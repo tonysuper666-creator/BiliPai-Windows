@@ -1,0 +1,103 @@
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:3:46: error: unresolved reference 'NetworkModule'.
+import com.android.purebilibili.core.network.NetworkModule
+                                             ^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:49:9: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        runCatching {
+        ^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:50:26: error: unresolved reference 'NetworkModule'.
+            val client = NetworkModule.okHttpClient.newBuilder()
+                         ^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:58:47: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            client.newCall(request).execute().use { response ->
+                                              ^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:58:47: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+            client.newCall(request).execute().use { response ->
+                                              ^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:58:53: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            client.newCall(request).execute().use { response ->
+                                                    ^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:61:44: error: unresolved reference 'header'.
+                    redirectUrl = response.header("Location")
+                                           ^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:71:9: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+        runCatching {
+        ^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:72:26: error: unresolved reference 'NetworkModule'.
+            val client = NetworkModule.okHttpClient.newBuilder()
+                         ^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:80:47: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            client.newCall(request).execute().use { response ->
+                                              ^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:80:47: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+            client.newCall(request).execute().use { response ->
+                                              ^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:80:53: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            client.newCall(request).execute().use { response ->
+                                                    ^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\direct\com\android\purebilibili\feature\search\SearchArticleNavigationPolicy.kt:83:44: error: unresolved reference 'header'.
+                    redirectUrl = response.header("Location")
+                                           ^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\data\repository\DesktopOriginalSearchRepository.kt:84:9: error: return type mismatch: expected 'Result<Pair<List<VideoItem>, DesktopOriginalSearchRepository.SearchPageInfo>>', actual 'Result<Pair<List<VideoItem>, SearchRepository.SearchPageInfo>>'.
+        try {
+        ^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\data\repository\DesktopOriginalSearchRepository.kt:185:16: error: return type mismatch: expected 'Result<Pair<List<VideoItem>, DesktopOriginalSearchRepository.SearchPageInfo>>', actual 'Result<Pair<List<VideoItem>, Any>>'.
+        return if (pages.isNotEmpty()) {
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\data\repository\DesktopOriginalSearchRepository.kt:186:59: error: argument type mismatch: actual type is 'MutableList<Pair<List<VideoItem>, DesktopOriginalSearchRepository.SearchPageInfo>>', but 'List<Pair<List<VideoItem>, SearchRepository.SearchPageInfo>>' was expected.
+            Result.success(mergeSearchDurationResultPages(pages))
+                                                          ^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:213:46: error: unresolved reference 'shouldAllowRenderEffectBackedHazeEffect'.
+import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:651:5: error: 'public' function exposes its 'internal' parameter type 'SearchViewModel'.
+    viewModel: SearchViewModel,
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:924:13: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            animate(
+            ^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:924:13: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+            animate(
+            ^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:924:13: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+suspend fun <T, V : AnimationVector> AnimationState<T, V>.animate(animation: Animation<T, V>, startTimeNanos: Long = ..., block: AnimationScope<T, V>.() -> Unit = ...): Unit
+            animate(
+            ^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:928:17: error: cannot infer type for value parameter 'value'. Specify it explicitly.
+            ) { value, _ ->
+                ^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:928:24: error: cannot infer type for implicit value parameter 'it'. Specify it explicitly.
+            ) { value, _ ->
+                       ^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:2551:21: error: unresolved reference 'stringResource'.
+    val backLabel = stringResource(R.string.common_back)
+                    ^^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:2551:36: error: unresolved reference 'R'.
+    val backLabel = stringResource(R.string.common_back)
+                                   ^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:2552:23: error: unresolved reference 'stringResource'.
+    val searchLabel = stringResource(R.string.common_search)
+                      ^^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:2552:38: error: unresolved reference 'R'.
+    val searchLabel = stringResource(R.string.common_search)
+                                     ^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:2788:46: error: unresolved reference 'stringResource'.
+                        contentDescription = stringResource(R.string.common_clear),
+                                             ^^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:2788:61: error: unresolved reference 'R'.
+                        contentDescription = stringResource(R.string.common_clear),
+                                                            ^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:2908:23: error: unresolved reference 'stringResource'.
+    val deleteLabel = stringResource(R.string.common_delete)
+                      ^^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchScreen.kt:2908:38: error: unresolved reference 'R'.
+    val deleteLabel = stringResource(R.string.common_delete)
+                                     ^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchTrendingScreen.kt:30:50: error: unresolved reference 'TrendingListSkeleton'.
+import com.android.purebilibili.core.ui.skeleton.TrendingListSkeleton
+                                                 ^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchTrendingScreen.kt:62:5: error: 'public' function exposes its 'internal' parameter type 'SearchTrendingViewModel'.
+    viewModel: SearchTrendingViewModel
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-original-search-pages-root-parity\generated\com\android\purebilibili\feature\search\SearchTrendingScreen.kt:97:32: error: unresolved reference 'TrendingListSkeleton'.
+            state.isLoading -> TrendingListSkeleton(
+                               ^^^^^^^^^^^^^^^^^^^^

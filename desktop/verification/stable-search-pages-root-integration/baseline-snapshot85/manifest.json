@@ -1,0 +1,3560 @@
+{
+  "frozen": true,
+  "phase": "actual-whole-stable-classes85",
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "artifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-85\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 156,
+      "sha256Bytes": "e0929361bd1be79e4fe9d6fee2e98e08cc54aa2af6772ba8b101db85ee2371fa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-85\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 16339,
+      "sha256Bytes": "0cbea1629b9d8b3300d5fede7c781e6e46931ebd42135f1fae41781a99952afe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-85\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 78,
+      "sha256Bytes": "f15807dfa86ba838449ea34db04c9f606c17b3a6c3106e9ab6e94d1504812def"
+    }
+  ],
+  "orderedRuntimeClasspathSha256Bytes": "6398174d444cf02365bc66480c1c37bb00800a520e681c4649100067af68b419",
+  "runtimeEntries": 101,
+  "classesLogSha256Bytes": "8933c33ebbccfc47d1db37420c1d40f5e4b1d8ea3582dc7a6f139066432e44fc",
+  "wholeCandidateClassesPassed": true,
+  "actualStableApplicationRuntimeAccepted": false,
+  "desktopExeReplaced": false,
+  "sourceRegistryCount": 1183,
+  "resourceCount": 244,
+  "inputs": [
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/Color.java",
+      "sha256Bytes": "b2d8c60d754e298e6ec001e6669a640bb3d978cbb968bf7cd0bcd890c0f4026d"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/ColorCutQuantizer.java",
+      "sha256Bytes": "7ec7a75ca254680208c3ffdd70ae5a0379bd6f5893f91e9ca1634b6b721f3e3f"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/ColorUtils.java",
+      "sha256Bytes": "a4e5ed8375c8617b742768115a0f3c6a01a352d98a14e69a6a2a37bbe90f7e71"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/DesktopPalette.java",
+      "sha256Bytes": "66bdbe519b0aff6b4aa8deea4e7a508c673aa55dd6b482e8e0752cb273f06c6b"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/DesktopPaletteTarget.java",
+      "sha256Bytes": "e9d918af69a38175d9fac6ce60b6ef3d59a133a6e78ecb1fc165685687b10384"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/palette/DesktopWallpaperPaletteScoring.java",
+      "sha256Bytes": "fce1b1803e5bc0d4c0dca36cf463052e2b14972afccafad8faf6dc014d1251bc"
+    },
+    {
+      "path": "desktop/src/main/java/com/bilipai/desktop/plugins/js/DesktopJsWorkerProcess.java",
+      "sha256Bytes": "9183d31bd5920dace42ba31eee1dfc1eefe166c78a4a1275e958156d336208c2"
+    },
+    {
+      "path": "desktop/src/main/java/openscreen/cast/proto/CastChannel.java",
+      "sha256Bytes": "f5c63139532e2ced82a4c9cce99de59cd284721a312ebea5b72ab743f38b8c08"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/AppEvent.java",
+      "sha256Bytes": "6d7cda49a422d4db4ca72956ef2da377b174f208e74d43eb44df6778c137720c"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Application.java",
+      "sha256Bytes": "0ddb08274171ae625b19db6588417d8158c27117c35e3e1d547656acddbe1e34"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/BoundedCastFrame.java",
+      "sha256Bytes": "70b7e4625f92dcf3218023a7a6ffa785c8972b3e1e6b67eef91e8a7af79a0bbf"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/CastChannel.java",
+      "sha256Bytes": "378d4fdf36476e196e56de0774eceff71246dd938d179971fb2ff628d74e1d9d"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/CastDeviceAuth.java",
+      "sha256Bytes": "ee70619d8a4a3fd8856084064a309fc4b795ee2e347e88c96330ebae3506cf80"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256Bytes": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/ChromeCast.java",
+      "sha256Bytes": "638f04842c298cadbff39e5ff5e21c36c0f5f26170344ade58c9b462009127ab"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/ChromeCastConnectionEvent.java",
+      "sha256Bytes": "b3d342ab7f19ed4d70c600011ae5f96d3120c0a58b67e930c2219536b0b3be06"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/ChromeCastConnectionEventListener.java",
+      "sha256Bytes": "968ee8bd8da05e085bbbd0fbce81071ac8edab9932e355e3049e23b49fd465ec"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/ChromeCastException.java",
+      "sha256Bytes": "af4d93207e9a2921f4856e6e98c60733461d55b1fa4468ebffee7e901997bf0b"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/ChromeCastSpontaneousEvent.java",
+      "sha256Bytes": "e493e7629d5e8fb0235ac22bfb221486603910559f36c120ca8f994f71faff43"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/ChromeCastSpontaneousEventListener.java",
+      "sha256Bytes": "924925cb44859d448b1b224ab6c51f1057c30e6cbffc61a81881fdbe6666a62e"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/ChromeCasts.java",
+      "sha256Bytes": "0fa1fa99fcdd20b30015127d11b4ef24c364e4beb1ddbf228b092af4cb636429"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/ChromeCastsListener.java",
+      "sha256Bytes": "6904c40796072506162629bee4d2fb5afb0c3230d1b9fa93b6d8fa974f7b68ac"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastPublication.java",
+      "sha256Bytes": "12a613267078eb7157868b9ab5595063894fdc2d098907da6e09f5a010e8928f"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256Bytes": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/DesktopGoogleCastProvider.java",
+      "sha256Bytes": "8e96e112271a130031b19eb6af005d0fd5882382dd65dcf1ff07f851fda1f656"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Device.java",
+      "sha256Bytes": "7efdc9aa16667c5871aaa918c72dec850bda099dd9ad2c2827515227da6a7391"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/EventListenerHolder.java",
+      "sha256Bytes": "e0653377f7b9d8ca157552ee5ee38f3d06eb280432f1df5a55c8838029be0ffe"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Item.java",
+      "sha256Bytes": "26937af58fa6a82d555c9c6f4c41f3f2493e5fc09bc0cc38a178793c655f505b"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/JacksonHelper.java",
+      "sha256Bytes": "2f8bfe2fd7203d4f4aee96f687ead6a6272eaa6b4785cc849d47ba5b0743699e"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Media.java",
+      "sha256Bytes": "48396d4a4fb9ea2e4c57f5d5113ff3056f463837065260ed61f8ce89877c3507"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/MediaStatus.java",
+      "sha256Bytes": "0ecc0610ea1f494ad1bc95960738d8192d173f535683c2dd1a5b8305c009d8e5"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Message.java",
+      "sha256Bytes": "6b82e1b4f451c5f6c942cec9b7de0363fbd065fff5d5bb5245f2efce54aa2f41"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/MultizoneStatus.java",
+      "sha256Bytes": "4e9d832336320eab82990831bb005da2bbd2a683b8bc37cb460a9ac1cf1fd52b"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Namespace.java",
+      "sha256Bytes": "42d00181e9de37bec733c76d1aa58a44264000554904b23fbf94e79cf7dc85a3"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/RandomString.java",
+      "sha256Bytes": "9db872dd816b2fd81c41ab1134a63f8a00e0a5ecba8990dce161be8a9efb69ec"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Request.java",
+      "sha256Bytes": "cc0a3b9cebc96ca56f32e16bb0522a67e175f5ae470dd33f01a9df53d342f602"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Response.java",
+      "sha256Bytes": "8e1ff00d5a645d5161cb3bf51ceb7fab8733f34203b8fac9a4b949d31673075d"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/StandardMessage.java",
+      "sha256Bytes": "20b86f6943633c0a1654a0cd0ecc9bc1c55f397c7e0cda9e4fde1ce3ead4fb21"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/StandardRequest.java",
+      "sha256Bytes": "8ccd7e8e5676708d8338844ccfb08e592005921a1d2ab8a6b67366c4eeb3a642"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/StandardResponse.java",
+      "sha256Bytes": "7511246e3c31dc146e3707984a177cb79ef8300cef60e62684d4a43b1343470b"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Status.java",
+      "sha256Bytes": "c128fc1ca8e837344a87efddbec93585612acc2bb772097349110aa5e9addc8d"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Track.java",
+      "sha256Bytes": "c30ac1c9ebf684889e679c67793358a1a5c7254a8b66e6b50a5f6a75049cfb0b"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Util.java",
+      "sha256Bytes": "aa57ad97ddb3eef92ab0a01d300944f9d5225df6f7cf58a059f08eba08246a21"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/Volume.java",
+      "sha256Bytes": "95dfd49df742522c1536c0d8169e83a0045bbfdd1f37a541ea6fa43c6fdb0c9c"
+    },
+    {
+      "path": "desktop/src/main/java/su/litvak/chromecast/api/v2/X509TrustAllManager.java",
+      "sha256Bytes": "c5c5a7a484416ad5d1f8fb787a19bd779273618cc8bcb972dd89eee28588b62d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/core/store/DesktopStorageSettingsPlatform.kt",
+      "sha256Bytes": "b45610ae14ba4777a90bdbf9b4a38e685c2639f15b21a33299d5b1c421ebf9f1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/core/util/DesktopCardHaptic.kt",
+      "sha256Bytes": "325e31f9a0d7f93447d5fd013c200088d8c8057d4c907dda11f861bb6720ba1c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/data/repository/DesktopCommentFraudRawTransport.kt",
+      "sha256Bytes": "bd596e2f376c97d3f8ac2a4f1c6672e02f9264799163eabc8ad3d09c225c7975"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt",
+      "sha256Bytes": "b9f9f4dcda31df9cae594ddb80d45c9f6909399bb60b82c07548e2a41dc5df3d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/home/DesktopWeeklySeriesPlatform.kt",
+      "sha256Bytes": "64dbb839ca212cd09a74983317b51f6860ee26a4f5d2047bd9672970e9589212"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/home/components/cards/DesktopHomeCardPlatform.kt",
+      "sha256Bytes": "fd4ef9cc8f1ce0b3a9cf974f6ef6b90a36c691a039b1bd87f67dd7a42cb60345"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/home/components/cards/DesktopVideoCardPalette.kt",
+      "sha256Bytes": "1d2efb86e08188d3ae20895780d216a2685e4017d462cab8402054123624e512"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/list/DesktopFavoriteEnvironment.kt",
+      "sha256Bytes": "b6b895cddc2797df7e8db82515667e7baa2f98f9a397a1c29885f98308a1f9b2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/settings/DesktopAppLanguageBinding.kt",
+      "sha256Bytes": "735235b64efd093d60f6ebfa2d43dc4793b563ec17562710cb008c929407ab56"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/android/purebilibili/feature/watchlater/DesktopWatchLaterEnvironment.kt",
+      "sha256Bytes": "273c7d3942da1875e1f11fdeaec65a913935d065f905250bd79f25b830982399"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopApp.kt",
+      "sha256Bytes": "a7124e23770c2f863f2095d8737a23ad5e5f478fa496d44d4ee4f2739bb6b574"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopApplicationRestart.kt",
+      "sha256Bytes": "f5d58c915d68642b5d20e8195f21ed1369600a5f14fdf8328ce79d4a8a2fd85b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopLibrary.kt",
+      "sha256Bytes": "8c7d22a8014ceab940b900fb38a55a0c6c34eea32fdaef13449ed65f821c8acf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopPlaybackController.kt",
+      "sha256Bytes": "4ceac1d05e306f00c66b4cf306226db96ec44b2f3fc08d31ee429395153eba6f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "b3a0e728e0eb60af43d521cc8388eda0db9c14d3d543e0199746f880cc1f1bb9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "2fbef0b05d3b8d696394a8f774887ab408a8983f1c503c9669f5b38b84e8859c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
+      "sha256Bytes": "f2a44d510e50180c2f16d9ad91e74a0b1b83b7faf5b98cc7618a5a2ac802ede3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "sha256Bytes": "ba275ec0b20c57463f8523e19c4301ee364301de2927608fd8fde7995c6fee55"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopMonotonicClock.kt",
+      "sha256Bytes": "d2483c6c46d42a91389a54d032cafe9cd7a70c7603fba40f46a8bb8b58f4d5fb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopStrings.kt",
+      "sha256Bytes": "3afdf5f10c37997ad972951371df65202d5954b4d66e8c4593fdae880b63adf8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopTextClipboard.kt",
+      "sha256Bytes": "1c06b24114bebbf60c93b9f62564d05057a1e7e7fdaa6e4658b5ad97c01193b7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "sha256Bytes": "0064869e7091937e263917d5b611e36c81f4c7ef107aa8fab86a557b3453e0b6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopWindowConfiguration.kt",
+      "sha256Bytes": "0434e37fbea6c8f1189e92f58ba8cd4d77273ed065629e1558d9cece42dc92c4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "sha256Bytes": "3a18a64e1900768ca47f2bbb41c99fa41075950dd1ec40fe5bfff884b7905879"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopBgmDiscoveryBindings.kt",
+      "sha256Bytes": "1d10908506435370542067140e3718e17a5de4f0220fb4b8330e8180e306b5f3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopMusicRootRoutes.kt",
+      "sha256Bytes": "c4e1afa7e2cc92a5447bc69c8f6fce2755e1d9d4571d097667ba201d98cf9b3a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicDetail.kt",
+      "sha256Bytes": "54b67bc1a331bba883118b0e8633e0d394c639df2bafa3579f9a1f38cb5b8508"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sha256Bytes": "0e7d680ffa7cb98ac08369c9686c5c7dc9840ec014ead13726becbed3eb675a8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenPlaybackDataSource.kt",
+      "sha256Bytes": "4a3f30f809124dac6c2604cc68aea3f2169263f0d2b1a0b7080a995fc203deb4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupArchive.kt",
+      "sha256Bytes": "dc674f9b47126c737db2bedcf4c1601357c921b2e9b13b53a7c6e1d29fb074eb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupCoordinator.kt",
+      "sha256Bytes": "1a098d154c11e4018317816a1a97ec1174e72dc86e9dd10692a82eac543a1edf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupScheduler.kt",
+      "sha256Bytes": "f561b75aa27d533e91b043c2476c37c3a983c34c4f65c2751dd8baa81fd52a90"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/backup/DesktopBackupStore.kt",
+      "sha256Bytes": "8e32e27d57555b468c7cceca744a238acd658742d397346592e553cf74000f75"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastController.kt",
+      "sha256Bytes": "076be21504a72723df3df764a04c9667ffa8167ce517fb78b1cb04a76fcc160a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "6d169325185d60ff4655e7011d826bf2f63b77ecd7de9c49a5c9e3539ab1fa5d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaPublication.kt",
+      "sha256Bytes": "edb66fb67c2a0036b72e9205f89b7941ee904e11bab939c59218bc352ee1fd76"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastMediaResolver.kt",
+      "sha256Bytes": "e29b7f591ab6970e8f2ad457cd788d93232fdabe5e7cf2e1630460afa717030a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastPlatform.kt",
+      "sha256Bytes": "adf857a9c0e3b6fc9e9dbcb5523c1a35a958e515ba8aba80103d56d169ce8711"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "sha256Bytes": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastPlugin.kt",
+      "sha256Bytes": "90875443ba3884cffb678b63853f02ee7d978b763ab3df86e6ef51c9ec4370a3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/AdvancedDanmakuRenderer.kt",
+      "sha256Bytes": "5d7b28203257bb5c5d938c63d1fc835e2d56a8300b7e9728b391f0202907bf13"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuMerge.kt",
+      "sha256Bytes": "72788d0dab3cf547b63924504eb18fddf1a1a5b54a2e484229765e0187f3bc8a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "sha256Bytes": "4a01a768a015edd70bd6bb7d1159dff578e5987167409d4973ecf369f0302442"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "sha256Bytes": "a1f9a7e93a06a7b4196c9ffd9dfe7e63592858b1e9727689d8c366ac63c5882d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuPluginAdapter.kt",
+      "sha256Bytes": "6ff24d00d7df09a6b14dfda514b17393257ae848f766e8acf99afa95fa4280c2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "sha256Bytes": "3271b1d961e4240d2058d4ee8943417d3d403b60be45869c73422a28b9e463cf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuSettings.kt",
+      "sha256Bytes": "26a724cc43f484aef5fa88a4f6f6e6ccc64e4564e39d2687b6b5323df7ff5b13"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuWindowLoader.kt",
+      "sha256Bytes": "6a5cc69327dff86de96149bca285cc3af9cf451ea4551b88b3855a0ee544215e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopDanmakuSource.kt",
+      "sha256Bytes": "53c25eb27390abb54f08904d0b8156485964622b59b1c82c469990a6c777c5b1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOriginalDanmakuRenderPlatform.kt",
+      "sha256Bytes": "cffab09d475d7aa7bf4b92e531752a464e8ba3a679bf0682759291b78e71c76c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopOwnedWebMaskSource.kt",
+      "sha256Bytes": "1b7dae404ad9e31e7f55c01153dcf0860b2c64464bc3f471f2fd3e8ed1516ccb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopWebMaskPath.kt",
+      "sha256Bytes": "1702c11f675ac4801a8e0c9940116c8827520575e0770173c44b66d9f29e722c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuRenderer.kt",
+      "sha256Bytes": "0745671dd4e8d5643dca02a01e42816c101a3e119ce2cf04691880aa7ad07bae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/OfflineDanmakuSource.kt",
+      "sha256Bytes": "e15972530ed8b71b9e5e8a57f7a3d8993ad6d9a39246ca19f5b16a82e123c12c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopArticleHistoryReporter.kt",
+      "sha256Bytes": "577db4b82de5f24aaf515f3d36f1703d8c48e712fab7d16b979cb3c9603aeda7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpConsumers.kt",
+      "sha256Bytes": "6e4c7dff07090220eba19b4b216bb60620c564dae3f9e3e5accd681a4548e1f9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+      "sha256Bytes": "c25db8f8e2919fdee968dcc1a405ee2b7f721c2674e5b6e31664831da62e1a85"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "sha256Bytes": "6d026a94333f63a6c923c90c75282cab299115632fdbe6d237eab2f264e36eaa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCaptchaBridge.kt",
+      "sha256Bytes": "c93b752ab2bafbb149c0817f494e20c115b34b4e255d0a7783ee3e2c15eec51f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommentFraudJsonDao.kt",
+      "sha256Bytes": "bcb6094e26e719fa8e30084272c801f13f0b22974318d86b1626feb3f3cd6657"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityModels.kt",
+      "sha256Bytes": "e2715a89163f0dabe34cf8effe5de71050226ad8333fd9c6421168d025ecc29c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "sha256Bytes": "ba2fd53f7774b113e892e58fe5cf1e69151b1894509d5cfafa37caffa92feb62"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCredentialCipher.kt",
+      "sha256Bytes": "459678b748e950af3b85f398d051393c21026bff792a33684a64744f9726fe09"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryFilters.kt",
+      "sha256Bytes": "df3f9b64de05e6650381c3ce7c3eb40f8f8bacaeaf218a27eb46c630dfb16bfe"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryModels.kt",
+      "sha256Bytes": "6cc913e1f5c682435b675e7831cf91b15a8aa008335ba11ad5937c75bdfb74fa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryPreferences.kt",
+      "sha256Bytes": "68c9b4ef48015ffe8b9688719d2bf3f01474fd017f5a663a69ce1669c83d6b4b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "sha256Bytes": "17fb7eb7167eb5a4f6104ce132c5c9af4b9bdbfd03d0de9e87891afa060e60d7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryTransport.kt",
+      "sha256Bytes": "2552b506367ed3becf31d0b86fd03f5c96058ada7da8773dda23eefdb4f73d0b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCache.kt",
+      "sha256Bytes": "3151316a7cc91e0e557fa56794c9fea9aa25d0b2f00686915137202211a56b95"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCacheSessionGuard.kt",
+      "sha256Bytes": "98c700f94c28743157e03a7aaf19fd383a56a2929092cb405a96fb2ed522d549"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt",
+      "sha256Bytes": "bad1068e9ee07db5a7ee2813904ed81e727cdd80dc611d02b13bdfc900f220be"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicGrpcCalls.kt",
+      "sha256Bytes": "b55386f0753d6e1ffed6b5c4181fca21f41d8bdc97e7b8fe0ae33712f6f83d82"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopFollowStateEvents.kt",
+      "sha256Bytes": "20af4b8147d67fabb02a546ff7d014d76df585a06849e066d120eae7e32f19a9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopHomeCardMetadataRepository.kt",
+      "sha256Bytes": "020a5e9feff213036f11a5e2b0b2b30bf38c6490171630d743456f7cf197f306"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLiveSession.kt",
+      "sha256Bytes": "47b3903de514b9ea7643df5bd271d5fba18272984b69d678ab4f92361d5171b1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLoginModels.kt",
+      "sha256Bytes": "5b00cb57269b175f655080ea2a3705adaefa8b546c24983f75bcbf259bcd8bfe"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopLoginRepository.kt",
+      "sha256Bytes": "d712a0621b9e4adfcfbed29ef7821296e925a6f133f6b04cf749c2e7a6bd1d34"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaApi.kt",
+      "sha256Bytes": "28733a930daa2a9fcbb3b745883731f11ceaaa8290cfbc98f9d4bbd4bbd7fea0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaModels.kt",
+      "sha256Bytes": "13edd2617ca0eca9418dd328a137be17a5b4eb2720ae8eea3295e977466982f1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256Bytes": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopModels.kt",
+      "sha256Bytes": "ff0d256c467cf703635a013d6808ddadccc8fad3a4714c84234697416a0d62ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPersonalModels.kt",
+      "sha256Bytes": "e6595f3dca5fdca4b11727020a65835d6f4a4d31d4f2d7979f1ff1f2c49f9221"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackAuthorization.kt",
+      "sha256Bytes": "f60c2aaebb98aa52073a9ecd56a6e8ff798c899f45d65223d215988ebafb932b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "sha256Bytes": "77fc8750cfd817e2711820ca39cdf164fcbec1445623a8d400e4123e8910040e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackHeartbeatReporter.kt",
+      "sha256Bytes": "7f8cfcf034073ebcb7cc2226ee599a6033d2d991a2f5659e5f4a24603f0d96f7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRecommendationPolicy.kt",
+      "sha256Bytes": "2d7336e1d1d93edfb4beffb715447a1223b4ffa439b672ae501ee51ed44e1016"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "sha256Bytes": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchFilters.kt",
+      "sha256Bytes": "9e0e379ac9e83de03980c654c915733784e8496f18c9dc1ff31b6d6d51451ae9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchPreferences.kt",
+      "sha256Bytes": "8d000d578ec677578aa6534b9dce903a86557d8bbd4cf6d461afed559f9b31a5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchRepository.kt",
+      "sha256Bytes": "a0f358053495d304ffb0b1ff7588913bddbee56f3e7b43fc184c18942a926297"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSessionStore.kt",
+      "sha256Bytes": "ed7449505c4254a7ab384539c73f40c0befa697db1b37fc734018c1397f77e0f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialModels.kt",
+      "sha256Bytes": "441a3dc8a3e031caa8b7396f7e61c027f46f2f8525522c9267005a0782f3b0fd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSocialRepository.kt",
+      "sha256Bytes": "f502a403e97af6caed1d4f4eb9085ca11f746ad1b56222b44830a97637fa2922"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSpaceContributionsRepository.kt",
+      "sha256Bytes": "ab331882928c74990d5263fecd22f4f7f0ac50b40b4b38bad4a86b34e4eb3baf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSpaceOverview.kt",
+      "sha256Bytes": "cbba318a734bd994dae30de3f1bf7bd2b43c5c2f1d95581fe0809b2c2b87dff0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSpaceRepository.kt",
+      "sha256Bytes": "a7bdd92905a7ca80af9fb30858d5302d534de903b7eee7b46f925d17a184d236"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopStoryTopicControllers.kt",
+      "sha256Bytes": "3855ff278abbb3305847cb6512efc584a3aad93288f97ee6335640c576b1463f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopStoryTopicRepository.kt",
+      "sha256Bytes": "a25e3217aff096a34084372f2c6820be9dc4d6a78ff9e307202d53f023b58ea8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLog.kt",
+      "sha256Bytes": "e5b1ac785d1c2e7e1d3e7901338a7c4a811b144e0cc46eb688474b0dc5466192"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/UpstreamLogger.kt",
+      "sha256Bytes": "ef79d0b51820b4684062dbf3440fd78e38a78fe136c2a9170195528bdd17d74a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashPromptController.kt",
+      "sha256Bytes": "a6cc49b32e13cc9ca2bb2cf6a10ee757b0191a382d4c8020beee4ea0b4f4f726"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashPromptHost.kt",
+      "sha256Bytes": "137320585637d91e870604f797f147ff036c7f2d89d21773f7dbf0c92eac7199"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopCrashShareCache.kt",
+      "sha256Bytes": "c95266e56c4a3a15b684118db67598cf7b0a2ed3f0373e56fd086706de4d36df"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticFileChooser.kt",
+      "sha256Bytes": "783474f7df4cab1fce420764a5a154e8d3befd9f4e9c21077f272a31186bb64f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticLifecycle.kt",
+      "sha256Bytes": "40ec6d2fadfe27e336ea6f8034e0de48f148ef1ac2e2a4c34865a1577535c911"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticRuntimeBindings.kt",
+      "sha256Bytes": "b9c21d224029ce946c9f31d19a79d84570c4eb572dcc1bf931f57c58511287e1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticSettingsSection.kt",
+      "sha256Bytes": "2899032b46735e8af3d12d688e3909067c28bbb198a156df4ac7152b5b352e7f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "sha256Bytes": "a1acc4f5b149d3519b7808de3555cc074361ed6aeb79ee5c464b3e9a3023a327"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopLocalDiagnosticViewer.kt",
+      "sha256Bytes": "41513e19b6ee478fb3307deef081a02ecba09bef9798943ad6d44dc8154ca435"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeCrashShare.kt",
+      "sha256Bytes": "eee9160cfd2782b8248d2d9047e7f0d0ff23572cd022352e2c33f839085c0b5e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "sha256Bytes": "3a0d30312765a0399677efe8bb7667ce3cfd072d68947b75adbeecb1069c1b5d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "sha256Bytes": "cebe7e5bd8248dde15c8a150cabe4cb58158bc17003ae91500859ce563e6e878"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadModels.kt",
+      "sha256Bytes": "c10bb57b4c50268eb6a51e34eb78720e03d672e49f66178f961489a816ae9725"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadNotifications.kt",
+      "sha256Bytes": "af8eb4e7664b83d1965afaa5313bab9543416cfd299b7f4e33fea37c59644815"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DownloadDanmakuTransport.kt",
+      "sha256Bytes": "af8d62f6547e53f4548e4a4405d35d43603ebbbfb2aa4e79612f2053bf6839ee"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/WindowsFfmpegMuxer.kt",
+      "sha256Bytes": "97f24b11724c9da81210f73a6d7960b8f8c3acc24100393194ea8f21a721869a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/network/DesktopNetworkProxyFailure.kt",
+      "sha256Bytes": "42152e96166cce1672fb86a6a1e5d4bac727f5c2d55851e1d247654adc9e2c2e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/platform/DesktopWindowsImageSaveDirectory.kt",
+      "sha256Bytes": "dfb6115880896df86d3ae5a46881831a997d01aa4aba8fb20432c831b7124c31"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/BiliSubtitleDocument.kt",
+      "sha256Bytes": "06632295838e0ef310d05800c29345f0d9ec45d1f9434dd02004d93044816913"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopAutomaticSubtitles.kt",
+      "sha256Bytes": "ed686f9b585b1bd5f228be2817a4cd104ca9250e9ee070008980d44516d480bd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopControllerNativeSmoke.kt",
+      "sha256Bytes": "e434425894137646f7ffe22415cbc70685169ff62d4c8674998beaddff9d1df5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopFsrHookAdapter.kt",
+      "sha256Bytes": "dbcbb55793b313e172e20e8516b498835ccea2af26d87efd09c45e4173c685c2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopFsrVideoShaderResources.kt",
+      "sha256Bytes": "d3f0c4793e8b9fb28045eee22a204a70eb1aac07ea9e5407459cc7adb8a2eedc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopHttpMediaFixture.kt",
+      "sha256Bytes": "ee7ac4597d91aca2e1e4078994ade9ac01d2bfd41d424779ba145b62506a300d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNativeVideoViewportTransform.kt",
+      "sha256Bytes": "2fe6d3690b0061913ee2bd07f174a667890d5509c3260b14098aef69ab2d7ea9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopOverlayNativeSmoke.kt",
+      "sha256Bytes": "04c7daf2404b037be69b80f5c8f1fbfde650261c6f49a69717d051c3cd00cc07"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackHeartbeat.kt",
+      "sha256Bytes": "3e1303297a36189ec78e30212dd92c21e0b77a2480bd47a3bcc1858e17c24634"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackPublication.kt",
+      "sha256Bytes": "7c513815b5a8319ab7ea47408e8f420e09bb3f3eb9fc396b0e349ba25f56cc26"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackRecovery.kt",
+      "sha256Bytes": "d5a3eb8e12d6f182fee91806f405e7f7e6733df0a10248bc0ca288116b0d9354"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackSelection.kt",
+      "sha256Bytes": "099fe63da463eb5dfd60502040e20133a12803b91d8e7971a552a414593d01b7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlaybackWatchdog.kt",
+      "sha256Bytes": "3bdf8f284fc4289f4fd96d62b5bd5c4fe0709c074deadda4953a0daa6f46c4eb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPlayerPreferencesWriter.kt",
+      "sha256Bytes": "8700a2ba3c54ff6ad7cda15ae8f50d569b71904edef0d4bbc6b2f28aa5cab0e7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecovery.kt",
+      "sha256Bytes": "ddad59a8126a9f9c97fde18d87607251c9a1966a19515fe170168df829b29506"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopRetainedMediaNativeSmoke.kt",
+      "sha256Bytes": "3490c1d482e59cb9b18717637fcbe487f7ad77615e35b62d1e8861812d5fcc6d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopShaderNativeSmoke.kt",
+      "sha256Bytes": "2b30319ddb54efee1c87169faf18a40ef9dd201a980ece5bbd19997a8c009db5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopStreamHeaderNativeSmoke.kt",
+      "sha256Bytes": "9439f5282ec8b4b4289a6c7241f86bf8022608104beaa0bd3440106bbc704bdf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+      "sha256Bytes": "b0115c8a75162796d3964de6e814c5859d5dc17db386513cb2d29ceec88b5d78"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSession.kt",
+      "sha256Bytes": "d206e4e82576b810d8c176dad433aaae8b2d1a91fa90a583f7f0920e20211147"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvDecoderCapabilities.kt",
+      "sha256Bytes": "7ec7e183daef014d78d56bb2adb7c633cb9667bcf99ff8802e9e48c1680b7a4b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvNative.kt",
+      "sha256Bytes": "8c9c91eedb07ac6eeac399142deaa980565866fffdc3781a7e76ac880188404d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256Bytes": "918eeefb47807c8a9fbca21bec88d17e9b7b32f1831f21c2e9a58e43ec0c73c5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvSoftwareFrames.kt",
+      "sha256Bytes": "c747310a5200d5d30c3a935d09c21e110cd7269597e9e901a117c54bb4ead889"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvStartupProbe.kt",
+      "sha256Bytes": "c4cfdce4c7d01fb810fa62abdd96665501ed0338e6c0f4e49f0e76e5c562a40a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PictureInPictureController.kt",
+      "sha256Bytes": "5d2d1cc7226171bc1f053f1e78a35bb5a10eeaa128224c4139efb203311144ef"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackSource.kt",
+      "sha256Bytes": "84f0ab9100d4e1ce3dc994a80ae8d56bd1f1111982f84c4c3481936aaf213457"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlaybackStreamHeaders.kt",
+      "sha256Bytes": "077c3f59e2714d48685792246e52f9df4882fff5bd25e2348aaa218adc04dd98"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerFailure.kt",
+      "sha256Bytes": "71ce91845c66bcb90fa039aeb1a178962391712ab006caecc7d801dd8934115d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerPreferences.kt",
+      "sha256Bytes": "2ff25af6a9700f1476726629eb67b30a45cec3f3f69ddf99fe6c03547568c06c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerSeekTracker.kt",
+      "sha256Bytes": "e2944b0c6cc621ed8f1594600b5f02b042468fa23f60b990fc1f6fed170c6909"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerSelfTest.kt",
+      "sha256Bytes": "b197ea8e39e555569951e0a65260f6f0f7ee8e7b3f0db07e1e59fc7ecf259838"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoOutput.kt",
+      "sha256Bytes": "e74a76a7fe3d68e847db5cca179174ca31ca77055a76c9cad66000d3e406bc79"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerVideoShaders.kt",
+      "sha256Bytes": "4831109a2c811fe06c4c0e4ba68a54cdaa6635aead44821704cc89a330b48d9e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/WindowsMediaSession.kt",
+      "sha256Bytes": "d8e299c913bad6fb19431e350df3857a7394e1fe591cad087e16f74021143ed7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+      "sha256Bytes": "815f89320ef9a54d2cf00ca6764f3a0ee1e91ca516b050c4b0f155325299ed22"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProbeCalls.kt",
+      "sha256Bytes": "651303df1e98327f003ec4d4aea1acc7b92c76c79ca1bcdfaa4f1a53794c1fc5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteProtocol.kt",
+      "sha256Bytes": "60de485ee5bd488edfc897c3d4210d68e885b9f841fa3846e182e5e12c798619"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteRepositoryAdmission.kt",
+      "sha256Bytes": "c603b60714b9a74dd50e21067a2095abdb62765e2af1e58a0a49cecfa23c9bc5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "6e1ea1e08921083a3064dc0f2f67cd7a338043cf65f8e7edf442379419019896"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopNativeByteFailure.kt",
+      "sha256Bytes": "c613b0ecfa25a162529abe7451a234ab1f2002564281c40f628a73cca01fde21"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopAnimatedSkinImage.kt",
+      "sha256Bytes": "dfb22396c093060ea589d83010f99e91ca5ac823db6901c4eed0a857db2d21f9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopLottieAsset.kt",
+      "sha256Bytes": "6950fc6ab37c00feb37ac0f9f9d5eba73067cc2ee27407fb54f545817def7ab8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPackageRepository.kt",
+      "sha256Bytes": "3e34f97bef8fa2a3faef5c3714d2bf1709e38822dd8877b8aa826b82e51db42d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPlayerPluginWriteAdmission.kt",
+      "sha256Bytes": "4025633e8c46a5f96b6eff98dcfb650f62b9fad094c319d4206730556778cb50"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginPlatform.kt",
+      "sha256Bytes": "8bc1a9a221744f63f09d980712be64b240c75a000b25f38b8b7f575f6dd44b27"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "sha256Bytes": "597d1d2e1c835ab9b862547a3049601f535167219796bbc24694e6173de5fc88"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginServices.kt",
+      "sha256Bytes": "ad1c9058bce0166a2a05bcdd09eaa1a82d2fdf5940840fd6e36b9fdfe04d0291"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "sha256Bytes": "008818e08e6dd0ac3f1fb2a5ae0d0a568cc9f8d1c139a1b93bfb5140de2a1535"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSkinVideoRegistry.kt",
+      "sha256Bytes": "4d2f3b284caebf368318493bf1c7813f1df2e5421e375d1c9c3bd594859c7a3a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionRepository.kt",
+      "sha256Bytes": "0f8503b71f18049d8a47ebeaf38d929b21e35fcb8e3d16b572440dcab82cbb0b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.kt",
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchRefillCoordinator.kt",
+      "sha256Bytes": "bbae82ce99f8990ee0af2cdf939f032c59bee43198556de3db3c33296b6d9859"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchRepository.kt",
+      "sha256Bytes": "2f783f6cfd6be2740658d69e8f9bb6f8b3aa4d20db7796dfc0508e650f95a5e6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopVideoEnhancementConfiguration.kt",
+      "sha256Bytes": "de95c044be6b44cfa298fa27f1fd2e99f3cc38387dd5af965d7f751d05025c16"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopVideoShaderResources.kt",
+      "sha256Bytes": "da0b8e4a66f8ddc24c451f7974f8efb6ccf87d6ff0045866dc3e8cb43552dc42"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/js/DesktopJsFeedSources.kt",
+      "sha256Bytes": "77dff337005bf415d53c7464b51aeda7ccdfe2e7341d0c566b3bc06c9b6dd269"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/js/DesktopJsPluginHost.kt",
+      "sha256Bytes": "219597a51f190ee970875376fdebde12b9d2f1bb80193cc7c1ec5877aa47fcb0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/js/DesktopJsPluginRepository.kt",
+      "sha256Bytes": "54cdf700b59a11da6b1c6a1f64875c3d2f38ea32ed71db133dc09ebf66350adb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/js/DesktopJsPublicHttp.kt",
+      "sha256Bytes": "628e98cbb96b4306bb9ae188619993969334e439d4c4d4813e48149c2f2cabbb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/js/DesktopJsWorkerResources.kt",
+      "sha256Bytes": "387914c3977ed4b2aca343d8c8cfb53cd97e12564ea1bdf22b6d2741106d5282"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopCollectionPreferences.kt",
+      "sha256Bytes": "e4f1a4d3bc0c25d23fe7ad56a5babb58763765b0cbe956efb5cbefabda1e9428"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTabsPreferences.kt",
+      "sha256Bytes": "81f213c41b555c314d312126c1a90a80fa1cf033a4dc5aac773a2cb0af35c52d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopDynamicTimelineSettings.kt",
+      "sha256Bytes": "892e47ace78bba7784c0516034400623daf7cd3bac1aba85fab1a93feff2a904"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationPreferences.kt",
+      "sha256Bytes": "53bcc85b37dafcf545bee2d9d9440a083e193915ed733b07b82622c7da384485"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferences.kt",
+      "sha256Bytes": "44cd3cbd98542c1a956814189b7738a59784f1d4a2d7665fb407b178227d690c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeCardVisualPreferences.kt",
+      "sha256Bytes": "77cd7146573fbcbf7dbab146bd17a1b7a8a5d8151944b802f227352a31a27c87"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopHomeRecommendationSettings.kt",
+      "sha256Bytes": "ae49d490a5ea37038f27f4291ddf5b98d9dee70c46e2cc331b5d0ab5d370ea02"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSaveLocationPreferences.kt",
+      "sha256Bytes": "98c7c4eb5fa8c27d97156e18ee1af38daaad3cf40ca9cd952246e098d97d41da"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopImageSavePathSettings.kt",
+      "sha256Bytes": "26d0a6f9afd682be1322c6c65d325760637bece0ce156788f04c1c42f064d169"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopLiquidTabSettings.kt",
+      "sha256Bytes": "3f5fcfdce31474bba7deaede2666ea61a1f42e591deecc6483079fa01f8a1a94"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt",
+      "sha256Bytes": "3a3aac14b90e134a32dd75554c03b7cc5bc5e98aed1b8f59af55b8c71590f467"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNetworkProxyBindings.kt",
+      "sha256Bytes": "12aefe8ca3d4a81d74a7ff9242ed0bd61f161859bf9fe75692906b6ebc0e7118"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopPrivacySection.kt",
+      "sha256Bytes": "1e7bbc6d5e34a0acf34e167cf077567323b3eeafb0c5f936baac9f9f4a567d11"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopPrivacySettings.kt",
+      "sha256Bytes": "50903d7c9b0270c370d1ecbe2d3fd84916078aba1357f744422d5c0203cff292"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsNavigator.kt",
+      "sha256Bytes": "50383077b62c166c55c9c9ac9e812a9d30ea9f82061493f6609f8a95c545a3aa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsSearchController.kt",
+      "sha256Bytes": "8312c7726804f9c88c5a9cb357a4e196b72044bdbb80751314c78e1d39d89389"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsSearchDestination.kt",
+      "sha256Bytes": "d13fc561ab34e0c0f4dad132ea2cc79c982412c84acee629aa3847b97277a1a1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsSearchRepository.kt",
+      "sha256Bytes": "bacc3834543d86b50df850c2babc6fd1e870918097d6cac849021a17ba6db1b3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsSearchScreen.kt",
+      "sha256Bytes": "0b466d3f9d1d98e60539428aab577fa11555914e264c2ab542e58ba2fb16bb2e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsStorageEntries.kt",
+      "sha256Bytes": "abd53fbd7f666c27b149279c16330cc81ca03c4d8e3e3d1ff1e4ed8fd08bf3c4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "sha256Bytes": "fdf84b43e0652fb1e1da3f8ba820387d67a8f7e3288effd16a9729a47c4736a6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopStorageSettings.kt",
+      "sha256Bytes": "fe1e23c4a1287dc06b1ddf9c62a3b4a96c5199d473b5879753950df1d4790ccf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopStorageSettingsOwner.kt",
+      "sha256Bytes": "483a5a33b295b553f71212ad91635c194e640f141466b17d91490ea8c742ad51"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSystemReduceMotion.kt",
+      "sha256Bytes": "ecd674a7b935cc799f2cac00803624541506831e6571ee9064b6957a8470657d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/AdvancedLoginDialog.kt",
+      "sha256Bytes": "7a6d86061466d7e361cdacdf506f623f78f18d5a641a92afb96ba4ea3080cf71"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/BackupSettingsDialog.kt",
+      "sha256Bytes": "1efbdb277191f355d8bfd05eef3291bf88003b4649688217205ab88486b3cf34"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityCollectionScreen.kt",
+      "sha256Bytes": "008220e9f49408f118ec20a4d5dd349c21e4ebdd7a539cdba062debc534eb748"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "sha256Bytes": "956ffecc0bdea646b7d606c25a258b26175dd593ab3af34bd81e0560b27fa0da"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityEditors.kt",
+      "sha256Bytes": "91d1ef093fde9beea937fb67e9554ea78bad67adb51ad8dd4adb24763e7d14d5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityMessageScreens.kt",
+      "sha256Bytes": "a5adb813ae4b82adfcca4478d5a7f372a82b86af9eb7b98fff3527927b6fb24f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityReadingScreens.kt",
+      "sha256Bytes": "31835037a31bf2c3cd7cd0671210298a8abd38fb8b7df435bac7c961f872328d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+      "sha256Bytes": "4cc337a4cdb09abbef7d397e0c9f2f54702995bae8efacd3eedba62ec44bc641"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "sha256Bytes": "54f3f5375daccb10d2a3826e84ad75b9a04b5da8fae035de00f3110fc812da3f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityUiSupport.kt",
+      "sha256Bytes": "4e81bfb474729f4d81133fefbbcde540f2673f2f60fe2b1cc61b20305976ef59"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageCacheTrim.kt",
+      "sha256Bytes": "9b93059fec4183f7e8ad6b2397ebb9462951030e1a633ff99e51ab511c5020a9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt",
+      "sha256Bytes": "d4ffbb2db1b567140b5245e093e8f3ac5b4a05e59a075243d80f2840bdf624ba"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+      "sha256Bytes": "420d128379653d05f9b0376006cf55cf1d286a8e6097ff5fda324e3622a2f61d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmLottie.kt",
+      "sha256Bytes": "441ada73f68accf43bc2cd4b434434086388a69a249b6cfeb0d95f89c79c0483"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBlockedListScreen.kt",
+      "sha256Bytes": "ee988f2abdfdd2cd929251220944024a912d93d0d8a21c1ef745d40fb9ae8a79"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBrowseMemory.kt",
+      "sha256Bytes": "6eb93c5ed8a0656873d2a4b58d689c49705e918f70c2f91e87daa2be82d86ee4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCategoryEnvironment.kt",
+      "sha256Bytes": "dd4b245e50d566264ed06d5a4856d8b4be3a9072c75171187875231b0cd3a848"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCategoryRouteHost.kt",
+      "sha256Bytes": "0278305589b3bb3f4ff477b18572a2d490315ebcb9482a2138eb41424f0f03b6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCollectionSheetHost.kt",
+      "sha256Bytes": "67a916a24376563b239ab089d6163bbcae1a4c57f0760378efaed738ddfead3d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentDialogNavigation.kt",
+      "sha256Bytes": "1e38e22b3da52e31d7c1688f49344b027ecbf10944f32cafcac61867e897e59c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentFraudRoot.kt",
+      "sha256Bytes": "58ec4a0aa6e2982373464144e29afe3b05e57bcf220c911864a61fa7bb62238a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentImageCanvas.kt",
+      "sha256Bytes": "afff8cefc2ec6a5da07bd8e5bd1b81ad095812a69fdb70829e113f9a8f8fddb2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommentPlatform.kt",
+      "sha256Bytes": "ef7c259d8343e773f84454dc262b3d3d6f20651214d00e732ea553bbc44f4eaf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "sha256Bytes": "76f1bee6ff516b2c7ce9b2a5410a9af650b87eddbcf8d7e2e8449e0b2d1f0e96"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuBindings.kt",
+      "sha256Bytes": "22ec3f340447146b3d3338636dc2d2d86fdc220b6d53106180fded7e68d2dd37"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsPlatform.kt",
+      "sha256Bytes": "b0c32cdb429e978a93536bfe4b0e48b8358f3fb6db939ac122a3be7b9909b742"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt",
+      "sha256Bytes": "4d382d2dee6b0cbb7a8b75a1613a160f4e126c0df76553d03645e73a74820763"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuWindowsPlatform.kt",
+      "sha256Bytes": "1431a416f51a3dbc7248bf7f8cdc1ad36b8905edefbeb31c49f50992864cdb43"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailEffects.kt",
+      "sha256Bytes": "a53e1ef5d154924d77198ae298af1b0b5a911bba5692d8c8ce5cc0254024f678"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDetailWindow.kt",
+      "sha256Bytes": "47f60d9d5ef8ef98104102074a8d5c3f334b83a09b45f7274daa91b9a9490ed1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageBoundary.kt",
+      "sha256Bytes": "6ccb9a81709c5a080725a8494d186ecb71f37f03cb495f324cdfaabd925d07c3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuard.kt",
+      "sha256Bytes": "511d59886f87c318caf35b756e2054d2ad87f7c2d68afdbb54dfc2d05ed54747"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCacheBindings.kt",
+      "sha256Bytes": "0f7f86d4f2f056f6818cfe7c3c2fa68fb2d93f440cb73e283d3beb6902418346"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardMutationBindings.kt",
+      "sha256Bytes": "a5ae1e82600f12cf7837532ef8b2d41cf296a222689eda7309432df0ef518dc2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardPlatform.kt",
+      "sha256Bytes": "aa70922c5b15c2885f4dad174565d67e78da1b6e92580eca5aed4d6832494b9d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardSession.kt",
+      "sha256Bytes": "a7972d1a1d72ae0cdb55c0c32475c6c1edca531a12f3ee4a74b85a4947f694f0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistry.kt",
+      "sha256Bytes": "45cc6e1e11e7a650d10ace44c4f50c171689bd6735c6c27ca3b215020c3edf12"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentLayoutAdmission.kt",
+      "sha256Bytes": "c94b9f1dcc9fc63bb988ed7527723236445e45b4f4cd3e394556e95e341b3c8b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicCommentPlatform.kt",
+      "sha256Bytes": "856214a6719711f85b5cd5352194e58e93241dba8b52fd597f73ebb3d0133192"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicDetailReadback.kt",
+      "sha256Bytes": "37efe62b5fc2c783007fe644f07fe79cceeb4851e6fe843a5aeb82a952695dc0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicDetailRoute.kt",
+      "sha256Bytes": "eba2abcbe0a8b2225451e2b77f54502a1e5debc2bff7d4f7601d7dbfdef3b38f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorPlatform.kt",
+      "sha256Bytes": "17240aeada99244176184e86701890f8584c19e1d527c8dd54111bcd1853aee3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt",
+      "sha256Bytes": "e01961364d0f4ae063b85e94f2026b1c00d2f37a051b9f1fd4ffd07f81414602"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorSelectedImages.kt",
+      "sha256Bytes": "a819e261cb7c6ccf802ef49dd037c5524733f36972efbe089df2fc5506620b34"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorWindowsPickers.kt",
+      "sha256Bytes": "cc8ef759284c4f1aaec8c7a35748adb906aa1685d7f7efdff766a3ab97ce58fa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicGallerySelection.kt",
+      "sha256Bytes": "b8879c4cbe7442d4523ab1b02007ef53b7aa5499941570e14eadbb4009a795e3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "02bbb275991a82e26bf04311da93cfa8055cde70df9d7a4686c2b88e082908ef"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicLivePhoto.kt",
+      "sha256Bytes": "51d95e2eafb2c2016de27b020e7a6510e6cf182c9e247643b65a582591250c9f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoExif.kt",
+      "sha256Bytes": "f8fa113399b5238b87b35bba0cc0b6e77ca5e2d44369b10aaac4648186043f28"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicMotionPhotoFiles.kt",
+      "sha256Bytes": "b320402527b0a04b38ab9a21c4511240faea800b3435a2f65713f1aa52242e6b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicReplyRequests.kt",
+      "sha256Bytes": "f8e8701c4b37a76286c501ae092069404c96246559034401c3fa8b63a51a5588"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicSaveParent.kt",
+      "sha256Bytes": "fcb34c9b1c14bbbfea91e747bbbc1549d437018f4f534e22e5a888134a4390a2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicStaticImageCodec.kt",
+      "sha256Bytes": "d416a261c585682889684ad3851fea35eeab72dad48c8384439fcc0698492387"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsHost.kt",
+      "sha256Bytes": "56c8eea9ffee7e6f558e55606bab12554f395b24eda71a9c3abc28aee3da5123"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTextSelectionSheet.kt",
+      "sha256Bytes": "1f99b5aa82f9dbcb779ef1accfb07e553a6c5d8dd13cd087c439ee6a1cc92719"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimeline.kt",
+      "sha256Bytes": "7737ea80d97c6082e48f9129eacda9d055b04ed5d58335d5086016aca5b9f4cb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicTopicLink.kt",
+      "sha256Bytes": "3377efe67dcfa04fa3f90d82561bb7d1f96b0aee29b773d4d68cad9ac3e9468d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUserPlatform.kt",
+      "sha256Bytes": "d81b77dc6ab8d41f771300b160226c1bd8d917f27334de6149943553c7eb47df"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicUsersState.kt",
+      "sha256Bytes": "aa14dceec872a8a1466ac319813e15796faf3a6dc42ddbf0c85c452ec5e758d2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopExternalMediaScreen.kt",
+      "sha256Bytes": "b086c5c024c5445eb0147625b3a2278ad4bb19e54e4d23cb2dc75d771000d13e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteBindings.kt",
+      "sha256Bytes": "b8e5dc2b7d00f705ce6c8b00a62952130f74b9149760f218b00dbcef4b299add"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteFolderEnvironment.kt",
+      "sha256Bytes": "b65e0babc57b40c8a52194736657919729b6a2fafe2fa8b32474079fc0d9c8e3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritePreferences.kt",
+      "sha256Bytes": "e6a3962552708154347a2ffc748194b9d5b7e63a7a9174561fe7840e3d9888e3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt",
+      "sha256Bytes": "7514cdc1c0b3ccdc78a19127d59ea8ee2bdea5f0c023dd3455c3c4ccb817dca6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoritesRootEntry.kt",
+      "sha256Bytes": "042a0e6920da18f1febb6151332eed043a2e9ea25a5df28eacfafe245d6cbdd2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHistoryRefresh.kt",
+      "sha256Bytes": "eb646a3b41c4f693080ee78aaf19ef1e4ee10b767ccf480ce24b6fd884560543"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeBlockedPort.kt",
+      "sha256Bytes": "ef3cda156722265454e5429a0172f114eee26caeacedeab98cdd3dc10c24f049"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardBindings.kt",
+      "sha256Bytes": "cac89c833fac4d5c547fd57382308ca817cf87b7363b933bfd66125231d4bea7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeCardGrid.kt",
+      "sha256Bytes": "d7f4083acafab90c86933884b8d8eb6c5b81e81b91455c626a74c248a7170536"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "sha256Bytes": "0d76f5133516781f31c918334ccaef0a72fcb9c13813525a6a1fd01bfee18b79"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedLifetime.kt",
+      "sha256Bytes": "1aeb84aa6a9746fefd1a296242c53d73713f8101457a7394f7b9b1828458c3f0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEmbeddedRetainedOwner.kt",
+      "sha256Bytes": "94bfdbb6b929ea87200b17915888acdcec43adb8f0380823119b341dd708ace7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeEnvironment.kt",
+      "sha256Bytes": "4c75e770aa9d19fd617824a07c581d444183124a76562a1af96ba11d3b002695"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeErrorAnimation.kt",
+      "sha256Bytes": "5833901a8147de7b64d4fb094bb7aa92a9603e574e13380ed695368b40f9503a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeFollowingCache.kt",
+      "sha256Bytes": "0645b926003f24702211863c9bdc6e0950255a5d946fcbf4bda078ecbb22ba9a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "2bea6ba542102982c9baadf5c997bb46434923a774acdd0230a72ecae3da3b41"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeLocalIdentityAnalytics.kt",
+      "sha256Bytes": "42b56c755720466a7de39fd4d4c739bf5272a58a09cc12a8200558ddd7c194f0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeMediaPorts.kt",
+      "sha256Bytes": "60b6595cc8d309ae50f5e4661249dc7c183c81eab4cd87525b61d3151569d263"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeMetricPorts.kt",
+      "sha256Bytes": "5bd2728f6a264d747614cf6891554e9f708511a01d783c23823fd596599ed031"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMedia.kt",
+      "sha256Bytes": "4151961c7936366bae2edd733243241c9e4b1a6f7095cab6f6a34dcce78b5f31"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeOwnedMutableStateFlow.kt",
+      "sha256Bytes": "5b5308d75689cdeac2c810067617ecbe6bcc8fb2232577332158c6d81e46b480"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeProtocolEnvironment.kt",
+      "sha256Bytes": "bab988706006e029cfa5fc59298dec7a772ff4f64c4786abaa91f922c06f1edd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRequestPorts.kt",
+      "sha256Bytes": "b195685ad81a1e8332ed9524c8b11adc756aa93dfde58b601442ad0cbf487be9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRetainedEntry.kt",
+      "sha256Bytes": "8cda26afece27cf4f63b496bb976ee28b6a773ba793782ecd4d29f9b53bb2d27"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+      "sha256Bytes": "5e9d823956e6c94e4bcce7fd9ca7966583072968dc7ef0e33db0fb62819eefad"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt",
+      "sha256Bytes": "c22cd94ca423d85a2099180485cec615d0775b1bc38be34a9f4babfe9dbb3283"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "0f7618ef7598ed05f7880b3dde5d75b50ecf0e7077899a27dfbd8db89962198d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootNavigation.kt",
+      "sha256Bytes": "c60906c4b59ff3c617c8f24e8fba433cb998c537829f6e7029ba6911c5a763d4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRequestBinding.kt",
+      "sha256Bytes": "66a42d7df260d936e6b998a21ea470b7ebc2bf7335f6d852e6a9ec317e4d5a2e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootRetainer.kt",
+      "sha256Bytes": "489ba6e3b21dbe704cdf1d000d0c12c6173d1ad4344ca44cf6d353fb72fff596"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWallpaperImages.kt",
+      "sha256Bytes": "9071a2667c477778d64c67b5231eb94a8388baeb51919867ae799dd80ed8e33a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowGlobals.kt",
+      "sha256Bytes": "fe8273c694c3d8835fe9b02afdc4481a63afbf2bfa91ad3fb815f9359a1df5dc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowPlatform.kt",
+      "sha256Bytes": "bf209f05e434369053f39c0b8a5d0e254b6504447235729a3b62adb48adb04e8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeWindowsPreferencesPlatform.kt",
+      "sha256Bytes": "10d443774659a748bfa23418a157f581e65232ca49c1eb490d48559b7a949355"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImagePreviewShareBindings.kt",
+      "sha256Bytes": "c8aa0f7ba9624db154747f0c5e820bb752a94678de02b46d777a7a9fa1b989a4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImageSaveLocations.kt",
+      "sha256Bytes": "5f27ef6e0a6db648446430dce3c92204d1317e66830c94b443475ba1908da97c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopJsMediaImage.kt",
+      "sha256Bytes": "7574bdd1dda502db04eb87d35d82d77e1bd3e826f1cdb65ba7c98f37bbcd15cd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopJsPluginScreens.kt",
+      "sha256Bytes": "70779ee731199687eb03d5ba05c06bb53cd0286b18d0af150d9004f227913269"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiquidReadabilityPlatform.kt",
+      "sha256Bytes": "7cbdeca7fa83fd43c38c7fdfa75d5fcbf2b3c69cd3ffb06df8d4793222af9a0d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveListBindings.kt",
+      "sha256Bytes": "97993d0091a4bb7496f72cede57a19ff32ae0997451acecd895a0e8937c59826"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopLiveNavigationBindings.kt",
+      "sha256Bytes": "b8fdf971f3c3419321f347d50c2996440da38ac5255837893b41dcaf4ad2b868"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopMusicRaster.kt",
+      "sha256Bytes": "d5a3dc4ac55d37fa591c7389db9658bb30df25dede63fa960049f0145acb18ff"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopNativeMusicDetailScreen.kt",
+      "sha256Bytes": "ba6ca443d41d56c00eff60e3bf6914d1feebe6f670d8ccd40717b7db420ebd98"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopNavigationHostEnvironment.kt",
+      "sha256Bytes": "a305a0cfb160198cc64260002d651aaaa3a143216dcd5f4ec4fea840042247c4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineMpvControl.kt",
+      "sha256Bytes": "7f667404eb2b8bcb142764cb1bd16d3b4d8a359529d3cf2bd86eda6e370a59b1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineRootMediaEffects.kt",
+      "sha256Bytes": "4d8ab6c0e45379471423f14b59c02aae0f030015f061154c7d37c483fc6768fd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerBinding.kt",
+      "sha256Bytes": "1274a2e6ca918ff1701ef2fdf65cbd1e3473115b97655e5a578fcee39aaf9ac7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOfflineTaskPlayerHost.kt",
+      "sha256Bytes": "fac05aaeddf932c741dea972d41ba9423927cf190e3bf4dd44b14b21065d9d74"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleBindings.kt",
+      "sha256Bytes": "69dce9ad4534260d1138c7335e7b05c354050851c265b1319f77dc39df709c92"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleRootHost.kt",
+      "sha256Bytes": "895430c3b0c511cf8e53bf0a46a5c3e64d101cb6dbae46c9c08b79981d705764"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.kt",
+      "sha256Bytes": "f170523ad724986f5fef176249cda64c857d6f8c32b8dc1217b343037f46785f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalAudioModePlatform.kt",
+      "sha256Bytes": "09772e987e12753b4069fca378f3f3883869640deb66c5cdc357c07567f7b75b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiHubRoot.kt",
+      "sha256Bytes": "c2edd98f193c6da1098a7d93d2dc632540e8bfd53c2160376bee157d933f2e56"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentDetailRoot.kt",
+      "sha256Bytes": "6a3b5f5b6c97ea0f169ab50f04ee11224af62a0d38324f0e93c933767b2abe21"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "sha256Bytes": "aee42e9528bdc7736d747acba10803ccc5c245db8a2eca96b90b872ce88db659"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCrashConsentBinding.kt",
+      "sha256Bytes": "9198f7343e0aec8f0ffb871aa45cacd9841e2b596e398208d4a206a533d7a3b0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "sha256Bytes": "96ec902a51a998bb033b5fa4f699b2764158d370e5f0a2d94db4b3ac5623d547"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuRoot.kt",
+      "sha256Bytes": "cb1567ca82f092b01ac38af632962f5bb21ea711d89f7edb7fa3589141ee8bca"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHost.kt",
+      "sha256Bytes": "e52165bea8256acbfc8e417a326fedf8122cfed83dc0d7a5d38479c82dccb20c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDiscoveryVideoCard.kt",
+      "sha256Bytes": "fd552f72365a6f6daddb55f797bc0e592a07fab77d5c088524f38abb75b7f24a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDownloadListBindings.kt",
+      "sha256Bytes": "a7f6e9d8466ade08f511a51a5766323cf71aac130633896847d6d6afe93bc020"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDownloadListHost.kt",
+      "sha256Bytes": "0392800388fc6e4c8d0bea4347788370ef7278ab3bfb1f945774904a988679eb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256Bytes": "bc7d919658134e6fc2076d21017b6f8c4ca4c64c65f182d8c819e51ce5bc96e8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicEditorHost.kt",
+      "sha256Bytes": "28235cfe6d786e82804149265ab4d3ce61df433f378c628997bb015246c55b49"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "sha256Bytes": "bf9a1d38299d68c5e1d83662596539000b0a1acff01f825309dc13ad79792002"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoriteFolderDrawer.kt",
+      "sha256Bytes": "f60a6bf3d0db0c2ab113b857aa15beceb5d8c06842f7f8b4097df687e0cfff6d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+      "sha256Bytes": "66452c07ff3716e941d923ec6d2926419b6f6d494c639e57a3c6571ab3d89c2d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFollowingHost.kt",
+      "sha256Bytes": "f4b5d910f0811971984106053b1a7e1e866880ea22288d6c276c00042cfed47a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+      "sha256Bytes": "ec434a545aa72ad1ac9ffe303192a6b5c1d078b126eb8d928d9b11af7a535051"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFullscreenPlatform.kt",
+      "sha256Bytes": "a068ec4b24e16f0fcc6a586ed72f801b9c317f5e38b3d9849329daad5048095d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "sha256Bytes": "839f923cb25cb4832f9738bc891dd74212a09aa92548771cac962a79e3902026"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeOverlayBindings.kt",
+      "sha256Bytes": "907d89358502c3e213c6fddd575af6f750febecd56f765e8ced90aac2ded56e2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomePreferences.kt",
+      "sha256Bytes": "4d5989e97318c7264753d076ea2d2fe0ade8be92df6d2029142642782cc0bd64"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeRoot.kt",
+      "sha256Bytes": "34871cd5e2c7dc92e1704c64a3e53b08a0715fceb036f90d37803b3b497f7984"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeStateOwner.kt",
+      "sha256Bytes": "65b53788070a0ad3beed834d1c4fd808c4454cd446e1ab1897481c039b4cff1b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalLinkedDockRoot.kt",
+      "sha256Bytes": "753413f621408d4ef61fd9752ccdd39bcdecd5abe009bc7975f09ccbb6c00ee1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessageLinkNavigation.kt",
+      "sha256Bytes": "0d3e8d128afc4648d6dbefb9f9f00131c9fa8cfe5237ff2b62fb964aa23b7b46"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvOverlayControl.kt",
+      "sha256Bytes": "6bd4f20c88716ef7c9e10e39268d083637c404e7d1750fdf10134bb90c05683c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvPlaybackCapabilities.kt",
+      "sha256Bytes": "9c3e352b88a0690cc04cc00e2f4c5261ff7b62841e00e2024ca2312e3d2507e1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMpvVideoPlayerState.kt",
+      "sha256Bytes": "8aed76922088520264d7ab4adde84783a85be64a4e04704429f7b4631113ff50"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMusicStorageBinding.kt",
+      "sha256Bytes": "01942b085be5dc452c0f80ab74e987d4fdc67aad9e2cf5430e53e6936966cd6b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMusicUiPlatform.kt",
+      "sha256Bytes": "2ce04e5a057a8438edc2c9f4ad3c7b1ff62c54cc8d57cac17ae5c45da14b1819"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNativeViewportState.kt",
+      "sha256Bytes": "1464a9ac96b8735192fd69f4dab286606b8619582ec4216752c122ba5cf837a8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNavigationHost.kt",
+      "sha256Bytes": "7b819357c4127a5b96685afe36e6cae9e87c169e05a48755033bbf6b054c5156"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNowPlayingOwners.kt",
+      "sha256Bytes": "d54c8e96e9350812cd80abfc302921acf7268040070146006b7c78643e9c3016"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflinePlayerBindings.kt",
+      "sha256Bytes": "51e6408f7ae196f9a760ce903790879d6800512ef5ed9f2f4e3da8cfc932940c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalOfflineRootHost.kt",
+      "sha256Bytes": "d59d088b6b6396c61deb7c8156d37899d41f9023b80d9578e1acb7e3ff47722f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPartitionRoot.kt",
+      "sha256Bytes": "43975346ea194c568449a816e069ec8b88dedab9657df2338ebae83b0e34c355"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPersonalListHost.kt",
+      "sha256Bytes": "bf291fb274d47ea982c8004fada328991a8484e1b3ffea3ffc57287858db987e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+      "sha256Bytes": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackStates.kt",
+      "sha256Bytes": "f1c3d23d7312e2a5cf740e88b5fd89c69c5a2362f8c8c849e1d5e9d65fd60817"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerControlsPlatform.kt",
+      "sha256Bytes": "e6803098d5700616cad947c538057f82e0950c57ff7c43394d1d99b8455a6a21"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerControlsWindows.kt",
+      "sha256Bytes": "4012b61778a50f70757bd26e09f9553656eaf49535dd8052deb4cbb81e983bca"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "93f045aa1b2f7de03d2ab9fa660d5209916c98d3a2c18f243d07bdd5ad2a7e20"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSkinAsset.kt",
+      "sha256Bytes": "6183a61108bd5f19d315e14992e12a9e5c376fa4310d7e0058a9d4880c316a4d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+      "sha256Bytes": "63b976dd419cd0aae2701fcd30c974a0a172e04583555e08b1d9e8bf3cbc3698"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerViewportPort.kt",
+      "sha256Bytes": "7a5bfae906f352398803ee6e4c73109813321e96a3f617b5c934c44522bee7e5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitBlockedUpsBinding.kt",
+      "sha256Bytes": "d05db3f3b0e5cd8b4c6bcb723ff387e8fd7b361a0900a2aed8717f51455f7d09"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "sha256Bytes": "1e4146d221e10c37d74b79c728fbeaca8a78eb758241504e11fbe9ad528494a0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "sha256Bytes": "c7740b47fc03c0f331ae1b2376db52d0827f8a53da7f2726036c8c1f4be66066"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitResolvedPayload.kt",
+      "sha256Bytes": "e0ddfde57d31cc04d76dbe33c298f93aca54c756c6a75886330bfe128480c734"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalProfileMedia.kt",
+      "sha256Bytes": "b105869099f365d3b284f757284fcbac4eaa707cf3ce24448b0f87056d596e7a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalProfilePreferences.kt",
+      "sha256Bytes": "08752986aa6d2606a14feca8b01b8a3ae872d52204d2c4ecd0d07dccffb15429"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+      "sha256Bytes": "e75770f242357dc78bfef01095c1f587a01766f69b25c517a5b842f9fa3b6564"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootNavigationPreferences.kt",
+      "sha256Bytes": "afb49956f98c0e78c1d148642941ae47b55e0c7a39e01829a3fa0268fd2ea834"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+      "sha256Bytes": "e4bf3d01c4e937288a705581723b0fb42eea7c90e849b720d94880323772797d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "sha256Bytes": "9484f6cacc3d20863805eaa06738809f259fd58a5804764e1d2cc2f9415a15f9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "sha256Bytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootVideoResolver.kt",
+      "sha256Bytes": "c5396399c26e3f93398c991b620ec3cc23b7a619e9b2557cc69ff73338e20587"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalStoryRoot.kt",
+      "sha256Bytes": "60fa0de5eee07db7e42cda260699ec82d306c7eba4db0274ff8145710f3f890f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSubtitleModeBinding.kt",
+      "sha256Bytes": "4f94e545736598b4808a6ecfce814d39f72be82cfe7e5907668ce4f2c4093b7a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalTabletAudioPlatform.kt",
+      "sha256Bytes": "f78b94415d77f3583c7b6e95812a73c1020c394c75e2219f3cedb552d4a2f878"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalTabletOwnerUploadsPlatform.kt",
+      "sha256Bytes": "b20a2a3d1675c4a601155ad60707f48b36f0966fd067538a1cf498e3cfa90c1d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalTodayWatchOwner.kt",
+      "sha256Bytes": "0e090cadc6ac4b2f3422be8b2a06c77d20953f6e3beec56b7dbd83df03f09407"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoAnalyticsBinding.kt",
+      "sha256Bytes": "6f608e00aca6a41537f1af7dc884e155667be983e6cdedf678f25d21272398bf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoAppResources.kt",
+      "sha256Bytes": "a667e4945734f350285664d643926f8a48786b4c92dbfabf112fabb694a56b0c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoByteCacheConsumers.kt",
+      "sha256Bytes": "be126693e1a39f6923a4a43a813cb8ddc675b4bbfc22cd70c266eee1d7f5b126"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoComposerEnvironment.kt",
+      "sha256Bytes": "5da87756b834e6974f48bdcfdd0798dc05a06a77a5a38d006fc44970ddc80e74"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoConsumedViews.kt",
+      "sha256Bytes": "06f9377ae93086b0bc1443e38cc3a2f16723080a0da5016b8f7cab42f9aec5b8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoContentBindings.kt",
+      "sha256Bytes": "d316f5e37ebd825f81681ce3c61dcf3e91b40030d06b90f3e2fe0b9ae90d2b7f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoDomainOwners.kt",
+      "sha256Bytes": "7d104e598322cc96138e30af6fc3ef57eb5b7a5adeca9a026a2bb753cefef6c6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEngagementBindings.kt",
+      "sha256Bytes": "4b358777eb5cf3df9ab7d8dfacf53968ed6c3a62a3520aa9ca24ce241053f5b0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEntryReadbacks.kt",
+      "sha256Bytes": "ffd38d6b647aa169f3e083397384d067374efa51c0bcc5be65b399caf80a76a5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoEntryScheduler.kt",
+      "sha256Bytes": "3714870d312d33611383bbfd621e474a9cbcd0a07c364a4a022313f5cecf6f4a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderMiniBinding.kt",
+      "sha256Bytes": "b3f56ecc15ed58592094910494840cea0ba4f30e752d8e0dde21789e0aa548df"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderPlatform.kt",
+      "sha256Bytes": "83badfb1c8bcf0ae468574809f4d499208da5079f7b01625809404325aa1edbe"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt",
+      "sha256Bytes": "3ff595ca0aee2431d6d5fa69a7bada48e1cf45238c8e2e1a964ef17ba2602931"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoInfoBindings.kt",
+      "sha256Bytes": "087fa8003aba878f8ed4e6ea56a9ce284debfa02d0dbaa6a21b1c7bc19562885"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoInfoRootBinding.kt",
+      "sha256Bytes": "8520f9c26537678fa559cba0787432e3627fa5d4ac915d244202db90143573c3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoLoadPort.kt",
+      "sha256Bytes": "6f75841eb201c819d798bca3541d3afd18e383d4a123a006ea249fee1b5158a3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoLoadProtocolEnvironment.kt",
+      "sha256Bytes": "616da54e666e05eacdc9edd66584a0993cf2cbc1d36fdc0b70b238ed48a1372a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMediaIntent.kt",
+      "sha256Bytes": "da110b5862ea3fb31bc756cb2390173b66f64c721d7b2a85a51d3c7097820f6c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMetadataEnvironment.kt",
+      "sha256Bytes": "beae856210dd930efe2a53c5eadb71f2f9ab1a968dfaf9cd4b856e4aab90cd00"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMiniBinding.kt",
+      "sha256Bytes": "c3c30b4fae9ddf13fcd88beebc41e7b7bf7d9cab34be5ff0fdc34ce7fd0b63bb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeCarrierRoute.kt",
+      "sha256Bytes": "bc0c06842d7a7965ed2ce6f6adb18c0b37ce4a6f87d9b723f40a31ffbd0d7f59"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNoteEnvironment.kt",
+      "sha256Bytes": "0ec43aa0b51fcfbf55b35453d549c89966dd88f6fa64ce79db5d6f3a879ce19f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOrientationInputs.kt",
+      "sha256Bytes": "9c6d78680a3b72fa373a4fa3df0ca49d49837172c12aa93de29c0e25bcff43bd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayPlatform.kt",
+      "sha256Bytes": "0641cd26582c3fd2194942d54088d2b1b79d15d33686d94795aecb8bf762d6ff"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayWindowsPlatform.kt",
+      "sha256Bytes": "f914539bdd5339ae236a9f974e6611b23664fbe233021e7e33f74c5b976b4be9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerActionView.kt",
+      "sha256Bytes": "113e011cc1ba41a8c1dce2cb95c72d79caa14ace9c58d45da35304b990ad3715"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "sha256Bytes": "90ffc7ea1ec15122a7e3f43b04f02fea65d69489754a69edcff57d53238539db"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDanmakuBinding.kt",
+      "sha256Bytes": "6207b38097df7c048d3b68eaa0c6ae9812ee0298abe4224936695e59b59e7779"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDiagnosticsBinding.kt",
+      "sha256Bytes": "300592157b602194007af5f652a588f5a2b3ba656f593b28ec64c4deaf5dc356"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDownloadBinding.kt",
+      "sha256Bytes": "e291c822e423e31094eac45408b0c4aa121e6ca96d4bf6ebe109ed2f814d883d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDownloadResolver.kt",
+      "sha256Bytes": "1c8ac1abe750239949b187cf2cd059a1f6ede321c3ea270d623185b9fafaefb1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerNetworkBinding.kt",
+      "sha256Bytes": "d8b813b4ee73112400ae545cd87a4710330355c2cb99eb482e470f78aee668e4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt",
+      "sha256Bytes": "d5231336c53881ee48d420f01a3e66752639a2b05e32c9679738717f2c2804d8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRepositoryView.kt",
+      "sha256Bytes": "44c1c494de96f599ccbf67e7bd5c81b43a8b06a8f916facde8fec54e26036e99"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+      "sha256Bytes": "a2ac9a3bb30600b8ffa4270b2306f2f9e70a7f4a384fdecb0072f063ad697279"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+      "sha256Bytes": "b1d304dd5924a3a1b4af1e31ebe4f73b2ef08728cbd1289e1d927abbcf7fb4a8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPhysicalLeaf.kt",
+      "sha256Bytes": "f626d1335573fb53c5900df2a9a730142c0669e657d17218db35c415afa478b6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackInvocation.kt",
+      "sha256Bytes": "3f6ce4b3b48441a05d7021a4d1228a64b3d0dbeef92aed4dfd0cce04693accea"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "sha256Bytes": "0154005969ada36d1b6e77c6f459208365d6b2434d01e0e0c5a8df53e50f1db7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackUseCaseEnvironment.kt",
+      "sha256Bytes": "0ac1269e4694a7878c45cff87491711d78c0ea25c3d01041b39bab3e03292c04"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaylistBinding.kt",
+      "sha256Bytes": "115f255b44458ed7bfd974f60d17d1b53215273f57900658b2b50a43a2d9ca34"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt",
+      "sha256Bytes": "b13e95d4ca88d4235e7decd67716dd965027729dac43ac1b1ce0aa35d7f19c1e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRelatedBlockedPort.kt",
+      "sha256Bytes": "45b5dac8df524d74b4717a403bc63a92887318cf4ddcbf54202205e5ef288671"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "ee32d8560212628ac434d3c4ac876362dcf312055149b5cd4985aaf93d7c543e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "sha256Bytes": "a276c009c4871907a9cee0d3c0c05b54d1475cf78c0a8962fc41e7670ae9e7fa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootFactory.kt",
+      "sha256Bytes": "a091867b7afdd678b58af62c7947338f87af71b4624b01a0a8e831658e0e007f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootHolderPlatform.kt",
+      "sha256Bytes": "0354737982039c76140ee4f3cbd2f7c74f763c137b38de9f0673d5d59f554606"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootMusicBindings.kt",
+      "sha256Bytes": "f8fc363042710c69425ac422c583a4263f4615209432a445f1f524d12476d1fd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootNowPlayingBinding.kt",
+      "sha256Bytes": "0f7fbef4f9a297487b3e1a8f720a31d5f7a1213471604f08a7da0015b1403303"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootOwnerSlot.kt",
+      "sha256Bytes": "8be2a8ef5995c7bae6d4d230d633ab8ed132073eab84a8f839492b5ca7efa44d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootPortraitRendering.kt",
+      "sha256Bytes": "be3a5e5da0b303c57bd2d0a49596ecaadd0378f671cb428e1cfdc306b72f9c30"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootRouteBinding.kt",
+      "sha256Bytes": "53426e7d0bfa24ba7347d952d1fce9b02e7d9ae74bc2d98ac1d0d7a86b112774"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootRuntimeBinding.kt",
+      "sha256Bytes": "7b6bccf8ee7aa5bc8d986669a4662b758acf75c0a8317d14edb01079811cded3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootSettingsBindings.kt",
+      "sha256Bytes": "28adfa299b12207d4bbc660ac4b1c108a789d03a7128e30e47071f79b277922f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootStoryFeedBinding.kt",
+      "sha256Bytes": "f799e08c7dd6c389eca84ed0f6afaf02beea318ba3788675c4a41954d677caa1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+      "sha256Bytes": "88e75afb8a4474c6e1e6902930a27c279398a4db16f21d8853e5aa516cdd7099"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowEnvironment.kt",
+      "sha256Bytes": "b027274fd7424bcc52c836c40f09c682a5240c0a8b5606c276241bcef695ebb1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt",
+      "sha256Bytes": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionPlatform.kt",
+      "sha256Bytes": "80f56352a843d60f0fcd1a7ae8940807cfa519bc84f038a968aa377ac93bb3ad"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+      "sha256Bytes": "90490f58a5560efd641bbca174952be5224050df261a99b782b8777b379633e8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellMount.kt",
+      "sha256Bytes": "fa820b5b0bc3b2941d2b6451105c612199a0fce1642fc2d00335f0383bc61e17"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellOwner.kt",
+      "sha256Bytes": "657d030f00be236e758cb1b0733fe560579689f62d517d18fa50cebe6958cd29"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSupplementEnvironment.kt",
+      "sha256Bytes": "857d5138704c3ebb8a7dbadcf382cf53a1f8c8e3a6d4cb0dbc825b15e5f4188f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoTokenRefreshBinding.kt",
+      "sha256Bytes": "f559faaafbecec2cb58257518391debfe7398b80bdafbef1c55cfc0dfa980108"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+      "sha256Bytes": "4637b1fd0798dcd94aaa06d1e8ed370a1d23989d64a1ee26a24b427196480904"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalWatchLaterHost.kt",
+      "sha256Bytes": "5af22bda667c092b89c93ce46f50f7e4c788450c66d2db7fe2d89cfc66ec1852"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalArticleResolver.kt",
+      "sha256Bytes": "272904bf46d66683b1ce15167df5ac0c3e756e655f19265bd81eb93909dec10a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalListsRoot.kt",
+      "sha256Bytes": "bf8e668a49ce1030bab442d993627933ae08dcd2c0ce4e8c224a5023ffae843a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopPersonalQueueStart.kt",
+      "sha256Bytes": "ebf1de83141b4034def07d1cebfb724dc1be264db5d7cd945ca0605a26c80530"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileAccountsBinding.kt",
+      "sha256Bytes": "da30e4d7b3016d7503e0cbce1c6b457a61b7ef6d8c1375619b554f666ef141e9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileBindings.kt",
+      "sha256Bytes": "af622378fc9104554d7913c5843ebde63ec53d8af68791b96e7008e67c3cdc0d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileOwnedFiles.kt",
+      "sha256Bytes": "eb63417cc60a9b4fbfa7217b263a18ce76f3d7259343c4ff32843909e4203117"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileVideoMetadata.kt",
+      "sha256Bytes": "9dcce91c7692cc8295e6e1255f4944f90212fc19bc6eaedaca1956f5192e72f5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowChrome.kt",
+      "sha256Bytes": "50852b3a790463323dbc509c438520558973f5f6b856f159f37ad3ea313b629d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowsBindingFactory.kt",
+      "sha256Bytes": "f8efeaf706f94202919b1a7be097390dd03252209cf50432991b029feb585a24"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopProfileWindowsPlatform.kt",
+      "sha256Bytes": "b2e6f64ba7ac5287d8d0582b54b510f93ecb99224284636aacd72ae4d6efb530"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyDynamicScroll.kt",
+      "sha256Bytes": "b2552e4def1295a85034ede94ab61d7f612d870f4f99531b6864300f676eb5ea"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+      "sha256Bytes": "449b12353ebbb59655d30e1d8ed34dda74fdcfc1f0cc19a6966389f2961491ca"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyNativeTargetDispatch.kt",
+      "sha256Bytes": "1dcf3083388bba9e79871f3883e37b23f2baa86cc71a64dd417790a8b277a4b0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyNowPlayingPosition.kt",
+      "sha256Bytes": "60bc0b701acf41a40fdd571e94f7f5d0229205abfc8a68c54bf5bc7c7766ad24"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "c27b4f45109af34521cada062d9a031ffc4fed276a8b3b4eb0daea6a224aed11"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReplyTransparentBoundsCropTransformation.kt",
+      "sha256Bytes": "6c0ab8177a8d6a7073ad12fb7e35d125fb8dd30a366b61a9da5d9dd4cc6ce6d1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopRetainedHomePage.kt",
+      "sha256Bytes": "3a78bc7cbf305f8d65883d38c120e4ff8cf640858646f10e7d4128afa8a9a620"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopRetainedMedia.kt",
+      "sha256Bytes": "34c02efeecf095de9c4687dad3a088414bfe10f520da75e873d36e1dcf8fa37e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopRootWindowNavigationOwner.kt",
+      "sha256Bytes": "bae800dfc62c2637af08d992348d392f063594531d37b62000f6b3b4224c635c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceContributionScreens.kt",
+      "sha256Bytes": "019fc755afae5798faf9a4672d5d6e5a3a20ad7fcfa26b0a112a8c81bd9f5b03"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "4c73830d9e827848d5f035e0cd3739ee1c6ac8bd327a387cf82773b5c4ddae6d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceOverviewScreens.kt",
+      "sha256Bytes": "a2853e0d4d2ea731c6551225c2901507eef58ca346715d0067cb0d07de5ceb52"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpacePlaybackBridge.kt",
+      "sha256Bytes": "4660e740d6741667b230900a86d18681702206aa9dc0192d0dd3824f6179f50e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "sha256Bytes": "7fb5e4ab81e7ac3794bafd69b29db23f23cd1d7006bfbf5fc0827b8f075ea190"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceVideoBrowser.kt",
+      "sha256Bytes": "408b369146be174b19072c30d0ff4d8206f74e24b57add5745f0f417214c62bb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopStoryNativeInput.kt",
+      "sha256Bytes": "b8ca238b195a93b1d7b10a18fa15036e985b380b9231d5543c56f90452821565"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopStoryPlaybackHost.kt",
+      "sha256Bytes": "79be44422c6ecd4680c661d3cf701c407444134ba6f98b8b9a1774b351e42a6f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPageBindings.kt",
+      "sha256Bytes": "5c4b1c680f34cf201d37147f224a6f9999b49b8653237b1b6906c76374ec46d4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubscriptionPredictiveBack.kt",
+      "sha256Bytes": "40df69f4b0d9f54d8343e668573fff6c8d8f698f8cbe4e89fce645eea4f89258"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSubtitleDialogTarget.kt",
+      "sha256Bytes": "9958e52b6f29583a29a3bdf8e9a4b821b5ba2207d0ae45272d92b896913b5c57"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopTextShareBindings.kt",
+      "sha256Bytes": "74b2133e63e1033672d2a39ecd073d56872d8b5af4b5e9ae399af905f575da2f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopTodayWatchFeedbackWriteBinding.kt",
+      "sha256Bytes": "662d707c3f176f5a7499e931ff4cc7803ed7d1f048882ae3d34da97700921e6c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopUnifiedPlaybackFacade.kt",
+      "sha256Bytes": "cd7d3f1e7a391e72081663144cb405bce2d50d0b9ad32d609f87576ce7e89198"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "sha256Bytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoEnhancementControls.kt",
+      "sha256Bytes": "d988974439feb2fb74c14c52cdce89700e18a7971cac4e89ef2dc7d23ce51bf4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoFavoriteRoot.kt",
+      "sha256Bytes": "8540b7e3ce7af141d84bc4bf48babea590477206f103ff7089d043c3b3411e8b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoMetadataHost.kt",
+      "sha256Bytes": "1e56a783addd1126e2b6f4bd8dc3f9c367e92020eb596e549c5078d8b093d1ec"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoMusicEntries.kt",
+      "sha256Bytes": "791499c3078ea47fdeb0230b67d1d896a4987dbf77444599371a7c7a9361abbf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoRouteEncoding.kt",
+      "sha256Bytes": "43c93af1da4c7cdbbdbd9592a37ca42f1d669c84527607053d04f348dc4b14db"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareBindings.kt",
+      "sha256Bytes": "eca7a43c513b7287ab38b128780a602ec210ace68797f146373bf70b8ce86d30"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt",
+      "sha256Bytes": "043c33dbdd8f9b7b30263697714bed5ca0e2477ae2e35a0141f2fe1d3e05cec0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareImageTransport.kt",
+      "sha256Bytes": "2336666e5936b24b2f41bcbb9f80c9edff81becc1b9994637fc141ce009ecb65"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoVotes.kt",
+      "sha256Bytes": "5625e50fd684c78941b7e59b6ee5ddb3b6650037ac3af65581622ce586efe3aa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWallpaperPalettePlatform.kt",
+      "sha256Bytes": "42f11cff3ca81e3685994c0cc1176a4eda0910051fc98c4db5e0c6a05bed746e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWatchLaterBindings.kt",
+      "sha256Bytes": "c6d703ba2670115bf0f55a86bd799947daed0d05487aabfe3f56b19b76a55ce3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWeeklySeriesScreen.kt",
+      "sha256Bytes": "78d2f99528040628904ff8359faec6af0652983a07868bfdfe7703e4ddf8e782"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsDanmakuPresentation.kt",
+      "sha256Bytes": "46dec51200ef21359d50800d4d197cfbdb30449bd82cc36a40e9180077786514"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsFullscreenControl.kt",
+      "sha256Bytes": "20c1b4b42e353cf429446c4ed8223fac889c69e664964517771a0ec6a967a8d6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.kt",
+      "sha256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoDisplayCapabilities.kt",
+      "sha256Bytes": "9c9474b87c9f11475c9bd036ea094e7c731c47bbb4ac7d102ada99e7c82c2085"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoWakeLease.kt",
+      "sha256Bytes": "bdba7c89df98fbd90fd8d305d801c2d19655c9940ac8eb1690d6f93bdffedc71"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryFilterDialog.kt",
+      "sha256Bytes": "ee1c934c4a0a9c5cc6c04e03c8436086449b5f43d6d12aadba732987b1c526de"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DiscoveryScreens.kt",
+      "sha256Bytes": "0aee7b311cf0530fc9fc64ef1cb67e1ffe2ea6f6f51b9756b5086e795ccb46c7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DownloadScreens.kt",
+      "sha256Bytes": "e1d11cc44f7cac317e53d09703885417276d6f4724f08815ef66dedb678542b7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/ListenBrowserScreen.kt",
+      "sha256Bytes": "87ac89bbc23bf82c8d472ce7aa5568c0d046053ca527fc5ca42755768f7d73b3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256Bytes": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/OnlineSubtitleDialog.kt",
+      "sha256Bytes": "80d6cef5ce3b90cb6726aeba94740f1adb6a6d9cd4d673d54570b6f7a28b8b35"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PersonalScreens.kt",
+      "sha256Bytes": "ad24b62a268e8d3a769332013c5d4b10fdd28591cc51387148c9851993821734"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerPanels.kt",
+      "sha256Bytes": "96dfb051a57180ec252bfde2621abfa18212124d5d405305b5ab46eb92d70fd6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PlayerSettings.kt",
+      "sha256Bytes": "dbdebe726048505818aaa22bd7ac101f93d3ebc54003a040ee3dfcca6a52593b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginPackageScreens.kt",
+      "sha256Bytes": "80df88309fa82377518a5132ff8fd707475e23ed6ab8a8a9854af1f4e1368289"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginProviderScreens.kt",
+      "sha256Bytes": "d3dc55015643af8d229cfa774ec978c2da426413e2a83a29d22f2f06499daff4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/PluginScreens.kt",
+      "sha256Bytes": "f93e7548df1292aa05a98356fdb77e3de6fe6d8c2694fdaf79201585eee678ec"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/StoryTopicScreens.kt",
+      "sha256Bytes": "d0d42db42c816be2ddff853956c76963851e17bca49ca02aef22af1b3e955fc1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/UiSkinAssets.kt",
+      "sha256Bytes": "2644549cf8bdd6c5d13ed430da35dd9cd49775324cf9223a74131cc3b12ead24"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/UiSkinSurfaceHooks.kt",
+      "sha256Bytes": "e192a2e3a8c71dc97dc5ac5b0126aea4b0d1a8ff6549e8a202e24405c215ad88"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/UiSkinVideo.kt",
+      "sha256Bytes": "aacc4a5c71cbe726ed34e820104994ef8ee735d2dbc1f11d1891b478ad8de289"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/VideoEngagementPanel.kt",
+      "sha256Bytes": "055bff3579df0c554d1d8b9979e8eef82e5bbb5c422c2f234d386c7d97883977"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt",
+      "sha256Bytes": "c1ca37d4c7748145a1f260fd4135c48614bff34f3c6409b1085b08a4f56394c8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/SafeUpdateZip.kt",
+      "sha256Bytes": "ad9e05a51a7e3e20b8fee27472870bb5d7ab3a09d624e3826467813d4a061854"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/StartupHealth.kt",
+      "sha256Bytes": "a2df6d74558180d7d96f2e1e6f10d042406650676b685fcf8dee7ea1fb7222f2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/UpdateModels.kt",
+      "sha256Bytes": "6588381b51ff6b2d2360bd9628fcdfd043c1498d1385b2aeb49bd535a92c702e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/UpdateStorage.kt",
+      "sha256Bytes": "9ce9a105ddb551f0faf5939c43be8ac328d51293530cc74c5b0cbc9b77681a23"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/home-card-platform/provenance.json",
+      "sha256Bytes": "a334de59044d6dc2a7c627b0011c393f7db6364c4232a57a9240a05d6ab7b5d5"
+    },
+    {
+      "path": "desktop/src/main/resources/licenses/pinyin4j-2.5.0/provenance.json",
+      "sha256Bytes": "ca14fa4e091afcf1c8458925ec94013539c5b7dfb5aae5e5c30e1a5575b3dfef"
+    },
+    {
+      "path": "desktop/src/test/java/su/litvak/chromecast/api/v2/GoogleCastFixtureTest.java",
+      "sha256Bytes": "8afe25c7c5fddea003d3990d50ef254243030cc8bae6db912a35b5a1ce0a9212"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/core/plugin/js/BiliPaiJsNativeExampleTest.kt",
+      "sha256Bytes": "793fc1fe244504b965447ccbef315f1a250321921f8170c60b05614d4eac5860"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/core/plugin/js/BiliPaiJsPluginInstallStoreTest.kt",
+      "sha256Bytes": "7a6a5659ede72ceb921634e20a146180e051248f1e8ff7212aac9102d92722e1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/core/plugin/js/BiliPaiJsPluginPolicyTest.kt",
+      "sha256Bytes": "b3de19c9aeee1b63826fb2802688d2198736ea8b7b7df8292736a63dc8a20ffc"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/core/plugin/js/BiliPaiJsRuntimeScriptPolicyTest.kt",
+      "sha256Bytes": "8209a651752a35edf62fd14bfdd6ffa79b16850e44e9698e038706f3ed48b0d8"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/core/plugin/kotlinpkg/ExternalKotlinPluginInstallStoreTest.kt",
+      "sha256Bytes": "605930de6913b438c724a97d9fc5e823823daf472ec1c262a666c1dc37989663"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/core/plugin/kotlinpkg/ExternalKotlinPluginPackageReaderTest.kt",
+      "sha256Bytes": "24e82204a9b172461696696d8f25f81c75c2602e23aeeced67c6eac28a654b80"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/core/plugin/skin/UiSkinInstallStoreTest.kt",
+      "sha256Bytes": "a871c7bae09204d1c17e6c5801df6afd2cc404ef4b828f5064310eb707b8ac00"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/core/plugin/skin/UiSkinPackageReaderTest.kt",
+      "sha256Bytes": "8a7cf85f2a339108976bd5c63067b2dfbd685812489cdcf719b08560c113d4c1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/plugin/js/BiliPaiJsPluginContentPolicyTest.kt",
+      "sha256Bytes": "9e893ffee4c96d8834864e6cdc5c39146d85ff47688a3d68070cfb788e82c353"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/ui/overlay/VideoProgressBarLayoutPolicyTest.kt",
+      "sha256Bytes": "30b903f31c05a803e64694615a518b68fd7ffdfeacbc0afa21537aeabaa94668"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopApplicationRestartTest.kt",
+      "sha256Bytes": "5ea8678c09c9151c80cf2b53121fe1b5f41d09ab8609e898d0e678a2a67fd0a8"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopCheckpointFailureTest.kt",
+      "sha256Bytes": "2bcd33f51351d31551f74b33a8fc7891acd69dae8d7846cac7a64399e00220c8"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopLibraryTest.kt",
+      "sha256Bytes": "969045a7b5f8fb5675f74b366ceb819a5209fddacd5137f579fbbad93d606778"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopLibraryTransactionTest.kt",
+      "sha256Bytes": "5ba92e76ae8a1a4f414f737be4a04e9dd50d562f6a2a0a4a3fa62d2f423a9c63"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackControllerTest.kt",
+      "sha256Bytes": "c0c75352f602d3a864d276ee2340ba447a31ecbe773d461b04029b946e603951"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/DesktopPlaybackQueueOwnershipTest.kt",
+      "sha256Bytes": "7605aeca7163b342cd87369854901268909c237e84025cc06491747d93e1246f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/IncognitoWriterTest.kt",
+      "sha256Bytes": "30ccc2b09cbe7cba102b55ee2dcec0dbb2227306600f796ebd70b275f10a9abf"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopAppComponentsTest.kt",
+      "sha256Bytes": "852226d4806b79bd8469a7eb591e939e1581551e7fadbaa1ec3f0c109d39a0c7"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopAppPreferenceComponentsTest.kt",
+      "sha256Bytes": "e19acd4d818f56ffca4a4868ee529f6d3982021d7df9070f7d4c770e22ebd772"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTest.kt",
+      "sha256Bytes": "2266ef96437d350017c200b92df733d3b0526cc408a00505616027a641a68140"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/appearance/DesktopComponentHostTest.kt",
+      "sha256Bytes": "97f3570b3800a43f2200fc7bb81438976ccf4b6ec07da41dd17d8fcb8cf3146a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopMusicRootIntegrationTest.kt",
+      "sha256Bytes": "a517f77bdfca9220b5849cfb4a4db9a48e07f372ba740100bee5e615fd6edd7d"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicIntegrationTest.kt",
+      "sha256Bytes": "280c336b59fc65947294262069f3cdf2c6ca3f073ef91ab8b73f6f4f013320d7"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/DesktopNativeMusicRouteTest.kt",
+      "sha256Bytes": "7da46350ee634aca4577b38c3d28c4eb4bb6c288ce4d50e9276f4be3622b76ff"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenAudioLifecycleTest.kt",
+      "sha256Bytes": "c62fd55f39d876b955486d4e9eaf1362865de9aa76b9249657adfa29c4b8c807"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenAudioStoreTest.kt",
+      "sha256Bytes": "ca316f977b5e9ff86d819f5868273506700ada3d0f8f617ec7a01cfabd83c020"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/audio/ListenWriterBarrierTest.kt",
+      "sha256Bytes": "a4a3939051a5cfced284913565ae4a398d674fadf27f74acddfcfd5d389c92b5"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopBackupArchiveTest.kt",
+      "sha256Bytes": "425dfbb54bcbbe8d6dab5c6632b9f1bd4b2d0082b1825844fb93c54a8bf17bf4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopBackupRestoreBarrierTest.kt",
+      "sha256Bytes": "ff1a5cf0a1cc1aea3488a390f7cbcd0806fff077e475452695a128ce08892f84"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/backup/DesktopWebDavTest.kt",
+      "sha256Bytes": "4ef40b4d118a4ad15885dcd4f0a88bb337b1a0a52909a054eada6b90862661a3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/cast/DesktopCastStreamHeaderTest.kt",
+      "sha256Bytes": "b44720acd2195723609cb185292d95292c10e84beae58035d885038bce2322fb"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/cast/DesktopCastTest.kt",
+      "sha256Bytes": "3a7d31d6d68c20f6575c14933313dd3e28c73e2b425217445df5304a35b68ee3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/AdvancedDanmakuTest.kt",
+      "sha256Bytes": "7f3883793a4e652914a128383abf2b83f309d9de0050202403ef7773c45c1971"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuPluginAdapterTest.kt",
+      "sha256Bytes": "3f2dbb78d4700c954abdb3225b7a64bf7ad0038f6ae545e0c796a3b504f1cb03"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuTest.kt",
+      "sha256Bytes": "3255dca9c03f7c238afde0db652eb25dca92fa8ab178f33bcdc4939f8c5c41dd"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/DanmakuWindowLoaderTest.kt",
+      "sha256Bytes": "db4f4e9bc6eb4c90e4f830ed38331f17488b801574602721bd594e0ccc100193"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/danmaku/LiveDanmakuPluginTest.kt",
+      "sha256Bytes": "3c63c2048a4ae7c1aa974a6bc13e541eaad2be5e3a87765ae60ec535451685ce"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/BiliApiExceptionTest.kt",
+      "sha256Bytes": "466206b6ef88cef7c391ece12a2f04841cbc422e1da81051698e7d1b65e593d3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopArticleHistoryTest.kt",
+      "sha256Bytes": "d4504d1c9436f7fa7bd3df02314eb01e0ab1afaaf95702f861b3861df0f9bb13"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepositoryTest.kt",
+      "sha256Bytes": "903c7526e7c60f49bb69c78ff4d26f35cfdca585fd8ae19431063322d6650f55"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStoreTest.kt",
+      "sha256Bytes": "23db6549dbdcc878c6b625a2d352c830cc441bf8df65fd879e3521471a891f41"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopCommunityMutationTest.kt",
+      "sha256Bytes": "69f863ed3b817be03314c24351660b48a2145cb48407f4e4e2d1024584ba2e51"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopCommunityRepositoryTest.kt",
+      "sha256Bytes": "f5c566b517557038e2aa9475330c97290c3b6c58f5ccc00d75897eb290fadd28"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRestoreLifecycleTest.kt",
+      "sha256Bytes": "a7f53d0ae45bac77ca95e3f2d15432fd4f2307d2cb24f7baba8c818362af2b01"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDiscoveryTest.kt",
+      "sha256Bytes": "09069bde7199fc6a6b08cc38a12a7e33233bf7dbfe7db267bf971e025ed1f008"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopDynamicCacheTest.kt",
+      "sha256Bytes": "646f11ef7570667b67fd2edd3398dbf82c9b70ed8054b85eb1237e23c2fe0625"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopLiveProtocolTest.kt",
+      "sha256Bytes": "c1c11dcf70d367185ea11154f296bbefdd1150a1409469bec85d81468f7d8539"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopLoginTest.kt",
+      "sha256Bytes": "60113285747f6cd091e61cf004daddd2ee728551c8d069cd03f20b7ce15dbd3a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopMediaRepositoryTest.kt",
+      "sha256Bytes": "9db5451d6158dd068b7f8ca6bc79bbc12c3129da416e8be44cde0e6499f20ad2"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopPersonalContentTest.kt",
+      "sha256Bytes": "1c6971a2e2eb250fc1c86c232c1711a01ace32691b0cac0898a239778fe29e21"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopPlaybackHeartbeatTest.kt",
+      "sha256Bytes": "45facfbc0fa2b61c70efc8e847fbc9e515206773206cbe196e5fcf370568d6ce"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopPlaybackSelectionTest.kt",
+      "sha256Bytes": "f9425f5f689d314779f52708b01fd1d1d0b8cee0d81edf71c917c32bc6683bba"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopQrLoginCookiesTest.kt",
+      "sha256Bytes": "9282d923d520ab391c925e27c8004baa9adcd6a3d64d791f354e362648671afa"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopRecommendationTest.kt",
+      "sha256Bytes": "49fe46db2435d60dc0d079ab6d7400435dcf4f0af2e69865f77da142ab3fa0c9"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopRequestPolicyTest.kt",
+      "sha256Bytes": "db99dd50a6c6d58f67ec832e49a44a99138fdc42fd882c0a02de9c3a59f980a0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSearchRestoreLifecycleTest.kt",
+      "sha256Bytes": "aab690a9f93b48dd39ac8da1fd3badf64cf7e696f152f14d90c523e4a1c017b4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSearchTest.kt",
+      "sha256Bytes": "de10cb3bd3e863ab262e9cb5aafc37efcf7908d18c7efe270ca855a1dc92c49c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSessionStoreTest.kt",
+      "sha256Bytes": "53a396f85721ed140f62f16275112e767ffce0315fc0f0bc28436f4e23f2976c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSocialRepositoryTest.kt",
+      "sha256Bytes": "0004cb1043df302ab33c3f089fc2f84f5de7270611069de2dfaa0a67796e0feb"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSpaceContributionsTest.kt",
+      "sha256Bytes": "cfd4e679973dfdd69c1f87a881ad5d2ce24d455dbc1648f703f5c71bf898c3e7"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSpaceOverviewTest.kt",
+      "sha256Bytes": "f8ddfb81e1b4b77949c502f9520bbe4217a9741aeec745321bede4b5380d6c21"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSpaceRelationActionTest.kt",
+      "sha256Bytes": "f9c80eabc92c03ed7b13f890f3952062897db6981102c536020bc8806ca08cc0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopSpaceRepositoryTest.kt",
+      "sha256Bytes": "ab84ed39f62132b063401c459155c77f129c4aed4282051eb990d4f9d50e4761"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/data/DesktopStoryTopicTest.kt",
+      "sha256Bytes": "007d308977b9fd23cb2b2fe8cc3f812925e8155eb577d49145ea8ce1457c206a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnosticsTest.kt",
+      "sha256Bytes": "e539fa6c23e8f5112c9be094a7c6f16c09e67b48fca9a8185b9b2cd6770e3130"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/download/DesktopDownloadManagerTest.kt",
+      "sha256Bytes": "d1ebc6a552ed394e07ffb98ca91deaf833561f708de778ff5be5b6fdad86f9f7"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/download/NativeDownloadMuxTest.kt",
+      "sha256Bytes": "f52d8659d9c4054a98a2d273f00ae8115448a4ee0b38a9f12d3035777b8b2f76"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopAdvancedPlaybackSettingsTest.kt",
+      "sha256Bytes": "676c37ad3e599cffee7cd0d464df3213f4cdf7c5cbce4793668c856284cbb38f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopFsrHookAdapterTest.kt",
+      "sha256Bytes": "c88ee0e23d66d5fddb25c32116e3166532bdcc1bd0b4cf47b1d9d507dd00989e"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopFsrVideoShaderResourcesTest.kt",
+      "sha256Bytes": "131bc16afb36b6f985a7d523f732d731bba3e8e96083f6b015fb5793cf9c601a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPlaybackHeartbeatTest.kt",
+      "sha256Bytes": "06b8f661116bc4dbcb3bec541de330a063ea4e34dc5fbd4827c506dac447dcfc"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPlaybackRecoveryTest.kt",
+      "sha256Bytes": "3b495e900c2f563c33e9a4e7adeec4435605e6ec09a2c4dee1dfaea3130fd1ab"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPlaybackWatchdogTest.kt",
+      "sha256Bytes": "229fc2c95b403980dffe5b77ba373d37794a32d08c748a426e1370608e993f65"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPlayerPreferencesWriterTest.kt",
+      "sha256Bytes": "c27f137681b205231014e46928900f5d7098e90669ea7b129ec62c2d8c81ec7f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioControllerTest.kt",
+      "sha256Bytes": "ea8a0840da3e7f73cfdd761c09b1cb17148df4f9c0e8bcdf89a3e30b78ed49e1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopPremiumAudioRecoveryTest.kt",
+      "sha256Bytes": "4f6814fb708db1c20078b9002c319548e65cbbdc0b3c2e5b5da8356533b806e4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopSubtitleCancellationTest.kt",
+      "sha256Bytes": "e87a5574dd7dfea7152659e7f5cfbe22d339341f0946abe2287234f3955a0ce4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/DesktopVideoEnhancementSessionTest.kt",
+      "sha256Bytes": "c943dc8a09e493221fff3608b5c0e1fbecb9fc7cb2e56c3acf058bc469e80e94"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/MpvStartupProbeTest.kt",
+      "sha256Bytes": "d6c1a0351debc8727d079dbef58f105cd723c3966330a4af4490aa653436b362"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlaybackSegmentsTest.kt",
+      "sha256Bytes": "170c58b8e8386622e59d4b1c92499b656b2d6230027d8d97e182047f9d371444"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlaybackSettingsIntegrationFixtures.kt",
+      "sha256Bytes": "a419ff7d4b4741078a135bff1000220c5800c1b719dc7afa249ea32ed499171a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlaybackStreamHeadersTest.kt",
+      "sha256Bytes": "090289a4588cdbcb88634afb425851eaca043612e29babb255635ee6d622d603"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlayerFailureTest.kt",
+      "sha256Bytes": "7f82779d215d8cc3643037d53be7eff04054ac26103ce7606f34940d424af8b3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlayerOwnershipTest.kt",
+      "sha256Bytes": "d1b2b5f77d5c7b055437238c199edad8094f8c9058b28ee331a00100177f2051"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlayerPreferencesTest.kt",
+      "sha256Bytes": "63781d7947449443a39ba643a49530101ed3773afefb75aab207d13535a54874"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlayerSeekTrackerTest.kt",
+      "sha256Bytes": "75188a2ea4f003a6d72a85e3c32017d7f752a30e74bee57a6dc2a7f791faa0ab"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlayerVideoOutputTest.kt",
+      "sha256Bytes": "38a05a14277d885276eaea78d012f00a708d9484aed3f97a6ecd19631b4e25cf"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/player/PlayerVideoShaderPathTest.kt",
+      "sha256Bytes": "f3e0c4de3f1503609788521b68a963cd701fe4d51ded641ce19780b645407b75"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopGoogleCastDefaultTest.kt",
+      "sha256Bytes": "1abc1fbff9e07129e5663584e6664cb671fac99c0c63756ecc047300b5ef404f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopJsSubscriptionTest.kt",
+      "sha256Bytes": "f8abef1c3271504b69bf1fcb1e89187570ffd6dc3748c5f60a83626649594c85"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPackageRepositoryTest.kt",
+      "sha256Bytes": "635e33ad0d9bd4411d65fd40240577e8ebabc774b0013635c78d135e697feb2a"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPluginParityTest.kt",
+      "sha256Bytes": "1f8ec27f9de6d3f11ef5de664e5b7a5c2b8cb65db2e69d431d193556c35f7bae"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPluginServicesTest.kt",
+      "sha256Bytes": "f6fb1275c22207dc2fbe6d073592f1f9b3197b3481679b77a4d78c91ea0328b0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopPluginStoreSharingTest.kt",
+      "sha256Bytes": "df449c257c1df1f85d83d60159d4967a6c53e6263f44e1d81b5ce63348fff7a3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopSkinRendererTest.kt",
+      "sha256Bytes": "4446ab3e6698145eed31f78332aac763c23f11671be67c5f5e9043be5c870e20"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchParityTest.kt",
+      "sha256Bytes": "dacfa26be2bf68cdcde0126dff2e804c184778323acde6deaf953508f57cfe45"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/DesktopTodayWatchRefillTest.kt",
+      "sha256Bytes": "8126c5705bff3bc85ff5ee598f041dc7db3dbfc74b4ac39f529377ef5e7f5966"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/js/DesktopJsPluginHostProbe.kt",
+      "sha256Bytes": "e71676499bbe7a25879c9c0060394fd4b58702994d20e5fe77a6600a5afa3c4e"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/js/DesktopJsPluginIntegrationTest.kt",
+      "sha256Bytes": "49050faf21e7d2ab6717385b1be685a2ed774873d4fbc1607f04fb8ed1f5598b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/js/DesktopJsPluginRepositoryProbe.kt",
+      "sha256Bytes": "28c73ea2acdcc7856c4f97a7b7e6008924f5d808aabe74fe77ec968435dd64d9"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/js/DesktopJsPublicHttpProbe.kt",
+      "sha256Bytes": "f6c93c21685adc2772256048ea723a80a45935d9c7cb8160049f34f81aadbfc2"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/js/DesktopJsRemoteMediaTest.kt",
+      "sha256Bytes": "ac51ffed7296d0aa855dac66f70bf7bfb114fbcb7c12fd99334bcc9b04e10e15"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/js/DesktopJsRemoteRepositoryProbe.kt",
+      "sha256Bytes": "616fdb2c4609757db03fafe780d81c41b714331ab5877dfaee1ec66d87dbc6b2"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/plugins/js/DesktopJsWorkerResourcesProbe.kt",
+      "sha256Bytes": "cddd79c17b70b85cc4a91c04e8042f0627893eb6d0d96e74fdd7456b0143bf22"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopFullNavigationSettingsTest.kt",
+      "sha256Bytes": "45a9bad41b72abbe8e9872ee70b173b891bf315c1a073201d15ea2bd5c528ae6"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeCardPreferencesTest.kt",
+      "sha256Bytes": "d482ab50822e1cc77e09e60c121981b744cb7adcf5a33baef56bdec8062091a0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopHomeFullCardTest.kt",
+      "sha256Bytes": "4e547618553a46f91903fec0fa77fcc2f0ca094a0992fa61b9d2cd151fe87635"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt",
+      "sha256Bytes": "bda834f6a35160765093809cf34d427c334919c4f699897b208eb77fa9faaed3"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopSettingsNavigatorTest.kt",
+      "sha256Bytes": "8a65062b638af36dcba6d8a688f2f430b5f1c94ccc17b56be8f8e1a8df308b1b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopSettingsSearchTest.kt",
+      "sha256Bytes": "b58fa932602d3b3d3e7b6f9686b7f470c1ab333bc3c1aea30adb0fd2186506f4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopBrowseMemoryTest.kt",
+      "sha256Bytes": "cca3b194a514864d19e809033ff0d3548088f7d457b9c99db963f2f1978970af"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceTest.kt",
+      "sha256Bytes": "acd13b16ec0843947a298d86645cc6fff672589e3ddfa92962c6d07e932840a5"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceUiTest.kt",
+      "sha256Bytes": "7d4b451d8986c79b96b32543cff069e7a3aa0ad0552ebd2044caed9c77012623"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDiscoveryStorageGuardTest.kt",
+      "sha256Bytes": "ba1a896b3de76159f392a9c89d6060803ffbf19fbbd071a21ea873d69465d059"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicCardStateRegistryTest.kt",
+      "sha256Bytes": "82b18f97e2d22aa57e54a1566faeaf17cdc340deb3d7b4cd6a7a8ecd9313e57c"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicEmoteCatalogTest.kt",
+      "sha256Bytes": "56967a0a9aa554782c5490c678f16e87a0af5ee058e034197b6f21109be801a2"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicResourceNavigationTest.kt",
+      "sha256Bytes": "5851424dc4955b5d336341882022f39298db7bf41a93b23ca1d30c52fec5b76d"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicStartupTest.kt",
+      "sha256Bytes": "6c376448b08260b328ad747be44d505640c4f0f9dbde655494ead9ee8f05ab29"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTabsTest.kt",
+      "sha256Bytes": "1c0825e0494d343ea94a787f77b4ef96da5aaf40f09898337fbcc0274da1b388"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopDynamicTimelineSettingsTest.kt",
+      "sha256Bytes": "2bffd7b860acbdb67a8d9b1d55bcf1730e36eea8b2456f954e4be55c296a0ac1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopExternalMediaTest.kt",
+      "sha256Bytes": "c56ac80416cdfa0fa78f5f99a7766f4879cab65b9f86dab327b01a26e116d696"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHistoryRefreshTest.kt",
+      "sha256Bytes": "527a7bf7e3f72fa42d8938c0e59b2f6f02767f8cb1eb06175334b65d00de488f"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopHomeCardProgressTest.kt",
+      "sha256Bytes": "f91c1138ac0533d290a75c05453c0b6b47595b093e91ed43b713c7a4ece714a4"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopJsImageProbe.kt",
+      "sha256Bytes": "6addb7be410593a53af2a02805f7a5797d97c282ab7ec8df1801592c4395c83e"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopRetainedMediaTest.kt",
+      "sha256Bytes": "b9ab530de561d2102f77b53cd025e1de64e809d63be88888bfd7b627d67608b0"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSpaceBrowseTest.kt",
+      "sha256Bytes": "94ef4e0659b5d4b33f84b8db397e06313df5d1564f55db413a5b3c110c4e75fb"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSpaceContributionBrowseTest.kt",
+      "sha256Bytes": "026a82e2104b943a69c4c579405602890d4996a75b16bea9f256ffa1d33f4bfd"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSpaceVideoBrowserTest.kt",
+      "sha256Bytes": "58a4e5e40180ab3b7993f6dbadf12b20f53caf57d6d7c4a1f34ededc9c9079ce"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureTest.kt",
+      "sha256Bytes": "a3d10b723328a59019ed582fb4409f9e9a7ad95cf8a7287043b7f766eeef4137"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryInitialFailureUiTest.kt",
+      "sha256Bytes": "d27fb4ff9ff4c58e080745249aaa406e08e32ebf55fcd3c5d60e6656c7ba3deb"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryNativeInputTest.kt",
+      "sha256Bytes": "15b7b41b2093d5e9c44639107a67aec8d44805a1fe25a5e69aa385865552b490"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryPlaybackHostTest.kt",
+      "sha256Bytes": "2602afde0f2ff9408554749f86a8eea397b8d7498ef21eede7ad2c6cac211b46"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopStoryTopicUiTest.kt",
+      "sha256Bytes": "25fe92687161543775120dc42ca804a3323e2ea303d0c8530c4aec79fa838b92"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopSubtitleDialogTargetTest.kt",
+      "sha256Bytes": "9f7257723d021918e2d619a7b840f1473b0092dbbd01aeb32ba87b95be6f1aee"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopTopicRoutingTest.kt",
+      "sha256Bytes": "2cb7b971955ba21f30af5d6fc23f481bb2512b2d20efb49a188d72eae22097b1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/PlaybackSettingsDraftMemoryTest.kt",
+      "sha256Bytes": "bab1a5b60ffc606e3e5cfe02062d211956821bde45b4f928fcddd40929bc72a1"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterIntegrationTest.kt",
+      "sha256Bytes": "17b7b0e3ec064eae5845d26460d21fc1c82712aa3ff06b73e4ae9ab76855f21b"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/DesktopUpdaterSafetyTest.kt",
+      "sha256Bytes": "4a97606ea16bc77c9c38d0b3b7e7772170c284fd36b94d10502903b58c181845"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/update/StartupHealthTest.kt",
+      "sha256Bytes": "61a7359c16dbf77128e92016c08ff04f2b2885a6ec88ec6eefcdf3f3c9e1c951"
+    },
+    {
+      "path": "desktop/src/test/kotlin/su/litvak/chromecast/api/v2/DesktopGoogleCastProtocolTest.kt",
+      "sha256Bytes": "f88685e3d80b3b2ace5f4157c4964393b0fe132906a0f947aced7815e9164b6c"
+    },
+    {
+      "path": "desktop/src/test/resources/google-cast-v2-fixture/fixture-files.json",
+      "sha256Bytes": "a79556ebf2583416041551e76a727ee9595672e8dd54ba58587dac8a47751166"
+    },
+    {
+      "path": "desktop/tools/build.ps1",
+      "sha256Bytes": "cb9876b33e0e87e7a89027f2dba2f7f569e68f9b5e39adfe96032240d427a2fb"
+    },
+    {
+      "path": "desktop/tools/compile-native-diagnostic-share.py",
+      "sha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861"
+    },
+    {
+      "path": "desktop/tools/extract-appearance-platform.py",
+      "sha256Bytes": "9a0db8a5e32fab8d9399d4af89f5cdf27cdcec231ffc8e744d1b82f98c743357"
+    },
+    {
+      "path": "desktop/tools/extract-cast-platform.py",
+      "sha256Bytes": "d88118db32194f2d8cbb583c6d9106bb5aed4745601df891f1f17d62aaae5e99"
+    },
+    {
+      "path": "desktop/tools/extract-discovery-platform.py",
+      "sha256Bytes": "7078a93fbe62d3b28528341a925067cdfb31664987a3d1bfd5ed68f916db452e"
+    },
+    {
+      "path": "desktop/tools/extract-dynamic-message-share.py",
+      "sha256Bytes": "93b7740b9103679e5b11a91cb5eff74f2752d8f6c4101f4328908b908abb692d"
+    },
+    {
+      "path": "desktop/tools/extract-google-cast-platform.py",
+      "sha256Bytes": "9b803f2d0a24bd4aff1b0e5a525c1ae2fe9b50e1f0898326be31211cd7a144a2"
+    },
+    {
+      "path": "desktop/tools/extract-image-save-settings-ui.py",
+      "sha256Bytes": "623af121faa2c7980c5b8fad328f7d88cfe39d45b8fa8f0d715d2a8c1377738f"
+    },
+    {
+      "path": "desktop/tools/extract-login-platform.py",
+      "sha256Bytes": "fd3c2497aea05aba6d0be2c49adaeca460c6af1926691f68e1c3df4298af2198"
+    },
+    {
+      "path": "desktop/tools/extract-native-music-root-platform.py",
+      "sha256Bytes": "d843f999ef975d8a1dbb3f37eb946014d4c64136e26ac45d8138172ae8b45e34"
+    },
+    {
+      "path": "desktop/tools/extract-playback-platform.py",
+      "sha256Bytes": "bbed69a08e783556b911802178cceba8a79d7cedc303bcb2665e918148a32209"
+    },
+    {
+      "path": "desktop/tools/extract-playback-settings.py",
+      "sha256Bytes": "6192fd86d09c6182ff3d827cc26257d4fc61775ab1be26580255edacc507d1ab"
+    },
+    {
+      "path": "desktop/tools/extract-playback-watchdogs.py",
+      "sha256Bytes": "c2f99f4a61fdf91e7904ce3576b0e787e9c18e78a7d4543169e266cf8d4ad6c6"
+    },
+    {
+      "path": "desktop/tools/extract-search-platform.py",
+      "sha256Bytes": "0b1bde42482246bac039bf2ca19176bc5251fb091ced28a4bef349a931979e08"
+    },
+    {
+      "path": "desktop/tools/extract-space-contributions.py",
+      "sha256Bytes": "915187b7f67bfc5269499adb5efde0fd08eab03bfd9bdb04250e8039c171df8e"
+    },
+    {
+      "path": "desktop/tools/extract-space-image-preview-callers.py",
+      "sha256Bytes": "80133dfdfb5e759ada5214645d602b3def971c0cd1052089a9ca771328bc9caa"
+    },
+    {
+      "path": "desktop/tools/extract-space-overview.py",
+      "sha256Bytes": "f7ff7e10d515585675325c1cdf85443ea8516c8e7f4cf3a21a26256705a82044"
+    },
+    {
+      "path": "desktop/tools/extract-space-platform.py",
+      "sha256Bytes": "f6e9ab478fca8ded0781218295d2fdc77135b564facdb767a59d4590e01e6250"
+    },
+    {
+      "path": "desktop/tools/extract-stable-collection-sheet.py",
+      "sha256Bytes": "23b786cd951bb6ddf3a2837982bf6537e362c6cb52ca3d2c6469408d17b8a9ce"
+    },
+    {
+      "path": "desktop/tools/extract-stable-video-metadata.py",
+      "sha256Bytes": "e419adcab59ac87fd4100c55fce8060540ca4f75c2773b155064dd120f98fa2d"
+    },
+    {
+      "path": "desktop/tools/extract-stable-video-votes.py",
+      "sha256Bytes": "7e4d6d814d7167df54e91f935f8a4048965df8075b6be1795c646d76480ae503"
+    },
+    {
+      "path": "desktop/tools/extract-stable-weekly-series.py",
+      "sha256Bytes": "1ab1a6bae4e54bc046556922df35007db33136d81445950ff55ce1de63d7eff4"
+    },
+    {
+      "path": "desktop/tools/extract-subtitle-load-policy.py",
+      "sha256Bytes": "779e58dcbea0be3c737baf196be1f66a34843bc14e93633172b979892858bbbc"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-api.py",
+      "sha256Bytes": "9a1efc08c595567667c14dc99946342622aa958f9830c6ef319fc8eff4d682b0"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-application-image-loader.py",
+      "sha256Bytes": "7d8d7dde625dad262fec46be18718dc3a707f83b864cc396854cee77159c4368"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-article-detail.py",
+      "sha256Bytes": "b7c86811b011a8c4923d5c4e2232286d560cb24e8368f3c41bedddd9f8ddea56"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-audio.py",
+      "sha256Bytes": "c7eed68a21d96a24740c3d07cbc84af062d6ba412628d527b083dd594db15e5b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bgm-detail.py",
+      "sha256Bytes": "924c1cd243d8252154bda5b7f43ef6fa5d281118d750f22722040c05f75e4538"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-blocked-list-ui.py",
+      "sha256Bytes": "bcbc6300f4c5196d32e3f1105daecbdbcbd94016ec29dd67f8acdec918c18c69"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-blocked-up-platform.py",
+      "sha256Bytes": "7f0aeb8f6bed6428dafb6fef99425b9929263777bb9f0b081046c6ab02bea7a7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-category-page.py",
+      "sha256Bytes": "13cf1aff8fac330699914eda6f31fa02e9c380a208e1feaf80b124c25fa5fc96"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-comment-fraud-protocol.py",
+      "sha256Bytes": "9557e29f1218a13f38b4b5043fe5947e7ab328bf29507ca7fe4816b794e8a358"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-components.py",
+      "sha256Bytes": "06c14b355d56a6f649d182619a6636e5689913fb9780dc626421e58b6836025f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-crash-prompt.py",
+      "sha256Bytes": "c33d47e5766ad9ef2adcb8cd7ea9673f40c5ab9bc93d3b9c5e58633ac682b808"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "sha256Bytes": "f4431f015fc7c7b60b13d214bff20e15df6bd1bded72d786020ce91f1232db7f"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-settings.py",
+      "sha256Bytes": "406c92feddc812f3fde05e6218ea4b56d851d0d64da5cd12942124f8c9ee89a7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku.py",
+      "sha256Bytes": "9915b3ca81d4c012b9be9183e671a73e75e52ed1390d64469d863399bd06d1c1"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-diagnostics.py",
+      "sha256Bytes": "5801bc6b79824caa5c01577eedf1a54997b6317f822c5a2d7e6847c5b7f3a29c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-download-list.py",
+      "sha256Bytes": "b4c9819aae4f09e4beb76e5e08b99965a9e0307cbca1b64bcf8b69815f2a5477"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-download-transport.py",
+      "sha256Bytes": "d2e2892466c63637b66e9db79b666bab9d9e6f9639ea77bc03e60b3a26cbb7fc"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-card.py",
+      "sha256Bytes": "62722e1a0ca0ad80b77ec89fa0c36d7f0bd998b98977c14154785d1f1aa811c5"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-container.py",
+      "sha256Bytes": "81fe59f04f29a6f40476b28f34f401df2d6efab456d65c68a1a3a3c113781325"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail-protocol.py",
+      "sha256Bytes": "42e14a376ceec0c63af52efeee6565bf9443d44fe26441a052fe242786935937"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-detail.py",
+      "sha256Bytes": "1b0706b4581b5cac36df33ae9fb90b0fedbc6c6f89012ed7ad812d39ea4f756c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-editor-protocol.py",
+      "sha256Bytes": "cf0cd7c2a1d3fdfa1b8232035d175ace1851bef6ae22b918c790acaaa0630abc"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-editor.py",
+      "sha256Bytes": "adf02e645c163afc52ba2b63db1f2f2564a1f68cbd58dc8d37590d766cfadac7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-follow.py",
+      "sha256Bytes": "3d31019d2a0142420b262138c85e8898f374dc010d719547dcaf3438e7c84b78"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-gallery-motion-photo.py",
+      "sha256Bytes": "e4f2910d5e8751e8ceeba3ca0593bf04b7d8ba80f42017c0ce332bd4eb49f9f2"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+      "sha256Bytes": "5e93fedc0d90696130d738d044d0b2fd7481ee73a8770766b340a73adefbcd04"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-reply.py",
+      "sha256Bytes": "3a6c8fa8ede763ccb7d8de2b605b3f7a9e741266760816e04cb6d12e8ad109f5"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-settings.py",
+      "sha256Bytes": "ad93173e383af50b724fe6f3b7d6ce0a821aa7ce8640f41fca1dc2cceab25d33"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-static-image-codec.py",
+      "sha256Bytes": "47d49362363f8e00f106637a1f14e2dc611ff9d7ba8bee1bd847de5a630a1cc7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-dynamic-tabs.py",
+      "sha256Bytes": "bca1f195aa5f5fd202cffb759ef208b9715e7f5a834363cce475db48f181f3ab"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-favorite-folder-sheet.py",
+      "sha256Bytes": "49a684d9121c78e5cb4d4b7bd80685a4282026dc60c7699c8f02131ac763795b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-favorites.py",
+      "sha256Bytes": "9b322a8713cb31b798f0ba4b87d6b1b0a85bdb0d5ff17ea858d9c154374e05fd"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-following.py",
+      "sha256Bytes": "83304d9ed33966785ecfd16ea192051416450fe138f25728bcd01cc67265e334"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-frosted-audio-renderer.py",
+      "sha256Bytes": "4d63edfb5a15fb9e86d42002ce89c36c3d47bf26afb14dcff947408bc7f248a1"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-full-navigation.py",
+      "sha256Bytes": "53d46335fa453e7acb80dc6f44566c21aaff87ec3861b1fdc02edf1b7ffa1661"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-bangumi-page.py",
+      "sha256Bytes": "d2b6020e333db5bbd0492f9627c6f173ee240d1f2f089c1bda030ae7a31bf3eb"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-cards.py",
+      "sha256Bytes": "43ef32327ee2bf6133d4f974bff7e21d3204ed660c122db31e0fa021897f1f9e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-full-card.py",
+      "sha256Bytes": "811bea870d0a74e98b2aae64f6a0424bb1665cf691c2224c3ac842f3801f1d3b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-page.py",
+      "sha256Bytes": "0345334bdea1a3ae68d470663be0bb769a2d4a949714506bcb2e43af1cdd8df3"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-partition.py",
+      "sha256Bytes": "0d21fc282852dbd3ff6344673bd88812fd7e5bcc2162d4e98f18431be0eb9571"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-protocols.py",
+      "sha256Bytes": "deb0f87478ae1cef8584e578debf63e7f07ad154da00c7ff7b959fe57f9e923b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-return-navigation.py",
+      "sha256Bytes": "deca07715b303f22d2e7bb7a13b9c34b62e6cd1ddb42c2c3f0c7fbb2e55ca884"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-viewmodel-adaptations.json",
+      "sha256Bytes": "e91b36f5945fc3614c8f9113ed9c9b0cf0e093e8bbd1e67327f1d46152c2ea6d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-viewmodel.py",
+      "sha256Bytes": "3368e456d064942db043b18a8dd23df64cd8911b249b28eaae6f97313a2e36e5"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-js.py",
+      "sha256Bytes": "93ab2107a9b6422818ffb01d0ef34ca7957eeb2dca8a3be6e44b0472080c4819"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-linked-dock.py",
+      "sha256Bytes": "342f984abf663ea530583c1b1ec59c54a6efe71b9179b40fe41a3ac4fa01d7a2"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-live-list.py",
+      "sha256Bytes": "13a041d3833af04827723915c26703aba6986bbf495fd1c06d996599eeca8442"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-live-navigation.py",
+      "sha256Bytes": "7c33a5206014b345007dbf739b577d281398e60106dc416ff642f7a7da325091"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-media-byte-cache-policy.py",
+      "sha256Bytes": "406583ee9b2374baf8b9f433857ac4a190cb867795d7599c83ab36d8d101011a"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-media.py",
+      "sha256Bytes": "10237e4dc56b952304c698ef536fc1bc0933403938aa75a23ef4683942e626a2"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "4e5e8b5d670ad2232f1829d96a036e4f25ab226eca05865e6f5d6202aa86be93"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-navigation-interaction.py",
+      "sha256Bytes": "936fa410bc18513534db6a8923b169a3f28afbb260304b477f225c34f61291cf"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-navigation3-host.py",
+      "sha256Bytes": "71f882f8e822d0f1073ded480706875989b4a87517abbe3cc549813b7eb46362"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-network-proxy.py",
+      "sha256Bytes": "15ca8a6f033111f8a18df94b1597ec4fc5d51a487204c42bc277365cc3289cb1"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-offline-player.py",
+      "sha256Bytes": "aae44d0243bf85db90a7ee9bc5cf7a3c947bcaaa48ea356b46d378ec935f2532"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-packages.py",
+      "sha256Bytes": "89fa52f2769a8b58b70985613a0a0c626d81e1578a6c4374472504551ce7468d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-personal-lists.py",
+      "sha256Bytes": "6d92f58b039e0b7e402a44cffdca22d347d61e81f3133360adb7164279b14041"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-plugins.py",
+      "sha256Bytes": "f61b4de950b1139fd25370ffa6b3654c17501fee7df23a6c9f79590a05782ce4"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-preferences.py",
+      "sha256Bytes": "df0baa29e92b978d5f5b360dbbff96d787ace8041e855a9f381530f0fbdb1c22"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-profile-main.py",
+      "sha256Bytes": "490ceb994ee7a8c358daaea871c707cf850d3a900e74b195fa8f67f3db26f75e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-profile-wallpaper-import.py",
+      "sha256Bytes": "f74d6fe884bfc2ace829a2fc536f15d07a63c8ae9caa32c6b085cdedd2435855"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-root-home-navigation.py",
+      "sha256Bytes": "62666a8161f409fdb6fd3e7d20310f7308060f8db7f931a923a792cb6d727332"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-categories.py",
+      "sha256Bytes": "33b73a52f5600813d1eefec2f84a65af50379fdd01dfdf131f14d13af1ec1793"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-entries.py",
+      "sha256Bytes": "1ae8c37a830e1e8a7325119314742b628bd68bd9cb23aa641ec98fde000f9d44"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-home.py",
+      "sha256Bytes": "d3046e0629bc0f03b35f384ddcb99b3b80e0f588df24deeff51447b21dff131d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-privacy.py",
+      "sha256Bytes": "a226aa7dae5ec56cb8419a24026c95e4b6579aa0c0308cf6d75e5ae2b439f23c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-search.py",
+      "sha256Bytes": "28c4e569ec50d7bd58617594a0347a19b34472439e5059438a325178d9d24ea7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-storage-entries.py",
+      "sha256Bytes": "f36edca0b8516337551727ccd2f4e2bbef87e708a91167620ce3cd9533e13f55"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings.py",
+      "sha256Bytes": "4d14e3cdd9c740adbe613f74e5fcaf44624cb25e700cb3bd430d1a128a6f2b1a"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-shared-liquid-tabs.py",
+      "sha256Bytes": "fd600701686a06dc229f0aff5f70de7a19e097b19140cb85c15d063e630f1251"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-storage-settings.py",
+      "sha256Bytes": "6843098d62104df8e7caa642d6e746839c22b344d4692d90fdd9ecd36cabf8b4"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-story-topic.py",
+      "sha256Bytes": "0d661a783101bfaaa8597e6c3ab7f2d6a44293365740a0b62b2102e676b77a75"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-subscription-page.py",
+      "sha256Bytes": "c2bfa5f63dbedbc96af2f45a1e28a09cbc6717adcc8a7e9631be2cd1e40c97ff"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-tablet-owner-space.py",
+      "sha256Bytes": "567c1be5be0bacf606b045c05371b171eafc3a424eca90b3d368e45d5feb23d1"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-audio-full.py",
+      "sha256Bytes": "7686a6c595aa6edd96f56ebc9fbb28147152530ba43d6034a6b52d15d34ef2e6"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-comment-ui.py",
+      "sha256Bytes": "7ee2a46466b16e8280c982248ff61c4e3b1855c4cfe8d22e70b2615b9418ee75"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-comment-url.py",
+      "sha256Bytes": "ededd840faa4c067f06bef70d732b970bbeed832ed1b4ef6414bc4bd0b003fc9"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-content-full.py",
+      "sha256Bytes": "6fa5b8edc7252f7533049d039a0b181a0440a692f11c594b9c2d70a21f0b1047"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-detail-full-units.py",
+      "sha256Bytes": "f9aa16b409441ba8a2dedf288ad8af19f05f15d6c9650d389cae726aed17f52b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-detail-holder.py",
+      "sha256Bytes": "630e90b43a736a1e0333fc7e33ecbfc59a377c12516ef8a096991448180904d3"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "sha256Bytes": "fe3efa7bd65b0dc682db49afffbf758fe07cb2302ac49c411dd40488099fd4e6"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "sha256Bytes": "38f0ec1559f812406854f1d856e2358afa9a41d22b15f496f577547e63978a1e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-owner-danmaku-send.py",
+      "sha256Bytes": "95a3676ac440e13c98285f42260830b9cccb0df47f7512bd1880e3211eded9a5"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-player-full-controls.py",
+      "sha256Bytes": "9623617ec421c74b390aeb424191b2270bf0e7c8b3fe3578c609f7da8460ef51"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-player-section-full.py",
+      "sha256Bytes": "47294a679c63fc7dfb6ff64d5b6e42d602855938a4fa78a50a488f60b597b0d9"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-playlist.py",
+      "sha256Bytes": "2857097ba9bdb5ef9faef051e63e51c730751c34604a638f4af5b8c98f1ac89c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-root-story-feed.py",
+      "sha256Bytes": "1faac9f94b91d3fe32d3d6b304fc43a54f55355d82d43f4674d1ea1fdaa97dbb"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-share-consent.py",
+      "sha256Bytes": "55c9844151939e669fe0cdf5e420acae3a58855a0289f15528d7d496dddee203"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-state-core.py",
+      "sha256Bytes": "6587b8596005fd5f16e543625d91de17f95c046d41b321d9b9d55d1e8246812e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-tablet-full.py",
+      "sha256Bytes": "1a40f7881fe6ba165d24a1a424e7e0a06fc229311af6fc75941249a0ee648e98"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-wallpaper-palette.py",
+      "sha256Bytes": "638a86946ba9cba169e8f5bb1369a20e31263617c6cbfc94185fb780538e8e0a"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-watchlater.py",
+      "sha256Bytes": "b5e51acd453f4fff2f4eb96c3764928d6a71e855295e975ba8894c88a00bbea1"
+    },
+    {
+      "path": "desktop/tools/extract-video-enhancement.py",
+      "sha256Bytes": "28967225c1cf7480c5b0062ddf8241ef1b79c1a3bfc5dc26104054b9b681e0f4"
+    },
+    {
+      "path": "desktop/tools/fetch-ffmpeg.ps1",
+      "sha256Bytes": "39d41988f5810fd6652ca23d4660dff78c25e6df29fe37b1c73fd6a5e32d780a"
+    },
+    {
+      "path": "desktop/tools/fetch-js-worker-jdk.py",
+      "sha256Bytes": "0efa825872120da27c476c7063677c69a88771c2b7ca4d7a7b7a2b93673c25df"
+    },
+    {
+      "path": "desktop/tools/fetch-mpv.ps1",
+      "sha256Bytes": "c6bba3b18adb582467261cf51b480045eb6dfef94ee885052b1cca2cfe4484c4"
+    },
+    {
+      "path": "desktop/tools/prepare-js-worker.py",
+      "sha256Bytes": "7dab3a6d1b839ce56d0b4ec8d0dda78d9acaaa7f5848375e045bca1e187c61ab"
+    },
+    {
+      "path": "desktop/tools/prepare-native-diagnostic-share.py",
+      "sha256Bytes": "46e8b35abe7139d204dee6bb6855c83dfbdc96ab20d1b83195d09d57e847160e"
+    },
+    {
+      "path": "desktop/tools/publish-release.py",
+      "sha256Bytes": "71f90c806adac432a599e1d94b0a6e965af2694d6d7da7e639357ff4db3881d1"
+    },
+    {
+      "path": "desktop/tools/reconcile-ffmpeg-missing-notices.py",
+      "sha256Bytes": "4c4664ceb845042f88465198fd6063b0d7c7b7966283b445e8e453dc702dc32f"
+    },
+    {
+      "path": "desktop/tools/source-parity-report.py",
+      "sha256Bytes": "b2c8ac5abf600bb5ee584be15fc952524f66f293d08ba5faa06fcf1756e7102e"
+    },
+    {
+      "path": "desktop/tools/sync-upstream.py",
+      "sha256Bytes": "10f2eac32778b2044cb5798931c12a94c9d67d458db3bc6a9b86170c5fb5aa6d"
+    },
+    {
+      "path": "desktop/tools/test_extract_upstream_api.py",
+      "sha256Bytes": "6d9177cbf95c483671e30807e2980c13ebe814414088276d274e8795e7d5c6fa"
+    },
+    {
+      "path": "desktop/tools/tests/test_backup_restore_sources.py",
+      "sha256Bytes": "34a6cf4621a42b409accb02a1536dd6fe8ae64837b62c2356baae7c12cbd764d"
+    },
+    {
+      "path": "desktop/tools/tests/test_blocked_list_sources.py",
+      "sha256Bytes": "3f20c19166f34277c4d2ea544d63a0a2b4eedef532539b2e8f8b2734743912ad"
+    },
+    {
+      "path": "desktop/tools/tests/test_crash_prompt_sources.py",
+      "sha256Bytes": "304206ad3049c830ef60ad5b6ffde84c51eb04177e1a7158a74be8b98400448b"
+    },
+    {
+      "path": "desktop/tools/tests/test_diagnostic_sources.py",
+      "sha256Bytes": "f2a47e77ad773d86a4cdac603a3b87583c82aa162d7ee1c28a7ac37196d4e00b"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_cache_sources.py",
+      "sha256Bytes": "dee372ba554834d85a5b37081c7e67ae58f670ec75e098b6561489eac48c0ee4"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_tabs_sources.py",
+      "sha256Bytes": "1512319851e820a43be18ed7b734eeeee914698c192cf340a78e90eb9e4aa176"
+    },
+    {
+      "path": "desktop/tools/tests/test_dynamic_timeline_sources.py",
+      "sha256Bytes": "f0e7af403ffab8c59fc0db605b5360d4d6fcb2b4a2ea13b61bd986ad820cf31d"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_advanced_playback_settings.py",
+      "sha256Bytes": "6d404b45d485c09c4416f401e8daeddf9db0330e3be9d3bf54bd7a3e3e7918a6"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_native_music_root_platform.py",
+      "sha256Bytes": "984333d8e050a647133b136fbcb892958a1b72747dcd5bc1b862079e9ee04dfa"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_playback_settings.py",
+      "sha256Bytes": "9187d4f0e3c8397040d0ebfe3f5607d139e74c41beb77ee4c1c4a3322058d5a8"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_playback_watchdogs.py",
+      "sha256Bytes": "237c31b1dc4a7a3cda6bfbf7413d7c304bafc9d8c8c814e6abdd5e61ec1b1761"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_subtitle_load_policy.py",
+      "sha256Bytes": "57c994b1f5e52f8eeec7ff6b996cda4df6fe9b048df0d3093973d504ba4a61e0"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_audio.py",
+      "sha256Bytes": "ce39f1306620101ccfdc1090061f50d2aa89bc4d48c993aabe644deac4cdc95b"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_components.py",
+      "sha256Bytes": "ecb45094e5bcd7ff484140ff141ac09ac72e328d2997da4fdd1734a866fffb4f"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_js.py",
+      "sha256Bytes": "ae48d4a3c6530461f884e9320ae48ea19295c0547255e9303af7e56d4ff0bff4"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_media.py",
+      "sha256Bytes": "f3a3a759fd1781e2fdf4fe6be9ec30959e833bc39d33b0103e389050912edb21"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_network_proxy.py",
+      "sha256Bytes": "1c09b923dc41230ec9f407b6acf7dba6a9427c80a27417b5f5428148bf19d9c0"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_packages.py",
+      "sha256Bytes": "a01f10ede702960d8e8e07d0066ba98ce7f7371e6248b48b3cd0c5f0ac4788d2"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_plugins.py",
+      "sha256Bytes": "c542e4a00c210adf3b297c87df10ad527d78b94d9c4915971849840ced4966e9"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_preferences.py",
+      "sha256Bytes": "831e23794ab987b3eafbc27ba0d573694bce8a15251e474b092e0de20477c7d4"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_settings_entries.py",
+      "sha256Bytes": "ed50612e5aa96f1d76ee338014c9d54ded81a7bd4f638708fccaaf9b9ebd88ea"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_settings_privacy.py",
+      "sha256Bytes": "6d7416fa486180c24001a15f5a9776eeac10782785a7b7cdb9a0e0a6541c1b6a"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_settings_search.py",
+      "sha256Bytes": "accb51e2503e2ea2b640a2dbc64ab653b13bcb700ceb37315272d984eecf2cc5"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_settings_storage_entries.py",
+      "sha256Bytes": "fb15c204213c667f036ff041762a0deae2d408bc39eeac1baf9eb2a12da90c0e"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_upstream_story_topic.py",
+      "sha256Bytes": "4b2bea9af6db4afa1734a2cc400e21b68086d34d661c5f05707e4eab0c35c3f1"
+    },
+    {
+      "path": "desktop/tools/tests/test_extract_video_enhancement.py",
+      "sha256Bytes": "687aff44a418a9cf96066add7d991dd16cf37d6cb8045d98b49904793c63b16e"
+    },
+    {
+      "path": "desktop/tools/tests/test_home_card_sources.py",
+      "sha256Bytes": "9ad2c2457e444cab306db882dd717cc0260b0a53adc863764c9597eb9ca29c24"
+    },
+    {
+      "path": "desktop/tools/tests/test_home_full_card_sources.py",
+      "sha256Bytes": "5e31b8d90c74c085f448bfd5e8eb7081b4d42519b5f517f1ba479901c56358af"
+    },
+    {
+      "path": "desktop/tools/tests/test_prepare_js_worker.py",
+      "sha256Bytes": "1956ca5527b429df70bf5c3f89e5e4163234c097201b9475c5f8b6bf5cc582e9"
+    },
+    {
+      "path": "desktop/tools/tests/test_publish_release.py",
+      "sha256Bytes": "d380308ee28e197ad109bef35a2b630d49b4d5103266b6c27c040b695e5a429e"
+    },
+    {
+      "path": "desktop/tools/tests/test_reconcile_ffmpeg_notices.py",
+      "sha256Bytes": "5405e9bc02bbd412620cb0002474888c55544aa5ca0f81d7e81102e48e029c69"
+    },
+    {
+      "path": "desktop/tools/tests/test_sync_upstream.py",
+      "sha256Bytes": "8e320ba465e92d3837a1814876253b80174ad322ed16da5a1df4856a9875e82d"
+    },
+    {
+      "path": "desktop/tools/verify-google-cast-sources.py",
+      "sha256Bytes": "da75b14db2c0ea8ace9837ed2fb1aa08972adade3246752bb4f65cfad5984449"
+    },
+    {
+      "path": "desktop/tools/verify-upstream-dynamic-detail-reply-protocol.py",
+      "sha256Bytes": "cf571d90925ee362335ce0e241632e2abd6e09d137554510b12a10d92e46205e"
+    },
+    {
+      "path": "desktop/tools/verify-upstream-dynamic-editor-protocol.py",
+      "sha256Bytes": "d43b896e49c1642cc6dcf126cbab1b3cc0944f937d39c1b4d40f5c2f6c5cf486"
+    },
+    {
+      "path": "desktop/tools/verify-upstream-dynamic-media.py",
+      "sha256Bytes": "eff30b241f93db5b40074af3d22870957d5531065e5a0a6eda58439554ccfc64"
+    },
+    {
+      "path": "desktop/tools/verify-upstream-video-content-full.py",
+      "sha256Bytes": "ec4b8fdcf655c6870377c6785b64075a3397118f52379e3f318210b24ced633c"
+    },
+    {
+      "path": "desktop/tools/verify-upstream-video-detail-full-units.py",
+      "sha256Bytes": "f9cfe449e31815ddf1e0f5c9e6b7c0d4b6acc7dc15c895d1c40576b53a7bcb1e"
+    },
+    {
+      "path": "desktop/tools/verify-upstream-video-player-full-controls.py",
+      "sha256Bytes": "5121b12417cedfa37b7d2af54bf659085fbb627161d83c08145b5d25289314db"
+    },
+    {
+      "path": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "sha256Bytes": "4ca60493f8224eefa7c00684fd4fede6a8c7bbdc2b735e03c5bcdd02983807ca"
+    },
+    {
+      "path": "desktop/native/diagnostic-share/approved-development-build.json",
+      "sha256Bytes": "147c338a72845eee396a394760945e76c96803b89d224059deb284c91f2831cf"
+    },
+    {
+      "path": "desktop/native/windows-x64/ffmpeg-provenance.json",
+      "sha256Bytes": "746a583cd9e84092780de0975ae72323a8d2fd69ae276485bc7d13b3b66d41ac"
+    },
+    {
+      "path": "desktop/native/windows-x64/licenses/SOURCES.json",
+      "sha256Bytes": "0e5fd9b4f5d2698d2404b115b9f7995cb41887f450c74eab3d7fe9ccb0b624d3"
+    },
+    {
+      "path": "desktop/native/windows-x64/licenses/ffmpeg/SOURCES.json",
+      "sha256Bytes": "b56df531cde221a6b423946890e006941b8e9bf00038252d456b9d629e373b62"
+    },
+    {
+      "path": "desktop/native/windows-x64/provenance.json",
+      "sha256Bytes": "4cbf039ba6cf9a3de3191fb3eeb573fdda3133e5a9fd78a7eae84c92ad0a6859"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "sha256Bytes": "77c57802d0982fcb9120c9d32d37f8c29b5b095365c22ab8577b5d7aa6e2c0da"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sha256Bytes": "b7cbefcae27a6fe428e46b2aba65c3936a65bbf741b8508af5b2822159aa874f"
+    }
+  ]
+}

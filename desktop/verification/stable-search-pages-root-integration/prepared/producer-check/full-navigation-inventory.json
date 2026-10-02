@@ -1,0 +1,82 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/BottomBarSettingsScreen.kt",
+    "sha256": "0b16042c8d9013b44388e300a40939f4957b7733d44f6c94baac49be9b9963c9",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/navigation/NavigationSettingsStore.kt",
+    "sha256": "b4176bb2ec022b87b955b6823777d43f507d5bdb4b7103903bbb77a213fb3cad",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsNavigationIconPreviewPolicy.kt",
+    "sha256": "7e1ad9445b9339f2b447bcc087f2f0468f8bb27f3b3326a57efa78569443ba22",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+    "sha256": "526fd05cd8c2daa946f6240b3922aae788d6376b058e7f83b1ce2b5b96eee6be",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AnimationSettingsScreen.kt",
+    "sha256": "a517fd0d059c1b54803ab8638aa2729e9dfb4f72163bb0e20dc1091889f22ff1",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/animation/AppEntrance.kt",
+    "sha256": "421d44dafd2d4c78b049a5ae1c64eac950ac124ad4a753dc4db66f67ed2760aa",
+    "mode": "direct",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  },
+  {
+    "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/AppEntranceMotion.kt",
+    "sha256": "9e44fd2b3a29b519efbc06b270fa6ed9407d7e52efb9b4070f6ea58b51a6faed",
+    "mode": "direct",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsComponents.kt",
+    "sha256": "bacc963c9fa5a159d65d9a9b93e09c639f7416ac695da8db3e45015abe6c79e3",
+    "mode": "direct",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntranceMotionPolicy.kt",
+    "sha256": "3681b59c3cb5b952dd6c5c8c449ffa9fd1e0fc669c972dbabe84c89f399c74c9",
+    "mode": "direct",
+    "features": [
+      "desktop-full-navigation-settings"
+    ]
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+    "target": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\search\\SearchScreen.kt",
+    "originalSha256LF": "526fd05cd8c2daa946f6240b3922aae788d6376b058e7f83b1ce2b5b96eee6be",
+    "generatedSha256LF": "c8d613b6dd5dc0dd657ae334ee9cb2f072833dee790a4b614a4b3ae0bb1f7838",
+    "inverseOriginalBodyExact": true
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
+    "target": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\search\\SearchViewModel.kt",
+    "originalSha256LF": "9735fb53cf10485d0244dece24c6c887c4775ef6c27231a3b617ebc01bb05763",
+    "generatedSha256LF": "4566a5d4ace4474cb8f4e147722c360db5201a5e8fd143b26ce1f7dc2e55b682",
+    "inverseOriginalBodyExact": true
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingViewModel.kt",
+    "target": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\search\\SearchTrendingViewModel.kt",
+    "originalSha256LF": "61b8c81269938c20edd8f51e2c1b2822922deba01097334f80b8f1886ed72a0f",
+    "generatedSha256LF": "c4c86ef5570eec88e0babf973398f6215cb5f3d621d5df94db52669f201410b3",
+    "inverseOriginalBodyExact": true
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingScreen.kt",
+    "target": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\search\\SearchTrendingScreen.kt",
+    "originalSha256LF": "456f6de62794eaedcc5151859a67d1cc7724e7ff74a518847b130f1d95f0c402",
+    "generatedSha256LF": "d62fcb2e6d09064b6289d8383927f07bd53eda326ccbc22171faa00f0e230488",
+    "inverseOriginalBodyExact": true
+  },
+  {
+    "source": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+    "target": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalSearchRepository.kt",
+    "originalSha256LF": "9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55",
+    "generatedSha256LF": "dde0d6af91e92445226a6c168d0b60f9de8f7793778453e563b54899bf08a1ca",
+    "inverseOriginalBodyExact": true
+  }
+]

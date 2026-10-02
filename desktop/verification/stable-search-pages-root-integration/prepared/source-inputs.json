@@ -1,0 +1,189 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "candidateSourceBaseline": "8c1970119ffeb5625c7bc7ed5d7a77c1558e52fa",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "sha256Bytes": "0a2be1c5d07fa6b103fac6fcbc2cf2bb56215928bb01899defc9250de578800d",
+      "sha256LF": "526fd05cd8c2daa946f6240b3922aae788d6376b058e7f83b1ce2b5b96eee6be",
+      "lines": 4688,
+      "bytes": 232772
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
+      "sha256Bytes": "575b96a82e79f08be6ca849b53252d578f81317d4bb10a2e3ed38fb23525ac46",
+      "sha256LF": "9735fb53cf10485d0244dece24c6c887c4775ef6c27231a3b617ebc01bb05763",
+      "lines": 1381,
+      "bytes": 71069
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingScreen.kt",
+      "sha256Bytes": "a02f1b916c7d1bd577a542b5b4123854d0bb212d1b3be9b21f146b0c1191e153",
+      "sha256LF": "456f6de62794eaedcc5151859a67d1cc7724e7ff74a518847b130f1d95f0c402",
+      "lines": 315,
+      "bytes": 12684
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingViewModel.kt",
+      "sha256Bytes": "4fe830ade5aecf6bd7e55616e224c78cc53c051b03523ba6b56a2e42b02e06e2",
+      "sha256LF": "61b8c81269938c20edd8f51e2c1b2822922deba01097334f80b8f1886ed72a0f",
+      "lines": 67,
+      "bytes": 2432
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
+      "sha256Bytes": "0be8c0d0cff36179ff306065bfd507ad1e5fd781f103c505d619db612bf61cf6",
+      "sha256LF": "8d4bc6df6da28464d90b238204617811d495746b6419b407d44b5e7bb76b8aba",
+      "lines": 534,
+      "bytes": 21901
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchLandingUi.kt",
+      "sha256Bytes": "98d252acd157f82214d4cc9523dc012f8202d7c3ab9a3c06ec83345c037865f6",
+      "sha256LF": "37e137719ce216ff19302bbb94767431b65e2e4ce2e185a4cbe7da96f6278cfe",
+      "lines": 801,
+      "bytes": 30817
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchUiModels.kt",
+      "sha256Bytes": "3ce8c659b088284694fcb87dafc23677e2817a8fce896e1eafc9d8bba5585099",
+      "sha256LF": "5f203359dd7d35d28579dd72239bfc2811f079ce87e684207d4d218c3086a06b",
+      "lines": 58,
+      "bytes": 1786
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTabletLayoutPolicy.kt",
+      "sha256Bytes": "d32bef3d4de517c637083d43bbb147e6fafd610d47d63e2578dea95ea64f461f",
+      "sha256LF": "8efb75d46f58aab2fa42d1b81183deb4fb923eb05da2e238e4e97fa4b2348c90",
+      "lines": 115,
+      "bytes": 3789
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchSelectionChipColorPolicy.kt",
+      "sha256Bytes": "461a06c54a3e0f730c5a5cc866db23f25c7729cb2e2425b391ddc9809e7420ff",
+      "sha256LF": "731ef56cf10d7671ffee1250b180502a4531ab4f30fea7fe534ef3064c9ed144",
+      "lines": 30,
+      "bytes": 969
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterPolicy.kt",
+      "sha256Bytes": "c7c93a4650e98fdc673b3b3e30f81b8403a112e9d0726a1b08035e026d59c58d",
+      "sha256LF": "fc1198b6fe287c7a3a3521ae0a0bb871bdfdc2d5fb16b7d2ca6ff4381bdf8d1d",
+      "lines": 266,
+      "bytes": 8947
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchResultNavigationPolicy.kt",
+      "sha256Bytes": "3a64d23c9daac9664ef37810192cd4f7f2d564cec7f083cddc8e08d23c89c44c",
+      "sha256LF": "3b049c25c74d3c4da671e4400a54d8ba7ba8b10c9e9afd2d859f23eb203cbff2",
+      "lines": 90,
+      "bytes": 2957
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchResultCardAppearancePolicy.kt",
+      "sha256Bytes": "022cef9bce08500ffe8f528043b615619d1069efae6729f20bfbd97107933761",
+      "sha256LF": "be1422a9670240aa8f15e70695f154f97c1277e180fff51b5c1beebb49d9ad38",
+      "lines": 80,
+      "bytes": 2617
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt",
+      "sha256Bytes": "24d0275a8b1c69b8200e03af74d943b93c35a7ceaf1ca449f5397d7f3f0b5ed6",
+      "sha256LF": "24a83910f4cd0a04055f443912af05addb79aa61dd3edef565ae66588cff894c",
+      "lines": 110,
+      "bytes": 3965
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchEntryMotionPolicy.kt",
+      "sha256Bytes": "a5b95cb0858a764437d37099c14caba2cb95a715d4bc7b257a41dd86622b5ce1",
+      "sha256LF": "d6d64547269d57099f62f5556ce08f47e9205c193ad742c2d60b0f8276f048aa",
+      "lines": 57,
+      "bytes": 1644
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt",
+      "sha256Bytes": "f1b4641e6f2762cbb8e3a3f3eb6163c71449d86c2d7098681bc12d6675091879",
+      "sha256LF": "a6284ad871eab020fb9e4b3210a8e2abebfa7d54dd246653cdfedc771526c012",
+      "lines": 51,
+      "bytes": 1563
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt",
+      "sha256Bytes": "c25d237442611a0e2394c25881e0d92db5fc58510dde8d70d6cf8cf36d6a5fe7",
+      "sha256LF": "1d8886b9c447c324ed7333bc07a375860ddd58677cbb916434120ab94c8261a3",
+      "lines": 104,
+      "bytes": 3193
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchArticleNavigationPolicy.kt",
+      "sha256Bytes": "59e9ac9cb13788daff0be11925f84ae730bfec15971c1e3b840d9ebbb3927153",
+      "sha256LF": "98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495",
+      "lines": 88,
+      "bytes": 3376
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "sha256Bytes": "4c013288074e7c19306170c898a5b2e7eb15ad73c7af34544ed55e1d358fdae1",
+      "sha256LF": "9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55",
+      "lines": 767,
+      "bytes": 29746
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt",
+      "sha256Bytes": "60154559177d50e70a2e6e41b4e890a23f705ff2e79786deb744443d41177919",
+      "sha256LF": "0e18a5f0f548544f95584ba535e674e62e2666cb48c87727a3629d84af943475",
+      "lines": 127,
+      "bytes": 4175
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchRecommendPolicy.kt",
+      "sha256Bytes": "a88b76b0c1e0aff36fd2541209c117a26b7e3a1b4b69a101282c4e996daa9a78",
+      "sha256LF": "4b2c8e16077beee8e2a02076571fe3e3beae9e8dde6f269c404e835d1ad5b368",
+      "lines": 84,
+      "bytes": 2991
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/database/dao/SearchHistoryDao.kt",
+      "sha256Bytes": "fe87998c7688665ea879e6ec5755e756f2c5873f0a3331834517cb1d8bc4fcbf",
+      "sha256LF": "083984280c6bd796439978e19c3d75bd6d8ffd77390d793ba9e6d010b50ca1c2",
+      "lines": 23,
+      "bytes": 706
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/entity/SearchHistory.kt",
+      "sha256Bytes": "80de7c34ff8fdb3df9d71faac4cf6fb7c6550ccdf03a1fa889fe5f2c3336c2fe",
+      "sha256LF": "eb8a776c2f9b11582486bda58d9f24d536381a0915f655890fa2a726b88227c9",
+      "lines": 12,
+      "bytes": 379
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256Bytes": "27aa95562630640a5308f02c0c417d2deda7254d08b364b6dd9dbf48facbb542",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "lines": 8396,
+      "bytes": 404554
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SearchHintSettingsStore.kt",
+      "sha256Bytes": "fdd7a88b197e834a88ed843c47ecc4e9553d186648efa64cb3d07732f4465bd9",
+      "sha256LF": "da55c7243a61dc25294d5a55e9a230ba097fb9e2e929e85bb6d47440739fd9c5",
+      "lines": 14,
+      "bytes": 595
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation3/BiliPaiNavKey.kt",
+      "sha256Bytes": "b4e9708650de2782820a7cbaa9b5c21f798ae25376a741839917d73f5f43d767",
+      "sha256LF": "1637952c78fccb2677ee73640b70ab876746d693fbca438365d285812fa76c85",
+      "lines": 528,
+      "bytes": 14737
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt",
+      "sha256Bytes": "ff7197222f42607afdefc68b4858952d467ef6433459dc0d86ba08220a9e9f27",
+      "sha256LF": "73f5ea87c6c9fa239f9413327d39268b66f744da08e85733a6ed43a3a7d3bea8",
+      "lines": 636,
+      "bytes": 19484
+    }
+  ]
+}

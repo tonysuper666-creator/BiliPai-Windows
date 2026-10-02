@@ -1,0 +1,932 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchPreferences.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchPreferences.kt
+@@ -6,6 +6,9 @@
+ import com.bilipai.desktop.plugins.DesktopPluginContext
+ import com.bilipai.desktop.plugins.DesktopPluginStore
+ import kotlinx.coroutines.Dispatchers
++import kotlinx.coroutines.CancellationException
++import kotlinx.coroutines.currentCoroutineContext
++import kotlinx.coroutines.ensureActive
+ import kotlinx.coroutines.flow.*
+ import kotlinx.coroutines.withContext
+ import kotlinx.serialization.json.*
+@@ -23,21 +26,53 @@
+     override suspend fun insert(history: SearchHistory) = withContext(Dispatchers.IO) {
+         insertNow(history)
+     }
+-    internal fun insertNow(history: SearchHistory) = synchronized(lock) { save(listOf(history) + entries.filter { it.keyword != history.keyword }) }
+-    internal fun deleteNow(history: SearchHistory) = synchronized(lock) { save(entries.filter { it.keyword != history.keyword }) }
+-    internal fun clearNow() = synchronized(lock) { save(emptyList()) }
++    internal fun insertNow(history: SearchHistory) = synchronized(lock) { editImmediate { old -> listOf(history) + old.filter { it.keyword != history.keyword } } }
++    internal fun deleteNow(history: SearchHistory) = synchronized(lock) { editImmediate { old -> old.filter { it.keyword != history.keyword } } }
++    internal fun clearNow() = synchronized(lock) { editImmediate { emptyList() } }
+     override suspend fun delete(history: SearchHistory) = withContext(Dispatchers.IO) {
+         deleteNow(history)
+     }
+     override suspend fun clearAll() = withContext(Dispatchers.IO) { clearNow() }
+ 
+-    private fun save(next: List<SearchHistory>) {
+-        val encoded = buildJsonArray { next.forEach { row -> add(buildJsonObject {
+-            put("keyword", row.keyword); put("timestamp", row.timestamp)
+-        }) } }.toString()
+-        preferences.edit().putString("entries", encoded).apply()
+-        entries = next
+-        visible.value = next.sortedByDescending { it.timestamp }.take(20)
++    /** Same Store/keyword DAO. CAS recomputes against current history, then a short Root
++     * permit linearizes the write; staging/fsync/rename never hold entry admission. */
++    internal suspend fun editOwned(checkOwner: () -> Unit, commit: ((() -> Unit) -> Boolean),
++        transform: (List<SearchHistory>) -> List<SearchHistory>) = withContext(Dispatchers.IO) {
++        val caller = currentCoroutineContext()
++        fun check() { caller.ensureActive(); checkOwner() }
++        context.store.updateOriginalFromSnapshot("search_history", ::check, {
++            lateinit var permit: DesktopPluginStore.OriginalPreferenceWritePermit
++            if (!commit { check(); permit = DesktopPluginStore.OriginalPreferenceWritePermit(context.store) })
++                throw CancellationException("Search history owner retired before write admission")
++            permit
++        }) { snapshot ->
++            val next = transform(decodeSearchHistory(snapshot[com.bilipai.desktop.plugins.stringPreferencesKey("entries")]))
++            val encoded = buildJsonArray { next.forEach { row -> add(buildJsonObject {
++                put("keyword", row.keyword); put("timestamp", row.timestamp)
++            }) } }.toString()
++            Unit to mapOf("entries" to JsonPrimitive(encoded))
++        }
++        // Reload the same committed backing so concurrent legacy edits cannot be overwritten
++        // by a stale derived list. Existing visible Flow is still the only DAO projection.
++        synchronized(lock) {
++            entries = decodeSearchHistory(preferences.getString("entries", null))
++            visible.value = entries.sortedByDescending { it.timestamp }.take(20)
++        }
++        check()
++    }
++
++    /** Legacy callers also derive changes from the same current backing generation, so
++     * a staged owned CAS cannot be overwritten by an older in-memory history projection. */
++    private fun editImmediate(transform: (List<SearchHistory>) -> List<SearchHistory>) {
++        context.store.updateFromSnapshot("search_history") { snapshot ->
++            val next = transform(decodeSearchHistory(snapshot[com.bilipai.desktop.plugins.stringPreferencesKey("entries")]))
++            val encoded = buildJsonArray { next.forEach { row -> add(buildJsonObject {
++                put("keyword",row.keyword);put("timestamp",row.timestamp)
++            }) } }.toString()
++            mapOf("entries" to JsonPrimitive(encoded))
++        }
++        entries = decodeSearchHistory(preferences.getString("entries",null))
++        visible.value = entries.sortedByDescending { it.timestamp }.take(20)
+     }
+ }
+ 
+@@ -93,6 +128,23 @@
+         histories.getOrPut(mid) { DesktopSearchHistoryDao(context(mid)) }
+     }
+     fun history(mid: Long?): StateFlow<List<SearchHistory>> = dao(mid).getAll()
++    /** Original Room interface over the EXISTING account DAO; never creates another store. */
++    internal fun originalHistory(mid: Long?, checkOwner: () -> Unit,
++        commit: ((() -> Unit) -> Boolean)): SearchHistoryDao {
++        checkOwner()
++        val same = dao(mid)
++        return object : SearchHistoryDao {
++            override fun getAll(): Flow<List<SearchHistory>> = same.getAll().onEach { checkOwner() }
++            override suspend fun insert(history: SearchHistory) = same.editOwned(checkOwner,commit) { old ->
++                listOf(history) + old.filter { it.keyword != history.keyword }
++            }
++            override suspend fun delete(history: SearchHistory) = same.editOwned(checkOwner,commit) { old ->
++                old.filter { it.keyword != history.keyword }
++            }
++            override suspend fun clearAll() = same.editOwned(checkOwner,commit) { emptyList() }
++        }
++    }
++
+     suspend fun record(mid: Long?, keyword: String) {
+         val value = keyword.trim()
+         if (value.isEmpty()) return
+--- desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1881,7 +1881,7 @@
+                                         transitionEnabled = articleHomeSettings.cardTransitionEnabled)
+                                 }
+                             }
+-                            section in listOf(DesktopSection.DYNAMIC, DesktopSection.SEARCH, DesktopSection.MESSAGES, DesktopSection.NOTES) ->
++                            section in listOf(DesktopSection.DYNAMIC, DesktopSection.MESSAGES, DesktopSection.NOTES) ->
+                                 CommunityContentScreen(when(section) {
+                                     DesktopSection.DYNAMIC -> CommunitySection.DYNAMIC
+                                     DesktopSection.SEARCH -> CommunitySection.SEARCH
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt
+@@ -27,6 +27,7 @@
+         } catch (_: Exception) { /* Original platform failures do not interrupt navigation/feed. */ }
+     }
+     override fun logScreenView(name: String) = record("HomeScreen", "screen=${name.take(80)}")
++    fun logSearch(keyword: String) = record("Search", "queryLength=${keyword.length}")
+     override fun logCategoryView(categoryName: String, categoryId: Int) =
+         record("HomeCategory", "category=${categoryName.take(80)}, id=$categoryId")
+     override fun logHomeReturnAnimationPerformance(actualDurationMs: Long, plannedSuppressionMs: Long,
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt
+@@ -87,7 +87,8 @@
+         if (key is BiliPaiNavKey.VideoDetail) { video(key); return owns() }
+         return admitted {
+             // Original legacy top-level routes select the actual pager, not a second Home key.
+-            if (mainHostNavigation.get()?.invoke(key) != true) pushAdmitted(decorate(key))
++            val parameterizedSearch = key is BiliPaiNavKey.Search && (key.keyword.isNotBlank() || key.openId != 0L)
++            if (parameterizedSearch || mainHostNavigation.get()?.invoke(key) != true) pushAdmitted(decorate(key))
+         }
+     }
+ 
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt
+@@ -184,6 +184,13 @@
+                         else -> error("Unreachable typed Live branch")
+                     }
+                 }
++                is BiliPaiNavKey.Search, BiliPaiNavKey.Search, BiliPaiNavKey.SearchTrending -> {
++                    val actualSearchKey = if (key == BiliPaiNavKey.Search) BiliPaiNavKey.Search() else key
++                    DesktopOriginalSearchPhysicalLeaf(actualSearchKey,active,pagerHosted,
++                        onBack={ routes.back() },returningFromVideo=returnState.isReturningFromDetail,
++                        quickReturningFromVideo=returnState.isQuickReturnFromDetail,
++                        consumeVideoReturn={ root.returns.consumeReturning() })
++                }
+                 is BiliPaiNavKey.VideoDetail -> {
+                     // AppNavigation.kt 2933–3018, original stack/return policies.
+                     val immediate = routes.previousKey == key
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt
+@@ -125,6 +125,29 @@
+             { text -> gate.commit { feedback(text) } }, ::diagnostic)
+     }
+ 
++    fun searchRoot(root: DesktopHomeRetainedRoot, routes: DesktopOriginalRootRouteAssembly,
++        backToTop: DesktopFavoritePreferences): DesktopOriginalSearchRoot {
++        val gate = root.entry.gate
++        fun published() = gate.owns() && rootPublished(gate) && routes.owns()
++        return DesktopOriginalSearchRoot(routes, ::published, repository.account) { owned, commit ->
++            check(published()) { "Search may not start before actual Root publication" }
++            DesktopOriginalSearchEnvironment(gate.scope, { published() && owned() }, commit,
++                context, root.environment.settings, community.searchPreferences, gate.mid,
++                DesktopOriginalSearchBlocked(community.blockedUpRepository.store.records),
++                { current -> DesktopPersonalArticleResolver(repository.ownedHomeCallFactory(gate.epoch,current),current) },
++                backToTop,
++                { current -> DesktopOriginalSearchRepository(repository.ownedHomeService(SearchApi::class.java,
++                    "https://api.bilibili.com/", gate.epoch, current),
++                    repository.ownedHomeService(BilibiliApi::class.java,"https://api.bilibili.com/",gate.epoch,current),
++                    root.entry.requests.environment.wbiKeys,current) },
++                profileConfiguration,platformContext,desktopDetailRenderEffectsSupported(),
++                root.entry.requests.ports.actions::toggleWatchLater,
++                root.environment.analytics::logScreenView,
++                { query -> (root.environment.analytics as DesktopHomeRootAnalytics).logSearch(query) },
++                { text -> commit { feedback(text) } })
++        }
++    }
++
+     private fun shareFiles(gate: DesktopHomeRetainedGate): DesktopVideoShareFiles {
+         fun owned() = gate.owns() && rootPublished(gate)
+         return DesktopVideoShareFiles(runtime.store.root.resolve("cache"), { url ->
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
+@@ -286,6 +286,9 @@
+             handle.personalLists.compareAndSet(personalLists, null); personalLists.close()
+         } }
+         val profile = remember(root, windowBinding) { windowBinding.profile(root, services.profileAccounts(root.entry.gate)) }
++        val originalSearch = remember(root, routes, windowBinding,personalLists) { windowBinding.searchRoot(root,routes,personalLists.preferences) }
++        SideEffect { originalSearch.prune() }
++        DisposableEffect(originalSearch) { onDispose { originalSearch.close() } }
+         var activeDestination by remember(root) { mutableStateOf<BiliPaiNavKey>(BiliPaiNavKey.Home) }
+         var dynamicUnreadCount by remember(root) { mutableIntStateOf(0) }
+         val navigationPreferences by prefs.navigation.collectAsState()
+@@ -359,7 +362,10 @@
+         }
+         val actions = DesktopOriginalFrostedNavigationActions({ item -> routes.push(bottomPagerNavKeyForItem(item)) },
+             { homeScroll.trySend(HomeScrollRequest.SCROLL_TO_TOP_AND_REFRESH) }, { if (routes.owns()) dynamicScroll.trySend(DynamicScrollRequest.SCROLL_TO_TOP_OR_REFRESH) },
+-            { searchLaunch++; routes.push(BiliPaiNavKey.Search(openId = DesktopHomeClock.elapsedRealtime())) },
++            { searchLaunch++
++                val key=BiliPaiNavKey.Search(openId=DesktopHomeClock.elapsedRealtime())
++                if(routes.push(key))originalSearch.bottomBarEntry(key,searchLaunch)
++            },
+             { query -> routes.push(BiliPaiNavKey.Search(query)) },
+             { target -> dispatchDesktopReadyNativeTarget(root, routes, target) },
+             { searchLaunch = 0 }, { scope.launch { prefs.setTabletUseSidebar(!prefs.navigation.value.tabletUseSidebar) } },
+@@ -389,6 +395,7 @@
+             onDispose { services.originalVideoWindowRetired(originalVideoWindow) }
+         }
+         CompositionLocalProvider(LocalDesktopOriginalVideoRootWindowEnvironment provides originalVideoWindow,
++            LocalDesktopOriginalSearchRoot provides originalSearch,
+             LocalVideoSharedTransitionSpeedSettings provides speedSettings,
+             LocalVideoTransitionAdaptiveInfo provides adaptiveTransition,
+             LocalDesktopRootDynamicScroll provides dynamicScroll) {
+--- desktop/tools/extract-upstream-favorites.py
++++ desktop/tools/extract-upstream-favorites.py
+@@ -164,9 +164,9 @@
+   s=s.replace('import com.android.purebilibili.core.store.HomeSettings','import com.bilipai.desktop.ui.DesktopFavoriteHomeAppearance as HomeSettings')
+   s=s.replace('import com.android.purebilibili.core.store.SettingsManager','import com.bilipai.desktop.ui.DesktopFavoriteNavigationTypes').replace('SettingsManager.BottomBarVisibilityMode','DesktopFavoriteNavigationTypes.BottomBarVisibilityMode')
+   if rel=='core/ui/components/AppLiquidGlassBackToTopButton':
+-   s=s.replace('import com.android.purebilibili.core.store.BackToTopSettingsStore','import com.bilipai.desktop.ui.LocalDesktopFavoriteBindings')
+-   s=s.replace('    val context = LocalContext.current','    val context = LocalContext.current\n    val platform = LocalDesktopFavoriteBindings.current')
+-   s=s.replace('BackToTopSettingsStore.getCustomOffsetDp(context)','platform.backToTopOffset').replace('BackToTopSettingsStore.getCachedOffsetDp()','platform.initialBackToTopOffset').replace('BackToTopSettingsStore.setCustomOffsetDp(context,','platform.setBackToTopOffset(').replace('BackToTopSettingsStore.updateCachedOffset(','platform.updateBackToTopOffset(')
++   s=s.replace('import com.android.purebilibili.core.store.BackToTopSettingsStore','import com.bilipai.desktop.ui.desktopBackToTopBindings')
++   s=s.replace('    val context = LocalContext.current','    val context = LocalContext.current\n    val platform = desktopBackToTopBindings()').replace('val configuration = LocalConfiguration.current','val configuration = platform.viewport')
++   s=s.replace('BackToTopSettingsStore.getCustomOffsetDp(context)','platform.offset').replace('BackToTopSettingsStore.getCachedOffsetDp()','platform.initialOffset').replace('BackToTopSettingsStore.setCustomOffsetDp(context,','platform.setOffset(').replace('BackToTopSettingsStore.updateCachedOffset(','platform.updateOffset(')
+   output(rel,s,'full original leaf/pure file; platform context/viewport import only')
+  # FavoriteCollectionPolicy installs only the not-yet-emitted declarations; risk policy is Main's sole original.
+  s=source('feature/list/FavoriteCollectionPolicy');s=rmfun(s,'isFavoriteRiskControlError');output('feature/list/FavoriteCollectionPolicy',s,'full original policy minus already installed sole risk-control function')
+@@ -204,8 +204,8 @@
+  emit('com/android/purebilibili/core/ui/DesktopFavoriteBottomBarLocals.kt','package com.android.purebilibili.core.ui\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.unit.*\n'+ '\n'.join(parts))
+  s=source('core/util/WindowSizeUtils');parts=[decl(s,n) for n in ['ResponsiveSpacing','rememberResponsiveSpacing','resolveSingleColumnFeedMaxWidth']]
+  emit('com/android/purebilibili/core/util/DesktopFavoriteWindowHelpers.kt','package com.android.purebilibili.core.util\n'+ '\n'.join(l for l in s.splitlines() if l.startswith('import androidx.compose.') and 'LocalContext'not in l and 'LocalConfiguration'not in l)+'\n'+ '\n'.join(parts))
+- s=source('core/ui/BackToTopPreference');s=s.replace('import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.ui.LocalDesktopFavoriteBindings').replace('import androidx.lifecycle.compose.collectAsStateWithLifecycle','import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle').replace('import com.android.purebilibili.core.store.BackToTopSettingsStore\n','').replace('import com.android.purebilibili.core.store.DEFAULT_BACK_TO_TOP_BUTTON_ENABLED\n','')
+- s=s.replace('LocalContext.current','LocalDesktopFavoriteBindings.current').replace('BackToTopSettingsStore.isEnabled(context)','context.backToTopEnabled').replace('DEFAULT_BACK_TO_TOP_BUTTON_ENABLED','context.initialBackToTopEnabled').replace('initialValue =','initial =');output('core/ui/BackToTopPreference',s,'whole original preference consumer; same global backing read port')
++ s=source('core/ui/BackToTopPreference');s=s.replace('import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.ui.desktopBackToTopBindings').replace('import androidx.lifecycle.compose.collectAsStateWithLifecycle','import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle').replace('import com.android.purebilibili.core.store.BackToTopSettingsStore\n','').replace('import com.android.purebilibili.core.store.DEFAULT_BACK_TO_TOP_BUTTON_ENABLED\n','')
++ s=s.replace('LocalContext.current','desktopBackToTopBindings()').replace('BackToTopSettingsStore.isEnabled(context)','context.enabled').replace('DEFAULT_BACK_TO_TOP_BUTTON_ENABLED','context.initialEnabled').replace('initialValue =','initial =');output('core/ui/BackToTopPreference',s,'whole original preference consumer; same global backing read port')
+  # Sole installed original manager/preset/container remain the authority. Add only the
+  # original modifier currently not emitted by that producer, in its existing namespace.
+  s=source('core/ui/animation/ParticleDissolveEffect');part=decl(s,'jiggleOnDissolve')
+--- desktop/tools/extract-upstream-full-navigation.py
++++ desktop/tools/extract-upstream-full-navigation.py
+@@ -75,10 +75,9 @@
+ ''')
+ if args.resource_inventory: write(args.resource_inventory,json.dumps([dict(path='app/src/main/res/drawable/'+n+'.xml',sha256=hashlib.sha256(source('app/src/main/res/drawable/'+n+'.xml').encode()).hexdigest(),features=['desktop-full-navigation-settings']) for n in needed],indent=2)+'\n')
+ # Original search order policy is shared by editor and actual search consumer.
+-tokens=parser.kotlin_tokens(search)
+-start=search.index('internal val defaultSearchFilterTabOrder')
+-end=search.index('internal fun resolveSearchDefaultPlaceholder',start)
+-write(out/'com/android/purebilibili/feature/search/DesktopOriginalSearchTabOrderPolicy.kt','package com.android.purebilibili.feature.search\nimport com.android.purebilibili.data.model.response.SearchType\n'+search[start:end])
++# Full original SearchScreen is the sole producer of search tab ordering declarations.
++# Settings editor imports those same original declarations; no selected duplicate is emitted.
++write(out/'com/android/purebilibili/feature/search/DesktopOriginalSearchTabOrderPolicy.kt','package com.android.purebilibili.feature.search\n// Selected policy retired: declarations are owned by the complete original SearchScreen.\n')
+ # Existing exact getters/setters, same settings namespace and shared backing atomic edit.
+ def method(source,name):
+     try:return media.function(source,name,parser)
+--- desktop/tools/extract-upstream-settings-privacy.py
++++ desktop/tools/extract-upstream-settings-privacy.py
+@@ -76,10 +76,9 @@
+ import kotlinx.coroutines.launch
+ '''
+     result.append(host.write(output,SECTION,original,imports+'\n@Composable\n'+source,'SettingsPrivacySection.kt'))
++    # Full original SearchScreen owns submit/default-hint functions; reuse the same declarations.
+     original=read(repo,SEARCH)
+-    source='package com.android.purebilibili.feature.search\n\n'+ '\n\n'.join(
+-        media.function(original,name,parser) for name in ['resolveSearchSubmitKeyword','resolveSearchDefaultPlaceholder'])
+-    result.append(host.write(output,SEARCH,original,source,'PrivacySearchHintPolicy.kt'))
++    result.append(host.write(output,SEARCH,original,'package com.android.purebilibili.feature.search\n// Selected policy retired: declarations are owned by the complete original SearchScreen.\n','PrivacySearchHintPolicy.kt'))
+     converter=load(repo/'desktop/tools/extract-upstream-settings-search.py','privacy_vector_converter')
+     if SHIELD in converter.symbol_names(repo):raise ValueError('Shared vectors already own shield; reuse that owner')
+     converter.symbol_names=lambda _: [SHIELD]
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchEnvironment.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchEnvironment.kt
+@@ -0,0 +1,159 @@
++package com.bilipai.desktop.ui
++
++import androidx.compose.runtime.*
++import androidx.navigationevent.NavigationEventInfo
++import androidx.navigationevent.compose.*
++import coil3.PlatformContext
++import com.android.purebilibili.core.database.dao.SearchHistoryDao
++import com.android.purebilibili.core.database.entity.BlockedUp
++import com.android.purebilibili.core.store.*
++import com.android.purebilibili.data.repository.DesktopOriginalSearchRepository
++import com.bilipai.desktop.data.DesktopSearchPreferences
++import com.bilipai.desktop.plugins.DesktopPluginContext
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.*
++import kotlin.coroutines.AbstractCoroutineContextElement
++import kotlin.coroutines.CoroutineContext
++
++/** Captured child Job follows dispatchers. A cancelled older request cannot publish merely
++ * because its retained page/Root is still current. No result/state authority lives here. */
++internal class DesktopSearchCaller : ThreadContextElement<Job?>, AbstractCoroutineContextElement(Key) {
++    companion object Key : CoroutineContext.Key<DesktopSearchCaller> {
++        private val current = ThreadLocal<Job?>()
++        fun check() { current.get()?.ensureActive() }
++    }
++    override fun updateThreadContext(context: CoroutineContext): Job? = current.get().also { current.set(context[Job]) }
++    override fun restoreThreadContext(context: CoroutineContext, oldState: Job?) { current.set(oldState) }
++}
++
++internal class DesktopOriginalSearchBlocked(val records: StateFlow<List<BlockedUp>>) {
++    fun getAllBlockedUps() = records
++}
++
++/** Views over ONE retained Root and existing history/global preferences/HTTP/WBI actors.
++ * Lifetime only owns this route's jobs; closing it never closes any global service. */
++internal class DesktopOriginalSearchEnvironment(
++    parentScope: CoroutineScope,
++    parentOwned: () -> Boolean,
++    parentCommit: ((() -> Unit) -> Boolean),
++    val pluginContext: DesktopPluginContext,
++    val settings: DesktopHomeSettingsPort,
++    preferences: DesktopSearchPreferences,
++    capturedMid: Long?,
++    val blocked: DesktopOriginalSearchBlocked,
++    articleFactory: (() -> Boolean) -> DesktopPersonalArticleResolver,
++    val backToTop: DesktopFavoritePreferences,
++    requestFactory: (() -> Boolean) -> DesktopOriginalSearchRepository,
++    val configuration: StateFlow<DesktopProfileWindowConfiguration>,
++    val platformContext: PlatformContext,
++    val renderEffectsSupported: Boolean,
++    private val watchLater: suspend (Long, Boolean) -> Result<Boolean>,
++    private val screenEvent: (String) -> Unit,
++    private val searchEvent: (String) -> Unit,
++    private val feedback: (String) -> Unit,
++) : AutoCloseable {
++    private val lifetime = DesktopHomeEmbeddedLifetime(parentScope, parentOwned, parentCommit)
++    val scope = CoroutineScope(lifetime.scope.coroutineContext + DesktopSearchCaller())
++    val requests: DesktopOriginalSearchRepository
++    val history: SearchHistoryDao
++    val articleResolver: DesktopPersonalArticleResolver
++    init {
++        try {
++            assertCurrent()
++            requests = requestFactory(::owns)
++            articleResolver = articleFactory(::owns)
++            history = preferences.originalHistory(capturedMid, ::assertCurrent, ::commit)
++        } catch (failure: Throwable) { lifetime.close(); throw failure }
++    }
++    val suggestionsEnabled = preferences.suggestionsEnabled
++    private val privacy = preferences::isPrivacyModeEnabledSync
++    val originalSettings = DesktopOriginalPlayerSettingsContext(pluginContext, ::owns, ::commit)
++    fun owns() = lifetime.owns()
++    fun assertCurrent() { DesktopSearchCaller.check(); if (!owns()) throw CancellationException("Search retained entry retired") }
++    fun commit(block: () -> Unit): Boolean {
++        DesktopSearchCaller.check()
++        return lifetime.commit { assertCurrent(); block() }
++    }
++    fun isPrivacyModeEnabledSync(): Boolean { assertCurrent(); return privacy().also { assertCurrent() } }
++    fun logScreenView(name: String) { commit { screenEvent(name) } }
++    fun logSearch(query: String) { commit { searchEvent(query) } }
++    fun message(text: String) { commit { feedback(text) } }
++    suspend fun toggleWatchLater(aid: Long, add: Boolean): Result<Boolean> {
++        currentCoroutineContext().ensureActive(); assertCurrent()
++        return watchLater(aid, add).also { currentCoroutineContext().ensureActive(); assertCurrent() }
++    }
++    override fun close() = lifetime.close()
++
++    /** Same global BackToTop owner; file staging occurs outside the route admission lock. */
++    suspend fun setBackToTopOffset(x: Float, y: Float) {
++        currentCoroutineContext().ensureActive(); assertCurrent()
++        originalSettings.settingsDataStore.edit { values ->
++            values[playerFloatPreferencesKey("back_to_top_button_offset_x_dp")] = x
++            values[playerFloatPreferencesKey("back_to_top_button_offset_y_dp")] = y
++        }
++        commit { backToTop.updateBackToTopOffset(x,y) }
++    }
++}
++
++/** Optional platform boundary for the two shared original BackToTop consumers. Favorites
++ * keeps its existing owner; Search supplies that SAME preferences owner without a list VM. */
++internal data class DesktopBackToTopBindings(
++    val enabled: Flow<Boolean>, val initialEnabled: Boolean,
++    val offset: Flow<Pair<Float,Float>>, val initialOffset: Pair<Float,Float>,
++    val setOffset: suspend(Float,Float) -> Unit, val updateOffset: (Float,Float) -> Unit,
++    val viewport: DesktopFavoriteViewport,
++)
++internal val LocalDesktopBackToTopBindings = staticCompositionLocalOf<DesktopBackToTopBindings?> { null }
++@Composable internal fun desktopBackToTopBindings(): DesktopBackToTopBindings {
++    LocalDesktopBackToTopBindings.current?.let { return it }
++    val old = LocalDesktopFavoriteBindings.current
++    val viewport = LocalDesktopFavoriteViewport.current
++    return DesktopBackToTopBindings(old.backToTopEnabled,old.initialBackToTopEnabled,
++        old.backToTopOffset,old.initialBackToTopOffset,old.setBackToTopOffset,old.updateBackToTopOffset,viewport)
++}
++@Composable internal fun DesktopOriginalSearchBackToTop(content: @Composable () -> Unit) {
++    val env = LocalDesktopOriginalSearchEnvironment.current
++    val config by env.configuration.collectAsState()
++    val port = DesktopBackToTopBindings(env.backToTop.backToTopEnabled,env.backToTop.initialBackToTopEnabled(),
++        env.backToTop.backToTopOffset,env.backToTop.initialBackToTopOffset(),env::setBackToTopOffset,
++        { x,y -> env.commit { env.backToTop.updateBackToTopOffset(x,y) } },
++        DesktopFavoriteViewport(config.screenWidthDp,config.screenHeightDp))
++    CompositionLocalProvider(LocalDesktopBackToTopBindings provides port,content=content)
++}
++
++internal val LocalDesktopOriginalSearchEnvironment = staticCompositionLocalOf<DesktopOriginalSearchEnvironment> {
++    error("Full original Search requires its retained actual Root entry")
++}
++internal val LocalDesktopOriginalSearchActive = staticCompositionLocalOf { false }
++
++/** Common NavigationEvent dispatcher already belongs to the actual Window/Root. */
++@Composable internal fun DesktopOriginalSearchBackHandler(onBack: () -> Unit) {
++    val state = rememberNavigationEventState(currentInfo = NavigationEventInfo.None)
++    NavigationBackHandler(state = state, isBackEnabled = LocalDesktopOriginalSearchActive.current, onBackCompleted = onBack)
++}
++
++/** Original leaf getters use existing decoded Home settings, same navigation getters and
++ * original Search preference methods. There is no parallel Settings state/store. */
++internal object DesktopOriginalSearchSettings {
++    fun getSearchFilterTabOrder(context: DesktopOriginalSearchEnvironment) =
++        DesktopOriginalFullNavigationSettings.getSearchFilterTabOrder(context.pluginContext)
++    fun getCardAnimationEnabled(context: DesktopOriginalSearchEnvironment) =
++        DesktopOriginalFullNavigationSettings.getCardAnimationEnabled(context.pluginContext)
++    fun getCardTransitionEnabled(context: DesktopOriginalSearchEnvironment) =
++        DesktopOriginalFullNavigationSettings.getCardTransitionEnabled(context.pluginContext)
++    fun getHomeDurationStyle(context: DesktopOriginalSearchEnvironment) = context.settings.homeSettings.map { it.homeDurationStyle }
++    fun getCompactVideoStatsOnCover(context: DesktopOriginalSearchEnvironment) = context.settings.homeSettings.map { it.compactVideoStatsOnCover }
++    fun getShowOnlineCount(context: DesktopOriginalSearchEnvironment) = context.settings.showOnlineCount
++    fun getHomeFeedCardStyle(context: DesktopOriginalSearchEnvironment) = context.settings.homeFeedCardStyle
++    fun getHomeSettings(context: DesktopOriginalSearchEnvironment) = context.settings.homeSettings
++    fun getSearchHotSectionEnabled(context: DesktopOriginalSearchEnvironment) = DesktopOriginalSearchPreferenceMethods.getSearchHotSectionEnabled(context.originalSettings)
++    fun getSearchDiscoverSectionEnabled(context: DesktopOriginalSearchEnvironment) = DesktopOriginalSearchPreferenceMethods.getSearchDiscoverSectionEnabled(context.originalSettings)
++    suspend fun setSearchHotSectionEnabled(context: DesktopOriginalSearchEnvironment, value: Boolean) = DesktopOriginalSearchPreferenceMethods.setSearchHotSectionEnabled(context.originalSettings,value)
++    suspend fun setSearchDiscoverSectionEnabled(context: DesktopOriginalSearchEnvironment, value: Boolean) = DesktopOriginalSearchPreferenceMethods.setSearchDiscoverSectionEnabled(context.originalSettings,value)
++    fun getSearchSuggestionsEnabled(context: DesktopOriginalSearchEnvironment) = context.suggestionsEnabled
++    fun isPrivacyModeEnabledSync(context: DesktopOriginalSearchEnvironment) = context.isPrivacyModeEnabledSync()
++    fun isEasterEggEnabledSync(context: DesktopOriginalSearchEnvironment) = DesktopOriginalSearchPreferenceMethods.isEasterEggEnabledSync(context.originalSettings)
++    fun getDefaultHintEnabled(context: DesktopOriginalSearchEnvironment) = SearchHintSettingsStore.isEnabled(context.pluginContext)
++    suspend fun setGridColumnCountCompact(context: DesktopOriginalSearchEnvironment, value: Int) = DesktopOriginalSearchPreferenceMethods.setGridColumnCountCompact(context.originalSettings,value)
++    suspend fun setGridColumnCount(context: DesktopOriginalSearchEnvironment, value: Int) = DesktopOriginalSearchPreferenceMethods.setGridColumnCount(context.originalSettings,value)
++}
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt
+@@ -0,0 +1,129 @@
++package com.bilipai.desktop.ui
++
++import androidx.compose.runtime.*
++import com.android.purebilibili.feature.search.*
++import com.android.purebilibili.navigation3.*
++import kotlinx.coroutines.CancellationException
++import kotlinx.coroutines.flow.StateFlow
++import kotlinx.coroutines.launch
++import com.bilipai.desktop.data.AccountSummary
++import java.awt.EventQueue
++import java.util.concurrent.atomic.AtomicBoolean
++
++/** Retains the ORIGINAL VMs by actual physical key, including keyword/openId. Map contains
++ * only page owners; physical Nav3/pager remains the sole navigation authority. Covering a
++ * Search with video keeps its VM/filter/list state; actual pop/epoch/restore retires it. */
++internal class DesktopOriginalSearchRoot(
++    val routes: DesktopOriginalRootRouteAssembly,
++    private val published: () -> Boolean,
++    val account: StateFlow<AccountSummary?>,
++    private val createEnvironment: (owned: () -> Boolean, commit: ((() -> Unit) -> Boolean)) -> DesktopOriginalSearchEnvironment,
++) : AutoCloseable {
++    internal data class Identity(val key: BiliPaiNavKey, val pagerHosted: Boolean)
++    private val closed = AtomicBoolean()
++    private val lock = Any()
++    private val owners = mutableMapOf<Identity, DesktopOriginalSearchEntry>()
++    private val bottomMotion = mutableMapOf<BiliPaiNavKey.Search,Int>()
++    fun bottomBarEntry(key: BiliPaiNavKey.Search, motionKey: Int) {
++        routes.root.entry.gate.commit {
++            if (!closed.get() && published() && routes.containsEntry(key)) synchronized(lock) {
++                bottomMotion[key] = motionKey
++            }
++        }
++    }
++    fun owns(id: Identity) = !closed.get() && published() && routes.owns() &&
++        routes.stack.contains(if (id.pagerHosted) BiliPaiNavKey.MainHost else id.key)
++    fun entry(key: BiliPaiNavKey, pagerHosted: Boolean): DesktopOriginalSearchEntry {
++        check(EventQueue.isDispatchThread()) { "Original Search lookup requires the actual Window EDT" }
++        require(key is BiliPaiNavKey.Search || key == BiliPaiNavKey.SearchTrending)
++        val id = Identity(key,pagerHosted)
++        check(owns(id)) { "Original Search requires a retained actual Root entry" }
++        synchronized(lock) { owners[id] }?.let { return it }
++        val env = createEnvironment({ owns(id) }) { action ->
++            var applied = false
++            val accepted = routes.root.entry.gate.commit { if (owns(id)) { action(); applied = true } }
++            accepted && applied
++        }
++        val motion = synchronized(lock) { (key as? BiliPaiNavKey.Search)?.let(bottomMotion::remove) ?: 0 }
++        val created = try { DesktopOriginalSearchEntry(id,env,motion) }
++        catch (failure: Throwable) { env.close(); throw failure }
++        val result = synchronized(lock) { if (closed.get()) null else owners.getOrPut(id) { created } }
++        if (result !== created) created.close()
++        return requireNotNull(result) { "Original Search retired during construction" }
++    }
++    fun prune() {
++        val retired = synchronized(lock) {
++            bottomMotion.keys.removeAll { !routes.containsEntry(it) }
++            owners.keys.filterNot(::owns).mapNotNull(owners::remove)
++        }
++        retired.forEach { it.close() } // no gate/map lock while cancelling children.
++    }
++    fun navigate(entry: DesktopOriginalSearchEntry, active: Boolean, block: () -> Unit) {
++        val id = entry.identity
++        if (active && entry.environment.owns() && owns(id) &&
++            routes.currentKey == if (id.pagerHosted) BiliPaiNavKey.MainHost else id.key) block()
++    }
++    override fun close() {
++        if (!closed.compareAndSet(false,true)) return
++        val old = synchronized(lock) { owners.values.toList().also { owners.clear(); bottomMotion.clear() } }
++        old.forEach { it.close() }
++    }
++}
++
++internal class DesktopOriginalSearchEntry(val identity: DesktopOriginalSearchRoot.Identity,
++    val environment: DesktopOriginalSearchEnvironment, val motionKey: Int = 0) : AutoCloseable {
++    val viewModel: SearchViewModel? = if (identity.key is BiliPaiNavKey.Search) SearchViewModel(environment) else null
++    val trending: SearchTrendingViewModel? = if (identity.key == BiliPaiNavKey.SearchTrending) SearchTrendingViewModel(environment) else null
++    private val consumed = AtomicBoolean()
++    var motionSource by mutableStateOf(if(motionKey>0)SearchEntryMotionSource.BOTTOM_BAR else SearchEntryMotionSource.NONE)
++        private set
++    fun consumeMotion(key: Int) { if(key==motionKey) environment.commit { motionSource=SearchEntryMotionSource.NONE } }
++    fun initialKeyword() = if (!consumed.get()) (identity.key as? BiliPaiNavKey.Search)?.keyword.orEmpty() else ""
++    fun initialKeywordConsumed() { environment.commit { consumed.set(true) } }
++    override fun close() = environment.close()
++}
++
++internal val LocalDesktopOriginalSearchRoot = staticCompositionLocalOf<DesktopOriginalSearchRoot> {
++    error("Original Search needs the published physical Root")
++}
++
++@Composable internal fun DesktopOriginalSearchPhysicalLeaf(key: BiliPaiNavKey, active: Boolean,
++    pagerHosted: Boolean, onBack: () -> Unit,
++    returningFromVideo: Boolean = false, quickReturningFromVideo: Boolean = false,
++    consumeVideoReturn: () -> Unit = {}) {
++    val root = LocalDesktopOriginalSearchRoot.current
++    val account by root.account.collectAsState()
++    val entry = remember(root,key,pagerHosted) { root.entry(key,pagerHosted) }
++    val commands = root.routes
++    fun navigate(block: () -> Unit) = root.navigate(entry,active,block)
++    CompositionLocalProvider(LocalDesktopOriginalSearchEnvironment provides entry.environment,
++        LocalDesktopOriginalSearchActive provides active) {
++        DesktopOriginalSearchBackToTop { when(key) {
++            is BiliPaiNavKey.Search -> SearchScreen(viewModel=checkNotNull(entry.viewModel),userFace=account?.avatar.orEmpty(),
++                initialKeyword=entry.initialKeyword(),onInitialKeywordConsumed={ entry.initialKeywordConsumed() },
++                onBack={ navigate(onBack) },onOpenTrending={ navigate { commands.push(BiliPaiNavKey.SearchTrending) } },
++                onVideoClick={ bvid,cid,cover -> navigate { commands.video(BiliPaiNavKey.VideoDetail(bvid,cid,cover,sourceRoute=key.toLegacyRoute())) } },
++                onWebClick={ url,title -> navigate { commands.push(BiliPaiNavKey.Web(url,title)) } },
++                onUpClick={ mid -> navigate { commands.push(BiliPaiNavKey.Space(mid)) } },
++                onBangumiClick={ season -> if(season>0L)navigate { commands.push(BiliPaiNavKey.BangumiDetail(season)) } },
++                onCheeseClick={ season,ep -> navigate { commands.push(BiliPaiNavKey.BangumiPlayer(season,ep,isCourse=true)) } },
++                onLiveClick={ room,title,name -> navigate { commands.push(BiliPaiNavKey.Live(roomId=room.toString(),title=title,uname=name)) } },
++                onTopicClick={ id -> if(id>0L)navigate { commands.push(BiliPaiNavKey.TopicDetail(id)) } },
++                onArticleClick={ id,title -> navigate { entry.environment.scope.launch {
++                    val target=entry.environment.articleResolver.resolve(id)
++                    navigate { when(target) {
++                        is ArticleNavigationTarget.NativeArticle -> commands.push(BiliPaiNavKey.ArticleDetail(target.articleId,title))
++                        is ArticleNavigationTarget.NativeDynamic -> commands.push(BiliPaiNavKey.DynamicDetail(target.dynamicId))
++                        null -> Unit
++                    } }
++                } } },
++                onAvatarClick={ navigate { commands.push(if(account!=null)BiliPaiNavKey.Profile else BiliPaiNavKey.Login) } },
++                entryMotionSource=entry.motionSource,entryMotionKey=entry.motionKey,onEntryMotionConsumed=entry::consumeMotion,
++                isReturningFromVideoDetail=returningFromVideo,isQuickReturningFromVideoDetail=quickReturningFromVideo,
++                onVideoDetailReturnAnimationConsumed={ navigate(consumeVideoReturn) })
++            BiliPaiNavKey.SearchTrending -> SearchTrendingScreen(onBack={ navigate(onBack) },
++                onKeywordClick={ query -> navigate { commands.push(BiliPaiNavKey.Search(query)) } },viewModel=checkNotNull(entry.trending))
++            else -> throw CancellationException("Original Search key retired")
++        } }
++    }
++}
+--- desktop/tools/extract-upstream-search-pages.py
++++ desktop/tools/extract-upstream-search-pages.py
+@@ -0,0 +1,33 @@
++"""Complete pinned original Search pages/VM/protocol; minimal Windows owner/platform boundaries."""
++from pathlib import Path
++import argparse,json,hashlib,os
++SPEC = [{'path': 'app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt', 'target': 'feature/search/SearchScreen.kt', 'inputSha256LF': '526fd05cd8c2daa946f6240b3922aae788d6376b058e7f83b1ce2b5b96eee6be', 'outputSha256LF': 'c8d613b6dd5dc0dd657ae334ee9cb2f072833dee790a4b614a4b3ae0bb1f7838', 'operations': [{'offset': 27951, 'before': 'fun SearchScreen(', 'after': 'internal fun SearchScreen('}, {'offset': 5088, 'before': 'import androidx.compose.ui.platform.LocalConfiguration', 'after': ''}, {'offset': 12021, 'before': 'import androidx.compose.ui.platform.LocalContext', 'after': ''}, {'offset': 5260, 'before': 'import androidx.compose.ui.res.stringResource', 'after': ''}, {'offset': 6180, 'before': 'import androidx.lifecycle.viewmodel.compose.viewModel', 'after': ''}, {'offset': 6181, 'before': 'import androidx.activity.compose.BackHandler', 'after': 'import com.bilipai.desktop.ui.DesktopOriginalSearchBackHandler as BackHandler'}, {'offset': 6259, 'before': 'import com.android.purebilibili.R', 'after': ''}, {'offset': 10802, 'before': 'import com.android.purebilibili.core.store.SettingsManager  //  读取动画设置', 'after': 'import com.bilipai.desktop.ui.DesktopOriginalSearchSettings as SettingsManager\nimport com.bilipai.desktop.ui.LocalDesktopOriginalSearchEnvironment'}, {'offset': 7004, 'before': 'import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled\nimport com.android.purebilibili.core.ui.isMiuixNonGlassEnabled', 'after': 'import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled'}, {'offset': 27795, 'before': 'viewModel: SearchViewModel = viewModel()', 'after': 'viewModel: SearchViewModel'}, {'offset': 29333, 'before': 'val configuration = LocalConfiguration.current', 'after': 'val configuration by LocalDesktopOriginalSearchEnvironment.current.configuration.collectAsState()'}, {'offset': 32807, 'before': 'val context = LocalContext.current', 'after': 'val context = LocalDesktopOriginalSearchEnvironment.current'}, {'offset': 192416, 'before': 'ImageRequest.Builder(LocalContext.current)', 'after': 'ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)'}, {'offset': 195782, 'before': 'ImageRequest.Builder(LocalContext.current)', 'after': 'ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)'}, {'offset': 199031, 'before': 'ImageRequest.Builder(LocalContext.current)', 'after': 'ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)'}, {'offset': 203491, 'before': 'ImageRequest.Builder(LocalContext.current)', 'after': 'ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)'}, {'offset': 208673, 'before': 'ImageRequest.Builder(LocalContext.current)', 'after': 'ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)'}, {'offset': 215371, 'before': 'ImageRequest.Builder(LocalContext.current)', 'after': 'ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)'}, {'offset': 218531, 'before': 'ImageRequest.Builder(LocalContext.current)', 'after': 'ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)'}, {'offset': 221195, 'before': 'ImageRequest.Builder(LocalContext.current)', 'after': 'ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)'}, {'offset': 224216, 'before': 'ImageRequest.Builder(LocalContext.current)', 'after': 'ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)'}, {'offset': 32924, 'before': 'com.android.purebilibili.core.store.SearchHintSettingsStore.isEnabled(context)', 'after': 'SettingsManager.getDefaultHintEnabled(context)'}, {'offset': 43365, 'before': 'shouldAllowRenderEffectBackedHazeEffect(android.os.Build.VERSION.SDK_INT)', 'after': 'LocalDesktopOriginalSearchEnvironment.current.renderEffectsSupported'}, {'offset': 47476, 'before': 'com.android.purebilibili.core.util.AnalyticsHelper.logScreenView("SearchScreen")', 'after': 'context.logScreenView("SearchScreen")'}, {'offset': 29125, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 32963, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 33237, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 34039, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 34168, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 34338, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 34455, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 34582, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 36508, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 36616, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 36746, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 36886, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 32979, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 33261, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 34045, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 34169, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 34334, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 34446, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 34568, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 36489, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 36592, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 36717, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 36852, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 40144, 'before': 'initialValue =', 'after': 'initial ='}, {'offset': 12290, 'before': 'import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect', 'after': ''}, {'offset': 40060, 'before': 'initial = searchHeaderOffsetPx', 'after': 'initialValue = searchHeaderOffsetPx'}, {'offset': 142158, 'before': 'stringResource(R.string.common_back)', 'after': 'com.bilipai.desktop.appearance.LocalDesktopStrings.current["common_back"]'}, {'offset': 142254, 'before': 'stringResource(R.string.common_search)', 'after': 'com.bilipai.desktop.appearance.LocalDesktopStrings.current["common_search"]'}, {'offset': 152015, 'before': 'stringResource(R.string.common_clear)', 'after': 'com.bilipai.desktop.appearance.LocalDesktopStrings.current["common_clear"]'}, {'offset': 156270, 'before': 'stringResource(R.string.common_delete)', 'after': 'com.bilipai.desktop.appearance.LocalDesktopStrings.current["common_delete"]'}], 'fullSourceInverseVerified': True}, {'path': 'app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt', 'target': 'feature/search/SearchViewModel.kt', 'inputSha256LF': '9735fb53cf10485d0244dece24c6c887c4775ef6c27231a3b617ebc01bb05763', 'outputSha256LF': '4566a5d4ace4474cb8f4e147722c360db5201a5e8fd143b26ce1f7dc2e55b682', 'operations': [{'offset': 49, 'before': 'import android.app.Application', 'after': ''}, {'offset': 50, 'before': 'import androidx.lifecycle.AndroidViewModel', 'after': ''}, {'offset': 51, 'before': 'import androidx.lifecycle.viewModelScope', 'after': ''}, {'offset': 52, 'before': 'import com.android.purebilibili.core.database.AppDatabase', 'after': 'import com.bilipai.desktop.ui.DesktopOriginalSearchEnvironment\nimport com.bilipai.desktop.ui.DesktopOriginalSearchSettings'}, {'offset': 903, 'before': 'import com.android.purebilibili.data.repository.SearchRepository', 'after': ''}, {'offset': 8349, 'before': 'class SearchViewModel(application: Application) : AndroidViewModel(application) {', 'after': 'internal class SearchViewModel(private val application: DesktopOriginalSearchEnvironment) : AutoCloseable {\n    private val viewModelScope = application.scope\n    private val SearchRepository = application.requests\n    private fun <T> MutableStateFlow(value: T) = com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(value, application::commit)\n    override fun close() = application.close()'}, {'offset': 8875, 'before': 'AppDatabase.getDatabase(application).searchHistoryDao()', 'after': 'application.history'}, {'offset': 9276, 'before': 'com.android.purebilibili.data.repository.BlockedUpRepository(application)', 'after': 'application.blocked'}, {'offset': 9426, 'before': 'com.android.purebilibili.core.store.SettingsManager.', 'after': 'DesktopOriginalSearchSettings.'}, {'offset': 21742, 'before': 'com.android.purebilibili.core.store.SettingsManager.', 'after': 'DesktopOriginalSearchSettings.'}, {'offset': 67014, 'before': 'com.android.purebilibili.core.store.SettingsManager.', 'after': 'DesktopOriginalSearchSettings.'}, {'offset': 21669, 'before': 'getApplication<android.app.Application>()', 'after': 'application'}, {'offset': 66922, 'before': 'getApplication<android.app.Application>()', 'after': 'application'}, {'offset': 23802, 'before': 'com.android.purebilibili.core.util.AnalyticsHelper.logSearch(normalizedKeyword)', 'after': 'application.logSearch(normalizedKeyword)'}, {'offset': 68522, 'before': 'com.android.purebilibili.data.repository.ActionRepository.toggleWatchLater(aid, true)', 'after': 'application.toggleWatchLater(aid, true)'}, {'offset': 68609, 'before': 'android.widget.Toast.makeText(getApplication(), "已添加到稍后再看", android.widget.Toast.LENGTH_SHORT).show()', 'after': 'application.message("已添加到稍后再看")'}, {'offset': 68688, 'before': 'android.widget.Toast.makeText(getApplication(), e.message ?: "添加失败", android.widget.Toast.LENGTH_SHORT).show()', 'after': 'application.message(e.message ?: "添加失败")'}, {'offset': 24931, 'before': 'val nativeFiltered = videos.filter { it.owner.mid !in blockedMids }', 'after': 'application.assertCurrent()\n                        val nativeFiltered = videos.filter { it.owner.mid !in blockedMids }'}, {'offset': 48990, 'before': 'val nativeFiltered = videos.filter { it.owner.mid !in blockedMids }', 'after': 'application.assertCurrent()\n                        val nativeFiltered = videos.filter { it.owner.mid !in blockedMids }'}], 'fullSourceInverseVerified': True}, {'path': 'app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingViewModel.kt', 'target': 'feature/search/SearchTrendingViewModel.kt', 'inputSha256LF': '61b8c81269938c20edd8f51e2c1b2822922deba01097334f80b8f1886ed72a0f', 'outputSha256LF': 'c4c86ef5570eec88e0babf973398f6215cb5f3d621d5df94db52669f201410b3', 'operations': [{'offset': 49, 'before': 'import android.app.Application', 'after': ''}, {'offset': 50, 'before': 'import androidx.lifecycle.AndroidViewModel', 'after': ''}, {'offset': 51, 'before': 'import androidx.lifecycle.viewModelScope', 'after': ''}, {'offset': 52, 'before': 'import com.android.purebilibili.data.repository.SearchRepository', 'after': 'import com.bilipai.desktop.ui.DesktopOriginalSearchEnvironment'}, {'offset': 536, 'before': 'class SearchTrendingViewModel(\n    application: Application\n) : AndroidViewModel(application) {', 'after': 'internal class SearchTrendingViewModel(private val application: DesktopOriginalSearchEnvironment) : AutoCloseable {\n    private val viewModelScope = application.scope\n    private val SearchRepository = application.requests\n    private fun <T> MutableStateFlow(value: T) = com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(value, application::commit)\n    override fun close() = application.close()'}], 'fullSourceInverseVerified': True}, {'path': 'app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingScreen.kt', 'target': 'feature/search/SearchTrendingScreen.kt', 'inputSha256LF': '456f6de62794eaedcc5151859a67d1cc7724e7ff74a518847b130f1d95f0c402', 'outputSha256LF': 'd62fcb2e6d09064b6289d8383927f07bd53eda326ccbc22171faa00f0e230488', 'operations': [{'offset': 2823, 'before': 'fun SearchTrendingScreen(', 'after': 'internal fun SearchTrendingScreen('}, {'offset': 2528, 'before': 'import androidx.lifecycle.viewmodel.compose.viewModel', 'after': ''}, {'offset': 2871, 'before': 'viewModel: SearchTrendingViewModel = viewModel()', 'after': 'viewModel: SearchTrendingViewModel'}, {'offset': 2944, 'before': '.collectAsStateWithLifecycle(', 'after': '.collectAsState('}, {'offset': 1913, 'before': 'import androidx.compose.runtime.Composable', 'after': 'import androidx.compose.runtime.Composable\nimport androidx.compose.runtime.collectAsState'}], 'fullSourceInverseVerified': True}, {'path': 'app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt', 'target': 'data/repository/DesktopOriginalSearchRepository.kt', 'inputSha256LF': '9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55', 'outputSha256LF': 'dde0d6af91e92445226a6c168d0b60f9de8f7793778453e563b54899bf08a1ca', 'operations': [{'offset': 50, 'before': 'import com.android.purebilibili.core.network.NetworkModule', 'after': 'import com.android.purebilibili.core.network.SearchApi\nimport com.android.purebilibili.core.network.BilibiliApi\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive'}, {'offset': 1235, 'before': 'object SearchRepository {\n    private val api = NetworkModule.searchApi\n    private val navApi = NetworkModule.api', 'after': 'internal class DesktopOriginalSearchRepository(\n    private val api: SearchApi,\n    private val navApi: BilibiliApi,\n    private val wbiKeys: suspend () -> Result<Pair<String, String>>,\n    private val owned: () -> Boolean,\n) {\n    private suspend fun checked() { currentCoroutineContext().ensureActive(); if (!owned()) throw CancellationException("Search route retired") }'}, {'offset': 3299, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 7545, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 9299, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 10260, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 11936, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 13760, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 15555, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 17140, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 18569, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 19657, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 20819, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 22168, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 23106, 'before': 'withContext(Dispatchers.IO) {', 'after': 'withContext(Dispatchers.IO) {\n        checked()'}, {'offset': 5505, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 9052, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 10122, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 11690, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 13540, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 15343, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 16946, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 18476, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 19592, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 20695, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 22186, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 23047, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 24332, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 25073, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 25802, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 27184, 'before': '} catch (e: Exception) {', 'after': '} catch (e: Exception) {\n            checked()'}, {'offset': 26467, 'before': '            val navResp = navApi.getNavInfo()\n            val wbiImg = navResp.data?.wbi_img\n            val imgKey = wbiImg?.img_url?.substringAfterLast("/")?.substringBefore(".") ?: ""\n            val subKey = wbiImg?.sub_url?.substringAfterLast("/")?.substringBefore(".") ?: ""', 'after': '            checked()\n            val (imgKey, subKey) = wbiKeys().getOrThrow()\n            checked()'}, {'offset': 1034, 'before': 'data class SearchTrendingBundle(\n    val pinnedItems: List<HotItem> = emptyList(),\n    val items: List<HotItem> = emptyList()\n) {\n    val allItems: List<HotItem>\n        get() = pinnedItems + items\n}\n\n', 'after': ''}, {'offset': 27440, 'before': '\n\n//  搜索排序选项\nenum class SearchOrder(val value: String, val displayName: String) {\n    TOTALRANK("totalrank", "综合排序"),\n    PUBDATE("pubdate", "最新发布"),\n    CLICK("click", "播放最多"),\n    DM("dm", "弹幕最多"),\n    STOW("stow", "收藏最多"),\n    SCORES("scores", "评论最多"),\n    ATTENTION("attention", "喜欢最多")\n}\n\nenum class SearchArticleCategory(val value: Int, val displayName: String) {\n    ALL(0, "全部分区"),\n    GAME(1, "游戏"),\n    ANIMATION(2, "动画"),\n    LIFE(3, "生活"),\n    LIGHT_NOVEL(16, "轻小说"),\n    TECHNOLOGY(17, "科技"),\n    MOVIE(28, "影视"),\n    INTEREST(29, "兴趣")\n}\n\nenum class SearchPhotoCategory(val value: Int, val displayName: String) {\n    ALL(0, "全部分区"),\n    ILLUSTRATION(1, "画友"),\n    PHOTOGRAPHY(2, "摄影")\n}\n\n//  搜索时长筛选\nenum class SearchDuration(val value: Int, val displayName: String) {\n    ALL(0, "全部时长"),\n    UNDER_10MIN(1, "10分钟以下"),\n    TEN_TO_30MIN(2, "10-30分钟"),\n    THIRTY_TO_60MIN(3, "30-60分钟"),\n    OVER_60MIN(4, "60分钟以上")\n}\n\nenum class SearchUpOrder(val value: String, val displayName: String) {\n    DEFAULT("0", "默认排序"),\n    FANS("fans", "粉丝数"),\n    LEVEL("level", "用户等级")\n}\n\nenum class SearchOrderSort(val value: Int, val displayName: String) {\n    DESC(0, "从高到低"),\n    ASC(1, "从低到高")\n}\n\nenum class SearchUserType(val value: Int, val displayName: String) {\n    ALL(0, "全部类型"),\n    UP(1, "仅UP主"),\n    NORMAL(2, "普通用户"),\n    VERIFIED(3, "认证用户")\n}\n\nenum class SearchLiveOrder(val value: String, val displayName: String) {\n    ONLINE("online", "人气直播"),\n    LIVE_TIME("live_time", "最新开播")\n}\n', 'after': '\n'}, {'offset': 1429, 'before': '    data class SearchPageInfo(\n        val currentPage: Int,\n        val totalPages: Int,\n        val totalResults: Int,\n        val hasMore: Boolean\n    )', 'after': ''}, {'offset': 1034, 'before': 'internal class DesktopOriginalSearchRepository(', 'after': 'private typealias SearchPageInfo = SearchRepository.SearchPageInfo\n\ninternal class DesktopOriginalSearchRepository('}, {'offset': 11227, 'before': 'Result.success(\n                SearchTrendingBundle(\n                    pinnedItems = pinnedItems,\n                    items = items\n                )\n            )', 'after': 'run { checked(); Result.success(\n                SearchTrendingBundle(\n                    pinnedItems = pinnedItems,\n                    items = items\n                )\n            ) }'}, {'offset': 10697, 'before': 'Result.success(\n                        SearchTrendingBundle(items = wbiItems.take(limit))\n                    )', 'after': 'run { checked(); Result.success(\n                        SearchTrendingBundle(items = wbiItems.take(limit))\n                    ) }'}, {'offset': 6799, 'before': 'Result.success(mergeSearchDurationResultPages(pages))', 'after': 'run { checked(); Result.success(mergeSearchDurationResultPages(pages)) }'}, {'offset': 13257, 'before': 'Result.success(Pair(bangumiList, pageInfo))', 'after': 'run { checked(); Result.success(Pair(bangumiList, pageInfo)) }'}, {'offset': 18212, 'before': 'Result.success(Pair(articleList, pageInfo))', 'after': 'run { checked(); Result.success(Pair(articleList, pageInfo)) }'}, {'offset': 15080, 'before': 'Result.success(Pair(resultList, pageInfo))', 'after': 'run { checked(); Result.success(Pair(resultList, pageInfo)) }'}, {'offset': 5102, 'before': 'Result.success(Pair(videoList, pageInfo))', 'after': 'run { checked(); Result.success(Pair(videoList, pageInfo)) }'}, {'offset': 16723, 'before': 'Result.success(Pair(liveList, pageInfo))', 'after': 'run { checked(); Result.success(Pair(liveList, pageInfo)) }'}, {'offset': 8755, 'before': 'Result.success(Pair(upList, pageInfo))', 'after': 'run { checked(); Result.success(Pair(upList, pageInfo)) }'}, {'offset': 19429, 'before': 'Result.success(Pair(items, pageInfo))', 'after': 'run { checked(); Result.success(Pair(items, pageInfo)) }'}, {'offset': 20551, 'before': 'Result.success(Pair(items, pageInfo))', 'after': 'run { checked(); Result.success(Pair(items, pageInfo)) }'}, {'offset': 22061, 'before': 'Result.success(Pair(items, pageInfo))', 'after': 'run { checked(); Result.success(Pair(items, pageInfo)) }'}, {'offset': 22466, 'before': 'Result.success(emptyList())', 'after': 'run { checked(); Result.success(emptyList()) }'}, {'offset': 22970, 'before': 'Result.success(suggestions)', 'after': 'run { checked(); Result.success(suggestions) }'}, {'offset': 26307, 'before': 'Result.success(items)', 'after': 'run { checked(); Result.success(items) }'}, {'offset': 9475, 'before': 'Result.success(hint)', 'after': 'run { checked(); Result.success(hint) }'}, {'offset': 9797, 'before': 'Result.success(hint)', 'after': 'run { checked(); Result.success(hint) }'}], 'fullSourceInverseVerified': True}]
++def wide(p):return Path('\\\\?\\'+os.path.abspath(p))
++def generate(repo,out):
++ rows=[]
++ for item in SPEC:
++  original=wide(repo/item['path']).read_text(encoding='utf8').replace('\r\n','\n')
++  assert hashlib.sha256(original.encode()).hexdigest()==item['inputSha256LF'],item['path']
++  source=original
++  for op in item['operations']:
++   at=op['offset'];assert source[at:at+len(op['before'])]==op['before'];source=source[:at]+op['after']+source[at+len(op['before']):]
++  assert hashlib.sha256(source.encode()).hexdigest()==item['outputSha256LF']
++  inverse=source
++  for op in reversed(item['operations']):
++   at=op['offset'];assert inverse[at:at+len(op['after'])]==op['after'];inverse=inverse[:at]+op['before']+inverse[at+len(op['after']):]
++  assert inverse==original
++  target=out/'com/android/purebilibili'/item['target'];wide(target.parent).mkdir(parents=True,exist_ok=True);wide(target).write_text(source,encoding='utf8',newline='\n')
++  rows.append(dict(source=item['path'],target=str(target),originalSha256LF=item['inputSha256LF'],generatedSha256LF=item['outputSha256LF'],inverseOriginalBodyExact=True))
++ # BackToTop is adapted through the existing Root global preferences owner; no second Store.
++ backToTopSource=wide(repo/'app/src/main/java/com/android/purebilibili/core/store/BackToTopSettingsStore.kt').read_text(encoding='utf8').replace('\r\n','\n');assert hashlib.sha256(backToTopSource.encode()).hexdigest()=='7cfc48da9652fa33262fb1ce4458b84ea442a0e34733f846836b21a9dc73c97e'
++ managerSource=wide(repo/'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt').read_text(encoding='utf8').replace('\r\n','\n');assert hashlib.sha256(managerSource.encode()).hexdigest()=='680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c'
++ preferenceSource = 'package com.android.purebilibili.core.store\nimport com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context\nimport com.bilipai.desktop.ui.playerBooleanPreferencesKey as booleanPreferencesKey\nimport com.bilipai.desktop.ui.playerIntPreferencesKey as intPreferencesKey\nimport kotlinx.coroutines.flow.Flow\nimport kotlinx.coroutines.flow.map\ninternal object DesktopOriginalSearchPreferenceMethods {\nprivate val KEY_GRID_COLUMN_COUNT = intPreferencesKey("grid_column_count")\nprivate val KEY_GRID_COLUMN_COUNT_COMPACT = intPreferencesKey("grid_column_count_compact")\nprivate val KEY_SEARCH_DISCOVER_SECTION_ENABLED = booleanPreferencesKey("search_discover_section_enabled")\nprivate val KEY_SEARCH_HOT_SECTION_ENABLED = booleanPreferencesKey("search_hot_section_enabled")\nfun getSearchHotSectionEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data\n    .map { preferences -> preferences[KEY_SEARCH_HOT_SECTION_ENABLED] ?: true }\n\nsuspend fun setSearchHotSectionEnabled(context: Context, value: Boolean) {\n    context.settingsDataStore.edit { preferences -> preferences[KEY_SEARCH_HOT_SECTION_ENABLED] = value }\n}\n\nfun getSearchDiscoverSectionEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data\n    .map { preferences -> preferences[KEY_SEARCH_DISCOVER_SECTION_ENABLED] ?: true }\n\nsuspend fun setSearchDiscoverSectionEnabled(context: Context, value: Boolean) {\n    context.settingsDataStore.edit { preferences -> preferences[KEY_SEARCH_DISCOVER_SECTION_ENABLED] = value }\n}\n\nfun isEasterEggEnabledSync(context: Context): Boolean {\n    return context.getSharedPreferences("easter_egg", Context.MODE_PRIVATE)\n        .getBoolean("enabled", false)  // 默认关闭\n}\n\nsuspend fun setGridColumnCount(context: Context, count: Int) {\n    context.settingsDataStore.edit { preferences ->\n        preferences[KEY_GRID_COLUMN_COUNT] = count\n    }\n}\n\nsuspend fun setGridColumnCountCompact(context: Context, count: Int) {\n    context.settingsDataStore.edit { preferences ->\n        preferences[KEY_GRID_COLUMN_COUNT_COMPACT] = count\n    }\n}\n}\n'
++ target=out/'com/android/purebilibili/core/store/DesktopOriginalSearchPreferenceMethods.kt';wide(target.parent).mkdir(parents=True,exist_ok=True);wide(target).write_text(preferenceSource,encoding='utf8',newline='\n')
++ skeletonSource = 'package com.android.purebilibili.core.ui.skeleton\n\nimport androidx.compose.animation.core.FastOutSlowInEasing\nimport androidx.compose.animation.core.RepeatMode\nimport androidx.compose.animation.core.animateFloat\nimport androidx.compose.animation.core.infiniteRepeatable\nimport androidx.compose.animation.core.rememberInfiniteTransition\nimport androidx.compose.animation.core.tween\nimport androidx.compose.foundation.background\nimport androidx.compose.foundation.layout.Arrangement\nimport androidx.compose.foundation.layout.Box\nimport androidx.compose.foundation.layout.Column\nimport androidx.compose.foundation.layout.PaddingValues\nimport androidx.compose.foundation.layout.Row\nimport androidx.compose.foundation.layout.Spacer\nimport androidx.compose.foundation.layout.aspectRatio\nimport androidx.compose.foundation.layout.fillMaxSize\nimport androidx.compose.foundation.layout.fillMaxWidth\nimport androidx.compose.foundation.layout.height\nimport androidx.compose.foundation.layout.padding\nimport androidx.compose.foundation.layout.size\nimport androidx.compose.foundation.layout.width\nimport androidx.compose.foundation.layout.widthIn\nimport androidx.compose.foundation.lazy.LazyColumn\nimport androidx.compose.foundation.lazy.grid.GridCells\nimport androidx.compose.foundation.lazy.grid.LazyVerticalGrid\nimport androidx.compose.foundation.lazy.grid.items as lazyGridItems\nimport androidx.compose.foundation.lazy.items as lazyListItems\nimport androidx.compose.foundation.shape.CircleShape\nimport androidx.compose.foundation.shape.RoundedCornerShape\nimport androidx.compose.material3.MaterialTheme\nimport androidx.compose.runtime.Composable\nimport androidx.compose.runtime.getValue\nimport androidx.compose.runtime.remember\nimport androidx.compose.ui.Alignment\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.draw.clip\nimport androidx.compose.ui.graphics.Color\nimport androidx.compose.ui.graphics.Shape\nimport androidx.compose.ui.graphics.luminance\nimport androidx.compose.ui.unit.Dp\nimport androidx.compose.ui.unit.dp\nimport com.android.purebilibili.core.ui.AppShapes\nimport com.android.purebilibili.core.ui.ContainerLevel\n\n\n@Composable\nfun TrendingListSkeleton(\n    modifier: Modifier = Modifier,\n    itemCount: Int = 10,\n    contentPadding: PaddingValues = PaddingValues(bottom = 24.dp),\n) {\n    val pulse = rememberContentSkeletonPulse()\n    val blockColor = rememberContentSkeletonBlockColor(pulse)\n    LazyColumn(\n        modifier = modifier.fillMaxSize(),\n        contentPadding = contentPadding,\n        userScrollEnabled = false,\n    ) {\n        item {\n            ContentSkeletonBlock(\n                blockColor,\n                Modifier.fillMaxWidth().height(240.dp),\n                AppShapes.container(ContainerLevel.Card),\n            )\n        }\n        lazyListItems(List(itemCount.coerceAtLeast(0)) { it }) { index ->\n            Row(\n                modifier = Modifier\n                    .fillMaxWidth()\n                    .padding(horizontal = 18.dp, vertical = 14.dp),\n                verticalAlignment = Alignment.CenterVertically,\n            ) {\n                ContentSkeletonBlock(blockColor, Modifier.width(24.dp).height(18.dp))\n                Spacer(Modifier.width(14.dp))\n                Column(Modifier.weight(1f)) {\n                    ContentSkeletonBlock(\n                        blockColor,\n                        Modifier.fillMaxWidth(if (index % 3 == 0) 0.82f else 0.64f).height(16.dp),\n                    )\n                    Spacer(Modifier.height(7.dp))\n                    ContentSkeletonBlock(blockColor, Modifier.fillMaxWidth(0.38f).height(11.dp))\n                }\n            }\n        }\n    }\n}\n'
++ skeletonOrigin = wide(repo/'app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt').read_text(encoding='utf8').replace('\r\n','\n');assert hashlib.sha256(skeletonOrigin.encode()).hexdigest()=='26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2'
++ target=out/'com/android/purebilibili/core/ui/skeleton/DesktopOriginalSearchTrendingSkeleton.kt';wide(target.parent).mkdir(parents=True,exist_ok=True);wide(target).write_text(skeletonSource,encoding='utf8',newline='\n')
++ return rows
++if __name__=='__main__':
++ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--audit',type=Path);a=p.parse_args();rows=generate(a.repo.resolve(),a.output.resolve())
++ if a.audit:wide(a.audit.parent).mkdir(parents=True,exist_ok=True);wide(a.audit).write_text(json.dumps(rows,indent=2)+'\n',encoding='utf8')
++ print('Generated complete original Search',len(rows),'source bodies; inverse PASS')
+--- desktop/upstream-sources.json
++++ desktop/upstream-sources.json
+@@ -9,7 +9,8 @@
+       "sha256": "2c57fe898b380ed8a517652a6b3e8dc1c446fca01eb7c30f94f7f1bf723061cd",
+       "features": [
+         "network",
+-        "playback"
++        "playback",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "direct"
+     },
+@@ -106,7 +107,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/data/model/response/SearchModels.kt",
+       "sha256": "73f5ea87c6c9fa239f9413327d39268b66f744da08e85733a6ed43a3a7d3bea8",
+       "features": [
+-        "data-models"
++        "data-models",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "direct"
+     },
+@@ -155,7 +157,8 @@
+         "profile-main-original",
+         "video-owned-primary-token-refresh",
+         "stable-tablet-owner-space-original",
+-        "stable-video-root-story-feed"
++        "stable-video-root-story-feed",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "api-extract"
+     },
+@@ -1788,7 +1791,8 @@
+         "stable-video-owner-download-binding",
+         "desktop-navigation-interaction-settings",
+         "desktop-full-navigation-settings",
+-        "desktop-storage-cache-settings-owner-parity"
++        "desktop-storage-cache-settings-owner-parity",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "policy-extract"
+     },
+@@ -1982,7 +1986,8 @@
+       "features": [
+         "search-native",
+         "settings-dynamic-full-card-parity",
+-        "live-sub-navigation"
++        "live-sub-navigation",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "policy-extract"
+     },
+@@ -1990,7 +1995,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchLoadPolicy.kt",
+       "sha256": "0e18a5f0f548544f95584ba535e674e62e2666cb48c87727a3629d84af943475",
+       "features": [
+-        "search-native"
++        "search-native",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "direct"
+     },
+@@ -1998,7 +2004,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchRecommendPolicy.kt",
+       "sha256": "4b2c8e16077beee8e2a02076571fe3e3beae9e8dde6f269c404e835d1ad5b368",
+       "features": [
+-        "search-native"
++        "search-native",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "direct"
+     },
+@@ -2014,7 +2021,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/data/model/entity/SearchHistory.kt",
+       "sha256": "eb8a776c2f9b11582486bda58d9f24d536381a0915f655890fa2a726b88227c9",
+       "features": [
+-        "search-native"
++        "search-native",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "platform-rewrite"
+     },
+@@ -2022,7 +2030,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/core/database/dao/SearchHistoryDao.kt",
+       "sha256": "083984280c6bd796439978e19c3d75bd6d8ffd77390d793ba9e6d010b50ca1c2",
+       "features": [
+-        "search-native"
++        "search-native",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "platform-rewrite"
+     },
+@@ -3696,7 +3705,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/core/store/SearchHintSettingsStore.kt",
+       "mode": "platform-rewrite",
+       "features": [
+-        "settings-privacy-section-parity"
++        "settings-privacy-section-parity",
++        "desktop-full-original-search-root-parity"
+       ],
+       "sha256": "da55c7243a61dc25294d5a55e9a230ba097fb9e2e929e85bb6d47440739fd9c5"
+     },
+@@ -3705,7 +3715,8 @@
+       "mode": "policy-extract",
+       "features": [
+         "settings-privacy-section-parity",
+-        "desktop-full-navigation-settings"
++        "desktop-full-navigation-settings",
++        "desktop-full-original-search-root-parity"
+       ],
+       "sha256": "526fd05cd8c2daa946f6240b3922aae788d6376b058e7f83b1ce2b5b96eee6be"
+     },
+@@ -5144,7 +5155,8 @@
+         "home-partition",
+         "stable-article-full",
+         "stable-favorites",
+-        "stable-video-fullscreen-pager"
++        "stable-video-fullscreen-pager",
++        "desktop-full-original-search-root-parity"
+       ]
+     },
+     {
+@@ -6240,7 +6252,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt",
+       "sha256": "92a3802ca8451dd973c982017a5022f89f0a7120ebc777fb792992d660fc9a86",
+       "features": [
+-        "stable-favorites"
++        "stable-favorites",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "selected"
+     },
+@@ -6289,7 +6302,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/core/ui/BackToTopPreference.kt",
+       "sha256": "f3996c0e728f84662fb5c266b0786d1b419cc5e4e38986769e6a309bf0c13675",
+       "features": [
+-        "stable-favorites"
++        "stable-favorites",
++        "desktop-full-original-search-root-parity"
+       ],
+       "mode": "selected"
+     },
+@@ -7427,7 +7441,8 @@
+       "sha256": "1637952c78fccb2677ee73640b70ab876746d693fbca438365d285812fa76c85",
+       "mode": "direct",
+       "features": [
+-        "stable-home-return-navigation"
++        "stable-home-return-navigation",
++        "desktop-full-original-search-root-parity"
+       ]
+     },
+     {
+@@ -9970,6 +9985,126 @@
+         "desktop-storage-cache-settings-owner-parity"
+       ],
+       "sha256": "1c521f406465df4c51450243e49db9d4d217d6fea3f0f70b262d556233007588"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/core/store/BackToTopSettingsStore.kt",
++      "sha256": "7cfc48da9652fa33262fb1ce4458b84ea442a0e34733f846836b21a9dc73c97e",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "platform-rewrite"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt",
++      "sha256": "1d8886b9c447c324ed7333bc07a375860ddd58677cbb916434120ab94c8261a3",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt",
++      "sha256": "a6284ad871eab020fb9e4b3210a8e2abebfa7d54dd246653cdfedc771526c012",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchEntryMotionPolicy.kt",
++      "sha256": "d6d64547269d57099f62f5556ce08f47e9205c193ad742c2d60b0f8276f048aa",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchLandingUi.kt",
++      "sha256": "37e137719ce216ff19302bbb94767431b65e2e4ce2e185a4cbe7da96f6278cfe",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt",
++      "sha256": "24a83910f4cd0a04055f443912af05addb79aa61dd3edef565ae66588cff894c",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchResultCardAppearancePolicy.kt",
++      "sha256": "be1422a9670240aa8f15e70695f154f97c1277e180fff51b5c1beebb49d9ad38",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchResultNavigationPolicy.kt",
++      "sha256": "3b049c25c74d3c4da671e4400a54d8ba7ba8b10c9e9afd2d859f23eb203cbff2",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchSelectionChipColorPolicy.kt",
++      "sha256": "731ef56cf10d7671ffee1250b180502a4531ab4f30fea7fe534ef3064c9ed144",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTabletLayoutPolicy.kt",
++      "sha256": "8efb75d46f58aab2fa42d1b81183deb4fb923eb05da2e238e4e97fa4b2348c90",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingScreen.kt",
++      "sha256": "456f6de62794eaedcc5151859a67d1cc7724e7ff74a518847b130f1d95f0c402",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "policy-extract"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingViewModel.kt",
++      "sha256": "61b8c81269938c20edd8f51e2c1b2822922deba01097334f80b8f1886ed72a0f",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "platform-rewrite"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchUiModels.kt",
++      "sha256": "5f203359dd7d35d28579dd72239bfc2811f079ce87e684207d4d218c3086a06b",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
++      "sha256": "8d4bc6df6da28464d90b238204617811d495746b6419b407d44b5e7bb76b8aba",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "direct"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
++      "sha256": "9735fb53cf10485d0244dece24c6c887c4775ef6c27231a3b617ebc01bb05763",
++      "features": [
++        "desktop-full-original-search-root-parity"
++      ],
++      "mode": "platform-rewrite"
+     }
+   ],
+   "featureCoverage": {
+@@ -10105,7 +10240,8 @@
+       "path": "app/src/main/res/values/strings.xml",
+       "mode": "resource-adapt",
+       "features": [
+-        "appearance-language"
++        "appearance-language",
++        "desktop-full-original-search-root-parity"
+       ],
+       "sha256": "1c698f101a92c528d86af0eaaa6cbd2b1e02d4c535d1292c135aa733c3357f60"
+     },
+@@ -10113,7 +10249,8 @@
+       "path": "app/src/main/res/values-en/strings.xml",
+       "mode": "resource-adapt",
+       "features": [
+-        "appearance-language"
++        "appearance-language",
++        "desktop-full-original-search-root-parity"
+       ],
+       "sha256": "940292e7ddef7233e39e7e5ff6a38ec8b9e5c33858d79151e8525dc7347948e2"
+     },
+@@ -10121,7 +10258,8 @@
+       "path": "app/src/main/res/values-zh-rTW/strings.xml",
+       "mode": "resource-adapt",
+       "features": [
+-        "appearance-language"
++        "appearance-language",
++        "desktop-full-original-search-root-parity"
+       ],
+       "sha256": "6d4746789d01394ec9084b5a84140e0ad820e1ff9ae6a160c2c8e0684e817b40"
+     },
+--- desktop/build.gradle.kts
++++ desktop/build.gradle.kts
+@@ -2158,3 +2158,20 @@
+ }
+ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-storage-settings")) }
+ tasks.named("compileKotlin") { dependsOn(extractOriginalStorageSettings) }
++
++// Complete original Search/SearchTrending page and VM bodies. Common DIRECT sources stay
++// solely with prepareUpstreamSources; no selected duplicate submit/tab-order declarations.
++val extractOriginalSearchPages by tasks.registering(Exec::class) {
++    dependsOn(prepareUpstreamSources)
++    workingDir(projectDir)
++    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-search-pages.py",
++        "--repo", repositoryRoot.absolutePath,
++        "--output", layout.buildDirectory.dir("generated/original-search-pages").get().asFile.absolutePath)
++    inputs.file("tools/extract-upstream-search-pages.py")
++    inputs.file(sourceManifest)
++    inputs.files(sources.filter { "desktop-full-original-search-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    outputs.dir(layout.buildDirectory.dir("generated/original-search-pages"))
++}
++kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-search-pages")) }
++tasks.named("compileKotlin") { dependsOn(extractOriginalSearchPages) }

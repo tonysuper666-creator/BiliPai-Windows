@@ -1,0 +1,180 @@
+PASS original default hint/trending/discover bootstrap
+PASS original suggestion debounce final keyword
+PASS superseded debounce query not requested
+PASS cancelled slow suggestion cannot publish after new result
+PASS original video search first page
+PASS original video WBI/platform params
+PASS original video pagination retains unique first/second page
+PASS original bili_user initial request
+PASS original bili_user current page populated
+PASS original bili_user independent pagination
+PASS original media_bangumi initial request
+PASS original media_bangumi current page populated
+PASS original media_bangumi independent pagination
+PASS original media_ft initial request
+PASS original media_ft current page populated
+PASS original media_ft independent pagination
+PASS original live_room initial request
+PASS original live_room current page populated
+PASS original live_room independent pagination
+PASS original live_user initial request
+PASS original live_user current page populated
+PASS original live_user independent pagination
+PASS original article initial request
+PASS original article current page populated
+PASS original article independent pagination
+PASS original topic initial request
+PASS original topic current page populated
+PASS original topic independent pagination
+PASS original photo initial request
+PASS original photo current page populated
+PASS original photo independent pagination
+PASS return to original cached VIDEO second page
+PASS original UP sort/direction/type request params
+PASS original live sorting request params
+PASS original article sorting/category request params
+PASS original photo sorting/category request params
+PASS original sorting restarts same video keyword
+PASS original partition/date request params
+PASS original duration request param
+PASS same existing account history records original searches
+PASS original history delete reaches same sole DAO
+PASS original confirmed history clear reaches same sole DAO
+PASS owned CAS and legacy mutations retain all same-DAO history
+PASS BackToTop read uses existing global preference owner
+PASS BackToTop offset writes same canonical keys with owner permit
+PASS incognito actual original result still loads
+PASS original privacy suppresses persistence
+PASS new search session renders fresh result
+PASS original activeSearchSessionId/caller rejects late result
+PASS same blocked-up owner removes current result
+PASS original hot setting same global backing
+PASS original discover setting same global backing
+PASS grid write uses existing global canonical preference
+PASS full original Trending VM initial result
+PASS older original Trending refresh reached delayed transport
+PASS new original Trending refresh publishes final ranking
+PASS cancelled noncooperative original Trending result cannot publish
+PASS unpublished Root refuses new request/history admission
+PASS full original Search landing/history/hot mounted
+PASS actual desktop keyboard edits original search query
+PASS actual desktop Enter submits original KeyboardActions.Search
+PASS actual pointer switches original UP tab
+PASS actual Search restores landing after results
+Error was captured in composition.
+java.lang.IllegalStateException: Dynamic detail foreground owner is not mounted
+	at com.bilipai.desktop.ui.DesktopDetailEffectsKt.LocalDesktopDetailForeground$lambda$0(DesktopDetailEffects.kt:11)
+	at kotlin.SynchronizedLazyImpl.getValue(LazyJVM.kt:86)
+	at androidx.compose.runtime.LazyValueHolder.getCurrent(ValueHolders.kt:46)
+	at androidx.compose.runtime.LazyValueHolder.readValue(ValueHolders.kt:48)
+	at androidx.compose.runtime.CompositionLocalMapKt.read(CompositionLocalMap.kt:88)
+	at androidx.compose.runtime.GapComposer.consume(GapComposer.kt:1235)
+	at com.android.purebilibili.core.ui.ImmersiveAppScaffoldKt.ImmersiveAppScaffold-uhEuKqE(ImmersiveAppScaffold.kt:152)
+	at com.android.purebilibili.feature.search.SearchTrendingScreenKt.SearchTrendingScreen(SearchTrendingScreen.kt:67)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt$main$1.invokeSuspend$lambda$46$0$0$0$0$0(SearchOwnerFixture.kt:211)
+	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.kt:122)
+	at androidx.compose.runtime.internal.ComposableLambdaImpl$invoke$1.invoke(ComposableLambda.kt:123)
+	at androidx.compose.runtime.internal.ComposableLambdaImpl$invoke$1.invoke(ComposableLambda.kt:123)
+	at androidx.compose.runtime.RecomposeScopeImpl.compose(RecomposeScopeImpl.kt:204)
+	at androidx.compose.runtime.GapComposer.recomposeToGroupEnd(GapComposer.kt:1678)
+	at androidx.compose.runtime.GapComposer.skipCurrentGroup(GapComposer.kt:2014)
+	at androidx.compose.runtime.GapComposer.doCompose-aFTiNEg(GapComposer.kt:2655)
+	at androidx.compose.runtime.GapComposer.recompose-aFTiNEg$runtime(GapComposer.kt:2577)
+	at androidx.compose.runtime.CompositionImpl.recompose(Composition.kt:1184)
+	at androidx.compose.runtime.Recomposer.performRecompose(Recomposer.kt:1318)
+	at androidx.compose.runtime.Recomposer.access$performRecompose(Recomposer.kt:191)
+	at androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2.invokeSuspend$lambda$2(Recomposer.kt:655)
+	at androidx.compose.runtime.BroadcastFrameClock$FrameAwaiter.resume(BroadcastFrameClock.kt:56)
+	at androidx.compose.runtime.BroadcastFrameClock.sendFrame$lambda$0(BroadcastFrameClock.kt:71)
+	at androidx.compose.runtime.internal.AwaiterQueue.flushAndDispatchAwaiters(AwaiterQueue.kt:89)
+	at androidx.compose.runtime.BroadcastFrameClock.sendFrame(BroadcastFrameClock.kt:71)
+	at androidx.compose.ui.platform.FrameRecomposer.performFrame(FrameRecomposer.skiko.kt:150)
+	at androidx.compose.ui.ImageComposeScene.render(ImageComposeScene.skiko.kt:289)
+	at com.bilipai.desktop.ui.SearchScene.frame(SearchOwnerFixture.kt:94)
+	at com.bilipai.desktop.ui.SearchScene.press(SearchOwnerFixture.kt:99)
+	at com.bilipai.desktop.ui.SearchScene.text(SearchOwnerFixture.kt:100)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt$main$1.invokeSuspend(SearchOwnerFixture.kt:229)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:233)
+	at kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:152)
+	at kotlinx.coroutines.CancellableContinuationImpl.dispatchResume(CancellableContinuationImpl.kt:470)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core(CancellableContinuationImpl.kt:504)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core$default(CancellableContinuationImpl.kt:493)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeUndispatched(CancellableContinuationImpl.kt:596)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedResumeTask.run(EventLoop.common.kt:497)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt.main(SearchOwnerFixture.kt:107)
+Exception in thread "main" java.lang.IllegalStateException: Dynamic detail foreground owner is not mounted
+	at com.bilipai.desktop.ui.DesktopDetailEffectsKt.LocalDesktopDetailForeground$lambda$0(DesktopDetailEffects.kt:11)
+	at kotlin.SynchronizedLazyImpl.getValue(LazyJVM.kt:86)
+	at androidx.compose.runtime.LazyValueHolder.getCurrent(ValueHolders.kt:46)
+	at androidx.compose.runtime.LazyValueHolder.readValue(ValueHolders.kt:48)
+	at androidx.compose.runtime.CompositionLocalMapKt.read(CompositionLocalMap.kt:88)
+	at androidx.compose.runtime.GapComposer.consume(GapComposer.kt:1235)
+	at com.android.purebilibili.core.ui.ImmersiveAppScaffoldKt.ImmersiveAppScaffold-uhEuKqE(ImmersiveAppScaffold.kt:152)
+	at com.android.purebilibili.feature.search.SearchTrendingScreenKt.SearchTrendingScreen(SearchTrendingScreen.kt:67)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt$main$1.invokeSuspend$lambda$46$0$0$0$0$0(SearchOwnerFixture.kt:211)
+	at androidx.compose.runtime.internal.ComposableLambdaImpl.invoke(ComposableLambda.kt:122)
+	at androidx.compose.runtime.internal.ComposableLambdaImpl$invoke$1.invoke(ComposableLambda.kt:123)
+	at androidx.compose.runtime.internal.ComposableLambdaImpl$invoke$1.invoke(ComposableLambda.kt:123)
+	at androidx.compose.runtime.RecomposeScopeImpl.compose(RecomposeScopeImpl.kt:204)
+	at androidx.compose.runtime.GapComposer.recomposeToGroupEnd(GapComposer.kt:1678)
+	at androidx.compose.runtime.GapComposer.skipCurrentGroup(GapComposer.kt:2014)
+	at androidx.compose.runtime.GapComposer.doCompose-aFTiNEg(GapComposer.kt:2655)
+	at androidx.compose.runtime.GapComposer.recompose-aFTiNEg$runtime(GapComposer.kt:2577)
+	at androidx.compose.runtime.CompositionImpl.recompose(Composition.kt:1184)
+	at androidx.compose.runtime.Recomposer.performRecompose(Recomposer.kt:1318)
+	at androidx.compose.runtime.Recomposer.access$performRecompose(Recomposer.kt:191)
+	at androidx.compose.runtime.Recomposer$runRecomposeAndApplyChanges$2.invokeSuspend$lambda$2(Recomposer.kt:655)
+	at androidx.compose.runtime.BroadcastFrameClock$FrameAwaiter.resume(BroadcastFrameClock.kt:56)
+	at androidx.compose.runtime.BroadcastFrameClock.sendFrame$lambda$0(BroadcastFrameClock.kt:71)
+	at androidx.compose.runtime.internal.AwaiterQueue.flushAndDispatchAwaiters(AwaiterQueue.kt:89)
+	at androidx.compose.runtime.BroadcastFrameClock.sendFrame(BroadcastFrameClock.kt:71)
+	at androidx.compose.ui.platform.FrameRecomposer.performFrame(FrameRecomposer.skiko.kt:150)
+	at androidx.compose.ui.ImageComposeScene.render(ImageComposeScene.skiko.kt:289)
+	at com.bilipai.desktop.ui.SearchScene.frame(SearchOwnerFixture.kt:94)
+	at com.bilipai.desktop.ui.SearchScene.press(SearchOwnerFixture.kt:99)
+	at com.bilipai.desktop.ui.SearchScene.text(SearchOwnerFixture.kt:100)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt$main$1.invokeSuspend(SearchOwnerFixture.kt:229)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:233)
+	at kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:152)
+	at kotlinx.coroutines.CancellableContinuationImpl.dispatchResume(CancellableContinuationImpl.kt:470)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core(CancellableContinuationImpl.kt:504)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core$default(CancellableContinuationImpl.kt:493)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeUndispatched(CancellableContinuationImpl.kt:596)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedResumeTask.run(EventLoop.common.kt:497)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt.main(SearchOwnerFixture.kt:107)
+	Suppressed: kotlinx.coroutines.internal.DiagnosticCoroutineContextException: [androidx.compose.runtime.BroadcastFrameClock@1cab19e2, StandaloneCoroutine{Cancelling}@6879e983, FlushCoroutineDispatcher@196d684b]
+Exception in thread "main" java.lang.IllegalStateException: actual pointer opens full original Trending page: actual labels [大家都在搜, 完整榜单, 刷新, Pinned hot, Fresh hot 1, 搜索发现, 刷新, Discover original, Fresh hot 4, Pinned hot, 黑神话悟空, 原神, 初音未来, JOJO, 罗翔说刑法, 何同学, 毕业季, 搜索历史, 清空, keyboard, fresh-result, stale-result, Default hint]
+	at com.bilipai.desktop.ui.SearchScene.wait(SearchOwnerFixture.kt:96)
+	at com.bilipai.desktop.ui.SearchScene$wait$1.invokeSuspend(SearchOwnerFixture.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTaskKt.resume(DispatchedTask.kt:233)
+	at kotlinx.coroutines.DispatchedTaskKt.dispatch(DispatchedTask.kt:152)
+	at kotlinx.coroutines.CancellableContinuationImpl.dispatchResume(CancellableContinuationImpl.kt:470)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core(CancellableContinuationImpl.kt:504)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeImpl$kotlinx_coroutines_core$default(CancellableContinuationImpl.kt:493)
+	at kotlinx.coroutines.CancellableContinuationImpl.resumeUndispatched(CancellableContinuationImpl.kt:596)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedResumeTask.run(EventLoop.common.kt:497)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt.main(SearchOwnerFixture.kt:107)

@@ -1,0 +1,33 @@
+SearchOwnerFixture.kt:197:131: warning: this declaration needs opt-in. Its usage should be marked with '@coil3.annotation.DelicateCoilApi' or '@OptIn(coil3.annotation.DelicateCoilApi::class)'
+            SuccessResult(ColorImage(0xffa0b0c0.toInt(),80,80),chain.request,DataSource.MEMORY) }) }.build();SingletonImageLoader.setUnsafe(loader)
+                                                                                                                                  ^^^^^^^^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1024:66: warning: elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+                else if (!item.bvid.isNullOrBlank() || (item.aid ?: 0) > 0) openVideo(VideoCard(item.bvid.orEmpty().ifBlank { "av${item.aid}" },
+                                                                 ^^^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1207:47: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                title = if (audioTarget) audio!!.current!!.title else offlinePayload?.title ?: if (retainedOwner != null) retainedMedia.title else current.details?.title ?: state.sourceTitle,
+                                              ^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1208:48: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                artist = if (audioTarget) audio!!.current!!.owner else offlinePayload?.owner ?: if (retainedOwner != null) "" else current.details?.author.orEmpty(),
+                                               ^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1209:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                mediaId = if (audioTarget) audio!!.current!!.bvid else offlinePayload?.bvid ?: if (retainedOwner != null) state.sourceTitle else current.details?.bvid ?: state.sourceTitle,
+                                                ^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1211:53: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
+                                                    ^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1212:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
+                                                ^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1369:34: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+        if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))
+                                 ^^^^^^^^^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1483:119: warning: expression is unused.
+                    { expectedEpoch,expectedMid -> authenticationInvalidations.trySend(expectedEpoch to expectedMid); Unit },
+                                                                                                                      ^^^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\DesktopShell.kt:1566:37: warning: condition is always 'false'.
+                                if (entry == null || queue == null || !entry.isOwned()) {
+                                    ^^^^^^^^^^^^^
+prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:184:25: warning: 'when' is exhaustive so 'else' is redundant here.
+                        else -> error("Unreachable typed Live branch")
+                        ^^^^

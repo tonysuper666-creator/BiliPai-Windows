@@ -1,0 +1,88 @@
+{
+  "failures": [
+    {
+      "attempt": "runtime/01",
+      "kind": "fixture",
+      "note": "Fixture assumed a switched-away page cache already represented current original page; fixed current page assertion.",
+      "receiptSha256": "aa8c282d27a967acd4304d50c7967afc9e3c461361365a4fbd41424fed9bc689",
+      "logSha256": "827fd0d4c91186190a1556bb22929b9fb2161cbcc37c7fccb1b60fd5e685a572"
+    },
+    {
+      "attempt": "runtime/02",
+      "kind": "fixture",
+      "note": "Fixture encoded SearchLiveUser.is_live as Int; real model Boolean fixed in fixture.",
+      "receiptSha256": "c88785e93c59d6e2f6242e7f5a62cbc7177d97dde3c0c3709bbcaf2b77d1249b",
+      "logSha256": "68d95e6a3487c98f8d68348826a98cac712de6b2c96cb3670e7eecec32b08d53"
+    },
+    {
+      "attempt": "runtime/03",
+      "kind": "fixture",
+      "note": "Generic timeout lacked context; kept failure and added diagnostics.",
+      "receiptSha256": "110537ae12a1151c1fbf180fe3f4f393028c4499f84106e6dddd75de4db3ca86",
+      "logSha256": "dcd90b0eb9f9bc47adeaf974cd5d138b6b28776f93721d07f1b82de45b551b8c"
+    },
+    {
+      "attempt": "runtime/04",
+      "kind": "fixture",
+      "note": "Fixture expected pinned fallback while a nonempty original getHotSearch branch correctly short-circuited; fixture response fixed.",
+      "receiptSha256": "fb3e864056bd800baddc19bf0c3b2d87bb10a75e751111f0761bcd7452699f6b",
+      "logSha256": "c55afe9ee313ba76a6c61b81465404a84dd4ab3cec4db70922a594abb6856456"
+    },
+    {
+      "attempt": "runtime/05",
+      "kind": "product-boundary",
+      "note": "Real product common BackToTop consumers required Favorites-only context; adapted same existing global owner through optional common platform port.",
+      "receiptSha256": "e50f86bb093a7881d6049d2947cfe5e2f5044e84b77195f7382b3a47c069fcca",
+      "logSha256": "54da7f4749e7e08079cb0382bd355ff8a80764e5662f43db3e47cd56242201f6"
+    },
+    {
+      "attempt": "runtime/06",
+      "kind": "fixture",
+      "note": "Fixture omitted real Shell global LiquidTab settings; supplied same isolated Store read projection.",
+      "receiptSha256": "70de7c92768c836bff432bc9a8e631dbe98978df4f869278b88f155e480decd5",
+      "logSha256": "abc17f582fd3b1ec1acac678641b6d5f9fde2bada061452bb7d5124aaeccf0b8"
+    },
+    {
+      "attempt": "runtime/07",
+      "kind": "fixture",
+      "note": "Fixture omitted real Shell global Dynamic skeleton settings; supplied same isolated Store read projection.",
+      "receiptSha256": "5eb0f18d3ce28feac1d60bf1901e8bbc795c72716f439562f8765bc697bccb66",
+      "logSha256": "6227e178faae9f3341c903f4dfe9de40a9035c3434f64dcb3cd8db6b09367c2a"
+    },
+    {
+      "attempt": "runtime/08",
+      "kind": "fixture",
+      "note": "Fixture expected exact UP label without original count suffix; matching fixed in fixture.",
+      "receiptSha256": "bbef17c0dffc6dfb83ec55e31c1aa465c95a6ba0337f4dfdc9ead46c6a86116d",
+      "logSha256": "34ae9b3b63dd899612de1d233e1a3db6a71641fba789f17dae62c09163d86ed3"
+    },
+    {
+      "attempt": "runtime/09",
+      "kind": "fixture",
+      "note": "Fixture expected wrong landing/open-Trending labels; used original 大家都在搜 / 完整榜单.",
+      "receiptSha256": "27d7853c2c448d221dbed097ce3a391a34b3f8962d783bb8aeae31ee42ece79c",
+      "logSha256": "b684f496572de8acc93cd3c31d5f5a75217d32501cfde1a5190fde03b36cf561"
+    },
+    {
+      "attempt": "runtime/10",
+      "kind": "fixture",
+      "note": "Fixture omitted actual scene foreground binding for ImmersiveAppScaffold; linked to owned scene lifetime.",
+      "receiptSha256": "7569d3fa2cbdb760a168bee83d014416ded055eaa5ab74eabc16b806a3c68b08",
+      "logSha256": "7082b5a03b46b6926a162aa82b581b5e295fa3441d729404efbbb6eb6a0707fe"
+    },
+    {
+      "attempt": "compile/01",
+      "kind": "adaptation",
+      "note": "Initial prospective compile exposed missing adapters/shared declarations/resource/animation boundaries; retained real diagnostics, fixed preparation."
+    },
+    {
+      "attempt": "compile/04",
+      "kind": "fixture-and-invalid-proof",
+      "note": "Obsolete SHORT enum in fixture; fixture edited during this compile. Not used as a successful source-stability proof."
+    }
+  ],
+  "finalCompile": "16",
+  "finalRuntime": "12",
+  "failedLogsPreserved": true,
+  "oldEvidenceNotRelabeled": true
+}

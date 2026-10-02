@@ -1,0 +1,23 @@
+{
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+    "-p",
+    "desktop",
+    "classes",
+    "compileTestKotlin",
+    "--console=plain"
+  ],
+  "exitCode": 0,
+  "actualProductOverrides": 0,
+  "sourceCount": 1198,
+  "resourceCount": 244,
+  "mainClassesCompiled": true,
+  "testClassesCompiled": true,
+  "testsExecuted": false,
+  "rootRuntimeAccepted": false,
+  "networkAccepted": false,
+  "desktopPackageUpdated": false,
+  "allFeaturesComplete": false,
+  "logSha256Bytes": "53ad6295ab05a5d778373713e54f1f064355beda337f72ae89d7890bb3d684d7",
+  "freshNativeShareProducerPassed": true
+}

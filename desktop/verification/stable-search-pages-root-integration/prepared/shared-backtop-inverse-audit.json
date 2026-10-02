@@ -1,0 +1,137 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/BackToTopPreference.kt",
+    "inputSha256LF": "f3996c0e728f84662fb5c266b0786d1b419cc5e4e38986769e6a309bf0c13675",
+    "output": "com/android/purebilibili/core/ui/BackToTopPreference.kt",
+    "outputSha256LF": "02abc966ac22b0bae00b30e33cf3f4de4176aa81417fe39de917fc7138319265",
+    "operations": [
+      {
+        "offset": 167,
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import com.bilipai.desktop.ui.desktopBackToTopBindings"
+      },
+      {
+        "offset": 222,
+        "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle",
+        "after": "import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle"
+      },
+      {
+        "offset": 300,
+        "before": "import com.android.purebilibili.core.store.BackToTopSettingsStore\n",
+        "after": ""
+      },
+      {
+        "offset": 300,
+        "before": "import com.android.purebilibili.core.store.DEFAULT_BACK_TO_TOP_BUTTON_ENABLED\n",
+        "after": ""
+      },
+      {
+        "offset": 379,
+        "before": "LocalContext.current",
+        "after": "desktopBackToTopBindings()"
+      },
+      {
+        "offset": 459,
+        "before": "BackToTopSettingsStore.isEnabled(context)",
+        "after": "context.enabled"
+      },
+      {
+        "offset": 567,
+        "before": "DEFAULT_BACK_TO_TOP_BUTTON_ENABLED",
+        "after": "context.initialEnabled"
+      },
+      {
+        "offset": 552,
+        "before": "initialValue =",
+        "after": "initial ="
+      }
+    ],
+    "fullOriginalInverseVerified": true,
+    "soleProducer": "desktop/tools/extract-upstream-favorites.py"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt",
+    "inputSha256LF": "92a3802ca8451dd973c982017a5022f89f0a7120ebc777fb792992d660fc9a86",
+    "output": "com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt",
+    "outputSha256LF": "b0b9db2b64b1c64867aea8c095184658949d8dbf8fd4537286095f1060adfe4a",
+    "operations": [
+      {
+        "offset": 1583,
+        "before": "import androidx.compose.ui.platform.LocalContext",
+        "after": "import coil3.compose.LocalPlatformContext as LocalContext"
+      },
+      {
+        "offset": 1528,
+        "before": "import androidx.compose.ui.platform.LocalConfiguration",
+        "after": "import com.bilipai.desktop.ui.LocalDesktopFavoriteViewport as LocalConfiguration"
+      },
+      {
+        "offset": 1849,
+        "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle",
+        "after": "import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle"
+      },
+      {
+        "offset": 3828,
+        "before": "initialValue =",
+        "after": "initial ="
+      },
+      {
+        "offset": 1927,
+        "before": "import com.android.purebilibili.core.store.BackToTopSettingsStore",
+        "after": "import com.bilipai.desktop.ui.desktopBackToTopBindings"
+      },
+      {
+        "offset": 3153,
+        "before": "    val context = LocalContext.current",
+        "after": "    val context = LocalContext.current\n    val platform = desktopBackToTopBindings()"
+      },
+      {
+        "offset": 3281,
+        "before": "val configuration = LocalConfiguration.current",
+        "after": "val configuration = platform.viewport"
+      },
+      {
+        "offset": 3770,
+        "before": "BackToTopSettingsStore.getCustomOffsetDp(context)",
+        "after": "platform.offset"
+      },
+      {
+        "offset": 3830,
+        "before": "BackToTopSettingsStore.getCachedOffsetDp()",
+        "after": "platform.initialOffset"
+      },
+      {
+        "offset": 3986,
+        "before": "BackToTopSettingsStore.getCachedOffsetDp()",
+        "after": "platform.initialOffset"
+      },
+      {
+        "offset": 4046,
+        "before": "BackToTopSettingsStore.getCachedOffsetDp()",
+        "after": "platform.initialOffset"
+      },
+      {
+        "offset": 8952,
+        "before": "BackToTopSettingsStore.setCustomOffsetDp(context,",
+        "after": "platform.setOffset("
+      },
+      {
+        "offset": 9825,
+        "before": "BackToTopSettingsStore.setCustomOffsetDp(context,",
+        "after": "platform.setOffset("
+      },
+      {
+        "offset": 8775,
+        "before": "BackToTopSettingsStore.updateCachedOffset(",
+        "after": "platform.updateOffset("
+      },
+      {
+        "offset": 9628,
+        "before": "BackToTopSettingsStore.updateCachedOffset(",
+        "after": "platform.updateOffset("
+      }
+    ],
+    "fullOriginalInverseVerified": true,
+    "soleProducer": "desktop/tools/extract-upstream-favorites.py"
+  }
+]

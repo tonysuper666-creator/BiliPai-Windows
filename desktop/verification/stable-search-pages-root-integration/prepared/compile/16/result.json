@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "inputs": 42,
+  "actual85Runtime101": true,
+  "ShellCompiled": true,
+  "RootMounted": false,
+  "native": false,
+  "HTTP": false
+}

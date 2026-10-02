@@ -1,0 +1,744 @@
+{
+  "baseline": "6ac84c8036ed4c75e2944d92d1020566e283e983",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "fullAdaptations": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "target": "feature/search/SearchScreen.kt",
+      "inputSha256LF": "526fd05cd8c2daa946f6240b3922aae788d6376b058e7f83b1ce2b5b96eee6be",
+      "outputSha256LF": "c8d613b6dd5dc0dd657ae334ee9cb2f072833dee790a4b614a4b3ae0bb1f7838",
+      "operations": [
+        {
+          "offset": 27951,
+          "before": "fun SearchScreen(",
+          "after": "internal fun SearchScreen("
+        },
+        {
+          "offset": 5088,
+          "before": "import androidx.compose.ui.platform.LocalConfiguration",
+          "after": ""
+        },
+        {
+          "offset": 12021,
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": ""
+        },
+        {
+          "offset": 5260,
+          "before": "import androidx.compose.ui.res.stringResource",
+          "after": ""
+        },
+        {
+          "offset": 6180,
+          "before": "import androidx.lifecycle.viewmodel.compose.viewModel",
+          "after": ""
+        },
+        {
+          "offset": 6181,
+          "before": "import androidx.activity.compose.BackHandler",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalSearchBackHandler as BackHandler"
+        },
+        {
+          "offset": 6259,
+          "before": "import com.android.purebilibili.R",
+          "after": ""
+        },
+        {
+          "offset": 10802,
+          "before": "import com.android.purebilibili.core.store.SettingsManager  //  读取动画设置",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalSearchSettings as SettingsManager\nimport com.bilipai.desktop.ui.LocalDesktopOriginalSearchEnvironment"
+        },
+        {
+          "offset": 7004,
+          "before": "import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled\nimport com.android.purebilibili.core.ui.isMiuixNonGlassEnabled",
+          "after": "import com.android.purebilibili.core.ui.isMiuixNonGlassEnabled"
+        },
+        {
+          "offset": 27795,
+          "before": "viewModel: SearchViewModel = viewModel()",
+          "after": "viewModel: SearchViewModel"
+        },
+        {
+          "offset": 29333,
+          "before": "val configuration = LocalConfiguration.current",
+          "after": "val configuration by LocalDesktopOriginalSearchEnvironment.current.configuration.collectAsState()"
+        },
+        {
+          "offset": 32807,
+          "before": "val context = LocalContext.current",
+          "after": "val context = LocalDesktopOriginalSearchEnvironment.current"
+        },
+        {
+          "offset": 192416,
+          "before": "ImageRequest.Builder(LocalContext.current)",
+          "after": "ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)"
+        },
+        {
+          "offset": 195782,
+          "before": "ImageRequest.Builder(LocalContext.current)",
+          "after": "ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)"
+        },
+        {
+          "offset": 199031,
+          "before": "ImageRequest.Builder(LocalContext.current)",
+          "after": "ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)"
+        },
+        {
+          "offset": 203491,
+          "before": "ImageRequest.Builder(LocalContext.current)",
+          "after": "ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)"
+        },
+        {
+          "offset": 208673,
+          "before": "ImageRequest.Builder(LocalContext.current)",
+          "after": "ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)"
+        },
+        {
+          "offset": 215371,
+          "before": "ImageRequest.Builder(LocalContext.current)",
+          "after": "ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)"
+        },
+        {
+          "offset": 218531,
+          "before": "ImageRequest.Builder(LocalContext.current)",
+          "after": "ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)"
+        },
+        {
+          "offset": 221195,
+          "before": "ImageRequest.Builder(LocalContext.current)",
+          "after": "ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)"
+        },
+        {
+          "offset": 224216,
+          "before": "ImageRequest.Builder(LocalContext.current)",
+          "after": "ImageRequest.Builder(LocalDesktopOriginalSearchEnvironment.current.platformContext)"
+        },
+        {
+          "offset": 32924,
+          "before": "com.android.purebilibili.core.store.SearchHintSettingsStore.isEnabled(context)",
+          "after": "SettingsManager.getDefaultHintEnabled(context)"
+        },
+        {
+          "offset": 43365,
+          "before": "shouldAllowRenderEffectBackedHazeEffect(android.os.Build.VERSION.SDK_INT)",
+          "after": "LocalDesktopOriginalSearchEnvironment.current.renderEffectsSupported"
+        },
+        {
+          "offset": 47476,
+          "before": "com.android.purebilibili.core.util.AnalyticsHelper.logScreenView(\"SearchScreen\")",
+          "after": "context.logScreenView(\"SearchScreen\")"
+        },
+        {
+          "offset": 29125,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 32963,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 33237,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 34039,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 34168,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 34338,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 34455,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 34582,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 36508,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 36616,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 36746,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 36886,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 32979,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 33261,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 34045,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 34169,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 34334,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 34446,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 34568,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 36489,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 36592,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 36717,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 36852,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 40144,
+          "before": "initialValue =",
+          "after": "initial ="
+        },
+        {
+          "offset": 12290,
+          "before": "import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect",
+          "after": ""
+        },
+        {
+          "offset": 40060,
+          "before": "initial = searchHeaderOffsetPx",
+          "after": "initialValue = searchHeaderOffsetPx"
+        },
+        {
+          "offset": 142158,
+          "before": "stringResource(R.string.common_back)",
+          "after": "com.bilipai.desktop.appearance.LocalDesktopStrings.current[\"common_back\"]"
+        },
+        {
+          "offset": 142254,
+          "before": "stringResource(R.string.common_search)",
+          "after": "com.bilipai.desktop.appearance.LocalDesktopStrings.current[\"common_search\"]"
+        },
+        {
+          "offset": 152015,
+          "before": "stringResource(R.string.common_clear)",
+          "after": "com.bilipai.desktop.appearance.LocalDesktopStrings.current[\"common_clear\"]"
+        },
+        {
+          "offset": 156270,
+          "before": "stringResource(R.string.common_delete)",
+          "after": "com.bilipai.desktop.appearance.LocalDesktopStrings.current[\"common_delete\"]"
+        }
+      ],
+      "fullSourceInverseVerified": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchViewModel.kt",
+      "target": "feature/search/SearchViewModel.kt",
+      "inputSha256LF": "9735fb53cf10485d0244dece24c6c887c4775ef6c27231a3b617ebc01bb05763",
+      "outputSha256LF": "4566a5d4ace4474cb8f4e147722c360db5201a5e8fd143b26ce1f7dc2e55b682",
+      "operations": [
+        {
+          "offset": 49,
+          "before": "import android.app.Application",
+          "after": ""
+        },
+        {
+          "offset": 50,
+          "before": "import androidx.lifecycle.AndroidViewModel",
+          "after": ""
+        },
+        {
+          "offset": 51,
+          "before": "import androidx.lifecycle.viewModelScope",
+          "after": ""
+        },
+        {
+          "offset": 52,
+          "before": "import com.android.purebilibili.core.database.AppDatabase",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalSearchEnvironment\nimport com.bilipai.desktop.ui.DesktopOriginalSearchSettings"
+        },
+        {
+          "offset": 903,
+          "before": "import com.android.purebilibili.data.repository.SearchRepository",
+          "after": ""
+        },
+        {
+          "offset": 8349,
+          "before": "class SearchViewModel(application: Application) : AndroidViewModel(application) {",
+          "after": "internal class SearchViewModel(private val application: DesktopOriginalSearchEnvironment) : AutoCloseable {\n    private val viewModelScope = application.scope\n    private val SearchRepository = application.requests\n    private fun <T> MutableStateFlow(value: T) = com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(value, application::commit)\n    override fun close() = application.close()"
+        },
+        {
+          "offset": 8875,
+          "before": "AppDatabase.getDatabase(application).searchHistoryDao()",
+          "after": "application.history"
+        },
+        {
+          "offset": 9276,
+          "before": "com.android.purebilibili.data.repository.BlockedUpRepository(application)",
+          "after": "application.blocked"
+        },
+        {
+          "offset": 9426,
+          "before": "com.android.purebilibili.core.store.SettingsManager.",
+          "after": "DesktopOriginalSearchSettings."
+        },
+        {
+          "offset": 21742,
+          "before": "com.android.purebilibili.core.store.SettingsManager.",
+          "after": "DesktopOriginalSearchSettings."
+        },
+        {
+          "offset": 67014,
+          "before": "com.android.purebilibili.core.store.SettingsManager.",
+          "after": "DesktopOriginalSearchSettings."
+        },
+        {
+          "offset": 21669,
+          "before": "getApplication<android.app.Application>()",
+          "after": "application"
+        },
+        {
+          "offset": 66922,
+          "before": "getApplication<android.app.Application>()",
+          "after": "application"
+        },
+        {
+          "offset": 23802,
+          "before": "com.android.purebilibili.core.util.AnalyticsHelper.logSearch(normalizedKeyword)",
+          "after": "application.logSearch(normalizedKeyword)"
+        },
+        {
+          "offset": 68522,
+          "before": "com.android.purebilibili.data.repository.ActionRepository.toggleWatchLater(aid, true)",
+          "after": "application.toggleWatchLater(aid, true)"
+        },
+        {
+          "offset": 68609,
+          "before": "android.widget.Toast.makeText(getApplication(), \"已添加到稍后再看\", android.widget.Toast.LENGTH_SHORT).show()",
+          "after": "application.message(\"已添加到稍后再看\")"
+        },
+        {
+          "offset": 68688,
+          "before": "android.widget.Toast.makeText(getApplication(), e.message ?: \"添加失败\", android.widget.Toast.LENGTH_SHORT).show()",
+          "after": "application.message(e.message ?: \"添加失败\")"
+        },
+        {
+          "offset": 24931,
+          "before": "val nativeFiltered = videos.filter { it.owner.mid !in blockedMids }",
+          "after": "application.assertCurrent()\n                        val nativeFiltered = videos.filter { it.owner.mid !in blockedMids }"
+        },
+        {
+          "offset": 48990,
+          "before": "val nativeFiltered = videos.filter { it.owner.mid !in blockedMids }",
+          "after": "application.assertCurrent()\n                        val nativeFiltered = videos.filter { it.owner.mid !in blockedMids }"
+        }
+      ],
+      "fullSourceInverseVerified": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingViewModel.kt",
+      "target": "feature/search/SearchTrendingViewModel.kt",
+      "inputSha256LF": "61b8c81269938c20edd8f51e2c1b2822922deba01097334f80b8f1886ed72a0f",
+      "outputSha256LF": "c4c86ef5570eec88e0babf973398f6215cb5f3d621d5df94db52669f201410b3",
+      "operations": [
+        {
+          "offset": 49,
+          "before": "import android.app.Application",
+          "after": ""
+        },
+        {
+          "offset": 50,
+          "before": "import androidx.lifecycle.AndroidViewModel",
+          "after": ""
+        },
+        {
+          "offset": 51,
+          "before": "import androidx.lifecycle.viewModelScope",
+          "after": ""
+        },
+        {
+          "offset": 52,
+          "before": "import com.android.purebilibili.data.repository.SearchRepository",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalSearchEnvironment"
+        },
+        {
+          "offset": 536,
+          "before": "class SearchTrendingViewModel(\n    application: Application\n) : AndroidViewModel(application) {",
+          "after": "internal class SearchTrendingViewModel(private val application: DesktopOriginalSearchEnvironment) : AutoCloseable {\n    private val viewModelScope = application.scope\n    private val SearchRepository = application.requests\n    private fun <T> MutableStateFlow(value: T) = com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(value, application::commit)\n    override fun close() = application.close()"
+        }
+      ],
+      "fullSourceInverseVerified": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingScreen.kt",
+      "target": "feature/search/SearchTrendingScreen.kt",
+      "inputSha256LF": "456f6de62794eaedcc5151859a67d1cc7724e7ff74a518847b130f1d95f0c402",
+      "outputSha256LF": "d62fcb2e6d09064b6289d8383927f07bd53eda326ccbc22171faa00f0e230488",
+      "operations": [
+        {
+          "offset": 2823,
+          "before": "fun SearchTrendingScreen(",
+          "after": "internal fun SearchTrendingScreen("
+        },
+        {
+          "offset": 2528,
+          "before": "import androidx.lifecycle.viewmodel.compose.viewModel",
+          "after": ""
+        },
+        {
+          "offset": 2871,
+          "before": "viewModel: SearchTrendingViewModel = viewModel()",
+          "after": "viewModel: SearchTrendingViewModel"
+        },
+        {
+          "offset": 2944,
+          "before": ".collectAsStateWithLifecycle(",
+          "after": ".collectAsState("
+        },
+        {
+          "offset": 1913,
+          "before": "import androidx.compose.runtime.Composable",
+          "after": "import androidx.compose.runtime.Composable\nimport androidx.compose.runtime.collectAsState"
+        }
+      ],
+      "fullSourceInverseVerified": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "target": "data/repository/DesktopOriginalSearchRepository.kt",
+      "inputSha256LF": "9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55",
+      "outputSha256LF": "dde0d6af91e92445226a6c168d0b60f9de8f7793778453e563b54899bf08a1ca",
+      "operations": [
+        {
+          "offset": 50,
+          "before": "import com.android.purebilibili.core.network.NetworkModule",
+          "after": "import com.android.purebilibili.core.network.SearchApi\nimport com.android.purebilibili.core.network.BilibiliApi\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive"
+        },
+        {
+          "offset": 1235,
+          "before": "object SearchRepository {\n    private val api = NetworkModule.searchApi\n    private val navApi = NetworkModule.api",
+          "after": "internal class DesktopOriginalSearchRepository(\n    private val api: SearchApi,\n    private val navApi: BilibiliApi,\n    private val wbiKeys: suspend () -> Result<Pair<String, String>>,\n    private val owned: () -> Boolean,\n) {\n    private suspend fun checked() { currentCoroutineContext().ensureActive(); if (!owned()) throw CancellationException(\"Search route retired\") }"
+        },
+        {
+          "offset": 3299,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 7545,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 9299,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 10260,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 11936,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 13760,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 15555,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 17140,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 18569,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 19657,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 20819,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 22168,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 23106,
+          "before": "withContext(Dispatchers.IO) {",
+          "after": "withContext(Dispatchers.IO) {\n        checked()"
+        },
+        {
+          "offset": 5505,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 9052,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 10122,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 11690,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 13540,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 15343,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 16946,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 18476,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 19592,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 20695,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 22186,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 23047,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 24332,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 25073,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 25802,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 27184,
+          "before": "} catch (e: Exception) {",
+          "after": "} catch (e: Exception) {\n            checked()"
+        },
+        {
+          "offset": 26467,
+          "before": "            val navResp = navApi.getNavInfo()\n            val wbiImg = navResp.data?.wbi_img\n            val imgKey = wbiImg?.img_url?.substringAfterLast(\"/\")?.substringBefore(\".\") ?: \"\"\n            val subKey = wbiImg?.sub_url?.substringAfterLast(\"/\")?.substringBefore(\".\") ?: \"\"",
+          "after": "            checked()\n            val (imgKey, subKey) = wbiKeys().getOrThrow()\n            checked()"
+        },
+        {
+          "offset": 1034,
+          "before": "data class SearchTrendingBundle(\n    val pinnedItems: List<HotItem> = emptyList(),\n    val items: List<HotItem> = emptyList()\n) {\n    val allItems: List<HotItem>\n        get() = pinnedItems + items\n}\n\n",
+          "after": ""
+        },
+        {
+          "offset": 27440,
+          "before": "\n\n//  搜索排序选项\nenum class SearchOrder(val value: String, val displayName: String) {\n    TOTALRANK(\"totalrank\", \"综合排序\"),\n    PUBDATE(\"pubdate\", \"最新发布\"),\n    CLICK(\"click\", \"播放最多\"),\n    DM(\"dm\", \"弹幕最多\"),\n    STOW(\"stow\", \"收藏最多\"),\n    SCORES(\"scores\", \"评论最多\"),\n    ATTENTION(\"attention\", \"喜欢最多\")\n}\n\nenum class SearchArticleCategory(val value: Int, val displayName: String) {\n    ALL(0, \"全部分区\"),\n    GAME(1, \"游戏\"),\n    ANIMATION(2, \"动画\"),\n    LIFE(3, \"生活\"),\n    LIGHT_NOVEL(16, \"轻小说\"),\n    TECHNOLOGY(17, \"科技\"),\n    MOVIE(28, \"影视\"),\n    INTEREST(29, \"兴趣\")\n}\n\nenum class SearchPhotoCategory(val value: Int, val displayName: String) {\n    ALL(0, \"全部分区\"),\n    ILLUSTRATION(1, \"画友\"),\n    PHOTOGRAPHY(2, \"摄影\")\n}\n\n//  搜索时长筛选\nenum class SearchDuration(val value: Int, val displayName: String) {\n    ALL(0, \"全部时长\"),\n    UNDER_10MIN(1, \"10分钟以下\"),\n    TEN_TO_30MIN(2, \"10-30分钟\"),\n    THIRTY_TO_60MIN(3, \"30-60分钟\"),\n    OVER_60MIN(4, \"60分钟以上\")\n}\n\nenum class SearchUpOrder(val value: String, val displayName: String) {\n    DEFAULT(\"0\", \"默认排序\"),\n    FANS(\"fans\", \"粉丝数\"),\n    LEVEL(\"level\", \"用户等级\")\n}\n\nenum class SearchOrderSort(val value: Int, val displayName: String) {\n    DESC(0, \"从高到低\"),\n    ASC(1, \"从低到高\")\n}\n\nenum class SearchUserType(val value: Int, val displayName: String) {\n    ALL(0, \"全部类型\"),\n    UP(1, \"仅UP主\"),\n    NORMAL(2, \"普通用户\"),\n    VERIFIED(3, \"认证用户\")\n}\n\nenum class SearchLiveOrder(val value: String, val displayName: String) {\n    ONLINE(\"online\", \"人气直播\"),\n    LIVE_TIME(\"live_time\", \"最新开播\")\n}\n",
+          "after": "\n"
+        },
+        {
+          "offset": 1429,
+          "before": "    data class SearchPageInfo(\n        val currentPage: Int,\n        val totalPages: Int,\n        val totalResults: Int,\n        val hasMore: Boolean\n    )",
+          "after": ""
+        },
+        {
+          "offset": 1034,
+          "before": "internal class DesktopOriginalSearchRepository(",
+          "after": "private typealias SearchPageInfo = SearchRepository.SearchPageInfo\n\ninternal class DesktopOriginalSearchRepository("
+        },
+        {
+          "offset": 11227,
+          "before": "Result.success(\n                SearchTrendingBundle(\n                    pinnedItems = pinnedItems,\n                    items = items\n                )\n            )",
+          "after": "run { checked(); Result.success(\n                SearchTrendingBundle(\n                    pinnedItems = pinnedItems,\n                    items = items\n                )\n            ) }"
+        },
+        {
+          "offset": 10697,
+          "before": "Result.success(\n                        SearchTrendingBundle(items = wbiItems.take(limit))\n                    )",
+          "after": "run { checked(); Result.success(\n                        SearchTrendingBundle(items = wbiItems.take(limit))\n                    ) }"
+        },
+        {
+          "offset": 6799,
+          "before": "Result.success(mergeSearchDurationResultPages(pages))",
+          "after": "run { checked(); Result.success(mergeSearchDurationResultPages(pages)) }"
+        },
+        {
+          "offset": 13257,
+          "before": "Result.success(Pair(bangumiList, pageInfo))",
+          "after": "run { checked(); Result.success(Pair(bangumiList, pageInfo)) }"
+        },
+        {
+          "offset": 18212,
+          "before": "Result.success(Pair(articleList, pageInfo))",
+          "after": "run { checked(); Result.success(Pair(articleList, pageInfo)) }"
+        },
+        {
+          "offset": 15080,
+          "before": "Result.success(Pair(resultList, pageInfo))",
+          "after": "run { checked(); Result.success(Pair(resultList, pageInfo)) }"
+        },
+        {
+          "offset": 5102,
+          "before": "Result.success(Pair(videoList, pageInfo))",
+          "after": "run { checked(); Result.success(Pair(videoList, pageInfo)) }"
+        },
+        {
+          "offset": 16723,
+          "before": "Result.success(Pair(liveList, pageInfo))",
+          "after": "run { checked(); Result.success(Pair(liveList, pageInfo)) }"
+        },
+        {
+          "offset": 8755,
+          "before": "Result.success(Pair(upList, pageInfo))",
+          "after": "run { checked(); Result.success(Pair(upList, pageInfo)) }"
+        },
+        {
+          "offset": 19429,
+          "before": "Result.success(Pair(items, pageInfo))",
+          "after": "run { checked(); Result.success(Pair(items, pageInfo)) }"
+        },
+        {
+          "offset": 20551,
+          "before": "Result.success(Pair(items, pageInfo))",
+          "after": "run { checked(); Result.success(Pair(items, pageInfo)) }"
+        },
+        {
+          "offset": 22061,
+          "before": "Result.success(Pair(items, pageInfo))",
+          "after": "run { checked(); Result.success(Pair(items, pageInfo)) }"
+        },
+        {
+          "offset": 22466,
+          "before": "Result.success(emptyList())",
+          "after": "run { checked(); Result.success(emptyList()) }"
+        },
+        {
+          "offset": 22970,
+          "before": "Result.success(suggestions)",
+          "after": "run { checked(); Result.success(suggestions) }"
+        },
+        {
+          "offset": 26307,
+          "before": "Result.success(items)",
+          "after": "run { checked(); Result.success(items) }"
+        },
+        {
+          "offset": 9475,
+          "before": "Result.success(hint)",
+          "after": "run { checked(); Result.success(hint) }"
+        },
+        {
+          "offset": 9797,
+          "before": "Result.success(hint)",
+          "after": "run { checked(); Result.success(hint) }"
+        }
+      ],
+      "fullSourceInverseVerified": true
+    }
+  ],
+  "directSources": [
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchLandingUi.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchUiModels.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchTabletLayoutPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchSelectionChipColorPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchResultNavigationPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchResultCardAppearancePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchEntryMotionPolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt",
+    "app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt"
+  ]
+}

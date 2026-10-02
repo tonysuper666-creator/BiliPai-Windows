@@ -1,0 +1,72 @@
+PASS original default hint/trending/discover bootstrap
+PASS original suggestion debounce final keyword
+PASS superseded debounce query not requested
+PASS cancelled slow suggestion cannot publish after new result
+PASS original video search first page
+PASS original video WBI/platform params
+PASS original video pagination retains unique first/second page
+PASS original bili_user initial request
+PASS original bili_user current page populated
+PASS original bili_user independent pagination
+PASS original media_bangumi initial request
+PASS original media_bangumi current page populated
+PASS original media_bangumi independent pagination
+PASS original media_ft initial request
+PASS original media_ft current page populated
+PASS original media_ft independent pagination
+PASS original live_room initial request
+PASS original live_room current page populated
+PASS original live_room independent pagination
+PASS original live_user initial request
+PASS original live_user current page populated
+PASS original live_user independent pagination
+PASS original article initial request
+PASS original article current page populated
+PASS original article independent pagination
+PASS original topic initial request
+PASS original topic current page populated
+PASS original topic independent pagination
+PASS original photo initial request
+PASS original photo current page populated
+PASS original photo independent pagination
+PASS return to original cached VIDEO second page
+PASS original UP sort/direction/type request params
+PASS original live sorting request params
+PASS original article sorting/category request params
+PASS original photo sorting/category request params
+PASS original sorting restarts same video keyword
+PASS original partition/date request params
+PASS original duration request param
+PASS same existing account history records original searches
+PASS original history delete reaches same sole DAO
+PASS original confirmed history clear reaches same sole DAO
+PASS owned CAS and legacy mutations retain all same-DAO history
+PASS BackToTop read uses existing global preference owner
+PASS BackToTop offset writes same canonical keys with owner permit
+PASS incognito actual original result still loads
+PASS original privacy suppresses persistence
+PASS new search session renders fresh result
+PASS original activeSearchSessionId/caller rejects late result
+PASS same blocked-up owner removes current result
+PASS original hot setting same global backing
+PASS original discover setting same global backing
+PASS grid write uses existing global canonical preference
+PASS full original Trending VM initial result
+PASS older original Trending refresh reached delayed transport
+PASS new original Trending refresh publishes final ranking
+PASS cancelled noncooperative original Trending result cannot publish
+PASS unpublished Root refuses new request/history admission
+PASS full original Search landing/history/hot mounted
+PASS actual desktop keyboard edits original search query
+PASS actual desktop Enter submits original KeyboardActions.Search
+PASS actual pointer switches original UP tab
+PASS actual Search restores landing after results
+PASS actual pointer opens full original Trending page
+PASS actual pointer chooses Trending keyword into original Search
+PASS actual scene exercised pointer and desktop keyboard
+PASS retired environment rejects reducer admission
+PASS retired route preserves previous visible original state
+PASS old epoch history cannot mutate sole DAO
+PASS restore freeze rejects writes on existing history backing
+PASS restore rejected entry not persisted
+Original Search CPU/UI PASS 71 assertions; real pointer/key; RootMounted=false

@@ -1,0 +1,175 @@
+{
+  "actual85Manifest": "417663152a99ecf23e6887e2940b15c7c1cfd06c6c3f0b2b1925430ed4ca4012",
+  "orderedCP": "6398174d444cf02365bc66480c1c37bb00800a520e681c4649100067af68b419",
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "3e949e52ce13f14b597d93cddf562ba95e31bee5fd061e627cb450489606326a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopSearchPreferences.kt",
+      "sha256Bytes": "32536d54130ca15214b040b74f66ac618e1e82184d3c6d9b93079e2d2876b4ae"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeRootAnalytics.kt",
+      "sha256Bytes": "e78989d7269060325ee4b47a53628d1faa82f4277257b086350be16e8d35db75"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootRouteAssembly.kt",
+      "sha256Bytes": "12df83bb44b6a47d4d0a4e70c039c425b3d1ecd12a527b7c68bba54cdee714d6"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootStack.kt",
+      "sha256Bytes": "8893af9323f7d567ff27b647a53ee9e877edc8b4229a6418f497178fe357518a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalSearchEnvironment.kt",
+      "sha256Bytes": "e96bedbd86c69b136724931043b6775edc0808ece2f4457af8887c3e664d5350"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalSearchRoot.kt",
+      "sha256Bytes": "84df422835627b428f36f6d55ff71c9e7e8dd44725b1edaadbb2f3e38ad575e5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopReadyHomeFactoryBinding.kt",
+      "sha256Bytes": "f5511cbb3ea28ac6fee146e01023a2afc486c7f3cce5b2c61e54803d973c1f79"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "ced93a0495eef7e0f94c718a24035b4b31121a4cba40d63ab21dc646110b060d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalSearchPreferenceMethods.kt",
+      "sha256Bytes": "ee3f01c8b1fa71b72bc86e3141b91c24b4ca4957e5613a6e1fe40ea8e683c83d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\core\\ui\\BackToTopPreference.kt",
+      "sha256Bytes": "02abc966ac22b0bae00b30e33cf3f4de4176aa81417fe39de917fc7138319265"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\core\\ui\\components\\AppLiquidGlassBackToTopButton.kt",
+      "sha256Bytes": "b0b9db2b64b1c64867aea8c095184658949d8dbf8fd4537286095f1060adfe4a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalSearchTrendingSkeleton.kt",
+      "sha256Bytes": "abaec557308024c834261372eebaf6ab4b47eaa2c2948e2ba15d2954b505ca96"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalSearchRepository.kt",
+      "sha256Bytes": "dde0d6af91e92445226a6c168d0b60f9de8f7793778453e563b54899bf08a1ca"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\search\\SearchScreen.kt",
+      "sha256Bytes": "c8d613b6dd5dc0dd657ae334ee9cb2f072833dee790a4b614a4b3ae0bb1f7838"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\search\\SearchTrendingScreen.kt",
+      "sha256Bytes": "d62fcb2e6d09064b6289d8383927f07bd53eda326ccbc22171faa00f0e230488"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\search\\SearchTrendingViewModel.kt",
+      "sha256Bytes": "c4c86ef5570eec88e0babf973398f6215cb5f3d621d5df94db52669f201410b3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\search\\SearchViewModel.kt",
+      "sha256Bytes": "4566a5d4ace4474cb8f4e147722c360db5201a5e8fd143b26ce1f7dc2e55b682"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchContentStatePolicy.kt",
+      "sha256Bytes": "1d8886b9c447c324ed7333bc07a375860ddd58677cbb916434120ab94c8261a3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchEmptyStatePolicy.kt",
+      "sha256Bytes": "a6284ad871eab020fb9e4b3210a8e2abebfa7d54dd246653cdfedc771526c012"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchEntryMotionPolicy.kt",
+      "sha256Bytes": "d6d64547269d57099f62f5556ce08f47e9205c193ad742c2d60b0f8276f048aa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchLandingUi.kt",
+      "sha256Bytes": "37e137719ce216ff19302bbb94767431b65e2e4ce2e185a4cbe7da96f6278cfe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchMotionBudgetPolicy.kt",
+      "sha256Bytes": "24a83910f4cd0a04055f443912af05addb79aa61dd3edef565ae66588cff894c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchResultCardAppearancePolicy.kt",
+      "sha256Bytes": "be1422a9670240aa8f15e70695f154f97c1277e180fff51b5c1beebb49d9ad38"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchResultNavigationPolicy.kt",
+      "sha256Bytes": "3b049c25c74d3c4da671e4400a54d8ba7ba8b10c9e9afd2d859f23eb203cbff2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchSelectionChipColorPolicy.kt",
+      "sha256Bytes": "731ef56cf10d7671ffee1250b180502a4531ab4f30fea7fe534ef3064c9ed144"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchTabletLayoutPolicy.kt",
+      "sha256Bytes": "8efb75d46f58aab2fa42d1b81183deb4fb923eb05da2e238e4e97fa4b2348c90"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchUiModels.kt",
+      "sha256Bytes": "5f203359dd7d35d28579dd72239bfc2811f079ce87e684207d4d218c3086a06b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\direct\\com\\android\\purebilibili\\feature\\search\\SearchVideoFilterSheet.kt",
+      "sha256Bytes": "8d4bc6df6da28464d90b238204617811d495746b6419b407d44b5e7bb76b8aba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\SearchOwnerFixture.kt",
+      "sha256Bytes": "d8878b359b2d98e19ef7353a439329211ada5a1f1265a9198b2c06aa2abb649a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\full-navigation-settings\\com\\android\\purebilibili\\core\\store\\DesktopOriginalFullNavigationSettings.kt",
+      "sha256Bytes": "c26e7005c2ce24b94f67bb53a6fd135c8d73b164901c80bafc669f916367bc8b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\full-navigation-settings\\com\\android\\purebilibili\\feature\\search\\DesktopOriginalSearchTabOrderPolicy.kt",
+      "sha256Bytes": "c4130a3d83695878b25d3d19344825797b380f463a24475a9a0ee4b1433b9795"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\full-navigation-settings\\com\\android\\purebilibili\\feature\\settings\\DesktopNavigationIconPreviewPolicy.kt",
+      "sha256Bytes": "9cdff76b9a3688ce874851859ab4ad6c633c9f2260c9a26c33241bd7978d0c75"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\full-navigation-settings\\com\\android\\purebilibili\\feature\\settings\\DesktopNavigationMaterialSymbols.kt",
+      "sha256Bytes": "9d2122fecd66aea800eb377a92b7e583c60ab5e13e324b3b5310a343f8e9f47b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\full-navigation-settings\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalAnimationSettingsContent.kt",
+      "sha256Bytes": "e1d887f8e6a2bbf9c2b5949b0fbcdb59ec2d03544d4fa9c93d402d3e29fbf06e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\full-navigation-settings\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalBottomBarSettingsContent.kt",
+      "sha256Bytes": "2fc996b5571af763dda576ffa81f8398dceb577f71a460b6e09079a7c77f6b0a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\full-navigation-settings\\com\\bilipai\\desktop\\settings\\DesktopNavigationSettingsVectors.kt",
+      "sha256Bytes": "2be81f75754f794e27a32fc6ff367b4ee1b38bf96655d7796d1c0f7642263d08"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\settings-privacy\\com\\android\\purebilibili\\core\\store\\DesktopPrivacyAuthenticationSettings.kt",
+      "sha256Bytes": "5dec6b9cce5e3cb8ed92ca59622b337b21d0257940135321e0b258d334744ea2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\settings-privacy\\com\\android\\purebilibili\\core\\store\\SearchHintSettingsStore.kt",
+      "sha256Bytes": "1263ec6cf3de3c22f1750b47027ddfc7db3610815d52c1f668126a9af992dcbe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\settings-privacy\\com\\android\\purebilibili\\feature\\search\\PrivacySearchHintPolicy.kt",
+      "sha256Bytes": "6f736b6cfe1de5587c68ee68c7bcefcd028c4203e22b5cab01e53cb51d595246"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\settings-privacy\\com\\android\\purebilibili\\feature\\settings\\SettingsPrivacySection.kt",
+      "sha256Bytes": "8f1e1b84f742bcb1a28b2e93ae02ea02833bdb394a0038fda80e41bbf9e5c317"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\producer-check\\settings-privacy\\com\\bilipai\\desktop\\settings\\DesktopPrivacySettingsVectors.kt",
+      "sha256Bytes": "d3a427589171c6340e0a30d2c0f8b0fc8cdb9fef9c624cb901d6d448b24719e7"
+    }
+  ],
+  "candidateWritten": false
+}

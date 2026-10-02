@@ -1,0 +1,62 @@
+PASS original default hint/trending/discover bootstrap
+PASS original suggestion debounce final keyword
+PASS superseded debounce query not requested
+PASS cancelled slow suggestion cannot publish after new result
+PASS original video search first page
+PASS original video WBI/platform params
+PASS original video pagination retains unique first/second page
+PASS original bili_user initial request
+PASS original bili_user current page populated
+PASS original bili_user independent pagination
+PASS original media_bangumi initial request
+PASS original media_bangumi current page populated
+PASS original media_bangumi independent pagination
+PASS original media_ft initial request
+PASS original media_ft current page populated
+PASS original media_ft independent pagination
+PASS original live_room initial request
+PASS original live_room current page populated
+PASS original live_room independent pagination
+PASS original live_user initial request
+PASS original live_user current page populated
+PASS original live_user independent pagination
+PASS original article initial request
+PASS original article current page populated
+PASS original article independent pagination
+PASS original topic initial request
+PASS original topic current page populated
+PASS original topic independent pagination
+PASS original photo initial request
+PASS original photo current page populated
+PASS original photo independent pagination
+PASS return to original cached VIDEO second page
+PASS original sorting restarts same video keyword
+PASS original partition/date request params
+PASS original duration request param
+PASS same existing account history records original searches
+PASS original history delete reaches same sole DAO
+PASS original confirmed history clear reaches same sole DAO
+PASS incognito actual original result still loads
+PASS original privacy suppresses persistence
+PASS new search session renders fresh result
+PASS original activeSearchSessionId/caller rejects late result
+PASS same blocked-up owner removes current result
+PASS original hot setting same global backing
+PASS original discover setting same global backing
+PASS grid write uses existing global canonical preference
+Exception in thread "main" java.lang.IllegalStateException: full original Trending VM initial result; state=VIDEO/1; searching=false; error=null; last=getHotSearch:{}
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt.until(SearchOwnerFixture.kt:41)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt.access$until(SearchOwnerFixture.kt:1)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt$until$1.invokeSuspend(SearchOwnerFixture.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:98)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.SearchOwnerFixtureKt.main(SearchOwnerFixture.kt:104)

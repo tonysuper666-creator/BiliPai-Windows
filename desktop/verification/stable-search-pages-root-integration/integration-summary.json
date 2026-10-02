@@ -1,0 +1,125 @@
+{
+  "status": "integrated_normal_product_main_and_test_compile_passed",
+  "baseCommit": "6ac84c8036ed4c75e2944d92d1020566e283e983",
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopSearchPreferences.kt",
+      "beforeSha256Bytes": "8d000d578ec677578aa6534b9dce903a86557d8bbd4cf6d461afed559f9b31a5",
+      "afterSha256Bytes": "96cdc62e4c95d7076cb9b7ff8cee1ae32f3144bf8bfc64ed53528366608acb4c",
+      "afterSha256LF": "32536d54130ca15214b040b74f66ac618e1e82184d3c6d9b93079e2d2876b4ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSha256Bytes": "b3a0e728e0eb60af43d521cc8388eda0db9c14d3d543e0199746f880cc1f1bb9",
+      "afterSha256Bytes": "3e949e52ce13f14b597d93cddf562ba95e31bee5fd061e627cb450489606326a",
+      "afterSha256LF": "3e949e52ce13f14b597d93cddf562ba95e31bee5fd061e627cb450489606326a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootAnalytics.kt",
+      "beforeSha256Bytes": "c22cd94ca423d85a2099180485cec615d0775b1bc38be34a9f4babfe9dbb3283",
+      "afterSha256Bytes": "e78989d7269060325ee4b47a53628d1faa82f4277257b086350be16e8d35db75",
+      "afterSha256LF": "e78989d7269060325ee4b47a53628d1faa82f4277257b086350be16e8d35db75"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "beforeSha256Bytes": "9484f6cacc3d20863805eaa06738809f259fd58a5804764e1d2cc2f9415a15f9",
+      "afterSha256Bytes": "12df83bb44b6a47d4d0a4e70c039c425b3d1ecd12a527b7c68bba54cdee714d6",
+      "afterSha256LF": "12df83bb44b6a47d4d0a4e70c039c425b3d1ecd12a527b7c68bba54cdee714d6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "beforeSha256Bytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "afterSha256Bytes": "8893af9323f7d567ff27b647a53ee9e877edc8b4229a6418f497178fe357518a",
+      "afterSha256LF": "8893af9323f7d567ff27b647a53ee9e877edc8b4229a6418f497178fe357518a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+      "beforeSha256Bytes": "449b12353ebbb59655d30e1d8ed34dda74fdcfc1f0cc19a6966389f2961491ca",
+      "afterSha256Bytes": "f5511cbb3ea28ac6fee146e01023a2afc486c7f3cce5b2c61e54803d973c1f79",
+      "afterSha256LF": "f5511cbb3ea28ac6fee146e01023a2afc486c7f3cce5b2c61e54803d973c1f79"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "beforeSha256Bytes": "c27b4f45109af34521cada062d9a031ffc4fed276a8b3b4eb0daea6a224aed11",
+      "afterSha256Bytes": "ced93a0495eef7e0f94c718a24035b4b31121a4cba40d63ab21dc646110b060d",
+      "afterSha256LF": "ced93a0495eef7e0f94c718a24035b4b31121a4cba40d63ab21dc646110b060d"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-favorites.py",
+      "beforeSha256Bytes": "9b322a8713cb31b798f0ba4b87d6b1b0a85bdb0d5ff17ea858d9c154374e05fd",
+      "afterSha256Bytes": "b18421444e6703be7daeeaf911b9715cd94334ebe5d1e0fcc0a2cb39f87a0b27",
+      "afterSha256LF": "e66ac70790137afdfae4afc9c67c977501ffea4c0ae88df09d3de94713a600aa"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-full-navigation.py",
+      "beforeSha256Bytes": "53d46335fa453e7acb80dc6f44566c21aaff87ec3861b1fdc02edf1b7ffa1661",
+      "afterSha256Bytes": "8b90d6151db8c33731c1ab27a7d765c015299ce044d2b02fe1be2241a0a050d3",
+      "afterSha256LF": "8b90d6151db8c33731c1ab27a7d765c015299ce044d2b02fe1be2241a0a050d3"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-settings-privacy.py",
+      "beforeSha256Bytes": "a226aa7dae5ec56cb8419a24026c95e4b6579aa0c0308cf6d75e5ae2b439f23c",
+      "afterSha256Bytes": "20ec6b7581b0ba61b175dc924bf2a473d1a548d3ca079ff66e4a86ff97bb2ed1",
+      "afterSha256LF": "58ff7c7b33bacc72ec1351b0d2d6cf3d6cda86ae23ee992a0ca5b211ca3268a7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchEnvironment.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "e96bedbd86c69b136724931043b6775edc0808ece2f4457af8887c3e664d5350",
+      "afterSha256LF": "e96bedbd86c69b136724931043b6775edc0808ece2f4457af8887c3e664d5350"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSearchRoot.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "84df422835627b428f36f6d55ff71c9e7e8dd44725b1edaadbb2f3e38ad575e5",
+      "afterSha256LF": "84df422835627b428f36f6d55ff71c9e7e8dd44725b1edaadbb2f3e38ad575e5"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-search-pages.py",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "70372208969a28920247bca18ea16be1532e2d5bac5d00dbe803d037a6125ba3",
+      "afterSha256LF": "70372208969a28920247bca18ea16be1532e2d5bac5d00dbe803d037a6125ba3"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "b7cbefcae27a6fe428e46b2aba65c3936a65bbf741b8508af5b2822159aa874f",
+      "afterSha256Bytes": "b8f2733d896d1b5923c826fb6066944586219cf06d92a033dcf1fa14f3924253",
+      "afterSha256LF": "2245139f2b5cb6ae7d6a02c90e43e89e3b35a5dd37710821edbc6b189ca7a23c"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "77c57802d0982fcb9120c9d32d37f8c29b5b095365c22ab8577b5d7aa6e2c0da",
+      "afterSha256Bytes": "dc50d5bbc819603ec21846d901e747086cf815c1e01a4e56292761ceddb74d4f",
+      "afterSha256LF": "d51e0ea10c71ebb46ef476a74033d15e64928786868cbaa472d90f29ff9ca8b3"
+    }
+  ],
+  "exactExistingFamilies": 10,
+  "exactHunks": 15,
+  "newCanonicalFiles": 3,
+  "newDependencies": 0,
+  "sourceCount": 1198,
+  "resourceCount": 244,
+  "newOriginalIdentities": 15,
+  "existingSourceFeatureUnions": 15,
+  "existingResourceFeatureUnions": 3,
+  "actualProductOverrides": 0,
+  "normalMainAndTestCompilePassed": true,
+  "integratedJUnitExecuted": false,
+  "preparedCPUAndActualPointerKeyboardAssertions": 71,
+  "fullOriginalSourceInverseAudits": 5,
+  "sharedBackToTopSourceInverseAudits": 2,
+  "originalSettingsMethods": 7,
+  "directOriginalSourcesVerbatim": 11,
+  "soleSearchProducer": "extractOriginalSearchPages",
+  "directSoleProducer": "prepareUpstreamSources",
+  "selectedPolicyProducersWriteRetirementMarkers": true,
+  "sameHistoryDAOAndStoreCAS": true,
+  "sameGlobalBackToTopPreferences": true,
+  "freshNativeShareProducerPassed": true,
+  "generatedOrBinaryProductCopies": false,
+  "excludedCompiledProofFiles": [],
+  "rootSearchWindowRuntimeAccepted": false,
+  "ordinaryBilibiliAccountAcceptance": false,
+  "desktopPackageUpdated": false,
+  "allFeaturesComplete": false
+}

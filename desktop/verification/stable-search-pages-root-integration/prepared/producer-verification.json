@@ -1,0 +1,142 @@
+{
+  "passed": true,
+  "sourceOutputs": [
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalSearchPreferenceMethods.kt",
+      "sha256Bytes": "ee3f01c8b1fa71b72bc86e3141b91c24b4ca4957e5613a6e1fe40ea8e683c83d",
+      "producer": "extract-upstream-search-pages.py"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/skeleton/DesktopOriginalSearchTrendingSkeleton.kt",
+      "sha256Bytes": "abaec557308024c834261372eebaf6ab4b47eaa2c2948e2ba15d2954b505ca96",
+      "producer": "extract-upstream-search-pages.py"
+    },
+    {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalSearchRepository.kt",
+      "sha256Bytes": "dde0d6af91e92445226a6c168d0b60f9de8f7793778453e563b54899bf08a1ca",
+      "producer": "extract-upstream-search-pages.py"
+    },
+    {
+      "path": "com/android/purebilibili/feature/search/SearchScreen.kt",
+      "sha256Bytes": "c8d613b6dd5dc0dd657ae334ee9cb2f072833dee790a4b614a4b3ae0bb1f7838",
+      "producer": "extract-upstream-search-pages.py"
+    },
+    {
+      "path": "com/android/purebilibili/feature/search/SearchTrendingScreen.kt",
+      "sha256Bytes": "d62fcb2e6d09064b6289d8383927f07bd53eda326ccbc22171faa00f0e230488",
+      "producer": "extract-upstream-search-pages.py"
+    },
+    {
+      "path": "com/android/purebilibili/feature/search/SearchTrendingViewModel.kt",
+      "sha256Bytes": "c4c86ef5570eec88e0babf973398f6215cb5f3d621d5df94db52669f201410b3",
+      "producer": "extract-upstream-search-pages.py"
+    },
+    {
+      "path": "com/android/purebilibili/feature/search/SearchViewModel.kt",
+      "sha256Bytes": "4566a5d4ace4474cb8f4e147722c360db5201a5e8fd143b26ce1f7dc2e55b682",
+      "producer": "extract-upstream-search-pages.py"
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/BackToTopPreference.kt",
+      "sha256Bytes": "02abc966ac22b0bae00b30e33cf3f4de4176aa81417fe39de917fc7138319265",
+      "producer": "extract-upstream-favorites.py",
+      "inverseOriginalExact": true
+    },
+    {
+      "path": "com/android/purebilibili/core/ui/components/AppLiquidGlassBackToTopButton.kt",
+      "sha256Bytes": "b0b9db2b64b1c64867aea8c095184658949d8dbf8fd4537286095f1060adfe4a",
+      "producer": "extract-upstream-favorites.py",
+      "inverseOriginalExact": true
+    }
+  ],
+  "directSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchVideoFilterSheet.kt",
+      "sha256LF": "8d4bc6df6da28464d90b238204617811d495746b6419b407d44b5e7bb76b8aba",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchLandingUi.kt",
+      "sha256LF": "37e137719ce216ff19302bbb94767431b65e2e4ce2e185a4cbe7da96f6278cfe",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchUiModels.kt",
+      "sha256LF": "5f203359dd7d35d28579dd72239bfc2811f079ce87e684207d4d218c3086a06b",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTabletLayoutPolicy.kt",
+      "sha256LF": "8efb75d46f58aab2fa42d1b81183deb4fb923eb05da2e238e4e97fa4b2348c90",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchSelectionChipColorPolicy.kt",
+      "sha256LF": "731ef56cf10d7671ffee1250b180502a4531ab4f30fea7fe534ef3064c9ed144",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchResultNavigationPolicy.kt",
+      "sha256LF": "3b049c25c74d3c4da671e4400a54d8ba7ba8b10c9e9afd2d859f23eb203cbff2",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchResultCardAppearancePolicy.kt",
+      "sha256LF": "be1422a9670240aa8f15e70695f154f97c1277e180fff51b5c1beebb49d9ad38",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchMotionBudgetPolicy.kt",
+      "sha256LF": "24a83910f4cd0a04055f443912af05addb79aa61dd3edef565ae66588cff894c",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchEntryMotionPolicy.kt",
+      "sha256LF": "d6d64547269d57099f62f5556ce08f47e9205c193ad742c2d60b0f8276f048aa",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchEmptyStatePolicy.kt",
+      "sha256LF": "a6284ad871eab020fb9e4b3210a8e2abebfa7d54dd246653cdfedc771526c012",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchContentStatePolicy.kt",
+      "sha256LF": "1d8886b9c447c324ed7333bc07a375860ddd58677cbb916434120ab94c8261a3",
+      "verbatim": true,
+      "soleProducer": "prepareUpstreamSources"
+    }
+  ],
+  "staleSelectedOutputs": [
+    {
+      "owner": "full-navigation-settings",
+      "path": "com/android/purebilibili/feature/search/DesktopOriginalSearchTabOrderPolicy.kt",
+      "previousActualGeneratedSha256Bytes": "f5bcbc9489d38f762ce7dba8902702b57e9246683a4c7d3869ee17dcab3166ea",
+      "replacementSha256Bytes": "c4130a3d83695878b25d3d19344825797b380f463a24475a9a0ee4b1433b9795",
+      "packageOnlyMarker": true,
+      "actualSeededOverwriteVerified": true
+    },
+    {
+      "owner": "settings-privacy",
+      "path": "com/android/purebilibili/feature/search/PrivacySearchHintPolicy.kt",
+      "previousActualGeneratedSha256Bytes": "19853b7b15ea49a013c1dc1529a9b083abf930ee11b5eb59ad3cfc4ad026dcdb",
+      "replacementSha256Bytes": "6f736b6cfe1de5587c68ee68c7bcefcd028c4203e22b5cab01e53cb51d595246",
+      "packageOnlyMarker": true,
+      "actualSeededOverwriteVerified": true
+    }
+  ],
+  "freshNavigationPrivacyClosureCompile": "compile/16/result.json",
+  "snapshot85Manifest": "417663152a99ecf23e6887e2940b15c7c1cfd06c6c3f0b2b1925430ed4ca4012",
+  "ordered101CP": "6398174d444cf02365bc66480c1c37bb00800a520e681c4649100067af68b419",
+  "candidateWritten": false
+}

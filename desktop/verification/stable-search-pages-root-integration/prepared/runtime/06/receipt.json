@@ -1,0 +1,21 @@
+{
+  "runtimeJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\compile\\10\\prospective.jar",
+    "sha256Bytes": "469362de67e3c0c41494ebfa0eb71f75969e910397687c26792b30341743887f"
+  },
+  "compileResult": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-search-pages-root-parity\\compile\\10\\result.json",
+    "sha256Bytes": "5203582cfd55de9a9e55f495e1b11ff8754e95e7f84da04578a4506cbfcd8899"
+  },
+  "sourcePinsVerified": true,
+  "snapshot85Manifest": "417663152a99ecf23e6887e2940b15c7c1cfd06c6c3f0b2b1925430ed4ca4012",
+  "ordered101CP": "6398174d444cf02365bc66480c1c37bb00800a520e681c4649100067af68b419",
+  "passed": false,
+  "exitCode": 1,
+  "ownedTemp": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-search-owner-fixture-sy5vpxad",
+  "onlyOwnedTempDisposed": true,
+  "RootMounted": false,
+  "nativePlayer": false,
+  "userAccount": false,
+  "businessNetwork": false
+}

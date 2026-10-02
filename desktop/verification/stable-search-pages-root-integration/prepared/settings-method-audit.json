@@ -1,0 +1,41 @@
+{
+  "original": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+  "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+  "fullOriginalMethods": [
+    {
+      "name": "getSearchHotSectionEnabled",
+      "sha256LF": "01721cf20c475d24ac5f0cc54a86763889b1c8baa6da5a369eacba4a1604fbb3"
+    },
+    {
+      "name": "setSearchHotSectionEnabled",
+      "sha256LF": "83934ac10203b58e0efd3958dafd57bb19201fdd8e5ce7c6d0fcd2451202a2fc"
+    },
+    {
+      "name": "getSearchDiscoverSectionEnabled",
+      "sha256LF": "1c7f12bd28d7c3dd68c694253a12a7b8a3257fae2cebe0540ffa6ab4cfed25d7"
+    },
+    {
+      "name": "setSearchDiscoverSectionEnabled",
+      "sha256LF": "8bf3c614a40e90f08ce76699dddc690d4e100b7ec056e53f6a1e3af8c8aea6f7"
+    },
+    {
+      "name": "isEasterEggEnabledSync",
+      "sha256LF": "e5166781222bf869ebde9fe3f2f1d7f3cefd37c14d62c0eef5f178ca485bac80"
+    },
+    {
+      "name": "setGridColumnCount",
+      "sha256LF": "d62c54d24e63803d8964256f6c3c47435997d6aeff1604572fbfc328e4f85dc1"
+    },
+    {
+      "name": "setGridColumnCountCompact",
+      "sha256LF": "70e868ba8ae8ac8967f6668028ffd2846fdacc682f627c6c05af8ece3076b868"
+    }
+  ],
+  "keys": [
+    "KEY_GRID_COLUMN_COUNT",
+    "KEY_GRID_COLUMN_COUNT_COMPACT",
+    "KEY_SEARCH_DISCOVER_SECTION_ENABLED",
+    "KEY_SEARCH_HOT_SECTION_ENABLED"
+  ],
+  "sameGlobalStore": true
+}

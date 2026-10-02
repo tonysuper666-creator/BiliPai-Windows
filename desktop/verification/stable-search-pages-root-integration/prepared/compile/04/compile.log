@@ -1,0 +1,6 @@
+desktop\.local\stable-original-search-pages-root-parity\SearchOwnerFixture.kt:139:45: error: unresolved reference 'SHORT'.
+        vm.setSearchDuration(SearchDuration.SHORT);until("original duration request param") {!vm.uiState.value.isSearching&&api.calls.last{it.name=="search"}.params["duration"]==SearchDuration.SHORT.value.toString()}
+                                            ^^^^^
+desktop\.local\stable-original-search-pages-root-parity\SearchOwnerFixture.kt:139:194: error: unresolved reference 'SHORT'.
+        vm.setSearchDuration(SearchDuration.SHORT);until("original duration request param") {!vm.uiState.value.isSearching&&api.calls.last{it.name=="search"}.params["duration"]==SearchDuration.SHORT.value.toString()}
+                                                                                                                                                                                                 ^^^^^

@@ -1,0 +1,7 @@
+{
+  "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+  "sha256LF": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+  "method": "TrendingListSkeleton",
+  "bodySha256": "7a646025c0990754eb9d983c00e164c9fcef9063f96144737fcb7cc988ac4b63",
+  "bodyUnchanged": true
+}
