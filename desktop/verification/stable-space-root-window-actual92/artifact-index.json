@@ -1,0 +1,99 @@
+{
+  "files": [
+    {
+      "path": "fixture/RootSpaceFixture.kt",
+      "bytes": 27059,
+      "sha256Bytes": "a1d9213a7cbac4bec1486545e98e9e236007a7bc0051c0356e7637f9e35ac3a4"
+    },
+    {
+      "path": "fixture/run.py",
+      "bytes": 11888,
+      "sha256Bytes": "cd2981f7337c701c7bfb38f55cbdc81643f29bf4f666dd5701c9ef7ef71c1dcf"
+    },
+    {
+      "path": "fixture/save_actual92.py",
+      "bytes": 3961,
+      "sha256Bytes": "bda458f262e5bcfd0632390519405a856f0d4fc2ee70480fc2d8e32a8efb37d6"
+    },
+    {
+      "path": "actual92-01/RootSpaceFixture.kt",
+      "bytes": 27059,
+      "sha256Bytes": "a1d9213a7cbac4bec1486545e98e9e236007a7bc0051c0356e7637f9e35ac3a4"
+    },
+    {
+      "path": "actual92-01/compile-result.json",
+      "bytes": 190,
+      "sha256Bytes": "1d65e48ed6bf3d501add925301fdf421a333e78b68dd6282781a861dac60eafa"
+    },
+    {
+      "path": "actual92-01/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "actual92-01/compiler.args",
+      "bytes": 26869,
+      "sha256Bytes": "04770e4157104bcd532404edeb6cc8aa690884e2eed3fc388168726d6f187f1b"
+    },
+    {
+      "path": "actual92-01/fixture-jar-pin.json",
+      "bytes": 114,
+      "sha256Bytes": "374b56a6718eb88a61f98448a0e6435ef639ff6b287693c81cf4a57cd6cfbfba"
+    },
+    {
+      "path": "actual92-01/acceptance-result.json",
+      "bytes": 1013,
+      "sha256Bytes": "7bdab735fe482c4d04b681c1c3251204bccc6ed6a4c963935ff4a912e4f947d0"
+    },
+    {
+      "path": "actual92-01/runtime.log",
+      "bytes": 2159,
+      "sha256Bytes": "5114ef26fe2c4f84b29b5f757baba38a253c2e756cbb8f1ae1abc95841cce5e3"
+    },
+    {
+      "path": "actual92-01/pins-before.json",
+      "bytes": 41938,
+      "sha256Bytes": "edf87517e96a67c43d150b580f4d2f60fe53ced50edd4a25a6d546c04769f02d"
+    },
+    {
+      "path": "actual92-01/pins-after.json",
+      "bytes": 41938,
+      "sha256Bytes": "edf87517e96a67c43d150b580f4d2f60fe53ced50edd4a25a6d546c04769f02d"
+    },
+    {
+      "path": "actual92-01/runtime-evidence/actual-root-space-member-guard.png",
+      "bytes": 25115,
+      "sha256Bytes": "42697c3e60621ce243101b610b85bf66d8810109a628c4491ed286013a564bd4"
+    },
+    {
+      "path": "actual92-01/runtime-evidence/actual-root-space-original-error.png",
+      "bytes": 18829,
+      "sha256Bytes": "ded3f4072a3521e71db7b2b4091610bcb6a8e554bd4aac48e42562e0f979188a"
+    },
+    {
+      "path": "actual92-01/runtime-evidence/actual-root-space-upower-rank.png",
+      "bytes": 24249,
+      "sha256Bytes": "993ade7a3c2cfc5fd0dda7cbad6a66bcd8bfc95e905f6b54020529473aad2907"
+    },
+    {
+      "path": "actual92-01/runtime-evidence/root-space-proof.json",
+      "bytes": 6036,
+      "sha256Bytes": "5ebfd2878edaeb7d14479ddceb475ecc2e11699004fb78071319576a637c3cca"
+    },
+    {
+      "path": "actual92-snapshot/manifest.json",
+      "bytes": 175520,
+      "sha256Bytes": "3e926808a6a88d90e1190a6b1a3c0da1b4545a8093ea34badd2c7c315ef81680"
+    },
+    {
+      "path": "actual92-snapshot/ordered-runtime-cp.json",
+      "bytes": 39744,
+      "sha256Bytes": "ca8bf52819713b31ddb6315de84e20f30d717ebf766971747b268940c0c27130"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1270,
+      "sha256Bytes": "0a162fa50834119dd5bd9ea0e18ea4f097ba130b93e82a8eb6917b1eec6f8c0f"
+    }
+  ]
+}

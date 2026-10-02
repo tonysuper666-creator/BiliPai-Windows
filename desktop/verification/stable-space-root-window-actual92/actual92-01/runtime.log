@@ -1,0 +1,42 @@
+STAGE await reference: actual Shell
+STAGE await condition: published actual Root
+STAGE await reference: actual Window route provider
+STAGE await reference: actual original Space pages owner
+STAGE await reference: actual ready Root handle
+PASS Actual Root accepts typed Space
+STAGE await condition: full original Space has real error/retry content
+PASS Physical Root owns original Space environment
+PASS Full original Space VM reports actual denied transport
+PASS One original VM per retained physical Space entry
+STAGE await condition: original Space retry calls same guarded transport
+PASS Actual pointer invokes original Space retry
+PASS Retry keeps same original Space VM
+PASS Actual Settings cover accepted
+STAGE await condition: covered Space physical key
+PASS Covered Space retains its original VM
+PASS Covered Space refuses a new visible mutation
+PASS Actual Root returns to Space
+STAGE await condition: same original Space restored
+PASS Actual typed UpowerRank accepted
+STAGE await condition: full original rank page mounted
+PASS Original rank retains supplied name/count and real error
+PASS Space survives being covered by rank
+STAGE await condition: actual rank retry completed
+PASS Pointer invokes original rank retry
+PASS Pop actual rank accepted
+STAGE await condition: popped rank environment retired
+PASS Removed rank rejects late state admission
+PASS Actual typed MemberGuard accepted
+STAGE await condition: full original guard page mounted
+PASS Original guard retains supplied name/count and real error
+STAGE await condition: actual guard retry completed
+PASS Pointer invokes original guard retry
+STAGE await condition: actual epoch retires old Space Root
+PASS Same isolated guest account change retires all original Space children
+PASS Retired prior-epoch Space denies late commit
+STAGE await reference: fresh original Space Root
+STAGE await reference: fresh actual Window route owner
+PASS Fresh physical Root accepts same UP
+STAGE await condition: new actual Space VM rendered
+PASS Fresh Space owns same global repository and new original VM
+PASS Actual Root close drains fresh and retired children
