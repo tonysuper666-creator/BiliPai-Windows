@@ -60,6 +60,8 @@ app/release/
 .worktrees/
 *.ai.md
 *.txt
+!/desktop/third-party/ffmpeg/licenses/libplacebo-jinja-LICENSE.txt
+!/desktop/third-party/ffmpeg/licenses/libplacebo-markupsafe-LICENSE.txt
 bilipai_log_*.txt
 !AI.txt
 !llm.txt
