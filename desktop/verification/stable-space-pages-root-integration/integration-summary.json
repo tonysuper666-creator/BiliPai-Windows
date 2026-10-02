@@ -1,0 +1,91 @@
+{
+  "baseCommit": "5f5f29a00609ec215b06553b59b3d3669ef0335b",
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "beforeSha256Bytes": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e",
+      "afterSha256Bytes": "98107c0eaa15588e7ac5af4638cbf1833fff03151ee62fb0212074aa0bc4a8e2",
+      "afterSha256LF": "98107c0eaa15588e7ac5af4638cbf1833fff03151ee62fb0212074aa0bc4a8e2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+      "beforeSha256Bytes": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7",
+      "afterSha256Bytes": "ae1be99c675f89654c6bf75e4a85fa08a8ac7ca2d900207a4c4a0700a3e97bab",
+      "afterSha256LF": "ae1be99c675f89654c6bf75e4a85fa08a8ac7ca2d900207a4c4a0700a3e97bab"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "beforeSha256Bytes": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6",
+      "afterSha256Bytes": "ebfa9a325786b9ae13f9ab51e8f57e6e4f9adf84bde1d9e32fa70318762b1a84",
+      "afterSha256LF": "ebfa9a325786b9ae13f9ab51e8f57e6e4f9adf84bde1d9e32fa70318762b1a84"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSha256Bytes": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903",
+      "afterSha256Bytes": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890",
+      "afterSha256LF": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpaceEnvironment.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "7b43054203348adda644c6a0ad2bdf05cc23c2191a6bb802ecd5ace73d83ad56",
+      "afterSha256LF": "7b43054203348adda644c6a0ad2bdf05cc23c2191a6bb802ecd5ace73d83ad56"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "563671c643dee36efcb9a6c236dcb0fac83279c58bf3f4f8007a2be54537571e",
+      "afterSha256LF": "563671c643dee36efcb9a6c236dcb0fac83279c58bf3f4f8007a2be54537571e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePlatform.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "8464710c7e2634197016bf26706ee77c74b9db604b6ac2a53203b946e5fd9e60",
+      "afterSha256LF": "8464710c7e2634197016bf26706ee77c74b9db604b6ac2a53203b946e5fd9e60"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesTest.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "c1bc68c03b5cb816fd7a5d94705556f38d9975fad5ff8f92689c86dfd43960b4",
+      "afterSha256LF": "98cc8688b23e1b9c264a475c7a859a41b91bb722f22f2ebd59cc2606b3996be5"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-space-pages.py",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "37a17de02c202f806a7e42bd61daac61d68520bb44acc982c3b31d912b98657d",
+      "afterSha256LF": "37a17de02c202f806a7e42bd61daac61d68520bb44acc982c3b31d912b98657d"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "240a19c530b8db9acb1f6802b54a600821c04989a5fb3ede2ea2f4d45f963107",
+      "afterSha256Bytes": "86f54544c8fedf031c049cf51ab15e647ea47138b75d70453f18c9b41b045a02",
+      "afterSha256LF": "37e8f13a66643d9a056689bb76cedbbcde66346360bd935bd8bad13c94ae868a"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "58af65ee1a889ec615c860dc7639c1caba8be9edc67ac43670ed896d2860a9b0",
+      "afterSha256Bytes": "09ab06e46f76fc016d3d27d27dbb8d7514fbe72b77a274e5c278b3754fe0c722",
+      "afterSha256LF": "09ab06e46f76fc016d3d27d27dbb8d7514fbe72b77a274e5c278b3754fe0c722"
+    }
+  ],
+  "normalMainAndTestCompilePassed": true,
+  "normalBuildAttempt": 2,
+  "normalBuildLogSha256Bytes": "e30f975fd0daaf220f31db51a8c4fe2784d025e96d96308fae35009ff5e35aec",
+  "actualProductOverrides": 0,
+  "junitMethods": 15,
+  "junitFailures": 0,
+  "junitErrors": 0,
+  "junitSkipped": 0,
+  "fullOriginalBodies": 11,
+  "sourceCount": 1229,
+  "resourceCount": 244,
+  "previousFailedNormalBuildRetained": true,
+  "declaredSoleOwnerRepair": true,
+  "rootRuntimeAccepted": false,
+  "realAccountAccepted": false,
+  "decodedNativePlaybackAccepted": false,
+  "installedExeAccepted": false,
+  "v025Accepted": false,
+  "allFeaturesComplete": false,
+  "excludedCompiledProofFiles": []
+}

@@ -1,0 +1,48 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:182:330: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            val posts=f.hits.filter {it.path=="/x/relation/modify"};check(posts.size==1&&posts.single().fields["fid"]=="77"&&posts.single().fields["act"]=="1"&&posts.single().fields["re_src"]=="11"&&posts.single().fields["csrf"]=="synthetic-space-csrf") {"posts=${posts.size}; safe=${posts.map {it.fields.filterKeys {key->key in setOf(\"fid\",\"act\",\"re_src\")}}}; csrfMatches=${posts.firstOrNull()?.fields?.get(\"csrf\")==\"synthetic-space-csrf\"}"}
+                                                                                                                                                                                                                                                                                                                                         ^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:182:336: error: syntax error: Expecting an argument.
+            val posts=f.hits.filter {it.path=="/x/relation/modify"};check(posts.size==1&&posts.single().fields["fid"]=="77"&&posts.single().fields["act"]=="1"&&posts.single().fields["re_src"]=="11"&&posts.single().fields["csrf"]=="synthetic-space-csrf") {"posts=${posts.size}; safe=${posts.map {it.fields.filterKeys {key->key in setOf(\"fid\",\"act\",\"re_src\")}}}; csrfMatches=${posts.firstOrNull()?.fields?.get(\"csrf\")==\"synthetic-space-csrf\"}"}
+                                                                                                                                                                                                                                                                                                                                               ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:182:336: error: syntax error: Expecting ')'.
+            val posts=f.hits.filter {it.path=="/x/relation/modify"};check(posts.size==1&&posts.single().fields["fid"]=="77"&&posts.single().fields["act"]=="1"&&posts.single().fields["re_src"]=="11"&&posts.single().fields["csrf"]=="synthetic-space-csrf") {"posts=${posts.size}; safe=${posts.map {it.fields.filterKeys {key->key in setOf(\"fid\",\"act\",\"re_src\")}}}; csrfMatches=${posts.firstOrNull()?.fields?.get(\"csrf\")==\"synthetic-space-csrf\"}"}
+                                                                                                                                                                                                                                                                                                                                               ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:182:337: error: syntax error: Unexpected tokens (use ';' to separate expressions on the same line).
+            val posts=f.hits.filter {it.path=="/x/relation/modify"};check(posts.size==1&&posts.single().fields["fid"]=="77"&&posts.single().fields["act"]=="1"&&posts.single().fields["re_src"]=="11"&&posts.single().fields["csrf"]=="synthetic-space-csrf") {"posts=${posts.size}; safe=${posts.map {it.fields.filterKeys {key->key in setOf(\"fid\",\"act\",\"re_src\")}}}; csrfMatches=${posts.firstOrNull()?.fields?.get(\"csrf\")==\"synthetic-space-csrf\"}"}
+                                                                                                                                                                                                                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:184:6: error: syntax error: Expecting '}'.
+    }
+     ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:185:15: error: anonymous functions with names are prohibited.
+    @Test fun coveredEntryRejectsSubmitBeforeOptimisticFlagsThenCanSubmitOnBack():Unit=runBlocking {
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:192:6: error: syntax error: Expecting '}'.
+    }
+     ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:193:15: error: anonymous functions with names are prohibited.
+    @Test fun sameMidEpochReplacementRejectsLateActualStatePublication():Unit=runBlocking {
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:200:6: error: syntax error: Expecting '}'.
+    }
+     ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:201:15: error: anonymous functions with names are prohibited.
+    @Test fun retainedEntryOwnsOriginalVmAndSelectionUntilRemovalDrain():Unit=runBlocking {
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:208:6: error: syntax error: Expecting '}'.
+    }
+     ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:209:15: error: anonymous functions with names are prohibited.
+    @Test fun actualCallerCancellationRejectsCookieAndStateWhileCloseDrains():Unit=runBlocking {
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:216:6: error: syntax error: Expecting '}'.
+    }
+     ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:217:15: error: anonymous functions with names are prohibited.
+    @Test fun immutableUpEntryRejectsWrongMidAndGuestFollowIsPermissionFailure():Unit=runBlocking {
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:225:2: error: syntax error: Expecting '"'.
+}
+ ^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:225:2: error: syntax error: Expecting '}'.
+}
+ ^

@@ -1,0 +1,169 @@
+{
+  "upstream": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "candidate": "5f5f29a00609ec215b06553b59b3d3669ef0335b",
+  "baselineSourceCount": 1225,
+  "appendCount": 4,
+  "unionCount": 8,
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+      "sha256": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "feature-union",
+      "priorFeatures": [
+        "space",
+        "space-contributions",
+        "space-overview",
+        "stable-video-tablet-original",
+        "stable-tablet-owner-space-original"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "feature-union",
+      "priorFeatures": [
+        "space-overview",
+        "space-image-preview"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+      "sha256": "0970836848746c1b9eae833074d3dd6a125e25dc1ee23bb8aec25455cdf45758",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "feature-union",
+      "priorFeatures": [
+        "space"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+      "sha256": "ec6c4f47792e8bb318149a8aff355262d693bf63a57456365b26062ab1645937",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "feature-union",
+      "priorFeatures": [
+        "space"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+      "sha256": "ff810be21539ada00fd6043aac26d15c73f51c261f560a02c19879461797c4fb",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "feature-union",
+      "priorFeatures": [
+        "space"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadingSkeleton.kt",
+      "sha256": "8adf4d2eca9225154b572c848c9ef151e8f241b757aaea707c4ee3bd9c84d90f",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "append",
+      "priorFeatures": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "sha256": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "feature-union",
+      "priorFeatures": [
+        "source-parity",
+        "media",
+        "downloads",
+        "stable-favorites",
+        "home-bangumi-page",
+        "independent-bangumi-pages",
+        "original-bangumi-player-full"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
+      "sha256": "fad17890cf2f8a2d95fc80a706c6e66011dd992df3511d77ef957b1d90ed2c8c",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "feature-union",
+      "priorFeatures": [
+        "space-contributions",
+        "space-overview",
+        "stable-favorites",
+        "stable-tablet-owner-space-original"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceDynamicLoadPolicy.kt",
+      "sha256": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "append",
+      "priorFeatures": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceTabChromePolicy.kt",
+      "sha256": "405e05b78f819da4e793258d7355254e6b70817b2803bfee01525bb785189421",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "append",
+      "priorFeatures": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSelectionChipColorPolicy.kt",
+      "sha256": "3f54531e069c10778c63895ccbd38734acec7317821fe8010b13bb65f25ea910",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "append",
+      "priorFeatures": []
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-space-pages-root-parity"
+      ],
+      "operation": "feature-union",
+      "priorFeatures": [
+        "home-full-card",
+        "stable-bgm-native-detail",
+        "stable-linked-dock-search",
+        "stable-home-retained-navigation",
+        "live-home-list",
+        "stable-home-return-navigation",
+        "live-sub-navigation",
+        "stable-root-home-navigation",
+        "stable-home-concrete-mount",
+        "stable-personal-history-liked",
+        "stable-personal-watchlater"
+      ]
+    }
+  ]
+}

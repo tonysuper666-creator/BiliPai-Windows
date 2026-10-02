@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-10-02T20:00:12.078Z" hostname="TONYSUPER666" time="2.131">
+  <properties/>
+  <testcase name="immutableUpEntryRejectsWrongMidAndGuestFollowIsPermissionFailure()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.644"/>
+  <testcase name="originalVideoFailureRetryIsBusinessBoundedNotTransportReplay()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.288"/>
+  <testcase name="actualOriginalAggregateLegacyHydrationAndPublicGuestReads()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.017"/>
+  <testcase name="actualCallerCancellationRejectsCookieAndStateWhileCloseDrains()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.102"/>
+  <testcase name="cancelledParallelRequestCannotAdoptCookiesWhileItsPageSurvives()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.095"/>
+  <testcase name="actualDelayedPreviousSortCannotOverwriteChosenSort()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.111"/>
+  <testcase name="videoPaginationAndOriginalOldestOrderingRemainReal()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.039"/>
+  <testcase name="followHttp503DoesNotImplicitlyReplayAndRollsBackOriginalState()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.128"/>
+  <testcase name="retainedEntryOwnsOriginalVmAndSelectionUntilRemovalDrain()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.017"/>
+  <testcase name="dynamicPaginationUsesOriginalOffsetFeaturesAndLocalRichTextSearch()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.346"/>
+  <testcase name="rawAudioSidAndOriginalRequestDefaultsSurviveMapping()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.027"/>
+  <testcase name="guardOriginalPodiumAndPageDefaultsRemainReal()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.034"/>
+  <testcase name="coveredEntryRejectsSubmitBeforeOptimisticFlagsThenCanSubmitOnBack()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.027"/>
+  <testcase name="sameMidEpochReplacementRejectsLateActualStatePublication()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.115"/>
+  <testcase name="rankLevelDelayedOldResponseCannotOverwriteChosenTier()" classname="com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest" time="0.124"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,30 @@
+{
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+    "-p",
+    "desktop",
+    "classes",
+    "test",
+    "--tests",
+    "com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest",
+    "--console=plain"
+  ],
+  "exitCode": 0,
+  "actualProductOverrides": 0,
+  "sourceCount": 1229,
+  "resourceCount": 244,
+  "mainClassesCompiled": true,
+  "testClassesCompiled": true,
+  "testsExecuted": true,
+  "rootRuntimeAccepted": false,
+  "networkAccepted": false,
+  "desktopPackageUpdated": false,
+  "allFeaturesComplete": false,
+  "logSha256Bytes": "e30f975fd0daaf220f31db51a8c4fe2784d025e96d96308fae35009ff5e35aec",
+  "junitTests": 15,
+  "junitFailures": 0,
+  "junitErrors": 0,
+  "junitSkipped": 0,
+  "junitXmlSha256Bytes": "42bb01e99cf38c49e26127a4c3682e924802d2135f35b5110e870d6fccf74a4c",
+  "freshNativeShareProducerPassed": true
+}

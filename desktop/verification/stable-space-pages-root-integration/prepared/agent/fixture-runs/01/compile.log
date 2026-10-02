@@ -1,0 +1,10 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:183:72: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+            check(runCatching {vm.toggleFollow()}.exceptionOrNull() is CancellationException)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalSpacePagesTest.kt:202:75: error: overload resolution ambiguity between candidates:
+typealias CancellationException = CancellationException
+class CancellationException : IllegalStateException
+            check(runCatching {vm.loadSpaceInfo(77)}.exceptionOrNull() is CancellationException)
+                                                                          ^^^^^^^^^^^^^^^^^^^^^

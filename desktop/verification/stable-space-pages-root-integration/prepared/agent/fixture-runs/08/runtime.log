@@ -1,0 +1,42 @@
+PASS actualCallerCancellationRejectsCookieAndStateWhileCloseDrains
+PASS actualDelayedPreviousSortCannotOverwriteChosenSort
+PASS actualOriginalAggregateLegacyHydrationAndPublicGuestReads
+PASS coveredEntryRejectsSubmitBeforeOptimisticFlagsThenCanSubmitOnBack
+PASS dynamicPaginationUsesOriginalOffsetFeaturesAndLocalRichTextSearch
+PASS followHttp503DoesNotImplicitlyReplayAndRollsBackOriginalState
+PASS guardOriginalPodiumAndPageDefaultsRemainReal
+FAIL immutableUpEntryRejectsWrongMidAndGuestFollowIsPermissionFailure
+java.lang.IllegalStateException: Check failed.
+	at com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest$immutableUpEntryRejectsWrongMidAndGuestFollowIsPermissionFailure$1.invokeSuspend(DesktopOriginalSpacePagesTest.kt:221)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest.immutableUpEntryRejectsWrongMidAndGuestFollowIsPermissionFailure(DesktopOriginalSpacePagesTest.kt:217)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at com.bilipai.desktop.ui.SpaceFixtureRunnerKt.main(SpaceFixtureRunner.kt:6)
+Exception in thread "main" java.lang.IllegalStateException: Check failed.
+	at com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest$immutableUpEntryRejectsWrongMidAndGuestFollowIsPermissionFailure$1.invokeSuspend(DesktopOriginalSpacePagesTest.kt:221)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.UndispatchedCoroutine.afterResume(CoroutineContext.kt:266)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:94)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:70)
+	at kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)
+	at kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:48)
+	at kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)
+	at com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest.immutableUpEntryRejectsWrongMidAndGuestFollowIsPermissionFailure(DesktopOriginalSpacePagesTest.kt:217)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at com.bilipai.desktop.ui.SpaceFixtureRunnerKt.main(SpaceFixtureRunner.kt:6)

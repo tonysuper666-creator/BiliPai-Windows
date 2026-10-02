@@ -1,0 +1,999 @@
+{
+  "files": [
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "b8264f5193d030ca74e68c9c0b0c258a1c123c574ed3edeea6f96afd15798264",
+      "bytes": 33708
+    },
+    {
+      "path": "prepared/agent/frozen-handoff.json",
+      "sha256Bytes": "b2b21eb2e4a6640db9b00ad13ec52ac1df313dbfa7f7d90385dd64ed5514f017",
+      "bytes": 199996
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/compile.log",
+      "sha256Bytes": "a3f4ee0d384f5dcf2578b8de45731eb3e2e83d577ddc9a626a57eb6f344d2d5e",
+      "bytes": 20574
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/compiler.args",
+      "sha256Bytes": "105e92a0c8df4b609dc560537738d8e0030d91d66a7b7af080760f31ed3b7cb4",
+      "bytes": 30599
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/0/DesktopOriginalSpaceRemainingLoadPolicy.kt",
+      "sha256Bytes": "d7212ff95573b4e9cd260d7d54eec55330876acac1edd106cf60b87981eb945f",
+      "bytes": 10298
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/1/DesktopOriginalSpaceRunCatching.kt",
+      "sha256Bytes": "1f8a40bfdb776efbd47abc45bd572e92c319473b976046862b522870d100b4be",
+      "bytes": 315
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/10/SpaceViewModel.kt",
+      "sha256Bytes": "ee73a225bfb9ed1c62d5b1535fac03839578eb9a38e32bfe41d5b68fdf03eebe",
+      "bytes": 102882
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/11/DesktopOriginalSpaceBangumiRequests.kt",
+      "sha256Bytes": "213be1c61ac32b0a69de9683f132f56d0bc4a25123ec746e314e655ed802d805",
+      "bytes": 1358
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/12/DesktopOriginalSpaceEnvironment.kt",
+      "sha256Bytes": "7b43054203348adda644c6a0ad2bdf05cc23c2191a6bb802ecd5ace73d83ad56",
+      "bytes": 11939
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/13/DesktopOriginalSpacePagesRoot.kt",
+      "sha256Bytes": "563671c643dee36efcb9a6c236dcb0fac83279c58bf3f4f8007a2be54537571e",
+      "bytes": 8257
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/14/DesktopOriginalSpacePlatform.kt",
+      "sha256Bytes": "8464710c7e2634197016bf26706ee77c74b9db604b6ac2a53203b946e5fd9e60",
+      "bytes": 8407
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/15/DesktopCommunityRepository.kt",
+      "sha256Bytes": "98107c0eaa15588e7ac5af4638cbf1833fff03151ee62fb0212074aa0bc4a8e2",
+      "bytes": 42022
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/16/DesktopShell.kt",
+      "sha256Bytes": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890",
+      "bytes": 154552
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/17/DesktopOriginalPlaybackProgressStorage.kt",
+      "sha256Bytes": "ae1be99c675f89654c6bf75e4a85fa08a8ac7ca2d900207a4c4a0700a3e97bab",
+      "bytes": 4988
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/18/DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "ebfa9a325786b9ae13f9ab51e8f57e6e4f9adf84bde1d9e32fa70318762b1a84",
+      "bytes": 31165
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/2/SpaceDynamicLoadPolicy.kt",
+      "sha256Bytes": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
+      "bytes": 19196
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/3/SpaceLoadingSkeleton.kt",
+      "sha256Bytes": "e19764692980edb8f7a575e475108efb784e36538e551cf91c531f113c76768e",
+      "bytes": 8254
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/4/SpaceMemberGuardViewModel.kt",
+      "sha256Bytes": "bf1b2a760d514e1020193f17a126d541dfcd70ae4ae0f96300f19266644d1f6b",
+      "bytes": 3911
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/5/SpaceScreen.kt",
+      "sha256Bytes": "a11ac3ea82c987d420342550b0efd315d26a9ad76754695e36670e54e5eb544c",
+      "bytes": 245524
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/6/SpaceSelectionChipColorPolicy.kt",
+      "sha256Bytes": "3f54531e069c10778c63895ccbd38734acec7317821fe8010b13bb65f25ea910",
+      "bytes": 1708
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/7/SpaceSupporterScreens.kt",
+      "sha256Bytes": "64fd7fde8afd2c9c15da020715b04ff989fa11fc383ce2fa264afaeca8663c3d",
+      "bytes": 17627
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/8/SpaceTabChromePolicy.kt",
+      "sha256Bytes": "405e05b78f819da4e793258d7355254e6b70817b2803bfee01525bb785189421",
+      "bytes": 9469
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/inputs/9/SpaceUpowerRankViewModel.kt",
+      "sha256Bytes": "93290b7b51a9086810a2e843edac0663c210252e628c6285463d40b12a8ac85a",
+      "bytes": 6088
+    },
+    {
+      "path": "prepared/agent/compile-runs/12/result.json",
+      "sha256Bytes": "4b58c22fde1166998c9b05d40be2428c7bc94820dfdc944e6c468252e38518f9",
+      "bytes": 6578
+    },
+    {
+      "path": "prepared/agent/compile.py",
+      "sha256Bytes": "4313adb45078d8ec6b481546d96549a6a58edbaa366cb5b782066692607a6f49",
+      "bytes": 3108
+    },
+    {
+      "path": "prepared/agent/fixture-runs/12/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/12/compiler.args",
+      "sha256Bytes": "5440ac8f155571317e82d2de9bfecbd29c498887991b17dc456bde5395a17746",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/12/identity.json",
+      "sha256Bytes": "de888343cf013929011e974f2e544c59f7714cefe07901baf8f5eb05527a0465",
+      "bytes": 2274
+    },
+    {
+      "path": "prepared/agent/fixture-runs/12/report.json",
+      "sha256Bytes": "bf4715ab70d8ecff3085c5157c1f8b741ea30a60d17ccefa5d65bf6f08938d68",
+      "bytes": 1365
+    },
+    {
+      "path": "prepared/agent/fixture-runs/12/runtime.log",
+      "sha256Bytes": "12d81719e68490ca61c241d1b478c8795e32e1a7f5bc5fd42d2ef28b9dae7542",
+      "bytes": 959
+    },
+    {
+      "path": "prepared/agent/fixture-runs/12/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixtures.py",
+      "sha256Bytes": "c371c597f62403d41cc4694003c2c96218b3e2699011861874e4a97d06f2fa62",
+      "bytes": 4358
+    },
+    {
+      "path": "prepared/agent/freeze.py",
+      "sha256Bytes": "9c45013c35a8a23746e4601bd09338e39d048de33a4b0c2d6870860db901f53e",
+      "bytes": 5163
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/DesktopOriginalSpaceRemainingLoadPolicy.kt",
+      "sha256Bytes": "d7212ff95573b4e9cd260d7d54eec55330876acac1edd106cf60b87981eb945f",
+      "bytes": 10298
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/DesktopOriginalSpaceRunCatching.kt",
+      "sha256Bytes": "1f8a40bfdb776efbd47abc45bd572e92c319473b976046862b522870d100b4be",
+      "bytes": 315
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/SpaceDynamicLoadPolicy.kt",
+      "sha256Bytes": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
+      "bytes": 19196
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/SpaceLoadingSkeleton.kt",
+      "sha256Bytes": "e19764692980edb8f7a575e475108efb784e36538e551cf91c531f113c76768e",
+      "bytes": 8254
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+      "sha256Bytes": "bf1b2a760d514e1020193f17a126d541dfcd70ae4ae0f96300f19266644d1f6b",
+      "bytes": 3911
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256Bytes": "a11ac3ea82c987d420342550b0efd315d26a9ad76754695e36670e54e5eb544c",
+      "bytes": 245524
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/SpaceSelectionChipColorPolicy.kt",
+      "sha256Bytes": "3f54531e069c10778c63895ccbd38734acec7317821fe8010b13bb65f25ea910",
+      "bytes": 1708
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+      "sha256Bytes": "64fd7fde8afd2c9c15da020715b04ff989fa11fc383ce2fa264afaeca8663c3d",
+      "bytes": 17627
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/SpaceTabChromePolicy.kt",
+      "sha256Bytes": "405e05b78f819da4e793258d7355254e6b70817b2803bfee01525bb785189421",
+      "bytes": 9469
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+      "sha256Bytes": "93290b7b51a9086810a2e843edac0663c210252e628c6285463d40b12a8ac85a",
+      "bytes": 6088
+    },
+    {
+      "path": "prepared/agent/generated/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+      "sha256Bytes": "ee73a225bfb9ed1c62d5b1535fac03839578eb9a38e32bfe41d5b68fdf03eebe",
+      "bytes": 102882
+    },
+    {
+      "path": "prepared/agent/generated/com/bilipai/desktop/ui/DesktopOriginalSpaceBangumiRequests.kt",
+      "sha256Bytes": "213be1c61ac32b0a69de9683f132f56d0bc4a25123ec746e314e655ed802d805",
+      "bytes": 1358
+    },
+    {
+      "path": "prepared/agent/generated/source-transform-replay.json",
+      "sha256Bytes": "a6376f97663bab37dee494790bccf96ba63bcca3eb67499ec4e43d19dab62d5e",
+      "bytes": 166712
+    },
+    {
+      "path": "prepared/agent/install-contract.json",
+      "sha256Bytes": "138fc883ca553779bc3ba70d884ec4f85483397e7b5aa948788e85e2f7a3a6de",
+      "bytes": 14744
+    },
+    {
+      "path": "prepared/agent/INTEGRATION.md",
+      "sha256Bytes": "8283c2d28b89fd3bfb88a18227423d49b0ebf941715a6bb5aff7173ca988c1b1",
+      "bytes": 6504
+    },
+    {
+      "path": "prepared/agent/prepare-root-hooks.py",
+      "sha256Bytes": "9ccb3aa21f55c93237104482b228daf40d102b05bb0dc9d2b247d39000956531",
+      "bytes": 10843
+    },
+    {
+      "path": "prepared/agent/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpaceEnvironment.kt",
+      "sha256Bytes": "7b43054203348adda644c6a0ad2bdf05cc23c2191a6bb802ecd5ace73d83ad56",
+      "bytes": 11939
+    },
+    {
+      "path": "prepared/agent/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "sha256Bytes": "563671c643dee36efcb9a6c236dcb0fac83279c58bf3f4f8007a2be54537571e",
+      "bytes": 8257
+    },
+    {
+      "path": "prepared/agent/prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePlatform.kt",
+      "sha256Bytes": "8464710c7e2634197016bf26706ee77c74b9db604b6ac2a53203b946e5fd9e60",
+      "bytes": 8407
+    },
+    {
+      "path": "prepared/agent/prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesTest.kt",
+      "sha256Bytes": "c1bc68c03b5cb816fd7a5d94705556f38d9975fad5ff8f92689c86dfd43960b4",
+      "bytes": 20899
+    },
+    {
+      "path": "prepared/agent/prepared/desktop/tools/extract-upstream-space-pages.py",
+      "sha256Bytes": "37f377c2ded407a8710c210885d364f91636efa601bc8c10539985a24d49ba31",
+      "bytes": 23979
+    },
+    {
+      "path": "prepared/agent/root-hooks/compiler-targets/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "sha256Bytes": "98107c0eaa15588e7ac5af4638cbf1833fff03151ee62fb0212074aa0bc4a8e2",
+      "bytes": 42022
+    },
+    {
+      "path": "prepared/agent/root-hooks/compiler-targets/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890",
+      "bytes": 154552
+    },
+    {
+      "path": "prepared/agent/root-hooks/compiler-targets/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+      "sha256Bytes": "ae1be99c675f89654c6bf75e4a85fa08a8ac7ca2d900207a4c4a0700a3e97bab",
+      "bytes": 4988
+    },
+    {
+      "path": "prepared/agent/root-hooks/compiler-targets/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "ebfa9a325786b9ae13f9ab51e8f57e6e4f9adf84bde1d9e32fa70318762b1a84",
+      "bytes": 31165
+    },
+    {
+      "path": "prepared/agent/root-hooks/exact-hunks.json",
+      "sha256Bytes": "9dc30bf44cb181e4dd2818834be0cad15006bd5f2a499edd8992fdf6d86110cd",
+      "bytes": 10827
+    },
+    {
+      "path": "prepared/agent/root-hooks/gradle-fragment.kts",
+      "sha256Bytes": "e7ac8d4e9bebb430d7e10b0223f79ed60c0668066dba5df6d8c9b3cf8a63d2ba",
+      "bytes": 1614
+    },
+    {
+      "path": "prepared/agent/source-facts.py",
+      "sha256Bytes": "8bbba9240b31f0a6031e285b4d44e68e2f68d07ba5bdece5ba9c11e98704924d",
+      "bytes": 3465
+    },
+    {
+      "path": "prepared/agent/source-inventory.json",
+      "sha256Bytes": "8a0e5446e5c9c9e91937ae1c37b0e1ad15004cec162c60c49b238970439ec8f6",
+      "bytes": 5794
+    },
+    {
+      "path": "prepared/agent/v025-delta/SeasonSeriesDetailViewModel.diff",
+      "sha256Bytes": "809e3b25e1c8504b2762f7eb2be614c85a160c85c9e176a8eaf9697c8bbfaf96",
+      "bytes": 1677
+    },
+    {
+      "path": "prepared/agent/v025-delta/SpaceScreen.diff",
+      "sha256Bytes": "ee837ddde3917a7449fff2e2aa73f3e7f87f2b9ecad4c80a5484b281d8016ff0",
+      "bytes": 4835
+    },
+    {
+      "path": "prepared/agent/v025-delta/SpaceViewModel.diff",
+      "sha256Bytes": "f2f4a9f536bd70248f8c46514a593d2ca15940b371aa4e508c7736d02f0a9a57",
+      "bytes": 3179
+    },
+    {
+      "path": "prepared/agent/v025-delta/summary.json",
+      "sha256Bytes": "72fb64089c3e75640ced537dac56562939581b005fd4bc9d8f2a0d19fe0d00cf",
+      "bytes": 2416
+    },
+    {
+      "path": "prepared/agent/compile-runs/01/compile.log",
+      "sha256Bytes": "db897adc687ff46e0a550e85a0cc7bd6cca220a592a69c66550d4d965ad3c4d6",
+      "bytes": 8392
+    },
+    {
+      "path": "prepared/agent/compile-runs/01/compiler.args",
+      "sha256Bytes": "690fc0356b2efb21dd54c36453575e81ecf910e5d3c170619a7a82015fbd4952",
+      "bytes": 27939
+    },
+    {
+      "path": "prepared/agent/compile-runs/01/result.json",
+      "sha256Bytes": "24b3d957ef23052723710db34b98c0d6218543d9de87495b0a298f6bebdd39ce",
+      "bytes": 2216
+    },
+    {
+      "path": "prepared/agent/compile-runs/02/compile.log",
+      "sha256Bytes": "000aa2270755d22d427b73db8a80a954aa856a1c47fbfe1cefe03326cb024b79",
+      "bytes": 13728
+    },
+    {
+      "path": "prepared/agent/compile-runs/02/compiler.args",
+      "sha256Bytes": "1340f159e452d0a02c7ec89bb41eda889a786d8b4250cd42e38a4d12aa49714a",
+      "bytes": 28358
+    },
+    {
+      "path": "prepared/agent/compile-runs/02/result.json",
+      "sha256Bytes": "f091d260932a2f4789b31c6ec0f42afc221a9716026dc62e73c52e7fafba6b20",
+      "bytes": 2896
+    },
+    {
+      "path": "prepared/agent/compile-runs/03/compile.log",
+      "sha256Bytes": "af9f87deda52f4b012d0c3e145758660c9fec039fc818bcfc564d3651ac339a9",
+      "bytes": 13725
+    },
+    {
+      "path": "prepared/agent/compile-runs/03/compiler.args",
+      "sha256Bytes": "873848b43d7424fe3dce0479666d5f02d85edc4b478fe053dea84c3b6e7d1265",
+      "bytes": 28565
+    },
+    {
+      "path": "prepared/agent/compile-runs/03/result.json",
+      "sha256Bytes": "9ba8514b0b93b806b469a7621606a666f04c240a64446fa278f10efa88bca34f",
+      "bytes": 3234
+    },
+    {
+      "path": "prepared/agent/compile-runs/04/compile.log",
+      "sha256Bytes": "2d03b8e4199848240ba428162960ec5a42326f0db66de5e533ac55fa09cbb5d3",
+      "bytes": 7601
+    },
+    {
+      "path": "prepared/agent/compile-runs/04/compiler.args",
+      "sha256Bytes": "da496c953202b5a2d401945e338ae3ad088a0ce0ae1034616a9bd236b584af8a",
+      "bytes": 29156
+    },
+    {
+      "path": "prepared/agent/compile-runs/04/result.json",
+      "sha256Bytes": "f10ebff49b72c38ce4dd79d7f4d5d0999a11a1f44dca9a4195ba09587465108a",
+      "bytes": 4219
+    },
+    {
+      "path": "prepared/agent/compile-runs/05/compile.log",
+      "sha256Bytes": "d3963abbfe9357ad8fff38d6afab96586e563181f127d55c2070f4b7715a1363",
+      "bytes": 15173
+    },
+    {
+      "path": "prepared/agent/compile-runs/05/compiler.args",
+      "sha256Bytes": "86475458a7163697aafbe7cb2f2089fd74e6a5b75a2621534252a2e57e71744c",
+      "bytes": 29565
+    },
+    {
+      "path": "prepared/agent/compile-runs/05/result.json",
+      "sha256Bytes": "90cc244f631e42370314cbc9cf7f6f2325f3f33c9ce4df8e66194205f07d2ebe",
+      "bytes": 4889
+    },
+    {
+      "path": "prepared/agent/compile-runs/06/compile.log",
+      "sha256Bytes": "f3a4beb2b8300092928d09b82b0656b9ca486f5e2ddc1fdd0d11bdb2afb3c26f",
+      "bytes": 15173
+    },
+    {
+      "path": "prepared/agent/compile-runs/06/compiler.args",
+      "sha256Bytes": "00ae7d3e976d3f94af2ba14aba74256798547af96cdeccc6be322a91a00d7995",
+      "bytes": 29774
+    },
+    {
+      "path": "prepared/agent/compile-runs/06/result.json",
+      "sha256Bytes": "c8887ef134af05ad2797462b6dcf9393e1563ff5815919b7a04c39f91d9ebf6e",
+      "bytes": 5229
+    },
+    {
+      "path": "prepared/agent/compile-runs/07/compile.log",
+      "sha256Bytes": "8966c60ebc1f243c95776e8ed0335dfd96ebac9af49584290a6370f61ca028b0",
+      "bytes": 15173
+    },
+    {
+      "path": "prepared/agent/compile-runs/07/compiler.args",
+      "sha256Bytes": "c0aa6eb82466a773adbfec5b9f53f19bd2f16035d04a0681b0f3f15549d19249",
+      "bytes": 29774
+    },
+    {
+      "path": "prepared/agent/compile-runs/07/result.json",
+      "sha256Bytes": "8033c136b98a76a8383ed33b9b349a7334b9a1c4eb1c3e8ffbf69a9cedc9a38d",
+      "bytes": 5229
+    },
+    {
+      "path": "prepared/agent/compile-runs/08/compile.log",
+      "sha256Bytes": "b2a20b81482760d4f1fe1dc85f5bd394740357b0b956c816764620e22f876d39",
+      "bytes": 15173
+    },
+    {
+      "path": "prepared/agent/compile-runs/08/compiler.args",
+      "sha256Bytes": "8047fd5f409c4784b645e232a37e5070c2272bf8809e383aa908768fa61bccf8",
+      "bytes": 29774
+    },
+    {
+      "path": "prepared/agent/compile-runs/08/result.json",
+      "sha256Bytes": "285431f3a629bb1bc147986a83782cdfb4e1d1616ecd5d28aa623c3153c7d4aa",
+      "bytes": 5229
+    },
+    {
+      "path": "prepared/agent/compile-runs/09/compile.log",
+      "sha256Bytes": "a07b91a797cf65fd2b65fa4b11298f72f28d4684da67c243b594d7c84b2030b6",
+      "bytes": 15173
+    },
+    {
+      "path": "prepared/agent/compile-runs/09/compiler.args",
+      "sha256Bytes": "d248a0ccae2c8f74f871c546acde9942b1b155bc86cb52c9e91cb801bc20c991",
+      "bytes": 29774
+    },
+    {
+      "path": "prepared/agent/compile-runs/09/result.json",
+      "sha256Bytes": "552c2dd6390c1119e64e65a19f526e53f688e0590d3c7e4cc069cd2b8cbe6221",
+      "bytes": 5229
+    },
+    {
+      "path": "prepared/agent/compile-runs/10/compile.log",
+      "sha256Bytes": "48a306c22f4a8b81ffbe98d642fa8e674e966e5ecd6178a913dedd928a0e0118",
+      "bytes": 20112
+    },
+    {
+      "path": "prepared/agent/compile-runs/10/compiler.args",
+      "sha256Bytes": "cb07975e5adb9650a0706dfab037c2d246b49bfcaaffd4ce8d93bf7cd4fdd072",
+      "bytes": 30599
+    },
+    {
+      "path": "prepared/agent/compile-runs/10/result.json",
+      "sha256Bytes": "fd6719dbd4c257c0ddd1c9031fd6d28d2d79818f9b94b59bc72c448d9a1c8ed6",
+      "bytes": 6578
+    },
+    {
+      "path": "prepared/agent/compile-runs/11/compile.log",
+      "sha256Bytes": "3694d08b079eead161aca43ef6ec2dad9cb5bb63ef551d0c424fcae5ac980eef",
+      "bytes": 20112
+    },
+    {
+      "path": "prepared/agent/compile-runs/11/compiler.args",
+      "sha256Bytes": "7a5ecccec10aaef480c8ca7c2d4cbddf99de1d05c9633e98b4d81045ab313457",
+      "bytes": 30599
+    },
+    {
+      "path": "prepared/agent/compile-runs/11/result.json",
+      "sha256Bytes": "9553b5f5fad3b8bd2af0994bbba808759c1ee5f50c7d6ecc3cf58e8d74aed916",
+      "bytes": 6578
+    },
+    {
+      "path": "prepared/agent/fixture-runs/01/compile.log",
+      "sha256Bytes": "adeb437f878065f934692c50d582f0fa0fe25226aa1a4659729adfdadc0ba391",
+      "bytes": 1204
+    },
+    {
+      "path": "prepared/agent/fixture-runs/01/compiler.args",
+      "sha256Bytes": "446c6fd49bdcc4d7236f163d9318fa3b707fe2d121a92438302b163d108b7a1a",
+      "bytes": 28382
+    },
+    {
+      "path": "prepared/agent/fixture-runs/01/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/02/compiler.args",
+      "sha256Bytes": "2a615d7f88464b25495e7768bd64b0d2036cb0b28cba933c839986fbb3dca1e9",
+      "bytes": 28382
+    },
+    {
+      "path": "prepared/agent/fixture-runs/02/identity.json",
+      "sha256Bytes": "6d6b50fe16194d54ff16018f1c32c94b678001ab3715ef881c75352904322756",
+      "bytes": 2310
+    },
+    {
+      "path": "prepared/agent/fixture-runs/02/runtime.log",
+      "sha256Bytes": "6272dfacbb814a3793c3825d6cecac8876c5056f1e8c534ae8d92d8d1d11311e",
+      "bytes": 510
+    },
+    {
+      "path": "prepared/agent/fixture-runs/02/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/03/compiler.args",
+      "sha256Bytes": "7b72620b340d370c04c54cf1bd22d4007786a7251f7f9eef5053f22693eaefe3",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/03/identity.json",
+      "sha256Bytes": "4a696633add79d8d98a2c91d76fa12d573daf777ce36dc25dba5f1942de3e7c9",
+      "bytes": 2275
+    },
+    {
+      "path": "prepared/agent/fixture-runs/03/report.json",
+      "sha256Bytes": "8dca137fe0dd3d9588ff8318600154b8ed0393d973e6514f883a7c66a9bc8452",
+      "bytes": 260
+    },
+    {
+      "path": "prepared/agent/fixture-runs/03/runtime.log",
+      "sha256Bytes": "7220c04678680499655265262e4ae4fd4742fa4f394e4adddf88ba0b01f64734",
+      "bytes": 3840
+    },
+    {
+      "path": "prepared/agent/fixture-runs/03/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/04/compiler.args",
+      "sha256Bytes": "4184f8580682191c9d37938debbee4e6c765b54d25a05ea687d71ee70adbeda2",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/04/identity.json",
+      "sha256Bytes": "83b5a049bf2f099274cc1960c8867630f628a826a808f27574e98492afc45908",
+      "bytes": 2275
+    },
+    {
+      "path": "prepared/agent/fixture-runs/04/report.json",
+      "sha256Bytes": "8dca137fe0dd3d9588ff8318600154b8ed0393d973e6514f883a7c66a9bc8452",
+      "bytes": 260
+    },
+    {
+      "path": "prepared/agent/fixture-runs/04/runtime.log",
+      "sha256Bytes": "b5ae8aed0fa098ab8a691c3f6ebf70dcb0583541efff3494b22361c8401f8ae6",
+      "bytes": 3874
+    },
+    {
+      "path": "prepared/agent/fixture-runs/04/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/05/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/05/compiler.args",
+      "sha256Bytes": "8756e24319ea096b3041d575cd617d88b5211154b2aa1c2c14f8abd408c21e81",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/05/identity.json",
+      "sha256Bytes": "665695f8f7b6b12d216013b4176bcd53f7ec723d4e1a3d9fd72db51b858bfc72",
+      "bytes": 2275
+    },
+    {
+      "path": "prepared/agent/fixture-runs/05/report.json",
+      "sha256Bytes": "8dca137fe0dd3d9588ff8318600154b8ed0393d973e6514f883a7c66a9bc8452",
+      "bytes": 260
+    },
+    {
+      "path": "prepared/agent/fixture-runs/05/runtime.log",
+      "sha256Bytes": "1d497ddc2612140c8b7ed44971bce91a026712d688812887b294962c8e6b3ca5",
+      "bytes": 3874
+    },
+    {
+      "path": "prepared/agent/fixture-runs/05/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/06/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/06/compiler.args",
+      "sha256Bytes": "7330f9d09c7e9fff61c3891cd98d143da74e739943dda3374e27c7762e55e47f",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/06/identity.json",
+      "sha256Bytes": "d78ab84210ea226d0af90f07e1a7087ca03fb538b55ce3793f81d6167967f70c",
+      "bytes": 2275
+    },
+    {
+      "path": "prepared/agent/fixture-runs/06/report.json",
+      "sha256Bytes": "40e45b816b2ea3d8548e717a8e564c02d48cf06efe62a98541f02549e956bf56",
+      "bytes": 620
+    },
+    {
+      "path": "prepared/agent/fixture-runs/06/runtime.log",
+      "sha256Bytes": "e420109e0209e2814a8436e8d8d800a4471bd3a004ebaa0063b50f8bc2a418b5",
+      "bytes": 4160
+    },
+    {
+      "path": "prepared/agent/fixture-runs/06/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/07/compile.log",
+      "sha256Bytes": "8d146b42247133f76b8d916601a8ae6d0fdf04881e6f6c7df1b7d3035023c0b0",
+      "bytes": 8922
+    },
+    {
+      "path": "prepared/agent/fixture-runs/07/compiler.args",
+      "sha256Bytes": "b9c80155b37032fcf964e805c5f6607455c7337f55c2813b127772776cb6e90f",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/07/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/08/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/08/compiler.args",
+      "sha256Bytes": "2697107e5036d990db0ca300e8e822a555eaab415408a6c533d824cdb5718680",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/08/identity.json",
+      "sha256Bytes": "e3408436ec7cecb441877cb8c7c1064b8cae85fac0ac17969706df85c4387da3",
+      "bytes": 2275
+    },
+    {
+      "path": "prepared/agent/fixture-runs/08/report.json",
+      "sha256Bytes": "fc4aec88b8b84334f270424d501587c85bc57bddd9ebcabaa1c5a3d1b874f025",
+      "bytes": 784
+    },
+    {
+      "path": "prepared/agent/fixture-runs/08/runtime.log",
+      "sha256Bytes": "bb757f8378976dc90405b4e3007c96dc68bb60e083426da8eb02731f97e940da",
+      "bytes": 3540
+    },
+    {
+      "path": "prepared/agent/fixture-runs/08/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/09/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/09/compiler.args",
+      "sha256Bytes": "2308673cbb7446b833800c79bda45fb7e1f70c1a5755d2314a19eac347f0776a",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/09/identity.json",
+      "sha256Bytes": "430cced3b197a9d4979d5cbac8ef80df49cb07bcdd593f90aed0d421796fef79",
+      "bytes": 2274
+    },
+    {
+      "path": "prepared/agent/fixture-runs/09/report.json",
+      "sha256Bytes": "a8cd7556a80068ffcd6f1a30b6dccce57a09199f7cb7960455c36bd373f6af23",
+      "bytes": 1275
+    },
+    {
+      "path": "prepared/agent/fixture-runs/09/runtime.log",
+      "sha256Bytes": "61d19a027cd6e6e0a786ab7227c65b2736af27fd153dd07fb1ced2172088a964",
+      "bytes": 890
+    },
+    {
+      "path": "prepared/agent/fixture-runs/09/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/10/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/10/compiler.args",
+      "sha256Bytes": "bea9f196234c2ca0780d885fa6b521737c341833858764fc7b0b792a7eef33fc",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/10/identity.json",
+      "sha256Bytes": "eb719c111c78857146c9fb23d48b6b13c2e732d34dd280213789aeeb3f882ddd",
+      "bytes": 2274
+    },
+    {
+      "path": "prepared/agent/fixture-runs/10/report.json",
+      "sha256Bytes": "a8cd7556a80068ffcd6f1a30b6dccce57a09199f7cb7960455c36bd373f6af23",
+      "bytes": 1275
+    },
+    {
+      "path": "prepared/agent/fixture-runs/10/runtime.log",
+      "sha256Bytes": "61d19a027cd6e6e0a786ab7227c65b2736af27fd153dd07fb1ced2172088a964",
+      "bytes": 890
+    },
+    {
+      "path": "prepared/agent/fixture-runs/10/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/agent/fixture-runs/11/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/agent/fixture-runs/11/compiler.args",
+      "sha256Bytes": "a5e981e1b3155df8bc7ba99a7e509d957bf663191c84bf37ea8df70cc2bdbc96",
+      "bytes": 28362
+    },
+    {
+      "path": "prepared/agent/fixture-runs/11/identity.json",
+      "sha256Bytes": "c60d14cdf02c8320361bc91149c970ae20982f35ff3fefd08c9d346ed110df2d",
+      "bytes": 2275
+    },
+    {
+      "path": "prepared/agent/fixture-runs/11/report.json",
+      "sha256Bytes": "472041f53e9597732b7bb8899ef6a861444cab10f054708bb0e737896685bf79",
+      "bytes": 435
+    },
+    {
+      "path": "prepared/agent/fixture-runs/11/runtime.log",
+      "sha256Bytes": "9717e665453b46d656e95f92323f1d9c954c198f3839a5cd10f6edc857755972",
+      "bytes": 6311
+    },
+    {
+      "path": "prepared/agent/fixture-runs/11/SpaceFixtureRunner.kt",
+      "sha256Bytes": "2f53ffd583dcd35b9c23cea0d9fce77c35c2d36b6d2b526d96e16266f841cc90",
+      "bytes": 913
+    },
+    {
+      "path": "prepared/root-review/repair_sole_owners.py",
+      "sha256Bytes": "71c65f817655e66b08c8ce03ea0ffcd0e6cdc4d3e00cfc5ce62b1e5a37911ad3",
+      "bytes": 5551
+    },
+    {
+      "path": "prepared/root-review/sole-owner-repair.json",
+      "sha256Bytes": "157d1aca79a43fdd7cdb7964dc88aa46261511019dce9580bd649d8b2521bd13",
+      "bytes": 4086
+    },
+    {
+      "path": "prepared/root-review/installation-attempt01.json",
+      "sha256Bytes": "0ace00e61331940781029de0348a5c4681c41e6f34af1efb199399511b7dee80",
+      "bytes": 8315
+    },
+    {
+      "path": "prepared/root-review/actual-build01.log",
+      "sha256Bytes": "769db8b8fc6e7a9968439b80bf369bd2e14d719457109201ad5edacb4a3e7963",
+      "bytes": 22164
+    },
+    {
+      "path": "prepared/root-review/actual-build01.json",
+      "sha256Bytes": "fb2af64f380d26889429ecad69ef1040460a158be262534931befce67bf00318",
+      "bytes": 805
+    },
+    {
+      "path": "prepared/root-review/prepare_evidence.py",
+      "sha256Bytes": "ae03fddd18e7064ab3ba1fedfc416e736e80c18a7ba8c0c509ac2831a6fd672b",
+      "bytes": 7948
+    },
+    {
+      "path": "prepared/root-review/normal-attempt01-before-repair/desktop/build.gradle.kts",
+      "sha256Bytes": "c41417155695148cee057d2e16bc345d10772f64d6f6e220563c3651b19e3ebc",
+      "bytes": 152088
+    },
+    {
+      "path": "prepared/root-review/normal-attempt01-before-repair/desktop/tools/extract-upstream-space-pages.py",
+      "sha256Bytes": "37f377c2ded407a8710c210885d364f91636efa601bc8c10539985a24d49ba31",
+      "bytes": 23979
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+      "sha256Bytes": "ee73a225bfb9ed1c62d5b1535fac03839578eb9a38e32bfe41d5b68fdf03eebe",
+      "bytes": 102882
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+      "sha256Bytes": "93290b7b51a9086810a2e843edac0663c210252e628c6285463d40b12a8ac85a",
+      "bytes": 6088
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+      "sha256Bytes": "bf1b2a760d514e1020193f17a126d541dfcd70ae4ae0f96300f19266644d1f6b",
+      "bytes": 3911
+    },
+    {
+      "path": "prepared/root-normal-generated/com/bilipai/desktop/ui/DesktopOriginalSpaceBangumiRequests.kt",
+      "sha256Bytes": "213be1c61ac32b0a69de9683f132f56d0bc4a25123ec746e314e655ed802d805",
+      "bytes": 1358
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/DesktopOriginalSpaceRemainingLoadPolicy.kt",
+      "sha256Bytes": "6213d9b0a80373db558d17448b0fdc178f8208ed9ae60d5fe142c5168bcd018e",
+      "bytes": 9052
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/SpaceDynamicLoadPolicy.kt",
+      "sha256Bytes": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
+      "bytes": 19196
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/SpaceTabChromePolicy.kt",
+      "sha256Bytes": "405e05b78f819da4e793258d7355254e6b70817b2803bfee01525bb785189421",
+      "bytes": 9469
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/SpaceSelectionChipColorPolicy.kt",
+      "sha256Bytes": "3f54531e069c10778c63895ccbd38734acec7317821fe8010b13bb65f25ea910",
+      "bytes": 1708
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256Bytes": "a11ac3ea82c987d420342550b0efd315d26a9ad76754695e36670e54e5eb544c",
+      "bytes": 245524
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+      "sha256Bytes": "92b1a7296ba33ca4a93e1f0324ce4bec92799f630e1c947c6aae0ec24fd2f781",
+      "bytes": 17474
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/SpaceLoadingSkeleton.kt",
+      "sha256Bytes": "e19764692980edb8f7a575e475108efb784e36538e551cf91c531f113c76768e",
+      "bytes": 8254
+    },
+    {
+      "path": "prepared/root-normal-generated/com/android/purebilibili/feature/space/DesktopOriginalSpaceRunCatching.kt",
+      "sha256Bytes": "1f8a40bfdb776efbd47abc45bd572e92c319473b976046862b522870d100b4be",
+      "bytes": 315
+    },
+    {
+      "path": "prepared/root-normal-generated/source-transform-replay.json",
+      "sha256Bytes": "f7d42a0d43bb0f96987bb20975845c0b78e22f70080a6e4fc7e09cfd03a183f3",
+      "bytes": 169146
+    },
+    {
+      "path": "prepared/root-review/generated-verification.json",
+      "sha256Bytes": "541419e65ba5dd98c4d2ac7392e24e50a77f9d5604731dbe0f159c670f3cd1c1",
+      "bytes": 3418
+    },
+    {
+      "path": "root/install.py",
+      "sha256Bytes": "f6dd2c0ec601b8fa13d59a9fe9002a9125321c9cad9649829afe04f7f21791ff",
+      "bytes": 8499
+    },
+    {
+      "path": "root/installation.json",
+      "sha256Bytes": "adf8c015e78e48f3e85344567487d8b6f557b840c3332e23c80071eaea794c76",
+      "bytes": 8490
+    },
+    {
+      "path": "root/source-diff.patch",
+      "sha256Bytes": "8c47e2a467dfca15b927ae1e531872a06af1c1c4d45e6ff21f53208dcce95d2f",
+      "bytes": 95604
+    },
+    {
+      "path": "root/build_actual.py",
+      "sha256Bytes": "036fde7fc6f312ac13a2c5ffc5b29c31d0a8ba973d544279a7a533aa6d457802",
+      "bytes": 3863
+    },
+    {
+      "path": "root/actual-build02.log",
+      "sha256Bytes": "e30f975fd0daaf220f31db51a8c4fe2784d025e96d96308fae35009ff5e35aec",
+      "bytes": 27035
+    },
+    {
+      "path": "root/actual-build02.json",
+      "sha256Bytes": "5b0d06f176a1d5fb1ad557e81c471a332e8d1dbf2b64064d83ea0d4a9049fd50",
+      "bytes": 1026
+    },
+    {
+      "path": "root/actual-native-producer-receipt.json",
+      "sha256Bytes": "143fa47bdad1e6177d2afed12a7e5e0577c3affc57a63a62aff779ffe604a05d",
+      "bytes": 1247
+    },
+    {
+      "path": "root/actual-native-producer-input-graph.json",
+      "sha256Bytes": "1b65672f8dea2faa646f2387072d5709f57f3464b9958a861e0a6374d894ddc9",
+      "bytes": 116973
+    },
+    {
+      "path": "root/save_and_stage.py",
+      "sha256Bytes": "cd93d69601e6da025470ff727ad56df4b432196331d8c13e74695ecf49132d22",
+      "bytes": 5892
+    },
+    {
+      "path": "root/integrated-test.xml",
+      "sha256Bytes": "42bb01e99cf38c49e26127a4c3682e924802d2135f35b5110e870d6fccf74a4c",
+      "bytes": 2746
+    },
+    {
+      "path": "root/generated-verification.json",
+      "sha256Bytes": "541419e65ba5dd98c4d2ac7392e24e50a77f9d5604731dbe0f159c670f3cd1c1",
+      "bytes": 3418
+    },
+    {
+      "path": "root/before/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "sha256Bytes": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e",
+      "bytes": 41945
+    },
+    {
+      "path": "root/before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+      "sha256Bytes": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7",
+      "bytes": 4769
+    },
+    {
+      "path": "root/before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6",
+      "bytes": 30064
+    },
+    {
+      "path": "root/before/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903",
+      "bytes": 155607
+    },
+    {
+      "path": "root/before/desktop/build.gradle.kts",
+      "sha256Bytes": "240a19c530b8db9acb1f6802b54a600821c04989a5fb3ede2ea2f4d45f963107",
+      "bytes": 150474
+    },
+    {
+      "path": "root/before/desktop/upstream-sources.json",
+      "sha256Bytes": "58af65ee1a889ec615c860dc7639c1caba8be9edc67ac43670ed896d2860a9b0",
+      "bytes": 439805
+    },
+    {
+      "path": "integration-summary.json",
+      "sha256Bytes": "d3b9ee5ee604da5cedc6042081f6e8d897a66338d3ca976967d6651333d23787",
+      "bytes": 4578
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "4b7e32a00352e4682fc15a8680f650f7b24d42c68d03d05b01961bc17beffe09",
+      "bytes": 1367
+    }
+  ]
+}

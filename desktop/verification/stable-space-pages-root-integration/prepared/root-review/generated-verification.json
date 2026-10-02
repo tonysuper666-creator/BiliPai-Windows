@@ -1,0 +1,83 @@
+{
+  "passed": true,
+  "fullOriginalBodies": 11,
+  "normalOutputs": 12,
+  "sourceInverseReconstructed": 11,
+  "frozenIdenticalFullBodies": 9,
+  "declaredSoleOwnerChangedBodies": 2,
+  "existingSoleHelpersExcluded": 3,
+  "rows": [
+    {
+      "path": "com/android/purebilibili/feature/space/SpaceViewModel.kt",
+      "sha256Bytes": "ee73a225bfb9ed1c62d5b1535fac03839578eb9a38e32bfe41d5b68fdf03eebe",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+      "sha256Bytes": "93290b7b51a9086810a2e843edac0663c210252e628c6285463d40b12a8ac85a",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+      "sha256Bytes": "bf1b2a760d514e1020193f17a126d541dfcd70ae4ae0f96300f19266644d1f6b",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": false
+    },
+    {
+      "path": "com/bilipai/desktop/ui/DesktopOriginalSpaceBangumiRequests.kt",
+      "sha256Bytes": "213be1c61ac32b0a69de9683f132f56d0bc4a25123ec746e314e655ed802d805",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/space/DesktopOriginalSpaceRemainingLoadPolicy.kt",
+      "sha256Bytes": "6213d9b0a80373db558d17448b0fdc178f8208ed9ae60d5fe142c5168bcd018e",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/space/SpaceDynamicLoadPolicy.kt",
+      "sha256Bytes": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/space/SpaceTabChromePolicy.kt",
+      "sha256Bytes": "405e05b78f819da4e793258d7355254e6b70817b2803bfee01525bb785189421",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/space/SpaceSelectionChipColorPolicy.kt",
+      "sha256Bytes": "3f54531e069c10778c63895ccbd38734acec7317821fe8010b13bb65f25ea910",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256Bytes": "a11ac3ea82c987d420342550b0efd315d26a9ad76754695e36670e54e5eb544c",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": false
+    },
+    {
+      "path": "com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+      "sha256Bytes": "92b1a7296ba33ca4a93e1f0324ce4bec92799f630e1c947c6aae0ec24fd2f781",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": true
+    },
+    {
+      "path": "com/android/purebilibili/feature/space/SpaceLoadingSkeleton.kt",
+      "sha256Bytes": "e19764692980edb8f7a575e475108efb784e36538e551cf91c531f113c76768e",
+      "completeOriginalInverseByteEqualLF": true,
+      "differsFromFrozen": false
+    }
+  ],
+  "actualProductOverrides": 0,
+  "normalBuildAttempt": 2,
+  "testsExecuted": true,
+  "junitMethods": 15,
+  "accountAccepted": false,
+  "rootRuntimeAccepted": false
+}

@@ -1,0 +1,2304 @@
+{
+  "passed": true,
+  "source": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\native\\diagnostic-share\\DesktopDiagnosticShare.cpp",
+    "sha256Bytes": "4ca60493f8224eefa7c00684fd4fede6a8c7bbdc2b735e03c5bcdd02983807ca",
+    "bytes": 32291
+  },
+  "dll": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\858addd0-60c8-4328-ba84-b1c40568aba9\\bilipai-diagnostic-share.dll",
+    "sha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3",
+    "bytes": 241152
+  },
+  "command": [
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+    "/nologo",
+    "/std:c++20",
+    "/EHsc",
+    "/W4",
+    "/WX",
+    "/MT",
+    "/O2",
+    "/LD",
+    "/utf-8",
+    "/sourceDependencies",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\858addd0-60c8-4328-ba84-b1c40568aba9\\source-dependencies.json",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\native\\diagnostic-share\\DesktopDiagnosticShare.cpp",
+    "/FoC:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\858addd0-60c8-4328-ba84-b1c40568aba9\\DesktopDiagnosticShare.obj",
+    "/FeC:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\858addd0-60c8-4328-ba84-b1c40568aba9\\bilipai-diagnostic-share.dll",
+    "/link",
+    "/NOLOGO",
+    "/Brepro",
+    "/VERBOSE:LIB",
+    "runtimeobject.lib",
+    "ole32.lib",
+    "oleaut32.lib",
+    "user32.lib",
+    "/IMPLIB:C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\858addd0-60c8-4328-ba84-b1c40568aba9\\bilipai-diagnostic-share.lib",
+    "/PDB:C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\858addd0-60c8-4328-ba84-b1c40568aba9\\bilipai-diagnostic-share.pdb"
+  ],
+  "includeSearchOrder": [
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\winrt",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt"
+  ],
+  "librarySearchOrder": [
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\lib\\x64",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x64",
+    "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64"
+  ],
+  "explicitEnvironment": {
+    "INCLUDE": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\winrt;C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt",
+    "LIB": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\lib\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x64;C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64",
+    "VSLANG": "1033"
+  },
+  "clearedImplicitFlagVariables": [
+    "CL",
+    "_CL_",
+    "LINK",
+    "_LINK_"
+  ],
+  "sourceDependencies": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\858addd0-60c8-4328-ba84-b1c40568aba9\\source-dependencies.json",
+    "sha256Bytes": "4886a7a7c93ef508d70d25373048eafe161b404c0e0e43bbdc6d38a3de263f33",
+    "bytes": 52473
+  },
+  "transitiveHeaders": [
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_bit_utils.hpp",
+      "sha256Bytes": "fd07ec800d789d222ba2b98c8ddcc3354930bd83e5ebd3ebc2491f35d047b331",
+      "bytes": 15274
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_chrono.hpp",
+      "sha256Bytes": "0fefff2b74e2fe60ef89d42042d8f9ecc7bda3f60472d353c84bb1a3fce7cb9c",
+      "bytes": 33686
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_format_ucd_tables.hpp",
+      "sha256Bytes": "0011433c71c625191e10d074d06bae571eb9cfcff979bd5650bb436fa6cda9fa",
+      "bytes": 50758
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_formatter.hpp",
+      "sha256Bytes": "fc22eb5e9c24a0e72f0f2a07fd0e5d2c619da57ad2b10cce988a4f229b0053d3",
+      "bytes": 17301
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_heap_algorithms.hpp",
+      "sha256Bytes": "56c6be67b7c0ff9b3ffb7d48943c1ec01728f41f0663dca2c49c296f492bf619",
+      "bytes": 5973
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_iter_core.hpp",
+      "sha256Bytes": "4fe1273bd571601435c7032dabf6e57b88f84b1740bc65768e00ccdc60b1c9ad",
+      "bytes": 19655
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_minmax.hpp",
+      "sha256Bytes": "2f899749842ccf2adbeabca98f1bba634d787a96f1ddebf62a2c5d0c6a83c8b2",
+      "bytes": 1473
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_ostream.hpp",
+      "sha256Bytes": "e2016938b271458a2ed0e04ffbf5dd38ca219755f8ec6c7b0447d46ae112cea5",
+      "bytes": 37634
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_print.hpp",
+      "sha256Bytes": "29413fa5b9d6b3af7fbda3b6e0d4918cc65fbb1afa160ad2f61a356cdbe6da26",
+      "bytes": 3310
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_ranges_tuple_formatter.hpp",
+      "sha256Bytes": "0efb7bfc2323b6c40e9d174ea4aa86f4f65722a4a13694cc1de24be33255a2ac",
+      "bytes": 53328
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_sanitizer_annotate_container.hpp",
+      "sha256Bytes": "50d83b50fd98df02f58c3c643b5bc26313968a9edd75a485f7af4a24cfcef8e1",
+      "bytes": 7597
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_string_view.hpp",
+      "sha256Bytes": "957ae97e03169f46d8d9b77c9dc5ab3f66c619be5a228d062499b60b8d336c47",
+      "bytes": 83111
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_system_error_abi.hpp",
+      "sha256Bytes": "c5c46618a13ba9a8087f0db8d2d2ecdeadad7694c8bef71a2e39b72b683d14d3",
+      "bytes": 1224
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_threads_core.hpp",
+      "sha256Bytes": "e29bc7049cc854234dbc1b332e1f7118aa0cc3b495fe538dfda9e7fbd0374529",
+      "bytes": 3051
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_tzdb.hpp",
+      "sha256Bytes": "8bb96dcb97cbe29f9475c35b4c5536cbe7524686f3e7a82a0b18264a10a86917",
+      "bytes": 5301
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\__msvc_xlocinfo_types.hpp",
+      "sha256Bytes": "1ee04bf81213a765a6b6c894275303d46d372c0555c8f4b17a1c97124dbdf860",
+      "bytes": 1207
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\algorithm",
+      "sha256Bytes": "e4cfb31da8ec07af89834d829ea72b20c7e3202476af3b0641cfe8d6ebb245d7",
+      "bytes": 533492
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\ammintrin.h",
+      "sha256Bytes": "267f97d9d269e39204b31efcdc2a7a32fd63b2e15dc21a80fb18d739d3d03b12",
+      "bytes": 16722
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\array",
+      "sha256Bytes": "48d2c6c4926e08d0d96f41e59f69513737f76107530f68c94d5d9fe668689a15",
+      "bytes": 29292
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\atomic",
+      "sha256Bytes": "76a3e00e57e342f26eb5db7a0e38002b0f5db850ac2fe33d026733bf8217b4b4",
+      "bytes": 125337
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\bit",
+      "sha256Bytes": "f08c873229e5c11b6e89a0d47c5ca5e2555947321aa382bf52224d041648d483",
+      "bytes": 8838
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cctype",
+      "sha256Bytes": "d764f74333f84776e778d936af9c78d9a9a21a0668dc1833fdd4a98e26a00f18",
+      "bytes": 1113
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cerrno",
+      "sha256Bytes": "4c8b39febc5b11b08e7a1253dc363bd8c8acdbe0159855b1c15d21b604f71e74",
+      "bytes": 314
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cfloat",
+      "sha256Bytes": "615e244a422277b8362e591881df1bd701d7e0ad0467d1787cb04a89565b333c",
+      "bytes": 242
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\charconv",
+      "sha256Bytes": "ca94da19ba8b2c4e2156559b9bf2921739c3fe09182f1429661199ae20e54b5f",
+      "bytes": 123112
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\chrono",
+      "sha256Bytes": "8af902a185268ba20756a2c4b5fb309c80e03c2a6fe3f166c67c3eb3aa6ffc4d",
+      "bytes": 275223
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\climits",
+      "sha256Bytes": "dd0a6215a16748afdb3c6ad3f877e32ffab31326645b14dda13fdc76c2683da4",
+      "bytes": 319
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\clocale",
+      "sha256Bytes": "95cb0b228d1448969c55add911b4abe6d0108422c05ba27a71dd3ec7d4f61e38",
+      "bytes": 744
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cmath",
+      "sha256Bytes": "3f10507b4bca07cd07b7b4ae1403377634a37e91459305094e9f8cba34dd8ca5",
+      "bytes": 71762
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\compare",
+      "sha256Bytes": "8f185f3771075b2dd0c41c13f4c12ff4995566c1f7240a2881d810ced72679ae",
+      "bytes": 38666
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\concepts",
+      "sha256Bytes": "cadf7ebe363fa04b56e84d664d0e3cf5683eabe2e671d3d38f4c1f95efabea56",
+      "bytes": 11976
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\concurrencysal.h",
+      "sha256Bytes": "1ea9a2e32a6ff298ad7904610cc71028caa9b172399a579ca90a120d1b1aec12",
+      "bytes": 17273
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\coroutine",
+      "sha256Bytes": "1fd6004a2eb2bd54d29d06cf4c19d9014f00f99285175e9d3e9550cbb2100c26",
+      "bytes": 8210
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\crtdefs.h",
+      "sha256Bytes": "82bdcc78bdab153e2a41a72a3860201b33aab6e46d207194caf09326f47b298f",
+      "bytes": 2581
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cstddef",
+      "sha256Bytes": "8388948efa6dc3b3b20866fa1c3057ea53b8dfd028f22abe1d7dce23ef1d9ecc",
+      "bytes": 4015
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cstdint",
+      "sha256Bytes": "7e608450751cd44f43942b20e1c1c455d42872e78e7119361316850644f1fb75",
+      "bytes": 2674
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cstdio",
+      "sha256Bytes": "d13434f976c70f1ea3f930ad63121bfd8cfb5c736cfc48a91f06a7608b1fbaa0",
+      "bytes": 2511
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cstdlib",
+      "sha256Bytes": "0a7edd2c3ba954e98aa26894f28c3eb7fb9b0ba748261ec6e568563ed17b2fc4",
+      "bytes": 2532
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cstring",
+      "sha256Bytes": "6f16cc44e5505c1d46e0869b8a7cbabf0be1646203261ab6e885165faceb98a6",
+      "bytes": 1532
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\ctime",
+      "sha256Bytes": "6d807f129b2ac76e16769464ab789b9a7980ecdd39041c02bf2974e2301aa485",
+      "bytes": 2950
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\cwchar",
+      "sha256Bytes": "6395a6c56a62c4b02e58f4f5bf6904f7baabd7b90d0de281148ee3c115e7291a",
+      "bytes": 3044
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\eh.h",
+      "sha256Bytes": "f9809ac3f6929a584a971f14823be5a737e763a8d8f93bd50af2c3575c286c52",
+      "bytes": 2206
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\emmintrin.h",
+      "sha256Bytes": "0088e279e28e47717d37096a52a328c6068ef41a33b8f8804e463e1e2984017e",
+      "bytes": 16131
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\exception",
+      "sha256Bytes": "f656e780c4b7de2d580f34e2c96d9992f8f0d154d068235ba5bee709ae0334a2",
+      "bytes": 13509
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\excpt.h",
+      "sha256Bytes": "191ab83e320a5e9712fe483257fecae14cb0c158a4517b620f3fddb1aa6ef23b",
+      "bytes": 2511
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\format",
+      "sha256Bytes": "b87d42ec97598dc6d003901948e15bd45f3db5d56841dee66cfc833ebd989f32",
+      "bytes": 141869
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\forward_list",
+      "sha256Bytes": "81ec7d91f571a65cce9065c9fd80b1c022c7b3fbcd3fa7137b241339b06a5cbf",
+      "bytes": 63150
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\immintrin.h",
+      "sha256Bytes": "fb8a3706c9013407f918ed92585be0eab7034ef124ec4c88f9ff4b00915d1cfa",
+      "bytes": 121773
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\initializer_list",
+      "sha256Bytes": "6ff91697d3fc1734976f2290dca64db6ff910a7d7add242029f692c745ac4558",
+      "bytes": 1888
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\intrin.h",
+      "sha256Bytes": "b1cfcc48e6e64200641d677886f63473e3d4135209bcc3438d5a73a298293e0d",
+      "bytes": 66891
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\intrin0.h",
+      "sha256Bytes": "bdbbcc2c993b2b90ea601cb033701c9ed6b66f65a39e031d65207464d7095e2c",
+      "bytes": 543
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\intrin0.inl.h",
+      "sha256Bytes": "be7631000a4e89dda44873b0c5e6336c8d3a2f4fdf594365b16f8aaaf7177aeb",
+      "bytes": 21923
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\iomanip",
+      "sha256Bytes": "f39b13944cb0e111ee6d81f1d842d25aae2c0cf570efbc26b031eb170a4c312d",
+      "bytes": 16228
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\ios",
+      "sha256Bytes": "f0114492124ab2dc5eff7fda5dfacc836ab0a84efbde4d6207c93a23efdd7373",
+      "bytes": 10615
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\iosfwd",
+      "sha256Bytes": "5bb1f37c08ab118972567c468f8f9e024046b7bd1f884571828a19006b3b4076",
+      "bytes": 11546
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\istream",
+      "sha256Bytes": "55f487a42ace45ef5262b5b895605f3ec305209eac02efb32f11969f29731029",
+      "bytes": 34901
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\iterator",
+      "sha256Bytes": "c26eadf25004e352bbb57d189820392aefaf08a82b15027f18b32725ba106db2",
+      "bytes": 68697
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\limits",
+      "sha256Bytes": "5cda311b1b514cdea1fdda5c1b53865a85c9288ef50d59b7b8f09802bf9bc60b",
+      "bytes": 27227
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\limits.h",
+      "sha256Bytes": "2ed583abdb8a052b919d4652b10839e28a6fadbe63674108dcc65f719c9ff51c",
+      "bytes": 1919
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\list",
+      "sha256Bytes": "4e3d4a6f46c2b07b18b22b1b12a003511e87b271f009786a45736a8fe67c9cb7",
+      "bytes": 75494
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\locale",
+      "sha256Bytes": "f45bb27d685f45610de3bd3dd1f122667c4a51caf820238b8b7f2ab7081272d3",
+      "bytes": 8346
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\map",
+      "sha256Bytes": "626f4bda2f71ec89ae1b7bac7b13d4b2a0483a8c8b70e777f66dd50238d47277",
+      "bytes": 30356
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\memory",
+      "sha256Bytes": "ebe9836c7d6460e9a414bcbf8e7a57d67a4760ab5f217c1ff1a06cee95af57bb",
+      "bytes": 177948
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\mmintrin.h",
+      "sha256Bytes": "d2dce9191fbdd235a94fc1af6bd163119dbcdfeadfb50f777b2d75b12ca1f028",
+      "bytes": 6634
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\mutex",
+      "sha256Bytes": "b8a1b115e4f763429314e6bd80460beecbc07206955ccdecd3bb6b0b3e10aa63",
+      "bytes": 26948
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\new",
+      "sha256Bytes": "101647348d130ff13563e2e8b07af3390a6dcfc0bea675207375eb493b213009",
+      "bytes": 2014
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\nmmintrin.h",
+      "sha256Bytes": "69ecf104338622b7f1e44b0d99469adb95c46dd9e5858f5dc8279c3ef3b99421",
+      "bytes": 4632
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\optional",
+      "sha256Bytes": "c597c685b29c361cf9689b1b7fd19b42155982dbef5729e9a21c033f73c24a88",
+      "bytes": 40581
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\ostream",
+      "sha256Bytes": "f3b25a4f7905c3a19309673cc773c7d7b6ec56c72111a33eeac0d2d840dad479",
+      "bytes": 12851
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\pmmintrin.h",
+      "sha256Bytes": "2fb7131f91e5e300a7d9f2f148b6fe79a9775d06c3f1be26908e138ac6f9fbc5",
+      "bytes": 3208
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\ratio",
+      "sha256Bytes": "1d195b2c2d72c73c9a728d3d9d516d87aa62bbab80335a9d8e81e7f0f97b019b",
+      "bytes": 10992
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\sal.h",
+      "sha256Bytes": "cda06459ca38681800ce5e98703c66534c74a803aa652bd4bc2b3407dd45ed46",
+      "bytes": 213957
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\setjmp.h",
+      "sha256Bytes": "529dce71c496d77b104b85876c65d8d6e61d7aed2d9e4b64c1011491fd566f10",
+      "bytes": 4342
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\smmintrin.h",
+      "sha256Bytes": "2f773512dac1c4515c13cb9173a2c852d8c884b0cedc5814cff3956b742a1071",
+      "bytes": 10000
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\source_location",
+      "sha256Bytes": "9c0bb82229074091cf9b643677b49e76dccdbb9129bf9419a4ad8a2c6fb408de",
+      "bytes": 2397
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\span",
+      "sha256Bytes": "ffd080146fdde499a87fbb8a8e0babb7e192d3a61b1cfa0d29889770457dad38",
+      "bytes": 22350
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\sstream",
+      "sha256Bytes": "cff76f476a58ba328e60c70b7a008b0fdf335bc1482b349632fdfe6b7b6949d3",
+      "bytes": 37478
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\stdarg.h",
+      "sha256Bytes": "5d61d0b6734ef0832c30064800e8d01b3f12d29d24c8b1bd07b3ece3b72a9330",
+      "bytes": 554
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\stdexcept",
+      "sha256Bytes": "e677daf8465dd4b870f420df9010ee3a17cd80fb6f6f5655f2ad3dc6d8009ae1",
+      "bytes": 5213
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\stdint.h",
+      "sha256Bytes": "29fb6d4ba5e311e06877609c20a1bc49c6cdfb730f56dd0f9c53a6241c40ab5c",
+      "bytes": 4114
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\stop_token",
+      "sha256Bytes": "b691531ef9e1dbfaceddda6f8d94b5ae89750edf942b89014a01b07eb8b707b2",
+      "bytes": 12970
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\streambuf",
+      "sha256Bytes": "b8bec573d0d281db12a779a161e0485d9b801fc8d7f040752909aa15cebb8478",
+      "bytes": 15129
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\string",
+      "sha256Bytes": "dafa5ec4d069f7e85001d6a03fdcac5bde1d18eb7412240aa5cc7e10c7cddf05",
+      "bytes": 16455
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\string_view",
+      "sha256Bytes": "4954e7353138c42fec445ac2357cdb90278807a57e395bb3e7a6a1e5b1007f3a",
+      "bytes": 833
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\system_error",
+      "sha256Bytes": "2749bc4705adc1b6cfc7e488f2fa9f3db4231990a33a5f5ec63c6568fdcba753",
+      "bytes": 29123
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\thread",
+      "sha256Bytes": "028f328b217c689a2c37c978371defc1c8835be98238fac814d61e0596f80060",
+      "bytes": 14103
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\tmmintrin.h",
+      "sha256Bytes": "e5981ed52590bbcd7cad7d84e7ab3b47b81837136138854de0ee807332f95dab",
+      "bytes": 4763
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\tuple",
+      "sha256Bytes": "feb355a9d1552af6e7b8cbdb3a6a2540604ae14ee5ed8f3dd6649bba46b3cd1d",
+      "bytes": 58581
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\type_traits",
+      "sha256Bytes": "357e102b4e6ab85a864980a01bba28440791311df288b8987b580e577c928d5c",
+      "bytes": 108106
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\typeinfo",
+      "sha256Bytes": "9fe7fd18aaf6ea9714837a862d40d3bbaebdf57321a60f0951a0fafd157e25d2",
+      "bytes": 2112
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\unordered_map",
+      "sha256Bytes": "989a75d74b4b4370bc4a610dc1555db4be223f3ae184fe81fb0d5cf06d104edd",
+      "bytes": 42678
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\use_ansi.h",
+      "sha256Bytes": "f3133ce73105aa38ea2fa0ee1495c8620b2d7dc0ab00dd980d9325ac38c7d443",
+      "bytes": 1330
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\utility",
+      "sha256Bytes": "403bcf5919d0e0371f25a929752f0a05aae7b0667129d65cfe3a8dff858e97d6",
+      "bytes": 42347
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vadefs.h",
+      "sha256Bytes": "200b49c2efd26bc7a92e9dfa3b847cc612b237dff5c7291d9f901d39b4a5e52e",
+      "bytes": 7800
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vcruntime.h",
+      "sha256Bytes": "a2fe9117dc2640e243f91fa94e1d05fc35083218c2a67a446db9e34cece779b5",
+      "bytes": 11851
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vcruntime_exception.h",
+      "sha256Bytes": "0dd3dcc67b655fbfc96708f131c9e7f86416d2db95fd33b1e7acc8489f2c32d4",
+      "bytes": 3143
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vcruntime_new.h",
+      "sha256Bytes": "8ee45e7db7f08475d1ddf33d493fd7cb5cd10b54b4756b39156c8548281b3e63",
+      "bytes": 5531
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vcruntime_new_debug.h",
+      "sha256Bytes": "c3f552f0f27600ad991ad4b8b39d2204b65b4afcf0123504f03e781546f0f010",
+      "bytes": 1578
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vcruntime_startup.h",
+      "sha256Bytes": "fb0bcd4cc6af20cedc3ddc02bdddd7e95cde5ede5c5c4aefa720702a2a75557a",
+      "bytes": 1272
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vcruntime_string.h",
+      "sha256Bytes": "b05204f6814d1d7b7ca729b41d4192d0e47722f162c0b1d322f994bf9650af63",
+      "bytes": 2959
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vcruntime_typeinfo.h",
+      "sha256Bytes": "d6a1a675ad9592ba87ec95dc130e0ad690040c6dbb4faa974945c778190cccf8",
+      "bytes": 5313
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\vector",
+      "sha256Bytes": "351604d91a2ceac79f9bd9448c0553cccc22711e22955b5938eaf41de98334a6",
+      "bytes": 161282
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\version",
+      "sha256Bytes": "f9c5a2952c6053e3bf8a50c7599dfba75815666ebfd963779c5698118915dbde",
+      "bytes": 257
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\wmmintrin.h",
+      "sha256Bytes": "ccee1d63e178b3dcff1625817c2a0722fbb2966956d3cbe5531feecb6afd5a9b",
+      "bytes": 2615
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xatomic.h",
+      "sha256Bytes": "769a41b38adbc4760a70feb5678a843e1df91ae33b64c60da2c993d8ad768d9c",
+      "bytes": 5088
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xatomic_wait.h",
+      "sha256Bytes": "9048eb4c65793df84d037413206471c41859cb02e12c95816dc1e77fdbad4e0b",
+      "bytes": 3448
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xbit_ops.h",
+      "sha256Bytes": "ce23055e9f7d2fe88d0e4733848c9374db361ab610fa512cbbebb3c01765e0b8",
+      "bytes": 2743
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xcall_once.h",
+      "sha256Bytes": "6d0dd9d0c84f4a4baf7969e257b9013ba73b8b2e4061abab626c2621f326c03d",
+      "bytes": 3856
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xcharconv.h",
+      "sha256Bytes": "7372e9cd682c47df5b0c5b5b0adbe0a1f1c41ffd908950a77afd037cdf77802d",
+      "bytes": 1260
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xcharconv_ryu.h",
+      "sha256Bytes": "265b74f46e8815f6e2eb4868cd0e5f4b5a28a52d68411805249c991062980090",
+      "bytes": 102081
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xcharconv_ryu_tables.h",
+      "sha256Bytes": "18e4dc7b7783d788f3123f9e871b00754521264e199608a908887a692c311f13",
+      "bytes": 6943
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xcharconv_tables.h",
+      "sha256Bytes": "291ec21d518f16a3c1399ae4bd269fa25d5288c4b71597fde600b476e2d170e8",
+      "bytes": 4728
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xerrc.h",
+      "sha256Bytes": "41bf5400ac3bc3e6f1d738089a77b3112d988bff89b31ef15bf532922d52b04d",
+      "bytes": 6445
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xfacet",
+      "sha256Bytes": "71d7bd76e31f7aee31c2d22386e00bf508936cea4e510ed3a7cde20dc3ab8312",
+      "bytes": 1473
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xfilesystem_abi.h",
+      "sha256Bytes": "66e149294f6c93ecc10b7a934c39cb6b276bc09e6dbdbdc2c637175cf82c38fc",
+      "bytes": 17434
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xhash",
+      "sha256Bytes": "b5b183c4fb05fa5c1079a6eb79b7de6b395bd5cb405c09832820e89e82423435",
+      "bytes": 84812
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xiosbase",
+      "sha256Bytes": "6fa886b895d0ee805985b9ef57d96d7e372431acc87184cfc02b7d65ea0a82fc",
+      "bytes": 16925
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xkeycheck.h",
+      "sha256Bytes": "fdb1dc9ca22f9309bfb7e87b3f9e2b340ced7945344af2450be4beac589a3df9",
+      "bytes": 20754
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xlocale",
+      "sha256Bytes": "cbaf5f6a4b5609dac0ce91facab9812b0f0400ce0ea13689b8e3eecbf8431ee1",
+      "bytes": 129272
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xlocbuf",
+      "sha256Bytes": "5b0fbdec54a6501ccb7cb66d1f31e4f3c207cb8a3f11e0876ab762d8a85e1a61",
+      "bytes": 18574
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xlocinfo",
+      "sha256Bytes": "3577fc29730c92dc4878003f0877695f6c7a8ad782d61be534c765a65661f741",
+      "bytes": 16020
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xlocmes",
+      "sha256Bytes": "fda364686c3132ef20c94db904334cf52071e154d4875c8883525e1a7b1b69b1",
+      "bytes": 4634
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xlocmon",
+      "sha256Bytes": "3a60a39b65c8abd859a61a784e4132e5d859b485501bda03776353a38070cda3",
+      "bytes": 37495
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xlocnum",
+      "sha256Bytes": "f02525562ce44675849016b2182a3e41105e329c790ece37a6d5f109f2599e11",
+      "bytes": 71094
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xloctime",
+      "sha256Bytes": "25a52e6e11c644fd3c630ed6e15e1da956f553987a083125d2f5c44c17e0fab9",
+      "bytes": 48694
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xmemory",
+      "sha256Bytes": "76359d0893ef63b0baa617e3f2d8729c50a24d349b41af51ad8e00ad7be82d70",
+      "bytes": 112178
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xmmintrin.h",
+      "sha256Bytes": "1f2376321c0f53c06cca13a354a519e2870b7cb1e6e0f223c242390b9114dd48",
+      "bytes": 20079
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xnode_handle.h",
+      "sha256Bytes": "559b99d9f52414b17923f7f791028ad50e310ebbcfb4ef4bee9d7c5d930c4935",
+      "bytes": 7078
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xpolymorphic_allocator.h",
+      "sha256Bytes": "df09c8ef5650c7e4980da1254f4d422fc0385e9852bb009e70449190a29db0f9",
+      "bytes": 16963
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xsmf_control.h",
+      "sha256Bytes": "b69b98ce04a1d505f2f7fcf8a610664682c3a754d85b4bb2f857f09bce61f3dd",
+      "bytes": 7671
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xstring",
+      "sha256Bytes": "9407c290a1d0c6bebc42cf131bd04f09a9892f61b713eecb12827c0f6bbc3045",
+      "bytes": 161127
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xthreads.h",
+      "sha256Bytes": "76a4a9ce19140621d2d3c32738bf396177ebe72b893c5f50dea331c9cff15e3b",
+      "bytes": 4138
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xtimec.h",
+      "sha256Bytes": "d6a25d6dfaf39141a7bfb86b296eb54c0b76aa29fc54a7c2a52c7bc17014d958",
+      "bytes": 1755
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xtr1common",
+      "sha256Bytes": "f9afdc2123d09c564f42552e160e7a558b87c8f0f63939e98bfcadb7dbf913ba",
+      "bytes": 7672
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xtree",
+      "sha256Bytes": "06b661c5906bcc6eae0078851b60898a2ec9c7af81e53c988d78e713a4e6952b",
+      "bytes": 79561
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\xutility",
+      "sha256Bytes": "d5959e0964ea09991888e5b45eecfd8c71c094034261489fbb450c2f2f450ef5",
+      "bytes": 331853
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\yvals.h",
+      "sha256Bytes": "a186476441eaa158056be01da9a1473217e14a7cc33365cbd0b6c9115833e0dc",
+      "bytes": 17704
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\yvals_core.h",
+      "sha256Bytes": "5070449e37a1735adf49204a12c7a7d5efa145d6aa607720aef5adbd2c57ef83",
+      "bytes": 104524
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\include\\zmmintrin.h",
+      "sha256Bytes": "ee8d0c6ce34ae423958ec2abc61d31e2a18a00d99761fcec8f4775c8775fdcc2",
+      "bytes": 493060
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\base.h",
+      "sha256Bytes": "55f61aeaf89109ed2f46c4054a8355cd9c48a3113150e3090a2214322f8675ac",
+      "bytes": 311075
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.0.h",
+      "sha256Bytes": "3f60c2de7e8b4b284fd2d2bd8094cbf2ef3acaea52aac504e17e52fe9d5f62cb",
+      "bytes": 115049
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.1.h",
+      "sha256Bytes": "3c0e626b063f17d27c3113509aebf81c5d597ca97fe2193dff244cecae02636f",
+      "bytes": 23554
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.2.h",
+      "sha256Bytes": "d72ea41e154fe56fa3a7796aa4bd55fa87dc66a6c65894b01cc20cc7f637230c",
+      "bytes": 15225
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.activation.0.h",
+      "sha256Bytes": "373e9d2aafac20c71fd3c1b729285d6fae23f3c26b0b9922835289985ac6fc79",
+      "bytes": 127603
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.activation.1.h",
+      "sha256Bytes": "f19833add31e4e7bd8558d7ea37759761863870d041ee399db51cf67c5a41ba9",
+      "bytes": 39603
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.activation.2.h",
+      "sha256Bytes": "54e8d9c039e37c1eaf52608075c95af245d094c75c432cd98525382c52ace468",
+      "bytes": 28243
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.core.0.h",
+      "sha256Bytes": "bd4e04b9d6ba68e268329936a4aed5fb6d527d872f473044103a3133df149013",
+      "bytes": 46147
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.core.1.h",
+      "sha256Bytes": "18bba1eaad941f256e2f88e1ca79221b6e840d656633f096e9a1a89041f84fc3",
+      "bytes": 9667
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.core.2.h",
+      "sha256Bytes": "aa1918b16dad64efe4a45bd91da2f998ea6c0eb41279069c47ea8a3150274425",
+      "bytes": 8865
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.datatransfer.0.h",
+      "sha256Bytes": "b2f0bd6cfc66b4202715f1fa5fd549c7338972743694d856c72dcf32bef0d990",
+      "bytes": 123940
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.datatransfer.1.h",
+      "sha256Bytes": "53b06cd70273459b125604f2c6ffb58c62c2618e284c8509f9c19131c4b3f0ec",
+      "bytes": 23105
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.applicationmodel.datatransfer.2.h",
+      "sha256Bytes": "7b865ecb20ff8ed15289032518f61f1eed7fecb437c1d1a4c6f4d15cc559fab1",
+      "bytes": 20217
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.devices.geolocation.0.h",
+      "sha256Bytes": "587c37de998ee5e01395e50d36b2e18d27ca5d8cbf9589d4f065c4b5bc3302ef",
+      "bytes": 64034
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.devices.geolocation.1.h",
+      "sha256Bytes": "8044ca9641472b057c32ef7ee28937e8b103ff6073be0b44c62fb52c9c11bb49",
+      "bytes": 13816
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.devices.geolocation.2.h",
+      "sha256Bytes": "f1d9c38c6898ffaa11cf0727536e28d8cec37b80abbde44a7baa988dbd3401cc",
+      "bytes": 10542
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.foundation.0.h",
+      "sha256Bytes": "3b1b8afa2ba308d35567fbcb6d84fa9eb11217b331d06ca6ac01c245b73abc55",
+      "bytes": 62687
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.foundation.1.h",
+      "sha256Bytes": "1881b846a745807abe376347dd7e4a10fe7d9f05a77a3a066928b0c342c317ef",
+      "bytes": 13212
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.foundation.2.h",
+      "sha256Bytes": "654023aaf0cef44b8425d9a5bba4572758cb8ba79b262685b091a69a43789f32",
+      "bytes": 17045
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.foundation.collections.0.h",
+      "sha256Bytes": "c1cb5d3400084db470589a45aa644cbf89cc8152948ed1495c0fc3cd09b1f7a8",
+      "bytes": 29752
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.foundation.collections.1.h",
+      "sha256Bytes": "98493c0814d742c73a33c336a5ec29e54bf690e17abebcec28c722906afb8a51",
+      "bytes": 8187
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.foundation.collections.2.h",
+      "sha256Bytes": "bfd67c9962ad97ba7aadc549f97d88d0ad26b478db05d955a6faff38548eba3e",
+      "bytes": 4097
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.networking.0.h",
+      "sha256Bytes": "597ab35c05bd279b9c2d502aa0ed9b53e0461346b4153a86f3864ef90abcae30",
+      "bytes": 9383
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.networking.1.h",
+      "sha256Bytes": "271fcb1289c4d19d5349f9214f5c67f25745715fce15cfc2f7214699c02247d0",
+      "bytes": 2139
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.networking.2.h",
+      "sha256Bytes": "f6d43a0503df3a4ba6dffec09f3c563d117b033433136b077d469bbee6951520",
+      "bytes": 1383
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.networking.connectivity.0.h",
+      "sha256Bytes": "6ad54a4a0e42e411251a730a5d7fa238bc8f0d3ee9efdc3c30cd62c27f83c444",
+      "bytes": 84259
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.networking.connectivity.1.h",
+      "sha256Bytes": "30d9e089ab233f1cb140e14402c88defff6030f5640af8cf1e537d638d426981",
+      "bytes": 15210
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.networking.connectivity.2.h",
+      "sha256Bytes": "4d95d200ddd389a4e4f397f0eac5e2a19450025326e9ef425df82519862fc08b",
+      "bytes": 13399
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.security.enterprisedata.0.h",
+      "sha256Bytes": "60dfd0d886af8979f9e3045bea2b56c6a5fa45047b113d3deac6df6e5dc9a04b",
+      "bytes": 64934
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.security.enterprisedata.1.h",
+      "sha256Bytes": "898a87561d35871bcdbe1c1147e77e78967511e7443fb67b196070aed6305968",
+      "bytes": 11209
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.security.enterprisedata.2.h",
+      "sha256Bytes": "ca4148b3c7e273d3fab7bbcc0d590eba2a8bc0343cde5f45d155a30551ab6ed1",
+      "bytes": 17693
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.0.h",
+      "sha256Bytes": "f4d7fc4b006b7dfabbaf4d78bf8738637e2317b5f108d6cc1feb1a0114f96f9d",
+      "bytes": 127834
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.1.h",
+      "sha256Bytes": "609d1598aa3787775e86dbb13e8fcede9f26a2737b98d957a6f71d60ba8edd8a",
+      "bytes": 27061
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.2.h",
+      "sha256Bytes": "44eb2ecc9e4d8b40608c255e9d67a074beec40a0aef388c3a0390f13273920b7",
+      "bytes": 24066
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.fileproperties.0.h",
+      "sha256Bytes": "068457e38e7fd7cc2dc0dac5b69ae0e45df03e75ef9e553925ceeb963ab3d8cf",
+      "bytes": 28128
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.fileproperties.1.h",
+      "sha256Bytes": "42e668d80dcadf00c8abdcf46a43b34e238663b7ea980bd0375d268848d4f091",
+      "bytes": 4604
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.fileproperties.2.h",
+      "sha256Bytes": "b33f377049a28e02416cfa30ca46e9ae2fa797d24a65741f1818caa045dfe5d6",
+      "bytes": 3743
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.provider.0.h",
+      "sha256Bytes": "68dcb0df71534b80a689ab946562a8768f4fcf98275228b4ff32fd1dc4b9f879",
+      "bytes": 104050
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.provider.1.h",
+      "sha256Bytes": "24af8b5117a17ec296a4570429d3e066d67050f860d96920376ac37c90384d9b",
+      "bytes": 19619
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.provider.2.h",
+      "sha256Bytes": "67998257420fbd96956c97bf72ee6bc4e57d320ee4cf17a19dde600403a31b77",
+      "bytes": 12677
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.search.0.h",
+      "sha256Bytes": "a6dd2a45e8f21ce11d1db2da47da8bfb974416b7cfe62105f28673d5aa517f57",
+      "bytes": 42780
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.search.1.h",
+      "sha256Bytes": "fbad630f87e88d2a54b52f0273e752588ab97b78d0e88329ec8d70cac57471d9",
+      "bytes": 7747
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.search.2.h",
+      "sha256Bytes": "fc3fc3571b1404f84d5ce3a0aceeb3bc0bad1ed3b1635edbe0a2b514d0c21728",
+      "bytes": 5567
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.streams.0.h",
+      "sha256Bytes": "e00667689294c63ab584a83ce51107ad7b0aa260a85ffbe1cff2009e2f929be7",
+      "bytes": 42355
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.streams.1.h",
+      "sha256Bytes": "4b7f3957698b6a3b5c6ec550e5107a3f8baf13dae3b59b15dacdce0ae093b912",
+      "bytes": 8438
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.storage.streams.2.h",
+      "sha256Bytes": "97ddd25addd1036f1f90b975e908eca1f916d0f9f0a28947e47a43ab2c362961",
+      "bytes": 8029
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.system.0.h",
+      "sha256Bytes": "576fb458d6eb0142d44fa91ae0260151416d76fae72f83448f7eb301299e730b",
+      "bytes": 167574
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.system.1.h",
+      "sha256Bytes": "263f873fe19574ff27e449713fc58e9976fb6fdadfe84c0917237e81d070e992",
+      "bytes": 32436
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.system.2.h",
+      "sha256Bytes": "1d95f890b602b04c626c0df4b6de3a38e243cf5fbeb37a454d9354ded2fe4b5a",
+      "bytes": 27418
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.system.remotesystems.0.h",
+      "sha256Bytes": "17588a70cee1135afc70fe0ef81522b281261a89ad39f0237d107b561dd4e0f0",
+      "bytes": 138297
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.system.remotesystems.1.h",
+      "sha256Bytes": "6b84c0d07c699117d17e5c413b3632271e0b07e2a79f708758eb7610c8c4cd2c",
+      "bytes": 29287
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.ui.0.h",
+      "sha256Bytes": "6689c40dc73f2ca0eaa726f26020ba64702d8b0daaf0239d1d283e1fa421244b",
+      "bytes": 29338
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.ui.1.h",
+      "sha256Bytes": "0a04f4898403a8a08989bb037e6198369e66bf5b9c13cd529704520e2ff47d97",
+      "bytes": 2805
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\impl\\windows.ui.2.h",
+      "sha256Bytes": "c296e02cc66d5cae0888dfc0a27d50acb62a7758782292cb5e2e850da69639d5",
+      "bytes": 8875
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\windows.applicationmodel.datatransfer.h",
+      "sha256Bytes": "ec538d9b86291a9c3c5c20ffcc4b78cf9091507f95e901156f9acd488a4472c7",
+      "bytes": 356558
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\windows.applicationmodel.h",
+      "sha256Bytes": "396f2c08f186116dacadfa8a18ee1cb2a40340ca522126807d99cd45d4f18539",
+      "bytes": 330201
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\windows.foundation.collections.h",
+      "sha256Bytes": "65ff059c35b317f0b9c16761bc9ed1263f50145569f83a25195c90d1997e4225",
+      "bytes": 146442
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\windows.foundation.h",
+      "sha256Bytes": "b4cbf8a20f390bcea2b9b55b0bf98d266cbf80ae8a49e7dbb65c8f77f20272f2",
+      "bytes": 305493
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\windows.networking.connectivity.h",
+      "sha256Bytes": "734115787e9a40e1c6c36577f4b05c5b1c4fe947f21526caf8961d92c6349bd2",
+      "bytes": 234043
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\windows.networking.h",
+      "sha256Bytes": "2a64c8fe3212c100b41bd3bbaa2f9a445a075cb32372e64613ad69a8c7f29f3b",
+      "bytes": 28185
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\windows.storage.fileproperties.h",
+      "sha256Bytes": "c4a2cd68d1c96ac1c00181c86f39366c95b3f4a2023b6245c849750693ba3c33",
+      "bytes": 128998
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\cppwinrt\\winrt\\windows.storage.h",
+      "sha256Bytes": "fc8f7bc53c54ddbcd86266c75d7b579663fcb1f2a7d148d7ccb32b9e94296fb5",
+      "bytes": 461714
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\apiset.h",
+      "sha256Bytes": "e984e20681fd3de73ce14ab09d759d5b4faf03f7d66a78602da2ac9234b24df4",
+      "bytes": 6423
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\apisetcconv.h",
+      "sha256Bytes": "1093683104f97c8c9725bb2e7539dca22722dc8c5618cd846287e9458698abfe",
+      "bytes": 2162
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\basetsd.h",
+      "sha256Bytes": "d35b73f885d7ef7dfd27fce3762c190c1c952a21e10a3945bcb3d1860c673b12",
+      "bytes": 11448
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\driverspecs.h",
+      "sha256Bytes": "9cf7e9e1c9b55c7c351e87ff5a98e362b6ffdb511c3309ab9cf46b62b0dace42",
+      "bytes": 41698
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\guiddef.h",
+      "sha256Bytes": "0c08463fbc5a23a8862e57699e2f30dd14cd3db4a40903e4fca9392a57942dae",
+      "bytes": 5083
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\kernelspecs.h",
+      "sha256Bytes": "e844c7726c42736df74445b36351dc01e29bccee7d57ea208f77f61aa4c2b191",
+      "bytes": 11879
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\ktmtypes.h",
+      "sha256Bytes": "68d2848d00ae33282fb265880f8166f2b5dc60cd7a26db652450a5b44d44ee11",
+      "bytes": 7849
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\minwindef.h",
+      "sha256Bytes": "a9cf08be8407a196104124d5ade2308e204e47d3252bcd2ad20d0f2137843d62",
+      "bytes": 6876
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\poppack.h",
+      "sha256Bytes": "a50d0ef5cfe96d634a41ee9a97749c147165f8656cdfed5df53bc24c8adb1210",
+      "bytes": 1021
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack1.h",
+      "sha256Bytes": "dee27f2712b9e72ca78a404834735303d16bdb21c8aa3addaca7dbca22664529",
+      "bytes": 918
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack2.h",
+      "sha256Bytes": "971d19074639cb36134bb40776cb2f817c53cbd05d748b52468f571932bbcc49",
+      "bytes": 918
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack4.h",
+      "sha256Bytes": "1cb4d07a218ec43c7935b431b16146fc0f3d29d43bd192f12959051d62c48d57",
+      "bytes": 918
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\pshpack8.h",
+      "sha256Bytes": "47f3972a1211e3a5ac32b18fae1a824db087dc7dc562d152e9ccab9b297faef0",
+      "bytes": 918
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpc.h",
+      "sha256Bytes": "063bd35df91c85b029064abe19d635d985e414c9733c60ee8ca8ce937c98d6d5",
+      "bytes": 5189
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcasync.h",
+      "sha256Bytes": "5e91801cee17b175a397cc56ff08790783d4fcdbc8d52fe7bb7461ccfa369a85",
+      "bytes": 19693
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcdce.h",
+      "sha256Bytes": "991883893134c8ecbe6af8335df0781bfb779c11684b3367def514136241b866",
+      "bytes": 89430
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcdcep.h",
+      "sha256Bytes": "df032ed7952b84113857284d86e7365b158cc57f955a5c0580e57e96c6df5ba2",
+      "bytes": 32196
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcndr.h",
+      "sha256Bytes": "7eeaaa2b4a5972b44a03086884eeb4338d2b0790e3dbc3cb858cbab5fa813978",
+      "bytes": 81583
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcnterr.h",
+      "sha256Bytes": "9d94281cbd9272e02a39b51e19367df2a87f3756b85b5c848bee38828e0cdc23",
+      "bytes": 17723
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\rpcsal.h",
+      "sha256Bytes": "c15959eb632ab0f27d2bcb3b6873cd2873bdd5669069409d936ef993dcb1c108",
+      "bytes": 30696
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\sdkddkver.h",
+      "sha256Bytes": "2472140e0a4d56595743bb74002a51aee9b58667bd178fc43742e19debfeb774",
+      "bytes": 11565
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\sdv_driverspecs.h",
+      "sha256Bytes": "99fd81f9464150f56963c3bbafaa95f93b837c221c4237e6e399a85e00ea9f39",
+      "bytes": 554
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\specstrings.h",
+      "sha256Bytes": "3b83b1cd3b4f9bf46009bfdccf01d5c3a6fa6eed3f823d1ef497ed6d1b9bce0e",
+      "bytes": 48804
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\specstrings_strict.h",
+      "sha256Bytes": "49b12898b42bcf53e5f8fb75e6db1a5d3ffb7a9f394e50df3351e0824d4a8b42",
+      "bytes": 67448
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\specstrings_undef.h",
+      "sha256Bytes": "6aba76eabbec627edadba5ab29304d9e2ff4eb9da165fd81a9095c851f405a01",
+      "bytes": 13106
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\stralign.h",
+      "sha256Bytes": "f7d2f48b6a9154937ad907e91b70faf6c68044fbe9d4042c392ac3c0eb1a82ef",
+      "bytes": 16784
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\tvout.h",
+      "sha256Bytes": "8c359d2dff894d546f3eced2fe9463dfa4824bffc6c8c71ecd8feef02e7eae21",
+      "bytes": 4128
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\winapifamily.h",
+      "sha256Bytes": "bda507d14f2e40023d344cb943cbd98af26de8a47f3b0f5fac694d2025711af1",
+      "bytes": 11292
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\windef.h",
+      "sha256Bytes": "040535b19a60264e5fe6971f7cb13cbf24be17abeeaa8acd21e44f5d7dfe8d22",
+      "bytes": 7362
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\winerror.h",
+      "sha256Bytes": "0284ea46280c14063bb714d08c9ec48de18de6a7f0384323b263fec234428833",
+      "bytes": 1622014
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\winpackagefamily.h",
+      "sha256Bytes": "8f74e254896094a3884e6975fd24b3493846514065f47d2666df53cdea45b8ea",
+      "bytes": 3699
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\wnnc.h",
+      "sha256Bytes": "fb3aaeef324b5d00ce0a6ae11702dcc3c1de65fa0a10caaab4336b97d3adf493",
+      "bytes": 4001
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\wtypes.h",
+      "sha256Bytes": "71417094369493700ce385e32c63002ed651dd70b5d7f7d8a6f64c9e9a0939db",
+      "bytes": 23996
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\shared\\WTypesbase.h",
+      "sha256Bytes": "e5277f89186f786ae0923c9d7689a16d91dbeff7fad36a86b08671416e4b679d",
+      "bytes": 14187
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\assert.h",
+      "sha256Bytes": "9f49681f2534ac2f12fe866ba174bb5f64adfc4d91c817ce2ddc32e9ba653ea8",
+      "bytes": 1163
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt.h",
+      "sha256Bytes": "822e503b81dd7b3d7df93ca22fced3672a5154484fd42054d5941e619bcf6cbc",
+      "bytes": 127273
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_malloc.h",
+      "sha256Bytes": "44bd1bb518e730ba0be045f44a4735869e08f7d54ab85c298270770812fcff80",
+      "bytes": 7405
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_math.h",
+      "sha256Bytes": "ca2f0f25b2e07b3613984efd1135dd9f1d0786fabaa56da2ba3c83b1a23eb918",
+      "bytes": 39299
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_memcpy_s.h",
+      "sha256Bytes": "359f3ce9e84bc00c983f01d9c3375d0ca9e0ef6a42e797d16e119c62b2ef333b",
+      "bytes": 3692
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_memory.h",
+      "sha256Bytes": "18ca520416579183bc369c0a8e555914db5c7577075b9359173fc6bc45595560",
+      "bytes": 3527
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_search.h",
+      "sha256Bytes": "fe06c4dd27c3df5ca6bed52a433b8848f32e14ed0f3712d00f7e602416471c1b",
+      "bytes": 10959
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_share.h",
+      "sha256Bytes": "08e7a7eb0b0c7ebdd7e5fa9f9a65f626f5a725b688502ac178ca67334328b898",
+      "bytes": 1005
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_startup.h",
+      "sha256Bytes": "2e2e27515bfe462435f5222022e5afdc84a50f093f87ade27db8afcaea202cb7",
+      "bytes": 5276
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_stdio_config.h",
+      "sha256Bytes": "a7e100624320a8e0123890c5008bcb2281c1273ca7ce5bb1d297f987fdbe79a0",
+      "bytes": 5009
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_terminate.h",
+      "sha256Bytes": "c8dc9a2497bcae0a9084eb1120f25660a575c7957997301c4f017fc44c908f54",
+      "bytes": 1223
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wconio.h",
+      "sha256Bytes": "6cfdcfd9e1ec60014c4e7e87913275ce3cacda008dbc397a17306976266aa5b6",
+      "bytes": 13310
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wctype.h",
+      "sha256Bytes": "b622b24cbda842a1736987f38c9deb5076e51af018630842a127bebd9104076e",
+      "bytes": 10605
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wdirect.h",
+      "sha256Bytes": "b8477593983d23ed4ef93c3efcabb8239375b518ba589a65338db29bb0dc2237",
+      "bytes": 1495
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wio.h",
+      "sha256Bytes": "e6a08ad4c75ef96fd5fafcff334048c4cc610f990f39c15e07c03af14d607197",
+      "bytes": 7427
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wprocess.h",
+      "sha256Bytes": "e75c5cdf244070ddcebac8920dd4cc96c33d0e21fdfbc82446c0374950e98487",
+      "bytes": 3980
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wstdio.h",
+      "sha256Bytes": "a10bbf4667b3aada380a6b80df853f9fbddc3cc691ca57389b3b6759f119e515",
+      "bytes": 75265
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wstdlib.h",
+      "sha256Bytes": "98b62ac5fb4291961c19ecf5c1b2e641b437f9042054f1a56ebdfd0deb71eca1",
+      "bytes": 16790
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wstring.h",
+      "sha256Bytes": "c485f918d43f0f846d77a36eaee9e111f57bf2eec32db7d9719ff924771744c6",
+      "bytes": 20015
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\corecrt_wtime.h",
+      "sha256Bytes": "4e487fddafbc724cf4e6df45feb920bc46dae80f54ffe5d983bf742a1fd9a12f",
+      "bytes": 7205
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\crtdbg.h",
+      "sha256Bytes": "d9ebd063f0243dd122ec33901661d1ae175359adbb019f0d815fb902e6f617e4",
+      "bytes": 32615
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\ctype.h",
+      "sha256Bytes": "6a10e9f0505b896d356d986d671c939b7fb0602012e463314ff7bfd0182a861f",
+      "bytes": 12981
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\errno.h",
+      "sha256Bytes": "c64e8df96f057fdebc0474bd765cee3ae17de34a2b1fc9d197597321f2d1e447",
+      "bytes": 3835
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\float.h",
+      "sha256Bytes": "0fbf87532c053b666940a65360f2488f5b6bb2e601632e32a0f1a8a078d8fdcd",
+      "bytes": 15397
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\locale.h",
+      "sha256Bytes": "877aa49e1f22814dd5634e785d305210d3c7ac0a1274e8552ce4f687a91ac4cb",
+      "bytes": 5109
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\malloc.h",
+      "sha256Bytes": "8acfe0c7a33a4d5ae2253f7167f92b0e728dea86f83289cee9d583c45b175b6e",
+      "bytes": 5079
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\math.h",
+      "sha256Bytes": "fb747990091c8c6e4ed8b4cfb40ed14eadd37547153607459e9ddef71c64edff",
+      "bytes": 505
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\process.h",
+      "sha256Bytes": "c11858d0260086e5a61cf0c02d3533ebec6d4ec6133c18967d8b8cfe8231f490",
+      "bytes": 11893
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\share.h",
+      "sha256Bytes": "f706b5df86d1bdf22cfe8d86dc798b255ce1bd2719d5d25f8f491595075a2bc2",
+      "bytes": 312
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stddef.h",
+      "sha256Bytes": "3f1f7eeefad270928749c89a2a2094ccc3f38829b1d8c197f6ce7483ead2284c",
+      "bytes": 1413
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stdio.h",
+      "sha256Bytes": "06cbab3a501306fdd9176a00a83e5bb92ea4d7863cfd666355743527cf99edc6",
+      "bytes": 81489
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\stdlib.h",
+      "sha256Bytes": "1576fdb40eb225dff53489db2fd52e41c7bb24f1e621e4a95c2c7f4a7216949c",
+      "bytes": 43968
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\string.h",
+      "sha256Bytes": "39767b2e1963b8ef679b62d5e27cb2d0ca1de6a6173b75389b79c9d575da92fc",
+      "bytes": 17395
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\sys\\stat.h",
+      "sha256Bytes": "2b720dd0426cf0a74eefdb684ac559c8b4f84b1d7d345e3582ce0dfeb01b9aa7",
+      "bytes": 6856
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\sys\\types.h",
+      "sha256Bytes": "dfb9ebc7d527c30d71f1056ddd85e33fb931df573b41424bb1db9a48457bebd7",
+      "bytes": 1280
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\time.h",
+      "sha256Bytes": "b775fe03a3288dfcd68a72caad43e8198283164eae94b665fdd3375a3baea44c",
+      "bytes": 19166
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\ucrt\\wchar.h",
+      "sha256Bytes": "802dc6f33d128ac94cb0e8a978c65382c7c18e85dc2eb7d340b038d79ad10ea5",
+      "bytes": 18447
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\apiquery2.h",
+      "sha256Bytes": "56c61c2ee306428d38037a578b66a49ef347a14a3760936416035b0d45da2b11",
+      "bytes": 1549
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\cguid.h",
+      "sha256Bytes": "36eaed76fe65e7dc5382761439bc9f22a66701d0259001943bfbe35f257aa6e2",
+      "bytes": 6063
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\combaseapi.h",
+      "sha256Bytes": "4b33bdf8cad7d07a0bd2945b4b96436b21021c46eee900881d2531616ba4df5f",
+      "bytes": 42146
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\comcat.h",
+      "sha256Bytes": "d98cfdd6689005d58a1e22d1ae64a9a04c422f7ed8ba2308107296613a6c34f8",
+      "bytes": 31311
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\coml2api.h",
+      "sha256Bytes": "73b81b7fefef903c28a3c2eab09cc52139ede97c38d8fe0e3f46faddb106a65e",
+      "bytes": 6867
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\CommCtrl.h",
+      "sha256Bytes": "6b8fa0799817fd438a9a3539c3e743b40acf6c77763c8f5acdbc91988e4736b0",
+      "bytes": 269240
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\consoleapi.h",
+      "sha256Bytes": "a0e727e696f3599ef0b570942f28646dbd94374e62c812659eba5ebe2a42a99f",
+      "bytes": 8161
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\consoleapi2.h",
+      "sha256Bytes": "f2134e1d2c01611e60ff939ccd45561884aa0ccbce590136ffd1d95161892d17",
+      "bytes": 11697
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\consoleapi3.h",
+      "sha256Bytes": "0a00bf6ca901d0d980fe8c2b9bb91a39fb84c3a99e9c87498149a04cf7cf5925",
+      "bytes": 8574
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\datetimeapi.h",
+      "sha256Bytes": "a4325c76b9bc900c22ef3d766c739ccd3a71894e81833ad637d50f9e45417117",
+      "bytes": 3964
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\debugapi.h",
+      "sha256Bytes": "d63f6c4aad9787bb8ff2e54966c8db156b0ef1570be58201d74dff12cd6f1e22",
+      "bytes": 3591
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\DirectXMath.h",
+      "sha256Bytes": "41bf7d66ceab474d21bfee8b54ae894edf3599bc258be32087c675b094e1e746",
+      "bytes": 128428
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\DirectXMathConvert.inl",
+      "sha256Bytes": "aec241bb47ba9a6458bc048c0913c3e9f5223d5defd462b2b637a2035001f1ad",
+      "bytes": 81932
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\DirectXMathMatrix.inl",
+      "sha256Bytes": "ec8f1ce63fa906c5121c023296e281d18935bc197a399e9039b1f850da04fbeb",
+      "bytes": 122191
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\DirectXMathMisc.inl",
+      "sha256Bytes": "a12dcabb4a1d5faf21b11b4691ad31b4bb409f74e91363d3a1dfc82c2d74a148",
+      "bytes": 82184
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\DirectXMathVector.inl",
+      "sha256Bytes": "8b5f45a4f3d0891570f3de2a019e494ff7d5a1656321c3b15f1780be1620f136",
+      "bytes": 549708
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\dpa_dsa.h",
+      "sha256Bytes": "e0d5490bf2c73c0dc5e94746b2704c2a6efdf0543de1e00447b8f781fc6a186f",
+      "bytes": 13094
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\enclaveapi.h",
+      "sha256Bytes": "9467c4bc6400057c3d3205d53667000be525cad64a381552291e869430af6a76",
+      "bytes": 3502
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\errhandlingapi.h",
+      "sha256Bytes": "b73cccce6dac8ce02c6a399862ec2a6e22fe27a4d09874d86ec2be3bd5d17fbf",
+      "bytes": 6566
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\fibersapi.h",
+      "sha256Bytes": "f8eeadc28f8e3e4c7bfd1217d55315eb31d63f3d86c66a3948d74ceb8e7a00d0",
+      "bytes": 2582
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\fileapi.h",
+      "sha256Bytes": "f8927178c75de487c0e57f044a215e455522bf6eaa0b660421be09cd06ae05a1",
+      "bytes": 40460
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\fileapifromapp.h",
+      "sha256Bytes": "d07110e7f7989aeef7eed77d5f584f3ee60ff2ce58bc1a374d70151a18b4a664",
+      "bytes": 4111
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\handleapi.h",
+      "sha256Bytes": "c967fdf1a98e4ce8d501dae26b905f6452173b2be1c25e6aa2e5eeae415369cc",
+      "bytes": 2578
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\heapapi.h",
+      "sha256Bytes": "22b606b0a4096295272bcae6fc353c4f159f0cdfc90b5f1a9a712b2fff50b53f",
+      "bytes": 5317
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ime_cmodes.h",
+      "sha256Bytes": "27904e900938749c12a4d1e741afd564198a57a24724c1ddd36cd3302224df26",
+      "bytes": 833
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\imm.h",
+      "sha256Bytes": "942d0b80eb7d186ee935fce8064ccdcdea3a49b39bcc03f55208b7c37e289779",
+      "bytes": 28873
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\interlockedapi.h",
+      "sha256Bytes": "4b0d3bc138eaab8dc9dd40bfb109f5fea4cbd2caaf92d63a4cf60a8edcfb0e3a",
+      "bytes": 2604
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ioapiset.h",
+      "sha256Bytes": "7c3f659f98b3f1748a314bd64106583d01649333e0419b66232b4f64b3f85b0c",
+      "bytes": 4791
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\jobapi.h",
+      "sha256Bytes": "08ddff85ec80f12b156837bbce4f969480fea0e32a08dade7cc16acecb0892d1",
+      "bytes": 1307
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\jobapi2.h",
+      "sha256Bytes": "a8f9591dc2b0bd249d03150b70abd47c0068c6eda2a1d74d24bc8964bcd68549",
+      "bytes": 2976
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\libloaderapi.h",
+      "sha256Bytes": "8ad0ba5600d6c2e9aed318ca9d2f48f2bdf9f47ed3cd5d9f243e6f779c8e04c4",
+      "bytes": 15518
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\mcx.h",
+      "sha256Bytes": "4ee416b2d24e45cfc5d35ce5b34833b64b34fd9a39957c66d75509f6d3b8f972",
+      "bytes": 24640
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\memoryapi.h",
+      "sha256Bytes": "58edcc2090c411a1821e04a6a2954c258fd59ded44440bdd671984027e0a852f",
+      "bytes": 33539
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\minwinbase.h",
+      "sha256Bytes": "7d1408f4b8eeba96ae45892209132258cde80cab6dab192b4cceea591972c78b",
+      "bytes": 13973
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\msxml.h",
+      "sha256Bytes": "001de8d9f111a4449dffbd9c2640f92eb329ff43fff9e6b46c1a10a6bcddc16b",
+      "bytes": 447870
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\namedpipeapi.h",
+      "sha256Bytes": "37062eba19e35b391cf050519c9403e19c6782663ea644ff38b2b5eb71dfce6b",
+      "bytes": 5539
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\namespaceapi.h",
+      "sha256Bytes": "3257ad8af53c5809be4d5d17ed0ffd8b49451d3f27c1fd747ffde3e0a7a81583",
+      "bytes": 1974
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\oaidl.h",
+      "sha256Bytes": "6432dc84174c12d5d3764b83fb4a21c5aed38b6a839c968133eca2920ee702fb",
+      "bytes": 215603
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\objbase.h",
+      "sha256Bytes": "14d465a8f602f2394c5455f67f129756fc525b26ad9c3099d3f6d943cafb5007",
+      "bytes": 10226
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ObjectArray.h",
+      "sha256Bytes": "738b2fc7a6c60530a408beee09f11ca2638539d6f62c4ed4a79078fac517b8b0",
+      "bytes": 9377
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\objidl.h",
+      "sha256Bytes": "6728b27fad8860be3a481ee33ae5bb8bda6acd5d692f79646fb7ef0c4cb03f0b",
+      "bytes": 524407
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\objidlbase.h",
+      "sha256Bytes": "677379339246e36e9dfa9325ae41fe790579ea474f4d05f688cde2e8ac521bd6",
+      "bytes": 277656
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ocidl.h",
+      "sha256Bytes": "442c0879df95ec8dc0e8762902d338191a25df7d31ec2a0338da5694088b4bf5",
+      "bytes": 241935
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ole2.h",
+      "sha256Bytes": "ff6645d2ba037df3835689ca7efa3fa4990c229bc98e195e500145a6b1344ce6",
+      "bytes": 15440
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\oleauto.h",
+      "sha256Bytes": "76a024c41b0778979c84466199d9c868fc767f1eaca8b2660d298798382137b4",
+      "bytes": 60118
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\oleidl.h",
+      "sha256Bytes": "d9e6028b3447ad94b01d0676047355d8eebf6ff11afa8529904dfc11b941359d",
+      "bytes": 149619
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processenv.h",
+      "sha256Bytes": "c10dd3bd48a2416e0aece2259ea57cc47d6c8b9fdbae085a4c7a5b29c71a85dd",
+      "bytes": 7427
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processthreadsapi.h",
+      "sha256Bytes": "436ae4cbb017d1cdb381aaf2119a3f89b04bae257fd4c881ef251daa02533540",
+      "bytes": 37180
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\processtopologyapi.h",
+      "sha256Bytes": "4507a5e0c4f41d19a80d1543833f1a9d90277bc376441b277884bb043be24ba5",
+      "bytes": 2081
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\profileapi.h",
+      "sha256Bytes": "cfa8e3626dba11689997d8fcd65b5dfbf4bcef8de09dd7e4e881769d48d165a2",
+      "bytes": 1413
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\PropIdl.h",
+      "sha256Bytes": "07200a21ea1247b97a91f2e28991c2de475b03cf890155a4de3d0990a2b70066",
+      "bytes": 45197
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\PropIdlBase.h",
+      "sha256Bytes": "637483de9f1d2d3d40c966e8daa9ed238a4469cb07fe168bac7c685e0cf1e1fd",
+      "bytes": 39269
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\propkeydef.h",
+      "sha256Bytes": "cc4fa9a98ec03a9ef29f625255889b4fad984991d01d9bee4df496f506017a98",
+      "bytes": 1357
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\propsys.h",
+      "sha256Bytes": "01e7c04dc26439c581ec36cd3d8477373d7883575e3a126138117a6a3647f767",
+      "bytes": 177929
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\prsht.h",
+      "sha256Bytes": "c894f54ac5e0584457f176f668b20b14577b06aa2ba5ce321e243c46248ea242",
+      "bytes": 30335
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\realtimeapiset.h",
+      "sha256Bytes": "00c874b981a1242ee4ebc21e6ae96a69d7aa70662d820ceffbabcfea859b03e4",
+      "bytes": 3149
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\reason.h",
+      "sha256Bytes": "30540eb35daa79c7a5cb98059430df480e86b549b7980247288da8a2801add1d",
+      "bytes": 5042
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\rpcnsi.h",
+      "sha256Bytes": "f49466a31875d34a6e5c02f301d81b7a78f25cb947f3d6e6ea712ab356b42c8e",
+      "bytes": 15272
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\rpcnsip.h",
+      "sha256Bytes": "7c8138b43e028724e0fd143be29c40de5b5650a3e0f87356662a77dbad186712",
+      "bytes": 1563
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\securityappcontainer.h",
+      "sha256Bytes": "85cc13ed7028960bd7f97c91f98b96825b46f4b8bc386aed2f2a6a9bccbe4083",
+      "bytes": 1470
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\securitybaseapi.h",
+      "sha256Bytes": "a443b4183d3ec5b8e1ae40db5824f002a34eb0415f38227fa1dddbbf02a448d4",
+      "bytes": 36514
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\servprov.h",
+      "sha256Bytes": "5f25310cfbfb07bfb737b37c04bb74cd6c713505fdb9c8c4954f76bccd86dea4",
+      "bytes": 7998
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\sherrors.h",
+      "sha256Bytes": "f0f2536dce1243d0e43e716fd5bc30973435234f9044dd63e0a5dbf8f85478d5",
+      "bytes": 17826
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\ShObjIdl_core.h",
+      "sha256Bytes": "1c6c0d74400d6dcb5b17fb2156a3ce8df420cd9271e0a23230d661790406a03f",
+      "bytes": 1165517
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\shtypes.h",
+      "sha256Bytes": "7cc9a372c57d6e986905db5c09cc7d595e2d12ee90f89663de98fafca6682f80",
+      "bytes": 15587
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\stringapiset.h",
+      "sha256Bytes": "624c82fb73517a3829f3766a50a0235e2f9a51cb4bda95a0c39981e39fa4d42d",
+      "bytes": 3941
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\StructuredQueryCondition.h",
+      "sha256Bytes": "05fd13cd34c3ed083b98a3bf38fff42c80a9a0cf8b741ebb9bc902fca2cfce7c",
+      "bytes": 29007
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\synchapi.h",
+      "sha256Bytes": "d962588974e5e100205f683160b351dee70ea100aa736e14d878b7a74577a9c5",
+      "bytes": 15696
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\sysinfoapi.h",
+      "sha256Bytes": "077088cb53ec69d454916aac5f00e45dda79e09da64054acc141120eb67a5700",
+      "bytes": 19345
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\systemtopologyapi.h",
+      "sha256Bytes": "8bfd1a78cc30b6d33c88e3f61ae2ac6468cee0607352ee8d096ba5375b4d401c",
+      "bytes": 2319
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\threadpoolapiset.h",
+      "sha256Bytes": "e91d7dee4d22ca848e3110a4c55f32e1918dc865479343896aec9ab653ee5110",
+      "bytes": 7148
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\threadpoollegacyapiset.h",
+      "sha256Bytes": "87c1630abf7dc4ed7978f2c4dbacf418f6bcf94cb946e277cb7250770bd44200",
+      "bytes": 2824
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\timezoneapi.h",
+      "sha256Bytes": "621c0252a8a831813592c4a95e183a2e7ae55efbbd7b8ad886af7d8871fc4d50",
+      "bytes": 5462
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\Unknwn.h",
+      "sha256Bytes": "d0bbc6a30fa025fa3e5c198c68c638dec855b27b3ec34c9d404a95f890dd6a53",
+      "bytes": 17672
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\Unknwnbase.h",
+      "sha256Bytes": "7fc28ae112c678a18567387fdbb43c615af6253429c9c1a8037cd0861f7568b6",
+      "bytes": 17732
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\urlmon.h",
+      "sha256Bytes": "a69ff621172bda7dcbd26b92f209e0bd7a7b00bad74e2ef375c2b6a8ec8b6f2f",
+      "bytes": 410523
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\utilapiset.h",
+      "sha256Bytes": "a8e0f6001c784b3ad9feb44c61d96b58c57366c473832ca8b2ea5de05877b470",
+      "bytes": 2482
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\verrsrc.h",
+      "sha256Bytes": "ff9bee8ee5b7aa81eaf79a1eab0e93bd307601e87d3b80a73f24984e9c951c61",
+      "bytes": 6705
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WinBase.h",
+      "sha256Bytes": "ec538199f5ebe8cec2dfd4f1ba48316ef776c82d37277aed3a677965e494f192",
+      "bytes": 271704
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wincon.h",
+      "sha256Bytes": "98e33720f9ec8fded808ab94f111b8335d0ba2fd2246a5adab3aab2ce05503d9",
+      "bytes": 1129
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wincontypes.h",
+      "sha256Bytes": "209e79fdbbb30971740e59b2da2d6c86e27c0e9dd02bee9cbc21736fbd2426ad",
+      "bytes": 4610
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\Windows.h",
+      "sha256Bytes": "b337d661d03a4abefb7b86a2742ce1ad5d19b57cd8b858bd13e7bbcc1dbeeaaa",
+      "bytes": 7511
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WindowsNumerics.impl.h",
+      "sha256Bytes": "84b6ba813a92cb6587fb36d8bddc9ddeee8e7018c9b79362e2c7cd2ce349eea0",
+      "bytes": 23583
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WindowsNumerics.inl",
+      "sha256Bytes": "ab7ce385944590ed3398a236de8664a9a04433878be25ad005b9ce29a6e26afa",
+      "bytes": 95438
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wingdi.h",
+      "sha256Bytes": "96f3528cabc7e5fe30e2f2c51daa01c018dd6cedb3768121202434758629b8a2",
+      "bytes": 244023
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnetwk.h",
+      "sha256Bytes": "7c7412df502fb6ea390c96d7c9f805a2a211609b95b8fdb4740540f789d9c4ce",
+      "bytes": 27073
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WinNls.h",
+      "sha256Bytes": "e47861762a4b51a2689c8a99798a1a7e68335573e03c857e545172b095c5c829",
+      "bytes": 129219
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winnt.h",
+      "sha256Bytes": "8693f0ad4ada355c912d40ca41ce929b480e92291bda2f9227acf56736bffbff",
+      "bytes": 876232
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winreg.h",
+      "sha256Bytes": "bff833e8d092a0cb657837e3162b8bb0cf35b43105203f4ce880972a501d61d6",
+      "bytes": 42295
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winsvc.h",
+      "sha256Bytes": "8108fe3f099960014f36d1b2da425a8382e9d839de3477eb06f181289a0685c8",
+      "bytes": 59863
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\WinUser.h",
+      "sha256Bytes": "014e26f0041535ebcc53c7b46f1d280f66283ec5eb4612b4e82f5b0f6c0d428c",
+      "bytes": 428811
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\winver.h",
+      "sha256Bytes": "c60e137e7ff88582f72e50fe74904f5773502d229f78234ea83abb2688f6e8ae",
+      "bytes": 8809
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\um\\wow64apiset.h",
+      "sha256Bytes": "6b14e2b59ae5b9f22bfd9a1e989a5589adf5790832ff24cb9d8828d4e8d45cda",
+      "bytes": 5421
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\winrt\\activation.h",
+      "sha256Bytes": "9296d6db4ae0a9ca875c941eacd2da2c89fb894f15ac712a81f23c1763931c65",
+      "bytes": 5665
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\winrt\\hstring.h",
+      "sha256Bytes": "169d6779f382d275a7ac277bb49946c017b31790a43f4b831cedc96629fcfcfc",
+      "bytes": 2933
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\winrt\\inspectable.h",
+      "sha256Bytes": "ff6c9d58bea8e577177a47d46bb164b593f54ee051353059feded7f783edefa9",
+      "bytes": 7670
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.26100.0\\winrt\\roapi.h",
+      "sha256Bytes": "07c564d33b64745ed92c5dccf7915e4191083aebe84a4c7d6a7c87561ab0245e",
+      "bytes": 7794
+    }
+  ],
+  "searchedLibrariesConservativePins": [
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\runtimeobject.lib",
+      "sha256Bytes": "b53777f7426c9118e3c2b7b87d8bfe9117e448886bd3b8b835b48a8d277a7864",
+      "bytes": 32130
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\Ole32.Lib",
+      "sha256Bytes": "f7b6d1e4a2f2a16c6a78ed821c8aa7f0b488112bb4da778285086e4588ca197a",
+      "bytes": 118864
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\OleAut32.Lib",
+      "sha256Bytes": "ccb86049288e4816e34b572f0d63a6b2c40d91777b092bb77ae639aa8e887ae5",
+      "bytes": 82126
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\User32.Lib",
+      "sha256Bytes": "f45759349ad08b848bdd4eee39cd9b428b2a7ae63a09889c09a197fe7b01421d",
+      "bytes": 167864
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\Uuid.Lib",
+      "sha256Bytes": "d077ffb106503e057428dc7bb4c5daac019c269ffc714edb18ca028723cc840a",
+      "bytes": 8936424
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\lib\\x64\\libcpmt.lib",
+      "sha256Bytes": "da86944db1497552c378e6252a7177fbefbdaeba4e69a6457de4db7fb2d235de",
+      "bytes": 21684758
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\lib\\x64\\libcmt.lib",
+      "sha256Bytes": "8fe40dd342b90b35d62b8f5d55b4e92df7785c122976618365cfe3b014cc857a",
+      "bytes": 6534094
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\lib\\x64\\oldnames.lib",
+      "sha256Bytes": "35bd82cfb02a0146ff9c0ca6bf7dbde61d49c6d4f3493befe584218c370ff41d",
+      "bytes": 157422
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\um\\x64\\kernel32.Lib",
+      "sha256Bytes": "341c7d56125a03b458e4d5093e4c79b33123ccfdfd610fe236937b8e6f3134bb",
+      "bytes": 311908
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\lib\\x64\\libvcruntime.lib",
+      "sha256Bytes": "e4f8daf356d63592ff6d6f7ad90c8c9da4c1230273ad113a9a2b56afd6bfcb04",
+      "bytes": 2087406
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.26100.0\\ucrt\\x64\\libucrt.lib",
+      "sha256Bytes": "2b247d6a27c22c520c34134b8acf2da3366175a4690886927a51929f37725fdd",
+      "bytes": 43336396
+    }
+  ],
+  "actualMemberSelectionClaimed": false,
+  "compilerBinDirectoryConservativePins": [
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\atlprov.dll",
+      "sha256Bytes": "de51e1081c30be9b5b34315ae5c8a923e2c052404deb8126897790a359ff4cd6",
+      "bytes": 212320
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\bscmake.exe",
+      "sha256Bytes": "de08279282ae87f667ccb76d9e390db4838c8036cfb39e062a79966f59cb4bae",
+      "bytes": 117136
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\c1.dll",
+      "sha256Bytes": "48bb561939cfd8fbf194bb73b111b2083912da4fb81af2c181cbe8f4b89e5ad1",
+      "bytes": 3430200
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\c1xx.dll",
+      "sha256Bytes": "688fe28f3065283edf668868e76aeab28f03f80e2171c14c7d4e37f64513f623",
+      "bytes": 12332384
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\c2.dll",
+      "sha256Bytes": "98050f97d60f7e95fcaf3525a7103e4818fba498a43563922476819ce88ed162",
+      "bytes": 10462008
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\c2dd.dll",
+      "sha256Bytes": "66f48262db00a15cffed9bc852e9e377f90c2e42da54b38d9569c3ab615aea54",
+      "bytes": 10462048
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cfgpersist.dll",
+      "sha256Bytes": "12b0ba2977b3df21b3399e34af95b9bc151490d9ddec6f42bb23a5fdd9818214",
+      "bytes": 1605176
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cl.exe",
+      "sha256Bytes": "88c8344236a27a6e727e0a8edc49aaa2690bdc7a9464b9d18cc7abe70a9f1c0d",
+      "bytes": 677736
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\clang_rt.asan_dbg_dynamic-x86_64.dll",
+      "sha256Bytes": "6ebc5e4c7b5906a3fa8234937dab49aa5b31be1f329bb6cc92141cdc80472ad4",
+      "bytes": 1267784
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\clang_rt.asan_dynamic-x86_64.dll",
+      "sha256Bytes": "3aa742521e8cbd23252f0545aa51d5a15624a3e4430fbe2f81567afaeb3fc59b",
+      "bytes": 1193496
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\ConcurrencyCheck.dll",
+      "sha256Bytes": "6d42cd490c56d11e640d7524d8ca701a129bb5a4de2c97150862fc7f5e0fa303",
+      "bytes": 820792
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\CppBuildInsights.dll",
+      "sha256Bytes": "c83504679e7fca14a6f60480d0f75eb94dec9994ed900dba0ff94125d468fc07",
+      "bytes": 292904
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\CppCoreCheck.dll",
+      "sha256Bytes": "68af7ec79d86d2d69d86b83b2a317f1d5ec2b64120c2f55ed11ac45260fed187",
+      "bytes": 1174568
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\cvtres.exe",
+      "sha256Bytes": "8e4b47f34c08c2118b1a6913ee923abc0c94881dc4e003d0daf059c1230c7687",
+      "bytes": 48544
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\d3dcompiler_47.dll",
+      "sha256Bytes": "8c88c162010a8d6b80f2c0433d4ce973ce626afcbc8da5be68bfa2ba68341eba",
+      "bytes": 4467904
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\dpcmi.dll",
+      "sha256Bytes": "74aabc92d318480d0f9bd3a65ecc0b15a144eb723f1f3379758913c4fbfd9b81",
+      "bytes": 1398584
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\dumpbin.exe",
+      "sha256Bytes": "12a1cd87238bd66dfdb788b4fcdcb91ce4b3f81236aab12a7a29e5ae1d85af50",
+      "bytes": 23416
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\editbin.exe",
+      "sha256Bytes": "82fc1e076713c90959d2c5856fd219d88ea8112af74164769a737dff5a418928",
+      "bytes": 23376
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\EnumIndex.dll",
+      "sha256Bytes": "75e2511ab5d6b035f8a40878609774f4b228ec523d25dd38e189896a508044ea",
+      "bytes": 624672
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\EspXEngine.dll",
+      "sha256Bytes": "18a6ac873124a291ae22be9f0d1729fdb6a784478efb428c8df7d66184b1bbb2",
+      "bytes": 2934840
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\HResultCheck.dll",
+      "sha256Bytes": "c5bf47ad49cef86638bc24d979ccc1a5249725d0a8872a29f7ff89cf0c939980",
+      "bytes": 557640
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\ifc.exe",
+      "sha256Bytes": "afceb636b7b8d4e8f0478bc32b77d96c5c69ff0f5f3681fe7751cac18e0e1967",
+      "bytes": 211808
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\KernelTraceControl.dll",
+      "sha256Bytes": "e462f4c4fff915c6fa742e218a254e5a3d5d051eadf5292b649904f602ce7f8e",
+      "bytes": 253472
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\lib.exe",
+      "sha256Bytes": "3d694c782f93e998fec5db0c2df78153565da23a028ee4618561fa0c33408489",
+      "bytes": 23376
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\link.exe",
+      "sha256Bytes": "ca11e6c45debd34bf652dfe984c5360a531a005ed78bf72852330c9c2590cf0d",
+      "bytes": 3252576
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\llvm-symbolizer.exe",
+      "sha256Bytes": "1a591000e57e894662427fee1f24dfbf5b5f0345260f84c5c2102207a31918ab",
+      "bytes": 12831776
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\Microsoft.Diagnostics.Tracing.EventSource.dll",
+      "sha256Bytes": "a20f6d6c0dae7ac9c7c295b819d085bdfc7cfab123e8fc4ca4ddfd0a88701d04",
+      "bytes": 170288
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\Microsoft.VisualStudio.RemoteControl.dll",
+      "sha256Bytes": "cc52e19735d6152702672feb5911c8ba77f60fdc73df5ed0d601b37415f3a7ed",
+      "bytes": 47536
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\Microsoft.VisualStudio.Telemetry.dll",
+      "sha256Bytes": "c6b09bdb01fb84406fb95f77befd68b4f8f0b5d715bb00df817b5e691501c50d",
+      "bytes": 1026088
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\Microsoft.VisualStudio.Utilities.Internal.dll",
+      "sha256Bytes": "4d1d5efd28d72c332ba87e1993cb35e46404753543c5563700b98a97aa3c42a6",
+      "bytes": 62480
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\ml64.exe",
+      "sha256Bytes": "a776cf32777d2df2e201a769bb5bd6502bb72bac98f60c6f53a4bfcecd0db8ed",
+      "bytes": 646504
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\msobj140.dll",
+      "sha256Bytes": "0a18f9fe0a6d7afd9fbcf921c15eee51e3c982d7297429eabf4122a19e56d4bc",
+      "bytes": 149344
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\mspdb140.dll",
+      "sha256Bytes": "8cd754a0fe8a91d853e04c48bf56b5de502897c77c3aa89a2dc82d6b80b9351a",
+      "bytes": 345912
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\mspdbcmf.exe",
+      "sha256Bytes": "79f50bad07e6f9bb9651cfadaf79201e627533b08fd13358494aee189d976f08",
+      "bytes": 2021752
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\mspdbcore.dll",
+      "sha256Bytes": "ff7482bf01d1dcad8d5e368333e4495ed3572713edeec7044623e5f5fff999b9",
+      "bytes": 1321824
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\mspdbsrv.exe",
+      "sha256Bytes": "9221dbe740f39a1059dfe6e917984effad6f97312636f001c9191a6bccb34f93",
+      "bytes": 186248
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\mspdbst.dll",
+      "sha256Bytes": "80de4791af04fcdd093fb9f9163122a07d9e08321c8a1512b15cdce08acf729e",
+      "bytes": 1288544
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\mspft140.dll",
+      "sha256Bytes": "f1800a2620d018886440cf1cc1a5ad22d403387409e5b9ff128eaf8eb71a906a",
+      "bytes": 2525496
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\msvcdis140.dll",
+      "sha256Bytes": "a5baa6487efccc4285b1aadd6620b94bbbcd649a77b4068170a5c575b0087e88",
+      "bytes": 1824608
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\msvcp140.dll",
+      "sha256Bytes": "20076bc0e3fcb1842cab77dfe8ef816bc099b887c25329847a83e71c98765639",
+      "bytes": 557496
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\msvcp140_1.dll",
+      "sha256Bytes": "a65e4abcf1df1ee5b4c363a2dfd27c471f78f1520372e38456c4379064d75aa2",
+      "bytes": 35696
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\msvcp140_2.dll",
+      "sha256Bytes": "b0798ec98cb0bade3df33ab66b553282425c6a2b512ff24b2d3f9040c848fe73",
+      "bytes": 280000
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\msvcp140_atomic_wait.dll",
+      "sha256Bytes": "4b77104b31157c094493667f2919ef857e39f23163df632dbe302c4e6d7e8180",
+      "bytes": 50032
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\msvcp140_codecvt_ids.dll",
+      "sha256Bytes": "21ce1d7d4685efff88bae1034215529a5a991d3a1dbb9daf5126963818a935a4",
+      "bytes": 31600
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\Newtonsoft.Json.dll",
+      "sha256Bytes": "a4096c8ab7c4dc5c21485b43f81b8f87699b748d39c4c24dc5dab6df61111219",
+      "bytes": 709944
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\nmake.exe",
+      "sha256Bytes": "b05f089f67dba8df1d7cc38798b71e62a6ce8881b234dcfc80a657264597626c",
+      "bytes": 134560
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\pgocvt.exe",
+      "sha256Bytes": "401d6c25a06df63fbc4e729e6275909e77f67a84ce46e7f1be7116ac8eef2c52",
+      "bytes": 59048
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\pgodb140.dll",
+      "sha256Bytes": "2dcb8bd692b6731fe41881666f8987126f1da87aad2145a54af6d5277e65bf91",
+      "bytes": 88096
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\pgomgr.exe",
+      "sha256Bytes": "7dd64ea79dae13e63be99133b52e88a8ebd869f08b70994c9a6a587181a66a20",
+      "bytes": 93816
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\pgort140.dll",
+      "sha256Bytes": "3a620df77fc0eb13003ee0da1728ed22e424b12997a95678de2ab8c9c742fc3c",
+      "bytes": 50728
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\pgosweep.exe",
+      "sha256Bytes": "5682d59c3864fb6566eb9a92add78b071c1d6a335f0be6734b6668f65d19f2e7",
+      "bytes": 64656
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\SecurityChecks.dll",
+      "sha256Bytes": "2452cb217044522553fda785f2ce5aba786964bfdecab7a8adb1f33c5007b386",
+      "bytes": 611896
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\System.Memory.dll",
+      "sha256Bytes": "06ea95f8388a6b031acb2449fd5663d9d26d720ae13df80c800805f896734430",
+      "bytes": 138144
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\System.Runtime.CompilerServices.Unsafe.dll",
+      "sha256Bytes": "3cadcb6b8a7335141c7c357a1d77af1ff49b59b872df494f5025580191d1c0d5",
+      "bytes": 16768
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\tbbmalloc.dll",
+      "sha256Bytes": "1e142c6c1d16f5454dbe30167e0164123c8542a85ef0db6a41ce474d93aef8ed",
+      "bytes": 115000
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\undname.exe",
+      "sha256Bytes": "e805364f61cecb3f7730731a77111a258a7198e33cc89e652392651340f00984",
+      "bytes": 26472
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\VariantClear.dll",
+      "sha256Bytes": "7dd21e35b22c2165f73e8a9f99ecc48a6a0b28406ac02b2dc4e5c446246b78cb",
+      "bytes": 655904
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\vcmeta.dll",
+      "sha256Bytes": "2ac473af2de8d862f0b2ee5df02693b7ebbc639b9b0139ae063015aa71dbb7f7",
+      "bytes": 113976
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\vcperf.exe",
+      "sha256Bytes": "2cfba4e704e19c8eda9514b4f7eca42fd35326f8fa730a2a17dff5144ffec50a",
+      "bytes": 265568
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\vcruntime140.dll",
+      "sha256Bytes": "b23a5c9ee132fbb72d970165de052f332209992eb4568616b7802052edc4f398",
+      "bytes": 124272
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\vcruntime140_1.dll",
+      "sha256Bytes": "c3feb5700b1cbe6ace93e64e286b6394970e52d36b3b643d8243a1771077d210",
+      "bytes": 49592
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\vcruntime140_threads.dll",
+      "sha256Bytes": "077dac1a197b8fbb9bffff1109489fdfba21140a25960b7e94d20bb69687dd84",
+      "bytes": 38328
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\vctip.exe",
+      "sha256Bytes": "e175c981ca866689bf8f8d9bd5ba1e71e2eb1c9d389de555744b0cb439250996",
+      "bytes": 335328
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\BuildTools\\VC\\Tools\\MSVC\\14.44.35207\\bin\\Hostx64\\x64\\xdcmake.exe",
+      "sha256Bytes": "8bfe7d0842bbf727c154b0229e0e91b11b6850a8d1ae300839a91e478a917d42",
+      "bytes": 42368
+    }
+  ],
+  "runtimeExpectedShaMayComeFromThisFreshControlledBuild": true,
+  "cacheMetadataAloneIsNotTrust": true,
+  "publicReleaseAuthorizationVerified": false,
+  "sharedGradle": false,
+  "mainWritten": false,
+  "HWND": false,
+  "ShareUI": false,
+  "externalReceiver": false
+}
