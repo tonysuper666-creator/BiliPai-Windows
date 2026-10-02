@@ -1,0 +1,210 @@
+{
+  "schemaVersion": 1,
+  "candidateBase": "6ac84c8036ed4c75e2944d92d1020566e283e983",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "snapshot85ManifestSha256": "417663152a99ecf23e6887e2940b15c7c1cfd06c6c3f0b2b1925430ed4ca4012",
+  "orderedRuntimeCpSha256": "6398174d444cf02365bc66480c1c37bb00800a520e681c4649100067af68b419",
+  "copyTargets": [
+    {
+      "target": "desktop/tools/extract-upstream-message-pages.py",
+      "prepared": "prepared/desktop/tools/extract-upstream-message-pages.py",
+      "sha256Bytes": "fab378ab275a262b95432464503d77e4fd25048b5235d93193e2f8cfacc289a2",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePageAdmission.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePageAdmission.kt",
+      "sha256Bytes": "5e866b2b92e9d3994d75df12b77f8f925c86b21480880f87de31b8cada0e136d",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesRoot.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesRoot.kt",
+      "sha256Bytes": "f8b1bf872d43b3786548887a48e36f379af1e139999fd9b6d6415b44c0bbbd79",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesTest.kt",
+      "prepared": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesTest.kt",
+      "sha256Bytes": "2afa302a4d83668832b380a9de8c4da05c6df4463384a06335764ba07cf546e6",
+      "operation": "copy-new"
+    }
+  ],
+  "hunkTargets": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseRawSha256": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+      "baseLfSha256": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+      "desiredRawSha256": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a",
+      "kind": "exact-hunk",
+      "patch": "DesktopRepository.patch",
+      "patchSha256Bytes": "53c0086530e45ce0715e4184984501e50115997e9553144e16ae6eb8d8ab145e",
+      "installInstruction": "Apply only exact hunk. Full prepared copy is an explicit compile overlay, NEVER a whole-file installer."
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "baseRawSha256": "ba2fd53f7774b113e892e58fe5cf1e69151b1894509d5cfafa37caffa92feb62",
+      "baseLfSha256": "a80bd55e796a1bc276bce2ea6bf0476985fcba3d2ab0ca35ceafb555f40dcac5",
+      "desiredRawSha256": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e",
+      "kind": "exact-hunk",
+      "patch": "DesktopCommunityRepository.patch",
+      "patchSha256Bytes": "d5f8f22ad5604fe488594024de9e0baa51d511dfa8ba45243196bb6c851f09f0",
+      "installInstruction": "Apply only exact hunk. Full prepared copy is an explicit compile overlay, NEVER a whole-file installer."
+    }
+  ],
+  "sourceInventory": "source-inventory.json",
+  "sourceProof": "source-proof.json",
+  "generatedFiles": [
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt",
+      "sha256Bytes": "1d97e25c32b8c6c7add043f3a29370f6ff70598f17b9aa27bf62c874ababf1e8"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/ChatMessageMutationPolicy.kt",
+      "sha256Bytes": "ec31b361095646ad7595ffca1ace43961389c18e813865b4a70d6d1e44dcc5a2"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/ChatScreen.kt",
+      "sha256Bytes": "838d727d2bb93115578aa55929cb967c2bde2666140645522527e04696051270"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/ChatViewModel.kt",
+      "sha256Bytes": "eb84d9b565b0cf675ad82680ad5d4a0d672247f5fed53ef0a44928740065da27"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/InboxScreen.kt",
+      "sha256Bytes": "c2cc9e7e39e159fc065a251c1800e2496cd6eb09a6290575e3b89b0875dcec70"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/InboxViewModel.kt",
+      "sha256Bytes": "bdb93e5fb68c2ccac8a63ff5f14c3f06810dd3af62fb085196fa906058e5aa99"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/MessageCenterPolicy.kt",
+      "sha256Bytes": "e050e17db72700dc86908e0ad2475e1711dbb88236e91bddf54380272166bf3b"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/MessageCenterScreen.kt",
+      "sha256Bytes": "4dade638fe07ae1ac64ded8e479580512677a213d8be685acb930a328d939f2a"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/MessageGlassSurface.kt",
+      "sha256Bytes": "4129c1fea0955ec367dca6c9079e99292bc8fdf05a80ce28d607e246b32b4083"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/MessageGlassSurfacePolicy.kt",
+      "sha256Bytes": "823b5bd0a7922caa21dcfdb26f1e35e8700729e77db72376c4e536e6caec4dec"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/MessagePreviewParser.kt",
+      "sha256Bytes": "b5c37de4251a5f51689d6a52157ea91615fa2653d2113da3c5989b703a3ed66a"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/feed/AtMeScreen.kt",
+      "sha256Bytes": "b1b3715dd8cf2f7368687c5b8f79b08c8b3846e7ff9a75f6b1d1915634f13520"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/feed/DesktopOriginalMessageFeedCommon.kt",
+      "sha256Bytes": "cca23f00fd5eadde1f090c28a0b65dbaf875e1f9ae71bc5614034f116b94783d"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/feed/LikeMeScreen.kt",
+      "sha256Bytes": "23dd6bb8f51327ed44b2257f34d04ea5fa9540a514b59a1ee50554cb84f272bf"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/feed/ReplyMeScreen.kt",
+      "sha256Bytes": "e0478d55ffe263fb3cb7841994840c6025d50dc47b9e99d0a8374149105635ca"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/feed/SystemNoticeContentPolicy.kt",
+      "sha256Bytes": "05eb7c25594605cd3eec499f1f32b65a8e826099975b59d439d68cec5fe53a17"
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/message/feed/SystemNoticeScreen.kt",
+      "sha256Bytes": "eef56de6f89061b0c302d4787c2bbdc9d9d6ac6859e6389f45de9159854c1d1e"
+    }
+  ],
+  "dependencies": [
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-desktop:1.3.0-rc01",
+      "artifact": "adaptive-desktop",
+      "version": "1.3.0-rc01",
+      "type": "pom",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-desktop-1.3.0-rc01.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-desktop/1.3.0-rc01/adaptive-desktop-1.3.0-rc01.pom",
+      "sha256Bytes": "c456b5db172ec5593706be838314c1a6669b2082633aa96e5ec5c6d75c3c3997"
+    },
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-desktop:1.3.0-rc01",
+      "artifact": "adaptive-desktop",
+      "version": "1.3.0-rc01",
+      "type": "jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-desktop-1.3.0-rc01.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-desktop/1.3.0-rc01/adaptive-desktop-1.3.0-rc01.jar",
+      "sha256Bytes": "94807e7afab0cb0d455a32ebbc3f07efe7a495655f3abc40f1c13ad40726a9d2"
+    },
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-layout-desktop:1.3.0-rc01",
+      "artifact": "adaptive-layout-desktop",
+      "version": "1.3.0-rc01",
+      "type": "pom",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-layout-desktop-1.3.0-rc01.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-layout-desktop/1.3.0-rc01/adaptive-layout-desktop-1.3.0-rc01.pom",
+      "sha256Bytes": "d0461a87d5f8e5c5e4ecd80c305d95f3cd4c61b8fd80d318f7d8aed51a375b4b"
+    },
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-layout-desktop:1.3.0-rc01",
+      "artifact": "adaptive-layout-desktop",
+      "version": "1.3.0-rc01",
+      "type": "jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-layout-desktop-1.3.0-rc01.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-layout-desktop/1.3.0-rc01/adaptive-layout-desktop-1.3.0-rc01.jar",
+      "sha256Bytes": "0b6a510201508aa3b4c6d15a1f40a9b087f97cdcecf625a1638445b920ec5699"
+    },
+    {
+      "coordinate": "org.jetbrains.androidx.window:window-core-desktop:1.5.0",
+      "type": "pom",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\window-core-desktop-1.5.0.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/androidx/window/window-core-desktop/1.5.0/window-core-desktop-1.5.0.pom",
+      "sha256Bytes": "0fbed81eb9a12b96b77e17ab696c9ab94da94318f6323fa73d7643424cd4d81f"
+    },
+    {
+      "coordinate": "org.jetbrains.androidx.window:window-core-desktop:1.5.0",
+      "type": "jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\window-core-desktop-1.5.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/androidx/window/window-core-desktop/1.5.0/window-core-desktop-1.5.0.jar",
+      "sha256Bytes": "e6a2c3d4e6dae7f69e466d875c1e8ab78734af991ac33e2076a99c77665dd330"
+    }
+  ],
+  "reusedSoleProducers": [
+    "UserBasicInfo",
+    "DesktopDynamicMessageUserInfoLoader",
+    "InboxUserInfoResolver",
+    "InboxSessionPaginationPolicy",
+    "MessageFeedError",
+    "totalPrivateUnreadCount",
+    "totalMessageUnreadCount",
+    "desktopOriginalOpenMessageLink",
+    "original MessageApi/response models"
+  ],
+  "proofs": {
+    "prospectiveCompile": "runs/11/result.json",
+    "actualProtocolAndVmFixtures": "fixture-runs/18/report.json",
+    "actualLoadedClassIdentity": "fixture-runs/18/actual-loaded-12-class-identities.json",
+    "ui": "fixture-runs/19/ui/ui-report.json",
+    "uiLoadedClassIdentity": "fixture-runs/19/ui/actual-loaded-12-class-identities.json",
+    "prospectiveJUnitCompile": "junit-prospective-compile-05/result.json",
+    "actualMeaningfulMethods": 14
+  },
+  "limits": {
+    "candidateWrites": 0,
+    "sharedGradleRuns": 0,
+    "realBilibiliRequests": 0,
+    "actualAccountTesting": false,
+    "wholeRootAcceptance": false,
+    "nativeFileChooserAcceptance": false,
+    "wideMessageCenterAndFullChatUiRuntimeAccepted": false,
+    "productionJUnitExecuted": false
+  },
+  "rootHooks": "INTEGRATION.md"
+}

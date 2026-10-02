@@ -1,0 +1,67 @@
+{
+  "passed": true,
+  "contractSha256": "ea34b9c47aaab1660e815e638589673d2d389fac914c310f4e9b5990954907a3",
+  "candidateBase": "01e5d615fa48da8fc73c470ea452f885f51af454",
+  "baselineOnly": false,
+  "applied": false,
+  "productionWrites": 0,
+  "exactHunks": 5,
+  "newCopies": 4,
+  "registryAppends": 13,
+  "registryFeatureUnions": 4,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "operation": "exact-hunks",
+      "desiredRawSha256": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "operation": "exact-hunks",
+      "desiredRawSha256": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "operation": "exact-hunks",
+      "desiredRawSha256": "29c36bca7b98bebedc56db733f87aff94ca6561afd96a25e8aea661b16fba7a7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "operation": "exact-hunks",
+      "desiredRawSha256": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "operation": "exact-hunks",
+      "desiredRawSha256": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-message-pages.py",
+      "operation": "copy-new",
+      "desiredRawSha256": "fab378ab275a262b95432464503d77e4fd25048b5235d93193e2f8cfacc289a2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePageAdmission.kt",
+      "operation": "copy-new",
+      "desiredRawSha256": "5e866b2b92e9d3994d75df12b77f8f925c86b21480880f87de31b8cada0e136d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesRoot.kt",
+      "operation": "copy-new",
+      "desiredRawSha256": "f8b1bf872d43b3786548887a48e36f379af1e139999fd9b6d6415b44c0bbbd79"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesTest.kt",
+      "operation": "copy-new",
+      "desiredRawSha256": "2afa302a4d83668832b380a9de8c4da05c6df4463384a06335764ba07cf546e6"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "operation": "verified-registry-union",
+      "desiredRawSha256": "09334ae9b197ac5bdf1024d9efc23f4b4bbefa69c7ecfbe39f8bd6eedc2448a3"
+    }
+  ],
+  "skipped": [],
+  "buildRun": false,
+  "rootRuntimeAccepted": false
+}

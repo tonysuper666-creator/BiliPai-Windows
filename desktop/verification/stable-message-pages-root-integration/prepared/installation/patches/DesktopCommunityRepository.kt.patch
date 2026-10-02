@@ -1,0 +1,33 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt
+@@ -60,6 +60,30 @@
+     private val mutationMutex = Mutex()
+     private val messageDeviceId = UUID.randomUUID().toString()
+ 
++    /** Complete original message protocol; same Community transport and epoch-tagged Jar.
++     * No mutation transport retry or additional client/pool/cache/session owner. */
++    internal fun originalMessagePages(owner: com.bilipai.desktop.ui.DesktopMessagePageAdmission):
++        com.bilipai.desktop.ui.DesktopMessagePageServices {
++        val factory = owner.callFactory(client)
++        fun service(base: String) = Retrofit.Builder().baseUrl(base).callFactory(factory)
++            .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
++        val ownedWeb = service("https://api.bilibili.com/")
++        val ownedApi = ownedWeb.create(BilibiliApi::class.java)
++        val ownedSpace = ownedWeb.create(SpaceApi::class.java)
++        val ownedMessages = service("https://api.vc.bilibili.com/").create(MessageApi::class.java)
++        val users = com.android.purebilibili.feature.message.DesktopDynamicMessageUserInfoLoader(
++            ownedApi, ownedSpace) { params -> owner.sign(params, ownedApi) }
++        return com.bilipai.desktop.ui.DesktopMessagePageServices(
++            com.android.purebilibili.data.repository.DesktopOriginalMessageRepository(ownedMessages, ownedApi, owner) { messageDeviceId },
++            users::fetch,
++            { bvid -> owner.runCatching {
++                val response = ownedApi.getVideoInfo(bvid)
++                if (response.code != 0) error(response.message)
++                requireNotNull(response.data) { "视频信息为空" }
++            } })
++    }
++
++
+     suspend fun sendTextMessage(talkerId: Long, text: String, sessionType: Int = 1): SendMessageData {
+         require(text.isNotBlank()) { "请输入消息内容" }
+         return sendMessage(talkerId, sessionType, 1, communityMessageTextContent(text))

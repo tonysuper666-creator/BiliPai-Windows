@@ -1,0 +1,50 @@
+{
+  "snapshot": 85,
+  "prospectiveJarSha256": "e6e1483b776b6df05a87c78df11c88e388e4d1a01a92ca015b0e3b48b16b2878",
+  "explicitFixtureSources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\fixture\\DesktopOriginalMessageFixtureIdentity.kt",
+      "sha256Bytes": "c20e0f7b37906c2c6838f3823a6dfe71290211c8f0449f9f622334a0aa3912dd"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\fixture\\DesktopOriginalMessagePagesFixture.kt",
+      "sha256Bytes": "7b82a9d29bf249b772387e8d5c6814c1b66ae59a3cd35141e7ea38f658b043d5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\fixture\\DesktopOriginalMessagePagesUiFixture.kt",
+      "sha256Bytes": "b8bd5d3ef5db215512e96371b878a3fdc68d248e8e18408bec80fb77ca3501b0"
+    }
+  ],
+  "externalCpCount": 101,
+  "extraDependencies": [
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-desktop:1.3.0-rc01",
+      "artifact": "adaptive-desktop",
+      "version": "1.3.0-rc01",
+      "type": "jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-desktop-1.3.0-rc01.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-desktop/1.3.0-rc01/adaptive-desktop-1.3.0-rc01.jar",
+      "sha256Bytes": "94807e7afab0cb0d455a32ebbc3f07efe7a495655f3abc40f1c13ad40726a9d2"
+    },
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-layout-desktop:1.3.0-rc01",
+      "artifact": "adaptive-layout-desktop",
+      "version": "1.3.0-rc01",
+      "type": "jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-layout-desktop-1.3.0-rc01.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-layout-desktop/1.3.0-rc01/adaptive-layout-desktop-1.3.0-rc01.jar",
+      "sha256Bytes": "0b6a510201508aa3b4c6d15a1f40a9b087f97cdcecf625a1638445b920ec5699"
+    },
+    {
+      "coordinate": "org.jetbrains.androidx.window:window-core-desktop:1.5.0",
+      "type": "jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\window-core-desktop-1.5.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/androidx/window/window-core-desktop/1.5.0/window-core-desktop-1.5.0.jar",
+      "sha256Bytes": "e6a2c3d4e6dae7f69e466d875c1e8ab78734af991ac33e2076a99c77665dd330"
+    }
+  ],
+  "productProductionWrites": 0,
+  "realAccountRequests": 0,
+  "rootAccepted": false,
+  "passed": true
+}

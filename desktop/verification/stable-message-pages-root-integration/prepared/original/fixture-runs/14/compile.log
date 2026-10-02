@@ -1,0 +1,6 @@
+desktop\.local\stable-original-message-pages-root-parity\fixture\DesktopOriginalMessagePagesFixture.kt:41:5: warning: 'lateinit' is unnecessary: definitely initialized in constructors.
+    lateinit var admission:DesktopMessagePageAdmission
+    ^^^^^^^^
+desktop\.local\stable-original-message-pages-root-parity\fixture\DesktopOriginalMessagePagesFixture.kt:42:5: warning: 'lateinit' is unnecessary: definitely initialized in constructors.
+    lateinit var services:DesktopMessagePageServices
+    ^^^^^^^^

@@ -1,0 +1,16 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+    "baseRawSha256": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+    "baseLfSha256": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+    "desiredRawSha256": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a",
+    "kind": "exact-hunk"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+    "baseRawSha256": "ba2fd53f7774b113e892e58fe5cf1e69151b1894509d5cfafa37caffa92feb62",
+    "baseLfSha256": "a80bd55e796a1bc276bce2ea6bf0476985fcba3d2ab0ca35ceafb555f40dcac5",
+    "desiredRawSha256": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e",
+    "kind": "exact-hunk"
+  }
+]

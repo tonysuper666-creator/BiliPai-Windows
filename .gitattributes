@@ -116,3 +116,4 @@ desktop/verification/stable-storage-settings-root-integration/** -text
 desktop/verification/stable-search-pages-root-integration/** -text
 desktop/verification/stable-bangumi-pages-root-integration/** -text
 desktop/verification/stable-root-share-provider-integration/** -text
+desktop/verification/stable-message-pages-root-integration/** -text

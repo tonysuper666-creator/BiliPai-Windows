@@ -1,0 +1,24 @@
+desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalMessagePagesTest.kt:129:44: error: unresolved reference 'Reply'.
+            if(pages.incrementAndGet()==1) Reply(sessionsJson(listOf(8L to 600L),true)) else Reply(sessionsJson(listOf(9L to 500L),false))
+                                           ^^^^^
+desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalMessagePagesTest.kt:129:94: error: unresolved reference 'Reply'.
+            if(pages.incrementAndGet()==1) Reply(sessionsJson(listOf(8L to 600L),true)) else Reply(sessionsJson(listOf(9L to 500L),false))
+                                                                                             ^^^^^
+desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalMessagePagesTest.kt:141:103: error: unresolved reference 'Reply'.
+            if(hit.query["session_type"]=="4") {entered.countDown();release.await(3,TimeUnit.SECONDS);Reply(sessionsJson(listOf(100L to 200L),false))}
+                                                                                                      ^^^^^
+desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalMessagePagesTest.kt:142:18: error: unresolved reference 'Reply'.
+            else Reply(sessionsJson(listOf(200L to 300L),false))
+                 ^^^^^
+desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalMessagePagesTest.kt:155:132: error: unresolved reference 'Reply'.
+            if(hit.query["id"]=="10") {check(hit.query["reply_time"]=="900");entered.countDown();release.await(3,TimeUnit.SECONDS);Reply(feedJson(listOf(11),11,800,true))}
+                                                                                                                                   ^^^^^
+desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalMessagePagesTest.kt:156:18: error: unresolved reference 'Reply'.
+            else Reply(feedJson(listOf(20),20,1000,false))
+                 ^^^^^
+desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalMessagePagesTest.kt:212:57: error: unresolved reference 'Reply'.
+        f.respond={hit->if(hit.path.endsWith("set_top"))Reply("""{"code":-400,"message":"controlled rejection"}""")else f.default(hit)}
+                                                        ^^^^^
+desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\test\kotlin\com\bilipai\desktop\ui\DesktopOriginalMessagePagesTest.kt:230:59: error: unresolved reference 'Reply'.
+        f.respond={ hit->if(hit.path.endsWith("send_msg"))Reply("""{"code":-1}""",503,mapOf("Retry-After" to "0"))else f.default(hit) }
+                                                          ^^^^^

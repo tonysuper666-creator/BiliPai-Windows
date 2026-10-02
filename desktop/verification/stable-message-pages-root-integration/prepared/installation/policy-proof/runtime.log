@@ -1,0 +1,8 @@
+Exception in thread "main" java.lang.ClassNotFoundException: com.android.purebilibili.navigation.AppTopLevelNavigationPolicyKt
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:423)
+	at java.base/java.lang.Class.forName(Class.java:414)
+	at com.bilipai.desktop.ui.MessageEntryPolicyProofKt.main(MessageEntryPolicyProof.kt:31)

@@ -1,0 +1,16 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
+@@ -357,11 +357,11 @@
+ 
+     /** Admission facade over the SAME client/dispatcher/pool/CookieJar. No client or cookie
+      * state is constructed. The immutable epoch and lifetime are attached before Call creation. */
+-    internal fun ownedHomeCallFactory(expectedEpoch: Long, stillOwned: () -> Boolean, guest: Boolean = false): okhttp3.Call.Factory =
++    internal fun ownedHomeCallFactory(expectedEpoch: Long, stillOwned: () -> Boolean, guest: Boolean = false, transport: OkHttpClient = client): okhttp3.Call.Factory =
+         okhttp3.Call.Factory { request ->
+             if (expectedEpoch != sessions.generation || !stillOwned())
+                 throw java.io.IOException("Home request owner retired")
+-            client.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
++            transport.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
+                 DesktopSessionEpoch(expectedEpoch, stillOwned, if (guest) homeGuestBuvid3 else null)).build())
+         }
+ 

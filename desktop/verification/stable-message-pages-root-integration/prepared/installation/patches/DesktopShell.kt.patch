@@ -1,0 +1,36 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1496,7 +1496,7 @@
+                         physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library,
+                     { root -> originalNowPlayingFor(root,listen).binding },
+                     { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) })
+-                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences ->
++                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages ->
+                     val messageRoutes = commands as DesktopOriginalRootRouteAssembly
+                     val messageLink: (String) -> Unit = { raw ->
+                         if (active) messageRoutes.callbackFor(entryKey) {
+@@ -1556,6 +1556,10 @@
+                             entryKey is BiliPaiNavKey.Bangumi || entryKey is BiliPaiNavKey.BangumiDetail || entryKey is BiliPaiNavKey.BangumiReview ->
+                                 DesktopDetailWindow { DesktopOriginalBangumiPagesRootHost(entryKey, messageRoutes, repository, ordinaryVideoResources, active,
+                                     replaceSeason = { current, season -> messageRoutes.replaceBangumiDetail(current, season) }) }
++                            entryKey == BiliPaiNavKey.Inbox || entryKey == BiliPaiNavKey.ReplyMe ||
++                                entryKey == BiliPaiNavKey.AtMe || entryKey == BiliPaiNavKey.LikeMe ||
++                                entryKey == BiliPaiNavKey.SystemNotice || entryKey is BiliPaiNavKey.Chat ->
++                                DesktopDetailWindow { DesktopOriginalMessagePageRootHost(entryKey, messagePages, messageRoutes, active) }
+                             entryKey is BiliPaiNavKey.CommentDetail ->
+                                 DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }
+                             entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.AudioMode ->
+@@ -1888,12 +1892,11 @@
+                                         transitionEnabled = articleHomeSettings.cardTransitionEnabled)
+                                 }
+                             }
+-                            section in listOf(DesktopSection.DYNAMIC, DesktopSection.MESSAGES, DesktopSection.NOTES) ->
++                            section in listOf(DesktopSection.DYNAMIC, DesktopSection.NOTES) ->
+                                 CommunityContentScreen(when(section) {
+                                     DesktopSection.DYNAMIC -> CommunitySection.DYNAMIC
+                                     DesktopSection.SEARCH -> CommunitySection.SEARCH
+                                     DesktopSection.USER -> CommunitySection.USER
+-                                    DesktopSection.MESSAGES -> CommunitySection.MESSAGES
+                                     DesktopSection.ARTICLE -> CommunitySection.ARTICLE
+                                     else -> CommunitySection.NOTES
+                                 }, repository, social, community, submitted, userId, articleId, noteVideo,

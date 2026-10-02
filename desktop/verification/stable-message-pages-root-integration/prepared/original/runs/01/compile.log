@@ -1,0 +1,66 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\ChatScreen.kt:75:43: error: unresolved reference 'PickGalleryVisualMedia'.
+import com.android.purebilibili.core.util.PickGalleryVisualMedia
+                                          ^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\ChatScreen.kt:102:46: error: unresolved reference 'shouldAllowRenderEffectBackedHazeEffect'.
+import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\ChatViewModel.kt:50:5: error: 'public' function exposes its 'internal' parameter type 'DesktopMessagePageAdmission'.
+    private val owner: DesktopMessagePageAdmission
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\ChatViewModel.kt:274:26: error: 'public' function exposes its 'internal' parameter type 'DesktopMessageLocalImage'.
+    fun sendImageMessage(image: DesktopMessageLocalImage) {
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:16:35: error: unresolved reference 'adaptive'.
+import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
+                                  ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:17:35: error: unresolved reference 'adaptive'.
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
+                                  ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:18:35: error: unresolved reference 'adaptive'.
+import androidx.compose.material3.adaptive.layout.PaneAdaptedValue
+                                  ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:19:35: error: unresolved reference 'adaptive'.
+import androidx.compose.material3.adaptive.layout.SupportingPaneScaffold
+                                  ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:20:35: error: unresolved reference 'adaptive'.
+import androidx.compose.material3.adaptive.layout.ThreePaneScaffoldValue
+                                  ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:21:35: error: unresolved reference 'adaptive'.
+import androidx.compose.material3.adaptive.layout.calculatePaneScaffoldDirective
+                                  ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:26:8: error: unresolved reference 'ExperimentalMaterial3AdaptiveApi'.
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:26:8: error: annotation argument must be a compile-time constant.
+@OptIn(ExperimentalMaterial3AdaptiveApi::class)
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:55:30: error: unresolved reference 'currentWindowAdaptiveInfoV2'.
+    val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:56:21: error: unresolved reference 'calculatePaneScaffoldDirective'.
+    val directive = calculatePaneScaffoldDirective(windowAdaptiveInfo)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:57:25: error: unresolved reference 'ThreePaneScaffoldValue'.
+    val scaffoldValue = ThreePaneScaffoldValue(
+                        ^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:58:19: error: unresolved reference 'PaneAdaptedValue'.
+        primary = PaneAdaptedValue.Expanded,
+                  ^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:59:47: error: unresolved reference 'PaneAdaptedValue'.
+        secondary = if (activeTalkerId != 0L) PaneAdaptedValue.Expanded else PaneAdaptedValue.Hidden,
+                                              ^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:59:78: error: unresolved reference 'PaneAdaptedValue'.
+        secondary = if (activeTalkerId != 0L) PaneAdaptedValue.Expanded else PaneAdaptedValue.Hidden,
+                                                                             ^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:60:20: error: unresolved reference 'PaneAdaptedValue'.
+        tertiary = PaneAdaptedValue.Hidden,
+                   ^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:68:5: error: unresolved reference 'SupportingPaneScaffold'.
+    SupportingPaneScaffold(
+    ^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:72:13: error: @Composable invocations can only happen from the context of a @Composable function
+            InboxScreen(
+            ^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\MessageCenterScreen.kt:84:17: error: @Composable invocations can only happen from the context of a @Composable function
+                key(activeTalkerId, activeSessionType) {
+                ^^^

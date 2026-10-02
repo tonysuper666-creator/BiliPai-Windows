@@ -1,0 +1,15 @@
+PASS original Inbox categories unread and cursor duplicate retry
+PASS late previous category cannot overwrite selected category
+PASS Reply pagination uses exact id time and refresh cancels stale more
+PASS original four notification VMs and successful system read cursor
+PASS original feed delete and notice exact parameters
+PASS Chat original ordering emotes control and actual ACK
+PASS original group DND top push intercept and batch parameters
+PASS original optimistic top failure refreshes authoritative sessions
+PASS send preserves text CR TAB and withdrawal payload model
+PASS HTTP503 RetryAfter0 mutation does not replay
+PASS image upload validates original cap and sends real uploaded metadata
+PASS same MID new epoch rejects old sender and stale UI
+PASS caller cancellation stops request and post-IO publication
+PASS covered entry reads retained but covered mutation cannot submit
+PASS 14 actual original protocol/VM fixtures

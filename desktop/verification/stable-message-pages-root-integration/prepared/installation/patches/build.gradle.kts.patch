@@ -1,0 +1,33 @@
+--- desktop/build.gradle.kts
++++ desktop/build.gradle.kts
+@@ -1607,6 +1607,9 @@
+     // Existing runtime97 datetime module used by unchanged Coil CacheControl source.
+     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
+     implementation("org.jetbrains.compose.material3:material3:1.12.0-alpha03")
++    // Actual JetBrains JVM counterparts of original Android adaptive 1.3.0.
++    implementation("org.jetbrains.compose.material3.adaptive:adaptive:1.3.0-rc01")
++    implementation("org.jetbrains.compose.material3.adaptive:adaptive-layout:1.3.0-rc01")
+     // Original comment sheets use this API directly; Material3 only brings its
+     // desktop implementation onto runtimeClasspath transitively.
+     implementation("androidx.navigationevent:navigationevent-compose:1.1.2")
+@@ -2190,3 +2193,20 @@
+ }
+ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-search-pages")) }
+ tasks.named("compileKotlin") { dependsOn(extractOriginalSearchPages) }
++
++// Full original message seven pages. DIRECT4 are copied once by prepareUpstreamSources;
++// production intentionally omits --standalone. Existing unread/share producers stay unique.
++val extractOriginalMessagePages by tasks.registering(Exec::class) {
++    dependsOn(prepareUpstreamSources, extractUpstreamDynamicFullCard, extractOriginalHomeProtocols)
++    workingDir(projectDir)
++    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-message-pages.py",
++        "--repo", repositoryRoot.absolutePath,
++        "--out", layout.buildDirectory.dir("generated/original-message-pages").get().asFile.absolutePath)
++    inputs.files("tools/extract-upstream-message-pages.py", "tools/extract-appearance-platform.py",
++        "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", sourceManifest)
++    inputs.files(sources.filter { "stable-original-message-pages-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    outputs.dir(layout.buildDirectory.dir("generated/original-message-pages"))
++}
++kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-pages")) }
++tasks.named("compileKotlin") { dependsOn(extractOriginalMessagePages) }

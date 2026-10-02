@@ -1,0 +1,414 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources
+> Task :extractBgmDetail
+> Task :extractCommentFraudProtocol
+> Task :extractFrostedAudioRenderer
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 95}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform UP-TO-DATE
+> Task :extractImageSaveSettingsUi UP-TO-DATE
+> Task :extractLinkedDock
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractNavigation3Host
+
+> Task :extractOriginalApplicationImageLoader
+Complete original application ImageLoader body and original cache/trim policies generated
+
+> Task :extractUpstreamDynamicDetailProtocol UP-TO-DATE
+> Task :extractOriginalArticleDetail
+
+> Task :extractOriginalHomeBangumiPage
+Complete original Home Bangumi Hub emitted
+
+> Task :extractUpstreamMedia UP-TO-DATE
+
+> Task :extractOriginalBangumiPages
+{"generatedFiles": 12, "fullOriginalFiles": 8, "playerAdaptationStillInProgress": true}
+
+> Task :extractOriginalDanmakuListMenu
+> Task :extractOriginalDanmakuSettings
+
+> Task :extractOriginalDownloadList
+Generated 3 original download list sources
+
+> Task :extractOriginalFavoriteFolder
+generated original favorite drawer, policy, protocol and session closure
+
+> Task :extractOriginalFavorites
+
+> Task :extractOriginalWatchLater
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterPlaybackPolicy.kt",
+      "sha256LfUtf8": "ce20213fc2e0b291be16d6077a02bcd0c23577a5b06472c4c9a1d89048de48b2",
+      "mode": "direct"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterLayoutPolicy.kt",
+      "sha256LfUtf8": "4233cc5aed3d8541f25ae8c1dd095743311de9ecdbd60d59094330b67fec1348",
+      "mode": "direct"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/data/repository/WatchLaterRepository.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "5062a5c6ddaf1f4d5ed58a6423545fd6ccf0a7f736f5362ef3aaf12d62ed4266",
+    "output": {
+      "path": "com/android/purebilibili/data/repository/DesktopOriginalWatchLaterRepository.kt",
+      "sha256LfUtf8": "1b5751403741cfd2554ace8bd6392038f16d1ddf3d06cb5066a4d0c4f37087db",
+      "mode": "selected"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "266e5f40e13147e8ffafc06537966174dcf0f492eac8cde455070a45885b6f84",
+    "output": {
+      "path": "com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+      "sha256LfUtf8": "c64257dffde90fba2881588c3b80bb7de676ad1003acdb2d269fe04b72933ebb",
+      "mode": "selected"
+    }
+  }
+]
+
+> Task :extractOriginalFollowing
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingGroupPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "6d6ce126d9df0a90db5104be0151980006cf3300be55db9e25dae15289674ce1"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingLayoutPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "cffcd31786c81a7798035357b4fde1e46f0e2fa767b819630f49583268dd7b5b"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingUserPresentationPolicy.kt",
+      "mode": "direct",
+      "sha256LfUtf8": "331ab17f76abb19383a5867b489a8b80018bb769b8cef753248dbd7f419f20d9"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/FollowingCacheStore.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "217da212735a1397d9a367343c76b6ed8e2668dccb62a048bdaa8e6def6afa7a",
+    "output": {
+      "path": "com/android/purebilibili/core/store/FollowingCacheStore.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "661222fd4ebfdb29e3aafde94563c6096685cf6ef376529d597e93cb2108160f"
+    }
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingListScreen.kt",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LfUtf8": "973c52505a2abe39e1ed0f8ae1ad51199076fd8482f50dbe50c2b1725f8412c8",
+    "output": {
+      "path": "com/android/purebilibili/feature/following/FollowingListScreen.kt",
+      "mode": "selected",
+      "sha256LfUtf8": "b3c099bd0f545ecfa9aed4f7aea5246de39681b6757d6f105a95a4ac68313264"
+    }
+  }
+]
+
+> Task :extractOriginalHomePage
+57 source outputs
+original settings keys 82
+original Home outputs 71
+
+> Task :extractOriginalHomePartition
+Complete original Partition Screen/Content/VM and shared media skeleton produced
+
+> Task :extractOriginalHomeProtocols UP-TO-DATE
+> Task :extractOriginalHomeViewModel UP-TO-DATE
+> Task :extractOriginalLiveList
+> Task :extractOriginalLiveNavigation
+> Task :extractOriginalMediaByteCachePolicy
+> Task :extractUpstreamDynamicFullCard UP-TO-DATE
+
+> Task :extractOriginalMessagePages
+[
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\MessageCenterPolicy.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalMessageRepository.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\InboxViewModel.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\ChatViewModel.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\ReplyMeScreen.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\AtMeScreen.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\LikeMeScreen.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\SystemNoticeScreen.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\DesktopOriginalMessageFeedCommon.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\InboxScreen.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\ChatScreen.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\MessageCenterScreen.kt",
+  "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\MessageGlassSurface.kt"
+]
+
+> Task :extractOriginalOfflinePlayer
+Generated 3 full original offline selected sources
+
+> Task :extractOriginalVideoDetailUnits
+{"sources": 24, "outputs": 26}
+
+> Task :extractOriginalPlayerFullControls
+> Task :extractOriginalVideoContentFull
+
+> Task :extractOriginalVideoStateCore
+whole original UseCase candidate prepared, platform adaptations 12
+Full original raw playback selected protocol methods 18 lines 1165
+
+> Task :extractOriginalVideoPlayerSectionFull
+> Task :prepareUpstreamVideoCommentUrl UP-TO-DATE
+
+> Task :extractOriginalVideoTabletFull
+{"outputs": 8, "sources": 9, "changes": 59}
+
+> Task :extractOriginalMusicPlayerFull
+{"outputs": 25, "sources": 22, "exactWholeBodyInverse": true}
+
+> Task :extractOriginalPersonalLists
+DesktopOriginalHistoryNavigation.kt
+DesktopOriginalHistoryArticlePolicy.kt
+
+> Task :extractOriginalProfileMain
+> Task :extractOriginalRootHomeNavigation
+
+> Task :extractOriginalSearchPages
+Generated complete original Search 5 source bodies; inverse PASS
+
+> Task :extractOriginalStorageSettings
+Generated exact original storage families 8
+
+> Task :extractOriginalSubscriptionPage
+Original Subscription UI outputs 1
+
+> Task :extractUpstreamSpaceOverview UP-TO-DATE
+> Task :extractOriginalTabletOwnerSpace
+> Task :extractOriginalVideoFullscreenPager
+
+> Task :extractOriginalVideoAudioFull
+{"outputs": 2, "exactWholeBodyInverse": true}
+
+> Task :extractOriginalVideoFullOwner
+Full original Video owner source outputs: 18 emitted: 8
+
+> Task :extractOriginalVideoDetailHolderFull
+
+> Task :extractOriginalVideoOwnerDanmakuSend
+[{"path": "com/android/purebilibili/data/repository/DesktopOriginalVideoDanmakuSendProtocol.kt", "origin": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt", "originalSha256LF": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5", "sha256LF": "8ab90267d9df7323baf73ab4e08304a1a2a6ce2ba49d2b051204a3cd02935db5", "mode": "selected", "generated": true}]
+
+> Task :extractOriginalVideoPlaylistFull
+Original playlist source outputs: 1
+
+> Task :extractOriginalVideoRootStoryFeed
+{"output": "com/android/purebilibili/data/repository/DesktopOriginalVideoStoryFeedProtocol.kt", "outputSHA256LF": "0efbed4bee48b83f026e83441c0e856c0774762289e737eaa1c242f1ce7565f8", "bodyInverseByteEqual": true, "outputCount": 1}
+
+> Task :extractOriginalVideoShareConsent
+
+> Task :extractOriginalWallpaperPalette
+Generated full original WallpaperPaletteStore with owned Windows services
+
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractSharedLiquidTabs
+> Task :extractStableCollectionSheet
+> Task :extractStableVideoMetadata
+> Task :extractStableWeeklySeries UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+
+> Task :extractUpstreamApi
+C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\build\generated\api\com\android\purebilibili\core\network\DesktopUpstreamApi.kt
+
+> Task :extractUpstreamAppearance UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamDiscovery UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamSettingsSearch UP-TO-DATE
+> Task :extractUpstreamSettingsCategories UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCast UP-TO-DATE
+> Task :extractUpstreamComponents UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+> Task :extractUpstreamDanmaku UP-TO-DATE
+
+> Task :extractUpstreamDiagnostics
+8
+
+> Task :extractUpstreamDownloadTransport UP-TO-DATE
+> Task :extractUpstreamDynamicDetail UP-TO-DATE
+> Task :extractUpstreamDynamicDetailContainer UP-TO-DATE
+> Task :extractUpstreamDynamicEditor
+> Task :extractUpstreamSettingsHome UP-TO-DATE
+> Task :extractUpstreamDynamicSettings UP-TO-DATE
+> Task :extractUpstreamDynamicTabs UP-TO-DATE
+> Task :extractUpstreamDynamicFollow UP-TO-DATE
+> Task :extractUpstreamDynamicReply UP-TO-DATE
+> Task :extractUpstreamDynamicReplyProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicStaticImageCodec UP-TO-DATE
+> Task :extractUpstreamNavigationInteraction UP-TO-DATE
+> Task :extractUpstreamFullNavigation
+> Task :extractUpstreamHomeCards UP-TO-DATE
+> Task :extractUpstreamHomeFullCard UP-TO-DATE
+> Task :extractUpstreamJs UP-TO-DATE
+> Task :extractUpstreamLogin UP-TO-DATE
+> Task :extractUpstreamNetworkProxy UP-TO-DATE
+> Task :extractUpstreamPackages UP-TO-DATE
+> Task :extractUpstreamPlayback UP-TO-DATE
+> Task :extractUpstreamPlugins UP-TO-DATE
+> Task :extractUpstreamPreferences UP-TO-DATE
+
+> Task :extractUpstreamProfileWallpaperImport
+Generated whole original WallpaperImageImport with required owned Windows IO
+
+> Task :extractUpstreamSearch UP-TO-DATE
+> Task :extractUpstreamSettings UP-TO-DATE
+> Task :extractUpstreamSettingsEntries UP-TO-DATE
+> Task :extractUpstreamSettingsPrivacy UP-TO-DATE
+> Task :extractUpstreamSettingsStorageEntries UP-TO-DATE
+> Task :extractUpstreamSpace UP-TO-DATE
+> Task :extractUpstreamSpaceContributions UP-TO-DATE
+> Task :extractUpstreamSpaceImagePreviews UP-TO-DATE
+> Task :extractUpstreamStoryTopic UP-TO-DATE
+> Task :extractVideoCommentUi
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+> Task :fetchJsWorkerJdk UP-TO-DATE
+> Task :prepareJsWorker UP-TO-DATE
+
+> Task :prepareNativeDiagnosticShare
+{"passed": true, "headers": 369, "searchedLibraries": 11, "compilerFiles": 64, "dllSha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3"}
+{"passed": true, "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\1ac26e2b-f0d3-491a-bf51-29a6d0857dd4", "approvedSourceManifestSha256Bytes": "147c338a72845eee396a394760945e76c96803b89d224059deb284c91f2831cf", "sourceSha256Bytes": "4ca60493f8224eefa7c00684fd4fede6a8c7bbdc2b735e03c5bcdd02983807ca", "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861", "expectedDllSha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3", "stagedDllSha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3", "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\1ac26e2b-f0d3-491a-bf51-29a6d0857dd4\\producer-input-graph.json", "actualBuildGraphSha256Bytes": "9da154f4254748aa244b2721988c62f75109274f092cc95ad282108078387d05", "cachedOutputTrusted": false, "freshCompilationOnEveryInvocation": true, "resolvedGraphMatchesReviewedBuild": true, "publicReleaseAuthorizationVerified": false}
+
+> Task :prepareOriginalCategoryPage
+Original Category outputs 1
+
+> Task :prepareOriginalHomeReturnNavigation
+
+> Task :verifyAppearanceDependencies
+Verified eight fixed appearance runtime dependencies and six source notices.
+
+> Task :verifyCoilCacheControlSources
+Verified three unchanged Coil3.5.0 cache-control sources and two Apache notices.
+
+> Task :verifyDynamicMediaDependencies
+Verified three approved image metadata runtime dependencies and six Apache notices.
+
+> Task :verifyOriginalPlayerFullControls
+> Task :verifyOriginalVideoContentFull
+> Task :verifyOriginalVideoDetailMembers UP-TO-DATE
+
+> Task :verifySettingsSearchDependencies
+Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.
+
+> Task :extractStableVideoVotes
+> Task :verifyUpstreamDynamicDetailReplyProtocol UP-TO-DATE
+> Task :verifyUpstreamDynamicEditorProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicGalleryMotionPhoto UP-TO-DATE
+> Task :verifyUpstreamDynamicMedia UP-TO-DATE
+
+> Task :miuix5157:verifyPinnedSource
+Exact Miuix5c91 pinned source PASS: 225 files; 195 compiled source files
+
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :assembleMainResources
+> Task :prepareOriginalPluginResources
+> Task :processResources
+> Task :convertXmlValueResourcesForTest NO-SOURCE
+> Task :copyNonXmlValueResourcesForTest NO-SOURCE
+> Task :prepareComposeResourcesTaskForTest NO-SOURCE
+> Task :generateResourceAccessorsForTest SKIPPED
+> Task :assembleTestResources
+> Task :processTestResources
+
+> Task :compileKotlin
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt:64:17 Condition is always 'false'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt:379:27 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/ChatScreen.kt:763:36 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/feed/SystemNoticeScreen.kt:194:37 'fun ClickableText(text: AnnotatedString, modifier: Modifier = ..., style: TextStyle = ..., softWrap: Boolean = ..., overflow: TextOverflow = ..., maxLines: Int = ..., onTextLayout: (TextLayoutResult) -> Unit = ..., onClick: (Int) -> Unit): Unit' is deprecated. Use Text or BasicText and pass an AnnotatedString that contains a LinkAnnotation. Check LinkAnnotation's documentation for more details and samples.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1024:66 Elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1207:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1208:48 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1209:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1211:53 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1212:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1369:34 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1487:119 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1577:37 Condition is always 'false'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:880:32 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:881:42 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePageAdmission.kt:115:25 This class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt:64:17 Condition is always 'false'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-message-pages/com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt:379:27 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/ChatScreen.kt:763:36 Condition is always 'true'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/generated/original-message-pages/com/android/purebilibili/feature/message/feed/SystemNoticeScreen.kt:194:37 'fun ClickableText(text: AnnotatedString, modifier: Modifier = ..., style: TextStyle = ..., softWrap: Boolean = ..., overflow: TextOverflow = ..., maxLines: Int = ..., onTextLayout: (TextLayoutResult) -> Unit = ..., onClick: (Int) -> Unit): Unit' is deprecated. Use Text or BasicText and pass an AnnotatedString that contains a LinkAnnotation. Check LinkAnnotation's documentation for more details and samples.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1024:66 Elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1207:47 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1208:48 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1209:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1211:53 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1212:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1369:34 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1487:119 Expression is unused.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1577:37 Condition is always 'false'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:880:32 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt:881:42 Unnecessary safe call on a non-null receiver of type 'DashVideo'.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeBlockedPort.kt:42:30 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePageAdmission.kt:115:25 This class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+
+> Task :compileJava
+注: C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai-v023\desktop\src\main\java\su\litvak\chromecast\api\v2\Util.java使用或覆盖了已过时的 API。
+注: 有关详细信息, 请使用 -Xlint:deprecation 重新编译。
+
+> Task :classes
+> Task :jar
+
+> Task :compileTestKotlin
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesTest.kt:42:5 'lateinit' is unnecessary: definitely initialized in constructors.
+w: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesTest.kt:43:5 'lateinit' is unnecessary: definitely initialized in constructors.
+
+> Task :compileTestJava
+> Task :testClasses
+> Task :test
+
+[Incubating] Problems report is available at: file:///C:/Users/TONYS/Documents/Codex/2026-09-29/https-github-com-jay3-yy-bilipai/work/BiliPai-v023/desktop/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 2m 18s
+144 actionable tasks: 80 executed, 64 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html

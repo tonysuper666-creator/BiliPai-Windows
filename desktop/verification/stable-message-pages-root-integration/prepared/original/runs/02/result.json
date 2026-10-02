@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "entries": 101,
+  "snapshot": 85,
+  "sourceCount": 21,
+  "explicitProspectiveSources": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopCommunityRepository.kt",
+      "sha256Bytes": "083ae460f434b6c9ce632c46afb86cf19228dbe6f5d4586ee97d4691ae3db339"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopRepository.kt",
+      "sha256Bytes": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalMessagePageAdmission.kt",
+      "sha256Bytes": "a2ba8ac5af24ae5200926693404014d921df46b7c54a4ffcb4f912a3edf8b388"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalMessagePagesRoot.kt",
+      "sha256Bytes": "8e666823e669149ff23d2c52f9735be8b9b2f22d86b717713c8d2afc069c7eab"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalMessageRepository.kt",
+      "sha256Bytes": "01ac400a2ea6f05fef3eff1974d4cc2f3108a5c237e24be4de44fe75ff64a163"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\ChatMessageMutationPolicy.kt",
+      "sha256Bytes": "ec31b361095646ad7595ffca1ace43961389c18e813865b4a70d6d1e44dcc5a2"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\ChatScreen.kt",
+      "sha256Bytes": "838d727d2bb93115578aa55929cb967c2bde2666140645522527e04696051270"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\ChatViewModel.kt",
+      "sha256Bytes": "8e7bdda4aeebce051d377404e0ef4d0101f78d0c9bfabc726cb7fdabf33b737d"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\InboxScreen.kt",
+      "sha256Bytes": "c2cc9e7e39e159fc065a251c1800e2496cd6eb09a6290575e3b89b0875dcec70"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\InboxViewModel.kt",
+      "sha256Bytes": "b817c06a73bd033db19a748c9306244080075b01be19920c0338452c4432cf57"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\MessageCenterPolicy.kt",
+      "sha256Bytes": "fe60c6c93c86b00fbb4b2b3ffe2c3e3bae091dc31282bfa004c6ef9896e44d43"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\MessageCenterScreen.kt",
+      "sha256Bytes": "4dade638fe07ae1ac64ded8e479580512677a213d8be685acb930a328d939f2a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\MessageGlassSurface.kt",
+      "sha256Bytes": "4129c1fea0955ec367dca6c9079e99292bc8fdf05a80ce28d607e246b32b4083"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\MessageGlassSurfacePolicy.kt",
+      "sha256Bytes": "823b5bd0a7922caa21dcfdb26f1e35e8700729e77db72376c4e536e6caec4dec"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\MessagePreviewParser.kt",
+      "sha256Bytes": "b5c37de4251a5f51689d6a52157ea91615fa2653d2113da3c5989b703a3ed66a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\feed\\AtMeScreen.kt",
+      "sha256Bytes": "12e5d6aadc1c05b81b1edffdd9ddf4de23deabb0cc255005379c4978d06d538d"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\feed\\DesktopOriginalMessageFeedCommon.kt",
+      "sha256Bytes": "cca23f00fd5eadde1f090c28a0b65dbaf875e1f9ae71bc5614034f116b94783d"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\feed\\LikeMeScreen.kt",
+      "sha256Bytes": "c5582ff1b833304b46ef3a79ea41296fc0842917636768394cec0b03226ecd0c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\feed\\ReplyMeScreen.kt",
+      "sha256Bytes": "360b6903becb6ed5a842381aa87b5cb9109ee6e32b08eca18e2e5306a06d61ee"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\feed\\SystemNoticeContentPolicy.kt",
+      "sha256Bytes": "05eb7c25594605cd3eec499f1f32b65a8e826099975b59d439d68cec5fe53a17"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\generated\\com\\android\\purebilibili\\feature\\message\\feed\\SystemNoticeScreen.kt",
+      "sha256Bytes": "be133e858bd1e86dc92650f5db83ad9bf93786680f2340ad0c834d6c32da9039"
+    }
+  ],
+  "productionWrites": 0,
+  "rootRuntimeAccepted": false
+}

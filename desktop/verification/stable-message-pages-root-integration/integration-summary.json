@@ -1,0 +1,98 @@
+{
+  "status": "integrated_normal_main_and_message_junit_passed",
+  "baseCommit": "01e5d615fa48da8fc73c470ea452f885f51af454",
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "beforeSha256Bytes": "ced93a0495eef7e0f94c718a24035b4b31121a4cba40d63ab21dc646110b060d",
+      "afterSha256Bytes": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6",
+      "afterSha256LF": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSha256Bytes": "10ad7db5f2bc54c27cb44b3e12e06c0aaee27e65481956f643d24fcb40366829",
+      "afterSha256Bytes": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903",
+      "afterSha256LF": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "4d3514320e05eebb89092d5f778f0516ab34448fb1cbf13aad2d6db7d0ae89aa",
+      "afterSha256Bytes": "29c36bca7b98bebedc56db733f87aff94ca6561afd96a25e8aea661b16fba7a7",
+      "afterSha256LF": "29c36bca7b98bebedc56db733f87aff94ca6561afd96a25e8aea661b16fba7a7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "beforeSha256Bytes": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+      "afterSha256Bytes": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a",
+      "afterSha256LF": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "beforeSha256Bytes": "ba2fd53f7774b113e892e58fe5cf1e69151b1894509d5cfafa37caffa92feb62",
+      "afterSha256Bytes": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e",
+      "afterSha256LF": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-message-pages.py",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "fab378ab275a262b95432464503d77e4fd25048b5235d93193e2f8cfacc289a2",
+      "afterSha256LF": "fab378ab275a262b95432464503d77e4fd25048b5235d93193e2f8cfacc289a2"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePageAdmission.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "5e866b2b92e9d3994d75df12b77f8f925c86b21480880f87de31b8cada0e136d",
+      "afterSha256LF": "5e866b2b92e9d3994d75df12b77f8f925c86b21480880f87de31b8cada0e136d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesRoot.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "f8b1bf872d43b3786548887a48e36f379af1e139999fd9b6d6415b44c0bbbd79",
+      "afterSha256LF": "f8b1bf872d43b3786548887a48e36f379af1e139999fd9b6d6415b44c0bbbd79"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesTest.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "2afa302a4d83668832b380a9de8c4da05c6df4463384a06335764ba07cf546e6",
+      "afterSha256LF": "2afa302a4d83668832b380a9de8c4da05c6df4463384a06335764ba07cf546e6"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "c79b1c291ac815262f1a3f743eeb32c85248ac4f5a0c2f0f650d7a114a26443b",
+      "afterSha256Bytes": "09334ae9b197ac5bdf1024d9efc23f4b4bbefa69c7ecfbe39f8bd6eedc2448a3",
+      "afterSha256LF": "09334ae9b197ac5bdf1024d9efc23f4b4bbefa69c7ecfbe39f8bd6eedc2448a3"
+    }
+  ],
+  "sourceCount": 1219,
+  "resourceCount": 244,
+  "exactExistingTargets": 5,
+  "newCanonicalFiles": 4,
+  "newOriginalSourceIdentities": 13,
+  "existingSourceFeatureUnions": 4,
+  "originalSevenScreenBodiesAndInboxChatVMsRetained": true,
+  "sameRootSessionRepositoryTransportAndStores": true,
+  "retainedPhysicalMessageEntries": true,
+  "sameHandleRestoreFreezeAndShutdownDrain": true,
+  "originalMutationsOneShotNo503Replay": true,
+  "existingSearchBangumiAndGalleryProviderPreserved": true,
+  "adaptiveJVMVersion": "1.3.0-rc01",
+  "originalAndroidAdaptiveVersion": "1.3.0",
+  "directSoleProducerFiles": 4,
+  "exactGeneratedFiles": 13,
+  "normalMainAndTestCompilePassed": true,
+  "integratedJUnitExecuted": true,
+  "integratedJUnitTests": 14,
+  "integratedJUnitFailures": 0,
+  "integratedJUnitErrors": 0,
+  "integratedJUnitSkipped": 0,
+  "actualProductOverrides": 0,
+  "freshNativeShareProducerPassed": true,
+  "preparedOverlayAndFailureHistoryPreserved": true,
+  "rootRuntimeAccepted": false,
+  "fullWideChatUIAccepted": false,
+  "nativeImageChooserAccepted": false,
+  "ordinaryBilibiliAccountAcceptance": false,
+  "desktopPackageUpdated": false,
+  "allFeaturesComplete": false,
+  "excludedCompiledProofFiles": []
+}

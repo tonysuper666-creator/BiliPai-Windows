@@ -1,0 +1,177 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualOriginalPaths": 17,
+  "newRegistryPaths": 13,
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatMessageMutationPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "d7069cd4569a1785dd3467134f461ebaf09859cec780d3f4e048047dcd6e17ee",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageGlassSurfacePolicy.kt",
+      "mode": "direct",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "bc18233068f78b8df6dfcf09f6a2242e97c3b46d7ac69e2f931a173667f4993a",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/MessagePreviewParser.kt",
+      "mode": "direct",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "097736e785b6f58e6567fb2df21f6abd020f32402c70021e9c872a8824b17357",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/SystemNoticeContentPolicy.kt",
+      "mode": "direct",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "0e4fdf748e8ac26c40091a7b218442ec3290faaebe09271d4db50c272886f7e0",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageCenterPolicy.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "b341edc17ccbe4d802341635279bc98e7cd308c067d96ab2f4e549b175703605",
+      "inCurrentRegistry": true,
+      "currentMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/InboxViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "243cb6a989da3764d272f905fb641873219f4b3473e563d42c7fe34fcd402c60",
+      "inCurrentRegistry": true,
+      "currentMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatViewModel.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "5c3d7e03da5453c67999f16f5a61301d4fb24c4bb0046f424e605bf2409f14e9",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/InboxScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "0296601eaf5ff4e494fc0b485d23f1ffd35b807a25c2dae5b64c5fa2f1bfb606",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "d9d9c15641cf7fc749962bd4a6c193289242d5b083aa256147807efd411a1c4b",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageCenterScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "9c61d0fc7832fbb7cc06d49cf82fef02b826dff75701de4939ca91a9c56b45d1",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageGlassSurface.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "68e65c3ce53e2f422fd7f4c4dce18867238b0b67f2a280a2761726b7c6063715",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/ReplyMeScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "89260d5bab9999d2b13c81f573c7f9a0bbc7c950dd6f5a8b1d00af79ba9df967",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/AtMeScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "668c8858a5a886273b55e220f0894f2fa5ff1c578212724d9030eee406027123",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/LikeMeScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "c0e935b791be2e004157f4dd8fdec889d97be958a56615098524c3cf932e3bc8",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/SystemNoticeScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "7897e9ee351e935a716ac1b8a7801607e7ced6c84505e9570ed89c3a13ceef1b",
+      "inCurrentRegistry": false,
+      "currentMode": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/MessageFeedCommon.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "4a2466d522be981e77a80326e3c61f6ebb2417a68078db2ea7c5d43933b7fd66",
+      "inCurrentRegistry": true,
+      "currentMode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt",
+      "mode": "policy-extract",
+      "features": [
+        "stable-original-message-pages-root-parity"
+      ],
+      "sha256": "405e952ef30ec06f14a155599a92641d533e73f28ea198f0aebfda90960a4bc8",
+      "inCurrentRegistry": true,
+      "currentMode": "policy-extract"
+    }
+  ]
+}

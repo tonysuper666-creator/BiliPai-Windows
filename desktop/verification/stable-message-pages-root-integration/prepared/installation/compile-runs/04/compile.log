@@ -1,0 +1,48 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\1\DesktopShell.kt:1024:66: warning: elvis operator (?:) always returns the left operand of non-nullable type 'Long'.
+                else if (!item.bvid.isNullOrBlank() || (item.aid ?: 0) > 0) openVideo(VideoCard(item.bvid.orEmpty().ifBlank { "av${item.aid}" },
+                                                                 ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\1\DesktopShell.kt:1207:47: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                title = if (audioTarget) audio!!.current!!.title else offlinePayload?.title ?: if (retainedOwner != null) retainedMedia.title else current.details?.title ?: state.sourceTitle,
+                                              ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\1\DesktopShell.kt:1208:48: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                artist = if (audioTarget) audio!!.current!!.owner else offlinePayload?.owner ?: if (retainedOwner != null) "" else current.details?.author.orEmpty(),
+                                               ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\1\DesktopShell.kt:1209:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                mediaId = if (audioTarget) audio!!.current!!.bvid else offlinePayload?.bvid ?: if (retainedOwner != null) state.sourceTitle else current.details?.bvid ?: state.sourceTitle,
+                                                ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\1\DesktopShell.kt:1211:53: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
+                                                    ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\1\DesktopShell.kt:1212:49: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'ListenAudioState'.
+                hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
+                                                ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\1\DesktopShell.kt:1369:34: warning: 'fun <T : Component> SwingPanel(background: Color = ..., factory: () -> T, modifier: Modifier = ..., update: (T) -> Unit = ...): Unit' is deprecated. Use overload without `background` parameter. Set the background manually in the factory method.
+        if (audioPlayer != null) SwingPanel(factory = { audioPlayer.surface }, background = Color.Transparent, modifier = Modifier.size(1.dp))
+                                 ^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\1\DesktopShell.kt:1487:119: warning: expression is unused.
+                    { expectedEpoch,expectedMid -> authenticationInvalidations.trySend(expectedEpoch to expectedMid); Unit },
+                                                                                                                      ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\1\DesktopShell.kt:1577:37: warning: condition is always 'false'.
+                                if (entry == null || queue == null || !entry.isOwned()) {
+                                    ^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\2\DesktopRepository.kt:880:32: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                quality = video?.id ?: quality, availableQualities = qualities,
+                               ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\2\DesktopRepository.kt:881:42: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
+                                         ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\22\SystemNoticeScreen.kt:194:37: warning: 'fun ClickableText(text: AnnotatedString, modifier: Modifier = ..., style: TextStyle = ..., softWrap: Boolean = ..., overflow: TextOverflow = ..., maxLines: Int = ..., onTextLayout: (TextLayoutResult) -> Unit = ..., onClick: (Int) -> Unit): Unit' is deprecated. Use Text or BasicText and pass an AnnotatedString that contains a LinkAnnotation. Check LinkAnnotation's documentation for more details and samples.
+                                    ClickableText(
+                                    ^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\4\DesktopOriginalMessagePageAdmission.kt:115:25: warning: this class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+        return object : MutableStateFlow<T> by state {
+                        ^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\6\DesktopOriginalMessageRepository.kt:64:17: warning: condition is always 'false'.
+            if (senderUid == null || senderUid <= 0) {
+                ^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\6\DesktopOriginalMessageRepository.kt:379:27: warning: condition is always 'true'.
+            val dnd = if (ownUid != null && ownUid > 0) {
+                          ^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-installation\compile-runs\04\inputs\8\ChatScreen.kt:763:36: warning: condition is always 'true'.
+        if (isLargeVideoMessage && parsedCard != null) {
+                                   ^^^^^^^^^^^^^^^^^^

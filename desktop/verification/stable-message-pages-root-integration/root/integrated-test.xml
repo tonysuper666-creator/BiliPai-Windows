@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-10-02T18:26:16.895Z" hostname="TONYSUPER666" time="1.206">
+  <properties/>
+  <testcase name="originalOptimisticTopFailureRefreshesAuthoritativeSessions()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.496"/>
+  <testcase name="chatOriginalOrderingEmotesControlAndActualACK()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.042"/>
+  <testcase name="latePreviousCategoryCannotOverwriteSelectedCategory()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.124"/>
+  <testcase name="originalFourNotificationVMsAndSuccessfulSystemReadCursor()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.047"/>
+  <testcase name="sameMIDNewEpochRejectsOldSenderAndStaleUI()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.007"/>
+  <testcase name="http503RetryAfter0MutationDoesNotReplay()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.013"/>
+  <testcase name="callerCancellationStopsRequestAndPostIOPublication()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.005"/>
+  <testcase name="coveredEntryReadsRetainedButCoveredMutationCannotSubmit()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.153"/>
+  <testcase name="sendPreservesTextCRTABAndWithdrawalPayloadModel()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.012"/>
+  <testcase name="originalFeedDeleteAndNoticeExactParameters()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.011"/>
+  <testcase name="originalInboxCategoriesUnreadAndCursorDuplicateRetry()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.039"/>
+  <testcase name="imageUploadValidatesOriginalCapAndSendsRealUploadedMetadata()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.067"/>
+  <testcase name="replyPaginationUsesExactIdTimeAndRefreshCancelsStaleMore()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.152"/>
+  <testcase name="originalGroupDNDTopPushInterceptAndBatchParameters()" classname="com.bilipai.desktop.ui.DesktopOriginalMessagePagesTest" time="0.02"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

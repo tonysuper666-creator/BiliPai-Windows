@@ -1,0 +1,110 @@
+{
+  "passed": true,
+  "directSoleProducerFiles": 4,
+  "exactGeneratedFiles": 13,
+  "verified": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\data\\repository\\DesktopOriginalMessageRepository.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "1d97e25c32b8c6c7add043f3a29370f6ff70598f17b9aa27bf62c874ababf1e8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\message\\ChatMessageMutationPolicy.kt",
+      "owner": "prepareUpstreamSources",
+      "normalization": "lf",
+      "sha256": "d7069cd4569a1785dd3467134f461ebaf09859cec780d3f4e048047dcd6e17ee"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\ChatScreen.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "838d727d2bb93115578aa55929cb967c2bde2666140645522527e04696051270"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\ChatViewModel.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "eb84d9b565b0cf675ad82680ad5d4a0d672247f5fed53ef0a44928740065da27"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\InboxScreen.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "c2cc9e7e39e159fc065a251c1800e2496cd6eb09a6290575e3b89b0875dcec70"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\InboxViewModel.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "bdb93e5fb68c2ccac8a63ff5f14c3f06810dd3af62fb085196fa906058e5aa99"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\MessageCenterPolicy.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "e050e17db72700dc86908e0ad2475e1711dbb88236e91bddf54380272166bf3b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\MessageCenterScreen.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "4dade638fe07ae1ac64ded8e479580512677a213d8be685acb930a328d939f2a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\MessageGlassSurface.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "4129c1fea0955ec367dca6c9079e99292bc8fdf05a80ce28d607e246b32b4083"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\message\\MessageGlassSurfacePolicy.kt",
+      "owner": "prepareUpstreamSources",
+      "normalization": "lf",
+      "sha256": "bc18233068f78b8df6dfcf09f6a2242e97c3b46d7ac69e2f931a173667f4993a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\message\\MessagePreviewParser.kt",
+      "owner": "prepareUpstreamSources",
+      "normalization": "lf",
+      "sha256": "097736e785b6f58e6567fb2df21f6abd020f32402c70021e9c872a8824b17357"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\AtMeScreen.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "b1b3715dd8cf2f7368687c5b8f79b08c8b3846e7ff9a75f6b1d1915634f13520"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\DesktopOriginalMessageFeedCommon.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "cca23f00fd5eadde1f090c28a0b65dbaf875e1f9ae71bc5614034f116b94783d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\LikeMeScreen.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "23dd6bb8f51327ed44b2257f34d04ea5fa9540a514b59a1ee50554cb84f272bf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\ReplyMeScreen.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "e0478d55ffe263fb3cb7841994840c6025d50dc47b9e99d0a8374149105635ca"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\upstream\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\message\\feed\\SystemNoticeContentPolicy.kt",
+      "owner": "prepareUpstreamSources",
+      "normalization": "lf",
+      "sha256": "0e4fdf748e8ac26c40091a7b218442ec3290faaebe09271d4db50c272886f7e0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\original-message-pages\\com\\android\\purebilibili\\feature\\message\\feed\\SystemNoticeScreen.kt",
+      "owner": "extractOriginalMessagePages",
+      "normalization": "raw",
+      "sha256": "eef56de6f89061b0c302d4787c2bbdc9d9d6ac6859e6389f45de9159854c1d1e"
+    }
+  ],
+  "rootRuntimeAccepted": false
+}

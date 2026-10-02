@@ -1,0 +1,3 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\ChatViewModel.kt:80:91: error: no parameter with name 'isRefreshing' found.
+            _uiState.value = _uiState.value.copy(isLoading = true, isLoadingMore = false, isRefreshing = false, error = null)
+                                                                                          ^^^^^^^^^^^^

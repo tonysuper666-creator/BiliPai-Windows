@@ -1,0 +1,21 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\data\repository\DesktopOriginalMessageRepository.kt:68:17: warning: condition is always 'false'.
+            if (senderUid == null || senderUid <= 0) {
+                ^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\data\repository\DesktopOriginalMessageRepository.kt:383:27: warning: condition is always 'true'.
+            val dnd = if (ownUid != null && ownUid > 0) {
+                          ^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\ChatScreen.kt:763:36: warning: condition is always 'true'.
+        if (isLargeVideoMessage && parsedCard != null) {
+                                   ^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\generated\com\android\purebilibili\feature\message\feed\SystemNoticeScreen.kt:194:37: warning: 'fun ClickableText(text: AnnotatedString, modifier: Modifier = ..., style: TextStyle = ..., softWrap: Boolean = ..., overflow: TextOverflow = ..., maxLines: Int = ..., onTextLayout: (TextLayoutResult) -> Unit = ..., onClick: (Int) -> Unit): Unit' is deprecated. Use Text or BasicText and pass an AnnotatedString that contains a LinkAnnotation. Check LinkAnnotation's documentation for more details and samples.
+                                    ClickableText(
+                                    ^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:880:32: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                quality = video?.id ?: quality, availableQualities = qualities,
+                               ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:881:42: warning: unnecessary safe call on a non-null receiver of type 'DashVideo'.
+                videoAlternatives = video?.backupUrl.orEmpty().filter(String::isNotBlank).map(::normalizeUrl),
+                                         ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-message-pages-root-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalMessagePageAdmission.kt:99:25: warning: this class or interface requires opt-in to be implemented: Inheriting from this kotlinx.coroutines API is unstable. Either new methods may be added in the future, which would break the inheritance, or correctly inheriting from it requires fulfilling contracts that may change in the future.
+        return object : MutableStateFlow<T> by state {
+                        ^^^^^^^^^^^^^^^^^^^

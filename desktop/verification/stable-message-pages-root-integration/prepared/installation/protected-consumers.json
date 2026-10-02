@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "candidateBase": "01e5d615fa48da8fc73c470ea452f885f51af454",
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+  "normalized": "LF",
+  "wholeVideoWindowContentSpanSha256": "b28c284c1abdd6c871a7a77036a14446b4a7323ad75b2ceb9dc57352760453c6",
+  "bangumiOriginalRootLeafSpanSha256": "9b4d0a66e75869f2d7f4a71bc056083027708488835e9fd7ec35443c7c1ae851",
+  "galleryProviderBeforeCommentWrapper": true,
+  "productionWrites": 0,
+  "currentRootWindowAcceptance": false
+}

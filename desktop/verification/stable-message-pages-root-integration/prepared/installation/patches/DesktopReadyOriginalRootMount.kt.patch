@@ -1,0 +1,62 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
+@@ -108,12 +108,14 @@
+     fun refreshCurrentRootChrome() { if (isActive()) chromeRefresh.get()?.invoke() }
+     val route = AtomicReference<DesktopOriginalRootRouteAssembly?>()
+     val personalLists = AtomicReference<DesktopPersonalListsRoot?>()
++    val messagePages = AtomicReference<DesktopOriginalMessagePagesRoot?>()
+     var imageTrim: DesktopApplicationImageCacheTrim? = null
+     fun isActive() = !closed.get() && retainer.isActive() && navigation.owns()
+     suspend fun closeAndJoin() = withContext(NonCancellable) {
+         if (!closed.compareAndSet(false, true)) return@withContext
+         chromeRefresh.set(null)
+         route.getAndSet(null)?.close()
++        messagePages.getAndSet(null)?.closeAndJoin()
+         personalLists.getAndSet(null)?.closeAndJoin()
+         retainer.closeAndJoin()
+         imageTrim?.close(); imageTrim = null
+@@ -128,7 +130,7 @@
+     services: DesktopReadyOriginalRootServices,
+     handleReference: AtomicReference<DesktopReadyOriginalRootHandle?>,
+     modifier: Modifier,
+-    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot, DesktopHomeSettingsPort) -> Unit,
++    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot, DesktopHomeSettingsPort, DesktopOriginalMessagePagesRoot) -> Unit,
+ ) {
+     val scope = rememberCoroutineScope()
+     val applicationImages = LocalDesktopApplicationImageLoader.current
+@@ -167,7 +169,7 @@
+     DisposableEffect(handle) { onDispose {
+         // cancel admission synchronously, then drain in a NON-child shutdown task.
+         handleReference.compareAndSet(handle, null)
+-        handle.route.getAndSet(null)?.close(); handle.retainer.retire()
++        handle.route.getAndSet(null)?.close(); handle.messagePages.get()?.close(); handle.retainer.retire()
+         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch { handle.closeAndJoin() }
+     } }
+     val physicalStack = remember(navigation) { mutableStateListOf<BiliPaiNavKey>(BiliPaiNavKey.MainHost) }
+@@ -233,6 +235,7 @@
+         val factory = factoryBinding ?: return@LaunchedEffect
+         try {
+             handle.route.getAndSet(null)?.close()
++            handle.messagePages.getAndSet(null)?.closeAndJoin()
+             physicalStack.clear(); physicalStack.add(BiliPaiNavKey.MainHost)
+             handle.retainer.install(epoch, account?.mid, factory.factory)
+             installFailure = null
+@@ -278,6 +281,9 @@
+             { prefs.navigation.value.orderedVisibleTabIds.map { it.lowercase() }.toSet() }) }
+         SideEffect { handle.route.set(routes) }
+         DisposableEffect(routes) { onDispose { handle.route.compareAndSet(routes, null); routes.close() } }
++        val messagePages = rememberDesktopOriginalMessagePagesRoot(services.repository, services.community,
++            routes, desktopDetailRenderEffectsSupported())
++        SideEffect { if (handle.isActive() && messagePages.isOwned()) handle.messagePages.set(messagePages) else messagePages.close() }
+         val personalLists = remember(root, services.library) { DesktopPersonalListsRoot(root.entry.gate,
+             services.repository, services.runtime.store, services.library,
+             services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze) }
+@@ -422,7 +428,7 @@
+                         clock.settleState == VideoCardTransitionSettleState.InteractiveSeek,
+                         clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress)) },
+                 Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable,
+-                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings) })
++                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages) })
+         }
+         }
+         }

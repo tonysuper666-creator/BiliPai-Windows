@@ -1,0 +1,557 @@
+{
+  "schemaVersion": 1,
+  "candidateBase": "01e5d615fa48da8fc73c470ea452f885f51af454",
+  "rootContractSha256": "ea34b9c47aaab1660e815e638589673d2d389fac914c310f4e9b5990954907a3",
+  "frozenPacketContractSha256": "32bf55205f093564d37444ead049f130f2cc4f3395a37b78fd2bf73d1b17ee9b",
+  "frozenPacketHandoffSha256": "27a644ddf45fea069b47b601d0728234118561110290aac4ddec5f3800a90ffd",
+  "exactHunkTargets": 5,
+  "copyNewTargets": 4,
+  "registryAppends": 13,
+  "registryFeatureUnions": 4,
+  "existingFilesInstallMode": "exact hunks only; full prospective files are compile overlays",
+  "inventoryTraversal": "Win32 extended absolute paths",
+  "exclusions": [
+    "classes/** (compiler intermediates; emitted JARs and immutable inputs remain pinned)",
+    "__pycache__/**",
+    "frozen-handoff.json (self)"
+  ],
+  "files": [
+    {
+      "path": "MessageEntryPolicyProof.kt",
+      "lengthBytes": 2867,
+      "sha256Bytes": "b7c3a95c12b98b3ef79d59e9b7cbb69743c1fb122373fbff4c2fe4d93f990608"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "lengthBytes": 11316,
+      "sha256Bytes": "f3f37ab3de06a6e6a8a295cdbd83807aae07d1046c0bdbd60963eb6fe796e905"
+    },
+    {
+      "path": "baseline-install-proof.json",
+      "lengthBytes": 2700,
+      "sha256Bytes": "882c754877240beb156fd11fc0ffe9ba368a90e93f03cb05ac0b6595863b0764"
+    },
+    {
+      "path": "baseline/desktop/build.gradle.kts",
+      "lengthBytes": 147686,
+      "sha256Bytes": "b57bab9c9748bf1050725ad397421b13096a7973bfb0d3c3983ca824b6dda901"
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "lengthBytes": 155260,
+      "sha256Bytes": "10ad7db5f2bc54c27cb44b3e12e06c0aaee27e65481956f643d24fcb40366829"
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "lengthBytes": 40420,
+      "sha256Bytes": "a80bd55e796a1bc276bce2ea6bf0476985fcba3d2ab0ca35ceafb555f40dcac5"
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "lengthBytes": 62334,
+      "sha256Bytes": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234"
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "lengthBytes": 29486,
+      "sha256Bytes": "ced93a0495eef7e0f94c718a24035b4b31121a4cba40d63ab21dc646110b060d"
+    },
+    {
+      "path": "baseline/desktop/upstream-sources.json",
+      "lengthBytes": 433812,
+      "sha256Bytes": "2fa98fff02c18278eca522f25ddf59a4e4ac68fe2a050b5c0b855e38beacb69f"
+    },
+    {
+      "path": "compile-runs/01/compile.log",
+      "lengthBytes": 5281,
+      "sha256Bytes": "049335124033fe9aacc97d0f4123c6744f3e649889f18b1436e57b2f102df5b5"
+    },
+    {
+      "path": "compile-runs/01/compiler.args",
+      "lengthBytes": 27061,
+      "sha256Bytes": "7df1a1c8f8780196abc7728d1e38b3ba76b4075684f3b62ff3504d753fbe853a"
+    },
+    {
+      "path": "compile-runs/01/prospective-root.jar",
+      "lengthBytes": 708927,
+      "sha256Bytes": "e837013ae4230db09e962a20514cfc73048da2201f534fe6c1a54f70bd8c162d"
+    },
+    {
+      "path": "compile-runs/01/result.json",
+      "lengthBytes": 1309,
+      "sha256Bytes": "b1f05b4db7ddd10b8c2473006d445f8b87a2b786ef7ac3990dedbaac7eb9b804"
+    },
+    {
+      "path": "compile-runs/02/compile.log",
+      "lengthBytes": 5281,
+      "sha256Bytes": "049335124033fe9aacc97d0f4123c6744f3e649889f18b1436e57b2f102df5b5"
+    },
+    {
+      "path": "compile-runs/02/compiler.args",
+      "lengthBytes": 27061,
+      "sha256Bytes": "c142bbb2fd079594b0af9c5fc86b9ae8261161834698ad4da7d1a928d18762e0"
+    },
+    {
+      "path": "compile-runs/02/prospective-root.jar",
+      "lengthBytes": 708966,
+      "sha256Bytes": "2f0abc7c30f04ff9319273a74311c29f6b9ee55900f14e68b658e11d31f25525"
+    },
+    {
+      "path": "compile-runs/02/result.json",
+      "lengthBytes": 1309,
+      "sha256Bytes": "87d7799087cc229aae78f630b38b45cff574fa863cc97acd5e0e0c1b4f9e2a46"
+    },
+    {
+      "path": "compile-runs/03/compile.log",
+      "lengthBytes": 8278,
+      "sha256Bytes": "5629c1fe613d4602f258baebd6aad603874c3e8564a99c7c69520971ef5502b7"
+    },
+    {
+      "path": "compile-runs/03/compiler.args",
+      "lengthBytes": 31024,
+      "sha256Bytes": "ac84d1ef4c1481716df6b3590c9c6e1b55433a3efbc92e7513a4bd45ffc02d82"
+    },
+    {
+      "path": "compile-runs/03/inputs/0/DesktopReadyOriginalRootMount.kt",
+      "lengthBytes": 30064,
+      "sha256Bytes": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6"
+    },
+    {
+      "path": "compile-runs/03/inputs/1/DesktopShell.kt",
+      "lengthBytes": 154755,
+      "sha256Bytes": "7253e0e3fa0dc2388810ba354a9b0933a03872a3d76c1bad299ff1d4e0436233"
+    },
+    {
+      "path": "compile-runs/03/inputs/10/InboxScreen.kt",
+      "lengthBytes": 30554,
+      "sha256Bytes": "c2cc9e7e39e159fc065a251c1800e2496cd6eb09a6290575e3b89b0875dcec70"
+    },
+    {
+      "path": "compile-runs/03/inputs/11/InboxViewModel.kt",
+      "lengthBytes": 15736,
+      "sha256Bytes": "bdb93e5fb68c2ccac8a63ff5f14c3f06810dd3af62fb085196fa906058e5aa99"
+    },
+    {
+      "path": "compile-runs/03/inputs/12/MessageCenterPolicy.kt",
+      "lengthBytes": 2692,
+      "sha256Bytes": "e050e17db72700dc86908e0ad2475e1711dbb88236e91bddf54380272166bf3b"
+    },
+    {
+      "path": "compile-runs/03/inputs/13/MessageCenterScreen.kt",
+      "lengthBytes": 4324,
+      "sha256Bytes": "4dade638fe07ae1ac64ded8e479580512677a213d8be685acb930a328d939f2a"
+    },
+    {
+      "path": "compile-runs/03/inputs/14/MessageGlassSurface.kt",
+      "lengthBytes": 4546,
+      "sha256Bytes": "4129c1fea0955ec367dca6c9079e99292bc8fdf05a80ce28d607e246b32b4083"
+    },
+    {
+      "path": "compile-runs/03/inputs/15/MessageGlassSurfacePolicy.kt",
+      "lengthBytes": 2100,
+      "sha256Bytes": "823b5bd0a7922caa21dcfdb26f1e35e8700729e77db72376c4e536e6caec4dec"
+    },
+    {
+      "path": "compile-runs/03/inputs/16/MessagePreviewParser.kt",
+      "lengthBytes": 6541,
+      "sha256Bytes": "b5c37de4251a5f51689d6a52157ea91615fa2653d2113da3c5989b703a3ed66a"
+    },
+    {
+      "path": "compile-runs/03/inputs/17/AtMeScreen.kt",
+      "lengthBytes": 12168,
+      "sha256Bytes": "b1b3715dd8cf2f7368687c5b8f79b08c8b3846e7ff9a75f6b1d1915634f13520"
+    },
+    {
+      "path": "compile-runs/03/inputs/18/DesktopOriginalMessageFeedCommon.kt",
+      "lengthBytes": 9390,
+      "sha256Bytes": "cca23f00fd5eadde1f090c28a0b65dbaf875e1f9ae71bc5614034f116b94783d"
+    },
+    {
+      "path": "compile-runs/03/inputs/19/LikeMeScreen.kt",
+      "lengthBytes": 17117,
+      "sha256Bytes": "23dd6bb8f51327ed44b2257f34d04ea5fa9540a514b59a1ee50554cb84f272bf"
+    },
+    {
+      "path": "compile-runs/03/inputs/2/DesktopRepository.kt",
+      "lengthBytes": 62371,
+      "sha256Bytes": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a"
+    },
+    {
+      "path": "compile-runs/03/inputs/20/ReplyMeScreen.kt",
+      "lengthBytes": 13261,
+      "sha256Bytes": "e0478d55ffe263fb3cb7841994840c6025d50dc47b9e99d0a8374149105635ca"
+    },
+    {
+      "path": "compile-runs/03/inputs/21/SystemNoticeContentPolicy.kt",
+      "lengthBytes": 3057,
+      "sha256Bytes": "05eb7c25594605cd3eec499f1f32b65a8e826099975b59d439d68cec5fe53a17"
+    },
+    {
+      "path": "compile-runs/03/inputs/22/SystemNoticeScreen.kt",
+      "lengthBytes": 13296,
+      "sha256Bytes": "eef56de6f89061b0c302d4787c2bbdc9d9d6ac6859e6389f45de9159854c1d1e"
+    },
+    {
+      "path": "compile-runs/03/inputs/3/DesktopCommunityRepository.kt",
+      "lengthBytes": 41945,
+      "sha256Bytes": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e"
+    },
+    {
+      "path": "compile-runs/03/inputs/4/DesktopOriginalMessagePageAdmission.kt",
+      "lengthBytes": 7905,
+      "sha256Bytes": "5e866b2b92e9d3994d75df12b77f8f925c86b21480880f87de31b8cada0e136d"
+    },
+    {
+      "path": "compile-runs/03/inputs/5/DesktopOriginalMessagePagesRoot.kt",
+      "lengthBytes": 11679,
+      "sha256Bytes": "f8b1bf872d43b3786548887a48e36f379af1e139999fd9b6d6415b44c0bbbd79"
+    },
+    {
+      "path": "compile-runs/03/inputs/6/DesktopOriginalMessageRepository.kt",
+      "lengthBytes": 27689,
+      "sha256Bytes": "1d97e25c32b8c6c7add043f3a29370f6ff70598f17b9aa27bf62c874ababf1e8"
+    },
+    {
+      "path": "compile-runs/03/inputs/7/ChatMessageMutationPolicy.kt",
+      "lengthBytes": 507,
+      "sha256Bytes": "ec31b361095646ad7595ffca1ace43961389c18e813865b4a70d6d1e44dcc5a2"
+    },
+    {
+      "path": "compile-runs/03/inputs/8/ChatScreen.kt",
+      "lengthBytes": 58525,
+      "sha256Bytes": "838d727d2bb93115578aa55929cb967c2bde2666140645522527e04696051270"
+    },
+    {
+      "path": "compile-runs/03/inputs/9/ChatViewModel.kt",
+      "lengthBytes": 15608,
+      "sha256Bytes": "eb84d9b565b0cf675ad82680ad5d4a0d672247f5fed53ef0a44928740065da27"
+    },
+    {
+      "path": "compile-runs/03/prospective-root.jar",
+      "lengthBytes": 1761117,
+      "sha256Bytes": "ade8878df40f558f47cc495f4009023ffd4bd228a76710bf942425d469993182"
+    },
+    {
+      "path": "compile-runs/03/result.json",
+      "lengthBytes": 16832,
+      "sha256Bytes": "3f8ebeb4e061be9ed8ce57dd703eeecd00abe921a713599c9001521cbeda3fae"
+    },
+    {
+      "path": "compile-runs/04/compile.log",
+      "lengthBytes": 8278,
+      "sha256Bytes": "f73be7b68a9eb7ea6e6a688d8c75dad6f61ba8731370d2f2af5853aa1664f9b8"
+    },
+    {
+      "path": "compile-runs/04/compiler.args",
+      "lengthBytes": 31024,
+      "sha256Bytes": "afdafc85fa361098213d03014c93858d741eefff081e59fbaa9305c4186ca074"
+    },
+    {
+      "path": "compile-runs/04/inputs/0/DesktopReadyOriginalRootMount.kt",
+      "lengthBytes": 30064,
+      "sha256Bytes": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6"
+    },
+    {
+      "path": "compile-runs/04/inputs/1/DesktopShell.kt",
+      "lengthBytes": 155607,
+      "sha256Bytes": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903"
+    },
+    {
+      "path": "compile-runs/04/inputs/10/InboxScreen.kt",
+      "lengthBytes": 30554,
+      "sha256Bytes": "c2cc9e7e39e159fc065a251c1800e2496cd6eb09a6290575e3b89b0875dcec70"
+    },
+    {
+      "path": "compile-runs/04/inputs/11/InboxViewModel.kt",
+      "lengthBytes": 15736,
+      "sha256Bytes": "bdb93e5fb68c2ccac8a63ff5f14c3f06810dd3af62fb085196fa906058e5aa99"
+    },
+    {
+      "path": "compile-runs/04/inputs/12/MessageCenterPolicy.kt",
+      "lengthBytes": 2692,
+      "sha256Bytes": "e050e17db72700dc86908e0ad2475e1711dbb88236e91bddf54380272166bf3b"
+    },
+    {
+      "path": "compile-runs/04/inputs/13/MessageCenterScreen.kt",
+      "lengthBytes": 4324,
+      "sha256Bytes": "4dade638fe07ae1ac64ded8e479580512677a213d8be685acb930a328d939f2a"
+    },
+    {
+      "path": "compile-runs/04/inputs/14/MessageGlassSurface.kt",
+      "lengthBytes": 4546,
+      "sha256Bytes": "4129c1fea0955ec367dca6c9079e99292bc8fdf05a80ce28d607e246b32b4083"
+    },
+    {
+      "path": "compile-runs/04/inputs/15/MessageGlassSurfacePolicy.kt",
+      "lengthBytes": 2100,
+      "sha256Bytes": "823b5bd0a7922caa21dcfdb26f1e35e8700729e77db72376c4e536e6caec4dec"
+    },
+    {
+      "path": "compile-runs/04/inputs/16/MessagePreviewParser.kt",
+      "lengthBytes": 6541,
+      "sha256Bytes": "b5c37de4251a5f51689d6a52157ea91615fa2653d2113da3c5989b703a3ed66a"
+    },
+    {
+      "path": "compile-runs/04/inputs/17/AtMeScreen.kt",
+      "lengthBytes": 12168,
+      "sha256Bytes": "b1b3715dd8cf2f7368687c5b8f79b08c8b3846e7ff9a75f6b1d1915634f13520"
+    },
+    {
+      "path": "compile-runs/04/inputs/18/DesktopOriginalMessageFeedCommon.kt",
+      "lengthBytes": 9390,
+      "sha256Bytes": "cca23f00fd5eadde1f090c28a0b65dbaf875e1f9ae71bc5614034f116b94783d"
+    },
+    {
+      "path": "compile-runs/04/inputs/19/LikeMeScreen.kt",
+      "lengthBytes": 17117,
+      "sha256Bytes": "23dd6bb8f51327ed44b2257f34d04ea5fa9540a514b59a1ee50554cb84f272bf"
+    },
+    {
+      "path": "compile-runs/04/inputs/2/DesktopRepository.kt",
+      "lengthBytes": 62371,
+      "sha256Bytes": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a"
+    },
+    {
+      "path": "compile-runs/04/inputs/20/ReplyMeScreen.kt",
+      "lengthBytes": 13261,
+      "sha256Bytes": "e0478d55ffe263fb3cb7841994840c6025d50dc47b9e99d0a8374149105635ca"
+    },
+    {
+      "path": "compile-runs/04/inputs/21/SystemNoticeContentPolicy.kt",
+      "lengthBytes": 3057,
+      "sha256Bytes": "05eb7c25594605cd3eec499f1f32b65a8e826099975b59d439d68cec5fe53a17"
+    },
+    {
+      "path": "compile-runs/04/inputs/22/SystemNoticeScreen.kt",
+      "lengthBytes": 13296,
+      "sha256Bytes": "eef56de6f89061b0c302d4787c2bbdc9d9d6ac6859e6389f45de9159854c1d1e"
+    },
+    {
+      "path": "compile-runs/04/inputs/3/DesktopCommunityRepository.kt",
+      "lengthBytes": 41945,
+      "sha256Bytes": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e"
+    },
+    {
+      "path": "compile-runs/04/inputs/4/DesktopOriginalMessagePageAdmission.kt",
+      "lengthBytes": 7905,
+      "sha256Bytes": "5e866b2b92e9d3994d75df12b77f8f925c86b21480880f87de31b8cada0e136d"
+    },
+    {
+      "path": "compile-runs/04/inputs/5/DesktopOriginalMessagePagesRoot.kt",
+      "lengthBytes": 11679,
+      "sha256Bytes": "f8b1bf872d43b3786548887a48e36f379af1e139999fd9b6d6415b44c0bbbd79"
+    },
+    {
+      "path": "compile-runs/04/inputs/6/DesktopOriginalMessageRepository.kt",
+      "lengthBytes": 27689,
+      "sha256Bytes": "1d97e25c32b8c6c7add043f3a29370f6ff70598f17b9aa27bf62c874ababf1e8"
+    },
+    {
+      "path": "compile-runs/04/inputs/7/ChatMessageMutationPolicy.kt",
+      "lengthBytes": 507,
+      "sha256Bytes": "ec31b361095646ad7595ffca1ace43961389c18e813865b4a70d6d1e44dcc5a2"
+    },
+    {
+      "path": "compile-runs/04/inputs/8/ChatScreen.kt",
+      "lengthBytes": 58525,
+      "sha256Bytes": "838d727d2bb93115578aa55929cb967c2bde2666140645522527e04696051270"
+    },
+    {
+      "path": "compile-runs/04/inputs/9/ChatViewModel.kt",
+      "lengthBytes": 15608,
+      "sha256Bytes": "eb84d9b565b0cf675ad82680ad5d4a0d672247f5fed53ef0a44928740065da27"
+    },
+    {
+      "path": "compile-runs/04/prospective-root.jar",
+      "lengthBytes": 1762329,
+      "sha256Bytes": "d0e2342be5b39d5c0c8d42de360ab29ec2e9dcdd79d4031f97732c284788a44b"
+    },
+    {
+      "path": "compile-runs/04/result.json",
+      "lengthBytes": 16832,
+      "sha256Bytes": "120d33deba974acec9364c9867d186f446e71a450424f060e2cfce6eebf279ad"
+    },
+    {
+      "path": "compile.py",
+      "lengthBytes": 4746,
+      "sha256Bytes": "7b14044f7a1557e693d6d8882af8c9904afb0c2c736778dc266b4d138e852d90"
+    },
+    {
+      "path": "exact_patch.py",
+      "lengthBytes": 1082,
+      "sha256Bytes": "47636d424c3a22722c5c4c03747b9b7a7cc1c253aaa9c21df420d6397645ce4e"
+    },
+    {
+      "path": "freeze.py",
+      "lengthBytes": 4785,
+      "sha256Bytes": "9faa3292843a31d7c966bea36eddd25e85f1b61200a348a9be2aecc51e1097b0"
+    },
+    {
+      "path": "install.py",
+      "lengthBytes": 6130,
+      "sha256Bytes": "bddab0c3082b4cc8e3ac1914ac3fa2bfde362895c445add05031f423676e3d4b"
+    },
+    {
+      "path": "patches/DesktopCommunityRepository.kt.patch",
+      "lengthBytes": 2098,
+      "sha256Bytes": "d5f8f22ad5604fe488594024de9e0baa51d511dfa8ba45243196bb6c851f09f0"
+    },
+    {
+      "path": "patches/DesktopReadyOriginalRootMount.kt.patch",
+      "lengthBytes": 4219,
+      "sha256Bytes": "2e35d4ff69d85132866f7e3060550245096e606d95b10a4155eabdd8ad27cacf"
+    },
+    {
+      "path": "patches/DesktopRepository.kt.patch",
+      "lengthBytes": 1159,
+      "sha256Bytes": "53c0086530e45ce0715e4184984501e50115997e9553144e16ae6eb8d8ab145e"
+    },
+    {
+      "path": "patches/DesktopShell.kt.patch",
+      "lengthBytes": 3493,
+      "sha256Bytes": "0e301337881badcd0e74851d4f5969e7d29b4aa632609e6e402f944a4ca50720"
+    },
+    {
+      "path": "patches/build.gradle.kts.patch",
+      "lengthBytes": 2344,
+      "sha256Bytes": "79fe49c0913fc31a6737977b163a474cfe9738fc96834e74c1479a16978183f5"
+    },
+    {
+      "path": "policy-proof-02/compile.log",
+      "lengthBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "policy-proof-02/compiler.args",
+      "lengthBytes": 25546,
+      "sha256Bytes": "30953f8785f10cf00990200ebf243d6c4f92efe01c2672d252ec05ff7e3f4d25"
+    },
+    {
+      "path": "policy-proof-02/identity.json",
+      "lengthBytes": 241,
+      "sha256Bytes": "f442b228b52a67ef56becd4b33515dd0deeb72a42f57b3d11f8727ef6f2820c8"
+    },
+    {
+      "path": "policy-proof-02/report.json",
+      "lengthBytes": 1911,
+      "sha256Bytes": "f893c3464cebe6e2f51b4a6d85510c46d25536b8bf498fda35bfda65b6bab963"
+    },
+    {
+      "path": "policy-proof-02/runtime.log",
+      "lengthBytes": 104,
+      "sha256Bytes": "71d24d20ee53cc5e2423bed0b08876c470c75c0dc0a7ffdae6dab65da30abd6e"
+    },
+    {
+      "path": "policy-proof/compile.log",
+      "lengthBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "policy-proof/compiler.args",
+      "lengthBytes": 25543,
+      "sha256Bytes": "132884b933a8b8c5efec42c6efcf39888849148e3171d1ef91348dace5cdf016"
+    },
+    {
+      "path": "policy-proof/identity.json",
+      "lengthBytes": 242,
+      "sha256Bytes": "68198b0998e3d46618b518b02318ace590de24ae88c5de779ac8ef179ec2407d"
+    },
+    {
+      "path": "policy-proof/runtime.log",
+      "lengthBytes": 641,
+      "sha256Bytes": "3e5ccee3a315439a7445c746183d324b72dc6f18290ecd439b36560b607f9302"
+    },
+    {
+      "path": "prepare.py",
+      "lengthBytes": 12343,
+      "sha256Bytes": "8bf6aecd93144d3f170f13b58bea486765fbe5afc651a7687ffc525815b26404"
+    },
+    {
+      "path": "prospective/desktop/build.gradle.kts",
+      "lengthBytes": 149258,
+      "sha256Bytes": "29c36bca7b98bebedc56db733f87aff94ca6561afd96a25e8aea661b16fba7a7"
+    },
+    {
+      "path": "prospective/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "lengthBytes": 155607,
+      "sha256Bytes": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903"
+    },
+    {
+      "path": "prospective/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "lengthBytes": 41945,
+      "sha256Bytes": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e"
+    },
+    {
+      "path": "prospective/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "lengthBytes": 62371,
+      "sha256Bytes": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a"
+    },
+    {
+      "path": "prospective/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "lengthBytes": 30064,
+      "sha256Bytes": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6"
+    },
+    {
+      "path": "prospective/desktop/upstream-sources.json",
+      "lengthBytes": 437994,
+      "sha256Bytes": "09334ae9b197ac5bdf1024d9efc23f4b4bbefa69c7ecfbe39f8bd6eedc2448a3"
+    },
+    {
+      "path": "protected-consumers.json",
+      "lengthBytes": 516,
+      "sha256Bytes": "dada581856e91e019de663196f7d933e6642509265ed52c9303983168d0e447a"
+    },
+    {
+      "path": "registry-delta.json",
+      "lengthBytes": 4701,
+      "sha256Bytes": "6a6e5e766a06456b312fb9a8fff023c40ab182ad20348ee62fe81be06ff0e126"
+    },
+    {
+      "path": "root-install-contract.json",
+      "lengthBytes": 15968,
+      "sha256Bytes": "ea34b9c47aaab1660e815e638589673d2d389fac914c310f4e9b5990954907a3"
+    },
+    {
+      "path": "run-policy-proof.py",
+      "lengthBytes": 2457,
+      "sha256Bytes": "ce6ca40be8964a2e5974b220a846dc5ebf1f0ff751ed8e6fa16b653e018ef647"
+    },
+    {
+      "path": "verify-generated.py",
+      "lengthBytes": 1951,
+      "sha256Bytes": "3bd6b9c58a552a2ba6be8ceb2ecb0d13a0b12149584819185d5578f05b7b4738"
+    },
+    {
+      "path": "verify-protected-consumers.py",
+      "lengthBytes": 2255,
+      "sha256Bytes": "0de278d4a2026ccb86aac775e70c18fd537c8033fcb99bca88b2ac404f6dea46"
+    }
+  ],
+  "productionWrites": 0,
+  "sharedGradleRuns": 0,
+  "rootRuntimeAccepted": false,
+  "currentProspectiveCompile": {
+    "snapshot": 87,
+    "inputs": 23,
+    "result": "compile-runs/04/result.json",
+    "passed": true
+  },
+  "protectedConsumers": "protected-consumers.json",
+  "discoveredJUnitMethodsExpected": [
+    "originalInboxCategoriesUnreadAndCursorDuplicateRetry",
+    "latePreviousCategoryCannotOverwriteSelectedCategory",
+    "replyPaginationUsesExactIdTimeAndRefreshCancelsStaleMore",
+    "originalFourNotificationVMsAndSuccessfulSystemReadCursor",
+    "originalFeedDeleteAndNoticeExactParameters",
+    "chatOriginalOrderingEmotesControlAndActualACK",
+    "originalGroupDNDTopPushInterceptAndBatchParameters",
+    "originalOptimisticTopFailureRefreshesAuthoritativeSessions",
+    "sendPreservesTextCRTABAndWithdrawalPayloadModel",
+    "http503RetryAfter0MutationDoesNotReplay",
+    "imageUploadValidatesOriginalCapAndSendsRealUploadedMetadata",
+    "sameMIDNewEpochRejectsOldSenderAndStaleUI",
+    "callerCancellationStopsRequestAndPostIOPublication",
+    "coveredEntryReadsRetainedButCoveredMutationCannotSubmit"
+  ],
+  "proofBoundary": "Prepared install/source/compile-policy evidence only. Root normal product build, JUnit discovery and message UI acceptance remain separate."
+}

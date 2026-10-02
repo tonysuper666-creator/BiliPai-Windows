@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "candidateBase": "01e5d615fa48da8fc73c470ea452f885f51af454",
+  "baselineReadMode": "git-show-pinned-commit (no dirty working-tree inputs)",
+  "frozenPacket": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity",
+  "frozenContractSha256": "32bf55205f093564d37444ead049f130f2cc4f3395a37b78fd2bf73d1b17ee9b",
+  "frozenHandoffSha256": "27a644ddf45fea069b47b601d0728234118561110290aac4ddec5f3800a90ffd",
+  "exactHunkTargets": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "baseRawSha256": "ced93a0495eef7e0f94c718a24035b4b31121a4cba40d63ab21dc646110b060d",
+      "baseLfSha256": "ced93a0495eef7e0f94c718a24035b4b31121a4cba40d63ab21dc646110b060d",
+      "desiredRawSha256": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6",
+      "patch": "patches/DesktopReadyOriginalRootMount.kt.patch",
+      "patchSha256": "2e35d4ff69d85132866f7e3060550245096e606d95b10a4155eabdd8ad27cacf",
+      "operation": "exact-hunks-only"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseRawSha256": "10ad7db5f2bc54c27cb44b3e12e06c0aaee27e65481956f643d24fcb40366829",
+      "baseLfSha256": "10ad7db5f2bc54c27cb44b3e12e06c0aaee27e65481956f643d24fcb40366829",
+      "desiredRawSha256": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903",
+      "patch": "patches/DesktopShell.kt.patch",
+      "patchSha256": "0e301337881badcd0e74851d4f5969e7d29b4aa632609e6e402f944a4ca50720",
+      "operation": "exact-hunks-only"
+    },
+    {
+      "target": "desktop/build.gradle.kts",
+      "baseRawSha256": "b57bab9c9748bf1050725ad397421b13096a7973bfb0d3c3983ca824b6dda901",
+      "baseLfSha256": "b57bab9c9748bf1050725ad397421b13096a7973bfb0d3c3983ca824b6dda901",
+      "desiredRawSha256": "29c36bca7b98bebedc56db733f87aff94ca6561afd96a25e8aea661b16fba7a7",
+      "patch": "patches/build.gradle.kts.patch",
+      "patchSha256": "79fe49c0913fc31a6737977b163a474cfe9738fc96834e74c1479a16978183f5",
+      "operation": "exact-hunks-only"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseRawSha256": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+      "baseLfSha256": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+      "desiredRawSha256": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a",
+      "patch": "patches/DesktopRepository.kt.patch",
+      "patchSha256": "53c0086530e45ce0715e4184984501e50115997e9553144e16ae6eb8d8ab145e",
+      "frozenPatchSha256": "53c0086530e45ce0715e4184984501e50115997e9553144e16ae6eb8d8ab145e",
+      "operation": "exact-hunks-only",
+      "rebaseRule": "Original exact hunk bytes; current unrelated source bytes retained."
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "baseRawSha256": "a80bd55e796a1bc276bce2ea6bf0476985fcba3d2ab0ca35ceafb555f40dcac5",
+      "baseLfSha256": "a80bd55e796a1bc276bce2ea6bf0476985fcba3d2ab0ca35ceafb555f40dcac5",
+      "desiredRawSha256": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e",
+      "patch": "patches/DesktopCommunityRepository.kt.patch",
+      "patchSha256": "d5f8f22ad5604fe488594024de9e0baa51d511dfa8ba45243196bb6c851f09f0",
+      "frozenPatchSha256": "d5f8f22ad5604fe488594024de9e0baa51d511dfa8ba45243196bb6c851f09f0",
+      "operation": "exact-hunks-only",
+      "rebaseRule": "Original exact hunk bytes; current unrelated source bytes retained."
+    }
+  ],
+  "originalPacketCopyTargets": [
+    {
+      "target": "desktop/tools/extract-upstream-message-pages.py",
+      "prepared": "prepared/desktop/tools/extract-upstream-message-pages.py",
+      "sha256Bytes": "fab378ab275a262b95432464503d77e4fd25048b5235d93193e2f8cfacc289a2",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePageAdmission.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePageAdmission.kt",
+      "sha256Bytes": "5e866b2b92e9d3994d75df12b77f8f925c86b21480880f87de31b8cada0e136d",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesRoot.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesRoot.kt",
+      "sha256Bytes": "f8b1bf872d43b3786548887a48e36f379af1e139999fd9b6d6415b44c0bbbd79",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesTest.kt",
+      "prepared": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessagePagesTest.kt",
+      "sha256Bytes": "2afa302a4d83668832b380a9de8c4da05c6df4463384a06335764ba07cf546e6",
+      "operation": "copy-new"
+    }
+  ],
+  "originalPacketDataHunksProvenance": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseRawSha256": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+      "baseLfSha256": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+      "desiredRawSha256": "f4cd5c794d1825e4c3954541c6cf7e3008dfb5ea378682748b58fc3540b4d43a",
+      "kind": "exact-hunk",
+      "patch": "DesktopRepository.patch",
+      "patchSha256Bytes": "53c0086530e45ce0715e4184984501e50115997e9553144e16ae6eb8d8ab145e",
+      "installInstruction": "Apply only exact hunk. Full prepared copy is an explicit compile overlay, NEVER a whole-file installer."
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "baseRawSha256": "ba2fd53f7774b113e892e58fe5cf1e69151b1894509d5cfafa37caffa92feb62",
+      "baseLfSha256": "a80bd55e796a1bc276bce2ea6bf0476985fcba3d2ab0ca35ceafb555f40dcac5",
+      "desiredRawSha256": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e",
+      "kind": "exact-hunk",
+      "patch": "DesktopCommunityRepository.patch",
+      "patchSha256Bytes": "d5f8f22ad5604fe488594024de9e0baa51d511dfa8ba45243196bb6c851f09f0",
+      "installInstruction": "Apply only exact hunk. Full prepared copy is an explicit compile overlay, NEVER a whole-file installer."
+    }
+  ],
+  "registry": {
+    "target": "desktop/upstream-sources.json",
+    "operation": "verified-union",
+    "baseRawSha256": "2fa98fff02c18278eca522f25ddf59a4e4ac68fe2a050b5c0b855e38beacb69f",
+    "beforeCount": 1206,
+    "afterCount": 1219,
+    "changes": [
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatMessageMutationPolicy.kt",
+        "operation": "append",
+        "sha256Lf": "d7069cd4569a1785dd3467134f461ebaf09859cec780d3f4e048047dcd6e17ee",
+        "mode": "direct"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageGlassSurfacePolicy.kt",
+        "operation": "append",
+        "sha256Lf": "bc18233068f78b8df6dfcf09f6a2242e97c3b46d7ac69e2f931a173667f4993a",
+        "mode": "direct"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/MessagePreviewParser.kt",
+        "operation": "append",
+        "sha256Lf": "097736e785b6f58e6567fb2df21f6abd020f32402c70021e9c872a8824b17357",
+        "mode": "direct"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/SystemNoticeContentPolicy.kt",
+        "operation": "append",
+        "sha256Lf": "0e4fdf748e8ac26c40091a7b218442ec3290faaebe09271d4db50c272886f7e0",
+        "mode": "direct"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageCenterPolicy.kt",
+        "operation": "union-features",
+        "sha256Lf": "b341edc17ccbe4d802341635279bc98e7cd308c067d96ab2f4e549b175703605",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/InboxViewModel.kt",
+        "operation": "union-features",
+        "sha256Lf": "243cb6a989da3764d272f905fb641873219f4b3473e563d42c7fe34fcd402c60",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatViewModel.kt",
+        "operation": "append",
+        "sha256Lf": "5c3d7e03da5453c67999f16f5a61301d4fb24c4bb0046f424e605bf2409f14e9",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/InboxScreen.kt",
+        "operation": "append",
+        "sha256Lf": "0296601eaf5ff4e494fc0b485d23f1ffd35b807a25c2dae5b64c5fa2f1bfb606",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatScreen.kt",
+        "operation": "append",
+        "sha256Lf": "d9d9c15641cf7fc749962bd4a6c193289242d5b083aa256147807efd411a1c4b",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageCenterScreen.kt",
+        "operation": "append",
+        "sha256Lf": "9c61d0fc7832fbb7cc06d49cf82fef02b826dff75701de4939ca91a9c56b45d1",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageGlassSurface.kt",
+        "operation": "append",
+        "sha256Lf": "68e65c3ce53e2f422fd7f4c4dce18867238b0b67f2a280a2761726b7c6063715",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/ReplyMeScreen.kt",
+        "operation": "append",
+        "sha256Lf": "89260d5bab9999d2b13c81f573c7f9a0bbc7c950dd6f5a8b1d00af79ba9df967",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/AtMeScreen.kt",
+        "operation": "append",
+        "sha256Lf": "668c8858a5a886273b55e220f0894f2fa5ff1c578212724d9030eee406027123",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/LikeMeScreen.kt",
+        "operation": "append",
+        "sha256Lf": "c0e935b791be2e004157f4dd8fdec889d97be958a56615098524c3cf932e3bc8",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/SystemNoticeScreen.kt",
+        "operation": "append",
+        "sha256Lf": "7897e9ee351e935a716ac1b8a7801607e7ced6c84505e9570ed89c3a13ceef1b",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/MessageFeedCommon.kt",
+        "operation": "union-features",
+        "sha256Lf": "4a2466d522be981e77a80326e3c61f6ebb2417a68078db2ea7c5d43933b7fd66",
+        "mode": "policy-extract"
+      },
+      {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt",
+        "operation": "union-features",
+        "sha256Lf": "405e952ef30ec06f14a155599a92641d533e73f28ea198f0aebfda90960a4bc8",
+        "mode": "policy-extract"
+      }
+    ],
+    "desiredRawSha256": "09334ae9b197ac5bdf1024d9efc23f4b4bbefa69c7ecfbe39f8bd6eedc2448a3"
+  },
+  "unchangedConsumers": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "sha256Bytes": "8893af9323f7d567ff27b647a53ee9e877edc8b4229a6418f497178fe357518a",
+      "reason": "Actual retained NavDisplay dispatches all six message key types through leafContent; no competing dispatcher."
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sha256Bytes": "2fbef0b05d3b8d696394a8f774887ab408a8983f1c503c9669f5b38b84e8859c",
+      "reason": "Existing registerShutdown calls shared handle through Shell; do not add another application shutdown coordinator."
+    }
+  ],
+  "dependencies": [
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-desktop:1.3.0-rc01",
+      "artifact": "adaptive-desktop",
+      "version": "1.3.0-rc01",
+      "type": "pom",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-desktop-1.3.0-rc01.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-desktop/1.3.0-rc01/adaptive-desktop-1.3.0-rc01.pom",
+      "sha256Bytes": "c456b5db172ec5593706be838314c1a6669b2082633aa96e5ec5c6d75c3c3997"
+    },
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-desktop:1.3.0-rc01",
+      "artifact": "adaptive-desktop",
+      "version": "1.3.0-rc01",
+      "type": "jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-desktop-1.3.0-rc01.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-desktop/1.3.0-rc01/adaptive-desktop-1.3.0-rc01.jar",
+      "sha256Bytes": "94807e7afab0cb0d455a32ebbc3f07efe7a495655f3abc40f1c13ad40726a9d2"
+    },
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-layout-desktop:1.3.0-rc01",
+      "artifact": "adaptive-layout-desktop",
+      "version": "1.3.0-rc01",
+      "type": "pom",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-layout-desktop-1.3.0-rc01.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-layout-desktop/1.3.0-rc01/adaptive-layout-desktop-1.3.0-rc01.pom",
+      "sha256Bytes": "d0461a87d5f8e5c5e4ecd80c305d95f3cd4c61b8fd80d318f7d8aed51a375b4b"
+    },
+    {
+      "coordinate": "org.jetbrains.compose.material3.adaptive:adaptive-layout-desktop:1.3.0-rc01",
+      "artifact": "adaptive-layout-desktop",
+      "version": "1.3.0-rc01",
+      "type": "jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\adaptive-layout-desktop-1.3.0-rc01.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/compose/material3/adaptive/adaptive-layout-desktop/1.3.0-rc01/adaptive-layout-desktop-1.3.0-rc01.jar",
+      "sha256Bytes": "0b6a510201508aa3b4c6d15a1f40a9b087f97cdcecf625a1638445b920ec5699"
+    },
+    {
+      "coordinate": "org.jetbrains.androidx.window:window-core-desktop:1.5.0",
+      "type": "pom",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\window-core-desktop-1.5.0.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/androidx/window/window-core-desktop/1.5.0/window-core-desktop-1.5.0.pom",
+      "sha256Bytes": "0fbed81eb9a12b96b77e17ab696c9ab94da94318f6323fa73d7643424cd4d81f"
+    },
+    {
+      "coordinate": "org.jetbrains.androidx.window:window-core-desktop:1.5.0",
+      "type": "jar",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-message-pages-root-parity\\dependencies\\window-core-desktop-1.5.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jetbrains/androidx/window/window-core-desktop/1.5.0/window-core-desktop-1.5.0.jar",
+      "sha256Bytes": "e6a2c3d4e6dae7f69e466d875c1e8ab78734af991ac33e2076a99c77665dd330"
+    }
+  ],
+  "productionWrites": 0,
+  "sharedGradleRuns": 0,
+  "rootAccepted": false
+}
