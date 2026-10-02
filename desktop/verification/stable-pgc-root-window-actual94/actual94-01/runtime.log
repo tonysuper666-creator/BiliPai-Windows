@@ -1,0 +1,30 @@
+STAGE await reference: actual Shell
+STAGE await condition: published actual Root
+STAGE await reference: actual Window route provider
+PASS Actual Root accepts typed PGC
+STAGE await reference: actual original PGC owner
+STAGE await reference: actual native Window platforms
+STAGE await condition: full original PGC has real error and retry
+PASS Actual physical leaf uses original PGC and native platforms
+PASS Complete original PGC VM reports actual denied transport
+PASS Same existing native Section and typed comment VM
+STAGE await condition: original PGC pointer retry calls guarded transport
+PASS Actual pointer invokes complete original PGC retry
+PASS Retry retains one original PGC VM
+PASS Actual Settings cover accepted
+STAGE await condition: covered PGC physical key
+PASS Covered PGC retains original state owner
+PASS Actual Root returns to PGC
+STAGE await condition: same original PGC restored
+PASS Return reuses same original PGC entry
+PASS Pop actual PGC accepted
+STAGE await condition: popped unloaded PGC scope retired
+PASS Popped PGC rejects original late retry
+PASS Actual Root accepts typed PUGV
+STAGE await condition: complete original PUGV error is rendered
+PASS PUGV uses new original VM and same native owner
+STAGE await condition: PUGV actual pointer retry completes
+PASS PUGV retry retains original course VM
+STAGE await condition: actual guest epoch retires PGC Root
+PASS Actual guest account change retires PGC and PUGV children
+PASS Actual Root close keeps all PGC entries retired

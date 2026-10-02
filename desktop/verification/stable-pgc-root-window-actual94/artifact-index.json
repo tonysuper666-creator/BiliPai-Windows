@@ -1,0 +1,94 @@
+{
+  "files": [
+    {
+      "path": "fixture/RootPgcFixture.kt",
+      "bytes": 25755,
+      "sha256Bytes": "39e2cd4ec7347394ca617ff9e02e5c889d4d94f5fb95015d91ad7ce8a613d324"
+    },
+    {
+      "path": "fixture/run.py",
+      "bytes": 11969,
+      "sha256Bytes": "a72a0f70a1e41f4ef1a819ba3917c6c9f1c66277e2b380b14f81fbf8e9147012"
+    },
+    {
+      "path": "fixture/save_actual94.py",
+      "bytes": 4203,
+      "sha256Bytes": "5e9e3e9b9830375976f7f69809aea90eea65e0c2b093d8d26044d111016a368c"
+    },
+    {
+      "path": "actual94-01/RootPgcFixture.kt",
+      "bytes": 25755,
+      "sha256Bytes": "39e2cd4ec7347394ca617ff9e02e5c889d4d94f5fb95015d91ad7ce8a613d324"
+    },
+    {
+      "path": "actual94-01/compile-result.json",
+      "bytes": 190,
+      "sha256Bytes": "a031ad344198ef514fa56606ed5d3a5dc51b229ae2c363a05dc4cb6d92a55e1f"
+    },
+    {
+      "path": "actual94-01/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "actual94-01/compiler.args",
+      "bytes": 26861,
+      "sha256Bytes": "252ac1b9f58414a3ef4d6f6f1e41b508df18007b39519d1f066835663abff8bb"
+    },
+    {
+      "path": "actual94-01/fixture-jar-pin.json",
+      "bytes": 114,
+      "sha256Bytes": "ddc0981fb33de130a7392b108065c78caa5f8e3eb0445fd39ad2420010669ad8"
+    },
+    {
+      "path": "actual94-01/acceptance-result.json",
+      "bytes": 1007,
+      "sha256Bytes": "9f70dbf313c4034547ce45f619303b7cd887cbee0e2c6470b32c9d8b848a5ef1"
+    },
+    {
+      "path": "actual94-01/runtime.log",
+      "bytes": 1533,
+      "sha256Bytes": "22be3033daaf569b2b95012eb480a565bb3983f7e120e4a487b794f262503320"
+    },
+    {
+      "path": "actual94-01/pins-before.json",
+      "bytes": 42043,
+      "sha256Bytes": "956f1c71f29a78f0dabc04a4939a22cd56512a86adf3fa8c1ee934dc565134a3"
+    },
+    {
+      "path": "actual94-01/pins-after.json",
+      "bytes": 42043,
+      "sha256Bytes": "956f1c71f29a78f0dabc04a4939a22cd56512a86adf3fa8c1ee934dc565134a3"
+    },
+    {
+      "path": "actual94-01/runtime-evidence/actual-root-pgc-original-error.png",
+      "bytes": 35302,
+      "sha256Bytes": "a8714ffc6659b846660d822c932824268d2ac1e45b34e951245e3540977f9946"
+    },
+    {
+      "path": "actual94-01/runtime-evidence/actual-root-pgc-pugv-original-error.png",
+      "bytes": 36172,
+      "sha256Bytes": "e5d4c1f2b259b9150129341d48b5947c05e2a1f2c69e3bbbb40661b7d5328b7d"
+    },
+    {
+      "path": "actual94-01/runtime-evidence/root-pgc-proof.json",
+      "bytes": 5068,
+      "sha256Bytes": "6cf7cc638756b47c8f492cdcd8f37847d347aad6b25e15637b37dae4ae1deda4"
+    },
+    {
+      "path": "actual94-snapshot/manifest.json",
+      "bytes": 175520,
+      "sha256Bytes": "bd49ccb6e3e4d85561a437bf43548204c36d94e0ccde23eb0ae8b83b238c1dc3"
+    },
+    {
+      "path": "actual94-snapshot/ordered-runtime-cp.json",
+      "bytes": 39744,
+      "sha256Bytes": "1306eb494e796d627a44c643ce7bf12dd14fffef7fa71a62517e6f257a0b12a8"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1456,
+      "sha256Bytes": "c2959598f222854414eacbbb92548eff494a7e410845c9cdc641501a94022af4"
+    }
+  ]
+}
