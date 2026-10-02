@@ -1,0 +1,124 @@
+{
+  "actual84Manifest": "f70a306e3dc42df93c00d536163ff4a1f1953cbc94d36586c9500281983351b2",
+  "orderedCP": "4b1de9cce18526162113e1336c0252b37b3113d1f0b8832b68953fc3ec5df8d9",
+  "extraCP": [],
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\android\\purebilibili\\core\\store\\DesktopStorageSettingsPlatform.kt",
+      "sha256Bytes": "b45610ae14ba4777a90bdbf9b4a38e685c2639f15b21a33299d5b1c421ebf9f1"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\android\\purebilibili\\feature\\following\\DesktopFollowingEnvironment.kt",
+      "sha256Bytes": "b9f9f4dcda31df9cae594ddb80d45c9f6909399bb60b82c07548e2a41dc5df3d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "1e32fb7c306e78327a12af249589f815355de6ad2b25599948847950803bf877"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuOverlay.kt",
+      "sha256Bytes": "4a01a768a015edd70bd6bb7d1159dff578e5987167409d4973ecf369f0302442"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\danmaku\\DanmakuWindowLoader.kt",
+      "sha256Bytes": "6a5cc69327dff86de96149bca285cc3af9cf451ea4551b88b3855a0ee544215e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopPlaybackCache.kt",
+      "sha256Bytes": "77fc8750cfd817e2711820ca39cdf164fcbec1445623a8d400e4123e8910040e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopRepository.kt",
+      "sha256Bytes": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopDiagnostics.kt",
+      "sha256Bytes": "a1acc4f5b149d3519b7808de3555cc074361ed6aeb79ee5c464b3e9a3023a327"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\download\\DesktopDownloadManager.kt",
+      "sha256Bytes": "cebe7e5bd8248dde15c8a150cabe4cb58158bc17003ae91500859ce563e6e878"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\DesktopSubtitleAssets.kt",
+      "sha256Bytes": "b0115c8a75162796d3964de6e814c5859d5dc17db386513cb2d29ceec88b5d78"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "918eeefb47807c8a9fbca21bec88d17e9b7b32f1831f21c2e9a58e43ec0c73c5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopPluginStore.kt",
+      "sha256Bytes": "008818e08e6dd0ac3f1fb2a5ae0d0a568cc9f8d1c139a1b93bfb5140de2a1535"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopSettingsTree.kt",
+      "sha256Bytes": "9aeea361ca3fc23af986b4d97f134f598262d7203918dd8bac3c287fb66773ed"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopStorageSettings.kt",
+      "sha256Bytes": "fe1e23c4a1287dc06b1ddf9c62a3b4a96c5199d473b5879753950df1d4790ccf"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopStorageSettingsOwner.kt",
+      "sha256Bytes": "483a5a33b295b553f71212ad91635c194e640f141466b17d91490ea8c742ad51"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopApplicationImageLoader.kt",
+      "sha256Bytes": "d4ffbb2db1b567140b5245e093e8f3ac5b4a05e59a075243d80f2840bdf624ba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "2bea6ba542102982c9baadf5c997bb46434923a774acdd0230a72ecae3da3b41"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "93f045aa1b2f7de03d2ab9fa660d5209916c98d3a2c18f243d07bdd5ad2a7e20"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerDownloadBinding.kt",
+      "sha256Bytes": "e291c822e423e31094eac45408b0c4aa121e6ca96d4bf6ebe109ed2f814d883d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoShareFiles.kt",
+      "sha256Bytes": "043c33dbdd8f9b7b30263697714bed5ca0e2477ae2e35a0141f2fe1d3e05cec0"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteCache.kt",
+      "sha256Bytes": "815f89320ef9a54d2cf00ca6764f3a0ee1e91ca516b050c4b0f155325299ed22"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\cache\\DesktopMediaByteSpanStore.kt",
+      "sha256Bytes": "6e1ea1e08921083a3064dc0f2f67cd7a338043cf65f8e7edf442379419019896"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\generated06\\com\\android\\purebilibili\\core\\store\\DesktopOriginalStorageSettings.kt",
+      "sha256Bytes": "b14ace4ad874c51dfa74ca403990d165abbd8707abe58a8c5f5ebf98455bc989"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\generated06\\com\\android\\purebilibili\\core\\util\\DesktopOriginalStorageCachePolicy.kt",
+      "sha256Bytes": "e945c5564f7812343bf9708242bd1788b3c00ed0b2845af210ed6ec1a0ade6ba"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\generated06\\com\\android\\purebilibili\\feature\\settings\\CacheClearAnimation.kt",
+      "sha256Bytes": "60304071fb60d3e03a00755a30e97f66eb77426e8e00cabc1c9c743eddc8ce18"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\generated06\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalDataStorageSection.kt",
+      "sha256Bytes": "add0ecec2071dccc2a74ccfc1ea1a878d2ae5a6762d399735243082cf8677569"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\generated06\\com\\bilipai\\desktop\\settings\\DesktopStorageSettingsVectors.kt",
+      "sha256Bytes": "54a7d0c403a59ce9ae44ec9db12a510467041a3625b9f49f6b716d78dd9d30f8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\app\\src\\main\\java\\com\\android\\purebilibili\\feature\\settings\\CacheClearUiPolicy.kt",
+      "sha256Bytes": "1d327ca40e3e9564304c1e92d1077259e732741d7395c6493b2882bb3db87b6f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\StorageOwnerFixture.kt",
+      "sha256Bytes": "692743cd0cf908aaf340a53b2f6e3af752055c0da3b1d0a6b9e1eaba2d110318"
+    }
+  ],
+  "candidateWritten": false
+}

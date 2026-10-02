@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "ownedTemp": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-storage-native-kmknztdn",
+  "cleanupRestrictedToResolvedOwnedTemp": true,
+  "actual84CPUnchanged": true,
+  "nativeUnchanged": true,
+  "productionInstalled": false,
+  "RootMounted": false,
+  "systemReceiverPassed": false,
+  "longPathSupported": false,
+  "detachTimeoutBoundaryPassed": false
+}

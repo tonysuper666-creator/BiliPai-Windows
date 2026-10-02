@@ -1,0 +1,27 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "ee8ac6d926e6633e90cd779462cff55b6441243bc834088536b9f8b210e1d915",
+  "preparedSha256LF": "043c33dbdd8f9b7b30263697714bed5ca0e2477ae2e35a0141f2fe1d3e05cec0",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "ee8ac6d926e6633e90cd779462cff55b6441243bc834088536b9f8b210e1d915",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 118,
+      "afterLine": 118,
+      "before": "    /** Only explicit user-authorized clear, AFTER same native actor revocation/drain. */\n    fun clearExplicit()=synchronized(gate) {\n        require(exposed.isEmpty() && pending.isEmpty()) {\"原生分享尚未撤销\"}\n        directory();Files.newDirectoryStream(root,\"BiliPai_share_*\").use { files ->files.forEach { path ->UpdateStorage.existingPathWithoutLinks(path);require(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS));Files.delete(path)}}\n",
+      "after": "    /** Same pool, ordinary validated files only; never counts unknown files as reclaimable. */\n    fun managedBytes(): Long = synchronized(gate) { directory(); managedFiles().sumOf { Files.size(it) } }\n    private fun managedFiles(): List<Path> = Files.newDirectoryStream(root,\"BiliPai_share_*\").use { stream ->\n        stream.filter { it.fileName.toString().matches(Regex(\"BiliPai_share_.+_[0-9a-fA-F-]{36}\\\\.(jpg|jpeg|png|webp|gif)\")) }.toList()\n            .onEach { path -> UpdateStorage.existingPathWithoutLinks(path); require(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS)) }\n    }\n    /** Only explicit user-authorized clear, AFTER same native actor revocation/drain. */\n    fun clearExplicit()=synchronized(gate) {\n        require(exposed.isEmpty() && pending.isEmpty()) {\"原生分享尚未撤销\"}\n        directory();val files=managedFiles();files.forEach(Files::delete)\n",
+      "beforeSha256LF": "2c8c27ee4deaf0c1bc8491b322a17cd6e71ca9dab6731c352c430da4d8207f7a",
+      "afterSha256LF": "455d0c8949e1955ef61cff124117805f6fd108d0d4bf3bf2a68ee20cf69fe446"
+    }
+  ]
+}

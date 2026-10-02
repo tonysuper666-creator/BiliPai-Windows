@@ -1,0 +1,40 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 6,
+  "baselineSha256LF": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+  "preparedSha256LF": "008818e08e6dd0ac3f1fb2a5ae0d0a568cc9f8d1c139a1b93bfb5140de2a1535",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 104,
+      "afterLine": 104,
+      "before": "        name: String,\n        checkRequest: () -> Unit,\n        acquirePermit: () -> OriginalPreferenceWritePermit,\n        edit: (DesktopPreferenceSnapshot) -> Pair<T, Map<String, JsonElement?>>,\n    ): T {\n        while (true) {\n            checkRequest()\n            val snapshot = synchronized(backing) {\n                check(!backing.writesFrozen) { \"插件已停止，不能写入旧设置实例\" }\n                require(backing.document[name] == null || backing.document[name] is JsonObject) { \"设置命名空间格式无效\" }\n                backing.document\n            }\n            val current = snapshot[name] as? JsonObject ?: JsonObject(emptyMap())\n            val (result, edits) = edit(DesktopPreferenceSnapshot(current))\n            checkRequest()\n            val updated = current.toMutableMap()\n            edits.forEach { (key, value) -> if (value == null) updated.remove(key) else updated[key] = value }\n            if (name == \"plugin_prefs\") {\n                updated[\"plugin_config_bilipai_feed_filter\"]?.let { value ->\n                    val encoded = (value as? JsonPrimitive)?.takeIf { it.isString }?.content ?: error(\"推荐流过滤配置格式无效\")\n                    validateFeedFilter(json.decodeFromString<BiliPaiFeedFilterConfig>(encoded))\n                }\n            }\n            val next = JsonObject(snapshot.toMutableMap().apply { put(name, JsonObject(updated)) })\n",
+      "after": "        name: String, checkRequest: () -> Unit,\n        acquirePermit: () -> OriginalPreferenceWritePermit,\n        edit: (DesktopPreferenceSnapshot) -> Pair<T, Map<String, JsonElement?>>,\n    ): T = updateOriginalNamespacesFromSnapshot(name, checkRequest, acquirePermit) { snapshot ->\n        val (result, changes) = edit(snapshot)\n        result to mapOf(name to changes)\n    }\n\n    /** Same sole backing/CAS/permit. Canonical storage + original sync mirror replace as one file. */\n    internal fun <T> updateOriginalNamespacesFromSnapshot(\n        name: String,\n        checkRequest: () -> Unit,\n        acquirePermit: () -> OriginalPreferenceWritePermit,\n        edit: (DesktopPreferenceSnapshot) -> Pair<T, Map<String, Map<String, JsonElement?>>>,\n    ): T {\n        while (true) {\n            checkRequest()\n            val snapshot = synchronized(backing) {\n                check(!backing.writesFrozen) { \"插件已停止，不能写入旧设置实例\" }\n                require(backing.document[name] == null || backing.document[name] is JsonObject) { \"设置命名空间格式无效\" }\n                backing.document\n            }\n            val current = snapshot[name] as? JsonObject ?: JsonObject(emptyMap())\n            val (result, edits) = edit(DesktopPreferenceSnapshot(current))\n            checkRequest()\n            val updates = edits.mapValues { (namespace, changes) ->\n                require(snapshot[namespace] == null || snapshot[namespace] is JsonObject) { \"设置命名空间格式无效\" }\n                val values = (snapshot[namespace] as? JsonObject ?: JsonObject(emptyMap())).toMutableMap()\n                changes.forEach { (key, value) -> if (value == null) values.remove(key) else values[key] = value }\n                if (namespace == \"plugin_prefs\") values[\"plugin_config_bilipai_feed_filter\"]?.let { value ->\n                    val encoded = (value as? JsonPrimitive)?.takeIf { it.isString }?.content ?: error(\"推荐流过滤配置格式无效\")\n                    validateFeedFilter(json.decodeFromString<BiliPaiFeedFilterConfig>(encoded))\n                }\n                JsonObject(values)\n            }\n            val next = JsonObject(snapshot.toMutableMap().apply { putAll(updates) })\n",
+      "beforeSha256LF": "33f95467fab438e959f2fcd11b9627df1fc4de0cc917956dd74d293272988a6f",
+      "afterSha256LF": "7e4ede00a43a0a43179d4aa825ee1e569ac34c10859b9f46a036e0aab49894ee"
+    },
+    {
+      "id": 2,
+      "beforeLine": 138,
+      "afterLine": 150,
+      "before": "                        permit.consume(this)\n                        try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }\n                        catch (_: java.nio.file.AtomicMoveNotSupportedException) {\n                            Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)\n                        }\n                        backing.document = next\n                        backing.snapshots[name]?.value = DesktopPreferenceSnapshot(JsonObject(updated))\n                        if (name == \"plugin_prefs\") {\n                            backing.feedFilterConfig.value = decodeFeedFilter(next)\n                            backing.feedFilterEnabled.value = updated[\"plugin_enabled_bilipai_feed_filter\"]?.jsonPrimitive?.booleanOrNull ?: false\n                        }\n                        true\n                    }\n                }\n                if (committed) return result\n                // Conflict retires this unconsumed permit and owned temporary file; retry checks ownership afresh.\n",
+      "after": "                        permit.consume(this)\n                        try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }\n                        catch (_: java.nio.file.AtomicMoveNotSupportedException) {\n                            Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)\n                        }\n                        backing.document = next\n                        updates.forEach { (namespace, values) -> backing.snapshots[namespace]?.value = DesktopPreferenceSnapshot(values) }\n                        updates[\"plugin_prefs\"]?.let { values ->\n                            backing.feedFilterConfig.value = decodeFeedFilter(next)\n                            backing.feedFilterEnabled.value = values[\"plugin_enabled_bilipai_feed_filter\"]?.jsonPrimitive?.booleanOrNull ?: false\n                        }\n                        true\n                    }\n                }\n                if (committed) return result\n                // Conflict retires this unconsumed permit and owned temporary file; retry checks ownership afresh.\n",
+      "beforeSha256LF": "ae1c12b2ba97db123ad5a27a4ecec1f5b8c8182f700136a595a485b11b96c59c",
+      "afterSha256LF": "463d127264ec9bab9bb593fe300f5f1e2266ffb5da983336b9f532843ed65c27"
+    }
+  ]
+}

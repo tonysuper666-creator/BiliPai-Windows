@@ -1,0 +1,27 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDownloadBinding.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "9ca39d08f902a60c53989bd6b683b9baacbd20b9d5301f1f340976b1ae5e54a3",
+  "preparedSha256LF": "e291c822e423e31094eac45408b0c4aa121e6ca96d4bf6ebe109ed2f814d883d",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "9ca39d08f902a60c53989bd6b683b9baacbd20b9d5301f1f340976b1ae5e54a3",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 62,
+      "afterLine": 62,
+      "before": "        val configured = (settings.pluginContext.store.preferences(\"settings\")[\"download_path\"] as? JsonPrimitive)\n            ?.takeIf { it.isString }?.content\n        val destination = resolveDesktopOriginalDownloadDestination(task.customSaveDir ?: configured,\n            DesktopDownloadManager.defaultDownloadRoot())\n",
+      "after": "        val destination = manager.destinationFor(task.customSaveDir)\n",
+      "beforeSha256LF": "8094509454474a23cd9e591468e28bf5e86e0a1784adcd7dc80bac767b706452",
+      "afterSha256LF": "c65259b9c9e6ab8e34c1a440103c1197030c0cd0ba823d5fb2ab64866c4d84db"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "e5af6e1c6ba9d194b21f27542b5f7f74ec01708471a1cc751da412ac40a88424",
+  "preparedSha256LF": "76679e50d78c62691a98b65044d8cd41a30120f7348530a224648c18ba883234",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "e5af6e1c6ba9d194b21f27542b5f7f74ec01708471a1cc751da412ac40a88424",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 526,
+      "afterLine": 526,
+      "before": "        client.dispatcher.cancelAll()\n        resetAuthenticationCaches()\n    }\n    private fun resetAuthenticationCaches() {\n        visitorInitialized = false\n        synchronized(playbackProtocolMonitor) {\n",
+      "after": "        client.dispatcher.cancelAll()\n        resetAuthenticationCaches()\n    }\n    internal fun storagePlaybackMemoryBytes(): Long = playbackCache.estimatedBytes()\n    internal fun clearStoragePlaybackCache(checkRequest: () -> Unit) {\n        checkRequest();synchronized(playbackProtocolMonitor) { appApiCooldownUntilMs=0L;lastPlayback412Time=0L }\n        playbackCache.clear();com.android.purebilibili.core.cooldown.PlaybackCooldownManager.clearAll();checkRequest()\n    }\n    /** Cache only. Visitor/session/cookies and selected playback authorization stay untouched. */\n    internal fun invalidateStorageWbi(checkRequest: () -> Unit) {\n        checkRequest();synchronized(playbackProtocolMonitor) { wbiKeys=null;wbiExpiresAt=0L;wbiGeneration=-1L };checkRequest()\n    }\n\n    private fun resetAuthenticationCaches() {\n        visitorInitialized = false\n        synchronized(playbackProtocolMonitor) {\n",
+      "beforeSha256LF": "de33f38648cf26264d75bae37d64c61792c8fd6a72ae874e70332933c89cef55",
+      "afterSha256LF": "09ad62997ad17bef5ef1363977ad73e7bc8feec2641533a376eafe39c997ef19"
+    }
+  ]
+}

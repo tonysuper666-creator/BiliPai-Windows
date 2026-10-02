@@ -1,0 +1,27 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuWindowLoader.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "1d6073d031171c3663d2862be3c1d33e8df03c21b5581722130b105c864ddc50",
+  "preparedSha256LF": "6a5cc69327dff86de96149bca285cc3af9cf451ea4551b88b3855a0ee544215e",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "1d6073d031171c3663d2862be3c1d33e8df03c21b5581722130b105c864ddc50",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 41,
+      "afterLine": 41,
+      "before": "    private var special = DanmakuDocument()\n    private var commands = emptyList<CommandDanmakuItem>()\n    private var metadataWarning: String? = null\n\n    fun windowForPosition(positionMs: Long) = segmentWindowForPosition(positionMs, totalSegments)\n\n",
+      "after": "    private var special = DanmakuDocument()\n    private var commands = emptyList<CommandDanmakuItem>()\n    private var metadataWarning: String? = null\n\n    internal fun cachedBytes(): Long = synchronized(cache) {cacheBytes}\n\n    fun windowForPosition(positionMs: Long) = segmentWindowForPosition(positionMs, totalSegments)\n\n",
+      "beforeSha256LF": "1e44fe58c09e3f113f1d452f2cd54bed112cb5cc9558197ed2943197315ea0fb",
+      "afterSha256LF": "e807822f1df9c1dab24b9794c4d394bacd463b11b93bc0c88c325bec1154f0d5"
+    }
+  ]
+}

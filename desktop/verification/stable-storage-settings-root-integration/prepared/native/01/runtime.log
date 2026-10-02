@@ -1,0 +1,21 @@
+PASS owned hidden Canvas peer is displayable
+PASS actual same-player NativeSession worker alive
+PASS local media load ACK on original native session
+PASS Stop immediately followed by real native idle barrier
+PASS central load rejects while real idle lease spans IO
+PASS rejected load does not mutate source version
+PASS owned IO completes under native maintenance token
+PASS subtitle admission rejected under native maintenance token
+PASS release permits same native owner reload ACK
+PASS release preserves normal single source version increment
+PASS detached owner clears only after actual native terminate acknowledgment
+PASS detached idle maintenance does not create a replacement session
+PASS Canvas reattach during maintenance remembers HWND without new native actor
+PASS reattach starts one normal session after maintenance release
+PASS verified actual native share DLL probe
+PASS actual native null-window prepare/retire reports safe unsupplied grant
+PASS null-window share reports no receiver delivery
+PASS same pool retains confirmed retired file for explicit clear
+PASS same real native actor drain clears only registered pool file
+PASS same native actor and pool remain reusable after clear
+StorageNativeOwnerFixture PASS 20 assertions; real owners, no Root/account/system receiver claim

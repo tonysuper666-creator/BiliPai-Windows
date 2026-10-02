@@ -1,0 +1,53 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "82a467d3c9955e4bd98314e8a3fb17c7031a9e1df1bf338514043a1b447944cf",
+  "preparedSha256LF": "b0115c8a75162796d3964de6e814c5859d5dc17db386513cb2d29ceec88b5d78",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "82a467d3c9955e4bd98314e8a3fb17c7031a9e1df1bf338514043a1b447944cf",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    },
+    {
+      "id": 3,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 34,
+      "afterLine": 34,
+      "before": "\n    suspend fun import(track: SubtitleTrackMeta): Path = import(track, client)\n\n    /** Same application-owned files/document/cancellation; caller supplies the\n     * already captured Repository Call.Factory. This creates no downloader/client. */\n    internal suspend fun import(track: SubtitleTrackMeta, ownedCalls: Call.Factory): Path = withContext(Dispatchers.IO) {\n",
+      "after": "    private var activeImports = 0\n\n    suspend fun import(track: SubtitleTrackMeta): Path = import(track, client)\n\n    /** Same application-owned files/document/cancellation; caller supplies the\n     * already captured Repository Call.Factory. This creates no downloader/client. */\n    internal suspend fun import(track: SubtitleTrackMeta, ownedCalls: Call.Factory): Path = withContext(Dispatchers.IO) {\n        synchronized(files) {check(!closed);activeImports++}\n        try {\n",
+      "beforeSha256LF": "bdab111c59c6b1d861822a1adc649ef81759515400854ce589610592e20dabdf",
+      "afterSha256LF": "8ea1ec09085cf1becfcf86e29b32828e1f27cb74ffab25c15ec794dd2f02286a"
+    },
+    {
+      "id": 2,
+      "beforeLine": 74,
+      "afterLine": 77,
+      "before": "            }\n            file\n        } finally { synchronized(files) { calls.remove(call) } }\n    }\n\n    /** The original parsed cue list is retained with its application-owned native file. */\n",
+      "after": "            }\n            file\n        } finally { synchronized(files) { calls.remove(call) } }\n        } finally { synchronized(files) {activeImports--} }\n    }\n\n    /** The original parsed cue list is retained with its application-owned native file. */\n",
+      "beforeSha256LF": "a76ae59e3dc98c7af9582b9836b757d00d965b69aaca837e750500be27ecc08c",
+      "afterSha256LF": "12be7192c97060342d4c8cc715ce1e41a5c70f816362b5d73c093c67f3b562f8"
+    },
+    {
+      "id": 3,
+      "beforeLine": 113,
+      "afterLine": 117,
+      "before": "        })\n    }\n\n    override fun close() {\n        val pending = synchronized(files) {\n            if (closed) return\n",
+      "after": "        })\n    }\n\n    internal fun cacheSizes(): Pair<Long,Long> = synchronized(files) {\n        files.sumOf { if(Files.isRegularFile(it))Files.size(it) else 0L } to\n            fileCues.values.sumOf { cues -> cues.sumOf { cue -> cue.content.length*2L + cue.words.sumOf { word -> word.text.length*2L+24L }+32L } }\n    }\n    /** Caller holds the actual native idle-maintenance lease. No in-flight import may publish here. */\n    internal fun clearIdle(checkRequest: () -> Unit) = synchronized(files) {\n        checkRequest();check(!closed);require(calls.isEmpty() && activeImports==0) { \"字幕仍在下载或提交，请稍后重试\" }\n        val ownedFiles=files.toList()\n        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(directory)\n        ownedFiles.forEach { path ->\n            require(path.toAbsolutePath().normalize().parent==directory.toAbsolutePath().normalize())\n            if(Files.exists(path,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {\n                com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)\n                require(Files.isRegularFile(path,java.nio.file.LinkOption.NOFOLLOW_LINKS))\n            }\n        }\n        ownedFiles.forEach { path -> checkRequest();Files.deleteIfExists(path);files.remove(path);fileCues.remove(path) }\n    }\n    override fun close() {\n        val pending = synchronized(files) {\n            if (closed) return\n",
+      "beforeSha256LF": "9bec015e89e4f4c183f1770ed52a6987225c1fe42dc94393ed262f6930b70d1b",
+      "afterSha256LF": "94ecdcde392d99cb4402c995575b4d813a490b68c71b0b35f018facfa714329b"
+    }
+  ]
+}

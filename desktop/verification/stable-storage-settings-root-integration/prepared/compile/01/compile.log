@@ -1,0 +1,34 @@
+desktop\.local\stable-settings-storage-owner-parity\generated03\com\android\purebilibili\feature\settings\CacheClearAnimation.kt:348:13: error: no parameter with name 'decorFitsSystemWindows' found.
+            decorFitsSystemWindows = false
+            ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\generated03\com\android\purebilibili\feature\settings\CacheClearAnimation.kt:469:125: error: unresolved reference 'R'.
+                    imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_check_fill_24),
+                                                                                                                            ^
+desktop\.local\stable-settings-storage-owner-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\data\DesktopRepository.kt:532:69: error: unresolved reference 'PlaybackCooldownManager'.
+        playbackCache.clear();com.android.purebilibili.core.network.PlaybackCooldownManager.clearAll();checkRequest()
+                                                                    ^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopSubtitleAssets.kt:118:29: error: overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+            fileCues.values.sumOf { cues -> cues.sumOf { cue -> cue.text.length*2L+32L } }
+                            ^^^^^
+desktop\.local\stable-settings-storage-owner-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopSubtitleAssets.kt:118:50: error: overload resolution ambiguity between candidates:
+fun <T> Iterable<T>.sumOf(selector: (T) -> Int): Int
+fun <T> Iterable<T>.sumOf(selector: (T) -> UInt): UInt
+            fileCues.values.sumOf { cues -> cues.sumOf { cue -> cue.text.length*2L+32L } }
+                                                 ^^^^^
+desktop\.local\stable-settings-storage-owner-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\player\DesktopSubtitleAssets.kt:118:69: error: unresolved reference 'text'.
+            fileCues.values.sumOf { cues -> cues.sumOf { cue -> cue.text.length*2L+32L } }
+                                                                    ^^^^
+desktop\.local\stable-settings-storage-owner-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\settings\DesktopSettingsTree.kt:96:84: error: unresolved reference 'SettingsNavigationInteractionCategoryEntrySection'.
+                                    SettingsRootCategory.NAVIGATION_INTERACTION -> SettingsNavigationInteractionCategoryEntrySection(
+                                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\settings\DesktopSettingsTree.kt:116:72: error: unresolved reference 'DesktopNavigationInteractionSettings'.
+                                    SettingsSearchTarget.BOTTOM_BAR -> DesktopNavigationInteractionSettings(SettingsSearchTarget.BOTTOM_BAR, onFailure)
+                                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\settings\DesktopSettingsTree.kt:117:71: error: unresolved reference 'DesktopNavigationInteractionSettings'.
+                                    SettingsSearchTarget.ANIMATION -> DesktopNavigationInteractionSettings(SettingsSearchTarget.ANIMATION, onFailure)
+                                                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\settings\DesktopStorageSettingsOwner.kt:78:50: error: unresolved reference 'diskBytes'.
+            playbackMediaCache=media()?.stats()?.diskBytes ?: 0L,
+                                                 ^^^^^^^^^

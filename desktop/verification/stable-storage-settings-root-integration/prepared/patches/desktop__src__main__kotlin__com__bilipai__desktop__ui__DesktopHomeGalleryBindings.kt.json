@@ -1,0 +1,40 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "84c1a7009692e93b3228ec4cfd1b7a987271bf3a396c5a8ec8155cb5c21128ad",
+  "preparedSha256LF": "2bea6ba542102982c9baadf5c997bb46434923a774acdd0230a72ecae3da3b41",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "84c1a7009692e93b3228ec4cfd1b7a987271bf3a396c5a8ec8155cb5c21128ad",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 17,
+      "afterLine": 17,
+      "before": "    private val operations: DesktopDynamicCardOperations,\n    private val assets: DesktopDynamicImageAssets,\n    internal val imageShare: DesktopImagePreviewShareBindings,\n    private val textShare: DesktopTextShareBindings,\n    private val clipboard: (String) -> Unit,\n    private val externalLink: (String) -> Unit,\n",
+      "after": "    private val operations: DesktopDynamicCardOperations,\n    private val assets: DesktopDynamicImageAssets,\n    internal val imageShare: DesktopImagePreviewShareBindings,\n    internal val shareFiles: DesktopVideoShareFiles,\n    private val textShare: DesktopTextShareBindings,\n    private val clipboard: (String) -> Unit,\n    private val externalLink: (String) -> Unit,\n",
+      "beforeSha256LF": "e6b4a0113204e2e13636792ec04721dfb482bb037ea10e1209879ace6e4c9865",
+      "afterSha256LF": "836449059e0e30238a872bf6224337ae9ef58188a0404c9b0cd84d5b07809d12"
+    },
+    {
+      "id": 2,
+      "beforeLine": 97,
+      "afterLine": 98,
+      "before": "                imageShare, textShare, clipboard, externalLink, feedback)\n",
+      "after": "                imageShare, shareFiles, textShare, clipboard, externalLink, feedback)\n",
+      "beforeSha256LF": "63938be563d083765c77453e8b0c8a235244c3f1e03886eb95c8793b41e51f4b",
+      "afterSha256LF": "ca061ebef471167718242be78bc93ff30264800aa04d58e144b3e54e95d570ff"
+    }
+  ]
+}

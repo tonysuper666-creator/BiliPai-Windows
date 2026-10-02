@@ -1,0 +1,29 @@
+{
+  "soleProducer": "extractOriginalStorageSettings",
+  "generatorSHA": "6843098d62104df8e7caa642d6e746839c22b344d4692d90fdd9ecd36cabf8b4",
+  "generated": [
+    {
+      "relativePath": "com/android/purebilibili/core/store/DesktopOriginalStorageSettings.kt",
+      "sha256Bytes": "b14ace4ad874c51dfa74ca403990d165abbd8707abe58a8c5f5ebf98455bc989"
+    },
+    {
+      "relativePath": "com/android/purebilibili/core/util/DesktopOriginalStorageCachePolicy.kt",
+      "sha256Bytes": "e945c5564f7812343bf9708242bd1788b3c00ed0b2845af210ed6ec1a0ade6ba"
+    },
+    {
+      "relativePath": "com/android/purebilibili/feature/settings/CacheClearAnimation.kt",
+      "sha256Bytes": "60304071fb60d3e03a00755a30e97f66eb77426e8e00cabc1c9c743eddc8ce18"
+    },
+    {
+      "relativePath": "com/android/purebilibili/feature/settings/DesktopOriginalDataStorageSection.kt",
+      "sha256Bytes": "add0ecec2071dccc2a74ccfc1ea1a878d2ae5a6762d399735243082cf8677569"
+    },
+    {
+      "relativePath": "com/bilipai/desktop/settings/DesktopStorageSettingsVectors.kt",
+      "sha256Bytes": "54a7d0c403a59ce9ae44ec9db12a510467041a3625b9f49f6b716d78dd9d30f8"
+    }
+  ],
+  "directPolicySoleProducer": "prepareUpstreamSources",
+  "directPolicySHA": "5a3659469307fd48462114c2c88b2873078ee0448e39f6960846cd23a7bb5d70",
+  "duplicateDirectProducerFindingClosed": true
+}

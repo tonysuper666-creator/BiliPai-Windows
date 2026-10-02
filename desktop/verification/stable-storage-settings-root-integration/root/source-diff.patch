@@ -1,0 +1,1353 @@
+--- desktop/src/main/kotlin/com/android/purebilibili/core/store/DesktopStorageSettingsPlatform.kt
++++ desktop/src/main/kotlin/com/android/purebilibili/core/store/DesktopStorageSettingsPlatform.kt
+@@ -0,0 +1,25 @@
++package com.android.purebilibili.core.store
++import com.bilipai.desktop.ui.*
++import kotlinx.coroutines.*
++import kotlinx.serialization.json.*
++
++internal class DesktopStorageMirrorEditor {
++    internal val changes = linkedMapOf<String, JsonElement?>()
++    fun putString(key: String, value: String?) = apply { changes[key] = value?.let(::JsonPrimitive) }
++}
++/** Original dual write is one accepted same-Store replacement; no Android prefs/second backing. */
++internal suspend fun editStorageSettingsAndCommitPrefs(
++    context: DesktopOriginalPlayerSettingsContext, name: String,
++    editSettings: DesktopOriginalPlayerPreferenceValues.() -> Unit,
++    editPrefs: DesktopStorageMirrorEditor.() -> Unit,
++) = withContext(Dispatchers.IO) {
++    require(name == "download_prefs")
++    val caller = currentCoroutineContext()
++    fun checkRequest() { caller.ensureActive(); context.requireCurrent(); com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal() }
++    context.pluginContext.store.updateOriginalNamespacesFromSnapshot("settings", ::checkRequest,
++        { context.preferenceWritePermit(::checkRequest) }) { snapshot ->
++        val values = DesktopOriginalPlayerPreferenceValues(snapshot).apply(editSettings)
++        val mirror = DesktopStorageMirrorEditor().apply(editPrefs)
++        Unit to mapOf("settings" to values.changes.toMap(), name to mirror.changes.toMap())
++    }
++}
+--- desktop/src/main/kotlin/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt
++++ desktop/src/main/kotlin/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt
+@@ -54,7 +54,14 @@
+         private val values=linkedMapOf<String,JsonElement?>()
+         fun putString(key:String,value:String)=apply{values[key]=JsonPrimitive(value)}
+         fun remove(key:String)=apply{values[key]=null}
+-        fun apply() {checkOwned();if(!commitIfCurrent {checkOwned();store.update(name,values)})throw CancellationException("Following cache publication retired")}
++        fun apply() {
++            fun checkRequest() { checkOwned();com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal() }
++            store.updateOriginalFromSnapshot(name,::checkRequest, {
++                var permit:com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit?=null
++                if(!commitIfCurrent {checkRequest();permit=com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit(store)})throw CancellationException("Following cache publication retired")
++                checkNotNull(permit)
++            }) { Unit to values.toMap() }
++        }
+     }
+     companion object {const val MODE_PRIVATE=0}
+ }
+--- desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt
+@@ -60,6 +60,8 @@
+     private val generation = AtomicLong()
+     private val documentRevision = AtomicLong()
+     private val requestLock = Any()
++    private var cacheMaintenance=false
++    @Volatile private var windowLoader:DanmakuWindowLoader?=null
+     private val requests = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+     private var loadJob: Job? = null
+     private var windowJob: Job? = null
+@@ -68,7 +70,7 @@
+     override val scope:CoroutineScope get()=requests
+     override val cachedCid:Long get()=commandCid ?: 0L
+     override val loadGeneration:Long get()=generation.get()
+-    override val webMaskEnabled:Boolean get()=settings.smartOcclusionEnabled && !liveMode && !closed.get()
++    override val webMaskEnabled:Boolean get()=settings.smartOcclusionEnabled && !cacheMaintenance && !liveMode && !closed.get()
+     override val webMaskTransport:DesktopDanmakuSource get()=source
+     override fun webMaskPositionMs():Long=(player.state.value.positionSeconds*1000).toLong().coerceAtLeast(0L)
+     override fun invalidateWebMaskPaint(){SwingUtilities.invokeLater {if(!closed.get())panel.repaint()}}
+@@ -499,7 +501,7 @@
+     fun setPluginDanmakuProcessor(processor: DanmakuPluginProcessor?) {
+         val vod = synchronized(requestLock) {
+             pluginProcessor = processor
+-            if (!liveMode) rawDocument to generation.get() else null
++            if (!liveMode && !cacheMaintenance) rawDocument to generation.get() else null
+         }
+         vod?.let { (document, version) -> installDocument(document, version) }
+         SwingUtilities.invokeLater { if (!closed.get()) { liveRenderer.setProcessor(processor); panel.repaint() } }
+@@ -526,6 +528,7 @@
+     /** Switches from VOD segments to genuine realtime events received by the upstream live client. */
+     fun enterLive(): Long {
+         val version = synchronized(requestLock) {
++            check(!cacheMaintenance) { "弹幕缓存正在维护" }
+             generation.incrementAndGet().also { loadJob?.cancel(); windowJob?.cancel(); retireWebMaskSource(); liveMode = true; pendingLive.clear() }
+                 .also { offlineDocumentOwner=null; commandCid = null; mutableCommands.value = emptyList(); mutableAdvanced.value=emptyList(); originalSectionDanmakuViewport=null }
+         }
+@@ -558,6 +561,7 @@
+ 
+     private suspend fun loadSource(playbackSource: DesktopDanmakuSource, cid: Long, aid: Long, durationSeconds: Double, expectedSourceVersion: Long?, maskSource:DesktopOwnedWebMaskSource?, offlineOwner:(()->Boolean)? = null) {
+         val version = synchronized(requestLock) {
++            check(!cacheMaintenance && !closed.get()) { "弹幕缓存正在维护" }
+             generation.incrementAndGet().also {
+                 loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()
+                 // Clear the old document before publishing a new CID/version identity.
+@@ -571,8 +575,11 @@
+         synchronized(requestLock){if(version==generation.get() && !closed.get())bindWebMaskSource(maskSource)}
+         lastWebMaskRefreshNanos=Long.MIN_VALUE;lastWebMaskPositionMs=Long.MIN_VALUE
+         installDocument(DanmakuDocument(), version)
+-        val loading = requests.async {
++        val loading = synchronized(requestLock) {
++          if(cacheMaintenance || closed.get() || version!=generation.get())throw CancellationException("弹幕缓存维护或请求已退役")
++          requests.async {
+             val loader = DanmakuWindowLoader(playbackSource, cid, aid, (durationSeconds * 1000).toLong())
++            synchronized(requestLock) { if(!cacheMaintenance && version==generation.get())windowLoader=loader }
+             val result = loader.initial((player.state.value.positionSeconds * 1000).toLong())
+             publish(result, version)
+             synchronized(requestLock) {
+@@ -595,6 +602,7 @@
+                 }
+             }
+         }
++        }
+         synchronized(requestLock) {
+             if (version == generation.get() && !closed.get()) loadJob = loading else loading.cancel()
+         }
+@@ -616,6 +624,42 @@
+         }
+     }
+ 
++    internal fun cacheMemoryEstimate(): Long = synchronized(requestLock) {
++        (windowLoader?.cachedBytes() ?: 0L)+rawDocument.comments.sumOf { it.text.length*2L+64L }
++    }
++    /** VOD memory only. Existing jobs (including inherited masks) drain outside requestLock;
++     * the same generation excludes stale plugin/EDT publication. Live image cache is not claimed. */
++    internal suspend fun clearIdleCache(checkRequest: () -> Unit) {
++        checkRequest()
++        val (version,jobs)=synchronized(requestLock) {
++            check(!closed.get() && !cacheMaintenance);require(!liveMode) { "请退出直播后再清理点播弹幕缓存" }
++            cacheMaintenance=true
++            val ownedJobs=requests.coroutineContext[Job]!!.children.toList()
++            val next=generation.incrementAndGet();retireWebMaskSource()
++            ownedJobs.forEach {it.cancel()}
++            next to ownedJobs
++        }
++        try {
++            jobs.forEach {it.join()};checkRequest()
++            synchronized(requestLock) {
++                check(!closed.get());loadJob=null;windowJob=null;pluginJob=null;windowLoader=null
++                rawDocument=DanmakuDocument();offlineDocumentOwner=null;poolSourceVersion=null
++                commandCid=null;pendingLive.clear();mutableCommands.value=emptyList();mutableAdvanced.value=emptyList()
++                mutableError.value=null;mutableFormat.value=null;originalLocalInjectionPhase=Any();documentRevision.incrementAndGet()
++            }
++            val painted=kotlinx.coroutines.CompletableDeferred<Unit>()
++            SwingUtilities.invokeLater {
++                try {
++                    check(!closed.get() && cacheMaintenance && version==generation.get())
++                    scheduler=DanmakuScheduler(emptyList(),settings,liveAdmission=false)
++                    advancedRenderer=AdvancedDanmakuRenderer(emptyList());styles=emptyMap();measuredWidths.clear()
++                    mutableCount.value=0;panel.repaint();painted.complete(Unit)
++                } catch(failure:Throwable) { painted.completeExceptionally(failure) }
++            }
++            kotlinx.coroutines.withTimeout(3_000L) {painted.await()};checkRequest()
++        } finally { synchronized(requestLock) {cacheMaintenance=false} }
++    }
++
+     /** Also supports locally supplied documents and deterministic offline verification. */
+     fun setComments(comments: List<DanmakuComment>) {
+         setDocument(DanmakuDocument(comments))
+@@ -623,6 +667,8 @@
+ 
+     fun setDocument(document: DanmakuDocument) {
+         val version = synchronized(requestLock) {
++            check(!cacheMaintenance) { "弹幕缓存正在维护" }
++            check(!cacheMaintenance && !closed.get()) { "弹幕缓存正在维护" }
+             generation.incrementAndGet().also {
+                 loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()
+                 retireWebMaskSource()
+@@ -637,7 +683,7 @@
+ 
+     private fun installDocument(document: DanmakuDocument, version: Long, immediateLocalPhase:Any? = null) {
+         val (revision, processor) = synchronized(requestLock) {
+-            if (version != generation.get() || closed.get() || !currentOfflineDocumentOwned()) return
++            if (cacheMaintenance || version != generation.get() || closed.get() || !currentOfflineDocumentOwned()) return
+             if(immediateLocalPhase==null)originalLocalInjectionPhase=Any()
+             pluginJob?.cancel()
+             rawDocument = document.copy(serverDisabled = rawDocument.serverDisabled || document.serverDisabled)
+--- desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuWindowLoader.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuWindowLoader.kt
+@@ -41,6 +41,8 @@
+     private var special = DanmakuDocument()
+     private var commands = emptyList<CommandDanmakuItem>()
+     private var metadataWarning: String? = null
++
++    internal fun cachedBytes(): Long = synchronized(cache) {cacheBytes}
+ 
+     fun windowForPosition(positionMs: Long) = segmentWindowForPosition(positionMs, totalSegments)
+ 
+--- desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt
+@@ -48,5 +48,8 @@
+         entries.keys.removeAll { it.accountEpoch == epoch && it.bvid == bvid && it.cid == cid }
+     }
+ 
++    /** Same estimate as original PlayUrl cache UI; runtime memory estimate, never disk bytes. */
++    @Synchronized fun estimatedBytes(): Long = entries.size * 2048L
++
+     @Synchronized fun clear() = entries.clear()
+ }
+--- desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt
+@@ -526,6 +526,16 @@
+         client.dispatcher.cancelAll()
+         resetAuthenticationCaches()
+     }
++    internal fun storagePlaybackMemoryBytes(): Long = playbackCache.estimatedBytes()
++    internal fun clearStoragePlaybackCache(checkRequest: () -> Unit) {
++        checkRequest();synchronized(playbackProtocolMonitor) { appApiCooldownUntilMs=0L;lastPlayback412Time=0L }
++        playbackCache.clear();com.android.purebilibili.core.cooldown.PlaybackCooldownManager.clearAll();checkRequest()
++    }
++    /** Cache only. Visitor/session/cookies and selected playback authorization stay untouched. */
++    internal fun invalidateStorageWbi(checkRequest: () -> Unit) {
++        checkRequest();synchronized(playbackProtocolMonitor) { wbiKeys=null;wbiExpiresAt=0L;wbiGeneration=-1L };checkRequest()
++    }
++
+     private fun resetAuthenticationCaches() {
+         visitorInitialized = false
+         synchronized(playbackProtocolMonitor) {
+--- desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -222,6 +222,7 @@
+     val scope = rememberCoroutineScope()
+     // App/window reference, independent of drawing, section and account MID.
+     val homeRootRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<DesktopReadyOriginalRootHandle?>() }
++    val storageOwnerRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<com.bilipai.desktop.settings.DesktopStorageSettingsOwner?>() }
+     val ordinaryVideoRef = remember(repository, pluginStore) {
+         java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoShellOwner?>()
+     }
+@@ -320,6 +321,7 @@
+     val pluginRuntime = remember(pluginStore, diagnosticLifecycle, dynamicCache, imageSaveLifetime) {
+         DesktopPluginRuntime(pluginStore, repository, community, discovery,
+             beforeStoreFreeze = {
++                storageOwnerRef.getAndSet(null)?.shutdownForRestore()
+                 drainOriginalVideo()
+                 homeRootRef.getAndSet(null)?.closeAndJoin()
+                 withContext(Dispatchers.IO) { applicationImages.close() }
+@@ -375,7 +377,14 @@
+     var castAccountEpoch by remember(repository) { mutableLongStateOf(repository.sessionEpoch) }
+     val eyePlaybackActive = remember { MutableStateFlow(false) }
+     var eyePaint by remember { mutableStateOf(DesktopEyePaint(0f, 0f)) }
+-    val downloads = remember(repository) { DesktopDownloadManager(repository) }
++    val storageSettingsContext=remember(globalPluginContext,imageSaveLifetime) {
++        DesktopOriginalPlayerSettingsContext(globalPluginContext,imageSaveLifetime::isActive,imageSaveLifetime::withCommit)
++    }
++    val downloads = remember(repository,storageSettingsContext) { DesktopDownloadManager(repository) {
++        val raw=(storageSettingsContext.pluginContext.store.preferences("settings")["download_path"] as? kotlinx.serialization.json.JsonPrimitive)?.takeIf { it.isString }?.content
++        storageSettingsContext.requireCurrent()
++        resolveDesktopOriginalDownloadDestination(raw,DesktopDownloadManager.defaultDownloadRoot())
++    } }
+     val danmaku = remember(player, repository, hostWindow) { player?.let { DanmakuOverlay(it, renderPlatform = com.bilipai.desktop.danmaku.DesktopWindowsDanmakuRenderPlatform { requireNotNull(hostWindow) { "Danmaku requires the mounted Root window" } }, httpClient = repository.httpClient) } }
+     val subtitleAssets = remember(repository) { DesktopSubtitleAssets(repository.httpClient) }
+     val ordinaryVideo = remember(repository, pluginStore, scope) {
+@@ -538,6 +547,27 @@
+             expectedSha256 = DesktopNativeDiagnosticShareAssetHash.sha256,
+             window = { hostWindow })
+     }
++    val storageOwner=remember(storageSettingsContext,repository,applicationImages,subtitleAssets,danmaku,player,nativeTextShare) {
++        com.bilipai.desktop.settings.DesktopStorageSettingsOwner(storageSettingsContext,repository,applicationImages,
++            {ordinaryVideoResourcesRef.get()?.mediaCache},subtitleAssets,danmaku,player,diagnostics,nativeTextShare,
++            { (homeRootRef.get()?.retainer?.current()?.entry?.embeddedPages as? DesktopOriginalHomeEmbeddedAggregate)?.gallery?.shareFiles },
++            { val captured=homeRootRef.get()?.retainer?.current()?.entry
++              if(captured==null)null else ({homeRootRef.get()?.retainer?.current()?.entry===captured && captured.gate.owns()}) },
++            imageSaveLifetime::isActive)
++    }
++    SideEffect { if(storageOwner.isActive())storageOwnerRef.compareAndSet(null,storageOwner) }
++    var storageStartupReady by remember(storageOwner) { mutableStateOf(false) }
++    LaunchedEffect(storageOwner,ordinaryVideoResources) {
++        if(ordinaryVideoResources!=null) {
++            try { storageOwner.clearAutomaticallyAtStartup() }
++            catch(cancelled:CancellationException) {
++                if(!currentCoroutineContext().isActive)throw cancelled
++                ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback("启动缓存清理已因所有者变更中止，未清理文件已保留"))
++            }
++            catch(failure:Exception) { ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(failure.message ?: "启动缓存清理失败，已保留未清理文件")) }
++            finally { if(currentCoroutineContext().isActive && storageOwner.isActive())storageStartupReady=true }
++        }
++    }
+     val rootTextShareBindings = remember(nativeTextShare) {
+         DesktopTextShareBindings { title, text, owned ->
+             nativeTextShare.share(title, text) { owned() && !isClosing() }
+@@ -554,6 +584,7 @@
+     DisposableEffect(nativeTextShare) { onDispose { nativeTextShare.close() } }
+     val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement, diagnosticLifecycle, nativeTextShare) {
+         DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {
++            storageOwnerRef.getAndSet(null)?.shutdownForRestore()
+             drainOriginalVideo()
+             homeRootRef.getAndSet(null)?.closeAndJoin()
+             withContext(Dispatchers.IO) { applicationImages.close() }
+@@ -574,6 +605,7 @@
+     SideEffect {
+         registerShutdown?.invoke {
+             withContext(NonCancellable) {
++                storageOwnerRef.getAndSet(null)?.shutdownForRestore()
+                 drainOriginalVideo()
+                 homeRootRef.getAndSet(null)?.closeAndJoin()
+                 withContext(Dispatchers.IO) { applicationImages.close() }
+@@ -1460,7 +1492,7 @@
+                         physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library,
+                     { root -> originalNowPlayingFor(root,listen).binding },
+                     { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) })
+-                DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences ->
++                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences ->
+                     val messageRoutes = commands as DesktopOriginalRootRouteAssembly
+                     val messageLink: (String) -> Unit = { raw ->
+                         if (active) messageRoutes.callbackFor(entryKey) {
+@@ -1720,6 +1752,15 @@
+                                 backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,
+                                     initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
+                                 blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { loginDialog = true }) },
++                                storageContent = { target ->
++                                    val imagePath by imageSavePreferences.getImageSaveTreeUri().collectAsState(imageSavePreferences.getImageSaveTreeUriSync())
++                                    com.bilipai.desktop.settings.DesktopStorageSettings(storageOwner,imagePath,target,
++                                        chooseDirectory = { selectDynamicSaveDirectory(hostWindow,"选择新任务的下载目录") },
++                                        openDetail = { settingsNavigator.openDetail(it,null) },
++                                        onFailure = { error=it.message ?: "存储设置处理失败" },
++                                        onMessage = { imageSaveMessage=it })
++                                    imageSaveMessage?.let { Text(it,Modifier.padding(12.dp)) }
++                                },
+                                 imageSavePathContent = { openInitially ->
+                                     DesktopImageSavePathSettings(imageSavePreferences, scope,
+                                         chooseDirectory = { selectDynamicSaveDirectory(hostWindow, "选择图片目录") },
+--- desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt
+@@ -192,6 +192,9 @@
+         Files.write(target,buildExport().toByteArray(Charsets.UTF_8),StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE)
+         target
+     })
++    internal suspend fun cacheBytes():Long = await(submit {
++        privatePaths().sumOf { path -> ensurePrivateFile(path);if(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS))Files.size(path) else 0L }
++    })
+     suspend fun clearAll():Unit {
+         val action:suspend ()->Unit={ await(submit {
+             nativeShareCache.clearExplicit()
+--- desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt
+@@ -27,9 +27,18 @@
+     private val sourceResolver: (suspend (DownloadTask) -> PlaybackSource?)? = null,
+     private val danmakuDownloader: (suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?>)? = null,
+     private val publication: com.bilipai.desktop.player.DesktopPlaybackPublication,
++    private val defaultDestination: () -> Path = Companion::defaultDownloadRoot,
+ ) : AutoCloseable {
+     constructor(repository: DesktopRepository) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),
+         defaultSourceResolver(repository), defaultDanmakuDownloader(repository), com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository))
++
++    constructor(repository: DesktopRepository, defaultDestination: () -> Path) : this(repository.playbackHttpClient,
++        defaultStateFile(), WindowsFfmpegMuxer(), defaultSourceResolver(repository), defaultDanmakuDownloader(repository),
++        com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository), defaultDestination)
++
++    /** Future admissions only. An explicit original task directory wins; queued roots never migrate. */
++    internal fun destinationFor(explicit: String? = null): Path =
++        com.bilipai.desktop.ui.resolveDesktopOriginalDownloadDestination(explicit, defaultDestination())
+ 
+     private val json = Json { ignoreUnknownKeys = true; prettyPrint = true }
+     private val serializer = ListSerializer(DownloadTask.serializer())
+@@ -43,7 +52,7 @@
+ 
+     init { synchronized(lock) { scheduleLocked() } }
+ 
+-    fun enqueue(source: PlaybackSource, destination: Path = defaultDownloadRoot(), metadata: DownloadMetadata = DownloadMetadata(), stillOwned: () -> Boolean = { true }): String {
++    fun enqueue(source: PlaybackSource, destination: Path = destinationFor(), metadata: DownloadMetadata = DownloadMetadata(), stillOwned: () -> Boolean = { true }): String {
+         publication.admit(source, stillOwned) { Unit }
+         val task = prepareDownloadTask(source, destination, metadata)
+         ensureOwnedDirectory(task) // filesystem work is outside the Store monitor
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt
+@@ -45,6 +45,7 @@
+     private val registrations = ConcurrentHashMap<String, DesktopMediaByteLease>()
+     private val bindings = ConcurrentHashMap.newKeySet<DesktopMediaByteLease>()
+     private val lifetimeMonitor = Any()
++    private var clearing = false
+     private val resourceLocks = Array(64) { Mutex() }
+     private val server = Loopback()
+     init {
+@@ -62,7 +63,7 @@
+         bindings.filter { !it.current() }.forEach { it.markRetired();cleanupLater(it) }
+         val lease=DesktopMediaByteLease(this,admission)
+         synchronized(lifetimeMonitor) {
+-            check(!closed.get());lease.requireLocallyLive()
++            check(!closed.get() && !clearing) { "媒体缓存正在维护" };lease.requireLocallyLive()
+             require(bindings.size<128) { "Too many live media bindings" }
+             bindings+=lease
+         }
+@@ -76,7 +77,7 @@
+         }
+         val token = UUID.randomUUID().toString().replace("-", "") + UUID.randomUUID().toString().replace("-", "")
+         synchronized(lifetimeMonitor) {
+-            check(!closed.get());lease.requireLocallyLive()
++            check(!closed.get() && !clearing) { "媒体缓存正在维护" };lease.requireLocallyLive()
+             require(registrations.size < 64) { "Too many live media registrations" }
+             registrations[token] = lease;lease.token = token
+         }
+@@ -88,6 +89,14 @@
+     fun stats(): DesktopMediaByteCacheStats {
+         val (bytes, spans) = store.stats()
+         return DesktopMediaByteCacheStats(upstream.get(), cacheReads.get(), bytes, spans, registrations.size)
++    }
++    /** Settings never retires playback. Same actor denies new binds/registration while its idle index clears. */
++    internal suspend fun clearIdle(checkRequest: () -> Unit) = withContext(Dispatchers.IO) {
++        checkRequest()
++        synchronized(lifetimeMonitor) {
++            check(!closed.get() && !clearing);require(bindings.isEmpty() && registrations.isEmpty()) { "正在播放的媒体缓存不能清理" };clearing=true
++        }
++        try { store.clearIdle(checkRequest) } finally { synchronized(lifetimeMonitor) { clearing=false } }
+     }
+     suspend fun clear(admission: DesktopMediaByteAdmission) {
+         admission.check()
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteSpanStore.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteSpanStore.kt
+@@ -25,19 +25,22 @@
+     private val garbage = mutableMapOf<Path, Long>()
+     private var diskBytes = 0L
+     private var closed = false
++    private var clearing = false
++    private val reservations = mutableSetOf<Reservation>()
+ 
+     init {
+         require(limit in 1024L..(128L * 1024 * 1024))
++        var ancestor=directory
++        while(!Files.exists(ancestor,java.nio.file.LinkOption.NOFOLLOW_LINKS))ancestor=requireNotNull(ancestor.parent)
++        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(ancestor)
+         Files.createDirectories(directory)
+-        require(!Files.isSymbolicLink(directory))
++        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(directory)
+         Files.list(directory).use { paths -> paths.forEach { path ->
+             if (Files.isRegularFile(path) && !Files.isSymbolicLink(path)) {
+                 val size = Files.size(path)
+                 val span = runCatching { readHeader(path, size) }.getOrNull()
+                 if (span != null && diskBytes <= limit - size) { spans += span; diskBytes += size }
+-                else {
+-                    diskBytes += size; garbage[path] = size
+-                }
++                // Unknown/corrupt files are not owned by this index and are never deleted.
+             }
+         } }
+         cleanGarbage()
+@@ -45,7 +48,8 @@
+     }
+ 
+     private fun readHeader(path: Path, size: Long): Span? {
+-        if (!path.fileName.toString().endsWith(".span")) return null
++        if (!path.fileName.toString().matches(Regex("[0-9a-fA-F-]{36}\\.span"))) return null
++        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)
+         RandomAccessFile(path.toFile(), "r").use { input ->
+             require(input.readInt() == MAGIC)
+             val id = input.readUTF(); require(id.matches(Regex("[a-f0-9]{64}")))
+@@ -97,7 +101,7 @@
+ 
+     fun open(id: String, position: Long): Reader? {
+         val span = synchronized(monitor) {
+-            if (closed) throw IOException("Media cache closed")
++            if (closed || clearing) throw IOException("Media cache closed or clearing")
+             spans.firstOrNull { it.id == id && position >= it.start && position < it.start + it.length }
+                 ?.also { it.users++; it.used = System.nanoTime() }
+         } ?: return null
+@@ -115,10 +119,10 @@
+         cleanGarbage()
+         while (true) {
+             val victim = synchronized(monitor) {
+-                if (closed) throw IOException("Media cache closed")
++                if (closed || clearing) throw IOException("Media cache closed or clearing")
+                 if (diskBytes <= limit - charge) {
+                     diskBytes += charge
+-                    return Reservation(directory.resolve(UUID.randomUUID().toString() + ".part"), charge)
++                    return Reservation(directory.resolve(UUID.randomUUID().toString() + ".part"), charge).also { reservations += it }
+                 }
+                 spans.filter { it.users == 0 }.minByOrNull { it.used }?.also {
+                     spans.remove(it); garbage[it.path] = it.diskSize
+@@ -152,10 +156,10 @@
+             }
+             admit {
+                 synchronized(monitor) {
+-                    if (closed) throw IOException("Media cache closed")
++                    if (closed || clearing) throw IOException("Media cache closed or clearing")
+                     check(!reservation.released)
+                     diskBytes -= reservation.charged - actualSize
+-                    reservation.released = true; spans += candidate
++                    reservation.released = true; reservations.remove(reservation); spans += candidate
+                 }
+             }
+         } catch (failure: Throwable) {
+@@ -174,6 +178,7 @@
+         synchronized(monitor) {
+             if (!reservation.released) {
+                 reservation.released = true
++                reservations.remove(reservation)
+                 if (deleted) diskBytes -= reservation.charged
+                 else {
+                     garbage[remainingPath] = reservation.charged
+@@ -188,11 +193,25 @@
+     }
+     private fun deleteGarbage(path: Path) {
+         try {
++            require(path.toAbsolutePath().normalize().parent==directory)
++            if(Files.exists(path,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
++                com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)
++                require(Files.isRegularFile(path,java.nio.file.LinkOption.NOFOLLOW_LINKS))
++            }
+             Files.deleteIfExists(path)
+             synchronized(monitor) { garbage.remove(path)?.let { diskBytes -= it } }
+         } catch (_: IOException) { /* remains charged; do not exceed budget */ }
+     }
+ 
++    /** Same index exclusion; refuses pending reservations/readers even after their outer lease retired. */
++    internal fun clearIdle(checkRequest: () -> Unit) {
++        checkRequest()
++        synchronized(monitor) {
++            check(!closed && !clearing);require(reservations.isEmpty() && spans.none { it.users != 0 }) { "媒体缓存仍有后台写入或读取" }
++            clearing=true
++        }
++        try { checkRequest();clear();checkRequest() } finally { synchronized(monitor) { clearing=false } }
++    }
+     fun clear() {
+         synchronized(monitor) {
+             require(spans.none { it.users != 0 }) { "Media cache readers must close before clear" }
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopSubtitleAssets.kt
+@@ -31,12 +31,15 @@
+     private val fileCues = mutableMapOf<Path, List<SubtitleCue>>()
+     private val calls = mutableSetOf<Call>()
+     private var closed = false
++    private var activeImports = 0
+ 
+     suspend fun import(track: SubtitleTrackMeta): Path = import(track, client)
+ 
+     /** Same application-owned files/document/cancellation; caller supplies the
+      * already captured Repository Call.Factory. This creates no downloader/client. */
+     internal suspend fun import(track: SubtitleTrackMeta, ownedCalls: Call.Factory): Path = withContext(Dispatchers.IO) {
++        synchronized(files) {check(!closed);activeImports++}
++        try {
+         require(isTrustedBilibiliSubtitleUrl(track.subtitleUrl)) { "服务器字幕地址不受支持" }
+         val url = normalizeBilibiliSubtitleUrl(track.subtitleUrl)
+         val digest = MessageDigest.getInstance("SHA-256").digest(url.toByteArray()).joinToString("") { "%02x".format(it) }
+@@ -74,6 +77,7 @@
+             }
+             file
+         } finally { synchronized(files) { calls.remove(call) } }
++        } finally { synchronized(files) {activeImports--} }
+     }
+ 
+     /** The original parsed cue list is retained with its application-owned native file. */
+@@ -113,6 +117,24 @@
+         })
+     }
+ 
++    internal fun cacheSizes(): Pair<Long,Long> = synchronized(files) {
++        files.sumOf { if(Files.isRegularFile(it))Files.size(it) else 0L } to
++            fileCues.values.sumOf { cues -> cues.sumOf { cue -> cue.content.length*2L + cue.words.sumOf { word -> word.text.length*2L+24L }+32L } }
++    }
++    /** Caller holds the actual native idle-maintenance lease. No in-flight import may publish here. */
++    internal fun clearIdle(checkRequest: () -> Unit) = synchronized(files) {
++        checkRequest();check(!closed);require(calls.isEmpty() && activeImports==0) { "字幕仍在下载或提交，请稍后重试" }
++        val ownedFiles=files.toList()
++        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(directory)
++        ownedFiles.forEach { path ->
++            require(path.toAbsolutePath().normalize().parent==directory.toAbsolutePath().normalize())
++            if(Files.exists(path,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {
++                com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)
++                require(Files.isRegularFile(path,java.nio.file.LinkOption.NOFOLLOW_LINKS))
++            }
++        }
++        ownedFiles.forEach { path -> checkRequest();Files.deleteIfExists(path);files.remove(path);fileCues.remove(path) }
++    }
+     override fun close() {
+         val pending = synchronized(files) {
+             if (closed) return
+--- desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt
+@@ -42,6 +42,8 @@
+     @Volatile private var session: Session? = null
+     private var attachedWindowId: Long? = null
+     private var requestedSource: PlaybackSource? = null
++    private var idleCacheMaintenance: Any? = null
++    private val retiringCacheSessions=mutableSetOf<Session>()
+     private var requestedLoadMute: Boolean? = null
+     private var sourceVersion = 0L
+     private var playbackRevision = 0L
+@@ -89,6 +91,27 @@
+     /** Ownership without copying or exposing any stream credentials. A closed/idle player has no owner. */
+     fun ownsSourceVersion(version: Long): Boolean = synchronized(lock) { !closed.get() && requestedSource != null && sourceVersion == version }
+ 
++    /** Same native-owner exclusion. The actor waits for idle-active after queued Stop before cache IO. */
++    internal suspend fun <T> withIdleCacheMaintenance(checkRequest: () -> Unit, block: suspend () -> T): T {
++        checkRequest();val token=Any();val completion=CompletableDeferred<Boolean>()
++        val retired=synchronized(lock) {
++            check(!closed.get());require(requestedSource==null && idleCacheMaintenance==null) { "请先停止播放再清理字幕、弹幕或临时文件" }
++            idleCacheMaintenance=token
++            val active=session
++            if(active==null)completion.complete(true)
++            else if(active.closing.get())completion.complete(false)
++            else active.commands.offer(Action.IdleCacheBarrier(token,completion))
++            retiringCacheSessions.toList()
++        }
++        try { check(withTimeout(3_000L) { retired.forEach {it.cacheTerminated.await()};completion.await() }) { "原生播放器尚未停止" };checkRequest();return block() }
++        finally { completion.cancel();synchronized(lock) {
++            if(idleCacheMaintenance===token) {
++                idleCacheMaintenance=null
++                if(!closed.get() && session==null)attachedWindowId?.let {startSession(it)}
++            }
++        } }
++    }
++
+     /** Internal casting transport only. Credentials remain in memory and must never be placed in a LAN URL or diagnostics. */
+     internal fun currentSourceSnapshot(): OwnedPlaybackSourceSnapshot? = synchronized(lock) {
+         if (closed.get()) null else requestedSource?.let { source ->
+@@ -164,6 +187,7 @@
+     private fun load(source: PlaybackSource, preserveSubtitles: Boolean, startMuted: Boolean? = null) {
+         synchronized(lock) {
+             check(!closed.get()) { "Player is closed" }
++            check(idleCacheMaintenance==null) { "播放器缓存正在清理，请稍后重试" }
+             // Validate and freeze caller-owned maps before transferring media ownership.
+             val retainedSource = source.immutableSnapshot()
+             val previousTransport = requestedSource?.nativeTransport
+@@ -338,7 +362,7 @@
+             require('\u0000' !in it.nativeTitle && '\u0000' !in it.track.lan) { "Subtitle metadata contains a NUL character." }
+         }
+         return synchronized(lock) {
+-            if (closed.get() || requestedSource == null || sourceVersion != expectedSourceVersion ||
++            if (closed.get() || idleCacheMaintenance!=null || requestedSource == null || sourceVersion != expectedSourceVersion ||
+                 subtitleControlVersion != expectedControlVersion) return@synchronized false
+             val normalizedMode = com.android.purebilibili.feature.video.subtitle.normalizeSubtitleDisplayMode(
+                 mode, primary != null, secondary != null)
+@@ -423,7 +447,7 @@
+         require(Files.isRegularFile(file)) { "Subtitle file does not exist." }
+         require(listOf(title, language).none { '\u0000' in it }) { "Invalid subtitle metadata." }
+         synchronized(lock) {
+-            check(!closed.get() && requestedSource != null) { "No video selected." }
++            check(!closed.get() && idleCacheMaintenance==null && requestedSource != null) { "No video selected or cache maintenance active." }
+             subtitleControlVersion++
+             val path = file.toAbsolutePath().normalize()
+             if (select) externalSubtitles.replaceAll { if (it.selection == 0) it.copy(selection = null) else it }
+@@ -487,6 +511,7 @@
+     /** Headless Compose texture transport; owns the SAME normal session/event loop and mpv instance. */
+     internal fun startSoftwareTransport() = synchronized(lock) {
+         check(softwareTarget != null) { "A software render target is required" }
++        check(idleCacheMaintenance==null) { "Cache maintenance is active" }
+         check(!closed.get()) { "Player is closed" }
+         if (session == null) startSession(0L)
+     }
+@@ -504,6 +529,7 @@
+     }
+ 
+     private fun startSession(windowId: Long) {
++        if(idleCacheMaintenance!=null)return
+         mutableDecoderCapabilities.value = null
+         mutableVideoOutput.value = PlayerVideoOutputState(sourceVersion = sourceVersion)
+         val next = Session(windowId, requestedSource, sourceVersion, playbackRevision, requestedLoadMute)
+@@ -520,7 +546,7 @@
+                     startPaused = snapshot.paused)
+             }
+             mutableDecoderCapabilities.value = null
+-            session.also { session = null; it?.closing?.set(true) }
++            session.also { session = null; it?.closing?.set(true);if(it!=null)retiringCacheSessions.add(it) }
+         }
+         // Shutdown must finish while the HWND is still alive. mpv does not
+         // call the AWT event thread, so this wait cannot create an EDT cycle.
+@@ -563,6 +589,7 @@
+         data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean,
+             val admissionSource: PlaybackSource? = null) : Action
+         data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>, val owned:OwnedPlaybackSourceSnapshot?=null, val revision:Long?=null) : Action
++        data class IdleCacheBarrier(val token: Any, val completion: CompletableDeferred<Boolean>) : Action
+         data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action
+     }
+ 
+@@ -572,6 +599,10 @@
+         private val initialRevision: Long, private val initialMuted: Boolean?) {
+         val commands = LinkedBlockingQueue<Action>()
+         val closing = AtomicBoolean(false)
++        val cacheTerminated=CompletableDeferred<Unit>()
++        // Worker-owned: Stop is asynchronous even after mpv_command returns. Keep the
++        // barrier armed while this same event loop advances mpv's unload events.
++        private var pendingIdleCacheBarrier: Action.IdleCacheBarrier? = null
+         val thread = Thread(::run, "BiliPai-native-player").apply { isDaemon = true }
+         private var sectionFlipHorizontal=false
+         private var sectionFlipVertical=false
+@@ -660,6 +691,7 @@
+                     var action = commands.poll()
+                     while (action != null) {
+                         if (closing.get()) {
++                            if (action is Action.IdleCacheBarrier) action.completion.complete(false)
+                             if (action is Action.Screenshot) action.completion.completeExceptionally(IllegalStateException("Player stopped before the screenshot was saved."))
+                             break
+                         }
+@@ -674,18 +706,24 @@
+                         refreshState(native, handle)
+                         lastPoll = now
+                     }
++                    advanceIdleCacheBarrier(native, handle)
+                 }
+             } catch (failure: Throwable) {
+                 if (!closing.get()) fatalFailure = failure
+             } finally {
++                pendingIdleCacheBarrier?.completion?.complete(false)
++                pendingIdleCacheBarrier = null
+                 while (true) {
+                     val pending = commands.poll() ?: break
++                    if(pending is Action.IdleCacheBarrier)pending.completion.complete(false)
+                     if (pending is Action.Screenshot) pending.completion.completeExceptionally(IllegalStateException("Player stopped before the screenshot was saved."))
+                 }
+                 // The render context/thread MUST terminate before its core. Never call render APIs from this client worker.
+                 try { softwareRenderer?.close() }
+                 finally { if (native != null && handle != null) native.mpv_terminate_destroy(handle) }
++                cacheTerminated.complete(Unit)
+                 synchronized(lock) {
++                    retiringCacheSessions.remove(this)
+                     if (session === this) {
+                         session = null
+                         mutableDecoderCapabilities.value = null
+@@ -699,9 +737,39 @@
+             }
+         }
+ 
++        private fun advanceIdleCacheBarrier(native: MpvNative, handle: Pointer) {
++            val pending = pendingIdleCacheBarrier ?: return
++            if (pending.completion.isCompleted) {
++                pendingIdleCacheBarrier = null
++                return
++            }
++            fun stillOwned(): Boolean = synchronized(lock) {
++                !closed.get() && session === this && !closing.get() &&
++                    requestedSource == null && idleCacheMaintenance === pending.token
++            }
++            if (!stillOwned()) {
++                pendingIdleCacheBarrier = null
++                pending.completion.complete(false)
++                return
++            }
++            // Native property/event progression belongs to this worker, outside lock.
++            // A false idle-active means keep polling, never await our own event loop.
++            try {
++                val idle = property(native, handle, "idle-active") == "yes"
++                val owned = stillOwned()
++                if (!owned || idle) {
++                    pendingIdleCacheBarrier = null
++                    pending.completion.complete(owned && idle)
++                }
++            } catch (failure: Exception) {
++                pendingIdleCacheBarrier = null
++                pending.completion.completeExceptionally(failure)
++            }
++        }
++
+         private fun perform(native: MpvNative, handle: Pointer, action: Action) {
+             try {
+-                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.OwnedMute && action !is Action.OwnedVideoViewport &&
++                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.IdleCacheBarrier && action !is Action.OwnedMute && action !is Action.OwnedVideoViewport &&
+                     !(action is Action.Seek && action.admissionSource != null)) publishState { it.copy(operationError = null) }
+                 when (action) {
+                     is Action.Load -> {
+@@ -838,6 +906,10 @@
+                         if(!allowed) action.completion.cancel(kotlinx.coroutines.CancellationException("Screenshot source changed before capture"))
+                         else saveScreenshot(native, handle, action)
+                     }
++                    is Action.IdleCacheBarrier -> {
++                        pendingIdleCacheBarrier?.completion?.complete(false)
++                        pendingIdleCacheBarrier = action
++                    }
+                     is Action.Barrier -> action.completion.complete(synchronized(lock) {
+                         session === this && !closing.get() && sourceVersion == action.version &&
+                             playbackRevision == action.revision && activeSourceVersion == action.version &&
+@@ -845,6 +917,7 @@
+                     })
+                 }
+             } catch (failure: Exception) {
++                if(action is Action.IdleCacheBarrier) {action.completion.completeExceptionally(failure);return}
+                 if (action is Action.Screenshot) {
+                     action.completion.completeExceptionally(failure)
+                     return
+--- desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt
+@@ -101,10 +101,20 @@
+      * fsync and replacement all run outside Root admission. Only permit minting enters Root.
+      */
+     internal fun <T> updateOriginalFromSnapshot(
++        name: String, checkRequest: () -> Unit,
++        acquirePermit: () -> OriginalPreferenceWritePermit,
++        edit: (DesktopPreferenceSnapshot) -> Pair<T, Map<String, JsonElement?>>,
++    ): T = updateOriginalNamespacesFromSnapshot(name, checkRequest, acquirePermit) { snapshot ->
++        val (result, changes) = edit(snapshot)
++        result to mapOf(name to changes)
++    }
++
++    /** Same sole backing/CAS/permit. Canonical storage + original sync mirror replace as one file. */
++    internal fun <T> updateOriginalNamespacesFromSnapshot(
+         name: String,
+         checkRequest: () -> Unit,
+         acquirePermit: () -> OriginalPreferenceWritePermit,
+-        edit: (DesktopPreferenceSnapshot) -> Pair<T, Map<String, JsonElement?>>,
++        edit: (DesktopPreferenceSnapshot) -> Pair<T, Map<String, Map<String, JsonElement?>>>,
+     ): T {
+         while (true) {
+             checkRequest()
+@@ -116,15 +126,17 @@
+             val current = snapshot[name] as? JsonObject ?: JsonObject(emptyMap())
+             val (result, edits) = edit(DesktopPreferenceSnapshot(current))
+             checkRequest()
+-            val updated = current.toMutableMap()
+-            edits.forEach { (key, value) -> if (value == null) updated.remove(key) else updated[key] = value }
+-            if (name == "plugin_prefs") {
+-                updated["plugin_config_bilipai_feed_filter"]?.let { value ->
++            val updates = edits.mapValues { (namespace, changes) ->
++                require(snapshot[namespace] == null || snapshot[namespace] is JsonObject) { "设置命名空间格式无效" }
++                val values = (snapshot[namespace] as? JsonObject ?: JsonObject(emptyMap())).toMutableMap()
++                changes.forEach { (key, value) -> if (value == null) values.remove(key) else values[key] = value }
++                if (namespace == "plugin_prefs") values["plugin_config_bilipai_feed_filter"]?.let { value ->
+                     val encoded = (value as? JsonPrimitive)?.takeIf { it.isString }?.content ?: error("推荐流过滤配置格式无效")
+                     validateFeedFilter(json.decodeFromString<BiliPaiFeedFilterConfig>(encoded))
+                 }
+-            }
+-            val next = JsonObject(snapshot.toMutableMap().apply { put(name, JsonObject(updated)) })
++                JsonObject(values)
++            }
++            val next = JsonObject(snapshot.toMutableMap().apply { putAll(updates) })
+             Files.createDirectories(backing.root)
+             val temporary = Files.createTempFile(backing.root, "plugin-settings-", ".tmp")
+             try {
+@@ -141,10 +153,10 @@
+                             Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)
+                         }
+                         backing.document = next
+-                        backing.snapshots[name]?.value = DesktopPreferenceSnapshot(JsonObject(updated))
+-                        if (name == "plugin_prefs") {
++                        updates.forEach { (namespace, values) -> backing.snapshots[namespace]?.value = DesktopPreferenceSnapshot(values) }
++                        updates["plugin_prefs"]?.let { values ->
+                             backing.feedFilterConfig.value = decodeFeedFilter(next)
+-                            backing.feedFilterEnabled.value = updated["plugin_enabled_bilipai_feed_filter"]?.jsonPrimitive?.booleanOrNull ?: false
++                            backing.feedFilterEnabled.value = values["plugin_enabled_bilipai_feed_filter"]?.jsonPrimitive?.booleanOrNull ?: false
+                         }
+                         true
+                     }
+--- desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt
+@@ -30,6 +30,7 @@
+     backupContent: @Composable (target: SettingsSearchTarget, onDismiss: () -> Unit) -> Unit,
+     blockedListContent: @Composable () -> Unit,
+     systemContent: @Composable () -> Unit,
++    storageContent: @Composable (target: SettingsSearchTarget?) -> Unit,
+     imageSavePathContent: @Composable (openInitially: Boolean) -> Unit = {
+         AppText("图片保存位置设置仍在移植中。", Modifier.padding(12.dp))
+     },
+@@ -90,11 +91,7 @@
+                                             onCommentFraudHistoryClick = { boundary = "原版发评反诈历史的记录、复查和导入导出尚未移植。" })
+                                     }
+                                     SettingsRootCategory.STORAGE_BACKUP -> {
+-                                        SettingsStorageBackupCategoryEntrySection(
+-                                            onSettingsShareClick = { navigator.openDetail(SettingsSearchTarget.SETTINGS_SHARE, null) },
+-                                            onWebDavBackupClick = { navigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP, null) })
+-                                        imageSavePathContent(false)
+-                                        AppText("全局下载目录和原版缓存管理尚未完整移植。", Modifier.padding(vertical = 12.dp))
++                                        storageContent(null)
+                                     }
+                                     SettingsRootCategory.NAVIGATION_INTERACTION -> SettingsNavigationInteractionCategoryEntrySection(
+                                         onBottomBarClick = { navigator.openDetail(SettingsSearchTarget.BOTTOM_BAR,
+@@ -126,6 +123,7 @@
+                                     SettingsSearchTarget.PERMISSION -> AppText("Windows 权限状态与检查尚未接入，当前不能确认权限是否可用。", Modifier.padding(12.dp))
+                                     SettingsSearchTarget.MESSAGE_NOTIFICATION -> AppText("原版消息通知调度和 Windows 通知权限尚未接入。", Modifier.padding(12.dp))
+                                     SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()
++                                    SettingsSearchTarget.DOWNLOAD_PATH, SettingsSearchTarget.CLEAR_CACHE -> storageContent(page.target)
+                                     SettingsSearchTarget.IMAGE_SAVE_PATH -> imageSavePathContent(true)
+                                     else -> AppText("该原版设置页面仍在移植中。", Modifier.padding(12.dp))
+                                 }
+--- desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopStorageSettings.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopStorageSettings.kt
+@@ -0,0 +1,60 @@
++package com.bilipai.desktop.settings
++
++import androidx.compose.runtime.*
++import androidx.compose.material3.*
++import com.android.purebilibili.core.store.DesktopOriginalStorageSettings as SettingsManager
++import com.android.purebilibili.core.util.*
++import com.android.purebilibili.feature.settings.*
++import kotlinx.coroutines.*
++import java.nio.file.Path
++
++/** Original section/options/confirmation/animation. Windows chooser changes only future queue admission. */
++@Composable
++internal fun DesktopStorageSettings(
++    owner: DesktopStorageSettingsOwner, imagePath: String?, target: SettingsSearchTarget?,
++    chooseDirectory: suspend () -> Path?, openDetail: (SettingsSearchTarget) -> Unit,
++    onFailure: (Throwable) -> Unit, onMessage: (String) -> Unit,
++) {
++    val context=owner.context
++    val path by remember(context) { SettingsManager.getDownloadPath(context) }.collectAsState(null)
++    val interval by remember(context) { SettingsManager.getAutoCacheClearInterval(context) }.collectAsState(SettingsManager.AutoCacheClearInterval.NEVER)
++    val threshold by remember(context) { SettingsManager.getAutoCacheClearThresholdGb(context) }.collectAsState(SettingsManager.DEFAULT_AUTO_CACHE_CLEAR_THRESHOLD_GB)
++    var breakdown by remember(owner) { mutableStateOf<CacheUtils.CacheBreakdown?>(null) }
++    var showDirectory by remember(target) { mutableStateOf(target==SettingsSearchTarget.DOWNLOAD_PATH) }
++    var showClear by remember(target) { mutableStateOf(target==SettingsSearchTarget.CLEAR_CACHE) }
++    var selected by remember { mutableStateOf(resolveDefaultCacheClearTargets()) }
++    var progress by remember { mutableStateOf<CacheClearProgress?>(null) }
++    val scope=rememberCoroutineScope() // Disposal cancels accepted UI callers; physical owner drains before restore.
++    val latestFailure by rememberUpdatedState(onFailure)
++    val latestMessage by rememberUpdatedState(onMessage)
++    val latestChoose by rememberUpdatedState(chooseDirectory)
++    fun report(block: suspend () -> Unit) { scope.launch {
++        try { block() } catch(cancelled: CancellationException) { throw cancelled }
++        catch(failure: Exception) { if(owner.isActive())latestFailure(failure) }
++    } }
++    LaunchedEffect(owner) { try { breakdown=owner.breakdown() } catch(cancelled: CancellationException) {throw cancelled} catch(failure: Exception) {latestFailure(failure)} }
++    DesktopOriginalDataStorageSection(path,imagePath,breakdown?.format() ?: "计算中…",interval,threshold,
++        {openDetail(SettingsSearchTarget.SETTINGS_SHARE)}, {openDetail(SettingsSearchTarget.WEBDAV_BACKUP)},
++        {showDirectory=true}, {openDetail(SettingsSearchTarget.IMAGE_SAVE_PATH)}, { selected=resolveDefaultCacheClearTargets();showClear=true },
++        {next->report { owner.saveInterval(next) }},
++        {next->report { owner.saveThreshold(next) }})
++    if(showDirectory)AlertDialog(onDismissRequest={showDirectory=false},title={Text("下载目录")},
++        text={Text("当前目录：${path ?: com.bilipai.desktop.download.DesktopDownloadManager.defaultDownloadRoot()}\n只影响以后加入的任务，现有下载保持原位置。")},
++        confirmButton={TextButton(onClick={showDirectory=false;report {
++            val selectedDirectory=latestChoose() ?: return@report
++            currentCoroutineContext().ensureActive();owner.selectDownloadPath(selectedDirectory);latestMessage("已设置新任务的下载目录")
++        }}){Text("选择文件夹")}},
++        dismissButton={TextButton(onClick={showDirectory=false;report {owner.selectDownloadPath(null);latestMessage("已恢复默认下载目录")}}){Text("恢复默认")}})
++    if(showClear)CacheClearConfirmDialog(breakdown,resolveSelectedCacheSizeSummary(breakdown,selected),resolveCacheClearOptions(),selected,
++        {item,on->selected=if(on)selected+item else selected-item},
++        onConfirm={
++            val captured=selected.toSet();showClear=false
++            if(captured.isNotEmpty())report {
++                val before=owner.breakdown();progress=CacheClearProgress(0,1)
++                try { owner.clear(captured);val after=owner.breakdown();breakdown=after
++                    progress=CacheClearProgress(1,1,true,formatCacheClearBytes((before.reclaimableDiskSize-after.reclaimableDiskSize).coerceAtLeast(0)))
++                } catch(failure: Throwable) {progress=null;throw failure}
++            }
++        }, onDismiss={showClear=false})
++    progress?.let { CacheClearAnimationDialog(it) { if(it.isComplete)progress=null } }
++}
+--- desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopStorageSettingsOwner.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopStorageSettingsOwner.kt
+@@ -0,0 +1,146 @@
++package com.bilipai.desktop.settings
++
++import com.android.purebilibili.core.store.DesktopOriginalStorageSettings
++import com.android.purebilibili.core.store.FollowingCacheStore
++import com.android.purebilibili.core.util.*
++import com.android.purebilibili.feature.following.DesktopFollowingCacheContext
++import com.bilipai.desktop.data.DesktopRepository
++import com.bilipai.desktop.danmaku.DanmakuOverlay
++import com.bilipai.desktop.diagnostics.DesktopDiagnostics
++import com.bilipai.desktop.diagnostics.DesktopNativeTextShare
++import com.bilipai.desktop.download.DesktopDownloadManager
++import com.bilipai.desktop.player.DesktopSubtitleAssets
++import com.bilipai.desktop.player.MpvPlayer
++import com.bilipai.desktop.player.cache.DesktopMediaByteCache
++import com.bilipai.desktop.ui.*
++import com.bilipai.desktop.update.UpdateStorage
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.first
++import kotlinx.coroutines.sync.Mutex
++import kotlinx.coroutines.sync.withLock
++import kotlinx.serialization.json.JsonPrimitive
++import java.nio.file.Files
++import java.nio.file.LinkOption
++import java.nio.file.Path
++import java.util.concurrent.atomic.AtomicBoolean
++
++/** Transient physical Window settings orchestration. Every byte/cache/preferences owner is supplied
++ * by the real Root. The mutex drains accepted maintenance before restore, without owning cache state. */
++internal class DesktopStorageSettingsOwner(
++    val context: DesktopOriginalPlayerSettingsContext,
++    private val repository: DesktopRepository,
++    private val images: DesktopApplicationImageLoader,
++    private val media: () -> DesktopMediaByteCache?,
++    private val subtitle: DesktopSubtitleAssets,
++    private val danmaku: DanmakuOverlay?,
++    private val player: MpvPlayer?,
++    private val diagnostics: DesktopDiagnostics?,
++    private val nativeShare: DesktopNativeTextShare,
++    private val sharePool: () -> DesktopVideoShareFiles?,
++    private val captureEntryOwnership: () -> (() -> Boolean)?,
++    private val windowOwned: () -> Boolean,
++) {
++    private val closed=AtomicBoolean()
++    private val startup=AtomicBoolean()
++    private val operations=Mutex()
++    fun isActive()= !closed.get() && windowOwned()
++    private fun requireActive() { if(!isActive())throw CancellationException("存储设置窗口已结束") }
++    fun defaultDestination(): Path {
++        requireActive();context.requireCurrent()
++        val value=(context.pluginContext.store.preferences("settings")["download_path"] as? JsonPrimitive)?.takeIf { it.isString }?.content
++        return resolveDesktopOriginalDownloadDestination(value,DesktopDownloadManager.defaultDownloadRoot())
++    }
++    suspend fun saveInterval(value: DesktopOriginalStorageSettings.AutoCacheClearInterval) = exclusive(requireEntry=false) { checkRequest ->
++        checkRequest();DesktopOriginalStorageSettings.setAutoCacheClearInterval(context,value);checkRequest()
++    }
++    suspend fun saveThreshold(value: Int) = exclusive(requireEntry=false) { checkRequest ->
++        checkRequest();DesktopOriginalStorageSettings.setAutoCacheClearThresholdGb(context,value);checkRequest()
++    }
++    suspend fun selectDownloadPath(selected: Path?) = exclusive(requireEntry=false) { checkRequest ->
++        val path=selected?.let {
++            require(it.isAbsolute) { "请选择绝对 Windows 下载目录" }
++            val normalized=it.toAbsolutePath().normalize()
++            UpdateStorage.existingPathWithoutLinks(normalized)
++            require(Files.isDirectory(normalized,LinkOption.NOFOLLOW_LINKS)) { "请选择普通文件夹" }
++            normalized
++        }
++        checkRequest()
++        // Both original canonical keys and synchronous mirrors publish in one actual Store replacement.
++        withContext(Dispatchers.IO) {
++            context.pluginContext.store.updateOriginalNamespacesFromSnapshot("settings",checkRequest,
++                {context.preferenceWritePermit(checkRequest)}) { Unit to mapOf(
++                "settings" to mapOf("download_path" to path?.toString()?.let(::JsonPrimitive),"download_export_tree_uri" to null),
++                "download_prefs" to mapOf("path" to path?.toString()?.let(::JsonPrimitive),"tree_uri" to null)) }
++        }
++        checkRequest()
++    }
++    suspend fun breakdown(includeProtectedShare: Boolean=true): CacheUtils.CacheBreakdown = withContext(Dispatchers.IO) {
++        requireActive();context.requireCurrent()
++        val (imageDisk,imageMemory)=images.cacheSizes()
++        val (subtitleDisk,subtitleMemory)=subtitle.cacheSizes()
++        val shareBytes=if(includeProtectedShare)sharePool()?.managedBytes() ?: 0L else 0L
++        CacheUtils.CacheBreakdown(imageDiskCache=imageDisk,imageMemoryCache=imageMemory,
++            httpCache=repository.httpClient.cache?.size() ?: 0L,
++            playbackMediaCache=media()?.stats()?.diskBytesIncludingStaging ?: 0L,
++            otherCache=subtitleDisk+shareBytes+(diagnostics?.cacheBytes() ?: 0L),
++            playUrlMemoryCache=repository.storagePlaybackMemoryBytes(),
++            subtitleDanmakuMemoryCache=subtitleMemory+(danmaku?.cacheMemoryEstimate() ?: 0L))
++    }
++    suspend fun clear(selected: Set<CacheClearTarget>, explicitUser: Boolean=true) = exclusive(requireEntry=explicitUser) { checkRequest ->
++        require(selected.isNotEmpty()) { "请选择至少一项缓存" }
++        suspend fun action() {
++            if(CacheClearTarget.NETWORK in selected) {
++                checkRequest();checkNotNull(media()) { "媒体缓存尚未初始化" }.clearIdle(checkRequest)
++                withContext(Dispatchers.IO) { checkRequest();repository.httpClient.cache?.evictAll();checkRequest() }
++            }
++            if(CacheClearTarget.SUBTITLE_DANMAKU in selected || CacheClearTarget.TEMP_FILES_AND_LOGS in selected) {
++                withContext(Dispatchers.IO) { subtitle.clearIdle(checkRequest) }
++                if(CacheClearTarget.SUBTITLE_DANMAKU in selected)danmaku?.clearIdleCache(checkRequest)
++            }
++            if(CacheClearTarget.IMAGE_PREVIEW in selected)withContext(Dispatchers.IO) { images.clearManagedCaches(checkRequest) }
++            if(CacheClearTarget.PLAYBACK_QUALITY in selected)repository.clearStoragePlaybackCache(checkRequest)
++            if(CacheClearTarget.TEMP_FILES_AND_LOGS in selected) {
++                // Protected recipient files require an explicit user confirmation; startup never revokes shares.
++                if(explicitUser) {
++                    val pool=checkNotNull(sharePool()) { "当前 Root 分享文件池不可用" }
++                    checkRequest();nativeShare.clearVideoShareFiles { checkRequest();pool.clearExplicit();checkRequest() }
++                }
++                checkRequest();diagnostics?.clearAll();checkRequest()
++            }
++            if(CacheClearTarget.APP_METADATA in selected)withContext(Dispatchers.IO) {
++                checkRequest();FollowingCacheStore.clear(DesktopFollowingCacheContext(context.pluginContext.store,
++                    {isActive()}, {block->context.commit {checkRequest();block()};true}))
++                repository.invalidateStorageWbi(checkRequest)
++            }
++            checkRequest()
++        }
++        val nativeSensitive=CacheClearTarget.SUBTITLE_DANMAKU in selected || CacheClearTarget.TEMP_FILES_AND_LOGS in selected
++        if(nativeSensitive)checkNotNull(player) { "实际原生播放器不可用，不能确认字幕文件已释放" }.withIdleCacheMaintenance(checkRequest) { action() }
++        else action()
++    }
++    /** Exactly once per physical Window, after actual media cache initialization and before Root mount. */
++    suspend fun clearAutomaticallyAtStartup(now: Long=System.currentTimeMillis()): Boolean {
++        if(!startup.compareAndSet(false,true))return false
++        requireActive();checkNotNull(media()) { "启动媒体缓存尚未初始化" }
++        val interval=DesktopOriginalStorageSettings.getAutoCacheClearInterval(context).first()
++        val threshold=DesktopOriginalStorageSettings.getAutoCacheClearThresholdGb(context).first()*1024L*1024*1024
++        val last=DesktopOriginalStorageSettings.getLastAutoCacheClearAt(context)
++        val bytes=breakdown(includeProtectedShare=false).reclaimableDiskSize
++        if(!shouldAutomaticallyClearCache(interval,last,now,bytes,threshold))return false
++        clear(CacheClearTarget.entries.toSet(),explicitUser=false)
++        exclusive(requireEntry=false) { checkRequest -> checkRequest();DesktopOriginalStorageSettings.setLastAutoCacheClearAt(context,now);checkRequest() }
++        return true
++    }
++    private suspend fun <T> exclusive(requireEntry: Boolean, block: suspend (() -> Unit) -> T): T {
++        requireActive();check(operations.tryLock()) { "存储设置正在处理，请稍后重试" }
++        try {
++            val caller=currentCoroutineContext()
++            val epoch=repository.sessionEpoch
++            val entry=if(requireEntry)checkNotNull(captureEntryOwnership()) { "当前设置页面已退役" } else null
++            val checkRequest={caller.ensureActive();requireActive();context.requireCurrent()
++                if(repository.sessionEpoch!=epoch || entry?.invoke()==false)throw CancellationException("存储请求的账号或 Root 已变更")}
++            checkRequest();return block(checkRequest)
++        } finally { operations.unlock() }
++    }
++    suspend fun shutdownForRestore()=withContext(NonCancellable) { closed.set(true);operations.withLock { Unit } }
++}
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt
+@@ -54,6 +54,13 @@
+         }
+     }
+ 
++    internal fun cacheSizes(): Pair<Long,Long> { check(!closed.get()); return (imageLoader.diskCache?.size ?: 0L) to (imageLoader.memoryCache?.size ?: 0L) }
++    /** Coil owns open snapshots/editors: clear marks pinned entries zombie until their own close. */
++    internal fun clearManagedCaches(checkRequest: () -> Unit) {
++        checkRequest();check(!closed.get() && accepting.get()) { "图片缓存已关闭" }
++        imageLoader.memoryCache?.clear();checkRequest();imageLoader.diskCache?.clear();checkRequest()
++    }
++
+     fun stopAccepting() { accepting.set(false) }
+ 
+     /** Existing Coil jobs/cache drain here. Root calls this on IO, outside admission monitors. */
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt
+@@ -17,6 +17,7 @@
+     private val operations: DesktopDynamicCardOperations,
+     private val assets: DesktopDynamicImageAssets,
+     internal val imageShare: DesktopImagePreviewShareBindings,
++    internal val shareFiles: DesktopVideoShareFiles,
+     private val textShare: DesktopTextShareBindings,
+     private val clipboard: (String) -> Unit,
+     private val externalLink: (String) -> Unit,
+@@ -94,7 +95,7 @@
+             val imageShare = DesktopImagePreviewShareBindings(assets::readOriginalShareBytes, shareFiles,
+                 { lifetime.owns() && sameCardSession.isOwned() }, mediaShare)
+             return DesktopHomeGalleryBindings(context, lifetime, sameCardSession, operations, assets,
+-                imageShare, textShare, clipboard, externalLink, feedback)
++                imageShare, shareFiles, textShare, clipboard, externalLink, feedback)
+         }
+     }
+ }
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt
+@@ -63,6 +63,7 @@
+ internal fun playerBooleanPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.booleanOrNull }
+ internal fun playerFloatPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.floatOrNull }
+ internal fun playerIntPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.intOrNull }
++internal fun playerLongPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.longOrNull }
+ internal fun playerStringPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.takeIf { it.isString }?.content }
+ 
+ internal class DesktopOriginalPlayerPreferenceValues(private val snapshot: DesktopPreferenceSnapshot) {
+@@ -74,6 +75,7 @@
+             is Boolean -> JsonPrimitive(value)
+             is Float -> JsonPrimitive(value)
+             is Int -> JsonPrimitive(value)
++            is Long -> JsonPrimitive(value)
+             is String -> JsonPrimitive(value)
+             else -> error("Unsupported original player preference value")
+         }
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDownloadBinding.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDownloadBinding.kt
+@@ -59,10 +59,7 @@
+         captured.callerJob.ensureActive()
+         if (!captured.isCurrent()) throw CancellationException("Original download source retired")
+         requireNotNull(captured.source.authorizationReceipt) { "Original download requires its playback authorization receipt" }
+-        val configured = (settings.pluginContext.store.preferences("settings")["download_path"] as? JsonPrimitive)
+-            ?.takeIf { it.isString }?.content
+-        val destination = resolveDesktopOriginalDownloadDestination(task.customSaveDir ?: configured,
+-            DesktopDownloadManager.defaultDownloadRoot())
++        val destination = manager.destinationFor(task.customSaveDir)
+         // Manager owns the SAME publication and applies Store -> entry only for
+         // actual queue mutation. Preparation/persistence/scheduling stay outside.
+         return manager.enqueueOriginal(task, captured.source, destination,
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt
+@@ -115,9 +115,15 @@
+             if(!commit {callerJob?.ensureActive();checkOwner();Files.move(temp,absolute)})throw CancellationException("分享保存已退役")
+         } finally {Files.deleteIfExists(temp)}
+     }
++    /** Same pool, ordinary validated files only; never counts unknown files as reclaimable. */
++    fun managedBytes(): Long = synchronized(gate) { directory(); managedFiles().sumOf { Files.size(it) } }
++    private fun managedFiles(): List<Path> = Files.newDirectoryStream(root,"BiliPai_share_*").use { stream ->
++        stream.filter { it.fileName.toString().matches(Regex("BiliPai_share_.+_[0-9a-fA-F-]{36}\\.(jpg|jpeg|png|webp|gif)")) }.toList()
++            .onEach { path -> UpdateStorage.existingPathWithoutLinks(path); require(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS)) }
++    }
+     /** Only explicit user-authorized clear, AFTER same native actor revocation/drain. */
+     fun clearExplicit()=synchronized(gate) {
+         require(exposed.isEmpty() && pending.isEmpty()) {"原生分享尚未撤销"}
+-        directory();Files.newDirectoryStream(root,"BiliPai_share_*").use { files ->files.forEach { path ->UpdateStorage.existingPathWithoutLinks(path);require(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS));Files.delete(path)}}
++        directory();val files=managedFiles();files.forEach(Files::delete)
+     }
+ }
+--- desktop/tools/extract-upstream-storage-settings.py
++++ desktop/tools/extract-upstream-storage-settings.py
+@@ -0,0 +1,82 @@
++"""Select original storage UI, setters/defaults, cache confirmation and pure auto policy.
++Actual Windows cache/download mutations are required platform owners, never Android directory scans.
++"""
++from pathlib import Path
++import argparse,hashlib,importlib.util,json,re,textwrap,sys
++sys.dont_write_bytecode=True
++BASE='app/src/main/java/com/android/purebilibili/'
++PATHS=[BASE+p for p in ['feature/settings/ui/SettingsSections.kt','core/store/SettingsManager.kt','core/util/CacheUtils.kt','feature/settings/CacheClearUiPolicy.kt','feature/settings/ui/CacheClearAnimation.kt','feature/settings/screen/SettingsScreen.kt','core/store/SettingsPrefsCache.kt']]
++VECTOR='app/src/main/res/drawable/ms_check_fill_24.xml'
++def load(name,p):
++ spec=importlib.util.spec_from_file_location(name,p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
++def write(p,s):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf8',newline='\n')
++def block(source,marker,parser):
++ start=source.index(marker);tokens=parser.kotlin_tokens(source[start:]);opening=next(i for i,t in enumerate(tokens)if t[0]=='{');depth=1;end=opening
++ while depth:end+=1;depth+=(tokens[end][0]=='{')-(tokens[end][0]=='}')
++ return source[start:start+tokens[end][2]]
++def generate(repo,out):
++ parser=load('storage_tokens',repo/'desktop/tools/sync-upstream.py');media=load('storage_methods',repo/'desktop/tools/extract-upstream-media.py')
++ raw={p:(repo/p).read_text(encoding='utf8').replace('\r\n','\n') for p in PATHS};sections,manager,cache,policy,animation,screen,mirrors=[raw[p]for p in PATHS]
++ body=media.function(sections,'DataStorageSection',parser).replace('fun DataStorageSection(','internal fun DesktopOriginalDataStorageSection(')
++ tokens=parser.kotlin_tokens(body);changes=[]
++ for i,t in enumerate(tokens[:-1]):
++  if t[0]=='SettingClickableItem' and tokens[i+1][0]=='(':
++   depth=1;end=i+1
++   while depth:end+=1;depth+=(tokens[end][0]=='(')-(tokens[end][0]==')')
++   start=t[1];stop=tokens[end][2];s=body[start:stop];changes.append((start,stop,re.sub(r'\bvalue = ','subtitle = ',s)))
++ assert len(changes)==5
++ for start,stop,s in reversed(changes):body=body[:start]+s+body[stop:]
++ body=body.replace('painterResource(id = it)','rememberVectorPainter(DesktopSettingsVectors.vector(it))')
++ write(out/'com/android/purebilibili/feature/settings/DesktopOriginalDataStorageSection.kt','''package com.android.purebilibili.feature.settings
++import androidx.compose.runtime.*
++import androidx.compose.ui.graphics.vector.rememberVectorPainter
++import com.android.purebilibili.core.ui.components.*
++import com.android.purebilibili.core.ui.components.AppPreference as SettingClickableItem
++import com.android.purebilibili.core.ui.components.AppSliderDialogPreference as SettingSliderItem
++import com.android.purebilibili.core.store.DesktopOriginalStorageSettings as SettingsManager
++import com.bilipai.desktop.settings.DesktopSettingsVectors
++import kotlin.math.roundToInt
++@Composable
++'''+body+'\n')
++ enum=block(manager,'enum class AutoCacheClearInterval',parser)
++ names=['getDownloadPath','setDownloadPath','getDownloadExportTreeUri','setDownloadExportTreeUri','getDownloadPathSync','getDownloadExportTreeUriSync','getAutoCacheClearInterval','setAutoCacheClearInterval','getAutoCacheClearThresholdGb','setAutoCacheClearThresholdGb','getLastAutoCacheClearAt','setLastAutoCacheClearAt']
++ methods=[]
++ for n in names:
++  if n=='getLastAutoCacheClearAt':
++   match=re.search(r'suspend fun getLastAutoCacheClearAt\(context: Context\): Long =\n[^\n]+',manager);assert match;methods.append(match.group())
++  else:methods.append(media.function(manager,n,parser))
++ keys=sorted(set(re.findall(r'\bKEY_[A-Z_]+\b','\n'.join(methods))))
++ declarations=[]
++ for key in keys:
++  matches=re.findall(r'private val '+key+r'\s*=\s*(?:int|string|long)PreferencesKey\("[^\"]+"\)',manager);assert len(matches)==1,key;declarations.append(matches[0])
++ originalConst=re.search(r'const val DEFAULT_AUTO_CACHE_CLEAR_THRESHOLD_GB = \d+',manager).group()
++ methods=[m.replace('editSettingsAndCommitPrefs','editStorageSettingsAndCommitPrefs')for m in methods]
++ write(out/'com/android/purebilibili/core/store/DesktopOriginalStorageSettings.kt','''package com.android.purebilibili.core.store
++import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context
++import com.bilipai.desktop.ui.playerIntPreferencesKey as intPreferencesKey
++import com.bilipai.desktop.ui.playerStringPreferencesKey as stringPreferencesKey
++import com.bilipai.desktop.ui.playerLongPreferencesKey as longPreferencesKey
++import kotlinx.coroutines.flow.*
++/** Original SettingsManager reads/keys/defaults; only the dual-write helper maps to one atomic Windows backing. */
++internal object DesktopOriginalStorageSettings {
++'''+textwrap.indent('\n'.join([originalConst,enum]+declarations+methods),'    ')+'\n}\n')
++ enumCache=block(cache,'enum class CacheClearTarget',parser);auto=media.function(cache,'shouldAutomaticallyClearCache',parser);breakdown=block(cache,'data class CacheBreakdown',parser);formatter=media.function(cache,'formatSize',parser)
++ write(out/'com/android/purebilibili/core/util/DesktopOriginalStorageCachePolicy.kt','''package com.android.purebilibili.core.util
++import com.android.purebilibili.core.store.DesktopOriginalStorageSettings as SettingsManager
++/** Original pure cache decisions/breakdown. Android Context file-walk and mutation code is never copied. */
++'''+enumCache+'\n'+auto+'\nobject CacheUtils {\n'+textwrap.indent(breakdown+'\n'+formatter,'    ')+'\n}\n')
++ # CacheClearUiPolicy is mode=direct: existing prepareUpstreamSources is its sole producer.
++ # This original Compose dialog/animation is platform-neutral. Keep its complete confirmation interaction.
++ animation=animation.replace(',\n            decorFitsSystemWindows = false','').replace('com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_check_fill_24)','com.bilipai.desktop.settings.DesktopStorageSettingsVectors.vector("ms_check_fill_24")')
++ write(out/'com/android/purebilibili/feature/settings/CacheClearAnimation.kt',animation)
++ vectorHelper=load('storage_vector',repo/'desktop/tools/extract-upstream-settings-search.py');vectorHelper.symbol_names=lambda unused:['ms_check_fill_24']
++ vector=vectorHelper.vectors(repo).replace('DesktopSettingsSymbols','DesktopStorageSettingsSymbols').replace('DesktopSettingsVectors','DesktopStorageSettingsVectors')
++ write(out/'com/bilipai/desktop/settings/DesktopStorageSettingsVectors.kt',vector)
++ inventory=[dict(path=p,mode='direct' if p==PATHS[3]else'policy-extract',features=['desktop-storage-cache-settings-owner-parity'],sha256=hashlib.sha256(raw[p].encode()).hexdigest())for p in PATHS]
++ inventory.append(dict(path=VECTOR,mode='direct',features=['desktop-storage-cache-settings-owner-parity'],sha256=hashlib.sha256((repo/VECTOR).read_bytes()).hexdigest()))
++ write(out/'storage-source-inventory.json',json.dumps(inventory,ensure_ascii=False,indent=2)+'\n')
++ return inventory
++if __name__=='__main__':
++ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--inventory',type=Path);a=p.parse_args();rows=generate(a.repo.resolve(),a.output.resolve())
++ if a.inventory:write(a.inventory,json.dumps(rows,ensure_ascii=False,indent=2)+'\n')
++ print('Generated exact original storage families',len(rows))
+--- desktop/upstream-sources.json
++++ desktop/upstream-sources.json
+@@ -1787,7 +1787,8 @@
+         "stable-video-root-effects",
+         "stable-video-owner-download-binding",
+         "desktop-navigation-interaction-settings",
+-        "desktop-full-navigation-settings"
++        "desktop-full-navigation-settings",
++        "desktop-storage-cache-settings-owner-parity"
+       ],
+       "mode": "policy-extract"
+     },
+@@ -3656,7 +3657,8 @@
+         "settings-home-dynamic-parity",
+         "settings-dynamic-tabs-parity",
+         "settings-image-save-path-ui",
+-        "desktop-navigation-interaction-settings"
++        "desktop-navigation-interaction-settings",
++        "desktop-storage-cache-settings-owner-parity"
+       ],
+       "sha256": "dad065eba76c2bb51ce9c5775b4e8bf86f21b8230be0ee2606fe53fa77b64f25"
+     },
+@@ -3665,7 +3667,8 @@
+       "mode": "policy-extract",
+       "features": [
+         "settings-category-ui-parity",
+-        "settings-image-save-path-ui"
++        "settings-image-save-path-ui",
++        "desktop-storage-cache-settings-owner-parity"
+       ],
+       "sha256": "4ffbe4130496d8af1b6f23acf1a9f4c76be13791739ee59f67b3265af801df7c"
+     },
+@@ -9009,7 +9012,8 @@
+       "sha256": "220e03ed1ab747373ffc8252c774f72c65821961de440fcf442d6a83753d4329",
+       "mode": "selected",
+       "features": [
+-        "stable-video-fullscreen-pager"
++        "stable-video-fullscreen-pager",
++        "desktop-storage-cache-settings-owner-parity"
+       ]
+     },
+     {
+@@ -9942,6 +9946,30 @@
+       "features": [
+         "desktop-full-navigation-settings"
+       ]
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/core/util/CacheUtils.kt",
++      "mode": "policy-extract",
++      "features": [
++        "desktop-storage-cache-settings-owner-parity"
++      ],
++      "sha256": "0d840fd24445c9a103a64172594678ef03b9ba7aaa82d14c762df382c915bf36"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/settings/CacheClearUiPolicy.kt",
++      "mode": "direct",
++      "features": [
++        "desktop-storage-cache-settings-owner-parity"
++      ],
++      "sha256": "5a3659469307fd48462114c2c88b2873078ee0448e39f6960846cd23a7bb5d70"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/CacheClearAnimation.kt",
++      "mode": "policy-extract",
++      "features": [
++        "desktop-storage-cache-settings-owner-parity"
++      ],
++      "sha256": "1c521f406465df4c51450243e49db9d4d217d6fea3f0f70b262d556233007588"
+     }
+   ],
+   "featureCoverage": {
+@@ -11718,6 +11746,14 @@
+       "features": [
+         "desktop-full-navigation-settings"
+       ]
++    },
++    {
++      "path": "app/src/main/res/drawable/ms_check_fill_24.xml",
++      "mode": "direct",
++      "features": [
++        "desktop-storage-cache-settings-owner-parity"
++      ],
++      "sha256": "b38c518aa15e88cb9f2eda91aa5617427530ae9359a1b2c8ab96f7d16bffabe7"
+     }
+   ],
+   "lastSourceReview": {
+--- desktop/build.gradle.kts
++++ desktop/build.gradle.kts
+@@ -2138,3 +2138,23 @@
+ }
+ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-root-story-feed/com")) }
+ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoRootStoryFeed) }
++
++// Original storage section, settings writes, cache confirmation and pure automatic policy.
++// CacheClearUiPolicy remains mode=direct, produced solely by prepareUpstreamSources.
++val extractOriginalStorageSettings by tasks.registering(Exec::class) {
++    dependsOn(prepareUpstreamSources)
++    workingDir(projectDir)
++    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-storage-settings.py",
++        "--repo", repositoryRoot.absolutePath,
++        "--output", layout.buildDirectory.dir("generated/original-storage-settings").get().asFile.absolutePath)
++    inputs.files("tools/extract-upstream-storage-settings.py", "tools/extract-upstream-media.py",
++        "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
++    inputs.file(sourceManifest)
++    inputs.files(sources.filter { "desktop-storage-cache-settings-owner-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    inputs.files(originalResources.filter { "desktop-storage-cache-settings-owner-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    outputs.dir(layout.buildDirectory.dir("generated/original-storage-settings"))
++}
++kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-storage-settings")) }
++tasks.named("compileKotlin") { dependsOn(extractOriginalStorageSettings) }

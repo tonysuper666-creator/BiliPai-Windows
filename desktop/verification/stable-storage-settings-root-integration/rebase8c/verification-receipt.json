@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "manifests": [
+    {
+      "manifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\frozen-handoff.json",
+      "sha256Bytes": "4e0082095254dd93d6e9302a6490d2e383c99e5ddf3b42a765e7f56baae7fc08",
+      "rawVerified": 97
+    },
+    {
+      "manifest": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity-rebase8c\\frozen-supplement.json",
+      "sha256Bytes": "ab7a081f3ffb9c038c4bdb0ee1db35b88c624edee91dcaa721899565d0edf496",
+      "rawVerified": 17
+    }
+  ],
+  "fixtureCompileAndRuntimePassed": true,
+  "realExistingSRTInput": true,
+  "fixtureProductionClasses": 0,
+  "actualNativeAssertions": 20,
+  "nativeAndCPPinsUnchanged": true,
+  "nativeOwnersSameFinalBytes": true,
+  "frozen97And17Untouched": true,
+  "RootMounted": false,
+  "accountVideo": false,
+  "systemReceiver": false,
+  "longPathSupported": false,
+  "detachTimeoutBoundaryPassed": false
+}

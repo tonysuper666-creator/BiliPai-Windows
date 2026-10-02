@@ -1,0 +1,108 @@
+{
+  "frozen": true,
+  "baselineHead": "8c1970119ffeb5625c7bc7ed5d7a77c1558e52fa",
+  "mainHandoffSHA": "4e0082095254dd93d6e9302a6490d2e383c99e5ddf3b42a765e7f56baae7fc08",
+  "main97RawAllBytesVerified": true,
+  "raw": [
+    {
+      "path": "DesktopShell.before8c.kt",
+      "sha256Bytes": "03a4da03702f7b3fc39d4fa1710eccbb3ec34c953d2a36e7a453575d568daaf2",
+      "bytes": 150826
+    },
+    {
+      "path": "DesktopShell.prepared8c.kt",
+      "sha256Bytes": "b3a0e728e0eb60af43d521cc8388eda0db9c14d3d543e0199746f880cc1f1bb9",
+      "bytes": 154431
+    },
+    {
+      "path": "freeze_supplement.py",
+      "sha256Bytes": "3d5d7b8f503d29bf58eb07271f9b1e0b1deb92202b55be8ef1ce983d8d76f011",
+      "bytes": 1889
+    },
+    {
+      "path": "native-corrected01/compile-result.json",
+      "sha256Bytes": "47c8cdd5dcbf8e0279148da6b64d5820d8b7032601feff348f31b332e1114a44",
+      "bytes": 233
+    },
+    {
+      "path": "native-corrected01/compile.args",
+      "sha256Bytes": "d1866456ded1bbb79c96c10b70da0ce43b4a19aab47f8a3c9908518c738b44b9",
+      "bytes": 25869
+    },
+    {
+      "path": "native-corrected01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "native-corrected01/fixture-result.json",
+      "sha256Bytes": "1a1734c44c76f1894a8078102ce8a94ee3ef0133418a0417715b36483becb374",
+      "bytes": 396
+    },
+    {
+      "path": "native-corrected01/pins-after.json",
+      "sha256Bytes": "8f906bf1d3f115848246ec9015e7528928535ef9e76ef4dac21ba6b09aef65ee",
+      "bytes": 1293
+    },
+    {
+      "path": "native-corrected01/pins-before.json",
+      "sha256Bytes": "8f906bf1d3f115848246ec9015e7528928535ef9e76ef4dac21ba6b09aef65ee",
+      "bytes": 1293
+    },
+    {
+      "path": "native-corrected01/runtime-command.json",
+      "sha256Bytes": "660e6182f40e8848d7ce5735cbe8a8291808930346368140b7c39df041c12aa6",
+      "bytes": 28141
+    },
+    {
+      "path": "native-corrected01/runtime-receipt.json",
+      "sha256Bytes": "d2edc36b52d546a4196d23af4d19f055be39317a4fb66d7c31ad768cb0f675f9",
+      "bytes": 387
+    },
+    {
+      "path": "native-corrected01/runtime.log",
+      "sha256Bytes": "f61c6de943cbac383bf882bc1abd6ddbadd1ffac373c7df6454a7f13ae3c4d2b",
+      "bytes": 1329
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "1811aac1351084549080dd9313307a30904563d62276bf8325e5c05c65b9f517",
+      "bytes": 1125
+    },
+    {
+      "path": "rebase-contract.json",
+      "sha256Bytes": "daad7f086c071d5fd042d1a85f8b23abc6b61870f2db9abf24269befa8dd4619",
+      "bytes": 22090
+    },
+    {
+      "path": "run_corrected_native.py",
+      "sha256Bytes": "761f0cb8d606ece6c33a3045c8bd2afad39c2b50eb2e6a83428559476be687bb",
+      "bytes": 4105
+    },
+    {
+      "path": "Shell-rebase-receipt.json",
+      "sha256Bytes": "e32e08380520776f7356f83dc6c8e9ae25414d174dafb2671186c4f0374fe2a2",
+      "bytes": 668
+    },
+    {
+      "path": "StorageNativeOwnerFixture.kt",
+      "sha256Bytes": "0ab49bd0c4dd6c7b446f2e44d8ec0948a4d7b2f505dad940f120c09ef91cf515",
+      "bytes": 7875
+    }
+  ],
+  "rawCount": 17,
+  "rebaseContract": "rebase-contract.json",
+  "rebase19Families66HunksForwardInverse": true,
+  "ShellCommentTypedSettingsPreserved": true,
+  "correctedNativeReceipt": "native-corrected01/fixture-result.json",
+  "correctedNativeAssertions": 20,
+  "supersedesOnlyNative01MissingSRTAssertion": true,
+  "productionUnchanged": true,
+  "fixtureOnlyCompile": true,
+  "RootMounted": false,
+  "accountVideo": false,
+  "systemReceiver": false,
+  "longPathSupported": false,
+  "combined8cShellCompilePendingRoot": true,
+  "detachTimeoutBoundaryPassed": false
+}

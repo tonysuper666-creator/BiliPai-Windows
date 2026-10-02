@@ -1,0 +1,27 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "4af9925d9ee6efa8710b94c5d7c5dcb7cf17fc2b6f1ad98bfae2286d2c0630d7",
+  "preparedSha256LF": "77fc8750cfd817e2711820ca39cdf164fcbec1445623a8d400e4123e8910040e",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "4af9925d9ee6efa8710b94c5d7c5dcb7cf17fc2b6f1ad98bfae2286d2c0630d7",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 48,
+      "afterLine": 48,
+      "before": "        entries.keys.removeAll { it.accountEpoch == epoch && it.bvid == bvid && it.cid == cid }\n    }\n\n    @Synchronized fun clear() = entries.clear()\n}\n",
+      "after": "        entries.keys.removeAll { it.accountEpoch == epoch && it.bvid == bvid && it.cid == cid }\n    }\n\n    /** Same estimate as original PlayUrl cache UI; runtime memory estimate, never disk bytes. */\n    @Synchronized fun estimatedBytes(): Long = entries.size * 2048L\n\n    @Synchronized fun clear() = entries.clear()\n}\n",
+      "beforeSha256LF": "c538af948741e5c315d0250be89bfc4f73b501a3a9c09e0d1872c5257e5739c7",
+      "afterSha256LF": "3f7e17c185e117087020b86ea2b35942333876794fa9c982bc86afe0c7ff2952"
+    }
+  ]
+}

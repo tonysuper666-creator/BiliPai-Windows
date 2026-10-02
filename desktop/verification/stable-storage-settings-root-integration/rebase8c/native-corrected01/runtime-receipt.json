@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "fixtureOnly": true,
+  "existingSRTInputVerified": true,
+  "productionClassesInFixture": 0,
+  "ownersByteIdenticalToNative01": true,
+  "ownedTemp": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-storage-native-r9ljyinm",
+  "cleanupRestrictedToResolvedOwnedTemp": true,
+  "RootMounted": false,
+  "systemReceiver": false,
+  "longPathSupported": false
+}

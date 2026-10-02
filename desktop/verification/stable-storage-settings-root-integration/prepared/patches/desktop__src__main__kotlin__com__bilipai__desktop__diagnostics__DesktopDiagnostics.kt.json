@@ -1,0 +1,27 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "9f5f7319648440d1ca3152ca828d790234423a503938e490d0f8d86b44323ad6",
+  "preparedSha256LF": "a1acc4f5b149d3519b7808de3555cc074361ed6aeb79ee5c464b3e9a3023a327",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "9f5f7319648440d1ca3152ca828d790234423a503938e490d0f8d86b44323ad6",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 192,
+      "afterLine": 192,
+      "before": "        Files.write(target,buildExport().toByteArray(Charsets.UTF_8),StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE)\n        target\n    })\n    suspend fun clearAll():Unit {\n        val action:suspend ()->Unit={ await(submit {\n            nativeShareCache.clearExplicit()\n",
+      "after": "        Files.write(target,buildExport().toByteArray(Charsets.UTF_8),StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE)\n        target\n    })\n    internal suspend fun cacheBytes():Long = await(submit {\n        privatePaths().sumOf { path -> ensurePrivateFile(path);if(Files.isRegularFile(path,LinkOption.NOFOLLOW_LINKS))Files.size(path) else 0L }\n    })\n    suspend fun clearAll():Unit {\n        val action:suspend ()->Unit={ await(submit {\n            nativeShareCache.clearExplicit()\n",
+      "beforeSha256LF": "ead0ed285990908ce6728cb0b58561cb9fdb31f904550038820e2d5bb8bf574e",
+      "afterSha256LF": "70450be33ce11f082ff9f267fff592f1a3f046ca43467f083cd1e00e6f1af8d5"
+    }
+  ]
+}

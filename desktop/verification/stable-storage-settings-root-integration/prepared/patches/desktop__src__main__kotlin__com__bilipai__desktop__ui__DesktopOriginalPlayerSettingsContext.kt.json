@@ -1,0 +1,40 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+  "preparedSha256LF": "93f045aa1b2f7de03d2ab9fa660d5209916c98d3a2c18f243d07bdd5ad2a7e20",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 63,
+      "afterLine": 63,
+      "before": "internal fun playerBooleanPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.booleanOrNull }\ninternal fun playerFloatPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.floatOrNull }\ninternal fun playerIntPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.intOrNull }\ninternal fun playerStringPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.takeIf { it.isString }?.content }\n\ninternal class DesktopOriginalPlayerPreferenceValues(private val snapshot: DesktopPreferenceSnapshot) {\n",
+      "after": "internal fun playerBooleanPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.booleanOrNull }\ninternal fun playerFloatPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.floatOrNull }\ninternal fun playerIntPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.intOrNull }\ninternal fun playerLongPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.longOrNull }\ninternal fun playerStringPreferencesKey(name: String) = DesktopPreferenceKey(name) { v -> (v as? JsonPrimitive)?.takeIf { it.isString }?.content }\n\ninternal class DesktopOriginalPlayerPreferenceValues(private val snapshot: DesktopPreferenceSnapshot) {\n",
+      "beforeSha256LF": "f44441cf0d4f1d0d5571ede4a46bfc665e66ab6190d02e4c67a1712729978467",
+      "afterSha256LF": "4b329ce45f8ba0f73a3d714c0e1cbc14f2a7844bf69d3be049057dd39e3aedbc"
+    },
+    {
+      "id": 2,
+      "beforeLine": 74,
+      "afterLine": 75,
+      "before": "            is Boolean -> JsonPrimitive(value)\n            is Float -> JsonPrimitive(value)\n            is Int -> JsonPrimitive(value)\n            is String -> JsonPrimitive(value)\n            else -> error(\"Unsupported original player preference value\")\n        }\n",
+      "after": "            is Boolean -> JsonPrimitive(value)\n            is Float -> JsonPrimitive(value)\n            is Int -> JsonPrimitive(value)\n            is Long -> JsonPrimitive(value)\n            is String -> JsonPrimitive(value)\n            else -> error(\"Unsupported original player preference value\")\n        }\n",
+      "beforeSha256LF": "c63905f1f8c3d44915614dc33be5a58e1e7036d16882b52a0bc73b36b9d37494",
+      "afterSha256LF": "a180ea8e8c8f2998cc038fd4d403297f68b116ee41dedc997ec5af065d94d208"
+    }
+  ]
+}

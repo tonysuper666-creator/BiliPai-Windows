@@ -1,0 +1,66 @@
+[
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-storage-cache-settings-owner-parity"
+    ],
+    "sha256": "dad065eba76c2bb51ce9c5775b4e8bf86f21b8230be0ee2606fe53fa77b64f25"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-storage-cache-settings-owner-parity"
+    ],
+    "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/util/CacheUtils.kt",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-storage-cache-settings-owner-parity"
+    ],
+    "sha256": "0d840fd24445c9a103a64172594678ef03b9ba7aaa82d14c762df382c915bf36"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/CacheClearUiPolicy.kt",
+    "mode": "direct",
+    "features": [
+      "desktop-storage-cache-settings-owner-parity"
+    ],
+    "sha256": "5a3659469307fd48462114c2c88b2873078ee0448e39f6960846cd23a7bb5d70"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/CacheClearAnimation.kt",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-storage-cache-settings-owner-parity"
+    ],
+    "sha256": "1c521f406465df4c51450243e49db9d4d217d6fea3f0f70b262d556233007588"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-storage-cache-settings-owner-parity"
+    ],
+    "sha256": "4ffbe4130496d8af1b6f23acf1a9f4c76be13791739ee59f67b3265af801df7c"
+  },
+  {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+    "mode": "policy-extract",
+    "features": [
+      "desktop-storage-cache-settings-owner-parity"
+    ],
+    "sha256": "220e03ed1ab747373ffc8252c774f72c65821961de440fcf442d6a83753d4329"
+  },
+  {
+    "path": "app/src/main/res/drawable/ms_check_fill_24.xml",
+    "mode": "direct",
+    "features": [
+      "desktop-storage-cache-settings-owner-parity"
+    ],
+    "sha256": "3f25d52c25f50c6e1010c692866c0dee2ecc892c764dd6ca22cc378ba9176db0"
+  }
+]

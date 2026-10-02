@@ -1,0 +1,33 @@
+{
+  "finalWholeClosure": "compile/08",
+  "finalClosureInputs": 29,
+  "snapshot84Manifest": "f70a306e3dc42df93c00d536163ff4a1f1953cbc94d36586c9500281983351b2",
+  "CP101": "4b1de9cce18526162113e1336c0252b37b3113d1f0b8832b68953fc3ec5df8d9",
+  "CPUAssertions": 46,
+  "actualNativeAssertions": 20,
+  "nativeOwnerEvidence": "native/01",
+  "nativeTestedOwnersSameFinalBytes": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\player\\MpvPlayer.kt",
+      "sha256Bytes": "918eeefb47807c8a9fbca21bec88d17e9b7b32f1831f21c2e9a58e43ec0c73c5"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-settings-storage-owner-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoShareFiles.kt",
+      "sha256Bytes": "043c33dbdd8f9b7b30263697714bed5ca0e2477ae2e35a0141f2fe1d3e05cec0"
+    }
+  ],
+  "nativeProspectiveJarSHA": "fbb8e7a215e23748a5eb7ca2ae0fa93e2df35d3d33aef9f9b2e70c5ea49ffe13",
+  "finalProspectiveJarSHA": "a05a8d6cc3338ec0e602a5be69e5758081236832d2b035eff2b6f994349b38ab",
+  "receiverUI": false,
+  "longPathSupported": false,
+  "RootMounted": false,
+  "accountVideoPassed": false,
+  "detachTimeoutBoundaryPassed": false,
+  "nativeLaterDelta": [
+    "Shell startup ownership-cancel feedback",
+    "removed duplicate direct CacheClearUiPolicy producer; same original LF bytes"
+  ],
+  "noJARorGeneratedTreesForGit": true,
+  "productionInstalled": false,
+  "deployedEXEReplaced": false
+}

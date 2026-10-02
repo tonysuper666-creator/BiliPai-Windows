@@ -1,0 +1,178 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "identities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "rawSHA": "fa735979e5654eea907c002d769a8e020dad6b50dc321a46d541f750ec24a529",
+      "lfSHA": "dad065eba76c2bb51ce9c5775b4e8bf86f21b8230be0ee2606fe53fa77b64f25",
+      "anchors": [
+        {
+          "marker": "fun DataStorageSection",
+          "lines": [
+            1368
+          ]
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "rawSHA": "27aa95562630640a5308f02c0c417d2deda7254d08b364b6dd9dbf48facbb542",
+      "lfSHA": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "anchors": [
+        {
+          "marker": "enum class AutoCacheClearInterval",
+          "lines": [
+            1345
+          ]
+        },
+        {
+          "marker": "DEFAULT_AUTO_CACHE_CLEAR_THRESHOLD_GB",
+          "lines": [
+            1344,
+            6154
+          ]
+        },
+        {
+          "marker": "fun getDownloadPath",
+          "lines": [
+            6731,
+            6769
+          ]
+        },
+        {
+          "marker": "fun setDownloadPath",
+          "lines": [
+            6740
+          ]
+        },
+        {
+          "marker": "fun setAutoCacheClearInterval",
+          "lines": [
+            6145
+          ]
+        },
+        {
+          "marker": "fun getLastAutoCacheClearAt",
+          "lines": [
+            6163
+          ]
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/CacheUtils.kt",
+      "rawSHA": "594eb7351a22f9bbcc085c0913cd612fa77e90b850fb74830a1340b33e7ce788",
+      "lfSHA": "0d840fd24445c9a103a64172594678ef03b9ba7aaa82d14c762df382c915bf36",
+      "anchors": [
+        {
+          "marker": "enum class CacheClearTarget",
+          "lines": [
+            23
+          ]
+        },
+        {
+          "marker": "fun shouldAutomaticallyClearCache",
+          "lines": [
+            32
+          ]
+        },
+        {
+          "marker": "data class CacheBreakdown",
+          "lines": [
+            94
+          ]
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/CacheClearUiPolicy.kt",
+      "rawSHA": "1d327ca40e3e9564304c1e92d1077259e732741d7395c6493b2882bb3db87b6f",
+      "lfSHA": "5a3659469307fd48462114c2c88b2873078ee0448e39f6960846cd23a7bb5d70",
+      "anchors": [
+        {
+          "marker": "fun resolveDefaultCacheClearTargets",
+          "lines": [
+            54
+          ]
+        },
+        {
+          "marker": "fun resolveCacheClearOptions",
+          "lines": [
+            13
+          ]
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/CacheClearAnimation.kt",
+      "rawSHA": "7cf4740544a8031bb55a8d4d2b2454d331044eaee646cb3f992ba7f8a25d49a0",
+      "lfSHA": "1c521f406465df4c51450243e49db9d4d217d6fea3f0f70b262d556233007588",
+      "anchors": [
+        {
+          "marker": "fun CacheClearAnimationDialog",
+          "lines": [
+            321
+          ]
+        },
+        {
+          "marker": "fun CacheClearConfirmDialog",
+          "lines": [
+            74
+          ]
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt",
+      "rawSHA": "95524d4a4f982a86dd8b342bc90834b781a228c74812d202297df005a260582b",
+      "lfSHA": "4ffbe4130496d8af1b6f23acf1a9f4c76be13791739ee59f67b3265af801df7c",
+      "anchors": [
+        {
+          "marker": "DataStorageSection(",
+          "lines": []
+        },
+        {
+          "marker": "getAutoCacheClearInterval",
+          "lines": [
+            139
+          ]
+        },
+        {
+          "marker": "getAutoCacheClearThresholdGb",
+          "lines": [
+            141
+          ]
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsPrefsCache.kt",
+      "rawSHA": "94d938f58aebba7c04cb1b50cf430c3306531c0470b0496ac5b88fffa0853bc2",
+      "lfSHA": "220e03ed1ab747373ffc8252c774f72c65821961de440fcf442d6a83753d4329",
+      "anchors": [
+        {
+          "marker": "setDownloadPath",
+          "lines": []
+        },
+        {
+          "marker": "setDownloadExportTreeUri",
+          "lines": []
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_check_fill_24.xml",
+      "rawSHA": "3f25d52c25f50c6e1010c692866c0dee2ecc892c764dd6ca22cc378ba9176db0",
+      "lfSHA": "b38c518aa15e88cb9f2eda91aa5617427530ae9359a1b2c8ab96f7d16bffabe7",
+      "anchors": [
+        {
+          "marker": "<vector",
+          "lines": [
+            1
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "families": 19,
+  "totalHunks": 66,
+  "forwardInverse": true,
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "candidateChangedTargets": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "anchors": [
+        {
+          "id": 1,
+          "count": 1
+        },
+        {
+          "id": 2,
+          "count": 1
+        },
+        {
+          "id": 3,
+          "count": 1
+        },
+        {
+          "id": 4,
+          "count": 1
+        },
+        {
+          "id": 5,
+          "count": 1
+        },
+        {
+          "id": 6,
+          "count": 1
+        },
+        {
+          "id": 7,
+          "count": 1
+        },
+        {
+          "id": 8,
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

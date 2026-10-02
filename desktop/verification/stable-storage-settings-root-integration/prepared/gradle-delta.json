@@ -1,0 +1,14 @@
+{
+  "target": "desktop/build.gradle.kts",
+  "appendFile": "gradle-append.kts",
+  "appendSha256Bytes": "88aa378d1018ce5f0ec1b30303d14c901b2a561a6cc4b252be7cfcfeccd36872",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "currentInputSha256Bytes": "1363ac221cbbaea71530941e05f5b2c5f20f5c96efcf3b3285b57c5ce6f3f692",
+  "noWholeBuildFileReplacement": true,
+  "task": "extractOriginalStorageSettings",
+  "standaloneCommand": "gradle -p desktop extractOriginalStorageSettings classes compileTestKotlin",
+  "newDependencies": 0,
+  "generatedKotlin": 5,
+  "directOriginalKotlin": 1,
+  "directSoleProducer": "prepareUpstreamSources"
+}

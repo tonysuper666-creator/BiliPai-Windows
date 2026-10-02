@@ -1,0 +1,30 @@
+desktop\.local\stable-settings-storage-owner-parity\StorageOwnerFixture.kt:24:9: error: class 'FixtureCall' is not abstract and does not implement abstract members:
+fun <T : Any> tag(type: KClass<T>): T?
+fun <T> tag(type: Class<out T>): T?
+fun <T : Any> tag(type: KClass<T>, computeIfAbsent: () -> T): T
+fun <T : Any> tag(type: Class<T>, computeIfAbsent: () -> T): T
+private class FixtureCall(private val request: Request, private val json: String?=null): Call {
+        ^^^^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\StorageOwnerFixture.kt:111:82: error: inapplicable candidate(s): fun load(source: PlaybackSource): Unit
+            fails("same-player-central-load-refuses-during-maintenance") {player.load(PlaybackSource("https://fixture.invalid/media"))}
+                                                                                 ^^^^
+desktop\.local\stable-settings-storage-owner-parity\StorageOwnerFixture.kt:111:87: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            fails("same-player-central-load-refuses-during-maintenance") {player.load(PlaybackSource("https://fixture.invalid/media"))}
+                                                                                      ^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\StorageOwnerFixture.kt:111:87: error: suspension functions can only be called within coroutine body.
+            fails("same-player-central-load-refuses-during-maintenance") {player.load(PlaybackSource("https://fixture.invalid/media"))}
+                                                                                      ^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\StorageOwnerFixture.kt:111:87: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+suspend fun <T> CoroutineDispatcher.invoke(noinline block: suspend CoroutineScope.() -> T): T
+            fails("same-player-central-load-refuses-during-maintenance") {player.load(PlaybackSource("https://fixture.invalid/media"))}
+                                                                                      ^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\StorageOwnerFixture.kt:120:16: error: inapplicable candidate(s): fun load(source: PlaybackSource): Unit
+        player.load(PlaybackSource("https://fixture.invalid/media"));assert("maintenance-finally-reopens-same-player-admission",player.currentSourceSnapshot()!=null);player.stop()
+               ^^^^
+desktop\.local\stable-settings-storage-owner-parity\StorageOwnerFixture.kt:120:21: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        player.load(PlaybackSource("https://fixture.invalid/media"));assert("maintenance-finally-reopens-same-player-admission",player.currentSourceSnapshot()!=null);player.stop()
+                    ^^^^^^^^^^^^^^
+desktop\.local\stable-settings-storage-owner-parity\StorageOwnerFixture.kt:120:21: error: unresolved reference. None of the following candidates is applicable because of a receiver type mismatch:
+suspend fun <T> CoroutineDispatcher.invoke(noinline block: suspend CoroutineScope.() -> T): T
+        player.load(PlaybackSource("https://fixture.invalid/media"));assert("maintenance-finally-reopens-same-player-admission",player.currentSourceSnapshot()!=null);player.stop()
+                    ^^^^^^^^^^^^^^

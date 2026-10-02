@@ -1,0 +1,14 @@
+{
+  "base": "8c1970119ffeb5625c7bc7ed5d7a77c1558e52fa",
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+  "beforeSHA": "03a4da03702f7b3fc39d4fa1710eccbb3ec34c953d2a36e7a453575d568daaf2",
+  "beforeLFSHA": "03a4da03702f7b3fc39d4fa1710eccbb3ec34c953d2a36e7a453575d568daaf2",
+  "afterSHA": "b3a0e728e0eb60af43d521cc8388eda0db9c14d3d543e0199746f880cc1f1bb9",
+  "exactOriginalFrozenHunks": 8,
+  "allUnique": true,
+  "inverseRestoresNewBase": true,
+  "commentAndTypedSettingsDeltaPreserved": true,
+  "source84FullCompileCoversOriginalStorageClosure": true,
+  "combined8cShellCompilePendingRoot": true,
+  "wholeOldShellReplacementForbidden": true
+}

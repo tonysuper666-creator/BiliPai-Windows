@@ -1,0 +1,66 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteCache.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "58240f63c5c6ba06b80aaf33478401d59be681333818b73b5b2457a616c99f3c",
+  "preparedSha256LF": "815f89320ef9a54d2cf00ca6764f3a0ee1e91ca516b050c4b0f155325299ed22",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "58240f63c5c6ba06b80aaf33478401d59be681333818b73b5b2457a616c99f3c",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    },
+    {
+      "id": 3,
+      "count": 1
+    },
+    {
+      "id": 4,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 45,
+      "afterLine": 45,
+      "before": "    private val registrations = ConcurrentHashMap<String, DesktopMediaByteLease>()\n    private val bindings = ConcurrentHashMap.newKeySet<DesktopMediaByteLease>()\n    private val lifetimeMonitor = Any()\n    private val resourceLocks = Array(64) { Mutex() }\n    private val server = Loopback()\n    init {\n",
+      "after": "    private val registrations = ConcurrentHashMap<String, DesktopMediaByteLease>()\n    private val bindings = ConcurrentHashMap.newKeySet<DesktopMediaByteLease>()\n    private val lifetimeMonitor = Any()\n    private var clearing = false\n    private val resourceLocks = Array(64) { Mutex() }\n    private val server = Loopback()\n    init {\n",
+      "beforeSha256LF": "27a0d8c48e3fb37b0093ce3379b25611feda279b4740d641f2e009eea3032650",
+      "afterSha256LF": "ce060b2103fded804c63cfea4cccf1306ee3222cfa46b1e74fed79d08d39e244"
+    },
+    {
+      "id": 2,
+      "beforeLine": 62,
+      "afterLine": 63,
+      "before": "        bindings.filter { !it.current() }.forEach { it.markRetired();cleanupLater(it) }\n        val lease=DesktopMediaByteLease(this,admission)\n        synchronized(lifetimeMonitor) {\n            check(!closed.get());lease.requireLocallyLive()\n            require(bindings.size<128) { \"Too many live media bindings\" }\n            bindings+=lease\n        }\n",
+      "after": "        bindings.filter { !it.current() }.forEach { it.markRetired();cleanupLater(it) }\n        val lease=DesktopMediaByteLease(this,admission)\n        synchronized(lifetimeMonitor) {\n            check(!closed.get() && !clearing) { \"媒体缓存正在维护\" };lease.requireLocallyLive()\n            require(bindings.size<128) { \"Too many live media bindings\" }\n            bindings+=lease\n        }\n",
+      "beforeSha256LF": "7af4f6b2f12d64dc77128189fb2fa6926702875b4e3b2409e53d842735464161",
+      "afterSha256LF": "dc192d4fbabc9a10f8c0b2c14ca9a9b65b3f4b0a60099aaf89de88946107f23f"
+    },
+    {
+      "id": 3,
+      "beforeLine": 76,
+      "afterLine": 77,
+      "before": "        }\n        val token = UUID.randomUUID().toString().replace(\"-\", \"\") + UUID.randomUUID().toString().replace(\"-\", \"\")\n        synchronized(lifetimeMonitor) {\n            check(!closed.get());lease.requireLocallyLive()\n            require(registrations.size < 64) { \"Too many live media registrations\" }\n            registrations[token] = lease;lease.token = token\n        }\n",
+      "after": "        }\n        val token = UUID.randomUUID().toString().replace(\"-\", \"\") + UUID.randomUUID().toString().replace(\"-\", \"\")\n        synchronized(lifetimeMonitor) {\n            check(!closed.get() && !clearing) { \"媒体缓存正在维护\" };lease.requireLocallyLive()\n            require(registrations.size < 64) { \"Too many live media registrations\" }\n            registrations[token] = lease;lease.token = token\n        }\n",
+      "beforeSha256LF": "09c01b7068840e75b19ba0b084dcd7676e37b121440401cdbfb165276a363720",
+      "afterSha256LF": "3c18fb668cf824b126060c7c784d08bac0b3e29880a8b5093b6b9226a6fceffb"
+    },
+    {
+      "id": 4,
+      "beforeLine": 88,
+      "afterLine": 89,
+      "before": "    fun stats(): DesktopMediaByteCacheStats {\n        val (bytes, spans) = store.stats()\n        return DesktopMediaByteCacheStats(upstream.get(), cacheReads.get(), bytes, spans, registrations.size)\n    }\n    suspend fun clear(admission: DesktopMediaByteAdmission) {\n        admission.check()\n",
+      "after": "    fun stats(): DesktopMediaByteCacheStats {\n        val (bytes, spans) = store.stats()\n        return DesktopMediaByteCacheStats(upstream.get(), cacheReads.get(), bytes, spans, registrations.size)\n    }\n    /** Settings never retires playback. Same actor denies new binds/registration while its idle index clears. */\n    internal suspend fun clearIdle(checkRequest: () -> Unit) = withContext(Dispatchers.IO) {\n        checkRequest()\n        synchronized(lifetimeMonitor) {\n            check(!closed.get() && !clearing);require(bindings.isEmpty() && registrations.isEmpty()) { \"正在播放的媒体缓存不能清理\" };clearing=true\n        }\n        try { store.clearIdle(checkRequest) } finally { synchronized(lifetimeMonitor) { clearing=false } }\n    }\n    suspend fun clear(admission: DesktopMediaByteAdmission) {\n        admission.check()\n",
+      "beforeSha256LF": "364d4303c3d62bb2b6016b7524484ed0708e57d73464cb85e5128695e91db730",
+      "afterSha256LF": "b6c22886abe0f2be083ca9930e3151c71cbdd6eebca0a63b6b33e596a0799302"
+    }
+  ]
+}

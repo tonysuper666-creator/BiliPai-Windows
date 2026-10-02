@@ -1,0 +1,53 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+  "preparedSha256LF": "9aeea361ca3fc23af986b4d97f134f598262d7203918dd8bac3c287fb66773ed",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    },
+    {
+      "id": 3,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 30,
+      "afterLine": 30,
+      "before": "    backupContent: @Composable (target: SettingsSearchTarget, onDismiss: () -> Unit) -> Unit,\n    blockedListContent: @Composable () -> Unit,\n    systemContent: @Composable () -> Unit,\n    imageSavePathContent: @Composable (openInitially: Boolean) -> Unit = {\n        AppText(\"图片保存位置设置仍在移植中。\", Modifier.padding(12.dp))\n    },\n",
+      "after": "    backupContent: @Composable (target: SettingsSearchTarget, onDismiss: () -> Unit) -> Unit,\n    blockedListContent: @Composable () -> Unit,\n    systemContent: @Composable () -> Unit,\n    storageContent: @Composable (target: SettingsSearchTarget?) -> Unit,\n    imageSavePathContent: @Composable (openInitially: Boolean) -> Unit = {\n        AppText(\"图片保存位置设置仍在移植中。\", Modifier.padding(12.dp))\n    },\n",
+      "beforeSha256LF": "e71e43e6b7ecce9f67d80af8430b54fc3ed62754dde11fc83f09c9547666aec5",
+      "afterSha256LF": "1b1e222c0581b9bd8630ebde477c0ab89a0d884786faba169321ab8ea649e00f"
+    },
+    {
+      "id": 2,
+      "beforeLine": 93,
+      "afterLine": 94,
+      "before": "                                        SettingsStorageBackupCategoryEntrySection(\n                                            onSettingsShareClick = { navigator.openDetail(SettingsSearchTarget.SETTINGS_SHARE, null) },\n                                            onWebDavBackupClick = { navigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP, null) })\n                                        imageSavePathContent(false)\n                                        AppText(\"全局下载目录和原版缓存管理尚未完整移植。\", Modifier.padding(vertical = 12.dp))\n",
+      "after": "                                        storageContent(null)\n",
+      "beforeSha256LF": "afdf6fa144c71c1710ae822bb2c72346013806bf52e027a71920fec19ff41195",
+      "afterSha256LF": "06874f3ea24b41e8ac9589c2f5f9939c1a6261aa587df06957c26c97dfda01be"
+    },
+    {
+      "id": 3,
+      "beforeLine": 126,
+      "afterLine": 123,
+      "before": "                                    SettingsSearchTarget.PERMISSION -> AppText(\"Windows 权限状态与检查尚未接入，当前不能确认权限是否可用。\", Modifier.padding(12.dp))\n                                    SettingsSearchTarget.MESSAGE_NOTIFICATION -> AppText(\"原版消息通知调度和 Windows 通知权限尚未接入。\", Modifier.padding(12.dp))\n                                    SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()\n                                    SettingsSearchTarget.IMAGE_SAVE_PATH -> imageSavePathContent(true)\n                                    else -> AppText(\"该原版设置页面仍在移植中。\", Modifier.padding(12.dp))\n                                }\n",
+      "after": "                                    SettingsSearchTarget.PERMISSION -> AppText(\"Windows 权限状态与检查尚未接入，当前不能确认权限是否可用。\", Modifier.padding(12.dp))\n                                    SettingsSearchTarget.MESSAGE_NOTIFICATION -> AppText(\"原版消息通知调度和 Windows 通知权限尚未接入。\", Modifier.padding(12.dp))\n                                    SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()\n                                    SettingsSearchTarget.DOWNLOAD_PATH, SettingsSearchTarget.CLEAR_CACHE -> storageContent(page.target)\n                                    SettingsSearchTarget.IMAGE_SAVE_PATH -> imageSavePathContent(true)\n                                    else -> AppText(\"该原版设置页面仍在移植中。\", Modifier.padding(12.dp))\n                                }\n",
+      "beforeSha256LF": "04014dc25e892b41fd07f961f2a4256b44904e7f1bcbcdb4f739595eece2582a",
+      "afterSha256LF": "6fc518b823cba7cdd6497ee297f31defcfe5b5747793158b81e6a9bd330a3554"
+    }
+  ]
+}

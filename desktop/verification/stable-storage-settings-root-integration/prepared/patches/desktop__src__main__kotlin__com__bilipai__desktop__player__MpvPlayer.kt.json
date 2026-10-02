@@ -1,0 +1,209 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "94c9f2a35a129c5d62fdbaf3b96e7801b9eab33534942ee3ba24b8c2b2b531ed",
+  "preparedSha256LF": "918eeefb47807c8a9fbca21bec88d17e9b7b32f1831f21c2e9a58e43ec0c73c5",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "94c9f2a35a129c5d62fdbaf3b96e7801b9eab33534942ee3ba24b8c2b2b531ed",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    },
+    {
+      "id": 3,
+      "count": 1
+    },
+    {
+      "id": 4,
+      "count": 1
+    },
+    {
+      "id": 5,
+      "count": 1
+    },
+    {
+      "id": 6,
+      "count": 1
+    },
+    {
+      "id": 7,
+      "count": 1
+    },
+    {
+      "id": 8,
+      "count": 1
+    },
+    {
+      "id": 9,
+      "count": 1
+    },
+    {
+      "id": 10,
+      "count": 1
+    },
+    {
+      "id": 11,
+      "count": 1
+    },
+    {
+      "id": 12,
+      "count": 1
+    },
+    {
+      "id": 13,
+      "count": 1
+    },
+    {
+      "id": 14,
+      "count": 1
+    },
+    {
+      "id": 15,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 42,
+      "afterLine": 42,
+      "before": "    @Volatile private var session: Session? = null\n    private var attachedWindowId: Long? = null\n    private var requestedSource: PlaybackSource? = null\n    private var requestedLoadMute: Boolean? = null\n    private var sourceVersion = 0L\n    private var playbackRevision = 0L\n",
+      "after": "    @Volatile private var session: Session? = null\n    private var attachedWindowId: Long? = null\n    private var requestedSource: PlaybackSource? = null\n    private var idleCacheMaintenance: Any? = null\n    private val retiringCacheSessions=mutableSetOf<Session>()\n    private var requestedLoadMute: Boolean? = null\n    private var sourceVersion = 0L\n    private var playbackRevision = 0L\n",
+      "beforeSha256LF": "231c9fa39da5ea4a9ee511738c43c53c9d9935b50ca5d29704eca2062e881222",
+      "afterSha256LF": "ebd4f3d74b241b680fa8251ca5f3e199d1c81f52f70b6c0f540f69a148357219"
+    },
+    {
+      "id": 2,
+      "beforeLine": 88,
+      "afterLine": 90,
+      "before": "    val currentSourceVersion: Long get() = synchronized(lock) { sourceVersion }\n    /** Ownership without copying or exposing any stream credentials. A closed/idle player has no owner. */\n    fun ownsSourceVersion(version: Long): Boolean = synchronized(lock) { !closed.get() && requestedSource != null && sourceVersion == version }\n\n    /** Internal casting transport only. Credentials remain in memory and must never be placed in a LAN URL or diagnostics. */\n    internal fun currentSourceSnapshot(): OwnedPlaybackSourceSnapshot? = synchronized(lock) {\n",
+      "after": "    val currentSourceVersion: Long get() = synchronized(lock) { sourceVersion }\n    /** Ownership without copying or exposing any stream credentials. A closed/idle player has no owner. */\n    fun ownsSourceVersion(version: Long): Boolean = synchronized(lock) { !closed.get() && requestedSource != null && sourceVersion == version }\n\n    /** Same native-owner exclusion. The actor waits for idle-active after queued Stop before cache IO. */\n    internal suspend fun <T> withIdleCacheMaintenance(checkRequest: () -> Unit, block: suspend () -> T): T {\n        checkRequest();val token=Any();val completion=CompletableDeferred<Boolean>()\n        val retired=synchronized(lock) {\n            check(!closed.get());require(requestedSource==null && idleCacheMaintenance==null) { \"请先停止播放再清理字幕、弹幕或临时文件\" }\n            idleCacheMaintenance=token\n            val active=session\n            if(active==null)completion.complete(true)\n            else if(active.closing.get())completion.complete(false)\n            else active.commands.offer(Action.IdleCacheBarrier(token,completion))\n            retiringCacheSessions.toList()\n        }\n        try { check(withTimeout(3_000L) { retired.forEach {it.cacheTerminated.await()};completion.await() }) { \"原生播放器尚未停止\" };checkRequest();return block() }\n        finally { completion.cancel();synchronized(lock) {\n            if(idleCacheMaintenance===token) {\n                idleCacheMaintenance=null\n                if(!closed.get() && session==null)attachedWindowId?.let {startSession(it)}\n            }\n        } }\n    }\n\n    /** Internal casting transport only. Credentials remain in memory and must never be placed in a LAN URL or diagnostics. */\n    internal fun currentSourceSnapshot(): OwnedPlaybackSourceSnapshot? = synchronized(lock) {\n",
+      "beforeSha256LF": "5f12dbd2c1dae883fbae56def537255af67798e84f498a77249406c6ab2b59c4",
+      "afterSha256LF": "576d22864853db8c452e832b3404c6d07cef56da7351e74b74df3691c13063b7"
+    },
+    {
+      "id": 3,
+      "beforeLine": 164,
+      "afterLine": 187,
+      "before": "    private fun load(source: PlaybackSource, preserveSubtitles: Boolean, startMuted: Boolean? = null) {\n        synchronized(lock) {\n            check(!closed.get()) { \"Player is closed\" }\n            // Validate and freeze caller-owned maps before transferring media ownership.\n            val retainedSource = source.immutableSnapshot()\n            val previousTransport = requestedSource?.nativeTransport\n",
+      "after": "    private fun load(source: PlaybackSource, preserveSubtitles: Boolean, startMuted: Boolean? = null) {\n        synchronized(lock) {\n            check(!closed.get()) { \"Player is closed\" }\n            check(idleCacheMaintenance==null) { \"播放器缓存正在清理，请稍后重试\" }\n            // Validate and freeze caller-owned maps before transferring media ownership.\n            val retainedSource = source.immutableSnapshot()\n            val previousTransport = requestedSource?.nativeTransport\n",
+      "beforeSha256LF": "71c8ab082e65b48808112bd89387e3f67381b5948a77beb101937ffa9a3761bd",
+      "afterSha256LF": "62cb0b719caebd95fd7fa482aec218d5dc4782dc6f52ed02dcdcd6709645c97d"
+    },
+    {
+      "id": 4,
+      "beforeLine": 338,
+      "afterLine": 362,
+      "before": "            require('\\u0000' !in it.nativeTitle && '\\u0000' !in it.track.lan) { \"Subtitle metadata contains a NUL character.\" }\n        }\n        return synchronized(lock) {\n            if (closed.get() || requestedSource == null || sourceVersion != expectedSourceVersion ||\n                subtitleControlVersion != expectedControlVersion) return@synchronized false\n            val normalizedMode = com.android.purebilibili.feature.video.subtitle.normalizeSubtitleDisplayMode(\n                mode, primary != null, secondary != null)\n",
+      "after": "            require('\\u0000' !in it.nativeTitle && '\\u0000' !in it.track.lan) { \"Subtitle metadata contains a NUL character.\" }\n        }\n        return synchronized(lock) {\n            if (closed.get() || idleCacheMaintenance!=null || requestedSource == null || sourceVersion != expectedSourceVersion ||\n                subtitleControlVersion != expectedControlVersion) return@synchronized false\n            val normalizedMode = com.android.purebilibili.feature.video.subtitle.normalizeSubtitleDisplayMode(\n                mode, primary != null, secondary != null)\n",
+      "beforeSha256LF": "ed2f42245ab711347463e0c8d11297a8901831ab1bbc7510102ec5860c1e165e",
+      "afterSha256LF": "951326d5d95637af2742f18ed4febe1b85355a9e98c963a15710a1e95829813e"
+    },
+    {
+      "id": 5,
+      "beforeLine": 426,
+      "afterLine": 450,
+      "before": "            check(!closed.get() && requestedSource != null) { \"No video selected.\" }\n",
+      "after": "            check(!closed.get() && idleCacheMaintenance==null && requestedSource != null) { \"No video selected or cache maintenance active.\" }\n",
+      "beforeSha256LF": "79809a00804e38bea9bce1db62b33e4acee27c72a7de71c5d28c9290fb74c760",
+      "afterSha256LF": "8849b67358921d8eab2e0bde8d5c9e91c03460987df4156c467d17ce5a357c05"
+    },
+    {
+      "id": 6,
+      "beforeLine": 487,
+      "afterLine": 511,
+      "before": "    /** Headless Compose texture transport; owns the SAME normal session/event loop and mpv instance. */\n    internal fun startSoftwareTransport() = synchronized(lock) {\n        check(softwareTarget != null) { \"A software render target is required\" }\n        check(!closed.get()) { \"Player is closed\" }\n        if (session == null) startSession(0L)\n    }\n",
+      "after": "    /** Headless Compose texture transport; owns the SAME normal session/event loop and mpv instance. */\n    internal fun startSoftwareTransport() = synchronized(lock) {\n        check(softwareTarget != null) { \"A software render target is required\" }\n        check(idleCacheMaintenance==null) { \"Cache maintenance is active\" }\n        check(!closed.get()) { \"Player is closed\" }\n        if (session == null) startSession(0L)\n    }\n",
+      "beforeSha256LF": "15a0c3d28fbf70476feccc6cb1f8ab2970d72e44a3bd712429d0e5d242e2aa61",
+      "afterSha256LF": "01ce9f160252ffbe1ae55e105ab2a80f0592c19fd872e858636711f55de6538a"
+    },
+    {
+      "id": 7,
+      "beforeLine": 504,
+      "afterLine": 529,
+      "before": "    }\n\n    private fun startSession(windowId: Long) {\n        mutableDecoderCapabilities.value = null\n        mutableVideoOutput.value = PlayerVideoOutputState(sourceVersion = sourceVersion)\n        val next = Session(windowId, requestedSource, sourceVersion, playbackRevision, requestedLoadMute)\n",
+      "after": "    }\n\n    private fun startSession(windowId: Long) {\n        if(idleCacheMaintenance!=null)return\n        mutableDecoderCapabilities.value = null\n        mutableVideoOutput.value = PlayerVideoOutputState(sourceVersion = sourceVersion)\n        val next = Session(windowId, requestedSource, sourceVersion, playbackRevision, requestedLoadMute)\n",
+      "beforeSha256LF": "ce1cabd2586630d342b29715e336770cbf0c18faf0a9359107550da9c3b34069",
+      "afterSha256LF": "fdd51b5470f7867d17c01490e038e148a3a47ea7684a85355b66c1fe7ad7ac8a"
+    },
+    {
+      "id": 8,
+      "beforeLine": 523,
+      "afterLine": 549,
+      "before": "            session.also { session = null; it?.closing?.set(true) }\n",
+      "after": "            session.also { session = null; it?.closing?.set(true);if(it!=null)retiringCacheSessions.add(it) }\n",
+      "beforeSha256LF": "fcd35a5a3f8b70d617f47f00646b1747c804ac0ccfbabfd9c599c1c619b4a11c",
+      "afterSha256LF": "ee73a06cccd8a628f334a2d7079d02daf1d5f0c1b20987823e84ce07b458f306"
+    },
+    {
+      "id": 9,
+      "beforeLine": 563,
+      "afterLine": 589,
+      "before": "        data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean,\n            val admissionSource: PlaybackSource? = null) : Action\n        data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>, val owned:OwnedPlaybackSourceSnapshot?=null, val revision:Long?=null) : Action\n        data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action\n    }\n\n",
+      "after": "        data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean,\n            val admissionSource: PlaybackSource? = null) : Action\n        data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>, val owned:OwnedPlaybackSourceSnapshot?=null, val revision:Long?=null) : Action\n        data class IdleCacheBarrier(val token: Any, val completion: CompletableDeferred<Boolean>) : Action\n        data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action\n    }\n\n",
+      "beforeSha256LF": "8cc076353de0766d51a120e680004364f451ec16cd9000ae9cf832d31b503e98",
+      "afterSha256LF": "63f6b9864806ddf8a52291f7a5c6b3ec475df4f44f45b615266d560f8db73555"
+    },
+    {
+      "id": 10,
+      "beforeLine": 572,
+      "afterLine": 599,
+      "before": "        private val initialRevision: Long, private val initialMuted: Boolean?) {\n        val commands = LinkedBlockingQueue<Action>()\n        val closing = AtomicBoolean(false)\n        val thread = Thread(::run, \"BiliPai-native-player\").apply { isDaemon = true }\n        private var sectionFlipHorizontal=false\n        private var sectionFlipVertical=false\n",
+      "after": "        private val initialRevision: Long, private val initialMuted: Boolean?) {\n        val commands = LinkedBlockingQueue<Action>()\n        val closing = AtomicBoolean(false)\n        val cacheTerminated=CompletableDeferred<Unit>()\n        // Worker-owned: Stop is asynchronous even after mpv_command returns. Keep the\n        // barrier armed while this same event loop advances mpv's unload events.\n        private var pendingIdleCacheBarrier: Action.IdleCacheBarrier? = null\n        val thread = Thread(::run, \"BiliPai-native-player\").apply { isDaemon = true }\n        private var sectionFlipHorizontal=false\n        private var sectionFlipVertical=false\n",
+      "beforeSha256LF": "c5ab8c89e81e4d8c92cc15feb6e78f1bf9c43e72a56f54a823656b4346520f28",
+      "afterSha256LF": "b79b4a3547e1c9e2344031b24106669f88d0069ea62b4c72a6594e42037bfcc4"
+    },
+    {
+      "id": 11,
+      "beforeLine": 660,
+      "afterLine": 691,
+      "before": "                    var action = commands.poll()\n                    while (action != null) {\n                        if (closing.get()) {\n                            if (action is Action.Screenshot) action.completion.completeExceptionally(IllegalStateException(\"Player stopped before the screenshot was saved.\"))\n                            break\n                        }\n",
+      "after": "                    var action = commands.poll()\n                    while (action != null) {\n                        if (closing.get()) {\n                            if (action is Action.IdleCacheBarrier) action.completion.complete(false)\n                            if (action is Action.Screenshot) action.completion.completeExceptionally(IllegalStateException(\"Player stopped before the screenshot was saved.\"))\n                            break\n                        }\n",
+      "beforeSha256LF": "9a2e2b4018ac2281e05c79041854bac6fc0baa29c38e466d2e2fef0573f6b2ed",
+      "afterSha256LF": "c46dd5e073c8835f9aea5626f0132a8982f238e95495d432563a946296552cb1"
+    },
+    {
+      "id": 12,
+      "beforeLine": 677,
+      "afterLine": 709,
+      "before": "                }\n            } catch (failure: Throwable) {\n                if (!closing.get()) fatalFailure = failure\n            } finally {\n                while (true) {\n                    val pending = commands.poll() ?: break\n                    if (pending is Action.Screenshot) pending.completion.completeExceptionally(IllegalStateException(\"Player stopped before the screenshot was saved.\"))\n                }\n                // The render context/thread MUST terminate before its core. Never call render APIs from this client worker.\n                try { softwareRenderer?.close() }\n                finally { if (native != null && handle != null) native.mpv_terminate_destroy(handle) }\n                synchronized(lock) {\n",
+      "after": "                    advanceIdleCacheBarrier(native, handle)\n                }\n            } catch (failure: Throwable) {\n                if (!closing.get()) fatalFailure = failure\n            } finally {\n                pendingIdleCacheBarrier?.completion?.complete(false)\n                pendingIdleCacheBarrier = null\n                while (true) {\n                    val pending = commands.poll() ?: break\n                    if(pending is Action.IdleCacheBarrier)pending.completion.complete(false)\n                    if (pending is Action.Screenshot) pending.completion.completeExceptionally(IllegalStateException(\"Player stopped before the screenshot was saved.\"))\n                }\n                // The render context/thread MUST terminate before its core. Never call render APIs from this client worker.\n                try { softwareRenderer?.close() }\n                finally { if (native != null && handle != null) native.mpv_terminate_destroy(handle) }\n                cacheTerminated.complete(Unit)\n                synchronized(lock) {\n                    retiringCacheSessions.remove(this)\n",
+      "beforeSha256LF": "8038389a31ee2c041ae53af4daa67d25147ab6395af2f88818530837abd8002a",
+      "afterSha256LF": "066dbb06234443e4383a6e2d323df8fece5a15a4cbdb797ac33143b9003edb58"
+    },
+    {
+      "id": 13,
+      "beforeLine": 702,
+      "afterLine": 740,
+      "before": "        private fun perform(native: MpvNative, handle: Pointer, action: Action) {\n            try {\n                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.OwnedMute && action !is Action.OwnedVideoViewport &&\n",
+      "after": "        private fun advanceIdleCacheBarrier(native: MpvNative, handle: Pointer) {\n            val pending = pendingIdleCacheBarrier ?: return\n            if (pending.completion.isCompleted) {\n                pendingIdleCacheBarrier = null\n                return\n            }\n            fun stillOwned(): Boolean = synchronized(lock) {\n                !closed.get() && session === this && !closing.get() &&\n                    requestedSource == null && idleCacheMaintenance === pending.token\n            }\n            if (!stillOwned()) {\n                pendingIdleCacheBarrier = null\n                pending.completion.complete(false)\n                return\n            }\n            // Native property/event progression belongs to this worker, outside lock.\n            // A false idle-active means keep polling, never await our own event loop.\n            try {\n                val idle = property(native, handle, \"idle-active\") == \"yes\"\n                val owned = stillOwned()\n                if (!owned || idle) {\n                    pendingIdleCacheBarrier = null\n                    pending.completion.complete(owned && idle)\n                }\n            } catch (failure: Exception) {\n                pendingIdleCacheBarrier = null\n                pending.completion.completeExceptionally(failure)\n            }\n        }\n\n        private fun perform(native: MpvNative, handle: Pointer, action: Action) {\n            try {\n                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.IdleCacheBarrier && action !is Action.OwnedMute && action !is Action.OwnedVideoViewport &&\n",
+      "beforeSha256LF": "bdfe045a00f56744572afe0fbb4d7256ee32707fb76f88b1765298e7242d82f7",
+      "afterSha256LF": "f6f47fe152d4617a021f2863d572a38530da6ea4811372c2a24bd847ee304e1b"
+    },
+    {
+      "id": 14,
+      "beforeLine": 838,
+      "afterLine": 906,
+      "before": "                        if(!allowed) action.completion.cancel(kotlinx.coroutines.CancellationException(\"Screenshot source changed before capture\"))\n                        else saveScreenshot(native, handle, action)\n                    }\n                    is Action.Barrier -> action.completion.complete(synchronized(lock) {\n                        session === this && !closing.get() && sourceVersion == action.version &&\n                            playbackRevision == action.revision && activeSourceVersion == action.version &&\n",
+      "after": "                        if(!allowed) action.completion.cancel(kotlinx.coroutines.CancellationException(\"Screenshot source changed before capture\"))\n                        else saveScreenshot(native, handle, action)\n                    }\n                    is Action.IdleCacheBarrier -> {\n                        pendingIdleCacheBarrier?.completion?.complete(false)\n                        pendingIdleCacheBarrier = action\n                    }\n                    is Action.Barrier -> action.completion.complete(synchronized(lock) {\n                        session === this && !closing.get() && sourceVersion == action.version &&\n                            playbackRevision == action.revision && activeSourceVersion == action.version &&\n",
+      "beforeSha256LF": "037f7debab49769a09edb9c9a2a83ff159c5152256eb00b54bdede6311e89b61",
+      "afterSha256LF": "e650a7942efbe132bba0b3e266800c732b1ede73214a44bdc3d0990d9c916484"
+    },
+    {
+      "id": 15,
+      "beforeLine": 845,
+      "afterLine": 917,
+      "before": "                    })\n                }\n            } catch (failure: Exception) {\n                if (action is Action.Screenshot) {\n                    action.completion.completeExceptionally(failure)\n                    return\n",
+      "after": "                    })\n                }\n            } catch (failure: Exception) {\n                if(action is Action.IdleCacheBarrier) {action.completion.completeExceptionally(failure);return}\n                if (action is Action.Screenshot) {\n                    action.completion.completeExceptionally(failure)\n                    return\n",
+      "beforeSha256LF": "ea8de8ce5ab9fbf79d995fef6f087fa5109f2cbc4a86b7df171772d4e721d02f",
+      "afterSha256LF": "833133ab1ce2a61ddd123c54646fd8ff021805523a1e7da1f481c311b561aba3"
+    }
+  ]
+}

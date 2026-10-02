@@ -1,0 +1,144 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "cd7e78bf5ad7823bf2481998818d0c80bb4280e6e22b5d8c7f1ddcab5140fcf5",
+  "preparedSha256LF": "4a01a768a015edd70bd6bb7d1159dff578e5987167409d4973ecf369f0302442",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "cd7e78bf5ad7823bf2481998818d0c80bb4280e6e22b5d8c7f1ddcab5140fcf5",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    },
+    {
+      "id": 3,
+      "count": 1
+    },
+    {
+      "id": 4,
+      "count": 1
+    },
+    {
+      "id": 5,
+      "count": 1
+    },
+    {
+      "id": 6,
+      "count": 1
+    },
+    {
+      "id": 7,
+      "count": 1
+    },
+    {
+      "id": 8,
+      "count": 1
+    },
+    {
+      "id": 9,
+      "count": 1
+    },
+    {
+      "id": 10,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 60,
+      "afterLine": 60,
+      "before": "    private val generation = AtomicLong()\n    private val documentRevision = AtomicLong()\n    private val requestLock = Any()\n    private val requests = CoroutineScope(SupervisorJob() + Dispatchers.IO)\n    private var loadJob: Job? = null\n    private var windowJob: Job? = null\n",
+      "after": "    private val generation = AtomicLong()\n    private val documentRevision = AtomicLong()\n    private val requestLock = Any()\n    private var cacheMaintenance=false\n    @Volatile private var windowLoader:DanmakuWindowLoader?=null\n    private val requests = CoroutineScope(SupervisorJob() + Dispatchers.IO)\n    private var loadJob: Job? = null\n    private var windowJob: Job? = null\n",
+      "beforeSha256LF": "6cfa818afd5787ffe8a32f7a3b1dd833aee5ecdd361c229269a8e8f2382537f6",
+      "afterSha256LF": "b8af4fc8b44db14d326b3517eb0317f60e8eed1a7bffbb6a8ca313ca41551784"
+    },
+    {
+      "id": 2,
+      "beforeLine": 71,
+      "afterLine": 73,
+      "before": "    override val webMaskEnabled:Boolean get()=settings.smartOcclusionEnabled && !liveMode && !closed.get()\n",
+      "after": "    override val webMaskEnabled:Boolean get()=settings.smartOcclusionEnabled && !cacheMaintenance && !liveMode && !closed.get()\n",
+      "beforeSha256LF": "3be0feb9f51c6becb0a77d2593fdeb2f228e6b3870b2b204b322222409ce735a",
+      "afterSha256LF": "d57f72ae8704a2cb74f87a9f6c519d4ba6996cd0d8a8ed07b69b790da886414c"
+    },
+    {
+      "id": 3,
+      "beforeLine": 502,
+      "afterLine": 504,
+      "before": "            if (!liveMode) rawDocument to generation.get() else null\n",
+      "after": "            if (!liveMode && !cacheMaintenance) rawDocument to generation.get() else null\n",
+      "beforeSha256LF": "061eb5c4690e1fb84a4d18dbb87c8ba3e9e6c0c13c5fd343009261370723af66",
+      "afterSha256LF": "5a367ec24b706ce1b0337c4bfbd2ea1067a59a53f36f84101a2e95a5e239044e"
+    },
+    {
+      "id": 4,
+      "beforeLine": 526,
+      "afterLine": 528,
+      "before": "    /** Switches from VOD segments to genuine realtime events received by the upstream live client. */\n    fun enterLive(): Long {\n        val version = synchronized(requestLock) {\n            generation.incrementAndGet().also { loadJob?.cancel(); windowJob?.cancel(); retireWebMaskSource(); liveMode = true; pendingLive.clear() }\n                .also { offlineDocumentOwner=null; commandCid = null; mutableCommands.value = emptyList(); mutableAdvanced.value=emptyList(); originalSectionDanmakuViewport=null }\n        }\n",
+      "after": "    /** Switches from VOD segments to genuine realtime events received by the upstream live client. */\n    fun enterLive(): Long {\n        val version = synchronized(requestLock) {\n            check(!cacheMaintenance) { \"弹幕缓存正在维护\" }\n            generation.incrementAndGet().also { loadJob?.cancel(); windowJob?.cancel(); retireWebMaskSource(); liveMode = true; pendingLive.clear() }\n                .also { offlineDocumentOwner=null; commandCid = null; mutableCommands.value = emptyList(); mutableAdvanced.value=emptyList(); originalSectionDanmakuViewport=null }\n        }\n",
+      "beforeSha256LF": "140f4a270eb411e67997041cf9d084c36b5ad8d2fe811d6c34972367b1baa846",
+      "afterSha256LF": "3a690be340e92c18ad44bcfc33b7c09ad03644d75327c087a91a284e593e0e0d"
+    },
+    {
+      "id": 5,
+      "beforeLine": 558,
+      "afterLine": 561,
+      "before": "\n    private suspend fun loadSource(playbackSource: DesktopDanmakuSource, cid: Long, aid: Long, durationSeconds: Double, expectedSourceVersion: Long?, maskSource:DesktopOwnedWebMaskSource?, offlineOwner:(()->Boolean)? = null) {\n        val version = synchronized(requestLock) {\n            generation.incrementAndGet().also {\n                loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()\n                // Clear the old document before publishing a new CID/version identity.\n",
+      "after": "\n    private suspend fun loadSource(playbackSource: DesktopDanmakuSource, cid: Long, aid: Long, durationSeconds: Double, expectedSourceVersion: Long?, maskSource:DesktopOwnedWebMaskSource?, offlineOwner:(()->Boolean)? = null) {\n        val version = synchronized(requestLock) {\n            check(!cacheMaintenance && !closed.get()) { \"弹幕缓存正在维护\" }\n            generation.incrementAndGet().also {\n                loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()\n                // Clear the old document before publishing a new CID/version identity.\n",
+      "beforeSha256LF": "3b2c02fbd2d2f0478c78d40b1c15ad0a06f87caec0eb72327df619418b7894b8",
+      "afterSha256LF": "035c2c43b3719e94f9ce19226a2a90e5db03a821de0a24c16306e1a80d618405"
+    },
+    {
+      "id": 6,
+      "beforeLine": 574,
+      "afterLine": 578,
+      "before": "        val loading = requests.async {\n            val loader = DanmakuWindowLoader(playbackSource, cid, aid, (durationSeconds * 1000).toLong())\n",
+      "after": "        val loading = synchronized(requestLock) {\n          if(cacheMaintenance || closed.get() || version!=generation.get())throw CancellationException(\"弹幕缓存维护或请求已退役\")\n          requests.async {\n            val loader = DanmakuWindowLoader(playbackSource, cid, aid, (durationSeconds * 1000).toLong())\n            synchronized(requestLock) { if(!cacheMaintenance && version==generation.get())windowLoader=loader }\n",
+      "beforeSha256LF": "158532111f8df941aeae72990f1f5ed7c9742c0869561549276396a0657c38f3",
+      "afterSha256LF": "9c1bdfc750b0221895fa6ee48e46d9aa36b5e4759effab0efa9532b1b13d430a"
+    },
+    {
+      "id": 7,
+      "beforeLine": 595,
+      "afterLine": 602,
+      "before": "                }\n            }\n        }\n        synchronized(requestLock) {\n            if (version == generation.get() && !closed.get()) loadJob = loading else loading.cancel()\n        }\n",
+      "after": "                }\n            }\n        }\n        }\n        synchronized(requestLock) {\n            if (version == generation.get() && !closed.get()) loadJob = loading else loading.cancel()\n        }\n",
+      "beforeSha256LF": "59a0f71863d85618dab85c3f9fb9812a78a086c0a650ca349c28540849fc8338",
+      "afterSha256LF": "388d9d1b4c1af982d53f881f1945574bcf37ff0969f8fbcd9561043b05fa965b"
+    },
+    {
+      "id": 8,
+      "beforeLine": 616,
+      "afterLine": 624,
+      "before": "        }\n    }\n\n    /** Also supports locally supplied documents and deterministic offline verification. */\n    fun setComments(comments: List<DanmakuComment>) {\n        setDocument(DanmakuDocument(comments))\n",
+      "after": "        }\n    }\n\n    internal fun cacheMemoryEstimate(): Long = synchronized(requestLock) {\n        (windowLoader?.cachedBytes() ?: 0L)+rawDocument.comments.sumOf { it.text.length*2L+64L }\n    }\n    /** VOD memory only. Existing jobs (including inherited masks) drain outside requestLock;\n     * the same generation excludes stale plugin/EDT publication. Live image cache is not claimed. */\n    internal suspend fun clearIdleCache(checkRequest: () -> Unit) {\n        checkRequest()\n        val (version,jobs)=synchronized(requestLock) {\n            check(!closed.get() && !cacheMaintenance);require(!liveMode) { \"请退出直播后再清理点播弹幕缓存\" }\n            cacheMaintenance=true\n            val ownedJobs=requests.coroutineContext[Job]!!.children.toList()\n            val next=generation.incrementAndGet();retireWebMaskSource()\n            ownedJobs.forEach {it.cancel()}\n            next to ownedJobs\n        }\n        try {\n            jobs.forEach {it.join()};checkRequest()\n            synchronized(requestLock) {\n                check(!closed.get());loadJob=null;windowJob=null;pluginJob=null;windowLoader=null\n                rawDocument=DanmakuDocument();offlineDocumentOwner=null;poolSourceVersion=null\n                commandCid=null;pendingLive.clear();mutableCommands.value=emptyList();mutableAdvanced.value=emptyList()\n                mutableError.value=null;mutableFormat.value=null;originalLocalInjectionPhase=Any();documentRevision.incrementAndGet()\n            }\n            val painted=kotlinx.coroutines.CompletableDeferred<Unit>()\n            SwingUtilities.invokeLater {\n                try {\n                    check(!closed.get() && cacheMaintenance && version==generation.get())\n                    scheduler=DanmakuScheduler(emptyList(),settings,liveAdmission=false)\n                    advancedRenderer=AdvancedDanmakuRenderer(emptyList());styles=emptyMap();measuredWidths.clear()\n                    mutableCount.value=0;panel.repaint();painted.complete(Unit)\n                } catch(failure:Throwable) { painted.completeExceptionally(failure) }\n            }\n            kotlinx.coroutines.withTimeout(3_000L) {painted.await()};checkRequest()\n        } finally { synchronized(requestLock) {cacheMaintenance=false} }\n    }\n\n    /** Also supports locally supplied documents and deterministic offline verification. */\n    fun setComments(comments: List<DanmakuComment>) {\n        setDocument(DanmakuDocument(comments))\n",
+      "beforeSha256LF": "0134acab8f20913cb65bdd2ef70246ba20fcac00228cf615ce0e5e1114c90de5",
+      "afterSha256LF": "7f4ca47ffe767f73fe89e9adfb93ef6f375df034b4856c6b3fccba1f365e5809"
+    },
+    {
+      "id": 9,
+      "beforeLine": 623,
+      "afterLine": 667,
+      "before": "\n    fun setDocument(document: DanmakuDocument) {\n        val version = synchronized(requestLock) {\n            generation.incrementAndGet().also {\n                loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()\n                retireWebMaskSource()\n",
+      "after": "\n    fun setDocument(document: DanmakuDocument) {\n        val version = synchronized(requestLock) {\n            check(!cacheMaintenance) { \"弹幕缓存正在维护\" }\n            check(!cacheMaintenance && !closed.get()) { \"弹幕缓存正在维护\" }\n            generation.incrementAndGet().also {\n                loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()\n                retireWebMaskSource()\n",
+      "beforeSha256LF": "3c06c27e678edcaff77090539df8ed96b97becbc6aec5460339a05d164678f96",
+      "afterSha256LF": "4d734f0599453f5f29ab177f0b77458137c74329b21f3f397f59daf6b9dff1d4"
+    },
+    {
+      "id": 10,
+      "beforeLine": 637,
+      "afterLine": 683,
+      "before": "\n    private fun installDocument(document: DanmakuDocument, version: Long, immediateLocalPhase:Any? = null) {\n        val (revision, processor) = synchronized(requestLock) {\n            if (version != generation.get() || closed.get() || !currentOfflineDocumentOwned()) return\n            if(immediateLocalPhase==null)originalLocalInjectionPhase=Any()\n            pluginJob?.cancel()\n            rawDocument = document.copy(serverDisabled = rawDocument.serverDisabled || document.serverDisabled)\n",
+      "after": "\n    private fun installDocument(document: DanmakuDocument, version: Long, immediateLocalPhase:Any? = null) {\n        val (revision, processor) = synchronized(requestLock) {\n            if (cacheMaintenance || version != generation.get() || closed.get() || !currentOfflineDocumentOwned()) return\n            if(immediateLocalPhase==null)originalLocalInjectionPhase=Any()\n            pluginJob?.cancel()\n            rawDocument = document.copy(serverDisabled = rawDocument.serverDisabled || document.serverDisabled)\n",
+      "beforeSha256LF": "435c9524f4ada8cd4d4a7c95cd548fd6feee3a9d38be9c8e91cf042875a0c6b8",
+      "afterSha256LF": "0ed822b0e2dcadabcda01270b44690494f9e549a491053aaf9c12fcfce8b4f4d"
+    }
+  ]
+}

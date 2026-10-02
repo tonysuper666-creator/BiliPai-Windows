@@ -1,0 +1,5 @@
+# Storage supplemental rebase and corrected native fixture
+
+The main 97 raw packet remains immutable. This supplement applies its same 66 exact hunks to clean HEAD8c197011. All 19 families pass forward and inverse reconstruction; the 8 Shell hunks preserve Parent's Comment and typed-settings additions. `rebase-contract.json` supplies the new original byte pins and precise resulting Shell SHA. Apply exact hunks only; never copy the older a5 whole Shell. Root's normal full-product compile remains required for the combined8c source.
+
+Native01's subtitle assertion used a nonexistent path and cannot isolate the maintenance guard. Its other actual idle/load/version/retirement/share observations remain evidence. This supplemental fixture creates a real SRT and requires IllegalStateException. It compiles only fixture code against the unchanged native01 tested owner JAR and immutable84 CP101; there is no production override beyond that already authorized prospective owner graph. The main native/JAR pins remain unchanged. Actual receiver, Root/account, long path and adversarial detach-timeout acceptance remain false.

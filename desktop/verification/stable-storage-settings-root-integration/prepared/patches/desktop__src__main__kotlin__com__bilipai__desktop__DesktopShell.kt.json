@@ -1,0 +1,118 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+  "preparedSha256LF": "1e32fb7c306e78327a12af249589f815355de6ad2b25599948847950803bf877",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "03a4da03702f7b3fc39d4fa1710eccbb3ec34c953d2a36e7a453575d568daaf2",
+  "currentEqualsBaseline": false,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    },
+    {
+      "id": 3,
+      "count": 1
+    },
+    {
+      "id": 4,
+      "count": 1
+    },
+    {
+      "id": 5,
+      "count": 1
+    },
+    {
+      "id": 6,
+      "count": 1
+    },
+    {
+      "id": 7,
+      "count": 1
+    },
+    {
+      "id": 8,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 222,
+      "afterLine": 222,
+      "before": "    val scope = rememberCoroutineScope()\n    // App/window reference, independent of drawing, section and account MID.\n    val homeRootRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<DesktopReadyOriginalRootHandle?>() }\n    val ordinaryVideoRef = remember(repository, pluginStore) {\n        java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoShellOwner?>()\n    }\n",
+      "after": "    val scope = rememberCoroutineScope()\n    // App/window reference, independent of drawing, section and account MID.\n    val homeRootRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<DesktopReadyOriginalRootHandle?>() }\n    val storageOwnerRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<com.bilipai.desktop.settings.DesktopStorageSettingsOwner?>() }\n    val ordinaryVideoRef = remember(repository, pluginStore) {\n        java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoShellOwner?>()\n    }\n",
+      "beforeSha256LF": "b1a9b6c87316a009518e163631e713c9fd912ec487f5082d33a27c34d892a72e",
+      "afterSha256LF": "64ef1c2b1e581ce24f26643a6e5a4a753893b280457edad04906973ef2745e64"
+    },
+    {
+      "id": 2,
+      "beforeLine": 320,
+      "afterLine": 321,
+      "before": "    val pluginRuntime = remember(pluginStore, diagnosticLifecycle, dynamicCache, imageSaveLifetime) {\n        DesktopPluginRuntime(pluginStore, repository, community, discovery,\n            beforeStoreFreeze = {\n                drainOriginalVideo()\n                homeRootRef.getAndSet(null)?.closeAndJoin()\n                withContext(Dispatchers.IO) { applicationImages.close() }\n",
+      "after": "    val pluginRuntime = remember(pluginStore, diagnosticLifecycle, dynamicCache, imageSaveLifetime) {\n        DesktopPluginRuntime(pluginStore, repository, community, discovery,\n            beforeStoreFreeze = {\n                storageOwnerRef.getAndSet(null)?.shutdownForRestore()\n                drainOriginalVideo()\n                homeRootRef.getAndSet(null)?.closeAndJoin()\n                withContext(Dispatchers.IO) { applicationImages.close() }\n",
+      "beforeSha256LF": "b1f2f634e9268e04937570edc691e019c365ac973f3c6a20cac17865b037d863",
+      "afterSha256LF": "bd1c58d407cc5df1c47bd90802212ff8465b52f8ff7c1bc01fbeaeb9636f6367"
+    },
+    {
+      "id": 3,
+      "beforeLine": 378,
+      "afterLine": 380,
+      "before": "    val downloads = remember(repository) { DesktopDownloadManager(repository) }\n",
+      "after": "    val storageSettingsContext=remember(globalPluginContext,imageSaveLifetime) {\n        DesktopOriginalPlayerSettingsContext(globalPluginContext,imageSaveLifetime::isActive,imageSaveLifetime::withCommit)\n    }\n    val downloads = remember(repository,storageSettingsContext) { DesktopDownloadManager(repository) {\n        val raw=(storageSettingsContext.pluginContext.store.preferences(\"settings\")[\"download_path\"] as? kotlinx.serialization.json.JsonPrimitive)?.takeIf { it.isString }?.content\n        storageSettingsContext.requireCurrent()\n        resolveDesktopOriginalDownloadDestination(raw,DesktopDownloadManager.defaultDownloadRoot())\n    } }\n",
+      "beforeSha256LF": "6bf97888ec6cf2c99af5ba3859b3d585a1655ba0f45da24e4d9d98c59d6b0470",
+      "afterSha256LF": "a33cd345df5f8723b5da3c501f244d977c42631ed201f0c0550e55867b80b44a"
+    },
+    {
+      "id": 4,
+      "beforeLine": 538,
+      "afterLine": 547,
+      "before": "            expectedSha256 = DesktopNativeDiagnosticShareAssetHash.sha256,\n            window = { hostWindow })\n    }\n    val rootTextShareBindings = remember(nativeTextShare) {\n        DesktopTextShareBindings { title, text, owned ->\n            nativeTextShare.share(title, text) { owned() && !isClosing() }\n",
+      "after": "            expectedSha256 = DesktopNativeDiagnosticShareAssetHash.sha256,\n            window = { hostWindow })\n    }\n    val storageOwner=remember(storageSettingsContext,repository,applicationImages,subtitleAssets,danmaku,player,nativeTextShare) {\n        com.bilipai.desktop.settings.DesktopStorageSettingsOwner(storageSettingsContext,repository,applicationImages,\n            {ordinaryVideoResourcesRef.get()?.mediaCache},subtitleAssets,danmaku,player,diagnostics,nativeTextShare,\n            { (homeRootRef.get()?.retainer?.current()?.entry?.embeddedPages as? DesktopOriginalHomeEmbeddedAggregate)?.gallery?.shareFiles },\n            { val captured=homeRootRef.get()?.retainer?.current()?.entry\n              if(captured==null)null else ({homeRootRef.get()?.retainer?.current()?.entry===captured && captured.gate.owns()}) },\n            imageSaveLifetime::isActive)\n    }\n    SideEffect { if(storageOwner.isActive())storageOwnerRef.compareAndSet(null,storageOwner) }\n    var storageStartupReady by remember(storageOwner) { mutableStateOf(false) }\n    LaunchedEffect(storageOwner,ordinaryVideoResources) {\n        if(ordinaryVideoResources!=null) {\n            try { storageOwner.clearAutomaticallyAtStartup() }\n            catch(cancelled:CancellationException) {\n                if(!currentCoroutineContext().isActive)throw cancelled\n                ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(\"启动缓存清理已因所有者变更中止，未清理文件已保留\"))\n            }\n            catch(failure:Exception) { ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(failure.message ?: \"启动缓存清理失败，已保留未清理文件\")) }\n            finally { if(currentCoroutineContext().isActive && storageOwner.isActive())storageStartupReady=true }\n        }\n    }\n    val rootTextShareBindings = remember(nativeTextShare) {\n        DesktopTextShareBindings { title, text, owned ->\n            nativeTextShare.share(title, text) { owned() && !isClosing() }\n",
+      "beforeSha256LF": "69a770d962fbc533744652aa466ec727e9ec5a8b6a9c0f87393b9106061083b7",
+      "afterSha256LF": "0c3a7b1eb547f0c6b6a10124cc13fb80120bd5adc0740f16d881e0b46be86ca5"
+    },
+    {
+      "id": 5,
+      "beforeLine": 554,
+      "afterLine": 584,
+      "before": "    DisposableEffect(nativeTextShare) { onDispose { nativeTextShare.close() } }\n    val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement, diagnosticLifecycle, nativeTextShare) {\n        DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {\n            drainOriginalVideo()\n            homeRootRef.getAndSet(null)?.closeAndJoin()\n            withContext(Dispatchers.IO) { applicationImages.close() }\n",
+      "after": "    DisposableEffect(nativeTextShare) { onDispose { nativeTextShare.close() } }\n    val backup = remember(playback, listen, pip, pluginRuntime, cast, retainedMedia, enhancement, diagnosticLifecycle, nativeTextShare) {\n        DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {\n            storageOwnerRef.getAndSet(null)?.shutdownForRestore()\n            drainOriginalVideo()\n            homeRootRef.getAndSet(null)?.closeAndJoin()\n            withContext(Dispatchers.IO) { applicationImages.close() }\n",
+      "beforeSha256LF": "6f083a13368aab80e69b3f1b0d919684c90178f629dcfaa5cc1e43f004972b6e",
+      "afterSha256LF": "1a64392b28334f419f85827b2a41ac87652d8dd699cef7d4659d00495244f62d"
+    },
+    {
+      "id": 6,
+      "beforeLine": 574,
+      "afterLine": 605,
+      "before": "    SideEffect {\n        registerShutdown?.invoke {\n            withContext(NonCancellable) {\n                drainOriginalVideo()\n                homeRootRef.getAndSet(null)?.closeAndJoin()\n                withContext(Dispatchers.IO) { applicationImages.close() }\n",
+      "after": "    SideEffect {\n        registerShutdown?.invoke {\n            withContext(NonCancellable) {\n                storageOwnerRef.getAndSet(null)?.shutdownForRestore()\n                drainOriginalVideo()\n                homeRootRef.getAndSet(null)?.closeAndJoin()\n                withContext(Dispatchers.IO) { applicationImages.close() }\n",
+      "beforeSha256LF": "87910b403718e0313d8daba5f4de95464fd01a496e593946c2eda0a17ec70ec8",
+      "afterSha256LF": "a10fe4ec0cdadddcd7e4fe5fb403c0f7d29edc5359124bba294250c40caed4e9"
+    },
+    {
+      "id": 7,
+      "beforeLine": 1459,
+      "afterLine": 1491,
+      "before": "                DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences ->\n",
+      "after": "                if(!storageStartupReady) Text(\"正在准备存储与缓存…\") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences ->\n",
+      "beforeSha256LF": "38acd5d73e69213049317edf2afba8def3e2b7698deebeb1d505f55cd0a47914",
+      "afterSha256LF": "f59436bb0b9cb76b8c90d93130c9dc7a7426a868b93002cbc55157974db86a3d"
+    },
+    {
+      "id": 8,
+      "beforeLine": 1703,
+      "afterLine": 1735,
+      "before": "                                backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,\n                                    initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },\n                                blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { loginDialog = true }) },\n                                imageSavePathContent = { openInitially ->\n                                    DesktopImageSavePathSettings(imageSavePreferences, scope,\n                                        chooseDirectory = { selectDynamicSaveDirectory(hostWindow, \"选择图片目录\") },\n",
+      "after": "                                backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,\n                                    initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },\n                                blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { loginDialog = true }) },\n                                storageContent = { target ->\n                                    val imagePath by imageSavePreferences.getImageSaveTreeUri().collectAsState(imageSavePreferences.getImageSaveTreeUriSync())\n                                    com.bilipai.desktop.settings.DesktopStorageSettings(storageOwner,imagePath,target,\n                                        chooseDirectory = { selectDynamicSaveDirectory(hostWindow,\"选择新任务的下载目录\") },\n                                        openDetail = { settingsNavigator.openDetail(it,null) },\n                                        onFailure = { error=it.message ?: \"存储设置处理失败\" },\n                                        onMessage = { imageSaveMessage=it })\n                                    imageSaveMessage?.let { Text(it,Modifier.padding(12.dp)) }\n                                },\n                                imageSavePathContent = { openInitially ->\n                                    DesktopImageSavePathSettings(imageSavePreferences, scope,\n                                        chooseDirectory = { selectDynamicSaveDirectory(hostWindow, \"选择图片目录\") },\n",
+      "beforeSha256LF": "bfa396b2a3dbd9450bb9e89352aa5d461760f1b43967e02312ff09eec4d51105",
+      "afterSha256LF": "e0d4f814f0c2cb087207d82c485abea23a0ffa444c30eb3a88841d67bace57c3"
+    }
+  ]
+}

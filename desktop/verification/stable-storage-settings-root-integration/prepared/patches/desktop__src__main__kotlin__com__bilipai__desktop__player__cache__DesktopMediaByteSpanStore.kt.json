@@ -1,0 +1,105 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/player/cache/DesktopMediaByteSpanStore.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "cb73a78908cc12b5932b30954def7ba381cfbe0c271c6fbdaab2a8b39e344d09",
+  "preparedSha256LF": "6e1ea1e08921083a3064dc0f2f67cd7a338043cf65f8e7edf442379419019896",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "cb73a78908cc12b5932b30954def7ba381cfbe0c271c6fbdaab2a8b39e344d09",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    },
+    {
+      "id": 3,
+      "count": 1
+    },
+    {
+      "id": 4,
+      "count": 1
+    },
+    {
+      "id": 5,
+      "count": 1
+    },
+    {
+      "id": 6,
+      "count": 1
+    },
+    {
+      "id": 7,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 28,
+      "afterLine": 28,
+      "before": "\n    init {\n        require(limit in 1024L..(128L * 1024 * 1024))\n        Files.createDirectories(directory)\n        require(!Files.isSymbolicLink(directory))\n        Files.list(directory).use { paths -> paths.forEach { path ->\n            if (Files.isRegularFile(path) && !Files.isSymbolicLink(path)) {\n                val size = Files.size(path)\n                val span = runCatching { readHeader(path, size) }.getOrNull()\n                if (span != null && diskBytes <= limit - size) { spans += span; diskBytes += size }\n                else {\n                    diskBytes += size; garbage[path] = size\n                }\n",
+      "after": "    private var clearing = false\n    private val reservations = mutableSetOf<Reservation>()\n\n    init {\n        require(limit in 1024L..(128L * 1024 * 1024))\n        var ancestor=directory\n        while(!Files.exists(ancestor,java.nio.file.LinkOption.NOFOLLOW_LINKS))ancestor=requireNotNull(ancestor.parent)\n        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(ancestor)\n        Files.createDirectories(directory)\n        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(directory)\n        Files.list(directory).use { paths -> paths.forEach { path ->\n            if (Files.isRegularFile(path) && !Files.isSymbolicLink(path)) {\n                val size = Files.size(path)\n                val span = runCatching { readHeader(path, size) }.getOrNull()\n                if (span != null && diskBytes <= limit - size) { spans += span; diskBytes += size }\n                // Unknown/corrupt files are not owned by this index and are never deleted.\n",
+      "beforeSha256LF": "45c2c66c0454123aaaaf567bc6ca3884d8f666800f70d1295e1ed9d239405416",
+      "afterSha256LF": "dccde3dc37e42e2b83157674e5d3818e353ab092ddca05079f567609123e8183"
+    },
+    {
+      "id": 2,
+      "beforeLine": 48,
+      "afterLine": 51,
+      "before": "        if (!path.fileName.toString().endsWith(\".span\")) return null\n",
+      "after": "        if (!path.fileName.toString().matches(Regex(\"[0-9a-fA-F-]{36}\\\\.span\"))) return null\n        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)\n",
+      "beforeSha256LF": "79bb918119ec4b2ae9f219d776085f7c0ef86bdf3bf54c7f1b3ba34f0097850f",
+      "afterSha256LF": "b100a72ae9f79ad89e942f3fad536b703a2ed426a4bec0d9ed0d3ba0d5013336"
+    },
+    {
+      "id": 3,
+      "beforeLine": 97,
+      "afterLine": 101,
+      "before": "\n    fun open(id: String, position: Long): Reader? {\n        val span = synchronized(monitor) {\n            if (closed) throw IOException(\"Media cache closed\")\n            spans.firstOrNull { it.id == id && position >= it.start && position < it.start + it.length }\n                ?.also { it.users++; it.used = System.nanoTime() }\n        } ?: return null\n",
+      "after": "\n    fun open(id: String, position: Long): Reader? {\n        val span = synchronized(monitor) {\n            if (closed || clearing) throw IOException(\"Media cache closed or clearing\")\n            spans.firstOrNull { it.id == id && position >= it.start && position < it.start + it.length }\n                ?.also { it.users++; it.used = System.nanoTime() }\n        } ?: return null\n",
+      "beforeSha256LF": "4b60759c8a09c555e08b91f52cf7c3c413945e530246c17063b2d84f211746a6",
+      "afterSha256LF": "8410b8ffe80c96c40dcdb719a56c91951b26a442dfb33e7a51cff8c27dce73bf"
+    },
+    {
+      "id": 4,
+      "beforeLine": 118,
+      "afterLine": 122,
+      "before": "                if (closed) throw IOException(\"Media cache closed\")\n                if (diskBytes <= limit - charge) {\n                    diskBytes += charge\n                    return Reservation(directory.resolve(UUID.randomUUID().toString() + \".part\"), charge)\n",
+      "after": "                if (closed || clearing) throw IOException(\"Media cache closed or clearing\")\n                if (diskBytes <= limit - charge) {\n                    diskBytes += charge\n                    return Reservation(directory.resolve(UUID.randomUUID().toString() + \".part\"), charge).also { reservations += it }\n",
+      "beforeSha256LF": "205fb702720d3b52855ffe77749edcb9c4e138448cfc214f35eecccb554c13e2",
+      "afterSha256LF": "6006d1a59cfb774beceeb463a529a2cdeb5840692b808b98cea404831ca7d8b9"
+    },
+    {
+      "id": 5,
+      "beforeLine": 155,
+      "afterLine": 159,
+      "before": "                    if (closed) throw IOException(\"Media cache closed\")\n                    check(!reservation.released)\n                    diskBytes -= reservation.charged - actualSize\n                    reservation.released = true; spans += candidate\n",
+      "after": "                    if (closed || clearing) throw IOException(\"Media cache closed or clearing\")\n                    check(!reservation.released)\n                    diskBytes -= reservation.charged - actualSize\n                    reservation.released = true; reservations.remove(reservation); spans += candidate\n",
+      "beforeSha256LF": "f7db862a7f183d1a644ce0859f2f9137b25b1a4f66c4f1f899c52eb5ee46b6b8",
+      "afterSha256LF": "2b7a810987d5262e6a1e162dbf3a1cbd696d933f3c07520907e465a4c0930dd0"
+    },
+    {
+      "id": 6,
+      "beforeLine": 174,
+      "afterLine": 178,
+      "before": "        synchronized(monitor) {\n            if (!reservation.released) {\n                reservation.released = true\n                if (deleted) diskBytes -= reservation.charged\n                else {\n                    garbage[remainingPath] = reservation.charged\n",
+      "after": "        synchronized(monitor) {\n            if (!reservation.released) {\n                reservation.released = true\n                reservations.remove(reservation)\n                if (deleted) diskBytes -= reservation.charged\n                else {\n                    garbage[remainingPath] = reservation.charged\n",
+      "beforeSha256LF": "4493aea39bb9c833b409750fe006c61017dc156ad3e49d8c5a3e3073ad8293b3",
+      "afterSha256LF": "d5f6b840a86e576f1478f8ab29c86973e4a6e0081bc40efa30047316491be7e4"
+    },
+    {
+      "id": 7,
+      "beforeLine": 191,
+      "afterLine": 196,
+      "before": "            Files.deleteIfExists(path)\n            synchronized(monitor) { garbage.remove(path)?.let { diskBytes -= it } }\n        } catch (_: IOException) { /* remains charged; do not exceed budget */ }\n    }\n\n",
+      "after": "            require(path.toAbsolutePath().normalize().parent==directory)\n            if(Files.exists(path,java.nio.file.LinkOption.NOFOLLOW_LINKS)) {\n                com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)\n                require(Files.isRegularFile(path,java.nio.file.LinkOption.NOFOLLOW_LINKS))\n            }\n            Files.deleteIfExists(path)\n            synchronized(monitor) { garbage.remove(path)?.let { diskBytes -= it } }\n        } catch (_: IOException) { /* remains charged; do not exceed budget */ }\n    }\n\n    /** Same index exclusion; refuses pending reservations/readers even after their outer lease retired. */\n    internal fun clearIdle(checkRequest: () -> Unit) {\n        checkRequest()\n        synchronized(monitor) {\n            check(!closed && !clearing);require(reservations.isEmpty() && spans.none { it.users != 0 }) { \"媒体缓存仍有后台写入或读取\" }\n            clearing=true\n        }\n        try { checkRequest();clear();checkRequest() } finally { synchronized(monitor) { clearing=false } }\n    }\n",
+      "beforeSha256LF": "ebf5839c9d6ac2c7975bc10a946541babdc66a233c1cbfb8d561ec4bf3d22494",
+      "afterSha256LF": "4181a0c4c1dfad573aaf8f95c8d54f1fde5f3b48eb9895904ab0b96623f43b5a"
+    }
+  ]
+}

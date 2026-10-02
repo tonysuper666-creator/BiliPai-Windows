@@ -1,0 +1,40 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "fb0f9399878577ccacea5ffa3b12c55b8c9da8de4c171bc765bc0a05c58094c4",
+  "preparedSha256LF": "cebe7e5bd8248dde15c8a150cabe4cb58158bc17003ae91500859ce563e6e878",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "fb0f9399878577ccacea5ffa3b12c55b8c9da8de4c171bc765bc0a05c58094c4",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    },
+    {
+      "id": 2,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 30,
+      "afterLine": 30,
+      "before": ") : AutoCloseable {\n    constructor(repository: DesktopRepository) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),\n        defaultSourceResolver(repository), defaultDanmakuDownloader(repository), com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository))\n",
+      "after": "    private val defaultDestination: () -> Path = Companion::defaultDownloadRoot,\n) : AutoCloseable {\n    constructor(repository: DesktopRepository) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),\n        defaultSourceResolver(repository), defaultDanmakuDownloader(repository), com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository))\n\n    constructor(repository: DesktopRepository, defaultDestination: () -> Path) : this(repository.playbackHttpClient,\n        defaultStateFile(), WindowsFfmpegMuxer(), defaultSourceResolver(repository), defaultDanmakuDownloader(repository),\n        com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository), defaultDestination)\n\n    /** Future admissions only. An explicit original task directory wins; queued roots never migrate. */\n    internal fun destinationFor(explicit: String? = null): Path =\n        com.bilipai.desktop.ui.resolveDesktopOriginalDownloadDestination(explicit, defaultDestination())\n",
+      "beforeSha256LF": "1e6b92d4ea2d7a30ca8b075c4f72e3a78c5a04f1d4d06faec153dd05cb386f5e",
+      "afterSha256LF": "57e6d47244ab7ec43157c0a01096cc04d2da68f9ff86fc73b08f7f241d2408cd"
+    },
+    {
+      "id": 2,
+      "beforeLine": 46,
+      "afterLine": 55,
+      "before": "    fun enqueue(source: PlaybackSource, destination: Path = defaultDownloadRoot(), metadata: DownloadMetadata = DownloadMetadata(), stillOwned: () -> Boolean = { true }): String {\n",
+      "after": "    fun enqueue(source: PlaybackSource, destination: Path = destinationFor(), metadata: DownloadMetadata = DownloadMetadata(), stillOwned: () -> Boolean = { true }): String {\n",
+      "beforeSha256LF": "e996d25f331f500b6257e20b8e63c83376fcf3bed289e1a5696f065b3259da2e",
+      "afterSha256LF": "6a93493615c094274492ed4c17c1d30f2e11eb6473551e28aea82652a5e1425f"
+    }
+  ]
+}

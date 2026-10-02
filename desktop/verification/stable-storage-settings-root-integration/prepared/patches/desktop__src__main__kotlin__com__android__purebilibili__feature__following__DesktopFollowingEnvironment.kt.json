@@ -1,0 +1,27 @@
+{
+  "target": "desktop/src/main/kotlin/com/android/purebilibili/feature/following/DesktopFollowingEnvironment.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "0988680e3bb0f077094f34fc4866049ccb18e4fdcc6e9c4a09a0dbbab61ae1a9",
+  "preparedSha256LF": "b9f9f4dcda31df9cae594ddb80d45c9f6909399bb60b82c07548e2a41dc5df3d",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "0988680e3bb0f077094f34fc4866049ccb18e4fdcc6e9c4a09a0dbbab61ae1a9",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 57,
+      "afterLine": 57,
+      "before": "        fun apply() {checkOwned();if(!commitIfCurrent {checkOwned();store.update(name,values)})throw CancellationException(\"Following cache publication retired\")}\n",
+      "after": "        fun apply() {\n            fun checkRequest() { checkOwned();com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal() }\n            store.updateOriginalFromSnapshot(name,::checkRequest, {\n                var permit:com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit?=null\n                if(!commitIfCurrent {checkRequest();permit=com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit(store)})throw CancellationException(\"Following cache publication retired\")\n                checkNotNull(permit)\n            }) { Unit to values.toMap() }\n        }\n",
+      "beforeSha256LF": "c9e74f854e11357febbefb956961d6a7f3cf02ebee5a61671ecc383b8bc1514e",
+      "afterSha256LF": "3ccc0817583daf93b593b545c4de21f65f4a4871cf93a9168120589de2499166"
+    }
+  ]
+}

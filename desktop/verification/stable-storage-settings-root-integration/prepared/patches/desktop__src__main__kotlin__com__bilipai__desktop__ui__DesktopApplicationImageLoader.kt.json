@@ -1,0 +1,27 @@
+{
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopApplicationImageLoader.kt",
+  "baselineHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "contextLines": 3,
+  "baselineSha256LF": "28e2562b4a0039bf292303f8459640c5a4c13ac8f2ea3de577076e50daa13b21",
+  "preparedSha256LF": "d4ffbb2db1b567140b5245e093e8f3ac5b4a05e59a075243d80f2840bdf624ba",
+  "forwardAndInverseVerified": true,
+  "candidateCurrentSha256LF": "28e2562b4a0039bf292303f8459640c5a4c13ac8f2ea3de577076e50daa13b21",
+  "currentEqualsBaseline": true,
+  "currentAnchorMatches": [
+    {
+      "id": 1,
+      "count": 1
+    }
+  ],
+  "hunks": [
+    {
+      "id": 1,
+      "beforeLine": 54,
+      "afterLine": 54,
+      "before": "        }\n    }\n\n    fun stopAccepting() { accepting.set(false) }\n\n    /** Existing Coil jobs/cache drain here. Root calls this on IO, outside admission monitors. */\n",
+      "after": "        }\n    }\n\n    internal fun cacheSizes(): Pair<Long,Long> { check(!closed.get()); return (imageLoader.diskCache?.size ?: 0L) to (imageLoader.memoryCache?.size ?: 0L) }\n    /** Coil owns open snapshots/editors: clear marks pinned entries zombie until their own close. */\n    internal fun clearManagedCaches(checkRequest: () -> Unit) {\n        checkRequest();check(!closed.get() && accepting.get()) { \"图片缓存已关闭\" }\n        imageLoader.memoryCache?.clear();checkRequest();imageLoader.diskCache?.clear();checkRequest()\n    }\n\n    fun stopAccepting() { accepting.set(false) }\n\n    /** Existing Coil jobs/cache drain here. Root calls this on IO, outside admission monitors. */\n",
+      "beforeSha256LF": "1593ec3897cda25c779a67b0914e03ffeaf484bc9d6b853c75305de4ec2beaa1",
+      "afterSha256LF": "979af97c4954f4ac531d01ec1f14bad551c0a77d142328045139551c74c00fdd"
+    }
+  ]
+}
