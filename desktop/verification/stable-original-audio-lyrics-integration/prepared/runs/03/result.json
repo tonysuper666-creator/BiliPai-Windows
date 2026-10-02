@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "exit": 0,
+  "assertions": 33,
+  "actualBase": 76,
+  "runtimeEntries": 101,
+  "prospectiveProductSources": 2,
+  "classes": 40,
+  "productClassOverlap": [],
+  "uniqueActualRepositoryModelOrigins": 4,
+  "allPinsUnchanged": true,
+  "actualInstalled": false,
+  "sameOriginalRepositoryAndFileCacheExercised": true,
+  "noHttpSent": true,
+  "underlyingBlockingHttpCancellationClaimed": false,
+  "completeRootMounted": false,
+  "nativeOrWindowAccepted": false,
+  "desktopExeReplaced": false
+}

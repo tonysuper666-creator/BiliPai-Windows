@@ -1,0 +1,66 @@
+{
+  "com/android/purebilibili/feature/audio/lyrics/LyricsRepository.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-77\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15360,
+      "sha256Bytes": "bea93d843fcaa8bf71735ca005c6c89e6807fcc2496e84ec002a7ed003d8a379"
+    }
+  ],
+  "com/android/purebilibili/feature/audio/lyrics/FileLyricsCache.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-77\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15360,
+      "sha256Bytes": "bea93d843fcaa8bf71735ca005c6c89e6807fcc2496e84ec002a7ed003d8a379"
+    }
+  ],
+  "com/android/purebilibili/feature/audio/lyrics/LyricDocument.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-77\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15360,
+      "sha256Bytes": "bea93d843fcaa8bf71735ca005c6c89e6807fcc2496e84ec002a7ed003d8a379"
+    }
+  ],
+  "com/android/purebilibili/feature/audio/viewmodel/MusicUiState.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-77\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15360,
+      "sha256Bytes": "bea93d843fcaa8bf71735ca005c6c89e6807fcc2496e84ec002a7ed003d8a379"
+    }
+  ],
+  "com/android/purebilibili/feature/audio/viewmodel/DesktopOriginalMusicLyricsController.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-77\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15360,
+      "sha256Bytes": "bea93d843fcaa8bf71735ca005c6c89e6807fcc2496e84ec002a7ed003d8a379"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-77\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15360,
+      "sha256Bytes": "bea93d843fcaa8bf71735ca005c6c89e6807fcc2496e84ec002a7ed003d8a379"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopOriginalMusicSourceLease.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-77\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15360,
+      "sha256Bytes": "bea93d843fcaa8bf71735ca005c6c89e6807fcc2496e84ec002a7ed003d8a379"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopOriginalMusicLyricsRequest.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-77\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15360,
+      "sha256Bytes": "bea93d843fcaa8bf71735ca005c6c89e6807fcc2496e84ec002a7ed003d8a379"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-audio-lyrics-parity\prepared\desktop\tools\extract-upstream-audio.py", line 162, in <module>
+    for file in generate(args.repo.resolve(), args.output.resolve()): print(file)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-audio-lyrics-parity\prepared\desktop\tools\extract-upstream-audio.py", line 101, in generate
+    adapt("            lastLyricsCacheKey = cacheKey", "            request.commit { lastLyricsCacheKey = cacheKey }", "manual search cannot publish a retired cache key")
+  File "C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-audio-lyrics-parity\prepared\desktop\tools\extract-upstream-audio.py", line 84, in adapt
+    assert count > 0 and (all or count == 1), (label, count)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('manual search cannot publish a retired cache key', 2)

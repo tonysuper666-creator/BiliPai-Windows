@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "exit": 0,
+  "assertions": 33,
+  "actualSnapshot": 77,
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "fixtureSourceCount": 1,
+  "fixtureClasses": 28,
+  "uniqueInstalledProductClassOrigins": 8,
+  "pinsUnchanged": true,
+  "actualInstalledOriginalLyricsDomain": true,
+  "sameOriginalRepositoryModelsAndFileCache": true,
+  "blockingPublicHttpCancellationClaimed": false,
+  "noHttpSent": true,
+  "completeRootMounted": false,
+  "nativeOrWindowAccepted": false,
+  "desktopExeReplaced": false
+}

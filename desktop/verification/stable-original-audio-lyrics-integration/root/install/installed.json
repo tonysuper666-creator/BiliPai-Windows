@@ -1,0 +1,36 @@
+{
+  "phase": 77,
+  "baseCommit": "84b47296d6acac3d7d934f6d8e23e69b5125e437",
+  "preparedPacketSHA256": "094597826959fce0c07ee93e3c2f1bd9bdc61becf04fd4b053d1d2480bf69543",
+  "preparedRaw": 74,
+  "newManual": 1,
+  "existingProducerFamilies": 1,
+  "exactProducerHunks": 1,
+  "indexedInverse": true,
+  "sourceIdentityCount": 1170,
+  "resourceCount": 213,
+  "newOriginalIdentities": 0,
+  "registryUnchanged": true,
+  "newDependencies": 0,
+  "newPlayerCacheOrClient": false,
+  "portMethods": 6,
+  "originalDomainMethodsSelected": 5,
+  "originalPrivateLoadSelected": true,
+  "canonicalMusicUiStateAndRepositoryOwnersPreserved": true,
+  "underlyingBlockingHttpCancellationClaimed": false,
+  "targets": [
+    {
+      "path": "desktop/tools/extract-upstream-audio.py",
+      "beforeSHA256Bytes": "28c0d50a0525419b7d61efc518cc4ca27a328aee0cfaf56282784d923039cfaa",
+      "afterSHA256Bytes": "c7eed68a21d96a24740c3d07cbc84af062d6ba412628d527b083dd594db15e5b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.kt",
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "f170523ad724986f5fef176249cda64c857d6f8c32b8dc1217b343037f46785f"
+    }
+  ],
+  "completeRootMounted": false,
+  "nativeOrWindowAccepted": false,
+  "desktopExeReplaced": false
+}

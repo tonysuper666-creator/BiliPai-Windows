@@ -1,0 +1,112 @@
+{
+  "kind": "independent-source-only-review",
+  "reviewedFinalGeneration": "generated-04",
+  "reviewedExistingProof": "runs/03",
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-audio-lyrics-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalAudioLyricsBinding.kt",
+      "sha256Bytes": "f170523ad724986f5fef176249cda64c857d6f8c32b8dc1217b343037f46785f",
+      "size": 5898
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-audio-lyrics-parity\\generated-04\\com\\android\\purebilibili\\feature\\audio\\viewmodel\\DesktopOriginalMusicLyricsController.kt",
+      "sha256Bytes": "1d2f54408946d3ff894eb7ff0d5ab28732e638fc67bb15a31482bbe4bc3dcf18",
+      "size": 7784
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-audio-lyrics-parity\\producer-hunk.json",
+      "sha256Bytes": "9f1157562b79756c91f00060e33de9a9980433a1969b0d67a9018d08d8adc544",
+      "size": 7763
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-audio-lyrics-parity\\AudioLyricsProof.kt",
+      "sha256Bytes": "88f34c2e7616c159ae2e2e5427c0771100444bc8c17e4166cea9e60f52286ee6",
+      "size": 15134
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-audio-lyrics-parity\\runs\\03\\result.json",
+      "sha256Bytes": "248acd650847e411c155283ca7195079b90eaa6d9cb1686a7f0b42debb7c68c5",
+      "size": 507
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-audio-lyrics-parity\\generated-04\\music-lyrics-selection.json",
+      "sha256Bytes": "25877ba6235a915b7861765344b19d70ea12ec80f48b5e76121a5109091c20aa",
+      "size": 10785
+    }
+  ],
+  "blockingFindings": [],
+  "checks": [
+    {
+      "file": "manual/com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.kt",
+      "lines": [
+        34,
+        38
+      ],
+      "conclusion": "The synchronous offset publication rechecks the binding closed predicate inside the Root subject commit, before UI mutation. The queued-close race is covered by the existing final 33-check proof."
+    },
+    {
+      "file": "manual/com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.kt",
+      "lines": [
+        51,
+        60
+      ],
+      "conclusion": "Every asynchronous launch captures its actual coroutine context and checks caller cancellation, binding openness, and logical source ownership before IO and again inside UI/private-context commit."
+    },
+    {
+      "file": "generated-04/com/android/purebilibili/feature/audio/viewmodel/DesktopOriginalMusicLyricsController.kt",
+      "lines": [
+        36,
+        41,
+        77,
+        93,
+        109,
+        143,
+        147
+      ],
+      "conclusion": "Early retry/search/select/offset cannot borrow an old query or cache key while a new source load is queued. The last lease/key/query are published together under current request admission."
+    },
+    {
+      "file": "manual/com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.kt",
+      "lines": [
+        74,
+        78,
+        109,
+        113
+      ],
+      "conclusion": "A child SupervisorJob tracks original launched jobs. Close cancels them, joins outside the publication gate, and returns false on timeout until blocking IO actually drains."
+    },
+    {
+      "file": "producer-hunk.json",
+      "conclusion": "Only original MusicViewModel lyrics declarations are selected, with indexed reverse replay. The supplied existing LyricsRepository, original FileLyricsCache/schema, native playback and public transport retain sole owners."
+    }
+  ],
+  "requiredIntegrationContracts": [
+    "Root supplies one actual entry scope and the current logical BV/CID subject with Store-to-entry short memory publication.",
+    "The original controller mutable fields and public operations keep the original serialized UI-owner usage; this receipt does not establish arbitrary concurrent caller support.",
+    "Root closeCancelJoin runs from an external teardown owner outside admission, not a descendant of the lyrics child Job; false must remain not drained."
+  ],
+  "limits": [
+    "This review did not compile, rerun fixtures, send HTTP, open a window, or modify production/candidate sources.",
+    "Existing public synchronous HTTP/cache IO may finish after cancellation; underlying execute cancellation is not claimed.",
+    "The existing proof exercises original repository/file cache with synthetic fixture subjects, not an installed complete Root or native acceptance."
+  ],
+  "observedProofResult": {
+    "passed": true,
+    "exit": 0,
+    "assertions": 33,
+    "actualBase": 76,
+    "runtimeEntries": 101,
+    "prospectiveProductSources": 2,
+    "classes": 40,
+    "productClassOverlap": [],
+    "uniqueActualRepositoryModelOrigins": 4,
+    "allPinsUnchanged": true,
+    "actualInstalled": false,
+    "sameOriginalRepositoryAndFileCacheExercised": true,
+    "noHttpSent": true,
+    "underlyingBlockingHttpCancellationClaimed": false,
+    "completeRootMounted": false,
+    "nativeOrWindowAccepted": false,
+    "desktopExeReplaced": false
+  }
+}

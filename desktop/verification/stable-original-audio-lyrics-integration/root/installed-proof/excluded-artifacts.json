@@ -1,0 +1,8 @@
+[
+  {
+    "path": "runs/01/fixture.jar",
+    "sha256Bytes": "8aac77eb405996c380788327ac07f4b72a8799c2394f47d6e899f82d561d7b12",
+    "sizeBytes": 64946,
+    "reason": "Rebuildable fixture output; not production payload."
+  }
+]

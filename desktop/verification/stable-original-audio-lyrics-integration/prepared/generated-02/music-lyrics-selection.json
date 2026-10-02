@@ -1,0 +1,212 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/audio/viewmodel/MusicViewModel.kt",
+  "sha256LF": "d9705a700bbe14722b79d9bb484d70da0afb97ae1c9df393e7a271e4a0173d0c",
+  "selected": [
+    "_uiState",
+    "uiState",
+    "lyricsRepository",
+    "lyricsJob",
+    "lyricsOffsetSaveJob",
+    "lastLyricsCacheKey",
+    "lastLyricsQuery",
+    "lastBilibiliLyrics",
+    "adjustLyricsOffset",
+    "loadLyricsForVideo",
+    "retryLyrics",
+    "searchLyrics",
+    "selectLyricsCandidate",
+    "loadLyrics"
+  ],
+  "retainedSelectedSHA256LF": "d2825c84db53c53321e4b3a6a6b98b2b211b6faadae8a3e3231e6d8c09087333",
+  "adaptations": [
+    {
+      "label": "same existing Repository instead of Android player initialization",
+      "index": 132,
+      "before": "private var lyricsRepository: LyricsRepository? = null",
+      "after": "private var lyricsRepository: LyricsRepository? = suppliedRepository"
+    },
+    {
+      "label": "fixed actual Root subject lease captured before adjustLyricsOffset",
+      "index": 453,
+      "before": "fun adjustLyricsOffset(offsetMs: Long)",
+      "after": "fun adjustLyricsOffset(lease: DesktopOriginalMusicSourceLease, offsetMs: Long)"
+    },
+    {
+      "label": "fixed actual Root subject lease captured before retryLyrics",
+      "index": 1598,
+      "before": "fun retryLyrics()",
+      "after": "fun retryLyrics(lease: DesktopOriginalMusicSourceLease)"
+    },
+    {
+      "label": "fixed actual Root subject lease captured before searchLyrics",
+      "index": 2143,
+      "before": "fun searchLyrics(title: String)",
+      "after": "fun searchLyrics(lease: DesktopOriginalMusicSourceLease, title: String)"
+    },
+    {
+      "label": "fixed actual Root subject lease captured before selectLyricsCandidate",
+      "index": 2818,
+      "before": "fun selectLyricsCandidate(index: Int)",
+      "after": "fun selectLyricsCandidate(lease: DesktopOriginalMusicSourceLease, index: Int)"
+    },
+    {
+      "label": "fixed actual Root subject lease before launch",
+      "index": 998,
+      "before": "fun loadLyricsForVideo(\n",
+      "after": "fun loadLyricsForVideo(\n        lease: DesktopOriginalMusicSourceLease,\n"
+    },
+    {
+      "label": "lexical launched Job and subject in original private load",
+      "index": 3984,
+      "before": "private suspend fun loadLyrics(\n",
+      "after": "private suspend fun loadLyrics(\n        request: DesktopOriginalMusicLyricsRequest,\n"
+    },
+    {
+      "label": "capture launched caller Job before original IO",
+      "index": 3180,
+      "before": "viewModelScope.launch {\n",
+      "after": "viewModelScope.launch {\n            val request = DesktopOriginalMusicLyricsRequest(lease, kotlinx.coroutines.currentCoroutineContext(), isOpen)\n            request.check()\n"
+    },
+    {
+      "label": "capture launched caller Job before original IO",
+      "index": 2471,
+      "before": "viewModelScope.launch {\n",
+      "after": "viewModelScope.launch {\n            val request = DesktopOriginalMusicLyricsRequest(lease, kotlinx.coroutines.currentCoroutineContext(), isOpen)\n            request.check()\n"
+    },
+    {
+      "label": "capture launched caller Job before original IO",
+      "index": 1850,
+      "before": "viewModelScope.launch {\n",
+      "after": "viewModelScope.launch {\n            val request = DesktopOriginalMusicLyricsRequest(lease, kotlinx.coroutines.currentCoroutineContext(), isOpen)\n            request.check()\n"
+    },
+    {
+      "label": "capture launched caller Job before original IO",
+      "index": 1239,
+      "before": "viewModelScope.launch {\n",
+      "after": "viewModelScope.launch {\n            val request = DesktopOriginalMusicLyricsRequest(lease, kotlinx.coroutines.currentCoroutineContext(), isOpen)\n            request.check()\n"
+    },
+    {
+      "label": "capture launched caller Job before original IO",
+      "index": 905,
+      "before": "viewModelScope.launch {\n",
+      "after": "viewModelScope.launch {\n            val request = DesktopOriginalMusicLyricsRequest(lease, kotlinx.coroutines.currentCoroutineContext(), isOpen)\n            request.check()\n"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 5911,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 5769,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 5392,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 5005,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 4570,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 4472,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 4133,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 3961,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 3356,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 3103,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 2562,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 2333,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 1573,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original UI updates enter only current Job/subject short publication",
+      "index": 678,
+      "before": "_uiState.update {",
+      "after": "request.updateState(_uiState) {"
+    },
+    {
+      "label": "original synchronous offset action retains synchronous ownership semantics",
+      "index": 678,
+      "before": "request.updateState(_uiState) { it.copy(lyricsDocument = adjusted) }",
+      "after": "lease.updateState(_uiState) { it.copy(lyricsDocument = adjusted) }"
+    },
+    {
+      "label": "same request carried to original automatic load",
+      "index": 1736,
+      "before": "loadLyrics(\n                cacheKey =",
+      "after": "loadLyrics(\n                request = request,\n                cacheKey ="
+    },
+    {
+      "label": "same captured request for original retry",
+      "index": 2556,
+      "before": "loadLyrics(cacheKey, query, lastBilibiliLyrics, forceRefresh = true)",
+      "after": "loadLyrics(request, cacheKey, query, lastBilibiliLyrics, forceRefresh = true)"
+    },
+    {
+      "label": "original private query context publishes under same current subject",
+      "index": 5275,
+      "before": "        lastLyricsCacheKey = cacheKey\n        lastLyricsQuery = query\n        lastBilibiliLyrics = bilibiliLyrics",
+      "after": "        request.commit {\n            lastLyricsCacheKey = cacheKey\n            lastLyricsQuery = query\n            lastBilibiliLyrics = bilibiliLyrics\n        }"
+    },
+    {
+      "label": "manual search cannot publish a retired cache key",
+      "index": 3414,
+      "before": "            lastLyricsCacheKey = cacheKey\n            request.updateState(_uiState) { it.copy(isLyricsSearching = false, lyricCandidates = candidates) }",
+      "after": "            request.commit { lastLyricsCacheKey = cacheKey }\n            request.updateState(_uiState) { it.copy(isLyricsSearching = false, lyricCandidates = candidates) }"
+    }
+  ],
+  "exactSelectedBodyInverse": true,
+  "wholeMusicViewModelOrAuPlayerEmitted": false,
+  "existingMusicUiStateAndLyricsRepositoryOwnersPreserved": true
+}

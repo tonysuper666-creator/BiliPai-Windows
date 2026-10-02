@@ -1,0 +1,527 @@
+{
+  "artifacts": [
+    {
+      "path": "prepared/AudioLyricsProof.kt",
+      "sha256Bytes": "88f34c2e7616c159ae2e2e5427c0771100444bc8c17e4166cea9e60f52286ee6",
+      "sizeBytes": 15134
+    },
+    {
+      "path": "prepared/baseline/desktop/tools/extract-upstream-audio.py",
+      "sha256Bytes": "28c0d50a0525419b7d61efc518cc4ca27a328aee0cfaf56282784d923039cfaa",
+      "sizeBytes": 6957
+    },
+    {
+      "path": "prepared/freeze.py",
+      "sha256Bytes": "32ef7a2a05986d4cad8d21f77cc896fd6c13736421c2b2071bedb7ce7eb9b5cb",
+      "sizeBytes": 3349
+    },
+    {
+      "path": "prepared/generated/com/android/purebilibili/feature/audio/viewmodel/MusicUiState.kt",
+      "sha256Bytes": "a6b30003aaf4f83c192c46432c023aaab97833a54c2201bebc431b461fd7d8d8",
+      "sizeBytes": 1225
+    },
+    {
+      "path": "prepared/generated-02/com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt",
+      "sha256Bytes": "3f365ffe8220e0c1219b402e127c1fe454193d4f01f17697a43d5594b353bbc4",
+      "sizeBytes": 446
+    },
+    {
+      "path": "prepared/generated-02/com/android/purebilibili/feature/audio/library/DesktopListenVideoLibraryLoader.kt",
+      "sha256Bytes": "370087c0032e88eadcb83463004dc8d0a38c5b1595584647f525493fb93b01e1",
+      "sizeBytes": 7721
+    },
+    {
+      "path": "prepared/generated-02/com/android/purebilibili/feature/audio/viewmodel/DesktopOriginalMusicLyricsController.kt",
+      "sha256Bytes": "e044b7ad86c638e8bc000194e7fc613198f97fe17432b12fdb242f1169d9b8c4",
+      "sizeBytes": 7416
+    },
+    {
+      "path": "prepared/generated-02/com/android/purebilibili/feature/audio/viewmodel/MusicUiState.kt",
+      "sha256Bytes": "a6b30003aaf4f83c192c46432c023aaab97833a54c2201bebc431b461fd7d8d8",
+      "sizeBytes": 1225
+    },
+    {
+      "path": "prepared/generated-02/com/android/purebilibili/feature/list/DesktopFavoriteRiskPolicy.kt",
+      "sha256Bytes": "3440f912ca2e2160068d75a3fe4f4823afc696a4b7b48a78e10c54f1d3a57c49",
+      "sizeBytes": 851
+    },
+    {
+      "path": "prepared/generated-02/com/android/purebilibili/feature/video/player/DesktopPlaylistPolicies.kt",
+      "sha256Bytes": "d781bd0d454a31fd093b49b52d8d7699db416e61de6fec7903627c933cc4427e",
+      "sizeBytes": 7266
+    },
+    {
+      "path": "prepared/generated-02/music-lyrics-selection.json",
+      "sha256Bytes": "c0f6e3732e2f383a59b5626da62ae621ccc8ee5a7e3e1a30413dc7b441a90c1b",
+      "sizeBytes": 9113
+    },
+    {
+      "path": "prepared/generated-02-generation.log",
+      "sha256Bytes": "b7cd34e1111f4375025cdf935ffc0e0fde8864b5cac81f8687e398f5bbfe7c73",
+      "sizeBytes": 1370
+    },
+    {
+      "path": "prepared/generated-03/com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt",
+      "sha256Bytes": "3f365ffe8220e0c1219b402e127c1fe454193d4f01f17697a43d5594b353bbc4",
+      "sizeBytes": 446
+    },
+    {
+      "path": "prepared/generated-03/com/android/purebilibili/feature/audio/library/DesktopListenVideoLibraryLoader.kt",
+      "sha256Bytes": "370087c0032e88eadcb83463004dc8d0a38c5b1595584647f525493fb93b01e1",
+      "sizeBytes": 7721
+    },
+    {
+      "path": "prepared/generated-03/com/android/purebilibili/feature/audio/viewmodel/DesktopOriginalMusicLyricsController.kt",
+      "sha256Bytes": "253f5461016e970e6969e098149ffa69f68f320f680fd4804d36c77b6f4d0447",
+      "sizeBytes": 7776
+    },
+    {
+      "path": "prepared/generated-03/com/android/purebilibili/feature/audio/viewmodel/MusicUiState.kt",
+      "sha256Bytes": "a6b30003aaf4f83c192c46432c023aaab97833a54c2201bebc431b461fd7d8d8",
+      "sizeBytes": 1225
+    },
+    {
+      "path": "prepared/generated-03/com/android/purebilibili/feature/list/DesktopFavoriteRiskPolicy.kt",
+      "sha256Bytes": "3440f912ca2e2160068d75a3fe4f4823afc696a4b7b48a78e10c54f1d3a57c49",
+      "sizeBytes": 851
+    },
+    {
+      "path": "prepared/generated-03/com/android/purebilibili/feature/video/player/DesktopPlaylistPolicies.kt",
+      "sha256Bytes": "d781bd0d454a31fd093b49b52d8d7699db416e61de6fec7903627c933cc4427e",
+      "sizeBytes": 7266
+    },
+    {
+      "path": "prepared/generated-03/music-lyrics-selection.json",
+      "sha256Bytes": "1c8a53556a7e87051d8dc85ee0fbdc836198aff5aa44a40525ed3a74719171e6",
+      "sizeBytes": 10761
+    },
+    {
+      "path": "prepared/generated-03-generation.log",
+      "sha256Bytes": "3f7fa09dfffa5f75bb9242e0723ac518d0fa2bff63feef14bbee430d08235ddf",
+      "sizeBytes": 1370
+    },
+    {
+      "path": "prepared/generated-04/com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt",
+      "sha256Bytes": "3f365ffe8220e0c1219b402e127c1fe454193d4f01f17697a43d5594b353bbc4",
+      "sizeBytes": 446
+    },
+    {
+      "path": "prepared/generated-04/com/android/purebilibili/feature/audio/library/DesktopListenVideoLibraryLoader.kt",
+      "sha256Bytes": "370087c0032e88eadcb83463004dc8d0a38c5b1595584647f525493fb93b01e1",
+      "sizeBytes": 7721
+    },
+    {
+      "path": "prepared/generated-04/com/android/purebilibili/feature/audio/viewmodel/DesktopOriginalMusicLyricsController.kt",
+      "sha256Bytes": "1d2f54408946d3ff894eb7ff0d5ab28732e638fc67bb15a31482bbe4bc3dcf18",
+      "sizeBytes": 7784
+    },
+    {
+      "path": "prepared/generated-04/com/android/purebilibili/feature/audio/viewmodel/MusicUiState.kt",
+      "sha256Bytes": "a6b30003aaf4f83c192c46432c023aaab97833a54c2201bebc431b461fd7d8d8",
+      "sizeBytes": 1225
+    },
+    {
+      "path": "prepared/generated-04/com/android/purebilibili/feature/list/DesktopFavoriteRiskPolicy.kt",
+      "sha256Bytes": "3440f912ca2e2160068d75a3fe4f4823afc696a4b7b48a78e10c54f1d3a57c49",
+      "sizeBytes": 851
+    },
+    {
+      "path": "prepared/generated-04/com/android/purebilibili/feature/video/player/DesktopPlaylistPolicies.kt",
+      "sha256Bytes": "d781bd0d454a31fd093b49b52d8d7699db416e61de6fec7903627c933cc4427e",
+      "sizeBytes": 7266
+    },
+    {
+      "path": "prepared/generated-04/music-lyrics-selection.json",
+      "sha256Bytes": "25877ba6235a915b7861765344b19d70ea12ec80f48b5e76121a5109091c20aa",
+      "sizeBytes": 10785
+    },
+    {
+      "path": "prepared/generated-04-generation.log",
+      "sha256Bytes": "c0e2d0bc8034fd74b8a6b3cdc5cc1ea9fcc0a17e61561708f0cef5d48962a8b1",
+      "sizeBytes": 1370
+    },
+    {
+      "path": "prepared/generation.log",
+      "sha256Bytes": "8e3f2d642df0fe0d9eabfcc37303d27894c5c9162a0ad6c5996265c90d8829fe",
+      "sizeBytes": 1201
+    },
+    {
+      "path": "prepared/install-contract.json",
+      "sha256Bytes": "be4b72f4628d6d9d9cc8184a5ebf32979a6b2fd916e2db3d7be28a5a19f8b4cb",
+      "sizeBytes": 1951
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.kt",
+      "sha256Bytes": "f170523ad724986f5fef176249cda64c857d6f8c32b8dc1217b343037f46785f",
+      "sizeBytes": 5898
+    },
+    {
+      "path": "prepared/prepare.py",
+      "sha256Bytes": "0620185a57377277df3a6de94b919bbf6758788dd48e4f5c535e8d2eda082aa0",
+      "sizeBytes": 8821
+    },
+    {
+      "path": "prepared/prepared/desktop/tools/extract-upstream-audio.py",
+      "sha256Bytes": "c7eed68a21d96a24740c3d07cbc84af062d6ba412628d527b083dd594db15e5b",
+      "sizeBytes": 13781
+    },
+    {
+      "path": "prepared/producer-hunk.json",
+      "sha256Bytes": "9f1157562b79756c91f00060e33de9a9980433a1969b0d67a9018d08d8adc544",
+      "sizeBytes": 7763
+    },
+    {
+      "path": "prepared/run.py",
+      "sha256Bytes": "fe7ef3363ac744c896d51f8cb2c8896d8cb7bafd2a54e7ade978fd708595df66",
+      "sizeBytes": 5233
+    },
+    {
+      "path": "prepared/runs/01/class-origins.json",
+      "sha256Bytes": "55a551d8c5471cac0a16ed19aa1239728a72f0167ac0782e8c5a36bdd259cbe3",
+      "sizeBytes": 1730
+    },
+    {
+      "path": "prepared/runs/01/compile-command.json",
+      "sha256Bytes": "0e3377cb087778cee955d5878eacc2333f54f3dfd81080d33d9a4c13509e1b4d",
+      "sizeBytes": 2546
+    },
+    {
+      "path": "prepared/runs/01/compile.args",
+      "sha256Bytes": "89f9f1fd31c8116c8261c9fdabf2f4ead8f531ab8a715d7a430a2236783a193f",
+      "sizeBytes": 25908
+    },
+    {
+      "path": "prepared/runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/runs/01/inputs/AudioLyricsProof.kt",
+      "sha256Bytes": "4a81c9bc7792d14f07b3c6a55c58e81b0a3477b3fed68dea623047c834270407",
+      "sizeBytes": 11640
+    },
+    {
+      "path": "prepared/runs/01/inputs/DesktopOriginalAudioLyricsBinding.kt",
+      "sha256Bytes": "a3aecc7a62829df7c931bd9a5429d64afb8171df18f94f2cb8883aab650c9ff1",
+      "sizeBytes": 5758
+    },
+    {
+      "path": "prepared/runs/01/inputs/DesktopOriginalMusicLyricsController.kt",
+      "sha256Bytes": "e044b7ad86c638e8bc000194e7fc613198f97fe17432b12fdb242f1169d9b8c4",
+      "sizeBytes": 7416
+    },
+    {
+      "path": "prepared/runs/01/overlap.json",
+      "sha256Bytes": "5efec17eae6575d478d255ac7855963a234a605d8ae6b562dce1dc3665398e41",
+      "sizeBytes": 76
+    },
+    {
+      "path": "prepared/runs/01/pins-after.json",
+      "sha256Bytes": "f9abbd43073e2fec174da7c2ddad1b913143e97e86d597677eee83df12f52ac2",
+      "sizeBytes": 43713
+    },
+    {
+      "path": "prepared/runs/01/pins-before.json",
+      "sha256Bytes": "f9abbd43073e2fec174da7c2ddad1b913143e97e86d597677eee83df12f52ac2",
+      "sizeBytes": 43713
+    },
+    {
+      "path": "prepared/runs/01/result.json",
+      "sha256Bytes": "7ce0c9639d2c083b03726f222ccbcf1258bfe8c657eca921c91eab3c832df185",
+      "sizeBytes": 507
+    },
+    {
+      "path": "prepared/runs/01/run-command.json",
+      "sha256Bytes": "115a0212b30b96a2e961051c9fef7771a3fa5dd790012b5b781d1279fdc5b90b",
+      "sizeBytes": 27039
+    },
+    {
+      "path": "prepared/runs/01/run.log",
+      "sha256Bytes": "cef11f9656b0c86e120fcdfb8d604f07ded75a08110a97663c366cb4b39ed33c",
+      "sizeBytes": 221
+    },
+    {
+      "path": "prepared/runs/02/class-origins.json",
+      "sha256Bytes": "55a551d8c5471cac0a16ed19aa1239728a72f0167ac0782e8c5a36bdd259cbe3",
+      "sizeBytes": 1730
+    },
+    {
+      "path": "prepared/runs/02/compile-command.json",
+      "sha256Bytes": "6aaa8c2f6477d4a069d550625cc22ab4625fe114386931493a57c3921de451f9",
+      "sizeBytes": 2546
+    },
+    {
+      "path": "prepared/runs/02/compile.args",
+      "sha256Bytes": "4fe50ce22638c7fb04d15ec999e32f68e692e83bbc3f172c7f014646c06eab05",
+      "sizeBytes": 25908
+    },
+    {
+      "path": "prepared/runs/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/runs/02/inputs/AudioLyricsProof.kt",
+      "sha256Bytes": "5e86ca1b78c2c042677468b623aa0d4c553bf2b906dd1f0ec4fbe5c439e5847f",
+      "sizeBytes": 13350
+    },
+    {
+      "path": "prepared/runs/02/inputs/DesktopOriginalAudioLyricsBinding.kt",
+      "sha256Bytes": "d51e04505dad08f5a39d60b2ba6987316b9c7076f63e29c98108944c44b567d2",
+      "sizeBytes": 5768
+    },
+    {
+      "path": "prepared/runs/02/inputs/DesktopOriginalMusicLyricsController.kt",
+      "sha256Bytes": "253f5461016e970e6969e098149ffa69f68f320f680fd4804d36c77b6f4d0447",
+      "sizeBytes": 7776
+    },
+    {
+      "path": "prepared/runs/02/overlap.json",
+      "sha256Bytes": "cdc3cb545440eca2b6834fa4983e75dd7567adbb585efa0d3a5e18602ff96a6c",
+      "sizeBytes": 76
+    },
+    {
+      "path": "prepared/runs/02/pins-after.json",
+      "sha256Bytes": "0586d2ed8cdef1f645cfe6b773bd938d075da753dffae8ef3d9233eb5ac87797",
+      "sizeBytes": 43713
+    },
+    {
+      "path": "prepared/runs/02/pins-before.json",
+      "sha256Bytes": "0586d2ed8cdef1f645cfe6b773bd938d075da753dffae8ef3d9233eb5ac87797",
+      "sizeBytes": 43713
+    },
+    {
+      "path": "prepared/runs/02/result.json",
+      "sha256Bytes": "07fe9f959ed3a4f873789431222e42bc76fe32aebf967dbb1c378c6a823bbc01",
+      "sizeBytes": 507
+    },
+    {
+      "path": "prepared/runs/02/run-command.json",
+      "sha256Bytes": "8bdbf62967e6990b95505606de431122a94b3bd1f524f6ccaeeefd4296125fcc",
+      "sizeBytes": 27039
+    },
+    {
+      "path": "prepared/runs/02/run.log",
+      "sha256Bytes": "8b2fea56bd67e5f87ddc97397795b8dbd8bcc319688d19a62b600d39f77e8c7b",
+      "sizeBytes": 221
+    },
+    {
+      "path": "prepared/runs/03/class-origins.json",
+      "sha256Bytes": "55a551d8c5471cac0a16ed19aa1239728a72f0167ac0782e8c5a36bdd259cbe3",
+      "sizeBytes": 1730
+    },
+    {
+      "path": "prepared/runs/03/compile-command.json",
+      "sha256Bytes": "aa3d9024b67b6107a2782489198cd53e1598827157e0dbdb1fb35294d9f9d809",
+      "sizeBytes": 2546
+    },
+    {
+      "path": "prepared/runs/03/compile.args",
+      "sha256Bytes": "0d9d9b1751073df7aad52bf8af560ab10175a37b0d8d1a3fbabf52d8cb764478",
+      "sizeBytes": 25908
+    },
+    {
+      "path": "prepared/runs/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "prepared/runs/03/inputs/AudioLyricsProof.kt",
+      "sha256Bytes": "88f34c2e7616c159ae2e2e5427c0771100444bc8c17e4166cea9e60f52286ee6",
+      "sizeBytes": 15134
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopOriginalAudioLyricsBinding.kt",
+      "sha256Bytes": "f170523ad724986f5fef176249cda64c857d6f8c32b8dc1217b343037f46785f",
+      "sizeBytes": 5898
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopOriginalMusicLyricsController.kt",
+      "sha256Bytes": "1d2f54408946d3ff894eb7ff0d5ab28732e638fc67bb15a31482bbe4bc3dcf18",
+      "sizeBytes": 7784
+    },
+    {
+      "path": "prepared/runs/03/overlap.json",
+      "sha256Bytes": "8ba239d6950bb9fe21ac3136a85e31be0bfe0fd5b0ed82a24f70f324776f498f",
+      "sizeBytes": 76
+    },
+    {
+      "path": "prepared/runs/03/pins-after.json",
+      "sha256Bytes": "0cbafaba0a25e98bb6dfbaa6b6542893ec73cd2422bed56d64631545fb0b55d7",
+      "sizeBytes": 43713
+    },
+    {
+      "path": "prepared/runs/03/pins-before.json",
+      "sha256Bytes": "0cbafaba0a25e98bb6dfbaa6b6542893ec73cd2422bed56d64631545fb0b55d7",
+      "sizeBytes": 43713
+    },
+    {
+      "path": "prepared/runs/03/result.json",
+      "sha256Bytes": "248acd650847e411c155283ca7195079b90eaa6d9cb1686a7f0b42debb7c68c5",
+      "sizeBytes": 507
+    },
+    {
+      "path": "prepared/runs/03/run-command.json",
+      "sha256Bytes": "c9f66d335d4e755a1c8f9a6d52ea4f93d736b1f33332dbfb1cc6e7ac686f0e91",
+      "sizeBytes": 27039
+    },
+    {
+      "path": "prepared/runs/03/run.log",
+      "sha256Bytes": "bf357c308de9e684bb54f4b8467b63f10af6f73fc2c44cd16c3a3a1cee98ccbf",
+      "sizeBytes": 220
+    },
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "094597826959fce0c07ee93e3c2f1bd9bdc61becf04fd4b053d1d2480bf69543",
+      "sizeBytes": 14510
+    },
+    {
+      "path": "root/install/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.kt",
+      "sha256Bytes": "f170523ad724986f5fef176249cda64c857d6f8c32b8dc1217b343037f46785f",
+      "sizeBytes": 5898
+    },
+    {
+      "path": "root/install/after/desktop/tools/extract-upstream-audio.py",
+      "sha256Bytes": "c7eed68a21d96a24740c3d07cbc84af062d6ba412628d527b083dd594db15e5b",
+      "sizeBytes": 13781
+    },
+    {
+      "path": "root/install/before/desktop/tools/extract-upstream-audio.py",
+      "sha256Bytes": "28c0d50a0525419b7d61efc518cc4ca27a328aee0cfaf56282784d923039cfaa",
+      "sizeBytes": 6957
+    },
+    {
+      "path": "root/install/installed.json",
+      "sha256Bytes": "8311728c1036d008180dd585c82da4c514d73245c3cb9433c38a72415c13a537",
+      "sizeBytes": 1297
+    },
+    {
+      "path": "root/snapshot77/manifest.json",
+      "sha256Bytes": "b366ccf36b0b2c5de3b848a9c526de85d2c3de02c95a44330c35f044f16c6f8f",
+      "sizeBytes": 157316
+    },
+    {
+      "path": "root/snapshot77/ordered-runtime-cp.json",
+      "sha256Bytes": "4219d7fb3a53989184991ef20aa27655fc26dcfff6a983d27a8aaaded01f2dda",
+      "sizeBytes": 38191
+    },
+    {
+      "path": "root/classes-77.log",
+      "sha256Bytes": "e2345ceb121395098a860641586d4634cdd33d67d2a3ce2d89f8340f79f7bbed",
+      "sizeBytes": 10177
+    },
+    {
+      "path": "root/classpath77.log",
+      "sha256Bytes": "63a2f9978c838ce5472008e7e0b22afafe9e8377da417b9807d7eef03c4364ee",
+      "sizeBytes": 290
+    },
+    {
+      "path": "root/jvm-method-name-audit-77.json",
+      "sha256Bytes": "c4f408e4a4ddd432b533d1aae329e8777abdd22db6a1cfff1c4a92b1563789ac",
+      "sizeBytes": 240
+    },
+    {
+      "path": "root/independent-source-review.json",
+      "sha256Bytes": "50aeccf517359bd2b70da0c5638dd07412c7abb98badb302c52464bb621120c8",
+      "sizeBytes": 5661
+    },
+    {
+      "path": "root/install-original-audio-lyrics77.py",
+      "sha256Bytes": "a73a0e9e05f544d8940eeddf202b4c781e2254644c7db01f2419f14206e30345",
+      "sizeBytes": 3534
+    },
+    {
+      "path": "root/freeze-original-audio-lyrics77.py",
+      "sha256Bytes": "93fefb8e99d6151e118228c26595aa624ce97cf223e5424e8ea38e7d57f8feab",
+      "sizeBytes": 8866
+    },
+    {
+      "path": "root/freeze-original-audio-lyrics77-final.py",
+      "sha256Bytes": "15daf36eba3de23efff559f3dfa38b7bdda516d644081f5ae34e23aa8bc57dc7",
+      "sizeBytes": 9226
+    },
+    {
+      "path": "root/sole-generated-controller-audit.json",
+      "sha256Bytes": "449941b02784ee97ae85b39b0fd434436226477d089fb1c9cc03aa07234eb669",
+      "sizeBytes": 746
+    },
+    {
+      "path": "root/installed-proof/run.py",
+      "sha256Bytes": "de09976fb2d0617a3ab41c313e0f720d426d36f279cd16107860dd302d6cbf8b",
+      "sizeBytes": 5310
+    },
+    {
+      "path": "root/installed-proof/runs/01/class-origins.json",
+      "sha256Bytes": "f720b5261662853fc26f5158899c9c3a9e291a0b3b9ece062ff9b8dbeff88326",
+      "sizeBytes": 3465
+    },
+    {
+      "path": "root/installed-proof/runs/01/compile-command.json",
+      "sha256Bytes": "4d2d7c86dd752dcf1b2e3e74f67e40d5795178c679893da1d3d2616edc524c21",
+      "sizeBytes": 2554
+    },
+    {
+      "path": "root/installed-proof/runs/01/compile.args",
+      "sha256Bytes": "8d8bc18aefa74505481051ad31f5d7d18236efd1501381b057bc1cfaed6244e9",
+      "sizeBytes": 25531
+    },
+    {
+      "path": "root/installed-proof/runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sizeBytes": 0
+    },
+    {
+      "path": "root/installed-proof/runs/01/inputs/AudioLyricsProof.kt",
+      "sha256Bytes": "88f34c2e7616c159ae2e2e5427c0771100444bc8c17e4166cea9e60f52286ee6",
+      "sizeBytes": 15134
+    },
+    {
+      "path": "root/installed-proof/runs/01/overlap.json",
+      "sha256Bytes": "3002d52bce3908d6698ef19a1f252bffa43bedd2fd1c6ef2ad52d90f82c6ba1b",
+      "sizeBytes": 56
+    },
+    {
+      "path": "root/installed-proof/runs/01/pins-after.json",
+      "sha256Bytes": "611a3921a2e59135075193411f62f983b10ce2a7a1c93f729ccda167030e6eb9",
+      "sizeBytes": 42929
+    },
+    {
+      "path": "root/installed-proof/runs/01/pins-before.json",
+      "sha256Bytes": "611a3921a2e59135075193411f62f983b10ce2a7a1c93f729ccda167030e6eb9",
+      "sizeBytes": 42929
+    },
+    {
+      "path": "root/installed-proof/runs/01/result.json",
+      "sha256Bytes": "5825f6f0dd2b819c624ec611666a9a291b00be032b3e14203b361637298cc8c3",
+      "sizeBytes": 519
+    },
+    {
+      "path": "root/installed-proof/runs/01/run-command.json",
+      "sha256Bytes": "f27c3714a317bb90ba7fef9d030f912b3e6108348fca62165898ea4c6fb51da9",
+      "sizeBytes": 27043
+    },
+    {
+      "path": "root/installed-proof/runs/01/run.log",
+      "sha256Bytes": "169f1cad7e5867fcbdecc8c9067c80564b2438df8cc97124515464b3884af589",
+      "sizeBytes": 222
+    },
+    {
+      "path": "root/installed-proof/excluded-artifacts.json",
+      "sha256Bytes": "1b15243667150e862cfdcc73009beea0714e1d8fd91cfaa5a3e5484ec9dd8345",
+      "sizeBytes": 226
+    },
+    {
+      "path": "integration-report.json",
+      "sha256Bytes": "010a140fc1f7a715853385a74f355192358332e47fecfdf19d820d8448e69d39",
+      "sizeBytes": 910
+    }
+  ],
+  "excludedRebuildableOutputs": [
+    {
+      "path": "runs/01/fixture.jar",
+      "sha256Bytes": "8aac77eb405996c380788327ac07f4b72a8799c2394f47d6e899f82d561d7b12",
+      "sizeBytes": 64946,
+      "reason": "Rebuildable fixture output; not production payload."
+    }
+  ]
+}

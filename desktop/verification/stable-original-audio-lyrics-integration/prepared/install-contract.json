@@ -1,0 +1,33 @@
+{
+  "copyWhitelist": [
+    {
+      "source": "manual/com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalAudioLyricsBinding.kt",
+      "sha256Bytes": "f170523ad724986f5fef176249cda64c857d6f8c32b8dc1217b343037f46785f",
+      "kind": "new"
+    }
+  ],
+  "exactProducerHunks": "producer-hunk.json",
+  "existingProducerFamilies": 1,
+  "exactHunks": 1,
+  "generatedSourcesNeverInstallationPayload": true,
+  "canonicalMusicUiStateRepositoryModelsAndCachePreserved": true,
+  "originalSelectedSource": "app/src/main/java/com/android/purebilibili/feature/audio/viewmodel/MusicViewModel.kt",
+  "originalSha256LF": "d9705a700bbe14722b79d9bb484d70da0afb97ae1c9df393e7a271e4a0173d0c",
+  "newOriginalIdentities": 0,
+  "newDependencies": 0,
+  "newPlayerCacheOrClient": false,
+  "sourceLeaseConstructor": "DesktopOriginalMusicSourceLease(bvid,cid,owns,commitIfCurrent)",
+  "bindingConstructor": "DesktopOriginalAudioLyricsBinding(settings,sameLyricsRepository,actualEntryScope,captureSource)",
+  "requiredRootCapture": "Same original subjectSnapshot object, BV/CID, captured epoch, Assembly and entry lifetime; quality or decoder changes can retain a logical subject.",
+  "requiredRootAdmission": "Only short memory/UI/private query publication; same Store -> entry order. No repository/HTTP/cache IO inside admission.",
+  "requiredRootClose": "Await closeCancelJoin outside all gates. False means jobs still alive; preserve that real failure and do not claim a completed drain.",
+  "portMethods": 6,
+  "originalDomainMethodsSelected": 5,
+  "originalPrivateLoadSelected": true,
+  "initPlayerPlatformOnly": "Root already supplies its existing Repository. No Android MiniPlayer/client/cache is constructed.",
+  "underlyingBlockingHttpCancellationClaimed": false,
+  "wholeMusicViewModelOrAuPlayerEmitted": false,
+  "completeRootMounted": false,
+  "desktopExeReplaced": false
+}

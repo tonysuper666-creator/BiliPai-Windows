@@ -1,0 +1,23 @@
+{
+  "actualGeneratedPath": "desktop/build/generated/audio/com/android/purebilibili/feature/audio/viewmodel/DesktopOriginalMusicLyricsController.kt",
+  "preparedSHA256LF": "423019ad96c020e3590e7d181d57f088d16ba4fb6ca65a57d76169ce2b863368",
+  "actualSHA256LF": "423019ad96c020e3590e7d181d57f088d16ba4fb6ca65a57d76169ce2b863368",
+  "sameByteBodyLF": true,
+  "exactSelectedBodyInverse": true,
+  "selectedOriginalFieldsAndMethods": [
+    "_uiState",
+    "uiState",
+    "lyricsRepository",
+    "lyricsJob",
+    "lyricsOffsetSaveJob",
+    "lastLyricsCacheKey",
+    "lastLyricsQuery",
+    "lastBilibiliLyrics",
+    "adjustLyricsOffset",
+    "loadLyricsForVideo",
+    "retryLyrics",
+    "searchLyrics",
+    "selectLyricsCandidate",
+    "loadLyrics"
+  ]
+}
