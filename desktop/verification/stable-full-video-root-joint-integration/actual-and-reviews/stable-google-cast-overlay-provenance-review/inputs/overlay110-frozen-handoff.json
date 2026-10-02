@@ -1,0 +1,600 @@
+{
+  "version": 1,
+  "lane": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-overlay-windows-platform-parity",
+  "actualInstalled": false,
+  "rawCount": 110,
+  "rawArtifacts": [
+    {
+      "path": "audit.py",
+      "sha256Bytes": "06933a9778c124ae707b11458531f3cfd1e365da7496865ec50dddbbdb2c5513",
+      "size": 5483
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "size": 5583
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "size": 4524
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "sha256Bytes": "76f9d6a63381cdc535c4ba1c2bc124e4ea5363996f78493b66aeff6c6fa5e066",
+      "size": 15256
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayPlatform.kt",
+      "sha256Bytes": "fb41fa8a39abf94c807965847f400647a9cafdf9924af0d887a89d9074f802f8",
+      "size": 2375
+    },
+    {
+      "path": "baseline/desktop/tools/extract-upstream-video-player-full-controls.py",
+      "sha256Bytes": "aa33a61c40c51c5a5fef72741393e585ce763f3b2775e29dae4cfc3c1f8e4ba5",
+      "size": 42268
+    },
+    {
+      "path": "baseline/desktop/tools/extract-upstream-video-state-core.py",
+      "sha256Bytes": "2609fab12b3a299db420ef9392a3c8fc7b91e142277e9831c711cfd674d3ae31",
+      "size": 32709
+    },
+    {
+      "path": "baseline-families.json",
+      "sha256Bytes": "b239f265167bd9f37d3050069791ae27d5267b6ef253ff2ffe2c645e9c6d52c6",
+      "size": 1757
+    },
+    {
+      "path": "baseline-generated/video-state-core/com/android/purebilibili/core/cooldown/PlaybackCooldownManager.kt",
+      "sha256Bytes": "62102a37824deac43b35a83b62e9b43252506f04e30a004673525e9e7dbcd7ec",
+      "size": 9524
+    },
+    {
+      "path": "baseline-generated/video-state-core/com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+      "sha256Bytes": "fd3f9e03a1c85ca47697a5807d1d94c95f379eecbd21db2ca8d295f58f763308",
+      "size": 2007
+    },
+    {
+      "path": "baseline-generated/video-state-core/original-video-state-core-selection.json",
+      "sha256Bytes": "b22db7ef2b9b1e2c7d94d83f798cd7cc569e264168d6d11176ea868a5460714f",
+      "size": 29551
+    },
+    {
+      "path": "exact-hunks.json",
+      "sha256Bytes": "288f1724c2a8f668469b848613256cc73d9979c3799a31811485ba5c0944fcc3",
+      "size": 14141
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "191cb62fb6027942ddb4800c0ed9f728f03723a4aeb7e8f41c0e60bda314c827",
+      "size": 5574
+    },
+    {
+      "path": "generate.py",
+      "sha256Bytes": "014557a805e9f3567acea228033c4576952f20fd42fe053cbf507c1bd1e22385",
+      "size": 558
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/core/store/DesktopOriginalVideoControlSettings.kt",
+      "sha256Bytes": "7f78c77e80e3425c5877de64f01787647a2d5b63c56da2b87b227c2f119f5ec3",
+      "size": 15642
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/components/DanmakuSendDialog.kt",
+      "sha256Bytes": "c7d3269eadfa06cdcefebd995bd43345e6e00b3ca2201feaa4cc5b7ceadafe70",
+      "size": 32352
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/components/PagesSelector.kt",
+      "sha256Bytes": "2c4d55a9c38de966992eeeb4e035af8909fa50979290d9764bfe60c8f7a9b6f8",
+      "size": 19688
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/components/QualityMenu.kt",
+      "sha256Bytes": "47e8921ca539a06603f43017df0f772f3288a2864d4c0950bbbad8bb50c257c3",
+      "size": 3715
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/components/SeekPreviewBubble.kt",
+      "sha256Bytes": "63b9e370c9f7729cee78c13e67fb5fc6829f9b5d1ec884aba08134a0e8df17c6",
+      "size": 24595
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/components/VideoAspectRatio.kt",
+      "sha256Bytes": "2d8c39ad8274a31e3b29a1c2c06baa6d9445a23e71934ef7d7d47c72ec14fe49",
+      "size": 9544
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/components/VideoSettingsPanel.kt",
+      "sha256Bytes": "f0e2ac3ed4971b04d827d6e95a05be327d428e8097e867782f51bcb01f246835",
+      "size": 78876
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/BottomControlBar.kt",
+      "sha256Bytes": "1c2e7ec8c966349e4247bb51812bb997edf70b7aa0c79ff9e9c3eb62f8be4c9d",
+      "size": 85924
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/PlayerOverlayModels.kt",
+      "sha256Bytes": "1b78a3407306c33d790712e05d950c75b5eedff853556e61358132378ce75b9b",
+      "size": 16019
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/TopControlBar.kt",
+      "sha256Bytes": "9e68bbf8cc9135240992410e22ad212320384d43b2411aec66235c53d7a572e3",
+      "size": 19443
+    },
+    {
+      "path": "generated/video-player-full-controls/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+      "sha256Bytes": "2f39cbb7f8d8a3d72f0770c1a5082fcafe51c90c853dc4b9046ca5571d168785",
+      "size": 153611
+    },
+    {
+      "path": "generated/video-state-core/com/android/purebilibili/core/cooldown/PlaybackCooldownManager.kt",
+      "sha256Bytes": "62102a37824deac43b35a83b62e9b43252506f04e30a004673525e9e7dbcd7ec",
+      "size": 9524
+    },
+    {
+      "path": "generated/video-state-core/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt",
+      "sha256Bytes": "adab6424c7df477f80c3f2d1cf0091ebcc17e12d3eccb69bef02c2bf6efcfeb5",
+      "size": 49283
+    },
+    {
+      "path": "generated/video-state-core/com/android/purebilibili/feature/video/playback/loader/PlaybackLoader.kt",
+      "sha256Bytes": "fd3f9e03a1c85ca47697a5807d1d94c95f379eecbd21db2ca8d295f58f763308",
+      "size": 2007
+    },
+    {
+      "path": "generated/video-state-core/com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoLoadModels.kt",
+      "sha256Bytes": "9ef04ed55677cb779b95a35d30658f1bebd4bae458eb1483687160b8de90027a",
+      "size": 3346
+    },
+    {
+      "path": "generated/video-state-core/com/android/purebilibili/feature/video/viewmodel/PlaybackCompletionPolicy.kt",
+      "sha256Bytes": "f0e1d6537da8b5d4036d5c480902eb090eb0330e1bb73674180729ae0ab16a5f",
+      "size": 3418
+    },
+    {
+      "path": "generated/video-state-core/original-video-state-core-selection.json",
+      "sha256Bytes": "8e684f9b3bc75b33f3d5ba875fc6cc99bb7535223eb3918d48e0a301b57eed7b",
+      "size": 29551
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "96303c4bcd599f7b213f439929d4fd8cd4ac98f9247925d103b8f2b00d02d91a",
+      "size": 3696
+    },
+    {
+      "path": "OverlayWindowsProof.kt",
+      "sha256Bytes": "a713ca28b8d746bd73db3b472a2d6298efded4499c5fbf87ba01464cfb9dd454",
+      "size": 9881
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "1640549209b437da913d8d0385e6f4f5188c803089918de898da6b9e142d1726",
+      "size": 12319
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "sha256Bytes": "6d169325185d60ff4655e7011d826bf2f63b77ecd7de9c49a5c9e3539ab1fa5d",
+      "size": 6720
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+      "size": 5562
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "sha256Bytes": "9f5f7319648440d1ca3152ca828d790234423a503938e490d0f8d86b44323ad6",
+      "size": 17722
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayPlatform.kt",
+      "sha256Bytes": "0641cd26582c3fd2194942d54088d2b1b79d15d33686d94795aecb8bf762d6ff",
+      "size": 2603
+    },
+    {
+      "path": "prepared/existing/desktop/tools/extract-upstream-video-player-full-controls.py",
+      "sha256Bytes": "9623617ec421c74b390aeb424191b2270bf0e7c8b3fe3578c609f7da8460ef51",
+      "size": 43212
+    },
+    {
+      "path": "prepared/existing/desktop/tools/extract-upstream-video-state-core.py",
+      "sha256Bytes": "6587b8596005fd5f16e543625d91de17f95c046d41b321d9b9d55d1e8246812e",
+      "size": 32729
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayWindowsPlatform.kt",
+      "sha256Bytes": "f914539bdd5339ae236a9f974e6611b23664fbe233021e7e33f74c5b976b4be9",
+      "size": 17824
+    },
+    {
+      "path": "retained-original/core/util/Logger.kt",
+      "sha256Bytes": "aa4af545b0c4a59fd7e57d5b2e64b3c1506b7732042a51d1643ca331a05a7c5e",
+      "size": 48244
+    },
+    {
+      "path": "retained-original/data/repository/VideoCastPolicy.kt",
+      "sha256Bytes": "d856735c91f8af1b17dc8344416a875293e7f36b30fe5eb2f793b23336fdafc2",
+      "size": 3849
+    },
+    {
+      "path": "retained-original/data/repository/VideoRepository.kt",
+      "sha256Bytes": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "size": 103425
+    },
+    {
+      "path": "retained-original/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+      "sha256Bytes": "73ccef84e24a91e6b907dcd617e1a7f87d7698d5042ccedb1437e7859d02ae10",
+      "size": 154113
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "d74165374573f6edf5e487442937dd1e4f28fc56f22cdc48376bb4b1354d1105",
+      "size": 4916
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "ff82f800a98bb6e18af407c34d970cf6af97439e559891d06f08bf83aa331cc9",
+      "size": 5602
+    },
+    {
+      "path": "runs/01/compile-command.json",
+      "sha256Bytes": "a5c906e31f4cebac65f19bcad3200b94389196a28188b86176e687e4ee176757",
+      "size": 2555
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "983926032135c4b2ae8785821be29d618af9deb9baa44a5d95071cfa7327e5a3",
+      "size": 27020
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "runs/01/inputs/DesktopCastDialog.kt",
+      "sha256Bytes": "6d169325185d60ff4655e7011d826bf2f63b77ecd7de9c49a5c9e3539ab1fa5d",
+      "size": 6720
+    },
+    {
+      "path": "runs/01/inputs/DesktopDiagnostics.kt",
+      "sha256Bytes": "9f5f7319648440d1ca3152ca828d790234423a503938e490d0f8d86b44323ad6",
+      "size": 17722
+    },
+    {
+      "path": "runs/01/inputs/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+      "size": 5562
+    },
+    {
+      "path": "runs/01/inputs/DesktopOriginalVideoLoadProtocol.kt",
+      "sha256Bytes": "adab6424c7df477f80c3f2d1cf0091ebcc17e12d3eccb69bef02c2bf6efcfeb5",
+      "size": 49283
+    },
+    {
+      "path": "runs/01/inputs/DesktopOriginalVideoOverlayPlatform.kt",
+      "sha256Bytes": "0641cd26582c3fd2194942d54088d2b1b79d15d33686d94795aecb8bf762d6ff",
+      "size": 2603
+    },
+    {
+      "path": "runs/01/inputs/DesktopOriginalVideoOverlayWindowsPlatform.kt",
+      "sha256Bytes": "816b4007f3c1cf373c4e93ebef864afff2ce2dd8657dd1480fd1ea40e0070426",
+      "size": 15453
+    },
+    {
+      "path": "runs/01/inputs/VideoPlayerOverlay.kt",
+      "sha256Bytes": "2f39cbb7f8d8a3d72f0770c1a5082fcafe51c90c853dc4b9046ca5571d168785",
+      "size": 153611
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "444f47cf23a10bb467fc4bcf591fde2416cb36a088d06acf07b1215708b06588",
+      "size": 45432
+    },
+    {
+      "path": "runs/02/compile-command.json",
+      "sha256Bytes": "1d02dce1ea65ac1672efcac6897e8285ec3cf18aa72480fbc8f3efcd58a13261",
+      "size": 2555
+    },
+    {
+      "path": "runs/02/compile.args",
+      "sha256Bytes": "0e5adfbc8567e864fe125babf3a4bdd368a5419b620567a904a9bf15676132c6",
+      "size": 27208
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "runs/02/inputs/DesktopCastDialog.kt",
+      "sha256Bytes": "6d169325185d60ff4655e7011d826bf2f63b77ecd7de9c49a5c9e3539ab1fa5d",
+      "size": 6720
+    },
+    {
+      "path": "runs/02/inputs/DesktopDiagnostics.kt",
+      "sha256Bytes": "9f5f7319648440d1ca3152ca828d790234423a503938e490d0f8d86b44323ad6",
+      "size": 17722
+    },
+    {
+      "path": "runs/02/inputs/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+      "size": 5562
+    },
+    {
+      "path": "runs/02/inputs/DesktopOriginalVideoLoadProtocol.kt",
+      "sha256Bytes": "adab6424c7df477f80c3f2d1cf0091ebcc17e12d3eccb69bef02c2bf6efcfeb5",
+      "size": 49283
+    },
+    {
+      "path": "runs/02/inputs/DesktopOriginalVideoOverlayPlatform.kt",
+      "sha256Bytes": "0641cd26582c3fd2194942d54088d2b1b79d15d33686d94795aecb8bf762d6ff",
+      "size": 2603
+    },
+    {
+      "path": "runs/02/inputs/DesktopOriginalVideoOverlayWindowsPlatform.kt",
+      "sha256Bytes": "816b4007f3c1cf373c4e93ebef864afff2ce2dd8657dd1480fd1ea40e0070426",
+      "size": 15453
+    },
+    {
+      "path": "runs/02/inputs/OverlayWindowsProof.kt",
+      "sha256Bytes": "8a72265439c58b17c75d184740b3d00d0df3d1bd82395ae7363adb0d97c916e3",
+      "size": 8026
+    },
+    {
+      "path": "runs/02/inputs/VideoPlayerOverlay.kt",
+      "sha256Bytes": "2f39cbb7f8d8a3d72f0770c1a5082fcafe51c90c853dc4b9046ca5571d168785",
+      "size": 153611
+    },
+    {
+      "path": "runs/02/overlap.json",
+      "sha256Bytes": "37c679d22761628449b12bc54070d1e5fe27f11da054bcc25213668585da7e09",
+      "size": 9784
+    },
+    {
+      "path": "runs/02/pins-after.json",
+      "sha256Bytes": "961d62d7e2d4c72ca0e9f8667f0bab02f455f34958ebf64677edbf9b866b99dc",
+      "size": 45771
+    },
+    {
+      "path": "runs/02/pins-before.json",
+      "sha256Bytes": "961d62d7e2d4c72ca0e9f8667f0bab02f455f34958ebf64677edbf9b866b99dc",
+      "size": 45771
+    },
+    {
+      "path": "runs/02/result.json",
+      "sha256Bytes": "148bc5a93b2af8c90478dff26551122b3b5995686c8505e94d2a1890435bb7f9",
+      "size": 344
+    },
+    {
+      "path": "runs/02/run-command.json",
+      "sha256Bytes": "e863f0d45ecf36673766c17c1797340d9e6ac030a05f48d7687b0ec60eb65ce0",
+      "size": 27049
+    },
+    {
+      "path": "runs/02/run.log",
+      "sha256Bytes": "e0139ed278164690a9c2788e646d1a7bc89e7d1afd12c2049209df678e3243b0",
+      "size": 1148
+    },
+    {
+      "path": "runs/03/compile-command.json",
+      "sha256Bytes": "8ce98ad32ac5d0bb5a7a6eff951c4f1f26e7d0dc2f0ae2e2ad5130ee58c1add9",
+      "size": 2555
+    },
+    {
+      "path": "runs/03/compile.args",
+      "sha256Bytes": "69e1a9d9b91ece8c4299ec6612e61acef2ac617e590b1690347d268a8df25f18",
+      "size": 27208
+    },
+    {
+      "path": "runs/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "runs/03/inputs/DesktopCastDialog.kt",
+      "sha256Bytes": "6d169325185d60ff4655e7011d826bf2f63b77ecd7de9c49a5c9e3539ab1fa5d",
+      "size": 6720
+    },
+    {
+      "path": "runs/03/inputs/DesktopDiagnostics.kt",
+      "sha256Bytes": "9f5f7319648440d1ca3152ca828d790234423a503938e490d0f8d86b44323ad6",
+      "size": 17722
+    },
+    {
+      "path": "runs/03/inputs/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+      "size": 5562
+    },
+    {
+      "path": "runs/03/inputs/DesktopOriginalVideoLoadProtocol.kt",
+      "sha256Bytes": "adab6424c7df477f80c3f2d1cf0091ebcc17e12d3eccb69bef02c2bf6efcfeb5",
+      "size": 49283
+    },
+    {
+      "path": "runs/03/inputs/DesktopOriginalVideoOverlayPlatform.kt",
+      "sha256Bytes": "0641cd26582c3fd2194942d54088d2b1b79d15d33686d94795aecb8bf762d6ff",
+      "size": 2603
+    },
+    {
+      "path": "runs/03/inputs/DesktopOriginalVideoOverlayWindowsPlatform.kt",
+      "sha256Bytes": "816b4007f3c1cf373c4e93ebef864afff2ce2dd8657dd1480fd1ea40e0070426",
+      "size": 15453
+    },
+    {
+      "path": "runs/03/inputs/OverlayWindowsProof.kt",
+      "sha256Bytes": "885f83396e8edd7240e8bb689b33c21c5d9ed8785950b78742f26508e731ee37",
+      "size": 8043
+    },
+    {
+      "path": "runs/03/inputs/VideoPlayerOverlay.kt",
+      "sha256Bytes": "2f39cbb7f8d8a3d72f0770c1a5082fcafe51c90c853dc4b9046ca5571d168785",
+      "size": 153611
+    },
+    {
+      "path": "runs/03/overlap.json",
+      "sha256Bytes": "37c679d22761628449b12bc54070d1e5fe27f11da054bcc25213668585da7e09",
+      "size": 9784
+    },
+    {
+      "path": "runs/03/pins-after.json",
+      "sha256Bytes": "a3af0606338da5e329ab4edaaddfa4fa59c77f7f3a1b9a06aa1b94f21e8d770e",
+      "size": 45771
+    },
+    {
+      "path": "runs/03/pins-before.json",
+      "sha256Bytes": "a3af0606338da5e329ab4edaaddfa4fa59c77f7f3a1b9a06aa1b94f21e8d770e",
+      "size": 45771
+    },
+    {
+      "path": "runs/03/result.json",
+      "sha256Bytes": "7c6e174aa92da8c7fe6f5feba82668500ad4c7093ad3a1a3efbf7f654cf60736",
+      "size": 343
+    },
+    {
+      "path": "runs/03/run-command.json",
+      "sha256Bytes": "7479d7f40314395f74c16c1e9e6a7fa710a2a801d86fd2ded7fd0c2da36d6150",
+      "size": 27049
+    },
+    {
+      "path": "runs/03/run.log",
+      "sha256Bytes": "1d5d4e362f0652a064741ed0016fb519a115037f0359645fe7df589a0c4c0efa",
+      "size": 146
+    },
+    {
+      "path": "runs/04/compile-command.json",
+      "sha256Bytes": "2f7ae34a848b4ddc8250ebf7622a270234bf6e6943835e942d8e709f988a93cc",
+      "size": 2555
+    },
+    {
+      "path": "runs/04/compile.args",
+      "sha256Bytes": "5ae65670bc4c3d0d23d2fefd2bb7e8db6bbe8863c7f3d3f77a4487314a0e74a0",
+      "size": 27208
+    },
+    {
+      "path": "runs/04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "runs/04/inputs/DesktopCastDialog.kt",
+      "sha256Bytes": "6d169325185d60ff4655e7011d826bf2f63b77ecd7de9c49a5c9e3539ab1fa5d",
+      "size": 6720
+    },
+    {
+      "path": "runs/04/inputs/DesktopDiagnostics.kt",
+      "sha256Bytes": "9f5f7319648440d1ca3152ca828d790234423a503938e490d0f8d86b44323ad6",
+      "size": 17722
+    },
+    {
+      "path": "runs/04/inputs/DesktopGoogleCastDialog.kt",
+      "sha256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+      "size": 5562
+    },
+    {
+      "path": "runs/04/inputs/DesktopOriginalVideoLoadProtocol.kt",
+      "sha256Bytes": "adab6424c7df477f80c3f2d1cf0091ebcc17e12d3eccb69bef02c2bf6efcfeb5",
+      "size": 49283
+    },
+    {
+      "path": "runs/04/inputs/DesktopOriginalVideoOverlayPlatform.kt",
+      "sha256Bytes": "0641cd26582c3fd2194942d54088d2b1b79d15d33686d94795aecb8bf762d6ff",
+      "size": 2603
+    },
+    {
+      "path": "runs/04/inputs/DesktopOriginalVideoOverlayWindowsPlatform.kt",
+      "sha256Bytes": "f914539bdd5339ae236a9f974e6611b23664fbe233021e7e33f74c5b976b4be9",
+      "size": 17824
+    },
+    {
+      "path": "runs/04/inputs/OverlayWindowsProof.kt",
+      "sha256Bytes": "a713ca28b8d746bd73db3b472a2d6298efded4499c5fbf87ba01464cfb9dd454",
+      "size": 9881
+    },
+    {
+      "path": "runs/04/inputs/VideoPlayerOverlay.kt",
+      "sha256Bytes": "2f39cbb7f8d8a3d72f0770c1a5082fcafe51c90c853dc4b9046ca5571d168785",
+      "size": 153611
+    },
+    {
+      "path": "runs/04/overlap.json",
+      "sha256Bytes": "07b6d018028b221a23bfe1fbbbe8417640057a8ce6069545dd108efbbaa93e4d",
+      "size": 9784
+    },
+    {
+      "path": "runs/04/pins-after.json",
+      "sha256Bytes": "6f85474d50f47bfa34422a7a16a46ff93fb37a71b29a393fae42575c18591450",
+      "size": 45771
+    },
+    {
+      "path": "runs/04/pins-before.json",
+      "sha256Bytes": "6f85474d50f47bfa34422a7a16a46ff93fb37a71b29a393fae42575c18591450",
+      "size": 45771
+    },
+    {
+      "path": "runs/04/result.json",
+      "sha256Bytes": "f6c8a2ec90cc882b01a1ec612a402b2027ef7013889867d38c67aaafe5181254",
+      "size": 343
+    },
+    {
+      "path": "runs/04/run-command.json",
+      "sha256Bytes": "efe8a6c115e358ce1573c66884fcf41b82cd2094c8b25feb03b585973488178f",
+      "size": 27049
+    },
+    {
+      "path": "runs/04/run.log",
+      "sha256Bytes": "57c340c73bdeab5d9cb68c1c65c1080931068b70978146687b0f00488ae9cafc",
+      "size": 146
+    },
+    {
+      "path": "source-audit.json",
+      "sha256Bytes": "891355febe443b96336d9245c10ab418f71dea1d37c6129372b879c177986254",
+      "size": 2894
+    }
+  ],
+  "excludedArtifacts": [
+    {
+      "path": "runs/01/candidate.jar",
+      "sha256Bytes": "db877705e339b142541b1dc082aeca40c034dff10e78c3b53f1e39ca53f13737",
+      "size": 549942,
+      "reason": "rebuildable compiler artifact; never installed"
+    },
+    {
+      "path": "runs/02/candidate.jar",
+      "sha256Bytes": "1f2f13938a4e1906ef71988f3119a7a0d54a86e113e0fd670c98c321d1f40ef1",
+      "size": 585405,
+      "reason": "rebuildable compiler artifact; never installed"
+    },
+    {
+      "path": "runs/03/candidate.jar",
+      "sha256Bytes": "3461bcd22124d33ed0a2eb22202acada4f9e9ad584ae210ad74734be729bf260",
+      "size": 585413,
+      "reason": "rebuildable compiler artifact; never installed"
+    },
+    {
+      "path": "runs/04/candidate.jar",
+      "sha256Bytes": "0e2fd9426b8c5b7d3c0c91abf4102d410ee970a82a9815684ec0ce0106864763",
+      "size": 590963,
+      "reason": "rebuildable compiler artifact; never installed"
+    }
+  ],
+  "installContract": {
+    "path": "install-contract.json",
+    "sha256Bytes": "96303c4bcd599f7b213f439929d4fd8cd4ac98f9247925d103b8f2b00d02d91a",
+    "size": 3696
+  },
+  "actualBase": 76,
+  "immutableRuntimeEntries": 101,
+  "productionOverridesForProofOnly": 6,
+  "proofAssertions": 25,
+  "sourceAudit": {
+    "path": "source-audit.json",
+    "sha256Bytes": "891355febe443b96336d9245c10ab418f71dea1d37c6129372b879c177986254",
+    "size": 2894
+  },
+  "immutableHistory": true,
+  "completeRootOrNativeAccepted": false
+}

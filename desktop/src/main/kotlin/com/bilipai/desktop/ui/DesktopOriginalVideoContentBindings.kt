@@ -22,6 +22,7 @@ internal class DesktopOriginalVideoContentBindings(
     private val watchLater: suspend (Long, Boolean) -> Result<Boolean>,
     private val feedbackPort: (String) -> Unit,
     private val shareTextPort: (String, String) -> Unit,
+    private val todayWatchFeedback: DesktopTodayWatchFeedbackWriteBinding,
 ) {
     fun requireCurrent() {
         if (!isCurrent()) throw CancellationException("Original video content owner retired")
@@ -48,15 +49,12 @@ internal class DesktopOriginalVideoContentBindings(
     }
     fun getFeedbackSnapshot(): TodayWatchFeedbackSnapshot {
         requireCurrent()
-        return TodayWatchFeedbackStore.getSnapshot(recommendationContext)
+        return todayWatchFeedback.getSnapshot()
     }
     suspend fun saveFeedbackSnapshot(snapshot: TodayWatchFeedbackSnapshot) {
-        val caller = currentCoroutineContext()
-        caller.ensureActive(); requireCurrent()
-        if (!commitIfCurrent {
-            caller.ensureActive(); requireCurrent()
-            TodayWatchFeedbackStore.saveSnapshot(recommendationContext, snapshot)
-        }) throw CancellationException("Original video recommendation feedback owner retired")
+        currentCoroutineContext().ensureActive(); requireCurrent()
+        todayWatchFeedback.saveSnapshot(snapshot)
+        currentCoroutineContext().ensureActive(); requireCurrent()
     }
     suspend fun commitUi(block: () -> Unit) {
         val caller = currentCoroutineContext()

@@ -1,0 +1,98 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayPlatform.kt",
+    "label": "Report actual clipboard acceptance instead of a Unit success assumption",
+    "before": "    fun copyText(label: String, text: String)\n",
+    "after": "    fun copyText(label: String, text: String): Boolean\n",
+    "beforeAnchorSHA256LF": "013cdfc4da6b70bdabaf67a6f1f3e643b3c705e1db37b7da56000c381182ec51",
+    "afterAnchorSHA256LF": "6d6878cc08fcabd9c0d3945a8e448edd8b1c6f2f6013dc6a3d8eda2f41d20961"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayPlatform.kt",
+    "label": "Fixed lexical cast-source admission around the complete original resolver",
+    "before": "    suspend fun getTvCastPlayData(aid: Long, cid: Long, qn: Int): PlayUrlData?\n",
+    "after": "    suspend fun withCastSource(aid: Long, cid: Long, action: suspend () -> com.android.purebilibili.feature.video.ui.overlay.CastMediaResolution?): com.android.purebilibili.feature.video.ui.overlay.CastMediaResolution?\n    suspend fun getTvCastPlayData(aid: Long, cid: Long, qn: Int): PlayUrlData?\n",
+    "beforeAnchorSHA256LF": "805953360e4d5cc3b24960f48ab676cb995655256a944bc1c4de3aa83badb595",
+    "afterAnchorSHA256LF": "9447a7adfd504fe3adcc18acf903b86b56b287ca136e648a39c514f38c6776c5"
+  },
+  {
+    "target": "desktop/tools/extract-upstream-video-player-full-controls.py",
+    "label": "Retain the complete resolver body inside the required captured-source scope",
+    "before": " resolver=adapt(resolver,'withContext(Dispatchers.IO) {','''withContext(Dispatchers.IO) {\n    kotlinx.coroutines.currentCoroutineContext().ensureActive()\n    context.requireCurrent()''','Reject canceled/retired cast resolution before existing transport')\n",
+    "after": " resolver=adapt(resolver,'withContext(Dispatchers.IO) {','''withContext(Dispatchers.IO) {\n    context.videoOverlay.withCastSource(currentAid, cid) {\n    kotlinx.coroutines.currentCoroutineContext().ensureActive()\n    context.requireCurrent()''','Reject canceled/retired cast resolution and keep one captured native source before existing transport')\n resolver=resolver.replace('return@withContext CastMediaResolution', 'return@withCastSource CastMediaResolution')\n assert resolver.endswith('}');resolver=resolver[:-1]+'    }\\n}'\n",
+    "beforeAnchorSHA256LF": "45a9482727a9c427a8fd9e2062d6165c2ad6a359a2957a58889e230b052e2d67",
+    "afterAnchorSHA256LF": "8d8842e7aec3c1ba2446f620f37cad19ef5302227583ad1b8000af5c684c64c2"
+  },
+  {
+    "target": "desktop/tools/extract-upstream-video-player-full-controls.py",
+    "label": "The original successful clipboard feedback requires real Windows acceptance",
+    "before": " emit(rel,t,rel,'complete-original-overlay-all-menus-cast-reload-diagnostic-drawer-real-mpv-platform-adapt')\n",
+    "after": " copyA=t.index('                onCopyReport =')\n copyB=t.index('                onDismiss =',copyA)\n copy=t[copyA:copyB]\n copy=adapt(copy,'context.videoOverlay.copyText(\"BiliPai Player Diagnostics\", exportDiagnosticReport(null))','if (context.videoOverlay.copyText(\"BiliPai Player Diagnostics\", exportDiagnosticReport(null))) {','Real Windows clipboard acknowledgment gates original success feedback')\n copy=adapt(copy,'                        ).show()\\n                    }','                        ).show()\\n                        }\\n                    }','Close real clipboard success branch without changing original feedback body')\n t=t[:copyA]+copy+t[copyB:]\n emit(rel,t,rel,'complete-original-overlay-all-menus-cast-reload-diagnostic-drawer-real-mpv-platform-adapt')\n",
+    "beforeAnchorSHA256LF": "724e89b403ecd7482adf24ed64281fabd9cbd336086ea3a4e5abacbfcc6ac565",
+    "afterAnchorSHA256LF": "0747a814e7d660b334a68d6ac6e90d5df57ad6b407133ec0361d9d83075f88ac"
+  },
+  {
+    "target": "desktop/tools/extract-upstream-video-state-core.py",
+    "label": "Select the complete original TV play-data method in the sole original Repository family",
+    "before": "methods=['getVideoInfoOnly','getInitialPlayUrlData','getVideoDetails','getPlaybackNavInfo','getPlayUrlData','getPlayUrlDataForPlaybackTransition','getExactPremiumPlayUrl','fetchPlayUrlRecursive','hasPlayableStreams','fetchDashWithFallback','fetchAsGuestFallback','fetchGuestPlaybackWithFallback','fetchPlayUrlWithWbiInternal','fetchPlayUrlWithAccessToken','getRelatedVideos','classifyPlayUrlError','getWbiKeys']",
+    "after": "methods=['getVideoInfoOnly','getInitialPlayUrlData','getVideoDetails','getPlaybackNavInfo','getPlayUrlData','getPlayUrlDataForPlaybackTransition','getExactPremiumPlayUrl','fetchPlayUrlRecursive','hasPlayableStreams','fetchDashWithFallback','fetchAsGuestFallback','fetchGuestPlaybackWithFallback','fetchPlayUrlWithWbiInternal','fetchPlayUrlWithAccessToken','getRelatedVideos','classifyPlayUrlError','getWbiKeys','getTvCastPlayData']",
+    "beforeAnchorSHA256LF": "7e62110a96ee6cbc08732fa6a77ce8e6093488b107bafd51e25366ac225f2dcb",
+    "afterAnchorSHA256LF": "889200d4ce529db810e966861fcc84da7f90a8e6b69f9ffb4c51acae0401043e"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+    "label": "Preserve the original Windows media overload; add a same-body route-selection overload",
+    "before": "fun DesktopCastDialog(controller: DesktopCastController, media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit) {",
+    "after": "fun DesktopCastDialog(controller: DesktopCastController, media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit) =\n    DesktopCastDialogContent(controller, media, null, onDismiss)\n\n@Composable\ninternal fun DesktopCastDialog(controller: DesktopCastController,\n    onRouteSelected: (com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit,\n    onDismiss: () -> Unit) = DesktopCastDialogContent(controller, null, onRouteSelected, onDismiss)\n\n@Composable\nprivate fun DesktopCastDialogContent(controller: DesktopCastController,\n    media: (suspend () -> DesktopCastMediaPublication?)?,\n    onRouteSelected: ((com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit)?,\n    onDismiss: () -> Unit) {",
+    "beforeAnchorSHA256LF": "53de885ad041a61c33cd79b462a230eb6673c8f3e662431c7bf075d78b25b35c",
+    "afterAnchorSHA256LF": "3acca2f6f1b27569f72cb7bfb02b2a5584b58639449d1451b3cdea456595f455"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+    "label": "Keep actual actors/state; prevent repeated selection while the original overlay is resolving",
+    "before": "    val busy by controller.isBusy.collectAsState()\n",
+    "after": "    val actorBusy by controller.isBusy.collectAsState()\n    var selectionPending by remember(controller) { mutableStateOf(false) }\n    val busy = actorBusy || selectionPending\n    val latestSelection by rememberUpdatedState(onRouteSelected)\n",
+    "beforeAnchorSHA256LF": "632639daae7e6ff7d1f9e463b15b4e30249faf7aa0ac95ea8ba7c60c495e438c",
+    "afterAnchorSHA256LF": "d81369083317e8b2e818a689a93a3d3ae4b965921e5733f9eef3028585f09b27"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+    "label": "Only the selector returns its real route; the existing media path remains unchanged",
+    "before": "Button(onClick = { scope.launch { controller.cast(route) { latestMedia() } } }, enabled = !busy)",
+    "after": "Button(onClick = {\n                            val selection = latestSelection\n                            if (selection != null) { selectionPending = true; selection(controller.plugin, route) }\n                            else scope.launch { controller.cast(route) { checkNotNull(latestMedia).invoke() } }\n                        }, enabled = !busy)",
+    "beforeAnchorSHA256LF": "86c503bda2637521c11e3706512e67febf3cfed788fa42d0256dab6f90214183",
+    "afterAnchorSHA256LF": "bb0d4b57bda4d80c894f5088705e918733366f085d55205d95fd479144614a29"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+    "label": "Preserve the original Windows media overload; add a same-body route-selection overload",
+    "before": "fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin,\n    media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit) {",
+    "after": "fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin,\n    media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit) =\n    DesktopGoogleCastDialogContent(context, plugin, media, null, onDismiss)\n\n@Composable\ninternal fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin,\n    onRouteSelected: (com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit,\n    onDismiss: () -> Unit) = DesktopGoogleCastDialogContent(context, plugin, null, onRouteSelected, onDismiss)\n\n@Composable\nprivate fun DesktopGoogleCastDialogContent(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin,\n    media: (suspend () -> DesktopCastMediaPublication?)?,\n    onRouteSelected: ((com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit)?,\n    onDismiss: () -> Unit) {\n    val latestSelection by rememberUpdatedState(onRouteSelected)",
+    "beforeAnchorSHA256LF": "4f1317f160adcb1449b79d12f5d13455472ec2e1098b580d03c92dc2aaeb80ca",
+    "afterAnchorSHA256LF": "59663b83729b51048499a151e790c792e69fcef063a3c2ee11a564dbc7c06433"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+    "label": "The selection mode delegates to the complete original overlay callback without another media resolver",
+    "before": "OutlinedButton(enabled = !busy, onClick = { scope.launch {\n",
+    "after": "OutlinedButton(enabled = !busy, onClick = {\n                    val selection = latestSelection\n                    if (selection != null) { preparing = true; selection(plugin, route) }\n                    else scope.launch {\n",
+    "beforeAnchorSHA256LF": "f07b8e57df083d7f956740219e2229b3c4d1a5db0bf5c8da04f33c532f205491",
+    "afterAnchorSHA256LF": "a984b5a0361166fc877992d4acb65063bf2526027d82ca30468ffe74492bbfb8"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+    "label": "Nullable media is permitted only in the explicit selector overload",
+    "before": "try { val request = media(); if (request == null)",
+    "after": "try { val request = checkNotNull(media).invoke(); if (request == null)",
+    "beforeAnchorSHA256LF": "3f1db8a2be9fef84453be4686edcdf0743c2557e5059e89e22a4f49597d6af87",
+    "afterAnchorSHA256LF": "84325f6b80c4beab4a8a5aa03cd001ae2aa615522a573e230cdccbd58a93efb8"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+    "label": "Same serial diagnostic actor exports the original sanitized report with no-clobber publication",
+    "before": "    /** Explicit caller-selected local file only. CREATE_NEW never overwrites another artifact. */\n",
+    "after": "    /** The original explicit player-report export, on THIS sole serial writer.\n     * Temporary IO stays outside Root admission. Only no-clobber publication is\n     * admitted by the existing Store -> entry gate; retirement cannot publish.\n     * Original synchronous UI API returns only an actually published path. */\n    internal fun exportOriginalPlayerReport(content:String, stillOwned:()->Boolean,\n        commitIfCurrent:((()->Unit)->Boolean)):String? {\n        if(!stillOwned())throw kotlinx.coroutines.CancellationException(\"Player diagnostic owner retired\")\n        val open=java.util.concurrent.atomic.AtomicBoolean(true)\n        val future=submit {\n            fun checkOwned() {\n                if(!open.get() || !stillOwned())throw kotlinx.coroutines.CancellationException(\"Player diagnostic owner retired\")\n            }\n            checkOwned()\n            val directory=root.resolve(\"logs\")\n            val target=directory.resolve(resolvePlayerDiagnosticExportFileName(clock()))\n            val temporary=directory.resolve(\".player-report-${java.util.UUID.randomUUID()}.tmp\")\n            ensurePrivateFile(target);ensurePrivateFile(temporary)\n            try {\n                val safe=utf8Tail(sanitizeDesktopDiagnosticText(content).toByteArray(Charsets.UTF_8),512*1024)\n                FileChannel.open(temporary,StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE).use { channel ->\n                    val buffer=ByteBuffer.wrap(safe)\n                    while(buffer.hasRemaining()){checkOwned();channel.write(buffer)}\n                    channel.force(true)\n                }\n                checkOwned()\n                var published=false\n                if(!commitIfCurrent {\n                    checkOwned()\n                    // A hard-link publication is atomic and has CREATE_NEW semantics.\n                    Files.createLink(target,temporary);published=true\n                } || !published)throw kotlinx.coroutines.CancellationException(\"Player diagnostic publication retired\")\n                target.toString()\n            } finally {Files.deleteIfExists(temporary)}\n        }\n        return try {future.get(5,TimeUnit.SECONDS)}\n        catch(cancelled:java.util.concurrent.CancellationException){throw cancelled}\n        catch(failure:ExecutionException) {\n            if(failure.cause is kotlinx.coroutines.CancellationException)throw failure.cause!!\n            null\n        } catch(_:Exception){open.set(false);null}\n    }\n\n    /** Explicit caller-selected local file only. CREATE_NEW never overwrites another artifact. */\n",
+    "beforeAnchorSHA256LF": "584d3f38653c419b5f44c72c6b1e5f6254e5893882a448e6c65d0e741693f789",
+    "afterAnchorSHA256LF": "ac2a7480682acb77b16b413b43f47a970dc203034ec1600c911bb212c3d9b922"
+  }
+]

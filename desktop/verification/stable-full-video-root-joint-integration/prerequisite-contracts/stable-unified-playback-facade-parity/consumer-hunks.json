@@ -1,0 +1,50 @@
+{
+  "groups": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt",
+      "baseSha256LF": "1ca11e61906f6a98da809612a3068c0ea303191ad6762c93bfb0c43695f256fb",
+      "desiredSha256LF": "7514cdc1c0b3ccdc78a19127d59ea8ee2bdea5f0c023dd3455c3c4ccb817dca6",
+      "edits": [
+        {
+          "before": "import com.bilipai.desktop.DesktopPlaybackController\n",
+          "after": "",
+          "count": 1,
+          "label": "same package sole unified facade; legacy migration type remains only Root drain"
+        },
+        {
+          "before": "    private val playback: DesktopPlaybackController,",
+          "after": "    private val playback: DesktopUnifiedPlaybackFacade,",
+          "count": 1,
+          "label": "ordinary commands/state all switch together; audio Listen unchanged"
+        }
+      ],
+      "bodyInverseExact": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopStoryPlaybackHost.kt",
+      "baseSha256LF": "d810cd6eb19faa4055ae7052cdaf7758e7dae04436999a6b11d47172aee8e1a8",
+      "desiredSha256LF": "79be44422c6ecd4680c661d3cf701c407444134ba6f98b8b9a1774b351e42a6f",
+      "edits": [
+        {
+          "before": "import com.bilipai.desktop.DesktopPlaybackController\n",
+          "after": "",
+          "count": 1,
+          "label": "same package sole unified facade; legacy migration type remains only Root drain"
+        },
+        {
+          "before": "internal class ControllerStoryQueuePlayer(private val controller: DesktopPlaybackController)",
+          "after": "internal class ControllerStoryQueuePlayer(private val controller: DesktopUnifiedPlaybackFacade)",
+          "count": 1,
+          "label": "preserve original Story adapter ABI/caller; no old Controller fallback"
+        }
+      ],
+      "bodyInverseExact": true
+    }
+  ],
+  "rootCallerContract": [
+    "Parent Shell must replace its ONE playback variable and all callbacks with this facade only after actual legacy drain. Do not construct a second MPV/VM.",
+    "ListenAudioSession before ordinary takeover must invoke facade.pause on Root Main dispatcher; Listen retains own queue/actor/source guards. This third acquisition bridge has no Controller-typed standalone source: callback lives in Shell.",
+    "SMTC/PiP/Story callbacks require Root Main dispatch and exact current Assembly. ReadyShell owns their same-source SMTC metadata and Window/PiP hooks.",
+    "ControllerNativeSmoke remains an explicit historical legacy fixture; do not rename it to claim full-owner/native acceptance."
+  ]
+}

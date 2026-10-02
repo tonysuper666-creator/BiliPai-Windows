@@ -2,7 +2,9 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.network.BuvidApi
+import com.android.purebilibili.core.network.SpaceApi
 import com.android.purebilibili.core.network.SearchApi
+import com.android.purebilibili.core.network.StoryApi
 import com.android.purebilibili.core.store.StoredAccountSession
 import com.android.purebilibili.data.repository.DesktopOriginalVideoLoadProtocol
 import com.bilipai.desktop.data.DesktopPlaybackAuthorization
@@ -70,7 +72,11 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     }
     private val capturedPrimaryApi = repository.ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/",
         receipt.accountEpoch, ::current)
+    private val capturedPrimarySpaceApi = repository.ownedHomeService(SpaceApi::class.java, "https://api.bilibili.com/",
+        receipt.accountEpoch, ::current)
     private val capturedPrimarySearchApi = repository.ownedHomeService(SearchApi::class.java, "https://api.bilibili.com/",
+        receipt.accountEpoch, ::current)
+    private val capturedPrimaryStoryApi = repository.ownedHomeService(StoryApi::class.java, "https://app.bilibili.com/",
         receipt.accountEpoch, ::current)
     private val playbackApi = repository.ownedPlaybackService(BilibiliApi::class.java, authorization, ::current)
     private val guestApi = repository.ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/",
@@ -129,7 +135,10 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
 
     /** Metadata facet of THIS captured request, not a latest-credential service. */
     val primaryApi: BilibiliApi get() = read { capturedPrimaryApi }
+    /** Same fixed primary request/Call.Factory, including original Space app endpoints. */
+    val primarySpaceApi: SpaceApi get() = read { capturedPrimarySpaceApi }
     val primarySearchApi: SearchApi get() = read { capturedPrimarySearchApi }
+    val primaryStoryApi: StoryApi get() = read { capturedPrimaryStoryApi }
     val playbackCalls: okhttp3.Call.Factory get() = read { metadataPlaybackCalls }
     /** Exact primary values of this request, admitted by its original receipt.
      * Used by original Notes/heartbeat; no page-wide credential or MID cache. */
@@ -139,6 +148,9 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     }
     /** Fixed request's short Store -> entry mutation admission. No wait/IO may
      * occur in action. Success is never reported for an expired request. */
+    /** Read-only caller identity; no new Job or request authority. */
+    fun capturedDownloadCallerJob(): Job = read { requestJob }
+
     fun admitCurrentMutation(action: () -> Unit): Boolean = try {
         read(action)
         true
@@ -150,6 +162,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     fun primaryAccessToken(): String? = read {
         repository.ownedHomeAccessToken(receipt.accountEpoch, ::entryCurrent)
     }
+    fun primaryAccessTokenPlatform(): String = read { repository.accessTokenCredentials().second }
     fun hasPrimarySession(): Boolean = read {
         !repository.ownedHomeCookie("SESSDATA", receipt.accountEpoch, ::entryCurrent).isNullOrEmpty()
     }
@@ -179,6 +192,11 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     /** Preserve this receipt through DASH/CDN/plugin transformations and final native
      * publication. This method stamps metadata only; it never publishes or loads MPV. */
     fun authorized(source: PlaybackSource): PlaybackSource = read { source.copy(authorizationReceipt = receipt) }
+
+    /** Exact captured media CookieJar, never latest account credentials. */
+    fun captureMediaCookieHeader(url: String): String = read {
+        repository.capturePlaybackMediaCookieHeader(authorization, url, ::entryCurrent)
+    }
 
     /** Same raw request's exact account/Job/entry admission for native byte preparation. */
     fun captureMediaBytes(cache: com.bilipai.desktop.player.cache.DesktopMediaByteCache): DesktopOriginalVideoByteCacheRequest = read {

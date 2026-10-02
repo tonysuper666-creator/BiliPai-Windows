@@ -1,0 +1,274 @@
+{
+  "status": "PASS_IDLE_ACTUAL_ROOT",
+  "actualSnapshot": 82,
+  "manifestSHA256": "91bb404a9be4c94f3e3e93eed068bfe50b2ca62558dd0af95322d3740797d339",
+  "orderedCPSHA256": "68f82a3f4a3f43f8dae5625fbcb0b891b7f68c93f7b5bbc361eb5b588bb30b8b",
+  "immutableEntries": 101,
+  "assertions": 17,
+  "loadedProductOrigins": 6,
+  "productSourceOverrides": 0,
+  "copyWhitelist": [],
+  "artifacts": [
+    {
+      "path": "RootIdleFixture.kt",
+      "bytes": 18291,
+      "sha256Bytes": "ca111b83b730a0092bd3e1726d84cf0acfa13fbf493f21c0587f0fd2c9a577d8"
+    },
+    {
+      "path": "run.py",
+      "bytes": 7701,
+      "sha256Bytes": "f39974347360d6f66ca736b5cf1948411ad7716d7b91eacbf25c87a38c4d98a7"
+    },
+    {
+      "path": "freeze.py",
+      "bytes": 3271,
+      "sha256Bytes": "df575abc84d4e49f4f9c61b05b362199b3d5ea76140a36fe3fbcccfd3bd2bcd7"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4576,
+      "sha256Bytes": "9ff2eacf62486ea9d031137e2a65ae7748fc0009aadb662b3f155640beb566cb"
+    },
+    {
+      "path": "prepared-source.json",
+      "bytes": 339,
+      "sha256Bytes": "913c61703c50142377300906f04ea66c5d22561f4e9dfa6b14ad0d7508627b30"
+    },
+    {
+      "path": "runs/actual81-01/compile-result.json",
+      "bytes": 191,
+      "sha256Bytes": "a5c944063481768e27d0a8eccde013ff198c73e0ee9132215d207c870cad0224"
+    },
+    {
+      "path": "runs/actual81-01/compile.log",
+      "bytes": 8408,
+      "sha256Bytes": "ea73cc3dd14187a5f9c989eb99402f9b5b97f94ec3bdcf7e04237f38c74583d9"
+    },
+    {
+      "path": "runs/actual81-01/compiler.args",
+      "bytes": 25816,
+      "sha256Bytes": "4ce2beba626765684f8c38140b42a5201c5eb001127f48d98ddcd6da3a731a08"
+    },
+    {
+      "path": "runs/actual81-01/pins-before.json",
+      "bytes": 39569,
+      "sha256Bytes": "4311ee009464f7d8abd799e72ac27e9ca1f64099d988bcc4a469536994e9a888"
+    },
+    {
+      "path": "runs/actual81-01/RootIdleFixture.kt",
+      "bytes": 17492,
+      "sha256Bytes": "3d1ea5d713d67957a85de86b83e23cd94eee875bf3efab5eb8c7ba41d606c56e"
+    },
+    {
+      "path": "runs/actual81-02/acceptance-result.json",
+      "bytes": 430,
+      "sha256Bytes": "7c9f9ced9ef2481af25b0cfe6464e39d53aa3bf2d68efe724089944e6ce33450"
+    },
+    {
+      "path": "runs/actual81-02/compile-result.json",
+      "bytes": 190,
+      "sha256Bytes": "2172402fede23651d2f95f7dbc2d47781ae8940e68426e65f7e16b9357a91c07"
+    },
+    {
+      "path": "runs/actual81-02/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/actual81-02/compiler.args",
+      "bytes": 25816,
+      "sha256Bytes": "53e7856af7826bbd713c8259be847625783427fc47478a4eae6f686cd5ca1a55"
+    },
+    {
+      "path": "runs/actual81-02/fixture-jar-pin.json",
+      "bytes": 114,
+      "sha256Bytes": "454875b13c1bcd6308e42c2392a901137cec3600aa87fe8763458d6d59a08491"
+    },
+    {
+      "path": "runs/actual81-02/pins-after.json",
+      "bytes": 39569,
+      "sha256Bytes": "d844743c44673a1fbf6ab3c8c3da0f9cff4dfeeb0f0e10180df91930bc601191"
+    },
+    {
+      "path": "runs/actual81-02/pins-before.json",
+      "bytes": 39569,
+      "sha256Bytes": "d844743c44673a1fbf6ab3c8c3da0f9cff4dfeeb0f0e10180df91930bc601191"
+    },
+    {
+      "path": "runs/actual81-02/RootIdleFixture.kt",
+      "bytes": 17875,
+      "sha256Bytes": "f022d444732070b85455eba1d0a40d14e4aad9eb3ba7c7f6ae8ae443cd2caf70"
+    },
+    {
+      "path": "runs/actual81-02/runtime-command.json",
+      "bytes": 27962,
+      "sha256Bytes": "a722fdef4dc45f9ca9d201fbdaf293f634edef099b089e873f04eab42a21b7d9"
+    },
+    {
+      "path": "runs/actual81-02/runtime.log",
+      "bytes": 1773,
+      "sha256Bytes": "f1368a36a5c28e010fdce82c25c0e5d18eb8ec3bcdbef93f34e639f1cd1ed604"
+    },
+    {
+      "path": "runs/actual81-02/fixture-owned-runtime/root-idle-proof.json",
+      "bytes": 2173,
+      "sha256Bytes": "a5a6190712fe28ba8cc7cbe36cdc4130753b3c187c29e8a27cdb3f1b1b517576"
+    },
+    {
+      "path": "runs/actual81-03/acceptance-result.json",
+      "bytes": 430,
+      "sha256Bytes": "7c9f9ced9ef2481af25b0cfe6464e39d53aa3bf2d68efe724089944e6ce33450"
+    },
+    {
+      "path": "runs/actual81-03/compile-result.json",
+      "bytes": 190,
+      "sha256Bytes": "719fcf32aac4082481918c124816e543577d4773613d3b86bcee85df81ba975b"
+    },
+    {
+      "path": "runs/actual81-03/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/actual81-03/compiler.args",
+      "bytes": 25816,
+      "sha256Bytes": "c2261bbb33f91280e86e57f46bc1da7600fc586406e82a3a9e32fd3bdc6c1f07"
+    },
+    {
+      "path": "runs/actual81-03/fixture-jar-pin.json",
+      "bytes": 114,
+      "sha256Bytes": "e25c4f9e539f71fd7feed9b46de7d12ca6be159d85e67903a2cbb17894f5edd8"
+    },
+    {
+      "path": "runs/actual81-03/pins-after.json",
+      "bytes": 39569,
+      "sha256Bytes": "b4895e41b75c4e16754cbbaeb50442e4f4a9a0b08d99c49cf0040a111190ca6b"
+    },
+    {
+      "path": "runs/actual81-03/pins-before.json",
+      "bytes": 39569,
+      "sha256Bytes": "b4895e41b75c4e16754cbbaeb50442e4f4a9a0b08d99c49cf0040a111190ca6b"
+    },
+    {
+      "path": "runs/actual81-03/RootIdleFixture.kt",
+      "bytes": 18291,
+      "sha256Bytes": "ca111b83b730a0092bd3e1726d84cf0acfa13fbf493f21c0587f0fd2c9a577d8"
+    },
+    {
+      "path": "runs/actual81-03/runtime-command.json",
+      "bytes": 27962,
+      "sha256Bytes": "0263ba2adefc7ac4e5f7c1581eb4c8a731533432d5cd5f8e2e7faf6891c727e1"
+    },
+    {
+      "path": "runs/actual81-03/runtime.log",
+      "bytes": 2530,
+      "sha256Bytes": "9842ddd6f60e36d4b4109f5d05d68a320b1ece9058e82274f988387239b90c07"
+    },
+    {
+      "path": "runs/actual81-03/fixture-owned-runtime/root-idle-proof.json",
+      "bytes": 2176,
+      "sha256Bytes": "b6839f0b2f2149c8021eb9e253bcd03caffae9be30182f9d71e1689a84efd104"
+    },
+    {
+      "path": "runs/actual82-01/acceptance-result.json",
+      "bytes": 448,
+      "sha256Bytes": "66d870ad90f375d9b71d73cb503765e6a4edc20cd71b86f18389794680262a6d"
+    },
+    {
+      "path": "runs/actual82-01/compile-result.json",
+      "bytes": 190,
+      "sha256Bytes": "2669d14a69534a3fbe6a088d188315dbd49868fac1105cf0d51c15031ee9f8db"
+    },
+    {
+      "path": "runs/actual82-01/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/actual82-01/compiler.args",
+      "bytes": 25816,
+      "sha256Bytes": "a3bce6c962f8ff96bb6d9b9c1d818c025db29104f371e53a3427168616a42fbc"
+    },
+    {
+      "path": "runs/actual82-01/fixture-jar-pin.json",
+      "bytes": 114,
+      "sha256Bytes": "9e53503bb005089a791929ebccf4dd3facabea2ca22376cc14edded47cd98a1b"
+    },
+    {
+      "path": "runs/actual82-01/pins-after.json",
+      "bytes": 39569,
+      "sha256Bytes": "54aa5d92471a78a726d421c0f0d689b32f6a362bf14c854cc70c158c5f0c0caa"
+    },
+    {
+      "path": "runs/actual82-01/pins-before.json",
+      "bytes": 39569,
+      "sha256Bytes": "54aa5d92471a78a726d421c0f0d689b32f6a362bf14c854cc70c158c5f0c0caa"
+    },
+    {
+      "path": "runs/actual82-01/RootIdleFixture.kt",
+      "bytes": 18291,
+      "sha256Bytes": "ca111b83b730a0092bd3e1726d84cf0acfa13fbf493f21c0587f0fd2c9a577d8"
+    },
+    {
+      "path": "runs/actual82-01/runtime-command.json",
+      "bytes": 27962,
+      "sha256Bytes": "c9be173f0779cc88a2a59cec83270eb29c53c629b9d3e62a224b7d978772d47c"
+    },
+    {
+      "path": "runs/actual82-01/runtime.log",
+      "bytes": 1239,
+      "sha256Bytes": "ee5f8251c284817addb660457235f0a921e2cae2dc1d077906a8c83be5a71e40"
+    },
+    {
+      "path": "runs/actual82-01/fixture-owned-runtime/root-idle-proof.json",
+      "bytes": 3724,
+      "sha256Bytes": "c414452a12ef700738bf946172123bffa1881f85e3edf91b4bb76485f69b0ce9"
+    },
+    {
+      "path": "runs/actual82-01/fixture-owned-runtime/actual-idle-root.png",
+      "bytes": 193642,
+      "sha256Bytes": "3eecdfb846e828f88af2648fca9d90d5cf808d87a31d2f712b0bc7e287fe752f"
+    },
+    {
+      "path": "runs/actual82-01/fixture-owned-runtime/actual-settings-cover.png",
+      "bytes": 825162,
+      "sha256Bytes": "d3bcd21d287737b5e7ec38d332efe1f78366131292457082f030107ee49d695a"
+    }
+  ],
+  "binaryExclusions": [
+    {
+      "path": "runs/actual81-02/root-idle-fixture.jar",
+      "sha256Bytes": "cbb61b69693c28b650f7caccb3cd45fcb2ae12fcce536f2ee296d07e0d509dca",
+      "reason": "Fixture compiler output, not install payload"
+    },
+    {
+      "path": "runs/actual81-03/root-idle-fixture.jar",
+      "sha256Bytes": "f3c85612ed37dee7d5815933b3d1573fb4dbe68dad0d14937bd0d39d3693c5b7",
+      "reason": "Fixture compiler output, not install payload"
+    },
+    {
+      "path": "runs/actual82-01/root-idle-fixture.jar",
+      "sha256Bytes": "be85eee4ca598acec4b4345732435a797c96e6dfd2d0f737ad1ace140760fdc3",
+      "reason": "Fixture compiler output, not install payload"
+    }
+  ],
+  "retainedFailures": [
+    "actual81-01 fixture compile",
+    "actual81-02 readonly fixture slot reflection",
+    "actual81-03 actual product constructor volume callback"
+  ],
+  "installedCorrection": "stable-video-root-constructor-volume-delta single Assembler hunk, built by Root in immutable82",
+  "boundaries": {
+    "unchangedMainEntry": false,
+    "detailSuccess": false,
+    "realAccount": false,
+    "globalInput": false,
+    "videoToVideoCarrier": false,
+    "pipTransfer": false,
+    "smtcButton": false,
+    "castOrDownloadSuccess": false,
+    "settingsVisualAccepted": false,
+    "settingsSnapshot": "Captured transitional Home darkened frame after actual key changed; exact typed route/retention passed, visual Settings rendering not accepted"
+  },
+  "omitted": "Compiler classes/JARs and isolated runtime cache/PluginStore/LOCALAPPDATA files are not payload/evidence mirrors. OrderedCP/pin receipts remain included."
+}

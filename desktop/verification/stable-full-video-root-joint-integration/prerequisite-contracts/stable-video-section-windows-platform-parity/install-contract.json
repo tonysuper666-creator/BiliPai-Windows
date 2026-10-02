@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "copyWhitelist": [
+    {
+      "source": {
+        "path": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNativeVideoViewportTransform.kt",
+        "sha256Bytes": "2fe6d3690b0061913ee2bd07f174a667890d5509c3260b14098aef69ab2d7ea9",
+        "size": 929
+      },
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNativeVideoViewportTransform.kt"
+    },
+    {
+      "source": {
+        "path": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNativeViewportState.kt",
+        "sha256Bytes": "1464a9ac96b8735192fd69f4dab286606b8619582ec4216752c122ba5cf837a8",
+        "size": 3069
+      },
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNativeViewportState.kt"
+    },
+    {
+      "source": {
+        "path": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+        "sha256Bytes": "bbd41ca504d4c8780c6b7f5bb58f7857a90a1622a1e09ed852b20d9e81de3075",
+        "size": 20216
+      },
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt"
+    }
+  ],
+  "existingFamilyDeltaOnly": {
+    "path": "exact-hunks.json",
+    "sha256Bytes": "44447057e839a8f33b342be1e1db88ca8eba039688d8c972f3493428361f82f6",
+    "size": 27427
+  },
+  "wholeFamilyBaselines": {
+    "path": "baseline-families.json",
+    "sha256Bytes": "69ab226c5acda069183c9d02c23f841bd26d4a636b6c854cfa5927ec1c0a2b82",
+    "size": 2050
+  },
+  "wholeExistingFamilyCopies": false,
+  "hunkCount": 30,
+  "familyCount": 7,
+  "originalRegistryAdditions": 0,
+  "resourceAdditions": 0,
+  "dependencyAdditions": 0,
+  "requiredRootPopupFrozenManifestSHA256": "9172cb93c4ed6837328c70e5fd5f0ca10a6d954928ee192989359b792ba34a6e",
+  "installRootPopupFromThisPacket": false,
+  "rootRecipe": {
+    "path": "ROOT-INTEGRATION.md",
+    "sha256Bytes": "9f012cc44d95492d58a2680ef2c2e3ae454e2523662a6b1290521cd6be690795",
+    "size": 8253
+  }
+}

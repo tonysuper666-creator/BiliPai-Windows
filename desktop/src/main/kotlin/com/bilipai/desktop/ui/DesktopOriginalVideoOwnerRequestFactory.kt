@@ -37,6 +37,18 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
     private val token = DesktopOriginalVideoTokenRefreshBinding(login, entryJob,
         stillEntryOwned, commitIfEntryCurrent)
 
+    /** One extra same-owner request facet for original Portrait/Story effects.
+     * Captures the ACTUAL calling coroutine Job and original playback state. */
+    suspend fun captureBinding(state: PlaybackSessionState): DesktopOriginalVideoRepositoryBinding {
+        currentCoroutineContext().ensureActive()
+        if (!entryScope.isActive || !stillEntryOwned()) throw CancellationException("Original facet entry retired")
+        return DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,
+            entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),
+            state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
+            capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
+            isMobileData, token::available, token::refresh)
+    }
+
     suspend fun capture(state: PlaybackSessionState,
         native: DesktopOriginalVideoNativeOwner): DesktopOriginalVideoPlaybackInvocation {
         currentCoroutineContext().ensureActive()

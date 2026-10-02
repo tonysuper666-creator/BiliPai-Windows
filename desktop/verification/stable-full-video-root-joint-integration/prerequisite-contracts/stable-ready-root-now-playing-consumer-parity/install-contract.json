@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "copyWhitelist": [
+    {
+      "prepared": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyNowPlayingPosition.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyNowPlayingPosition.kt",
+      "sha256Bytes": "60bc0b701acf41a40fdd571e94f7f5d0229205abfc8a68c54bf5bc7c7766ad24",
+      "size": 981
+    }
+  ],
+  "existingFamilies": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "baselineWholeFileSha256Bytes": "994a5ca9c332baf6f6973cf65e433188f8330a5ca6c29c4a0e5bf41bd6c4664e",
+      "baselineWholeFileSha256LF": "4321dbe0fc4e9fe94571510ea8835081324563cd3d83e504608b9f5c1f34a9b9",
+      "preparedWholeFileSha256LF": "f52c99d34d9e06c8f77b50cb17986933a403c19cd861342a623e406f3a6c5b1e"
+    }
+  ],
+  "exactHunks": [
+    {
+      "id": "required-owned-now-playing-services",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "before": "    val library: com.bilipai.desktop.DesktopLibrary,\n)",
+      "after": "    val library: com.bilipai.desktop.DesktopLibrary,\n    val nowPlayingBinding: (DesktopHomeRetainedRoot) -> DesktopOriginalAudioNowPlayingBinding,\n    val nowPlayingPositionMs: (DesktopHomeRetainedRoot, DesktopOriginalNowPlayingSnapshot) -> Long?,\n)",
+      "beforeAnchorSha256LF": "a371d95529a7d4323b3dc7ba955ff18728846156f240777966ac59ede32926c3",
+      "afterAnchorSha256LF": "8d8bb077f98a2a45ee0a8a1501b47d6c2b5ab86eb96f72beff0c75f463af1346"
+    },
+    {
+      "id": "actual-priority-binding-and-captured-position-navigation",
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "before": "        val audio = remember(root, services.listen) { services.listen?.let {\n            DesktopOriginalAudioNowPlayingBinding(it, services.repository, root.entry.gate.scope, routes::owns) } }\n        val audioNavigation = {\n            DesktopOriginalNowPlayingNavigation(routes.currentKey.toLegacyRoute(), false,\n                com.android.purebilibili.core.ui.transition.NowPlayingBarHandoffState.Idle, false,\n                { item -> routes.push(BiliPaiNavKey.AudioMode(item.bvid, item.cid,\n                    ((services.listen?.player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong())) },\n                { item, source -> routes.video(BiliPaiNavKey.VideoDetail(item.bvid, item.cid, item.cover,\n                    resumePositionMs = ((services.listen?.player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong(), sourceRoute = source)) },\n                services.dismissNowPlayingBar)\n        }",
+      "after": "        val audio = remember(root, services.nowPlayingBinding) { services.nowPlayingBinding(root) }\n        val navigationAudio = audio.observeSnapshot()\n        val audioNavigation = {\n            DesktopOriginalNowPlayingNavigation(routes.currentKey.toLegacyRoute(), false,\n                com.android.purebilibili.core.ui.transition.NowPlayingBarHandoffState.Idle, false,\n                { item ->\n                    val position = captureDesktopReadyNowPlayingPositionMs(audio, navigationAudio, item,\n                        routes::owns) { expected -> services.nowPlayingPositionMs(root, expected) }\n                    if (position != null) {\n                        val song = com.bilipai.desktop.audio.nativeMusicSourceForListenItem(item)\n                            as? com.android.purebilibili.feature.audio.player.MusicPlaybackSource.AudioSong\n                        if (song != null) routes.push(BiliPaiNavKey.MusicDetail(song.sid))\n                        else routes.push(BiliPaiNavKey.AudioMode(item.bvid, item.cid, position))\n                    }\n                },\n                { item, source ->\n                    val position = captureDesktopReadyNowPlayingPositionMs(audio, navigationAudio, item,\n                        routes::owns) { expected -> services.nowPlayingPositionMs(root, expected) }\n                    if (position != null) {\n                        val song = com.bilipai.desktop.audio.nativeMusicSourceForListenItem(item)\n                            as? com.android.purebilibili.feature.audio.player.MusicPlaybackSource.AudioSong\n                        if (song != null) routes.push(BiliPaiNavKey.MusicDetail(song.sid))\n                        else routes.video(BiliPaiNavKey.VideoDetail(item.bvid, item.cid, item.cover,\n                            resumePositionMs = position, sourceRoute = source))\n                    }\n                },\n                services.dismissNowPlayingBar)\n        }",
+      "beforeAnchorSha256LF": "5de8b2c0fda59d12949a73bd5468db028ae5dea4881ca8824b12738913b330fa",
+      "afterAnchorSha256LF": "a5df4643b9e38c59a0e4d12aaa3a045fb61cb652c28c68573501c0017096e44d"
+    }
+  ],
+  "anchorHashMeaning": "beforeAnchorSha256LF/afterAnchorSha256LF hash the exact snippet, not the whole family. ExistingFamilies contains whole-file pins.",
+  "requiredPreviousPacket": {
+    "lane": "stable-original-now-playing-owner-parity",
+    "manifestSHA": "7da3f226c2f02d62dc6d0de7ea0771f1e125420f1d90a2a33089e5ab19ef3805"
+  },
+  "registryDelta": [],
+  "gradleDelta": [],
+  "newOriginalIdentities": 0,
+  "inverseExactLF": true,
+  "changesOutsideAnchors": false,
+  "producerPayload": []
+}

@@ -1,0 +1,36 @@
+{
+  "newManual": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-portrait-rendering-parity\\prepared\\manual\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoRootPortraitRendering.kt",
+    "sha256Bytes": "be3a5e5da0b303c57bd2d0a49596ecaadd0378f671cb428e1cfdc306b72f9c30",
+    "size": 8067
+  },
+  "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootPortraitRendering.kt",
+  "exactHunks": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-portrait-rendering-parity\\exact-hunks.json",
+    "sha256Bytes": "5495096bfc6b18788c7226d923f6ae0e4656cd9de6c2b72ab5e0d5039aba015b",
+    "size": 6846
+  },
+  "wholeBaselines": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-portrait-rendering-parity\\baseline-families.json",
+    "sha256Bytes": "0482918fd540aee1e9f5fd01c11a28e1119fe1af3026740b81deb2b24dd5fe4a",
+    "size": 1379
+  },
+  "existingFamilyCount": 4,
+  "hunkCount": 6,
+  "copyExistingWholeFiles": false,
+  "producer": "existing sole extract-upstream-video-fullscreen-pager.py: local post-transform only",
+  "newOriginalIdentities": 0,
+  "newResourceIdentities": 0,
+  "newDependencies": 0,
+  "requiresBeforeThisPacket": [
+    "Section265 frozen prospective foundation",
+    "Nested12 same carrier no duplicate portal"
+  ],
+  "actualDependencySnapshot": 79,
+  "prospectiveDependencyReference": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-root-portrait-rendering-parity\\runs\\02\\prospective-dependencies.json",
+    "sha256Bytes": "1b42165b9c325715c0579bafbf42cea7f6d8a5dc1075b3298ddd1f3339fce312",
+    "size": 128712
+  },
+  "runtimeAccepted": false
+}

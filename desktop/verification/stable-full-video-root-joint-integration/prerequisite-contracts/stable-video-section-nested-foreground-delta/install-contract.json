@@ -1,0 +1,24 @@
+{
+  "copyWhitelist": [],
+  "hunkOnly": true,
+  "baselineWholeFamilySha256LF": "bbd41ca504d4c8780c6b7f5bb58f7857a90a1622a1e09ed852b20d9e81de3075",
+  "afterWholeFamilySha256LF": "eb65e9d6403e15a97c45ba99b416893c3389b47f5aeca9f82d9c49a978e8046d",
+  "baseline": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-section-windows-platform-parity\\prepared\\manual\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoSectionWindowsPlatform.kt",
+    "sha256Bytes": "bbd41ca504d4c8780c6b7f5bb58f7857a90a1622a1e09ed852b20d9e81de3075",
+    "size": 20216
+  },
+  "after": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-section-nested-foreground-delta\\prepared\\after\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoSectionWindowsPlatform.kt",
+    "sha256Bytes": "eb65e9d6403e15a97c45ba99b416893c3389b47f5aeca9f82d9c49a978e8046d",
+    "size": 20839
+  },
+  "historicalSectionManifest": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-section-windows-platform-parity\\frozen-handoff.json",
+    "sha256Bytes": "ee169952db6c6c7a39a376cfd16f53e005e5eff9ad9410e53423ce30115fe554",
+    "size": 521624
+  },
+  "compositionIdentity": "same concrete SectionWindowsPlatform instance",
+  "nativeActorsAdded": 0,
+  "rootAccepted": false
+}

@@ -1,0 +1,29 @@
+{
+  "scope": "One existing sole producer callsite + existing required interface argument; actual原latestPortraitPlaybackAllowed passed, no default/native shadow flag",
+  "families": [
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "baseLF": "da0c0aa9245aad12f69a499067a915806639fcf43d67b9ef3df7d2ee14b94cb8",
+      "desiredLF": "c3139d1a8917e6ab05a9543a65b60566e9cbc9b9bbe95cd968434457917cc056",
+      "hunks": [
+        {
+          "before": "  text=captured_media_byte_consumer_delta(spec['output'],text)\n",
+          "after": "  text=captured_media_byte_consumer_delta(spec['output'],text)\n  if spec['output']=='com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt':\n   needle='platform.publishSource(playbackRequest, finalSource, requestGeneration) {'\n   assert text.count(needle)==1\n   text=text.replace(needle,'platform.publishSource(playbackRequest, finalSource, requestGeneration, latestPortraitPlaybackAllowed) {',1)\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "baseLF": "da809850bd185bb62ec5201983535881e52e25b58c96fbc313397d528cc968ad",
+      "desiredLF": "15505043ce253f6d85f20ccba83dbc61dd96c86ad4b314cbf390e1f17d50abf3",
+      "hunks": [
+        {
+          "before": "expectedLoadGeneration: Int, stillCurrentLoad: () -> Boolean): Boolean",
+          "after": "expectedLoadGeneration: Int, playWhenReady: Boolean, stillCurrentLoad: () -> Boolean): Boolean",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

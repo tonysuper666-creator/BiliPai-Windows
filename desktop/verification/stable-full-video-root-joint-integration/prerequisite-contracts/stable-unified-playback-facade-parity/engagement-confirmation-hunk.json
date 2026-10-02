@@ -1,0 +1,13 @@
+{
+  "producer": "desktop/tools/extract-upstream-video-detail-full-units.py",
+  "producerBaseSha256LF": "450589b84d3118160cde6ae14ef30ad6e56e1afc38bcb53fc179d3e964537f8b",
+  "before": "def emit(path,t,origin,mode):\n",
+  "after": "def confirmed_favorite_receipt_delta(path,t):\n    if path != 'com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt':return t\n    before='    internal fun emitMessage(message: String) {\\n'\n    after='    /** Confirmed existing Root Favorite receipt; exact same domain subject only. */\\n    internal fun confirmDesktopFavoriteCount(subject: VideoSubjectSnapshot, count: Int): Boolean {\\n        require(count >= 0)\\n        if (_uiState.value.subject != subject) return false\\n        var applied = false\\n        environment.commit {\\n            if (_uiState.value.subject == subject) {\\n                locallyModifiedFields = locallyModifiedFields + VideoEngagementField.FAVORITE\\n                _uiState.value = _uiState.value.copy(favoriteCount = count)\\n                applied = true\\n            }\\n        }\\n        return applied\\n    }\\n\\n    internal fun emitMessage(message: String) {\\n'\n    assert t.count(before)==1,'actual Favorite receipt domain anchor'\n    return t.replace(before,after,1)\n\ndef emit(path,t,origin,mode):\n    t=confirmed_favorite_receipt_delta(path,t)\n",
+  "targetOutput": "desktop/build/generated/original-video-detail-units/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+  "bodyBefore": "    internal fun emitMessage(message: String) {\n",
+  "bodyAfter": "    /** Confirmed existing Root Favorite receipt; exact same domain subject only. */\n    internal fun confirmDesktopFavoriteCount(subject: VideoSubjectSnapshot, count: Int): Boolean {\n        require(count >= 0)\n        if (_uiState.value.subject != subject) return false\n        var applied = false\n        environment.commit {\n            if (_uiState.value.subject == subject) {\n                locallyModifiedFields = locallyModifiedFields + VideoEngagementField.FAVORITE\n                _uiState.value = _uiState.value.copy(favoriteCount = count)\n                applied = true\n            }\n        }\n        return applied\n    }\n\n    internal fun emitMessage(message: String) {\n",
+  "inputGeneratedSha256LF": "09ee859950ec73586c10bb60990ce35db4a1537b8eb1943ae4573558e76d77b9",
+  "outputGeneratedSha256LF": "f54a8d71be61d5d6988ba2bd223502293d832e78483c0d4ff8f5bb84f9a2c1ba",
+  "originalInverse": true,
+  "adaptation": "new platform confirmed receipt projection only; complete original class unchanged"
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "source-only-review-v1",
+  "rawCount": 10,
+  "blockingCount": 0,
+  "artifacts": [
+    {
+      "path": "inputs/actual-dialog.kt",
+      "sha256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+      "size": 5562
+    },
+    {
+      "path": "inputs/before-dialog.kt",
+      "sha256Bytes": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "size": 4524
+    },
+    {
+      "path": "inputs/head-SOURCES.json",
+      "sha256Bytes": "771d5a77e6fee429e9ce93e8d7d9cd3d1a05fa8e78029a0930c02eba2ab316d2",
+      "size": 28291
+    },
+    {
+      "path": "inputs/observed-main-SOURCES.json",
+      "sha256Bytes": "ba8a1791317e53cab351e09a39ae688286f75c54139aecf598bc50f4feb8be5e",
+      "size": 28291
+    },
+    {
+      "path": "inputs/observed-notices-SOURCES.json",
+      "sha256Bytes": "ba8a1791317e53cab351e09a39ae688286f75c54139aecf598bc50f4feb8be5e",
+      "size": 28291
+    },
+    {
+      "path": "inputs/overlay110-exact-hunks.json",
+      "sha256Bytes": "288f1724c2a8f668469b848613256cc73d9979c3799a31811485ba5c0944fcc3",
+      "size": 14141
+    },
+    {
+      "path": "inputs/overlay110-frozen-handoff.json",
+      "sha256Bytes": "30eb51cbc0b1333d5a2fb54e7b02eea9c814eddcbb82400ab33c3e57a29a60bf",
+      "size": 22563
+    },
+    {
+      "path": "inputs/source-verifier.py",
+      "sha256Bytes": "da75b14db2c0ea8ace9837ed2fb1aa08972adade3246752bb4f65cfad5984449",
+      "size": 3471
+    },
+    {
+      "path": "review-receipt.json",
+      "sha256Bytes": "c3bb176a89fabc933f688c21acbc67c755a51faf67e4736c3dcb7e8acfc93d7a",
+      "size": 32134
+    },
+    {
+      "path": "review.py",
+      "sha256Bytes": "484da71cdb668bc3242c9ffa24122beeaa56315743dd9a89f897eede6e42cedf",
+      "size": 5446
+    }
+  ]
+}

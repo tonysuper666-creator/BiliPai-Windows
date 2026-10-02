@@ -1,0 +1,16 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+    "before": "    @Composable fun InitialNativeSurface(modifier: Modifier) { carrier(modifier) {} }",
+    "after": "    @Composable fun InitialNativeSurface(modifier: Modifier) {\n        if (LocalDesktopOriginalVideoNativeCarrierActive.current) carrier(modifier) {}\n    }",
+    "beforeAnchorSha256LF": "cb19848815d5c07e6e0a02b47a12c5218f66f231ca0024323dbcbd88cb1fae6b",
+    "afterAnchorSha256LF": "e34835bdc577995680426e46fd91f254d01cc79b29c093478a4d8f9740e0447c"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+    "before": "        if (LocalDesktopOriginalSectionForegroundOwner.current === this) {",
+    "after": "        if (!LocalDesktopOriginalVideoNativeCarrierActive.current ||\n            LocalDesktopOriginalSectionForegroundOwner.current === this) {",
+    "beforeAnchorSha256LF": "1b1378f85720a99b117ebb9f281c731b75fe79643a41f34c19e3ba0c84435746",
+    "afterAnchorSha256LF": "4658bd7495a6008a7d717f67274f3f650e819c83e085978b4c37508ccbd043c9"
+  }
+]

@@ -18,6 +18,20 @@ def write(path,text):
 def load(path,name):
  spec=importlib.util.spec_from_file_location(name,path);mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
 
+
+def owned_today_watch_feedback_delta(vm):
+ assert vm.count('    private fun recordTodayWatchNegativeFeedback(\n')==1
+ vm=vm.replace('    private fun recordTodayWatchNegativeFeedback(\n','    private suspend fun recordTodayWatchNegativeFeedback(\n',1)
+ assert vm.count('        if (!ownedCommit { TodayWatchFeedbackStore.saveSnapshot(environment.recommendationContext, snapshot) }) throw CancellationException("Home entry retired")\n')==1
+ vm=vm.replace('        if (!ownedCommit { TodayWatchFeedbackStore.saveSnapshot(environment.recommendationContext, snapshot) }) throw CancellationException("Home entry retired")\n','        environment.todayWatchFeedback.saveSnapshot(snapshot)\n',1)
+ assert vm.count('    private fun persistTodayWatchFeedback() {\n')==1
+ vm=vm.replace('    private fun persistTodayWatchFeedback() {\n','    private suspend fun persistTodayWatchFeedback() {\n',1)
+ assert vm.count('        if (!ownedCommit { TodayWatchFeedbackStore.saveSnapshot(\n            context = environment.recommendationContext,\n')==1
+ vm=vm.replace('        if (!ownedCommit { TodayWatchFeedbackStore.saveSnapshot(\n            context = environment.recommendationContext,\n','        environment.todayWatchFeedback.saveSnapshot(\n',1)
+ assert vm.count('        ) }) throw CancellationException("Home entry retired")\n')==1
+ vm=vm.replace('        ) }) throw CancellationException("Home entry retired")\n','        )\n',1)
+ return vm
+
 def generate(repo,output,standalone=False):
  repo=Path(repo);output=Path(output)
  for path,expected in SOURCE_PINS.items():assert sha(read(repo/path))==expected,path
@@ -35,6 +49,7 @@ def generate(repo,output,standalone=False):
  visibility='private fun RecommendationResult.toTodayWatchPlan'
  assert vm.count(visibility)==1
  vm=vm.replace(visibility,'internal fun RecommendationResult.toTodayWatchPlan')
+ vm=owned_today_watch_feedback_delta(vm)
  write(output/spec['target'],vm)
  parser=load(repo/'desktop/tools/sync-upstream.py','home_vm_parser')
  media=load(repo/'desktop/tools/extract-upstream-media.py','home_vm_media')

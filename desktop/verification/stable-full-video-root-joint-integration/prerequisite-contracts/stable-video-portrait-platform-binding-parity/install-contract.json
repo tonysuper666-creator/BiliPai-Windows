@@ -1,0 +1,22 @@
+{
+  "newManual": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-portrait-platform-binding-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalPortraitPlatformBinding.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "sha256LF": "d3ad8c653c91cd984b42c42d007570e2f3c6012fcc5a8d6be7f7d5b6bef6dfd6"
+    }
+  ],
+  "existingExactHunks": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-portrait-platform-binding-parity\\exact-hunks.json",
+  "familyCount": 2,
+  "regenerateSoleProducer": true,
+  "referenceJarOnly": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-portrait-platform-binding-parity\\compile\\03\\candidate.jar",
+    "sha256Bytes": "3dd311181e5e98d38d9f6781acd97dd1b94747b4914e5372a99f0c8bf8917812",
+    "includesOriginalKotlinModule": true
+  },
+  "requiredJointMount": [
+    "Actual owned blocked-UP final write + symmetric unblock, separate pending delta",
+    "Actual same Window/Overlay/Surface/Share/Cdn provider delegates"
+  ],
+  "noSecondAuthority": true
+}

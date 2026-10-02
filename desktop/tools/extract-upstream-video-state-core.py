@@ -155,7 +155,7 @@ print('whole original UseCase candidate prepared, platform adaptations',len(repl
 
 def build_raw_protocol():
  code=r"""orig=p.original(p.BASE+"data/repository/VideoRepository.kt")
-methods=['getVideoInfoOnly','getInitialPlayUrlData','getVideoDetails','getPlaybackNavInfo','getPlayUrlData','getPlayUrlDataForPlaybackTransition','getExactPremiumPlayUrl','fetchPlayUrlRecursive','hasPlayableStreams','fetchDashWithFallback','fetchAsGuestFallback','fetchGuestPlaybackWithFallback','fetchPlayUrlWithWbiInternal','fetchPlayUrlWithAccessToken','getRelatedVideos','classifyPlayUrlError','getWbiKeys']
+methods=['getVideoInfoOnly','getInitialPlayUrlData','getVideoDetails','getPlaybackNavInfo','getPlayUrlData','getPlayUrlDataForPlaybackTransition','getExactPremiumPlayUrl','fetchPlayUrlRecursive','hasPlayableStreams','fetchDashWithFallback','fetchAsGuestFallback','fetchGuestPlaybackWithFallback','fetchPlayUrlWithWbiInternal','fetchPlayUrlWithAccessToken','getRelatedVideos','classifyPlayUrlError','getWbiKeys','getTvCastPlayData']
 parts=[sel.func(orig,n,False) for n in methods]
 a=orig.index('    private data class PlayUrlFetchResult(');b=p.lex.balanced(p.lex.masked(orig),orig.index('(',a));result=orig[a:b]
 s='\n\n'.join([result]+parts);changes=[]

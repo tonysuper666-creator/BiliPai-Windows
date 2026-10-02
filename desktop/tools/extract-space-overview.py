@@ -19,7 +19,11 @@ def generate(repo, output, policy_only=False):
     def read(suffix): return (repo/BASE/suffix).read_text(encoding='utf-8')
     def declaration(source, name, kind='fun'):
         tokens=parser.kotlin_tokens(source)
-        starts=[i for i,t in enumerate(tokens[:-1]) if t[0]==kind and tokens[i+1][0]==name]
+        starts=[]
+        for i,t in enumerate(tokens[:-1]):
+            if t[0]!=kind: continue
+            opening=next((j for j in range(i+1,len(tokens)) if tokens[j][0]=='('),None)
+            if opening is not None and tokens[opening-1][0]==name: starts.append(i)
         if len(starts)!=1: raise ValueError(name)
         start=starts[0]; end=start
         while tokens[end][0]!='(': end+=1
@@ -45,6 +49,9 @@ def generate(repo, output, policy_only=False):
         'import com.android.purebilibili.core.util.BilibiliNavigationTarget',
         'import com.android.purebilibili.core.util.BilibiliNavigationTargetParser', declaration(policy,'SpaceInitialSeed','class')]
     pieces += [declaration(policy,name) for name in names]
+    # Complete initial SpaceViewModel load closure, reused by original Tablet ownerUploads.
+    pieces += [declaration(policy,'SpaceUserCardVisuals','class')]
+    pieces += [declaration(policy,name) for name in ['shouldApplySpaceLoadResult', 'applySpaceSupplementalData', 'mergeArchiveMapsByLargestList', 'resolveEmbeddedSeasonArchives', 'resolveEmbeddedSeriesArchives', 'buildInitialSpaceSuccessState', 'shouldHydrateSpaceContributionVideos', 'shouldApplySpaceVideoResult', 'extractSpaceVideoCategories']]
     enum_start,enum_end=parser.kotlin_structure(parser.kotlin_tokens(policy),'class','SpaceContributionVideoLayoutMode')
     enum_tokens=parser.kotlin_tokens(policy)
     enum_begin=policy.rfind('\n',0,enum_tokens[enum_start][1])+1

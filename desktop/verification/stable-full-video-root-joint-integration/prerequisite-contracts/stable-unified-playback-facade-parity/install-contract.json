@@ -1,0 +1,167 @@
+{
+  "schema": 1,
+  "status": "SOURCE_READY_ROOT_ASSEMBLY_PENDING",
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "baseline": {
+    "snapshot": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-73",
+    "manifestSha256Bytes": "4fe15a56b0a78bda5bf067e52f4e20ceb88244eee943a007db248e6f1bb9e829",
+    "orderedCPsha256Bytes": "f71557c1952176118a9eba16479da2e244cacfb6cc419a65f43dc5501f822d31",
+    "runtimeEntryCount": 101
+  },
+  "newProductionInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoMiniBinding.kt",
+      "relativePath": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoMiniBinding.kt",
+      "role": "new sole manual production source",
+      "sha256Bytes": "c3c30b4fae9ddf13fcd88beebc41e7b7bf7d9cab34be5ff0fdc34ce7fd0b63bb",
+      "sha256LF": "c3c30b4fae9ddf13fcd88beebc41e7b7bf7d9cab34be5ff0fdc34ce7fd0b63bb",
+      "bytes": 2620
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoPlaylistBinding.kt",
+      "relativePath": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoPlaylistBinding.kt",
+      "role": "new sole manual production source",
+      "sha256Bytes": "115f255b44458ed7bfd974f60d17d1b53215273f57900658b2b50a43a2d9ca34",
+      "sha256LF": "115f255b44458ed7bfd974f60d17d1b53215273f57900658b2b50a43a2d9ca34",
+      "bytes": 7134
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopUnifiedPlaybackFacade.kt",
+      "relativePath": "prepared/manual/com/bilipai/desktop/ui/DesktopUnifiedPlaybackFacade.kt",
+      "role": "new sole manual production source",
+      "sha256Bytes": "1fca8cc948af22f87f3ef1b47645a5f9cb8ad0a923eaa8db015dc1b3a497c9ca",
+      "sha256LF": "1fca8cc948af22f87f3ef1b47645a5f9cb8ad0a923eaa8db015dc1b3a497c9ca",
+      "bytes": 21573
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\prepared\\tools\\extract-upstream-video-playlist.py",
+      "relativePath": "prepared/tools/extract-upstream-video-playlist.py",
+      "role": "new sole original playlist producer",
+      "sha256Bytes": "2857097ba9bdb5ef9faef051e63e51c730751c34604a638f4af5b8c98f1ac89c",
+      "sha256LF": "2857097ba9bdb5ef9faef051e63e51c730751c34604a638f4af5b8c98f1ac89c",
+      "bytes": 7872
+    }
+  ],
+  "singleOriginalOutput": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\prepared\\generated\\com\\android\\purebilibili\\feature\\video\\player\\DesktopOriginalPlaylistManager.kt",
+    "relativePath": "prepared/generated/com/android/purebilibili/feature/video/player/DesktopOriginalPlaylistManager.kt",
+    "role": "expected default generated output; do not copy as second production input",
+    "sha256Bytes": "8a74835518be35b69e72619376f6547f9ed55b96665bed75473ddba248ac0195",
+    "sha256LF": "8a74835518be35b69e72619376f6547f9ed55b96665bed75473ddba248ac0195",
+    "bytes": 22979
+  },
+  "registryRecipe": {
+    "existingIdentity": "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt",
+    "sha256LF": "a6a884fffc8d045609da0ac745d7376ec68c5237a2b4dae64e7a6c578240bd80",
+    "operation": "Union feature video-full-owner-unified-playlist into existing identity; preserve current mode/features. No new original identity and no duplicate canonical policies/models."
+  },
+  "exactExistingProducerHunks": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\engagement-confirmation-hunk.json",
+      "relativePath": "engagement-confirmation-hunk.json",
+      "role": "sole Engagement confirmation member producer edit",
+      "sha256Bytes": "1b88e6439218f3752a17996b80e185b358d1aa6172e151619a066406c82fd902",
+      "sha256LF": "8d045255b6c805822bf0b41da57877594e1a9405b3a3b76e3f870565df9d49e5",
+      "bytes": 2644
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\producer-hunks.json",
+      "relativePath": "producer-hunks.json",
+      "role": "three sole control/subtitle producer local edits",
+      "sha256Bytes": "4d0db58f1ef08e31edbae13003291e63e4ab05666502a9d28343ffbd549712f2",
+      "sha256LF": "824165bdd8b21ccd8384f7b76026877e5f5cb2d06815c3ae371c9d4f828a75d8",
+      "bytes": 30625
+    }
+  ],
+  "exactOutputBodyAudit": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\control-supplement-hunks.json",
+    "relativePath": "control-supplement-hunks.json",
+    "role": "matching fullVM/Holder/Section output postdelta and original inverse",
+    "sha256Bytes": "e02313c54aeb0bd1e7e7e53330e8c22db4859024fb7b11ccb7e0cc7767cc5b4b",
+    "sha256LF": "b417f7c0ec5908e4b5ae1d8c4acd0e9b5062c0fa4dffe285c50d362e82a4b34e",
+    "bytes": 30386
+  },
+  "existingTypedConsumerHunks": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\consumer-hunks.json",
+    "relativePath": "consumer-hunks.json",
+    "role": "two exact Favorite/Story type-only switches; Listen callback inside parent Shell",
+    "sha256Bytes": "0b03f92dbd34880a4d73d594616bf6f08bc8278312055d5194106a22a00cfa49",
+    "sha256LF": "da62634c5cb78e9e5d745762f9ebcd3ba23e4de39703f6279dad96cab1a9b48f",
+    "bytes": 2630
+  },
+  "constructorRecipe": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\ROOT-INTEGRATION.md",
+    "relativePath": "ROOT-INTEGRATION.md",
+    "role": "parent single-slot/factory/Shell construction and migration recipe",
+    "sha256Bytes": "16d74249a9c032baba010d69c8ebd43b5a4f1069160777d9c77346d522cd5482",
+    "sha256LF": "16d74249a9c032baba010d69c8ebd43b5a4f1069160777d9c77346d522cd5482",
+    "bytes": 10475
+  },
+  "requiredParentSources": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-full-owner-root-mount-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalSubtitleModeBinding.kt",
+      "sha256Bytes": "4f94e545736598b4808a6ecfce814d39f72be82cfe7e5907668ce4f2c4093b7a",
+      "owner": "parent sole bridge; compile input copied locally, never re-emitted by this producer"
+    }
+  ],
+  "separateImmutableDownload39": {
+    "manifestPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-owner-download-binding-parity\\frozen-handoff.json",
+    "sha256Bytes": "14f4732bba3ac82e7d1597469095f8f63e6a9da8b36843970aa5c10245856530",
+    "required": "Concrete capturedTask resolver pending parent factory. Do not claim enqueue closed without it."
+  },
+  "evidence": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\compile\\09\\result.json",
+      "relativePath": "compile/09/result.json",
+      "role": "facade accepted narrow proof",
+      "sha256Bytes": "372c19af35e6f7253dd786ac8fb8b3742485a2e28a3a70b11ffb057f495cfb9e",
+      "sha256LF": "db43b4550ec7c7211c4c3e3d8c84a02a72f66c7e7abd79ba74e4773555d78b86",
+      "bytes": 89082
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\supplement-compile\\02\\result.json",
+      "relativePath": "supplement-compile/02/result.json",
+      "role": "controls accepted narrow proof",
+      "sha256Bytes": "d597ff559823b6f94655964cfa974ea26e3ace8dba4bf8a06de61b2383db9b7f",
+      "sha256LF": "02e2f62735afa609b5139c20258311c743949c3b7499f69a4a5de4296e81dff7",
+      "bytes": 78933
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\holder-hook-compile\\01\\result.json",
+      "relativePath": "holder-hook-compile/01/result.json",
+      "role": "holder accepted narrow proof",
+      "sha256Bytes": "323f5794ecabe116ea33dd94d064edb97c1ea2f67d251de5c3d13ddd82c0d33f",
+      "sha256LF": "323f5794ecabe116ea33dd94d064edb97c1ea2f67d251de5c3d13ddd82c0d33f",
+      "bytes": 123596
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\playlist-proof\\05\\result.json",
+      "relativePath": "playlist-proof/05/result.json",
+      "role": "playlist accepted narrow proof",
+      "sha256Bytes": "2f14c398db970796316103f7d2c5189021b1ee28c03922b6e461c0d2345c7823",
+      "sha256LF": "2da76c788404c7503a4f6061c47babe5ca3552fd3e02af98bab6eed7e1ce2e6b",
+      "bytes": 78373
+    }
+  ],
+  "sourceAudit": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\source-checks.json",
+    "relativePath": "source-checks.json",
+    "role": "44 source checks",
+    "sha256Bytes": "f10e297cacb6b72671cccf163951f40dfd496e62d262eb354d3cf3b4a91ff384",
+    "sha256LF": "f10e297cacb6b72671cccf163951f40dfd496e62d262eb354d3cf3b4a91ff384",
+    "bytes": 11859
+  },
+  "notClaims": [
+    "No current Candidate source change",
+    "No production JAR/class installed",
+    "No full Root/native/HWND/HTTP/account runtime acceptance",
+    "No second queue/state/cache/VM/MPV/Store",
+    "Original part-shuffle and STOP_AFTER_CURRENT require explicit migration capability; never fake accepted"
+  ],
+  "rawExclusions": [
+    "all JAR/class/native binaries",
+    "task temp Store and private test data",
+    "unselected replay-generated source trees",
+    "__pycache__"
+  ]
+}

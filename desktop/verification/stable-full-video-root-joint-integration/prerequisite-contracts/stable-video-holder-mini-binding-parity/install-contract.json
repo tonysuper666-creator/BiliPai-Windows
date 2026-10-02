@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "status": "SOURCE_READY_REQUIRED_ROOT_PRESENTATION_CALLBACKS",
+  "constructor": "DesktopOriginalVideoHolderMiniBinding(assembly,currentAssembly,mini,readMiniMode,readNavigatingToVideo,writeNavigatingToVideo,markLeaving,rememberEntrySide,retainUiState,enterMini)",
+  "productionSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-holder-mini-binding-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoHolderMiniBinding.kt",
+    "sha256Bytes": "b3f56ecc15ed58592094910494840cea0ba4f30e752d8e0dde21789e0aa548df",
+    "sha256LF": "b3f56ecc15ed58592094910494840cea0ba4f30e752d8e0dde21789e0aa548df"
+  },
+  "callbacks": {
+    "currentAssembly": "()->DesktopOriginalVideoOwnerAssembly?",
+    "mini": "SAME frozen138 DesktopOriginalVideoMiniBinding instance consumed by fullVM",
+    "readMiniMode": "(Assembly)->Boolean: actual Root mini/presentation flag; not fixed false",
+    "readNavigatingToVideo": "(Assembly)->Boolean: original Root navigation bookkeeping",
+    "writeNavigatingToVideo": "(Assembly,Boolean)->Unit: fixed entry guarded real flag",
+    "markLeaving": "(Assembly,String,Boolean)->Unit: expected BVID/defer-stop actual Root navigation/native receipt",
+    "rememberEntrySide": "(Assembly,Boolean)->Unit: original fromLeft transition direction",
+    "retainUiState": "(Assembly,VideoPlaybackUiState.Success)->Unit: register same retained original reference/view, no parallel playback cache/VM",
+    "enterMini": "(Assembly,Boolean)->Unit: actual Root same-source mini/PiP presentation"
+  },
+  "boundaries": [
+    "Every callback receives the fixed Assembly and must apply only to that same entry; never recapture latest from old command.",
+    "player/title/BV/CID/AID/duration come only from actual same VM/Section/native/Mini binding. Inactive empty/zero fields are terminal original interface semantics, not configurable fake defaults.",
+    "setVideoInfo checks exact actual info tuple and Section; metadata uses unified Mini Binding actual Root SMTC/Library consumer.",
+    "No scope/Flow/state/Store/cache/player constructed. Real physical flags are required Root callbacks; no native/UI integration claim.",
+    "Original HelperRootScope ABI uses only currentAssembly pointer; old entry rejects even if another Assembly is active."
+  ],
+  "compile": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-holder-mini-binding-parity\\compile\\01\\result.json",
+    "passed": true,
+    "inputs": 2,
+    "classes": 2,
+    "overlap": [],
+    "referenceOnly": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoMiniBinding.kt"
+  },
+  "baseline": {
+    "snapshot": "actual73",
+    "runtimeEntries": 101,
+    "manifestSha256Bytes": "4fe15a56b0a78bda5bf067e52f4e20ceb88244eee943a007db248e6f1bb9e829",
+    "orderedCPsha256Bytes": "f71557c1952176118a9eba16479da2e244cacfb6cc419a65f43dc5501f822d31"
+  }
+}

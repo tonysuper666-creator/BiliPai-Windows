@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "scope": "new delta against immutable unified138; do not overwrite parent Shell or frozen138",
+  "family": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopUnifiedPlaybackFacade.kt",
+  "base": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-playback-facade-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopUnifiedPlaybackFacade.kt",
+    "bytes": 21573,
+    "sha256Bytes": "1fca8cc948af22f87f3ef1b47645a5f9cb8ad0a923eaa8db015dc1b3a497c9ca",
+    "sha256LF": "1fca8cc948af22f87f3ef1b47645a5f9cb8ad0a923eaa8db015dc1b3a497c9ca"
+  },
+  "desired": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-unified-subtitle-notification-retirement-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopUnifiedPlaybackFacade.kt",
+    "bytes": 21403,
+    "sha256Bytes": "cd7d3f1e7a391e72081663144cb405bce2d50d0b9ad32d609f87576ce7e89198",
+    "sha256LF": "cd7d3f1e7a391e72081663144cb405bce2d50d0b9ad32d609f87576ce7e89198"
+  },
+  "hunks": [
+    {
+      "before": "    private val notifySubtitleSelection: (DesktopOriginalVideoOwnerAssembly) -> Unit,\n",
+      "after": ""
+    },
+    {
+      "before": "    fun notifyUserSubtitleTrackSelection() { held()?.let(notifySubtitleSelection) }\n",
+      "after": ""
+    }
+  ]
+}

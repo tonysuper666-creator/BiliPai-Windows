@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 /** Direct consumption of the original standard factories. This is an ephemeral projection of the sole raw document. */
 internal fun originalDanmakuPoolItems(snapshot:com.bilipai.desktop.danmaku.DanmakuPoolSourceSnapshot):List<DanmakuItem> =
     snapshot.comments.mapNotNull { comment ->
-        comment.originalElement?.let(DesktopOriginalDanmakuItemParser::createTextDataFromProto)
+        comment.originalLocalItem ?: comment.originalElement?.let(DesktopOriginalDanmakuItemParser::createTextDataFromProto)
             ?: if(comment.originalXmlAttributes!=null&&comment.originalXmlContent!=null)
                 DesktopOriginalDanmakuItemParser.createTextData(comment.originalXmlAttributes,comment.originalXmlContent)
             else null

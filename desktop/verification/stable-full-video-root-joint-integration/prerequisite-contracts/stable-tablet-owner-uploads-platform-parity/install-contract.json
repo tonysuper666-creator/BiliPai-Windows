@@ -1,0 +1,45 @@
+{
+  "copyWhitelist": [
+    {
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-tablet-owner-uploads-platform-parity\\prepared\\desktop\\tools\\extract-upstream-tablet-owner-space.py",
+        "sha256Bytes": "567c1be5be0bacf606b045c05371b171eafc3a424eca90b3d368e45d5feb23d1",
+        "size": 9639
+      },
+      "target": "desktop/tools/extract-upstream-tablet-owner-space.py"
+    },
+    {
+      "source": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-tablet-owner-uploads-platform-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalTabletOwnerUploadsPlatform.kt",
+        "sha256Bytes": "b20a2a3d1675c4a601155ad60707f48b36f0966fd067538a1cf498e3cfa90c1d",
+        "size": 8502
+      },
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalTabletOwnerUploadsPlatform.kt"
+    }
+  ],
+  "exactHunks": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-tablet-owner-uploads-platform-parity\\exact-hunks.json",
+    "sha256Bytes": "4b9d3b8692033a3c8a0f58f3cc117ebfc45928ee93fc53fe89cb34c6e22fdf06",
+    "size": 4240
+  },
+  "baselineFamilies": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-tablet-owner-uploads-platform-parity\\baseline-families.json",
+    "sha256Bytes": "d1813ca84b4218290b3b09015a8c389ef65640a408ac73759bd1000fa6b68ebd",
+    "size": 559
+  },
+  "gradleAppend": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-tablet-owner-uploads-platform-parity\\gradle.fragment.kts",
+    "sha256Bytes": "de9a001e2128377f693a08c1d1a07f46fbe69a6a6e4c6011d151515b22ab2758",
+    "size": 1138
+  },
+  "registryMerge": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-tablet-owner-uploads-platform-parity\\registry-merge-recipe.json",
+    "sha256Bytes": "e45254f3e61c287d9c6232ddcff3ca7006be961eecccb6d7dc2ccee4f061c736",
+    "size": 1438
+  },
+  "generatedSourcesInstall": false,
+  "proofInputsInstall": false,
+  "wholeExistingFamilyCopyAllowed": false,
+  "rootAccepted": false,
+  "entryUiScopeRequired": true
+}

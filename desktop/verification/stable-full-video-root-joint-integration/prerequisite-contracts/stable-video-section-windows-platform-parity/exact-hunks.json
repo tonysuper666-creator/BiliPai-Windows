@@ -1,0 +1,242 @@
+[
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionPlatform.kt",
+    "label": "whole-original-foreground-portal",
+    "before": "    val settingsContext: DesktopOriginalPlayerSettingsContext",
+    "after": "    @Composable fun RenderPlayerForeground(content: @Composable () -> Unit)\n    val settingsContext: DesktopOriginalPlayerSettingsContext",
+    "beforeAnchorSha256LF": "f8a2b733ab9c38bdd7119c3106fa674cb366e58252d543695cf38618b0f18554",
+    "afterAnchorSha256LF": "807c6aaf231af1a489ac533d8e21e694ef85f3db16ab852640416edcee979dd3"
+  },
+  {
+    "file": "desktop/tools/extract-upstream-video-player-section-full.py",
+    "label": "native-viewport-transform-one-platform-owner",
+    "before": "                        sizeModifier.onSizeChanged { measuredPlayerViewportSize = it }\n                            .alpha(playerSurfaceAlpha).graphicsLayer {\n                                val revealAwareScaleX = scale * playerSurfaceScale\n                                val revealAwareScaleY = scale * playerSurfaceScale\n                                scaleX = if (isFlippedHorizontal) -revealAwareScaleX else revealAwareScaleX\n                                scaleY = if (isFlippedVertical) -revealAwareScaleY else revealAwareScaleY\n                                translationX = panX\n                                translationY = panY\n                            }",
+    "after": "                        // The native owner receives the original transform inputs below exactly once.\n                        // This registration Box measures the untransformed viewport; HWND alpha is unsupported.\n                        sizeModifier.onSizeChanged { measuredPlayerViewportSize = it }",
+    "beforeAnchorSha256LF": "d848551dae68bd81891243ba5c143f41987719843f610c09e79325f2559792f3",
+    "afterAnchorSha256LF": "cc7864fe610fcf629edcbf58c90c63355fd183ae00fb7ae47538dd96d9f7dbec"
+  },
+  {
+    "file": "desktop/tools/extract-upstream-video-player-section-full.py",
+    "label": "sole-section-entry-portal",
+    "before": " t=t.replace('    val context = LocalContext.current\\n    val density = LocalDensity.current\\n'",
+    "after": " t=exact(t,'    VideoPlayerSectionContent(state = state, actions = actions)', '    LocalDesktopOriginalVideoSectionPlatform.current.RenderPlayerForeground {\\n        VideoPlayerSectionContent(state = state, actions = actions)\\n    }','Whole original Section foreground in the sole Windows native carrier')\n t=t.replace('    val context = LocalContext.current\\n    val density = LocalDensity.current\\n'",
+    "beforeAnchorSha256LF": "fc03e295b6857594b7f29ebb2cf047c7c9a2900c95b820c82106ff2a9949250f",
+    "afterAnchorSha256LF": "c9c29357bba322ee669738fe28c0d088451f30f7ff9259ca6807b2b43ec05489"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+    "label": "preserve-six-parameter-abi",
+    "before": "    onWindowAvailability: ((Any, Boolean) -> Unit)?,\n) {\n    val latestOwned",
+    "after": "    onWindowAvailability: ((Any, Boolean) -> Unit)?,\n) {\n    DesktopOriginalPlayerSurface(player, sourceVersion, isOwned, modifier, foreground, onWindowAvailability, null)\n}\n\n@Composable\ninternal fun DesktopOriginalPlayerSurface(\n    player: MpvPlayer, sourceVersion: Long?, isOwned: () -> Boolean, modifier: Modifier,\n    foreground: @Composable () -> Unit, onWindowAvailability: ((Any, Boolean) -> Unit)?,\n    viewport: DesktopOriginalNativeViewportState?,\n) {\n    DesktopOriginalPlayerSurface(player,sourceVersion,isOwned,modifier,foreground,onWindowAvailability,viewport,null,true)\n}\n\n@Composable\ninternal fun DesktopOriginalPlayerSurface(\n    player:MpvPlayer,sourceVersion:Long?,isOwned:()->Boolean,modifier:Modifier,\n    foreground:@Composable () -> Unit,onWindowAvailability:((Any,Boolean)->Unit)?,\n    viewport:DesktopOriginalNativeViewportState?,onNativeWindowAvailability:((java.awt.Window,Boolean)->Unit)?,\n    presented:Boolean,\n) {\n    val latestOwned",
+    "beforeAnchorSha256LF": "70abf7f6b1d11e31fc0ee7f1861274587325bcfa735ef0f2e9581ffcc0a0bbeb",
+    "afterAnchorSha256LF": "18c34f0446ab196df9f34dd4a5a8a36eb6276c247cd485b88039c518c35c3f2e"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+    "label": "same-carrier-native-viewport-container",
+    "before": "    var size by remember(player) { mutableStateOf(IntSize.Zero) }\n    if (!isOwned()) return",
+    "after": "    var size by remember(player) { mutableStateOf(IntSize.Zero) }\n    val anchor = remember(player, viewport) {\n        if (viewport == null) player.surface else viewport.createContainer(player.surface)\n    }\n    if (!isOwned()) return",
+    "beforeAnchorSha256LF": "fa30b0cc253766ddb2cb8a92e1b269efaea6c44441fde2591a91906d4298aef6",
+    "afterAnchorSha256LF": "7d786e7b373ac2a7dcf60f63d3c01978033dcdcd3c7df45313e008686c10cd7d"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+    "label": "actual-full-foreground-anchor",
+    "before": "SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())\n        DesktopShapedVideoCommandPopup(size, player.surface,",
+    "after": "SwingPanel(factory = { anchor }, background = Color.Black, modifier = Modifier.fillMaxSize())\n        DesktopShapedVideoCommandPopup(size, anchor,",
+    "beforeAnchorSha256LF": "71efdf5daa36621a8201ac1a9536c4697e3089df5ef2e050a9a2af5334837be9",
+    "afterAnchorSha256LF": "23fd2186574c542f4c5ff02300ae55f6445872be381f144382b91f1e4fac2bcd"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+    "label": "same-carrier-real-pip-visibility",
+    "before": "DesktopShapedVideoCommandPopup(size, anchor, onWindowAvailability = onWindowAvailability)",
+    "after": "DesktopShapedVideoCommandPopup(size, anchor, onWindowAvailability, onNativeWindowAvailability, presented)",
+    "beforeAnchorSha256LF": "c3b2e40b97f91fdf2b79c921f595d329da80d87d490f85e322ef9dc4e289aa82",
+    "afterAnchorSha256LF": "c602f086f6639c0e508713acc656c8c733e6a9e5e477fea65741929d90b30010"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+    "label": "stable-original-subject-composition",
+    "before": "key(player, version) {",
+    "after": "key(player) {",
+    "beforeAnchorSha256LF": "9232b64382936a2c2bc8c4dc0aa3a0ebafb6037426711327ff3dc316ecfeb3ec",
+    "afterAnchorSha256LF": "b049cb5fd4b46b06937f4b1b6755d5827be62a445c94e6f57cb4298be33d1e73"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "derived-original-advanced-flow",
+    "before": "    val commandItems: StateFlow<List<CommandDanmakuItem>> = mutableCommands.asStateFlow()",
+    "after": "    val commandItems: StateFlow<List<CommandDanmakuItem>> = mutableCommands.asStateFlow()\n    private val mutableAdvanced = MutableStateFlow(emptyList<com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData>())\n    val advancedItems: StateFlow<List<com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData>> = mutableAdvanced.asStateFlow()\n    @Volatile private var originalSectionViewport: Pair<Long,Boolean>? = null\n    @Volatile private var originalSectionDanmakuViewport: Pair<Long,DanmakuViewport>? = null\n    @Volatile private var originalSeekScrub: Pair<Long,Boolean>? = null\n    fun bindOriginalSectionDanmakuViewport(version:Long,viewport:DanmakuViewport):Boolean = synchronized(requestLock) {\n        if(closed.get() || !player.ownsSourceVersion(version)) false\n        else {originalSectionDanmakuViewport=version to viewport;true}\n    }\n    fun setOriginalSectionViewport(version:Long,active:Boolean):Boolean = synchronized(requestLock) {\n        if(closed.get() || !player.ownsSourceVersion(version)) false\n        else {originalSectionViewport=version to active;true}\n    }\n    fun releaseOriginalSectionViewport(version:Long):Boolean = synchronized(requestLock) {\n        if(originalSectionViewport?.first!=version) false\n        else {originalSectionViewport=null;originalSectionDanmakuViewport=null;originalSeekScrub=null;true}\n    }\n    /** Seek scrubbing suppresses displayed items only, retaining the raw CID document and loader. */\n    fun seekOriginalSection(version:Long,positionMs:Long?,scrubbing:Boolean):Boolean = synchronized(requestLock) {\n        if(closed.get() || !player.ownsSourceVersion(version) || poolSourceVersion!=version) false\n        else {\n            originalSeekScrub=version to scrubbing\n            val currentGeneration=generation.get()\n            SwingUtilities.invokeLater {\n                if(!closed.get() && currentGeneration==generation.get() && player.ownsSourceVersion(version)) {\n                    scheduler.resetTimeline()\n                    lastPosition=Double.NaN\n                    if(positionMs!=null) {anchoredPosition=positionMs.coerceAtLeast(0L)/1000.0;displayTime=anchoredPosition;sampleTimeNanos=System.nanoTime()}\n                    panel.repaint()\n                }\n            }\n            true\n        }\n    }",
+    "beforeAnchorSha256LF": "b41ae275bf81d3169d9ebe9c50fd7e9da08ef13038acd91d02badc686664583f",
+    "afterAnchorSha256LF": "384fa70be0406ae16f054f4a889d78d092de5a2b61732595dfe0f5d3b5e1f195"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "online-captured-owner-tail",
+    "before": "    suspend fun load(cid: Long, aid: Long = 0L, durationSeconds: Double = 0.0, expectedSourceVersion: Long? = null, maskSource:DesktopOwnedWebMaskSource?) {\n        require(cid > 0)",
+    "after": "    suspend fun load(cid:Long,aid:Long=0L,durationSeconds:Double=0.0,expectedSourceVersion:Long?=null,maskSource:DesktopOwnedWebMaskSource?) =\n        load(cid,aid,durationSeconds,expectedSourceVersion,maskSource,null)\n\n    suspend fun load(cid:Long,aid:Long,durationSeconds:Double,expectedSourceVersion:Long?,maskSource:DesktopOwnedWebMaskSource?,stillOwned:(()->Boolean)?) {\n        require(stillOwned==null || expectedSourceVersion!=null)\n        require(cid > 0)",
+    "beforeAnchorSha256LF": "457ead4377477d617b19827cdbab41967e298045fdd86f59f77ca9d8f0ba1f94",
+    "afterAnchorSha256LF": "16837c261c633432095af0549d2a00097fb3f442ecd65b6346b6f30630dbc4ec"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "online-loader-owned-source",
+    "before": "loadSource(source, cid, aid, durationSeconds, expectedSourceVersion, maskSource)",
+    "after": "loadSource(source, cid, aid, durationSeconds, expectedSourceVersion, maskSource, stillOwned)",
+    "beforeAnchorSha256LF": "1784ce53771045eee89f9133dfca5bd2dae1f3966fa5c7ba11786321ffdfdec2",
+    "afterAnchorSha256LF": "e3e1145eb0e7d797986d9d44b210673cc92a1befd8471a3381ebbb7d1871506d"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "derived-publish-from-sole-document",
+    "before": "            rawDocument = document\n            documentRevision",
+    "after": "            rawDocument = document\n            mutableAdvanced.value = document.advanced\n            documentRevision",
+    "beforeAnchorSha256LF": "ba5e7abaa57a2715b1a5ed03be2062bdab9407095fb30cf4e9faceacca9c5dac",
+    "afterAnchorSha256LF": "66d5eb3cc9d9162ddef7b54558912fea2d5efa6ebb09357ec7a83acb09e0fb8d"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "live-retires-derived-vod-items",
+    "before": "offlineDocumentOwner=null; commandCid = null; mutableCommands.value = emptyList()",
+    "after": "offlineDocumentOwner=null; commandCid = null; mutableCommands.value = emptyList(); mutableAdvanced.value=emptyList(); originalSectionDanmakuViewport=null",
+    "beforeAnchorSha256LF": "71e6e7541724ab2acb5852aa4c289bad046ff786f59d383bfd2471807f54a016",
+    "afterAnchorSha256LF": "491b760040bb2a3d0ddac5c3f13b66a79d103bf1e25f2c346f5d0e4d125ca0aa"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "bind-original-config-to-real-native-viewport",
+    "before": "                val viewport=geometry.viewport\n                val configuration = settings",
+    "after": "                // The original Section supplies density/scale only for this same physical viewport.\n                // A SCREEN_TOP region outside the actual Canvas remains a separate platform gap.\n                val viewport=if(liveMode)geometry.viewport else originalSectionDanmakuViewport?.takeIf {\n                    it.first==poolSourceVersion && player.ownsSourceVersion(it.first) &&\n                    it.second.widthPx==geometry.viewport.widthPx && it.second.heightPx==geometry.viewport.heightPx\n                }?.second ?: geometry.viewport\n                val configuration = settings",
+    "beforeAnchorSha256LF": "02ca3c4bd0f0daf5002cc8f8668821354cc1156089b3919bc6393e1484f9ae48",
+    "afterAnchorSha256LF": "e752f3b95b3dc716702cdcf096ab8881ddfd6fa5215ffe7f4cc0fcb8df4303fa"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "original-vod-config-consumes-bound-viewport",
+    "before": "ConfigKey(configuration,geometry.viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false,webMaskAvailable())",
+    "after": "ConfigKey(configuration,viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false,webMaskAvailable())",
+    "beforeAnchorSha256LF": "414b118e7964a017ba7284bef224d910cf97a5d1541d1a291ae25b0d8bb46176",
+    "afterAnchorSha256LF": "90d824dd1bf68b2143bde6a7e37d99a4fb7c353948ec019b49c789ef1d9f047a"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "original-vod-config-resolves-bound-viewport",
+    "before": ".resolveRenderConfig(geometry.viewport).copy(maskEnabled=key.maskReady)",
+    "after": ".resolveRenderConfig(viewport).copy(maskEnabled=key.maskReady)",
+    "beforeAnchorSha256LF": "502766e675be543081673b3955b97693f16c1ae16436de436ec07efd123682f6",
+    "afterAnchorSha256LF": "717e0ad2f61f95c8ee689bb004bf0381f02b2093e3ab9a76e0ad2509673a7c54"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "owned-viewport-actual-native-paint",
+    "before": "                if (configuration.enabled && currentOfflineDocumentOwned()) {",
+    "after": "                if (configuration.enabled && currentOfflineDocumentOwned() &&\n                    originalSectionViewport?.let { !player.ownsSourceVersion(it.first) || it.second } != false &&\n                    originalSeekScrub?.let { player.ownsSourceVersion(it.first) && it.second } != true) {",
+    "beforeAnchorSha256LF": "f9e9e369adc7df2488711ad6ad8d225d8336a6fd52f77b74bffe50612ee20f7a",
+    "afterAnchorSha256LF": "bfb9b01eb77d49bafdc0cabcb3d696d10789c37bb302206aa40887a942b5754e"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "label": "reset-same-scheduler-timeline",
+    "before": "    fun applySettings(settings: DanmakuSettings) {",
+    "after": "    fun resetTimeline() { active.clear(); previousTime=Double.NaN }\n\n    fun applySettings(settings: DanmakuSettings) {",
+    "beforeAnchorSha256LF": "4243a5b458f0eff84caea69a632745ff1a6eeec45ffdcaa87d0ea1f47ab46aaf",
+    "afterAnchorSha256LF": "3f8c0a34a4978c83612f155298c7a7ecaa9d3e8158044b568490638bacde0f44"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+    "label": "retain-profile-jpeg-entry-generalize-same-actor",
+    "before": "        profileCommit: ((() -> Unit) -> Boolean)): Boolean = saveMutex.withLock {\n        suspend fun profileCheckpoint()",
+    "after": "        profileCommit: ((() -> Unit) -> Boolean)): Boolean = saveCapturedGalleryBytes(bytes,fileName,\"image/jpeg\",profileOwns,profileCommit)\n\n    /** Native frame bytes remain PNG. Same Assets/Locations actor and publication gate. */\n    internal suspend fun saveNativeFrameBytes(bytes:ByteArray,fileName:String,stillOwned:()->Boolean,\n        commit:((()->Unit)->Boolean)):Boolean = saveCapturedGalleryBytes(bytes,fileName,\"image/png\",stillOwned,commit)\n\n    private suspend fun saveCapturedGalleryBytes(bytes:ByteArray,fileName:String,mime:String,profileOwns:()->Boolean,\n        profileCommit:((()->Unit)->Boolean)):Boolean = saveMutex.withLock {\n        require(mime==\"image/jpeg\" || mime==\"image/png\")\n        suspend fun profileCheckpoint()",
+    "beforeAnchorSha256LF": "cfb906ee9a2fc8cd96ff785622d9459517adedc00142f38587987a9fd8566a74",
+    "afterAnchorSha256LF": "645e547d94612fe0fd8958b97f0ac96062986fe73e558425536ab9bf7c109348"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+    "label": "typed-capture-mime-only-at-actual-chooser",
+    "before": "write(selectTarget(fileName,\"image/jpeg\") ?: return@withLock false)",
+    "after": "write(selectTarget(fileName,mime) ?: return@withLock false)",
+    "beforeAnchorSha256LF": "6cfa872973ba715199f37df0697b9805060433c9f8b6e0afa5a933c38e04eaf7",
+    "afterAnchorSha256LF": "4b5d6d0a8481c803b8005df8851a85f4dd7d2ca536c778fc38d030f30c34ef0e"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "source-owned-native-viewport-command",
+    "before": "    fun setLoop(looping: Boolean) {",
+    "after": "    internal fun setOriginalVideoViewport(expected:OwnedPlaybackSourceSnapshot,value:DesktopNativeVideoViewportTransform):Boolean = synchronized(lock) {\n        if(!ownsSourceSnapshot(expected)) return@synchronized false\n        val active=session ?: return@synchronized false\n        if(active.closing.get()) false else active.commands.offer(Action.OwnedVideoViewport(expected.sourceVersion,playbackRevision,expected.source,value))\n    }\n    fun setLoop(looping: Boolean) {",
+    "beforeAnchorSha256LF": "b422fcb2174078adb6bb2205aed1768611edd09ce05325d694c4156530f4e003",
+    "afterAnchorSha256LF": "584a892d93f2685a37c2359206f4729602941795671e11f07b5898a048063643"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "owned-screenshot-entry",
+    "before": "    private sealed interface Action {",
+    "after": "    internal suspend fun captureScreenshotForSource(expected:OwnedPlaybackSourceSnapshot,destination:Path,includeSubtitles:Boolean):Path {\n        val completion=CompletableDeferred<Path>()\n        val queued=synchronized(lock) {\n            val active=session\n            if(!ownsSourceSnapshot(expected) || active==null || active.closing.get() || !state.value.ready ||\n                state.value.ended || state.value.audioOnly || state.value.videoCodec==null) false\n            else active.commands.offer(Action.Screenshot(destination.toAbsolutePath().normalize(),includeSubtitles,completion,expected,playbackRevision))\n        }\n        if(!queued) throw kotlinx.coroutines.CancellationException(\"Screenshot source retired/unavailable\")\n        try { return withTimeout(15_000L){completion.await()} } finally {if(!completion.isCompleted)completion.cancel()}\n    }\n\n    private sealed interface Action {",
+    "beforeAnchorSha256LF": "3bebd6591f251c21cafbb6b8370cd48a62f635a706ce1756a5e657807d15e2fc",
+    "afterAnchorSha256LF": "5bcbeb9242a511c28575797e3ea0ba827073d2dc82878e0421df2b4c211d9c99"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "owned-viewport-action-carrier",
+    "before": "        data class Property(val name: String, val value: String) : Action",
+    "after": "        data class Property(val name: String, val value: String) : Action\n        data class OwnedVideoViewport(val version:Long,val revision:Long,val source:PlaybackSource,val value:DesktopNativeVideoViewportTransform):Action",
+    "beforeAnchorSha256LF": "95b8d28701be33810e3db4d0d7460a347de66075e89c38a8b3539a3353df5d72",
+    "afterAnchorSha256LF": "caed4b69a56eeef8417ac1b63c94e143f3b69ad257c90b37ce8479bcb804119c"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "optional-screenshot-snapshot-abi",
+    "before": "data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>) : Action",
+    "after": "data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>, val owned:OwnedPlaybackSourceSnapshot?=null, val revision:Long?=null) : Action",
+    "beforeAnchorSha256LF": "a0f2795979441c7ed3d9c92dad6e3af0eaac9966b06248fe54a2da0bf494fd6d",
+    "afterAnchorSha256LF": "c13f657920bccd9e60e1eff87e3bc5a703b8a8872c7113abf5027dcb738799de"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "same-session-native-viewport-filter-state",
+    "before": "        private var activeEntry: Long? = null",
+    "after": "        private var sectionFlipHorizontal=false\n        private var sectionFlipVertical=false\n        private fun clearSectionViewport(native:MpvNative,handle:Pointer) {\n            if(sectionFlipHorizontal) {checkResult(native,native.mpv_command(handle,StringArray(arrayOf(\"vf\",\"remove\",\"@bilipai-section-hflip\"),\"UTF-8\")),\"remove-section-hflip\");sectionFlipHorizontal=false}\n            if(sectionFlipVertical) {checkResult(native,native.mpv_command(handle,StringArray(arrayOf(\"vf\",\"remove\",\"@bilipai-section-vflip\"),\"UTF-8\")),\"remove-section-vflip\");sectionFlipVertical=false}\n            for((name,value)in listOf(\"video-zoom\" to \"0\",\"video-pan-x\" to \"0\",\"video-pan-y\" to \"0\",\"keepaspect\" to \"yes\",\"panscan\" to state.value.videoPanscan.toString()))\n                checkResult(native,native.mpv_set_property_string(handle,name,value),name)\n        }\n        private var activeEntry: Long? = null",
+    "beforeAnchorSha256LF": "335a34b4d880e15ca66a175eb457191957db6f2e45efb5a50a331bae15c16f4e",
+    "afterAnchorSha256LF": "a80d51cddea9e2fa0b1e4e6187edca803409aec20e8da0b3b6c543306a6f7c21"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "new-load-retires-viewport-only-owned-filters",
+    "before": "                        loadedSubtitlePaths.clear()\n                        lastTrackPoll",
+    "after": "                        clearSectionViewport(native,handle)\n                        loadedSubtitlePaths.clear()\n                        lastTrackPoll",
+    "beforeAnchorSha256LF": "e649dbc2aca9f93f777c755ee4fdd42ef3aa3e6e02be2d7d87f605298aa359ae",
+    "afterAnchorSha256LF": "425ed99054bda464e41fe7b8b9f8e189347eb3e516c4a84837b64bcd0ca632f5"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "native-viewport-real-execution-admission",
+    "before": "                    is Action.Property -> checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)",
+    "after": "                    is Action.OwnedVideoViewport -> {\n                        val command={synchronized(lock) {\n                            if(session===this && !closing.get() && sourceVersion==action.version && playbackRevision==action.revision &&\n                                requestedSource==action.source && activeSourceVersion==action.version && activeRevision==action.revision) {\n                                val value=action.value\n                                for((name,setting)in value.nativeProperties())checkResult(native,native.mpv_set_property_string(handle,name,setting),name)\n                                if(sectionFlipHorizontal!=value.flipHorizontal) {\n                                    checkResult(native,native.mpv_command(handle,StringArray(arrayOf(\"vf\",if(value.flipHorizontal)\"add\"else\"remove\",if(value.flipHorizontal)\"@bilipai-section-hflip:hflip\"else\"@bilipai-section-hflip\"),\"UTF-8\")),\"section-hflip\")\n                                    sectionFlipHorizontal=value.flipHorizontal\n                                }\n                                if(sectionFlipVertical!=value.flipVertical) {\n                                    checkResult(native,native.mpv_command(handle,StringArray(arrayOf(\"vf\",if(value.flipVertical)\"add\"else\"remove\",if(value.flipVertical)\"@bilipai-section-vflip:vflip\"else\"@bilipai-section-vflip\"),\"UTF-8\")),\"section-vflip\")\n                                    sectionFlipVertical=value.flipVertical\n                                }\n                            }\n                        }}\n                        action.source.nativePublication?.admit(command)\n                    }\n                    is Action.Property -> checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)",
+    "beforeAnchorSha256LF": "8dd4296c9356356c3a288b0ca60d0eb279440527c383c1c278272157f27f20ed",
+    "afterAnchorSha256LF": "a566a76ec5d7687fe0bdaf98c06c6b6fb73e6f654dc885ae4b4d5a21b38f39f7"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "retired-viewport-action-no-state-write",
+    "before": "action !is Action.OwnedMute &&\n                    !(action is Action.Seek",
+    "after": "action !is Action.OwnedMute && action !is Action.OwnedVideoViewport &&\n                    !(action is Action.Seek",
+    "beforeAnchorSha256LF": "f6232a0936acfcf6329d06b41232b6b3e221e74d7ac3b5365891167e3925a97d",
+    "afterAnchorSha256LF": "35d3d8a79210675dcc5aacd3cee8d18acfe3c1bef0de7f674fadfc57fd5cbb9c"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "owned-screenshot-native-read-guard",
+    "before": "                    is Action.Screenshot -> saveScreenshot(native, handle, action)",
+    "after": "                    is Action.Screenshot -> {\n                        val expected=action.owned\n                        val allowed=expected==null || synchronized(lock){session===this && !closing.get() && ownsSourceSnapshot(expected) &&\n                            action.revision==playbackRevision && activeSourceVersion==expected.sourceVersion && activeRevision==action.revision}\n                        if(!allowed) action.completion.cancel(kotlinx.coroutines.CancellationException(\"Screenshot source changed before capture\"))\n                        else saveScreenshot(native, handle, action)\n                    }",
+    "beforeAnchorSha256LF": "65a4030f103699fd3d2481c22f328ac148170765422db4b69786f305995c5534",
+    "afterAnchorSha256LF": "348f17e858835e13dc4fae40de94f859acfb7dea3250b24e05cfb61b27addebe"
+  },
+  {
+    "file": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+    "label": "cancelled-owned-capture-cleans-late-scratch-publication",
+    "before": "                action.completion.complete(destination)",
+    "after": "                if(!action.completion.complete(destination) && action.owned!=null)Files.deleteIfExists(destination)",
+    "beforeAnchorSha256LF": "dc75b4296af72408f3a9378acc83a4d25fb97d48b364064d2ef1e3f617f4fb03",
+    "afterAnchorSha256LF": "7833f5726cb499133f1c055bd93c5d8d23d8500e16e5b4096c8abf872a4c6630"
+  }
+]

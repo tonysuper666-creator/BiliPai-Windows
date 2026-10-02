@@ -1,0 +1,9 @@
+{
+  "status": "actual82-idle-cohort-passed",
+  "sourceSHA256Bytes": "ca111b83b730a0092bd3e1726d84cf0acfa13fbf493f21c0587f0fd2c9a577d8",
+  "runnerSHA256Bytes": "f39974347360d6f66ca736b5cf1948411ad7716d7b91eacbf25c87a38c4d98a7",
+  "actualSnapshot": 82,
+  "fixtureOnly": true,
+  "productSourceOverrides": 0,
+  "initialAnticipatedPhase": 80
+}

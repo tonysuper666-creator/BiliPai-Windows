@@ -1,0 +1,582 @@
+{
+  "schema": 1,
+  "candidateBaseHead": "462507f8a175a74a823fa3ea138f6b490c20a953",
+  "sourceCompositionResultSHA256Bytes": "579bd55b29dd0bf74c2c660adb5223f075be592391b3181739b55d99bb9d4a43",
+  "sourceComposerSHA256Bytes": "e9e0d6d06f1e1443ac4efefae2ccc77ad776cd465bc0ba21c3514ba528280322",
+  "prerequisiteComposerSHA256Bytes": "fb2969dc24d03a98fc678329cf430323fe5da7ad0595e2360dddc352e788c428",
+  "rootComposerSHA256Bytes": "ef5c0baad0aacb094bb12ac4bd922c0df56ff7fa83231fd3270f55c6e2cea469",
+  "installerSHA256Bytes": "e1025774e1363fa161d8d14fcb002e3c3d4f804d0b9dcc11a4e11bf0b174806b",
+  "productionSourceFilesWritten": 94,
+  "registryAndGradleApplied": false,
+  "generatedFilesInstalled": false,
+  "productBinariesInstalled": false,
+  "wholeBuildPassed": false,
+  "actualMainAccepted": false,
+  "newExeDeployed": false,
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/DesktopNativeVideoViewportTransform.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "2fe6d3690b0061913ee2bd07f174a667890d5509c3260b14098aef69ab2d7ea9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNativeViewportState.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "1464a9ac96b8735192fd69f4dab286606b8619582ec4216752c122ba5cf837a8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "90490f58a5560efd641bbca174952be5224050df261a99b782b8777b379633e8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionPlatform.kt",
+      "new": false,
+      "beforeSHA256Bytes": "1257b1664e464d82a7f648ff23ff222b39bbb2d056be7b41ae6b49620e05cb3f",
+      "afterSHA256Bytes": "80f56352a843d60f0fcd1a7ae8940807cfa519bc84f038a968aa377ac93bb3ad"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-player-section-full.py",
+      "new": false,
+      "beforeSHA256Bytes": "3c9fa4d5115fdebed4fcd16f534bb0f9a30af4ae714ec2fb506ab385328ccc04",
+      "afterSHA256Bytes": "47294a679c63fc7dfb6ff64d5b6e42d602855938a4fa78a50a488f60b597b0d9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSurface.kt",
+      "new": false,
+      "beforeSHA256Bytes": "52de6e2a34dda17b7e8198761b16029a61bdea15e3f5a74eb31468c166476fc2",
+      "afterSHA256Bytes": "63b976dd419cd0aae2701fcd30c974a0a172e04583555e08b1d9e8bf3cbc3698"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "new": false,
+      "beforeSHA256Bytes": "3d388c4b158f009296d474a96793eecea241e0dd8f2e51e457731e7996377e09",
+      "afterSHA256Bytes": "cd7e78bf5ad7823bf2481998818d0c80bb4280e6e22b5d8c7f1ddcab5140fcf5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "new": false,
+      "beforeSHA256Bytes": "04132a2cb924ea0837f08b6758791c4b4a652be0393a712620cc1646dc57b83b",
+      "afterSHA256Bytes": "3271b1d961e4240d2058d4ee8943417d3d403b60be45869c73422a28b9e463cf"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "new": false,
+      "beforeSHA256Bytes": "ff38bb9451fdbc0f4515c0199b0cde1b7da4187e78f232f0c0ffe19297f3b80d",
+      "afterSHA256Bytes": "2d8db29bcc41de05655f780d9e8e8b5facf8f2d8585341ed511f10a738b00b53"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "new": false,
+      "beforeSHA256Bytes": "9717dbc8dfb106e1b2674e8b6c57b5f288f8a788fb78aab97bfaa0e1f3410c5c",
+      "afterSHA256Bytes": "94c9f2a35a129c5d62fdbaf3b96e7801b9eab33534942ee3ba24b8c2b2b531ed"
+    },
+    {
+      "path": "desktop/tools/extract-space-overview.py",
+      "new": false,
+      "beforeSHA256Bytes": "108296e682ead7e9be8f2b3b865952d387fc3826ea38c887f13e2e82330d94b5",
+      "afterSHA256Bytes": "f7ff7e10d515585675325c1cdf85443ea8516c8e7f4cf3a21a26256705a82044"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "new": false,
+      "beforeSHA256Bytes": "724b8cb04e01ce9c6dc4f727783704fd332f65526ab300716b1d211295fc5298",
+      "afterSHA256Bytes": "ee32d8560212628ac434d3c4ac876362dcf312055149b5cd4985aaf93d7c543e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayWindowsPlatform.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "f914539bdd5339ae236a9f974e6611b23664fbe233021e7e33f74c5b976b4be9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayPlatform.kt",
+      "new": false,
+      "beforeSHA256Bytes": "fb41fa8a39abf94c807965847f400647a9cafdf9924af0d887a89d9074f802f8",
+      "afterSHA256Bytes": "0641cd26582c3fd2194942d54088d2b1b79d15d33686d94795aecb8bf762d6ff"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-player-full-controls.py",
+      "new": false,
+      "beforeSHA256Bytes": "aa33a61c40c51c5a5fef72741393e585ce763f3b2775e29dae4cfc3c1f8e4ba5",
+      "afterSHA256Bytes": "9623617ec421c74b390aeb424191b2270bf0e7c8b3fe3578c609f7da8460ef51"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-state-core.py",
+      "new": false,
+      "beforeSHA256Bytes": "2609fab12b3a299db420ef9392a3c8fc7b91e142277e9831c711cfd674d3ae31",
+      "afterSHA256Bytes": "6587b8596005fd5f16e543625d91de17f95c046d41b321d9b9d55d1e8246812e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopCastDialog.kt",
+      "new": false,
+      "beforeSHA256Bytes": "a060183d34791c844f0b8e1353bc8613b7834474b4001cab1e5efdb707879be5",
+      "afterSHA256Bytes": "6d169325185d60ff4655e7011d826bf2f63b77ecd7de9c49a5c9e3539ab1fa5d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "new": false,
+      "beforeSHA256Bytes": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "afterSHA256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopDiagnostics.kt",
+      "new": false,
+      "beforeSHA256Bytes": "76f9d6a63381cdc535c4ba1c2bc124e4ea5363996f78493b66aeff6c6fa5e066",
+      "afterSHA256Bytes": "9f5f7319648440d1ca3152ca828d790234423a503938e490d0f8d86b44323ad6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "d3ad8c653c91cd984b42c42d007570e2f3c6012fcc5a8d6be7f7d5b6bef6dfd6"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "new": false,
+      "beforeSHA256Bytes": "da0c0aa9245aad12f69a499067a915806639fcf43d67b9ef3df7d2ee14b94cb8",
+      "afterSHA256Bytes": "209ee1379c97715e55519ed0d0a4af831b1e5254b9559f009d51d2153049b4ae"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "new": false,
+      "beforeSHA256Bytes": "da809850bd185bb62ec5201983535881e52e25b58c96fbc313397d528cc968ad",
+      "afterSHA256Bytes": "15505043ce253f6d85f20ccba83dbc61dd96c86ad4b314cbf390e1f17d50abf3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDownloadBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "9ca39d08f902a60c53989bd6b683b9baacbd20b9d5301f1f340976b1ae5e54a3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadManager.kt",
+      "new": false,
+      "beforeSHA256Bytes": "625fae9a5e66e7fcb9a27820506fa2788da54f667864dbb3917dc026b7cd78b3",
+      "afterSHA256Bytes": "fb0f9399878577ccacea5ffa3b12c55b8c9da8de4c171bc765bc0a05c58094c4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/download/DesktopDownloadModels.kt",
+      "new": false,
+      "beforeSHA256Bytes": "2e63eed6d04156a06cd51cf7003d9613e47b10d1766c33d5a175d99c66497ada",
+      "afterSHA256Bytes": "c10bb57b4c50268eb6a51e34eb78720e03d672e49f66178f961489a816ae9725"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "new": false,
+      "beforeSHA256Bytes": "a7df2a25ccf84435488fe3362c00fb648bd3e20012205b0354ab681615accfc8",
+      "afterSHA256Bytes": "0154005969ada36d1b6e77c6f459208365d6b2434d01e0e0c5a8df53e50f1db7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "new": false,
+      "beforeSHA256Bytes": "c2e6e731c9430c181e37824e47e4f83d43064afa549abee326c98630b3174976",
+      "afterSHA256Bytes": "0cd8c25e57186937478524318f99b2698ed25aef6b0ba1ef0a0dea60c29f2396"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDownloadResolver.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "1c8ac1abe750239949b187cf2cd059a1f6ede321c3ea270d623185b9fafaefb1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitBlockedUpsBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "d05db3f3b0e5cd8b4c6bcb723ff387e8fd7b361a0900a2aed8717f51455f7d09"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "new": false,
+      "beforeSHA256Bytes": "a403844ef6f92a94624557f084f9ec38e389ad4a7a5baad76ebc881434132a64",
+      "afterSHA256Bytes": "6d026a94333f63a6c923c90c75282cab299115632fdbe6d237eab2f264e36eaa"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+      "new": false,
+      "beforeSHA256Bytes": "dc74e4cd2706670106779db1d074e3c6aed763f5e12cd1b785c9d6b24093fd38",
+      "afterSHA256Bytes": "c25db8f8e2919fdee968dcc1a405ee2b7f721c2674e5b6e31664831da62e1a85"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoConsumedViews.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "06f9377ae93086b0bc1443e38cc3a2f16723080a0da5016b8f7cab42f9aec5b8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoMiniBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "c3c30b4fae9ddf13fcd88beebc41e7b7bf7d9cab34be5ff0fdc34ce7fd0b63bb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaylistBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "115f255b44458ed7bfd974f60d17d1b53215273f57900658b2b50a43a2d9ca34"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopUnifiedPlaybackFacade.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "cd7d3f1e7a391e72081663144cb405bce2d50d0b9ad32d609f87576ce7e89198"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-playlist.py",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "2857097ba9bdb5ef9faef051e63e51c730751c34604a638f4af5b8c98f1ac89c"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-detail-full-units.py",
+      "new": false,
+      "beforeSHA256Bytes": "450589b84d3118160cde6ae14ef30ad6e56e1afc38bcb53fc179d3e964537f8b",
+      "afterSHA256Bytes": "f9aa16b409441ba8a2dedf288ad8af19f05f15d6c9650d389cae726aed17f52b"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-detail-holder.py",
+      "new": false,
+      "beforeSHA256Bytes": "504e1390d84e04e3e1678ff1e6aff44b26a5cb47503fb2e9511d31dd8ff02bbb",
+      "afterSHA256Bytes": "3545cf9da80900e701c0a49259e5413462c7fdebf6a75ebfb55608269c229be8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopFavoriteQueueBridge.kt",
+      "new": false,
+      "beforeSHA256Bytes": "346dfe246c92ccc6cfa9a53c087920b4a00eefb648f20716f612f05806011549",
+      "afterSHA256Bytes": "7514cdc1c0b3ccdc78a19127d59ea8ee2bdea5f0c023dd3455c3c4ccb817dca6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopStoryPlaybackHost.kt",
+      "new": false,
+      "beforeSHA256Bytes": "65d0b72b02c3dabfdfa2224340d3c3dc2b620f662257bed3a316d3cc7d97ee48",
+      "afterSHA256Bytes": "79be44422c6ecd4680c661d3cf701c407444134ba6f98b8b9a1774b351e42a6f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDanmakuBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "6207b38097df7c048d3b68eaa0c6ae9812ee0298abe4224936695e59b59e7779"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "new": false,
+      "beforeSHA256Bytes": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24",
+      "afterSHA256Bytes": "4af9925d9ee6efa8710b94c5d7c5dcb7cf17fc2b6f1ad98bfae2286d2c0630d7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "new": false,
+      "beforeSHA256Bytes": "0074b5ef68ed46bdca12341e1a1c18fdb4ede5ba2ddf27a682d767a0ce1ff027",
+      "afterSHA256Bytes": "e5af6e1c6ba9d194b21f27542b5f7f74ec01708471a1cc751da412ac40a88424"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "new": false,
+      "beforeSHA256Bytes": "ee4235dbcb628fe160295650be9c2eb218211e75f06fa0d7fe0dc7e7223cd45c",
+      "afterSHA256Bytes": "a1f9a7e93a06a7b4196c9ffd9dfe7e63592858b1e9727689d8c366ac63c5882d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuWindowLoader.kt",
+      "new": false,
+      "beforeSHA256Bytes": "32ddbf4ce5e90753902c52eefc99ceac7096b3ff38d17091e715a71244243d54",
+      "afterSHA256Bytes": "1d6073d031171c3663d2862be3c1d33e8df03c21b5581722130b105c864ddc50"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderMiniBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "b3f56ecc15ed58592094910494840cea0ba4f30e752d8e0dde21789e0aa548df"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopTodayWatchFeedbackWriteBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "662d707c3f176f5a7499e931ff4cc7803ed7d1f048882ae3d34da97700921e6c"
+    },
+    {
+      "path": "desktop/tools/extract-discovery-platform.py",
+      "new": false,
+      "beforeSHA256Bytes": "55d8329dd359c6c4b5304f7584cd6c53c05b0c00c68bae6fb06cef1a8dbc298b",
+      "afterSHA256Bytes": "7078a93fbe62d3b28528341a925067cdfb31664987a3d1bfd5ed68f916db452e"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "new": false,
+      "beforeSHA256Bytes": "ab1413ae2215001453b88dd65dfc88d1e39c4c7dec23f3b6a6f3cc7b5607e31a",
+      "afterSHA256Bytes": "0d76f5133516781f31c918334ccaef0a72fcb9c13813525a6a1fd01bfee18b79"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoContentBindings.kt",
+      "new": false,
+      "beforeSHA256Bytes": "8fb52219b4f9dc4a4f703a9ce8700f0edcb3830b81f4b8ec3879c7b8f26ec1f9",
+      "afterSHA256Bytes": "d316f5e37ebd825f81681ce3c61dcf3e91b40030d06b90f3e2fe0b9ae90d2b7f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "new": false,
+      "beforeSHA256Bytes": "26f125c5cfd743383d8eb1b262051f73aaf366ed5d888ce9f205df3d9ea55ca8",
+      "afterSHA256Bytes": "90ffc7ea1ec15122a7e3f43b04f02fea65d69489754a69edcff57d53238539db"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-home-viewmodel.py",
+      "new": false,
+      "beforeSHA256Bytes": "8fbf5e2ef1c635284500df3999122134b4377f088eb6012af30e901ea671c1e0",
+      "afterSHA256Bytes": "3368e456d064942db043b18a8dd23df64cd8911b249b28eaae6f97313a2e36e5"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootStoryFeedBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "f799e08c7dd6c389eca84ed0f6afaf02beea318ba3788675c4a41954d677caa1"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-root-story-feed.py",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "1faac9f94b91d3fe32d3d6b304fc43a54f55355d82d43f4674d1ea1fdaa97dbb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootPortraitRendering.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "be3a5e5da0b303c57bd2d0a49596ecaadd0378f671cb428e1cfdc306b72f9c30"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+      "new": false,
+      "beforeSHA256Bytes": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48",
+      "afterSHA256Bytes": "4637b1fd0798dcd94aaa06d1e8ed370a1d23989d64a1ee26a24b427196480904"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNowPlayingOwners.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "d54c8e96e9350812cd80abfc302921acf7268040070146006b7c78643e9c3016"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+      "new": false,
+      "beforeSHA256Bytes": "eba3ca62fe189d6d95ef88587df3d0d4e5db5a139a608ae5ac36c4b6df4022ef",
+      "afterSHA256Bytes": "ec434a545aa72ad1ac9ffe303192a6b5c1d078b126eb8d928d9b11af7a535051"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+      "new": false,
+      "beforeSHA256Bytes": "017f690836d092e283dd59052e30118490b2c6e005573e27147c750cb5a4fecc",
+      "afterSHA256Bytes": "e75770f242357dc78bfef01095c1f587a01766f69b25c517a5b842f9fa3b6564"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-frosted-audio-renderer.py",
+      "new": false,
+      "beforeSHA256Bytes": "21155d42664317be58b33e31ec660bb7cb7a3f740259490225e50978c9aa8b15",
+      "afterSHA256Bytes": "4d63edfb5a15fb9e86d42002ce89c36c3d47bf26afb14dcff947408bc7f248a1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyNowPlayingPosition.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "60bc0b701acf41a40fdd571e94f7f5d0229205abfc8a68c54bf5bc7c7766ad24"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "new": false,
+      "beforeSHA256Bytes": "994a5ca9c332baf6f6973cf65e433188f8330a5ca6c29c4a0e5bf41bd6c4664e",
+      "afterSHA256Bytes": "20fdc31ebb3da3bbb846a5080db7f0b5a27c6bd477a19a1723b3cf4868b92172"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "new": false,
+      "beforeSHA256Bytes": "abe6c706450cdb3ba3364e50b90dc78e146eb1e5ce032f2d5294225606c3893c",
+      "afterSHA256Bytes": "96ec902a51a998bb033b5fa4f699b2764158d370e5f0a2d94db4b3ac5623d547"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "new": false,
+      "beforeSHA256Bytes": "72fb8c0affd99cd66688cae9544d444aaacf59c20bb6e8eb351101838bf1fb65",
+      "afterSHA256Bytes": "f4431f015fc7c7b60b13d214bff20e15df6bd1bded72d786020ce91f1232db7f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeCarrierRoute.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "bc0c06842d7a7965ed2ce6f6adb18c0b37ce4a6f87d9b723f40a31ffbd0d7f59"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSubtitleModeBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "4f94e545736598b4808a6ecfce814d39f72be82cfe7e5907668ce4f2c4093b7a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoAppResources.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "a667e4945734f350285664d643926f8a48786b4c92dbfabf112fabb694a56b0c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "1ba569342bb32d622b2a84dd3a0f04d205ff4c3c0fd069935162cd19c8be2940"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPhysicalLeaf.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "f626d1335573fb53c5900df2a9a730142c0669e657d17218db35c415afa478b6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "5c94c0a3f06d91b2693536434224243aa55603eab453d78ecaf321aa36b89299"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "e57cba6d089ffc73020ddf6716ef35eb7f149e7df52a1306e1c288fe07df48fe"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootFactory.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "a091867b7afdd678b58af62c7947338f87af71b4624b01a0a8e831658e0e007f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootHolderPlatform.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "0354737982039c76140ee4f3cbd2f7c74f763c137b38de9f0673d5d59f554606"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootMusicBindings.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "f8fc363042710c69425ac422c583a4263f4615209432a445f1f524d12476d1fd"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootNowPlayingBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "0f7fbef4f9a297487b3e1a8f720a31d5f7a1213471604f08a7da0015b1403303"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootOwnerSlot.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "8be2a8ef5995c7bae6d4d230d633ab8ed132073eab84a8f839492b5ca7efa44d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootRouteBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "53426e7d0bfa24ba7347d952d1fce9b02e7d9ae74bc2d98ac1d0d7a86b112774"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootRuntimeBinding.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "7b6bccf8ee7aa5bc8d986669a4662b758acf75c0a8317d14edb01079811cded3"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootSettingsBindings.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "28adfa299b12207d4bbc660ac4b1c108a789d03a7128e30e47071f79b277922f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "2b35ee2f419e731a2fd66bf0d3a91850141ddb5373b0f608c848fccc0b5815a4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowEnvironment.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "b027274fd7424bcc52c836c40f09c682a5240c0a8b5606c276241bcef695ebb1"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "80cb73807e6884ebad3efaf9cf58635eac867ded2493da44afaca3797336a053"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellMount.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "fa820b5b0bc3b2941d2b6451105c612199a0fce1642fc2d00335f0383bc61e17"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellOwner.kt",
+      "new": true,
+      "beforeSHA256Bytes": null,
+      "afterSHA256Bytes": "657d030f00be236e758cb1b0733fe560579689f62d517d18fa50cebe6958cd29"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+      "new": false,
+      "beforeSHA256Bytes": "1f5677b8658124703e6491838ddd976dddd580d3d130a446e1e98f9b1c5aa03c",
+      "afterSHA256Bytes": "b1d304dd5924a3a1b4af1e31ebe4f73b2ef08728cbd1289e1d927abbcf7fb4a8"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+      "new": false,
+      "beforeSHA256Bytes": "2b33a3c46c0e28d41542a2b54cba4180c7e41a7b89c7ab29bdbe14c11a3d65d0",
+      "afterSHA256Bytes": "597d1d2e1c835ab9b862547a3049601f535167219796bbc24694e6173de5fc88"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+      "new": false,
+      "beforeSHA256Bytes": "9d069d23e7afeffe5c13115e71c728811c6269f1706156be5df5c5206a003405",
+      "afterSHA256Bytes": "a2ac9a3bb30600b8ffa4270b2306f2f9e70a7f4a384fdecb0072f063ad697279"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-root-home-navigation.py",
+      "new": false,
+      "beforeSHA256Bytes": "22ebdd36573b1c0d8daa460d37d3b1b36fc9d89d21bf5390dc170b622e8c7588",
+      "afterSHA256Bytes": "62666a8161f409fdb6fd3e7d20310f7308060f8db7f931a923a792cb6d727332"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+      "new": false,
+      "beforeSHA256Bytes": "087e897d542ccaa975c2615eb470a401a0813959bc960c7daefb952c486f1756",
+      "afterSHA256Bytes": "e4bf3d01c4e937288a705581723b0fb42eea7c90e849b720d94880323772797d"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+      "new": false,
+      "beforeSHA256Bytes": "e356a0b19a5f18376c6c86e0693a38e420a553292953287a6c1b7de596309ced",
+      "afterSHA256Bytes": "5e9d823956e6c94e4bcce7fd9ca7966583072968dc7ef0e33db0fb62819eefad"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "new": false,
+      "beforeSHA256Bytes": "1189b7351ba2e4c5e402388c135d0e40f2cad812f859c0b61d2a746e1662ab7a",
+      "afterSHA256Bytes": "9484f6cacc3d20863805eaa06738809f259fd58a5804764e1d2cc2f9415a15f9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "new": false,
+      "beforeSHA256Bytes": "72a5ab184155346fa3f12f1d4a3882bce04b36ead89b11f7d462e7b027c12e92",
+      "afterSHA256Bytes": "c5d982f9442dace7e93fac4792b248d65dcd3f3d6c3e5051e9fae3401e4b2381"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "new": false,
+      "beforeSHA256Bytes": "bbc99f260a799626efb14603e06c90a35da14a1ef745dfe614ab397fca1f8a86",
+      "afterSHA256Bytes": "b2bf0dce712f3ffa932dcbbb37a2b369fd231c4c11a4f5ef179789fdc66f58ec"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "new": false,
+      "beforeSHA256Bytes": "4fed8d12bd67414a3baec64239933adc71ba4896ddbda614be053ddfb468beec",
+      "afterSHA256Bytes": "50f1c8090e910fa96e74c4185ee109d215e687acbbf7ef08ee014be4cf2fe30f"
+    }
+  ]
+}

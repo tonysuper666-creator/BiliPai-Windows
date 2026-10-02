@@ -26,6 +26,24 @@ internal class DesktopPlaybackCache {
         while (entries.size > 80) entries.remove(entries.keys.first())
     }
 
+    /** Original no-quality get: newest valid entry for this video. The same
+     * existing LRU/TTL remains sole authority; receipt revision excludes other
+     * selected-account credentials. No source data is copied or cached here. */
+    @Synchronized fun getForVideo(epoch: Long, revision: Long, bvid: String, cid: Long,
+        now: Long = System.currentTimeMillis()): Entry? {
+        var candidate: Entry? = null
+        entries.toMap().forEach { (key, entry) ->
+            if (key.accountEpoch != epoch || key.authorizationRevision != revision ||
+                key.bvid != bvid || key.cid != cid) return@forEach
+            if (now < entry.storedAt || now - entry.storedAt > TimeUnit.MINUTES.toMillis(10)) {
+                entries.remove(key); return@forEach
+            }
+            val current = candidate
+            if (current == null || entry.storedAt > current.storedAt) candidate = entry
+        }
+        return candidate
+    }
+
     @Synchronized fun invalidateVideo(epoch: Long, bvid: String, cid: Long) {
         entries.keys.removeAll { it.accountEpoch == epoch && it.bvid == bvid && it.cid == cid }
     }

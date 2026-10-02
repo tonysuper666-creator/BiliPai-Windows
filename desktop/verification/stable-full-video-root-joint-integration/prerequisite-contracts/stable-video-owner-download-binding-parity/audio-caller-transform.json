@@ -1,0 +1,12 @@
+{
+  "producer": "desktop/tools/extract-upstream-video-full-owner.py",
+  "producerBaseSha256LF": "40de3ae610f65b941059a0759f66c2655b7e6e05c0114636838f3038eae49a11",
+  "transform": "download-audio-selected-transform.py",
+  "selectedBefore": "        val started = environment.download.addTask(task)\n        if (started) {\n            toast(\"已开始下载音频\")\n        } else {\n            toast(\"该任务已在下载中或已完成\")\n        }\n",
+  "selectedAfter": "        // Fixed click publication; never retag this raw audio URL with a later load.\n        val expectedDownload = environment.plugins.capturePlaybackDispatch()\n        if (expectedDownload == null) {\n            toast(\"无法获取音频地址\")\n            return\n        }\n        environment.invocations.launch {\n            val stillCaptured = { environment.plugins.isPlaybackDispatchCurrent(expectedDownload) }\n            if (!stillCaptured()) return@launch\n            val started = environment.download.addTask(task, stillCaptured)\n            if (stillCaptured()) {\n                if (started) {\n                    toast(\"已开始下载音频\")\n                } else {\n                    toast(\"该任务已在下载中或已完成\")\n                }\n            }\n        }\n",
+  "inputGeneratedSha256LF": "dff8feb5fa8c207ad633dc18b23b877b4e6438bf325d1fc336569491d9b70ab1",
+  "outputGeneratedSha256LF": "84d453630393f97d234c866160258ac53bb07ec87bc44e48fb8ebc309255921c",
+  "composeBefore": "  body=captured_media_byte_consumer_delta(recipe['output'],body)\n",
+  "composeAfter": "  body=captured_media_byte_consumer_delta(recipe['output'],body)\n  body=captured_audio_download_delta(recipe['output'],body)\n",
+  "install": "append only the transform declaration and this one composition anchor; do not replace the frozen parent producer"
+}

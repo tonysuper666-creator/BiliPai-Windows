@@ -138,6 +138,10 @@ internal class DesktopOriginalRootSessionKeys {
         ['shouldDeferBottomBarRevealOnVideoReturn','shouldDelayBottomBarRevealAfterVideoReturn','resolveVideoReturnBottomBarRevealDelayMs'],
         'com/android/purebilibili/navigation/DesktopOriginalRootPlaybackChromePolicy.kt',
         'package com.android.purebilibili.navigation\n\n')
+    selected('app/src/main/java/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt',
+        ['shouldEnableVideoDetailSharedTransition'],
+        'com/android/purebilibili/navigation/DesktopOriginalRootPlaybackHolderPolicy.kt',
+        'package com.android.purebilibili.navigation\n\n')
     # Reuse the already emitted full original policy in home-full-card; one top-function owner.
     stale_chrome = safe(out / 'com/android/purebilibili/core/ui/transition/DesktopOriginalRootChromeReveal.kt')
     if stale_chrome.exists():

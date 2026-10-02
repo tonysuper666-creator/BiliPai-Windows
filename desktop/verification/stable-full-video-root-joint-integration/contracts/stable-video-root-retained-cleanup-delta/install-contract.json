@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "requiresFrozenParentManifest": "4cacb53b6d15e036edde4fd60828e1f98a3ea7f6120d232c6e221dbf4ac0cd0d",
+  "order": "preflight06 prerequisites -> frozen313 exact contract (skip two same-pin already-applied Assets anchors) -> this delta",
+  "copyWhitelist": [],
+  "exactHunks": "exact-hunks.json",
+  "exactHunkCount": 4,
+  "targets": [
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellOwner.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellMount.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt"
+  ],
+  "wholePreparedFilesInstallable": false,
+  "registryDelta": [],
+  "gradleDelta": [],
+  "preservedParentArtifacts": 313,
+  "reviewOnlyAfterSources": true,
+  "compiledFourSources": true,
+  "compiledClasses": 325,
+  "acceptedProductRuntime": false
+}

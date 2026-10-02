@@ -60,6 +60,35 @@ class DesktopBlockedUpRepository private constructor(private val repository: Des
         }
     }
 
+    /** Exact original local-first relation operation with captured IO publication.
+     * Local callback performs its own same-Store CAS outside Root admission. */
+    internal suspend fun blockUpWithCapturedLocalWrite(mid: Long, name: String, face: String,
+        relationSource: BlockedUpRelationSource, expectedSessionEpoch: Long,
+        assertRequest: () -> Unit, writeLocal: (BlockedUp) -> Unit,
+        ownedApi: BilibiliApi, ownedCsrf: () -> String?, ensureOwnedSession: suspend () -> Unit): BlockedUpWriteResult =
+        withContext(Dispatchers.IO) {
+            require(mid > 0)
+            mutationMutex.withLock {
+                ensureEpoch(expectedSessionEpoch); currentCoroutineContext().ensureActive(); assertRequest()
+                writeLocal(BlockedUp(mid = mid, name = name, face = face))
+                sync(mid, true, relationSource, expectedSessionEpoch,
+                    { assertRequest(); true }, ownedApi, ownedCsrf, ensureOwnedSession)
+            }
+        }
+    internal suspend fun unblockUpWithCapturedLocalWrite(mid: Long,
+        relationSource: BlockedUpRelationSource, expectedSessionEpoch: Long,
+        assertRequest: () -> Unit, writeLocal: (Long) -> Unit,
+        ownedApi: BilibiliApi, ownedCsrf: () -> String?, ensureOwnedSession: suspend () -> Unit): BlockedUpWriteResult =
+        withContext(Dispatchers.IO) {
+            require(mid > 0)
+            mutationMutex.withLock {
+                ensureEpoch(expectedSessionEpoch); currentCoroutineContext().ensureActive(); assertRequest()
+                writeLocal(mid)
+                sync(mid, false, relationSource, expectedSessionEpoch,
+                    { assertRequest(); true }, ownedApi, ownedCsrf, ensureOwnedSession)
+            }
+        }
+
     suspend fun importBlockedUps(text: String): BlockedUpImportResult = withContext(Dispatchers.IO) {
         currentCoroutineContext().ensureActive()
         store.import(parseBlockedUpShareText(text))

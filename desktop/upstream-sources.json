@@ -131,7 +131,8 @@
       "path": "app/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt",
       "sha256": "fb11abc7e01d02c977250ce978a099bdfcdb3a9048ad0f47fda9fb1e06d9b62e",
       "features": [
-        "data-models"
+        "data-models",
+        "stable-video-root-story-feed"
       ],
       "mode": "direct"
     },
@@ -152,7 +153,9 @@
         "home-protocol-platform-reference",
         "live-home-list",
         "profile-main-original",
-        "video-owned-primary-token-refresh"
+        "video-owned-primary-token-refresh",
+        "stable-tablet-owner-space-original",
+        "stable-video-root-story-feed"
       ],
       "mode": "api-extract"
     },
@@ -478,7 +481,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadTask.kt",
       "sha256": "8a018fe4a83eae2690645c0fef92bc23b0482429bffb90a252d8b5a5581dae15",
       "features": [
-        "source-parity"
+        "source-parity",
+        "stable-video-owner-download-binding"
       ],
       "mode": "direct"
     },
@@ -547,7 +551,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadManager.kt",
       "sha256": "f1c78637c9a13b99e70a7732b6fd3836712784628c1903539b34de5b57817c64",
       "features": [
-        "source-parity"
+        "source-parity",
+        "stable-video-owner-download-binding"
       ],
       "mode": "policy-extract"
     },
@@ -622,7 +627,8 @@
         "comments",
         "stable-danmaku-list-menu",
         "stable-danmaku-settings-panel",
-        "stable-web-mask-parity"
+        "stable-web-mask-parity",
+        "stable-video-owner-danmaku-send"
       ],
       "sha256": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5"
     },
@@ -841,7 +847,8 @@
       "mode": "extracted",
       "features": [
         "listen-video",
-        "lyrics"
+        "lyrics",
+        "video-full-owner-unified-playlist"
       ],
       "sha256": "a6a884fffc8d045609da0ac745d7376ec68c5237a2b4dae64e7a6c578240bd80"
     },
@@ -1559,7 +1566,8 @@
       "features": [
         "plugins",
         "stable-danmaku-list-menu",
-        "stable-web-mask-parity"
+        "stable-web-mask-parity",
+        "complete original neutral local-item apply builder and same-document initial local injection"
       ],
       "mode": "extracted"
     },
@@ -1587,7 +1595,8 @@
       "features": [
         "discovery",
         "plugins",
-        "home-viewmodel"
+        "home-viewmodel",
+        "stable-today-watch-feedback-io"
       ],
       "mode": "policy-extract"
     },
@@ -1613,7 +1622,8 @@
         "stable-video-repository-core-ports",
         "stable-video-state-core",
         "stable-weekly-series-parity",
-        "weekly"
+        "weekly",
+        "stable-video-overlay-windows-platform"
       ],
       "mode": "policy-extract"
     },
@@ -1774,7 +1784,8 @@
         "stable-video-player-full-controls",
         "stable-video-player-section-full",
         "stable-video-tablet-original",
-        "stable-video-root-effects"
+        "stable-video-root-effects",
+        "stable-video-owner-download-binding"
       ],
       "mode": "policy-extract"
     },
@@ -1782,7 +1793,8 @@
       "path": "app/src/main/java/com/android/purebilibili/core/store/TodayWatchFeedbackStore.kt",
       "sha256": "c5a13d5bed751c048d3ec872e1a6a82fc418571f1403aa0723c1bb433843d1e9",
       "features": [
-        "discovery"
+        "discovery",
+        "stable-today-watch-feedback-io"
       ],
       "mode": "platform-rewrite"
     },
@@ -1800,7 +1812,8 @@
         "stable-video-detail-full-units",
         "stable-personal-following",
         "stable-original-video-full-owner",
-        "desktop-original-video-owner-assembly"
+        "desktop-original-video-owner-assembly",
+        "stable-tablet-owner-space-original"
       ],
       "mode": "policy-extract"
     },
@@ -2254,7 +2267,9 @@
         "subtitle",
         "watchdogs",
         "stable-original-video-byte-cache-consumers",
-        "desktop-original-video-owner-assembly"
+        "desktop-original-video-owner-assembly",
+        "stable-today-watch-feedback-io",
+        "stable-video-owner-download-binding"
       ],
       "sha256": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae"
     },
@@ -3187,7 +3202,8 @@
         "space",
         "space-contributions",
         "space-overview",
-        "stable-video-tablet-original"
+        "stable-video-tablet-original",
+        "stable-tablet-owner-space-original"
       ],
       "sha256": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a"
     },
@@ -3241,7 +3257,8 @@
       "features": [
         "space-contributions",
         "space-overview",
-        "stable-favorites"
+        "stable-favorites",
+        "stable-tablet-owner-space-original"
       ],
       "sha256": "fad17890cf2f8a2d95fc80a706c6e66011dd992df3511d77ef957b1d90ed2c8c"
     },
@@ -4422,7 +4439,9 @@
       "mode": "policy-extract",
       "features": [
         "home-full-card",
-        "stable-root-home-navigation"
+        "stable-root-home-navigation",
+        "root-home-navigation",
+        "video-holder-root-mount"
       ],
       "sha256": "e0165d4a922cdd613fcda87100f8344f572ba8e5afd22ce6c1c603eba8fec758"
     },
@@ -7099,7 +7118,8 @@
       "mode": "extracted",
       "features": [
         "stable-danmaku-list-menu",
-        "stable-web-mask-parity"
+        "stable-web-mask-parity",
+        "complete original foreground-recovery policy and sync action enum"
       ]
     },
     {
@@ -8461,7 +8481,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
       "sha256": "73ccef84e24a91e6b907dcd617e1a7f87d7698d5042ccedb1437e7859d02ae10",
       "features": [
-        "stable-video-player-full-controls"
+        "stable-video-player-full-controls",
+        "stable-video-overlay-windows-platform"
       ],
       "mode": "policy-extract"
     },
@@ -9199,7 +9220,8 @@
       "mode": "selected",
       "features": [
         "stable-video-fullscreen-pager",
-        "stable-original-video-byte-cache-consumers"
+        "stable-original-video-byte-cache-consumers",
+        "stable-video-portrait-platform-binding"
       ]
     },
     {
@@ -9827,6 +9849,25 @@
         "original-video-progress-manager"
       ],
       "sha256": "878095967b5c71e2b5e31f4960e59111ac58939d2a6ae93619dab8bdc1cbb8c5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/player/AudioNowPlayingSession.kt",
+      "sha256": "8807646bb60de283fc481df7071baf4648bd4db0651deacab1c9f800fd28744c",
+      "mode": "policy-extract",
+      "features": [
+        "stable-frosted-audio-renderer",
+        "stable-original-now-playing-owner"
+      ],
+      "note": "Complete original two-flow UI presentation only; sole existing Frosted producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt",
+      "sha256": "738f08d77fc7ae0332afe46bde5d2a8a7ad0fdd66e88d28591399d42c9840c31",
+      "mode": "policy-extract",
+      "features": [
+        "stable-video-root-story-feed"
+      ],
+      "note": "Complete original getStoryFeed selected body; sole new Story feed protocol producer."
     }
   ],
   "featureCoverage": {

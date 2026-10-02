@@ -274,8 +274,11 @@ import com.android.purebilibili.feature.video.ui.overlay.PlaybackUserActionType
  resolverA,resolverB=function_range(t,'resolveCastPlayUrl')
  resolver=t[resolverA:resolverB]
  resolver=adapt(resolver,'withContext(Dispatchers.IO) {','''withContext(Dispatchers.IO) {
+    context.videoOverlay.withCastSource(currentAid, cid) {
     kotlinx.coroutines.currentCoroutineContext().ensureActive()
-    context.requireCurrent()''','Reject canceled/retired cast resolution before existing transport')
+    context.requireCurrent()''','Reject canceled/retired cast resolution and keep one captured native source before existing transport')
+ resolver=resolver.replace('return@withContext CastMediaResolution', 'return@withCastSource CastMediaResolution')
+ assert resolver.endswith('}');resolver=resolver[:-1]+'    }\n}'
  assert resolver.count('}.getOrNull()')==2
  resolver=resolver.replace('}.getOrNull()','''}.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }.getOrNull()''')
  resolver=adapt(resolver,'    if (tvData != null) {','''    kotlinx.coroutines.currentCoroutineContext().ensureActive()
@@ -318,6 +321,12 @@ import com.android.purebilibili.feature.video.ui.overlay.PlaybackUserActionType
  a=t.index('                        val clipboard = context.getSystemService');b=t.index('                        com.bilipai.desktop.ui.DesktopOriginalPlayerFeedback.makeText',a)
  old=t[a:b];new='''                        context.videoOverlay.copyText("BiliPai Player Diagnostics", exportDiagnosticReport(null))
 ''';ADAPT.append(dict(label='Same Root actual clipboard ownership',before=old,after=new));t=t[:a]+new+t[b:]
+ copyA=t.index('                onCopyReport =')
+ copyB=t.index('                onDismiss =',copyA)
+ copy=t[copyA:copyB]
+ copy=adapt(copy,'context.videoOverlay.copyText("BiliPai Player Diagnostics", exportDiagnosticReport(null))','if (context.videoOverlay.copyText("BiliPai Player Diagnostics", exportDiagnosticReport(null))) {','Real Windows clipboard acknowledgment gates original success feedback')
+ copy=adapt(copy,'                        ).show()\n                    }','                        ).show()\n                        }\n                    }','Close real clipboard success branch without changing original feedback body')
+ t=t[:copyA]+copy+t[copyB:]
  emit(rel,t,rel,'complete-original-overlay-all-menus-cast-reload-diagnostic-drawer-real-mpv-platform-adapt')
  rel='feature/video/screen/VideoDetailPlatformPolicy.kt';t=read(rel)
  emit('feature/video/screen/DesktopOriginalPlayerSystemBarInsetPolicy.kt','package com.android.purebilibili.feature.video.screen\n'+selector.declarations(parser,t,['shouldApplyStatusBarPaddingToVideoPlayerChrome','VideoDetailSystemBarsVisibilityPolicy','resolveVideoDetailSystemBarsVisibilityPolicy'])+'\n',rel,'complete-original-inset-policy')

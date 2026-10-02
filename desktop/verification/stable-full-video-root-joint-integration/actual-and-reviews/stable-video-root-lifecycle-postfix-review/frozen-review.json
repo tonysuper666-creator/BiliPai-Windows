@@ -1,0 +1,78 @@
+{
+  "schema": "source-only-review-v1",
+  "blockingCount": 0,
+  "rawCount": 14,
+  "artifacts": [
+    {
+      "path": "inputs/author-compile02-log.txt",
+      "sha256Bytes": "89e2dd4bac8d1e9b942dc5e86fa5865691b0e97853e6ae12a3d344cf407a92f3",
+      "size": 4993
+    },
+    {
+      "path": "inputs/author-compile02-pins-after.json",
+      "sha256Bytes": "cd6fc8aa7fe45295dfab02f66f7d6475ef3f40368e1cc83d602a4c2fa4797f19",
+      "size": 40825
+    },
+    {
+      "path": "inputs/author-compile02-pins-before.json",
+      "sha256Bytes": "cd6fc8aa7fe45295dfab02f66f7d6475ef3f40368e1cc83d602a4c2fa4797f19",
+      "size": 40825
+    },
+    {
+      "path": "inputs/author-compile02-result.json",
+      "sha256Bytes": "27d4f8bd5668b772ca801cb85515923cc7450cdb4fd4d4244c7f70471a4fdad4",
+      "size": 179
+    },
+    {
+      "path": "inputs/DesktopHomeRetainedEntry.kt",
+      "sha256Bytes": "8cda26afece27cf4f63b496bb976ee28b6a773ba793782ecd4d29f9b53bb2d27",
+      "size": 9038
+    },
+    {
+      "path": "inputs/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "63172c96a60460c5e34a1643028b3278ee56e090fb277e0ab834f0dd6e3f4c4d",
+      "size": 10637
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoRootAssembler.kt",
+      "sha256Bytes": "e57cba6d089ffc73020ddf6716ef35eb7f149e7df52a1306e1c288fe07df48fe",
+      "size": 29126
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoShellMount.kt",
+      "sha256Bytes": "fa820b5b0bc3b2941d2b6451105c612199a0fce1642fc2d00335f0383bc61e17",
+      "size": 4565
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoShellOwner.kt",
+      "sha256Bytes": "657d030f00be236e758cb1b0733fe560579689f62d517d18fa50cebe6958cd29",
+      "size": 9574
+    },
+    {
+      "path": "inputs/DesktopShell.kt",
+      "sha256Bytes": "50f1c8090e910fa96e74c4185ee109d215e687acbbf7ef08ee014be4cf2fe30f",
+      "size": 150373
+    },
+    {
+      "path": "inputs/exact-hunks.json",
+      "sha256Bytes": "7494fea246a8c24b837c59bb3d017c0277c057a66ccea7065c7cb43cd2c14a0e",
+      "size": 3933
+    },
+    {
+      "path": "inputs/previous-frozen-review.json",
+      "sha256Bytes": "be29e66847afd4dabe7ca5b4c23b59fa4b168970535d4b90ce9dad3ee702fb41",
+      "size": 3914
+    },
+    {
+      "path": "prepare_review.py",
+      "sha256Bytes": "cb2cd89430db87c74e1fb9351dd42d8190f06cbd9bdd92d799eb968d4196b64e",
+      "size": 5716
+    },
+    {
+      "path": "review-receipt.json",
+      "sha256Bytes": "07decbcd4bf1b198cc7ab94b9f28180dd6ab721aefde180d2760832bef94d329",
+      "size": 9107
+    }
+  ],
+  "immutable": true
+}

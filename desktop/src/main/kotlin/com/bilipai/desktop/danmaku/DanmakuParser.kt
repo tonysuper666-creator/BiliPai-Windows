@@ -26,9 +26,12 @@ data class DanmakuComment(
     val originalElement: DanmakuProto.DanmakuElem? = null,
     val originalXmlAttributes: String? = null,
     val originalXmlContent: String? = null,
+    // Exact neutral original local item, not a fabricated server element or second list.
+    val originalLocalItem: com.android.purebilibili.danmaku.engine.DanmakuItem? = null,
+    val originalLocalInjectionPhase:Any? = null,
 )
 
-data class DanmakuDocument(val comments: List<DanmakuComment> = emptyList(), val advanced: List<AdvancedDanmakuData> = emptyList()) {
+data class DanmakuDocument(val comments: List<DanmakuComment> = emptyList(), val advanced: List<AdvancedDanmakuData> = emptyList(), val serverDisabled: Boolean = false) {
     val size: Int get() = comments.size + advanced.size
 }
 
@@ -115,8 +118,11 @@ object DanmakuParser {
         val comments = mutableListOf<DanmakuComment>()
         val advanced = mutableListOf<AdvancedDanmakuData>()
         require(segments.sumOf { it.size.toLong() } <= MAX_DOCUMENT_BYTES) { "Danmaku window is too large." }
+        var serverDisabled = false
         segments.forEach { bytes ->
-            DanmakuProto.parse(bytes).take(MAX_COMMENTS).forEach { item ->
+            val reply = DanmakuProto.parseReply(bytes)
+            if (reply.state == 1) serverDisabled = true
+            reply.elems.take(MAX_COMMENTS).forEach { item ->
                 if (item.progress < 0 || item.content.isBlank()) return@forEach
                 when (item.mode) {
                     in 1..6 -> if (comments.size < MAX_COMMENTS) {
@@ -135,7 +141,7 @@ object DanmakuParser {
             }
         }
         return DanmakuDocument(comments.sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id }),
-            advanced.distinctBy { it.id }.sortedBy { it.startTimeMs })
+            advanced.distinctBy { it.id }.sortedBy { it.startTimeMs }, serverDisabled)
     }
 
     /** Reject pathological numeric values before they reach AWT transforms; parser functions remain upstream code. */

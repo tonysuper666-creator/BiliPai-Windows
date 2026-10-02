@@ -1,0 +1,64 @@
+{
+  "families": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "baseLF": "aeee153c9df8f84756f5b64a6681b7ecee6aeb7a10b9812314282eda2fafeab8",
+      "desiredLF": "a32254d4f57a996ec1c0002814749dedaa75fb32d90ed3483618e3dbbe06edbc",
+      "hunks": [
+        {
+          "before": "    fun admitCurrentMutation(action: () -> Unit): Boolean = try {\n",
+          "after": "    /** Read-only caller identity; no new Job or request authority. */\n    fun capturedDownloadCallerJob(): Job = read { requestJob }\n\n    fun admitCurrentMutation(action: () -> Unit): Boolean = try {\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "baseLF": "a7df2a25ccf84435488fe3362c00fb648bd3e20012205b0354ab681615accfc8",
+      "desiredLF": "12c452ecbfbebef4e0b3c5c424bce5fe363149d26864ed6b82f85eaa190fbecf",
+      "hunks": [
+        {
+          "before": "    fun getVideoTask(bvid:String,cid:Long):DownloadTask?\n",
+          "after": "    /** Exact original construction result, not a cache lookup or latest-cookie retag. */\n    fun captureTask(task:DownloadTask,explicitReply:PlayUrlData?):DownloadTask\n    fun getVideoTask(bvid:String,cid:Long):DownloadTask?\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDownloadBinding.kt",
+      "baseLF": "ec64a00cb7f042081e3818dec4de2b9a501f22a5e8208111d2e267009a6aef65",
+      "desiredLF": "9ca39d08f902a60c53989bd6b683b9baacbd20b9d5301f1f340976b1ae5e54a3",
+      "hunks": [
+        {
+          "before": "    private val resolveCaptured: (DownloadTask) -> DesktopOriginalVideoOwnerDownloadCapture,\n",
+          "after": "    private val resolveCaptured: (DownloadTask) -> DesktopOriginalVideoOwnerDownloadCapture,\n    private val captureConstructedTask: (DownloadTask, com.android.purebilibili.data.model.response.PlayUrlData?) -> DownloadTask,\n",
+          "count": 1
+        },
+        {
+          "before": "    override fun getVideoTask(bvid: String, cid: Long): DownloadTask? {\n",
+          "after": "    override fun captureTask(task: DownloadTask, explicitReply: com.android.purebilibili.data.model.response.PlayUrlData?): DownloadTask {\n        assertOwned(); settings.requireCurrent()\n        return captureConstructedTask(task, explicitReply)\n    }\n\n    override fun getVideoTask(bvid: String, cid: Long): DownloadTask? {\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "baseLF": "c2e6e731c9430c181e37824e47e4f83d43064afa549abee326c98630b3174976",
+      "desiredLF": "2e011ccbb615d118cf10b467f35b3e6a5fe9354fd86d26d64966f5b027b9937d",
+      "hunks": [
+        {
+          "before": "def generate(repo,output,standalone=False):",
+          "after": "def captured_original_download_task_delta(path,text):\n if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return text\n begin=text.index('    private suspend fun buildDownloadTaskForTarget(')\n end=text.index('    fun downloadWithQuality(',begin)\n original=text[begin:end];body=original\n edits=[('        val resolvedUrls = if (directVideoUrl.isNotBlank() && directAudioUrl.isNotBlank()) {','        var capturedDownloadReply: com.android.purebilibili.data.model.response.PlayUrlData? = null\\n        val resolvedUrls = if (directVideoUrl.isNotBlank() && directAudioUrl.isNotBlank()) {'),\n ('            val playUrlData = VideoRepository.getPlayUrlData(targetBvid, targetCid, qualityId)','            val playUrlData = VideoRepository.getPlayUrlData(targetBvid, targetCid, qualityId)\\n            capturedDownloadReply = playUrlData'),\n ('        return com.android.purebilibili.feature.download.DownloadTask(','        return environment.download.captureTask(com.android.purebilibili.feature.download.DownloadTask('),\n ('            options = options\\n        )','            options = options\\n        ), capturedDownloadReply)')]\n for old,new in edits:\n  assert body.count(old)==1,old;body=body.replace(old,new,1)\n return text[:begin]+body+text[end:]\n\ndef generate(repo,output,standalone=False):",
+          "count": 1
+        },
+        {
+          "before": "  body=captured_media_byte_consumer_delta(recipe['output'],body)\n",
+          "after": "  body=captured_media_byte_consumer_delta(recipe['output'],body)\n  body=captured_original_download_task_delta(recipe['output'],body)\n",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "download39Unchanged": true,
+  "installation": "Sequential exact hunks only; never whole producer/Binding replacement over dirty source"
+}

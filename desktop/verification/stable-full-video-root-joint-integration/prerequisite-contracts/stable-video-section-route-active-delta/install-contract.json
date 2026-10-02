@@ -1,0 +1,42 @@
+{
+  "copyWhitelist": [
+    {
+      "fromPath": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeCarrierRoute.kt",
+      "toPath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeCarrierRoute.kt",
+      "sha256Bytes": "bc0c06842d7a7965ed2ce6f6adb18c0b37ce4a6f87d9b723f40a31ffbd0d7f59",
+      "size": 520
+    }
+  ],
+  "hunkOnlyFamilies": [
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt"
+  ],
+  "baselineWholeFamilySha256LF": "3a533f169811cd9367c9bf0df0ba062d7b914044b727c86a248d5659c3177c62",
+  "afterWholeFamilySha256LF": "a89d21333354e2d8af52224648b2d54026615097dc3121f17e70fcc529c1c5dd",
+  "dependsOn": [
+    "Section265",
+    "nested foreground12",
+    "Root local-click263 final run06"
+  ],
+  "actualLocalClickBaseSha256Bytes": "e6c9c525f569a03853981e10d7a67fca15fe688a48ad89c07cc0c25a98821871",
+  "registryDelta": [],
+  "newPlayerActors": 0,
+  "newNativeInputActors": 0,
+  "providerRequired": "Parent PhysicalLeaf provides exact route/entry-active Boolean; Shell covered ordinary bootstrap explicitly provides true only when no other actual native source leaf owns the frame.",
+  "constraints": [
+    "Gate both initialization carrier and RenderPlayerForeground. Inactive Initial must not invoke movable carrier.",
+    "Inactive Render evaluates original content/Effects directly. Active nested same adapter still evaluates content directly.",
+    "Video -> Video and Video -> Audio outgoing flags must be false by exact current key and actual leaf active; type-only Video membership is insufficient.",
+    "Shell 1dp retained bootstrap must not coexist with active ordinary, Story, Offline, PGC, Course or another actual native source leaf.",
+    "Nested Fullscreen and Portrait inherit actual parent flag; they must not unconditionally provide true.",
+    "Do not suppress whole original effects or stop/close the native actor on route cover.",
+    "Review-only full file is not an install payload; apply only two local hunks preserving Root pointer/other deltas."
+  ],
+  "validation": {
+    "sourceAnchorInverse": true,
+    "hunks": 2,
+    "manualFiles": 1,
+    "compilerRun": false,
+    "runtimeRun": false,
+    "rootAccepted": false
+  }
+}

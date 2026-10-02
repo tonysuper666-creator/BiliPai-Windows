@@ -144,7 +144,8 @@ class DanmakuWindowLoader(
             .distinctBy { if (it.serverId > 0) "id:${it.serverId}" else "${it.timeSeconds}:${it.mode}:${it.color}:${it.text}" }
             .sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id })
             .take(25_000).mapIndexed { index, comment -> comment.copy(id = index) }
-        return DanmakuDocument(comments, (first.advanced + second.advanced).distinctBy { it.id }.sortedBy { it.startTimeMs }.take(5_000))
+        return DanmakuDocument(comments, (first.advanced + second.advanced).distinctBy { it.id }.sortedBy { it.startTimeMs }.take(5_000),
+            first.serverDisabled || second.serverDisabled)
     }
 
     private fun requireProtocolBytes(bytes: ByteArray) {

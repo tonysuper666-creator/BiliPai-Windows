@@ -1,0 +1,13 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+    "before": "            { control ->\n                require(control === resources.player.let { assembly().section })\n                assembly().native.current()?.let { expected -> assembly().native.admitPlaybackDispatch(expected) {\n                    val preferred = resources.preferences()\n                    resources.player.setVolume(preferred.volume)\n                    resources.player.setMuted(preferred.muted)\n                } }\n            }, { desktopOriginalRootDashRequestsEnabled(settings) },",
+    "after": "            { control ->\n                require(control.nativePlayer === resources.player)\n                // Original attachPlayer runs before Slot publishes the Assembly.\n                // Root applies its actual preferences to this same MPV at startup;\n                // initial native publication also reads the current user mute.\n                shell.slot.currentAssembly()?.let { owner ->\n                    require(control === owner.section)\n                    owner.native.current()?.let { expected -> owner.native.admitPlaybackDispatch(expected) {\n                        val preferred = resources.preferences()\n                        resources.player.setVolume(preferred.volume)\n                        resources.player.setMuted(preferred.muted)\n                    } }\n                }\n            }, { desktopOriginalRootDashRequestsEnabled(settings) },",
+    "count": 1,
+    "beforeAnchorSHA256LF": "c828b99e4f62b25c7b04aeab3e3602049eca48efce5e4bb750735de38a14c930",
+    "afterAnchorSHA256LF": "015e7c292d05a66045c5e25383aeeb6bc679ddac2cf256388ee3cd3582cb8906",
+    "baselineWholeSHA256LF": "e57cba6d089ffc73020ddf6716ef35eb7f149e7df52a1306e1c288fe07df48fe",
+    "afterWholeSHA256LF": "a276c009c4871907a9cee0d3c0c05b54d1475cf78c0a8962fc41e7670ae9e7fa",
+    "reason": "Original attachPlayer precedes Slot publication. Validate same MPV without dereferencing unpublished Assembly; actual accepted-source changes retain the original native admission."
+  }
+]

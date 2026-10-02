@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "checks": {
+    "sameNativeControlBeforePublication": true,
+    "noUnpublishedAssemblyGetter": true,
+    "nullablePublishedOwnerOnly": true,
+    "sameSectionAfterPublication": true,
+    "acceptedSourceKeepsNativeAdmission": true,
+    "actualRootStartupAppliesSamePreferences": true,
+    "actualRootPreferenceChangesApplySamePreferences": true,
+    "applyPreferencesIncludesUserVolume": true,
+    "applyPreferencesIncludesUserMute": true,
+    "sessionInitializationReadsActualUserVolume": true,
+    "sessionInitializationReadsActualUserMute": true,
+    "initialLoadCapturesCurrentUserMute": true,
+    "originalAttachmentStillBeforeCreateReturns": true,
+    "exactForwardInverse": true
+  },
+  "checkCount": 14,
+  "boundary": "Static callsite/source verification only. Actual81 construction failed and is retained; actual82 runtime must confirm corrected construction. No override or native acceptance claim.",
+  "sources": {
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt": "e57cba6d089ffc73020ddf6716ef35eb7f149e7df52a1306e1c288fe07df48fe",
+    "DesktopShell.kt": "50f1c8090e910fa96e74c4185ee109d215e687acbbf7ef08ee014be4cf2fe30f",
+    "MpvPlayer.kt": "94c9f2a35a129c5d62fdbaf3b96e7801b9eab33534942ee3ba24b8c2b2b531ed",
+    "DesktopOriginalVideoNativeOwner.kt": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+    "DesktopOriginalVideoOwnerAssembly.kt": "90ffc7ea1ec15122a7e3f43b04f02fea65d69489754a69edcff57d53238539db"
+  }
+}

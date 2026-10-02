@@ -11,9 +11,10 @@ data class DesktopDanmakuTextMetrics(val width:Int,val ascent:Double)
 data class PositionedDanmaku(val comment: DanmakuComment, val x: Double, val baseline: Double, val textWidth: Int)
 
 /** Media-time scheduler: pause freezes positions; seeking rebuilds only the visible window. */
-class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings, private val liveAdmission:Boolean) {
-    private val originalComments = comments.sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id })
+class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings, private val liveAdmission:Boolean, immediateLocalPhase:Any? = null) {
+    private val originalComments = comments.sortedBy {it.timeSeconds}
     private var settings = settings.normalized()
+    private var initialLocalPhase=immediateLocalPhase
     private var comments = prepareComments()
     internal val currentSettings:DanmakuSettings get()=settings
     private data class Scheduled(val comment: DanmakuComment, val layer: Int, val trackTop:Double, val baseline:Double, val width: Int, val duration: Double) {
@@ -25,18 +26,29 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
     private data class Geometry(val width:Int,val height:Int,val config:DanmakuRenderConfig)
     private var viewport:Geometry?=null
 
+    fun resetTimeline() { active.clear(); previousTime=Double.NaN }
+
     fun applySettings(settings: DanmakuSettings) {
         val normalized = settings.normalized()
         if (normalized == this.settings) return
         this.settings = normalized
+        initialLocalPhase=null
         comments = prepareComments()
         previousTime = Double.NaN
     }
 
+    internal fun observeOriginalLocalInjectionPhase(current:Any) {
+        if(initialLocalPhase!=null && initialLocalPhase!==current) {
+            initialLocalPhase=null;comments=prepareComments();previousTime=Double.NaN
+        }
+    }
+
     private fun prepareComments(): List<DanmakuComment> {
-        val visible = originalComments.filter { if(liveAdmission)settings.allowsLive(it) else settings.allows(it) }
-        return if (settings.mergeDuplicates) mergeDuplicateDanmaku(visible, settings.duplicateMergeWindowMs, settings.duplicateMergeCountThreshold)
-            else visible
+        val injected=if(initialLocalPhase==null)emptyList() else originalComments.filter {it.originalLocalInjectionPhase===initialLocalPhase && it.originalLocalItem!=null}
+        val visible=originalComments.filter {initialLocalPhase==null || it.originalLocalInjectionPhase!==initialLocalPhase || it.originalLocalItem==null}
+            .filter {if(liveAdmission)settings.allowsLive(it) else settings.allows(it)}
+        val ordinary=if(settings.mergeDuplicates)mergeDuplicateDanmaku(visible,settings.duplicateMergeWindowMs,settings.duplicateMergeCountThreshold) else visible
+        return (ordinary+injected).sortedBy {it.timeSeconds}
     }
 
     fun frame(time: Double, width: Int, height: Int, config:DanmakuRenderConfig, measure: (DanmakuComment) -> DesktopDanmakuTextMetrics): List<PositionedDanmaku> {

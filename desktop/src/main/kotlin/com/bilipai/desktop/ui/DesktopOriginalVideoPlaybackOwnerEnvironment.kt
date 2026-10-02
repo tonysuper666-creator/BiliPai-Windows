@@ -96,6 +96,9 @@ internal interface DesktopOriginalVideoOwnerMini {
 internal interface DesktopOriginalVideoOwnerDownload {
     val tasks:StateFlow<Map<String,DownloadTask>>
     fun addTask(task:DownloadTask):Boolean
+    fun addTask(task:DownloadTask,stillCaptured:()->Boolean):Boolean
+    /** Exact original construction result, not a cache lookup or latest-cookie retag. */
+    fun captureTask(task:DownloadTask,explicitReply:PlayUrlData?):DownloadTask
     fun getVideoTask(bvid:String,cid:Long):DownloadTask?
     suspend fun saveImageToGallery(context:DesktopOriginalPlayerSettingsContext,url:String,title:String):Boolean
 }
@@ -211,6 +214,7 @@ internal class DesktopOriginalVideoPlaybackOwnerEnvironment(
     val background:StateFlow<Boolean>,
     private val isCurrent:()->Boolean,
     private val admission:((()->Unit)->Boolean),
+    val todayWatchFeedback: DesktopTodayWatchFeedbackWriteBinding,
 ) {
     fun assertCurrent() {
         if(!isCurrent() || !scope.isActive) throw CancellationException("Original video owner retired")

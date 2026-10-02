@@ -13,11 +13,26 @@ import kotlinx.coroutines.launch
 
 /** Discovery begins only when the user opens this dialog; dismissal keeps a successful cast playing. */
 @Composable
-fun DesktopCastDialog(controller: DesktopCastController, media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit) {
+fun DesktopCastDialog(controller: DesktopCastController, media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit) =
+    DesktopCastDialogContent(controller, media, null, onDismiss)
+
+@Composable
+internal fun DesktopCastDialog(controller: DesktopCastController,
+    onRouteSelected: (com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit,
+    onDismiss: () -> Unit) = DesktopCastDialogContent(controller, null, onRouteSelected, onDismiss)
+
+@Composable
+private fun DesktopCastDialogContent(controller: DesktopCastController,
+    media: (suspend () -> DesktopCastMediaPublication?)?,
+    onRouteSelected: ((com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit)?,
+    onDismiss: () -> Unit) {
     val routes by controller.routes.collectAsState()
     val state by controller.playbackState.collectAsState()
     val discovering by controller.isDiscovering.collectAsState()
-    val busy by controller.isBusy.collectAsState()
+    val actorBusy by controller.isBusy.collectAsState()
+    var selectionPending by remember(controller) { mutableStateOf(false) }
+    val busy = actorBusy || selectionPending
+    val latestSelection by rememberUpdatedState(onRouteSelected)
     val error by controller.error.collectAsState()
     val discoveryError by controller.discoveryError.collectAsState()
     val latestMedia by rememberUpdatedState(media)
@@ -52,7 +67,11 @@ fun DesktopCastDialog(controller: DesktopCastController, media: suspend () -> De
                     Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         Text(route.name, style = MaterialTheme.typography.titleMedium)
                         route.description?.let { Text(it, style = MaterialTheme.typography.bodySmall) }
-                        Button(onClick = { scope.launch { controller.cast(route) { latestMedia() } } }, enabled = !busy) { Text("投屏到此设备") }
+                        Button(onClick = {
+                            val selection = latestSelection
+                            if (selection != null) { selectionPending = true; selection(controller.plugin, route) }
+                            else scope.launch { controller.cast(route) { checkNotNull(latestMedia).invoke() } }
+                        }, enabled = !busy) { Text("投屏到此设备") }
                     }
                 }
             }

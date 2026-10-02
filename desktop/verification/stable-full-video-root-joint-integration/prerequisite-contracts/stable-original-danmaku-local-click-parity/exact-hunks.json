@@ -1,0 +1,245 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+    "label": "retain-local-source-item",
+    "before": "    val originalXmlContent: String? = null,\n",
+    "after": "    val originalXmlContent: String? = null,\n    // Exact neutral original local item, not a fabricated server element or second list.\n    val originalLocalItem: com.android.purebilibili.danmaku.engine.DanmakuItem? = null,\n    val originalLocalInjectionPhase:Any? = null,\n",
+    "beforeSHA256LF": "3f4fe41a62267b41f161d01a32e66efcb241cfb34777ea2bda1fca23521e4b29",
+    "afterSHA256LF": "c6183ab8b438cff8c97c6e2494d1a5eef02adf5a8820542ccd6ca93c0b895524",
+    "indexAtApplication": 997
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+    "label": "pool-consumes-same-local-item",
+    "before": "        comment.originalElement?.let(DesktopOriginalDanmakuItemParser::createTextDataFromProto)",
+    "after": "        comment.originalLocalItem ?: comment.originalElement?.let(DesktopOriginalDanmakuItemParser::createTextDataFromProto)",
+    "beforeSHA256LF": "5639f3a06fc511a969f972230cb9d6c3d1b4b0ad3cce9ae0f4f468f4db4e2a8f",
+    "afterSHA256LF": "deae3199b2da4190e953a15f8fd688635a7f356891f9b0a5c49f1324c874e85a",
+    "indexAtApplication": 880
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "same-document-local-and-click-ports",
+    "before": "    private var styles = emptyMap<Int, DanmakuStyle>()",
+    "after": "    private data class OriginalClickBinding(\n        val token:Long,val owns:()->Boolean,val onClick:(String,Long,String,Boolean)->Unit,\n        val foregroundWindow:()->Window?,val currentMid:()->Long,\n        val admit:(Long,()->Unit)->Boolean,\n    )\n    private data class OriginalPaintHit(val comment:DanmakuComment,val area:java.awt.geom.Area)\n    private data class OriginalPaintFrame(\n        val cid:Long,val sourceVersion:Long,val generation:Long,val revision:Long,\n        val origin:java.awt.Point,val width:Int,val height:Int,\n        val scaleX:Double,val scaleY:Double,val mediaTime:Double,val configuration:DanmakuSettings,val hits:List<OriginalPaintHit>,\n    )\n    internal class OriginalDanmakuPointerHit internal constructor(\n        internal val identity:Any,internal val listener:Long,internal val sourceVersion:Long,\n        internal val cid:Long,internal val generation:Long,internal val revision:Long,\n        internal val internalId:Int,internal val foreground:Window,internal val foregroundHwnd:Long,\n        internal val origin:java.awt.Point,internal val width:Int,internal val height:Int,\n        internal val scaleX:Double,internal val scaleY:Double,internal val mediaTime:Double,\n        internal val configuration:DanmakuSettings,\n    )\n    private val originalClickSequence=AtomicLong()\n    private var originalLocalInjectionPhase:Any=Any() // Same-document preprocessing phase; not an item list.\n    private val originalClickBindings=linkedMapOf<Long,OriginalClickBinding>()\n    private var originalPaintFrame:OriginalPaintFrame?=null // EDT; derived ONLY from successful paint.\n    private var originalPointerHit:OriginalDanmakuPointerHit?=null // EDT; one accepted DOWN/UP, no item queue.\n    private var originalInstalledGeneration=Long.MIN_VALUE // EDT; scheduler's actual installed identity.\n    private var originalInstalledRevision=Long.MIN_VALUE\n\n    /** Predicates/getters are actual Root's read-only entry/account/foreground views.\n     * The sole original Section forwards real pointer input; this passive HWND never takes input. */\n    internal fun acquireOriginalDanmakuClickListener(\n        stillOwned:()->Boolean,onClick:(String,Long,String,Boolean)->Unit,\n        foregroundWindow:()->Window?,currentMid:()->Long,\n        admit:(expectedSourceVersion:Long,action:()->Unit)->Boolean,\n    ):AutoCloseable {\n        val token=originalClickSequence.incrementAndGet()\n        synchronized(requestLock) {\n            if(!closed.get() && stillOwned())\n                originalClickBindings[token]=OriginalClickBinding(token,stillOwned,onClick,foregroundWindow,currentMid,admit)\n        }\n        val released=AtomicBoolean()\n        return AutoCloseable {\n            if(released.compareAndSet(false,true)) synchronized(requestLock) {originalClickBindings.remove(token)}\n        }\n    }\n    private fun originalDocumentOwned(version:Long):Boolean = !closed.get() && !liveMode && version>0L &&\n        poolSourceVersion==version && (commandCid ?: 0L)>0L && player.ownsSourceVersion(version) && currentOfflineDocumentOwned()\n\n    fun clearOriginalPortraitDanmaku(expectedSourceVersion:Long):Boolean = synchronized(requestLock) {\n        if(!originalDocumentOwned(expectedSourceVersion)) false\n        else seekOriginalSection(expectedSourceVersion,null,true)\n    }\n    fun recoverOriginalPortraitDanmaku(expectedSourceVersion:Long,positionMs:Long,\n        playWhenReady:Boolean,playbackState:Int):Boolean = synchronized(requestLock) {\n        if(!originalDocumentOwned(expectedSourceVersion))return@synchronized false\n        val state=player.state.value\n        when(com.android.purebilibili.feature.video.danmaku.resolveDanmakuActionForForegroundRecovery(\n            playWhenReady,!state.paused && !state.loading && !state.ended,playbackState,settings.enabled,\n            mutableFormat.value != null || rawDocument.size > 0)) {\n            com.android.purebilibili.feature.video.danmaku.DanmakuSyncAction.HardResync ->\n                seekOriginalSection(expectedSourceVersion,positionMs,false)\n            com.android.purebilibili.feature.video.danmaku.DanmakuSyncAction.PauseOnly ->\n                seekOriginalSection(expectedSourceVersion,null,true)\n            else -> true\n        }\n    }\n    fun addOriginalPortraitDanmaku(expectedSourceVersion:Long,text:String,color:Int,mode:Int,fontSize:Int):Boolean =\n        synchronized(requestLock) {\n            if(!originalDocumentOwned(expectedSourceVersion))return@synchronized false\n            val position=(player.state.value.positionSeconds*1000).toLong().coerceAtLeast(0L)\n            val item=com.android.purebilibili.feature.video.danmaku.desktopOriginalLocalDanmakuItem(\n                text,color,mode,fontSize,position,settings.staticDanmakuToScroll)\n            val previous=rawDocument.comments.filter {it.originalLocalItem!=null}.maxOfOrNull {it.id} ?: Int.MIN_VALUE\n            check(previous< -1) {\"Local danmaku measurement identity exhausted\"}\n            val comment=DanmakuComment(previous+1,item.showAtTime/1000.0,mode,fontSize,\n                (item.textColor ?: color) and 0xffffff,item.text.orEmpty(),originalLocalItem=item,\n                originalLocalInjectionPhase=originalLocalInjectionPhase)\n            val next=rawDocument.copy(comments=(rawDocument.comments+comment)\n                .sortedBy {it.timeSeconds})\n            // Consecutive local appends remain downstream of ordinary preprocessing\n            // until a genuine settings/plugin/document rebuild retires this phase.\n            installDocument(next,generation.get(),originalLocalInjectionPhase)\n            true\n        }\n\n    private fun originalClickBinding():OriginalClickBinding? {\n        originalClickBindings.entries.removeIf {!it.value.owns()}\n        return originalClickBindings.values.lastOrNull()\n    }\n    private fun originalFrameCurrent(frame:OriginalPaintFrame):Boolean =\n        originalDocumentOwned(frame.sourceVersion) && commandCid==frame.cid &&\n            generation.get()==frame.generation && documentRevision.get()==frame.revision &&\n            originalInstalledGeneration==frame.generation && originalInstalledRevision==frame.revision &&\n            settings==frame.configuration && settings.enabled && originalSeekScrub?.let {it.first==frame.sourceVersion && it.second}!=true &&\n            overlay?.isShowing==true && panel.isShowing && panel.width==frame.width && panel.height==frame.height &&\n            panel.locationOnScreen==frame.origin &&\n            panel.graphicsConfiguration?.defaultTransform?.let {\n                kotlin.math.hypot(it.scaleX,it.shearY)==frame.scaleX &&\n                    kotlin.math.hypot(it.scaleY,it.shearX)==frame.scaleY\n            }==true && player.state.value.let {\n                it.positionSeconds==frame.mediaTime && it.paused && it.ready && it.firstVideoFrameReady && !it.loading && !it.ended && !it.audioOnly && it.error==null\n            }\n    private fun originalWindowPoint(window:Window,x:Double,y:Double,frame:OriginalPaintFrame):java.awt.geom.Point2D.Double? {\n        if(!window.isShowing || !window.isDisplayable || !x.isFinite() || !y.isFinite())return null\n        val transform=window.graphicsConfiguration?.defaultTransform ?: return null\n        val sx=kotlin.math.hypot(transform.scaleX,transform.shearY)\n        val sy=kotlin.math.hypot(transform.scaleY,transform.shearX)\n        if(!sx.isFinite() || !sy.isFinite() || sx<=0.0 || sy<=0.0)return null\n        val screen=window.locationOnScreen\n        return java.awt.geom.Point2D.Double(screen.x+x/sx-frame.origin.x,screen.y+y/sy-frame.origin.y)\n    }\n    /** Actual Compose positionInWindow physical pixels, converted with that same foreground Window's DPI/origin. */\n    internal fun beginOriginalDanmakuPointer(expectedSourceVersion:Long,windowPixelX:Double,windowPixelY:Double):OriginalDanmakuPointerHit? {\n        check(SwingUtilities.isEventDispatchThread())\n        return synchronized(requestLock) {\n            originalPointerHit=null\n            val frame=originalPaintFrame ?: return@synchronized null\n            if(frame.sourceVersion!=expectedSourceVersion || !originalFrameCurrent(frame))return@synchronized null\n            val binding=originalClickBinding() ?: return@synchronized null\n            val foreground=binding.foregroundWindow() ?: return@synchronized null\n            val point=originalWindowPoint(foreground,windowPixelX,windowPixelY,frame) ?: return@synchronized null\n            val hit=frame.hits.lastOrNull {it.area.contains(point)} ?: return@synchronized null\n            OriginalDanmakuPointerHit(Any(),binding.token,frame.sourceVersion,frame.cid,frame.generation,frame.revision,\n                hit.comment.id,foreground,Pointer.nativeValue(Native.getWindowPointer(foreground)),\n                frame.origin,frame.width,frame.height,frame.scaleX,frame.scaleY,frame.mediaTime,frame.configuration).also {originalPointerHit=it}\n        }\n    }\n    internal fun cancelOriginalDanmakuPointer(hit:OriginalDanmakuPointerHit) {\n        check(SwingUtilities.isEventDispatchThread())\n        if(originalPointerHit===hit)originalPointerHit=null\n    }\n    internal fun finishOriginalDanmakuPointer(hit:OriginalDanmakuPointerHit,windowPixelX:Double,windowPixelY:Double):Boolean {\n        check(SwingUtilities.isEventDispatchThread())\n        val selected=synchronized(requestLock) {\n            if(originalPointerHit!==hit)return@synchronized null\n            originalPointerHit=null\n            val frame=originalPaintFrame ?: return@synchronized null\n            if(!originalFrameCurrent(frame) || frame.cid!=hit.cid || frame.sourceVersion!=hit.sourceVersion ||\n                frame.generation!=hit.generation || frame.revision!=hit.revision || frame.origin!=hit.origin ||\n                frame.width!=hit.width || frame.height!=hit.height || frame.scaleX!=hit.scaleX || frame.scaleY!=hit.scaleY ||\n                frame.mediaTime!=hit.mediaTime || frame.configuration!=hit.configuration)return@synchronized null\n            val binding=originalClickBinding()?.takeIf {it.token==hit.listener} ?: return@synchronized null\n            if(binding.foregroundWindow()!==hit.foreground || !hit.foreground.isDisplayable ||\n                Pointer.nativeValue(Native.getWindowPointer(hit.foreground))!=hit.foregroundHwnd)return@synchronized null\n            val point=originalWindowPoint(hit.foreground,windowPixelX,windowPixelY,frame) ?: return@synchronized null\n            val item=frame.hits.lastOrNull {it.comment.id==hit.internalId && it.area.contains(point)}?.comment ?: return@synchronized null\n            binding to item\n        } ?: return false\n        // Original callbacks/UI/API work happen AFTER Overlay's request lock has been released.\n        val (binding,comment)=selected\n        if(!binding.owns() || synchronized(requestLock) {originalClickBindings.values.lastOrNull()?.token}!=binding.token ||\n            !player.ownsSourceVersion(hit.sourceVersion))return false\n        val original=comment.originalLocalItem ?: comment.originalElement?.let {\n            com.android.purebilibili.feature.video.danmaku.DesktopOriginalDanmakuItemParser.createTextDataFromProto(it)\n        } ?: if(comment.originalXmlAttributes!=null && comment.originalXmlContent!=null)\n            com.android.purebilibili.feature.video.danmaku.DesktopOriginalDanmakuItemParser.createTextData(comment.originalXmlAttributes,comment.originalXmlContent)\n        else null\n        var dispatched=false\n        val admitted=binding.admit(hit.sourceVersion) {\n            // Root first admits this exact native publication under Store -> entry,\n            // releasing NativeOwner's validation lock before this short Overlay read.\n            val current=synchronized(requestLock) {\n                !closed.get() && !liveMode && poolSourceVersion==hit.sourceVersion && commandCid==hit.cid &&\n                    generation.get()==hit.generation && documentRevision.get()==hit.revision &&\n                    originalClickBindings.values.lastOrNull()?.token==binding.token\n            }\n            if(current && binding.owns()) {\n                val user=com.android.purebilibili.feature.video.danmaku.resolveDanmakuClickUserHash(original?.userHash ?: comment.userHash)\n                val self=(original?.isSelf==true) || com.android.purebilibili.feature.video.danmaku.resolveDanmakuClickIsSelf(user,binding.currentMid())\n                binding.onClick(comment.text,original?.danmakuId ?: comment.serverId,user,self)\n                dispatched=true\n            }\n        }\n        return admitted && dispatched\n    }\n\n\n    private var styles = emptyMap<Int, DanmakuStyle>()",
+    "beforeSHA256LF": "37a07e3d1e2dbd934bc1b10990d5a3c9fc9eca8ee06e434e4e0211c8ab58449d",
+    "afterSHA256LF": "be6ccd7cf0ea3a160b9bd0f1d6f277462b6271f35b9f2a3aa56eedc31e880b37",
+    "indexAtApplication": 8793
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "paint-start-retires-old-hit-frame",
+    "before": "        override fun paintComponent(graphics: Graphics) {\n",
+    "after": "        override fun paintComponent(graphics: Graphics) {\n            originalPaintFrame=null\n",
+    "beforeSHA256LF": "23857a3316d84b7c8747629d32a744aad8d69464f338275426a28875133e7710",
+    "afterSHA256LF": "df66f22cc502d24330bd4f997b8fabc312783fe6b1a519ef2b833b7ef0853c50",
+    "indexAtApplication": 22705
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "explicit-panel-type-for-self-paint-reference",
+    "before": "    private val panel = object : JComponent() {",
+    "after": "    private val panel:JComponent = object : JComponent() {",
+    "beforeSHA256LF": "d8066eaf1c34436525439085a78e5be026b4a46316b24581830dff172fc574fc",
+    "afterSHA256LF": "42bb4c3a66f2354728fc9017351fa0082197eb6e87cce511bc31f68bc72d95be",
+    "indexAtApplication": 22657
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "derive-hits-from-actual-frame",
+    "before": "                    positioned.forEach { item ->",
+    "after": "                    val originalHits=mutableListOf<OriginalPaintHit>()\n                    positioned.forEach { item ->",
+    "beforeSHA256LF": "286a8e3a4a9de87b953ccf93b349c3e89297bc0bf58c8e7382e2fd97661c52e7",
+    "afterSHA256LF": "1c320cb656d826a8fb50b7c4ab63a5752778d645f063f87c6e320417159cbc43",
+    "indexAtApplication": 27360
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "same-font-clip-and-dpi-hit-rectangles",
+    "before": "                        physical.fill(shape)\n",
+    "after": "                        physical.fill(shape)\n                        if(config.alpha>0) {\n                            val metrics=physical.getFontMetrics(font)\n                            val area=java.awt.geom.Area(java.awt.geom.Rectangle2D.Double(item.x,\n                                item.baseline-metrics.ascent,item.textWidth.toDouble(),(metrics.ascent+metrics.descent).toDouble()))\n                            physical.clip?.let {area.intersect(java.awt.geom.Area(it))}\n                            area.transform(java.awt.geom.AffineTransform.getScaleInstance(1.0/geometry.scaleX,1.0/geometry.scaleY))\n                            if(!area.isEmpty)originalHits+=OriginalPaintHit(item.comment,area)\n                        }\n",
+    "beforeSHA256LF": "8edeb353bd34aca81b154f7f9703c218811ce9bbdf5a1fdd15ec74789c8b70e3",
+    "afterSHA256LF": "64a0e86edddb477741ee993f496f160e3fca52555aabdd9021e2358f8568d0fd",
+    "indexAtApplication": 29063
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "publish-only-installed-paused-paint-frame",
+    "before": "                    }\n                } finally {physical.dispose()}\n                advancedRenderer.paint",
+    "after": "                    }\n                    synchronized(requestLock) {\n                        val cid=commandCid\n                        val sourceVersion=poolSourceVersion\n                        if(cid!=null && sourceVersion!=null && originalDocumentOwned(sourceVersion) &&\n                            originalInstalledGeneration==generation.get() && originalInstalledRevision==documentRevision.get() &&\n                            player.state.value.paused && panel.isShowing && overlay?.isShowing==true) {\n                            originalPaintFrame=OriginalPaintFrame(cid,sourceVersion,generation.get(),documentRevision.get(),\n                                panel.locationOnScreen,panel.width,panel.height,geometry.scaleX,geometry.scaleY,displayTime,configuration,originalHits.toList())\n                        }\n                    }\n                } finally {physical.dispose()}\n                advancedRenderer.paint",
+    "beforeSHA256LF": "fc365cf7189d7ebce9d844454345b6f09656da35bb51e58eec30627c8a3358d5",
+    "afterSHA256LF": "79f1c3f2b2ebe8f9238b39282fb59dcf30a678a44e0f1ac8e49b9326cb0f5e34",
+    "indexAtApplication": 29794
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "explicit-local-preprocessing-phase-boundary",
+    "before": "    private fun installDocument(document: DanmakuDocument, version: Long) {",
+    "after": "    private fun installDocument(document: DanmakuDocument, version: Long, immediateLocalPhase:Any? = null) {",
+    "beforeSHA256LF": "6eac3d37bc27db4b8f58c30b51aca3c3829946a59acf31a73b11e621d467cb58",
+    "afterSHA256LF": "3b5278aa263d657feda3be1c14550085791d851db1d2e30b3d5ee542f5331659",
+    "indexAtApplication": 41029
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "ordinary-rebuild-retires-injection-phase",
+    "before": "            pluginJob?.cancel()\n            rawDocument = document",
+    "after": "            if(immediateLocalPhase==null)originalLocalInjectionPhase=Any()\n            pluginJob?.cancel()\n            rawDocument = document",
+    "beforeSHA256LF": "556f3a2010e77d06062d3e499303d858b7854163d01ba5f750a9f1cfa18109d8",
+    "afterSHA256LF": "6fe1ed56e8ca44d320bf09ad8f8808a0d016b93157128593c3e3aee10fa8dc50",
+    "indexAtApplication": 41304
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "changed-settings-retires-injection-phase",
+    "before": "        this.settings = normalized",
+    "after": "        synchronized(requestLock) {if(this.settings!=normalized)originalLocalInjectionPhase=Any();this.settings=normalized}",
+    "beforeSHA256LF": "1c04b39ae1995e8d9afa692ce73c2d301cbdda7267ce55cd4b7877a36a2ffc66",
+    "afterSHA256LF": "17eda1723ade44faa19b03217832d605b388aee322b2cd59da09e9bd87991e2b",
+    "indexAtApplication": 31436
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "actual-installed-scheduler-identity",
+    "before": "                scheduler = DanmakuScheduler(processed.comments, settings,liveAdmission=false)",
+    "after": "                val currentLocalPhase=synchronized(requestLock) {immediateLocalPhase?.takeIf {it===originalLocalInjectionPhase}}\n                scheduler = DanmakuScheduler(processed.comments, settings,liveAdmission=false,immediateLocalPhase=currentLocalPhase)\n                originalInstalledGeneration=version;originalInstalledRevision=revision",
+    "beforeSHA256LF": "0f9c085e44f7923327d75b7a4ac3ae7d09232fd51228bfddd981fa3ed98b0f4d",
+    "afterSHA256LF": "a9e62ab06ed88d625be25f142163f8fe13ff7086e2a760a3777a332a9475e0f3",
+    "indexAtApplication": 42126
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "paint-observes-real-preprocessing-retirement",
+    "before": "                    val positioned = scheduler.frame",
+    "after": "                    scheduler.observeOriginalLocalInjectionPhase(synchronized(requestLock){originalLocalInjectionPhase})\n                    val positioned = scheduler.frame",
+    "beforeSHA256LF": "536fc7adf827e612327df387bcaa2a7d41113f1d86b476403a40bdc85dd224b9",
+    "afterSHA256LF": "6093ec7757fa1e6feeef56919336248fd09c0b942151d72f2dd32e839754aecc",
+    "indexAtApplication": 26886
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "initial-local-after-plugin-filter",
+    "before": "                applyDesktopDanmakuPlugin(comment, processor)?.let { transformed ->",
+    "after": "                if(immediateLocalPhase!=null && comment.originalLocalInjectionPhase===immediateLocalPhase && comment.originalLocalItem!=null)next+=comment\n                else applyDesktopDanmakuPlugin(comment, processor)?.let { transformed ->",
+    "beforeSHA256LF": "0300cc41917614debee05e672129c410539a60090ef25e21ae51a2f0549b92bc",
+    "afterSHA256LF": "71bf299d5e49d0a5789ca30cd1695d4a310cb934d96553540207239e66646fa0",
+    "indexAtApplication": 43148
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "hidden-window-retires-hit",
+    "before": "        if (!visible) { overlay?.isVisible = false; ownerWasActive = false; return }",
+    "after": "        if (!visible) { originalPaintFrame=null;originalPointerHit=null;overlay?.isVisible = false; ownerWasActive = false; return }",
+    "beforeSHA256LF": "ca03bff79d493f1d16d5b64e21e3cd573cdc80d6a4ade99af25e8a1b6d6b35ad",
+    "afterSHA256LF": "3ffa1d155335dd1f896b7cb7d30f3f28d665921a8be0b4c3eac58f6fb37bae10",
+    "indexAtApplication": 45513
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "close-retires-listeners",
+    "before": "generation.incrementAndGet(); loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel(); retireWebMaskSource() }",
+    "after": "generation.incrementAndGet();originalClickBindings.clear();loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel(); retireWebMaskSource() }",
+    "beforeSHA256LF": "5a252cf8dee8d4a1ee87125271a51000d3964e99fb4f707f593c6c32ba5bf646",
+    "afterSHA256LF": "6cb23eb9b225d03c9e6802eeca12c544769082b888c7ebf538d3d1f575cd6a5b",
+    "indexAtApplication": 50070
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+    "label": "close-retires-input-frame",
+    "before": "SwingUtilities.invokeLater { timer.stop(); overlay?.dispose(); overlay = null }",
+    "after": "SwingUtilities.invokeLater {originalPaintFrame=null;originalPointerHit=null;timer.stop(); overlay?.dispose(); overlay = null }",
+    "beforeSHA256LF": "8e2dabd706a7f70652be53881a9d0ad9a1fd817d176b6d41c076a9ae2d7e337f",
+    "afterSHA256LF": "bfabe50ee02e3aefa0a40a9d014f818031b8aa3255e7e8c41f132e81afeac9af",
+    "indexAtApplication": 50256
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "label": "initial-local-filter-phase-carrier",
+    "before": "private val liveAdmission:Boolean) {",
+    "after": "private val liveAdmission:Boolean, immediateLocalPhase:Any? = null) {",
+    "beforeSHA256LF": "a22f69953f636b3d7a7643f32ac80ffb1adbe01052c06d2c833f54ab93adbdc2",
+    "afterSHA256LF": "ceba2dd50781f327bc1bcd5fd168a2b23354a4059e03fee359910a1e9f8ec8c7",
+    "indexAtApplication": 738
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "label": "stable-original-append-order",
+    "before": "comments.sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id })",
+    "after": "comments.sortedBy {it.timeSeconds}",
+    "beforeSHA256LF": "cd772504a692e5d3bbdb26e6eb78d4087ec39132fa2a3fb896653d48477fc94a",
+    "afterSHA256LF": "9a1e840f0308bcbe03c711e6f6a6818419d24e1a62eeccccd9da1a7da11ca791",
+    "indexAtApplication": 843
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "label": "initialize-before-filter",
+    "before": "    private var comments = prepareComments()",
+    "after": "    private var initialLocalPhase=immediateLocalPhase\n    private var comments = prepareComments()",
+    "beforeSHA256LF": "5592887527fc27626f0bc1e5adbe2e513677499cee2f9b3629815c590d8e90f3",
+    "afterSHA256LF": "ebbb0baa722b81d173c5e881654a9afa91add6ef7dfa0c63a95da8b4b7c5c392",
+    "indexAtApplication": 927
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "label": "later-settings-rebuild-ordinary-filter",
+    "before": "        comments = prepareComments()",
+    "after": "        initialLocalPhase=null\n        comments = prepareComments()",
+    "beforeSHA256LF": "a21a317b4761e2269cb87d0db37b1085d96604cf0f115338ea89c298a64bd32b",
+    "afterSHA256LF": "dbc1637b61eeff73a2ac861f6643e2a5a45b7f893e84af0525024c08f881009e",
+    "indexAtApplication": 1816
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "label": "retired-phase-restores-original-filtering",
+    "before": "    private fun prepareComments(): List<DanmakuComment> {",
+    "after": "    internal fun observeOriginalLocalInjectionPhase(current:Any) {\n        if(initialLocalPhase!=null && initialLocalPhase!==current) {\n            initialLocalPhase=null;comments=prepareComments();previousTime=Double.NaN\n        }\n    }\n\n    private fun prepareComments(): List<DanmakuComment> {",
+    "beforeSHA256LF": "29d4bcf72aaccff193318d29f55519e7cedd8ab5b4bb220f47fcf6df69c9c562",
+    "afterSHA256LF": "f570211ec06eb178ffbdd3580f559d394130f4dae4b9693efebe61939df167f8",
+    "indexAtApplication": 1925
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+    "label": "local-immediate-append-does-not-spoof-weight-or-self",
+    "before": "        val visible = originalComments.filter { if(liveAdmission)settings.allowsLive(it) else settings.allows(it) }\n        return if (settings.mergeDuplicates) mergeDuplicateDanmaku(visible, settings.duplicateMergeWindowMs, settings.duplicateMergeCountThreshold)\n            else visible",
+    "after": "        val injected=if(initialLocalPhase==null)emptyList() else originalComments.filter {it.originalLocalInjectionPhase===initialLocalPhase && it.originalLocalItem!=null}\n        val visible=originalComments.filter {initialLocalPhase==null || it.originalLocalInjectionPhase!==initialLocalPhase || it.originalLocalItem==null}\n            .filter {if(liveAdmission)settings.allowsLive(it) else settings.allows(it)}\n        val ordinary=if(settings.mergeDuplicates)mergeDuplicateDanmaku(visible,settings.duplicateMergeWindowMs,settings.duplicateMergeCountThreshold) else visible\n        return (ordinary+injected).sortedBy {it.timeSeconds}",
+    "beforeSHA256LF": "a8b1ffa008602d6f16a79b318d662dc495ba4f6a8ae3c249ef90cd67c22f758f",
+    "afterSHA256LF": "624fbd9d41ea195b5ceb6c96b47d226f10ad2928697185d2fdc9e3816a1c6017",
+    "indexAtApplication": 2222
+  },
+  {
+    "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "label": "sole-producer-selects-original-local-builder",
+    "before": " sync=source[PATHS[16]];raw=",
+    "after": "\n # Selected original neutral local-item builder; only the configuration carrier is adapted.\n local_method=function(manager,'addLocalDanmaku')[0]; local_mask=masked(local_method)\n local_start=local_method.index('        val danmakuData = DanmakuItem().apply {')\n local_open=local_mask.index('{',local_start);local_end=balanced(local_mask,local_open,'{','}')\n local_original=local_method[local_start:local_end]\n local_patches=[]\n local_body=adapt(local_original,'        val danmakuData = DanmakuItem().apply {','    return DanmakuItem().apply {',local_patches)\n local_body=adapt(local_body,'staticDanmakuToScroll = config.staticDanmakuToScroll','staticDanmakuToScroll = staticDanmakuToScroll',local_patches)\n reverse=local_body\n for patch in reversed(local_patches):reverse=reverse.replace(patch['after'],patch['before'])\n assert reverse==local_original\n local_tag=re.search(r'(?m)^        private const val TAG = [^\\n]+',manager).group(0).strip()\n local_wrapper='package com.android.purebilibili.feature.video.danmaku\\nimport com.android.purebilibili.danmaku.engine.*\\nimport com.android.purebilibili.core.util.Logger as Log\\n'+local_tag+'\\n\\ninternal fun desktopOriginalLocalDanmakuItem(text:String,color:Int,mode:Int,fontSize:Int,currentPosition:Long,staticDanmakuToScroll:Boolean):DanmakuItem {\\n'+local_body+'\\n}\\n'\n emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuLocalItemFactory.kt',local_wrapper,PATHS[5],'selected-complete-original-local-item-apply',local_patches)\n save(output/'local-item-selection.json',dict(originalSelectedSHA256LF=sha(local_original),adaptedSelectedSHA256LF=sha(local_body),exactSelectedInverse=True,adaptations=local_patches))\n sync=source[PATHS[16]];raw=",
+    "beforeSHA256LF": "304ec8e617e4d22259cc00fb37454ec6ca7567fe078df62fc84e77e2ed0b2fb3",
+    "afterSHA256LF": "3101ec9979f8185c6c09e44bd465fe872b93a17ceab5bec536a89ef327fa352b",
+    "indexAtApplication": 40279
+  },
+  {
+    "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+    "label": "sole-producer-selects-original-recovery",
+    "before": " constants=[re.search(r'(?m)^private const val '+name",
+    "after": " sync_mask=masked(sync);enum_start=sync.index('internal enum class DanmakuSyncAction {');enum_open=sync_mask.index('{',enum_start)\n enum_source=sync[enum_start:balanced(sync_mask,enum_open,'{','}')]\n recovery_source=function(sync,'resolveDanmakuActionForForegroundRecovery','')[0]\n recovery_patches=[]\n recovery_body=adapt(recovery_source,'androidx.media3.common.Player.STATE_ENDED','com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_ENDED',recovery_patches)\n assert recovery_body.replace(recovery_patches[0]['after'],recovery_patches[0]['before'])==recovery_source\n raw+='\\n\\n'+enum_source+'\\n\\n'+recovery_body\n save(output/'foreground-recovery-selection.json',dict(enumSHA256LF=sha(enum_source),originalSelectedSHA256LF=sha(recovery_source),adaptedSelectedSHA256LF=sha(recovery_body),exactSelectedInverse=True,adaptations=recovery_patches))\n constants=[re.search(r'(?m)^private const val '+name",
+    "beforeSHA256LF": "c6671e779c35042953ebcbf90c833cc10b20d2722638f4a38a8a5de51141f7ff",
+    "afterSHA256LF": "e530da1262d4c9094e9d3c41a335bddf0aa25cd9f6b80960f01d22ed8905d97d",
+    "indexAtApplication": 42111
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+    "label": "sole-foreground-pointer-imports",
+    "before": "import androidx.compose.ui.Modifier\n",
+    "after": "import androidx.compose.ui.Modifier\nimport androidx.compose.foundation.gestures.awaitEachGesture\nimport androidx.compose.foundation.gestures.awaitFirstDown\nimport androidx.compose.ui.input.pointer.pointerInput\n",
+    "beforeSHA256LF": "017f6c5db3fce6bb4c99154ab563118e8f7e9c7445d7f80b3414b3b09969d527",
+    "afterSHA256LF": "5f1cc4d7334530ae6e58d88597f4230ec6261dec0689f58f80ae2bfcd94527f7",
+    "indexAtApplication": 166
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+    "label": "sole-existing-foreground-delivers-real-pointer",
+    "before": "        Box(modifier)",
+    "after": "        var coordinates by remember {mutableStateOf<androidx.compose.ui.layout.LayoutCoordinates?>(null)}\n        Box(modifier.onGloballyPositioned {coordinates=it}.pointerInput(resources.overlay,resources.native) {\n            awaitEachGesture {\n                val down=awaitFirstDown(requireUnconsumed=true)\n                val publication=resources.native.current() ?: return@awaitEachGesture\n                val origin=coordinates?.takeIf {it.isAttached}?.localToWindow(androidx.compose.ui.geometry.Offset.Zero)\n                    ?: return@awaitEachGesture\n                if(!owns(publication) || resources.isPipActive.value)return@awaitEachGesture\n                val hit=resources.overlay.beginOriginalDanmakuPointer(publication.sourceVersion,\n                    (origin.x+down.position.x).toDouble(),(origin.y+down.position.y).toDouble()) ?: return@awaitEachGesture\n                down.consume()\n                try {\n                    var released:androidx.compose.ui.input.pointer.PointerInputChange?=null\n                    var cancelled=false\n                    while(released==null && !cancelled) {\n                        val event=awaitPointerEvent()\n                        val change=event.changes.firstOrNull {it.id==down.id}\n                        if(change==null || change.isConsumed || event.changes.size!=1 ||\n                            (change.position-down.position).getDistance()>viewConfiguration.touchSlop ||\n                            !owns(publication) || resources.isPipActive.value)cancelled=true\n                        else {change.consume();if(!change.pressed)released=change}\n                    }\n                    val up=released\n                    val latestOrigin=coordinates?.takeIf {it.isAttached}?.localToWindow(androidx.compose.ui.geometry.Offset.Zero)\n                    if(!cancelled && up!=null && latestOrigin==origin && owns(publication))\n                        resources.overlay.finishOriginalDanmakuPointer(hit,(origin.x+up.position.x).toDouble(),(origin.y+up.position.y).toDouble())\n                } finally {resources.overlay.cancelOriginalDanmakuPointer(hit)}\n            }\n        })",
+    "beforeSHA256LF": "bac1667d8dada3eff1a7c9b0a08f54b20e2e82ef09b0347d64d4e4a8c414d302",
+    "afterSHA256LF": "2ddcc1eb24040adfd597ade354ca43fdc4385cc94ee5fef7eaabe9ac9af5052f",
+    "indexAtApplication": 19509
+  }
+]

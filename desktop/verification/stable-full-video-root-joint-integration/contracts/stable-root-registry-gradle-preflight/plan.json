@@ -1,0 +1,966 @@
+{
+  "schema": "bilipai-root-registry-gradle-readonly-plan-v1",
+  "candidateHead": "462507f8a175a74a823fa3ea138f6b490c20a953",
+  "candidateRegistrySHA256Bytes": "7a4d62a607ccc41252e10ea3a877392db4578db510833e98064fce4b17a56611",
+  "candidateRegistrySHA256LF": "7a4d62a607ccc41252e10ea3a877392db4578db510833e98064fce4b17a56611",
+  "candidateGradleSHA256Bytes": "3725ae77f6eede220ec5d716a5995ff4595d7cbfb5dc8db9346de3cc8cb742d6",
+  "candidateGradleSHA256LF": "3725ae77f6eede220ec5d716a5995ff4595d7cbfb5dc8db9346de3cc8cb742d6",
+  "originalSourceCount": 1170,
+  "expectedOriginalSourceCountAfterExactUnionsAndAdds": 1172,
+  "resourceCountUnchanged": 213,
+  "prerequisitePacketCount": 20,
+  "rootPacketCount": 1,
+  "allFrozenRawFilesVerified": 1927,
+  "packetCoverage": [
+    {
+      "packet": "stable-video-section-windows-platform-parity",
+      "frozenSHA256Bytes": "ee169952db6c6c7a39a376cfd16f53e005e5eff9ad9410e53423ce30115fe554",
+      "allFrozenRawFilesVerified": 265,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-video-section-nested-foreground-delta",
+      "frozenSHA256Bytes": "abce96f7d44362f5ebbaf59c102fe77198d81caf600b4d09bc5009999e4703f3",
+      "allFrozenRawFilesVerified": 12,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-tablet-owner-uploads-platform-parity",
+      "frozenSHA256Bytes": "5e5ea5504013a18007374bf04597fc513e354b004703fb3403790322ed1e42e1",
+      "allFrozenRawFilesVerified": 209,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+        "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+        "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt"
+      ],
+      "gradleTasks": [
+        "extractOriginalTabletOwnerSpace"
+      ],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-video-overlay-windows-platform-parity",
+      "frozenSHA256Bytes": "30eb51cbc0b1333d5a2fb54e7b02eea9c814eddcbb82400ab33c3e57a29a60bf",
+      "allFrozenRawFilesVerified": 110,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt"
+      ],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-video-portrait-platform-binding-parity",
+      "frozenSHA256Bytes": "fadd71c343f41e48eb4b1e2cf811c01e678b4011574e02f02e20477a60992b41",
+      "allFrozenRawFilesVerified": 69,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt"
+      ],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-video-owner-download-binding-parity",
+      "frozenSHA256Bytes": "14f4732bba3ac82e7d1597469095f8f63e6a9da8b36843970aa5c10245856530",
+      "allFrozenRawFilesVerified": 39,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadManager.kt",
+        "app/src/main/java/com/android/purebilibili/feature/download/DownloadTask.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
+      ],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-video-download-captured-resolver-parity",
+      "frozenSHA256Bytes": "fca8c6f885742717422f11cf619bb0bd535264fd8ede9a248064b44b8a69d097",
+      "allFrozenRawFilesVerified": 44,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-portrait-blocked-final-write-parity",
+      "frozenSHA256Bytes": "8f28d0b0186beba1eee436dc124b4a33b7a080e561d73833c99c39db43aa4f34",
+      "allFrozenRawFilesVerified": 39,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-video-consumed-view-bindings-parity",
+      "frozenSHA256Bytes": "ccf0a3d89c362d0cd1d12ef5a7715ffcc9e609b3e50f7c7e5b52ded19a2c5b75",
+      "allFrozenRawFilesVerified": 14,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-unified-playback-facade-parity",
+      "frozenSHA256Bytes": "745e36cdf2d0d9d7b446d687b79b27a064aa17492b81353da70c2ec5242b8260",
+      "allFrozenRawFilesVerified": 138,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt"
+      ],
+      "gradleTasks": [
+        "extractOriginalVideoPlaylistFull"
+      ],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-unified-subtitle-notification-retirement-parity",
+      "frozenSHA256Bytes": "a7c6ac3d3a88ad0ab9df4b08d2ce97fc9d8d9d5ae9e8acb97c07c49990dd9643",
+      "allFrozenRawFilesVerified": 19,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-video-owner-danmaku-cache-binding-parity",
+      "frozenSHA256Bytes": "ad6f8cf244f0fd87d11cba9a3ac19786ac558a085a4770fc3b8b0c28e6b4936c",
+      "allFrozenRawFilesVerified": 95,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"
+      ],
+      "gradleTasks": [
+        "extractOriginalVideoOwnerDanmakuSend"
+      ],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-video-holder-mini-binding-parity",
+      "frozenSHA256Bytes": "dc9639c0dd2bb22c8fe2083bb38369e8334f6d84754db7d9dc3e8077c485e694",
+      "allFrozenRawFilesVerified": 8,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-today-watch-feedback-io-parity",
+      "frozenSHA256Bytes": "b00dbfaa9d34a196dca9cbb5473250dc4547647e36ed294a4530d734bc921ce4",
+      "allFrozenRawFilesVerified": 45,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/core/store/TodayWatchFeedbackStore.kt",
+        "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"
+      ],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-video-root-story-feed-parity",
+      "frozenSHA256Bytes": "abfb888bc537b4c9ddbc2b729ad9b3b0d5029f15c93b5532abb965b4cd7e58ee",
+      "allFrozenRawFilesVerified": 42,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+        "app/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt",
+        "app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt"
+      ],
+      "gradleTasks": [
+        "extractOriginalVideoRootStoryFeed"
+      ],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-video-root-portrait-rendering-parity",
+      "frozenSHA256Bytes": "516a40bba7b5f0a93ad6d4c195840113a1b691fe3a386e08a911c63cd2062c03",
+      "allFrozenRawFilesVerified": 87,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-original-now-playing-owner-parity",
+      "frozenSHA256Bytes": "7da3f226c2f02d62dc6d0de7ea0771f1e125420f1d90a2a33089e5ab19ef3805",
+      "allFrozenRawFilesVerified": 83,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/feature/audio/player/AudioNowPlayingSession.kt"
+      ],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-ready-root-now-playing-consumer-parity",
+      "frozenSHA256Bytes": "d254f729b51e5abcbd02705e7767c669a44230b70baf16bc2fd817302e685c06",
+      "allFrozenRawFilesVerified": 26,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-original-danmaku-local-click-parity",
+      "frozenSHA256Bytes": "c526ad761da1b2892a5e3d1515068d04e5cf919b14682c34d260248696d33b47",
+      "allFrozenRawFilesVerified": 263,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+        "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt"
+      ],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": false
+    },
+    {
+      "packet": "stable-video-section-route-active-delta",
+      "frozenSHA256Bytes": "31799a4098c9635e0ace60356ebde86a78aeb6f0ac1253ab05438fb1b4d3dbb0",
+      "allFrozenRawFilesVerified": 7,
+      "registryPaths": [],
+      "gradleTasks": [],
+      "registryGradleDeltaNone": true
+    },
+    {
+      "packet": "stable-video-full-owner-root-mount-parity",
+      "frozenSHA256Bytes": "4cacb53b6d15e036edde4fd60828e1f98a3ea7f6120d232c6e221dbf4ac0cd0d",
+      "allFrozenRawFilesVerified": 313,
+      "registryPaths": [
+        "app/src/main/java/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt"
+      ],
+      "gradleTasks": []
+    }
+  ],
+  "newIdentities": [
+    {
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/audio/player/AudioNowPlayingSession.kt",
+        "sha256": "8807646bb60de283fc481df7071baf4648bd4db0651deacab1c9f800fd28744c",
+        "mode": "policy-extract",
+        "features": [
+          "stable-frosted-audio-renderer",
+          "stable-original-now-playing-owner"
+        ],
+        "note": "Complete original two-flow UI presentation only; sole existing Frosted producer."
+      },
+      "packet": "stable-original-now-playing-owner-parity",
+      "featureTokenFrozen": true,
+      "evidence": {
+        "sourceIndex": 12,
+        "anchor": "#/0"
+      }
+    },
+    {
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt",
+        "sha256": "738f08d77fc7ae0332afe46bde5d2a8a7ad0fdd66e88d28591399d42c9840c31",
+        "mode": "policy-extract",
+        "features": [
+          "stable-video-root-story-feed"
+        ],
+        "note": "Complete original getStoryFeed selected body; sole new Story feed protocol producer."
+      },
+      "packet": "stable-video-root-story-feed-parity",
+      "featureTokenFrozen": false,
+      "evidence": {
+        "sourceIndex": 13,
+        "anchor": "#/originalPath + #/originalSHA256LF; ROOT-INTEGRATION.md line 7"
+      }
+    }
+  ],
+  "existingFeatureUnions": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+      "sha256LF": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a",
+      "existingMode": "policy-extract",
+      "addFeatures": [
+        "stable-tablet-owner-space-original"
+      ],
+      "currentFeaturesSHA256": "af6c9e0f73a93ccb0690d88c5e8546506f533e4a303068a4939567b8e0773c3f",
+      "currentFeatureCount": 4,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-tablet-owner-uploads-platform-parity",
+          "addFeatures": [
+            "stable-tablet-owner-space-original"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 0,
+            "anchor": "#/existingIdentityOnly/0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "sha256LF": "d6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f",
+      "existingMode": "policy-extract",
+      "addFeatures": [
+        "stable-tablet-owner-space-original"
+      ],
+      "currentFeaturesSHA256": "205dc2797f7f2c3f5e06c788ca6bc485cebc672951072261cea83d66301dff61",
+      "currentFeatureCount": 11,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-tablet-owner-uploads-platform-parity",
+          "addFeatures": [
+            "stable-tablet-owner-space-original"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 0,
+            "anchor": "#/existingIdentityOnly/1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256LF": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "existingMode": "api-extract",
+      "addFeatures": [
+        "stable-tablet-owner-space-original",
+        "stable-video-root-story-feed"
+      ],
+      "currentFeaturesSHA256": "c2979cd3560c67f6018369f93f56cfd82c9ebf9f03ce93a2a6a5e2afd6e5aacd",
+      "currentFeatureCount": 14,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-tablet-owner-uploads-platform-parity",
+          "addFeatures": [
+            "stable-tablet-owner-space-original"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 0,
+            "anchor": "#/existingIdentityOnly/2"
+          }
+        },
+        {
+          "packet": "stable-video-root-story-feed-parity",
+          "addFeatures": [
+            "stable-video-root-story-feed"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 9,
+            "anchor": "line 7: references/feature unions, preserve existing owners/modes"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
+      "sha256LF": "fad17890cf2f8a2d95fc80a706c6e66011dd992df3511d77ef957b1d90ed2c8c",
+      "existingMode": "policy-extract",
+      "addFeatures": [
+        "stable-tablet-owner-space-original"
+      ],
+      "currentFeaturesSHA256": "43e910df94ebcc999ecf53035ea7370dec170eb2eeb4dd58c89cac823fa6e888",
+      "currentFeatureCount": 3,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-tablet-owner-uploads-platform-parity",
+          "addFeatures": [
+            "stable-tablet-owner-space-original"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 0,
+            "anchor": "#/existingIdentityOnly/3"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "sha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "existingMode": "policy-extract",
+      "addFeatures": [
+        "stable-video-overlay-windows-platform"
+      ],
+      "currentFeaturesSHA256": "32951ee89072d8cd32a5f8624792129594d86570b1b10dcca12fdca82e4b5888",
+      "currentFeatureCount": 10,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-overlay-windows-platform-parity",
+          "addFeatures": [
+            "stable-video-overlay-windows-platform"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 1,
+            "anchor": "#/sourceRegistryFeatureMerges/0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+      "sha256LF": "73ccef84e24a91e6b907dcd617e1a7f87d7698d5042ccedb1437e7859d02ae10",
+      "existingMode": "policy-extract",
+      "addFeatures": [
+        "stable-video-overlay-windows-platform"
+      ],
+      "currentFeaturesSHA256": "78f38b90d136599ea277ba589d500b9036ccd9ffdf418126d84886da25bd8472",
+      "currentFeatureCount": 1,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-overlay-windows-platform-parity",
+          "addFeatures": [
+            "stable-video-overlay-windows-platform"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 1,
+            "anchor": "#/sourceRegistryFeatureMerges/1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt",
+      "sha256LF": "a6c9295a49defe38b5c67d8ef6c5da5f8b380c5d82b17d8a302af73822545cd9",
+      "existingMode": "selected",
+      "addFeatures": [
+        "stable-video-portrait-platform-binding"
+      ],
+      "currentFeaturesSHA256": "9a5f20023f33a1e9ac2c37b123d1e140da53e088b800b581e71251ca45922996",
+      "currentFeatureCount": 2,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-portrait-platform-binding-parity",
+          "addFeatures": [
+            "stable-video-portrait-platform-binding"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 2,
+            "anchor": "line 3; prepare.py changes only PortraitVideoPager.kt"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadManager.kt",
+      "sha256LF": "f1c78637c9a13b99e70a7732b6fd3836712784628c1903539b34de5b57817c64",
+      "existingMode": "policy-extract",
+      "addFeatures": [
+        "stable-video-owner-download-binding"
+      ],
+      "currentFeaturesSHA256": "f8254bdf631bae10147b253fe2477d642c1edd972ab5cc0dc717978d152576f5",
+      "currentFeatureCount": 1,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-owner-download-binding-parity",
+          "addFeatures": [
+            "stable-video-owner-download-binding"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 3,
+            "anchor": "#/sources/0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadTask.kt",
+      "sha256LF": "8a018fe4a83eae2690645c0fef92bc23b0482429bffb90a252d8b5a5581dae15",
+      "existingMode": "direct",
+      "addFeatures": [
+        "stable-video-owner-download-binding"
+      ],
+      "currentFeaturesSHA256": "f8254bdf631bae10147b253fe2477d642c1edd972ab5cc0dc717978d152576f5",
+      "currentFeatureCount": 1,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-owner-download-binding-parity",
+          "addFeatures": [
+            "stable-video-owner-download-binding"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 3,
+            "anchor": "#/sources/1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "existingMode": "extracted",
+      "addFeatures": [
+        "stable-today-watch-feedback-io",
+        "stable-video-owner-download-binding"
+      ],
+      "currentFeaturesSHA256": "456c83cce4e882e02c50fb6973d6326e79b64c96cdd8ce9121b6b313cd3417b3",
+      "currentFeatureCount": 12,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-owner-download-binding-parity",
+          "addFeatures": [
+            "stable-video-owner-download-binding"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 3,
+            "anchor": "#/sources/2"
+          }
+        },
+        {
+          "packet": "stable-today-watch-feedback-io-parity",
+          "addFeatures": [
+            "stable-today-watch-feedback-io"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 7,
+            "anchor": "#/sourceInventory/2"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "sha256LF": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c",
+      "existingMode": "policy-extract",
+      "addFeatures": [
+        "stable-video-owner-download-binding"
+      ],
+      "currentFeaturesSHA256": "14a9286a41479e7d01ad239d38f5326122876fdcbb7f4b94d7caa8608db5be0d",
+      "currentFeatureCount": 36,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-owner-download-binding-parity",
+          "addFeatures": [
+            "stable-video-owner-download-binding"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 3,
+            "anchor": "#/sources/3"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt",
+      "sha256LF": "a6a884fffc8d045609da0ac745d7376ec68c5237a2b4dae64e7a6c578240bd80",
+      "existingMode": "extracted",
+      "addFeatures": [
+        "video-full-owner-unified-playlist"
+      ],
+      "currentFeaturesSHA256": "4637d626a3ebfd43c0f6bdc338b41bdea8e51d9def7a916308a6303a81274e6f",
+      "currentFeatureCount": 2,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-unified-playback-facade-parity",
+          "addFeatures": [
+            "video-full-owner-unified-playlist"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 5,
+            "anchor": "#/registryRecipe"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "sha256LF": "d09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5",
+      "existingMode": "extracted",
+      "addFeatures": [
+        "stable-video-owner-danmaku-send"
+      ],
+      "currentFeaturesSHA256": "0ba71b8cd9c2d9af11078f863df51f28924bddcff4a2f4ed4eb9032a76f8830e",
+      "currentFeatureCount": 9,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-owner-danmaku-cache-binding-parity",
+          "addFeatures": [
+            "stable-video-owner-danmaku-send"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 6,
+            "anchor": "line 3"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/TodayWatchFeedbackStore.kt",
+      "sha256LF": "c5a13d5bed751c048d3ec872e1a6a82fc418571f1403aa0723c1bb433843d1e9",
+      "existingMode": "platform-rewrite",
+      "addFeatures": [
+        "stable-today-watch-feedback-io"
+      ],
+      "currentFeaturesSHA256": "d485a648e1c7dfd279ca91f2a8c4ac42cd32c200807e403cbe323a8d7af99aa0",
+      "currentFeatureCount": 1,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-today-watch-feedback-io-parity",
+          "addFeatures": [
+            "stable-today-watch-feedback-io"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 7,
+            "anchor": "#/sourceInventory/0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "sha256LF": "63ffd0eadd3080e2b304612c9c1e672f5f2370ca9c9db4f8040a52e85cbc15aa",
+      "existingMode": "policy-extract",
+      "addFeatures": [
+        "stable-today-watch-feedback-io"
+      ],
+      "currentFeaturesSHA256": "a5b48cc8370154469e108cf30a08dce2f57f231e0868bb3f29043f4b6213722b",
+      "currentFeatureCount": 3,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-today-watch-feedback-io-parity",
+          "addFeatures": [
+            "stable-today-watch-feedback-io"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 7,
+            "anchor": "#/sourceInventory/1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt",
+      "sha256LF": "fb11abc7e01d02c977250ce978a099bdfcdb3a9048ad0f47fda9fb1e06d9b62e",
+      "existingMode": "direct",
+      "addFeatures": [
+        "stable-video-root-story-feed"
+      ],
+      "currentFeaturesSHA256": "60cf0594bd9e9708fcc4fdb16f612bff44485c9566c5e1b0dbc8fcbfca7ca09f",
+      "currentFeatureCount": 1,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-root-story-feed-parity",
+          "addFeatures": [
+            "stable-video-root-story-feed"
+          ],
+          "featureTokenFrozen": false,
+          "evidence": {
+            "sourceIndex": 9,
+            "anchor": "line 7: references/feature unions, preserve existing owners/modes"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "sha256LF": "cfe1d1eed5f1fcb47e1657b559f149698994cee0b8808dea4a7030774ec40c93",
+      "existingMode": "extracted",
+      "addFeatures": [
+        "complete original neutral local-item apply builder and same-document initial local injection"
+      ],
+      "currentFeaturesSHA256": "316eebf9295a1eaec9967bb5816542d17335eae2c396bd9c52038198ddddbd9b",
+      "currentFeatureCount": 3,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-original-danmaku-local-click-parity",
+          "addFeatures": [
+            "complete original neutral local-item apply builder and same-document initial local injection"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 10,
+            "anchor": "#/registryFeatureUnions/0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
+      "sha256LF": "65b184189813db2db4ab04c175e5b2c4eda682fce57be547bd2b290237473400",
+      "existingMode": "extracted",
+      "addFeatures": [
+        "complete original foreground-recovery policy and sync action enum"
+      ],
+      "currentFeaturesSHA256": "44fbfa8225e0a883179da5f830f8015d1a33d1936537c18b682c58d07ff83793",
+      "currentFeatureCount": 2,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-original-danmaku-local-click-parity",
+          "addFeatures": [
+            "complete original foreground-recovery policy and sync action enum"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 10,
+            "anchor": "#/registryFeatureUnions/1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt",
+      "sha256LF": "e0165d4a922cdd613fcda87100f8344f572ba8e5afd22ce6c1c603eba8fec758",
+      "existingMode": "policy-extract",
+      "addFeatures": [
+        "root-home-navigation",
+        "video-holder-root-mount"
+      ],
+      "currentFeaturesSHA256": "58757c59988b1fb369134307fafc3543f8bfb8e02356faba799b55a26e4757bb",
+      "currentFeatureCount": 2,
+      "preserveExistingModeSHAAndFeatures": true,
+      "requests": [
+        {
+          "packet": "stable-video-full-owner-root-mount-parity",
+          "addFeatures": [
+            "root-home-navigation",
+            "video-holder-root-mount"
+          ],
+          "featureTokenFrozen": true,
+          "evidence": {
+            "sourceIndex": 11,
+            "anchor": "#/existingIdentityFeatureUnion/0"
+          }
+        }
+      ]
+    }
+  ],
+  "implementerChosenTokens": {
+    "stable-video-portrait-platform-binding-parity": [
+      "stable-video-portrait-platform-binding"
+    ],
+    "stable-video-owner-download-binding-parity": [
+      "stable-video-owner-download-binding"
+    ],
+    "stable-video-owner-danmaku-cache-binding-parity": [
+      "stable-video-owner-danmaku-send"
+    ],
+    "stable-today-watch-feedback-io-parity": [
+      "stable-today-watch-feedback-io"
+    ],
+    "stable-video-root-story-feed-parity": [
+      "stable-video-root-story-feed"
+    ]
+  },
+  "implementerChosenTokenMeaning": "These exact suggested tokens are Root implementer decisions; respective frozen packets define semantic unions without literal tags. Other feature values are frozen verbatim.",
+  "gradleAppends": [
+    {
+      "packet": "stable-tablet-owner-uploads-platform-parity",
+      "taskName": "extractOriginalTabletOwnerSpace",
+      "taskNameFrozen": true,
+      "producerSource": {
+        "sourceIndex": 14,
+        "anchor": "generate(repo,output,standalone=False)"
+      },
+      "destination": "desktop/tools/extract-upstream-tablet-owner-space.py",
+      "output": "generated/original-tablet-owner-space",
+      "sourceRoot": "generated/original-tablet-owner-space/com",
+      "appendSource": {
+        "sourceIndex": 15,
+        "anchor": "entire frozen 1138-byte append"
+      },
+      "appendBlockSHA256": "de9a001e2128377f693a08c1d1a07f46fbe69a6a6e4c6011d151515b22ab2758",
+      "candidateRegistrationCount": 0
+    },
+    {
+      "packet": "stable-unified-playback-facade-parity",
+      "taskName": "extractOriginalVideoPlaylistFull",
+      "taskNameFrozen": false,
+      "destination": "desktop/tools/extract-upstream-video-playlist.py",
+      "producerSource": {
+        "sourceIndex": 16,
+        "anchor": "entire new sole CLI producer; --repo --output; omit --standalone"
+      },
+      "output": "generated/original-video-playlist-full",
+      "sourceRoot": "generated/original-video-playlist-full/com",
+      "appendBlockSHA256": "6d3b1f0c1c1feb767f71158f913a7ec795c1d7da650ca2166521f1ff4c5ad361",
+      "inputsOriginalPaths": [
+        "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt"
+      ],
+      "inputsHelperTools": [],
+      "taskDependencies": [
+        "prepareUpstreamSources"
+      ],
+      "candidateRegistrationCount": 0
+    },
+    {
+      "packet": "stable-video-owner-danmaku-cache-binding-parity",
+      "taskName": "extractOriginalVideoOwnerDanmakuSend",
+      "taskNameFrozen": false,
+      "destination": "desktop/tools/extract-upstream-video-owner-danmaku-send.py",
+      "producerSource": {
+        "sourceIndex": 17,
+        "anchor": "entire new sole CLI producer; --repo --output; omit --standalone"
+      },
+      "output": "generated/original-video-owner-danmaku-send",
+      "sourceRoot": "generated/original-video-owner-danmaku-send/com",
+      "appendBlockSHA256": "811024f941b624fced9a1e078b6c0ab3e20390581fdf7b088ea3d4b77c91f480",
+      "inputsOriginalPaths": [
+        "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"
+      ],
+      "inputsHelperTools": [
+        "tools/extract-upstream-danmaku-list-menu.py"
+      ],
+      "taskDependencies": [
+        "prepareUpstreamSources",
+        "extractOriginalDanmakuListMenu"
+      ],
+      "candidateRegistrationCount": 0
+    },
+    {
+      "packet": "stable-video-root-story-feed-parity",
+      "taskName": "extractOriginalVideoRootStoryFeed",
+      "taskNameFrozen": false,
+      "destination": "desktop/tools/extract-upstream-video-root-story-feed.py",
+      "producerSource": {
+        "sourceIndex": 18,
+        "anchor": "entire new sole CLI producer; --repo --output; omit --standalone"
+      },
+      "output": "generated/original-video-root-story-feed",
+      "sourceRoot": "generated/original-video-root-story-feed/com",
+      "appendBlockSHA256": "64227330016072650ce3077823ce82ed03e1eb40a8fb7d375bb72056ff511831",
+      "inputsOriginalPaths": [
+        "app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt",
+        "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+        "app/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt"
+      ],
+      "inputsHelperTools": [
+        "tools/extract-upstream-danmaku-list-menu.py"
+      ],
+      "taskDependencies": [
+        "prepareUpstreamSources",
+        "extractOriginalDanmakuListMenu"
+      ],
+      "candidateRegistrationCount": 0
+    }
+  ],
+  "gradleAppendFile": "gradle-append.kts",
+  "gradleAppendSHA256Bytes": "33aa558573daebc1a1f4cd3b22682b4896899bedb3d16c27b9ef8feeacce095e",
+  "gradleAppendAnchor": "// DIRECT21 are copied once by prepareUpstreamSources; production omits --standalone.\n",
+  "gradleAppendAnchorCount": 1,
+  "gradleAppendPolicy": "Append once after exact current EOF anchor; preserve existing tasks/dependencies. Three unfrozen task names are implementer choices; Tablet fragment is frozen verbatim modulo CRLF-to-LF.",
+  "gradleInputsPolicy": "Three derived append blocks use explicit fixed original inputs, so semantic token choice cannot omit generation inputs. Story/Danmaku declare the actual sole imported token helper.",
+  "nowPlayingSessionReusesExistingTask": "extractFrostedAudioRenderer; stable-frosted-audio-renderer feature; new task count zero",
+  "dependenciesAdded": [],
+  "lifecycleLaneHasRegistryOrGradleDelta": false,
+  "generatedSourcesMustNotBeCopied": true,
+  "candidateModified": false,
+  "frozenPacketsModified": false,
+  "buildStarted": false,
+  "completeFunctionalAcceptanceClaimed": false,
+  "sourceEvidence": [
+    {
+      "packet": "stable-tablet-owner-uploads-platform-parity",
+      "file": "registry-merge-recipe.json",
+      "sha256Bytes": "e45254f3e61c287d9c6232ddcff3ca7006be961eecccb6d7dc2ccee4f061c736"
+    },
+    {
+      "packet": "stable-video-overlay-windows-platform-parity",
+      "file": "install-contract.json",
+      "sha256Bytes": "96303c4bcd599f7b213f439929d4fd8cd4ac98f9247925d103b8f2b00d02d91a"
+    },
+    {
+      "packet": "stable-video-portrait-platform-binding-parity",
+      "file": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "4cf87e8e858f33db58831ec43ad80ca8bfa0b17da1a771c3453e41c556944536"
+    },
+    {
+      "packet": "stable-video-owner-download-binding-parity",
+      "file": "original-source-inventory.json",
+      "sha256Bytes": "da05295b388047c636c8e58414e7a0ced3ab1f3639236cffb78803d832d1c845"
+    },
+    {
+      "packet": "stable-video-owner-download-binding-parity",
+      "file": "ROOT-INTEGRATION.txt",
+      "sha256Bytes": "bc25331840906f471f468c67f3ed32ab1484cc46c705da8a8c9fa657b8d335d3"
+    },
+    {
+      "packet": "stable-unified-playback-facade-parity",
+      "file": "install-contract.json",
+      "sha256Bytes": "8d543f4d4b2fafeb1b7741476609fd3f142df2738cd29f81a170f8d0332af756"
+    },
+    {
+      "packet": "stable-video-owner-danmaku-cache-binding-parity",
+      "file": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "89a700ae1ed0f06e3ffde846d7d57bec04e1bfc1b2b4b7a81e9dafcd1be20a20"
+    },
+    {
+      "packet": "stable-today-watch-feedback-io-parity",
+      "file": "producer-audit.json",
+      "sha256Bytes": "427ab2096265ca1e861feb4b734c7a69cec76402a16eff200c303c48982ea9e7"
+    },
+    {
+      "packet": "stable-today-watch-feedback-io-parity",
+      "file": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "0e493bca066acbd6a2537fd3d13c430e7c52e87e01f0fc448d7d7ebd29d088e9"
+    },
+    {
+      "packet": "stable-video-root-story-feed-parity",
+      "file": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "72384c0a26b08946c640b4a45eb86252e299b878d9987ad86a3df12bdf3e8e85"
+    },
+    {
+      "packet": "stable-original-danmaku-local-click-parity",
+      "file": "install-contract.json",
+      "sha256Bytes": "f16a51e09b432ca0265c3b58c9cee92d78927cdd2f2d8bfde3bc5a724f83dd39"
+    },
+    {
+      "packet": "stable-video-full-owner-root-mount-parity",
+      "file": "registry-delta.json",
+      "sha256Bytes": "10e9394438160ea4a919a6b397927c45168338dd0bae0ecc2098fc8ce3da052f"
+    },
+    {
+      "packet": "stable-original-now-playing-owner-parity",
+      "file": "registry-delta.json",
+      "sha256Bytes": "4cafb5659cc81ba447fa5fc573e27f838b26dd270e7fe8a99d81325d5b17716a"
+    },
+    {
+      "packet": "stable-video-root-story-feed-parity",
+      "file": "source-inventory.json",
+      "sha256Bytes": "96b9df07ce8484fa30793061a3dda4d4670f5a95c8e9e7b3040d2aeb3f1213d5"
+    },
+    {
+      "packet": "stable-tablet-owner-uploads-platform-parity",
+      "file": "prepared/desktop/tools/extract-upstream-tablet-owner-space.py",
+      "sha256Bytes": "567c1be5be0bacf606b045c05371b171eafc3a424eca90b3d368e45d5feb23d1"
+    },
+    {
+      "packet": "stable-tablet-owner-uploads-platform-parity",
+      "file": "gradle.fragment.kts",
+      "sha256Bytes": "de9a001e2128377f693a08c1d1a07f46fbe69a6a6e4c6011d151515b22ab2758"
+    },
+    {
+      "packet": "stable-unified-playback-facade-parity",
+      "file": "prepared/tools/extract-upstream-video-playlist.py",
+      "sha256Bytes": "2857097ba9bdb5ef9faef051e63e51c730751c34604a638f4af5b8c98f1ac89c"
+    },
+    {
+      "packet": "stable-video-owner-danmaku-cache-binding-parity",
+      "file": "prepared/tool/extract-upstream-video-owner-danmaku-send.py",
+      "sha256Bytes": "95a3676ac440e13c98285f42260830b9cccb0df47f7512bd1880e3211eded9a5"
+    },
+    {
+      "packet": "stable-video-root-story-feed-parity",
+      "file": "prepared/tools/extract-upstream-video-root-story-feed.py",
+      "sha256Bytes": "1faac9f94b91d3fe32d3d6b304fc43a54f55355d82d43f4674d1ea1fdaa97dbb"
+    }
+  ]
+}

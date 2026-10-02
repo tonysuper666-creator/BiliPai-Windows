@@ -34,6 +34,7 @@ internal class DesktopOriginalCommentRootOwner(
     contentIdentity: Any,
     stillOwned: () -> Boolean,
     modifier: Modifier,
+    borrowedImageAssets: DesktopDynamicImageAssets? = null,
     content: @Composable (DesktopOriginalCommentRootOwner) -> Unit,
 ) {
     val session = checkNotNull(LocalDesktopDynamicCardSession.current)
@@ -63,8 +64,8 @@ internal class DesktopOriginalCommentRootOwner(
         val pickers = remember(images, saveParent) {
             DesktopDynamicEditorWindowsPickers(images, ::owned, { saveParent }, ::feedback)
         }
-        val assets = remember(operations, locations, saveParent) {
-            DesktopDynamicImageAssets(repository.httpClient, ::owned, guard, owner,
+        val assets = remember(operations, locations, saveParent, borrowedImageAssets) {
+            borrowedImageAssets ?: DesktopDynamicImageAssets(repository.httpClient, ::owned, guard, owner,
                 selectTarget = { name, mime -> selectDynamicSaveTarget(name, mime, saveParent) },
                 selectDirectory = { selectDynamicSaveDirectory(saveParent) }, imageSaveLocations = locations)
         }
@@ -100,7 +101,8 @@ internal class DesktopOriginalCommentRootOwner(
         DisposableEffect(alive, assets, images, scope) {
             onDispose {
                 synchronized(exportLock) { alive.set(false) }
-                assets.close(); images.close(); scope.cancel()
+                if (borrowedImageAssets == null) assets.close()
+                images.close(); scope.cancel()
             }
         }
         val ownerBindings = remember(operations, requests, scope) {

@@ -1,0 +1,11 @@
+{
+  "frozenManifestSHA256Bytes": "308da215db3aa1819e6cd158cf2c6b83ce0d724d8f76f8125e11de00a06dd724",
+  "exactHunksInstalled": 1,
+  "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+  "beforeSHA256LF": "e57cba6d089ffc73020ddf6716ef35eb7f149e7df52a1306e1c288fe07df48fe",
+  "afterSHA256LF": "a276c009c4871907a9cee0d3c0c05b54d1475cf78c0a8962fc41e7670ae9e7fa",
+  "sameMPVIdentityRequired": true,
+  "noUnpublishedAssemblyDereference": true,
+  "newWholeBuildPassed": false,
+  "runtimeAccepted": false
+}

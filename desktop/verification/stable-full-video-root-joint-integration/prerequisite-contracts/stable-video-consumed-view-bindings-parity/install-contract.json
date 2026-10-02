@@ -1,0 +1,91 @@
+{
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "newSource": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-consumed-view-bindings-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoConsumedViews.kt",
+    "relativePath": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoConsumedViews.kt",
+    "sha256Bytes": "06f9377ae93086b0bc1443e38cc3a2f16723080a0da5016b8f7cab42f9aec5b8",
+    "sha256LF": "06f9377ae93086b0bc1443e38cc3a2f16723080a0da5016b8f7cab42f9aec5b8",
+    "bytes": 5337,
+    "role": "sole new no-authority consumed view; install one manual source"
+  },
+  "constructor": "DesktopOriginalVideoConsumedViews(assembly: DesktopOriginalVideoOwnerAssembly)",
+  "consumption": "Use the SAME view as both DesktopOriginalPortraitPlaybackOwner and DesktopOriginalAudioVideoOwner for that fixed retained Assembly. No current/latest owner recapture from an old view.",
+  "flowContract": "All StateFlows are exact original VM references. Two original Channel receiveAsFlow event streams remain cold borrowed flows; ownership filter and transient read-interface map only, no relay collector/replay/actor/new state.",
+  "nativeContract": "currentPlayer is the actual assembly.section ONLY when original.currentPlayer === assembly.section and the fixed Assembly owns. Original VM static Player ABI is Overlay; no blind cast or alternate player fallback.",
+  "commandContract": "Every command first checks fixed Assembly/VM identity and owns; original methods then use their installed invocation/request/native guards. No callback/IO is placed inside a new gate in this read adapter.",
+  "actualSourcesRead": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatform.kt",
+      "sourceSha256LF": "da809850bd185bb62ec5201983535881e52e25b58c96fbc313397d528cc968ad"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalAudioModePlatform.kt",
+      "sourceSha256LF": "09772e987e12753b4069fca378f3f3883869640deb66c5cdc357c07567f7b75b"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMusicUiPlatform.kt",
+      "sourceSha256LF": "2ce04e5a057a8438edc2c9f4ad3c7b1ff62c54cc8d57cac17ae5c45da14b1819"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/DesktopAudioRepository.kt",
+      "sourceSha256LF": "fedfe3ce90865fcd00ed2474766623d64432bebeff63eacbfb206dc153c320f9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/audio/ListenAudioSession.kt",
+      "sourceSha256LF": "4f4ec3ad0dfc0aa1eb5ba5147b9632f3619d0f79961bbb783755ff853ab96523"
+    }
+  ],
+  "originalPendingEffectSources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/viewmodel/MusicViewModel.kt",
+      "sourceSha256LF": "d9705a700bbe14722b79d9bb484d70da0afb97ae1c9df393e7a271e4a0173d0c",
+      "lines": 314
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/lyrics/LyricsRepository.kt",
+      "sourceSha256LF": "bd0c6cfc33e24ab44b8aea772989c6c2b3b0d0a5e4276e0ea6b296e2bd36d7e3",
+      "lines": 232
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/PlayHistoryStore.kt",
+      "sourceSha256LF": "571161606f2dc9c287fcbdfc43699b46fca9e67384969598e38cbd4170efcf17",
+      "lines": 93
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ExternalPlaylistRepository.kt",
+      "sourceSha256LF": "3fe9556d6701f34e7f0eb1731ad005acca7f2ef2f278f5bf3fc571911ae09288",
+      "lines": 333
+    }
+  ],
+  "musicViewModelClassPresentActual73": false,
+  "remainingRequiredAudioEffects": [
+    {
+      "port": "DesktopOriginalAudioLyricsPort",
+      "status": "Pending concrete original MusicViewModel lyrics-only/native view adapter. MusicUiState/UI are installed, full MusicViewModel class is absent actual73.",
+      "reusableAuthority": "Existing Root DesktopAudioRepository.lyrics is the actual LyricsRepository and provider/cache instance (DesktopAudioRepository.kt:55). Reuse that instance, no new client/cache. Do not drive BV AudioMode from ListenAudioSession native player/state.",
+      "required": "Original MusicViewModel init/loadLyricsForVideo/adjust/retry/search/select logic must consume SAME BV Section position/duration/source/entry, not construct another decoder or empty MusicUiState."
+    },
+    {
+      "port": "DesktopOriginalMusicUiPlatform.history",
+      "status": "Required global original history/last-session adapter; no implementation emitted here.",
+      "reusableAuthority": "Pinned PlayHistoryStore schemas and same Root Library/global Settings Store; exact recent/lastSession/record/saveLastSession API must map once with original keys and captured final-write owner."
+    },
+    {
+      "port": "DesktopOriginalMusicUiPlatform.externalPlaylist",
+      "status": "Required source-preserving original ExternalPlaylistRepository protocol/checkpoint adapter; no implementation emitted here.",
+      "reusableAuthority": "Existing same Repository/API/call factory/global checkpoint settings. Preserve load/save/clear checkpoint, fetch/match/search/progress semantics; no empty list or no-op import."
+    },
+    {
+      "port": "DesktopOriginalAudioSessionPort/DesktopOriginalAudioMiniPort",
+      "status": "Required Root presentation/Library/SMTC metadata over same BV source, not Listen playback takeover.",
+      "reusableAuthority": "Same Root Library/session and DesktopOriginalVideoMiniBinding. Root mark/dismiss must reflect real audio-mode presentation; no new audio source or independent player."
+    }
+  ],
+  "baseline": {
+    "snapshot": "stable-product-snapshot-73",
+    "runtimeEntries": 101,
+    "manifestSha256Bytes": "4fe15a56b0a78bda5bf067e52f4e20ceb88244eee943a007db248e6f1bb9e829",
+    "orderedCPsha256Bytes": "f71557c1952176118a9eba16479da2e244cacfb6cc419a65f43dc5501f822d31"
+  },
+  "scope": "Prepared adapter compile only, 14 new classes, no production overlap. No Root/native/UI/runtime/HTTP/account proof; full Audio effects remain explicitly pending."
+}

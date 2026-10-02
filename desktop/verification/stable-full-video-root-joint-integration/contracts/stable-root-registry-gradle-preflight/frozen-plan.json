@@ -1,0 +1,41 @@
+{
+  "schema": "bilipai-readonly-registry-gradle-plan-freeze-v1",
+  "candidateBaseHead": "462507f8a175a74a823fa3ea138f6b490c20a953",
+  "candidateOriginalRegistrySHA256Bytes": "7a4d62a607ccc41252e10ea3a877392db4578db510833e98064fce4b17a56611",
+  "candidateOriginalGradleSHA256Bytes": "3725ae77f6eede220ec5d716a5995ff4595d7cbfb5dc8db9346de3cc8cb742d6",
+  "artifactCount": 4,
+  "files": [
+    {
+      "relativePath": "audit.py",
+      "bytes": 15568,
+      "sha256Bytes": "9c0c581b724d0d4269061fb5c0fcbbee1f53621025b34977e2acce35ec4d5d9c"
+    },
+    {
+      "relativePath": "audit-01.log",
+      "bytes": 518,
+      "sha256Bytes": "fea39b137f87a7ce343a049dfb0cc9c3a49e1ee4ca22e9f070f771db94594804"
+    },
+    {
+      "relativePath": "plan.json",
+      "bytes": 37476,
+      "sha256Bytes": "d59427bafc66f36837985c506c09756247ad5b47cbbf1109987b5043cc7ff5a2"
+    },
+    {
+      "relativePath": "gradle-append.kts",
+      "bytes": 4278,
+      "sha256Bytes": "33aa558573daebc1a1f4cd3b22682b4896899bedb3d16c27b9ef8feeacce095e"
+    }
+  ],
+  "allFrozenInputRawFilesVerified": 1927,
+  "prerequisiteCount": 20,
+  "rootCount": 1,
+  "newOriginalIdentities": 2,
+  "existingUniqueUnionPaths": 19,
+  "unionRequests": 21,
+  "gradleAppendTasks": 4,
+  "candidateEdited": false,
+  "frozenPacketsEdited": false,
+  "buildStarted": false,
+  "implementerChoicesExplicit": true,
+  "lifecycleRegistryGradleDelta": false
+}

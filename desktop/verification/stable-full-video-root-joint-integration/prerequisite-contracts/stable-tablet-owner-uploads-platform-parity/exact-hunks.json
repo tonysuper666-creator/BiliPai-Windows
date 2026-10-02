@@ -1,0 +1,44 @@
+[
+  {
+    "path": "desktop/tools/extract-space-overview.py",
+    "before": "starts=[i for i,t in enumerate(tokens[:-1]) if t[0]==kind and tokens[i+1][0]==name]",
+    "after": "starts=[]\n        for i,t in enumerate(tokens[:-1]):\n            if t[0]!=kind: continue\n            opening=next((j for j in range(i+1,len(tokens)) if tokens[j][0]=='('),None)\n            if opening is not None and tokens[opening-1][0]==name: starts.append(i)",
+    "beforeAnchorSha256LF": "e238da3cc401cb9c41d67631ded1ae72c53f98d735e58b999e36172a0e187e1e",
+    "afterAnchorSha256LF": "464040b96b32bb9256c5fe56dbb5b3826c62a0d5bd01301770789f2624b3695c"
+  },
+  {
+    "path": "desktop/tools/extract-space-overview.py",
+    "before": "    pieces += [declaration(policy,name) for name in names]\n",
+    "after": "    pieces += [declaration(policy,name) for name in names]\n    # Complete initial SpaceViewModel load closure, reused by original Tablet ownerUploads.\n    pieces += [declaration(policy,'SpaceUserCardVisuals','class')]\n    pieces += [declaration(policy,name) for name in ['shouldApplySpaceLoadResult', 'applySpaceSupplementalData', 'mergeArchiveMapsByLargestList', 'resolveEmbeddedSeasonArchives', 'resolveEmbeddedSeriesArchives', 'buildInitialSpaceSuccessState', 'shouldHydrateSpaceContributionVideos', 'shouldApplySpaceVideoResult', 'extractSpaceVideoCategories']]\n",
+    "beforeAnchorSha256LF": "c9c7fb7e949c83988a6fe909fd8f47dd87b7e3898f64c539609965f22652df34",
+    "afterAnchorSha256LF": "664ed8d985f88a4c847cf904aa99f5acf99d12d9cfa72ca4276830c0b628aaf5"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+    "before": "import com.android.purebilibili.core.network.BuvidApi\n",
+    "after": "import com.android.purebilibili.core.network.BuvidApi\nimport com.android.purebilibili.core.network.SpaceApi\n",
+    "beforeAnchorSha256LF": "4e8499019a83932600d56d72c8a3bf46b54337e300453f5b50fb2e7de83b43bc",
+    "afterAnchorSha256LF": "da2e78caafe6bda900e388159ac4170b952bd1b86af029653a46dfe30f63b4fc"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+    "before": "    private val capturedPrimaryApi = repository.ownedHomeService(BilibiliApi::class.java, \"https://api.bilibili.com/\",\n        receipt.accountEpoch, ::current)\n",
+    "after": "    private val capturedPrimaryApi = repository.ownedHomeService(BilibiliApi::class.java, \"https://api.bilibili.com/\",\n        receipt.accountEpoch, ::current)\n    private val capturedPrimarySpaceApi = repository.ownedHomeService(SpaceApi::class.java, \"https://api.bilibili.com/\",\n        receipt.accountEpoch, ::current)\n",
+    "beforeAnchorSha256LF": "93addd93166c4febcfd814585058ed822111ae19eedc5d7305d46bd5a5c61b02",
+    "afterAnchorSha256LF": "3c2e3ffc7910d5ed194b49a40326841aca2676aa965e4d2f5e239b72a54c1049"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+    "before": "    val primaryApi: BilibiliApi get() = read { capturedPrimaryApi }\n",
+    "after": "    val primaryApi: BilibiliApi get() = read { capturedPrimaryApi }\n    /** Same fixed primary request/Call.Factory, including original Space app endpoints. */\n    val primarySpaceApi: SpaceApi get() = read { capturedPrimarySpaceApi }\n",
+    "beforeAnchorSha256LF": "ef7c994c8ee9c567449ee4f39647a5e5b99fc6ca929c589d6aec79986c945ba0",
+    "afterAnchorSha256LF": "1ac84b3bbdd52baa6440c32f9e5b104190d80d7be716eb27ecaa502db85772ff"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+    "before": "    fun primaryAccessToken(): String? = read {\n        repository.ownedHomeAccessToken(receipt.accountEpoch, ::entryCurrent)\n    }\n",
+    "after": "    fun primaryAccessToken(): String? = read {\n        repository.ownedHomeAccessToken(receipt.accountEpoch, ::entryCurrent)\n    }\n    fun primaryAccessTokenPlatform(): String = read { repository.accessTokenCredentials().second }\n",
+    "beforeAnchorSha256LF": "3e3e0c885799e18dc4a3b25b8d551588d12678f3d326f372342fed7dbce19254",
+    "afterAnchorSha256LF": "ebf7f019952cf8234a9bca47b1b33ddab41701c283c0abe1cd5ae73ae793c8c2"
+  }
+]

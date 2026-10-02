@@ -31,6 +31,38 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
     private val writePrimaryVip: (Boolean) -> Unit,
 ) : DesktopOriginalVideoOwnerRepository,
     DesktopOriginalVideoLoadRepository by binding.rawRepository {
+    private var transportObserver: DesktopOriginalVideoTransportObserver? = null
+    private var awaitNativeSelection: (suspend () -> Unit)? = null
+    fun observeTransportMetadata(observer: DesktopOriginalVideoTransportObserver,
+        beforeSelection: suspend () -> Unit) {
+        check(transportObserver == null) { "The captured request already has a transport observer" }
+        binding.assertCurrent(); transportObserver = observer; awaitNativeSelection = beforeSelection
+    }
+    private suspend fun observedInfo(info: ViewInfo) {
+        currentCoroutineContext().ensureActive(); binding.assertCurrent()
+        transportObserver?.info(info)
+    }
+    private suspend fun observedPlay(bvid: String, cid: Long, data: PlayUrlData?) {
+        currentCoroutineContext().ensureActive(); binding.assertCurrent()
+        data?.let { transportObserver?.playData(bvid, cid, it) }
+        // The raw request has returned; selection is synchronous after this actual
+        // same-session await. It is outside every Store/entry/native monitor.
+        awaitNativeSelection?.invoke()
+        currentCoroutineContext().ensureActive(); binding.assertCurrent()
+    }
+    override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> =
+        binding.rawRepository.getVideoInfoOnly(bvid, aid, requestedCid).also { result -> result.getOrNull()?.let { observedInfo(it) } }
+    override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long,
+        targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> =
+        binding.rawRepository.getVideoDetails(bvid, aid, requestedCid, targetQuality, audioLang).also { result ->
+            result.getOrNull()?.let { (info, data) -> observedInfo(info); observedPlay(info.bvid, info.cid, data) }
+        }
+    override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int,
+        audioLang: String?): PlayUrlData? = binding.rawRepository.getInitialPlayUrlData(bvid, cid, targetQuality, audioLang)
+            .also { observedPlay(bvid, cid, it) }
+    override suspend fun getPlayUrlData(bvid: String, cid: Long, qn: Int, audioLang: String?): PlayUrlData? =
+        binding.rawRepository.getPlayUrlData(bvid, cid, qn, audioLang).also { observedPlay(bvid, cid, it) }
+
     override val primaryApi get() = binding.primaryApi
     override val playbackCalls get() = binding.playbackCalls
 
@@ -55,8 +87,10 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
 
     override suspend fun getPlayUrlDataForPlaybackTransition(bvid: String, cid: Long, qn: Int,
         audioLang: String?): PlayUrlData? = binding.protocol.getPlayUrlDataForPlaybackTransition(bvid, cid, qn, audioLang)
+            .also { observedPlay(bvid, cid, it) }
     override suspend fun getExactPremiumPlayUrl(bvid: String, cid: Long, targetQn: Int,
         audioLang: String?): PlayUrlData? = binding.protocol.getExactPremiumPlayUrl(bvid, cid, targetQn, audioLang)
+            .also { observedPlay(bvid, cid, it) }
     override suspend fun refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn: Boolean, cachedIsVip: Boolean,
         storedQuality: Int, autoHighestEnabled: Boolean): Boolean =
         metadata.refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn, cachedIsVip, storedQuality, autoHighestEnabled)

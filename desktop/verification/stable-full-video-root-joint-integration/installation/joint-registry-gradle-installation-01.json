@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "candidateBaseHead": "462507f8a175a74a823fa3ea138f6b490c20a953",
+  "readonlyPlanSHA256Bytes": "d59427bafc66f36837985c506c09756247ad5b47cbbf1109987b5043cc7ff5a2",
+  "sourceRegistryCountBefore": 1170,
+  "sourceRegistryCountAfter": 1172,
+  "resourceCount": 213,
+  "existingIdentityUnionsApplied": 19,
+  "newIdentities": 2,
+  "addedGradleTasks": [
+    "extractOriginalTabletOwnerSpace",
+    "extractOriginalVideoPlaylistFull",
+    "extractOriginalVideoOwnerDanmakuSend",
+    "extractOriginalVideoRootStoryFeed"
+  ],
+  "dependenciesAdded": false,
+  "registryModeOrSHAChanged": false,
+  "existingGradlePrefixUnchanged": true,
+  "installerSHA256Bytes": "d5f621955d0d162b54ad921f8d9f29f8ea807b1268dc487c187b746fd6f213ee",
+  "files": [
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSHA256Bytes": "7a4d62a607ccc41252e10ea3a877392db4578db510833e98064fce4b17a56611",
+      "afterSHA256Bytes": "d759eff054a8fca05705a1fbb307de2531ef4a6865d680e224f0da3d05b801bb"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSHA256Bytes": "3725ae77f6eede220ec5d716a5995ff4595d7cbfb5dc8db9346de3cc8cb742d6",
+      "afterSHA256Bytes": "4eea9a34c4564b2a7eeb6789269806f048a4053f216346a0cd3ffe3b5be04cf4"
+    }
+  ],
+  "wholeBuildPassed": false,
+  "actualMainAccepted": false,
+  "newExeDeployed": false
+}

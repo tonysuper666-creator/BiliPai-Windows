@@ -169,6 +169,31 @@ internal class DesktopOriginalVideoWindowsWindowPort(
         return AutoCloseable { captureLeases.remove(token)?.close() }
     }
 
+    /** A separate registration in the EXISTING Window chrome owner. Closing a
+     * portrait lease cannot restore/remove a later Holder registration. Android
+     * hidden system bars are represented only by the Windows client/title policy.
+     * The caller must invoke this outside Store/entry/native admission gates. */
+    fun acquirePortraitPresentation(spec: VideoDetailSystemBarsApplySpec): AutoCloseable {
+        val stillOwned = { !closed.get() && isRootCurrent() && owner.owns() }
+        var registration: AutoCloseable? = null // EDT only.
+        onEdt {
+            if (stillOwned()) {
+                clientPolicy.ensureEdgeToEdge()
+                registration = chrome.acquire(true, spec.lightStatusBars) {
+                    check(stillOwned()) { "Portrait Window entry retired" }
+                }
+                if (!stillOwned()) { registration?.close(); registration = null }
+                diagnostic("Portrait system bars mapped to the same Windows client/title owner (${spec.hiddenBars}); no Android bars/monitor rotation")
+            }
+        }
+        val released = AtomicBoolean()
+        return AutoCloseable {
+            if (released.compareAndSet(false, true)) onEdt {
+                registration?.close(); registration = null
+            }
+        }
+    }
+
     /** Same Window fullscreen lease, also used by the fullscreen platform view. */
     fun acquireFullscreen(): AutoCloseable {
         val subject = capture()

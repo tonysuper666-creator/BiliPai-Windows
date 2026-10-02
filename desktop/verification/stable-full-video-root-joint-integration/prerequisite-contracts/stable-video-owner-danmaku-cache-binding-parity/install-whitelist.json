@@ -1,0 +1,62 @@
+{
+  "rows": [
+    {
+      "kind": "newTool",
+      "source": "prepared/tool/extract-upstream-video-owner-danmaku-send.py",
+      "destination": "desktop/tools/extract-upstream-video-owner-danmaku-send.py"
+    },
+    {
+      "kind": "newManual",
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDanmakuBinding.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDanmakuBinding.kt"
+    },
+    {
+      "kind": "exactFamily",
+      "manifest": "exact-hunks.json",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "baseLF": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24",
+      "desiredLF": "4af9925d9ee6efa8710b94c5d7c5dcb7cf17fc2b6f1ad98bfae2286d2c0630d7"
+    },
+    {
+      "kind": "exactFamily",
+      "manifest": "exact-hunks.json",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseLF": "0074b5ef68ed46bdca12341e1a1c18fdb4ede5ba2ddf27a682d767a0ce1ff027",
+      "desiredLF": "44c9aa87640afc3e1470aff6cc2ea7e21d72a358a8cd49b96a7cb50f63797405"
+    },
+    {
+      "kind": "exactFamily",
+      "manifest": "exact-hunks.json",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "baseLF": "ee4235dbcb628fe160295650be9c2eb218211e75f06fa0d7fe0dc7e7223cd45c",
+      "desiredLF": "936e1a63fed4facadafa0a018c0a3e6c6a2e8e6ec2e789a6cf622ba76878c100"
+    },
+    {
+      "kind": "exactFamily",
+      "manifest": "exact-hunks.json",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuWindowLoader.kt",
+      "baseLF": "959505017886e7dcebff58abb45acaaf8dd1cb2d0672497b457f8affbae3e29d",
+      "desiredLF": "1d6073d031171c3663d2862be3c1d33e8df03c21b5581722130b105c864ddc50"
+    },
+    {
+      "kind": "exactFamily",
+      "manifest": "exact-hunks.json",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "baseLF": "3d388c4b158f009296d474a96793eecea241e0dd8f2e51e457731e7996377e09",
+      "desiredLF": "c435ac9a7a677ab3101b0ee747d20bbcbf59742e1a0eee0de6b02b975b38ecb3"
+    },
+    {
+      "kind": "soleProducerHunks",
+      "manifest": "submission-producer-hunks.json",
+      "destination": "desktop/tools/extract-upstream-video-full-owner.py",
+      "baseLF": "c2e6e731c9430c181e37824e47e4f83d43064afa549abee326c98630b3174976",
+      "desiredLF": "485d55d857ffe6f44d7f5c650c993f96fd4522a6d89896edd28179a8c3612707"
+    }
+  ],
+  "exclude": [
+    "proof-source whole VM",
+    "candidate binaries/classes",
+    "whole producer/file replacement"
+  ],
+  "ordered": "new source+five family hunks+independent existing owner-producer anchors; Root whole generation/build required"
+}

@@ -1,0 +1,8 @@
+{
+  "stage": "registry/Gradle adapter before any registry or Gradle write",
+  "failure": "Missing whitelisted new Tablet producer; canonical prepared/desktop and prepared/tool path variants were not covered by the source naming heuristic",
+  "sourceFilesAlreadyInstalled": 94,
+  "resolution": "Copied exact 3 canonical new contract payloads and independently audited all25 current prerequisite payloads; no generated or existing file copy",
+  "completionReceipt": "joint-payload-completion-01.json",
+  "independentCopyAuditSHA256": "9c207ae1cf02426aa1911497b0dae1e3b12616923f92cf9cefe728b06c89a288"
+}

@@ -93,6 +93,38 @@ internal class DesktopOriginalRootRouteAssembly(
 
     override fun home(): Boolean = push(BiliPaiNavKey.Home)
 
+    /** Exact stable AppNavigation portrait replacement (3061–3086). decorate
+     * uses its original monotonic openId authority; stack replaces only the top. */
+    override fun replaceVideoDetail(current: BiliPaiNavKey.VideoDetail, bvid: String,
+        cid: Long, cover: String, resumePositionMs: Long): Boolean {
+        val normalized = bvid.trim()
+        if (normalized.isBlank() || normalized == current.bvid || currentKey != current) return false
+        var replaced = false
+        val admitted = admitted {
+            if (currentKey == current && root.returns.clearVideoSourceForReplacement()) {
+                val next = decorate(BiliPaiNavKey.VideoDetail(normalized, cid.coerceAtLeast(0L), cover,
+                    resumePositionMs = resumePositionMs.coerceAtLeast(0L)))
+                replaceStack(BiliPaiNavBackStackController(stack.toList()).replaceTop(next).backStack)
+                replaced = true
+            }
+        }
+        return admitted && replaced
+    }
+    override fun homeFromVideo(current: BiliPaiNavKey.VideoDetail): Boolean {
+        if (currentKey != current) return false
+        val accepted = root.returns.returnFromVideo(current, BiliPaiNavKey.MainHost, false) {
+            if (owns() && currentKey == current) {
+                mainHostNavigation.get()?.invoke(BiliPaiNavKey.Home)
+                replaceStack(popBiliPaiNavKeyToRoot(stack.toList()))
+            }
+        }
+        if (accepted) pruneCategoryOwners()
+        return accepted
+    }
+    override fun markVideoReturning(current: BiliPaiNavKey.VideoDetail): Boolean =
+        currentKey == current && root.returns.prepareReturnBeforeBack(current, previousKey)
+    override fun clearVideoReturning(): Boolean = root.returns.consumeReturning()
+
     override fun videoRoute(route: String, sourceRoute: String) {
         val key = legacyRouteToBiliPaiNavKey(route)
         if (key is BiliPaiNavKey.VideoDetail) video(key.copy(sourceRoute = sourceRoute), directEntry = false)

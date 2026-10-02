@@ -10,6 +10,14 @@ def _wide(p):
     s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92)
     return Path(s if s.startswith(prefix) or __import__('os').name!='nt' else prefix+s)
 def _sha(t):return hashlib.sha256(t.encode('utf8')).hexdigest()
+def holder_subtitle_registration_delta(path,text):
+    if path != 'com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt':return text
+    before='    var subtitleDisplayModeOverride by rememberSaveable { mutableStateOf(SubtitleDisplayMode.OFF) }\n'
+    after='    var subtitleDisplayModeOverride by rememberSaveable { mutableStateOf(SubtitleDisplayMode.OFF) }\n    val desktopSubtitleModes = com.bilipai.desktop.ui.LocalDesktopOriginalSubtitleModeBinding.current\n    DisposableEffect(viewModel, desktopSubtitleModes) {\n        val registration = desktopSubtitleModes.register(viewModel,\n            read = { subtitleDisplayModeOverride },\n            write = { subtitleDisplayModeOverride = it })\n        onDispose { registration.close() }\n    }\n'
+    assert text.count(before)==1,'register same original Holder state setter; scoped exact VM registration'
+    text=text.replace(before,after,1)
+    return text
+
 def generate(repo, output, standalone=False):
     repo,output=Path(repo),Path(output);written=[]
     for s in SPECS:
@@ -18,6 +26,7 @@ def generate(repo, output, standalone=False):
         if s['direct'] and not standalone:continue
         text=''.join(raw[o[1]:o[2]]if o[0]=='copy'else o[1]for o in s['operations'])
         if _sha(text)!=s['outputSHA256LF']:raise ValueError('Generated body mismatch: '+s['output'])
+        text=holder_subtitle_registration_delta(s['output'],text)
         target=_wide(output/s['output']);target.parent.mkdir(parents=True,exist_ok=True)
         target.write_bytes(text.encode('utf8'));written.append(target)
     return written

@@ -52,6 +52,51 @@ class DesktopDownloadManager internal constructor(
         return id
     }
 
+    /** Original full task consumer; storage/HTTP context stays in the existing wrapper.
+     * Caller/entry only guard admission. The global queue owns its accepted task afterwards. */
+    internal fun enqueueOriginal(item: UpstreamDownloadTask, source: PlaybackSource, destination: Path,
+        downloadAllowed: Boolean, seasonId: Long, episodeId: Long, isCourse: Boolean,
+        stillOwned: () -> Boolean, entryAdmission: ((() -> Unit) -> Boolean)): Boolean {
+        require(downloadAllowed) { "此媒体的服务器权限不允许下载" }
+        require(item.bvid.isNotBlank() && item.cid > 0L) { "原下载任务必须保留实际 BVID/CID" }
+        publication.admit(source, stillOwned) { Unit }
+        val video = requireMediaUrl(source.videoUrl)
+        val audio = source.audioUrl?.let(::requireMediaUrl)
+        val segments = source.progressiveSegments.map { DownloadProgressiveSegment(requireMediaUrl(it.url), it.durationSeconds) }
+        require(segments.isEmpty() || audio == null) { "多段渐进媒体不能同时含独立音轨" }
+        require(segments.none { it.url.substringBefore('?').endsWith(".m3u8", ignoreCase = true) } &&
+            !video.substringBefore('?').endsWith(".m3u8", ignoreCase = true)) { "直播 HLS 不适用于视频下载队列" }
+        if (item.isAudioOnly) {
+            require(item.videoUrl.isBlank() && requireMediaUrl(item.audioUrl) == video && audio == null && segments.isEmpty()) {
+                "音频下载必须使用同一已捕获音轨，不能丢弃或替换原任务地址"
+            }
+        } else require(requireMediaUrl(item.videoUrl) == video && item.audioUrl == audio.orEmpty()) {
+            "原任务音视频地址与捕获的授权来源不一致"
+        }
+        val queued = DownloadTask(item.copy(status = DownloadStatus.QUEUED, errorMessage = null),
+            destination.toAbsolutePath().normalize().toString(), source.referer, source.userAgent,
+            seasonId, episodeId, isCourse, segments, source.authorizationReceipt, source.cookieHeader,
+            com.bilipai.desktop.player.copyPlaybackStreamHeaders(source.streamHeaders))
+        ensureOwnedDirectory(queued) // same manager filesystem, outside Store/entry
+        var added = false
+        publication.admit(source, stillOwned) {
+            if (!entryAdmission {
+                if (!stillOwned()) throw CancellationException("原下载入口已退役")
+                synchronized(lock) {
+                    check(!closed) { "下载队列已关闭" }
+                    val existing = mutableTasks.value.firstOrNull { it.id == queued.id }
+                    // EXACT original addTask duplicate/failed/paused policy.
+                    if (existing == null || existing.status == DownloadStatus.FAILED || existing.status == DownloadStatus.PAUSED) {
+                        mutableTasks.value = mutableTasks.value.filterNot { it.id == queued.id } + queued
+                        added = true
+                    }
+                }
+            }) throw CancellationException("原下载入口已退役")
+        }
+        if (added) synchronized(lock) { persistLocked(force = true); scheduleLocked() }
+        return added
+    }
+
     private fun prepareDownloadTask(source: PlaybackSource, destination: Path, metadata: DownloadMetadata): DownloadTask {
         require(metadata.downloadAllowed) { "此媒体的服务器权限不允许下载" }
         val video = requireMediaUrl(source.videoUrl)

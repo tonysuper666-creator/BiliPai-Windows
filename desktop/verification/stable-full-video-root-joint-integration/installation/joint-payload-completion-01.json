@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "reason": "Explicit new copyWhitelist paths missed by the old prepared-path naming heuristic",
+  "generatedCopies": false,
+  "wholeExistingCopies": false,
+  "rawPrerequisitePacketsVerified": 20,
+  "rawPrerequisiteArtifactsVerified": 1614,
+  "files": [
+    {
+      "path": "desktop/tools/extract-upstream-tablet-owner-space.py",
+      "new": true,
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-tablet-owner-uploads-platform-parity\\prepared\\desktop\\tools\\extract-upstream-tablet-owner-space.py",
+      "sha256Bytes": "567c1be5be0bacf606b045c05371b171eafc3a424eca90b3d368e45d5feb23d1",
+      "bytes": 9639
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalTabletOwnerUploadsPlatform.kt",
+      "new": true,
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-tablet-owner-uploads-platform-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalTabletOwnerUploadsPlatform.kt",
+      "sha256Bytes": "b20a2a3d1675c4a601155ad60707f48b36f0966fd067538a1cf498e3cfa90c1d",
+      "bytes": 8502
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-owner-danmaku-send.py",
+      "new": true,
+      "sourcePath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-owner-danmaku-cache-binding-parity\\prepared\\tool\\extract-upstream-video-owner-danmaku-send.py",
+      "sha256Bytes": "95a3676ac440e13c98285f42260830b9cccb0df47f7512bd1880e3211eded9a5",
+      "bytes": 4911
+    }
+  ]
+}

@@ -129,6 +129,12 @@ internal class DesktopHomeReturnNavigationOwner(
         return owns() && mutableSession.value.isQuickReturnFromDetail
     }
 
+    /** Stable portrait replacement clears only this same original return source.
+     * It must not morph the replacement into the previous video's card. */
+    fun clearVideoSourceForReplacement(): Boolean = mutate {
+        mutableSession.value = mutableSession.value.recordVideoSourceRoute(null)
+    }
+
     fun consumeReturning(): Boolean = mutate {
         mutableSession.value = mutableSession.value.clearReturning()
     }

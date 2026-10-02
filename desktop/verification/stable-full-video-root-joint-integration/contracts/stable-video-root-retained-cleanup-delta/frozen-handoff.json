@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "scope": "Prepared four-hunk retained cleanup/reference and original global session retirement delta; no Candidate writes or runtime acceptance",
+  "targetCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "candidateSourceBaseHead": "462507f8a175a74a823fa3ea138f6b490c20a953",
+  "requiresFrozenParentManifest": "4cacb53b6d15e036edde4fd60828e1f98a3ea7f6120d232c6e221dbf4ac0cd0d",
+  "actual79Manifest": "9f489f0e107470b79209ce8fa6a54e34050faadef335c831351afc8cc2813b8e",
+  "actual79OrderedCP": "66b099ef5a956392dbb4672f8f77ace7aee33bd73f1c434f34d23f0b6b5d0d9b",
+  "installContractSha256Bytes": "1f8956e89d7ee7aff3156d99eb7c58d22db918f707679838bd95bd724e4887e7",
+  "artifacts": [
+    {
+      "path": "compile.py",
+      "sha256Bytes": "aeca285b83da38c8192aefd6f835ec354ed25d00d6bb7589e03835f4b7068930",
+      "size": 2491
+    },
+    {
+      "path": "exact-hunks.json",
+      "sha256Bytes": "7494fea246a8c24b837c59bb3d017c0277c057a66ccea7065c7cb43cd2c14a0e",
+      "size": 3933
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "ed5b955ee6f1c12e4690957ae99b4a0ede5bf84c3fe99bca6ac032ea577a917c",
+      "size": 4741
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "1f8956e89d7ee7aff3156d99eb7c58d22db918f707679838bd95bd724e4887e7",
+      "size": 935
+    },
+    {
+      "path": "postfix-review-reference.json",
+      "sha256Bytes": "8159e50e1ce800a405d38b3232bc6f05b712123635105b068a3dfaf0f119d3da",
+      "size": 530
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "eb18976156e82ffc09743e506687772f4ffa3d55e7f52f4c53d3207f9cfbf100",
+      "size": 3830
+    },
+    {
+      "path": "prepared/after/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "50f1c8090e910fa96e74c4185ee109d215e687acbbf7ef08ee014be4cf2fe30f",
+      "size": 150373
+    },
+    {
+      "path": "prepared/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "sha256Bytes": "e57cba6d089ffc73020ddf6716ef35eb7f149e7df52a1306e1c288fe07df48fe",
+      "size": 29126
+    },
+    {
+      "path": "prepared/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellMount.kt",
+      "sha256Bytes": "fa820b5b0bc3b2941d2b6451105c612199a0fce1642fc2d00335f0383bc61e17",
+      "size": 4565
+    },
+    {
+      "path": "prepared/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellOwner.kt",
+      "sha256Bytes": "657d030f00be236e758cb1b0733fe560579689f62d517d18fa50cebe6958cd29",
+      "size": 9574
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "sha256Bytes": "ec8a4c8527ac6714e37f977ef0b9bba14ffdb61be5078da9c921b024df22d086",
+      "size": 2905
+    },
+    {
+      "path": "runs/01/compile.args",
+      "sha256Bytes": "d96a1aa770a5cf97e73afa18dfa9db5ae309092b12749051c147f28d55acc8b9",
+      "size": 28756
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "4b34d5a54c663af4ab75db6f295f04fd76b560ef0e28e44cc2eb1645b426f6b4",
+      "size": 6156
+    },
+    {
+      "path": "runs/01/pins-after.json",
+      "sha256Bytes": "cd6fc8aa7fe45295dfab02f66f7d6475ef3f40368e1cc83d602a4c2fa4797f19",
+      "size": 40825
+    },
+    {
+      "path": "runs/01/pins-before.json",
+      "sha256Bytes": "cd6fc8aa7fe45295dfab02f66f7d6475ef3f40368e1cc83d602a4c2fa4797f19",
+      "size": 40825
+    },
+    {
+      "path": "runs/01/result.json",
+      "sha256Bytes": "c3a06d89c4746cb5ff11c1affb6a2203645e908e99159c884f59655f9445624b",
+      "size": 180
+    },
+    {
+      "path": "runs/02/compile.args",
+      "sha256Bytes": "c07e5ece3e2f34ac6b37db853e52d9054ce8726f05e2b03c0edf74c73ea45f1e",
+      "size": 30580
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "89e2dd4bac8d1e9b942dc5e86fa5865691b0e97853e6ae12a3d344cf407a92f3",
+      "size": 4993
+    },
+    {
+      "path": "runs/02/pins-after.json",
+      "sha256Bytes": "cd6fc8aa7fe45295dfab02f66f7d6475ef3f40368e1cc83d602a4c2fa4797f19",
+      "size": 40825
+    },
+    {
+      "path": "runs/02/pins-before.json",
+      "sha256Bytes": "cd6fc8aa7fe45295dfab02f66f7d6475ef3f40368e1cc83d602a4c2fa4797f19",
+      "size": 40825
+    },
+    {
+      "path": "runs/02/result.json",
+      "sha256Bytes": "27d4f8bd5668b772ca801cb85515923cc7450cdb4fd4d4244c7f70471a4fdad4",
+      "size": 179
+    }
+  ],
+  "rawCount": 21,
+  "binaryInstall": false,
+  "compiledSources": 4,
+  "compiledClasses": 325,
+  "failedRun01Retained": true,
+  "originalParentUnchanged": true,
+  "independentPostfixReview": "e900a996ec0e46d4fa5a0439eda1e366cb7804ac6bf477912a037ba018f7d449",
+  "physicalRootAccepted": false,
+  "nativeAccepted": false,
+  "HTTP": false
+}

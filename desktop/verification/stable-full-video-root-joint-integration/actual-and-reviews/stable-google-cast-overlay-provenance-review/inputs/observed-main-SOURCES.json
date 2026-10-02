@@ -1,0 +1,647 @@
+{
+  "schemaVersion": 1,
+  "originalJavaCoordinate": "de.sfuhrm:chromecast-java-api-v2:0.12.20",
+  "originalSourceJarSha256": "312fd605cd0ef4cfff54bbcd49cb48e9df2c01342d61192f757d376d6b178ad3",
+  "openscreenCommit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+  "physicalDeviceTested": false,
+  "modifiedUpstreamFiles": [
+    "Channel.java",
+    "ChromeCast.java",
+    "ChromeCasts.java"
+  ],
+  "dependencies": [
+    {
+      "path": "deps/jmdns-3.6.3.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/jmdns/jmdns/3.6.3/jmdns-3.6.3.jar",
+      "sha256": "6b6eb1623cb1d9e51467312ea62c567da005c2aa5a95347f566a11b8703c0ef1"
+    },
+    {
+      "path": "deps/protobuf-javalite-4.33.2.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-javalite/4.33.2/protobuf-javalite-4.33.2.jar",
+      "sha256": "cd09e496b3d56aaeb9d5fd3e62b7fe20f9f39275c98134e25249ef3952e8dbfb"
+    },
+    {
+      "path": "deps/jackson-annotations-2.20.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.20/jackson-annotations-2.20.jar",
+      "sha256": "959a2ffb2d591436f51f183c6a521fc89347912f711bf0cae008cdf045d95319"
+    },
+    {
+      "path": "deps/jackson-core-2.20.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-core/2.20.0/jackson-core-2.20.0.jar",
+      "sha256": "bc0cf46075877201f8406ee7de2741ae7df6c066f5f0457bd80632a718c06e72"
+    },
+    {
+      "path": "deps/jackson-databind-2.20.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.20.0/jackson-databind-2.20.0.jar",
+      "sha256": "a70e146a6bf2cba4f9cd367169787f50adcfbb57122bc2e9c8390cd0b397ac30"
+    },
+    {
+      "path": "deps/slf4j-api-2.0.17.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.jar",
+      "sha256": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+    }
+  ],
+  "protoc": {
+    "path": "deps/protoc.exe",
+    "url": "https://repo.maven.apache.org/maven2/com/google/protobuf/protoc/4.33.2/protoc-4.33.2-windows-x86_64.exe",
+    "sha256": "9808ac8ee7bae498ab06320c2324fb2753a435fa089f46134f394f680f9f112e"
+  },
+  "originalSources": [
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "LICENSE",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/LICENSE",
+      "sha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/common/certificate/boringssl_trust_store.cc",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/common/certificate/boringssl_trust_store.cc",
+      "sha256": "fc358190733b39c6679971448de6810065c8b030be795991c2daa859f3d930f2"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/common/certificate/cast_cert_validator.cc",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/common/certificate/cast_cert_validator.cc",
+      "sha256": "f08bdbc76130c51f3c05b959d5b3b474e1174b1737754ccd8b7c8c56c6b96a98"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/common/certificate/cast_crl.cc",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/common/certificate/cast_crl.cc",
+      "sha256": "7379bc544851f8470087b1e9c5224d1bb6d8414680aa9b4716d0f44f166b99bb"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/common/certificate/cast_root_ca_cert_der-inc.h",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/common/certificate/cast_root_ca_cert_der-inc.h",
+      "sha256": "7017274205c6063e5753e84f0d3b782348d74704936bd0858dc3b4d5ed2ad2c6"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/common/certificate/eureka_root_ca_der-inc.h",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/common/certificate/eureka_root_ca_der-inc.h",
+      "sha256": "008585fcb97c38cb9457eb79c1c2c6aa05191c899e167acc9d42e6ee5dcb7426"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/common/channel/message_framer.cc",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/common/channel/message_framer.cc",
+      "sha256": "9a958be6c759fdaaf54807b835c26277a51057ff75d98ee1ba3e4f23f46890f0"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/common/channel/proto/cast_channel.proto",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/common/channel/proto/cast_channel.proto",
+      "sha256": "eb2c71153923325cbfe2987a6fc42ab2f44ae4c7fe9756fd448f6b5907999147"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/sender/channel/cast_auth_util.cc",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/sender/channel/cast_auth_util.cc",
+      "sha256": "e9fe1870feffa1194ce64bf46123727f5a2249734d8fc89c41293d8fcf124963"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/sender/channel/cast_auth_util.h",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/sender/channel/cast_auth_util.h",
+      "sha256": "f2cc018f8fc4a687a546c795c35a2a9efb55bd7f4568188fe90ca485a254dff9"
+    },
+    {
+      "repository": "https://chromium.googlesource.com/openscreen",
+      "commit": "45c685cee0b522a7bb578ce5adcc696eeacf0f0c",
+      "path": "cast/sender/channel/sender_socket_factory.cc",
+      "url": "https://chromium.googlesource.com/openscreen/+/45c685cee0b522a7bb578ce5adcc696eeacf0f0c/cast/sender/channel/sender_socket_factory.cc",
+      "sha256": "ff60979b527e50a2ff7ad258843c24ad53034549b6040052a49a0810eac4b3ac"
+    }
+  ],
+  "records": [
+    {
+      "path": "src/main/java/openscreen/cast/proto/CastChannel.java",
+      "sha256": "9389b5a754024ea994d386bb2aae68e71c5df6120ca19a3feda1066e0732c76b",
+      "bytes": 157576
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/AppEvent.java",
+      "sha256": "cad322f4b4bc5ca021423603a3e8948a66ab36d8aa6a3b3ab5a685d9464c82e2",
+      "bytes": 1174
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Application.java",
+      "sha256": "3a8405a9aadd6f2ec70bc3d0f090eb88bbc154d1fb63147b25a9d67fb78c72a7",
+      "bytes": 2737
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/BoundedCastFrame.java",
+      "sha256": "d4a01932b9203bae040d293d28a0d95be91816057590c73bd9dd3090efeef29f",
+      "bytes": 2086
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/CastChannel.java",
+      "sha256": "500dee4c82baa81f548183c4c585187c8dd628ab58d5f3ad409bb31cd8871db6",
+      "bytes": 129743
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/CastDeviceAuth.java",
+      "sha256": "7451310c17f27dea8639ae357f9ef523df442bfc05392096834d9701bca11b14",
+      "bytes": 9179
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "sha256": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "bytes": 27030
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/DesktopCastPublication.java",
+      "sha256": "12a613267078eb7157868b9ab5595063894fdc2d098907da6e09f5a010e8928f",
+      "bytes": 568
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "sha256": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "bytes": 2816
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCast.java",
+      "sha256": "e2e9444c4d7b3ab963be4f19c72d37838d890682e20d7a818301cea1464b250a",
+      "bytes": 20343
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastConnectionEvent.java",
+      "sha256": "d167c1804a8b9d8e011d1d42bce2b7a291609e19185c1979ad5c9730443ef1d0",
+      "bytes": 1186
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastConnectionEventListener.java",
+      "sha256": "5d6757d4fd4d170c39b07624c5481c790021bdbb8b541cb823d5d8e6dc087405",
+      "bytes": 1230
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastException.java",
+      "sha256": "232563e1f1bacb48dbc4fc2e47b33f0a0f3116ff8f2d17bbc8e31eb6cf808417",
+      "bytes": 1047
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCasts.java",
+      "sha256": "ca57c2c50597e00e1d527df184808c917783d161f5947d425c46c343b1baa2ea",
+      "bytes": 5541
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastsListener.java",
+      "sha256": "d1a6eadf67313349162f3b86fc774cdb1af6902d1b81c8af091f4acb32299949",
+      "bytes": 879
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastSpontaneousEvent.java",
+      "sha256": "28d6b48545cc44c95ea9fa0b5f92625dca24e48d2cf91de9954f9d0f58a68d9e",
+      "bytes": 3079
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastSpontaneousEventListener.java",
+      "sha256": "66d40b6afbbc29d399022476915cdedeb93407aba68ecf716e6fca8e5f0ea224",
+      "bytes": 1385
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/DesktopGoogleCastProvider.java",
+      "sha256": "3ac18f2974a0717c7a1550d197ef74354819c946b84cfdf445c942bfe7a7c0ca",
+      "bytes": 5262
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Device.java",
+      "sha256": "d736947f26f2cc3c1155402c5877393d1def2d78a47cf8c5fc52686e148d5a18",
+      "bytes": 1275
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/EventListenerHolder.java",
+      "sha256": "60aad2f4ab7352c7e368376aa54fca00ded53d35f6671a911563ae639919a94a",
+      "bytes": 5432
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Item.java",
+      "sha256": "c7cf4bf0a39d3249043d76a3e9d685857fcafafa228e5a69c5dc8235e8c9bf0a",
+      "bytes": 2272
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/JacksonHelper.java",
+      "sha256": "42777d76a8b5c6797bf60dd14149e8e90173f6abf39b750d9336ff9553a281b3",
+      "bytes": 1133
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Media.java",
+      "sha256": "3d91fc7d303ca8e4a65230be349e55655961671f7e3ce2e9d3b651c05225229c",
+      "bytes": 7627
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/MediaStatus.java",
+      "sha256": "5edae88485978497ffb9ced8e11900979db49f5539964173989729ddf24a1ed3",
+      "bytes": 6169
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Message.java",
+      "sha256": "ab53990859b0f2cedd2958959b6bea66416b1fcb6ff270ea6670b327cc668052",
+      "bytes": 758
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/MultizoneStatus.java",
+      "sha256": "d25b07c817a1749ba3c2c4d98d439465aa61accd4d51bc8d60a2b0849fe4d489",
+      "bytes": 1170
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Namespace.java",
+      "sha256": "386999ba444350ee2f5e86eb5c28e6ad31f1ba125c54b8034f45df967a6898a9",
+      "bytes": 1029
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/RandomString.java",
+      "sha256": "a2038726d7ee46b94a456fa5b7cf9c0e4d08786f3b11a9ee3c128e56b2e0dc8b",
+      "bytes": 1576
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Request.java",
+      "sha256": "f2e7853fb969f8e9ce929b3c53cb3e913ccacdd2aaaf47d715192f24962d25e9",
+      "bytes": 963
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Response.java",
+      "sha256": "2e28433219472c7b8199cdc13647d8342ee3d1b5a5026c583f3b9a36a635ce68",
+      "bytes": 949
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/StandardMessage.java",
+      "sha256": "6639bf0df1d73ab53512b7f80addf45b8717c1b8c483721bbeb2c352550e5a8b",
+      "bytes": 3008
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/StandardRequest.java",
+      "sha256": "5ca253216a9ccc1a07b29505a4e8513cfda6c41d674dcc6163273c3366ebb142",
+      "bytes": 5481
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/StandardResponse.java",
+      "sha256": "286ed4e70db2eb0b4adbb70b0756e50cbe13b18dd5521a5eab9dda79b919ff08",
+      "bytes": 5781
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Status.java",
+      "sha256": "d9784fd98c1fabe939269c76cfeaf8b641e9e87aae1a5408b41381eeca977a32",
+      "bytes": 2181
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Track.java",
+      "sha256": "32c28ef70fefa2aff06fb2842a13ff9c8e44037f35d19355b5cc457907325b2d",
+      "bytes": 1656
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Util.java",
+      "sha256": "c745d8f445710bf0f713ad1ac60696b3d3172056fec7d72e7a70360991062cb2",
+      "bytes": 2624
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Volume.java",
+      "sha256": "51cf776f6373f43aa82d44b8d4d2e17b284dc50887ee29a4d48386a3065c6cd0",
+      "bytes": 3474
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/X509TrustAllManager.java",
+      "sha256": "466cd04f23b26ab0d4267d6b3c8f57ede8164c4e97dfb14e19c8f3ecb2bb40dd",
+      "bytes": 1198
+    },
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "sha256": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+      "bytes": 4524
+    },
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastPlugin.kt",
+      "sha256": "4ddd2e0640e32c438668965715ac3d1fdf695a81dc40ce020e88f798cc64748e",
+      "bytes": 8339
+    },
+    {
+      "path": "src/main/resources/cast-v2/cast-root.der",
+      "sha256": "809af14700b3fe2611ad597eb1584d6354313b64ccdb3390f097fa3e5826d6ca",
+      "bytes": 969
+    },
+    {
+      "path": "src/main/resources/cast-v2/eureka-root.der",
+      "sha256": "caf6d1e37b532203e01a76bf07187bb731ccd38801565ab2211a2c0ab7f3bc46",
+      "bytes": 967
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/chromecast-java-api-v2-Apache-2.0.txt",
+      "sha256": "6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a",
+      "bytes": 11323
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-annotations-2.20-META-INF_LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-annotations-2.20-META-INF_NOTICE",
+      "sha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "bytes": 738
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_FastDoubleParser-LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_FastDoubleParser-NOTICE",
+      "sha256": "aa057961a9ac52f1a63a8ae5ae437aa8355a69a0876aa8b5d1ecd6e35944be3c",
+      "bytes": 1999
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_NOTICE",
+      "sha256": "0a0042db627fe915c6a1d9ef74927af5081446063e8888494be6718d692dd2b8",
+      "bytes": 1227
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_thirdparty-LICENSE",
+      "sha256": "6e0e5b6e6389568c1669163fdf40cee2143be58960be0a4e2f1428805505170d",
+      "bytes": 3047
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-databind-2.20.0-META-INF_LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-databind-2.20.0-META-INF_NOTICE",
+      "sha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "bytes": 738
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jmdns-3.6.3-LICENSE.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/NOTICES.txt",
+      "sha256": "bf3d7703c5b8a4e3bad6a6d022f27dcc229958d762d2bf67bcd95457277e2e06",
+      "bytes": 2572
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/OpenScreen-BSD-3-Clause.txt",
+      "sha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+      "bytes": 1536
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/protobuf-v33.2-LICENSE.txt",
+      "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d",
+      "bytes": 1732
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/slf4j-api-2.0.17-META-INF_LICENSE.txt",
+      "sha256": "6fbe2eaf44b193b8a40eed9208f52848572224ad8d7672dd09418aa174847e73",
+      "bytes": 1154
+    },
+    {
+      "path": "third-party/google-cast-v2/chromecast-java-api-v2-0.12.20-sources.jar",
+      "sha256": "312fd605cd0ef4cfff54bbcd49cb48e9df2c01342d61192f757d376d6b178ad3",
+      "bytes": 56519
+    },
+    {
+      "path": "third-party/google-cast-v2/chromecast-java-api-v2-0.12.20.pom",
+      "sha256": "51b148a7b1f87f6d22b9fd6a88f33d5ee24e2dd9ce346183bb2f5fdf61982463",
+      "bytes": 11371
+    },
+    {
+      "path": "third-party/google-cast-v2/jackson-annotations-2.20.pom",
+      "sha256": "4d740c4478dd08d089ecdc6d063228a55a11a7e8e497da4338f872f8115794a4",
+      "bytes": 7009
+    },
+    {
+      "path": "third-party/google-cast-v2/jackson-core-2.20.0.pom",
+      "sha256": "76e1f2ffd76a4761c4485249ba5d01c915cc835984fbb71b27c989624c516bae",
+      "bytes": 9496
+    },
+    {
+      "path": "third-party/google-cast-v2/jackson-databind-2.20.0.pom",
+      "sha256": "cefefed01dd2c0d96a88e101bb3e065fc150063b498e301a938c690b02bcf3ce",
+      "bytes": 22908
+    },
+    {
+      "path": "third-party/google-cast-v2/jmdns-3.6.3.pom",
+      "sha256": "89fbc2b2c5029e75bfb549f8755d9af582c31be296e1674a5c6e7414e256ee3f",
+      "bytes": 9466
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/chromecast-java-api-v2-Apache-2.0.txt",
+      "sha256": "6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a",
+      "bytes": 11323
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-annotations-2.20-META-INF_LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-annotations-2.20-META-INF_NOTICE",
+      "sha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "bytes": 738
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_FastDoubleParser-LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_FastDoubleParser-NOTICE",
+      "sha256": "aa057961a9ac52f1a63a8ae5ae437aa8355a69a0876aa8b5d1ecd6e35944be3c",
+      "bytes": 1999
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_NOTICE",
+      "sha256": "0a0042db627fe915c6a1d9ef74927af5081446063e8888494be6718d692dd2b8",
+      "bytes": 1227
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_thirdparty-LICENSE",
+      "sha256": "6e0e5b6e6389568c1669163fdf40cee2143be58960be0a4e2f1428805505170d",
+      "bytes": 3047
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-databind-2.20.0-META-INF_LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-databind-2.20.0-META-INF_NOTICE",
+      "sha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "bytes": 738
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jmdns-3.6.3-LICENSE.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/OpenScreen-BSD-3-Clause.txt",
+      "sha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+      "bytes": 1536
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/protobuf-v33.2-LICENSE.txt",
+      "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d",
+      "bytes": 1732
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/slf4j-api-2.0.17-META-INF_LICENSE.txt",
+      "sha256": "6fbe2eaf44b193b8a40eed9208f52848572224ad8d7672dd09418aa174847e73",
+      "bytes": 1154
+    },
+    {
+      "path": "third-party/google-cast-v2/NOTICES.txt",
+      "sha256": "bf3d7703c5b8a4e3bad6a6d022f27dcc229958d762d2bf67bcd95457277e2e06",
+      "bytes": 2572
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/boringssl_trust_store.cc",
+      "sha256": "fc358190733b39c6679971448de6810065c8b030be795991c2daa859f3d930f2",
+      "bytes": 19671
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/cast_cert_validator.cc",
+      "sha256": "f08bdbc76130c51f3c05b959d5b3b474e1174b1737754ccd8b7c8c56c6b96a98",
+      "bytes": 3456
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/cast_crl.cc",
+      "sha256": "7379bc544851f8470087b1e9c5224d1bb6d8414680aa9b4716d0f44f166b99bb",
+      "bytes": 6937
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/cast_root_ca_cert_der-inc.h",
+      "sha256": "7017274205c6063e5753e84f0d3b782348d74704936bd0858dc3b4d5ed2ad2c6",
+      "bytes": 9899
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/eureka_root_ca_der-inc.h",
+      "sha256": "008585fcb97c38cb9457eb79c1c2c6aa05191c899e167acc9d42e6ee5dcb7426",
+      "bytes": 9804
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/channel/message_framer.cc",
+      "sha256": "9a958be6c759fdaaf54807b835c26277a51057ff75d98ee1ba3e4f23f46890f0",
+      "bytes": 1806
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/channel/proto/cast_channel.proto",
+      "sha256": "eb2c71153923325cbfe2987a6fc42ab2f44ae4c7fe9756fd448f6b5907999147",
+      "bytes": 3765
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/sender/channel/cast_auth_util.cc",
+      "sha256": "e9fe1870feffa1194ce64bf46123727f5a2249734d8fc89c41293d8fcf124963",
+      "bytes": 16170
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/sender/channel/cast_auth_util.h",
+      "sha256": "f2cc018f8fc4a687a546c795c35a2a9efb55bd7f4568188fe90ca485a254dff9",
+      "bytes": 3433
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/sender/channel/sender_socket_factory.cc",
+      "sha256": "ff60979b527e50a2ff7ad258843c24ad53034549b6040052a49a0810eac4b3ac",
+      "bytes": 7523
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/LICENSE",
+      "sha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+      "bytes": 1536
+    },
+    {
+      "path": "third-party/google-cast-v2/protobuf-javalite-4.33.2.pom",
+      "sha256": "bdfb9efb6a34657a6112fe63f10032865f33596817f1d9bf1d6d8259f27ea2ca",
+      "bytes": 1561
+    },
+    {
+      "path": "third-party/google-cast-v2/slf4j-api-2.0.17.pom",
+      "sha256": "9b96956ae3f96c588225cef822bc57ed9ba854b55b1a0060989cecd55837acba",
+      "bytes": 2745
+    },
+    {
+      "path": "third-party/google-cast-v2/upstream-files.json",
+      "sha256": "e21fb5ad72b2dd01615d1d846822571e2e6ba98a5cb0d4727907c9465329534d",
+      "bytes": 4867
+    },
+    {
+      "path": "third-party/google-cast-v2/upstream-hardening.patch",
+      "sha256": "10eb9ac8127c019e77c4202a1336c2c0b358c6ae8e5fa965317d3995abec51ed",
+      "bytes": 22204
+    },
+    {
+      "path": "tools/extract-google-cast-platform.py",
+      "sha256": "09b0213de5471cf97a0f7afcdf4dee9114cfdeaba227b6dada3e818009cfe0bf",
+      "bytes": 2946
+    },
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "sha256": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05",
+      "bytes": 5019
+    }
+  ],
+  "dependencyNotices": [
+    {
+      "path": "third-party/google-cast-v2/jmdns-3.6.3.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/jmdns/jmdns/3.6.3/jmdns-3.6.3.pom",
+      "sha256": "89fbc2b2c5029e75bfb549f8755d9af582c31be296e1674a5c6e7414e256ee3f"
+    },
+    {
+      "path": "third-party/google-cast-v2/protobuf-javalite-4.33.2.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/google/protobuf/protobuf-javalite/4.33.2/protobuf-javalite-4.33.2.pom",
+      "sha256": "bdfb9efb6a34657a6112fe63f10032865f33596817f1d9bf1d6d8259f27ea2ca"
+    },
+    {
+      "path": "third-party/google-cast-v2/jackson-annotations-2.20.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.20/jackson-annotations-2.20.pom",
+      "sha256": "4d740c4478dd08d089ecdc6d063228a55a11a7e8e497da4338f872f8115794a4"
+    },
+    {
+      "path": "third-party/google-cast-v2/jackson-core-2.20.0.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-core/2.20.0/jackson-core-2.20.0.pom",
+      "sha256": "76e1f2ffd76a4761c4485249ba5d01c915cc835984fbb71b27c989624c516bae"
+    },
+    {
+      "path": "third-party/google-cast-v2/jackson-databind-2.20.0.pom",
+      "url": "https://repo.maven.apache.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.20.0/jackson-databind-2.20.0.pom",
+      "sha256": "cefefed01dd2c0d96a88e101bb3e065fc150063b498e301a938c690b02bcf3ce"
+    },
+    {
+      "path": "third-party/google-cast-v2/slf4j-api-2.0.17.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.17/slf4j-api-2.0.17.pom",
+      "sha256": "9b96956ae3f96c588225cef822bc57ed9ba854b55b1a0060989cecd55837acba"
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/protobuf-v33.2-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/protocolbuffers/protobuf/v33.2/LICENSE",
+      "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d"
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jmdns-3.6.3-LICENSE.txt",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  ]
+}

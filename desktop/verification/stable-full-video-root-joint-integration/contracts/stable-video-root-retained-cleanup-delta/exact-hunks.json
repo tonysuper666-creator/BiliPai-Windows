@@ -1,0 +1,46 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellOwner.kt",
+    "before": "            try { afterDrain(value) } finally { factory.afterDrain(value) }",
+    "after": "            afterDrain(value)\n            factory.afterDrain(value)",
+    "count": 1,
+    "reason": "Keep construction/runtime refs if downstream IO/Window drain fails. Clear only after successful cleanup.",
+    "beforeAnchorSHA256LF": "be38d671db7e4147cc3e30dbd8bd5ef4f3bb4ae296bbc2761d9dbf653d6e8354",
+    "afterAnchorSHA256LF": "e84ef26105f03c51600cf29192d0ea928db2d1b44528bab9b5d22a16f997859d",
+    "baselineWholeSHA256LF": "4f0106a5da1c40888ea183f516990820d00172e40c24bc3ee644e3a59ea2e38e",
+    "afterWholeSHA256LF": "657d030f00be236e758cb1b0733fe560579689f62d517d18fa50cebe6958cd29"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoShellMount.kt",
+    "before": "            afterDrain(owner, windows.getAndSet(null))",
+    "after": "            val previousWindows = windows.get()\n            afterDrain(owner, previousWindows)\n            windows.compareAndSet(previousWindows, null)",
+    "count": 1,
+    "reason": "Retain the exact old Window platforms across a failed cleanup; success only clears its own captured registration.",
+    "beforeAnchorSHA256LF": "65e580afac5fa1dddd4707178a6c747b24be53320df96e196cd392616b1f43bb",
+    "afterAnchorSHA256LF": "59cf25b16e17003b93999da3e95b65d2510fe1612df2724172691dc7ef52223d",
+    "baselineWholeSHA256LF": "1128fc48436aed80687fa324e34615ba59ccbc0fe667dad695d028497b685210",
+    "afterWholeSHA256LF": "fa820b5b0bc3b2941d2b6451105c612199a0fce1642fc2d00335f0383bc61e17"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+    "before": "            (platforms as? AutoCloseable)?.close() ?: previous.displays.close()\n            resources.captureProtection.refresh()\n",
+    "after": "            (platforms as? AutoCloseable)?.close() ?: previous.displays.close()\n            resources.captureProtection.refresh()\n            if (!resources.rootAlive() || window.repository.sessionEpoch != window.root.capturedEpoch ||\n                !window.root.isCurrentOwner()) com.android.purebilibili.feature.audio.player.AudioNowPlayingSession.dismiss()\n",
+    "count": 1,
+    "reason": "Successful serial account/window retirement clears the sole original global session before reference release. Covered route and same-epoch ordinary stop do not.",
+    "beforeAnchorSHA256LF": "95aeec6dd20cc90f9c88c48c65ecd3c5ccc4896a3485fbb8c2caa9ed6b12a994",
+    "afterAnchorSHA256LF": "36683cf6f981bc12c08097fbd903ede5ac3d0d7d4a5010be9c3c880382726218",
+    "baselineWholeSHA256LF": "b811b6e62c54ea5cbbcb2c7734e968b27e4275b51600d80dd2a734cb0096a757",
+    "afterWholeSHA256LF": "e57cba6d089ffc73020ddf6716ef35eb7f149e7df52a1306e1c288fe07df48fe"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                                    { !isClosing() },{message->ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(message))},",
+    "after": "                                    { !isClosing() && !ordinaryVideoResourcesRetired.get() },{message->ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(message))},",
+    "count": 1,
+    "reason": "Real existing app restore/shutdown flag retires this resource view before Home close or account write; no new lifecycle state.",
+    "beforeAnchorSHA256LF": "8c86f9ae63d2d1aaf07cec1e39996bf7eb5b68c71067dd540bee4c55879a41c8",
+    "afterAnchorSHA256LF": "c12bad53d68e9d9dd7d339f04eb12660b053914b70464ee6bd73023c37a71196",
+    "baselineWholeSHA256LF": "637e5830f6291054a72d599e75986cf5ff3f9e81e26c1e8afbd9cf163e60961c",
+    "afterWholeSHA256LF": "50f1c8090e910fa96e74c4185ee109d215e687acbbf7ef08ee014be4cf2fe30f"
+  }
+]

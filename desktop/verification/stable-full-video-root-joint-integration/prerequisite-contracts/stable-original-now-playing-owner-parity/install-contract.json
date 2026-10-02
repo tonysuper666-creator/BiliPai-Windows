@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "sourceOnly": true,
+  "actualInstalled": false,
+  "copyWhitelist": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalNowPlayingOwners.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNowPlayingOwners.kt",
+      "sha256Bytes": "d54c8e96e9350812cd80abfc302921acf7268040070146006b7c78643e9c3016",
+      "size": 12981
+    }
+  ],
+  "exactHunks": "exact-hunks.json",
+  "baselineFamilies": "baseline-families.json",
+  "localHunks": 16,
+  "existingFamilies": 3,
+  "wholeFileVsAnchorHash": "baseSHA256LF/candidateSHA256LF are whole LF families; before/afterAnchorSHA256LF are local snippets; raw artifacts hash actual bytes.",
+  "newOriginalSourceIdentities": 1,
+  "registryDelta": "registry-delta.json",
+  "newProducer": false,
+  "newTasks": 0,
+  "newDependencies": 0,
+  "installWholePreparedExisting": false,
+  "installGeneratedOrReferenceOriginal": false,
+  "installCompiledProof": false,
+  "requiredRootRecipe": "ROOT-INTEGRATION.md",
+  "sourceProof": "source-proof.json",
+  "producerProof": "producer-proof.json",
+  "originalAudioModeSource": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeScreen.kt",
+    "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "sha256LF": "8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d",
+    "gitBlobMatches": true
+  },
+  "validation": {
+    "compilerPassed": true,
+    "sources": 5,
+    "classes": 25,
+    "actualBase": 78,
+    "runtimeEntries": 101,
+    "declaredExistingFamilyOverrides": 2,
+    "unexpectedClassOverlap": 0,
+    "pinsUnchanged": true,
+    "proofPassed": true,
+    "assertions": 23,
+    "actualInstalled": false,
+    "realAssemblyNativeAccepted": false,
+    "completeRootMounted": false,
+    "newQueueStorePlayerHTTP": false
+  },
+  "closedRuns": [
+    "01: first prospective compile/23 CPU checks PASS",
+    "02: final exact-source compile after explicit actual accepted CID navigation mapping/23 CPU checks PASS"
+  ],
+  "barriers": [
+    "Parent alone constructs Root port and maps navigation/services visibility/musicOverlay/lifetime.",
+    "No second queue, Mini, Store, player, client or actor; normal BV does not use Listen.",
+    "Original session.active survives Audio page disposal; only explicit dismissal and actual Root retirement clear it.",
+    "Root command gate releases native lock before VM/playlist writes; staging/waits outside Store/entry.",
+    "Real installed Assembly/native/Main/Window/navigation/persistence acceptance remains pending."
+  ]
+}

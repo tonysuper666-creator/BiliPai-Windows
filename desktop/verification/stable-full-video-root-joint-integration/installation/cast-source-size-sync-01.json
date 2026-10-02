@@ -1,0 +1,9 @@
+{
+  "beforeSHA256": "ba8a1791317e53cab351e09a39ae688286f75c54139aecf598bc50f4feb8be5e",
+  "afterSHA256": "8a4db40ff3f880df97848f8f3aed5b425fa764883d70536c580b99355088e760",
+  "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+  "beforeBytes": 4524,
+  "afterBytes": 5562,
+  "onlySizeMetadataChanged": true,
+  "reviewSHA256": "18980ac0dcacf4ad5ac313ae18f26c86f7abb59b11b6c5cae13459554b1ec262"
+}

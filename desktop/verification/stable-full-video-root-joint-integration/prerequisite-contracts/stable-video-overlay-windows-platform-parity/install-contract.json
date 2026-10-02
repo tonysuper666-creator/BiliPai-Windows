@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "sourceOnly": true,
+  "actualInstalled": false,
+  "completeRootMounted": false,
+  "copyWhitelist": [
+    {
+      "source": "prepared/manual/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayWindowsPlatform.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOverlayWindowsPlatform.kt",
+      "sha256Bytes": "f914539bdd5339ae236a9f974e6611b23664fbe233021e7e33f74c5b976b4be9",
+      "size": 17824
+    }
+  ],
+  "exactHunks": "exact-hunks.json",
+  "baselineFamilies": "baseline-families.json",
+  "hashSchema": "baseSHA256LF/candidateSHA256LF are whole normalized-LF families; before/afterAnchorSHA256LF are only the exact local snippets; raw manifest sha256Bytes hashes untouched bytes.",
+  "localHunks": 12,
+  "existingFamilies": 6,
+  "installWholePreparedExisting": false,
+  "installGeneratedOrProofSources": false,
+  "installCompiledArtifacts": false,
+  "newGradleTasks": 0,
+  "newDependencies": 0,
+  "newOriginalSourceIdentities": 0,
+  "sourceRegistryFeatureMerges": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496",
+      "feature": "stable-video-overlay-windows-platform",
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlay.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "73ccef84e24a91e6b907dcd617e1a7f87d7698d5042ccedb1437e7859d02ae10",
+      "feature": "stable-video-overlay-windows-platform",
+      "mode": "policy-extract"
+    }
+  ],
+  "integrationRecipe": "ROOT-INTEGRATION.md",
+  "proof": {
+    "actualBase": 76,
+    "runtimeEntries": 101,
+    "compilerPassed": true,
+    "sources": 8,
+    "classes": 153,
+    "declaredExistingFamilyOverrides": 6,
+    "unexpectedClassOverlap": 0,
+    "assertions": 25,
+    "allPinsUnchanged": true,
+    "HTTP": false,
+    "castDiscovery": false,
+    "realClipboard": false,
+    "windowOrNative": false,
+    "completeRoot": false
+  },
+  "closedRuns": [
+    {
+      "run": "01",
+      "status": "compile passed; overlap allowlist audit failed on same-file Compose singletons; no runtime"
+    },
+    {
+      "run": "02",
+      "status": "compile passed; fixture expected aid instead of original object_id; failed fixture preserved"
+    },
+    {
+      "run": "03",
+      "status": "compile and 19 CPU assertions passed"
+    },
+    {
+      "run": "04",
+      "status": "final compile and 25 CPU assertions passed"
+    }
+  ],
+  "requiredActors": [
+    "same Root DesktopPluginRuntime/context/DLNA/Google actors",
+    "same DesktopCastController/LocalProxyServer/CastProxySessions",
+    "actual Root Window and entry scope/epoch admission",
+    "captured Factory request and exact native accepted aid/CID/source/publication",
+    "sole DesktopHomeOverlayPorts complete VideoShareSheetHost",
+    "same Windows clipboard",
+    "same nullable DesktopDiagnostics writer/state logs"
+  ],
+  "boundaries": [
+    "Windows protocol selectors are actual existing DLNA/Google dialogs; not Android DeviceListDialog renderer parity.",
+    "Diagnostic export is synchronous original API on sole serial writer, at most five seconds; no-clobber in state logs, not Android MediaStore.",
+    "Pending resolved capabilities bounded to eight; normal resolver completion retains preparation; cancel/entry retirement rejects capabilities.",
+    "Actual device discovery, LAN reads/cast playback, user clipboard, hardware refresh and full Root mounting still require installed acceptance."
+  ]
+}

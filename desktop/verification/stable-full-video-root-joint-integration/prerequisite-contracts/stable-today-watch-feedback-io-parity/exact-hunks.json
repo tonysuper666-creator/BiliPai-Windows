@@ -1,0 +1,107 @@
+{
+  "schema": 1,
+  "scope": "three sole producers and four existing manual families; exact local hunk merge only, no whole producer/body overwrite",
+  "families": [
+    {
+      "relativePath": "desktop/tools/extract-discovery-platform.py",
+      "baseSha256LF": "55d8329dd359c6c4b5304f7584cd6c53c05b0c00c68bae6fb06cef1a8dbc298b",
+      "desiredSha256LF": "7078a93fbe62d3b28528341a925067cdfb31664987a3d1bfd5ed68f916db452e",
+      "hunks": [
+        {
+          "before": "def generate_recommendation_platform(repo: Path, output: Path, parser) -> None:\n",
+          "after": "\ndef adapt_owned_today_watch_feedback(text):\n    before = '    fun saveSnapshot(context: Context, snapshot: TodayWatchFeedbackSnapshot) {\\n        synchronized(lock) {\\n            val payload = TodayWatchFeedbackPayload(\\n                dislikedBvids = snapshot.dislikedBvids\\n                    .filter { it.isNotBlank() }\\n                    .takeLast(MAX_DISLIKED_BVIDS),\\n                dislikedCreatorMids = snapshot.dislikedCreatorMids\\n                    .filter { it > 0L }\\n                    .takeLast(MAX_DISLIKED_CREATORS),\\n                dislikedKeywords = snapshot.dislikedKeywords\\n                    .map { it.trim().lowercase() }\\n                    .filter { it.isNotBlank() }\\n                    .takeLast(MAX_DISLIKED_KEYWORDS),\\n                recentDislikedVideos = snapshot.recentDislikedVideos\\n                    .filter { it.bvid.isNotBlank() }\\n                    .takeLast(MAX_RECENT_DISLIKED_VIDEOS)\\n                    .map { item ->\\n                        TodayWatchDislikedVideoPayload(\\n                            bvid = item.bvid.trim(),\\n                            title = item.title.trim(),\\n                            creatorName = item.creatorName.trim(),\\n                            creatorMid = item.creatorMid,\\n                            dislikedAtMillis = item.dislikedAtMillis\\n                        )\\n                    }\\n            )\\n            val raw = json.encodeToString(payload)\\n            context\\n                .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)\\n                .edit()\\n                .putString(KEY_PAYLOAD, raw)\\n                .apply()\\n        }\\n    }\\n'\n    after = '    private fun encodeSnapshot(snapshot: TodayWatchFeedbackSnapshot): String {\\n    val payload = TodayWatchFeedbackPayload(\\n        dislikedBvids = snapshot.dislikedBvids\\n            .filter { it.isNotBlank() }\\n            .takeLast(MAX_DISLIKED_BVIDS),\\n        dislikedCreatorMids = snapshot.dislikedCreatorMids\\n            .filter { it > 0L }\\n            .takeLast(MAX_DISLIKED_CREATORS),\\n        dislikedKeywords = snapshot.dislikedKeywords\\n            .map { it.trim().lowercase() }\\n            .filter { it.isNotBlank() }\\n            .takeLast(MAX_DISLIKED_KEYWORDS),\\n        recentDislikedVideos = snapshot.recentDislikedVideos\\n            .filter { it.bvid.isNotBlank() }\\n            .takeLast(MAX_RECENT_DISLIKED_VIDEOS)\\n            .map { item ->\\n                TodayWatchDislikedVideoPayload(\\n                    bvid = item.bvid.trim(),\\n                    title = item.title.trim(),\\n                    creatorName = item.creatorName.trim(),\\n                    creatorMid = item.creatorMid,\\n                    dislikedAtMillis = item.dislikedAtMillis\\n                )\\n            }\\n    )\\n    val raw = json.encodeToString(payload)\\n        return raw\\n    }\\n\\n    fun saveSnapshot(context: Context, snapshot: TodayWatchFeedbackSnapshot) {\\n        synchronized(lock) {\\n            val raw = encodeSnapshot(snapshot)\\n            context\\n                .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)\\n                .edit()\\n                .putString(KEY_PAYLOAD, raw)\\n                .apply()\\n        }\\n    }\\n\\n    internal fun saveSnapshot(context: Context, snapshot: TodayWatchFeedbackSnapshot,\\n        checkRequest: () -> Unit,\\n        acquirePermit: () -> com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit,\\n    ) {\\n        checkRequest()\\n        val raw = encodeSnapshot(snapshot)\\n        context.store.updateOriginalFromSnapshot(PREFS_NAME, checkRequest, acquirePermit) {\\n            Unit to mapOf(KEY_PAYLOAD to kotlinx.serialization.json.JsonPrimitive(raw))\\n        }\\n    }\\n\\n    internal fun clear(context: Context, checkRequest: () -> Unit,\\n        acquirePermit: () -> com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit,\\n    ) {\\n        context.store.updateOriginalFromSnapshot(PREFS_NAME, checkRequest, acquirePermit) {\\n            Unit to mapOf(KEY_PAYLOAD to null)\\n        }\\n    }\\n'\n    if text.count(before) != 1:\n        raise ValueError(\"Original TodayWatch feedback save body changed\")\n    return text.replace(before, after, 1)\n\ndef generate_recommendation_platform(repo: Path, output: Path, parser) -> None:\n"
+        },
+        {
+          "before": "    feedback = feedback.replace(before, \"import com.bilipai.desktop.plugins.DesktopPluginContext as Context\")\n",
+          "after": "    feedback = feedback.replace(before, \"import com.bilipai.desktop.plugins.DesktopPluginContext as Context\")\n    feedback = adapt_owned_today_watch_feedback(feedback)\n"
+        }
+      ]
+    },
+    {
+      "relativePath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeDataEnvironment.kt",
+      "baseSha256LF": "ab1413ae2215001453b88dd65dfc88d1e39c4c7dec23f3b6a6f3cc7b5607e31a",
+      "desiredSha256LF": "0d76f5133516781f31c918334ccaef0a72fcb9c13813525a6a1fd01bfee18b79",
+      "hunks": [
+        {
+          "before": " val feedback:(String)->Unit,\n)",
+          "after": " val feedback:(String)->Unit,\n) {\n val todayWatchFeedback = DesktopTodayWatchFeedbackWriteBinding(recommendationContext, isCurrent, commitIfCurrent)\n}"
+        }
+      ]
+    },
+    {
+      "relativePath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoContentBindings.kt",
+      "baseSha256LF": "8fb52219b4f9dc4a4f703a9ce8700f0edcb3830b81f4b8ec3879c7b8f26ec1f9",
+      "desiredSha256LF": "d316f5e37ebd825f81681ce3c61dcf3e91b40030d06b90f3e2fe0b9ae90d2b7f",
+      "hunks": [
+        {
+          "before": "    private val shareTextPort: (String, String) -> Unit,\n",
+          "after": "    private val shareTextPort: (String, String) -> Unit,\n    private val todayWatchFeedback: DesktopTodayWatchFeedbackWriteBinding,\n"
+        },
+        {
+          "before": "    suspend fun saveFeedbackSnapshot(snapshot: TodayWatchFeedbackSnapshot) {\n        val caller = currentCoroutineContext()\n        caller.ensureActive(); requireCurrent()\n        if (!commitIfCurrent {\n            caller.ensureActive(); requireCurrent()\n            TodayWatchFeedbackStore.saveSnapshot(recommendationContext, snapshot)\n        }) throw CancellationException(\"Original video recommendation feedback owner retired\")\n    }\n",
+          "after": "    suspend fun saveFeedbackSnapshot(snapshot: TodayWatchFeedbackSnapshot) {\n        currentCoroutineContext().ensureActive(); requireCurrent()\n        todayWatchFeedback.saveSnapshot(snapshot)\n        currentCoroutineContext().ensureActive(); requireCurrent()\n    }\n"
+        },
+        {
+          "before": "        return TodayWatchFeedbackStore.getSnapshot(recommendationContext)",
+          "after": "        return todayWatchFeedback.getSnapshot()"
+        }
+      ]
+    },
+    {
+      "relativePath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoPlaybackOwnerEnvironment.kt",
+      "baseSha256LF": "a7df2a25ccf84435488fe3362c00fb648bd3e20012205b0354ab681615accfc8",
+      "desiredSha256LF": "e550aa988ea4d9ba19e8992ea470d7a0ecc2abc0f76ba71f05b6fb9e57570796",
+      "hunks": [
+        {
+          "before": "    private val admission:((()->Unit)->Boolean),\n) {",
+          "after": "    private val admission:((()->Unit)->Boolean),\n    val todayWatchFeedback: DesktopTodayWatchFeedbackWriteBinding,\n) {"
+        }
+      ]
+    },
+    {
+      "relativePath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerAssembly.kt",
+      "baseSha256LF": "26f125c5cfd743383d8eb1b262051f73aaf366ed5d888ce9f205df3d9ea55ca8",
+      "desiredSha256LF": "90ffc7ea1ec15122a7e3f43b04f02fea65d69489754a69edcff57d53238539db",
+      "hunks": [
+        {
+          "before": "            effects: DesktopOriginalVideoOwnerEffects,\n",
+          "after": "            effects: DesktopOriginalVideoOwnerEffects,\n            todayWatchFeedback: DesktopTodayWatchFeedbackWriteBinding,\n"
+        },
+        {
+          "before": "                    effects.background, owner::owns, owner::commit)",
+          "after": "                    effects.background, owner::owns, owner::commit, todayWatchFeedback)"
+        }
+      ]
+    },
+    {
+      "relativePath": "desktop/tools/extract-upstream-home-viewmodel.py",
+      "baseSha256LF": "8fbf5e2ef1c635284500df3999122134b4377f088eb6012af30e901ea671c1e0",
+      "desiredSha256LF": "3368e456d064942db043b18a8dd23df64cd8911b249b28eaae6f97313a2e36e5",
+      "hunks": [
+        {
+          "before": "def generate(repo,output,standalone=False):\n",
+          "after": "\ndef owned_today_watch_feedback_delta(vm):\n assert vm.count('    private fun recordTodayWatchNegativeFeedback(\\n')==1\n vm=vm.replace('    private fun recordTodayWatchNegativeFeedback(\\n','    private suspend fun recordTodayWatchNegativeFeedback(\\n',1)\n assert vm.count('        if (!ownedCommit { TodayWatchFeedbackStore.saveSnapshot(environment.recommendationContext, snapshot) }) throw CancellationException(\"Home entry retired\")\\n')==1\n vm=vm.replace('        if (!ownedCommit { TodayWatchFeedbackStore.saveSnapshot(environment.recommendationContext, snapshot) }) throw CancellationException(\"Home entry retired\")\\n','        environment.todayWatchFeedback.saveSnapshot(snapshot)\\n',1)\n assert vm.count('    private fun persistTodayWatchFeedback() {\\n')==1\n vm=vm.replace('    private fun persistTodayWatchFeedback() {\\n','    private suspend fun persistTodayWatchFeedback() {\\n',1)\n assert vm.count('        if (!ownedCommit { TodayWatchFeedbackStore.saveSnapshot(\\n            context = environment.recommendationContext,\\n')==1\n vm=vm.replace('        if (!ownedCommit { TodayWatchFeedbackStore.saveSnapshot(\\n            context = environment.recommendationContext,\\n','        environment.todayWatchFeedback.saveSnapshot(\\n',1)\n assert vm.count('        ) }) throw CancellationException(\"Home entry retired\")\\n')==1\n vm=vm.replace('        ) }) throw CancellationException(\"Home entry retired\")\\n','        )\\n',1)\n return vm\n\ndef generate(repo,output,standalone=False):\n"
+        },
+        {
+          "before": " vm=vm.replace(visibility,'internal fun RecommendationResult.toTodayWatchPlan')\n",
+          "after": " vm=vm.replace(visibility,'internal fun RecommendationResult.toTodayWatchPlan')\n vm=owned_today_watch_feedback_delta(vm)\n"
+        }
+      ]
+    },
+    {
+      "relativePath": "desktop/tools/extract-upstream-video-full-owner.py",
+      "baseSha256LF": "c2e6e731c9430c181e37824e47e4f83d43064afa549abee326c98630b3174976",
+      "desiredSha256LF": "fe4d6ea0d52e34e679290ba8670cff6e736e42aa844580419e621b8ff554ad46",
+      "hunks": [
+        {
+          "before": "def generate(repo,output,standalone=False):\n",
+          "after": "\ndef owned_video_today_watch_feedback_delta(output,body):\n if output!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt': return body\n assert body.count('            val oldSnapshot = TodayWatchFeedbackStore.getSnapshot(context.pluginContext)')==1\n body=body.replace('            val oldSnapshot = TodayWatchFeedbackStore.getSnapshot(context.pluginContext)','            val oldSnapshot = environment.todayWatchFeedback.getSnapshot()',1)\n assert body.count('            TodayWatchFeedbackStore.saveSnapshot(context.pluginContext, snapshot)')==1\n body=body.replace('            TodayWatchFeedbackStore.saveSnapshot(context.pluginContext, snapshot)','            environment.todayWatchFeedback.saveSnapshot(snapshot)',1)\n return body\n\ndef generate(repo,output,standalone=False):\n"
+        },
+        {
+          "before": "  body=captured_media_byte_consumer_delta(recipe['output'],body)\n",
+          "after": "  body=captured_media_byte_consumer_delta(recipe['output'],body)\n  body=owned_video_today_watch_feedback_delta(recipe['output'],body)\n"
+        }
+      ]
+    }
+  ]
+}

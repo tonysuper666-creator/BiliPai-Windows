@@ -280,6 +280,55 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         return generation
     }
 
+    /** Full original owner publishes exactly once for a newly accepted native
+     * source. Inherited handoff/recovery retains its REAL generation. Each provider
+     * identity and Job is captured before waiting for the existing playerMutex. */
+    internal suspend fun onVideoLoadOwned(bvid: String, cid: Long,
+        stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean),
+        calls: okhttp3.Call.Factory): Long {
+        val caller = currentCoroutineContext()
+        fun checkOwner() {
+            caller.ensureActive()
+            if (closing.get() || !stillOwned()) throw CancellationException("Original Runtime load retired")
+        }
+        checkOwner()
+        val providers = PluginManager.getEnabledPlayerPlugins().toList()
+        var video: CurrentVideo? = null
+        if (!admission {
+            checkOwner()
+            val generation = playerGeneration.incrementAndGet()
+            video = CurrentVideo(generation, bvid, cid)
+            currentVideo.updateAndGet { previous -> if (previous == null || previous.generation < generation) video else previous }
+        }) throw CancellationException("Original Runtime publication rejected")
+        val captured = checkNotNull(video)
+        val dispatch = DesktopPlayerPluginDispatch(this, captured, captured.generation,
+            stillOwned, admission, providers)
+        try {
+            playerMutex.withLock {
+                checkOwner()
+                for (plugin in providers) {
+                    checkOwner()
+                    requirePlaybackPluginDispatch(dispatch, plugin, false)
+                    if (!admission { checkOwner(); requirePlaybackPluginDispatch(dispatch, plugin, false) })
+                        throw CancellationException("Original provider load rejected")
+                    val write = playbackPluginWriteOperation(dispatch, plugin, false, calls)
+                    try { DesktopPlayerPluginWriteAdmission.withCaptured(write) { plugin.onVideoLoad(bvid, cid) } }
+                    catch (cancelled: CancellationException) { throw cancelled }
+                    catch (failure: Exception) { DesktopPluginLog.e(plugin.id, "Video plugin load failed", failure) }
+                    checkOwner(); requirePlaybackPluginDispatch(dispatch, plugin, false)
+                    if (!admission { checkOwner(); requirePlaybackPluginDispatch(dispatch, plugin, false) })
+                        throw CancellationException("Original provider result rejected")
+                }
+            }
+        } catch (cancelled: CancellationException) {
+            if (playerGeneration.compareAndSet(captured.generation, captured.generation + 1))
+                currentVideo.compareAndSet(captured, null)
+            throw cancelled
+        }
+        checkOwner()
+        return captured.generation
+    }
+
     /** Root uses the actual inherited generation from handoff, or the generation
      * returned by this Runtime's real load. Never recapture it after an await. */
     internal fun capturePlaybackPluginDispatch(bvid: String, cid: Long, expectedGeneration: Long,

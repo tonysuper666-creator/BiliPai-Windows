@@ -1,0 +1,16 @@
+{
+  "newManual": [
+    {
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-video-owner-download-binding-parity\\prepared\\manual\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoOwnerDownloadBinding.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerDownloadBinding.kt",
+      "sha256LF": "ec64a00cb7f042081e3818dec4de2b9a501f22a5e8208111d2e267009a6aef65"
+    }
+  ],
+  "exactFamilyHunks": "exact-hunks.json",
+  "soleProducerPostDelta": "audio-caller-transform.json",
+  "transformSource": "download-audio-selected-transform.py",
+  "proofOnlyNeverWholeCopy": [
+    "prepared/prospective",
+    "prepared/proof-interface"
+  ]
+}

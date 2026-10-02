@@ -1,0 +1,25 @@
+{
+  "schema": "bilipai-canonical-copy-audit-freeze-v1",
+  "artifactCount": 3,
+  "files": [
+    {
+      "relativePath": "audit-copy-targets.py",
+      "bytes": 8556,
+      "sha256Bytes": "f97036c909185dc084e6308962fa8da29b56649058705c63c93ae1a5620ac1a1"
+    },
+    {
+      "relativePath": "copy-audit-01.log",
+      "bytes": 681,
+      "sha256Bytes": "35d1c19ae9cf087d6c28655ada5809e18ea7a1d74ca55ac1b8d3966803db2c24"
+    },
+    {
+      "relativePath": "canonical-copy-target-audit.json",
+      "bytes": 43445,
+      "sha256Bytes": "9c207ae1cf02426aa1911497b0dae1e3b12616923f92cf9cefe728b06c89a288"
+    }
+  ],
+  "oldFrozenPlanUnchanged": true,
+  "candidateEdited": false,
+  "frozenPacketsEdited": false,
+  "buildStarted": false
+}

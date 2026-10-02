@@ -1,0 +1,41 @@
+{
+  "status": "ready-exact-delta-source-only",
+  "copyWhitelist": [],
+  "exactHunks": "exact-hunks.json",
+  "baselineWholeSHA256LF": "e57cba6d089ffc73020ddf6716ef35eb7f149e7df52a1306e1c288fe07df48fe",
+  "afterWholeSHA256LF": "a276c009c4871907a9cee0d3c0c05b54d1475cf78c0a8962fc41e7670ae9e7fa",
+  "artifacts": [
+    {
+      "path": "exact-hunks.json",
+      "bytes": 2132,
+      "sha256Bytes": "3351c13b84942d0c190092e8cc9a3444e6fe31aa148782f0640ae31453d09efb"
+    },
+    {
+      "path": "install-contract.json",
+      "bytes": 628,
+      "sha256Bytes": "d8bcf4189d23afa25769e080e7d3850dbebf1e91aee8f042e208c9703280c20e"
+    },
+    {
+      "path": "prepare.py",
+      "bytes": 7470,
+      "sha256Bytes": "e9e3a02fd0c3190f49c83fd60b0e9aec0d8ce0b170e48964c045f018e659733f"
+    },
+    {
+      "path": "prepared/after/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "bytes": 29502,
+      "sha256Bytes": "a276c009c4871907a9cee0d3c0c05b54d1475cf78c0a8962fc41e7670ae9e7fa"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1082,
+      "sha256Bytes": "fc368cc5386d1760c95d6e5dee3251b6fc404700dd3d26c8f85533cd4f15609b"
+    },
+    {
+      "path": "source-check.json",
+      "bytes": 1510,
+      "sha256Bytes": "a88e106e67b46ece16c05a23c2ce98a732986dc23866ea947d4d78b2123acfb8"
+    }
+  ],
+  "actual81Runtime": "Failed constructor before assertions; no altered fixture success",
+  "requiredNext": "Root actual82 build and issued zero-override runtime"
+}

@@ -1,0 +1,19 @@
+{
+  "existingIdentityFeatureUnion": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt",
+      "sha256": "e0165d4a922cdd613fcda87100f8344f572ba8e5afd22ce6c1c603eba8fec758",
+      "preserveExistingMode": true,
+      "features": [
+        "root-home-navigation",
+        "video-holder-root-mount"
+      ]
+    }
+  ],
+  "ownNewIdentities": [],
+  "prerequisiteNewIdentityPaths": [
+    "app/src/main/java/com/android/purebilibili/feature/audio/player/AudioNowPlayingSession.kt",
+    "app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt"
+  ],
+  "note": "Root unions the prerequisite frozen identity rows exactly; do not overwrite registry or count only Session."
+}

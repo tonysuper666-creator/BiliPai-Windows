@@ -177,6 +177,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
             root: DesktopOriginalCommentRootOwner,
             interactionAnalytics: DesktopOriginalVideoInteractionAnalytics,
             effects: DesktopOriginalVideoOwnerEffects,
+            todayWatchFeedback: DesktopTodayWatchFeedbackWriteBinding,
         ): DesktopOriginalVideoOwnerAssembly {
             require(settings.pluginContext.store === context.store) { "The actual global player store is required" }
             if (repository.sessionEpoch != capturedEpoch || root.operations.expectedEpoch != capturedEpoch ||
@@ -217,7 +218,7 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                             DesktopOriginalCdnRangeCapture(expected, owner.native::isCurrent)
                         else null // actual direct source or retired lease; no fake cache success
                     }, effects.analytics, effects.crash, comments, effects.danmaku,
-                    effects.background, owner::owns, owner::commit)
+                    effects.background, owner::owns, owner::commit, todayWatchFeedback)
                 owner.playback = VideoPlaybackViewModel(owner.environment)
                 owner.section = DesktopOriginalMpvSectionControl(player,
                     { owner.native.current()?.sourceVersion }, owner::owns,

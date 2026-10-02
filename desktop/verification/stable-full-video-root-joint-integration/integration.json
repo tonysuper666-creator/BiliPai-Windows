@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "sourceBaseHead": "462507f8a175a74a823fa3ea138f6b490c20a953",
+  "actualProductSnapshot": 82,
+  "sourceRegistryCount": 1172,
+  "resourceCount": 213,
+  "wholeClassesPassed": true,
+  "jvmMethodNameIssues": 0,
+  "runtimeEntries": 101,
+  "unchangedMainPhysicalStartupPassed": true,
+  "actualIdleRootAssertions": 17,
+  "productSourceOrClassOverrides": 0,
+  "realAccountUsed": false,
+  "detailSuccessAccepted": false,
+  "videoToVideoTransitionsAccepted": false,
+  "pictureInPictureTransferAccepted": false,
+  "smtcButtonsAccepted": false,
+  "newExeBuilt": false,
+  "newExeDeployed": false,
+  "originalFrozenPrerequisiteArtifactsVerifiedAtOrigin": 1614,
+  "originalRootArtifactsVerifiedAtOrigin": 313,
+  "generatedOrProductBinaryCopiesToEvidence": 0
+}

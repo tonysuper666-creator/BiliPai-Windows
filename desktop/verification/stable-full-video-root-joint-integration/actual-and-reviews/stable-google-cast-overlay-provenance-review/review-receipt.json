@@ -1,0 +1,619 @@
+{
+  "review": "independent read-only Google Cast Overlay110 provenance delta",
+  "blockingCount": 0,
+  "dialogHunks": 3,
+  "exactForwardReplay": true,
+  "exactInverseReplay": true,
+  "baselineDialogSha256Bytes": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+  "actualDialogSha256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+  "actualDialogSha256LF": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+  "headInventoryRecordCount": 95,
+  "headInventoryMismatch": [
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "recordedSha256": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "actualSha256": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+      "actualSizeNormalized": 5562
+    }
+  ],
+  "observedMainInventoryMismatch": [],
+  "observedMainRecordChanges": [
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "before": {
+        "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+        "sha256": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+        "bytes": 4524
+      },
+      "after": {
+        "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+        "sha256": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+        "bytes": 4524
+      }
+    }
+  ],
+  "allNonRecordFieldsUnchanged": true,
+  "mirrorNonRecordFieldsEqualMain": true,
+  "semantics": "Existing public media overload preserved by same-body private renderer; added internal route-selection callback plus current selection state. Legacy media branch still uses actual publication and existing cast plugin. The three exact hunks do not modify certificates, Cast authentication, TLS/protocol, trust anchors, or source/transport implementations.",
+  "mirrorNote": "Main record update/mirror refresh belongs to Root. Observed notices records may be older than main; no mirror acceptance claimed by this receipt.",
+  "recordAudit": [
+    {
+      "path": "src/main/java/openscreen/cast/proto/CastChannel.java",
+      "recordedSha256": "9389b5a754024ea994d386bb2aae68e71c5df6120ca19a3feda1066e0732c76b",
+      "actualSha256": "9389b5a754024ea994d386bb2aae68e71c5df6120ca19a3feda1066e0732c76b",
+      "actualSizeNormalized": 157576
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/AppEvent.java",
+      "recordedSha256": "cad322f4b4bc5ca021423603a3e8948a66ab36d8aa6a3b3ab5a685d9464c82e2",
+      "actualSha256": "cad322f4b4bc5ca021423603a3e8948a66ab36d8aa6a3b3ab5a685d9464c82e2",
+      "actualSizeNormalized": 1174
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Application.java",
+      "recordedSha256": "3a8405a9aadd6f2ec70bc3d0f090eb88bbc154d1fb63147b25a9d67fb78c72a7",
+      "actualSha256": "3a8405a9aadd6f2ec70bc3d0f090eb88bbc154d1fb63147b25a9d67fb78c72a7",
+      "actualSizeNormalized": 2737
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/BoundedCastFrame.java",
+      "recordedSha256": "d4a01932b9203bae040d293d28a0d95be91816057590c73bd9dd3090efeef29f",
+      "actualSha256": "d4a01932b9203bae040d293d28a0d95be91816057590c73bd9dd3090efeef29f",
+      "actualSizeNormalized": 2086
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/CastChannel.java",
+      "recordedSha256": "500dee4c82baa81f548183c4c585187c8dd628ab58d5f3ad409bb31cd8871db6",
+      "actualSha256": "500dee4c82baa81f548183c4c585187c8dd628ab58d5f3ad409bb31cd8871db6",
+      "actualSizeNormalized": 129743
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/CastDeviceAuth.java",
+      "recordedSha256": "7451310c17f27dea8639ae357f9ef523df442bfc05392096834d9701bca11b14",
+      "actualSha256": "7451310c17f27dea8639ae357f9ef523df442bfc05392096834d9701bca11b14",
+      "actualSizeNormalized": 9179
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Channel.java",
+      "recordedSha256": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "actualSha256": "6384b65629d30224a076ba02516262e63fdb0b69f00c7b3023502167b2db4014",
+      "actualSizeNormalized": 27030
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/DesktopCastPublication.java",
+      "recordedSha256": "12a613267078eb7157868b9ab5595063894fdc2d098907da6e09f5a010e8928f",
+      "actualSha256": "12a613267078eb7157868b9ab5595063894fdc2d098907da6e09f5a010e8928f",
+      "actualSizeNormalized": 568
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/DesktopCastWriter.java",
+      "recordedSha256": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "actualSha256": "3559f422cbddaa39637b10a65fd06cbc8b46cf873562fefcf69da795dc9b827e",
+      "actualSizeNormalized": 2816
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCast.java",
+      "recordedSha256": "e2e9444c4d7b3ab963be4f19c72d37838d890682e20d7a818301cea1464b250a",
+      "actualSha256": "e2e9444c4d7b3ab963be4f19c72d37838d890682e20d7a818301cea1464b250a",
+      "actualSizeNormalized": 20488
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastConnectionEvent.java",
+      "recordedSha256": "d167c1804a8b9d8e011d1d42bce2b7a291609e19185c1979ad5c9730443ef1d0",
+      "actualSha256": "d167c1804a8b9d8e011d1d42bce2b7a291609e19185c1979ad5c9730443ef1d0",
+      "actualSizeNormalized": 1186
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastConnectionEventListener.java",
+      "recordedSha256": "5d6757d4fd4d170c39b07624c5481c790021bdbb8b541cb823d5d8e6dc087405",
+      "actualSha256": "5d6757d4fd4d170c39b07624c5481c790021bdbb8b541cb823d5d8e6dc087405",
+      "actualSizeNormalized": 1230
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastException.java",
+      "recordedSha256": "232563e1f1bacb48dbc4fc2e47b33f0a0f3116ff8f2d17bbc8e31eb6cf808417",
+      "actualSha256": "232563e1f1bacb48dbc4fc2e47b33f0a0f3116ff8f2d17bbc8e31eb6cf808417",
+      "actualSizeNormalized": 1047
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCasts.java",
+      "recordedSha256": "ca57c2c50597e00e1d527df184808c917783d161f5947d425c46c343b1baa2ea",
+      "actualSha256": "ca57c2c50597e00e1d527df184808c917783d161f5947d425c46c343b1baa2ea",
+      "actualSizeNormalized": 7180
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastsListener.java",
+      "recordedSha256": "d1a6eadf67313349162f3b86fc774cdb1af6902d1b81c8af091f4acb32299949",
+      "actualSha256": "d1a6eadf67313349162f3b86fc774cdb1af6902d1b81c8af091f4acb32299949",
+      "actualSizeNormalized": 879
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastSpontaneousEvent.java",
+      "recordedSha256": "28d6b48545cc44c95ea9fa0b5f92625dca24e48d2cf91de9954f9d0f58a68d9e",
+      "actualSha256": "28d6b48545cc44c95ea9fa0b5f92625dca24e48d2cf91de9954f9d0f58a68d9e",
+      "actualSizeNormalized": 3079
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/ChromeCastSpontaneousEventListener.java",
+      "recordedSha256": "66d40b6afbbc29d399022476915cdedeb93407aba68ecf716e6fca8e5f0ea224",
+      "actualSha256": "66d40b6afbbc29d399022476915cdedeb93407aba68ecf716e6fca8e5f0ea224",
+      "actualSizeNormalized": 1385
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/DesktopGoogleCastProvider.java",
+      "recordedSha256": "3ac18f2974a0717c7a1550d197ef74354819c946b84cfdf445c942bfe7a7c0ca",
+      "actualSha256": "3ac18f2974a0717c7a1550d197ef74354819c946b84cfdf445c942bfe7a7c0ca",
+      "actualSizeNormalized": 5262
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Device.java",
+      "recordedSha256": "d736947f26f2cc3c1155402c5877393d1def2d78a47cf8c5fc52686e148d5a18",
+      "actualSha256": "d736947f26f2cc3c1155402c5877393d1def2d78a47cf8c5fc52686e148d5a18",
+      "actualSizeNormalized": 1275
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/EventListenerHolder.java",
+      "recordedSha256": "60aad2f4ab7352c7e368376aa54fca00ded53d35f6671a911563ae639919a94a",
+      "actualSha256": "60aad2f4ab7352c7e368376aa54fca00ded53d35f6671a911563ae639919a94a",
+      "actualSizeNormalized": 5432
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Item.java",
+      "recordedSha256": "c7cf4bf0a39d3249043d76a3e9d685857fcafafa228e5a69c5dc8235e8c9bf0a",
+      "actualSha256": "c7cf4bf0a39d3249043d76a3e9d685857fcafafa228e5a69c5dc8235e8c9bf0a",
+      "actualSizeNormalized": 2272
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/JacksonHelper.java",
+      "recordedSha256": "42777d76a8b5c6797bf60dd14149e8e90173f6abf39b750d9336ff9553a281b3",
+      "actualSha256": "42777d76a8b5c6797bf60dd14149e8e90173f6abf39b750d9336ff9553a281b3",
+      "actualSizeNormalized": 1133
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Media.java",
+      "recordedSha256": "3d91fc7d303ca8e4a65230be349e55655961671f7e3ce2e9d3b651c05225229c",
+      "actualSha256": "3d91fc7d303ca8e4a65230be349e55655961671f7e3ce2e9d3b651c05225229c",
+      "actualSizeNormalized": 7627
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/MediaStatus.java",
+      "recordedSha256": "5edae88485978497ffb9ced8e11900979db49f5539964173989729ddf24a1ed3",
+      "actualSha256": "5edae88485978497ffb9ced8e11900979db49f5539964173989729ddf24a1ed3",
+      "actualSizeNormalized": 6169
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Message.java",
+      "recordedSha256": "ab53990859b0f2cedd2958959b6bea66416b1fcb6ff270ea6670b327cc668052",
+      "actualSha256": "ab53990859b0f2cedd2958959b6bea66416b1fcb6ff270ea6670b327cc668052",
+      "actualSizeNormalized": 758
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/MultizoneStatus.java",
+      "recordedSha256": "d25b07c817a1749ba3c2c4d98d439465aa61accd4d51bc8d60a2b0849fe4d489",
+      "actualSha256": "d25b07c817a1749ba3c2c4d98d439465aa61accd4d51bc8d60a2b0849fe4d489",
+      "actualSizeNormalized": 1170
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Namespace.java",
+      "recordedSha256": "386999ba444350ee2f5e86eb5c28e6ad31f1ba125c54b8034f45df967a6898a9",
+      "actualSha256": "386999ba444350ee2f5e86eb5c28e6ad31f1ba125c54b8034f45df967a6898a9",
+      "actualSizeNormalized": 1029
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/RandomString.java",
+      "recordedSha256": "a2038726d7ee46b94a456fa5b7cf9c0e4d08786f3b11a9ee3c128e56b2e0dc8b",
+      "actualSha256": "a2038726d7ee46b94a456fa5b7cf9c0e4d08786f3b11a9ee3c128e56b2e0dc8b",
+      "actualSizeNormalized": 1576
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Request.java",
+      "recordedSha256": "f2e7853fb969f8e9ce929b3c53cb3e913ccacdd2aaaf47d715192f24962d25e9",
+      "actualSha256": "f2e7853fb969f8e9ce929b3c53cb3e913ccacdd2aaaf47d715192f24962d25e9",
+      "actualSizeNormalized": 963
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Response.java",
+      "recordedSha256": "2e28433219472c7b8199cdc13647d8342ee3d1b5a5026c583f3b9a36a635ce68",
+      "actualSha256": "2e28433219472c7b8199cdc13647d8342ee3d1b5a5026c583f3b9a36a635ce68",
+      "actualSizeNormalized": 949
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/StandardMessage.java",
+      "recordedSha256": "6639bf0df1d73ab53512b7f80addf45b8717c1b8c483721bbeb2c352550e5a8b",
+      "actualSha256": "6639bf0df1d73ab53512b7f80addf45b8717c1b8c483721bbeb2c352550e5a8b",
+      "actualSizeNormalized": 3008
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/StandardRequest.java",
+      "recordedSha256": "5ca253216a9ccc1a07b29505a4e8513cfda6c41d674dcc6163273c3366ebb142",
+      "actualSha256": "5ca253216a9ccc1a07b29505a4e8513cfda6c41d674dcc6163273c3366ebb142",
+      "actualSizeNormalized": 5481
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/StandardResponse.java",
+      "recordedSha256": "286ed4e70db2eb0b4adbb70b0756e50cbe13b18dd5521a5eab9dda79b919ff08",
+      "actualSha256": "286ed4e70db2eb0b4adbb70b0756e50cbe13b18dd5521a5eab9dda79b919ff08",
+      "actualSizeNormalized": 5781
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Status.java",
+      "recordedSha256": "d9784fd98c1fabe939269c76cfeaf8b641e9e87aae1a5408b41381eeca977a32",
+      "actualSha256": "d9784fd98c1fabe939269c76cfeaf8b641e9e87aae1a5408b41381eeca977a32",
+      "actualSizeNormalized": 2181
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Track.java",
+      "recordedSha256": "32c28ef70fefa2aff06fb2842a13ff9c8e44037f35d19355b5cc457907325b2d",
+      "actualSha256": "32c28ef70fefa2aff06fb2842a13ff9c8e44037f35d19355b5cc457907325b2d",
+      "actualSizeNormalized": 1656
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Util.java",
+      "recordedSha256": "c745d8f445710bf0f713ad1ac60696b3d3172056fec7d72e7a70360991062cb2",
+      "actualSha256": "c745d8f445710bf0f713ad1ac60696b3d3172056fec7d72e7a70360991062cb2",
+      "actualSizeNormalized": 2624
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/Volume.java",
+      "recordedSha256": "51cf776f6373f43aa82d44b8d4d2e17b284dc50887ee29a4d48386a3065c6cd0",
+      "actualSha256": "51cf776f6373f43aa82d44b8d4d2e17b284dc50887ee29a4d48386a3065c6cd0",
+      "actualSizeNormalized": 3474
+    },
+    {
+      "path": "src/main/java/su/litvak/chromecast/api/v2/X509TrustAllManager.java",
+      "recordedSha256": "466cd04f23b26ab0d4267d6b3c8f57ede8164c4e97dfb14e19c8f3ecb2bb40dd",
+      "actualSha256": "466cd04f23b26ab0d4267d6b3c8f57ede8164c4e97dfb14e19c8f3ecb2bb40dd",
+      "actualSizeNormalized": 1198
+    },
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "recordedSha256": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "actualSha256": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
+      "actualSizeNormalized": 5562
+    },
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastPlugin.kt",
+      "recordedSha256": "4ddd2e0640e32c438668965715ac3d1fdf695a81dc40ce020e88f798cc64748e",
+      "actualSha256": "4ddd2e0640e32c438668965715ac3d1fdf695a81dc40ce020e88f798cc64748e",
+      "actualSizeNormalized": 8339
+    },
+    {
+      "path": "src/main/resources/cast-v2/cast-root.der",
+      "recordedSha256": "809af14700b3fe2611ad597eb1584d6354313b64ccdb3390f097fa3e5826d6ca",
+      "actualSha256": "809af14700b3fe2611ad597eb1584d6354313b64ccdb3390f097fa3e5826d6ca",
+      "actualSizeNormalized": 969
+    },
+    {
+      "path": "src/main/resources/cast-v2/eureka-root.der",
+      "recordedSha256": "caf6d1e37b532203e01a76bf07187bb731ccd38801565ab2211a2c0ab7f3bc46",
+      "actualSha256": "caf6d1e37b532203e01a76bf07187bb731ccd38801565ab2211a2c0ab7f3bc46",
+      "actualSizeNormalized": 967
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/chromecast-java-api-v2-Apache-2.0.txt",
+      "recordedSha256": "6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a",
+      "actualSha256": "6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a",
+      "actualSizeNormalized": 11323
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-annotations-2.20-META-INF_LICENSE",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-annotations-2.20-META-INF_NOTICE",
+      "recordedSha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "actualSha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "actualSizeNormalized": 738
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_FastDoubleParser-LICENSE",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_FastDoubleParser-NOTICE",
+      "recordedSha256": "aa057961a9ac52f1a63a8ae5ae437aa8355a69a0876aa8b5d1ecd6e35944be3c",
+      "actualSha256": "aa057961a9ac52f1a63a8ae5ae437aa8355a69a0876aa8b5d1ecd6e35944be3c",
+      "actualSizeNormalized": 1999
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_LICENSE",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_NOTICE",
+      "recordedSha256": "0a0042db627fe915c6a1d9ef74927af5081446063e8888494be6718d692dd2b8",
+      "actualSha256": "0a0042db627fe915c6a1d9ef74927af5081446063e8888494be6718d692dd2b8",
+      "actualSizeNormalized": 1227
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-core-2.20.0-META-INF_thirdparty-LICENSE",
+      "recordedSha256": "6e0e5b6e6389568c1669163fdf40cee2143be58960be0a4e2f1428805505170d",
+      "actualSha256": "6e0e5b6e6389568c1669163fdf40cee2143be58960be0a4e2f1428805505170d",
+      "actualSizeNormalized": 3047
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-databind-2.20.0-META-INF_LICENSE",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jackson-databind-2.20.0-META-INF_NOTICE",
+      "recordedSha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "actualSha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "actualSizeNormalized": 738
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/jmdns-3.6.3-LICENSE.txt",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/NOTICES.txt",
+      "recordedSha256": "bf3d7703c5b8a4e3bad6a6d022f27dcc229958d762d2bf67bcd95457277e2e06",
+      "actualSha256": "bf3d7703c5b8a4e3bad6a6d022f27dcc229958d762d2bf67bcd95457277e2e06",
+      "actualSizeNormalized": 2572
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/OpenScreen-BSD-3-Clause.txt",
+      "recordedSha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+      "actualSha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+      "actualSizeNormalized": 1536
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/protobuf-v33.2-LICENSE.txt",
+      "recordedSha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d",
+      "actualSha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d",
+      "actualSizeNormalized": 1732
+    },
+    {
+      "path": "src/main/resources/licenses/google-cast-v2/slf4j-api-2.0.17-META-INF_LICENSE.txt",
+      "recordedSha256": "6fbe2eaf44b193b8a40eed9208f52848572224ad8d7672dd09418aa174847e73",
+      "actualSha256": "6fbe2eaf44b193b8a40eed9208f52848572224ad8d7672dd09418aa174847e73",
+      "actualSizeNormalized": 1154
+    },
+    {
+      "path": "third-party/google-cast-v2/chromecast-java-api-v2-0.12.20-sources.jar",
+      "recordedSha256": "312fd605cd0ef4cfff54bbcd49cb48e9df2c01342d61192f757d376d6b178ad3",
+      "actualSha256": "312fd605cd0ef4cfff54bbcd49cb48e9df2c01342d61192f757d376d6b178ad3",
+      "actualSizeNormalized": 56519
+    },
+    {
+      "path": "third-party/google-cast-v2/chromecast-java-api-v2-0.12.20.pom",
+      "recordedSha256": "51b148a7b1f87f6d22b9fd6a88f33d5ee24e2dd9ce346183bb2f5fdf61982463",
+      "actualSha256": "51b148a7b1f87f6d22b9fd6a88f33d5ee24e2dd9ce346183bb2f5fdf61982463",
+      "actualSizeNormalized": 11371
+    },
+    {
+      "path": "third-party/google-cast-v2/jackson-annotations-2.20.pom",
+      "recordedSha256": "4d740c4478dd08d089ecdc6d063228a55a11a7e8e497da4338f872f8115794a4",
+      "actualSha256": "4d740c4478dd08d089ecdc6d063228a55a11a7e8e497da4338f872f8115794a4",
+      "actualSizeNormalized": 7009
+    },
+    {
+      "path": "third-party/google-cast-v2/jackson-core-2.20.0.pom",
+      "recordedSha256": "76e1f2ffd76a4761c4485249ba5d01c915cc835984fbb71b27c989624c516bae",
+      "actualSha256": "76e1f2ffd76a4761c4485249ba5d01c915cc835984fbb71b27c989624c516bae",
+      "actualSizeNormalized": 9496
+    },
+    {
+      "path": "third-party/google-cast-v2/jackson-databind-2.20.0.pom",
+      "recordedSha256": "cefefed01dd2c0d96a88e101bb3e065fc150063b498e301a938c690b02bcf3ce",
+      "actualSha256": "cefefed01dd2c0d96a88e101bb3e065fc150063b498e301a938c690b02bcf3ce",
+      "actualSizeNormalized": 22908
+    },
+    {
+      "path": "third-party/google-cast-v2/jmdns-3.6.3.pom",
+      "recordedSha256": "89fbc2b2c5029e75bfb549f8755d9af582c31be296e1674a5c6e7414e256ee3f",
+      "actualSha256": "89fbc2b2c5029e75bfb549f8755d9af582c31be296e1674a5c6e7414e256ee3f",
+      "actualSizeNormalized": 9466
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/chromecast-java-api-v2-Apache-2.0.txt",
+      "recordedSha256": "6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a",
+      "actualSha256": "6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a",
+      "actualSizeNormalized": 11323
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-annotations-2.20-META-INF_LICENSE",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-annotations-2.20-META-INF_NOTICE",
+      "recordedSha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "actualSha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "actualSizeNormalized": 738
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_FastDoubleParser-LICENSE",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_FastDoubleParser-NOTICE",
+      "recordedSha256": "aa057961a9ac52f1a63a8ae5ae437aa8355a69a0876aa8b5d1ecd6e35944be3c",
+      "actualSha256": "aa057961a9ac52f1a63a8ae5ae437aa8355a69a0876aa8b5d1ecd6e35944be3c",
+      "actualSizeNormalized": 1999
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_LICENSE",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_NOTICE",
+      "recordedSha256": "0a0042db627fe915c6a1d9ef74927af5081446063e8888494be6718d692dd2b8",
+      "actualSha256": "0a0042db627fe915c6a1d9ef74927af5081446063e8888494be6718d692dd2b8",
+      "actualSizeNormalized": 1227
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-core-2.20.0-META-INF_thirdparty-LICENSE",
+      "recordedSha256": "6e0e5b6e6389568c1669163fdf40cee2143be58960be0a4e2f1428805505170d",
+      "actualSha256": "6e0e5b6e6389568c1669163fdf40cee2143be58960be0a4e2f1428805505170d",
+      "actualSizeNormalized": 3047
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-databind-2.20.0-META-INF_LICENSE",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jackson-databind-2.20.0-META-INF_NOTICE",
+      "recordedSha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "actualSha256": "612b14bc77c944ce229cbba0d14919162cfea8ed802cbf06a8e865e032d03201",
+      "actualSizeNormalized": 738
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/jmdns-3.6.3-LICENSE.txt",
+      "recordedSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "actualSizeNormalized": 11358
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/OpenScreen-BSD-3-Clause.txt",
+      "recordedSha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+      "actualSha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+      "actualSizeNormalized": 1536
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/protobuf-v33.2-LICENSE.txt",
+      "recordedSha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d",
+      "actualSha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d",
+      "actualSizeNormalized": 1732
+    },
+    {
+      "path": "third-party/google-cast-v2/licenses/slf4j-api-2.0.17-META-INF_LICENSE.txt",
+      "recordedSha256": "6fbe2eaf44b193b8a40eed9208f52848572224ad8d7672dd09418aa174847e73",
+      "actualSha256": "6fbe2eaf44b193b8a40eed9208f52848572224ad8d7672dd09418aa174847e73",
+      "actualSizeNormalized": 1154
+    },
+    {
+      "path": "third-party/google-cast-v2/NOTICES.txt",
+      "recordedSha256": "bf3d7703c5b8a4e3bad6a6d022f27dcc229958d762d2bf67bcd95457277e2e06",
+      "actualSha256": "bf3d7703c5b8a4e3bad6a6d022f27dcc229958d762d2bf67bcd95457277e2e06",
+      "actualSizeNormalized": 2572
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/boringssl_trust_store.cc",
+      "recordedSha256": "fc358190733b39c6679971448de6810065c8b030be795991c2daa859f3d930f2",
+      "actualSha256": "fc358190733b39c6679971448de6810065c8b030be795991c2daa859f3d930f2",
+      "actualSizeNormalized": 19671
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/cast_cert_validator.cc",
+      "recordedSha256": "f08bdbc76130c51f3c05b959d5b3b474e1174b1737754ccd8b7c8c56c6b96a98",
+      "actualSha256": "f08bdbc76130c51f3c05b959d5b3b474e1174b1737754ccd8b7c8c56c6b96a98",
+      "actualSizeNormalized": 3456
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/cast_crl.cc",
+      "recordedSha256": "7379bc544851f8470087b1e9c5224d1bb6d8414680aa9b4716d0f44f166b99bb",
+      "actualSha256": "7379bc544851f8470087b1e9c5224d1bb6d8414680aa9b4716d0f44f166b99bb",
+      "actualSizeNormalized": 6937
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/cast_root_ca_cert_der-inc.h",
+      "recordedSha256": "7017274205c6063e5753e84f0d3b782348d74704936bd0858dc3b4d5ed2ad2c6",
+      "actualSha256": "7017274205c6063e5753e84f0d3b782348d74704936bd0858dc3b4d5ed2ad2c6",
+      "actualSizeNormalized": 9899
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/certificate/eureka_root_ca_der-inc.h",
+      "recordedSha256": "008585fcb97c38cb9457eb79c1c2c6aa05191c899e167acc9d42e6ee5dcb7426",
+      "actualSha256": "008585fcb97c38cb9457eb79c1c2c6aa05191c899e167acc9d42e6ee5dcb7426",
+      "actualSizeNormalized": 9804
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/channel/message_framer.cc",
+      "recordedSha256": "9a958be6c759fdaaf54807b835c26277a51057ff75d98ee1ba3e4f23f46890f0",
+      "actualSha256": "9a958be6c759fdaaf54807b835c26277a51057ff75d98ee1ba3e4f23f46890f0",
+      "actualSizeNormalized": 1806
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/common/channel/proto/cast_channel.proto",
+      "recordedSha256": "eb2c71153923325cbfe2987a6fc42ab2f44ae4c7fe9756fd448f6b5907999147",
+      "actualSha256": "eb2c71153923325cbfe2987a6fc42ab2f44ae4c7fe9756fd448f6b5907999147",
+      "actualSizeNormalized": 3765
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/sender/channel/cast_auth_util.cc",
+      "recordedSha256": "e9fe1870feffa1194ce64bf46123727f5a2249734d8fc89c41293d8fcf124963",
+      "actualSha256": "e9fe1870feffa1194ce64bf46123727f5a2249734d8fc89c41293d8fcf124963",
+      "actualSizeNormalized": 16170
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/sender/channel/cast_auth_util.h",
+      "recordedSha256": "f2cc018f8fc4a687a546c795c35a2a9efb55bd7f4568188fe90ca485a254dff9",
+      "actualSha256": "f2cc018f8fc4a687a546c795c35a2a9efb55bd7f4568188fe90ca485a254dff9",
+      "actualSizeNormalized": 3433
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/cast/sender/channel/sender_socket_factory.cc",
+      "recordedSha256": "ff60979b527e50a2ff7ad258843c24ad53034549b6040052a49a0810eac4b3ac",
+      "actualSha256": "ff60979b527e50a2ff7ad258843c24ad53034549b6040052a49a0810eac4b3ac",
+      "actualSizeNormalized": 7523
+    },
+    {
+      "path": "third-party/google-cast-v2/openscreen/LICENSE",
+      "recordedSha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+      "actualSha256": "4df77ff8575f0b6053e0e02e1b60aa0b2e87e6aaaaa629a7111970e6c4a12e94",
+      "actualSizeNormalized": 1536
+    },
+    {
+      "path": "third-party/google-cast-v2/protobuf-javalite-4.33.2.pom",
+      "recordedSha256": "bdfb9efb6a34657a6112fe63f10032865f33596817f1d9bf1d6d8259f27ea2ca",
+      "actualSha256": "bdfb9efb6a34657a6112fe63f10032865f33596817f1d9bf1d6d8259f27ea2ca",
+      "actualSizeNormalized": 1561
+    },
+    {
+      "path": "third-party/google-cast-v2/slf4j-api-2.0.17.pom",
+      "recordedSha256": "9b96956ae3f96c588225cef822bc57ed9ba854b55b1a0060989cecd55837acba",
+      "actualSha256": "9b96956ae3f96c588225cef822bc57ed9ba854b55b1a0060989cecd55837acba",
+      "actualSizeNormalized": 2745
+    },
+    {
+      "path": "third-party/google-cast-v2/upstream-files.json",
+      "recordedSha256": "e21fb5ad72b2dd01615d1d846822571e2e6ba98a5cb0d4727907c9465329534d",
+      "actualSha256": "e21fb5ad72b2dd01615d1d846822571e2e6ba98a5cb0d4727907c9465329534d",
+      "actualSizeNormalized": 4867
+    },
+    {
+      "path": "third-party/google-cast-v2/upstream-hardening.patch",
+      "recordedSha256": "10eb9ac8127c019e77c4202a1336c2c0b358c6ae8e5fa965317d3995abec51ed",
+      "actualSha256": "10eb9ac8127c019e77c4202a1336c2c0b358c6ae8e5fa965317d3995abec51ed",
+      "actualSizeNormalized": 26345
+    },
+    {
+      "path": "tools/extract-google-cast-platform.py",
+      "recordedSha256": "09b0213de5471cf97a0f7afcdf4dee9114cfdeaba227b6dada3e818009cfe0bf",
+      "actualSha256": "09b0213de5471cf97a0f7afcdf4dee9114cfdeaba227b6dada3e818009cfe0bf",
+      "actualSizeNormalized": 2946
+    },
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
+      "recordedSha256": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05",
+      "actualSha256": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05",
+      "actualSizeNormalized": 5019
+    }
+  ],
+  "scope": {
+    "CandidateMutation": false,
+    "compile": false,
+    "runtime": false,
+    "HTTP": false,
+    "physicalCastDevice": false,
+    "sourceVerifierExecuted": false
+  }
+}

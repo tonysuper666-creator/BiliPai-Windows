@@ -1,6 +1,5 @@
 package com.bilipai.desktop.ui
 
-import com.bilipai.desktop.DesktopPlaybackController
 import com.bilipai.desktop.DesktopPlaybackState
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.player.PlayerState
@@ -15,7 +14,7 @@ internal interface DesktopStoryQueuePlayer {
     fun retryQueueForOwner(owner: Any): Boolean = false
 }
 
-internal class ControllerStoryQueuePlayer(private val controller: DesktopPlaybackController) : DesktopStoryQueuePlayer {
+internal class ControllerStoryQueuePlayer(private val controller: DesktopUnifiedPlaybackFacade) : DesktopStoryQueuePlayer {
     override fun ownsQueue(owner: Any) = controller.ownsQueue(owner)
     override fun openQueue(cards: List<VideoCard>, index: Int, owner: Any) = controller.openQueue(cards, index, owner)
     override fun updateQueueForOwner(owner: Any, cards: List<VideoCard>, index: Int) = controller.updateQueueForOwner(owner, cards, index)

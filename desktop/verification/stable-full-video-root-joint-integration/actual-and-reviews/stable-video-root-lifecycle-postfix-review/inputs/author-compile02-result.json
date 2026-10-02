@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "inputs": 4,
+  "explicitPreparedFamilies": true,
+  "actualMainRootAccepted": false,
+  "Native": false,
+  "Window": false,
+  "HTTP": false
+}

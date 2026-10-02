@@ -113,7 +113,7 @@ internal interface DesktopOriginalPortraitPlatform {
      * the existing source actor under SAME Store->entry gate. Never join under locks.
      */
     fun publishSource(request: DesktopOriginalVideoRepositoryBinding, source: PlaybackSource,
-        expectedLoadGeneration: Int, stillCurrentLoad: () -> Boolean): Boolean
+        expectedLoadGeneration: Int, playWhenReady: Boolean, stillCurrentLoad: () -> Boolean): Boolean
     /** Root must supply the real owned media-range transport/cache capability.
      * A raw PlayUrl cache alone is not disk-byte media cache parity. No no-op is valid.
      * Original Wi-Fi gate, video1536KiB/audio256KiB bounds and headers are retained.

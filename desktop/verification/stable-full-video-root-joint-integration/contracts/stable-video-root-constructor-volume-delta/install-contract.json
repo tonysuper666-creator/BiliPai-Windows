@@ -1,0 +1,13 @@
+{
+  "copyWhitelist": [],
+  "exactHunks": "exact-hunks.json",
+  "expectedHunks": 1,
+  "baseline": "Actual81 installed source; frozen313/lifecycle21 unchanged",
+  "targets": [
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt"
+  ],
+  "sourceChecks": "source-check.json",
+  "preparedWholeForReviewOnly": true,
+  "preserves": "Same actual MPV, Root preferences, currentUserMuted first-load capture; no new owner/Store/Scope/native loading path",
+  "postInstall": "Root applies exact hunk and builds fresh immutable82. Fixture compiles alone and runs against issued82, no product overrides."
+}

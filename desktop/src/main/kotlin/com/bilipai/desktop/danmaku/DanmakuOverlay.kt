@@ -80,6 +80,40 @@ class DanmakuOverlay internal constructor(
     val commentCount: StateFlow<Int> = mutableCount.asStateFlow()
     private val mutableCommands = MutableStateFlow(emptyList<CommandDanmakuItem>())
     val commandItems: StateFlow<List<CommandDanmakuItem>> = mutableCommands.asStateFlow()
+    private val mutableAdvanced = MutableStateFlow(emptyList<com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData>())
+    val advancedItems: StateFlow<List<com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData>> = mutableAdvanced.asStateFlow()
+    @Volatile private var originalSectionViewport: Pair<Long,Boolean>? = null
+    @Volatile private var originalSectionDanmakuViewport: Pair<Long,DanmakuViewport>? = null
+    @Volatile private var originalSeekScrub: Pair<Long,Boolean>? = null
+    fun bindOriginalSectionDanmakuViewport(version:Long,viewport:DanmakuViewport):Boolean = synchronized(requestLock) {
+        if(closed.get() || !player.ownsSourceVersion(version)) false
+        else {originalSectionDanmakuViewport=version to viewport;true}
+    }
+    fun setOriginalSectionViewport(version:Long,active:Boolean):Boolean = synchronized(requestLock) {
+        if(closed.get() || !player.ownsSourceVersion(version)) false
+        else {originalSectionViewport=version to active;true}
+    }
+    fun releaseOriginalSectionViewport(version:Long):Boolean = synchronized(requestLock) {
+        if(originalSectionViewport?.first!=version) false
+        else {originalSectionViewport=null;originalSectionDanmakuViewport=null;originalSeekScrub=null;true}
+    }
+    /** Seek scrubbing suppresses displayed items only, retaining the raw CID document and loader. */
+    fun seekOriginalSection(version:Long,positionMs:Long?,scrubbing:Boolean):Boolean = synchronized(requestLock) {
+        if(closed.get() || !player.ownsSourceVersion(version) || poolSourceVersion!=version) false
+        else {
+            originalSeekScrub=version to scrubbing
+            val currentGeneration=generation.get()
+            SwingUtilities.invokeLater {
+                if(!closed.get() && currentGeneration==generation.get() && player.ownsSourceVersion(version)) {
+                    scheduler.resetTimeline()
+                    lastPosition=Double.NaN
+                    if(positionMs!=null) {anchoredPosition=positionMs.coerceAtLeast(0L)/1000.0;displayTime=anchoredPosition;sampleTimeNanos=System.nanoTime()}
+                    panel.repaint()
+                }
+            }
+            true
+        }
+    }
     // This is transport ownership only; the command list remains the sole list.
     private var commandCid: Long? = null
     private var poolSourceVersion: Long? = null
@@ -90,6 +124,16 @@ class DanmakuOverlay internal constructor(
         if (closed.get() || liveMode || cid <= 0L || commandCid != cid || poolSourceVersion != sourceVersion ||
             !player.ownsSourceVersion(sourceVersion)) null
         else DanmakuPoolSourceSnapshot(cid, sourceVersion, documentRevision.get(), rawDocument.comments)
+    }
+    /** Original server-disable metadata belongs to the sole raw document.
+     * Require the same actual native source; no per-CID set/cache is created. */
+    fun serverDisabledFor(cid: Long, sourceVersion: Long): Boolean = synchronized(requestLock) {
+        check(!closed.get() && !liveMode && cid > 0L && player.ownsSourceVersion(sourceVersion)) {
+            "Danmaku server-state source is not current"
+        }
+        // Original mark-set absence is false until a reply marks this CID.
+        // Never use metadata from another CID/version or create a second set.
+        commandCid == cid && poolSourceVersion == sourceVersion && rawDocument.serverDisabled
     }
     fun commandItemsFor(cid: Long): List<CommandDanmakuItem> = synchronized(requestLock) {
         if (!closed.get() && cid > 0 && commandCid == cid) mutableCommands.value else emptyList()
@@ -109,6 +153,182 @@ class DanmakuOverlay internal constructor(
     private fun currentOfflineDocumentOwned():Boolean = offlineDocumentOwner?.let {
         !closed.get() && player.ownsSourceVersion(it.first) && it.second()
     } ?: !closed.get()
+    private data class OriginalClickBinding(
+        val token:Long,val owns:()->Boolean,val onClick:(String,Long,String,Boolean)->Unit,
+        val foregroundWindow:()->Window?,val currentMid:()->Long,
+        val admit:(Long,()->Unit)->Boolean,
+    )
+    private data class OriginalPaintHit(val comment:DanmakuComment,val area:java.awt.geom.Area)
+    private data class OriginalPaintFrame(
+        val cid:Long,val sourceVersion:Long,val generation:Long,val revision:Long,
+        val origin:java.awt.Point,val width:Int,val height:Int,
+        val scaleX:Double,val scaleY:Double,val mediaTime:Double,val configuration:DanmakuSettings,val hits:List<OriginalPaintHit>,
+    )
+    internal class OriginalDanmakuPointerHit internal constructor(
+        internal val identity:Any,internal val listener:Long,internal val sourceVersion:Long,
+        internal val cid:Long,internal val generation:Long,internal val revision:Long,
+        internal val internalId:Int,internal val foreground:Window,internal val foregroundHwnd:Long,
+        internal val origin:java.awt.Point,internal val width:Int,internal val height:Int,
+        internal val scaleX:Double,internal val scaleY:Double,internal val mediaTime:Double,
+        internal val configuration:DanmakuSettings,
+    )
+    private val originalClickSequence=AtomicLong()
+    private var originalLocalInjectionPhase:Any=Any() // Same-document preprocessing phase; not an item list.
+    private val originalClickBindings=linkedMapOf<Long,OriginalClickBinding>()
+    private var originalPaintFrame:OriginalPaintFrame?=null // EDT; derived ONLY from successful paint.
+    private var originalPointerHit:OriginalDanmakuPointerHit?=null // EDT; one accepted DOWN/UP, no item queue.
+    private var originalInstalledGeneration=Long.MIN_VALUE // EDT; scheduler's actual installed identity.
+    private var originalInstalledRevision=Long.MIN_VALUE
+
+    /** Predicates/getters are actual Root's read-only entry/account/foreground views.
+     * The sole original Section forwards real pointer input; this passive HWND never takes input. */
+    internal fun acquireOriginalDanmakuClickListener(
+        stillOwned:()->Boolean,onClick:(String,Long,String,Boolean)->Unit,
+        foregroundWindow:()->Window?,currentMid:()->Long,
+        admit:(expectedSourceVersion:Long,action:()->Unit)->Boolean,
+    ):AutoCloseable {
+        val token=originalClickSequence.incrementAndGet()
+        synchronized(requestLock) {
+            if(!closed.get() && stillOwned())
+                originalClickBindings[token]=OriginalClickBinding(token,stillOwned,onClick,foregroundWindow,currentMid,admit)
+        }
+        val released=AtomicBoolean()
+        return AutoCloseable {
+            if(released.compareAndSet(false,true)) synchronized(requestLock) {originalClickBindings.remove(token)}
+        }
+    }
+    private fun originalDocumentOwned(version:Long):Boolean = !closed.get() && !liveMode && version>0L &&
+        poolSourceVersion==version && (commandCid ?: 0L)>0L && player.ownsSourceVersion(version) && currentOfflineDocumentOwned()
+
+    fun clearOriginalPortraitDanmaku(expectedSourceVersion:Long):Boolean = synchronized(requestLock) {
+        if(!originalDocumentOwned(expectedSourceVersion)) false
+        else seekOriginalSection(expectedSourceVersion,null,true)
+    }
+    fun recoverOriginalPortraitDanmaku(expectedSourceVersion:Long,positionMs:Long,
+        playWhenReady:Boolean,playbackState:Int):Boolean = synchronized(requestLock) {
+        if(!originalDocumentOwned(expectedSourceVersion))return@synchronized false
+        val state=player.state.value
+        when(com.android.purebilibili.feature.video.danmaku.resolveDanmakuActionForForegroundRecovery(
+            playWhenReady,!state.paused && !state.loading && !state.ended,playbackState,settings.enabled,
+            mutableFormat.value != null || rawDocument.size > 0)) {
+            com.android.purebilibili.feature.video.danmaku.DanmakuSyncAction.HardResync ->
+                seekOriginalSection(expectedSourceVersion,positionMs,false)
+            com.android.purebilibili.feature.video.danmaku.DanmakuSyncAction.PauseOnly ->
+                seekOriginalSection(expectedSourceVersion,null,true)
+            else -> true
+        }
+    }
+    fun addOriginalPortraitDanmaku(expectedSourceVersion:Long,text:String,color:Int,mode:Int,fontSize:Int):Boolean =
+        synchronized(requestLock) {
+            if(!originalDocumentOwned(expectedSourceVersion))return@synchronized false
+            val position=(player.state.value.positionSeconds*1000).toLong().coerceAtLeast(0L)
+            val item=com.android.purebilibili.feature.video.danmaku.desktopOriginalLocalDanmakuItem(
+                text,color,mode,fontSize,position,settings.staticDanmakuToScroll)
+            val previous=rawDocument.comments.filter {it.originalLocalItem!=null}.maxOfOrNull {it.id} ?: Int.MIN_VALUE
+            check(previous< -1) {"Local danmaku measurement identity exhausted"}
+            val comment=DanmakuComment(previous+1,item.showAtTime/1000.0,mode,fontSize,
+                (item.textColor ?: color) and 0xffffff,item.text.orEmpty(),originalLocalItem=item,
+                originalLocalInjectionPhase=originalLocalInjectionPhase)
+            val next=rawDocument.copy(comments=(rawDocument.comments+comment)
+                .sortedBy {it.timeSeconds})
+            // Consecutive local appends remain downstream of ordinary preprocessing
+            // until a genuine settings/plugin/document rebuild retires this phase.
+            installDocument(next,generation.get(),originalLocalInjectionPhase)
+            true
+        }
+
+    private fun originalClickBinding():OriginalClickBinding? {
+        originalClickBindings.entries.removeIf {!it.value.owns()}
+        return originalClickBindings.values.lastOrNull()
+    }
+    private fun originalFrameCurrent(frame:OriginalPaintFrame):Boolean =
+        originalDocumentOwned(frame.sourceVersion) && commandCid==frame.cid &&
+            generation.get()==frame.generation && documentRevision.get()==frame.revision &&
+            originalInstalledGeneration==frame.generation && originalInstalledRevision==frame.revision &&
+            settings==frame.configuration && settings.enabled && originalSeekScrub?.let {it.first==frame.sourceVersion && it.second}!=true &&
+            overlay?.isShowing==true && panel.isShowing && panel.width==frame.width && panel.height==frame.height &&
+            panel.locationOnScreen==frame.origin &&
+            panel.graphicsConfiguration?.defaultTransform?.let {
+                kotlin.math.hypot(it.scaleX,it.shearY)==frame.scaleX &&
+                    kotlin.math.hypot(it.scaleY,it.shearX)==frame.scaleY
+            }==true && player.state.value.let {
+                it.positionSeconds==frame.mediaTime && it.paused && it.ready && it.firstVideoFrameReady && !it.loading && !it.ended && !it.audioOnly && it.error==null
+            }
+    private fun originalWindowPoint(window:Window,x:Double,y:Double,frame:OriginalPaintFrame):java.awt.geom.Point2D.Double? {
+        if(!window.isShowing || !window.isDisplayable || !x.isFinite() || !y.isFinite())return null
+        val transform=window.graphicsConfiguration?.defaultTransform ?: return null
+        val sx=kotlin.math.hypot(transform.scaleX,transform.shearY)
+        val sy=kotlin.math.hypot(transform.scaleY,transform.shearX)
+        if(!sx.isFinite() || !sy.isFinite() || sx<=0.0 || sy<=0.0)return null
+        val screen=window.locationOnScreen
+        return java.awt.geom.Point2D.Double(screen.x+x/sx-frame.origin.x,screen.y+y/sy-frame.origin.y)
+    }
+    /** Actual Compose positionInWindow physical pixels, converted with that same foreground Window's DPI/origin. */
+    internal fun beginOriginalDanmakuPointer(expectedSourceVersion:Long,windowPixelX:Double,windowPixelY:Double):OriginalDanmakuPointerHit? {
+        check(SwingUtilities.isEventDispatchThread())
+        return synchronized(requestLock) {
+            originalPointerHit=null
+            val frame=originalPaintFrame ?: return@synchronized null
+            if(frame.sourceVersion!=expectedSourceVersion || !originalFrameCurrent(frame))return@synchronized null
+            val binding=originalClickBinding() ?: return@synchronized null
+            val foreground=binding.foregroundWindow() ?: return@synchronized null
+            val point=originalWindowPoint(foreground,windowPixelX,windowPixelY,frame) ?: return@synchronized null
+            val hit=frame.hits.lastOrNull {it.area.contains(point)} ?: return@synchronized null
+            OriginalDanmakuPointerHit(Any(),binding.token,frame.sourceVersion,frame.cid,frame.generation,frame.revision,
+                hit.comment.id,foreground,Pointer.nativeValue(Native.getWindowPointer(foreground)),
+                frame.origin,frame.width,frame.height,frame.scaleX,frame.scaleY,frame.mediaTime,frame.configuration).also {originalPointerHit=it}
+        }
+    }
+    internal fun cancelOriginalDanmakuPointer(hit:OriginalDanmakuPointerHit) {
+        check(SwingUtilities.isEventDispatchThread())
+        if(originalPointerHit===hit)originalPointerHit=null
+    }
+    internal fun finishOriginalDanmakuPointer(hit:OriginalDanmakuPointerHit,windowPixelX:Double,windowPixelY:Double):Boolean {
+        check(SwingUtilities.isEventDispatchThread())
+        val selected=synchronized(requestLock) {
+            if(originalPointerHit!==hit)return@synchronized null
+            originalPointerHit=null
+            val frame=originalPaintFrame ?: return@synchronized null
+            if(!originalFrameCurrent(frame) || frame.cid!=hit.cid || frame.sourceVersion!=hit.sourceVersion ||
+                frame.generation!=hit.generation || frame.revision!=hit.revision || frame.origin!=hit.origin ||
+                frame.width!=hit.width || frame.height!=hit.height || frame.scaleX!=hit.scaleX || frame.scaleY!=hit.scaleY ||
+                frame.mediaTime!=hit.mediaTime || frame.configuration!=hit.configuration)return@synchronized null
+            val binding=originalClickBinding()?.takeIf {it.token==hit.listener} ?: return@synchronized null
+            if(binding.foregroundWindow()!==hit.foreground || !hit.foreground.isDisplayable ||
+                Pointer.nativeValue(Native.getWindowPointer(hit.foreground))!=hit.foregroundHwnd)return@synchronized null
+            val point=originalWindowPoint(hit.foreground,windowPixelX,windowPixelY,frame) ?: return@synchronized null
+            val item=frame.hits.lastOrNull {it.comment.id==hit.internalId && it.area.contains(point)}?.comment ?: return@synchronized null
+            binding to item
+        } ?: return false
+        // Original callbacks/UI/API work happen AFTER Overlay's request lock has been released.
+        val (binding,comment)=selected
+        if(!binding.owns() || synchronized(requestLock) {originalClickBindings.values.lastOrNull()?.token}!=binding.token ||
+            !player.ownsSourceVersion(hit.sourceVersion))return false
+        val original=comment.originalLocalItem ?: comment.originalElement?.let {
+            com.android.purebilibili.feature.video.danmaku.DesktopOriginalDanmakuItemParser.createTextDataFromProto(it)
+        } ?: if(comment.originalXmlAttributes!=null && comment.originalXmlContent!=null)
+            com.android.purebilibili.feature.video.danmaku.DesktopOriginalDanmakuItemParser.createTextData(comment.originalXmlAttributes,comment.originalXmlContent)
+        else null
+        var dispatched=false
+        val admitted=binding.admit(hit.sourceVersion) {
+            // Root first admits this exact native publication under Store -> entry,
+            // releasing NativeOwner's validation lock before this short Overlay read.
+            val current=synchronized(requestLock) {
+                !closed.get() && !liveMode && poolSourceVersion==hit.sourceVersion && commandCid==hit.cid &&
+                    generation.get()==hit.generation && documentRevision.get()==hit.revision &&
+                    originalClickBindings.values.lastOrNull()?.token==binding.token
+            }
+            if(current && binding.owns()) {
+                val user=com.android.purebilibili.feature.video.danmaku.resolveDanmakuClickUserHash(original?.userHash ?: comment.userHash)
+                val self=(original?.isSelf==true) || com.android.purebilibili.feature.video.danmaku.resolveDanmakuClickIsSelf(user,binding.currentMid())
+                binding.onClick(comment.text,original?.danmakuId ?: comment.serverId,user,self)
+                dispatched=true
+            }
+        }
+        return admitted && dispatched
+    }
+
+
     private var styles = emptyMap<Int, DanmakuStyle>()
     var enabled: Boolean
         get() = settings.enabled
@@ -131,8 +351,9 @@ class DanmakuOverlay internal constructor(
     private val measuredWidths = mutableMapOf<Pair<Int,Font>, Int>()
     private data class ConfigKey(val settings:DanmakuSettings,val viewport:DanmakuViewport,val font:Font,val live:Boolean,val maskReady:Boolean)
     private var resolvedConfig:Pair<ConfigKey,DanmakuRenderConfig>?=null
-    private val panel = object : JComponent() {
+    private val panel:JComponent = object : JComponent() {
         override fun paintComponent(graphics: Graphics) {
+            originalPaintFrame=null
             val context = graphics.create() as Graphics2D
             try {
                 context.composite = AlphaComposite.Src
@@ -142,9 +363,16 @@ class DanmakuOverlay internal constructor(
                 context.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON)
                 context.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
                 val geometry=DesktopDanmakuPaintGeometry.from(width,height,context.transform,renderPlatform.maximumDisplayShortSidePx()) ?: return
-                val viewport=geometry.viewport
+                // The original Section supplies density/scale only for this same physical viewport.
+                // A SCREEN_TOP region outside the actual Canvas remains a separate platform gap.
+                val viewport=if(liveMode)geometry.viewport else originalSectionDanmakuViewport?.takeIf {
+                    it.first==poolSourceVersion && player.ownsSourceVersion(it.first) &&
+                    it.second.widthPx==geometry.viewport.widthPx && it.second.heightPx==geometry.viewport.heightPx
+                }?.second ?: geometry.viewport
                 val configuration = settings
-                if (configuration.enabled && currentOfflineDocumentOwned()) {
+                if (configuration.enabled && currentOfflineDocumentOwned() &&
+                    originalSectionViewport?.let { !player.ownsSourceVersion(it.first) || it.second } != false &&
+                    originalSeekScrub?.let { player.ownsSourceVersion(it.first) && it.second } != true) {
                   context.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, configuration.opacity)
                   if (liveMode) {
                     // Uses the actual Root-monitor geometry resolved once above.
@@ -156,8 +384,8 @@ class DanmakuOverlay internal constructor(
                     finally {physical.dispose()}
                   } else {
                 // Uses the actual Root-monitor geometry resolved once above.
-                val key=ConfigKey(configuration,geometry.viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false,webMaskAvailable())
-                val config=resolvedConfig?.takeIf { it.first==key }?.second ?: configuration.originalConfig(renderPlatform).resolveRenderConfig(geometry.viewport).copy(maskEnabled=key.maskReady).also { resolvedConfig=key to it }
+                val key=ConfigKey(configuration,viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false,webMaskAvailable())
+                val config=resolvedConfig?.takeIf { it.first==key }?.second ?: configuration.originalConfig(renderPlatform).resolveRenderConfig(viewport).copy(maskEnabled=key.maskReady).also { resolvedConfig=key to it }
                 val physical=context.create() as Graphics2D
                 try {
                     geometry.configurePhysicalPixels(physical)
@@ -168,12 +396,14 @@ class DanmakuOverlay internal constructor(
                         val style=styles[comment.id]
                         return desktopDanmakuFont(config,comment,style?.scale ?: 1f,style?.bold==true)
                     }
+                    scheduler.observeOriginalLocalInjectionPhase(synchronized(requestLock){originalLocalInjectionPhase})
                     val positioned = scheduler.frame(displayTime, geometry.viewport.widthPx, geometry.viewport.heightPx, config) { comment ->
                         val font=font(comment)
                         val metrics=physical.getFontMetrics(font)
                         val width=measuredWidths.getOrPut(comment.id to font) {metrics.stringWidth(comment.text)}
                         DesktopDanmakuTextMetrics(width,metrics.ascent.toDouble())
                     }
+                    val originalHits=mutableListOf<OriginalPaintHit>()
                     positioned.forEach { item ->
                         val style = styles[item.comment.id]
                         val font = font(item.comment)
@@ -196,6 +426,24 @@ class DanmakuOverlay internal constructor(
                                 floatArrayOf(0f, 0.5f, 1f), arrayOf(Color(0xff7cba), Color(0xa798ff), Color(0x70d6ff)))
                         } else physical.color = pluginAwtColor(style?.textColor) ?: Color(item.comment.color)
                         physical.fill(shape)
+                        if(config.alpha>0) {
+                            val metrics=physical.getFontMetrics(font)
+                            val area=java.awt.geom.Area(java.awt.geom.Rectangle2D.Double(item.x,
+                                item.baseline-metrics.ascent,item.textWidth.toDouble(),(metrics.ascent+metrics.descent).toDouble()))
+                            physical.clip?.let {area.intersect(java.awt.geom.Area(it))}
+                            area.transform(java.awt.geom.AffineTransform.getScaleInstance(1.0/geometry.scaleX,1.0/geometry.scaleY))
+                            if(!area.isEmpty)originalHits+=OriginalPaintHit(item.comment,area)
+                        }
+                    }
+                    synchronized(requestLock) {
+                        val cid=commandCid
+                        val sourceVersion=poolSourceVersion
+                        if(cid!=null && sourceVersion!=null && originalDocumentOwned(sourceVersion) &&
+                            originalInstalledGeneration==generation.get() && originalInstalledRevision==documentRevision.get() &&
+                            player.state.value.paused && panel.isShowing && overlay?.isShowing==true) {
+                            originalPaintFrame=OriginalPaintFrame(cid,sourceVersion,generation.get(),documentRevision.get(),
+                                panel.locationOnScreen,panel.width,panel.height,geometry.scaleX,geometry.scaleY,displayTime,configuration,originalHits.toList())
+                        }
                     }
                 } finally {physical.dispose()}
                 advancedRenderer.paint(context, (displayTime * 1000).toLong(), width, height, viewport.scale, configuration)
@@ -213,7 +461,7 @@ class DanmakuOverlay internal constructor(
     fun applySettings(settings: DanmakuSettings) {
         val normalized = settings.normalized()
         val smartChanged=this.settings.smartOcclusionEnabled!=normalized.smartOcclusionEnabled
-        this.settings = normalized
+        synchronized(requestLock) {if(this.settings!=normalized)originalLocalInjectionPhase=Any();this.settings=normalized}
         if(smartChanged)onWebMaskSettingChanged()
         SwingUtilities.invokeLater {
             if (!closed.get()) {
@@ -257,11 +505,15 @@ class DanmakuOverlay internal constructor(
         SwingUtilities.invokeLater { if (!closed.get()) { liveRenderer.setProcessor(processor); panel.repaint() } }
     }
 
-    suspend fun load(cid: Long, aid: Long = 0L, durationSeconds: Double = 0.0, expectedSourceVersion: Long? = null, maskSource:DesktopOwnedWebMaskSource?) {
+    suspend fun load(cid:Long,aid:Long=0L,durationSeconds:Double=0.0,expectedSourceVersion:Long?=null,maskSource:DesktopOwnedWebMaskSource?) =
+        load(cid,aid,durationSeconds,expectedSourceVersion,maskSource,null)
+
+    suspend fun load(cid:Long,aid:Long,durationSeconds:Double,expectedSourceVersion:Long?,maskSource:DesktopOwnedWebMaskSource?,stillOwned:(()->Boolean)?) {
+        require(stillOwned==null || expectedSourceVersion!=null)
         require(cid > 0) { "Invalid danmaku content ID." }
         require(aid >= 0 && durationSeconds.isFinite() && durationSeconds >= 0)
         require(maskSource==null || (maskSource.cid==cid && maskSource.sourceVersion==expectedSourceVersion))
-        loadSource(source, cid, aid, durationSeconds, expectedSourceVersion, maskSource)
+        loadSource(source, cid, aid, durationSeconds, expectedSourceVersion, maskSource, stillOwned)
     }
 
     /** Decodes the downloaded upstream protobuf assets through the same window policy, without HTTP. */
@@ -275,7 +527,7 @@ class DanmakuOverlay internal constructor(
     fun enterLive(): Long {
         val version = synchronized(requestLock) {
             generation.incrementAndGet().also { loadJob?.cancel(); windowJob?.cancel(); retireWebMaskSource(); liveMode = true; pendingLive.clear() }
-                .also { offlineDocumentOwner=null; commandCid = null; mutableCommands.value = emptyList() }
+                .also { offlineDocumentOwner=null; commandCid = null; mutableCommands.value = emptyList(); mutableAdvanced.value=emptyList(); originalSectionDanmakuViewport=null }
         }
         mutableError.value = null; mutableFormat.value = null
         SwingUtilities.invokeLater {
@@ -383,18 +635,22 @@ class DanmakuOverlay internal constructor(
         installDocument(document, version)
     }
 
-    private fun installDocument(document: DanmakuDocument, version: Long) {
+    private fun installDocument(document: DanmakuDocument, version: Long, immediateLocalPhase:Any? = null) {
         val (revision, processor) = synchronized(requestLock) {
             if (version != generation.get() || closed.get() || !currentOfflineDocumentOwned()) return
+            if(immediateLocalPhase==null)originalLocalInjectionPhase=Any()
             pluginJob?.cancel()
-            rawDocument = document
+            rawDocument = document.copy(serverDisabled = rawDocument.serverDisabled || document.serverDisabled)
+            mutableAdvanced.value = document.advanced
             documentRevision.incrementAndGet().also { mutablePoolSourceRevision.value = it } to pluginProcessor
         }
         fun install(processed: DanmakuDocument, nextStyles: Map<Int, DanmakuStyle>) = SwingUtilities.invokeLater {
             if (!closed.get() && version == generation.get() && revision == documentRevision.get() && currentOfflineDocumentOwned()) {
                 mutableCount.value = processed.size
                 styles = nextStyles
-                scheduler = DanmakuScheduler(processed.comments, settings,liveAdmission=false)
+                val currentLocalPhase=synchronized(requestLock) {immediateLocalPhase?.takeIf {it===originalLocalInjectionPhase}}
+                scheduler = DanmakuScheduler(processed.comments, settings,liveAdmission=false,immediateLocalPhase=currentLocalPhase)
+                originalInstalledGeneration=version;originalInstalledRevision=revision
                 advancedRenderer = AdvancedDanmakuRenderer(processed.advanced)
                 measuredWidths.clear()
                 panel.repaint()
@@ -407,7 +663,8 @@ class DanmakuOverlay internal constructor(
             val nextStyles = mutableMapOf<Int, DanmakuStyle>()
             document.comments.forEachIndexed { index, comment ->
                 if (index % 128 == 0) ensureActive()
-                applyDesktopDanmakuPlugin(comment, processor)?.let { transformed ->
+                if(immediateLocalPhase!=null && comment.originalLocalInjectionPhase===immediateLocalPhase && comment.originalLocalItem!=null)next+=comment
+                else applyDesktopDanmakuPlugin(comment, processor)?.let { transformed ->
                     next += transformed.comment
                     transformed.style?.let { nextStyles[transformed.comment.id] = it }
                 }
@@ -446,7 +703,7 @@ class DanmakuOverlay internal constructor(
             currentOwner != null && currentOwner.isVisible &&
             (currentOwner !is Frame || currentOwner.extendedState and Frame.ICONIFIED == 0) &&
             playerState.ready && playerState.firstVideoFrameReady && playerState.videoCodec != null && playerState.error == null && !playerState.ended && !playerState.audioOnly
-        if (!visible) { overlay?.isVisible = false; ownerWasActive = false; return }
+        if (!visible) { originalPaintFrame=null;originalPointerHit=null;overlay?.isVisible = false; ownerWasActive = false; return }
         if (currentOwner != owner) {
             overlay?.dispose()
             owner = currentOwner
@@ -515,9 +772,9 @@ class DanmakuOverlay internal constructor(
 
     override fun close() {
         if (closed.compareAndSet(false, true)) {
-            synchronized(requestLock) { generation.incrementAndGet(); loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel(); retireWebMaskSource() }
+            synchronized(requestLock) { generation.incrementAndGet();originalClickBindings.clear();loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel(); retireWebMaskSource() }
             requests.cancel()
-            SwingUtilities.invokeLater { timer.stop(); overlay?.dispose(); overlay = null }
+            SwingUtilities.invokeLater {originalPaintFrame=null;originalPointerHit=null;timer.stop(); overlay?.dispose(); overlay = null }
         }
     }
 

@@ -1,0 +1,17 @@
+{
+  "reason": "Original Overlay110 exact CastDialog adapter changed; update its one vetted source row, and refresh preexisting stale bundled records mirror",
+  "recordChanges": [
+    {
+      "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
+      "before": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b",
+      "after": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e"
+    }
+  ],
+  "protocolAndCertificateSourceChanged": false,
+  "sourceJarAndOpenScreenPinsChanged": false,
+  "physicalDeviceTested": false,
+  "mainBeforeSHA256": "771d5a77e6fee429e9ce93e8d7d9cd3d1a05fa8e78029a0930c02eba2ab316d2",
+  "noticeBeforeSHA256": "88aab8c87cdb17fa4ac7c020368d314ecea030224389f158cb6ab0b7a1ec7fa4",
+  "sharedAfterSHA256": "ba8a1791317e53cab351e09a39ae688286f75c54139aecf598bc50f4feb8be5e",
+  "wholeBuildPassed": false
+}

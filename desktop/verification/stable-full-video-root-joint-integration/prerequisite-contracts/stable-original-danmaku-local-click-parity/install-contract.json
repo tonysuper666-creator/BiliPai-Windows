@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "kind": "exact-hunk-original-local-danmaku-and-foreground-click",
+  "copyWhitelist": [],
+  "exactHunks": "exact-hunks.json",
+  "exactHunkSchema": "list of path/before/after/indexAtApplication",
+  "existingFamilies": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "beforeSHA256LF": "a465b99419f88bc47d5b4ce48689340e3f1052fc8d8252c054f08e032aeeb2f7",
+      "afterSHA256LF": "cd7e78bf5ad7823bf2481998818d0c80bb4280e6e22b5d8c7f1ddcab5140fcf5",
+      "hunks": 15,
+      "exactLocalInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "beforeSHA256LF": "936e1a63fed4facadafa0a018c0a3e6c6a2e8e6ec2e789a6cf622ba76878c100",
+      "afterSHA256LF": "a1f9a7e93a06a7b4196c9ffd9dfe7e63592858b1e9727689d8c366ac63c5882d",
+      "hunks": 1,
+      "exactLocalInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuScheduler.kt",
+      "beforeSHA256LF": "60fbb76aed3eca93dfde9ae1fd8830799c50974e6832a56bd2746d57a040edce",
+      "afterSHA256LF": "3271b1d961e4240d2058d4ee8943417d3d403b60be45869c73422a28b9e463cf",
+      "hunks": 6,
+      "exactLocalInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuHost.kt",
+      "beforeSHA256LF": "abe6c706450cdb3ba3364e50b90dc78e146eb1e5ce032f2d5294225606c3893c",
+      "afterSHA256LF": "96ec902a51a998bb033b5fa4f699b2764158d370e5f0a2d94db4b3ac5623d547",
+      "hunks": 1,
+      "exactLocalInverse": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-danmaku-list-menu.py",
+      "beforeSHA256LF": "72fb8c0affd99cd66688cae9544d444aaacf59c20bb6e8eb351101838bf1fb65",
+      "afterSHA256LF": "f4431f015fc7c7b60b13d214bff20e15df6bd1bded72d786020ce91f1232db7f",
+      "hunks": 2,
+      "exactLocalInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+      "beforeSHA256LF": "bbd41ca504d4c8780c6b7f5bb58f7857a90a1622a1e09ed852b20d9e81de3075",
+      "afterSHA256LF": "e6c9c525f569a03853981e10d7a67fca15fe688a48ad89c07cc0c25a98821871",
+      "hunks": 2,
+      "exactLocalInverse": true
+    }
+  ],
+  "localHunks": 27,
+  "newOriginalIdentities": 0,
+  "newDependencies": 0,
+  "requiredBeforeComposition": [
+    {
+      "lane": "stable-video-section-windows-platform-parity",
+      "manifest": "frozen-handoff.json",
+      "sha256Bytes": "ee169952db6c6c7a39a376cfd16f53e005e5eff9ad9410e53423ce30115fe554"
+    },
+    {
+      "lane": "stable-video-owner-danmaku-cache-binding-parity",
+      "manifest": "frozen-handoff.json",
+      "sha256Bytes": "ad6f8cf244f0fd87d11cba9a3ac19786ac558a085a4770fc3b8b0c28e6b4936c"
+    }
+  ],
+  "commutingPortrait87": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+      "composedSHA256LF": "84f94365a2a9f4900f558491cd639c9b8e12f260cfe5d6a0854f350348dfa259",
+      "exactBothOrders": true
+    }
+  ],
+  "registryFeatureUnions": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "features": [
+        "complete original neutral local-item apply builder and same-document initial local injection"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt",
+      "features": [
+        "complete original foreground-recovery policy and sync action enum"
+      ]
+    }
+  ],
+  "originalInputInventory": "prepared/generated/source-inventory.json",
+  "completeSourceRebuildRequired": true,
+  "integration": "ROOT-INTEGRATION.md",
+  "holderClickAdmissionParameters": 5,
+  "clickCallbackLongIsServerDanmakuId": true,
+  "sourceVersionMustMatchFixedNativePublication": true,
+  "actualRootPresentationAdmissionRequired": true,
+  "pointerEntrance": "same Section NativeDanmakuSurface Box; paused successful real paint hits only",
+  "noGlobalMouseObserver": true,
+  "noNewInputWindow": true,
+  "noNewItemListOrPlayer": true,
+  "desktopDeploymentAccepted": false
+}

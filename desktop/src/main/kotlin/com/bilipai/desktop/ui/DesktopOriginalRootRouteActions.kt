@@ -17,6 +17,11 @@ internal interface DesktopOriginalRootRouteCommands {
     fun home(): Boolean
     fun video(key: BiliPaiNavKey.VideoDetail)
     fun videoRoute(route: String, sourceRoute: String)
+    fun replaceVideoDetail(current: BiliPaiNavKey.VideoDetail, bvid: String, cid: Long,
+        cover: String, resumePositionMs: Long): Boolean
+    fun homeFromVideo(current: BiliPaiNavKey.VideoDetail): Boolean
+    fun markVideoReturning(current: BiliPaiNavKey.VideoDetail): Boolean
+    fun clearVideoReturning(): Boolean
 }
 
 /** Stable AppNavigation HOME caller (2330–2408), adapted only to required Root effects.

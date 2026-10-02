@@ -70,7 +70,7 @@ internal class DesktopOriginalRootChromeBindings(
     val dataSaverActive=remember(root){root.environment.settings.isDataSaverActive()}
     val baseColor=MaterialTheme.colorScheme.background
     val lightBackground=baseColor.luminance()>.5f
-    val listen=binding.audio?.listen?.state?.collectAsState()?.value
+    val audioSnapshot=binding.audio?.observeSnapshot()
     val windowClass=LocalWindowSizeClass.current
     val useSidebar=shouldUseSidebarNavigationForLayout(windowClass,navigation.tabletUseSidebar,
         LocalAppWindowAdaptiveInfo.current.posture)
@@ -92,12 +92,19 @@ internal class DesktopOriginalRootChromeBindings(
     val mountRoute=resolveVideoCardTransitionChromeBottomBarRoute(video,activeRoute,currentItem.route)
     val skin=rememberBottomBarUiSkinDecoration(LocalUiSkinState.current)
     val visibility=binding.nowPlayingVisibility().copy(barEnabled=audioPrefs.enabled)
-    val audioActive=binding.audio?.isOwned()==true&&visibility.sessionActive&&listen?.current!=null
+    val audioActive=audioSnapshot!=null&&binding.audio?.ownsSnapshot(audioSnapshot)==true&&visibility.sessionActive&&audioSnapshot.active
     val state=desktopOriginalRootChromeState(currentKey.toLegacyRoute(),activeRoute,mountRoute,
         visibleItems.map{it.route}.toSet(),windowClass.isTablet,useSidebar,video,returns,
         binding.cardTransitionEnabled(),driveByProgress,sourceChrome,navigation.bottomBarVisibilityMode,
         pages.bottomBarVisible(),pages.setBottomBarVisible,home.isBottomBarFloating,audioPrefs.enabled,
-        audioActive,listen?.current,currentItem,pages.scrollOffset,skin,binding.navigationBarsBottom())
+        audioActive,audioSnapshot?.item,currentItem,pages.scrollOffset,skin,binding.navigationBarsBottom())
+    val independentAudioDestination=isAudioNowPlayingPlayerDestination(currentKey.toLegacyRoute()) ||
+        (returns.isReturningFromDetail&&returns.transitionSession?.bvid==audioSnapshot?.item?.bvid)
+    val actualBarOverlayVisible=audioActive&&resolveAudioNowPlayingVisible(
+        visibility.sessionActive&&audioSnapshot?.active==true,visibility.onAudioModeScreen,visibility.inPipMode,
+        audioSnapshot!=null,visibility.barEnabled,visibility.inMiniMode,video,visibility.landscape,
+        if(state.bottomBarCanMount)visibility.playerDestination else independentAudioDestination)
+    SideEffect { binding.audio?.publishBarOverlayVisible(actualBarOverlayVisible) }
     val budget=resolveBottomPagerRenderBudget(mainPager.isNavigating)
     val motion=remember(windowClass.isTablet,binding.cardTransitionEnabled()){
         resolveAppNavigationMotionSpec(windowClass.isTablet,binding.cardTransitionEnabled())}
@@ -165,22 +172,21 @@ internal class DesktopOriginalRootChromeBindings(
                                 actions,binding.audio,visibility,actualNowNavigation,haze,backdrop?.backdrop,skin,Modifier)
                         }
                     }
-                } else if (binding.audio != null && listen?.current != null) {
+                } else if (binding.audio != null && audioSnapshot != null) {
                     val audio=binding.audio
-                    val item=requireNotNull(listen.current)
-                    val native by audio.listen.player.state.collectAsState()
+                    val item=audioSnapshot.item
                     val independentPlayer=isAudioNowPlayingPlayerDestination(currentKey.toLegacyRoute()) ||
                         (returns.isReturningFromDetail&&returns.transitionSession?.bvid==item.bvid)
-                    val showIndependent=resolveAudioNowPlayingVisible(visibility.sessionActive,visibility.onAudioModeScreen,
+                    val showIndependent=resolveAudioNowPlayingVisible(visibility.sessionActive&&audioSnapshot.active,visibility.onAudioModeScreen,
                         visibility.inPipMode,true,visibility.barEnabled,visibility.inMiniMode,video,
                         visibility.landscape,independentPlayer)
                     AudioNowPlayingBarPresenceHost(showIndependent,Modifier.align(Alignment.BottomCenter).zIndex(2f)) {
                         AudioNowPlayingBar(state=AudioNowPlayingBarState(item.bvid,item.title,item.owner,item.ownerFace,item.cover,
-                            listen.active&&audio.listen.ownedPlaybackSourceVersion!=null&&!native.paused&&!native.ended,native.speed.toFloat()),
-                            sourceIsOwned={binding.owner.isOwned()&&audio.ownsCurrent(item)},
+                            audioSnapshot.isPlaying,audioSnapshot.playbackSpeed),
+                            sourceIsOwned={binding.owner.isOwned()&&audio.ownsSnapshot(audioSnapshot)},
                             isLayoutStable=!driveByProgress,sourceRoute=currentKey.toLegacyRoute(),handoff=actualNowNavigation.handoff,
-                            onExpand={audio.expand(item,actualNowNavigation)},onPlayPause={audio.playPause(item,actualNowNavigation)},
-                            onSkipNext={audio.next(item)},onSkipPrevious={audio.previous(item)},onDismiss={audio.dismiss(item,actualNowNavigation)},
+                            onExpand={audio.expand(audioSnapshot,actualNowNavigation)},onPlayPause={audio.playPause(audioSnapshot,actualNowNavigation)},
+                            onSkipNext={audio.next(audioSnapshot)},onSkipPrevious={audio.previous(audioSnapshot)},onDismiss={audio.dismiss(audioSnapshot,actualNowNavigation)},
                             expandDestinationLabel=if(audioPrefs.opensAudioMode)"听视频"else"视频详情页",
                             glassEnabled=home.androidNativeLiquidGlassEnabled,blurEnabled=home.isBottomBarBlurEnabled,
                             hazeState=haze,miuixBackdrop=backdrop?.backdrop,liquidGlassTuning=LocalLiquidGlassRenderConfig.current.tuning,

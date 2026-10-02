@@ -14,10 +14,12 @@ import java.nio.file.Files
 import java.nio.file.LinkOption.NOFOLLOW_LINKS
 import java.nio.file.Path
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 
 /** One global original UP block model; account-scoped discovery lists are retired migration inputs. */
 class DesktopBlockedUpStore(val context: DesktopPluginContext, private val clock: () -> Long = System::currentTimeMillis) {
-    private val mutationLock = locks.computeIfAbsent(context.store.root.toAbsolutePath().normalize()) { Any() }
+    private val mutationLock = locks.computeIfAbsent(context.store.root.toAbsolutePath().normalize()) { ReentrantLock() }
     private val source = context.store.snapshot(NAMESPACE)
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
     private val mutableMigrationError = MutableStateFlow<String?>(null)
@@ -45,26 +47,26 @@ class DesktopBlockedUpStore(val context: DesktopPluginContext, private val clock
         return rows.sortedByDescending { it.blockedAt }
     }
 
-    fun upsert(up: BlockedUp): Unit = synchronized(mutationLock) {
+    fun upsert(up: BlockedUp): Unit = mutationLock.withLock {
         require(up.mid > 0) { "UP 主 UID 必须为正整数" }
         migrateLegacyDiscoveryMids().getOrThrow()
         persist((readRecords().filterNot { it.mid == up.mid } + up))
     }
-    fun remove(mid: Long): Unit = synchronized(mutationLock) {
+    fun remove(mid: Long): Unit = mutationLock.withLock {
         require(mid > 0) { "UP 主 UID 必须为正整数" }
         migrateLegacyDiscoveryMids().getOrThrow()
         persist(readRecords().filterNot { it.mid == mid })
     }
     /** A delayed profile response cannot resurrect an unblocked or newly replaced entry. */
-    fun replaceProfileIfUnchanged(previous: BlockedUp, next: BlockedUp): Boolean = synchronized(mutationLock) {
+    fun replaceProfileIfUnchanged(previous: BlockedUp, next: BlockedUp): Boolean = mutationLock.withLock {
         require(next.mid == previous.mid && next.blockedAt == previous.blockedAt)
         migrateLegacyDiscoveryMids().getOrThrow()
         val rows = readRecords()
-        if (rows.firstOrNull { it.mid == previous.mid } != previous) return@synchronized false
+        if (rows.firstOrNull { it.mid == previous.mid } != previous) return@withLock false
         persist(rows.map { if (it.mid == previous.mid) next else it })
         true
     }
-    fun import(items: List<BlockedUpImportItem>): BlockedUpImportResult = synchronized(mutationLock) {
+    fun import(items: List<BlockedUpImportItem>): BlockedUpImportResult = mutationLock.withLock {
         migrateLegacyDiscoveryMids().getOrThrow()
         val previous = readRecords()
         val plan = buildBlockedUpImportPlan(previous.map { it.mid }.toSet(), items)
@@ -78,7 +80,7 @@ class DesktopBlockedUpStore(val context: DesktopPluginContext, private val clock
     }
 
     /** Records and completion marker share one backing's atomic replacement; failure preserves every input. */
-    fun migrateLegacyDiscoveryMids(): Result<Int> = synchronized(mutationLock) {
+    fun migrateLegacyDiscoveryMids(): Result<Int> = mutationLock.withLock {
         var readingDestination = true
         try {
             val namespace = context.store.preferences(NAMESPACE)
@@ -87,7 +89,7 @@ class DesktopBlockedUpStore(val context: DesktopPluginContext, private val clock
                 require(marker is JsonPrimitive && marker.intOrNull == 1) { "黑名单迁移版本无法识别" }
                 readRecords() // A marker must never hide a corrupt destination.
                 mutableMigrationError.value = null
-                return@synchronized Result.success(0)
+                return@withLock Result.success(0)
             }
             val previous = readRecords()
             readingDestination = false
@@ -126,6 +128,114 @@ class DesktopBlockedUpStore(val context: DesktopPluginContext, private val clock
         }
     }
 
+    /** Same global namespace and generic document CAS. Neither mutationLock nor
+     * backing is held while the captured Root permit is minted. Legacy callers
+     * keep their original methods; this entry-owned path never gates disk IO. */
+    internal fun upsertCaptured(up: BlockedUp, checkRequest: () -> Unit,
+        acquirePermit: () -> com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit) {
+        require(up.mid > 0) { "UP 主 UID 必须为正整数" }
+        editCaptured(checkRequest, acquirePermit) { it.filterNot { row -> row.mid == up.mid } + up }
+    }
+    internal fun removeCaptured(mid: Long, checkRequest: () -> Unit,
+        acquirePermit: () -> com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit) {
+        require(mid > 0) { "UP 主 UID 必须为正整数" }
+        editCaptured(checkRequest, acquirePermit) { it.filterNot { row -> row.mid == mid } }
+    }
+    private class CapturedMigrationReadRequired : RuntimeException()
+    private class CapturedDestinationReadFailure : RuntimeException()
+    private fun capturedRecords(snapshot: com.bilipai.desktop.plugins.DesktopPreferenceSnapshot): List<BlockedUp> {
+        val raw = snapshot[com.bilipai.desktop.plugins.DesktopPreferenceKey<JsonElement>(RECORDS) { it }] ?: run {
+            require(snapshot[com.bilipai.desktop.plugins.DesktopPreferenceKey<JsonElement>(MIGRATION) { it }] == null) {
+                "本地黑名单迁移标记缺少资料记录"
+            }
+            return emptyList()
+        }
+        require(raw is JsonPrimitive && raw.isString) { "本地黑名单资料格式无效" }
+        val rows = json.decodeFromString<List<BlockedUp>>(raw.content)
+        require(rows.all { it.mid > 0 } && rows.map { it.mid }.distinct().size == rows.size) { "本地黑名单 UID 格式无效" }
+        return rows.sortedByDescending { it.blockedAt }
+    }
+    private fun editCaptured(checkRequest: () -> Unit,
+        acquirePermit: () -> com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit,
+        edit: (List<BlockedUp>) -> List<BlockedUp>) {
+        var legacy: List<BlockedUpImportItem>? = null
+        var held = false
+        fun releaseFinalLock() {
+            if (held) { held = false; mutationLock.unlock() }
+        }
+        fun checkAttempt() { releaseFinalLock(); checkRequest() }
+        fun finalPermit(): com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit {
+            // Mint under the short Root admission first. Waiting for the shared
+            // legacy lock and the backing replacement happen after that gate.
+            val permit = acquirePermit()
+            mutationLock.lock()
+            held = true
+            return permit
+        }
+        while (true) {
+            checkAttempt()
+            try {
+                try { context.store.updateOriginalFromSnapshot(NAMESPACE, ::checkAttempt, ::finalPermit) { snapshot ->
+                    val marker = snapshot[com.bilipai.desktop.plugins.DesktopPreferenceKey<JsonElement>(MIGRATION) { it }]
+                    val previous = try {
+                        if (marker != null) require(marker is JsonPrimitive && marker.intOrNull == 1) { "黑名单迁移版本无法识别" }
+                        capturedRecords(snapshot)
+                    } catch (cancelled: CancellationException) { throw cancelled }
+                    catch (_: Exception) { throw CapturedDestinationReadFailure() }
+                    val migrated = if (marker == null) {
+                        val incoming = legacy ?: throw CapturedMigrationReadRequired()
+                        val plan = buildBlockedUpImportPlan(previous.map { it.mid }.toSet(), incoming)
+                        val now = clock()
+                        val added = plan.itemsToInsert.map { BlockedUp(it.mid, it.name, "", blockedAt = now) }
+                        previous + added
+                    } else previous
+                    Unit to mapOf(RECORDS to JsonPrimitive(json.encodeToString(edit(migrated))), MIGRATION to JsonPrimitive(1))
+                } } finally { releaseFinalLock() }
+                mutableMigrationError.value = null
+                return
+            } catch (_: CapturedMigrationReadRequired) {
+                checkRequest()
+                legacy = try { readCapturedLegacyMids(checkRequest) }
+                catch (cancelled: CancellationException) { throw cancelled }
+                catch (_: Exception) {
+                    val message = "旧屏蔽名单迁移失败，原文件和现有黑名单保持不变；请修复旧文件后重试。"
+                    mutableMigrationError.value = message
+                    throw IllegalStateException(message)
+                }
+                checkRequest()
+            } catch (_: CapturedDestinationReadFailure) {
+                val message = "本地黑名单资料无法读取，原数据保持不变；请修复文件后重新启动应用。"
+                mutableMigrationError.value = message
+                throw IllegalStateException(message)
+            }
+        }
+    }
+
+    private fun readCapturedLegacyMids(checkRequest: () -> Unit): List<BlockedUpImportItem> {
+        checkRequest()
+        val paths = legacyDiscoveryFiles()
+        val incoming = paths.flatMap { path ->
+            checkRequest()
+                val file = UpdateStorage.existingPathWithoutLinks(path)
+                val canonicalRoot = UpdateStorage.existingPathWithoutLinks(context.store.root)
+                require(file.startsWith(canonicalRoot) && Files.isRegularFile(file, NOFOLLOW_LINKS)) { "旧黑名单路径无效" }
+                require(Files.size(file) <= 8L * 1024 * 1024) { "旧黑名单文件过大" }
+                val document = Json.parseToJsonElement(Files.readString(file)).jsonObject
+                checkRequest()
+                require(document.values.all { it is JsonObject }) { "旧设置存储格式无法识别" }
+                val old = document[NAMESPACE] ?: return@flatMap emptyList()
+                require(old is JsonObject) { "旧黑名单数据格式无效" }
+                val encoded = old["mids"] ?: run {
+                    require(old.isEmpty()) { "旧黑名单字段无法识别" }
+                    return@flatMap emptyList()
+                }
+                require(encoded is JsonPrimitive && encoded.isString) { "旧黑名单 UID 数据格式无效" }
+                json.decodeFromString<List<Long>>(encoded.content).map { BlockedUpImportItem(it) }
+            }
+        checkRequest()
+        return incoming
+    }
+
     /** Strict guest + positive account MID whitelist. Credential files are never opened. */
     private fun legacyDiscoveryFiles(): List<Path> {
         val root = context.store.root.toAbsolutePath().normalize()
@@ -152,7 +262,7 @@ class DesktopBlockedUpStore(val context: DesktopPluginContext, private val clock
         const val NAMESPACE = "blocked_ups"
         const val RECORDS = "records"
         const val MIGRATION = "legacy_discovery_migration_version"
-        val locks = ConcurrentHashMap<Path, Any>()
+        val locks = ConcurrentHashMap<Path, ReentrantLock>()
     }
 }
 

@@ -66,4 +66,6 @@ internal class DesktopHomeDataEnvironment(
  val blockedUps:DesktopHomeBlockedRequests,
  val following:DesktopHomeFollowingRequests,
  val feedback:(String)->Unit,
-)
+) {
+ val todayWatchFeedback = DesktopTodayWatchFeedbackWriteBinding(recommendationContext, isCurrent, commitIfCurrent)
+}

@@ -1,0 +1,851 @@
+{
+  "artifacts": [
+    {
+      "path": "README.md",
+      "sizeBytes": 1633,
+      "sha256Bytes": "fce6b34f11202d4660ea2631728d9916716cea2d55ac38453d5f165ab478e441"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/README.md",
+      "sizeBytes": 4576,
+      "sha256Bytes": "9ff2eacf62486ea9d031137e2a65ae7748fc0009aadb662b3f155640beb566cb"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/RootIdleFixture.kt",
+      "sizeBytes": 18291,
+      "sha256Bytes": "ca111b83b730a0092bd3e1726d84cf0acfa13fbf493f21c0587f0fd2c9a577d8"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/freeze.py",
+      "sizeBytes": 3271,
+      "sha256Bytes": "df575abc84d4e49f4f9c61b05b362199b3d5ea76140a36fe3fbcccfd3bd2bcd7"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/frozen-handoff.json",
+      "sizeBytes": 9848,
+      "sha256Bytes": "3d9ab83e0c2d83938d56183e659de2dda652f6f52f7014024fdbbb29e16457fa"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/prepared-source.json",
+      "sizeBytes": 339,
+      "sha256Bytes": "913c61703c50142377300906f04ea66c5d22561f4e9dfa6b14ad0d7508627b30"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/run.py",
+      "sizeBytes": 7701,
+      "sha256Bytes": "f39974347360d6f66ca736b5cf1948411ad7716d7b91eacbf25c87a38c4d98a7"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-01/RootIdleFixture.kt",
+      "sizeBytes": 17492,
+      "sha256Bytes": "3d1ea5d713d67957a85de86b83e23cd94eee875bf3efab5eb8c7ba41d606c56e"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-01/compile-result.json",
+      "sizeBytes": 191,
+      "sha256Bytes": "a5c944063481768e27d0a8eccde013ff198c73e0ee9132215d207c870cad0224"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-01/compile.log",
+      "sizeBytes": 8408,
+      "sha256Bytes": "ea73cc3dd14187a5f9c989eb99402f9b5b97f94ec3bdcf7e04237f38c74583d9"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-01/compiler.args",
+      "sizeBytes": 25816,
+      "sha256Bytes": "4ce2beba626765684f8c38140b42a5201c5eb001127f48d98ddcd6da3a731a08"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-01/pins-before.json",
+      "sizeBytes": 39569,
+      "sha256Bytes": "4311ee009464f7d8abd799e72ac27e9ca1f64099d988bcc4a469536994e9a888"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/RootIdleFixture.kt",
+      "sizeBytes": 17875,
+      "sha256Bytes": "f022d444732070b85455eba1d0a40d14e4aad9eb3ba7c7f6ae8ae443cd2caf70"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/acceptance-result.json",
+      "sizeBytes": 430,
+      "sha256Bytes": "7c9f9ced9ef2481af25b0cfe6464e39d53aa3bf2d68efe724089944e6ce33450"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/compile-result.json",
+      "sizeBytes": 190,
+      "sha256Bytes": "2172402fede23651d2f95f7dbc2d47781ae8940e68426e65f7e16b9357a91c07"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/compiler.args",
+      "sizeBytes": 25816,
+      "sha256Bytes": "53e7856af7826bbd713c8259be847625783427fc47478a4eae6f686cd5ca1a55"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/fixture-jar-pin.json",
+      "sizeBytes": 114,
+      "sha256Bytes": "454875b13c1bcd6308e42c2392a901137cec3600aa87fe8763458d6d59a08491"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/fixture-owned-runtime/root-idle-proof.json",
+      "sizeBytes": 2173,
+      "sha256Bytes": "a5a6190712fe28ba8cc7cbe36cdc4130753b3c187c29e8a27cdb3f1b1b517576"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/pins-after.json",
+      "sizeBytes": 39569,
+      "sha256Bytes": "d844743c44673a1fbf6ab3c8c3da0f9cff4dfeeb0f0e10180df91930bc601191"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/pins-before.json",
+      "sizeBytes": 39569,
+      "sha256Bytes": "d844743c44673a1fbf6ab3c8c3da0f9cff4dfeeb0f0e10180df91930bc601191"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/runtime-command.json",
+      "sizeBytes": 27962,
+      "sha256Bytes": "a722fdef4dc45f9ca9d201fbdaf293f634edef099b089e873f04eab42a21b7d9"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-02/runtime.log",
+      "sizeBytes": 1773,
+      "sha256Bytes": "f1368a36a5c28e010fdce82c25c0e5d18eb8ec3bcdbef93f34e639f1cd1ed604"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/RootIdleFixture.kt",
+      "sizeBytes": 18291,
+      "sha256Bytes": "ca111b83b730a0092bd3e1726d84cf0acfa13fbf493f21c0587f0fd2c9a577d8"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/acceptance-result.json",
+      "sizeBytes": 430,
+      "sha256Bytes": "7c9f9ced9ef2481af25b0cfe6464e39d53aa3bf2d68efe724089944e6ce33450"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/compile-result.json",
+      "sizeBytes": 190,
+      "sha256Bytes": "719fcf32aac4082481918c124816e543577d4773613d3b86bcee85df81ba975b"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/compiler.args",
+      "sizeBytes": 25816,
+      "sha256Bytes": "c2261bbb33f91280e86e57f46bc1da7600fc586406e82a3a9e32fd3bdc6c1f07"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/fixture-jar-pin.json",
+      "sizeBytes": 114,
+      "sha256Bytes": "e25c4f9e539f71fd7feed9b46de7d12ca6be159d85e67903a2cbb17894f5edd8"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/fixture-owned-runtime/root-idle-proof.json",
+      "sizeBytes": 2176,
+      "sha256Bytes": "b6839f0b2f2149c8021eb9e253bcd03caffae9be30182f9d71e1689a84efd104"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/pins-after.json",
+      "sizeBytes": 39569,
+      "sha256Bytes": "b4895e41b75c4e16754cbbaeb50442e4f4a9a0b08d99c49cf0040a111190ca6b"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/pins-before.json",
+      "sizeBytes": 39569,
+      "sha256Bytes": "b4895e41b75c4e16754cbbaeb50442e4f4a9a0b08d99c49cf0040a111190ca6b"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/runtime-command.json",
+      "sizeBytes": 27962,
+      "sha256Bytes": "0263ba2adefc7ac4e5f7c1581eb4c8a731533432d5cd5f8e2e7faf6891c727e1"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual81-03/runtime.log",
+      "sizeBytes": 2530,
+      "sha256Bytes": "9842ddd6f60e36d4b4109f5d05d68a320b1ece9058e82274f988387239b90c07"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/RootIdleFixture.kt",
+      "sizeBytes": 18291,
+      "sha256Bytes": "ca111b83b730a0092bd3e1726d84cf0acfa13fbf493f21c0587f0fd2c9a577d8"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/acceptance-result.json",
+      "sizeBytes": 448,
+      "sha256Bytes": "66d870ad90f375d9b71d73cb503765e6a4edc20cd71b86f18389794680262a6d"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/compile-result.json",
+      "sizeBytes": 190,
+      "sha256Bytes": "2669d14a69534a3fbe6a088d188315dbd49868fac1105cf0d51c15031ee9f8db"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/compiler.args",
+      "sizeBytes": 25816,
+      "sha256Bytes": "a3bce6c962f8ff96bb6d9b9c1d818c025db29104f371e53a3427168616a42fbc"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/fixture-jar-pin.json",
+      "sizeBytes": 114,
+      "sha256Bytes": "9e53503bb005089a791929ebccf4dd3facabea2ca22376cc14edded47cd98a1b"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/fixture-owned-runtime/actual-idle-root.png",
+      "sizeBytes": 193642,
+      "sha256Bytes": "3eecdfb846e828f88af2648fca9d90d5cf808d87a31d2f712b0bc7e287fe752f"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/fixture-owned-runtime/actual-settings-cover.png",
+      "sizeBytes": 825162,
+      "sha256Bytes": "d3bcd21d287737b5e7ec38d332efe1f78366131292457082f030107ee49d695a"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/fixture-owned-runtime/root-idle-proof.json",
+      "sizeBytes": 3724,
+      "sha256Bytes": "c414452a12ef700738bf946172123bffa1881f85e3edf91b4bb76485f69b0ce9"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/pins-after.json",
+      "sizeBytes": 39569,
+      "sha256Bytes": "54aa5d92471a78a726d421c0f0d689b32f6a362bf14c854cc70c158c5f0c0caa"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/pins-before.json",
+      "sizeBytes": 39569,
+      "sha256Bytes": "54aa5d92471a78a726d421c0f0d689b32f6a362bf14c854cc70c158c5f0c0caa"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/runtime-command.json",
+      "sizeBytes": 27962,
+      "sha256Bytes": "c9be173f0779cc88a2a59cec83270eb29c53c629b9d3e62a224b7d978772d47c"
+    },
+    {
+      "path": "actual-and-reviews/stable-full-video-root-actual-proof80/runs/actual82-01/runtime.log",
+      "sizeBytes": 1239,
+      "sha256Bytes": "ee5f8251c284817addb660457235f0a921e2cae2dc1d077906a8c83be5a71e40"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/frozen-review.json",
+      "sizeBytes": 1760,
+      "sha256Bytes": "18980ac0dcacf4ad5ac313ae18f26c86f7abb59b11b6c5cae13459554b1ec262"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/inputs/actual-dialog.kt",
+      "sizeBytes": 5562,
+      "sha256Bytes": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/inputs/before-dialog.kt",
+      "sizeBytes": 4524,
+      "sha256Bytes": "00837b4322e6164ed582fcb560cdeadec7b90ba2330123af63e0dd1b1f29eb4b"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/inputs/head-SOURCES.json",
+      "sizeBytes": 28291,
+      "sha256Bytes": "771d5a77e6fee429e9ce93e8d7d9cd3d1a05fa8e78029a0930c02eba2ab316d2"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/inputs/observed-main-SOURCES.json",
+      "sizeBytes": 28291,
+      "sha256Bytes": "ba8a1791317e53cab351e09a39ae688286f75c54139aecf598bc50f4feb8be5e"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/inputs/observed-notices-SOURCES.json",
+      "sizeBytes": 28291,
+      "sha256Bytes": "ba8a1791317e53cab351e09a39ae688286f75c54139aecf598bc50f4feb8be5e"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/inputs/overlay110-exact-hunks.json",
+      "sizeBytes": 14141,
+      "sha256Bytes": "288f1724c2a8f668469b848613256cc73d9979c3799a31811485ba5c0944fcc3"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/inputs/overlay110-frozen-handoff.json",
+      "sizeBytes": 22563,
+      "sha256Bytes": "30eb51cbc0b1333d5a2fb54e7b02eea9c814eddcbb82400ab33c3e57a29a60bf"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/inputs/source-verifier.py",
+      "sizeBytes": 3471,
+      "sha256Bytes": "da75b14db2c0ea8ace9837ed2fb1aa08972adade3246752bb4f65cfad5984449"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/review-receipt.json",
+      "sizeBytes": 32134,
+      "sha256Bytes": "c3bb176a89fabc933f688c21acbc67c755a51faf67e4736c3dcb7e8acfc93d7a"
+    },
+    {
+      "path": "actual-and-reviews/stable-google-cast-overlay-provenance-review/review.py",
+      "sizeBytes": 5446,
+      "sha256Bytes": "484da71cdb668bc3242c9ffa24122beeaa56315743dd9a89f897eede6e42cedf"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/frozen-review.json",
+      "sizeBytes": 2522,
+      "sha256Bytes": "e900a996ec0e46d4fa5a0439eda1e366cb7804ac6bf477912a037ba018f7d449"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/DesktopHomeRetainedEntry.kt",
+      "sizeBytes": 9038,
+      "sha256Bytes": "8cda26afece27cf4f63b496bb976ee28b6a773ba793782ecd4d29f9b53bb2d27"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/DesktopHomeRootFactory.kt",
+      "sizeBytes": 10637,
+      "sha256Bytes": "63172c96a60460c5e34a1643028b3278ee56e090fb277e0ab834f0dd6e3f4c4d"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/DesktopOriginalVideoRootAssembler.kt",
+      "sizeBytes": 29126,
+      "sha256Bytes": "e57cba6d089ffc73020ddf6716ef35eb7f149e7df52a1306e1c288fe07df48fe"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/DesktopOriginalVideoShellMount.kt",
+      "sizeBytes": 4565,
+      "sha256Bytes": "fa820b5b0bc3b2941d2b6451105c612199a0fce1642fc2d00335f0383bc61e17"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/DesktopOriginalVideoShellOwner.kt",
+      "sizeBytes": 9574,
+      "sha256Bytes": "657d030f00be236e758cb1b0733fe560579689f62d517d18fa50cebe6958cd29"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/DesktopShell.kt",
+      "sizeBytes": 150373,
+      "sha256Bytes": "50f1c8090e910fa96e74c4185ee109d215e687acbbf7ef08ee014be4cf2fe30f"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/author-compile02-log.txt",
+      "sizeBytes": 4993,
+      "sha256Bytes": "89e2dd4bac8d1e9b942dc5e86fa5865691b0e97853e6ae12a3d344cf407a92f3"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/author-compile02-pins-after.json",
+      "sizeBytes": 40825,
+      "sha256Bytes": "cd6fc8aa7fe45295dfab02f66f7d6475ef3f40368e1cc83d602a4c2fa4797f19"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/author-compile02-pins-before.json",
+      "sizeBytes": 40825,
+      "sha256Bytes": "cd6fc8aa7fe45295dfab02f66f7d6475ef3f40368e1cc83d602a4c2fa4797f19"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/author-compile02-result.json",
+      "sizeBytes": 179,
+      "sha256Bytes": "27d4f8bd5668b772ca801cb85515923cc7450cdb4fd4d4244c7f70471a4fdad4"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/exact-hunks.json",
+      "sizeBytes": 3933,
+      "sha256Bytes": "7494fea246a8c24b837c59bb3d017c0277c057a66ccea7065c7cb43cd2c14a0e"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/inputs/previous-frozen-review.json",
+      "sizeBytes": 3914,
+      "sha256Bytes": "be29e66847afd4dabe7ca5b4c23b59fa4b168970535d4b90ce9dad3ee702fb41"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/prepare_review.py",
+      "sizeBytes": 5716,
+      "sha256Bytes": "cb2cd89430db87c74e1fb9351dd42d8190f06cbd9bdd92d799eb968d4196b64e"
+    },
+    {
+      "path": "actual-and-reviews/stable-video-root-lifecycle-postfix-review/review-receipt.json",
+      "sizeBytes": 9107,
+      "sha256Bytes": "07decbcd4bf1b198cc7ab94b9f28180dd6ab721aefde180d2760832bef94d329"
+    },
+    {
+      "path": "actual-build/81/jvm-method-name-audit.json",
+      "sizeBytes": 240,
+      "sha256Bytes": "ec4fc9ed81546fbe03286db95f4a6a41472060ac82a911a594aba9a5a83904c3"
+    },
+    {
+      "path": "actual-build/81/ordered-runtime-cp.json",
+      "sizeBytes": 38191,
+      "sha256Bytes": "ab6691753e415eb100a90cc100527481d69579ff0543a02b11a4c7f4ea7a1064"
+    },
+    {
+      "path": "actual-build/81/product-manifest.json",
+      "sizeBytes": 167282,
+      "sha256Bytes": "f4b1c376e16fe6245213866e446cfc3d290c68c5e7326e9f72b4964000ac15f9"
+    },
+    {
+      "path": "actual-build/82/jvm-method-name-audit.json",
+      "sizeBytes": 240,
+      "sha256Bytes": "b77e67c89cb8a257a38aa7fbdaf1f5a8a9117d4437af34da918988433297aca7"
+    },
+    {
+      "path": "actual-build/82/ordered-runtime-cp.json",
+      "sizeBytes": 38191,
+      "sha256Bytes": "68f82a3f4a3f43f8dae5625fbcb0b891b7f68c93f7b5bbc361eb5b588bb30b8b"
+    },
+    {
+      "path": "actual-build/82/product-manifest.json",
+      "sizeBytes": 167282,
+      "sha256Bytes": "91bb404a9be4c94f3e3e93eed068bfe50b2ca62558dd0af95322d3740797d339"
+    },
+    {
+      "path": "actual-build/classes-80.log",
+      "sizeBytes": 1722,
+      "sha256Bytes": "21bcc1e987bb3a1db19ce8dab01188ced70247837481baff380488b7953a5bff"
+    },
+    {
+      "path": "actual-build/classes-81-resource-refresh.log",
+      "sizeBytes": 9306,
+      "sha256Bytes": "a32e730f6607a4ed678857bc3a81c8ce5149aa990173b65b3e79969a9e378eca"
+    },
+    {
+      "path": "actual-build/classes-81.log",
+      "sizeBytes": 52075,
+      "sha256Bytes": "a879c30340dc53eac042c1f19dd1946d705be7cf9718ce79b151a884ad616f18"
+    },
+    {
+      "path": "actual-build/classes-82.log",
+      "sizeBytes": 9722,
+      "sha256Bytes": "14de160901c5b348751bed2e6146679aabb9c990d6ffdcf118080d773cef73eb"
+    },
+    {
+      "path": "contracts/stable-root-registry-gradle-preflight/canonical-copy-target-audit.json",
+      "sizeBytes": 43445,
+      "sha256Bytes": "9c207ae1cf02426aa1911497b0dae1e3b12616923f92cf9cefe728b06c89a288"
+    },
+    {
+      "path": "contracts/stable-root-registry-gradle-preflight/frozen-copy-audit.json",
+      "sizeBytes": 729,
+      "sha256Bytes": "3204d019185d7476ba47d164840ad2f2da74a694b0be7f68791aea9536fbcbbd"
+    },
+    {
+      "path": "contracts/stable-root-registry-gradle-preflight/frozen-plan.json",
+      "sizeBytes": 1393,
+      "sha256Bytes": "0fbd4752a64b038453b4533fb5110f687e18d44e2516660530449ecd76e0ae52"
+    },
+    {
+      "path": "contracts/stable-root-registry-gradle-preflight/gradle-append.kts",
+      "sizeBytes": 4278,
+      "sha256Bytes": "33aa558573daebc1a1f4cd3b22682b4896899bedb3d16c27b9ef8feeacce095e"
+    },
+    {
+      "path": "contracts/stable-root-registry-gradle-preflight/plan.json",
+      "sizeBytes": 37476,
+      "sha256Bytes": "d59427bafc66f36837985c506c09756247ad5b47cbbf1109987b5043cc7ff5a2"
+    },
+    {
+      "path": "contracts/stable-video-full-owner-root-mount-parity/exact-install-hunks.json",
+      "sizeBytes": 94006,
+      "sha256Bytes": "3c9e597211a1609cdf30dfe697c388860b601b3a66cb8854aa2f70e02b9d6cfa"
+    },
+    {
+      "path": "contracts/stable-video-full-owner-root-mount-parity/frozen-handoff.json",
+      "sizeBytes": 60427,
+      "sha256Bytes": "4cacb53b6d15e036edde4fd60828e1f98a3ea7f6120d232c6e221dbf4ac0cd0d"
+    },
+    {
+      "path": "contracts/stable-video-full-owner-root-mount-parity/install-contract.json",
+      "sizeBytes": 11083,
+      "sha256Bytes": "07b8fa09a068a74b2cbd466223638e9948b0784080aba6bb5bb07146c947066d"
+    },
+    {
+      "path": "contracts/stable-video-full-owner-root-mount-parity/registry-delta.json",
+      "sizeBytes": 741,
+      "sha256Bytes": "10e9394438160ea4a919a6b397927c45168338dd0bae0ecc2098fc8ce3da052f"
+    },
+    {
+      "path": "contracts/stable-video-root-constructor-volume-delta/exact-hunks.json",
+      "sizeBytes": 2132,
+      "sha256Bytes": "3351c13b84942d0c190092e8cc9a3444e6fe31aa148782f0640ae31453d09efb"
+    },
+    {
+      "path": "contracts/stable-video-root-constructor-volume-delta/frozen-handoff.json",
+      "sizeBytes": 1489,
+      "sha256Bytes": "308da215db3aa1819e6cd158cf2c6b83ce0d724d8f76f8125e11de00a06dd724"
+    },
+    {
+      "path": "contracts/stable-video-root-constructor-volume-delta/install-contract.json",
+      "sizeBytes": 628,
+      "sha256Bytes": "d8bcf4189d23afa25769e080e7d3850dbebf1e91aee8f042e208c9703280c20e"
+    },
+    {
+      "path": "contracts/stable-video-root-constructor-volume-delta/source-check.json",
+      "sizeBytes": 1510,
+      "sha256Bytes": "a88e106e67b46ece16c05a23c2ce98a732986dc23866ea947d4d78b2123acfb8"
+    },
+    {
+      "path": "contracts/stable-video-root-retained-cleanup-delta/exact-hunks.json",
+      "sizeBytes": 3933,
+      "sha256Bytes": "7494fea246a8c24b837c59bb3d017c0277c057a66ccea7065c7cb43cd2c14a0e"
+    },
+    {
+      "path": "contracts/stable-video-root-retained-cleanup-delta/frozen-handoff.json",
+      "sizeBytes": 4650,
+      "sha256Bytes": "1f9fc952cc3622bc71d7e65a37ca711e53b026378f6759b68ff82f6380cd1609"
+    },
+    {
+      "path": "contracts/stable-video-root-retained-cleanup-delta/install-contract.json",
+      "sizeBytes": 935,
+      "sha256Bytes": "1f8956e89d7ee7aff3156d99eb7c58d22db918f707679838bd95bd724e4887e7"
+    },
+    {
+      "path": "final-production-source-pins.json",
+      "sizeBytes": 19736,
+      "sha256Bytes": "e8cd64174ab545be00440b018c6c10e8d5f03625ce7c2c23e2dbf849b369a553"
+    },
+    {
+      "path": "installation/cast-source-pin-sync-01.json",
+      "sizeBytes": 877,
+      "sha256Bytes": "0e3fb233bc6a61ed2ae110f3f2084f19e0255b7c11dd74b02d4d5b5d2bd5eae7"
+    },
+    {
+      "path": "installation/cast-source-size-sync-01.json",
+      "sizeBytes": 421,
+      "sha256Bytes": "8442ce83a3267a2cb7a30c0f03b3213edb42d6208e8272e1ce149ef80186df48"
+    },
+    {
+      "path": "installation/compose_fresh_joint.py",
+      "sizeBytes": 1030,
+      "sha256Bytes": "e9e0d6d06f1e1443ac4efefae2ccc77ad776cd465bc0ba21c3514ba528280322"
+    },
+    {
+      "path": "installation/constructor-volume-installation-01.json",
+      "sizeBytes": 543,
+      "sha256Bytes": "903ea2e9787be33ef71bec0888edb004ae590743febe94b7d68bea734a3f5cfc"
+    },
+    {
+      "path": "installation/final-composition-before-constructor-fix.json",
+      "sizeBytes": 65547,
+      "sha256Bytes": "579bd55b29dd0bf74c2c660adb5223f075be592391b3181739b55d99bb9d4a43"
+    },
+    {
+      "path": "installation/full-root-preflight-adapter-failures.json",
+      "sizeBytes": 442,
+      "sha256Bytes": "178c93567b2cc874c981679a4628fe6a28614b1b68c877862fac03f3ccc2d88d"
+    },
+    {
+      "path": "installation/install_joint_payload_completion.py",
+      "sizeBytes": 2423,
+      "sha256Bytes": "805bd7b900789cb75faa21b43d206ac9af944ce3de0eb753ab3c16b891f97209"
+    },
+    {
+      "path": "installation/install_joint_registry_gradle.py",
+      "sizeBytes": 5390,
+      "sha256Bytes": "d5f621955d0d162b54ad921f8d9f29f8ea807b1268dc487c187b746fd6f213ee"
+    },
+    {
+      "path": "installation/install_joint_sources.py",
+      "sizeBytes": 3218,
+      "sha256Bytes": "e1025774e1363fa161d8d14fcb002e3c3d4f804d0b9dcc11a4e11bf0b174806b"
+    },
+    {
+      "path": "installation/joint-payload-completion-01.json",
+      "sizeBytes": 1740,
+      "sha256Bytes": "0475ceb27a44370fab97bb0271e4883e1ad9b78c4c47705b81b94a313a7b55a8"
+    },
+    {
+      "path": "installation/joint-registry-gradle-installation-01.json",
+      "sizeBytes": 1329,
+      "sha256Bytes": "ff4ae0df4d1464c94e18c4158eca25b133dc793c036f34f03794f3c4c2241e1a"
+    },
+    {
+      "path": "installation/joint-source-installation-01.json",
+      "sizeBytes": 27959,
+      "sha256Bytes": "9fcddc62d8924b6cc52342032d1b8041b50d166225308f01f3138ec9db526b96"
+    },
+    {
+      "path": "installation/packet_inventory_current.py",
+      "sizeBytes": 1662,
+      "sha256Bytes": "4adba82597c4508af7f8e5433a72c86ff2e936f9cfacdebd445f84a723c9d33b"
+    },
+    {
+      "path": "installation/preflight_current.py",
+      "sizeBytes": 7706,
+      "sha256Bytes": "fb2969dc24d03a98fc678329cf430323fe5da7ad0595e2360dddc352e788c428"
+    },
+    {
+      "path": "installation/preflight_full_root.py",
+      "sizeBytes": 9222,
+      "sha256Bytes": "ef5c0baad0aacb094bb12ac4bd922c0df56ff7fa83231fd3270f55c6e2cea469"
+    },
+    {
+      "path": "installation/registry-adapter-failure-01.json",
+      "sizeBytes": 601,
+      "sha256Bytes": "053d141a06c990102265db7dc061ddb7a807da56715b519baafffb24594d72e6"
+    },
+    {
+      "path": "integration.json",
+      "sizeBytes": 763,
+      "sha256Bytes": "eaf1e4a8499831f4a59a6d39a8eed6e6c346ffabe034372a4501817eab139637"
+    },
+    {
+      "path": "prerequisite-contracts/stable-original-danmaku-local-click-parity/exact-hunks.json",
+      "sizeBytes": 35434,
+      "sha256Bytes": "6b5b7d5bfcc7c8b107eed42f4057be1b240e1f8ad198944e4fcf976e430a20e1"
+    },
+    {
+      "path": "prerequisite-contracts/stable-original-danmaku-local-click-parity/install-contract.json",
+      "sizeBytes": 4145,
+      "sha256Bytes": "f16a51e09b432ca0265c3b58c9cee92d78927cdd2f2d8bfde3bc5a724f83dd39"
+    },
+    {
+      "path": "prerequisite-contracts/stable-original-now-playing-owner-parity/exact-hunks.json",
+      "sizeBytes": 16722,
+      "sha256Bytes": "270c0bf26155b1dc40e919d8774261a4109696abf1e0fca6b9010f0796907807"
+    },
+    {
+      "path": "prerequisite-contracts/stable-original-now-playing-owner-parity/install-contract.json",
+      "sizeBytes": 2563,
+      "sha256Bytes": "30fc2c2852d983d01b2594572273c9f533dfb442ba63f4c431e42b619f10618c"
+    },
+    {
+      "path": "prerequisite-contracts/stable-portrait-blocked-final-write-parity/exact-hunks.json",
+      "sizeBytes": 10707,
+      "sha256Bytes": "ae647947738e448396ba7c3d8dca40fb0647937c8aed6ac8544e93d21b2ba859"
+    },
+    {
+      "path": "prerequisite-contracts/stable-ready-root-now-playing-consumer-parity/install-contract.json",
+      "sizeBytes": 5362,
+      "sha256Bytes": "6548d1f799f3732440c850e0a7bd046cd3a6be18f37cd23d1983660ddd4fd561"
+    },
+    {
+      "path": "prerequisite-contracts/stable-tablet-owner-uploads-platform-parity/exact-hunks.json",
+      "sizeBytes": 4240,
+      "sha256Bytes": "4b9d3b8692033a3c8a0f58f3cc117ebfc45928ee93fc53fe89cb34c6e22fdf06"
+    },
+    {
+      "path": "prerequisite-contracts/stable-tablet-owner-uploads-platform-parity/install-contract.json",
+      "sizeBytes": 2512,
+      "sha256Bytes": "ac76235e7e5dbcb58da0604f2e784d44642c1827c75acfa4a5acb867adbce076"
+    },
+    {
+      "path": "prerequisite-contracts/stable-today-watch-feedback-io-parity/exact-hunks.json",
+      "sizeBytes": 12610,
+      "sha256Bytes": "9b7b2fd2689df13bf797eba4d8d462f9a52aff77d1c5472818486d7f7f56aefd"
+    },
+    {
+      "path": "prerequisite-contracts/stable-unified-playback-facade-parity/consumer-hunks.json",
+      "sizeBytes": 2630,
+      "sha256Bytes": "0b03f92dbd34880a4d73d594616bf6f08bc8278312055d5194106a22a00cfa49"
+    },
+    {
+      "path": "prerequisite-contracts/stable-unified-playback-facade-parity/engagement-confirmation-hunk.json",
+      "sizeBytes": 2644,
+      "sha256Bytes": "1b88e6439218f3752a17996b80e185b358d1aa6172e151619a066406c82fd902"
+    },
+    {
+      "path": "prerequisite-contracts/stable-unified-playback-facade-parity/install-contract.json",
+      "sizeBytes": 10788,
+      "sha256Bytes": "8d543f4d4b2fafeb1b7741476609fd3f142df2738cd29f81a170f8d0332af756"
+    },
+    {
+      "path": "prerequisite-contracts/stable-unified-playback-facade-parity/producer-hunks.json",
+      "sizeBytes": 30625,
+      "sha256Bytes": "4d0db58f1ef08e31edbae13003291e63e4ab05666502a9d28343ffbd549712f2"
+    },
+    {
+      "path": "prerequisite-contracts/stable-unified-subtitle-notification-retirement-parity/exact-hunks.json",
+      "sizeBytes": 1424,
+      "sha256Bytes": "d0d395383bc4a93a785a8a3e9e05fb3ed0d20954d31b0824a09357417943723f"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-consumed-view-bindings-parity/install-contract.json",
+      "sizeBytes": 6189,
+      "sha256Bytes": "3bb43cb7b67fa3751d76fa0451479159cdeb991edd1f0e6872502da8b1a89e22"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-download-captured-resolver-parity/exact-hunks.json",
+      "sizeBytes": 4798,
+      "sha256Bytes": "222a5b2224ec12c642e4b66384f709ed62e53617549fc92cdf88a47712d74372"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-holder-mini-binding-parity/install-contract.json",
+      "sizeBytes": 3248,
+      "sha256Bytes": "7c811093151a72367a70f9c174c5c6d91e8f4572e67ad1d9cc350b261d8a9ccc"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-overlay-windows-platform-parity/exact-hunks.json",
+      "sizeBytes": 14141,
+      "sha256Bytes": "288f1724c2a8f668469b848613256cc73d9979c3799a31811485ba5c0944fcc3"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-overlay-windows-platform-parity/install-contract.json",
+      "sizeBytes": 3696,
+      "sha256Bytes": "96303c4bcd599f7b213f439929d4fd8cd4ac98f9247925d103b8f2b00d02d91a"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-owner-danmaku-cache-binding-parity/exact-hunks.json",
+      "sizeBytes": 7393,
+      "sha256Bytes": "75fd549444300c81d8fd72d13f255084bc66cdb7b5fb2cea341905e420f3d1b6"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-owner-danmaku-cache-binding-parity/install-whitelist.json",
+      "sizeBytes": 2853,
+      "sha256Bytes": "98f58c26fb16ba8773b5d268a8b7778a27dfb4713302a812bb92fc187c40474f"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-owner-danmaku-cache-binding-parity/submission-producer-hunks.json",
+      "sizeBytes": 3979,
+      "sha256Bytes": "7197920d5abf3b89a578968e8aee5bd94b19b9e31cd7dd885c87788cc16f228a"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-owner-download-binding-parity/audio-caller-transform.json",
+      "sizeBytes": 1874,
+      "sha256Bytes": "aabbf6b1a6cbc904b3bc5802320f46402f61b3198174a030a7b2a9523e4445c6"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-owner-download-binding-parity/exact-hunks.json",
+      "sizeBytes": 14148,
+      "sha256Bytes": "42072a08fa3066c033da87c88d715e79bb24c4d808ad37d1ba188c8e7905919d"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-owner-download-binding-parity/install-whitelist.json",
+      "sizeBytes": 759,
+      "sha256Bytes": "5cc2a8be286b58203f07b211bf043b1d5d8eb7a3d2d202c5588b7aaaee4f4522"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-portrait-platform-binding-parity/exact-hunks.json",
+      "sizeBytes": 1603,
+      "sha256Bytes": "9cbd346b8d26a853a3ada48369440563666066ff6991c6628268fc700d46210f"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-portrait-platform-binding-parity/install-contract.json",
+      "sizeBytes": 1355,
+      "sha256Bytes": "696ef67d498e5d4fd3f2a4fb1812dadd63f6dcb2372f9e53bb1eb6e707d85f34"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-root-portrait-rendering-parity/exact-hunks.json",
+      "sizeBytes": 6846,
+      "sha256Bytes": "5495096bfc6b18788c7226d923f6ae0e4656cd9de6c2b72ab5e0d5039aba015b"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-root-portrait-rendering-parity/install-contract.json",
+      "sizeBytes": 2003,
+      "sha256Bytes": "3b07c623124491d7cd49aff7b9bfada5576a30cfc691e4809dcc02442494d720"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-root-story-feed-parity/exact-hunks.json",
+      "sizeBytes": 1346,
+      "sha256Bytes": "2ca5833f046c559fbfdd1150c297c59d01f92012ae326c9323165d03292e1e0a"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-section-nested-foreground-delta/exact-hunks.json",
+      "sizeBytes": 1733,
+      "sha256Bytes": "c70fadb086c75e78517c39a6eb75c0afac52a9846eb08c02eec4701ed78a0b4a"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-section-nested-foreground-delta/install-contract.json",
+      "sizeBytes": 1545,
+      "sha256Bytes": "03458041ae3fb8f6216f622193c2bf28d00154113f2065444b91b4c77302a217"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-section-route-active-delta/exact-hunks.json",
+      "sizeBytes": 1147,
+      "sha256Bytes": "82adf3ed3699d6fb178115e76681084ceeb204b99e4e38720d2c0ecb09656add"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-section-route-active-delta/install-contract.json",
+      "sizeBytes": 2267,
+      "sha256Bytes": "f3972f6b2f58495444cf94cba4ac2576491173ec7cd48e432a1d585e2c4d3b0c"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-section-windows-platform-parity/exact-hunks.json",
+      "sizeBytes": 27427,
+      "sha256Bytes": "44447057e839a8f33b342be1e1db88ca8eba039688d8c972f3493428361f82f6"
+    },
+    {
+      "path": "prerequisite-contracts/stable-video-section-windows-platform-parity/install-contract.json",
+      "sizeBytes": 2045,
+      "sha256Bytes": "0165be5113baeed7e22d06b7cd21ad6b9d505ecafd304c5ff2e556e16d304d9a"
+    },
+    {
+      "path": "unchanged-main/81/PhysicalRootStartupFixture.java",
+      "sizeBytes": 5134,
+      "sha256Bytes": "e680e0d6bdb2dad911dc52e315bc54c3ac484c32d77db993c1a0d3c601b747e9"
+    },
+    {
+      "path": "unchanged-main/81/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "unchanged-main/81/launch.args",
+      "sizeBytes": 25813,
+      "sha256Bytes": "a45db877f12671d9f23ee42211fb884928c218e5eff6d6ef8a8b8a53b5dd5eb8"
+    },
+    {
+      "path": "unchanged-main/81/physical-window.json",
+      "sizeBytes": 210,
+      "sha256Bytes": "9a6b9efb7ebedb94c58ab75081dd7430eedd6c3ebe2aa6a9a815918c2a6cea7f"
+    },
+    {
+      "path": "unchanged-main/81/private-product-window.png",
+      "sizeBytes": 2266761,
+      "sha256Bytes": "505a8fd3d1ed827791d36d239821bc9d0266c7b341b4aadde92a6691326644a4"
+    },
+    {
+      "path": "unchanged-main/81/result.json",
+      "sizeBytes": 1221,
+      "sha256Bytes": "2dd801ba0cbebdfe0757b1eba152de44c0b3f575f335b75a00da0c93beb029dc"
+    },
+    {
+      "path": "unchanged-main/81/stderr.raw.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "unchanged-main/81/stdout.raw.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "unchanged-main/82/PhysicalRootStartupFixture.java",
+      "sizeBytes": 5134,
+      "sha256Bytes": "e680e0d6bdb2dad911dc52e315bc54c3ac484c32d77db993c1a0d3c601b747e9"
+    },
+    {
+      "path": "unchanged-main/82/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "unchanged-main/82/launch.args",
+      "sizeBytes": 25813,
+      "sha256Bytes": "6bb93ccd203b0cc3304592547756a4da17e07cf25cb7dee67a848332ab70b161"
+    },
+    {
+      "path": "unchanged-main/82/physical-window.json",
+      "sizeBytes": 210,
+      "sha256Bytes": "9a6b9efb7ebedb94c58ab75081dd7430eedd6c3ebe2aa6a9a815918c2a6cea7f"
+    },
+    {
+      "path": "unchanged-main/82/private-product-window.png",
+      "sizeBytes": 2109502,
+      "sha256Bytes": "91ecadff867478fde598b4406ff69b9b549025958f3ba644a7a1cf275a43d90f"
+    },
+    {
+      "path": "unchanged-main/82/result.json",
+      "sizeBytes": 1221,
+      "sha256Bytes": "e71e16663193d04ca20047bf5937ba4ca98861bb8bce30a846dc1349b0b0f911"
+    },
+    {
+      "path": "unchanged-main/82/stderr.raw.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "unchanged-main/82/stdout.raw.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "rawBytesPreserved": true,
+  "binariesExcluded": true
+}

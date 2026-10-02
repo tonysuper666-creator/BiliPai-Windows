@@ -34,7 +34,15 @@ def read(path):
     return SOURCES[path]['text']
 def adapt(t,a,b,label):
     assert t.count(a)==1,(label,t.count(a));ADAPTATIONS.append(dict(label=label,before=a,after=b));return t.replace(a,b,1)
+def confirmed_favorite_receipt_delta(path,t):
+    if path != 'com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt':return t
+    before='    internal fun emitMessage(message: String) {\n'
+    after='    /** Confirmed existing Root Favorite receipt; exact same domain subject only. */\n    internal fun confirmDesktopFavoriteCount(subject: VideoSubjectSnapshot, count: Int): Boolean {\n        require(count >= 0)\n        if (_uiState.value.subject != subject) return false\n        var applied = false\n        environment.commit {\n            if (_uiState.value.subject == subject) {\n                locallyModifiedFields = locallyModifiedFields + VideoEngagementField.FAVORITE\n                _uiState.value = _uiState.value.copy(favoriteCount = count)\n                applied = true\n            }\n        }\n        return applied\n    }\n\n    internal fun emitMessage(message: String) {\n'
+    assert t.count(before)==1,'actual Favorite receipt domain anchor'
+    return t.replace(before,after,1)
+
 def emit(path,t,origin,mode):
+    t=confirmed_favorite_receipt_delta(path,t)
     if STANDALONE or mode!='direct':write(OUTPUT/path,t)
     OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=sha(t),physicalLines=len(t.splitlines()),generated=STANDALONE or mode!='direct'))
 def function_range(t,name):

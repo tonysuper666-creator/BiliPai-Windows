@@ -80,38 +80,32 @@ internal class DesktopOriginalNowPlayingNavigation(
     val dismissBar: () -> Unit,
 )
 
-/** No new actor/scope/store: reads and commands target the already retained native session. */
-internal class DesktopOriginalAudioNowPlayingBinding(
-    val listen: ListenAudioSession,
-    private val repository: DesktopRepository,
-    private val rootScope: CoroutineScope,
-    private val ownerIsCurrent: () -> Boolean,
-) {
-    private val epoch = repository.sessionEpoch
-    fun isOwned(): Boolean = rootScope.isActive && ownerIsCurrent() && repository.sessionEpoch == epoch
-    fun ownsCurrent(item: PlaylistItem): Boolean = isOwned() && listen.state.value.current?.let {
-        it.bvid == item.bvid && it.cid == item.cid
-    } == true
-    fun expand(item: PlaylistItem, navigation: DesktopOriginalNowPlayingNavigation) {
-        if (!ownsCurrent(item)) return
-        if (navigation.opensAudioMode) navigation.openAudioMode(item)
-        else navigation.openVideo(item, navigation.sourceRoute)
+/** One thin now-playing read/command view. The preserved Listen constructor
+ * supports serial integration; the full Root supplies the real priority owner port. */
+internal class DesktopOriginalAudioNowPlayingBinding(private val owner: DesktopOriginalNowPlayingOwnerPort,
+    private val publishVisible: (Boolean) -> Unit) {
+    constructor(listen: ListenAudioSession, repository: DesktopRepository, rootScope: CoroutineScope,
+        ownerIsCurrent: () -> Boolean) : this(DesktopOriginalListenNowPlayingPort(listen,repository,rootScope,ownerIsCurrent),
+            { visible -> if(rootScope.isActive && ownerIsCurrent()) com.android.purebilibili.feature.audio.player.AudioNowPlayingSession.publishBarOverlayVisible(visible) })
+    @Composable fun observeSnapshot() = owner.observe()
+    fun currentSnapshot() = owner.current()
+    fun isOwned() = owner.current()?.let(owner::owns) == true
+    fun ownsSnapshot(expected: DesktopOriginalNowPlayingSnapshot) = owner.owns(expected)
+    fun ownsCurrent(item: PlaylistItem) = owner.current()?.let { it.item == item && owner.owns(it) } == true
+    fun publishBarOverlayVisible(visible: Boolean) = publishVisible(visible)
+    fun expand(expected: DesktopOriginalNowPlayingSnapshot, navigation: DesktopOriginalNowPlayingNavigation) {
+        if (!owner.owns(expected)) return
+        if (navigation.opensAudioMode) navigation.openAudioMode(expected.item)
+        else navigation.openVideo(expected.item,navigation.sourceRoute)
     }
-    fun playPause(item: PlaylistItem, navigation: DesktopOriginalNowPlayingNavigation) {
-        if (!ownsCurrent(item)) return
-        // Original onPlayPause opens audio mode when the current native source cannot toggle.
-        val native = listen.player.state.value
-        if (listen.ownedPlaybackSourceVersion != null && native.ready && native.durationSeconds > 0) {
-            listen.togglePause()
-        } else if (isOwned()) navigation.openAudioMode(item)
+    fun playPause(expected: DesktopOriginalNowPlayingSnapshot, navigation: DesktopOriginalNowPlayingNavigation) {
+        if (!owner.owns(expected)) return
+        if (!owner.toggle(expected) && owner.owns(expected)) navigation.openAudioMode(expected.item)
     }
-    fun next(item: PlaylistItem) { if (ownsCurrent(item)) listen.next() }
-    fun previous(item: PlaylistItem) { if (ownsCurrent(item)) listen.previous() }
-    fun dismiss(item: PlaylistItem, navigation: DesktopOriginalNowPlayingNavigation) {
-        if (!ownsCurrent(item)) return
-        val native = listen.player.state.value
-        if (listen.ownedPlaybackSourceVersion != null && !native.paused && !native.ended) listen.pause()
-        if (ownsCurrent(item)) navigation.dismissBar()
+    fun next(expected: DesktopOriginalNowPlayingSnapshot) { if (owner.owns(expected)) owner.next(expected) }
+    fun previous(expected: DesktopOriginalNowPlayingSnapshot) { if (owner.owns(expected)) owner.previous(expected) }
+    fun dismiss(expected: DesktopOriginalNowPlayingSnapshot, navigation: DesktopOriginalNowPlayingNavigation) {
+        if (owner.owns(expected) && owner.dismiss(expected)) navigation.dismissBar()
     }
 }
 
@@ -145,17 +139,16 @@ internal fun DesktopOriginalFrostedAudioNavigation(
     }.collectAsState(initial = null)
     val actualHome = home ?: return
     val actualExtra = extra ?: return
-    val listen = audio?.let { it.listen.state.collectAsState().value }
-    val native = audio?.let { it.listen.player.state.collectAsState().value }
-    val item = listen?.current
-    val hasActiveAudioPlayback = audio?.isOwned() == true && nowPlayingVisibility.sessionActive && item != null && nowPlayingVisibility.barEnabled
+    val audioState = audio?.observeSnapshot()
+    val item = audioState?.item
+    val hasActiveAudioPlayback = audioState != null && audio?.ownsSnapshot(audioState) == true && audioState.active && nowPlayingVisibility.sessionActive && nowPlayingVisibility.barEnabled
     LaunchedEffect(hasActiveAudioPlayback, owner) {
         if (!owner.isOwned()) return@LaunchedEffect
         val reconciled = resolveLinkedDockPhaseOnAudioChange(owner.phase.value, hasActiveAudioPlayback)
         if (reconciled != owner.phase.value) owner.onPhaseChange(reconciled)
     }
     val showAudio = audio != null && audio.isOwned() && resolveAudioNowPlayingVisible(
-        sessionActive = nowPlayingVisibility.sessionActive,
+        sessionActive = nowPlayingVisibility.sessionActive && audioState?.active == true,
         isOnAudioModeScreen = nowPlayingVisibility.onAudioModeScreen,
         isInPipMode = nowPlayingVisibility.inPipMode,
         hasCurrentItem = item != null,
@@ -166,21 +159,20 @@ internal fun DesktopOriginalFrostedAudioNavigation(
         isPlayerDestination = nowPlayingVisibility.playerDestination,
     )
     val tuning = LocalLiquidGlassRenderConfig.current.tuning
-    val slot: LinkedDockNowPlayingSlot? = if (showAudio && item != null && audio != null && native != null) {
+    val slot: LinkedDockNowPlayingSlot? = if (showAudio && item != null && audio != null && audioState != null) {
         { audioModifier, merge, iconOnly, surface, compactClick, stable ->
             if (audio.isOwned()) {
                 AudioNowPlayingBar(
                     state = AudioNowPlayingBarState(item.bvid, item.title, item.owner, item.ownerFace, item.cover,
-                        listen?.active == true && audio.listen.ownedPlaybackSourceVersion != null && native?.paused == false && native?.ended == false,
-                        native!!.speed.toFloat()),
-                    sourceIsOwned = { owner.isOwned() && audio.ownsCurrent(item) },
-                    onExpand = { audio.expand(item, nowPlayingNavigation) },
-                    onCompactClick = compactClick?.let { callback -> { if (owner.isOwned() && audio.isOwned()) callback() } },
+                        audioState.isPlaying, audioState.playbackSpeed),
+                    sourceIsOwned = { owner.isOwned() && audio.ownsSnapshot(audioState) },
+                    onExpand = { audio.expand(audioState, nowPlayingNavigation) },
+                    onCompactClick = compactClick?.let { callback -> { if (owner.isOwned() && audio.ownsSnapshot(audioState)) callback() } },
                     isLayoutStable = stable && !nowPlayingNavigation.driveBottomBarByProgress,
-                    onPlayPause = { audio.playPause(item, nowPlayingNavigation) },
-                    onSkipNext = { audio.next(item) },
-                    onSkipPrevious = { audio.previous(item) },
-                    onDismiss = { audio.dismiss(item, nowPlayingNavigation) },
+                    onPlayPause = { audio.playPause(audioState, nowPlayingNavigation) },
+                    onSkipNext = { audio.next(audioState) },
+                    onSkipPrevious = { audio.previous(audioState) },
+                    onDismiss = { audio.dismiss(audioState, nowPlayingNavigation) },
                     expandDestinationLabel = if (nowPlayingNavigation.opensAudioMode) "听视频" else "视频详情页",
                     sourceRoute = nowPlayingNavigation.sourceRoute,
                     handoff = nowPlayingNavigation.handoff,

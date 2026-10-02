@@ -300,6 +300,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         mutableState.update { it.copy(videoPanscan = value) }
         send(Action.Property("panscan", value.toString()))
     }
+    internal fun setOriginalVideoViewport(expected:OwnedPlaybackSourceSnapshot,value:DesktopNativeVideoViewportTransform):Boolean = synchronized(lock) {
+        if(!ownsSourceSnapshot(expected)) return@synchronized false
+        val active=session ?: return@synchronized false
+        if(active.closing.get()) false else active.commands.offer(Action.OwnedVideoViewport(expected.sourceVersion,playbackRevision,expected.source,value))
+    }
     fun setLoop(looping: Boolean) {
         mutableState.update { it.copy(looping = looping) }
         send(Action.Property("loop-file", if (looping) "inf" else "no"))
@@ -533,6 +538,18 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         }
     }
 
+    internal suspend fun captureScreenshotForSource(expected:OwnedPlaybackSourceSnapshot,destination:Path,includeSubtitles:Boolean):Path {
+        val completion=CompletableDeferred<Path>()
+        val queued=synchronized(lock) {
+            val active=session
+            if(!ownsSourceSnapshot(expected) || active==null || active.closing.get() || !state.value.ready ||
+                state.value.ended || state.value.audioOnly || state.value.videoCodec==null) false
+            else active.commands.offer(Action.Screenshot(destination.toAbsolutePath().normalize(),includeSubtitles,completion,expected,playbackRevision))
+        }
+        if(!queued) throw kotlinx.coroutines.CancellationException("Screenshot source retired/unavailable")
+        try { return withTimeout(15_000L){completion.await()} } finally {if(!completion.isCompleted)completion.cancel()}
+    }
+
     private sealed interface Action {
         data class Load(val source: PlaybackSource, val version: Long, val softwareDecoding: Boolean, val revision: Long, val startMuted: Boolean? = null) : Action
         data class Subtitles(val version: Long) : Action
@@ -540,11 +557,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         data class SubtitleConfiguration(val controlVersion: Long, val version: Long, val revision: Long, val visible: Boolean) : Action
         data class VideoShaders(val version: Long, val configuration: PreparedVideoShaders) : Action
         data class Property(val name: String, val value: String) : Action
+        data class OwnedVideoViewport(val version:Long,val revision:Long,val source:PlaybackSource,val value:DesktopNativeVideoViewportTransform):Action
         data class OwnedMute(val version: Long, val revision: Long, val source: PlaybackSource, val muted: Boolean) : Action
         data class Command(val args: List<String>) : Action
         data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean,
             val admissionSource: PlaybackSource? = null) : Action
-        data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>) : Action
+        data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>, val owned:OwnedPlaybackSourceSnapshot?=null, val revision:Long?=null) : Action
         data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action
     }
 
@@ -555,6 +573,14 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         val commands = LinkedBlockingQueue<Action>()
         val closing = AtomicBoolean(false)
         val thread = Thread(::run, "BiliPai-native-player").apply { isDaemon = true }
+        private var sectionFlipHorizontal=false
+        private var sectionFlipVertical=false
+        private fun clearSectionViewport(native:MpvNative,handle:Pointer) {
+            if(sectionFlipHorizontal) {checkResult(native,native.mpv_command(handle,StringArray(arrayOf("vf","remove","@bilipai-section-hflip"),"UTF-8")),"remove-section-hflip");sectionFlipHorizontal=false}
+            if(sectionFlipVertical) {checkResult(native,native.mpv_command(handle,StringArray(arrayOf("vf","remove","@bilipai-section-vflip"),"UTF-8")),"remove-section-vflip");sectionFlipVertical=false}
+            for((name,value)in listOf("video-zoom" to "0","video-pan-x" to "0","video-pan-y" to "0","keepaspect" to "yes","panscan" to state.value.videoPanscan.toString()))
+                checkResult(native,native.mpv_set_property_string(handle,name,value),name)
+        }
         private var activeEntry: Long? = null
         private var expectedEntry: Long? = null
         private var fileLoaded = false
@@ -675,7 +701,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
 
         private fun perform(native: MpvNative, handle: Pointer, action: Action) {
             try {
-                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.OwnedMute &&
+                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.OwnedMute && action !is Action.OwnedVideoViewport &&
                     !(action is Action.Seek && action.admissionSource != null)) publishState { it.copy(operationError = null) }
                 when (action) {
                     is Action.Load -> {
@@ -693,6 +719,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         seekTracker.reset()
                         diagnostics.reset(action.source)
                         checkResult(native, native.mpv_set_property_string(handle, "hwdec", synchronized(lock) { if (softwareTarget == null) resolveMpvHardwareDecoding(hardwareDecodeEnabled, action.softwareDecoding) else "no" }), "hwdec")
+                        clearSectionViewport(native,handle)
                         loadedSubtitlePaths.clear()
                         lastTrackPoll = 0L
                         MpvNodes().use { nodes ->
@@ -770,6 +797,24 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         refreshPausedVideoFrame(native, handle, action.version)
                         refreshVideoShaders(native, handle)
                     }
+                    is Action.OwnedVideoViewport -> {
+                        val command={synchronized(lock) {
+                            if(session===this && !closing.get() && sourceVersion==action.version && playbackRevision==action.revision &&
+                                requestedSource==action.source && activeSourceVersion==action.version && activeRevision==action.revision) {
+                                val value=action.value
+                                for((name,setting)in value.nativeProperties())checkResult(native,native.mpv_set_property_string(handle,name,setting),name)
+                                if(sectionFlipHorizontal!=value.flipHorizontal) {
+                                    checkResult(native,native.mpv_command(handle,StringArray(arrayOf("vf",if(value.flipHorizontal)"add"else"remove",if(value.flipHorizontal)"@bilipai-section-hflip:hflip"else"@bilipai-section-hflip"),"UTF-8")),"section-hflip")
+                                    sectionFlipHorizontal=value.flipHorizontal
+                                }
+                                if(sectionFlipVertical!=value.flipVertical) {
+                                    checkResult(native,native.mpv_command(handle,StringArray(arrayOf("vf",if(value.flipVertical)"add"else"remove",if(value.flipVertical)"@bilipai-section-vflip:vflip"else"@bilipai-section-vflip"),"UTF-8")),"section-vflip")
+                                    sectionFlipVertical=value.flipVertical
+                                }
+                            }
+                        }}
+                        action.source.nativePublication?.admit(command)
+                    }
                     is Action.Property -> checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)
                     is Action.OwnedMute -> {
                         val command = { synchronized(lock) {
@@ -786,7 +831,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         checkResult(native, native.mpv_command(handle, StringArray(action.args.toTypedArray(), "UTF-8")), action.args.first())
                         lastTrackPoll = 0L
                     }
-                    is Action.Screenshot -> saveScreenshot(native, handle, action)
+                    is Action.Screenshot -> {
+                        val expected=action.owned
+                        val allowed=expected==null || synchronized(lock){session===this && !closing.get() && ownsSourceSnapshot(expected) &&
+                            action.revision==playbackRevision && activeSourceVersion==expected.sourceVersion && activeRevision==action.revision}
+                        if(!allowed) action.completion.cancel(kotlinx.coroutines.CancellationException("Screenshot source changed before capture"))
+                        else saveScreenshot(native, handle, action)
+                    }
                     is Action.Barrier -> action.completion.complete(synchronized(lock) {
                         session === this && !closing.get() && sourceVersion == action.version &&
                             playbackRevision == action.revision && activeSourceVersion == action.version &&
@@ -874,7 +925,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 check(Files.size(temporary) > 0) { "原生播放器未写出截图。" }
                 if (!action.completion.isActive) return
                 Files.move(temporary, destination)
-                action.completion.complete(destination)
+                if(!action.completion.complete(destination) && action.owned!=null)Files.deleteIfExists(destination)
             } finally { Files.deleteIfExists(temporary) }
         }
 

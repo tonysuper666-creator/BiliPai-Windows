@@ -1,0 +1,46 @@
+{
+  "edits": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+      "before": "    /** Same Window fullscreen lease, also used by the fullscreen platform view. */\n",
+      "after": "    /** A separate registration in the EXISTING Window chrome owner. Closing a\n     * portrait lease cannot restore/remove a later Holder registration. Android\n     * hidden system bars are represented only by the Windows client/title policy.\n     * The caller must invoke this outside Store/entry/native admission gates. */\n    fun acquirePortraitPresentation(spec: VideoDetailSystemBarsApplySpec): AutoCloseable {\n        val stillOwned = { !closed.get() && isRootCurrent() && owner.owns() }\n        var registration: AutoCloseable? = null // EDT only.\n        onEdt {\n            if (stillOwned()) {\n                clientPolicy.ensureEdgeToEdge()\n                registration = chrome.acquire(true, spec.lightStatusBars) {\n                    check(stillOwned()) { \"Portrait Window entry retired\" }\n                }\n                if (!stillOwned()) { registration?.close(); registration = null }\n                diagnostic(\"Portrait system bars mapped to the same Windows client/title owner (${spec.hiddenBars}); no Android bars/monitor rotation\")\n            }\n        }\n        val released = AtomicBoolean()\n        return AutoCloseable {\n            if (released.compareAndSet(false, true)) onEdt {\n                registration?.close(); registration = null\n            }\n        }\n    }\n\n    /** Same Window fullscreen lease, also used by the fullscreen platform view. */\n",
+      "beforeSHA256LF": "1ff52ef9cfdd0bebdeb95a84ade031b1dfda2cdb7a86726b6d32bd4b5fb88c83",
+      "afterSHA256LF": "4a9fd290bef6821c5214f018f92f2757ce560586e96f7f1396bbeb7b995e1159"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "before": "def generate(repo,output,standalone=False):\n",
+      "after": "def portrait_hwnd_foreground_delta(path,text):\n if path=='com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt':\n  before='        modifier = Modifier\\n            .fillMaxSize()\\n            .background(Color.Black)\\n    ) { page ->'\n  after='        modifier = Modifier\\n            .fillMaxSize()\\n            .background(Color.Transparent)\\n    ) { page ->'\n  assert text.count(before)==1,(path,'portrait native foreground host')\n  text=text.replace(before,after,1)\n return text\n\ndef generate(repo,output,standalone=False):\n",
+      "beforeSHA256LF": "29b357d72f1caaf7385c52669500d6905e98ebddb3dbcd1309719e9414d79087",
+      "afterSHA256LF": "995d4fe1a0ae1cf6fd02295deb195dd7ed2730217efb60254d3e084e511b9bf9"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-fullscreen-pager.py",
+      "before": "  text=captured_media_byte_consumer_delta(spec['output'],text)\n",
+      "after": "  text=captured_media_byte_consumer_delta(spec['output'],text)\n  text=portrait_hwnd_foreground_delta(spec['output'],text)\n",
+      "beforeSHA256LF": "5bb99e529f8e2dd169838ba5522acfa54f849adcc67356549aea8793a9fe38fb",
+      "afterSHA256LF": "9d6f24d49831aa12d650121d94c1b37ef001351adb071ef355c82ad4061a3de6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionPlatform.kt",
+      "before": "    fun setViewportActive(active: Boolean)\n",
+      "after": "    fun setViewportActive(active: Boolean)\n    fun acquireViewportLease(): AutoCloseable\n",
+      "beforeSHA256LF": "671b96a8cff90abdf285c591e9018022e42cdc2d948a5c720da97de7866378e8",
+      "afterSHA256LF": "6c660be92807826e8e4fb9098bd6d34782e3f04852cd11ebde9187c1ffda3ae0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+      "before": "    private var viewportPublication:DesktopOriginalVideoAcceptedPublication? = null\n",
+      "after": "    private var viewportPublication:DesktopOriginalVideoAcceptedPublication? = null\n    private var borrowedViewportToken: Any? = null // Same presentation admission; not a source authority.\n",
+      "beforeSHA256LF": "aa63382292415304c73df58c66d638cdc890081d537a0c4ee88bb570486a1632",
+      "afterSHA256LF": "f7359f6c435fea4376a771e48525c2d3b4670a5d868b09840b3bb03eb46e8a29"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+      "before": "    override fun setViewportActive(active: Boolean) { presentationWrite { if(resources.overlay.setOriginalSectionViewport(it.sourceVersion, active))viewportPublication=it } }\n    override fun releaseViewportForThisEntry() { viewportPublication?.let { resources.overlay.releaseOriginalSectionViewport(it.sourceVersion) }; viewportPublication=null; layout.reset() }\n",
+      "after": "    override fun setViewportActive(active: Boolean) {\n        presentationWrite {\n            if (resources.overlay.setOriginalSectionViewport(it.sourceVersion, active)) {\n                viewportPublication = it; borrowedViewportToken = null\n            }\n        }\n    }\n    override fun releaseViewportForThisEntry() {\n        // A normal Section disposer must not release a newer borrowed Pager view.\n        if (borrowedViewportToken == null) {\n            viewportPublication?.let { resources.overlay.releaseOriginalSectionViewport(it.sourceVersion) }\n            viewportPublication = null; layout.reset()\n        }\n    }\n    override fun acquireViewportLease(): AutoCloseable {\n        val token = Any()\n        var fixed: DesktopOriginalVideoAcceptedPublication? = null\n        presentationWrite {\n            if (resources.overlay.setOriginalSectionViewport(it.sourceVersion, true)) {\n                viewportPublication = it; borrowedViewportToken = token; fixed = it\n            }\n        }\n        val released = AtomicBoolean()\n        return AutoCloseable {\n            if (released.compareAndSet(false, true) && fixed != null) {\n                // Existing short Store -> entry admission; native lock is released\n                // before the Overlay call. Old source/handle cannot reset new layout.\n                presentationWrite { current ->\n                    if (current === fixed && viewportPublication === fixed && borrowedViewportToken === token) {\n                        resources.overlay.releaseOriginalSectionViewport(current.sourceVersion)\n                        viewportPublication = null; borrowedViewportToken = null; layout.reset()\n                    }\n                }\n            }\n        }\n    }\n",
+      "beforeSHA256LF": "41b0fea0b170dc462c3ed040894a9f70727e9ebfad4905527b97a384e21ac3d6",
+      "afterSHA256LF": "f763a00456746809919158a8521d299d05c5972e961243d7c5117b2275fa5282"
+    }
+  ]
+}

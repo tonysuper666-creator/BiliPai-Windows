@@ -11,10 +11,11 @@ import com.android.purebilibili.feature.video.share.VideoSharePayload
  */
 internal interface DesktopOriginalVideoOverlayPlatform {
     fun networkTypeLabel(): String
-    fun copyText(label: String, text: String)
+    fun copyText(label: String, text: String): Boolean
     fun feedback(message: String)
     fun readPanelRefreshRate(): Float?
     fun exportPlayerDiagnostic(content: String): String?
+    suspend fun withCastSource(aid: Long, cid: Long, action: suspend () -> com.android.purebilibili.feature.video.ui.overlay.CastMediaResolution?): com.android.purebilibili.feature.video.ui.overlay.CastMediaResolution?
     suspend fun getTvCastPlayData(aid: Long, cid: Long, qn: Int): PlayUrlData?
     fun castProxyUrl(url: String): String
     fun registerCastDashManifest(manifest: String): String

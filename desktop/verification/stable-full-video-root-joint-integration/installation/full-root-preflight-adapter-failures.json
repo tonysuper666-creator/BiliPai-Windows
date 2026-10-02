@@ -1,0 +1,13 @@
+{
+  "scope": "local preflight adapter, no production changes",
+  "failures": [
+    {
+      "attempt": 1,
+      "failure": "unique-anchor assumption rejected explicit occurrence=0 at Root hunk30; Candidate unchanged"
+    },
+    {
+      "attempt": 2,
+      "failure": "over-strong bridge-before absence rejected shared wrapper text retained inside exact after; full pinned bridge already verified; Candidate unchanged"
+    }
+  ]
+}

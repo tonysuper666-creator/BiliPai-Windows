@@ -1,0 +1,63 @@
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:36:52: error: this in experimental API that may change frequently and without warning.
+    private val compositions = CopyOnWriteArraySet<ObservableComposition>()
+                                                   ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:37:47: error: this in experimental API that may change frequently and without warning.
+    private val handles = CopyOnWriteArraySet<CompositionObserverHandle>()
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:43:21: error: this in experimental API that may change frequently and without warning.
+                    handles += info.observe(object : CompositionRegistrationObserver {
+                    ^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:43:29: error: this in experimental API that may change frequently and without warning.
+                    handles += info.observe(object : CompositionRegistrationObserver {
+                            ^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:43:37: error: this in experimental API that may change frequently and without warning.
+                    handles += info.observe(object : CompositionRegistrationObserver {
+                                    ^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:43:54: error: this in experimental API that may change frequently and without warning.
+                    handles += info.observe(object : CompositionRegistrationObserver {
+                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:44:75: error: this in experimental API that may change frequently and without warning.
+                        override fun onCompositionRegistered(composition: ObservableComposition) { compositions += composition }
+                                                                          ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:44:100: error: this in experimental API that may change frequently and without warning.
+                        override fun onCompositionRegistered(composition: ObservableComposition) { compositions += composition }
+                                                                                                   ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:44:113: error: this in experimental API that may change frequently and without warning.
+                        override fun onCompositionRegistered(composition: ObservableComposition) { compositions += composition }
+                                                                                                                ^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:44:116: error: this in experimental API that may change frequently and without warning.
+                        override fun onCompositionRegistered(composition: ObservableComposition) { compositions += composition }
+                                                                                                                   ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:45:77: error: this in experimental API that may change frequently and without warning.
+                        override fun onCompositionUnregistered(composition: ObservableComposition) { compositions -= composition }
+                                                                            ^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:45:102: error: this in experimental API that may change frequently and without warning.
+                        override fun onCompositionUnregistered(composition: ObservableComposition) { compositions -= composition }
+                                                                                                     ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:45:115: error: this in experimental API that may change frequently and without warning.
+                        override fun onCompositionUnregistered(composition: ObservableComposition) { compositions -= composition }
+                                                                                                                  ^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:45:118: error: this in experimental API that may change frequently and without warning.
+                        override fun onCompositionUnregistered(composition: ObservableComposition) { compositions -= composition }
+                                                                                                                     ^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:66:9: error: this in experimental API that may change frequently and without warning.
+        compositions.forEach { composition ->
+        ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:86:42: error: this in experimental API that may change frequently and without warning.
+    override fun close() { job.cancel(); handles.forEach { it.dispose() }; handles.clear(); compositions.clear() }
+                                         ^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:86:76: error: this in experimental API that may change frequently and without warning.
+    override fun close() { job.cancel(); handles.forEach { it.dispose() }; handles.clear(); compositions.clear() }
+                                                                           ^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:86:93: error: this in experimental API that may change frequently and without warning.
+    override fun close() { job.cancel(); handles.forEach { it.dispose() }; handles.clear(); compositions.clear() }
+                                                                                            ^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:129:16: error: this API is experimental and is likely to change in the future.
+        window.renderImmediately()
+               ^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:192:258: error: argument type mismatch: actual type is 'JPanel', but 'Canvas' was expected.
+                checkThat("Same actual MPV session initialized through the product bootstrap Canvas", player.state.value.ready && player.decoderCapabilities.value != null && SwingUtilities.getWindowAncestor(player.surface) === window && countCanvas(window, player.surface) == 1)
+                                                                                                                                                                                                                                                                 ^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-full-video-root-actual-proof80\runs\actual81-01\RootIdleFixture.kt:203:143: error: argument type mismatch: actual type is 'JPanel', but 'Canvas' was expected.
+                checkThat("Outgoing and incoming non-media route retain a single attached Canvas", countCanvas(checkNotNull(windowRef.get()), player.surface) == 1)
+                                                                                                                                              ^^^^^^^^^^^^^^

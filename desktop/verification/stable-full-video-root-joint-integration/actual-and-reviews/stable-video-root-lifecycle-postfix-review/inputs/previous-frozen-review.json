@@ -1,0 +1,113 @@
+{
+  "schema": "source-only-review-v1",
+  "blockingCount": 1,
+  "rawCount": 21,
+  "artifacts": [
+    {
+      "path": "author-evidence/focused11-compile.log",
+      "sha256Bytes": "3cb2274088b29f90ab77b49adb73c2870009ae5dbd6e7a4b6a7d6b27ce508ae8",
+      "size": 265
+    },
+    {
+      "path": "author-evidence/focused11-result.json",
+      "sha256Bytes": "43ef931988e1bc483deeed3053b2deb55ac04f3091f0667dbd354b2447659e68",
+      "size": 156
+    },
+    {
+      "path": "author-evidence/focused11-run.log",
+      "sha256Bytes": "cc1e1fde02eaabfeed6e3da781dca9a444520496039e30bc57af2c9fcf578478",
+      "size": 302
+    },
+    {
+      "path": "author-evidence/RootSlotFailureProof.kt",
+      "sha256Bytes": "13fea49bbfe666410133af92ea2c59048c14f6cdbbdaa228ef281ef1832287e0",
+      "size": 2587
+    },
+    {
+      "path": "author-evidence/run20-compile.log",
+      "sha256Bytes": "e46bbfa089ac9435221e12db7b4fff40b910ef0e47f0904d89eb08d3e763fbc0",
+      "size": 12961
+    },
+    {
+      "path": "author-evidence/run20-pins-after.json",
+      "sha256Bytes": "b939e8edd8e584921e4957019e83de455b8cba3da57dbe505adf208633331b94",
+      "size": 659943
+    },
+    {
+      "path": "author-evidence/run20-pins-before.json",
+      "sha256Bytes": "b939e8edd8e584921e4957019e83de455b8cba3da57dbe505adf208633331b94",
+      "size": 659943
+    },
+    {
+      "path": "author-evidence/run20-result.json",
+      "sha256Bytes": "620c98ab968ead7eb3d57aef7659c6014ab4c504f50c15efdbea8197aa51bc70",
+      "size": 183
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoAppResources.kt",
+      "sha256Bytes": "a667e4945734f350285664d643926f8a48786b4c92dbfabf112fabb694a56b0c",
+      "size": 3014
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoOwnerAssembly.kt",
+      "sha256Bytes": "90ffc7ea1ec15122a7e3f43b04f02fea65d69489754a69edcff57d53238539db",
+      "size": 14353
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoOwnerRequestFactory.kt",
+      "sha256Bytes": "a2ac9a3bb30600b8ffa4270b2306f2f9e70a7f4a384fdecb0072f063ad697279",
+      "size": 4455
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "ee32d8560212628ac434d3c4ac876362dcf312055149b5cd4985aaf93d7c543e",
+      "size": 13476
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoRootAssembler.kt",
+      "sha256Bytes": "b811b6e62c54ea5cbbcb2c7734e968b27e4275b51600d80dd2a734cb0096a757",
+      "size": 28895
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoRootFactory.kt",
+      "sha256Bytes": "a091867b7afdd678b58af62c7947338f87af71b4624b01a0a8e831658e0e007f",
+      "size": 12389
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoRootOwnerSlot.kt",
+      "sha256Bytes": "8be2a8ef5995c7bae6d4d230d633ab8ed132073eab84a8f839492b5ca7efa44d",
+      "size": 11225
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoRootRuntimeBinding.kt",
+      "sha256Bytes": "7b6bccf8ee7aa5bc8d986669a4662b758acf75c0a8317d14edb01079811cded3",
+      "size": 4576
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoShellMount.kt",
+      "sha256Bytes": "1128fc48436aed80687fa324e34615ba59ccbc0fe667dad695d028497b685210",
+      "size": 4468
+    },
+    {
+      "path": "inputs/DesktopOriginalVideoShellOwner.kt",
+      "sha256Bytes": "4f0106a5da1c40888ea183f516990820d00172e40c24bc3ee644e3a59ea2e38e",
+      "size": 9582
+    },
+    {
+      "path": "inputs/DesktopShell.kt",
+      "sha256Bytes": "637e5830f6291054a72d599e75986cf5ff3f9e81e26c1e8afbd9cf163e60961c",
+      "size": 150333
+    },
+    {
+      "path": "prepare_review.py",
+      "sha256Bytes": "99eaef7a985007c29a8855d4e7cf2bec0e9895b2fbe2b4d61c7b52fd94e82f37",
+      "size": 8670
+    },
+    {
+      "path": "review-receipt.json",
+      "sha256Bytes": "7471f477baa1b7e1b9ff9ff241fbdc5da0218157d03597f4f55576c441a2ab08",
+      "size": 16068
+    }
+  ],
+  "immutability": "Do not edit this review. Repaired input review must be a separate postfix package."
+}

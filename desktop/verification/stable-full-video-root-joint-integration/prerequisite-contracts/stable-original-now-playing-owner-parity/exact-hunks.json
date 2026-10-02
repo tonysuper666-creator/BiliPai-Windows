@@ -1,0 +1,130 @@
+[
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+    "label": "Replace Listen-only binding with same-owner capability; preserve original Listen constructor",
+    "before": "/** No new actor/scope/store: reads and commands target the already retained native session. */\ninternal class DesktopOriginalAudioNowPlayingBinding(\n    val listen: ListenAudioSession,\n    private val repository: DesktopRepository,\n    private val rootScope: CoroutineScope,\n    private val ownerIsCurrent: () -> Boolean,\n) {\n    private val epoch = repository.sessionEpoch\n    fun isOwned(): Boolean = rootScope.isActive && ownerIsCurrent() && repository.sessionEpoch == epoch\n    fun ownsCurrent(item: PlaylistItem): Boolean = isOwned() && listen.state.value.current?.let {\n        it.bvid == item.bvid && it.cid == item.cid\n    } == true\n    fun expand(item: PlaylistItem, navigation: DesktopOriginalNowPlayingNavigation) {\n        if (!ownsCurrent(item)) return\n        if (navigation.opensAudioMode) navigation.openAudioMode(item)\n        else navigation.openVideo(item, navigation.sourceRoute)\n    }\n    fun playPause(item: PlaylistItem, navigation: DesktopOriginalNowPlayingNavigation) {\n        if (!ownsCurrent(item)) return\n        // Original onPlayPause opens audio mode when the current native source cannot toggle.\n        val native = listen.player.state.value\n        if (listen.ownedPlaybackSourceVersion != null && native.ready && native.durationSeconds > 0) {\n            listen.togglePause()\n        } else if (isOwned()) navigation.openAudioMode(item)\n    }\n    fun next(item: PlaylistItem) { if (ownsCurrent(item)) listen.next() }\n    fun previous(item: PlaylistItem) { if (ownsCurrent(item)) listen.previous() }\n    fun dismiss(item: PlaylistItem, navigation: DesktopOriginalNowPlayingNavigation) {\n        if (!ownsCurrent(item)) return\n        val native = listen.player.state.value\n        if (listen.ownedPlaybackSourceVersion != null && !native.paused && !native.ended) listen.pause()\n        if (ownsCurrent(item)) navigation.dismissBar()\n    }\n}\n\n",
+    "after": "/** One thin now-playing read/command view. The preserved Listen constructor\n * supports serial integration; the full Root supplies the real priority owner port. */\ninternal class DesktopOriginalAudioNowPlayingBinding(private val owner: DesktopOriginalNowPlayingOwnerPort,\n    private val publishVisible: (Boolean) -> Unit) {\n    constructor(listen: ListenAudioSession, repository: DesktopRepository, rootScope: CoroutineScope,\n        ownerIsCurrent: () -> Boolean) : this(DesktopOriginalListenNowPlayingPort(listen,repository,rootScope,ownerIsCurrent),\n            { visible -> if(rootScope.isActive && ownerIsCurrent()) com.android.purebilibili.feature.audio.player.AudioNowPlayingSession.publishBarOverlayVisible(visible) })\n    @Composable fun observeSnapshot() = owner.observe()\n    fun currentSnapshot() = owner.current()\n    fun isOwned() = owner.current()?.let(owner::owns) == true\n    fun ownsSnapshot(expected: DesktopOriginalNowPlayingSnapshot) = owner.owns(expected)\n    fun ownsCurrent(item: PlaylistItem) = owner.current()?.let { it.item == item && owner.owns(it) } == true\n    fun publishBarOverlayVisible(visible: Boolean) = publishVisible(visible)\n    fun expand(expected: DesktopOriginalNowPlayingSnapshot, navigation: DesktopOriginalNowPlayingNavigation) {\n        if (!owner.owns(expected)) return\n        if (navigation.opensAudioMode) navigation.openAudioMode(expected.item)\n        else navigation.openVideo(expected.item,navigation.sourceRoute)\n    }\n    fun playPause(expected: DesktopOriginalNowPlayingSnapshot, navigation: DesktopOriginalNowPlayingNavigation) {\n        if (!owner.owns(expected)) return\n        if (!owner.toggle(expected) && owner.owns(expected)) navigation.openAudioMode(expected.item)\n    }\n    fun next(expected: DesktopOriginalNowPlayingSnapshot) { if (owner.owns(expected)) owner.next(expected) }\n    fun previous(expected: DesktopOriginalNowPlayingSnapshot) { if (owner.owns(expected)) owner.previous(expected) }\n    fun dismiss(expected: DesktopOriginalNowPlayingSnapshot, navigation: DesktopOriginalNowPlayingNavigation) {\n        if (owner.owns(expected) && owner.dismiss(expected)) navigation.dismissBar()\n    }\n}\n\n",
+    "beforeAnchorSHA256LF": "6c3206502d7aae2010e4c5627aa9fe302521f2b51579577c14ae87d2e8e6a911",
+    "afterAnchorSHA256LF": "fbaec725faf06cdfa3d607827cf944a61759a6e65e4215101355f083c538c46e"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+    "label": "Collect required selected actual owner, not the secondary Listen state",
+    "before": "    val listen = audio?.let { it.listen.state.collectAsState().value }\n    val native = audio?.let { it.listen.player.state.collectAsState().value }\n    val item = listen?.current\n",
+    "after": "    val audioState = audio?.observeSnapshot()\n    val item = audioState?.item\n",
+    "beforeAnchorSHA256LF": "c04ad62566890e9a2f0427a16647de220cacaa89dd70d5e0a2868e17219fdbe1",
+    "afterAnchorSHA256LF": "02c28cd8932b9bd2593431d55abf7c24fdfb24270fd36442f0afa6c7c9b1675a"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+    "label": "Original linked dock availability uses actual selected session presentation",
+    "before": "val hasActiveAudioPlayback = audio?.isOwned() == true && nowPlayingVisibility.sessionActive && item != null && nowPlayingVisibility.barEnabled",
+    "after": "val hasActiveAudioPlayback = audioState != null && audio?.ownsSnapshot(audioState) == true && audioState.active && nowPlayingVisibility.sessionActive && nowPlayingVisibility.barEnabled",
+    "beforeAnchorSHA256LF": "7e5ec2fd465e9594e82487158861b8f0c2b606b1c430c1c8798df08cf1ef4968",
+    "afterAnchorSHA256LF": "59544385edfb6131bf7221263d6854a4acdd3f567a6f353a612f5d51284d7674"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+    "label": "Real selected original presentation guards the original visibility policy",
+    "before": "sessionActive = nowPlayingVisibility.sessionActive,",
+    "after": "sessionActive = nowPlayingVisibility.sessionActive && audioState?.active == true,",
+    "beforeAnchorSHA256LF": "63ba5ed229757b8d21353d3496186e417ca25ad43a7d0e9cf679dc161fc9c123",
+    "afterAnchorSHA256LF": "1681944170e42dade47ce8730577bd00869fa5c84b1fe91d14c6f6c26e776cea"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+    "label": "Complete original audio slot consumes captured real owner state",
+    "before": "if (showAudio && item != null && audio != null && native != null)",
+    "after": "if (showAudio && item != null && audio != null && audioState != null)",
+    "beforeAnchorSHA256LF": "782a464a3616b20f78b91b4adbb6759b9d223fc5911be17dae9462737cc16c44",
+    "afterAnchorSHA256LF": "81bc024f05a8c822200ed48541e44fd68941a65922c5f2b99c402c9723d818ed"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+    "label": "Real paused/loading native facts instead of Listen native coupling",
+    "before": "                        listen?.active == true && audio.listen.ownedPlaybackSourceVersion != null && native?.paused == false && native?.ended == false,\n                        native!!.speed.toFloat()),",
+    "after": "                        audioState.isPlaying, audioState.playbackSpeed),",
+    "beforeAnchorSHA256LF": "67965303a6b77634115939f939aba13e8d4afdfbe2fd3de4051ab75dcf7d46f7",
+    "afterAnchorSHA256LF": "68f6921905968e181b174a4d4e724bf181c512158cf2fe43fd1ac7b407c16269"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFrostedAudioRoot.kt",
+    "label": "Every old rendered button retains the exact captured source/subject capability",
+    "before": "                    sourceIsOwned = { owner.isOwned() && audio.ownsCurrent(item) },\n                    onExpand = { audio.expand(item, nowPlayingNavigation) },\n                    onCompactClick = compactClick?.let { callback -> { if (owner.isOwned() && audio.isOwned()) callback() } },\n                    isLayoutStable = stable && !nowPlayingNavigation.driveBottomBarByProgress,\n                    onPlayPause = { audio.playPause(item, nowPlayingNavigation) },\n                    onSkipNext = { audio.next(item) },\n                    onSkipPrevious = { audio.previous(item) },\n                    onDismiss = { audio.dismiss(item, nowPlayingNavigation) },",
+    "after": "                    sourceIsOwned = { owner.isOwned() && audio.ownsSnapshot(audioState) },\n                    onExpand = { audio.expand(audioState, nowPlayingNavigation) },\n                    onCompactClick = compactClick?.let { callback -> { if (owner.isOwned() && audio.ownsSnapshot(audioState)) callback() } },\n                    isLayoutStable = stable && !nowPlayingNavigation.driveBottomBarByProgress,\n                    onPlayPause = { audio.playPause(audioState, nowPlayingNavigation) },\n                    onSkipNext = { audio.next(audioState) },\n                    onSkipPrevious = { audio.previous(audioState) },\n                    onDismiss = { audio.dismiss(audioState, nowPlayingNavigation) },",
+    "beforeAnchorSHA256LF": "6131eb691ab1c7d7f2ffb94a1b876e9f4d8a08f7782704fc728106f005609647",
+    "afterAnchorSHA256LF": "db92963af565616777267f9648c631c2ffb7011a89119de4507dfb54b110f4e0"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+    "label": "Both original dock and independent bar use the selected same-owner snapshot",
+    "before": "    val listen=binding.audio?.listen?.state?.collectAsState()?.value",
+    "after": "    val audioSnapshot=binding.audio?.observeSnapshot()",
+    "beforeAnchorSHA256LF": "de82198da83991e6fa9e21bf59d1559cb0e6d178118ae9cd376cc29ef3d4aa2d",
+    "afterAnchorSHA256LF": "1080d071d0924e62d9ad9bb924fc88db79e3b6ac5291966a9887cc688890f2da"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+    "label": "Chrome active state preserves original listening presentation",
+    "before": "val audioActive=binding.audio?.isOwned()==true&&visibility.sessionActive&&listen?.current!=null",
+    "after": "val audioActive=audioSnapshot!=null&&binding.audio?.ownsSnapshot(audioSnapshot)==true&&visibility.sessionActive&&audioSnapshot.active",
+    "beforeAnchorSHA256LF": "a221d22e2850cc161c26d24eb3ef6444771ec4d7cb55641a6c5a10c07a0632f2",
+    "afterAnchorSHA256LF": "6102a93c5a4bf2476906445a42aa9a273bfdb86bb4acecf3056e5555760ea53c"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+    "label": "Same original item drives original chrome layout",
+    "before": "audioActive,listen?.current,currentItem,pages.scrollOffset,skin,binding.navigationBarsBottom())",
+    "after": "audioActive,audioSnapshot?.item,currentItem,pages.scrollOffset,skin,binding.navigationBarsBottom())",
+    "beforeAnchorSHA256LF": "25b9420a19c4b17fadce9cdbf81befd973984c458b103b02c0f917134df73dad",
+    "afterAnchorSHA256LF": "8084d3d5de55b942e1cf58eded4e7e6aca6a60f0dab758af43aed5f1306e6466"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+    "label": "Publish actual selected original bar visibility through required same Root presentation admission",
+    "before": "    val budget=resolveBottomPagerRenderBudget(mainPager.isNavigating)",
+    "after": "    val independentAudioDestination=isAudioNowPlayingPlayerDestination(currentKey.toLegacyRoute()) ||\n        (returns.isReturningFromDetail&&returns.transitionSession?.bvid==audioSnapshot?.item?.bvid)\n    val actualBarOverlayVisible=audioActive&&resolveAudioNowPlayingVisible(\n        visibility.sessionActive&&audioSnapshot?.active==true,visibility.onAudioModeScreen,visibility.inPipMode,\n        audioSnapshot!=null,visibility.barEnabled,visibility.inMiniMode,video,visibility.landscape,\n        if(state.bottomBarCanMount)visibility.playerDestination else independentAudioDestination)\n    SideEffect { binding.audio?.publishBarOverlayVisible(actualBarOverlayVisible) }\n    val budget=resolveBottomPagerRenderBudget(mainPager.isNavigating)",
+    "beforeAnchorSHA256LF": "86554b19538bd224ad349fad89a48dc0d1bc9047e0103b9bb5ed77990e14c7d1",
+    "afterAnchorSHA256LF": "270d50d497942a98b75decead2656a0708c6262ff14f9b7d04305638bc421069"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+    "label": "Independent original bar consumes the identical captured source as the dock",
+    "before": "                } else if (binding.audio != null && listen?.current != null) {\n                    val audio=binding.audio\n                    val item=requireNotNull(listen.current)\n                    val native by audio.listen.player.state.collectAsState()",
+    "after": "                } else if (binding.audio != null && audioSnapshot != null) {\n                    val audio=binding.audio\n                    val item=audioSnapshot.item",
+    "beforeAnchorSHA256LF": "681e01870fe083d6ad9889f9a741f3f66ecd4efe1e04b8dfad63c2a90dadfcd9",
+    "afterAnchorSHA256LF": "a46683f826e5f8c4327ae0489eb60cfe17eb3e28dcae04be32fd80bfdf7fbb90"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+    "label": "Independent original visibility preserves paused active presentation",
+    "before": "val showIndependent=resolveAudioNowPlayingVisible(visibility.sessionActive,visibility.onAudioModeScreen,",
+    "after": "val showIndependent=resolveAudioNowPlayingVisible(visibility.sessionActive&&audioSnapshot.active,visibility.onAudioModeScreen,",
+    "beforeAnchorSHA256LF": "e621ca53eb1e5cf5039510c204823b85bc9fb9444f4c1991ef1dcdc7a86933f7",
+    "afterAnchorSHA256LF": "20c0233b09004b505641fe478b2b4338e00fc6fd0258f086ca13b372cf3c89de"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+    "label": "Independent original bar uses selected native facts",
+    "before": "listen.active&&audio.listen.ownedPlaybackSourceVersion!=null&&!native.paused&&!native.ended,native.speed.toFloat()),",
+    "after": "audioSnapshot.isPlaying,audioSnapshot.playbackSpeed),",
+    "beforeAnchorSHA256LF": "c48ea296c1ecdccaecd5f14742a9ef1b4d2cf83372918de6589312ad6a7af20c",
+    "afterAnchorSHA256LF": "0bdef89f2950f0fcb2d2ea5ecc0b2919f2bd9a225b41ee23a1aadbdabe9d332d"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootChrome.kt",
+    "label": "Independent commands retain the same exact source capability",
+    "before": "                            sourceIsOwned={binding.owner.isOwned()&&audio.ownsCurrent(item)},\n                            isLayoutStable=!driveByProgress,sourceRoute=currentKey.toLegacyRoute(),handoff=actualNowNavigation.handoff,\n                            onExpand={audio.expand(item,actualNowNavigation)},onPlayPause={audio.playPause(item,actualNowNavigation)},\n                            onSkipNext={audio.next(item)},onSkipPrevious={audio.previous(item)},onDismiss={audio.dismiss(item,actualNowNavigation)},",
+    "after": "                            sourceIsOwned={binding.owner.isOwned()&&audio.ownsSnapshot(audioSnapshot)},\n                            isLayoutStable=!driveByProgress,sourceRoute=currentKey.toLegacyRoute(),handoff=actualNowNavigation.handoff,\n                            onExpand={audio.expand(audioSnapshot,actualNowNavigation)},onPlayPause={audio.playPause(audioSnapshot,actualNowNavigation)},\n                            onSkipNext={audio.next(audioSnapshot)},onSkipPrevious={audio.previous(audioSnapshot)},onDismiss={audio.dismiss(audioSnapshot,actualNowNavigation)},",
+    "beforeAnchorSHA256LF": "03a377d5a9f8c92444b2ac2c37507b745003e55ee175f9efb96bc7615d615db3",
+    "afterAnchorSHA256LF": "823a384cefe30ecf5f090256053f724803d449df4c450b51c91aee5d4de211b7"
+  },
+  {
+    "target": "desktop/tools/extract-upstream-frosted-audio-renderer.py",
+    "label": "Select the complete original two-flow presentation object once in this sole existing producer",
+    "before": "+['core/ui/transition/NowPlayingBarHandoff']",
+    "after": "+['core/ui/transition/NowPlayingBarHandoff','feature/audio/player/AudioNowPlayingSession']",
+    "beforeAnchorSHA256LF": "e1ea55c6cc7a9d6bf338bcd3082b9f48e40feb932dc8b1f35ade475b07335b11",
+    "afterAnchorSHA256LF": "f643ec27283a7b15ce9b767ddb631559ee0560aae50fb33081eb011b61a67f67"
+  }
+]

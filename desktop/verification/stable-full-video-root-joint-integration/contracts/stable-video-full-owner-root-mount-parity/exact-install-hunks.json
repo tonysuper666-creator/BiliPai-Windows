@@ -1,0 +1,613 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+    "before": "    fun authorized(source: PlaybackSource): PlaybackSource = read { source.copy(authorizationReceipt = receipt) }",
+    "after": "    fun authorized(source: PlaybackSource): PlaybackSource = read { source.copy(authorizationReceipt = receipt) }\n\n    /** Exact captured media CookieJar, never latest account credentials. */\n    fun captureMediaCookieHeader(url: String): String = read {\n        repository.capturePlaybackMediaCookieHeader(authorization, url, ::entryCurrent)\n    }",
+    "baselineLF": "724b8cb04e01ce9c6dc4f727783704fd332f65526ab300716b1d211295fc5298",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+    "sourceHunkFile": "family-hunks.json",
+    "beforeAnchorSha256LF": "adae2ec0cdd623fd12917efdd5da3d66f3311c004062ce8c7fb7f0bd54312868",
+    "afterAnchorSha256LF": "991d3629ce35ac6472a7da94176668975612f61fb4aa7408e2ffaef558dbd516"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+    "before": "    private val webLogin by lazy { DesktopLoginRepository(this) }",
+    "after": "    private val webLogin by lazy { DesktopLoginRepository(this) }\n    /** Borrow the same existing login/refresh authority for the original owner. */\n    internal val originalVideoLogin: DesktopLoginRepository get() = webLogin",
+    "baselineLF": "0074b5ef68ed46bdca12341e1a1c18fdb4ede5ba2ddf27a682d767a0ce1ff027",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+    "sourceHunkFile": "family-hunks.json",
+    "beforeAnchorSha256LF": "8309d24cb8cffa41a6848d324b51450a4648c1ad4076b385c3eca5a14fc7e9ed",
+    "afterAnchorSha256LF": "9eaa906c27fe1b95867d11c6995ab6b15e732ed41895ad5e07f01b5a8057da4d"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+    "before": "    internal fun assertPlaybackAuthorization(authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean) =",
+    "after": "    /** Called from captured Binding's Store -> entry read. No request or IO is created. */\n    internal fun capturePlaybackMediaCookieHeader(authorization: DesktopPlaybackAuthorization,\n        url: String, stillOwned: () -> Boolean): String {\n        assertPlaybackAuthorization(authorization, stillOwned)\n        val parsed = url.toHttpUrlOrNull() ?: throw IllegalArgumentException(\"Invalid captured media URL\")\n        return (authorization.cookieJar?.loadForRequest(parsed) ?: sessions.loadForRequest(parsed))\n            .joinToString(\"; \") { \"${it.name}=${it.value}\" }.also {\n                assertPlaybackAuthorization(authorization, stillOwned)\n            }\n    }\n\n    internal fun assertPlaybackAuthorization(authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean) =",
+    "baselineLF": "0074b5ef68ed46bdca12341e1a1c18fdb4ede5ba2ddf27a682d767a0ce1ff027",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+    "sourceHunkFile": "family-hunks.json",
+    "beforeAnchorSha256LF": "175f09bb40f6b7eb82500e71b045ba2e8c03cc23021da0043c2c73a566091056",
+    "afterAnchorSha256LF": "88437fb9e98cf5e69ec6c510b89eb846e1c3fa2fb9e70672ea37b874c69a5488"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+    "before": "    override val primaryApi get() = binding.primaryApi",
+    "after": "    private var transportObserver: DesktopOriginalVideoTransportObserver? = null\n    private var awaitNativeSelection: (suspend () -> Unit)? = null\n    fun observeTransportMetadata(observer: DesktopOriginalVideoTransportObserver,\n        beforeSelection: suspend () -> Unit) {\n        check(transportObserver == null) { \"The captured request already has a transport observer\" }\n        binding.assertCurrent(); transportObserver = observer; awaitNativeSelection = beforeSelection\n    }\n    private suspend fun observedInfo(info: ViewInfo) {\n        currentCoroutineContext().ensureActive(); binding.assertCurrent()\n        transportObserver?.info(info)\n    }\n    private suspend fun observedPlay(bvid: String, cid: Long, data: PlayUrlData?) {\n        currentCoroutineContext().ensureActive(); binding.assertCurrent()\n        data?.let { transportObserver?.playData(bvid, cid, it) }\n        // The raw request has returned; selection is synchronous after this actual\n        // same-session await. It is outside every Store/entry/native monitor.\n        awaitNativeSelection?.invoke()\n        currentCoroutineContext().ensureActive(); binding.assertCurrent()\n    }\n    override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> =\n        binding.rawRepository.getVideoInfoOnly(bvid, aid, requestedCid).also { result -> result.getOrNull()?.let { observedInfo(it) } }\n    override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long,\n        targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> =\n        binding.rawRepository.getVideoDetails(bvid, aid, requestedCid, targetQuality, audioLang).also { result ->\n            result.getOrNull()?.let { (info, data) -> observedInfo(info); observedPlay(info.bvid, info.cid, data) }\n        }\n    override suspend fun getInitialPlayUrlData(bvid: String, cid: Long, targetQuality: Int,\n        audioLang: String?): PlayUrlData? = binding.rawRepository.getInitialPlayUrlData(bvid, cid, targetQuality, audioLang)\n            .also { observedPlay(bvid, cid, it) }\n    override suspend fun getPlayUrlData(bvid: String, cid: Long, qn: Int, audioLang: String?): PlayUrlData? =\n        binding.rawRepository.getPlayUrlData(bvid, cid, qn, audioLang).also { observedPlay(bvid, cid, it) }\n\n    override val primaryApi get() = binding.primaryApi",
+    "baselineLF": "1f5677b8658124703e6491838ddd976dddd580d3d130a446e1e98f9b1c5aa03c",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+    "sourceHunkFile": "family-hunks.json",
+    "beforeAnchorSha256LF": "942445c60faf6f53ade0f0a78bf079097414c75ac90d786d1424595828698d74",
+    "afterAnchorSha256LF": "89300b21fc05b3aba23eec6f92f315e23cf95f25436c3bcab174e7e7b9b01286"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+    "before": "audioLang: String?): PlayUrlData? = binding.protocol.getPlayUrlDataForPlaybackTransition(bvid, cid, qn, audioLang)",
+    "after": "audioLang: String?): PlayUrlData? = binding.protocol.getPlayUrlDataForPlaybackTransition(bvid, cid, qn, audioLang)\n            .also { observedPlay(bvid, cid, it) }",
+    "baselineLF": "1f5677b8658124703e6491838ddd976dddd580d3d130a446e1e98f9b1c5aa03c",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+    "sourceHunkFile": "family-hunks.json",
+    "beforeAnchorSha256LF": "a7ae9c99e7262f9995e441f67ddcc41fe6fb3a653da083dddbdda81e65fb0304",
+    "afterAnchorSha256LF": "22c2a63c4634cb987b6d94950498a45d137dc7f1508744328b1e5989c1218846"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+    "before": "audioLang: String?): PlayUrlData? = binding.protocol.getExactPremiumPlayUrl(bvid, cid, targetQn, audioLang)",
+    "after": "audioLang: String?): PlayUrlData? = binding.protocol.getExactPremiumPlayUrl(bvid, cid, targetQn, audioLang)\n            .also { observedPlay(bvid, cid, it) }",
+    "baselineLF": "1f5677b8658124703e6491838ddd976dddd580d3d130a446e1e98f9b1c5aa03c",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestRepository.kt",
+    "sourceHunkFile": "family-hunks.json",
+    "beforeAnchorSha256LF": "b7512b6ce744a4c921f45dc2478ebf63ef02baeb45f41dae115f129cdcf95141",
+    "afterAnchorSha256LF": "a545ff9c5c7b2497f3573a66e91311dc785347e93ed271676c3bd87872222e3f"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+    "before": "    /** Root uses the actual inherited generation from handoff, or the generation",
+    "after": "    /** Full original owner publishes exactly once for a newly accepted native\n     * source. Inherited handoff/recovery retains its REAL generation. Each provider\n     * identity and Job is captured before waiting for the existing playerMutex. */\n    internal suspend fun onVideoLoadOwned(bvid: String, cid: Long,\n        stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean),\n        calls: okhttp3.Call.Factory): Long {\n        val caller = currentCoroutineContext()\n        fun checkOwner() {\n            caller.ensureActive()\n            if (closing.get() || !stillOwned()) throw CancellationException(\"Original Runtime load retired\")\n        }\n        checkOwner()\n        val providers = PluginManager.getEnabledPlayerPlugins().toList()\n        var video: CurrentVideo? = null\n        if (!admission {\n            checkOwner()\n            val generation = playerGeneration.incrementAndGet()\n            video = CurrentVideo(generation, bvid, cid)\n            currentVideo.updateAndGet { previous -> if (previous == null || previous.generation < generation) video else previous }\n        }) throw CancellationException(\"Original Runtime publication rejected\")\n        val captured = checkNotNull(video)\n        val dispatch = DesktopPlayerPluginDispatch(this, captured, captured.generation,\n            stillOwned, admission, providers)\n        try {\n            playerMutex.withLock {\n                checkOwner()\n                for (plugin in providers) {\n                    checkOwner()\n                    requirePlaybackPluginDispatch(dispatch, plugin, false)\n                    if (!admission { checkOwner(); requirePlaybackPluginDispatch(dispatch, plugin, false) })\n                        throw CancellationException(\"Original provider load rejected\")\n                    val write = playbackPluginWriteOperation(dispatch, plugin, false, calls)\n                    try { DesktopPlayerPluginWriteAdmission.withCaptured(write) { plugin.onVideoLoad(bvid, cid) } }\n                    catch (cancelled: CancellationException) { throw cancelled }\n                    catch (failure: Exception) { DesktopPluginLog.e(plugin.id, \"Video plugin load failed\", failure) }\n                    checkOwner(); requirePlaybackPluginDispatch(dispatch, plugin, false)\n                    if (!admission { checkOwner(); requirePlaybackPluginDispatch(dispatch, plugin, false) })\n                        throw CancellationException(\"Original provider result rejected\")\n                }\n            }\n        } catch (cancelled: CancellationException) {\n            if (playerGeneration.compareAndSet(captured.generation, captured.generation + 1))\n                currentVideo.compareAndSet(captured, null)\n            throw cancelled\n        }\n        checkOwner()\n        return captured.generation\n    }\n\n    /** Root uses the actual inherited generation from handoff, or the generation",
+    "baselineLF": "2b33a3c46c0e28d41542a2b54cba4180c7e41a7b89c7ab29bdbe14c11a3d65d0",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginRuntime.kt",
+    "sourceHunkFile": "family-hunks.json",
+    "beforeAnchorSha256LF": "8c642d6b3ab5c82bd59eb69e45740503b5673ad017717c69529ff8e99074f0b6",
+    "afterAnchorSha256LF": "a561b797d6c72abd5c6fcfad0ab18c4d232224353775f35b55c9108b05aced6b"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+    "before": "    suspend fun capture(state: PlaybackSessionState,",
+    "after": "    /** One extra same-owner request facet for original Portrait/Story effects.\n     * Captures the ACTUAL calling coroutine Job and original playback state. */\n    suspend fun captureBinding(state: PlaybackSessionState): DesktopOriginalVideoRepositoryBinding {\n        currentCoroutineContext().ensureActive()\n        if (!entryScope.isActive || !stillEntryOwned()) throw CancellationException(\"Original facet entry retired\")\n        return DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,\n            entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),\n            state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,\n            capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,\n            isMobileData, token::available, token::refresh)\n    }\n\n    suspend fun capture(state: PlaybackSessionState,",
+    "baselineLF": "9d069d23e7afeffe5c13115e71c728811c6269f1706156be5df5c5206a003405",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerRequestFactory.kt",
+    "sourceHunkFile": "request-facet-hunk.json",
+    "beforeAnchorSha256LF": "092877d18bced8590de0da8510dcd2ec1bd87fa762b4d22910cdd7733ff9801a",
+    "afterAnchorSha256LF": "daaba2ef5c87f04b637c585895b3ebb3b858c9755091710fc064a711047d3fc9"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-root-home-navigation.py",
+    "baselineLF": "22ebdd36573b1c0d8daa460d37d3b1b36fc9d89d21bf5390dc170b622e8c7588",
+    "before": "    # Reuse the already emitted full original policy in home-full-card; one top-function owner.",
+    "after": "    selected('app/src/main/java/com/android/purebilibili/navigation/AppNavigationPlaybackPolicy.kt',\n        ['shouldEnableVideoDetailSharedTransition'],\n        'com/android/purebilibili/navigation/DesktopOriginalRootPlaybackHolderPolicy.kt',\n        'package com.android.purebilibili.navigation\\n\\n')\n    # Reuse the already emitted full original policy in home-full-card; one top-function owner.",
+    "target": "desktop/tools/extract-upstream-root-home-navigation.py",
+    "sourceHunkFile": "route-producer-hunk.json",
+    "beforeAnchorSha256LF": "c714999dfb34af0927e34fe4bbed2698b66ac04b376eecc384a977452503c082",
+    "afterAnchorSha256LF": "6938f89e88b3b4d7aa39390a613518bdf466d698556ddb4e497ccce67775fadf"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+    "before": "    fun videoRoute(route: String, sourceRoute: String)",
+    "after": "    fun videoRoute(route: String, sourceRoute: String)\n    fun replaceVideoDetail(current: BiliPaiNavKey.VideoDetail, bvid: String, cid: Long,\n        cover: String, resumePositionMs: Long): Boolean\n    fun homeFromVideo(current: BiliPaiNavKey.VideoDetail): Boolean\n    fun markVideoReturning(current: BiliPaiNavKey.VideoDetail): Boolean\n    fun clearVideoReturning(): Boolean",
+    "baselineLF": "087e897d542ccaa975c2615eb470a401a0813959bc960c7daefb952c486f1756",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+    "sourceHunkFile": "route-hunks.json",
+    "beforeAnchorSha256LF": "1aa88031413d900939e458c8dcd732f994906313c2a8d4321ee28aa2ae0c9108",
+    "afterAnchorSha256LF": "29701c738748a256e2c842643e3b25661bf07abc39efc20ec733f43172bc0dee"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+    "before": "    fun consumeReturning(): Boolean = mutate {",
+    "after": "    /** Stable portrait replacement clears only this same original return source.\n     * It must not morph the replacement into the previous video's card. */\n    fun clearVideoSourceForReplacement(): Boolean = mutate {\n        mutableSession.value = mutableSession.value.recordVideoSourceRoute(null)\n    }\n\n    fun consumeReturning(): Boolean = mutate {",
+    "baselineLF": "e356a0b19a5f18376c6c86e0693a38e420a553292953287a6c1b7de596309ced",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeReturnNavigationOwner.kt",
+    "sourceHunkFile": "route-hunks.json",
+    "beforeAnchorSha256LF": "53d66b3c7f472d3208b1a475d03e7100b840dcf5d8164ae1958ea50fb7dd3f9c",
+    "afterAnchorSha256LF": "596df0be347ad3b555cc89566baeda265ef6a8454c13792b41b4281275ccdccf"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+    "before": "    override fun home(): Boolean = push(BiliPaiNavKey.Home)",
+    "after": "    override fun home(): Boolean = push(BiliPaiNavKey.Home)\n\n    /** Exact stable AppNavigation portrait replacement (3061–3086). decorate\n     * uses its original monotonic openId authority; stack replaces only the top. */\n    override fun replaceVideoDetail(current: BiliPaiNavKey.VideoDetail, bvid: String,\n        cid: Long, cover: String, resumePositionMs: Long): Boolean {\n        val normalized = bvid.trim()\n        if (normalized.isBlank() || normalized == current.bvid || currentKey != current) return false\n        var replaced = false\n        val admitted = admitted {\n            if (currentKey == current && root.returns.clearVideoSourceForReplacement()) {\n                val next = decorate(BiliPaiNavKey.VideoDetail(normalized, cid.coerceAtLeast(0L), cover,\n                    resumePositionMs = resumePositionMs.coerceAtLeast(0L)))\n                replaceStack(BiliPaiNavBackStackController(stack.toList()).replaceTop(next).backStack)\n                replaced = true\n            }\n        }\n        return admitted && replaced\n    }\n    override fun homeFromVideo(current: BiliPaiNavKey.VideoDetail): Boolean {\n        if (currentKey != current) return false\n        val accepted = root.returns.returnFromVideo(current, BiliPaiNavKey.MainHost, false) {\n            if (owns() && currentKey == current) {\n                mainHostNavigation.get()?.invoke(BiliPaiNavKey.Home)\n                replaceStack(popBiliPaiNavKeyToRoot(stack.toList()))\n            }\n        }\n        if (accepted) pruneCategoryOwners()\n        return accepted\n    }\n    override fun markVideoReturning(current: BiliPaiNavKey.VideoDetail): Boolean =\n        currentKey == current && root.returns.prepareReturnBeforeBack(current, previousKey)\n    override fun clearVideoReturning(): Boolean = root.returns.consumeReturning()",
+    "baselineLF": "1189b7351ba2e4c5e402388c135d0e40f2cad812f859c0b61d2a746e1662ab7a",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+    "sourceHunkFile": "route-hunks.json",
+    "beforeAnchorSha256LF": "10bfaf02e7c54fe3792ca4cd13fdef9110e3adf97e6a7a9a6d2e1ef75a06d4e0",
+    "afterAnchorSha256LF": "f0cc8e323912188272139d1d580ec24faf5d18eaec9de160bdf4b3c2c5d9d3d7"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+    "before": "    val transitionClock: VideoCardTransitionClock,",
+    "after": "    val transitionClock: VideoCardTransitionClock,\n    val inPictureInPicture: () -> Boolean,",
+    "baselineLF": "72a5ab184155346fa3f12f1d4a3882bce04b36ead89b11f7d462e7b027c12e92",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+    "sourceHunkFile": "route-hunks.json",
+    "beforeAnchorSha256LF": "c2200f27181898c2ceaff3fc6fa4926f9179a118471a93098a300add1f8c0ae6",
+    "afterAnchorSha256LF": "c56ddcacc6ca7d4c1ef0e0213f2720dd02621d07bbbb187df77b4835c662ee86"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+    "before": "    val returnState = returning",
+    "after": "    val returnState = returning\n    // This is the stable AppNavigation recovery-generation owner. Stable's\n    // declared generation has no synthetic increment or fake gesture source.\n    var predictiveBackCancelRecoveryGeneration by remember { mutableIntStateOf(0) }",
+    "baselineLF": "72a5ab184155346fa3f12f1d4a3882bce04b36ead89b11f7d462e7b027c12e92",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+    "sourceHunkFile": "route-hunks.json",
+    "beforeAnchorSha256LF": "ea1ea4ad100f386243cfe84dfc37aa373ee772bca5da9775402625f1062ad890",
+    "afterAnchorSha256LF": "6ba6596957f442d0b5e6e4a79e6be51968f059303f581fceb60ba59e3835131f"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+    "before": "                else -> leafContent(key, routes, active, pagerHosted)",
+    "after": "                is BiliPaiNavKey.VideoDetail -> {\n                    // AppNavigation.kt 2933–3018, original stack/return policies.\n                    val immediate = routes.previousKey == key\n                    val bindPreview = immediate && shouldBindVideoDetailBackPreviewPlayer(routes.currentKey, key)\n                    val sessionActive = shouldActivateVideoDetailPlaybackSession(routes.currentKey, key,\n                        immediate, bindPreview && returnState.isReturningFromDetail)\n                    val detailState = DesktopOriginalVideoHolderRouteState(immediate, bindPreview,\n                        predictiveBackCancelRecoveryGeneration.takeIf { routes.currentKey == key } ?: 0,\n                        returnState.isReturningFromDetail, returnState.isQuickReturnFromDetail,\n                        com.android.purebilibili.navigation.shouldEnableVideoDetailSharedTransition(\n                            cardTransitionEnabled = homeSettings.cardTransitionEnabled,\n                            sourceRoute = key.sourceRoute), resolveAppNavigationMotionSpec(\n                            com.android.purebilibili.core.util.LocalWindowSizeClass.current.isTablet,\n                            homeSettings.cardTransitionEnabled).slowFadeDurationMillis,\n                        pages.inPictureInPicture(), sessionActive && routes.currentKey !is BiliPaiNavKey.AudioMode,\n                        sessionActive)\n                    CompositionLocalProvider(LocalDesktopOriginalRootVideoRouteState provides detailState) {\n                        leafContent(key, routes, active, pagerHosted)\n                    }\n                }\n                else -> leafContent(key, routes, active, pagerHosted)",
+    "baselineLF": "72a5ab184155346fa3f12f1d4a3882bce04b36ead89b11f7d462e7b027c12e92",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+    "sourceHunkFile": "route-hunks.json",
+    "beforeAnchorSha256LF": "bd404a768d19887c719633e7aaad589486e947e7c862ef2b966ee05b76e34a16",
+    "afterAnchorSha256LF": "26c3c6f5d533d71cc7be8b273f90f3dae33595a9f766e6c3bd5de42ba642f1d2"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+    "before": "            clock, { sourceReady }, { liveScrollId }, { 0.dp }, profile, { accountRefresh }, profileScroll,",
+    "after": "            clock, services.isPipActiveOrPending, { sourceReady }, { liveScrollId }, { 0.dp }, profile, { accountRefresh }, profileScroll,",
+    "baselineLF": "4321dbe0fc4e9fe94571510ea8835081324563cd3d83e504608b9f5c1f34a9b9",
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+    "sourceHunkFile": "route-hunks.json",
+    "beforeAnchorSha256LF": "a5eef876c69b14b86952fba9d0bc3772aa1ce6376b2673d68acd570c09737248",
+    "afterAnchorSha256LF": "10238d240969f24c9a2ea9fdd938d48440d634ee5308e6bfe9d32c47d8da118a"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+    "before": "    val repository: DesktopRepository,\n",
+    "after": "    val repository: DesktopRepository,\n    val originalVideoWindowReady: (DesktopOriginalVideoRootWindowEnvironment) -> Unit,\n    val originalVideoWindowRetired: (DesktopOriginalVideoRootWindowEnvironment) -> Unit,\n    val originalVideoWindowContent: @Composable (DesktopOriginalVideoRootWindowEnvironment, @Composable () -> Unit) -> Unit,\n",
+    "reason": "Actual physical Window mount required above the original stack",
+    "sourceHunkFile": "window-environment-hunks.json",
+    "beforeAnchorSha256LF": "fae4f0b57686cfb817f1a24e42a499e211137bbe66f8739ef8cfeef074b62203",
+    "afterAnchorSha256LF": "b9efefad5f39dc25ce82dc5e4640ece135775d34db9573a332927faadb00aac1"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+    "before": "        CompositionLocalProvider(LocalVideoSharedTransitionSpeedSettings provides speedSettings,",
+    "after": "        val originalVideoWindow = remember(root, resources, prefs, routes, configuration, systemWallpaperChrome) {\n            DesktopOriginalVideoRootWindowEnvironment(root, services.actualWindow, scope, resources,\n                preferencesPlatform, configuration, systemWallpaperChrome, haze, prefs, services.appearance,\n                services.repository, services.runtime, navigation, routes, services.imageLocations, services.imageLifetime,\n                services.isPipActiveOrPending, { routes.currentKey })\n        }\n        DisposableEffect(originalVideoWindow) {\n            services.originalVideoWindowReady(originalVideoWindow)\n            onDispose { services.originalVideoWindowRetired(originalVideoWindow) }\n        }\n        CompositionLocalProvider(LocalDesktopOriginalVideoRootWindowEnvironment provides originalVideoWindow,\n            LocalVideoSharedTransitionSpeedSettings provides speedSettings,",
+    "reason": "Exact retained Home Window resources, no route-owned globals",
+    "sourceHunkFile": "window-environment-hunks.json",
+    "beforeAnchorSha256LF": "21f9ee08fac7711514f584fdf115c15812503d507d3422dab99b5910d6975ae4",
+    "afterAnchorSha256LF": "56d7d3635a88a9b8afc88864ed93a6f5d81f683924d3d29ec4ae2ee2b597756d"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+    "before": "        DesktopHomeWindowGlobals(resources, sourceReady,",
+    "after": "        services.originalVideoWindowContent(originalVideoWindow) {\n        DesktopHomeWindowGlobals(resources, sourceReady,",
+    "reason": "Concrete original-video factory/provider physically wraps NavDisplay",
+    "sourceHunkFile": "window-environment-hunks.json",
+    "beforeAnchorSha256LF": "a164e61dfed097333032a55952519da64dd529857e365e98da449216206030af",
+    "afterAnchorSha256LF": "cef31a062255c5bd93a04ac94597e39282a948f055994c97dafa90723550e6ae"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+    "before": "                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings) })\n        }\n        }\n",
+    "after": "                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings) })\n        }\n        }\n        }\n",
+    "reason": "Close actual WindowContent wrapper",
+    "sourceHunkFile": "window-environment-hunks.json",
+    "beforeAnchorSha256LF": "fa87b385324bdbb603db0a048d73467eae3c91db6cda5c0b6a2e82682579b5a1",
+    "afterAnchorSha256LF": "8e3b963028fd5388fb07d5469524ea023c89b3f2cb2596206b1494d606543f3f"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+    "before": "    content: @Composable (DesktopOriginalCommentRootOwner) -> Unit,",
+    "after": "    borrowedImageAssets: DesktopDynamicImageAssets? = null,\n    content: @Composable (DesktopOriginalCommentRootOwner) -> Unit,",
+    "reason": "New concrete Root borrows same retained gallery assets; existing callers preserve ABI",
+    "sourceHunkFile": "comment-root-hunks.json",
+    "beforeAnchorSha256LF": "0608d3b487d5044af7bb4b0b8d3314f56b4923df383149318f670470b73dd4dc",
+    "afterAnchorSha256LF": "2e4148323012469223163e65314a0c3962cd5468d63e9fb9a97c209efebcd5cb"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+    "before": "        val assets = remember(operations, locations, saveParent) {\n            DesktopDynamicImageAssets(",
+    "after": "        val assets = remember(operations, locations, saveParent, borrowedImageAssets) {\n            borrowedImageAssets ?: DesktopDynamicImageAssets(",
+    "reason": "No duplicate Root image-save/network actor",
+    "sourceHunkFile": "comment-root-hunks.json",
+    "beforeAnchorSha256LF": "3da1310d58dbeff24f62e518c79dedc40acbd0d8f4e9b2559ca855cc2037291f",
+    "afterAnchorSha256LF": "94adf6b33cb86dd99b8444326a1aa2592ed1cd595f96b3ba313dfb769af15a27"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+    "before": "                assets.close(); images.close(); scope.cancel()",
+    "after": "                if (borrowedImageAssets == null) assets.close()\n                images.close(); scope.cancel()",
+    "reason": "Borrowed global/retained assets close only through their true owner",
+    "sourceHunkFile": "comment-root-hunks.json",
+    "beforeAnchorSha256LF": "e85d4cb7897700b70b6e1ae2caec6e732cf359c10a20e39bb9fca8845855a7b1",
+    "afterAnchorSha256LF": "9063a53e9ecc7e1f0a00868b62e5518ab373925ee8cc24ca0178640c1d8d795a"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "    val homeRootRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<DesktopReadyOriginalRootHandle?>() }",
+    "after": "    val homeRootRef = remember(repository, pluginStore) { java.util.concurrent.atomic.AtomicReference<DesktopReadyOriginalRootHandle?>() }\n    val ordinaryVideoRef = remember(repository, pluginStore) {\n        java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoShellOwner?>()\n    }\n    val ordinaryVideoEvents = remember { kotlinx.coroutines.channels.Channel<DesktopOriginalVideoShellEvent>(64) }\n    val ordinaryVideoResourcesRef = remember(repository, pluginStore) {\n        java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoAppResources?>()\n    }\n    val ordinaryVideoResourceJob = remember { java.util.concurrent.atomic.AtomicReference<Job?>() }\n    val ordinaryVideoResourcesRetired = remember { java.util.concurrent.atomic.AtomicBoolean(false) }\n    suspend fun drainOriginalVideo() = withContext(NonCancellable) {\n        ordinaryVideoResourcesRetired.set(true)\n        ordinaryVideoRef.get()?.let { owner ->\n            owner.closeAndJoin()\n            ordinaryVideoRef.compareAndSet(owner, null)\n        }\n        ordinaryVideoResourceJob.getAndSet(null)?.cancelAndJoin()\n        // Keep a failed drain reference available for a later bounded retry.\n        ordinaryVideoResourcesRef.get()?.let { resources ->\n            resources.closeAndJoin()\n            ordinaryVideoResourcesRef.compareAndSet(resources, null)\n        }\n    }",
+    "reason": "One physical Window ordinary owner; refs precede all Store freeze hooks",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "1057b73aebaf2b96a7318c3f6829e3ab26a3179debc7c6b0d12ee08395507b39",
+    "afterAnchorSha256LF": "42394cb6193072ad592719529fca49a10f987890a86ad73c62cae85ef1a624cc"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "            beforeStoreFreeze = {\n                homeRootRef.getAndSet(null)?.closeAndJoin()",
+    "after": "            beforeStoreFreeze = {\n                drainOriginalVideo()\n                homeRootRef.getAndSet(null)?.closeAndJoin()",
+    "reason": "Drain original video before Home/gallery/image/Store freeze; joins outside gates",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "7477cf0d3db3875aa5c83ba5601662a82b46fbfb5531a5317bb0c3373bba7ce3",
+    "afterAnchorSha256LF": "79d7129330610ca72b33afa7202b54c20a82c45cec73f6dad056039f3b9b69b4"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "    val automaticSubtitles = remember(player, community, subtitleAssets, library) { player?.let {\n        DesktopAutomaticSubtitles(RepositoryAutomaticSubtitleDataSource(community, subtitleAssets), MpvAutomaticSubtitlePlayer(it),\n            sessionEpoch = { repository.sessionEpoch })\n    } }\n    val emptyAutomaticSubtitles = remember { MutableStateFlow(DesktopAutomaticSubtitleState()) }\n    val automaticSubtitleState by (automaticSubtitles?.state ?: emptyAutomaticSubtitles).collectAsState()\n    LaunchedEffect(automaticSubtitles, sessionEpoch) { automaticSubtitles?.onSessionChanged() }\n    val playback = remember(repository, player, danmaku, library) {\n        DesktopPlaybackController(repository, player, playerError, danmaku, library, { latestPreferences }, scope,\n            plugins = pluginRuntime, community = community, automaticSubtitles = automaticSubtitles,\n            currentDanmakuSettings = { latestRendererDanmakuSettings },\n            onRememberAudioQuality = { quality ->\n                preferences = preferences.copy(lastSelectedAudioQuality = quality).normalized()\n                val snapshot = preferences\n                preferenceWriter.submit(snapshot)\n            })\n    }\n",
+    "after": "    val ordinaryVideo = remember(repository, pluginStore, scope) {\n        DesktopOriginalVideoShellOwner(repository, pluginStore, scope,\n            rootAlive = { !isClosing() }, rootAdmission = imageSaveLifetime::withCommit,\n            metadata = { ordinaryVideoEvents.trySend(it) },\n            feedback = { ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(it)) })\n    }\n    SideEffect {\n        if (!ordinaryVideoResourcesRetired.get() && !isClosing()) ordinaryVideoRef.set(ordinaryVideo)\n    }\n    val playback = ordinaryVideo.playback\n    var ordinaryVideoResources by remember(ordinaryVideo) { mutableStateOf<DesktopOriginalVideoAppResources?>(null) }\n    var ordinaryVideoResourceError by remember(ordinaryVideo) { mutableStateOf<String?>(null) }\n    LaunchedEffect(ordinaryVideo, globalPluginContext) {\n        val creatorJob = checkNotNull(currentCoroutineContext()[Job])\n        if (ordinaryVideoResourcesRetired.get() || isClosing()) return@LaunchedEffect\n        check(ordinaryVideoResourceJob.compareAndSet(null, creatorJob))\n        try {\n            val resources = withContext(Dispatchers.IO) {\n                val created = DesktopOriginalVideoAppResources.create(globalPluginContext, repository, scope,\n                    DesktopLibrary.directoryForAccount(null).resolve(\"video-media-bytes\")) {\n                    ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(it))\n                }\n                var published = false\n                try {\n                    creatorJob.ensureActive()\n                    if (ordinaryVideoResourcesRetired.get() || isClosing())\n                        throw CancellationException(\"Original app video resources retired during construction\")\n                    check(ordinaryVideoResourcesRef.compareAndSet(null, created))\n                    published = true\n                    created\n                } finally { if (!published) created.closeAndJoin() }\n            }\n            ensureActive()\n            ordinaryVideoResources = resources\n        } catch (cancelled: CancellationException) { throw cancelled }\n        catch (failure: Exception) { ordinaryVideoResourceError = failure.message ?: \"视频缓存或进度存储初始化失败\" }\n        finally { ordinaryVideoResourceJob.compareAndSet(creatorJob, null) }\n    }\n",
+    "reason": "Retire old Controller and automatic-subtitle producer; construct sole actual app resources outside UI gates",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "c8b27cbf6cf9dbb3c2605bc5b798005bad3184c4a7180d0d70e70daed8ee9df2",
+    "afterAnchorSha256LF": "86ebffad9f2d9900404171bf8dffe39ed94c8a82cc5f79ecdf886a76258b83bd"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "playback.pause(); player?.setPaused(true) },",
+    "after": "playback.pause() },",
+    "reason": "Listen transfer pauses ordinary through its actual admitted facade only",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "25a0a30d1803a632363e7f0bd42be1ab12f70adc60ce7435cbe66a766e51161d",
+    "afterAnchorSha256LF": "5840584855f842f325656fcfe24cf70f7cce8f8b65c48ea14d415451b2fbaa7c"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "    val chapterIdentity = playing.details?.let { info ->\n        info.pages.getOrNull(playing.currentPart)?.cid?.takeIf { it > 0 }?.let { info.bvid to it }\n    }\n    var chapterViewPoints by remember(chapterIdentity, sessionEpoch) {\n        mutableStateOf<List<com.android.purebilibili.data.model.response.ViewPoint>>(emptyList())\n    }\n    LaunchedEffect(community, chapterIdentity, sessionEpoch) {\n        val identity = chapterIdentity ?: return@LaunchedEffect\n        try {\n            val points = community.playerMetadata(identity.first, identity.second).viewPoints\n            kotlinx.coroutines.currentCoroutineContext().ensureActive()\n            if (repository.sessionEpoch == sessionEpoch) chapterViewPoints = points\n        } catch (cancelled: CancellationException) { throw cancelled }\n        catch (_: Exception) { /* Optional player metadata must not interrupt playback. */ }\n    }\n",
+    "after": "",
+    "reason": "Remove second metadata request; whole original VM already owns tags/chapters/player metadata",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "8f324d08a87aad35c94c53d86acd3a1b777d69260bdb7a281711a6a75f52b970",
+    "afterAnchorSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "        DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {\n            homeRootRef.getAndSet(null)?.closeAndJoin()",
+    "after": "        DesktopBackupCoordinator(DesktopBackupStore(DesktopLibrary.directoryForAccount(null)), beforeRestore = {\n            drainOriginalVideo()\n            homeRootRef.getAndSet(null)?.closeAndJoin()",
+    "reason": "Restore drains ordinary producers/native/cache before Home/global actors",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "db52e1ca96d72227c2355d5c57321e8a2eb556612b80d7a5461cbb53968324de",
+    "afterAnchorSha256LF": "c46f67053f1e801bca82980b266c8f433dc90bdd36715f6af784d4ba6c6da2b0"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "            withContext(NonCancellable) {\n                homeRootRef.getAndSet(null)?.closeAndJoin()",
+    "after": "            withContext(NonCancellable) {\n                drainOriginalVideo()\n                homeRootRef.getAndSet(null)?.closeAndJoin()",
+    "reason": "Normal app shutdown explicitly drains same ordinary owner before existing global teardown",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "032504dd7b24584b6cf199e712ba8705523a27c026ceb0e15e8988aced61e028",
+    "afterAnchorSha256LF": "1035513724642634fbdc676fe33670d115ab5045d342a1555737aa3e956aa6c5"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "retainedMedia.close(); playback.close(); listen?.shutdownForRestore()",
+    "after": "retainedMedia.close(); listen?.shutdownForRestore()",
+    "reason": "Old controller is not constructed or closed; same unified owner was already joined",
+    "occurrence": 0,
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "f83f11a11a1d8b6de3cbe9a940607747e1b25d092f5fb23afd698ce931dd28b7",
+    "afterAnchorSha256LF": "3e306c003638c9c26793906497aeebaa4f765dcfeec760e226c12ec534a4d2f8"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); playback.close(); listen?.shutdownForRestore() }",
+    "after": "                withContext(Dispatchers.Main) { enhancement?.close(); pip?.close(); retainedMedia.close(); listen?.shutdownForRestore() }",
+    "reason": "No old Controller close after original drain",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "4f3ad3533b95f56ba8aeb3165d98d1a37bee3504c6e8b5195cf9cf4343cd878c",
+    "afterAnchorSha256LF": "509f78511d6ba87cd762d5edd94e2b871ef5ca27e27864671d5f2d788cd4a7fa"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "    fun changePreferences(next: PlayerPreferences) {",
+    "after": "    LaunchedEffect(ordinaryVideoEvents, systemMedia) {\n        for (event in ordinaryVideoEvents) when(event) {\n            is DesktopOriginalVideoShellEvent.Feedback -> error = event.message\n            is DesktopOriginalVideoShellEvent.Metadata -> {\n                if (!systemTargetAudio && retainedMedia.current == null &&\n                    ordinaryVideo.slot.currentAssembly() === event.owner && event.owner.owns() &&\n                    event.owner.native.isCurrent(event.expected)) {\n                    val readback = event.owner.section.nativePlayer.state.value\n                    systemMedia?.update(WindowsMediaSnapshot(event.title, event.author,\n                        event.expected.request.bvid, readback, readback.audioOnly,\n                        playback.hasPrevious, playback.hasNext,\n                        readback.loading || readback.durationSeconds > 0 || readback.ended))\n                }\n            }\n        }\n    }\n    fun changePreferences(next: PlayerPreferences) {",
+    "reason": "Real Mini metadata/feedback consumer on existing SMTC actor, with captured accepted identity",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "cb6922c260be5e81822f957a25e4af51ded15f0b3ab639960168e5afcb1625b8",
+    "afterAnchorSha256LF": "d0975593c4bf6ca3a943232cf7f267d010440f16ae0980de0c15443fe064c150"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "            else -> player?.let { if (relative) it.seekBy(seconds) else it.seekTo(seconds) }\n        }\n    }\n    val systemMedia",
+    "after": "            else -> Unit // No ordinary source exists; never command an unowned native source.\n        }\n    }\n    val systemMedia",
+    "reason": "SMTC seek never falls through to unowned ordinary native state",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "cc4c6976fbf25ec6c666a4f6f3ca349944820b99fa1281cad249d34d854326dd",
+    "afterAnchorSha256LF": "d8768b8765821463e830c4687e3cde723a07269f3bae69e4bbff50c86ac0b4b1"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                WindowsMediaCommand.PLAY -> if (systemTargetAudio) listen?.let { if (it.player.state.value.paused || !it.state.value.active) it.togglePause() }\n                    else target?.let { if (it.state.value.ended) it.replay() else it.setPaused(false) }\n                WindowsMediaCommand.PAUSE -> if (systemTargetAudio) listen?.pause() else target?.setPaused(true)\n                WindowsMediaCommand.STOP -> if (systemTargetAudio) listen?.pause() else { pip?.close(); retainedMedia.stop(); playback.stop(); target?.stop() }",
+    "after": "                WindowsMediaCommand.PLAY -> if (systemTargetAudio) listen?.let { if (it.player.state.value.paused || !it.state.value.active) it.togglePause() }\n                    else if (retainedMedia.current?.ownsNativeSource == true) target?.let { if (it.state.value.ended) it.replay() else it.setPaused(false) }\n                    else ordinaryVideo.play()\n                WindowsMediaCommand.PAUSE -> if (systemTargetAudio) listen?.pause()\n                    else if (retainedMedia.current?.ownsNativeSource == true) target?.setPaused(true) else playback.pause()\n                WindowsMediaCommand.STOP -> if (systemTargetAudio) listen?.pause() else {\n                    pip?.close()\n                    if (retainedMedia.current != null) { retainedMedia.stop(); target?.stop() } else playback.stop()\n                }",
+    "reason": "SMTC preserves real retained/SID-AU priority; ordinary commands admit same accepted source",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "a20154efcc456150356e96c0e32d10ed6e37832cdf88085b2c3d155d0749a8ea",
+    "afterAnchorSha256LF": "069cdab79d2a2047866677be59d898704d5ec682c88c9ec68639fd4ec1e6a84b"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "            if (nativeSource == null) repository.playback(info, current.currentPart, current.quality)\n            else playback.currentCastSource(nativeSource.sourceVersion) ?: error(\"当前视频播放源已经变化，请重新开始投屏\")",
+    "after": "            checkNotNull(nativeSource) { \"当前视频尚未发布可投屏的播放源\" }\n            playback.currentCastSource(nativeSource.sourceVersion) ?: error(\"当前视频播放源已经变化，请重新开始投屏\")",
+    "reason": "Cast never recaptures latest account playback to authorize old UI",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "723f381b6518fee23941f4f0b29744f0cd68292ec36df8a3a6d45a4b44c124f0",
+    "afterAnchorSha256LF": "19d6c950be0d9fed5c678c22468b242afd32293a009c0fff2eb07abd3d3d92da"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "            null -> resolvedVideo!!.toNativePlayback()",
+    "after": "            null -> checkNotNull(nativeSource).source",
+    "reason": "Ordinary cast preserves exact remote headers/user-agent/receipt/epoch, not lossy legacy projection",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "c0bfa0b8ba8b98fa30b63122287949fb8ed75ff02984df7788da5461bd3f0684",
+    "afterAnchorSha256LF": "5001debff146bb265d4f7ddfcae967764d873b2c0d0b5ef0d493dbdbb7145b02"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "    DisposableEffect(playback) { onDispose { playback.close() } }",
+    "after": "    DisposableEffect(ordinaryVideo) { onDispose { ordinaryVideo.retire() } }",
+    "reason": "Dispose admission synchronously; shutdown hook owns all external joins",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "dab4e35d8c3e68448519c5393763fa037cc531519e20dd9860aff800500d5a42",
+    "afterAnchorSha256LF": "3fb54489ec0855daf4df9b039d8956a4d4aa21585412ede2bb6c41d51cd20575"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "    LaunchedEffect(anyCasting) { if (anyCasting) { playback.pause(); player?.setPaused(true); listen?.pause() } }",
+    "after": "    LaunchedEffect(anyCasting) { if (anyCasting) {\n        if (retainedMedia.current?.ownsNativeSource == true) player?.setPaused(true) else playback.pause()\n        listen?.pause()\n    } }",
+    "reason": "Ordinary pause uses accepted publication while retained media has its own authority",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "a59ba795b96bed8241c4b7302397eeafce16e952d6aab09ac2e2f67b8714615d",
+    "afterAnchorSha256LF": "bcb793ba884adc8ff33eeeaffd22e77cee16b9dc5740e580f389fe8c4a90e33b"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "    LaunchedEffect(playing.details?.bvid, playing.currentPart) {\n        while (playing.details != null) {\n            delay(5000)\n            if (!withContext(Dispatchers.IO) { playback.checkpoint() })\n                error = playback.state.value.error ?: \"播放记录保存失败，请检查本地隐私和存储设置\"\n        }\n    }\n",
+    "after": "",
+    "reason": "Whole original VM owns heartbeat/history/progress scheduling; remove old five-second planner",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "2abb87ee10d287fd582c00a34af8d513553faed165094b2e3b70cfd6086e5485",
+    "afterAnchorSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "            PlayerKeyAction.PlayPause -> { initialized.togglePause(); true }",
+    "after": "            PlayerKeyAction.PlayPause -> ordinaryVideo.togglePause()",
+    "reason": "Physical key pause uses same ordinary native admission",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "054540ee4d6a3391665488445739e9c56f4197c4fcbc88c90600b7f79883d1cf",
+    "afterAnchorSha256LF": "7e2297a13169a23eb0d441276c90389a7ac623b39a6fbc1778d5ea0cd1f36e3d"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "        // Native AO keeps the same actual source while ordinary Video is covered by Home.\n        if(player!=null && !showVideo && section!=DesktopSection.STORY && retainedMedia.current==null && !pipActive && playing.details!=null)\n            SwingPanel(factory={player.surface},background=Color.Transparent,modifier=Modifier.size(1.dp))\n",
+    "after": "",
+    "reason": "One persistent Section carrier only; remove second ordinary 1px Canvas attachment",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "173feeeb8e10d83a190c9c7afb7f87769eb8a34874d3c38a000954d7df329379",
+    "afterAnchorSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                            onOnlineSubtitles = if ((showVideo || section == DesktopSection.STORY) && playing.details != null) ({\n                                val current = playback.state.value\n                                val info = current.details\n                                val cid = info?.pages?.getOrNull(current.currentPart)?.cid\n                                val owner = initialized.currentSourceVersion\n                                if (info != null && cid != null && playback.currentCastSource(owner) != null) {\n                                    subtitleDialogTarget = DesktopSubtitleDialogTarget(info.bvid, cid, owner, repository.sessionEpoch)\n                                    subtitleDialog = true\n                                }\n                            }) else null,\n                            onManualSubtitleSelection = playback::notifyUserSubtitleTrackSelection,\n                            audioSelection = playback.currentCastSource(initialized.currentSourceVersion)?.audioSelection,\n                            onAudioQualityChange = if (showVideo || section == DesktopSection.STORY) ({ playback.selectAudioQuality(it) }) else null,\n                            automaticSubtitleMode = automaticSubtitleState.mode,\n                            automaticSubtitleTracks = automaticSubtitleState.tracks,\n                            onAutomaticSubtitleMode = if (showVideo || section == DesktopSection.STORY) ({ playback.setAutomaticSubtitleMode(it) }) else null,\n",
+    "after": "                            // Ordinary subtitles/audio are owned by the complete original Holder.\n                            // This thin panel is retained only by Story/other native media.\n",
+    "reason": "No old no-argument subtitle notification or parallel automatic-subtitle owner",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "679deab45779f7101d80b99fe5b6106aee1d063d5b50c9e01fc94f4d86f174f7",
+    "afterAnchorSha256LF": "ec115483eb09c7676de7e87997d4080b4d63cac103c68d2bfe8bbba7a0b6b53c"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                            viewPoints = if (playback.currentCastSource(initialized.currentSourceVersion) != null)\n                                chapterViewPoints else emptyList(),",
+    "after": "",
+    "reason": "Full original Content/VM owns ordinary chapter UI; remove old duplicate projection",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "f21e6101b309964d69b28629cf5ecccb67c119e425db33ee4ac9c45addbc52a7",
+    "afterAnchorSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                LaunchedEffect(videoEntry,active,native.ready,player?.currentSourceVersion) {\n                    if(active && videoEntry!=null && native.ready && playing.details?.bvid==videoEntry.bvid &&\n                        (videoEntry.cid<=0 || playing.details?.pages?.getOrNull(playing.currentPart)?.cid==videoEntry.cid) &&\n                        playback.currentCastSource(player?.currentSourceVersion ?: 0L)!=null)\n                        player?.setAudioOnly(videoEntry.startAudio || preferences.audioOnly)\n                }\n",
+    "after": "",
+    "reason": "Original Holder/native media intent owns route audio/paused flags",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "f19e1075bb1bd0b4c7086f897428607d9c47353a1d3046afb9bc1f3a9f1b4f84",
+    "afterAnchorSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                        is BiliPaiNavKey.AudioMode -> if(listen!=null && entryKey.sourceBvid.isNotBlank() && entryKey.sourceCid>0) {\n                            val current=listen.state.value.current\n                            if(current?.bvid!=entryKey.sourceBvid || current.cid!=entryKey.sourceCid) {\n                                val info=repository.videoDetails(entryKey.sourceBvid)\n                                ensureActive()\n                                if(homeRootRef.get()?.route?.get()?.currentKey==entryKey) {\n                                    listen.playStartingAt(listOf(com.android.purebilibili.feature.video.player.PlaylistItem(\n                                        info.bvid,entryKey.sourceCid,info.title,info.cover,info.author)),0,\n                                        entryKey.sourceResumePositionMs.coerceAtLeast(0L)/1000.0)\n                                }\n                            }\n                        }\n",
+    "after": "",
+    "reason": "BV audio must use same original video owner/Section, never secondary Listen single-track playback",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "d2f8282153ce2c14b75da42b54dd0da381b06066397417910b8a3e6ff1777bfb",
+    "afterAnchorSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "if(!pagerHosted && (entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.Search || entryKey == BiliPaiNavKey.Settings))",
+    "after": "if(!pagerHosted && (entryKey is BiliPaiNavKey.Search || entryKey == BiliPaiNavKey.Settings))",
+    "reason": "Original Holder owns its complete back/chrome controls",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "250c204b532afa85b709e426e994d95470b09ff4bf82061c2d25b7b8acb70cda",
+    "afterAnchorSha256LF": "50f8996cf235bcedf9cfb49f4f7964632de78d4a46f526bfd2a3b8a3cfcc78ff"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                            showVideo && playing.opening -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }\n                            showVideo && playing.details != null -> DesktopVideoPage(playing, player, playerContent, favorite,\n                                blockedUps = community.blockedUpRepository, onLogin = { loginDialog = true },\n                                onVideo = ::openVideo, onPart = playback::playPart, onQuality = playback::switchQuality,\n                                onFavorite = { library.toggleFavorite(playing.details!!.asCard()); favorite = library.isFavorite(playing.details!!.bvid) },\n                                onCast = { castDialog = true },\n                                onStory = { openStory(playing.details!!.asCard().copy(preferredCid = playing.details!!.pages[playing.currentPart].cid)) },\n                                engagement = { Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {\n                                    DesktopVideoMetadataHost(playing.details!!, repository, social, ::openUser, ::openVideoHonorLink, { error = it })\n                                    val favoriteVideoAid = playing.details!!.aid\n                                    val favoriteVideoEpoch = sessionEpoch\n                                    VideoEngagementPanel(playing.details!!, repository, social, community,\n                                    ::openUser, { loginDialog = true }, ::openNotes, playback::seek,\n                                    cid = playing.details!!.pages[playing.currentPart].cid,\n                                    globalStore = pluginStore,\n                                    stillOwned = {\n                                        repository.sessionEpoch == favoriteVideoEpoch && !isClosing() && !activatingUpdate && showVideo &&\n                                            playback.state.value.details?.aid == favoriteVideoAid\n                                    }, onFavoriteCount = { count ->\n                                        playback.updateFavoriteCountForOwner(favoriteVideoAid, favoriteVideoEpoch, count)\n                                    },\n                                    commentContent = {\n                                        val rawCommentInfo = playing.details!!.raw\n                                        val commentCid = playing.details!!.pages[playing.currentPart].cid\n                                        val commentEpoch = sessionEpoch\n                                        val commentVideoId = playing.details!!.bvid\n                                        val commentSourceVersion = player?.currentSourceVersion ?: 0L\n                                        if (rawCommentInfo != null) DesktopVideoCommentRootHost(\n                                            info = rawCommentInfo.copy(cid = commentCid), videoTags = emptyList(),\n                                            repository = repository, community = community, fraud = commentFraud,\n                                            isVideoPlaying = !native.paused,\n                                            stillOwned = {\n                                                repository.sessionEpoch == commentEpoch && !isClosing() && !activatingUpdate && showVideo &&\n                                                    playback.state.value.details?.bvid == commentVideoId\n                                            }, currentVideoPositionMsProvider = {\n                                                if (repository.sessionEpoch == commentEpoch && player?.currentSourceVersion == commentSourceVersion &&\n                                                    playback.state.value.details?.bvid == commentVideoId &&\n                                                    playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == commentCid)\n                                                    ((player?.state?.value?.positionSeconds ?: 0.0) * 1000L).toLong() else 0L\n                                            }, onTimestampClick = { timestampMs ->\n                                                if (repository.sessionEpoch == commentEpoch && player?.currentSourceVersion == commentSourceVersion &&\n                                                    playback.state.value.details?.bvid == commentVideoId &&\n                                                    playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == commentCid &&\n                                                    playback.currentCastSource(commentSourceVersion) != null)\n                                                    playback.seek(commentCid, timestampMs.coerceAtLeast(0L) / 1000.0)\n                                            }, onUserClick = ::openUser, onLinkClick = ::openVideoHonorLink,\n                                            onLogin = { loginDialog = true }, modifier = Modifier.fillMaxWidth().height(440.dp),\n                                            initialCommentRootRpid = (entryKey as? BiliPaiNavKey.VideoDetail)?.commentRootRpid ?: 0L,\n                                            initialCommentTargetRpid = (entryKey as? BiliPaiNavKey.VideoDetail)?.commentTargetRpid ?: 0L,\n                                            commentRouteOpenId = (entryKey as? BiliPaiNavKey.VideoDetail)?.openId ?: 0L,\n                                            auxiliaryContent = if (player != null && danmaku != null && hostWindow != null && commentCid > 0L) ({ owner ->\n                                                val viewport = com.android.purebilibili.core.util.LocalWindowSizeClass.current\n                                                DesktopOriginalDanmakuRootHost(owner, repository, pluginStore, danmaku, commentCid,\n                                                    commentSourceVersion, stillOwned = {\n                                                        repository.sessionEpoch == commentEpoch && !isClosing() && !activatingUpdate && showVideo &&\n                                                            player.ownsSourceVersion(commentSourceVersion) && playback.state.value.details?.bvid == commentVideoId &&\n                                                            playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == commentCid &&\n                                                            playback.currentCastSource(commentSourceVersion) != null\n                                                    }, window = hostWindow, presentation = originalDanmakuPresentation,\n                                                    viewport = DesktopDanmakuSettingsViewport(viewport.widthDp.value.toInt(), viewport.heightDp.value.toInt()),\n                                                    currentPositionMs = { (player.state.value.positionSeconds * 1000.0).toLong().coerceAtLeast(0L) },\n                                                    seekFromUser = { playback.seekTo(it.coerceAtLeast(0L) / 1000.0) },\n                                                    showSettings = originalDanmakuSettingsVisible, showPool = originalDanmakuPoolVisible,\n                                                    onShowPool = { originalDanmakuSettingsVisible = false; originalDanmakuPoolVisible = true },\n                                                    onDismissSettings = { originalDanmakuSettingsVisible = false },\n                                                    onDismissPool = { originalDanmakuPoolVisible = false },\n                                                    enabledChangeVersion = originalDanmakuEnabledChangeVersion)\n                                            }) else null)\n                                        else Text(\"暂时无法取得原始评论信息\")\n                                    })\n                                    val musicTarget = DesktopMusicVideoTarget(playing.details!!.bvid,\n                                        playing.details!!.pages[playing.currentPart].cid, player?.currentSourceVersion ?: 0L, repository.sessionEpoch)\n                                    DesktopVideoMusicEntries(playing.details!!, musicTarget, repository, community,\n                                        currentTarget = { captured -> captured.isCurrent(playback.state.value.details?.bvid,\n                                            playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid,\n                                            player?.currentSourceVersion, repository.sessionEpoch) && showVideo && !activatingUpdate &&\n                                            playback.currentCastSource(captured.sourceVersion) != null },\n                                        positionSeconds = { player?.state?.value?.positionSeconds ?: 0.0 },\n                                        onMusic = ::openMusicSource, onBgm = ::openBgm, operations = dynamicEditor.operations,\n                                        onRelatedVideo = { bvid, cid -> openVideo(VideoCard(bvid, \"\", \"\", \"\", 0, 0, preferredCid = cid)) },\n                                        onExternalUrl = { raw ->\n                                            runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf(\"http\", \"https\") }?.let { uri ->\n                                                runCatching { java.awt.Desktop.getDesktop().browse(uri) }\n                                            }\n                                        })\n                                    DesktopCollectionSheetHost(playing.details!!, repository,\n                                        currentCid = playing.details!!.pages[playing.currentPart].cid,\n                                        isPlaying = player?.state?.value?.let { it.ready && !it.paused && !it.ended } == true,\n                                        onPlayQueue = ::openQueue, onFeedback = { error = it },\n                                        onShare = { title, text, owned -> scope.launch {\n                                            try {\n                                                if (!nativeTextShare.share(title, text) { owned() && !isClosing() } && owned() && !isClosing())\n                                                    error = \"无法打开 Windows 分享面板\"\n                                            } catch (cancelled: CancellationException) { throw cancelled }\n                                            catch (failure: Exception) { if (owned() && !isClosing()) error = failure.message ?: \"分享合集失败\" }\n                                        } },\n                                        stillOwned = { showVideo && playback.state.value.details?.bvid == playing.details!!.bvid && !isClosing() })\n                                } },\n                                onDownload = { requestedQuality, options ->\n                                    val expectedEpoch = repository.sessionEpoch\n                                    scope.launch {\n                                    try {\n                                        val downloadJob = kotlinx.coroutines.currentCoroutineContext()[Job]\n                                        val info = playing.details!!\n                                        val part = info.pages[playing.currentPart]\n                                        val source = repository.playback(info, playing.currentPart, requestedQuality)\n                                        kotlinx.coroutines.currentCoroutineContext().ensureActive()\n                                        if (repository.sessionEpoch != expectedEpoch) throw CancellationException(\"下载账号已切换\")\n                                        val downloadDestination = desktopOriginalDownloadDestination(globalPluginContext) {\n                                            !isClosing() && !activatingUpdate && repository.sessionEpoch == expectedEpoch &&\n                                                downloadJob?.isActive == true && playback.state.value.details?.bvid == info.bvid &&\n                                                playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == part.cid\n                                        }\n                                        downloads.enqueue(com.bilipai.desktop.player.PlaybackSource(videoUrl = source.videoUrl, audioUrl = source.audioUrl,\n                                            referer = source.referer, cookieHeader = source.cookieHeader, title = source.title,\n                                            progressiveSegments = source.progressiveSegments, authorizationReceipt = source.authorizationReceipt), destination = downloadDestination, metadata = DownloadMetadata(\n                                            aid = info.aid, bvid = info.bvid, cid = part.cid, cover = info.cover, author = info.author,\n                                            durationSeconds = part.duration.toInt(), quality = source.quality,\n                                            qualityLabel = source.availableQualities.firstOrNull { it.id == source.quality }?.label.orEmpty(),\n                                            includeDanmaku = options.includeDanmaku, episodeLabel = part.title),\n                                            stillOwned = { !isClosing() && !activatingUpdate && repository.sessionEpoch == expectedEpoch &&\n                                                downloadJob?.isActive == true && playback.state.value.details?.bvid == info.bvid &&\n                                                playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == part.cid })\n                                        error = \"已加入下载队列\"\n                                    } catch (cancelled: CancellationException) { throw cancelled } catch (failure: Exception) { error = failure.message ?: \"下载失败\" }\n                                } })\n",
+    "after": "                            entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.AudioMode ->\n                                DesktopOriginalVideoPhysicalLeaf(entryKey, ordinaryVideo, commands, active,\n                                    commands::back, ::openVideoHonorLink,\n                                    { enabled -> enhancementHostStarted.value = enabled },\n                                    pendingOwner = {\n                                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {\n                                            ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()\n                                        }\n                                    })\n",
+    "reason": "Physical immutable typed Video/Audio keys directly mount whole original Holder and all five retained domains",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "5add70733f582129b9139b4fcd81d23ac1a628c77020dfd08fe8becb2051152f",
+    "afterAnchorSha256LF": "9ac46a8905d6f94346498d5299bd359df350aff5d8f968c552fb9a6db6909c47"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "        val subtitleTarget = subtitleDialogTarget\n        fun subtitleTargetOwned(target: DesktopSubtitleDialogTarget): Boolean {\n            val current = playback.state.value\n            return target.matches(current.details?.bvid, current.details?.pages?.getOrNull(current.currentPart)?.cid,\n                player?.currentSourceVersion, repository.sessionEpoch, playback.currentCastSource(target.sourceVersion) != null)\n        }\n        LaunchedEffect(subtitleDialog, subtitleTarget, playing.details?.bvid, playing.currentPart, sessionEpoch, player?.currentSourceVersion) {\n            if (subtitleDialog && (subtitleTarget == null || !subtitleTargetOwned(subtitleTarget))) subtitleDialog = false\n        }\n        if (subtitleDialog && subtitleTarget != null && subtitleTargetOwned(subtitleTarget)) {\n            key(subtitleTarget) { OnlineSubtitleDialog(subtitleTarget.bvid, subtitleTarget.cid, community, subtitleAssets,\n                onImport = { path, track, select ->\n                    if (subtitleTargetOwned(subtitleTarget)) {\n                        playback.notifyUserSubtitleTrackSelection()\n                        player?.addSubtitle(path, track.lanDoc.ifBlank { track.lan }, track.lan, select)\n                    } else { subtitleDialog = false; error = \"播放内容已变化，请重新打开字幕选择\" }\n                }, onDismiss = { subtitleDialog = false }) }\n        }\n",
+    "after": "",
+    "reason": "Remove legacy ordinary external/online subtitle dialog; full Holder selector owns exact key",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "00d60e8eaae1aa164d49015663cca9f6d3e8145790cd9632f83449612cb34d25",
+    "afterAnchorSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "    val ordinaryVideoResourcesRetired = remember { java.util.concurrent.atomic.AtomicBoolean(false) }",
+    "after": "    val ordinaryVideoResourcesRetired = remember { java.util.concurrent.atomic.AtomicBoolean(false) }\n    val originalWindowEnvironment = remember { java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoRootWindowEnvironment?>() }\n    val originalNowPlaying = remember { java.util.concurrent.atomic.AtomicReference<Pair<DesktopHomeRetainedRoot,DesktopOriginalVideoRootNowPlayingBinding>?>() }\n    val originalCaptureProtection = remember(hostWindow) { hostWindow?.let { actual ->\n        DesktopWindowsVideoCaptureOwner(actual,{ !isClosing() }) { diagnostic ->\n            diagnostics?.record(\"W\",\"VideoCapture\",diagnostic)\n        }\n    } }\n    fun setOriginalFullscreen(desired: Boolean) {\n        if (originalCaptureProtection?.orientationLocked == true && desired != isFullscreen()) {\n            ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(\"当前播放器已锁定展示方向，请先解除锁定\"))\n        } else setFullscreen(desired)\n    }\n    fun toggleOriginalFullscreen() = setOriginalFullscreen(!isFullscreen())",
+    "reason": "One actual app Window capture owner; all fullscreen changes honor its own presentation lock",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "06ec662ae42a7b742d615e687fc4fd2a08e941795e95bb5a7942acc0219b115e",
+    "afterAnchorSha256LF": "c26a0a943465b48376954b123979514acbd9a636bbfa46e16146c8712647e1a1"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "        ordinaryVideoResourcesRef.get()?.let { resources ->\n            resources.closeAndJoin()\n            ordinaryVideoResourcesRef.compareAndSet(resources, null)\n        }\n    }",
+    "after": "        ordinaryVideoResourcesRef.get()?.let { resources ->\n            resources.closeAndJoin()\n            ordinaryVideoResourcesRef.compareAndSet(resources, null)\n        }\n        withContext(Dispatchers.Main) { originalCaptureProtection?.close() }\n    }",
+    "reason": "Close the one Window capture owner after all ordinary producer joins",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "67789522acb36f463162ab66c2227ff59e964e051311b8998cce81e95e1b35df",
+    "afterAnchorSha256LF": "a2ec620a7a6a95f8014209eeb9bf9e6c527a7de9c3e09ae075df6a9700580edd"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "    val playback = ordinaryVideo.playback",
+    "after": "    val playback = ordinaryVideo.playback\n    fun originalNowPlayingFor(root: DesktopHomeRetainedRoot, actualListen: ListenAudioSession?): DesktopOriginalVideoRootNowPlayingBinding {\n        val old = originalNowPlaying.get()\n        if (old?.first === root) return old.second\n        val next = DesktopOriginalVideoRootNowPlayingBinding(root,repository,ordinaryVideo,\n            checkNotNull(player),actualListen) { !isClosing() && root.isCurrentOwner() }\n        originalNowPlaying.set(root to next)\n        return next\n    }",
+    "reason": "Root music/dock shares the exact ordinary/Listen priority read view, no new queue or player",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "45f4278b3db4423e49ac30cf22103c4747dca0e5e0f30a17898375c8b1111156",
+    "afterAnchorSha256LF": "53d7ae60157a21e626c65aafa7e411bc1c679bd1bcc0045d11062aa0a09f4229"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                            playback.openVideoDetail(VideoCard(new.bvid,new.bvid,new.coverUrl,\"\",0,0,preferredCid=new.cid),\n                                new.resumePositionMs,keepMatchingSource=!new.startAudio)\n",
+    "after": "",
+    "reason": "Only the original Holder accepts its initial immutable route; remove duplicate early load",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "8989d02d54dd78fdb5a6ca81cef60306e655d1d61c45c173e5ca07d501df05ab",
+    "afterAnchorSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                SideEffect { musicOverlay.value = listening.current != null && !rootNowPlayingDismissed }",
+    "after": "                val originalBarVisible by com.android.purebilibili.feature.audio.player.AudioNowPlayingSession.barOverlayVisible.collectAsState()\n                SideEffect { musicOverlay.value = originalBarVisible }",
+    "reason": "Root overlay visibility uses the single original bar presentation flow",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "954ee8a485014d639d2ca676917be44645dbecd16a3b5b74b231b8325b8d0a2f",
+    "afterAnchorSha256LF": "61a155c9480187767cf5d12fbfa9f986697705e06f493747a0ef55b776377d79"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                val services = DesktopReadyOriginalRootServices(repository,discovery,community,pluginRuntime,dynamicCardSession,",
+    "after": "                val services = DesktopReadyOriginalRootServices(repository,\n                    { environment -> originalWindowEnvironment.set(environment) },\n                    { environment -> originalWindowEnvironment.compareAndSet(environment,null) },\n                    { environment, content ->\n                        val appResources = ordinaryVideoResources\n                        if (appResources == null) content() else {\n                            val shellResources = remember(environment,appResources,ordinaryVideo,player,danmaku,enhancement,pip) {\n                                DesktopOriginalVideoRootShellResources(checkNotNull(player),checkNotNull(danmaku),\n                                    checkNotNull(enhancement),checkNotNull(pip),subtitleAssets,downloads,cast,\n                                    checkNotNull(listen).audio,discovery,community,commentFraud,appResources,\n                                    checkNotNull(originalCaptureProtection),originalDanmakuPreferences,danmakuPresentation,\n                                    WindowsTextClipboard,diagnostics,{preferences},isFullscreen,::setOriginalFullscreen,\n                                    { volume -> changePreferences(preferences.copy(volume=volume.toDouble())) },\n                                    { !isClosing() },{message->ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(message))},\n                                    { event -> ordinaryVideoEvents.trySend(event) },\n                                    { receipt -> scope.launch {\n                                        if (repository.sessionEpoch == receipt.accountEpoch && ordinaryVideo.slot.currentAssembly()?.owns()==true)\n                                            playback.retry() // Fresh request capture after the original VIP receipt invalidates itself.\n                                    } },\n                                    DesktopLibrary.directoryForAccount(null).resolve(\"video-scratch\"))\n                            }\n                            DesktopOriginalVideoReadyRootMount(environment,ordinaryVideo,shellResources,content)\n                        }\n                    }, discovery,community,pluginRuntime,dynamicCardSession,",
+    "reason": "Physical ready-window assembler constructs all required effects and mounts same original Holder provider",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "c9b2f93bbadabce60d5ae0eb0af0695a85ab8813b42292a13eb8b7a30f0f730c",
+    "afterAnchorSha256LF": "55cfea34d65a124a54e1cc8fe48226192fc6d4310b134b5a15738322ae1ee7f8"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                    { rootNowPlayingDismissed=true;listen?.pause() },",
+    "after": "                    { originalNowPlaying.get()?.second?.dismiss() },",
+    "reason": "Dismiss the exact priority snapshot through the original session view",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "9c37a353757b39aa450c44fedb8b8520bd14723448315de4527992c2515b8a66",
+    "afterAnchorSha256LF": "5476d0025bc9a2819dc0ef7c9a616cfacdcab3838f3af7cdc936f4429a339c96"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "DesktopOriginalNowPlayingVisibility(listening.current!=null&&!rootNowPlayingDismissed,",
+    "after": "DesktopOriginalNowPlayingVisibility(originalNowPlaying.get()?.second?.owner?.current()?.active==true,",
+    "reason": "Paused BV audio and actual SID/AU ownership both feed the original visibility policy",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "032705e5b8b9a7712089df55042e8d9e331b1901ce9267e6317d577dd56fbaef",
+    "afterAnchorSha256LF": "d9acc29b74fc49ddb8a8119932c7302d7ea15841f5e8bc9474450d83096428d8"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                        physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library)",
+    "after": "                        physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library,\n                    { root -> originalNowPlayingFor(root,listen).binding },\n                    { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) })",
+    "reason": "Two required Ready26 consumers read the same captured ordinary/Listen position, never default zero",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "b3ea1802da4f99634c4adeed2acf0b5e0e9ea582b9d3ab24a9f78aa7d5d11679",
+    "afterAnchorSha256LF": "931d1b08a7dd51fe1d307cff1f3dc36b0eaf2bdd67c23874166e25c614187ae9"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "            PlayerKeyAction.ToggleFullscreen -> { onToggleFullscreen(); true }\n",
+    "after": "            PlayerKeyAction.ToggleFullscreen -> { toggleOriginalFullscreen(); true }\n",
+    "reason": "Use app capture-aware actual fullscreen setter",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "cc3182aec9bac83100c43fb3e207fbb55b2528c9a1bc7d3012b3e0b0c315d4d1",
+    "afterAnchorSha256LF": "a72c93b4193d9d08806fd8cb44db655ec92a91ac80a2c18a3471d074eb25ab41"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "            if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { onToggleFullscreen(); true }\n",
+    "after": "            if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }\n",
+    "reason": "Use app capture-aware actual fullscreen setter",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "b777ea01864e4ff652a0f1b745ace6c0969c98e335f979f683f7273e4fa52153",
+    "afterAnchorSha256LF": "cf62849f2a5841c9be6c86ea1d5b6bbcea89a89e78594b8ae5a5ab399108098c"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                if (isFullscreen()) setFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()\n",
+    "after": "                if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()\n",
+    "reason": "Use app capture-aware actual fullscreen setter",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "ea3ad3fa5a205bebb354bfd8b464508836c8f3a8c17262278172b27a888e6dae",
+    "afterAnchorSha256LF": "853ff33f1e23de2729cfb28b7e36356979f4ae8c7ba13bfb7a4fa606843b816b"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                            if(new.fullscreen && !isFullscreen()) setFullscreen(true)\n",
+    "after": "                            if(new.fullscreen && !isFullscreen()) setOriginalFullscreen(true)\n",
+    "reason": "Use app capture-aware actual fullscreen setter",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "de3b6e59370fabba9ed0e38634528fe190bb1311b91942e9509f77b3bbff0b5a",
+    "afterAnchorSha256LF": "a51761ea65e5f59857a2c918d390e30342ac6bdcd80952a4ddedcffd083e8e86"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                        } else if(old is BiliPaiNavKey.VideoDetail && old.fullscreen && isFullscreen()) setFullscreen(false)\n",
+    "after": "                        } else if(old is BiliPaiNavKey.VideoDetail && old.fullscreen && isFullscreen()) setOriginalFullscreen(false)\n",
+    "reason": "Use app capture-aware actual fullscreen setter",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "d50b71210d7b6459b4fc0a12cab0e8113c4ba38e8c2680db4adb5b3dbcb86260",
+    "afterAnchorSha256LF": "c79e564713255d33181e40e01ba26c5d59f0ebf3bce784d8048f334619ae8415"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "before": "                                    isFullscreen,setFullscreen,{homeRootRef.get()?.refreshCurrentRootChrome()},\n",
+    "after": "                                    isFullscreen,::setOriginalFullscreen,{homeRootRef.get()?.refreshCurrentRootChrome()},\n",
+    "reason": "Use app capture-aware actual fullscreen setter",
+    "sourceHunkFile": "shell-command-hunks.json",
+    "beforeAnchorSha256LF": "5bde1ac3fda7f789fee5cca3637de10e242eb9d97ccd9a8477c3ce8e0924df54",
+    "afterAnchorSha256LF": "1ddad329eae144cd5c11476ac91a3b7bb7a1253b457c5c12828410b5fd20afde"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+    "before": "    private suspend fun saveCapturedGalleryBytes(bytes:ByteArray,fileName:String,mime:String,profileOwns:()->Boolean,\n        profileCommit:((()->Unit)->Boolean)):Boolean = saveMutex.withLock {\n        require(mime==\"image/jpeg\" || mime==\"image/png\")\n        suspend fun profileCheckpoint() {checkpoint();if(!profileOwns())throw CancellationException(\"Profile gallery entry retired\")}\n        profileCheckpoint();require(bytes.size.toLong() in 1..MAX_IMAGE_BYTES)\n        val profileCaller=currentCoroutineContext()\n        fun commitProfileOwned(block: () -> Unit): Boolean = commitOwned {\n            if(!profileCommit {profileCaller.ensureActive();if(!profileOwns())throw CancellationException(\"Profile gallery entry retired\");block()})\n                throw CancellationException(\"Profile gallery entry retired\")\n        }\n        require(fileName == Path.of(fileName).fileName.toString() && fileName.isNotBlank())\n        suspend fun write(target: DesktopDynamicSaveTarget): Boolean = withContext(Dispatchers.IO) {\n            profileCheckpoint();val parent=validateTarget(target)\n            val stage=Files.createTempFile(parent,\".bilipai-profile-gallery-\",\".tmp\")\n            try {\n                Files.newOutputStream(stage).use { output ->\n                    var offset=0\n                    while(offset<bytes.size) {profileCheckpoint();val count=minOf(64*1024,bytes.size-offset);output.write(bytes,offset,count);offset+=count}\n                }\n                if(!commitProfileOwned {validateTarget(target);Files.move(stage,target.path.toAbsolutePath().normalize())})\n                    throw CancellationException(\"Profile gallery owner retired\")\n                true\n            } finally {Files.deleteIfExists(stage)}\n        }\n        if(imageSaveLocations==null)write(selectTarget(fileName,mime) ?: return@withLock false)\n        else imageSaveLocations.save(fileName,::profileCheckpoint,::commitProfileOwned,::write)\n    }\n\n",
+    "after": "    private suspend fun saveCapturedGalleryBytes(bytes:ByteArray,fileName:String,mime:String,profileOwns:()->Boolean,\n        profileCommit:((()->Unit)->Boolean)):Boolean = saveMutex.withLock {\n        saveCapturedGalleryBytesUnlocked(bytes,fileName,mime,profileOwns,profileCommit)\n    }\n\n    private suspend fun saveCapturedGalleryBytesUnlocked(bytes:ByteArray,fileName:String,mime:String,profileOwns:()->Boolean,\n        profileCommit:((()->Unit)->Boolean)):Boolean {\n        require(mime==\"image/jpeg\" || mime==\"image/png\")\n        suspend fun profileCheckpoint() {checkpoint();if(!profileOwns())throw CancellationException(\"Profile gallery entry retired\")}\n        profileCheckpoint();require(bytes.size.toLong() in 1..MAX_IMAGE_BYTES)\n        val profileCaller=currentCoroutineContext()\n        fun commitProfileOwned(block: () -> Unit): Boolean = commitOwned {\n            if(!profileCommit {profileCaller.ensureActive();if(!profileOwns())throw CancellationException(\"Profile gallery entry retired\");block()})\n                throw CancellationException(\"Profile gallery entry retired\")\n        }\n        require(fileName == Path.of(fileName).fileName.toString() && fileName.isNotBlank())\n        suspend fun write(target: DesktopDynamicSaveTarget): Boolean = withContext(Dispatchers.IO) {\n            profileCheckpoint();val parent=validateTarget(target)\n            val stage=Files.createTempFile(parent,\".bilipai-profile-gallery-\",\".tmp\")\n            try {\n                Files.newOutputStream(stage).use { output ->\n                    var offset=0\n                    while(offset<bytes.size) {profileCheckpoint();val count=minOf(64*1024,bytes.size-offset);output.write(bytes,offset,count);offset+=count}\n                }\n                if(!commitProfileOwned {validateTarget(target);Files.move(stage,target.path.toAbsolutePath().normalize())})\n                    throw CancellationException(\"Profile gallery owner retired\")\n                true\n            } finally {Files.deleteIfExists(stage)}\n        }\n        return if(imageSaveLocations==null)write(selectTarget(fileName,mime) ?: return false)\n        else imageSaveLocations.save(fileName,::profileCheckpoint,::commitProfileOwned,::write)\n    }\n\n",
+    "reason": "Keep the sole Section265 PNG/JPEG writer body; expose its existing mutex-owned body to the original cover operation",
+    "sourceHunkFile": "download-assets-merge-hunks.json",
+    "beforeAnchorSha256LF": "df32c16f1ec0c7273ec179cfd83cffa301b84be5af4e67c2b2bc11f10a3476c4",
+    "afterAnchorSha256LF": "88e956a3548788b3dd9989865f0e92e2e5f1d3932477fbeffe27a0e19732a9a3"
+  },
+  {
+    "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+    "before": "    suspend fun saveLivePhotoVideo(rawUrl: String): Boolean = saveMutex.withLock {",
+    "after": "    /** Original DownloadManager cover bytes/$title.jpg, on the SAME existing save actor.\n     * The Windows file-name mapping reuses the existing manager sanitizer; no static\n     * image transcoding is substituted for this original raw-byte cover operation. */\n    suspend fun saveVideoCoverToGallery(rawUrl: String, title: String, videoOwns: () -> Boolean,\n        videoCommit: ((() -> Unit) -> Boolean)): Boolean = saveMutex.withLock {\n        requireNotNull(imageSaveLocations) { \"Root global image save locations are required\" }\n        suspend fun videoCheckpoint() {\n            checkpoint()\n            if (!videoOwns()) throw CancellationException(\"Video cover entry retired\")\n        }\n        videoCheckpoint()\n        val source = downloadTo(rawUrl.replace(\"http://\", \"https://\"), scratchDirectory(), MAX_IMAGE_BYTES)\n        try {\n            withContext(Dispatchers.IO) {\n                videoCheckpoint()\n                val bytes = java.io.ByteArrayOutputStream().use { output ->\n                    Files.newInputStream(source).use { input ->\n                        val buffer = ByteArray(64 * 1024)\n                        while (true) {\n                            videoCheckpoint()\n                            val count = input.read(buffer)\n                            if (count < 0) break\n                            if (count > 0) output.write(buffer, 0, count)\n                        }\n                    }\n                    output.toByteArray()\n                }\n                videoCheckpoint()\n                saveCapturedGalleryBytesUnlocked(bytes,\n                    com.bilipai.desktop.download.DesktopDownloadManager.safeOutputName(title) + \".jpg\", \"image/jpeg\",\n                    videoOwns, videoCommit)\n            }\n        } finally { Files.deleteIfExists(source) }\n    }\n\n    suspend fun saveLivePhotoVideo(rawUrl: String): Boolean = saveMutex.withLock {",
+    "reason": "Original Download39 cover body, only the shared JPEG byte helper call is adapted to the Section265 mime parameter",
+    "sourceHunkFile": "download-assets-merge-hunks.json",
+    "beforeAnchorSha256LF": "8819b820e967bb48675bce069f09e57649e1426ef694885a42d6a337b29f48e6",
+    "afterAnchorSha256LF": "b535425fb4c838c8d6f6777a3c95ef87a41e67d049614224f7758b48b6b8b4f0"
+  }
+]

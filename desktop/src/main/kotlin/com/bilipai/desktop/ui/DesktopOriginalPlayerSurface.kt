@@ -37,19 +37,41 @@ internal fun DesktopOriginalPlayerSurface(
     foreground: @Composable () -> Unit,
     onWindowAvailability: ((Any, Boolean) -> Unit)?,
 ) {
+    DesktopOriginalPlayerSurface(player, sourceVersion, isOwned, modifier, foreground, onWindowAvailability, null)
+}
+
+@Composable
+internal fun DesktopOriginalPlayerSurface(
+    player: MpvPlayer, sourceVersion: Long?, isOwned: () -> Boolean, modifier: Modifier,
+    foreground: @Composable () -> Unit, onWindowAvailability: ((Any, Boolean) -> Unit)?,
+    viewport: DesktopOriginalNativeViewportState?,
+) {
+    DesktopOriginalPlayerSurface(player,sourceVersion,isOwned,modifier,foreground,onWindowAvailability,viewport,null,true)
+}
+
+@Composable
+internal fun DesktopOriginalPlayerSurface(
+    player:MpvPlayer,sourceVersion:Long?,isOwned:()->Boolean,modifier:Modifier,
+    foreground:@Composable () -> Unit,onWindowAvailability:((Any,Boolean)->Unit)?,
+    viewport:DesktopOriginalNativeViewportState?,onNativeWindowAvailability:((java.awt.Window,Boolean)->Unit)?,
+    presented:Boolean,
+) {
     val latestOwned by rememberUpdatedState(isOwned)
     val latestSourceVersion by rememberUpdatedState(sourceVersion)
     val latestForeground by rememberUpdatedState(foreground)
     var size by remember(player) { mutableStateOf(IntSize.Zero) }
+    val anchor = remember(player, viewport) {
+        if (viewport == null) player.surface else viewport.createContainer(player.surface)
+    }
     if (!isOwned()) return
     Box(modifier.background(Color.Black).onSizeChanged { size = it }) {
-        SwingPanel(factory = { player.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
-        DesktopShapedVideoCommandPopup(size, player.surface, onWindowAvailability = onWindowAvailability) {
+        SwingPanel(factory = { anchor }, background = Color.Black, modifier = Modifier.fillMaxSize())
+        DesktopShapedVideoCommandPopup(size, anchor, onWindowAvailability, onNativeWindowAvailability, presented) {
             val version = latestSourceVersion
             // Null is an explicit entry-loading cover/control presentation, never native write permission.
             // Every control supplied by the caller must reject native writes until it owns a non-null version.
             if (latestOwned() && (version == null || player.ownsSourceVersion(version))) {
-                key(player, version) {
+                key(player) {
                     Box(Modifier.fillMaxSize().desktopCommandHitRegion("original-player-surface")) {
                         latestForeground()
                     }

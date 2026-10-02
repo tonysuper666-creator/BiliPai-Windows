@@ -1,0 +1,16 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+    "before": "internal class DesktopOriginalVideoSectionWindowsPlatform(\n",
+    "after": "// The outer fullscreen foreground and its inner original Section share this exact\n// adapter/Popup. An inner call renders inside the existing portal, never attaches\n// the same movable native carrier a second time in one composition frame.\nprivate val LocalDesktopOriginalSectionForegroundOwner = staticCompositionLocalOf<Any?> { null }\n\ninternal class DesktopOriginalVideoSectionWindowsPlatform(\n",
+    "beforeAnchorSha256LF": "54d8b50be45b590948489e790c9c3153325b7a295f4ed2569f46a3c75068bacc",
+    "afterAnchorSha256LF": "864edaf6648940e9992901593b748537a2be54fa1ce9eaf93ff19903098072e4"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+    "before": "    @Composable override fun RenderPlayerForeground(content: @Composable () -> Unit) {\n        carrier(Modifier.fillMaxSize(), content)\n    }\n",
+    "after": "    @Composable override fun RenderPlayerForeground(content: @Composable () -> Unit) {\n        if (LocalDesktopOriginalSectionForegroundOwner.current === this) {\n            content()\n        } else {\n            carrier(Modifier.fillMaxSize()) {\n                CompositionLocalProvider(LocalDesktopOriginalSectionForegroundOwner provides this) {\n                    content()\n                }\n            }\n        }\n    }\n",
+    "beforeAnchorSha256LF": "d9b926149a187b08569eaa6646b86a7b05ba02199392a0df7a0dfacd0e664c85",
+    "afterAnchorSha256LF": "be8b9caae1abfa571826a625747efe5232b9ce9fb0868bd2138e8de4db2aa28d"
+  }
+]

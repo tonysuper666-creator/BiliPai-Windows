@@ -1,0 +1,20 @@
+{
+  "relativePath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+  "baseSHA256LF": "724b8cb04e01ce9c6dc4f727783704fd332f65526ab300716b1d211295fc5298",
+  "desiredSHA256LF": "b7dfa910f1e8db89aab9ea239a1ae1d7872b600e5470f6ccb2ca26021573ea8e",
+  "hunks": [
+    {
+      "before": "import com.android.purebilibili.core.network.SearchApi\n",
+      "after": "import com.android.purebilibili.core.network.SearchApi\nimport com.android.purebilibili.core.network.StoryApi\n"
+    },
+    {
+      "before": "    private val playbackApi = repository.ownedPlaybackService(BilibiliApi::class.java, authorization, ::current)\n",
+      "after": "    private val capturedPrimaryStoryApi = repository.ownedHomeService(StoryApi::class.java, \"https://app.bilibili.com/\",\n        receipt.accountEpoch, ::current)\n    private val playbackApi = repository.ownedPlaybackService(BilibiliApi::class.java, authorization, ::current)\n"
+    },
+    {
+      "before": "    val primarySearchApi: SearchApi get() = read { capturedPrimarySearchApi }\n",
+      "after": "    val primarySearchApi: SearchApi get() = read { capturedPrimarySearchApi }\n    val primaryStoryApi: StoryApi get() = read { capturedPrimaryStoryApi }\n"
+    }
+  ],
+  "scope": "existing sole request Binding API facet only; no constructor/capture ABI change"
+}

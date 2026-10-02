@@ -1,0 +1,80 @@
+{
+  "families": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopPlaybackCache.kt",
+      "baseLF": "0e18c9bca99eee6371ee148f198471d659afadd77d64d2347ae8054cd6c99f24",
+      "desiredLF": "4af9925d9ee6efa8710b94c5d7c5dcb7cf17fc2b6f1ad98bfae2286d2c0630d7",
+      "hunks": [
+        {
+          "before": "    @Synchronized fun invalidateVideo(epoch: Long, bvid: String, cid: Long) {\n",
+          "after": "    /** Original no-quality get: newest valid entry for this video. The same\n     * existing LRU/TTL remains sole authority; receipt revision excludes other\n     * selected-account credentials. No source data is copied or cached here. */\n    @Synchronized fun getForVideo(epoch: Long, revision: Long, bvid: String, cid: Long,\n        now: Long = System.currentTimeMillis()): Entry? {\n        var candidate: Entry? = null\n        entries.toMap().forEach { (key, entry) ->\n            if (key.accountEpoch != epoch || key.authorizationRevision != revision ||\n                key.bvid != bvid || key.cid != cid) return@forEach\n            if (now < entry.storedAt || now - entry.storedAt > TimeUnit.MINUTES.toMillis(10)) {\n                entries.remove(key); return@forEach\n            }\n            val current = candidate\n            if (current == null || entry.storedAt > current.storedAt) candidate = entry\n        }\n        return candidate\n    }\n\n    @Synchronized fun invalidateVideo(epoch: Long, bvid: String, cid: Long) {\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt",
+      "baseLF": "0074b5ef68ed46bdca12341e1a1c18fdb4ede5ba2ddf27a682d767a0ce1ff027",
+      "desiredLF": "44c9aa87640afc3e1470aff6cc2ea7e21d72a358a8cd49b96a7cb50f63797405",
+      "hunks": [
+        {
+          "before": "    internal fun originalVideoCacheKey(authorization: DesktopPlaybackAuthorization, bvid: String, cid: Long,\n",
+          "after": "    /** Entry view of the EXISTING raw playback cache. Every synchronous read\n     * captures the current valid authorization under the SAME Store; completed\n     * request Jobs are not retained for a page-wide cache view. */\n    internal fun originalVideoOwnerCacheView(expectedEpoch: Long, stillOwned: () -> Boolean,\n        commitIfEntryCurrent: ((() -> Unit) -> Boolean)): com.bilipai.desktop.ui.DesktopOriginalVideoOwnerCache {\n        fun <T> admitted(block: (DesktopPlaybackAuthorizationReceipt) -> T): T {\n            val authorization = capturePlaybackAuthorization(expectedEpoch, stillOwned)\n            return sessions.withPlaybackAuthorizationAdmission(authorization.receipt, stillOwned) {\n                var result: Result<T>? = null\n                if (!commitIfEntryCurrent {\n                    if (!stillOwned()) throw CancellationException(\"Original video cache entry retired\")\n                    result = runCatching { block(authorization.receipt) }\n                }) throw CancellationException(\"Original video cache entry retired\")\n                checkNotNull(result).getOrThrow()\n            }\n        }\n        return object : com.bilipai.desktop.ui.DesktopOriginalVideoOwnerCache {\n            override fun get(bvid: String, cid: Long): PlayUrlData? = admitted { receipt ->\n                playbackCache.getForVideo(receipt.accountEpoch, receipt.revision, bvid, cid)?.data\n            }\n            override fun invalidate(bvid: String, cid: Long) { admitted { receipt ->\n                playbackCache.invalidateVideo(receipt.accountEpoch, bvid, cid)\n            } }\n        }\n    }\n\n    internal fun originalVideoCacheKey(authorization: DesktopPlaybackAuthorization, bvid: String, cid: Long,\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuParser.kt",
+      "baseLF": "ee4235dbcb628fe160295650be9c2eb218211e75f06fa0d7fe0dc7e7223cd45c",
+      "desiredLF": "936e1a63fed4facadafa0a018c0a3e6c6a2e8e6ec2e789a6cf622ba76878c100",
+      "hunks": [
+        {
+          "before": "val advanced: List<AdvancedDanmakuData> = emptyList()) {",
+          "after": "val advanced: List<AdvancedDanmakuData> = emptyList(), val serverDisabled: Boolean = false) {",
+          "count": 1
+        },
+        {
+          "before": "        segments.forEach { bytes ->\n            DanmakuProto.parse(bytes).take(MAX_COMMENTS).forEach { item ->",
+          "after": "        var serverDisabled = false\n        segments.forEach { bytes ->\n            val reply = DanmakuProto.parseReply(bytes)\n            if (reply.state == 1) serverDisabled = true\n            reply.elems.take(MAX_COMMENTS).forEach { item ->",
+          "count": 1
+        },
+        {
+          "before": "            advanced.distinctBy { it.id }.sortedBy { it.startTimeMs })",
+          "after": "            advanced.distinctBy { it.id }.sortedBy { it.startTimeMs }, serverDisabled)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuWindowLoader.kt",
+      "baseLF": "959505017886e7dcebff58abb45acaaf8dd1cb2d0672497b457f8affbae3e29d",
+      "desiredLF": "1d6073d031171c3663d2862be3c1d33e8df03c21b5581722130b105c864ddc50",
+      "hunks": [
+        {
+          "before": "return DanmakuDocument(comments, (first.advanced + second.advanced).distinctBy { it.id }.sortedBy { it.startTimeMs }.take(5_000))",
+          "after": "return DanmakuDocument(comments, (first.advanced + second.advanced).distinctBy { it.id }.sortedBy { it.startTimeMs }.take(5_000),\n            first.serverDisabled || second.serverDisabled)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DanmakuOverlay.kt",
+      "baseLF": "3d388c4b158f009296d474a96793eecea241e0dd8f2e51e457731e7996377e09",
+      "desiredLF": "c435ac9a7a677ab3101b0ee747d20bbcbf59742e1a0eee0de6b02b975b38ecb3",
+      "hunks": [
+        {
+          "before": "    fun commandItemsFor(cid: Long): List<CommandDanmakuItem> = synchronized(requestLock) {\n",
+          "after": "    /** Original server-disable metadata belongs to the sole raw document.\n     * Require the same actual native source; no per-CID set/cache is created. */\n    fun serverDisabledFor(cid: Long, sourceVersion: Long): Boolean = synchronized(requestLock) {\n        check(!closed.get() && !liveMode && cid > 0L && player.ownsSourceVersion(sourceVersion)) {\n            \"Danmaku server-state source is not current\"\n        }\n        // Original mark-set absence is false until a reply marks this CID.\n        // Never use metadata from another CID/version or create a second set.\n        commandCid == cid && poolSourceVersion == sourceVersion && rawDocument.serverDisabled\n    }\n    fun commandItemsFor(cid: Long): List<CommandDanmakuItem> = synchronized(requestLock) {\n",
+          "count": 1
+        },
+        {
+          "before": "            rawDocument = document\n",
+          "after": "            rawDocument = document.copy(serverDisabled = rawDocument.serverDisabled || document.serverDisabled)\n",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "notes": "Same five actual families; no second cache/CID-set/client/DTO/player. Server-disabled stays monotonic only within existing raw source, whose original load reset clears it."
+}

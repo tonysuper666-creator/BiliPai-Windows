@@ -30,6 +30,7 @@ internal class DesktopOriginalRootPageBindings(
     val bottomBarContentPadding: () -> Dp,
     val setBottomBarVisible: (Boolean) -> Unit,
     val transitionClock: VideoCardTransitionClock,
+    val inPictureInPicture: () -> Boolean,
     val homeGraphicsLayerCaptureReady: () -> Boolean,
     val liveScrollRequestId: () -> Int,
     val liveTopPadding: () -> Dp,
@@ -114,6 +115,9 @@ internal class DesktopOriginalRootPageBindings(
     val skin = rememberHomeUiSkinDecoration(com.android.purebilibili.core.plugin.skin.LocalUiSkinState.current)
     val aggregate = root.entry.embeddedPages as DesktopOriginalHomeEmbeddedAggregate
     val returnState = returning
+    // This is the stable AppNavigation recovery-generation owner. Stable's
+    // declared generation has no synthetic increment or fake gesture source.
+    var predictiveBackCancelRecoveryGeneration by remember { mutableIntStateOf(0) }
     val renderPage: @Composable (BiliPaiNavKey, Boolean, Boolean) -> Unit = { key, active, pagerHosted ->
         if (active && routes.owns()) SideEffect { onActiveDestination(key) }
         if (routes.owns()) CompositionLocalProvider(
@@ -174,6 +178,26 @@ internal class DesktopOriginalRootPageBindings(
                         is BiliPaiNavKey.LiveAreaDetail -> androidx.compose.runtime.key(key) {
                             LiveAreaDetailScreen(key.parentAreaId, key.areaId, key.title, back, area, room) }
                         else -> error("Unreachable typed Live branch")
+                    }
+                }
+                is BiliPaiNavKey.VideoDetail -> {
+                    // AppNavigation.kt 2933–3018, original stack/return policies.
+                    val immediate = routes.previousKey == key
+                    val bindPreview = immediate && shouldBindVideoDetailBackPreviewPlayer(routes.currentKey, key)
+                    val sessionActive = shouldActivateVideoDetailPlaybackSession(routes.currentKey, key,
+                        immediate, bindPreview && returnState.isReturningFromDetail)
+                    val detailState = DesktopOriginalVideoHolderRouteState(immediate, bindPreview,
+                        predictiveBackCancelRecoveryGeneration.takeIf { routes.currentKey == key } ?: 0,
+                        returnState.isReturningFromDetail, returnState.isQuickReturnFromDetail,
+                        com.android.purebilibili.navigation.shouldEnableVideoDetailSharedTransition(
+                            cardTransitionEnabled = homeSettings.cardTransitionEnabled,
+                            sourceRoute = key.sourceRoute), resolveAppNavigationMotionSpec(
+                            com.android.purebilibili.core.util.LocalWindowSizeClass.current.isTablet,
+                            homeSettings.cardTransitionEnabled).slowFadeDurationMillis,
+                        pages.inPictureInPicture(), sessionActive && routes.currentKey !is BiliPaiNavKey.AudioMode,
+                        sessionActive)
+                    CompositionLocalProvider(LocalDesktopOriginalRootVideoRouteState provides detailState) {
+                        leafContent(key, routes, active, pagerHosted)
                     }
                 }
                 else -> leafContent(key, routes, active, pagerHosted)

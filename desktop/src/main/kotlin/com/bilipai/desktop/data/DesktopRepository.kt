@@ -226,6 +226,32 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         return cache to protocolState
     }
 
+    /** Entry view of the EXISTING raw playback cache. Every synchronous read
+     * captures the current valid authorization under the SAME Store; completed
+     * request Jobs are not retained for a page-wide cache view. */
+    internal fun originalVideoOwnerCacheView(expectedEpoch: Long, stillOwned: () -> Boolean,
+        commitIfEntryCurrent: ((() -> Unit) -> Boolean)): com.bilipai.desktop.ui.DesktopOriginalVideoOwnerCache {
+        fun <T> admitted(block: (DesktopPlaybackAuthorizationReceipt) -> T): T {
+            val authorization = capturePlaybackAuthorization(expectedEpoch, stillOwned)
+            return sessions.withPlaybackAuthorizationAdmission(authorization.receipt, stillOwned) {
+                var result: Result<T>? = null
+                if (!commitIfEntryCurrent {
+                    if (!stillOwned()) throw CancellationException("Original video cache entry retired")
+                    result = runCatching { block(authorization.receipt) }
+                }) throw CancellationException("Original video cache entry retired")
+                checkNotNull(result).getOrThrow()
+            }
+        }
+        return object : com.bilipai.desktop.ui.DesktopOriginalVideoOwnerCache {
+            override fun get(bvid: String, cid: Long): PlayUrlData? = admitted { receipt ->
+                playbackCache.getForVideo(receipt.accountEpoch, receipt.revision, bvid, cid)?.data
+            }
+            override fun invalidate(bvid: String, cid: Long) { admitted { receipt ->
+                playbackCache.invalidateVideo(receipt.accountEpoch, bvid, cid)
+            } }
+        }
+    }
+
     internal fun originalVideoCacheKey(authorization: DesktopPlaybackAuthorization, bvid: String, cid: Long,
         quality: Int, preferences: PlayerPreferences, codecOverride: String?, blockedCodecs: Set<String>,
         av1Supported: Boolean): DesktopPlaybackCache.Key {
@@ -266,6 +292,17 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         sessions.capturePlaybackCachePartition(receipt, stillOwned)
     internal fun capturePlaybackAuthorization(expectedEpoch: Long, stillOwned: () -> Boolean) =
         sessions.capturePlaybackAuthorization(expectedEpoch, stillOwned)
+    /** Called from captured Binding's Store -> entry read. No request or IO is created. */
+    internal fun capturePlaybackMediaCookieHeader(authorization: DesktopPlaybackAuthorization,
+        url: String, stillOwned: () -> Boolean): String {
+        assertPlaybackAuthorization(authorization, stillOwned)
+        val parsed = url.toHttpUrlOrNull() ?: throw IllegalArgumentException("Invalid captured media URL")
+        return (authorization.cookieJar?.loadForRequest(parsed) ?: sessions.loadForRequest(parsed))
+            .joinToString("; ") { "${it.name}=${it.value}" }.also {
+                assertPlaybackAuthorization(authorization, stillOwned)
+            }
+    }
+
     internal fun assertPlaybackAuthorization(authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean) =
         sessions.withPlaybackAuthorizationAdmission(authorization.receipt, stillOwned) { Unit }
     internal fun isPlaybackSourceCurrent(source: PlaybackSource): Boolean =
@@ -710,6 +747,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     }
 
     private val webLogin by lazy { DesktopLoginRepository(this) }
+    /** Borrow the same existing login/refresh authority for the original owner. */
+    internal val originalVideoLogin: DesktopLoginRepository get() = webLogin
     suspend fun beginQrLogin(): QrLogin = webLogin.beginWebQr()
     suspend fun pollQrLogin(key: String): QrLoginState = webLogin.pollWebQr(key)
 

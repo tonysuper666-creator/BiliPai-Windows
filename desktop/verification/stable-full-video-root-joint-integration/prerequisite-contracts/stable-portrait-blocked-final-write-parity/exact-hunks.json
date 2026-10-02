@@ -1,0 +1,56 @@
+{
+  "families": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpStore.kt",
+      "baseLF": "d185957657265d4c3bdde40791ac488f1178d6b6d8e128f89749b78d0192d8ff",
+      "desiredLF": "6d026a94333f63a6c923c90c75282cab299115632fdbe6d237eab2f264e36eaa",
+      "hunks": [
+        {
+          "before": "import java.util.concurrent.ConcurrentHashMap\n",
+          "after": "import java.util.concurrent.ConcurrentHashMap\nimport java.util.concurrent.locks.ReentrantLock\nimport kotlin.concurrent.withLock\n",
+          "count": 1
+        },
+        {
+          "before": "{ Any() }",
+          "after": "{ ReentrantLock() }",
+          "count": 1
+        },
+        {
+          "before": "synchronized(mutationLock)",
+          "after": "mutationLock.withLock",
+          "count": 5
+        },
+        {
+          "before": "return@synchronized",
+          "after": "return@withLock",
+          "count": 2
+        },
+        {
+          "before": "val locks = ConcurrentHashMap<Path, Any>()",
+          "after": "val locks = ConcurrentHashMap<Path, ReentrantLock>()",
+          "count": 1
+        },
+        {
+          "before": "    /** Strict guest + positive account MID whitelist. Credential files are never opened. */\n",
+          "after": "    /** Same global namespace and generic document CAS. Neither mutationLock nor\n     * backing is held while the captured Root permit is minted. Legacy callers\n     * keep their original methods; this entry-owned path never gates disk IO. */\n    internal fun upsertCaptured(up: BlockedUp, checkRequest: () -> Unit,\n        acquirePermit: () -> com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit) {\n        require(up.mid > 0) { \"UP 主 UID 必须为正整数\" }\n        editCaptured(checkRequest, acquirePermit) { it.filterNot { row -> row.mid == up.mid } + up }\n    }\n    internal fun removeCaptured(mid: Long, checkRequest: () -> Unit,\n        acquirePermit: () -> com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit) {\n        require(mid > 0) { \"UP 主 UID 必须为正整数\" }\n        editCaptured(checkRequest, acquirePermit) { it.filterNot { row -> row.mid == mid } }\n    }\n    private class CapturedMigrationReadRequired : RuntimeException()\n    private class CapturedDestinationReadFailure : RuntimeException()\n    private fun capturedRecords(snapshot: com.bilipai.desktop.plugins.DesktopPreferenceSnapshot): List<BlockedUp> {\n        val raw = snapshot[com.bilipai.desktop.plugins.DesktopPreferenceKey<JsonElement>(RECORDS) { it }] ?: run {\n            require(snapshot[com.bilipai.desktop.plugins.DesktopPreferenceKey<JsonElement>(MIGRATION) { it }] == null) {\n                \"本地黑名单迁移标记缺少资料记录\"\n            }\n            return emptyList()\n        }\n        require(raw is JsonPrimitive && raw.isString) { \"本地黑名单资料格式无效\" }\n        val rows = json.decodeFromString<List<BlockedUp>>(raw.content)\n        require(rows.all { it.mid > 0 } && rows.map { it.mid }.distinct().size == rows.size) { \"本地黑名单 UID 格式无效\" }\n        return rows.sortedByDescending { it.blockedAt }\n    }\n    private fun editCaptured(checkRequest: () -> Unit,\n        acquirePermit: () -> com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit,\n        edit: (List<BlockedUp>) -> List<BlockedUp>) {\n        var legacy: List<BlockedUpImportItem>? = null\n        var held = false\n        fun releaseFinalLock() {\n            if (held) { held = false; mutationLock.unlock() }\n        }\n        fun checkAttempt() { releaseFinalLock(); checkRequest() }\n        fun finalPermit(): com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit {\n            // Mint under the short Root admission first. Waiting for the shared\n            // legacy lock and the backing replacement happen after that gate.\n            val permit = acquirePermit()\n            mutationLock.lock()\n            held = true\n            return permit\n        }\n        while (true) {\n            checkAttempt()\n            try {\n                try { context.store.updateOriginalFromSnapshot(NAMESPACE, ::checkAttempt, ::finalPermit) { snapshot ->\n                    val marker = snapshot[com.bilipai.desktop.plugins.DesktopPreferenceKey<JsonElement>(MIGRATION) { it }]\n                    val previous = try {\n                        if (marker != null) require(marker is JsonPrimitive && marker.intOrNull == 1) { \"黑名单迁移版本无法识别\" }\n                        capturedRecords(snapshot)\n                    } catch (cancelled: CancellationException) { throw cancelled }\n                    catch (_: Exception) { throw CapturedDestinationReadFailure() }\n                    val migrated = if (marker == null) {\n                        val incoming = legacy ?: throw CapturedMigrationReadRequired()\n                        val plan = buildBlockedUpImportPlan(previous.map { it.mid }.toSet(), incoming)\n                        val now = clock()\n                        val added = plan.itemsToInsert.map { BlockedUp(it.mid, it.name, \"\", blockedAt = now) }\n                        previous + added\n                    } else previous\n                    Unit to mapOf(RECORDS to JsonPrimitive(json.encodeToString(edit(migrated))), MIGRATION to JsonPrimitive(1))\n                } } finally { releaseFinalLock() }\n                mutableMigrationError.value = null\n                return\n            } catch (_: CapturedMigrationReadRequired) {\n                checkRequest()\n                legacy = try { readCapturedLegacyMids(checkRequest) }\n                catch (cancelled: CancellationException) { throw cancelled }\n                catch (_: Exception) {\n                    val message = \"旧屏蔽名单迁移失败，原文件和现有黑名单保持不变；请修复旧文件后重试。\"\n                    mutableMigrationError.value = message\n                    throw IllegalStateException(message)\n                }\n                checkRequest()\n            } catch (_: CapturedDestinationReadFailure) {\n                val message = \"本地黑名单资料无法读取，原数据保持不变；请修复文件后重新启动应用。\"\n                mutableMigrationError.value = message\n                throw IllegalStateException(message)\n            }\n        }\n    }\n\n    private fun readCapturedLegacyMids(checkRequest: () -> Unit): List<BlockedUpImportItem> {\n        checkRequest()\n        val paths = legacyDiscoveryFiles()\n        val incoming = paths.flatMap { path ->\n            checkRequest()\n                val file = UpdateStorage.existingPathWithoutLinks(path)\n                val canonicalRoot = UpdateStorage.existingPathWithoutLinks(context.store.root)\n                require(file.startsWith(canonicalRoot) && Files.isRegularFile(file, NOFOLLOW_LINKS)) { \"旧黑名单路径无效\" }\n                require(Files.size(file) <= 8L * 1024 * 1024) { \"旧黑名单文件过大\" }\n                val document = Json.parseToJsonElement(Files.readString(file)).jsonObject\n                checkRequest()\n                require(document.values.all { it is JsonObject }) { \"旧设置存储格式无法识别\" }\n                val old = document[NAMESPACE] ?: return@flatMap emptyList()\n                require(old is JsonObject) { \"旧黑名单数据格式无效\" }\n                val encoded = old[\"mids\"] ?: run {\n                    require(old.isEmpty()) { \"旧黑名单字段无法识别\" }\n                    return@flatMap emptyList()\n                }\n                require(encoded is JsonPrimitive && encoded.isString) { \"旧黑名单 UID 数据格式无效\" }\n                json.decodeFromString<List<Long>>(encoded.content).map { BlockedUpImportItem(it) }\n            }\n        checkRequest()\n        return incoming\n    }\n\n    /** Strict guest + positive account MID whitelist. Credential files are never opened. */\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopBlockedUpRepository.kt",
+      "baseLF": "fd1ede2e75ba505be3b45a52052d146730cfea0ee27caf84eee32687cf7ebbfe",
+      "desiredLF": "c25db8f8e2919fdee968dcc1a405ee2b7f721c2674e5b6e31664831da62e1a85",
+      "hunks": [
+        {
+          "before": "    suspend fun importBlockedUps(text: String): BlockedUpImportResult = withContext(Dispatchers.IO) {\n",
+          "after": "    /** Exact original local-first relation operation with captured IO publication.\n     * Local callback performs its own same-Store CAS outside Root admission. */\n    internal suspend fun blockUpWithCapturedLocalWrite(mid: Long, name: String, face: String,\n        relationSource: BlockedUpRelationSource, expectedSessionEpoch: Long,\n        assertRequest: () -> Unit, writeLocal: (BlockedUp) -> Unit,\n        ownedApi: BilibiliApi, ownedCsrf: () -> String?, ensureOwnedSession: suspend () -> Unit): BlockedUpWriteResult =\n        withContext(Dispatchers.IO) {\n            require(mid > 0)\n            mutationMutex.withLock {\n                ensureEpoch(expectedSessionEpoch); currentCoroutineContext().ensureActive(); assertRequest()\n                writeLocal(BlockedUp(mid = mid, name = name, face = face))\n                sync(mid, true, relationSource, expectedSessionEpoch,\n                    { assertRequest(); true }, ownedApi, ownedCsrf, ensureOwnedSession)\n            }\n        }\n    internal suspend fun unblockUpWithCapturedLocalWrite(mid: Long,\n        relationSource: BlockedUpRelationSource, expectedSessionEpoch: Long,\n        assertRequest: () -> Unit, writeLocal: (Long) -> Unit,\n        ownedApi: BilibiliApi, ownedCsrf: () -> String?, ensureOwnedSession: suspend () -> Unit): BlockedUpWriteResult =\n        withContext(Dispatchers.IO) {\n            require(mid > 0)\n            mutationMutex.withLock {\n                ensureEpoch(expectedSessionEpoch); currentCoroutineContext().ensureActive(); assertRequest()\n                writeLocal(mid)\n                sync(mid, false, relationSource, expectedSessionEpoch,\n                    { assertRequest(); true }, ownedApi, ownedCsrf, ensureOwnedSession)\n            }\n        }\n\n    suspend fun importBlockedUps(text: String): BlockedUpImportResult = withContext(Dispatchers.IO) {\n",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "legacyBodiesInverseEqualExceptSharedLockSyntax": true,
+  "storeCAS": "Actual76 sole DesktopPluginStore.updateOriginalFromSnapshot",
+  "noNewStoreOrCache": true
+}

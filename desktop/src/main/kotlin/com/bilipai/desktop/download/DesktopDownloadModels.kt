@@ -22,7 +22,9 @@ data class DownloadTask(
     @kotlinx.serialization.Transient val streamHeaders: Map<String, String> = emptyMap(),
 ) {
     override fun toString() = "DownloadTask(id=$id, status=$status, authorization=$authorizationReceipt)"
-    internal fun playbackSource() = com.bilipai.desktop.player.PlaybackSource(item.videoUrl, item.audioUrl.takeIf { it.isNotBlank() },
+    internal fun playbackSource() = com.bilipai.desktop.player.PlaybackSource(
+        if (item.isAudioOnly) item.audioUrl.ifBlank { item.videoUrl } else item.videoUrl,
+        item.audioUrl.takeIf { !item.isAudioOnly && it.isNotBlank() },
         referer, userAgent, cookieHeader, item.title, progressiveSegments = progressiveSegments.map {
             com.bilipai.desktop.player.PlaybackSegment(it.url, it.durationSeconds) },
         streamHeaders = streamHeaders, authorizationReceipt = authorizationReceipt)

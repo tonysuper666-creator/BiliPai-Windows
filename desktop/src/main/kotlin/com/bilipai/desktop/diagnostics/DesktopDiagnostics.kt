@@ -143,6 +143,48 @@ internal class DesktopDiagnostics(
         await(submit {nativeShareCache.mayExpose(lease)})
     internal suspend fun retireNativeCrashShareLease(lease:DesktopCrashShareLease,safeToDelete:Boolean):Unit =
         await(submit {nativeShareCache.retire(lease,safeToDelete)})
+    /** The original explicit player-report export, on THIS sole serial writer.
+     * Temporary IO stays outside Root admission. Only no-clobber publication is
+     * admitted by the existing Store -> entry gate; retirement cannot publish.
+     * Original synchronous UI API returns only an actually published path. */
+    internal fun exportOriginalPlayerReport(content:String, stillOwned:()->Boolean,
+        commitIfCurrent:((()->Unit)->Boolean)):String? {
+        if(!stillOwned())throw kotlinx.coroutines.CancellationException("Player diagnostic owner retired")
+        val open=java.util.concurrent.atomic.AtomicBoolean(true)
+        val future=submit {
+            fun checkOwned() {
+                if(!open.get() || !stillOwned())throw kotlinx.coroutines.CancellationException("Player diagnostic owner retired")
+            }
+            checkOwned()
+            val directory=root.resolve("logs")
+            val target=directory.resolve(resolvePlayerDiagnosticExportFileName(clock()))
+            val temporary=directory.resolve(".player-report-${java.util.UUID.randomUUID()}.tmp")
+            ensurePrivateFile(target);ensurePrivateFile(temporary)
+            try {
+                val safe=utf8Tail(sanitizeDesktopDiagnosticText(content).toByteArray(Charsets.UTF_8),512*1024)
+                FileChannel.open(temporary,StandardOpenOption.CREATE_NEW,StandardOpenOption.WRITE).use { channel ->
+                    val buffer=ByteBuffer.wrap(safe)
+                    while(buffer.hasRemaining()){checkOwned();channel.write(buffer)}
+                    channel.force(true)
+                }
+                checkOwned()
+                var published=false
+                if(!commitIfCurrent {
+                    checkOwned()
+                    // A hard-link publication is atomic and has CREATE_NEW semantics.
+                    Files.createLink(target,temporary);published=true
+                } || !published)throw kotlinx.coroutines.CancellationException("Player diagnostic publication retired")
+                target.toString()
+            } finally {Files.deleteIfExists(temporary)}
+        }
+        return try {future.get(5,TimeUnit.SECONDS)}
+        catch(cancelled:java.util.concurrent.CancellationException){throw cancelled}
+        catch(failure:ExecutionException) {
+            if(failure.cause is kotlinx.coroutines.CancellationException)throw failure.cause!!
+            null
+        } catch(_:Exception){open.set(false);null}
+    }
+
     /** Explicit caller-selected local file only. CREATE_NEW never overwrites another artifact. */
     suspend fun exportTo(selectedPath:Path):Path = await(submit {
         val target=selectedPath.toAbsolutePath().normalize()

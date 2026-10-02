@@ -64,6 +64,7 @@ internal interface DesktopOriginalSectionEnhancementActions {
  * This source-only interface is not an assertion that Root has supplied these ports.
  */
 internal interface DesktopOriginalVideoSectionPlatform {
+    @Composable fun RenderPlayerForeground(content: @Composable () -> Unit)
     val settingsContext: DesktopOriginalPlayerSettingsContext
     val viewport: DesktopOriginalPlayerViewportPort
     val viewportAttached: Boolean
@@ -84,6 +85,7 @@ internal interface DesktopOriginalVideoSectionPlatform {
     fun hasPlaylistNext(): Boolean
     fun setScreenshotAndOrientationLock(locked: Boolean): AutoCloseable
     fun setViewportActive(active: Boolean)
+    fun acquireViewportLease(): AutoCloseable
     fun releaseViewportForThisEntry()
     fun recoverViewport(identity: String, fullscreen: Boolean, pip: Boolean, predictiveBackGeneration: Int)
     fun readViewportBrightness(): Float

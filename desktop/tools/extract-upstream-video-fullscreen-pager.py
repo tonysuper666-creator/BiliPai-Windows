@@ -53,6 +53,14 @@ def captured_media_byte_consumer_delta(path, text):
   text=text.replace(edit["before"],edit["after"],count)
  return text
 
+def portrait_hwnd_foreground_delta(path,text):
+ if path=='com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt':
+  before='        modifier = Modifier\n            .fillMaxSize()\n            .background(Color.Black)\n    ) { page ->'
+  after='        modifier = Modifier\n            .fillMaxSize()\n            .background(Color.Transparent)\n    ) { page ->'
+  assert text.count(before)==1,(path,'portrait native foreground host')
+  text=text.replace(before,after,1)
+ return text
+
 def generate(repo,output,standalone=False):
  global parser
  repo=Path(repo);output=Path(output);parser=module('original_fullscreen_tokens',repo/'desktop/tools/sync-upstream.py');lex=module('original_fullscreen_balanced',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py');rows=[]
@@ -64,6 +72,11 @@ def generate(repo,output,standalone=False):
    count=edit.get('count',1);assert text.count(edit['before'])>=count,(spec['output'],edit.get('label'));text=text.replace(edit['before'],edit['after'],count)
   text=spec.get('prefix','')+text+spec.get('suffix','');assert digest(text)==spec['outputSHA'],spec['output']
   text=captured_media_byte_consumer_delta(spec['output'],text)
+  text=portrait_hwnd_foreground_delta(spec['output'],text)
+  if spec['output']=='com/android/purebilibili/feature/video/ui/pager/PortraitVideoPager.kt':
+   needle='platform.publishSource(playbackRequest, finalSource, requestGeneration) {'
+   assert text.count(needle)==1
+   text=text.replace(needle,'platform.publishSource(playbackRequest, finalSource, requestGeneration, latestPortraitPlaybackAllowed) {',1)
   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
   if generated:
    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')

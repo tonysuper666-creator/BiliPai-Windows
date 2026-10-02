@@ -1,14 +1,13 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.feature.video.player.PlaylistItem
-import com.bilipai.desktop.DesktopPlaybackController
 import com.bilipai.desktop.audio.ListenAudioSession
 import com.bilipai.desktop.data.VideoCard
 
 /** Only an admission/reveal adapter. The Controller/Listen session retain the actual
  * native source, queue, shuffle policy and ownership. No Root queue is copied into a store. */
 internal class DesktopFavoriteQueueBridge(
-    private val playback: DesktopPlaybackController,
+    private val playback: DesktopUnifiedPlaybackFacade,
     private val listen: ListenAudioSession?,
     private val stillOwned: () -> Boolean,
     private val isSelectedTarget: (Boolean) -> Boolean,

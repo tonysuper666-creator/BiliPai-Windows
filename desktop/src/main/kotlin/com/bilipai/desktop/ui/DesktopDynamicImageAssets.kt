@@ -105,7 +105,20 @@ internal class DesktopDynamicImageAssets(
     }
     /** Original Profile gallery writes its supplied bytes with JPEG display name. Reuse this sole save actor. */
     suspend fun saveProfileGalleryBytes(bytes: ByteArray, fileName: String, profileOwns: () -> Boolean,
-        profileCommit: ((() -> Unit) -> Boolean)): Boolean = saveMutex.withLock {
+        profileCommit: ((() -> Unit) -> Boolean)): Boolean = saveCapturedGalleryBytes(bytes,fileName,"image/jpeg",profileOwns,profileCommit)
+
+    /** Native frame bytes remain PNG. Same Assets/Locations actor and publication gate. */
+    internal suspend fun saveNativeFrameBytes(bytes:ByteArray,fileName:String,stillOwned:()->Boolean,
+        commit:((()->Unit)->Boolean)):Boolean = saveCapturedGalleryBytes(bytes,fileName,"image/png",stillOwned,commit)
+
+    private suspend fun saveCapturedGalleryBytes(bytes:ByteArray,fileName:String,mime:String,profileOwns:()->Boolean,
+        profileCommit:((()->Unit)->Boolean)):Boolean = saveMutex.withLock {
+        saveCapturedGalleryBytesUnlocked(bytes,fileName,mime,profileOwns,profileCommit)
+    }
+
+    private suspend fun saveCapturedGalleryBytesUnlocked(bytes:ByteArray,fileName:String,mime:String,profileOwns:()->Boolean,
+        profileCommit:((()->Unit)->Boolean)):Boolean {
+        require(mime=="image/jpeg" || mime=="image/png")
         suspend fun profileCheckpoint() {checkpoint();if(!profileOwns())throw CancellationException("Profile gallery entry retired")}
         profileCheckpoint();require(bytes.size.toLong() in 1..MAX_IMAGE_BYTES)
         val profileCaller=currentCoroutineContext()
@@ -127,8 +140,43 @@ internal class DesktopDynamicImageAssets(
                 true
             } finally {Files.deleteIfExists(stage)}
         }
-        if(imageSaveLocations==null)write(selectTarget(fileName,"image/jpeg") ?: return@withLock false)
+        return if(imageSaveLocations==null)write(selectTarget(fileName,mime) ?: return false)
         else imageSaveLocations.save(fileName,::profileCheckpoint,::commitProfileOwned,::write)
+    }
+
+    /** Original DownloadManager cover bytes/$title.jpg, on the SAME existing save actor.
+     * The Windows file-name mapping reuses the existing manager sanitizer; no static
+     * image transcoding is substituted for this original raw-byte cover operation. */
+    suspend fun saveVideoCoverToGallery(rawUrl: String, title: String, videoOwns: () -> Boolean,
+        videoCommit: ((() -> Unit) -> Boolean)): Boolean = saveMutex.withLock {
+        requireNotNull(imageSaveLocations) { "Root global image save locations are required" }
+        suspend fun videoCheckpoint() {
+            checkpoint()
+            if (!videoOwns()) throw CancellationException("Video cover entry retired")
+        }
+        videoCheckpoint()
+        val source = downloadTo(rawUrl.replace("http://", "https://"), scratchDirectory(), MAX_IMAGE_BYTES)
+        try {
+            withContext(Dispatchers.IO) {
+                videoCheckpoint()
+                val bytes = java.io.ByteArrayOutputStream().use { output ->
+                    Files.newInputStream(source).use { input ->
+                        val buffer = ByteArray(64 * 1024)
+                        while (true) {
+                            videoCheckpoint()
+                            val count = input.read(buffer)
+                            if (count < 0) break
+                            if (count > 0) output.write(buffer, 0, count)
+                        }
+                    }
+                    output.toByteArray()
+                }
+                videoCheckpoint()
+                saveCapturedGalleryBytesUnlocked(bytes,
+                    com.bilipai.desktop.download.DesktopDownloadManager.safeOutputName(title) + ".jpg", "image/jpeg",
+                    videoOwns, videoCommit)
+            }
+        } finally { Files.deleteIfExists(source) }
     }
 
     suspend fun saveLivePhotoVideo(rawUrl: String): Boolean = saveMutex.withLock {

@@ -19,7 +19,16 @@ def source(rel):
   blob=subprocess.check_output(['git','-c','core.longpaths=true','hash-object','--path='+path,path],cwd=REPO,text=True).strip();assert blob==SOURCE_PINS[path]['gitBlob'],path
   SOURCES[path]=dict(text=b.decode(),**SOURCE_PINS[path])
  return SOURCES[path]['text']
+def original_subtitle_auto_setter_delta(path,text):
+    if path != 'com/android/purebilibili/core/store/DesktopOriginalPlayerSectionSettings.kt':return text
+    before='    fun getSubtitleAutoPreference(context: Context): Flow<SubtitleAutoPreference> ='
+    after='    suspend fun setSubtitleAutoPreference(context: Context, preference: SubtitleAutoPreference) {\n        context.settingsDataStore.edit { preferences ->\n            preferences[KEY_SUBTITLE_AUTO_PREFERENCE] = preference.ordinal\n        }\n    }\n\n    fun getSubtitleAutoPreference(context: Context): Flow<SubtitleAutoPreference> ='
+    assert text.count(before)==1,'exact missing original setter over existing key/context/globalStore'
+    text=text.replace(before,after,1)
+    return text
+
 def emit(rel,t):
+ t=original_subtitle_auto_setter_delta('com/android/purebilibili/'+rel,t)
  direct=BASE+rel in DIRECT
  OUTPUTS.append(dict(path='com/android/purebilibili/'+rel,sha256LF=sha(t),mode='direct-complete-original'if direct else'selected-platform',generated=STANDALONE or not direct))
  if STANDALONE or not direct:write(OUTPUT/'com/android/purebilibili'/rel,t)
@@ -147,15 +156,9 @@ def render_section():
                     modifier = with(density) {
                         val sizeModifier = if (fillMaxViewport) Modifier.fillMaxSize() else Modifier.size(
                             width = viewportLayout.width.toDp(), height = viewportLayout.height.toDp())
+                        // The native owner receives the original transform inputs below exactly once.
+                        // This registration Box measures the untransformed viewport; HWND alpha is unsupported.
                         sizeModifier.onSizeChanged { measuredPlayerViewportSize = it }
-                            .alpha(playerSurfaceAlpha).graphicsLayer {
-                                val revealAwareScaleX = scale * playerSurfaceScale
-                                val revealAwareScaleY = scale * playerSurfaceScale
-                                scaleX = if (isFlippedHorizontal) -revealAwareScaleX else revealAwareScaleX
-                                scaleY = if (isFlippedVertical) -revealAwareScaleY else revealAwareScaleY
-                                translationX = panX
-                                translationY = panY
-                            }
                     },
                     layout = viewportLayout, resizeMode = targetResizeMode,
                     revealAlpha = playerSurfaceAlpha, revealScale = playerSurfaceScale,
@@ -202,6 +205,7 @@ def render_section():
   'coil3.request.ImageRequest.Builder(context)':'coil3.request.ImageRequest.Builder(LocalContext.current)',
  }
  for a,b in mappings.items():t=t.replace(a,b)
+ t=exact(t,'    VideoPlayerSectionContent(state = state, actions = actions)', '    LocalDesktopOriginalVideoSectionPlatform.current.RenderPlayerForeground {\n        VideoPlayerSectionContent(state = state, actions = actions)\n    }','Whole original Section foreground in the sole Windows native carrier')
  t=t.replace('    val context = LocalContext.current\n    val density = LocalDensity.current\n','    val context = LocalDesktopOriginalVideoSectionPlatform.current.settingsContext\n    val density = LocalDensity.current\n')
  t=re.sub(r'(?m)^@androidx\.annotation\.OptIn\(androidx\.media3\.common\.util\.UnstableApi::class\)\n','',t)
  t=re.sub(r'(?m)^import (?:android\.(?!util\.Log as Logger)|androidx\.compose\.ui\.viewinterop\.AndroidView|com\.android\.purebilibili\.feature\.video\.danmaku\.(?:DanmakuManager|rememberDanmakuManager|configureAsPassiveDanmakuOverlay)|com\.android\.purebilibili\.danmaku\.engine\.DanmakuRenderView|com\.android\.purebilibili\.feature\.anime4k\.gl\.|com\.android\.purebilibili\.core\.plugin\.PluginManager|com\.android\.purebilibili\.feature\.plugin\.Anime4KPlugin|com\.android\.purebilibili\.core\.util\.applyPlayerRequestedOrientation|com\.android\.purebilibili\.feature\.screenshot\.AppScreenshotGestureBlockState|com\.android\.purebilibili\.feature\.video\.util\.capture).*$\n','',t)

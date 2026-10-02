@@ -367,7 +367,31 @@ internal class DesktopOriginalDanmakuSession(private val environment:DesktopDanm
  template=template.replace('// SELECTED_ORIGINAL_METHODS','\n\n'.join(members[1:]))
  template=template.replace('\n/** The existing Overlay', '\n'+members[0]+'\n\n/** The existing Overlay')
  emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskOwner.kt',template,PATHS[5],'selected-full-original-mask-window-methods-same-overlay-owner',selected)
+
+ # Selected original neutral local-item builder; only the configuration carrier is adapted.
+ local_method=function(manager,'addLocalDanmaku')[0]; local_mask=masked(local_method)
+ local_start=local_method.index('        val danmakuData = DanmakuItem().apply {')
+ local_open=local_mask.index('{',local_start);local_end=balanced(local_mask,local_open,'{','}')
+ local_original=local_method[local_start:local_end]
+ local_patches=[]
+ local_body=adapt(local_original,'        val danmakuData = DanmakuItem().apply {','    return DanmakuItem().apply {',local_patches)
+ local_body=adapt(local_body,'staticDanmakuToScroll = config.staticDanmakuToScroll','staticDanmakuToScroll = staticDanmakuToScroll',local_patches)
+ reverse=local_body
+ for patch in reversed(local_patches):reverse=reverse.replace(patch['after'],patch['before'])
+ assert reverse==local_original
+ local_tag=re.search(r'(?m)^        private const val TAG = [^\n]+',manager).group(0).strip()
+ local_wrapper='package com.android.purebilibili.feature.video.danmaku\nimport com.android.purebilibili.danmaku.engine.*\nimport com.android.purebilibili.core.util.Logger as Log\n'+local_tag+'\n\ninternal fun desktopOriginalLocalDanmakuItem(text:String,color:Int,mode:Int,fontSize:Int,currentPosition:Long,staticDanmakuToScroll:Boolean):DanmakuItem {\n'+local_body+'\n}\n'
+ emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuLocalItemFactory.kt',local_wrapper,PATHS[5],'selected-complete-original-local-item-apply',local_patches)
+ save(output/'local-item-selection.json',dict(originalSelectedSHA256LF=sha(local_original),adaptedSelectedSHA256LF=sha(local_body),exactSelectedInverse=True,adaptations=local_patches))
  sync=source[PATHS[16]];raw=function(sync,'normalizeDanmakuPlaybackSpeed','')[0]+'\n\n'+function(sync,'resolveDanmakuDriftSyncIntervalMs','')[0]
+ sync_mask=masked(sync);enum_start=sync.index('internal enum class DanmakuSyncAction {');enum_open=sync_mask.index('{',enum_start)
+ enum_source=sync[enum_start:balanced(sync_mask,enum_open,'{','}')]
+ recovery_source=function(sync,'resolveDanmakuActionForForegroundRecovery','')[0]
+ recovery_patches=[]
+ recovery_body=adapt(recovery_source,'androidx.media3.common.Player.STATE_ENDED','com.bilipai.desktop.ui.DesktopOriginalPlaybackStates.STATE_ENDED',recovery_patches)
+ assert recovery_body.replace(recovery_patches[0]['after'],recovery_patches[0]['before'])==recovery_source
+ raw+='\n\n'+enum_source+'\n\n'+recovery_body
+ save(output/'foreground-recovery-selection.json',dict(enumSHA256LF=sha(enum_source),originalSelectedSHA256LF=sha(recovery_source),adaptedSelectedSHA256LF=sha(recovery_body),exactSelectedInverse=True,adaptations=recovery_patches))
  constants=[re.search(r'(?m)^private const val '+name+r' = [^\n]+',sync).group(0) for name in ['MIN_ENGINE_PLAYBACK_SPEED','MAX_ENGINE_PLAYBACK_SPEED','NORMAL_SYNC_INTERVAL_MS']]
  imports='package com.android.purebilibili.feature.video.danmaku\n'+'\n'.join(constants)+'\n\n'
  emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicy.kt',imports+raw+'\n',PATHS[16],'selected-complete-original-refresh-interval-and-normalization')

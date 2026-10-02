@@ -51,6 +51,9 @@ import java.util.logging.Logger
  * is added. Root passes its current existing actors and primitive UI actions below. */
 internal class DesktopReadyOriginalRootServices(
     val repository: DesktopRepository,
+    val originalVideoWindowReady: (DesktopOriginalVideoRootWindowEnvironment) -> Unit,
+    val originalVideoWindowRetired: (DesktopOriginalVideoRootWindowEnvironment) -> Unit,
+    val originalVideoWindowContent: @Composable (DesktopOriginalVideoRootWindowEnvironment, @Composable () -> Unit) -> Unit,
     val discovery: DesktopDiscoveryRepository,
     val community: DesktopCommunityRepository,
     val runtime: DesktopPluginRuntime,
@@ -87,6 +90,8 @@ internal class DesktopReadyOriginalRootServices(
     val nowPlayingVisibility: () -> DesktopOriginalNowPlayingVisibility,
     val ffprobe: Path,
     val library: com.bilipai.desktop.DesktopLibrary,
+    val nowPlayingBinding: (DesktopHomeRetainedRoot) -> DesktopOriginalAudioNowPlayingBinding,
+    val nowPlayingPositionMs: (DesktopHomeRetainedRoot, DesktopOriginalNowPlayingSnapshot) -> Long?,
 )
 
 /** Shutdown order is captured entry/route admission first, drains outside Store locks, then
@@ -323,15 +328,32 @@ internal class DesktopReadyOriginalRootHandle(
                 onSuccess = { accountRefresh++ }, onFailure = services.feedback) })
         val owner = remember(root) { DesktopOriginalLinkedDockOwner(scrollOffset, feedScrolling, linkedPhase,
             { linkedPhase.value = it }, routes::owns) }
-        val audio = remember(root, services.listen) { services.listen?.let {
-            DesktopOriginalAudioNowPlayingBinding(it, services.repository, root.entry.gate.scope, routes::owns) } }
+        val audio = remember(root, services.nowPlayingBinding) { services.nowPlayingBinding(root) }
+        val navigationAudio = audio.observeSnapshot()
         val audioNavigation = {
             DesktopOriginalNowPlayingNavigation(routes.currentKey.toLegacyRoute(), false,
                 com.android.purebilibili.core.ui.transition.NowPlayingBarHandoffState.Idle, false,
-                { item -> routes.push(BiliPaiNavKey.AudioMode(item.bvid, item.cid,
-                    ((services.listen?.player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong())) },
-                { item, source -> routes.video(BiliPaiNavKey.VideoDetail(item.bvid, item.cid, item.cover,
-                    resumePositionMs = ((services.listen?.player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong(), sourceRoute = source)) },
+                { item ->
+                    val position = captureDesktopReadyNowPlayingPositionMs(audio, navigationAudio, item,
+                        routes::owns) { expected -> services.nowPlayingPositionMs(root, expected) }
+                    if (position != null) {
+                        val song = com.bilipai.desktop.audio.nativeMusicSourceForListenItem(item)
+                            as? com.android.purebilibili.feature.audio.player.MusicPlaybackSource.AudioSong
+                        if (song != null) routes.push(BiliPaiNavKey.MusicDetail(song.sid))
+                        else routes.push(BiliPaiNavKey.AudioMode(item.bvid, item.cid, position))
+                    }
+                },
+                { item, source ->
+                    val position = captureDesktopReadyNowPlayingPositionMs(audio, navigationAudio, item,
+                        routes::owns) { expected -> services.nowPlayingPositionMs(root, expected) }
+                    if (position != null) {
+                        val song = com.bilipai.desktop.audio.nativeMusicSourceForListenItem(item)
+                            as? com.android.purebilibili.feature.audio.player.MusicPlaybackSource.AudioSong
+                        if (song != null) routes.push(BiliPaiNavKey.MusicDetail(song.sid))
+                        else routes.video(BiliPaiNavKey.VideoDetail(item.bvid, item.cid, item.cover,
+                            resumePositionMs = position, sourceRoute = source))
+                    }
+                },
                 services.dismissNowPlayingBar)
         }
         val actions = DesktopOriginalFrostedNavigationActions({ item -> routes.push(bottomPagerNavKeyForItem(item)) },
@@ -346,7 +368,7 @@ internal class DesktopReadyOriginalRootHandle(
             { prefs.homeSettings.value.cardTransitionEnabled }, sidebarAccountSwitcher, { sourceReady = it })
         val pages = DesktopOriginalRootPageBindings(windowBinding.window, scrollOffset, feedScrolling,
             homeScroll, { bottomVisible }, { bottomPadding }, { bottomVisible = it },
-            clock, { sourceReady }, { liveScrollId }, { 0.dp }, profile, { accountRefresh }, profileScroll,
+            clock, services.isPipActiveOrPending, { sourceReady }, { liveScrollId }, { 0.dp }, profile, { accountRefresh }, profileScroll,
             services.logout, sidebarAccountSwitcher, { accountRefresh++ }, { accountRefresh++ })
         val environment = remember(root, navigation) { DesktopNavigationHostEnvironment(services.runtime.context,
             navigation, navigation, navigation, navigation, { null /* physical monitor corner API unavailable */ },
@@ -355,7 +377,18 @@ internal class DesktopReadyOriginalRootHandle(
         if (handle.imageTrim == null) SideEffect { handle.imageTrim = DesktopApplicationImageCacheTrim(
             applicationImages.imageLoader, resources.background, scope, palette,
             services.isPipActiveOrPending, services.canTrimImages) }
-        CompositionLocalProvider(LocalVideoSharedTransitionSpeedSettings provides speedSettings,
+        val originalVideoWindow = remember(root, resources, prefs, routes, configuration, systemWallpaperChrome) {
+            DesktopOriginalVideoRootWindowEnvironment(root, services.actualWindow, scope, resources,
+                preferencesPlatform, configuration, systemWallpaperChrome, haze, prefs, services.appearance,
+                services.repository, services.runtime, navigation, routes, services.imageLocations, services.imageLifetime,
+                services.isPipActiveOrPending, { routes.currentKey })
+        }
+        DisposableEffect(originalVideoWindow) {
+            services.originalVideoWindowReady(originalVideoWindow)
+            onDispose { services.originalVideoWindowRetired(originalVideoWindow) }
+        }
+        CompositionLocalProvider(LocalDesktopOriginalVideoRootWindowEnvironment provides originalVideoWindow,
+            LocalVideoSharedTransitionSpeedSettings provides speedSettings,
             LocalVideoTransitionAdaptiveInfo provides adaptiveTransition,
             LocalDesktopRootDynamicScroll provides dynamicScroll) {
         var returnPrefetched by remember(routes.currentKey) { mutableStateOf(false) }
@@ -371,6 +404,7 @@ internal class DesktopReadyOriginalRootHandle(
             }
             root.returns.prepareReturnBeforeBack(routes.currentKey, routes.previousKey)
         }
+        services.originalVideoWindowContent(originalVideoWindow) {
         DesktopHomeWindowGlobals(resources, sourceReady, { url, size, count -> root.ErrorAnimation(url, size, count) }) {
             DesktopOriginalRootStack(routes, environment, pages, rootThemeColor.luminance() > .5f,
                 reduceMotion, transitionDuration, programmaticBack,
@@ -381,6 +415,7 @@ internal class DesktopReadyOriginalRootHandle(
                         clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress)) },
                 Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable,
                 { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings) })
+        }
         }
         }
     }
