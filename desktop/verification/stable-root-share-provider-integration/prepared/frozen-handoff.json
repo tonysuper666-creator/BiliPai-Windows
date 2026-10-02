@@ -1,0 +1,58 @@
+{
+  "rawArtifacts": [
+    {
+      "path": "provider-fix-proposal/exact-hunk.json",
+      "sha256Bytes": "bdb215e1c44d360fec4e07ab0cd1d9847998c0a1f5cfba984b0e767596e5bd02",
+      "sizeBytes": 6380
+    },
+    {
+      "path": "provider-fix-proposal/provenance.json",
+      "sha256Bytes": "36f9ecee2a10e277bcf77f583dc090e929b90d52d489dd8075a66633746873e5",
+      "sizeBytes": 1273
+    },
+    {
+      "path": "actual86-failure/runtime.log",
+      "sha256Bytes": "3a792367338b0da07d20cf83ab58cee8e709eb0aacb14a9b982432bd183ede66",
+      "sizeBytes": 12735
+    },
+    {
+      "path": "actual86-failure/runtime-command.json",
+      "sha256Bytes": "0412316344cb21b69094efcd0ab2bb4918ddebab7a4a96c869d0d5b79ecd88a6",
+      "sizeBytes": 28460
+    },
+    {
+      "path": "actual86-failure/pins-before.json",
+      "sha256Bytes": "22dba907fb67f6525d9c1e5ab8b569b8fd1ee78dd5e299b3ea3558157edce455",
+      "sizeBytes": 40339
+    },
+    {
+      "path": "actual86-failure/pins-after.json",
+      "sha256Bytes": "22dba907fb67f6525d9c1e5ab8b569b8fd1ee78dd5e299b3ea3558157edce455",
+      "sizeBytes": 40339
+    },
+    {
+      "path": "actual86-failure/compile-result.json",
+      "sha256Bytes": "004ee6027b1b111e8db539ac29dc34056757e68e2794009b451100db9b5b38c6",
+      "sizeBytes": 190
+    },
+    {
+      "path": "actual86-failure/fixture-jar-pin.json",
+      "sha256Bytes": "71a55a0b839a6f2b06118c1e319ec9f4bb43d14860d640e802bdc6187310f734",
+      "sizeBytes": 114
+    },
+    {
+      "path": "actual86-failure/acceptance-result.json",
+      "sha256Bytes": "44bc14ff435915b16817f5d95437d42155fa065f56010f6929fd1cebb519e00c",
+      "sizeBytes": 706
+    },
+    {
+      "path": "actual86-failure/root-search-proof.json",
+      "sha256Bytes": "5bcc91859720e69ef39d2ffb106ed5cd4f5cd55650662ba9d2e383d81cb59f9e",
+      "sizeBytes": 2876
+    }
+  ],
+  "rawArtifactCount": 10,
+  "knownActualRootStartupFailure": true,
+  "sameExistingGalleryBinding": true,
+  "fixedWindowRuntimeAccepted": false
+}

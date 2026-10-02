@@ -1,0 +1,31 @@
+{
+  "status": "normal_compile_passed_actual_root_retest_pending",
+  "baseCommit": "f14e6e4311f122be3aa45b41b062f629df5e69d5",
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSha256Bytes": "3196399c8875b7261c259dfabb3f6208f7d28357ed21d5c53d81ee8f245aa499",
+      "afterSha256Bytes": "10ad7db5f2bc54c27cb44b3e12e06c0aaee27e65481956f643d24fcb40366829",
+      "afterSha256LF": "10ad7db5f2bc54c27cb44b3e12e06c0aaee27e65481956f643d24fcb40366829"
+    }
+  ],
+  "normalMainAndTestCompilePassed": true,
+  "actualProductOverrides": 0,
+  "sourceCount": 1206,
+  "resourceCount": 244,
+  "exactProviderHunks": 1,
+  "actual86RootFailurePreserved": true,
+  "sameExistingGalleryShareBinding": true,
+  "newActors": 0,
+  "newPools": 0,
+  "newClients": 0,
+  "newDependencies": 0,
+  "originalRootOwnerEpochAndJobFencesUnchanged": true,
+  "resourceRetirementOrderUnchanged": true,
+  "freshNativeShareProducerPassed": true,
+  "rootRuntimeAccepted": false,
+  "ordinaryAccountAccepted": false,
+  "desktopPackageUpdated": false,
+  "allFeaturesComplete": false,
+  "excludedCompiledProofFiles": []
+}

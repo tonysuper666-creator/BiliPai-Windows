@@ -1,0 +1,119 @@
+{
+  "files": [
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "9327353a8caefc86bcafe709ed42923f22f62e11978e7f50acb5c098eca32bfc",
+      "bytes": 1967
+    },
+    {
+      "path": "prepared/provider-fix-proposal/exact-hunk.json",
+      "sha256Bytes": "bdb215e1c44d360fec4e07ab0cd1d9847998c0a1f5cfba984b0e767596e5bd02",
+      "bytes": 6380
+    },
+    {
+      "path": "prepared/provider-fix-proposal/provenance.json",
+      "sha256Bytes": "36f9ecee2a10e277bcf77f583dc090e929b90d52d489dd8075a66633746873e5",
+      "bytes": 1273
+    },
+    {
+      "path": "prepared/actual86-failure/runtime.log",
+      "sha256Bytes": "3a792367338b0da07d20cf83ab58cee8e709eb0aacb14a9b982432bd183ede66",
+      "bytes": 12735
+    },
+    {
+      "path": "prepared/actual86-failure/runtime-command.json",
+      "sha256Bytes": "0412316344cb21b69094efcd0ab2bb4918ddebab7a4a96c869d0d5b79ecd88a6",
+      "bytes": 28460
+    },
+    {
+      "path": "prepared/actual86-failure/pins-before.json",
+      "sha256Bytes": "22dba907fb67f6525d9c1e5ab8b569b8fd1ee78dd5e299b3ea3558157edce455",
+      "bytes": 40339
+    },
+    {
+      "path": "prepared/actual86-failure/pins-after.json",
+      "sha256Bytes": "22dba907fb67f6525d9c1e5ab8b569b8fd1ee78dd5e299b3ea3558157edce455",
+      "bytes": 40339
+    },
+    {
+      "path": "prepared/actual86-failure/compile-result.json",
+      "sha256Bytes": "004ee6027b1b111e8db539ac29dc34056757e68e2794009b451100db9b5b38c6",
+      "bytes": 190
+    },
+    {
+      "path": "prepared/actual86-failure/fixture-jar-pin.json",
+      "sha256Bytes": "71a55a0b839a6f2b06118c1e319ec9f4bb43d14860d640e802bdc6187310f734",
+      "bytes": 114
+    },
+    {
+      "path": "prepared/actual86-failure/acceptance-result.json",
+      "sha256Bytes": "44bc14ff435915b16817f5d95437d42155fa065f56010f6929fd1cebb519e00c",
+      "bytes": 706
+    },
+    {
+      "path": "prepared/actual86-failure/root-search-proof.json",
+      "sha256Bytes": "5bcc91859720e69ef39d2ffb106ed5cd4f5cd55650662ba9d2e383d81cb59f9e",
+      "bytes": 2876
+    },
+    {
+      "path": "root/install.py",
+      "sha256Bytes": "9b3291cca4389ccc9aba6af870241aa01f82e52129a969f8a99fa75088993c12",
+      "bytes": 3035
+    },
+    {
+      "path": "root/installation.json",
+      "sha256Bytes": "aa6a0d1b035b0e2b5f2f75aebfd9d1165517473b43cc60fb1af0ddcc63f9f3db",
+      "bytes": 731
+    },
+    {
+      "path": "root/source-diff.patch",
+      "sha256Bytes": "7a8afd81ab15e300c3c7b1e402b8a1c09f110980cdbf64a46eed55675c96917d",
+      "bytes": 1439
+    },
+    {
+      "path": "root/build_actual.py",
+      "sha256Bytes": "036fde7fc6f312ac13a2c5ffc5b29c31d0a8ba973d544279a7a533aa6d457802",
+      "bytes": 3863
+    },
+    {
+      "path": "root/actual-build01.log",
+      "sha256Bytes": "57975a6180f04a2ba7eeee92817998a53a1f50a36f9eb876a3ce97befa05188c",
+      "bytes": 12280
+    },
+    {
+      "path": "root/actual-build01.json",
+      "sha256Bytes": "69b1593b94fa43af0f51ecb4680c7caa2ff853375939c4dc02f20933b3fb4b9b",
+      "bytes": 782
+    },
+    {
+      "path": "root/actual-native-producer-receipt.json",
+      "sha256Bytes": "ce8934904402dd47f4e0a0022b6113c2506007f4067e36f899ee194869ef631e",
+      "bytes": 1247
+    },
+    {
+      "path": "root/actual-native-producer-input-graph.json",
+      "sha256Bytes": "78641ee2d491b3ef29c3ad10dc8849c481fc135cf380359dc540669d953b38de",
+      "bytes": 116973
+    },
+    {
+      "path": "root/save_and_stage.py",
+      "sha256Bytes": "5da19d3d4cf4a57a05eb3310d602ebfb8a1c05cc0efca178ebba1b0927e46ed8",
+      "bytes": 5102
+    },
+    {
+      "path": "root/before/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256Bytes": "3196399c8875b7261c259dfabb3f6208f7d28357ed21d5c53d81ee8f245aa499",
+      "bytes": 154879
+    },
+    {
+      "path": "integration-summary.json",
+      "sha256Bytes": "5a3138379a456bed275f53bba7fbba8a6d22e68f0bb2ee9efbe424c7d023d716",
+      "bytes": 1140
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "bef96fe3c4fa0e38ac61e77196533c2be88df4e08cb0a88239b3e404229408f7",
+      "bytes": 1383
+    }
+  ]
+}

@@ -1438,9 +1438,6 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     { environment -> originalWindowEnvironment.compareAndSet(environment,null) },
                     { environment, content ->
                         val appResources = ordinaryVideoResources
-                        // Borrow the already created retained Gallery binding before the Root comment wrapper.
-                        // This is the same owner, file pool and native share actor; it creates no new resource.
-                        CompositionLocalProvider(LocalDesktopImagePreviewShareBindings provides environment.gallery.imageShare) {
                         DesktopOriginalCommentRootBindings(environment.repository, community, commentFraud,
                             environment.root, environment::owns, Modifier.fillMaxSize(),
                             borrowedImageAssets=environment.gallery.imageAssets) { _ ->
@@ -1461,7 +1458,6 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     DesktopLibrary.directoryForAccount(null).resolve("video-scratch"))
                             }
                             DesktopOriginalVideoReadyRootMount(environment,ordinaryVideo,shellResources,content)
-                        }
                         }
                         }
                     }, discovery,community,pluginRuntime,dynamicCardSession,
