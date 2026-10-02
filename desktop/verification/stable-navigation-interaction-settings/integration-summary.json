@@ -1,0 +1,53 @@
+{
+  "status": "integrated_and_targeted_junit_passed",
+  "baseCommit": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "originalControlsConnected": 7,
+  "sourceCountBefore": 1172,
+  "sourceCountAfter": 1174,
+  "newSourceIdentities": [
+    "BottomBarSettingsScreen.kt",
+    "AnimationSettingsScreen.kt"
+  ],
+  "generatedOriginalByteChecks": [
+    {
+      "path": "desktop/build/generated/navigation-interaction/com/android/purebilibili/core/store/DesktopOriginalNavigationInteractionSettings.kt",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb"
+    },
+    {
+      "path": "desktop/build/generated/navigation-interaction/com/android/purebilibili/feature/settings/DesktopNavigationInteractionCategoryEntries.kt",
+      "sha256Bytes": "2e4e3ea2624c6fc3aa00f972bd05968a78672436d48ecfe92ce3ced2e6c4a9f5"
+    },
+    {
+      "path": "desktop/build/generated/navigation-interaction/com/android/purebilibili/feature/settings/DesktopOriginalNavigationInteractionFields.kt",
+      "sha256Bytes": "5be1c39a48d99b038fbea156728e4404a8aa33690862c683e09e44030ab96097"
+    }
+  ],
+  "integratedJUnit": {
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  "wholeProductCompilePassed": true,
+  "prospectiveUiCases": 4,
+  "prospectiveActualPointerEvents": 48,
+  "preparedProductOverrides": "Tree-family only; not an actual full Root launch",
+  "fullBottomBarAnimationComplete": false,
+  "wholeRootVisualEffectsAccepted": false,
+  "includedPreparedRawCount": 82,
+  "excludedCompiledFixtures": [
+    {
+      "path": "runs/03/classes.jar",
+      "sha256Bytes": "1a4a81a2660a0e73f5916d145f3ce36aab54abb6cfb31240b8cf9f9d0debda24"
+    },
+    {
+      "path": "runs/05/classes.jar",
+      "sha256Bytes": "94664b42709daf1ff92ef32116239049f2acb5731fcfc1d75ae37b1472decbc7"
+    }
+  ],
+  "preflightCorrections": [
+    "First installer rejected non-unique single-line insertion anchor before any write; corrected to verified three opcode text slices.",
+    "Second installer rejected missing registry identities before any write; original BottomBar and Animation screen identities added with pinned hashes."
+  ],
+  "desktopPackageUpdatedWithTheseSourceChanges": false
+}

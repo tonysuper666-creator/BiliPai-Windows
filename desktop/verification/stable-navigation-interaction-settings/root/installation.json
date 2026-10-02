@@ -1,0 +1,45 @@
+{
+  "baseCommit": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "packetVerified": true,
+  "frozenFileCount": 84,
+  "sourceCountBefore": 1172,
+  "sourceCountAfter": 1174,
+  "installed": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7",
+      "afterSha256Lf": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "beforeSha256Bytes": "c48138cf8ad8f734daaf3bea9fbc4eff50123f56f30a1b4acafe3708d053578e",
+      "afterSha256Bytes": "4d25d4266e512943227c23740bdbd4843742be71b7f05fa1fa8602dc6a6563f1",
+      "afterSha256Lf": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e"
+    },
+    {
+      "path": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "54ed266b73c889da5a969007e7f88c08ecade303d74ce129f9c9f4aa53c92634",
+      "afterSha256Lf": "54ed266b73c889da5a969007e7f88c08ecade303d74ce129f9c9f4aa53c92634"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-navigation-interaction.py",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "936fa410bc18513534db6a8923b169a3f28afbb260304b477f225c34f61291cf",
+      "afterSha256Lf": "936fa410bc18513534db6a8923b169a3f28afbb260304b477f225c34f61291cf"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "4eea9a34c4564b2a7eeb6789269806f048a4053f216346a0cd3ffe3b5be04cf4",
+      "afterSha256Bytes": "df844315b90a916fb045200dd6f4570cea4d82d9c73d2ec749747d9f3fef35f4",
+      "afterSha256Lf": "12f52edf79b7192822005ab2edaf0f74755159d8bda6f5220e3dd0871582a228"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "d759eff054a8fca05705a1fbb307de2531ef4a6865d680e224f0da3d05b801bb",
+      "afterSha256Bytes": "28c4c6ef4eab76ae7048b611d66d8e84792160d3729ac4ea7a48f90e38a827c4",
+      "afterSha256Lf": "eb22e7ae960c1389d34a0e863c2a17803a0fd77bfd893f52e43550ef07914215"
+    }
+  ]
+}

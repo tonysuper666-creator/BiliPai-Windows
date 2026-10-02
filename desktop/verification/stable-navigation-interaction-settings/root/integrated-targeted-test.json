@@ -1,0 +1,37 @@
+{
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+    "-p",
+    "desktop",
+    "test",
+    "--tests",
+    "com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest",
+    "--console=plain"
+  ],
+  "exitCode": 0,
+  "fullProductCompile": true,
+  "testClassFilter": "com.bilipai.desktop.settings.DesktopNavigationInteractionSettingsTest",
+  "actualProductOverrides": 0,
+  "logSha256Bytes": "e09a3601f3e440b69627794a96d9f81fe6452d39a234f785971dac99235e2b30",
+  "junit": {
+    "tests": "6",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0"
+  },
+  "reportSha256Bytes": "3fe5e9b0196f2b81205ad13c7e1d0b10e6c8445e5ae20dc0fcd034ba74991b19",
+  "generatedByteChecks": [
+    {
+      "path": "desktop/build/generated/navigation-interaction/com/android/purebilibili/core/store/DesktopOriginalNavigationInteractionSettings.kt",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb"
+    },
+    {
+      "path": "desktop/build/generated/navigation-interaction/com/android/purebilibili/feature/settings/DesktopNavigationInteractionCategoryEntries.kt",
+      "sha256Bytes": "2e4e3ea2624c6fc3aa00f972bd05968a78672436d48ecfe92ce3ced2e6c4a9f5"
+    },
+    {
+      "path": "desktop/build/generated/navigation-interaction/com/android/purebilibili/feature/settings/DesktopOriginalNavigationInteractionFields.kt",
+      "sha256Bytes": "5be1c39a48d99b038fbea156728e4404a8aa33690862c683e09e44030ab96097"
+    }
+  ]
+}

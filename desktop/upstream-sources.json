@@ -1785,7 +1785,8 @@
         "stable-video-player-section-full",
         "stable-video-tablet-original",
         "stable-video-root-effects",
-        "stable-video-owner-download-binding"
+        "stable-video-owner-download-binding",
+        "desktop-navigation-interaction-settings"
       ],
       "mode": "policy-extract"
     },
@@ -3652,7 +3653,8 @@
         "settings-local-diagnostics-parity",
         "settings-home-dynamic-parity",
         "settings-dynamic-tabs-parity",
-        "settings-image-save-path-ui"
+        "settings-image-save-path-ui",
+        "desktop-navigation-interaction-settings"
       ],
       "sha256": "dad065eba76c2bb51ce9c5775b4e8bf86f21b8230be0ee2606fe53fa77b64f25"
     },
@@ -9868,6 +9870,22 @@
         "stable-video-root-story-feed"
       ],
       "note": "Complete original getStoryFeed selected body; sole new Story feed protocol producer."
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/BottomBarSettingsScreen.kt",
+      "mode": "policy-extract",
+      "sha256": "0b16042c8d9013b44388e300a40939f4957b7733d44f6c94baac49be9b9963c9",
+      "features": [
+        "desktop-navigation-interaction-settings"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AnimationSettingsScreen.kt",
+      "mode": "policy-extract",
+      "sha256": "a517fd0d059c1b54803ab8638aa2729e9dfb4f72163bb0e20dc1091889f22ff1",
+      "features": [
+        "desktop-navigation-interaction-settings"
+      ]
     }
   ],
   "featureCoverage": {

@@ -1,0 +1,454 @@
+{
+  "files": [
+    {
+      "path": "prepared/freeze-manifest.json",
+      "sha256Bytes": "49c627989b2461d985bb28e8e596a580b94583f6288b04b62540c842a776289c",
+      "bytes": 13998
+    },
+    {
+      "path": "prepared/base-identity.json",
+      "sha256Bytes": "09b7e4ebdd05755a2b9874f72a5c899029157479ab8fdfb85d7b7d126b3af6fc",
+      "bytes": 1571
+    },
+    {
+      "path": "prepared/compile-run.py",
+      "sha256Bytes": "0184f110462d9ab848aa90fd4373e157af9ae39bd7ca11795a1b14ccc7227dc6",
+      "bytes": 5226
+    },
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "9b4e9ceb8318d87c175d7e9947cd933987f843cb1d7db7a36178d6fa55f39f7f",
+      "bytes": 6186
+    },
+    {
+      "path": "prepared/INTEGRATION.md",
+      "sha256Bytes": "1d4a95c0c0c5c5c324031f722b80cbf3852d972f3470ea216d24c75692ecd915",
+      "bytes": 6357
+    },
+    {
+      "path": "prepared/make-handoff.py",
+      "sha256Bytes": "b23ef7a307f20e2e100d97f88d0f4acd2e48320a7399648f54a4649bdd466c29",
+      "bytes": 5298
+    },
+    {
+      "path": "prepared/NavigationSettingsFixture.kt",
+      "sha256Bytes": "e356ac669fb0415cb5658f14762bdd59f42e66fcb13a181198bc7c46c0b295c1",
+      "bytes": 7392
+    },
+    {
+      "path": "prepared/prepare.py",
+      "sha256Bytes": "fd0a6438739d2424ea479e9ff5511d079a6e680ec316be99e2bb26ca8b673784",
+      "bytes": 10730
+    },
+    {
+      "path": "prepared/prepared/desktop/build/generated/navigation-interaction/com/android/purebilibili/core/store/DesktopOriginalNavigationInteractionSettings.kt",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb",
+      "bytes": 4075
+    },
+    {
+      "path": "prepared/prepared/desktop/build/generated/navigation-interaction/com/android/purebilibili/feature/settings/DesktopNavigationInteractionCategoryEntries.kt",
+      "sha256Bytes": "2e4e3ea2624c6fc3aa00f972bd05968a78672436d48ecfe92ce3ced2e6c4a9f5",
+      "bytes": 2001
+    },
+    {
+      "path": "prepared/prepared/desktop/build/generated/navigation-interaction/com/android/purebilibili/feature/settings/DesktopOriginalNavigationInteractionFields.kt",
+      "sha256Bytes": "5be1c39a48d99b038fbea156728e4404a8aa33690862c683e09e44030ab96097",
+      "bytes": 5950
+    },
+    {
+      "path": "prepared/prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt",
+      "sha256Bytes": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7",
+      "bytes": 5886
+    },
+    {
+      "path": "prepared/prepared/desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "sha256Bytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "bytes": 10675
+    },
+    {
+      "path": "prepared/prepared/desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt",
+      "sha256Bytes": "54ed266b73c889da5a969007e7f88c08ecade303d74ce129f9c9f4aa53c92634",
+      "bytes": 6707
+    },
+    {
+      "path": "prepared/prepared/desktop/tools/extract-upstream-navigation-interaction.py",
+      "sha256Bytes": "936fa410bc18513534db6a8923b169a3f28afbb260304b477f225c34f61291cf",
+      "bytes": 8462
+    },
+    {
+      "path": "prepared/producer-probe/com/android/purebilibili/core/store/DesktopOriginalNavigationInteractionSettings.kt",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb",
+      "bytes": 4075
+    },
+    {
+      "path": "prepared/producer-probe/com/android/purebilibili/feature/settings/DesktopNavigationInteractionCategoryEntries.kt",
+      "sha256Bytes": "2e4e3ea2624c6fc3aa00f972bd05968a78672436d48ecfe92ce3ced2e6c4a9f5",
+      "bytes": 2001
+    },
+    {
+      "path": "prepared/producer-probe/com/android/purebilibili/feature/settings/DesktopOriginalNavigationInteractionFields.kt",
+      "sha256Bytes": "5be1c39a48d99b038fbea156728e4404a8aa33690862c683e09e44030ab96097",
+      "bytes": 5950
+    },
+    {
+      "path": "prepared/producer-proof.json",
+      "sha256Bytes": "b2b679b7d195b0aef6c36d7aea256d9cf4f14504890092bd1f3f171b6ffc1085",
+      "bytes": 706
+    },
+    {
+      "path": "prepared/producer-source-inventory.json",
+      "sha256Bytes": "d3b08a5fa239cab0af9bf8646e7076fd07b7e355425c20995e60932e244ac8af",
+      "bytes": 1179
+    },
+    {
+      "path": "prepared/runs/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/runs/03/compiler.args",
+      "sha256Bytes": "69adbf045d90ddd6ab43e4e1aabb9c12ac8d4bf1026987f5d331d368fc499338",
+      "bytes": 27826
+    },
+    {
+      "path": "prepared/runs/03/fixture.log",
+      "sha256Bytes": "76194d57ebde74427697e50f23cf75e32805b5ff37e9b6de48747a90e1d7ac35",
+      "bytes": 149
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopNavigationInteractionCategoryEntries.kt",
+      "sha256Bytes": "2e4e3ea2624c6fc3aa00f972bd05968a78672436d48ecfe92ce3ced2e6c4a9f5",
+      "bytes": 2001
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopNavigationInteractionSettings.kt",
+      "sha256Bytes": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7",
+      "bytes": 5886
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopOriginalNavigationInteractionFields.kt",
+      "sha256Bytes": "5be1c39a48d99b038fbea156728e4404a8aa33690862c683e09e44030ab96097",
+      "bytes": 5950
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopOriginalNavigationInteractionSettings.kt",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb",
+      "bytes": 4075
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopSettingsTree.kt",
+      "sha256Bytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "bytes": 10675
+    },
+    {
+      "path": "prepared/runs/03/inputs/NavigationSettingsFixture.kt",
+      "sha256Bytes": "e356ac669fb0415cb5658f14762bdd59f42e66fcb13a181198bc7c46c0b295c1",
+      "bytes": 7392
+    },
+    {
+      "path": "prepared/runs/03/result.json",
+      "sha256Bytes": "bc5f9f73968fa707c1bbd6eb40d94f9113d7da676c111e71170ae0a3d829d065",
+      "bytes": 44363
+    },
+    {
+      "path": "prepared/runs/05/compile.log",
+      "sha256Bytes": "a33d3d3e5a6f68d7417fc371ad0f04c490c56e6ff3650d1326a32a74ca4f7336",
+      "bytes": 233
+    },
+    {
+      "path": "prepared/runs/05/compiler.args",
+      "sha256Bytes": "6e8f5b254936cc5fa95cedd4622046d96764561582a73326359e2ff9ff230b32",
+      "bytes": 28003
+    },
+    {
+      "path": "prepared/runs/05/fixture.log",
+      "sha256Bytes": "76194d57ebde74427697e50f23cf75e32805b5ff37e9b6de48747a90e1d7ac35",
+      "bytes": 149
+    },
+    {
+      "path": "prepared/runs/05/inputs/DesktopNavigationInteractionCategoryEntries.kt",
+      "sha256Bytes": "2e4e3ea2624c6fc3aa00f972bd05968a78672436d48ecfe92ce3ced2e6c4a9f5",
+      "bytes": 2001
+    },
+    {
+      "path": "prepared/runs/05/inputs/DesktopNavigationInteractionSettings.kt",
+      "sha256Bytes": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7",
+      "bytes": 5886
+    },
+    {
+      "path": "prepared/runs/05/inputs/DesktopOriginalNavigationInteractionFields.kt",
+      "sha256Bytes": "5be1c39a48d99b038fbea156728e4404a8aa33690862c683e09e44030ab96097",
+      "bytes": 5950
+    },
+    {
+      "path": "prepared/runs/05/inputs/DesktopOriginalNavigationInteractionSettings.kt",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb",
+      "bytes": 4075
+    },
+    {
+      "path": "prepared/runs/05/inputs/DesktopSettingsTree.kt",
+      "sha256Bytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "bytes": 10675
+    },
+    {
+      "path": "prepared/runs/05/inputs/NavigationSettingsFixture.kt",
+      "sha256Bytes": "e356ac669fb0415cb5658f14762bdd59f42e66fcb13a181198bc7c46c0b295c1",
+      "bytes": 7392
+    },
+    {
+      "path": "prepared/runs/05/inputs/UiFixture.kt",
+      "sha256Bytes": "45514c6fa3d862b5d807f5246425134d9a50151ed115c326271c291e2566d4d7",
+      "bytes": 10146
+    },
+    {
+      "path": "prepared/runs/05/result.json",
+      "sha256Bytes": "3720a05daae54e222f0cb09dded6f61261b4e36a0f0761defcef33c47b664d54",
+      "bytes": 44863
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-dark/animation-after.png",
+      "sha256Bytes": "a8ca374da49226951c8e9c7cf756684e8e93193b189cce17e1aa2ae1f3db5971",
+      "bytes": 24236
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-dark/animation.semantics.txt",
+      "sha256Bytes": "7cc5c15b66e3aef944cc648ba647e3fd52a37819d44be3369cecd3ca96c34b6e",
+      "bytes": 12685
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-dark/discovery/plugin-settings.json",
+      "sha256Bytes": "0e613f6f1cfc9964ee7fec2180a18b9cc170ca2fe59d6fea4a7f9ef49649be12",
+      "bytes": 103
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-dark/global/plugin-settings.json",
+      "sha256Bytes": "f0a49392b22a41609e31df468d4ff00148395eff492e343ed66a7e2baf74d18b",
+      "bytes": 400
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-dark/navigation-after.png",
+      "sha256Bytes": "f589c31dd29f8928f560a4bb4c9f4a3ab44b290d0ebc0a84415aa683344f8679",
+      "bytes": 50042
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-dark/navigation-before.png",
+      "sha256Bytes": "301efbfb365a1d85e5545e0becb523e6bbbfb21076351c414839e087d3046a94",
+      "bytes": 35710
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-dark/navigation.semantics.txt",
+      "sha256Bytes": "5607b0efd3f977e1ce2c9365574330b24e4f28a4a9fc369fb7f0a323caac8279",
+      "bytes": 22609
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-dark/pointer.json",
+      "sha256Bytes": "79ec018973c2c3e7c0df55d24aa20e8050093fc520b7d8a3287729c4b95b9d0e",
+      "bytes": 1180
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-dark/settings-disk.json",
+      "sha256Bytes": "f20148418e4a2e03153e11dab3a9218cd100e371d5dbac95173b8ccbc5bd31b7",
+      "bytes": 295
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-light/animation-after.png",
+      "sha256Bytes": "71e583ff26b91686cdf5e86acc70025bebf5c565239aade37bd455f4219b1e5d",
+      "bytes": 23922
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-light/animation.semantics.txt",
+      "sha256Bytes": "90ff9f1530fbbe24dc2dcb4187a8cd0679b9f8475480a13654576b4ff248f51d",
+      "bytes": 12693
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-light/discovery/plugin-settings.json",
+      "sha256Bytes": "0e613f6f1cfc9964ee7fec2180a18b9cc170ca2fe59d6fea4a7f9ef49649be12",
+      "bytes": 103
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-light/global/plugin-settings.json",
+      "sha256Bytes": "f0a49392b22a41609e31df468d4ff00148395eff492e343ed66a7e2baf74d18b",
+      "bytes": 400
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-light/navigation-after.png",
+      "sha256Bytes": "4c65e825ff929d9284e82747219e0d87f1488cbbc2af80603fdd9aeaa2b3e7dd",
+      "bytes": 49829
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-light/navigation-before.png",
+      "sha256Bytes": "fad494b49f597b96a99a12f7963bfd9f74418a12eb58e2471cd5e921d253c1f6",
+      "bytes": 35569
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-light/navigation.semantics.txt",
+      "sha256Bytes": "6e901c32fef1bbb28705a60af8258b0eed5d2262b02a73988879a746f063672c",
+      "bytes": 22610
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-light/pointer.json",
+      "sha256Bytes": "79ec018973c2c3e7c0df55d24aa20e8050093fc520b7d8a3287729c4b95b9d0e",
+      "bytes": 1180
+    },
+    {
+      "path": "prepared/runs/05/ui/material3-light/settings-disk.json",
+      "sha256Bytes": "f20148418e4a2e03153e11dab3a9218cd100e371d5dbac95173b8ccbc5bd31b7",
+      "bytes": 295
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-dark/animation-after.png",
+      "sha256Bytes": "b9f89d07dd6ad32f618f27fa35f2c5577f86c2289b0118bc963cabe13fb5402e",
+      "bytes": 24930
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-dark/animation.semantics.txt",
+      "sha256Bytes": "65ac2534c9799ee6e6f1610340d40c41262927ae6e715fea0d4f4bea46c7792a",
+      "bytes": 11712
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-dark/discovery/plugin-settings.json",
+      "sha256Bytes": "0e613f6f1cfc9964ee7fec2180a18b9cc170ca2fe59d6fea4a7f9ef49649be12",
+      "bytes": 103
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-dark/global/plugin-settings.json",
+      "sha256Bytes": "f0a49392b22a41609e31df468d4ff00148395eff492e343ed66a7e2baf74d18b",
+      "bytes": 400
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-dark/navigation-after.png",
+      "sha256Bytes": "8dbb3640d143cef04e95758be6d044620389406ecf2da73aa325c437e496e48b",
+      "bytes": 49902
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-dark/navigation-before.png",
+      "sha256Bytes": "ec74820c0d715567858232dd4fb24bc4330fcc7d5786d597806fe7662b07a9e1",
+      "bytes": 36002
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-dark/navigation.semantics.txt",
+      "sha256Bytes": "5e64d806fc636010399796dcdfb945f8a14e3dcea70c0410e63e2aab2dcf8009",
+      "bytes": 20547
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-dark/pointer.json",
+      "sha256Bytes": "78011e2ad36f292861b211109c64edd4dd715dd57925262de6506e50b06c257d",
+      "bytes": 1180
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-dark/settings-disk.json",
+      "sha256Bytes": "f20148418e4a2e03153e11dab3a9218cd100e371d5dbac95173b8ccbc5bd31b7",
+      "bytes": 295
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-light/animation-after.png",
+      "sha256Bytes": "701ebce74dfcfe8a791d6c2058ed0b27ed80cd36f760d819eb8e8678d6d58484",
+      "bytes": 24616
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-light/animation.semantics.txt",
+      "sha256Bytes": "309fb033945658be89352514d14d132f61fa68e8981fee8da1a280e9dafa8394",
+      "bytes": 11710
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-light/discovery/plugin-settings.json",
+      "sha256Bytes": "0e613f6f1cfc9964ee7fec2180a18b9cc170ca2fe59d6fea4a7f9ef49649be12",
+      "bytes": 103
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-light/global/plugin-settings.json",
+      "sha256Bytes": "f0a49392b22a41609e31df468d4ff00148395eff492e343ed66a7e2baf74d18b",
+      "bytes": 400
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-light/navigation-after.png",
+      "sha256Bytes": "92c8ffaab5df0782a3347f9148e779923814d8d7b30a90ea0b4f39ad4f496ef1",
+      "bytes": 48571
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-light/navigation-before.png",
+      "sha256Bytes": "5abd23fa601e101c318d653411fc6ec217d04a3b76bfb0e149f404833a45f718",
+      "bytes": 34965
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-light/navigation.semantics.txt",
+      "sha256Bytes": "faeeb13e3cd70a4ad532539d610bca09927bca310691da2fa1bbca2f1a9e6e72",
+      "bytes": 20551
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-light/pointer.json",
+      "sha256Bytes": "78011e2ad36f292861b211109c64edd4dd715dd57925262de6506e50b06c257d",
+      "bytes": 1180
+    },
+    {
+      "path": "prepared/runs/05/ui/miuix-light/settings-disk.json",
+      "sha256Bytes": "f20148418e4a2e03153e11dab3a9218cd100e371d5dbac95173b8ccbc5bd31b7",
+      "bytes": 295
+    },
+    {
+      "path": "prepared/runs/05/ui/result.json",
+      "sha256Bytes": "0ac71042c9cbec0b27ee4ca0a4ee87f7209de633781f73a41e690915a87f25c3",
+      "bytes": 986
+    },
+    {
+      "path": "prepared/runs/05/ui.log",
+      "sha256Bytes": "13c704d205229e122beaf63f15c1e13dfa83ffcc5a25f0db8cbe3c47298cb7ed",
+      "bytes": 157
+    },
+    {
+      "path": "prepared/source-inventory.json",
+      "sha256Bytes": "d3b08a5fa239cab0af9bf8646e7076fd07b7e355425c20995e60932e244ac8af",
+      "bytes": 1179
+    },
+    {
+      "path": "prepared/STORAGE-OWNER-FENCE-DESIGN.md",
+      "sha256Bytes": "dd665ed38cb5b9bc703e921c52cc1a27c3a37ad26713e10dd2afb0651590fb31",
+      "bytes": 4302
+    },
+    {
+      "path": "prepared/tree.patch",
+      "sha256Bytes": "cc6727e42200b5be742203a5bd2093ed07afcbcb787644126b42c67a3180c266",
+      "bytes": 21004
+    },
+    {
+      "path": "prepared/UiFixture.kt",
+      "sha256Bytes": "45514c6fa3d862b5d807f5246425134d9a50151ed115c326271c291e2566d4d7",
+      "bytes": 10146
+    },
+    {
+      "path": "root/install.py",
+      "sha256Bytes": "84d121cd5cbed9171ecba828053c5ad8e07724c6fb44b367e7ea4fb043a7d59f",
+      "bytes": 6765
+    },
+    {
+      "path": "root/installation.json",
+      "sha256Bytes": "46c8473c4789c6649de77ffb160b16c909531f2ea38c50523111c6e369664ebb",
+      "bytes": 2283
+    },
+    {
+      "path": "root/run_tests.py",
+      "sha256Bytes": "fbcba717df13da29b637f8dfffeb7530e46710593bb69d32c8c6f74eaf3d6984",
+      "bytes": 2658
+    },
+    {
+      "path": "root/integrated-targeted-test.json",
+      "sha256Bytes": "aca63330548300baf82af709116bc6aaac04514bf82ee3dd83cdb95a1d29f4da",
+      "bytes": 1654
+    },
+    {
+      "path": "root/integrated-targeted-test.log",
+      "sha256Bytes": "e09a3601f3e440b69627794a96d9f81fe6452d39a234f785971dac99235e2b30",
+      "bytes": 22067
+    },
+    {
+      "path": "root/targeted-test.xml",
+      "sha256Bytes": "3fe5e9b0196f2b81205ad13c7e1d0b10e6c8445e5ae20dc0fcd034ba74991b19",
+      "bytes": 1461
+    },
+    {
+      "path": "integration-summary.json",
+      "sha256Bytes": "03809e69adf90c15b5adaca78d033f795f9480c8a5da29cc5431bd8004952a8c",
+      "bytes": 2205
+    }
+  ]
+}

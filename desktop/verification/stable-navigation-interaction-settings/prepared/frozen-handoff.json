@@ -1,0 +1,87 @@
+{
+  "frozen": true,
+  "slice": "seven-original-navigation-card-motion-controls",
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "candidateProductionUntouched": true,
+  "actualSnapshotManifestSha256Bytes": "72934edb925c7793294bf504388dfbd1f849fe14d8ea00dd4f333befdabd4157",
+  "targets": [
+    {
+      "target": "desktop/build/generated/navigation-interaction/com/android/purebilibili/core/store/DesktopOriginalNavigationInteractionSettings.kt",
+      "preparedPath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-interaction-parity\\prepared\\desktop\\build\\generated\\navigation-interaction\\com\\android\\purebilibili\\core\\store\\DesktopOriginalNavigationInteractionSettings.kt",
+      "kind": "generated-template",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb",
+      "expectedBaseSha256Bytes": null
+    },
+    {
+      "target": "desktop/build/generated/navigation-interaction/com/android/purebilibili/feature/settings/DesktopNavigationInteractionCategoryEntries.kt",
+      "preparedPath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-interaction-parity\\prepared\\desktop\\build\\generated\\navigation-interaction\\com\\android\\purebilibili\\feature\\settings\\DesktopNavigationInteractionCategoryEntries.kt",
+      "kind": "generated-template",
+      "sha256Bytes": "2e4e3ea2624c6fc3aa00f972bd05968a78672436d48ecfe92ce3ced2e6c4a9f5",
+      "expectedBaseSha256Bytes": null
+    },
+    {
+      "target": "desktop/build/generated/navigation-interaction/com/android/purebilibili/feature/settings/DesktopOriginalNavigationInteractionFields.kt",
+      "preparedPath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-interaction-parity\\prepared\\desktop\\build\\generated\\navigation-interaction\\com\\android\\purebilibili\\feature\\settings\\DesktopOriginalNavigationInteractionFields.kt",
+      "kind": "generated-template",
+      "sha256Bytes": "5be1c39a48d99b038fbea156728e4404a8aa33690862c683e09e44030ab96097",
+      "expectedBaseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettings.kt",
+      "preparedPath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-interaction-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopNavigationInteractionSettings.kt",
+      "kind": "production-target",
+      "sha256Bytes": "6bf5c9946631c676253ae590c563fe02cc79c27055c809b343edf382315e3fe7",
+      "expectedBaseSha256Bytes": null
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "preparedPath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-interaction-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopSettingsTree.kt",
+      "kind": "production-target",
+      "sha256Bytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "expectedBaseSha256Bytes": "c48138cf8ad8f734daaf3bea9fbc4eff50123f56f30a1b4acafe3708d053578e"
+    },
+    {
+      "target": "desktop/src/test/kotlin/com/bilipai/desktop/settings/DesktopNavigationInteractionSettingsTest.kt",
+      "preparedPath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-interaction-parity\\prepared\\desktop\\src\\test\\kotlin\\com\\bilipai\\desktop\\settings\\DesktopNavigationInteractionSettingsTest.kt",
+      "kind": "production-target",
+      "sha256Bytes": "54ed266b73c889da5a969007e7f88c08ecade303d74ce129f9c9f4aa53c92634",
+      "expectedBaseSha256Bytes": null
+    },
+    {
+      "target": "desktop/tools/extract-upstream-navigation-interaction.py",
+      "preparedPath": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\settings-navigation-interaction-parity\\prepared\\desktop\\tools\\extract-upstream-navigation-interaction.py",
+      "kind": "production-target",
+      "sha256Bytes": "936fa410bc18513534db6a8923b169a3f28afbb260304b477f225c34f61291cf",
+      "expectedBaseSha256Bytes": null
+    }
+  ],
+  "sourceInventory": "source-inventory.json",
+  "productionOverrides": [
+    "com/bilipai/desktop/settings/ComposableSingletons$DesktopSettingsTreeKt.class",
+    "com/bilipai/desktop/settings/DesktopSettingsTreeKt$DesktopSettingsTree$1$1$2$1.class",
+    "com/bilipai/desktop/settings/DesktopSettingsTreeKt$DesktopSettingsTree$1$1$3$1.class",
+    "com/bilipai/desktop/settings/DesktopSettingsTreeKt$DesktopSettingsTree$1$1$4$1$2$1.class",
+    "com/bilipai/desktop/settings/DesktopSettingsTreeKt$DesktopSettingsTree$1$1$4$2$1$1.class",
+    "com/bilipai/desktop/settings/DesktopSettingsTreeKt$WhenMappings.class",
+    "com/bilipai/desktop/settings/DesktopSettingsTreeKt.class"
+  ],
+  "evidence": "runs/05/result.json",
+  "evidenceSha256Bytes": "3720a05daae54e222f0cb09dded6f61261b4e36a0f0761defcef33c47b664d54",
+  "uiEvidence": "runs/05/ui/result.json",
+  "uiEvidenceSha256Bytes": "0ac71042c9cbec0b27ee4ca0a4ee87f7209de633781f73a41e690915a87f25c3",
+  "focusedExecutableMethods": 6,
+  "uiCases": 4,
+  "actualPointerCount": 48,
+  "fullBottomBarAnimationComplete": false,
+  "wholeMainRuntimeAccepted": false,
+  "categoryAuditCorrection": "Appearance and Plugins already route directly through existing generated helper; no mutation of their admission.",
+  "remaining": [
+    "bottom/top navigation order and visibility editing",
+    "search-tab order",
+    "navigation label/color customization",
+    "sidebar/tablet preferences UI",
+    "all other animation/blur/gesture/haptic settings",
+    "actual on-screen Root animation and chrome acceptance"
+  ]
+}

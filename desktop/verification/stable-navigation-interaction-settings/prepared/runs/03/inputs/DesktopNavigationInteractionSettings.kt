@@ -1,0 +1,88 @@
+package com.bilipai.desktop.settings
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.store.DesktopOriginalNavigationInteractionSettings
+import com.android.purebilibili.core.ui.components.*
+import com.android.purebilibili.feature.settings.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+
+/** Selected original fields; the existing Root global context is the sole preference authority.
+ * No account store, lifecycle scope, defaults model or settings cache is created here. */
+@Composable
+internal fun DesktopNavigationInteractionSettings(target: SettingsSearchTarget, onFailure: (Throwable) -> Unit) {
+    require(target == SettingsSearchTarget.BOTTOM_BAR || target == SettingsSearchTarget.ANIMATION)
+    val context = checkNotNull(LocalDesktopHomeCardPreferences.current) {
+        "Navigation settings require Root's global preference context"
+    }.context
+    val scope = rememberCoroutineScope()
+    val writer = remember(context) { Mutex() }
+    val latestFailure by rememberUpdatedState(onFailure)
+    val listState = rememberLazyListState()
+    val request by SettingsSearchFocusController.request.collectAsState()
+    val unsupportedFocus = request?.takeIf { it.target == target &&
+        desktopNavigationInteractionFocusIndex(target, it.focusId) == null }
+    LaunchedEffect(request?.token, target) {
+        val focus = request ?: return@LaunchedEffect
+        if (focus.target != target) return@LaunchedEffect
+        val index = desktopNavigationInteractionFocusIndex(target, focus.focusId) ?: return@LaunchedEffect
+        listState.animateScrollToItem(index)
+        SettingsSearchFocusController.clear(focus.token)
+    }
+    fun save(action: suspend () -> Unit) {
+        scope.launch {
+            try { writer.withLock { action() } }
+            catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) { latestFailure(failure) }
+        }
+    }
+    // Keep each exact upstream read default. The icon getter defaults false while the
+    // aggregate HomeSettings reader defaults true: that existing upstream difference is retained.
+    val floating by DesktopOriginalNavigationInteractionSettings.getBottomBarFloating(context).collectAsState(true)
+    val crossScale by DesktopOriginalNavigationInteractionSettings.getNavigationIconCrossScaleEnabled(context).collectAsState(false)
+    val dockSearch by DesktopOriginalNavigationInteractionSettings.getBottomBarSearchEnabled(context).collectAsState(false)
+    val merge by DesktopOriginalNavigationInteractionSettings.getLinkedDockMergeOnScrollEnabled(context).collectAsState(true)
+    val scopedSearch by DesktopOriginalNavigationInteractionSettings.getListScopedSearchEnabled(context).collectAsState(false)
+    val entrance by DesktopOriginalNavigationInteractionSettings.getCardAnimationEnabled(context).collectAsState(false)
+    val transition by DesktopOriginalNavigationInteractionSettings.getCardTransitionEnabled(context).collectAsState(true)
+    LazyColumn(Modifier.fillMaxSize(), state = listState, contentPadding = PaddingValues(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        if (target == SettingsSearchTarget.BOTTOM_BAR) {
+            item { AppText("当前已接入导航行为；导航项目排序、顶部标签和侧边栏编辑仍待接入。") }
+            item { AppPreferenceSectionTitle("导航行为") }
+            item {
+                DesktopOriginalNavigationBehaviorFields(floating, crossScale, dockSearch, merge, scopedSearch,
+                    { value -> save { DesktopOriginalNavigationInteractionSettings.setBottomBarFloating(context, value) } },
+                    { value -> save { DesktopOriginalNavigationInteractionSettings.setNavigationIconCrossScaleEnabled(context, value) } },
+                    { value -> save { DesktopOriginalNavigationInteractionSettings.setBottomBarSearchEnabled(context, value) } },
+                    { value -> save { DesktopOriginalNavigationInteractionSettings.setLinkedDockMergeOnScrollEnabled(context, value) } },
+                    { value -> save { DesktopOriginalNavigationInteractionSettings.setListScopedSearchEnabled(context, value) } })
+            }
+        } else {
+            item { AppPreferenceSectionTitle("卡片动画") }
+            item {
+                DesktopOriginalCardMotionFields(entrance, transition,
+                    { value -> save { DesktopOriginalNavigationInteractionSettings.setCardAnimationEnabled(context, value) } },
+                    { value -> save { DesktopOriginalNavigationInteractionSettings.setCardTransitionEnabled(context, value) } })
+            }
+            item { AppText("当前已接入卡片动画；其它原版动效、触觉反馈和 Android 系统手势设置仍待平台适配。") }
+        }
+        unsupportedFocus?.let { item { AppText("搜索命中的具体设置尚未接入；此页保留已可用的原版控件。") } }
+    }
+}
+
+/** Admit only existing sections; never consume a focus token for a missing original control. */
+internal fun desktopNavigationInteractionFocusIndex(target: SettingsSearchTarget, focusId: String): Int? = when (target) {
+    SettingsSearchTarget.BOTTOM_BAR -> if (focusId in setOf(SettingsSearchFocusIds.BOTTOM_BAR_START, SettingsSearchFocusIds.BOTTOM_BAR_BEHAVIOR))
+        resolveBottomBarSettingsScrollIndex(focusId) else null
+    SettingsSearchTarget.ANIMATION -> if (focusId == SettingsSearchFocusIds.ANIMATION_START)
+        resolveAnimationSettingsScrollIndex(focusId) else null
+    else -> null
+}

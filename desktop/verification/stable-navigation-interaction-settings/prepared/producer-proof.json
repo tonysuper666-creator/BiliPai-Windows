@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "generatedFiles": [
+    {
+      "path": "com/android/purebilibili/core/store/DesktopOriginalNavigationInteractionSettings.kt",
+      "sha256Bytes": "bc560e2b5de1c24715a4700dd2d462f578789ffba74500f3198f196b7ea3acdb"
+    },
+    {
+      "path": "com/android/purebilibili/feature/settings/DesktopNavigationInteractionCategoryEntries.kt",
+      "sha256Bytes": "2e4e3ea2624c6fc3aa00f972bd05968a78672436d48ecfe92ce3ced2e6c4a9f5"
+    },
+    {
+      "path": "com/android/purebilibili/feature/settings/DesktopOriginalNavigationInteractionFields.kt",
+      "sha256Bytes": "5be1c39a48d99b038fbea156728e4404a8aa33690862c683e09e44030ab96097"
+    }
+  ],
+  "noSharedWrites": true
+}

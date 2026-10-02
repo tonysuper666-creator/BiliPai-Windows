@@ -1,0 +1,39 @@
+{
+  "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023",
+  "treeBaseSha256Bytes": "c48138cf8ad8f734daaf3bea9fbc4eff50123f56f30a1b4acafe3708d053578e",
+  "treePreparedSha256Bytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "mode": "policy-extract",
+      "features": [
+        "desktop-navigation-interaction-settings"
+      ],
+      "sha256": "dad065eba76c2bb51ce9c5775b4e8bf86f21b8230be0ee2606fe53fa77b64f25"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/BottomBarSettingsScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "desktop-navigation-interaction-settings"
+      ],
+      "sha256": "0b16042c8d9013b44388e300a40939f4957b7733d44f6c94baac49be9b9963c9"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AnimationSettingsScreen.kt",
+      "mode": "policy-extract",
+      "features": [
+        "desktop-navigation-interaction-settings"
+      ],
+      "sha256": "a517fd0d059c1b54803ab8638aa2729e9dfb4f72163bb0e20dc1091889f22ff1"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "mode": "policy-extract",
+      "features": [
+        "desktop-navigation-interaction-settings"
+      ],
+      "sha256": "680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c"
+    }
+  ]
+}
