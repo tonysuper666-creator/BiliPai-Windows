@@ -1,0 +1,136 @@
+{
+  "candidateBase": "464f5573331dfc7f7c2f1e47a5bf6bbac8cfd201",
+  "scope": "Read-only exact current fallback consumer trace before bridge installation",
+  "fallbackUsesEpisodeReferer": true,
+  "fallbackPublishesViaSameNativeOwner": false,
+  "fallbackSetsPgcPresenter": false,
+  "guardReadsAcceptedPluginDispatch": true,
+  "guardReadsBareMpvRequestedSource": false,
+  "priorAssemblyRetiredByAcquire": true,
+  "foreignSourceVersionInvalidatesNativeOwnerAcceptedIdentity": true,
+  "existingFallbackQualityErrorAndAutoNextOwner": "DesktopBangumiPageMemory/MediaScreens/RetainedMediaEffects",
+  "regressionConclusion": "Existing fallback cannot activate the new ep/cheese accepted-dispatch guard: it retires the assembly before loading and bypasses native.publish; foreign Mpv source invalidates any prior accepted identity. No known early listener/quality/heartbeat suppression regression in this consumer chain.",
+  "runtimeTested": false,
+  "normalCompile": false,
+  "productionWrites": 0,
+  "evidence": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "sha256LF": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903",
+      "ranges": [
+        {
+          "start": 399,
+          "end": 399,
+          "body": "    val playback = ordinaryVideo.playback"
+        },
+        {
+          "start": 520,
+          "end": 522,
+          "body": "    val retainedMedia = remember(player, repository, account?.mid) {\n        DesktopRetainedMedia(scope, player) { storyHost.retire(); pip?.close(); playback.stop(); listen?.pause(); systemTargetAudio = false }\n    }"
+        },
+        {
+          "start": 1537,
+          "end": 1540,
+          "body": "                val seasonId = when(entryKey){is BiliPaiNavKey.BangumiPlayer->entryKey.seasonId;is BiliPaiNavKey.BangumiDetail->entryKey.seasonId;else->0L}\n                val episodeId = when(entryKey){is BiliPaiNavKey.BangumiPlayer->entryKey.epId;is BiliPaiNavKey.BangumiDetail->entryKey.epId;else->0L}\n                val isCourse = (entryKey as? BiliPaiNavKey.BangumiPlayer)?.isCourse ?: false\n                val seasonProgress = (entryKey as? BiliPaiNavKey.BangumiPlayer)?.resumePositionMs?.div(1000.0) ?: 0.0"
+        },
+        {
+          "start": 1808,
+          "end": 1809,
+          "body": "                            section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,\n                                initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType, retained = retainedMedia, community = community)"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "sha256LF": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "ranges": [
+        {
+          "start": 276,
+          "end": 312,
+          "body": "            try {\n                val initialized = player ?: throw IllegalStateException(playerError ?: \"播放器未能初始化\")\n                val info = media.bangumiPlaybackInfo(current, selected, selectedQuality)\n                currentCoroutineContext().ensureActive()\n                val callerJob = currentCoroutineContext()[Job]\n                val maskEpoch = repository.sessionEpoch\n                val episodeSourceVersion = repository.withPlaybackSourceAdmission(info.source, { callerJob?.isActive == true &&\n                    memory.scope.isActive && memory.playJob === callerJob && season === current && initialized.currentSourceVersion == nativeBaseline }) {\n                    initialized.loadVersioned(com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository).ownedSource(\n                        info.source.toNativePlayback().copy(startPositionSeconds = startPosition),\n                        { callerJob?.isCancelled != true && memory.scope.isActive && season === current && repository.sessionEpoch == maskEpoch }))\n                }\n                episode = selected; playback = info; quality = info.source.quality\n                sourceVersion = episodeSourceVersion; loaded = true\n                val index = current.episodes.indexOfFirst { it.id == selected.id }\n                memory.previous = if (index > 0) ({ current.episodes.getOrNull(index - 1)?.let { playEpisode(it) } }) else null\n                memory.next = if (index >= 0 && index + 1 < current.episodes.size)\n                    ({ current.episodes.getOrNull(index + 1)?.let { playEpisode(it) } }) else null\n                overlay?.setDocument(DanmakuDocument())\n                overlay?.enabled = danmakuEnabled\n                if (selected.cid > 0 && current.danmakuAllowed) launch {\n                    overlay?.load(selected.cid, selected.aid, selected.durationSeconds.toDouble(),\n                        expectedSourceVersion = episodeSourceVersion,\n                        maskSource = selected.bvid.takeIf { it.isNotBlank() }?.let { bvid ->\n                            com.bilipai.desktop.danmaku.DesktopOwnedWebMaskSource(bvid, selected.cid,\n                                episodeSourceVersion, maskEpoch,\n                                stillOwned = { memory.scope.isActive && memory.sourceVersion == episodeSourceVersion &&\n                                    memory.episode?.id == selected.id && memory.season?.seasonId == current.seasonId &&\n                                    repository.sessionEpoch == maskEpoch && initialized.ownsSourceVersion(episodeSourceVersion) },\n                                metadata = community::playerMetadata)\n                        })\n                }\n            } catch (cancelled: CancellationException) { throw cancelled\n            } catch (failure: Exception) { if (memory.isCurrentRequest()) { error = failure.message ?: \"番剧播放失败\"; loaded = false }\n            } finally { if (memory.isCurrentRequest()) opening = false }\n        }\n    }"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopMediaRepository.kt",
+      "sha256LF": "dc5f3d769249cd1d549f55b2fd3ea2cc091ba570e72e779cea2f0b4213aa3c99",
+      "ranges": [
+        {
+          "start": 419,
+          "end": 435,
+          "body": "        internal fun selectBangumi(info: BangumiVideoInfo, season: BangumiSeason, episode: BangumiEpisode, quality: Int): PlaybackSource {\n            validateBangumiPlayableVideoInfo(info).getOrElse { throw BiliApiException(-403, it.message.orEmpty()) }\n            val referer = if (season.isCourse) \"https://www.bilibili.com/cheese/play/ep${episode.id}\"\n                else \"https://www.bilibili.com/bangumi/play/ep${episode.id}\"\n            val title = \"${season.title} · ${episode.title} ${episode.subtitle}\".trim()\n            info.dash?.let { dash ->\n                val video = dash.getBestVideo(quality, preferCodec = \"avc1\", secondPreferCodec = \"hev1\", isHevcSupported = true, isAv1Supported = true)\n                val url = video?.getValidUrl()?.let(::playableUrl)\n                if (url != null) return PlaybackSource(url, dash.getBestAudio()?.getValidUrl()?.let(::playableUrl), title, referer, quality = video?.id ?: quality)\n            }\n            val segments = info.durl.orEmpty().ifEmpty { info.durls.orEmpty() }\n            val urls = collectPlayableDurlUrls(segments)\n            if (segments.isNotEmpty() && urls.size == segments.size && urls.all { playableUrl(it) != null }) {\n                val parts = segments.zip(urls).map { (segment, url) -> PlaybackSegment(requireNotNull(playableUrl(url)),\n                    segment.length.takeIf { it > 0 }?.div(1000.0)) }\n                return PlaybackSource(parts.first().url, null, title, referer, quality = info.quality,\n                    progressiveSegments = if (parts.size > 1) parts else emptyList())"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopUnifiedPlaybackFacade.kt",
+      "sha256LF": "cd7d3f1e7a391e72081663144cb405bce2d50d0b9ad32d609f87576ce7e89198",
+      "ranges": [
+        {
+          "start": 264,
+          "end": 271,
+          "body": "    fun stop() {\n        val a=held() ?: return\n        cancelCardResolution()\n        checkpoint()\n        a.native.current()?.let { expected -> a.native.admitPlaybackDispatch(expected) { a.section.nativePlayer.stopIfSourceVersion(expected.sourceVersion) } }\n        lease=null;retireAssembly(a) // retire/cancel immediately; Root joins outside locks\n        playlist.clearPlaylist()\n    }"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256LF": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+      "ranges": [
+        {
+          "start": 153,
+          "end": 156,
+          "body": "    private fun owns(value: DesktopOriginalVideoAcceptedPublication): Boolean =\n        entryCurrent() && value.accountEpoch == currentEpoch() &&\n            accepted.get() === value && player.ownsSourceSnapshot(value.nativeSource) &&\n            publication.isCurrent(value.nativeSource.source)"
+        },
+        {
+          "start": 193,
+          "end": 195,
+          "body": "\n    /** A UI action captures this exact accepted object before waiting for its\n     * existing owner coroutine. Recheck it atomically when queuing the seek or"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoOwnerPluginBridge.kt",
+      "sha256LF": "d5231336c53881ee48d420f01a3e66752639a2b05e32c9679738717f2c2804d8",
+      "ranges": [
+        {
+          "start": 64,
+          "end": 67,
+          "body": "    override fun capturePlaybackDispatch(): DesktopOriginalVideoAcceptedPublication? {\n        val expected = native.current() ?: return null\n        return expected.takeIf { capture(it) != null }\n    }"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt",
+      "sha256LF": "918eeefb47807c8a9fbca21bec88d17e9b7b32f1831f21c2e9a58e43ec0c73c5",
+      "ranges": [
+        {
+          "start": 116,
+          "end": 126,
+          "body": "    internal fun currentSourceSnapshot(): OwnedPlaybackSourceSnapshot? = synchronized(lock) {\n        if (closed.get()) null else requestedSource?.let { source ->\n            OwnedPlaybackSourceSnapshot(sourceVersion, source.immutableSnapshot())\n        }\n    }\n\n    /** The publication identity alone is insufficient for same-version recovery:\n     * compare the complete immutable source while holding the native root lock. */\n    internal fun ownsSourceSnapshot(expected: OwnedPlaybackSourceSnapshot): Boolean = synchronized(lock) {\n        !closed.get() && sourceVersion == expected.sourceVersion && requestedSource == expected.source\n    }"
+        },
+        {
+          "start": 187,
+          "end": 204,
+          "body": "    private fun load(source: PlaybackSource, preserveSubtitles: Boolean, startMuted: Boolean? = null) {\n        synchronized(lock) {\n            check(!closed.get()) { \"Player is closed\" }\n            check(idleCacheMaintenance==null) { \"播放器缓存正在清理，请稍后重试\" }\n            // Validate and freeze caller-owned maps before transferring media ownership.\n            val retainedSource = source.immutableSnapshot()\n            val previousTransport = requestedSource?.nativeTransport\n            if (!preserveSubtitles) retainedSource.nativeTransport?.lease?.requireUnattached()\n            if (!preserveSubtitles || previousTransport !== retainedSource.nativeTransport)\n                previousTransport?.retire(sourceVersion, requestedSource?.nativePublication)\n            if (!preserveSubtitles) {\n                sourceVersion++; softwareDecodingRequested = false\n                if (videoShaderSourceVersion != null) installVideoShaders(PreparedVideoShaders(emptyList(), emptySet()))\n            }\n            if (!preserveSubtitles) { externalSubtitles.clear(); subtitleControlVersion++ }\n            requestedSource = retainedSource\n            requestedLoadMute = startMuted\n            val revision = ++playbackRevision"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopRetainedMedia.kt",
+      "sha256LF": "4f9715137820e31db8cb669aa22d4cbc7770d064ca3c802e811568d06f14674a",
+      "ranges": [
+        {
+          "start": 130,
+          "end": 134,
+          "body": "    fun acquire(target: DesktopMediaPageMemory) {\n        require(target in pages)\n        pages.filter { it !== target }.forEach { it.stopPlayback() }\n        onAcquire()\n    }"
+        },
+        {
+          "start": 140,
+          "end": 159,
+          "body": "/** Always mounted by the shell; page disposal does not stop, detach ownership or close the live socket. */\n@Composable\nfun DesktopRetainedMediaEffects(memory: DesktopRetainedMedia, onActive: (Boolean) -> Unit) {\n    val latestActive by rememberUpdatedState(onActive)\n    val versions = memory.pages.map { it.sourceVersion to it.opening }\n    LaunchedEffect(memory, versions) {\n        val player = memory.player ?: return@LaunchedEffect\n        var completedEpisode: Long? = null\n        player.state.collect { state ->\n            memory.pages.filter { it.sourceVersion != null && !it.ownsNativeSource }.forEach { it.stopPlayback() }\n            val episodeVersion = memory.bangumi.sourceVersion\n            if (memory.current === memory.bangumi && state.ended && episodeVersion != null && completedEpisode != episodeVersion) {\n                completedEpisode = episodeVersion\n                // Upstream BangumiPlayerViewModel always advances sequentially and stops at the last episode.\n                memory.bangumi.next?.invoke() ?: run { memory.bangumi.notice = \"已是最后一集\" }\n            }\n            if (memory.current === memory.external && state.ended) memory.external.releaseCompletedLaunch()\n            latestActive(memory.pages.any { it.opening } || memory.current != null && state.error == null && !state.ended &&\n                (state.loading || state.videoCodec != null || state.audioCodec != null))\n        }"
+        }
+      ]
+    }
+  ]
+}

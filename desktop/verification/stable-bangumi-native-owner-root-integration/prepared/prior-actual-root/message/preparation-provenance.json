@@ -1,0 +1,20 @@
+{
+  "observerAndOwnedWindowReuse": {
+    "RootSearchFixture.kt": "25782d09ec61f8212f8f505d9ba572ced821e910ebcaeaba367805a4825de2b8",
+    "run.py": "d27d807547c5f15b018d69825a9021d4846d77bd658d3b504fe3f9f958482646",
+    "prepare-message-fixture.py": "f6b772657e393db77ab4c4368dfe150643b16ba09ca5da6691db9b7da760fc46"
+  },
+  "actualSnapshot": 88,
+  "productionOverlays": 0,
+  "authenticatedMessagePagesAccepted": false,
+  "SOFTWAREFixtureOnly": true,
+  "guestKeys": [
+    "Inbox",
+    "ReplyMe",
+    "AtMe",
+    "LikeMe",
+    "SystemNotice",
+    "Chat"
+  ],
+  "userAccountDataRead": false
+}

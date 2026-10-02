@@ -1,0 +1,261 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
++++ app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt
+@@ -39,6 +39,7 @@
+ import com.android.purebilibili.data.repository.resolveVideoPlaybackAuthState
+ import com.android.purebilibili.data.repository.isExactRequestedQualitySelected
+ import com.android.purebilibili.data.repository.shouldScheduleHdrAutoUpgrade
++import com.android.purebilibili.feature.plugin.CdnTransferRuntime
+ import com.android.purebilibili.feature.plugin.CdnHealthEvent
+ import com.android.purebilibili.feature.plugin.CdnDashPrefetchRequest
+ import com.android.purebilibili.feature.plugin.CdnDashSegmentPrefetcher
+@@ -98,14 +99,14 @@
+ import com.android.purebilibili.feature.video.playback.loader.PlaybackLoadConfig
+ import com.android.purebilibili.feature.video.playback.loader.PlaybackLoadResult
+ import com.android.purebilibili.feature.video.playback.loader.PlaybackLoader
+-import com.android.purebilibili.feature.video.playback.dash.AdaptiveDashPlaybackSource
++import com.android.purebilibili.core.player.dash.AdaptiveDashPlaybackSource
+ import com.android.purebilibili.feature.video.playback.audio.AudioFallbackReason
+ import com.android.purebilibili.feature.video.playback.audio.AudioQualityOption
+ import com.android.purebilibili.feature.video.playback.audio.AUDIO_QUALITY_AUTO
+ import com.android.purebilibili.feature.video.playback.audio.isPremiumAudioPlaybackFailure
+ import com.android.purebilibili.feature.video.playback.audio.resolveRequestedAudioQuality
+ import com.android.purebilibili.feature.video.playback.policy.PlaybackPostLoadTask
+-import com.android.purebilibili.feature.video.playback.policy.PlaybackQualityMode
++import com.android.purebilibili.core.player.policy.PlaybackQualityMode
+ import com.android.purebilibili.feature.video.playback.policy.PlaybackHeartbeatSnapshot
+ import com.android.purebilibili.feature.video.playback.policy.resolveOnlineCountPollingDelayMs
+ import com.android.purebilibili.feature.video.playback.policy.buildPlaybackPostLoadPlan
+@@ -266,6 +267,7 @@
+ }
+ 
+ private const val SPONSOR_SKIP_END_GUARD_MS = 1_000L
++private const val PUBLIC_VIDEO_NOTE_PAGE_SIZE = 10
+ 
+ internal fun resolveSponsorBlockSkipTargetPositionMs(
+     requestedPositionMs: Long,
+@@ -1471,8 +1473,9 @@
+                     "NavInfo: code=${result.code}, isLogin=${result.data?.isLogin}, money=${result.data?.money}, wallet=${result.data?.wallet?.bcoin_balance}")
+                 
+                 if (result.code == 0 && result.data != null) {
+-                    if (result.data.isLogin) {
+-                        _userCoinBalance.value = result.data.money
++                    val checkedResultData = requireNotNull(result.data)
++                    if (checkedResultData.isLogin) {
++                        _userCoinBalance.value = checkedResultData.money
+                     } else {
+                         com.android.purebilibili.core.util.Logger.w("VideoPlaybackViewModel", "User not logged in according to getNavInfo")
+                         _userCoinBalance.value = -3.0 // API says Not Logged In
+@@ -2311,6 +2314,12 @@
+     //  [新增] 播放完成监听器
+     private val playbackEndListener = object : Player.Listener {
+         override fun onPlaybackStateChanged(playbackState: Int) {
++            if (CdnTransferRuntime.enabled) {
++                CdnTransferRuntime.playback(
++                    exoPlayer?.let { (it.bufferedPosition - it.currentPosition).coerceAtLeast(0) } ?: 0L,
++                    exoPlayer?.videoFormat?.bitrate?.coerceAtLeast(0)?.toLong() ?: 0L
++                )
++            }
+             if (playbackState == Player.STATE_READY) {
+                 cancelPlaybackStallRecovery()
+                 markPlaybackCdnReadyIfMediaReady()
+@@ -5379,7 +5388,8 @@
+                 // 使用 Relation 接口精准查询
+                 val response = currentApi.getRelation(mid)
+                 if (response.code == 0 && response.data != null) {
+-                    val isFollowing = response.data.attribute == 2 || response.data.attribute == 6
++                    val checkedResponseData = requireNotNull(response.data)
++                    val isFollowing = checkedResponseData.attribute == 2 || checkedResponseData.attribute == 6
+ 
+                     _uiState.update { state ->
+                         if (state is VideoPlaybackUiState.Success) {
+@@ -5435,7 +5445,8 @@
+                     try {
+                         val result = com.android.purebilibili.core.network.NetworkModule.api.getFollowings(loginMid, page, pageSize)
+                         if (result.code == 0 && result.data != null) {
+-                            val list = result.data.list ?: break
++                            val checkedResultData = requireNotNull(result.data)
++                            val list = checkedResultData.list ?: break
+                             if (list.isEmpty()) break
+                             allMids.addAll(list.map { it.mid })
+                             if (list.size < pageSize) break
+@@ -5545,13 +5556,14 @@
+             try {
+                 val response = com.android.purebilibili.core.network.NetworkModule.api.getVideoTags(bvid)
+                 if (response.code == 0 && response.data != null) {
++                    val checkedResponseData = requireNotNull(response.data)
+                     _uiState.update { current ->
+                         if (current is VideoPlaybackUiState.Success && current.info.bvid == bvid) {
+-                            current.copy(videoTags = response.data)
++                            current.copy(videoTags = checkedResponseData)
+                         } else current
+                     }
+-                    MiniPlayerManager.getInstance(getApplication<Application>()).updateCachedVideoTags(bvid, response.data)
+-                    Logger.d("PlayerVM", "🏷️ Loaded ${response.data.size} video tags")
++                    MiniPlayerManager.getInstance(getApplication<Application>()).updateCachedVideoTags(bvid, checkedResponseData)
++                    Logger.d("PlayerVM", "🏷️ Loaded ${checkedResponseData.size} video tags")
+                 }
+             } catch (e: Exception) {
+                 Logger.d("PlayerVM", " Failed to load video tags: ${e.message}")
+@@ -5618,13 +5630,14 @@
+                     ) {
+                         val response = com.android.purebilibili.core.network.NetworkModule.api.getOnlineCount(bvid, cid)
+                         if (response.code == 0 && response.data != null) {
+-                            val onlineText = "${response.data.total}人正在看"
++                            val checkedResponseData = requireNotNull(response.data)
++                            val onlineText = "${checkedResponseData.total}人正在看"
+                             _uiState.update { current ->
+                                 if (current is VideoPlaybackUiState.Success) {
+                                     current.copy(onlineCount = onlineText)
+                                 } else current
+                             }
+-                            Logger.d("PlayerVM", "👀 Online count: ${response.data.total}")
++                            Logger.d("PlayerVM", "👀 Online count: ${checkedResponseData.total}")
+                         }
+                     }
+                 } catch (e: Exception) {
+@@ -5721,12 +5734,13 @@
+ 
+                     // 2. 处理 BGM 信息
+                     if (data.bgmInfo != null) {
++                        val checkedDataBgmInfo = requireNotNull(data.bgmInfo)
+                         _uiState.update { current ->
+                             if (current is VideoPlaybackUiState.Success) {
+-                                current.copy(bgmInfo = data.bgmInfo)
++                                current.copy(bgmInfo = checkedDataBgmInfo)
+                             } else current
+                         }
+-                        Logger.d("PlayerVM", "🎵 Loaded BGM: ${data.bgmInfo.musicTitle}")
++                        Logger.d("PlayerVM", "🎵 Loaded BGM: ${checkedDataBgmInfo.musicTitle}")
+                     }
+ 
+                     // 2b. gRPC BGM list (multi-song support)
+@@ -6252,7 +6266,7 @@
+         val edgeStartMs = resolveInteractiveEdgeStartPositionMs(data, resolvedEdgeId)
+         val triggerOffsetMs = question.startTimeR.toLong().coerceAtLeast(0L)
+         val absoluteTriggerMs = resolveInteractiveQuestionTriggerMs(edgeStartMs, triggerOffsetMs)
+-        val dimension = data.edges.dimension
++        val dimension = data.edges?.dimension
+ 
+         scheduleInteractiveQuestion(
+             edgeId = resolvedEdgeId,
+@@ -6618,10 +6632,16 @@
+                                         title = note.title,
+                                         summary = note.summary,
+                                         authorName = note.author?.name.orEmpty(),
++                                        authorMid = note.author?.mid ?: 0L,
++                                        authorFace = note.author?.face.orEmpty(),
++                                        authorLevel = note.author?.level ?: 0,
++                                        authorSenior = (note.author?.isSeniorMember ?: 0) == 1,
++                                        pubtime = note.pubtime,
+                                         webUrl = note.webUrl,
+                                         likes = note.likes
+                                     )
+-                                }
++                                },
++                                publicNotesEnd = snapshot.publicNotes.size >= snapshot.publicNoteTotal
+                             )
+                         )
+                     }
+@@ -6650,6 +6670,63 @@
+         loadVideoNote(loadedBvid = current.info.bvid, loadedAid = current.info.aid)
+     }
+ 
++    fun loadMorePublicVideoNotes() {
++        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return
++        val noteState = current.videoNoteState
++        if (noteState.publicNotesLoadingMore || noteState.publicNotesEnd) return
++        val nextPage = noteState.publicNotes.size / PUBLIC_VIDEO_NOTE_PAGE_SIZE + 1
++        _uiState.update { state ->
++            val success = state as? VideoPlaybackUiState.Success ?: return@update state
++            success.copy(
++                videoNoteState = success.videoNoteState.copy(publicNotesLoadingMore = true)
++            )
++        }
++        viewModelScope.launch {
++            VideoNoteRepository.getPublicVideoNotePage(current.info.aid, nextPage)
++                .onSuccess { page ->
++                    _uiState.update { state ->
++                        val success = state as? VideoPlaybackUiState.Success ?: return@update state
++                        if (success.info.aid != current.info.aid) return@update state
++                        val existing = success.videoNoteState.publicNotes
++                        val knownCvids = existing.mapTo(mutableSetOf()) { it.cvid }
++                        val appended = page.notes
++                            .filter { it.cvid !in knownCvids }
++                            .map { note ->
++                                VideoNotePublicPreview(
++                                    cvid = note.cvid,
++                                    title = note.title,
++                                    summary = note.summary,
++                                    authorName = note.author?.name.orEmpty(),
++                                    authorMid = note.author?.mid ?: 0L,
++                                    authorFace = note.author?.face.orEmpty(),
++                                    authorLevel = note.author?.level ?: 0,
++                                    pubtime = note.pubtime,
++                                    webUrl = note.webUrl,
++                                    likes = note.likes
++                                )
++                            }
++                        val merged = existing + appended
++                        success.copy(
++                            videoNoteState = success.videoNoteState.copy(
++                                publicNotes = merged,
++                                publicNoteCount = page.total,
++                                publicNotesLoadingMore = false,
++                                publicNotesEnd = merged.size >= page.total || page.notes.isEmpty()
++                            )
++                        )
++                    }
++                }
++                .onFailure {
++                    _uiState.update { state ->
++                        val success = state as? VideoPlaybackUiState.Success ?: return@update state
++                        success.copy(
++                            videoNoteState = success.videoNoteState.copy(publicNotesLoadingMore = false)
++                        )
++                    }
++                }
++        }
++    }
++
+     fun openVideoNoteEditor() {
+         val current = _uiState.value as? VideoPlaybackUiState.Success ?: return
+         if (current.videoNoteState.forbidNoteEntrance) return
+@@ -6686,19 +6763,15 @@
+         }
+     }
+ 
+-    fun insertCurrentPlaybackTimestampIntoNote() {
+-        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return
++    fun currentVideoNoteTimestamp(): VideoNoteBlock.Timestamp? {
++        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return null
+         val positionSeconds = ((exoPlayer?.currentPosition ?: 0L) / 1000L).coerceAtLeast(0L)
+         val pageIndex = current.info.pages.indexOfFirst { it.cid == current.info.cid }.coerceAtLeast(0)
+-        val timestamp = VideoNoteBlock.Timestamp(
++        return VideoNoteBlock.Timestamp(
+             seconds = positionSeconds,
+             cid = current.info.cid,
+             index = pageIndex,
+             cidCount = current.info.pages.size.coerceAtLeast(1)
+-        )
+-        val document = current.videoNoteState.editorDocument
+-        updateVideoNoteEditorDocument(
+-            document.copy(blocks = document.blocks + timestamp + VideoNoteBlock.Text(" "))
+         )
+     }
+ 
+@@ -7866,6 +7939,15 @@
+         lastPluginDispatchPositionMs = null
+         pluginCheckJob = viewModelScope.launch {
+             while (true) {
++                if (CdnTransferRuntime.enabled) {
++                    exoPlayer?.let { player ->
++                        CdnTransferRuntime.playback(
++                            (player.bufferedPosition - player.currentPosition).coerceAtLeast(0),
++                            (player.videoFormat?.bitrate?.coerceAtLeast(0)?.toLong() ?: 0L) +
++                                (player.audioFormat?.bitrate?.coerceAtLeast(0)?.toLong() ?: 0L)
++                        )
++                    }
++                }
+                 val plugins = getSessionPlayerPlugins()
+                 refreshSponsorContributionAvailability(plugins)
+                 val currentVideo = _uiState.value as? VideoPlaybackUiState.Success

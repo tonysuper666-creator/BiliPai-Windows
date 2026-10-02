@@ -1,0 +1,25 @@
+PASS all original DURL entries and primary-or-backup order retained
+PASS original milliseconds converted to exact continuous segment seconds
+PASS same native EDL contains both physical segments
+PASS original seek and pause intent retained
+PASS original episode Referer retained
+PASS same-cache progressive plan has one track per segment
+PASS signed progressive backup URL retained as exact alias
+PASS same native headers used by all progressive cache tracks
+PASS legitimate missing BVID and aid/cid stay absent
+PASS missing uploader and dimensions stay absent
+PASS season aggregate statistics never fabricated as episode statistics
+PASS actual episode title cover and raw response duration projected
+PASS wrong episode Referer rejected
+PASS incomplete progressive source rejected
+PASS reordered progressive source rejected
+PASS foreign signed URL rejected
+PASS metadata from another raw response rejected
+PASS course dedicated Referer and true uploader projected
+PASS complete original generated MPD retained byte-for-byte
+PASS actual selected signed mirrors used by accepted adaptive preparation
+PASS raw signed primary addresses retained as adaptive aliases
+PASS original cached raw Dash DTO remains unchanged
+Exception in thread "main" java.lang.IllegalStateException: selected DASH mirrors and raw signed primary URLs reach same byte plan
+	at com.bilipai.desktop.ui.BangumiNativeOwnerProofKt.checkThat(BangumiNativeOwnerProof.kt:14)
+	at com.bilipai.desktop.ui.BangumiNativeOwnerProofKt.main(BangumiNativeOwnerProof.kt:87)

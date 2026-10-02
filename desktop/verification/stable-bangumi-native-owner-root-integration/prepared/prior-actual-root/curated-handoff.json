@@ -1,0 +1,22 @@
+{
+  "searchIndex": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\curated-evidence-index.json",
+  "searchIndexSHA": "c40af885d0f5711143ee832c2148fa218dd0b3fb84261d0657b02102a0db3901",
+  "messageIndex": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\curated-evidence-index.json",
+  "messageIndexSHA": "bc35d97ee8520a5ca5fc9dd8888af0b6e637ea9b2445f2c3f18938afc4d262a8",
+  "searchRawCount": 112,
+  "messageRawCount": 18,
+  "searchAssertions": 23,
+  "messageGuestAssertions": 57,
+  "actualSearchSnapshot": 87,
+  "actualMessageSnapshot": 88,
+  "sourceOverlays": 0,
+  "rootMountAccepted": true,
+  "accountAuthenticatedContent": false,
+  "realBusinessNetwork": false,
+  "defaultDirect3DStartup": false,
+  "longNativePath": false,
+  "nativeOrdinaryVideoPlayback": false,
+  "newEXEDeployed": false,
+  "candidateProductEdited": false,
+  "userDataChanged": false
+}

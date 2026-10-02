@@ -1,0 +1,85 @@
+STAGE await reference: actual Shell
+STAGE await condition: published actual Root
+STAGE await reference: actual Window route provider
+STAGE await reference: actual remembered original Search Root
+STAGE await reference: actual same Community Repository
+PASS Actual Window typed Search route accepted
+STAGE await condition: actual full Search rendered
+PASS Original VM belongs to already composed physical Root entry
+STAGE await condition: actual original key input
+PASS Owned Root Canvas keyboard enters original Search field
+STAGE await condition: actual Enter search and same history
+PASS Original Enter writes Root's same history owner
+PASS Original VM history matches actual Root's existing account DAO
+STAGE await condition: UP tab available
+STAGE await condition: actual original UP tab
+java.io.IOException: Unexpected response code for CONNECT: 503
+	at okhttp3.internal.connection.ConnectPlan.createTunnel(ConnectPlan.kt:456)
+	at okhttp3.internal.connection.ConnectPlan.connectTunnel$okhttp(ConnectPlan.kt:306)
+	at okhttp3.internal.connection.ConnectPlan.connectTlsEtc(ConnectPlan.kt:170)
+	at okhttp3.internal.connection.FastFallbackExchangeFinder.find(FastFallbackExchangeFinder.kt:78)
+	at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:298)
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:101)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:85)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:74)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at com.bilipai.desktop.data.DesktopRepository$special$$inlined$-addInterceptor$1.intercept(OkHttpClient.kt:1418)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:226)
+	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:574)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.io.IOException: Unexpected response code for CONNECT: 503
+	at okhttp3.internal.connection.ConnectPlan.createTunnel(ConnectPlan.kt:456)
+	at okhttp3.internal.connection.ConnectPlan.connectTunnel$okhttp(ConnectPlan.kt:306)
+	at okhttp3.internal.connection.ConnectPlan.connectTlsEtc(ConnectPlan.kt:170)
+	at okhttp3.internal.connection.FastFallbackExchangeFinder.find(FastFallbackExchangeFinder.kt:78)
+	at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:298)
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:101)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:85)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:74)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at com.bilipai.desktop.data.DesktopRepository$special$$inlined$-addInterceptor$1.intercept(OkHttpClient.kt:1418)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:226)
+	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:574)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.io.IOException: Unexpected response code for CONNECT: 503
+	at okhttp3.internal.connection.ConnectPlan.createTunnel(ConnectPlan.kt:456)
+	at okhttp3.internal.connection.ConnectPlan.connectTunnel$okhttp(ConnectPlan.kt:306)
+	at okhttp3.internal.connection.ConnectPlan.connectTlsEtc(ConnectPlan.kt:170)
+	at okhttp3.internal.connection.FastFallbackExchangeFinder.find(FastFallbackExchangeFinder.kt:78)
+	at okhttp3.internal.connection.RealCall.initExchange$okhttp(RealCall.kt:298)
+	at okhttp3.internal.connection.ConnectInterceptor.intercept(ConnectInterceptor.kt:32)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.cache.CacheInterceptor.intercept(CacheInterceptor.kt:101)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.http.BridgeInterceptor.intercept(BridgeInterceptor.kt:85)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.http.RetryAndFollowUpInterceptor.intercept(RetryAndFollowUpInterceptor.kt:74)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at com.bilipai.desktop.data.DesktopRepository$special$$inlined$-addInterceptor$1.intercept(OkHttpClient.kt:1418)
+	at okhttp3.internal.http.RealInterceptorChain.proceed(RealInterceptorChain.kt:126)
+	at okhttp3.internal.connection.RealCall.getResponseWithInterceptorChain$okhttp(RealCall.kt:226)
+	at okhttp3.internal.connection.RealCall$AsyncCall.run(RealCall.kt:574)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+kotlinx.coroutines.TimeoutCancellationException: Timed out waiting for 35000 ms
+	at kotlinx.coroutines.TimeoutKt.TimeoutCancellationException(Timeout.kt:189)
+	at kotlinx.coroutines.TimeoutCoroutine.run(Timeout.kt:157)
+	at kotlinx.coroutines.EventLoopImplBase$DelayedRunnableTask.run(EventLoop.common.kt:505)
+	at kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:263)
+	at kotlinx.coroutines.DefaultExecutor.run(DefaultExecutor.kt:105)
+	at java.base/java.lang.Thread.run(Thread.java:1583)

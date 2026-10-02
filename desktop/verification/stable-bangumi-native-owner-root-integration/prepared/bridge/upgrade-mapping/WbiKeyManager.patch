@@ -1,0 +1,85 @@
+--- app/src/main/java/com/android/purebilibili/core/network/WbiKeyManager.kt
++++ core-data/src/main/java/com/android/purebilibili/core/network/WbiKeyManager.kt
+@@ -44,7 +44,7 @@
+         // 1. 检查内存缓存
+         val cached = cachedKeys
+         if (cached != null && isCacheValid()) {
+-            com.android.purebilibili.core.util.Logger.d(TAG, " Using cached WBI keys")
++            com.android.purebilibili.core.network.CoreDataLog.d(TAG, " Using cached WBI keys")
+             return Result.success(cached)
+         }
+         
+@@ -53,7 +53,7 @@
+             // 双重检查：可能在等待锁的过程中其他协程已刷新
+             val rechecked = cachedKeys
+             if (rechecked != null && isCacheValid()) {
+-                com.android.purebilibili.core.util.Logger.d(TAG, " Using cached WBI keys (after lock)")
++                com.android.purebilibili.core.network.CoreDataLog.d(TAG, " Using cached WBI keys (after lock)")
+                 return@withLock Result.success(rechecked)
+             }
+             
+@@ -75,7 +75,7 @@
+      * 内部刷新逻辑
+      */
+     private suspend fun refreshKeysInternal(): Result<Pair<String, String>> {
+-        com.android.purebilibili.core.util.Logger.d(TAG, " Refreshing WBI keys from network...")
++        com.android.purebilibili.core.network.CoreDataLog.d(TAG, " Refreshing WBI keys from network...")
+         
+         return try {
+             val api = NetworkModule.api
+@@ -96,16 +96,18 @@
+                         persistToStorage(context)
+                     }
+                 } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+                     android.util.Log.w(TAG, " Failed to persist WBI keys: ${e.message}")
+                 }
+                 
+-                com.android.purebilibili.core.util.Logger.d(TAG, " WBI keys refreshed successfully")
++                com.android.purebilibili.core.network.CoreDataLog.d(TAG, " WBI keys refreshed successfully")
+                 Result.success(Pair(imgKey, subKey))
+             } else {
+                 android.util.Log.e(TAG, " WBI keys not found in response")
+                 Result.failure(Exception("WBI keys not found in nav response"))
+             }
+         } catch (e: Exception) {
++                if (e is kotlinx.coroutines.CancellationException) throw e
+             android.util.Log.e(TAG, " Failed to refresh WBI keys: ${e.message}")
+             Result.failure(e)
+         }
+@@ -115,7 +117,7 @@
+      * 使缓存失效
+      */
+     fun invalidateCache() {
+-        com.android.purebilibili.core.util.Logger.d(TAG, " Invalidating WBI keys cache")
++        com.android.purebilibili.core.network.CoreDataLog.d(TAG, " Invalidating WBI keys cache")
+         cachedKeys = null
+         cacheTimestamp = 0
+     }
+@@ -148,7 +150,7 @@
+             .putLong(SP_KEY_TIMESTAMP, cacheTimestamp)
+             .apply()
+         
+-        com.android.purebilibili.core.util.Logger.d(TAG, " WBI keys persisted to storage")
++        com.android.purebilibili.core.network.CoreDataLog.d(TAG, " WBI keys persisted to storage")
+     }
+     
+     /**
+@@ -175,14 +177,14 @@
+             cacheTimestamp = timestamp
+             
+             if (isCacheValid()) {
+-                com.android.purebilibili.core.util.Logger.d(TAG, " WBI keys restored from storage")
++                com.android.purebilibili.core.network.CoreDataLog.d(TAG, " WBI keys restored from storage")
+                 return true
+             } else {
+-                com.android.purebilibili.core.util.Logger.d(TAG, "⏰ Restored WBI keys are expired")
++                com.android.purebilibili.core.network.CoreDataLog.d(TAG, "⏰ Restored WBI keys are expired")
+                 invalidateCache()
+             }
+         } else {
+-            com.android.purebilibili.core.util.Logger.d(TAG, " No WBI keys found in storage")
++            com.android.purebilibili.core.network.CoreDataLog.d(TAG, " No WBI keys found in storage")
+         }
+         
+         return false

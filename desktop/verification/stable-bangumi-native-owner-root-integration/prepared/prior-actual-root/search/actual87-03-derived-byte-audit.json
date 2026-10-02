@@ -1,0 +1,20 @@
+{
+  "derivedAuditOnly": true,
+  "originalAttemptUnmodified": true,
+  "originalRuntimeProofSHA": "9002cf3fd878731bcb1e6e531ce60891540bae246b8162e1e3cba4b3a0725c3e",
+  "actualSnapshot": 87,
+  "manifestSHA": "5aecc4d5a84f83368d01820541fb2beb8b3cf29ececefa17e8a9363ae030bb03",
+  "orderedCPSHA": "cf3e0773efdb82b4b4c9fa19654a54b92c16401b675cd746748de8b41141361f",
+  "sourceSHA": "6f6ffeaa0ac7e7b17bda200bd740e6d26c7dc93f639af0f2b5f02a4752eb4bc9",
+  "fixtureJarSHA": "905b5c14336e438151284cac3d33b4067b31579276f5fcf2869009682430c3f0",
+  "actualRootSearchAccepted": false,
+  "RootMounted": true,
+  "assertions": 5,
+  "status": "FAIL",
+  "loadedClassBytesAllActual": true,
+  "productClassOverlaps": 0,
+  "artifactCollectorFailure": "Prior run helper duplicated Windows extended-path prefix during artifact enumeration; original proof retained. This derived receipt audits bytes, it does not supersede the failed UI result.",
+  "realAccount": false,
+  "nativePlaybackAccepted": false,
+  "defaultDirect3DStartupAccepted": false
+}

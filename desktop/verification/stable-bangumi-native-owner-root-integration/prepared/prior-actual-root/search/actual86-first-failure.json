@@ -1,0 +1,79 @@
+{
+  "actualSnapshot": 86,
+  "codeHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+  "fixtureCompilePassed": true,
+  "actualRootSearchAccepted": false,
+  "RootMounted": false,
+  "searchAssertions": 0,
+  "pointerEvents": 0,
+  "keyboardEvents": 0,
+  "childExitCode": 0,
+  "normalCloseAccepted": false,
+  "productionOverrides": 0,
+  "loadedOriginsBytesAllActual": true,
+  "diagnosis": "Actual Comment Root wrapper consumes retained ImagePreviewShare CompositionLocal before provider. Initial composition cannot publish navigation.",
+  "additionalObservedFailure": "Original progress writer has not drained during shutdown after composition failure; preserved, not declared fixed or independently classified.",
+  "realAccount": false,
+  "newEXEDeployed": false,
+  "rawFiles": [
+    {
+      "path": "runs/actual86-01/RootSearchFixture.kt",
+      "sha256Bytes": "0a11b6296ea99178b5953f336b737e7aa3a0274c5d66dc20cada84020a61fb35",
+      "bytes": 22536
+    },
+    {
+      "path": "runs/actual86-01/pins-before.json",
+      "sha256Bytes": "22dba907fb67f6525d9c1e5ab8b569b8fd1ee78dd5e299b3ea3558157edce455",
+      "bytes": 40339
+    },
+    {
+      "path": "runs/actual86-01/compiler.args",
+      "sha256Bytes": "f83c65a6adcb48e4c9060352a936f7e8c8aa02b69a5b1389702f3be04618935b",
+      "bytes": 25828
+    },
+    {
+      "path": "runs/actual86-01/compile.log",
+      "sha256Bytes": "d54ae1b76e4233a872323735ed461ea639b618b662569f1311f7f7b43df52e89",
+      "bytes": 515
+    },
+    {
+      "path": "runs/actual86-01/compile-result.json",
+      "sha256Bytes": "004ee6027b1b111e8db539ac29dc34056757e68e2794009b451100db9b5b38c6",
+      "bytes": 190
+    },
+    {
+      "path": "runs/actual86-01/fixture-jar-pin.json",
+      "sha256Bytes": "71a55a0b839a6f2b06118c1e319ec9f4bb43d14860d640e802bdc6187310f734",
+      "bytes": 114
+    },
+    {
+      "path": "runs/actual86-01/runtime-command.json",
+      "sha256Bytes": "0412316344cb21b69094efcd0ab2bb4918ddebab7a4a96c869d0d5b79ecd88a6",
+      "bytes": 28460
+    },
+    {
+      "path": "runs/actual86-01/runtime.log",
+      "sha256Bytes": "3a792367338b0da07d20cf83ab58cee8e709eb0aacb14a9b982432bd183ede66",
+      "bytes": 12735
+    },
+    {
+      "path": "runs/actual86-01/pins-after.json",
+      "sha256Bytes": "22dba907fb67f6525d9c1e5ab8b569b8fd1ee78dd5e299b3ea3558157edce455",
+      "bytes": 40339
+    },
+    {
+      "path": "runs/actual86-01/acceptance-result.json",
+      "sha256Bytes": "44bc14ff435915b16817f5d95437d42155fa065f56010f6929fd1cebb519e00c",
+      "bytes": 706
+    },
+    {
+      "path": "runs/actual86-01/fixture-owned-runtime/root-search-proof.json",
+      "sha256Bytes": "5bcc91859720e69ef39d2ffb106ed5cd4f5cd55650662ba9d2e383d81cb59f9e",
+      "bytes": 2876
+    }
+  ],
+  "fixtureJarExcludedFromFormalRaw": true,
+  "generatedClassesExcluded": true,
+  "originalReceiptsModified": false,
+  "frozenSearch73Modified": false
+}

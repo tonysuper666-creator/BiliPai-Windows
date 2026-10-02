@@ -1,0 +1,85 @@
+{
+  "passed": true,
+  "exactGeneratedFiles": 15,
+  "bangumiOutputs": 7,
+  "existingVideoOwnerOutputs": 8,
+  "actualProductOverrides": 0,
+  "normalBuildSoleProducerOutputs": true,
+  "outputs": [
+    {
+      "path": "generated-video/com/android/purebilibili/core/store/DesktopOriginalVideoOwnerSettings.kt",
+      "normalSoleProducerSha256Bytes": "2c4f29ea06019618e887216317c3ef5b075e2dab2ba215e92dda9af35bdc35d0",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/core/util/DesktopOriginalVideoDefaultQuality.kt",
+      "normalSoleProducerSha256Bytes": "d3841115454bc3b0a7b9bd662069936884245b79f0bb3cd05dc2b9311e453d8c",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt",
+      "normalSoleProducerSha256Bytes": "1ae7928157b5ef7bdd027fbe0a68c34e79aadf07fdf58de61e1702d8be024957",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/data/repository/DesktopOriginalVideoNoteProtocol.kt",
+      "normalSoleProducerSha256Bytes": "7dec47b049608e2040651dc72f6bfcff523cbf764bc87428d351ba23a6b10a72",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/data/repository/DesktopOriginalVideoOwnerMetadataProtocol.kt",
+      "normalSoleProducerSha256Bytes": "b19944b4a8d7ebb96d15abb100a6489d0d9a7ed8bde230d81142f28c4182f41a",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt",
+      "normalSoleProducerSha256Bytes": "76f264d90b9ee2db2e99484be9251a7c370ece433becc059feece4c461ddac57",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt",
+      "normalSoleProducerSha256Bytes": "f514cca9498fcb4ab7bfb1f1c1aa2adc1adae14ff9773e26b2d6be7f47b3e361",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "normalSoleProducerSha256Bytes": "869a11b10aced877a65399a1f14fad719152fc63dc21257e80b2d255f8d0c17c",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/player/DesktopOriginalBangumiBasePlayerViewModel.kt",
+      "normalSoleProducerSha256Bytes": "3cb3fd42aeeaba87a32746988214fc5f86408daa8d3e8f26cb381ba891449eb9",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt",
+      "normalSoleProducerSha256Bytes": "d83ada54257341092ab9ff0549cd05ff8ce14395b09ad1f3c352a2b6b6b70da9",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDashManifestPolicy.kt",
+      "normalSoleProducerSha256Bytes": "342b8d27a9ee4b9ea22b7640eae25c15e9db7a2cb0da069d3a9fc99a73b5be3c",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiEpisodeSkipPolicy.kt",
+      "normalSoleProducerSha256Bytes": "1d5e0803dc92f9497c603be7a34eff81ab392bafc98975d110a52105790b14aa",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerOverlayPolicy.kt",
+      "normalSoleProducerSha256Bytes": "5f0bbe75750e01dab2c5804d030e8633c3148fd82c893805b48e09a5258e485a",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt",
+      "normalSoleProducerSha256Bytes": "00c481a9fae24e70e2a24613ae98e1a49c9afd4aa318bc27c4e4f522c86d0970",
+      "byteEqualPrepared": true
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt",
+      "normalSoleProducerSha256Bytes": "f891f4d060c64773e09cf44f8a8b3f797e5f2660168f862a3a6a0139d5730ef0",
+      "byteEqualPrepared": true
+    }
+  ]
+}

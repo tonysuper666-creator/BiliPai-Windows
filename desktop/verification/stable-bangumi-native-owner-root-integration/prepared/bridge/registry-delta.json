@@ -1,0 +1,117 @@
+{
+  "base": "464f5573331dfc7f7c2f1e47a5bf6bbac8cfd201",
+  "sourcesBefore": 1219,
+  "sourcesAfter": 1225,
+  "newOriginalIdentities": 6,
+  "existingFeatureUnions": 1,
+  "resourcesBefore": 244,
+  "resourcesAfter": 244,
+  "resourceDelta": [],
+  "newDependencies": [],
+  "sourceDelta": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/player/BasePlayerViewModel.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/core/player/BasePlayerViewModel.kt",
+        "sha256": "40f38ceb1e9372ee3bd9edbbc833be8675588d5ac71aacd62aa9dbac66af761b",
+        "features": [
+          "original-bangumi-player-full"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt",
+        "sha256": "73217eeb5cd680ba132ff1f4cc46cf46c35ed4fc0e8b99a175694ee635bdc151",
+        "features": [
+          "original-bangumi-player-full"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicy.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicy.kt",
+        "sha256": "061841fda22326b1c2f0cae94b7259ddf1135d11ac344ea7f238e7f58ba94395",
+        "features": [
+          "original-bangumi-player-full"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerOverlayPolicy.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerOverlayPolicy.kt",
+        "sha256": "a4e38309ce483cd28a6f04e1ff55f174ac3aff6850adeb46c31d903d9fe9a90d",
+        "features": [
+          "original-bangumi-player-full"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiResumePolicy.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiResumePolicy.kt",
+        "sha256": "dc28fef104bd5712617b5073a291d7ac4117a81d19bf8b3bf141848ab41efd5b",
+        "features": [
+          "original-bangumi-player-full"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiEpisodeSkipPolicy.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiEpisodeSkipPolicy.kt",
+        "sha256": "42626f5f61961e4aee797a413d9eab8c56f8032862fb112ec6e6bd0ceffc2d7d",
+        "features": [
+          "original-bangumi-player-full"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "operation": "feature-union",
+      "before": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+        "mode": "policy-extract",
+        "features": [
+          "source-parity",
+          "media",
+          "downloads",
+          "stable-favorites",
+          "home-bangumi-page",
+          "independent-bangumi-pages"
+        ],
+        "sha256": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612"
+      },
+      "after": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+        "mode": "policy-extract",
+        "features": [
+          "source-parity",
+          "media",
+          "downloads",
+          "stable-favorites",
+          "home-bangumi-page",
+          "independent-bangumi-pages",
+          "original-bangumi-player-full"
+        ],
+        "sha256": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612"
+      }
+    }
+  ],
+  "fullFunctionalPlayerAccepted": false
+}

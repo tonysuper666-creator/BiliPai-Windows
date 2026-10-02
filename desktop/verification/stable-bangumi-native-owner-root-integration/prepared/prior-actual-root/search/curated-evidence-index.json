@@ -1,0 +1,683 @@
+{
+  "status": "PASS_ACTUAL_ROOT_SEARCH_UI_SCOPE",
+  "rootMounted": true,
+  "productionOverlays": 0,
+  "userData": false,
+  "binaryJarsOrGeneratedTreesIncluded": false,
+  "rawCount": 112,
+  "rawBytes": 1728336,
+  "rows": [
+    {
+      "relativePath": "ACTUAL-ROOT-READOUT.md",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\ACTUAL-ROOT-READOUT.md",
+      "sha256Bytes": "36fe96d72aa9d338c81256599ffbfafd76ab3cd138e802c74f956d1cdbf81a01",
+      "bytes": 5799
+    },
+    {
+      "relativePath": "DELIVERY-READINESS-CURRENT.md",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\DELIVERY-READINESS-CURRENT.md",
+      "sha256Bytes": "412bda9c9cb65fff071240ebb23702875045e73793b843f69256e35b8bb7a777",
+      "bytes": 7434
+    },
+    {
+      "relativePath": "RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\RootSearchFixture.kt",
+      "sha256Bytes": "25782d09ec61f8212f8f505d9ba572ced821e910ebcaeaba367805a4825de2b8",
+      "bytes": 31623
+    },
+    {
+      "relativePath": "actual86-first-failure.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\actual86-first-failure.json",
+      "sha256Bytes": "2a993b918f5c0e19a0d1c9cc3df15c72a23519e49663a56fc632f24251e31881",
+      "bytes": 2871
+    },
+    {
+      "relativePath": "actual86-selected-failed-proof-copy.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\actual86-selected-failed-proof-copy.json",
+      "sha256Bytes": "545965e0283ed869ffe025a97e30eb6da0652cd775187a16bf668755db02728e",
+      "bytes": 3169
+    },
+    {
+      "relativePath": "actual87-03-derived-byte-audit.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\actual87-03-derived-byte-audit.json",
+      "sha256Bytes": "df00aa4b0a3a872bcf1402d02cb6e8695dce7187df7827443e890ec332ae3bba",
+      "bytes": 1040
+    },
+    {
+      "relativePath": "curate-actual-root.py",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\curate-actual-root.py",
+      "sha256Bytes": "629f90ced9a450e13dae5e7c67a2afa0f2625c7947c71184d232871eb59800fd",
+      "bytes": 12221
+    },
+    {
+      "relativePath": "delivery-readonly-final-versions.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\delivery-readonly-final-versions.json",
+      "sha256Bytes": "967c6838d55be338138f03f913688eb4fd0229de6420c0fb202ae695d97bebfd",
+      "bytes": 996
+    },
+    {
+      "relativePath": "final-owned-process-check.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\final-owned-process-check.json",
+      "sha256Bytes": "0e0a093e70641b144a11825a4f157c9244f3b61949e5e909b6fa2b85ec4f3917",
+      "bytes": 163
+    },
+    {
+      "relativePath": "post-timeout-owned-process-check.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\post-timeout-owned-process-check.json",
+      "sha256Bytes": "e9d5ac0426b6e46880c100ce7409ff82d4850edc81df7bd2e3f38724daf5db51",
+      "bytes": 253
+    },
+    {
+      "relativePath": "preparation-provenance.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\preparation-provenance.json",
+      "sha256Bytes": "429f2623f8c562a542467bda4b04bcfb9ae1895865104e44123768056497a5ac",
+      "bytes": 427
+    },
+    {
+      "relativePath": "readonly-delivery-provenance.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\readonly-delivery-provenance.json",
+      "sha256Bytes": "4492c3329ffb5d9176c192d04f52261e1ddaf43700bfaabfa5bed551787b5831",
+      "bytes": 8593
+    },
+    {
+      "relativePath": "run.py",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\run.py",
+      "sha256Bytes": "d27d807547c5f15b018d69825a9021d4846d77bd658d3b504fe3f9f958482646",
+      "bytes": 11924
+    },
+    {
+      "relativePath": "runs/actual86-01/RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\RootSearchFixture.kt",
+      "sha256Bytes": "0a11b6296ea99178b5953f336b737e7aa3a0274c5d66dc20cada84020a61fb35",
+      "bytes": 22536
+    },
+    {
+      "relativePath": "runs/actual86-01/acceptance-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\acceptance-result.json",
+      "sha256Bytes": "44bc14ff435915b16817f5d95437d42155fa065f56010f6929fd1cebb519e00c",
+      "bytes": 706
+    },
+    {
+      "relativePath": "runs/actual86-01/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\compile-result.json",
+      "sha256Bytes": "004ee6027b1b111e8db539ac29dc34056757e68e2794009b451100db9b5b38c6",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual86-01/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\compile.log",
+      "sha256Bytes": "d54ae1b76e4233a872323735ed461ea639b618b662569f1311f7f7b43df52e89",
+      "bytes": 515
+    },
+    {
+      "relativePath": "runs/actual86-01/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\compiler.args",
+      "sha256Bytes": "f83c65a6adcb48e4c9060352a936f7e8c8aa02b69a5b1389702f3be04618935b",
+      "bytes": 25828
+    },
+    {
+      "relativePath": "runs/actual86-01/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\fixture-jar-pin.json",
+      "sha256Bytes": "71a55a0b839a6f2b06118c1e319ec9f4bb43d14860d640e802bdc6187310f734",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual86-01/pins-after.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\pins-after.json",
+      "sha256Bytes": "22dba907fb67f6525d9c1e5ab8b569b8fd1ee78dd5e299b3ea3558157edce455",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual86-01/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\pins-before.json",
+      "sha256Bytes": "22dba907fb67f6525d9c1e5ab8b569b8fd1ee78dd5e299b3ea3558157edce455",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual86-01/runtime-command.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\runtime-command.json",
+      "sha256Bytes": "0412316344cb21b69094efcd0ab2bb4918ddebab7a4a96c869d0d5b79ecd88a6",
+      "bytes": 28460
+    },
+    {
+      "relativePath": "runs/actual86-01/runtime.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-01\\runtime.log",
+      "sha256Bytes": "3a792367338b0da07d20cf83ab58cee8e709eb0aacb14a9b982432bd183ede66",
+      "bytes": 12735
+    },
+    {
+      "relativePath": "runs/actual86-02/RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-02\\RootSearchFixture.kt",
+      "sha256Bytes": "d925d375d24e30dba9acd4cb0ad2fbd0c915bee2291b7b735a6eda582d1d9604",
+      "bytes": 24714
+    },
+    {
+      "relativePath": "runs/actual86-02/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-02\\compile-result.json",
+      "sha256Bytes": "51b075da8ec9fde85e12e890f8f1512e3361ef9ddf7d5fada360ccde8a9b93eb",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual86-02/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-02\\compile.log",
+      "sha256Bytes": "38226d82987df56624327818bb7ed720d41c01ae855b6f4712d531a76f9221ea",
+      "bytes": 515
+    },
+    {
+      "relativePath": "runs/actual86-02/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-02\\compiler.args",
+      "sha256Bytes": "f0933ee0db636ef4b891172e6816262aacf607486e05525de7ff855ab82e23cc",
+      "bytes": 25828
+    },
+    {
+      "relativePath": "runs/actual86-02/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-02\\fixture-jar-pin.json",
+      "sha256Bytes": "4c6d0a474cacff7139597d5dfe3b76eba906d08377bd6e8c997a7dc251de0090",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual86-02/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual86-02\\pins-before.json",
+      "sha256Bytes": "5184daa85502d5f1dbb98b6170c74a5595dceaa4aad345bed7ea061fe26ddef8",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-01/RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\RootSearchFixture.kt",
+      "sha256Bytes": "6f6ffeaa0ac7e7b17bda200bd740e6d26c7dc93f639af0f2b5f02a4752eb4bc9",
+      "bytes": 28344
+    },
+    {
+      "relativePath": "runs/actual87-01/acceptance-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\acceptance-result.json",
+      "sha256Bytes": "b12865543d915cebee38222306cd7f08c5ef28894b540056baa94b72e4b0d983",
+      "bytes": 244
+    },
+    {
+      "relativePath": "runs/actual87-01/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\compile-result.json",
+      "sha256Bytes": "2d16a5a62ae6114db7d16f5e45f232efda4cbd0d94caea953b1ecd9f57ff7823",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual87-01/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\compile.log",
+      "sha256Bytes": "cc328949ed24da2588e2b36e470d9091d82965b3182614766758e1d27098d85b",
+      "bytes": 515
+    },
+    {
+      "relativePath": "runs/actual87-01/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\compiler.args",
+      "sha256Bytes": "ee84b9b1cb3bddfaba54801f0b4d92b33e5be06d077767b423954ca45e8b248f",
+      "bytes": 25828
+    },
+    {
+      "relativePath": "runs/actual87-01/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\fixture-jar-pin.json",
+      "sha256Bytes": "a55d1fbfc9dae01ffa259cc70ff8b3ebb2bfb2546e2760971d05a1d5c956b038",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual87-01/pins-after.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\pins-after.json",
+      "sha256Bytes": "8f1f643f6d11448e54f1f296abac071fb30d31aa5043b2f417e93ee9387c4788",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-01/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\pins-before.json",
+      "sha256Bytes": "8f1f643f6d11448e54f1f296abac071fb30d31aa5043b2f417e93ee9387c4788",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-01/runtime-command.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\runtime-command.json",
+      "sha256Bytes": "f869e141490462235165fca9b3c4047574f80d95ecf7f45f083b89eefdd13fc3",
+      "bytes": 29200
+    },
+    {
+      "relativePath": "runs/actual87-01/runtime.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-01\\runtime.log",
+      "sha256Bytes": "765efb54aaf3d191abcc8f6b4df16d7b5b330ce00beb412c0195ef7cf66bf0ee",
+      "bytes": 405
+    },
+    {
+      "relativePath": "runs/actual87-02/RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\RootSearchFixture.kt",
+      "sha256Bytes": "6f6ffeaa0ac7e7b17bda200bd740e6d26c7dc93f639af0f2b5f02a4752eb4bc9",
+      "bytes": 28344
+    },
+    {
+      "relativePath": "runs/actual87-02/acceptance-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\acceptance-result.json",
+      "sha256Bytes": "b12865543d915cebee38222306cd7f08c5ef28894b540056baa94b72e4b0d983",
+      "bytes": 244
+    },
+    {
+      "relativePath": "runs/actual87-02/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\compile-result.json",
+      "sha256Bytes": "2d16a5a62ae6114db7d16f5e45f232efda4cbd0d94caea953b1ecd9f57ff7823",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual87-02/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\compile.log",
+      "sha256Bytes": "7147c6d418812bf7f3abed7ed4968f815019689ba4097a89f527110f6c5a9505",
+      "bytes": 515
+    },
+    {
+      "relativePath": "runs/actual87-02/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\compiler.args",
+      "sha256Bytes": "5317a8256822c64e8dcce775672ab52f9bddc630b104a64eb472540b0b0c3424",
+      "bytes": 25828
+    },
+    {
+      "relativePath": "runs/actual87-02/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\fixture-jar-pin.json",
+      "sha256Bytes": "5ae74a8a8f5b0130dd02d887ce5d8ef14b96fafe9f025c30f199bbddac613919",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual87-02/owned-child-live-jstack.txt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\owned-child-live-jstack.txt",
+      "sha256Bytes": "d1c1f5ca7b0f5b45d608bb27c1e3c972b7e89fb2dd8c4df5324065932456147b",
+      "bytes": 22563
+    },
+    {
+      "relativePath": "runs/actual87-02/pins-after.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\pins-after.json",
+      "sha256Bytes": "d44f049a1da4a5184f7eef93853c96d7217aa953b912f60036f72b7d589c1dd3",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-02/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\pins-before.json",
+      "sha256Bytes": "d44f049a1da4a5184f7eef93853c96d7217aa953b912f60036f72b7d589c1dd3",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-02/runtime-command.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\runtime-command.json",
+      "sha256Bytes": "a3ce9025c6deb71e8964bb9537d9bb92966192217511427d82f0da6320dc737e",
+      "bytes": 28227
+    },
+    {
+      "relativePath": "runs/actual87-02/runtime-owned-path.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\runtime-owned-path.json",
+      "sha256Bytes": "9503a98af6716eac485d72e7ea7f9c79129c97f9c822e50fb488abbfc283fb4c",
+      "bytes": 210
+    },
+    {
+      "relativePath": "runs/actual87-02/runtime.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-02\\runtime.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "relativePath": "runs/actual87-03/RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\RootSearchFixture.kt",
+      "sha256Bytes": "6f6ffeaa0ac7e7b17bda200bd740e6d26c7dc93f639af0f2b5f02a4752eb4bc9",
+      "bytes": 28344
+    },
+    {
+      "relativePath": "runs/actual87-03/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\compile-result.json",
+      "sha256Bytes": "2d16a5a62ae6114db7d16f5e45f232efda4cbd0d94caea953b1ecd9f57ff7823",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual87-03/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\compile.log",
+      "sha256Bytes": "5a6fe9d9b419d5951b537565b752c88518bf08e977459307e2b802a35ff1e398",
+      "bytes": 515
+    },
+    {
+      "relativePath": "runs/actual87-03/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\compiler.args",
+      "sha256Bytes": "9cc4f2175d7b27af788595a42aca5a80a61907183fa2f13c8cca8e54f991b2c3",
+      "bytes": 25828
+    },
+    {
+      "relativePath": "runs/actual87-03/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\fixture-jar-pin.json",
+      "sha256Bytes": "0f1837839d657f831589b3d1e6788ff2cd5a804674d5f3da9541ef52804a5ded",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual87-03/pins-after.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\pins-after.json",
+      "sha256Bytes": "60882062ee2a3b1509e2249036b376a91c43a0e68be4ec0b3b8a9a7e1c572bec",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-03/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\pins-before.json",
+      "sha256Bytes": "60882062ee2a3b1509e2249036b376a91c43a0e68be4ec0b3b8a9a7e1c572bec",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-03/runtime-command.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\runtime-command.json",
+      "sha256Bytes": "e1622999a688b0cfe167d49102b6737fc03fa91feae8f95f590537f9466b5279",
+      "bytes": 28345
+    },
+    {
+      "relativePath": "runs/actual87-03/runtime-evidence/root-search-proof.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\runtime-evidence\\root-search-proof.json",
+      "sha256Bytes": "9002cf3fd878731bcb1e6e531ce60891540bae246b8162e1e3cba4b3a0725c3e",
+      "bytes": 3338
+    },
+    {
+      "relativePath": "runs/actual87-03/runtime-owned-path.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\runtime-owned-path.json",
+      "sha256Bytes": "ea803952dae5cea1dcf7b4d5a085f6acc285659957313fa87a19ee342e6b3a6d",
+      "bytes": 210
+    },
+    {
+      "relativePath": "runs/actual87-03/runtime.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-03\\runtime.log",
+      "sha256Bytes": "4e3b6454cfb5ebeacdfae70f868a67e01e45b11392ad3288587bab72944a0276",
+      "bytes": 6688
+    },
+    {
+      "relativePath": "runs/actual87-04/RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\RootSearchFixture.kt",
+      "sha256Bytes": "bff152249cc777c441b546a7c507bda7b8c396c93213932d6babcf9abb368411",
+      "bytes": 28645
+    },
+    {
+      "relativePath": "runs/actual87-04/acceptance-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\acceptance-result.json",
+      "sha256Bytes": "efb9b2573b05aa4b3912692c23ef6ccf09690bf2675d2c6c19365ac4b9113dbb",
+      "bytes": 972
+    },
+    {
+      "relativePath": "runs/actual87-04/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\compile-result.json",
+      "sha256Bytes": "a24e067f82ae9166540e8af88a42ea6d9ec225f10ffd42e9fffa43cccd3c0dce",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual87-04/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\compile.log",
+      "sha256Bytes": "5584701fcf4a237f6f4090d0ce3d6bc6d0d057110c1f9a6765759597c5f4cf79",
+      "bytes": 515
+    },
+    {
+      "relativePath": "runs/actual87-04/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\compiler.args",
+      "sha256Bytes": "55bcbbe7ff628afe6469505aeba2801a9c7b302170d80e24e70beb21efe9eb8f",
+      "bytes": 25828
+    },
+    {
+      "relativePath": "runs/actual87-04/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\fixture-jar-pin.json",
+      "sha256Bytes": "13084ab50a0f2055b390977caf6df65db4ab195ed380e1a9077620c3bbc4301a",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual87-04/pins-after.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\pins-after.json",
+      "sha256Bytes": "327435d666f4118e5e6e020a3c84d6b3b43a7217d5fb166c4d6a2024e12dfb43",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-04/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\pins-before.json",
+      "sha256Bytes": "327435d666f4118e5e6e020a3c84d6b3b43a7217d5fb166c4d6a2024e12dfb43",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-04/runtime-command.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\runtime-command.json",
+      "sha256Bytes": "a88f929d241cfc9b2f87c0dfbeb744ff32d69b76e6d61d336c4591893cf3fc41",
+      "bytes": 28345
+    },
+    {
+      "relativePath": "runs/actual87-04/runtime-evidence/root-search-proof.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\runtime-evidence\\root-search-proof.json",
+      "sha256Bytes": "7a8984837c2336452c7ecd62634cd9bcf94112466158d0708fc6789a1ca74cb8",
+      "bytes": 3096
+    },
+    {
+      "relativePath": "runs/actual87-04/runtime-owned-path.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\runtime-owned-path.json",
+      "sha256Bytes": "47e5dbe24366c2871e8c3160d48f57dd7b15df39567f5b7440d56aefeac7d99a",
+      "bytes": 210
+    },
+    {
+      "relativePath": "runs/actual87-04/runtime.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-04\\runtime.log",
+      "sha256Bytes": "a05722f9c15cc5a6566646e5ce15be6b47568b8a067140630b28db2ead1a7f24",
+      "bytes": 5537
+    },
+    {
+      "relativePath": "runs/actual87-05/RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\RootSearchFixture.kt",
+      "sha256Bytes": "1e478b82172d10831a8e94d722fd2669345044efb77c6fb0fada1aaa89ea33e6",
+      "bytes": 30466
+    },
+    {
+      "relativePath": "runs/actual87-05/acceptance-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\acceptance-result.json",
+      "sha256Bytes": "e00346492d6c4087baf60210dbb5abf5882e854b04c5c2456873f38ea87c76ee",
+      "bytes": 973
+    },
+    {
+      "relativePath": "runs/actual87-05/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\compile-result.json",
+      "sha256Bytes": "9989b5cf1849393d12ccec02bba4e5ad7e6c5ba5dd202e7099700fc2500b4080",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual87-05/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\compile.log",
+      "sha256Bytes": "d53ba410433ddfd1aab9941af60d65597ae1eaa9bf071367e31957faee710769",
+      "bytes": 515
+    },
+    {
+      "relativePath": "runs/actual87-05/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\compiler.args",
+      "sha256Bytes": "30182d5105459d4a881681ae296e10d177e4519c082c59064f02aae2ad5f19ba",
+      "bytes": 25828
+    },
+    {
+      "relativePath": "runs/actual87-05/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\fixture-jar-pin.json",
+      "sha256Bytes": "39c7186860df1f91d8869eb3e53642d4634add506dfda0ebe5450329da4c736e",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual87-05/pins-after.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\pins-after.json",
+      "sha256Bytes": "8e5565a81c6363baa8b960e8de0891657dc6f5d7d709fff6018a43ab378bea16",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-05/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\pins-before.json",
+      "sha256Bytes": "8e5565a81c6363baa8b960e8de0891657dc6f5d7d709fff6018a43ab378bea16",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-05/runtime-command.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\runtime-command.json",
+      "sha256Bytes": "d1139864e322eabaf71252b1b0b58e30f9215753685b01ba4eb7173e6abcd8d6",
+      "bytes": 28345
+    },
+    {
+      "relativePath": "runs/actual87-05/runtime-evidence/root-search-proof.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\runtime-evidence\\root-search-proof.json",
+      "sha256Bytes": "88673877b29bb248514f6309db0c3ac4cb08c657dea0c3d03801ec8b3e856391",
+      "bytes": 3788
+    },
+    {
+      "relativePath": "runs/actual87-05/runtime-owned-path.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\runtime-owned-path.json",
+      "sha256Bytes": "74d5b4d57086ceef420bdb70003510dcae6b0862942a7e17c44b9b8d585c9f9a",
+      "bytes": 210
+    },
+    {
+      "relativePath": "runs/actual87-05/runtime.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-05\\runtime.log",
+      "sha256Bytes": "4e3b6454cfb5ebeacdfae70f868a67e01e45b11392ad3288587bab72944a0276",
+      "bytes": 6688
+    },
+    {
+      "relativePath": "runs/actual87-06/RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\RootSearchFixture.kt",
+      "sha256Bytes": "9ccbafb231f6755919aabcc3934020452bcb0da5e6a2d22c05296ca9952c5a5a",
+      "bytes": 31084
+    },
+    {
+      "relativePath": "runs/actual87-06/acceptance-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\acceptance-result.json",
+      "sha256Bytes": "3fb042233f622db8bde203fde893e01b09bf513c6cdd22933cc2202e9291bfcf",
+      "bytes": 974
+    },
+    {
+      "relativePath": "runs/actual87-06/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\compile-result.json",
+      "sha256Bytes": "9736a8cd2701aa9a19f62c460315231d69d77f95937bc3b344269e374ed50a44",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual87-06/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\compile.log",
+      "sha256Bytes": "45582b1132fd4528f7928b24c0e62788f586ad5461414e7b3998e0c0a01fb122",
+      "bytes": 515
+    },
+    {
+      "relativePath": "runs/actual87-06/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\compiler.args",
+      "sha256Bytes": "c13422f7f2a508bbcdef3099e596034ef7e9ac54b89c592aaaede7cec3fedb72",
+      "bytes": 25828
+    },
+    {
+      "relativePath": "runs/actual87-06/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\fixture-jar-pin.json",
+      "sha256Bytes": "bbed2c5aeb44524b44dbe24a22649f8f3dd11edaf0e455c2dc51b7061339b054",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual87-06/pins-after.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\pins-after.json",
+      "sha256Bytes": "ba31380aa482706e9d9aa257446185aae725313c3d9395e9bf8f795cea707206",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-06/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\pins-before.json",
+      "sha256Bytes": "ba31380aa482706e9d9aa257446185aae725313c3d9395e9bf8f795cea707206",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-06/runtime-command.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\runtime-command.json",
+      "sha256Bytes": "8260558535cfa7dbd5871ea8297d063ce312bcdee8211e0c639fe933675ea286",
+      "bytes": 28345
+    },
+    {
+      "relativePath": "runs/actual87-06/runtime-evidence/root-search-proof.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\runtime-evidence\\root-search-proof.json",
+      "sha256Bytes": "c001e7d7824cd3d2c2c562dd5a04c0f5f4899bd8a0c4dfb27deeb8aa90a3fae6",
+      "bytes": 5222
+    },
+    {
+      "relativePath": "runs/actual87-06/runtime-owned-path.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\runtime-owned-path.json",
+      "sha256Bytes": "744d2a63437cd8a27ece4cc5d88e3488f9179f494e98c7690ef3f4a1d1a31118",
+      "bytes": 210
+    },
+    {
+      "relativePath": "runs/actual87-06/runtime.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-06\\runtime.log",
+      "sha256Bytes": "523a3ea92f39f0b5a29f75f0c07866bb5e4cc8238f72431cb32f5a8635e045cf",
+      "bytes": 11530
+    },
+    {
+      "relativePath": "runs/actual87-07/RootSearchFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\RootSearchFixture.kt",
+      "sha256Bytes": "25782d09ec61f8212f8f505d9ba572ced821e910ebcaeaba367805a4825de2b8",
+      "bytes": 31623
+    },
+    {
+      "relativePath": "runs/actual87-07/acceptance-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\acceptance-result.json",
+      "sha256Bytes": "05664e5ab2c91f736158175f82322d8b909ecf6a7799dd820be63c0dbbe03336",
+      "bytes": 1017
+    },
+    {
+      "relativePath": "runs/actual87-07/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\compile-result.json",
+      "sha256Bytes": "7de1dc79b9b59c621cc24a310de2809e86aaf62c2b63edb2e9a417411f6d17f8",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual87-07/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\compile.log",
+      "sha256Bytes": "0dfad12eade8eb95f3472b7c3a37550c219a2aa9142250a59824209d6e45e6ca",
+      "bytes": 515
+    },
+    {
+      "relativePath": "runs/actual87-07/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\compiler.args",
+      "sha256Bytes": "bcaa651939932ef4ddd77707d15e9bd40712da0ae7931aa05af630550c4ebb85",
+      "bytes": 25828
+    },
+    {
+      "relativePath": "runs/actual87-07/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\fixture-jar-pin.json",
+      "sha256Bytes": "cd8f99af20696c18685c3b0df9c667333db92c48301c8fa7c389ba2a5797d6bb",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual87-07/pins-after.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\pins-after.json",
+      "sha256Bytes": "77b3f153890a7a4e8aead6bed1b601f165b212c88969a9d77a77153879737552",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-07/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\pins-before.json",
+      "sha256Bytes": "77b3f153890a7a4e8aead6bed1b601f165b212c88969a9d77a77153879737552",
+      "bytes": 40339
+    },
+    {
+      "relativePath": "runs/actual87-07/runtime-command.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\runtime-command.json",
+      "sha256Bytes": "db2ca11d89a3cb856987cbc1ec5e85f763e722c83a642ba1493bc463199ed534",
+      "bytes": 28345
+    },
+    {
+      "relativePath": "runs/actual87-07/runtime-evidence/actual-root-search-trending.png",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\runtime-evidence\\actual-root-search-trending.png",
+      "sha256Bytes": "326c36a60fb7f8c6624606737cb746930674fe10dab9df65d59d8a70d89a4f26",
+      "bytes": 87573
+    },
+    {
+      "relativePath": "runs/actual87-07/runtime-evidence/actual-root-search-up-filters.png",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\runtime-evidence\\actual-root-search-up-filters.png",
+      "sha256Bytes": "b065badbcaccab9649f2852a7dac003a20268417f1b8c590b17cefc8448126ca",
+      "bytes": 39034
+    },
+    {
+      "relativePath": "runs/actual87-07/runtime-evidence/root-search-proof.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\runtime-evidence\\root-search-proof.json",
+      "sha256Bytes": "e1ec8c911025ba10eecbf097ae97727a03ceb4deead1fec26121fcc2f2c0da50",
+      "bytes": 6332
+    },
+    {
+      "relativePath": "runs/actual87-07/runtime-owned-path.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\runtime-owned-path.json",
+      "sha256Bytes": "3c387f07258ef6a3a8c72ea51671a49aee38279017ecd050e1f0231c110bde0d",
+      "bytes": 210
+    },
+    {
+      "relativePath": "runs/actual87-07/runtime.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-search-root-integration-acceptance\\runs\\actual87-07\\runtime.log",
+      "sha256Bytes": "9a81102fe38ded23cc6bc2cab73e44aa269d01f5b96e8f745061c759c37247a8",
+      "bytes": 13606
+    }
+  ]
+}
