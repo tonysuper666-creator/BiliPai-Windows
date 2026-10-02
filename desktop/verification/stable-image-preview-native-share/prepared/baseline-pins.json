@@ -1,0 +1,90 @@
+{
+  "head": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "files": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "2d8db29bcc41de05655f780d9e8e8b5facf8f2d8585341ed511f10a738b00b53",
+      "bytes": 20827
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt",
+      "sha256Bytes": "574dd690425a3a569c6d2ad07f318a3f49d344b3e60c19ce7ad46240f73b3729",
+      "bytes": 7178
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "4f6a7c78303cac721fc74b60d9e1660d51a1db557156270d55f230c685ea155a",
+      "bytes": 5981
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "sha256Bytes": "af1a01f2059d4a549bebb349b199bb77fe24586900aec178ebe74d8c857695be",
+      "bytes": 10746
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "63172c96a60460c5e34a1643028b3278ee56e090fb277e0ab834f0dd6e3f4c4d",
+      "bytes": 10637
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+      "sha256Bytes": "4f0e9dd35905a4c2c3b770b00d6f1e30d868ef7f703fbd910164c390281aa050",
+      "bytes": 11116
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "20fdc31ebb3da3bbb846a5080db7f0b5a27c6bd477a19a1723b3cf4868b92172",
+      "bytes": 28948
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "sha256Bytes": "c5d982f9442dace7e93fac4792b248d65dcd3f3d6c3e5051e9fae3401e4b2381",
+      "bytes": 14874
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256Bytes": "40a0c2424116bfccedf9b4d34c9fd8e12e29b324a37133aeee11520287ec0f20",
+      "bytes": 15837
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "060bddd5fc739571a2f1db2c838880dcba9b14566335632ee466f009c65f1f16",
+      "bytes": 8818
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "sha256Bytes": "b2bf0dce712f3ffa932dcbbb37a2b369fd231c4c11a4f5ef179789fdc66f58ec",
+      "bytes": 6870
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleRootHost.kt",
+      "sha256Bytes": "d383abd978d93290588e4d0a690f693ed379466d24b293e3d6324bfd99d7ca3a",
+      "bytes": 5319
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "sha256Bytes": "2171801494bfaaa5f60616b3b6a1a6edeb9e48a5997603fa2dc3d6b2bf806450",
+      "bytes": 7513
+    },
+    {
+      "path": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "sha256Bytes": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92",
+      "bytes": 32271
+    },
+    {
+      "path": "desktop/native/diagnostic-share/approved-development-build.json",
+      "sha256Bytes": "e13c4d6775a942343039d5602d52ee02bd92fe3f83155f80f67da67160dd62b1",
+      "bytes": 80844
+    },
+    {
+      "path": "desktop/tools/compile-native-diagnostic-share.py",
+      "sha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+      "bytes": 5052
+    },
+    {
+      "path": "desktop/tools/prepare-native-diagnostic-share.py",
+      "sha256Bytes": "46e8b35abe7139d204dee6bb6855c83dfbdc96ab20d1b83195d09d57e847160e",
+      "bytes": 6194
+    }
+  ]
+}

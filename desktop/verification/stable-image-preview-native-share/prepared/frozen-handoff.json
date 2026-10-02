@@ -1,0 +1,272 @@
+{
+  "task": "stable-image-preview-native-share",
+  "baselineHead": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256Bytes": "55ba2e23eb17348444d830e3b1e06c0fa650de15e8e1292ebc3018cea264e0a9",
+      "bytes": 4421
+    },
+    {
+      "path": "baseline-pins.json",
+      "sha256Bytes": "130a7fa412fea04cf708f01ff9165ff19bd67ea51615616549effa129e7919d3",
+      "bytes": 3694
+    },
+    {
+      "path": "installation-contract.json",
+      "sha256Bytes": "c609230df517a813defbffaa12a05319c4587eecc1dabe5031e2790f16ab80bc",
+      "bytes": 10371
+    },
+    {
+      "path": "source-contract.json",
+      "sha256Bytes": "c82a005fb0e29f41a3fedf215f15ffac2e5b6886a257e646084eed963142cc28",
+      "bytes": 4580
+    },
+    {
+      "path": "source.patch",
+      "sha256Bytes": "446a9ccf39e9eb4cfcf8b7bf9526fe7d1f1ee8225f2340b8e54d38b9372abad6",
+      "bytes": 29585
+    },
+    {
+      "path": "patch-check.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "summary.json",
+      "sha256Bytes": "f64a0f825e2ae6e0c0b6c61ee7d2c378b848c2ded58a7c97b686d10293998f11",
+      "bytes": 1888
+    },
+    {
+      "path": "native-verification.json",
+      "sha256Bytes": "bbfa1fe5a070db3a4fd1e772835c68d975fb97d525e29ecaf0f659183192e9ca",
+      "bytes": 846
+    },
+    {
+      "path": "native-reviewed-producer01.log",
+      "sha256Bytes": "5e217ec3907455c2c9df2107c6ab7a04d1fcebe4184311c43ae9f79ed14359a8",
+      "bytes": 166
+    },
+    {
+      "path": "native-fresh-verifier01.log",
+      "sha256Bytes": "a7f5b88b14e7232951cea0e2704c6d51de8fc198b3e098c33ca93dcebd09733b",
+      "bytes": 1478
+    },
+    {
+      "path": "native-prepare-fixture.json",
+      "sha256Bytes": "0139000364eb5c9d78b92643a64797fa06f391a68d002568530a5251ab1b3cb5",
+      "bytes": 562
+    },
+    {
+      "path": "native-prepare-fixture02.json",
+      "sha256Bytes": "4a1ba5f0de77e24d412637408808b769f978754a628cc6335043fa4fb5f75d28",
+      "bytes": 696
+    },
+    {
+      "path": "ImagePreviewShareFixture.kt",
+      "sha256Bytes": "28b1bf961f975ae9bbb874ebf771f0278c0438ccdad2a9a5c4d2e124710b65cf",
+      "bytes": 9354
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "19d25db74e64ea6bcf7b890de6692356acbb7c2c30380c3dc85230b56c306fa4",
+      "bytes": 13071
+    },
+    {
+      "path": "native-prepare.py",
+      "sha256Bytes": "72e3436a1307a5be395989c9abd7abb9a35deb615b4c47e9d8b391d0232ab39e",
+      "bytes": 3423
+    },
+    {
+      "path": "native-prepare-fixture.py",
+      "sha256Bytes": "002a56802108f3bc7045ba5007d5d7b952b2dae0cf8ea2af17428aceb37a9b17",
+      "bytes": 1949
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "23869e54e3c939ea942e1ea4eb85e1e7b179281cacb5a608702e6439a8173346",
+      "bytes": 3694
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "ebd257abd0e6292f7fa8835b580dce87d456210c1bf174bb8267b60b49242cd0",
+      "bytes": 10067
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "02bbb275991a82e26bf04311da93cfa8055cde70df9d7a4686c2b88e082908ef",
+      "bytes": 21494
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt",
+      "sha256Bytes": "ee8ac6d926e6633e90cd779462cff55b6441243bc834088536b9f8b210e1d915",
+      "bytes": 7404
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "84c1a7009692e93b3228ec4cfd1b7a987271bf3a396c5a8ec8155cb5c21128ad",
+      "bytes": 6270
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "sha256Bytes": "839f923cb25cb4832f9738bc891dd74212a09aa92548771cac962a79e3902026",
+      "bytes": 10873
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "sha256Bytes": "0f7618ef7598ed05f7880b3dde5d75b50ecf0e7077899a27dfbd8db89962198d",
+      "bytes": 11131
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+      "sha256Bytes": "449b12353ebbb59655d30e1d8ed34dda74fdcfc1f0cc19a6966389f2961491ca",
+      "bytes": 11740
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "c27b4f45109af34521cada062d9a031ffc4fed276a8b3b4eb0daea6a224aed11",
+      "bytes": 29037
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "sha256Bytes": "33b5f9b17a78b3c97612bfd1c29c3f523d1d794be900606d1a5843ac6d1dbab3",
+      "bytes": 14963
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "sha256Bytes": "bc7d919658134e6fc2076d21017b6f8c4ca4c64c65f182d8c819e51ce5bc96e8",
+      "bytes": 15894
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "4c73830d9e827848d5f035e0cd3739ee1c6ac8bd327a387cf82773b5c4ddae6d",
+      "bytes": 8968
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "sha256Bytes": "057011c6ef3ca659d12a5d8334e228d96eb1b3955381ef3ace668327fa674875",
+      "bytes": 6974
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleRootHost.kt",
+      "sha256Bytes": "895430c3b0c511cf8e53bf0a46a5c3e64d101cb6dbae46c9c08b79981d705764",
+      "bytes": 5482
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "sha256Bytes": "3a0d30312765a0399677efe8bb7667ce3cfd072d68947b75adbeecb1069c1b5d",
+      "bytes": 7519
+    },
+    {
+      "path": "prepared/desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "sha256Bytes": "4ca60493f8224eefa7c00684fd4fede6a8c7bbdc2b735e03c5bcdd02983807ca",
+      "bytes": 32291
+    },
+    {
+      "path": "prepared/desktop/native/diagnostic-share/approved-development-build.json",
+      "sha256Bytes": "147c338a72845eee396a394760945e76c96803b89d224059deb284c91f2831cf",
+      "bytes": 83098
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImagePreviewShareBindings.kt",
+      "sha256Bytes": "c8aa0f7ba9624db154747f0c5e820bb752a94678de02b46d777a7a9fa1b989a4",
+      "bytes": 3476
+    },
+    {
+      "path": "compile/01/result.json",
+      "sha256Bytes": "389d05ed8c1c173040a9407fdbe5f53e103e6209008bb235a937c2e7e2f830d1",
+      "bytes": 144
+    },
+    {
+      "path": "compile/01/compile.log",
+      "sha256Bytes": "87cefb0ce7ab194e0c10d7edc255a91662027e07ac6d75fc04a671b96ec55b77",
+      "bytes": 1154
+    },
+    {
+      "path": "compile/02/result.json",
+      "sha256Bytes": "61f10088704bc0df2115be77c49c707d6ed9916b80ba452a9144d3bc6d5d3452",
+      "bytes": 144
+    },
+    {
+      "path": "compile/02/compile.log",
+      "sha256Bytes": "87cefb0ce7ab194e0c10d7edc255a91662027e07ac6d75fc04a671b96ec55b77",
+      "bytes": 1154
+    },
+    {
+      "path": "compile/02/fixture.log",
+      "sha256Bytes": "a7f468508da29386be095772d01a4eed2a2b434bb9e04141bfb3d52efbe35b86",
+      "bytes": 1014
+    },
+    {
+      "path": "compile/03/result.json",
+      "sha256Bytes": "61f10088704bc0df2115be77c49c707d6ed9916b80ba452a9144d3bc6d5d3452",
+      "bytes": 144
+    },
+    {
+      "path": "compile/03/compile.log",
+      "sha256Bytes": "87cefb0ce7ab194e0c10d7edc255a91662027e07ac6d75fc04a671b96ec55b77",
+      "bytes": 1154
+    },
+    {
+      "path": "compile/03/fixture.log",
+      "sha256Bytes": "b07ed81f010fbfa75cf2753d03d9012d4995a960307b33b19619fa32bb5e3cc5",
+      "bytes": 1891
+    },
+    {
+      "path": "compile/03/fixture-receipt.json",
+      "sha256Bytes": "303b6c7b7356de8adc7f34a1d6de4fec5b4f849c7e0c07c57df695074da5e877",
+      "bytes": 372
+    },
+    {
+      "path": "compile/04/result.json",
+      "sha256Bytes": "61f10088704bc0df2115be77c49c707d6ed9916b80ba452a9144d3bc6d5d3452",
+      "bytes": 144
+    },
+    {
+      "path": "compile/04/compile.log",
+      "sha256Bytes": "87cefb0ce7ab194e0c10d7edc255a91662027e07ac6d75fc04a671b96ec55b77",
+      "bytes": 1154
+    },
+    {
+      "path": "compile/04/fixture.log",
+      "sha256Bytes": "4c872e1237739f2eb409b582cea94b17a4f674b7cf25064c559d4f99ad45dbd9",
+      "bytes": 2132
+    },
+    {
+      "path": "compile/04/fixture-receipt.json",
+      "sha256Bytes": "fa399a0f6e0a51d5a8353e9938447cea0288e2ed387d5b1afb6253672b216823",
+      "bytes": 402
+    },
+    {
+      "path": "compile/04/pins-before.json",
+      "sha256Bytes": "f04318369357194e9e56117d1a5629f41f84e5d7e6f9e3429bb82ebe6be83fa6",
+      "bytes": 6027
+    },
+    {
+      "path": "compile/04/pins-after.json",
+      "sha256Bytes": "f04318369357194e9e56117d1a5629f41f84e5d7e6f9e3429bb82ebe6be83fa6",
+      "bytes": 6027
+    },
+    {
+      "path": "prepared/desktop/build/native-diagnostic-share/producer-receipt.json",
+      "sha256Bytes": "bafbab51fc6f109bdcc3b7ed7d620db09754404afba97d82726cadfcab3f2640",
+      "bytes": 1339
+    },
+    {
+      "path": "native-reviewed-producer01/producer-input-graph.json",
+      "sha256Bytes": "cf9ba2c93ff2d1e78143695b02bab8f65a3569e863c9ac2c9d8c41af6e2bb138",
+      "bytes": 116926
+    },
+    {
+      "path": "prepared/desktop/build/native-diagnostic-share/builds/9712317e-a400-4b3b-9693-9027177d59e7/producer-input-graph.json",
+      "sha256Bytes": "b24f61b9c4216c80ed954c9466e2c5975536811dbb5de283e4801f9a1ea55bc2",
+      "bytes": 117409
+    }
+  ],
+  "binaryFilesIncluded": false,
+  "generatedTreeIncluded": false,
+  "immutable101CPNotCopied": true,
+  "candidateWritten": false,
+  "receiverUIAccepted": false,
+  "longPathAccepted": false
+}

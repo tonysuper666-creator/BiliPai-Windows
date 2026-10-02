@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "approvalChangedFields": [
+    "sourceSha256Bytes",
+    "dllSha256Bytes"
+  ],
+  "oldSource": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92",
+  "newSource": "4ca60493f8224eefa7c00684fd4fede6a8c7bbdc2b735e03c5bcdd02983807ca",
+  "oldDLL": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06",
+  "newDLL": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3",
+  "driver": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+  "headers": 369,
+  "libraries": 11,
+  "compilerFiles": 64,
+  "commandsFlagsUnchanged": true,
+  "resolvedGraphUnchanged": true,
+  "freshBuilds": 2,
+  "prepareReceiptSha": "bafbab51fc6f109bdcc3b7ed7d620db09754404afba97d82726cadfcab3f2640",
+  "candidateWritten": false,
+  "ShareUI": false,
+  "externalReceiver": false
+}

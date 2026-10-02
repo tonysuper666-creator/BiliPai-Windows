@@ -1,0 +1,460 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt
+@@ -59,6 +59,18 @@
+     }
+     private val exif = DesktopDynamicMotionPhotoExif(::isOwned)
+     private val motionPhoto = DesktopDynamicMotionPhotoFiles(::isOwned, ::commitOwned, writeExif = exif::write)
++
++    /** Original preview share bytes, using this SAME anonymous owned download actor; never decoded. */
++    internal suspend fun readOriginalShareBytes(rawUrl: String): ByteArray = withContext(Dispatchers.IO) {
++        checkpoint()
++        val url = normalizeImageUrl(rawUrl)
++        require(url.isNotBlank()) { "图片地址为空" }
++        val source = downloadTo(url, scratchDirectory(), MAX_IMAGE_BYTES)
++        try {
++            checkpoint(); require(Files.size(source) in 1..MAX_IMAGE_BYTES)
++            Files.readAllBytes(source).also { checkpoint(); require(it.size.toLong() in 1..MAX_IMAGE_BYTES) }
++        } finally { Files.deleteIfExists(source) }
++    }
+ 
+     suspend fun saveImage(rawUrl: String): Boolean = saveMutex.withLock {
+         saveImageUnlocked(rawUrl)
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt
+@@ -33,6 +33,7 @@
+         Files.createDirectories(root);UpdateStorage.existingPathWithoutLinks(root)
+         require(Files.isDirectory(root,LinkOption.NOFOLLOW_LINKS))
+     }
++    internal suspend fun assertAdmission() = checkpoint()
+     suspend fun bytes(url:String):ByteArray {checkpoint();return download(url).also {checkpoint();require(it.isNotEmpty() && it.size <= 32*1024*1024)}}
+     suspend fun bitmap(url:String):BufferedImage? {
+         val raw=bytes(url)
+@@ -56,7 +57,8 @@
+             }
+         }.also {checkpoint()}
+     }
+-    suspend fun publish(name:String,mime:String,write:(Path)->Unit):VideoShareCoverFile = withContext(Dispatchers.IO) {
++    suspend fun publish(name:String,mime:String,write:(Path)->Unit):VideoShareCoverFile = publish(name,mime,null,write)
++    suspend fun publish(name:String,mime:String,beforeCommit:(()->Unit)?,write:(Path)->Unit):VideoShareCoverFile = withContext(Dispatchers.IO) {
+         checkpoint()
+         val callerJob=currentCoroutineContext()[Job]
+         synchronized(gate) {
+@@ -71,7 +73,7 @@
+             try {
+                 write(temporary);callerJob?.ensureActive();checkOwner()
+                 require(Files.size(temporary) in 1..32L*1024*1024)
+-                if(!commit {callerJob?.ensureActive();checkOwner();Files.move(temporary,target)})throw CancellationException("分享文件提交已退役")
++                if(!commit {callerJob?.ensureActive();checkOwner();beforeCommit?.invoke();Files.move(temporary,target)})throw CancellationException("分享文件提交已退役")
+                 VideoShareCoverFile(target,mime)
+             } finally {pending.remove(temporary);Files.deleteIfExists(temporary)}
+         }.also { checkpoint() }
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt
+@@ -16,6 +16,7 @@
+     private val session: DesktopDynamicCardSession,
+     private val operations: DesktopDynamicCardOperations,
+     private val assets: DesktopDynamicImageAssets,
++    internal val imageShare: DesktopImagePreviewShareBindings,
+     private val textShare: DesktopTextShareBindings,
+     private val clipboard: (String) -> Unit,
+     private val externalLink: (String) -> Unit,
+@@ -54,7 +55,7 @@
+     override suspend fun saveMotionPhoto(imageUrl: String, videoUrl: String) = owned { assets.saveMotionPhoto(imageUrl, videoUrl) }
+     override suspend fun saveLivePhotoVideo(videoUrl: String) = owned { assets.saveLivePhotoVideo(videoUrl) }
+     override suspend fun shareImage(url: String): Boolean =
+-        error("Windows 系统图片分享面板尚未接入") // Exact existing CardHost platform capability boundary.
++        imageShare.shareImage(url, ::isOwned)
+     override fun close() = assets.close()
+ 
+     companion object {
+@@ -66,6 +67,8 @@
+             sameCardSession: DesktopDynamicCardSession,
+             actualImageLocations: DesktopImageSaveLocations,
+             actualRootWindow: Component,
++            shareFiles: DesktopVideoShareFiles,
++            mediaShare: DesktopImagePreviewMediaShare,
+             textShare: DesktopTextShareBindings,
+             clipboard: (String) -> Unit,
+             externalLink: (String) -> Unit,
+@@ -88,8 +91,10 @@
+                 selectTarget = { name, mime -> selectDynamicSaveTarget(name, mime, actualRootWindow) },
+                 selectDirectory = { selectDynamicSaveDirectory(actualRootWindow) },
+                 imageSaveLocations = actualImageLocations)
++            val imageShare = DesktopImagePreviewShareBindings(assets::readOriginalShareBytes, shareFiles,
++                { lifetime.owns() && sameCardSession.isOwned() }, mediaShare)
+             return DesktopHomeGalleryBindings(context, lifetime, sameCardSession, operations, assets,
+-                textShare, clipboard, externalLink, feedback)
++                imageShare, textShare, clipboard, externalLink, feedback)
+         }
+     }
+ }
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt
+@@ -114,6 +114,8 @@
+             sameCardSession: DesktopDynamicCardSession,
+             actualImageLocations: DesktopImageSaveLocations,
+             actualRootWindow: Component,
++            shareFiles: DesktopVideoShareFiles,
++            mediaShare: DesktopImagePreviewMediaShare,
+             textShare: DesktopTextShareBindings,
+             clipboard: (String) -> Unit,
+             externalLink: (String) -> Unit,
+@@ -134,7 +136,7 @@
+                     source.wbiKeys, source.accessToken, source.csrf, source.buvid3,
+                     source.awaitSessionRestored, source.ensureBuvid3FromSpi)
+                 val images = DesktopHomeGalleryBindings.create(repository, runtime.context, gate, lifetime,
+-                    sameCardSession, actualImageLocations, actualRootWindow, textShare, clipboard, externalLink, feedback)
++                    sameCardSession, actualImageLocations, actualRootWindow, shareFiles, mediaShare, textShare, clipboard, externalLink, feedback)
+                 gallery = images
+                 val partitionEnvironment = DesktopPartitionEnvironment(requests.ports.video,
+                     lifetime.scope, lifetime::owns, lifetime::commit)
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt
+@@ -47,7 +47,9 @@
+     val onMatchClick: () -> Unit,
+     val liveScrollToTop: Channel<Unit>?,
+     val globalHaze: () -> HazeState?,
+-    val overlays: (DesktopHomeRetainedGate, DesktopHomeRootRequestBinding) -> DesktopHomeOverlayPorts,
++    val shareFiles: (DesktopHomeRetainedGate) -> DesktopVideoShareFiles,
++    val mediaShare: DesktopImagePreviewMediaShare,
++    val overlays: (DesktopHomeRetainedGate, DesktopHomeRootRequestBinding, DesktopVideoShareFiles) -> DesktopHomeOverlayPorts,
+ )
+ 
+ /** Real Root navigation/clock inputs. This is no parallel stack or CardPositionManager cache. */
+@@ -120,6 +122,7 @@
+         require(window.imageLocations.isActive())
+     }
+     suspend fun create(epoch: Long, mid: Long?, stillOwned: () -> Boolean): DesktopHomeRetainedRoot {
++        var sharedFiles: DesktopVideoShareFiles? = null
+         var original: DesktopHomeRetainedEntry? = null
+         var attemptedGate: DesktopHomeRetainedGate? = null
+         var identityAnalytics: DesktopHomeRootAnalytics? = null
+@@ -134,10 +137,13 @@
+                 { gate -> attemptedGate = gate; DesktopHomeRootAnalytics(runtime.store, window.diagnostics, gate::owns)
+                     .also { identityAnalytics = it } },
+                 blocked, onAuthenticationInvalidated, window.feedback,
+-                { gate, requests -> DesktopOriginalHomeEmbeddedAggregate.create(repository, gate,
+-                    requests, runtime, window.settings, cardSession, window.imageLocations, window.window,
+-                    window.textShare, window.clipboard, window.externalLink, window.feedback,
+-                    DesktopHomeEmbeddedRootUi(window.onMatchClick, window.liveScrollToTop, window.globalHaze)) })
++                { gate, requests ->
++                    // Pure path/lease construction. Publication admission denies I/O until Retainer installs this gate.
++                    val files = window.shareFiles(gate).also { sharedFiles = it }
++                    DesktopOriginalHomeEmbeddedAggregate.create(repository, gate,
++                        requests, runtime, window.settings, cardSession, window.imageLocations, window.window,
++                        files, window.mediaShare, window.textShare, window.clipboard, window.externalLink, window.feedback,
++                        DesktopHomeEmbeddedRootUi(window.onMatchClick, window.liveScrollToTop, window.globalHaze)) })
+             original = entry
+             val gate = entry.gate
+             gate.assertOwned()
+@@ -171,7 +177,7 @@
+                 window.resources.clientPolicy::ensureEdgeToEdge,
+                 window.resources.clientPolicy::applyHomeSystemBars, aggregate,
+                 { url, _ -> aggregate.gallery.saveImage(url) },
+-                { message -> gate.commit { window.feedback(message) } }, window.overlays(gate, entry.requests))
++                { message -> gate.commit { window.feedback(message) } }, window.overlays(gate, entry.requests, requireNotNull(sharedFiles)))
+             gate.assertOwned()
+             return DesktopHomeRetainedRoot(entry, environment, mediaPorts, returnOwner, liveRoutes, mediaOwner, lottie)
+         } catch (failure: Throwable) {
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt
+@@ -62,6 +62,7 @@
+     private val feedback: (String) -> Unit,
+     private val openLink: (String) -> Unit,
+     private val invalidateAuthentication: (Long, Long) -> Unit,
++    private val rootPublished: (DesktopHomeRetainedGate) -> Boolean,
+ ) {
+     private val systemWallpaper = DesktopWindowsSystemWallpaperPort()
+     val window = DesktopHomeRootWindowBindings(actualWindow, context, settings, lifecycle,
+@@ -79,7 +80,9 @@
+         }, clipboard = { text -> if (!clipboard.copyText(text)) feedback("无法写入系统剪贴板") },
+         externalLink = openLink, feedback = feedback,
+         onMatchClick = { openLink("https://www.bilibili.com/match/") },
+-        liveScrollToTop = liveScroll, globalHaze = { haze }, overlays = ::overlays)
++        liveScrollToTop = liveScroll, globalHaze = { haze }, shareFiles = ::shareFiles,
++        mediaShare = { file, title, text, owned, retired -> nativeShare.shareMedia(file, title, text, owned, retired) },
++        overlays = ::overlays)
+ 
+     val factory = DesktopHomeRootFactory(repository, discovery.homePreferences,
+         community.blockedUpRepository, runtime, cardSession, scope, window, incrementalRefresh,
+@@ -122,7 +125,19 @@
+             { text -> gate.commit { feedback(text) } }, ::diagnostic)
+     }
+ 
+-    private fun overlays(gate: DesktopHomeRetainedGate, requests: DesktopHomeRootRequestBinding): DesktopHomeOverlayPorts {
++    private fun shareFiles(gate: DesktopHomeRetainedGate): DesktopVideoShareFiles {
++        fun owned() = gate.owns() && rootPublished(gate)
++        return DesktopVideoShareFiles(runtime.store.root.resolve("cache"), { url ->
++            if (!owned()) throw CancellationException("Share Root has not been published")
++            readShareBytes(repository.ownedHomeCallFactory(gate.epoch, ::owned), url, gate)
++        }, ::owned, { block -> gate.commit {
++            if (!owned()) throw CancellationException("Share Root publication retired")
++            block()
++        } })
++    }
++
++    private fun overlays(gate: DesktopHomeRetainedGate, requests: DesktopHomeRootRequestBinding,
++        files: DesktopVideoShareFiles): DesktopHomeOverlayPorts {
+         val operations = DesktopDynamicCardOperations(repository, gate.epoch,
+             stillOwned = gate::owns, sharedEmotes = cardSession.emotes)
+         val messages = DesktopOriginalVideoShareMessages(repository.ownedHomeService(MessageApi::class.java,
+@@ -131,9 +146,6 @@
+             { if (gate.owns()) repository.account.value?.mid else throw CancellationException("Share account retired") },
+             // Original MessageRepository caches one random device ID per repository lifetime.
+             UUID.randomUUID().toString().let { identity -> { identity } })
+-        val files = DesktopVideoShareFiles(runtime.store.root.resolve("cache"), { url ->
+-            readShareBytes(repository.ownedHomeCallFactory(gate.epoch, gate::owns), url, gate)
+-        }, gate::owns, gate::commit)
+         val share = DesktopVideoShareBindings(operations, requests.ports.following,
+             { id, text -> messages.sendTextMessage(id, text) }, files,
+             { if (gate.owns()) repository.account.value?.mid else throw CancellationException("Share owner retired") },
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
+@@ -226,7 +226,8 @@
+             DesktopHomeRootReturnPorts(services.navigationAdmission, { hostOrigin }, DesktopHomeClock::elapsedRealtime,
+                 clock, { actualSettings.homeSettings.value.cardTransitionEnabled && !reduceMotionNow },
+                 { actualSettings.homeSettings.value.cardTransitionEnabled && !reduceMotionNow }, { reduceMotionNow }),
+-            services.feedback, services.openExternalLink, services.authenticationInvalidated) }
++            services.feedback, services.openExternalLink, services.authenticationInvalidated,
++            rootPublished = { gate -> handle.retainer.current()?.entry?.gate === gate }) }
+     }
+     LaunchedEffect(handle, epoch, factoryBinding, retry) {
+         val factory = factoryBinding ?: return@LaunchedEffect
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt
+@@ -130,6 +130,7 @@
+             LocalSetBottomBarVisible provides pages.setBottomBarVisible,
+             LocalVideoCardTransitionClock provides pages.transitionClock,
+             LocalDesktopDynamicCardBindings provides aggregate.gallery,
++            LocalDesktopImagePreviewShareBindings provides aggregate.gallery.imageShare,
+         ) {
+             when (key) {
+                 BiliPaiNavKey.Home -> DesktopRetainedHomePage(root, pages.window, homeNavigation,
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt
+@@ -56,6 +56,7 @@
+     val account by community.account.collectAsState()
+     val capturedMid=account?.mid
+     val textShare=LocalDesktopTextShareBindings.current
++    val imageShare=LocalDesktopImagePreviewShareBindings.current
+     val saveParent=LocalDesktopDynamicSaveParent.current
+     val imageSaveLocations=checkNotNull(LocalDesktopImageSaveLocations.current){"Root image save locations are not mounted"}
+     val alive=remember(repository,capturedEpoch,item.id_str,saveParent,imageSaveLocations){AtomicBoolean(true)}
+@@ -106,7 +107,7 @@
+     }
+     LaunchedEffect(item,alive){if(owned())shown=item}
+     DisposableEffect(alive,assets,scope){onDispose{alive.set(false);assets.close();scope.cancel()}}
+-    val platform=remember(operations,assets,preferences.context,textShare){object:DesktopDynamicCardPlatform{
++    val platform=remember(operations,assets,preferences.context,textShare,imageShare){object:DesktopDynamicCardPlatform{
+         override val context:DesktopPluginContext=preferences.context
+         override val emotes=operations.emotes
+         override fun isOwned()=owned()
+@@ -133,7 +134,7 @@
+         override suspend fun saveImages(urls:List<String>)=assets.saveImages(urls)
+         override suspend fun saveLivePhotoVideo(videoUrl:String)=assets.saveLivePhotoVideo(videoUrl)
+         override suspend fun saveMotionPhoto(imageUrl:String,videoUrl:String)=assets.saveMotionPhoto(imageUrl,videoUrl)
+-        override suspend fun shareImage(url:String):Boolean=error("Windows 系统图片分享面板尚未接入")
++        override suspend fun shareImage(url:String):Boolean=imageShare.shareImage(url,::owned)
+     }}
+     val interaction=DynamicCardInteractionActions(
+         onCommentClick={guarded{latestComment(it)}},
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt
+@@ -55,13 +55,14 @@
+     val shareParentScope = rememberCoroutineScope()
+     val shareScope = remember(alive) { CoroutineScope(shareParentScope.coroutineContext + SupervisorJob(shareParentScope.coroutineContext[Job])) }
+     val textShare = LocalDesktopTextShareBindings.current
++    val imageShare = LocalDesktopImagePreviewShareBindings.current
+     val clipboard = LocalDesktopTextClipboard.current
+     val uriHandler = LocalUriHandler.current
+     val latestFeedback by rememberUpdatedState(onFeedback)
+-    val platform = remember(alive, clipboard, uriHandler, textShare) {
++    val platform = remember(alive, clipboard, uriHandler, textShare, imageShare) {
+         DesktopSpaceAvatarPlatform(preferences.context, session.emotes, operations, assets, ::owned,
+             clipboard, feedback = { latestFeedback(it) }, openExternalLink = uriHandler::openUri,
+-            textShare = textShare, shareScope = shareScope)
++            imageShare = imageShare, textShare = textShare, shareScope = shareScope)
+     }
+     var showAvatarPreview by remember(alive) { mutableStateOf(false) }
+     var avatarSourceRect by remember(alive) { mutableStateOf<Rect?>(null) }
+@@ -118,6 +119,7 @@
+     private val clipboard: DesktopTextClipboard,
+     private val feedback: (String) -> Unit,
+     private val openExternalLink: (String) -> Unit,
++    private val imageShare: DesktopImagePreviewShareBindings,
+     private val textShare: DesktopTextShareBindings? = null,
+     private val shareScope: CoroutineScope? = null,
+ ) : DesktopDynamicCardPlatform {
+@@ -138,7 +140,7 @@
+     override suspend fun saveImages(urls: List<String>) = assets.saveImages(urls)
+     override suspend fun saveMotionPhoto(imageUrl: String, videoUrl: String) = assets.saveMotionPhoto(imageUrl, videoUrl)
+     override suspend fun saveLivePhotoVideo(videoUrl: String) = assets.saveLivePhotoVideo(videoUrl)
+-    override suspend fun shareImage(url: String): Boolean = error("Windows 系统图片分享面板尚未接入")
++    override suspend fun shareImage(url: String): Boolean = imageShare.shareImage(url, ::isOwned)
+     override suspend fun getShareTargets(size: Int) = operations.getShareTargets(size)
+     override suspend fun getMessageSessions(size: Int) = operations.getMessageSessions(size)
+     override suspend fun fetchMessageUserInfo(mid: Long) = operations.fetchMessageUserInfo(mid)
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt
+@@ -47,6 +47,7 @@
+     val clipboard = LocalDesktopTextClipboard.current
+     val uriHandler = LocalUriHandler.current
+     val textShare = LocalDesktopTextShareBindings.current
++    val imageShare = LocalDesktopImagePreviewShareBindings.current
+     val currentStillOwned by rememberUpdatedState(stillOwned)
+     key(contentIdentity, session, capturedEpoch) {
+         val alive = remember { AtomicBoolean(true) }
+@@ -70,9 +71,9 @@
+                 selectDirectory = { selectDynamicSaveDirectory(saveParent) }, imageSaveLocations = locations)
+         }
+         // Reuse the already installed gallery platform, never a second renderer/client/store.
+-        val gallery = remember(operations, assets, clipboard, uriHandler, textShare) {
++        val gallery = remember(operations, assets, clipboard, uriHandler, textShare, imageShare) {
+             DesktopSpaceAvatarPlatform(preferences.context, session.emotes, operations, assets,
+-                ::owned, clipboard, ::feedback, uriHandler::openUri, textShare = textShare, shareScope = scope)
++                ::owned, clipboard, ::feedback, uriHandler::openUri, imageShare = imageShare, textShare = textShare, shareScope = scope)
+         }
+         val platform = remember(operations, clipboard, images, locations, textShare) {
+             DesktopDynamicCommentPlatform(preferences.context, session.emotes, repository, community, operations,
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleRootHost.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleRootHost.kt
+@@ -33,6 +33,7 @@
+     leaf: DesktopOriginalArticleLeaf,
+     gallery: DesktopDynamicCardPlatform,
+     textShare: DesktopTextShareBindings?,
++    imageShare: DesktopImagePreviewShareBindings,
+ ): DesktopDynamicCardPlatform = object : DesktopDynamicCardPlatform by gallery {
+     override fun isOwned() = leaf.owns() && gallery.isOwned()
+     override fun copyText(text: String) { leaf.assertOwned(); gallery.copyText(text) }
+@@ -49,7 +50,7 @@
+     override suspend fun saveImages(urls: List<String>) = leaf.call { gallery.saveImages(urls) }
+     override suspend fun saveMotionPhoto(imageUrl: String, videoUrl: String) = leaf.call { gallery.saveMotionPhoto(imageUrl, videoUrl) }
+     override suspend fun saveLivePhotoVideo(videoUrl: String) = leaf.call { gallery.saveLivePhotoVideo(videoUrl) }
+-    override suspend fun shareImage(url: String) = leaf.call { gallery.shareImage(url) }
++    override suspend fun shareImage(url: String) = leaf.call { imageShare.shareImage(url, ::isOwned) }
+     override suspend fun getShareTargets(size: Int) = leaf.call { gallery.getShareTargets(size) }
+     override suspend fun getMessageSessions(size: Int) = leaf.call { gallery.getMessageSessions(size) }
+     override suspend fun fetchMessageUserInfo(mid: Long) = leaf.call { gallery.fetchMessageUserInfo(mid) }
+@@ -75,8 +76,9 @@
+             }
+             val actualGallery = LocalDesktopDynamicCardBindings.current
+             val textShare = LocalDesktopTextShareBindings.current
++            val imageShare = LocalDesktopImagePreviewShareBindings.current
+             val foreground by rememberUpdatedState(LocalDesktopDetailForeground.current)
+-            val gallery = remember(leaf, actualGallery, textShare) { articleGalleryPlatform(leaf, actualGallery, textShare) }
++            val gallery = remember(leaf, actualGallery, textShare, imageShare) { articleGalleryPlatform(leaf, actualGallery, textShare, imageShare) }
+             // Key the full UI/provider as one leaf: the original loader itself keys only id+retry.
+             key(leaf.identity) {
+                 CompositionLocalProvider(LocalDesktopDynamicCardBindings provides gallery) {
+--- desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt
+@@ -72,7 +72,7 @@
+         try {
+             val verified=UpdateStorage.existingPathWithoutLinks(path.toAbsolutePath())
+             require(Files.isRegularFile(verified,LinkOption.NOFOLLOW_LINKS) && Files.size(verified) in 1..32L*1024*1024)
+-            require(verified.fileName.toString().substringAfterLast('.').lowercase() in setOf("jpg","jpeg","png","webp"))
++            require(verified.fileName.toString().substringAfterLast('.').lowercase() in setOf("jpg","jpeg","png","webp","gif"))
+             return sharePrepared(title,text,stillOwned,retirement) { result ->
+                 val hr=api.BilipaiSharePrepareMedia(WString(verified.toString()),WString(title.ifBlank {"BiliPai 分享"}),WString(text),result)
+                 prepared=result.value!=0L
+--- desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp
++++ desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp
+@@ -335,7 +335,7 @@
+         value->file=StorageFile::GetFileFromPathAsync(path).get();
+         auto size=value->file.GetBasicPropertiesAsync().get().Size();
+         auto extension=value->file.FileType();
+-        if(size==0||size>32ULL*1024*1024 || (extension!=L".jpg"&&extension!=L".jpeg"&&extension!=L".png"&&extension!=L".webp"))return E_INVALIDARG;
++        if(size==0||size>32ULL*1024*1024 || (extension!=L".jpg"&&extension!=L".jpeg"&&extension!=L".png"&&extension!=L".webp"&&extension!=L".gif"))return E_INVALIDARG;
+         value->mediaFile=true;value->shareTitle=hstring(title);value->shareText=hstring(text);
+         auto token=nextToken.fetch_add(1);
+         std::lock_guard lock(registryGate);
+--- desktop/native/diagnostic-share/approved-development-build.json
++++ desktop/native/diagnostic-share/approved-development-build.json
+@@ -1,9 +1,9 @@
+ {
+   "approvedDevelopmentBuild": true,
+   "publicReleaseAuthorizationVerified": false,
+-  "sourceSha256Bytes": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92",
++  "sourceSha256Bytes": "4ca60493f8224eefa7c00684fd4fede6a8c7bbdc2b735e03c5bcdd02983807ca",
+   "controlledCompilerScriptSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
+-  "dllSha256Bytes": "89705e2e0b5b146c8fdbccda63dc68bea7e46bfcc7e4aaa50c4cb1efa5331f06",
++  "dllSha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3",
+   "sdkVersion": "10.0.26100.0",
+   "msvcVersion": "14.44.35207",
+   "flags": [
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImagePreviewShareBindings.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImagePreviewShareBindings.kt
+@@ -0,0 +1,73 @@
++package com.bilipai.desktop.ui
++
++import androidx.compose.runtime.staticCompositionLocalOf
++import com.android.purebilibili.feature.dynamic.components.normalizeImageUrl
++import com.android.purebilibili.feature.dynamic.components.resolveImageShareMimeType
++import com.android.purebilibili.feature.video.share.VideoShareCoverFile
++import kotlinx.coroutines.*
++import java.nio.file.Files
++import java.nio.file.Path
++
++internal typealias DesktopImagePreviewMediaShare = suspend (
++    Path, String, String, () -> Boolean, (Boolean) -> Unit
++) -> Boolean
++
++/** Borrows the retained Root's ONE share-file pool, existing anonymous Assets download,
++ * and serialized native actor. A successful call means panel shown, never receiver delivery.
++ * Native retirement tracks host/route ownership; the normally completed action Job is not
++ * a lifetime token for a recipient's file grant. Unknown grants remain bounded by the pool. */
++internal class DesktopImagePreviewShareBindings(
++    private val readOriginal: suspend (String) -> ByteArray,
++    private val files: DesktopVideoShareFiles,
++    private val rootOwned: () -> Boolean,
++    private val mediaShare: DesktopImagePreviewMediaShare,
++) {
++    suspend fun shareImage(rawUrl: String, callerOwned: () -> Boolean): Boolean = coroutineScope {
++        val caller = currentCoroutineContext()[Job]
++            ?: throw CancellationException("图片分享需要实际预览请求")
++        fun owned() = rootOwned() && callerOwned()
++        fun checkpoint() { caller.ensureActive(); if (!owned()) throw CancellationException("图片预览所有者已退役") }
++        checkpoint()
++        // The pool's publication fence also prevents downloading before RootRetainer publication.
++        files.assertAdmission()
++        val url = normalizeImageUrl(rawUrl)
++        if (url.isBlank()) return@coroutineScope false
++        val mime = resolveImageShareMimeType(url)
++        val extension = when (mime) {
++            "image/gif" -> "gif"
++            "image/webp" -> "webp"
++            "image/png" -> "png"
++            else -> "jpg"
++        }
++        val watcher = launch(Dispatchers.Default) {
++            while (isActive) {
++                if (!owned()) { caller.cancel(CancellationException("图片预览所有者已退役")); break }
++                delay(40)
++            }
++        }
++        var file: VideoShareCoverFile? = null
++        var exposed = false
++        try {
++            val bytes = readOriginal(url)
++            checkpoint(); require(bytes.size in 1..32 * 1024 * 1024) { "分享图片过大或为空" }
++            val prepared = files.publish("BiliPai_share_${System.currentTimeMillis()}.$extension", mime,
++                beforeCommit = ::checkpoint) { target ->
++                checkpoint(); Files.write(target, bytes); checkpoint()
++            }
++            file = prepared
++            checkpoint()
++            files.mayExpose(prepared)
++            exposed = true
++            // Native actor owns exact-once retirement even when prepare throws or is cancelled.
++            mediaShare(prepared.path, "BiliPai 图片分享", url, ::owned) { safe -> files.retire(prepared, safe) }
++                .also { checkpoint() }
++        } finally {
++            watcher.cancel()
++            if (!exposed) file?.let { files.retire(it, true) }
++        }
++    }
++}
++
++internal val LocalDesktopImagePreviewShareBindings = staticCompositionLocalOf<DesktopImagePreviewShareBindings> {
++    error("Image preview share requires the actual retained Root owner")
++}

@@ -1,0 +1,25 @@
+{
+  "rows": [
+    {
+      "label": "short-owned-temp",
+      "pathLength": 133,
+      "HRESULT": "00000000",
+      "token": 1,
+      "retireHRESULT": "00000000",
+      "state": 0,
+      "supplied": 0
+    },
+    {
+      "label": "long-main-lane",
+      "pathLength": 225,
+      "HRESULT": "00000000",
+      "token": 2,
+      "retireHRESULT": "00000000",
+      "state": 0,
+      "supplied": 0
+    }
+  ],
+  "expectedDLL": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3",
+  "ShareUI": false,
+  "externalReceiver": false
+}

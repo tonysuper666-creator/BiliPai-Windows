@@ -1,0 +1,71 @@
+{
+  "actual83Manifest": "72934edb925c7793294bf504388dfbd1f849fe14d8ea00dd4f333befdabd4157",
+  "orderedCP": "f82828347f7cfad86cd101dfb13d44677ba88f780b21a9e21df8c06a97d4828b",
+  "sourceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopNativeTextShare.kt",
+      "sha256Bytes": "3a0d30312765a0399677efe8bb7667ce3cfd072d68947b75adbeecb1069c1b5d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopDynamicImageAssets.kt",
+      "sha256Bytes": "02bbb275991a82e26bf04311da93cfa8055cde70df9d7a4686c2b88e082908ef"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeGalleryBindings.kt",
+      "sha256Bytes": "84c1a7009692e93b3228ec4cfd1b7a987271bf3a396c5a8ec8155cb5c21128ad"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopHomeRootFactory.kt",
+      "sha256Bytes": "0f7618ef7598ed05f7880b3dde5d75b50ecf0e7077899a27dfbd8db89962198d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopImagePreviewShareBindings.kt",
+      "sha256Bytes": "c8aa0f7ba9624db154747f0c5e820bb752a94678de02b46d777a7a9fa1b989a4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalArticleRootHost.kt",
+      "sha256Bytes": "895430c3b0c511cf8e53bf0a46a5c3e64d101cb6dbae46c9c08b79981d705764"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalCommentRootBindings.kt",
+      "sha256Bytes": "057011c6ef3ca659d12a5d8334e228d96eb1b3955381ef3ace668327fa674875"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalDynamicCardHost.kt",
+      "sha256Bytes": "bc7d919658134e6fc2076d21017b6f8c4ca4c64c65f182d8c819e51ce5bc96e8"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalHomeEmbeddedAggregate.kt",
+      "sha256Bytes": "839f923cb25cb4832f9738bc891dd74212a09aa92548771cac962a79e3902026"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalRootStack.kt",
+      "sha256Bytes": "33b5f9b17a78b3c97612bfd1c29c3f523d1d794be900606d1a5843ac6d1dbab3"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopReadyHomeFactoryBinding.kt",
+      "sha256Bytes": "449b12353ebbb59655d30e1d8ed34dda74fdcfc1f0cc19a6966389f2961491ca"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "c27b4f45109af34521cada062d9a031ffc4fed276a8b3b4eb0daea6a224aed11"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopSpaceImagePreviews.kt",
+      "sha256Bytes": "4c73830d9e827848d5f035e0cd3739ee1c6ac8bd327a387cf82773b5c4ddae6d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopVideoShareFiles.kt",
+      "sha256Bytes": "ee8ac6d926e6633e90cd779462cff55b6441243bc834088536b9f8b210e1d915"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\prepared\\desktop\\build\\native-diagnostic-share\\kotlin\\com\\bilipai\\desktop\\diagnostics\\DesktopNativeDiagnosticShareAssetHash.kt",
+      "sha256Bytes": "e95b3bc4b9155083498e1df364fe90e17b5e606665e1a6ea52123fdec52914a9"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-image-preview-native-share\\ImagePreviewShareFixture.kt",
+      "sha256Bytes": "28b1bf961f975ae9bbb874ebf771f0278c0438ccdad2a9a5c4d2e124710b65cf"
+    }
+  ],
+  "candidateWritten": false
+}

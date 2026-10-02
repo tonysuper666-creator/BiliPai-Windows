@@ -1,0 +1,94 @@
+{
+  "origin": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+    "sha256Bytes": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb",
+    "anchors": [
+      {
+        "lines": "2183-2198",
+        "method": "normalizeImageUrl",
+        "behavior": "original URL normalization, http to https and original size suffix removal"
+      },
+      {
+        "lines": "2212-2229",
+        "method": "resolveImageShareMimeType / resolveImageShareExtension",
+        "behavior": "original jpg/png/webp/gif MIME/extension"
+      },
+      {
+        "lines": "2234-2271",
+        "method": "shareImageFromPreview",
+        "behavior": "original raw byte share; no bitmap/GIF transcoding"
+      }
+    ]
+  },
+  "authority": {
+    "RootPool": "one DesktopVideoShareFiles per retained Root gate shared by image and video",
+    "nativeActor": "existing window-owned DesktopNativeTextShare",
+    "reader": "same HomeGallery DesktopDynamicImageAssets anonymous actor",
+    "publicationFence": "handle.retainer.current()?.entry?.gate === capturedGate; files.assertAdmission before original download and final commit publication check",
+    "construction": "pool constructor is pure path/set; unpublished pool creates no files/calls/tokens; failed Root construction closes/cancels attemptedGate and Aggregate/Gallery assets in existing catch paths",
+    "caller": "actual preview coroutine Job retained; route/host cancellation stops pipeline; native watcher uses Root/host/Article leaf ownership after normal caller completion",
+    "restore": "retainer/current epoch + gate lifecycle and same session lifetime, no all-true ownership"
+  },
+  "hosts": [
+    "HomeGallery",
+    "DynamicCardHost",
+    "Space avatar/top multi-image",
+    "Article actual leaf",
+    "OriginalCommentRoot gallery; covers Video/Space/BGM comment previews"
+  ],
+  "fileProtocol": {
+    "rawBytes": true,
+    "decodeOrReencode": false,
+    "maxBytes": 33554432,
+    "maxRetainedFiles": 8,
+    "prefix": "BiliPai_share_",
+    "brandTimestampOriginalMimeExtension": true,
+    "uuidExistingPoolLeaseSuffix": true,
+    "safeNativeRetirementDeletes": true,
+    "unknownRetirementRetains": true,
+    "noNewTransport": true,
+    "noNewStore": true
+  },
+  "clearContract": {
+    "productionEntryWired": false,
+    "currentFacts": "clearVideoShareFiles and clearExplicit exist but no production callsite invokes this pair",
+    "requiredPreconditions": [
+      "Explicit user action on active published Root must invoke same native actor clearVideoShareFiles",
+      "Serialized native actor closes active token and drains its ownership before invoking pool clearExplicit",
+      "Current Root publication/epoch ownership checked inside clear callback",
+      "Pool exposed and pending sets empty; only verified regular owned shared_images BiliPai_share_* files can be removed",
+      "No automatic TTL or restart inference; no second cache/pool; do not call clear directly while native lease exists"
+    ],
+    "claim": "Only strict prerequisite contract and isolated fixture proved; cache-clear UI is pending"
+  },
+  "pathBoundary": {
+    "defaultPoolDerivedFromSource": "C:\\Users\\TONYS\\AppData\\Local\\BiliPaiWindows\\cache\\shared_images",
+    "actualDefaultUserDirectoryTouched": false,
+    "directoryCharacters": 63,
+    "currentImageNameCharacters": 68,
+    "currentFullCharacters": 132,
+    "signedLongAndWebpUpperNameCharacters": 76,
+    "boundFullCharacters": 140,
+    "nativeLongPathSupported": false,
+    "observedFailure": {
+      "characters": 261,
+      "HRESULT": "80070057",
+      "token": 0
+    },
+    "failureProductionFeedback": "Native sharePrepared check throws IllegalStateException(\"Check failed.\"); original ImagePreview catches and calls actual platform.showFeedback(error.message); normal false shows 分享失败，请重试",
+    "failureCleanup": "Kotlin shareMedia prepared=false invokes exactly-once onRetired(true); same pool removes logical exposed lease and deletes file; real negative fixture confirms empty directory"
+  },
+  "acceptance": {
+    "prospectiveCompile": true,
+    "protocolAssertions": 48,
+    "actualNativePrepareRetire": true,
+    "realNativeActorNullWindow": true,
+    "actualReceiverUI": false,
+    "systemReceiverDelivery": false,
+    "longPathSupported": false,
+    "actualRootMountedPreviewClick": false,
+    "clearUIWired": false,
+    "accountHTTP412Fixed": false,
+    "packagedOrDeployed": false
+  }
+}

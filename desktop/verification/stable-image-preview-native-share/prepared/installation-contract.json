@@ -1,0 +1,192 @@
+{
+  "baselineHead": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "currentCandidateHead": "2055ce3b52c27b2956dc6eab6ae238f7fc73c680",
+  "targets": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicImageAssets.kt",
+      "beforeSha256Bytes": "2d8db29bcc41de05655f780d9e8e8b5facf8f2d8585341ed511f10a738b00b53",
+      "afterSha256Bytes": "02bbb275991a82e26bf04311da93cfa8055cde70df9d7a4686c2b88e082908ef",
+      "beforeBytes": 20827,
+      "afterBytes": 21494,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoShareFiles.kt",
+      "beforeSha256Bytes": "574dd690425a3a569c6d2ad07f318a3f49d344b3e60c19ce7ad46240f73b3729",
+      "afterSha256Bytes": "ee8ac6d926e6633e90cd779462cff55b6441243bc834088536b9f8b210e1d915",
+      "beforeBytes": 7178,
+      "afterBytes": 7404,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeGalleryBindings.kt",
+      "beforeSha256Bytes": "4f6a7c78303cac721fc74b60d9e1660d51a1db557156270d55f230c685ea155a",
+      "afterSha256Bytes": "84c1a7009692e93b3228ec4cfd1b7a987271bf3a396c5a8ec8155cb5c21128ad",
+      "beforeBytes": 5981,
+      "afterBytes": 6270,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalHomeEmbeddedAggregate.kt",
+      "beforeSha256Bytes": "af1a01f2059d4a549bebb349b199bb77fe24586900aec178ebe74d8c857695be",
+      "afterSha256Bytes": "839f923cb25cb4832f9738bc891dd74212a09aa92548771cac962a79e3902026",
+      "beforeBytes": 10746,
+      "afterBytes": 10873,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopHomeRootFactory.kt",
+      "beforeSha256Bytes": "63172c96a60460c5e34a1643028b3278ee56e090fb277e0ab834f0dd6e3f4c4d",
+      "afterSha256Bytes": "0f7618ef7598ed05f7880b3dde5d75b50ecf0e7077899a27dfbd8db89962198d",
+      "beforeBytes": 10637,
+      "afterBytes": 11131,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyHomeFactoryBinding.kt",
+      "beforeSha256Bytes": "4f0e9dd35905a4c2c3b770b00d6f1e30d868ef7f703fbd910164c390281aa050",
+      "afterSha256Bytes": "449b12353ebbb59655d30e1d8ed34dda74fdcfc1f0cc19a6966389f2961491ca",
+      "beforeBytes": 11116,
+      "afterBytes": 11740,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "beforeSha256Bytes": "20fdc31ebb3da3bbb846a5080db7f0b5a27c6bd477a19a1723b3cf4868b92172",
+      "afterSha256Bytes": "c27b4f45109af34521cada062d9a031ffc4fed276a8b3b4eb0daea6a224aed11",
+      "beforeBytes": 28948,
+      "afterBytes": 29037,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "beforeSha256Bytes": "c5d982f9442dace7e93fac4792b248d65dcd3f3d6c3e5051e9fae3401e4b2381",
+      "afterSha256Bytes": "33b5f9b17a78b3c97612bfd1c29c3f523d1d794be900606d1a5843ac6d1dbab3",
+      "beforeBytes": 14874,
+      "afterBytes": 14963,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDynamicCardHost.kt",
+      "beforeSha256Bytes": "40a0c2424116bfccedf9b4d34c9fd8e12e29b324a37133aeee11520287ec0f20",
+      "afterSha256Bytes": "bc7d919658134e6fc2076d21017b6f8c4ca4c64c65f182d8c819e51ce5bc96e8",
+      "beforeBytes": 15837,
+      "afterBytes": 15894,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceImagePreviews.kt",
+      "beforeSha256Bytes": "060bddd5fc739571a2f1db2c838880dcba9b14566335632ee466f009c65f1f16",
+      "afterSha256Bytes": "4c73830d9e827848d5f035e0cd3739ee1c6ac8bd327a387cf82773b5c4ddae6d",
+      "beforeBytes": 8818,
+      "afterBytes": 8968,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+      "beforeSha256Bytes": "b2bf0dce712f3ffa932dcbbb37a2b369fd231c4c11a4f5ef179789fdc66f58ec",
+      "afterSha256Bytes": "057011c6ef3ca659d12a5d8334e228d96eb1b3955381ef3ace668327fa674875",
+      "beforeBytes": 6870,
+      "afterBytes": 6974,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleRootHost.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalArticleRootHost.kt",
+      "beforeSha256Bytes": "d383abd978d93290588e4d0a690f693ed379466d24b293e3d6324bfd99d7ca3a",
+      "afterSha256Bytes": "895430c3b0c511cf8e53bf0a46a5c3e64d101cb6dbae46c9c08b79981d705764",
+      "beforeBytes": 5319,
+      "afterBytes": 5482,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeTextShare.kt",
+      "beforeSha256Bytes": "2171801494bfaaa5f60616b3b6a1a6edeb9e48a5997603fa2dc3d6b2bf806450",
+      "afterSha256Bytes": "3a0d30312765a0399677efe8bb7667ce3cfd072d68947b75adbeecb1069c1b5d",
+      "beforeBytes": 7513,
+      "afterBytes": 7519,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "prepared": "prepared/desktop/native/diagnostic-share/DesktopDiagnosticShare.cpp",
+      "beforeSha256Bytes": "4065f91829bfb250769f6eb767ccd3760ae918297c5f239fe31d242c8ce1bb92",
+      "afterSha256Bytes": "4ca60493f8224eefa7c00684fd4fede6a8c7bbdc2b735e03c5bcdd02983807ca",
+      "beforeBytes": 32271,
+      "afterBytes": 32291,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/native/diagnostic-share/approved-development-build.json",
+      "prepared": "prepared/desktop/native/diagnostic-share/approved-development-build.json",
+      "beforeSha256Bytes": "e13c4d6775a942343039d5602d52ee02bd92fe3f83155f80f67da67160dd62b1",
+      "afterSha256Bytes": "147c338a72845eee396a394760945e76c96803b89d224059deb284c91f2831cf",
+      "beforeBytes": 80844,
+      "afterBytes": 83098,
+      "kind": "exact-baseline-replacement",
+      "currentCandidateMatches6fd": true
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImagePreviewShareBindings.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopImagePreviewShareBindings.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "c8aa0f7ba9624db154747f0c5e820bb752a94678de02b46d777a7a9fa1b989a4",
+      "afterBytes": 3476,
+      "kind": "new-manual-source"
+    }
+  ],
+  "trackedSourceTargetsOnly": true,
+  "noWholeRegistryReplacement": true,
+  "noBuildGradleReplacement": true,
+  "gradleAppend": [],
+  "registry": {
+    "existingIdentity": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+    "mode": "policy-extract",
+    "sha256": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb",
+    "existingFeatures": [
+      "settings-dynamic-full-card-parity",
+      "dynamic-media-export-parity",
+      "dynamic-static-image-save-parity"
+    ],
+    "suggestedFeatureUnion": [
+      "dynamic-native-image-preview-share-parity"
+    ],
+    "newIdentity": false
+  },
+  "freshNativeProducerRequired": true,
+  "nativeAssetTarget": "desktop/resources/common/native/windows-x64/bilipai-diagnostic-share.dll",
+  "nativeAssetNotCopiedFromOldDLL": true,
+  "prepareNativeTool": "desktop/tools/prepare-native-diagnostic-share.py",
+  "actualGradleProducerTask": ":desktop:prepareNativeDiagnosticShare",
+  "generatedHashSource": "desktop/build/generated/native-diagnostic-share/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeDiagnosticShareAssetHash.kt",
+  "shadowProofGeneratedHashSource": "prepared/desktop/build/native-diagnostic-share/kotlin/com/bilipai/desktop/diagnostics/DesktopNativeDiagnosticShareAssetHash.kt",
+  "generatedHashInstallFalse": true,
+  "binaryCheckOnlySha": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3",
+  "candidateWritten": false
+}

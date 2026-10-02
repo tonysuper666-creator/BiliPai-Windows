@@ -1,0 +1,9 @@
+desktop\.local\stable-image-preview-native-share\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicImageAssets.kt:302:52: warning: the corresponding parameter in the supertype 'Callback' is named 'e'. This may cause problems when calling this function with named arguments.
+                override fun onFailure(call: Call, error: IOException) { finished.complete(Result.failure(error)) }
+                                                   ^^^^^
+desktop\.local\stable-image-preview-native-share\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopDynamicImageAssets.kt:307:48: warning: elvis operator (?:) always returns the left operand of non-nullable type 'ResponseBody'.
+                            val body = it.body ?: error("Í¼Æ¬ÄÚÈÝÎª¿Õ")
+                                               ^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-image-preview-native-share\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalRootStack.kt:181:25: warning: 'when' is exhaustive so 'else' is redundant here.
+                        else -> error("Unreachable typed Live branch")
+                        ^^^^

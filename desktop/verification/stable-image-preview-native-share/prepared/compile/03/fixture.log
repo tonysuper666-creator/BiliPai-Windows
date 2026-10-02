@@ -1,0 +1,45 @@
+PASS Assets original gif identity
+PASS original MIME gif
+PASS raw byte identity gif
+PASS actual native unsupplied retirement
+PASS no window reports false gif
+PASS Assets original webp identity
+PASS original MIME webp
+PASS raw byte identity webp
+PASS actual native unsupplied retirement
+PASS no window reports false webp
+PASS Assets original png identity
+PASS original MIME png
+PASS raw byte identity png
+PASS actual native unsupplied retirement
+PASS no window reports false png
+PASS Assets original jpg identity
+PASS original MIME jpg
+PASS raw byte identity jpg
+PASS actual native unsupplied retirement
+PASS no window reports false jpg
+PASS real actor exact once retirement for four formats
+PASS real native files safely retired
+PASS unpublished Root denies download and native allocation
+PASS pure failed construction creates no cache
+PASS route retirement cancels actual caller pipeline
+PASS caller Job cancellation drains reader
+PASS leaf retirement checked inside final publication transaction
+PASS failed publication removes own stage and grants nothing
+PASS protocol panel success
+PASS completed request Job does not retire host grant
+PASS explicit clear rejected before native grant drain
+PASS native watcher retains actual leaf retirement fence
+PASS confirmed native drain permits explicit fixture clear
+PASS unknown native grant retained 1
+PASS unknown native grant retained 2
+PASS unknown native grant retained 3
+PASS unknown native grant retained 4
+PASS unknown native grant retained 5
+PASS unknown native grant retained 6
+PASS unknown native grant retained 7
+PASS unknown native grant retained 8
+PASS same eight-file pool bounds unknown grants
+PASS no unsafe unknown-grant file deletion
+PASS Assets owner retirement denies new request
+RESULT assertions=44 nativePrepareRetire=4 ShareUI=false receiver=false productionClearWired=false

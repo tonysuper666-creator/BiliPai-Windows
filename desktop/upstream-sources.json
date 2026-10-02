@@ -4848,7 +4848,8 @@
       "features": [
         "settings-dynamic-full-card-parity",
         "dynamic-media-export-parity",
-        "dynamic-static-image-save-parity"
+        "dynamic-static-image-save-parity",
+        "dynamic-native-image-preview-share-parity"
       ],
       "sha256": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb"
     },

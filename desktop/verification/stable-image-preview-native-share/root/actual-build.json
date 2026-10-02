@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+    "-p",
+    "desktop",
+    "classes",
+    "compileTestKotlin",
+    "--console=plain"
+  ],
+  "exitCode": 0,
+  "actualProductOverrides": 0,
+  "sourceCount": 1174,
+  "testCompileOnly": true,
+  "testExecutionClaimed": false,
+  "freshNativeProducerExecutedByClasses": true,
+  "logSha256Bytes": "24927a1d6cc85b8d067a1c07fa44a9b6de73f5528a557eea9a98e6d2a2af0796",
+  "nativeAssetSha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3",
+  "nativeProducerReceiptSha256Bytes": "a28c5521229934fbdb760a9fb0d2628b87aa2f1715ea0bed8d5e923e997e41f6",
+  "generatedNativeHashSha256Bytes": "e95b3bc4b9155083498e1df364fe90e17b5e606665e1a6ea52123fdec52914a9"
+}
