@@ -1,0 +1,3 @@
+desktop\.local\stable-pgc-root-integration-acceptance\runs\actual92-01\RootPgcFixture.kt:274:166: error: only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'DesktopOriginalVideoOwnerAssembly?'.
+                checkThat("Same existing native Section and typed comment VM",entry.section===platforms.holder.section&&entry.comments===shell.slot.currentAssembly().domains.comments)
+                                                                                                                                                                     ^

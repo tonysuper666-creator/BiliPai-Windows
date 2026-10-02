@@ -1,0 +1,17 @@
+{
+  "baseCommit": "efba03e9b8a4b5eaec9189ea297db00144b1969d",
+  "sourceCount": 1234,
+  "resourceCount": 244,
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+      "beforeSha256Bytes": "90490f58a5560efd641bbca174952be5224050df261a99b782b8777b379633e8",
+      "afterSha256Bytes": "c6945bebad1bd3dd8627abda7da6d26aae8801f25370c854988662871ae6738c"
+    }
+  ],
+  "priorActualWindow": "actual92-03",
+  "actualWindowFailure": "Original PGC Loading/Error reads brightness before any accepted media source",
+  "sourceWriteAdmissionUnchanged": true,
+  "normalCompile": false,
+  "rootRuntimeAccepted": false
+}

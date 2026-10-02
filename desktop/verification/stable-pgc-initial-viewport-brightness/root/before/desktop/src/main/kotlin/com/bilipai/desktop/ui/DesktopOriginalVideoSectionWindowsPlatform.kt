@@ -216,13 +216,7 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         }
     }
     override fun recoverViewport(identity: String, fullscreen: Boolean, pip: Boolean, predictiveBackGeneration: Int) { viewport.requestLayout(); viewport.invalidate() }
-    override fun readViewportBrightness(): Float {
-        // The original PGC view exists before detail/playurl succeeds. Until a
-        // source owns the dimmer, its actual viewport has full brightness.
-        // This read cannot grant a source or relax any presentation write.
-        val value = resources.native.current() ?: return 1f
-        return if (owns(value)) resources.overlay.viewportBrightnessFor(value.sourceVersion) ?: 1f else 1f
-    }
+    override fun readViewportBrightness(): Float { val value=expected(); return resources.overlay.viewportBrightnessFor(value.sourceVersion) ?: 1f }
     override fun setViewportBrightness(value: Float, requestSystemBrightness: Boolean) {
         require(value.isFinite())
         presentationWrite { resources.overlay.setViewportBrightness(it.sourceVersion, value.coerceIn(0.05f,1f)) }

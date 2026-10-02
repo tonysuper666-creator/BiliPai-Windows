@@ -1,0 +1,185 @@
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :prepareUpstreamSources UP-TO-DATE
+> Task :extractBgmDetail UP-TO-DATE
+> Task :extractCommentFraudProtocol UP-TO-DATE
+> Task :extractFrostedAudioRenderer UP-TO-DATE
+
+> Task :verifyGoogleCastSources
+{"passed": true, "originalJavaFiles": 32, "narrowlyModifiedFiles": 3, "pinnedRoots": 2, "physicalDeviceTested": false, "auditedRecords": 95}
+Verified six fixed Google Cast runtime dependency digests.
+
+> Task :extractGoogleCastPlatform UP-TO-DATE
+> Task :extractImageSaveSettingsUi UP-TO-DATE
+> Task :extractLinkedDock UP-TO-DATE
+> Task :extractNativeMusicRoot UP-TO-DATE
+> Task :extractNavigation3Host UP-TO-DATE
+> Task :extractOriginalApplicationImageLoader UP-TO-DATE
+> Task :extractUpstreamDynamicDetailProtocol UP-TO-DATE
+> Task :extractOriginalArticleDetail UP-TO-DATE
+> Task :extractOriginalHomeBangumiPage UP-TO-DATE
+> Task :extractUpstreamMedia UP-TO-DATE
+> Task :extractOriginalBangumiPages UP-TO-DATE
+> Task :extractOriginalBangumiPlayer UP-TO-DATE
+> Task :extractOriginalBangumiPlayerUi UP-TO-DATE
+> Task :extractOriginalDanmakuListMenu UP-TO-DATE
+> Task :extractOriginalDanmakuSettings UP-TO-DATE
+> Task :extractOriginalDownloadList UP-TO-DATE
+> Task :extractOriginalFavoriteFolder UP-TO-DATE
+> Task :extractOriginalFavorites UP-TO-DATE
+> Task :extractOriginalWatchLater UP-TO-DATE
+> Task :extractOriginalFollowing UP-TO-DATE
+> Task :extractOriginalHomePage UP-TO-DATE
+> Task :extractOriginalHomePartition UP-TO-DATE
+> Task :extractOriginalHomeProtocols UP-TO-DATE
+> Task :extractOriginalHomeViewModel UP-TO-DATE
+> Task :extractOriginalLiveList UP-TO-DATE
+> Task :extractOriginalLiveNavigation UP-TO-DATE
+> Task :extractOriginalMediaByteCachePolicy UP-TO-DATE
+> Task :extractUpstreamDynamicFullCard UP-TO-DATE
+> Task :extractOriginalMessagePages UP-TO-DATE
+> Task :extractOriginalOfflinePlayer UP-TO-DATE
+> Task :extractOriginalVideoDetailUnits UP-TO-DATE
+> Task :extractOriginalPlayerFullControls UP-TO-DATE
+> Task :extractOriginalVideoContentFull UP-TO-DATE
+> Task :extractOriginalVideoStateCore UP-TO-DATE
+> Task :extractOriginalVideoPlayerSectionFull UP-TO-DATE
+> Task :prepareUpstreamVideoCommentUrl UP-TO-DATE
+> Task :extractOriginalVideoTabletFull UP-TO-DATE
+> Task :extractOriginalMusicPlayerFull UP-TO-DATE
+> Task :extractOriginalPersonalLists UP-TO-DATE
+> Task :extractOriginalProfileMain UP-TO-DATE
+> Task :extractOriginalRootHomeNavigation UP-TO-DATE
+> Task :extractOriginalSearchPages UP-TO-DATE
+> Task :extractUpstreamSpace UP-TO-DATE
+> Task :extractUpstreamSpaceContributions UP-TO-DATE
+> Task :extractUpstreamSpaceOverview UP-TO-DATE
+> Task :extractOriginalSpacePages UP-TO-DATE
+> Task :extractOriginalStorageSettings UP-TO-DATE
+> Task :extractOriginalSubscriptionPage UP-TO-DATE
+> Task :extractOriginalTabletOwnerSpace UP-TO-DATE
+> Task :extractOriginalVideoFullscreenPager UP-TO-DATE
+> Task :extractOriginalVideoAudioFull UP-TO-DATE
+> Task :extractOriginalVideoFullOwner UP-TO-DATE
+> Task :extractOriginalVideoDetailHolderFull UP-TO-DATE
+> Task :extractOriginalVideoOwnerDanmakuSend UP-TO-DATE
+> Task :extractOriginalVideoPlaylistFull UP-TO-DATE
+> Task :extractOriginalVideoRootStoryFeed UP-TO-DATE
+> Task :extractOriginalVideoShareConsent UP-TO-DATE
+> Task :extractOriginalWallpaperPalette UP-TO-DATE
+> Task :extractPlaybackSettings UP-TO-DATE
+> Task :extractPlaybackWatchdogs UP-TO-DATE
+> Task :extractSharedLiquidTabs UP-TO-DATE
+> Task :extractStableCollectionSheet UP-TO-DATE
+> Task :extractStableVideoMetadata UP-TO-DATE
+> Task :extractStableWeeklySeries UP-TO-DATE
+> Task :extractSubtitleLoadPolicy UP-TO-DATE
+> Task :extractUpstreamApi UP-TO-DATE
+> Task :extractUpstreamAppearance UP-TO-DATE
+> Task :extractUpstreamAudio UP-TO-DATE
+> Task :extractUpstreamDiscovery UP-TO-DATE
+> Task :extractUpstreamBlockedUp UP-TO-DATE
+> Task :extractUpstreamSettingsSearch UP-TO-DATE
+> Task :extractUpstreamSettingsCategories UP-TO-DATE
+> Task :extractUpstreamBlockedListUi UP-TO-DATE
+> Task :extractUpstreamCast UP-TO-DATE
+> Task :extractUpstreamComponents UP-TO-DATE
+> Task :extractUpstreamCrashPrompt UP-TO-DATE
+> Task :extractUpstreamDanmaku UP-TO-DATE
+> Task :extractUpstreamDiagnostics UP-TO-DATE
+> Task :extractUpstreamDownloadTransport UP-TO-DATE
+> Task :extractUpstreamDynamicDetail UP-TO-DATE
+> Task :extractUpstreamDynamicDetailContainer UP-TO-DATE
+> Task :extractUpstreamDynamicEditor UP-TO-DATE
+> Task :extractUpstreamSettingsHome UP-TO-DATE
+> Task :extractUpstreamDynamicSettings UP-TO-DATE
+> Task :extractUpstreamDynamicTabs UP-TO-DATE
+> Task :extractUpstreamDynamicFollow UP-TO-DATE
+> Task :extractUpstreamDynamicReply UP-TO-DATE
+> Task :extractUpstreamDynamicReplyProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicStaticImageCodec UP-TO-DATE
+> Task :extractUpstreamNavigationInteraction UP-TO-DATE
+> Task :extractUpstreamFullNavigation UP-TO-DATE
+> Task :extractUpstreamHomeCards UP-TO-DATE
+> Task :extractUpstreamHomeFullCard UP-TO-DATE
+> Task :extractUpstreamJs UP-TO-DATE
+> Task :extractUpstreamLogin UP-TO-DATE
+> Task :extractUpstreamNetworkProxy UP-TO-DATE
+> Task :extractUpstreamPackages UP-TO-DATE
+> Task :extractUpstreamPlayback UP-TO-DATE
+> Task :extractUpstreamPlugins UP-TO-DATE
+> Task :extractUpstreamPreferences UP-TO-DATE
+> Task :extractUpstreamProfileWallpaperImport UP-TO-DATE
+> Task :extractUpstreamSearch UP-TO-DATE
+> Task :extractUpstreamSettings UP-TO-DATE
+> Task :extractUpstreamSettingsEntries UP-TO-DATE
+> Task :extractUpstreamSettingsPrivacy UP-TO-DATE
+> Task :extractUpstreamSettingsStorageEntries UP-TO-DATE
+> Task :extractUpstreamSpaceImagePreviews UP-TO-DATE
+> Task :extractUpstreamStoryTopic UP-TO-DATE
+> Task :extractVideoCommentUi UP-TO-DATE
+> Task :convertXmlValueResourcesForMain NO-SOURCE
+> Task :copyNonXmlValueResourcesForMain NO-SOURCE
+> Task :prepareComposeResourcesTaskForMain NO-SOURCE
+> Task :generateResourceAccessorsForMain SKIPPED
+> Task :generateActualResourceCollectorsForMain SKIPPED
+> Task :generateComposeResClass SKIPPED
+> Task :fetchJsWorkerJdk UP-TO-DATE
+> Task :prepareJsWorker UP-TO-DATE
+
+> Task :prepareNativeDiagnosticShare
+{"passed": true, "headers": 369, "searchedLibraries": 11, "compilerFiles": 64, "dllSha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3"}
+{"passed": true, "freshBuild": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\48fa10a8-d1f6-40dc-8880-7a024df84179", "approvedSourceManifestSha256Bytes": "147c338a72845eee396a394760945e76c96803b89d224059deb284c91f2831cf", "sourceSha256Bytes": "4ca60493f8224eefa7c00684fd4fede6a8c7bbdc2b735e03c5bcdd02983807ca", "compilerDriverSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861", "expectedDllSha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3", "stagedDllSha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3", "actualBuildGraph": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\generated\\native-diagnostic-share\\builds\\48fa10a8-d1f6-40dc-8880-7a024df84179\\producer-input-graph.json", "actualBuildGraphSha256Bytes": "e682e5b7f0b77e7dd71a26da515fc8131fb9dbdd5018e268082b568e2b412d05", "cachedOutputTrusted": false, "freshCompilationOnEveryInvocation": true, "resolvedGraphMatchesReviewedBuild": true, "publicReleaseAuthorizationVerified": false}
+
+> Task :prepareOriginalCategoryPage UP-TO-DATE
+> Task :prepareOriginalHomeReturnNavigation UP-TO-DATE
+
+> Task :verifyAppearanceDependencies
+Verified eight fixed appearance runtime dependencies and six source notices.
+
+> Task :verifyCoilCacheControlSources
+Verified three unchanged Coil3.5.0 cache-control sources and two Apache notices.
+
+> Task :verifyDynamicMediaDependencies
+Verified three approved image metadata runtime dependencies and six Apache notices.
+
+> Task :verifyOriginalPlayerFullControls UP-TO-DATE
+> Task :verifyOriginalVideoContentFull UP-TO-DATE
+> Task :verifyOriginalVideoDetailMembers UP-TO-DATE
+
+> Task :verifySettingsSearchDependencies
+Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.
+
+> Task :extractStableVideoVotes UP-TO-DATE
+> Task :verifyUpstreamDynamicDetailReplyProtocol UP-TO-DATE
+> Task :verifyUpstreamDynamicEditorProtocol UP-TO-DATE
+> Task :extractUpstreamDynamicGalleryMotionPhoto UP-TO-DATE
+> Task :verifyUpstreamDynamicMedia UP-TO-DATE
+
+> Task :miuix5157:verifyPinnedSource
+Exact Miuix5c91 pinned source PASS: 225 files; 195 compiled source files
+
+> Task :miuix5157:bakeSquircleSdf UP-TO-DATE
+> Task :miuix5157:kmpPartiallyResolvedDependenciesChecker
+> Task :miuix5157:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :miuix5157:compileKotlinJvm UP-TO-DATE
+> Task :miuix5157:compileJvmMainJava NO-SOURCE
+> Task :miuix5157:jvmProcessResources NO-SOURCE
+> Task :miuix5157:processJvmMainResources SKIPPED
+> Task :miuix5157:jvmMainClasses UP-TO-DATE
+> Task :miuix5157:jvmJar UP-TO-DATE
+> Task :assembleMainResources UP-TO-DATE
+> Task :prepareOriginalPluginResources UP-TO-DATE
+> Task :processResources UP-TO-DATE
+> Task :convertXmlValueResourcesForTest NO-SOURCE
+> Task :copyNonXmlValueResourcesForTest NO-SOURCE
+> Task :prepareComposeResourcesTaskForTest NO-SOURCE
+> Task :generateResourceAccessorsForTest SKIPPED
+> Task :compileKotlin
+> Task :compileJava UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :jar
+> Task :compileTestKotlin UP-TO-DATE
+
+BUILD SUCCESSFUL in 1m 47s
+143 actionable tasks: 10 executed, 133 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html

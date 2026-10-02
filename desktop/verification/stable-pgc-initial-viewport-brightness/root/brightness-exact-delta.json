@@ -1,0 +1,5 @@
+{
+  "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoSectionWindowsPlatform.kt",
+  "before": "    override fun readViewportBrightness(): Float { val value=expected(); return resources.overlay.viewportBrightnessFor(value.sourceVersion) ?: 1f }",
+  "after": "    override fun readViewportBrightness(): Float {\n        // The original PGC view exists before detail/playurl succeeds. Until a\n        // source owns the dimmer, its actual viewport has full brightness.\n        // This read cannot grant a source or relax any presentation write.\n        val value = resources.native.current() ?: return 1f\n        return if (owns(value)) resources.overlay.viewportBrightnessFor(value.sourceVersion) ?: 1f else 1f\n    }"
+}
