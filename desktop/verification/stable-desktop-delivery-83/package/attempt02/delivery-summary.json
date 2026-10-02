@@ -1,0 +1,60 @@
+{
+  "attempt": 2,
+  "status": "packaged_verified_and_desktop_deployed",
+  "codeHead": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "windowsVersion": {
+    "version": "0.2.415.1",
+    "upstreamTag": "v0.2.3",
+    "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+    "windowsReleaseRepository": "tonysuper666-creator/BiliPai-Windows",
+    "channel": "prerelease",
+    "executable": "BiliPai Windows.exe"
+  },
+  "portableZip": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\distributions\\BiliPai-Windows-0.2.415.1-x64.zip",
+    "bytes": 359535321,
+    "sha256Bytes": "8aac45f341dd04cab4700dde9b537bcc7388d0df334d9be6562f1136f5725cf9"
+  },
+  "desktopDirectory": "C:\\Users\\TONYS\\Desktop\\BiliPai Windows v0.2.3",
+  "deployedExecutable": "C:\\Users\\TONYS\\Desktop\\BiliPai Windows v0.2.3\\BiliPai Windows.exe",
+  "executableSha256": "959729207e4db17fa22c29d520228a7e6e22a07c97ab2e0786011dbd48cb4d17",
+  "productJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\compose\\binaries\\main\\app\\BiliPai Windows\\app\\bilipai-windows-0.1.0-6a50da618ccbe8dd23e77f43f1636a86.jar",
+    "bytes": 47396566,
+    "sha256Bytes": "f6cde92de9daa2d8790027d090deddc94ff574d717f556a6220125480b442f0a"
+  },
+  "payloadFilesVerified": 1122,
+  "sourceAndNativeInputsUnchanged": true,
+  "nativePlayerSmoke": {
+    "passed": true,
+    "offlinePassedCheckCount": 29,
+    "evidenceSha256": "a0f73e8f2d41bf690fc0150ca4ea53a0bc4abc1729c777ae21f4622de29ae28e"
+  },
+  "nativeMuxSmoke": {
+    "passed": true,
+    "decodedOutputVariants": 6,
+    "evidenceSha256": "ed854c7e2f9340a639dfa0f088d874d42f0637747df4ac8e9d72ebb0fad198d7"
+  },
+  "updaterSmoke": {
+    "passed": true,
+    "isolated": true,
+    "evidenceSha256": "bb9f79867b7c6b605deb15528a8acf31335b69fbe4fe4f40336fba4bf3819536",
+    "actualPreviousExeForwarding": {
+      "tested": false,
+      "reason": "No actual previous package supplied; only the shared registry forwarding function was tested"
+    }
+  },
+  "classpathAuditPassed": true,
+  "frozen83MainEntriesByteIdentical": 16168,
+  "duplicateClassGroups": 0,
+  "realAccountAcceptance": "pending_user_test",
+  "knownGuestMediaHttpStatus": 412,
+  "realRootExternalMedia17Checks": "reported_passed_by_parent_separate_lane",
+  "ordinaryBilibiliVideoAccepted": false,
+  "allFeaturesAccepted": false,
+  "published": false,
+  "msiCreated": false,
+  "releaseGatePassed": false,
+  "packageResultSha256": "ad60cd11ecce1c70fc550699f3db7440e2add05eb9b3faad27f6279043daab03",
+  "deploymentReceiptSha256": "01c24e97b84be911b9e5fe721b8b756e1bc06fcf8c25b662402a0d4219d1cd33"
+}

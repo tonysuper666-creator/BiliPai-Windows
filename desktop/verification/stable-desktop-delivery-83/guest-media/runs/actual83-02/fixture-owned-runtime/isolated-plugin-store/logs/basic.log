@@ -1,0 +1,9 @@
+[2026-10-02 06:24:08.943] I/StartupDiagnostics: stage=diagnostics_initialized, app=actual-issued-media-fixture
+[2026-10-02 06:24:13.923] W/OriginalVideo: Video system bars mapped to the Root Windows client/title policy (SYSTEM_BARS)
+[2026-10-02 06:24:14.177] W/OriginalVideo: HWND video does not support texture alpha/reveal-scale; original cover is retained
+[2026-10-02 06:24:14.504] W/VideoReturnTrace: load request=BV***/42349887766, loaded=null/null, keepLoadedUi=false, playerAttached=true
+[2026-10-02 06:24:14.514] W/VideoReturnTrace: show Loading.Initial for BV***
+[2026-10-02 06:24:14.525] W/OriginalVideo: Current Windows video output has no Dolby Vision profile negotiation
+[2026-10-02 06:24:16.059] W/CooldownManager: ⚠️ 记录失败: bvid=BV***, 次数=1/3
+[2026-10-02 06:24:16.065] W/CooldownManager: 📛 记录失败: bvid=BV***, reason=Bilibili 暂时限制了此请求 (HTTP 412)。请在浏览器打开 B 站完成正常验证，或登录后重试；也可稍后再试。, 连续失败=1
+[2026-10-02 06:24:16.071] E/CrashReporter: Video Error: [load_failed] 网络连接失败，请检查网络后重试

@@ -1,0 +1,27 @@
+{
+  "startedUtc": "2026-10-02T06:11:23.4936591Z",
+  "harnessCodeHead": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "packagedCodeHead": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "arguments": [
+    "-p",
+    "desktop",
+    "--console=plain",
+    "updaterSmoke",
+    "-PupdateTestPackage=C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\distributions\\BiliPai-Windows-0.2.415.1-x64.zip",
+    "-PupdatePreviousPackage=C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\distributions\\BiliPai-Windows-0.2.406.5-x64.zip",
+    "-PupdateTestReport=C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-updater-real-previous-forwarding83\\reports"
+  ],
+  "gradle": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+  "javaHome": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\jdk\\jdk-21.0.12.1+1",
+  "sourceStatusBefore": [],
+  "packageRebuilt": false,
+  "nativeMuxRerun": false,
+  "productionEdits": false,
+  "testEdits": false,
+  "userDesktopExeStarted": false,
+  "userAccountDataTouched": false,
+  "gradleExitCode": 0,
+  "passed": true,
+  "finishedUtc": "2026-10-02T06:13:32.7738175Z",
+  "sourceStatusAfter": []
+}

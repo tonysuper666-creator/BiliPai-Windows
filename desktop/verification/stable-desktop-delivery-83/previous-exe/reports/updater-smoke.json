@@ -1,0 +1,181 @@
+{
+    "passed": true,
+    "evidenceType": "isolated-packaged-updater",
+    "caseRoot": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076",
+    "isolatedLocalAppData": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\LocalAppData",
+    "updateRoot": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\LocalAppData\\BiliPai\\updates",
+    "portableZip": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\distributions\\BiliPai-Windows-0.2.415.1-x64.zip",
+    "realShortcutTested": false,
+    "childBackgroundNetworkAllowed": true,
+    "windowsVersion": "0.2.415.1",
+    "portableZipSha256": "8aac45f341dd04cab4700dde9b537bcc7388d0df334d9be6562f1136f5725cf9",
+    "baselineVersion": "0.2.406.5",
+    "repository": "tonysuper666-creator/BiliPai-Windows",
+    "successActivation": {
+        "passed": true,
+        "processId": 41088,
+        "executable": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\LocalAppData\\BiliPai\\updates\\staged-200-17971766692321614998\\app\\BiliPai Windows\\BiliPai Windows.exe",
+        "health": [
+            {
+                "directory": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\LocalAppData\\BiliPai\\updates\\staged-200-17971766692321614998\\launch-c06f4b88-712f-430d-b570-53abe423ffb0",
+                "tokenMarkerPresent": true,
+                "reportedVersion": "0.2.415.1"
+            }
+        ]
+    },
+    "wrongHashRejected": true,
+    "versionMismatchRejected": {
+        "passed": true,
+        "fixtureAdvertisedVersion": "windows-v0.2.415.2",
+        "actualPackageVersion": "0.2.415.1",
+        "preparedSuccessfully": true,
+        "health": [
+            {
+                "directory": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\LocalAppData\\BiliPai\\updates\\staged-200-770955634305139154\\launch-46d92c52-2023-48f6-a758-796ad96bca61",
+                "tokenMarkerPresent": true,
+                "reportedVersion": "0.2.415.1"
+            }
+        ]
+    },
+    "damagedStartupRejected": {
+        "passed": true,
+        "fixtureZipSha256": "f73ba3628794593c0e4a6746699b19f684098b87018f6ce2cd8d2190864ae10d",
+        "modifiedEntries": [
+            "BiliPai Windows/app/resources/native/windows-x64/libmpv-2.dll"
+        ],
+        "originalActiveBytesUnchanged": true,
+        "health": [
+            {
+                "directory": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\LocalAppData\\BiliPai\\updates\\staged-200-8944036185472617160\\launch-9ece39a7-d2c0-411b-b929-b48473187db8",
+                "tokenMarkerPresent": false,
+                "reportedVersion": ""
+            }
+        ]
+    },
+    "registeredFallback": {
+        "passed": true,
+        "registrySetupWasFixture": true,
+        "failedProcessId": 26752,
+        "healthyProcessId": 29208,
+        "activeExecutable": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\LocalAppData\\BiliPai\\updates\\staged-200-17971766692321614998\\app\\BiliPai Windows\\BiliPai Windows.exe"
+    },
+    "failedPreparedCandidateRevoked": true,
+    "actualPreviousExeForwarding": {
+        "passed": true,
+        "previousVersion": "0.2.406.5",
+        "previousZipSha256": "178f5c4dc584853d2da5e2733998987a1a2d13ded21e4d650369aeba1139a3e3",
+        "previousExecutable": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\previous-launcher\\BiliPai Windows\\BiliPai Windows.exe",
+        "originalProcessId": 26924,
+        "newProcessIds": [
+            39120,
+            9484
+        ],
+        "shortcutTested": false
+    },
+    "fixtureHttp": {
+        "address": "127.0.0.1:65161",
+        "unexpectedExternalRequestsAllowed": false,
+        "redirectsAllowed": false,
+        "routes": [
+            {
+                "path": "/after-damaged-failure/package.sha256",
+                "requests": 0,
+                "bytesSent": 0
+            },
+            {
+                "path": "/after-damaged-failure/package.zip",
+                "requests": 0,
+                "bytesSent": 0
+            },
+            {
+                "path": "/after-damaged-failure/releases.json",
+                "requests": 1,
+                "bytesSent": 714
+            },
+            {
+                "path": "/after-version-failure/package.sha256",
+                "requests": 0,
+                "bytesSent": 0
+            },
+            {
+                "path": "/after-version-failure/package.zip",
+                "requests": 0,
+                "bytesSent": 0
+            },
+            {
+                "path": "/after-version-failure/releases.json",
+                "requests": 1,
+                "bytesSent": 714
+            },
+            {
+                "path": "/damaged-native/package.sha256",
+                "requests": 1,
+                "bytesSent": 111
+            },
+            {
+                "path": "/damaged-native/package.zip",
+                "requests": 1,
+                "bytesSent": 323424861
+            },
+            {
+                "path": "/damaged-native/releases.json",
+                "requests": 1,
+                "bytesSent": 686
+            },
+            {
+                "path": "/healthy/package.sha256",
+                "requests": 1,
+                "bytesSent": 104
+            },
+            {
+                "path": "/healthy/package.zip",
+                "requests": 1,
+                "bytesSent": 359535321
+            },
+            {
+                "path": "/healthy/releases.json",
+                "requests": 1,
+                "bytesSent": 658
+            },
+            {
+                "path": "/version-mismatch/package.sha256",
+                "requests": 1,
+                "bytesSent": 113
+            },
+            {
+                "path": "/version-mismatch/package.zip",
+                "requests": 1,
+                "bytesSent": 359535321
+            },
+            {
+                "path": "/version-mismatch/releases.json",
+                "requests": 1,
+                "bytesSent": 694
+            },
+            {
+                "path": "/wrong-hash/package.sha256",
+                "requests": 1,
+                "bytesSent": 107
+            },
+            {
+                "path": "/wrong-hash/package.zip",
+                "requests": 1,
+                "bytesSent": 359535321
+            },
+            {
+                "path": "/wrong-hash/releases.json",
+                "requests": 1,
+                "bytesSent": 670
+            }
+        ]
+    },
+    "trackedProcessesStopped": true,
+    "directProcessIds": [
+        41088,
+        14996,
+        23820,
+        26752,
+        29208,
+        26924
+    ]
+}

@@ -1,0 +1,17 @@
+{
+  "status": "FAIL",
+  "assertions": 2,
+  "productSourceOverrides": 0,
+  "actualSnapshot": 83,
+  "immutableEntries": 101,
+  "loadedOriginsBytesAllActual": true,
+  "ownedSkiaOnly": true,
+  "seededSuccess": false,
+  "realAccount": false,
+  "globalInput": false,
+  "unchangedMainEntry": false,
+  "detailSuccessAccepted": false,
+  "VideoToVideoCarrierAccepted": false,
+  "PiPTransferAccepted": false,
+  "SMTCButtonAccepted": false
+}

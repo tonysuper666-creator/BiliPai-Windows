@@ -1,0 +1,53 @@
+{
+  "status": "passed",
+  "passed": true,
+  "harnessCodeHead": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "packagedCodeHead": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "previousWindowsVersion": "0.2.406.5",
+  "previousZip": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\build\\distributions\\BiliPai-Windows-0.2.406.5-x64.zip",
+  "previousZipSha256": "178f5c4dc584853d2da5e2733998987a1a2d13ded21e4d650369aeba1139a3e3",
+  "currentWindowsVersion": "0.2.415.1",
+  "currentZip": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\build\\distributions\\BiliPai-Windows-0.2.415.1-x64.zip",
+  "currentZipSha256": "8aac45f341dd04cab4700dde9b537bcc7388d0df334d9be6562f1136f5725cf9",
+  "previousExeCfgAndProductJarByteMatchUserOldDesktop": true,
+  "bothOriginalArchivesUnchanged": true,
+  "actualPreviousExeForwarding": {
+    "passed": true,
+    "previousVersion": "0.2.406.5",
+    "previousZipSha256": "178f5c4dc584853d2da5e2733998987a1a2d13ded21e4d650369aeba1139a3e3",
+    "previousExecutable": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\previous-launcher\\BiliPai Windows\\BiliPai Windows.exe",
+    "originalProcessId": 26924,
+    "newProcessIds": [
+      39120,
+      9484
+    ],
+    "shortcutTested": false
+  },
+  "isolatedLocalAppData": "C:\\Users\\TONYS\\AppData\\Local\\Temp\\bp-u-3673332286467538076\\LocalAppData",
+  "trackedFixtureProcessesStopped": true,
+  "rawReport": "reports/updater-smoke.json",
+  "rawReportSha256": "879c7d49e301f754d4c124712e28da8499f449f72da717e4172624b1ddf46e27",
+  "junit": {
+    "name": "com.bilipai.desktop.update.DesktopUpdaterIntegrationTest",
+    "tests": "1",
+    "skipped": "0",
+    "failures": "0",
+    "errors": "0",
+    "timestamp": "2026-10-02T06:11:30.892Z",
+    "hostname": "TONYSUPER666",
+    "time": "121.687"
+  },
+  "gradleExitCode": 0,
+  "error": null,
+  "sourceStatusBefore": [],
+  "sourceStatusAfter": [],
+  "productionOrTestEdits": false,
+  "repackaged": false,
+  "nativeMuxRerun": false,
+  "desktopPayloadOrMetadataChanged": false,
+  "userAccountDataReadOrTouched": false,
+  "userDesktopExeOrOldProcessesStartedOrControlled": false,
+  "shortcutTested": false,
+  "realBilibiliAccountPlaybackAccepted": false,
+  "allFeaturesAccepted": false
+}

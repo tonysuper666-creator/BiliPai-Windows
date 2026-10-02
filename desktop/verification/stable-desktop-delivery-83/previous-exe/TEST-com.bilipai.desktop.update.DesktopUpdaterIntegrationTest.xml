@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.update.DesktopUpdaterIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-02T06:11:30.892Z" hostname="TONYSUPER666" time="121.687">
+  <properties/>
+  <testcase name="packagedUpdaterEndToEnd()" classname="com.bilipai.desktop.update.DesktopUpdaterIntegrationTest" time="121.655"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

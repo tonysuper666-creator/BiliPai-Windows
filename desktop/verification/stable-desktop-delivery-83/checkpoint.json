@@ -1,0 +1,145 @@
+{
+  "status": "local_test_delivery_verified",
+  "packageSourceCommit": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+  "windowsVersion": "0.2.415.1",
+  "desktopExecutable": "C:\\Users\\TONYS\\Desktop\\BiliPai Windows v0.2.3\\BiliPai Windows.exe",
+  "packageSha256Bytes": "8aac45f341dd04cab4700dde9b537bcc7388d0df334d9be6562f1136f5725cf9",
+  "payloadFilesVerifiedAtDeployment": 1122,
+  "packagedNativePlayerChecks": 29,
+  "packagedNativeMuxVariants": 6,
+  "packagedUpdaterPassed": true,
+  "realPreviousExeForwardingPassed": true,
+  "actualExternalRootChecks": 17,
+  "realGuestMediaHttpStatus": 412,
+  "ordinaryVideoAccepted": false,
+  "realAccountAcceptance": "pending_user_test",
+  "allFeaturesAccepted": false,
+  "latestV024Aligned": false,
+  "publicWindowsReleasePublished": false,
+  "scheduledAutoSyncEnabledVerified": false,
+  "reviewedLocalEvidence": [
+    {
+      "lane": "package",
+      "originalLocalDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-portable-package-actual83",
+      "frozenManifestSha256Bytes": "ee7180c8256bceb55c3eb13416bddf76bd291f3be998893e6be63920b86bc5ed",
+      "fullLocalArtifactsVerified": 32,
+      "selectedRawArtifactsCopied": 15,
+      "omittedLocalOnly": [
+        {
+          "path": "attempt02/after-inputs.json",
+          "bytes": 4180843,
+          "sha256Bytes": "e84a3931cc4ebbaa9619bf7af0b7a09d640e09a6461d78d2fe66a85c1772d631"
+        },
+        {
+          "path": "attempt02/before-inputs.json",
+          "bytes": 4180844,
+          "sha256Bytes": "695541cae27a250bd49523fcc87a6a1cf67ed0ebf75c065507627fd3d6bc440d"
+        },
+        {
+          "path": "attempt02/classpath-audit-02.log",
+          "bytes": 568,
+          "sha256Bytes": "1ee9c60a25068ea25834f28db0a0130d78f1fdc32c551091be07b588c7b5a2cb"
+        },
+        {
+          "path": "attempt02/classpath-audit-03.log",
+          "bytes": 409,
+          "sha256Bytes": "95bb0e0c1a17ae3aa7e961327a93898118f530ab8956e975307aa3ca325c2ed6"
+        },
+        {
+          "path": "attempt02/deployment.log",
+          "bytes": 435,
+          "sha256Bytes": "ff342bdcd2498f10af649b5918784136c3b7d27129257cbbae8733fb8859b23e"
+        },
+        {
+          "path": "attempt02/input-change-audit.json",
+          "bytes": 522836,
+          "sha256Bytes": "ddc9730293317762e08e9f9be86c5b1ff26ad5449080fdf96e114c165f37c520"
+        },
+        {
+          "path": "attempt02/inspection-01.log",
+          "bytes": 338,
+          "sha256Bytes": "1dfbaab1050272402eaa948e3adc39e1a4af5eb5233ea374b9485c9a32e2c762"
+        },
+        {
+          "path": "attempt02/inspection-02.log",
+          "bytes": 1030,
+          "sha256Bytes": "9b9d61a48c2b83a84615e5b714ea94bbcf42dc2a53b2f8bccfdad51401b8e463"
+        },
+        {
+          "path": "attempt02/inspection.log",
+          "bytes": 338,
+          "sha256Bytes": "1dfbaab1050272402eaa948e3adc39e1a4af5eb5233ea374b9485c9a32e2c762"
+        },
+        {
+          "path": "attempt02/package-image-file-manifest.json",
+          "bytes": 240764,
+          "sha256Bytes": "5e30902dbeb16d39e982c9ab0d1cf19d49c9fd8f4b499e62225ede8655f49396"
+        },
+        {
+          "path": "attempt02/packaged-classpath-byte-diagnostic02.json",
+          "bytes": 880,
+          "sha256Bytes": "9d81d46c6b7ec6540b6a968cb344842cc4e14bcc0cffe3242488233ce5936fa6"
+        },
+        {
+          "path": "attempt02/packaged-classpath-preflight01-diagnostic.json",
+          "bytes": 15739,
+          "sha256Bytes": "da0647bfb377103a4512b2d2e2a76099e444b4ca91f86b6fe20db6e92fa17a68"
+        },
+        {
+          "path": "attempt02/portable-zip-file-manifest.json",
+          "bytes": 367729,
+          "sha256Bytes": "61a0127b9cdec10d11c94c8d55054ba69bdeab892ff55d2981fb5e4100624b8c"
+        },
+        {
+          "path": "attempt02/run-info.json",
+          "bytes": 960,
+          "sha256Bytes": "0fff779653e22365dfb482bdea3fc552ea86d185075a562eea1db2a89f2d45bc"
+        },
+        {
+          "path": "attempt02/run-result.json",
+          "bytes": 1042,
+          "sha256Bytes": "36568d775f22adfeadd3d1fcd09fb2083d23e235ceda4a668a1ca96fabeb016d"
+        },
+        {
+          "path": "attempt02/tracked-notices-review.json",
+          "bytes": 184,
+          "sha256Bytes": "c3e54740ad6b5c43d4908a56348eb4996f839ae53d4dc17ea7fc46d9387d3fe1"
+        },
+        {
+          "path": "audit-packaged-classpath02-preflight.py",
+          "bytes": 6181,
+          "sha256Bytes": "2e4975b79daa3d4772a05db0245d9fcc14386a74bf6f289904c24513393fd841"
+        },
+        {
+          "path": "inspect-package-attempt02-preflight01.py",
+          "bytes": 9461,
+          "sha256Bytes": "32fe663418c7698eb717cdd53410ee00b5500deeb5f6e07f709f86610543f400"
+        }
+      ]
+    },
+    {
+      "lane": "external-root",
+      "originalLocalDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-full-video-root-external-actual-proof83",
+      "frozenManifestSha256Bytes": "91d0536d8232f050c3c3a7ae724e212ed476a8293e5215f4c967cec49008b802",
+      "fullLocalArtifactsVerified": 31,
+      "selectedRawArtifactsCopied": 32,
+      "omittedLocalOnly": []
+    },
+    {
+      "lane": "previous-exe",
+      "originalLocalDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-updater-real-previous-forwarding83",
+      "frozenManifestSha256Bytes": "466d72620d9dafa710b01bb6e40ec756c7439676376ad7e1f923145c932fa5c0",
+      "fullLocalArtifactsVerified": 11,
+      "selectedRawArtifactsCopied": 12,
+      "omittedLocalOnly": []
+    },
+    {
+      "lane": "guest-media",
+      "originalLocalDirectory": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-full-video-root-media-actual-proof82",
+      "frozenManifestSha256Bytes": "b824e2c41f0cdac8bee085be24a6c00738f10a7b1e56a1659a527e5ffca28c0b",
+      "fullLocalArtifactsVerified": 16,
+      "selectedRawArtifactsCopied": 17,
+      "omittedLocalOnly": []
+    }
+  ]
+}

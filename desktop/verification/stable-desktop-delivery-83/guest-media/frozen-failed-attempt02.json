@@ -1,0 +1,108 @@
+{
+  "status": "FAIL_ACTUAL_GUEST_MEDIA_ATTEMPT02_HTTP412",
+  "artifacts": [
+    {
+      "path": "diagnosis-attempt02.md",
+      "sha256Bytes": "084fc44226c28f440e6b01ebd6c1495e703c36eef8a37687d5d872a62775cc82",
+      "bytes": 2031
+    },
+    {
+      "path": "freeze-failed02.py",
+      "sha256Bytes": "480a3515a722ba49c5302b5280be5ec0f21c2d56df4e29c0ceb93b3fcf2f616e",
+      "bytes": 2271
+    },
+    {
+      "path": "RootMediaFixture.kt",
+      "sha256Bytes": "f6db8bc6f9688b7b82bc1852ecc3ffc2b3ab759aca5a9167f7dbc15b16d87425",
+      "bytes": 21308
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "9659f1080279535fcf3783005f92ac5e3af15b7a30730c04d67f820a512e2bd1",
+      "bytes": 7806
+    },
+    {
+      "path": "runs/actual83-02/acceptance-result.json",
+      "sha256Bytes": "a7f1ffc739035b9cb5c0f5b2ae3ee06a6b7b8bc052e0a1a03096125723e19920",
+      "bytes": 430
+    },
+    {
+      "path": "runs/actual83-02/compile-result.json",
+      "sha256Bytes": "85040d5714bcbdfa90b547a7eb927ad1abe5d374a93940971e7d2973d7ff599c",
+      "bytes": 190
+    },
+    {
+      "path": "runs/actual83-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/actual83-02/compiler.args",
+      "sha256Bytes": "1a8e56d7c2b479b00b20fb818622d594cda8d3064a2deafb9ca0ee78c2f97672",
+      "bytes": 25830
+    },
+    {
+      "path": "runs/actual83-02/fixture-jar-pin.json",
+      "sha256Bytes": "d46bf59e6992ed1c23db421276ce824f8479e397953f931ee9336fe991444c9a",
+      "bytes": 114
+    },
+    {
+      "path": "runs/actual83-02/fixture-owned-runtime/isolated-plugin-store/logs/basic.log",
+      "sha256Bytes": "c1837142a1f6e5e35b37dfb22e2276d3d3932f3edc6486f263aa4cb0e194fd24",
+      "bytes": 1126
+    },
+    {
+      "path": "runs/actual83-02/fixture-owned-runtime/root-media-proof.json",
+      "sha256Bytes": "27427be60d420c6a206b6e9dcb46c632a1d3ba7fed7f4e6c10ccd4a11ae36141",
+      "bytes": 2465
+    },
+    {
+      "path": "runs/actual83-02/pins-after.json",
+      "sha256Bytes": "c8ebd118cb6b9b1a6c2eddcd05d95ff5c53abc4833a349905b83fc75a587d558",
+      "bytes": 39569
+    },
+    {
+      "path": "runs/actual83-02/pins-before.json",
+      "sha256Bytes": "c8ebd118cb6b9b1a6c2eddcd05d95ff5c53abc4833a349905b83fc75a587d558",
+      "bytes": 39569
+    },
+    {
+      "path": "runs/actual83-02/RootMediaFixture.kt",
+      "sha256Bytes": "f6db8bc6f9688b7b82bc1852ecc3ffc2b3ab759aca5a9167f7dbc15b16d87425",
+      "bytes": 21308
+    },
+    {
+      "path": "runs/actual83-02/runtime-command.json",
+      "sha256Bytes": "f89bd79687784224eca80ce5a0f70553396af0ee97c125dbd7ad49816c554248",
+      "bytes": 27983
+    },
+    {
+      "path": "runs/actual83-02/runtime.log",
+      "sha256Bytes": "f0f7317dbbdea226776ef79fa18ec9b2b993088c12f075c4026845f4bf241677",
+      "bytes": 1437
+    }
+  ],
+  "copyWhitelist": [],
+  "actualSnapshot": 83,
+  "checksPassed": 2,
+  "productSourceOverrides": 0,
+  "loadedOriginsAllActual": true,
+  "immutableEntries": 101,
+  "observedServerResponse": 412,
+  "preciseEndpointObserved": false,
+  "throwableStackObserved": false,
+  "actualPublicBvids": [
+    "BV174Yc6JEZo",
+    "BV1raaG6QE2H"
+  ],
+  "optionalRequestConstructorExceptionObserved": false,
+  "nativeSuccess": false,
+  "videoDetailSuccess": false,
+  "videoToVideo": false,
+  "pip": false,
+  "realAccount": false,
+  "seededSuccess": false,
+  "productionPayloads": [],
+  "extraDiagnosticHttpRequests": 0,
+  "next": "No verification bypass or Success injection. Original guest playback remains unaccepted; any authorized ExternalMedia branch is separate."
+}

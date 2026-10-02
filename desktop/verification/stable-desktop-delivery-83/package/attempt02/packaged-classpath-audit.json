@@ -1,0 +1,491 @@
+{
+  "passed": true,
+  "frozenSnapshotManifestSha256": "72934edb925c7793294bf504388dfbd1f849fe14d8ea00dd4f333befdabd4157",
+  "frozenOrderedRuntimeCPSha256": "f82828347f7cfad86cd101dfb13d44677ba88f780b21a9e21df8c06a97d4828b",
+  "frozenRuntimeEntries": 101,
+  "frozenMainInputArtifacts": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-83\\main-java.jar",
+      "source": "desktop/build/classes/java/main",
+      "entries": 156,
+      "sha256Bytes": "e0929361bd1be79e4fe9d6fee2e98e08cc54aa2af6772ba8b101db85ee2371fa"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-83\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15934,
+      "sha256Bytes": "d0c545efac5c028fa0ec23fe188b72249243610c7d3e5faf3b3ee8cb68ce0b90"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-83\\main-resources.jar",
+      "source": "desktop/build/resources/main",
+      "entries": 78,
+      "sha256Bytes": "f15807dfa86ba838449ea34db04c9f606c17b3a6c3106e9ab6e94d1504812def"
+    }
+  ],
+  "runtimeDependencyJars": 98,
+  "packagedProductJars": 1,
+  "bundledResourceJars": 15,
+  "launcherClasspathEntries": 114,
+  "allLauncherFilesExist": true,
+  "allRuntimeDependenciesAccountedFor": true,
+  "directByteMatchedRuntimeDependencyJars": 97,
+  "nativeRuntimeJarTransforms": [
+    {
+      "sourceJar": {
+        "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.skiko\\skiko-awt-runtime-windows-x64\\0.150.1\\f709996c593fdd677168a054d09f7dcd91b6b51e\\skiko-awt-runtime-windows-x64-0.150.1.jar",
+        "sha256Bytes": "22a5e52c9fb4278f998785c5029d96f007c8eb8944f6eb0d3f4b06fb3775edcf"
+      },
+      "packagedJar": {
+        "path": "skiko-awt-runtime-windows-x64-0.150.1-35cb62279e9c2c45e8e0b9532a44685f.jar",
+        "sha256Bytes": "801a64b26817537d9bfdcf9a54e4ef15d2630aa6f7e526ae7ac6895b93fdf88a"
+      },
+      "remainingEntriesByteEqual": true,
+      "extractedNativeEntriesByteEqual": true,
+      "extractedNativeEntries": [
+        {
+          "path": "icudtl.dat",
+          "sha256Bytes": "9ae98c06cbb0ea43c5cd6b5725310c008c65e46072421a1118cb88e1de9a8b92"
+        },
+        {
+          "path": "skiko-windows-x64.dll",
+          "sha256Bytes": "5061ffbbfbad9fc8c6c8e0c1741b674c863293d3d071b061db9e6e0fc3ef1d38"
+        },
+        {
+          "path": "skiko-windows-x64.dll.sha256",
+          "sha256Bytes": "37666ec76678b7766e712e071953fd46c6b288ac7f451e6bff7ecf6e2c0e4fa9"
+        }
+      ],
+      "producer": "unpackDefaultComposeDesktopJvmApplicationResources"
+    }
+  ],
+  "packagedRuntimeJars": [
+    {
+      "path": "animation-core-desktop-1.12.1-e9420621a5a999d679c6cbd2f1a42.jar",
+      "sha256Bytes": "d988b6b7d867146825a9da38e1522fc50580aa14986ab22a8b724fcdcef17875"
+    },
+    {
+      "path": "animation-desktop-1.12.1-fdae3e449cd09fba75baf68dd23ffc.jar",
+      "sha256Bytes": "755ca81764d5aae7afb2d5f72e3253a44a1cc9c0f890d1dcc319f0eb8f00736b"
+    },
+    {
+      "path": "annotation-jvm-1.9.1-1d6a04b3b9847638d0529df8ef76a.jar",
+      "sha256Bytes": "1e343917ebf27ba96fe4dc52b1cad7fd32b738fbc6355bb6cd5b3b305d7212d0"
+    },
+    {
+      "path": "annotations-23.0.0-8484cd17d040d837983323f760b2c660.jar",
+      "sha256Bytes": "7b0f19724082cbfcbc66e5abea2b9bc92cf08a1ea11e191933ed43801eb3cd05"
+    },
+    {
+      "path": "atomicfu-jvm-0.28.0-70921245a0aed3c3e3d17c34ca3dbd87.jar",
+      "sha256Bytes": "39576ec46b83412ff7a2909d24cccbba90400e91f9aa67b250309bc0872ecf52"
+    },
+    {
+      "path": "coil-compose-core-jvm-3.5.0-9565c4af0fad861b0bc16b7bffc53.jar",
+      "sha256Bytes": "38d80e53cd9dcda1fa84470bd3aa7a6080451b6cc52b03c9dffa22570b7f0e3b"
+    },
+    {
+      "path": "coil-compose-jvm-3.5.0-c0c057f9ba1311897cfbada05f910fb.jar",
+      "sha256Bytes": "ec78dd5eaa0c4326b197880e5e7a44c31b0e6daa6cd2b8636ca7e1c032ce3567"
+    },
+    {
+      "path": "coil-core-jvm-3.5.0-73da9d924cacaf672c3cc0d09340dfa.jar",
+      "sha256Bytes": "479311df567a435d88aef4fabbec04585556770e7881d86c1758b07d5b126f40"
+    },
+    {
+      "path": "coil-jvm-3.5.0-4cd0fba134e919a7ce9b2982d8d52685.jar",
+      "sha256Bytes": "a280d338cb22a6bdc2f7f27aca1feccc3142a67c29f5cd945bd948d5b312727c"
+    },
+    {
+      "path": "coil-network-core-jvm-3.5.0-ae9139c71aff8fac3760d889bf422572.jar",
+      "sha256Bytes": "3eb2ea78232460c9b9ae5ebe96e3bfb3b50b2c41b39277efb4ae454ad8652d6a"
+    },
+    {
+      "path": "coil-network-okhttp-jvm-3.5.0-f974fdd495c0323392b2471d5755364.jar",
+      "sha256Bytes": "73b11895e324812a4403d32d6c5d8cb67dad3fc3f1d57ffb0555da06c592965f"
+    },
+    {
+      "path": "collection-jvm-1.6.0-5c83ba2e8758868955f1b1526ecc73.jar",
+      "sha256Bytes": "839fcec147704611a222159fa84e3e062f68eee80caa549ddd1222d5210a13df"
+    },
+    {
+      "path": "colormath-jvm-dc7d9937bbe0a4c9d7a6e25dd88b74f4.jar",
+      "sha256Bytes": "a1853ee4a5fec636dbbb8c44955b7a3015f02ce8f9cfa1c2350791c2c2d3639c"
+    },
+    {
+      "path": "commons-imaging-1.0.0-alpha6-e4d8ec6f8156f1e1a2dd1ecc36c24611.jar",
+      "sha256Bytes": "19da061ae2d28d97dc0489a8735a48c2626168c462cd0c0a0bac87996921af5e"
+    },
+    {
+      "path": "commons-io-2.19.0-3d1fd45f9d2a247c1d5ab1e98c07160.jar",
+      "sha256Bytes": "824268919b4b62f9f40f08c54381de5993b078f58667e332d17348ae019d72b9"
+    },
+    {
+      "path": "commons-lang3-3.17.0-7730df72b7fdff4a3a32d89a314f826a.jar",
+      "sha256Bytes": "6ee731df5c8e5a2976a1ca023b6bb320ea8d3539fbe64c8a1d5cb765127c33b4"
+    },
+    {
+      "path": "converter-kotlinx-serialization-3.0.0-fb704796896a38711038d172f7a8d4aa.jar",
+      "sha256Bytes": "e9078b659251a2ef63e70729e0dec5f6cb57d220a1002948dc24b865fa6b42b0"
+    },
+    {
+      "path": "core-3.5.4-23cc13611f7f222b9988220fa28a115.jar",
+      "sha256Bytes": "71de5d89341b5fcf5dd89da7f44e84d825d0e084cdf3ec77c9abe26b0f0ceb13"
+    },
+    {
+      "path": "core-common-2.2.0-2212d240dfe1e8a7598ee117ccc316d.jar",
+      "sha256Bytes": "65308a06b1c00ee186cb9e19321383f043b993813f1522c47f4a3e3303bdba41"
+    },
+    {
+      "path": "dec-0.1.2-4b1cd14cf29733941cc536b27e6aedfa.jar",
+      "sha256Bytes": "615c0c3efef990d77831104475fba6a1f7971388691d4bad1471ad84101f6d52"
+    },
+    {
+      "path": "desktop-jvm-1.12.1-4ae609894295d208af37cd66a73dcb.jar",
+      "sha256Bytes": "adaea6ec630420712dcfd52a356b46aef603129ca7f76cba204569112fa80e1c"
+    },
+    {
+      "path": "foundation-desktop-1.12.1-af970f7348edc832f57bd29a9aceaf.jar",
+      "sha256Bytes": "e1dc29cd9de2f1628a741866a112eedc62fec43bc548d0e4f434bf31207fd1e3"
+    },
+    {
+      "path": "foundation-layout-desktop-1.12.1-a74242b69b6ea3e0269ad27af719fbe5.jar",
+      "sha256Bytes": "57b54c104bae9eea0e90bb26487f8b64ead09a473f1b32cbed8579084f485e7b"
+    },
+    {
+      "path": "graphics-shapes-desktop-1.1.0-dee1da92dcd95a52b7faca62f4f942.jar",
+      "sha256Bytes": "8d7a4d3812cae2e3ef8272e97f6e9917ae45931f17cf1391f0246a92c955d9f4"
+    },
+    {
+      "path": "haze-blur-jvm-157f13d30f14dc9386119dc41fc0dd.jar",
+      "sha256Bytes": "1e2959edfff3c967e860275602c638f46a2eace4805c03a644c2a96ea8deb739"
+    },
+    {
+      "path": "haze-jvm-7111ada2cb9fb35d1921eb08d1c8e6f.jar",
+      "sha256Bytes": "d6383d1186d7a27932350a3637ce6446f2a7e283a562de08de0a6602e5f96f1e"
+    },
+    {
+      "path": "haze-materials-jvm-4657b527c4610992ff9aaeb89919565.jar",
+      "sha256Bytes": "e3a200418c558185582968e73cd70d409d64063268172ae6d3d95f8232e07f2b"
+    },
+    {
+      "path": "haze-utils-jvm-bf98bd41289668356c7d45c2ce702db4.jar",
+      "sha256Bytes": "4d080fc15ebbaec2aabdd9de9c9e12b82392498fe64889558542d8a41ab251e4"
+    },
+    {
+      "path": "jackson-annotations-2.20-b91def3c2752817f2713e4b8d6640.jar",
+      "sha256Bytes": "959a2ffb2d591436f51f183c6a521fc89347912f711bf0cae008cdf045d95319"
+    },
+    {
+      "path": "jackson-core-2.20.0-3536b524a7106dae1b4feb71e6f5ff74.jar",
+      "sha256Bytes": "bc0cf46075877201f8406ee7de2741ae7df6c066f5f0457bd80632a718c06e72"
+    },
+    {
+      "path": "jackson-databind-2.20.0-7e33b9e657f74ff95fe2c881e2f8f76.jar",
+      "sha256Bytes": "a70e146a6bf2cba4f9cd367169787f50adcfbb57122bc2e9c8390cd0b397ac30"
+    },
+    {
+      "path": "jbr-api-1.9.0-4ae6ce27bcafb233efdbf54395d03.jar",
+      "sha256Bytes": "7e37284e33b5b304ee6174dcaa92db949b257cc4c8991ca865e7daf5113d8279"
+    },
+    {
+      "path": "jmdns-3.6.3-b22928eba13879441b654ffaf780121c.jar",
+      "sha256Bytes": "6b6eb1623cb1d9e51467312ea62c567da005c2aa5a95347f566a11b8703c0ef1"
+    },
+    {
+      "path": "jna-5.17.0-8fc1e1f239ec4511e8d9e5a433f6244.jar",
+      "sha256Bytes": "b3a9408e7c51e08ef0e3bfcc08f443f6ec0f6191ba8cd7c18d53d2b22e5bdbc0"
+    },
+    {
+      "path": "json-20240303-99aae5de9871d158cdb970f17be4c8da.jar",
+      "sha256Bytes": "3cf6cd6892e32e2b4c1c39e0f52f5248a2f5b37646fdfbb79a66b46b618414ed"
+    },
+    {
+      "path": "jspecify-1.0.0-9133aba420d0ca3b01dbb6ae9992cf6.jar",
+      "sha256Bytes": "1fad6e6be7557781e4d33729d49ae1cdc8fdda6fe477bb0cc68ce351eafdfbab"
+    },
+    {
+      "path": "kotlin-stdlib-2.4.10-5b757154baf259203dc5a025571bec14.jar",
+      "sha256Bytes": "4ec0293bc3751423b203f1d8493251c57c42e73eb6377a6b8560d0974ff0a6df"
+    },
+    {
+      "path": "kotlinx-collections-immutable-jvm-0.4.0-8f33105b4925dda1ce211bcb54ab58.jar",
+      "sha256Bytes": "d767014ad0c9a27d27d26fd38e7afa030aee0d141338f108781ff02ecf2fdab5"
+    },
+    {
+      "path": "kotlinx-coroutines-core-jvm-1.10.2-16bb58d0777fca3b2efde66862478c.jar",
+      "sha256Bytes": "5ca175b38df331fd64155b35cd8cae1251fa9ee369709b36d42e0a288ccce3fd"
+    },
+    {
+      "path": "kotlinx-coroutines-swing-1.10.2-b9cd9ab0c3f429acd698981c43dd6a2f.jar",
+      "sha256Bytes": "02bdb85f20ec08004429abf6887e8d0e40f3ab637d7462f817f0f8abbe7d1eb5"
+    },
+    {
+      "path": "kotlinx-datetime-jvm-0.7.1-70b44e22ebc7eebfa53f7d1941af072.jar",
+      "sha256Bytes": "3b8b98657c9aff3be7f6b4b575e9f3fb9a3a1f452a801da0f438901734acdade"
+    },
+    {
+      "path": "kotlinx-serialization-core-jvm-1.11.0-cce19040b3217192d383e28af7ffcb58.jar",
+      "sha256Bytes": "f4a801c647d4351327cd9e1ac4113e2be9ea37a64ab0abae269c25a52e28f35d"
+    },
+    {
+      "path": "kotlinx-serialization-json-jvm-1.11.0-22c7504f2965bec48288d5efa4886c52.jar",
+      "sha256Bytes": "563a25b4eb5c9128ae9c2479f3d1a5c44dcd176112b91cf03682e906eba5c935"
+    },
+    {
+      "path": "ksoup-entities-jvm-0.6.0-dfb9049efbba4c8cc8ce1efc51a770.jar",
+      "sha256Bytes": "6c41eb42e4f7dd27b7a68f234b74ea802027e9ddb523db09376902ba23259185"
+    },
+    {
+      "path": "ksoup-html-jvm-0.6.0-29977367ab45b7361bb8064a522c4a6.jar",
+      "sha256Bytes": "396d52c83d11708634f4a3cf848de194d7a0e2cab8e4106a59325af8514681b6"
+    },
+    {
+      "path": "lifecycle-common-jvm-2.11.0-14b667ae927764855aedc4f3c099.jar",
+      "sha256Bytes": "e6a66e67b9f63a0fb6344f165c1d872376e5fe6d235bffb138af45122cf452a9"
+    },
+    {
+      "path": "lifecycle-common-jvm-2.11.0-abf33538971706e734094ccec7f03f.jar",
+      "sha256Bytes": "50a826ef0d1bd27ff384e4dd9d147bd1f343cc78d044f7b32a7ec6ce9b3fd2ba"
+    },
+    {
+      "path": "lifecycle-runtime-compose-desktop-2.11.0-39a884fc9f780a0a4c984b5f429825.jar",
+      "sha256Bytes": "4c94a5fa98b838a34b84eecb0fca5b291b417ab3af8518862b488f85868a2195"
+    },
+    {
+      "path": "lifecycle-runtime-compose-desktop-2.11.0-b176c793de60d9c31bc2ae3987f7d29e.jar",
+      "sha256Bytes": "d5336753ea4d5881ccfb8b0613e034eb241f0d8b4349536df1cd0ec86cf63664"
+    },
+    {
+      "path": "lifecycle-runtime-desktop-2.11.0-db02cb9fa9bf7526ffd1fef044cdbf.jar",
+      "sha256Bytes": "3e5b56c54c826dbc2a8d8162af4d020840dbd3e742b8be3bf78546afdc2f7376"
+    },
+    {
+      "path": "lifecycle-runtime-desktop-2.11.0-f14af19f336c43981285f2b83ea88f.jar",
+      "sha256Bytes": "09f75a4a8d763cee5d6af36f422139a0205d3f6df2e2c5288cae42836f0b36ea"
+    },
+    {
+      "path": "lifecycle-viewmodel-compose-desktop-2.11.0-9b8cf0a583b9f95d6c80da92f398b5.jar",
+      "sha256Bytes": "1b4c58125c7b3693444f40c8ab76881d17fa74726860c24872a3dec3e0fad34b"
+    },
+    {
+      "path": "lifecycle-viewmodel-compose-desktop-2.11.0-b6b9988570b5c2c9e248104289c72a74.jar",
+      "sha256Bytes": "b44ae28c255709eba43719179ab5a4a27b7a8d2075e20030e2e265211f320a0f"
+    },
+    {
+      "path": "lifecycle-viewmodel-desktop-2.11.0-eb8f3804e7967444ef57615880a76b.jar",
+      "sha256Bytes": "38384ad114f3231a5bfe04608c2c514747574fff3e347a7266e12e6ad35a6a1c"
+    },
+    {
+      "path": "lifecycle-viewmodel-desktop-2.11.0-f82f9216259467601fb180d915a6b118.jar",
+      "sha256Bytes": "175c349266ccbb6a2036615725b7066ee3f3319665c98af42206ab3a582a43c3"
+    },
+    {
+      "path": "lifecycle-viewmodel-savedstate-desktop-2.11.0-2527aa4d8d1c0962b7ae1dc31a16597.jar",
+      "sha256Bytes": "5dbf963e5be555b61ce47e18f8dfa82fad3b5c0e79cbeed7c9dca6c556f53847"
+    },
+    {
+      "path": "lifecycle-viewmodel-savedstate-desktop-2.11.0-32f127f2f7fce65ea95a871fd81b1a2.jar",
+      "sha256Bytes": "ca21720ce7f370cb21cabb5329b959eda624107ec06282e3bdc92582917b1d27"
+    },
+    {
+      "path": "markdown-jvm-0.7.3-26e066c4816f12a82495b8dc3956ff.jar",
+      "sha256Bytes": "893abb31f15b6216f74dc704c0c6bf1e567dcf2b62cca29cf42e4f53153637ac"
+    },
+    {
+      "path": "material-color-utilities-jvm-3332b9693ed03564dded4ea20648c37.jar",
+      "sha256Bytes": "a997ae8bcbdddc5baeca01c64d03f8d5014a186ae3f3a7f93ce9abbee93c7f9a"
+    },
+    {
+      "path": "material-desktop-1.12.1-921af98aef5117e3c225b2aa7fe7b5d9.jar",
+      "sha256Bytes": "0c1dd397b45a7cd830234ddf30d253b586259e726a5cd816cca2e79119a47fa2"
+    },
+    {
+      "path": "material-icons-core-desktop-1.7.3-23eaca5d2a4caa3e4077a0e9fd549d68.jar",
+      "sha256Bytes": "bcf6c853b6db2ff148d2d3aad3b7a7ea54d93fc7b42e0afd840eb6daf1a1c681"
+    },
+    {
+      "path": "material-icons-extended-desktop-1.7.3-848bc0f13628d5b3accc94dd3afdfa27.jar",
+      "sha256Bytes": "dc55d383dca8279e353917e5c5a93d192a95e7ca4f926ee55ee0b4627f99d860"
+    },
+    {
+      "path": "material-kolor-jvm-3d4fbeb619446b3c86a3eb58827ae237.jar",
+      "sha256Bytes": "0125a24ca92662320ef2409b8d439409174cb4b11f70afff466fe11272876d66"
+    },
+    {
+      "path": "material-ripple-desktop-1.12.1-14de3de9fc704811971ae5fc7fe212a.jar",
+      "sha256Bytes": "06ac72a5f57b2e724ea129efbc71973a27a9e1ceeb7f568281dcb0d1ef4448fd"
+    },
+    {
+      "path": "material3-desktop-1.12.0-alpha03-93d61db7948256acfa73654d43751d69.jar",
+      "sha256Bytes": "27ac80da1c3f65b67311bfae57d79f130b7d4d0ac8e1c5be1ca7ce8b04b7d0d7"
+    },
+    {
+      "path": "material3-window-size-class-desktop-1.12.0-alpha03-e8b44a25b7473167363993aed717af2.jar",
+      "sha256Bytes": "a8488465bb2d652b475b85187bbbd01919a8065fc592812069b47e2fa1e051bd"
+    },
+    {
+      "path": "miuix5157-jvm-0.9.4-5c91d5e5-windows-source1-6225c5366cc0c9aa6cdaf89cc7ad3778.jar",
+      "sha256Bytes": "c3fe8751624fec7702756a3a25e8af745f3e6aad6d53abff80c52b419d137451"
+    },
+    {
+      "path": "nanohttpd-2.3.1-847ff87de16561e3dcede3eda6abfab6.jar",
+      "sha256Bytes": "de864c47818157141a24c9acb36df0c47d7bf15b7ff48c90610f3eb4e5df0e58"
+    },
+    {
+      "path": "navigationevent-compose-desktop-1.1.0-6370d5c46488f619be7b5e63333545d2.jar",
+      "sha256Bytes": "0514f5d5c14de3b422c48a4eaf1d9dd2ce265041339e4c51ce30db8da1690874"
+    },
+    {
+      "path": "navigationevent-compose-desktop-1.1.2-7c81c6a8aa54e8beed4bae895cb91.jar",
+      "sha256Bytes": "1d7d20d7826a2cc63ace9862cddd8a7085a11a3ea2cff258c28b3d58e57f143b"
+    },
+    {
+      "path": "navigationevent-desktop-1.1.2-5d6b5b7abab9bd6abdc6485ffd91541.jar",
+      "sha256Bytes": "4c92508d4bd3b9cafb2785e8211057d39ed8465b529660223864a19625cedb5b"
+    },
+    {
+      "path": "okhttp-jvm-5.3.2-827a887aa959c1f1d6b12f3345df2484.jar",
+      "sha256Bytes": "c771f48075b763f6c322055e21129a94b7de4c1faf3f8f58ace320b0c9517a30"
+    },
+    {
+      "path": "okio-jvm-3.17.0-96ad357689fd2841747aec56e94a7162.jar",
+      "sha256Bytes": "3b13dcc3e1573047c2d507fc4f7fcb0bb0cbcd9d395da21d20e09406e2cd6a73"
+    },
+    {
+      "path": "pinyin4j-2.5.0-f9f4f3d492f9675dbb44917e3164e4.jar",
+      "sha256Bytes": "282de2b3f2558b4f1c86dfd2fd6550500f838a178ef8b7acf34863f7d814fa35"
+    },
+    {
+      "path": "poko-annotations-jvm-0.23.1-54d6a44a13e5948698b763ebd9b2a8ba.jar",
+      "sha256Bytes": "9042e6da375ffa8e201d349e7ac926d1bab7694a818102c3a6a2f7d6e014bcc8"
+    },
+    {
+      "path": "protobuf-javalite-4.33.2-8f6a2105e856f35aa93a82b2ebd9e.jar",
+      "sha256Bytes": "cd09e496b3d56aaeb9d5fd3e62b7fe20f9f39275c98134e25249ef3952e8dbfb"
+    },
+    {
+      "path": "retrofit-3.0.0-624b533e1f8ab3e8c52646e89a53f5.jar",
+      "sha256Bytes": "69c6a2d3451b6df9549a93fab744094ebf07a4b0ce4f453d6c8f575ef0fec9a1"
+    },
+    {
+      "path": "richeditor-compose-desktop-1.0.0-rc14-acdb8734e94689b553a7f620b25698f6.jar",
+      "sha256Bytes": "c4d49d810294afa86d4335b058e7ee9cc4ddb875ec08355354bc77f8c917c8bb"
+    },
+    {
+      "path": "runtime-annotation-jvm-1.12.1-4190aa9d3047cacca43687b075ca9f41.jar",
+      "sha256Bytes": "e291a6ae01ab71a7f48a568ec9744c6bf9b3f46ef72fbcdeb28c3407ae531c5e"
+    },
+    {
+      "path": "runtime-desktop-1.12.1-1f10feae5687d5ddef2226983a95b8e.jar",
+      "sha256Bytes": "ed390d7bf7bdba951359d127f4c1ddd223f535f5a6a63078c5c5ac6b6924eb08"
+    },
+    {
+      "path": "runtime-desktop-1.12.1-b7d07b28974ce573c251fcf21c78ac5.jar",
+      "sha256Bytes": "9a40fb9ac9b98a1b2d8be51ce57dbcf733e768fa06a9e4859a1775cb52bf6806"
+    },
+    {
+      "path": "runtime-retain-desktop-1.12.1-1a6731c44f232c5d9e1fb10edac28de.jar",
+      "sha256Bytes": "9b7e62a7df333c33eff9e1a6d6c2508a4d8fe4b7a43778075538fe3da4bc4485"
+    },
+    {
+      "path": "runtime-saveable-desktop-1.12.1-20894c61e27fb5db944c2ca8876eb2.jar",
+      "sha256Bytes": "069949667409ab6de21053f9fdbff0869ae2a1f70a7212cdb89e7d409fd2552c"
+    },
+    {
+      "path": "runtime-saveable-desktop-1.12.1-b997262ae4482c23c7c8a0c47e846924.jar",
+      "sha256Bytes": "d81973dced223d6aea7bf9f6d4ead285494c656ea003b59072babefd25470c7b"
+    },
+    {
+      "path": "savedstate-compose-desktop-1.3.6-8de11644e97845eaa45d9e74fdec755.jar",
+      "sha256Bytes": "0f3d045c5fd7e1301ab6c38cd0778067b0484cf39acac1233be71a723a6a8075"
+    },
+    {
+      "path": "savedstate-compose-desktop-1.4.0-84ed9710e312be7017fd7498fe747a.jar",
+      "sha256Bytes": "c02a98b0c2b35cdde245c0bfe6e7ff453c7b6d06a5eb8681d25b7f54b874ea48"
+    },
+    {
+      "path": "savedstate-desktop-1.4.0-e2a50762f9c6de234b04b12926df6b3.jar",
+      "sha256Bytes": "e965ed7a011be83a271ac7d82249a776368479ee3a2b07948c3445b51d640856"
+    },
+    {
+      "path": "skiko-awt-0.150.1-68b78f48c75f4f82c8e747df5df4883a.jar",
+      "sha256Bytes": "bb610ada28509ebee3a623c0469aff3665689fbec73d118055f3dbf5a37211f5"
+    },
+    {
+      "path": "skiko-awt-runtime-windows-x64-0.150.1-35cb62279e9c2c45e8e0b9532a44685f.jar",
+      "sha256Bytes": "801a64b26817537d9bfdcf9a54e4ef15d2630aa6f7e526ae7ac6895b93fdf88a"
+    },
+    {
+      "path": "slf4j-api-2.0.17-b648d114a23683498ac3f746f959d2f.jar",
+      "sha256Bytes": "7b751d952061954d5abfed7181c1f645d336091b679891591d63329c622eb832"
+    },
+    {
+      "path": "ui-backhandler-desktop-1.12.1-35874ca299568adff7969876bded31ff.jar",
+      "sha256Bytes": "0bc021accc616c2a99afe0c39ca1ec29082fa78a7b99868ed122d162eab828bd"
+    },
+    {
+      "path": "ui-desktop-1.12.1-c4ace5714b95bdaa8dfbefbef8c45514.jar",
+      "sha256Bytes": "eaee42812c81cf1f1a925088bd7e847a343decbc3ccb1682f00f203123a51a17"
+    },
+    {
+      "path": "ui-geometry-desktop-1.12.1-29a565e9b56c42fc9a78ad6247868345.jar",
+      "sha256Bytes": "2cde44d95ba21654dcced3a3098bdd171b3ef5b17ef7fc6cec0d25983dbc9fa0"
+    },
+    {
+      "path": "ui-graphics-desktop-1.12.1-6fa07bde255e7be1447cd8eabce6901d.jar",
+      "sha256Bytes": "92fddd7609d77a803f7083b1b7dd5a651cba10be27c105361a5d0b3894932085"
+    },
+    {
+      "path": "ui-text-desktop-1.12.1-5e3686245ced4825d1d811c323ec58fb.jar",
+      "sha256Bytes": "672331d7e1440f2406f6a9b6d3d61475316cf622d0dbbe910e47bdbd69861c38"
+    },
+    {
+      "path": "ui-tooling-preview-desktop-1.12.1-3548dd9011fded88e7f44967f5c29e4.jar",
+      "sha256Bytes": "19f5005baa27dfbf3f435feed44dfba9c938ba386ac6753d00a67a270cd72231"
+    },
+    {
+      "path": "ui-unit-desktop-1.12.1-7ef6fe1b7eef6348891d94869166a6f7.jar",
+      "sha256Bytes": "7c4998f1224f241dbe88fa59701d697d598fe8979a4acaed717b8365d4cd9300"
+    },
+    {
+      "path": "ui-util-desktop-1.12.1-8f9524bdc94dc578c1cf5d640b48d99.jar",
+      "sha256Bytes": "bb81e9748c9bcadeaeb99bab647e21442e62e253a3a497a213c68e040cb2b385"
+    }
+  ],
+  "packagedProductJar": {
+    "path": "bilipai-windows-0.1.0-6a50da618ccbe8dd23e77f43f1636a86.jar",
+    "sha256Bytes": "f6cde92de9daa2d8790027d090deddc94ff574d717f556a6220125480b442f0a"
+  },
+  "frozenMainEntriesCompared": 16168,
+  "packagedProductEntries": 16169,
+  "frozenJavaKotlinAndResourcesMatchByteForByte": true,
+  "permittedProductMetadataExtras": [
+    "META-INF/MANIFEST.MF"
+  ],
+  "bundledResourceJarPaths": [
+    "resources/js-engine/desktop-js-worker.jar",
+    "resources/js-engine/maven/org/graalvm/js/js-language/24.2.2/js-language-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/polyglot/polyglot/24.2.2/polyglot-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/regex/regex/24.2.2/regex-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/sdk/collections/24.2.2/collections-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/sdk/jniutils/24.2.2/jniutils-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/sdk/nativeimage/24.2.2/nativeimage-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/sdk/word/24.2.2/word-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/shadowed/icu4j/24.2.2/icu4j-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/shadowed/xz/24.2.2/xz-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/truffle/truffle-api/24.2.2/truffle-api-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/truffle/truffle-compiler/24.2.2/truffle-compiler-24.2.2.jar",
+    "resources/js-engine/maven/org/graalvm/truffle/truffle-runtime/24.2.2/truffle-runtime-24.2.2.jar",
+    "resources/js-engine/runtime/lib/jrt-fs.jar",
+    "resources/notices/pinyin4j-2.5.0/pinyin4j-2.5.0-sources.jar"
+  ],
+  "explanation": "101 frozen Gradle entries comprise three main artifacts and 98 dependency JARs. Jpackage replaces the three main artifacts with one product JAR and discovers 15 existing bundled resource JARs, producing 114 launcher entries. Product main entries and 97 dependency JARs match frozen actual83 bytes. The remaining Skiko runtime JAR has three native entries moved without byte changes into APPDIR by the existing Compose unpack task; all remaining JAR entries are unchanged.",
+  "duplicateClassGroups": 0,
+  "nonIdenticalDuplicateClassGroups": 0,
+  "duplicateClassGroupsIncludingBundledResources": 0,
+  "duplicateClasses": [],
+  "initialInspectionFailureWasCountAssumption": true,
+  "initialInlineProvenanceDiagnosticUsedUnprefixedLongPaths": true,
+  "productionOrPackagingCodeChanged": false
+}

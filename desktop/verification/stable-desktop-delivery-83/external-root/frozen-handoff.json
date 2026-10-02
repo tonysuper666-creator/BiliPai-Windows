@@ -1,0 +1,202 @@
+{
+  "status": "PASS_ACTUAL83_AUTHORIZED_EXTERNAL_BRANCH",
+  "artifacts": [
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "55534203cc62f848979a4c7012cdba3578e1806d50966375ee2d4d5e915885bf",
+      "bytes": 3121
+    },
+    {
+      "path": "prepare.py",
+      "sha256Bytes": "9023743815dcc93fd01e156c5d43a61fe0b0bcefdec39880861a7e1120beed01",
+      "bytes": 17443
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "e49fa8dbd574495d1654228dba93781cca03081b29dcf2f42bc2cbcf6f3424b7",
+      "bytes": 3197
+    },
+    {
+      "path": "RootExternalFixture.kt",
+      "sha256Bytes": "471c9608a1bb97f0fc8a37bfbc6115494c8d11fcfaeee35b9672c2a98f8d5937",
+      "bytes": 25892
+    },
+    {
+      "path": "run.py",
+      "sha256Bytes": "d8a31563035f32fc0505ea597830fde5a01095eb914d895a269fa4fe47f97b28",
+      "bytes": 8186
+    },
+    {
+      "path": "runs/actual83-01/acceptance-result.json",
+      "sha256Bytes": "60b969a8da0da32ab70eb525a924a67ac08ea7dd4158248e7916d179f3c90d83",
+      "bytes": 538
+    },
+    {
+      "path": "runs/actual83-01/compile-result.json",
+      "sha256Bytes": "dd237a289bbbb9ac54bc00262af2e6cfe7cd0d884c5d855f8ef7a7a6763a06c9",
+      "bytes": 190
+    },
+    {
+      "path": "runs/actual83-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/actual83-01/compiler.args",
+      "sha256Bytes": "768aaae40a112fc8a14c7499fd5e0c738698c8ed64870aad72bde3f62310dd39",
+      "bytes": 25842
+    },
+    {
+      "path": "runs/actual83-01/fixture-jar-pin.json",
+      "sha256Bytes": "916bb7e2a7aa8edb7e0bedfd498e142a1044f14b01878a5c18130374386a6fe9",
+      "bytes": 114
+    },
+    {
+      "path": "runs/actual83-01/fixture-owned-runtime/isolated-plugin-store/logs/basic.log",
+      "sha256Bytes": "4322bbc68e15963b122e3e9b8f251a217c19dc011fe90b27512168073484307f",
+      "bytes": 111
+    },
+    {
+      "path": "runs/actual83-01/fixture-owned-runtime/root-external-proof.json",
+      "sha256Bytes": "878f980b72cd549d5be477a48211667ed45179e81edf487cfba337d354beb67e",
+      "bytes": 3385
+    },
+    {
+      "path": "runs/actual83-01/pins-after.json",
+      "sha256Bytes": "6c713151fb1b8e4bd6a35ba440c98f818817c81d25895a8c8ab193ba6c6cdc6d",
+      "bytes": 39650
+    },
+    {
+      "path": "runs/actual83-01/pins-before.json",
+      "sha256Bytes": "6c713151fb1b8e4bd6a35ba440c98f818817c81d25895a8c8ab193ba6c6cdc6d",
+      "bytes": 39650
+    },
+    {
+      "path": "runs/actual83-01/RootExternalFixture.kt",
+      "sha256Bytes": "7200d37e5589b3347ad5137e28e30c9eaa5e64190504d5f186c63c9bf00d9ac1",
+      "bytes": 23577
+    },
+    {
+      "path": "runs/actual83-01/runtime-command.json",
+      "sha256Bytes": "2a9f8580019ea9372619139f3f2769c8361a390d7c52e72a6727cf41017344db",
+      "bytes": 28194
+    },
+    {
+      "path": "runs/actual83-01/runtime.log",
+      "sha256Bytes": "c9347734cd2b77ff1e1094afb6e337d2cc7801cc9bcfdf9fd0cc2a9ff1824086",
+      "bytes": 2055
+    },
+    {
+      "path": "runs/actual83-02/acceptance-result.json",
+      "sha256Bytes": "a9a31c2f5505ce84117cfc912725d779f909b09eb5b629fdbbfd6487eb244a6f",
+      "bytes": 569
+    },
+    {
+      "path": "runs/actual83-02/compile-result.json",
+      "sha256Bytes": "af376e8eddb1dc51a94de224195fb57bc9a21e59c43b308afd53d9d7dab96f02",
+      "bytes": 190
+    },
+    {
+      "path": "runs/actual83-02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "runs/actual83-02/compiler.args",
+      "sha256Bytes": "204d10012c7380b8f86b578a8a4fcc6131e2e142ab614054b89b73ee20e0708d",
+      "bytes": 25842
+    },
+    {
+      "path": "runs/actual83-02/fixture-jar-pin.json",
+      "sha256Bytes": "73cc130d244d79dec89b9bc6a5cb0f15baa33f3e3cc4e728553a2ed431e54aa4",
+      "bytes": 114
+    },
+    {
+      "path": "runs/actual83-02/fixture-owned-runtime/actual-external-0.png",
+      "sha256Bytes": "129b5081fc4a52b4797156bbf0a17ae8af80e03b3b8b54742af63529953056fb",
+      "bytes": 20084
+    },
+    {
+      "path": "runs/actual83-02/fixture-owned-runtime/actual-external-1.png",
+      "sha256Bytes": "df7d902271fb2c8f8cdd1155024e4c4bdbd12c94155662beea7b6c33bbff58b3",
+      "bytes": 19808
+    },
+    {
+      "path": "runs/actual83-02/fixture-owned-runtime/isolated-plugin-store/logs/basic.log",
+      "sha256Bytes": "bc64593230325d9c786814c1616810258c705744e67a7162ec9842336e474ba4",
+      "bytes": 111
+    },
+    {
+      "path": "runs/actual83-02/fixture-owned-runtime/root-external-proof.json",
+      "sha256Bytes": "fb4d13f146faf5d7247c1e23018244f5c24a390bac71f122088227ef39b85377",
+      "bytes": 6120
+    },
+    {
+      "path": "runs/actual83-02/pins-after.json",
+      "sha256Bytes": "69f266d2e5fc9f9f2ee2681ef1f9d5238cb6c1f8993214ca687913a5fcdb0bd1",
+      "bytes": 39650
+    },
+    {
+      "path": "runs/actual83-02/pins-before.json",
+      "sha256Bytes": "69f266d2e5fc9f9f2ee2681ef1f9d5238cb6c1f8993214ca687913a5fcdb0bd1",
+      "bytes": 39650
+    },
+    {
+      "path": "runs/actual83-02/RootExternalFixture.kt",
+      "sha256Bytes": "471c9608a1bb97f0fc8a37bfbc6115494c8d11fcfaeee35b9672c2a98f8d5937",
+      "bytes": 25892
+    },
+    {
+      "path": "runs/actual83-02/runtime-command.json",
+      "sha256Bytes": "369da8048fd9d28f0437434019eb11fd6704bff71750033e6dca27c1bbf316c9",
+      "bytes": 28194
+    },
+    {
+      "path": "runs/actual83-02/runtime.log",
+      "sha256Bytes": "5d2f6a76cc2c9ea9dc83a7fd5cffb00cfa42006a2b6ea2f0bfe31d789d529806",
+      "bytes": 1061
+    }
+  ],
+  "binaryExcluded": [
+    {
+      "path": "runs/actual83-01/root-external-fixture.jar",
+      "sha256Bytes": "ce39c1ed36eef5230c8f1b486a8ae209b33919fdf0968ff4e97feac963caa3c7",
+      "reason": "fixture-only compiled test artifact"
+    },
+    {
+      "path": "runs/actual83-02/root-external-fixture.jar",
+      "sha256Bytes": "94f77143b3e18c9bc09364f253ca60fedfb95fa00c895651060bb839cba52cb8",
+      "reason": "fixture-only compiled test artifact"
+    },
+    {
+      "path": "local-fixture-media.mp4",
+      "sha256Bytes": "04eba353733a6cc95fe0bac2a1633534dda86817460d3bcd94d353d1530a7a4d",
+      "reason": "generated loopback-only fixture input; not product payload"
+    }
+  ],
+  "actualSnapshot": 83,
+  "checksPassed": 17,
+  "copyWhitelist": [],
+  "productionPayloads": [],
+  "productSourceOverrides": 0,
+  "immutableEntries": 101,
+  "loadedProductOrigins": 8,
+  "seededSuccess": false,
+  "realAccount": false,
+  "globalInput": false,
+  "permissionApprovedThroughActualRepository": true,
+  "semanticCallbacks": true,
+  "physicalPointerAccepted": false,
+  "nativeFirstFrame": true,
+  "externalTwoSource": true,
+  "externalPiPAndRestore": true,
+  "rootShutdownDrained": true,
+  "ordinaryVideoDetailSuccess": false,
+  "ordinaryVideoToVideo": false,
+  "controlsVisibilityAccepted": false,
+  "nativeDecodedPixelCapture": false,
+  "SMTCButtonAccepted": false,
+  "settingsVisualOcclusionAccepted": false,
+  "failedAttempt01Preserved": true,
+  "failedAttempt01Cause": "Fixture incorrectly assumed ordinary Assembly retention across original ExternalMedia acquire/stop"
+}

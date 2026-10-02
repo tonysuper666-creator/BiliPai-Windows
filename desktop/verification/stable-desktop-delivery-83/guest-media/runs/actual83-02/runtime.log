@@ -1,0 +1,16 @@
+PASS Actual idle Assembly uses same Section, native player and Overlay
+PASS Selected two distinct ordinary candidates from actual guest Home results
+ACTUAL_PUBLIC_CANDIDATES BV174Yc6JEZo, BV1raaG6QE2H
+java.lang.IllegalStateException: Actual guest ordinary protocol error: 网络连接失败，请检查网络后重试
+	at com.bilipai.desktop.rootmediafixture.RootMediaFixture.exercise$loadActual(RootMediaFixture.kt:236)
+	at com.bilipai.desktop.rootmediafixture.RootMediaFixture.access$exercise$loadActual(RootMediaFixture.kt:120)
+	at com.bilipai.desktop.rootmediafixture.RootMediaFixture$exercise$loadActual$1.invokeSuspend(RootMediaFixture.kt)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+	at kotlinx.coroutines.internal.ScopeCoroutine.afterResume(Scopes.kt:35)
+	at kotlinx.coroutines.AbstractCoroutine.resumeWith(AbstractCoroutine.kt:101)
+	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:47)
+	at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:586)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:829)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:717)
+	at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:704)

@@ -1,0 +1,62 @@
+{
+  "status": "passed",
+  "createdUtc": "2026-10-02T06:16:06.280328+00:00",
+  "summary": "forwarding-summary.json",
+  "files": [
+    {
+      "path": "forwarding-summary.json",
+      "bytes": 2396,
+      "sha256Bytes": "d984ef8e311f3c919f81b780de5fca62e700cde9fc9861a1c98ad59c4c2383b8"
+    },
+    {
+      "path": "freeze-forwarding-result.py",
+      "bytes": 6029,
+      "sha256Bytes": "11aceb6749e069884076dc85a9688b444b591e4d524b41b8a480157beea8056f"
+    },
+    {
+      "path": "package-preflight.json",
+      "bytes": 2583,
+      "sha256Bytes": "8872b0b1ed7c5166a446ccce44c594a019d560bde814540f0a03418c562a9444"
+    },
+    {
+      "path": "preflight.log",
+      "bytes": 313,
+      "sha256Bytes": "9fee1ebc5cd36875f2d8e55ed484afc6b126077dc9e79446b8dce71fa5685994"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1175,
+      "sha256Bytes": "3870ea707d4beeaae1c139dd1bb0053e7fb22816f805661639863f2f5dd97435"
+    },
+    {
+      "path": "reports/updater-smoke.json",
+      "bytes": 6752,
+      "sha256Bytes": "879c7d49e301f754d4c124712e28da8499f449f72da717e4172624b1ddf46e27"
+    },
+    {
+      "path": "run-real-previous-updater.ps1",
+      "bytes": 3420,
+      "sha256Bytes": "6288974de628d3348e2871282e33cdd46706e8b7a016e11ad05b9ee2530f5c59"
+    },
+    {
+      "path": "run-result.json",
+      "bytes": 1549,
+      "sha256Bytes": "6fe55985426fcfa4aa9b243c1e2b3c4e4d440e1825673ff5c1959d2045ca696f"
+    },
+    {
+      "path": "TEST-com.bilipai.desktop.update.DesktopUpdaterIntegrationTest.xml",
+      "bytes": 484,
+      "sha256Bytes": "b04b9580bf5cfe8e601bd50119919d35b13e6d9648b24e3c5241d4cf9c45f7a8"
+    },
+    {
+      "path": "updater-real-previous.log",
+      "bytes": 9915,
+      "sha256Bytes": "a9d61cb5d979a26b6d8486766ed53157e99cfc5cd67dddd6d9f6f6d7fd7c0093"
+    },
+    {
+      "path": "verify-real-packages.py",
+      "bytes": 3936,
+      "sha256Bytes": "d71c962e19c2a6f42974b08ac5259f54d5eb0e87f2fe75164e0730d77c5f0bcc"
+    }
+  ]
+}
