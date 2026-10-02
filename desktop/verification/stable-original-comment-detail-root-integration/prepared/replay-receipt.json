@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "soleProducer": "desktop/tools/extract-upstream-bgm-detail.py",
+  "onlyChangedOutputs": [
+    "com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+    "com/android/purebilibili/feature/comment/CommentDetailScreen.kt"
+  ],
+  "otherOutputsByteUnchanged": true,
+  "newOriginalIdentities": 0,
+  "productionWrites": 0
+}

@@ -1,0 +1,23 @@
+{
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+    "-p",
+    "desktop",
+    "-I",
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\upstream-v023-audit\\export-stable-classpath.init.gradle",
+    "-DstableClasspathOutput=C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\upstream-v023-audit\\stable-classpath-84.json",
+    "classes",
+    "exportStableRuntimeClasspath",
+    "--console=plain"
+  ],
+  "exitCode": 0,
+  "candidateHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "actualProductOverrides": 0,
+  "sourceCount": 1180,
+  "resourceCount": 243,
+  "testsExecuted": false,
+  "rootRuntimeAccepted": false,
+  "desktopExeReplaced": false,
+  "logSha256Bytes": "634fb74e8db16605a9e93e888966a5923ae5c2c564d054f7beb8ad2a0cc5d5e9",
+  "classpathExportSha256Bytes": "fb36197c8fec4db7c00186e14f9a012ee6589fbea796f3d684c701878b49e7e6"
+}

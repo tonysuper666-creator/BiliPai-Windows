@@ -1,0 +1,2862 @@
+{
+  "schemaVersion": 1,
+  "generatedAtUtc": "2026-10-02T08:59:10.834627+00:00",
+  "auditKind": "read_only_source_route_and_existing_evidence_audit",
+  "candidate": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023",
+  "inspectedCommittedBaseline": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "observedWorkingTreeHeadAtStart": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "workingTreeStatusAtStart": "M desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt\n M desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt\n M desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt\n M desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt\n M desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt\n M desktop/tools/extract-upstream-bgm-detail.py",
+  "concurrentRootSourceIntegrationsExcludedFromBaseline": true,
+  "auditPreflight": {
+    "initialCleanWorkingTreeGuardRejected": true,
+    "cause": "Root began authorized CommentDetail integration concurrently; this was not a product regression.",
+    "resolution": "Every production source and existing verification artifact is read from the pinned a5 Git blob.",
+    "originalGuardNotUsedToBlockWork": true
+  },
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "registrySources": 1180,
+  "registryResources": 243,
+  "sourceCountsAreNotCompletionDenominator": true,
+  "reportedCompletionPercent": null,
+  "groupingIsReviewChecklistNotWeightedCompletionMetric": true,
+  "allFeatureParityComplete": false,
+  "currentSourcePackageDelivered": false,
+  "buildTestsRuntimeExecutedByAuditor": false,
+  "externalRepositoryActivationVerifiedByAuditor": false,
+  "groups": [
+    {
+      "id": "F01",
+      "name": "首页推荐／热门与卡片",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 3,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "63ffd0eadd3080e2b304612c9c1e672f5f2370ca9c9db4f8040a52e85cbc15aa",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:139"
+      ],
+      "currentBehavior": "完整原 Home、原 VM 和卡片通过保留的真实 Root entry 消费，推荐/热门由原分类切换。",
+      "remainingWork": [
+        "真实账号刷新、分页、广告/不感兴趣、完整指针与卡片转场验收仍缺。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "historical_root_idle"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F02",
+      "name": "分区入口／分类页",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 3,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "04ba7fe22888802cb1da9e4d91ef97df318c49b2a9aea37672a00f4b10504010",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/category/CategoryScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "fc7bb877d961633bb0a3fe8aaa4ceb15476b394d0f2d3a3ffb3bc72acbaffc96",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:155",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:162"
+      ],
+      "currentBehavior": "原分区和分类页使用原请求/状态及 typed video handoff。",
+      "remainingWork": [
+        "全部分区、排序、返回状态和真实接口交互未逐页验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F03",
+      "name": "每周必看／历史期数",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 3,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "9c62f6eec189e5214dbaae7224922e00bfc716100c72423cd48d2d7676d634ca",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "0d62f01e9fb55151333b5c7de117f0251e47d926f414901a517bf3bdac30f8df",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1760",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWeeklySeriesScreen.kt:41"
+      ],
+      "currentBehavior": "原页面、期数选择和 VM 已在独立 Root key 消费。",
+      "remainingWork": [
+        "真人服务加载、选期与播放队列实际 Root 验收待做。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F04",
+      "name": "全站搜索／热搜／建议／筛选",
+      "sourceIntegrationStatus": "partial_desktop_substitute",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "526fd05cd8c2daa946f6240b3922aae788d6376b058e7f83b1ce2b5b96eee6be",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/search/SearchTrendingScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "456f6de62794eaedcc5151859a67d1cc7724e7ff74a518847b130f1d95f0c402",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt:55",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt:71",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1996"
+      ],
+      "currentBehavior": "桌面 CommunitySearch 复用部分协议、原筛选顺序与隐私设置；独立 SearchTrending key 未消费原页。",
+      "remainingWork": [
+        "完整原 SearchScreen/SearchTrendingScreen 还需迁入；建议/结果/历史/独立热搜路由和视觉交互对齐。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F05",
+      "name": "登录／认证／扫码",
+      "sourceIntegrationStatus": "partial_desktop_substitute",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/login/LoginScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "e27a1d855850ec361f41aeb344d91e448eee0dd8b8d5361ddb89c8bac6fe7f0e",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/login/LoginViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "40fe1db262e3280f61248b605326cc186075e27d0f948a25f9f898e3e500bf8b",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1765",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/AdvancedLoginDialog.kt:28"
+      ],
+      "currentBehavior": "Windows 登录窗口与同 Repository/Session 使用原认证协议和政策切片。",
+      "remainingWork": [
+        "完整原登录 UI/风险/验证码流程差距需逐项核对；当前 EXE 真人扫码及普通播放待用户测试。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "delivered_old_package"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F06",
+      "name": "我的／账户切换／资料与壁纸入口",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 2,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "034c92c6622f540400972353e26ec1a61a022151cbb71e7c6ee45f4305617a0c",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "a2a08a77fefc78f9cbe41760034e273bb34f5555b65e979f7e12fad147c333a1",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:145",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt:95"
+      ],
+      "currentBehavior": "完整原 Profile/VM/相关 sheet 接同 Root 账户、主题、壁纸 Windows 平台服务。",
+      "remainingWork": [
+        "实际账户切换、头像/资料刷新、官方壁纸及真实选择器 Root 验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F07",
+      "name": "UP 空间／投稿／合集／充电与大航海",
+      "sourceIntegrationStatus": "partial_desktop_substitute",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "ff810be21539ada00fd6043aac26d15c73f51c261f560a02c19879461797c4fb",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "0970836848746c1b9eae833074d3dd6a125e25dc1ee23bb8aec25455cdf45758",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "ec6c4f47792e8bb318149a8aff355262d693bf63a57456365b26062ab1645937",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1808",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt:253",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt:188",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1996"
+      ],
+      "currentBehavior": "DesktopCompleteSpaceScreen/多个桌面分栏消费原模型政策；充电/大航海仅页内 desktop tab，独立 key 未接。",
+      "remainingWork": [
+        "完整原 SpaceScreen/SupporterScreens 不等于目前 desktop 重排 UI；投稿、订阅、漫画等实际缺项和全部子页需对齐。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F08",
+      "name": "视频详情／分P／合集／团队／荣誉声明",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "476bd8c90e4905921195e344653e13ddac20e11bce4e6a581d327d7245323ebb",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "ca5827fd3f917479f2768b339c182149c9b1edba20272b0b3f02cec3e64957b4",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1506",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt:24"
+      ],
+      "currentBehavior": "完整原 Holder/Content/VM 及实际 retained Assembly 使用同 Session、Repository 和平台 ports。",
+      "remainingWork": [
+        "普通 B站账号完整 Success、分P/合集/创作者/声明/荣誉跳转及 actual Root UI 尚需验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "historical_root_idle"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F09",
+      "name": "原生 DASH 播放／全屏／字幕／PiP／系统媒体",
+      "sourceIntegrationStatus": "original_body_wired_windows_platform",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "a15692762ddc4197c5087057ef4573da844e7432adf28310f8776ba0d156504e",
+          "registered": true,
+          "registryMode": "selected",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt:31",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt:556",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:488"
+      ],
+      "currentBehavior": "原控制/播放所有者接 Windows MPV、同原生 Canvas、字幕/PiP/SMTC ports；本地外部媒体实际 Root 通过有限 cohort。",
+      "remainingWork": [
+        "普通 B站获取流和首帧、完整控件指针、字幕同步、DPI/遮挡、SMTC 系统按钮与投屏需实际验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "historical_root_idle",
+          "historical_root_external_media",
+          "delivered_old_package"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F10",
+      "name": "视频评论／楼中楼／搜索／发送与风控",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 2,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt:146",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt:126",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt:165"
+      ],
+      "currentBehavior": "原评论 tab、thread、composer、提及/表情/搜索和 fraud 路径接真实视频 owner。",
+      "remainingWork": [
+        "真实账号发送/撤回/搜索/定位与 Root 长按、表情输入实测尚缺。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F11",
+      "name": "独立评论详情／消息内评论定位",
+      "sourceIntegrationStatus": "original_body_present_unwired_root",
+      "priority": 0,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt:59",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt:73",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1996"
+      ],
+      "currentBehavior": "完整原 CommentDetail body 已用于视频/BGM 内部；独立 BiliPaiNavKey.CommentDetail 未入 Shell leaf，消息链接目前只有动态部分 typed 解析。",
+      "remainingWork": [
+        "player_parity 正在准备独立 Root leaf 与全部原 message dispatcher；未正式合入，不能计完成。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F12",
+      "name": "Story 竖屏连续播放",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "bd85559d3998515508d93378f1476950eda1973cde86b2c8591b1d525396c471",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/story/StoryViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "d16fd532890ca4b229dca79b0deb00aac7b8acd2a68d2316b0e507fb75fc4bef",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1792",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:71"
+      ],
+      "currentBehavior": "完整原 Story/VM 已入真实原 video owner；实际 request token→原生停止→新 baseline/ACK→原 Session adoption。",
+      "remainingWork": [
+        "local native 11 检查不证明远端 raw payload adoption、真实连续流、拖拽/对话框与 Story 视觉；需完整 Root cohort。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "story_native_prepared",
+          "navigation_tests_current"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F13",
+      "name": "弹幕渲染／列表／长按／投票／设置与屏蔽",
+      "sourceIntegrationStatus": "original_body_wired_windows_platform",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "c48abd1ee32d91d7ed8ebdbf87689f20f1de86c93a019c8a24e45581dc42a6ba",
+          "registered": true,
+          "registryMode": "selected",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHost.kt:7",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuRoot.kt:4"
+      ],
+      "currentBehavior": "完整原设置/列表菜单/协议接同全局 Store、原规则、原生弹幕覆盖层。",
+      "remainingWork": [
+        "每个原渲染字段/时间轨道/遮挡/投票交互与真实窗口命中不因持久化通过而完成。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F14",
+      "name": "收藏夹／订阅合集／抽屉／范围搜索",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 2,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "fa688e0dcd59efc702bf71c1bee5742c7e3a03297ed70a10babfa355265a7827",
+          "registered": true,
+          "registryMode": "selected",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCategoryScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "c05f746c158f6ee2cc76837d08eab985082bc65e2b82e6b29e217887e8eb240d",
+          "registered": true,
+          "registryMode": "selected",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1539",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1567",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt:47"
+      ],
+      "currentBehavior": "原 favorites/full collection body 和 typed subscribed/search/detail key 已消费，保留原列表和队列 owner。",
+      "remainingWork": [
+        "各收藏管理操作、分享、分集数据、范围搜索和 Root 实际账号验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F15",
+      "name": "历史／历史搜索／点赞视频",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 2,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "fa688e0dcd59efc702bf71c1bee5742c7e3a03297ed70a10babfa355265a7827",
+          "registered": true,
+          "registryMode": "selected",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/list/HistoryFilterPolicy.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "3f8e10cb699850e22f4a2cf1e91cb06e5af2397dbd949b8b7379a58f46179fed",
+          "registered": true,
+          "registryMode": "direct",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1627",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPersonalListHost.kt:58"
+      ],
+      "currentBehavior": "原列表 Host 已消费独立 HistorySearch 和 LikedVideos，不能误报成只有旧桌面列表。",
+      "remainingWork": [
+        "云端过滤/删除/搜索、记录一致性和实际账户验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F16",
+      "name": "稍后再看／搜索／批量音频队列",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 2,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/watchlater/WatchLaterScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "266e5f40e13147e8ffafc06537966174dcf0f492eac8cde455070a45885b6f84",
+          "registered": true,
+          "registryMode": "selected",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1580",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1618"
+      ],
+      "currentBehavior": "原 WatchLater Host 与独立 WatchLaterSearch、原选集和队列接 Shell。",
+      "remainingWork": [
+        "账号列表修改、排序/搜索/队列实际 Root 验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F17",
+      "name": "关注分组／屏蔽列表",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 2,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingListScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "973c52505a2abe39e1ed0f8ae1ad51199076fd8482f50dbe50c2b1725f8412c8",
+          "registered": true,
+          "registryMode": "selected",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/BlockedListScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "5c4f172ac7b12135a927a849c5e1f31c9ce0cc42b0eed219ba2da0b726e89a65",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1576",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1705"
+      ],
+      "currentBehavior": "原 Following 页和原 BlockedList 内容通过共享 social/blocked owner 消费。",
+      "remainingWork": [
+        "真实关注/取关/分组和跨页过滤效果、账号刷新实际验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F18",
+      "name": "动态流／卡片／详情／侧栏与缓存",
+      "sourceIntegrationStatus": "partial_original_body_and_desktop_orchestration",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "f3f74942a9ce57a2dfcbbc0312fdd0ae45ffb92add60e8ce67411cc9a28c2a44",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicDetailScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "ab0d6cf956ba9915445f421f299ea48e14a7561edd2a609973700531bf0f67b4",
+          "registered": true,
+          "registryMode": "reference-only",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicCard.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "1b972841b2f27bfd15bf3d60bacc4f19ba2570c5833327df2b9ac51977c1e361",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt:76",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt:207",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt:238"
+      ],
+      "currentBehavior": "完整原卡片/详情 layout 和 tabs 切片接 desktop timeline/cache；整体 DynamicScreen 与 Android VM 未完整迁入。",
+      "remainingWork": [
+        "完整原时间线/侧栏编排差距、缓存/增量刷新/退出状态与真实账号操作逐项对齐。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F19",
+      "name": "发布／编辑／转发／动态回复",
+      "sourceIntegrationStatus": "original_body_wired_windows_platform",
+      "priority": 2,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishComposer.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "2321fb5c86497cd726aaa73468884c568e7f36fab9641022cb7b1df38664617c",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/DynamicPublishPickers.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "be5e3aa6604fe22801c414366da78afb15184082dee71f548dd15a243646609a",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt:90",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt:121"
+      ],
+      "currentBehavior": "原 composer/pickers/发布协议和回复会话接同 Root Windows 文件、图库和动作 owner。",
+      "remainingWork": [
+        "多图/定位/话题/上传/编辑/转发与真实平台发送验收；已有本地协议不代表服务器操作成功。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F20",
+      "name": "专栏／话题／视频笔记",
+      "sourceIntegrationStatus": "mixed_original_body_and_desktop_substitute",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/article/ArticleDetailScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "c1d2eb23bd186fce229fb1025abe32ed8fea9592725fc6e739f43294161e25e8",
+          "registered": true,
+          "registryMode": "selected",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/search/TopicDetailScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "1b2bbf8bd0bebaa9f7a2702eef4548bf39184aa65935dd1e1f40230db4a337f7",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/search/TopicDetailViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "16d33fa80b4e92026bb83681f050eb85fd59f397ac15f7b7963dcfa3b6f6cbc3",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1822",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/StoryTopicScreens.kt:161",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt:59"
+      ],
+      "currentBehavior": "专栏使用原独立 Host；话题和视频笔记仍由 desktop controller/UI 消费部分原数据政策。",
+      "remainingWork": [
+        "完整原 TopicDetailScreen/VM body 及笔记功能对齐；富文本、图片、返回动画和参与话题实测。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F21",
+      "name": "图片预览／保存／Windows 分享／动态图",
+      "sourceIntegrationStatus": "original_body_wired_windows_platform",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "93c3ff348146db952bc8b8c9252a0d03a4cef7fe173835e884767b3efd3132cb",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:136",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt:173"
+      ],
+      "currentBehavior": "原预览已在 Home/Dynamic/Space/Article/Comment 消费，共用现有图像资产和 Windows actor，原 GIF 不重编码。",
+      "remainingWork": [
+        "当前 Root 实际分享按钮/Windows receiver UI、长路径、预览全部手势/动态图验收仍缺；安全清理 UI 待 storage 合入。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "image_share_current"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F22",
+      "name": "离线下载／并发暂停继续／画质重下／离线播放器",
+      "sourceIntegrationStatus": "original_body_wired_windows_platform",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadListScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15",
+          "registered": true,
+          "registryMode": "platform-adapter-reference",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "4a72cdf71c721179f472fe011c8f76adbb75ba2e9aeac63a2b5d0c5b6b90b226",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadManager.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "f1c78637c9a13b99e70a7732b6fd3836712784628c1903539b34de5b57817c64",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1745",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1755"
+      ],
+      "currentBehavior": "完整原下载列表/离线页用既有 Windows Manager、通知与 mux/播放器；列表 typed leaf 已接。",
+      "remainingWork": [
+        "真实在线下载/失效链接回退、并发速度/系统通知/重新下载及完整 Root 实测。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "delivered_old_package"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F23",
+      "name": "下载目录／缓存统计清理／自动清理",
+      "sourceIntegrationStatus": "partial_unwired_owner_settings",
+      "priority": 0,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsCategoryScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "436b3bf0391c0008887f039214da4d2a0ac1a51be11fdd5a78dc81219e568590",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "dad065eba76c2bb51ce9c5775b4e8bf86f21b8230be0ee2606fe53fa77b64f25",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:92",
+        "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsStorageEntries.kt:5"
+      ],
+      "currentBehavior": "当前 Tree 的存储分类只有原 backup 入口；真正 download/cache owner 清理及目录控件尚未正式合入。",
+      "remainingWork": [
+        "delivery_readiness 正准备同 DownloadManager/Coil/MPV/字幕/弹幕/share/diagnostics 的安全清理与原设置 body；旧源当前不可计完成。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F24",
+      "name": "直播列表／搜索／分区／关注",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 2,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveListScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "a88f86fefe56e06d941438270ba0c32b3f35b739068cadf3ef4b838903ee49d8",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "c391e12ba7e24a29cecf7c13d3593365029b2dbad19b8bb2a7ec48b8e28c0ba0",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "09f5cb59863395387ca7b40805e30e633f1aa2f74bb593bc12104e35dd9b53f8",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "75bc6e38c891944425834a188973a314abf4c4d24a7fbbf50c6d44560ad32b59",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:166",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:178",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:181"
+      ],
+      "currentBehavior": "原列表及四个独立子路由已接真实 Root navigation/retained aggregate。",
+      "remainingWork": [
+        "真实接口分页/房间入口/关注登录和页面指针验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F25",
+      "name": "直播播放器／弹幕／互动",
+      "sourceIntegrationStatus": "partial_desktop_substitute",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/live/LivePlayerScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "dc6458024e229a804f1a07637cc3773bf05decaff4c99b0f3501d13dbb8b0764",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1738",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt:465"
+      ],
+      "currentBehavior": "现有 desktop LiveBrowserScreen/LiveChatPanel 使用同 MPV 和实时协议；完整原 LivePlayerScreen 未移植。",
+      "remainingWork": [
+        "完整原直播播放器和互动功能表（原 controls/用户/礼物/粉丝团等）需逐项接原 body；真实窗口/账号/流实测。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F26",
+      "name": "首页番剧／影视 Hub 与筛选",
+      "sourceIntegrationStatus": "original_body_wired",
+      "priority": 2,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "40489c068b77bac5136d31209f1d6f25952d34831760ccf7b1feda9c56a52b98",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "5d6b6d24c41e7072b5f1e7107c65c632db7926fbf7da1cc35c61551bdf2a2045",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "de00b9fc1ba0910d4b778c8d76e1f72237c74042fffb6ef14a3dadf2711604b3",
+          "registered": true,
+          "registryMode": "extracted",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiHubRoot.kt:38"
+      ],
+      "currentBehavior": "Home 中完整原 Hub 页、筛选索引、搜索和追番 mutations 已消费。",
+      "remainingWork": [
+        "不能据此认定独立 BangumiScreen/Detail/Player 完成；Hub 原账号/筛选实测待验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F27",
+      "name": "独立番剧／详情／时间表／点评／番剧与课程播放",
+      "sourceIntegrationStatus": "partial_desktop_substitute",
+      "priority": 0,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "7d6be537fed4dcb3bd251749402a1d79bfa9703507bebf479109f55646d73078",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "7aaa20bcbfec0174453f28d5c27db530633b0fcf15ef0a2733267e03cf1547d3",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "d34dea667e32da6b89e4a322192b9472e0cb86b8b16b10ff5cb165f03c9842f0",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "e4a9d64425e5244a7b237e231148931a71d288b3d9e93f7c98a18db26d36da2a",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "287d6919dd09e53428a6b01b81b9ff588629441831134a59732ab80c75e3289a",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1739",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1980",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1996"
+      ],
+      "currentBehavior": "Bangumi/Detail/Player 共用自写 BangumiBrowserScreen；五个主 body 均未登记/生成，BangumiReview 独立 key Unsupported。",
+      "remainingWork": [
+        "优先迁入完整原 PGC detail/player/review/timeline/catalog 保持同平台播放与请求所有者；现有可播不等于原功能对齐。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F28",
+      "name": "BGM／AU 音频详情／听视频／音乐播放",
+      "sourceIntegrationStatus": "mixed_original_body_and_desktop_substitute",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "12da0cc512053fd517772dc97353b21a57209a1ad853a5d775ba70e731500a00",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicDetailScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "d4040f6ed3088403d817b2ad2b8f5b35f1ae7a359e57066398b1bb3127b85369",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ListenVideoScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "44705806ae3d8785392e264b665c32d98c155604dc8fcd27173d16ab05144fbb",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt:48",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1770",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1787"
+      ],
+      "currentBehavior": "原 BGM 详情和完整原音频 player/content/歌词/history/playlist 切片已接；AU详情及 ListenVideo 独立浏览页仍 desktop UI。",
+      "remainingWork": [
+        "完整原 MusicDetailScreen/ListenVideoScreen 独立页面功能差距、音频评论/收藏/搜索/歌词/后台实际账号窗口验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F29",
+      "name": "消息中心／回复／@／点赞／系统消息／私信",
+      "sourceIntegrationStatus": "partial_desktop_substitute",
+      "priority": 0,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/message/InboxScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "0296601eaf5ff4e494fc0b485d23f1ffd35b807a25c2dae5b64c5fa2f1bfb606",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/message/MessageCenterScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "9c61d0fc7832fbb7cc06d49cf82fef02b826dff75701de4939ca91a9c56b45d1",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "d9d9c15641cf7fc749962bd4a6c193289242d5b083aa256147807efd411a1c4b",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/ReplyMeScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "89260d5bab9999d2b13c81f573c7f9a0bbc7c950dd6f5a8b1d00af79ba9df967",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/AtMeScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "668c8858a5a886273b55e220f0894f2fa5ff1c578212724d9030eee406027123",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/LikeMeScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "c0e935b791be2e004157f4dd8fdec889d97be958a56615098524c3cf932e3bc8",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/SystemNoticeScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "7897e9ee351e935a716ac1b8a7801607e7ced6c84505e9570ed89c3a13ceef1b",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1987",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityMessageScreens.kt:29",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityMessageScreens.kt:33"
+      ],
+      "currentBehavior": "同 CommunityMessages 有列表/读取/发送/撤回协议，但所有独立 key 都回 tab=0、session=null；原页面主 body 未生成。",
+      "remainingWork": [
+        "完整原七页/VM/未读 owner 接线、Chat talker/sessionType 透传、路由保存/轮询/通知/实时会话和真实账号实测。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F30",
+      "name": "插件管理／JSON／JS／外部媒体／皮肤",
+      "sourceIntegrationStatus": "partial_original_runtime_and_desktop_ui",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/PluginsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "7b0d2d74547f090d24a94b7b6ae816c2bc1b4865855d2841560c8edb9e49a93a",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/plugin/js/BiliPaiJsPluginContentScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "ceb79c1886b47e47f5463628b1414d144a0ac7623c6f56cb217c54bbed6f3109",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/plugin/js/ExternalMediaPlayerScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "cf150b8998765363198e84c49d6fa876fae78086d546b72ef5d30deaa3406a41",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1695",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1732",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1736"
+      ],
+      "currentBehavior": "原 worker/permission/runtime/provider/content 切片与 Windows 授权和媒体 actor 已用；管理页及外部 player 页面仍 desktop UI。",
+      "remainingWork": [
+        "原完整插件管理/设置编辑/皮肤目录/页面能力差异与真实 package/auth/pointer 验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "historical_root_external_media"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F31",
+      "name": "外观／主题／启动壁纸／图标与玻璃参数",
+      "sourceIntegrationStatus": "partial_original_policies_and_desktop_ui",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "430a30fc17725128a991c15fed0b69597a55d4aa8afa13ed8d075658a5cc1390",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/IconSettingsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "ea80aa3578bc3af72d1aff852f6bda2ee897404ba7ca68e6936097f928a6388b",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SkinCatalogScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "c588bb0816bf36ff2e3dce04ebbf5f2a6b2f394e6bb8e6d22d73113fb30b2bb7",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1727",
+        "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt:33",
+        "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:111"
+      ],
+      "currentBehavior": "desktop Appearance settings 消费原 themes/palette/role/wallpaper policies；IconSettings 与原 skin catalog 完整 body 未接。",
+      "remainingWork": [
+        "完整原外观控件/图标/皮肤与高级液态玻璃档案导入导出，真实 GPU 效果和 Root 呈现验收。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F32",
+      "name": "完整导航编辑／标签颜色顺序／动画",
+      "sourceIntegrationStatus": "original_body_wired_with_remaining_platform_features",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/BottomBarSettingsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "0b16042c8d9013b44388e300a40939f4957b7733d44f6c94baac49be9b9963c9",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AnimationSettingsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "a517fd0d059c1b54803ab8638aa2729e9dfb4f72163bb0e20dc1091889f22ff1",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:119",
+        "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:120",
+        "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNavigationHost.kt:69"
+      ],
+      "currentBehavior": "完整原底栏/顶栏/search-order editors、Windows适用动画 controls 接同 Store/Home/Chrome/Theme，20个定向测试通过。",
+      "remainingWork": [
+        "独立 BottomBarSettings/AnimationSettings key 尚未在 Shell effect 选择对应 detail；高级 glass 管理/震动/五个原 Miuix glyph 与实际 Root 效果待补。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "navigation_tests_current"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F33",
+      "name": "设置树／搜索／推荐隐私播放／ZIP/WebDAV备份",
+      "sourceIntegrationStatus": "partial_original_sections_and_desktop_substitute",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "4ffbe4130496d8af1b6f23acf1a9f4c76be13791739ee59f67b3265af801df7c",
+          "registered": true,
+          "registryMode": "policy-extract",
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/SettingsSearchScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "40e622d9e592311e4ac2eaf9cb5529443296946e9ae67aab03a318c8833ba2ed",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/PlaybackSettingsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "7620c421c6f3dab19482adc52c219bf37c5a9d11141dca57f7863bba21ff7e78",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/share/SettingsShareScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "fef1b8bb09bbb66ebfbce6cda67e03b8b2b9323c6e7fce7e6b3b0ba8fd469d60",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/webdav/WebDavBackupScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "5553aaa9c6ef1c455af58d73c2af92300dcb708f22e28dc1fda826f0f051d248",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:113",
+        "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:122",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1472"
+      ],
+      "currentBehavior": "原设置索引/分类/部分 recommendation/privacy fields 用同 Store；播放器基础设置和 ZIP/WebDAV 窗口是 Windows 替代。",
+      "remainingWork": [
+        "完整原播放/推荐/动态/备份控件与全部实际消费者逐项对齐；SettingsShare/Icon/MessageNotification typed key 接线缺口，WebDav key 指向 DATA_BACKUP 待修。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F34",
+      "name": "系统权限／消息通知／诊断／帮助许可／AICU入口",
+      "sourceIntegrationStatus": "windows_replacement_missing_and_unwired_original_pages",
+      "priority": 1,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/PermissionSettingsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "8e0d5488adfdeeeddb0739939eaf3c6a5fd079b2bf10ba998948311f974bc1ab",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/MessageNotificationSettingsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "0e668997260428875208cf590bc297c098f2f2861ae1f8a0fbd78346b1699627",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/OpenSourceLicensesScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "f6b888b30850ee1c1c1ce87649e4eae148f7fddf6563934c38be0cbc5323bfe3",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/TipsSettingsScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "5c3b38dd075082cc08468fadbd0915599563c02d5bdae56b2a431ed85dd4391a",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/onboarding/OnboardingScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "73f062726925c6f242f335702f9c1054e65dd948dffc0339515cd986a91c4cbb",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        },
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuScreen.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "8d682fe6e05a744e3f90421f97e256b984fc91ff8706e79eb9ff9b1f56872d4b",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:126",
+        "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:127",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1725",
+        "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1996"
+      ],
+      "currentBehavior": "诊断/网络代理已有 Windows owner；权限和消息通知当前占位，帮助许可/引导/AICU 独立 typed leaf 未接，AICU fraud 协议嵌入不等于独立页。",
+      "remainingWork": [
+        "原许可/帮助/引导/AICU 完整 body 接入；Windows 通知权限、消息后台轮询和提示需真正实现，Android权限项需映射到实际 Windows 功能。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    },
+    {
+      "id": "F35",
+      "name": "Windows 桌面交付／低成本跟更／自动回退",
+      "sourceIntegrationStatus": "implemented_partial_delivery_and_pipeline",
+      "priority": 0,
+      "upstreamSources": [
+        {
+          "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateDownloader.kt",
+          "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+          "sha256LF": "0ec817cf98eeef377b77de0ac100969eeff3f102e97513accbbf9fe150ad80e3",
+          "registered": false,
+          "registryMode": null,
+          "registrationDoesNotProveWholeBodyOrRuntime": true
+        }
+      ],
+      "actualConsumerReferences": [
+        ".github/workflows/windows-upstream-sync.yml:6",
+        ".github/workflows/windows-upstream-sync.yml:20",
+        "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt:365"
+      ],
+      "currentBehavior": "有两小时 upstream workflow、敏感更新 gate、六小时 client updater 和本地 EXE/package 回退试验；桌面仅旧 6fd/0.2.415.1。",
+      "remainingWork": [
+        "现有新源码未重新打包交付；真实公有 Windows release/feed 与仓库 AUTO_SYNC/AUTO_PUBLISH 启用外部状态未在本审计验证，v0.2.4 未完成对齐。"
+      ],
+      "verification": {
+        "normalProductCompile": true,
+        "normalCompileEvidence": "compile_current_source",
+        "additionalEvidence": [
+          "delivered_old_package"
+        ],
+        "entireGroupActualRootAccepted": false,
+        "entireGroupRealAccountAccepted": false,
+        "currentSourceDesktopPackageAccepted": false
+      },
+      "completeFeatureParityProven": false
+    }
+  ],
+  "typedRouteFindings": [
+    {
+      "keys": [
+        "CommentDetail"
+      ],
+      "state": "unsupported_leaf",
+      "note": "Original body exists inside Video/BGM. player_parity lane not merged."
+    },
+    {
+      "keys": [
+        "Bangumi",
+        "BangumiDetail",
+        "BangumiPlayer"
+      ],
+      "state": "desktop_substitute",
+      "note": "Same BangumiBrowserScreen for three distinct original pages; original body unregistered."
+    },
+    {
+      "keys": [
+        "BangumiReview",
+        "SearchTrending",
+        "AicuQuery",
+        "UpowerRank",
+        "MemberGuard",
+        "TipsSettings",
+        "OpenSourceLicenses",
+        "Onboarding"
+      ],
+      "state": "unsupported_leaf",
+      "note": "Related embedded policies/Space tabs do not close independent typed routes."
+    },
+    {
+      "keys": [
+        "Inbox",
+        "ReplyMe",
+        "AtMe",
+        "LikeMe",
+        "SystemNotice",
+        "Chat"
+      ],
+      "state": "collapsed_desktop_page",
+      "note": "All MESSAGES; entryKey not passed to CommunityMessages; tab starts 0 and selectedSession null."
+    },
+    {
+      "keys": [
+        "BottomBarSettings",
+        "AnimationSettings",
+        "SettingsShare",
+        "IconSettings",
+        "MessageNotificationSettings"
+      ],
+      "state": "section_mapped_without_corresponding_navigator_open",
+      "note": "Tree internal navigation can reach some controls. Shell effect handles only a subset, so independent key may show prior current page."
+    },
+    {
+      "keys": [
+        "WebDavBackup"
+      ],
+      "state": "wrong_or_unsupported_settings_target",
+      "note": "Shell opens DATA_BACKUP but Tree handles WEBDAV_BACKUP/SETTINGS_SHARE, requires correction."
+    },
+    {
+      "keys": [
+        "HistorySearch",
+        "FavoriteSearch",
+        "WatchLaterSearch"
+      ],
+      "state": "original_host_wired",
+      "note": "Verified actual Shell typed branches and original Host consumers; these are not missing."
+    }
+  ],
+  "evidence": {
+    "compile_current_source": {
+      "path": "desktop/verification/stable-story-full-navigation-integration/root/story/actual-build.json",
+      "sha256GitBlobBytes": "72346747aaadc56a71ed2c8ff47b75437bc2d580e9d6ec78089f963f4a1121da",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+      "kind": "existing_normal_product_compile_receipt",
+      "exitCode": 0,
+      "sourceCount": 1180,
+      "productOverrides": 0,
+      "notRuntimeOrAccountAcceptance": true,
+      "noBuildExecutedByAudit": true
+    },
+    "navigation_tests_current": {
+      "kind": "existing_targeted_CPU_test_records",
+      "xmlHashAndCountsChecked": true,
+      "tests": [
+        {
+          "path": "desktop/verification/stable-story-full-navigation-integration/root/story/DesktopFullNavigationSettingsTest.xml",
+          "sha256GitBlobBytes": "fbf65b97b710b3573d3588f28692d6d6e0248af8b35644e5d4e1276e8794fb05",
+          "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+          "tests": 14,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        },
+        {
+          "path": "desktop/verification/stable-story-full-navigation-integration/root/story/DesktopNavigationInteractionSettingsTest.xml",
+          "sha256GitBlobBytes": "5c9b818c19c5659025c571bbb52a14b200e5ce57d1d5450c6af4decc922d368f",
+          "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+          "tests": 6,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0
+        }
+      ],
+      "total": 20,
+      "doesNotProveRootVisuals": true
+    },
+    "story_native_prepared": {
+      "path": "desktop/verification/stable-story-full-navigation-integration/README.md",
+      "sha256GitBlobBytes": "7bac7c95583f63304704062fec77e20583657077a406d0442ec8bc3268ee6975",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+      "kind": "reported_prepared_actual_Root_local_media_cohort",
+      "checksReported": 11,
+      "noNetworkRawPayloadOrStoryVisualAcceptance": true
+    },
+    "image_share_current": {
+      "path": "desktop/verification/stable-image-preview-native-share/integration-summary.json",
+      "sha256GitBlobBytes": "a2256fb843c64e6e1164c5e2fdab7fb33b841a7dd1ce9335aef4b38b2a71c9e9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+      "kind": "existing_product_compile_and_prepared_native_share_protocol_receipt",
+      "actualRootPreviewClickAccepted": false,
+      "receiverUiAccepted": false
+    },
+    "historical_root_idle": {
+      "path": "desktop/verification/stable-full-video-root-joint-integration/actual-and-reviews/stable-full-video-root-actual-proof80/README.md",
+      "sha256GitBlobBytes": "9ff2eacf62486ea9d031137e2a65ae7748fc0009aadb662b3f155640beb566cb",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+      "kind": "historical_actual82_idle_Root_cohort",
+      "checksReported": 17,
+      "ordinaryVideoSuccessAccepted": false
+    },
+    "historical_root_external_media": {
+      "path": "desktop/verification/stable-desktop-delivery-83/external-root/README.md",
+      "sha256GitBlobBytes": "e49fa8dbd574495d1654228dba93781cca03081b29dcf2f42bc2cbcf6f3424b7",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+      "kind": "historical_actual83_external_local_media_Root_cohort",
+      "checksReported": 17,
+      "ordinaryVideoSuccessOrPhysicalControlsAccepted": false
+    },
+    "delivered_old_package": {
+      "path": "desktop/verification/stable-desktop-delivery-83/desktop-deployment.json",
+      "sha256GitBlobBytes": "53176afb5498478a3872f3504e464d9f674e73ee0bbb9229b0016de26ed9409e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+      "kind": "existing_deployment_receipt_and_actual_current_EXE_hash",
+      "sourceCommit": "6fd5bbd804f272650942f5a445385ba5428ffa9b",
+      "version": "0.2.415.1",
+      "actualCurrentExePath": "C:\\Users\\TONYS\\Desktop\\BiliPai Windows v0.2.3\\BiliPai Windows.exe",
+      "actualCurrentExeSha256": "959729207e4db17fa22c29d520228a7e6e22a07c97ab2e0786011dbd48cb4d17",
+      "matchesDeploymentReceipt": true,
+      "doesNotContainCurrentSourceEdits": true,
+      "realAccountAcceptance": "pending_user_test"
+    }
+  },
+  "sourceObservations": {
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:139": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "line": 139,
+      "matchingLines": [
+        139
+      ],
+      "needle": "BiliPaiNavKey.Home -> DesktopRetainedHomePage",
+      "snippet": "BiliPaiNavKey.Home -> DesktopRetainedHomePage(root, pages.window, homeNavigation,",
+      "sha256GitBlobBytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:155": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "line": 155,
+      "matchingLines": [
+        155
+      ],
+      "needle": "is BiliPaiNavKey.Category -> DesktopCategoryRouteHost",
+      "snippet": "is BiliPaiNavKey.Category -> DesktopCategoryRouteHost(routes.category(key),",
+      "sha256GitBlobBytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:162": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "line": 162,
+      "matchingLines": [
+        162
+      ],
+      "needle": "PartitionScreen({ routes.back() }",
+      "snippet": "PartitionScreen({ routes.back() },",
+      "sha256GitBlobBytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1760": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1760,
+      "matchingLines": [
+        1760
+      ],
+      "needle": "entryKey is BiliPaiNavKey.WeeklySeries -> DesktopWeeklySeriesScreen",
+      "snippet": "entryKey is BiliPaiNavKey.WeeklySeries -> DesktopWeeklySeriesScreen(discovery.weeklySeriesRequests(),repository,entryKey.number,{commands.back()},",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWeeklySeriesScreen.kt:41": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWeeklySeriesScreen.kt",
+      "line": 41,
+      "matchingLines": [
+        41
+      ],
+      "needle": "WeeklySeriesScreen(initialNumber",
+      "snippet": "WeeklySeriesScreen(initialNumber, onBack = { if (owns()) latestBack() },",
+      "sha256GitBlobBytes": "78d2f99528040628904ff8359faec6af0652983a07868bfdfe7703e4ddf8e782",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt:55": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+      "line": 55,
+      "matchingLines": [
+        55
+      ],
+      "needle": "CommunitySection.SEARCH -> CommunitySearch",
+      "snippet": "CommunitySection.SEARCH -> CommunitySearch(query, community, navigation, runtime, defaultSearchHintEnabled)",
+      "sha256GitBlobBytes": "3a2712a13c4a3c312008f208384167124e7855680a726310eb22d45f94dc2cfc",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt:71": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunitySearchScreens.kt",
+      "line": 71,
+      "matchingLines": [
+        71
+      ],
+      "needle": "resolveSearchFilterTabs(savedTabOrder)",
+      "snippet": "com.android.purebilibili.feature.search.resolveSearchFilterTabs(savedTabOrder)",
+      "sha256GitBlobBytes": "54f3f5375daccb10d2a3826e84ad75b9a04b5da8fae035de00f3110fc812da3f",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1996": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1996,
+      "matchingLines": [
+        1996
+      ],
+      "needle": "else -> DesktopSection.UNSUPPORTED",
+      "snippet": "else -> DesktopSection.UNSUPPORTED // Explicit unsupported leaf; never Home or Notes.",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1765": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1765,
+      "matchingLines": [
+        1765,
+        1855
+      ],
+      "needle": "AdvancedLoginDialog(repository",
+      "snippet": "AdvancedLoginDialog(repository,onDismiss={commands.back()},onComplete={commands.back()})",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/AdvancedLoginDialog.kt:28": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/AdvancedLoginDialog.kt",
+      "line": 28,
+      "matchingLines": [
+        28
+      ],
+      "needle": "fun AdvancedLoginDialog",
+      "snippet": "fun AdvancedLoginDialog(repository: DesktopRepository, onDismiss: () -> Unit, onComplete: (AccountSummary) -> Unit) {",
+      "sha256GitBlobBytes": "bc213b312f9b5e44d549804f6e0cc101f809ffe0708e4e6c55ff196f20178ca3",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:145": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "line": 145,
+      "matchingLines": [
+        145
+      ],
+      "needle": "BiliPaiNavKey.Profile -> DesktopOriginalProfileHost",
+      "snippet": "BiliPaiNavKey.Profile -> DesktopOriginalProfileHost(pages.profile, profileNavigation,",
+      "sha256GitBlobBytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt:95": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteActions.kt",
+      "line": 95,
+      "matchingLines": [
+        95
+      ],
+      "needle": "onAccountSwitchSuccess = accountSwitchSucceeded",
+      "snippet": "onAccountSwitchSuccess = accountSwitchSucceeded,",
+      "sha256GitBlobBytes": "e4bf3d01c4e937288a705581723b0fb42eea7c90e849b720d94880323772797d",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1808": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1808,
+      "matchingLines": [
+        1808
+      ],
+      "needle": "DesktopCompleteSpaceScreen(userId",
+      "snippet": "DesktopCompleteSpaceScreen(userId, repository, social, community, space, spaceContributions,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt:253": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCompleteSpaceScreen.kt",
+      "line": 253,
+      "matchingLines": [
+        253
+      ],
+      "needle": "SpaceSubTab.UGC_SEASON, SpaceSubTab.COMIC -> Text",
+      "snippet": "SpaceSubTab.UGC_SEASON, SpaceSubTab.COMIC -> Text(\"该投稿栏目尚未开放\", Modifier.padding(20.dp))",
+      "sha256GitBlobBytes": "76f1bee6ff516b2c7ce9b2a5410a9af650b87eddbcf8d7e2e8449e0b2d1f0e96",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt:188": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+      "line": 188,
+      "matchingLines": [
+        188
+      ],
+      "needle": "DesktopSpaceTab.CHARGE -> CommunityFeed",
+      "snippet": "DesktopSpaceTab.CHARGE -> CommunityFeed<SpaceUpowerRankItem, Unit>(Pair(selectedTab, state.selectedPrivilege), Unit, load = {",
+      "sha256GitBlobBytes": "93fe822b2b12f80053f03e457261d0bfe84829d2f6975af20f5d4de0b58373b8",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1506": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1506,
+      "matchingLines": [
+        1506
+      ],
+      "needle": "DesktopOriginalVideoPhysicalLeaf(entryKey",
+      "snippet": "DesktopOriginalVideoPhysicalLeaf(entryKey, ordinaryVideo, commands, active,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt:24": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt",
+      "line": 24,
+      "matchingLines": [
+        24
+      ],
+      "needle": "DesktopOriginalVideoShellMount(environment",
+      "snippet": "DesktopOriginalVideoShellMount(environment, shell, { assembler.factory },",
+      "sha256GitBlobBytes": "5c94c0a3f06d91b2693536434224243aa55603eab453d78ecaf321aa36b89299",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt:31": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "line": 31,
+      "matchingLines": [
+        31,
+        43,
+        55,
+        63,
+        64,
+        65,
+        66,
+        71,
+        73,
+        74,
+        75,
+        87,
+        90,
+        97,
+        100,
+        106,
+        117,
+        118,
+        121,
+        123,
+        124,
+        126,
+        127,
+        143,
+        144,
+        172,
+        177,
+        198,
+        238,
+        239,
+        245,
+        263,
+        274,
+        276,
+        277,
+        324,
+        333,
+        339,
+        352,
+        379,
+        384
+      ],
+      "needle": "DesktopOriginalVideo",
+      "snippet": "internal class DesktopOriginalVideoRootShellResources(",
+      "sha256GitBlobBytes": "a276c009c4871907a9cee0d3c0c05b54d1475cf78c0a8962fc41e7670ae9e7fa",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt:556": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "line": 556,
+      "matchingLines": [
+        556
+      ],
+      "needle": "fun NativeMediaPlayer",
+      "snippet": "fun NativeMediaPlayer(player: MpvPlayer) {",
+      "sha256GitBlobBytes": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:488": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 488,
+      "matchingLines": [
+        488,
+        1130,
+        1198,
+        1202,
+        1389,
+        1454,
+        1756,
+        1883
+      ],
+      "needle": "pipActive",
+      "snippet": "val pipActive by (pip?.active ?: emptyPipState).collectAsState()",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt:146": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "line": 146,
+      "matchingLines": [
+        146
+      ],
+      "needle": "VideoCommentTab(listState",
+      "snippet": "} else VideoCommentTab(listState, Modifier.weight(1f), info, commentState.replies,",
+      "sha256GitBlobBytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt:126": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "line": 126,
+      "matchingLines": [
+        126
+      ],
+      "needle": "CommentDetailScreen(info.aid",
+      "snippet": "CommentDetailScreen(info.aid, activeDetail.root, activeDetail.target, 1,",
+      "sha256GitBlobBytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt:165": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "line": 165,
+      "matchingLines": [
+        165
+      ],
+      "needle": "DesktopOriginalVideoCommentInputOverlay",
+      "snippet": "DesktopOriginalVideoCommentInputOverlay(composer, commentState, { if (owned()) currentPosition() else 0L })",
+      "sha256GitBlobBytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt:59": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+      "line": 59,
+      "matchingLines": [
+        59
+      ],
+      "needle": "CommentDetailScreen(active.oid",
+      "snippet": "CommentDetailScreen(active.oid, active.root, active.target, active.type,",
+      "sha256GitBlobBytes": "420d128379653d05f9b0376006cf55cf1d286a8e6097ff5fda324e3622a2f61d",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt:73": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+      "line": 73,
+      "matchingLines": [
+        73
+      ],
+      "needle": "is MessageLinkNavigationAction.CommentDetail -> if(action.businessId==17)",
+      "snippet": "is MessageLinkNavigationAction.CommentDetail -> if(action.businessId==17)",
+      "sha256GitBlobBytes": "3a2712a13c4a3c312008f208384167124e7855680a726310eb22d45f94dc2cfc",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1792": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1792,
+      "matchingLines": [
+        1792
+      ],
+      "needle": "DesktopOriginalStoryPhysicalLeaf(entryKey",
+      "snippet": "DesktopOriginalStoryPhysicalLeaf(entryKey, ordinaryVideo, commands, active && !activatingUpdate,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:71": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "line": 71,
+      "matchingLines": [
+        71
+      ],
+      "needle": "storyFeeds?.reconcile(retainedStoryKeys)",
+      "snippet": "SideEffect { storyFeeds?.reconcile(retainedStoryKeys) }",
+      "sha256GitBlobBytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHost.kt:7": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuSettingsHost.kt",
+      "line": 7,
+      "matchingLines": [
+        7,
+        12,
+        13
+      ],
+      "needle": "DesktopOriginalDanmaku",
+      "snippet": "import com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences",
+      "sha256GitBlobBytes": "e52165bea8256acbfc8e417a326fedf8122cfed83dc0d7a5d38479c82dccb20c",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuRoot.kt:4": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalDanmakuRoot.kt",
+      "line": 4,
+      "matchingLines": [
+        4,
+        9,
+        15,
+        54,
+        64,
+        76,
+        81,
+        83
+      ],
+      "needle": "DesktopOriginalDanmaku",
+      "snippet": "import com.android.purebilibili.feature.video.viewmodel.DesktopOriginalDanmakuSession",
+      "sha256GitBlobBytes": "cb1567ca82f092b01ac38af632962f5bb21ea711d89f7edb7fa3589141ee8bca",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1539": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1539,
+      "matchingLines": [
+        1539
+      ],
+      "needle": "DesktopOriginalFavoritesHost(entry.environment",
+      "snippet": "DesktopOriginalFavoritesHost(entry.environment, bindings,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1567": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1567,
+      "matchingLines": [
+        1567
+      ],
+      "needle": "isSearchDestination = entryKey is BiliPaiNavKey.FavoriteSearch",
+      "snippet": "isSearchDestination = entryKey is BiliPaiNavKey.FavoriteSearch,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt:47": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalFavoritesHost.kt",
+      "line": 47,
+      "matchingLines": [
+        47
+      ],
+      "needle": "CommonListScreen(viewModel",
+      "snippet": "CommonListScreen(viewModel,onBack,onVideoClick,onUpClick,onCollectionClick,onFolderClick,",
+      "sha256GitBlobBytes": "cea29eb586f110638af5da7571b8eb56428414277774230b839976242a6193dd",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1627": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1627,
+      "matchingLines": [
+        1627
+      ],
+      "needle": "entryKey == BiliPaiNavKey.History || entryKey is BiliPaiNavKey.HistorySearch",
+      "snippet": "entryKey == BiliPaiNavKey.History || entryKey is BiliPaiNavKey.HistorySearch || entryKey is BiliPaiNavKey.LikedVideos -> {",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPersonalListHost.kt:58": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPersonalListHost.kt",
+      "line": 58,
+      "matchingLines": [
+        58
+      ],
+      "needle": "CommonListScreen(model",
+      "snippet": "CommonListScreen(model, onBack = { if (entry.owns()) onBack() },",
+      "sha256GitBlobBytes": "bf291fb274d47ea982c8004fada328991a8484e1b3ffea3ffc57287858db987e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1580": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1580,
+      "matchingLines": [
+        1580
+      ],
+      "needle": "entryKey == BiliPaiNavKey.WatchLater || entryKey is BiliPaiNavKey.WatchLaterSearch",
+      "snippet": "entryKey == BiliPaiNavKey.WatchLater || entryKey is BiliPaiNavKey.WatchLaterSearch -> {",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1618": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1618,
+      "matchingLines": [
+        1618
+      ],
+      "needle": "DesktopOriginalWatchLaterHost",
+      "snippet": "DesktopOriginalWatchLaterHost(entry,bindings,navigation,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1576": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1576,
+      "matchingLines": [
+        1576
+      ],
+      "needle": "DesktopOriginalFollowingHost(entry",
+      "snippet": "DesktopOriginalFollowingHost(entry,onBack={commands.back()},",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1705": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1705,
+      "matchingLines": [
+        1705
+      ],
+      "needle": "DesktopBlockedListScreen(community.blockedUpRepository",
+      "snippet": "blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { loginDialog = true }) },",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt:76": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "line": 76,
+      "matchingLines": [
+        76
+      ],
+      "needle": "DesktopDynamicTabsHost(users",
+      "snippet": "DesktopDynamicTabsHost(users,preferences,navigation.onUser,navigation.onLogin,transform,::timeline,",
+      "sha256GitBlobBytes": "956ffecc0bdea646b7d606c25a258b26175dd593ab3af34bd81e0560b27fa0da",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt:207": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "line": 207,
+      "matchingLines": [
+        207
+      ],
+      "needle": "DesktopOriginalDynamicDetailLayout(id",
+      "snippet": "DesktopOriginalDynamicDetailLayout(id,uiState,replySession,defaultLayout,",
+      "sha256GitBlobBytes": "956ffecc0bdea646b7d606c25a258b26175dd593ab3af34bd81e0560b27fa0da",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt:238": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "line": 238,
+      "matchingLines": [
+        238
+      ],
+      "needle": "DesktopOriginalDynamicCardHost(item",
+      "snippet": "DesktopOriginalDynamicCardHost(item,repository,community,routes,isDetail=details,",
+      "sha256GitBlobBytes": "956ffecc0bdea646b7d606c25a258b26175dd593ab3af34bd81e0560b27fa0da",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt:90": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDynamicEditorRoot.kt",
+      "line": 90,
+      "matchingLines": [
+        90
+      ],
+      "needle": "DesktopOriginalDynamicEditorHost(request.draft",
+      "snippet": "DesktopOriginalDynamicEditorHost(request.draft, request.dynamicId, operations, root.session,",
+      "sha256GitBlobBytes": "e01961364d0f4ae063b85e94f2026b1c00d2f37a051b9f1fd4ffd07f81414602",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt:121": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityDynamicScreens.kt",
+      "line": 121,
+      "matchingLines": [
+        121
+      ],
+      "needle": "DesktopOriginalDynamicReplySession(id",
+      "snippet": "val replySession=remember(alive){DesktopOriginalDynamicReplySession(id,pageScope,requests,",
+      "sha256GitBlobBytes": "956ffecc0bdea646b7d606c25a258b26175dd593ab3af34bd81e0560b27fa0da",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1822": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1822,
+      "matchingLines": [
+        1822
+      ],
+      "needle": "DesktopOriginalArticleRootHost(entryKey",
+      "snippet": "DesktopOriginalArticleRootHost(entryKey, personalLists, commands,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/StoryTopicScreens.kt:161": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/StoryTopicScreens.kt",
+      "line": 161,
+      "matchingLines": [
+        161
+      ],
+      "needle": "internal fun DesktopTopicDetailScreen",
+      "snippet": "internal fun DesktopTopicDetailScreen(topicId: Long, data: DesktopStoryTopicDataSource,",
+      "sha256GitBlobBytes": "c361c88c80459f15f22eacec7c05c2b4135009fe54ec188afdda7720a44a1244",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt:59": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+      "line": 59,
+      "matchingLines": [
+        59
+      ],
+      "needle": "CommunitySection.NOTES -> CommunityVideoNotes",
+      "snippet": "CommunitySection.NOTES -> CommunityVideoNotes(noteVideo, repository, community, navigation)",
+      "sha256GitBlobBytes": "3a2712a13c4a3c312008f208384167124e7855680a726310eb22d45f94dc2cfc",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:136": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "line": 136,
+      "matchingLines": [
+        136
+      ],
+      "needle": "LocalDesktopImagePreviewShareBindings provides aggregate.gallery.imageShare",
+      "snippet": "LocalDesktopImagePreviewShareBindings provides aggregate.gallery.imageShare,",
+      "sha256GitBlobBytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt:173": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopVideoCommentRoot.kt",
+      "line": 173,
+      "matchingLines": [
+        173
+      ],
+      "needle": "ImagePreviewDialog(images,index",
+      "snippet": "com.android.purebilibili.feature.dynamic.components.ImagePreviewDialog(images,index,",
+      "sha256GitBlobBytes": "35b8fbf20f3a0e1d793dcc3626c6228a0c7310e264e04ca6be22e41da246ae06",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1745": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1745,
+      "matchingLines": [
+        1745
+      ],
+      "needle": "DesktopOriginalDownloadListHost(binding",
+      "snippet": "DesktopOriginalDownloadListHost(binding,{commands.back()},",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1755": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1755,
+      "matchingLines": [
+        1755
+      ],
+      "needle": "DesktopOriginalOfflineRootHost(entryKey.taskId",
+      "snippet": "DesktopOriginalOfflineRootHost(entryKey.taskId,binding,offlineEntryScope,globalPluginContext,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:92": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "line": 92,
+      "matchingLines": [
+        92
+      ],
+      "needle": "SettingsRootCategory.STORAGE_BACKUP",
+      "snippet": "SettingsRootCategory.STORAGE_BACKUP -> {",
+      "sha256GitBlobBytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsStorageEntries.kt:5": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsStorageEntries.kt",
+      "line": 5,
+      "matchingLines": [
+        5,
+        18
+      ],
+      "needle": "SettingsStorageBackupCategoryEntrySection",
+      "snippet": "import com.android.purebilibili.feature.settings.SettingsStorageBackupCategoryEntrySection",
+      "sha256GitBlobBytes": "ce199bc114fe4921577f305cf6e171f2325c3ca0c0954df284b60295e72889f3",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:166": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "line": 166,
+      "matchingLines": [
+        166
+      ],
+      "needle": "BiliPaiNavKey.LiveList -> aggregate.LiveListScreen",
+      "snippet": "BiliPaiNavKey.LiveList -> aggregate.LiveListScreen({ routes.back() }, homeNavigation.onLiveClick,",
+      "sha256GitBlobBytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:178": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "line": 178,
+      "matchingLines": [
+        178
+      ],
+      "needle": "BiliPaiNavKey.LiveSearch -> LiveSearchScreen",
+      "snippet": "BiliPaiNavKey.LiveSearch -> LiveSearchScreen(back, room,",
+      "sha256GitBlobBytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt:181": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootStack.kt",
+      "line": 181,
+      "matchingLines": [
+        181
+      ],
+      "needle": "BiliPaiNavKey.LiveFollowing -> LiveFollowingScreen",
+      "snippet": "BiliPaiNavKey.LiveFollowing -> LiveFollowingScreen(back, room)",
+      "sha256GitBlobBytes": "78d3c66e02f54e88933f3370f4abb446289d7d4ca2a0d3c2dff0b16091a8f5d2",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1738": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1738,
+      "matchingLines": [
+        1738
+      ],
+      "needle": "section == DesktopSection.LIVE -> LiveBrowserScreen",
+      "snippet": "section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia)",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt:465": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/MediaScreens.kt",
+      "line": 465,
+      "matchingLines": [
+        465
+      ],
+      "needle": "private fun LiveChatPanel",
+      "snippet": "private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modifier: Modifier = Modifier) {",
+      "sha256GitBlobBytes": "9d02ca0714942908507e9bc3ed63f3afa4c436b97a33fb4b0967416a25603bf3",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiHubRoot.kt:38": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiHubRoot.kt",
+      "line": 38,
+      "matchingLines": [
+        38
+      ],
+      "needle": "com.android.purebilibili.feature.bangumi.HomeBangumiTabPage(",
+      "snippet": "com.android.purebilibili.feature.bangumi.HomeBangumiTabPage(",
+      "sha256GitBlobBytes": "c2edd98f193c6da1098a7d93d2dc632540e8bfd53c2160376bee157d933f2e56",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1739": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1739,
+      "matchingLines": [
+        1739
+      ],
+      "needle": "section == DesktopSection.BANGUMI -> BangumiBrowserScreen",
+      "snippet": "section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1980": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1980,
+      "matchingLines": [
+        1980
+      ],
+      "needle": "is BiliPaiNavKey.Bangumi,is BiliPaiNavKey.BangumiDetail,is BiliPaiNavKey.BangumiPlayer",
+      "snippet": "is BiliPaiNavKey.Bangumi,is BiliPaiNavKey.BangumiDetail,is BiliPaiNavKey.BangumiPlayer -> DesktopSection.BANGUMI",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt:48": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopBgmDetailRoot.kt",
+      "line": 48,
+      "matchingLines": [
+        48
+      ],
+      "needle": "BgmDetailScreen(request.musicId",
+      "snippet": "if (active == null) BgmDetailScreen(request.musicId, request.aid, request.cid, request.showVideos,",
+      "sha256GitBlobBytes": "420d128379653d05f9b0376006cf55cf1d286a8e6097ff5fda324e3622a2f61d",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1770": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1770,
+      "matchingLines": [
+        1770
+      ],
+      "needle": "section == DesktopSection.LISTEN ->",
+      "snippet": "section == DesktopSection.LISTEN -> if (listen != null) ListenBrowserScreen(listen, preferences, ::changePreferences, ::openVideo, { loginDialog = true })",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1787": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1787,
+      "matchingLines": [
+        1787
+      ],
+      "needle": "DesktopNativeMusicDetailScreen(source",
+      "snippet": "if (listen != null && source != null) DesktopNativeMusicDetailScreen(source, listen, preferences, ::changePreferences,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1987": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1987,
+      "matchingLines": [
+        1987
+      ],
+      "needle": "BiliPaiNavKey.Inbox,BiliPaiNavKey.ReplyMe",
+      "snippet": "BiliPaiNavKey.Inbox,BiliPaiNavKey.ReplyMe,BiliPaiNavKey.AtMe,BiliPaiNavKey.LikeMe,BiliPaiNavKey.SystemNotice,is BiliPaiNavKey.Chat -> DesktopSection.MESSAGES",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityMessageScreens.kt:29": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityMessageScreens.kt",
+      "line": 29,
+      "matchingLines": [
+        29
+      ],
+      "needle": "var tab by remember",
+      "snippet": "var tab by remember { mutableIntStateOf(0) }",
+      "sha256GitBlobBytes": "8577901730e19dc2eff2cd54597834ca32790bc53ab4efe191a08b3a1309fb0c",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityMessageScreens.kt:33": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityMessageScreens.kt",
+      "line": 33,
+      "matchingLines": [
+        33
+      ],
+      "needle": "var selectedSession by remember",
+      "snippet": "var selectedSession by remember(mid) { mutableStateOf<SessionItem?>(null) }",
+      "sha256GitBlobBytes": "8577901730e19dc2eff2cd54597834ca32790bc53ab4efe191a08b3a1309fb0c",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1695": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1695,
+      "matchingLines": [
+        1695
+      ],
+      "needle": "section == DesktopSection.PLUGINS -> PluginCenterScreen",
+      "snippet": "section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1732": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1732,
+      "matchingLines": [
+        1732
+      ],
+      "needle": "DesktopJsPluginContentScreen(pluginRuntime.jsPlugins",
+      "snippet": "DesktopJsPluginContentScreen(pluginRuntime.jsPlugins, jsPluginId,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1736": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1736,
+      "matchingLines": [
+        1736
+      ],
+      "needle": "DesktopExternalMediaScreen(retainedMedia.external",
+      "snippet": "section == DesktopSection.EXTERNAL_MEDIA -> DesktopExternalMediaScreen(retainedMedia.external, player, playerContent,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1727": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1727,
+      "matchingLines": [
+        1727
+      ],
+      "needle": "section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings",
+      "snippet": "section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings(appearance,",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt:33": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
+      "line": 33,
+      "matchingLines": [
+        33
+      ],
+      "needle": "fun DesktopAppearanceSettings",
+      "snippet": "fun DesktopAppearanceSettings(",
+      "sha256GitBlobBytes": "6190b1e381e8d4b70388489c6241e2dd960c20e20beacd8350153cb143519e9b",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:111": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "line": 111,
+      "matchingLines": [
+        111
+      ],
+      "needle": "SettingsSearchTarget.APPEARANCE -> appearanceContent()",
+      "snippet": "SettingsSearchTarget.APPEARANCE -> appearanceContent()",
+      "sha256GitBlobBytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:119": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "line": 119,
+      "matchingLines": [
+        119
+      ],
+      "needle": "SettingsSearchTarget.BOTTOM_BAR -> DesktopNavigationInteractionSettings",
+      "snippet": "SettingsSearchTarget.BOTTOM_BAR -> DesktopNavigationInteractionSettings(SettingsSearchTarget.BOTTOM_BAR, onFailure)",
+      "sha256GitBlobBytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:120": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "line": 120,
+      "matchingLines": [
+        120
+      ],
+      "needle": "SettingsSearchTarget.ANIMATION -> DesktopNavigationInteractionSettings",
+      "snippet": "SettingsSearchTarget.ANIMATION -> DesktopNavigationInteractionSettings(SettingsSearchTarget.ANIMATION, onFailure)",
+      "sha256GitBlobBytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNavigationHost.kt:69": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalNavigationHost.kt",
+      "line": 69,
+      "matchingLines": [
+        69
+      ],
+      "needle": "videoTransitionRealtimeBlurEnabled = videoTransitionRealtimeBlurEnabled",
+      "snippet": "videoTransitionRealtimeBlurEnabled = videoTransitionRealtimeBlurEnabled,",
+      "sha256GitBlobBytes": "7b819357c4127a5b96685afe36e6cae9e87c169e05a48755033bbf6b054c5156",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:113": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "line": 113,
+      "matchingLines": [
+        113
+      ],
+      "needle": "SettingsSearchTarget.PLAYBACK ->",
+      "snippet": "SettingsSearchTarget.PLAYBACK -> {",
+      "sha256GitBlobBytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:122": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "line": 122,
+      "matchingLines": [
+        122
+      ],
+      "needle": "SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE ->",
+      "snippet": "SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE -> {",
+      "sha256GitBlobBytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1472": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1472,
+      "matchingLines": [
+        1472
+      ],
+      "needle": "BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.DATA_BACKUP",
+      "snippet": "BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.DATA_BACKUP,null)",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:126": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "line": 126,
+      "matchingLines": [
+        126
+      ],
+      "needle": "SettingsSearchTarget.PERMISSION -> AppText",
+      "snippet": "SettingsSearchTarget.PERMISSION -> AppText(\"Windows 权限状态与检查尚未接入，当前不能确认权限是否可用。\", Modifier.padding(12.dp))",
+      "sha256GitBlobBytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt:127": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopSettingsTree.kt",
+      "line": 127,
+      "matchingLines": [
+        127
+      ],
+      "needle": "SettingsSearchTarget.MESSAGE_NOTIFICATION -> AppText",
+      "snippet": "SettingsSearchTarget.MESSAGE_NOTIFICATION -> AppText(\"原版消息通知调度和 Windows 通知权限尚未接入。\", Modifier.padding(12.dp))",
+      "sha256GitBlobBytes": "3b936bf3304036d69782ec711dcd76392f80bbd212b674ab655a6d1ac27b2b2e",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt:1725": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "line": 1725,
+      "matchingLines": [
+        1725
+      ],
+      "needle": "许可和支持页面仍在移植中",
+      "snippet": "Text(\"许可和支持页面仍在移植中。\", Modifier.padding(12.dp))",
+      "sha256GitBlobBytes": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    ".github/workflows/windows-upstream-sync.yml:6": {
+      "path": ".github/workflows/windows-upstream-sync.yml",
+      "line": 6,
+      "matchingLines": [
+        6
+      ],
+      "needle": "cron: '23 */2 * * *'",
+      "snippet": "- cron: '23 */2 * * *'",
+      "sha256GitBlobBytes": "42ae30e21093a3fd33a0ffa7d7a130c574f869434bc07c770c507dfa36a209ec",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    ".github/workflows/windows-upstream-sync.yml:20": {
+      "path": ".github/workflows/windows-upstream-sync.yml",
+      "line": 20,
+      "matchingLines": [
+        20
+      ],
+      "needle": "vars.BILIPAI_WINDOWS_AUTO_SYNC == 'true'",
+      "snippet": "(github.event_name == 'workflow_dispatch' || vars.BILIPAI_WINDOWS_AUTO_SYNC == 'true')",
+      "sha256GitBlobBytes": "42ae30e21093a3fd33a0ffa7d7a130c574f869434bc07c770c507dfa36a209ec",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    },
+    "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt:365": {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/update/DesktopUpdater.kt",
+      "line": 365,
+      "matchingLines": [
+        365
+      ],
+      "needle": "AUTO_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000L",
+      "snippet": "internal const val AUTO_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000L",
+      "sha256GitBlobBytes": "03bc98ffd493bd28a40fcd044301116ae3e02ccd9aae56ef8c942887f7f4c346",
+      "inspectedCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478"
+    }
+  },
+  "nextMajorSlices": [
+    {
+      "priority": 0,
+      "scope": "独立 CommentDetail 与全部原 message typed dispatcher",
+      "alreadyInPreparation": "player_parity",
+      "doNotCountUnmergedLane": true
+    },
+    {
+      "priority": 0,
+      "scope": "原存储设置与实际 owner 安全清理/下载目录",
+      "alreadyInPreparation": "delivery_readiness",
+      "doNotCountUnmergedLane": true
+    },
+    {
+      "priority": 0,
+      "scope": "完整原消息七页/VM，保留 typed key、会话与未读/通知 owner",
+      "reason": "当前独立入口参数丢失且主体均为 desktop substitute"
+    },
+    {
+      "priority": 0,
+      "scope": "完整原独立番剧详情/播放器/点评/时间表/catalog",
+      "reason": "Home Hub 已完整；独立原五页均未生成"
+    },
+    {
+      "priority": 1,
+      "scope": "settings typed key 必须打开正确 navigator target",
+      "reason": "已有完整编辑器也可能无法经原独立 key 到达"
+    },
+    {
+      "priority": 1,
+      "scope": "完整原 Search、Space、LivePlayer、Topic、Music/Listen 独立页面",
+      "reason": "当前复用协议/policy 与 desktop UI，尚非完整原 body"
+    },
+    {
+      "priority": 1,
+      "scope": "Windows permissions/message notifications 和帮助许可/AICU/引导独立页",
+      "reason": "明确占位或 Unsupported"
+    },
+    {
+      "priority": 1,
+      "scope": "普通账号与完整 Root 控件/画面验收，再打包桌面 EXE",
+      "reason": "现有本地 native/CPU checks 不能证明全功能真实账号使用"
+    },
+    {
+      "priority": 2,
+      "scope": "完成后启用并验证公有 Windows feed 与仓库持续自动发布",
+      "reason": "按人类最新优先级先对齐全部功能；workflow 代码不证明外部启用"
+    }
+  ],
+  "limits": [
+    "Read-only code inspection cannot establish real-account API success, physical controls or visual parity.",
+    "Original body wired is a source integration category, never proof that every feature and platform effect has passed.",
+    "Historical receipts are labeled by actual revision/scope; they do not promote the current source or current desktop EXE into full acceptance.",
+    "Source registered mode and identity are reported, never used as equivalent to complete UI/body reuse.",
+    "Latest upstream v0.2.4 comparison is outside this pinned v0.2.3 source audit and remains outstanding."
+  ],
+  "observedWorkingTreeHeadAtEnd": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "workingTreeStatusAtEnd": "M desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt\n M desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt\n M desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt\n M desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt\n M desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt\n M desktop/tools/extract-upstream-bgm-detail.py"
+}

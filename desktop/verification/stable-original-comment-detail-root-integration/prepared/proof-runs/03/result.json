@@ -1,0 +1,13 @@
+{
+  "passed": false,
+  "snapshot": 83,
+  "entries": 101,
+  "pinsBeforeAfter": true,
+  "prospectiveJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\runs\\01\\prospective.jar",
+    "sha256Bytes": "4fd817b7b8b2c5ac24674b297808ccaa7e50dce06d1a357fc038e0fe4e0ac6cf"
+  },
+  "fixtureSha256Bytes": "804a0b6458e9c2c5080ddc8dd00a809a1bf93a0ecad8512e70dddb3cf4067c60",
+  "scope": "Original typed dispatcher and original comment VM, explicit fixture requests; no Root HTTP/native/Window acceptance",
+  "productionWrites": 0
+}

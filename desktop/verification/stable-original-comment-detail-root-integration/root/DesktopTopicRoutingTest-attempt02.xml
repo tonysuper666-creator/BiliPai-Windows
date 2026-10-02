@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopTopicRoutingTest" tests="5" skipped="0" failures="1" errors="0" timestamp="2026-10-02T09:02:20.678Z" hostname="TONYSUPER666" time="1.644">
+  <properties/>
+  <testcase name="original message aliases preserve dynamic and standalone comment parameters()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="0.126">
+    <failure message="org.opentest4j.AssertionFailedError: expected: &lt;DynamicDetail(dynamicId=123, commentRootRpid=701, commentTargetRpid=703)&gt; but was: &lt;CommentDetail(oid=123, rootId=701, targetId=703, type=17, enterUri=bilibili://following/detail/123)&gt;" type="org.opentest4j.AssertionFailedError">org.opentest4j.AssertionFailedError: expected: &lt;DynamicDetail(dynamicId=123, commentRootRpid=701, commentTargetRpid=703)&gt; but was: &lt;CommentDetail(oid=123, rootId=701, targetId=703, type=17, enterUri=bilibili://following/detail/123)&gt;
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1156)
+	at kotlin.test.junit5.JUnit5Asserter.assertEquals(JUnitSupport.kt:32)
+	at kotlin.test.AssertionsKt__AssertionsKt.assertEquals(Assertions.kt:63)
+	at kotlin.test.AssertionsKt.assertEquals(Unknown Source)
+	at kotlin.test.AssertionsKt__AssertionsKt.assertEquals$default(Assertions.kt:62)
+	at kotlin.test.AssertionsKt.assertEquals$default(Unknown Source)
+	at com.bilipai.desktop.ui.DesktopTopicRoutingTest.original message aliases preserve dynamic and standalone comment parameters(DesktopTopicRoutingTest.kt:47)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+</failure>
+  </testcase>
+  <testcase name="existing video user dynamic article and live routes keep their targets()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="0.022"/>
+  <testcase name="original topic URL variants route to numeric detail inside client()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="0.003"/>
+  <testcase name="real rich topic pointer prefers original RID while mention still routes to UP()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="1.444"/>
+  <testcase name="video message links retain both reply ids through the original typed route()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="0.028"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

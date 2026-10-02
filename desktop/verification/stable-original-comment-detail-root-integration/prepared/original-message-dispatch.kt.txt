@@ -1,0 +1,72 @@
+fun openMessageLinkInNavigation3(rawLink: String) {
+    when (val action = resolveMessageLinkNavigationAction(rawLink)) {
+        is MessageLinkNavigationAction.Video -> {
+            navigateToVideoInNavigation3(action.videoId, 0L, "")
+        }
+        is MessageLinkNavigationAction.CommentDetail -> {
+            pushNavigation3Key(
+                BiliPaiNavKey.CommentDetail(
+                    oid = action.oid,
+                    rootId = action.rootReplyId,
+                    targetId = action.targetReplyId,
+                    type = action.businessId,
+                    enterUri = action.enterUri
+                )
+            )
+        }
+        is MessageLinkNavigationAction.VideoComment -> {
+            navigateToVideoRouteInNavigation3(
+                route = VideoRoute.createRoute(
+                    bvid = action.videoId,
+                    cid = 0L,
+                    coverUrl = "",
+                    commentRootRpid = action.rootReplyId,
+                    commentTargetRpid = action.targetReplyId
+                ),
+                sourceRoute = currentRoute
+            )
+        }
+        is MessageLinkNavigationAction.Dynamic -> {
+            pushNavigation3Key(BiliPaiNavKey.DynamicDetail(action.dynamicId))
+        }
+        is MessageLinkNavigationAction.DynamicComment -> {
+            pushNavigation3Key(
+                BiliPaiNavKey.DynamicDetail(
+                    dynamicId = action.dynamicId,
+                    commentRootRpid = action.rootReplyId,
+                    commentTargetRpid = action.targetReplyId
+                )
+            )
+        }
+        is MessageLinkNavigationAction.Space -> {
+            pushNavigation3Key(BiliPaiNavKey.Space(action.mid))
+        }
+        is MessageLinkNavigationAction.Live -> {
+            pushNavigation3Key(BiliPaiNavKey.Live(roomId = action.roomId.toString()))
+        }
+        is MessageLinkNavigationAction.BangumiSeason -> {
+            pushNavigation3Key(
+                BiliPaiNavKey.BangumiDetail(
+                    seasonId = action.seasonId,
+                    mediaId = action.mediaId
+                )
+            )
+        }
+        is MessageLinkNavigationAction.BangumiEpisode -> {
+            pushNavigation3Key(BiliPaiNavKey.BangumiDetail(seasonId = 0L, epId = action.epId))
+        }
+        is MessageLinkNavigationAction.Music -> {
+            ScreenRoutes.createMusicRoute(action.musicId)?.let { pushNavigation3Route(it) }
+                ?: pushNavigation3Key(BiliPaiNavKey.Web(rawLink))
+        }
+        is MessageLinkNavigationAction.Article -> {
+            pushNavigation3Key(BiliPaiNavKey.ArticleDetail(action.articleId))
+        }
+        is MessageLinkNavigationAction.Web -> {
+            val url = action.url.trim()
+            if (url.startsWith("http://", ignoreCase = true) || url.startsWith("https://", ignoreCase = true)) {
+                pushNavigation3Key(BiliPaiNavKey.Web(url))
+            }
+        }
+    }
+}

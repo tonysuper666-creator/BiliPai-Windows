@@ -1,0 +1,29 @@
+{
+  "baseCommit": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "baseFamilySha256LF": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+  "candidateWritten": false,
+  "runtimeAccepted": false,
+  "testsExecuted": false,
+  "hunk": {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "name": "actual-typed-settings-keys-open-their-own-existing-destination",
+    "before": "                        BiliPaiNavKey.PlaybackSettings -> settingsNavigator.openDetail(SettingsSearchTarget.PLAYBACK,null)\n                        BiliPaiNavKey.HomeSettings -> settingsNavigator.openCategory(SettingsRootCategory.HOME_RECOMMENDATION)\n                        BiliPaiNavKey.PermissionSettings -> settingsNavigator.openCategory(SettingsRootCategory.PRIVACY_PERMISSION)\n                        BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.DATA_BACKUP,null)\n",
+    "after": "                        BiliPaiNavKey.PlaybackSettings -> settingsNavigator.openDetail(SettingsSearchTarget.PLAYBACK,null)\n                        BiliPaiNavKey.AnimationSettings -> settingsNavigator.openDetail(SettingsSearchTarget.ANIMATION,null)\n                        BiliPaiNavKey.BottomBarSettings -> settingsNavigator.openDetail(SettingsSearchTarget.BOTTOM_BAR,null)\n                        BiliPaiNavKey.SettingsShare -> settingsNavigator.openDetail(SettingsSearchTarget.SETTINGS_SHARE,null)\n                        BiliPaiNavKey.MessageNotificationSettings -> settingsNavigator.openDetail(SettingsSearchTarget.MESSAGE_NOTIFICATION,null)\n                        BiliPaiNavKey.HomeSettings -> settingsNavigator.openCategory(SettingsRootCategory.HOME_RECOMMENDATION)\n                        BiliPaiNavKey.PermissionSettings -> settingsNavigator.openCategory(SettingsRootCategory.PRIVACY_PERMISSION)\n                        BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP,null)\n",
+    "beforeSha256LF": "9a9717f43a7274e93fb8dc85985fff51af8ece515059b1f44a110e56ce787e62",
+    "afterSha256LF": "433eb0c21674fb9c19906c9104254f247e21dcd8825cbabc163724d0d0e47610"
+  },
+  "correctedTargets": [
+    "ANIMATION",
+    "BOTTOM_BAR",
+    "SETTINGS_SHARE",
+    "MESSAGE_NOTIFICATION",
+    "WEBDAV_BACKUP"
+  ],
+  "originalBodiesAdded": false,
+  "secondNavigatorCreated": false,
+  "knownRemaining": [
+    "IconSettings still requires its Windows icon implementation.",
+    "Message notification scheduler/permission UI is still incomplete."
+  ],
+  "reasoning": "Actual typed Root keys mapped to SETTINGS but retained the previous detail; WebDavBackup used the category target DATA_BACKUP which the detail consumer did not support."
+}

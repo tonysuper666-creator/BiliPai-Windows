@@ -1,0 +1,32 @@
+{
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+    "-p",
+    "desktop",
+    "classes",
+    "test",
+    "--tests",
+    "com.bilipai.desktop.ui.DesktopTopicRoutingTest",
+    "--console=plain"
+  ],
+  "exitCode": 0,
+  "actualProductOverrides": 0,
+  "sourceCount": 1180,
+  "resourceCount": 243,
+  "mainClassesCompiled": true,
+  "testClassesCompiled": true,
+  "testsExecuted": true,
+  "rootRuntimeAccepted": false,
+  "networkAccepted": false,
+  "desktopPackageUpdated": false,
+  "allFeaturesComplete": false,
+  "logSha256Bytes": "e9f3bac5aa5f0430ddd5ccc22bb2d6b7b8c158030e31a63046e8eeb0f8f99a40",
+  "priorFailurePreserved": true,
+  "repair": "Existing topic routing tests now supply the mandatory original message dispatcher and assert standalone CommentDetail rather than the previous dynamic surrogate; numeric dynamic comments follow the original standalone CommentDetail policy.",
+  "junitTests": 5,
+  "junitFailures": 0,
+  "junitErrors": 0,
+  "junitSkipped": 0,
+  "junitXmlSha256Bytes": "dceb6e2518139a8f17a87009c269c8e91d2e04413947452a31f6a18cb68ab0bc",
+  "freshNativeShareProducerPassed": true
+}

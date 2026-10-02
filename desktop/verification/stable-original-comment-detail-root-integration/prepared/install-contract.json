@@ -1,0 +1,44 @@
+{
+  "candidateHead": "a5ba7265ffcc0157cd9cdab768e0a211fa9e4478",
+  "snapshot": 84,
+  "copyWhitelist": [
+    {
+      "source": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentDetailRoot.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentDetailRoot.kt",
+      "sha256Bytes": "6a3b5f5b6c97ea0f169ab50f04ee11224af62a0d38324f0e93c933767b2abe21"
+    },
+    {
+      "source": "prepared/manual/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessageLinkNavigation.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessageLinkNavigation.kt",
+      "sha256Bytes": "0d3e8d128afc4648d6dbefb9f9f00131c9fa8cfe5237ff2b62fb964aa23b7b46"
+    }
+  ],
+  "exactHunks": "exact-hunks.json",
+  "targets": "targets.json",
+  "patchOrder": [
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "desktop/tools/extract-upstream-bgm-detail.py"
+  ],
+  "newOriginalIdentities": 0,
+  "registryEdits": [],
+  "gradleEdits": [],
+  "newDependencies": [],
+  "newResources": [],
+  "doNotInstall": [
+    "prepared/existing/** whole files",
+    "baseline/**",
+    "reference/**",
+    "replay/**",
+    "prepared/existing/desktop/tools/extract-upstream-dynamic-reply.py",
+    "prepared/existing/desktop/tools/extract-upstream-dynamic-reply-protocol.py",
+    "runs/** compiled classes/JARs",
+    "proof-runs/** compiled classes"
+  ],
+  "soleProducer": "desktop/tools/extract-upstream-bgm-detail.py",
+  "regenerate": "existing BGM task; full canonical Screen/VM only changed, no new task",
+  "runtimeAcceptance": false
+}

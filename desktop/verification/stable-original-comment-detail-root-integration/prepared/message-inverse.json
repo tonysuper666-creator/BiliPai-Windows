@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "origin": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+  "sourceSha256LF": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+  "selectedSha256LF": "c51988247f25a38292c0dfa15723fb5150c4a7e46a205e620b7ae1d0982cc8f1",
+  "edits": [
+    [
+      "fun openMessageLinkInNavigation3(rawLink: String)",
+      "internal fun desktopOriginalOpenMessageLink(rawLink: String, commands: DesktopOriginalRootRouteCommands, sourceRoute: String)"
+    ],
+    [
+      "navigateToVideoInNavigation3(action.videoId, 0L, \"\")",
+      "commands.video(BiliPaiNavKey.VideoDetail(action.videoId, 0L, \"\", sourceRoute=sourceRoute))"
+    ],
+    [
+      "pushNavigation3Key(",
+      "commands.push("
+    ],
+    [
+      "navigateToVideoRouteInNavigation3(",
+      "commands.videoRoute("
+    ],
+    [
+      "sourceRoute = currentRoute",
+      "sourceRoute = sourceRoute"
+    ],
+    [
+      "pushNavigation3Route(it)",
+      "commands.push(legacyRouteToBiliPaiNavKey(it))"
+    ]
+  ],
+  "parserReused": true
+}

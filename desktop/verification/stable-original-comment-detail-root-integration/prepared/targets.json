@@ -1,0 +1,32 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+    "beforeSha256LF": "3a2712a13c4a3c312008f208384167124e7855680a726310eb22d45f94dc2cfc",
+    "afterSha256LF": "d12dab149b35e4dd79ce38bb23f1d4764a347d4bcac59049d81e0d0c70910fe8"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+    "beforeSha256LF": "93fe822b2b12f80053f03e457261d0bfe84829d2f6975af20f5d4de0b58373b8",
+    "afterSha256LF": "7fb5e4ab81e7ac3794bafd69b29db23f23cd1d7006bfbf5fc0827b8f075ea190"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+    "beforeSha256LF": "057011c6ef3ca659d12a5d8334e228d96eb1b3955381ef3ace668327fa674875",
+    "afterSha256LF": "aee42e9528bdc7736d747acba10803ccc5c245db8a2eca96b90b872ce88db659"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt",
+    "beforeSha256LF": "5c94c0a3f06d91b2693536434224243aa55603eab453d78ecaf321aa36b89299",
+    "afterSha256LF": "b13e95d4ca88d4235e7decd67716dd965027729dac43ac1b1ce0aa35d7f19c1e"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "beforeSha256LF": "cd3e8e916d65a342b5551ccf97c8dfb61127409c622103d8eaaea0c206acfca9",
+    "afterSha256LF": "e096c91309b5bad1d0dc54a81dd442b7dbd8e83bea306c4b1cd3aa7e2ac76424"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-bgm-detail.py",
+    "beforeSha256LF": "a7930d611284574a46d80eb3c3c8adab49e5aef4865fb3aad8ef8808df785d0f",
+    "afterSha256LF": "924c1cd243d8252154bda5b7f43ef6fa5d281118d750f22722040c05f75e4538"
+  }
+]

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.bilipai.desktop.ui.DesktopTopicRoutingTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-02T09:05:13.659Z" hostname="TONYSUPER666" time="1.078">
+  <properties/>
+  <testcase name="original message aliases preserve dynamic and standalone comment parameters()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="0.079"/>
+  <testcase name="existing video user dynamic article and live routes keep their targets()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="0.016"/>
+  <testcase name="original topic URL variants route to numeric detail inside client()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="0.003"/>
+  <testcase name="real rich topic pointer prefers original RID while mention still routes to UP()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="0.946"/>
+  <testcase name="video message links retain both reply ids through the original typed route()" classname="com.bilipai.desktop.ui.DesktopTopicRoutingTest" time="0.022"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

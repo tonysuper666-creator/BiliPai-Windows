@@ -1,0 +1,523 @@
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt
+@@ -20,7 +20,8 @@
+     val onArticle: (Long) -> Unit, val onLogin: () -> Unit, val onLive: (Long) -> Unit,
+     val onBangumi: (Long) -> Unit, val onDynamic: (String) -> Unit, val onTopic: (Long) -> Unit = {},
+     val onTopicKeyword: (String) -> Unit = {}, val onDynamicBack: () -> Unit = {},
+-    val onDynamicRoute: (DesktopDynamicDetailRoute) -> Unit = { onDynamic(it.dynamicId) })
++    val onDynamicRoute: (DesktopDynamicDetailRoute) -> Unit = { onDynamic(it.dynamicId) },
++    val onMessageLink: (String) -> Unit)
+ 
+ @Composable
+ fun CommunityContentScreen(section: CommunitySection, repository: DesktopRepository, social: DesktopSocialRepository,
+@@ -38,9 +39,10 @@
+         browseMemory.screen(listOf("community-dynamic-detail", section, userId, query, initialRoute)) { mutableStateOf(initialRoute) }
+     }
+     val feedMemory = browseMemory.feeds
++    val messageLink = LocalDesktopOriginalMessageLinkNavigation.current
+     val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi,
+         { dynamicDetail = DesktopDynamicDetailRoute(it) }, onTopic, onTopicKeyword,
+-        onDynamicBack={dynamicDetail=null},onDynamicRoute={dynamicDetail=it})
++        onDynamicBack={dynamicDetail=null},onDynamicRoute={dynamicDetail=it},onMessageLink=messageLink)
+     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalCommunityFeedMemory provides feedMemory,
+         LocalCommunityFeedNamespace provides listOf(section, userId, articleId, noteVideo?.aid)) {
+     Column(Modifier.fillMaxSize()) {
+@@ -65,35 +67,15 @@
+ 
+ internal fun navigateCommunityUrl(raw: String, navigation: CommunityNavigation) {
+     val url = imageUrl(raw.trim())
+-    // Keep the original message-link aliases, nested browser URI and fragment
+-    // resolution. Root carries both reply identifiers to the original layout.
+-    val dynamicRoute = when (val action = resolveMessageLinkNavigationAction(url)) {
+-        is MessageLinkNavigationAction.Dynamic -> DesktopDynamicDetailRoute(action.dynamicId)
+-        is MessageLinkNavigationAction.DynamicComment -> DesktopDynamicDetailRoute(action.dynamicId,action.rootReplyId,action.targetReplyId)
+-        is MessageLinkNavigationAction.CommentDetail -> if(action.businessId==17)
+-            DesktopDynamicDetailRoute(action.oid.toString(),action.rootReplyId,action.targetReplyId) else null
+-        else -> null
++    // Topic rich text uses its already installed original topic policy. Every
++    // other message target is parsed by the sole original AppNavigation policy.
++    val uri = runCatching { URI(url) }.getOrNull()
++    val host = uri?.host?.lowercase().orEmpty()
++    if (uri?.scheme in setOf("https", "http") && (host == "bilibili.com" || host.endsWith(".bilibili.com")) &&
++            uri?.path.orEmpty().contains("topic", ignoreCase=true)) {
++        com.android.purebilibili.feature.dynamic.components.resolveDynamicRichTextTopicId(
++            com.android.purebilibili.data.model.response.RichTextNode(jump_url=url)
++        )?.let { navigation.onTopic(it); return }
+     }
+-    if(dynamicRoute!=null){navigation.onDynamicRoute(dynamicRoute);return}
+-    val uri = runCatching { URI(url) }.getOrNull() ?: return
+-    if (uri.scheme !in setOf("https", "http")) return
+-    val host = uri.host?.lowercase().orEmpty()
+-    if (host == "bilibili.com" || host.endsWith(".bilibili.com")) {
+-        if (uri.path.orEmpty().contains("topic", ignoreCase = true)) {
+-            com.android.purebilibili.feature.dynamic.components.resolveDynamicRichTextTopicId(
+-                com.android.purebilibili.data.model.response.RichTextNode(jump_url = url)
+-            )?.let { navigation.onTopic(it); return }
+-        }
+-        Regex("BV[0-9A-Za-z]{10}").find(url)?.value?.let {
+-            navigation.onVideo(VideoCard(it, "", "", "", 0, 0)); return
+-        }
+-        Regex("/read/cv(\\d+)").find(uri.path.orEmpty())?.groupValues?.get(1)?.toLongOrNull()?.let { navigation.onArticle(it); return }
+-        Regex("/bangumi/play/ss(\\d+)").find(uri.path.orEmpty())?.groupValues?.get(1)?.toLongOrNull()?.let { navigation.onBangumi(it); return }
+-        if (host == "space.bilibili.com") uri.path.trim('/').substringBefore('/').toLongOrNull()?.let { navigation.onUser(it); return }
+-        if (host == "live.bilibili.com") uri.path.trim('/').substringBefore('/').toLongOrNull()?.let { navigation.onLive(it); return }
+-        if (host == "t.bilibili.com") uri.path.trim('/').toLongOrNull()?.takeIf { it > 0 }?.let { navigation.onDynamic(it.toString()); return }
+-        Regex("/opus/(\\d+)").find(uri.path.orEmpty())?.groupValues?.get(1)?.let { navigation.onDynamic(it); return }
+-    }
+-    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))
+-        runCatching { Desktop.getDesktop().browse(uri) }
++    navigation.onMessageLink(url)
+ }
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt
+@@ -72,7 +72,8 @@
+     val state = browseState ?: remember(memory, owner) { memory?.screen(owner) { DesktopSpaceBrowseState() } ?: DesktopSpaceBrowseState() }
+     val selectedTab = bodyTab ?: state.tab
+     val scope = rememberCoroutineScope()
+-    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, onDynamic, onTopic, onTopicKeyword)
++    val messageLink = LocalDesktopOriginalMessageLinkNavigation.current
++    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, onDynamic, onTopic, onTopicKeyword, onMessageLink=messageLink)
+     suspend fun loadProfile() {
+         try { val result = social.userProfile(mid); state.profile = result; state.profileError = null }
+         catch (failure: Exception) { if (failure is CancellationException) throw failure; state.profileError = failure }
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt
+@@ -26,6 +26,10 @@
+     val isOwned: () -> Boolean,
+     val feedback: (String) -> Unit,
+ )
++
++internal val LocalDesktopOriginalCommentRootOwner = staticCompositionLocalOf<DesktopOriginalCommentRootOwner> {
++    error("Original standalone comment requires the same Root comment owner")
++}
+ 
+ @Composable internal fun DesktopOriginalCommentRootBindings(
+     repository: DesktopRepository,
+@@ -109,7 +113,8 @@
+         val ownerBindings = remember(operations, requests, scope) {
+             DesktopOriginalCommentRootOwner(operations, requests, scope, session.emotes, ::owned, ::feedback)
+         }
+-        if (owned()) CompositionLocalProvider(LocalDesktopCommentBindings provides platform,
++        if (owned()) CompositionLocalProvider(LocalDesktopOriginalCommentRootOwner provides ownerBindings,
++            LocalDesktopCommentBindings provides platform,
+             LocalDesktopDynamicCardBindings provides gallery,
+             LocalDesktopBgmLottieLoader provides operations::loadBgmEmptyAnimation) {
+             Box(modifier) {
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt
+@@ -14,15 +14,12 @@
+     resources: DesktopOriginalVideoRootShellResources,
+     content: @Composable () -> Unit,
+ ) {
+-    DesktopOriginalCommentRootBindings(environment.repository, resources.community,
+-        resources.fraud, environment.root, environment::owns, Modifier.fillMaxSize(),
+-        borrowedImageAssets = environment.gallery.imageAssets) { comments ->
+-        val commentPlatform = checkNotNull(LocalDesktopCommentBindings.current)
+-        val assembler = remember(environment, shell, resources, comments, commentPlatform) {
+-            DesktopOriginalVideoRootAssembler(environment, shell, resources, comments, commentPlatform)
+-        }
+-        DesktopOriginalVideoShellMount(environment, shell, { assembler.factory },
+-            { _, owner -> assembler.Platforms(owner) }, assembler::afterDrain,
+-            assembler::afterUnconstructedDrain, content)
++    val comments = LocalDesktopOriginalCommentRootOwner.current
++    val commentPlatform = LocalDesktopCommentBindings.current
++    val assembler = remember(environment, shell, resources, comments, commentPlatform) {
++        DesktopOriginalVideoRootAssembler(environment, shell, resources, comments, commentPlatform)
+     }
++    DesktopOriginalVideoShellMount(environment, shell, { assembler.factory },
++        { _, owner -> assembler.Platforms(owner) }, assembler::afterDrain,
++        assembler::afterUnconstructedDrain, content)
+ }
+--- desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1406,6 +1406,9 @@
+                     { environment -> originalWindowEnvironment.compareAndSet(environment,null) },
+                     { environment, content ->
+                         val appResources = ordinaryVideoResources
++                        DesktopOriginalCommentRootBindings(environment.repository, community, commentFraud,
++                            environment.root, environment::owns, Modifier.fillMaxSize(),
++                            borrowedImageAssets=environment.gallery.imageAssets) { _ ->
+                         if (appResources == null) content() else {
+                             val shellResources = remember(environment,appResources,ordinaryVideo,player,danmaku,enhancement,pip) {
+                                 DesktopOriginalVideoRootShellResources(checkNotNull(player),checkNotNull(danmaku),
+@@ -1423,6 +1426,7 @@
+                                     DesktopLibrary.directoryForAccount(null).resolve("video-scratch"))
+                             }
+                             DesktopOriginalVideoReadyRootMount(environment,ordinaryVideo,shellResources,content)
++                        }
+                         }
+                     }, discovery,community,pluginRuntime,dynamicCardSession,
+                     appearance,actualWindow,imageSaveLocations,imageSaveLifetime,diagnostics,nativeTextShare,rootTextShareBindings,
+@@ -1457,7 +1461,14 @@
+                     { root -> originalNowPlayingFor(root,listen).binding },
+                     { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) })
+                 DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences ->
+-                    CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable)) {
++                    val messageRoutes = commands as DesktopOriginalRootRouteAssembly
++                    val messageLink: (String) -> Unit = { raw ->
++                        if (active) messageRoutes.callbackFor(entryKey) {
++                            desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute())
++                        }
++                    }
++                    CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable),
++                        LocalDesktopOriginalMessageLinkNavigation provides messageLink) {
+ 
+                 val section = desktopReadySection(entryKey)
+                 val videoEntry = entryKey as? BiliPaiNavKey.VideoDetail
+@@ -1467,9 +1478,13 @@
+                         is BiliPaiNavKey.SettingsCategory -> settingsNavigator.openCategory(entryKey.category)
+                         BiliPaiNavKey.SettingsSearch -> settingsNavigator.openSearch()
+                         BiliPaiNavKey.PlaybackSettings -> settingsNavigator.openDetail(SettingsSearchTarget.PLAYBACK,null)
++                        BiliPaiNavKey.AnimationSettings -> settingsNavigator.openDetail(SettingsSearchTarget.ANIMATION,null)
++                        BiliPaiNavKey.BottomBarSettings -> settingsNavigator.openDetail(SettingsSearchTarget.BOTTOM_BAR,null)
++                        BiliPaiNavKey.SettingsShare -> settingsNavigator.openDetail(SettingsSearchTarget.SETTINGS_SHARE,null)
++                        BiliPaiNavKey.MessageNotificationSettings -> settingsNavigator.openDetail(SettingsSearchTarget.MESSAGE_NOTIFICATION,null)
+                         BiliPaiNavKey.HomeSettings -> settingsNavigator.openCategory(SettingsRootCategory.HOME_RECOMMENDATION)
+                         BiliPaiNavKey.PermissionSettings -> settingsNavigator.openCategory(SettingsRootCategory.PRIVACY_PERMISSION)
+-                        BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.DATA_BACKUP,null)
++                        BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP,null)
+                         else -> Unit
+                     }
+                 }
+@@ -1502,6 +1517,8 @@
+                             }
+                         Box(Modifier.weight(1f).fillMaxWidth()) {
+                         when {
++                            entryKey is BiliPaiNavKey.CommentDetail ->
++                                DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }
+                             entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.AudioMode ->
+                                 DesktopOriginalVideoPhysicalLeaf(entryKey, ordinaryVideo, commands, active,
+                                     commands::back, ::openVideoHonorLink,
+@@ -1797,7 +1814,7 @@
+                                     })
+                             section == DesktopSection.TOPIC -> DesktopTopicDetailScreen(topicId, storyTopic, community,
+                                 CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
+-                                    onDynamicRoute=::openDynamicRoute),
++                                    onDynamicRoute=::openDynamicRoute,onMessageLink=messageLink),
+                                 onBack = { commands.back() }, onTopic = ::openTopic)
+                             section == DesktopSection.USER -> {
+                                 val spaceTargetMid = userId
+@@ -1984,7 +2001,7 @@
+     BiliPaiNavKey.WatchLater,is BiliPaiNavKey.WatchLaterSearch -> DesktopSection.WATCH_LATER
+     is BiliPaiNavKey.Following -> DesktopSection.FOLLOWINGS
+     is BiliPaiNavKey.LikedVideos -> DesktopSection.LIKED
+-    BiliPaiNavKey.Inbox,BiliPaiNavKey.ReplyMe,BiliPaiNavKey.AtMe,BiliPaiNavKey.LikeMe,BiliPaiNavKey.SystemNotice,is BiliPaiNavKey.Chat -> DesktopSection.MESSAGES
++    BiliPaiNavKey.Inbox,BiliPaiNavKey.ReplyMe,BiliPaiNavKey.AtMe,BiliPaiNavKey.LikeMe,BiliPaiNavKey.SystemNotice,is BiliPaiNavKey.Chat,is BiliPaiNavKey.CommentDetail -> DesktopSection.MESSAGES
+     is BiliPaiNavKey.PluginsSettings -> DesktopSection.PLUGINS
+     is BiliPaiNavKey.JsPluginContent -> DesktopSection.JS_CONTENT
+     is BiliPaiNavKey.ExternalMedia -> DesktopSection.EXTERNAL_MEDIA
+--- desktop/tools/extract-upstream-bgm-detail.py
++++ desktop/tools/extract-upstream-bgm-detail.py
+@@ -12,10 +12,133 @@
+ SOURCES += ["design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt"]
+ def replace_once(text,old,new):
+     assert text.count(old)==1,(old,text.count(old));return text.replace(old,new)
++
++def comment_detail_root_entry_delta(relative,body):
++ if relative=='com/android/purebilibili/feature/comment/CommentDetailViewModel.kt':
++  before='    private val requests: DesktopVideoCommentRequests,\n) {'
++  after='    private val requests: DesktopVideoCommentRequests,\n    private val commitState: ((() -> Unit) -> Boolean) = { action ->\n        if (requests.isOwned()) { action(); true } else false\n    },\n) {\n    private fun <T> MutableStateFlow(initial: T): kotlinx.coroutines.flow.MutableStateFlow<T> =\n        com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(initial, commitState)'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++ if relative=='com/android/purebilibili/feature/comment/CommentDetailScreen.kt':
++  before='    requests: DesktopVideoCommentRequests\n'
++  after='    requests: DesktopVideoCommentRequests,\n    isCurrentPage: Boolean = true,\n    admitUiAction: ((() -> Unit) -> Boolean) = { action -> action(); true },\n'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='    val subReplyState by viewModel.subReplyState.collectAsState()'
++  after='    fun uiAction(action: () -> Unit) { if (isCurrentPage) admitUiAction(action) }\n    val subReplyState by viewModel.subReplyState.collectAsState()'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='    LaunchedEffect(fraudResult) {'
++  after='    LaunchedEffect(fraudResult, isCurrentPage) {\n        if (!isCurrentPage) return@LaunchedEffect'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='        if (shouldShowCommentFraudResultDialog(result.status)) {'
++  after='        if (isCurrentPage && shouldShowCommentFraudResultDialog(result.status)) {'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='LocalNavigationBackHandler(enabled = true)'
++  after='LocalNavigationBackHandler(enabled = isCurrentPage)'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='if (showImagePreview && previewImages.isNotEmpty())'
++  after='if (isCurrentPage && showImagePreview && previewImages.isNotEmpty())'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='                visible = showCommentInput,'
++  after='                visible = isCurrentPage && showCommentInput,'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='                            viewModel.loadInitial(\n'
++  after='                            uiAction { viewModel.loadInitial(\n'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='                                targetReplyId = targetId\n                            )'
++  after='                                targetReplyId = targetId\n                            ) }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onLoadMore = viewModel::loadMore'
++  after='onLoadMore = { uiAction(viewModel::loadMore) }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onSortModeChange = viewModel::setSortMode'
++  after='onSortModeChange = { mode -> uiAction { viewModel.setSortMode(mode) } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onRootCommentClick = { viewModel.showReplyInput(rootReply) }'
++  after='onRootCommentClick = { uiAction { viewModel.showReplyInput(rootReply) } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onReplyClick = { reply -> viewModel.showReplyInput(reply) }'
++  after='onReplyClick = { reply -> uiAction { viewModel.showReplyInput(reply) } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onConversationClick = viewModel::openConversation'
++  after='onConversationClick = { reply -> uiAction { viewModel.openConversation(reply) } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onConversationBack = viewModel::closeConversation'
++  after='onConversationBack = { uiAction(viewModel::closeConversation) }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onDissolveStart = viewModel::startDissolve'
++  after='onDissolveStart = { id -> uiAction { viewModel.startDissolve(id) } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onDeleteComment = viewModel::deleteComment'
++  after='onDeleteComment = { id -> uiAction { viewModel.deleteComment(id) } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onCheckCommentFraud = if (type == 1) viewModel::checkCommentFraud else null'
++  after='onCheckCommentFraud = if (type == 1) { reply -> uiAction { viewModel.checkCommentFraud(reply) } } else null'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onCommentLike = viewModel::likeComment'
++  after='onCommentLike = { id -> uiAction { viewModel.likeComment(id) } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onCommentHate = viewModel::hateComment'
++  after='onCommentHate = { id -> uiAction { viewModel.hateComment(id) } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onDismiss = viewModel::hideReplyInput'
++  after='onDismiss = { uiAction(viewModel::hideReplyInput) }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='                    viewModel.sendReply(text, uris, sync)'
++  after='                    uiAction { viewModel.sendReply(text, uris, sync) }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='onDismiss = viewModel::dismissFraudResult'
++  after='onDismiss = { uiAction(viewModel::dismissFraudResult) }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='{ viewModel.startDissolve(result.rpid) }'
++  after='{ uiAction { viewModel.startDissolve(result.rpid) } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='            viewModel.closeConversation()'
++  after='            uiAction(viewModel::closeConversation)'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='        resolveCommentFraudLightMessage(result.status)?.let { message ->\n            platform.showFeedback(message)\n            viewModel.dismissFraudResult()\n        }'
++  after='        resolveCommentFraudLightMessage(result.status)?.let { message -> uiAction {\n            platform.showFeedback(message)\n            viewModel.dismissFraudResult()\n        } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='                        onImagePreview = { images, index, rect, textContent ->\n                            previewImages = images\n                            previewInitialIndex = index\n                            previewSourceRect = rect\n                            previewTextContent = textContent\n                            showImagePreview = true\n                        },'
++  after='                        onImagePreview = { images, index, rect, textContent -> uiAction {\n                            previewImages = images\n                            previewInitialIndex = index\n                            previewSourceRect = rect\n                            previewTextContent = textContent\n                            showImagePreview = true\n                        } },'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++  before='                    onDismiss = {\n                        showImagePreview = false\n                        previewTextContent = null\n                    }'
++  after='                    onDismiss = { uiAction {\n                        showImagePreview = false\n                        previewTextContent = null\n                    } }'
++  assert body.count(before)==1
++  body=body.replace(before,after)
++ return body
++
+ def generate(repo,output):
+     shared=module(Path(__file__).with_name('extract-upstream-dynamic-reply-protocol.py'),'bgm_identity')
+     original,identities=shared.load_pinned_sources(repo,SOURCES)
+     def emit(relative,body):
++        body=comment_detail_root_entry_delta(relative,body)
+         target=output/relative;v=str(target.absolute());safe=Path(v if v.startswith('\\\\?\\') else '\\\\?\\'+v)
+         safe.parent.mkdir(parents=True,exist_ok=True);safe.write_text(body,encoding='utf-8',newline='\n');return target
+     package='com/android/purebilibili/feature/audio/bgm/'
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentDetailRoot.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentDetailRoot.kt
+@@ -0,0 +1,91 @@
++package com.bilipai.desktop.ui
++import androidx.compose.runtime.*
++import com.android.purebilibili.feature.comment.*
++import com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests
++import com.android.purebilibili.data.model.CommentFraudStatus
++import com.android.purebilibili.data.model.response.*
++import com.android.purebilibili.navigation3.BiliPaiNavKey
++import kotlinx.coroutines.*
++import java.util.concurrent.atomic.AtomicBoolean
++
++/** Complete original CommentDetail UI/VM on one actual NavEntry, independent
++ * of the ordinary playback Assembly. All protocols/assets/settings/records are
++ * borrowed from the already mounted same Root owner. */
++@Composable internal fun DesktopOriginalCommentDetailRootHost(
++    key: BiliPaiNavKey.CommentDetail,
++    routes: DesktopOriginalRootRouteAssembly,
++    active: Boolean,
++) {
++    val shared = LocalDesktopOriginalCommentRootOwner.current
++    val messageLink = LocalDesktopOriginalMessageLinkNavigation.current
++    val gate = routes.root.entry.gate
++    androidx.compose.runtime.key(key, shared, gate) {
++        val open = remember { AtomicBoolean(true) }
++        val scope = remember { CoroutineScope(shared.scope.coroutineContext + SupervisorJob(shared.scope.coroutineContext[Job])) }
++        fun owns() = open.get() && scope.isActive && shared.isOwned() && gate.owns() && routes.containsEntry(key)
++        fun commit(action: () -> Unit): Boolean {
++            var applied = false
++            return gate.commit { if (owns()) { action(); applied=true } } && applied
++        }
++        val requests = remember(shared, scope) { DesktopOriginalCommentEntryRequests(shared.requests, ::owns, ::commit) }
++        val detail = remember(scope, requests) { CommentDetailViewModel(scope,requests,::commit) }
++        LaunchedEffect(scope, routes, key) {
++            snapshotFlow { routes.containsEntry(key) }.collect { retained ->
++                if (!retained) scope.cancel("Original comment NavEntry removed")
++            }
++        }
++        DisposableEffect(scope) { onDispose { open.set(false);scope.cancel() } }
++        if (owns()) CommentDetailScreen(oid=key.oid,rootId=key.rootId,targetId=key.targetId,
++            type=key.type,enterUri=key.enterUri,
++            onBack={ if(active) routes.callbackFor(key) { routes.back() } },
++            onOpenLink=messageLink,
++            onUserClick={ mid -> if(active) routes.callbackFor(key) { routes.push(BiliPaiNavKey.Space(mid)) } },
++            viewModel=detail,requests=requests,isCurrentPage=active && routes.currentKey==key,
++            admitUiAction={ action ->
++                var admitted=false
++                commit { if(active && routes.currentKey==key) { action();admitted=true } } && admitted
++            })
++    }
++}
++
++/** Every delegate call uses this entry's real caller Job. The shared protocol
++ * still supplies its existing captured account/epoch/HTTP admission; Kotlin
++ * interface delegation does not substitute its internal isOwned implementation.
++ * Both short entry checks stay outside network/body/file waits. */
++internal class DesktopOriginalCommentEntryRequests(
++    private val delegate: DesktopVideoCommentRequests,
++    private val entryOwned: () -> Boolean,
++    private val commitEntry: ((() -> Unit) -> Boolean),
++) : DesktopVideoCommentRequests {
++    override fun isOwned() = entryOwned() && delegate.isOwned()
++    private fun checkEntry() {
++        var admitted=false
++        if (!commitEntry { if (isOwned()) admitted=true } || !admitted)
++            throw CancellationException("Original comment entry retired")
++    }
++    private suspend fun <T> request(action:suspend()->T):T {
++        currentCoroutineContext().ensureActive();checkEntry()
++        val result=action()
++        currentCoroutineContext().ensureActive();checkEntry()
++        return result
++    }
++    override fun currentMid():Long {
++        var mid=0L
++        checkEntry()
++        if (!commitEntry { if (!isOwned()) throw CancellationException("Original comment account retired");mid=delegate.currentMid() })
++            throw CancellationException("Original comment account retired")
++        return mid
++    }
++    override suspend fun getCommentsForSubject(oid:Long,type:Int,page:Int,ps:Int,mode:Int,paginationOffset:String?,fallbackOnMissingLocation:Boolean)=request { delegate.getCommentsForSubject(oid,type,page,ps,mode,paginationOffset,fallbackOnMissingLocation) }
++    override suspend fun getSortedSubCommentsForSubject(oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?,targetReplyId:Long)=request { delegate.getSortedSubCommentsForSubject(oid,type,rootId,mode,paginationOffset,targetReplyId) }
++    override suspend fun getDialogCommentsForSubject(oid:Long,type:Int,rootId:Long,dialogId:Long,page:Int,paginationOffset:String?)=request { delegate.getDialogCommentsForSubject(oid,type,rootId,dialogId,page,paginationOffset) }
++    override suspend fun uploadCommentPicture(source:String,index:Int)=request { delegate.uploadCommentPicture(source,index) }
++    override suspend fun addCommentForSubject(oid:Long,type:Int,message:String,root:Long,parent:Long,pictures:List<ReplyPicture>,syncToDynamic:Boolean)=request { delegate.addCommentForSubject(oid,type,message,root,parent,pictures,syncToDynamic) }
++    override suspend fun likeCommentForSubject(oid:Long,type:Int,rpid:Long,like:Boolean)=request { delegate.likeCommentForSubject(oid,type,rpid,like) }
++    override suspend fun hateCommentForSubject(oid:Long,type:Int,rpid:Long,hate:Boolean)=request { delegate.hateCommentForSubject(oid,type,rpid,hate) }
++    override suspend fun deleteCommentForSubject(oid:Long,type:Int,rpid:Long)=request { delegate.deleteCommentForSubject(oid,type,rpid) }
++    override suspend fun setCommentTopForSubject(oid:Long,type:Int,rpid:Long,isCurrentlyTop:Boolean)=request { delegate.setCommentTopForSubject(oid,type,rpid,isCurrentlyTop) }
++    override suspend fun reportCommentForSubject(oid:Long,type:Int,rpid:Long,reason:Int,content:String)=request { delegate.reportCommentForSubject(oid,type,rpid,reason,content) }
++    override suspend fun checkCommentStatus(aid:Long,rpid:Long,rootId:Long,hasPictures:Boolean,sentAtSeconds:Long,waitMs:Long)=request { delegate.checkCommentStatus(aid,rpid,rootId,hasPictures,sentAtSeconds,waitMs) }
++    override suspend fun saveFraudRecord(rpid:Long,oid:Long,type:Int,root:Long,message:String,status:CommentFraudStatus,initialStatus:CommentFraudStatus?)=request { delegate.saveFraudRecord(rpid,oid,type,root,message,status,initialStatus) }
++}
+--- desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessageLinkNavigation.kt
++++ desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalMessageLinkNavigation.kt
+@@ -0,0 +1,82 @@
++package com.bilipai.desktop.ui
++import androidx.compose.runtime.staticCompositionLocalOf
++import com.android.purebilibili.navigation.*
++import com.android.purebilibili.navigation3.*
++
++/** Actual Root entry-scoped original AppNavigation message actions. */
++internal val LocalDesktopOriginalMessageLinkNavigation = staticCompositionLocalOf<(String) -> Unit> {
++    error("Original message links require the actual retained Root route")
++}
++
++internal fun desktopOriginalOpenMessageLink(rawLink: String, commands: DesktopOriginalRootRouteCommands, sourceRoute: String) {
++    when (val action = resolveMessageLinkNavigationAction(rawLink)) {
++        is MessageLinkNavigationAction.Video -> {
++            commands.video(BiliPaiNavKey.VideoDetail(action.videoId, 0L, "", sourceRoute=sourceRoute))
++        }
++        is MessageLinkNavigationAction.CommentDetail -> {
++            commands.push(
++                BiliPaiNavKey.CommentDetail(
++                    oid = action.oid,
++                    rootId = action.rootReplyId,
++                    targetId = action.targetReplyId,
++                    type = action.businessId,
++                    enterUri = action.enterUri
++                )
++            )
++        }
++        is MessageLinkNavigationAction.VideoComment -> {
++            commands.videoRoute(
++                route = VideoRoute.createRoute(
++                    bvid = action.videoId,
++                    cid = 0L,
++                    coverUrl = "",
++                    commentRootRpid = action.rootReplyId,
++                    commentTargetRpid = action.targetReplyId
++                ),
++                sourceRoute = sourceRoute
++            )
++        }
++        is MessageLinkNavigationAction.Dynamic -> {
++            commands.push(BiliPaiNavKey.DynamicDetail(action.dynamicId))
++        }
++        is MessageLinkNavigationAction.DynamicComment -> {
++            commands.push(
++                BiliPaiNavKey.DynamicDetail(
++                    dynamicId = action.dynamicId,
++                    commentRootRpid = action.rootReplyId,
++                    commentTargetRpid = action.targetReplyId
++                )
++            )
++        }
++        is MessageLinkNavigationAction.Space -> {
++            commands.push(BiliPaiNavKey.Space(action.mid))
++        }
++        is MessageLinkNavigationAction.Live -> {
++            commands.push(BiliPaiNavKey.Live(roomId = action.roomId.toString()))
++        }
++        is MessageLinkNavigationAction.BangumiSeason -> {
++            commands.push(
++                BiliPaiNavKey.BangumiDetail(
++                    seasonId = action.seasonId,
++                    mediaId = action.mediaId
++                )
++            )
++        }
++        is MessageLinkNavigationAction.BangumiEpisode -> {
++            commands.push(BiliPaiNavKey.BangumiDetail(seasonId = 0L, epId = action.epId))
++        }
++        is MessageLinkNavigationAction.Music -> {
++            ScreenRoutes.createMusicRoute(action.musicId)?.let { commands.push(legacyRouteToBiliPaiNavKey(it)) }
++                ?: commands.push(BiliPaiNavKey.Web(rawLink))
++        }
++        is MessageLinkNavigationAction.Article -> {
++            commands.push(BiliPaiNavKey.ArticleDetail(action.articleId))
++        }
++        is MessageLinkNavigationAction.Web -> {
++            val url = action.url.trim()
++            if (url.startsWith("http://", ignoreCase = true) || url.startsWith("https://", ignoreCase = true)) {
++                commands.push(BiliPaiNavKey.Web(url))
++            }
++        }
++    }
++}

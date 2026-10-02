@@ -1406,6 +1406,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     { environment -> originalWindowEnvironment.compareAndSet(environment,null) },
                     { environment, content ->
                         val appResources = ordinaryVideoResources
+                        DesktopOriginalCommentRootBindings(environment.repository, community, commentFraud,
+                            environment.root, environment::owns, Modifier.fillMaxSize(),
+                            borrowedImageAssets=environment.gallery.imageAssets) { _ ->
                         if (appResources == null) content() else {
                             val shellResources = remember(environment,appResources,ordinaryVideo,player,danmaku,enhancement,pip) {
                                 DesktopOriginalVideoRootShellResources(checkNotNull(player),checkNotNull(danmaku),
@@ -1423,6 +1426,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     DesktopLibrary.directoryForAccount(null).resolve("video-scratch"))
                             }
                             DesktopOriginalVideoReadyRootMount(environment,ordinaryVideo,shellResources,content)
+                        }
                         }
                     }, discovery,community,pluginRuntime,dynamicCardSession,
                     appearance,actualWindow,imageSaveLocations,imageSaveLifetime,diagnostics,nativeTextShare,rootTextShareBindings,
@@ -1457,7 +1461,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     { root -> originalNowPlayingFor(root,listen).binding },
                     { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) })
                 DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences ->
-                    CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable)) {
+                    val messageRoutes = commands as DesktopOriginalRootRouteAssembly
+                    val messageLink: (String) -> Unit = { raw ->
+                        if (active) messageRoutes.callbackFor(entryKey) {
+                            desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute())
+                        }
+                    }
+                    CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable),
+                        LocalDesktopOriginalMessageLinkNavigation provides messageLink) {
 
                 val section = desktopReadySection(entryKey)
                 val videoEntry = entryKey as? BiliPaiNavKey.VideoDetail
@@ -1467,9 +1478,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                         is BiliPaiNavKey.SettingsCategory -> settingsNavigator.openCategory(entryKey.category)
                         BiliPaiNavKey.SettingsSearch -> settingsNavigator.openSearch()
                         BiliPaiNavKey.PlaybackSettings -> settingsNavigator.openDetail(SettingsSearchTarget.PLAYBACK,null)
+                        BiliPaiNavKey.AnimationSettings -> settingsNavigator.openDetail(SettingsSearchTarget.ANIMATION,null)
+                        BiliPaiNavKey.BottomBarSettings -> settingsNavigator.openDetail(SettingsSearchTarget.BOTTOM_BAR,null)
+                        BiliPaiNavKey.SettingsShare -> settingsNavigator.openDetail(SettingsSearchTarget.SETTINGS_SHARE,null)
+                        BiliPaiNavKey.MessageNotificationSettings -> settingsNavigator.openDetail(SettingsSearchTarget.MESSAGE_NOTIFICATION,null)
                         BiliPaiNavKey.HomeSettings -> settingsNavigator.openCategory(SettingsRootCategory.HOME_RECOMMENDATION)
                         BiliPaiNavKey.PermissionSettings -> settingsNavigator.openCategory(SettingsRootCategory.PRIVACY_PERMISSION)
-                        BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.DATA_BACKUP,null)
+                        BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP,null)
                         else -> Unit
                     }
                 }
@@ -1502,6 +1517,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }
                         Box(Modifier.weight(1f).fillMaxWidth()) {
                         when {
+                            entryKey is BiliPaiNavKey.CommentDetail ->
+                                DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }
                             entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.AudioMode ->
                                 DesktopOriginalVideoPhysicalLeaf(entryKey, ordinaryVideo, commands, active,
                                     commands::back, ::openVideoHonorLink,
@@ -1797,7 +1814,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     })
                             section == DesktopSection.TOPIC -> DesktopTopicDetailScreen(topicId, storyTopic, community,
                                 CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
-                                    onDynamicRoute=::openDynamicRoute),
+                                    onDynamicRoute=::openDynamicRoute,onMessageLink=messageLink),
                                 onBack = { commands.back() }, onTopic = ::openTopic)
                             section == DesktopSection.USER -> {
                                 val spaceTargetMid = userId
@@ -1984,7 +2001,7 @@ private fun desktopReadySection(key:BiliPaiNavKey):DesktopSection = when(key) {
     BiliPaiNavKey.WatchLater,is BiliPaiNavKey.WatchLaterSearch -> DesktopSection.WATCH_LATER
     is BiliPaiNavKey.Following -> DesktopSection.FOLLOWINGS
     is BiliPaiNavKey.LikedVideos -> DesktopSection.LIKED
-    BiliPaiNavKey.Inbox,BiliPaiNavKey.ReplyMe,BiliPaiNavKey.AtMe,BiliPaiNavKey.LikeMe,BiliPaiNavKey.SystemNotice,is BiliPaiNavKey.Chat -> DesktopSection.MESSAGES
+    BiliPaiNavKey.Inbox,BiliPaiNavKey.ReplyMe,BiliPaiNavKey.AtMe,BiliPaiNavKey.LikeMe,BiliPaiNavKey.SystemNotice,is BiliPaiNavKey.Chat,is BiliPaiNavKey.CommentDetail -> DesktopSection.MESSAGES
     is BiliPaiNavKey.PluginsSettings -> DesktopSection.PLUGINS
     is BiliPaiNavKey.JsPluginContent -> DesktopSection.JS_CONTENT
     is BiliPaiNavKey.ExternalMedia -> DesktopSection.EXTERNAL_MEDIA

@@ -8,6 +8,8 @@ import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.Density
 import com.android.purebilibili.data.model.response.RichTextNode
 import com.android.purebilibili.core.theme.AppUiStyle
+import com.android.purebilibili.navigation3.BiliPaiNavKey
+import com.android.purebilibili.navigation3.legacyRouteToBiliPaiNavKey
 import com.bilipai.desktop.appearance.*
 import kotlin.test.*
 
@@ -31,17 +33,36 @@ class DesktopTopicRoutingTest {
         assertTrue(topics.isEmpty()); assertEquals(listOf("video:BV1234567890", "user:23", "dynamic:789", "article:31", "live:57"), other)
     }
 
-    @Test fun `original message aliases preserve dynamic root and secondary reply navigation`() {
-        val routes=mutableListOf<DesktopDynamicDetailRoute>()
-        val navigation=CommunityNavigation({},{},{},{},{},{},{},onDynamicRoute={routes+=it})
+    @Test fun `original message aliases preserve dynamic and standalone comment parameters`() {
+        val routes=mutableListOf<BiliPaiNavKey>()
+        val commands = commands(routes::add)
+        val navigation=CommunityNavigation({},{},{},{},{},{},{},
+            onMessageLink={ desktopOriginalOpenMessageLink(it, commands, "message-test") })
         navigateCommunityUrl("https://t.bilibili.com/123?comment_root_id=701&comment_secondary_id=703",navigation)
         navigateCommunityUrl("https://www.bilibili.com/opus/123#reply701",navigation)
         navigateCommunityUrl("bilibili://comment/detail/17/123/701?reply_id=703",navigation)
         navigateCommunityUrl("bilibili://browser/?url=https%3A%2F%2Ft.bilibili.com%2F123%3Froot_reply_id%3D701%26target_id%3D703",navigation)
         navigateCommunityUrl("https://www.bilibili.com/h5/comment/sub?oid=123&pageType=17&root=701&comment_id=703",navigation)
-        assertEquals(listOf(DesktopDynamicDetailRoute("123",701,703),DesktopDynamicDetailRoute("123",701,0),
-            DesktopDynamicDetailRoute("123",701,703),DesktopDynamicDetailRoute("123",701,703),
-            DesktopDynamicDetailRoute("123",701,703)),routes)
+        assertEquals(5, routes.size)
+        for (index in routes.indices) {
+            val comment = assertIs<BiliPaiNavKey.CommentDetail>(routes[index])
+            assertEquals(listOf(123L,701L,if(index == 1) 0L else 703L,17L),
+                listOf(comment.oid,comment.rootId,comment.targetId,comment.type.toLong()))
+            assertEquals("bilibili://following/detail/123",comment.enterUri)
+        }
+    }
+
+    @Test fun `video message links retain both reply ids through the original typed route`() {
+        val routes=mutableListOf<BiliPaiNavKey>()
+        val commands=commands(routes::add)
+        val navigation=CommunityNavigation({},{},{},{},{},{},{},
+            onMessageLink={ desktopOriginalOpenMessageLink(it,commands,"message-test") })
+        navigateCommunityUrl("https://www.bilibili.com/video/BV1234567890?comment_root_id=701&comment_secondary_id=703",navigation)
+        val video=assertIs<BiliPaiNavKey.VideoDetail>(routes.single())
+        assertEquals("BV1234567890",video.bvid)
+        assertEquals(701L,video.commentRootRpid)
+        assertEquals(703L,video.commentTargetRpid)
+        assertEquals("message-test",video.sourceRoute)
     }
 
     @OptIn(ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class)
@@ -81,7 +102,36 @@ class DesktopTopicRoutingTest {
         }
     }
 
-    private fun navigation(topics: MutableList<Long>, other: MutableList<String>, keywords: MutableList<String> = mutableListOf()) = CommunityNavigation(
-        { other += "video:${it.bvid}" }, { other += "user:$it" }, { other += "article:$it" }, {},
-        { other += "live:$it" }, { other += "bangumi:$it" }, { other += "dynamic:$it" }, { topics += it }, { keywords += it })
+    private fun navigation(topics: MutableList<Long>, other: MutableList<String>, keywords: MutableList<String> = mutableListOf()): CommunityNavigation {
+        val commands=commands { key -> other += when(key) {
+            is BiliPaiNavKey.VideoDetail -> "video:${key.bvid}"
+            is BiliPaiNavKey.Space -> "user:${key.mid}"
+            is BiliPaiNavKey.ArticleDetail -> "article:${key.articleId}"
+            is BiliPaiNavKey.Live -> "live:${key.roomId}"
+            is BiliPaiNavKey.DynamicDetail -> "dynamic:${key.dynamicId}"
+            else -> error("Unexpected message target: $key")
+        } }
+        return CommunityNavigation(
+            { other += "video:${it.bvid}" }, { other += "user:$it" }, { other += "article:$it" }, {},
+            { other += "live:$it" }, { other += "bangumi:$it" }, { other += "dynamic:$it" }, { topics += it }, { keywords += it },
+            onMessageLink={ desktopOriginalOpenMessageLink(it,commands,"message-test") })
+    }
+
+    private fun commands(record: (BiliPaiNavKey) -> Unit) = object : DesktopOriginalRootRouteCommands {
+        override fun push(key: BiliPaiNavKey): Boolean { record(key);return true }
+        override fun video(key: BiliPaiNavKey.VideoDetail) { record(key) }
+        override fun videoRoute(route: String, sourceRoute: String) {
+            val key=assertIs<BiliPaiNavKey.VideoDetail>(legacyRouteToBiliPaiNavKey(route))
+            record(key.copy(sourceRoute=sourceRoute))
+        }
+        override fun back(): Boolean = error("Unexpected back")
+        override fun articleBack(article: BiliPaiNavKey.ArticleDetail, useSharedReturn: Boolean): Boolean = error("Unexpected back")
+        override fun containsEntry(key: BiliPaiNavKey): Boolean = error("Unexpected entry lookup")
+        override fun home(): Boolean = error("Unexpected Home")
+        override fun replaceVideoDetail(current: BiliPaiNavKey.VideoDetail, bvid: String, cid: Long,
+            cover: String, resumePositionMs: Long): Boolean = error("Unexpected video replacement")
+        override fun homeFromVideo(current: BiliPaiNavKey.VideoDetail): Boolean = error("Unexpected Home")
+        override fun markVideoReturning(current: BiliPaiNavKey.VideoDetail): Boolean = error("Unexpected video return")
+        override fun clearVideoReturning(): Boolean = error("Unexpected video return")
+    }
 }

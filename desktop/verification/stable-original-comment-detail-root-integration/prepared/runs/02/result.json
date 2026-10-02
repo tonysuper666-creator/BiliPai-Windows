@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "entries": 101,
+  "snapshot": 84,
+  "sourceCount": 9,
+  "explicitProspectiveSources": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "sha256Bytes": "e096c91309b5bad1d0dc54a81dd442b7dbd8e83bea306c4b1cd3aa7e2ac76424"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\CommunityScreens.kt",
+      "sha256Bytes": "d12dab149b35e4dd79ce38bb23f1d4764a347d4bcac59049d81e0d0c70910fe8"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalCommentRootBindings.kt",
+      "sha256Bytes": "aee42e9528bdc7736d747acba10803ccc5c245db8a2eca96b90b872ce88db659"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoReadyRootMount.kt",
+      "sha256Bytes": "b13e95d4ca88d4235e7decd67716dd965027729dac43ac1b1ce0aa35d7f19c1e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopSpaceScreens.kt",
+      "sha256Bytes": "7fb5e4ab81e7ac3794bafd69b29db23f23cd1d7006bfbf5fc0827b8f075ea190"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\prepared\\manual\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalCommentDetailRoot.kt",
+      "sha256Bytes": "99dba0223f153eb893ef244ce07816c09e3721ac9252f402bd13d77582dcb8e3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\prepared\\manual\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalMessageLinkNavigation.kt",
+      "sha256Bytes": "0d3e8d128afc4648d6dbefb9f9f00131c9fa8cfe5237ff2b62fb964aa23b7b46"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\reference\\com\\android\\purebilibili\\feature\\comment\\CommentDetailScreen.kt",
+      "sha256Bytes": "1428951a8b48f44af82f4ee872fc3a015858dad6ec7d073108899ce159fa914b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\reference\\com\\android\\purebilibili\\feature\\comment\\CommentDetailViewModel.kt",
+      "sha256Bytes": "df772408b21eca24aef058db9476cf04ab686893ca390bcba90bd015d0524998"
+    }
+  ],
+  "productionWrites": 0,
+  "rootRuntimeAccepted": false
+}

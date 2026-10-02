@@ -1,0 +1,583 @@
+{
+  "passed": true,
+  "soleProducer": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-comment-detail-root-parity\\baseline\\desktop\\tools\\extract-upstream-bgm-detail.py",
+  "newOriginalIdentities": 0,
+  "existingScreenVMIdentities": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+        "mode": "policy-extract",
+        "features": [
+          "stable-bgm-native-detail"
+        ],
+        "sha256": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+        "mode": "policy-extract",
+        "features": [
+          "stable-bgm-native-detail"
+        ],
+        "sha256": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36"
+      }
+    }
+  ],
+  "fullOriginalBodies": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+      "originalSha256LF": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267",
+      "originalLines": 317,
+      "existingCanonicalSha256LF": "32d172f0b96df6f915caae47dbdb5a419a314232408b13ee0effa6dcabdf9a51",
+      "prospectiveSha256LF": "df772408b21eca24aef058db9476cf04ab686893ca390bcba90bd015d0524998",
+      "fullOriginalInverseByteEqual": true,
+      "canonicalTransforms": [
+        {
+          "line": 250,
+          "beforeSha256LF": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267",
+          "afterSha256LF": "c2113794eeb08272c1684807ad29bdd7aaa13ae645902a2e059f56f1331fbe25",
+          "segments": [
+            {
+              "beforeStart": 50,
+              "beforeEnd": 150,
+              "afterStart": 50,
+              "afterEnd": 50,
+              "before": "import android.net.Uri\nimport androidx.lifecycle.ViewModel\nimport androidx.lifecycle.viewModelScope\n",
+              "after": ""
+            },
+            {
+              "beforeStart": 212,
+              "beforeEnd": 283,
+              "afterStart": 112,
+              "afterEnd": 112,
+              "before": "import com.android.purebilibili.data.repository.CommentFraudRepository\n",
+              "after": ""
+            },
+            {
+              "beforeStart": 345,
+              "beforeEnd": 411,
+              "afterStart": 174,
+              "afterEnd": 174,
+              "before": "import com.android.purebilibili.data.repository.CommentRepository\n",
+              "after": ""
+            }
+          ]
+        },
+        {
+          "line": 251,
+          "beforeSha256LF": "c2113794eeb08272c1684807ad29bdd7aaa13ae645902a2e059f56f1331fbe25",
+          "afterSha256LF": "7c8244e8d1cb509a71236f5654e71fdff731e831be4ea7d9e18872c712135b5c",
+          "segments": [
+            {
+              "beforeStart": 866,
+              "beforeEnd": 866,
+              "afterStart": 866,
+              "afterEnd": 1128,
+              "before": "",
+              "after": "import kotlinx.coroutines.CoroutineScope\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive\nimport com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests\n"
+            }
+          ]
+        },
+        {
+          "line": 262,
+          "beforeSha256LF": "7c8244e8d1cb509a71236f5654e71fdff731e831be4ea7d9e18872c712135b5c",
+          "afterSha256LF": "8b0842cf4ed0626bf9cb49d5eb08bd0e9ccc7113d7b4e72f8a5b5fc9d1d4a5f4",
+          "segments": [
+            {
+              "beforeStart": 1386,
+              "beforeEnd": 1431,
+              "afterStart": 1386,
+              "afterEnd": 1840,
+              "before": "class CommentDetailViewModel : ViewModel() {\n",
+              "after": "internal class CommentDetailViewModel(\n    private val scope: CoroutineScope,\n    private val requests: DesktopVideoCommentRequests,\n) {\n    private suspend fun ensureOwned() {\n        currentCoroutineContext().ensureActive()\n        if (!requests.isOwned()) throw CancellationException(\"Comment detail owner retired\")\n    }\n    private fun launchOwned(block: suspend CoroutineScope.() -> Unit): Job = scope.launch {\n        ensureOwned(); block()\n    }\n"
+            }
+          ]
+        },
+        {
+          "line": 263,
+          "beforeSha256LF": "8b0842cf4ed0626bf9cb49d5eb08bd0e9ccc7113d7b4e72f8a5b5fc9d1d4a5f4",
+          "afterSha256LF": "565957622c6d4ecfcf5889f9942b4f7fe6da121a7bff1120d431ba43709d727e",
+          "segments": [
+            {
+              "beforeStart": 2934,
+              "beforeEnd": 2982,
+              "afterStart": 2934,
+              "afterEnd": 2972,
+              "before": "        fraudCheckJob = viewModelScope.launch {\n",
+              "after": "        fraudCheckJob = launchOwned {\n"
+            },
+            {
+              "beforeStart": 5913,
+              "beforeEnd": 5963,
+              "afterStart": 5903,
+              "afterEnd": 5943,
+              "before": "        subReplyLoadJob = viewModelScope.launch {\n",
+              "after": "        subReplyLoadJob = launchOwned {\n"
+            },
+            {
+              "beforeStart": 9361,
+              "beforeEnd": 9404,
+              "afterStart": 9341,
+              "afterEnd": 9387,
+              "before": "        pictures: List<Uri> = emptyList(),\n",
+              "after": "        pictures: List<String> = emptyList(),\n"
+            },
+            {
+              "beforeStart": 9749,
+              "beforeEnd": 9781,
+              "afterStart": 9732,
+              "afterEnd": 9754,
+              "before": "        viewModelScope.launch {\n",
+              "after": "        launchOwned {\n"
+            },
+            {
+              "beforeStart": 11143,
+              "beforeEnd": 11175,
+              "afterStart": 11116,
+              "afterEnd": 11138,
+              "before": "        viewModelScope.launch {\n",
+              "after": "        launchOwned {\n"
+            },
+            {
+              "beforeStart": 11728,
+              "beforeEnd": 11760,
+              "afterStart": 11691,
+              "afterEnd": 11713,
+              "before": "        viewModelScope.launch {\n",
+              "after": "        launchOwned {\n"
+            },
+            {
+              "beforeStart": 12076,
+              "beforeEnd": 12108,
+              "afterStart": 12029,
+              "afterEnd": 12051,
+              "before": "        viewModelScope.launch {\n",
+              "after": "        launchOwned {\n"
+            }
+          ]
+        },
+        {
+          "line": 265,
+          "beforeSha256LF": "565957622c6d4ecfcf5889f9942b4f7fe6da121a7bff1120d431ba43709d727e",
+          "afterSha256LF": "3efe406a7efdef783068489c8469997e4060c5924886c48c87844cdc264494a5",
+          "segments": [
+            {
+              "beforeStart": 2972,
+              "beforeEnd": 3022,
+              "afterStart": 2972,
+              "afterEnd": 3013,
+              "before": "            CommentRepository.checkCommentStatus(\n",
+              "after": "            requests.checkCommentStatus(\n"
+            },
+            {
+              "beforeStart": 3301,
+              "beforeEnd": 3352,
+              "afterStart": 3292,
+              "afterEnd": 3334,
+              "before": "                CommentFraudRepository.saveRecord(\n",
+              "after": "                requests.saveFraudRecord(\n"
+            },
+            {
+              "beforeStart": 5943,
+              "beforeEnd": 6005,
+              "afterStart": 5925,
+              "afterEnd": 5978,
+              "before": "            CommentRepository.getSortedSubCommentsForSubject(\n",
+              "after": "            requests.getSortedSubCommentsForSubject(\n"
+            },
+            {
+              "beforeStart": 9790,
+              "beforeEnd": 9842,
+              "afterStart": 9763,
+              "afterEnd": 9806,
+              "before": "            CommentRepository.addCommentForSubject(\n",
+              "after": "            requests.addCommentForSubject(\n"
+            },
+            {
+              "beforeStart": 11138,
+              "beforeEnd": 11238,
+              "afterStart": 11102,
+              "afterEnd": 11193,
+              "before": "            CommentRepository.likeCommentForSubject(oid, type, rpid, !isCurrentlyLiked).onFailure {\n",
+              "after": "            requests.likeCommentForSubject(oid, type, rpid, !isCurrentlyLiked).onFailure {\n"
+            },
+            {
+              "beforeStart": 11713,
+              "beforeEnd": 11813,
+              "afterStart": 11668,
+              "afterEnd": 11759,
+              "before": "            CommentRepository.hateCommentForSubject(oid, type, rpid, !isCurrentlyHated).onFailure {\n",
+              "after": "            requests.hateCommentForSubject(oid, type, rpid, !isCurrentlyHated).onFailure {\n"
+            },
+            {
+              "beforeStart": 12051,
+              "beforeEnd": 12134,
+              "afterStart": 11997,
+              "afterEnd": 12071,
+              "before": "            CommentRepository.deleteCommentForSubject(oid, type, rpid).onSuccess {\n",
+              "after": "            requests.deleteCommentForSubject(oid, type, rpid).onSuccess {\n"
+            }
+          ]
+        },
+        {
+          "line": 266,
+          "beforeSha256LF": "3efe406a7efdef783068489c8469997e4060c5924886c48c87844cdc264494a5",
+          "afterSha256LF": "e6c3ef88287503ef652431039c3d989e9eaf770deda5beab016e5b129e106ce3",
+          "segments": [
+            {
+              "beforeStart": 3256,
+              "beforeEnd": 3292,
+              "afterStart": 3256,
+              "afterEnd": 3307,
+              "before": "            ).onSuccess { status ->\n",
+              "after": "            ).onSuccess { status -> ensureOwned();\n"
+            },
+            {
+              "beforeStart": 6207,
+              "beforeEnd": 6241,
+              "afterStart": 6222,
+              "afterEnd": 6271,
+              "before": "            ).onSuccess { data ->\n",
+              "after": "            ).onSuccess { data -> ensureOwned();\n"
+            },
+            {
+              "beforeStart": 8421,
+              "beforeEnd": 8456,
+              "afterStart": 8451,
+              "afterEnd": 8501,
+              "before": "            }.onFailure { error ->\n",
+              "after": "            }.onFailure { error -> ensureOwned();\n"
+            },
+            {
+              "beforeStart": 10017,
+              "beforeEnd": 10055,
+              "afterStart": 10062,
+              "afterEnd": 10115,
+              "before": "            ).onSuccess { newReply ->\n",
+              "after": "            ).onSuccess { newReply -> ensureOwned();\n"
+            }
+          ]
+        },
+        {
+          "line": 267,
+          "beforeSha256LF": "e6c3ef88287503ef652431039c3d989e9eaf770deda5beab016e5b129e106ce3",
+          "afterSha256LF": "32d172f0b96df6f915caae47dbdb5a419a314232408b13ee0effa6dcabdf9a51",
+          "segments": [
+            {
+              "beforeStart": 10709,
+              "beforeEnd": 10735,
+              "afterStart": 10709,
+              "afterEnd": 10750,
+              "before": "            }.onFailure {\n",
+              "after": "            }.onFailure { ensureOwned();\n"
+            },
+            {
+              "beforeStart": 11162,
+              "beforeEnd": 11253,
+              "afterStart": 11177,
+              "afterEnd": 11283,
+              "before": "            requests.likeCommentForSubject(oid, type, rpid, !isCurrentlyLiked).onFailure {\n",
+              "after": "            requests.likeCommentForSubject(oid, type, rpid, !isCurrentlyLiked).onFailure { ensureOwned();\n"
+            },
+            {
+              "beforeStart": 11728,
+              "beforeEnd": 11819,
+              "afterStart": 11758,
+              "afterEnd": 11864,
+              "before": "            requests.hateCommentForSubject(oid, type, rpid, !isCurrentlyHated).onFailure {\n",
+              "after": "            requests.hateCommentForSubject(oid, type, rpid, !isCurrentlyHated).onFailure { ensureOwned();\n"
+            }
+          ]
+        }
+      ],
+      "newFiniteTransforms": [
+        [
+          "    private val requests: DesktopVideoCommentRequests,\n) {",
+          "    private val requests: DesktopVideoCommentRequests,\n    private val commitState: ((() -> Unit) -> Boolean) = { action ->\n        if (requests.isOwned()) { action(); true } else false\n    },\n) {\n    private fun <T> MutableStateFlow(initial: T): kotlinx.coroutines.flow.MutableStateFlow<T> =\n        com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(initial, commitState)"
+        ]
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "originalSha256LF": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+      "originalLines": 242,
+      "existingCanonicalSha256LF": "caa441ab87c27e27c0652f0bbad03da01a26a8f1418a22f95d46457604859fe5",
+      "prospectiveSha256LF": "341827ca3f848765ecd69daf9896f8c36fb525bae26947f4473b634b360b8f0b",
+      "fullOriginalInverseByteEqual": true,
+      "canonicalTransforms": [
+        {
+          "line": 271,
+          "beforeSha256LF": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+          "afterSha256LF": "7eef2468814c45822433682ac49a3af117f59317187d9221eed53141f015b67f",
+          "segments": [
+            {
+              "beforeStart": 50,
+              "beforeEnd": 123,
+              "afterStart": 50,
+              "afterEnd": 50,
+              "before": "import android.widget.Toast\nimport androidx.activity.compose.BackHandler\n",
+              "after": ""
+            },
+            {
+              "beforeStart": 957,
+              "beforeEnd": 1122,
+              "afterStart": 884,
+              "afterEnd": 884,
+              "before": "import androidx.compose.ui.platform.LocalContext\nimport androidx.lifecycle.compose.collectAsStateWithLifecycle\nimport androidx.lifecycle.viewmodel.compose.viewModel\n",
+              "after": ""
+            },
+            {
+              "beforeStart": 1602,
+              "beforeEnd": 1658,
+              "afterStart": 1364,
+              "afterEnd": 1364,
+              "before": "import com.android.purebilibili.core.store.TokenManager\n",
+              "after": ""
+            }
+          ]
+        },
+        {
+          "line": 272,
+          "beforeSha256LF": "7eef2468814c45822433682ac49a3af117f59317187d9221eed53141f015b67f",
+          "afterSha256LF": "b5dce44547ff6831ab3ff9a5645678169ea3cc2dd0c05ee3178f3f8c7afc8918",
+          "segments": [
+            {
+              "beforeStart": 503,
+              "beforeEnd": 503,
+              "afterStart": 503,
+              "afterEnd": 692,
+              "before": "",
+              "after": "import androidx.compose.runtime.collectAsState\nimport com.bilipai.desktop.ui.LocalDesktopCommentBindings\nimport com.android.purebilibili.feature.video.viewmodel.DesktopVideoCommentRequests\n"
+            }
+          ]
+        },
+        {
+          "line": 273,
+          "beforeSha256LF": "b5dce44547ff6831ab3ff9a5645678169ea3cc2dd0c05ee3178f3f8c7afc8918",
+          "afterSha256LF": "2e2a1e3d09097cdf5a3117a9ea68fcdb0da338beb043e5d5f11b434198902f44",
+          "segments": [
+            {
+              "beforeStart": 2703,
+              "beforeEnd": 2755,
+              "afterStart": 2703,
+              "afterEnd": 2784,
+              "before": "    viewModel: CommentDetailViewModel = viewModel()\n",
+              "after": "    viewModel: CommentDetailViewModel,\n    requests: DesktopVideoCommentRequests\n"
+            }
+          ]
+        },
+        {
+          "line": 274,
+          "beforeSha256LF": "2e2a1e3d09097cdf5a3117a9ea68fcdb0da338beb043e5d5f11b434198902f44",
+          "afterSha256LF": "5ac452d744cc70a614f97899d7597db904596b4b9ecf11973a48147dd8ecddbf",
+          "segments": [
+            {
+              "beforeStart": 2483,
+              "beforeEnd": 2508,
+              "afterStart": 2483,
+              "afterEnd": 2517,
+              "before": "fun CommentDetailScreen(\n",
+              "after": "internal fun CommentDetailScreen(\n"
+            }
+          ]
+        },
+        {
+          "line": 275,
+          "beforeSha256LF": "5ac452d744cc70a614f97899d7597db904596b4b9ecf11973a48147dd8ecddbf",
+          "afterSha256LF": "f4153313b75cad6ae504da72efbc9cba80474bdb3694bf5b28fb0d8212c2d85a",
+          "segments": [
+            {
+              "beforeStart": 2797,
+              "beforeEnd": 3338,
+              "afterStart": 2797,
+              "afterEnd": 3247,
+              "before": "    val subReplyState by viewModel.subReplyState.collectAsStateWithLifecycle()\n    val likedComments by viewModel.likedComments.collectAsStateWithLifecycle()\n    val hatedComments by viewModel.hatedComments.collectAsStateWithLifecycle()\n    val showCommentInput by viewModel.showCommentInput.collectAsStateWithLifecycle()\n    val replyingTo by viewModel.replyingTo.collectAsStateWithLifecycle()\n    val isSending by viewModel.isSending.collectAsStateWithLifecycle()\n    val fraudResult by viewModel.fraudResult.collectAsStateWithLifecycle()\n",
+              "after": "    val subReplyState by viewModel.subReplyState.collectAsState()\n    val likedComments by viewModel.likedComments.collectAsState()\n    val hatedComments by viewModel.hatedComments.collectAsState()\n    val showCommentInput by viewModel.showCommentInput.collectAsState()\n    val replyingTo by viewModel.replyingTo.collectAsState()\n    val isSending by viewModel.isSending.collectAsState()\n    val fraudResult by viewModel.fraudResult.collectAsState()\n"
+            }
+          ]
+        },
+        {
+          "line": 276,
+          "beforeSha256LF": "f4153313b75cad6ae504da72efbc9cba80474bdb3694bf5b28fb0d8212c2d85a",
+          "afterSha256LF": "8c264b2d24129573fb7350553e0163ad230bbbe0ef071612b209835ecc1b1ee3",
+          "segments": [
+            {
+              "beforeStart": 3247,
+              "beforeEnd": 3286,
+              "afterStart": 3247,
+              "afterEnd": 3302,
+              "before": "    val context = LocalContext.current\n",
+              "after": "    val platform = LocalDesktopCommentBindings.current\n"
+            }
+          ]
+        },
+        {
+          "line": 277,
+          "beforeSha256LF": "8c264b2d24129573fb7350553e0163ad230bbbe0ef071612b209835ecc1b1ee3",
+          "afterSha256LF": "862a99a7af99f0a11a1a6c1d098779dfcc8bdfc52f14808a6dd8733ebdb38151",
+          "segments": [
+            {
+              "beforeStart": 3468,
+              "beforeEnd": 3540,
+              "afterStart": 3468,
+              "afterEnd": 3511,
+              "before": "            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()\n",
+              "after": "            platform.showFeedback(message)\n"
+            }
+          ]
+        },
+        {
+          "line": 278,
+          "beforeSha256LF": "862a99a7af99f0a11a1a6c1d098779dfcc8bdfc52f14808a6dd8733ebdb38151",
+          "afterSha256LF": "d61ae761cecb481f7c95ffb99a7ae026c7cb0458e28220ef67ec29b2b38bc914",
+          "segments": [
+            {
+              "beforeStart": 4406,
+              "beforeEnd": 4468,
+              "afterStart": 4406,
+              "afterEnd": 4449,
+              "before": "    val currentMid = remember { TokenManager.midCache ?: 0L }\n",
+              "after": "    val currentMid = requests.currentMid()\n"
+            }
+          ]
+        },
+        {
+          "line": 279,
+          "beforeSha256LF": "d61ae761cecb481f7c95ffb99a7ae026c7cb0458e28220ef67ec29b2b38bc914",
+          "afterSha256LF": "caa441ab87c27e27c0652f0bbad03da01a26a8f1418a22f95d46457604859fe5",
+          "segments": [
+            {
+              "beforeStart": 4716,
+              "beforeEnd": 4750,
+              "afterStart": 4716,
+              "afterEnd": 4798,
+              "before": "    BackHandler(enabled = true) {\n",
+              "after": "    com.android.purebilibili.core.ui.LocalNavigationBackHandler(enabled = true) {\n"
+            }
+          ]
+        }
+      ],
+      "newFiniteTransforms": [
+        [
+          "    requests: DesktopVideoCommentRequests\n",
+          "    requests: DesktopVideoCommentRequests,\n    isCurrentPage: Boolean = true,\n    admitUiAction: ((() -> Unit) -> Boolean) = { action -> action(); true },\n"
+        ],
+        [
+          "    val subReplyState by viewModel.subReplyState.collectAsState()",
+          "    fun uiAction(action: () -> Unit) { if (isCurrentPage) admitUiAction(action) }\n    val subReplyState by viewModel.subReplyState.collectAsState()"
+        ],
+        [
+          "    LaunchedEffect(fraudResult) {",
+          "    LaunchedEffect(fraudResult, isCurrentPage) {\n        if (!isCurrentPage) return@LaunchedEffect"
+        ],
+        [
+          "        if (shouldShowCommentFraudResultDialog(result.status)) {",
+          "        if (isCurrentPage && shouldShowCommentFraudResultDialog(result.status)) {"
+        ],
+        [
+          "LocalNavigationBackHandler(enabled = true)",
+          "LocalNavigationBackHandler(enabled = isCurrentPage)"
+        ],
+        [
+          "if (showImagePreview && previewImages.isNotEmpty())",
+          "if (isCurrentPage && showImagePreview && previewImages.isNotEmpty())"
+        ],
+        [
+          "                visible = showCommentInput,",
+          "                visible = isCurrentPage && showCommentInput,"
+        ],
+        [
+          "                            viewModel.loadInitial(\n",
+          "                            uiAction { viewModel.loadInitial(\n"
+        ],
+        [
+          "                                targetReplyId = targetId\n                            )",
+          "                                targetReplyId = targetId\n                            ) }"
+        ],
+        [
+          "onLoadMore = viewModel::loadMore",
+          "onLoadMore = { uiAction(viewModel::loadMore) }"
+        ],
+        [
+          "onSortModeChange = viewModel::setSortMode",
+          "onSortModeChange = { mode -> uiAction { viewModel.setSortMode(mode) } }"
+        ],
+        [
+          "onRootCommentClick = { viewModel.showReplyInput(rootReply) }",
+          "onRootCommentClick = { uiAction { viewModel.showReplyInput(rootReply) } }"
+        ],
+        [
+          "onReplyClick = { reply -> viewModel.showReplyInput(reply) }",
+          "onReplyClick = { reply -> uiAction { viewModel.showReplyInput(reply) } }"
+        ],
+        [
+          "onConversationClick = viewModel::openConversation",
+          "onConversationClick = { reply -> uiAction { viewModel.openConversation(reply) } }"
+        ],
+        [
+          "onConversationBack = viewModel::closeConversation",
+          "onConversationBack = { uiAction(viewModel::closeConversation) }"
+        ],
+        [
+          "onDissolveStart = viewModel::startDissolve",
+          "onDissolveStart = { id -> uiAction { viewModel.startDissolve(id) } }"
+        ],
+        [
+          "onDeleteComment = viewModel::deleteComment",
+          "onDeleteComment = { id -> uiAction { viewModel.deleteComment(id) } }"
+        ],
+        [
+          "onCheckCommentFraud = if (type == 1) viewModel::checkCommentFraud else null",
+          "onCheckCommentFraud = if (type == 1) { reply -> uiAction { viewModel.checkCommentFraud(reply) } } else null"
+        ],
+        [
+          "onCommentLike = viewModel::likeComment",
+          "onCommentLike = { id -> uiAction { viewModel.likeComment(id) } }"
+        ],
+        [
+          "onCommentHate = viewModel::hateComment",
+          "onCommentHate = { id -> uiAction { viewModel.hateComment(id) } }"
+        ],
+        [
+          "onDismiss = viewModel::hideReplyInput",
+          "onDismiss = { uiAction(viewModel::hideReplyInput) }"
+        ],
+        [
+          "                    viewModel.sendReply(text, uris, sync)",
+          "                    uiAction { viewModel.sendReply(text, uris, sync) }"
+        ],
+        [
+          "onDismiss = viewModel::dismissFraudResult",
+          "onDismiss = { uiAction(viewModel::dismissFraudResult) }"
+        ],
+        [
+          "{ viewModel.startDissolve(result.rpid) }",
+          "{ uiAction { viewModel.startDissolve(result.rpid) } }"
+        ],
+        [
+          "            viewModel.closeConversation()",
+          "            uiAction(viewModel::closeConversation)"
+        ],
+        [
+          "        resolveCommentFraudLightMessage(result.status)?.let { message ->\n            platform.showFeedback(message)\n            viewModel.dismissFraudResult()\n        }",
+          "        resolveCommentFraudLightMessage(result.status)?.let { message -> uiAction {\n            platform.showFeedback(message)\n            viewModel.dismissFraudResult()\n        } }"
+        ],
+        [
+          "                        onImagePreview = { images, index, rect, textContent ->\n                            previewImages = images\n                            previewInitialIndex = index\n                            previewSourceRect = rect\n                            previewTextContent = textContent\n                            showImagePreview = true\n                        },",
+          "                        onImagePreview = { images, index, rect, textContent -> uiAction {\n                            previewImages = images\n                            previewInitialIndex = index\n                            previewSourceRect = rect\n                            previewTextContent = textContent\n                            showImagePreview = true\n                        } },"
+        ],
+        [
+          "                    onDismiss = {\n                        showImagePreview = false\n                        previewTextContent = null\n                    }",
+          "                    onDismiss = { uiAction {\n                        showImagePreview = false\n                        previewTextContent = null\n                    } }"
+        ]
+      ]
+    }
+  ],
+  "targetsExactForwardInverse": true,
+  "hunks": 16,
+  "families": 6,
+  "productionWrites": 0
+}

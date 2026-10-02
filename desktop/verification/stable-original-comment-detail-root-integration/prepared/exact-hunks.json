@@ -1,0 +1,130 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+    "name": "mandatory-typed-original-message-port",
+    "before": "    val onDynamicRoute: (DesktopDynamicDetailRoute) -> Unit = { onDynamic(it.dynamicId) })",
+    "after": "    val onDynamicRoute: (DesktopDynamicDetailRoute) -> Unit = { onDynamic(it.dynamicId) },\n    val onMessageLink: (String) -> Unit)",
+    "beforeSha256LF": "3aafde4cda6c4999947fffaf5746e3a12d5484e325d0b33323e81572de29d09c",
+    "afterSha256LF": "f49dc8e99cff07ce73c16a40b9948ff154004949632ccf1b43b6b7714c37488c"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+    "name": "actual-root-link-provider",
+    "before": "    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi,",
+    "after": "    val messageLink = LocalDesktopOriginalMessageLinkNavigation.current\n    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi,",
+    "beforeSha256LF": "6655a70581bf853e2258e5c9e7adce884003d45ab2f8818771ed73d810391c23",
+    "afterSha256LF": "bc0252dd7acaea4c1c51016fd1c35d26289e31d93502a434d382521b7dcbcdc8"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+    "name": "preserve-full-actions-in-content",
+    "before": "        onDynamicBack={dynamicDetail=null},onDynamicRoute={dynamicDetail=it})",
+    "after": "        onDynamicBack={dynamicDetail=null},onDynamicRoute={dynamicDetail=it},onMessageLink=messageLink)",
+    "beforeSha256LF": "21fdd2d537cede70027256c2ade142c3499fa7cc62c3ef4ce33110515e8e3b7f",
+    "afterSha256LF": "4e10f9e3eaecd3d53b91d7997c0d9d519136ec8f89d1ca7f57b1ea3d12874d92"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/CommunityScreens.kt",
+    "name": "one-original-parser-only",
+    "before": "raw: String, navigation: CommunityNavigation) {\n    val url = imageUrl(raw.trim())\n    // Keep the original message-link aliases, nested browser URI and fragment\n    // resolution. Root carries both reply identifiers to the original layout.\n    val dynamicRoute = when (val action = resolveMessageLinkNavigationAction(url)) {\n        is MessageLinkNavigationAction.Dynamic -> DesktopDynamicDetailRoute(action.dynamicId)\n        is MessageLinkNavigationAction.DynamicComment -> DesktopDynamicDetailRoute(action.dynamicId,action.rootReplyId,action.targetReplyId)\n        is MessageLinkNavigationAction.CommentDetail -> if(action.businessId==17)\n            DesktopDynamicDetailRoute(action.oid.toString(),action.rootReplyId,action.targetReplyId) else null\n        else -> null\n    }\n    if(dynamicRoute!=null){navigation.onDynamicRoute(dynamicRoute);return}\n    val uri = runCatching { URI(url) }.getOrNull() ?: return\n    if (uri.scheme !in setOf(\"https\", \"http\")) return\n    val host = uri.host?.lowercase().orEmpty()\n    if (host == \"bilibili.com\" || host.endsWith(\".bilibili.com\")) {\n        if (uri.path.orEmpty().contains(\"topic\", ignoreCase = true)) {\n            com.android.purebilibili.feature.dynamic.components.resolveDynamicRichTextTopicId(\n                com.android.purebilibili.data.model.response.RichTextNode(jump_url = url)\n            )?.let { navigation.onTopic(it); return }\n        }\n        Regex(\"BV[0-9A-Za-z]{10}\").find(url)?.value?.let {\n            navigation.onVideo(VideoCard(it, \"\", \"\", \"\", 0, 0)); return\n        }\n        Regex(\"/read/cv(\\\\d+)\").find(uri.path.orEmpty())?.groupValues?.get(1)?.toLongOrNull()?.let { navigation.onArticle(it); return }\n        Regex(\"/bangumi/play/ss(\\\\d+)\").find(uri.path.orEmpty())?.groupValues?.get(1)?.toLongOrNull()?.let { navigation.onBangumi(it); return }\n        if (host == \"space.bilibili.com\") uri.path.trim('/').substringBefore('/').toLongOrNull()?.let { navigation.onUser(it); return }\n        if (host == \"live.bilibili.com\") uri.path.trim('/').substringBefore('/').toLongOrNull()?.let { navigation.onLive(it); return }\n        if (host == \"t.bilibili.com\") uri.path.trim('/').toLongOrNull()?.takeIf { it > 0 }?.let { navigation.onDynamic(it.toString()); return }\n        Regex(\"/opus/(\\\\d+)\").find(uri.path.orEmpty())?.groupValues?.get(1)?.let { navigation.onDynamic(it); return }\n    }\n    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE))\n        runCatching { Desktop.getDesktop().browse(uri) }\n}\n",
+    "after": "raw: String, navigation: CommunityNavigation) {\n    val url = imageUrl(raw.trim())\n    // Topic rich text uses its already installed original topic policy. Every\n    // other message target is parsed by the sole original AppNavigation policy.\n    val uri = runCatching { URI(url) }.getOrNull()\n    val host = uri?.host?.lowercase().orEmpty()\n    if (uri?.scheme in setOf(\"https\", \"http\") && (host == \"bilibili.com\" || host.endsWith(\".bilibili.com\")) &&\n            uri?.path.orEmpty().contains(\"topic\", ignoreCase=true)) {\n        com.android.purebilibili.feature.dynamic.components.resolveDynamicRichTextTopicId(\n            com.android.purebilibili.data.model.response.RichTextNode(jump_url=url)\n        )?.let { navigation.onTopic(it); return }\n    }\n    navigation.onMessageLink(url)\n}\n",
+    "beforeSha256LF": "2b0973a5b4968d6c65749cc47db90620c62a241bd55f1f957386822e31cf4d21",
+    "afterSha256LF": "6546dc6fbf496c84a0c632621778fa872de979e9993dc7bde21d63a94f55e7d2"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopSpaceScreens.kt",
+    "name": "space-shares-original-message-router",
+    "before": "    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, onDynamic, onTopic, onTopicKeyword)",
+    "after": "    val messageLink = LocalDesktopOriginalMessageLinkNavigation.current\n    val navigation = CommunityNavigation(onVideo, onUser, onArticle, onLogin, onLive, onBangumi, onDynamic, onTopic, onTopicKeyword, onMessageLink=messageLink)",
+    "beforeSha256LF": "6e493467f9202447185b42ac66e5ddc97a714318f78b97d1973a4416465085c9",
+    "afterSha256LF": "d2f46b516dbe16379637a0802467315b86751d230137a849609bbe629b3c6423"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+    "name": "sole-shared-root-comment-owner",
+    "before": "@Composable internal fun DesktopOriginalCommentRootBindings(",
+    "after": "internal val LocalDesktopOriginalCommentRootOwner = staticCompositionLocalOf<DesktopOriginalCommentRootOwner> {\n    error(\"Original standalone comment requires the same Root comment owner\")\n}\n\n@Composable internal fun DesktopOriginalCommentRootBindings(",
+    "beforeSha256LF": "e22b7dc1224f60632eb6db7d95ff7a8928fd28b81f192770817b186c8a41b52e",
+    "afterSha256LF": "13388bb91726d3c81237dcd514b1a648af595dfc21e53642c95d3f6ca429aab1"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalCommentRootBindings.kt",
+    "name": "publish-the-existing-owner-only",
+    "before": "if (owned()) CompositionLocalProvider(LocalDesktopCommentBindings provides platform,",
+    "after": "if (owned()) CompositionLocalProvider(LocalDesktopOriginalCommentRootOwner provides ownerBindings,\n            LocalDesktopCommentBindings provides platform,",
+    "beforeSha256LF": "7237687bf93875f93f9063fc1cc61c465f6686b23ce1dc2fff0996cb3562190b",
+    "afterSha256LF": "d0a727af24fa2385d16be39ad78f5ad1f5fa5955167f1f3881e24ff5a7972811"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoReadyRootMount.kt",
+    "name": "borrow-the-root-comment-owner",
+    "before": "    DesktopOriginalCommentRootBindings(environment.repository, resources.community,\n        resources.fraud, environment.root, environment::owns, Modifier.fillMaxSize(),\n        borrowedImageAssets = environment.gallery.imageAssets) { comments ->\n        val commentPlatform = checkNotNull(LocalDesktopCommentBindings.current)\n        val assembler = remember(environment, shell, resources, comments, commentPlatform) {\n            DesktopOriginalVideoRootAssembler(environment, shell, resources, comments, commentPlatform)\n        }\n        DesktopOriginalVideoShellMount(environment, shell, { assembler.factory },\n            { _, owner -> assembler.Platforms(owner) }, assembler::afterDrain,\n            assembler::afterUnconstructedDrain, content)\n    }\n}\n",
+    "after": "    val comments = LocalDesktopOriginalCommentRootOwner.current\n    val commentPlatform = LocalDesktopCommentBindings.current\n    val assembler = remember(environment, shell, resources, comments, commentPlatform) {\n        DesktopOriginalVideoRootAssembler(environment, shell, resources, comments, commentPlatform)\n    }\n    DesktopOriginalVideoShellMount(environment, shell, { assembler.factory },\n        { _, owner -> assembler.Platforms(owner) }, assembler::afterDrain,\n        assembler::afterUnconstructedDrain, content)\n}\n",
+    "beforeSha256LF": "d9eef23f0ab102210733cfc2ca62dad3fb794387d2b0f38f90eba416571c455d",
+    "afterSha256LF": "2b6beaaea5d231969c7ce177923a18c55433fa1f41c63e1933a9d8d906d209e4"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "name": "stable-root-comment-owner-before-media",
+    "before": "                        val appResources = ordinaryVideoResources\n                        if (appResources == null) content() else {",
+    "after": "                        val appResources = ordinaryVideoResources\n                        DesktopOriginalCommentRootBindings(environment.repository, community, commentFraud,\n                            environment.root, environment::owns, Modifier.fillMaxSize(),\n                            borrowedImageAssets=environment.gallery.imageAssets) { _ ->\n                        if (appResources == null) content() else {",
+    "beforeSha256LF": "d5c53679ddeda4be86cd6d2750b3f6de1703fedbd84d1e28aae455fad3d3d9fd",
+    "afterSha256LF": "bd96ee8b614ee4b0382ef0bb3ba759ec19102d1bf315251f565a9f19cf602cbc"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "name": "close-stable-comment-provider",
+    "before": "                            DesktopOriginalVideoReadyRootMount(environment,ordinaryVideo,shellResources,content)\n                        }\n                    }, discovery,community",
+    "after": "                            DesktopOriginalVideoReadyRootMount(environment,ordinaryVideo,shellResources,content)\n                        }\n                        }\n                    }, discovery,community",
+    "beforeSha256LF": "5ab625c1cd56bf6f108dc5b260df6012d0f3f887056999f0187b4dd0f6b05e12",
+    "afterSha256LF": "92b84e2923efbefe8e3b0d6beac2aa9ca9d9da54aa634bae67cf1860885207d9"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "name": "captured-entry-original-message-router",
+    "before": "                    CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable)) {",
+    "after": "                    val messageRoutes = commands as DesktopOriginalRootRouteAssembly\n                    val messageLink: (String) -> Unit = { raw ->\n                        if (active) messageRoutes.callbackFor(entryKey) {\n                            desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute())\n                        }\n                    }\n                    CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable),\n                        LocalDesktopOriginalMessageLinkNavigation provides messageLink) {",
+    "beforeSha256LF": "3f66a2b2746e691a7b6ed983cb41abe7b27f6d60102486ead126f6a24cadd060",
+    "afterSha256LF": "8899242ac80bccecc30c2327cc31b796be17910d3f21fcbba5e55721aa684237"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "name": "native-standalone-comment-detail-leaf",
+    "before": "                            entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.AudioMode ->",
+    "after": "                            entryKey is BiliPaiNavKey.CommentDetail ->\n                                DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }\n                            entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.AudioMode ->",
+    "beforeSha256LF": "b65b5d521d5ba88d078bb085c49a637659a7f9c4b92f2ba232aa523fd99a859a",
+    "afterSha256LF": "6832bd8a7534e8c586ad938ca1f44bc2b2f1b7cba6c2cbb1112e9d43c528eb2a"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "name": "topic-shares-original-typed-link-actions",
+    "before": "                                    onDynamicRoute=::openDynamicRoute),",
+    "after": "                                    onDynamicRoute=::openDynamicRoute,onMessageLink=messageLink),",
+    "beforeSha256LF": "32e16e684e6eb050479b94309cee1942c1ace6de4926af2ba129ddf950ac6f90",
+    "afterSha256LF": "01b437cdf5a5068a7bd8f123ccba233f985d2ed718b2f7658c7c04fd98715c40"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "name": "actual-comment-section-selection",
+    "before": "    BiliPaiNavKey.Inbox,BiliPaiNavKey.ReplyMe,BiliPaiNavKey.AtMe,BiliPaiNavKey.LikeMe,BiliPaiNavKey.SystemNotice,is BiliPaiNavKey.Chat -> DesktopSection.MESSAGES",
+    "after": "    BiliPaiNavKey.Inbox,BiliPaiNavKey.ReplyMe,BiliPaiNavKey.AtMe,BiliPaiNavKey.LikeMe,BiliPaiNavKey.SystemNotice,is BiliPaiNavKey.Chat,is BiliPaiNavKey.CommentDetail -> DesktopSection.MESSAGES",
+    "beforeSha256LF": "c3a0b5b691d24df64d2ce5ca5cd4936f2be0d4a43b91ab5bf0482ada9b296a5f",
+    "afterSha256LF": "e275764fa30a4b653aae32d8676796eac834f0f62c43dd872efff3619d44af7b"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-bgm-detail.py",
+    "name": "sole-original-comment-entry-adaptation",
+    "before": "def generate(repo,output):",
+    "after": "\ndef comment_detail_root_entry_delta(relative,body):\n if relative=='com/android/purebilibili/feature/comment/CommentDetailViewModel.kt':\n  before='    private val requests: DesktopVideoCommentRequests,\\n) {'\n  after='    private val requests: DesktopVideoCommentRequests,\\n    private val commitState: ((() -> Unit) -> Boolean) = { action ->\\n        if (requests.isOwned()) { action(); true } else false\\n    },\\n) {\\n    private fun <T> MutableStateFlow(initial: T): kotlinx.coroutines.flow.MutableStateFlow<T> =\\n        com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow(initial, commitState)'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n if relative=='com/android/purebilibili/feature/comment/CommentDetailScreen.kt':\n  before='    requests: DesktopVideoCommentRequests\\n'\n  after='    requests: DesktopVideoCommentRequests,\\n    isCurrentPage: Boolean = true,\\n    admitUiAction: ((() -> Unit) -> Boolean) = { action -> action(); true },\\n'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='    val subReplyState by viewModel.subReplyState.collectAsState()'\n  after='    fun uiAction(action: () -> Unit) { if (isCurrentPage) admitUiAction(action) }\\n    val subReplyState by viewModel.subReplyState.collectAsState()'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='    LaunchedEffect(fraudResult) {'\n  after='    LaunchedEffect(fraudResult, isCurrentPage) {\\n        if (!isCurrentPage) return@LaunchedEffect'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='        if (shouldShowCommentFraudResultDialog(result.status)) {'\n  after='        if (isCurrentPage && shouldShowCommentFraudResultDialog(result.status)) {'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='LocalNavigationBackHandler(enabled = true)'\n  after='LocalNavigationBackHandler(enabled = isCurrentPage)'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='if (showImagePreview && previewImages.isNotEmpty())'\n  after='if (isCurrentPage && showImagePreview && previewImages.isNotEmpty())'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='                visible = showCommentInput,'\n  after='                visible = isCurrentPage && showCommentInput,'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='                            viewModel.loadInitial(\\n'\n  after='                            uiAction { viewModel.loadInitial(\\n'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='                                targetReplyId = targetId\\n                            )'\n  after='                                targetReplyId = targetId\\n                            ) }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onLoadMore = viewModel::loadMore'\n  after='onLoadMore = { uiAction(viewModel::loadMore) }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onSortModeChange = viewModel::setSortMode'\n  after='onSortModeChange = { mode -> uiAction { viewModel.setSortMode(mode) } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onRootCommentClick = { viewModel.showReplyInput(rootReply) }'\n  after='onRootCommentClick = { uiAction { viewModel.showReplyInput(rootReply) } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onReplyClick = { reply -> viewModel.showReplyInput(reply) }'\n  after='onReplyClick = { reply -> uiAction { viewModel.showReplyInput(reply) } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onConversationClick = viewModel::openConversation'\n  after='onConversationClick = { reply -> uiAction { viewModel.openConversation(reply) } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onConversationBack = viewModel::closeConversation'\n  after='onConversationBack = { uiAction(viewModel::closeConversation) }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onDissolveStart = viewModel::startDissolve'\n  after='onDissolveStart = { id -> uiAction { viewModel.startDissolve(id) } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onDeleteComment = viewModel::deleteComment'\n  after='onDeleteComment = { id -> uiAction { viewModel.deleteComment(id) } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onCheckCommentFraud = if (type == 1) viewModel::checkCommentFraud else null'\n  after='onCheckCommentFraud = if (type == 1) { reply -> uiAction { viewModel.checkCommentFraud(reply) } } else null'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onCommentLike = viewModel::likeComment'\n  after='onCommentLike = { id -> uiAction { viewModel.likeComment(id) } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onCommentHate = viewModel::hateComment'\n  after='onCommentHate = { id -> uiAction { viewModel.hateComment(id) } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onDismiss = viewModel::hideReplyInput'\n  after='onDismiss = { uiAction(viewModel::hideReplyInput) }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='                    viewModel.sendReply(text, uris, sync)'\n  after='                    uiAction { viewModel.sendReply(text, uris, sync) }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='onDismiss = viewModel::dismissFraudResult'\n  after='onDismiss = { uiAction(viewModel::dismissFraudResult) }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='{ viewModel.startDissolve(result.rpid) }'\n  after='{ uiAction { viewModel.startDissolve(result.rpid) } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='            viewModel.closeConversation()'\n  after='            uiAction(viewModel::closeConversation)'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='        resolveCommentFraudLightMessage(result.status)?.let { message ->\\n            platform.showFeedback(message)\\n            viewModel.dismissFraudResult()\\n        }'\n  after='        resolveCommentFraudLightMessage(result.status)?.let { message -> uiAction {\\n            platform.showFeedback(message)\\n            viewModel.dismissFraudResult()\\n        } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='                        onImagePreview = { images, index, rect, textContent ->\\n                            previewImages = images\\n                            previewInitialIndex = index\\n                            previewSourceRect = rect\\n                            previewTextContent = textContent\\n                            showImagePreview = true\\n                        },'\n  after='                        onImagePreview = { images, index, rect, textContent -> uiAction {\\n                            previewImages = images\\n                            previewInitialIndex = index\\n                            previewSourceRect = rect\\n                            previewTextContent = textContent\\n                            showImagePreview = true\\n                        } },'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n  before='                    onDismiss = {\\n                        showImagePreview = false\\n                        previewTextContent = null\\n                    }'\n  after='                    onDismiss = { uiAction {\\n                        showImagePreview = false\\n                        previewTextContent = null\\n                    } }'\n  assert body.count(before)==1\n  body=body.replace(before,after)\n return body\n\ndef generate(repo,output):",
+    "beforeSha256LF": "e4f1749de6868eae5dee35f917082f3d651439a19e8f3b10431f224ea103191f",
+    "afterSha256LF": "2114e6749e8116cf24a8eded007d891411939125f8e0a9ddd6a3ed326b5709da"
+  },
+  {
+    "path": "desktop/tools/extract-upstream-bgm-detail.py",
+    "name": "route-owned-original-state-publication",
+    "before": "    def emit(relative,body):\n",
+    "after": "    def emit(relative,body):\n        body=comment_detail_root_entry_delta(relative,body)\n",
+    "beforeSha256LF": "9515c5a02e1600eaded60420f4664cb10e42343e5d7c64c3c79f2e01792045e8",
+    "afterSha256LF": "8773a803ed9c2291c879e4b96751ffb8d846288ad2f25d4f5e832ae797c02065"
+  }
+]

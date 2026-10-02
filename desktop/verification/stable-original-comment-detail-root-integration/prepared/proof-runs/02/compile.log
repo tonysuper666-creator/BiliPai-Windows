@@ -1,0 +1,12 @@
+work\BiliPai\desktop\.local\stable-original-comment-detail-root-parity\CommentDetailProof.kt:33:28: error: unresolved reference 'desktopOriginalOpenMessageLink'.
+    fun open(uri:String) = desktopOriginalOpenMessageLink(uri,c,"reply_me")
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-original-comment-detail-root-parity\CommentDetailProof.kt:50:153: error: no value passed for parameter 'onLive'.
+    val navigation=CommunityNavigation({error("Video flattening")},{error("User flattening")},{error("Article flattening")},{error("Login flattening")},onMessageLink={open(it)})
+                                                                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-original-comment-detail-root-parity\CommentDetailProof.kt:50:153: error: no value passed for parameter 'onBangumi'.
+    val navigation=CommunityNavigation({error("Video flattening")},{error("User flattening")},{error("Article flattening")},{error("Login flattening")},onMessageLink={open(it)})
+                                                                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^
+work\BiliPai\desktop\.local\stable-original-comment-detail-root-parity\CommentDetailProof.kt:50:153: error: no value passed for parameter 'onDynamic'.
+    val navigation=CommunityNavigation({error("Video flattening")},{error("User flattening")},{error("Article flattening")},{error("Login flattening")},onMessageLink={open(it)})
+                                                                                                                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^

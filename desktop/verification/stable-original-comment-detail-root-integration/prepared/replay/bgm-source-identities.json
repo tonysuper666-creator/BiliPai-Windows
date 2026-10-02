@@ -1,0 +1,444 @@
+{
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "4c2c56d2a73c329325d3bf423f0c62e8a14aa87a",
+      "currentGitBlob": "4c2c56d2a73c329325d3bf423f0c62e8a14aa87a",
+      "sha256LfUtf8": "e1fc5fd13a007b37b387c3391e233fb45b83784ff8f364c407f1b33d282cc0ac",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "b1623629763ca5263dd848a8265990f41d41d26f",
+      "currentGitBlob": "b1623629763ca5263dd848a8265990f41d41d26f",
+      "sha256LfUtf8": "4ab0fbb532bfca7b809f4a3662f2405ad4a8a6d27882bd581fb204e6f597031c",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmHeatChart.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "2e3afdd5d3f0ab93792e7187205f130efad1c18d",
+      "currentGitBlob": "2e3afdd5d3f0ab93792e7187205f130efad1c18d",
+      "sha256LfUtf8": "9110f3fb6d5d4482ff1b1c3f833cd37435501cf376a98397d667ca67323ec33f",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "97daffd44d2c6f1b60a1a4fc71120eb5a4b143ec",
+      "currentGitBlob": "97daffd44d2c6f1b60a1a4fc71120eb5a4b143ec",
+      "sha256LfUtf8": "12da0cc512053fd517772dc97353b21a57209a1ad853a5d775ba70e731500a00",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ViewGrpcRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "71d6448b7e79822e457e4236b8f5a74fb8373575",
+      "currentGitBlob": "71d6448b7e79822e457e4236b8f5a74fb8373575",
+      "sha256LfUtf8": "fbc1efb28ea94a0fadcfb7358a2a07404ee464cfb4bf37de8b1bd7865df9149f",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/response/PlayerInfoResponse.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "e6bd9c0d25d9be99f2450f7bebafb248c1591457",
+      "currentGitBlob": "e6bd9c0d25d9be99f2450f7bebafb248c1591457",
+      "sha256LfUtf8": "9dafa480e4f4eabd24ae791ff4beb46844b64a541f64912d80655346917ed3b2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+      "currentGitBlob": "c8fddc1d08933deed87784474ce12c464ca49a1f",
+      "sha256LfUtf8": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "3b0618edad17d4001bb3f0191539567f38810b4d",
+      "currentGitBlob": "3b0618edad17d4001bb3f0191539567f38810b4d",
+      "sha256LfUtf8": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/util/BilibiliNavigationTargetParser.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "1b526e9016c8d557f0d63314836a99cbe1e148e6",
+      "currentGitBlob": "1b526e9016c8d557f0d63314836a99cbe1e148e6",
+      "sha256LfUtf8": "bf3f2e86d526e60a48787f17b578afea86f0515e8ee62894bfdeb7eec5d63dd8",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "6f3c711465b6bd893e5dc8a4465b0e8ecdeb0ea3",
+      "currentGitBlob": "6f3c711465b6bd893e5dc8a4465b0e8ecdeb0ea3",
+      "sha256LfUtf8": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "1cc06bf4cbf392d29bcb13c315cbca03a40765e5",
+      "currentGitBlob": "1cc06bf4cbf392d29bcb13c315cbca03a40765e5",
+      "sha256LfUtf8": "f05ef7834aa979f77c6e129cc9bcdbbd53f1695500d82719ef1183b4f8653f9e",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "30d194757554b7e26c0835e3c1ec826f752dbaed",
+      "currentGitBlob": "30d194757554b7e26c0835e3c1ec826f752dbaed",
+      "sha256LfUtf8": "8a47a92187486ced7686861df44f1ef283f790acd80284656d55751853e144e2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudDetectionPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "98f8fd31774ac78f6fdf6fa7bacad141898de42f",
+      "currentGitBlob": "98f8fd31774ac78f6fdf6fa7bacad141898de42f",
+      "sha256LfUtf8": "7dc33b651feb4e9091b6db607f1f4213cc5c7a665ae817b9d856a9233969ce58",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/model/CommentFraudStatus.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "e443d9a630c922891ee8805c93da285828542e27",
+      "currentGitBlob": "e443d9a630c922891ee8805c93da285828542e27",
+      "sha256LfUtf8": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/database/entity/CommentFraudRecord.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "1bf88bdfd8a5c076564dbdc167ac6d7664be90a6",
+      "currentGitBlob": "1bf88bdfd8a5c076564dbdc167ac6d7664be90a6",
+      "sha256LfUtf8": "7af362e688bae215d5fd67d018a2913f4f8a2a32992655e20d1fc5f54e54fee0",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/database/dao/CommentFraudDao.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "de29531cfe6fb1ae6bdfb625ed7cc67a3f2f9ad6",
+      "currentGitBlob": "de29531cfe6fb1ae6bdfb625ed7cc67a3f2f9ad6",
+      "sha256LfUtf8": "92fa21f761939b0cab0de2340b94aaaf2ede83585a2648e00c10f4379df1c443",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "338f52e0194995a3cbb0c04fbf76bc5b7d719232",
+      "currentGitBlob": "338f52e0194995a3cbb0c04fbf76bc5b7d719232",
+      "sha256LfUtf8": "7b0e6218596e7bbc2fe6672eefb9cc6b5241e6a943c266089460aa83be335951",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "e5f15d09184077c63058c0e1e96467ae9dddc613",
+      "currentGitBlob": "e5f15d09184077c63058c0e1e96467ae9dddc613",
+      "sha256LfUtf8": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/LocalNavigationBackHandler.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "6b06da09b784f6534bac6f187b9199a1cd2ae80e",
+      "currentGitBlob": "6b06da09b784f6534bac6f187b9199a1cd2ae80e",
+      "sha256LfUtf8": "e8ab6dd41683241eeb229085309eee7d08d08ce7849f2d92b9fed5c18c4526f2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "a25268ed3cbd7a72ec105609975f64022f2bafe7",
+      "currentGitBlob": "a25268ed3cbd7a72ec105609975f64022f2bafe7",
+      "sha256LfUtf8": "16c385ceea6db55eb50d2e1ecee44314378e5e20f09fe70ff990480cbff25401",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "39dc76cb7708487684d0f5f736db14039790d371",
+      "currentGitBlob": "39dc76cb7708487684d0f5f736db14039790d371",
+      "sha256LfUtf8": "aec899be32bded9932d88f69741f88c0c2e042d64af2dc462536cc508c633f52",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/VideoDetailShapes.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "a11992b1a44cef761577a8bd0875c37606283981",
+      "currentGitBlob": "a11992b1a44cef761577a8bd0875c37606283981",
+      "sha256LfUtf8": "dfa4af4d6ceff6d7ab21d922d82b34b51cc2860cec69a0e693467402c3d1e5b2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "c0386b40d894687a5f15dbe2660bbc526c7acdb9",
+      "currentGitBlob": "c0386b40d894687a5f15dbe2660bbc526c7acdb9",
+      "sha256LfUtf8": "00c0e0ec11fa04524c2f0c131e806a4f92e037cac322e79e434b00615e2e82f2",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "490f6ce915e4bd71e74e6ff2278183dbe0f57a14",
+      "currentGitBlob": "490f6ce915e4bd71e74e6ff2278183dbe0f57a14",
+      "sha256LfUtf8": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "7da2be3116555bf29f85d8ef50809c0bac837ef2",
+      "currentGitBlob": "7da2be3116555bf29f85d8ef50809c0bac837ef2",
+      "sha256LfUtf8": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "40a0abcb22bd2de308e80af58cc6c35c3ad83463",
+      "currentGitBlob": "40a0abcb22bd2de308e80af58cc6c35c3ad83463",
+      "sha256LfUtf8": "8a1464b0bd1efff13280fde891ffa9c1fc5163539b2f88aaa07cd5092e393e31",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/feed/MessageFeedCommon.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "21d014000f4b13d00257ba28ac8da44ce55d40ad",
+      "currentGitBlob": "21d014000f4b13d00257ba28ac8da44ce55d40ad",
+      "sha256LfUtf8": "4a2466d522be981e77a80326e3c61f6ebb2417a68078db2ea7c5d43933b7fd66",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "currentGitBlob": "5a2116eb0ad284a547dfc08846c886fa4f0bfe85",
+      "sha256LfUtf8": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "f746915e2079fc5773e8ee12529da4b17da99099",
+      "currentGitBlob": "f746915e2079fc5773e8ee12529da4b17da99099",
+      "sha256LfUtf8": "9d46b945a048069469b9b678f18d70d5b88eb6bc263e14dffbcfe850da220ee0",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "a00a4e210a0b5b2056fec40c31928a6400de75a2",
+      "currentGitBlob": "a00a4e210a0b5b2056fec40c31928a6400de75a2",
+      "sha256LfUtf8": "1c8570bebd72655729a17b5fb1406eb4656665fc73ecdc2ae9007ea1dca07459",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "b570f8569e0a1ee6591794dc7374b629bc715704",
+      "currentGitBlob": "b570f8569e0a1ee6591794dc7374b629bc715704",
+      "sha256LfUtf8": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+      "matchesPinnedCommit": true
+    },
+    {
+      "path": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt",
+      "pinnedCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "pinnedTag": "v0.2.3",
+      "pinnedGitBlob": "e53cd28d3823ecc635f69a58a967a6ecf288f15f",
+      "currentGitBlob": "e53cd28d3823ecc635f69a58a967a6ecf288f15f",
+      "sha256LfUtf8": "f3db5d68a1de2a23786f39784e662f52e29a8763b422b67a707156eca59a1819",
+      "matchesPinnedCommit": true
+    }
+  ],
+  "sourceSelection": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/ViewGrpcRepository.kt",
+      "strategy": "full original object body; constructor receives sole existing API and repository signer; no new transport/cache/store",
+      "originalSha256": "fbc1efb28ea94a0fadcfb7358a2a07404ee464cfb4bf37de8b1bd7865df9149f",
+      "generatedSha256": "584a7b74270c11ebbcac5802bec66837a887de8e8f7f057658c0343ac8cb5114"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailViewModel.kt",
+      "strategy": "full original UI state and every method; Android ViewModelScope/TokenManager/API become required existing-owner request/scope seams; retired owner state admission",
+      "originalSha256": "e1fc5fd13a007b37b387c3391e233fb45b83784ff8f364c407f1b33d282cc0ac",
+      "generatedSha256": "eff8c900f0287dc40b81c6628c39af59124e28e1b52b26375a15b1e491929e4a"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailPolicy.kt",
+      "strategy": "full original LF-identical file",
+      "originalSha256": "4ab0fbb532bfca7b809f4a3662f2405ad4a8a6d27882bd581fb204e6f597031c",
+      "generatedSha256": "4ab0fbb532bfca7b809f4a3662f2405ad4a8a6d27882bd581fb204e6f597031c"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmHeatChart.kt",
+      "strategy": "full original LF-identical file",
+      "originalSha256": "9110f3fb6d5d4482ff1b1c3f833cd37435501cf376a98397d667ca67323ec33f",
+      "generatedSha256": "9110f3fb6d5d4482ff1b1c3f833cd37435501cf376a98397d667ca67323ec33f"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "strategy": "Full original generic VM, including typed subjects, paging, subreply/conversation, send/pictures/sync, reactions, delete, original fraud hooks; sole editor/count-helper declarations omitted because already emitted once. Android lifecycle/Uri/currentMid/fraud persistence become required same-owner seams. No DynamicItem surrogate.",
+      "originalSha256": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+      "generatedSha256": "2f06949a68cc4219510c33db33c4558bdd1e9a1ae0c68a1f2c839dcf009c5c0a"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "strategy": "Full original input renderer/policies/mention/emotes/skin/draft/sync/9 images; owned existing Windows picker replaces ActivityResult, measured viewport replaces Android configuration and Android-only dialog inset flag is omitted.",
+      "originalSha256": "f05ef7834aa979f77c6e129cc9bcdbbd53f1695500d82719ef1183b4f8653f9e",
+      "generatedSha256": "4d029ce2991899f3a804dc54d546a1e0301f2b9da77cd93897c9033bb963b0a4"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSortFilterBar.kt",
+      "strategy": "Full original generic header/list-title and preceding policies; unrelated filter-bar/segmented renderer stays outside this consumer selection.",
+      "originalSha256": "8a47a92187486ced7686861df44f1ef283f790acd80284656d55751853e144e2",
+      "generatedSha256": "3b4424d7e161f570147a65cf5b620cbed80fac20c047aa7ae14709ae7eb2515b"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/audio/bgm/BgmDetailScreen.kt",
+      "strategy": "Entire original Screen/Content/InfoCard/Videos retained, with owned required VM/platform callbacks, actual ListenAudioSession overlay parameter, and original external-media-search fallback. Native BGM never becomes legacy AU/Music page.",
+      "originalSha256": "12da0cc512053fd517772dc97353b21a57209a1ad853a5d775ba70e731500a00",
+      "generatedSha256": "44dee4b1cd4f67f7eb46225003c2af1fb947140c6edf9416ff88a85d3339f1f2"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/database/entity/CommentFraudRecord.kt",
+      "strategy": "Exact original serializable record schema, computations, enums and JSON SerialName fields; only Room Entity/PrimaryKey metadata removed.",
+      "originalSha256": "7af362e688bae215d5fd67d018a2913f4f8a2a32992655e20d1fc5f54e54fee0",
+      "generatedSha256": "9031d881ca98072dcd2cf934fdb2b82e1593aaa0e780dd136588904d58565d76"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/database/dao/CommentFraudDao.kt",
+      "strategy": "Full original DAO method contract; Room annotations/SQL replaced by Windows adapter preserving primary-key replacement and effective post-time DESC ordering.",
+      "originalSha256": "92fa21f761939b0cab0de2340b94aaaf2ede83585a2648e00c10f4379df1c443",
+      "generatedSha256": "d756ba5f4d91c4bbd58d18fbf14aefc2491d477d385c61981dd32e29d4de8714"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudRepository.kt",
+      "strategy": "Complete original record merge/save/recheck/delete/export/import bodies; Android Room getDao/context replaced by required same-account Windows DAO, requests remain existing-owner callbacks; cancellation rethrows.",
+      "originalSha256": "7b0e6218596e7bbc2fe6672eefb9cc6b5241e6a943c266089460aa83be335951",
+      "generatedSha256": "c5ac18ef4a3de034171ed6274a24448ef979c97a9dead980c7661d3375d5e754"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentMentionInsertPolicy.kt",
+      "strategy": "Full original pure helper file, LF-identical.",
+      "originalSha256": "9d46b945a048069469b9b678f18d70d5b88eb6bc263e14dffbcfe850da220ee0",
+      "generatedSha256": "9d46b945a048069469b9b678f18d70d5b88eb6bc263e14dffbcfe850da220ee0"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/CommentPaginationPolicy.kt",
+      "strategy": "Full original pure helper file, LF-identical.",
+      "originalSha256": "1c8570bebd72655729a17b5fb1406eb4656665fc73ecdc2ae9007ea1dca07459",
+      "generatedSha256": "1c8570bebd72655729a17b5fb1406eb4656665fc73ecdc2ae9007ea1dca07459"
+    },
+    {
+      "source": "design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt",
+      "strategy": "Full original Compose reveal motion file, LF-identical.",
+      "originalSha256": "f3db5d68a1de2a23786f39784e662f52e29a8763b422b67a707156eca59a1819",
+      "generatedSha256": "f3db5d68a1de2a23786f39784e662f52e29a8763b422b67a707156eca59a1819"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "strategy": "Complete original EmptyState body and original LottieUrls; only Android Lottie animation API maps to existing Skottie with required same-owner anonymous loader.",
+      "originalSha256": "d6725e7276bc02e559bcf692daa602bf9ff4c9a4ecf5beea3ed3e94c953dc728",
+      "generatedSha256": "288a8057ec461a97e3bfd54f5875820fb004d26414342e952b4dfb24acef3d3d"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoInfoSection.kt",
+      "strategy": "Entire original BGM-only InlineBgmSection/BgmInfoRow/selection sheet/detail/recommendation paging/strip/skeleton + all consumed pure helpers. Existing shared display/tag helpers remain sole-owned. Android Bundle/Uri/Coil/context/settings singletons map to same existing Root owners/typed cid; no UI simplification.",
+      "originalSha256": "b3a84152a38284bea0336b7df37c674cac78b4bab46d29a6e216a6a1f8fbc8ef",
+      "generatedSha256": "e9001958b2043dcaa17b6b2e30ad1db75ba7189137cdea03de715c0f9089e29b"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/core/ui/LocalNavigationBackHandler.kt",
+      "strategy": "Full original LF-identical helper; existing Root navigation-event/settings/skeleton owners stay sole-defined.",
+      "originalSha256": "e8ab6dd41683241eeb229085309eee7d08d08ce7849f2d92b9fed5c18c4526f2",
+      "generatedSha256": "e8ab6dd41683241eeb229085309eee7d08d08ce7849f2d92b9fed5c18c4526f2"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoCardSkeleton.kt",
+      "strategy": "Full original LF-identical helper; existing Root navigation-event/settings/skeleton owners stay sole-defined.",
+      "originalSha256": "16c385ceea6db55eb50d2e1ecee44314378e5e20f09fe70ff990480cbff25401",
+      "generatedSha256": "16c385ceea6db55eb50d2e1ecee44314378e5e20f09fe70ff990480cbff25401"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SkeletonComponents.kt",
+      "strategy": "Full original skeleton renderer/body, animation and color policies; sole Home card settings owner replaces Android SettingsManager read.",
+      "originalSha256": "aec899be32bded9932d88f69741f88c0c2e042d64af2dc462536cc508c633f52",
+      "generatedSha256": "a268f34a153d20de2ef88049c51f6bee9ad799aed33ca024fb5d739c4462cfe5"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/RelatedVideoItem.kt",
+      "strategy": "Exact original shared cover-ratio constant consumed by the complete original SkeletonComponents renderer; no related-video UI selected in this lane.",
+      "originalSha256": "00c0e0ec11fa04524c2f0c131e806a4f92e037cac322e79e434b00615e2e82f2",
+      "generatedSha256": "7b18a3b98ca671fe2891807cff39c23c0cb14ae1ebd84c08ed2ccae1a411cdbc"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailViewModel.kt",
+      "strategy": "Full original CommentDetail VM: root-target load, sorting/pagination/conversation, send/reactions/delete/dissolve/type1 fraud. Android Uri/lifecycle/singleton repositories become required same-owner requests/scope. Original pictures parameter remains unused by original sendReply; no fabricated image-upload parity.",
+      "originalSha256": "8c8627860dd4808722c6d796a09afe358e82b9a9bc1cda19584c7ae43ea6f267",
+      "generatedSha256": "32d172f0b96df6f915caae47dbdb5a419a314232408b13ee0effa6dcabdf9a51"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/comment/CommentDetailScreen.kt",
+      "strategy": "Full original BGM navigation destination CommentDetailScreen; all SubReplyDetailContent/image/composer/fraud/back branches retained. Only current owner VM/platform/ID and desktop navigation event seams replace Android bindings.",
+      "originalSha256": "3a16e210faa5661c315f8401520206123d9172203f4be4a1b195a4dda8a3fd36",
+      "generatedSha256": "caa441ab87c27e27c0652f0bbad03da01a26a8f1418a22f95d46457604859fe5"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentFraudDialog.kt",
+      "strategy": "Full original LF-identical fraud dialog, banner, models.",
+      "originalSha256": "8a1464b0bd1efff13280fde891ffa9c1fc5163539b2f88aaa07cd5092e393e31",
+      "generatedSha256": "8a1464b0bd1efff13280fde891ffa9c1fc5163539b2f88aaa07cd5092e393e31"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/message/feed/MessageFeedCommon.kt",
+      "strategy": "Complete original MessageFeedError function consumed by CommentDetailScreen; no unrelated message-feed renderers selected.",
+      "originalSha256": "4a2466d522be981e77a80326e3c61f6ebb2417a68078db2ea7c5d43933b7fd66",
+      "generatedSha256": "a38a1aa47b2501374616dea2abd5665016acffbe83152dc96cb0e0b05aeae396"
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "strategy": "Exact original addCommentForSubject background record save block; Root same-account epoch scope replaces AppScope, original UID/type/root/parent/server ctime/UNKNOWN merge preserved.",
+      "originalSha256": "4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820",
+      "generatedSha256": "9a404c66d3e06ca23d12be8968e8e3270cd2137c776bca3f78452c3e560f9667"
+    }
+  ]
+}
