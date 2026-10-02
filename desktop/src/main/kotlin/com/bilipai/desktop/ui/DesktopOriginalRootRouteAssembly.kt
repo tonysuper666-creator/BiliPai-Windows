@@ -92,6 +92,21 @@ internal class DesktopOriginalRootRouteAssembly(
         }
     }
 
+    /** Original AppNavigation onSeasonClick replaces the current detail top.
+     * Use this same controller/stack/Store-entry admission and native beforeCommit. */
+    fun replaceBangumiDetail(current: BiliPaiNavKey.BangumiDetail, seasonId: Long): Boolean {
+        if (seasonId <= 0L || currentKey != current) return false
+        var replaced = false
+        val accepted = admitted {
+            if (currentKey == current) {
+                val next = decorate(BiliPaiNavKey.BangumiDetail(seasonId = seasonId))
+                replaceStack(BiliPaiNavBackStackController(stack.toList()).replaceTop(next).backStack)
+                replaced = true
+            }
+        }
+        return accepted && replaced
+    }
+
     override fun home(): Boolean = push(BiliPaiNavKey.Home)
 
     /** Exact stable AppNavigation portrait replacement (3061–3086). decorate

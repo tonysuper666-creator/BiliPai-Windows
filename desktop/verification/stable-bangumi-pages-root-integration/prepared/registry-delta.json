@@ -1,0 +1,140 @@
+{
+  "base": "6ac84c8036ed4c75e2944d92d1020566e283e983",
+  "newIdentities": 8,
+  "sourceFeaturesUnion": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt",
+        "sha256": "7d6be537fed4dcb3bd251749402a1d79bfa9703507bebf479109f55646d73078",
+        "features": [
+          "independent-bangumi-pages"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt",
+        "sha256": "7aaa20bcbfec0174453f28d5c27db530633b0fcf15ef0a2733267e03cf1547d3",
+        "features": [
+          "independent-bangumi-pages"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt",
+        "sha256": "d34dea667e32da6b89e4a322192b9472e0cb86b8b16b10ff5cb165f03c9842f0",
+        "features": [
+          "independent-bangumi-pages"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/detail/BangumiDetailComponents.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/detail/BangumiDetailComponents.kt",
+        "sha256": "5becc31ca3b88526541e010394c9a152670aa4998b08a0291b26f7ebe17b4153",
+        "features": [
+          "independent-bangumi-pages"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt",
+        "sha256": "e4a9d64425e5244a7b237e231148931a71d288b3d9e93f7c98a18db26d36da2a",
+        "features": [
+          "independent-bangumi-pages"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt",
+        "sha256": "d720f3e4966801b37a86972b44f90a9a4882280739c3bc71aa8a7049852cf77b",
+        "features": [
+          "independent-bangumi-pages"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiReviewRepository.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiReviewRepository.kt",
+        "sha256": "7dd7ac7da8498648fae7242f921bc6654814ccd47dc28d678730449f78070a12",
+        "features": [
+          "independent-bangumi-pages"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "operation": "feature-union",
+      "features": [
+        "independent-bangumi-pages"
+      ],
+      "sha256": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612",
+      "existingModePreserved": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt",
+      "operation": "feature-union",
+      "features": [
+        "independent-bangumi-pages"
+      ],
+      "sha256": "4f4d3f8befea28b3e4715061fdc71f563ee26d453c5899925188a8d1d2275e20",
+      "existingModePreserved": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/MyFollowStats.kt",
+      "operation": "add-original-identity",
+      "row": {
+        "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/MyFollowStats.kt",
+        "sha256": "4ec993ecd0f5493c8d7d4c12e3a925c176d212d9d360aa18c772762ab3a491b1",
+        "features": [
+          "independent-bangumi-pages"
+        ],
+        "mode": "extracted"
+      }
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+      "operation": "feature-union",
+      "features": [
+        "independent-bangumi-pages"
+      ],
+      "sha256": "7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285",
+      "existingModePreserved": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "operation": "feature-union",
+      "features": [
+        "independent-bangumi-pages"
+      ],
+      "sha256": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+      "existingModePreserved": "selected"
+    }
+  ],
+  "newResources": [],
+  "newDependencies": []
+}

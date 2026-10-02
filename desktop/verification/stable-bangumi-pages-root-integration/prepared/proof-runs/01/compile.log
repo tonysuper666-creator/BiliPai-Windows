@@ -1,0 +1,3 @@
+desktop\.local\stable-original-bangumi-pages-root-parity\BangumiPagesProof.kt:84:76: warning: unnecessary non-null assertion (!!) on a non-null receiver of type 'List<BangumiEpisode>'.
+    prove(course.episodes!!.single().duration == 60_000L && course.episodes!!.single().badge == "¸¶·Ñ", "original course seconds and restricted episode badge retained")
+                                                                           ^^

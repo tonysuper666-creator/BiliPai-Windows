@@ -1,0 +1,74 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "name": "actual-original-independent-catalog-detail-review-leaves",
+    "before": "                            entryKey is BiliPaiNavKey.CommentDetail ->\n                                DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }",
+    "after": "                            entryKey is BiliPaiNavKey.Bangumi || entryKey is BiliPaiNavKey.BangumiDetail || entryKey is BiliPaiNavKey.BangumiReview ->\n                                DesktopDetailWindow { DesktopOriginalBangumiPagesRootHost(entryKey, messageRoutes, repository, ordinaryVideoResources, active,\n                                    replaceSeason = { current, season -> messageRoutes.replaceBangumiDetail(current, season) }) }\n                            entryKey is BiliPaiNavKey.CommentDetail ->\n                                DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }",
+    "beforeSha256LF": "9ad157e49dcf7775cfd003af454b9ae0e157a85208165d2ba961b3bd325c11df",
+    "afterSha256LF": "3a4fa12002b93ef3453b6853214e06563e26206590234a2890b22f17bdde47a3"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "name": "original-review-section-navigation",
+    "before": "is BiliPaiNavKey.Bangumi,is BiliPaiNavKey.BangumiDetail,is BiliPaiNavKey.BangumiPlayer -> DesktopSection.BANGUMI",
+    "after": "is BiliPaiNavKey.Bangumi,is BiliPaiNavKey.BangumiDetail,is BiliPaiNavKey.BangumiReview,is BiliPaiNavKey.BangumiPlayer -> DesktopSection.BANGUMI",
+    "beforeSha256LF": "5c6a7a83d8d3ca431b49d8d91e3cdcb4a2e1d21dc3f8f79b4e65badd83280f64",
+    "afterSha256LF": "04a59f73cbcfb9a0dfc4234bdf36fb5558e63d1e74527111b085fc7c8cd328ef"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+    "name": "original-season-replaces-only-real-top-within-existing-admission",
+    "before": "    override fun home(): Boolean = push(BiliPaiNavKey.Home)",
+    "after": "    /** Original AppNavigation onSeasonClick replaces the current detail top.\n     * Use this same controller/stack/Store-entry admission and native beforeCommit. */\n    fun replaceBangumiDetail(current: BiliPaiNavKey.BangumiDetail, seasonId: Long): Boolean {\n        if (seasonId <= 0L || currentKey != current) return false\n        var replaced = false\n        val accepted = admitted {\n            if (currentKey == current) {\n                val next = decorate(BiliPaiNavKey.BangumiDetail(seasonId = seasonId))\n                replaceStack(BiliPaiNavBackStackController(stack.toList()).replaceTop(next).backStack)\n                replaced = true\n            }\n        }\n        return accepted && replaced\n    }\n\n    override fun home(): Boolean = push(BiliPaiNavKey.Home)",
+    "beforeSha256LF": "10bfaf02e7c54fe3792ca4cd13fdef9110e3adf97e6a7a9a6d2e1ef75a06d4e0",
+    "afterSha256LF": "ffd1bc85b19997b17aee67ac6ec363cb6e17ed030bc229911ddba020965ae944"
+  },
+  {
+    "path": "desktop/build.gradle.kts",
+    "name": "sole-original-bangumi-pages-producer-input-closure",
+    "before": "val extractOriginalSubscriptionPage by tasks.registering(Exec::class) {",
+    "after": "val extractOriginalBangumiPages by tasks.registering(Exec::class) {\n    dependsOn(prepareUpstreamSources, extractOriginalHomeBangumiPage, extractUpstreamMedia)\n    workingDir(projectDir)\n    commandLine(System.getenv(\"PYTHON_EXECUTABLE\") ?: \"python\", \"tools/extract-upstream-bangumi-pages.py\",\n        \"--repo\", repositoryRoot.absolutePath,\n        \"--output\", layout.buildDirectory.dir(\"generated/independent-bangumi-pages\").get().asFile.absolutePath)\n    inputs.files(\"tools/extract-upstream-bangumi-pages.py\", \"tools/sync-upstream.py\", \"tools/extract-upstream-media.py\")\n    inputs.file(sourceManifest)\n    inputs.files(sources.filter { \"independent-bangumi-pages\" in ((it[\"features\"] as? List<*>) ?: emptyList<Any>()) }\n        .map { File(repositoryRoot, it[\"path\"].toString()) })\n    outputs.dir(layout.buildDirectory.dir(\"generated/independent-bangumi-pages\"))\n}\nkotlin.sourceSets.named(\"main\") { kotlin.srcDir(layout.buildDirectory.dir(\"generated/independent-bangumi-pages\")) }\ntasks.named(\"compileKotlin\") { dependsOn(extractOriginalBangumiPages) }\n\nval extractOriginalSubscriptionPage by tasks.registering(Exec::class) {",
+    "beforeSha256LF": "60f60c67a6a2e0c5484092c4a17af5ac81a06175821a6b80a6bc2e0918c27182",
+    "afterSha256LF": "d199e80b0f84f84b25ec83583673bbd1aaecf5e5adff6f9fb9447f1e36276228"
+  },
+  {
+    "path": "desktop/upstream-sources.json",
+    "name": "source-feature-union:app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+    "before": "    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt\",\n      \"mode\": \"policy-extract\",\n      \"features\": [\n        \"source-parity\",\n        \"media\",\n        \"downloads\",\n        \"stable-favorites\",\n        \"home-bangumi-page\"\n      ],\n      \"sha256\": \"358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612\"\n    }",
+    "after": "    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt\",\n      \"mode\": \"policy-extract\",\n      \"features\": [\n        \"source-parity\",\n        \"media\",\n        \"downloads\",\n        \"stable-favorites\",\n        \"home-bangumi-page\",\n        \"independent-bangumi-pages\"\n      ],\n      \"sha256\": \"358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612\"\n    }",
+    "beforeSha256LF": "f23dda6239ed417c07431c8d7473e568019f47b346d26e429ee7ac0d971b6be1",
+    "afterSha256LF": "7161baca7290a962209f875e8f5f0e170eeff799a7cf6233df7e5caa01d9d6d8"
+  },
+  {
+    "path": "desktop/upstream-sources.json",
+    "name": "source-feature-union:app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt",
+    "before": "    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt\",\n      \"mode\": \"policy-extract\",\n      \"features\": [\n        \"media\",\n        \"source-parity\",\n        \"downloads\"\n      ],\n      \"sha256\": \"4f4d3f8befea28b3e4715061fdc71f563ee26d453c5899925188a8d1d2275e20\"\n    }",
+    "after": "    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt\",\n      \"mode\": \"policy-extract\",\n      \"features\": [\n        \"media\",\n        \"source-parity\",\n        \"downloads\",\n        \"independent-bangumi-pages\"\n      ],\n      \"sha256\": \"4f4d3f8befea28b3e4715061fdc71f563ee26d453c5899925188a8d1d2275e20\"\n    }",
+    "beforeSha256LF": "7ea7a0178414aea0e60db5aa9b861aae7577f0eb2037389a16dd498edd5e5771",
+    "afterSha256LF": "8fba804f094f77322c9244420969abcf535116f736f2e00bb6d3190b6feb87ee"
+  },
+  {
+    "path": "desktop/upstream-sources.json",
+    "name": "source-feature-union:app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+    "before": "    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt\",\n      \"sha256\": \"7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285\",\n      \"mode\": \"extracted\",\n      \"features\": [\n        \"home-bangumi-page\"\n      ]\n    }",
+    "after": "    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt\",\n      \"sha256\": \"7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285\",\n      \"mode\": \"extracted\",\n      \"features\": [\n        \"home-bangumi-page\",\n        \"independent-bangumi-pages\"\n      ]\n    }",
+    "beforeSha256LF": "1e55138449a57f6357d3afc510470528628f0d7c4c8413ca50171c14f42a87fc",
+    "afterSha256LF": "314edaa993f7f0fc8e537a3614d264dfd2380243cf40327088c7f54364793268"
+  },
+  {
+    "path": "desktop/upstream-sources.json",
+    "name": "source-feature-union:app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+    "before": "    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt\",\n      \"sha256\": \"26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2\",\n      \"mode\": \"selected\",\n      \"features\": [\n        \"dynamic-detail-reply\",\n        \"home-partition\",\n        \"stable-article-full\",\n        \"stable-favorites\",\n        \"stable-video-fullscreen-pager\"\n      ]\n    }",
+    "after": "    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt\",\n      \"sha256\": \"26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2\",\n      \"mode\": \"selected\",\n      \"features\": [\n        \"dynamic-detail-reply\",\n        \"home-partition\",\n        \"stable-article-full\",\n        \"stable-favorites\",\n        \"stable-video-fullscreen-pager\",\n        \"independent-bangumi-pages\"\n      ]\n    }",
+    "beforeSha256LF": "95cca934d21e2ca1d9420734cb87a5cdc4be047ffec3227e543df38a0c279447",
+    "afterSha256LF": "400dc52d8a1609de6308a66b5be86118638d89391cc101d3ef47b85cef556f88"
+  },
+  {
+    "path": "desktop/upstream-sources.json",
+    "name": "new-original-identities-only",
+    "before": "  \"sources\": [\n",
+    "after": "  \"sources\": [\n    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt\",\n      \"sha256\": \"7d6be537fed4dcb3bd251749402a1d79bfa9703507bebf479109f55646d73078\",\n      \"features\": [\n        \"independent-bangumi-pages\"\n      ],\n      \"mode\": \"extracted\"\n    },\n    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt\",\n      \"sha256\": \"7aaa20bcbfec0174453f28d5c27db530633b0fcf15ef0a2733267e03cf1547d3\",\n      \"features\": [\n        \"independent-bangumi-pages\"\n      ],\n      \"mode\": \"extracted\"\n    },\n    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt\",\n      \"sha256\": \"d34dea667e32da6b89e4a322192b9472e0cb86b8b16b10ff5cb165f03c9842f0\",\n      \"features\": [\n        \"independent-bangumi-pages\"\n      ],\n      \"mode\": \"extracted\"\n    },\n    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/ui/detail/BangumiDetailComponents.kt\",\n      \"sha256\": \"5becc31ca3b88526541e010394c9a152670aa4998b08a0291b26f7ebe17b4153\",\n      \"features\": [\n        \"independent-bangumi-pages\"\n      ],\n      \"mode\": \"extracted\"\n    },\n    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt\",\n      \"sha256\": \"e4a9d64425e5244a7b237e231148931a71d288b3d9e93f7c98a18db26d36da2a\",\n      \"features\": [\n        \"independent-bangumi-pages\"\n      ],\n      \"mode\": \"extracted\"\n    },\n    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt\",\n      \"sha256\": \"d720f3e4966801b37a86972b44f90a9a4882280739c3bc71aa8a7049852cf77b\",\n      \"features\": [\n        \"independent-bangumi-pages\"\n      ],\n      \"mode\": \"extracted\"\n    },\n    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/data/repository/BangumiReviewRepository.kt\",\n      \"sha256\": \"7dd7ac7da8498648fae7242f921bc6654814ccd47dc28d678730449f78070a12\",\n      \"features\": [\n        \"independent-bangumi-pages\"\n      ],\n      \"mode\": \"extracted\"\n    },\n    {\n      \"path\": \"app/src/main/java/com/android/purebilibili/feature/bangumi/MyFollowStats.kt\",\n      \"sha256\": \"4ec993ecd0f5493c8d7d4c12e3a925c176d212d9d360aa18c772762ab3a491b1\",\n      \"features\": [\n        \"independent-bangumi-pages\"\n      ],\n      \"mode\": \"extracted\"\n    },\n",
+    "beforeSha256LF": "b6481e40383ba5b547c26e59b35694ab4020140045f4cd9255e6953ab5ff9b67",
+    "afterSha256LF": "343709f1adbcb23ba17d525e505e50404bcc32660ac0a8687d65b7d8a5438ff7"
+  }
+]

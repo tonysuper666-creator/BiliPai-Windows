@@ -1,0 +1,198 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:110:19: error: unresolved label.
+            return@withContext Result.failure(Exception("参数错误: seasonId 和 epId 不能同时为空"))
+                  ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:110:39: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            return@withContext Result.failure(Exception("参数错误: seasonId 和 epId 不能同时为空"))
+                                      ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:151:23: error: unresolved label.
+                return@withContext pugvResult
+                      ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:164:19: error: unresolved label.
+            return@withContext pugvResult
+                  ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:177:19: error: unresolved label.
+            return@withContext Result.failure(Exception("参数错误: seasonId 和 epId 不能同时为空"))
+                  ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:177:39: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            return@withContext Result.failure(Exception("参数错误: seasonId 和 epId 不能同时为空"))
+                                      ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:181:20: error: unresolved reference 'Json'.
+        val json = Json {
+                   ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:182:13: error: unresolved reference 'ignoreUnknownKeys'.
+            ignoreUnknownKeys = true
+            ^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:183:13: error: unresolved reference 'coerceInputValues'.
+            coerceInputValues = true
+            ^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:192:55: error: cannot infer type for type parameter 'C'. Specify it explicitly.
+            Result.failure(Exception(response.message.ifBlank { "获取课程详情失败" }))
+                                                      ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:192:55: error: cannot infer type for type parameter 'R'. Specify it explicitly.
+            Result.failure(Exception(response.message.ifBlank { "获取课程详情失败" }))
+                                                      ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:202:15: error: unresolved label.
+        return@withContext Result.failure(IllegalArgumentException("mediaId 必须大于 0"))
+              ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:202:35: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        return@withContext Result.failure(IllegalArgumentException("mediaId 必须大于 0"))
+                                  ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:215:15: error: unresolved label.
+        return@withContext Result.failure(IllegalArgumentException("seasonId 必须大于 0"))
+              ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:215:35: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        return@withContext Result.failure(IllegalArgumentException("seasonId 必须大于 0"))
+                                  ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:241:36: error: unresolved label.
+        val csrf = csrf() ?: return@withContext Result.failure(Exception("未登录"))
+                                   ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:241:56: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+        val csrf = csrf() ?: return@withContext Result.failure(Exception("未登录"))
+                                                       ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\data\repository\DesktopOriginalBangumiPagesRequests.kt:245:19: error: unresolved label.
+            return@withContext if (pugvResponse?.code == 0) {
+                  ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:68:50: error: unresolved reference 'PosterDetailSkeleton'.
+import com.android.purebilibili.core.ui.skeleton.PosterDetailSkeleton
+                                                 ^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:115:17: error: unresolved reference 'PosterDetailSkeleton'.
+                PosterDetailSkeleton(
+                ^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:211:27: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val orderedEpisodes = remember(allEpisodes, episodesDescending) {
+                          ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:212:9: error: unresolved reference 'orderBangumiEpisodes'.
+        orderBangumiEpisodes(allEpisodes, episodesDescending)
+        ^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:215:28: error: unresolved reference 'resolveBangumiEpisodePageCount'.
+    val episodePageCount = resolveBangumiEpisodePageCount(orderedEpisodes.size, episodesPerPage)
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:215:75: error: function invocation 'size(...)' expected.
+    val episodePageCount = resolveBangumiEpisodePageCount(orderedEpisodes.size, episodesPerPage)
+                                                                          ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:216:29: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val displayedEpisodes = remember(orderedEpisodes, selectedEpisodePage) {
+                            ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:222:29: error: unresolved reference 'subList'.
+            orderedEpisodes.subList(start, minOf(start + episodesPerPage, orderedEpisodes.size))
+                            ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:222:91: error: function invocation 'size(...)' expected.
+            orderedEpisodes.subList(start, minOf(start + episodesPerPage, orderedEpisodes.size))
+                                                                                          ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:555:53: error: unresolved reference 'resolveBangumiEpisodePageLabel'.
+                                             text = resolveBangumiEpisodePageLabel(
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:571:58: error: unresolved reference 'id'.
+                     items(displayedEpisodes, key = { it.id }) { episode ->
+                                                         ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:573:43: error: argument type mismatch: actual type is 'Int', but 'BangumiEpisode' was expected.
+                                episode = episode,
+                                          ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:574:91: error: argument type mismatch: actual type is 'Int', but 'BangumiEpisode' was expected.
+                                progressFraction = rememberBangumiEpisodeProgressLookup()(episode),
+                                                                                          ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:575:60: error: argument type mismatch: actual type is 'Int', but 'BangumiEpisode' was expected.
+                                onClick = { onEpisodeClick(episode) }
+                                                           ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:731:27: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val orderedEpisodes = remember(detail.episodes, episodesDescending) {
+                          ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:732:9: error: unresolved reference 'orderBangumiEpisodes'.
+        orderBangumiEpisodes(detail.episodes.orEmpty(), episodesDescending)
+        ^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1152:48: error: unresolved reference 'resolveBangumiEpisodePageLabel'.
+                                        text = resolveBangumiEpisodePageLabel(
+                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1171:38: error: unresolved reference 'resolveBangumiEpisodePreviewWindow'.
+                        val window = resolveBangumiEpisodePreviewWindow(
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1177:41: error: unresolved reference 'subList'.
+                        orderedEpisodes.subList(window.startIndex, window.endExclusive)
+                                        ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1186:59: error: unresolved reference 'id'.
+                        items(previewEpisodes, key = { it.id }) { episode ->
+                                                          ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1188:43: error: argument type mismatch: actual type is 'Int', but 'BangumiEpisode' was expected.
+                                episode = episode,
+                                          ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1189:91: error: argument type mismatch: actual type is 'Int', but 'BangumiEpisode' was expected.
+                                progressFraction = rememberBangumiEpisodeProgressLookup()(episode),
+                                                                                          ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1190:60: error: argument type mismatch: actual type is 'Int', but 'BangumiEpisode' was expected.
+                                onClick = { onEpisodeClick(episode) }
+                                                           ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1657:20: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val episodes = remember(sourceEpisodes, episodesDescending) {
+                   ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1658:9: error: unresolved reference 'orderBangumiEpisodes'.
+        orderBangumiEpisodes(sourceEpisodes, episodesDescending)
+        ^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1761:30: error: unresolved reference 'resolveBangumiEpisodePageCount'.
+            val totalPages = resolveBangumiEpisodePageCount(episodes.size, episodesPerPage)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1761:70: error: function invocation 'size(...)' expected.
+            val totalPages = resolveBangumiEpisodePageCount(episodes.size, episodesPerPage)
+                                                                     ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1778:40: error: unresolved reference 'resolveBangumiEpisodePageLabel'.
+                                text = resolveBangumiEpisodePageLabel(
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1779:61: error: function invocation 'size(...)' expected.
+                                    episodeCount = episodes.size,
+                                                            ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1796:75: error: function invocation 'size(...)' expected.
+                val pageEnd = minOf(pageStart + episodesPerPage, episodes.size)
+                                                                          ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1797:26: error: unresolved reference 'subList'.
+                episodes.subList(pageStart, pageEnd)
+                         ^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1810:45: error: function invocation 'size(...)' expected.
+                    count = displayEpisodes.size,
+                                            ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1811:38: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+                    key = { index -> displayEpisodes[index].id }
+                                     ^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1811:61: error: unresolved reference 'id'.
+                    key = { index -> displayEpisodes[index].id }
+                                                            ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1813:35: error: cannot infer type for type parameter 'V'. Specify it explicitly.
+                    val episode = displayEpisodes[index]
+                                  ^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiScreen.kt:52:46: error: unresolved reference 'shouldAllowRenderEffectBackedHazeEffect'.
+import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:122:34: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    private val _myFollowStats = DesktopHomeOwnedMutableStateFlow(MyFollowStats(), desktopEnvironment.commitIfCurrent)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:122:34: error: cannot access 'constructor<T>(delegate: MutableStateFlow<T>, commit: (() -> Unit) -> Boolean): DesktopHomeOwnedMutableStateFlow<T>': it is private in 'com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow'.
+    private val _myFollowStats = DesktopHomeOwnedMutableStateFlow(MyFollowStats(), desktopEnvironment.commitIfCurrent)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:122:67: error: unresolved reference 'MyFollowStats'.
+    private val _myFollowStats = DesktopHomeOwnedMutableStateFlow(MyFollowStats(), desktopEnvironment.commitIfCurrent)
+                                                                  ^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:123:34: error: unresolved reference 'MyFollowStats'.
+    val myFollowStats: StateFlow<MyFollowStats> = _myFollowStats.asStateFlow()
+                                 ^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:123:66: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val myFollowStats: StateFlow<MyFollowStats> = _myFollowStats.asStateFlow()
+                                                                 ^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:174:36: error: unresolved reference 'buildMyFollowStats'.
+            _myFollowStats.value = buildMyFollowStats(
+                                   ^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:184:38: error: unresolved reference 'bangumiTotal'.
+                _myFollowStats.value.bangumiTotal
+                                     ^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:186:38: error: unresolved reference 'cinemaTotal'.
+                _myFollowStats.value.cinemaTotal
+                                     ^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:660:13: error: unresolved reference 'buildMyFollowStats'.
+            buildMyFollowStats(
+            ^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:662:39: error: unresolved reference 'cinemaTotal'.
+                cinemaTotal = current.cinemaTotal
+                                      ^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:665:13: error: unresolved reference 'buildMyFollowStats'.
+            buildMyFollowStats(
+            ^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiViewModel.kt:666:40: error: unresolved reference 'bangumiTotal'.
+                bangumiTotal = current.bangumiTotal,
+                                       ^^^^^^^^^^^^

@@ -1549,6 +1549,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }
                         Box(Modifier.weight(1f).fillMaxWidth()) {
                         when {
+                            entryKey is BiliPaiNavKey.Bangumi || entryKey is BiliPaiNavKey.BangumiDetail || entryKey is BiliPaiNavKey.BangumiReview ->
+                                DesktopDetailWindow { DesktopOriginalBangumiPagesRootHost(entryKey, messageRoutes, repository, ordinaryVideoResources, active,
+                                    replaceSeason = { current, season -> messageRoutes.replaceBangumiDetail(current, season) }) }
                             entryKey is BiliPaiNavKey.CommentDetail ->
                                 DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }
                             entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.AudioMode ->
@@ -2035,7 +2038,7 @@ private fun desktopReadySection(key:BiliPaiNavKey):DesktopSection = when(key) {
     is BiliPaiNavKey.MusicDetail,is BiliPaiNavKey.NativeMusic -> DesktopSection.MUSIC
     BiliPaiNavKey.ListenVideo,is BiliPaiNavKey.AudioMode -> DesktopSection.LISTEN
     is BiliPaiNavKey.Live -> DesktopSection.LIVE
-    is BiliPaiNavKey.Bangumi,is BiliPaiNavKey.BangumiDetail,is BiliPaiNavKey.BangumiPlayer -> DesktopSection.BANGUMI
+    is BiliPaiNavKey.Bangumi,is BiliPaiNavKey.BangumiDetail,is BiliPaiNavKey.BangumiReview,is BiliPaiNavKey.BangumiPlayer -> DesktopSection.BANGUMI
     BiliPaiNavKey.DownloadList,is BiliPaiNavKey.OfflineVideoPlayer -> DesktopSection.DOWNLOADS
     BiliPaiNavKey.Favorite,BiliPaiNavKey.FavoriteSubscribed,is BiliPaiNavKey.FavoriteSearch,is BiliPaiNavKey.SeasonSeriesDetail -> DesktopSection.CLOUD_FAVORITES
     BiliPaiNavKey.History,is BiliPaiNavKey.HistorySearch -> DesktopSection.CLOUD_HISTORY

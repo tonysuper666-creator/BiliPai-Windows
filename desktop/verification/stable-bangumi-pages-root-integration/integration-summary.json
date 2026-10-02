@@ -1,0 +1,70 @@
+{
+  "status": "integrated_normal_product_main_and_test_compile_passed",
+  "baseCommit": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSha256Bytes": "3e949e52ce13f14b597d93cddf562ba95e31bee5fd061e627cb450489606326a",
+      "afterSha256Bytes": "3196399c8875b7261c259dfabb3f6208f7d28357ed21d5c53d81ee8f245aa499",
+      "afterSha256LF": "3196399c8875b7261c259dfabb3f6208f7d28357ed21d5c53d81ee8f245aa499"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+      "beforeSha256Bytes": "12df83bb44b6a47d4d0a4e70c039c425b3d1ecd12a527b7c68bba54cdee714d6",
+      "afterSha256Bytes": "2f095e19c88d282c64287746628876a2f1d2a4ca10b2d2422418d4a6e7a086da",
+      "afterSha256LF": "2f095e19c88d282c64287746628876a2f1d2a4ca10b2d2422418d4a6e7a086da"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "dc50d5bbc819603ec21846d901e747086cf815c1e01a4e56292761ceddb74d4f",
+      "afterSha256Bytes": "4d3514320e05eebb89092d5f778f0516ab34448fb1cbf13aad2d6db7d0ae89aa",
+      "afterSha256LF": "b57bab9c9748bf1050725ad397421b13096a7973bfb0d3c3983ca824b6dda901"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPagesRoot.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "0ab9e90075c6e7b9aa0e07ad445aff987ae40a30300f9f5dcd84e474e38577b7",
+      "afterSha256LF": "0ab9e90075c6e7b9aa0e07ad445aff987ae40a30300f9f5dcd84e474e38577b7"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-pages.py",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "a87ff9f51d49ee6504048e6e35584ea29d4a465b437ba1f9ab442b32b9e9c79c",
+      "afterSha256LF": "45f03c2405999596ec2adcd1b8a6f1e5fb2c06c4060413fbe09751c330389073"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "b8f2733d896d1b5923c826fb6066944586219cf06d92a033dcf1fa14f3924253",
+      "afterSha256Bytes": "c79b1c291ac815262f1a3f743eeb32c85248ac4f5a0c2f0f650d7a114a26443b",
+      "afterSha256LF": "2fa98fff02c18278eca522f25ddf59a4e4ac68fe2a050b5c0b855e38beacb69f"
+    }
+  ],
+  "frozenPreparationBaseCommit": "6ac84c8036ed4c75e2944d92d1020566e283e983",
+  "originalFrozenExactHunks": 9,
+  "rebasedCodeHunks": 4,
+  "registrySemanticDeltaMatchesFrozenFiveHunks": true,
+  "registrySemanticComparisonByUniqueIdentity": true,
+  "frozenRegistryListOrderDiffers": true,
+  "originalIdentitiesAdded": 8,
+  "existingFeatureUnions": 4,
+  "sourceCount": 1206,
+  "resourceCount": 244,
+  "newDependencies": 0,
+  "currentSearchAndAllExistingFeaturesPreserved": true,
+  "actualProductOverrides": 0,
+  "normalMainAndTestCompilePassed": true,
+  "integratedJUnitExecuted": false,
+  "preparedOriginalVMAndProtocolAssertions": 34,
+  "freshNativeShareProducerPassed": true,
+  "generatedOrBinaryProductCopies": false,
+  "originalStandaloneCatalogDetailReviewIntegrated": true,
+  "originalTimelineCompatibilityBodyCompiled": true,
+  "independentTimelineNavKeyExists": false,
+  "originalBangumiPlayerAccepted": false,
+  "fullRootRuntimeAccepted": false,
+  "knownRootShareProviderAssemblyFailurePendingRepair": true,
+  "ordinaryBilibiliAccountAcceptance": false,
+  "desktopPackageUpdated": false,
+  "allFeaturesComplete": false,
+  "excludedCompiledProofFiles": []
+}

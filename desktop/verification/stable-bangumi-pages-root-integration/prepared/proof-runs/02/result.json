@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "snapshot": 85,
+  "entries": 101,
+  "pinsBeforeAfter": true,
+  "prospectiveJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\runs\\05\\prospective.jar",
+    "sha256Bytes": "c1a3571ada5065a6d820adf02230f2262369050bb2730290f590d5c44059ef6e"
+  },
+  "fixtureSha256Bytes": "5e4dd7afe8da1d707d3753e7d5bbd8a106c45a574f700d9081ed1332a2383a5b",
+  "scope": "Original complete Bangumi detail VM and original season/review requests, explicit fixture requests; no Root HTTP/native/Window acceptance",
+  "productionWrites": 0
+}

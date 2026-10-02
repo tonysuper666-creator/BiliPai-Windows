@@ -1,0 +1,24 @@
+{
+  "command": [
+    "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\wrapper\\dists\\gradle-9.5.0-bin\\bvnork1r7n8i6kp5cnkibsc9q\\gradle-9.5.0\\bin\\gradle.bat",
+    "-p",
+    "desktop",
+    "classes",
+    "compileTestKotlin",
+    "--console=plain"
+  ],
+  "exitCode": 0,
+  "actualProductOverrides": 0,
+  "sourceCount": 1206,
+  "resourceCount": 244,
+  "mainClassesCompiled": true,
+  "testClassesCompiled": true,
+  "testsExecuted": false,
+  "rootRuntimeAccepted": false,
+  "networkAccepted": false,
+  "desktopPackageUpdated": false,
+  "originalBangumiPlayerAccepted": false,
+  "allFeaturesComplete": false,
+  "logSha256Bytes": "669ec41ce5a47ad8e0903a7ce05fa9d7a6b22be2023194cfd9aad3aca637708f",
+  "freshNativeShareProducerPassed": true
+}

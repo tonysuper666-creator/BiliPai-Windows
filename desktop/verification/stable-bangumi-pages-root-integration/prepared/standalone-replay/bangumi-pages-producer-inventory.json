@@ -1,0 +1,531 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "emitted": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt",
+      "originalSha256LF": "7d6be537fed4dcb3bd251749402a1d79bfa9703507bebf479109f55646d73078",
+      "output": "com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalBangumiScreen.kt",
+      "completeOriginalFileBody": true,
+      "adaptedSha256LF": "22c3d7b6e2ccf4442d52213c51e663abe36c9f6eb84138c95f5a1712eafd333b",
+      "inverseByteEqual": true,
+      "changes": [
+        {
+          "before": "import android.os.Build",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalBangumiPagesEnvironment",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect",
+          "after": "// Capability comes from the actual Desktop page environment.",
+          "count": 1
+        },
+        {
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopHomeEnvironment as LocalContext",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.core.store.SettingsManager",
+          "after": "import kotlinx.coroutines.flow.map",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.feature.download.DownloadManager",
+          "after": "// Root owns the existing cover download/save boundary.",
+          "count": 1
+        },
+        {
+          "before": "viewModel: BangumiHubViewModel = viewModel()",
+          "after": "viewModel: BangumiHubViewModel",
+          "count": 1
+        },
+        {
+          "before": "fun BangumiScreen(",
+          "after": "internal fun BangumiScreen(",
+          "count": 2
+        },
+        {
+          "before": "SettingsManager.getShowPgcTimeline(context)",
+          "after": "context.settings.homeSettings.map { it.showPgcTimeline }",
+          "count": 1
+        },
+        {
+          "before": "shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT)",
+          "after": "LocalDesktopOriginalBangumiPagesEnvironment.current.hazeEffectSupported",
+          "count": 1
+        },
+        {
+          "before": "DownloadManager.saveImageToGallery(context, url, title)",
+          "after": "context.saveCover(url, title)",
+          "count": 1
+        },
+        {
+          "before": "        initialType = initialType,\n    )",
+          "after": "        initialType = initialType,\n        viewModel = LocalDesktopOriginalBangumiPagesEnvironment.current.hub,\n    )",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt",
+      "originalSha256LF": "7aaa20bcbfec0174453f28d5c27db530633b0fcf15ef0a2733267e03cf1547d3",
+      "output": "com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalBangumiDetailScreen.kt",
+      "completeOriginalFileBody": true,
+      "adaptedSha256LF": "b8144c1550141124f82ae31cd5e895d18bb49d1ee9ce81366f3e7ec9803eb339",
+      "inverseByteEqual": true,
+      "changes": [
+        {
+          "before": "import androidx.lifecycle.viewmodel.compose.viewModel",
+          "after": "// Root supplies the actual retained full original ViewModel.",
+          "count": 1
+        },
+        {
+          "before": "import androidx.compose.ui.platform.LocalConfiguration",
+          "after": "// Window layout is provided by the existing responsive/window policy.",
+          "count": 1
+        },
+        {
+          "before": "viewModel: BangumiViewModel = viewModel()",
+          "after": "viewModel: BangumiViewModel",
+          "count": 1
+        },
+        {
+          "before": "fun BangumiDetailScreen(",
+          "after": "internal fun BangumiDetailScreen(",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt",
+      "originalSha256LF": "d34dea667e32da6b89e4a322192b9472e0cb86b8b16b10ff5cb165f03c9842f0",
+      "output": "com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalBangumiTimelineScreen.kt",
+      "completeOriginalFileBody": true,
+      "adaptedSha256LF": "d34dea667e32da6b89e4a322192b9472e0cb86b8b16b10ff5cb165f03c9842f0",
+      "inverseByteEqual": true,
+      "changes": []
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/detail/BangumiDetailComponents.kt",
+      "originalSha256LF": "5becc31ca3b88526541e010394c9a152670aa4998b08a0291b26f7ebe17b4153",
+      "output": "com\\android\\purebilibili\\feature\\bangumi\\ui\\detail\\DesktopOriginalBangumiDetailComponents.kt",
+      "completeOriginalFileBody": true,
+      "adaptedSha256LF": "d9b79ad25731ac5658a6abb6a3f7c7e8435689874a1f3c136be28e014548c772",
+      "inverseByteEqual": true,
+      "changes": [
+        {
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalBangumiPagesEnvironment as LocalContext",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.feature.video.controller.PlaybackProgressManager",
+          "after": "// Borrow the sole actual global progress owner through this entry read port.",
+          "count": 1
+        },
+        {
+          "before": "val manager = remember { PlaybackProgressManager.getInstance(context) }",
+          "after": "val manager = remember(context) { context.progress }",
+          "count": 1
+        },
+        {
+          "before": "manager.getCachedPosition(bvid)",
+          "after": "manager.getCachedPosition(bvid, 0L)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt",
+      "originalSha256LF": "e4a9d64425e5244a7b237e231148931a71d288b3d9e93f7c98a18db26d36da2a",
+      "output": "com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalBangumiReviewScreen.kt",
+      "completeOriginalFileBody": true,
+      "adaptedSha256LF": "877ccc248db8eaabc08ac3680a43afa8ea8a9fb737238b45102a25e950b116c6",
+      "inverseByteEqual": true,
+      "changes": [
+        {
+          "before": "import android.widget.Toast",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalBangumiPagesToast as Toast",
+          "count": 1
+        },
+        {
+          "before": "import androidx.compose.ui.platform.LocalContext",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalBangumiPagesEnvironment as LocalContext",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.data.repository.BangumiReviewRepository",
+          "after": "// Review requests borrow the actual Root owned API and csrf authority.",
+          "count": 1
+        },
+        {
+          "before": "BangumiReviewRepository.",
+          "after": "context.reviews.",
+          "count": 4
+        },
+        {
+          "before": "val scope = rememberCoroutineScope()",
+          "after": "val scope = context.scope",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt",
+      "originalSha256LF": "d720f3e4966801b37a86972b44f90a9a4882280739c3bc71aa8a7049852cf77b",
+      "output": "com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalBangumiViewModel.kt",
+      "completeOriginalFileBody": true,
+      "adaptedSha256LF": "c1b44864d508886d931c3db2e0b85541d511f9b4d46061fc04a64eccbc7e3fe1",
+      "inverseByteEqual": true,
+      "changes": [
+        {
+          "before": "import androidx.lifecycle.viewModelScope",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalBangumiPagesEnvironment\nimport com.bilipai.desktop.ui.DesktopHomeOwnedMutableStateFlow",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.data.repository.BangumiRepository",
+          "after": "// Existing Root services are required, never a new network singleton.",
+          "count": 1
+        },
+        {
+          "before": "class BangumiViewModel : ViewModel() {",
+          "after": "internal class BangumiViewModel(private val desktopEnvironment: DesktopOriginalBangumiPagesEnvironment) : ViewModel() {\n    private val viewModelScope get() = desktopEnvironment.scope",
+          "count": 1
+        },
+        {
+          "before": "BangumiRepository.",
+          "after": "desktopEnvironment.requests.",
+          "count": 15
+        },
+        {
+          "before": "            followedSeasonIds = followedSeasonIds\n        )",
+          "after": "            followedSeasonIds = followedSeasonIds,\n            fetchPage = { type, page, pageSize -> desktopEnvironment.requests.getMyFollowBangumi(type = type, page = page, pageSize = pageSize) }\n        )",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow(BangumiDisplayMode.LIST)",
+          "after": "DesktopHomeOwnedMutableStateFlow(BangumiDisplayMode.LIST, desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow(1)",
+          "after": "DesktopHomeOwnedMutableStateFlow(1, desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow<BangumiListState>(BangumiListState.Loading)",
+          "after": "DesktopHomeOwnedMutableStateFlow<BangumiListState>(BangumiListState.Loading, desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow<TimelineState>(TimelineState.Loading)",
+          "after": "DesktopHomeOwnedMutableStateFlow<TimelineState>(TimelineState.Loading, desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow<BangumiDetailState>(BangumiDetailState.Loading)",
+          "after": "DesktopHomeOwnedMutableStateFlow<BangumiDetailState>(BangumiDetailState.Loading, desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow<BangumiSearchState>(BangumiSearchState.Idle)",
+          "after": "DesktopHomeOwnedMutableStateFlow<BangumiSearchState>(BangumiSearchState.Idle, desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow<MyFollowState>(MyFollowState.Loading)",
+          "after": "DesktopHomeOwnedMutableStateFlow<MyFollowState>(MyFollowState.Loading, desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow(defaultMyFollowTypeForSeasonType(1))",
+          "after": "DesktopHomeOwnedMutableStateFlow(defaultMyFollowTypeForSeasonType(1), desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow(MyFollowStats())",
+          "after": "DesktopHomeOwnedMutableStateFlow(MyFollowStats(), desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow(BangumiFilter())",
+          "after": "DesktopHomeOwnedMutableStateFlow(BangumiFilter(), desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        },
+        {
+          "before": "MutableStateFlow(\"\")",
+          "after": "DesktopHomeOwnedMutableStateFlow(\"\", desktopEnvironment.commitIfCurrent)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/BangumiReviewRepository.kt",
+      "originalSha256LF": "7dd7ac7da8498648fae7242f921bc6654814ccd47dc28d678730449f78070a12",
+      "output": "com\\android\\purebilibili\\data\\repository\\DesktopOriginalBangumiReviewRequests.kt",
+      "completeOriginalFileBody": true,
+      "adaptedSha256LF": "4dfe756b779aca22d230f571c72509ed0c4475d0fe5e87966fede87a4d3e1bba",
+      "inverseByteEqual": true,
+      "changes": [
+        {
+          "before": "import com.android.purebilibili.core.network.NetworkModule",
+          "after": "import com.android.purebilibili.core.network.BangumiApi",
+          "count": 1
+        },
+        {
+          "before": "import com.android.purebilibili.core.store.TokenManager",
+          "after": "// Root supplies its existing csrf reader.",
+          "count": 1
+        },
+        {
+          "before": "object BangumiReviewRepository {",
+          "after": "internal class DesktopOriginalBangumiReviewRequests(private val api: BangumiApi, private val csrf: () -> String?, private val owned: () -> Boolean, private val actionOwned: () -> Boolean) {",
+          "count": 1
+        },
+        {
+          "before": "import kotlinx.coroutines.withContext",
+          "after": "import com.bilipai.desktop.ui.ownedBangumiRequest",
+          "count": 1
+        },
+        {
+          "before": "withContext(Dispatchers.IO)",
+          "after": "ownedBangumiRequest(Dispatchers.IO, owned)",
+          "count": 3
+        },
+        {
+          "before": "suspend fun likeReview(mediaId: Long, reviewId: Long): Result<Unit> = ownedBangumiRequest(Dispatchers.IO, owned)",
+          "after": "suspend fun likeReview(mediaId: Long, reviewId: Long): Result<Unit> = ownedBangumiRequest(Dispatchers.IO, actionOwned)",
+          "count": 1
+        },
+        {
+          "before": "    ): Result<Unit> = ownedBangumiRequest(Dispatchers.IO, owned)",
+          "after": "    ): Result<Unit> = ownedBangumiRequest(Dispatchers.IO, actionOwned)",
+          "count": 1
+        },
+        {
+          "before": "NetworkModule.bangumiApi.",
+          "after": "api.",
+          "count": 4
+        },
+        {
+          "before": "TokenManager.csrfCache",
+          "after": "csrf()",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "originalSha256LF": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612",
+      "output": "com\\android\\purebilibili\\data\\repository\\DesktopOriginalBangumiPagesRequests.kt",
+      "completeOriginalFileBody": false,
+      "completeSelectedMethodBodies": true,
+      "methods": [
+        {
+          "method": "getBangumiIndex",
+          "originalSha256LF": "e6b1a81ea1f6a42a9197faaaa97840156c0d82a406ca141cdf724f399a53be94",
+          "adaptedSha256LF": "599d9b4dde47fd633b20a43503cf9f0bb948bd5dacb2aa3d0e2ba8a3665c78f1",
+          "inverseByteEqual": true,
+          "changes": [
+            {
+              "before": "withContext(Dispatchers.IO)",
+              "after": "ownedBangumiRequest(Dispatchers.IO, owned)",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "method": "getBangumiIndexWithFilter",
+          "originalSha256LF": "ecde9ddb1f57e79fc18b75b1e1189ed7737d75630d4411a826c8b830f924612d",
+          "adaptedSha256LF": "924d40ea7c70a819a598d2f64288935ecdcec2804938c69c751d2134a08c3663",
+          "inverseByteEqual": true,
+          "changes": [
+            {
+              "before": "withContext(Dispatchers.IO)",
+              "after": "ownedBangumiRequest(Dispatchers.IO, owned)",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "method": "getSeasonDetail",
+          "originalSha256LF": "07d063c7dede85de4c496504ffbbf741a600afc264887a803ed973cf81fcba97",
+          "adaptedSha256LF": "5aecba62ded1307eddab7976b56d5aff3e67e76c16a2ac68d8e5d94fb9e1a6b5",
+          "inverseByteEqual": true,
+          "changes": [
+            {
+              "before": "com.android.purebilibili.core.store.TokenManager.sessDataCache",
+              "after": "sessionCookie()",
+              "count": 1
+            },
+            {
+              "before": "withContext(Dispatchers.IO)",
+              "after": "ownedBangumiRequest(Dispatchers.IO, owned)",
+              "count": 1
+            },
+            {
+              "before": "return@withContext",
+              "after": "return@ownedBangumiRequest",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "method": "getPugvSeasonDetail",
+          "originalSha256LF": "02bc9d1db5ae6801fce255b8c2924f7ee60351cef14f0eab6fc996c1db619c46",
+          "adaptedSha256LF": "fe5b287e2be97d5ab6be3c16ed59f8ddcc6ac68596cfe9f3f0f055e764ed26b7",
+          "inverseByteEqual": true,
+          "changes": [
+            {
+              "before": "withContext(Dispatchers.IO)",
+              "after": "ownedBangumiRequest(Dispatchers.IO, owned)",
+              "count": 1
+            },
+            {
+              "before": "return@withContext",
+              "after": "return@ownedBangumiRequest",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "method": "getBangumiMediaInfo",
+          "originalSha256LF": "fc10aeea6f5036f8df1368cc42c2c53682052f2390acefe233370011cd8ea669",
+          "adaptedSha256LF": "5c3848ac6935bbc808db4bd9502d88e0e9c1432e68a9c3e9e18e45bf58a3838e",
+          "inverseByteEqual": true,
+          "changes": [
+            {
+              "before": "withContext(Dispatchers.IO)",
+              "after": "ownedBangumiRequest(Dispatchers.IO, owned)",
+              "count": 1
+            },
+            {
+              "before": "return@withContext",
+              "after": "return@ownedBangumiRequest",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "method": "getSeasonSections",
+          "originalSha256LF": "3a90ddbfac2b3876d692c1cff2662bb2070ece078fdb6703402b07ac8416a01a",
+          "adaptedSha256LF": "e42d400fd70979544a9b407dd72b0815067481d722411445d4da1b5fc7bcea93",
+          "inverseByteEqual": true,
+          "changes": [
+            {
+              "before": "withContext(Dispatchers.IO)",
+              "after": "ownedBangumiRequest(Dispatchers.IO, owned)",
+              "count": 1
+            },
+            {
+              "before": "return@withContext",
+              "after": "return@ownedBangumiRequest",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "method": "getSeasonDetailByMediaId",
+          "originalSha256LF": "46ee5bad8695869adb7c45d7f64384bd213dc699bfeda3acbc0a4efa3d509dc6",
+          "adaptedSha256LF": "46ee5bad8695869adb7c45d7f64384bd213dc699bfeda3acbc0a4efa3d509dc6",
+          "inverseByteEqual": true,
+          "changes": []
+        },
+        {
+          "method": "followBangumi",
+          "originalSha256LF": "80d8f036cff33f9e6acc556d9c7e9ab42c1274bc97ad996bafd4c787b80e4051",
+          "adaptedSha256LF": "d7b67799bdfefeb54c08ea6b69c3cd32f453bf11ebf032d593f79df614061f9b",
+          "inverseByteEqual": true,
+          "changes": [
+            {
+              "before": "TokenManager.csrfCache",
+              "after": "csrf()",
+              "count": 1
+            },
+            {
+              "before": "withContext(Dispatchers.IO)",
+              "after": "ownedBangumiRequest(Dispatchers.IO, actionOwned)",
+              "count": 1
+            },
+            {
+              "before": "return@withContext",
+              "after": "return@ownedBangumiRequest",
+              "count": 2
+            },
+            {
+              "before": "${csrf.take(10)}",
+              "after": "[Root credential bound]",
+              "count": 1
+            }
+          ]
+        }
+      ],
+      "existingHubDelegation": [
+        "getTimeline",
+        "getMyFollowBangumi",
+        "searchBangumi",
+        "unfollowBangumi",
+        "updateBangumiFollowStatus"
+      ],
+      "noNewNetworkOwner": true
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt",
+      "originalSha256LF": "4f4d3f8befea28b3e4715061fdc71f563ee26d453c5899925188a8d1d2275e20",
+      "output": "com\\android\\purebilibili\\feature\\bangumi\\policy\\DesktopOriginalBangumiFollowPreloadPolicy.kt",
+      "completeOriginalFileBody": false,
+      "adaptedSha256LF": "0a61228c6714c2e4b525430a8a248003cba453ecbd0525a9349b273c0f003931",
+      "inverseByteEqual": true,
+      "changes": [
+        {
+          "before": "import com.android.purebilibili.data.repository.BangumiRepository",
+          "after": "// Root requires the exact existing follow-request delegate.",
+          "count": 1
+        },
+        {
+          "before": "fetchPage: suspend (type: Int, page: Int, pageSize: Int) -> Result<MyFollowBangumiData> =\n        { requestType, page, ps ->\n            BangumiRepository.getMyFollowBangumi(type = requestType, page = page, pageSize = ps)\n        }",
+          "after": "fetchPage: suspend (type: Int, page: Int, pageSize: Int) -> Result<MyFollowBangumiData>",
+          "count": 1
+        }
+      ],
+      "completeSelectedMethodBodies": true,
+      "selectedMethods": [
+        "resolveFollowPreloadPageCount",
+        "preloadFollowedSeasonsForType"
+      ]
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/MyFollowStats.kt",
+      "originalSha256LF": "4ec993ecd0f5493c8d7d4c12e3a925c176d212d9d360aa18c772762ab3a491b1",
+      "output": "com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalMyFollowStats.kt",
+      "completeOriginalFileBody": true,
+      "adaptedSha256LF": "4ec993ecd0f5493c8d7d4c12e3a925c176d212d9d360aa18c772762ab3a491b1",
+      "inverseByteEqual": true,
+      "changes": []
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt",
+      "originalSha256LF": "7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285",
+      "output": "com\\android\\purebilibili\\feature\\bangumi\\policy\\DesktopOriginalBangumiEpisodePagePolicy.kt",
+      "completeOriginalFileBody": false,
+      "adaptedSha256LF": "c34cadf5b228b87918098cec9beb7d704b1543599b9155f7aa38a38c8b07bc51",
+      "inverseByteEqual": true,
+      "changes": [],
+      "completeSelectedMethodBodies": true
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt",
+      "originalSha256LF": "26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2",
+      "output": "com\\android\\purebilibili\\core\\ui\\skeleton\\DesktopOriginalBangumiPosterDetailSkeleton.kt",
+      "completeOriginalFileBody": false,
+      "adaptedSha256LF": "a94ebf8023076e902d55efa9bf2c73b59cf0d23bb775f85403b9823e099f668a",
+      "inverseByteEqual": true,
+      "changes": [],
+      "completeSelectedMethodBodies": true
+    }
+  ],
+  "originalInverseTransformsVerified": true,
+  "playerBodyNotYetAdapted": true,
+  "wholeProductBuildAccepted": false
+}

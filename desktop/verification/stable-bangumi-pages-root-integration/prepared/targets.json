@@ -1,0 +1,22 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+    "beforeSha256LF": "b3a0e728e0eb60af43d521cc8388eda0db9c14d3d543e0199746f880cc1f1bb9",
+    "afterSha256LF": "b46c12e547f36fb58d2b233a26f8992e2d38cd2c5e2391f848c48cdb8c6cd8b7"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootRouteAssembly.kt",
+    "beforeSha256LF": "9484f6cacc3d20863805eaa06738809f259fd58a5804764e1d2cc2f9415a15f9",
+    "afterSha256LF": "65839db4105a4e46b49512e020a7c25418110b8a2f274221bf4da5b6eb548045"
+  },
+  {
+    "path": "desktop/build.gradle.kts",
+    "beforeSha256LF": "ad0ba36be48bf478bb723d44cd4896197c0e3d8c5977f1b111fdaf990a1a2bde",
+    "afterSha256LF": "a52d4240fdcfa1e9dccdc5b14380e0acfc9400e77a4a34e515b9f758ac59ecb5"
+  },
+  {
+    "path": "desktop/upstream-sources.json",
+    "beforeSha256LF": "3d940933d64cd885df9333b5c56d44f82ba2261718dc5cc231101a11bf1b8d87",
+    "afterSha256LF": "ae5b3154e63c89d16650ab00bea7d19324b71088db6205cc9df52019ffe9b5db"
+  }
+]

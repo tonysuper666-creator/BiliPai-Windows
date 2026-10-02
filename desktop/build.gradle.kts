@@ -599,6 +599,21 @@ val extractOriginalHomeBangumiPage by tasks.registering(Exec::class) {
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-bangumi-page")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalHomeBangumiPage) }
 
+val extractOriginalBangumiPages by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalHomeBangumiPage, extractUpstreamMedia)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bangumi-pages.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/independent-bangumi-pages").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-bangumi-pages.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "independent-bangumi-pages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { File(repositoryRoot, it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/independent-bangumi-pages"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/independent-bangumi-pages")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalBangumiPages) }
+
 val extractOriginalSubscriptionPage by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)

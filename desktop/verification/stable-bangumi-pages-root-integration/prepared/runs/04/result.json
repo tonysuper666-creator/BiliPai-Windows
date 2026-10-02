@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "entries": 101,
+  "snapshot": 85,
+  "sourceCount": 13,
+  "explicitProspectiveSources": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPagesRoot.kt",
+      "sha256Bytes": "f46a53b660db61b131f3eff20f4a0b0fcb21dbdf57358fd2d41d941516bd4b6a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\core\\ui\\skeleton\\DesktopOriginalBangumiPosterDetailSkeleton.kt",
+      "sha256Bytes": "2ac3233a104689f7b938dfa09e4a8b15a6bb7c238c06d63ef86751ebb9322316"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\data\\repository\\DesktopOriginalBangumiPagesRequests.kt",
+      "sha256Bytes": "e145bd17f2f12100f2d022157267269cc1222bfe5d3495d918c24127fae9419a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\data\\repository\\DesktopOriginalBangumiReviewRequests.kt",
+      "sha256Bytes": "34905dd7017c052ceefafe7338d7537bda939f21914b456ed4626382f6c3faef"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\feature\\bangumi\\DesktopOriginalBangumiDetailScreen.kt",
+      "sha256Bytes": "2864ca37e487a872fee046047f41fd39f620627c511ac2139ffe5c5c1d0478f2"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\feature\\bangumi\\DesktopOriginalBangumiReviewScreen.kt",
+      "sha256Bytes": "db7db04d687b4365db212a79a1f489f4e7ccc515a04857208528f58462ad6f73"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\feature\\bangumi\\DesktopOriginalBangumiScreen.kt",
+      "sha256Bytes": "92f15833201182e393bc9a8069b05ea0c70eef95382a511ab86417d87f75d4d5"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\feature\\bangumi\\DesktopOriginalBangumiTimelineScreen.kt",
+      "sha256Bytes": "e8e3c656824f43d36cbe0c910a1d28f65c28548999a91aa1eaf553cfe15d29b6"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\feature\\bangumi\\DesktopOriginalBangumiViewModel.kt",
+      "sha256Bytes": "d2a5ef452795e793d652257e6f80fa30e275ba9436e8c22335f7c0d8b5cc69b3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\feature\\bangumi\\DesktopOriginalMyFollowStats.kt",
+      "sha256Bytes": "2ad74d544127b7470461ac26d4cdde614672b5be8c7c13721749d71d55c8bd5a"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\feature\\bangumi\\policy\\DesktopOriginalBangumiEpisodePagePolicy.kt",
+      "sha256Bytes": "2d3e0d44aa6f5469005748d4a50836f6b043d9e3c359847c0a887edfc2cf7eab"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\feature\\bangumi\\policy\\DesktopOriginalBangumiFollowPreloadPolicy.kt",
+      "sha256Bytes": "15b2321505f7ca4fc3dfd7d2a4e463447eaec9f452d1198cc6d54f4a9eefe658"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-pages-root-parity\\generated\\feature\\bangumi\\ui\\detail\\DesktopOriginalBangumiDetailComponents.kt",
+      "sha256Bytes": "f26ef94bf4e909b6fbecdb21e044d26113b0d9fa64040f6b2afb1746de884662"
+    }
+  ],
+  "productionWrites": 0,
+  "rootRuntimeAccepted": false
+}

@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "comparedOutputs": 12,
+  "inverseOriginalBodies": true,
+  "base": "6ac84c8036ed4c75e2944d92d1020566e283e983",
+  "candidateWrites": 0,
+  "toolSha256Bytes": "a87ff9f51d49ee6504048e6e35584ea29d4a465b437ba1f9ab442b32b9e9c79c"
+}
