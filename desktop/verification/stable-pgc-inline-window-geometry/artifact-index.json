@@ -1,0 +1,189 @@
+{
+  "files": [
+    {
+      "path": "root/prepare.py",
+      "bytes": 3619,
+      "sha256Bytes": "b8e71b24ae215a559794d5af7429ea937b342171ac8d80b800ca2cf80a94cf4c"
+    },
+    {
+      "path": "root/save_and_stage.py",
+      "bytes": 4799,
+      "sha256Bytes": "bb38123842b0c56d2c4fb51e07eed072397983ad53c1a48b91a258ee8733514f"
+    },
+    {
+      "path": "root/installation.json",
+      "bytes": 793,
+      "sha256Bytes": "ac561f2f58c545afcd43bf4affbfe1cfab9918339f4d9b89fb0b70440c4d118a"
+    },
+    {
+      "path": "root/screen-height-required-seam.json",
+      "bytes": 4212,
+      "sha256Bytes": "440f81e20dfe19a52be09c732f018ecafc4c17632bf8f5fde1bc27dff7ee99b4"
+    },
+    {
+      "path": "root/generated-verification.json",
+      "bytes": 716,
+      "sha256Bytes": "d64ca45f5dc89086e37965986caab5df5d809455de76c80958de3a78968584e4"
+    },
+    {
+      "path": "root/actual-build01.log",
+      "bytes": 12517,
+      "sha256Bytes": "f608e7120a62b482b2362991a8b62203d3fabf06ec68201b4c95681a5c1fc8b2"
+    },
+    {
+      "path": "root/actual-build01.json",
+      "bytes": 782,
+      "sha256Bytes": "8e180b45fcf4341fc5cdbf82f5ad9bfbb8215157b4d2fb705e0bce68a55d41ac"
+    },
+    {
+      "path": "root/actual-native-producer-receipt.json",
+      "bytes": 1247,
+      "sha256Bytes": "243f09087c9b5f1d646ca6780ef7c278915073c6ae370990f89ea0c9f68e9237"
+    },
+    {
+      "path": "root/actual-native-producer-input-graph.json",
+      "bytes": 116973,
+      "sha256Bytes": "93a23464cd9c10216ab1ff6948d93876eb78bf665b620e64d998edb9babc9f8d"
+    },
+    {
+      "path": "root/build_actual.py",
+      "bytes": 3863,
+      "sha256Bytes": "036fde7fc6f312ac13a2c5ffc5b29c31d0a8ba973d544279a7a533aa6d457802"
+    },
+    {
+      "path": "root/before/desktop/tools/extract-upstream-bangumi-player-ui.py",
+      "bytes": 71333,
+      "sha256Bytes": "c5f97ea576989f1749f4885d1d73f8687540bdc3a8eaf3a35bf980bd7d454fd8"
+    },
+    {
+      "path": "root/before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerScreenPlatform.kt",
+      "bytes": 2833,
+      "sha256Bytes": "fbb4627acf42331301ca9b944ec86835926ef2557b3bad4d7791f7102d1d3685"
+    },
+    {
+      "path": "prior-actual93-01/RootPgcFixture.kt",
+      "bytes": 24789,
+      "sha256Bytes": "eff87c725531d8ff821ad1661d74cb996e52ee28d23a508c415570bbad36201c"
+    },
+    {
+      "path": "prior-actual93-01/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prior-actual93-01/compile-result.json",
+      "bytes": 190,
+      "sha256Bytes": "44dc960bf6d7601c8e785a5591b3e22035d62923400c8f9f730b6d9a505da8ac"
+    },
+    {
+      "path": "prior-actual93-01/compiler.args",
+      "bytes": 26861,
+      "sha256Bytes": "5167d8ea045c0ad4e52532a1323751bbd1adab827a5a90424090657814ccb8b2"
+    },
+    {
+      "path": "prior-actual93-01/pins-before.json",
+      "bytes": 42043,
+      "sha256Bytes": "77fb835dfa2ca22b741fdaf00b0ce92c1d8a914ab2fa2269552b479c1c167522"
+    },
+    {
+      "path": "prior-actual93-01/fixture-jar-pin.json",
+      "bytes": 114,
+      "sha256Bytes": "340722274e1bb949da77e89e990990e1a7cc40b13868817c534ae9fd1ae3f645"
+    },
+    {
+      "path": "prior-actual93-01/acceptance-result.json",
+      "bytes": 969,
+      "sha256Bytes": "b077994473f6f4a02b56d3ffa228d9b43390508d8d1dd8f72349168bc2c909f2"
+    },
+    {
+      "path": "prior-actual93-01/runtime.log",
+      "bytes": 862,
+      "sha256Bytes": "4fb975a15ef517e923b779c3ab2ec351b592da7e651fdc1e7adb091d046148ae"
+    },
+    {
+      "path": "prior-actual93-01/pins-after.json",
+      "bytes": 42043,
+      "sha256Bytes": "77fb835dfa2ca22b741fdaf00b0ce92c1d8a914ab2fa2269552b479c1c167522"
+    },
+    {
+      "path": "prior-actual93-01/runtime-evidence/actual-root-pgc-failure.png",
+      "bytes": 8305,
+      "sha256Bytes": "c570e89edac680bcf1e6b684ec3efa611bd5ad09b90457086a6ea9438cde2289"
+    },
+    {
+      "path": "prior-actual93-01/runtime-evidence/root-pgc-proof.json",
+      "bytes": 3448,
+      "sha256Bytes": "324dcaaa7c3c0397ad1a4c43b624308dc1bdf13fce4e409f92c6bde0b6a4ae37"
+    },
+    {
+      "path": "prior-actual93-02/RootPgcFixture.kt",
+      "bytes": 25702,
+      "sha256Bytes": "fe884cfd3ddd83cc8e62d42b5b159eca8fbbebc09d16cc725e3911dcf788dccd"
+    },
+    {
+      "path": "prior-actual93-02/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prior-actual93-02/compile-result.json",
+      "bytes": 190,
+      "sha256Bytes": "9926d463fbd04fd58d98731c7372d134de6a8e5aae386599f2ea3ba35d5721a9"
+    },
+    {
+      "path": "prior-actual93-02/compiler.args",
+      "bytes": 26861,
+      "sha256Bytes": "cb4c09beaf5320b36947538ff15df5fe466a23afff84a3ca71e49a891fde566f"
+    },
+    {
+      "path": "prior-actual93-02/pins-before.json",
+      "bytes": 42043,
+      "sha256Bytes": "d9232980902f7133fd06304031a7f9ced2a8cb48525b19929b0aacbfa0189e32"
+    },
+    {
+      "path": "prior-actual93-02/fixture-jar-pin.json",
+      "bytes": 114,
+      "sha256Bytes": "2e756c667280fec40e4c2b9709e91ee23fe0801dcaf9e96557ea4c93df402c09"
+    },
+    {
+      "path": "prior-actual93-02/acceptance-result.json",
+      "bytes": 968,
+      "sha256Bytes": "98705e5adcfa613487fb1adbc73c698a53990ffe0db02cf77f04d3b4524c70b2"
+    },
+    {
+      "path": "prior-actual93-02/runtime.log",
+      "bytes": 1122,
+      "sha256Bytes": "f2888d3fd2c1c3c2b71b1c71c7384d917f40849352872cb9b40fc451a650e09c"
+    },
+    {
+      "path": "prior-actual93-02/pins-after.json",
+      "bytes": 42043,
+      "sha256Bytes": "d9232980902f7133fd06304031a7f9ced2a8cb48525b19929b0aacbfa0189e32"
+    },
+    {
+      "path": "prior-actual93-02/runtime-evidence/actual-root-pgc-failure.png",
+      "bytes": 15660,
+      "sha256Bytes": "3ec0861b12f2fc276c1b7740bc32927bd360f08de72af99f5ec96037a064a4df"
+    },
+    {
+      "path": "prior-actual93-02/runtime-evidence/actual-root-pgc-original-error.png",
+      "bytes": 30888,
+      "sha256Bytes": "e7dfd4a2ad87625965c57f88f60e1b79339a585763c21ed1ad051e75190ade78"
+    },
+    {
+      "path": "prior-actual93-02/runtime-evidence/root-pgc-proof.json",
+      "bytes": 3945,
+      "sha256Bytes": "7d4e0f36e47f4c1205d7d6fa831b86bf0ef2023b3df906a6c7279ae19e458d2a"
+    },
+    {
+      "path": "prior-fixture/run.py",
+      "bytes": 11969,
+      "sha256Bytes": "a72a0f70a1e41f4ef1a819ba3917c6c9f1c66277e2b380b14f81fbf8e9147012"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1241,
+      "sha256Bytes": "3287d947342e6670447c886a77572b40d45c9bd24f37467369224cd464711a83"
+    }
+  ]
+}

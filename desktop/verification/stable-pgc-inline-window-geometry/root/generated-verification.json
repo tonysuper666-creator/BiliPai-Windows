@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "completeScreenInversePassed": true,
+  "fullOriginalSourceSha256LF": "287d6919dd09e53428a6b01b81b9ff588629441831134a59732ab80c75e3289a",
+  "adaptedBodySha256LF": "7aca38c7aed628eab0c8102f018a03b0ddf4fbd171b50c76b0f3eec3e0230e54",
+  "newPlatformGeometryLine": {
+    "startLine": 821,
+    "endLineExclusive": 822,
+    "before": "        val playerHeight = screenWidthDp * 2f / 3f\n",
+    "after": "        val playerHeight = com.bilipai.desktop.ui.desktopOriginalBangumiInlinePlayerHeightDp(configuration.screenWidthDp, configuration.screenHeightDp).dp\n",
+    "beforeSha256LF": "03dac9f6d003efb028efc00d7d8ece6178fe6d363e1d660abba9131089188124"
+  },
+  "extraOriginalProducer": 0
+}

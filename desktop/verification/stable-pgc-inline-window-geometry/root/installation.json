@@ -1,0 +1,19 @@
+{
+  "baseCommit": "fd02521dbdbbeb54cc40662ef8cf65288084069f",
+  "sourceCount": 1234,
+  "resourceCount": 244,
+  "sourceTargets": [
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player-ui.py",
+      "beforeSha256Bytes": "c5f97ea576989f1749f4885d1d73f8687540bdc3a8eaf3a35bf980bd7d454fd8",
+      "afterSha256Bytes": "2a7956349cd109fb94c26ff3751cccf1b2fca46deae5a2ee795c56d84e958d78"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerScreenPlatform.kt",
+      "beforeSha256Bytes": "fbb4627acf42331301ca9b944ec86835926ef2557b3bad4d7791f7102d1d3685",
+      "afterSha256Bytes": "f850c64f759e2ed7422387a1fbea34f5949646e938c242720c73236304e29db6"
+    }
+  ],
+  "normalCompile": false,
+  "rootRuntimeAccepted": false
+}

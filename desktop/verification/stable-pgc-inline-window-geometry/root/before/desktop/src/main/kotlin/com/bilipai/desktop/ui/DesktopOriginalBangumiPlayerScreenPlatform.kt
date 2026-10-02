@@ -4,8 +4,6 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import com.android.purebilibili.feature.bangumi.BangumiPlayerViewModel
-import com.android.purebilibili.feature.video.screen.resolveLargeScreenVideoMetrics
-import com.android.purebilibili.feature.video.screen.shouldUseLargeScreenVideoLayout
 import com.android.purebilibili.feature.video.viewmodel.VideoCommentViewModel
 
 /** Required same existing Root share boundary; no exporter, browser, Store or
@@ -57,13 +55,3 @@ internal val LocalDesktopOriginalBangumiPlayerScreenPlatform =
     staticCompositionLocalOf<DesktopOriginalBangumiPlayerScreenPlatform> {
         error("Full original PGC Screen requires its retained same native/Window/domain Root binding")
     }
-
-/** The mobile PGC page assumes a tall portrait display. Use the already owned
- * original large-window geometry for Windows while keeping its collapse state. */
-internal fun desktopOriginalBangumiInlinePlayerHeightDp(widthDp: Int, heightDp: Int): Float {
-    val width = widthDp.toFloat().coerceAtLeast(0f)
-    val height = heightDp.toFloat().coerceAtLeast(0f)
-    val portraitHeight = width * 2f / 3f
-    if (!shouldUseLargeScreenVideoLayout(width, height, horizontalAdaptationEnabled = true)) return portraitHeight
-    return minOf(portraitHeight, resolveLargeScreenVideoMetrics(width, height, isVerticalVideo = false).playerHeightDp)
-}
