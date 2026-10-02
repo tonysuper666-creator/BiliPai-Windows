@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "readOnly": true,
+  "productionModified": false,
+  "compilerOrRuntimeRunByReviewer": false,
+  "primaryInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalExternalPlaylistBinding.kt",
+      "sha256Bytes": "bf9a1d38299d68c5e1d83662596539000b0a1acff01f825309dc13ad79792002",
+      "size": 6691,
+      "sha256LF": "bf9a1d38299d68c5e1d83662596539000b0a1acff01f825309dc13ad79792002",
+      "role": "primary"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\tools\\extract-search-platform.py",
+      "sha256Bytes": "0b1bde42482246bac039bf2ca19176bc5251fb091ced28a4bef349a931979e08",
+      "size": 9513,
+      "sha256LF": "f7408d4ce0405e8020358c3ed8dc7959890c93cbb24c224a92bd832f96530505",
+      "role": "primary"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\tools\\extract-upstream-music-player-full.py",
+      "sha256Bytes": "4e5e8b5d670ad2232f1829d96a036e4f25ab226eca05865e6f5d6202aa86be93",
+      "size": 33892,
+      "sha256LF": "4e5e8b5d670ad2232f1829d96a036e4f25ab226eca05865e6f5d6202aa86be93",
+      "role": "primary"
+    }
+  ],
+  "referenceInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "724b8cb04e01ce9c6dc4f727783704fd332f65526ab300716b1d211295fc5298",
+      "size": 12333,
+      "sha256LF": "724b8cb04e01ce9c6dc4f727783704fd332f65526ab300716b1d211295fc5298",
+      "role": "reference"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalPlayerSettingsContext.kt",
+      "sha256Bytes": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+      "size": 7757,
+      "sha256LF": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f",
+      "role": "reference"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopSubscriptionWriteAdmission.kt",
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0",
+      "size": 3149,
+      "sha256LF": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0",
+      "role": "reference"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\plugins\\DesktopPluginStore.kt",
+      "sha256Bytes": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+      "size": 20329,
+      "sha256LF": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22",
+      "role": "reference"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\audio\\DesktopAudioRepository.kt",
+      "sha256Bytes": "3a18a64e1900768ca47f2bbb41c99fa41075950dd1ec40fe5bfff884b7905879",
+      "size": 12024,
+      "sha256LF": "3a18a64e1900768ca47f2bbb41c99fa41075950dd1ec40fe5bfff884b7905879",
+      "role": "reference"
+    }
+  ],
+  "fixedOriginals": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55",
+      "gitBlobMatches": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ExternalPlaylistRepository.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "3fe9556d6701f34e7f0eb1731ad005acca7f2ef2f278f5bf3fc571911ae09288",
+      "gitBlobMatches": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ExternalPlaylistImportDialog.kt",
+      "commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+      "sha256LF": "26cb46a8d744f16eb448c3242ade46d4edc9363c7109fdaf7b86d07c3fd91c97",
+      "gitBlobMatches": true
+    }
+  ],
+  "sourceChecks": [
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 37,
+      "claim": "New operation captures in actual caller Job; nested operation retains same request binding.",
+      "sourceExpression": "val binding = retained ?: captureRequest()"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 49,
+      "claim": "Same retained binding survives coroutine dispatcher changes for nested progress/checkpoint calls.",
+      "sourceExpression": "return withContext(retainedRequest.asContextElement(binding))"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 52,
+      "claim": "Same captured request receipt supplies short mutation gate; no new account/store authority.",
+      "sourceExpression": "commitIfCurrent = binding::admitCurrentMutation"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 48,
+      "claim": "Nested operations preserve surrounding admission and check completion without recapture.",
+      "sourceExpression": "if (retained != null) return block(domain).also { checkRequest() }"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 84,
+      "claim": "Original match progress callback is checked before and after nested checkpoint writes.",
+      "sourceExpression": "caller.ensureActive()\n                DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()\n                onProgress"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 115,
+      "claim": "Call.cancel is attached immediately at request cancellation, including already cancelled Job.",
+      "sourceExpression": "invokeOnCompletion(onCancelling = true, invokeImmediately = true)"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 120,
+      "claim": "Response remains open only through original parser; actual response closure executes before cancellation hook is removed.",
+      "sourceExpression": "return call.execute().use { response ->"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 122,
+      "claim": "Body carrier shares borrowed actual response; no copy/client/service is created.",
+      "sourceExpression": "body(CheckedPlaylistBody(response.body, ::checkpoint))"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 137,
+      "claim": "Each underlying body read checks caller and captured account/entry before and after IO.",
+      "sourceExpression": "check()\n            val count = super.read(sink, byteCount)\n            check()"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 123,
+      "claim": "Final parser result rechecks admission, including data satisfied by an already buffered source.",
+      "sourceExpression": "block(owned).also { checkpoint() }"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "line": 58,
+      "claim": "Checkpoint operation requires the same Root settings context, not a new persisted document.",
+      "sourceExpression": "require(supplied === context)"
+    },
+    {
+      "file": "desktop/tools/extract-search-platform.py",
+      "line": 109,
+      "claim": "Producer explicitly reverses all guard adaptations to the original selected search/sign/error bodies.",
+      "sourceExpression": "assert restored == original_selected"
+    },
+    {
+      "file": "desktop/tools/extract-search-platform.py",
+      "line": 120,
+      "claim": "Search and Nav APIs are constructor-required captured request facets, not latest credential globals.",
+      "sourceExpression": "private val api: SearchApi,\n    private val navApi: BilibiliApi,"
+    },
+    {
+      "file": "desktop/tools/extract-search-platform.py",
+      "line": 98,
+      "claim": "Real nav result is checked before and after original WBI selection.",
+      "sourceExpression": "checkCurrent()\\n        val navResp = navApi.getNavInfo()\\n        checkCurrent()"
+    },
+    {
+      "file": "desktop/tools/extract-search-platform.py",
+      "line": 96,
+      "claim": "Real search result is checked before and after original conversion/pagination.",
+      "sourceExpression": "checkCurrent()\\n        val response = api.search(signedParams)\\n        checkCurrent()"
+    },
+    {
+      "file": "desktop/tools/extract-upstream-music-player-full.py",
+      "line": 149,
+      "claim": "Producer reverses original domain body, encryption/parsing/matching/checkpoint selection exactly.",
+      "sourceExpression": "assert restored==originalDomain"
+    },
+    {
+      "file": "desktop/tools/extract-upstream-music-player-full.py",
+      "line": 136,
+      "claim": "Only original response execution boundary changes; original request parameters, encryption and parser bodies remain selected.",
+      "sourceExpression": "'responsePort.withResponse(request) { response ->'"
+    },
+    {
+      "file": "desktop/tools/extract-upstream-music-player-full.py",
+      "line": 222,
+      "claim": "Original ImportDialog async state publication uses required platform.commitUi while IO remains outside.",
+      "sourceExpression": "Only async UI publication enters same caller/entry/account gate; checkpoint IO remains outside"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "line": 72,
+      "claim": "Existing global settings actor stages owned file outside Root account/entry gates.",
+      "sourceExpression": "val temporary = Files.createTempFile(backing.root, \"plugin-settings-\", \".tmp\")"
+    },
+    {
+      "file": "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+      "line": 133,
+      "claim": "Only permit acquisition enters Root admission; document publication consumes permit under backing monitor after leaving Root gate.",
+      "sourceExpression": "val permit = acquirePermit()"
+    }
+  ],
+  "blockingFindings": [],
+  "actual78": {
+    "manifestSHA256Bytes": "95665c3a2211e1d7be50b40c92138db37b837f098f44e331936f841e99174e52",
+    "orderedCPSHA256Bytes": "bb20396a8d06fd8b0520142d0ae704d102c1106962fe7d2b66279455e0ccb242",
+    "runtimeEntries": 101,
+    "mainKotlinSHA256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+  },
+  "rootOwnedFixture": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-external-playlist-integration\\runs\\01\\result.json",
+    "sha256Bytes": "2775d136570ab1507b0651f9fd49702c7734a5ab83dd71760730a2cecaf29abe",
+    "size": 540,
+    "result": {
+      "passed": true,
+      "exit": 0,
+      "assertions": 46,
+      "actualSnapshot": 78,
+      "runtimeEntries": 101,
+      "productionOverrides": 0,
+      "fixtureSourceCount": 1,
+      "fixtureClasses": 20,
+      "uniqueInstalledProductClassOrigins": 12,
+      "pinsUnchanged": true,
+      "realLoopbackHttp": true,
+      "fakeSearchAndNavApi": true,
+      "realOriginalEapiEncryptionAndParsing": true,
+      "realSameSettingsStore": true,
+      "fullRootCapturedBindingRuntimeAccepted": false,
+      "completeRootMounted": false,
+      "nativeOrWindowAccepted": false,
+      "desktopExeReplaced": false
+    },
+    "reviewerReran": false
+  },
+  "conclusions": [
+    "No specific blocking defect found in the three requested final source families.",
+    "Actual caller cancellation and captured receipt reject results and body reads; caller hook lasts through response closure.",
+    "Nested batch checkpoint uses retained binding and same outer SubscriptionWriteAdmission; it does not capture latest account.",
+    "Original matching/search/encryption/parser/checkpoint semantics remain source selected; added guards target transport/publication boundaries.",
+    "Transport borrows the existing bounded public audio client and captured search facets; no new client/cache/Store/MPV/thread created by binding.",
+    "Original checkpoint uses global import_checkpoint_v1 key; receipt guards writes but this is not new per-account checkpoint partitioning.",
+    "Original domain runCatching can contain CancellationException temporarily, but adapter final check and child completion reject canceled/retired request before publication.",
+    "Complete Root captured-binding runtime and concrete Music commitUi wiring are still a separate required mount acceptance."
+  ],
+  "requiredMount": [
+    "Same Root context identity and captureRequest from actual current entry/caller Job.",
+    "Concrete platform.commitUi must join same SubscriptionWriteAdmission and live entry admission; do not invoke merely an unguarded UI closure.",
+    "Do not put network/parse/temp/fsync IO inside Store/entry gates. Existing settings permit minting remains short."
+  ]
+}

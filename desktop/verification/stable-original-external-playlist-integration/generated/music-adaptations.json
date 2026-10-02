@@ -1,0 +1,510 @@
+{
+  "feature/audio/lyrics/halcyon/AppleMusicLyricsView.kt": [
+    {
+      "label": "Actual Windows backend/import import androidx.compose.ui.platform.LocalContext\n",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "index": 1579
+    }
+  ],
+  "feature/audio/lyrics/halcyon/AppleMusicLyricLine.kt": [
+    {
+      "label": "Actual Windows backend/import import androidx.compose.ui.platform.LocalContext\n",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "index": 2299
+    }
+  ],
+  "feature/audio/lyrics/halcyon/AppleMusicKaraokeText.kt": [
+    {
+      "label": "Actual Windows backend/import import androidx.compose.ui.platform.LocalContext\n",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "index": 1821
+    }
+  ],
+  "feature/audio/lyrics/halcyon/PlayerLyricPerspective.kt": [
+    {
+      "label": "Actual Windows backend/import import androidx.compose.ui.platform.LocalConfiguration",
+      "before": "import androidx.compose.ui.platform.LocalConfiguration",
+      "after": "import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration",
+      "index": 237
+    },
+    {
+      "label": "Actual enclosing window layout, not fabricated Android orientation",
+      "before": "configuration.orientation ==\n        android.content.res.Configuration.ORIENTATION_LANDSCAPE",
+      "after": "configuration.screenWidthDp > configuration.screenHeightDp",
+      "index": 1259
+    },
+    {
+      "label": "Actual enclosing window dimensions",
+      "before": "configuration.smallestScreenWidthDp",
+      "after": "minOf(configuration.screenWidthDp, configuration.screenHeightDp)",
+      "index": 1330
+    }
+  ],
+  "feature/audio/lyrics/halcyon/PlayerPalette.kt": [
+    {
+      "label": "Actual Windows backend/import import android.graphics.Bitmap",
+      "before": "import android.graphics.Bitmap",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRaster as Bitmap",
+      "index": 63
+    },
+    {
+      "label": "Actual Windows backend/import import android.graphics.Color as AndroidColor",
+      "before": "import android.graphics.Color as AndroidColor",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRasterColor as AndroidColor",
+      "index": 122
+    }
+  ],
+  "feature/audio/lyrics/halcyon/PlayerBlurBackground.kt": [
+    {
+      "label": "Actual Windows backend/import import android.graphics.Bitmap",
+      "before": "import android.graphics.Bitmap",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRaster as Bitmap",
+      "index": 63
+    },
+    {
+      "label": "Actual Windows backend/import import android.graphics.Color as AndroidColor",
+      "before": "import android.graphics.Color as AndroidColor",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRasterColor as AndroidColor",
+      "index": 122
+    },
+    {
+      "label": "Actual Windows backend/import import androidx.compose.ui.graphics.asImageBitmap",
+      "before": "import androidx.compose.ui.graphics.asImageBitmap",
+      "after": "import com.bilipai.desktop.ui.asImageBitmap",
+      "index": 1028
+    }
+  ],
+  "feature/audio/lyrics/halcyon/AppleCoverFlowBackground.kt": [
+    {
+      "label": "Actual Windows backend/import import android.graphics.Bitmap",
+      "before": "import android.graphics.Bitmap",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRaster as Bitmap",
+      "index": 62
+    },
+    {
+      "label": "Actual Windows backend/import import android.graphics.Canvas",
+      "before": "import android.graphics.Canvas",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRasterCanvas as Canvas",
+      "index": 121
+    },
+    {
+      "label": "Actual Windows backend/import import android.graphics.ColorMatrixColorFilter",
+      "before": "import android.graphics.ColorMatrixColorFilter",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRasterColorFilter as ColorMatrixColorFilter",
+      "index": 222
+    },
+    {
+      "label": "Actual Windows backend/import import android.graphics.ColorMatrix\n",
+      "before": "import android.graphics.ColorMatrix\n",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRasterColorMatrix as ColorMatrix\n",
+      "index": 186
+    },
+    {
+      "label": "Actual Windows backend/import import android.graphics.Matrix",
+      "before": "import android.graphics.Matrix",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRasterMatrix as Matrix",
+      "index": 347
+    },
+    {
+      "label": "Actual Windows backend/import import android.graphics.Paint",
+      "before": "import android.graphics.Paint",
+      "after": "import com.bilipai.desktop.ui.DesktopMusicRasterPaint as Paint",
+      "index": 412
+    },
+    {
+      "label": "Actual Windows backend/import import androidx.compose.ui.graphics.asImageBitmap",
+      "before": "import androidx.compose.ui.graphics.asImageBitmap",
+      "after": "import com.bilipai.desktop.ui.asImageBitmap",
+      "index": 1269
+    },
+    {
+      "label": "Actual Windows backend/import import androidx.compose.ui.platform.LocalContext\n",
+      "before": "import androidx.compose.ui.platform.LocalContext\n",
+      "after": "",
+      "index": 1451
+    },
+    {
+      "label": "Original DPI sampling threshold maps actual Compose pixel density; original stock settings retained",
+      "before": "    val context = LocalContext.current\n    val densityDpi = context.resources.displayMetrics.densityDpi\n    val settingsManager = remember(context) { HalcyonLyricSettings }",
+      "after": "    val densityDpi = (androidx.compose.ui.platform.LocalDensity.current.density * 160f).roundToInt()\n    val settingsManager = remember { HalcyonLyricSettings }",
+      "index": 3885
+    },
+    {
+      "label": "Dispose actual Graphics2D even when original frame computation fails",
+      "before": "    val canvas = Canvas(frame)",
+      "after": "    val canvas = Canvas(frame)\n    try {",
+      "index": 10140
+    },
+    {
+      "label": "Dispose actual Graphics2D after original blur/crop algorithm",
+      "before": "    if (frame !== blurred && frame !== result) frame.recycle()\n    return result\n}",
+      "after": "    if (frame !== blurred && frame !== result) frame.recycle()\n    return result\n    } finally { canvas.close() }\n}",
+      "index": 12210
+    }
+  ],
+  "feature/audio/screen/MusicWavySlider.kt": [
+    {
+      "label": "Monotonic existing JVM clock",
+      "before": "import android.os.SystemClock\n",
+      "after": "",
+      "index": 55
+    },
+    {
+      "label": "Monotonic existing JVM clock",
+      "before": "SystemClock.elapsedRealtime()",
+      "after": "System.nanoTime() / 1_000_000L",
+      "index": 5518
+    },
+    {
+      "label": "Monotonic existing JVM clock",
+      "before": "SystemClock.elapsedRealtime()",
+      "after": "System.nanoTime() / 1_000_000L",
+      "index": 3231
+    },
+    {
+      "label": "Monotonic existing JVM clock",
+      "before": "SystemClock.elapsedRealtime()",
+      "after": "System.nanoTime() / 1_000_000L",
+      "index": 2758
+    }
+  ],
+  "feature/audio/screen/PlayHistorySheet.kt": [
+    {
+      "label": "Required same Root history view",
+      "before": "import com.android.purebilibili.core.store.PlayHistoryStore\n",
+      "after": "",
+      "index": 1290
+    },
+    {
+      "label": "Required same Root history view",
+      "before": "import androidx.compose.ui.platform.LocalContext",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalMusicUiPlatform",
+      "index": 1409
+    },
+    {
+      "label": "Original full UI reads same existing history actor",
+      "before": "    val context = LocalContext.current\n    val entries by PlayHistoryStore.recent(context, limit = 50)",
+      "after": "    val platform = LocalDesktopOriginalMusicUiPlatform.current\n    val entries by platform.history.recent(limit = 50)",
+      "index": 1656
+    }
+  ],
+  "feature/audio/screen/ExternalPlaylistImportDialog.kt": [
+    {
+      "label": "Android decor system-bars option maps actual desktop Dialog client area",
+      "before": "            decorFitsSystemWindows = false,\n",
+      "after": "",
+      "index": 7902
+    },
+    {
+      "label": "Required same Root import actions",
+      "before": "import androidx.compose.ui.platform.LocalContext",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalMusicUiPlatform",
+      "index": 2046
+    },
+    {
+      "label": "Full original schemas and pure input policy selected once",
+      "before": "import com.android.purebilibili.data.repository.ExternalPlaylistRepository",
+      "after": "import com.android.purebilibili.data.repository.DesktopOriginalExternalPlaylistSchema as ExternalPlaylistRepository",
+      "index": 2655
+    },
+    {
+      "label": "Required same Repository search transport",
+      "before": "import com.android.purebilibili.data.repository.SearchRepository\n",
+      "after": "",
+      "index": 2771
+    },
+    {
+      "label": "Required same local playlist persistence",
+      "before": "import com.android.purebilibili.core.store.LocalPlaylistStore\n",
+      "after": "",
+      "index": 2488
+    },
+    {
+      "label": "Required same Root owner, no new Store/HTTP",
+      "before": "    val context = LocalContext.current",
+      "after": "    val platform = LocalDesktopOriginalMusicUiPlatform.current\n    val context = platform.context",
+      "index": 3620
+    },
+    {
+      "label": "Same owned protocol/persistence operation loadImportCheckpoint",
+      "before": "ExternalPlaylistRepository.loadImportCheckpoint",
+      "after": "platform.externalPlaylist.loadImportCheckpoint",
+      "index": 4803
+    },
+    {
+      "label": "Same owned protocol/persistence operation saveImportCheckpoint",
+      "before": "ExternalPlaylistRepository.saveImportCheckpoint",
+      "after": "platform.externalPlaylist.saveImportCheckpoint",
+      "index": 25106
+    },
+    {
+      "label": "Same owned protocol/persistence operation saveImportCheckpoint",
+      "before": "ExternalPlaylistRepository.saveImportCheckpoint",
+      "after": "platform.externalPlaylist.saveImportCheckpoint",
+      "index": 12169
+    },
+    {
+      "label": "Same owned protocol/persistence operation saveImportCheckpoint",
+      "before": "ExternalPlaylistRepository.saveImportCheckpoint",
+      "after": "platform.externalPlaylist.saveImportCheckpoint",
+      "index": 6393
+    },
+    {
+      "label": "Same owned protocol/persistence operation saveImportCheckpoint",
+      "before": "ExternalPlaylistRepository.saveImportCheckpoint",
+      "after": "platform.externalPlaylist.saveImportCheckpoint",
+      "index": 5767
+    },
+    {
+      "label": "Same owned protocol/persistence operation clearImportCheckpoint",
+      "before": "ExternalPlaylistRepository.clearImportCheckpoint",
+      "after": "platform.externalPlaylist.clearImportCheckpoint",
+      "index": 7484
+    },
+    {
+      "label": "Same owned protocol/persistence operation matchTracks",
+      "before": "ExternalPlaylistRepository.matchTracks",
+      "after": "platform.externalPlaylist.matchTracks",
+      "index": 6007
+    },
+    {
+      "label": "Same owned protocol/persistence operation fetchPlaylist",
+      "before": "ExternalPlaylistRepository.fetchPlaylist",
+      "after": "platform.externalPlaylist.fetchPlaylist",
+      "index": 11371
+    },
+    {
+      "label": "Same existing Root local playlist persistence",
+      "before": "LocalPlaylistStore.savePlaylist(context, local)",
+      "after": "platform.savePlaylist(local)",
+      "index": 7423
+    },
+    {
+      "label": "Same owned Repository/WBI search",
+      "before": "SearchRepository.search(keyword = manualKeyword)",
+      "after": "platform.externalPlaylist.search(keyword = manualKeyword)",
+      "index": 22914
+    },
+    {
+      "label": "Only async UI publication enters same caller/entry/account gate; checkpoint IO remains outside",
+      "before": "            playlist = checkpoint.playlist\n            matchResults = checkpoint.outcomes.map { ExternalPlaylistRepository.MatchOutcome(it.track, it.video) }\n            matchTotal = checkpoint.playlist.tracks.size\n            matchCompleted = checkpoint.completedCount",
+      "after": "            platform.commitUi {\n                playlist = checkpoint.playlist\n                matchResults = checkpoint.outcomes.map { ExternalPlaylistRepository.MatchOutcome(it.track, it.video) }\n                matchTotal = checkpoint.playlist.tracks.size\n                matchCompleted = checkpoint.completedCount\n            }",
+      "index": 4880
+    },
+    {
+      "label": "Only async UI publication enters same caller/entry/account gate; checkpoint IO remains outside",
+      "before": "                matchCompleted = completed\n                matchingTrackTitle = outcome.track.title\n                matchResults = matchResults.toMutableList().also { list ->\n                    if (completed - 1 in list.indices) list[completed - 1] = outcome\n                }",
+      "after": "                platform.commitUi {\n                    matchCompleted = completed\n                    matchingTrackTitle = outcome.track.title\n                    matchResults = matchResults.toMutableList().also { list ->\n                        if (completed - 1 in list.indices) list[completed - 1] = outcome\n                    }\n                }",
+      "index": 6159
+    },
+    {
+      "label": "Only async UI publication enters same caller/entry/account gate; checkpoint IO remains outside",
+      "before": "                                                                manualResults = items.take(8).map {\n                                                                    ExternalPlaylistRepository.MatchedVideo(\n                                                                        bvid = it.bvid,\n                                                                        title = it.title,\n                                                                        cover = it.pic,\n                                                                        author = it.owner.name,\n                                                                        durationSec = it.duration.toLong(),\n                                                                    )\n                                                                }",
+      "after": "                                                                platform.commitUi {\n                                                                    manualResults = items.take(8).map {\n                                                                        ExternalPlaylistRepository.MatchedVideo(\n                                                                            bvid = it.bvid,\n                                                                            title = it.title,\n                                                                            cover = it.pic,\n                                                                            author = it.owner.name,\n                                                                            durationSec = it.duration.toLong(),\n                                                                        )\n                                                                    }\n                                                                }",
+      "index": 23195
+    },
+    {
+      "label": "Only async UI publication enters same caller/entry/account gate; checkpoint IO remains outside",
+      "before": "                                                playlist = fetched\n                                                matchResults = fetched.tracks.map {\n                                                    ExternalPlaylistRepository.MatchOutcome(it, null)\n                                                }\n                                                matchCompleted = 0\n                                                matchTotal = fetched.tracks.size",
+      "after": "                                                platform.commitUi {\n                                                    playlist = fetched\n                                                    matchResults = fetched.tracks.map {\n                                                        ExternalPlaylistRepository.MatchOutcome(it, null)\n                                                    }\n                                                    matchCompleted = 0\n                                                    matchTotal = fetched.tracks.size\n                                                }",
+      "index": 11782
+    },
+    {
+      "label": "Async import UI publishes only inside same Root short admission",
+      "before": "            matching = false\n        }\n    }\n\n    fun savePlaylist()",
+      "after": "            platform.commitUi { matching = false }\n        }\n    }\n\n    fun savePlaylist()",
+      "index": 6732
+    },
+    {
+      "label": "Async import UI publishes only inside same Root short admission",
+      "before": "if (fetched.tracks.isEmpty()) fetchError = \"歌单为空或为私密歌单\"",
+      "after": "if (fetched.tracks.isEmpty()) platform.commitUi { fetchError = \"歌单为空或为私密歌单\" }",
+      "index": 11697
+    },
+    {
+      "label": "Async import UI publishes only inside same Root short admission",
+      "before": "                                    fetchError = \"无法识别链接，请粘贴网易云或 QQ 音乐的完整分享链接\"",
+      "after": "                                    platform.commitUi { fetchError = \"无法识别链接，请粘贴网易云或 QQ 音乐的完整分享链接\" }",
+      "index": 11354
+    },
+    {
+      "label": "Async import UI publishes only inside same Root short admission",
+      "before": "                                        .onFailure { fetchError = it.message ?: \"获取歌单失败\" }",
+      "after": "                                        .onFailure { error -> platform.commitUi { fetchError = error.message ?: \"获取歌单失败\" } }",
+      "index": 13099
+    },
+    {
+      "label": "Async import UI publishes only inside same Root short admission",
+      "before": "                                fetching = false\n                            }",
+      "after": "                                platform.commitUi { fetching = false }\n                            }",
+      "index": 13258
+    },
+    {
+      "label": "Async import UI publishes only inside same Root short admission",
+      "before": "                                                        manualSearching = true",
+      "after": "                                                        platform.commitUi { manualSearching = true }",
+      "index": 23179
+    },
+    {
+      "label": "Async import UI publishes only inside same Root short admission",
+      "before": "                                                        manualSearching = false",
+      "after": "                                                        platform.commitUi { manualSearching = false }",
+      "index": 24544
+    }
+  ],
+  "feature/audio/screen/MusicPlayerContent.kt": [
+    {
+      "label": "Required actual Windows platform/import import android.os.Build\n",
+      "before": "import android.os.Build\n",
+      "after": "",
+      "index": 371
+    },
+    {
+      "label": "Required actual Windows platform/import import android.provider.Settings\n",
+      "before": "import android.provider.Settings\n",
+      "after": "",
+      "index": 371
+    },
+    {
+      "label": "Required actual Windows platform/import import androidx.palette.graphics.Palette\n",
+      "before": "import androidx.palette.graphics.Palette\n",
+      "after": "",
+      "index": 7224
+    },
+    {
+      "label": "Required actual Windows platform/import import coil3.request.allowHardware\n",
+      "before": "import coil3.request.allowHardware\n",
+      "after": "",
+      "index": 335
+    },
+    {
+      "label": "Required actual Windows platform/import import androidx.compose.ui.graphics.asAndroidBitmap\n",
+      "before": "import androidx.compose.ui.graphics.asAndroidBitmap\n",
+      "after": "",
+      "index": 6194
+    },
+    {
+      "label": "Required actual Windows platform/import import androidx.compose.ui.graphics.asImageBitmap\n",
+      "before": "import androidx.compose.ui.graphics.asImageBitmap\n",
+      "after": "",
+      "index": 6194
+    },
+    {
+      "label": "Required actual Windows platform/import import coil3.imageLoader\n",
+      "before": "import coil3.imageLoader\n",
+      "after": "",
+      "index": 7144
+    },
+    {
+      "label": "Required actual Windows platform/import import androidx.compose.ui.platform.LocalContext",
+      "before": "import androidx.compose.ui.platform.LocalContext",
+      "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalMusicUiPlatform",
+      "index": 6587
+    },
+    {
+      "label": "Required actual Windows platform/import import com.android.purebilibili.core.lifecycle.BackgroundManager\n",
+      "before": "import com.android.purebilibili.core.lifecycle.BackgroundManager\n",
+      "after": "",
+      "index": 7230
+    },
+    {
+      "label": "Required actual Windows platform/import import com.android.purebilibili.core.store.SettingsManager",
+      "before": "import com.android.purebilibili.core.store.SettingsManager",
+      "after": "import com.android.purebilibili.core.store.DesktopOriginalMusicUiSettings as SettingsManager",
+      "index": 9154
+    },
+    {
+      "label": "Required same-entry Root platform capture",
+      "before": "val context = LocalContext.current",
+      "after": "val platform = LocalDesktopOriginalMusicUiPlatform.current\n    val context = platform.context",
+      "index": 18066
+    },
+    {
+      "label": "Same required global context in complete private player UI",
+      "before": "getMusicLyricsUiStyle(LocalContext.current)",
+      "after": "getMusicLyricsUiStyle(LocalDesktopOriginalMusicUiPlatform.current.context)",
+      "index": 97814
+    },
+    {
+      "label": "Actual Root system/lifecycle flows",
+      "before": "    val systemReduceMotion = remember(context) {\n        Settings.Global.getFloat(\n            context.contentResolver,\n            Settings.Global.ANIMATOR_DURATION_SCALE,\n            1f\n        ) == 0f\n    }\n    val effectiveReduceMotion = reduceMotion || systemReduceMotion || BackgroundManager.isInBackground\n",
+      "after": "    val systemReduceMotion by platform.systemReduceMotion.collectAsStateWithLifecycle()\n    val isInBackground by platform.isInBackground.collectAsStateWithLifecycle()\n    val effectiveReduceMotion = reduceMotion || systemReduceMotion || isInBackground\n",
+      "index": 21373
+    },
+    {
+      "label": "Same full global settings current value, no fake default",
+      "before": "val homeSettings by SettingsManager\n        .getHomeSettings(context)\n        .collectAsStateWithLifecycle(initialValue = HomeSettings())",
+      "after": "val homeSettings by platform.homeSettings.collectAsStateWithLifecycle()",
+      "index": 21938
+    },
+    {
+      "label": "Same actual background state",
+      "before": "BackgroundManager.isInBackground",
+      "after": "isInBackground",
+      "index": 23788
+    },
+    {
+      "label": "Same owned SingletonImageLoader artwork load",
+      "before": "val result = loadMusicArtwork(context.imageLoader, state.coverUrl, context)",
+      "after": "val result = loadMusicArtwork(platform, state.coverUrl)",
+      "index": 22991
+    },
+    {
+      "label": "Same caller Job/entry admission rejects a superseded cover or retired page before UI publication",
+      "before": "        artworkBitmap = result?.bitmap\n        paletteColor = result?.baseColor ?: themeSurfaceColor\n        paletteAccent = result?.accentColor ?: (result?.baseColor ?: themeSurfaceColor)\n        playerPalette = result?.palette\n            ?: com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette.Default",
+      "after": "        platform.commitUi {\n            artworkBitmap = result?.bitmap\n            paletteColor = result?.baseColor ?: themeSurfaceColor\n            paletteAccent = result?.accentColor ?: (result?.baseColor ?: themeSurfaceColor)\n            playerPalette = result?.palette\n                ?: com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette.Default\n        }",
+      "index": 23047
+    },
+    {
+      "label": "Map only original Android API capability clause to required real Skia capability; retain remaining original conditions",
+      "before": "val glassEnabled = resolveMusicLiquidGlassEnabled(\n        sdkInt = Build.VERSION.SDK_INT,\n        effectsEnabled = liquidGlassEffectsEnabled,\n        isAppInBackground = isInBackground,\n        reduceMotion = effectiveReduceMotion\n    )",
+      "after": "val glassEnabled = platform.blurEffectsAvailable && liquidGlassEffectsEnabled &&\n        !isInBackground && !effectiveReduceMotion",
+      "index": 23655
+    },
+    {
+      "label": "Owned copy of actual Compose bitmap, never close borrowed cache",
+      "before": "bitmap?.toAndroidBitmapOrNull()",
+      "after": "bitmap?.let { com.bilipai.desktop.ui.desktopMusicRasterCopy(it) }",
+      "index": 92076
+    },
+    {
+      "label": "Android Bitmap cast is replaced by real owned raster copy",
+      "before": "private fun ImageBitmap.toAndroidBitmapOrNull(): android.graphics.Bitmap? {\n    return try {\n        this.asAndroidBitmap()\n    } catch (_: Throwable) {\n        null\n    }\n}\n\n",
+      "after": "",
+      "index": 92950
+    },
+    {
+      "label": "Actual same Listen/native volume flow replaces Android AudioManager/ContentObserver",
+      "before": "    val context = androidx.compose.ui.platform.LocalContext.current\n    val audioManager = remember {\n        context.getSystemService(android.content.Context.AUDIO_SERVICE)\n            as? android.media.AudioManager\n    }\n    val maxVolume = remember(audioManager) {\n        audioManager?.getStreamMaxVolume(android.media.AudioManager.STREAM_MUSIC)?.coerceAtLeast(1) ?: 15\n    }\n    fun readVolume(): Float = audioManager\n        ?.getStreamVolume(android.media.AudioManager.STREAM_MUSIC)\n        ?.toFloat()?.div(maxVolume) ?: 0f\n\n    var volume by remember(audioManager) { mutableFloatStateOf(readVolume()) }\n\n    DisposableEffect(audioManager) {\n        val observer = object : android.database.ContentObserver(android.os.Handler(android.os.Looper.getMainLooper())) {\n            override fun onChange(selfChange: Boolean) {\n                volume = readVolume()\n            }\n        }\n        context.contentResolver.registerContentObserver(\n            android.provider.Settings.System.CONTENT_URI,\n            true,\n            observer\n        )\n        onDispose { context.contentResolver.unregisterContentObserver(observer) }\n    }\n\n",
+      "after": "    val platform = LocalDesktopOriginalMusicUiPlatform.current\n    val actualVolume by platform.volume.collectAsStateWithLifecycle()\n    val maxVolume = platform.maximumVolumeStep.also { require(it > 0) }\n    var volume by remember(platform) { mutableFloatStateOf(actualVolume) }\n    LaunchedEffect(actualVolume) { volume = actualVolume }\n",
+      "index": 119034
+    },
+    {
+      "label": "Required same source-owned volume write",
+      "before": "audioManager?.setStreamVolume(\n                        android.media.AudioManager.STREAM_MUSIC,\n                        (volume * maxVolume).roundToInt(),\n                        0\n                    )",
+      "after": "platform.setVolumeFraction(volume)",
+      "index": 120407
+    },
+    {
+      "label": "Actual Skia blur capability with original remaining policy",
+      "before": "resolveMusicLyricsBlurEnabled(\n        sdkInt = Build.VERSION.SDK_INT,\n        effectsEnabled = blurEffectsEnabled,\n        reduceMotion = reduceMotion\n    )",
+      "after": "LocalDesktopOriginalMusicUiPlatform.current.blurEffectsAvailable &&\n        blurEffectsEnabled && !reduceMotion",
+      "index": 130597
+    },
+    {
+      "label": "Actual Skia blur capability",
+      "before": "Build.VERSION.SDK_INT >= 31 && blurRadius.value > 0.dp",
+      "after": "LocalDesktopOriginalMusicUiPlatform.current.blurEffectsAvailable && blurRadius.value > 0.dp",
+      "index": 159039
+    },
+    {
+      "label": "Required same loader/context/HTTP owned acquisition; original palette algorithm retained, owned pixel temporary disposed",
+      "before": "private suspend fun loadMusicArtwork(\n    imageLoader: ImageLoader,\n    coverUrl: String,\n    context: android.content.Context\n): MusicArtworkPalette? = withContext(Dispatchers.IO) {\n    if (coverUrl.isBlank()) return@withContext null\n    runCatching {\n        val request = ImageRequest.Builder(context)\n            .data(coverUrl)\n            .allowHardware(false)\n            .size(512, 512)\n            .build()\n        val result = imageLoader.execute(request) as SuccessResult\n        val bitmap = (result.image as coil3.BitmapImage).bitmap\n        val playerPalette =\n            com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette.fromCoverBackground(\n                bitmap = bitmap,\n                light = false,\n            )\n        MusicArtworkPalette(\n            bitmap = bitmap.asImageBitmap(),\n            baseColor = playerPalette.middle,\n            accentColor = playerPalette.accent,\n            palette = playerPalette,\n        )\n    }.getOrNull()\n}\n\n",
+      "after": "private suspend fun loadMusicArtwork(\n    platform: com.bilipai.desktop.ui.DesktopOriginalMusicUiPlatform,\n    coverUrl: String\n): MusicArtworkPalette? = try {\n    val bitmap = platform.loadOwnedArtwork(coverUrl)\n    if (bitmap == null) null else {\n    try {\n        val palette = com.android.purebilibili.feature.audio.lyrics.halcyon.PlayerPalette.fromCoverBackground(bitmap, light = false)\n        MusicArtworkPalette(bitmap.asImageBitmap(), palette.middle, palette.accent, palette)\n    } finally { bitmap.recycle() }\n    }\n} catch (cancelled: kotlinx.coroutines.CancellationException) {\n    throw cancelled\n} catch (_: Throwable) {\n    null // Preserve the original artwork failure palette fallback, never swallow cancellation.\n}\n\n",
+      "index": 185809
+    }
+  ]
+}

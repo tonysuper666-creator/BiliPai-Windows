@@ -76,6 +76,60 @@ def generate(repo: Path, output: Path) -> None:
     target = output / "com/android/purebilibili/data/repository/DesktopSearchDeclarations.kt"
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8", newline="\n")
+    # The import matcher consumes the complete original video-search protocol.
+    # Its APIs are REQUIRED views of one captured Root request, never globals.
+    names = ("search", "signWithWbi", "createSearchError")
+    selected = "\n\n".join(declaration("fun", name) for name in names)
+    original_selected = selected
+    adaptations = []
+
+    def guard(before: str, after: str) -> None:
+        nonlocal selected
+        assert selected.count(before) == 1, before
+        index = selected.index(before)
+        adaptations.append({"index": index, "before": before, "after": after})
+        selected = selected[:index] + after + selected[index + len(before):]
+
+    guard("    try {\n        val params = mutableMapOf(",
+          "    try {\n        checkCurrent()\n        val params = mutableMapOf(")
+    guard("        val response = api.search(signedParams)",
+          "        checkCurrent()\n        val response = api.search(signedParams)\n        checkCurrent()")
+    guard("        val navResp = navApi.getNavInfo()",
+          "        checkCurrent()\n        val navResp = navApi.getNavInfo()\n        checkCurrent()")
+    guard('        com.android.purebilibili.core.util.Logger.e("SearchRepo", "search(video) failed", e)',
+          '        checkCurrent()\n        com.android.purebilibili.core.util.Logger.e("SearchRepo", "search(video) failed", e)')
+    # Missing/failing nav keeps the original unsigned fallback for a live request.
+    guard("    } catch (e: Exception) {\n        com.android.purebilibili.core.util.Logger.e(\n",
+          "    } catch (e: Exception) {\n        checkCurrent()\n        com.android.purebilibili.core.util.Logger.e(\n")
+    restored = selected
+    for change in reversed(adaptations):
+        index = change["index"]
+        assert restored[index:index + len(change["after"])] == change["after"]
+        restored = restored[:index] + change["before"] + restored[index + len(change["after"]):]
+    assert restored == original_selected
+    header = """package com.android.purebilibili.data.repository
+import com.android.purebilibili.core.network.SearchApi
+import com.android.purebilibili.core.network.BilibiliApi
+import com.android.purebilibili.core.network.WbiUtils
+import com.android.purebilibili.data.model.response.VideoItem
+import com.android.purebilibili.data.repository.SearchRepository.SearchPageInfo
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+internal class DesktopOriginalCapturedVideoSearch(
+    private val api: SearchApi,
+    private val navApi: BilibiliApi,
+    private val checkCurrent: () -> Unit,
+) {
+"""
+    search_target = target.parent / "DesktopOriginalCapturedVideoSearch.kt"
+    search_target.write_text(header + textwrap.indent(selected, "    ") + "\n}\n", encoding="utf-8", newline="\n")
+    (output / "captured-video-search-selection.json").write_text(json.dumps({
+        "original": relative, "sourceSHA256LF": hashlib.sha256(source.encode()).hexdigest(),
+        "declarations": names, "originalSelectedSHA256LF": hashlib.sha256(original_selected.encode()).hexdigest(),
+        "generatedSelectedSHA256LF": hashlib.sha256(selected.encode()).hexdigest(),
+        "adaptations": adaptations, "exactSelectedBodyInverse": True,
+    }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     for path in (BASE + "data/model/entity/SearchHistory.kt", BASE + "core/database/dao/SearchHistoryDao.kt"):
         original = (repo / path).read_text(encoding="utf-8")
         lines = [line for line in original.splitlines() if not line.startswith("import androidx.room")

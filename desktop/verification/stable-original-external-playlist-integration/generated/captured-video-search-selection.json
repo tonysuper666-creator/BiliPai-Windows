@@ -1,0 +1,39 @@
+{
+  "original": "app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt",
+  "sourceSHA256LF": "9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55",
+  "declarations": [
+    "search",
+    "signWithWbi",
+    "createSearchError"
+  ],
+  "originalSelectedSHA256LF": "977f4397c4930ec8e4321132132f25e30e110aad351d967a0d76ebcb5d6875c3",
+  "generatedSelectedSHA256LF": "c6e43eff2968c6cf7ea46c83fbdd2d1e3438ab1f07efdbbd3e273916cc77e1c1",
+  "adaptations": [
+    {
+      "index": 312,
+      "before": "    try {\n        val params = mutableMapOf(",
+      "after": "    try {\n        checkCurrent()\n        val params = mutableMapOf("
+    },
+    {
+      "index": 1269,
+      "before": "        val response = api.search(signedParams)",
+      "after": "        checkCurrent()\n        val response = api.search(signedParams)\n        checkCurrent()"
+    },
+    {
+      "index": 2589,
+      "before": "        val navResp = navApi.getNavInfo()",
+      "after": "        checkCurrent()\n        val navResp = navApi.getNavInfo()\n        checkCurrent()"
+    },
+    {
+      "index": 2360,
+      "before": "        com.android.purebilibili.core.util.Logger.e(\"SearchRepo\", \"search(video) failed\", e)",
+      "after": "        checkCurrent()\n        com.android.purebilibili.core.util.Logger.e(\"SearchRepo\", \"search(video) failed\", e)"
+    },
+    {
+      "index": 3307,
+      "before": "    } catch (e: Exception) {\n        com.android.purebilibili.core.util.Logger.e(\n",
+      "after": "    } catch (e: Exception) {\n        checkCurrent()\n        com.android.purebilibili.core.util.Logger.e(\n"
+    }
+  ],
+  "exactSelectedBodyInverse": true
+}

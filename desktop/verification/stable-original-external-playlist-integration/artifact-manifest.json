@@ -1,0 +1,299 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceRegistryCount": 1170,
+  "resources": 213,
+  "actualSnapshot": 78,
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "fixtureAssertions": 46,
+  "fixtureClasses": 20,
+  "verifiedUniqueProductClassOrigins": 12,
+  "originalSearchAndExternalDomainInverse": true,
+  "fullOriginalImportDialogInverse": true,
+  "independentSourceReview": true,
+  "reviewerReran": false,
+  "realLoopbackHttp": true,
+  "fakeSearchAndNavApi": true,
+  "capturedBindingRuntimeAccepted": false,
+  "completeRootMounted": false,
+  "nativeWindowAccepted": false,
+  "desktopExeReplaced": false,
+  "artifacts": [
+    {
+      "path": "build/classes-78-before-ui-admission.log",
+      "sizeBytes": 9806,
+      "sha256Bytes": "a01ca67ecdc3c7e0b26c23025652366cd75c641fa90be9da651c7135dfbbb35f"
+    },
+    {
+      "path": "build/classes-78.log",
+      "sizeBytes": 9044,
+      "sha256Bytes": "1bb0eda1062fc735ccce08e485b4398c5c545c9a5295dce865775bc5a8acf4dd"
+    },
+    {
+      "path": "build/classpath-78.log",
+      "sizeBytes": 290,
+      "sha256Bytes": "0b12207be04ae886811f7f6780f60eb87c9f983e7d75ea4cb76528e53ba1710e"
+    },
+    {
+      "path": "generated/captured-video-search-selection.json",
+      "sizeBytes": 1678,
+      "sha256Bytes": "030cf30e1836a8d57880739a442f3d8a38178f1da6510c20387d461294107982"
+    },
+    {
+      "path": "generated/DesktopOriginalCapturedVideoSearch.kt",
+      "sizeBytes": 5030,
+      "sha256Bytes": "344eb9f81ab2cdfd2f52433298eda71b7cb531e6f9319fb8f7aba15cbeb13cf9"
+    },
+    {
+      "path": "generated/DesktopOriginalExternalPlaylistDomain.kt",
+      "sizeBytes": 13066,
+      "sha256Bytes": "da46ddab118579649b4219eedb758d518e4ed566ad934d5b1c8ca2d92d8d4682"
+    },
+    {
+      "path": "generated/DesktopOriginalExternalPlaylistSchema.kt",
+      "sizeBytes": 2903,
+      "sha256Bytes": "32312dc86ce8bc3391080aa4587b5d283a8e21254ab75f8f93e6852985b82890"
+    },
+    {
+      "path": "generated/DesktopSearchDeclarations.kt",
+      "sizeBytes": 4215,
+      "sha256Bytes": "f65bb8b087b8ef120d8721df07b021edcdb6f8f2f77f1746bf1b5214f6839868"
+    },
+    {
+      "path": "generated/ExternalPlaylistImportDialog.kt",
+      "sizeBytes": 29112,
+      "sha256Bytes": "f38f99a050d4b6a2a2a8af19565d7ec903f067e24031afd7c5f90f413c3c42ad"
+    },
+    {
+      "path": "generated/music-adaptations.json",
+      "sizeBytes": 30376,
+      "sha256Bytes": "6c87826f6a6cabf3acf128da6304a354fb29c13ce5e6e47ac8fa7beb44342e10"
+    },
+    {
+      "path": "generated/music-outputs.json",
+      "sizeBytes": 14692,
+      "sha256Bytes": "0266f8733e20516a9e8e997562446f541edc127a7984df7835fb6c8ac77ad517"
+    },
+    {
+      "path": "generated/music-source-pins.json",
+      "sizeBytes": 5366,
+      "sha256Bytes": "09183825d2f3c70ca4a6ed239d3be68a9b7d81f6a9ae2e5de7b4ccd72387fa0b"
+    },
+    {
+      "path": "original/ExternalPlaylistImportDialog.kt",
+      "sizeBytes": 28554,
+      "sha256Bytes": "26cb46a8d744f16eb448c3242ade46d4edc9363c7109fdaf7b86d07c3fd91c97"
+    },
+    {
+      "path": "original/ExternalPlaylistRepository.kt",
+      "sizeBytes": 15407,
+      "sha256Bytes": "3fe9556d6701f34e7f0eb1731ad005acca7f2ef2f278f5bf3fc571911ae09288"
+    },
+    {
+      "path": "original/SearchRepository.kt",
+      "sizeBytes": 28979,
+      "sha256Bytes": "9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55"
+    },
+    {
+      "path": "product-source/DesktopAudioRepository.kt",
+      "sizeBytes": 12024,
+      "sha256Bytes": "3a18a64e1900768ca47f2bbb41c99fa41075950dd1ec40fe5bfff884b7905879"
+    },
+    {
+      "path": "product-source/DesktopOriginalExternalPlaylistBinding.kt",
+      "sizeBytes": 6691,
+      "sha256Bytes": "bf9a1d38299d68c5e1d83662596539000b0a1acff01f825309dc13ad79792002"
+    },
+    {
+      "path": "product-source/DesktopOriginalMusicUiPlatform.kt",
+      "sizeBytes": 5668,
+      "sha256Bytes": "2ce04e5a057a8438edc2c9f4ad3c7b1ff62c54cc8d57cac17ae5c45da14b1819"
+    },
+    {
+      "path": "product-source/DesktopOriginalPlayerSettingsContext.kt",
+      "sizeBytes": 7757,
+      "sha256Bytes": "d120c6f1b46c2aaf00c3e0c2a550a2be3d184dc4d0ac75cc7923b0e40b71845f"
+    },
+    {
+      "path": "product-source/DesktopOriginalVideoRepositoryBinding.kt",
+      "sizeBytes": 12333,
+      "sha256Bytes": "724b8cb04e01ce9c6dc4f727783704fd332f65526ab300716b1d211295fc5298"
+    },
+    {
+      "path": "product-source/DesktopPluginStore.kt",
+      "sizeBytes": 20329,
+      "sha256Bytes": "0f2b2cc3bdcff17f891a41a3cca086d78f97207fcefe11a4a1d2b0f22db12e22"
+    },
+    {
+      "path": "product-source/DesktopSubscriptionWriteAdmission.kt",
+      "sizeBytes": 3149,
+      "sha256Bytes": "c6997bc14ed7800c57a923e7b7b039ab1beb1dd3e56237e0a4cfcbf19c9776f0"
+    },
+    {
+      "path": "product-source/extract-search-platform.py",
+      "sizeBytes": 9513,
+      "sha256Bytes": "0b1bde42482246bac039bf2ca19176bc5251fb091ced28a4bef349a931979e08"
+    },
+    {
+      "path": "product-source/extract-upstream-music-player-full.py",
+      "sizeBytes": 33892,
+      "sha256Bytes": "4e5e8b5d670ad2232f1829d96a036e4f25ab226eca05865e6f5d6202aa86be93"
+    },
+    {
+      "path": "product-source/UpstreamLogger.kt",
+      "sizeBytes": 408,
+      "sha256Bytes": "ef79d0b51820b4684062dbf3440fd78e38a78fe136c2a9170195528bdd17d74a"
+    },
+    {
+      "path": "review/finalize.py",
+      "sizeBytes": 2309,
+      "sha256Bytes": "34c0f445eae5f7295d018948118338279237aad335770cbced881cd7a3705614"
+    },
+    {
+      "path": "review/frozen-review-final.json",
+      "sizeBytes": 1634,
+      "sha256Bytes": "48678f3c2851cf196efd79e68115a48431cf5556dc9e53f82c6cfaf843e8e914"
+    },
+    {
+      "path": "review/frozen-review.json",
+      "sizeBytes": 1117,
+      "sha256Bytes": "36d5fed3a7069b4bb12a4ba62addf8731d2dc65b6e5a159e885615861619c427"
+    },
+    {
+      "path": "review/retained-current/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "sizeBytes": 6691,
+      "sha256Bytes": "bf9a1d38299d68c5e1d83662596539000b0a1acff01f825309dc13ad79792002"
+    },
+    {
+      "path": "review/retained-current/desktop/tools/extract-search-platform.py",
+      "sizeBytes": 9513,
+      "sha256Bytes": "0b1bde42482246bac039bf2ca19176bc5251fb091ced28a4bef349a931979e08"
+    },
+    {
+      "path": "review/retained-current/desktop/tools/extract-upstream-music-player-full.py",
+      "sizeBytes": 33892,
+      "sha256Bytes": "4e5e8b5d670ad2232f1829d96a036e4f25ab226eca05865e6f5d6202aa86be93"
+    },
+    {
+      "path": "review/review.py",
+      "sizeBytes": 8788,
+      "sha256Bytes": "53670c6be3c2424091595911ecb6f00ca23974d1d2a2803b07dad08cecb24aed"
+    },
+    {
+      "path": "review/source-review-final.json",
+      "sizeBytes": 14425,
+      "sha256Bytes": "27b0891a7ac34eec10693cd13c4e75b3aac5c790dd1f8f0f65761975ad48e7c0"
+    },
+    {
+      "path": "review/source-review.json",
+      "sizeBytes": 13911,
+      "sha256Bytes": "b728af34408b271eebaf25f28c9f360ef81bb56ed31748d6e5c49c2985556fc7"
+    },
+    {
+      "path": "root/ExternalPlaylistProof.kt",
+      "sizeBytes": 17615,
+      "sha256Bytes": "da9bee849bf4c8023cc9352e37fa327267f590b94abdb008e100a44548d9666b"
+    },
+    {
+      "path": "root/freeze.py",
+      "sizeBytes": 7414,
+      "sha256Bytes": "4be6f05cfbcc4b23bd0d8b855e1d08621abb16eb356ab174d4d5039ed37ff18d"
+    },
+    {
+      "path": "root/ROOT-INTEGRATION.md",
+      "sizeBytes": 2853,
+      "sha256Bytes": "cce337c2b871fd6d273ec5b4120af2e11b8bf7faf0828466c12887fb53a05e6d"
+    },
+    {
+      "path": "root/run.py",
+      "sizeBytes": 5135,
+      "sha256Bytes": "9b942da0d025031d64b45411f1ed397bb06022a4294c88509243060c1ea9cbc2"
+    },
+    {
+      "path": "root/run01/class-origins.json",
+      "sizeBytes": 5207,
+      "sha256Bytes": "8082690687f2a6a1f10eb9c984c8784149e91234fce4334e9c04c9c89423f878"
+    },
+    {
+      "path": "root/run01/compile-command.json",
+      "sizeBytes": 2556,
+      "sha256Bytes": "a9d71b9d477c6ebbdd3853658131a18c786c7c481dad9414b53f58f65451a2ba"
+    },
+    {
+      "path": "root/run01/compile.args",
+      "sizeBytes": 25540,
+      "sha256Bytes": "8a114076f98422541a84aa49aa31cf6ef974efc06f9dc58e66d1d6a97b3677f0"
+    },
+    {
+      "path": "root/run01/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "root/run01/fixture.jar",
+      "sizeBytes": 56493,
+      "sha256Bytes": "870b6f248ae96bc1099233df96863e4fd8da737401326c3e18186b1898bf2d26"
+    },
+    {
+      "path": "root/run01/inputs/ExternalPlaylistProof.kt",
+      "sizeBytes": 17615,
+      "sha256Bytes": "da9bee849bf4c8023cc9352e37fa327267f590b94abdb008e100a44548d9666b"
+    },
+    {
+      "path": "root/run01/overlap.json",
+      "sizeBytes": 56,
+      "sha256Bytes": "d4c76af53398d865dd5f7fca764e789da1c667d70740536442c17566e3231e39"
+    },
+    {
+      "path": "root/run01/pins-after.json",
+      "sizeBytes": 42902,
+      "sha256Bytes": "537420b167b5ff5f3c5328d6dd020fdccf8c5a2714b99471d00c12ca501a07cc"
+    },
+    {
+      "path": "root/run01/pins-before.json",
+      "sizeBytes": 42902,
+      "sha256Bytes": "537420b167b5ff5f3c5328d6dd020fdccf8c5a2714b99471d00c12ca501a07cc"
+    },
+    {
+      "path": "root/run01/result.json",
+      "sizeBytes": 540,
+      "sha256Bytes": "2775d136570ab1507b0651f9fd49702c7734a5ab83dd71760730a2cecaf29abe"
+    },
+    {
+      "path": "root/run01/run-command.json",
+      "sizeBytes": 27050,
+      "sha256Bytes": "b2715a2a567407d0f8da4dea71345a09921f67171d91d68a0375e879ea346821"
+    },
+    {
+      "path": "root/run01/run.log",
+      "sizeBytes": 118,
+      "sha256Bytes": "ae7290e061742bb14cf2cfb960fd1d7ebfbf77a449309d2dfa714ef1924f3b8b"
+    },
+    {
+      "path": "root/source-verification.json",
+      "sizeBytes": 472,
+      "sha256Bytes": "e69652dd63778ee0b364dfdb582149c60b415421634d4ed264ef80816fc5ef42"
+    },
+    {
+      "path": "root/verify-source.py",
+      "sizeBytes": 4045,
+      "sha256Bytes": "ecedc1074e54f8cf01fe35d778557275af0596b3837e39606eb8e260fd96bc55"
+    },
+    {
+      "path": "snapshot78/jvm-method-name-audit-78.json",
+      "sizeBytes": 240,
+      "sha256Bytes": "b86ca462017c67ac2c2b361c791f24eef921840a763051e292cfa74b59be23aa"
+    },
+    {
+      "path": "snapshot78/manifest.json",
+      "sizeBytes": 157523,
+      "sha256Bytes": "95665c3a2211e1d7be50b40c92138db37b837f098f44e331936f841e99174e52"
+    },
+    {
+      "path": "snapshot78/ordered-runtime-cp.json",
+      "sizeBytes": 38191,
+      "sha256Bytes": "bb20396a8d06fd8b0520142d0ae704d102c1106962fe7d2b66279455e0ccb242"
+    }
+  ]
+}

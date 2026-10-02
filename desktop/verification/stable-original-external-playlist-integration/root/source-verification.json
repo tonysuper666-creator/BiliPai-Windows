@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "sourceRegistryCount": 1170,
+  "resources": 213,
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "searchSelectedBodyInverse": true,
+  "searchGuards": 5,
+  "externalSelectedBodyInverse": true,
+  "externalPlatformEdits": 5,
+  "fullOriginalDialogInverse": true,
+  "dialogPlatformEdits": 27,
+  "samePublicAudioClientAlias": true,
+  "newClientOrStoreInBinding": false,
+  "bindingRuntimeAccepted": false,
+  "completeRootMounted": false
+}

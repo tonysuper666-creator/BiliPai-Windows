@@ -1,0 +1,48 @@
+{
+  "rawArtifacts": [
+    {
+      "path": "finalize.py",
+      "sha256Bytes": "34c0f445eae5f7295d018948118338279237aad335770cbced881cd7a3705614",
+      "size": 2309
+    },
+    {
+      "path": "frozen-review.json",
+      "sha256Bytes": "36d5fed3a7069b4bb12a4ba62addf8731d2dc65b6e5a159e885615861619c427",
+      "size": 1117
+    },
+    {
+      "path": "retained-current/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "sha256Bytes": "bf9a1d38299d68c5e1d83662596539000b0a1acff01f825309dc13ad79792002",
+      "size": 6691
+    },
+    {
+      "path": "retained-current/desktop/tools/extract-search-platform.py",
+      "sha256Bytes": "0b1bde42482246bac039bf2ca19176bc5251fb091ced28a4bef349a931979e08",
+      "size": 9513
+    },
+    {
+      "path": "retained-current/desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "4e5e8b5d670ad2232f1829d96a036e4f25ab226eca05865e6f5d6202aa86be93",
+      "size": 33892
+    },
+    {
+      "path": "review.py",
+      "sha256Bytes": "53670c6be3c2424091595911ecb6f00ca23974d1d2a2803b07dad08cecb24aed",
+      "size": 8788
+    },
+    {
+      "path": "source-review-final.json",
+      "sha256Bytes": "27b0891a7ac34eec10693cd13c4e75b3aac5c790dd1f8f0f65761975ad48e7c0",
+      "size": 14425
+    },
+    {
+      "path": "source-review.json",
+      "sha256Bytes": "b728af34408b271eebaf25f28c9f360ef81bb56ed31748d6e5c49c2985556fc7",
+      "size": 13911
+    }
+  ],
+  "rawCount": 8,
+  "reviewOnly": true,
+  "sourceReview": "source-review-final.json",
+  "sourceReviewSHA256Bytes": "27b0891a7ac34eec10693cd13c4e75b3aac5c790dd1f8f0f65761975ad48e7c0"
+}

@@ -100,3 +100,4 @@ desktop/verification/stable-native-capabilities-recovery-integration/** -text
 desktop/verification/stable-original-progress-storage-integration/** -text
 desktop/verification/stable-original-music-storage-integration/** -text
 desktop/verification/stable-original-audio-lyrics-integration/** -text
+desktop/verification/stable-original-external-playlist-integration/** -text

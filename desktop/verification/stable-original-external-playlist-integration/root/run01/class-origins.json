@@ -1,0 +1,98 @@
+{
+  "com/android/purebilibili/data/repository/DesktopOriginalCapturedVideoSearch.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/android/purebilibili/data/repository/DesktopOriginalExternalPlaylistDomain.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/android/purebilibili/data/repository/DesktopOriginalExternalPlaylistSchema.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/android/purebilibili/data/repository/SearchRepository.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/android/purebilibili/data/model/response/SearchVideoItem.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/android/purebilibili/data/model/response/SearchTypeResponse.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/android/purebilibili/data/model/response/NavResponse.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistHttp.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/bilipai/desktop/plugins/DesktopPluginStore.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ],
+  "com/bilipai/desktop/plugins/DesktopSubscriptionWriteAdmission.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-78\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15405,
+      "sha256Bytes": "84eb914ae6e7da03c90dc5a58d4f0c21b906e19baac8e7b785cbe29150285d2d"
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "rawArtifacts": [
+    {
+      "path": "retained-current/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalExternalPlaylistBinding.kt",
+      "sha256Bytes": "bf9a1d38299d68c5e1d83662596539000b0a1acff01f825309dc13ad79792002",
+      "size": 6691
+    },
+    {
+      "path": "retained-current/desktop/tools/extract-search-platform.py",
+      "sha256Bytes": "0b1bde42482246bac039bf2ca19176bc5251fb091ced28a4bef349a931979e08",
+      "size": 9513
+    },
+    {
+      "path": "retained-current/desktop/tools/extract-upstream-music-player-full.py",
+      "sha256Bytes": "4e5e8b5d670ad2232f1829d96a036e4f25ab226eca05865e6f5d6202aa86be93",
+      "size": 33892
+    },
+    {
+      "path": "review.py",
+      "sha256Bytes": "53670c6be3c2424091595911ecb6f00ca23974d1d2a2803b07dad08cecb24aed",
+      "size": 8788
+    },
+    {
+      "path": "source-review.json",
+      "sha256Bytes": "b728af34408b271eebaf25f28c9f360ef81bb56ed31748d6e5c49c2985556fc7",
+      "size": 13911
+    }
+  ],
+  "rawCount": 5,
+  "reviewOnly": true,
+  "sourceReviewSHA256Bytes": "b728af34408b271eebaf25f28c9f360ef81bb56ed31748d6e5c49c2985556fc7"
+}
