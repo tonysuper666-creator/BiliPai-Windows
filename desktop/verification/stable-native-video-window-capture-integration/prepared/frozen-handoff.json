@@ -1,0 +1,430 @@
+{
+  "schemaVersion": 1,
+  "task": "stable-native-video-window-capture-parity",
+  "files": [
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "size": 13022,
+      "sha256Bytes": "94f544ae098d3bb89290197534c4aab17400ada9e7231d27c96afa4c1f3f3412"
+    },
+    {
+      "path": "baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+      "size": 9593,
+      "sha256Bytes": "3bb5303144455f58c304731b8e941e1646585aca99954c76e808113306015aab"
+    },
+    {
+      "path": "baseline-families.json",
+      "size": 829,
+      "sha256Bytes": "8f75b5c30f6663f4c0983619712b1ed260161a65dda8732e3abdac11c0844a8f"
+    },
+    {
+      "path": "compile.py",
+      "size": 3226,
+      "sha256Bytes": "8539db91b7e293e8c6e34207535e47ee27359e5bc269aee6c0585e57f2698545"
+    },
+    {
+      "path": "exact-hunks.json",
+      "size": 10963,
+      "sha256Bytes": "1db4f99dbd8b9949187f4a9918504fae3cfde6af922bdc6c18f4715ec3c408c8"
+    },
+    {
+      "path": "freeze.py",
+      "size": 6881,
+      "sha256Bytes": "cb9f11a41c578daf1dbb349c9c3319653a64152e40c3de7825d2e7e2dbf27dc0"
+    },
+    {
+      "path": "manual/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.kt",
+      "size": 6329,
+      "sha256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66"
+    },
+    {
+      "path": "prepare.py",
+      "size": 7482,
+      "sha256Bytes": "a46d4ff75630953db5edf929aa4d9ffc4f29f34a3fdc9242d5bb45de10810bb2"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "size": 14346,
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    },
+    {
+      "path": "prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+      "size": 10967,
+      "sha256Bytes": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48"
+    },
+    {
+      "path": "reference-actual74/manifest.json",
+      "size": 156704,
+      "sha256Bytes": "6e6f2ca97fc5e98f00f3806ad7ffeceff271466a20cc90d68479e37e38ffe210"
+    },
+    {
+      "path": "reference-actual74/ordered-runtime-cp.json",
+      "size": 38191,
+      "sha256Bytes": "e5e3a3375a6d5a85fab9d51343af496bb16b46eff71aadeb98e227b766dbf2cd"
+    },
+    {
+      "path": "review/postfix-receipt.json",
+      "size": 3345,
+      "sha256Bytes": "94571c21b3a5680ea8a762dd89d4377251a985e67c3195fb0a4d0e4401abef10"
+    },
+    {
+      "path": "review/receipt.json",
+      "size": 4575,
+      "sha256Bytes": "3e69b515ac9adfb5f32d467ba9d4168d6f64c3d4ddbda1524ea34a384b7d3d06"
+    },
+    {
+      "path": "ROOT-INTEGRATION.md",
+      "size": 3025,
+      "sha256Bytes": "895af30e52ea80be5f9cd1d84bcc79a835767ddce83b153e1f45686672284937"
+    },
+    {
+      "path": "runs/01/result.json",
+      "size": 233,
+      "sha256Bytes": "eacb06718857c410e5c7f2ec58b538597440fd71d88daa32975e874c31b98490"
+    },
+    {
+      "path": "runs/01/source-inputs/new-manual/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.kt",
+      "size": 6326,
+      "sha256Bytes": "8033f875c940d458a9b8fcc464f26311dacefb7f57a417daf0b9888e493b86cb"
+    },
+    {
+      "path": "runs/02/compile-command.json",
+      "size": 2562,
+      "sha256Bytes": "52a4811cd075982c0de97120119f11483d81fe528fb1a8aa4a351a06c4030af9"
+    },
+    {
+      "path": "runs/02/compile.log",
+      "size": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "size": 26248,
+      "sha256Bytes": "081cd508e664e3056bfced69077338bb1715e9ac9f7c5cd7c50cc39f049e5026"
+    },
+    {
+      "path": "runs/02/inputs/DesktopCommandPopupWindow.kt",
+      "size": 14346,
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    },
+    {
+      "path": "runs/02/inputs/DesktopOriginalVideoWindowsWindowPort.kt",
+      "size": 11236,
+      "sha256Bytes": "1f92bd2a53e5b4d5141ab825f1c692cfaad7d1316d9d44d9092e80e94c9f09b4"
+    },
+    {
+      "path": "runs/02/inputs/DesktopWindowsVideoCaptureOwner.kt",
+      "size": 6326,
+      "sha256Bytes": "8033f875c940d458a9b8fcc464f26311dacefb7f57a417daf0b9888e493b86cb"
+    },
+    {
+      "path": "runs/02/inputs.json",
+      "size": 2464,
+      "sha256Bytes": "314cc66b97f8e2b40f7d9ef80887e7acf8e2fedb9346221cfa226f0c0182d785"
+    },
+    {
+      "path": "runs/02/result.json",
+      "size": 126,
+      "sha256Bytes": "5f9de96fcc31799aa512ea4b52671e50b4b9cb21b9164e288a7b5abac5faab2e"
+    },
+    {
+      "path": "runs/03/compile-command.json",
+      "size": 2562,
+      "sha256Bytes": "89caffaf09080ad9dda33712fbc3626e4e0382727f2502e2c5667e1a9177b623"
+    },
+    {
+      "path": "runs/03/compile.log",
+      "size": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "runs/03/compiler.args",
+      "size": 26248,
+      "sha256Bytes": "404e3d76f0165c32893e2d53eb802d4538661086d813d7cbc05436d6d4da771f"
+    },
+    {
+      "path": "runs/03/inputs/DesktopCommandPopupWindow.kt",
+      "size": 14346,
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    },
+    {
+      "path": "runs/03/inputs/DesktopOriginalVideoWindowsWindowPort.kt",
+      "size": 10967,
+      "sha256Bytes": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48"
+    },
+    {
+      "path": "runs/03/inputs/DesktopWindowsVideoCaptureOwner.kt",
+      "size": 6329,
+      "sha256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66"
+    },
+    {
+      "path": "runs/03/inputs.json",
+      "size": 2464,
+      "sha256Bytes": "deb08628361125022bf35fbd7c05c8030e3a1b3e927a091a8515fc286f6bd625"
+    },
+    {
+      "path": "runs/03/result.json",
+      "size": 126,
+      "sha256Bytes": "5f9de96fcc31799aa512ea4b52671e50b4b9cb21b9164e288a7b5abac5faab2e"
+    }
+  ],
+  "excludedRebuildable": [
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandGdiRegion.class",
+      "size": 961,
+      "sha256Bytes": "bb34047470eae234b3d4a16919362a4fcfa0b53eaf2acc3d79bfafbae8ea7158"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandHitRegions.class",
+      "size": 4166,
+      "sha256Bytes": "1113e4d28ab7f816ca4372e8e76c9882108ae3cde3243ee744d4a5d38dca9c83"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow$hierarchyBoundsListener$1.class",
+      "size": 1564,
+      "sha256Bytes": "b6a53c33ab8857756eaf308ac2fb88867031cd0e85327f5124e50fbdb36c6a26"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow$moveListener$1.class",
+      "size": 1769,
+      "sha256Bytes": "f773b9d4bee35c82945cad7095c3a6f16868ee5770a08c5c4a9f0ce2f91cd263"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow$popupVisibilityListener$1.class",
+      "size": 3306,
+      "sha256Bytes": "64634a1bbf4c5adbf3256a6974d760ed5aebe786eb3e3f5049e562bc6e07e713"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow$windowListener$1.class",
+      "size": 1660,
+      "sha256Bytes": "83a8b8ffb8c23bfe1eab2cbd772c110933130fe5453b3fb41d6579c19c1cec99"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow.class",
+      "size": 19230,
+      "sha256Bytes": "f40bbf2be91830f95c5ba9dd90ee592b8f639fe20d138659ae45f72deac915fa"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindowKt$desktopCommandHitRegion$lambda$0$1$0$$inlined$onDispose$1.class",
+      "size": 2344,
+      "sha256Bytes": "1a36861be2ec16e5df3ef1d8ca59e057dd1e77bf9dec15f5060472528a4bb5ff"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindowKt$DesktopCommandModalRegion$lambda$1$0$$inlined$onDispose$1.class",
+      "size": 2312,
+      "sha256Bytes": "39db284ce6ae3f3b86f3526623d6cf6534487845724d638e94941c865ebb2831"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindowKt$DesktopShapedVideoCommandPopup_Y4uRVHk$lambda$7$0$$inlined$onDispose$1.class",
+      "size": 2326,
+      "sha256Bytes": "39b5d0bcbd4828bd11959d9bbc01b2101be0017d3696b7a4ecfbfca5a54a04c6"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindowKt.class",
+      "size": 37713,
+      "sha256Bytes": "bfbc971712f1c1eb46137e332debc0f2a064e43a143fbd87db2ff0078c19f852"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopCommandWindowRegion.class",
+      "size": 810,
+      "sha256Bytes": "8af585c2279552b6a913361da004af3560de83c289b1141317ed851186a5c257"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopEmptyCommandRegion.class",
+      "size": 3120,
+      "sha256Bytes": "d14245ece2ec84ce31db1ca4a810973c0b9e040e1f5703241259205d7560f2aa"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort$acquireKeepAwake$lease$1.class",
+      "size": 1469,
+      "sha256Bytes": "3c89ae56029d0d534c7fba75990634cca28142b32256812c5aa85eaf2a0f0417"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort$event$1.class",
+      "size": 3932,
+      "sha256Bytes": "c854c7ad4997b7db2c71b3d0ef49e5e0736f1de82f59ca5fc20becc213917e5d"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort$presentation$1.class",
+      "size": 6144,
+      "sha256Bytes": "4dd4e2550144dc953cd35bbd5e121d5ddc0c0c784acb91ce79eec3a64b29e2ed"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort$Subject.class",
+      "size": 2617,
+      "sha256Bytes": "43b87dd696459b2d6814afa7276c5665ae788f2c44a12317f840831aace0c788"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.class",
+      "size": 30724,
+      "sha256Bytes": "413b9e341bcc4c18d0ab6cd13a6e0cf9272d9a6b3517e1d743cfdced959947af"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner$AffinityApi.class",
+      "size": 914,
+      "sha256Bytes": "543530b6e5b1b5d0f175b94d33b4ceb8d373c5e054897b689a459f1a366faace"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner$rootListener$1.class",
+      "size": 1641,
+      "sha256Bytes": "3e53943136c661ef06bb3772753545cac558facd006078d01f35b365824fcb87"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner$Target.class",
+      "size": 2026,
+      "sha256Bytes": "a63a2fa37c560a22d7cec0df975541c630c7e342db4c1cce219c3d81e66bf14e"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.class",
+      "size": 17504,
+      "sha256Bytes": "0bdabf50d9cb444f0213dfcb7db974f4bd1a890ae9442aaad2854510ec445bb3"
+    },
+    {
+      "path": "runs/02/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureState.class",
+      "size": 3897,
+      "sha256Bytes": "73f47daebc17e5256fcb609d0a4c470462db40af0b24eb822be29ee986c9877c"
+    },
+    {
+      "path": "runs/02/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "size": 79,
+      "sha256Bytes": "04191feb9f60daea8d50593772ebcd532ab08af4c40499aa75f5cfef14d7514d"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandGdiRegion.class",
+      "size": 961,
+      "sha256Bytes": "bb34047470eae234b3d4a16919362a4fcfa0b53eaf2acc3d79bfafbae8ea7158"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandHitRegions.class",
+      "size": 4166,
+      "sha256Bytes": "1113e4d28ab7f816ca4372e8e76c9882108ae3cde3243ee744d4a5d38dca9c83"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow$hierarchyBoundsListener$1.class",
+      "size": 1564,
+      "sha256Bytes": "b6a53c33ab8857756eaf308ac2fb88867031cd0e85327f5124e50fbdb36c6a26"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow$moveListener$1.class",
+      "size": 1769,
+      "sha256Bytes": "f773b9d4bee35c82945cad7095c3a6f16868ee5770a08c5c4a9f0ce2f91cd263"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow$popupVisibilityListener$1.class",
+      "size": 3306,
+      "sha256Bytes": "64634a1bbf4c5adbf3256a6974d760ed5aebe786eb3e3f5049e562bc6e07e713"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow$windowListener$1.class",
+      "size": 1660,
+      "sha256Bytes": "83a8b8ffb8c23bfe1eab2cbd772c110933130fe5453b3fb41d6579c19c1cec99"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindow.class",
+      "size": 19230,
+      "sha256Bytes": "f40bbf2be91830f95c5ba9dd90ee592b8f639fe20d138659ae45f72deac915fa"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindowKt$desktopCommandHitRegion$lambda$0$1$0$$inlined$onDispose$1.class",
+      "size": 2344,
+      "sha256Bytes": "1a36861be2ec16e5df3ef1d8ca59e057dd1e77bf9dec15f5060472528a4bb5ff"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindowKt$DesktopCommandModalRegion$lambda$1$0$$inlined$onDispose$1.class",
+      "size": 2312,
+      "sha256Bytes": "39db284ce6ae3f3b86f3526623d6cf6534487845724d638e94941c865ebb2831"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindowKt$DesktopShapedVideoCommandPopup_Y4uRVHk$lambda$7$0$$inlined$onDispose$1.class",
+      "size": 2326,
+      "sha256Bytes": "39b5d0bcbd4828bd11959d9bbc01b2101be0017d3696b7a4ecfbfca5a54a04c6"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandPopupWindowKt.class",
+      "size": 37713,
+      "sha256Bytes": "bfbc971712f1c1eb46137e332debc0f2a064e43a143fbd87db2ff0078c19f852"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopCommandWindowRegion.class",
+      "size": 810,
+      "sha256Bytes": "8af585c2279552b6a913361da004af3560de83c289b1141317ed851186a5c257"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopEmptyCommandRegion.class",
+      "size": 3120,
+      "sha256Bytes": "d14245ece2ec84ce31db1ca4a810973c0b9e040e1f5703241259205d7560f2aa"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort$acquireKeepAwake$lease$1.class",
+      "size": 1469,
+      "sha256Bytes": "3c89ae56029d0d534c7fba75990634cca28142b32256812c5aa85eaf2a0f0417"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort$event$1.class",
+      "size": 3932,
+      "sha256Bytes": "c854c7ad4997b7db2c71b3d0ef49e5e0736f1de82f59ca5fc20becc213917e5d"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort$presentation$1.class",
+      "size": 6144,
+      "sha256Bytes": "4dd4e2550144dc953cd35bbd5e121d5ddc0c0c784acb91ce79eec3a64b29e2ed"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort$Subject.class",
+      "size": 2617,
+      "sha256Bytes": "43b87dd696459b2d6814afa7276c5665ae788f2c44a12317f840831aace0c788"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.class",
+      "size": 30053,
+      "sha256Bytes": "55477892da63075bef882474e237dac85a51f2c3df7b167aa683ec61e32ea8d1"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner$AffinityApi.class",
+      "size": 914,
+      "sha256Bytes": "543530b6e5b1b5d0f175b94d33b4ceb8d373c5e054897b689a459f1a366faace"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner$rootListener$1.class",
+      "size": 1641,
+      "sha256Bytes": "3e53943136c661ef06bb3772753545cac558facd006078d01f35b365824fcb87"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner$Target.class",
+      "size": 2026,
+      "sha256Bytes": "a63a2fa37c560a22d7cec0df975541c630c7e342db4c1cce219c3d81e66bf14e"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.class",
+      "size": 17504,
+      "sha256Bytes": "0bdabf50d9cb444f0213dfcb7db974f4bd1a890ae9442aaad2854510ec445bb3"
+    },
+    {
+      "path": "runs/03/classes/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureState.class",
+      "size": 3897,
+      "sha256Bytes": "73f47daebc17e5256fcb609d0a4c470462db40af0b24eb822be29ee986c9877c"
+    },
+    {
+      "path": "runs/03/classes/META-INF/com_bilipai_desktop_bilipai_windows.kotlin_module",
+      "size": 79,
+      "sha256Bytes": "04191feb9f60daea8d50593772ebcd532ab08af4c40499aa75f5cfef14d7514d"
+    }
+  ],
+  "copyWhitelist": [
+    {
+      "source": "manual/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.kt",
+      "destination": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.kt",
+      "sha256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66"
+    }
+  ],
+  "existingFamilies": 2,
+  "exactHunks": 16,
+  "sourceOnly": true,
+  "prospectiveCompiledSnapshot": 74,
+  "runtimeEntries": 101,
+  "declaredProductionFamilyOverrides": 2,
+  "nativeWindowRuntimeAccepted": false,
+  "physicalCaptureAccepted": false,
+  "wholeRootAccepted": false,
+  "desktopExeReplaced": false
+}

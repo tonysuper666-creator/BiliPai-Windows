@@ -27,7 +27,6 @@ internal class DesktopOriginalVideoWindowsWindowPort(
     private val pip: PictureInPictureController,
     private val clientPolicy: DesktopHomeWindowsClientPolicy,
     private val chrome: DesktopWindowsProfileChrome,
-    private val captureProtection: DesktopWindowsVideoCaptureOwner,
     private val clearViewportBrightness: (Long) -> Boolean,
     private val onDeferredExit: (DesktopOriginalVideoAcceptedPublication?, Boolean) -> Unit,
     private val diagnostic: (String) -> Unit,
@@ -35,7 +34,6 @@ internal class DesktopOriginalVideoWindowsWindowPort(
     private val closed = AtomicBoolean()
     private val sequence = AtomicLong()
     private val wake = ConcurrentHashMap<Long, AutoCloseable>()
-    private val captureLeases = ConcurrentHashMap<Long, AutoCloseable>()
     private var chromeLease: AutoCloseable? = null // EDT only, same shared DWM authority.
     private var chromeSpec: VideoDetailSystemBarsApplySpec? = null
     private var chromeSubject: Subject? = null
@@ -73,10 +71,6 @@ internal class DesktopOriginalVideoWindowsWindowPort(
             val subject = capture()
             onEdt {
                 if (!subject.owns()) return@onEdt
-                if (captureProtection.orientationLocked && requestedOrientation != this@DesktopOriginalVideoWindowsWindowPort.requestedOrientation) {
-                    diagnostic("Original fullscreen lock keeps the current Windows presentation")
-                    return@onEdt
-                }
                 this@DesktopOriginalVideoWindowsWindowPort.requestedOrientation = requestedOrientation
                 when (requestedOrientation) {
                     0, 6, 8, 11 -> setFullscreen(true) // Landscape presentation, not monitor rotation.
@@ -154,21 +148,6 @@ internal class DesktopOriginalVideoWindowsWindowPort(
         }
     }
 
-    /** The original fullscreen/screen-lock intent belongs to this UI entry.
-     * Changing part/quality or approved same-entry recovery retains protection.
-     * Deferred exit and playback operations keep their stricter exact snapshot.
-     */
-    fun acquireScreenshotAndOrientationLock(locked: Boolean): AutoCloseable {
-        if (!locked) { captureProtection.refresh(); return AutoCloseable {} }
-        val stillOwned = { !closed.get() && isRootCurrent() && owner.owns() }
-        val lease = captureProtection.acquire(stillOwned)
-        val token = sequence.incrementAndGet()
-        captureLeases[token] = lease
-        // close may retire/enumerate before this map registration becomes visible.
-        if (!stillOwned()) captureLeases.remove(token)?.close()
-        return AutoCloseable { captureLeases.remove(token)?.close() }
-    }
-
     /** Same Window fullscreen lease, also used by the fullscreen platform view. */
     fun acquireFullscreen(): AutoCloseable {
         val subject = capture()
@@ -195,7 +174,6 @@ internal class DesktopOriginalVideoWindowsWindowPort(
     override fun close() {
         if (closed.compareAndSet(false, true)) {
             releaseEntryKeepAwake()
-            captureLeases.keys.toList().forEach { captureLeases.remove(it)?.close() }
             restoreEntryWindowChrome()
             onEdt { autoPipSubject = null; fullscreenLeases.clear(); root.removeWindowListener(event) }
         }

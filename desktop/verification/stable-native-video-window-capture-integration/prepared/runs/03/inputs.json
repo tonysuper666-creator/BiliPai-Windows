@@ -1,0 +1,30 @@
+{
+  "snapshot": 74,
+  "entries": 101,
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoCaptureOwner.kt",
+      "sha256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66",
+      "copy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\runs\\03\\inputs\\DesktopWindowsVideoCaptureOwner.kt",
+      "role": "new-manual"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6",
+      "copy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\runs\\03\\inputs\\DesktopCommandPopupWindow.kt",
+      "role": "declared-existing-family"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort.kt",
+      "sha256Bytes": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48",
+      "copy": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\runs\\03\\inputs\\DesktopOriginalVideoWindowsWindowPort.kt",
+      "role": "declared-existing-family"
+    }
+  ],
+  "existingFamilyOverrides": [
+    "DesktopCommandPopupWindow.kt",
+    "DesktopOriginalVideoWindowsWindowPort.kt"
+  ],
+  "newManual": 1,
+  "composeCompiler": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-compose-compiler-plugin-embeddable\\2.4.0\\77913398cd4a9cb385000d56d51501954d1da6db\\kotlin-compose-compiler-plugin-embeddable-2.4.0.jar"
+}

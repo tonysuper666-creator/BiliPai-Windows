@@ -1,0 +1,324 @@
+{
+  "upstreamTag": "v0.2.3",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "sourceRegistryCount": 1170,
+  "resources": 213,
+  "actualSnapshot": 79,
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "fixtureAssertions": 30,
+  "fixtureClasses": 7,
+  "verifiedUniqueProductClassOrigins": 2,
+  "wholeDesktopClassesPassed": true,
+  "illegalJvmMethods": 0,
+  "realWindowsDisplayAffinityApi": true,
+  "realOwnedHiddenHwndReadback": true,
+  "osInputInjected": false,
+  "foreignApplicationWindowsOperated": false,
+  "physicalCapturePixelsAccepted": false,
+  "fullWindowPortRuntimeAccepted": false,
+  "completeRootMounted": false,
+  "desktopExeReplaced": false,
+  "artifacts": [
+    {
+      "path": "build/classes-79.log",
+      "sizeBytes": 9628,
+      "sha256Bytes": "5a0b9ae3264f06d712551c35c6cc027ce14b9d2ebabbf5d6281c3b09ec02ba70"
+    },
+    {
+      "path": "build/export-79.log",
+      "sizeBytes": 290,
+      "sha256Bytes": "ac480e86754fcfd1756f8d35b3a2d3b381f1bd0a9143b21195ccb5304fdd3377"
+    },
+    {
+      "path": "prepared/baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "sizeBytes": 13022,
+      "sha256Bytes": "94f544ae098d3bb89290197534c4aab17400ada9e7231d27c96afa4c1f3f3412"
+    },
+    {
+      "path": "prepared/baseline/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+      "sizeBytes": 9593,
+      "sha256Bytes": "3bb5303144455f58c304731b8e941e1646585aca99954c76e808113306015aab"
+    },
+    {
+      "path": "prepared/baseline-families.json",
+      "sizeBytes": 829,
+      "sha256Bytes": "8f75b5c30f6663f4c0983619712b1ed260161a65dda8732e3abdac11c0844a8f"
+    },
+    {
+      "path": "prepared/compile.py",
+      "sizeBytes": 3226,
+      "sha256Bytes": "8539db91b7e293e8c6e34207535e47ee27359e5bc269aee6c0585e57f2698545"
+    },
+    {
+      "path": "prepared/exact-hunks.json",
+      "sizeBytes": 10963,
+      "sha256Bytes": "1db4f99dbd8b9949187f4a9918504fae3cfde6af922bdc6c18f4715ec3c408c8"
+    },
+    {
+      "path": "prepared/freeze.py",
+      "sizeBytes": 6881,
+      "sha256Bytes": "cb9f11a41c578daf1dbb349c9c3319653a64152e40c3de7825d2e7e2dbf27dc0"
+    },
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sizeBytes": 17557,
+      "sha256Bytes": "9172cb93c4ed6837328c70e5fd5f0ca10a6d954928ee192989359b792ba34a6e"
+    },
+    {
+      "path": "prepared/manual/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.kt",
+      "sizeBytes": 6329,
+      "sha256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66"
+    },
+    {
+      "path": "prepared/prepare.py",
+      "sizeBytes": 7482,
+      "sha256Bytes": "a46d4ff75630953db5edf929aa4d9ffc4f29f34a3fdc9242d5bb45de10810bb2"
+    },
+    {
+      "path": "prepared/prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "sizeBytes": 14346,
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    },
+    {
+      "path": "prepared/prepared/existing/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+      "sizeBytes": 10967,
+      "sha256Bytes": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48"
+    },
+    {
+      "path": "prepared/reference-actual74/manifest.json",
+      "sizeBytes": 156704,
+      "sha256Bytes": "6e6f2ca97fc5e98f00f3806ad7ffeceff271466a20cc90d68479e37e38ffe210"
+    },
+    {
+      "path": "prepared/reference-actual74/ordered-runtime-cp.json",
+      "sizeBytes": 38191,
+      "sha256Bytes": "e5e3a3375a6d5a85fab9d51343af496bb16b46eff71aadeb98e227b766dbf2cd"
+    },
+    {
+      "path": "prepared/review/postfix-receipt.json",
+      "sizeBytes": 3345,
+      "sha256Bytes": "94571c21b3a5680ea8a762dd89d4377251a985e67c3195fb0a4d0e4401abef10"
+    },
+    {
+      "path": "prepared/review/receipt.json",
+      "sizeBytes": 4575,
+      "sha256Bytes": "3e69b515ac9adfb5f32d467ba9d4168d6f64c3d4ddbda1524ea34a384b7d3d06"
+    },
+    {
+      "path": "prepared/ROOT-INTEGRATION.md",
+      "sizeBytes": 3025,
+      "sha256Bytes": "895af30e52ea80be5f9cd1d84bcc79a835767ddce83b153e1f45686672284937"
+    },
+    {
+      "path": "prepared/runs/01/result.json",
+      "sizeBytes": 233,
+      "sha256Bytes": "eacb06718857c410e5c7f2ec58b538597440fd71d88daa32975e874c31b98490"
+    },
+    {
+      "path": "prepared/runs/01/source-inputs/new-manual/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.kt",
+      "sizeBytes": 6326,
+      "sha256Bytes": "8033f875c940d458a9b8fcc464f26311dacefb7f57a417daf0b9888e493b86cb"
+    },
+    {
+      "path": "prepared/runs/02/compile-command.json",
+      "sizeBytes": 2562,
+      "sha256Bytes": "52a4811cd075982c0de97120119f11483d81fe528fb1a8aa4a351a06c4030af9"
+    },
+    {
+      "path": "prepared/runs/02/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prepared/runs/02/compiler.args",
+      "sizeBytes": 26248,
+      "sha256Bytes": "081cd508e664e3056bfced69077338bb1715e9ac9f7c5cd7c50cc39f049e5026"
+    },
+    {
+      "path": "prepared/runs/02/inputs/DesktopCommandPopupWindow.kt",
+      "sizeBytes": 14346,
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    },
+    {
+      "path": "prepared/runs/02/inputs/DesktopOriginalVideoWindowsWindowPort.kt",
+      "sizeBytes": 11236,
+      "sha256Bytes": "1f92bd2a53e5b4d5141ab825f1c692cfaad7d1316d9d44d9092e80e94c9f09b4"
+    },
+    {
+      "path": "prepared/runs/02/inputs/DesktopWindowsVideoCaptureOwner.kt",
+      "sizeBytes": 6326,
+      "sha256Bytes": "8033f875c940d458a9b8fcc464f26311dacefb7f57a417daf0b9888e493b86cb"
+    },
+    {
+      "path": "prepared/runs/02/inputs.json",
+      "sizeBytes": 2464,
+      "sha256Bytes": "314cc66b97f8e2b40f7d9ef80887e7acf8e2fedb9346221cfa226f0c0182d785"
+    },
+    {
+      "path": "prepared/runs/02/result.json",
+      "sizeBytes": 126,
+      "sha256Bytes": "5f9de96fcc31799aa512ea4b52671e50b4b9cb21b9164e288a7b5abac5faab2e"
+    },
+    {
+      "path": "prepared/runs/03/compile-command.json",
+      "sizeBytes": 2562,
+      "sha256Bytes": "89caffaf09080ad9dda33712fbc3626e4e0382727f2502e2c5667e1a9177b623"
+    },
+    {
+      "path": "prepared/runs/03/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "prepared/runs/03/compiler.args",
+      "sizeBytes": 26248,
+      "sha256Bytes": "404e3d76f0165c32893e2d53eb802d4538661086d813d7cbc05436d6d4da771f"
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopCommandPopupWindow.kt",
+      "sizeBytes": 14346,
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopOriginalVideoWindowsWindowPort.kt",
+      "sizeBytes": 10967,
+      "sha256Bytes": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48"
+    },
+    {
+      "path": "prepared/runs/03/inputs/DesktopWindowsVideoCaptureOwner.kt",
+      "sizeBytes": 6329,
+      "sha256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66"
+    },
+    {
+      "path": "prepared/runs/03/inputs.json",
+      "sizeBytes": 2464,
+      "sha256Bytes": "deb08628361125022bf35fbd7c05c8030e3a1b3e927a091a8515fc286f6bd625"
+    },
+    {
+      "path": "prepared/runs/03/result.json",
+      "sizeBytes": 126,
+      "sha256Bytes": "5f9de96fcc31799aa512ea4b52671e50b4b9cb21b9164e288a7b5abac5faab2e"
+    },
+    {
+      "path": "product-source/DesktopCommandPopupWindow.kt",
+      "sizeBytes": 14346,
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    },
+    {
+      "path": "product-source/DesktopOriginalVideoWindowsWindowPort.kt",
+      "sizeBytes": 10967,
+      "sha256Bytes": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48"
+    },
+    {
+      "path": "product-source/DesktopWindowsVideoCaptureOwner.kt",
+      "sizeBytes": 6329,
+      "sha256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66"
+    },
+    {
+      "path": "root/CaptureOwnerProof.kt",
+      "sizeBytes": 6195,
+      "sha256Bytes": "efad8a1632f469af50215a2325be443fdef76955a5f7201ca4077a63bb2ddc45"
+    },
+    {
+      "path": "root/freeze.py",
+      "sizeBytes": 5097,
+      "sha256Bytes": "c0551bb2a06a413383f8e13bfe617472a0f9a84be82766ccab52156a709c7029"
+    },
+    {
+      "path": "root/install.py",
+      "sizeBytes": 2953,
+      "sha256Bytes": "67d72b8d097ce57a0bfc035f0c69dd9d5c3198a2dbea3f185dfba9e7ab6079e2"
+    },
+    {
+      "path": "root/installation.json",
+      "sizeBytes": 1147,
+      "sha256Bytes": "bdcf6348f8295476462c781355b6df46e33038833dc988b02fc298124be0a754"
+    },
+    {
+      "path": "root/ROOT-INTEGRATION.md",
+      "sizeBytes": 1843,
+      "sha256Bytes": "d7c3442bbbd8832037bd02a9f951ae69f9b276fe3a0275539bb712b85b90aaac"
+    },
+    {
+      "path": "root/run.py",
+      "sizeBytes": 4776,
+      "sha256Bytes": "79d34426eb3eaef7b900fc52a76d390238d23ef0828f7c904f28ce17b1bb65c8"
+    },
+    {
+      "path": "root/run01/class-origins.json",
+      "sizeBytes": 853,
+      "sha256Bytes": "a67ba52434f749faebe76d033acae3b78fdda14d61c2256d9bd93ae9bbc193ba"
+    },
+    {
+      "path": "root/run01/compile-command.json",
+      "sizeBytes": 2557,
+      "sha256Bytes": "421e1a1210e3932a65f2a3e484bf435a415767f69a390986661f3924a84286e1"
+    },
+    {
+      "path": "root/run01/compile.args",
+      "sizeBytes": 25538,
+      "sha256Bytes": "8c3fb99e0c43bdc2a4f14fbc85cd589ea7076ea54ee6d9a4a216ff3d6ae54b02"
+    },
+    {
+      "path": "root/run01/compile.log",
+      "sizeBytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "root/run01/fixture.jar",
+      "sizeBytes": 12216,
+      "sha256Bytes": "dc1a739d24bb7200ccb7e2ae8a8030d4ea028e95edbba9823bdab9abcf4b696e"
+    },
+    {
+      "path": "root/run01/inputs/CaptureOwnerProof.kt",
+      "sizeBytes": 6195,
+      "sha256Bytes": "efad8a1632f469af50215a2325be443fdef76955a5f7201ca4077a63bb2ddc45"
+    },
+    {
+      "path": "root/run01/overlap.json",
+      "sizeBytes": 55,
+      "sha256Bytes": "5dd03c0e282295e25f52818d89b6e39d1413dc5f75cc61dd0573f55c4736a2d8"
+    },
+    {
+      "path": "root/run01/pins-after.json",
+      "sizeBytes": 42899,
+      "sha256Bytes": "8b1709f93e459d9c0e3544fb3827e55b2136880986518c6117b205a158609750"
+    },
+    {
+      "path": "root/run01/pins-before.json",
+      "sizeBytes": 42899,
+      "sha256Bytes": "8b1709f93e459d9c0e3544fb3827e55b2136880986518c6117b205a158609750"
+    },
+    {
+      "path": "root/run01/result.json",
+      "sizeBytes": 550,
+      "sha256Bytes": "5a3b72e52dd84ee90731920c9901f181541694c9376694dae26dc167476cfeca"
+    },
+    {
+      "path": "root/run01/run-command.json",
+      "sizeBytes": 27048,
+      "sha256Bytes": "577e5d84472fbc93f6a91364a425a7a1e0d74bd613790b6df180ea2c6a6bc248"
+    },
+    {
+      "path": "root/run01/run.log",
+      "sizeBytes": 90,
+      "sha256Bytes": "a68ff983fa9e750e8be5f93ab5c75a5d8111816e6cf4472f9987731be519f253"
+    },
+    {
+      "path": "snapshot79/jvm-method-name-audit-79.json",
+      "sizeBytes": 240,
+      "sha256Bytes": "e3ef50f86d4edf3de76b2d46a720e349536c3840819ea68fe839357ee6e8a04f"
+    },
+    {
+      "path": "snapshot79/manifest.json",
+      "sizeBytes": 157723,
+      "sha256Bytes": "9f489f0e107470b79209ce8fa6a54e34050faadef335c831351afc8cc2813b8e"
+    },
+    {
+      "path": "snapshot79/ordered-runtime-cp.json",
+      "sizeBytes": 38191,
+      "sha256Bytes": "66b099ef5a956392dbb4672f8f77ace7aee33bd73f1c434f34d23f0b6b5d0d9b"
+    }
+  ]
+}

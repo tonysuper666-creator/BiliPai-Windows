@@ -1,0 +1,16 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "beforeSha256Bytes": "94f544ae098d3bb89290197534c4aab17400ada9e7231d27c96afa4c1f3f3412",
+    "beforeSha256LF": "94f544ae098d3bb89290197534c4aab17400ada9e7231d27c96afa4c1f3f3412",
+    "afterSha256LF": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6",
+    "indexedInverse": true
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+    "beforeSha256Bytes": "3bb5303144455f58c304731b8e941e1646585aca99954c76e808113306015aab",
+    "beforeSha256LF": "3bb5303144455f58c304731b8e941e1646585aca99954c76e808113306015aab",
+    "afterSha256LF": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48",
+    "indexedInverse": true
+  }
+]

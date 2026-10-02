@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "exit": 0,
+  "assertions": 30,
+  "actualSnapshot": 79,
+  "runtimeEntries": 101,
+  "productionOverrides": 0,
+  "fixtureSourceCount": 1,
+  "fixtureClasses": 7,
+  "uniqueInstalledProductClassOrigins": 2,
+  "pinsUnchanged": true,
+  "realWindowsDisplayAffinityApi": true,
+  "realOwnedHiddenHwndReadback": true,
+  "osInputInjected": false,
+  "foreignApplicationWindowsOperated": false,
+  "fullWindowPortRuntimeAccepted": false,
+  "physicalCapturePixelsAccepted": false,
+  "completeRootMounted": false,
+  "desktopExeReplaced": false
+}

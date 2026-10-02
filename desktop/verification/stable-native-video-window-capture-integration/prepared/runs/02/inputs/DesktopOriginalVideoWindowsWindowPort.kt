@@ -154,18 +154,24 @@ internal class DesktopOriginalVideoWindowsWindowPort(
         }
     }
 
-    /** The original fullscreen/screen-lock intent belongs to this UI entry.
-     * Changing part/quality or approved same-entry recovery retains protection.
+    /** The display policy follows the same logical entry/native version even
+     * when approved direct recovery transfers its internal native publication.
      * Deferred exit and playback operations keep their stricter exact snapshot.
      */
     fun acquireScreenshotAndOrientationLock(locked: Boolean): AutoCloseable {
         if (!locked) { captureProtection.refresh(); return AutoCloseable {} }
-        val stillOwned = { !closed.get() && isRootCurrent() && owner.owns() }
-        val lease = captureProtection.acquire(stillOwned)
+        val expected = owner.native.current()
+        val lease = captureProtection.acquire {
+            if (closed.get() || !isRootCurrent() || !owner.owns()) false
+            else owner.native.current().let { current ->
+                if (expected == null) current == null
+                else current != null && current.sourceVersion == expected.sourceVersion &&
+                    current.accountEpoch == expected.accountEpoch && current.request == expected.request &&
+                    owner.native.isCurrent(current)
+            }
+        }
         val token = sequence.incrementAndGet()
         captureLeases[token] = lease
-        // close may retire/enumerate before this map registration becomes visible.
-        if (!stillOwned()) captureLeases.remove(token)?.close()
         return AutoCloseable { captureLeases.remove(token)?.close() }
     }
 

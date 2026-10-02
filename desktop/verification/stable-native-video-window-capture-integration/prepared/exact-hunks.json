@@ -1,0 +1,114 @@
+[
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "    private val anchorComponent: Component,\n    private val onWindowAvailability: (Any, Boolean) -> Unit,",
+    "after": "    private val anchorComponent: Component,\n    private val onNativeWindowAvailability: ((Window, Boolean) -> Unit)?,\n    private val onWindowAvailability: (Any, Boolean) -> Unit,",
+    "beforeSnippetSha256": "4c33f5f4fb75045392ebfc7ee37c7193dcd66b8417296400d07d34d9f2385af6",
+    "afterSnippetSha256": "88018b4aed0701e042d2752b2f006a8e95d06c2fc0596cb300e07895b7b0ac66"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "            windowReady = ready\n            onWindowAvailability(windowIdentity, ready)",
+    "after": "            windowReady = ready\n            popup?.let { onNativeWindowAvailability?.invoke(it, ready) }\n            onWindowAvailability(windowIdentity, ready)",
+    "beforeSnippetSha256": "ccd57c596f6ec00a27aefba07cae5db9af9687087b59f98e585570972a5a52fd",
+    "afterSnippetSha256": "7c1e6c22719545c4b9bba0e2f76491023963665fa70673560f1867ba1048d1d9"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "    onWindowAvailability: ((Any, Boolean) -> Unit)?,\n    content: @Composable () -> Unit,\n) {\n    if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return",
+    "after": "    onWindowAvailability: ((Any, Boolean) -> Unit)?,\n    content: @Composable () -> Unit,\n) {\n    DesktopShapedVideoCommandPopup(surfaceSize, anchorComponent, onWindowAvailability, null, content)\n}\n\n@Composable\ninternal fun DesktopShapedVideoCommandPopup(\n    surfaceSize: IntSize,\n    anchorComponent: Component,\n    onWindowAvailability: ((Any, Boolean) -> Unit)?,\n    onNativeWindowAvailability: ((Window, Boolean) -> Unit)?,\n    content: @Composable () -> Unit,\n) {\n    if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return",
+    "beforeSnippetSha256": "8a9056ba67b960da9dab8e269ba265e60862fda37d0f628da9b722a6057ac0cc",
+    "afterSnippetSha256": "9594e0894874fc202293e73cda576b3b99469bc14d1e42cc1d65a7d77487e43f"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "    val latestWindowAvailability by rememberUpdatedState(onWindowAvailability)\n",
+    "after": "    val latestWindowAvailability by rememberUpdatedState(onWindowAvailability)\n    val latestNativeWindowAvailability by rememberUpdatedState(onNativeWindowAvailability)\n",
+    "beforeSnippetSha256": "0445216b27304932a928707fae26860af9feee22de983bbdd46526e90742deb7",
+    "afterSnippetSha256": "28e1e652dd609df73d4a6a51bd297d3f86ef023a24df8f0ac10f334152712040"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "        DesktopCommandPopupWindow(owner, anchorComponent) { identity, ready -> latestWindowAvailability?.invoke(identity, ready) }",
+    "after": "        DesktopCommandPopupWindow(owner, anchorComponent, { window, ready -> latestNativeWindowAvailability?.invoke(window, ready) }) { identity, ready -> latestWindowAvailability?.invoke(identity, ready) }",
+    "beforeSnippetSha256": "f620cb8d1e0817178d5c3f9d1f1ebcf753e54a29830a6c3eb52b8c88e2f779b3",
+    "afterSnippetSha256": "adff7002ea0df93f9b209e86ea96b3e9e3fef9be47faed4e6d5f5f832bd86915"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "    private var requested = IntSize.Zero\n",
+    "after": "    private var requested = IntSize.Zero\n    private var presented = false\n",
+    "beforeSnippetSha256": "3efb08a95e2a0112bc982a8f5f0ea313411778e5121b9e18207f36510bcbc088",
+    "afterSnippetSha256": "94260c7b5b7da328c25e3267f7814910d614086f13702349e5c4857dc73d23c3"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "    fun update(context: CompositionLocalContext, size: IntSize) {",
+    "after": "    fun update(context: CompositionLocalContext, size: IntSize, presented: Boolean) {",
+    "beforeSnippetSha256": "4179a450644c94205133b0b17b571c9ad9fea0c152dcf6c3a45a028d983afa4e",
+    "afterSnippetSha256": "2d068c0dc89f69024b5ddc0fd3225784fb81d2a2705fe4b041f14aad0c4fef69"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "        requested = size\n        updateGeometry()",
+    "after": "        requested = size\n        this.presented = presented\n        updateGeometry()",
+    "beforeSnippetSha256": "bc71eea686104bd5a93d65771d6044dd8af0dcae6165f2f6c44ee85db59a211b",
+    "afterSnippetSha256": "30acd4cb57200582523bb635f728099cdc387d2b87e63305f42e9ff3f3d4c360"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "        val showing = owner.isShowing && (owner !is Frame",
+    "after": "        val showing = presented && owner.isShowing && (owner !is Frame",
+    "beforeSnippetSha256": "47b0a1cc9464c5c650ca287431c353e6e50b1d28dfaaad7f07b61356b80a5263",
+    "afterSnippetSha256": "59f50a33d5770b70d0d27d5c57e32ba40338054209427b3931ad3197f2ee3d2d"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "    onNativeWindowAvailability: ((Window, Boolean) -> Unit)?,\n    content: @Composable () -> Unit,\n) {\n    if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return",
+    "after": "    onNativeWindowAvailability: ((Window, Boolean) -> Unit)?,\n    content: @Composable () -> Unit,\n) {\n    DesktopShapedVideoCommandPopup(surfaceSize, anchorComponent, onWindowAvailability,\n        onNativeWindowAvailability, true, content)\n}\n\n/** PiP hides this actual popup while retaining its original Section composition. */\n@Composable\ninternal fun DesktopShapedVideoCommandPopup(\n    surfaceSize: IntSize,\n    anchorComponent: Component,\n    onWindowAvailability: ((Any, Boolean) -> Unit)?,\n    onNativeWindowAvailability: ((Window, Boolean) -> Unit)?,\n    presented: Boolean,\n    content: @Composable () -> Unit,\n) {\n    if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return",
+    "beforeSnippetSha256": "d1255d38d3a0fb85c4e564b8689f029226cd4c1e542bef6ea0c3c32cb3c41813",
+    "afterSnippetSha256": "541b816e33296eb868c00bf61d42c2cd997356b0ed8e6685c71c32395b2ea61b"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+    "before": "    SideEffect { host.update(context, surfaceSize) }",
+    "after": "    SideEffect { host.update(context, surfaceSize, presented) }",
+    "beforeSnippetSha256": "b58ab7c469630d8d985019d23db2f41d5128096cf83cf42bbc74521e10386882",
+    "afterSnippetSha256": "ff73a9bb778dd449101d0dddc2027b0316c0bdba39ea04920cdd67dea377a7ab"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+    "before": "    private val chrome: DesktopWindowsProfileChrome,\n",
+    "after": "    private val chrome: DesktopWindowsProfileChrome,\n    private val captureProtection: DesktopWindowsVideoCaptureOwner,\n",
+    "beforeSnippetSha256": "d5839755d7db475ff3c68af0d8aa4ad69222a8036193af889b5761aa14088a50",
+    "afterSnippetSha256": "c5809ee8eae4479d201eac5faf6e438ce9b554dc1366ea2ac335b0958f057db8"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+    "before": "                if (!subject.owns()) return@onEdt\n                this@DesktopOriginalVideoWindowsWindowPort.requestedOrientation = requestedOrientation",
+    "after": "                if (!subject.owns()) return@onEdt\n                if (captureProtection.orientationLocked && requestedOrientation != this@DesktopOriginalVideoWindowsWindowPort.requestedOrientation) {\n                    diagnostic(\"Original fullscreen lock keeps the current Windows presentation\")\n                    return@onEdt\n                }\n                this@DesktopOriginalVideoWindowsWindowPort.requestedOrientation = requestedOrientation",
+    "beforeSnippetSha256": "d582be959a23a37d780f05b365d6fb0cd37ef9752432275aef59e851321708f7",
+    "afterSnippetSha256": "1572d309e0bee2ecefc359c4a281fc6e79a9bea32822176a4de83d77c27dd08f"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+    "before": "    /** Same Window fullscreen lease, also used by the fullscreen platform view. */",
+    "after": "    /** The original fullscreen/screen-lock intent belongs to this UI entry.\n     * Changing part/quality or approved same-entry recovery retains protection.\n     * Deferred exit and playback operations keep their stricter exact snapshot.\n     */\n    fun acquireScreenshotAndOrientationLock(locked: Boolean): AutoCloseable {\n        if (!locked) { captureProtection.refresh(); return AutoCloseable {} }\n        val stillOwned = { !closed.get() && isRootCurrent() && owner.owns() }\n        val lease = captureProtection.acquire(stillOwned)\n        val token = sequence.incrementAndGet()\n        captureLeases[token] = lease\n        // close may retire/enumerate before this map registration becomes visible.\n        if (!stillOwned()) captureLeases.remove(token)?.close()\n        return AutoCloseable { captureLeases.remove(token)?.close() }\n    }\n\n    /** Same Window fullscreen lease, also used by the fullscreen platform view. */",
+    "beforeSnippetSha256": "239b52d46e9e334ff79b55e16ce7d57a65cb76b7b7f3bd1748f14ef10a4e8faa",
+    "afterSnippetSha256": "1060f5b761fcc10aa40833e338a5716764f1be4f758986ef38e5a4c030d9537a"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+    "before": "    private val wake = ConcurrentHashMap<Long, AutoCloseable>()\n",
+    "after": "    private val wake = ConcurrentHashMap<Long, AutoCloseable>()\n    private val captureLeases = ConcurrentHashMap<Long, AutoCloseable>()\n",
+    "beforeSnippetSha256": "2a74ee8a69aa6c3f5485e622d871f30c2f5f9eaf79a0a4011337cd55f28830c5",
+    "afterSnippetSha256": "e355b60430f01f7d989cf4a72965a3f7766816eb1c99182d39760ccd9e0c749d"
+  },
+  {
+    "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+    "before": "            releaseEntryKeepAwake()\n            restoreEntryWindowChrome()",
+    "after": "            releaseEntryKeepAwake()\n            captureLeases.keys.toList().forEach { captureLeases.remove(it)?.close() }\n            restoreEntryWindowChrome()",
+    "beforeSnippetSha256": "da0c2ee31908d7897e664f4f6bceb85c0dfe3df1740ed6170ed6d49f6dd53ee6",
+    "afterSnippetSha256": "19083debbaaf31dc2f41f468617e8e3f5b676733a9fc8b932a4934ce2c407d17"
+  }
+]

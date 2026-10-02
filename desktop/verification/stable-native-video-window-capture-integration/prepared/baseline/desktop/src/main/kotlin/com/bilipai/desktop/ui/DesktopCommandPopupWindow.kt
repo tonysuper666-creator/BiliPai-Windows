@@ -108,12 +108,10 @@ internal fun DesktopCommandModalRegion(present: Boolean) {
 private class DesktopCommandPopupWindow(
     private val owner: Window,
     private val anchorComponent: Component,
-    private val onNativeWindowAvailability: ((Window, Boolean) -> Unit)?,
     private val onWindowAvailability: (Any, Boolean) -> Unit,
 ) : AutoCloseable {
     private var closed = false
     private var requested = IntSize.Zero
-    private var presented = false
     private var rectangles = emptyList<Rect>()
     private var popup: ComposeDialog? = null
     private var modal = false
@@ -122,7 +120,6 @@ private class DesktopCommandPopupWindow(
     private fun publishWindowAvailability(ready: Boolean) {
         if (windowReady != ready) {
             windowReady = ready
-            popup?.let { onNativeWindowAvailability?.invoke(it, ready) }
             onWindowAvailability(windowIdentity, ready)
         }
     }
@@ -189,19 +186,18 @@ private class DesktopCommandPopupWindow(
         anchorComponent.addHierarchyListener(hierarchyListener)
         anchorComponent.addHierarchyBoundsListener(hierarchyBoundsListener)
     }
-    fun update(context: CompositionLocalContext, size: IntSize, presented: Boolean) {
+    fun update(context: CompositionLocalContext, size: IntSize) {
         check(SwingUtilities.isEventDispatchThread())
         if (closed) return
         popup?.compositionLocalContext = context
         requested = size
-        this.presented = presented
         updateGeometry()
     }
     private fun updateGeometry() {
         check(SwingUtilities.isEventDispatchThread())
         if (closed) return
         val window = popup ?: return
-        val showing = presented && owner.isShowing && (owner !is Frame || owner.extendedState and Frame.ICONIFIED == 0) &&
+        val showing = owner.isShowing && (owner !is Frame || owner.extendedState and Frame.ICONIFIED == 0) &&
             anchorComponent.isShowing && SwingUtilities.getWindowAncestor(anchorComponent) === owner &&
             requested.width > 0 && requested.height > 0 && anchorComponent.width > 0 && anchorComponent.height > 0
         if (!showing) { publishWindowAvailability(false); window.isVisible = false; return }
@@ -262,41 +258,15 @@ internal fun DesktopShapedVideoCommandPopup(
     onWindowAvailability: ((Any, Boolean) -> Unit)?,
     content: @Composable () -> Unit,
 ) {
-    DesktopShapedVideoCommandPopup(surfaceSize, anchorComponent, onWindowAvailability, null, content)
-}
-
-@Composable
-internal fun DesktopShapedVideoCommandPopup(
-    surfaceSize: IntSize,
-    anchorComponent: Component,
-    onWindowAvailability: ((Any, Boolean) -> Unit)?,
-    onNativeWindowAvailability: ((Window, Boolean) -> Unit)?,
-    content: @Composable () -> Unit,
-) {
-    DesktopShapedVideoCommandPopup(surfaceSize, anchorComponent, onWindowAvailability,
-        onNativeWindowAvailability, true, content)
-}
-
-/** PiP hides this actual popup while retaining its original Section composition. */
-@Composable
-internal fun DesktopShapedVideoCommandPopup(
-    surfaceSize: IntSize,
-    anchorComponent: Component,
-    onWindowAvailability: ((Any, Boolean) -> Unit)?,
-    onNativeWindowAvailability: ((Window, Boolean) -> Unit)?,
-    presented: Boolean,
-    content: @Composable () -> Unit,
-) {
     if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return
     val owner = LocalAwtWindow.current ?: return
     val context = currentCompositionLocalContext
     val latestContent by rememberUpdatedState(content)
     val latestWindowAvailability by rememberUpdatedState(onWindowAvailability)
-    val latestNativeWindowAvailability by rememberUpdatedState(onNativeWindowAvailability)
     val density = LocalDensity.current
     val latestDensity by rememberUpdatedState(density)
     val host = remember(owner, anchorComponent) {
-        DesktopCommandPopupWindow(owner, anchorComponent, { window, ready -> latestNativeWindowAvailability?.invoke(window, ready) }) { identity, ready -> latestWindowAvailability?.invoke(identity, ready) }
+        DesktopCommandPopupWindow(owner, anchorComponent) { identity, ready -> latestWindowAvailability?.invoke(identity, ready) }
     }
     DisposableEffect(host) {
         host.create(context) {
@@ -306,5 +276,5 @@ internal fun DesktopShapedVideoCommandPopup(
         }
         onDispose { host.close() }
     }
-    SideEffect { host.update(context, surfaceSize, presented) }
+    SideEffect { host.update(context, surfaceSize) }
 }

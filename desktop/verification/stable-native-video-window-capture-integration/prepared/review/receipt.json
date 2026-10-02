@@ -1,0 +1,50 @@
+{
+  "scope": "Independent read-only source review; no build/runtime/native/HWND/HTTP/account/GUI execution, no Candidate/lane edits.",
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoCaptureOwner.kt",
+      "sha256Bytes": "8033f875c940d458a9b8fcc464f26311dacefb7f57a417daf0b9888e493b86cb",
+      "sha256LF": "8033f875c940d458a9b8fcc464f26311dacefb7f57a417daf0b9888e493b86cb"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort.kt",
+      "sha256Bytes": "1f92bd2a53e5b4d5141ab825f1c692cfaad7d1316d9d44d9092e80e94c9f09b4",
+      "sha256LF": "1f92bd2a53e5b4d5141ab825f1c692cfaad7d1316d9d44d9092e80e94c9f09b4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6",
+      "sha256LF": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    }
+  ],
+  "findings": [
+    {
+      "id": "capture-register-close-race",
+      "priority": "P2",
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort.kt",
+      "line": 174,
+      "finding": "captureProtection.acquire registers on EDT before inserting the lease into captureLeases. Another-thread close can CAS closed and enumerate old keys in that gap, missing the newly registered lease; subsequent insertion has no post-admission retirement recheck. KeepAwake already has the corresponding after-put check.",
+      "minimalFix": "After put, recheck fixed entry/closed/root predicate; if retired remove this token and close only its lease. Keep all EDT waits/native affinity outside Store/entry/native gates. Alternatively strictly serialize acquire and close on EDT, including the closed transition/map lifetime, and document that narrower API contract."
+    },
+    {
+      "id": "logical-source-refresh-consumer",
+      "priority": "required-consumer-boundary",
+      "source": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoCaptureOwner.kt",
+      "finding": "Stale predicates are removed only by refresh/acquire/availability/componentShown. orientationLocked reads live predicates but does not clear the applied affinity/state. Root must refresh and reacquire current original lock intent on real native source/entry retirement, including loading-null to first accepted source.",
+      "minimalFix": "Use an existing actual source/entry Flow/effect at Root; no new poller/capture authority. Same-version approved direct recovery correctly retains protection when account/request identity remains equal."
+    }
+  ],
+  "checkedBoundaries": [
+    "Capture policy state distinguishes request/API result/failure and does not claim DRM/screenshot guarantee.",
+    "Native/EDT operations are outside gates by required construction/caller contract; onEdt is synchronous and must never be entered with Store/entry/native locks held.",
+    "Old capture lease removes only its token; replacement leases remain. HWND identity is checked before clears.",
+    "PiP presented=false hides actual popup and publishes unavailable without closing regions/disposal/content; Root must retain nonzero anchor geometry for that path.",
+    "Playback/deferred-exit subjects remain stricter exact accepted references; capture permits same-version/account/request direct recovery explicitly.",
+    "Root/window affinity only, no unrelated HWND or second native player/authority."
+  ],
+  "notClaims": [
+    "No actual native affinity result",
+    "No composition/PiP runtime proof",
+    "No Root observer integration claim"
+  ]
+}

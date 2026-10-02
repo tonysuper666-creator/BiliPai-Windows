@@ -1,0 +1,25 @@
+{
+  "installed": true,
+  "frozenManifestSHA256Bytes": "9172cb93c4ed6837328c70e5fd5f0ca10a6d954928ee192989359b792ba34a6e",
+  "sourceFamilies": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopCommandPopupWindow.kt",
+      "beforeSHA256LF": "94f544ae098d3bb89290197534c4aab17400ada9e7231d27c96afa4c1f3f3412",
+      "afterSHA256LF": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6",
+      "localHunks": 11,
+      "exactInverse": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoWindowsWindowPort.kt",
+      "beforeSHA256LF": "3bb5303144455f58c304731b8e941e1646585aca99954c76e808113306015aab",
+      "afterSHA256LF": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48",
+      "localHunks": 5,
+      "exactInverse": true
+    }
+  ],
+  "newManualPath": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.kt",
+  "newManualSHA256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66",
+  "noRegistryOrDependencyChange": true,
+  "wholeMainMounted": false,
+  "nativeWindowRuntimeAccepted": false
+}

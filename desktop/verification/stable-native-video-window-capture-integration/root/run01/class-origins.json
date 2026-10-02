@@ -1,0 +1,18 @@
+{
+  "com/bilipai/desktop/ui/DesktopWindowsVideoCaptureOwner.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-79\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15410,
+      "sha256Bytes": "42ab7690c495b3abf560468c62ff6cf13506a7142e1953f323aa3251ea1634f4"
+    }
+  ],
+  "com/bilipai/desktop/ui/DesktopWindowsVideoCaptureState.class": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-product-snapshot-79\\main-kotlin.jar",
+      "source": "desktop/build/classes/kotlin/main",
+      "entries": 15410,
+      "sha256Bytes": "42ab7690c495b3abf560468c62ff6cf13506a7142e1953f323aa3251ea1634f4"
+    }
+  ]
+}

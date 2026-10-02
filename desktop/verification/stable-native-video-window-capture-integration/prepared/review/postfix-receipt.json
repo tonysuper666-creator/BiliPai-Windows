@@ -1,0 +1,51 @@
+{
+  "scope": "Independent read-only postfix source confirmation; no execution/build/runtime/native/GUI/HTTP/account.",
+  "initialReceiptSha256Bytes": "3e69b515ac9adfb5f32d467ba9d4168d6f64c3d4ddbda1524ea34a384b7d3d06",
+  "inputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\manual\\com\\bilipai\\desktop\\ui\\DesktopWindowsVideoCaptureOwner.kt",
+      "sha256Bytes": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66",
+      "sha256LF": "edd2c4225a7bec71f395fe013be61597b1048bb3de684f06004733163ba3df66"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalVideoWindowsWindowPort.kt",
+      "sha256Bytes": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48",
+      "sha256LF": "5fcbee5bb8b70f9bd1d36936569977c7f8e78bef10526c3b8c5d45cbccfcaf48"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\prepared\\existing\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopCommandPopupWindow.kt",
+      "sha256Bytes": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6",
+      "sha256LF": "412eafd8f7579e869cd4eb537447c88f1d7b86c3014d6bf9b3a332685f5c5bc6"
+    }
+  ],
+  "checked": [
+    {
+      "check": "Capture registration/close race",
+      "resolvedSource": true,
+      "evidence": "Same fixed stillOwned predicate is rechecked after map insertion; retired request removes and closes only that token. Concurrent map remove makes duplicate closes benign."
+    },
+    {
+      "check": "Original UI-entry protection policy",
+      "resolvedSource": true,
+      "evidence": "Fullscreen/locked screenshot lease now uses fixed Assembly entry/Root ownership, preserves same-entry part/quality/recovery intent, and no longer needs native-version watcher. Strict playback/deferred-exit Subject capture remains separate."
+    },
+    {
+      "check": "Original popup composition lifetime",
+      "resolvedSource": true,
+      "evidence": "presented=false still hides only the existing popup, without disposing regions/content. Actual availability callback receives only that owned Window."
+    }
+  ],
+  "compileEvidenceRead": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-native-video-window-capture-parity\\runs\\03\\result.json",
+    "sha256Bytes": "5f9de96fcc31799aa512ea4b52671e50b4b9cb21b9164e288a7b5abac5faab2e",
+    "reported": {
+      "exit": 0,
+      "sourceCount": 3,
+      "classCount": 23,
+      "nativeWindowAccepted": false,
+      "wholeRootAccepted": false
+    }
+  },
+  "remainingBoundary": "Root constructs/calls native/EDT methods outside Store/entry/native gates, refreshes on true entry retirement and closes only own registrations. Native Window runtime remains unaccepted; this report confirms source only.",
+  "blockersRemainingInReadScope": []
+}
