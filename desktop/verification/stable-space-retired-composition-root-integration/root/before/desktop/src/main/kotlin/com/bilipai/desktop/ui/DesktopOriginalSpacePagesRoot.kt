@@ -36,14 +36,6 @@ internal class DesktopOriginalSpacePagesRoot(
             }
         }
     }
-    /** Navigation animations may recompose an outgoing physical entry after
-     * it has been removed. Such a view cannot create/revive a retained owner. */
-    fun entryIfRetained(key:BiliPaiNavKey):DesktopOriginalSpacePageEntry? = synchronized(lock) {
-        if(!owns()||!routes.containsEntry(key))return@synchronized null
-        try { entry(key) } catch(cancelled:CancellationException) {
-            if(!owns()||!routes.containsEntry(key))null else throw cancelled
-        }
-    }
     fun prune() {
         val removed=synchronized(lock) { pages.keys.filterNot(routes::containsEntry).mapNotNull(pages::remove).map {it.environment}.also {retired.addAll(it)} }
         removed.forEach {it.close()}
@@ -92,7 +84,7 @@ internal class DesktopOriginalSpacePageEntry(val environment:DesktopOriginalSpac
     backToTopPreferences:DesktopFavoritePreferences,
 ) {
     val routes=pages.routes
-    val entry=pages.entryIfRetained(key)?:return
+    val entry=pages.entry(key)
     val environment=entry.environment
     val comments=LocalDesktopOriginalCommentRootOwner.current
     val session=checkNotNull(LocalDesktopDynamicCardSession.current)

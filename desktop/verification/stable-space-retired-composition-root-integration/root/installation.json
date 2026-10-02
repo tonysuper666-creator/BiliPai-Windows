@@ -1,0 +1,19 @@
+{
+  "baseCommit": "7637ac94555968f419e78ce496451523f9e194bb",
+  "sourceCount": 1234,
+  "resourceCount": 244,
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "beforeSha256Bytes": "ce9160a6a036fd99c0ec4c6895498c50ca44cd99f23a3aaa2db0e1129f56502a",
+      "afterSha256Bytes": "707cf84775c62f402de9514ad93c136230569be316ea3bfb79026692a017d319"
+    }
+  ],
+  "priorActualWindow": "actual91-01",
+  "priorWindowAsserted": 17,
+  "actualWindowFailure": "Outgoing removed Space entry recomposed during navigation animation",
+  "retiredUiCannotRecreateOwner": true,
+  "strictRequestEntryAdmissionPreserved": true,
+  "normalCompile": false,
+  "rootRuntimeAccepted": false
+}

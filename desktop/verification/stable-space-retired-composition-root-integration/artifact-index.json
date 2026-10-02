@@ -1,0 +1,114 @@
+{
+  "files": [
+    {
+      "path": "prepared/frozen-handoff.json",
+      "sha256Bytes": "c25783b0105fe976c5a36753198eff11fbef9461b906389018afc8ef240e4ab4",
+      "bytes": 1478
+    },
+    {
+      "path": "prepared/actual91-01/RootSpaceFixture.kt",
+      "sha256Bytes": "a1d9213a7cbac4bec1486545e98e9e236007a7bc0051c0356e7637f9e35ac3a4",
+      "bytes": 27059
+    },
+    {
+      "path": "prepared/actual91-01/compile-result.json",
+      "sha256Bytes": "a979bc0f71c15a35142c6959d76af27eea5a9f83e33dfbb0ec822c0166fb3d4c",
+      "bytes": 190
+    },
+    {
+      "path": "prepared/actual91-01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "prepared/actual91-01/acceptance-result.json",
+      "sha256Bytes": "4b27d4bc085e6784be10cad982df700ff648ab540022fd7cd2b347acca2a0de6",
+      "bytes": 1016
+    },
+    {
+      "path": "prepared/actual91-01/runtime.log",
+      "sha256Bytes": "aee2608dc10c2d6719abb20476d4e36b6b8db63fb16891b8e466a847007c5059",
+      "bytes": 6787
+    },
+    {
+      "path": "prepared/actual91-01/pins-before.json",
+      "sha256Bytes": "8d25a6558def46a70422e2fed5ab07d4546f9f2beb859bbf1b9a5b1845feafd8",
+      "bytes": 41938
+    },
+    {
+      "path": "prepared/actual91-01/pins-after.json",
+      "sha256Bytes": "8d25a6558def46a70422e2fed5ab07d4546f9f2beb859bbf1b9a5b1845feafd8",
+      "bytes": 41938
+    },
+    {
+      "path": "prepared/prepare_evidence.py",
+      "sha256Bytes": "2463a271c3b9340976dfcbc2f4257c7b2ad0f112176757851f85dd9dd3d85480",
+      "bytes": 3124
+    },
+    {
+      "path": "root/install.py",
+      "sha256Bytes": "2b1fecffe82ba98910fdd9bb247514a048842f9c1181fdafb3aa37e13b07c6ef",
+      "bytes": 2043
+    },
+    {
+      "path": "root/installation.json",
+      "sha256Bytes": "432b42eab96db2b80f030cbc9b28df9624ec96bc3544312bb3efc3cd101c342a",
+      "bytes": 761
+    },
+    {
+      "path": "root/source-diff.patch",
+      "sha256Bytes": "e03b6f8b98f891966c5828fef7be4584dcd7ebe45da57264dd9f80ccee34a5ff",
+      "bytes": 1270
+    },
+    {
+      "path": "root/build_actual.py",
+      "sha256Bytes": "036fde7fc6f312ac13a2c5ffc5b29c31d0a8ba973d544279a7a533aa6d457802",
+      "bytes": 3863
+    },
+    {
+      "path": "root/actual-build01.log",
+      "sha256Bytes": "7e00951fa325a790811ec818abbce2bc51948e483745b0b4b1bff937fa7166d7",
+      "bytes": 20214
+    },
+    {
+      "path": "root/actual-build01.json",
+      "sha256Bytes": "c82dd963078207483fac568cfa0e2abba7fc0f9a0084cd4b077cde7602e27621",
+      "bytes": 1026
+    },
+    {
+      "path": "root/actual-native-producer-receipt.json",
+      "sha256Bytes": "0d5590266770189779a0ecf1245abb33526f5f1eed6db65bc93fa3fea9aa38fa",
+      "bytes": 1247
+    },
+    {
+      "path": "root/actual-native-producer-input-graph.json",
+      "sha256Bytes": "7f5b7de128685f30d0c621ea61404f0b7d9ab41bd564b3645daf316decd0ce62",
+      "bytes": 116973
+    },
+    {
+      "path": "root/save_and_stage.py",
+      "sha256Bytes": "cd93d69601e6da025470ff727ad56df4b432196331d8c13e74695ecf49132d22",
+      "bytes": 5892
+    },
+    {
+      "path": "root/integrated-test.xml",
+      "sha256Bytes": "766acfa5496b9f6844a9362da5031f805d65236ab40f3cd7055ff576bdabdd0a",
+      "bytes": 2745
+    },
+    {
+      "path": "root/before/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "sha256Bytes": "ce9160a6a036fd99c0ec4c6895498c50ca44cd99f23a3aaa2db0e1129f56502a",
+      "bytes": 9552
+    },
+    {
+      "path": "integration-summary.json",
+      "sha256Bytes": "f75a6caa32280887ba495339b42caf275503acd832e36534593cd24b7c53912c",
+      "bytes": 805
+    },
+    {
+      "path": "README.md",
+      "sha256Bytes": "152bf3aef3aa565d4d54a5290ab5640a92034d28257a7281da3ee431e00cf754",
+      "bytes": 819
+    }
+  ]
+}
