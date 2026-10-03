@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.application
@@ -159,11 +158,13 @@ fun main(args: Array<String>) {
                 }
             }
         }
+        val windowKeyFallback = remember { com.bilipai.desktop.ui.DesktopWindowKeyFallback() }
+        DisposableEffect(windowKeyFallback) { onDispose { windowKeyFallback.close() } }
         Window(
             onCloseRequest = { closeApp() },
+            onKeyEvent = windowKeyFallback::dispatch,
             title = "BiliPai Windows",
-            state = windowState,
-            icon = painterResource("app-icon.png")
+            state = windowState
         ) {
             DisposableEffect(window, diagnosticWindow) {
                 diagnosticWindow.set(window)
@@ -216,6 +217,7 @@ fun main(args: Array<String>) {
             val fullscreenControl = com.bilipai.desktop.ui.rememberDesktopWindowsFullscreenControl(window, windowState)
             androidx.compose.runtime.CompositionLocalProvider(
                 com.bilipai.desktop.ui.LocalDesktopApplicationImageLoader provides applicationImages,
+                com.bilipai.desktop.ui.LocalDesktopWindowKeyFallback provides windowKeyFallback,
             ) {
             DesktopApp(repository, playerResult.getOrNull(), playerResult.exceptionOrNull()?.message, initialVideo,
                 onExit = { closeApp() }, onToggleFullscreen = fullscreenControl::toggle,

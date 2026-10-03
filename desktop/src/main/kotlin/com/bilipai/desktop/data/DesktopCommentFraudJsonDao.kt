@@ -4,6 +4,10 @@ import com.android.purebilibili.core.database.entity.CommentFraudRecord
 import com.android.purebilibili.data.repository.DesktopCommentFraudDao
 import com.bilipai.desktop.update.UpdateStorage
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,6 +28,7 @@ internal class DesktopCommentFraudJsonDao(
     private val admit: (() -> Unit) -> Boolean,
 ) : DesktopCommentFraudDao, AutoCloseable {
     private val lock=Any()
+    private val mutations=Mutex()
     private var closed=false
     private val json=Json { ignoreUnknownKeys=true;isLenient=true;prettyPrint=true;encodeDefaults=true }
     private val serializer=ListSerializer(CommentFraudRecord.serializer())
@@ -53,24 +58,58 @@ internal class DesktopCommentFraudJsonDao(
     }
     private fun sorted()=records.values.sortedByDescending { if(it.post_time>0)it.post_time else it.timestamp }
     private fun publish(){flow.value=sorted()}
-    private fun persist(next:LinkedHashMap<Long,CommentFraudRecord>) {
-        check(mid>0){"请先登录后保存评论记录"}
-        UpdateStorage.existingPathWithoutLinks(directory)
-        if(Files.exists(file,NOFOLLOW_LINKS))require(Files.isRegularFile(file,NOFOLLOW_LINKS) && !Files.isSymbolicLink(file))
-        val temporary=Files.createTempFile(directory,"records-",".tmp")
-        try {
-            Files.writeString(temporary,json.encodeToString(serializer,next.values.toList()))
-            if(closed || !isOwned())throw CancellationException("Comment record owner retired")
-            Files.move(temporary,file,ATOMIC_MOVE,REPLACE_EXISTING)
-            records=next;publish()
-        } finally { Files.deleteIfExists(temporary) }
+    private suspend fun <T> operation(block:()->T):T {
+        val caller=currentCoroutineContext()
+        val page=caller[DesktopCommentFraudRecordOperation]
+        return owned {
+            caller.ensureActive();page?.checkpoint()
+            // Preserve actual SessionStore -> DAO owner -> ImageLifetime order. No
+            // caller enters page admission and then waits for the account monitor.
+            if(page!=null)page.withAdmission { caller.ensureActive();block() } else block()
+        }
     }
-    override suspend fun insertOrUpdate(record:CommentFraudRecord)=owned { persist(LinkedHashMap(records).apply{put(record.rpid,record)}) }
-    override suspend fun insertAll(records:List<CommentFraudRecord>)=owned { persist(LinkedHashMap(this.records).apply{records.forEach{put(it.rpid,it)}}) }
+    private suspend fun mutateRecords(transform:(LinkedHashMap<Long,CommentFraudRecord>)->LinkedHashMap<Long,CommentFraudRecord>) {
+        mutations.withLock {
+            val caller=currentCoroutineContext()
+            val page=caller[DesktopCommentFraudRecordOperation]
+            fun checkpoint() {
+                caller.ensureActive();page?.checkpoint()
+                synchronized(lock) {
+                    if(closed || !isOwned())throw CancellationException("Comment record owner retired")
+                }
+            }
+            val next=operation { check(mid>0){"请先登录后保存评论记录"};transform(LinkedHashMap(records)) }
+            checkpoint()
+            val encoded=json.encodeToString(serializer,next.values.toList())
+            checkpoint()
+            UpdateStorage.existingPathWithoutLinks(directory)
+            if(Files.exists(file,NOFOLLOW_LINKS))require(Files.isRegularFile(file,NOFOLLOW_LINKS) && !Files.isSymbolicLink(file))
+            val temporary=Files.createTempFile(directory,"records-",".tmp")
+            try {
+                Files.newBufferedWriter(temporary).use { writer ->
+                    var offset=0
+                    while(offset<encoded.length) {
+                        checkpoint()
+                        val count=minOf(32*1024,encoded.length-offset)
+                        writer.write(encoded,offset,count);offset+=count
+                    }
+                }
+                checkpoint()
+                operation {
+                    UpdateStorage.existingPathWithoutLinks(directory)
+                    if(Files.exists(file,NOFOLLOW_LINKS))require(Files.isRegularFile(file,NOFOLLOW_LINKS) && !Files.isSymbolicLink(file))
+                    Files.move(temporary,file,ATOMIC_MOVE,REPLACE_EXISTING)
+                    records=next;publish()
+                }
+            } finally { Files.deleteIfExists(temporary) }
+        }
+    }
+    override suspend fun insertOrUpdate(record:CommentFraudRecord)=mutateRecords { it.apply{put(record.rpid,record)} }
+    override suspend fun insertAll(records:List<CommentFraudRecord>)=mutateRecords { next->next.apply{records.forEach{put(it.rpid,it)}} }
     override fun getAllRecordsFlow():Flow<List<CommentFraudRecord>> = owned { flow.asStateFlow() }
-    override suspend fun getAllRecords():List<CommentFraudRecord> = owned { sorted() }
-    override suspend fun getRecordByRpid(rpid:Long):CommentFraudRecord? = owned { records[rpid] }
-    override suspend fun deleteByRpid(rpid:Long)=owned { persist(LinkedHashMap(records).apply{remove(rpid)}) }
-    override suspend fun clearAll()=owned { persist(linkedMapOf()) }
+    override suspend fun getAllRecords():List<CommentFraudRecord> = operation { sorted() }
+    override suspend fun getRecordByRpid(rpid:Long):CommentFraudRecord? = operation { records[rpid] }
+    override suspend fun deleteByRpid(rpid:Long)=mutateRecords { it.apply{remove(rpid)} }
+    override suspend fun clearAll()=mutateRecords { linkedMapOf() }
     override fun close() { synchronized(lock) { closed=true;records.clear();flow.value=emptyList() } }
 }

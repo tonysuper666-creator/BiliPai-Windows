@@ -640,6 +640,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var cards by remember { mutableStateOf(emptyList<VideoCard>()) }
     var feedLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
+    val rootFeedback = remember { SnackbarHostState() }
     LaunchedEffect(originalDanmakuPreferences) {
         try { originalDanmakuPreferences.importLegacyWindowsDanmakuIfAbsent(preferenceStore.read().danmaku) }
         catch (cancelled: CancellationException) { throw cancelled }
@@ -732,6 +733,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         onDispose { hostWindow?.removeHierarchyListener(listener); (hostWindow as? java.awt.Frame)?.removeWindowStateListener(windowStateListener) }
     }
     SideEffect { enhancementHostStarted.value = hostVisible }
+    // The existing Root feedback port must reach a visible presentation surface.
+    // Cancellation removes a replaced or hidden Snackbar; business ownership remains at each caller.
+    LaunchedEffect(error, hostDisplayable, hostVisible, activatingUpdate) {
+        val message = error?.takeIf { it.isNotBlank() } ?: return@LaunchedEffect
+        if (!hostDisplayable || !hostVisible || isClosing() || activatingUpdate) return@LaunchedEffect
+        rootFeedback.showSnackbar(message)
+        if (error == message) error = null
+    }
     fun seekCurrentSystemMedia(seconds: Double, relative: Boolean = false) {
         if (!seconds.isFinite() || isClosing() || activatingUpdate) return
         val retained = if (systemTargetAudio) null else retainedMedia.current
@@ -1328,6 +1337,29 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     } ?: parentLiquidConfig
     val captureLiquidBackground = effectiveThemeConfig.liquidGlassEnabled &&
         liquidHomeSettings?.liquidGlassReadabilityMode == com.android.purebilibili.core.store.LiquidGlassReadabilityMode.ADAPTIVE
+    val rootKeyHandler: (KeyEvent) -> Boolean = { event ->
+            if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }
+            else if (event.type == KeyEventType.KeyDown && event.key == Key.Escape && !searchFocused) {
+                if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()
+                true
+            }
+            else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {
+                // Shortcuts are scoped to the focused player; comment and search editors keep their keys.
+                performPlayerKey(resolvePlayerKeyAction(event, isTextInputActive = searchFocused))
+            } else false
+    }
+    val latestRootKeyHandler by rememberUpdatedState(rootKeyHandler)
+    val windowKeyFallback = com.bilipai.desktop.ui.LocalDesktopWindowKeyFallback.current
+    DisposableEffect(windowKeyFallback, hostWindow, homeRootRef, scope) {
+        val registration = windowKeyFallback?.register { event ->
+            // The real Window invokes this only after the scene did not consume the key.
+            // Native focus can exist without a Compose focus target below the Surface.
+            if (isClosing() || activatingUpdate || !scope.isActive ||
+                !hostDisplayable || !hostVisible || homeRootRef.get()?.isActive() != true) false
+            else latestRootKeyHandler(event)
+        }
+        onDispose { registration?.close() }
+    }
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
         LocalDesktopLiquidTabSettings provides liquidTabSettings,
         LocalDesktopLiquidReadabilityEnvironment provides liquidEnvironment,
@@ -1386,17 +1418,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     liquidBackground.record { this@drawWithContent.drawContent() }
                 }
                 drawContent()
-            }.onKeyEvent { event ->
-            if (event.type == KeyEventType.KeyDown && event.key == Key.F11) { toggleOriginalFullscreen(); true }
-            else if (event.type == KeyEventType.KeyDown && event.key == Key.Escape && !searchFocused) {
-                if (isFullscreen()) setOriginalFullscreen(false) else homeRootRef.get()?.navigation?.requestBack()
-                true
-            }
-            else if ((showVideo || section == DesktopSection.STORY) && playing.details != null && playerFocused && !searchFocused && player != null) {
-                // Shortcuts are scoped to the focused player; comment and search editors keep their keys.
-                performPlayerKey(resolvePlayerKeyAction(event, isTextInputActive = searchFocused))
-            } else false
-        }, color = scheme.background) {
+            }.onKeyEvent(rootKeyHandler), color = scheme.background) {
                     val playerContent: @Composable (MpvPlayer) -> Unit = { initialized ->
                         Column(Modifier.fillMaxWidth()) {
                         PlayerPanel(initialized, preferences.copy(danmaku = rendererDanmakuSettings), ::changePreferences, onToggleFullscreen,
@@ -1572,6 +1594,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                         when {
                             entryKey == BiliPaiNavKey.Onboarding ->
                                 DesktopOriginalOnboardingRootHost(messageRoutes, active, onDisagree = onExit)
+                            entryKey == BiliPaiNavKey.IconSettings ->
+                                DesktopDetailWindow { DesktopOriginalIconSettingsRootHost(messageRoutes, homeRootRef,
+                                    services.runtime.context, services.imageLifetime, active,
+                                    onFailure = { error = it.message ?: "图标设置保存失败" },
+                                    onNotice = services.feedback) }
                             entryKey is BiliPaiNavKey.AicuQuery ->
                                 DesktopDetailWindow { DesktopOriginalAicuRootHost(entryKey, messageRoutes, services.repository) }
                             entryKey is BiliPaiNavKey.Space || entryKey is BiliPaiNavKey.UpowerRank || entryKey is BiliPaiNavKey.MemberGuard ->
@@ -1797,12 +1824,62 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     else settingsNavigator.pop()
                                 },
                                 appearanceContent = { DesktopAppearanceSettings(appearance,
-                                    onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } }) },
+                                    onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } },
+                                    onNavigateToIconSettings = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } }) },
                                 pluginsContent = { PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin) },
                                 playbackContent = { dismiss -> PlaybackSettingsDialog(preferences, ::changePreferences, dismiss) },
                                 backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,
                                     initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
                                 blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { loginDialog = true }) },
+                                donateContent = { donateEntry, dismiss ->
+                                    val capturedHandle = homeRootRef.get()
+                                    val currentDonateActive by rememberUpdatedState(active)
+                                    if (capturedHandle != null && capturedHandle.isActive() && active && hostWindow != null) {
+                                        val donateBindings = remember(donateEntry, capturedHandle, hostWindow, services.imageLifetime) {
+                                            DesktopDonateDialogBindings(hostWindow,
+                                                owns = { currentDonateActive && donateEntry.ownsCurrent() &&
+                                                    homeRootRef.get() === capturedHandle && capturedHandle.isActive() &&
+                                                    services.imageLifetime.isActive() &&
+                                                    !isClosing() && !activatingUpdate },
+                                                admit = services.imageLifetime::withCommit,
+                                                onDismiss = dismiss)
+                                        }
+                                        com.android.purebilibili.feature.settings.DesktopOriginalDonateDialog(donateBindings)
+                                    }
+                                },
+                                commentFraudHistoryContent = { page, back ->
+                                    val capturedHandle = homeRootRef.get()
+                                    val currentHistoryActive by rememberUpdatedState(active)
+                                    if (capturedHandle != null && capturedHandle.isActive() && active && hostWindow != null) {
+                                        key(page, capturedHandle, commentFraud) {
+                                            val pageScope = rememberCoroutineScope()
+                                            val notices = remember { SnackbarHostState() }
+                                            val bindings = remember(page, commentFraud, capturedHandle, hostWindow, services.imageLifetime) {
+                                                DesktopCommentFraudHistoryBindings(commentFraud.records, pageScope, hostWindow,
+                                                    owns = { currentHistoryActive && homeRootRef.get() === capturedHandle &&
+                                                        capturedHandle.isActive() && settingsNavigator.state.value.current === page &&
+                                                        commentFraud.isOwned() && services.imageLifetime.isActive() &&
+                                                        !isClosing() && !activatingUpdate },
+                                                    admit = services.imageLifetime::withCommit,
+                                                    onNotice = { message -> pageScope.launch { notices.showSnackbar(message) } },
+                                                    onFailure = { failure -> pageScope.launch { notices.showSnackbar(failure.message ?: "发评反诈历史处理失败") } })
+                                            }
+                                            DisposableEffect(bindings) { onDispose { bindings.close() } }
+                                            val ownedBack: () -> Unit = {
+                                                bindings.uiAction {
+                                                    services.imageLifetime.withCommit { if (bindings.isOwned()) back() }
+                                                }
+                                            }
+                                            val backState = androidx.navigationevent.compose.rememberNavigationEventState(androidx.navigationevent.NavigationEventInfo.None)
+                                            androidx.navigationevent.compose.NavigationBackHandler(state = backState,
+                                                isBackEnabled = bindings.isOwned(), onBackCompleted = ownedBack)
+                                            Box(Modifier.fillMaxSize()) {
+                                                com.android.purebilibili.feature.settings.screen.DesktopOriginalCommentFraudHistoryScreen(bindings, onBack = ownedBack)
+                                                SnackbarHost(notices, Modifier.align(Alignment.BottomCenter))
+                                            }
+                                        }
+                                    }
+                                },
                                 storageContent = { target ->
                                     val imagePath by imageSavePreferences.getImageSaveTreeUri().collectAsState(imageSavePreferences.getImageSaveTreeUriSync())
                                     com.bilipai.desktop.settings.DesktopStorageSettings(storageOwner,imagePath,target,
@@ -1833,7 +1910,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     diagnosticStartupError?.let { Text(it, Modifier.padding(12.dp), color = scheme.error) }
                                 })
                             section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings(appearance,
-                                onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } })
+                                onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } },
+                                onNavigateToIconSettings = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } })
                             section == DesktopSection.JS_CONTENT -> Column(Modifier.fillMaxSize()) {
                                 TextButton(onClick = { commands.back() }) { Text("返回插件") }
                                 Box(Modifier.weight(1f).fillMaxWidth()) {
@@ -1941,6 +2019,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
         if (eyePaint.dimAlpha > 0f) Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = eyePaint.dimAlpha)))
         if (eyePaint.warmAlpha > 0f) Box(Modifier.fillMaxSize().background(Color(eyePaint.warmArgb).copy(alpha = eyePaint.warmAlpha)))
+        if (hostDisplayable && hostVisible && !isClosing() && !activatingUpdate) {
+            SnackbarHost(rootFeedback, Modifier.align(Alignment.BottomCenter).padding(16.dp))
+        }
         }
         if (loginDialog) AdvancedLoginDialog(repository, onDismiss = { loginDialog = false }, onComplete = { loginDialog = false })
         if (enhancementSettings) DesktopVideoEnhancementSettingsDialog(pluginRuntime.enhancementConfiguration) { enhancementSettings = false }

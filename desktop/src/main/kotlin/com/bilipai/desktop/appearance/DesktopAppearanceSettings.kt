@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 fun DesktopAppearanceSettings(
     prefs: DesktopThemePrefs,
     onRestartRequested: () -> Unit,
+    onNavigateToIconSettings: () -> Unit,
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
 ) {
@@ -112,6 +113,8 @@ fun DesktopAppearanceSettings(
             AppearanceChoice(strings.desktop("DPI 覆盖", "DPI 覆寫", "DPI override"), settings.appDpiOverridePercent,
                 listOf(AppSegmentOption(0, strings["theme_mode_follow_system"])) + (90..115).map { AppSegmentOption(it, "$it%") }, !busy) { update { prefs.setDpiOverride(it) } }
         }
+        DesktopAppearanceButton(strings["icon_settings_title"], onNavigateToIconSettings,
+            modifier = Modifier.fillMaxWidth(), enabled = !busy)
         RoleOverridesEditor(settings, !busy) { update { prefs.setRoleOverrides(it) } }
         DesktopAppearanceCard(Modifier.fillMaxWidth()) {
             AppearanceChoice(strings.desktop("图标样式", "圖示樣式", "Icon style"), settings.appIconStyle,

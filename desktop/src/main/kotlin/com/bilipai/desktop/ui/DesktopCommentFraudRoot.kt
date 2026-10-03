@@ -19,6 +19,7 @@ internal class DesktopCommentFraudRoot(
     private val alive = AtomicBoolean(true)
     private val scope = CoroutineScope(parentScope.coroutineContext + SupervisorJob(parentScope.coroutineContext[Job]))
     private fun owned() = alive.get() && session.isOwned()
+    fun isOwned() = owned()
     private val operations = DesktopDynamicCardOperations(repository, session.expectedEpoch, ::owned, session.emotes)
     private val dao = DesktopCommentFraudJsonDao(stateDirectory, repository.account.value?.mid ?: 0L,
         operations::isOwned, operations::withOwnedEditorImageAdmission)

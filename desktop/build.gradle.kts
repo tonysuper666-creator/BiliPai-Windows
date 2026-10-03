@@ -2417,6 +2417,80 @@ val extractOriginalAicu by tasks.registering(Exec::class) {
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-aicu")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalAicu) }
 
+// Root integrates after prepareUpstreamSources, retaining normal whole-build task inputs.
+val extractOriginalCommentFraudHistory by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-comment-fraud-history.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/comment-fraud-history").get().asFile.absolutePath,
+        "--proof", layout.buildDirectory.file("reports/comment-fraud-history-source-inverse.json").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-comment-fraud-history.py", "tools/extract-upstream-settings-search.py",
+        canonicalOriginalHelperFile, canonicalOriginalCatalogFile)
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "desktop-whole-comment-fraud-history" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.files(originalResources.filter { "desktop-whole-comment-fraud-history" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/comment-fraud-history"))
+    outputs.file(layout.buildDirectory.file("reports/comment-fraud-history-source-inverse.json"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/comment-fraud-history")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalCommentFraudHistory) }
+
+
+val extractOriginalDonateDialog by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-donate-dialog.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-donate-dialog").get().asFile.absolutePath,
+        "--resource-output", layout.buildDirectory.dir("generated/original-donate-resources").get().asFile.absolutePath,
+        "--proof", layout.buildDirectory.file("reports/original-donate-dialog-inverse.json").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-donate-dialog.py", "tools/extract-upstream-settings-search.py",
+        canonicalOriginalHelperFile, canonicalOriginalCatalogFile)
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "desktop-whole-original-donate-dialog" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.files(originalResources.filter { "desktop-whole-original-donate-dialog" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-donate-dialog"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-donate-resources"))
+    outputs.file(layout.buildDirectory.file("reports/original-donate-dialog-inverse.json"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-donate-dialog")) }
+sourceSets.named("main") { resources.srcDir(layout.buildDirectory.dir("generated/original-donate-resources")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalDonateDialog) }
+tasks.named("processResources") { dependsOn(extractOriginalDonateDialog) }
+
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(extractOriginalDonateDialog) }
+
+// Complete original IconSettings page, fixed original PNGs and same-Store Windows leaf.
+val extractOriginalIconSettings by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-icon-settings.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/icon-settings").get().asFile.absolutePath,
+        "--resource-output", layout.buildDirectory.dir("generated/icon-settings-resources").get().asFile.absolutePath,
+        "--proof", layout.buildDirectory.file("reports/icon-settings-source-inverse.json").get().asFile.absolutePath)
+    inputs.file(sourceManifest)
+    inputs.files("tools/extract-upstream-icon-settings.py", "tools/extract-upstream-settings-search.py",
+        canonicalOriginalHelperFile, canonicalOriginalCatalogFile)
+    inputs.files(sources.filter { "desktop-whole-icon-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.files(originalResources.filter { "desktop-whole-icon-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/icon-settings"))
+    outputs.dir(layout.buildDirectory.dir("generated/icon-settings-resources"))
+    outputs.file(layout.buildDirectory.file("reports/icon-settings-source-inverse.json"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/icon-settings")) }
+sourceSets.named("main") { resources.srcDir(layout.buildDirectory.dir("generated/icon-settings-resources")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalIconSettings) }
+tasks.named("processResources") { dependsOn(extractOriginalIconSettings) }
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(extractOriginalIconSettings) }
+
 // Canonical locator/catalog are explicit inputs of every original-source producer
 // and verifier, including consumers through existing imported producer helpers.
 val canonicalOriginalInputTasks = setOf(
@@ -2655,5 +2729,44 @@ tasks.register<JavaExec>("originalOnboardingUiSmoke") {
             requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
             requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
         if (mode == "deep-link") args(requireNotNull(providers.gradleProperty("rootValidationBvid").orNull))
+    }
+}
+
+// Standalone, opt-in test task. It keeps the complete ordinary test runtime and real Main.
+tasks.register<JavaExec>("originalIconSettingsUiSmoke") {
+    group = "verification"
+    description = "Exercise original IconSettings controls and the actual Root Window icon."
+    dependsOn("testClasses", "classes", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalIconSettingsRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    providers.gradleProperty("rootValidationToken").orNull?.let {
+        systemProperty("bilipai.rootValidationToken", it)
+    }
+    doFirst {
+        args(requireNotNull(providers.gradleProperty("rootValidationMode").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
+    }
+}
+
+// Opt-in real Main GUI fixture; normal source sets/resources and default renderer only.
+tasks.register<JavaExec>("originalFraudDonateUiSmoke") {
+    group = "verification"
+    description = "Exercise original guest Fraud and Donate controls in the actual Main Window."
+    dependsOn("testClasses", "classes", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalFraudDonateRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    providers.gradleProperty("rootValidationToken").orNull?.let {
+        systemProperty("bilipai.rootValidationToken", it)
+    }
+    doFirst {
+        args(requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
     }
 }

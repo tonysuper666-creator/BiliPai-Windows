@@ -10,6 +10,7 @@ internal sealed interface DesktopSettingsPage {
     data class Search(val entryToken: Long) : DesktopSettingsPage
     data class Category(val category: SettingsRootCategory) : DesktopSettingsPage
     data class Detail(val target: SettingsSearchTarget, val focusId: String?) : DesktopSettingsPage
+    data class CommentFraudHistory(val entryToken: Long) : DesktopSettingsPage
 }
 
 internal data class DesktopSettingsNavigationState(val stack: List<DesktopSettingsPage>) {
@@ -21,6 +22,7 @@ internal class DesktopSettingsNavigator {
     private val mutableState = MutableStateFlow(DesktopSettingsNavigationState(listOf(DesktopSettingsPage.Root)))
     val state = mutableState.asStateFlow()
     private var nextSearchToken = 0L
+    private var nextLocalPageToken = 0L
 
     fun openRoot() {
         SettingsSearchFocusController.clear()
@@ -45,6 +47,11 @@ internal class DesktopSettingsNavigator {
     fun openDetail(target: SettingsSearchTarget, focusId: String?) {
         SettingsSearchFocusController.submit(target, focusId)
         push(DesktopSettingsPage.Detail(target, focusId))
+    }
+
+    fun openCommentFraudHistory() {
+        SettingsSearchFocusController.clear()
+        push(DesktopSettingsPage.CommentFraudHistory(++nextLocalPageToken))
     }
 
     fun openSearchResult(result: SettingsSearchResult) = dispatchDesktopSettingsSearchDestination(

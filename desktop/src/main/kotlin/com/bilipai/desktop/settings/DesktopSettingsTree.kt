@@ -30,6 +30,8 @@ internal fun DesktopSettingsTree(
     playbackContent: @Composable (onDismiss: () -> Unit) -> Unit,
     backupContent: @Composable (target: SettingsSearchTarget, onDismiss: () -> Unit) -> Unit,
     blockedListContent: @Composable () -> Unit,
+    donateContent: @Composable (entry: DesktopSettingsDonateEntry, onDismiss: () -> Unit) -> Unit,
+    commentFraudHistoryContent: @Composable (page: DesktopSettingsPage.CommentFraudHistory, onBack: () -> Unit) -> Unit,
     systemContent: @Composable () -> Unit,
     storageContent: @Composable (target: SettingsSearchTarget?) -> Unit,
     imageSavePathContent: @Composable (openInitially: Boolean) -> Unit = {
@@ -39,13 +41,19 @@ internal fun DesktopSettingsTree(
     val navigation by navigator.state.collectAsState()
     val page = navigation.current
     var boundary by remember { mutableStateOf<String?>(null) }
+    var nextDonateToken by remember { mutableLongStateOf(0L) }
+    var donateEntry by remember { mutableStateOf<DesktopSettingsDonateEntry?>(null) }
+    LaunchedEffect(page) { if (donateEntry?.parentPage !== page) donateEntry = null }
+    DisposableEffect(Unit) { onDispose { donateEntry = null } }
     CompositionLocalProvider(
         LocalAppPreferenceIconTreatment provides AppPreferenceIconTreatment.FILLED,
         LocalAppPreferenceGroupPresentation provides if (isMiuixNonGlassEnabled())
             AppPreferenceGroupPresentation.CARD else AppPreferenceGroupPresentation.FLAT,
     ) {
         AppSurface(Modifier.fillMaxSize()) {
-            if (page is DesktopSettingsPage.Search) {
+            if (page is DesktopSettingsPage.CommentFraudHistory) {
+                commentFraudHistoryContent(page) { navigator.pop() }
+            } else if (page is DesktopSettingsPage.Search) {
                 DesktopSettingsSearchScreen(search, onBack = { navigator.pop() },
                     onCategoryClick = navigator::openCategory,
                     onResultClick = navigator::openSearchResult,
@@ -72,7 +80,13 @@ internal fun DesktopSettingsTree(
                             DesktopSettingsPage.Root -> {
                                 SettingsCategoryHeader("设置")
                                 SettingsRootCategoryListSection(resolveSettingsRootCategoryOrder(), navigator::openCategory,
-                                    onDonateClick = { boundary = "原版赞助页面尚未移植。" })
+                                    onDonateClick = {
+                                        val token = ++nextDonateToken
+                                        val parent = page
+                                        donateEntry = DesktopSettingsDonateEntry(token, parent) {
+                                            donateEntry?.entryToken == token && navigator.state.value.current === parent
+                                        }
+                                    })
                             }
                             is DesktopSettingsPage.Category -> {
                                 SettingsCategoryHeader(page.category.title)
@@ -93,7 +107,7 @@ internal fun DesktopSettingsTree(
                                             onPermissionClick = { navigator.openDetail(SettingsSearchTarget.PERMISSION, null) },
                                             onMessageNotificationClick = { navigator.openDetail(SettingsSearchTarget.MESSAGE_NOTIFICATION, null) },
                                             onBlockedListClick = { navigator.openDetail(SettingsSearchTarget.BLOCKED_LIST, null) },
-                                            onCommentFraudHistoryClick = { boundary = "原版发评反诈历史的记录、复查和导入导出尚未移植。" })
+                                            onCommentFraudHistoryClick = navigator::openCommentFraudHistory)
                                     }
                                     SettingsRootCategory.STORAGE_BACKUP -> {
                                         storageContent(null)
@@ -151,12 +165,15 @@ internal fun DesktopSettingsTree(
                                     else -> AppText("该原版设置页面仍在移植中。", Modifier.padding(12.dp))
                                 }
                             }
-                            is DesktopSettingsPage.Search -> Unit
+                            is DesktopSettingsPage.Search, is DesktopSettingsPage.CommentFraudHistory -> Unit
                         }
                         Spacer(Modifier.height(16.dp))
                     }
                 }
             }
+        }
+        donateEntry?.takeIf { it.parentPage === page }?.let { entry ->
+            donateContent(entry) { if (donateEntry === entry) donateEntry = null }
         }
         boundary?.let { message ->
             AlertDialog(onDismissRequest = { boundary = null }, title = { Text("功能尚未接入") },

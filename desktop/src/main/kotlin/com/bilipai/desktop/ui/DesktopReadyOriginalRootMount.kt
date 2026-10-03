@@ -177,6 +177,18 @@ internal class DesktopReadyOriginalRootHandle(
         handle.route.getAndSet(null)?.close(); handle.messagePages.get()?.close(); handle.spacePages.get()?.close(); handle.retainer.retire()
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch { handle.closeAndJoin() }
     } }
+    // One Window-level observer follows the same global Store on every original route.
+    // Its lifetime is independent of account epoch and the IconSettings source entry.
+    val iconWindowPreferences = remember(handle, services.runtime.context, services.imageLifetime) {
+        DesktopOriginalAppIconPreferences(services.runtime.context,
+            owns = { handleReference.get() === handle && handle.isActive() &&
+                latest.rootAlive() && services.imageLifetime.isActive() && services.actualWindow.isDisplayable },
+            admit = services.imageLifetime::withCommit)
+    }
+    DesktopOriginalAppIconWindowConsumer(iconWindowPreferences, services.actualWindow,
+        owns = { handleReference.get() === handle && handle.isActive() && latest.rootAlive() &&
+            services.imageLifetime.isActive() && services.actualWindow.isDisplayable },
+        onFailure = { failure -> latest.feedback(failure.message ?: "窗口图标更新失败") })
     val onboardingPreferences = remember(services.runtime.context, navigation) { DesktopOriginalOnboardingPreferences(services.runtime.context) }
     var startupStackInstalled by remember(navigation) { mutableStateOf(false) }
     val physicalStack = remember(navigation) { mutableStateListOf<BiliPaiNavKey>().apply { addAll(onboardingPreferences.initialStack()) } }

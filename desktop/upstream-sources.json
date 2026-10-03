@@ -1812,7 +1812,8 @@
         "desktop-full-original-search-root-parity",
         "original-bangumi-player-ui",
         "v025-comment-parity",
-        "desktop-v025-complete-player-parity"
+        "desktop-v025-complete-player-parity",
+        "desktop-whole-icon-settings"
       ],
       "mode": "policy-extract"
     },
@@ -3667,7 +3668,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsViewModel.kt",
       "mode": "policy-extract",
       "features": [
-        "settings-search-parity"
+        "settings-search-parity",
+        "desktop-whole-icon-settings"
       ],
       "sha256": "eda6a70ef0e32386580c96badf27ea808d3a29af08acf2628e3439aecf5ad787"
     },
@@ -3694,7 +3696,9 @@
         "settings-dynamic-tabs-parity",
         "settings-image-save-path-ui",
         "desktop-navigation-interaction-settings",
-        "desktop-storage-cache-settings-owner-parity"
+        "desktop-storage-cache-settings-owner-parity",
+        "desktop-whole-comment-fraud-history",
+        "desktop-whole-original-donate-dialog"
       ],
       "sha256": "e306f73ee7cf49877248eb01063816d50f43f61b47c9d41a52ab372917de54f7"
     },
@@ -3704,7 +3708,9 @@
       "features": [
         "settings-category-ui-parity",
         "settings-image-save-path-ui",
-        "desktop-storage-cache-settings-owner-parity"
+        "desktop-storage-cache-settings-owner-parity",
+        "desktop-whole-comment-fraud-history",
+        "desktop-whole-original-donate-dialog"
       ],
       "sha256": "a683216a92ed0a4079eea64955425da2abcf2f596ae2790e9909f21611a54a1a"
     },
@@ -3800,7 +3806,8 @@
       "mode": "policy-extract",
       "features": [
         "settings-blocked-up",
-        "desktop-whole-static-settings-pages"
+        "desktop-whole-static-settings-pages",
+        "desktop-whole-comment-fraud-history"
       ],
       "sha256": "efd8d810300de3dc98dd2a695fb441b16d13720fbb54ab3a8b9e142ccc185d53"
     },
@@ -5907,7 +5914,8 @@
       "path": "app/src/main/java/com/android/purebilibili/data/model/CommentFraudStatus.kt",
       "mode": "policy-extract",
       "features": [
-        "stable-bgm-native-detail"
+        "stable-bgm-native-detail",
+        "desktop-whole-comment-fraud-history"
       ],
       "sha256": "5fcb0b9edf692cad259031d93e5e789fb6a968c2cee80d3440d8e45c75f50fde"
     },
@@ -5915,7 +5923,8 @@
       "path": "app/src/main/java/com/android/purebilibili/core/database/entity/CommentFraudRecord.kt",
       "mode": "policy-extract",
       "features": [
-        "stable-bgm-native-detail"
+        "stable-bgm-native-detail",
+        "desktop-whole-comment-fraud-history"
       ],
       "sha256": "7af362e688bae215d5fd67d018a2913f4f8a2a32992655e20d1fc5f54e54fee0"
     },
@@ -5931,7 +5940,8 @@
       "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentFraudRepository.kt",
       "mode": "policy-extract",
       "features": [
-        "stable-bgm-native-detail"
+        "stable-bgm-native-detail",
+        "desktop-whole-comment-fraud-history"
       ],
       "sha256": "7b0e6218596e7bbc2fe6672eefb9cc6b5241e6a943c266089460aa83be335951"
     },
@@ -11122,7 +11132,8 @@
       "sha256": "6b69e920307bd0d459a3106ae235eace3b4d3680551c690d9774f6368830d72b",
       "mode": "direct",
       "features": [
-        "desktop-whole-static-settings-pages"
+        "desktop-whole-static-settings-pages",
+        "desktop-whole-original-donate-dialog"
       ]
     },
     {
@@ -11188,6 +11199,30 @@
       "features": [
         "desktop-whole-onboarding"
       ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/CommentFraudHistoryScreen.kt",
+      "sha256": "09bbf5b5d7708db2922348a0c72843c882ac4f01d8953760ad8b20b98717cedf",
+      "features": [
+        "desktop-whole-comment-fraud-history"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/IconSettingsScreen.kt",
+      "sha256": "ea80aa3578bc3af72d1aff852f6bda2ee897404ba7ca68e6936097f928a6388b",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AppIconKeyNormalizer.kt",
+      "sha256": "f6ae33af84e6ef90ed8ef36a5fc5f6c586a0db52e2511fb6966c62714ef90b28",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "mode": "direct"
     }
   ],
   "featureCoverage": {
@@ -11847,7 +11882,8 @@
       "path": "app/src/main/res/drawable/ms_info_24.xml",
       "sha256": "b105df7f824e7eafbd0a73ebc55085134409161d606894c97685ba1cd38cbcc2",
       "features": [
-        "settings-search-symbols"
+        "settings-search-symbols",
+        "desktop-whole-icon-settings"
       ]
     },
     {
@@ -11870,7 +11906,8 @@
       "features": [
         "settings-search-symbols",
         "desktop-full-navigation-settings",
-        "desktop-whole-static-settings-pages"
+        "desktop-whole-static-settings-pages",
+        "desktop-whole-comment-fraud-history"
       ]
     },
     {
@@ -12653,7 +12690,8 @@
     {
       "path": "app/src/main/res/drawable/ms_shield_24.xml",
       "features": [
-        "settings-privacy-symbols"
+        "settings-privacy-symbols",
+        "desktop-whole-comment-fraud-history"
       ],
       "sha256": "2cc7a7bd203321ff547581554c64efacaa1208a818232393c291cbf6ccbbb5ff"
     },
@@ -12803,7 +12841,8 @@
       "path": "app/src/main/res/drawable/ms_keyboard_arrow_down_24.xml",
       "sha256": "25c502082d201a6223f4ab6418918218a864e73f75d1d734984e648c55eccba3",
       "features": [
-        "desktop-full-navigation-settings"
+        "desktop-full-navigation-settings",
+        "desktop-whole-comment-fraud-history"
       ]
     },
     {
@@ -13029,6 +13068,193 @@
       "sha256": "780b3df0c9108861210d916d2510a0c4e89370449232137d621b1e7c6e756d4b",
       "features": [
         "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_file_download_24.xml",
+      "sha256": "0b928b12f6297196976a480ef6d6e10377df6fe8bdce4afb30e7ad2d99437008",
+      "features": [
+        "desktop-whole-comment-fraud-history"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_file_upload_24.xml",
+      "sha256": "5fdca5e4b9e758f9940254494ac614bc1cd66fa364a954319fa120fea9fc9bff",
+      "features": [
+        "desktop-whole-comment-fraud-history"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_delete_sweep_24.xml",
+      "sha256": "4288ae4bc24c88073ff231a47b41b50365c9bb1fd52d03d6da1209a43f01ab74",
+      "features": [
+        "desktop-whole-comment-fraud-history"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/author_qr.jpg",
+      "sha256": "ebd531d83556e51a92fdd5d4d64946f037730416cff44957a8018d063b5bb610",
+      "features": [
+        "desktop-whole-original-donate-dialog"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_close_24.xml",
+      "sha256": "31644025d94b5a5637d75660ebdcb93c398f2620bfc12f7a7a9362965e271288",
+      "features": [
+        "desktop-whole-original-donate-dialog"
+      ]
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_3d_foreground.png",
+      "sha256": "7c099f890a3ad9ad9210768c9412d0de72e952bebf233603a4c6df9eba4d04a8",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_3d_round.png",
+      "sha256": "fc204d7a94f949c94877c3cde244ff813afa37228a3dcb3d39db1e871d68d1f7",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_bilipai_monet_round.png",
+      "sha256": "aa21c22512f44fb7047be35a1751af205445365ce5f0604473fb3e5f5ee1ab27",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_bilipai_pink_round.png",
+      "sha256": "0c52db4a0b1a7981b56434db0a1c8d909af98111cec7a631fab095b877ce69c6",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_bilipai_round.png",
+      "sha256": "37707b402856b9d36ef3a1c84982f42fff8783fe8ce35ca13a5fb0475d90aa86",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_bilipai_white_round.png",
+      "sha256": "bc6381fc21d52498b88858404aa37b503a54d597b8d6dcbed40b4e85c26fe80c",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_blue_snow_maid_announcement_dark_round.png",
+      "sha256": "df4459e107ac755705de197dea856fd35574dd58f5aae95bca24d045ab2fb672",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_blue_snow_maid_announcement_light_round.png",
+      "sha256": "69d27b5e166666cf2c17894ab994d3994605ef26ea1aab2857a4775002ba5464",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_blue_snow_maid_announcement_round.png",
+      "sha256": "69d27b5e166666cf2c17894ab994d3994605ef26ea1aab2857a4775002ba5464",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-night-xxxhdpi/ic_launcher_blue_snow_maid_announcement_round.png",
+      "sha256": "df4459e107ac755705de197dea856fd35574dd58f5aae95bca24d045ab2fb672",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_blue_snow_maid_dark_round.png",
+      "sha256": "15b30fd360203690891e79d3480594045e01cc9065814238c9fe91d74a6abd1c",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_blue_snow_maid_front_dark_round.png",
+      "sha256": "fefd9d26cfd0107e86624e8eac13b8ff85f99f024f8835e0855f779ff053cfdb",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_blue_snow_maid_front_light_round.png",
+      "sha256": "a6f0edb1246f249073e51e1acdb39ab1aa358ad53b3c2a4478413c7b7b33be56",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_blue_snow_maid_front_round.png",
+      "sha256": "a6f0edb1246f249073e51e1acdb39ab1aa358ad53b3c2a4478413c7b7b33be56",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-night-xxxhdpi/ic_launcher_blue_snow_maid_front_round.png",
+      "sha256": "fefd9d26cfd0107e86624e8eac13b8ff85f99f024f8835e0855f779ff053cfdb",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_blue_snow_maid_light_round.png",
+      "sha256": "061c0dc4d6f21165e5aedf21d957b279573d3d43f395cb024be5422d7d04bcaf",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-xxxhdpi/ic_launcher_blue_snow_maid_round.png",
+      "sha256": "061c0dc4d6f21165e5aedf21d957b279573d3d43f395cb024be5422d7d04bcaf",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/mipmap-night-xxxhdpi/ic_launcher_blue_snow_maid_round.png",
+      "sha256": "15b30fd360203690891e79d3480594045e01cc9065814238c9fe91d74a6abd1c",
+      "features": [
+        "desktop-whole-icon-settings"
+      ],
+      "hashNormalization": "raw"
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_check_circle_fill_24.xml",
+      "sha256": "8323deed996998c054e7de6ddab910286661ac44cf2a202144ef2d411bdc164e",
+      "features": [
+        "desktop-whole-icon-settings"
       ]
     }
   ],
