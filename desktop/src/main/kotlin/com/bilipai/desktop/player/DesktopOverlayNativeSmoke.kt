@@ -59,7 +59,9 @@ internal object DesktopOverlayNativeSmoke {
             ImageIO.write(baseline, "png", File(outputDirectory, "native-overlay-before.png"))
             check(red(baseline) < 20 && blue(baseline) < 20) { "The local native fixture already contains the overlay's proof colors." }
             SwingUtilities.invokeAndWait {
-                overlay.applySettings(DanmakuSettings(opacity = 1f, fontScale = 1.5f, strokeEnabled = false, staticDurationSeconds = 20f))
+                // Original top/bottom layers have zero tracks when the row budget is <= 4.
+                // Use a full-height budget for this fixed-top native pixel fixture.
+                overlay.applySettings(DanmakuSettings(opacity = 1f, fontScale = 1.5f, displayAreaRatio = 1f, strokeEnabled = false, staticDurationSeconds = 20f))
                 overlay.setDocument(DanmakuParser.parseDocument("<i><d p=\"0,5,40,16711680,0,0,fixture,77\">NATIVE DANMAKU PROOF</d></i>"))
             }
             ImageIO.write(waitImage("XML danmaku above D3D11") { red(it) > 100 }, "png", File(outputDirectory, "native-danmaku-overlay.png"))
