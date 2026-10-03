@@ -218,7 +218,8 @@
       "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/AicuModels.kt",
       "sha256": "662e875cfe1543d8f3117c39565a29ee1cbd3cfc8a2d84e2ffa4f0f2dd1e89cc",
       "features": [
-        "source-parity"
+        "source-parity",
+        "desktop-full-original-aicu-root-parity"
       ],
       "mode": "direct"
     },
@@ -5082,7 +5083,8 @@
         "stable-bgm-native-detail",
         "stable-comment-fraud-protocol",
         "stable-video-original-comments",
-        "bgm-original-emote-requests"
+        "bgm-original-emote-requests",
+        "desktop-full-original-aicu-root-parity"
       ],
       "sha256": "1da1505d0ec3be32726ff5aacf462a1ee864be945283c7846b635cd6939cc9f4"
     },
@@ -5254,9 +5256,10 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuNavigationPolicy.kt",
       "sha256": "0001fbdf81eb2a438935c898ae3d6f61760737ddeb8e71d895c176fd3a4ed160",
-      "mode": "selected",
+      "mode": "direct",
       "features": [
-        "dynamic-detail-reply"
+        "dynamic-detail-reply",
+        "desktop-full-original-aicu-root-parity"
       ]
     },
     {
@@ -7036,9 +7039,10 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/onboarding/UserAgreementPolicy.kt",
       "sha256": "c2889de37dcf966bbcc10195ebcb10083aba619ff590de8f856b3f0a6e252645",
-      "mode": "policy-extract",
+      "mode": "direct",
       "features": [
-        "home-page"
+        "home-page",
+        "desktop-whole-onboarding"
       ]
     },
     {
@@ -7813,7 +7817,8 @@
       "sha256": "f0e2d00adaac936b63824d77fb76e144eb0511e0208e9a93f9d4fd95deb4d54a",
       "mode": "direct",
       "features": [
-        "stable-navigation3-host"
+        "stable-navigation3-host",
+        "desktop-whole-onboarding"
       ]
     },
     {
@@ -11118,6 +11123,70 @@
       "mode": "direct",
       "features": [
         "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuConsentPolicy.kt",
+      "sha256": "97b886f1573975a30559f712e33d930f406f3b6508e0654539a133a28c81fc01",
+      "mode": "direct",
+      "features": [
+        "desktop-full-original-aicu-root-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AicuConsentStore.kt",
+      "sha256": "69bdd269093859957ead3d5754512cea6692fbfdedc2f72b41283ff88b6c948e",
+      "mode": "platform-adapted",
+      "features": [
+        "desktop-full-original-aicu-root-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuViewModel.kt",
+      "sha256": "fe0542391baa3e752f15f0ae5476d66c1da7d852eb85a772f94f869eac750ad6",
+      "mode": "platform-adapted",
+      "features": [
+        "desktop-full-original-aicu-root-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuScreen.kt",
+      "sha256": "a1cb7edacc5a5046addf2ee914e2a7ca7ff3c091693bb24d5afd4019c8d9b601",
+      "mode": "platform-adapted",
+      "features": [
+        "desktop-full-original-aicu-root-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/AicuRepository.kt",
+      "sha256": "08d6932db3e63d966c5d71ab7a774b1a71f0a04f9cada0a3addc9bdf7fdb2abf",
+      "mode": "direct",
+      "features": [
+        "desktop-full-original-aicu-root-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/AicuResponsePolicy.kt",
+      "sha256": "dbad9d9eec41d0b912af06b8d40ac7ae79391a5e6b52f0b782f5f898935acf09",
+      "mode": "direct",
+      "features": [
+        "desktop-full-original-aicu-root-parity"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/onboarding/OnboardingScreen.kt",
+      "sha256": "73f062726925c6f242f335702f9c1054e65dd948dffc0339515cd986a91c4cbb",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-onboarding"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/policy/ReleaseChannelDisclaimer.kt",
+      "sha256": "403f208a9d7da546f0288bd819045f00fb33fa3a46e8acf606dfb411192f0f7a",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-onboarding"
       ]
     }
   ],

@@ -396,11 +396,13 @@ import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import com.bilipai.desktop.ui.LocalDesktopCommentBindings
 @Composable
 ''' + body, 'DesktopOriginalReplyClipboard.kt')
-    path = BASE + 'feature/aicu/AicuNavigationPolicy.kt'
-    original = read(repo, path)
-    body = appearance.declarations(parser, original, ['LocalAicuNavigation'])
-    emit(path, 'package com.android.purebilibili.feature.aicu\nimport androidx.compose.runtime.staticCompositionLocalOf\n' + body,
-         'DesktopOriginalReplyAicuNavigation.kt')
+    # Full AicuNavigationPolicy is mode=direct; prepareUpstreamSources is its sole producer.
+    legacy_aicu=output/'com/android/purebilibili/feature/aicu/DesktopOriginalReplyAicuNavigation.kt'
+    if legacy_aicu.exists():
+        import hashlib
+        assert not legacy_aicu.is_symlink() and legacy_aicu.resolve().is_relative_to(output.resolve())
+        assert hashlib.sha256(legacy_aicu.read_bytes().replace(b"\r\n",b"\n")).hexdigest()=="62516206102de9ff99b64c6228e2360cfda7830f4a2751d4608a27dac48a934c"
+        legacy_aicu.unlink()
     path = BASE + 'feature/dynamic/DynamicDetailScreen.kt'
     original = read(repo, path)
     begin = original.index('                val commentContent:')

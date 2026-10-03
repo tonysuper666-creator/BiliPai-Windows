@@ -177,7 +177,9 @@ internal class DesktopReadyOriginalRootHandle(
         handle.route.getAndSet(null)?.close(); handle.messagePages.get()?.close(); handle.spacePages.get()?.close(); handle.retainer.retire()
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch { handle.closeAndJoin() }
     } }
-    val physicalStack = remember(navigation) { mutableStateListOf<BiliPaiNavKey>(BiliPaiNavKey.MainHost) }
+    val onboardingPreferences = remember(services.runtime.context, navigation) { DesktopOriginalOnboardingPreferences(services.runtime.context) }
+    var startupStackInstalled by remember(navigation) { mutableStateOf(false) }
+    val physicalStack = remember(navigation) { mutableStateListOf<BiliPaiNavKey>().apply { addAll(onboardingPreferences.initialStack()) } }
     val homeScroll = remember(navigation) { Channel<HomeScrollRequest>(Channel.CONFLATED) }
     val profileScroll = remember(navigation) { Channel<Unit>(Channel.CONFLATED) }
     val liveScroll = remember(navigation) { Channel<Unit>(Channel.CONFLATED) }
@@ -242,8 +244,10 @@ internal class DesktopReadyOriginalRootHandle(
             handle.route.getAndSet(null)?.close()
             handle.messagePages.getAndSet(null)?.closeAndJoin()
             handle.spacePages.getAndSet(null)?.closeAndJoin()
-            physicalStack.clear(); physicalStack.add(BiliPaiNavKey.MainHost)
+            val nextInitialStack = onboardingPreferences.initialStack(includeStartupPortraitFeed = !startupStackInstalled)
+            androidx.compose.runtime.snapshots.Snapshot.withMutableSnapshot { physicalStack.clear(); physicalStack.addAll(nextInitialStack) }
             handle.retainer.install(epoch, account?.mid, factory.factory)
+            startupStackInstalled = true
             installFailure = null
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) { installFailure = "首页资料初始化失败，请重试" }
@@ -420,7 +424,10 @@ internal class DesktopReadyOriginalRootHandle(
             services.originalVideoWindowReady(originalVideoWindow)
             onDispose { services.originalVideoWindowRetired(originalVideoWindow) }
         }
-        CompositionLocalProvider(LocalDesktopOriginalVideoRootWindowEnvironment provides originalVideoWindow,
+        CompositionLocalProvider(LocalDesktopOriginalOnboardingPreferences provides onboardingPreferences,
+            com.android.purebilibili.feature.aicu.LocalAicuNavigation provides { uid: Long? ->
+            if (routes.owns()) routes.push(BiliPaiNavKey.AicuQuery(uid = uid ?: 0L))
+        }, LocalDesktopOriginalVideoRootWindowEnvironment provides originalVideoWindow,
             LocalDesktopOriginalSearchRoot provides originalSearch,
             LocalVideoSharedTransitionSpeedSettings provides speedSettings,
             LocalVideoTransitionAdaptiveInfo provides adaptiveTransition,

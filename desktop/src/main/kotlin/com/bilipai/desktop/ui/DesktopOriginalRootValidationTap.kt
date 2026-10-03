@@ -38,6 +38,11 @@ internal object DesktopOriginalRootValidationTap {
         handle: DesktopReadyOriginalRootHandle, routes: DesktopOriginalRootRouteAssembly) {
         val callback = observer.get() ?: return
         if (!handle.isActive() || !routes.owns() || handle.route.get() !== routes) return
+        // Retained pages can draw during transitions after their captured active flag changes.
+        // A pager page belongs to the physical MainHost; every other page must be the stack top.
+        if (pagerHosted) {
+            if (routes.currentKey != BiliPaiNavKey.MainHost) return
+        } else if (routes.currentKey != key) return
         callback(Frame(serial.incrementAndGet(), key, pagerHosted, handle, routes))
     }
 }

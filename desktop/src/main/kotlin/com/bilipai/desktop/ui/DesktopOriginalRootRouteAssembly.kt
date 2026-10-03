@@ -107,6 +107,23 @@ internal class DesktopOriginalRootRouteAssembly(
         return accepted && replaced
     }
 
+    /** Original Onboarding completion replaces the actual stack only after durable ACK. */
+    fun completeOnboarding(openPortraitFeedOnStartup: Boolean): Boolean {
+        if (currentKey != BiliPaiNavKey.Onboarding) return false
+        var replaced = false
+        val accepted = admitted {
+            if (currentKey == BiliPaiNavKey.Onboarding) {
+                replaceStack(resolveInitialBiliPaiBackStack(
+                    firstRoute = com.android.purebilibili.navigation.ScreenRoutes.Home.route,
+                    onboardingRequired = false,
+                    openPortraitFeedOnStartup = openPortraitFeedOnStartup,
+                ))
+                replaced = true
+            }
+        }
+        return accepted && replaced
+    }
+
     override fun home(): Boolean = push(BiliPaiNavKey.Home)
 
     /** Exact stable AppNavigation portrait replacement (3061–3086). decorate

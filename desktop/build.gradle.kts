@@ -1748,6 +1748,7 @@ dependencies {
     implementation("com.belerweb:pinyin4j:2.5.0")
     implementation("org.brotli:dec:0.1.2")
     testImplementation(kotlin("test-junit5"))
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
@@ -1850,6 +1851,23 @@ tasks.register<JavaExec>("originalStaticSettingsUiSmoke") {
         args(requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
             requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
             requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
+    }
+}
+
+tasks.register<JavaExec>("originalAicuRootUiSmoke") {
+    group = "verification"
+    description = "Exercise the original Aicu consent and filter UI through unchanged Main and its owned live Root."
+    dependsOn("testClasses", "classes", prepareJsWorkerResources)
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalAicuRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    providers.gradleProperty("rootValidationToken").orNull?.let { systemProperty("bilipai.rootValidationToken", it) }
+    doFirst {
+        args(requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationToken").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationPhase").orNull))
     }
 }
 
@@ -2382,6 +2400,23 @@ val extractOriginalCdnTransfer by tasks.registering(Exec::class) {
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-cdn-transfer")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalCdnTransfer) }
 
+
+// Full original Aicu closure. Direct repository/policies/nav/models have one Sync producer.
+val extractOriginalAicu by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-aicu.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-aicu").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-aicu.py", "tools/upstream-aicu-adaptations.json", "tools/sync-upstream.py", "tools/extract-upstream-media.py", sourceManifest)
+    inputs.files(canonicalOriginalHelperFile, canonicalOriginalCatalogFile)
+    inputs.files(sources.filter { "desktop-full-original-aicu-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-aicu"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-aicu")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalAicu) }
+
 // Canonical locator/catalog are explicit inputs of every original-source producer
 // and verifier, including consumers through existing imported producer helpers.
 val canonicalOriginalInputTasks = setOf(
@@ -2600,3 +2635,25 @@ val verifyJsDomParserDependency by tasks.registering {
     }
 }
 tasks.named("compileKotlin") { dependsOn(verifyJsDomParserDependency) }
+
+// Root merges this independent task; no source, classpath, native or renderer overrides.
+tasks.register<JavaExec>("originalOnboardingUiSmoke") {
+    group = "verification"
+    description = "Exercise mandatory original agreement through the actual Main and owned Window."
+    dependsOn("testClasses", "classes", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalOnboardingUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    providers.gradleProperty("rootValidationToken").orNull?.let {
+        systemProperty("bilipai.rootValidationToken", it)
+    }
+    doFirst {
+        val mode = requireNotNull(providers.gradleProperty("rootValidationMode").orNull)
+        args(mode,
+            requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
+        if (mode == "deep-link") args(requireNotNull(providers.gradleProperty("rootValidationBvid").orNull))
+    }
+}

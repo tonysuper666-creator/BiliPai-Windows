@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "feature": "desktop-full-original-aicu-root-parity",
+  "recipes": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/AicuConsentStore.kt",
+      "output": "com/android/purebilibili/core/store/AicuConsentStore.kt",
+      "sha256": "69bdd269093859957ead3d5754512cea6692fbfdedc2f72b41283ff88b6c948e",
+      "resultSha256": "f59385bc71920f0d021b57ff4801f36ef4f43726ea65ecb634edccff2ab53dfe",
+      "hunks": [
+        {
+          "offset": 45,
+          "before": "import android.content.Context",
+          "after": "import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context",
+          "reason": "Same Root global settings backing and ownership admission."
+        },
+        {
+          "offset": 123,
+          "before": "import androidx.datastore.preferences.core.edit\n",
+          "after": "",
+          "reason": "Existing real settings facade exposes edit as a member."
+        },
+        {
+          "offset": 123,
+          "before": "import androidx.datastore.preferences.core.intPreferencesKey",
+          "after": "import com.bilipai.desktop.ui.playerIntPreferencesKey as intPreferencesKey",
+          "reason": "Preserve original integer key/zero default/version semantics."
+        },
+        {
+          "offset": 419,
+          "before": "private val appContext = context.applicationContext",
+          "after": "private val appContext = context",
+          "reason": "Windows context already belongs to the retained Root settings owner."
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuViewModel.kt",
+      "output": "com/android/purebilibili/feature/aicu/AicuViewModel.kt",
+      "sha256": "fe0542391baa3e752f15f0ae5476d66c1da7d852eb85a772f94f869eac750ad6",
+      "resultSha256": "2739160416d957ee3f6206da5b6d0b695439c6a9cf9792e43a399df3efaa7b27",
+      "hunks": [
+        {
+          "offset": 47,
+          "before": "import android.os.SystemClock",
+          "after": "import com.bilipai.desktop.ui.DesktopHomeClock as SystemClock",
+          "reason": "Real monotonic System.nanoTime clock; every original ViewModel statement unchanged."
+        }
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuScreen.kt",
+      "output": "com/android/purebilibili/feature/aicu/AicuScreen.kt",
+      "sha256": "a1cb7edacc5a5046addf2ee914e2a7ca7ff3c091693bb24d5afd4019c8d9b601",
+      "resultSha256": "c1df43d1c7bd5cc2c9156921d7d375f25c589ad7e7fe39eecc03e012f1bdd4da",
+      "hunks": [
+        {
+          "offset": 47,
+          "before": "import android.content.ClipData\nimport android.content.ClipboardManager\nimport android.content.Context\nimport android.os.Build\n",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopAicuBindings\nimport com.bilipai.desktop.ui.LocalDesktopDetailForeground\nimport com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported\n",
+          "reason": "Actual Windows clipboard, settings and physical render-effect capability."
+        },
+        {
+          "offset": 227,
+          "before": "import androidx.activity.compose.BackHandler",
+          "after": "import com.android.purebilibili.core.ui.LocalNavigationBackHandler",
+          "reason": "Existing original navigation event dispatcher."
+        },
+        {
+          "offset": 1200,
+          "before": "import androidx.compose.ui.platform.LocalContext\n",
+          "after": "",
+          "reason": "No Android context on desktop."
+        },
+        {
+          "offset": 1906,
+          "before": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "after": "",
+          "reason": "Use the exact Root home-settings StateFlow."
+        },
+        {
+          "offset": 2313,
+          "before": "import com.android.purebilibili.data.repository.CommentRepository\n",
+          "after": "",
+          "reason": "Original emote-map method is bound to existing owned original emote-package request."
+        },
+        {
+          "offset": 2799,
+          "before": "val context = LocalContext.current",
+          "after": "val context = LocalDesktopAicuBindings.current\n    val foreground = LocalDesktopDetailForeground.current",
+          "reason": "Fail closed unless actual Root bindings and foreground are mounted."
+        },
+        {
+          "offset": 2922,
+          "before": "remember(context.applicationContext)",
+          "after": "remember(context.settingsContext)",
+          "reason": "Original per-entry factory retains the same real NavDisplay ViewModelStore."
+        },
+        {
+          "offset": 3207,
+          "before": "DataStoreAicuConsentStore(context)",
+          "after": "DataStoreAicuConsentStore(context.settingsContext)",
+          "reason": "No second preference document or credential store."
+        },
+        {
+          "offset": 3715,
+          "before": "SettingsManager.getHomeSettings(context)",
+          "after": "context.homeSettings",
+          "reason": "Root owns decoded original global HomeSettings."
+        },
+        {
+          "offset": 3915,
+          "before": "LaunchedEffect(model, uid, initialCategory) { model.initialize(uid, initialCategory) }",
+          "after": "LaunchedEffect(model, uid, initialCategory) {\n        model.setForeground(foreground && owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED))\n        model.initialize(uid, initialCategory)\n    }",
+          "reason": "Establish actual visibility before original consent initialization can auto-query."
+        },
+        {
+          "offset": 4249,
+          "before": "emoteMap = CommentRepository.getEmoteMap()",
+          "after": "emoteMap = context.emoteMap()",
+          "reason": "Same complete original getEmoteMap via existing real owned Bili API; never Aicu cookie sharing."
+        },
+        {
+          "offset": 4299,
+          "before": "LaunchedEffect(owner, model, state.consent) {\n        model.setDisclaimerVisible(owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED))",
+          "after": "LaunchedEffect(owner, model, state.consent, foreground) {\n        model.setDisclaimerVisible(foreground && owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED))",
+          "reason": "Covered or hidden physical window must not accumulate the five-second timer."
+        },
+        {
+          "offset": 4481,
+          "before": "DisposableEffect(owner, model) {",
+          "after": "DisposableEffect(owner, model, foreground) {",
+          "reason": "React to actual leaf/window visibility as well as original per-entry lifecycle."
+        },
+        {
+          "offset": 4571,
+          "before": "val visible = owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)",
+          "after": "val visible = foreground && owner.lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED)",
+          "reason": "Original foreground false cancels query and visible timer."
+        },
+        {
+          "offset": 5247,
+          "before": "BackHandler(onBack = back)",
+          "after": "LocalNavigationBackHandler(enabled = foreground, onBackCompleted = back)",
+          "reason": "Original completed-back action and leave() on real entry dispatcher."
+        },
+        {
+          "offset": 6689,
+          "before": "(context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager)\n                .setPrimaryClip(ClipData.newPlainText(\"查询记录\", text))",
+          "after": "context.copyText(text)",
+          "reason": "Preserve complete original record-copy payload; report actual OS failure."
+        },
+        {
+          "offset": 16930,
+          "before": "shouldUseAicuLiquidTabs(liquidEnabled, Build.VERSION.SDK_INT, maxWidth.value, fontScale, hasBackdrop = true)",
+          "after": "shouldUseDesktopAicuLiquidTabs(liquidEnabled, desktopDetailRenderEffectsSupported(), maxWidth.value, fontScale, hasBackdrop = true)",
+          "reason": "Android SDK test becomes actual graphics capability; all original width/font/backdrop gates retained."
+        },
+        {
+          "offset": 20717,
+          "before": "shouldUseAicuLiquidTabs(\n            enabled = liquidEnabled,\n            sdkInt = Build.VERSION.SDK_INT,",
+          "after": "shouldUseDesktopAicuLiquidTabs(\n            enabled = liquidEnabled,\n            renderEffectsSupported = desktopDetailRenderEffectsSupported(),",
+          "reason": "Same actual graphics capability for the comment-mode dock."
+        },
+        {
+          "offset": 1623,
+          "before": "import androidx.lifecycle.ViewModelProvider\n",
+          "after": "import androidx.lifecycle.ViewModelProvider\nimport androidx.lifecycle.viewmodel.CreationExtras\nimport kotlin.reflect.KClass\n",
+          "reason": "Pinned desktop Lifecycle 2.11.0 Factory uses common KClass and CreationExtras."
+        },
+        {
+          "offset": 3135,
+          "before": "override fun <T : ViewModel> create(modelClass: Class<T>): T =",
+          "after": "override fun <T : ViewModel> create(modelClass: KClass<T>, extras: CreationExtras): T =",
+          "reason": "Match the actual desktop Factory override; retain original constructor, NavDisplay owner and viewModel(factory) call."
+        },
+        {
+          "offset": 13961,
+          "before": "if (state.consent == AicuConsentState.REQUIRED) {",
+          "after": "if (LocalDesktopDetailForeground.current && state.consent == AicuConsentState.REQUIRED) {",
+          "reason": "Only compose the original Aicu dialog on its actual foreground Windows leaf; preserve complete dialog payload and retained state."
+        },
+        {
+          "offset": 14165,
+          "before": "} else if (showInformation) {",
+          "after": "} else if (LocalDesktopDetailForeground.current && showInformation) {",
+          "reason": "Only compose the original Aicu dialog on its actual foreground Windows leaf; preserve complete dialog payload and retained state."
+        },
+        {
+          "offset": 14750,
+          "before": "if (showTrending) {",
+          "after": "if (LocalDesktopDetailForeground.current && showTrending) {",
+          "reason": "Only compose the original Aicu dialog on its actual foreground Windows leaf; preserve complete dialog payload and retained state."
+        }
+      ]
+    }
+  ],
+  "extractions": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/aicu/AicuConsentPolicy.kt",
+      "sourceSha256": "97b886f1573975a30559f712e33d930f406f3b6508e0654539a133a28c81fc01",
+      "original": "internal fun shouldUseAicuLiquidTabs(\n    enabled: Boolean, sdkInt: Int, availableWidthDp: Float, fontScale: Float, hasBackdrop: Boolean,\n): Boolean = enabled && sdkInt >= 33 && hasBackdrop && fontScale <= 1.3f &&\n    availableWidthDp >= 300f * fontScale.coerceAtLeast(1f)\n",
+      "adapted": "internal fun shouldUseDesktopAicuLiquidTabs(\n    enabled: Boolean, renderEffectsSupported: Boolean, availableWidthDp: Float, fontScale: Float, hasBackdrop: Boolean,\n): Boolean = enabled && renderEffectsSupported && hasBackdrop && fontScale <= 1.3f &&\n    availableWidthDp >= 300f * fontScale.coerceAtLeast(1f)\n",
+      "changes": [
+        [
+          "shouldUseAicuLiquidTabs",
+          "shouldUseDesktopAicuLiquidTabs"
+        ],
+        [
+          "sdkInt: Int",
+          "renderEffectsSupported: Boolean"
+        ],
+        [
+          "sdkInt >= 33",
+          "renderEffectsSupported"
+        ]
+      ],
+      "output": "com/android/purebilibili/feature/aicu/DesktopAicuLiquidPolicy.kt",
+      "prefix": "package com.android.purebilibili.feature.aicu\n\n"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt",
+      "sourceSha256": "1da1505d0ec3be32726ff5aacf462a1ee864be945283c7846b635cd6939cc9f4",
+      "original": "    suspend fun getEmoteMap(): Map<String, String> = withContext(Dispatchers.IO) {\n        val map = mutableMapOf<String, String>()\n        // 默认表情\n        map[\"[doge]\"] = \"http://i0.hdslb.com/bfs/emote/6f8743c3c13009f4705307b2750e32f5068225e3.png\"\n        map[\"[笑哭]\"] = \"http://i0.hdslb.com/bfs/emote/500b63b2f293309a909403a746566fdd6104d498.png\"\n        map[\"[妙啊]\"] = \"http://i0.hdslb.com/bfs/emote/03c39c8eb009f63568971032b49c716259c72441.png\"\n        getEmotePackages().getOrNull()?.forEach { pkg ->\n            pkg.emote?.forEach { emote -> map[emote.text] = emote.url }\n        }\n        map\n    }",
+      "adapted": "    suspend fun getEmoteMap(): Map<String, String> = withContext(Dispatchers.IO) {\n        val map = mutableMapOf<String, String>()\n        // 默认表情\n        map[\"[doge]\"] = \"http://i0.hdslb.com/bfs/emote/6f8743c3c13009f4705307b2750e32f5068225e3.png\"\n        map[\"[笑哭]\"] = \"http://i0.hdslb.com/bfs/emote/500b63b2f293309a909403a746566fdd6104d498.png\"\n        map[\"[妙啊]\"] = \"http://i0.hdslb.com/bfs/emote/03c39c8eb009f63568971032b49c716259c72441.png\"\n        getEmotePackages().getOrNull()?.forEach { pkg ->\n            pkg.emote?.forEach { emote -> map[emote.text] = emote.url }\n        }\n        map\n    }",
+      "changes": [],
+      "output": "com/bilipai/desktop/ui/DesktopOriginalAicuEmotes.kt",
+      "prefix": "package com.bilipai.desktop.ui\nimport com.android.purebilibili.data.model.response.EmotePackage\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.withContext\n/** Complete original CommentRepository.getEmoteMap; packages use the existing owned original API. */\ninternal class DesktopOriginalAicuEmotes(private val getEmotePackages: suspend () -> Result<List<EmotePackage>>) {\n",
+      "suffix": "\n}\n"
+    }
+  ]
+}

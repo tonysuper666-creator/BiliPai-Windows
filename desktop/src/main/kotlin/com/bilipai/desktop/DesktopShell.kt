@@ -1493,7 +1493,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     { destination -> if(physicalDestination!=destination) playerFocused=false
                         physicalDestination=destination;section=desktopReadySection(destination)
                         showVideo=destination is BiliPaiNavKey.VideoDetail
-                        if(!initialVideoConsumed && initialVideo!=null) {
+                        if(destination != BiliPaiNavKey.Onboarding && !initialVideoConsumed && initialVideo!=null) {
                             initialVideoConsumed=true;rootRoutes()?.video(BiliPaiNavKey.VideoDetail(initialVideo,sourceRoute="home"))
                         } },
                     {error=it}, {raw->openDynamicWeb(raw,"链接")},
@@ -1570,6 +1570,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }
                         Box(Modifier.weight(1f).fillMaxWidth()) {
                         when {
+                            entryKey == BiliPaiNavKey.Onboarding ->
+                                DesktopOriginalOnboardingRootHost(messageRoutes, active, onDisagree = onExit)
+                            entryKey is BiliPaiNavKey.AicuQuery ->
+                                DesktopDetailWindow { DesktopOriginalAicuRootHost(entryKey, messageRoutes, services.repository) }
                             entryKey is BiliPaiNavKey.Space || entryKey is BiliPaiNavKey.UpowerRank || entryKey is BiliPaiNavKey.MemberGuard ->
                                 DesktopDetailWindow { DesktopOriginalSpacePageRootHost(entryKey, spacePages,
                                     services.originalSpacePlaylist, services.originalSpaceCachedPosition,

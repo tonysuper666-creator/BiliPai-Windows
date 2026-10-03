@@ -91,7 +91,15 @@ object OriginalStaticSettingsUiFixture {
                     // Accessibility can expose text while its original entrance/route animation is still transparent.
                     Thread.sleep(1800)
                     val settled = requireNotNull(latest.get())
-                    check(settled.key == key && settled.handle === observation.handle && settled.routes.owns())
+                    if (!(settled.key == key && settled.handle === observation.handle && settled.routes.owns())) {
+                        val diagnostic = "wanted=$key; observed=${observation.key}; settled=${settled.key}; " +
+                            "sameHandle=${settled.handle === observation.handle}; active=${settled.handle.isActive()}; " +
+                            "owns=${settled.routes.owns()}; routesCurrent=${settled.routes.currentKey}; " +
+                            "stack=${settled.routes.stack.joinToString()}"
+                        Files.writeString(report.resolve("$id-settled-failure.txt"), diagnostic)
+                        EventQueue.invokeAndWait { capture("$id-unexpected-diagnostic", "") }
+                        error("Original page changed before acceptance: $diagnostic")
+                    }
                     EventQueue.invokeAndWait { capture(id, anchor) }
                     return settled
                 }
@@ -142,6 +150,42 @@ object OriginalStaticSettingsUiFixture {
         error("Original list did not scroll to its last item: $anchor")
     }
 
+    private fun dismissOriginalDiagnosticPrompt(home: DesktopOriginalRootValidationTap.Frame) {
+        val deadline = System.nanoTime() + Duration.ofSeconds(15).toNanos()
+        while (System.nanoTime() < deadline) {
+            var shown = false
+            EventQueue.invokeAndWait {
+                check(home.handle.isActive() && home.routes.owns() && home.key == BiliPaiNavKey.Home &&
+                    home.pagerHosted && home.routes.currentKey == BiliPaiNavKey.MainHost) {
+                    "Expected the actual Home tab inside the original MainHost: ${home.key} / ${home.routes.currentKey}"
+                }
+                val names = accessible().map { it.accessibleName.orEmpty() }
+                shown = names.any { it == "帮助改进应用" } &&
+                    names.any { it.contains("Windows 版本仅在本地保存脱敏的基础错误与崩溃快照") } &&
+                    names.any { it.contains("关闭后不保留增强日志；基础错误与崩溃快照仍保留") }
+                if (shown) {
+                    capture("home-diagnostic-original-default", "帮助改进应用")
+                    val confirms = accessible().filter { it.accessibleName == "确定" &&
+                        (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
+                    check(confirms.size == 1) { "Expected one original diagnostic confirm: ${confirms.size}" }
+                    check(confirms.single().accessibleStateSet.contains(javax.accessibility.AccessibleState.ENABLED))
+                    check(confirms.single().accessibleAction.doAccessibleAction(0))
+                }
+            }
+            if (shown) {
+                while (System.nanoTime() < deadline) {
+                    var dismissed = false
+                    EventQueue.invokeAndWait { dismissed = accessible().none { it.accessibleName == "帮助改进应用" } }
+                    if (dismissed) return
+                    Thread.sleep(100)
+                }
+                error("Original diagnostic confirm did not dismiss its prompt")
+            }
+            Thread.sleep(100)
+        }
+        error("Actual first-Home diagnostic prompt did not appear")
+    }
+
     @JvmStatic fun main(args: Array<String>) {
         require(args.size == 3)
         report = Path.of(args[0]).toRealPath()
@@ -150,7 +194,17 @@ object OriginalStaticSettingsUiFixture {
         DesktopOriginalRootValidationTap.install { latest.set(it) }.use {
             val observer = Thread({
                 try {
-                    val initial = awaitPage(BiliPaiNavKey.Home, 0, "推荐", "000-home")
+                    val agreementHome = OriginalOnboardingUiActions(latest::get, report, token).acceptFreshAgreementToHome(health)
+                    dismissOriginalDiagnosticPrompt(agreementHome)
+                    // Dismissing a dialog need not redraw the retained Home page or change its route.
+                    Thread.sleep(1800)
+                    val initial = requireNotNull(latest.get())
+                    check(initial.key == BiliPaiNavKey.Home && initial.handle === agreementHome.handle &&
+                        initial.routes === agreementHome.routes && initial.handle.isActive() && initial.routes.owns())
+                    EventQueue.invokeAndWait {
+                        check(accessible().none { it.accessibleName == "帮助改进应用" })
+                        capture("home-after-diagnostic", "推荐")
+                    }
                     val healthDeadline = System.nanoTime() + Duration.ofSeconds(10).toNanos()
                     while (!Files.isRegularFile(health)) {
                         check(System.nanoTime() < healthDeadline) { "Actual startup health acknowledgement timed out" }
