@@ -60,6 +60,7 @@ app/release/
 .worktrees/
 *.ai.md
 *.txt
+!desktop/src/main/resources/licenses/jsoup-1.21.2/LICENSE.txt
 !/desktop/third-party/ffmpeg/licenses/libplacebo-jinja-LICENSE.txt
 !/desktop/third-party/ffmpeg/licenses/libplacebo-markupsafe-LICENSE.txt
 bilipai_log_*.txt

@@ -1,6 +1,10 @@
 # Pinned native dependency licenses are checked by SHA-256 as original bytes.
 # v0.2.5 catalog and raw upstream text pins retain their exact checkout bytes.
 desktop/tools/v025-canonical-sources.json -text
+desktop/third-party/graaljs/artifacts.lock.json -text
+desktop/third-party/graaljs/runtime.lock.json -text
+desktop/third-party/graaljs/catalog.json -text
+desktop/src/main/resources/licenses/jsoup-1.21.2/** -text
 "app/src/main/java/com/android/purebilibili/feature/onboarding/# 视频基本信息" -text
 app/src/main/res/raw/thanos_fragment.glsl -text
 app/src/main/res/raw/thanos_vertex.glsl -text
