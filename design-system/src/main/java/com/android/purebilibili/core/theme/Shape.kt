@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.ui.AppShapeTokens
 
 /**
  * CompositionLocal 提供当前 Android 原生主题的圆角缩放比例。
@@ -20,11 +21,11 @@ val LocalCornerRadiusScale = staticCompositionLocalOf { 1f }
  * - extraLarge 28 与胶囊 token 一致。
  */
 val Md3Shapes = Shapes(
-    extraSmall = RoundedCornerShape(4.dp),
-    small = RoundedCornerShape(8.dp),
-    medium = RoundedCornerShape(16.dp),
-    large = RoundedCornerShape(24.dp),
-    extraLarge = RoundedCornerShape(28.dp)
+    extraSmall = RoundedCornerShape(AppShapeTokens.MaterialExtraSmall),
+    small = RoundedCornerShape(AppShapeTokens.MaterialSmall),
+    medium = RoundedCornerShape(AppShapeTokens.MaterialMedium),
+    large = RoundedCornerShape(AppShapeTokens.MaterialLarge),
+    extraLarge = RoundedCornerShape(AppShapeTokens.MaterialExtraLarge)
 )
 
 val MiuixAlignedShapes = Shapes(

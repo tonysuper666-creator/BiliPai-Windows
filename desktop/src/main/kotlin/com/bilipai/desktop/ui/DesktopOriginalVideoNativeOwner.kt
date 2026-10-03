@@ -307,10 +307,18 @@ internal class DesktopOriginalVideoNativeOwner(
      * never a completed request Job. prepare is REQUIRED same-authority native
      * source preparation carrying the accepted receipt and headers.
      */
-    fun acceptedMedia(prepare: (DesktopOriginalVideoAcceptedPublication) -> DesktopOriginalVideoMediaPort): DesktopOriginalVideoMediaPort {
+    fun acceptedMedia(prepare: (DesktopOriginalVideoAcceptedPublication) -> DesktopOriginalVideoMediaPort): DesktopOriginalVideoMediaPort =
+        acceptedMedia(prepare) { true }
+
+    /** Optional concrete presenter admission is evaluated in the SAME final
+     * Store -> entry -> native gate. It is not a new source authority. */
+    internal fun acceptedMedia(prepare: (DesktopOriginalVideoAcceptedPublication) -> DesktopOriginalVideoMediaPort,
+        isPresenterCurrent: () -> Boolean): DesktopOriginalVideoMediaPort {
         val lease = current() ?: throw CancellationException("No owned accepted ordinary source")
+        if (!isPresenterCurrent()) throw CancellationException("Accepted presenter retired before preparation")
         val delegate = prepare(lease)
-        fun checkCurrent() { if (!owns(lease)) throw CancellationException("Accepted ordinary source retired") }
+        fun current() = owns(lease) && isPresenterCurrent()
+        fun checkCurrent() { if (!current()) throw CancellationException("Accepted ordinary source/presenter retired") }
         return object : DesktopOriginalVideoMediaPort {
             override fun withPlaybackIntent(startPositionMs:Long,playWhenReady:Boolean,action:()->Unit) {
                 checkCurrent()
@@ -321,7 +329,7 @@ internal class DesktopOriginalVideoNativeOwner(
             override fun prepareLegacyDash(videoUrl:String,audioUrl:String?,cdnCacheKeysByUrl:Map<String,String>):PlaybackSource {
                 checkCurrent(); return delegate.prepareLegacyDash(videoUrl,audioUrl,cdnCacheKeysByUrl)
             }
-            override fun prepareAdaptiveDash(source:com.android.purebilibili.feature.video.playback.dash.AdaptiveDashPlaybackSource,
+            override fun prepareAdaptiveDash(source:com.android.purebilibili.core.player.dash.AdaptiveDashPlaybackSource,
                 cdnCacheKeysByUrl:Map<String,String>):PlaybackSource? {
                 checkCurrent(); return delegate.prepareAdaptiveDash(source,cdnCacheKeysByUrl)
             }
@@ -332,18 +340,18 @@ internal class DesktopOriginalVideoNativeOwner(
                 checkCurrent()
                 if (source.authorizationReceipt != lease.nativeSource.source.authorizationReceipt)
                     throw CancellationException("Accepted recovery receipt changed")
-                publication.admit(source, { owns(lease) }) {
+                publication.admit(source, ::current) {
                     if (!withEntryAdmission {
                         checkCurrent()
                         lateinit var next: DesktopOriginalVideoAcceptedPublication
-                        val retained = retainedSource(source) { owns(next) }
+                        val retained = retainedSource(source) { owns(next) && isPresenterCurrent() }
                         if (!player.recoverSource(lease.sourceVersion,retained,
                                 positionSeconds = source.startPositionSeconds,paused = source.startPaused))
                             throw CancellationException("Accepted ordinary recovery retired")
                         next = DesktopOriginalVideoAcceptedPublication(lease.request,
                             checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == lease.sourceVersion) })
                         accepted.set(next)
-                        bindAcceptedTransport(next, lease) { owns(next) }
+                        bindAcceptedTransport(next, lease) { owns(next) && isPresenterCurrent() }
                         inheritedMute.get()?.takeIf { it.lease === lease }?.let { previous ->
                             inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))
                         }

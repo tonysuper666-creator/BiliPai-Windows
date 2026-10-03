@@ -15,6 +15,7 @@ import com.bilipai.desktop.player.PlaybackSource as NativeSource
 import com.bilipai.desktop.player.cache.DesktopMediaByteCache
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 import java.util.IdentityHashMap
 
 /** Concrete request/media view of one installed full original Assembly. No VM,
@@ -31,6 +32,7 @@ internal class DesktopOriginalPortraitPlatformBinding(
     private val ownedPrimaryApi: BilibiliApi,
     private val ownedSpaceApi: SpaceApi,
     private val captureRequest: suspend (DesktopOriginalVideoOwnerAssembly) -> DesktopOriginalVideoRepositoryBinding,
+    private val creatorTeamFollowStateChanges: Flow<com.android.purebilibili.data.repository.FollowStateChange>,
     private val mediaCache: DesktopMediaByteCache,
     private val captureCookieHeader: (DesktopOriginalVideoRepositoryBinding, String) -> String,
     override val favoriteQuickSaveDefaultFolder: Flow<Boolean>,
@@ -47,6 +49,7 @@ internal class DesktopOriginalPortraitPlatformBinding(
     private val viewport: @Composable (DesktopOriginalVideoOwnerAssembly, DesktopOriginalMpvSectionControl, Modifier, Int, Boolean, Boolean, Boolean) -> Unit,
     private val danmakuSurface: @Composable (DesktopOriginalVideoOwnerAssembly, Modifier, Int, Int, Int) -> Unit,
     private val onPreparation: (DesktopOriginalMediaCachePreparation) -> Unit,
+    private val prepareAcceptedMedia: (DesktopOriginalVideoAcceptedPublication, DesktopOriginalBangumiNativeSourcePlan, () -> Boolean) -> DesktopOriginalVideoMediaPort,
 ) : DesktopOriginalPortraitPlatform {
     private fun owns() = currentAssembly() === assembly && assembly.owns()
     private fun assertOwned() { if (!owns()) throw CancellationException("Portrait Assembly retired") }
@@ -55,6 +58,26 @@ internal class DesktopOriginalPortraitPlatformBinding(
     }
 
     override val player get() = assembly.section.also { assertOwned() }
+    /** Facet of the already installed action/use-case authority. Every actual
+     * query/write Job captures once through the existing invocation ports.
+     * Server-success-only events are confirmed by that same ActionView; no
+     * additional optimistic event, cache or credential projection exists here. */
+    override val creatorTeam = object : DesktopCreatorTeamBindings {
+        override val followStateChanges = creatorTeamFollowStateChanges.onEach { assertOwned() }
+        override suspend fun checkFollowStatus(mid: Long): Boolean = assembly.invocations.withInvocation {
+            currentCoroutineContext().ensureActive(); assertOwned()
+            assembly.environment.actions.checkFollowStatus(mid).also {
+                currentCoroutineContext().ensureActive(); assertOwned()
+            }
+        }
+        override suspend fun followUser(mid: Long, follow: Boolean): Result<Boolean> = assembly.invocations.withInvocation {
+            currentCoroutineContext().ensureActive(); assertOwned()
+            assembly.environment.interactionUseCase.toggleFollow(mid, !follow).also { result ->
+                currentCoroutineContext().ensureActive(); assertOwned()
+                (result.exceptionOrNull() as? CancellationException)?.let { throw it }
+            }
+        }
+    }
     override val composer = object : DesktopOriginalPortraitComposerOwner {
         override fun bindSubject(subject: com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot) {
             assertOwned(); assembly.domains.composer.bindSubject(subject)
@@ -78,10 +101,14 @@ internal class DesktopOriginalPortraitPlatformBinding(
      */
     private class Capture(val job: Job, val nativeBaseline: Long, val requestToken: Long) {
         var prepared: Prepared? = null
+        var bangumi: BangumiCapture? = null
     }
     private class Prepared(val original: PlaybackSource, val request: PlaybackRequest,
         val preparation: DesktopOriginalMediaCachePreparation,
-        val payload: com.android.purebilibili.feature.video.usecase.VideoLoadResult.Success)
+        val payload: com.android.purebilibili.feature.video.usecase.VideoLoadResult.Success,
+        val bangumiPresenter: DesktopOriginalBangumiSharedPlaybackPresenter? = null)
+    private class BangumiCapture(val presenter: DesktopOriginalBangumiSharedPlaybackPresenter,
+        val detail: BangumiDetail, val episode: BangumiEpisode)
     private val captures = IdentityHashMap<DesktopOriginalVideoRepositoryBinding, Capture>()
 
     override suspend fun capturePageRequest(bvid: String, aid: Long, cid: Long): DesktopOriginalVideoRepositoryBinding {
@@ -214,7 +241,7 @@ internal class DesktopOriginalPortraitPlatformBinding(
         require(info.bvid.isNotBlank() && info.aid > 0L && info.cid > 0L)
         require(mediaId == resolvePortraitMediaId(info.bvid, info.cid))
         val remote = nativeSource(request, videoUrl, audioUrl, info.title)
-        val preparation = request.captureMediaBytes(mediaCache).prepare(remote, tracks(remote, playData), null, null) { false }
+        val preparation = request.captureMediaBytes(mediaCache, assembly.environment.network::cdnNetwork).prepare(remote, tracks(remote, playData), null, null) { false }
         onPreparation(preparation)
         val source = PlaybackSource(videoUrl = videoUrl, audioUrl = audioUrl, title = info.title,
             referer = remote.referer, cookieHeader = remote.cookieHeader, quality = playData.quality,
@@ -260,15 +287,147 @@ internal class DesktopOriginalPortraitPlatformBinding(
             cached?.accepted(accepted)
             return assembly.playback.adoptDesktopPortraitLoad(capture.requestToken, prepared.payload,
                 { !capture.job.isCancelled && owns() && stillCurrentLoad() && assembly.native.isCurrent(accepted) },
-                request::admitCurrentMutation)
+                request::admitCurrentMutation, prepared.bangumiPresenter)
         } catch (failure: Throwable) { cached?.failed(); throw failure }
+    }
+
+
+    /** PGC starts the sole original Store, then captures the same request/byte
+     * authority as Portrait. The capture map below remains the single map. */
+    internal suspend fun captureBangumiPageRequest(presenter: DesktopOriginalBangumiSharedPlaybackPresenter,
+        detail: BangumiDetail, episode: BangumiEpisode): DesktopOriginalVideoRepositoryBinding {
+        currentCoroutineContext().ensureActive(); assertOwned()
+        require(detail.seasonId > 0L && episode.id > 0L && episode.cid >= 0L && episode.aid >= 0L)
+        val token = assembly.playback.beginDesktopPortraitLoad(PlaybackRequest.create(episode.bvid, episode.aid, episode.cid), presenter)
+        clearCapturedPagePlayback(token, checkNotNull(currentCoroutineContext()[Job]))
+        val request = capturePlaybackRequest()
+        val capture = captured(request)
+        if (capture.requestToken != token || !assembly.playback.isDesktopBangumiPresenterCurrent(presenter))
+            throw CancellationException("PGC episode replaced during request capture")
+        synchronized(captures) {
+            if (captures[request] !== capture) throw CancellationException("PGC request finished during capture")
+            capture.bangumi = BangumiCapture(presenter, detail, episode)
+        }
+        request.assertCurrent(); currentCoroutineContext().ensureActive(); return request
+    }
+
+    private fun findBangumiCapture(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job):
+        Pair<DesktopOriginalVideoRepositoryBinding, Capture>? {
+        assertOwned(); caller.ensureActive()
+        if (!assembly.playback.isDesktopBangumiPresenterCurrent(presenter))
+            throw CancellationException("PGC presenter taken over")
+        return synchronized(captures) {
+            captures.entries.filter { it.value.job === caller && it.value.bangumi?.presenter === presenter }
+                .also { require(it.size <= 1) }.firstOrNull()?.let { it.key to it.value }
+        }?.also { (binding, capture) ->
+            binding.assertCurrent()
+            if (capture.requestToken != assembly.captureLoadState().currentLoadRequestToken)
+                throw CancellationException("PGC actual Store token replaced")
+        }
+    }
+    internal fun capturedBangumiRequest(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job): DesktopOriginalVideoRepositoryBinding =
+        findBangumiCapture(presenter, caller)?.first ?: throw CancellationException("PGC load capture missing/finished")
+    internal fun assertBangumiCallerCurrent(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job) {
+        findBangumiCapture(presenter, caller) // Follow/heartbeat jobs genuinely have no media capture.
+    }
+
+    internal fun ownsBangumiPlayback(presenter: DesktopOriginalBangumiSharedPlaybackPresenter,
+        state: com.android.purebilibili.feature.bangumi.BangumiPlayerState.Success): Boolean {
+        if (!owns() || !assembly.playback.isDesktopBangumiPresenterCurrent(presenter)) return false
+        val expected = assembly.native.current() ?: return false
+        val episode = state.currentEpisode
+        val actual = assembly.captureLoadState()
+        val referer = "https://www.bilibili.com/" +
+            (if (state.seasonDetail.seasonType == 10) "cheese" else "bangumi") + "/play/ep${episode.id}"
+        return expected.request.bvid == episode.bvid && expected.request.aid == episode.aid && expected.request.cid == episode.cid &&
+            actual.currentBvid == episode.bvid && actual.currentCid == episode.cid &&
+            expected.nativeSource.source.referer == referer && assembly.native.isCurrent(expected)
+    }
+
+    internal fun stopBangumiPlayback(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job?) {
+        assertOwned()
+        if (!assembly.playback.isDesktopBangumiPresenterCurrent(presenter))
+            throw CancellationException("PGC stop presenter replaced")
+        caller?.let { findBangumiCapture(presenter, it) } // If present, its actual token is also required.
+        val expected = assembly.native.current() ?: return
+        if (!assembly.native.admitPlaybackDispatch(expected) {
+            if (!assembly.playback.isDesktopBangumiPresenterCurrent(presenter) || caller?.isCancelled == true)
+                throw CancellationException("PGC stop producer replaced")
+            assembly.native.player.stopIfSourceVersion(expected.sourceVersion)
+        }) throw CancellationException("PGC stop source replaced")
+    }
+
+    internal fun publishBangumiSource(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job?,
+        state: com.android.purebilibili.feature.bangumi.BangumiPlayerState.Success,
+        videoUrl: String, audioUrl: String?, segments: List<String>?, seekToMs: Long,
+        referer: String, manifest: String?, playWhenReady: Boolean) {
+        assertOwned(); caller?.ensureActive()
+        val operation = caller?.let { findBangumiCapture(presenter, it) }
+        val data = checkNotNull(state.cachedPlayData) { "PGC publication requires its actual full protocol response" }
+        val plan = desktopOriginalBangumiNativePlan(state.seasonDetail, state.currentEpisode, data,
+            videoUrl, audioUrl, segments, referer, manifest, seekToMs, playWhenReady)
+        // Audio selection is committed by the full original VM only after this
+        // native source acceptance. Shared Subject/Mini use the actual new URL.
+        val projection = state.copy(playUrl = videoUrl, audioUrl = audioUrl?.takeIf(String::isNotBlank))
+        if (operation != null) {
+            val (request, capture) = operation
+            val metadata = checkNotNull(capture.bangumi)
+            require(metadata.episode.id == plan.episode.id && metadata.episode.cid == plan.episode.cid &&
+                metadata.detail.seasonId == plan.detail.seasonId)
+            val remote = request.authorized(plan.nativeSource().copy(cookieHeader = captureCookieHeader(request, videoUrl)))
+            val preparation = request.captureMediaBytes(mediaCache, assembly.environment.network::cdnNetwork).prepare(remote, plan.byteTracks(remote), plan.manifest, null) { false }
+            onPreparation(preparation)
+            val source = PlaybackSource(videoUrl = videoUrl, audioUrl = plan.audioUrl, title = plan.title,
+                referer = plan.referer, cookieHeader = remote.cookieHeader, quality = state.quality,
+                authorizationReceipt = request.receipt, cachedDashData = data.dash, progressiveSegments = plan.segments)
+            val prepared = Prepared(source, PlaybackRequest.create(plan.episode.bvid, plan.episode.aid, plan.episode.cid),
+                preparation, plan.payload(projection), presenter)
+            synchronized(captures) {
+                if (captures[request] !== capture || capture.prepared != null) {
+                    (preparation as? DesktopOriginalMediaCachePreparation.Cached)?.discardUnaccepted()
+                    throw CancellationException("PGC preparation replaced/duplicated")
+                }
+                capture.prepared = prepared
+            }
+            if (!publishSource(request, source, 1, playWhenReady) {
+                    assembly.playback.isDesktopBangumiPresenterCurrent(presenter) &&
+                        assembly.captureLoadState().currentLoadRequestToken == capture.requestToken
+                }) throw CancellationException("PGC publication rejected")
+            return
+        }
+        // Cached audio/resume use the fixed accepted lease, not a completed load
+        // binding or newly captured credentials. Same receipt is preserved by the
+        // existing RootMediaFactory and NativeOwner.acceptedMedia final gate.
+        if (!ownsBangumiPlayback(presenter, state)) throw CancellationException("PGC accepted source replaced")
+        val expected = checkNotNull(assembly.native.current())
+        val token = assembly.captureLoadState().currentLoadRequestToken
+        val samePresenterAndRequest = {
+            ownsBangumiPlayback(presenter, state) && assembly.captureLoadState().currentLoadRequestToken == token &&
+                caller?.isCancelled != true
+        }
+        val media = prepareAcceptedMedia(expected, plan, samePresenterAndRequest)
+        media.withPlaybackIntent(seekToMs, playWhenReady) {
+            if (!ownsBangumiPlayback(presenter, state) || assembly.native.current() !== expected)
+                throw CancellationException("PGC accepted preparation replaced")
+            val source = plan.adaptiveSource()?.let { media.prepareAdaptiveDash(it, emptyMap()) }
+                ?: media.prepareLegacyDash(videoUrl, plan.audioUrl, emptyMap())
+            require(source.referer == plan.referer && source.authorizationReceipt == expected.nativeSource.source.authorizationReceipt)
+            media.accept(source)
+        }
+        val accepted = checkNotNull(assembly.native.current())
+        if (accepted.request != expected.request || accepted.accountEpoch != expected.accountEpoch ||
+            accepted.nativeSource.source.authorizationReceipt != expected.nativeSource.source.authorizationReceipt)
+            throw CancellationException("PGC accepted recovery subject changed")
+        if (!assembly.playback.adoptDesktopPortraitLoad(token, plan.payload(projection), {
+                ownsBangumiPlayback(presenter, projection) && assembly.native.isCurrent(accepted) && caller?.isCancelled != true
+            }, assembly.environment::commit, presenter)) throw CancellationException("PGC accepted metadata adoption rejected")
     }
 
     override fun captureMediaCache(request: DesktopOriginalVideoRepositoryBinding, playData: PlayUrlData,
         streamUrls: PortraitPlaybackStreamUrls): DesktopOriginalPortraitByteCache {
         captured(request)
         val source = nativeSource(request, streamUrls.videoUrl, streamUrls.audioUrl, "BiliPai")
-        return captureDesktopOriginalPortraitByteCache(request.captureMediaBytes(mediaCache), source, tracks(source, playData))
+        return captureDesktopOriginalPortraitByteCache(request.captureMediaBytes(mediaCache, assembly.environment.network::cdnNetwork), source, tracks(source, playData))
     }
 
     override val mediaFactory = object : DesktopOriginalPortraitMediaFactory {

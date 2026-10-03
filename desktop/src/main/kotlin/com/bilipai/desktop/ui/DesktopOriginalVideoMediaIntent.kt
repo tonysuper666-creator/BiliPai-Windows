@@ -1,6 +1,6 @@
 package com.bilipai.desktop.ui
 
-import com.android.purebilibili.feature.video.playback.dash.AdaptiveDashPlaybackSource
+import com.android.purebilibili.core.player.dash.AdaptiveDashPlaybackSource
 import com.android.purebilibili.feature.video.playback.loader.PlaybackRequest
 import com.android.purebilibili.feature.video.playback.session.PlaybackSessionState
 import com.bilipai.desktop.player.PlaybackSource

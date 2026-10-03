@@ -187,14 +187,15 @@ private fun TimelineView(
         
         // 当天番剧列表
         val selectedDay = days.getOrNull(selectedDayIndex)
-        if (selectedDay != null && !selectedDay.episodes.isNullOrEmpty()) {
+        val episodes = selectedDay?.episodes.orEmpty()
+        if (episodes.isNotEmpty()) {
             LazyColumn(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 modifier = Modifier.fillMaxSize()
             ) {
                 itemsIndexed(
-                    items = selectedDay.episodes,
+                    items = episodes,
                     key = { index, episode -> resolveTimelineEpisodeLazyKey(index, episode) }
                 ) { _, episode ->
                     TimelineEpisodeCard(

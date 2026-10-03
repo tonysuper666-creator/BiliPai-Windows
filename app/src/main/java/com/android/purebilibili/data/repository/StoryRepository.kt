@@ -41,7 +41,8 @@ object StoryRepository {
             )
             
             if (response.code == 0 && response.data != null) {
-                val items = response.data.items ?: emptyList()
+                val checkedResponseData = requireNotNull(response.data)
+                val items = checkedResponseData.items ?: emptyList()
                 Logger.d(TAG, " 获取故事流成功: ${items.size} 条视频")
                 Result.success(items)
             } else {
@@ -92,7 +93,8 @@ object StoryRepository {
             val response = NetworkModule.playbackApi().getPlayUrlByAid(aid = aid, cid = cid)
             
             if (response.code == 0 && response.data != null) {
-                val urls = extractPlayUrls(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                val urls = extractPlayUrls(checkedResponseData)
                 if (urls != null) {
                     Logger.d(TAG, " 获取播放 URL 成功: video=${urls.videoUrl.take(50)}..., hasAudio=${urls.audioUrl != null}")
                     return urls

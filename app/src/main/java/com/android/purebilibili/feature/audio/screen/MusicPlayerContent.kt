@@ -115,6 +115,8 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -133,6 +135,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -190,6 +193,7 @@ import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.MoreHoriz
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.MusicNote
 import androidx.compose.material.icons.outlined.QueueMusic
 import androidx.compose.material.icons.outlined.Repeat
@@ -436,13 +440,13 @@ internal fun MusicPlayerContent(
     }
     LaunchedEffect(state.isPlaying, chromeInteractionTick, musicChromeVisible) {
         if (state.isPlaying && musicChromeVisible) {
-            kotlinx.coroutines.delay(4000)
+            kotlinx.coroutines.delay(5000)
             musicChromeVisible = false
         }
     }
     LaunchedEffect(state.isPlaying, chromeInteractionTick, musicChromeVisible, musicChromeHidden) {
         if (state.isPlaying && !musicChromeVisible && !musicChromeHidden) {
-            kotlinx.coroutines.delay(4000)
+            kotlinx.coroutines.delay(5000)
             musicChromeHidden = true
         }
     }
@@ -452,6 +456,8 @@ internal fun MusicPlayerContent(
         label = "music_chrome_alpha"
     )
     var lyricsControlsVisible by remember(state.title) { mutableStateOf(false) }
+    // 翻译开关提升到内容层：顶栏与歌词设置面板共用，保证同一状态源
+    var lyricsShowTranslations by rememberSaveable { mutableStateOf(true) }
     var lyricSearchText by remember(state.title) { mutableStateOf(state.title) }
     val currentItem = remember(state.title, state.artist, state.coverUrl) {
         state.queue.getOrNull(state.currentQueueIndex) ?: MusicQueueItemUi(
@@ -518,6 +524,14 @@ internal fun MusicPlayerContent(
         animationSpec = if (effectiveReduceMotion) snap() else AppMotionTokens.emphasizedSpec(),
         label = "music_palette"
     )
+    androidx.compose.runtime.DisposableEffect(backgroundColor) {
+        com.android.purebilibili.feature.audio.player.AudioNowPlayingSession
+            .publishImmersiveBackdropColor(backgroundColor)
+        onDispose {
+            com.android.purebilibili.feature.audio.player.AudioNowPlayingSession
+                .publishImmersiveBackdropColor(null)
+        }
+    }
     val glassEnabled = resolveMusicLiquidGlassEnabled(
         sdkInt = Build.VERSION.SDK_INT,
         effectsEnabled = liquidGlassEffectsEnabled,
@@ -614,6 +628,8 @@ internal fun MusicPlayerContent(
                 )
             }
         }
+        // 分页状态提升到布局分支之外：顶栏 leadingActions 需要感知当前是否在歌词页
+        val pagerState = rememberPagerState(pageCount = { 2 })
         when (layout) {
             MusicPlayerLayout.PIP_ARTWORK -> MusicArtwork(
                 coverUrl = state.coverUrl,
@@ -727,6 +743,8 @@ internal fun MusicPlayerContent(
                                 onControlsVisibleChange = { lyricsControlsVisible = it },
                                 showBottomControls = false,
                                 lyricsUiStyle = lyricsUiStyle,
+                                showTranslations = lyricsShowTranslations,
+                                onToggleTranslations = { lyricsShowTranslations = !lyricsShowTranslations },
                                 modifier = Modifier.fillMaxSize()
                             )
                             } else {
@@ -775,7 +793,6 @@ internal fun MusicPlayerContent(
             }
 
             MusicPlayerLayout.COMPACT_PAGER -> {
-                val pagerState = rememberPagerState(pageCount = { 2 })
                 val pagerScope = rememberCoroutineScope()
                 val openCoverPage: () -> Unit = {
                     showMusicChrome()
@@ -881,19 +898,33 @@ internal fun MusicPlayerContent(
                                 showBottomControls = false,
                                 onPageTap = openCoverPage,
                                 lyricsUiStyle = lyricsUiStyle,
+                                showTranslations = lyricsShowTranslations,
+                                onToggleTranslations = { lyricsShowTranslations = !lyricsShowTranslations },
                                 modifier = Modifier.padding(bottom = MUSIC_PLAYER_COMPACT_DOCK_BOTTOM_PADDING_DP.dp)
                             )
-                            MusicArtwork(
-                                coverUrl = state.coverUrl,
-                                bitmap = artworkBitmap,
+                            // 歌词页不再放右上角迷你封面：与歌词工具行同位冲突，返回封面页由手势与底部 dock 承担
+                            // 顶部/底部渐变遮罩：歌词滚动到边缘时渐隐，避免大字穿过控制区
+                            Box(
                                 modifier = Modifier
-                                    .align(Alignment.TopEnd)
-                                    .statusBarsPadding()
-                                    .padding(top = 12.dp, end = 20.dp)
-                                    .size(56.dp),
-                                coverStyle = MusicCoverStyle.APPLE_MUSIC_SQUARE,
-                                reduceMotion = effectiveReduceMotion,
-                                onClick = openCoverPage,
+                                    .align(Alignment.TopCenter)
+                                    .fillMaxWidth()
+                                    .height(140.dp)
+                                    .background(
+                                        Brush.verticalGradient(
+                                            listOf(Color.Black.copy(alpha = 0.42f), Color.Transparent)
+                                        )
+                                    )
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .fillMaxWidth()
+                                    .height(180.dp)
+                                    .background(
+                                        Brush.verticalGradient(
+                                            listOf(Color.Transparent, Color.Black.copy(alpha = 0.46f))
+                                        )
+                                    )
                             )
                             Column(
                                 modifier = Modifier
@@ -908,25 +939,95 @@ internal fun MusicPlayerContent(
                                     ),
                                 horizontalAlignment = Alignment.CenterHorizontally,
                             ) {
-                                PlaybackControls(
-                                    state = state,
-                                    onPlayPause = onPlayPause,
-                                    onPrevious = onPrevious,
-                                    onNext = onNext,
-                                    playButtonSizeDp = 56,
-                                    skipButtonSizeDp = 48,
-                                    isDarkEnvironment = isDarkEnvironment,
-                                    glassTintColor = backgroundColor,
-                                    modifier = Modifier.graphicsLayer { alpha = 0.72f },
-                                )
-                                Spacer(Modifier.height(12.dp))
-                                LyricsImmersiveProgress(state = state)
+                                if (liquidGlassEffectsEnabled) {
+                                    // 液态玻璃模式保持原有悬浮三键 + 细进度线排版
+                                    PlaybackControls(
+                                        state = state,
+                                        onPlayPause = onPlayPause,
+                                        onPrevious = onPrevious,
+                                        onNext = onNext,
+                                        playButtonSizeDp = 56,
+                                        skipButtonSizeDp = 48,
+                                        isDarkEnvironment = isDarkEnvironment,
+                                        glassTintColor = backgroundColor,
+                                        modifier = Modifier.graphicsLayer { alpha = 0.72f },
+                                    )
+                                    Spacer(Modifier.height(12.dp))
+                                    LyricsImmersiveProgress(state = state)
+                                } else {
+                                    // 紧凑 dock：进度线 + 三键 + 封面/歌词切换收进单容器，
+                                    // 高度约为原分段控件方案的一半，不再压住歌词。
+                                    // 播放中静置时随沉浸节奏减淡、滑出消失，点按歌词区恢复。
+                                    AnimatedVisibility(
+                                        visible = !musicChromeHidden,
+                                        enter = fadeIn(tween(300)) +
+                                            slideInVertically(tween(300)) { it / 2 },
+                                        exit = fadeOut(tween(300)) +
+                                            slideOutVertically(tween(300)) { it / 2 },
+                                    ) {
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                            LyricsImmersiveProgress(state = state)
+                                            Spacer(Modifier.height(10.dp))
+                                            Row(
+                                                modifier = Modifier
+                                                    .graphicsLayer { alpha = musicChromeAlpha }
+                                                    .clip(CircleShape)
+                                                    .background(Color.Black.copy(alpha = 0.42f))
+                                                    .border(
+                                                        width = 0.8.dp,
+                                                        color = Color.White.copy(alpha = 0.16f),
+                                                        shape = CircleShape
+                                                    )
+                                                    .padding(horizontal = 10.dp, vertical = 6.dp),
+                                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                                verticalAlignment = Alignment.CenterVertically,
+                                            ) {
+                                                MusicDockPagePill(
+                                                    label = "封面",
+                                                    selected = pagerState.currentPage == 0,
+                                                    onClick = openCoverPage
+                                                )
+                                                PlaybackIconButton(
+                                                    icon = Icons.Filled.SkipPrevious,
+                                                    description = "上一首",
+                                                    enabled = state.queueControls.hasPrevious && onPrevious != null,
+                                                    onClick = onPrevious ?: {},
+                                                    sizeDp = 44
+                                                )
+                                                MusicPlayPauseButton(
+                                                    state = state,
+                                                    onPlayPause = onPlayPause,
+                                                    sizeDp = 52,
+                                                    isDarkEnvironment = isDarkEnvironment,
+                                                    glassTintColor = backgroundColor,
+                                                )
+                                                PlaybackIconButton(
+                                                    icon = Icons.Filled.SkipNext,
+                                                    description = "下一首",
+                                                    enabled = state.queueControls.hasNext && onNext != null,
+                                                    onClick = onNext ?: {},
+                                                    sizeDp = 44
+                                                )
+                                                MusicDockPagePill(
+                                                    label = "歌词",
+                                                    selected = pagerState.currentPage == 1,
+                                                    onClick = {
+                                                        pagerScope.launch {
+                                                            animatePagerSelection(pagerState, 1)
+                                                        }
+                                                    }
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                         }
                     }
                     androidx.compose.animation.AnimatedVisibility(
-                        visible = !musicChromeHidden,
+                        // 非液态玻璃下底部已换成歌词页内的紧凑 dock，不再叠加分段胶囊
+                        visible = !musicChromeHidden && liquidGlassEffectsEnabled,
                         enter = androidx.compose.animation.fadeIn(tween(300)) +
                             androidx.compose.animation.slideInVertically(tween(300)) { it / 2 },
                         exit = androidx.compose.animation.fadeOut(tween(300)) +
@@ -997,6 +1098,8 @@ internal fun MusicPlayerContent(
                 onLyricsRetry = onLyricsRetry,
                 onOpenLyricsSearch = { showLyricsSearch = true },
                 lyricsUiStyle = lyricsUiStyle,
+                showTranslations = lyricsShowTranslations,
+                onToggleTranslations = { lyricsShowTranslations = !lyricsShowTranslations },
                 availableWidthDp = availableWidthDp,
                 hingeStartDp = if (adaptiveInfo.foldingFeature.hingeOrientation == AppHingeOrientation.Horizontal) {
                     hingeStartDp
@@ -1128,6 +1231,8 @@ internal fun MusicPlayerContent(
                                                 onControlsVisibleChange = { lyricsControlsVisible = it },
                                                 showBottomControls = false,
                                                 lyricsUiStyle = lyricsUiStyle,
+                                                showTranslations = lyricsShowTranslations,
+                                                onToggleTranslations = { lyricsShowTranslations = !lyricsShowTranslations },
                                                 modifier = Modifier.fillMaxSize()
                                             )
                                         }
@@ -1400,43 +1505,48 @@ internal fun MusicPlayerContent(
                 layoutActionLabel = resolveMusicPlayerLayoutPreferenceLabel(
                     nextMusicPlayerLayoutPreference(layoutPreference)
                 ),
+                // 歌词页顶栏：译/搜索与返回、更多同一行同一居中逻辑，杜绝跨容器错位
                 leadingActions = if (layout == MusicPlayerLayout.COMPACT_PAGER) {
                     {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            modifier = Modifier.graphicsLayer {
-                                alpha = if (musicChromeHidden) 0f else musicChromeAlpha
-                            }
+                        AnimatedVisibility(
+                            visible = pagerState.currentPage == 1 && !musicChromeHidden,
+                            enter = fadeIn(tween(200)),
+                            exit = fadeOut(tween(200)),
                         ) {
-                            if (onAudioQualitySelected != null) {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
                                 GlassTextButton(
-                                    label = audioQualityLabel.ifBlank { "音质" },
+                                    label = if (lyricsShowTranslations) "译:开" else "译:关",
                                     glassEnabled = glassEnabled,
                                     miuixBackdrop = musicBackdrop,
-                                    onClick = {
-                                        showMusicChrome()
-                                        showAudioQuality = true
-                                    },
                                     glassTintColor = backgroundColor,
                                     isDarkEnvironment = isDarkEnvironment,
                                     liquidGlassTuning = liquidGlassTuning,
+                                    onClick = {
+                                        showMusicChrome()
+                                        lyricsShowTranslations = !lyricsShowTranslations
+                                    }
+                                )
+                                GlassIconButton(
+                                    icon = Icons.Outlined.Search,
+                                    description = "搜索歌词",
+                                    glassEnabled = glassEnabled,
+                                    miuixBackdrop = musicBackdrop,
+                                    liquidGlassTuning = liquidGlassTuning,
+                                    glassTintColor = backgroundColor,
+                                    isDarkEnvironment = isDarkEnvironment,
+                                    onClick = {
+                                        showMusicChrome()
+                                        showLyricsSearch = true
+                                    }
                                 )
                             }
-                            GlassTextButton(
-                                label = resolveCoverStyleShortLabel(coverStyle),
-                                glassEnabled = glassEnabled,
-                                miuixBackdrop = musicBackdrop,
-                                onClick = {
-                                    showMusicChrome()
-                                    coverStyle = resolveNextCoverStyle(coverStyle)
-                                },
-                                glassTintColor = backgroundColor,
-                                isDarkEnvironment = isDarkEnvironment,
-                                liquidGlassTuning = liquidGlassTuning,
-                            )
                         }
                     }
                 } else null,
+                // 音质与封面样式不再常驻顶栏：⋯ 菜单内已有同等入口，避免歌词页顶部拥挤
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .statusBarsPadding()
@@ -1491,6 +1601,14 @@ internal fun MusicPlayerContent(
         )
     }
     if (showLyricsSearch) {
+        val searchFocusRequester = remember { FocusRequester() }
+        val keyboardController = LocalSoftwareKeyboardController.current
+        // 弹层入场动画结束后自动聚焦搜索框并拉起键盘，免去手动点一下输入框
+        LaunchedEffect(Unit) {
+            kotlinx.coroutines.delay(250)
+            runCatching { searchFocusRequester.requestFocus() }
+            keyboardController?.show()
+        }
         AppModalBottomSheet(
             onDismissRequest = { showLyricsSearch = false },
             containerColor = AppSurfaceTokens.surface(),
@@ -1514,6 +1632,7 @@ internal fun MusicPlayerContent(
                     onValueChange = { lyricSearchText = it },
                     label = { AppText("歌名") },
                     singleLine = true,
+                    focusRequester = searchFocusRequester,
                     modifier = Modifier.weight(1f)
                 )
                 AppTextButton(onClick = { onLyricsSearch(lyricSearchText) }) {
@@ -1670,13 +1789,20 @@ private fun ImmersiveBottomQueueShelf(
                 .fillMaxWidth()
                 .pointerInput(dismissThresholdPx) {
                     detectVerticalDragGestures(
+                        // Kill any in-flight return/dismiss animation so snapTo below
+                        // never races a running animateTo (that caused the flicker).
+                        onDragStart = {
+                            dragScope.launch { dragOffsetY.stop() }
+                        },
                         onDragEnd = {
                             val settled = dragOffsetY.value
                             if (settled > dismissThresholdPx) {
                                 dragScope.launch {
                                     dragOffsetY.animateTo(settled + 1200f, tween(160))
+                                    // Hand over to the AnimatedVisibility exit; do NOT snap
+                                    // back to 0 here — that jumped the panel to its resting
+                                    // position before the exit slide, causing the bounce.
                                     onClose()
-                                    dragOffsetY.snapTo(0f)
                                 }
                             } else {
                                 dragScope.launch {
@@ -1944,11 +2070,9 @@ private fun PlayerPage(
     val topPadding = if (compactLandscape) 0.dp else if (isExpandedLayout) 12.dp else 56.dp
     val bottomPadding = if (isExpandedLayout) 12.dp else 12.dp
     val horizontalPadding = if (isExpandedLayout) 16.dp else chromeSpec.horizontalPaddingDp.dp
-    val portraitArtworkSizeDp = if (!isExpandedLayout && !compactLandscape) {
-        (artworkSizeDp * 1.12f).roundToInt()
-    } else {
-        artworkSizeDp
-    }
+    // 竖屏封面不再额外放大：1.12 倍会让上半区超出可用高度，
+    // 底部「轻点查看完整歌词」预览行被 clipToBounds 裁切
+    val portraitArtworkSizeDp = artworkSizeDp
 
     Column(
         modifier = modifier
@@ -2826,6 +2950,8 @@ private fun LyricsPage(
     progressSeekRevision: Int,
     controlsVisible: Boolean,
     onControlsVisibleChange: (Boolean) -> Unit,
+    showTranslations: Boolean = true,
+    onToggleTranslations: () -> Unit = {},
     showBottomControls: Boolean = true,
     onPageTap: (() -> Unit)? = null,
     isDarkEnvironment: Boolean = true,
@@ -2858,7 +2984,6 @@ private fun LyricsPage(
     )
     val listState = rememberLazyListState()
     val isLyricsDragged by listState.interactionSource.collectIsDraggedAsState()
-    var showTranslations by remember { mutableStateOf(true) }
     var showLyricsSettings by remember { mutableStateOf(false) }
     var isAutoFollowPaused by remember(document) { mutableStateOf(false) }
     LaunchedEffect(progressSeekRevision) {
@@ -2887,13 +3012,15 @@ private fun LyricsPage(
     // Immersive lyrics follow Halcyon PlayerLyricsPage: one horizontal 28.dp inset and a
     // single 72/72 content pad inside AppleMusicLyricsView. Do not stack the classic
     // top/bottom chrome padding on top of that.
+    // 全屏歌词（听视频紧凑分页）为真正的沉浸式：列表通到屏幕边缘，
+    // 顶部/底部由渐变遮罩与悬浮控制负责可读性，这里不再额外缩进。
     val chromeTopPadding = when {
         immersiveLyrics -> 0.dp
-        fullScreenLyrics -> 72.dp
+        fullScreenLyrics -> 0.dp
         showBottomControls -> 72.dp
         else -> 16.dp
     }
-    val chromeBottomPadding = if (immersiveLyrics) 0.dp else if (fullScreenLyrics) 104.dp else 16.dp
+    val chromeBottomPadding = if (immersiveLyrics || fullScreenLyrics) 0.dp else 16.dp
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -3005,7 +3132,8 @@ private fun LyricsPage(
                         },
                         onLineLongClick = {},
                         topContentPadding = 72.dp,
-                        bottomContentPadding = 72.dp,
+                        // 全屏歌词时底部让出紧凑 dock 的高度，当前行不被播放键压住
+                        bottomContentPadding = if (fullScreenLyrics) 200.dp else 72.dp,
                         nonCurrentLineBlurEnabled = blurEnabled,
                         focusOffsetRatio = if (fullScreenLyrics) 0.40f else 0.24f,
                         useFocusLeadingPadding = false,
@@ -3084,63 +3212,33 @@ private fun LyricsPage(
                         .padding(horizontal = 20.dp, vertical = 4.dp)
                 )
             }
-        } else {
+        } else if (isAutoFollowPaused) {
+            // 译/搜索已上移至播放器顶栏（与返回/更多同行，保证对齐）；
+            // 这里只保留手动拖动歌词后的「回到当前歌词」快捷入口。
             AnimatedVisibility(
                 visible = controlsVisible,
                 modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxWidth()
-                    .padding(top = 8.dp, start = 20.dp, end = 20.dp),
+                    .align(Alignment.TopStart)
+                    .then(
+                        if (fullScreenLyrics) {
+                            Modifier
+                                .statusBarsPadding()
+                                .padding(start = 64.dp, top = 4.dp)
+                        } else {
+                            Modifier.padding(top = 56.dp, start = 20.dp)
+                        }
+                    ),
                 enter = if (reduceMotion) EnterTransition.None else fadeIn() + slideInVertically { -it / 2 },
                 exit = if (reduceMotion) ExitTransition.None else fadeOut() + slideOutVertically { -it / 2 }
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    if (isAutoFollowPaused) {
-                        GlassTextButton(
-                            label = "回到当前歌词",
-                            glassEnabled = glassEnabled,
-                            miuixBackdrop = miuixBackdrop,
-                            glassTintColor = glassTintColor,
-                            isDarkEnvironment = isDarkEnvironment,
-                            onClick = { isAutoFollowPaused = false }
-                        )
-                    } else {
-                        Spacer(Modifier.width(1.dp))
-                    }
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        GlassTextButton(
-                            label = if (showTranslations) "译:开" else "译:关",
-                            glassEnabled = glassEnabled,
-                            miuixBackdrop = miuixBackdrop,
-                            glassTintColor = glassTintColor,
-                            isDarkEnvironment = isDarkEnvironment,
-                            onClick = { showTranslations = !showTranslations }
-                        )
-                        GlassTextButton(
-                            label = "搜索",
-                            glassEnabled = glassEnabled,
-                            miuixBackdrop = miuixBackdrop,
-                            glassTintColor = glassTintColor,
-                            isDarkEnvironment = isDarkEnvironment,
-                            onClick = onOpenLyricsSearch
-                        )
-                        GlassTextButton(
-                            label = "歌词设置",
-                            glassEnabled = glassEnabled,
-                            miuixBackdrop = miuixBackdrop,
-                            glassTintColor = glassTintColor,
-                            isDarkEnvironment = isDarkEnvironment,
-                            onClick = { showLyricsSettings = true }
-                        )
-                    }
-                }
+                GlassTextButton(
+                    label = "回到当前歌词",
+                    glassEnabled = glassEnabled,
+                    miuixBackdrop = miuixBackdrop,
+                    glassTintColor = glassTintColor,
+                    isDarkEnvironment = isDarkEnvironment,
+                    onClick = { isAutoFollowPaused = false }
+                )
             }
         }
         if (showBottomControls && isAutoFollowPaused && controlsVisible) {
@@ -3172,7 +3270,7 @@ private fun LyricsPage(
                 sourceLabel = BiliSubtitleLyricsPolicy.resolveSourceLabel(document),
                 contentColor = sheetContentColor,
                 secondaryColor = sheetSecondaryColor,
-                onToggleTranslations = { showTranslations = !showTranslations },
+                onToggleTranslations = onToggleTranslations,
                 onLyricsOffsetChange = onLyricsOffsetChange,
                 onLyricsRetry = onLyricsRetry,
                 onOpenLyricsSearch = {
@@ -3824,6 +3922,48 @@ private fun GlassTextButton(
     }
 }
 
+/** 紧凑 dock 内的封面/歌词切换小胶囊（非液态玻璃模式）。 */
+@Composable
+private fun MusicDockPagePill(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .height(36.dp)
+            .clip(CircleShape)
+            .background(
+                if (selected) {
+                    MusicAccentColor.copy(alpha = 0.26f)
+                } else {
+                    Color.White.copy(alpha = 0.08f)
+                }
+            )
+            .then(
+                if (selected) {
+                    Modifier.border(
+                        width = 0.8.dp,
+                        color = MusicAccentColor.copy(alpha = 0.40f),
+                        shape = CircleShape
+                    )
+                } else {
+                    Modifier
+                }
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 14.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        AppText(
+            label,
+            color = if (selected) MusicAccentColor else MusicContentColor.copy(alpha = 0.78f),
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
+        )
+    }
+}
+
 @Composable
 private fun TabletopPlayerLayout(
     coverStyle: MusicCoverStyle,
@@ -3854,6 +3994,8 @@ private fun TabletopPlayerLayout(
     hingeEndDp: Int? = null,
     isDarkEnvironment: Boolean = true,
     lyricsUiStyle: SettingsManager.MusicLyricsUiStyle = SettingsManager.MusicLyricsUiStyle.CLASSIC,
+    showTranslations: Boolean = true,
+    onToggleTranslations: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val tabletopDensity = LocalDensity.current
@@ -3938,6 +4080,8 @@ private fun TabletopPlayerLayout(
                     onControlsVisibleChange = {},
                     showBottomControls = false,
                     lyricsUiStyle = lyricsUiStyle,
+                    showTranslations = showTranslations,
+                    onToggleTranslations = onToggleTranslations,
                     modifier = Modifier.fillMaxSize()
                 )
             }

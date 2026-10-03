@@ -3,6 +3,7 @@
 Production direct inputs are copied only by prepareUpstreamSources. Isolated
 compilation explicitly asks for standalone output of those exact bodies.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json
 BASE = 'app/src/main/java/com/android/purebilibili/'
@@ -13,7 +14,7 @@ ADAPTED = [COMP+n+'.kt' for n in ['DynamicCard','DynamicCardClickPolicy','DrawGr
 PATHS = DIRECT+ADAPTED+SHARED+[BASE+'feature/dynamic/DynamicDeletePolicy.kt',BASE+'feature/dynamic/DynamicLayoutPolicy.kt',BASE+'feature/dynamic/model/LiveContentModels.kt',BASE+'core/store/SettingsManager.kt',BASE+'core/ui/common/TextSelectionPolicy.kt',BASE+'core/ui/common/TextSelectionBottomSheet.kt',BASE+'core/util/ModifierExt.kt',BASE+'data/repository/DynamicRepository.kt',BASE+'data/repository/DynamicVoteRepository.kt',BASE+'data/repository/SearchRepository.kt',BASE+'feature/dynamic/DynamicScreen.kt',COMP+'RepostDialog.kt',COMP+'DynamicEmoteCatalog.kt',COMP+'ImagePreviewDialog.kt',COMP+'LivePhotoPlayback.kt',COMP+'DynamicRichTextPolicy.kt']
 def module(repo,name,path):
  s=importlib.util.spec_from_file_location(name,repo/path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
-def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 def messages(repo):
  path=Path(__file__).with_name('extract-dynamic-message-share.py');spec=importlib.util.spec_from_file_location('dynamic_message_share',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 def inventory(repo):return [dict(path=p,mode='platform-adapter-reference' if p in SHARED+[BASE+'core/util/ModifierExt.kt'] else 'direct' if p in DIRECT else 'policy-extract',features=['settings-dynamic-full-card-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]+messages(repo).inventory(repo)

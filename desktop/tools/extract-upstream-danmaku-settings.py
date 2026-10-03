@@ -1,12 +1,13 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,importlib.util,json,re,subprocess,sys
 sys.dont_write_bytecode=True
 HERE=Path(__file__).resolve().parent;MAIN=next(p for p in HERE.parents if (p/'.git').exists());STABLE=MAIN.parent/'BiliPai-v023'
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589';BASE='app/src/main/java/com/android/purebilibili/'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
 def sha(s):return hashlib.sha256(s.encode('utf-8')).hexdigest()
 def write(p,s):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')
 def save(p,s):write(p,json.dumps(s,ensure_ascii=False,indent=2)+'\n')
-spec=importlib.util.spec_from_file_location('source_parser',STABLE/'desktop/tools/extract-upstream-danmaku-list-menu.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
+spec=importlib.util.spec_from_file_location('source_parser',HERE/'extract-upstream-danmaku-list-menu.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
 def decl(s,name,indent=''):
  mask=parser.masked(s)
  m=re.search(r'(?m)^'+re.escape(indent)+r'(?:(?:private|internal|suspend|inline)\s+)*fun(?:\s*<[^>]*>)?\s+'+name+r'\s*\(',mask);assert m,name
@@ -37,8 +38,11 @@ def generate(repo,output,standalone=False):
  paths=[BASE+x for x in ['feature/video/ui/components/DanmakuSettingsPanel.kt','core/store/SettingsManager.kt','feature/video/danmaku/DanmakuSettingsPolicy.kt','feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt','feature/video/danmaku/DanmakuSyncStatusPolicy.kt','data/repository/DanmakuRepository.kt','feature/video/ui/section/VideoPlayerSectionPolicy.kt','feature/video/ui/section/VideoPlayerSection.kt']]
  sources={};ids=[];emitted=[]
  for path in paths:
-  s=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=repo).decode().replace('\r\n','\n');assert (repo/path).read_text(encoding='utf-8')==s,path
-  sources[path]=s;ids.append(dict(path=path,pinnedCommit=COMMIT,sha256LF=sha(s),gitBlob=subprocess.check_output(['git','rev-parse',COMMIT+':'+path],cwd=repo,text=True).strip()))
+  from v025_source_paths import canonical_source
+  canonical_file=canonical_source(repo,path)
+  canonical_path=canonical_file.relative_to(repo.resolve()).as_posix()
+  s=subprocess.check_output(['git','show',COMMIT+':'+canonical_path],cwd=repo).decode().replace('\r\n','\n');assert canonical_file.read_text(encoding='utf-8').replace('\r\n','\n')==s,path
+  sources[path]=s;ids.append(dict(path=canonical_path,previousPath=path,pinnedCommit=COMMIT,sha256LF=sha(s),gitBlob=subprocess.check_output(['git','rev-parse',COMMIT+':'+canonical_path],cwd=repo,text=True).strip()))
  def emit(path,s,origin,mode,patches=None,original=None):
   write(output/path,s);row=dict(path=path,origin=origin,mode=mode,sha256LF=sha(s),adaptations=patches or [])
   if original is not None:

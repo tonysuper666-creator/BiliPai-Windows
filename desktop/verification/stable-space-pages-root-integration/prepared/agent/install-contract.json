@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "candidateBase": "5f5f29a00609ec215b06553b59b3d3669ef0335b",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "actualProductSnapshot": 89,
+  "snapshotManifest": "desktop/.local/stable-product-snapshot-89/manifest.json",
+  "snapshotManifestSha256": "aa28f253a357c107073d20ef279f28716a96dfa4015aca2be180f1865b14340b",
+  "orderedRuntimeEntries": 105,
+  "orderedRuntimeCpSha256": "63b3d1693889263d164badad1a3e45aa7b09168181be74cb1eff83b7a82bffb5",
+  "copyNewTargets": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpaceEnvironment.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpaceEnvironment.kt",
+      "sha256Bytes": "7b43054203348adda644c6a0ad2bdf05cc23c2191a6bb802ecd5ace73d83ad56",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "sha256Bytes": "563671c643dee36efcb9a6c236dcb0fac83279c58bf3f4f8007a2be54537571e",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePlatform.kt",
+      "prepared": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePlatform.kt",
+      "sha256Bytes": "8464710c7e2634197016bf26706ee77c74b9db604b6ac2a53203b946e5fd9e60",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesTest.kt",
+      "prepared": "prepared/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesTest.kt",
+      "sha256Bytes": "c1bc68c03b5cb816fd7a5d94705556f38d9975fad5ff8f92689c86dfd43960b4",
+      "operation": "copy-new"
+    },
+    {
+      "target": "desktop/tools/extract-upstream-space-pages.py",
+      "prepared": "prepared/desktop/tools/extract-upstream-space-pages.py",
+      "sha256Bytes": "37f377c2ded407a8710c210885d364f91636efa601bc8c10539985a24d49ba31",
+      "operation": "copy-new"
+    }
+  ],
+  "existingCodeTargets": [
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt",
+      "baseRawSha256": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e",
+      "baseLfSha256": "4e0d80b01a36468c2bef884327b838bc8cf6d29616bd01bf92b295a68ffef38e",
+      "desiredRawSha256": "98107c0eaa15588e7ac5af4638cbf1833fff03151ee62fb0212074aa0bc4a8e2",
+      "desiredLfSha256": "98107c0eaa15588e7ac5af4638cbf1833fff03151ee62fb0212074aa0bc4a8e2",
+      "compilerOverlay": "root-hooks\\compiler-targets\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\data\\DesktopCommunityRepository.kt",
+      "hunks": [
+        {
+          "before": "    private val client = repository.httpClient.newBuilder().retryOnConnectionFailure(false).build()",
+          "after": "    private val client = repository.httpClient.newBuilder().retryOnConnectionFailure(false).build()\n    internal val originalSpaceTransport: okhttp3.OkHttpClient get() = client",
+          "offsetAfter": 2682
+        }
+      ]
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt",
+      "baseRawSha256": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7",
+      "baseLfSha256": "06b7431d57941ef336be25d4d7e18fb5fddc882c8bd74ff8d0c5c0664f83c6c7",
+      "desiredRawSha256": "ae1be99c675f89654c6bf75e4a85fa08a8ac7ca2d900207a4c4a0700a3e97bab",
+      "desiredLfSha256": "ae1be99c675f89654c6bf75e4a85fa08a8ac7ca2d900207a4c4a0700a3e97bab",
+      "compilerOverlay": "root-hooks\\compiler-targets\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalPlaybackProgressStorage.kt",
+      "hunks": [
+        {
+          "before": "    suspend fun closeAndJoin(): Boolean = writer.closeAndJoin()",
+          "after": "    internal fun cachedPositionForSpace(bvid: String, owned: () -> Boolean): Long {\n        if (!owned()) throw CancellationException(\"Space progress entry retired\")\n        return manager.getCachedPosition(bvid)\n    }\n    suspend fun closeAndJoin(): Boolean = writer.closeAndJoin()",
+          "offsetAfter": 4671
+        }
+      ]
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "baseRawSha256": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6",
+      "baseLfSha256": "b59ec45bedd3c5931bae249d5f0626bff5f7cbae41d372e692f876609030f5d6",
+      "desiredRawSha256": "ebfa9a325786b9ae13f9ab51e8f57e6e4f9adf84bde1d9e32fa70318762b1a84",
+      "desiredLfSha256": "ebfa9a325786b9ae13f9ab51e8f57e6e4f9adf84bde1d9e32fa70318762b1a84",
+      "compilerOverlay": "root-hooks\\compiler-targets\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopReadyOriginalRootMount.kt",
+      "hunks": [
+        {
+          "before": "    val nowPlayingPositionMs: (DesktopHomeRetainedRoot, DesktopOriginalNowPlayingSnapshot) -> Long?,",
+          "after": "    val nowPlayingPositionMs: (DesktopHomeRetainedRoot, DesktopOriginalNowPlayingSnapshot) -> Long?,\n    val originalSpacePlaylist: DesktopOriginalVideoPlaylistBinding,\n    val originalSpaceCachedPosition: (String) -> Long,",
+          "offsetAfter": 4773
+        },
+        {
+          "before": "    val messagePages = AtomicReference<DesktopOriginalMessagePagesRoot?>()",
+          "after": "    val messagePages = AtomicReference<DesktopOriginalMessagePagesRoot?>()\n    val spacePages = AtomicReference<DesktopOriginalSpacePagesRoot?>()",
+          "offsetAfter": 5883
+        },
+        {
+          "before": "        messagePages.getAndSet(null)?.closeAndJoin()\n        personalLists.getAndSet(null)?.closeAndJoin()",
+          "after": "        messagePages.getAndSet(null)?.closeAndJoin()\n        spacePages.getAndSet(null)?.closeAndJoin()\n        personalLists.getAndSet(null)?.closeAndJoin()",
+          "offsetAfter": 6369
+        },
+        {
+          "before": "DesktopHomeSettingsPort, DesktopOriginalMessagePagesRoot) -> Unit,",
+          "after": "DesktopHomeSettingsPort, DesktopOriginalMessagePagesRoot, DesktopOriginalSpacePagesRoot) -> Unit,",
+          "offsetAfter": 7246
+        },
+        {
+          "before": "handle.route.getAndSet(null)?.close(); handle.messagePages.get()?.close(); handle.retainer.retire()",
+          "after": "handle.route.getAndSet(null)?.close(); handle.messagePages.get()?.close(); handle.spacePages.get()?.close(); handle.retainer.retire()",
+          "offsetAfter": 9825
+        },
+        {
+          "before": "            handle.messagePages.getAndSet(null)?.closeAndJoin()\n            physicalStack.clear();",
+          "after": "            handle.messagePages.getAndSet(null)?.closeAndJoin()\n            handle.spacePages.getAndSet(null)?.closeAndJoin()\n            physicalStack.clear();",
+          "offsetAfter": 14925
+        },
+        {
+          "before": "        val personalLists = remember(root, services.library) {",
+          "after": "        val spacePages = remember(services.repository, services.community, routes) {\n            DesktopOriginalSpacePagesRoot(services.repository, services.community, routes,\n                services.community.originalSpaceTransport)\n        }\n        SideEffect { if (handle.isActive()) handle.spacePages.set(spacePages) else spacePages.close() }\n        LaunchedEffect(spacePages, routes) { snapshotFlow { physicalStack.toList() }.collect { spacePages.prune() } }\n        DisposableEffect(spacePages) { onDispose {\n            // Leave the last owner in the handle until its existing account/\n            // restore/shutdown drain has awaited it. Retirement cancels now.\n            spacePages.close()\n        } }\n        val personalLists = remember(root, services.library) {",
+          "offsetAfter": 18673
+        },
+        {
+          "before": "leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages)",
+          "after": "leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages, spacePages)",
+          "offsetAfter": 30922
+        }
+      ]
+    },
+    {
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "baseRawSha256": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903",
+      "baseLfSha256": "c5d7419691cc8a9d1cf7c51c21077a2be940fe39c19db9a0bba26c63189e3903",
+      "desiredRawSha256": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890",
+      "desiredLfSha256": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890",
+      "compilerOverlay": "root-hooks\\compiler-targets\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\DesktopShell.kt",
+      "hunks": [
+        {
+          "before": "{ root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) })",
+          "after": "{ root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) },\n                    ordinaryVideo.playlist,\n                    { bvid -> ordinaryVideoResources?.progress?.cachedPositionForSpace(bvid) { !isClosing() } ?: 0L })",
+          "offsetAfter": 102293
+        },
+        {
+          "before": "entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages ->",
+          "after": "entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages,spacePages ->",
+          "offsetAfter": 102677
+        },
+        {
+          "before": "                        when {\n                            entryKey is BiliPaiNavKey.Bangumi",
+          "after": "                        when {\n                            entryKey is BiliPaiNavKey.Space || entryKey is BiliPaiNavKey.UpowerRank || entryKey is BiliPaiNavKey.MemberGuard ->\n                                DesktopDetailWindow { DesktopOriginalSpacePageRootHost(entryKey, spacePages,\n                                    services.originalSpacePlaylist, services.originalSpaceCachedPosition,\n                                    { title, text, owned -> requestDesktopTextShare(services.textShare,\n                                        spacePages.entry(entryKey).environment.scope, title, text,\n                                        { owned() && active && messageRoutes.currentKey == entryKey && !isClosing() }, services.feedback) },\n                                    desktopDetailRenderEffectsSupported(), active) }\n                            entryKey is BiliPaiNavKey.Bangumi",
+          "offsetAfter": 107940
+        },
+        {
+          "before": "                            section == DesktopSection.USER -> {\n                                val spaceTargetMid = userId\n                                val spaceTargetEpoch = repository.sessionEpoch\n                                val history = library.history().filter { it.authorMid == userId }\n                                val progress = history.associate { card -> card.bvid to SpaceWatchProgress(card.bvid, card.preferredCid, card.title,\n                                    card.progressSeconds ?: 0, card.duration, card.viewedAt) }\n                                DesktopCompleteSpaceScreen(userId, repository, social, community, space, spaceContributions,\n                                    ::openVideo, ::openUser, ::openArticle, ::openDynamic, ::openLive, ::openBangumi, ::openMusic,\n                                    { showSeason(it, course = true) }, ::openResource, ::openCollection,\n                                    onPlaylist = { playlist -> if (repository.sessionEpoch == spaceTargetEpoch && userId == spaceTargetMid) openListenSpaceQueue(playlist, spaceTargetMid, history) },\n                                    onLogin = { loginDialog = true }, onExternalUrl = { raw ->\n                                        runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf(\"http\", \"https\") }?.let { uri ->\n                                            runCatching { java.awt.Desktop.getDesktop().browse(uri) }\n                                        }\n                                    }, progressByBvid = progress, localPositionMs = { bvid -> ((history.firstOrNull { it.bvid == bvid }?.progressSeconds ?: 0) * 1000L) },\n                                    locateBvid = (entryKey as? BiliPaiNavKey.Space)?.targetBvid?.takeIf{it.isNotBlank()} ?: playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword, onImagePreviewFeedback = { error = it })\n                            }\n",
+          "after": "",
+          "offsetAfter": 139332
+        }
+      ]
+    }
+  ],
+  "exactHunks": "root-hooks/exact-hunks.json",
+  "exactHunksSha256": "9dc30bf44cb181e4dd2818834be0cad15006bd5f2a499edd8992fdf6d86110cd",
+  "gradleOperation": "append-single-producer-fragment",
+  "gradleFragment": "root-hooks/gradle-fragment.kts",
+  "gradleFragmentSha256": "e7ac8d4e9bebb430d7e10b0223f79ed60c0668066dba5df6d8c9b3cf8a63d2ba",
+  "gradleBaseRawSha256": "240a19c530b8db9acb1f6802b54a600821c04989a5fb3ede2ea2f4d45f963107",
+  "registryOperation": "union-existing-features-and-append-missing-paths-only",
+  "sourceInventory": "source-inventory.json",
+  "sourceInventorySha256": "8a0e5446e5c9c9e91937ae1c37b0e1ad15004cec162c60c49b238970439ec8f6",
+  "registryBaseRawSha256": "58af65ee1a889ec615c860dc7639c1caba8be9edc67ac43670ed896d2860a9b0",
+  "sourceCountBefore": 1225,
+  "sourceCountAfter": 1229,
+  "sourceAppendCount": 4,
+  "sourceUnionCount": 8,
+  "resourcesBefore": 244,
+  "resourcesAfter": 244,
+  "originalReplay": "generated/source-transform-replay.json",
+  "originalReplaySha256": "a6376f97663bab37dee494790bccf96ba63bcca3eb67499ec4e43d19dab62d5e",
+  "finalCompile": "compile-runs/12/result.json",
+  "finalCompileSha256": "4b58c22fde1166998c9b05d40be2428c7bc94820dfdc944e6c468252e38518f9",
+  "actualJunitMethods": 15,
+  "finalFixtureReport": "fixture-runs/12/report.json",
+  "finalFixtureReportSha256": "bf4715ab70d8ecff3085c5157c1f8b741ea30a60d17ccefa5d65bf6f08938d68",
+  "normalProductTestCommand": ".\\gradlew.bat -p desktop test --tests com.bilipai.desktop.ui.DesktopOriginalSpacePagesTest",
+  "newDependencies": [],
+  "newResources": [],
+  "candidateWrites": 0,
+  "sharedGradleRuns": 0,
+  "hwndCreated": 0,
+  "realAccountRequests": 0,
+  "rootRuntimeAccepted": false,
+  "installedExeAccepted": false,
+  "v025Compiled": false
+}

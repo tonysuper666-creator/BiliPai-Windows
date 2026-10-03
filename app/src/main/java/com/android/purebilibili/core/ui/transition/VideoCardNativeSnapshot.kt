@@ -43,8 +43,19 @@ internal fun shouldHideStationarySourceCard(
     phase: VideoCardTransitionBackgroundPhase,
     depthProgress: Float,
     isReturnGestureInProgress: Boolean,
+    exposure: VideoCardTransitionExposure? = null,
 ): Boolean {
     if (!isSharedMorphSourceCard) return false
+    // Depth can reach its endpoint before the navigation owner releases the flying entry.
+    // Keep the original slot empty throughout rotation, commit and cancel, until actual Idle.
+    when (exposure) {
+        VideoCardTransitionExposure.SettledHidden,
+        VideoCardTransitionExposure.BackPreview,
+        VideoCardTransitionExposure.Returning,
+        VideoCardTransitionExposure.Restoring -> return true
+        VideoCardTransitionExposure.Idle -> return false
+        VideoCardTransitionExposure.Opening, null -> Unit
+    }
     return isVideoCardFlyingOverlayCoveringSource(
         phase = phase,
         depthProgress = depthProgress,
@@ -107,6 +118,7 @@ internal fun Modifier.recordNativeVideoCardLayer(
             depthProgress = bgState.progressProvider(),
             isReturnGestureInProgress = bgState.isReturnGestureInProgressProvider() ||
                 bgState.isGestureRestoreInProgressProvider(),
+            exposure = bgState.exposureProvider(),
         )
         if (!hide) {
             if (freezeProvider() && isNativeVideoCardLayerDrawable(layer.size.width, layer.size.height)) {

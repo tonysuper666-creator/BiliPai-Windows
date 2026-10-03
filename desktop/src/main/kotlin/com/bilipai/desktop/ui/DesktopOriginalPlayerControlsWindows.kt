@@ -9,6 +9,23 @@ internal class DesktopOriginalPlayerControlsWindows(
     private val isCurrent: () -> Boolean,
     private val reportCapabilityUnavailable: (Throwable) -> Unit,
 ) : DesktopOriginalPlayerControlsPlatform {
+    override fun readAmbientEnvironment(): com.android.purebilibili.feature.video.ambient.AmbientEnvironment {
+        if (!isCurrent()) return com.android.purebilibili.feature.video.ambient.AmbientEnvironment()
+        return try {
+            val status = DesktopPlayerSystemPowerStatus()
+            check(DesktopPlayerPowerKernel32.api.GetSystemPowerStatus(status) != 0)
+            if (!isCurrent()) return com.android.purebilibili.feature.video.ambient.AmbientEnvironment()
+            val flags = status.batteryFlag.toInt() and 255
+            val percent = status.batteryLifePercent.toInt() and 255
+            val lowBattery = flags and 128 == 0 && percent != 255 && percent <= 15
+            // SYSTEM_POWER_STATUS.SystemStatusFlag is the original struct's fourth BYTE.
+            // Windows has no equivalent portable Android severe-thermal listener.
+            com.android.purebilibili.feature.video.ambient.AmbientEnvironment(status.reserved1.toInt() and 255 == 1 || lowBattery, false)
+        } catch (failure: Exception) {
+            if (isCurrent()) reportCapabilityUnavailable(failure)
+            com.android.purebilibili.feature.video.ambient.AmbientEnvironment()
+        }
+    }
     override fun readBatteryPercent(): Int? {
         if (!isCurrent()) return null
         return try {

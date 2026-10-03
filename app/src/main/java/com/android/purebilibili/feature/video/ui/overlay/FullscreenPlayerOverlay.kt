@@ -19,7 +19,6 @@ import com.android.purebilibili.feature.video.usecase.seekPlayerFromUserAction
 import com.android.purebilibili.feature.video.usecase.togglePlayerPlaybackFromUserAction
 import com.android.purebilibili.danmaku.engine.DanmakuRenderView
 
-import android.app.Activity
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.media.AudioManager
@@ -85,6 +84,7 @@ import com.android.purebilibili.core.store.FullscreenAspectRatio
 import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.core.ui.rememberAppPlayerChromeProfile
 import com.android.purebilibili.core.ui.AppWindowSystemUiController
+import com.android.purebilibili.core.ui.findHostActivity
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppDropdownMenu
 import com.android.purebilibili.core.ui.components.AppDropdownMenuItem
@@ -441,10 +441,14 @@ fun FullscreenPlayerOverlay(
     
     // 进入全屏时设置横屏和沉浸式
     DisposableEffect(lifecycleOwner, player, playerViewRef) {
-        val activity = (context as? Activity) ?: return@DisposableEffect onDispose {}
+        val activity = context.findHostActivity() ?: return@DisposableEffect onDispose {}
         val window = activity.window
         val originalOrientation = activity.requestedOrientation
-        val originalSystemUi = AppWindowSystemUiController.capture(window)
+        val originalSystemUi = AppWindowSystemUiController.capture(window).let { snapshot ->
+            //  [修复] 播放器实例重建会重启本 effect，此时系统栏已被本覆盖层隐藏；
+            //  快照若照实记录会把"隐藏"当原始状态，退出全屏后系统栏将无法恢复。
+            if (snapshot.systemBarsVisible) snapshot else snapshot.copy(systemBarsVisible = true)
+        }
         val desktopFullscreenRequested =
             AppWindowSystemUiController.requestDesktopFullscreen(activity, enter = true)
 
@@ -496,7 +500,7 @@ fun FullscreenPlayerOverlay(
     }
 
     DisposableEffect(context, keepFullscreenPlaybackAwake) {
-        val hostWindow = (context as? Activity)?.window
+        val hostWindow = context.findHostActivity()?.window
         if (keepFullscreenPlaybackAwake) {
             hostWindow?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         } else {
@@ -877,7 +881,7 @@ fun FullscreenPlayerOverlay(
                             FullscreenGestureMode.Brightness -> {
                                 gestureValue = (gestureValue - dragAmount.y / screenHeight).coerceIn(0f, 1f)
                                 currentBrightness = gestureValue
-                                (context as? Activity)?.window?.let { window ->
+                                context.findHostActivity()?.window?.let { window ->
                                     val params = window.attributes
                                     params.screenBrightness = gestureValue
                                     window.attributes = params

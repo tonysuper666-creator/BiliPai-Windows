@@ -66,6 +66,7 @@ import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.AppSurfaceTokens
 import com.android.purebilibili.core.ui.blur.LocalFloatingChromeBackdrop
 import com.android.purebilibili.core.util.FormatUtils
+import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
 import com.android.purebilibili.data.model.response.ReplyItem
 import com.android.purebilibili.feature.home.components.biliPaiFloatingDockShell
 import com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControl
@@ -387,6 +388,7 @@ private fun CommentSearchResultRow(
     onCopy: () -> Unit,
 ) {
     val context = LocalContext.current
+    val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current
     val item = entry.reply
     val primaryColor = MaterialTheme.colorScheme.primary
 
@@ -489,9 +491,10 @@ private fun CommentSearchResultRow(
                 }
 
                 // 发布时间
-                val timeStr = if (item.ctime > 0) {
-                    FormatUtils.formatPublishTime(item.ctime * 1000L)
-                } else ""
+                val timeStr = FormatUtils.formatCommentTime(
+                    timestampSeconds = item.ctime,
+                    detailedTimeEnabled = detailedCommentTimeEnabled
+                )
                 if (timeStr.isNotBlank()) {
                     AppText(
                         text = timeStr,

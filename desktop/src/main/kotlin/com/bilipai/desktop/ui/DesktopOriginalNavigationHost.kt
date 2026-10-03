@@ -80,6 +80,8 @@ internal fun DesktopOriginalNavigationHost(
             miuixTransitionBlurEnabled = navigationSettings.miuixTransitionBlurEnabled,
             miuixPredictiveBackMaxProgressPercent = navigationSettings.miuixPredictiveBackMaxProgressPercent,
             videoSharedReturnGestureFollowEnabled = navigationSettings.videoSharedReturnGestureFollowEnabled,
+            videoSharedReturnGestureTranslationEnabled = navigationSettings.videoSharedReturnGestureTranslationEnabled,
+            videoReturnContentFollowProgressEnabled = navigationSettings.videoReturnContentFollowProgressEnabled,
             sourceMetadata = sourceMetadata,
             programmaticBackDispatcher = programmaticBackDispatcher,
             preferWholeCardReturn = preferWholeCardReturn,

@@ -118,6 +118,9 @@ data class PlayerState(
     val bufferedForwardSeconds: Double? = null,
     /** Actual per-source pause readback, published together with the native playback position. */
     val nativePaused: Boolean? = null,
+    /** Actual packet bitrate readback from the current MPV worker, bits/sec. */
+    val videoBitrateBps: Long? = null,
+    val audioBitrateBps: Long? = null,
 )
 
 data class PlayerTrack(

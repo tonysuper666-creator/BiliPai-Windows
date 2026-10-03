@@ -1,4 +1,5 @@
 """Exact upstream theme/renderer declarations and string resources for JVM. No Android stubs."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, shutil
 SETTINGS="app/src/main/java/com/android/purebilibili/feature/settings/"
@@ -64,12 +65,12 @@ def declarations(parser,source,names):
         output.append(text)
     return '\n\n'.join(output)+'\n'
 def inventory(repo):
-    return [dict(path=p,mode='direct' if p in DIRECT else 'policy-extract',features=['appearance-parity'],sha256=hashlib.sha256((repo/p).read_text(encoding='utf-8').encode()).hexdigest()) for p in DIRECT+list(EXTRACTED)]
+    return [dict(path=p,mode='direct' if p in DIRECT else 'policy-extract',features=['appearance-parity'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').encode()).hexdigest()) for p in DIRECT+list(EXTRACTED)]
 def generate(repo,output,resource_output=None,policy_only=False):
     spec=importlib.util.spec_from_file_location('appearance_parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
     output.mkdir(parents=True,exist_ok=True)
     for path in ([] if policy_only else DIRECT)+list(EXTRACTED):
-        source=(repo/path).read_text(encoding='utf-8');package=re.search(r'(?m)^package (\S+)',source).group(1)
+        source=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8');package=re.search(r'(?m)^package (\S+)',source).group(1)
         text=source if path in DIRECT else 'package '+package+'\n\n'+HEADERS[Path(path).name]+'\n'+declarations(parser,source,EXTRACTED[path])
         target=output/package.replace('.','/')/Path(path).name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text,encoding='utf-8',newline='\n')
     for language,path in RESOURCES.items():
@@ -77,5 +78,5 @@ def generate(repo,output,resource_output=None,policy_only=False):
 if __name__=='__main__':
     ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path);ap.add_argument('--resource-output',type=Path);ap.add_argument('--policy-only',action='store_true');ap.add_argument('--inventory',action='store_true');ap.add_argument('--resource-inventory',action='store_true');args=ap.parse_args()
     if args.inventory:print(json.dumps(inventory(args.repo),indent=2))
-    if args.resource_inventory:print(json.dumps([dict(path=p,mode='resource-adapt',features=['appearance-language'],sha256=hashlib.sha256((args.repo/p).read_text(encoding='utf-8').encode()).hexdigest()) for p in RESOURCES.values()],indent=2))
+    if args.resource_inventory:print(json.dumps([dict(path=p,mode='resource-adapt',features=['appearance-language'],sha256=hashlib.sha256((_desktop_canonical_source(args.repo, p)).read_text(encoding='utf-8').encode()).hexdigest()) for p in RESOURCES.values()],indent=2))
     if args.output:generate(args.repo,args.output,args.resource_output,args.policy_only)

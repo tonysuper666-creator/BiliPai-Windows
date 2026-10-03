@@ -1397,14 +1397,14 @@ class SpaceViewModel(
 
                 while (true) {
                     val response = spaceApi.getSpaceDynamic(currentMid, offset)
-                    if (response.code != 0 || response.data == null) {
+                    val responseData = response.data
+                    if (response.code != 0 || responseData == null) {
                         android.util.Log.e("SpaceVM", " loadSpaceDynamic failed: code=${response.code}, msg=${response.message}")
                         failed = true
                         hasMore = false
                         break
                     }
 
-                    val responseData = response.data
                     accumulated += responseData.items
                     pagesFetched += 1
                     val previousOffset = offset
@@ -1566,14 +1566,15 @@ class SpaceViewModel(
                 )
                 val latest = _uiState.value as? SpaceUiState.Success ?: return@launch
                 if (response.code == 0 && response.data != null) {
-                    val incomingItems = response.data.items
+                    val checkedResponseData = requireNotNull(response.data)
+                    val incomingItems = checkedResponseData.items
                     val previousItems = if (refresh) emptyList() else latest.cheeseItems
                     val mergedItems = if (refresh) {
                         incomingItems
                     } else {
                         mergeSpaceCheeseItems(previousItems, incomingItems)
                     }
-                    val hasNext = response.data.page?.next == true
+                    val hasNext = checkedResponseData.page?.next == true
                     _uiState.value = latest.copy(
                         cheeseItems = mergedItems,
                         cheesePage = page,
@@ -1935,7 +1936,8 @@ class SpaceViewModel(
         return try {
             val stateBefore = _uiState.value as? SpaceUiState.Success ?: return false
             val response = spaceApi.getSpaceDynamic(currentMid, stateBefore.dynamicOffset)
-            if (response.code != 0 || response.data == null) {
+            val responseData = response.data
+            if (response.code != 0 || responseData == null) {
                 val failed = _uiState.value as? SpaceUiState.Success ?: return false
                 _uiState.value = failed.copy(
                     isLoadingDynamics = false,
@@ -1944,7 +1946,6 @@ class SpaceViewModel(
                 return false
             }
 
-            val responseData = response.data
             val latest = _uiState.value as? SpaceUiState.Success ?: return false
             val merged = mergeSpaceDynamicPages(existing = latest.dynamics, incoming = responseData.items)
             _uiState.value = latest.copy(

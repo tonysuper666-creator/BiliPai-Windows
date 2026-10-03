@@ -1169,17 +1169,14 @@ private fun MobileSettingsNavLayout(
                             onDonateClick = onDonateClick,
                         )
                     }
-                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
             is SettingsNavDestination.Category -> {
-                Box(modifier = Modifier.padding(top = 12.dp)) {
-                    SettingsRootCategoryContent(
-                        category = destination.category,
-                        actions = rootCategoryActions,
-                        state = rootCategoryState,
-                    )
-                }
+                SettingsRootCategoryContent(
+                    category = destination.category,
+                    actions = rootCategoryActions,
+                    state = rootCategoryState,
+                )
             }
             SettingsNavDestination.Search -> Unit
         }

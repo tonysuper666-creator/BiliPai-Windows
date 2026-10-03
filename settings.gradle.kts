@@ -70,12 +70,17 @@ dependencyResolutionManagement {
 
 rootProject.name = "BiliPai"
 include(":app")
+include(":app-tv")
+include(":core-data")
+include(":core-player")
 include(":baselineprofile")
 include(":settings-core")
 include(":network-core")
 include(":plugin-sdk")
 include(":design-system")
+include(":design-tokens")
 include(":dolby-ffmpeg-decoder")
 include(":danmaku-engine")
+include(":miuix-navigation")
 
  

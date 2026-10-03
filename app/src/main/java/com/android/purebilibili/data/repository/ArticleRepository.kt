@@ -48,8 +48,9 @@ object ArticleRepository {
                 throw IllegalStateException(response.message.ifBlank { "Article detail unavailable" })
             }
 
-            val fromView = response.data.toUiModel()
-            val opusBlocks = fetchOpusArticleBlocks(response.data.dynamicId)
+            val data = requireNotNull(response.data)
+            val fromView = data.toUiModel()
+            val opusBlocks = fetchOpusArticleBlocks(data.dynamicId)
             val merged = if (opusBlocks.isEmpty()) {
                 fromView
             } else {

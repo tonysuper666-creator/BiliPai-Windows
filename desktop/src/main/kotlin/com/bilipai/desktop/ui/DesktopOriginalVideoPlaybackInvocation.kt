@@ -1,7 +1,7 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.data.model.response.*
-import com.android.purebilibili.feature.video.playback.dash.AdaptiveDashPlaybackSource
+import com.android.purebilibili.core.player.dash.AdaptiveDashPlaybackSource
 import com.bilipai.desktop.player.PlaybackSource
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext

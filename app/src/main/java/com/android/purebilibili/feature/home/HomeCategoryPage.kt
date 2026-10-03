@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,7 +52,6 @@ import com.android.purebilibili.core.store.HomeFeedCardStyle
 import com.android.purebilibili.core.store.HomeWallpaperEffectMode
 import com.android.purebilibili.core.ui.animation.DissolveAnimationPreset
 import com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard
-import com.android.purebilibili.core.ui.animation.jiggleOnDissolve
 import com.android.purebilibili.core.ui.adaptive.MotionTier
 import com.android.purebilibili.core.ui.performance.TrackScrollJank
 import com.android.purebilibili.core.ui.components.UpBadgeName
@@ -61,6 +61,7 @@ import kotlinx.collections.immutable.ImmutableSet
 import com.android.purebilibili.data.model.response.VideoItem
 import com.android.purebilibili.feature.home.components.BottomBarLiquidSegmentedControl
 import com.android.purebilibili.feature.home.components.HomeHeroCarousel
+import com.android.purebilibili.feature.home.components.HomeHeroCarouselImmersive
 import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
 import top.yukonga.miuix.kmp.blur.layerBackdrop
 import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
@@ -192,6 +193,8 @@ internal fun HomeCategoryPageContent(
     onDismissVideo: (VideoItem) -> Unit,
     onWatchLater: (String, Long) -> Unit,
     onDissolveComplete: (String) -> Unit,
+    onDissolveReflowStarted: (String) -> Unit = {},
+    dissolveReflowEnabled: Boolean = true,
     longPressCallback: ((VideoItem) -> Unit)? = null, // [Feature] Long Press
     displayMode: Int,
     cardAnimationEnabled: Boolean,
@@ -255,6 +258,18 @@ internal fun HomeCategoryPageContent(
     firstGridItemModifier: Modifier = Modifier,
     modifier: Modifier = Modifier,
 ) {
+    val cardReflowState = remember(category) { HomeCardReflowState() }
+    val cardReflowScope = rememberCoroutineScope()
+    var cardReflowActive by remember(category) { mutableStateOf(false) }
+    val latestReflowEnabled by rememberUpdatedState(dissolveReflowEnabled)
+    LaunchedEffect(dissolvingVideos, dissolveReflowEnabled) {
+        if (!dissolveReflowEnabled) {
+            cardReflowActive = false
+        } else if (dissolvingVideos.isEmpty()) {
+            kotlinx.coroutines.delay(500L)
+            cardReflowActive = false
+        }
+    }
     val sourceRoute = remember(category) {
         resolveHomeCategoryVideoSourceRoute(category)
     }
@@ -267,18 +282,7 @@ internal fun HomeCategoryPageContent(
             widthSizeClass = widthSizeClass,
         )
     }
-    val adaptiveInfo = com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo.current
-    val density = androidx.compose.ui.platform.LocalDensity.current
-    val hingeGridSpec = remember(adaptiveInfo, density.density) {
-        resolveHomeFeedBookHingeGridSpec(adaptiveInfo, density.density)
-    }
-    val horizontalArrangement = remember(gridColumns, cardLayout.itemSpacingDp, hingeGridSpec) {
-        resolveHomeFeedHorizontalArrangement(
-            columns = gridColumns,
-            baseSpacing = cardLayout.itemSpacingDp.dp,
-            hingeSpec = hingeGridSpec,
-        )
-    }
+    val horizontalArrangement = Arrangement.spacedBy(cardLayout.itemSpacingDp.dp)
     TrackScrollJank(
         scrollableState = gridState,
         stateName = "home:feed:${category.name.lowercase()}"
@@ -339,6 +343,7 @@ internal fun HomeCategoryPageContent(
     val videoGridKeys = remember(visibleGridVideos) {
         resolveHomeCategoryVideoGridKeys(visibleGridVideos)
     }
+    SideEffect { cardReflowState.retainKeys(videoGridKeys.toSet()) }
     val oldContentVideoIndex = oldContentAnchorBvid?.let { anchor ->
         visibleGridVideos.indexOfFirst { it.bvid == anchor }.takeIf { it >= 0 }
     } ?: oldContentStartIndex
@@ -415,16 +420,26 @@ internal fun HomeCategoryPageContent(
             onDissolveComplete = { onDissolveComplete(video.bvid) },
             cardId = video.bvid,
             preset = DissolveAnimationPreset.TELEGRAM_FAST,
+            publishGlobalDissolveState = false,
+            reflowDuringFinalTail = dissolveReflowEnabled,
+            onReflowStarted = {
+                cardReflowActive = dissolveReflowEnabled
+                onDissolveReflowStarted(video.bvid)
+            },
             preserveContentLayerWhenIdle = cardTransitionEnabled,
             modifier = itemModifier
+                .then(homeCardReflowModifier(
+                    key = videoGridKeys[index],
+                    state = cardReflowState,
+                    scope = cardReflowScope,
+                    enabledProvider = {
+                        latestReflowEnabled && cardReflowActive && !gridState.isScrollInProgress
+                    },
+                ))
                 .graphicsLayer {
                     scaleX = cardSquishScaleX
                     scaleY = cardSquishScaleY
                 }
-                .jiggleOnDissolve(
-                    cardId = video.bvid,
-                    isCurrentCardDissolving = isDissolving
-                )
                 .then(if (index == 0) firstGridItemModifier else Modifier)
         ) {
             when (displayMode) {
@@ -575,25 +590,46 @@ internal fun HomeCategoryPageContent(
                         contentType = "home_hero_carousel",
                         span = StaggeredGridItemSpan.FullLine
                     ) {
-                        HomeHeroCarousel(
-                            videos = carouselVideos,
-                            autoplayEnabled = homeHeroCarouselAutoplayEnabled,
-                            onGestureActiveChange = onHeroCarouselGestureActiveChange,
-                            onVideoClick = { video ->
-                                onVideoClick(
-                                    HomeVideoClickRequest(
-                                        bvid = video.bvid,
-                                        dynamicId = video.dynamicId,
-                                        cid = video.cid,
-                                        coverUrl = video.pic,
-                                        isVerticalVideo = video.isVertical,
-                                        source = HomeVideoClickSource.GRID,
-                                        sourceRoute = sourceRoute
+                        if (LocalConfiguration.current.screenWidthDp >= HOME_HERO_CAROUSEL_WIDE_BREAKPOINT_DP.toInt()) {
+                            // 折叠屏/平板展开态:全幅沉浸式 hero(与 TV 首页同一视觉语言)
+                            HomeHeroCarouselImmersive(
+                                videos = carouselVideos,
+                                horizontalEscapeDp = contentPadding.calculateLeftPadding(LocalLayoutDirection.current),
+                                onVideoClick = { video ->
+                                    onVideoClick(
+                                        HomeVideoClickRequest(
+                                            bvid = video.bvid,
+                                            dynamicId = video.dynamicId,
+                                            cid = video.cid,
+                                            coverUrl = video.pic,
+                                            isVerticalVideo = video.isVertical,
+                                            source = HomeVideoClickSource.GRID,
+                                            sourceRoute = sourceRoute
+                                        )
                                     )
-                                )
-                            },
-                            onGetPreviewUrl = onGetPreviewUrl
-                        )
+                                },
+                            )
+                        } else {
+                            HomeHeroCarousel(
+                                videos = carouselVideos,
+                                autoplayEnabled = homeHeroCarouselAutoplayEnabled,
+                                onGestureActiveChange = onHeroCarouselGestureActiveChange,
+                                onVideoClick = { video ->
+                                    onVideoClick(
+                                        HomeVideoClickRequest(
+                                            bvid = video.bvid,
+                                            dynamicId = video.dynamicId,
+                                            cid = video.cid,
+                                            coverUrl = video.pic,
+                                            isVerticalVideo = video.isVertical,
+                                            source = HomeVideoClickSource.GRID,
+                                            sourceRoute = sourceRoute
+                                        )
+                                    )
+                                },
+                                onGetPreviewUrl = onGetPreviewUrl
+                            )
+                        }
                     }
                 }
                 if (todayWatchEnabled) {
@@ -674,7 +710,7 @@ internal fun HomeCategoryPageContent(
                             renderVideoCard(
                                 index,
                                 video,
-                                videoListItemModifier(enabled = cardAnimationEnabled),
+                                videoListItemModifier(enabled = cardAnimationEnabled && !cardReflowActive),
                             )
                         }
                     }
@@ -705,7 +741,7 @@ internal fun HomeCategoryPageContent(
                             span = StaggeredGridItemSpan.FullLine,
                         ) {
                             Row(
-                                modifier = videoListItemModifier(enabled = cardAnimationEnabled)
+                                modifier = videoListItemModifier(enabled = cardAnimationEnabled && !cardReflowActive)
                                     .fillMaxWidth(),
                                 horizontalArrangement = horizontalArrangement,
                                 verticalAlignment = Alignment.Top,
@@ -769,8 +805,10 @@ internal fun HomeCategoryPageContent(
                 .align(Alignment.BottomEnd)
                 .padding(
                     end = AppSpacingTokens.Large,
-                    // 听视频小横条悬浮时上浮避让（与动态页 76dp 预留一致）
+                    // 听视频小横条悬浮时上浮避让（与动态页 76dp 预留一致）；
+                    // 整体抬高 120dp，避免胶囊压在底部卡片上
                     bottom = contentPadding.calculateBottomPadding() + AppSpacingTokens.Medium +
+                        120.dp +
                         if (nowPlayingBarOverlayVisible) 76.dp else 0.dp,
                 ),
         ) {

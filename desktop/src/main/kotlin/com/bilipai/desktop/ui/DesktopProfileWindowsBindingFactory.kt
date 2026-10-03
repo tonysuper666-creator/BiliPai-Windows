@@ -28,6 +28,7 @@ internal fun createDesktopOriginalWindowsProfileBinding(
     dynamicApi:DynamicApi,
     searchApi:SearchApi,
     splash:DesktopOriginalProfileSplashProtocol,
+    authorizationApi:PassportApi,
     favorite:DesktopOriginalFavoriteRepository,
     bangumi:DesktopOriginalFavoritePgc,
     csrf:()->String?,
@@ -55,5 +56,5 @@ internal fun createDesktopOriginalWindowsProfileBinding(
     val platform=DesktopWindowsProfilePlatform(stateDirectory,configuration,supportsRenderEffectBackedHaze,
         applicationIconModel,actualWindow,scope,owns,commit,ownedCallFactory,files,assets,clipboard,chrome,feedback,diagnostic)
     return DesktopOriginalProfileBinding(DesktopProfileEnvironment(scope,owns,commit,
-        api,spaceApi,dynamicApi,searchApi,splash,favorite,bangumi,csrf,accounts,preferences,platform,media,analytics))
+        api,spaceApi,dynamicApi,searchApi,splash,authorizationApi,favorite,bangumi,csrf,accounts,preferences,platform,media,analytics))
 }

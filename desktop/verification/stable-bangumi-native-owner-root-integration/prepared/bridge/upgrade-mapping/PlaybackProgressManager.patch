@@ -1,0 +1,14 @@
+--- app/src/main/java/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt
++++ core-player/src/main/java/com/android/purebilibili/core/player/PlaybackProgressManager.kt
+@@ -1,9 +1,9 @@
+ // File: feature/video/controller/PlaybackProgressManager.kt
+-package com.android.purebilibili.feature.video.controller
++package com.android.purebilibili.core.player
+ 
+ import android.content.Context
+ import android.content.SharedPreferences
+-import com.android.purebilibili.core.util.Logger
++import com.android.purebilibili.core.network.CoreDataLog as Logger
+ 
+ /**
+  * Playback Progress Manager

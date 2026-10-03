@@ -89,7 +89,7 @@ internal class DesktopOriginalVideoRootMediaFactory(
         // Keep their captured Binding; require a subject only for media publication.
         val capturedRequest = state.currentRequest
         val token = state.currentLoadRequestToken
-        return DesktopOriginalVideoCachedMediaFactory(raw.binding.captureMediaBytes(cache),
+        return DesktopOriginalVideoCachedMediaFactory(raw.binding.captureMediaBytes(cache, assembly.environment.network::cdnNetwork),
             legacyOrigin = { video, audio, _ -> transport.source(video, audio) },
             adaptiveOrigin = { adaptive, _ ->
                 val video = adaptive.videoTracks.firstOrNull()?.getValidUrl()
@@ -112,20 +112,31 @@ internal class DesktopOriginalVideoRootMediaFactory(
 
     /** Accepted recovery has its own live source Job. It does not retain a
      * completed resolver/Binding, and preserves the exact remote header fields. */
-    fun accepted(expected: DesktopOriginalVideoAcceptedPublication): DesktopOriginalVideoMediaPort {
+    fun accepted(expected: DesktopOriginalVideoAcceptedPublication): DesktopOriginalVideoMediaPort = accepted(expected, null)
+
+    /** PGC's raw signed plan borrows the same accepted receipt/cache/transport.
+     * Full DURL order survives retained resume; the ordinary overload is intact. */
+    internal fun accepted(expected: DesktopOriginalVideoAcceptedPublication,
+        bangumiPlan: DesktopOriginalBangumiNativeSourcePlan?): DesktopOriginalVideoMediaPort {
         val assembly = currentAssembly()
         if (!assembly.native.isCurrent(expected)) throw CancellationException("Original accepted recovery retired")
         val original = expected.nativeSource.source
+        bangumiPlan?.let { plan ->
+            require(expected.request.bvid == plan.episode.bvid && expected.request.aid == plan.episode.aid &&
+                expected.request.cid == plan.episode.cid && original.referer == plan.referer)
+        }
         val receipt = checkNotNull(original.authorizationReceipt)
         val authorization = repository.capturePlaybackAuthorization(receipt.accountEpoch) { gate.owns() }
         if (authorization.receipt != receipt) throw CancellationException("Original accepted authorization changed")
         val namespace = repository.capturePlaybackCachePartition(receipt, gate::owns)
         val admission = DesktopMediaByteRepositoryAdmission(repository, authorization, namespace,
-            checkNotNull(gate.scope.coroutineContext[Job]), gate::owns, gate::commitEntry)
+            checkNotNull(gate.scope.coroutineContext[Job]), gate::owns, gate::commitEntry,
+            assembly.environment.network::cdnNetwork)
         val request = DesktopOriginalVideoByteCacheRequest(cache, admission) {
             if (!assembly.native.isCurrent(expected)) throw CancellationException("Original recovery replaced")
         }
-        fun remote(video: String, audio: String?) = original.copy(videoUrl = video, audioUrl = audio,
+        fun remote(video: String, audio: String?) = bangumiPlan?.retainedSource(original, video, audio)
+            ?: original.copy(videoUrl = video, audioUrl = audio,
             progressiveSegments = emptyList(), nativePublication = null, nativeTransport = null)
         return DesktopOriginalVideoCachedMediaFactory(request,
             legacyOrigin = { video, audio, _ -> remote(video, audio) },
@@ -134,7 +145,8 @@ internal class DesktopOriginalVideoRootMediaFactory(
                     ?: throw IllegalStateException("Original adaptive source has no video representation"),
                 adaptive.audioTracks.firstOrNull()?.getValidUrl()) },
             progressiveOrigin = { remote(it, null) },
-            legacyTracks = { source, keys -> desktopOriginalLegacyByteTracks(source, emptyList(), emptyList(), keys) },
+            legacyTracks = { source, keys -> bangumiPlan?.byteTracks(source)
+                ?: desktopOriginalLegacyByteTracks(source, emptyList(), emptyList(), keys) },
             // NativeOwner.acceptedMedia intercepts accept, so this delegate must
             // never publish a second time. If used outside that wrapper it fails.
             publish = { _, _ -> error("Accepted recovery must use the same NativeOwner.acceptedMedia") },
@@ -143,6 +155,8 @@ internal class DesktopOriginalVideoRootMediaFactory(
     }
 
     fun admission(expected: DesktopOriginalVideoAcceptedPublication, stillOwned: () -> Boolean): DesktopMediaByteAdmission {
+        val assembly = currentAssembly()
+        if (!assembly.native.isCurrent(expected)) throw CancellationException("Original CDN source retired")
         val receipt = checkNotNull(expected.nativeSource.source.authorizationReceipt)
         val authorization = repository.capturePlaybackAuthorization(receipt.accountEpoch) { gate.owns() && stillOwned() }
         if (authorization.receipt != receipt) throw CancellationException("Original media authorization retired")
@@ -150,6 +164,7 @@ internal class DesktopOriginalVideoRootMediaFactory(
         // Root entry Job is intentionally NOT this operation's resolver Job.
         // NativeOwner supplies the fixed per-source publication predicate.
         return DesktopMediaByteRepositoryAdmission(repository, authorization, namespace,
-            checkNotNull(gate.scope.coroutineContext[Job]), { gate.owns() && stillOwned() }, gate::commitEntry)
+            checkNotNull(gate.scope.coroutineContext[Job]), { gate.owns() && stillOwned() }, gate::commitEntry,
+            assembly.environment.network::cdnNetwork)
     }
 }

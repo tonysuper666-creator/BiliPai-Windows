@@ -71,14 +71,14 @@ object CardPositionManager {
         private set
 
     /** Frozen display list of the stationary card; drawn with drawLayer on the flying entry. */
-    internal var lastClickedNativeCardLayer: GraphicsLayer? = null
+    internal var lastClickedNativeCardLayer: GraphicsLayer? by mutableStateOf(null)
         private set
 
     /**
      * Frozen cover overlays (gradient, play/danmaku, duration) without the thumbnail.
      * Drawn over the live flying cover so stats-on-cover cards keep their rest chrome.
      */
-    internal var lastClickedNativeCoverOverlayLayer: GraphicsLayer? = null
+    internal var lastClickedNativeCoverOverlayLayer: GraphicsLayer? by mutableStateOf(null)
         private set
 
     /** Stable click-time pixels used when the source composable leaves composition. */

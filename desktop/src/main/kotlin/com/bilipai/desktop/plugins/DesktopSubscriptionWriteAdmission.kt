@@ -53,6 +53,13 @@ object DesktopSubscriptionWriteAdmission {
         if (operation == null) action() else operation.cleanup(action)
     }
 
+    /** Root admission only mints the existing Store permit; it performs no file IO or Store locking. */
+    internal fun acquirePreferencePermit(store: DesktopPluginStore): DesktopPluginStore.OriginalPreferenceWritePermit {
+        var permit: DesktopPluginStore.OriginalPreferenceWritePermit? = null
+        commitOrOriginal { permit = DesktopPluginStore.OriginalPreferenceWritePermit(store) }
+        return checkNotNull(permit) { "Subscription preference admission rejected" }
+    }
+
     /** Settings writes already hold Root admission before entering the original backing monitor. */
     fun checkCurrentRequestOrOriginal() { current.get()?.checkRequest?.invoke() }
 

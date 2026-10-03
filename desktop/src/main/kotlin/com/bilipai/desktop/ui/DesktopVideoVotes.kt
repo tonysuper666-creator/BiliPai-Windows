@@ -143,7 +143,7 @@ internal fun DesktopVideoCommandVoteContent(
         val scope = rememberCoroutineScope()
         var measured by remember { mutableStateOf(IntSize.Zero) }
         val density = LocalDensity.current
-        val viewport = resolveDanmakuViewport(measured.width, measured.height, density.density, danmaku.maximumDisplayShortSidePx())
+        val viewport = resolveDanmakuViewport(measured.width, measured.height, density.density)
         val items = filterVisibleCommandDanmakuItems(cidOwnedCommands, hideInteractiveCommands)
             .filter { it.type == CommandDanmakuType.VOTE }
         Box(modifier.fillMaxSize().onSizeChanged { measured = it }) {

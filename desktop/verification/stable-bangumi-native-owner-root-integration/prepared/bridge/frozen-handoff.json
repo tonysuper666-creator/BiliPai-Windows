@@ -1,0 +1,490 @@
+{
+  "candidateBase": "464f5573331dfc7f7c2f1e47a5bf6bbac8cfd201",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "scope": "Installable same native-owner bridge only; full original Player Screen/PUGV comment/download/account/native runtime unaccepted",
+  "installContract": "install-contract.json",
+  "normalProductCompile": false,
+  "completeOriginalPlayerAccepted": false,
+  "files": [
+    {
+      "path": "BangumiNativeOwnerProof.kt",
+      "sha256Bytes": "8a7c5241ec93e2ae58f5e5d2c338bf190d0caf9e99c8efab231dc12605ecd488",
+      "bytes": 13622
+    },
+    {
+      "path": "ROOT-BRIDGE-HANDOFF.md",
+      "sha256Bytes": "79f813bd712f16bcbf1f1e0c38c9e4ba83509e6a21b67dd8541ba1e9d0f5d1a8",
+      "bytes": 6147
+    },
+    {
+      "path": "audit_packet.py",
+      "sha256Bytes": "5e40a9e5a48fce83ac7c54ad264689d74943dd8728c73eb192a3a6e8cc1c67a9",
+      "bytes": 11060
+    },
+    {
+      "path": "compile.py",
+      "sha256Bytes": "bff8746b7b0f37ac99f0eb69a2fc9905428766eb8db50ebec8a224f578224ac2",
+      "bytes": 3482
+    },
+    {
+      "path": "exact-hunks.json",
+      "sha256Bytes": "2bdd2e24c967a5c58b4d3d24f089413410fac89eacd9935cb3f3568e08871ef2",
+      "bytes": 53997
+    },
+    {
+      "path": "fragments/portrait-pgc-methods.kt.txt",
+      "sha256Bytes": "28bd9fc2e07d465d68645f70062e72072bbbb084f6f617895d20c312179a6cbf",
+      "bytes": 9515
+    },
+    {
+      "path": "fragments/video-owner-delta.py.txt",
+      "sha256Bytes": "c5f65c252f170477e998495ff934e2a7c0585b8d1880efb1074dec183327b613",
+      "bytes": 7659
+    },
+    {
+      "path": "freeze.py",
+      "sha256Bytes": "44d7134aaecaa63f1b19e565b7a932cf21055d5ef7af2fae3265693251bd72a9",
+      "bytes": 1280
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/core/store/DesktopOriginalVideoOwnerSettings.kt",
+      "sha256Bytes": "2c4f29ea06019618e887216317c3ef5b075e2dab2ba215e92dda9af35bdc35d0",
+      "bytes": 8429
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/core/util/DesktopOriginalVideoDefaultQuality.kt",
+      "sha256Bytes": "d3841115454bc3b0a7b9bd662069936884245b79f0bb3cd05dc2b9311e453d8c",
+      "bytes": 1082
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/data/repository/DesktopOriginalVideoActionStatus.kt",
+      "sha256Bytes": "1ae7928157b5ef7bdd027fbe0a68c34e79aadf07fdf58de61e1702d8be024957",
+      "bytes": 3638
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/data/repository/DesktopOriginalVideoNoteProtocol.kt",
+      "sha256Bytes": "7dec47b049608e2040651dc72f6bfcff523cbf764bc87428d351ba23a6b10a72",
+      "bytes": 6724
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/data/repository/DesktopOriginalVideoOwnerMetadataProtocol.kt",
+      "sha256Bytes": "b19944b4a8d7ebb96d15abb100a6489d0d9a7ed8bde230d81142f28c4182f41a",
+      "bytes": 10255
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/feature/plugin/CdnDashSegmentPrefetcher.kt",
+      "sha256Bytes": "76f264d90b9ee2db2e99484be9251a7c370ece433becc059feece4c461ddac57",
+      "bytes": 5030
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt",
+      "sha256Bytes": "f514cca9498fcb4ab7bfb1f1c1aa2adc1adae14ff9773e26b2d6be7f47b3e361",
+      "bytes": 7186
+    },
+    {
+      "path": "generated-video/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "sha256Bytes": "869a11b10aced877a65399a1f14fad719152fc63dc21257e80b2d255f8d0c17c",
+      "bytes": 399978
+    },
+    {
+      "path": "generated/com/android/purebilibili/core/player/DesktopOriginalBangumiBasePlayerViewModel.kt",
+      "sha256Bytes": "3cb3fd42aeeaba87a32746988214fc5f86408daa8d3e8f26cb381ba891449eb9",
+      "bytes": 9200
+    },
+    {
+      "path": "generated/com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt",
+      "sha256Bytes": "d83ada54257341092ab9ff0549cd05ff8ce14395b09ad1f3c352a2b6b6b70da9",
+      "bytes": 6402
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDashManifestPolicy.kt",
+      "sha256Bytes": "342b8d27a9ee4b9ea22b7640eae25c15e9db7a2cb0da069d3a9fc99a73b5be3c",
+      "bytes": 1937
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiEpisodeSkipPolicy.kt",
+      "sha256Bytes": "1d5e0803dc92f9497c603be7a34eff81ab392bafc98975d110a52105790b14aa",
+      "bytes": 1882
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerOverlayPolicy.kt",
+      "sha256Bytes": "5f0bbe75750e01dab2c5804d030e8633c3148fd82c893805b48e09a5258e485a",
+      "bytes": 6987
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt",
+      "sha256Bytes": "00c481a9fae24e70e2a24613ae98e1a49c9afd4aa318bc27c4e4f522c86d0970",
+      "bytes": 59832
+    },
+    {
+      "path": "generated/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt",
+      "sha256Bytes": "f891f4d060c64773e09cf44f8a8b3f797e5f2660168f862a3a6a0139d5730ef0",
+      "bytes": 3247
+    },
+    {
+      "path": "install-contract.json",
+      "sha256Bytes": "8a40e96100a8a8bcc06523ea3ebad33ce205232983d3f44b4afa05df9ffb032a",
+      "bytes": 6157
+    },
+    {
+      "path": "map_upgrade.py",
+      "sha256Bytes": "05df90083a2a4aa16a7984177bcb6d2bf3ac1f1ee83fdd9ffb8a022dd9af5d4a",
+      "bytes": 5404
+    },
+    {
+      "path": "prepare_shared_owner.py",
+      "sha256Bytes": "f7813946011e4b420d5b870c9f9e82aa451c1b35f0f0e3327eed31e49eb20e2f",
+      "bytes": 15636
+    },
+    {
+      "path": "prepared/desktop/build.gradle.kts",
+      "sha256Bytes": "240a19c530b8db9acb1f6802b54a600821c04989a5fb3ede2ea2f4d45f963107",
+      "bytes": 150474
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativePresenter.kt",
+      "sha256Bytes": "d783742df9fde979b2918bfe371178c92cb7c01c66b84abf0909435fbbbdf589",
+      "bytes": 5582
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativeSourcePlan.kt",
+      "sha256Bytes": "6a90f74d6caf9678cca92cb1d92a5baac82d4df722fb6d49c5e7bad996dfa29c",
+      "bytes": 10157
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerPlatform.kt",
+      "sha256Bytes": "5849e790175a7cb4b40a2e707c5c6fb21f0006fc3c43f8af003f191845bf4287",
+      "bytes": 6217
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerRequestViews.kt",
+      "sha256Bytes": "b84edacf72b00fec21eeeef791a608965d45ff8a8b21b188f9d4df12b390c7a9",
+      "bytes": 5699
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiSharedPlaybackPresenter.kt",
+      "sha256Bytes": "ab5f2b7751af670621a94c43b8b09e4d0c6517f1f0aa4460221f73740f5b9eb5",
+      "bytes": 379
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "sha256Bytes": "40ee9b47bade9d375a4b77f57410746ee0db6e0c0056c92deb67ddb2ad25a7a7",
+      "bytes": 30736
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "sha256Bytes": "5d0a1aa363ee1da9816a3c05268fcce28541bcf59dc4b9650006e078b68ecc0c",
+      "bytes": 27750
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "sha256Bytes": "613f8180f38cd861faddb046b06005f1e7a11585315d306e235911839ca0c311",
+      "bytes": 14609
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "sha256Bytes": "3f4d58d2d6f85a82595c0c5f3214860e34f185ad721409db4edc670bcb89574c",
+      "bytes": 29622
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootFactory.kt",
+      "sha256Bytes": "803a4380f85740a36924984ea2ddbb1e36e0520b2cf32b1b00845bbf643e0e24",
+      "bytes": 13138
+    },
+    {
+      "path": "prepared/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+      "sha256Bytes": "70534aceed24cdca019ca08026bc8c05bc978a39a056bf3895f45415f380e2cc",
+      "bytes": 10921
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-bangumi-player.py",
+      "sha256Bytes": "ae7891552d3c37b4371cbb52c0982fa319173b1c0e9589d8fd861407d7ee1675",
+      "bytes": 52106
+    },
+    {
+      "path": "prepared/desktop/tools/extract-upstream-video-full-owner.py",
+      "sha256Bytes": "c43b89c786ff9d372549a598366e9a375c8f017b6e2434f67ff4751b026d061a",
+      "bytes": 265846
+    },
+    {
+      "path": "prepared/desktop/upstream-sources.json",
+      "sha256Bytes": "58af65ee1a889ec615c860dc7639c1caba8be9edc67ac43670ed896d2860a9b0",
+      "bytes": 439805
+    },
+    {
+      "path": "proof-runs/01/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-runs/01/compiler.args",
+      "sha256Bytes": "eba237c6787a32bfbbbf807de0c8f71dcddd2e0fd3d7f901c055e888567572bd",
+      "bytes": 25924
+    },
+    {
+      "path": "proof-runs/01/result.json",
+      "sha256Bytes": "1263f0db4934c18cc03c7ecba2c22e8df178de6415ac7f93622924c28074df77",
+      "bytes": 899
+    },
+    {
+      "path": "proof-runs/01/run.log",
+      "sha256Bytes": "c1be1673ce5d862dd9f0bea34108153e7b057d91e4c0388e6ed08004eee02259",
+      "bytes": 1551
+    },
+    {
+      "path": "proof-runs/02/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-runs/02/compiler.args",
+      "sha256Bytes": "81825ed73dd45d495105df4be60e960634dcca15a55e46f41c4d8580bcc853b0",
+      "bytes": 25924
+    },
+    {
+      "path": "proof-runs/02/result.json",
+      "sha256Bytes": "385dd0a3d841871bc9c437ed5f23d766ff8a3fec73d4023cdfe4e16895a83512",
+      "bytes": 899
+    },
+    {
+      "path": "proof-runs/02/run.log",
+      "sha256Bytes": "34478b22d5b36856e6bee07d3a49d94af36756942cc4b8d1704d1e1bbc644b45",
+      "bytes": 2034
+    },
+    {
+      "path": "proof-runs/03/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-runs/03/compiler.args",
+      "sha256Bytes": "94e4a109bcfbedd2c5f2c097ea97d6295919c4fe9f7db56f45bdf361210364c8",
+      "bytes": 25924
+    },
+    {
+      "path": "proof-runs/03/result.json",
+      "sha256Bytes": "8039228a4969e2bdd34a3de000f9bc0d4c844b45b3cc485ff9b49194dfb005bc",
+      "bytes": 898
+    },
+    {
+      "path": "proof-runs/03/run.log",
+      "sha256Bytes": "bfc595b54704cfc1fe59b1a57b4f49b745cdcaaf4d388713a469b565cf1ad2ad",
+      "bytes": 2237
+    },
+    {
+      "path": "proof-runs/04/compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "proof-runs/04/compiler.args",
+      "sha256Bytes": "48faa13883776a79a355a3255b68157b45a731d06236d0e9f3feb82d847ff01c",
+      "bytes": 26969
+    },
+    {
+      "path": "proof-runs/04/result.json",
+      "sha256Bytes": "f3b5c8ac4e78d7cd0af67c462aac207633559cb41350bdff0e6dfe79b4a41ca8",
+      "bytes": 898
+    },
+    {
+      "path": "proof-runs/04/run.log",
+      "sha256Bytes": "39e859406a39362e3fe47b16bb7843b1e2f88725dd1039047d7e3e5e20ecde95",
+      "bytes": 2499
+    },
+    {
+      "path": "proof.py",
+      "sha256Bytes": "3f01375bbb5c896d081da474e34efad2928e0b580e329d6c397469c03a375d9a",
+      "bytes": 2995
+    },
+    {
+      "path": "registry-delta.json",
+      "sha256Bytes": "45e8e3ca9e70e17a2b570b41c38d6140f1f5fc6603a194c037ab76f91b858308",
+      "bytes": 4276
+    },
+    {
+      "path": "runs/01/compile.log",
+      "sha256Bytes": "6fb1a89731d8180d0e1cb524358ed1f2dc5fa79aaec5a9036300d43a5c257626",
+      "bytes": 552
+    },
+    {
+      "path": "runs/01/compiler.args",
+      "sha256Bytes": "bb0b764f009e069f0e09e45153aab2e1d81a044fd08b34d312fdf3f3dc6096a1",
+      "bytes": 33234
+    },
+    {
+      "path": "runs/01/result.json",
+      "sha256Bytes": "f1694995e567d73165c8f48f1f108a852ee857861ce1c1343a5b3740d874ab0f",
+      "bytes": 12503
+    },
+    {
+      "path": "runs/02/compile.log",
+      "sha256Bytes": "052a4cd87c1e4d0111b719707c7c7c00abdf375aac1087f1a6cbe74ae9350a4c",
+      "bytes": 2863
+    },
+    {
+      "path": "runs/02/compiler.args",
+      "sha256Bytes": "2cc1acd6a251e0b5e28662e4ee01d4f42d757f962aceea00c63c6538d45d1a6d",
+      "bytes": 33234
+    },
+    {
+      "path": "runs/02/prospective.jar",
+      "sha256Bytes": "1b7831a1ea8e94c21813af9317c6e2dc23632c67085f9de03a63c93463085469",
+      "bytes": 1862044
+    },
+    {
+      "path": "runs/02/result.json",
+      "sha256Bytes": "5030dc504737e7a2026f8c41005b320e59d0ab1586c1bce2f8afc0b5d3f9b224",
+      "bytes": 48044
+    },
+    {
+      "path": "runs/03/compile.log",
+      "sha256Bytes": "6c28de9c8293ecfddb3b0cd26ea3fea892901a17980bb36f24fd2e3a83cc74a1",
+      "bytes": 1888
+    },
+    {
+      "path": "runs/03/compiler.args",
+      "sha256Bytes": "8d8c83190ac5c6e2f697d71ca4286873156ec74edad217d990e05b9b61a0bca5",
+      "bytes": 30360
+    },
+    {
+      "path": "runs/03/prospective.jar",
+      "sha256Bytes": "ec6c0125106a84b11ab7bae682a61ac161477ad4277a0eccb8befb2842922ac8",
+      "bytes": 1197374
+    },
+    {
+      "path": "runs/03/result.json",
+      "sha256Bytes": "34dc3cef65ea99a6fd81a7d29ca5d1301d1583526b57fe9ea8b364be5c8ca281",
+      "bytes": 43378
+    },
+    {
+      "path": "runs/04/compile.log",
+      "sha256Bytes": "6c28de9c8293ecfddb3b0cd26ea3fea892901a17980bb36f24fd2e3a83cc74a1",
+      "bytes": 1888
+    },
+    {
+      "path": "runs/04/compiler.args",
+      "sha256Bytes": "957846c0214b92f8acf618e9e75b52a3e31e6010e0484a4b4e89184e8bb686b7",
+      "bytes": 31405
+    },
+    {
+      "path": "runs/04/prospective.jar",
+      "sha256Bytes": "0bba735c0fdd060301da3ef05247a8e8d1e9e7cebd925200cc8b194a4a437e7a",
+      "bytes": 1197374
+    },
+    {
+      "path": "runs/04/result.json",
+      "sha256Bytes": "1d22f6f13bf6180273f5b2a2f259610a0871ae3561d8b61167880e75fd326828",
+      "bytes": 43378
+    },
+    {
+      "path": "runs/05/compile.log",
+      "sha256Bytes": "f4de91a4a99cd823e7606e2f05571b25f7b303208909b7439657672391ae0c0f",
+      "bytes": 424
+    },
+    {
+      "path": "runs/05/compiler.args",
+      "sha256Bytes": "3dd958f2fe292187ea59df184e0394853836dd78e1b34a1dfb4ead539c44ffb5",
+      "bytes": 31664
+    },
+    {
+      "path": "runs/05/result.json",
+      "sha256Bytes": "e104e69cd9fa11551b95e6c549c7f5de62e8c2cedd2ace7820ef3ff940e72ae7",
+      "bytes": 8284
+    },
+    {
+      "path": "runs/06/compile.log",
+      "sha256Bytes": "6c28de9c8293ecfddb3b0cd26ea3fea892901a17980bb36f24fd2e3a83cc74a1",
+      "bytes": 1888
+    },
+    {
+      "path": "runs/06/compiler.args",
+      "sha256Bytes": "1486a6497f7725dce1d5deab4a3bcb68c78b5931a2ce78e3aadef88bcbdce096",
+      "bytes": 31664
+    },
+    {
+      "path": "runs/06/prospective.jar",
+      "sha256Bytes": "3ce70e41e9bca553abdcb5aa09bd18a7483641d827487430cb64e954edc7b012",
+      "bytes": 1220184
+    },
+    {
+      "path": "runs/06/result.json",
+      "sha256Bytes": "531aff7c3e534b4dfca812dfb9cbba4b2ef6b884a9e74864b61b0e954b98d2ab",
+      "bytes": 44591
+    },
+    {
+      "path": "source-and-boundary-audit.json",
+      "sha256Bytes": "d01e2c39dd11e9555c101592e5b831dbeaae7fc9d7913b15a84dac6f8fdeed1a",
+      "bytes": 53506
+    },
+    {
+      "path": "targets.json",
+      "sha256Bytes": "6ddfaef6e479967a7624bf1369e5bb9a9f2a1a40dddb8466ca91c251b120c3c3",
+      "bytes": 2974
+    },
+    {
+      "path": "upgrade-mapping/ApiClient.patch",
+      "sha256Bytes": "051f8ba076d0594beaf3ceea77905a1c51cc49e916fd679af09ebbd680951292",
+      "bytes": 19698
+    },
+    {
+      "path": "upgrade-mapping/BangumiDashManifestPolicy.patch",
+      "sha256Bytes": "8d0b8cdf30057005edc863ca233a5533a6b7db1c6342a34f6d1042ed605e5973",
+      "bytes": 612
+    },
+    {
+      "path": "upgrade-mapping/BangumiPlayerContent.patch",
+      "sha256Bytes": "ab1569950e2e35b5f8a28244b0203e8c071b6c371c165a46a6dec114231fb8ca",
+      "bytes": 7548
+    },
+    {
+      "path": "upgrade-mapping/BangumiPlayerOverlayHost.patch",
+      "sha256Bytes": "c1e07899ea05afd8446c03f407ceb3a2e6290df8049b08f593aea5051a4090bd",
+      "bytes": 10411
+    },
+    {
+      "path": "upgrade-mapping/BangumiPlayerScreen.patch",
+      "sha256Bytes": "824b8f5bd202ea0167022a9a7bf529d62da55f8cae2eedd00b326f4e5aacc986",
+      "bytes": 10873
+    },
+    {
+      "path": "upgrade-mapping/BangumiPlayerViewModel.patch",
+      "sha256Bytes": "394df5e6e5eecd9bae39250975b028da0fbfbe51758bdeca0b11b1e8130ecec8",
+      "bytes": 3382
+    },
+    {
+      "path": "upgrade-mapping/BangumiRepository.patch",
+      "sha256Bytes": "66e49051b04ad6f2bbbab0331c479507c56631ac6ae73026bb02081662f2c3df",
+      "bytes": 4527
+    },
+    {
+      "path": "upgrade-mapping/CommentInputDialog.patch",
+      "sha256Bytes": "837eed4582ec44f855cc4e92a877ba6149ae368084fb9839c4829f8cac3f80d2",
+      "bytes": 48684
+    },
+    {
+      "path": "upgrade-mapping/PlaybackProgressManager.patch",
+      "sha256Bytes": "7d14deb8103ee610d7192ef0f1389ee6b20c06af755915f788186f013741466e",
+      "bytes": 607
+    },
+    {
+      "path": "upgrade-mapping/VideoCommentViewModel.patch",
+      "sha256Bytes": "6cebc658ba05dc5fc9aae9bf97f5629843c0044f01d26dcaff534bea4b9a4e67",
+      "bytes": 11732
+    },
+    {
+      "path": "upgrade-mapping/VideoPlaybackViewModel.patch",
+      "sha256Bytes": "260d3ccebeddfddbe636d46f293c1e78f3018980377b4bc39a9740ae5774d5e5",
+      "bytes": 14987
+    },
+    {
+      "path": "upgrade-mapping/WbiKeyManager.patch",
+      "sha256Bytes": "b44865cb4363b65c5e73cf94db74f5abe727f295faddd00842e855ce57466ed1",
+      "bytes": 4037
+    },
+    {
+      "path": "v025-upgrade-mapping.json",
+      "sha256Bytes": "995139ec2e5c421d97ffd9e61739df8dec3759d918c3a825c838f652677fb1f6",
+      "bytes": 13127
+    }
+  ]
+}

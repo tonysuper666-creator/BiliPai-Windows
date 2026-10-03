@@ -280,6 +280,7 @@ internal fun resolveVideoDetailReturnMediaFrame(
     liveReturnMorph: Boolean = false,
     isReturnGestureInProgress: Boolean = false,
     showResidentCoverUntilFirstFrame: Boolean = false,
+    followProgressEnabled: Boolean = true,
 ): VideoDetailReturnMediaFrame {
     if (!hasResidentCover) {
         return VideoDetailReturnMediaFrame(coverAlpha = 0f, playerAlpha = 1f)
@@ -296,7 +297,9 @@ internal fun resolveVideoDetailReturnMediaFrame(
     }
     // Keep the flying media slot opaque. Transparent cover + fading player is the empty
     // card: Miuix will not composite the list card through the flying clip.
-    val coverTakeover = resolveVideoCardLiveReturnVisualHandoffAlpha(transitionProgress)
+    val coverTakeover = if (!followProgressEnabled && transitionProgress > 0f) {
+        0f
+    } else resolveVideoCardLiveReturnVisualHandoffAlpha(transitionProgress)
     return VideoDetailReturnMediaFrame(
         coverAlpha = coverTakeover,
         playerAlpha = 1f - coverTakeover,

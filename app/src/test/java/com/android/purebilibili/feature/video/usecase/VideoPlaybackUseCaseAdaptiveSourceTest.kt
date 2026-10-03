@@ -5,8 +5,8 @@ import com.android.purebilibili.data.model.response.DashAudio
 import com.android.purebilibili.data.model.response.DashVideo
 import com.android.purebilibili.data.model.response.PlayUrlData
 import com.android.purebilibili.data.model.response.SegmentBase
-import com.android.purebilibili.feature.video.playback.dash.AdaptiveDashPlaybackSource
-import com.android.purebilibili.feature.video.playback.policy.PlaybackQualityMode
+import com.android.purebilibili.core.player.dash.AdaptiveDashPlaybackSource
+import com.android.purebilibili.core.player.policy.PlaybackQualityMode
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull

@@ -1,0 +1,207 @@
+--- app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt
++++ app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt
+@@ -11,6 +11,7 @@
+ import com.android.purebilibili.core.player.HiResCompatibleRenderersFactory
+ import com.android.purebilibili.core.util.LocalWindowSizeClass
+ import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
++import com.android.purebilibili.core.util.layoutHinges
+ import com.android.purebilibili.core.util.applyPlayerRequestedOrientation
+ import com.android.purebilibili.core.util.formatAppAdaptiveStrategySnapshot
+ import com.android.purebilibili.core.util.resolvePlayerPresentationPolicy
+@@ -639,8 +640,26 @@
+                 setWindowNavigationBarColor(window, Color.Black.toArgb())
+             } else {
+                 insetsController.show(WindowInsetsCompat.Type.systemBars())
++                insetsController.systemBarsBehavior =
++                    androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+                 setWindowStatusBarColor(window, Color.Transparent.toArgb())
+                 setWindowNavigationBarColor(window, Color.Transparent.toArgb())
++            }
++        }
++    }
++
++    //  [修复] 离开番剧页时恢复系统栏：横屏沉浸路径（isFullscreen=true）此前没有
++    //  onDispose，经小窗/深链等非返回手势路径离开会泄漏隐藏的系统栏。
++    if (!view.isInEditMode) {
++        DisposableEffect(Unit) {
++            onDispose {
++                val exitWindow = view.context.findActivity()?.window ?: return@onDispose
++                val exitController = WindowCompat.getInsetsController(exitWindow, view)
++                exitController.show(WindowInsetsCompat.Type.systemBars())
++                exitController.systemBarsBehavior =
++                    androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
++                setWindowStatusBarColor(exitWindow, Color.Transparent.toArgb())
++                setWindowNavigationBarColor(exitWindow, Color.Transparent.toArgb())
+             }
+         }
+     }
+@@ -815,7 +834,8 @@
+             .getPauseOnPlayerCollapseEnabled(context)
+             .collectAsStateWithLifecycle(initialValue = true)
+ 
+-        val inlineCollapseEnabled = !isFullscreen && portraitPlayerCollapseMode != PortraitPlayerCollapseMode.OFF
++        val inlineCollapseEnabled = !isFullscreen && !appWindowAdaptiveInfo.shouldAvoidHinge &&
++            portraitPlayerCollapseMode != PortraitPlayerCollapseMode.OFF
+ 
+         val density = LocalDensity.current
+         val screenWidthDp = configuration.screenWidthDp.dp
+@@ -900,7 +920,88 @@
+             }
+         }
+ 
+-        if (isFullscreen) {
++        val supportingContent: @Composable () -> Unit = {
++            Box(
++                modifier = Modifier
++                    .fillMaxSize()
++                    .background(AppSurfaceTokens.groupedListContainer())
++            ) {
++                when (val state = uiState) {
++                    is BangumiPlayerState.Loading -> {
++                        Box(
++                            modifier = Modifier.fillMaxSize(),
++                            contentAlignment = Alignment.Center
++                        ) {
++                            AdaptiveLoadingIndicator()
++                        }
++                    }
++
++                    is BangumiPlayerState.Error -> {
++                        BangumiErrorContent(
++                            message = state.message,
++                            isVipRequired = state.isVipRequired,
++                            isLoginRequired = state.isLoginRequired,
++                            canRetry = state.canRetry,
++                            onRetry = { viewModel.retry() },
++                            onLogin = onNavigateToLogin
++                        )
++                    }
++
++                    is BangumiPlayerState.Success -> {
++                        BangumiPlayerContent(
++                            detail = state.seasonDetail,
++                            currentEpisode = state.currentEpisode,
++                            commentViewModel = commentViewModel,
++                            onEpisodeClick = { viewModel.switchEpisode(it) },
++                            onFollowStatusSelect = { viewModel.updateFollowStatus(it) },
++                            onUserClick = onUserClick,
++                            onCommentUrlClick = onOpenBilibiliLink,
++                            onDownloadClick = { viewModel.downloadCurrentEpisode(context) },
++                            onShareClick = {
++                                val episode = state.currentEpisode
++                                val shareUrl = "https://www.bilibili.com/cheese/play/ep${episode.id}"
++                                val shareText = listOf(
++                                    state.seasonDetail.title,
++                                    episode.title,
++                                    shareUrl
++                                ).filter { it.isNotBlank() }.joinToString("\n")
++                                runCatching {
++                                    context.startActivity(
++                                        android.content.Intent.createChooser(
++                                            android.content.Intent(android.content.Intent.ACTION_SEND).apply {
++                                                type = "text/plain"
++                                                putExtra(android.content.Intent.EXTRA_TEXT, shareText)
++                                            },
++                                            "分享课程"
++                                        )
++                                    )
++                                }.onFailure {
++                                    Toast.makeText(context, "暂时无法打开分享面板", Toast.LENGTH_SHORT).show()
++                                }
++                            }
++                        )
++                    }
++                }
++            }
++        }
++
++        // 非全屏有简介等二级内容，半开时分 pane；全屏没有二级内容，仅物理遮挡铰链才分 pane，
++        // 软折痕跨整窗避免下半屏留黑。
++        val bangumiSplitPanes = appWindowAdaptiveInfo.shouldAvoidHinge &&
++            (!isFullscreen || appWindowAdaptiveInfo.foldingFeature.layoutHinges().any { it.isOccluding })
++        if (bangumiSplitPanes) {
++            com.android.purebilibili.core.ui.adaptive.AppHingePaneLayout(
++                modifier = Modifier.fillMaxSize(),
++                primaryContent = {
++                    Box(
++                        Modifier.fillMaxSize()
++                            .padding(top = if (isFullscreen) 0.dp else portraitPlayerTopPadding)
++                            .background(Color.Black)
++                    ) { playerContentView(isFullscreen) }
++                },
++                secondaryContent = if (isFullscreen) null else supportingContent,
++            )
++        } else if (isFullscreen) {
+             // 全屏播放
+             playerContentView(true)
+         } else {
+@@ -950,68 +1051,7 @@
+                 }
+                 
+                 // 内容区域
+-                Box(
+-                    modifier = Modifier
+-                        .fillMaxSize()
+-                        .background(AppSurfaceTokens.groupedListContainer())
+-                ) {
+-                    when (val state = uiState) {
+-                        is BangumiPlayerState.Loading -> {
+-                            Box(
+-                                modifier = Modifier.fillMaxSize(),
+-                                contentAlignment = Alignment.Center
+-                            ) {
+-                                AdaptiveLoadingIndicator()
+-                            }
+-                        }
+-                        
+-                        is BangumiPlayerState.Error -> {
+-                            BangumiErrorContent(
+-                                message = state.message,
+-                                isVipRequired = state.isVipRequired,
+-                                isLoginRequired = state.isLoginRequired,
+-                                canRetry = state.canRetry,
+-                                onRetry = { viewModel.retry() },
+-                                onLogin = onNavigateToLogin
+-                            )
+-                        }
+-                        
+-                        is BangumiPlayerState.Success -> {
+-                            BangumiPlayerContent(
+-                                detail = state.seasonDetail,
+-                                currentEpisode = state.currentEpisode,
+-                                commentViewModel = commentViewModel,
+-                                onEpisodeClick = { viewModel.switchEpisode(it) },
+-                                onFollowStatusSelect = { viewModel.updateFollowStatus(it) },
+-                                onUserClick = onUserClick,
+-                                onCommentUrlClick = onOpenBilibiliLink,
+-                                onDownloadClick = { viewModel.downloadCurrentEpisode(context) },
+-                                onShareClick = {
+-                                    val episode = state.currentEpisode
+-                                    val shareUrl = "https://www.bilibili.com/cheese/play/ep${episode.id}"
+-                                    val shareText = listOf(
+-                                        state.seasonDetail.title,
+-                                        episode.title,
+-                                        shareUrl
+-                                    ).filter { it.isNotBlank() }.joinToString("\n")
+-                                    runCatching {
+-                                        context.startActivity(
+-                                            android.content.Intent.createChooser(
+-                                                android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+-                                                    type = "text/plain"
+-                                                    putExtra(android.content.Intent.EXTRA_TEXT, shareText)
+-                                                },
+-                                                "分享课程"
+-                                            )
+-                                        )
+-                                    }.onFailure {
+-                                        Toast.makeText(context, "暂时无法打开分享面板", Toast.LENGTH_SHORT).show()
+-                                    }
+-                                }
+-                            )
+-                        }
+-                    }
+-                }
++                supportingContent()
+             }
+         }
+     }

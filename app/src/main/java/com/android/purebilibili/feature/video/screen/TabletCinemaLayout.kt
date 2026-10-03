@@ -1,5 +1,6 @@
 package com.android.purebilibili.feature.video.screen
 
+import com.android.purebilibili.feature.video.ambient.PlayerAmbientLayout
 import com.android.purebilibili.navigation.animatePagerSelection
 
 import android.content.res.Configuration
@@ -53,6 +54,7 @@ import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowLeft
 import androidx.compose.material.icons.outlined.KeyboardDoubleArrowRight
 import androidx.compose.material.icons.outlined.PlaylistPlay
+import com.android.purebilibili.core.ui.AdaptivePullToRefreshBox
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.rememberBackToTopButtonEnabled
@@ -61,6 +63,7 @@ import com.android.purebilibili.feature.video.ui.components.shouldShowVideoComme
 import androidx.compose.material3.MaterialTheme
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppText
+import com.android.purebilibili.core.ui.components.AppTextButton
 import com.android.purebilibili.core.ui.common.verticalPriorityHorizontalPagerSwipe
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
@@ -377,11 +380,12 @@ internal fun TabletCinemaLayout(
                         onOpenVideoNoteEditor = playbackActions.openVideoNoteEditor,
                         onCloseVideoNoteEditor = playbackActions.closeVideoNoteEditor,
                         onVideoNoteDocumentChange = playbackActions.updateVideoNoteEditorDocument,
-                        onInsertVideoNoteTimestamp = playbackActions.insertCurrentPlaybackTimestampIntoNote,
+                        onInsertVideoNoteTimestamp = playbackActions.currentVideoNoteTimestamp,
                         onVideoNoteTimestampClick = playbackActions.seekTo,
                         onSaveVideoNote = playbackActions.saveVideoNote,
                         onDeleteVideoNote = playbackActions.deleteVideoNote,
                         onRetryVideoNote = playbackActions.retryVideoNote,
+                        onLoadMoreVideoNotes = playbackActions.loadMorePublicVideoNotes,
                         onShareVideo = openVideoShareSheet
                     )
                 } else {
@@ -517,105 +521,109 @@ private fun CinemaStagePlayer(
         } else {
             playerWidth * 9f / 16f
         }
-        AppSurface(
-            modifier = playerContainerModifier
-                .align(Alignment.Center)
+        PlayerAmbientLayout(
+            modifier = Modifier.fillMaxWidth().align(Alignment.Center),
+            playerModifier = playerContainerModifier
                 .width(playerWidth)
                 .height(videoHeight)
                 .aspectRatio(playerWidth / videoHeight),
-            shape = AppShapes.container(ContainerLevel.Floating),
-            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.94f),
-            tonalElevation = 4.dp
         ) {
-            VideoPlayerSection(
-                state = VideoPlayerSectionState(
-                    playerState = playerState,
-                    uiState = uiState,
-                    isFullscreen = false,
-                    isInPipMode = isInPipMode,
-                    danmakuHostActive = danmakuHostActive,
-                    useTextureSurfaceForNavigation = resolveNavigationLiveSurfaceTextureEnabled(
-                        cardTransitionEnabled = transitionEnabled,
-                        liveSurfaceCardTransitionEnabled = liveSurfaceCardTransitionEnabled,
+            AppSurface(
+                modifier = Modifier.fillMaxSize(),
+                shape = AppShapes.container(ContainerLevel.Floating),
+                color = MaterialTheme.colorScheme.surface.copy(alpha = 0.94f),
+                tonalElevation = 4.dp,
+            ) {
+                VideoPlayerSection(
+                    state = VideoPlayerSectionState(
+                        playerState = playerState,
+                        uiState = uiState,
+                        isFullscreen = false,
+                        isInPipMode = isInPipMode,
+                        danmakuHostActive = danmakuHostActive,
+                        useTextureSurfaceForNavigation = resolveNavigationLiveSurfaceTextureEnabled(
+                            cardTransitionEnabled = transitionEnabled,
+                            liveSurfaceCardTransitionEnabled = liveSurfaceCardTransitionEnabled,
+                        ),
+                        allowLivePlayerSharedElement = resolveAllowLivePlayerSharedElementForMorph(
+                            cardTransitionEnabled = transitionEnabled,
+                            liveSurfaceCardTransitionEnabled = liveSurfaceCardTransitionEnabled,
+                        ),
+                        predictiveBackCancelRecoveryGeneration = predictiveBackCancelRecoveryGeneration,
+                        bvid = bvid,
+                        coverUrl = coverUrl,
+                        currentCdnIndex = success?.currentCdnIndex ?: 0,
+                        cdnCount = success?.cdnCount ?: 1,
+                        cdnLineDiagnostics = success?.cdnLineDiagnostics.orEmpty(),
+                        isCdnProbing = success?.isCdnProbing ?: false,
+                        isAudioOnly = false,
+                        sleepTimerMinutes = sleepTimerMinutes,
+                        videoshotData = success?.videoshotData,
+                        viewPoints = viewPoints,
+                        pbpProgressData = pbpProgressData,
+                        isVerticalVideo = isVerticalVideo,
+                        isPortraitFullscreen = isPortraitFullscreen,
+                        viewportWidthDpOverride = playerViewportWidthDp,
+                        currentCodec = currentCodec,
+                        currentSecondCodec = currentSecondCodec,
+                        currentAudioQuality = currentAudioQuality,
+                        currentPlayMode = currentPlayMode,
+                        relatedVideos = success?.related ?: emptyList(),
+                        forceCoverOnly = forceCoverOnlyOnReturn,
+                        ugcSeason = success?.info?.ugc_season,
+                        isFollowed = engagementState.isFollowing,
+                        isLiked = engagementState.isLiked,
+                        isCoined = engagementState.coinCount > 0,
+                        isFavorited = engagementState.isFavorited,
+                        sponsorContributionState = sponsorContributionState,
                     ),
-                    allowLivePlayerSharedElement = resolveAllowLivePlayerSharedElementForMorph(
-                        cardTransitionEnabled = transitionEnabled,
-                        liveSurfaceCardTransitionEnabled = liveSurfaceCardTransitionEnabled,
+                    actions = VideoPlayerSectionActions(
+                        onToggleFullscreen = onToggleFullscreen,
+                        onQualityChange = playbackActions.changeQuality,
+                        onBack = onBack,
+                        onHomeClick = onHomeClick,
+                        onDoubleTapLike = engagementActions.toggleLike,
+                        onReloadVideo = playbackActions.reloadVideo,
+                        onSwitchCdn = playbackActions.switchCdn,
+                        onSwitchCdnTo = playbackActions.switchCdnTo,
+                        onProbeCdnCandidates = playbackActions.probeCdnCandidates,
+                        onAudioOnlyToggle = {
+                            playbackActions.setAudioMode(true)
+                            onNavigateToAudioMode()
+                        },
+                        onSleepTimerChange = playbackActions.setSleepTimer,
+                        onPortraitFullscreen = onPortraitFullscreen,
+                        onPipClick = onPipClick,
+                        onCodecChange = onCodecChange,
+                        onSecondCodecChange = onSecondCodecChange,
+                        onAudioQualityChange = onAudioQualityChange,
+                        onPlaybackSpeedChange = playbackActions.applyPlaybackSpeed,
+                        onSaveCover = playbackActions.saveCover,
+                        onDownloadAudio = playbackActions.downloadAudio,
+                        onPlayModeClick = onPlayModeClick,
+                        onRelatedVideoClick = onRelatedVideoClick,
+                        onToggleFollow = engagementActions.toggleFollow,
+                        onToggleLike = engagementActions.toggleLike,
+                        onDislike = playbackActions.markVideoNotInterested,
+                        onCoin = engagementActions.openCoinDialog,
+                        onToggleFavorite = { engagementActions.onFavoriteAction(false) },
+                        onTriple = engagementActions.doTripleAction,
+                        onSubtitleTrackSelected = playbackActions.selectSubtitleTrack,
+                        onDanmakuInputClick = playbackActions.showDanmakuSendDialog,
+                        onSponsorContributionMarkBoundary = playbackActions.markSponsorContributionBoundary,
+                        onSponsorContributionMarkWholeVideo = playbackActions.markWholeVideoAsSponsor,
+                        onSponsorContributionCategoryChange = playbackActions.setSponsorContributionCategory,
+                        onSponsorContributionActionTypeChange = playbackActions.setSponsorContributionActionType,
+                        onSponsorContributionSubmit = playbackActions.submitSponsorContribution,
+                        onSponsorContributionCancel = playbackActions.cancelSponsorContribution,
+                        onLikeDanmaku = playbackActions.likeDanmaku,
+                        onLikeDanmakuToggle = playbackActions.likeDanmakuToggle,
+                        likedDanmakuIds = playbackActions.likedDanmakuIds,
+                        onReportDanmaku = playbackActions.reportDanmaku,
+                        onRecallDanmaku = playbackActions.recallDanmaku,
                     ),
-                    predictiveBackCancelRecoveryGeneration = predictiveBackCancelRecoveryGeneration,
-                    bvid = bvid,
-                    coverUrl = coverUrl,
-                    currentCdnIndex = success?.currentCdnIndex ?: 0,
-                    cdnCount = success?.cdnCount ?: 1,
-                    cdnLineDiagnostics = success?.cdnLineDiagnostics.orEmpty(),
-                    isCdnProbing = success?.isCdnProbing ?: false,
-                    isAudioOnly = false,
-                    sleepTimerMinutes = sleepTimerMinutes,
-                    videoshotData = success?.videoshotData,
-                    viewPoints = viewPoints,
-                    pbpProgressData = pbpProgressData,
-                    isVerticalVideo = isVerticalVideo,
-                    isPortraitFullscreen = isPortraitFullscreen,
-                    viewportWidthDpOverride = playerViewportWidthDp,
-                    currentCodec = currentCodec,
-                    currentSecondCodec = currentSecondCodec,
-                    currentAudioQuality = currentAudioQuality,
-                    currentPlayMode = currentPlayMode,
-                    relatedVideos = success?.related ?: emptyList(),
-                    forceCoverOnly = forceCoverOnlyOnReturn,
-                    ugcSeason = success?.info?.ugc_season,
-                    isFollowed = engagementState.isFollowing,
-                    isLiked = engagementState.isLiked,
-                    isCoined = engagementState.coinCount > 0,
-                    isFavorited = engagementState.isFavorited,
-                    sponsorContributionState = sponsorContributionState,
-                ),
-                actions = VideoPlayerSectionActions(
-                    onToggleFullscreen = onToggleFullscreen,
-                    onQualityChange = playbackActions.changeQuality,
-                    onBack = onBack,
-                    onHomeClick = onHomeClick,
-                    onDoubleTapLike = engagementActions.toggleLike,
-                    onReloadVideo = playbackActions.reloadVideo,
-                    onSwitchCdn = playbackActions.switchCdn,
-                    onSwitchCdnTo = playbackActions.switchCdnTo,
-                    onProbeCdnCandidates = playbackActions.probeCdnCandidates,
-                    onAudioOnlyToggle = {
-                        playbackActions.setAudioMode(true)
-                        onNavigateToAudioMode()
-                    },
-                    onSleepTimerChange = playbackActions.setSleepTimer,
-                    onPortraitFullscreen = onPortraitFullscreen,
-                    onPipClick = onPipClick,
-                    onCodecChange = onCodecChange,
-                    onSecondCodecChange = onSecondCodecChange,
-                    onAudioQualityChange = onAudioQualityChange,
-                    onPlaybackSpeedChange = playbackActions.applyPlaybackSpeed,
-                    onSaveCover = playbackActions.saveCover,
-                    onDownloadAudio = playbackActions.downloadAudio,
-                    onPlayModeClick = onPlayModeClick,
-                    onRelatedVideoClick = onRelatedVideoClick,
-                    onToggleFollow = engagementActions.toggleFollow,
-                    onToggleLike = engagementActions.toggleLike,
-                    onDislike = playbackActions.markVideoNotInterested,
-                    onCoin = engagementActions.openCoinDialog,
-                    onToggleFavorite = { engagementActions.onFavoriteAction(false) },
-                    onTriple = engagementActions.doTripleAction,
-                    onSubtitleTrackSelected = playbackActions.selectSubtitleTrack,
-                    onDanmakuInputClick = playbackActions.showDanmakuSendDialog,
-                    onSponsorContributionMarkBoundary = playbackActions.markSponsorContributionBoundary,
-                    onSponsorContributionMarkWholeVideo = playbackActions.markWholeVideoAsSponsor,
-                    onSponsorContributionCategoryChange = playbackActions.setSponsorContributionCategory,
-                    onSponsorContributionActionTypeChange = playbackActions.setSponsorContributionActionType,
-                    onSponsorContributionSubmit = playbackActions.submitSponsorContribution,
-                    onSponsorContributionCancel = playbackActions.cancelSponsorContribution,
-                    onLikeDanmaku = playbackActions.likeDanmaku,
-                    onLikeDanmakuToggle = playbackActions.likeDanmakuToggle,
-                    likedDanmakuIds = playbackActions.likedDanmakuIds,
-                    onReportDanmaku = playbackActions.reportDanmaku,
-                    onRecallDanmaku = playbackActions.recallDanmaku,
-                ),
-            )
+                )
+            }
         }
     }
 }
@@ -654,11 +662,12 @@ private fun CinemaMetaPanel(
     onOpenVideoNoteEditor: () -> Unit,
     onCloseVideoNoteEditor: () -> Unit,
     onVideoNoteDocumentChange: (VideoNoteEditorDocument) -> Unit,
-    onInsertVideoNoteTimestamp: () -> Unit,
+    onInsertVideoNoteTimestamp: () -> com.android.purebilibili.feature.video.note.VideoNoteBlock.Timestamp?,
     onVideoNoteTimestampClick: (Long) -> Unit,
     onSaveVideoNote: (VideoNoteEditorDocument) -> Unit,
     onDeleteVideoNote: () -> Unit,
     onRetryVideoNote: () -> Unit,
+    onLoadMoreVideoNotes: () -> Unit,
     onShareVideo: () -> Unit
 ) {
     val context = LocalContext.current
@@ -841,10 +850,11 @@ private fun CinemaMetaPanel(
                             onCreateNoteDraftFromAiSummary = onCreateNoteDraftFromAiSummary,
                             onOpenVideoNoteEditor = onOpenVideoNoteEditor,
                             onRetryVideoNote = onRetryVideoNote,
+                            onLoadMoreVideoNotes = onLoadMoreVideoNotes,
                             onDeleteVideoNoteClick = { confirmDeleteNote = true },
                             onShareVideoNote = { document -> onShareVideoNote(document, false) },
-                            onPublicVideoNoteClick = { _, url ->
-                                if (url.isNotBlank()) onOpenBilibiliLink?.invoke(url)
+                            onPublicVideoNoteClick = { cvid, _ ->
+                                onOpenBilibiliLink?.invoke("https://www.bilibili.com/read/cv$cvid")
                             }
                         )
                     }
@@ -877,7 +887,7 @@ private fun CinemaMetaPanel(
         noteState = success.videoNoteState,
         onDismiss = onCloseVideoNoteEditor,
         onDocumentChange = onVideoNoteDocumentChange,
-        onInsertTimestamp = onInsertVideoNoteTimestamp,
+        currentTimestampProvider = onInsertVideoNoteTimestamp,
         onTimestampClick = onVideoNoteTimestampClick,
         onShare = { document -> onShareVideoNote(document, success.videoNoteState.editorFromAiSummary) },
         onSave = onSaveVideoNote
@@ -978,6 +988,7 @@ private fun CinemaVideoIntroSection(
     onCreateNoteDraftFromAiSummary: () -> Unit = {},
     onOpenVideoNoteEditor: () -> Unit = {},
     onRetryVideoNote: () -> Unit = {},
+    onLoadMoreVideoNotes: () -> Unit = {},
     onDeleteVideoNoteClick: () -> Unit = {},
     onShareVideoNote: (VideoNoteEditorDocument) -> Unit = {},
     onPublicVideoNoteClick: (Long, String) -> Unit = { _, _ -> }
@@ -1048,7 +1059,17 @@ private fun CinemaVideoIntroSection(
                 onDeleteVideoNoteClick()
             },
             onShareClick = onShareVideoNote,
-            onPublicNoteClick = onPublicVideoNoteClick
+            onPublicNoteClick = onPublicVideoNoteClick,
+            onAuthorClick = { mid ->
+                if (mid > 0L) onOpenBilibiliLink?.invoke("https://space.bilibili.com/$mid")
+            },
+            onLoadMore = onLoadMoreVideoNotes,
+            onOfficialEditorClick = {
+                showNoteListSheet = false
+                onOpenBilibiliLink?.invoke(
+                    "https://www.bilibili.com/h5/note-app?oid=${success.info.aid}&pagefrom=ugcvideo"
+                )
+            }
         )
     }
 }
@@ -1293,12 +1314,29 @@ private fun CinemaCommentsPane(
         derivedStateOf {
             val totalItems = listState.layoutInfo.totalItemsCount
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            totalItems > 0 && lastVisibleItem >= totalItems - 3 && !commentState.isRepliesLoading
+            totalItems > 0 &&
+                lastVisibleItem >= totalItems - 3 &&
+                !commentState.isRepliesLoading &&
+                !commentState.isRepliesRefreshing &&
+                commentState.repliesError == null
         }
     }
 
-    LaunchedEffect(shouldLoadMore) {
-        if (shouldLoadMore) {
+    LaunchedEffect(
+        shouldLoadMore,
+        commentState.isRepliesLoading,
+        commentState.isRepliesRefreshing,
+        commentState.repliesError,
+        commentState.isRepliesEnd,
+        commentState.replies.size,
+    ) {
+        if (
+            shouldLoadMore &&
+            !commentState.isRepliesLoading &&
+            !commentState.isRepliesRefreshing &&
+            commentState.repliesError == null &&
+            !commentState.isRepliesEnd
+        ) {
             commentActions.loadComments()
         }
     }
@@ -1326,6 +1364,7 @@ private fun CinemaCommentsPane(
             emoteMap = success.emoteMap,
             maxTimestampMs = success.videoDurationMs.takeIf { it > 0L },
             onLoadMore = commentActions.loadMoreSubReplies,
+            onRefresh = commentActions.refreshSubReplies,
             onSortModeChange = commentActions.setSubReplySortMode,
             onDismiss = commentActions.closeSubReply,
             onRootCommentClick = playbackActions.openRootCommentComposer,
@@ -1368,19 +1407,45 @@ private fun CinemaCommentsPane(
                 onSearchClick = { showCommentSearchSheet = true },
             )
             Box(modifier = Modifier.weight(1f).fillMaxWidth()) {
-            LazyColumn(
-                state = listState,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .layerBackdrop(commentChromeBackdrop),
-                contentPadding = PaddingValues(bottom = 112.dp)
+            AdaptivePullToRefreshBox(
+                isRefreshing = commentState.isRepliesRefreshing,
+                onRefresh = commentActions.refreshComments,
+                modifier = Modifier.fillMaxSize(),
             ) {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .layerBackdrop(commentChromeBackdrop),
+                    contentPadding = PaddingValues(bottom = 112.dp)
+                ) {
             commentState.voteCard?.let { card ->
                 item(key = "curtain_vote_${card.voteId}") {
                     com.android.purebilibili.feature.video.ui.components.VideoCommentVoteCard(
                         card = card,
                         modifier = Modifier.fillMaxWidth().padding(12.dp),
                     )
+                }
+            }
+            val repliesError = commentState.repliesError
+            if (repliesError != null) {
+                item(key = "cinema_comment_refresh_error") {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        AppText(
+                            text = repliesError,
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.bodySmall,
+                        )
+                        AppTextButton(onClick = commentActions.refreshComments) {
+                            AppText("重试")
+                        }
+                    }
                 }
             }
             items(
@@ -1433,11 +1498,15 @@ private fun CinemaCommentsPane(
                     }
                 )
             }
-            if (commentState.isRepliesLoading && commentState.replies.isEmpty()) {
+            if (
+                commentState.isRepliesLoading &&
+                !commentState.isRepliesRefreshing &&
+                commentState.replies.isEmpty()
+            ) {
                 item(key = "cinema_comment_skeleton") {
                     com.android.purebilibili.core.ui.skeleton.CommentListColumnSkeleton()
                 }
-            } else if (commentState.isRepliesLoading) {
+            } else if (commentState.isRepliesLoading && !commentState.isRepliesRefreshing) {
                 item {
                     Box(
                         modifier = Modifier
@@ -1449,7 +1518,12 @@ private fun CinemaCommentsPane(
                     }
                 }
             }
-            if (commentState.replies.isEmpty() && !commentState.isRepliesLoading) {
+            if (
+                commentState.replies.isEmpty() &&
+                !commentState.isRepliesLoading &&
+                !commentState.isRepliesRefreshing &&
+                commentState.repliesError == null
+            ) {
                 item {
                     Box(
                         modifier = Modifier
@@ -1464,6 +1538,7 @@ private fun CinemaCommentsPane(
                         )
                     }
                 }
+            }
             }
             }
 

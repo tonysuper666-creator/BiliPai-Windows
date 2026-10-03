@@ -82,8 +82,8 @@ class DanmakuOverlay internal constructor(
     val commentCount: StateFlow<Int> = mutableCount.asStateFlow()
     private val mutableCommands = MutableStateFlow(emptyList<CommandDanmakuItem>())
     val commandItems: StateFlow<List<CommandDanmakuItem>> = mutableCommands.asStateFlow()
-    private val mutableAdvanced = MutableStateFlow(emptyList<com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData>())
-    val advancedItems: StateFlow<List<com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData>> = mutableAdvanced.asStateFlow()
+    private val mutableAdvanced = MutableStateFlow(emptyList<com.android.purebilibili.danmaku.parser.AdvancedDanmakuData>())
+    val advancedItems: StateFlow<List<com.android.purebilibili.danmaku.parser.AdvancedDanmakuData>> = mutableAdvanced.asStateFlow()
     @Volatile private var originalSectionViewport: Pair<Long,Boolean>? = null
     @Volatile private var originalSectionDanmakuViewport: Pair<Long,DanmakuViewport>? = null
     @Volatile private var originalSeekScrub: Pair<Long,Boolean>? = null
@@ -380,7 +380,7 @@ class DanmakuOverlay internal constructor(
                     // Uses the actual Root-monitor geometry resolved once above.
                     val key=ConfigKey(configuration,geometry.viewport,renderPlatform.resolveTypeface(configuration.fontWeight),true,false)
                     val bandHeight=(geometry.viewport.heightPx*configuration.displayAreaRatio).toInt().coerceAtLeast(1)
-                    val config=resolvedConfig?.takeIf { it.first==key }?.second ?: com.android.purebilibili.feature.video.danmaku.resolveDesktopOriginalLiveDanmakuRenderConfig(configuration,geometry.viewport.widthPx,bandHeight,configuration.displayAreaRatio,renderPlatform).also { resolvedConfig=key to it }
+                    val config=resolvedConfig?.takeIf { it.first==key }?.second ?: com.android.purebilibili.feature.video.danmaku.resolveDesktopOriginalLiveDanmakuRenderConfig(configuration,geometry.viewport.widthPx,bandHeight,configuration.displayAreaRatio,geometry.viewport.density,renderPlatform).also { resolvedConfig=key to it }
                     val physical=context.create() as Graphics2D
                     try {geometry.configurePhysicalPixels(physical);physical.composite=AlphaComposite.getInstance(AlphaComposite.SRC_OVER,config.alpha/255f);liveRenderer.paint(physical,geometry.viewport.widthPx,geometry.viewport.heightPx,bandHeight,config,configuration)}
                     finally {physical.dispose()}
@@ -448,7 +448,7 @@ class DanmakuOverlay internal constructor(
                         }
                     }
                 } finally {physical.dispose()}
-                advancedRenderer.paint(context, (displayTime * 1000).toLong(), width, height, viewport.scale, configuration)
+                advancedRenderer.paint(context, (displayTime * 1000).toLong(), width, height, configuration)
                   }
                 }
                 ownedViewportBrightness()?.let { (_,brightness) -> DesktopEyeTint(1f-brightness,0f).paint(context,width,height) }
@@ -658,6 +658,36 @@ class DanmakuOverlay internal constructor(
             }
             kotlinx.coroutines.withTimeout(3_000L) {painted.await()};checkRequest()
         } finally { synchronized(requestLock) {cacheMaintenance=false} }
+    }
+
+    /** One supplied document admitted by the already retained native source/account/plugin owner. */
+    internal fun setOwnedDocument(document: DanmakuDocument, expectedSourceVersion: Long, stillOwned: () -> Boolean): Boolean {
+        val version = synchronized(requestLock) {
+            if (cacheMaintenance || closed.get() || !player.ownsSourceVersion(expectedSourceVersion) || !stillOwned()) return false
+            generation.incrementAndGet().also {
+                loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel(); liveMode = false; pendingLive.clear()
+                retireWebMaskSource(); rawDocument = DanmakuDocument()
+                poolSourceVersion = expectedSourceVersion; offlineDocumentOwner = expectedSourceVersion to stillOwned
+                commandCid = null; mutableCommands.value = emptyList(); mutableAdvanced.value = emptyList()
+                mutableError.value = null; mutableFormat.value = null
+            }
+        }
+        installDocument(document, version)
+        return true
+    }
+    internal fun clearOwnedDocument(expectedSourceVersion: Long) = synchronized(requestLock) {
+        if (poolSourceVersion == expectedSourceVersion && offlineDocumentOwner?.first == expectedSourceVersion) {
+            generation.incrementAndGet(); loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel()
+            offlineDocumentOwner = null; poolSourceVersion = null; rawDocument = DanmakuDocument()
+            mutableCommands.value = emptyList(); mutableAdvanced.value = emptyList(); mutableCount.value = 0
+            val clearedGeneration = generation.get()
+            SwingUtilities.invokeLater {
+                if (!closed.get() && clearedGeneration == generation.get()) {
+                    scheduler = DanmakuScheduler(emptyList(), settings, liveAdmission = false)
+                    advancedRenderer = AdvancedDanmakuRenderer(emptyList()); panel.repaint()
+                }
+            }
+        }
     }
 
     /** Also supports locally supplied documents and deterministic offline verification. */

@@ -68,6 +68,7 @@ fun CollectionRow(
     
     AppSurface(
         modifier = modifier
+            .padding(horizontal = if (immersive) 0.dp else 8.dp)
             .fillMaxWidth(),
         shape = if (immersive) {
             androidx.compose.ui.graphics.RectangleShape
@@ -84,7 +85,11 @@ fun CollectionRow(
         Row(
             modifier = Modifier
                 .clickable(onClick = onClick)
-                .padding(horizontal = 12.dp, vertical = 10.dp),
+                .heightIn(min = 48.dp)
+                .padding(
+                    horizontal = if (immersive) 12.dp else 8.dp,
+                    vertical = if (immersive) 10.dp else 0.dp,
+                ),
             verticalAlignment = Alignment.CenterVertically
         ) {
             //  合集信息（PiliPlus 式单行：合集：标题 …… 播放指示 n/total >）

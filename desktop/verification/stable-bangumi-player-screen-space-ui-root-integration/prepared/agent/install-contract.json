@@ -1,0 +1,94 @@
+{
+  "candidateBase": "cd8317d54fff02c2d920e295397aef502333f69b",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "immutableSnapshot": 90,
+  "orderedCpEntries": 105,
+  "installableFullPlayerSourceClosure": true,
+  "completeOriginalPlayerAccepted": false,
+  "newFileCopyWhitelist": [
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\tools\\extract-upstream-bangumi-player-ui.py",
+      "target": "desktop/tools/extract-upstream-bangumi-player-ui.py",
+      "sha256Bytes": "c5f97ea576989f1749f4885d1d73f8687540bdc3a8eaf3a35bf980bd7d454fd8"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPlayerPhysicalLeaf.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerPhysicalLeaf.kt",
+      "sha256Bytes": "88412bc099c2fbd87e260136ba440d769b60964ef9b91476babea902aebce859"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPlayerRootOwner.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerRootOwner.kt",
+      "sha256Bytes": "d5162e8f298b8e1e7c68ad9e53eee49277a3480fb00a12563d902fd5cb944502"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPlayerScreenPlatform.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerScreenPlatform.kt",
+      "sha256Bytes": "fbb4627acf42331301ca9b944ec86835926ef2557b3bad4d7791f7102d1d3685"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPrimaryApiView.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPrimaryApiView.kt",
+      "sha256Bytes": "833df46c322df29e3319ba1a771e0b71a81db4a14ebe41eaec87fb814b8492eb"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiRawDanmakuView.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiRawDanmakuView.kt",
+      "sha256Bytes": "87b6308e8fe5ff9d574b6d6b94bfbf6edb7a06622dd55f38eb12802e44b2841c"
+    }
+  ],
+  "existingExactHunks": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\exact-hunks.json",
+    "sha256Bytes": "8183e96c60053e6d1b365bad9cec91f158f855a3cf504c0d97480456a82125eb"
+  },
+  "existingTargets": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\targets.json",
+    "sha256Bytes": "54d8dedbd75c689642bfeefdfd2d468c5c50d72abce98cb70d194ebc3cb27782"
+  },
+  "wholeExistingFileOverwriteForbidden": true,
+  "generatedFilesCopyForbidden": true,
+  "generatedSoleProducers": [
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player-ui.py",
+      "outputDirectory": "desktop/build/generated/original-bangumi-player-ui",
+      "outputs": 8
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player.py",
+      "outputDirectory": "desktop/build/generated/original-bangumi-player",
+      "outputs": 7,
+      "onlyLifecycleAndFailureBoundaryChanged": true
+    }
+  ],
+  "registryDelta": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\registry-delta.json",
+    "sha256Bytes": "0074ec51f0659a185af60d1ce44da9152ff14d0b465c8db0fd212206e19a64c6"
+  },
+  "sourceInverseAudit": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\source-and-boundary-audit.json",
+    "sha256Bytes": "ba85edc7d3080ffb7026c1939de929b757db96b82dd2ce4c73de4968c53df0bc"
+  },
+  "narrowCompile": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\runs\\14\\result.json",
+    "sha256Bytes": "ea758f769d4c1fd864dfdde3653748d8aeac14fa875dd42dddbbd91ca2e09d44"
+  },
+  "cpuProof": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\proof-runs\\04\\result.json",
+    "sha256Bytes": "b7731efaebb4cd25037aac0f6f07e000a5705c309266109282a24213f0b5c221"
+  },
+  "guard": {
+    "pinnedGitRef": "cd8317d54fff02c2d920e295397aef502333f69b",
+    "currentHead": "cd8317d54fff02c2d920e295397aef502333f69b",
+    "currentStatus": "",
+    "candidateWrittenByThisLane": false
+  },
+  "normalProductCompile": false,
+  "actualRootNativeAccountAccepted": false,
+  "requiredAfterInstallation": [
+    "normal classes/compileTestKotlin with no prospective overlays",
+    "actual physical Root PGC/PUGV screen and shared native transport/frame/error recovery",
+    "real account PUGV comments/download/heartbeat/ordinary takeover and covered-page Mini continuation"
+  ],
+  "v025": false,
+  "v025UpgradeMappingSeparate": true
+}

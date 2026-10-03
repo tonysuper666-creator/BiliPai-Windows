@@ -1,3 +1,4 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, os, textwrap
 
@@ -23,9 +24,9 @@ def balanced(parser,raw,start):
     raise ValueError('unclosed selected original block')
 def generate(repo,out,standalone=False):
     parser=load(repo/'desktop/tools/sync-upstream.py')
-    raw=safe(repo/APP).read_text(encoding='utf-8').replace('\r\n','\n')
-    pager=safe(repo/PAGER).read_text(encoding='utf-8').replace('\r\n','\n')
-    top=safe(repo/TOP).read_text(encoding='utf-8').replace('\r\n','\n')
+    raw=safe(_desktop_canonical_source(repo, APP)).read_text(encoding='utf-8').replace('\r\n','\n')
+    pager=safe(_desktop_canonical_source(repo, PAGER)).read_text(encoding='utf-8').replace('\r\n','\n')
+    top=safe(_desktop_canonical_source(repo, TOP)).read_text(encoding='utf-8').replace('\r\n','\n')
     receipt={'target':TARGET,'sources':[
         {'path':APP,'sha256LF':digest(raw),'mode':'existing-feature-merge'},
         {'path':PAGER,'sha256LF':digest(pager),'mode':'direct'},
@@ -117,7 +118,7 @@ internal class DesktopOriginalRootSessionKeys {
         'import com.android.purebilibili.navigation3.toLegacyRoute\n\n'+body)
     receipt['selected'].append({'name':'pager-policy','declarations':names,'sha256OriginalBlock':digest(body)})
     def selected(path,names,rel,header,changes=()):
-        original=safe(repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+        original=safe(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
         body=nav_parser.declarations(parser,original,names)
         adapted=body
         for before,after in changes:
@@ -150,7 +151,7 @@ internal class DesktopOriginalRootSessionKeys {
         'com/android/purebilibili/navigation/DesktopOriginalRootStandardVideoRoute.kt',
         'package com.android.purebilibili.navigation\nimport java.net.URLEncoder\nimport java.nio.charset.StandardCharsets\n\n')
     offline='app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt'
-    offline_body=safe(repo/offline).read_text(encoding='utf-8').replace('\r\n','\n')
+    offline_body=safe(_desktop_canonical_source(repo, offline)).read_text(encoding='utf-8').replace('\r\n','\n')
     receipt['sources'].append({'path':offline,'sha256LF':digest(offline_body),'mode':'direct'})
     if standalone: emit('com/android/purebilibili/feature/download/OfflineVideoRoutingPolicy.kt',offline_body)
     selected('app/src/main/java/com/android/purebilibili/feature/home/HomeWallpaperBackdrop.kt',

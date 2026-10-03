@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -98,11 +99,13 @@ internal fun HomeTopSearchPillContent(
         Spacer(modifier = Modifier.width(iconTextGap))
         AppText(
             text = "搜索视频、UP主...",
+            modifier = Modifier.weight(1f),
             style = MaterialTheme.typography.bodyMedium,
             fontSize = textFontSize,
             fontWeight = FontWeight.Normal,
             color = contentColor,
-            maxLines = 1
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
         )
     }
 }

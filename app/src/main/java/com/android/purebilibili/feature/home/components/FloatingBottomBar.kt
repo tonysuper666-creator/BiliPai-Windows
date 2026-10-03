@@ -162,6 +162,7 @@ fun PlainMiuixFloatingBottomBar(
     tabsCount: Int,
     modifier: Modifier = Modifier,
     colors: FloatingBottomBarColors = FloatingBottomBarDefaults.colors(),
+    indicatorContainerColor: Color = colors.indicatorColor.copy(alpha = 0.14f),
     content: @Composable RowScope.() -> Unit,
 ) {
     val safeCount = tabsCount.coerceAtLeast(1)
@@ -226,7 +227,7 @@ fun PlainMiuixFloatingBottomBar(
                 .width(itemWidth)
                 .fillMaxHeight()
                 .clip(shape)
-                .background(colors.indicatorColor.copy(alpha = 0.14f), shape),
+                .background(indicatorContainerColor, shape),
         )
         CompositionLocalProvider(
             LocalFloatingBottomBarContentColor provides colors.contentColor,

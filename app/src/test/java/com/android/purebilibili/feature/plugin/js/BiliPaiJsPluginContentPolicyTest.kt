@@ -1,10 +1,14 @@
 package com.android.purebilibili.feature.plugin.js
 
-import com.android.purebilibili.core.plugin.js.BiliPaiJsParam
 import com.android.purebilibili.core.plugin.js.BiliPaiJsMediaItem
+import com.android.purebilibili.core.plugin.js.BiliPaiJsModule
+import com.android.purebilibili.core.plugin.js.BiliPaiJsParam
+import com.android.purebilibili.core.plugin.js.BiliPaiJsParamTypes
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertNotEquals
+import kotlin.test.assertTrue
 
 class BiliPaiJsPluginContentPolicyTest {
 
@@ -30,6 +34,40 @@ class BiliPaiJsPluginContentPolicyTest {
             "js_param_tv.live_channels_dataSource",
             buildBiliPaiJsParamPreferenceKey("tv.live", "channels", "dataSource")
         )
+    }
+
+    @Test
+    fun moduleWithoutPageParamStartsAtZeroAndPageModuleStartsAtOne() {
+        assertEquals(0, resolveBiliPaiJsInitialPage(module = null))
+        assertEquals(
+            0,
+            resolveBiliPaiJsInitialPage(
+                BiliPaiJsModule(
+                    title = "偏移分页",
+                    functionName = "load",
+                    params = listOf(BiliPaiJsParam(name = "offset", title = "偏移", type = BiliPaiJsParamTypes.OFFSET))
+                )
+            )
+        )
+        assertEquals(
+            1,
+            resolveBiliPaiJsInitialPage(
+                BiliPaiJsModule(
+                    title = "页码分页",
+                    functionName = "load",
+                    params = listOf(BiliPaiJsParam(name = "page", title = "页码", type = BiliPaiJsParamTypes.PAGE))
+                )
+            )
+        )
+    }
+
+    @Test
+    fun hostDrivenParamsAreExcludedFromPersistedFormValues() {
+        val pageParam = BiliPaiJsParam(name = "page", title = "页码", type = BiliPaiJsParamTypes.PAGE)
+        val textParam = BiliPaiJsParam(name = "sourceUrl", title = "数据源")
+
+        assertTrue(pageParam.isHostDriven)
+        assertFalse(textParam.isHostDriven)
     }
 
     @Test

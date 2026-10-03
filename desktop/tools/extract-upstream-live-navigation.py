@@ -1,10 +1,11 @@
 """Complete original Live sub-navigation pages; one retained Root owner and original DTOs.
 No API/client/account/cache/preferences authority is constructed by this producer.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
-SOURCE_PINS={'app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt': 'c391e12ba7e24a29cecf7c13d3593365029b2dbad19b8bb2a7ec48b8e28c0ba0', 'app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt': '09f5cb59863395387ca7b40805e30e633f1aa2f74bb593bc12104e35dd9b53f8', 'app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt': 'e71df3f0eb772d756399a4f035e3a8477411f0ebf6bb6525142f45ba65b53cc7', 'app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt': '75bc6e38c891944425834a188973a314abf4c4d24a7fbbf50c6d44560ad32b59', 'app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt': 'f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf', 'app/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt': '9cb78811e16b872a943744544074629d406c48af08c917ca252aa54bdd699e55', 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': '680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c', 'app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt': '218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59'}
+COMMIT = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
+SOURCE_PINS = {'app/src/main/java/com/android/purebilibili/feature/live/LiveSearchScreen.kt': 'c391e12ba7e24a29cecf7c13d3593365029b2dbad19b8bb2a7ec48b8e28c0ba0', 'app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreen.kt': '09f5cb59863395387ca7b40805e30e633f1aa2f74bb593bc12104e35dd9b53f8', 'app/src/main/java/com/android/purebilibili/feature/live/LiveAreaDetailScreen.kt': 'e71df3f0eb772d756399a4f035e3a8477411f0ebf6bb6525142f45ba65b53cc7', 'app/src/main/java/com/android/purebilibili/feature/live/LiveFollowingScreen.kt': '75bc6e38c891944425834a188973a314abf4c4d24a7fbbf50c6d44560ad32b59', 'app/src/main/java/com/android/purebilibili/feature/live/LiveAreaScreenPolicy.kt': 'f76b8591ed458ab3d4a139a7a440611454eb9586f117cad6e2d348491d0e2fbf', 'core-data/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt': '4cec15c48b162a5987ae84ab962ed5e0958e89c33126f7c1f1fdbec322880ed0', 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': '5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c', 'app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt': '729021fb73c3ec4aa2aedb0d4de5706c3d72c43928f6b5f0a8da4e80c693ccca'}
 BASE='app/src/main/java/com/android/purebilibili/'
 def safe(p):
  s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
@@ -16,7 +17,7 @@ def load(p,n):
  sp=importlib.util.spec_from_file_location(n,p);m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m);return m
 def generate(repo,output,standalone=False):
  repo=Path(repo);output=Path(output);records=[];adaptations=[]
- originals={p:read(repo/p) for p in SOURCE_PINS}
+ originals={p:read(_desktop_canonical_source(repo, p)) for p in SOURCE_PINS}
  for p,s in originals.items():assert sha(s)==SOURCE_PINS[p],p
  parser=load(repo/'desktop/tools/sync-upstream.py','live_navigation_parser')
  media=load(repo/'desktop/tools/extract-upstream-media.py','live_navigation_selector')
@@ -121,11 +122,12 @@ def generate(repo,output,standalone=False):
   emit(p,s)
  p=BASE+'feature/live/LiveAreaScreenPolicy.kt'
  if standalone:emit(p,originals[p],mode='direct')
- p=BASE+'data/repository/SearchRepository.kt';raw=originals[p];bodies=[]
+ p='core-data/src/main/java/com/android/purebilibili/data/repository/SearchRepository.kt';raw=originals[p];bodies=[]
  for name in ['searchTypeParams','createPageInfo','createSearchError','searchLive','signWithWbi']:
   body=media.function(raw,name,parser);adapt=body
-  if name=='searchLive':adapt=adapt.replace('} catch (e: Exception) {','} catch (cancelled: CancellationException) { throw cancelled\n        } catch (e: Exception) {')
-  if name=='signWithWbi':adapt=adapt.replace('com.android.purebilibili.core.util.Logger.w(', 'android.util.Log.w(')
+  # Canonical v025 already preserves cancellation in each original selected request.
+  # App diagnostics retain the existing desktop Logger; no core-data runtime/client is created.
+  adapt=adapt.replace('com.android.purebilibili.core.network.CoreDataLog.', 'com.android.purebilibili.core.util.Logger.')
   bodies.append(textwrap.indent(adapt,'    '));records.append(dict(source=p,declaration=name,originalBodySha256LF=sha(body),preparedBodySha256LF=sha(adapt)))
  header='''package com.android.purebilibili.data.repository
 import com.android.purebilibili.core.network.SearchApi

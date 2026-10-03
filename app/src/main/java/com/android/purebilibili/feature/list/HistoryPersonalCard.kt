@@ -215,7 +215,7 @@ internal fun HistoryPersonalCard(
                     durationText = FormatUtils.formatDuration(video.duration),
                     infoPresentation = com.android.purebilibili.core.ui.transition
                         .resolveVideoCardSourceInfoPresentation(
-                            publishTimeText = FormatUtils.formatPublishTime(video.view_at),
+                            publishTimeText = FormatUtils.formatHistoryViewTime(video.view_at),
                             // History cards show owner + viewed time, not play/danmaku stats.
                             showStatsInInfo = false,
                             ownerBeforePublish = true,
@@ -240,7 +240,7 @@ internal fun HistoryPersonalCard(
     val contentTypography = feedContentTypography(FeedTitleHierarchy.Standard)
     val owner = video.owner.name.takeIf { it.isNotBlank() }
         ?: if (item.business == HistoryBusiness.PGC) "番剧" else "未知作者"
-    val viewedAt = FormatUtils.formatPublishTime(video.view_at)
+    val viewedAt = FormatUtils.formatHistoryViewTime(video.view_at)
     val titleMaxLines = if (item.page > 1) 1 else 2
 
     val actionContent: @Composable () -> Unit = {

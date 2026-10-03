@@ -53,10 +53,14 @@ import androidx.compose.ui.graphics.luminance  //  状态栏亮度计算
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.zIndex
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalViewConfiguration
+import androidx.compose.ui.platform.ViewConfiguration
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
@@ -544,9 +548,6 @@ internal fun resolveHomeTopSearchIconTextGap(
 internal fun resolveHomeTopSearchContainerShape(
     chromePolicy: AppTopChromePolicy,
 ): Shape {
-    if (chromePolicy.tabPresentation == AppTopTabPresentation.MOVING_CAPSULE) {
-        return resolveSharedBottomBarCapsuleShape()
-    }
     return RoundedCornerShape(chromePolicy.compactChromeSpec.primaryCornerRadiusDp.dp)
 }
 
@@ -1463,6 +1464,25 @@ internal fun Modifier.homeTopChromeSurface(
     }
 }
 
+@Composable
+private fun HomeHeaderControlBounds(
+    modifier: Modifier,
+    content: @Composable BoxWithConstraintsScope.() -> Unit,
+) {
+    val viewConfiguration = LocalViewConfiguration.current
+    val boundedViewConfiguration = remember(viewConfiguration) {
+        object : ViewConfiguration by viewConfiguration {
+            override val minimumTouchTargetSize: DpSize = DpSize.Zero
+        }
+    }
+    CompositionLocalProvider(
+        LocalViewConfiguration provides boundedViewConfiguration,
+        LocalMinimumInteractiveComponentSize provides 0.dp,
+    ) {
+        BoxWithConstraints(modifier = modifier, content = content)
+    }
+}
+
 /**
  *  简洁版首页头部 (带滚动隐藏/显示动画)
  * 
@@ -1586,6 +1606,8 @@ fun HomeHeader(
         isLiquidGlassEnabled = searchLiquidGlassEnabled,
         isProgressiveTopBlurEnabled = progressiveTopBlurEnabled,
     )
+    val useCompactSearchEntry =
+        searchChromeMaterialMode == TopTabMaterialMode.LIQUID_GLASS && appThemeConfig.liquidGlassEnabled
     //  读取当前模糊强度以确定背景透明度
     val blurIntensity = currentUnifiedBlurIntensity()
     val backgroundAlpha = resolveHomeHeaderSurfaceAlpha(
@@ -2274,7 +2296,7 @@ fun HomeHeader(
         }
     }
 
-    BoxWithConstraints(
+    HomeHeaderControlBounds(
         modifier = Modifier
             .fillMaxWidth()
             .zIndex(10f)
@@ -2643,7 +2665,14 @@ fun HomeHeader(
                                 shape = CircleShape,
                                 modifier = Modifier
                                     .weight(1f)
-                                    .widthIn(max = AppSpacingTokens.TripleExtraLarge * 13 + AppSpacingTokens.Large),
+                                    .widthIn(max = AppSpacingTokens.TripleExtraLarge * 13 + AppSpacingTokens.Large)
+                                    .then(
+                                        if (useCompactSearchEntry) {
+                                            Modifier.height(resolveHomeTopEdgeControlHeight())
+                                        } else {
+                                            Modifier
+                                        }
+                                    ),
                                 backdrop = miuixBackdrop,
                                 reuseEnabled = true,
                                 liquidGlassEffectsEnabled =
@@ -2651,23 +2680,43 @@ fun HomeHeader(
                                 useNeutralLiquidContainer = true,
                                 drawShellLens = true,
                                 shellLensIntensity = resolveFloatingDockGeometryScale(
-                                    resolveHomeTopSearchPillHeight(topChromePolicy).value
+                                    if (useCompactSearchEntry) {
+                                        resolveHomeTopEdgeControlHeight().value
+                                    } else {
+                                        resolveHomeTopSearchPillHeight(topChromePolicy).value
+                                    }
                                 ),
                                 isScrollInProgressProvider = { topChromeMotionPolicy.isScrolling },
                             ) { liquidChromeActive ->
-                                AppSearchEntry(
-                                    onClick = {
-                                        haptic(HapticType.LIGHT)
-                                        onSearchClick()
-                                    },
-                                    placeholder = "搜索视频、UP主...",
-                                    containerColor = if (liquidChromeActive) {
-                                        Color.Transparent
-                                    } else {
-                                        Color.Unspecified
-                                    },
-                                    modifier = Modifier.fillMaxWidth(),
-                                )
+                                if (liquidChromeActive) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .clickable(role = Role.Button) {
+                                                haptic(HapticType.LIGHT)
+                                                onSearchClick()
+                                            }
+                                            .padding(horizontal = resolveHomeTopSearchContentHorizontalPadding(topChromePolicy)),
+                                        contentAlignment = Alignment.CenterStart,
+                                    ) {
+                                        HomeTopSearchPillContent(
+                                            searchIcon = topActionIcons.search,
+                                            contentColor = topForegroundColor,
+                                            textFontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                                            iconTextGap = resolveHomeTopSearchIconTextGap(topChromePolicy),
+                                            modifier = Modifier.fillMaxWidth(),
+                                        )
+                                    }
+                                } else {
+                                    AppSearchEntry(
+                                        onClick = {
+                                            haptic(HapticType.LIGHT)
+                                            onSearchClick()
+                                        },
+                                        placeholder = "搜索视频、UP主...",
+                                        modifier = Modifier.fillMaxWidth(),
+                                    )
+                                }
                             }
 
                             Spacer(modifier = Modifier.width(resolveHomeTopEdgeControlGap(topChromePolicy)))

@@ -1,5 +1,7 @@
 import groovy.json.JsonSlurper
 import java.security.MessageDigest
+import java.nio.file.Paths as JvmPaths
+import java.nio.file.Files as JvmFiles
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
@@ -21,7 +23,50 @@ val manifest = if (sourceManifest.exists()) {
 } else emptyMap<Any, Any>()
 val sources = (manifest["sources"] as? List<*>)?.map { it as Map<*, *> } ?: emptyList()
 val originalResources = (manifest["resources"] as? List<*>)?.map { it as Map<*, *> } ?: emptyList()
-val upstreamBuildFile = File(repositoryRoot, "app/build.gradle.kts")
+
+// Build-time original source identities only; runtime owners are unchanged.
+val canonicalOriginalCatalogFile = file("tools/v025-canonical-sources.json")
+val canonicalOriginalHelperFile = file("tools/v025_source_paths.py")
+val canonicalOriginalCatalogBytes = canonicalOriginalCatalogFile.readBytes().also { bytes ->
+    require(MessageDigest.getInstance("SHA-256").digest(bytes)
+        .joinToString("") { "%02x".format(it) } == "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc") {
+        "The v025 canonical original source catalog changed without review."
+    }
+}
+val canonicalOriginalCatalog = (JsonSlurper().parse(canonicalOriginalCatalogBytes) as Map<*, *>).also {
+    require(it["upstreamCommit"] == "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40")
+}
+val canonicalOriginalRoots = (canonicalOriginalCatalog["sourceRoots"] as List<*>).map { it.toString() }
+val canonicalOriginalPrevious = canonicalOriginalCatalog["previousPaths"] as Map<*, *>
+val canonicalOriginalPins = canonicalOriginalCatalog["paths"] as Map<*, *>
+fun canonicalOriginalIdentity(relative: String): String {
+    val path = JvmPaths.get(relative)
+    require(!path.isAbsolute && path.none { it.toString() == ".." }) { "Invalid original source identity: $relative" }
+    val name = path.normalize().toString().replace('\\', '/')
+    if (canonicalOriginalRoots.none { name.startsWith(it) }) return name
+    val identity = if (canonicalOriginalPrevious.containsKey(name)) {
+        requireNotNull(canonicalOriginalPrevious[name]) { "Upstream removed original source: $name" }.toString()
+    } else name
+    require(canonicalOriginalPins.containsKey(identity)) { "Unknown canonical original source: $identity" }
+    return identity
+}
+fun canonicalOriginalSource(relative: String): File {
+    val identity = canonicalOriginalIdentity(relative)
+    val destination = File(repositoryRoot, identity)
+    require(!JvmFiles.isSymbolicLink(destination.toPath())) { "Original source is a symbolic link: $relative" }
+    require(destination.canonicalFile.toPath().startsWith(repositoryRoot.canonicalFile.toPath())) { "Original source escapes repository: $relative" }
+    if (canonicalOriginalRoots.any { identity.startsWith(it) }) {
+        val pin = canonicalOriginalPins[identity] as Map<*, *>
+        val raw = destination.readBytes()
+        val normalized = if (pin["hashNormalization"] == "lf")
+            raw.toString(Charsets.UTF_8).replace("\r\n", "\n").toByteArray(Charsets.UTF_8) else raw
+        require(MessageDigest.getInstance("SHA-256").digest(normalized)
+            .joinToString("") { "%02x".format(it) } == pin["sha256"]) { "Canonical original source changed: $identity" }
+    }
+    return destination
+}
+
+val upstreamBuildFile = canonicalOriginalSource("app/build.gradle.kts")
 val upstreamBuild = upstreamBuildFile.readText()
 val upstreamVersionCode = Regex("versionCode\\s*=\\s*(\\d+)")
     .find(upstreamBuild)?.groupValues?.get(1) ?: "406"
@@ -48,17 +93,17 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
 
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
-        include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { it["path"].toString() })
+        include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { canonicalOriginalIdentity(it["path"].toString()) })
     }
     into(generatedUpstream)
     inputs.file(sourceManifest)
-    inputs.files(sources.map { File(repositoryRoot, it["path"].toString()) })
-    inputs.files(originalResources.map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(sources.map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.files(originalResources.map { canonicalOriginalSource(it["path"].toString()) })
     doFirst {
         require(sources.isNotEmpty()) { "The upstream source manifest is missing or empty." }
         require(manifest["hashNormalization"] == "lf") { "The upstream source inventory must use LF-normalized hashes." }
         (sources + originalResources).forEach { entry ->
-            val source = File(repositoryRoot, entry["path"].toString())
+            val source = canonicalOriginalSource(entry["path"].toString())
             require(source.isFile) { "Required upstream source is missing: ${entry["path"]}" }
             val normalization = entry["hashNormalization"] ?: "lf"
             require(normalization in setOf("lf", "raw")) { "Unknown upstream hash normalization: ${entry["path"]}" }
@@ -78,10 +123,11 @@ val extractUpstreamApi by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-api.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/api").get().asFile.absolutePath)
-    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
+    inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/network/CoreNetworkRuntime.kt"))
     inputs.file("tools/extract-upstream-api.py")
     inputs.file("tools/sync-upstream.py")
-    inputs.files(sources.filter { it["mode"] == "policy-extract" }.map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(sources.filter { it["mode"] == "policy-extract" }.map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/api"))
 }
 val extractUpstreamDanmaku by tasks.registering(Exec::class) {
@@ -90,7 +136,7 @@ val extractUpstreamDanmaku by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-danmaku.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/danmaku").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-danmaku.py")
-    inputs.files(sources.filter { it["mode"] == "extracted" }.map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(sources.filter { it["mode"] == "extracted" }.map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/danmaku"))
 }
 val extractUpstreamMedia by tasks.registering(Exec::class) {
@@ -101,7 +147,7 @@ val extractUpstreamMedia by tasks.registering(Exec::class) {
     inputs.file("tools/extract-upstream-media.py")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { "media" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/media"))
 }
 val extractUpstreamAudio by tasks.registering(Exec::class) {
@@ -112,7 +158,7 @@ val extractUpstreamAudio by tasks.registering(Exec::class) {
     inputs.file("tools/extract-upstream-audio.py")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { "listen-video" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/audio"))
 }
 val extractUpstreamLogin by tasks.registering(Exec::class) {
@@ -123,7 +169,7 @@ val extractUpstreamLogin by tasks.registering(Exec::class) {
     inputs.file("tools/extract-login-platform.py")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { "auth" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/login"))
 }
 val extractUpstreamPlugins by tasks.registering(Exec::class) {
@@ -137,8 +183,8 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
     inputs.file("tools/extract-upstream-media.py")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { "plugins" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
-    inputs.files(originalResources.map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.files(originalResources.map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/plugins"))
 }
 val extractUpstreamDiscovery by tasks.registering(Exec::class) {
@@ -150,7 +196,7 @@ val extractUpstreamDiscovery by tasks.registering(Exec::class) {
     inputs.file("tools/extract-upstream-media.py")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { "discovery" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/discovery"))
 }
 val extractUpstreamSettings by tasks.registering(Exec::class) {
@@ -160,7 +206,7 @@ val extractUpstreamSettings by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/settings").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "backup" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings"))
 }
 val extractUpstreamPlayback by tasks.registering(Exec::class) {
@@ -170,7 +216,7 @@ val extractUpstreamPlayback by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/playback").get().asFile.absolutePath)
     inputs.files("tools/extract-playback-platform.py", "third-party/media3-error-codes.json")
     inputs.files(sources.filter { "recovery" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/playback"))
 }
 val extractUpstreamSearch by tasks.registering(Exec::class) {
@@ -180,7 +226,7 @@ val extractUpstreamSearch by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/search").get().asFile.absolutePath)
     inputs.files("tools/extract-search-platform.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "search-native" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/search"))
 }
 val extractUpstreamCast by tasks.registering(Exec::class) {
@@ -190,7 +236,7 @@ val extractUpstreamCast by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/cast").get().asFile.absolutePath)
     inputs.files("tools/extract-cast-platform.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "dlna-cast" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/cast"))
 }
 val extractUpstreamPackages by tasks.registering(Exec::class) {
@@ -200,9 +246,9 @@ val extractUpstreamPackages by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/packages").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-packages.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/extract-upstream-api.py")
     inputs.files(sources.filter { "packages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "packages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/packages"))
 }
 val extractPlaybackWatchdogs by tasks.registering(Exec::class) {
@@ -212,7 +258,7 @@ val extractPlaybackWatchdogs by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/watchdogs").get().asFile.absolutePath)
     inputs.files("tools/extract-playback-watchdogs.py", "third-party/media3-player-state-codes.json")
     inputs.files(sources.filter { "watchdogs" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/watchdogs"))
 }
 val verifyGoogleCastSources by tasks.registering(Exec::class) {
@@ -246,7 +292,7 @@ val extractGoogleCastPlatform by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/google-cast").get().asFile.absolutePath)
     inputs.files("tools/extract-google-cast-platform.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "google-cast-v2" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/google-cast"))
 }
 
@@ -258,7 +304,8 @@ val extractUpstreamJs by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-js.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
         "tools/extract-upstream-api.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "js-plugins" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/upstream-js-content-adaptations.json")
     outputs.dir(layout.buildDirectory.dir("generated/js"))
 }
 
@@ -273,9 +320,9 @@ val extractUpstreamAppearance by tasks.registering(Exec::class) {
         "--resource-output", generatedAppearanceResources.get().asFile.absolutePath)
     inputs.files("tools/extract-appearance-platform.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "appearance-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "appearance-language" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(generatedAppearance)
     outputs.dir(generatedAppearanceResources)
 }
@@ -288,7 +335,7 @@ val extractUpstreamComponents by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/components").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-components.py")
     inputs.files(sources.filter { "component-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/components"))
 }
 
@@ -300,7 +347,7 @@ val extractUpstreamPreferences by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/preferences").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-preferences.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "preference-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/preferences"))
 }
 
@@ -312,9 +359,9 @@ val extractUpstreamSettingsSearch by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/settings-search").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-search.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-search-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "settings-search-symbols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings-search"))
 }
 
@@ -327,9 +374,9 @@ val extractUpstreamSettingsCategories by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-settings-categories.py", "tools/extract-upstream-settings-search.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-category-ui-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "settings-category-symbols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings-categories"))
 }
 
@@ -341,7 +388,7 @@ val extractUpstreamSettingsHome by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/settings-home").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-home.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-home-section-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings-home"))
 }
 
@@ -353,9 +400,9 @@ val extractUpstreamSettingsPrivacy by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/settings-privacy").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-settings-privacy.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", "tools/extract-upstream-settings-search.py")
     inputs.files(sources.filter { "settings-privacy-section-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "settings-privacy-section-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings-privacy"))
 }
 
@@ -368,7 +415,7 @@ val extractUpstreamSettingsEntries by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-settings-entries.py", "tools/extract-upstream-settings-search.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-playback-entry-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings-entries"))
 }
 
@@ -380,7 +427,7 @@ val extractUpstreamNavigationInteraction by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/navigation-interaction").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-navigation-interaction.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "desktop-navigation-interaction-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/navigation-interaction"))
 }
 
@@ -395,7 +442,7 @@ val extractUpstreamFullNavigation by tasks.registering(Exec::class) {
     inputs.file(sourceManifest)
     inputs.files((sources + originalResources).filter {
         "desktop-full-navigation-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>())
-    }.map { File(repositoryRoot, it["path"].toString()) })
+    }.map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/full-navigation-settings"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/full-navigation-settings")) }
@@ -410,7 +457,7 @@ val extractUpstreamSettingsStorageEntries by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-settings-storage-entries.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-storage-backup-entries" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings-storage-entries"))
 }
 
@@ -422,7 +469,7 @@ val extractUpstreamBlockedUp by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/blocked-up").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-blocked-up-platform.py", "tools/extract-discovery-platform.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-blocked-up" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/blocked-up"))
 }
 
@@ -434,9 +481,9 @@ val extractUpstreamBlockedListUi by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/blocked-list-ui").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-blocked-list-ui.py", "tools/extract-upstream-blocked-up-platform.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-blocked-up" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "settings-blocked-up" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/blocked-list-ui"))
 }
 
@@ -450,9 +497,9 @@ val extractUpstreamNetworkProxy by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-upstream-api.py",
         "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-network-proxy-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "settings-network-proxy-symbols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/network-proxy"))
 }
 
@@ -466,9 +513,9 @@ val extractUpstreamDiagnostics by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-upstream-api.py",
         "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-local-diagnostics-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "settings-local-diagnostics-symbol" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/diagnostics"))
     // Own the reference-only output too; the network-proxy producer has its own copy.
 }
@@ -483,7 +530,7 @@ val extractUpstreamDynamicSettings by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py",
         "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-home-dynamic-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-settings"))
 }
 
@@ -497,7 +544,7 @@ val extractUpstreamHomeCards by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py",
         "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-home-card-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-cards"))
 }
 
@@ -510,7 +557,7 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-home-page.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "home-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-page"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalHomePage) }
@@ -525,7 +572,7 @@ val extractOriginalHomeViewModel by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-home-viewmodel.py", "tools/extract-upstream-home-viewmodel-adaptations.json",
         "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "home-viewmodel" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-viewmodel"))
 }
 val extractOriginalHomeProtocols by tasks.registering(Exec::class) {
@@ -536,7 +583,7 @@ val extractOriginalHomeProtocols by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/home-protocols").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-protocols.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "home-protocols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-protocols"))
 }
 // Add to the existing kotlin.sourceSets.named("main") block.
@@ -560,7 +607,7 @@ val extractOriginalLiveList by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-live-list.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "live-home-list" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/live-home-list"))
 }
 kotlin.sourceSets.named("main") {
@@ -578,7 +625,7 @@ val extractOriginalHomePartition by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-home-partition.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "home-partition" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-partition"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-partition")) }
@@ -593,7 +640,7 @@ val extractOriginalHomeBangumiPage by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-home-bangumi-page.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "home-bangumi-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-bangumi-page"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-bangumi-page")) }
@@ -608,11 +655,43 @@ val extractOriginalBangumiPages by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-bangumi-pages.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "independent-bangumi-pages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/independent-bangumi-pages"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/independent-bangumi-pages")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalBangumiPages) }
+
+// Complete original PGC VM/Base/policies and playurl have one producer;
+// the complete physical Player UI is produced separately below.
+val extractOriginalBangumiPlayer by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalBangumiPages, extractUpstreamMedia)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bangumi-player.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-bangumi-player").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-bangumi-player.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "original-bangumi-player-full" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-bangumi-player"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-bangumi-player")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalBangumiPlayer) }
+
+val extractOriginalBangumiPlayerUi by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalBangumiPlayer, extractUpstreamMedia)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bangumi-player-ui.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-bangumi-player-ui").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-bangumi-player-ui.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "original-bangumi-player-ui" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-bangumi-player-ui"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-bangumi-player-ui")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalBangumiPlayerUi) }
 
 val extractOriginalSubscriptionPage by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
@@ -623,7 +702,7 @@ val extractOriginalSubscriptionPage by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-subscription-page.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "home-subscription-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-subscription-page"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-subscription-page")) }
@@ -639,7 +718,7 @@ val prepareOriginalCategoryPage by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-category-page.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "category-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/category-page"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/category-page")) }
@@ -654,7 +733,7 @@ val prepareOriginalHomeReturnNavigation by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-home-return-navigation.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-home-return-navigation" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-return-navigation"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-return-navigation")) }
@@ -670,7 +749,7 @@ val extractOriginalProfileMain by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-profile-main.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "profile-main-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/profile-main"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/profile-main")) }
@@ -686,7 +765,7 @@ val extractOriginalLiveNavigation by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-live-navigation.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "live-sub-navigation" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/live-navigation"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/live-navigation")) }
@@ -702,7 +781,7 @@ val extractOriginalVideoShareConsent by tasks.registering(Exec::class) {
     inputs.file("tools/extract-upstream-video-share-consent.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "video-share-original-windows" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/video-share-consent"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/video-share-consent")) }
@@ -721,7 +800,7 @@ val extractOriginalDownloadList by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-download-list-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-download-list"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-download-list")) }
@@ -739,7 +818,7 @@ val extractOriginalRootHomeNavigation by tasks.registering(Exec::class) {
         "tools/extract-upstream-navigation3-host.py", "tools/extract-upstream-media.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-root-home-navigation" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-root-home-navigation"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-root-home-navigation")) }
@@ -755,7 +834,7 @@ val extractNavigation3Host by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-navigation3-host.py", "tools/sync-upstream.py", "tools/extract-upstream-media.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-navigation3-host" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-navigation3-host"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-navigation3-host")) }
@@ -771,7 +850,7 @@ val extractOriginalWallpaperPalette by tasks.registering(Exec::class) {
     inputs.file("tools/extract-upstream-wallpaper-palette.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "home-wallpaper-palette-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/wallpaper-palette"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/wallpaper-palette")) }
@@ -788,7 +867,7 @@ val extractOriginalApplicationImageLoader by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-application-image-loader.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "original-application-image-loader" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-application-image-loader"))
 }
 val verifyCoilCacheControlSources by tasks.registering {
@@ -803,7 +882,7 @@ val verifyCoilCacheControlSources by tasks.registering {
     doLast {
         pins.forEach { (name, expected) ->
             val actual = MessageDigest.getInstance("SHA-256")
-                .digest(File(projectDir, name).readBytes()).joinToString("") { "%02x".format(it) }
+                .digest(File(projectDir, name).readText(Charsets.UTF_8).replace("\r\n", "\n").toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) }
             check(actual == expected) { "Original Coil cache-control source/license changed: $name" }
         }
         logger.lifecycle("Verified three unchanged Coil3.5.0 cache-control sources and two Apache notices.")
@@ -826,7 +905,7 @@ val extractUpstreamProfileWallpaperImport by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-profile-wallpaper-import.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-profile-windows-platform" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/profile-wallpaper-import"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/profile-wallpaper-import")) }
@@ -841,9 +920,9 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-home-full-card.py", "tools/extract-upstream-home-page.py", "tools/extract-upstream-media.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "home-full-card" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(sources.filter { "home-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-full-card"))
 }
 
@@ -857,7 +936,7 @@ val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
         "tools/extract-upstream-api.py", "tools/extract-appearance-platform.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-dynamic-full-card-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-full-card"))
 }
 
@@ -869,7 +948,7 @@ val extractUpstreamDynamicStaticImageCodec by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/dynamic-static-image-codec").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-dynamic-static-image-codec.py")
     inputs.files(sources.filter { "dynamic-static-image-save-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-static-image-codec"))
 }
 
@@ -882,7 +961,7 @@ val extractImageSaveSettingsUi by tasks.registering(Exec::class) {
     inputs.files("tools/extract-image-save-settings-ui.py", "tools/extract-upstream-settings-storage-entries.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/extract-upstream-api.py")
     inputs.files(sources.filter { "settings-image-save-path-ui" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/settings-image-save-path"))
 }
 
@@ -894,7 +973,7 @@ val extractUpstreamDynamicGalleryMotionPhoto by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-dynamic-gallery-motion-photo.py")
     inputs.files(sources.filter { "dynamic-media-export-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-gallery-motion-photo"))
 }
 
@@ -919,7 +998,7 @@ val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-editor.py", "tools/extract-upstream-dynamic-reply-protocol.py", "upstream-sources.json", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-editor"))
 }
 
@@ -934,7 +1013,7 @@ val verifyUpstreamDynamicEditorProtocol by tasks.registering(Exec::class) {
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
         "src/main/kotlin/com/bilipai/desktop/data/DesktopDynamicCardOperations.kt")
     inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.file(layout.buildDirectory.file("generated/dynamic-editor-protocol/verification.json"))
 }
 
@@ -947,7 +1026,7 @@ val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-reply.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-reply"))
 }
 
@@ -960,7 +1039,7 @@ val extractUpstreamDynamicDetail by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-detail.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail"))
 }
 
@@ -973,7 +1052,7 @@ val extractUpstreamDynamicDetailContainer by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-detail-container.py", "tools/extract-appearance-platform.py",
         "tools/sync-upstream.py")
     inputs.files(sources.filter { "dynamic-detail-container" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail-container"))
 }
 
@@ -985,7 +1064,7 @@ val extractUpstreamDynamicReplyProtocol by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/dynamic-reply-protocol").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-reply-protocol"))
 }
 
@@ -997,7 +1076,7 @@ val extractUpstreamDynamicDetailProtocol by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/dynamic-detail-protocol").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-detail-protocol.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-detail-protocol"))
 }
 
@@ -1011,7 +1090,7 @@ val extractBgmDetail by tasks.registering(Exec::class) {
         "tools/extract-appearance-platform.py", "tools/extract-upstream-media.py", "tools/extract-upstream-plugins.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-bgm-native-detail" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/bgm-detail"))
 }
 tasks.named("compileKotlin") { dependsOn(extractBgmDetail) }
@@ -1026,7 +1105,7 @@ val extractVideoCommentUi by tasks.registering(Exec::class) {
         "tools/extract-upstream-dynamic-reply.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-video-original-comments" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/video-comment-ui"))
 }
 tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
@@ -1040,7 +1119,7 @@ val extractOriginalFavorites by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-favorites.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-favorites" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-favorites"))
 }
 val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {
@@ -1052,7 +1131,7 @@ val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-favorite-folder-sheet.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-favorite-folder-sheet" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-favorite-folder"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalFavorites, extractOriginalFavoriteFolder) }
@@ -1067,9 +1146,9 @@ val extractLinkedDock by tasks.registering(Exec::class) {
         "tools/extract-appearance-platform.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-linked-dock-search" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "stable-linked-dock-search" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/linked-dock"))
 }
 tasks.named("compileKotlin") { dependsOn(extractLinkedDock) }
@@ -1083,7 +1162,7 @@ val extractFrostedAudioRenderer by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-frosted-audio-renderer.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-frosted-audio-renderer" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/frosted-audio-renderer"))
 }
 tasks.named("compileKotlin") { dependsOn(extractFrostedAudioRenderer) }
@@ -1097,7 +1176,7 @@ val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-danmaku-settings.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-danmaku-settings-panel" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-danmaku-settings"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuSettings) }
@@ -1111,7 +1190,7 @@ val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-danmaku-list-menu.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-danmaku-list-menu" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-danmaku-list-menu"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuListMenu) }
@@ -1125,7 +1204,7 @@ val extractCommentFraudProtocol by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-comment-fraud-protocol.py", "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/sync-upstream.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py")
     inputs.file(sourceManifest)
-    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt"))
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt"))
     outputs.dir(layout.buildDirectory.dir("generated/comment-fraud-protocol"))
 }
 tasks.named("compileKotlin") { dependsOn(extractCommentFraudProtocol) }
@@ -1139,7 +1218,7 @@ val extractSharedLiquidTabs by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-shared-liquid-tabs.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-shared-liquid-tabs" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/shared-liquid-tabs"))
 }
 tasks.named("compileKotlin") { dependsOn(extractSharedLiquidTabs) }
@@ -1153,7 +1232,7 @@ val extractStableVideoMetadata by tasks.registering(Exec::class) {
     inputs.file(sourceManifest)
     inputs.files(listOf("feature/video/ui/section/VideoInfoSection.kt", "feature/video/ui/section/VideoInfoDisplayPolicy.kt",
         "data/repository/ActionRepository.kt", "core/store/SettingsManager.kt")
-        .map { File(repositoryRoot, "app/src/main/java/com/android/purebilibili/$it") })
+        .map { canonicalOriginalSource("app/src/main/java/com/android/purebilibili/$it") })
     outputs.dir(layout.buildDirectory.dir("generated/video-metadata"))
 }
 tasks.named("compileKotlin") { dependsOn(extractStableVideoMetadata) }
@@ -1167,7 +1246,7 @@ val extractStableCollectionSheet by tasks.registering(Exec::class) {
     inputs.file(sourceManifest)
     inputs.files(listOf("feature/video/ui/components/CollectionSheet.kt", "feature/video/ui/components/CollectionSubscriptionButton.kt",
         "data/repository/ActionRepository.kt", "core/store/SettingsManager.kt", "core/util/ShareUtils.kt")
-        .map { File(repositoryRoot, "app/src/main/java/com/android/purebilibili/$it") })
+        .map { canonicalOriginalSource("app/src/main/java/com/android/purebilibili/$it") })
     outputs.dir(layout.buildDirectory.dir("generated/collection-sheet"))
 }
 tasks.named("compileKotlin") { dependsOn(extractStableCollectionSheet) }
@@ -1179,7 +1258,7 @@ val extractStableWeeklySeries by tasks.registering(Exec::class) {
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/weekly-series").get().asFile.absolutePath)
     inputs.files("tools/extract-stable-weekly-series.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py")
     inputs.files(listOf("feature/home/WeeklySeriesScreen.kt", "feature/home/WeeklySeriesViewModel.kt", "data/repository/VideoRepository.kt")
-        .map { File(repositoryRoot, "app/src/main/java/com/android/purebilibili/$it") })
+        .map { canonicalOriginalSource("app/src/main/java/com/android/purebilibili/$it") })
     outputs.dir(layout.buildDirectory.dir("generated/weekly-series"))
 }
 tasks.named("compileKotlin") { dependsOn(extractStableWeeklySeries) }
@@ -1191,8 +1270,8 @@ val extractStableVideoVotes by tasks.registering(Exec::class) {
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/video-votes").get().asFile.absolutePath)
     inputs.files("tools/extract-stable-video-votes.py", "tools/sync-upstream.py", sourceManifest)
     inputs.files(
-        File(repositoryRoot, "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt"),
-        File(repositoryRoot, "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"),
+        canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt"),
+        canonicalOriginalSource("app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"),
     )
     outputs.dir(layout.buildDirectory.dir("generated/video-votes"))
 }
@@ -1230,7 +1309,7 @@ val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py",
         "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-dynamic-tabs-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-tabs"))
 }
 
@@ -1243,7 +1322,7 @@ val extractUpstreamDynamicFollow by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-follow.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-upstream-api.py")
     inputs.files(sources.filter { "dynamic-follow-observer-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-follow"))
 }
 
@@ -1256,7 +1335,7 @@ val extractUpstreamCrashPrompt by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-crash-prompt.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "settings-crash-prompt-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/crash-prompt"))
 }
 
@@ -1268,7 +1347,7 @@ val extractNativeMusicRoot by tasks.registering(Exec::class) {
         "--output-dir", layout.buildDirectory.dir("generated/native-music-root").get().asFile.absolutePath)
     inputs.files("tools/extract-native-music-root-platform.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "resolveDisplayBgmList" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/native-music-root"))
 }
 
@@ -1280,7 +1359,7 @@ val extractUpstreamSpace by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/space").get().asFile.absolutePath)
     inputs.files("tools/extract-space-platform.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "space" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space"))
 }
 
@@ -1291,7 +1370,7 @@ val extractUpstreamSpaceImagePreviews by tasks.registering(Exec::class) {
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/space-image-previews").get().asFile.absolutePath)
     inputs.files("tools/extract-space-image-preview-callers.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "space-image-preview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space-image-previews"))
 }
 
@@ -1303,7 +1382,7 @@ val extractUpstreamSpaceContributions by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/space-contributions").get().asFile.absolutePath)
     inputs.files("tools/extract-space-contributions.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "space-contributions" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space-contributions"))
 }
 
@@ -1315,7 +1394,7 @@ val extractUpstreamSpaceOverview by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/space-overview").get().asFile.absolutePath)
     inputs.files("tools/extract-space-overview.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "space-overview" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/space-overview"))
 }
 
@@ -1327,7 +1406,7 @@ val extractUpstreamStoryTopic by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/story-topic").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-story-topic.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-api.py")
     inputs.files(sources.filter { "story-topic" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/story-topic"))
 }
 
@@ -1339,7 +1418,7 @@ val extractPlaybackSettings by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/playback-settings").get().asFile.absolutePath)
     inputs.files("tools/extract-playback-settings.py", "third-party/premium-audio-platform.json")
     inputs.files(sources.filter { "playback-settings-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/playback-settings"))
 }
 
@@ -1560,11 +1639,11 @@ val prepareOriginalPluginResources by tasks.registering(Sync::class) {
     dependsOn(prepareUpstreamSources)
     from(File(repositoryRoot, "app/src/main/assets/anime4k")) { into("anime4k"); include(originalResources.filter {
         it["path"].toString().startsWith("app/src/main/assets/anime4k/") }.map { File(it["path"].toString()).name }) }
-    from(File(repositoryRoot, "app/src/main/res/raw/cdn_region_catalog.json")) { into("plugin") }
-    from(File(repositoryRoot, "app/src/main/assets/rovniced-skin-catalog.json"))
+    from(canonicalOriginalSource("app/src/main/res/raw/cdn_region_catalog.json")) { into("plugin") }
+    from(canonicalOriginalSource("app/src/main/assets/rovniced-skin-catalog.json"))
     into(layout.buildDirectory.dir("generated/plugin-resources"))
     inputs.file(sourceManifest)
-    inputs.files(originalResources.map { File(repositoryRoot, it["path"].toString()) })
+    inputs.files(originalResources.map { canonicalOriginalSource(it["path"].toString()) })
 }
 sourceSets.named("main") { resources.srcDir(layout.buildDirectory.dir("generated/plugin-resources")) }
 tasks.named("processResources") { dependsOn(prepareOriginalPluginResources, verifyGoogleCastSources) }
@@ -1635,6 +1714,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
+    implementation("org.jsoup:jsoup:1.21.2")
     implementation("io.coil-kt.coil3:coil-compose:3.5.0")
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.5.0")
     implementation("com.google.zxing:core:3.5.4")
@@ -1765,7 +1845,7 @@ val extractSubtitleLoadPolicy by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-subtitle-load-policy.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/subtitle-load").get().asFile.absolutePath)
     inputs.files("tools/extract-subtitle-load-policy.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
-    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"))
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt"))
     outputs.dir(layout.buildDirectory.dir("generated/subtitle-load"))
 }
 tasks.named("compileKotlin") { dependsOn(extractUpstreamStoryTopic, extractPlaybackSettings, extractSubtitleLoadPolicy) }
@@ -1776,7 +1856,7 @@ val extractUpstreamDownloadTransport by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-download-transport.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/download-transport").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-download-transport.py")
-    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt"))
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/download/ResumableAssetDownloader.kt"))
     outputs.dir(layout.buildDirectory.dir("generated/download-transport"))
 }
 sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/download-transport")) }
@@ -1790,7 +1870,7 @@ val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-video-detail-full-units.py", "tools/sync-upstream.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-detail-full-units" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-detail-units"))
 }
 val verifyOriginalVideoDetailMembers by tasks.registering(Exec::class) {
@@ -1813,7 +1893,7 @@ val extractOriginalOfflinePlayer by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/original-offline-player").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-offline-player.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", sourceManifest)
     inputs.files(sources.filter { "stable-offline-player-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-offline-player"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-offline-player")) }
@@ -1829,7 +1909,7 @@ val extractOriginalPersonalLists by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-personal-lists.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-personal-history-liked" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-personal-lists"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-personal-lists")) }
@@ -1846,7 +1926,7 @@ val extractOriginalWatchLater by tasks.registering(Exec::class) {
         "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-personal-watchlater" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-watchlater"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-watchlater")) }
@@ -1859,7 +1939,7 @@ val extractOriginalPlayerFullControls by tasks.registering(Exec::class) {
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-full-controls").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-player-full-controls.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-player-full-controls" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-player-full-controls"))
 }
 val verifyOriginalPlayerFullControls by tasks.registering(Exec::class) {
@@ -1886,7 +1966,7 @@ val extractOriginalFollowing by tasks.registering(Exec::class) {
         "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-personal-following" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-following"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-following")) }
@@ -1902,7 +1982,7 @@ val extractOriginalArticleDetail by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-article-detail.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-article-full" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-article-detail"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-article-detail")) }
@@ -1920,7 +2000,7 @@ val extractOriginalVideoContentFull by tasks.registering(Exec::class) {
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-content-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-content-full.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-content-full" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-content-full"))
 }
 val verifyOriginalVideoContentFull by tasks.registering(Exec::class) {
@@ -1946,7 +2026,7 @@ val extractOriginalVideoStateCore by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-video-state-core.py", "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/extract-upstream-video-detail-full-units.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-state-core" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-state-core"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-state-core")) }
@@ -1962,7 +2042,7 @@ val extractOriginalVideoPlayerSectionFull by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-video-player-section-full.py", "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-player-section-full" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-player-section-full"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-player-section-full")) }
@@ -1976,7 +2056,7 @@ val prepareUpstreamVideoCommentUrl by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/upstream-video-comment-url").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-comment-url.py",
-        File(repositoryRoot, "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt"))
+        canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailSessionPolicy.kt"))
     outputs.dir(layout.buildDirectory.dir("generated/upstream-video-comment-url"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/upstream-video-comment-url/com")) }
@@ -1992,7 +2072,7 @@ val extractOriginalVideoTabletFull by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-video-tablet-full.py", "tools/sync-upstream.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-video-player-section-full.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-tablet-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/video-tablet-full"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/video-tablet-full/com")) }
@@ -2009,7 +2089,7 @@ val extractOriginalVideoFullscreenPager by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-video-fullscreen-pager.py", "tools/sync-upstream.py",
         "tools/extract-upstream-dynamic-reply-protocol.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-fullscreen-pager" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-fullscreen-pager"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-fullscreen-pager")) }
@@ -2027,7 +2107,7 @@ val extractOriginalMusicPlayerFull by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-music-player-full.py", "tools/sync-upstream.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-video-player-section-full.py", sourceManifest)
     inputs.files(sources.filter { "stable-music-player-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/music-player-full"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/music-player-full/com")) }
@@ -2043,7 +2123,7 @@ val extractOriginalVideoAudioFull by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-video-audio-full.py", "tools/sync-upstream.py",
         "tools/extract-appearance-platform.py", sourceManifest)
     inputs.files(sources.filter { "stable-video-audio-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/video-audio-full"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/video-audio-full/com")) }
@@ -2056,7 +2136,7 @@ val extractOriginalMediaByteCachePolicy by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-media-byte-cache-policy").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-media-byte-cache-policy.py", sourceManifest,
-        File(repositoryRoot, "app/src/main/java/com/android/purebilibili/core/player/PlaybackMediaCache.kt"))
+        canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/player/PlaybackMediaCache.kt"))
     outputs.dir(layout.buildDirectory.dir("generated/original-media-byte-cache-policy"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-media-byte-cache-policy")) }
@@ -2073,7 +2153,7 @@ val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/original-video-full-owner").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-full-owner.py", sourceManifest)
     inputs.files(sources.filter { "stable-original-video-full-owner" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-full-owner"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-full-owner")) }
@@ -2089,7 +2169,7 @@ val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
         layout.buildDirectory.dir("generated/original-video-detail-holder-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-detail-holder.py", sourceManifest)
     inputs.files(sources.filter { "original-video-detail-holder-full" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-detail-holder-full"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-detail-holder-full")) }
@@ -2107,7 +2187,7 @@ val extractOriginalTabletOwnerSpace by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/original-tablet-owner-space").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-tablet-owner-space.py", "tools/sync-upstream.py", sourceManifest)
     inputs.files(sources.filter { "stable-tablet-owner-space-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-tablet-owner-space"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-tablet-owner-space/com")) }
@@ -2121,7 +2201,7 @@ val extractOriginalVideoPlaylistFull by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-playlist-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-playlist.py", sourceManifest)
-    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt"))
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt"))
     outputs.dir(layout.buildDirectory.dir("generated/original-video-playlist-full"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-playlist-full/com")) }
@@ -2135,7 +2215,7 @@ val extractOriginalVideoOwnerDanmakuSend by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-owner-danmaku-send").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-owner-danmaku-send.py", "tools/extract-upstream-danmaku-list-menu.py", sourceManifest)
-    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"))
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"))
     outputs.dir(layout.buildDirectory.dir("generated/original-video-owner-danmaku-send"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-owner-danmaku-send/com")) }
@@ -2149,9 +2229,9 @@ val extractOriginalVideoRootStoryFeed by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-root-story-feed").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-root-story-feed.py", "tools/extract-upstream-danmaku-list-menu.py", sourceManifest)
-    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt"))
-    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
-    inputs.file(File(repositoryRoot, "app/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt"))
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt"))
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
+    inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/data/model/response/StoryModels.kt"))
     outputs.dir(layout.buildDirectory.dir("generated/original-video-root-story-feed"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-root-story-feed/com")) }
@@ -2169,9 +2249,9 @@ val extractOriginalStorageSettings by tasks.registering(Exec::class) {
         "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "desktop-storage-cache-settings-owner-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "desktop-storage-cache-settings-owner-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-storage-settings"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-storage-settings")) }
@@ -2188,7 +2268,7 @@ val extractOriginalSearchPages by tasks.registering(Exec::class) {
     inputs.file("tools/extract-upstream-search-pages.py")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "desktop-full-original-search-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-search-pages"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-search-pages")) }
@@ -2205,8 +2285,280 @@ val extractOriginalMessagePages by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-message-pages.py", "tools/extract-appearance-platform.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", sourceManifest)
     inputs.files(sources.filter { "stable-original-message-pages-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
-        .map { File(repositoryRoot, it["path"].toString()) })
+        .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-message-pages"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-pages")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalMessagePages) }
+
+// Full original retained Space page, supporter leaves and business ViewModels.
+// Existing SpaceUiState/SubTab/selected policies, dynamic cards and gallery stay sole-owned.
+val extractOriginalSpacePages by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSpace, extractUpstreamSpaceOverview, extractUpstreamSpaceContributions,
+        extractOriginalVideoTabletFull, extractOriginalFavorites)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-space-pages.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--out", layout.buildDirectory.dir("generated/original-space-pages").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-space-pages.py", "tools/extract-upstream-tablet-owner-space.py", "tools/sync-upstream.py", sourceManifest)
+    inputs.files(layout.buildDirectory.file("generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt"),
+        layout.buildDirectory.file("generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt"),
+        layout.buildDirectory.file("generated/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt"),
+        layout.buildDirectory.file("generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt"))
+    inputs.files(sources.filter { "stable-original-space-pages-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-space-pages"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-space-pages")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalSpacePages) }
+
+val extractOriginalWindowLayout by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamDynamicDetailContainer)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-window-layout.py",
+        "--repo", rootProject.projectDir.parentFile.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-window-layout").get().asFile.absolutePath,
+        "--existing-hinge-model", layout.buildDirectory.file("generated/dynamic-detail-container/com/android/purebilibili/core/util/DesktopOriginalDetailHingeModel.kt").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-window-layout.py")
+    inputs.file(layout.buildDirectory.file("generated/dynamic-detail-container/com/android/purebilibili/core/util/DesktopOriginalDetailHingeModel.kt"))
+    inputs.files(sources.filter { "original-window-layout-v025" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { rootProject.projectDir.parentFile.resolve(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-window-layout"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-window-layout")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalWindowLayout) }
+
+
+// Five original CDN transfer families have exactly one neutral Windows producer.
+val extractOriginalCdnTransfer by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-cdn-transfer.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-cdn-transfer").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-cdn-transfer.py", "tools/upstream-cdn-transfer-adaptations.json")
+    inputs.file(sourceManifest)
+    inputs.files(sources.filter { "desktop-original-cdn-transfer-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-cdn-transfer"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-cdn-transfer")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalCdnTransfer) }
+
+// Canonical locator/catalog are explicit inputs of every original-source producer
+// and verifier, including consumers through existing imported producer helpers.
+val canonicalOriginalInputTasks = setOf(
+    "prepareUpstreamSources",
+    "extractUpstreamApi",
+    "extractUpstreamDanmaku",
+    "extractUpstreamMedia",
+    "extractUpstreamAudio",
+    "extractUpstreamLogin",
+    "extractUpstreamPlugins",
+    "extractUpstreamDiscovery",
+    "extractUpstreamSettings",
+    "extractUpstreamPlayback",
+    "extractUpstreamSearch",
+    "extractUpstreamCast",
+    "extractUpstreamPackages",
+    "extractPlaybackWatchdogs",
+    "extractGoogleCastPlatform",
+    "extractUpstreamJs",
+    "extractUpstreamAppearance",
+    "extractUpstreamComponents",
+    "extractUpstreamPreferences",
+    "extractUpstreamSettingsSearch",
+    "extractUpstreamSettingsCategories",
+    "extractUpstreamSettingsHome",
+    "extractUpstreamSettingsPrivacy",
+    "extractUpstreamSettingsEntries",
+    "extractUpstreamNavigationInteraction",
+    "extractUpstreamFullNavigation",
+    "extractUpstreamSettingsStorageEntries",
+    "extractUpstreamBlockedUp",
+    "extractUpstreamBlockedListUi",
+    "extractUpstreamNetworkProxy",
+    "extractUpstreamDiagnostics",
+    "extractUpstreamDynamicSettings",
+    "extractUpstreamHomeCards",
+    "extractOriginalHomePage",
+    "extractOriginalHomeViewModel",
+    "extractOriginalHomeProtocols",
+    "extractOriginalLiveList",
+    "extractOriginalHomePartition",
+    "extractOriginalHomeBangumiPage",
+    "extractOriginalBangumiPages",
+    "extractOriginalBangumiPlayer",
+    "extractOriginalBangumiPlayerUi",
+    "extractOriginalSubscriptionPage",
+    "prepareOriginalCategoryPage",
+    "prepareOriginalHomeReturnNavigation",
+    "extractOriginalProfileMain",
+    "extractOriginalLiveNavigation",
+    "extractOriginalVideoShareConsent",
+    "extractOriginalDownloadList",
+    "extractOriginalRootHomeNavigation",
+    "extractNavigation3Host",
+    "extractOriginalWallpaperPalette",
+    "extractOriginalApplicationImageLoader",
+    "extractUpstreamProfileWallpaperImport",
+    "extractUpstreamHomeFullCard",
+    "extractUpstreamDynamicFullCard",
+    "extractUpstreamDynamicStaticImageCodec",
+    "extractImageSaveSettingsUi",
+    "extractUpstreamDynamicGalleryMotionPhoto",
+    "verifyUpstreamDynamicMedia",
+    "extractUpstreamDynamicEditor",
+    "verifyUpstreamDynamicEditorProtocol",
+    "extractUpstreamDynamicReply",
+    "extractUpstreamDynamicDetail",
+    "extractUpstreamDynamicDetailContainer",
+    "extractUpstreamDynamicReplyProtocol",
+    "extractUpstreamDynamicDetailProtocol",
+    "extractBgmDetail",
+    "extractVideoCommentUi",
+    "extractOriginalFavorites",
+    "extractOriginalFavoriteFolder",
+    "extractLinkedDock",
+    "extractFrostedAudioRenderer",
+    "extractOriginalDanmakuSettings",
+    "extractOriginalDanmakuListMenu",
+    "extractCommentFraudProtocol",
+    "extractSharedLiquidTabs",
+    "extractStableVideoMetadata",
+    "extractStableCollectionSheet",
+    "extractStableWeeklySeries",
+    "extractStableVideoVotes",
+    "extractUpstreamDynamicTabs",
+    "extractUpstreamDynamicFollow",
+    "extractUpstreamCrashPrompt",
+    "extractNativeMusicRoot",
+    "extractUpstreamSpace",
+    "extractUpstreamSpaceImagePreviews",
+    "extractUpstreamSpaceContributions",
+    "extractUpstreamSpaceOverview",
+    "extractUpstreamStoryTopic",
+    "extractPlaybackSettings",
+    "prepareJsWorker",
+    "extractSubtitleLoadPolicy",
+    "extractUpstreamDownloadTransport",
+    "extractOriginalVideoDetailUnits",
+    "extractOriginalOfflinePlayer",
+    "extractOriginalPersonalLists",
+    "extractOriginalWatchLater",
+    "extractOriginalPlayerFullControls",
+    "verifyOriginalPlayerFullControls",
+    "extractOriginalFollowing",
+    "extractOriginalArticleDetail",
+    "extractOriginalVideoContentFull",
+    "verifyOriginalVideoContentFull",
+    "extractOriginalVideoStateCore",
+    "extractOriginalVideoPlayerSectionFull",
+    "prepareUpstreamVideoCommentUrl",
+    "extractOriginalVideoTabletFull",
+    "extractOriginalVideoFullscreenPager",
+    "extractOriginalMusicPlayerFull",
+    "extractOriginalVideoAudioFull",
+    "extractOriginalMediaByteCachePolicy",
+    "extractOriginalVideoFullOwner",
+    "extractOriginalVideoDetailHolderFull",
+    "extractOriginalTabletOwnerSpace",
+    "extractOriginalVideoPlaylistFull",
+    "extractOriginalVideoOwnerDanmakuSend",
+    "extractOriginalVideoRootStoryFeed",
+    "extractOriginalStorageSettings",
+    "extractOriginalSearchPages",
+    "extractOriginalMessagePages",
+    "extractOriginalSpacePages",
+    "extractOriginalWindowLayout",
+    "extractOriginalCdnTransfer"
+)
+tasks.matching { it.name in canonicalOriginalInputTasks }.configureEach {
+    inputs.files(canonicalOriginalHelperFile, canonicalOriginalCatalogFile)
+}
+// Five latest comment recipe outputs share three existing sole producers.
+// Their verifier also consumes the same helper through the existing producer.
+val originalCommentConsumerInputTasks = setOf(
+    "extractOriginalVideoContentFull",
+    "verifyOriginalVideoContentFull",
+    "extractOriginalVideoTabletFull",
+    "extractOriginalVideoDetailHolderFull"
+)
+tasks.matching { it.name in originalCommentConsumerInputTasks }.configureEach {
+    inputs.file("tools/extract-upstream-v025-comment-consumers.py")
+}
+
+
+// New canonical original Danmaku content source belongs to the same existing producers.
+tasks.named("extractUpstreamDanmaku") {
+    inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/data/repository/DanmakuContentRepository.kt"))
+}
+tasks.named("extractUpstreamMedia") {
+    inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/data/repository/DanmakuContentRepository.kt"))
+}
+
+// Original standard emote requests remain in the sole BGM/Operations producer.
+tasks.named("extractBgmDetail") { inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt")) }
+
+// Complete original ambient domain; existing native Section owns frames and leases.
+val extractOriginalVideoAmbientWindows by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-ambient-windows.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-video-ambient-windows").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-video-ambient-windows.py", "tools/sync-upstream.py",
+        "tools/v025_source_paths.py", "tools/v025-canonical-sources.json")
+    inputs.file(sourceManifest)
+    inputs.files(
+            canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientEnvironment.kt"),
+            canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFrameController.kt"),
+            canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientFramePolicy.kt"),
+            canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ambient/AmbientPlayerBinding.kt"),
+            canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ambient/PlayerAmbientGlow.kt"),
+            canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ambient/PlayerAmbientLayout.kt"),
+            canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"),
+            canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/settings/screen/PlaybackSettingsScreen.kt"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-video-ambient-windows"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-video-ambient-windows")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalVideoAmbientWindows) }
+tasks.named("extractOriginalVideoStateCore") { inputs.files(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/data/repository/SharedContentRepository.kt"), canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/data/repository/PlaybackStreamDataSource.kt")) }
+tasks.named("extractOriginalPlayerFullControls") { inputs.files(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/VideoPlayerOverlayContracts.kt"), canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentThreadNavigationBlur.kt")) }
+tasks.named("extractOriginalWindowLayout") { inputs.files(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/ui/adaptive/AppHingePaneLayout.kt"), canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/ui/adaptive/AppHingeSafeSidePanel.kt")) }
+tasks.named("extractOriginalVideoContentFull") { inputs.files(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ui/components/VideoScreenshotSharePrompt.kt"), canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoNoteSection.kt")) }
+
+tasks.named("extractOriginalProfileMain") { inputs.files(
+    canonicalOriginalSource("app/src/main/java/com/android/purebilibili/data/repository/WallpaperArchiveRepository.kt"),
+    canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/login/BilibiliLoginQr.kt"),
+    canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/login/TvQrConfirmationPolicy.kt"),
+    canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/login/OfficialQrAuthorizationService.kt"),
+    canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/login/OfficialQrAuthorizationViewModel.kt"),
+    canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/login/OfficialQrAuthorizationContent.kt"),
+    canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/login/BiliPaiQrDecoder.kt"),
+    canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/agreement/UserAgreementGate.kt"),
+    canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/agreement/UserAgreementText.kt")
+) }
+
+
+tasks.named("extractOriginalMessagePages") { inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/message/MessageAppScaffold.kt")) }
+
+tasks.named("extractUpstreamComponents") { inputs.file(canonicalOriginalSource("design-system/src/main/java/com/android/purebilibili/core/ui/AdaptiveDialogComponents.kt")) }
+
+tasks.named("extractOriginalSearchPages") { inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/search/SearchLandingUi.kt")) }
+
+// DOMParser is a leaf of the already approved JS Host, with a fixed parser artifact.
+val verifyJsDomParserDependency by tasks.registering {
+    inputs.file("src/main/resources/licenses/jsoup-1.21.2/provenance.json")
+    doLast {
+        val artifacts = configurations.getByName("compileClasspath").resolvedConfiguration.resolvedArtifacts
+            .filter { it.moduleVersion.id.group == "org.jsoup" && it.name == "jsoup" }
+        check(artifacts.size == 1 && artifacts.single().moduleVersion.id.version == "1.21.2")
+        val artifact = artifacts.single().file
+        val digest = MessageDigest.getInstance("SHA-256").digest(artifact.readBytes())
+            .joinToString("") { "%02x".format(it) }
+        check(digest == "f05496e255734759f0d4b5632da7b24f81313147c78c69e90ad045d096191344") {
+            "Pinned JS DOMParser artifact changed"
+        }
+    }
+}
+tasks.named("compileKotlin") { dependsOn(verifyJsDomParserDependency) }

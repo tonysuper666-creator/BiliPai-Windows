@@ -38,4 +38,13 @@ class SearchSubmitPolicyTest {
 
         assertEquals("猫", action.keyword)
     }
+
+    @Test
+    fun `search submit treats short links as plain keywords`() {
+        listOf("b23.tv/abc123", "https://b23.tv/abc123").forEach { shortLink ->
+            val action = assertIs<SearchSubmitAction.OpenSearch>(resolveSearchSubmitAction(shortLink))
+
+            assertEquals(shortLink, action.keyword)
+        }
+    }
 }

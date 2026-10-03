@@ -1,9 +1,10 @@
 """Original BlockedUp data fields and pure import/share policies, without Room/Android runtime."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json
 BASE='app/src/main/java/com/android/purebilibili/'
 SOURCES=[BASE+'core/database/entity/BlockedUp.kt',BASE+'data/repository/BlockedUpRepository.kt',BASE+'data/repository/BilibiliBlockedListSyncRepository.kt']
-def original(repo,name):return (repo/name).read_text(encoding='utf-8').replace('\r\n','\n')
+def original(repo,name):return (_desktop_canonical_source(repo, name)).read_text(encoding='utf-8').replace('\r\n','\n')
 def load(repo):
     spec=importlib.util.spec_from_file_location('blocked_discovery',repo/'desktop/tools/extract-discovery-platform.py')
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)

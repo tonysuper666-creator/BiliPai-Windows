@@ -108,7 +108,7 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             if (expectedEpoch != sessions.generation || !requestOwner.stillOwned() || requestOwner.playbackAuthorization?.let { !sessions.isPlaybackAuthorizationCurrent(it.receipt) } == true) {
                 response.close(); throw BiliApiException(-101, "账号已切换，请重新加载")
             }
-            if (response.code == 412 || response.code == 429) {
+            if ((response.code == 412 || response.code == 429) && original.tag(com.bilipai.desktop.player.cache.DesktopCdnRangeRequestPolicy::class.java) == null) {
                 val code = response.code
                 response.close()
                 throw BiliApiException(code, if (code == 412)
@@ -135,6 +135,10 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             val stripped = stripDesktopAnonymousHomeFeedCookie(stripDesktopMergedFeedCookie(replacement))
             val mediaOrigin = stripped.tag(com.bilipai.desktop.player.cache.DesktopMediaOriginHeaders::class.java)
             val response = chain.proceed(mediaOrigin?.apply(stripped) ?: stripped)
+            // The same client must reject captured parallel-range redirects before
+            // RetryAndFollowUpInterceptor can send a follow-up to another signed address.
+            if (request.tag(com.bilipai.desktop.player.cache.DesktopCdnRangeRequestPolicy::class.java) != null)
+                com.bilipai.desktop.player.cache.DesktopCdnRangeRequestPolicy.rejectRedirect(response)
             // BridgeInterceptor saves response cookies after this interceptor returns. An old
             // account's in-flight response must never populate the newly activated account jar.
             if (epoch != sessions.generation || !requestOwner.stillOwned() || requestOwner.playbackAuthorization?.let { !sessions.isPlaybackAuthorizationCurrent(it.receipt) } == true) response.newBuilder().headers(response.headers.newBuilder().removeAll("Set-Cookie").build()).build()
@@ -148,7 +152,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     private val searchApi = retrofit("https://api.bilibili.com/").create(SearchApi::class.java)
     private val passportApi = retrofit("https://passport.bilibili.com/").create(PassportApi::class.java)
     private val validationPassportRetrofit = Retrofit.Builder().baseUrl("https://passport.bilibili.com/")
-        .client(client.newBuilder().cookieJar(CookieJar.NO_COOKIES).build())
+        .client(client.newBuilder().cookieJar(CookieJar.NO_COOKIES)
+            .retryOnConnectionFailure(false).followRedirects(false).followSslRedirects(false).build())
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
     private val validationPassportApi = validationPassportRetrofit.create(PassportApi::class.java)
     private val buvidApi = retrofit("https://api.bilibili.com/").create(BuvidApi::class.java)
@@ -371,6 +376,29 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         .callFactory(ownedHomeCallFactory(expectedEpoch, stillOwned, guest))
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
 
+    /** Original official QR authorization endpoints over the EXISTING validation transport.
+     * Default system TLS is already used by this owner; no debug trust override, new pool,
+     * CookieJar, dispatcher or credential persistence is introduced. */
+    internal fun ownedProfileQrAuthorizationService(expectedEpoch: Long, stillOwned: () -> Boolean): PassportApi {
+        val transport = validationPassportRetrofit.callFactory() as OkHttpClient
+        val bound = ownedHomeCallFactory(expectedEpoch, stillOwned, transport = transport)
+        val restricted = okhttp3.Call.Factory { request ->
+            val url = request.url
+            val allowed = url.isHttps && url.port == 443 && when (url.host) {
+                "api.bilibili.com" -> url.encodedPath == "/x/web-interface/nav" && request.method == "GET"
+                "passport.bilibili.com" -> when (url.encodedPath) {
+                    "/x/passport-login/web/qrcode/check", "/x/passport-login/web/qrcode/scene" -> request.method == "GET"
+                    "/x/passport-login/web/qrcode/confirm", "/x/passport-tv-login/h5/qrcode/confirm" -> request.method == "POST"
+                    else -> false
+                }
+                else -> false
+            }
+            if (!allowed) throw java.io.IOException("扫码授权请求地址不受支持")
+            bound.newCall(request)
+        }
+        return validationPassportRetrofit.newBuilder().callFactory(restricted).build().create(PassportApi::class.java)
+    }
+
     /** Reads the existing WBI cache, with its existing expiry and owner-bound nav API. */
     internal suspend fun homeWbiKeys(expectedEpoch: Long, stillOwned: () -> Boolean,
         ownedApi: BilibiliApi, forceRefresh: Boolean = false): Result<Pair<String, String>> {
@@ -400,6 +428,9 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     internal fun ownedHomeAccessToken(expectedEpoch: Long, stillOwned: () -> Boolean): String? =
         sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) { sessions.accessTokenCredentials().first }
+    /** One atomic credential/platform snapshot under the existing same-Store epoch gate. */
+    internal fun ownedHomeAccessTokenIdentity(expectedEpoch: Long, stillOwned: () -> Boolean): Pair<String?,String> =
+        sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) { sessions.accessTokenCredentials() }
     internal fun ownedHomeCookie(name: String, expectedEpoch: Long, stillOwned: () -> Boolean): String? =
         sessions.homeRequestCookies(expectedEpoch, stillOwned)[name]
     // SavedSession is synchronously read/decrypted by the existing Store constructor. This is

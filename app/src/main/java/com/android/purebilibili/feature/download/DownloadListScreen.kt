@@ -2,6 +2,7 @@ package com.android.purebilibili.feature.download
 
 import android.widget.Toast
 
+import com.android.purebilibili.core.ui.animation.jiggleOnDissolve
 import com.android.purebilibili.core.ui.components.VideoListLayoutToggle
 import com.android.purebilibili.core.ui.components.resolveVideoListColumns
 import com.android.purebilibili.core.ui.components.rememberVideoListLayoutControl
@@ -80,6 +81,7 @@ fun DownloadListScreen(
     val downloadExportTreeUri by SettingsManager.getDownloadExportTreeUri(context).collectAsStateWithLifecycle(initialValue = null)
     val taskList = tasks.values.toList().sortedByDescending { it.createdAt }
     var pendingDeleteTask by remember { mutableStateOf<com.android.purebilibili.feature.download.DownloadTask?>(null) }
+    var dissolvingTaskIds by remember { mutableStateOf(setOf<String>()) }
     val currentDir = resolveDisplayedDownloadLocation(
         defaultManagedPath = remember(context) { SettingsManager.getDefaultDownloadPath(context) },
         customManagedPath = customDownloadPath,
@@ -156,6 +158,10 @@ fun DownloadListScreen(
             )
         }
     ) { padding ->
+        // 遮挡铰链时整页内容落入最大安全区，软折痕允许跨越（与首页/动态/搜索一致）。
+        com.android.purebilibili.core.ui.adaptive.AppHingeSafeContent(
+            modifier = Modifier.fillMaxSize(),
+        ) {
         if (taskList.isEmpty()) {
             // 空状态
             Box(
@@ -191,6 +197,21 @@ fun DownloadListScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 items(taskList, key = { it.id }) { task ->
+                    val isDissolving = task.id in dissolvingTaskIds
+                    com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(
+                        isDissolving = isDissolving,
+                        onDissolveComplete = {
+                            dissolvingTaskIds = dissolvingTaskIds - task.id
+                            DownloadManager.removeTask(task.id)
+                            pendingDeleteTask = null
+                        },
+                        cardId = task.id,
+                        preset = com.android.purebilibili.core.ui.animation.DissolveAnimationPreset.TELEGRAM_FAST,
+                        modifier = Modifier.jiggleOnDissolve(
+                            cardId = task.id,
+                            isCurrentCardDissolving = isDissolving,
+                        ),
+                    ) {
                     AnimatedVideoListItem(modifier = videoListItemModifier(), enabled = true) {
                         val playableOffline = remember(task.filePath, task.status) {
                             isDownloadTaskPlayableOffline(task)
@@ -230,6 +251,7 @@ fun DownloadListScreen(
                             }
                         )
                     }
+                    }
                 }
 
                 // [新增] 显示当前存储路径
@@ -264,6 +286,7 @@ fun DownloadListScreen(
                 }
             }
         }
+        }
     }
 
     // 删除确认：避免误触直接清掉已下载的文件
@@ -280,8 +303,8 @@ fun DownloadListScreen(
             confirmButton = {
                 androidx.compose.material3.TextButton(
                     onClick = {
-                        DownloadManager.removeTask(taskToDelete.id)
-                        pendingDeleteTask = null
+                        // Dissolve first; the actual removal happens onDissolveComplete.
+                        dissolvingTaskIds = dissolvingTaskIds + taskToDelete.id
                     }
                 ) {
                     AppText("删除", color = MaterialTheme.colorScheme.error)

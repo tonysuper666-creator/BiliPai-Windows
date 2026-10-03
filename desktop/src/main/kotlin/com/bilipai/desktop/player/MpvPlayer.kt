@@ -207,7 +207,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             mutableVideoShaders.update { it.copy(active = false, executedPasses = emptyList()) }
             mutableState.update {
                 it.copy(loading = true, paused = source.startPaused, positionSeconds = source.startPositionSeconds, durationSeconds = 0.0,
-                    firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null,
+                    firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null, videoBitrateBps = null, audioBitrateBps = null,
                     sourceTitle = source.title, videoWidth = 0, videoHeight = 0,
                     ended = false, error = null, failure = null, softwareDecodingRequested = softwareDecodingRequested,
                     hardwareDecoder = null, seekCompletedId = 0, seekCompletedPositionSeconds = null, operationError = null, videoCodec = null, audioCodec = null, avSyncSeconds = null)
@@ -495,7 +495,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             send(Action.Command(listOf("stop")))
             mutableState.update {
                 it.copy(loading = false, paused = false, positionSeconds = 0.0, durationSeconds = 0.0,
-                    firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null,
+                    firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null, videoBitrateBps = null, audioBitrateBps = null,
                     sourceTitle = "BiliPai", videoWidth = 0, videoHeight = 0,
                     ended = false, error = null, failure = null, softwareDecodingRequested = softwareDecodingRequested,
                     hardwareDecoder = null, seekCompletedId = 0, seekCompletedPositionSeconds = null, operationError = null, videoCodec = null, audioCodec = null, avSyncSeconds = null)
@@ -1049,7 +1049,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     fileLoaded = false
                     loadedSubtitlePaths.clear()
                     publishState { it.copy(loading = true, ended = false, error = null, failure = null,
-                        firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null) }
+                        firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null, videoBitrateBps = null, audioBitrateBps = null) }
                 }
                 8 -> { // MPV_EVENT_FILE_LOADED
                     if (activeEntry == null || (expectedEntry != null && activeEntry != expectedEntry)) return
@@ -1108,6 +1108,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         }
 
         private fun refreshState(native: MpvNative, handle: Pointer) {
+            fun packetBitrate(name: String): Long? = if (fileLoaded) property(native, handle, name)?.toDoubleOrNull()
+                ?.takeIf { it.isFinite() && it >= 0.0 && it <= Long.MAX_VALUE.toDouble() }?.toLong() else null
+            val videoBitrate = packetBitrate("video-bitrate")
+            val audioBitrate = packetBitrate("audio-bitrate")
             val nativePaused = when (property(native, handle, "pause")) { "yes" -> true; "no" -> false; else -> null }
             val paused = nativePaused ?: state.value.paused
             val buffering = property(native, handle, "paused-for-cache") == "yes"
@@ -1165,6 +1169,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     loading = if (fileLoaded) buffering else it.loading,
                     pausedForCache = fileLoaded && buffering,
                     bufferedForwardSeconds = bufferedForward,
+                    videoBitrateBps = videoBitrate,
+                    audioBitrateBps = audioBitrate,
                     paused = if (it.ended) true else if (fileLoaded) paused else it.paused,
                     nativePaused = if (fileLoaded) nativePaused else null,
                     positionSeconds = if (fileLoaded) position ?: it.positionSeconds else it.positionSeconds,

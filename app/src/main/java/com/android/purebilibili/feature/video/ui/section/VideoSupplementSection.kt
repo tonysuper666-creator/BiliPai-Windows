@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.AppModalBottomSheet
+import com.android.purebilibili.core.ui.components.AppButton
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.data.model.response.AiSummaryData
 import com.android.purebilibili.feature.video.note.VideoNoteEditorDocument
@@ -129,10 +130,13 @@ fun VideoNoteListSheet(
     isLoggedIn: Boolean,
     onDismiss: () -> Unit,
     onCreateOrEditClick: () -> Unit,
+    onOfficialEditorClick: () -> Unit = {},
     onRetryClick: () -> Unit,
     onDeleteClick: () -> Unit,
     onShareClick: (VideoNoteEditorDocument) -> Unit,
     onPublicNoteClick: (Long, String) -> Unit,
+    onAuthorClick: (Long) -> Unit = {},
+    onLoadMore: () -> Unit = {},
 ) {
     if (!visible) return
     AppModalBottomSheet(
@@ -153,8 +157,52 @@ fun VideoNoteListSheet(
                 onDeleteClick = onDeleteClick,
                 onShareClick = onShareClick,
                 onPublicNoteClick = onPublicNoteClick,
+                onAuthorClick = onAuthorClick,
+                onLoadMore = onLoadMore,
                 defaultCollapsed = false,
             )
+            VideoNoteSheetFooter(
+                isLoggedIn = isLoggedIn,
+                onOfficialEditorClick = onOfficialEditorClick,
+                onCreateOrEditClick = onCreateOrEditClick,
+            )
         }
+    }
+}
+
+/** PiliPlus 式底部操作栏：官方 H5 编辑器 + 内置编辑器双入口。 */
+@Composable
+private fun VideoNoteSheetFooter(
+    isLoggedIn: Boolean,
+    onOfficialEditorClick: () -> Unit,
+    onCreateOrEditClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        AppButton(
+            onClick = onOfficialEditorClick,
+            enabled = isLoggedIn,
+            modifier = Modifier.weight(1f),
+        ) {
+            AppText(if (isLoggedIn) "开始记笔记" else "登录后开始记笔记")
+        }
+        AppButton(
+            onClick = onCreateOrEditClick,
+            modifier = Modifier.weight(1f),
+        ) {
+            AppText("内置编辑器")
+        }
+    }
+    if (!isLoggedIn) {
+        AppText(
+            text = "官方笔记编辑器需要登录 B 站账号",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(horizontal = 16.dp),
+        )
     }
 }

@@ -1,9 +1,10 @@
 """Whole original WallpaperImageImport. Physical IO/metadata are required owned Windows effects.
 No renderer, account/store/client/player/dependency is created by this producer.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,json,subprocess
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 PATH='app/src/main/java/com/android/purebilibili/feature/profile/WallpaperImageImport.kt'
 ORIGINAL_SHA='9d1d439a42738a9e1b92340e1b5c3e9c2abe5cf578cf3f605a43388f178cbc91'
 PREPARED_SHA='0379e92e67bee566f47832e741ffe117c4186f9d17a0979cf552bcc59d329aec'
@@ -21,7 +22,7 @@ def main():
  repo=Path(args.source_repo).resolve();out=Path(args.output_dir).resolve()
  manifest=json.loads((repo/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
  assert manifest['upstreamCommit']==COMMIT,'Profile import fixed source identity changed'
- original=(repo/PATH).read_text(encoding='utf-8').replace('\r\n','\n')
+ original=(_desktop_canonical_source(repo, PATH)).read_text(encoding='utf-8').replace('\r\n','\n')
  assert sha(original)==ORIGINAL_SHA,'Profile import source content changed'
  blob=subprocess.run(['git','show',COMMIT+':'+PATH],cwd=repo,capture_output=True,check=True).stdout.decode().replace('\r\n','\n')
  assert blob==original,'Profile import source differs from fixed Git blob'

@@ -1,5 +1,6 @@
 // 私信收件箱页面
 package com.android.purebilibili.feature.message
+import com.android.purebilibili.core.ui.animation.jiggleOnDissolve
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
 
@@ -27,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.android.purebilibili.core.ui.AppAlertDialog
-import com.android.purebilibili.core.ui.ImmersiveAppScaffold as AppScaffold
+import com.android.purebilibili.feature.message.MessageAppScaffold as AppScaffold
 import com.android.purebilibili.core.ui.AppTopBar
 import com.android.purebilibili.core.ui.rememberAppSemanticVisualPolicy
 import coil3.compose.AsyncImage
@@ -48,6 +49,7 @@ import com.android.purebilibili.core.ui.rememberAppBackIcon
 import com.android.purebilibili.data.model.response.SessionItem
 import com.android.purebilibili.core.ui.AppSurfaceTokens
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -68,6 +70,7 @@ fun InboxScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var lastAutoLoadEndTs by remember { mutableLongStateOf(0L) }
     var pendingRemoveSession by remember { mutableStateOf<SessionItem?>(null) }
+    var dissolvingSessionKeys by remember { mutableStateOf(setOf<String>()) }
     var pendingInterceptSession by remember { mutableStateOf<SessionItem?>(null) }
     var showClearDustbinConfirm by remember { mutableStateOf(false) }
 
@@ -178,27 +181,43 @@ fun InboxScreen(
                                     }
                                 }
                                 val userInfo = uiState.userInfoMap[session.talker_id]
-                                SessionListItem(
-                                    session = session,
-                                    userInfo = userInfo,
-                                    onClick = {
-                                        val userName = InboxUserInfoResolver.resolveDisplayName(
-                                            cached = userInfo,
-                                            session = session
-                                        )
-                                        onSessionClick(session.talker_id, session.session_type, userName)
+                                val sessionKey = InboxSessionPaginationPolicy.resolveSessionKey(session)
+                                val isSessionDissolving = sessionKey in dissolvingSessionKeys
+                                com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(
+                                    isDissolving = isSessionDissolving,
+                                    onDissolveComplete = {
+                                        dissolvingSessionKeys = dissolvingSessionKeys - sessionKey
+                                        viewModel.removeSession(session)
                                     },
-                                    onRemove = { pendingRemoveSession = session },
-                                    onToggleTop = { viewModel.toggleTop(session) },
-                                    onToggleDnd = { viewModel.toggleDnd(session) },
-                                    onToggleIntercept = {
-                                        if (session.is_intercept == 1) {
-                                            viewModel.toggleIntercept(session)
-                                        } else {
-                                            pendingInterceptSession = session
+                                    cardId = sessionKey,
+                                    preset = com.android.purebilibili.core.ui.animation.DissolveAnimationPreset.TELEGRAM_FAST,
+                                    modifier = Modifier.jiggleOnDissolve(
+                                        cardId = sessionKey,
+                                        isCurrentCardDissolving = isSessionDissolving,
+                                    ),
+                                ) {
+                                    SessionListItem(
+                                        session = session,
+                                        userInfo = userInfo,
+                                        onClick = {
+                                            val userName = InboxUserInfoResolver.resolveDisplayName(
+                                                cached = userInfo,
+                                                session = session
+                                            )
+                                            onSessionClick(session.talker_id, session.session_type, userName)
+                                        },
+                                        onRemove = { pendingRemoveSession = session },
+                                        onToggleTop = { viewModel.toggleTop(session) },
+                                        onToggleDnd = { viewModel.toggleDnd(session) },
+                                        onToggleIntercept = {
+                                            if (session.is_intercept == 1) {
+                                                viewModel.toggleIntercept(session)
+                                            } else {
+                                                pendingInterceptSession = session
+                                            }
                                         }
-                                    }
-                                )
+                                    )
+                                }
                             }
 
                             if (uiState.hasMore) {
@@ -249,7 +268,9 @@ fun InboxScreen(
             confirmButton = {
                 AppTextButton(
                     onClick = {
-                        viewModel.removeSession(session)
+                        // Dissolve first; actual removal happens onDissolveComplete.
+                        dissolvingSessionKeys =
+                            dissolvingSessionKeys + InboxSessionPaginationPolicy.resolveSessionKey(session)
                         pendingRemoveSession = null
                     }
                 ) {
@@ -733,19 +754,45 @@ private fun MessageSmallFlag(text: String) {
 // 会话行组合期热路径：共享 formatter，避免每行新建 SimpleDateFormat。
 // 仅主线程（Compose 组合）调用，不涉及 SimpleDateFormat 的线程安全问题。
 private val inboxDayFormatter = SimpleDateFormat("MM-dd", Locale.getDefault())
+private val inboxYearDayFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+private val inboxClockFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+private val inboxTimeCalendar = Calendar.getInstance()
 
+/**
+ * 会话列表相对时间，与 PiliPlus `DateFormatUtils.dateFormat` 对齐：
+ * 刚刚 / N分钟前 / N小时前 / 昨天 HH:mm / N天前 / 同年 MM-dd / 跨年 yyyy-MM-dd。
+ */
 private fun formatTime(timestamp: Long): String {
-    if (timestamp == 0L) return ""
+    if (timestamp <= 0L) return ""
+    val nowMillis = System.currentTimeMillis()
+    val date = Date(timestamp * 1000)
+    val diffMinutes = ((nowMillis - date.time) / 60_000L).toInt()
+    if (diffMinutes < 1) return "刚刚"
+    if (diffMinutes < 60) return "${diffMinutes}分钟前"
+    val diffHours = diffMinutes / 60
+    if (diffHours < 24) return "${diffHours}小时前"
 
-    val now = System.currentTimeMillis()
-    val msgTime = timestamp * 1000
-    val diff = now - msgTime
-
-    return when {
-        diff < 60_000 -> "刚刚"
-        diff < 3600_000 -> "${diff / 60_000}分钟前"
-        diff < 86400_000 -> "${diff / 3600_000}小时前"
-        diff < 172800_000 -> "昨天"
-        else -> inboxDayFormatter.format(Date(msgTime))
+    val calendar = inboxTimeCalendar
+    val today = (calendar.clone() as Calendar).apply {
+        timeInMillis = nowMillis
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+    calendar.time = date
+    val dateDay = (calendar.clone() as Calendar).apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+    val dayDiff = ((today.timeInMillis - dateDay.timeInMillis) / 86_400_000L).toInt()
+    if (dayDiff == 1) return "昨天 ${inboxClockFormatter.format(date)}"
+    if (dayDiff < 4) return "${dayDiff}天前"
+    return if (today.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+        inboxDayFormatter.format(date)
+    } else {
+        inboxYearDayFormatter.format(date)
     }
 }

@@ -2,7 +2,7 @@ package com.bilipai.desktop.download
 
 import com.android.purebilibili.core.network.BilibiliApi
 import com.bilipai.desktop.data.DesktopRepository
-import com.android.purebilibili.feature.video.danmaku.DanmakuProto
+import com.android.purebilibili.danmaku.parser.DanmakuProto
 import kotlinx.serialization.json.Json
 import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.MediaType.Companion.toMediaType

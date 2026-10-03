@@ -8,6 +8,7 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,23 @@ import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
+import com.android.purebilibili.core.ui.animation.gl.ThanosEffectView
+import com.android.purebilibili.core.ui.animation.gl.isThanosEffectSupported
+import com.android.purebilibili.core.ui.findHostActivity
+import com.android.purebilibili.core.ui.transition.captureNativeVideoCardImage
+import com.android.purebilibili.core.ui.transition.captureNativeVideoCardBitmap
+import com.android.purebilibili.core.ui.transition.recordNativeVideoCardLayer
+import com.android.purebilibili.core.ui.transition.rememberNativeVideoCardLayer
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.withFrameNanos
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import com.android.purebilibili.core.ui.transition.NowPlayingBarHandoffState
 import com.android.purebilibili.core.ui.transition.VideoCardSourceChromeSnapshot
 import com.android.purebilibili.core.ui.transition.VideoCardSourceLayout
@@ -41,21 +59,30 @@ import com.android.purebilibili.core.ui.transition.resolveNowPlayingBarReturnVis
 import com.android.purebilibili.core.util.CardPositionManager
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.layer.drawLayer
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import com.android.purebilibili.feature.audio.lyrics.halcyon.darken
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.contentDescription
@@ -94,6 +121,7 @@ internal fun AudioNowPlayingBar(
     onSkipNext: () -> Unit,
     onSkipPrevious: () -> Unit,
     onDismiss: () -> Unit,
+    onManualHide: (() -> Unit)? = null,
     expandDestinationLabel: String = "听视频",
     sourceRoute: String? = null,
     handoff: NowPlayingBarHandoffState = NowPlayingBarHandoffState.Idle,
@@ -122,13 +150,104 @@ internal fun AudioNowPlayingBar(
         CardPositionManager.invalidateVideoSourceIfWindowChanged(screenWidthPx, screenHeightPx)
     }
 
+    val nativeBarLayer = rememberNativeVideoCardLayer()
+    val snapshotScope = rememberCoroutineScope()
+    var captureInProgress by remember(state.bvid) { mutableStateOf(false) }
     val barCoordsRef = remember { arrayOfNulls<LayoutCoordinates>(1) }
     val coverCoordsRef = remember { arrayOfNulls<LayoutCoordinates>(1) }
+    val dissolveContext = LocalContext.current
+
+    //  [粒子消散] 取消按钮：截取横条位图后挂 ThanosEffectView（电报/NagramX 那套 GL
+    //  粒子消散），首帧粒子出现时隐藏本体，消散完成再执行真正的 onDismiss。
+    //  GL 不支持或截取失败时直接回退到原有 onDismiss 行为。
+    var cancelDissolving by remember { mutableStateOf(false) }
+    var dissolveRecorded by remember { mutableStateOf(false) }
+    var dissolveContentHidden by remember { mutableStateOf(false) }
+    var dissolveEffectView by remember { mutableStateOf<ThanosEffectView?>(null) }
+    val dissolveLayer = rememberGraphicsLayer()
+
+    fun finishCancelDissolveCleanup() {
+        dissolveEffectView?.dispose()
+        dissolveEffectView = null
+        cancelDissolving = false
+        dissolveRecorded = false
+        dissolveContentHidden = false
+    }
+
+    val handleCancelClick: () -> Unit = {
+        if (!cancelDissolving) {
+            val hostWindow = dissolveContext.findHostActivity()?.window
+            if (hostWindow == null || !isThanosEffectSupported(dissolveContext)) {
+                onDismiss()
+            } else {
+                cancelDissolving = true
+                snapshotScope.launch {
+                    try {
+                        val ready = withTimeoutOrNull(500L) {
+                            androidx.compose.runtime.snapshotFlow { dissolveRecorded }.first { it }
+                        }
+                        withFrameNanos { }
+                        val bitmap = if (ready == true) {
+                            withTimeoutOrNull(500L) {
+                                dissolveLayer.toImageBitmap().asAndroidBitmap()
+                                    .copy(android.graphics.Bitmap.Config.ARGB_8888, false)
+                            }
+                        } else {
+                            null
+                        }
+                        val windowBounds = barCoordsRef[0]?.takeIf { it.isAttached }?.boundsInWindow()
+                        if (bitmap == null || windowBounds == null || windowBounds.isEmpty) {
+                            if (bitmap != null && !bitmap.isRecycled) bitmap.recycle()
+                            finishCancelDissolveCleanup()
+                            onDismiss()
+                            return@launch
+                        }
+                        dissolveEffectView?.dispose()
+                        dissolveEffectView = ThanosEffectView.attach(
+                            window = hostWindow,
+                            bitmap = bitmap,
+                            windowBounds = android.graphics.RectF(
+                                windowBounds.left,
+                                windowBounds.top,
+                                windowBounds.right,
+                                windowBounds.bottom,
+                            ),
+                            onFirstFrame = { dissolveContentHidden = true },
+                            onComplete = {
+                                finishCancelDissolveCleanup()
+                                onDismiss()
+                            },
+                        )
+                        if (dissolveEffectView == null) {
+                            if (!bitmap.isRecycled) bitmap.recycle()
+                            finishCancelDissolveCleanup()
+                            onDismiss()
+                        }
+                    } catch (cancelled: CancellationException) {
+                        throw cancelled
+                    } catch (error: Exception) {
+                        com.android.purebilibili.core.util.Logger.w(
+                            "AudioNowPlayingBar", "Cancel dissolve failed: ${error.message}",
+                        )
+                        finishCancelDissolveCleanup()
+                        onDismiss()
+                    }
+                }
+            }
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            dissolveEffectView?.dispose()
+            dissolveEffectView = null
+        }
+    }
 
     val handleExpand = {
         if (onCompactClick != null) {
             onCompactClick()
-        } else if (canOpenAudioNowPlayingBarSource(isLayoutStable)) {
+        } else if (!captureInProgress && canOpenAudioNowPlayingBarSource(isLayoutStable)) {
             barCoordsRef[0]?.takeIf { it.isAttached }?.boundsInRoot()?.let { bounds ->
                 val sourceCoverBounds = coverCoordsRef[0]?.takeIf { it.isAttached }?.boundsInRoot()
                 val effectiveSourceLayout = if (iconOnlyProgress() >= 0.99f) {
@@ -164,7 +283,25 @@ internal fun AudioNowPlayingBar(
                     )
                 }
             }
-            onExpand()
+            // Finish freezing before navigation removes the bar's graphics layer.
+            CardPositionManager.clearNativeVideoCardLayers()
+            captureNativeVideoCardImage(nativeBarLayer)
+            val expectedSourceKey = CardPositionManager.lastClickedVideoSourceKey
+            captureInProgress = true
+            snapshotScope.launch {
+                try {
+                    captureNativeVideoCardBitmap(nativeBarLayer, expectedSourceKey)
+                } catch (cancelled: CancellationException) {
+                    throw cancelled
+                } catch (error: Exception) {
+                    com.android.purebilibili.core.util.Logger.w(
+                        "AudioNowPlayingBar", "Could not freeze return snapshot: ${error.message}",
+                    )
+                } finally {
+                    captureInProgress = false
+                }
+                onExpand()
+            }
         }
     }
     val reduceMotion = rememberSystemReduceMotion()
@@ -179,12 +316,32 @@ internal fun AudioNowPlayingBar(
     )
     val shape = resolveSharedBottomBarCapsuleShape()
     val glassActive = glassEnabled && miuixBackdrop != null
-    val containerColor = resolveBiliPaiBottomBarShellColor(
+    val immersiveBackdrop: Color? =
+        com.android.purebilibili.feature.audio.player.AudioNowPlayingSession
+            .immersiveBackdropColor.collectAsState().value
+    val defaultContainerColor = resolveBiliPaiBottomBarShellColor(
         containerColor = AppSurfaceTokens.surfaceContainer(),
         liquidGlassEnabled = glassEnabled,
         darkTheme = resolveBottomBarDarkTheme(AppSurfaceTokens.background()),
         liquidGlassTuning = liquidGlassTuning,
     )
+    // 悬浮在沉浸式音乐页上时，容器取封面主色的暗化版本，避免主题中性灰与
+    // 封面氛围色冲突。玻璃材质保留外壳的半透明度，仅替换 RGB 为氛围色调。
+    val containerColor = if (immersiveBackdrop != null) {
+        val tint = immersiveBackdrop.darken(0.52f)
+        if (glassActive) {
+            tint.copy(alpha = defaultContainerColor.alpha)
+        } else {
+            androidx.compose.ui.graphics.lerp(defaultContainerColor, tint, 0.85f)
+        }
+    } else {
+        defaultContainerColor
+    }
+    val immersiveContentColor = if (immersiveBackdrop != null) {
+        Color.White
+    } else {
+        null
+    }
     // 迷你条封面旋转：播放时逐帧失效是预期开销（封面独占 graphicsLayer，
     // 不会连带模糊外壳层重绘）；暂停后 while 循环退出，帧率自然回落。
     val coverRotationDegrees = rememberMusicArtworkRotationDegrees(
@@ -215,9 +372,27 @@ internal fun AudioNowPlayingBar(
             .graphicsLayer {
                 // The transition host owns the source pixels during return; do not
                 // start a second settle animation when the real bar is revealed.
-                alpha = if (sourceInActiveReturn) 0f else 1f
+                alpha = if (sourceInActiveReturn || dissolveContentHidden) 0f else 1f
             }
             .clip(shape)
+            .drawWithContent {
+                //  [粒子消散] 消散期间把横条最终像素（含圆角裁剪）记录进独立 graphics layer，
+                //  供取消时抓取位图交给 ThanosEffectView。
+                if (cancelDissolving) {
+                    dissolveLayer.record { this@drawWithContent.drawContent() }
+                    if (!dissolveRecorded) dissolveRecorded = true
+                }
+                drawContent()
+            }
+            .recordNativeVideoCardLayer(
+                layer = nativeBarLayer,
+                freezeProvider = {
+                    (captureInProgress || sourceInActiveReturn) &&
+                        CardPositionManager.isNativeVideoCardLayerCurrentOwner(nativeBarLayer)
+                },
+                // Visibility is owned by the explicit now-playing handoff above.
+                sourceRoute = sourceRoute,
+            )
             .semantics {
                 contentDescription = if (onCompactClick != null) {
                     "当前视频：${state.title}，收起搜索并展开视频小横条"
@@ -225,9 +400,22 @@ internal fun AudioNowPlayingBar(
                     "当前视频：${state.title}，打开$expandDestinationLabel"
                 }
             }
-            .clickable(enabled = !sourceInActiveReturn, onClick = handleExpand)
+            .clickable(
+                enabled = !sourceInActiveReturn && !cancelDissolving,
+                onClick = handleExpand,
+            )
             .then(
-                if (!sourceInActiveReturn) {
+                if (onManualHide != null && !sourceInActiveReturn && !cancelDissolving) {
+                    Modifier.pointerInput(onManualHide) {
+                        // 长按立即进入沉浸态，与自动沉浸共用同一把柄唤回通道。
+                        detectTapGestures(onLongPress = { onManualHide() })
+                    }
+                } else {
+                    Modifier
+                }
+            )
+            .then(
+                if (!sourceInActiveReturn && !cancelDissolving) {
                     Modifier.audioNowPlayingSkipGesture(
                         onSkipNext = onSkipNext,
                         onSkipPrevious = onSkipPrevious,
@@ -295,7 +483,8 @@ internal fun AudioNowPlayingBar(
                         maxLines = 1,
                         overflow = TextOverflow.Clip,
                         softWrap = false,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        color = immersiveContentColor
+                            ?: MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.SemiBold,
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -329,7 +518,8 @@ internal fun AudioNowPlayingBar(
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                                 style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = immersiveContentColor?.copy(alpha = 0.72f)
+                                    ?: MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         }
                     }
@@ -352,7 +542,7 @@ internal fun AudioNowPlayingBar(
                         AppIcon(
                             imageVector = if (state.isPlaying) Icons.Filled.Pause else Icons.Filled.PlayArrow,
                             contentDescription = if (state.isPlaying) "暂停" else "播放",
-                            tint = MaterialTheme.colorScheme.onSurface
+                            tint = immersiveContentColor ?: MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
@@ -380,7 +570,7 @@ internal fun AudioNowPlayingBar(
                         AppIcon(
                             Icons.Outlined.QueueMusic,
                             contentDescription = "打开$expandDestinationLabel",
-                            tint = MaterialTheme.colorScheme.onSurface,
+                            tint = immersiveContentColor ?: MaterialTheme.colorScheme.onSurface,
                         )
                     }
                 }
@@ -404,11 +594,15 @@ internal fun AudioNowPlayingBar(
                         },
                     contentAlignment = Alignment.Center,
                 ) {
-                    AppIconButton(onClick = onDismiss, modifier = Modifier.size(48.dp)) {
+                    AppIconButton(
+                        onClick = handleCancelClick,
+                        enabled = !cancelDissolving,
+                        modifier = Modifier.size(48.dp),
+                    ) {
                         AppIcon(
                             Icons.Filled.Close,
                             contentDescription = "关闭听视频条",
-                            tint = MaterialTheme.colorScheme.onSurface,
+                            tint = immersiveContentColor ?: MaterialTheme.colorScheme.onSurface,
                         )
                     }
                 }

@@ -1,0 +1,334 @@
+{
+  "source": "app/src/main/java/com/android/purebilibili/feature/plugin/js/BiliPaiJsPluginContentScreen.kt",
+  "sha256LF": "7e45b019b5d9a61339b59c1cea9d5c74e5c2258f0cc6cbb3310dd7d958b63536",
+  "changes": [
+    {
+      "before": "private fun buildBiliPaiJsModuleParamsJson(\n    module: BiliPaiJsModule,\n    values: Map<String, String>,\n    page: Int,\n    loadedCount: Int\n): String {\n    return buildJsonObject {\n        module.params.forEach { param ->\n            when (param.type) {\n                BiliPaiJsParamTypes.PAGE -> put(param.name, JsonPrimitive(page))\n                BiliPaiJsParamTypes.OFFSET -> put(param.name, JsonPrimitive(loadedCount))\n                else -> put(param.name, JsonPrimitive(values[param.name] ?: param.defaultValue))\n            }\n        }\n    }.toString()\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35331
+      ]
+    },
+    {
+      "before": "internal fun resolveBiliPaiJsInitialParamValues(\n    params: List<BiliPaiJsParam>,\n    savedValues: Map<String, String>,\n    presetValues: Map<String, String> = emptyMap()\n): Map<String, String> {\n    return params.associate { param ->\n        param.name to (\n            savedValues[param.name]\n                ?: presetValues[param.name]\n                ?: param.defaultValue\n            )\n    }\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35594
+      ]
+    },
+    {
+      "before": "internal fun resolveBiliPaiJsInitialPage(module: BiliPaiJsModule?): Int {\n    val hasPageParam = module?.params?.any { it.type == BiliPaiJsParamTypes.PAGE } == true\n    return if (hasPageParam) 1 else 0\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35388
+      ]
+    },
+    {
+      "before": "internal fun resolveBiliPaiJsModuleId(module: BiliPaiJsModule): String {\n    return module.id.ifBlank { module.functionName }\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35392
+      ]
+    },
+    {
+      "before": "internal fun buildBiliPaiJsParamPreferenceKey(\n    pluginId: String,\n    moduleId: String,\n    paramName: String\n): String {\n    return \"js_param_${safePreferencePart(pluginId)}_${safePreferencePart(moduleId)}_${safePreferencePart(paramName)}\"\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35394
+      ]
+    },
+    {
+      "before": "private fun readBiliPaiJsParamValues(\n    context: android.content.Context,\n    pluginId: String,\n    module: BiliPaiJsModule\n): Map<String, String> {\n    val prefs = context.getSharedPreferences(\"bilipai_js_plugin_params\", android.content.Context.MODE_PRIVATE)\n    val moduleId = module.id.ifBlank { module.functionName }\n    return module.params.associate { param ->\n        val key = buildBiliPaiJsParamPreferenceKey(pluginId, moduleId, param.name)\n        param.name to prefs.getString(key, param.defaultValue).orEmpty()\n    }\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35396
+      ]
+    },
+    {
+      "before": "private fun persistBiliPaiJsParamValues(\n    context: android.content.Context,\n    pluginId: String,\n    module: BiliPaiJsModule,\n    values: Map<String, String>\n) {\n    val prefs = context.getSharedPreferences(\"bilipai_js_plugin_params\", android.content.Context.MODE_PRIVATE)\n    val moduleId = module.id.ifBlank { module.functionName }\n    prefs.edit().apply {\n        module.params.filterNot { it.isHostDriven }.forEach { param ->\n            putString(\n                buildBiliPaiJsParamPreferenceKey(pluginId, moduleId, param.name),\n                values[param.name] ?: param.defaultValue\n            )\n        }\n    }.apply()\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35398
+      ]
+    },
+    {
+      "before": "private fun safePreferencePart(value: String): String {\n    return value.replace(Regex(\"[^A-Za-z0-9_.-]\"), \"_\")\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35400
+      ]
+    },
+    {
+      "before": "private fun flattenMediaItems(items: List<BiliPaiJsMediaItem>): List<BiliPaiJsMediaItem> {\n    return buildList {\n        items.forEach { item ->\n            add(item)\n            addAll(item.childItems)\n        }\n    }\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35402
+      ]
+    },
+    {
+      "before": "internal fun resolveBiliPaiJsMediaItemLazyKey(index: Int, item: BiliPaiJsMediaItem): String {\n    return \"js_media_${index}_${item.id}\"\n}",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        35404
+      ]
+    },
+    {
+      "before": "import androidx.compose.ui.platform.LocalContext",
+      "after": "import com.bilipai.desktop.plugins.DesktopPluginContext as Context\nimport com.bilipai.desktop.plugins.js.DesktopJsPluginRepository\nimport androidx.compose.runtime.DisposableEffect\nimport androidx.compose.runtime.collectAsState\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.Job\nimport kotlinx.coroutines.ensureActive",
+      "count": 1,
+      "beforePositions": [
+        2726
+      ]
+    },
+    {
+      "before": "import androidx.lifecycle.compose.collectAsStateWithLifecycle",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        3105
+      ]
+    },
+    {
+      "before": "import coil3.compose.AsyncImage",
+      "after": "import com.bilipai.desktop.ui.DesktopJsAuthorizedImage as AsyncImage",
+      "count": 1,
+      "beforePositions": [
+        3106
+      ]
+    },
+    {
+      "before": "import com.android.purebilibili.core.plugin.js.BiliPaiJsPluginInstallStore",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        3558
+      ]
+    },
+    {
+      "before": "import com.android.purebilibili.core.plugin.js.BiliPaiJsRuntime",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        3559
+      ]
+    },
+    {
+      "before": "import com.android.purebilibili.core.plugin.js.ExternalMediaLaunchStore",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        3560
+      ]
+    },
+    {
+      "before": "import com.android.purebilibili.core.store.SettingsManager",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        3633
+      ]
+    },
+    {
+      "before": "    pluginId: String,\n    onBack: () -> Unit,\n    onPlayMedia: (String) -> Unit\n",
+      "after": "    repository: DesktopJsPluginRepository,\n    pluginId: String,\n    onBack: () -> Unit,\n    onPlayMedia: (String, Long) -> Unit,\n    onFeedModule: (String, String) -> Unit,\n    pinchToChangeGridColumnsEnabled: Boolean,\n    shareLayout: (String, String, () -> Boolean) -> Unit,\n    modifier: Modifier = Modifier\n",
+      "count": 1,
+      "beforePositions": [
+        4756
+      ]
+    },
+    {
+      "before": "    val context = LocalContext.current\n    val store = remember(context) { BiliPaiJsPluginInstallStore.createDefault(context) }\n    val runtime = remember(context) { BiliPaiJsRuntime(context) }\n    val scope = rememberCoroutineScope()\n    var installed by remember(pluginId) {\n        mutableStateOf(store.listInstalledPlugins().firstOrNull { it.manifest.id == pluginId })\n    }",
+      "after": "    val context = repository.context\n    val runtime = repository.host\n    val scope = rememberCoroutineScope()\n    val revision by runtime.executionRevision.collectAsState()\n    val installedState by repository.state.collectAsState()\n    val record = installedState.plugins.firstOrNull { it.installed.manifest.id == pluginId }\n    val installed = record?.installed?.takeIf { record.authorizationMatches }\n    val alive = remember(pluginId, revision) { java.util.concurrent.atomic.AtomicBoolean(true) }\n    val loadGeneration = remember(pluginId, revision) { java.util.concurrent.atomic.AtomicLong() }\n    var loadJob by remember(pluginId, revision) { mutableStateOf<Job?>(null) }\n    fun owned() = alive.get() && runtime.executionRevision.value == revision &&\n        installed?.enabled == true && repository.state.value.plugins.any {\n            it.installed == installed && it.authorizationMatches\n        }\n    DisposableEffect(alive) { onDispose { alive.set(false); loadJob?.cancel() } }\n    LaunchedEffect(repository) { repository.load() }",
+      "count": 1,
+      "beforePositions": [
+        5072
+      ]
+    },
+    {
+      "before": "var selectedModule by remember(installed)",
+      "after": "var selectedModule by remember(pluginId, installed, revision)",
+      "count": 1,
+      "beforePositions": [
+        6122
+      ]
+    },
+    {
+      "before": "    val pinchToChangeGridColumnsEnabled by SettingsManager\n        .getPinchToChangeGridColumnsEnabled(context)\n        .collectAsStateWithLifecycle(initialValue = true)\n",
+      "after": "",
+      "count": 1,
+      "beforePositions": [
+        7943
+      ]
+    },
+    {
+      "before": "        persistBiliPaiJsParamValues(context, current.manifest.id, module, paramValues)",
+      "after": "        if (!owned()) return\n        runtime.withOriginalPluginAdmission(current, revision) {\n            persistBiliPaiJsParamValues(context, current.manifest.id, module, paramValues)\n        }\n        val generation = loadGeneration.incrementAndGet()\n        loadJob?.cancel()\n        val capturedValues = paramValues.toMap()",
+      "count": 1,
+      "beforePositions": [
+        8502
+      ]
+    },
+    {
+      "before": "        detailError = null\n        scope.launch {\n            val result = runtime.loadModuleItems(",
+      "after": "        detailError = null\n        if (module.kind.equals(\"feed\", true)) {\n            isLoading = false\n            onFeedModule(pluginId, resolveBiliPaiJsModuleId(module))\n            return\n        }\n        loadJob = scope.launch {\n            val result = runtime.loadOriginalModuleItems(",
+      "count": 1,
+      "beforePositions": [
+        9026
+      ]
+    },
+    {
+      "before": "paramsJson = buildBiliPaiJsModuleParamsJson(module, paramValues, page = page, loadedCount = 0)",
+      "after": "paramsJson = buildBiliPaiJsModuleParamsJson(module, capturedValues, page = page, loadedCount = 0),\n                expectedRevision = revision",
+      "count": 1,
+      "beforePositions": [
+        9406
+      ]
+    },
+    {
+      "before": "            isLoading = false\n            result.onSuccess",
+      "after": "            ensureActive()\n            if (!owned() || loadGeneration.get() != generation) return@launch\n            isLoading = false\n            result.onSuccess",
+      "count": 1,
+      "beforePositions": [
+        9563
+      ]
+    },
+    {
+      "before": "        val nextPage = page + 1\n        scope.launch {\n            val result = runtime.loadModuleItems(",
+      "after": "        val nextPage = page + 1\n        val generation = loadGeneration.get()\n        val capturedValues = paramValues.toMap()\n        loadJob = scope.launch {\n            val result = runtime.loadOriginalModuleItems(",
+      "count": 1,
+      "beforePositions": [
+        10304
+      ]
+    },
+    {
+      "before": "                    paramValues,\n                    page = nextPage,\n                    loadedCount = items.size\n                )",
+      "after": "                    capturedValues,\n                    page = nextPage,\n                    loadedCount = items.size\n                ),\n                expectedRevision = revision",
+      "count": 1,
+      "beforePositions": [
+        10681
+      ]
+    },
+    {
+      "before": "            isLoadingMore = false\n            result.onSuccess",
+      "after": "            ensureActive()\n            if (!owned() || loadGeneration.get() != generation) return@launch\n            isLoadingMore = false\n            result.onSuccess",
+      "count": 1,
+      "beforePositions": [
+        10876
+      ]
+    },
+    {
+      "before": "        isLoading = true\n        errorMessage = null",
+      "after": "        isLoading = true\n        isLoadingMore = false\n        errorMessage = null",
+      "count": 1,
+      "beforePositions": [
+        8881
+      ]
+    },
+    {
+      "before": "LaunchedEffect(selectedModule, installed?.enabled)",
+      "after": "LaunchedEffect(selectedModule, installed?.enabled, revision)",
+      "count": 1,
+      "beforePositions": [
+        11458
+      ]
+    },
+    {
+      "before": "LaunchedEffect(detailStack.lastOrNull(), installed?.enabled)",
+      "after": "LaunchedEffect(detailStack.lastOrNull(), installed?.enabled, revision)",
+      "count": 1,
+      "beforePositions": [
+        11699
+      ]
+    },
+    {
+      "before": "runtime.loadDetailItems(installed = current, link = entry.link)",
+      "after": "runtime.loadDetailItems(installed = current, link = entry.link, expectedRevision = revision)\n        ensureActive()\n        if (!owned()) return@LaunchedEffect",
+      "count": 1,
+      "beforePositions": [
+        12037
+      ]
+    },
+    {
+      "before": "    AppScaffold(\n        topBar = {",
+      "after": "    AppScaffold(\n        modifier = modifier,\n        topBar = {",
+      "count": 1,
+      "beforePositions": [
+        12511
+      ]
+    },
+    {
+      "before": "                    imagePreview = resolveBiliPaiJsImagePreviewRequest(images, index, rect)",
+      "after": "                    if (owned() && PluginCapability.NETWORK in current.grantedCapabilities)\n                        imagePreview = resolveBiliPaiJsImagePreviewRequest(images, index, rect)",
+      "count": 1,
+      "beforePositions": [
+        14349
+      ]
+    },
+    {
+      "before": "onShareLayout = { selectedModule?.let { module -> shareLayoutPreset(context, current, module, paramValues, effectiveLayout) } },",
+      "after": "onShareLayout = { selectedModule?.let { module -> shareLayoutPreset(context, current, module, paramValues, effectiveLayout, shareLayout, ::owned) } },",
+      "count": 1,
+      "beforePositions": [
+        14572
+      ]
+    },
+    {
+      "before": "                        val danmakuPluginId = if (\n                            current.manifest.supportsDanmaku &&\n                            PluginCapability.DANMAKU_STREAM in current.grantedCapabilities\n                        ) {\n                            current.manifest.id\n                        } else {\n                            null\n                        }\n                        onPlayMedia(\n                            ExternalMediaLaunchStore.put(\n                                title = item.title,\n                                coverUrl = item.coverUrl,\n                                streams = streams,\n                                danmakuPluginId = danmakuPluginId\n                            )\n                        )",
+      "after": "                        if (owned()) onPlayMedia(runtime.createExternalLaunch(pluginId, item), revision)",
+      "count": 1,
+      "beforePositions": [
+        15213
+      ]
+    },
+    {
+      "before": "    val candidates = images.filter { it.isNotBlank() }",
+      "after": "    val candidates = images.filter { raw ->\n        runCatching { java.net.URI(raw) }.getOrNull()?.let {\n            it.scheme?.lowercase() in setOf(\"http\", \"https\") && !it.host.isNullOrBlank()\n        } == true\n    }",
+      "count": 1,
+      "beforePositions": [
+        25113
+      ]
+    },
+    {
+      "before": "    context: android.content.Context,",
+      "after": "    context: Context,",
+      "count": 1,
+      "beforePositions": [
+        28757
+      ]
+    },
+    {
+      "before": "    effectiveLayout: String\n) {",
+      "after": "    effectiveLayout: String,\n    share: (String, String, () -> Boolean) -> Unit,\n    owned: () -> Boolean\n) {",
+      "count": 1,
+      "beforePositions": [
+        28887
+      ]
+    },
+    {
+      "before": "    val intent = android.content.Intent(android.content.Intent.ACTION_SEND).apply {\n        type = \"text/plain\"\n        putExtra(android.content.Intent.EXTRA_SUBJECT, \"BiliPai 布局：${preset.name}\")\n        putExtra(android.content.Intent.EXTRA_TEXT, BiliPaiJsLayoutPresetStore.encodePreset(preset))\n    }\n    context.startActivity(android.content.Intent.createChooser(intent, \"分享布局\"))",
+      "after": "    if (owned()) share(\"BiliPai 布局：${preset.name}\", BiliPaiJsLayoutPresetStore.encodePreset(preset), owned)",
+      "count": 1,
+      "beforePositions": [
+        29442
+      ]
+    },
+    {
+      "before": "if (owned()) onPlayMedia(runtime.createExternalLaunch(pluginId, item), revision)",
+      "after": "if (owned()) try {\n                            onPlayMedia(runtime.createExternalLaunch(pluginId, item, expectedRevision = revision), revision)\n                        } catch (cancelled: CancellationException) { throw cancelled }\n                        catch (failure: Exception) { if (owned()) errorMessage = failure.message ?: \"外部媒体无法打开\" }",
+      "count": 1,
+      "beforePositions": [
+        15237
+      ]
+    }
+  ]
+}

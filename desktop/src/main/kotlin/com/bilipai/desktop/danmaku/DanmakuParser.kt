@@ -1,8 +1,8 @@
 package com.bilipai.desktop.danmaku
 
-import com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData
-import com.android.purebilibili.feature.video.danmaku.DanmakuProto
-import com.android.purebilibili.feature.video.danmaku.DesktopAdvancedDanmakuParser
+import com.android.purebilibili.danmaku.parser.AdvancedDanmakuData
+import com.android.purebilibili.danmaku.parser.DanmakuProto
+import com.android.purebilibili.danmaku.parser.DesktopAdvancedDanmakuParser
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 import java.io.ByteArrayInputStream

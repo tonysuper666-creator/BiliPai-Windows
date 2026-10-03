@@ -266,6 +266,10 @@ class VideoActivity : ComponentActivity() {
                     },
                     LocalWindowSizeClass provides windowSizeClass,
                     LocalAppWindowAdaptiveInfo provides appWindowAdaptiveInfo,
+                    com.android.purebilibili.core.ui.LocalHingeSafeOverlayRegions provides
+                        com.android.purebilibili.core.ui.adaptive.rememberHingeSafeOverlayRegions(
+                            adaptiveInfo = appWindowAdaptiveInfo
+                        ),
                     LocalVideoTransitionAdaptiveInfo provides videoTransitionAdaptiveInfo,
                     com.android.purebilibili.feature.home.components.cards.LocalHomeCardDynamicTintEnabled provides
                         cardDynamicTintEnabled,

@@ -1,8 +1,9 @@
 """Sole original favorite drawer producer. No account/client/store/model replacement."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib, json, re, subprocess, sys
 
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
 PATHS=[BASE+x for x in [
  'feature/video/ui/components/FavoriteFolderSheet.kt',
@@ -14,7 +15,10 @@ PATHS=[BASE+x for x in [
  'core/store/FavoriteInteractionSettingsStore.kt']]
 
 def sha(s): return hashlib.sha256(s.encode('utf-8')).hexdigest()
-def write(p,s): p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')
+def write(p,s):
+ value=str(p.absolute());prefix=chr(92)*2+'?'+chr(92)
+ p=Path(value if value.startswith(prefix) else prefix+value)
+ p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')
 def save(p,s): write(p,json.dumps(s,ensure_ascii=False,indent=2)+'\n')
 def masked(text):
  out=list(text);i=0;n=len(text)
@@ -57,7 +61,7 @@ def generate(repo:Path,output:Path,standalone=False):
  source={};identities=[];emitted=[]
  for path in PATHS:
   blob=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=repo).decode('utf-8').replace('\r\n','\n')
-  local=(repo/path).read_text(encoding='utf-8').replace('\r\n','\n');assert local==blob,path
+  local=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n');assert local==blob,path
   source[path]=blob;identities.append(dict(path=path,pinnedCommit=COMMIT,sha256LF=sha(blob),gitBlob=subprocess.check_output(['git','rev-parse',COMMIT+':'+path],cwd=repo,text=True).strip()))
  def emit(path,text,origin,mode,patches=None,original=None):
   write(output/path,text);row=dict(path=path,origin=origin,mode=mode,sha256LF=sha(text),adaptations=patches or [])

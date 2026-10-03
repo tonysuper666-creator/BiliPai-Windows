@@ -3,6 +3,7 @@
 Only the two settings with actual prepared consumers are emitted. Other original
 FeedApiSection fields are audited, not replaced with inactive switches.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,textwrap
 
@@ -16,7 +17,7 @@ SELECTED=['core/store/SettingsManager.kt','feature/settings/ui/SettingsSections.
 
 def module(repo,name,path):
  spec=importlib.util.spec_from_file_location(name,repo/path);result=importlib.util.module_from_spec(spec);spec.loader.exec_module(result);return result
-def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 def inventory(repo):return [dict(path=BASE+p,mode='direct' if p in DIRECT else 'policy-extract',features=['settings-home-dynamic-parity'],
  sha256=hashlib.sha256(read(repo,BASE+p).encode()).hexdigest()) for p in DIRECT+SELECTED]
 

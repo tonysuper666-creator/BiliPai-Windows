@@ -1,7 +1,8 @@
 """Full stable linked dock/search controls; same actual glass/navigation actors."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re,subprocess,textwrap,xml.etree.ElementTree as ET
-PIN='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589';BASE='app/src/main/java/com/android/purebilibili/'
+PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
 SOURCES=[BASE+n+'.kt' for n in ['feature/home/components/LinkedBottomDock','feature/home/components/LinkedDockPolicy','feature/home/components/BottomBar','feature/home/components/HomeNavigationIconPolicy','feature/home/HomeScrollOffsetPolicy','feature/home/HomeScreen','feature/audio/screen/AudioNowPlayingBarPresenceMotionPolicy','core/store/SettingsManager','navigation/SearchSubmitPolicy','navigation/AppNavigation']]
 ASSETS=['ms_home_fill_24','ms_history_fill_24','ms_rss_feed_24','bp_nav_home_outline_24','bp_nav_history_outline_24']
 def safe(p):
@@ -10,7 +11,7 @@ def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(p,t):safe(p.parent).mkdir(parents=True,exist_ok=True);safe(p).write_text(t,encoding='utf-8',newline='\n')
 def mod(p,n):
  s=importlib.util.spec_from_file_location(n,p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
-def inventory(repo):return [dict(path=p,mode='policy-extract',features=['stable-linked-dock-search'],sha256=hashlib.sha256(read(repo/p).encode()).hexdigest()) for p in SOURCES]
+def inventory(repo):return [dict(path=p,mode='policy-extract',features=['stable-linked-dock-search'],sha256=hashlib.sha256(read(_desktop_canonical_source(repo, p)).encode()).hexdigest()) for p in SOURCES]
 def local_callback(parser,source,name):
  tokens=parser.kotlin_tokens(source);matches=[i for i,t in enumerate(tokens[:-1]) if t[0]=='val' and tokens[i+1][0]==name];assert len(matches)==1,name
  i=matches[0];begin=source.rfind('\n',0,tokens[i][1])+1;j=next(k for k in range(i,len(tokens)) if tokens[k][0]=='{');depth=0
@@ -71,7 +72,7 @@ import top.yukonga.miuix.kmp.icon.extended.Search
  body=body.replace('R.drawable.','DesktopLinkedDockSymbols.').replace('ImageVector.vectorResource(','DesktopLinkedDockVectors.vector(')
  emit('feature/home/components/HomeNavigationIconPolicy.kt',body,p,adaptations=['Only Android vector resource lookup -> exact original XML geometry Windows vector renderer'])
  for asset in ASSETS:
-  path='app/src/main/res/drawable/'+asset+'.xml';raw=read(repo/path);blob=subprocess.check_output(['git','show',PIN+':'+path],cwd=repo).decode().replace('\r\n','\n');assert raw==blob
+  path='app/src/main/res/drawable/'+asset+'.xml';raw=read(_desktop_canonical_source(repo, path));blob=subprocess.check_output(['git','show',PIN+':'+path],cwd=repo).decode().replace('\r\n','\n');assert raw==blob
   records.append(dict(source=path,mode='original-vector-paths',sha256LF=hashlib.sha256(raw.encode()).hexdigest()))
   write(output/'original-retained'/(path+'.txt'),raw)
  v=vector_geometry(repo)
@@ -124,7 +125,7 @@ def vector_geometry(repo):
   assert re.fullmatch(r'#[0-9a-fA-F]{8}',v),v
   return 'SolidColor(Color(0x'+v[1:]+'))'
  for name in ASSETS:
-  root=ET.fromstring(read(repo/'app/src/main/res/drawable'/(name+'.xml')));assert root.tag=='vector'
+  root=ET.fromstring(read(_desktop_canonical_source(repo, 'app/src/main/res/drawable/' + name + '.xml')));assert root.tag=='vector'
   assert not set(k.removeprefix(ns) for k in root.attrib)-{'width','height','viewportWidth','viewportHeight','tint','autoMirrored'}
   body=[]
   for node in root:

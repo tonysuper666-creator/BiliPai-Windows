@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Selected original space pagination/merge and interaction mapping, with UI/network bindings removed."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, textwrap
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -7,11 +8,11 @@ SOURCES={BASE+'feature/space/SpaceLoadPolicy.kt':'policy-extract',BASE+'feature/
          BASE+'data/repository/LikedVideosRepository.kt':'policy-extract',BASE+'feature/list/ListViewModel.kt':'policy-extract',
          BASE+'feature/space/SpaceProfileEnhancementPolicy.kt':'policy-extract',BASE+'core/network/ApiClient.kt':'policy-extract'}
 def inventory(repo):
-    return [dict(path=p,mode=m,features=['space-contributions'],sha256=hashlib.sha256((repo/p).read_bytes().replace(b'\r\n',b'\n')).hexdigest()) for p,m in SOURCES.items()]
+    return [dict(path=p,mode=m,features=['space-contributions'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_bytes().replace(b'\r\n',b'\n')).hexdigest()) for p,m in SOURCES.items()]
 def generate(repo,output):
     spec=importlib.util.spec_from_file_location('space_contribution_parser',repo/'desktop/tools/sync-upstream.py')
     parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
-    def read(suffix):return (repo/BASE/suffix).read_text(encoding='utf-8')
+    def read(suffix):return (_desktop_canonical_source(repo, Path(BASE) / suffix)).read_text(encoding='utf-8')
     def declaration(source,name):
         tokens=parser.kotlin_tokens(source);starts=[i for i,t in enumerate(tokens[:-1]) if t[0]=='fun' and tokens[i+1][0]==name]
         if len(starts)!=1:raise ValueError(name)

@@ -1,0 +1,33 @@
+{
+  "snapshot": 88,
+  "actualRuntimeEntries": 105,
+  "prospectiveJarSha256": "79ccd02430010d199275cc83d89490171fdb7d816ead8f5a2f3c9fbf2ac08636",
+  "explicitTestSourceSha256": "9d4a07a5779686a4c567c15cfc26369f8dfd2596ae2a1f6beddc323c64b94be0",
+  "testDependencies": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-test\\2.4.0\\c9a0c254adade886172cb021c0b099d8be1a5fc4\\kotlin-test-2.4.0.jar",
+      "sha256Bytes": "38099e38d81f394d7ae3eb73ad0a2b6379629a293ba8cfe5485ee7f836124943"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.jetbrains.kotlin\\kotlin-test-junit5\\2.4.0\\3a25dcc853e90ef0ee264b0f532791966bea9cb6\\kotlin-test-junit5-2.4.0.jar",
+      "sha256Bytes": "305492a09546af4121b922f19a62b48bab650c31dc1e6ff187decc6859335675"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.junit.jupiter\\junit-jupiter-api\\5.10.1\\eb90c7d8bfaae8fdc97b225733fcb595ddd72843\\junit-jupiter-api-5.10.1.jar",
+      "sha256Bytes": "60d5c398c32dc7039b99282514ad6064061d8417cf959a1f6bd2038cc907c913"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.apiguardian\\apiguardian-api\\1.1.2\\a231e0d844d2721b0fa1b238006d15c6ded6842a\\apiguardian-api-1.1.2.jar",
+      "sha256Bytes": "b509448ac506d607319f182537f0b35d71007582ec741832a1f111e5b5b70b38"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\toolchain\\gradle-home\\caches\\modules-2\\files-2.1\\org.opentest4j\\opentest4j\\1.3.0\\152ea56b3a72f655d4fd677fc0ef2596c3dd5e6e\\opentest4j-1.3.0.jar",
+      "sha256Bytes": "48e2df636cab6563ced64dcdff8abb2355627cb236ef0bf37598682ddf742f1b"
+    }
+  ],
+  "productionWrites": 0,
+  "sharedGradleRuns": 0,
+  "realAccountRequests": 0,
+  "rootAccepted": false,
+  "passed": false
+}

@@ -773,16 +773,25 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     val officialWallpapersError = _officialWallpapersError.asStateFlow()
 
     fun loadOfficialWallpapers() {
+        if (_officialWallpapersLoading.value) return
         viewModelScope.launch {
             _officialWallpapersLoading.value = true
             _officialWallpapersError.value = null
-            val result = com.android.purebilibili.data.repository.SplashRepository.getOfficialWallpapers()
-            if (result.isSuccess) {
-                _officialWallpapers.value = result.getOrNull() ?: emptyList()
-            } else {
-                _officialWallpapersError.value = result.exceptionOrNull()?.message ?: "加载失败，点击重试"
+            try {
+                val result = com.android.purebilibili.data.repository.SplashRepository.getOfficialWallpapers()
+                if (result.isSuccess) {
+                    val catalog = result.getOrThrow()
+                    if (catalog.items.isNotEmpty() || catalog.failedSources.isEmpty()) {
+                        _officialWallpapers.value = catalog.items
+                    }
+                    _officialWallpapersError.value = catalog.failedSources.takeIf { it.isNotEmpty() }
+                        ?.joinToString("、")?.let { "${it}未加载成功，当前列表不完整，请刷新重试" }
+                } else {
+                    _officialWallpapersError.value = result.exceptionOrNull()?.message ?: "加载失败，点击重试"
+                }
+            } finally {
+                _officialWallpapersLoading.value = false
             }
-            _officialWallpapersLoading.value = false
         }
     }
 

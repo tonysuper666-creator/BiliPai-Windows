@@ -12,6 +12,11 @@ import kotlin.math.roundToInt
 /** Layout state of the sole existing Canvas. No native/entry/session authority is created. */
 internal class DesktopOriginalNativeViewportState(private val isOwned: () -> Boolean) {
     private var pixels: Rect? = null
+    var boundsInWindow by mutableStateOf<Rect?>(null); private set
+    fun updateWindowBounds(rect: Rect) {
+        require(rect.left.isFinite() && rect.top.isFinite() && rect.right.isFinite() && rect.bottom.isFinite())
+        if (isOwned()) boundsInWindow = rect
+    }
     private var visible = true
     private var container: JPanel? = null
     private var nativeAttached=true
@@ -25,7 +30,7 @@ internal class DesktopOriginalNativeViewportState(private val isOwned: () -> Boo
         heightPixels = rect.height.roundToInt().coerceAtLeast(0)
         relayout()
     }
-    fun reset() { pixels = null; visible = true; attached = false; heightPixels = 0; relayout() }
+    fun reset() { boundsInWindow = null; pixels = null; visible = true; attached = false; heightPixels = 0; relayout() }
     fun setNativeAttached(value:Boolean) {if(nativeAttached==value)return;nativeAttached=value;relayout()}
     private fun relayout() = SwingUtilities.invokeLater {
         if (isOwned()) container?.let { it.doLayout(); it.revalidate(); it.repaint() }

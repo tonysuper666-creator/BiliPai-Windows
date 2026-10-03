@@ -18,7 +18,7 @@ internal val LocalDesktopHomeMediaPorts=staticCompositionLocalOf<DesktopHomeMedi
 }
 
 /** Platform capabilities are provided by Root, not a simulated Android SDK/default. */
-internal class DesktopHomePlatform(val supportsHomeChromeLiquidGlass:Boolean,val supportsDirectHazeLiquidGlassFallback:Boolean,val legacyTopChromeSafetyGapRequired:Boolean, val supportsRenderEffectBackedHaze:Boolean, val recreateHazeOnResume:Boolean, val background:DesktopHomeWindowBackgroundPort, val deviceCornerRadiusPx:Float, val debugFrameMetricsEnabled:Boolean)
+internal class DesktopHomePlatform(val supportsNativeParticleDissolve:Boolean,val supportsHomeChromeLiquidGlass:Boolean,val supportsDirectHazeLiquidGlassFallback:Boolean,val legacyTopChromeSafetyGapRequired:Boolean, val supportsRenderEffectBackedHaze:Boolean, val recreateHazeOnResume:Boolean, val background:DesktopHomeWindowBackgroundPort, val deviceCornerRadiusPx:Float, val debugFrameMetricsEnabled:Boolean)
 internal val LocalDesktopHomePlatform=staticCompositionLocalOf<DesktopHomePlatform>{
     error("Home requires the current window renderer capability binding")
 }

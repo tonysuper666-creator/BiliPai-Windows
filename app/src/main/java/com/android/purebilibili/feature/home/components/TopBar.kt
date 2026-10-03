@@ -1493,7 +1493,9 @@ private fun LightweightHomeTopTabs(
         }
         val topTabIndicatorOwnsPosition = topTabIndicatorDirectDragActive ||
             topTabIndicatorSettlingTarget != null
-        val topTabIndicatorPositionState = remember(topTabIndicatorOwnsPosition) {
+        // Gesture ownership replaces the derived State object. Every downstream cached
+        // calculation must track that object, rather than retain the pre-drag pager state.
+        val topTabIndicatorPositionState = remember(topTabIndicatorOwnsPosition, pagerIndicatorPositionState) {
             derivedStateOf {
                 if (topTabIndicatorOwnsPosition) {
                     topTabIndicatorDirectDragPosition
@@ -1502,7 +1504,7 @@ private fun LightweightHomeTopTabs(
                 }
             }
         }
-        val iosCapsulePositionState = remember(topTabIndicatorOwnsPosition) {
+        val iosCapsulePositionState = remember(topTabIndicatorOwnsPosition, pagerContentPositionState) {
             derivedStateOf {
                 if (topTabIndicatorOwnsPosition) {
                     topTabIndicatorDirectDragPosition
@@ -1513,7 +1515,9 @@ private fun LightweightHomeTopTabs(
         }
         val topTabContentPositionState = remember(
             topTabIndicatorOwnsPosition,
-            effectivePresentation
+            effectivePresentation,
+            iosCapsulePositionState,
+            topTabIndicatorPositionState,
         ) {
             derivedStateOf {
                 if (effectivePresentation == AppTopTabPresentation.MOVING_CAPSULE) {
@@ -1525,7 +1529,7 @@ private fun LightweightHomeTopTabs(
         }
         val indicatorIsInteracting = pagerIsDragging || pagerIsScrolling ||
             topTabIndicatorDirectDragActive
-        val topTabShouldStretchIndicator by remember(indicatorIsInteracting) {
+        val topTabShouldStretchIndicator by remember(indicatorIsInteracting, topTabIndicatorPositionState) {
             derivedStateOf {
                 shouldDeformTopTabIndicator(
                     position = topTabIndicatorPositionState.value,
@@ -1543,7 +1547,7 @@ private fun LightweightHomeTopTabs(
                 var previousNanos = 0L
             }
         }
-        val topTabMotionVelocityItemsPerSecondState = remember {
+        val topTabMotionVelocityItemsPerSecondState = remember(topTabIndicatorPositionState) {
             derivedStateOf {
                 val position = topTabIndicatorPositionState.value
                 val now = System.nanoTime()
@@ -1562,7 +1566,7 @@ private fun LightweightHomeTopTabs(
                 velocity
             }
         }
-        val topTabMotionVelocityPxPerSecondState = remember(density, itemWidth) {
+        val topTabMotionVelocityPxPerSecondState = remember(density, itemWidth, topTabMotionVelocityItemsPerSecondState) {
             derivedStateOf {
                 topTabMotionVelocityItemsPerSecondState.value * with(density) {
                     itemWidth.toPx()
@@ -1613,7 +1617,12 @@ private fun LightweightHomeTopTabs(
         val topTabMiuixContentBackdrop = rememberMiuixLayerBackdrop()
         // 视觉策略只产出离散决策（是否折射/中性着色），包一层 derivedStateOf：
         // 位置/速度仍逐帧进入推导，但只有布尔结果变化才通知外层重组。
-        val topTabIndicatorVisualPolicy by remember(shouldUseLiquidGlassIndicator) {
+        val topTabIndicatorVisualPolicy by remember(
+            shouldUseLiquidGlassIndicator,
+            topTabIndicatorPositionState,
+            indicatorIsInteracting,
+            topTabMotionVelocityPxPerSecondState,
+        ) {
             derivedStateOf {
                 resolveTopTabIndicatorVisualPolicy(
                     position = topTabIndicatorPositionState.value,
@@ -1631,12 +1640,12 @@ private fun LightweightHomeTopTabs(
         // Match the bottom bar's two-source topology. The local source first records the
         // already-frosted dock material and tinted labels, so the indicator never falls
         // back to a raw-page-only frame during idle/gesture transitions.
-        val effectiveTopTabMiuixContentBackdrop =
-            if (topTabIndicatorBackdropPolicy.useCombinedBackdrop && miuixBackdrop != null) {
+        val effectiveTopTabMiuixContentBackdrop = when {
+            !topTabIndicatorBackdropPolicy.useIndicatorBackdrop -> null
+            topTabIndicatorBackdropPolicy.useCombinedBackdrop && miuixBackdrop != null ->
                 rememberMiuixCombinedBackdrop(miuixBackdrop, topTabMiuixContentBackdrop)
-            } else {
-                topTabMiuixContentBackdrop
-            }
+            else -> topTabMiuixContentBackdrop
+        }
         val topTabIndicatorCaptureSurfaceColor =
             resolveBiliPaiBottomBarContainerColor(darkTheme = isDarkTheme)
         val useTopTabGlassColorPath = resolveTopTabUsesGlassExportForSelectedGlyphs(
@@ -1748,7 +1757,13 @@ private fun LightweightHomeTopTabs(
         }
         val effectiveTopTabContentPositionState = remember(
             shouldUseMd3NativeUnderline,
-            shouldAnimateMd3Tap
+            shouldAnimateMd3Tap,
+            topTabContentPositionState,
+            density,
+            itemWidth,
+            md3ContentPadding,
+            safeMd3TargetIndex,
+            categories.size,
         ) {
             derivedStateOf {
                 if (shouldUseMd3NativeUnderline && shouldAnimateMd3Tap) {
@@ -2240,7 +2255,10 @@ private fun BoxScope.LightweightTopTabIndicatorOverlay(
         topTabHorizontalPadding,
         pagerIsDragging,
         pagerIsScrolling,
-        ownsPosition
+        ownsPosition,
+        capsulePositionState,
+        measuredSelectedItemLeftPxState,
+        rowScrollOffsetPxProvider,
     ) {
         derivedStateOf {
             with(density) {
@@ -2279,7 +2297,10 @@ private fun BoxScope.LightweightTopTabIndicatorOverlay(
     val md3IndicatorTranslationXPx by remember(
         density,
         itemWidth,
-        topTabHorizontalPadding
+        topTabHorizontalPadding,
+        positionState,
+        md3LiquidCapsuleWidth,
+        rowScrollOffsetPxProvider,
     ) {
         derivedStateOf {
             with(density) {
@@ -2983,8 +3004,10 @@ internal fun resolveTopTabIndicatorBackdropPolicy(
     indicatorVisualPolicy: BottomBarIndicatorVisualPolicy
 ): TopTabIndicatorBackdropPolicy {
     if (!effectiveLiquidGlassEnabled) {
+        // Non-glass tabs do not record a content backdrop. Sampling that empty layer
+        // during a drag produces a black capsule; keep the solid material throughout.
         return TopTabIndicatorBackdropPolicy(
-            useIndicatorBackdrop = indicatorVisualPolicy.shouldRefract && hasBackdrop,
+            useIndicatorBackdrop = false,
             useCombinedBackdrop = false
         )
     }

@@ -1,11 +1,12 @@
 """Source-preserving stable Space callers. The sole preview producer owns its renderer."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,importlib.util,sys
 sys.dont_write_bytecode=True
 SOURCE='app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt'
-PIN='2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca'
+PIN='4fa39d30048c5d3c371c0a7b44258370825c93b1e60e321bc8663e92e9311a2e'
 def generate(repo:Path, output:Path):
-    original=(repo/SOURCE).read_text(encoding='utf-8').replace('\r\n','\n').replace('\r','\n')
+    original=(_desktop_canonical_source(repo, SOURCE)).read_text(encoding='utf-8').replace('\r\n','\n').replace('\r','\n')
     assert hashlib.sha256(original.encode()).hexdigest()==PIN
     spec=importlib.util.spec_from_file_location('space_image_caller_parser',repo/'desktop/tools/sync-upstream.py')
     parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)

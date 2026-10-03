@@ -87,6 +87,35 @@ public final class DesktopJsPluginWorker {
             bindings.putMember("BiliPaiHttpNative", bridgeObject("http", "get", "post"));
             bindings.putMember("BiliPaiStorageNative", bridgeObject("storage", "get", "set", "remove"));
             bindings.putMember("BiliPaiLogNative", bridgeObject("log", "write"));
+            bindings.putMember("BiliPaiDomNative", bridgeObject("dom", "parse", "select", "selectOne"));
+            // The original BiliPai.dom wrapper receives browser-shaped nodes through the same bounded IPC.
+            context.eval("js", """
+                function biliPaiDesktopDomNode(encoded) {
+                  if (encoded == null) return null;
+                  const node = {
+                    tagName: encoded.tagName, textContent: encoded.textContent, innerHTML: encoded.innerHTML,
+                    getAttribute: function(name) {
+                      const key = String(name).toLowerCase();
+                      return Object.prototype.hasOwnProperty.call(encoded.attributes, key) ? encoded.attributes[key] : null;
+                    },
+                    querySelectorAll: function(selector) {
+                      return JSON.parse(BiliPaiDomNative.select(String(encoded.id), String(selector))).map(biliPaiDesktopDomNode);
+                    },
+                    querySelector: function(selector) {
+                      return biliPaiDesktopDomNode(JSON.parse(BiliPaiDomNative.selectOne(String(encoded.id), String(selector))));
+                    }
+                  };
+                  if (Object.prototype.hasOwnProperty.call(encoded, 'title')) node.title = encoded.title;
+                  if (Object.prototype.hasOwnProperty.call(encoded, 'body')) node.body = biliPaiDesktopDomNode(encoded.body);
+                  return node;
+                }
+                globalThis.DOMParser = class {
+                  parseFromString(html, contentType) {
+                    if (String(contentType).toLowerCase() !== 'text/html') throw Error('Only HTML DOM parsing is supported');
+                    return biliPaiDesktopDomNode(JSON.parse(BiliPaiDomNative.parse(String(html))));
+                  }
+                };
+                """);
             context.eval("js", "globalThis.window = globalThis;");
             context.eval("js", data.getMember("executionScript").asString());
             // GraalJS drains Promise jobs at each guest boundary. Parent owns the total wall-clock limit.

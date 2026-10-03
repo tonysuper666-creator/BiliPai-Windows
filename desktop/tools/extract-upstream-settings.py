@@ -1,5 +1,6 @@
 """Reuse upstream WebDAV protocol methods; bind only Windows file storage."""
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 import argparse
 import hashlib
 import importlib.util
@@ -16,7 +17,7 @@ SOURCES = {
 }
 
 def read(repo: Path, path: str) -> str:
-    return (repo / path).read_text(encoding="utf-8").replace("\r\n", "\n")
+    return (_desktop_canonical_source(repo, path)).read_text(encoding="utf-8").replace("\r\n", "\n")
 
 def generate(repo: Path, output: Path) -> None:
     spec = importlib.util.spec_from_file_location("settings_source_parser", repo / "desktop/tools/extract-upstream-media.py")

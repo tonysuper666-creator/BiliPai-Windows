@@ -1,20 +1,24 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
-import argparse,hashlib,json,re,importlib.util,sys
+import argparse,hashlib,json,re,importlib.util,sys,os
 sys.dont_write_bytecode=True
 args=argparse.ArgumentParser(description="Complete original independent Bangumi Catalog/Detail/Timeline/Review bodies; Root owned platform bindings only.")
 args.add_argument('--repo',type=Path,required=True);args.add_argument('--output',type=Path,required=True)
 args.add_argument('--manifest',type=Path);options=args.parse_args()
-C=options.repo.resolve();OUT=options.output.resolve();OUT.mkdir(parents=True,exist_ok=True);ROWS=[]
+def _output_path(path):
+ path=os.path.abspath(path);prefix=chr(92)*2+'?'+chr(92)
+ return Path(path if os.name!='nt' or path.startswith(prefix) else prefix+path)
+C=options.repo.resolve();OUT=_output_path(options.output.resolve());OUT.mkdir(parents=True,exist_ok=True);ROWS=[]
 BASE='app/src/main/java/com/android/purebilibili/'
-INPUT={'upstreamCommit':'3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'}
-PINS={'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt': '7d6be537fed4dcb3bd251749402a1d79bfa9703507bebf479109f55646d73078', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt': '7aaa20bcbfec0174453f28d5c27db530633b0fcf15ef0a2733267e03cf1547d3', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt': 'd34dea667e32da6b89e4a322192b9472e0cb86b8b16b10ff5cb165f03c9842f0', 'app/src/main/java/com/android/purebilibili/feature/bangumi/ui/detail/BangumiDetailComponents.kt': '5becc31ca3b88526541e010394c9a152670aa4998b08a0291b26f7ebe17b4153', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt': 'e4a9d64425e5244a7b237e231148931a71d288b3d9e93f7c98a18db26d36da2a', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt': 'd720f3e4966801b37a86972b44f90a9a4882280739c3bc71aa8a7049852cf77b', 'app/src/main/java/com/android/purebilibili/data/repository/BangumiReviewRepository.kt': '7dd7ac7da8498648fae7242f921bc6654814ccd47dc28d678730449f78070a12', 'app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt': '358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt': '4f4d3f8befea28b3e4715061fdc71f563ee26d453c5899925188a8d1d2275e20', 'app/src/main/java/com/android/purebilibili/feature/bangumi/MyFollowStats.kt': '4ec993ecd0f5493c8d7d4c12e3a925c176d212d9d360aa18c772762ab3a491b1', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt': '7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285', 'app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt': '26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2'}
+INPUT={'upstreamCommit':'79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'}
+PINS={'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiScreen.kt': '7d6be537fed4dcb3bd251749402a1d79bfa9703507bebf479109f55646d73078', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDetailScreen.kt': 'ec91f98f0da0b34791b995516c4664c6a128b96dfb0f739d431b30300c2cb014', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiTimelineScreen.kt': '841ab513ecdaa0a472c6f14c19b3fc476aa211d7d2f2b7d735f96f03049fe24c', 'app/src/main/java/com/android/purebilibili/feature/bangumi/ui/detail/BangumiDetailComponents.kt': '028458ee42f9ed884f859f0d64fd50e85e6e46ec7f845a91e1c65a34da607d3f', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiReviewScreen.kt': 'ce52e3d0f7034d03fdbd82afdc6f027a6f50548728c4a580760bb1354e714c71', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiViewModel.kt': 'd720f3e4966801b37a86972b44f90a9a4882280739c3bc71aa8a7049852cf77b', 'app/src/main/java/com/android/purebilibili/data/repository/BangumiReviewRepository.kt': '7dd7ac7da8498648fae7242f921bc6654814ccd47dc28d678730449f78070a12', 'app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt': '7a7f195be5ba108aaa3e9b05d7069e9c981183fa7a79fae751b8f0da25714c73', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiFollowStatusPolicy.kt': '4f4d3f8befea28b3e4715061fdc71f563ee26d453c5899925188a8d1d2275e20', 'app/src/main/java/com/android/purebilibili/feature/bangumi/MyFollowStats.kt': '4ec993ecd0f5493c8d7d4c12e3a925c176d212d9d360aa18c772762ab3a491b1', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt': '7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285', 'app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt': '26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2'}
 spec=importlib.util.spec_from_file_location('parser',C/'desktop/tools/sync-upstream.py')
 parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
 spec=importlib.util.spec_from_file_location('media_extract',C/'desktop/tools/extract-upstream-media.py')
 media=importlib.util.module_from_spec(spec);spec.loader.exec_module(media)
 def sha(s):return hashlib.sha256(s.encode('utf-8')).hexdigest()
 def original(short):
- rel=BASE+short;s=(C/rel).read_text(encoding='utf-8').replace('\r\n','\n')
+ rel=BASE+short;s=(_desktop_canonical_source(C, rel)).read_text(encoding='utf-8').replace('\r\n','\n')
  assert sha(s)==PINS[rel];return rel,s
 class Edit:
  def __init__(self,s):self.before=s;self.s=s;self.changes=[]
@@ -60,7 +64,7 @@ rel,s=original('feature/bangumi/BangumiTimelineScreen.kt');Edit(s).write(rel,'De
 
 rel,s=original('feature/bangumi/ui/detail/BangumiDetailComponents.kt');e=Edit(s)
 e.replace('import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.ui.LocalDesktopOriginalBangumiPagesEnvironment as LocalContext')
-e.replace('import com.android.purebilibili.feature.video.controller.PlaybackProgressManager','// Borrow the sole actual global progress owner through this entry read port.')
+e.replace('import com.android.purebilibili.core.player.PlaybackProgressManager','// Borrow the sole actual global progress owner through this entry read port.')
 e.replace('val manager = remember { PlaybackProgressManager.getInstance(context) }','val manager = remember(context) { context.progress }',1)
 e.replace('manager.getCachedPosition(bvid)','manager.getCachedPosition(bvid, 0L)',1)
 e.write(rel,'DesktopOriginalBangumiDetailComponents.kt')
@@ -182,6 +186,6 @@ rel,s=original('core/ui/skeleton/ContentLoadingSkeletons.kt')
 selected=s[:s.index('/**')]+ '@Composable\n'+media.function(s,'PosterDetailSkeleton',parser)+'\n'
 Edit(selected).write(rel,'DesktopOriginalBangumiPosterDetailSkeleton.kt')
 ROWS[-1]['completeOriginalFileBody']=False;ROWS[-1]['completeSelectedMethodBodies']=True
-(options.manifest or OUT/'bangumi-pages-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit=INPUT['upstreamCommit'],emitted=ROWS,
+_output_path(options.manifest or OUT/'bangumi-pages-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit=INPUT['upstreamCommit'],emitted=ROWS,
  originalInverseTransformsVerified=True,playerBodyNotYetAdapted=True,wholeProductBuildAccepted=False),ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(dict(generatedFiles=len(ROWS),fullOriginalFiles=sum(r.get('completeOriginalFileBody',False) for r in ROWS),playerAdaptationStillInProgress=True),ensure_ascii=False))

@@ -3,6 +3,7 @@
 The other seven original dynamic controls remain unbound; they are not emitted as
 working switches. No parallel enum/store or simplified category layout is added.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse
 import hashlib
@@ -18,7 +19,7 @@ def helper(repo):
     spec=importlib.util.spec_from_file_location('home_helpers',repo/'desktop/tools/extract-upstream-plugins.py')
     host=importlib.util.module_from_spec(spec);spec.loader.exec_module(host);return host
 
-def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 
 def call(source,name,parser):
     tokens=parser.kotlin_tokens(source)

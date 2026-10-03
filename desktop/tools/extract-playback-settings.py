@@ -1,5 +1,6 @@
 """Extract exact settings/audio policy bodies with verified platform constants."""
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 import argparse
 import hashlib
 import json
@@ -9,10 +10,11 @@ import re
 STORE = 'app/src/main/java/com/android/purebilibili/core/store/player/PlayerSettingsStore.kt'
 SETTINGS = 'app/src/main/java/com/android/purebilibili/feature/settings/PlaybackSettingsSelectionPolicy.kt'
 FAILURE = 'app/src/main/java/com/android/purebilibili/feature/video/playback/audio/PremiumAudioPlaybackFailurePolicy.kt'
-SOURCES = {STORE: 'extracted', SETTINGS: 'extracted', FAILURE: 'extracted'}
+SCREEN = 'app/src/main/java/com/android/purebilibili/feature/settings/screen/PlaybackSettingsScreen.kt'
+SOURCES = {STORE: 'extracted', SETTINGS: 'extracted', FAILURE: 'extracted', SCREEN: 'extracted'}
 
 def read(repo: Path, path: str) -> str:
-    return (repo / path).read_text(encoding='utf-8').replace('\r\n', '\n')
+    return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
 
 def function(source: str, name: str) -> str:
     start = source.index('internal fun ' + name)
@@ -30,6 +32,26 @@ def generate(repo: Path, output: Path, platform: Path) -> None:
         if original:
             body = '// Source: ' + original + '\n// LF SHA-256: ' + hashlib.sha256(read(repo, original).encode()).hexdigest() + '\n' + body
         target.write_text(body, encoding='utf-8')
+    # Exact v025 interaction/comment control; the existing dialog owns scope.
+    import importlib.util
+    def load(name, path):
+        spec=importlib.util.spec_from_file_location(name,path)
+        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
+    parser=load('comment_setting_parser',repo/'desktop/tools/sync-upstream.py')
+    original=read(repo,SCREEN)
+    point=original.index('title = "详细评论时间显示"')
+    start=original.rfind('AppSwitchPreference(',0,point)
+    assert start>=0
+    tokens=parser.kotlin_tokens(original[start:]);opening=next(i for i,t in enumerate(tokens)if t[0]=='(')
+    depth=1;end=opening
+    while depth:
+        end+=1;depth+=(tokens[end][0]=='(')-(tokens[end][0]==')')
+    body=original[start:start+tokens[end][2]]
+    seam='scope.launch {\n                    SettingsManager.setDetailedCommentTimeEnabled(context, enabled)\n                }'
+    assert body.count(seam)==1
+    body=body.replace(seam,'setDetailedCommentTimeEnabled(enabled)',1)
+    write('com/android/purebilibili/feature/settings/DesktopOriginalDetailedCommentTimeSetting.kt',
+        'package com.android.purebilibili.feature.settings\nimport androidx.compose.runtime.Composable\nimport com.android.purebilibili.core.ui.components.AppSwitchPreference\nimport com.android.purebilibili.core.theme.iOSTeal\n@Composable\ninternal fun DesktopOriginalDetailedCommentTimeSetting(\n    detailedCommentTimeEnabled:Boolean,\n    setDetailedCommentTimeEnabled:(Boolean)->Unit,\n) {\n'+body+'\n}\n',SCREEN)
     constant = re.search(r'^const val DEFAULT_AUDIO_QUALITY_FOLLOW_LAST = -?\d+\s*$', read(repo, STORE), re.MULTILINE)
     assert constant, 'Original default audio setting drifted'
     write('com/android/purebilibili/core/store/player/DefaultAudioQuality.kt',

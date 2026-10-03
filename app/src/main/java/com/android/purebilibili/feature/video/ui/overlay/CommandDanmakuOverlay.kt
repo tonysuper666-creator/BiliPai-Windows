@@ -1,16 +1,8 @@
 package com.android.purebilibili.feature.video.ui.overlay
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,12 +26,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.StarBorder
 import androidx.compose.material.icons.rounded.ThumbUp
 import com.android.purebilibili.core.ui.components.AppButton
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ButtonColors
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppIconButtonDefaults
@@ -47,6 +42,7 @@ import androidx.compose.material3.MaterialTheme
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppText
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -58,15 +54,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -177,8 +171,8 @@ private fun CommandDanmakuCard(
         else -> 220
     }
     val density = LocalDensity.current
-    val visualDensity = remember(density.density, density.fontScale, viewport.scale, fontScale) {
-        Density(density.density * viewport.scale, density.fontScale * fontScale.coerceIn(0.3f, 2f))
+    val visualDensity = remember(density.density, density.fontScale, fontScale) {
+        Density(density.density, density.fontScale * fontScale.coerceIn(0.3f, 2f))
     }
     val requestedCardWidthPx = with(visualDensity) { requestedCardWidthDp.dp.roundToPx() }
     val cardWidthPx = resolveCommandDanmakuCardWidthPx(
@@ -219,7 +213,8 @@ private fun CommandDanmakuCard(
                     item = item,
                     isFollowing = isFollowing,
                     onFollowClick = onFollowClick,
-                    onTripleClick = onTripleClick
+                    onTripleClick = onTripleClick,
+                    onDismiss = onDismiss,
                 )
                 CommandDanmakuType.VOTE -> VoteCommandCard(
                     item = item,
@@ -230,12 +225,14 @@ private fun CommandDanmakuCard(
                 )
                 else -> InfoCommandCard(item)
             }
-            CommandDanmakuCloseButton(
-                onDismiss = onDismiss,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(1.dp)
-            )
+            if (item.type != CommandDanmakuType.ATTENTION) {
+                CommandDanmakuCloseButton(
+                    onDismiss = onDismiss,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(1.dp)
+                )
+            }
         }
             }
         }
@@ -276,83 +273,100 @@ private fun InfoCommandCard(item: CommandDanmakuItem) {
     }
 }
 
+private const val ATTENTION_ICON_SLOT_DP = 32
+private const val ATTENTION_TOUCH_TARGET_DP = 48
+private const val ATTENTION_FOLLOW_TARGET_DP = 78
+
+private val attentionCommandButtonColors = ButtonColors(
+    containerColor = Color.Transparent,
+    contentColor = Color.White,
+    disabledContainerColor = Color.Transparent,
+    disabledContentColor = Color.White.copy(alpha = 0.7f),
+)
+
 @Composable
 private fun AttentionCommandCard(
     item: CommandDanmakuItem,
     isFollowing: Boolean,
     onFollowClick: () -> Unit,
-    onTripleClick: () -> Unit
+    onTripleClick: () -> Unit,
+    onDismiss: () -> Unit,
 ) {
-    var tripleBurstKey by remember(item.id) { mutableIntStateOf(0) }
+    val showTriple = item.attentionType == 1 || item.attentionType == 2
 
-    fun playTripleAction() {
-        tripleBurstKey += 1
-        onTripleClick()
+    fun dispatchAction(target: AttentionCommandAction) {
+        val action = resolveAttentionCommandClickAction(
+            attentionType = item.attentionType,
+            action = target,
+            isFollowing = isFollowing,
+        )
+        if (action.shouldFollow) onFollowClick()
+        if (action.shouldTriple) onTripleClick()
     }
 
-    Column(
-        modifier = Modifier.padding(start = 8.dp, top = 8.dp, end = 52.dp, bottom = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (item.iconUrl.isNotBlank()) {
-            AsyncImage(
-                model = item.iconUrl,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(34.dp)
-                    .clip(CircleShape)
-            )
-                Spacer(Modifier.height(6.dp))
-        }
-        val label = resolveAttentionCommandLabel(item.attentionType)
-        AppButton(
-            onClick = {
-                val action = resolveAttentionCommandClickAction(
-                    attentionType = item.attentionType,
-                    isFollowing = isFollowing
-                )
-                if (action.shouldFollow) {
-                    onFollowClick()
-                }
-                if (action.shouldTriple) {
-                    playTripleAction()
-                }
-            },
-            shape = AppShapes.container(ContainerLevel.Pill),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ),
-            elevation = null,
-            contentPadding = PaddingValues(horizontal = 14.dp),
-            modifier = Modifier
-                .heightIn(min = 48.dp)
-                .fillMaxWidth()
+    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        AppSurface(
+            modifier = Modifier.matchParentSize().padding(vertical = 6.dp),
+            color = Color.Black.copy(alpha = 0.54f),
+            shape = RoundedCornerShape(8.dp),
+        ) {}
+        Row(
+            modifier = Modifier.fillMaxWidth().heightIn(min = ATTENTION_TOUCH_TARGET_DP.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            AppText(
-                text = label,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-                overflow = TextOverflow.Clip
+            Row(
+                modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (showTriple) {
+                    AttentionCommandTripleButton(
+                        onClick = { dispatchAction(AttentionCommandAction.TRIPLE) },
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier.size(
+                            width = ATTENTION_ICON_SLOT_DP.dp,
+                            height = ATTENTION_TOUCH_TARGET_DP.dp,
+                        ),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        if (item.iconUrl.isNotBlank()) {
+                            AsyncImage(
+                                model = item.iconUrl,
+                                contentDescription = null,
+                                modifier = Modifier.size(24.dp).clip(CircleShape),
+                            )
+                        } else {
+                            AppIcon(Icons.Rounded.Person, contentDescription = null, tint = Color.White)
+                        }
+                    }
+                }
+                if (item.attentionType != 1) {
+                    AttentionCommandFollowButton(
+                        isFollowing = isFollowing,
+                        onClick = { dispatchAction(AttentionCommandAction.FOLLOW) },
+                    )
+                }
+            }
+            CommandDanmakuCloseButton(
+                onDismiss = onDismiss,
+                containerColor = Color.Transparent,
             )
         }
-        CommandTripleActionBurst(
-            triggerKey = tripleBurstKey,
-            modifier = Modifier.padding(top = 6.dp)
-        )
     }
 }
 
 @Composable
 private fun CommandDanmakuCloseButton(
     onDismiss: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    containerColor: Color = Color.Black.copy(alpha = 0.34f),
 ) {
     AppIconButton(
         onClick = onDismiss,
         modifier = modifier.size(48.dp),
         colors = AppIconButtonDefaults.colors(
-            containerColor = Color.Black.copy(alpha = 0.34f),
+            containerColor = containerColor,
             contentColor = Color.White
         )
     ) {
@@ -365,112 +379,119 @@ private fun CommandDanmakuCloseButton(
 }
 
 @Composable
-private fun CommandTripleActionBurst(
-    triggerKey: Int,
-    modifier: Modifier = Modifier
-) {
-    var visible by remember { mutableStateOf(false) }
-    val progress by animateFloatAsState(
-        targetValue = if (visible) 1f else 0f,
-        animationSpec = if (visible) {
-            tween(durationMillis = 520, easing = LinearEasing)
-        } else {
-            tween(durationMillis = 160, easing = FastOutSlowInEasing)
-        },
-        label = "commandTripleBurstProgress"
+private fun AttentionCommandTripleButton(onClick: () -> Unit) {
+    var pulseKey by remember { mutableIntStateOf(0) }
+    var pressed by remember { mutableStateOf(false) }
+    val scale = animateFloatAsState(
+        targetValue = if (pressed) 1.1f else 1f,
+        animationSpec = tween(durationMillis = 160, easing = FastOutSlowInEasing),
+        label = "attentionTriplePressScale",
     )
-
-    LaunchedEffect(triggerKey) {
-        if (triggerKey > 0) {
-            visible = true
-            delay(820)
-            visible = false
+    LaunchedEffect(pulseKey) {
+        if (pulseKey > 0) {
+            pressed = true
+            delay(420)
+            pressed = false
         }
     }
-
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn(tween(90)) + scaleIn(
-            initialScale = 0.86f,
-            animationSpec = tween(180, easing = FastOutSlowInEasing)
-        ),
-        exit = fadeOut(tween(120)) + scaleOut(
-            targetScale = 0.92f,
-            animationSpec = tween(120, easing = FastOutSlowInEasing)
-        ),
-        modifier = modifier
+    AppButton(
+        onClick = {
+            pulseKey += 1
+            onClick()
+        },
+        modifier = Modifier
+            .width((ATTENTION_ICON_SLOT_DP * 3).dp)
+            .heightIn(min = ATTENTION_TOUCH_TARGET_DP.dp)
+            .semantics { contentDescription = "一键三连：点赞、投币、收藏" },
+        colors = attentionCommandButtonColors,
+        elevation = null,
+        contentPadding = PaddingValues(0.dp),
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .clip(AppShapes.container(ContainerLevel.Pill))
-                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.16f))
-                .widthIn(min = 118.dp)
-                .padding(horizontal = 10.dp, vertical = 6.dp)
+        // Normalize intrinsic vector padding so the three visible glyphs have comparable weight.
+        AttentionCommandIconSlot(Icons.Rounded.ThumbUp, 22.dp, scale)
+        AttentionCommandIconSlot(AppIcons.BiliCoin, 21.dp, scale)
+        AttentionCommandIconSlot(Icons.Rounded.Star, 28.dp, scale)
+    }
+}
+
+@Composable
+private fun AttentionCommandFollowButton(
+    isFollowing: Boolean,
+    onClick: () -> Unit,
+) {
+    val primary = MaterialTheme.colorScheme.primary
+    val contentColor = if (isFollowing) Color.White else MaterialTheme.colorScheme.onPrimary
+    AppButton(
+        onClick = onClick,
+        enabled = !isFollowing,
+        modifier = Modifier
+            .widthIn(min = ATTENTION_FOLLOW_TARGET_DP.dp)
+            .heightIn(min = ATTENTION_TOUCH_TARGET_DP.dp),
+        colors = attentionCommandButtonColors,
+        elevation = null,
+        contentPadding = PaddingValues(horizontal = 6.dp),
+    ) {
+        AppSurface(
+            modifier = Modifier.widthIn(min = 66.dp).heightIn(min = 24.dp),
+            color = if (isFollowing) Color.Black.copy(alpha = 0.18f) else primary,
+            contentColor = contentColor,
+            shape = RoundedCornerShape(6.dp),
         ) {
-            CommandTripleActionIcon(
-                icon = Icons.Rounded.ThumbUp,
-                progress = progress,
-                color = MaterialTheme.colorScheme.primary
-            )
-            CommandTripleActionIcon(
-                icon = AppIcons.BiliCoin,
-                progress = progress,
-                color = Color(0xFFFFB300)
-            )
-            CommandTripleActionIcon(
-                icon = Icons.Rounded.Star,
-                progress = progress,
-                color = Color(0xFFFFC107)
-            )
+            Row(
+                modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                if (!isFollowing) {
+                    AppIcon(
+                        Icons.Rounded.Add,
+                        contentDescription = null,
+                        tint = contentColor,
+                        modifier = Modifier.size(16.dp),
+                    )
+                }
+                AppText(
+                    text = if (isFollowing) "已关注" else "关注",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = contentColor,
+                    maxLines = 1,
+                    softWrap = false,
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun CommandTripleActionIcon(
+private fun AttentionCommandIconSlot(
     icon: ImageVector,
-    progress: Float,
-    color: Color
+    iconSize: Dp,
+    scale: State<Float>,
 ) {
-    AppSurface(
-        shape = CircleShape,
-        color = Color.White.copy(alpha = 0.92f),
-        contentColor = color,
-        border = BorderStroke(1.dp, color.copy(alpha = 0.42f)),
-        modifier = Modifier
-            .size(28.dp)
-            .graphicsLayer {
-                scaleX = 0.88f + 0.12f * progress
-                scaleY = 0.88f + 0.12f * progress
-            }
+    Box(
+        modifier = Modifier.size(
+            width = ATTENTION_ICON_SLOT_DP.dp,
+            height = ATTENTION_TOUCH_TARGET_DP.dp,
+        ),
+        contentAlignment = Alignment.Center,
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Canvas(modifier = Modifier.size(28.dp)) {
-                val stroke = 2.dp.toPx()
-                val diameter = size.minDimension - stroke
-                val topLeft = Offset((size.width - diameter) / 2, (size.height - diameter) / 2)
-                drawArc(
-                    color = color,
-                    startAngle = -90f,
-                    sweepAngle = 360f * progress,
-                    useCenter = false,
-                    topLeft = topLeft,
-                    size = Size(diameter, diameter),
-                    style = Stroke(width = stroke, cap = StrokeCap.Round)
-                )
-            }
-            AppIcon(
-                imageVector = icon,
-                contentDescription = null,
-                modifier = Modifier.size(17.dp)
-            )
-        }
+        AppIcon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = Color.White,
+            modifier = Modifier.size(iconSize).graphicsLayer {
+                val currentScale = scale.value
+                scaleX = currentScale
+                scaleY = currentScale
+            },
+        )
     }
+}
+
+internal enum class AttentionCommandAction {
+    FOLLOW,
+    TRIPLE,
 }
 
 internal data class AttentionCommandClickAction(
@@ -478,31 +499,31 @@ internal data class AttentionCommandClickAction(
     val shouldTriple: Boolean
 )
 
+private val attentionFollowAction = AttentionCommandClickAction(shouldFollow = true, shouldTriple = false)
+private val attentionTripleAction = AttentionCommandClickAction(shouldFollow = false, shouldTriple = true)
+private val attentionNoAction = AttentionCommandClickAction(shouldFollow = false, shouldTriple = false)
+
 internal fun resolveAttentionCommandClickAction(
     attentionType: Int,
-    isFollowing: Boolean
-): AttentionCommandClickAction {
-    return when (attentionType) {
-        1 -> AttentionCommandClickAction(shouldFollow = false, shouldTriple = true)
-        2 -> AttentionCommandClickAction(shouldFollow = !isFollowing, shouldTriple = true)
-        else -> AttentionCommandClickAction(shouldFollow = !isFollowing, shouldTriple = false)
+    action: AttentionCommandAction,
+    isFollowing: Boolean,
+): AttentionCommandClickAction = when (action) {
+    AttentionCommandAction.FOLLOW -> if (attentionType != 1 && !isFollowing) {
+        attentionFollowAction
+    } else {
+        attentionNoAction
+    }
+    AttentionCommandAction.TRIPLE -> if (attentionType == 1 || attentionType == 2) {
+        attentionTripleAction
+    } else {
+        attentionNoAction
     }
 }
 
-internal fun resolveAttentionCommandLabel(attentionType: Int): String {
-    return when (attentionType) {
-        1 -> "一键三连"
-        2 -> "关注并三连"
-        else -> "关注 UP"
-    }
-}
-
-internal fun resolveAttentionCommandCardWidthDp(attentionType: Int): Int {
-    return when (attentionType) {
-        1 -> 172
-        2 -> 196
-        else -> 154
-    }
+internal fun resolveAttentionCommandCardWidthDp(attentionType: Int): Int = when (attentionType) {
+    1 -> ATTENTION_ICON_SLOT_DP * 3 + ATTENTION_TOUCH_TARGET_DP
+    2 -> ATTENTION_ICON_SLOT_DP * 3 + ATTENTION_FOLLOW_TARGET_DP + ATTENTION_TOUCH_TARGET_DP
+    else -> ATTENTION_ICON_SLOT_DP + ATTENTION_FOLLOW_TARGET_DP + ATTENTION_TOUCH_TARGET_DP
 }
 
 internal fun resolveCommandDanmakuContainerColor(type: CommandDanmakuType): Color {

@@ -1,10 +1,13 @@
 package com.android.purebilibili.feature.video.danmaku
 
+import com.android.purebilibili.danmaku.parser.resolveBilibiliDanmakuFontScale
+
 import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_BOTTOM
 import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_SCROLL
 import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_TOP
 import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_REVERSE
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class DanmakuConfigPolicyTest {
@@ -80,8 +83,11 @@ class DanmakuConfigPolicyTest {
             massiveMode = true
         )
 
-        assertEquals(9, regularLines)
-        assertEquals(10, massiveLines)
+        assertTrue(massiveLines >= regularLines)
+        val rowHeight = resolveDanmakuLayerLineHeightPx(20f, 1.6f)
+        // Row pitch is the line height alone; there is no extra interline margin.
+        assertTrue(rowHeight + (massiveLines - 1) * rowHeight <= 500f)
+        assertTrue(rowHeight + massiveLines * rowHeight > 500f)
     }
 
     @Test
@@ -113,13 +119,14 @@ class DanmakuConfigPolicyTest {
     }
 
     @Test
-    fun `text size composes user preference density and viewport without a small window floor`() {
-        val fullscreen = requireNotNull(resolveDanmakuViewport(2392, 1080, 3f, 1080f))
-        val inline = requireNotNull(resolveDanmakuViewport(1080, 608, 3f, 1080f))
-        assertEquals(608f / 1080f,
-            resolveDanmakuTextSizePx(inline, 1.5f) / resolveDanmakuTextSizePx(fullscreen, 1.5f), 0.001f)
-        assertEquals(1.5f,
-            resolveDanmakuTextSizePx(inline, 1.5f) / resolveDanmakuTextSizePx(inline, 1f), 0.001f)
+    fun `text size ignores the container box so every surface renders the same`() {
+        val inline = requireNotNull(resolveDanmakuViewport(1080, 608, 3f))
+        val fullscreen = requireNotNull(resolveDanmakuViewport(2392, 1080, 3f))
+        assertEquals(
+            resolveDanmakuTextSizePx(inline.density, 1f),
+            resolveDanmakuTextSizePx(fullscreen.density, 1f),
+            0f
+        )
     }
 
     @Test

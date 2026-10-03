@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "upstreamTag": "v0.2.5",
+  "upstreamCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "windowsVersion": "0.2.427.1",
+  "sourceRegistryCount": 1290,
+  "resourceRegistryCount": 244,
+  "countsAreNotFeatureCompletion": true,
+  "overallFeatureCompletionPercent": null,
+  "normalCompile": {
+    "passed": true,
+    "actualProductOverrides": 0,
+    "logSha256Bytes": "5eba6ff4e418d2f7eca5e2f74ad22181fc1385e1faeffceacb2e2d9459209bdd"
+  },
+  "normalTests": {
+    "passed": true,
+    "totals": {
+      "test": {
+        "tests": 954,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "jsWorkerSmoke": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "logSha256Bytes": "3e9a4064b174d03b4a628146e61bba202248cd36fafe0d62275720b097458e1f",
+    "skippedReason": "Symbolic-link creation unavailable on this Windows host."
+  },
+  "physicalRoot": {
+    "passed": true,
+    "renderApi": "DIRECT3D",
+    "normalCloseRequested": true,
+    "runtimeAndSourcePinsBeforeAfterEqual": true,
+    "windowImageSHA": "ae53027c2408dd7edeeaad16de6574ca2dbc7557afb89b7f42eab80ee92b7499",
+    "realAccountUsed": false
+  },
+  "startupHealthSourceReview": {
+    "passed": true,
+    "requiresActualActiveRootDrawAndNextFrame": true,
+    "requiresCurrentOwnerAndNativeProbe": true
+  },
+  "finalCleanSourceSnapshotAccepted": false,
+  "latestPackagedUpdaterAccepted": false,
+  "latestNativeExeAccepted": false,
+  "latestDesktopDeploymentAccepted": false,
+  "allRoutesAccepted": false,
+  "fullFeatureParityAccepted": false,
+  "knownPlatformFallbacks": [
+    "Listening-video particle dissolve uses the original unsupported-GL close fallback on Windows."
+  ],
+  "requiredUserChecks": [
+    "Latest packaged login, online video, account actions and full page interaction."
+  ]
+}

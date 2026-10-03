@@ -11,6 +11,10 @@ import com.android.purebilibili.core.coroutines.AppScope
 import com.android.purebilibili.data.model.CommentFraudStatus
 import com.android.purebilibili.data.model.response.*
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +32,23 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okio.BufferedSink
 import okio.source
 import java.util.TreeMap
+
+private val COMMENT_STANDARD_EMOTE_IDS = listOf(1L, 2L, 53L, 4L)
+
+internal fun mergeCommentEmotePackages(
+    userData: EmoteData?,
+    standardPackages: List<EmotePackage>,
+): List<EmotePackage> {
+    val userPackages = userData?.packages?.takeIf { it.isNotEmpty() }
+        ?: userData?.all_packages.orEmpty()
+    val packages = userPackages.associateByTo(linkedMapOf()) { it.id }
+    standardPackages.forEach { pkg ->
+        if (packages[pkg.id]?.emote.isNullOrEmpty()) {
+            packages[pkg.id] = pkg
+        }
+    }
+    return packages.values.toList()
+}
 
 /**
  * 评论相关数据仓库
@@ -509,7 +530,8 @@ object CommentRepository {
                 readPlan.fallback != null &&
                 shouldFallbackCommentRead(primaryResponse.code)
             ) {
-                val fallbackMode = readPlan.fallback
+                val checkedReadPlanFallback = requireNotNull(readPlan.fallback)
+                val fallbackMode = checkedReadPlanFallback
                 Logger.w(
                     "CommentRepo",
                     "getComments fallback triggered: code=${primaryResponse.code}, from=$primaryMode to=$fallbackMode, oid=$oid, type=$type, page=$page, mode=$mode"
@@ -618,12 +640,75 @@ object CommentRepository {
                 nextOffset = paginationOffset
             )
             currentCoroutineContext().ensureActive()
-            result
+            val data = result.getOrNull() ?: return@withContext result
+            Result.success(supplementSortedSubReplyLocations(oid, type, data))
         } catch (e: CancellationException) {
             throw e
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    private suspend fun supplementSortedSubReplyLocations(
+        oid: Long,
+        type: Int,
+        data: ReplyData,
+    ): ReplyData {
+        val missing = collectReplyLocationCandidates(data).filter {
+            it.rpid > 0 && it.replyControl?.location.isNullOrBlank()
+        }
+        if (missing.isEmpty()) return data
+        // seek_rpid is already used for exact comment reads. Never substitute REST pn
+        // pages for a sorted gRPC page, or infer a child's location from its author/root.
+        val supplements = mutableListOf<ReplyItem>()
+        withTimeoutOrNull(3_500L) {
+            val keys = getWbiKeysOrNull() ?: return@withTimeoutOrNull
+            currentCoroutineContext().ensureActive()
+            val readMode = resolveCommentReadPlan(
+                hasSession = !com.android.purebilibili.core.store.TokenManager.sessDataCache.isNullOrEmpty()
+            ).primary
+            val apiClient = resolveReadApi(readMode)
+            for (batch in missing.chunked(3)) {
+                val responses = coroutineScope {
+                    batch.filter { item -> supplements.none {
+                        it.rpid == item.rpid && !it.replyControl?.location.isNullOrBlank()
+                    } }.map { item ->
+                        async {
+                            try {
+                                val params = TreeMap<String, String>().apply {
+                                    put("oid", oid.toString())
+                                    put("type", type.toString())
+                                    put("mode", "2")
+                                    put("next", "0")
+                                    put("ps", "20")
+                                    put("plat", "1")
+                                    put("seek_rpid", item.rpid.toString())
+                                }
+                                val response = apiClient.getReplyList(
+                                    WbiUtils.sign(params, keys.first, keys.second)
+                                )
+                                response
+                            } catch (e: CancellationException) {
+                                throw e
+                            } catch (e: Exception) {
+                                Logger.w("CommentRepo", "Reply location supplement failed: ${e.message}")
+                                null
+                            }
+                        }
+                    }.awaitAll()
+                }
+                supplements += responses.filterNotNull()
+                    .filter { it.code == 0 }
+                    .mapNotNull { it.data }
+                    .flatMap(::collectReplyLocationCandidates)
+                // Stop optional reads on authentication/rate-limit errors.
+                if (responses.filterNotNull().any { shouldFallbackCommentRead(it.code) }) break
+                if (missing.all { item -> supplements.any {
+                        it.rpid == item.rpid && !it.replyControl?.location.isNullOrBlank()
+                    } }) break
+            }
+        }
+        return mergeCommentReplyLocations(data, supplements)
     }
 
     suspend fun getSubCommentsForSubject(
@@ -684,7 +769,8 @@ object CommentRepository {
                 readPlan.fallback != null &&
                 shouldFallbackCommentRead(primaryResponse.code)
             ) {
-                val fallbackMode = readPlan.fallback
+                val checkedReadPlanFallback = requireNotNull(readPlan.fallback)
+                val fallbackMode = checkedReadPlanFallback
                 Logger.w(
                     "CommentRepo",
                     "getSubComments fallback triggered: code=${primaryResponse.code}, from=$primaryMode to=$fallbackMode, oid=$oid, type=$type, root=$rootId, page=$page"
@@ -762,15 +848,9 @@ object CommentRepository {
         map["[doge]"] = "http://i0.hdslb.com/bfs/emote/6f8743c3c13009f4705307b2750e32f5068225e3.png"
         map["[笑哭]"] = "http://i0.hdslb.com/bfs/emote/500b63b2f293309a909403a746566fdd6104d498.png"
         map["[妙啊]"] = "http://i0.hdslb.com/bfs/emote/03c39c8eb009f63568971032b49c716259c72441.png"
-        try {
-            val params = mutableMapOf("business" to "reply")
-            
-            val response = api.getEmotes(params)
-            val packages = response.data?.packages ?: response.data?.all_packages
-            packages?.forEach { pkg ->
-                pkg.emote?.forEach { emote -> map[emote.text] = emote.url }
-            }
-        } catch (e: Exception) { e.printStackTrace() }
+        getEmotePackages().getOrNull()?.forEach { pkg ->
+            pkg.emote?.forEach { emote -> map[emote.text] = emote.url }
+        }
         map
     }
 
@@ -779,16 +859,32 @@ object CommentRepository {
      */
     suspend fun getEmotePackages(): Result<List<EmotePackage>> = withContext(Dispatchers.IO) {
         try {
-            val params = mutableMapOf("business" to "reply")
-            
-            val response = api.getEmotes(params)
-            if (response.code == 0) {
-                val data = response.data
-                val pkgs = data?.packages ?: data?.all_packages ?: emptyList()
-                Result.success(pkgs)
-            } else {
-                Result.failure(Exception(response.message))
+            val response = api.getEmotes(mapOf("business" to "reply"))
+            val userData = if (response.code == 0) response.data else null
+            val userPackages = userData?.packages?.takeIf { it.isNotEmpty() }
+                ?: userData?.all_packages.orEmpty()
+            val missingIds = COMMENT_STANDARD_EMOTE_IDS.filter { id ->
+                userPackages.none { it.id == id && !it.emote.isNullOrEmpty() }
             }
+            if (missingIds.isEmpty()) {
+                return@withContext Result.success(userPackages)
+            }
+
+            // 用户面板可能成功返回空列表；从 B 站明细接口取回缺失的原始基础包。
+            val details = api.getEmotePackageDetails(
+                mapOf("business" to "reply", "ids" to missingIds.joinToString(","))
+            )
+            if (details.code != 0) {
+                return@withContext Result.failure(Exception(details.message))
+            }
+            val packages = mergeCommentEmotePackages(userData, details.data?.packages.orEmpty())
+            if (missingIds.any { id -> packages.none { it.id == id && !it.emote.isNullOrEmpty() } }) {
+                Result.failure(Exception("基础表情包加载失败"))
+            } else {
+                Result.success(packages)
+            }
+        } catch (e: CancellationException) {
+            throw e
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -1007,7 +1103,8 @@ object CommentRepository {
             )
 
             if (response.code == 0 && response.data != null) {
-                val data = response.data
+                val checkedResponseData = requireNotNull(response.data)
+                val data = checkedResponseData
                 Result.success(
                     ReplyPicture(
                         imgSrc = data.imageUrl,

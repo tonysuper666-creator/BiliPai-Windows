@@ -64,6 +64,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.android.purebilibili.core.ui.AppWindowSystemUiController
+import com.android.purebilibili.core.ui.AppWindowSystemUiSnapshot
 import com.android.purebilibili.feature.video.screen.VideoDetailHiddenSystemBars
 import com.android.purebilibili.feature.video.screen.VideoDetailSystemBarsApplySpec
 import com.android.purebilibili.feature.video.screen.applyVideoDetailSystemBarsSpec
@@ -176,7 +177,6 @@ import com.android.purebilibili.feature.video.ui.components.UpPreviewSheet
 import com.android.purebilibili.feature.video.ui.components.UP_PREVIEW_SHEET_HEIGHT_FRACTION
 import com.android.purebilibili.feature.video.ui.components.resolvePortraitOverlaySheetExpansion
 import com.android.purebilibili.feature.video.ui.components.VideoAspectRatio
-import com.android.purebilibili.feature.video.ui.components.PORTRAIT_SEEK_PREVIEW_ASPECT_RATIO
 import com.android.purebilibili.feature.video.ui.components.resolveSafeVideoAspectRatio
 import com.android.purebilibili.feature.video.ui.overlay.FullscreenDoubleTapAction
 import com.android.purebilibili.feature.video.ui.overlay.ImmersiveAmbientLetterboxBackdrop
@@ -302,9 +302,19 @@ fun PortraitVideoPager(
         if (window != null) WindowInsetsControllerCompat(window, view) else null
     }
     // Immersive: hide status + nav bars while portrait pager is active (Story + detail overlay).
+    //  [修复] 沉浸前捕获系统栏快照，退出时还原进入前的真实外观（含图标明暗），
+    //  而不是硬编码透明色 + 深色图标，避免与进入前的页面外观不一致。
+    var preImmersiveSystemBarsSnapshot by remember(window) {
+        mutableStateOf<AppWindowSystemUiSnapshot?>(null)
+    }
     LaunchedEffect(isActive, window, insetsController) {
         if (!isActive || window == null || insetsController == null) return@LaunchedEffect
         AppWindowSystemUiController.ensureEdgeToEdge(window)
+        preImmersiveSystemBarsSnapshot =
+            AppWindowSystemUiController.capture(window).let { snapshot ->
+                // 快照若在系统栏已被隐藏时取得，照实记录会让退出恢复走到 hide 分支。
+                if (snapshot.systemBarsVisible) snapshot else snapshot.copy(systemBarsVisible = true)
+            }
         val immersiveSpec = resolveVideoDetailSystemBarsApplySpec(
             visibilityPolicy = resolveVideoDetailSystemBarsVisibilityPolicy(
                 isFullscreenMode = false,
@@ -326,15 +336,28 @@ fun PortraitVideoPager(
         onDispose {
             if (window == null || insetsController == null) return@onDispose
             // Restore bars when leaving portrait immersive (detail returns to inline / Story pops).
-            val restoreSpec = VideoDetailSystemBarsApplySpec(
-                hiddenBars = VideoDetailHiddenSystemBars.NONE,
-                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT,
-                statusBarColor = ComposeColor.Transparent.toArgb(),
-                navigationBarColor = ComposeColor.Transparent.toArgb(),
-                lightStatusBars = false,
-                lightNavigationBars = false
-            )
-            applyVideoDetailSystemBarsSpec(window, insetsController, restoreSpec)
+            val snapshot = preImmersiveSystemBarsSnapshot
+            if (snapshot != null) {
+                val restoreSpec = VideoDetailSystemBarsApplySpec(
+                    hiddenBars = VideoDetailHiddenSystemBars.NONE,
+                    systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT,
+                    statusBarColor = snapshot.statusBarColor,
+                    navigationBarColor = snapshot.navigationBarColor,
+                    lightStatusBars = snapshot.lightStatusBars,
+                    lightNavigationBars = snapshot.lightNavigationBars
+                )
+                applyVideoDetailSystemBarsSpec(window, insetsController, restoreSpec)
+            } else {
+                val restoreSpec = VideoDetailSystemBarsApplySpec(
+                    hiddenBars = VideoDetailHiddenSystemBars.NONE,
+                    systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT,
+                    statusBarColor = ComposeColor.Transparent.toArgb(),
+                    navigationBarColor = ComposeColor.Transparent.toArgb(),
+                    lightStatusBars = false,
+                    lightNavigationBars = false
+                )
+                applyVideoDetailSystemBarsSpec(window, insetsController, restoreSpec)
+            }
             insetsController.show(WindowInsetsCompat.Type.systemBars())
         }
     }
@@ -2851,7 +2874,8 @@ private fun VideoPageItem(
                         sourceWidthPx = gestureVideoshotData.img_x_size,
                         sourceHeightPx = gestureVideoshotData.img_y_size,
                         screenWidthDp = previewConfiguration.screenWidthDp,
-                        videoAspectRatio = PORTRAIT_SEEK_PREVIEW_ASPECT_RATIO
+                        // 使用真实视频宽比：横屏内容预览不再被强行裁成 9:16
+                        videoAspectRatio = currentVideoAspect
                     )
                 }
                 val previewWidthPx = with(density) { gesturePreviewSize.widthDp.dp.toPx() }
@@ -2870,7 +2894,7 @@ private fun VideoPageItem(
                     videoshotData = gestureVideoshotData,
                     targetPositionMs = seekTargetPosition.toLong(),
                     durationMs = progressState.duration,
-                    videoAspectRatio = PORTRAIT_SEEK_PREVIEW_ASPECT_RATIO,
+                    videoAspectRatio = currentVideoAspect,
                     modifier = Modifier
                         .align(Alignment.BottomStart)
                         .offset {
@@ -3191,6 +3215,13 @@ private fun VideoPageItem(
             currentCid = portraitDetailInfo?.cid ?: 0L,
             authorName = authorName,
             authorFace = authorFace,
+            staff = portraitDetailInfo?.staff.orEmpty(),
+            ownerMid = authorMid,
+            onStaffMemberClick = { mid ->
+                if (isCurrentPage && mid > 0L) {
+                    onUserClick(mid)
+                }
+            },
             isPlaying = if (isCurrentPage) {
                 isPlaying || shouldShowPlaybackRecoveryUiAfterSeek(
                     state = seekSession,
@@ -3343,7 +3374,7 @@ private fun VideoPageItem(
             danmakuEnabled = danmakuEnabled,
             isStatusBarHidden = true,
             videoshotData = currentSuccess?.videoshotData,
-            videoAspectRatio = PORTRAIT_SEEK_PREVIEW_ASPECT_RATIO,
+            videoAspectRatio = currentVideoAspect,
             isPlaybackRecovering = isCurrentPage && shouldShowPlaybackRecoveryUiAfterSeek(
                 state = seekSession,
                 playWhenReady = exoPlayer.playWhenReady,

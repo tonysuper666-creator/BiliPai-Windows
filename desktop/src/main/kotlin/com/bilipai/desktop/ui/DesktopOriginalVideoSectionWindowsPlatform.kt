@@ -11,6 +11,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.toComposeImageBitmap
 import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import com.android.purebilibili.core.store.DanmakuSettings as OriginalSettings
 import com.android.purebilibili.danmaku.engine.DanmakuItem
@@ -66,6 +67,7 @@ internal class DesktopOriginalVideoSectionWindowsResources(
     val operations: (DesktopOriginalVideoAcceptedPublication, Job) -> DesktopDynamicCardOperations,
     val recordDanmakuToggle: (Boolean) -> Unit,
     val reportUnsupported: (String) -> Unit,
+    val imageShare: DesktopImagePreviewShareBindings,
 )
 
 /** Remember once with the same assembly/WindowPlatforms. The movable carrier keeps the native peer
@@ -216,7 +218,13 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         }
     }
     override fun recoverViewport(identity: String, fullscreen: Boolean, pip: Boolean, predictiveBackGeneration: Int) { viewport.requestLayout(); viewport.invalidate() }
-    override fun readViewportBrightness(): Float { val value=expected(); return resources.overlay.viewportBrightnessFor(value.sourceVersion) ?: 1f }
+    override fun readViewportBrightness(): Float {
+        // The original PGC view exists before detail/playurl succeeds. Until a
+        // source owns the dimmer, its actual viewport has full brightness.
+        // This read cannot grant a source or relax any presentation write.
+        val value = resources.native.current() ?: return 1f
+        return if (owns(value)) resources.overlay.viewportBrightnessFor(value.sourceVersion) ?: 1f else 1f
+    }
     override fun setViewportBrightness(value: Float, requestSystemBrightness: Boolean) {
         require(value.isFinite())
         presentationWrite { resources.overlay.setViewportBrightness(it.sourceVersion, value.coerceIn(0.05f,1f)) }
@@ -278,13 +286,26 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         val value=expected();val bytes=capture(value);checkpoint(value)
         return desktopOriginalSectionAmbientFrame(bytes,targetWidth,targetHeight){checkpoint(value)}
     }
-    override suspend fun captureAndSaveScreenshot(videoWidth:Int,videoHeight:Int,title:String):Boolean {
+    override fun captureAmbientSourceLease(): DesktopOriginalAmbientSourceLease? {
+        val value = resources.native.current()?.takeIf(::owns) ?: return null
+        return DesktopOriginalAmbientSourceLease { owns(value) }
+    }
+    override fun ambientViewportBoundsInWindow(): Rect? =
+        if (resources.native.current()?.let(::owns) == true) layout.boundsInWindow else null
+    override suspend fun captureAndSaveScreenshot(videoWidth:Int,videoHeight:Int,title:String):Boolean =
+        captureAndSaveScreenshotForShare(videoWidth,videoHeight,title) != null
+    override suspend fun captureAndSaveScreenshotForShare(videoWidth:Int,videoHeight:Int,title:String):DesktopOriginalSavedVideoScreenshot? {
         val value=expected();val bytes=capture(value);checkpoint(value)
         val safeTitle=title.replace(Regex("[\\\\/:*?\"<>|\\p{Cntrl}]"),"_").take(80).ifBlank{"BiliPai"}
         val name="$safeTitle-${System.currentTimeMillis()}-${UUID.randomUUID()}.png"
         val caller=currentCoroutineContext()
-        return resources.gallery.saveNativeFrameBytes(bytes,name,{caller.isActive && owns(value)}) { block -> resources.withPresentationAdmission(value) {caller.ensureActive();block()} }
+        val saved = resources.gallery.saveNativeFrameBytes(bytes,name,{caller.isActive && owns(value)}) { block -> resources.withPresentationAdmission(value) {caller.ensureActive();block()} }
+        checkpoint(value)
+        if (!saved) return null
+        return DesktopOriginalSavedVideoScreenshot(bytes) { owns(value) }
     }
+    override suspend fun shareSavedScreenshot(screenshot:DesktopOriginalSavedVideoScreenshot):Boolean =
+        resources.imageShare.shareCapturedNativeImage(screenshot.copyPngBytes(), "视频截图", screenshot::isCurrent)
     private suspend fun <T> request(action:suspend(DesktopDynamicCardOperations)->Result<T>):Result<T> {
         val value=expected();checkpoint(value);val job=currentCoroutineContext().job
         val result=action(resources.operations(value,job));checkpoint(value);return result
@@ -306,7 +327,7 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
                 }
             if((revealAlpha!=1f || revealScale!=1f) && !reportedNativeReveal){reportedNativeReveal=true;resources.reportUnsupported("HWND video does not support texture alpha/reveal-scale; original cover is retained")}
         }
-        Box(modifier.onGloballyPositioned { coordinates -> if(resources.isForegroundOwned() && !resources.isPipActive.value)this.layout.update(coordinates.boundsInRoot(),visible) })
+        Box(modifier.onGloballyPositioned { coordinates -> if(resources.isForegroundOwned() && !resources.isPipActive.value)this.layout.update(coordinates.boundsInRoot(),visible).also { this.layout.updateWindowBounds(coordinates.boundsInWindow()) } })
     }
     @Composable override fun NativeDanmakuSurface(viewport:DanmakuViewport,modifier:Modifier) {
         // The same native overlay reads actual Canvas/DPI/OSD geometry in its sole timer.

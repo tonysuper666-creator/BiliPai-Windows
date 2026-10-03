@@ -1,0 +1,92 @@
+{
+  "candidateBase": "cd8317d54fff02c2d920e295397aef502333f69b",
+  "sourceCount": 1234,
+  "resourceCount": 244,
+  "frozenHandoffSha256Bytes": "ff948da7b16aec02be43f8819e5b3756374bf6bb4da5f54fdc8a5657711e172b",
+  "sourceTargets": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "86f54544c8fedf031c049cf51ab15e647ea47138b75d70453f18c9b41b045a02",
+      "afterSha256Bytes": "f237a085614f78acc5929715cf6c046c738c66987458a6aecc81132fea1702f4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSha256Bytes": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890",
+      "afterSha256Bytes": "3e1cab8ac93243232681b0267d39a4e730dda09424eb837628345179f47517d6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativePresenter.kt",
+      "beforeSha256Bytes": "d783742df9fde979b2918bfe371178c92cb7c01c66b84abf0909435fbbbdf589",
+      "afterSha256Bytes": "157645dbfac1e42c2aaad119b9747eef3a8b6696013df1fcd4987cc91f0ba124"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerPhysicalLeaf.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "88412bc099c2fbd87e260136ba440d769b60964ef9b91476babea902aebce859"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerRootOwner.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "d5162e8f298b8e1e7c68ad9e53eee49277a3480fb00a12563d902fd5cb944502"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerScreenPlatform.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "fbb4627acf42331301ca9b944ec86835926ef2557b3bad4d7791f7102d1d3685"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPrimaryApiView.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "833df46c322df29e3319ba1a771e0b71a81db4a14ebe41eaec87fb814b8492eb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiRawDanmakuView.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "f31c03ea5e163bcbbb7f372ab5354d50fd809630bc3db60c28feefa3c959152c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "beforeSha256Bytes": "563671c643dee36efcb9a6c236dcb0fac83279c58bf3f4f8007a2be54537571e",
+      "afterSha256Bytes": "ce9160a6a036fd99c0ec4c6895498c50ca44cd99f23a3aaa2db0e1129f56502a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt",
+      "beforeSha256Bytes": "3ff595ca0aee2431d6d5fa69a7bada48e1cf45238c8e2e1a964ef17ba2602931",
+      "afterSha256Bytes": "cf3d15a74ed35c4c5c3ff3efca5596284f1f624a98e517515f779319c698810f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "beforeSha256Bytes": "3f4d58d2d6f85a82595c0c5f3214860e34f185ad721409db4edc670bcb89574c",
+      "afterSha256Bytes": "f9f6d90bedea4e54cff446cf889d9da9842b6875d586eaa49781ba696fff9370"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt",
+      "beforeSha256Bytes": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09",
+      "afterSha256Bytes": "55acdd6bf9f52dc937d7be487f9988591cf6e9d7814b13b6833783e486c5f952"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player-ui.py",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "c5f97ea576989f1749f4885d1d73f8687540bdc3a8eaf3a35bf980bd7d454fd8"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player.py",
+      "beforeSha256Bytes": "ae7891552d3c37b4371cbb52c0982fa319173b1c0e9589d8fd861407d7ee1675",
+      "afterSha256Bytes": "efa41de7de3e45921304a7ba2d27094016b256d501d9b6465899a467459e2a3e"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "09ab06e46f76fc016d3d27d27dbb8d7514fbe72b77a274e5c278b3754fe0c722",
+      "afterSha256Bytes": "c446137c58cca0906bbe9474932e5640d002bb4b08a916d9811834e042b4280f"
+    }
+  ],
+  "allFrozenFilesVerified": 140,
+  "exactPgcFragmentsApplied": 10,
+  "newPgcFiles": 6,
+  "spaceBackToTopBindingRepair": true,
+  "actualProductCompile": false,
+  "actualRootWindowAccepted": false,
+  "nativePlaybackAccepted": false,
+  "newEXEDeployed": false,
+  "baseCommit": "cd8317d54fff02c2d920e295397aef502333f69b"
+}

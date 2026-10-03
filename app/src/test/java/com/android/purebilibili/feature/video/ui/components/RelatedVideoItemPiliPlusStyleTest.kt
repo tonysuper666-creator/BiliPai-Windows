@@ -46,8 +46,9 @@ class RelatedVideoItemPiliPlusStyleTest {
         val statRow = File(
             "src/main/java/com/android/purebilibili/feature/home/components/cards/HorizontalVideoCardStats.kt"
         ).let { file -> listOf(file, File("app/${file.path}")).first { it.exists() }.readText() }
-        val model = File("src/main/java/com/android/purebilibili/data/model/response/RelatedResponse.kt")
-            .readText()
+        val modelPath = "src/main/java/com/android/purebilibili/data/model/response/RelatedResponse.kt"
+        val model = listOf(File("../core-data/$modelPath"), File("core-data/$modelPath"))
+            .first(File::exists).readText()
 
         assertTrue(source.contains("RELATED_VIDEO_CARD_COVER_ASPECT_RATIO = 16f / 10f"))
         assertTrue(source.contains("FormatUtils.formatPublishTime(video.pubdate)"))

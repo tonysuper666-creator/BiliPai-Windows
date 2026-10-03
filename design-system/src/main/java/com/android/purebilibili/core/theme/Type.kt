@@ -4,17 +4,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
-
-/**
- * 中文正文统一行高策略：Center 保证文字在 lineHeight 盒内垂直居中，
- * Trim.None 避免汉字上伸部被裁切（Compose 官方对 CJK 的推荐组合）。
- */
-private val CjkMd3LineHeightStyle = LineHeightStyle(
-    alignment = LineHeightStyle.Alignment.Center,
-    trim = LineHeightStyle.Trim.None
-)
 
 /**
  * 历史 iOS 风格定制字阶（已废弃）。
@@ -129,130 +119,25 @@ val BiliTypography = Typography(
  * - 全部 letterSpacing 归零：汉字为方块字，正字距会显松散；
  * - 正文/标签行高不低于 1.4 倍，bodyMedium/bodySmall/labelMedium 各加一档行高；
  * - bodySmall 12→13sp、labelSmall 11→12sp：密集小字的中文可读性下限；
- * - 全部槽位统一 [CjkMd3LineHeightStyle]，固定高度组件内中文垂直居中一致。
+ * - 全部槽位统一 [AppTextStyles] 的中文行高策略，固定高度组件内中文垂直居中一致。
  * labelSmall 保持 16sp 行高（1.33 倍），服务于徽章等固定槽位的紧凑场景。
  */
 val Md3Typography = Typography(
-    displayLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 57.sp,
-        lineHeight = 64.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    displayMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 45.sp,
-        lineHeight = 52.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    displaySmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 36.sp,
-        lineHeight = 44.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    headlineLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 32.sp,
-        lineHeight = 40.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    headlineMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 28.sp,
-        lineHeight = 36.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    headlineSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 24.sp,
-        lineHeight = 32.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    titleLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 22.sp,
-        lineHeight = 28.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    titleMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    titleSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    bodyLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    bodyMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
-        lineHeight = 21.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    bodySmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 13.sp,
-        lineHeight = 19.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    labelLarge = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 14.sp,
-        lineHeight = 20.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    labelMedium = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
-        lineHeight = 17.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    ),
-    labelSmall = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 12.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.sp,
-        lineHeightStyle = CjkMd3LineHeightStyle
-    )
+    displayLarge = AppTextStyles.displayLarge,
+    displayMedium = AppTextStyles.displayMedium,
+    displaySmall = AppTextStyles.displaySmall,
+    headlineLarge = AppTextStyles.headlineLarge,
+    headlineMedium = AppTextStyles.headlineMedium,
+    headlineSmall = AppTextStyles.headlineSmall,
+    titleLarge = AppTextStyles.titleLarge,
+    titleMedium = AppTextStyles.titleMedium,
+    titleSmall = AppTextStyles.titleSmall,
+    bodyLarge = AppTextStyles.bodyLarge,
+    bodyMedium = AppTextStyles.bodyMedium,
+    bodySmall = AppTextStyles.bodySmall,
+    labelLarge = AppTextStyles.labelLarge,
+    labelMedium = AppTextStyles.labelMedium,
+    labelSmall = AppTextStyles.labelSmall
 )
 
 /**

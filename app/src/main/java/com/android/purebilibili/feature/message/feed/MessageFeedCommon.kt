@@ -27,20 +27,51 @@ import com.android.purebilibili.core.ui.AppSurfaceTokens
 import com.android.purebilibili.core.ui.rememberContentCardSurfaceSpec
 import com.android.purebilibili.feature.message.messageGlassContainer
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+private val messageFeedDayFormatter = SimpleDateFormat("MM-dd", Locale.getDefault())
+private val messageFeedYearDayFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+private val messageFeedClockFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+private val messageFeedCalendar = Calendar.getInstance()
+
+/**
+ * 通知聚合列表相对时间，与 PiliPlus `DateFormatUtils.dateFormat` 对齐：
+ * 刚刚 / N分钟前 / N小时前 / 昨天 HH:mm / N天前 / 同年 MM-dd / 跨年 yyyy-MM-dd。
+ */
 internal fun formatMessageFeedTime(timestampSeconds: Int): String {
     if (timestampSeconds <= 0) return ""
-    val now = System.currentTimeMillis()
-    val msgTime = timestampSeconds * 1000L
-    val diff = now - msgTime
-    return when {
-        diff < 60_000L -> "刚刚"
-        diff < 3_600_000L -> "${diff / 60_000L}分钟前"
-        diff < 86_400_000L -> "${diff / 3_600_000L}小时前"
-        diff < 172_800_000L -> "昨天"
-        else -> SimpleDateFormat("MM-dd", Locale.getDefault()).format(Date(msgTime))
+    val nowMillis = System.currentTimeMillis()
+    val date = Date(timestampSeconds * 1000L)
+    val diffMinutes = ((nowMillis - date.time) / 60_000L).toInt()
+    if (diffMinutes < 1) return "刚刚"
+    if (diffMinutes < 60) return "${diffMinutes}分钟前"
+    val diffHours = diffMinutes / 60
+    if (diffHours < 24) return "${diffHours}小时前"
+
+    val calendar = messageFeedCalendar
+    val today = (calendar.clone() as Calendar).apply {
+        timeInMillis = nowMillis
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+    calendar.time = date
+    val dateDay = (calendar.clone() as Calendar).apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+    val dayDiff = ((today.timeInMillis - dateDay.timeInMillis) / 86_400_000L).toInt()
+    if (dayDiff == 1) return "昨天 ${messageFeedClockFormatter.format(date)}"
+    if (dayDiff < 4) return "${dayDiff}天前"
+    return if (today.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+        messageFeedDayFormatter.format(date)
+    } else {
+        messageFeedYearDayFormatter.format(date)
     }
 }
 

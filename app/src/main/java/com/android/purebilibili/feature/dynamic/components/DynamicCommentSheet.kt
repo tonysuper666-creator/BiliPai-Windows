@@ -13,8 +13,8 @@ import com.android.purebilibili.core.ui.AppDialogAction
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 import com.android.purebilibili.core.ui.AppSurfaceTokens
+import com.android.purebilibili.core.ui.AdaptivePullToRefreshBox
 import com.android.purebilibili.core.ui.skeleton.CommentListColumnSkeleton
-import com.android.purebilibili.core.ui.skeleton.CommentListSkeleton
 
 import android.content.Context
 import android.net.Uri
@@ -122,6 +122,8 @@ import androidx.compose.material.icons.automirrored.outlined.Reply
 import androidx.compose.material.icons.outlined.Image
 import coil3.compose.AsyncImage
 import com.android.purebilibili.core.util.PickMultipleGalleryVisualMedia
+import com.android.purebilibili.core.util.FormatUtils
+import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
 import com.android.purebilibili.core.ui.AppModalBottomSheet
 import com.android.purebilibili.core.ui.components.AppTextField
 import com.android.purebilibili.core.ui.components.AppOutlinedTextField
@@ -147,6 +149,8 @@ fun DynamicCommentOverlayHost(
     val selectedDynamicId by viewModel.selectedDynamicId.collectAsStateWithLifecycle()
     val comments by viewModel.comments.collectAsStateWithLifecycle()
     val commentsLoading by viewModel.commentsLoading.collectAsStateWithLifecycle()
+    val commentsRefreshing by viewModel.commentsRefreshing.collectAsStateWithLifecycle()
+    val commentsRefreshError by viewModel.commentsRefreshError.collectAsStateWithLifecycle()
     val commentsLoadingMore by viewModel.commentsLoadingMore.collectAsStateWithLifecycle()
     val subReplyState by viewModel.subReplyState.collectAsStateWithLifecycle()
     val liveCommentCount by viewModel.commentTotalCount.collectAsStateWithLifecycle()
@@ -154,6 +158,13 @@ fun DynamicCommentOverlayHost(
     val replyTarget by viewModel.commentReplyTarget.collectAsStateWithLifecycle()
     val inspectionMode = LocalInspectionMode.current
 
+    LaunchedEffect(commentsRefreshError, inspectionMode) {
+        commentsRefreshError?.let { message ->
+            if (!inspectionMode) {
+                android.widget.Toast.makeText(toastContext, message, android.widget.Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     if (!selectedDynamicId.isNullOrBlank()) {
         val dynamicId = requireNotNull(selectedDynamicId)
         val dynamicItem = remember(dynamicId, primaryItems, secondaryItems) {
@@ -173,8 +184,11 @@ fun DynamicCommentOverlayHost(
             totalCount = totalCount,
             sortMode = sortMode,
             isLoading = commentsLoading,
+            isRefreshing = commentsRefreshing,
+            hasRefreshError = commentsRefreshError != null,
             isLoadingMore = commentsLoadingMore,
             onDismiss = { viewModel.closeCommentSheet() },
+            onRefresh = viewModel::refreshComments,
             onSortModeChange = { viewModel.setDynamicCommentSortMode(it) },
             onPostComment = { message, images, onResult ->
                 viewModel.postComment(dynamicId, message, images) { success, msg ->
@@ -216,6 +230,7 @@ fun DynamicCommentOverlayHost(
             subReplyState = subReplyState,
             onCloseSubReply = { viewModel.closeSubReply() },
             onLoadMoreSubReplies = { viewModel.loadMoreSubReplies() },
+            onRefreshSubReplies = { viewModel.refreshSubReplies() },
             onSubReplySortModeChange = { viewModel.setSubReplySortMode(it) },
             onThreadCommentLike = { rpid -> viewModel.likeComment(rpid) },
             onThreadCommentHate = { rpid ->
@@ -251,8 +266,11 @@ fun DynamicCommentSheet(
     totalCount: Int,  //  [新增] 总评论数
     sortMode: CommentSortMode = CommentSortMode.HOT,
     isLoading: Boolean,
+    isRefreshing: Boolean,
+    hasRefreshError: Boolean,
     isLoadingMore: Boolean,
     onDismiss: () -> Unit,
+    onRefresh: () -> Unit,
     onSortModeChange: (CommentSortMode) -> Unit = {},
     onPostComment: (String, List<Uri>, (Boolean) -> Unit) -> Unit,
     onViewReplies: (ReplyItem) -> Unit = {},
@@ -271,6 +289,7 @@ fun DynamicCommentSheet(
     subReplyState: SubReplyUiState = SubReplyUiState(),
     onCloseSubReply: () -> Unit = {},
     onLoadMoreSubReplies: () -> Unit = {},
+    onRefreshSubReplies: () -> Unit,
     onSubReplySortModeChange: (SubReplySortMode) -> Unit = {},
     onThreadCommentLike: (Long) -> Unit = {},
     onThreadCommentHate: (Long) -> Unit = {},
@@ -293,7 +312,7 @@ fun DynamicCommentSheet(
             } catch (_: Exception) {}
         }
     }
-    val canLoadMore = comments.size < totalCount && !isLoading && !isLoadingMore
+    val canLoadMore = comments.size < totalCount && !isLoading && !isRefreshing && !hasRefreshError && !isLoadingMore
     var showImagePreview by remember { mutableStateOf(false) }
     var previewImages by remember { mutableStateOf<List<String>>(emptyList()) }
     var previewInitialIndex by remember { mutableIntStateOf(0) }
@@ -318,7 +337,7 @@ fun DynamicCommentSheet(
         )
     }
 
-    LaunchedEffect(listState, comments.size, totalCount, isLoading, isLoadingMore) {
+    LaunchedEffect(listState, comments.size, totalCount, isLoading, isRefreshing, hasRefreshError, isLoadingMore) {
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: -1 }
             .map { lastVisibleIndex ->
                 val itemCount = listState.layoutInfo.totalItemsCount
@@ -490,97 +509,114 @@ fun DynamicCommentSheet(
                 }
 
                 // 评论列表
-                if (isLoading && comments.isEmpty()) {
-                    CommentListSkeleton(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        contentPadding = PaddingValues(vertical = AppSpacingTokens.Small),
-                    )
-                } else if (comments.isEmpty()) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                ) {
+                    AdaptivePullToRefreshBox(
+                        isRefreshing = isRefreshing,
+                        onRefresh = onRefresh,
+                        modifier = Modifier.fillMaxSize(),
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier.padding(horizontal = AppSpacingTokens.ExtraLarge),
+                        LazyColumn(
+                            state = listState,
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(
+                                horizontal = AppSpacingTokens.Large,
+                                vertical = AppSpacingTokens.Small,
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.Medium)
                         ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(AppSpacingTokens.TripleExtraLarge + AppSpacingTokens.Large)
-                                    .clip(AppShapes.container(ContainerLevel.Pill))
-                                    .background(AppSurfaceTokens.surfaceContainerHigh()),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                AppIcon(
-                                    rememberAppCommentIcon(),
-                                    contentDescription = null,
-                                    modifier = Modifier.size(AppSpacingTokens.DoubleExtraLarge),
-                                    tint = MaterialTheme.colorScheme.primary,
-                                )
-                            }
-                            Spacer(modifier = Modifier.height(AppSpacingTokens.Large))
-                            AppText(
-                                text = resolveDynamicCommentEmptyLabel(),
-                                style = MaterialTheme.typography.titleSmall,
-                                fontWeight = FontWeight.SemiBold,
-                            )
-                            Spacer(modifier = Modifier.height(AppSpacingTokens.ExtraSmall))
-                            AppText(
-                                text = "来聊聊你对这条动态的看法",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = AppSurfaceTokens.onSurfaceVariantActions(),
-                            )
-                        }
-                    }
-                } else {
-                    LazyColumn(
-                        state = listState,
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth(),
-                        contentPadding = PaddingValues(
-                            horizontal = AppSpacingTokens.Large,
-                            vertical = AppSpacingTokens.Small,
-                        ),
-                        verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.Medium)
-                    ) {
-                        items(comments, key = { it.rpid }) { reply ->
-                            ReplyItemView(
-                                item = reply,
-                                onClick = { onViewReplies(reply) },
-                                onSubClick = { root, _ -> onViewReplies(root) },
-                                onReplyClick = { onReply(reply) },
-                                onLikeClick = { onLike(reply) },
-                                isLiked = isDynamicCommentLiked(reply),
-                                onHateClick = { onHate(reply) },
-                                isHated = reply.action == 2,
-                                onDeleteClick = { onDelete(reply) },
-                                onReportClick = { reason -> onReport(reply, reason) },
-                                canToggleTop = dynamicAuthorMid > 0L,
-                                onToggleTopClick = { onToggleTop(reply) },
-                                onAvatarClick = { mid -> mid.toLongOrNull()?.let(onUserClick) },
-                                onImagePreview = { images, index, rect, textContent ->
-                                    previewImages = images
-                                    previewInitialIndex = index
-                                    previewSourceRect = rect
-                                    previewTextContent = textContent
-                                    showImagePreview = true
-                                },
-                            )
-                        }
-                        if (isLoadingMore) {
-                            item(key = "dynamic_comment_loading_more") {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(vertical = AppSpacingTokens.Small),
-                                    contentAlignment = Alignment.Center
+                            when {
+                                isLoading && comments.isEmpty() -> item(
+                                    key = "dynamic_comment_initial_skeleton",
+                                    contentType = "dynamic_comment_initial_skeleton",
                                 ) {
-                                    AdaptiveLoadingIndicator(size = AppSpacingTokens.ExtraLarge)
+                                    Box(modifier = Modifier.fillParentMaxSize()) {
+                                        CommentListColumnSkeleton(itemCount = 6)
+                                    }
+                                }
+
+                                comments.isEmpty() -> item(
+                                    key = "dynamic_comment_empty",
+                                    contentType = "dynamic_comment_empty",
+                                ) {
+                                    Box(
+                                        modifier = Modifier.fillParentMaxSize(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Column(
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                            modifier = Modifier.padding(horizontal = AppSpacingTokens.ExtraLarge),
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(AppSpacingTokens.TripleExtraLarge + AppSpacingTokens.Large)
+                                                    .clip(AppShapes.container(ContainerLevel.Pill))
+                                                    .background(AppSurfaceTokens.surfaceContainerHigh()),
+                                                contentAlignment = Alignment.Center,
+                                            ) {
+                                                AppIcon(
+                                                    rememberAppCommentIcon(),
+                                                    contentDescription = null,
+                                                    modifier = Modifier.size(AppSpacingTokens.DoubleExtraLarge),
+                                                    tint = MaterialTheme.colorScheme.primary,
+                                                )
+                                            }
+                                            Spacer(modifier = Modifier.height(AppSpacingTokens.Large))
+                                            AppText(
+                                                text = resolveDynamicCommentEmptyLabel(),
+                                                style = MaterialTheme.typography.titleSmall,
+                                                fontWeight = FontWeight.SemiBold,
+                                            )
+                                            Spacer(modifier = Modifier.height(AppSpacingTokens.ExtraSmall))
+                                            AppText(
+                                                text = "来聊聊你对这条动态的看法",
+                                                style = MaterialTheme.typography.bodyMedium,
+                                                color = AppSurfaceTokens.onSurfaceVariantActions(),
+                                            )
+                                        }
+                                    }
+                                }
+
+                                else -> {
+                                    items(comments, key = { it.rpid }) { reply ->
+                                        ReplyItemView(
+                                            item = reply,
+                                            onClick = { onViewReplies(reply) },
+                                            onSubClick = { root, _ -> onViewReplies(root) },
+                                            onReplyClick = { onReply(reply) },
+                                            onLikeClick = { onLike(reply) },
+                                            isLiked = isDynamicCommentLiked(reply),
+                                            onHateClick = { onHate(reply) },
+                                            isHated = reply.action == 2,
+                                            onDeleteClick = { onDelete(reply) },
+                                            onReportClick = { reason -> onReport(reply, reason) },
+                                            canToggleTop = dynamicAuthorMid > 0L,
+                                            onToggleTopClick = { onToggleTop(reply) },
+                                            onAvatarClick = { mid -> mid.toLongOrNull()?.let(onUserClick) },
+                                            onImagePreview = { images, index, rect, textContent ->
+                                                previewImages = images
+                                                previewInitialIndex = index
+                                                previewSourceRect = rect
+                                                previewTextContent = textContent
+                                                showImagePreview = true
+                                            },
+                                        )
+                                    }
+                                    if (isLoadingMore) {
+                                        item(key = "dynamic_comment_loading_more") {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(vertical = AppSpacingTokens.Small),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                AdaptiveLoadingIndicator(size = AppSpacingTokens.ExtraLarge)
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -618,9 +654,11 @@ fun DynamicCommentSheet(
                                 onSortModeChange = onSubReplySortModeChange,
                                 remoteReplyCount = subReplyState.totalCount,
                                 isLoading = subReplyState.isLoading,
+                                isRefreshing = subReplyState.isRefreshing,
                                 isEnd = subReplyState.isEnd,
                                 emoteMap = emoteMap,
                                 onLoadMore = onLoadMoreSubReplies,
+                                onRefresh = onRefreshSubReplies,
                                 onDismiss = onCloseSubReply,
                                 applyStatusBarPadding = false,
                                 onImagePreview = { images, index, rect, textContent ->
@@ -1116,6 +1154,7 @@ private fun CommentItem(
     subReplyState: SubReplyUiState = SubReplyUiState(),
     modifier: Modifier = Modifier,
 ) {
+    val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current
     val queryAicu = com.android.purebilibili.feature.aicu.LocalAicuNavigation.current
     val member = reply.member
     val actionCapabilities = remember(reply, dynamicAuthorMid, currentUserMid) {
@@ -1231,7 +1270,10 @@ private fun CommentItem(
                 )
                 Spacer(modifier = Modifier.width(AppSpacingTokens.Small))
                 AppText(
-                    text = formatTime(reply.ctime),
+                    text = FormatUtils.formatCommentTime(
+                        timestampSeconds = reply.ctime,
+                        detailedTimeEnabled = detailedCommentTimeEnabled
+                    ),
                     fontSize = VideoCommentTypographyTokens.metadata,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f)
                 )
@@ -1335,13 +1377,15 @@ private fun CommentItem(
             if (!reply.content.pictures.isNullOrEmpty()) {
                 Spacer(modifier = Modifier.height(AppSpacingTokens.Small))
                 CommentPictures(
-                    pictures = reply.content.pictures,
+                    pictures = reply.content.pictures.orEmpty(),
                     onImageClick = { images, index, rect ->
                         onImagePreview(
                             images,
                             index,
                             rect,
-                            resolveReplyPreviewTextContent(reply)
+                            resolveReplyPreviewTextContent(
+                                item = reply
+                            )
                         )
                     }
                 )
@@ -1445,13 +1489,15 @@ private fun CommentItem(
                                 }
                                 if (!subReply.content.pictures.isNullOrEmpty()) {
                                     CommentPictures(
-                                        pictures = subReply.content.pictures,
+                                        pictures = subReply.content.pictures.orEmpty(),
                                         onImageClick = { images, index, rect ->
                                             onImagePreview(
                                                 images,
                                                 index,
                                                 rect,
-                                                resolveReplyPreviewTextContent(subReply)
+                                                resolveReplyPreviewTextContent(
+                                                    item = subReply
+                                                )
                                             )
                                         }
                                     )
@@ -1498,25 +1544,5 @@ private fun CommentItem(
                     .padding(top = AppSpacingTokens.None)
             )
         }
-    }
-}
-
-// 评论时间组合期热路径：共享 formatter，避免每行新建 SimpleDateFormat。
-// 仅主线程（Compose 组合）调用，不涉及 SimpleDateFormat 的线程安全问题。
-private val commentDayFormatter =
-    java.text.SimpleDateFormat("MM-dd", java.util.Locale.CHINA)
-
-/**
- * 格式化时间戳
- */
-private fun formatTime(timestamp: Long): String {
-    val now = System.currentTimeMillis() / 1000
-    val diff = now - timestamp
-    return when {
-        diff < 60 -> "刚刚"
-        diff < 3600 -> "${diff / 60}分钟前"
-        diff < 86400 -> "${diff / 3600}小时前"
-        diff < 604800 -> "${diff / 86400}天前"
-        else -> commentDayFormatter.format(java.util.Date(timestamp * 1000))
     }
 }

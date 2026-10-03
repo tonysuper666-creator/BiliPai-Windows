@@ -407,10 +407,11 @@ internal fun resolveDynamicCardPrimaryAction(item: DynamicItem): DynamicCardPrim
         )?.let { return it }
     }
 
-    major?.live?.id?.trim()?.toLongOrNull()?.takeIf { it > 0L }?.let { roomId ->
+    val live = major?.live
+    live?.id?.trim()?.toLongOrNull()?.takeIf { it > 0L }?.let { roomId ->
         return DynamicCardPrimaryAction.OpenLive(
             roomId = roomId,
-            title = major.live.title.ifBlank { "直播间" },
+            title = live.title.ifBlank { "直播间" },
             uname = target.modules.module_author?.name.orEmpty()
         )
     }
@@ -448,7 +449,7 @@ internal fun resolveDynamicCardMediaAction(
     val images = when {
         opusImages.isNotEmpty() -> opusImages.map { it.url }
         drawImages.isNotEmpty() -> drawImages.map { it.src }
-        major.article != null -> resolveArticleCoverUrls(major.article)
+        major.article != null -> resolveArticleCoverUrls(requireNotNull(major.article))
         else -> emptyList()
     }
     if (clickedIndex !in images.indices) return DynamicCardMediaAction.None

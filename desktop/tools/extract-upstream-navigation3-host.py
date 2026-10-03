@@ -1,3 +1,4 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, os, re, textwrap
 
@@ -84,7 +85,7 @@ def function(raw, name):
 def generate(repo, output, standalone=False):
     receipt = {'target': TARGET, 'sources': [], 'outputs': [], 'replacements': {}}
     def read(path):
-        raw = safe(repo / path).read_text(encoding='utf-8').replace('\r\n', '\n')
+        raw = safe(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
         return raw
     def record(path, raw, mode):
         receipt['sources'].append({'path': path, 'sha256LF': digest(raw), 'mode': mode,

@@ -1,5 +1,6 @@
 package com.android.purebilibili.feature.video.screen
 
+import com.android.purebilibili.feature.video.ambient.PlayerAmbientLayout
 import android.content.res.Configuration
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope.OverlayClip
@@ -495,7 +496,7 @@ private fun LargeScreenPlayerHost(
     } else {
         modifier
     }
-    Box(modifier = playerContainerModifier) {
+    PlayerAmbientLayout(playerModifier = playerContainerModifier) {
         if (playerContent != null) {
             playerContent(Modifier.fillMaxSize())
         } else {

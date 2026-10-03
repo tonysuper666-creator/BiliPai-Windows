@@ -1,3 +1,4 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap, difflib, sys
 sys.dont_write_bytecode = True
@@ -43,7 +44,7 @@ def generate(repo, output):
              prefix + 'feature/settings/screen/BottomBarSettingsScreen.kt',
              prefix + 'feature/settings/screen/AnimationSettingsScreen.kt',
              prefix + 'core/store/SettingsManager.kt']
-    sources = {path: (repo / path).read_text(encoding='utf-8').replace('\r\n', '\n') for path in paths}
+    sources = {path: (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n') for path in paths}
     sections, bottom, animation, manager = [sources[path] for path in paths]
     selected = []
     branch = re.search(r'SettingsRootCategory\.NAVIGATION_INTERACTION\s*->\s*\{', sections)

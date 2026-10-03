@@ -1,4 +1,5 @@
 """Source-preserving application HTTP proxy store/policy and actual proxy-only settings UI."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,textwrap
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -10,7 +11,7 @@ ASSETS=['ms_lan_24','ms_hub_24']
 SOURCES={STORE:'platform-rewrite',POLICY:'direct',API:'policy-extract',SECTIONS:'policy-extract'}
 def load(path,name):
  spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
-def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 def generate(repo,output,standalone=False):
  host=load(repo/'desktop/tools/extract-upstream-plugins.py','proxy_helpers');media=host.media_extractor(repo);parser=media.parser_for(repo)
  files=[];output.mkdir(parents=True,exist_ok=True)
@@ -24,7 +25,7 @@ def generate(repo,output,standalone=False):
  selector=media.function(original,'buildAppProxySelector',parser)
  selector=host.substitute(selector,'buildAppProxySelector():','buildAppProxySelector(systemSelector: () -> java.net.ProxySelector? = { java.net.ProxySelector.getDefault() }):')
  selector=host.substitute(selector,'getDefault()?.select(uri).orEmpty()','systemSelector()?.select(uri).orEmpty()')
- unsafe='com.android.purebilibili.core.util.Logger.w(\n                "ApiClient",\n                "Proxy connect failed uri=$uri sa=$sa: ${ioe?.message}"\n            )'
+ unsafe='com.android.purebilibili.core.network.CoreDataLog.w(\n                "ApiClient",\n                "Proxy connect failed uri=$uri sa=$sa: ${ioe?.message}"\n            )'
  selector=host.substitute(selector,unsafe,'recordDesktopProxyConnectionFailure(ioe)')
  playback=media.function(original,'buildPlaybackOkHttpClient',parser)
  source='package com.bilipai.desktop.network\nimport okhttp3.OkHttpClient\nimport java.net.Proxy\n\ninternal object DesktopNetworkProxyPlatform {\n'+selector+'\n\n'+playback+'\n}\n'

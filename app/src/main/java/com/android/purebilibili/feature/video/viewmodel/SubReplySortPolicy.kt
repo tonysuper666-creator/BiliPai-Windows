@@ -22,6 +22,7 @@ internal fun SubReplyUiState.resetForSort(mode: SubReplySortMode): SubReplyUiSta
     conversationAnchor = null,
     targetReplyId = 0L,
     isLoading = true,
+    isRefreshing = false,
     error = null,
 )
 

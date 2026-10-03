@@ -96,11 +96,14 @@ report.md
 !README_EN.md
 !AGENTS.md
 !CHANGELOG.md
+!miuix-navigation/UPGRADE_REVIEW.md
 !docs/
 docs/*
 !docs/GOOGLE_CAST_PLUGIN.md
 !docs/DLNA_CAST_PLUGIN.md
 !docs/android17-verification.md
+!docs/telegram-thanos-port.md
+!docs/TV_ADAPTATION.md
 !docs/images/
 !docs/images/screenshot*.png
 !docs/wiki/

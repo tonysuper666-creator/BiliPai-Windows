@@ -226,7 +226,8 @@ object BangumiRepository {
                 after = after.coerceIn(0, 7),
             )
             if (response.code == 0 && response.result != null) {
-                Result.success(response.result)
+                val checkedResponseResult = requireNotNull(response.result)
+                Result.success(checkedResponseResult)
             } else {
                 Result.failure(Exception("获取时间表失败: ${response.message}"))
             }
@@ -270,7 +271,8 @@ object BangumiRepository {
                 seasonMonth = requestFilter.seasonMonth
             )
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 Result.failure(Exception("获取番剧列表失败: ${response.message}"))
             }
@@ -309,7 +311,8 @@ object BangumiRepository {
             val response = json.decodeFromString<BangumiDetailResponse>(jsonString)
             
             if (response.code == 0 && response.result != null) {
-                val rawDetail = response.result
+                val checkedResponseResult = requireNotNull(response.result)
+                val rawDetail = checkedResponseResult
                 val resolvedDetail = if (rawDetail.seasonId > 0L && shouldLoadBangumiSections(rawDetail)) {
                     runCatching { api.getSeasonSections(rawDetail.seasonId) }
                         .getOrNull()
@@ -376,7 +379,8 @@ object BangumiRepository {
 
             val response = json.decodeFromString<com.android.purebilibili.data.model.response.PugvSeasonResponse>(jsonString)
             if (response.code == 0 && response.data != null) {
-                val detail = response.data.toBangumiDetail()
+                val checkedResponseData = requireNotNull(response.data)
+                val detail = checkedResponseData.toBangumiDetail()
                 android.util.Log.w("BangumiRepo", "getPugvSeasonDetail 成功: seasonId=${detail.seasonId}, title=${detail.title}, episodes=${detail.episodes?.size}")
                 Result.success(detail)
             } else {
@@ -670,7 +674,8 @@ object BangumiRepository {
                 indexType = indexType,
             )
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 Result.failure(Exception("获取番剧索引条件失败: ${response.message}"))
             }
@@ -701,7 +706,8 @@ object BangumiRepository {
             }
             val response = api.getBangumiIndexResult(query)
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 Result.failure(Exception("获取番剧索引失败: ${response.message}"))
             }
@@ -745,7 +751,8 @@ object BangumiRepository {
                 seasonMonth = requestFilter.seasonMonth
             )
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 Result.failure(Exception("获取番剧列表失败: ${response.message}"))
             }
@@ -791,7 +798,8 @@ object BangumiRepository {
             }
             
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 Result.failure(Exception("搜索番剧失败: ${response.message}"))
             }
@@ -821,7 +829,8 @@ object BangumiRepository {
                 ps = pageSize
             )
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 Result.failure(Exception("获取追番列表失败: ${response.message}"))
             }

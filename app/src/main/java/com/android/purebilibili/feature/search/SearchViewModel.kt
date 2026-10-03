@@ -33,6 +33,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -204,7 +205,10 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val searchDao = AppDatabase.getDatabase(application).searchHistoryDao()
     
     //  防抖任务
-    private var searchRecommendEnabled = true
+    private var discoverSectionEnabled = true
+    private var searchSuggestionsEnabled = true
+    private var discoverSettingsLoaded = false
+    private var discoverRequestVersion = 0L
     private var suggestJob: Job? = null
     private var activeSearchJob: Job? = null
     private var activeLoadMoreJob: Job? = null
@@ -218,12 +222,25 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     init {
         loadHistory()
         viewModelScope.launch {
-            com.android.purebilibili.core.store.SettingsManager.getSearchSuggestionsEnabled(application)
-                .collect { enabled ->
-                    val changed = (searchRecommendEnabled != enabled)
-                    searchRecommendEnabled = enabled
-                    if (changed && landingBootstrapStarted) {
-                        refreshDiscoverInternal()
+            combine(
+                com.android.purebilibili.core.store.SettingsManager.getSearchDiscoverSectionEnabled(application),
+                com.android.purebilibili.core.store.SettingsManager.getSearchSuggestionsEnabled(application)
+            ) { visible, personalized -> visible to personalized }
+                .collect { (visible, personalized) ->
+                    val wasVisible = discoverSectionEnabled
+                    val wasPersonalized = searchSuggestionsEnabled
+                    val wasLoaded = discoverSettingsLoaded
+                    discoverSectionEnabled = visible
+                    searchSuggestionsEnabled = personalized
+                    discoverSettingsLoaded = true
+                    if (!wasLoaded || visible != wasVisible || personalized != wasPersonalized) {
+                        discoverRequestVersion++
+                        if (wasPersonalized != personalized) {
+                            _uiState.update { it.copy(discoverList = emptyList(), discoverListError = null) }
+                        }
+                        if (landingBootstrapStarted && visible) {
+                            launch { refreshDiscoverInternal() }
+                        }
                     }
                 }
         }
@@ -284,7 +301,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             launch { loadDefaultSearchHintInternal() }
             launch { refreshHotSearchInternal() }
-            launch { refreshDiscoverInternal() }
+            if (discoverSettingsLoaded && discoverSectionEnabled) launch { refreshDiscoverInternal() }
         }
     }
 
@@ -1263,6 +1280,7 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun refreshDiscover() {
+        if (!discoverSectionEnabled || !discoverSettingsLoaded) return
         if (!landingBootstrapStarted) {
             ensureLandingBootstrap()
             return
@@ -1294,19 +1312,14 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     private suspend fun refreshDiscoverInternal() {
-        val historyKeywords = _uiState.value.historyList.map { it.keyword }
+        val requestVersion = ++discoverRequestVersion
         _uiState.update { it.copy(isRefreshingDiscoverList = true, discoverListError = null) }
-        val result = SearchRepository.getSearchRecommend(
-            historyKeywords = historyKeywords,
-            enablePersonalizedRecommend = searchRecommendEnabled
-        )
-
+        val result = SearchRepository.getSearchRecommend(personalizedEnabled = searchSuggestionsEnabled)
+        if (requestVersion != discoverRequestVersion || !discoverSectionEnabled) return
         result.onSuccess { list ->
             _uiState.update {
                 it.copy(
-                    discoverList = list
-                        .map { item -> item.toSearchKeywordUiModel() }
-                        .take(10),
+                    discoverList = list.map { item -> item.toSearchKeywordUiModel() },
                     isRefreshingDiscoverList = false,
                     discoverListError = null
                 )
@@ -1345,7 +1358,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             try {
                 searchDao.delete(history)
-                refreshDiscover()
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Throwable) {
@@ -1358,7 +1370,6 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
         viewModelScope.launch {
             try {
                 searchDao.clearAll()
-                refreshDiscover()
             } catch (e: CancellationException) {
                 throw e
             } catch (e: Throwable) {

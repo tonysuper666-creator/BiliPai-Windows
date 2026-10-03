@@ -3,6 +3,7 @@
 Requires the previously extracted dynamic timeline source set. No Android ViewModel,
 synthetic UI state or disabled glass branch is emitted as a working consumer.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,textwrap
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -19,7 +20,7 @@ PATHS=[BASE+p for p in ['core/store/SettingsManager.kt','feature/settings/ui/Set
  'renderer/material3/AppMaterial3SegmentedControl.kt','renderer/miuix/AppMiuixSegmentedControl.kt']]+DIRECT[:3]+[DS+'AdaptiveChrome.kt',DS+'renderer/material3/AppMaterial3TonalPillTabRow.kt']
 def module(repo,name,path):
  s=importlib.util.spec_from_file_location(name,repo/path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
-def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 def inventory(repo):return [dict(path=p,mode='direct' if p in DIRECT else 'platform-adapter-reference' if p.endswith('DynamicUserLiveBadge.kt') else 'policy-extract',
  features=['settings-dynamic-tabs-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]
 def generate(repo,output,standalone=False):

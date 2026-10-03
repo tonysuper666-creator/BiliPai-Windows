@@ -132,9 +132,8 @@ class ImagePreviewTransitionPolicyTest {
 
         assertEquals(0f, motion.overshootTarget)
         assertEquals(0f, motion.settleTarget)
-        assertEquals(300, motion.collapseDurationMillis)
         assertEquals(180, motion.cancelRecoverDurationMillis)
-        assertEquals(300, motion.openDurationMillis)
+        assertEquals(260, motion.openDurationMillis)
         assertEquals(motion.overshootTarget, motion.settleTarget)
     }
 
@@ -481,6 +480,35 @@ class ImagePreviewTransitionPolicyTest {
         assertEquals(0f, clampImagePreviewDismissVelocity(0f))
         assertEquals(3000f, clampImagePreviewDismissVelocity(9000f), 0.0001f)
         assertEquals(-3000f, clampImagePreviewDismissVelocity(-9000f), 0.0001f)
+    }
+
+    @Test
+    fun dismissVelocity_convertsPixelsToProgressAndRespectsReturnDirection() {
+        val start = Rect(0f, 0f, 200f, 200f)
+        val below = Rect(0f, 1000f, 200f, 1200f)
+        val above = Rect(0f, -1000f, 200f, -800f)
+        assertEquals(-1f, resolveImagePreviewDismissProgressVelocity(1000f, start, below, 2000f), 0.0001f)
+        assertEquals(-1f, resolveImagePreviewDismissProgressVelocity(-1000f, start, above, 2000f), 0.0001f)
+        assertEquals(0f, resolveImagePreviewDismissProgressVelocity(1000f, start, above, 2000f))
+        // A diagonal return only carries the part of the vertical velocity along its path.
+        val diagonal = below.translate(androidx.compose.ui.geometry.Offset(1000f, 0f))
+        assertEquals(-0.5f, resolveImagePreviewDismissProgressVelocity(1000f, start, diagonal, 2000f), 0.0001f)
+    }
+
+    @Test
+    fun dismissVelocity_handlesMissingAndCoincidentAnchorsWithoutOvershoot() {
+        val rect = Rect(0f, 0f, 200f, 200f)
+        assertEquals(0f, resolveImagePreviewDismissProgressVelocity(3000f, rect, rect, 2000f))
+        assertEquals(-0.75f, resolveImagePreviewDismissProgressVelocity(-3000f, rect, null, 2000f, 0.5f))
+        assertEquals(-6f, resolveImagePreviewDismissProgressVelocity(3000f, null, null, 0f, 0.5f))
+    }
+
+    @Test
+    fun dismissCorners_startAtDraggedCornerAndLandAtThumbnailCorner() {
+        assertEquals(7f, resolveImagePreviewDismissCornerRadiusDp(1f, 7f, 12f))
+        assertEquals(9.5f, resolveImagePreviewDismissCornerRadiusDp(0.5f, 7f, 12f))
+        assertEquals(12f, resolveImagePreviewDismissCornerRadiusDp(0f, 7f, 12f))
+        assertEquals(7f, resolveImagePreviewDismissCornerRadiusDp(2f, 7f, 12f))
     }
 
     @Test

@@ -13,7 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,10 +25,9 @@ import com.android.purebilibili.core.ui.AppModalBottomSheet
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppOutlinedTextField
-import com.android.purebilibili.core.ui.components.AppSegmentOption
+import com.android.purebilibili.core.ui.components.AppFilterChip
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppText
-import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -91,9 +91,10 @@ fun LiveSendDanmakuSheet(
     AppModalBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
                 .widthIn(max = 640.dp)
+                .fillMaxWidth()
                 .align(Alignment.CenterHorizontally)
+                .verticalScroll(rememberScrollState())
                 .padding(
                     horizontal = AppSpacingTokens.ExtraLarge,
                     vertical = AppSpacingTokens.Small,
@@ -120,9 +121,9 @@ fun LiveSendDanmakuSheet(
                         value = message,
                         onValueChange = { message = it.take(maxLength) },
                         modifier = Modifier.fillMaxWidth(),
-                        minLines = 3,
+                        minLines = 2,
                         maxLines = 4,
-                        placeholder = { AppText(if (replyTarget == null) "输入弹幕内容" else "输入回复内容") },
+                        placeholderText = if (replyTarget == null) "输入弹幕内容" else "输入回复内容",
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
                         keyboardActions = KeyboardActions(onSend = {
                             val content = message.trim()
@@ -135,12 +136,14 @@ fun LiveSendDanmakuSheet(
                         DanmakuColorSelector(
                             options = permission.availableColors,
                             selectedColor = selectedColor,
-                            onColorSelected = { selectedColor = it }
+                            onColorSelected = { selectedColor = it },
+                            modifier = Modifier.fillMaxWidth(),
                         )
                         DanmakuModeSelector(
                             options = permission.availableModes,
                             selectedMode = selectedMode,
-                            onModeSelected = { selectedMode = it }
+                            onModeSelected = { selectedMode = it },
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                     AppText(
@@ -195,9 +198,13 @@ fun LiveSendDanmakuSheet(
 private fun DanmakuColorSelector(
     options: List<com.android.purebilibili.data.repository.LiveDanmakuColorOption>,
     selectedColor: Int,
-    onColorSelected: (Int) -> Unit
+    onColorSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall)) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall),
+    ) {
         AppText(
             text = "弹幕颜色",
             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -267,27 +274,44 @@ private fun DanmakuColorSelector(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun DanmakuModeSelector(
     options: List<com.android.purebilibili.data.repository.LiveDanmakuModeOption>,
     selectedMode: Int,
-    onModeSelected: (Int) -> Unit
+    onModeSelected: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall)) {
+    // Only render a selector when the room actually offers a choice.
+    if (options.size == 1) {
         AppText(
-            text = "弹幕模式",
+            text = "弹幕模式：${options.single().name}",
+            modifier = modifier,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            style = MaterialTheme.typography.labelMedium
+            style = MaterialTheme.typography.labelMedium,
         )
-        AppThemeAdaptiveTabRow(
-            options = options.map { option -> AppSegmentOption(option.mode, option.name) },
-            selectedValue = selectedMode,
-            onSelectionChange = onModeSelected,
-            scrollable = true,
-            minTabWidth = 72.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentWidth(Alignment.CenterHorizontally),
-        )
+    } else {
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall),
+        ) {
+            AppText(
+                text = "弹幕模式",
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.labelMedium,
+            )
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(AppSpacingTokens.Small),
+                verticalArrangement = Arrangement.spacedBy(AppSpacingTokens.ExtraSmall),
+            ) {
+                options.forEach { option ->
+                    AppFilterChip(
+                        selected = selectedMode == option.mode,
+                        onClick = { onModeSelected(option.mode) },
+                        label = { AppText(option.name) },
+                    )
+                }
+            }
+        }
     }
 }

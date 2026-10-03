@@ -2,6 +2,7 @@
 package com.android.purebilibili.feature.video.ui.components
 
 import com.android.purebilibili.core.ui.AppAlertDialog
+import com.android.purebilibili.core.ui.HingeSafeInputOverlayHost
 import com.android.purebilibili.core.ui.components.AppSlider
 import com.android.purebilibili.core.ui.resolveFilledButtonContainerColor
 import com.android.purebilibili.core.ui.resolveFilledButtonContentColor
@@ -16,7 +17,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -128,6 +129,10 @@ fun DanmakuSendDialog(
 ) {
     val layoutPolicy = remember { resolveDanmakuSendDialogLayoutPolicy() }
     val configuration = LocalConfiguration.current
+    // 宽窗口限宽居中；半开折叠时弹层整体由 HingeSafeInputOverlayHost 收进铰链安全区。
+    val inputOverlayMaxWidthDp = remember(configuration.screenWidthDp) {
+        resolveBottomInputOverlayMaxWidthDp(configuration.screenWidthDp)
+    }
     val density = LocalDensity.current
     val imeBottomPx = WindowInsets.ime.getBottom(density)
     val effectiveBottomLiftDp = resolveDanmakuDialogBottomLiftDp(
@@ -146,11 +151,11 @@ fun DanmakuSendDialog(
     val fontSizeOptions = remember { danmakuSendFontSizeOptions().map { it.value to it.label } }
 
     // 状态
-    var text by remember { mutableStateOf(initialText) }
-    var selectedColor by remember { mutableIntStateOf(initialColor) }
-    var selectedMode by remember { mutableIntStateOf(initialMode) }
-    var selectedFontSize by remember { mutableIntStateOf(initialFontSize) }
-    var attentionCommandChecked by remember { mutableStateOf(initialAttentionCommand) }
+    var text by rememberSaveable { mutableStateOf(initialText) }
+    var selectedColor by rememberSaveable { mutableIntStateOf(initialColor) }
+    var selectedMode by rememberSaveable { mutableIntStateOf(initialMode) }
+    var selectedFontSize by rememberSaveable { mutableIntStateOf(initialFontSize) }
+    var attentionCommandChecked by rememberSaveable { mutableStateOf(initialAttentionCommand) }
     var showSettings by remember { mutableStateOf(false) }
     var showCustomColorPicker by remember { mutableStateOf(false) }
     var lastCustomColor by remember { mutableIntStateOf(0x66CCFF) }
@@ -159,15 +164,15 @@ fun DanmakuSendDialog(
     val keyboardController = LocalSoftwareKeyboardController.current
 
     // 重置状态
-    LaunchedEffect(
-        visible,
-        initialColor,
-        initialMode,
-        initialFontSize,
-        initialText,
-        initialAttentionCommand
-    ) {
-        if (visible) {
+    var inputWasVisible by rememberSaveable { mutableStateOf(false) }
+    // 草稿和样式会随输入回流，只在开始新会话时初始化，避免反复重置焦点与设置面板。
+    LaunchedEffect(visible) {
+        if (!visible) {
+            inputWasVisible = false
+            return@LaunchedEffect
+        }
+        if (!inputWasVisible) {
+            inputWasVisible = true
             val selection = resolveDanmakuSendSelectionState(
                 initialColor = initialColor,
                 initialMode = initialMode,
@@ -182,10 +187,10 @@ fun DanmakuSendDialog(
             selectedFontSize = selection.fontSize
             attentionCommandChecked = initialAttentionCommand
             showSettings = false
-            delay(100)
-            focusRequester.requestFocus()
-            keyboardController?.show()
         }
+        delay(100)
+        focusRequester.requestFocus()
+        keyboardController?.show()
     }
 
     LaunchedEffect(selectedColor, selectedMode, selectedFontSize, visible) {
@@ -219,29 +224,20 @@ fun DanmakuSendDialog(
                 decorFitsSystemWindows = false
             )
         ) {
-            Column(
+            // 统一输入弹层宿主：半开折叠时弹层整体收进铰链安全区，避免输入控件跨缝；
+            // 平铺窗口时点击空白处关闭、底部对齐，宽窗口由 widthIn 限宽并水平居中。
+            HingeSafeInputOverlayHost(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = topReservedSpace)
                     .padding(bottom = effectiveBottomLiftDp.dp)
                     .imePadding(),
-                verticalArrangement = if (layoutPolicy.bottomAligned) Arrangement.Bottom else Arrangement.Center
+                alignment = if (layoutPolicy.bottomAligned) Alignment.BottomCenter else Alignment.Center,
+                onDismissRequest = if (layoutPolicy.bottomAligned) onDismiss else null,
             ) {
-                if (layoutPolicy.bottomAligned) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxWidth()
-                            .clickable(
-                                indication = null,
-                                interactionSource = remember { MutableInteractionSource() },
-                                onClick = onDismiss
-                            )
-                    )
-                }
-
                 AppSurface(
                     modifier = modifier
+                        .widthIn(max = inputOverlayMaxWidthDp.dp)
                         .fillMaxWidth(layoutPolicy.fillMaxWidthFraction)
                         .heightIn(max = maxSheetHeight)
                         .wrapContentHeight(),

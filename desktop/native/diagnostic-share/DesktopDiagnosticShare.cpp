@@ -545,13 +545,63 @@ extern "C" __declspec(dllexport) HRESULT WINAPI BilipaiHomeNetworkSnapshot(
     if(FAILED(apartment.result)&&apartment.result!=RPC_E_CHANGED_MODE)return apartment.result;
     try {
         using namespace winrt::Windows::Networking::Connectivity;
-        auto profile=NetworkInformation::GetInternetConnectionProfile();
+        // String overload creates a local factory: no process factory pointer may
+        // outlive this query's RoUninitialize on an otherwise uninitialized caller.
+        auto factory=winrt::get_activation_factory<INetworkInformationStatics>(
+            L"Windows.Networking.Connectivity.NetworkInformation");
+        auto profile=factory.GetInternetConnectionProfile();
         if(!profile) {*profilePresent=0;*connectivity=0;*interfaceType=0;*isWwan=0;return S_OK;}
         auto adapter=profile.NetworkAdapter();if(!adapter)return E_UNEXPECTED;
         auto level=profile.GetNetworkConnectivityLevel();
         auto kind=adapter.IanaInterfaceType();
         auto cellular=profile.IsWwanConnectionProfile();
         *profilePresent=1;*connectivity=static_cast<int>(level);*interfaceType=kind;*isWwan=cellular?1:0;
+        return S_OK;
+    }catch(...){return winrt::to_hresult();}
+}
+
+// Extended SAME preferred-profile query. Old four-field ABI remains callable above.
+// Bounded private bytes are hashed/wiped by the owning Kotlin platform; never logged.
+extern "C" __declspec(dllexport) HRESULT WINAPI BilipaiHomeNetworkIdentitySnapshot(
+    int* profilePresent,int* connectivity,unsigned* interfaceType,int* isWwan,
+    unsigned char* identity,unsigned capacity,unsigned* written) noexcept {
+    if(!profilePresent||!connectivity||!interfaceType||!isWwan||!identity||!written)return E_POINTER;
+    *profilePresent=-1;*connectivity=-1;*interfaceType=0;*isWwan=-1;*written=0;
+    if(capacity==0||capacity>8192)return E_INVALIDARG;
+    struct NetworkApartment final {
+        HRESULT result=RoInitialize(RO_INIT_MULTITHREADED);
+        ~NetworkApartment(){if(SUCCEEDED(result))RoUninitialize();}
+    } apartment;
+    if(FAILED(apartment.result)&&apartment.result!=RPC_E_CHANGED_MODE)return apartment.result;
+    try {
+        using namespace winrt::Windows::Networking::Connectivity;
+        // String overload creates a local factory: no process factory pointer may
+        // outlive this query's RoUninitialize on an otherwise uninitialized caller.
+        auto factory=winrt::get_activation_factory<INetworkInformationStatics>(
+            L"Windows.Networking.Connectivity.NetworkInformation");
+        auto profile=factory.GetInternetConnectionProfile();
+        std::string value="bilipai-preferred-network-v1/";
+        int present=0,level=0,cellular=0;unsigned kind=0;
+        if(!profile)value+="absent";
+        else {
+            auto adapter=profile.NetworkAdapter();if(!adapter)return E_UNEXPECTED;
+            auto name=winrt::to_string(profile.ProfileName());
+            auto adapterId=winrt::to_string(winrt::to_hstring(adapter.NetworkAdapterId()));
+            std::string ssid;
+            if(profile.IsWlanConnectionProfile()) {
+                auto wlan=profile.WlanConnectionProfileDetails();if(!wlan)return E_UNEXPECTED;
+                ssid=winrt::to_string(wlan.GetConnectedSsid());
+            }
+            // Length-prefix fields avoid collisions even when profile names contain separators.
+            value+=std::to_string(name.size())+":"+name+std::to_string(adapterId.size())+":"+adapterId+
+                std::to_string(ssid.size())+":"+ssid;
+            present=1;level=static_cast<int>(profile.GetNetworkConnectivityLevel());
+            kind=adapter.IanaInterfaceType();cellular=profile.IsWwanConnectionProfile()?1:0;
+        }
+        if(value.empty()||value.size()>capacity)return E_BOUNDS;
+        for(size_t i=0;i<value.size();++i)identity[i]=static_cast<unsigned char>(value[i]);
+        *written=static_cast<unsigned>(value.size());
+        *profilePresent=present;*connectivity=level;*interfaceType=kind;*isWwan=cellular;
         return S_OK;
     }catch(...){return winrt::to_hresult();}
 }

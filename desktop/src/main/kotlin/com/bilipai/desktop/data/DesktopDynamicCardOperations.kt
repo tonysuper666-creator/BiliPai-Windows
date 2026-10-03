@@ -289,7 +289,7 @@ internal class DesktopDynamicCardOperations(
 // ORIGINAL app/src/main/java/com/android/purebilibili/data/repository/DynamicCreateRepository.kt
 // LF-normalized SHA-256: 2f85544e1e973dd0e7178077ef5c1f439b798a1d86b46701803adeb2a7c0364f
 // ORIGINAL app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt
-// LF-normalized SHA-256: 4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820
+// LF-normalized SHA-256: 1da1505d0ec3be32726ff5aacf462a1ee864be945283c7846b635cd6939cc9f4
 
 suspend fun publishDynamic(draft: DynamicPublishDraft, imageProvider: suspend (String) -> Triple<String?, String?, okhttp3.RequestBody>): Result<String> = result {
     mutate { csrf ->
@@ -524,8 +524,9 @@ private suspend fun uploadEditorCommentImageBody(csrf: String, fileName: String,
             coroutineContext.ensureActive(); assertOwned()
             val uploadContext = coroutineContext
             if (!withOwnedEditorImageAdmission { uploadContext.ensureActive() }) throw CancellationException("Dynamic upload account owner retired")
-            val data = response.data
-            return if (response.code == 0 && data != null) {
+            return if (response.code == 0 && response.data != null) {
+                val checkedResponseData = requireNotNull(response.data)
+                val data = checkedResponseData
                 ReplyPicture(
                         imgSrc = data.imageUrl,
                         imgWidth = data.imageWidth,
@@ -846,11 +847,59 @@ suspend fun submitGradeDanmaku(aid: Long, cid: Long, progress: Long, gradeId: St
     suspend fun updateBgmWish(musicId: String, state: Int): Result<SimpleApiResponse> = result {
         mutate { csrf -> api.updateBgmWish(musicId, state, csrf) }
     }
-    suspend fun getBgmEmotePackages(): Result<List<EmotePackage>> = result { read {
-        val response = api.getEmotes(mutableMapOf("business" to "reply"))
-        if (response.code == 0) response.data?.packages ?: response.data?.all_packages ?: emptyList()
-        else throw Exception(response.message)
-    } }
+    suspend fun getBgmEmotePackages(): Result<List<EmotePackage>> = result { read { originalBgmEmotePackages().getOrThrow() } }
+    private val COMMENT_STANDARD_EMOTE_IDS = listOf(1L, 2L, 53L, 4L)
+
+    private fun mergeCommentEmotePackages(
+        userData: EmoteData?,
+        standardPackages: List<EmotePackage>,
+    ): List<EmotePackage> {
+        val userPackages = userData?.packages?.takeIf { it.isNotEmpty() }
+            ?: userData?.all_packages.orEmpty()
+        val packages = userPackages.associateByTo(linkedMapOf()) { it.id }
+        standardPackages.forEach { pkg ->
+            if (packages[pkg.id]?.emote.isNullOrEmpty()) {
+                packages[pkg.id] = pkg
+            }
+        }
+        return packages.values.toList()
+    }
+
+    private suspend fun originalBgmEmotePackages(): Result<List<EmotePackage>> = withContext(Dispatchers.IO) {
+        try {
+            val response = api.getEmotes(mapOf("business" to "reply"))
+            coroutineContext.ensureActive(); assertOwned()
+            val userData = if (response.code == 0) response.data else null
+            val userPackages = userData?.packages?.takeIf { it.isNotEmpty() }
+                ?: userData?.all_packages.orEmpty()
+            val missingIds = COMMENT_STANDARD_EMOTE_IDS.filter { id ->
+                userPackages.none { it.id == id && !it.emote.isNullOrEmpty() }
+            }
+            if (missingIds.isEmpty()) {
+                return@withContext Result.success(userPackages)
+            }
+
+            // 用户面板可能成功返回空列表；从 B 站明细接口取回缺失的原始基础包。
+            coroutineContext.ensureActive(); assertOwned()
+            val details = api.getEmotePackageDetails(
+                mapOf("business" to "reply", "ids" to missingIds.joinToString(","))
+            )
+            coroutineContext.ensureActive(); assertOwned()
+            if (details.code != 0) {
+                return@withContext Result.failure(Exception(details.message))
+            }
+            val packages = mergeCommentEmotePackages(userData, details.data?.packages.orEmpty())
+            if (missingIds.any { id -> packages.none { it.id == id && !it.emote.isNullOrEmpty() } }) {
+                Result.failure(Exception("基础表情包加载失败"))
+            } else {
+                Result.success(packages)
+            }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
     suspend fun loadBgmEmptyAnimation(url: String): ByteArray = read {
         require(url == com.android.purebilibili.core.ui.LottieUrls.EMPTY)
         kotlinx.coroutines.suspendCancellableCoroutine { continuation ->

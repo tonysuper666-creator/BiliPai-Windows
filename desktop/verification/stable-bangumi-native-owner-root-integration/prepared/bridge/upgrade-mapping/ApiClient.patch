@@ -1,0 +1,410 @@
+--- app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt
++++ core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt
+@@ -2,7 +2,6 @@
+ package com.android.purebilibili.core.network
+ 
+ import android.content.Context
+-import com.android.purebilibili.BuildConfig
+ import com.android.purebilibili.core.network.policy.HomeFeedAnonymizerRuntime
+ import com.android.purebilibili.core.network.policy.resolveHardcodedDnsFallback
+ import com.android.purebilibili.core.network.policy.resolveHomeFeedCookieAnonymizerDecision
+@@ -34,9 +33,9 @@
+ import javax.net.ssl.TrustManager
+ import javax.net.ssl.X509TrustManager
+ 
+-internal const val BANGUMI_PLAY_URL_PATH = "pgc/player/web/v2/playurl"
+-internal const val BANGUMI_PLAY_URL_LEGACY_PATH = "pgc/player/web/playurl"
+-internal const val FORCE_COOKIE_HEADER = "X-BiliPai-Force-Cookie"
++const val BANGUMI_PLAY_URL_PATH = "pgc/player/web/v2/playurl"
++const val BANGUMI_PLAY_URL_LEGACY_PATH = "pgc/player/web/playurl"
++const val FORCE_COOKIE_HEADER = "X-BiliPai-Force-Cookie"
+ 
+ //  合并模式 App 半边身份头取值 — 对齐 PiliNara 原版 app 端点请求头
+ //  (原版 fp_local/fp_remote 使用同一组固定值, session_id 为固定占位)
+@@ -44,7 +43,7 @@
+     "1111111111111111111111111111111111111111111111111111111111111111"
+ private const val MERGED_APP_FEED_SESSION_ID = "11111111"
+ 
+-internal fun applyForcedCookieHeader(request: okhttp3.Request): okhttp3.Request {
++fun applyForcedCookieHeader(request: okhttp3.Request): okhttp3.Request {
+     val forcedCookie = request.header(FORCE_COOKIE_HEADER) ?: return request
+     return request.newBuilder()
+         .header("Cookie", forcedCookie)
+@@ -63,7 +62,7 @@
+             cookies.forEach { newCookie ->
+                 existingCookies.removeAll { it.name == newCookie.name }
+                 existingCookies.add(newCookie)
+-                com.android.purebilibili.core.util.Logger.d("CookieJar", " Saved cookie: ${newCookie.name} for $host")
++                com.android.purebilibili.core.network.CoreDataLog.d("CookieJar", " Saved cookie: ${newCookie.name} for $host")
+             }
+         }
+     }
+@@ -75,7 +74,7 @@
+                 encodedPath = url.encodedPath
+             )
+         ) {
+-            com.android.purebilibili.core.util.Logger.d(
++            com.android.purebilibili.core.network.CoreDataLog.d(
+                 "CookieJar",
+                 " 初见推荐匿名化首页推荐请求: ${url.encodedPath}, clearCookieHeader=true"
+             )
+@@ -89,7 +88,7 @@
+                 mobiApp = url.queryParameter("mobi_app")
+             )
+         ) {
+-            com.android.purebilibili.core.util.Logger.d(
++            com.android.purebilibili.core.network.CoreDataLog.d(
+                 "CookieJar",
+                 " 合并模式 App 半边匿名取流: ${url.encodedPath}, clearCookieHeader=true"
+             )
+@@ -159,7 +158,7 @@
+         }
+ 
+         if (url.encodedPath.contains("playurl") || url.encodedPath.contains("pgc/view")) {
+-            com.android.purebilibili.core.util.Logger.d(
++            com.android.purebilibili.core.network.CoreDataLog.d(
+                 "CookieJar",
+                 " ${url.encodedPath} request: domain=$biliBiliDomain, hasSess=${!sessData.isNullOrEmpty()}, hasCsrf=${!biliJct.isNullOrEmpty()}"
+             )
+@@ -1222,6 +1221,11 @@
+     suspend fun getEmotes(
+         @QueryMap params: Map<String, String>
+     ): com.android.purebilibili.data.model.response.EmoteResponse
++
++    @GET("x/emote/package")
++    suspend fun getEmotePackageDetails(
++        @QueryMap params: Map<String, String>
++    ): com.android.purebilibili.data.model.response.EmoteResponse
+     
+     // [新增] 点赞评论
+     @retrofit2.http.FormUrlEncoded
+@@ -1545,14 +1549,7 @@
+ 
+     @GET("https://app.bilibili.com/x/v2/search/recommend")
+     suspend fun getSearchRecommend(
+-        @Query("build") build: Int = 8430300,
+-        @Query("channel") channel: String = "master",
+-        @Query("version") version: String = "8.43.0",
+-        @Query("c_locale") cLocale: String = "zh_CN",
+-        @Query("mobi_app") mobiApp: String = "android",
+-        @Query("platform") platform: String = "android",
+-        @Query("s_locale") sLocale: String = "zh_CN",
+-        @Query("from") from: Int = 2
++        @QueryMap params: Map<String, String>
+     ): com.android.purebilibili.data.model.response.SearchRecommendResponse
+ 
+     //  综合搜索 (不支持排序)
+@@ -1730,7 +1727,7 @@
+     val action: String
+ )
+ 
+-internal fun buildDynamicRepostRequest(
++fun buildDynamicRepostRequest(
+     dynamicId: String,
+     content: String
+ ): DynamicRepostRequest {
+@@ -1755,7 +1752,7 @@
+     )
+ }
+ 
+-internal fun buildFavoriteFolderDynamicRequest(
++fun buildFavoriteFolderDynamicRequest(
+     mediaId: Long,
+     content: String,
+ ): DynamicRepostRequest {
+@@ -1774,16 +1771,16 @@
+     )
+ }
+ 
+-internal const val DYNAMIC_FEED_FEATURES =
++const val DYNAMIC_FEED_FEATURES =
+     "itemOpusStyle,listOnlyfans,opusBigCover,onlyfansVote,decorationCard,onlyfansAssetsV2,onlyfansQaCard,forwardListHidden,ugcDelete"
+ 
+-internal const val DYNAMIC_DETAIL_FEATURES =
++const val DYNAMIC_DETAIL_FEATURES =
+     "itemOpusStyle,listOnlyfans,opusBigCover,onlyfansVote,endFooterHidden,decorationCard,onlyfansAssetsV2,ugcDelete,onlyfansQaCard,commentsNewVersion,forwardListHidden,htmlNewStyle"
+ 
+ /** PiliPlus opus/detail uses only htmlNewStyle so old columns return full paragraphs. */
+-internal const val OPUS_DETAIL_FEATURES = "htmlNewStyle"
+-
+-internal const val SPACE_DYNAMIC_FEATURES =
++const val OPUS_DETAIL_FEATURES = "htmlNewStyle"
++
++const val SPACE_DYNAMIC_FEATURES =
+     "itemOpusStyle,listOnlyfans,opusBigCover,commentsNewVersion,onlyfansVote,onlyfansAssetsV2,decorationCard,forwardListHidden,ugcDelete,onlyfansQaCard"
+ 
+ interface DynamicApi {
+@@ -2177,7 +2174,7 @@
+     )
+ }
+ 
+-internal fun buildSpaceAggregateParams(
++fun buildSpaceAggregateParams(
+     mid: Long,
+     accessToken: String?,
+     accessTokenPlatform: String = TokenManager.ACCESS_TOKEN_PLATFORM_ANDROID
+@@ -2237,7 +2234,7 @@
+     )
+ }
+ 
+-internal fun buildSpaceLikedArchiveParams(
++fun buildSpaceLikedArchiveParams(
+     mid: Long,
+     page: Int = 1,
+     pageSize: Int = 20,
+@@ -2463,6 +2460,39 @@
+ 
+     @GET("x/passport-login/web/qrcode/poll")
+     suspend fun pollQrCode(@Query("qrcode_key") key: String): Response<PollResponse>
++
++    // Web scan-authorization authenticates via access_key + android64 sign (not cookies).
++    // Contract verified by PiliPlus issue #2933 against the live API.
++    @GET("x/passport-login/web/qrcode/check")
++    @retrofit2.http.Headers(
++        "User-Agent: Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2",
++        "app-key: android64",
++        "env: prod",
++    )
++    suspend fun checkWebQrCode(
++        @retrofit2.http.QueryMap signedParams: Map<String, String>,
++    ): QrAuthorizationResponse
++
++    @GET("x/passport-login/web/qrcode/scene")
++    @retrofit2.http.Headers(
++        "User-Agent: Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2",
++        "app-key: android64",
++        "env: prod",
++    )
++    suspend fun getWebQrScene(
++        @retrofit2.http.QueryMap signedParams: Map<String, String>,
++    ): QrAuthorizationSceneResponse
++
++    @retrofit2.http.FormUrlEncoded
++    @retrofit2.http.POST("x/passport-login/web/qrcode/confirm")
++    @retrofit2.http.Headers(
++        "User-Agent: Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2",
++        "app-key: android64",
++        "env: prod",
++    )
++    suspend fun confirmWebQrCode(
++        @retrofit2.http.FieldMap signedParams: Map<String, String>,
++    ): QrAuthorizationResponse
+     
+     // ==========  极验验证 + 手机号/密码登录 ==========
+ 
+@@ -2594,15 +2624,21 @@
+         @retrofit2.http.FieldMap params: @JvmSuppressWildcards Map<String, String>
+     ): TvPollResponse
+ 
+-    /** Confirm a TV QR scanned by an already logged-in BiliPai client. */
++    /** Confirm a TV QR scanned by an already logged-in BiliPai client.
++     *  Same signed contract as the web scan-authorization endpoints: the TV h5 confirm
++     *  authenticates via access_key + appkey/appsec sign, not SESSDATA cookies. */
+     @retrofit2.http.FormUrlEncoded
+     @retrofit2.http.POST("https://passport.bilibili.com/x/passport-tv-login/h5/qrcode/confirm")
++    @retrofit2.http.Headers(
++        "Origin: https://passport.bilibili.com",
++        "app-key: android64",
++        "env: prod",
++        "User-Agent: Mozilla/5.0 BiliDroid/8.43.0 (bbcallen@gmail.com) os/android model/android mobi_app/android build/8430300 channel/master innerVer/8430300 osVer/15 network/2",
++    )
+     suspend fun confirmTvQrCode(
+-        @retrofit2.http.Field("auth_code") authCode: String,
+-        @Header(FORCE_COOKIE_HEADER) cookieHeader: String,
+-        @retrofit2.http.Field("build") build: Int = 7082000,
+-        @retrofit2.http.Field("csrf") csrf: String,
+-    ): com.android.purebilibili.data.model.response.SimpleApiResponse
++        @retrofit2.http.FieldMap signedParams: Map<String, String>,
++        @retrofit2.http.Header("Buvid") buvidHeader: String = "",
++    ): QrAuthorizationResponse
+ 
+     //  [新增] TV 端刷新 Token
+     @retrofit2.http.FormUrlEncoded
+@@ -2873,13 +2909,15 @@
+ }
+ 
+ object NetworkModule {
+-    internal var appContext: Context? = null
++    var appContext: Context? = null
++        private set
+     private val appSessionCookieJar = AppSessionCookieJar()
+     private var playbackAccountKey: String? = null
+     private var playbackAccountApi: BilibiliApi? = null
+     private var playbackAccountBangumiApi: BangumiApi? = null
+ 
+-    fun init(context: Context) {
++    fun init(context: Context, config: CoreNetworkConfig = CoreNetworkConfig()) {
++        CoreNetworkRuntime.config = config
+         appContext = context.applicationContext
+         com.android.purebilibili.core.store.NetworkProxyStore.init(context.applicationContext)
+     }
+@@ -2956,15 +2994,15 @@
+         coerceInputValues = true
+     }
+ 
+-    internal fun resolveSharedNetworkProtocols(): List<Protocol> {
++    fun resolveSharedNetworkProtocols(): List<Protocol> {
+         return listOf(Protocol.HTTP_2, Protocol.HTTP_1_1)
+     }
+ 
+-    internal fun resolveApiHttpCacheBudgetBytes(): Long {
++    fun resolveApiHttpCacheBudgetBytes(): Long {
+         return 32L * 1024 * 1024
+     }
+ 
+-    internal fun resolveAndroidHdLoginAppKeyHeader(encodedPath: String): String? {
++    fun resolveAndroidHdLoginAppKeyHeader(encodedPath: String): String? {
+         return when (encodedPath) {
+             "/x/passport-login/sms/send",
+             "/x/passport-login/login/sms",
+@@ -2982,7 +3020,7 @@
+      * Dynamic proxy: app HTTP proxy when enabled, else system proxy / VPN.
+      * Read live from [NetworkProxyStore] so toggle works without rebuilding clients.
+      */
+-    internal fun buildAppProxySelector(): java.net.ProxySelector {
++    fun buildAppProxySelector(): java.net.ProxySelector {
+         return object : java.net.ProxySelector() {
+             override fun select(uri: java.net.URI?): List<Proxy> {
+                 val settings = com.android.purebilibili.core.store.NetworkProxyStore.getSync()
+@@ -3000,7 +3038,7 @@
+                 sa: java.net.SocketAddress?,
+                 ioe: java.io.IOException?,
+             ) {
+-                com.android.purebilibili.core.util.Logger.w(
++                com.android.purebilibili.core.network.CoreDataLog.w(
+                     "ApiClient",
+                     "Proxy connect failed uri=$uri sa=$sa: ${ioe?.message}"
+                 )
+@@ -3008,7 +3046,7 @@
+         }
+     }
+ 
+-    internal fun buildPlaybackOkHttpClient(sharedClient: OkHttpClient): OkHttpClient {
++    fun buildPlaybackOkHttpClient(sharedClient: OkHttpClient): OkHttpClient {
+         return sharedClient.newBuilder()
+             // Media playback should not inherit device-local proxy apps that may expose
+             // an unavailable loopback port and break streaming with ECONNREFUSED.
+@@ -3040,7 +3078,7 @@
+             .followRedirects(true)
+             .followSslRedirects(true)
+         
+-        if (shouldEnableTrustAllCertificates(BuildConfig.DEBUG)) {
++        if (shouldEnableTrustAllCertificates(CoreNetworkRuntime.config.debug)) {
+             val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+                 override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+                 override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
+@@ -3058,16 +3096,17 @@
+                 override fun lookup(hostname: String): List<java.net.InetAddress> {
+                 try {
+                     val addresses = java.net.InetAddress.getAllByName(hostname).toList()
+-                    com.android.purebilibili.core.util.Logger.d("ApiClient", "DNS resolved: $hostname -> $addresses")
++                    com.android.purebilibili.core.network.CoreDataLog.d("ApiClient", "DNS resolved: $hostname -> $addresses")
+                     return addresses
+                 } catch (e: Exception) {
+-                    com.android.purebilibili.core.util.Logger.e("ApiClient", "DNS failed for $hostname: ${e.message}")
++                if (e is kotlinx.coroutines.CancellationException) throw e
++                    com.android.purebilibili.core.network.CoreDataLog.e("ApiClient", "DNS failed for $hostname: ${e.message}")
+                     val fallback = resolveHardcodedDnsFallback(
+                         hostname = hostname,
+-                        allowHardcodedIpFallback = BuildConfig.ALLOW_HARDCODED_DNS_FALLBACK
++                        allowHardcodedIpFallback = CoreNetworkRuntime.config.allowHardcodedDnsFallback
+                     )
+                     if (fallback != null) {
+-                        com.android.purebilibili.core.util.Logger.w(
++                        com.android.purebilibili.core.network.CoreDataLog.w(
+                             "ApiClient",
+                             "⚠️ Using Hardcoded IP for ${fallback.description}: ${fallback.ipAddress}"
+                         )
+@@ -3221,19 +3260,19 @@
+                 }
+ 
+                 val request = builder.build()
+-                com.android.purebilibili.core.util.Logger.d(
++                com.android.purebilibili.core.network.CoreDataLog.d(
+                     "ApiClient",
+                     " Sending request to ${original.url}, Referer: ${request.header("Referer") ?: "OMITTED"}, hasSess=${!TokenManager.sessDataCache.isNullOrEmpty()}, hasCsrf=${!TokenManager.csrfCache.isNullOrEmpty()}"
+                 )
+ 
+                 try {
+                     val response = chain.proceed(request)
+-                    com.android.purebilibili.core.util.Logger.d(
++                    com.android.purebilibili.core.network.CoreDataLog.d(
+                         "ApiClient",
+                         " Network protocol: ${response.protocol} ${request.url.host}${request.url.encodedPath}"
+                     )
+                     if (response.code >= 500 || response.code == 429 || response.code == 412) {
+-                        com.android.purebilibili.core.util.CrashReporter.reportApiError(
++                        CoreDataLog.reportApiError(
+                             endpoint = "${request.method} ${request.url.encodedPath}",
+                             httpCode = response.code,
+                             errorMessage = "HTTP ${response.code}"
+@@ -3241,12 +3280,13 @@
+                     }
+                     response
+                 } catch (e: Exception) {
+-                    if (com.android.purebilibili.core.util.shouldReportApiFailure(
++                if (e is kotlinx.coroutines.CancellationException) throw e
++                    if (shouldReportNetworkFailure(
+                             callCanceled = chain.call().isCanceled(),
+                             throwable = e
+                         )
+                     ) {
+-                        com.android.purebilibili.core.util.CrashReporter.reportApiError(
++                        CoreDataLog.reportApiError(
+                             endpoint = "${request.method} ${request.url.encodedPath}",
+                             httpCode = -1,
+                             errorMessage = e.message ?: e.javaClass.simpleName
+@@ -3306,7 +3346,7 @@
+                         .value(guestBuvid3)
+                         .build())
+                     
+-                    com.android.purebilibili.core.util.Logger.d(
++                    com.android.purebilibili.core.network.CoreDataLog.d(
+                         "GuestCookieJar",
+                         " ${url.encodedPath} request: guest mode with fresh buvid3=${guestBuvid3.take(15)}..."
+                     )
+@@ -3336,12 +3376,12 @@
+                 val request = builder.build()
+                 try {
+                     val response = chain.proceed(request)
+-                    com.android.purebilibili.core.util.Logger.d(
++                    com.android.purebilibili.core.network.CoreDataLog.d(
+                         "ApiClient",
+                         " Guest network protocol: ${response.protocol} ${request.url.host}${request.url.encodedPath}"
+                     )
+                     if (response.code >= 500 || response.code == 429 || response.code == 412) {
+-                        com.android.purebilibili.core.util.CrashReporter.reportApiError(
++                        CoreDataLog.reportApiError(
+                             endpoint = "guest ${request.method} ${request.url.encodedPath}",
+                             httpCode = response.code,
+                             errorMessage = "HTTP ${response.code}"
+@@ -3349,12 +3389,13 @@
+                     }
+                     response
+                 } catch (e: Exception) {
+-                    if (com.android.purebilibili.core.util.shouldReportApiFailure(
++                if (e is kotlinx.coroutines.CancellationException) throw e
++                    if (shouldReportNetworkFailure(
+                             callCanceled = chain.call().isCanceled(),
+                             throwable = e
+                         )
+                     ) {
+-                        com.android.purebilibili.core.util.CrashReporter.reportApiError(
++                        CoreDataLog.reportApiError(
+                             endpoint = "guest ${request.method} ${request.url.encodedPath}",
+                             httpCode = -1,
+                             errorMessage = e.message ?: e.javaClass.simpleName
+@@ -3383,6 +3424,13 @@
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+             .create(PassportApi::class.java)
+     }
++    /** Strict TLS and fixed destinations even in Debug builds, with no credential redirects. */
++    val qrAuthorizationApi: PassportApi by lazy {
++        Retrofit.Builder().baseUrl("https://passport.bilibili.com/")
++            .client(createQrAuthorizationClient(okHttpClient))
++            .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
++            .create(PassportApi::class.java)
++    }
+     val searchApi: SearchApi by lazy {
+         Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(okHttpClient)
+             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()

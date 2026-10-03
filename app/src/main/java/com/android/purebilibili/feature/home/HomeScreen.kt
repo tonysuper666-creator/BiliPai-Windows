@@ -41,6 +41,10 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Close
+import com.android.purebilibili.core.ui.components.AppIcon
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.zIndex
 import androidx.compose.material3.DrawerValue
@@ -159,7 +163,7 @@ import com.android.purebilibili.core.ui.transition.videoCardTransitionOverlayDep
 import com.android.purebilibili.feature.home.components.BottomBarMatchedDockEdge
 import com.android.purebilibili.feature.home.components.BottomBarMatchedDockVisibility
 import com.android.purebilibili.core.ui.animation.DissolvableVideoCard  //  粒子消散动画
-import com.android.purebilibili.core.ui.animation.jiggleOnDissolve      // 📳 iOS 风格抖动效果
+import com.android.purebilibili.core.ui.animation.gl.isThanosEffectSupported
 import com.android.purebilibili.core.ui.blur.rememberRecoverableHazeState
 import com.android.purebilibili.core.ui.blur.recoverableBlurEnabled
 import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect
@@ -348,6 +352,8 @@ fun HomeScreen(
     val subscriptionListState = rememberLazyStaggeredGridState()
     // [Feature] Video Preview State (Global Scope)
     val targetVideoItemState = remember { mutableStateOf<VideoItem?>(null) }
+    var dissolvingNotInterestedVideo by remember { mutableStateOf<VideoItem?>(null) }
+    var reflowingNotInterestedVideo by remember { mutableStateOf<VideoItem?>(null) }
     var pendingNotInterestedVideo by remember { mutableStateOf<VideoItem?>(null) }
     var pendingVideoShare by remember {
         mutableStateOf<com.android.purebilibili.feature.video.share.VideoSharePayload?>(null)
@@ -1056,6 +1062,52 @@ fun HomeScreen(
     // [统一门控] 系统「减弱动效」是所有界面动效的通用开关:开启时关闭卡片进场/消散等所有卡片动效,
     // 各功能面自身的开关(此处为卡片动画开关)仍各自独立。与设置页入场动画共用同一 reduce-motion 判定。
     val systemReduceMotion = rememberSystemReduceMotion()
+    val onDissolveCompleteCallback = remember(viewModel) {
+        { bvid: String ->
+            viewModel.completeVideoDissolve(bvid)
+            val video = dissolvingNotInterestedVideo
+            if (video?.bvid == bvid) {
+                dissolvingNotInterestedVideo = null
+                if (reflowingNotInterestedVideo?.bvid != bvid) {
+                    pendingNotInterestedVideo = video
+                }
+            }
+        }
+    }
+    val onDissolveReflowStartedCallback = remember {
+        { bvid: String ->
+            val video = dissolvingNotInterestedVideo
+            if (video?.bvid == bvid) reflowingNotInterestedVideo = video
+        }
+    }
+    LaunchedEffect(reflowingNotInterestedVideo, systemReduceMotion) {
+        val video = reflowingNotInterestedVideo ?: return@LaunchedEffect
+        // Open once the 180 ms particle tail has cleared; the 240 ms reflow is settling.
+        if (!systemReduceMotion) delay(180L)
+        pendingNotInterestedVideo = video
+    }
+    val onDismissVideoCallback = remember(viewModel, context, systemReduceMotion) {
+        { video: VideoItem ->
+            if (dissolvingNotInterestedVideo == null && pendingNotInterestedVideo == null) {
+                targetVideoItemState.value = null
+                reflowingNotInterestedVideo = null
+                dissolvingNotInterestedVideo = video
+                if (!systemReduceMotion && isThanosEffectSupported(context)) {
+                    viewModel.startVideoDissolve(video.bvid)
+                } else {
+                    onDissolveCompleteCallback(video.bvid)
+                }
+            }
+        }
+    }
+    LaunchedEffect(dissolvingNotInterestedVideo) {
+        val video = dissolvingNotInterestedVideo ?: return@LaunchedEffect
+        // A lazy card can leave composition before mounting its particle effect.
+        delay(6_000L)
+        if (dissolvingNotInterestedVideo?.bvid == video.bvid) {
+            onDissolveCompleteCallback(video.bvid)
+        }
+    }
     val cardAnimationEnabled = homePerformanceConfig.cardAnimationEnabled && !systemReduceMotion
     // 过渡由用户设置控制；系统“减弱动效”开启时统一关闭。
     val cardTransitionEnabled = homePerformanceConfig.cardTransitionEnabled && !systemReduceMotion
@@ -1289,13 +1341,6 @@ fun HomeScreen(
     var pinchPillDismissJob by remember { mutableStateOf<kotlinx.coroutines.Job?>(null) }
     val effectiveGridColumns = interactiveColumns ?: gridColumns
     val haptic = LocalHapticFeedback.current
-    val pinchColumnBounds = remember(windowSizeClass.widthSizeClass, contentWidth, displayMode) {
-        resolveHomeFeedPinchColumnBounds(
-            widthSizeClass = windowSizeClass.widthSizeClass,
-            contentWidthDp = contentWidth.value.toInt(),
-            displayMode = displayMode,
-        )
-    }
     LaunchedEffect(
         homeSettings.gridColumnCount,
         homeSettings.gridColumnCountCompact,
@@ -1314,22 +1359,7 @@ fun HomeScreen(
             widthSizeClass = windowSizeClass.widthSizeClass,
         )
     }
-    val homeFeedCoverAspectRatio = homeFeedCardLayout.coverAspectRatio
     val density = LocalDensity.current
-    val hingeGridSpec = remember(appWindowAdaptiveInfo, density.density) {
-        resolveHomeFeedBookHingeGridSpec(appWindowAdaptiveInfo, density.density)
-    }
-    val homeFeedHorizontalArrangement = remember(
-        effectiveGridColumns,
-        homeFeedCardLayout.itemSpacingDp,
-        hingeGridSpec,
-    ) {
-        resolveHomeFeedHorizontalArrangement(
-            columns = effectiveGridColumns,
-            baseSpacing = homeFeedCardLayout.itemSpacingDp.dp,
-            hingeSpec = hingeGridSpec,
-        )
-    }
     
     
     val tabletUseSidebar = appNavigationSettings.tabletUseSidebar
@@ -1397,12 +1427,24 @@ fun HomeScreen(
         SideEffect {
             val window = (context as? android.app.Activity)?.window ?: return@SideEffect
             val insetsController = androidx.core.view.WindowCompat.getInsetsController(window, view)
-            //  根据背景亮度设置状态栏图标颜色
+            //  根据背景亮度设置状态栏/导航栏图标颜色。
+            //  [关键] 图标明暗必须在系统栏隐藏时也照常写入：从沉浸播放页返回的瞬间
+            //  系统栏尚未恢复可见，若因此跳过，insets 恢复不会触发重组，图标会停留
+            //  在上一页的明暗（浅色模式下白色图标压白底不可见）。隐藏时写入不可见，
+            //  且沉浸页面的 effect 会在自己的重组中重新 assert，无竞争副作用。
             insetsController.isAppearanceLightStatusBars = useDarkStatusBarIcons
-            //  [修复] 导航栏也需要根据背景亮度设置图标颜色
             insetsController.isAppearanceLightNavigationBars = isLightBackground
-            //  确保状态栏可见且透明
-            insetsController.show(androidx.core.view.WindowInsetsCompat.Type.statusBars())
+            //  沉浸式播放覆盖层（小窗全屏播放等）隐藏系统栏期间，首页不得抢权恢复
+            //  系统栏可见性/滑出行为，否则会打断播放器的沉浸；覆盖层退出时会通过
+            //  快照自行还原。仅 show() 与 behavior 需要这层守卫。
+            val systemBarsVisible = androidx.core.view.ViewCompat.getRootWindowInsets(view)
+                ?.isVisible(androidx.core.view.WindowInsetsCompat.Type.systemBars()) ?: true
+            if (!systemBarsVisible) return@SideEffect
+            //  [修复] 从直播/番剧等沉浸页面返回时导航栏可能仍被隐藏，系统栏整体恢复，
+            //  并重置滑出行为，避免上一页面遗留 BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            insetsController.systemBarsBehavior =
+                androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+            insetsController.show(androidx.core.view.WindowInsetsCompat.Type.systemBars())
             com.android.purebilibili.core.ui.setWindowStatusBarColor(window, android.graphics.Color.TRANSPARENT)
             //  [修复] 导航栏也设为透明，确保底栏隐藏时手势区域沉浸
             com.android.purebilibili.core.ui.setWindowNavigationBarColor(window, android.graphics.Color.TRANSPARENT)
@@ -1990,12 +2032,33 @@ fun HomeScreen(
                                 isTopLevelActive = isTopLevelActive,
                                 hideTopTabs = effectiveHomeSettings.hideTopTabs
                             )
+                        com.android.purebilibili.core.ui.adaptive.AppHingeSafeContent(
+                            modifier = Modifier.responsiveContentWidth(maxWidth = contentWidth).fillMaxSize(),
+                        ) {
+                            val requestedGridColumns = effectiveGridColumns
+                            val effectiveGridColumns = if (appWindowAdaptiveInfo.shouldAvoidHinge) {
+                                com.android.purebilibili.core.ui.adaptive.resolveHingeSafeFeedColumns(
+                                    requestedGridColumns, maxWidth.value,
+                                    if (isSingleColumnMode) 280 else homeSettings.homeFeedCardWidthPreset.minCardWidthDp ?: 180,
+                                )
+                            } else requestedGridColumns
+                            val homeFeedCardLayout = resolveHomeFeedCardLayout(
+                                style = homeFeedCardStyle,
+                                gridColumns = effectiveGridColumns,
+                                widthSizeClass = windowSizeClass.widthSizeClass,
+                            )
+                            val homeFeedCoverAspectRatio = homeFeedCardLayout.coverAspectRatio
+                            val homeFeedHorizontalArrangement = Arrangement.spacedBy(homeFeedCardLayout.itemSpacingDp.dp)
+                            val pinchColumnBounds = resolveHomeFeedPinchColumnBounds(
+                                widthSizeClass = windowSizeClass.widthSizeClass,
+                                contentWidthDp = maxWidth.value.toInt(),
+                                displayMode = displayMode,
+                            )
                         HorizontalPager(
                             state = pagerState,
                             beyondViewportPageCount = 0,
                             userScrollEnabled = false,
                             modifier = Modifier
-                                .responsiveContentWidth(maxWidth = contentWidth)
                                 .fillMaxSize()
                                 .verticalPriorityHorizontalPagerSwipe(
                                     state = pagerState,
@@ -2344,13 +2407,7 @@ fun HomeScreen(
                                  // Data Content
                                  // [性能优化] Stabilize event callbacks to prevent recomposition on scroll
                                  val onLoadMoreCallback = remember(viewModel) { { viewModel.loadMore() } }
-                                 val onDismissVideoCallback = remember {
-                                     { video: VideoItem ->
-                                         pendingNotInterestedVideo = video
-                                     }
-                                 }
                                  val onWatchLaterCallback = remember(viewModel) { { bvid: String, aid: Long -> viewModel.addToWatchLater(bvid, aid) } }
-                                 val onDissolveCompleteCallback = remember(viewModel) { { bvid: String -> viewModel.completeVideoDissolve(bvid) } }
                                   val onLongPressCallback = remember(
                                       targetVideoItemState,
                                       homeSettings.videoCardLongPressActionEnabled
@@ -2409,6 +2466,8 @@ fun HomeScreen(
                                      onDismissVideo = onDismissVideoCallback,
                                      onWatchLater = onWatchLaterCallback,
                                      onDissolveComplete = onDissolveCompleteCallback,
+                                     onDissolveReflowStarted = onDissolveReflowStartedCallback,
+                                     dissolveReflowEnabled = !systemReduceMotion,
                                      longPressCallback = onLongPressCallback, // [Feature] Pass callback
                                      displayMode = displayMode,
                                      // 刷新数据换位时不再同时启动整屏卡片 placement spring。
@@ -2521,6 +2580,7 @@ fun HomeScreen(
                             null -> Unit
                         }
                 } // Close HorizontalPager lambda
+                        } // Close AppHingeSafeContent
             } // Close Box wrapper
                     } // Close LocalHomeMiuixBackdrop provider
         } // Close Scaffold lambda
@@ -2795,7 +2855,14 @@ fun HomeScreen(
         )
 
         //  [新增] 刷新撤销悬浮按钮（右下角，5秒后自动消失）
+        //  与「定位上次刷新」胶囊共用同一底部锚点：跟随听视频横条上浮，且在定位胶囊
+        //  可见时再抬一个胶囊位（胶囊高约 36dp + 8dp 间距），避免两者互相遮挡。
         val undoVisible = undoAvailable && currentCategory == HomeCategory.RECOMMEND
+        //  手动关闭撤销胶囊；下次撤销可用时自动复位
+        var undoDismissed by remember { androidx.compose.runtime.mutableStateOf(false) }
+        androidx.compose.runtime.LaunchedEffect(undoAvailable) {
+            if (!undoAvailable) undoDismissed = false
+        }
         val oldContentLocatorVisible = shouldShowRecommendOldContentDivider(
             currentCategory = currentCategory,
             refreshNewItemsKey = refreshNewItemsKey,
@@ -2804,6 +2871,13 @@ fun HomeScreen(
             oldContentStartIndex = recommendOldContentStartIndex,
             refreshTipVisible = homeSettings.homeRefreshTipVisible,
         )
+        val nowPlayingBarOverlayVisible by com.android.purebilibili.feature.audio.player
+            .AudioNowPlayingSession.barOverlayVisible
+            .collectAsStateWithLifecycle()
+        val undoPillBottomPadding = homeListBottomPadding + AppSpacingTokens.Medium +
+            120.dp +
+            (if (nowPlayingBarOverlayVisible) 76.dp else 0.dp) +
+            (if (oldContentLocatorVisible) 52.dp else 0.dp)
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -2811,7 +2885,7 @@ fun HomeScreen(
             contentAlignment = Alignment.BottomEnd
         ) {
             AnimatedVisibility(
-                visible = undoVisible,
+                visible = undoVisible && !undoDismissed,
                 enter = fadeIn(animationSpec = tween(overlayMotionSpec.undoFabFadeDurationMillis)) + slideInVertically(
                     animationSpec = tween(overlayMotionSpec.undoFabSlideDurationMillis),
                     initialOffsetY = { it }
@@ -2822,8 +2896,7 @@ fun HomeScreen(
                 ),
                 modifier = Modifier.padding(
                     end = AppSpacingTokens.Large,
-                    bottom = homeListBottomPadding + AppSpacingTokens.Small +
-                        if (oldContentLocatorVisible) 64.dp else 0.dp,
+                    bottom = undoPillBottomPadding,
                 )
             ) {
             AppButton(
@@ -2856,6 +2929,20 @@ fun HomeScreen(
                     style = MaterialTheme.typography.labelLarge,
                     fontWeight = androidx.compose.ui.text.font.FontWeight.Bold
                 )
+                Spacer(modifier = Modifier.width(AppSpacingTokens.ExtraSmall))
+                Box(
+                    modifier = Modifier
+                        .size(22.dp)
+                        .clip(androidx.compose.foundation.shape.CircleShape)
+                        .clickable { undoDismissed = true },
+                    contentAlignment = androidx.compose.ui.Alignment.Center
+                ) {
+                    AppIcon(
+                        imageVector = Icons.Outlined.Close,
+                        contentDescription = "关闭",
+                        modifier = Modifier.size(14.dp)
+                    )
+                }
             }
             }
         }
@@ -2931,10 +3018,7 @@ fun HomeScreen(
                     )
                     targetVideoItemState.value = null
                 },
-                onNotInterested = {
-                    pendingNotInterestedVideo = item
-                    targetVideoItemState.value = null
-                },
+                onNotInterested = { onDismissVideoCallback(item) },
                 onBlockCreator = {
                     viewModel.blockCreator(item)
                     targetVideoItemState.value = null
@@ -3185,14 +3269,28 @@ fun HomeScreen(
                 reasons = resolveHomeNotInterestedReasons(video),
                 onReasonSelected = { reason ->
                     pendingNotInterestedVideo = null
+                    reflowingNotInterestedVideo = null
+                    if (dissolvingNotInterestedVideo?.bvid == video.bvid) {
+                        dissolvingNotInterestedVideo = null
+                    }
                     viewModel.markNotInterested(
                         video = video,
                         reason = reason,
-                        cardAnimationEnabled = cardAnimationEnabled
+                        // The card has already dissolved before the reason sheet opened.
+                        dissolveAnimationEnabled = false
                     )
                 },
                 onDismissRequest = {
                     pendingNotInterestedVideo = null
+                    reflowingNotInterestedVideo = null
+                    if (dissolvingNotInterestedVideo?.bvid == video.bvid) {
+                        dissolvingNotInterestedVideo = null
+                    }
+                    viewModel.markNotInterested(
+                        video = video,
+                        reason = resolveDefaultHomeNotInterestedReason(),
+                        dissolveAnimationEnabled = false,
+                    )
                 }
             )
         }

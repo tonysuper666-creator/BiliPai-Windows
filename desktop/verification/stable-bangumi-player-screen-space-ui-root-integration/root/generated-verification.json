@@ -1,0 +1,222 @@
+{
+  "baseCommit": "cd8317d54fff02c2d920e295397aef502333f69b",
+  "normalMainAndTestCompilePassed": true,
+  "actualProductOverrides": 0,
+  "sourceCount": 1234,
+  "resourceCount": 244,
+  "normalBuildLogSha256Bytes": "151f533151d1fc97c5850664bdce2863e5137408827bc309e67847deae784b6a",
+  "junitMethods": 15,
+  "fullOriginalUiBodies": 5,
+  "sourceInverseReconstructed": 5,
+  "normalGeneratedOutputs": 15,
+  "generated": [
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/core/store/DesktopOriginalBangumiPlayerUiSettings.kt",
+      "sha256Bytes": "5552fbf9efd040238a939540763ae03170e3f973b8027129ec004be0e2428b55",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt",
+      "sha256Bytes": "8dd80de1e959bb9f633a2455a83758e90a884e56f6378513a6b63ee725bd2344",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerUiPolicy.kt",
+      "sha256Bytes": "9c8b1809ff8d03d125e8ceae375fb6f67aa63679350a15626f820e455f6512be",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiSponsorPolicy.kt",
+      "sha256Bytes": "279b706c205bdbec5f76fba956dedbe6b7cb8a37f283b4499c5a84912edee160",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCollapsedPlayerBar.kt",
+      "sha256Bytes": "54bab92afc3575fb29f28e269bbbdcdf4824cbd730b4695b2d625721af4f1ef0",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerComponents.kt",
+      "sha256Bytes": "284a136d96933974a36a5353a850b26be59eb5f589ca969c06d8b25300f29f9e",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerContent.kt",
+      "sha256Bytes": "6661c5832ad6b2f705df7b1a9b8cf528cb1f482a61b9a9067a6831fef111dae3",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerOverlayHost.kt",
+      "sha256Bytes": "d9589706a1765b9dd01bce3f2ec10dff985227b7e2131b2f17aad5757d00f38b",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/core/player/DesktopOriginalBangumiBasePlayerViewModel.kt",
+      "sha256Bytes": "3cb3fd42aeeaba87a32746988214fc5f86408daa8d3e8f26cb381ba891449eb9",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt",
+      "sha256Bytes": "d83ada54257341092ab9ff0549cd05ff8ce14395b09ad1f3c352a2b6b6b70da9",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDashManifestPolicy.kt",
+      "sha256Bytes": "342b8d27a9ee4b9ea22b7640eae25c15e9db7a2cb0da069d3a9fc99a73b5be3c",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiEpisodeSkipPolicy.kt",
+      "sha256Bytes": "1d5e0803dc92f9497c603be7a34eff81ab392bafc98975d110a52105790b14aa",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerOverlayPolicy.kt",
+      "sha256Bytes": "5f0bbe75750e01dab2c5804d030e8633c3148fd82c893805b48e09a5258e485a",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt",
+      "sha256Bytes": "6b3bc4b9da1af5390834d58f3cf0ead348cbae8614ae42a471fe8a55bd20a0f7",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt",
+      "sha256Bytes": "f891f4d060c64773e09cf44f8a8b3f797e5f2660168f862a3a6a0139d5730ef0",
+      "frozenByteEqual": true
+    }
+  ],
+  "inverse": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+      "originalSha256LF": "c0cfbb4c871ae3abfb9b0bf784f05db05b2564760f4fa3b235740e76c1d2c74d",
+      "completeNormalOriginalInverse": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt",
+      "originalSha256LF": "b07032c56edf4c39a34f9e16a1a55764f8082d3bb2909eb3e68e34b7651e79c4",
+      "completeNormalOriginalInverse": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiCollapsedPlayerBar.kt",
+      "originalSha256LF": "559f125ae24846591e45a77dcda3fdbdd330a96e2b4408cc87dcc6608bc51043",
+      "completeNormalOriginalInverse": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerComponents.kt",
+      "originalSha256LF": "ffee251ee24bcaf09870c4e787254fea544d02daac6b257fabe8ade9471f6ebb",
+      "completeNormalOriginalInverse": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+      "originalSha256LF": "287d6919dd09e53428a6b01b81b9ff588629441831134a59732ab80c75e3289a",
+      "completeNormalOriginalInverse": true
+    }
+  ],
+  "priorActualSpaceCompositionFailurePreserved": true,
+  "spaceBackToTopActualRootBindingRepaired": true,
+  "rootRuntimeAccepted": false,
+  "realAccountAccepted": false,
+  "decodedNativePlaybackAccepted": false,
+  "newEXEDeployed": false,
+  "v025Accepted": false,
+  "allFeaturesComplete": false,
+  "passed": true,
+  "sourceTargets": [
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "86f54544c8fedf031c049cf51ab15e647ea47138b75d70453f18c9b41b045a02",
+      "afterSha256Bytes": "f237a085614f78acc5929715cf6c046c738c66987458a6aecc81132fea1702f4"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "beforeSha256Bytes": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890",
+      "afterSha256Bytes": "3e1cab8ac93243232681b0267d39a4e730dda09424eb837628345179f47517d6"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativePresenter.kt",
+      "beforeSha256Bytes": "d783742df9fde979b2918bfe371178c92cb7c01c66b84abf0909435fbbbdf589",
+      "afterSha256Bytes": "157645dbfac1e42c2aaad119b9747eef3a8b6696013df1fcd4987cc91f0ba124"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerPhysicalLeaf.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "88412bc099c2fbd87e260136ba440d769b60964ef9b91476babea902aebce859"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerRootOwner.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "d5162e8f298b8e1e7c68ad9e53eee49277a3480fb00a12563d902fd5cb944502"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerScreenPlatform.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "fbb4627acf42331301ca9b944ec86835926ef2557b3bad4d7791f7102d1d3685"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPrimaryApiView.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "833df46c322df29e3319ba1a771e0b71a81db4a14ebe41eaec87fb814b8492eb"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiRawDanmakuView.kt",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "f31c03ea5e163bcbbb7f372ab5354d50fd809630bc3db60c28feefa3c959152c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "beforeSha256Bytes": "563671c643dee36efcb9a6c236dcb0fac83279c58bf3f4f8007a2be54537571e",
+      "afterSha256Bytes": "ce9160a6a036fd99c0ec4c6895498c50ca44cd99f23a3aaa2db0e1129f56502a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt",
+      "beforeSha256Bytes": "3ff595ca0aee2431d6d5fa69a7bada48e1cf45238c8e2e1a964ef17ba2602931",
+      "afterSha256Bytes": "cf3d15a74ed35c4c5c3ff3efca5596284f1f624a98e517515f779319c698810f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "beforeSha256Bytes": "3f4d58d2d6f85a82595c0c5f3214860e34f185ad721409db4edc670bcb89574c",
+      "afterSha256Bytes": "f9f6d90bedea4e54cff446cf889d9da9842b6875d586eaa49781ba696fff9370"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt",
+      "beforeSha256Bytes": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09",
+      "afterSha256Bytes": "55acdd6bf9f52dc937d7be487f9988591cf6e9d7814b13b6833783e486c5f952"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player-ui.py",
+      "beforeSha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "afterSha256Bytes": "c5f97ea576989f1749f4885d1d73f8687540bdc3a8eaf3a35bf980bd7d454fd8"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player.py",
+      "beforeSha256Bytes": "ae7891552d3c37b4371cbb52c0982fa319173b1c0e9589d8fd861407d7ee1675",
+      "afterSha256Bytes": "efa41de7de3e45921304a7ba2d27094016b256d501d9b6465899a467459e2a3e"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "09ab06e46f76fc016d3d27d27dbb8d7514fbe72b77a274e5c278b3754fe0c722",
+      "afterSha256Bytes": "c446137c58cca0906bbe9474932e5640d002bb4b08a916d9811834e042b4280f"
+    }
+  ],
+  "postCompileNonBehavioralCleanup": {
+    "priorStageRejected": true,
+    "reason": "Two whitespace-only original API blank lines; full registry sorting caused unnecessary diff.",
+    "changes": [
+      {
+        "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiRawDanmakuView.kt",
+        "normalBuildSha256Bytes": "87b6308e8fe5ff9d574b6d6b94bfbf6edb7a06622dd55f38eb12802e44b2841c",
+        "finalSourceSha256Bytes": "f31c03ea5e163bcbbb7f372ab5354d50fd809630bc3db60c28feefa3c959152c"
+      },
+      {
+        "path": "desktop/upstream-sources.json",
+        "normalBuildSha256Bytes": "3480e67149a41655121627fd21a7babde16a14673c4bdcbfc4d53ad717a4cd25",
+        "finalSourceSha256Bytes": "c446137c58cca0906bbe9474932e5640d002bb4b08a916d9811834e042b4280f"
+      }
+    ],
+    "registryIdentitiesFeaturesModesUnchanged": true,
+    "rawDanmakuOnlyTwoBlankLinesTrimmed": true,
+    "normalGeneratedOutputsUnchanged": true,
+    "normalCompiledKotlinBehaviorUnchanged": true
+  }
+}

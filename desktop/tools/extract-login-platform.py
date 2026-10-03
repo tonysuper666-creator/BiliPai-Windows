@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Extract upstream login declarations; only Android platform bindings are replaced."""
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 import argparse
 import importlib.util
 import textwrap
@@ -15,12 +16,12 @@ def generate(repo: Path, output: Path) -> None:
         ("app/src/main/java/com/android/purebilibili/feature/login/CaptchaManager.kt", "com.android.purebilibili.feature.login",
          [("object", "RsaEncryption", False)],
          "import com.bilipai.desktop.data.DesktopLoginBase64 as Base64\nimport java.security.KeyFactory\nimport java.security.spec.X509EncodedKeySpec\nimport javax.crypto.Cipher"),
-        ("app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt", "com.android.purebilibili.core.store",
+        ('core-data/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt', "com.android.purebilibili.core.store",
          [("class", "StoredAccountSession", True), ("class", "AccountSessionSnapshot", True)],
          "import kotlinx.serialization.Serializable\nimport com.android.purebilibili.core.network.DesktopTokenPlatform as TokenManager"),
     ]
     for relative, package, selections, imports in declarations:
-        source = (repo / relative).read_text(encoding="utf-8")
+        source = (_desktop_canonical_source(repo, relative)).read_text(encoding="utf-8")
         tokens = parser.kotlin_tokens(source)
         pieces = ["// GENERATED from " + relative + "; declaration body unchanged.", "package " + package, imports]
         for kind, name, constructor_only in selections:
@@ -33,8 +34,8 @@ def generate(repo: Path, output: Path) -> None:
         target = output / (package.replace(".", "/") + "/DesktopUpstreamLoginDeclarations.kt")
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
-    api_path = "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
-    source = (repo / api_path).read_text(encoding="utf-8")
+    api_path = 'core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt'
+    source = (_desktop_canonical_source(repo, api_path)).read_text(encoding="utf-8")
     tokens = parser.kotlin_tokens(source)
     positions = [i for i, token in enumerate(tokens[:-1])
                  if token[0] == "fun" and tokens[i + 1][0] == "resolveAndroidHdLoginAppKeyHeader"]

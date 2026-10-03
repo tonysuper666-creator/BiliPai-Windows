@@ -4,6 +4,7 @@ The existing editor producer owns rich/layout policy declarations and public
 format helpers. This producer owns only their original UI consumers, Android
 platform seams and original thread renderer. Never emit that policy twice.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib
 import importlib.util
@@ -32,7 +33,7 @@ SOURCES = [REPLY, SUB, SAVER, SHEET,
 
 
 def read(repo, path):
-    return (repo / path).read_text(encoding='utf-8').replace('\r\n', '\n')
+    return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
 
 
 def load(repo, name, path):
@@ -70,8 +71,15 @@ def adapt_common(body):
         'import com.bilipai.desktop.ui.LocalDesktopCommentBindings\n'
         'import com.bilipai.desktop.ui.DesktopReplyTransparentBoundsCropTransformation as TransparentBoundsCropTransformation\n'
         'import kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.ensureActive\n')
+    body = body.replace('    val sheetContext = LocalContext.current', '    val sheetContext = LocalContext.current\n    val sheetPlatform = LocalDesktopCommentBindings.current')
+    body = body.replace('SettingsManager\n        .getDetailedCommentTimeEnabled(sheetContext)', 'com.android.purebilibili.core.store.DesktopOriginalReplySettings\n        .getDetailedCommentTimeEnabled(sheetPlatform.context)')
+    body = body.replace('SettingsManager.setDetailedCommentTimeEnabled(sheetContext, next)', 'if (sheetPlatform.isOwned()) com.android.purebilibili.core.store.DesktopOriginalReplySettings.setDetailedCommentTimeEnabled(sheetPlatform.context, next)')
+    body = body.replace('Toast.makeText(\n                                    sheetContext,', 'Toast.makeText(\n                                    context,')
+    body = body.replace('Toast.LENGTH_LONG', 'Toast.LENGTH_SHORT')
     body = body.replace('    val context = LocalContext.current\n    val scope = rememberCoroutineScope()',
                         '    val context = LocalContext.current\n    val platform = LocalDesktopCommentBindings.current\n    val scope = rememberCoroutineScope()')
+    if 'var wasRefreshing by remember(rootReply.rpid)' in body:
+        body = body.replace('    val context = LocalContext.current\n    val showLoadedReplyCount', '    val context = LocalContext.current\n    val platform = LocalDesktopCommentBindings.current\n    val showLoadedReplyCount')
     body = body.replace('    val blockedUpRepository = remember { BlockedUpRepository.getInstance(context) }\n', '')
     body = body.replace('blockedUpRepository.blockUpWithBilibiliSync(', 'platform.blockUser(')
     body = body.replace('import androidx.lifecycle.compose.collectAsStateWithLifecycle\n',
@@ -97,7 +105,7 @@ def adapt_common(body):
     }''', body)
     assert count == 1
     body, count = re.subn(r'Toast\.makeText\(\s*context,\s*([\s\S]*?),\s*Toast\.LENGTH_SHORT\s*\)\.show\(\)',
-                         r'if (platform.isOwned()) platform.showFeedback(\1)', body)
+                         lambda m: ('if (sheetPlatform.isOwned()) sheetPlatform.showFeedback(' + m.group(1) + ')' if '已切换为绝对时间' in m.group(1) else 'if (platform.isOwned()) platform.showFeedback(' + m.group(1) + ')'), body)
     assert count >= 3
     # Propagate cancellation and suppress late UI publications. Owner verification
     # is an adapter requirement; the original translated/original state remains.
@@ -149,11 +157,11 @@ def generate(repo, output):
         emitted.append(host.write(output, path, read(repo, path), body, filename))
 
     original = read(repo, REPLY)
-    imports = original[:original.index('private val EMOTE_TOKEN_PATTERN')]
+    imports = original[:original.index('internal val EMOTE_TOKEN_PATTERN')]
     # Only private file helpers are repeated. All public/internal policies and
     # types are the editor's single existing source-owned producers.
     private_helpers = appearance.declarations(parser, original, [
-        'EMOTE_TOKEN_PATTERN', 'COMMENT_INLINE_UP_BADGE_ID',
+        'COMMENT_INLINE_UP_BADGE_ID',
         'COMMENT_INLINE_VERIFY_PERSONAL_BADGE_ID', 'COMMENT_INLINE_VERIFY_ORGANIZATION_BADGE_ID',
         'REPLY_VIDEO_TITLE_CACHE_MAX_ENTRIES', 'replyVideoTitleCache',
         'resolveReplyActionSheetLabel', 'isReplyActionDestructive',
@@ -165,7 +173,7 @@ def generate(repo, output):
     assert 'private val replyVideoTitleCache' not in private_helpers
     private_helpers += original[cache_begin:cache_end] + '\n\n'
     ui = original[original.index('@Composable\nfun ReplyHeader'):]
-    for name in ('normalizeHttpImageUrl', 'resolveDecorationImageUrl', 'formatTime'):
+    for name in ('normalizeHttpImageUrl', 'resolveDecorationImageUrl'):
         declaration = appearance.declarations(parser, original, [name])
         assert declaration.strip() in ui
         ui = ui.replace(declaration.strip(), '', 1)
@@ -186,7 +194,8 @@ def generate(repo, output):
                       '    val titlePlatform = LocalDesktopCommentBindings.current\n'
                       '    val videoReference = remember(text) { resolveReplyVideoReference(text) }')
     ui = ui.replace('LocalDesktopCommentBindings.current.videoTitle(bvid)', 'titlePlatform.videoTitle(bvid)')
-    emit(REPLY, adapt_common(imports + private_helpers + ui), 'DesktopOriginalReplyComponents.kt')
+    shared=load(repo,'reply_new_log_boundary','desktop/tools/extract-upstream-dynamic-reply-protocol.py')
+    emit(REPLY, shared.drop_logs(adapt_common(imports + private_helpers + ui)), 'DesktopOriginalReplyComponents.kt')
 
     original = read(repo, SUB)
     # The actual sole full generic VideoCommentVM is now installed. Preserve
@@ -200,6 +209,7 @@ def generate(repo, output):
     declarations = appearance.declarations(parser, original, ['ReplyCommentImageSpec', 'buildReplyCommentImageSpec'])
     emit(SAVER, '''package com.android.purebilibili.feature.video.ui.components
 import com.android.purebilibili.data.model.response.ReplyItem
+import com.android.purebilibili.core.util.FormatUtils
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -509,6 +519,7 @@ import kotlinx.coroutines.ensureActive
     }
     val showUpFlag = false
     val onLoadMore = session::loadMoreSubReplies
+    val onRefresh = session::refreshSubReplies
     val onSortModeChange = session::setSubReplySortMode
     val onDismiss = session::closeSubReply
     val onRootCommentClick: (() -> Unit)? = null
@@ -533,6 +544,7 @@ import kotlinx.coroutines.ensureActive
              'normalizeCommentCollapsedReplyPreviewLimit', 'getCommentCollapsedReplyPreviewLimit',
              'setCommentCollapsedReplyPreviewLimit', 'getCommentCollapsedReplyPreviewLimitSync',
              'getSubReplyLoadedCountEnabled', 'setSubReplyLoadedCountEnabled',
+             'KEY_DETAILED_COMMENT_TIME_ENABLED', 'getDetailedCommentTimeEnabled', 'setDetailedCommentTimeEnabled',
              'KEY_COMMENT_DEFAULT_SORT_MODE', 'getCommentDefaultSortMode',
              'getCommentDefaultSortModeSync', 'KEY_COMMENT_FRAUD_DETECTION_ENABLED',
              'getCommentFraudDetectionEnabled', 'KEY_COMMENT_MEMBER_DECORATIONS_ENABLED',
@@ -554,44 +566,19 @@ internal object DesktopOriginalReplySettings {
     helpers = original[original.index('object DissolveAnimationManager'):
                        original.index('@Composable\nfun Modifier.jiggleOnDissolve')]
     dissolve = media.function(original, 'DissolvableVideoCard', parser)
-    begin = dissolve.index('    var captureBitmap by remember')
-    end = dissolve.index('    DisposableEffect(cardId)', begin)
-    # Windows has no Android PixelCopy/GLSurfaceView capture renderer. Preserve
-    # the original failed-capture completion/collapse path, rather than claiming
-    # that a different animation is the original GL particle effect.
-    dissolve = dissolve[:begin] + '''    val isGLContentReady = false
-    LaunchedEffect(isDissolving) {
-        if (isDissolving) {
-            hasCompletedCurrentDissolve = false
-            keepContentHidden = false
-            finishWithoutParticle()
-        } else {
-            shouldCollapse = false
-            if (publishGlobalState && cardId.isNotEmpty() &&
-                DissolveAnimationManager.dissolvingCardId.value == cardId) {
-                DissolveAnimationManager.stopDissolving()
-            }
-        }
-    }
-
-''' + dissolve[end:]
-    begin = dissolve.index('            .onGloballyPositioned')
-    end = dissolve.index('            .then(', begin)
-    dissolve = dissolve[:begin] + dissolve[end:]
-    begin = dissolve.index('        // 2. GL Overlay')
-    dissolve = dissolve[:begin] + '    }\n}\n'
+    original_dissolve_sha = hashlib.sha256(dissolve.encode()).hexdigest()
+    if original_dissolve_sha != '7f7d0d3d2a8724dd1a03496c857ea1367c5d9e63d483b81cb081f60f8a4b0440':
+        raise ValueError('Original full dissolve body changed')
+    changes = [{'before': '    val context = LocalContext.current\n', 'after': ''}, {'before': '    var cardWindowBounds by remember(cardId) { mutableStateOf<RectF?>(null) }\n', 'after': ''}, {'before': '    var effectView by remember(cardId) { mutableStateOf<ThanosEffectView?>(null) }\n', 'after': ''}, {'before': '        effectView?.dispose()\n        effectView = null\n', 'after': ''}, {'before': '    LaunchedEffect(isDissolving, cardId) {\n        if (!isDissolving) {\n            effectView?.dispose()\n            effectView = null\n            shouldCollapse = false\n            keepContentHidden = false\n            return@LaunchedEffect\n        }\n        hasCompletedCurrentDissolve = false\n        val window = findWindow(context)\n        if (window == null || !isThanosEffectSupported(context)) {\n            finishEffect()\n            return@LaunchedEffect\n        }\n        val ready = withTimeoutOrNull(500L) {\n            snapshotFlow { hasRecordedContent && cardWindowBounds != null }\n                .first { it }\n        }\n        if (ready != true) {\n            finishEffect()\n            return@LaunchedEffect\n        }\n        // Capture the actual card subtree, including its transparent corners, without\n        // the window background or action sheet. This replaces upstream View.draw(Canvas).\n        val bitmap: Bitmap? = try {\n            withTimeoutOrNull(500L) {\n                contentLayer.toImageBitmap().asAndroidBitmap().copy(Bitmap.Config.ARGB_8888, false)\n            }\n        } catch (cancelled: CancellationException) {\n            throw cancelled\n        } catch (error: RuntimeException) {\n            android.util.Log.w("ThanosEffect", "Cannot capture video card", error)\n            null\n        }\n        val bounds = cardWindowBounds\n        if (bitmap == null || bounds == null) {\n            bitmap?.recycle()\n            finishEffect()\n            return@LaunchedEffect\n        }\n        effectView = ThanosEffectView.attach(\n            window = window,\n            bitmap = bitmap,\n            windowBounds = bounds,\n            onFirstFrame = {\n                keepContentHidden = true\n                if (publishGlobalState && cardId.isNotEmpty()) {\n                    DissolveAnimationManager.startDissolving(cardId)\n                }\n            },\n            onComplete = { finishEffect() },\n            onFinalTail = {\n                if (reflowDuringFinalTail && collapseAfterDissolve) beginCollapse()\n            },\n        )\n        if (effectView == null) {\n            if (!bitmap.isRecycled) bitmap.recycle()\n            finishEffect()\n            return@LaunchedEffect\n        }\n        // Covers missing SurfaceTexture callbacks/device failures without a stuck removal.\n        // Normal upstream lifetime is (1.5 + 0.9) / 1.15, about 2.09 seconds.\n        delay(5000L)\n        if (!hasCompletedCurrentDissolve && !shouldCollapse) finishEffect()\n    }\n\n', 'after': '    // Existing Windows consumer follows the original unavailable/failed-capture branch.\n    // Collapse, global publication, reflow notification and once-only completion remain original.\n    LaunchedEffect(isDissolving, cardId) {\n        if (!isDissolving) {\n            shouldCollapse = false\n            keepContentHidden = false\n            return@LaunchedEffect\n        }\n        hasCompletedCurrentDissolve = false\n        finishEffect()\n    }\n\n'}, {'before': '            effectView?.dispose()\n            effectView = null\n', 'after': ''}, {'before': '            .onGloballyPositioned { coordinates ->\n                val position = coordinates.positionInWindow()\n                cardWindowBounds = RectF(\n                    position.x, position.y,\n                    position.x + coordinates.size.width,\n                    position.y + coordinates.size.height,\n                )\n            }\n', 'after': ''}]
+    for change in changes:
+        if dissolve.count(change['before']) != 1:
+            raise ValueError('Original Windows failed-capture seam changed')
+        dissolve = dissolve.replace(change['before'], change['after'], 1)
     maybe = media.function(original, 'MaybeDissolvableVideoCard', parser)
-    maybe = maybe.replace('fun MaybeDissolvableVideoCard(', 'internal fun DesktopReplyDissolvableContainer(')
-    emit(path, '''package com.bilipai.desktop.ui
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.IntSize
-''' + helpers + '\n@Composable\n' + dissolve + '\n@Composable\n' + maybe,
+    if maybe.count('fun MaybeDissolvableVideoCard(') != 1:
+        raise ValueError('Original maybe dissolve signature changed')
+    maybe = maybe.replace('fun MaybeDissolvableVideoCard(', 'internal fun DesktopReplyDissolvableContainer(', 1)
+    emit(path, 'package com.bilipai.desktop.ui\nimport androidx.compose.animation.core.*\nimport androidx.compose.foundation.layout.*\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.Modifier\nimport androidx.compose.ui.draw.alpha\nimport androidx.compose.ui.draw.drawWithContent\nimport androidx.compose.ui.graphics.graphicsLayer\nimport androidx.compose.ui.graphics.layer.drawLayer\nimport androidx.compose.ui.graphics.rememberGraphicsLayer\nimport androidx.compose.ui.layout.layout\nimport androidx.compose.ui.layout.onSizeChanged\nimport androidx.compose.ui.unit.IntSize\nimport kotlin.math.roundToInt\n' + helpers + '\n@Composable\n' + dissolve + '\n@Composable\n' + maybe,
          'DesktopOriginalReplyFailedCaptureDissolve.kt')
     return emitted
 

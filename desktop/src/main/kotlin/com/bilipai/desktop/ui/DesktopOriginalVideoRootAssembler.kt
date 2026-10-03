@@ -233,7 +233,7 @@ internal class DesktopOriginalVideoRootAssembler(
                         { !caller.isCancelled && factory.isPresentationCurrent(owner, accepted) }, comments.emotes)
                 }, { enabled ->
                     if (current()) resources.diagnostics?.record("I", "Danmaku", "enabled=$enabled")
-                }, ::diagnostic)
+                }, ::diagnostic, window.gallery.imageShare)
         }
         val section = rememberDesktopOriginalVideoSectionWindowsPlatform(sectionResources)
         val playlist = remember(owner) { DesktopOriginalVideoRootAudioPlaylist(shell.playlist, gate.scope) }
@@ -302,7 +302,9 @@ internal class DesktopOriginalVideoRootAssembler(
             shell.slot::currentAssembly, section, window.root.entry.requests.ports.video,
             window.root.entry.requests.environment.api,
             window.repository.ownedHomeService(SpaceApi::class.java, "https://api.bilibili.com/", gate.capturedEpoch, ::current),
-            factory::captureRequest, resources.app.mediaCache, { request, url -> request.captureMediaCookieHeader(url) },
+            factory::captureRequest, window.repository.followStateEvents.changes
+                .filter { it.owner.epoch == gate.capturedEpoch && current() && window.repository.followStateEvents.isCurrent(it.owner) }
+                .map { it.change }, resources.app.mediaCache, { request, url -> request.captureMediaCookieHeader(url) },
             favorite.getQuickSaveDefaultFolder(), blocked, danmaku,
             { window.runtime.plugins.value.filter { it.enabled }.map { it.plugin }
                 .filterIsInstance<com.android.purebilibili.feature.plugin.PlaybackCdnPlugin>().firstOrNull() },
@@ -310,7 +312,8 @@ internal class DesktopOriginalVideoRootAssembler(
             rendering::releasePager, rendering::recover,
             { _, text -> window.gallery.shareText(text) }, { _, text -> resources.feedback(text) },
             rendering::Surface, rendering::Viewport, rendering::DanmakuSurface,
-            { result -> if (result is DesktopOriginalMediaCachePreparation.Direct) diagnostic("Portrait byte transport selected direct origin") }) }
+            { result -> if (result is DesktopOriginalMediaCachePreparation.Direct) diagnostic("Portrait byte transport selected direct origin") },
+            { expected, plan, isPresenterCurrent -> factory.acceptedMedia(owner, expected, plan, isPresenterCurrent) }) }
         val storage = remember(owner) { DesktopOriginalMusicStorageBinding(effect.settings) }
         val external = remember(owner) { DesktopOriginalExternalPlaylistBinding(effect.settings, resources.audioRepository) {
             factory.captureRequest(owner)
@@ -375,9 +378,19 @@ internal class DesktopOriginalVideoRootAssembler(
                 fallbackResumePositionMs: Long): DesktopOriginalMpvVideoPlayerState =
                 holder.BindPlayerState(bvid, cid, fallbackResumePositionMs, false, true, true)
         } }
-        return remember(owner, section, holder, tablet, music, portrait, audio, fullscreen, subtitle) {
+        val textShare = checkNotNull(LocalDesktopTextShareBindings.current) {
+            "Original PGC player requires the actual Root text share binding"
+        }
+        val fullscreenState = remember(owner, effect) {
+            snapshotFlow { resources.isFullscreen() }.stateIn(gate.scope, SharingStarted.Eagerly, resources.isFullscreen())
+        }
+        val bangumiPlayer = remember(owner, section, holder, portrait, windows, textShare, fullscreenState) {
+            DesktopOriginalBangumiPlayerRootOwner(owner, shell, window, factory, resources,
+                section, holder, portrait, windows, textShare, fullscreenState)
+        }
+        return remember(owner, section, holder, tablet, music, portrait, audio, fullscreen, subtitle, bangumiPlayer) {
             DesktopOriginalVideoRootWindowPlatformsImpl(owner, section, holder, fullscreen, tablet, audio, music,
-                content, portrait, subtitle, windows, effect.displays, resources.captureProtection::refresh)
+                content, portrait, subtitle, bangumiPlayer, windows, effect.displays, resources.captureProtection::refresh)
         }
     }
 

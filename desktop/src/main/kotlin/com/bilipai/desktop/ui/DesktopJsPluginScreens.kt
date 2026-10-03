@@ -54,10 +54,13 @@ fun DesktopJsPluginsDialog(repository: DesktopJsPluginRepository, onOpenPlugin: 
                 (error ?: state.error)?.let { Text(it, color = MaterialTheme.colorScheme.error) }
                 Button(onClick = { action {
                     val path = withContext(Dispatchers.Swing) {
-                        val chooser = JFileChooser().apply { dialogTitle = "选择 JS 插件"; fileFilter = FileNameExtensionFilter("BiliPai JS 插件", "js") }
+                        val chooser = JFileChooser().apply { dialogTitle = "选择 JS 插件"; fileFilter = FileNameExtensionFilter("BiliPai JS 插件 / 布局", "js", "bplayout") }
                         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) chooser.selectedFile.toPath() else null
                     }
-                    path?.let { preview = repository.preview(it); granted = emptySet() }
+                    path?.let {
+                        if (it.fileName.toString().endsWith(".bplayout", ignoreCase = true)) repository.importLayoutPreset(it)
+                        else { preview = repository.preview(it); granted = emptySet() }
+                    }
                 } }, enabled = !busy) { Text("预览本地 JS 插件") }
                 OutlinedTextField(remoteUrl, { remoteUrl = it }, label = { Text("远程 JS 插件链接") },
                     singleLine = true, enabled = !busy, modifier = Modifier.fillMaxWidth())
@@ -115,86 +118,32 @@ fun DesktopJsPluginsDialog(repository: DesktopJsPluginRepository, onOpenPlugin: 
 fun DesktopJsPluginContentScreen(repository: DesktopJsPluginRepository, pluginId: String,
     onPlayMedia: (launchId: String, executionRevision: Long) -> Unit,
     onFeedModule: (pluginId: String, moduleId: String) -> Unit,
-    modifier: Modifier = Modifier) {
-    val state by repository.state.collectAsState()
+    modifier: Modifier = Modifier, onBack: () -> Unit = {}) {
     val revision by repository.host.executionRevision.collectAsState()
-    val record = state.plugins.firstOrNull { it.installed.manifest.id == pluginId }
-    val installed = record?.installed
-    var selectedId by remember(pluginId) { mutableStateOf<String?>(null) }
-    val module = installed?.manifest?.modules?.firstOrNull { it.id.ifBlank { it.functionName } == selectedId }
-        ?: installed?.manifest?.modules?.firstOrNull()
-    val values = remember(pluginId, module, revision) { mutableStateMapOf<String, String>().apply {
-        module?.let { putAll(resolveBiliPaiJsInitialParamValues(it.params, readBiliPaiJsParamValues(repository.context, pluginId, it))) }
-    } }
-    var reload by remember(pluginId) { mutableIntStateOf(0) }
-    var busy by remember(pluginId) { mutableStateOf(false) }
-    var error by remember(pluginId) { mutableStateOf<String?>(null) }
-    var media by remember(pluginId) { mutableStateOf(emptyList<BiliPaiJsMediaItem>()) }
-    val loadGeneration = remember(pluginId) { java.util.concurrent.atomic.AtomicLong() }
-    LaunchedEffect(repository) {
-        try { repository.load() }
-        catch (cancelled: CancellationException) { throw cancelled }
-        catch (failure: Exception) { error = failure.message ?: "JS 插件安装记录无法读取" }
+    val installed by repository.state.collectAsState()
+    val record = installed.plugins.firstOrNull { it.installed.manifest.id == pluginId }
+    val context = LocalDesktopHomeEnvironment.current
+    val homeSettings by context.settings.homeSettings.collectAsState()
+    val scope = rememberCoroutineScope()
+    val share = LocalDesktopTextShareBindings.current
+    val gallery = LocalDesktopDynamicCardBindings.current
+    val alive = remember(repository, pluginId, revision) { java.util.concurrent.atomic.AtomicBoolean(true) }
+    fun owned() = alive.get() && gallery.isOwned() && repository.host.executionRevision.value == revision &&
+        record?.authorizationMatches == true && record.installed.enabled
+    DisposableEffect(alive) { onDispose { alive.set(false) } }
+    val authorizedGallery = remember(gallery, repository, pluginId, revision, alive) {
+        object : DesktopDynamicCardPlatform by gallery { override fun isOwned() = owned() }
     }
-    LaunchedEffect(pluginId, module, revision, reload, record?.authorizationMatches, installed?.enabled) {
-        val generation = loadGeneration.incrementAndGet()
-        media = emptyList(); error = null
-        if (module == null || installed?.enabled != true || record?.authorizationMatches != true) {
-            busy = false
-            return@LaunchedEffect
-        }
-        busy = true
-        try {
-            persistBiliPaiJsParamValues(repository.context, pluginId, module, values.toMap())
-            if (module.kind.equals("feed", true)) onFeedModule(pluginId, module.id.ifBlank { module.functionName })
-            else media = repository.host.loadModuleItems(pluginId, module.id.ifBlank { module.functionName }, buildParamsJson(module, values.toMap()))
-        } catch (cancelled: CancellationException) { throw cancelled }
-        catch (failure: Exception) { error = failure.message ?: "JS 插件模块执行失败" }
-        finally { if (loadGeneration.get() == generation) busy = false }
+    val images = remember(repository, pluginId, revision, alive) {
+        DesktopJsImageBindings(repository, pluginId, revision,
+            { owned() && PluginCapability.NETWORK in (record?.installed?.grantedCapabilities ?: emptySet()) })
     }
-    LazyColumn(modifier.fillMaxSize().padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        item {
-            Text(installed?.manifest?.title ?: "JS 插件不存在", style = MaterialTheme.typography.headlineSmall)
-            if (installed?.enabled != true || record?.authorizationMatches != true) Text("请先在插件中心批准当前脚本并启用。", color = MaterialTheme.colorScheme.error)
-        }
-        item { Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            installed?.manifest?.modules?.forEach { candidate ->
-                FilterChip(module == candidate, onClick = { selectedId = candidate.id.ifBlank { candidate.functionName } }, label = { Text(candidate.title) })
-            }
-        } }
-        module?.params?.let { parameters -> items(parameters, key = { it.name }) { param ->
-            DesktopJsParameter(param, values[param.name] ?: param.defaultValue, { values[param.name] = it }, !busy)
-        } }
-        item {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(onClick = { reload++ }, enabled = !busy && installed?.enabled == true && record?.authorizationMatches == true) { Text("重新加载") }
-                if (busy) DesktopLoadingIndicator(size = 28.dp)
-            }
-            error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-        }
-        itemsIndexed(flattenMediaItems(media), key = { index, item -> resolveBiliPaiJsMediaItemLazyKey(index, item) }) { _, item ->
-            Card(Modifier.fillMaxWidth()) {
-                Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        DesktopJsMediaImage(repository, pluginId, item, revision,
-                            installed?.enabled == true && record?.authorizationMatches == true &&
-                                PluginCapability.NETWORK in (installed?.grantedCapabilities ?: emptySet()))
-                        Column(Modifier.weight(1f)) {
-                            Text(item.title, style = MaterialTheme.typography.titleMedium); Text(item.description)
-                        }
-                    }
-                    val streams = resolveBiliPaiJsMediaStreams(item)
-                    if (streams.isNotEmpty()) Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        streams.forEachIndexed { index, stream ->
-                            TextButton(onClick = {
-                                try { onPlayMedia(repository.host.createExternalLaunch(pluginId, item, index), revision) }
-                                catch (failure: Exception) { error = failure.message ?: "JS 外部媒体无法打开" }
-                            }, enabled = !busy) { Text(stream.title.ifBlank { "线路 ${index + 1}" }) }
-                        }
-                    }
-                }
-            }
-        }
+    CompositionLocalProvider(LocalDesktopJsImageBindings provides images,
+        LocalDesktopDynamicCardBindings provides authorizedGallery) {
+        key(pluginId, revision) { BiliPaiJsPluginContentScreen(repository, pluginId, onBack, onPlayMedia, onFeedModule,
+            homeSettings.pinchToChangeGridColumnsEnabled,
+            shareLayout = { title, text, stillOwned -> requestDesktopTextShare(share, scope, title, text,
+                { owned() && stillOwned() }, context.feedback) }, modifier = modifier) }
     }
 }
 

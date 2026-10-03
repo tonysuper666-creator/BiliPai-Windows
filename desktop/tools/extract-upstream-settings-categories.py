@@ -1,4 +1,5 @@
 """Select original settings category root UI; reuse already-owned semantic vectors."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse
 import hashlib
@@ -20,7 +21,7 @@ def helper(repo):
     return host
 
 def read(repo, path):
-    return (repo/path).read_text(encoding='utf-8').replace('\r\n', '\n')
+    return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
 
 def selected_body(repo):
     host = helper(repo)

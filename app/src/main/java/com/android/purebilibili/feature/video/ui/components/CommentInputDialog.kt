@@ -1,7 +1,6 @@
 // 文件路径: feature/video/ui/components/CommentInputDialog.kt
 package com.android.purebilibili.feature.video.ui.components
 
-import com.android.purebilibili.core.theme.opaqueCompositeOver
 import com.android.purebilibili.core.ui.resolveFilledButtonContainerColor
 import com.android.purebilibili.core.ui.resolveFilledButtonContentColor
 import com.android.purebilibili.core.ui.components.AppSegmentOption
@@ -16,7 +15,6 @@ import com.android.purebilibili.core.ui.components.AppCircularProgressIndicator
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppOutlinedTextField
 import com.android.purebilibili.core.ui.components.AppSurface
-import com.android.purebilibili.core.ui.components.AppTextButton
 import com.android.purebilibili.core.ui.components.appDesktopFocusableItemVisuals
 
 import android.net.Uri
@@ -34,24 +32,25 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.outlined.AlternateEmail
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
+import androidx.compose.material.icons.outlined.Schedule
 import androidx.compose.material3.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -61,13 +60,14 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.testTag
+import kotlin.math.roundToInt
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -78,6 +78,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import coil3.compose.AsyncImage
 import java.io.File
+import com.android.purebilibili.core.ui.HingeSafeInputOverlayHost
 import com.android.purebilibili.core.ui.motion.resolveCommentVerticalContentRevealMotionSpec
 import com.android.purebilibili.core.ui.motion.verticalContentRevealEnterTransition
 import com.android.purebilibili.core.ui.motion.verticalContentRevealExitTransition
@@ -90,6 +91,24 @@ import com.android.purebilibili.core.ui.ContainerLevel
 
 private const val COMMENT_INPUT_FOCUS_RETRY_COUNT = 3
 private const val COMMENT_INPUT_FOCUS_RETRY_DELAY_MS = 80L
+
+private val COMMENT_INPUT_KAOMOJIS = listOf(
+    "(⌒▽⌒)", "（￣▽￣）", "(=・ω・=)", "(｀・ω・´)",
+    "(〜￣△￣)〜", "(･∀･)", "(°∀°)ﾉ", "(￣3￣)",
+    "╮(￣▽￣)╭", "( ´_ゝ｀)", "_(:3」∠)_", "(;¬_¬)",
+    "(ﾟДﾟ≡ﾟДﾟ)", "(ノ=Д=)ノ┻━┻", "Σ( ￣□￣||)", "(´；ω；`)",
+    "（/TДT)/", "(^・ω・^ )", "(●￣(ｴ)￣●)", "ε=ε=(ノ≧∇≦)ノ",
+    "( >﹏<。)", "( *・ω・)✄╰ひ╯", "(╬￣皿￣)凸", "⊙__⊙"
+)
+
+private fun commentEmoteTabPriority(id: Long): Int = when (id) {
+    1L -> 0
+    2L -> 1
+    53L -> 2
+    4L, -1L -> 3
+    -2L -> 5
+    else -> 4
+}
 
 internal data class CommentInputDialogLayoutPolicy(
     val inputBoxMinHeightDp: Int,
@@ -118,16 +137,16 @@ internal fun resolveCommentInputDialogLayoutPolicy(
             emojiPanelHeightDp = 240,
             sheetHorizontalPaddingDp = 20,
             toolbarToolButtonSizeDp = 44,
-            toolbarToolSpacingDp = 8,
+            toolbarToolSpacingDp = 4,
             sendButtonHorizontalPaddingDp = 20
         )
         isTablet -> CommentInputDialogLayoutPolicy(
             inputBoxMinHeightDp = 120,
             inputBoxMaxHeightDp = 200,
-            emojiPanelHeightDp = 280,
+            emojiPanelHeightDp = 320,
             sheetHorizontalPaddingDp = 20,
             toolbarToolButtonSizeDp = 44,
-            toolbarToolSpacingDp = 8,
+            toolbarToolSpacingDp = 4,
             sendButtonHorizontalPaddingDp = 18
         )
         isLandscape -> CommentInputDialogLayoutPolicy(
@@ -136,16 +155,16 @@ internal fun resolveCommentInputDialogLayoutPolicy(
             emojiPanelHeightDp = 196,
             sheetHorizontalPaddingDp = 16,
             toolbarToolButtonSizeDp = 40,
-            toolbarToolSpacingDp = 6,
+            toolbarToolSpacingDp = 2,
             sendButtonHorizontalPaddingDp = 18
         )
         else -> CommentInputDialogLayoutPolicy(
             inputBoxMinHeightDp = 84,
             inputBoxMaxHeightDp = 136,
-            emojiPanelHeightDp = 220,
+            emojiPanelHeightDp = 280,
             sheetHorizontalPaddingDp = 16,
             toolbarToolButtonSizeDp = 40,
-            toolbarToolSpacingDp = 6,
+            toolbarToolSpacingDp = 2,
             sendButtonHorizontalPaddingDp = 16
         )
     }
@@ -157,6 +176,15 @@ internal fun shouldAutoShowCommentKeyboard(
     showEmojiPanel: Boolean
 ): Boolean {
     return visible && canInputComment && !showEmojiPanel
+}
+
+internal fun resolveCommentEmojiPanelHeightDp(
+    fallbackHeightDp: Int,
+    keyboardHeightDp: Int,
+    availableHeightDp: Int
+): Int {
+    return maxOf(fallbackHeightDp, keyboardHeightDp)
+        .coerceIn(0, availableHeightDp.coerceAtLeast(0))
 }
 
 internal fun resolveCommentProgressInsertText(positionMs: Long): String {
@@ -183,7 +211,7 @@ internal fun canPublishCommentDraft(
  * 
  * 提供评论输入功能，支持回复指定评论
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun CommentInputDialog(
     visible: Boolean,
@@ -217,22 +245,43 @@ fun CommentInputDialog(
     } else {
         emptyMap()
     }
+    val inputEmoteUrls = remember(emotePackages) {
+        buildMap {
+            emotePackages.forEach { pkg ->
+                pkg.emote.orEmpty().forEach { emote ->
+                    if (emote.url.isNotBlank()) put(emote.text, emote.url)
+                }
+            }
+        }
+    }
     val layoutPolicy = remember(isLandscape, isTablet) {
         resolveCommentInputDialogLayoutPolicy(
             isLandscape = isLandscape,
             isTablet = isTablet
         )
     }
+    // 宽窗口限宽居中；半开折叠时弹层整体由 HingeSafeInputOverlayHost 收进铰链安全区。
+    val inputOverlayMaxWidthDp = remember(configuration.screenWidthDp) {
+        resolveBottomInputOverlayMaxWidthDp(configuration.screenWidthDp)
+    }
 
     // 状态
-    var textFieldValue by remember { mutableStateOf(commentDraftTextFieldValue(initialText)) }
-    var isForwardToDynamic by remember { mutableStateOf(initialSyncToDynamic) } // 转发到动态
+    var textFieldValue by rememberSaveable(stateSaver = TextFieldValue.Saver) {
+        mutableStateOf(commentDraftTextFieldValue(initialText))
+    }
+    var isForwardToDynamic by rememberSaveable { mutableStateOf(initialSyncToDynamic) } // 转发到动态
     var showEmojiPanel by remember { mutableStateOf(false) }    // 表情面板
     var showMentionPanel by remember { mutableStateOf(false) }
     var mentionSearchText by remember { mutableStateOf("") }
-    var currentTab by remember { mutableIntStateOf(0) } // 0=Kaomoji, 1=Emoji, 2+=API Packages
-    var selectedImageUris by remember { mutableStateOf(initialImageUris) }
-    var inputWasVisible by remember { mutableStateOf(false) }
+    var currentTab by remember { mutableLongStateOf(1L) }
+    var selectedImageUris by rememberSaveable(
+        stateSaver = listSaver<List<Uri>, String>(
+            save = { uris -> uris.map(Uri::toString) },
+            restore = { uris -> uris.map(Uri::parse) },
+        )
+    ) { mutableStateOf(initialImageUris) }
+    var lastKeyboardHeightDp by remember(configuration.orientation) { mutableIntStateOf(0) }
+    var inputWasVisible by rememberSaveable { mutableStateOf(false) }
     val text = textFieldValue.text
     val canPublish = canPublishCommentDraft(
         text = text,
@@ -266,6 +315,7 @@ fun CommentInputDialog(
         if (nextValue.text.length > 1000) return
         textFieldValue = nextValue
         onDraftChange(nextValue.text, selectedImageUris, isForwardToDynamic)
+        if (showEmojiPanel) return
         val mentionQuery = resolveActiveCommentMentionQuery(
             text = nextValue.text,
             cursor = nextValue.selection.end
@@ -287,13 +337,6 @@ fun CommentInputDialog(
         updateTextFieldValue(TextFieldValue(nextText, TextRange(nextCursor)))
     }
 
-    suspend fun requestInputFocusWithRetry() {
-        repeat(COMMENT_INPUT_FOCUS_RETRY_COUNT) { index ->
-            delay(COMMENT_INPUT_FOCUS_RETRY_DELAY_MS + index * 40L)
-            focusRequester.requestFocus()
-            keyboardController?.show()
-        }
-    }
     
     // 重置状态
     LaunchedEffect(visible) {
@@ -308,6 +351,8 @@ fun CommentInputDialog(
             return@LaunchedEffect
         }
 
+        // 恢复后的可见会话保留正文、选区、图片及转发状态；重新打开才加载上游草稿。
+        if (inputWasVisible) return@LaunchedEffect
         inputWasVisible = true
         // 草稿更新会随每次输入回流，不能作为 effect key，否则会持续覆盖 IME 选区。
         textFieldValue = commentDraftTextFieldValue(initialText)
@@ -318,24 +363,6 @@ fun CommentInputDialog(
         selectedImageUris = initialImageUris
     }
     
-    // 监听 emoji 面板开关，控制键盘
-    LaunchedEffect(showEmojiPanel, visible, canInputComment) {
-        if (!canInputComment) return@LaunchedEffect
-        if (showEmojiPanel) {
-            keyboardController?.hide()
-        } else if (shouldAutoShowCommentKeyboard(visible, canInputComment, showEmojiPanel)) {
-            requestInputFocusWithRetry()
-        }
-    }
-
-    DisposableEffect(visible) {
-        onDispose {
-            if (visible) {
-                keyboardController?.hide()
-                focusManager.clearFocus(force = true)
-            }
-        }
-    }
     
     AnimatedVisibility(
         visible = visible,
@@ -351,27 +378,63 @@ fun CommentInputDialog(
                 decorFitsSystemWindows = false   // 沉浸式：内容延伸到状态栏/导航栏下
             )
         ) {
-            Column(
+            val density = LocalDensity.current
+            val imeBottomPx = WindowInsets.ime.getBottom(density)
+            val navigationBarsBottomPx = WindowInsets.navigationBars.getBottom(density)
+            val keyboardHeightDp = with(density) {
+                (imeBottomPx - navigationBarsBottomPx).coerceAtLeast(0).toDp().value.roundToInt()
+            }
+            LaunchedEffect(keyboardHeightDp, showEmojiPanel) {
+                if (!showEmojiPanel) {
+                    lastKeyboardHeightDp = maxOf(lastKeyboardHeightDp, keyboardHeightDp)
+                }
+            }
+            val availablePanelHeightDp = configuration.screenHeightDp -
+                layoutPolicy.inputBoxMaxHeightDp -
+                layoutPolicy.toolbarToolButtonSizeDp -
+                layoutPolicy.sheetHorizontalPaddingDp * 2 - 12 -
+                with(density) {
+                    (navigationBarsBottomPx + WindowInsets.statusBars.getTop(density))
+                        .toDp().value.roundToInt()
+                } -
+                // 已选图片的数量提示和缩略图也需要保留空间。
+                (if (selectedImageUris.isEmpty()) 0 else 112)
+            val emojiPanelHeightDp = resolveCommentEmojiPanelHeightDp(
+                fallbackHeightDp = layoutPolicy.emojiPanelHeightDp,
+                keyboardHeightDp = maxOf(lastKeyboardHeightDp, keyboardHeightDp),
+                availableHeightDp = availablePanelHeightDp,
+            )
+            LaunchedEffect(showEmojiPanel, visible, canInputComment) {
+                if (!shouldAutoShowCommentKeyboard(visible, canInputComment, showEmojiPanel)) {
+                    keyboardController?.hide()
+                    focusManager.clearFocus(force = true)
+                } else {
+                    repeat(COMMENT_INPUT_FOCUS_RETRY_COUNT) { index ->
+                        delay(COMMENT_INPUT_FOCUS_RETRY_DELAY_MS + index * 40L)
+                        focusRequester.requestFocus()
+                        keyboardController?.show()
+                    }
+                }
+            }
+            DisposableEffect(focusManager, keyboardController) {
+                onDispose {
+                    keyboardController?.hide()
+                    focusManager.clearFocus(force = true)
+                }
+            }
+            // 统一输入弹层宿主：半开折叠时弹层整体收进铰链安全区，避免输入控件跨缝；
+            // 平铺窗口时点击空白处关闭、底部对齐，宽窗口由 widthIn 限宽并水平居中。
+            // 表情面板替代键盘时不再避让 IME，避免双重底部空隙。
+            HingeSafeInputOverlayHost(
                 modifier = Modifier
                     .fillMaxSize()
-                    .imePadding(), // 避让软键盘
-                verticalArrangement = Arrangement.Bottom // 底部对齐
+                    .then(if (showEmojiPanel) Modifier else Modifier.imePadding()),
+                onDismissRequest = dismissDialog,
             ) {
-                // 点击上半部分空白区域关闭
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = dismissDialog
-                        )
-                )
-                
                 // 输入区域
                 AppSurface(
                     modifier = modifier
+                        .widthIn(max = inputOverlayMaxWidthDp.dp)
                         .fillMaxWidth()
                         .wrapContentHeight(),
                     shape = AppShapes.container(ContainerLevel.Sheet),
@@ -394,34 +457,26 @@ fun CommentInputDialog(
                                 .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f), AppShapes.container(ContainerLevel.Chip))
                                 .padding(12.dp)
                         ) {
-                            BasicTextField(
+                            CommentEmoteTextField(
                                 value = textFieldValue,
                                 onValueChange = ::updateTextFieldValue,
+                                emoteUrls = inputEmoteUrls,
                                 enabled = canInputComment && !isSending,
+                                readOnly = showEmojiPanel,
+                                onBeginEditing = { showEmojiPanel = false },
+                                hint = inputHint.ifBlank { "进来唠会嗑呗~" }.let { resolvedHint ->
+                                    if (replyToName != null) "回复 @$replyToName: $resolvedHint" else resolvedHint
+                                },
+                                hintColor = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                                cursorColor = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .fillMaxHeight() // 填满 Box
-                                    .focusRequester(focusRequester),
+                                    .focusRequester(focusRequester)
+                                    .testTag("comment_composer_input"),
                                 textStyle = MaterialTheme.typography.bodyLarge.copy(
                                     color = MaterialTheme.colorScheme.onSurface
                                 ),
-                                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-                                decorationBox = { innerTextField ->
-                                    Box(
-                                        modifier = Modifier.fillMaxSize()
-                                    ) {
-                                        if (text.isEmpty()) {
-                                            val fallbackHint = "进来唠会嗑呗~"
-                                            val resolvedHint = inputHint.ifBlank { fallbackHint }
-                                            AppText(
-                                                text = if (replyToName != null) "回复 @$replyToName: $resolvedHint" else resolvedHint,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                                                style = MaterialTheme.typography.bodyLarge
-                                            )
-                                        }
-                                        innerTextField()
-                                    }
-                                }
                             )
                             
                             // 右上角全屏图标 (装饰)
@@ -576,13 +631,21 @@ fun CommentInputDialog(
 
                                 // 图标栏: 表情 @ 图片
                                 AppIconButton(
-                                    onClick = { showEmojiPanel = !showEmojiPanel },
+                                    onClick = {
+                                        val opening = !showEmojiPanel
+                                        if (opening) {
+                                            focusManager.clearFocus(force = true)
+                                            keyboardController?.hide()
+                                            showMentionPanel = false
+                                        }
+                                        showEmojiPanel = opening
+                                    },
                                     enabled = canInputComment && !isSending,
                                     modifier = Modifier.size(layoutPolicy.toolbarToolButtonSizeDp.dp)
                                 ) {
                                     AppIcon(
                                         imageVector = Icons.Filled.Face,
-                                        contentDescription = "Emoji",
+                                        contentDescription = "表情",
                                         tint = if (showEmojiPanel) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.size(26.dp)
                                     )
@@ -600,27 +663,27 @@ fun CommentInputDialog(
                                     modifier = Modifier.size(layoutPolicy.toolbarToolButtonSizeDp.dp)
                                 ) {
                                     AppIcon(
-                                        imageVector = Icons.Filled.Email,
-                                        contentDescription = "At",
+                                        imageVector = Icons.Outlined.AlternateEmail,
+                                        contentDescription = "提及用户",
                                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                         modifier = Modifier.size(26.dp)
                                     )
                                 }
 
-                                AppTextButton(
+                                AppIconButton(
                                     onClick = {
                                         insertTextAtCursor(resolveCommentProgressInsertText(currentVideoPositionMsProvider()))
                                         showEmojiPanel = false
                                         showMentionPanel = false
                                     },
                                     enabled = canInputComment && !isSending,
-                                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
-                                    modifier = Modifier.height(36.dp)
+                                    modifier = Modifier.size(layoutPolicy.toolbarToolButtonSizeDp.dp)
                                 ) {
-                                    AppText(
-                                        text = "进度",
-                                        style = MaterialTheme.typography.labelMedium,
-                                        maxLines = 1
+                                    AppIcon(
+                                        imageVector = Icons.Outlined.Schedule,
+                                        contentDescription = "插入当前播放进度",
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.size(26.dp)
                                     )
                                 }
 
@@ -691,178 +754,167 @@ fun CommentInputDialog(
                         }
                         
                         // 3. 表情面板區域
-                        val emojiPanelRevealMotion = remember {
-                            resolveCommentVerticalContentRevealMotionSpec()
-                        }
-                        AnimatedVisibility(
-                            visible = showEmojiPanel,
-                            enter = verticalContentRevealEnterTransition(emojiPanelRevealMotion),
-                            exit = verticalContentRevealExitTransition(emojiPanelRevealMotion)
-                        ) {
+                        if (showEmojiPanel) {
+                            val apiKaomojiPackage = remember(emotePackages) {
+                                emotePackages.firstOrNull { it.text == "颜文字" }
+                            }
+                            val selectedEmotePackage = when {
+                                currentTab == -1L -> apiKaomojiPackage
+                                currentTab == -2L && skinEmojiImages.isNotEmpty() -> null
+                                else -> emotePackages.firstOrNull { it.id == currentTab }
+                                    ?: emotePackages.firstOrNull { it.id == 1L }
+                                    ?: emotePackages.firstOrNull()
+                            }
+                            val selectedEmoteTab = selectedEmotePackage?.id
+                                ?: if (currentTab == -2L && skinEmojiImages.isNotEmpty()) -2L else -1L
+                            val showingKaomojis = selectedEmoteTab == -1L ||
+                                selectedEmotePackage?.text == "颜文字"
+                            val emoteTabOptions = remember(emotePackages, skinEmojiImages.isNotEmpty()) {
+                                buildList {
+                                    emotePackages.forEach { pkg ->
+                                        val label = when (pkg.id) {
+                                            2L -> "小电视"
+                                            53L -> "热词系列"
+                                            else -> pkg.text
+                                        }
+                                        add(AppSegmentOption(pkg.id, label))
+                                    }
+                                    if (apiKaomojiPackage == null) {
+                                        add(AppSegmentOption(-1L, "颜文字"))
+                                    }
+                                    if (skinEmojiImages.isNotEmpty()) {
+                                        add(AppSegmentOption(-2L, "皮肤"))
+                                    }
+                                }.sortedBy { commentEmoteTabPriority(it.value) }
+                            }
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(layoutPolicy.emojiPanelHeightDp.dp)
+                                    .height(emojiPanelHeightDp.dp)
+                                    .testTag("comment_emote_panel")
                                     .padding(top = 8.dp)
                             ) {
-                                // 顶部标签栏 (可滚动)
                                 AppThemeAdaptiveTabRow(
-indicatorPresentation = AppTabRowIndicatorPresentation.TONAL_PILL,
-                                    options = buildList {
-                                        add(AppSegmentOption(0, "颜文字"))
-                                        add(AppSegmentOption(1, "Emoji"))
-                                        emotePackages.forEachIndexed { index, pkg ->
-                                            add(AppSegmentOption(index + 2, pkg.text))
-                                        }
-                                        if (skinEmojiImages.isNotEmpty()) {
-                                            add(AppSegmentOption(emotePackages.size + 2, "皮肤"))
-                                        }
-                                    },
-                                    selectedValue = currentTab,
+                                    indicatorPresentation = AppTabRowIndicatorPresentation.TONAL_PILL,
+                                    options = emoteTabOptions,
+                                    selectedValue = selectedEmoteTab,
                                     onSelectionChange = { currentTab = it },
                                     height = 48.dp,
                                     scrollable = true,
                                 )
 
                                 // 内容区域
-                                Box(modifier = Modifier.fillMaxSize().padding(horizontal = 8.dp, vertical = 8.dp)) {
-                                    when (currentTab) {
-                                        0 -> { // 颜文字
-                                            val kaomojis = listOf(
-                                                "(⌒▽⌒)", "（￣▽￣）", "(=・ω・=)", "(｀・ω・´)", 
-                                                "(〜￣△￣)〜", "(･∀･)", "(°∀°)ﾉ", "(￣3￣)", 
-                                                "╮(￣▽￣)╭", "( ´_ゝ｀)", "_(:3」∠)_", "(;¬_¬)",
-                                                "(ﾟДﾟ≡ﾟДﾟ)", "(ノ=Д=)ノ┻━┻", "Σ( ￣□￣||)", "(´；ω；`)",
-                                                "（/TДT)/", "(^・ω・^ )", "(●￣(ｴ)￣●)", "ε=ε=(ノ≧∇≦)ノ",
-                                                "( >﹏<。)", "( *・ω・)✄╰ひ╯", "(╬￣皿￣)凸", "⊙__⊙"
-                                            )
-                                            androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
-                                                columns = androidx.compose.foundation.lazy.grid.GridCells.Adaptive(80.dp),
-                                                verticalArrangement = Arrangement.spacedBy(8.dp),
-                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .weight(1f)
+                                        .testTag("comment_emote_content")
+                                        .padding(horizontal = 8.dp, vertical = 8.dp)
+                                ) {
+                                    if (showingKaomojis) {
+                                        CommentKaomojiGrid(
+                                            emotes = selectedEmotePackage?.let { it.emote.orEmpty() },
+                                            enabled = canInputComment && !isSending,
+                                            onChoose = ::insertTextAtCursor,
+                                        )
+                                    } else if (selectedEmoteTab == -2L && skinEmojiImages.isNotEmpty()) {
+                                        val emotes = skinEmojiImages.toList()
+                                        androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
+                                            columns = androidx.compose.foundation.lazy.grid.GridCells.Adaptive(60.dp),
+                                            verticalArrangement = Arrangement.spacedBy(12.dp),
+                                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                        ) {
+                                            items(emotes.size, key = { emotes[it].first }) { index ->
+                                                val (emoteText, imagePath) = emotes[index]
+                                                Column(
+                                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                                    modifier = Modifier.clickable {
+                                                        insertTextAtCursor(emoteText)
+                                                    },
+                                                ) {
+                                                    AsyncImage(
+                                                        model = File(imagePath),
+                                                        contentDescription = emoteText,
+                                                        modifier = Modifier.size(50.dp),
+                                                    )
+                                                    AppText(
+                                                        text = emoteText.removePrefix("[").removeSuffix("]"),
+                                                        style = MaterialTheme.typography.labelSmall,
+                                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                        maxLines = 1,
+                                                        overflow = TextOverflow.Ellipsis,
+                                                    )
+                                                }
+                                            }
+                                        }
+                                    } else {
+                                        val pkg = selectedEmotePackage
+                                        if (pkg == null) {
+                                            Box(
+                                                modifier = Modifier.fillMaxSize(),
+                                                contentAlignment = Alignment.Center,
                                             ) {
-                                                items(kaomojis.size, key = { i -> kaomojis[i] }) { i ->
-                                                    Box(
-                                                        contentAlignment = Alignment.Center,
-                                                        modifier = Modifier
-                                                            .height(48.dp)
-                                                            .appDesktopFocusableItemVisuals()
-                                                            .clickable(role = Role.Button) {
-                                                                insertTextAtCursor(kaomojis[i])
-                                                            },
-                                                    ) {
+                                                AppText(
+                                                    text = "暂无表情包",
+                                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                )
+                                            }
+                                        } else {
+                                            val emotes = pkg.emote.orEmpty()
+                                            val compactEmotes = when (pkg.text) {
+                                                "小黄脸", "小电视", "tv_小电视" -> true
+                                                else -> false
+                                            }
+                                            val showEmoteLabels = pkg.id != 53L && !pkg.text.startsWith("热词系列")
+                                            androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
+                                                columns = if (compactEmotes) {
+                                                    androidx.compose.foundation.lazy.grid.GridCells.Fixed(8)
+                                                } else {
+                                                    androidx.compose.foundation.lazy.grid.GridCells.Adaptive(60.dp)
+                                                },
+                                                verticalArrangement = Arrangement.spacedBy(if (compactEmotes) 8.dp else 12.dp),
+                                                horizontalArrangement = Arrangement.spacedBy(if (compactEmotes) 4.dp else 12.dp),
+                                            ) {
+                                                items(emotes.size, key = { emotes[it].id }) { i ->
+                                                    val emote = emotes[i]
+                                                    if (compactEmotes) {
                                                         Box(
                                                             modifier = Modifier
                                                                 .fillMaxWidth()
-                                                                .height(36.dp)
-                                                                .clip(AppShapes.container(ContainerLevel.Tag))
-                                                                .background(
-                                                                    opaqueCompositeOver(
-                                                                        MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.1f),
-                                                                        MaterialTheme.colorScheme.surface,
-                                                                    )
-                                                                ),
+                                                                .aspectRatio(1f)
+                                                                .appDesktopFocusableItemVisuals()
+                                                                .clickable(role = Role.Button) {
+                                                                    insertTextAtCursor(emote.text)
+                                                                },
                                                             contentAlignment = Alignment.Center,
-                                                        ) {
-                                                            AppText(kaomojis[i], style = MaterialTheme.typography.bodySmall)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        1 -> { // Emoji
-                                            val emojis = listOf(
-                                                "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣",
-                                                "😊", "😇", "🙂", "🙃", "😉", "😌", "😍", "🥰",
-                                                "😘", "😗", "😙", "😚", "😋", "😛", "😝", "😜",
-                                                "🤪", "🤨", "🧐", "🤓", "😎", "🤩", "🥳", "😏",
-                                                "😒", "😞", "😔", "😟", "😕", "🙁", "☹️", "😣",
-                                                "🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼"
-                                            )
-                                            androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
-                                                columns = androidx.compose.foundation.lazy.grid.GridCells.Adaptive(48.dp),
-                                                verticalArrangement = Arrangement.spacedBy(8.dp),
-                                                horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                            ) {
-                                                items(emojis.size, key = { i -> emojis[i] }) { i ->
-                                                    Box(
-                                                        contentAlignment = Alignment.Center,
-                                                        modifier = Modifier
-                                                            .size(48.dp)
-                                                            .appDesktopFocusableItemVisuals()
-                                                            .clickable(role = Role.Button) {
-                                                                insertTextAtCursor(emojis[i])
-                                                            }
-                                                    ) {
-                                                        AppText(emojis[i], style = MaterialTheme.typography.headlineSmall)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        emotePackages.size + 2 -> { // 皮肤表情
-                                            // when(currentTab) 的分支必须是常量；空列表时留白，
-                                            // 与原本「布尔条件不命中落入 else」的空态一致。
-                                            if (skinEmojiImages.isNotEmpty()) {
-                                                val emotes = skinEmojiImages.toList()
-                                                androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
-                                                    columns = androidx.compose.foundation.lazy.grid.GridCells.Adaptive(60.dp),
-                                                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                                                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                                                ) {
-                                                    items(emotes.size, key = { emotes[it].first }) { index ->
-                                                        val (emoteText, imagePath) = emotes[index]
-                                                        Column(
-                                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                                            modifier = Modifier.clickable {
-                                                                insertTextAtCursor(emoteText)
-                                                            },
-                                                        ) {
-                                                            AsyncImage(
-                                                                model = File(imagePath),
-                                                                contentDescription = emoteText,
-                                                                modifier = Modifier.size(50.dp),
-                                                            )
-                                                            AppText(
-                                                                text = emoteText.removePrefix("[").removeSuffix("]"),
-                                                                style = MaterialTheme.typography.labelSmall,
-                                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                                maxLines = 1,
-                                                                overflow = TextOverflow.Ellipsis,
-                                                            )
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else -> { // API Package
-                                            val pkgIndex = currentTab - 2
-                                            if (pkgIndex < emotePackages.size) {
-                                                val pkg = emotePackages[pkgIndex]
-                                                val emotes = pkg.emote ?: emptyList()
-                                                
-                                                androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
-                                                    columns = androidx.compose.foundation.lazy.grid.GridCells.Adaptive(60.dp),
-                                                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                                                    horizontalArrangement = Arrangement.spacedBy(12.dp)
-                                                ) {
-                                                    items(emotes.size, key = { i -> emotes[i].id }) { i ->
-                                                        val emote = emotes[i]
-                                                        Column(
-                                                            horizontalAlignment = Alignment.CenterHorizontally,
-                                                            modifier = Modifier.clickable { insertTextAtCursor(emote.text) }
                                                         ) {
                                                             AsyncImage(
                                                                 model = emote.url,
                                                                 contentDescription = emote.text,
-                                                                modifier = Modifier.size(50.dp)
+                                                                modifier = Modifier.size(32.dp),
                                                             )
-                                                            AppText(
-                                                                text = emote.text.replace("[", "").replace("]", ""),
-                                                                style = MaterialTheme.typography.labelSmall,
-                                                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                                                maxLines = 1,
-                                                                overflow = TextOverflow.Ellipsis
+                                                        }
+                                                    } else {
+                                                        Column(
+                                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                                            modifier = Modifier.clickable {
+                                                                insertTextAtCursor(emote.text)
+                                                            },
+                                                        ) {
+                                                            AsyncImage(
+                                                                model = emote.url,
+                                                                contentDescription = emote.text,
+                                                                modifier = Modifier.size(50.dp),
                                                             )
+                                                            if (showEmoteLabels) {
+                                                                AppText(
+                                                                    text = emote.text.removePrefix("[").removeSuffix("]"),
+                                                                    style = MaterialTheme.typography.labelSmall,
+                                                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                                    maxLines = 1,
+                                                                    overflow = TextOverflow.Ellipsis,
+                                                                )
+                                                            }
                                                         }
                                                     }
                                                 }
@@ -874,6 +926,47 @@ indicatorPresentation = AppTabRowIndicatorPresentation.TONAL_PILL,
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun CommentKaomojiGrid(
+    emotes: List<com.android.purebilibili.data.model.response.EmoteItem>?,
+    enabled: Boolean,
+    onChoose: (String) -> Unit,
+) {
+    androidx.compose.foundation.lazy.grid.LazyVerticalGrid(
+        columns = androidx.compose.foundation.lazy.grid.GridCells.Adaptive(100.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag("comment_kaomoji_grid"),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        items(
+            count = emotes?.size ?: COMMENT_INPUT_KAOMOJIS.size,
+            key = { index -> emotes?.get(index)?.id ?: COMMENT_INPUT_KAOMOJIS[index] },
+        ) { index ->
+            val kaomoji = emotes?.get(index)?.text ?: COMMENT_INPUT_KAOMOJIS[index]
+            Box(
+                modifier = Modifier
+                    .heightIn(min = 44.dp)
+                    .appDesktopFocusableItemVisuals()
+                    .clip(AppShapes.container(ContainerLevel.Tag))
+                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                    .clickable(enabled = enabled, role = Role.Button) {
+                        onChoose(kaomoji)
+                    }
+                    .padding(horizontal = 6.dp, vertical = 8.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                AppText(
+                    text = kaomoji,
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center,
+                )
             }
         }
     }

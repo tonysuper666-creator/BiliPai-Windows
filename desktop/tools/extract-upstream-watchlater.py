@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Full stable WatchLater UI/VM/repository, with owned Windows Root ports only."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,os,re,subprocess
-PIN='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
 def safe(p):
  p=os.path.abspath(p);prefix=chr(92)*2+'?'+chr(92)
@@ -17,7 +18,7 @@ def generate(repo,output,standalone=False):
  rows=[]
 
  def source(rel):
-  path=BASE+rel+'.kt';s=read(R/path);b=subprocess.check_output(['git','show',P+':'+path],cwd=R).replace(b'\r\n',b'\n');assert s.encode()==b
+  path=BASE+rel+'.kt';sourcePath=_desktop_canonical_source(R,path);path=sourcePath.relative_to(R).as_posix();s=read(sourcePath);b=subprocess.check_output(['git','show',P+':'+path],cwd=R).replace(b'\r\n',b'\n');assert s.encode()==b
   rows.append({'path':path,'commit':P,'sha256LfUtf8':hashlib.sha256(b).hexdigest()});return s
  def emit(rel,s,direct=False):
   path=OUT/'com/android/purebilibili'/(rel+'.kt')
@@ -46,6 +47,7 @@ def generate(repo,output,standalone=False):
  # The three original external-playlist admissions retain the original items/start index;
  # concrete current Root queue bridge applies SEQUENTIAL and opens video/audio atomically.
  needle='com.android.purebilibili.feature.video.player.PlaylistManager.setExternalPlaylist('
+ assert s.count(needle)==3, ('latest original three queue admissions', s.count(needle))
  while needle in s:
   a=s.index(needle);b=parser.balanced(parser.masked(s),s.index('(',a))
   args=s[s.index('(',a)+1:b-1]

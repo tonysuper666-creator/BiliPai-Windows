@@ -125,6 +125,15 @@ class CommentDetailViewModel : ViewModel() {
         loadSubReplies(page = 1, paginationOffset = null)
     }
 
+    fun refresh() {
+        val state = _subReplyState.value
+        if (currentOid <= 0L || currentRootId <= 0L || state.isRefreshing ||
+            (state.isLoading && state.items.isEmpty())
+        ) return
+        _subReplyState.value = state.copy(isLoading = true, isRefreshing = true, error = null)
+        loadSubReplies(page = 1, paginationOffset = null)
+    }
+
     fun loadMore() {
         val state = _subReplyState.value
         if (state.isLoading || state.isEnd || state.rootReply == null) return
@@ -159,6 +168,7 @@ class CommentDetailViewModel : ViewModel() {
                 if (rootReply == null) {
                     _subReplyState.value = _subReplyState.value.copy(
                         isLoading = false,
+                        isRefreshing = false,
                         error = "评论可能已被删除或不可见"
                     )
                     return@onSuccess
@@ -191,6 +201,7 @@ class CommentDetailViewModel : ViewModel() {
                     baseItems = updatedItems.toImmutableList(),
                     totalCount = totalCount,
                     isLoading = false,
+                    isRefreshing = false,
                     page = page,
                     basePage = page,
                     isEnd = isEnd,
@@ -203,6 +214,7 @@ class CommentDetailViewModel : ViewModel() {
                 if (currentOid != oid || currentRootId != rootId || currentType != type) return@onFailure
                 _subReplyState.value = _subReplyState.value.copy(
                     isLoading = false,
+                    isRefreshing = false,
                     error = error.message ?: "回复加载失败"
                 )
             }

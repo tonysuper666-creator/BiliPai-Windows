@@ -1,4 +1,5 @@
 """Extract only the original pure BGM display selection; no Android UI declarations."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse
 import hashlib
@@ -11,7 +12,7 @@ SOURCE = "app/src/main/java/com/android/purebilibili/feature/video/ui/section/Vi
 def declaration(root):
     spec = importlib.util.spec_from_file_location("structure", root / "desktop/tools/sync-upstream.py")
     parser = importlib.util.module_from_spec(spec); spec.loader.exec_module(parser)
-    raw = (root / SOURCE).read_text(encoding="utf-8")
+    raw = (_desktop_canonical_source(root, SOURCE)).read_text(encoding="utf-8")
     tokens = parser.kotlin_tokens(raw)
     matches = [i for i, token in enumerate(tokens[:-1]) if token[0] == "fun" and tokens[i + 1][0] == "resolveDisplayBgmList"]
     if len(matches) != 1: raise ValueError("Original BGM pure function must be unique")
@@ -28,7 +29,7 @@ def declaration(root):
 
 def inventory(root):
     return [{"path": SOURCE, "mode": "policy-extract", "features": ["resolveDisplayBgmList"],
-             "sha256": hashlib.sha256((root / SOURCE).read_text(encoding="utf-8").encode()).hexdigest(),
+             "sha256": hashlib.sha256((_desktop_canonical_source(root, SOURCE)).read_text(encoding="utf-8").encode()).hexdigest(),
              "declarationSha256": hashlib.sha256(declaration(root).encode()).hexdigest()}]
 
 

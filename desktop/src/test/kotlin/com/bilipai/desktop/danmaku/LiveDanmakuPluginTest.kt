@@ -47,7 +47,7 @@ class LiveDanmakuPluginTest {
                 override fun systemChromeInsetPx() = 0
                 override fun maximumDisplayShortSidePx() = 360f // Declared test monitor only.
             }
-            val config = resolveDesktopOriginalLiveDanmakuRenderConfig(settings, 640, 360, 1f, platform)
+            val config = resolveDesktopOriginalLiveDanmakuRenderConfig(settings, 640, 360, 1f, density = 1f, platform = platform)
             assertTrue(config.lineCount > 4, "style fixture must have an original pinned-layer budget")
             try { renderer.paint(graphics, 640, 360, 360, config, settings) }
             finally { graphics.dispose() }

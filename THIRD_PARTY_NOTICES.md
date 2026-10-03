@@ -1,5 +1,19 @@
 # Third-party notices
 
+## Telegram / NagramX ThanosEffect
+
+The particle-dissolve shaders are imported unchanged from Telegram / NagramX.
+The GLES3 transform-feedback renderer and TextureView/EGL lifecycle are ported
+to BiliPai's Compose video-card integration.
+
+Sources: [NagramX revision 2db685af](https://github.com/risin42/NagramX/tree/2db685af00a4352c877ecf96474cbf0494284715)
+and [Telegram revision f2908b14](https://github.com/DrKLO/Telegram/tree/f2908b14133bbffbf7ab04f641ecb5bfaf533242).
+Credit: Telegram and NagramX contributors.
+License: GNU General Public License; NagramX distributes its source under GPL-3.0.
+The port is distributed under this repository's [GPL-3.0 license](LICENSE).
+Source paths, preserved behavior, and modifications are recorded in
+[the port documentation](docs/telegram-thanos-port.md).
+
 ## HyperIsland
 
 The liquid navigation indicator motion tuning and deformation formulas are adapted from

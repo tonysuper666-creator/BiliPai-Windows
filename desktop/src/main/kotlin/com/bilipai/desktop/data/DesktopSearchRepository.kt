@@ -1,6 +1,5 @@
 package com.bilipai.desktop.data
 
-import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.core.network.SearchApi
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.*
@@ -15,11 +14,10 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 /** SearchRepository policies using the same desktop account and original Retrofit API. */
 class DesktopSearchRepository(private val repository: DesktopRepository) {
     private val web = Retrofit.Builder().baseUrl("https://api.bilibili.com/")
-        .client(repository.httpClient.newBuilder().retryOnConnectionFailure(false).build())
+        .client(repository.httpClient)
         .addConverterFactory(Json { ignoreUnknownKeys = true; coerceInputValues = true }.asConverterFactory("application/json".toMediaType()))
         .build()
     private val api = web.create(SearchApi::class.java)
-    private val nav = web.create(BilibiliApi::class.java)
 
     suspend fun defaultHint(): String = read {
         val current = optional { api.getDefaultSearch(repository.signWebParams(emptyMap())) }
@@ -40,26 +38,14 @@ class DesktopSearchRepository(private val repository: DesktopRepository) {
         SearchTrendingBundle(legacy.topList ?: legacy.data?.topList.orEmpty(), legacy.list ?: legacy.data?.list.orEmpty())
     }
 
-    suspend fun discover(historyKeywords: List<String>, personalized: Boolean = true): List<HotItem> = read {
-        val last = historyKeywords.firstOrNull()?.takeIf { personalized && it.isNotBlank() }
-        val suggestions = if (last == null) emptyList() else optional {
-            api.getSearchSuggest(last).result?.tag.orEmpty().mapNotNull { tag ->
-                tag.term.ifBlank { tag.value.ifBlank { tag.name } }.replace(Regex("<.*?>"), "").trim()
-                    .takeIf { it.isNotBlank() && it != last }
-            }.take(8)
-        }.orEmpty()
-        val mid = repository.account.value?.mid?.takeIf { personalized }
-        val followed = if (mid == null) emptyList() else optional {
-            nav.getFollowings(mid, pn = 1, ps = 20).data?.list.orEmpty().mapNotNull { it.uname.trim().takeIf(String::isNotBlank) }
-        }.orEmpty()
-        val official = optional {
-            val response = api.getSearchRecommend()
-            if (response.code != 0) emptyList() else response.data?.list.orEmpty().filter {
-                (it.keyword.isNotBlank() || it.show_name.isNotBlank()) && (personalized || it.recommend_reason.isBlank())
-            }
-        }.orEmpty()
-        val hot = optional { trending(12).allItems.shuffled().take(10) }.orEmpty()
-        buildSearchRecommendItems(suggestions, followed, official, hot, desktopSearchFallbackKeywords(), 10)
+    suspend fun discover(personalized: Boolean = true): List<HotItem> = read {
+        if (!personalized) return@read trending(12).allItems.take(12)
+        val expectedEpoch = repository.sessionEpoch
+        val identity = repository.ownedHomeAccessTokenIdentity(expectedEpoch) { repository.sessionEpoch == expectedEpoch }
+        val response = api.getSearchRecommend(buildSearchRecommendParams(identity.first, identity.second,
+            com.android.purebilibili.core.network.AppSignUtils.getTimestamp()))
+        requireSuccess(response.code, response.message)
+        response.data?.list.orEmpty().filter { it.keyword.isNotBlank() || it.show_name.isNotBlank() }
     }
 
     suspend fun videos(keyword: String, page: Int = 1, order: SearchOrder = SearchOrder.TOTALRANK,

@@ -3737,8 +3737,14 @@ private fun BiliPaiFloatingBottomBarChrome(
     }
     val selectedIndex = visibleItems.indexOf(currentItem).coerceAtLeast(0)
     val isValidSelection = currentItem in visibleItems
-    val baseSelectedColor = MaterialTheme.colorScheme.primary
-    val baseUnselectedColor = if (iconStyle == SharedFloatingBottomBarIconStyle.MATERIAL) {
+    val neutralMiuixSelection = LocalAppUiStyle.current == AppUiStyle.MIUIX &&
+        !effectiveGlassEnabled && uiSkinDecoration == null
+    val baseSelectedColor = if (neutralMiuixSelection) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        MaterialTheme.colorScheme.primary
+    }
+    val baseUnselectedColor = if (neutralMiuixSelection || iconStyle == SharedFloatingBottomBarIconStyle.MATERIAL) {
         MaterialTheme.colorScheme.onSurfaceVariant
     } else {
         MaterialTheme.colorScheme.onSurface
@@ -3756,12 +3762,12 @@ private fun BiliPaiFloatingBottomBarChrome(
     val selectedColor = lerpColor(
         skinContentColors.selectedColor,
         readableContentColor,
-        liquidGlassTuning.contentReadabilityBoost * 0.65f,
+        if (neutralMiuixSelection) 0f else liquidGlassTuning.contentReadabilityBoost * 0.65f,
     )
     val unselectedColor = lerpColor(
         skinContentColors.unselectedColor,
         readableContentColor,
-        liquidGlassTuning.contentReadabilityBoost,
+        if (neutralMiuixSelection) 0f else liquidGlassTuning.contentReadabilityBoost,
     ).copy(alpha = 1f)
     val totalItems = allItems.size.coerceAtLeast(1)
 
@@ -3849,6 +3855,12 @@ private fun BiliPaiFloatingBottomBarChrome(
             mode = floatingMode,
             hasUiSkinDecoration = uiSkinDecoration != null,
         )
+    }
+    // Use the same opaque surface roles as the non-glass top dock capsule.
+    val neutralIndicatorContainerColor = if (neutralMiuixSelection) {
+        if (isDarkTheme) AppSurfaceTokens.surfaceContainerHighest() else AppSurfaceTokens.surfaceContainer()
+    } else {
+        null
     }
     val floatingColors = FloatingBottomBarColors(
         containerColor = floatingContainerColor,
@@ -4084,6 +4096,8 @@ private fun BiliPaiFloatingBottomBarChrome(
                                 tabsCount = totalItems,
                                 modifier = dockModifier,
                                 colors = floatingColors,
+                                indicatorContainerColor = neutralIndicatorContainerColor
+                                    ?: floatingColors.indicatorColor.copy(alpha = 0.14f),
                                 content = dockContent,
                             )
                         } else {
@@ -4096,6 +4110,7 @@ private fun BiliPaiFloatingBottomBarChrome(
                                 modifier = dockModifier,
                                 mode = floatingMode,
                                 colors = floatingColors,
+                                indicatorIdleSurfaceColorOverride = neutralIndicatorContainerColor,
                                 shellHeight = dockHeight,
                                 indicatorHeight = resolveBiliPaiBottomBarIndicatorHeight(dockHeight),
                                 minimumIndicatorWidth = searchLayoutState.minimumIndicatorWidth,

@@ -1,10 +1,33 @@
 """Full v0.2.3 message bodies; required existing Root/account/transport platform seams."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re
 BASE='app/src/main/java/com/android/purebilibili/'
 DIRECT=[BASE+'feature/message/'+n+'.kt' for n in ['ChatMessageMutationPolicy','MessageGlassSurfacePolicy','MessagePreviewParser']]+[BASE+'feature/message/feed/SystemNoticeContentPolicy.kt']
-PATHS=DIRECT+[BASE+'feature/message/MessageCenterPolicy.kt']+[BASE+'feature/message/'+n+'.kt' for n in ['InboxViewModel','ChatViewModel','InboxScreen','ChatScreen','MessageCenterScreen','MessageGlassSurface']]+[BASE+'feature/message/feed/'+n+'.kt' for n in ['ReplyMeScreen','AtMeScreen','LikeMeScreen','SystemNoticeScreen','MessageFeedCommon']]+[BASE+'data/repository/MessageRepository.kt']
-def read(repo,p):return(repo/p).read_text(encoding='utf-8').replace('\r\n','\n')
+PATHS=DIRECT+[BASE+'feature/message/MessageCenterPolicy.kt']+[BASE+'feature/message/'+n+'.kt' for n in ['InboxViewModel','ChatViewModel','InboxScreen','ChatScreen','MessageCenterScreen','MessageGlassSurface']]+[BASE+'feature/message/feed/'+n+'.kt' for n in ['ReplyMeScreen','AtMeScreen','LikeMeScreen','SystemNoticeScreen','MessageFeedCommon']]+[BASE+'data/repository/MessageRepository.kt',BASE+'feature/message/MessageAppScaffold.kt']
+MESSAGE_SCAFFOLD_SOURCE_SHA='1d23437ce71fdd275f1129cfa6b0d2c70a4787058c10573a451a2de96a630882'
+MESSAGE_SCAFFOLD_OUTPUT_SHA='dd080776317163e8dca9c04e40893e4878f1430d4fb0d2b1ad741f3696ad594d'
+MESSAGE_SCAFFOLD_LEAVES=[{'before': 'import androidx.compose.ui.platform.LocalContext', 'after': 'import com.bilipai.desktop.ui.LocalDesktopMessagePageOwner', 'count': 1, 'afterOffsets': [503]}, {'before': 'import androidx.lifecycle.compose.collectAsStateWithLifecycle', 'after': 'import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle\nimport kotlinx.coroutines.flow.map', 'count': 1, 'afterOffsets': [562]}, {'before': 'import com.android.purebilibili.core.store.SettingsManager\n', 'after': '', 'count': 1, 'afterOffsets': [742]}, {'before': '    val context = LocalContext.current', 'after': '    val context = LocalDesktopMessagePageOwner.current\n    if (!context.isOwned()) return', 'count': 1, 'afterOffsets': [1401]}, {'before': 'SettingsManager.getHomeWallpaperUri(context)', 'after': 'context.home.settings.homeWallpaperUri', 'count': 1, 'afterOffsets': [1581]}, {'before': 'SettingsManager.getSplashWallpaperUri(context)', 'after': 'context.home.settings.splashWallpaperUri', 'count': 1, 'afterOffsets': [1697]}, {'before': 'SettingsManager.getHomeWallpaperEffectMode(context)', 'after': 'remember(context) { context.home.settings.homeSettings.map { it.homeWallpaperEffectMode } }', 'count': 1, 'afterOffsets': [1810]}, {'before': 'SettingsManager.isDataSaverActive(context)', 'after': 'context.home.settings.isDataSaverActive()', 'count': 1, 'afterOffsets': [2144]}, {'before': 'initialValue =', 'after': 'initial =', 'count': 3, 'afterOffsets': [1657, 1770, 1929]}]
+
+def message_scaffold_source(repo):
+    path=BASE+'feature/message/MessageAppScaffold.kt';original=read(repo,path)
+    assert hashlib.sha256(original.encode()).hexdigest()==MESSAGE_SCAFFOLD_SOURCE_SHA
+    value=original;changes=[]
+    for e in MESSAGE_SCAFFOLD_LEAVES:
+        assert value.count(e['before'])==e['count'],e['before']
+        cursor=0;positions=[]
+        for _ in range(e['count']):
+            at=value.index(e['before'],cursor);positions.append(at);value=value[:at]+e['after']+value[at+len(e['before']):];cursor=at+len(e['after'])
+        changes.append((positions,e))
+    inverse=value
+    for positions,e in reversed(changes):
+        for at in reversed(positions):
+            assert inverse[at:at+len(e['after'])]==e['after'];inverse=inverse[:at]+e['before']+inverse[at+len(e['after']):]
+    assert inverse==original
+    assert hashlib.sha256(value.encode()).hexdigest()==MESSAGE_SCAFFOLD_OUTPUT_SHA
+    return value
+
+def read(repo,p):return(_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').replace('\r\n','\n')
 def inventory(repo):return [dict(path=p,mode='direct' if p in DIRECT else 'policy-extract',features=['stable-original-message-pages-root-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest())for p in PATHS]
 def generate(repo,out,standalone=False):
  spec=importlib.util.spec_from_file_location('message_decl',repo/'desktop/tools/extract-appearance-platform.py');decl=importlib.util.module_from_spec(spec);spec.loader.exec_module(decl)
@@ -27,6 +50,7 @@ def generate(repo,out,standalone=False):
   s='\n'.join(l for l in s.splitlines()if not l.startswith(('import android.','import androidx.activity.','import androidx.lifecycle.')))+'\n'
   s=s.replace('import androidx.compose.ui.platform.LocalContext','import coil3.compose.LocalPlatformContext').replace('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.desktopMessageWindowConfiguration')
   s=s.replace('collectAsStateWithLifecycle','collectAsState').replace('LocalContext.current','LocalPlatformContext.current').replace('LocalConfiguration.current','desktopMessageWindowConfiguration()')
+  for before,after in [('import com.android.purebilibili.core.ui.animation.jiggleOnDissolve', 'import com.bilipai.desktop.ui.jiggleOnDissolve'), ('com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(', 'com.bilipai.desktop.ui.DesktopReplyDissolvableContainer('), ('com.android.purebilibili.core.ui.animation.DissolveAnimationPreset.', 'com.bilipai.desktop.ui.DissolveAnimationPreset.')]:s=s.replace(before,after)
   s=re.sub(r'(?m)^fun (InboxScreen|ChatScreen|MessageCenterScreen|ReplyMeScreen|AtMeScreen|LikeMeScreen|SystemNoticeScreen)\(',r'internal fun \1(',s)
   package=re.search(r'^package [^\n]+',s,re.M).group()
   s=s.replace(package,package+'\nimport androidx.compose.runtime.collectAsState\nimport com.bilipai.desktop.ui.LocalDesktopMessagePageOwner\nimport com.bilipai.desktop.ui.rememberDesktopMessageImagePicker\nimport com.android.purebilibili.core.ui.LocalNavigationBackHandler as BackHandler',1)
@@ -140,6 +164,7 @@ def generate(repo,out,standalone=False):
   if name=='MessageCenterScreen':
    s=s.replace('    val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()','    val pageOwner = LocalDesktopMessagePageOwner.current\n    androidx.compose.runtime.SideEffect { pageOwner.keepPaneChat(activeTalkerId, activeSessionType) }\n    val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()',1)
   emit('com/android/purebilibili/feature/message/'+name+'.kt',s)
+ emit('com/android/purebilibili/feature/message/MessageAppScaffold.kt',message_scaffold_source(repo))
  return files
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--out',type=Path);p.add_argument('--inventory',action='store_true');p.add_argument('--standalone',action='store_true');a=p.parse_args()

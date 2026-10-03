@@ -75,7 +75,7 @@ def generate_members(repo):
     members.append('private suspend fun uploadEditorCommentImage(csrf: String, fileName: String, mimeType: String, bytes: ByteArray): ReplyPicture {\n        coroutineContext.ensureActive(); assertOwned()\n'+byte_body+'\n}\n')
     body=block(fun(comment,'uploadCommentImagePart'),'try {')
     a=body.index('            val part =');body=body[a:]
-    body=sub(body,'            if (response.code == 0 && response.data != null) {\n                val data = response.data','            coroutineContext.ensureActive(); assertOwned()\n            val uploadContext = coroutineContext\n            if (!withOwnedEditorImageAdmission { uploadContext.ensureActive() }) throw CancellationException("Dynamic upload account owner retired")\n            val data = response.data\n            return if (response.code == 0 && data != null) {')
+    body=sub(body,'            if (response.code == 0 && response.data != null) {','            coroutineContext.ensureActive(); assertOwned()\n            val uploadContext = coroutineContext\n            if (!withOwnedEditorImageAdmission { uploadContext.ensureActive() }) throw CancellationException("Dynamic upload account owner retired")\n            return if (response.code == 0 && response.data != null) {')
     body=sub(body,'                Result.success(\n                    ReplyPicture(','                ReplyPicture(')
     body=sub(body,'                    )\n                )','                    )')
     body=identity.drop_logs(body)

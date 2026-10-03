@@ -1,7 +1,7 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.plugin.js.*
-import com.android.purebilibili.feature.plugin.js.buildParamsJson
+import com.android.purebilibili.feature.plugin.js.buildBiliPaiJsModuleParamsJson
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 import org.jetbrains.skia.Bitmap
@@ -66,7 +66,7 @@ internal fun runDesktopJsMediaImageFixture(): Unit = runBlocking {
             BiliPaiJsParam("mode", "mode", "enum", "default", listOf(BiliPaiJsEnumOption("one", "1"))),
             BiliPaiJsParam("number", "number", "number", "42"),
             BiliPaiJsParam("boolean", "boolean", "boolean", "false")))
-        val payload = Json.parseToJsonElement(buildParamsJson(module, mapOf("mode" to "saved unknown", "boolean" to "true"))).jsonObject
+        val payload = Json.parseToJsonElement(buildBiliPaiJsModuleParamsJson(module, mapOf("mode" to "saved unknown", "boolean" to "true"), page = 1, loadedCount = 0)).jsonObject
         check(payload["mode"]?.jsonPrimitive?.content == "saved unknown")
         check(payload["number"]?.jsonPrimitive?.content == "42")
         check(payload["boolean"]?.jsonPrimitive?.content == "true")

@@ -2,7 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.player.shouldUsePlaybackMediaCache
 import com.android.purebilibili.core.player.buildPlaybackCacheKey
-import com.android.purebilibili.feature.video.playback.dash.AdaptiveDashPlaybackSource
+import com.android.purebilibili.core.player.dash.AdaptiveDashPlaybackSource
 import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.player.cache.*
 import kotlinx.coroutines.*

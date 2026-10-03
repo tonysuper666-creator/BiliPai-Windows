@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.foundation.layout.sizeIn
 import com.android.purebilibili.core.ui.components.AppIconButtonColors
 import com.android.purebilibili.core.ui.components.AppIconButtonVariant
 import com.android.purebilibili.core.ui.components.appDesktopFocusableItemVisuals
@@ -68,15 +67,8 @@ internal fun AppMiuixIconButton(
     } else {
         Modifier
     }
-    // Put the minimum before the caller modifier so an exact 32/36/40dp size is coerced to the
-    // accessibility bound instead of overriding Miuix's defaultMinSize. The icon content keeps
-    // its own visual size; only the selectable container grows.
-    val nativeModifier = Modifier
-        .sizeIn(
-            minWidth = AppChromeSizeTokens.MinimumTouchTarget,
-            minHeight = AppChromeSizeTokens.MinimumTouchTarget,
-        )
-        .then(modifier)
+    // Leave explicit sizes to the caller and default sizing to the native control.
+    val nativeModifier = modifier
         .appDesktopFocusableItemVisuals(
             enabled = enabled,
             shape = RoundedCornerShape(AppChromeSizeTokens.MiuixNativeCompactCornerRadiusDp.dp),
@@ -89,8 +81,6 @@ internal fun AppMiuixIconButton(
             modifier = nativeModifier,
             enabled = enabled,
             backgroundColor = backgroundColor,
-            minHeight = AppChromeSizeTokens.MinimumTouchTarget,
-            minWidth = AppChromeSizeTokens.MinimumTouchTarget,
             cornerRadius = AppChromeSizeTokens.MiuixNativeCompactCornerRadiusDp.dp,
             content = content,
         )

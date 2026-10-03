@@ -92,6 +92,8 @@ internal class DesktopReadyOriginalRootServices(
     val library: com.bilipai.desktop.DesktopLibrary,
     val nowPlayingBinding: (DesktopHomeRetainedRoot) -> DesktopOriginalAudioNowPlayingBinding,
     val nowPlayingPositionMs: (DesktopHomeRetainedRoot, DesktopOriginalNowPlayingSnapshot) -> Long?,
+    val originalSpacePlaylist: DesktopOriginalVideoPlaylistBinding,
+    val originalSpaceCachedPosition: (String) -> Long,
 )
 
 /** Shutdown order is captured entry/route admission first, drains outside Store locks, then
@@ -109,6 +111,7 @@ internal class DesktopReadyOriginalRootHandle(
     val route = AtomicReference<DesktopOriginalRootRouteAssembly?>()
     val personalLists = AtomicReference<DesktopPersonalListsRoot?>()
     val messagePages = AtomicReference<DesktopOriginalMessagePagesRoot?>()
+    val spacePages = AtomicReference<DesktopOriginalSpacePagesRoot?>()
     var imageTrim: DesktopApplicationImageCacheTrim? = null
     fun isActive() = !closed.get() && retainer.isActive() && navigation.owns()
     suspend fun closeAndJoin() = withContext(NonCancellable) {
@@ -116,6 +119,7 @@ internal class DesktopReadyOriginalRootHandle(
         chromeRefresh.set(null)
         route.getAndSet(null)?.close()
         messagePages.getAndSet(null)?.closeAndJoin()
+        spacePages.getAndSet(null)?.closeAndJoin()
         personalLists.getAndSet(null)?.closeAndJoin()
         retainer.closeAndJoin()
         imageTrim?.close(); imageTrim = null
@@ -130,7 +134,8 @@ internal class DesktopReadyOriginalRootHandle(
     services: DesktopReadyOriginalRootServices,
     handleReference: AtomicReference<DesktopReadyOriginalRootHandle?>,
     modifier: Modifier,
-    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot, DesktopHomeSettingsPort, DesktopOriginalMessagePagesRoot) -> Unit,
+    onRootContentFrame: ((() -> Boolean) -> Unit) = {},
+    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot, DesktopHomeSettingsPort, DesktopOriginalMessagePagesRoot, DesktopOriginalSpacePagesRoot) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val applicationImages = LocalDesktopApplicationImageLoader.current
@@ -169,7 +174,7 @@ internal class DesktopReadyOriginalRootHandle(
     DisposableEffect(handle) { onDispose {
         // cancel admission synchronously, then drain in a NON-child shutdown task.
         handleReference.compareAndSet(handle, null)
-        handle.route.getAndSet(null)?.close(); handle.messagePages.get()?.close(); handle.retainer.retire()
+        handle.route.getAndSet(null)?.close(); handle.messagePages.get()?.close(); handle.spacePages.get()?.close(); handle.retainer.retire()
         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch { handle.closeAndJoin() }
     } }
     val physicalStack = remember(navigation) { mutableStateListOf<BiliPaiNavKey>(BiliPaiNavKey.MainHost) }
@@ -236,6 +241,7 @@ internal class DesktopReadyOriginalRootHandle(
         try {
             handle.route.getAndSet(null)?.close()
             handle.messagePages.getAndSet(null)?.closeAndJoin()
+            handle.spacePages.getAndSet(null)?.closeAndJoin()
             physicalStack.clear(); physicalStack.add(BiliPaiNavKey.MainHost)
             handle.retainer.install(epoch, account?.mid, factory.factory)
             installFailure = null
@@ -279,11 +285,25 @@ internal class DesktopReadyOriginalRootHandle(
             DesktopOriginalRootRoutePlatform(services.navigationAdmission, services.beforeNavigationCommit,
                 resolver::resolve, saveable::removeState, services.backAtHomeRoot),
             { prefs.navigation.value.orderedVisibleTabIds.map { it.lowercase() }.toSet() }) }
+        val ownsStartupRoot = remember(root, handle, routes) {
+            { handle.isActive() && root.isCurrentOwner() && routes.owns() }
+        }
         SideEffect { handle.route.set(routes) }
         DisposableEffect(routes) { onDispose { handle.route.compareAndSet(routes, null); routes.close() } }
         val messagePages = rememberDesktopOriginalMessagePagesRoot(services.repository, services.community,
             routes, desktopDetailRenderEffectsSupported())
         SideEffect { if (handle.isActive() && messagePages.isOwned()) handle.messagePages.set(messagePages) else messagePages.close() }
+        val spacePages = remember(services.repository, services.community, routes) {
+            DesktopOriginalSpacePagesRoot(services.repository, services.community, routes,
+                services.community.originalSpaceTransport)
+        }
+        SideEffect { if (handle.isActive()) handle.spacePages.set(spacePages) else spacePages.close() }
+        LaunchedEffect(spacePages, routes) { snapshotFlow { physicalStack.toList() }.collect { spacePages.prune() } }
+        DisposableEffect(spacePages) { onDispose {
+            // Leave the last owner in the handle until its existing account/
+            // restore/shutdown drain has awaited it. Retirement cancels now.
+            spacePages.close()
+        } }
         val personalLists = remember(root, services.library) { DesktopPersonalListsRoot(root.entry.gate,
             services.repository, services.runtime.store, services.library,
             services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze) }
@@ -428,7 +448,8 @@ internal class DesktopReadyOriginalRootHandle(
                         clock.settleState == VideoCardTransitionSettleState.InteractiveSeek,
                         clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress)) },
                 Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable,
-                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages) })
+                onRootContentFrame = { if (ownsStartupRoot()) onRootContentFrame(ownsStartupRoot) },
+                leafContent = { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages, spacePages) })
         }
         }
         }

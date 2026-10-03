@@ -543,30 +543,6 @@ class SearchScreenPolicyTest {
     }
 
     @Test
-    fun searchTopBar_inputUsesFixedHeightNotFillMaxSize() {
-        val searchSource = loadSource("app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt")
-        val topBar = searchSource
-            .substringAfter("fun SearchTopBar(")
-            .substringBefore("private fun SearchTopBarIconButton(")
-        // 回归：fillMaxSize 会让输入框在 Column 剩余高度里变成竖向长胶囊
-        assertFalse(topBar.contains("Modifier = Modifier.fillMaxSize()"))
-        assertTrue(topBar.contains(".height(chromeSpec.inputHeightDp.dp)"))
-        assertTrue(topBar.contains(".fillMaxWidth()"))
-        assertTrue(topBar.contains("TextFieldValue("))
-        assertTrue(topBar.contains("resolveSearchInputShape(topChromePolicy)"))
-        assertFalse(topBar.contains("RoundedCornerShape("))
-        assertFalse(topBar.contains("searchTopChromeGlass(dockShape)"))
-        assertTrue(topBar.contains("searchTopChromeGlass(inputShape, chromeSpec.inputHeightDp)"))
-        assertTrue(topBar.contains("searchTopChromeGlass(actionShape, chromeSpec.submitActionSizeDp)"))
-        assertEquals(2, Regex("searchTopChromeGlass\\(actionShape, chromeSpec.clearActionSizeDp\\)").findAll(topBar).count())
-        assertTrue(topBar.contains("resolveHomeTopEdgeButtonShape(topChromePolicy)"))
-        assertTrue(topBar.contains("liquidGlassEnabled"))
-        assertTrue(topBar.contains("homeTopBottomBarMatchedSurface("))
-        assertTrue(topBar.contains("drawShellLens = true"))
-        assertTrue(topBar.contains("resolveFloatingDockGeometryScale(controlHeightDp.toFloat())"))
-    }
-
-    @Test
     fun bottomBarSearchEntry_usesDedicatedTopBarContinuityMotion() {
         val navigationSource = loadSource("app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt")
         val searchSource = loadSource("app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt")

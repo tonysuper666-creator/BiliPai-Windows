@@ -1,10 +1,11 @@
 """Original dynamic share-v2 protocol/UI; only desktop ownership/transport seams."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,importlib.util,re
 BASE='app/src/main/java/com/android/purebilibili/'
 DIRECT=[BASE+'core/network/grpc/ProtoWire.kt',BASE+'feature/message/InboxUserInfoResolver.kt']
 PATHS=DIRECT+[BASE+'core/network/grpc/BiliGrpcClient.kt',BASE+'data/repository/MessageShareGrpcRepository.kt',BASE+'feature/message/InboxViewModel.kt',BASE+'feature/message/MessageUserInfoLoader.kt',BASE+'data/repository/MessageRepository.kt',BASE+'feature/dynamic/components/DynamicShareToMessageDialog.kt']
-def read(repo,p):return(repo/p).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,p):return(_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').replace('\r\n','\n')
 def inventory(repo):return[dict(path=p,mode='direct'if p in DIRECT else'policy-extract',features=['settings-dynamic-full-card-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest())for p in PATHS]
 def load(repo,name,path):
  spec=importlib.util.spec_from_file_location(name,repo/path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m

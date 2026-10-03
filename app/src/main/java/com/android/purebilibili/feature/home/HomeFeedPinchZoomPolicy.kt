@@ -9,8 +9,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.calculateCentroid
 import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -20,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.isSpecified
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.PointerEventPass
@@ -44,6 +47,12 @@ internal const val PINCH_ZOOM_OUT_FACTOR = 0.80f
 
 /** 手指轻微抖动过滤阈值，避免误触发手势 */
 internal const val PINCH_ACTIVATION_THRESHOLD = 0.05f
+
+/** 手势结束后视口/中心点弹性归位的弹簧曲线（略欠阻尼，保留一点物理回弹感）。 */
+private val PINCH_SETTLE_SPRING = spring<Float>(
+    dampingRatio = 0.72f,
+    stiffness = Spring.StiffnessMedium,
+)
 
 /**
  * 根据屏幕尺寸档位与内容宽度解析双指捏合允许调节的网格列数上下限。
@@ -146,13 +155,20 @@ internal fun Modifier.homeFeedPinchZoom(
     val onGestureEndState = rememberUpdatedState(onGestureEnd)
 
     val liveScale = remember { Animatable(1.0f) }
+    // 双指中心的偏移：缩放围绕手指捏合中心而非固定屏幕中心，
+    // 视口收缩方向与手指一致，符合"内容跟着手指走"的直觉。
+    val centroidX = remember { Animatable(0.5f) }
+    val centroidY = remember { Animatable(0.5f) }
     val coroutineScope = rememberCoroutineScope()
 
     return this
         .graphicsLayer {
             scaleX = liveScale.value
             scaleY = liveScale.value
-            transformOrigin = TransformOrigin.Center
+            transformOrigin = TransformOrigin(
+                pivotFractionX = centroidX.value,
+                pivotFractionY = centroidY.value,
+            )
         }
         .pointerInput(enabled) {
             awaitEachGesture {
@@ -179,7 +195,8 @@ internal fun Modifier.homeFeedPinchZoom(
                             // 消费所有多指事件，阻止子级 LazyGrid 或外层 Pager 接收到滑动/点击
                             event.changes.forEach { it.consume() }
 
-                            // 实时跟随双指距离直接变换缩放比例
+                            // AwaitPointerEventScope 是受限挂起作用域，Animatable 调用须经协程：
+                            // 单事件单 launch，动画写与输入帧逐帧对齐。
                             val visualScale = calculatePinchVisualScale(
                                 cumulativeZoom = cumulativeZoom,
                                 currentColumns = committedColumns,
@@ -187,6 +204,15 @@ internal fun Modifier.homeFeedPinchZoom(
                             )
                             coroutineScope.launch {
                                 liveScale.snapTo(visualScale)
+                                val centroid = event.calculateCentroid(useCurrent = true)
+                                if (centroid.isSpecified && size.width > 0 && size.height > 0) {
+                                    centroidX.snapTo(
+                                        (centroid.x / size.width).coerceIn(0f, 1f)
+                                    )
+                                    centroidY.snapTo(
+                                        (centroid.y / size.height).coerceIn(0f, 1f)
+                                    )
+                                }
                             }
 
                             val (nextColumns, resetZoom) = calculatePinchStepColumns(
@@ -199,16 +225,8 @@ internal fun Modifier.homeFeedPinchZoom(
                             if (nextColumns != committedColumns) {
                                 committedColumns = nextColumns
                                 onColumnsChangeState.value(nextColumns)
-                                // 换档瞬间：弹簧阻尼快速平滑归正至 1.0f，与重排的新列数布局无缝交接
-                                coroutineScope.launch {
-                                    liveScale.animateTo(
-                                        targetValue = 1.0f,
-                                        animationSpec = spring(
-                                            dampingRatio = 0.8f,
-                                            stiffness = Spring.StiffnessMediumLow,
-                                        ),
-                                    )
-                                }
+                                // 换档后 cumulativeZoom 已重置为 1.0，下一帧 snapTo 会
+                                // 以 1.0 为基准继续；此处无需 animateTo（会被逐帧 snapTo 覆盖）。
                             }
                         }
                     } else if (isPinchActive) {
@@ -220,15 +238,12 @@ internal fun Modifier.homeFeedPinchZoom(
 
                 if (isPinchActive) {
                     onGestureEndState.value(committedColumns)
-                    // 手指完全离屏：弹性回弹归位至 1.0f
+                    // 手指完全离屏：弹簧回弹归位至 1.0f，同时中心回到屏幕中心，
+                    // 两个动画并行，避免回正时视觉锚点突跳。
                     coroutineScope.launch {
-                        liveScale.animateTo(
-                            targetValue = 1.0f,
-                            animationSpec = spring(
-                                dampingRatio = 0.75f,
-                                stiffness = Spring.StiffnessMediumLow,
-                            ),
-                        )
+                        launch { liveScale.animateTo(1.0f, PINCH_SETTLE_SPRING) }
+                        launch { centroidX.animateTo(0.5f, PINCH_SETTLE_SPRING) }
+                        launch { centroidY.animateTo(0.5f, PINCH_SETTLE_SPRING) }
                     }
                 }
             }
@@ -267,11 +282,7 @@ internal fun GridPinchColumnHudPill(
                     tonalElevation = 6.dp,
                     shadowElevation = 8.dp,
                 ) {
-                    androidx.compose.material3.Text(
-                        text = "${columns} 列网格",
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    )
+                    GridPinchColumnHudContent(columns = columns, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 }
             }
             AppUiStyle.MIUIX -> {
@@ -282,13 +293,42 @@ internal fun GridPinchColumnHudPill(
                     tonalElevation = 6.dp,
                     shadowElevation = 8.dp,
                 ) {
-                    AppText(
-                        text = "${columns} 列网格",
-                        style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.inverseOnSurface,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    )
+                    GridPinchColumnHudContent(columns = columns, modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
                 }
+            }
+        }
+    }
+}
+
+/** 列数数字滚动动画：换档瞬间数字沿捏合方向滑入滑出，而不是整块文字跳变。 */
+@Composable
+private fun GridPinchColumnHudContent(
+    columns: Int,
+    modifier: Modifier = Modifier,
+) {
+    androidx.compose.animation.AnimatedContent(
+        targetState = columns,
+        transitionSpec = {
+            val direction = if (targetState > initialState) -1 else 1
+            (fadeIn(animationSpec = tween(120)) +
+                androidx.compose.animation.slideInVertically(animationSpec = tween(160)) { it / 2 * direction }) togetherWith
+                (fadeOut(animationSpec = tween(120)) +
+                    androidx.compose.animation.slideOutVertically(animationSpec = tween(160)) { -it / 2 * direction })
+        },
+        label = "pinchColumnHudCount",
+    ) { columnCount ->
+        androidx.compose.foundation.layout.Row(modifier = modifier) {
+            if (LocalAppUiStyle.current == AppUiStyle.MIUIX) {
+                AppText(
+                    text = "$columnCount 列网格",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.inverseOnSurface,
+                )
+            } else {
+                androidx.compose.material3.Text(
+                    text = "$columnCount 列网格",
+                    style = MaterialTheme.typography.labelLarge,
+                )
             }
         }
     }

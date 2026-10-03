@@ -1,4 +1,5 @@
 """Original shared detail entries and canonical playback category calls only."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse
 import hashlib
@@ -9,7 +10,7 @@ import textwrap
 
 SOURCE='app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt'
 
-def read(repo):return (repo/SOURCE).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo):return (_desktop_canonical_source(repo, SOURCE)).read_text(encoding='utf-8').replace('\r\n','\n')
 def helpers(repo):
     spec=importlib.util.spec_from_file_location('settings_entry_helpers',repo/'desktop/tools/extract-upstream-plugins.py')
     host=importlib.util.module_from_spec(spec);spec.loader.exec_module(host)

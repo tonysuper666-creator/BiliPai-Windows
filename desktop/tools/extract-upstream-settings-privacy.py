@@ -1,4 +1,5 @@
 """Original privacy section/store, with explicit Windows authentication boundary."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse
 import hashlib
@@ -15,7 +16,7 @@ ASSET = 'app/src/main/res/drawable/'+SHIELD+'.xml'
 SOURCES = {SECTION:'policy-extract', HINT:'platform-rewrite', MANAGER:'policy-extract', SEARCH:'policy-extract'}
 
 def read(repo, path):
-    return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+    return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 
 def load(path, name):
     spec=importlib.util.spec_from_file_location(name,path)

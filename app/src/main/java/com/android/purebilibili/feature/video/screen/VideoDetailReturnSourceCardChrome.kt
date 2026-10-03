@@ -178,7 +178,11 @@ internal fun resolveVideoDetailFlyingSourceChromeAlpha(
     sourceLayout: VideoCardSourceLayout,
     detailContentLoading: Boolean = false,
     isNowPlayingBar: Boolean = false,
+    followProgressEnabled: Boolean = true,
 ): Float {
+    if (!followProgressEnabled && morphDepthProgress > 0f &&
+        isVideoCardReturnContentYieldActive(phase, isReturnGestureInProgress, morphDepthProgress)
+    ) return 0f
     // Opening, settled-detail return, quick reverse, and predictive seek all hide the
     // list slot. The flying entry must keep the complementary info band or the morph
     // is cover-only. COVER_ONLY has no info band; its cover badges still use this alpha.
@@ -222,9 +226,14 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
         VideoCardTransitionBackgroundPhase.RETURNING
     },
     isReturnGestureInProgressProvider: () -> Boolean = { true },
+    followProgressEnabledProvider: () -> Boolean = { true },
 ) {
     val model = resolveVideoDetailReturnSourceCardChromeModel(info, sourceChromeSnapshot) ?: return
     val isNowPlayingBar = sourceChromeSnapshot?.isNowPlayingBar == true
+    // The complete bar (including buttons and material) is rendered by the media overlay.
+    // Rebuilding an info band here would double-paint it over the frozen native pixels.
+    if (isNowPlayingBar && CardPositionManager.lastClickedNativeCardBitmap != null) return
+
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
     val miuixHost = LocalMiuixVideoCardTransitionState.current
@@ -294,6 +303,7 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
             sourceLayout = layout.layout,
             detailContentLoading = detailContentLoading,
             isNowPlayingBar = isNowPlayingBar,
+            followProgressEnabled = followProgressEnabledProvider(),
         )
     }
 
@@ -328,6 +338,7 @@ internal fun BoxScope.VideoDetailReturnSourceCardChrome(
                 sourceLayout = layout.layout,
                 detailContentLoading = detailContentLoading,
                 isNowPlayingBar = isNowPlayingBar,
+                followProgressEnabled = followProgressEnabledProvider(),
             )
         }.drawWithContent {
             val inverse = currentInverseScale()

@@ -50,10 +50,6 @@ internal fun resolveMiuixNonGlassChipMetrics(): AppMiuixCompactChipMetrics =
         iconGapDp = 8,
     )
 
-internal fun shouldUseOfficialMiuixButtonPadding(
-    usesDefaultMaterialPadding: Boolean,
-): Boolean = usesDefaultMaterialPadding
-
 internal fun resolveMiuixFabMinSizeDp(small: Boolean): Int = if (small) 48 else 60
 
 internal fun resolveMiuixFabContainerColor(

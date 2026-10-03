@@ -1,4 +1,5 @@
 """Select the alpha.9 image-save row and complete dialog; existing controls stay unique."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, sys, textwrap
 sys.dont_write_bytecode = True
@@ -8,7 +9,7 @@ def helpers(repo):
     spec=importlib.util.spec_from_file_location('image_path_storage',repo/'desktop/tools/extract-upstream-settings-storage-entries.py')
     mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
     return mod, mod.helpers(repo)
-def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 def select_row(repo):
     storage,(_,media,parser)=helpers(repo)
     source=media.function(read(repo,SECTIONS),'DataStorageSection',parser)

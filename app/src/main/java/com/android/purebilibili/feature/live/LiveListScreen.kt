@@ -138,7 +138,8 @@ class LiveListViewModel(application: Application) : AndroidViewModel(application
                 runCatching {
                     val response = NetworkModule.api.getLiveAreaList()
                     if (response.code == 0 && response.data != null) {
-                        _uiState.value = _uiState.value.copy(areaList = response.data)
+                        val checkedResponseData = requireNotNull(response.data)
+                        _uiState.value = _uiState.value.copy(areaList = checkedResponseData)
                     }
                 }
             }

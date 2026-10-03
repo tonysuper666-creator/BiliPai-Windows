@@ -15,9 +15,7 @@ import kotlin.math.roundToInt
 private const val LAYOUT_PROGRESS_MIN = 0f
 private const val LAYOUT_PROGRESS_MAX = 1f
 private const val FALLBACK_START_SCALE = 0.96f
-/** Match PiliPlus's HeroDialogRoute 300ms route transition. */
-private const val IMAGE_PREVIEW_OPEN_DURATION_MS = 300
-private const val IMAGE_PREVIEW_DISMISS_DURATION_MS = 300
+private const val IMAGE_PREVIEW_OPEN_DURATION_MS = 260
 private const val IMAGE_PREVIEW_CANCEL_RECOVER_DURATION_MS = 180
 private const val IMAGE_PREVIEW_VERTICAL_DISMISS_FRACTION = 0.18f
 private const val IMAGE_PREVIEW_BLUR_QUANTUM_PX = 2f
@@ -39,11 +37,9 @@ internal data class ImagePreviewDismissMotion(
     /** 关闭落点：一镜到底直落到 0，不再 overshoot。 */
     val overshootTarget: Float,
     val settleTarget: Float,
-    /** 主收缩时长：与进场接近，Continuity 先快后慢贴回缩略图。 */
-    val collapseDurationMillis: Int,
     /** 预测返回取消后的回弹时长。 */
     val cancelRecoverDurationMillis: Int,
-    /** 打开时长：与关闭同系，进出一镜对称。 */
+    /** 打开时长；关闭使用 spring，由位移和速度决定收敛时间。 */
     val openDurationMillis: Int
 )
 
@@ -201,7 +197,7 @@ internal fun resolveImagePreviewVisualFrame(
     )
 }
 
-/** Flutter's HeroDialogRoute fades with Curves.easeOut over 300ms. */
+/** Keep a smooth ease-out landing while shortening the route response. */
 internal fun imagePreviewOpenTween(): TweenSpec<Float> =
     tween(durationMillis = IMAGE_PREVIEW_OPEN_DURATION_MS, easing = CubicBezierEasing(0f, 0f, 0.58f, 1f))
 
@@ -211,11 +207,42 @@ internal fun imagePreviewOpenTween(): TweenSpec<Float> =
  * 临界阻尼 spring 起步即可携带手势速度，落地自带减速，与评论区下拉关闭的手感一致。
  */
 internal fun imagePreviewCloseSpring(): SpringSpec<Float> =
-    spring(dampingRatio = 1f, stiffness = Spring.StiffnessMediumLow)
+    spring(dampingRatio = 1f, stiffness = 600f)
 
 /** 关闭回位允许携带的手势速度上限（px/s），避免极端快挥把画面甩过落点方向。 */
 internal fun clampImagePreviewDismissVelocity(velocityY: Float): Float =
     velocityY.coerceIn(-3000f, 3000f)
+
+/** Project px/s onto the return path, then convert to progress/s. Never reverse the exit. */
+internal fun resolveImagePreviewDismissProgressVelocity(
+    velocityY: Float,
+    startRect: Rect?,
+    targetRect: Rect?,
+    containerHeightPx: Float,
+    startProgress: Float = 1f,
+): Float {
+    val velocity = clampImagePreviewDismissVelocity(velocityY)
+    val progress = startProgress.coerceIn(0f, 1f)
+    val projectedVelocity = if (startRect != null && targetRect != null) {
+        val dx = targetRect.center.x - startRect.center.x
+        val dy = targetRect.center.y - startRect.center.y
+        -velocity * dy / (dx * dx + dy * dy).coerceAtLeast(120f * 120f)
+    } else {
+        -kotlin.math.abs(velocity) / containerHeightPx.coerceAtLeast(120f)
+    }
+    // Below the critically damped spring's natural frequency: no overshoot past the source.
+    return (projectedVelocity * progress).coerceIn(-12f * progress, 0f)
+}
+
+internal fun resolveImagePreviewDismissCornerRadiusDp(
+    remainingProgress: Float,
+    startCornerRadiusDp: Float,
+    targetCornerRadiusDp: Float,
+): Float = lerpFloat(
+    targetCornerRadiusDp.coerceAtLeast(0f),
+    startCornerRadiusDp.coerceAtLeast(0f),
+    remainingProgress.coerceIn(0f, 1f),
+)
 
 /**
  * 模糊随回位进度线性爬升。此前用 returnProgress² 会让模糊集中在关闭后半段
@@ -237,7 +264,6 @@ internal fun imagePreviewDismissMotion(): ImagePreviewDismissMotion {
         // 一镜到底：单段连续 morph 到缩略图，不做 overshoot + spring 二次落点。
         overshootTarget = 0f,
         settleTarget = 0f,
-        collapseDurationMillis = IMAGE_PREVIEW_DISMISS_DURATION_MS,
         cancelRecoverDurationMillis = IMAGE_PREVIEW_CANCEL_RECOVER_DURATION_MS,
         openDurationMillis = IMAGE_PREVIEW_OPEN_DURATION_MS
     )

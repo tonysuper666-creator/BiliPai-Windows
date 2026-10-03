@@ -81,7 +81,8 @@ object MessageRepository {
             )
 
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 val errorMsg = when (response.code) {
                     -101 -> "请先登录"
@@ -113,7 +114,8 @@ object MessageRepository {
             val response = api.getUnreadCount()
             
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 val errorMsg = when (response.code) {
                     -101 -> "请先登录"
@@ -131,7 +133,8 @@ object MessageRepository {
         try {
             val response = api.getFeedUnread()
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 Result.failure(Exception(response.message.ifEmpty { "获取消息中心未读数失败 (${response.code})" }))
             }
@@ -146,7 +149,8 @@ object MessageRepository {
             try {
                 val response = api.getReplyFeed(cursor = cursor, cursorTime = cursorTime)
                 if (response.code == 0 && response.data != null) {
-                    Result.success(response.data)
+                    val checkedResponseData = requireNotNull(response.data)
+                    Result.success(checkedResponseData)
                 } else {
                     Result.failure(Exception(response.message.ifEmpty { "获取回复消息失败 (${response.code})" }))
                 }
@@ -161,7 +165,8 @@ object MessageRepository {
             try {
                 val response = api.getAtFeed(cursor = cursor, cursorTime = cursorTime)
                 if (response.code == 0 && response.data != null) {
-                    Result.success(response.data)
+                    val checkedResponseData = requireNotNull(response.data)
+                    Result.success(checkedResponseData)
                 } else {
                     Result.failure(Exception(response.message.ifEmpty { "获取@我消息失败 (${response.code})" }))
                 }
@@ -176,7 +181,8 @@ object MessageRepository {
             try {
                 val response = api.getLikeFeed(cursor = cursor, cursorTime = cursorTime)
                 if (response.code == 0 && response.data != null) {
-                    Result.success(response.data)
+                    val checkedResponseData = requireNotNull(response.data)
+                    Result.success(checkedResponseData)
                 } else {
                     Result.failure(Exception(response.message.ifEmpty { "获取点赞消息失败 (${response.code})" }))
                 }
@@ -298,7 +304,8 @@ object MessageRepository {
             }
             
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 val errorMsg = when (response.code) {
                     -101 -> "请先登录"
@@ -340,7 +347,8 @@ object MessageRepository {
             com.android.purebilibili.core.util.Logger.d("MessageRepo", "getMessages response: code=${response.code}, messages=${response.data?.messages?.size ?: 0}")
             
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 val errorMsg = when (response.code) {
                     -101 -> "请先登录"
@@ -611,7 +619,8 @@ object MessageRepository {
             )
 
             if (response.code == 0 && response.data != null) {
-                Result.success(response.data)
+                val checkedResponseData = requireNotNull(response.data)
+                Result.success(checkedResponseData)
             } else {
                 Result.failure(Exception(response.message.ifEmpty { "图片上传失败 (${response.code})" }))
             }

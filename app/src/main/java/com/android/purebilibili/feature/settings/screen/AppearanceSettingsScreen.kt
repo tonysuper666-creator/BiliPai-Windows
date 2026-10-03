@@ -614,9 +614,8 @@ fun AppearanceSettingsContent(
                             summary = uiPresetDescription.summary
                         )
 
-                        Column(modifier = Modifier.padding(top = 16.dp)) {
+                        Column {
                             AppPreferenceDivider()
-                            Spacer(modifier = Modifier.height(8.dp))
                             SettingsSingleChoicePreference(
                                 title = "屏幕帧率：$selectedScreenDisplayModeLabel",
                                 subtitle = "默认跟随系统自动调节；手动锁定某一档后，LTPO 设备将暂停自动升降帧率",
@@ -632,9 +631,8 @@ fun AppearanceSettingsContent(
                             )
                         }
 
-                        Column(modifier = Modifier.padding(top = 16.dp)) {
+                        Column {
                             AppPreferenceDivider()
-                            Spacer(modifier = Modifier.height(8.dp))
                             AppSwitchPreference(
                                 icon = rememberSettingsSemanticIcon(SettingsIconRole.ANDROID_LIQUID_GLASS),
                                 title = "安卓液态玻璃",
@@ -650,9 +648,7 @@ fun AppearanceSettingsContent(
                             )
                         }
 
-                        Spacer(modifier = Modifier.height(16.dp))
                         AppPreferenceDivider()
-                        Spacer(modifier = Modifier.height(8.dp))
 
                         SettingsSingleChoicePreference(
                             title = "列表条目样式",
@@ -664,9 +660,7 @@ fun AppearanceSettingsContent(
                             }
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
                         AppPreferenceDivider()
-                        Spacer(modifier = Modifier.height(8.dp))
 
                         SettingsSingleChoicePreference(
                             title = "图标样式",
@@ -678,9 +672,7 @@ fun AppearanceSettingsContent(
                             }
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
                         AppPreferenceDivider()
-                        Spacer(modifier = Modifier.height(8.dp))
 
                         SettingsSingleChoicePreference(
                             title = "选项弹窗样式",
@@ -726,9 +718,8 @@ fun AppearanceSettingsContent(
                             enter = androidx.compose.animation.expandVertically() + androidx.compose.animation.fadeIn(),
                             exit = androidx.compose.animation.shrinkVertically() + androidx.compose.animation.fadeOut()
                         ) {
-                            Column(modifier = Modifier.padding(top = 16.dp)) {
+                            Column {
                                 AppPreferenceDivider()
-                                Spacer(modifier = Modifier.height(8.dp))
                                 SettingsSingleChoicePreference(
                                     title = "${darkThemeStyleTitle}：$selectedDarkThemeStyleLabel",
                                     subtitle = darkThemeStyleSubtitle,
@@ -741,9 +732,7 @@ fun AppearanceSettingsContent(
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(16.dp))
                         AppPreferenceDivider()
-                        Spacer(modifier = Modifier.height(8.dp))
 
                         SettingsSingleChoicePreference(
                             title = "主题颜色来源：$selectedMd3ColorSourceLabel",
@@ -767,7 +756,6 @@ fun AppearanceSettingsContent(
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(12.dp))
                         AppPreferenceDivider()
                         AppPreference(
                             icon = rememberSettingsSemanticIcon(SettingsIconRole.CUSTOM_MD3_COLOR),
@@ -848,7 +836,7 @@ fun AppearanceSettingsContent(
                             enter =   androidx.compose.animation.expandVertically() +   androidx.compose.animation.fadeIn(),
                             exit =   androidx.compose.animation.shrinkVertically() +   androidx.compose.animation.fadeOut()
                         ) {
-                            Column(modifier = Modifier.padding(top = 16.dp)) {
+                            Column {
                                 AppPreferenceDivider()
                                 AppPreference(
                                     icon = rememberSettingsSemanticIcon(SettingsIconRole.THEME_COLOR_PICKER),
@@ -1005,7 +993,6 @@ fun AppearanceSettingsContent(
                             }
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
                         SettingsSingleChoicePreference(
                             title = "全局字重：${state.appFontWeightPreset.label}",
                             subtitle = "统一调整全部文字的粗细",
@@ -1016,7 +1003,6 @@ fun AppearanceSettingsContent(
                             }
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
                         AppPreferenceDivider()
 	                        AppPreference(
 	                            icon = rememberSettingsSemanticIcon(SettingsIconRole.FONT_FILE),
@@ -1055,9 +1041,7 @@ fun AppearanceSettingsContent(
                             }
                         }
 
-                        Spacer(modifier = Modifier.height(16.dp))
                         AppPreferenceDivider()
-                        Spacer(modifier = Modifier.height(8.dp))
 
                         SettingsSingleChoicePreference(
                             title = "界面缩放：${state.appUiScalePreset.label}",
@@ -1069,9 +1053,7 @@ fun AppearanceSettingsContent(
                             }
                         )
 
-                        Spacer(modifier = Modifier.height(16.dp))
                         AppPreferenceDivider()
-                        Spacer(modifier = Modifier.height(8.dp))
 
 	                        AppSwitchPreference(
 	                            icon = rememberSettingsSemanticIcon(SettingsIconRole.DISPLAY_SCALE),

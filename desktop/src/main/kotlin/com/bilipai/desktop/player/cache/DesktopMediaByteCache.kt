@@ -332,7 +332,7 @@ internal class DesktopMediaByteLease(private val cache: DesktopMediaByteCache, i
         return mediaDigest(frame.get().admission.persistentNamespace + "\n" + track.cacheKey + "\n" + track.representation + "\n" + properties.entries.joinToString { it.key.lowercase() + "=" + it.value })
     }
 
-    suspend fun ensureRange(track: DesktopMediaByteTrack, meta: DesktopMediaResource, position: Long, length: Long, url: String = track.url) {
+    suspend fun ensureRange(track: DesktopMediaByteTrack, meta: DesktopMediaResource, position: Long, length: Long, url: String = track.url, background: Boolean = false) {
         val end = DesktopMediaByteSpanStore.checkedEnd(position,length)
         require(end <= meta.total)
         val key = resourceBase(track)
@@ -344,21 +344,65 @@ internal class DesktopMediaByteLease(private val cache: DesktopMediaByteCache, i
                 if(coveredEnd!=null) { cursor=minOf(end,coveredEnd);continue }
                 val next=cache.store.nextSpanStart(meta.id,cursor,end)
                 val size = minOf(BLOCK_BYTES, end-cursor, next-cursor)
-                writeSpan(track,meta,url,cursor,size)
+                writeSpan(track,meta,url,cursor,size,background)
                 cursor += size
             }
         }
     }
-    private suspend fun writeSpan(track: DesktopMediaByteTrack, meta: DesktopMediaResource, url: String, start: Long, length: Long) {
+    private suspend fun writeSpan(track: DesktopMediaByteTrack, meta: DesktopMediaResource, url: String, start: Long, length: Long, background: Boolean) {
         val finished=CompletableDeferred<Unit>();writes+=finished
-        try { check(); writeSpanOwned(track,meta,url,start,length) }
+        try { check(); writeSpanOwned(track,meta,url,start,length,background) }
         finally { writes-=finished;finished.complete(Unit) }
     }
-    private suspend fun writeSpanOwned(track: DesktopMediaByteTrack, meta: DesktopMediaResource, url: String, start: Long, length: Long) {
+    @OptIn(InternalCoroutinesApi::class)
+    private suspend fun writeSpanOwned(track: DesktopMediaByteTrack, meta: DesktopMediaResource, url: String, start: Long, length: Long, background: Boolean) {
         val writeJob=currentCoroutineContext()[Job]?:error("Media write Job required")
         val reservation = cache.store.reserve(length)
         try {
-            origin(track,url,start,length) { response, _ ->
+            val accepted = frame.get()
+            // Initial/prewarm preparation has no accepted native publication: retain the
+            // existing single transport. Never manufacture an ACK/version for parallel IO.
+            val cdn = if (accepted.version != null && accepted.publication != null &&
+                com.android.purebilibili.feature.plugin.CdnTransferRuntime.enabled) {
+                val version = accepted.version; val receipt = accepted.admission.receipt
+                fun ownCdn() {
+                    writeJob.ensureActive(); check()
+                    val now = frame.get()
+                    if (now.version != version || now.publication == null || now.admission.receipt != receipt)
+                        throw CancellationException("CDN accepted native source retired")
+                    // SAME-source publication adoption remains valid; no old-frame capture.
+                }
+                val calls = accepted.admission.calls(::current, writeJob)
+                DesktopCdnMediaRangeSource(track, meta, calls, writeJob,
+                    network = {
+                        ownCdn()
+                        val admission = frame.get().admission as? DesktopMediaByteCdnAdmission
+                            ?: throw IOException("CDN native network capability is not installed")
+                        admission.cdnNetwork().also { ownCdn() }
+                    }, owned = ::ownCdn,
+                    onBytes = { count -> frame.get().admission.commit { ownCdn(); cache.upstream.addAndGet(count.toLong()) } }, background = background)
+            } else null
+            if (cdn != null) {
+                val cancel = { _: Throwable? -> cdn.cancel() }
+                val requestHook = writeJob.invokeOnCompletion(onCancelling=true, invokeImmediately=true, handler=cancel)
+                val leaseHook = leaseJob.invokeOnCompletion(onCancelling=true, invokeImmediately=true, handler=cancel)
+                try {
+                    cdn.open(url, start, length)
+                    cache.store.begin(reservation,meta.id,start,length,meta.persistent).use { output ->
+                        val bytes=ByteArray(64*1024);var left=length
+                        while(left>0) {
+                            writeJob.ensureActive();check()
+                            val count=cdn.read(bytes,0,minOf(bytes.size.toLong(),left).toInt())
+                            writeJob.ensureActive();check()
+                            if(count<=0)throw IOException("CDN staged interval truncated")
+                            output.write(bytes,0,count);left-=count
+                            writeJob.ensureActive();check()
+                        }
+                        if(cdn.read(bytes,0,1)!=-1)throw IOException("CDN staged interval oversized")
+                        output.flush();check()
+                    }
+                } finally { requestHook.dispose();leaseHook.dispose();cdn.close() }
+            } else origin(track,url,start,length) { response, _ ->
                 val range = parseContentRange(response.header("Content-Range"))
                 if (range != Triple(start,start+length-1,meta.total)) throw IOException("Origin interval mismatch")
                 if(meta.validatorName!=null&&response.header(meta.validatorName)!=meta.validatorValue)throw IOException("Media resource validator changed")
@@ -448,7 +492,7 @@ internal class DesktopBoundMediaByteCache(private val lease: DesktopMediaByteLea
         if(length > 128L*1024*1024-128)throw IOException("Prefetch interval exceeds byte cache capacity")
         val metadata=lease.metadata(track)
         require(DesktopMediaByteSpanStore.checkedEnd(position,length)<=metadata.total)
-        lease.ensureRange(track,metadata,position,length,url)
+        lease.ensureRange(track,metadata,position,length,url,background=true)
         lease.requireCovered(metadata,position,length)
     }
     suspend fun prefetchHeadRange(url: String, cacheKey: String, upperLimit: Long, headers: Map<String,String>) {

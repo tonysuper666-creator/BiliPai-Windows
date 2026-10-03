@@ -54,6 +54,9 @@ abstract class DrawItem<T: DanmakuData> {
 
     open var showDuration: Long = 0L
 
+    /** Baseline on the controller's pause-aware render clock; set when entering a line. */
+    internal var lastRenderTimeMs: Long = 0L
+
     /**
      * If paused, [showDuration] will not increase.
      */

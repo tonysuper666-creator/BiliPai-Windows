@@ -1,3 +1,4 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib, importlib.util, json, re, subprocess
 HERE=Path(__file__).resolve().parent
@@ -18,10 +19,11 @@ def emit(p,s):
 parser=None
 records=[]
 def source(rel):
- path=BASE+rel+'.kt';s=read(REPO/path)
- blob=subprocess.check_output(['git','show','3d5d19a2f994daccd0e2f8b5f522b6d82f43d589:'+path],cwd=REPO)
+ path=BASE+rel+'.kt';s=read(_desktop_canonical_source(REPO, path))
+ path=_desktop_canonical_source(REPO,path).relative_to(REPO).as_posix()
+ blob=subprocess.check_output(['git','show','79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40:'+path],cwd=REPO)
  assert hashlib.sha256(blob.replace(b'\r\n',b'\n')).hexdigest()==hashlib.sha256(s.encode()).hexdigest(),path
- records.append(dict(path=path,upstreamCommit='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589',sha256LfUtf8=hashlib.sha256(s.encode()).hexdigest()))
+ records.append(dict(path=path,upstreamCommit='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40',sha256LfUtf8=hashlib.sha256(s.encode()).hexdigest()))
  return s
 def output(rel,s,mode):
  s=re.sub(r'(\banimate\(\s*)initial\s*=',r'\1initialValue =',s)
@@ -69,9 +71,13 @@ def produce():
   s=s.replace('private val api = NetworkModule.api','private val api = environment.api').replace('NetworkModule.api.','environment.api.').replace('NetworkModule.spaceApi.','environment.spaceApi.')
   if name=='LikedVideosRepository':
    s=s.replace('environment.spaceApi.getSpaceCoinArchive','environment.getSpaceCoinArchive').replace('environment.spaceApi.getSpaceLikedArchive','environment.getSpaceLikedArchive').replace('import com.android.purebilibili.core.network.getSpaceCoinArchive\n','').replace('import com.android.purebilibili.core.network.getSpaceLikedArchive\n','')
-  s=s.replace('com.android.purebilibili.core.store.TokenManager.csrfCache','environment.csrf()').replace('TokenManager.csrfCache','environment.csrf()').replace('TokenManager.midCache','environment.currentMid()')
+  s=s.replace('com.android.purebilibili.core.store.TokenManager.csrfCache','environment.csrf()').replace('TokenManager.csrfCache','environment.csrf()').replace('com.android.purebilibili.core.store.TokenManager.midCache','environment.currentMid()').replace('TokenManager.midCache','environment.currentMid()')
   s=drop_logs(s)
   if name=='HistoryRepository':
+   # The new original heartbeat guard remains a privacy no-op in its dataRequest scope.
+   playbackPrivacy='        val context = com.android.purebilibili.core.network.NetworkModule.appContext\n        if (context != null && com.android.purebilibili.core.network.CoreNetworkRuntime.config.isPrivacyModeEnabled(context)) return@dataRequest'
+   assert s.count(playbackPrivacy)==1, 'latest original heartbeat privacy guard'
+   s=s.replace(playbackPrivacy,'        if (environment.privacyModeEnabled()) return@dataRequest')
    # HistoryCursorQuery already has the installed history producer.
    s=s.replace(decl(s,'HistoryCursorQuery'),'')
    s=s.replace(decl(s,'resolveHistoryCursorQuery'),'')
@@ -80,11 +86,11 @@ def produce():
    s=s[:a]+'                if (environment.privacyModeEnabled()) return@withContext Result.success(Unit)'+s[b:]
   if name=='FavoriteRepository':
    # FavoriteRequestException and request resolver already have a sole installed producer.
-   a=s.index('internal class FavoriteRequestException');b=s.index('class DesktopOriginalFavoriteRepository')
+   a=s.index('class FavoriteRequestException');b=s.index('class DesktopOriginalFavoriteRepository')
    s=s[:a]+s[b:]
    s=s.replace('favoriteApiFailure(','desktopFavoriteApiFailure(').replace('favoriteHttpFailure(','desktopFavoriteHttpFailure(').replace('NetworkModule.dynamicApi.','environment.dynamicApi.')
    originals=source(rel)
-   a=originals.index('private fun favoriteApiFailure');b=originals.index('internal data class FavoriteResourceRequestParams')
+   a=originals.index('private fun favoriteApiFailure');b=originals.index('data class FavoriteResourceRequestParams')
    funcs=originals[a:b].replace('favoriteApiFailure','desktopFavoriteApiFailure').replace('favoriteHttpFailure','desktopFavoriteHttpFailure')+decl(originals,'FavoriteResourceRequestParams')+decl(originals,'resolveFavoriteResourceRequestParams')
    s=s[:s.index('class DesktopOriginalFavoriteRepository')]+funcs+s[s.index('class DesktopOriginalFavoriteRepository'):]
   output('data/repository/DesktopOriginal'+name,s,'entire original repository; shared API/identity constructor only, original protocol/parser/management bodies retained')
@@ -118,6 +124,9 @@ def produce():
  s=s.replace('com.android.purebilibili.core.store.TokenManager.csrfCache','environment.csrf()').replace('AppScope.ioScope','viewModelScope').replace('HistoryRefreshBus.changes','environment.historyChanges')
  s=s.replace('com.android.purebilibili.data.repository.LikedVideosRepository','environment.liked').replace('com.android.purebilibili.data.repository.FavoriteRepository','environment.favorite')
  s=s.replace('Build.VERSION.SDK_INT','0').replace('Build.MANUFACTURER.orEmpty()','"Windows"')
+ # Original history delete session chooses its DIRECT_DELETE branch when Windows GL is unavailable.
+ before='isThanosEffectSupported(getApplication<Application>())';assert s.count(before)==1;s=s.replace(before,'false',1)
+ before='import com.android.purebilibili.core.ui.animation.gl.isThanosEffectSupported\n';assert s.count(before)==1;s=s.replace(before,'',1)
  a=s.index('    private val progressManager by lazy');b=s.index('    // 游标分页',a);s=s[:a]+'    private val progressManager get() = environment\n\n'+s[b:]
  s=toast(s);s=drop_logs(s);output('feature/list/DesktopOriginalListViewModels',s,'full original Base/Favorite/History/Liked algorithms; lifecycle/environment aliases, Android factory omitted; history/liked not mounted by favorites host')
  s=source('feature/space/SeasonSeriesDetailViewModel');s=s.replace('import android.app.Application\n','').replace('import androidx.lifecycle.viewModelScope\n','').replace('import com.android.purebilibili.core.network.NetworkModule\n','').replace('import com.android.purebilibili.data.repository.FavoriteRepository\n','')

@@ -1,4 +1,5 @@
 """Original logging policies, collector, and effective enhanced-consent UI only."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,textwrap
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -11,7 +12,57 @@ NATIVE=BASE+'core/performance/NativeExitTrace.kt'
 ASSETS=['ms_pest_control_24']
 def load(path,name):
  s=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
-def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
+CORE_API_ERROR_SHA = 'f8699ac6588654fd9fef96ce337b94ffe0d9270f63d46cb0f4e5eea3521735a6'
+
+def generate_core_api_error_policy(repo, out, parser, media, source):
+    import re
+    assert hashlib.sha256(source.encode()).hexdigest() == CORE_API_ERROR_SHA
+    constants = '\n'.join(re.search(r'(?m)^private const val '+name+r' =[^\n]+', source).group(0)
+        for name in ['MIN_NON_FATAL_HEADROOM_BYTES', 'MIN_NON_FATAL_HEADROOM_RATIO'])
+    pure = '\n\n'.join(media.function(source, name, parser)
+        for name in ['shouldRecordNonFatalEvent', 'normalizeApiErrorEndpoint'])
+    fields = '\n'.join(re.search(r'(?m)^    private (?:const )?val '+name+r' =[^\n]+', source).group(0)
+        for name in ['RATE_LIMIT_WINDOW_MS', 'RATE_LIMIT_MAX_KEYS', 'nonFatalRateLimiter'])
+    fields = fields.replace('private const val', 'private val')
+    selected = '\n\n'.join(media.function(source, name, parser)
+        for name in ['reportApiError', 'shouldDropByRateLimit', 'hasNonFatalReportingHeadroom'])
+    adapted = selected
+    firebase = '            crashlytics.setCustomKey("api_endpoint", safeEndpoint)\n' + \
+        '            crashlytics.setCustomKey("api_http_code", httpCode)\n' + \
+        '            crashlytics.log("API Error: [$httpCode] $safeEndpoint - ${errorMessage.take(300)}")\n' + \
+        '            crashlytics.recordException(ApiException(safeEndpoint, httpCode, errorMessage))\n' + \
+        '            Logger.e(TAG, "API error: [$httpCode] $safeEndpoint - $errorMessage")'
+    # Extraction dedents each method. Bind only platform sinks and the one owner.
+    firebase = textwrap.dedent(firebase)
+    # Dedent removes common indentation from this stand-alone span; in a method
+    # the try body has eight spaces. Restore those exact source spaces.
+    firebase = textwrap.indent(firebase, '        ')
+    changes = [
+        ('if (!isEnabled) return', 'if (!enabled()) return'),
+        (firebase, '        emit("API Error: [$httpCode] $safeEndpoint - ${errorMessage.take(300)}")'),
+        ('Log.e(TAG, "Failed to report API error", e)', 'emit("Failed to report API error: ${e.javaClass.simpleName}")'),
+        ('val now = System.currentTimeMillis()', 'val now = clock()'),
+    ]
+    for before, after in changes:
+        assert adapted.count(before) == 1, before
+        adapted = adapted.replace(before, after, 1)
+    inverse = adapted
+    for before, after in reversed(changes):
+        assert inverse.count(after) == 1
+        inverse = inverse.replace(after, before, 1)
+    assert inverse == selected
+    body = 'package com.android.purebilibili.core.util\nimport java.util.concurrent.ConcurrentHashMap\nimport kotlin.math.max\n\n' + constants + '\n\n' + pure + \
+        '\n\ninternal class DesktopOriginalCoreApiErrorPolicy(\n    private val enabled:()->Boolean,\n    private val emit:(String)->Unit,\n    private val clock:()->Long=System::currentTimeMillis,\n) {\n' + fields + '\n\n' + textwrap.indent(adapted, '    ') + '\n}\n'
+    target = out/'com/android/purebilibili/core/util/DesktopOriginalCoreApiErrorPolicy.kt'
+    target.parent.mkdir(parents=True, exist_ok=True);target.write_text(body, encoding='utf8', newline='\n')
+    (out/'core-api-error-source-proof.json').write_text(json.dumps(dict(
+        source=CRASH, originalSha256LF=CORE_API_ERROR_SHA,
+        selectedOriginalSha256LF=hashlib.sha256(selected.encode()).hexdigest(),
+        selectedAdaptedSha256LF=hashlib.sha256(adapted.encode()).hexdigest(),
+        fullSelectedInverseExact=True, platformChanges=changes,
+        existingConsumerOwnedInstance=True, cloudUpload=False), indent=2)+'\n', encoding='utf8')
+
 def generate(repo,out):
  host=load(repo/'desktop/tools/extract-upstream-plugins.py','diaghost');media=host.media_extractor(repo);parser=media.parser_for(repo)
  identity=load(repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py','diag_fixed_identity')
@@ -83,6 +134,7 @@ def generate(repo,out):
  ref=out.parent/'reference-only';ref.mkdir(exist_ok=True)
  (ref/'OriginalDiagnosticsSection.kt').write_text('@Composable\n'+section,encoding='utf-8',newline='\n')
  # No Firebase stub/provider is generated. Local crash-snapshot policy is always true.
+ generate_core_api_error_policy(repo,out,parser,media,fixed_sources[CRASH])
  original=fixed_sources[CRASH];local=media.function(original,'shouldPersistLocalCrashSnapshot',parser)
  files.append(host.write(out,CRASH,original,'package com.android.purebilibili.core.util\n'+local+'\n','DesktopLocalCrashPolicy.kt'))
  return files

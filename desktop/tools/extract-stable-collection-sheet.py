@@ -1,4 +1,5 @@
 """Full stable collection UI and exact settings/request bodies with Windows ports."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib, importlib.util, json, re, sys
 sys.dont_write_bytecode = True
@@ -17,7 +18,7 @@ def generate(repo, output):
     pins = {r['path']:r['sha256'] for r in manifest['sources']}
     records = []
     def read(path):
-        text = (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+        text = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
         assert hashlib.sha256(text.encode()).hexdigest() == pins[path], path
         return text
     def emit(path, body, name):

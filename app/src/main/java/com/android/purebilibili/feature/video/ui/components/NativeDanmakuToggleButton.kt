@@ -6,6 +6,8 @@ import androidx.compose.material.icons.outlined.SubtitlesOff
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -24,7 +26,9 @@ fun NativeDanmakuToggleButton(
 ) {
     AppIconButton(
         onClick = onToggle,
-        modifier = modifier,
+        modifier = modifier.semantics {
+            stateDescription = if (enabled) "弹幕已开启" else "弹幕已关闭"
+        },
     ) {
         AppIcon(
             imageVector = if (enabled) Icons.Outlined.Subtitles else Icons.Outlined.SubtitlesOff,

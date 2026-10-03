@@ -8,36 +8,63 @@ import org.junit.Test
 class DanmakuViewportPolicyTest {
     @Test
     fun `invalid geometry does not produce a placeholder viewport`() {
-        assertNull(resolveDanmakuViewport(0, 608, 3f, 1080f))
-        assertNull(resolveDanmakuViewport(1080, 608, 0f, 1080f))
-        assertNull(resolveDanmakuViewport(1080, 608, 3f, Float.NaN))
+        assertNull(resolveDanmakuViewport(0, 608, 3f))
+        assertNull(resolveDanmakuViewport(1080, 0, 3f))
+        assertNull(resolveDanmakuViewport(1080, 608, 0f))
+        assertNull(resolveDanmakuViewport(1080, 608, Float.NaN))
     }
 
     @Test
-    fun `rotation preserves scale and a smaller window really shrinks below three quarters`() {
-        val landscape = requireNotNull(resolveDanmakuViewport(2392, 1080, 3f, 1080f))
-        val portrait = requireNotNull(resolveDanmakuViewport(1080, 2392, 3f, 1080f))
-        val inline = requireNotNull(resolveDanmakuViewport(1080, 608, 3f, 1080f))
-        assertEquals(landscape.scale, portrait.scale, 0f)
-        assertEquals(608f / 1080f, inline.scale, 0.0001f)
-        assertTrue(inline.scale < 0.75f)
+    fun `viewport carries the measured box and density only`() {
+        val viewport = requireNotNull(resolveDanmakuViewport(1080, 608, 3f))
+        assertEquals(1080, viewport.widthPx)
+        assertEquals(608, viewport.heightPx)
+        assertEquals(3f, viewport.density, 0f)
     }
 
     @Test
-    fun `proportional geometry retains line budget including scaled interline spacing`() {
-        fun lines(scale: Float) = resolveDanmakuVisibleLineCount(
-            visibleHeightPx = 500f * scale,
+    fun `inline and fullscreen surfaces resolve the same text size`() {
+        val inline = requireNotNull(resolveDanmakuViewport(1080, 608, 3f))
+        val fullscreen = requireNotNull(resolveDanmakuViewport(2392, 1080, 3f))
+        assertEquals(
+            resolveDanmakuTextSizePx(fullscreen.density, 1.5f),
+            resolveDanmakuTextSizePx(inline.density, 1.5f),
+            0f
+        )
+    }
+
+    @Test
+    fun `a band shorter than one row budgets no lines`() {
+        val rowHeight = resolveDanmakuLayerLineHeightPx(fontSize = 45f, lineHeightMultiplier = 1.6f)
+        assertEquals(
+            0,
+            resolveDanmakuVisibleLineCount(
+                visibleHeightPx = rowHeight - 1f,
+                areaRatioHint = 0.5f,
+                fontSize = 45f,
+                strokeWidth = 2f,
+                strokeEnabled = true,
+                lineHeight = 1.6f,
+                massiveMode = false
+            )
+        )
+    }
+
+    @Test
+    fun `a taller band never budgets fewer rows`() {
+        fun rows(visibleHeightPx: Float) = resolveDanmakuVisibleLineCount(
+            visibleHeightPx = visibleHeightPx,
             areaRatioHint = 0.5f,
-            fontSize = 20f * scale,
-            strokeWidth = 1.5f * scale,
+            fontSize = 45f,
+            strokeWidth = 2f,
             strokeEnabled = true,
             lineHeight = 1.6f,
-            massiveMode = true,
-            viewportScale = scale
+            massiveMode = false
         )
-        assertEquals(lines(1f), lines(0.5f))
-        val scale = 0.5f
-        val occupiedHeight = 32f * scale + (lines(scale) - 1) * (32f + 18f) * scale
-        assertTrue(occupiedHeight <= 500f * scale)
+        val rowHeight = resolveDanmakuLayerLineHeightPx(fontSize = 45f, lineHeightMultiplier = 1.6f)
+        val tall = rows(rowHeight * 8f)
+        val short = rows(rowHeight * 3f)
+        assertTrue(tall >= short)
+        assertTrue(short > 0)
     }
 }

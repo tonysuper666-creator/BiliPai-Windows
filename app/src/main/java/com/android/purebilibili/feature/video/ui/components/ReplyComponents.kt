@@ -33,12 +33,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
 import androidx.compose.material.icons.outlined.*
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Reply
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,6 +58,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import coil3.compose.AsyncImage
+import coil3.compose.asPainter
+import coil3.ImageLoader
 import coil3.request.ImageRequest
 import coil3.size.Size
 import coil3.transform.Transformation
@@ -64,6 +68,7 @@ import coil3.imageLoader
 import com.android.purebilibili.core.store.SettingsManager
 import com.android.purebilibili.core.theme.calculateContrastRatio
 import com.android.purebilibili.core.util.FormatUtils
+import com.android.purebilibili.core.util.Logger
 import com.android.purebilibili.core.util.BilibiliUrlParser
 import com.android.purebilibili.core.util.rememberStoragePermissionState
 import com.android.purebilibili.data.model.response.ReplyFansDetail
@@ -83,9 +88,12 @@ import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextConte
 import com.android.purebilibili.feature.dynamic.components.isImagePreviewSourceHidden
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewSourceAnchor
 import com.android.purebilibili.feature.dynamic.components.prepareImagePreviewSourceTransition
+import com.android.purebilibili.feature.dynamic.components.rememberImagePreviewSourceImage
+import com.android.purebilibili.feature.dynamic.components.isImagePreviewOpen
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextPlacement
 import com.android.purebilibili.feature.dynamic.components.ImagePreviewCommentContext
 import com.android.purebilibili.feature.dynamic.components.ImageDecodeTarget
+import com.android.purebilibili.feature.dynamic.components.ImageDecodeSize
 import com.android.purebilibili.feature.dynamic.components.resolveCommentImageOriginalSizeLabel
 import com.android.purebilibili.feature.dynamic.components.resolveImageDecodeSize
 import androidx.compose.ui.layout.ContentScale
@@ -107,16 +115,16 @@ import com.android.purebilibili.core.ui.components.AppSurface
 import androidx.compose.foundation.text.selection.SelectionContainer
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import com.android.purebilibili.core.ui.components.UserLevelBadge
 import com.android.purebilibili.core.ui.components.UserUpBadge
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 
-private val EMOTE_TOKEN_PATTERN = """\[(.*?)\]""".toRegex()
+internal val EMOTE_TOKEN_PATTERN = """\[(.*?)\]""".toRegex()
 private const val COMMENT_INLINE_UP_BADGE_ID = "comment_inline_up_badge"
 private const val COMMENT_INLINE_VERIFY_PERSONAL_BADGE_ID = "comment_inline_verify_personal_badge"
 private const val COMMENT_INLINE_VERIFY_ORGANIZATION_BADGE_ID = "comment_inline_verify_organization_badge"
@@ -488,6 +496,14 @@ internal fun resolveSubReplyPreviewSummaryLabel(
     }
 }
 
+/**
+ * 楼中楼预览已经列出全部回复时不再显示“共x条回复”，避免同一层里重复的计数入口。
+ */
+internal fun shouldShowSubReplyPreviewSummary(
+    replyCount: Int,
+    visiblePreviewCount: Int
+): Boolean = replyCount > 0 && visiblePreviewCount < replyCount
+
 internal fun resolveSubReplyOpenTargetId(rootReplyId: Long, clickedReplyId: Long): Long {
     return clickedReplyId.takeIf { it > 0L && it != rootReplyId } ?: 0L
 }
@@ -534,6 +550,7 @@ internal enum class ReplyActionSheetAction {
     FREE_COPY,
     COPY_USERNAME,
     QUERY_AUTHOR_HISTORY,
+    TIME_STYLE,
     SAVE,
     SHARE,
     REPLY,
@@ -560,6 +577,7 @@ internal fun buildReplyActionSheetActions(
             add(ReplyActionSheetAction.COPY_USERNAME)
         }
         if (canQueryAuthorHistory) add(ReplyActionSheetAction.QUERY_AUTHOR_HISTORY)
+        add(ReplyActionSheetAction.TIME_STYLE)
         add(ReplyActionSheetAction.SAVE)
         if (canShare) {
             add(ReplyActionSheetAction.SHARE)
@@ -592,6 +610,7 @@ private fun resolveReplyActionSheetLabel(
         ReplyActionSheetAction.FREE_COPY -> "自由复制"
         ReplyActionSheetAction.COPY_USERNAME -> "复制用户名"
         ReplyActionSheetAction.QUERY_AUTHOR_HISTORY -> "查询作者历史"
+        ReplyActionSheetAction.TIME_STYLE -> "评论时间样式"
         ReplyActionSheetAction.SAVE -> "保存评论"
         ReplyActionSheetAction.SHARE -> "分享评论"
         ReplyActionSheetAction.REPLY -> "回复"
@@ -1161,7 +1180,10 @@ internal fun resolveReplyPreviewTextContent(
             replyId = item.rpid,
             authorName = item.member.uname,
             avatarUrl = item.member.avatar,
-            timeText = formatTime(item.ctime),
+            timeText = FormatUtils.formatPrecisePublishTime(
+                timestampSeconds = item.ctime,
+                pattern = "yyyy-MM-dd HH:mm:ss"
+            ),
             body = item.content.message,
             originalSizeLabels = originalSizeLabels,
             likeCount = item.like,
@@ -1255,9 +1277,16 @@ fun ReplyItemView(
     val displayLocation = remember(location) {
         resolveReplyLocationText(location)
     }
+    //  [PiliPlus 对齐] 一级评论固定显示绝对时间 yyyy-MM-dd HH:mm:ss，不随
+    //  详细时间开关变化；开关只作用于楼中楼/动态等相对时间表面。
     val metadataText = remember(item.ctime, displayLocation) {
         buildString {
-            append(formatTime(item.ctime))
+            append(
+                FormatUtils.formatPrecisePublishTime(
+                    timestampSeconds = item.ctime,
+                    pattern = "yyyy-MM-dd HH:mm:ss"
+                )
+            )
             if (!displayLocation.isNullOrEmpty()) {
                 append(" · $displayLocation")
             }
@@ -1650,7 +1679,8 @@ fun ReplyItemView(
                                 ReplyTextAction(
                                     label = "屏蔽该用户",
                                     appearance = appearance,
-                                    onClick = { confirmBlockUser = true }
+                                    onClick = { confirmBlockUser = true },
+                                    icon = Icons.Outlined.Block
                                 )
                                 ReplyTextAction(
                                     label = "举报",
@@ -1658,7 +1688,8 @@ fun ReplyItemView(
                                     onClick = {
                                         hatePromptHandled = true
                                         showReportDialog = true
-                                    }
+                                    },
+                                    icon = Icons.Outlined.Flag
                                 )
                             }
                         }
@@ -1688,7 +1719,7 @@ fun ReplyItemView(
                     if (!item.content.pictures.isNullOrEmpty()) {
                         Spacer(modifier = Modifier.height(8.dp))
                         CommentPictures(
-                            pictures = item.content.pictures,
+                            pictures = item.content.pictures.orEmpty(),
                             onImageClick = { images, index, rect ->
                                 onImagePreview?.invoke(
                                     images,
@@ -1698,7 +1729,7 @@ fun ReplyItemView(
                                         item = item,
                                         isLiked = isLiked,
                                         onLikeClick = onLikeClick,
-                                        onReplyClick = onReplyClick
+                                        onReplyClick = onReplyClick,
                                     )
                                 )
                             }
@@ -1965,7 +1996,7 @@ fun ReplyItemView(
                             )
                         }
 
-                        if (threadReplyCount > 0) {
+                        if (shouldShowSubReplyPreviewSummary(threadReplyCount, visibleSubReplies.size)) {
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -2715,15 +2746,6 @@ private fun parseHexColorOrNull(hex: String?): Color? {
     return runCatching { Color(argb.toLong(16).toInt()) }.getOrNull()
 }
 
-// 评论行组合期热路径：共享 formatter，避免每条评论格式化时间都新建 SimpleDateFormat。
-// 仅主线程（Compose 组合）调用，不涉及 SimpleDateFormat 的线程安全问题。
-private val replyPublishDayFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-fun formatTime(timestamp: Long): String {
-    val date = Date(timestamp * 1000)
-    return replyPublishDayFormatter.format(date)
-}
-
 @Composable
 internal fun ReplySpecialLabelChip(text: String) {
     AppText(
@@ -2737,7 +2759,8 @@ internal fun ReplySpecialLabelChip(text: String) {
 internal fun ReplyTextAction(
     label: String,
     appearance: VideoCommentAppearance,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    icon: ImageVector = Icons.AutoMirrored.Outlined.Reply
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -2747,7 +2770,7 @@ internal fun ReplyTextAction(
             .padding(end = 8.dp)
     ) {
         AppIcon(
-            imageVector = Icons.AutoMirrored.Outlined.Reply,
+            imageVector = icon,
             contentDescription = null,
             tint = appearance.actionTint,
             modifier = Modifier.size(17.dp)
@@ -2786,6 +2809,13 @@ internal fun ReplyActionSheet(
 ) {
     val queryAicu = com.android.purebilibili.feature.aicu.LocalAicuNavigation.current
     val canQueryAuthorHistory = queryAicu != null && queryAuthorUid > 0
+    val sheetContext = LocalContext.current
+    val sheetScope = rememberCoroutineScope()
+    //  [评论时间样式] 长按菜单直达开关：相对时间（默认，PiliPlus 规则）⇄ 绝对时间
+    //  （yyyy-MM-dd HH:mm:ss）。设置项全局持久化，评论区经 CompositionLocal 即时刷新。
+    val detailedTimeEnabled by SettingsManager
+        .getDetailedCommentTimeEnabled(sheetContext)
+        .collectAsStateWithLifecycle(initialValue = false)
     val actions = remember(
         canQueryAuthorHistory,
         canDelete,
@@ -2809,12 +2839,19 @@ internal fun ReplyActionSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                // M3 路径的 modalWindowInsets 已消费导航栏 insets（此处为 0）；
+                // 这层 padding 是给 CenteredDialog/平板限宽弹层路径兜底的，勿删。
                 .navigationBarsPadding()
                 .padding(bottom = 12.dp)
         ) {
             actions.forEach { action ->
                 ReplyActionSheetItem(
-                    label = resolveReplyActionSheetLabel(action, topActionLabel),
+                    label = if (action == ReplyActionSheetAction.TIME_STYLE) {
+                        if (detailedTimeEnabled) "评论时间样式：绝对（yyyy-MM-dd HH:mm:ss）"
+                        else "评论时间样式：相对"
+                    } else {
+                        resolveReplyActionSheetLabel(action, topActionLabel)
+                    },
                     isDestructive = isReplyActionDestructive(action),
                     onClick = {
                         when (action) {
@@ -2822,6 +2859,19 @@ internal fun ReplyActionSheet(
                             ReplyActionSheetAction.FREE_COPY -> onFreeCopy()
                             ReplyActionSheetAction.COPY_USERNAME -> onCopyUsername()
                             ReplyActionSheetAction.QUERY_AUTHOR_HISTORY -> queryAicu?.invoke(queryAuthorUid)
+                            ReplyActionSheetAction.TIME_STYLE -> sheetScope.launch {
+                                val next = !detailedTimeEnabled
+                                SettingsManager.setDetailedCommentTimeEnabled(sheetContext, next)
+                                Toast.makeText(
+                                    sheetContext,
+                                    if (next) {
+                                        "已切换为绝对时间：楼中楼与动态评论将显示 yyyy-MM-dd HH:mm:ss"
+                                    } else {
+                                        "已切换为相对时间（默认）：一级评论保持精确时间，楼中楼/动态按相对显示"
+                                    },
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
                             ReplyActionSheetAction.SAVE -> onSave()
                             ReplyActionSheetAction.SHARE -> onShare()
                             ReplyActionSheetAction.REPLY -> onReply()
@@ -2883,6 +2933,72 @@ fun TopTag() {
     }
 }
 
+private const val COMMENT_PICTURE_MAX_RETRIES = 3
+
+@Composable
+private fun CommentPictureThumbnail(
+    imageUrl: String,
+    imageLoader: ImageLoader,
+    decodeSize: ImageDecodeSize,
+) {
+    val context = LocalContext.current
+    val request = remember(context, imageUrl, decodeSize) {
+        ImageRequest.Builder(context)
+            .data(imageUrl)
+            // Preserve the source cache key used by the preview's first-frame placeholder.
+            .memoryCacheKey(imageUrl)
+            .size(decodeSize.widthPx, decodeSize.heightPx)
+            .httpHeaders(NetworkHeaders.Builder().set("Referer", "https://www.bilibili.com/").build())
+            .crossfade(false)
+            .build()
+    }
+    var retryAttempt by remember(imageUrl) { mutableIntStateOf(0) }
+    var loadError by remember(imageUrl) { mutableStateOf<Throwable?>(null) }
+    var hasLoadedImage by remember(imageUrl) { mutableStateOf(false) }
+    val previewImage = if (!hasLoadedImage) rememberImagePreviewSourceImage(imageUrl) else null
+    if (previewImage != null) {
+        // Wait until the overlay releases its painter, especially for animated drawables.
+        if (!isImagePreviewOpen()) {
+            val painter = remember(previewImage, context) { previewImage.asPainter(context) }
+            androidx.compose.foundation.Image(
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+        return
+    }
+    val error = loadError
+    if (error != null && retryAttempt < COMMENT_PICTURE_MAX_RETRIES) {
+        LaunchedEffect(imageUrl, retryAttempt, error) {
+            if (retryAttempt == 0) {
+                Logger.w("CommentPictures", "缩略图加载失败，最多重试3次: $imageUrl", error)
+            }
+            delay(350L * (retryAttempt + 1))
+            loadError = null
+            retryAttempt++
+        }
+    }
+
+    // A failed painter does not reload an unchanged model. Replace only the image subtree;
+    // disposing the thumbnail also cancels any pending retry through LaunchedEffect.
+    key(imageUrl, retryAttempt) {
+        AsyncImage(
+            model = request,
+            contentDescription = null,
+            imageLoader = imageLoader,
+            onError = { loadError = it.result.throwable },
+            onSuccess = {
+                hasLoadedImage = true
+                loadError = null
+            },
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
 //  评论图片网格组件 - 支持 GIF 动画
 //  [优化] 更新为匹配动态页面的视觉风格
 @Composable
@@ -2921,8 +3037,6 @@ fun CommentPictures(
     //  GIF 图片加载器
     val gifImageLoader = context.imageLoader
     
-    // 检测是否是 GIF
-    fun isGif(url: String) = url.contains(".gif", ignoreCase = true)
     
     // 根据图片数量选择不同的布局
     when (pictures.size) {
@@ -2971,23 +3085,10 @@ fun CommentPictures(
                         )
                     }
             ) {
-                AsyncImage(
-                    model = ImageRequest.Builder(context)
-                        .data(imageUrls[0])
-                        // Preview uses this exact URL as its placeholder cache key. Keep
-                        // the thumbnail cache identity independent of its decode size so
-                        // the hero flight can paint the already-visible source immediately.
-                        .memoryCacheKey(imageUrls[0])
-                        .size(thumbnailDecodeSize.widthPx, thumbnailDecodeSize.heightPx)
-                        .httpHeaders(NetworkHeaders.Builder().set("Referer", "https://www.bilibili.com/").build())  //  必需
-                        // Hero owns the transition; a second image fade on return causes
-                        // the thumbnail to blink after the preview window is removed.
-                        .crossfade(false)
-                        .build(),
-                    contentDescription = null,
-                    imageLoader = gifImageLoader,  //  支持 GIF 和其他格式
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                CommentPictureThumbnail(
+                    imageUrl = imageUrls[0],
+                    imageLoader = gifImageLoader,
+                    decodeSize = thumbnailDecodeSize,
                 )
             }
         }
@@ -3039,21 +3140,10 @@ fun CommentPictures(
                                     },
                                 contentAlignment = Alignment.Center
                             ) {
-                                AsyncImage(
-                                    model = ImageRequest.Builder(context)
-                                        .data(imageUrls[globalIndex])
-                                        // Match ImagePreviewDialog's placeholder key; the
-                                        // thumbnail and fullscreen requests use different
-                                        // decode sizes but must share the source image entry.
-                                        .memoryCacheKey(imageUrls[globalIndex])
-                                        .size(thumbnailDecodeSize.widthPx, thumbnailDecodeSize.heightPx)
-                                        .httpHeaders(NetworkHeaders.Builder().set("Referer", "https://www.bilibili.com/").build())  //  必需
-                                        .crossfade(false)
-                                        .build(),
-                                    contentDescription = null,
-                                    imageLoader = gifImageLoader,  //  支持 GIF
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier.fillMaxSize()
+                                CommentPictureThumbnail(
+                                    imageUrl = imageUrls[globalIndex],
+                                    imageLoader = gifImageLoader,
+                                    decodeSize = thumbnailDecodeSize,
                                 )
                                 
                                 //  [新增] 最后一张图片显示多图角标（如 +3）

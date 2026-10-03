@@ -29,6 +29,21 @@ data class BottomControlBarLayoutPolicy(
     val fullscreenIconSizeDp: Int
 )
 
+private const val PLAYER_CONTROL_MIN_TOUCH_TARGET_DP = 48
+
+/**
+ * Keeps the visible gap between time text and an icon near one text size. The icon button's
+ * minimum touch target already contributes blank space around its glyph, so the explicit spacer
+ * only needs to fill the remainder; the touch target itself stays unchanged.
+ */
+internal fun resolveTimeToIconSpacingDp(
+    timeFontSp: Int,
+    iconSizeDp: Int
+): Int {
+    val iconInsetDp = ((PLAYER_CONTROL_MIN_TOUCH_TARGET_DP - iconSizeDp) / 2).coerceAtLeast(0)
+    return (timeFontSp - iconInsetDp).coerceAtLeast(0)
+}
+
 internal fun resolveBottomControlBarBottomPaddingDp(
     defaultBottomPaddingDp: Int,
     progressPlacement: PlayerProgressPlacement
@@ -69,9 +84,9 @@ fun resolveBottomControlBarLayoutPolicy(
             horizontalPaddingDp = if (compact) 14 else 32,
             playButtonSizeDp = 48,
             playIconSizeDp = 36,
-            afterPlaySpacingDp = 12,
+            afterPlaySpacingDp = resolveTimeToIconSpacingDp(timeFontSp = 15, iconSizeDp = 36),
             timeFontSp = 15,
-            afterTimeSpacingDp = 20,
+            afterTimeSpacingDp = resolveTimeToIconSpacingDp(timeFontSp = 15, iconSizeDp = 32),
             danmakuIconSizeDp = 32,
             danmakuSwitchToInputSpacingDp = 12,
             danmakuSwitchHorizontalPaddingDp = 10,
@@ -98,9 +113,9 @@ fun resolveBottomControlBarLayoutPolicy(
             horizontalPaddingDp = if (compact) 10 else 24,
             playButtonSizeDp = 40,
             playIconSizeDp = 32,
-            afterPlaySpacingDp = 10,
+            afterPlaySpacingDp = resolveTimeToIconSpacingDp(timeFontSp = 13, iconSizeDp = 32),
             timeFontSp = 13,
-            afterTimeSpacingDp = 16,
+            afterTimeSpacingDp = resolveTimeToIconSpacingDp(timeFontSp = 13, iconSizeDp = 28),
             danmakuIconSizeDp = 28,
             danmakuSwitchToInputSpacingDp = 10,
             danmakuSwitchHorizontalPaddingDp = 8,
@@ -127,9 +142,9 @@ fun resolveBottomControlBarLayoutPolicy(
             horizontalPaddingDp = if (compact) 8 else 20,
             playButtonSizeDp = 36,
             playIconSizeDp = 30,
-            afterPlaySpacingDp = 9,
+            afterPlaySpacingDp = resolveTimeToIconSpacingDp(timeFontSp = 13, iconSizeDp = 30),
             timeFontSp = 13,
-            afterTimeSpacingDp = 14,
+            afterTimeSpacingDp = resolveTimeToIconSpacingDp(timeFontSp = 13, iconSizeDp = 26),
             danmakuIconSizeDp = 26,
             danmakuSwitchToInputSpacingDp = 10,
             danmakuSwitchHorizontalPaddingDp = 8,
@@ -151,13 +166,13 @@ fun resolveBottomControlBarLayoutPolicy(
 
     return BottomControlBarLayoutPolicy(
         bottomPaddingDp = 12,
-        progressSpacingDp = if (compact) 3 else 8,
+        progressSpacingDp = if (compact) 3 else 0,
         horizontalPaddingDp = if (compact) 5 else 12,
         playButtonSizeDp = 32,
         playIconSizeDp = 28,
-        afterPlaySpacingDp = 8,
+        afterPlaySpacingDp = resolveTimeToIconSpacingDp(timeFontSp = 12, iconSizeDp = 28),
         timeFontSp = 12,
-        afterTimeSpacingDp = 8,
+        afterTimeSpacingDp = resolveTimeToIconSpacingDp(timeFontSp = 12, iconSizeDp = 24),
         danmakuIconSizeDp = 24,
         danmakuSwitchToInputSpacingDp = 8,
         danmakuSwitchHorizontalPaddingDp = 6,

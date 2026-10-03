@@ -140,11 +140,4 @@ internal fun opusContentBlocksToArticleBlocks(
 internal fun buildArticleHistoryReportFields(
     articleId: Long,
     csrf: String
-): Map<String, String>? {
-    if (articleId <= 0L || csrf.isBlank()) return null
-    return mapOf(
-        "aid" to articleId.toString(),
-        "type" to ARTICLE_HISTORY_REPORT_TYPE.toString(),
-        "csrf" to csrf
-    )
-}
+): Map<String, String>? = com.android.purebilibili.data.repository.buildArticleHistoryReportFields(articleId, csrf)

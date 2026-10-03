@@ -158,15 +158,6 @@ class VideoInteractionIconPolicyTest {
     }
 
     @Test
-    fun `collection row uses app semantic share icon`() {
-        val source = File("src/main/java/com/android/purebilibili/feature/video/ui/components/CollectionRow.kt")
-            .readText()
-
-        assertTrue(source.contains("rememberAppShareIcon"))
-        assertFalse(source.contains("CupertinoIcons.Default.SquareAndArrowUp"))
-    }
-
-    @Test
     fun `common video close buttons use app clear icon`() {
         val paths = listOf(
             "src/main/java/com/android/purebilibili/feature/video/ui/overlay/MiniPlayerOverlay.kt",

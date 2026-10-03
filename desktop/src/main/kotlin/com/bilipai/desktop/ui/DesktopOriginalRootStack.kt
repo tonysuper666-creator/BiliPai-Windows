@@ -4,6 +4,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import com.android.purebilibili.core.ui.*
@@ -62,6 +65,7 @@ internal class DesktopOriginalRootPageBindings(
     chrome: DesktopOriginalRootChromeBindings,
     onActiveDestination: (BiliPaiNavKey) -> Unit,
     saveableState: SaveableStateHolder,
+    onRootContentFrame: () -> Unit = {},
     leafContent: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean) -> Unit,
 ) {
     if (!routes.owns() || !environment.isCurrent()) return
@@ -135,6 +139,11 @@ internal class DesktopOriginalRootPageBindings(
             LocalDesktopDynamicCardBindings provides aggregate.gallery,
             LocalDesktopImagePreviewShareBindings provides aggregate.gallery.imageShare,
         ) {
+            // This exists only inside a real page slot, after every Root initialization gate.
+            Box(Modifier.fillMaxSize().drawWithContent {
+                drawContent()
+                if (contentReady && active && routes.owns()) onRootContentFrame()
+            }) {
             when (key) {
                 BiliPaiNavKey.Home -> DesktopRetainedHomePage(root, pages.window, homeNavigation,
                     pages.scrollOffset, pages.feedScrollInProgress, pages.homeScroll,
@@ -212,6 +221,7 @@ internal class DesktopOriginalRootPageBindings(
                     }
                 }
                 else -> leafContent(key, routes, active, pagerHosted)
+            }
             }
         }
     }

@@ -1,13 +1,14 @@
 '''Stable original Weekly UI/state/repository selection; no direct leaf producers.'''
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib, importlib.util, sys, textwrap
 sys.dont_write_bytecode=True
-PINS={'app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesScreen.kt': '9c62f6eec189e5214dbaae7224922e00bfc716100c72423cd48d2d7676d634ca', 'app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesViewModel.kt': '0d62f01e9fb55151333b5c7de117f0251e47d926f414901a517bf3bdac30f8df', 'app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt': '1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496'}
+PINS={'app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesScreen.kt': '9c62f6eec189e5214dbaae7224922e00bfc716100c72423cd48d2d7676d634ca', 'app/src/main/java/com/android/purebilibili/feature/home/WeeklySeriesViewModel.kt': '0d62f01e9fb55151333b5c7de117f0251e47d926f414901a517bf3bdac30f8df', 'app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt': 'acf05cba9a89666533378eef35a21609484a02ccd874a460c259c3f3363d1e64'}
 def generate(repo:Path,output:Path):
  spec=importlib.util.spec_from_file_location('weekly_ast',repo/'desktop/tools/sync-upstream.py')
  parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
  def read(p):
-  s=(repo/p).read_text(encoding='utf-8').replace('\r\n','\n').replace('\r','\n')
+  s=(_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').replace('\r\n','\n').replace('\r','\n')
   assert hashlib.sha256(s.encode()).hexdigest()==PINS[p],p
   return s
  def emit(p,path,body):

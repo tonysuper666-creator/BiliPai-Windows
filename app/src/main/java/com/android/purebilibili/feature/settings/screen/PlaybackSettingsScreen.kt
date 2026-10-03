@@ -161,6 +161,8 @@ fun PlaybackSettingsContent(
         .getAudioModeAutoPipEnabled(context).collectAsStateWithLifecycle(initialValue = false)
     val audioNowPlayingBarEnabled by com.android.purebilibili.core.store.SettingsManager
         .getAudioNowPlayingBarEnabled(context).collectAsStateWithLifecycle(initialValue = true)
+    val audioNowPlayingBarImmersiveEnabled by com.android.purebilibili.core.store.SettingsManager
+        .getAudioNowPlayingBarImmersiveEnabled(context).collectAsStateWithLifecycle(initialValue = true)
     val audioNowPlayingBarOpensAudioMode by SettingsManager
         .getAudioNowPlayingBarOpensAudioMode(context)
         .collectAsStateWithLifecycle(initialValue = false)
@@ -701,6 +703,24 @@ fun PlaybackSettingsContent(
                             onCheckedChange = {
                                 scope.launch {
                                     SettingsManager.setAudioNowPlayingBarOpensAudioMode(context, it)
+                                }
+                            },
+                            iconTint = iOSOrange
+                        )
+                        AppPreferenceDivider()
+                        AppSwitchPreference(
+                            icon = rememberSettingsSemanticIcon(SettingsIconRole.PLAYLIST_AUTO_CONTINUE),
+                            title = "听视频标题横条自动沉浸",
+                            subtitle = if (audioNowPlayingBarImmersiveEnabled) {
+                                "听视频页播放中静置 5 秒后隐藏标题横条，点按底部把柄恢复"
+                            } else {
+                                "关闭后标题横条始终显示"
+                            },
+                            checked = audioNowPlayingBarImmersiveEnabled,
+                            onCheckedChange = {
+                                scope.launch {
+                                    com.android.purebilibili.core.store.SettingsManager
+                                        .setAudioNowPlayingBarImmersiveEnabled(context, it)
                                 }
                             },
                             iconTint = iOSOrange
@@ -1361,6 +1381,9 @@ private fun PlaybackInteractionSettingsSection(
     val commentMemberDecorationsEnabled by com.android.purebilibili.core.store.SettingsManager
         .getCommentMemberDecorationsEnabled(context)
         .collectAsStateWithLifecycle(initialValue = false)
+    val detailedCommentTimeEnabled by SettingsManager
+        .getDetailedCommentTimeEnabled(context)
+        .collectAsStateWithLifecycle(initialValue = false)
     val subReplyLoadedCountEnabled by com.android.purebilibili.core.store.SettingsManager
         .getSubReplyLoadedCountEnabled(context)
         .collectAsStateWithLifecycle(initialValue = false)
@@ -1599,6 +1622,19 @@ private fun PlaybackInteractionSettingsSection(
                     modifier = Modifier.size(24.dp),
                 )
             },
+        )
+        AppPreferenceDivider()
+        AppSwitchPreference(
+            icon = rememberSettingsSemanticIcon(SettingsIconRole.COMMENT_DECORATION),
+            title = "详细评论时间显示",
+            subtitle = "一级评论固定显示 yyyy-MM-dd HH:mm:ss；开启后楼中楼与动态评论也显示绝对时间，关闭则按相对时间显示",
+            checked = detailedCommentTimeEnabled,
+            onCheckedChange = { enabled ->
+                scope.launch {
+                    SettingsManager.setDetailedCommentTimeEnabled(context, enabled)
+                }
+            },
+            iconTint = iOSTeal,
         )
         AppPreferenceDivider()
         AppSwitchPreference(
@@ -2383,6 +2419,8 @@ private fun PlaybackFullscreenGestureSettingsSection(
         val horizontalAdaptationEnabled by com.android.purebilibili.core.store.SettingsManager
             .getHorizontalAdaptationEnabled(context)
             .collectAsStateWithLifecycle(initialValue = isLargeScreenDevice)
+        val videoAmbientSettings by SettingsManager.getVideoAmbientSettings(context)
+            .collectAsStateWithLifecycle(initialValue = com.android.purebilibili.feature.video.ambient.AmbientSettings())
         val immersiveVideoPageStatusBar by com.android.purebilibili.core.store.SettingsManager
             .getHideVideoPageStatusBar(context)
             .collectAsStateWithLifecycle(initialValue = false)
@@ -2552,6 +2590,40 @@ private fun PlaybackFullscreenGestureSettingsSection(
             },
             iconTint = com.android.purebilibili.core.theme.iOSPurple
         )
+        AppPreferenceDivider()
+        AppSwitchPreference(
+            icon = rememberSettingsSemanticIcon(SettingsIconRole.IMMERSIVE_STATUS_BAR),
+            title = "动态环境光",
+            subtitle = "在播放器周边显示随画面变化的柔和光晕；HDR、Anime4K 和小窗下不启用",
+            checked = videoAmbientSettings.enabled,
+            onCheckedChange = { enabled -> scope.launch { SettingsManager.setVideoAmbientEnabled(context, enabled) } },
+            iconTint = com.android.purebilibili.core.theme.iOSTeal,
+        )
+        if (videoAmbientSettings.enabled) {
+            AppPreferenceDivider()
+            SettingsSingleChoicePreference(
+                title = "环境光强度",
+                subtitle = "调整周边光晕亮度，不改变视频画面",
+                options = listOf(
+                    com.android.purebilibili.core.ui.components.AppSegmentOption(0, "柔和"),
+                    com.android.purebilibili.core.ui.components.AppSegmentOption(1, "标准"),
+                    com.android.purebilibili.core.ui.components.AppSegmentOption(2, "强烈"),
+                ),
+                selectedValue = videoAmbientSettings.strength,
+                onSelectionChange = { value -> scope.launch { SettingsManager.setVideoAmbientStrength(context, value) } },
+            )
+            AppPreferenceDivider()
+            SettingsSingleChoicePreference(
+                title = "环境光质量",
+                subtitle = "自动模式会根据省电、温度和静态画面降低刷新频率",
+                options = listOf(
+                    com.android.purebilibili.core.ui.components.AppSegmentOption(false, "自动"),
+                    com.android.purebilibili.core.ui.components.AppSegmentOption(true, "省电"),
+                ),
+                selectedValue = videoAmbientSettings.powerSaving,
+                onSelectionChange = { value -> scope.launch { SettingsManager.setVideoAmbientPowerSaving(context, value) } },
+            )
+        }
         AppPreferenceDivider()
 	        AppSwitchPreference(
             icon = rememberSettingsSemanticIcon(SettingsIconRole.IMMERSIVE_STATUS_BAR),

@@ -12,7 +12,7 @@ class BiliPaiNavDisplayHostStructureTest {
         assertTrue(source.contains("resolveVideoHeroMotionSpec("))
         assertTrue(source.contains("heroMotionSpec = heroMotion"))
         assertTrue(source.contains("bindNavigationDriver("))
-        assertTrue(source.contains("remember(sourceMetadata.sourceKey) { MiuixVideoCardTransitionProgress() }"))
+        assertTrue(source.contains("sourceMetadata.sourceKey, videoSharedReturnGestureFollowEnabled, videoSharedReturnGestureTranslationEnabled,"))
         assertTrue(source.contains("followNavigationDriver("))
         assertTrue(source.contains("snapshotFlow { videoCardTransitionProgress.settleStateOrNull() }"))
         assertFalse(source.contains("animateFallbackTo("))
@@ -51,31 +51,24 @@ class BiliPaiNavDisplayHostStructureTest {
     }
 
     @Test
-    fun navigation3RuntimeAndUiUseTheSameOfficialAlpha07Version() {
+    fun navigationUsesBundledMiuixRuntimeWithoutAndroidXNavigation3() {
         val buildFile = buildFileSource()
 
-        assertTrue(buildFile.contains("val navigation3Version = \"1.2.0-alpha07\""))
-        assertTrue(buildFile.contains("androidx.navigation3:navigation3-runtime:\$navigation3Version"))
-        assertTrue(buildFile.contains("androidx.navigation3:navigation3-ui:\$navigation3Version"))
+        assertTrue(buildFile.contains("implementation(project(\":miuix-navigation\"))"))
+        assertFalse(buildFile.contains("androidx.navigation3:"))
+        assertFalse(buildFile.contains("lifecycle-viewmodel-navigation3"))
+        assertFalse(buildFile.contains("implementation(libs.miuix.navigation"))
         assertFalse(buildFile.contains("miuix-navigation3-ui-android"))
     }
 
     @Test
-    fun navDisplayHostScopesEntryStateWithLifecycleNavigation3Decorator() {
+    fun miuixRuntimeOwnsEntryStateAndViewModelLifetime() {
         val source = navDisplayHostSource()
-        val buildFile = buildFileSource()
-
-        assertTrue(buildFile.contains("androidx.lifecycle:lifecycle-viewmodel-navigation3:"))
-        // 上游 navigationevent-compose 被 Gradle exclude 掉，转而使用项目内 vendored 源码
-        // (app/src/main/java/androidx/navigationevent/compose/)，以便在 onBackCompleted 回调
-        // 内对 transitionState 提交时序做精确控制。
-        assertTrue(buildFile.contains("exclude(group = \"androidx.navigationevent\", module = \"navigationevent-compose\")"))
-        assertFalse(buildFile.contains("androidx.navigationevent:navigationevent-compose:"))
-        assertFalse(buildFile.contains("androidx.navigationevent:navigationevent-compose"))
-        assertTrue(source.contains("rememberDecoratedNavEntries("))
-        assertTrue(source.contains("rememberSceneState("))
-        assertTrue(source.contains("rememberSaveableStateHolderNavEntryDecorator"))
-        assertTrue(source.contains("rememberViewModelStoreNavEntryDecorator"))
+        assertTrue(source.contains("import top.yukonga.miuix.kmp.nav.core.NavDisplay"))
+        assertTrue(source.contains("ProvideMiuixNavViewModelApplicationExtras(application)"))
+        assertFalse(source.contains("rememberDecoratedNavEntries("))
+        assertFalse(source.contains("rememberSceneState("))
+        assertFalse(source.contains("rememberViewModelStoreNavEntryDecorator"))
     }
 
     @Test

@@ -1,4 +1,5 @@
 """Original Story/Topic models and policies; Windows transport injection only."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re
 
@@ -14,7 +15,7 @@ def module(repo, name, path):
     value = importlib.util.module_from_spec(spec); spec.loader.exec_module(value); return value
 
 def host(repo): return module(repo, "story_topic_host", "desktop/tools/extract-upstream-plugins.py")
-def read(repo, path): return (repo / path).read_text(encoding="utf-8").replace("\r\n", "\n")
+def read(repo, path): return (_desktop_canonical_source(repo, path)).read_text(encoding="utf-8").replace("\r\n", "\n")
 
 def adapt(path, source, helpers):
     if path.endswith("TopicRepository.kt"):

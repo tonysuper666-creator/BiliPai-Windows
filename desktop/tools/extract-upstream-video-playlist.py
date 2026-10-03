@@ -1,8 +1,9 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,json,subprocess
 HERE=Path(__file__).resolve().parent
 MAIN=HERE.parents[2];SOURCE=MAIN.parent/'BiliPai-v023'
-PIN='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 PATH='app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt'
 def sha(s):return hashlib.sha256(s.encode()).hexdigest()
 def wide(p):
@@ -22,7 +23,7 @@ def span(s,start):
  return at,i
 def generate(repo, output, standalone=False):
  outputRoot=Path(output)
- original=wide(Path(repo)/PATH).read_bytes().replace(b'\r\n',b'\n').decode()
+ original=wide(_desktop_canonical_source(repo, PATH)).read_bytes().replace(b'\r\n',b'\n').decode()
  assert sha(original)=='a6a884fffc8d045609da0ac745d7376ec68c5237a2b4dae64e7a6c578240bd80'
  start,end=span(original,'object PlaylistManager {');body=original[start:end]
  edits=[]

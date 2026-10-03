@@ -1,8 +1,9 @@
 """Sole stable shared tab/liquid original renderer producer; task-only prepare."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,importlib.util,json,re,subprocess,sys
 sys.dont_write_bytecode=True
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589';BASE='app/src/main/java/com/android/purebilibili/';HOME=BASE+'feature/home/components/'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/';HOME=BASE+'feature/home/components/'
 def safe(p):
  s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
@@ -33,7 +34,7 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   return [(name,source[start:(starts[i+1][1] if i+1<len(starts) else len(source))].rstrip()+'\n') for i,(name,start) in enumerate(starts)]
  records=[]
  def emit(path,names=None,imports='',transforms=()):
-  source=read(REPO/path);original=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=REPO).decode().replace('\r\n','\n');assert source==original,path
+  source=read(_desktop_canonical_source(REPO, path));original=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=REPO).decode().replace('\r\n','\n');assert source==original,path
   package=re.search(r'(?m)^package (\S+)',source).group(1)
   selected=[]
   if names is None:text=source
@@ -52,7 +53,7 @@ def generate(repo: Path, output: Path, standalone: bool = False):
  for row in inv['sources']:
   p=row['path'];t=[]
   if p.endswith('LiquidGlassAdaptiveReadability.kt'):continue
-  s=read(REPO/p)
+  s=read(_desktop_canonical_source(REPO, p))
   if p.endswith('AppLiquidAwareTabRow.kt'):
    t += [('import androidx.compose.ui.Modifier','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.excludeFromLiquidBackground'),('        modifier = modifier,\n        enabled = enabled,','        modifier = modifier.excludeFromLiquidBackground(),\n        enabled = enabled,')]
   selected_names=None;selected_imports=''
@@ -88,7 +89,7 @@ def generate(repo: Path, output: Path, standalone: bool = False):
  imports+='\nimport kotlin.math.abs\n'
  emit(HOME+'BottomBar.kt',['iosIndicatorSpecular','AndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarTuning','resolveAndroidNativeBottomBarContainerColor','resolveAndroidNativeFloatingBottomBarContainerColor','resolveAndroidNativeBottomBarGlassEnabled','shouldUseAndroidNativeFloatingHazeBlur','shouldRenderBottomBarLiquidGlassEffects','biliPaiMiuixFloatingDockSurface','resolveBiliPaiBottomBarContainerColor','resolveBottomBarDarkTheme','BOTTOM_BAR_INDICATOR_DRAG_SCALE_TARGET','resolveBottomBarCaptureSafeInsetDp','resolveBottomBarSurfaceColor','resolveBiliPaiBottomBarShellColor','BottomBarItemMotionVisual','resolveBottomBarItemCoverage','resolveBottomBarItemMotionScale','resolveBottomBarItemMotionVisual'],imports=imports,transforms=[('private val iosIndicatorSpecular','internal val desktopOriginalBottomBarIosIndicatorSpecular'),('rememberBiliPaiGravityHighlight(iosIndicatorSpecular, extraDegrees = -45f)','rememberBiliPaiGravityHighlight(desktopOriginalBottomBarIosIndicatorSpecular, extraDegrees = -45f)'),('    sdkInt: Int = Build.VERSION.SDK_INT\n): Boolean = liquidGlassEnabled && shouldAllowHomeChromeLiquidGlass(sdkInt)','): Boolean = liquidGlassEnabled && desktopDetailRenderEffectsSupported()'),('    sdkInt: Int = Build.VERSION.SDK_INT\n): Boolean = blurEnabled &&\n    !glassEnabled &&\n    hasHazeState &&\n    shouldAllowRenderEffectBackedHazeEffect(sdkInt)','): Boolean = blurEnabled &&\n    !glassEnabled &&\n    hasHazeState &&\n    desktopDetailRenderEffectsSupported()')])
  # Full original adaptive policy/state/UI kept; only Android capture/owner types map.
- adaptive=read(REPO/(HOME+'LiquidGlassAdaptiveReadability.kt'))
+ adaptive=read(_desktop_canonical_source(REPO, HOME + 'LiquidGlassAdaptiveReadability.kt'))
  vals=[n for n,_ in declarations(adaptive) if n not in ['adaptiveReadabilityPixelCopyHandler','sampleWindowLuminance','findLiquidGlassHostActivity']]
  emit(HOME+'LiquidGlassAdaptiveReadability.kt',vals,imports='''import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween

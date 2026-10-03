@@ -1,3 +1,4 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,importlib.util,json,re,subprocess,sys,difflib
 sys.dont_write_bytecode=True;sys.stdout.reconfigure(encoding='utf-8')
@@ -8,9 +9,9 @@ args=cli.parse_args();REPO=args.repo.resolve();LANE=args.output.resolve()
 FEATURE='stable-video-audio-original'
 SOURCE_PINS={'app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeScreen.kt': {'sha256LF': '8be4fda06237bf87601aa55f844bc501991a426fbde778f3abe6b264fd87ce2d', 'gitBlob': '88daf54da269640a18a1ab07bb030f0bff5fa462'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/AudioModeMusicPlayer.kt': {'sha256LF': '4aa801e622630315ff95d9ba5bb4c277ecee524055ef4f5ccc5c71e648f136ea', 'gitBlob': '86588a2c4f6404a0464b8d3ef856bfce43734d14'}}
 manifest=json.loads((REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
-assert manifest['upstreamCommit']=='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+assert manifest['upstreamCommit']=='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589';BASE='app/src/main/java/com/android/purebilibili/'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
 OUT=LANE;SOURCES={};CHANGES={};OUTPUTS=[]
 def safe(p):
  s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92);return Path(s if s.startswith(prefix)else prefix+s)
@@ -21,7 +22,7 @@ def module(name,p):
 parser=module('audio_tokens',REPO/'desktop/tools/sync-upstream.py');selector=module('audio_select',REPO/'desktop/tools/extract-appearance-platform.py')
 def read(rel):
  p=BASE+rel;raw=subprocess.check_output(['git','show',COMMIT+':'+p],cwd=REPO)
- assert raw==safe(REPO/p).read_bytes().replace(b'\r\n',b'\n'),p
+ assert raw==safe(_desktop_canonical_source(REPO, p)).read_bytes().replace(b'\r\n',b'\n'),p
  SOURCES[p]={'text':raw.decode(),'sha256LF':sha(raw),'gitBlob':subprocess.check_output(['git','rev-parse',COMMIT+':'+p],cwd=REPO,text=True).strip()}
  assert SOURCES[p]['sha256LF']==SOURCE_PINS[p]['sha256LF'] and SOURCES[p]['gitBlob']==SOURCE_PINS[p]['gitBlob'],p
  if not args.standalone:

@@ -62,6 +62,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.imageLoader
 import com.android.purebilibili.R
+import com.android.purebilibili.core.ui.AdaptivePullToRefreshBox
 import com.android.purebilibili.core.ui.ImmersiveAppScaffold as AppScaffold
 import com.android.purebilibili.core.ui.AppSplitLayout
 import com.android.purebilibili.core.ui.AppTopBar
@@ -185,6 +186,8 @@ fun DynamicDetailScreen(
     val likeOverrides by interactionViewModel.likeOverrides.collectAsStateWithLifecycle()
     val comments by interactionViewModel.comments.collectAsStateWithLifecycle()
     val commentsLoading by interactionViewModel.commentsLoading.collectAsStateWithLifecycle()
+    val commentsRefreshing by interactionViewModel.commentsRefreshing.collectAsStateWithLifecycle()
+    val commentsRefreshError by interactionViewModel.commentsRefreshError.collectAsStateWithLifecycle()
     val commentsLoadingMore by interactionViewModel.commentsLoadingMore.collectAsStateWithLifecycle()
     val commentTotalCount by interactionViewModel.commentTotalCount.collectAsStateWithLifecycle()
     val commentSortMode by interactionViewModel.dynamicCommentSortMode.collectAsStateWithLifecycle()
@@ -206,6 +209,11 @@ fun DynamicDetailScreen(
     var previewInitialIndex by remember { mutableIntStateOf(0) }
     var previewSourceRect by remember { mutableStateOf<ImagePreviewSourceAnchor?>(null) }
     var previewTextContent by remember { mutableStateOf<ImagePreviewTextContent?>(null) }
+    LaunchedEffect(commentsRefreshError) {
+        commentsRefreshError?.let { message ->
+            android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()
+        }
+    }
     AppScaffold(
         blurContentReady = uiState !is DynamicDetailUiState.Loading,
         topBar = {
@@ -306,7 +314,7 @@ fun DynamicDetailScreen(
                             itemCount = itemCount,
                             loadedCount = comments.size,
                             totalCount = commentTotalCount,
-                            isLoading = commentsLoading,
+                            isLoading = commentsLoading || commentsRefreshing || commentsRefreshError != null,
                             isLoadingMore = commentsLoadingMore,
                         )
                     }
@@ -535,20 +543,27 @@ fun DynamicDetailScreen(
                             secondaryContent = {
                                 if (floatingCommentComposer) {
                                     Box(modifier = Modifier.fillMaxSize()) {
-                                        LazyColumn(
-                                            state = commentListState,
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                                .then(
-                                                    if (detailCommentBackdrop != null) {
-                                                        Modifier.layerBackdrop(detailCommentBackdrop)
-                                                    } else {
-                                                        Modifier
-                                                    }
-                                                ),
-                                            contentPadding = PaddingValues(top = paddingValues.calculateTopPadding(), bottom = commentContentBottomPadding),
+                                        AdaptivePullToRefreshBox(
+                                            isRefreshing = commentsRefreshing,
+                                            onRefresh = interactionViewModel::refreshComments,
+                                            modifier = Modifier.fillMaxSize(),
+                                            indicatorTopInset = paddingValues.calculateTopPadding(),
                                         ) {
-                                            commentContent()
+                                            LazyColumn(
+                                                state = commentListState,
+                                                modifier = Modifier
+                                                    .fillMaxSize()
+                                                    .then(
+                                                        if (detailCommentBackdrop != null) {
+                                                            Modifier.layerBackdrop(detailCommentBackdrop)
+                                                        } else {
+                                                            Modifier
+                                                        }
+                                                    ),
+                                                contentPadding = PaddingValues(top = paddingValues.calculateTopPadding(), bottom = commentContentBottomPadding),
+                                            ) {
+                                                commentContent()
+                                            }
                                         }
                                         Box(
                                             modifier = Modifier
@@ -568,12 +583,19 @@ fun DynamicDetailScreen(
                                     }
                                 } else {
                                     Box(modifier = Modifier.fillMaxSize()) {
-                                        LazyColumn(
-                                            state = commentListState,
+                                        AdaptivePullToRefreshBox(
+                                            isRefreshing = commentsRefreshing,
+                                            onRefresh = interactionViewModel::refreshComments,
                                             modifier = Modifier.fillMaxSize(),
-                                            contentPadding = PaddingValues(top = paddingValues.calculateTopPadding(), bottom = commentContentBottomPadding),
+                                            indicatorTopInset = paddingValues.calculateTopPadding(),
                                         ) {
-                                            commentContent()
+                                            LazyColumn(
+                                                state = commentListState,
+                                                modifier = Modifier.fillMaxSize(),
+                                                contentPadding = PaddingValues(top = paddingValues.calculateTopPadding(), bottom = commentContentBottomPadding),
+                                            ) {
+                                                commentContent()
+                                            }
                                         }
                                         Column(
                                             modifier = Modifier
@@ -610,21 +632,28 @@ fun DynamicDetailScreen(
                                 .consumeWindowInsets(paddingValues)
                                 .responsiveContentWidth(maxWidth = resolveDynamicFeedMaxWidth())
                         ) {
-                            LazyColumn(
-                                state = detailListState,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .then(
-                                        if (floatingCommentComposer && detailCommentBackdrop != null) {
-                                            Modifier.layerBackdrop(detailCommentBackdrop)
-                                        } else {
-                                            Modifier
-                                        }
-                                    ),
-                                contentPadding = PaddingValues(top = paddingValues.calculateTopPadding(), bottom = commentContentBottomPadding),
+                            AdaptivePullToRefreshBox(
+                                isRefreshing = commentsRefreshing,
+                                onRefresh = interactionViewModel::refreshComments,
+                                modifier = Modifier.fillMaxSize(),
+                                indicatorTopInset = paddingValues.calculateTopPadding(),
                             ) {
-                                cardContent()
-                                commentContent()
+                                LazyColumn(
+                                    state = detailListState,
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .then(
+                                            if (floatingCommentComposer && detailCommentBackdrop != null) {
+                                                Modifier.layerBackdrop(detailCommentBackdrop)
+                                            } else {
+                                                Modifier
+                                            }
+                                        ),
+                                    contentPadding = PaddingValues(top = paddingValues.calculateTopPadding(), bottom = commentContentBottomPadding),
+                                ) {
+                                    cardContent()
+                                    commentContent()
+                                }
                             }
                             if (floatingCommentComposer) {
                                 Box(
@@ -675,6 +704,7 @@ fun DynamicDetailScreen(
                     state = subReplyState,
                     onDismiss = interactionViewModel::closeSubReply,
                     onLoadMore = interactionViewModel::loadMoreSubReplies,
+                    onRefresh = interactionViewModel::refreshSubReplies,
                     onSortModeChange = interactionViewModel::setSubReplySortMode,
                     onUserClick = onUserClick,
                     onReplyClick = { reply ->

@@ -112,6 +112,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
@@ -1136,6 +1137,10 @@ fun CommonListScreen(
             AppSurfaceTokens.groupedListContainer()
         }
     ) { scaffoldPadding ->
+        // 遮挡铰链时整页内容落入最大安全区，软折痕允许跨越（与首页/动态/搜索一致）。
+        com.android.purebilibili.core.ui.adaptive.AppHingeSafeContent(
+            modifier = Modifier.fillMaxSize(),
+        ) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -2103,6 +2108,7 @@ fun CommonListScreen(
                 }
             }
         }
+        }
     }
 
     if (showHistoryBatchDeleteConfirm && historyViewModel != null) {
@@ -2114,15 +2120,21 @@ fun CommonListScreen(
                 AppTextButton(
                     onClick = {
                         val targetKeys = selectedHistoryKeys
-                        when (resolveHistoryDeleteAnimationMode(targetKeys.size)) {
-                            HistoryDeleteAnimationMode.SINGLE_DISSOLVE -> {
-                                targetKeys.firstOrNull()?.let(historyViewModel::startVideoDissolve)
-                            }
-                            HistoryDeleteAnimationMode.DIRECT_DELETE -> {
-                                // Batch selection may include off-screen items that never report animation completion.
-                                historyViewModel.deleteHistoryItems(targetKeys)
-                            }
-                        }
+                        val pageIndex = historyPagerState.currentPage
+                        val pageItems = filterHistoryItemsByContent(
+                            items = state.items,
+                            filter = historyFilters.getOrElse(pageIndex) { HistoryContentFilter.ALL },
+                            resolveHistoryItem = { video ->
+                                historyViewModel.getHistoryItem(historyViewModel.resolveHistoryLookupKey(video))
+                            },
+                        )
+                        val filteredItems = filterCommonListVideosByQuery(pageItems, searchQuery)
+                        val visibleKeys = historyPagerGridStates[pageIndex]?.layoutInfo
+                            ?.visibleItemsInfo.orEmpty()
+                            .mapNotNull { item -> filteredItems.getOrNull(item.index) }
+                            .map(historyViewModel::resolveHistoryRenderKey)
+                            .toSet()
+                        historyViewModel.startVideosDissolve(targetKeys, visibleKeys)
                         selectedHistoryKeys = emptySet()
                         isHistoryBatchMode = false
                         showHistoryBatchDeleteConfirm = false
@@ -2915,12 +2927,15 @@ private fun CommonListContent(
                                 collapseAfterDissolve = shouldCollapseHistoryDeleteCard(historyDeleteAnimationMode),
                                 publishGlobalDissolveState = shouldJiggleHistoryDeleteCards(historyDeleteAnimationMode),
                                 keepInvisibleAfterDissolve = shouldKeepPlaceholderHidden ||
-                                    historyDeleteAnimationMode == HistoryDeleteAnimationMode.DIRECT_DELETE,
-                                modifier = Modifier.jiggleOnDissolve(
-                                    cardId = historyKey,
-                                    enabled = shouldJiggleHistoryDeleteCards(historyDeleteAnimationMode),
-                                    isCurrentCardDissolving = isDissolving
-                                )
+                                    historyDeleteAnimationMode == HistoryDeleteAnimationMode.BATCH_DISSOLVE,
+                                modifier = Modifier
+                                    // Completed cards keep their layout slot until the whole batch finishes.
+                                    .alpha(if (shouldKeepPlaceholderHidden) 0f else 1f)
+                                    .jiggleOnDissolve(
+                                        cardId = historyKey,
+                                        enabled = shouldJiggleHistoryDeleteCards(historyDeleteAnimationMode),
+                                        isCurrentCardDissolving = isDissolving
+                                    )
                             ) {
                                 cardContent()
                             }

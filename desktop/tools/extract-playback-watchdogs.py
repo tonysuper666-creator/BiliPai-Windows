@@ -1,5 +1,6 @@
 """Extract original CDN/first-frame/stall decisions verbatim with a verified player-state platform bridge."""
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 import argparse
 import hashlib
 import json
@@ -10,7 +11,7 @@ SOURCES = {SOURCE: "extracted"}
 
 
 def read(repo: Path, path: str) -> str:
-    return (repo / path).read_text(encoding="utf-8").replace("\r\n", "\n")
+    return (_desktop_canonical_source(repo, path)).read_text(encoding="utf-8").replace("\r\n", "\n")
 
 
 def section(source: str, start: str, end: str) -> str:

@@ -8,6 +8,10 @@ import com.bilipai.desktop.settings.desktopSettingsSearchFocusAnchor
 import com.android.purebilibili.feature.settings.SettingsSearchTarget
 import com.android.purebilibili.feature.settings.SettingsSearchFocusIds
 import androidx.compose.runtime.*
+import com.bilipai.desktop.plugins.DesktopPluginContext
+import com.android.purebilibili.core.store.DesktopOriginalReplySettings
+import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
+import com.android.purebilibili.feature.settings.DesktopOriginalDetailedCommentTimeSetting
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -19,6 +23,7 @@ import com.bilipai.desktop.danmaku.DanmakuSettings
 import com.bilipai.desktop.player.PlaybackMode
 import com.bilipai.desktop.player.PlayerPreferences
 import java.util.Locale
+import kotlinx.coroutines.launch
 
 fun playbackModeLabel(mode: PlaybackMode): String = when (mode) {
     PlaybackMode.STOP_AFTER_CURRENT -> "播完停止"
@@ -37,9 +42,16 @@ internal fun resolvePlaybackSettingsDraftSave(draft: PlayerPreferences, latest: 
         speed = if (draft.rememberLastSpeed) draft.speed else draft.defaultSpeed,
     ).normalized()
 
+internal val LocalDesktopDetailedCommentTimeContext = staticCompositionLocalOf<DesktopPluginContext> {
+    error("Root same global comment settings context is required")
+}
+
 @Composable
 fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: (PlayerPreferences) -> Unit, onDismiss: () -> Unit) {
     val latestPreferences by rememberUpdatedState(preferences)
+    val commentContext = LocalDesktopDetailedCommentTimeContext.current
+    val commentScope = rememberCoroutineScope()
+    val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current
     var draft by remember { mutableStateOf(preferences) }
     var newSpeed by remember { mutableStateOf("") }
     var speedError by remember { mutableStateOf<String?>(null) }
@@ -53,6 +65,7 @@ fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: 
                 }
             }
             PlayerSwitch("记住上次播放倍速", draft.rememberLastSpeed) { draft = draft.copy(rememberLastSpeed = it) }
+            com.android.purebilibili.feature.settings.DesktopOriginalVideoAmbientSettingsContent()
             Column(Modifier.desktopSettingsSearchFocusAnchor(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.PLAYBACK_DECODER), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 PlayerSwitch("启用硬件解码", draft.hardwareDecodeEnabled) { draft = draft.copy(hardwareDecodeEnabled = it) }
                 val codecOptions = listOf("avc1" to "AVC", "hev1" to "HEVC", "av01" to "AV1")
@@ -75,6 +88,9 @@ fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: 
                 }
             }
             Column(Modifier.desktopSettingsSearchFocusAnchor(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.PLAYBACK_INTERACTION), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                DesktopOriginalDetailedCommentTimeSetting(detailedCommentTimeEnabled) { enabled ->
+                    commentScope.launch { DesktopOriginalReplySettings.setDetailedCommentTimeEnabled(commentContext, enabled) }
+                }
                 Text("自动启用字幕", style = MaterialTheme.typography.titleSmall)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                     listOf(SubtitleAutoPreference.OFF to "关闭", SubtitleAutoPreference.ON to "开启",

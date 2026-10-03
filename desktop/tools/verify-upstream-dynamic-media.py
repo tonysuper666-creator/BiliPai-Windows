@@ -8,12 +8,7 @@ import sys
 import tempfile
 
 sys.dont_write_bytecode = True
-EXPECTED = {
-    'com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt':
-        '4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a',
-    'com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt':
-        '52f013d2128d8689cc55e685d1a1c6e5aebaedfb5066b2bae61025bb748207a2',
-}
+EXPECTED = {'com/android/purebilibili/core/util/DesktopOriginalGalleryResultPolicy.kt': '4c6dff09291ee1c6732fc8af45fdb6d3fd288b228985599fcc47b9dedb45be1a', 'com/android/purebilibili/feature/dynamic/components/DesktopOriginalMotionPhotoPacking.kt': '51ba3403185f6d7cad1cc2e7975b1a2ecb2362641c42994ba57b2c7d46998e8e'}
 
 def verify(repo, generated, output):
     tool = repo / 'desktop/tools/extract-upstream-dynamic-gallery-motion-photo.py'
@@ -30,8 +25,8 @@ def verify(repo, generated, output):
             assert hashlib.sha256(data).hexdigest() == expected, path + ' exceeds reviewed adaptations'
             assert (generated / path).read_bytes() == data, path + ' differs from the sole producer'
         receipt = json.loads((fresh / 'producer-receipt.json').read_text(encoding='utf-8'))
-        assert receipt['originalCommit'] == '3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
-        assert receipt['originalTag'] == 'v0.2.3'
+        assert receipt['originalCommit'] == '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
+        assert receipt['originalTag'] == '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
         assert receipt['selectedPacking']['deletedExactLines'] == [
             '        GCamera:MotionPhoto="1"',
             '        GCamera:MotionPhotoVersion="1"',

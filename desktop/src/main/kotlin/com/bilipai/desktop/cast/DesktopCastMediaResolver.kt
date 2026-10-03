@@ -10,7 +10,7 @@ import com.android.purebilibili.data.repository.extractTvCastPlayableUrl
 import com.android.purebilibili.data.repository.selectCastDashAudio
 import com.android.purebilibili.data.repository.selectCastDashVideo
 import com.android.purebilibili.feature.cast.LocalProxyServer
-import com.android.purebilibili.feature.video.playback.dash.buildLocalDashManifest
+import com.android.purebilibili.core.player.dash.buildLocalDashManifest
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.data.PlaybackSource
 import com.bilipai.desktop.data.VideoDetails

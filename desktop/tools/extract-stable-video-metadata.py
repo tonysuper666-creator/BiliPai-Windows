@@ -1,4 +1,5 @@
 """Original honor/declaration/team renderers, policy and status-query bodies."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib, importlib.util, json, re, sys
 sys.dont_write_bytecode=True
@@ -12,7 +13,7 @@ def generate(repo,output):
     pins={r['path']:r['sha256'] for r in json.loads((repo/'desktop/upstream-sources.json').read_text(encoding='utf-8'))['sources']}
     records=[]
     def read(path):
-        text=(repo/path).read_text(encoding='utf-8').replace('\r\n','\n');assert hashlib.sha256(text.encode()).hexdigest()==pins[path];return text
+        text=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n');assert hashlib.sha256(text.encode()).hexdigest()==pins[path];return text
     def emit(path,body,name):
         package=re.search(r'(?m)^package (\S+)',body).group(1);target=output/package.replace('.','/')/name
         target.parent.mkdir(parents=True,exist_ok=True)

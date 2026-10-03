@@ -78,3 +78,32 @@ internal fun decodeDesktopJsImage(bytes: ByteArray): SkiaImage {
         }
     }
 }
+
+internal class DesktopJsImageBindings(val repository: DesktopJsPluginRepository, val pluginId: String,
+    val revision: Long, val ownedNetworkGrant: () -> Boolean)
+internal val LocalDesktopJsImageBindings = staticCompositionLocalOf<DesktopJsImageBindings> {
+    error("JS image requires the original mounted module owner")
+}
+
+/** Existing image decoder/network owner; original full card retains its candidate/error order. */
+@Composable
+internal fun DesktopJsAuthorizedImage(model: String, contentDescription: String?, modifier: Modifier = Modifier,
+    contentScale: ContentScale = ContentScale.Fit, onError: () -> Unit = {}) {
+    val bindings = LocalDesktopJsImageBindings.current
+    var image by remember(model, bindings) { mutableStateOf<SkiaImage?>(null) }
+    val latestError by rememberUpdatedState(onError)
+    LaunchedEffect(model, bindings) {
+        if (!bindings.ownedNetworkGrant()) return@LaunchedEffect
+        var owned: SkiaImage? = null
+        try {
+            owned = loadDesktopJsMediaImage(listOf(model)) { bindings.repository.mediaImage(bindings.pluginId, it) }
+            currentCoroutineContext().ensureActive()
+            if (bindings.ownedNetworkGrant() && bindings.repository.host.executionRevision.value == bindings.revision) {
+                image = owned; owned = null
+                if (image == null) latestError()
+            }
+        } finally { owned?.close() }
+    }
+    DisposableEffect(image) { val owned = image; onDispose { owned?.close() } }
+    image?.let { Image(it.toComposeImageBitmap(), contentDescription, modifier, contentScale = contentScale) }
+}

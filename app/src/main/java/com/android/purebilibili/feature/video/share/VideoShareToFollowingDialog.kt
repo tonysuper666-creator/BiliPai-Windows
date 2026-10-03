@@ -76,9 +76,10 @@ internal fun VideoShareToFollowingDialog(
                 error = response.message.ifBlank { "关注列表加载失败 (${response.code})" }
                 return
             }
-            val page = response.data.list.orEmpty().filter { it.mid > 0L && it.mid != selfMid }
+            val data = requireNotNull(response.data)
+            val page = data.list.orEmpty().filter { it.mid > 0L && it.mid != selfMid }
             followings = (followings + page).distinctBy(FollowingUser::mid)
-            total = response.data.total
+            total = data.total
             nextPage++
             if (page.isEmpty() || nextPage > (total + 49) / 50) total = followings.size
         } catch (cancelled: CancellationException) {

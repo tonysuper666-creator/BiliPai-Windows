@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "snapshot": 87,
+  "entries": 101,
+  "pinsBeforeAfter": true,
+  "prospectiveJar": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\runs\\03\\prospective.jar",
+    "sha256Bytes": "ec6c0125106a84b11ab7bae682a61ac161477ad4277a0eccb8befb2842922ac8"
+  },
+  "fixtureSha256Bytes": "40b773d84c3b9d252c972cba29451abc9e98f9cade297bb95258642a01d7b58a",
+  "scope": "Complete PGC physical plans plus actual original Store/native-owner negative admissions on unmounted MPV; no native transport command ACK/frame",
+  "productionWrites": 0,
+  "fullScreenPrepared": false,
+  "rootRuntimeAccepted": false,
+  "httpRuntimeAccepted": false,
+  "nativeRuntimeAccepted": false,
+  "accountRuntimeAccepted": false,
+  "normalProductCompile": false
+}

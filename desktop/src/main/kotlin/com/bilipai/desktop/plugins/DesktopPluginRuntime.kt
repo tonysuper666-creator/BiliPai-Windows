@@ -435,6 +435,32 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         (result ?: throw CancellationException("Playback request admission did not execute")).getOrThrow()
     }
 
+    /** Root settings uses the same playerMutex and original Store even before a first
+     * accepted source exists. Captured entry/native identity remains fixed across IO. */
+    internal suspend fun <T> runCapturedPlaybackPluginSettings(plugin: Plugin,
+        stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean), action: suspend () -> T): T = playerMutex.withLock {
+        val caller = currentCoroutineContext()[Job] ?: error("CDN settings requires caller Job")
+        fun checkSettings() {
+            caller.ensureActive()
+            if (closing.get() || !stillOwned() || plugins.value.none { it.plugin === plugin && it.enabled })
+                throw CancellationException("Captured CDN settings owner retired")
+        }
+        checkSettings()
+        if (!admission { checkSettings() }) throw CancellationException("CDN settings admission rejected")
+        val captured = DesktopPlayerPluginWriteAdmission.Operation(context, caller, null,
+            ::checkSettings, admission, serializedDeferred = { previous, block ->
+                playerMutex.withLock {
+                    currentCoroutineContext().ensureActive(); previous.check()
+                    if (!admission { previous.check() }) throw CancellationException("Deferred CDN settings retired")
+                    DesktopPlayerPluginWriteAdmission.withCaptured(previous, block)
+                }
+            })
+        val result = DesktopPlayerPluginWriteAdmission.withCaptured(captured, action)
+        checkSettings()
+        if (!admission { checkSettings() }) throw CancellationException("CDN settings result rejected")
+        result
+    }
+
     /** Cleanup cannot depend on the canceled VM scope or current native entry.
      * Capture OLD generation/provider identities now, then use Runtime's existing
      * scope. A subsequent load increments generation BEFORE waiting for the mutex. */

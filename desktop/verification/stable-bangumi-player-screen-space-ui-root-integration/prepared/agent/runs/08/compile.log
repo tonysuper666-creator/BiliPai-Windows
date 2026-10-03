@@ -1,0 +1,6 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalBangumiPlayerRootOwner.kt:222:88: error: argument type mismatch: actual type is 'Int', but 'Boolean' was expected.
+            val spec = resolveVideoDetailSystemBarsApplySpec(visibility, false, false, 0xff000000.toInt(), 0, 0xff000000.toInt(), 2)
+                                                                                       ^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalBangumiPlayerRootOwner.kt:222:131: error: no value passed for parameter 'transientBarsBehavior'.
+            val spec = resolveVideoDetailSystemBarsApplySpec(visibility, false, false, 0xff000000.toInt(), 0, 0xff000000.toInt(), 2)
+                                                                                                                                  ^^

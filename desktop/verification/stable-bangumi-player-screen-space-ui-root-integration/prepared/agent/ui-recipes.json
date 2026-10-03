@@ -1,0 +1,78 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "recipes": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+      "originalSha256LF": "c0cfbb4c871ae3abfb9b0bf784f05db05b2564760f4fa3b235740e76c1d2c74d",
+      "output": "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerContent.kt",
+      "adaptedSha256LF": "f858b399323afa87706b88e57bc517af39b55740c75b9073e721adc1ebb2114e",
+      "edits": [
+        {
+          "startLine": 74,
+          "endLineExclusive": 75,
+          "before": "fun BangumiPlayerContent(\n",
+          "after": "internal fun BangumiPlayerContent(\n",
+          "beforeSha256LF": "9375988060938c1344dd7a18193f6411efebdc06e3fe2524865b20386ec2f91d"
+        }
+      ],
+      "platformBoundaries": [
+        "Internal visibility for actual original desktop comment VM ABI; body unchanged"
+      ],
+      "fullOriginalBody": true,
+      "actualRootConsumer": false
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt",
+      "originalSha256LF": "b07032c56edf4c39a34f9e16a1a55764f8082d3bb2909eb3e68e34b7651e79c4",
+      "output": "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerOverlayHost.kt",
+      "adaptedSha256LF": "f95074beb5dc064d060c0ba10654c10558a695970fc914e230bd6b56ba4390b7",
+      "edits": [
+        {
+          "startLine": 3,
+          "endLineExclusive": 5,
+          "before": "import androidx.compose.ui.platform.LocalContext\nimport androidx.media3.exoplayer.ExoPlayer\n",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext as LocalContext\nimport com.bilipai.desktop.ui.DesktopOriginalMpvSectionControl as ExoPlayer\n",
+          "beforeSha256LF": "23487a95bd020f50714a3b44c5eae90eedb0b5d16436f7441d07a275bd9dd8b8"
+        },
+        {
+          "startLine": 12,
+          "endLineExclusive": 13,
+          "before": "import com.android.purebilibili.core.util.ShareUtils\n",
+          "after": "import com.bilipai.desktop.ui.LocalDesktopOriginalBangumiPlayerShare\n",
+          "beforeSha256LF": "19e0321d1b8a4fe58aecec1286a59f51899d2fdce1e414cbdec319515e2a80f3"
+        },
+        {
+          "startLine": 95,
+          "endLineExclusive": 95,
+          "before": "",
+          "after": "    val shareUtils = LocalDesktopOriginalBangumiPlayerShare.current\n",
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "startLine": 163,
+          "endLineExclusive": 164,
+          "before": "            ShareUtils.shareBangumi(\n",
+          "after": "            shareUtils.shareBangumi(\n",
+          "beforeSha256LF": "ef7256f639b170db1f1f3a61a78c6d0f287ff2b1589675b22681e706a57a0d10"
+        }
+      ],
+      "platformBoundaries": [
+        "LocalContext/settings borrow same Root",
+        "Media3 API view same native Section",
+        "ShareUtils delegates required same Root share owner"
+      ],
+      "fullOriginalBody": true,
+      "actualRootConsumer": false
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiCollapsedPlayerBar.kt",
+      "originalSha256LF": "559f125ae24846591e45a77dcda3fdbdd330a96e2b4408cc87dcc6608bc51043",
+      "output": "com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCollapsedPlayerBar.kt",
+      "adaptedSha256LF": "559f125ae24846591e45a77dcda3fdbdd330a96e2b4408cc87dcc6608bc51043",
+      "edits": [],
+      "platformBoundaries": [],
+      "fullOriginalBody": true,
+      "actualRootConsumer": false
+    }
+  ]
+}

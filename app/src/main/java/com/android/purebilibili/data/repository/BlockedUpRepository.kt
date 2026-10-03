@@ -412,8 +412,8 @@ class BlockedUpRepository(
                         level = card.level_info?.current_level,
                         vipLabel = card.vip?.label?.text.orEmpty(),
                         officialTitle = card.Official?.title.orEmpty(),
-                        follower = response.data.follower.toLong(),
-                        archiveCount = response.data.archive_count,
+                        follower = requireNotNull(response?.data).follower.toLong(),
+                        archiveCount = requireNotNull(response?.data).archive_count,
                         isDeleted = false,
                         lastSyncedAt = now
                     )

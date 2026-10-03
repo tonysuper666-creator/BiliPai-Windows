@@ -40,8 +40,9 @@ internal class PremiumRecoveryActor(private val player: MpvPlayer) : AutoCloseab
     private val action = MpvPlayer::class.java.declaredClasses.single { it.simpleName == "Action" }
     private val snapshot = requireNotNull(player.currentSourceSnapshot())
     private val revision = MpvPlayer::class.java.getDeclaredField("playbackRevision").apply { isAccessible = true }.getLong(player)
+    private val initialMuted = MpvPlayer::class.java.getDeclaredField("requestedLoadMute").apply { isAccessible = true }.get(player) as Boolean?
     private val actor = clazz.declaredConstructors.single().apply { isAccessible = true }
-        .newInstance(player, 1L, snapshot.source, snapshot.sourceVersion, revision)
+        .newInstance(player, 1L, snapshot.source, snapshot.sourceVersion, revision, initialMuted)
     private val field = MpvPlayer::class.java.getDeclaredField("session").apply { isAccessible = true }
     private val perform = clazz.getDeclaredMethod("perform", MpvNative::class.java, Pointer::class.java, action).apply { isAccessible = true }
     private val receive = clazz.getDeclaredMethod("receiveEvent", MpvNative::class.java, Pointer::class.java, Pointer::class.java).apply { isAccessible = true }

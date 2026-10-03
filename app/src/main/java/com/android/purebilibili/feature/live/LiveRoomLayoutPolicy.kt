@@ -86,8 +86,13 @@ fun resolveLiveRoomLayoutMode(
     isLandscape: Boolean,
     isTablet: Boolean,
     isFullscreen: Boolean,
-    isPortraitLive: Boolean
+    isPortraitLive: Boolean,
+    hasObstructingHinge: Boolean = false,
 ): LiveRoomLayoutMode {
+    // Hinge panes provide the interaction area even when the window is portrait or compact.
+    if (hasObstructingHinge) {
+        return if (isFullscreen) LiveRoomLayoutMode.LandscapeOverlay else LiveRoomLayoutMode.LandscapeSplit
+    }
     return if (isTablet) {
         if (isFullscreen) {
             if (!isLandscape && isPortraitLive) LiveRoomLayoutMode.PortraitVerticalOverlay

@@ -9,7 +9,7 @@ import com.android.purebilibili.danmaku.engine.DanmakuItem
 import com.android.purebilibili.feature.anime4k.Anime4KConfig
 import com.android.purebilibili.feature.anime4k.VideoEnhancementAlgorithm
 import com.android.purebilibili.feature.anime4k.Anime4KPreset
-import com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData
+import com.android.purebilibili.danmaku.parser.AdvancedDanmakuData
 import com.android.purebilibili.feature.video.danmaku.CommandDanmakuItem
 import com.android.purebilibili.feature.video.danmaku.DanmakuViewport
 import com.android.purebilibili.feature.video.ui.components.VideoViewportLayout
@@ -92,6 +92,10 @@ internal interface DesktopOriginalVideoSectionPlatform {
     fun setViewportBrightness(value: Float, requestSystemBrightness: Boolean)
     suspend fun captureAmbientFrame(targetWidth: Int, targetHeight: Int): ImageBitmap?
     suspend fun captureAndSaveScreenshot(videoWidth: Int, videoHeight: Int, title: String): Boolean
+    fun captureAmbientSourceLease(): DesktopOriginalAmbientSourceLease?
+    fun ambientViewportBoundsInWindow(): androidx.compose.ui.geometry.Rect?
+    suspend fun captureAndSaveScreenshotForShare(videoWidth: Int, videoHeight: Int, title: String): DesktopOriginalSavedVideoScreenshot?
+    suspend fun shareSavedScreenshot(screenshot: DesktopOriginalSavedVideoScreenshot): Boolean
     fun setCurrentVideoEnhancementEnabled(enabled: Boolean)
     fun recordDanmakuToggle(enabled: Boolean)
     suspend fun submitGradeDanmaku(aid: Long, cid: Long, progress: Long, gradeId: String, gradeScore: Int): Result<Unit>

@@ -74,6 +74,7 @@ internal data class DesktopHomeNetworkObservation(
     val connectivityLevel: Int,
     val ianaInterfaceType: Long,
     val isWwanProfile: Boolean,
+    val identityHash: String,
 ) {
     val hasInternetAccess: Boolean get() = profilePresent && connectivityLevel == 3
     val isMobileNetwork: Boolean get() = profilePresent &&
@@ -100,6 +101,9 @@ internal class DesktopHomeWindowsPreferencesPlatform(
     private interface Api : StdCallLibrary {
         fun BilipaiHomeNetworkSnapshot(profile: IntByReference, connectivity: IntByReference,
             interfaceType: IntByReference, wwan: IntByReference): Int
+        fun BilipaiHomeNetworkIdentitySnapshot(profile: IntByReference, connectivity: IntByReference,
+            interfaceType: IntByReference, wwan: IntByReference, identity: ByteArray,
+            capacity: Int, written: IntByReference): Int
     }
     private val api: Api by lazy {
         try {
@@ -125,12 +129,22 @@ internal class DesktopHomeWindowsPreferencesPlatform(
         try {
             val profile = IntByReference(-1); val level = IntByReference(-1)
             val kind = IntByReference(-1); val wwan = IntByReference(-1)
-            val hr = api.BilipaiHomeNetworkSnapshot(profile, level, kind, wwan)
+            // The private bounded bytes contain actual profile/adapter/connected SSID.
+            // Hash before returning, wipe in every path; no raw identity enters UI/receipts.
+            val identity = ByteArray(4096); val written = IntByReference(-1)
+            val identityHash = try {
+                val hr = api.BilipaiHomeNetworkIdentitySnapshot(profile, level, kind, wwan,
+                    identity, identity.size, written)
+                assertOwned()
+                if (hr < 0) throw DesktopHomePreferenceCapabilityUnavailable("Windows网络状态读取失败 (HRESULT 0x${hr.toUInt().toString(16)})")
+                check(written.value in 1..identity.size)
+                MessageDigest.getInstance("SHA-256").apply { update(identity, 0, written.value) }
+                    .digest().joinToString("") { "%02x".format(it) }
+            } finally { identity.fill(0) }
             assertOwned()
-            if (hr < 0) throw DesktopHomePreferenceCapabilityUnavailable("Windows网络状态读取失败 (HRESULT 0x${hr.toUInt().toString(16)})")
             check(profile.value in 0..1 && level.value in 0..3 && wwan.value in 0..1)
             if (profile.value == 0) check(level.value == 0 && kind.value == 0 && wwan.value == 0)
-            return DesktopHomeNetworkObservation(profile.value != 0, level.value, kind.value.toUInt().toLong(), wwan.value != 0)
+            return DesktopHomeNetworkObservation(profile.value != 0, level.value, kind.value.toUInt().toLong(), wwan.value != 0, identityHash)
         } catch (cancelled: CancellationException) { throw cancelled }
           catch (failure: DesktopHomePreferenceCapabilityUnavailable) { throw failure }
           catch (failure: Exception) { throw DesktopHomePreferenceCapabilityUnavailable("Windows网络状态能力暂不可用", failure) }

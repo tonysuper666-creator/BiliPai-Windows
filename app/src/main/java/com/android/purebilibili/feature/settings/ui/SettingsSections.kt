@@ -422,7 +422,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "互动与评论") {
                         SettingsDetailEntrySection(
@@ -461,7 +460,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "推荐流与动态") {
                         FeedApiSection(
@@ -510,7 +508,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "交互与动效") {
                         SettingsDetailEntrySection(
@@ -597,7 +594,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "动效") {
                         SettingsDetailEntrySection(
@@ -616,7 +612,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "导航") {
                         SettingsDetailEntrySection(
@@ -635,7 +630,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "全屏与手势") {
                         SettingsDetailEntrySection(
@@ -674,7 +668,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "推荐流与动态") {
                         FeedApiSection(
@@ -703,7 +696,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "画质与播放") {
                         SettingsDetailEntrySection(
@@ -722,7 +714,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "互动") {
                         SettingsDetailEntrySection(
@@ -761,7 +752,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "隐私与安全") {
                         PrivacySection(
@@ -809,7 +799,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "帮助与工具") {
                         SupportToolsSection(
@@ -818,9 +807,23 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     SettingsDetailGroup(title = "关于与更新") {
+                        var showUserAgreement by remember { mutableStateOf(false) }
+                        SettingClickableItem(
+                            icon = com.android.purebilibili.feature.settings.rememberMaterialSymbol(
+                                com.android.purebilibili.R.drawable.ms_gavel_24
+                            ),
+                            title = "用户协议与隐私政策",
+                            value = "查看全文",
+                            onClick = { showUserAgreement = true }
+                        )
+                        SettingsAdaptiveDivider()
+                        if (showUserAgreement) {
+                            com.android.purebilibili.feature.agreement.UserAgreementReviewDialog(
+                                onDismiss = { showUserAgreement = false }
+                            )
+                        }
                         AboutSection(
                             versionName = state.versionName,
                             appIconKey = state.appIcon,
@@ -853,7 +856,6 @@ internal fun SettingsRootCategoryContent(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
                 SettingsRootCategoryEntranceSection {
                     ReleaseChannelPinnedCard(
                         onGithubClick = actions.onGithubClick,
@@ -966,6 +968,12 @@ fun ReleaseChannelPinnedCard(
                         overflow = TextOverflow.Clip
                     )
                 }
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 AppOutlinedButton(
                     onClick = onTelegramGroupClick,
                     modifier = Modifier.weight(1f),
@@ -978,7 +986,7 @@ fun ReleaseChannelPinnedCard(
                         overflow = TextOverflow.Clip
                     )
                 }
-                AppTextButton(
+                AppOutlinedButton(
                     onClick = onDisclaimerClick,
                     modifier = Modifier.weight(1f),
                     contentPadding = PaddingValues(horizontal = 8.dp)
@@ -1303,8 +1311,8 @@ fun PrivacySection(
 
         SettingSwitchItem(
             icon = visibilityOffIcon,
-            title = "搜索推荐词",
-            subtitle = "在搜索页显示关注更新和推荐词（如关注 UP 主更新等），默认开启",
+            title = "个性化搜索推荐",
+            subtitle = "开启时使用官方搜索推荐；关闭后改用公开热搜词",
             checked = searchSuggestionsEnabled,
             onCheckedChange = onSearchSuggestionsChange,
             iconTint = siblingTints[0],

@@ -1,3 +1,4 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, json, textwrap
 
@@ -34,8 +35,8 @@ def function(raw, name, indent):
 def sha(s): return hashlib.sha256(s.encode('utf-8')).hexdigest()
 
 def generate(repo, output):
-    app = safe(repo / APP).read_text(encoding='utf-8').replace('\r\n', '\n')
-    top = safe(repo / TOP).read_text(encoding='utf-8').replace('\r\n', '\n')
+    app = safe(_desktop_canonical_source(repo, APP)).read_text(encoding='utf-8').replace('\r\n', '\n')
+    top = safe(_desktop_canonical_source(repo, TOP)).read_text(encoding='utf-8').replace('\r\n', '\n')
     selections = {}
     selected = []
     names = ('currentNavigation3SourceMetadata', 'captureCardSourceDirectionForSession',

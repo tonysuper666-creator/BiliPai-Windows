@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Original search contracts and policies, with only Room storage bound to Windows."""
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 import argparse
 import hashlib
 import importlib.util
@@ -12,7 +13,6 @@ BASE = "app/src/main/java/com/android/purebilibili/"
 SOURCES = {
     BASE + "data/repository/SearchRepository.kt": "policy-extract",
     BASE + "data/repository/SearchLoadPolicy.kt": "direct",
-    BASE + "data/repository/SearchRecommendPolicy.kt": "direct",
     BASE + "feature/search/SearchVideoFilterPolicy.kt": "direct",
     BASE + "data/model/entity/SearchHistory.kt": "platform-rewrite",
     BASE + "core/database/dao/SearchHistoryDao.kt": "platform-rewrite",
@@ -21,7 +21,7 @@ SOURCES = {
 
 def inventory(repo: Path) -> list[dict]:
     return [{"path": path, "mode": mode, "features": ["search"],
-             "sha256": hashlib.sha256((repo / path).read_text(encoding="utf-8").encode("utf-8")).hexdigest()}
+             "sha256": hashlib.sha256((_desktop_canonical_source(repo, path)).read_text(encoding="utf-8").encode("utf-8")).hexdigest()}
             for path, mode in SOURCES.items()]
 
 
@@ -30,7 +30,7 @@ def generate(repo: Path, output: Path) -> None:
     parser = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(parser)
     relative = BASE + "data/repository/SearchRepository.kt"
-    source = (repo / relative).read_text(encoding="utf-8")
+    source = (_desktop_canonical_source(repo, relative)).read_text(encoding="utf-8")
     tokens = parser.kotlin_tokens(source)
 
     def declaration(kind: str, name: str) -> str:
@@ -68,11 +68,9 @@ def generate(repo: Path, output: Path) -> None:
     # This platform function is the exact original video parameter block, including omission of unset filters.
     video = source[source.index("    suspend fun search("):source.index("    suspend fun searchWithDurations(")]
     begin = video.index("            val params = mutableMapOf(")
-    end = video.index("            com.android.purebilibili.core.util.Logger.d(", begin)
+    end = video.index("            com.android.purebilibili.core.network.CoreDataLog.d(", begin)
     params = textwrap.dedent(video[begin:end]).rstrip()
     pieces.append("internal fun desktopVideoSearchParams(keyword: String, order: SearchOrder, duration: SearchDuration, tids: Int, page: Int, pubBegin: Long?, pubEnd: Long?): Map<String, String> {\n" + textwrap.indent(params, "    ") + "\n    return params\n}")
-    fallback = next(line.strip() for line in source.splitlines() if line.strip().startswith("val fallbackKeywords = listOf("))
-    pieces.append("internal fun desktopSearchFallbackKeywords(): List<String> {\n    " + fallback + "\n    return fallbackKeywords\n}")
     target = output / "com/android/purebilibili/data/repository/DesktopSearchDeclarations.kt"
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8", newline="\n")
@@ -96,11 +94,20 @@ def generate(repo: Path, output: Path) -> None:
           "        checkCurrent()\n        val response = api.search(signedParams)\n        checkCurrent()")
     guard("        val navResp = navApi.getNavInfo()",
           "        checkCurrent()\n        val navResp = navApi.getNavInfo()\n        checkCurrent()")
-    guard('        com.android.purebilibili.core.util.Logger.e("SearchRepo", "search(video) failed", e)',
-          '        checkCurrent()\n        com.android.purebilibili.core.util.Logger.e("SearchRepo", "search(video) failed", e)')
+    guard('        com.android.purebilibili.core.network.CoreDataLog.e("SearchRepo", "search(video) failed", e)',
+          '        checkCurrent()\n        com.android.purebilibili.core.network.CoreDataLog.e("SearchRepo", "search(video) failed", e)')
     # Missing/failing nav keeps the original unsigned fallback for a live request.
-    guard("    } catch (e: Exception) {\n        com.android.purebilibili.core.util.Logger.e(\n",
-          "    } catch (e: Exception) {\n        checkCurrent()\n        com.android.purebilibili.core.util.Logger.e(\n")
+    guard("        com.android.purebilibili.core.network.CoreDataLog.e(\n",
+          "        checkCurrent()\n        com.android.purebilibili.core.network.CoreDataLog.e(\n")
+    # The original shared-data logger is the existing desktop JVM log leaf.
+    log_before = "com.android.purebilibili.core.network.CoreDataLog."
+    log_after = "com.android.purebilibili.core.util.Logger."
+    log_count = selected.count(log_before)
+    assert log_count > 0 and log_after not in selected
+    for _ in range(log_count):
+        index = selected.index(log_before)
+        adaptations.append({"index": index, "before": log_before, "after": log_after})
+        selected = selected[:index] + log_after + selected[index + len(log_before):]
     restored = selected
     for change in reversed(adaptations):
         index = change["index"]
@@ -131,7 +138,7 @@ internal class DesktopOriginalCapturedVideoSearch(
         "adaptations": adaptations, "exactSelectedBodyInverse": True,
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     for path in (BASE + "data/model/entity/SearchHistory.kt", BASE + "core/database/dao/SearchHistoryDao.kt"):
-        original = (repo / path).read_text(encoding="utf-8")
+        original = (_desktop_canonical_source(repo, path)).read_text(encoding="utf-8")
         lines = [line for line in original.splitlines() if not line.startswith("import androidx.room")
                  and not line.strip().startswith(("@Entity", "@PrimaryKey", "@Dao", "@Query", "@Insert", "@Delete"))]
         package = next(line.split(" ", 1)[1] for line in lines if line.startswith("package "))

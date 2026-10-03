@@ -5,6 +5,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 /** Actual page/window capability. Root supplies native GetSystemPowerStatus, not Android context. */
 internal interface DesktopOriginalPlayerControlsPlatform {
     fun readBatteryPercent(): Int?
+    fun readAmbientEnvironment(): com.android.purebilibili.feature.video.ambient.AmbientEnvironment
 }
 internal val LocalDesktopOriginalPlayerControlsPlatform = staticCompositionLocalOf<DesktopOriginalPlayerControlsPlatform> {
     error("Full original player controls require the actual Root Windows capability")

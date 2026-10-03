@@ -966,12 +966,12 @@ enum class DanmakuSettingsScope(
     PORTRAIT(
         keyPrefix = "portrait",
         badgeLabel = "竖屏专用",
-        subtitle = "开关、字号和区域与横屏同步，其余样式独立"
+        subtitle = "开关、字号、行距和区域与横屏同步，其余样式独立"
     ),
     LANDSCAPE(
         keyPrefix = "landscape",
         badgeLabel = "横屏专用",
-        subtitle = "开关、字号和区域与竖屏同步，其余样式独立"
+        subtitle = "开关、字号、行距和区域与竖屏同步，其余样式独立"
     )
 }
 
@@ -1026,6 +1026,8 @@ data class AppNavigationSettings(
     val miuixTransitionBlurEnabled: Boolean = true,
     val miuixPredictiveBackMaxProgressPercent: Int = 100,
     val videoSharedReturnGestureFollowEnabled: Boolean = true,
+    val videoSharedReturnGestureTranslationEnabled: Boolean = true,
+    val videoReturnContentFollowProgressEnabled: Boolean = true,
 )
 
 internal data class BottomTabMigrationResult(
@@ -1390,6 +1392,7 @@ object SettingsManager {
     private val KEY_PLAYER_PROGRESS_PLACEMENT = intPreferencesKey("player_progress_placement")
     private val KEY_SEARCH_HOT_SECTION_ENABLED = booleanPreferencesKey("search_hot_section_enabled")
     private val KEY_SEARCH_DISCOVER_SECTION_ENABLED = booleanPreferencesKey("search_discover_section_enabled")
+    private val KEY_SEARCH_SUGGESTIONS_ENABLED = booleanPreferencesKey("search_suggestions_enabled")
     //  [新增] 双击跳转秒数 (可分开设置快进和后退)
     private val KEY_DOUBLE_TAP_SEEK_ENABLED = booleanPreferencesKey("double_tap_seek_enabled")
     private val KEY_SEEK_FORWARD_SECONDS = intPreferencesKey("seek_forward_seconds")
@@ -1665,6 +1668,8 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     private val KEY_LAST_AUTO_CACHE_CLEAR_AT = longPreferencesKey("last_auto_cache_clear_at")
     private val KEY_COMMENT_MEMBER_DECORATIONS_ENABLED =
         booleanPreferencesKey("comment_member_decorations_enabled")
+    private val KEY_DETAILED_COMMENT_TIME_ENABLED =
+        booleanPreferencesKey("detailed_comment_time_enabled")
     private val KEY_SUB_REPLY_LOADED_COUNT_ENABLED =
         booleanPreferencesKey("sub_reply_loaded_count_enabled")
     private val KEY_IMAGE_PREVIEW_LONG_PRESS_SAVE_ENABLED =
@@ -1677,6 +1682,8 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     private val KEY_AUDIO_FOCUS_ENABLED = booleanPreferencesKey("audio_focus_enabled")
     private val KEY_AUDIO_MODE_AUTO_PIP_ENABLED = booleanPreferencesKey("audio_mode_auto_pip_enabled")
     private val KEY_AUDIO_NOW_PLAYING_BAR_ENABLED = booleanPreferencesKey("audio_now_playing_bar_enabled")
+    private val KEY_AUDIO_NOW_PLAYING_BAR_IMMERSIVE_ENABLED =
+        booleanPreferencesKey("audio_now_playing_bar_immersive_enabled")
     private val KEY_AUDIO_NOW_PLAYING_BAR_OPENS_AUDIO_MODE =
         booleanPreferencesKey("audio_now_playing_bar_opens_audio_mode")
     private val KEY_MUSIC_LYRICS_UI_STYLE = intPreferencesKey("music_lyrics_ui_style")
@@ -3787,11 +3794,28 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         context.settingsDataStore.edit { preferences -> preferences[KEY_SEARCH_HOT_SECTION_ENABLED] = value }
     }
 
+    internal fun resolveSearchDiscoverSectionEnabled(preferences: Preferences): Boolean =
+        preferences[KEY_SEARCH_DISCOVER_SECTION_ENABLED] ?: true
+
+    internal fun resolveSearchSuggestionsEnabled(preferences: Preferences): Boolean =
+        preferences[KEY_SEARCH_SUGGESTIONS_ENABLED] ?: true
+
+    fun getSearchSuggestionsEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
+        .map(::resolveSearchSuggestionsEnabled)
+
+    suspend fun setSearchSuggestionsEnabled(context: Context, value: Boolean) {
+        context.settingsDataStore.edit { preferences ->
+            preferences[KEY_SEARCH_SUGGESTIONS_ENABLED] = value
+        }
+    }
+
     fun getSearchDiscoverSectionEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
-        .map { preferences -> preferences[KEY_SEARCH_DISCOVER_SECTION_ENABLED] ?: true }
+        .map(::resolveSearchDiscoverSectionEnabled)
 
     suspend fun setSearchDiscoverSectionEnabled(context: Context, value: Boolean) {
-        context.settingsDataStore.edit { preferences -> preferences[KEY_SEARCH_DISCOVER_SECTION_ENABLED] = value }
+        context.settingsDataStore.edit { preferences ->
+            preferences[KEY_SEARCH_DISCOVER_SECTION_ENABLED] = value
+        }
     }
     
     //  [新增] --- 底栏显示模式 (0=图标+文字, 1=仅图标, 2=仅文字) ---
@@ -4593,7 +4617,8 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         suffix: String
     ): String {
         // Keep the existing fullscreen values authoritative across playback modes.
-        val shared = suffix == "enabled" || suffix == "font_scale" || suffix == "area"
+        val shared = suffix == "enabled" || suffix == "font_scale" ||
+            suffix == "line_height" || suffix == "area"
         val prefix = if (shared) DanmakuSettingsScope.LANDSCAPE.keyPrefix else scope.keyPrefix
         return "danmaku_${prefix}_$suffix"
     }
@@ -4664,6 +4689,8 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         booleanPreferencesKey("danmaku_portrait_enabled")
     private fun keyDanmakuLegacyPortraitFontScale() =
         floatPreferencesKey("danmaku_portrait_font_scale")
+    private fun keyDanmakuLegacyPortraitLineHeight() =
+        floatPreferencesKey("danmaku_portrait_line_height")
     private fun keyDanmakuLegacyPortraitArea() =
         floatPreferencesKey("danmaku_portrait_area")
 
@@ -4785,9 +4812,10 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
                 )
             ),
             lineHeight = normalizeDanmakuLineHeight(
-                readScopedDanmakuPreference(
+                readSharedDanmakuPreference(
                     preferences = preferences,
                     scopeKey = keyDanmakuLineHeight(scope),
+                    legacyPortraitKey = keyDanmakuLegacyPortraitLineHeight(),
                     legacyKey = KEY_DANMAKU_LINE_HEIGHT,
                     defaultValue = DEFAULT_DANMAKU_LINE_HEIGHT
                 )
@@ -5109,9 +5137,10 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     ): Flow<Float> = context.settingsDataStore.data
         .map { preferences ->
             normalizeDanmakuLineHeight(
-                readScopedDanmakuPreference(
+                readSharedDanmakuPreference(
                     preferences = preferences,
                     scopeKey = keyDanmakuLineHeight(scope),
+                    legacyPortraitKey = keyDanmakuLegacyPortraitLineHeight(),
                     legacyKey = KEY_DANMAKU_LINE_HEIGHT,
                     defaultValue = DEFAULT_DANMAKU_LINE_HEIGHT
                 )
@@ -5791,6 +5820,18 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     // --- 订阅文章阅读字号 (0=小 1=标准 2=大) ---
     private val KEY_SUBSCRIPTION_ARTICLE_FONT_SCALE = intPreferencesKey("subscription_article_font_scale")
 
+    private val KEY_SUBSCRIPTION_ARTICLE_WALLPAPER_ENABLED =
+        booleanPreferencesKey("subscription_article_wallpaper_enabled")
+
+    fun getSubscriptionArticleWallpaperEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
+        .map { preferences -> preferences[KEY_SUBSCRIPTION_ARTICLE_WALLPAPER_ENABLED] ?: false }
+
+    suspend fun setSubscriptionArticleWallpaperEnabled(context: Context, enabled: Boolean) {
+        context.settingsDataStore.edit { preferences ->
+            preferences[KEY_SUBSCRIPTION_ARTICLE_WALLPAPER_ENABLED] = enabled
+        }
+    }
+
     fun getSubscriptionArticleFontScale(context: Context): Flow<Int> = context.settingsDataStore.data
         .map { preferences -> preferences[KEY_SUBSCRIPTION_ARTICLE_FONT_SCALE] ?: 1 }
 
@@ -6179,6 +6220,16 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         }
     }
 
+    fun getDetailedCommentTimeEnabled(context: Context): Flow<Boolean> =
+        context.settingsDataStore.data
+            .map { preferences -> preferences[KEY_DETAILED_COMMENT_TIME_ENABLED] ?: false }
+
+    suspend fun setDetailedCommentTimeEnabled(context: Context, enabled: Boolean) {
+        context.settingsDataStore.edit { preferences ->
+            preferences[KEY_DETAILED_COMMENT_TIME_ENABLED] = enabled
+        }
+    }
+
     fun getSubReplyLoadedCountEnabled(context: Context): Flow<Boolean> =
         context.settingsDataStore.data
             .map { preferences -> preferences[KEY_SUB_REPLY_LOADED_COUNT_ENABLED] ?: false }
@@ -6331,15 +6382,6 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     private val KEY_PRIVACY_CONTENT_AUTHENTICATION_ENABLED =
         booleanPreferencesKey("privacy_content_authentication_enabled")
     
-    private val KEY_SEARCH_SUGGESTIONS_ENABLED = booleanPreferencesKey("search_suggestions_enabled")
-
-    fun getSearchSuggestionsEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
-        .map { preferences -> preferences[KEY_SEARCH_SUGGESTIONS_ENABLED] ?: true }
-
-    suspend fun setSearchSuggestionsEnabled(context: Context, value: Boolean) {
-        context.settingsDataStore.edit { it[KEY_SEARCH_SUGGESTIONS_ENABLED] = value }
-    }
-
     // --- 不记录播放历史和搜索历史 ---
     fun getPrivacyModeEnabled(context: Context): Flow<Boolean> = context.settingsDataStore.data
         .map { preferences -> preferences[KEY_PRIVACY_MODE_ENABLED] ?: false }  // 默认关闭
@@ -6558,6 +6600,21 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
     suspend fun setAudioNowPlayingBarOpensAudioMode(context: Context, value: Boolean) {
         context.settingsDataStore.edit { preferences ->
             preferences[KEY_AUDIO_NOW_PLAYING_BAR_OPENS_AUDIO_MODE] = value
+        }
+    }
+
+    /**
+     * 听视频标题横条自动沉浸：开启后进入听视频页且播放中静置 5 秒，
+     * 底部标题横条自动隐藏，点按底部把柄恢复。默认开启。
+     */
+    fun getAudioNowPlayingBarImmersiveEnabled(context: Context): Flow<Boolean> =
+        context.settingsDataStore.data.map { preferences ->
+            preferences[KEY_AUDIO_NOW_PLAYING_BAR_IMMERSIVE_ENABLED] ?: true
+        }
+
+    suspend fun setAudioNowPlayingBarImmersiveEnabled(context: Context, value: Boolean) {
+        context.settingsDataStore.edit { preferences ->
+            preferences[KEY_AUDIO_NOW_PLAYING_BAR_IMMERSIVE_ENABLED] = value
         }
     }
 
@@ -7158,6 +7215,31 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         }
     }
 
+    private val KEY_VIDEO_AMBIENT_ENABLED = booleanPreferencesKey("video_ambient_enabled")
+    private val KEY_VIDEO_AMBIENT_STRENGTH = intPreferencesKey("video_ambient_strength")
+    private val KEY_VIDEO_AMBIENT_SAVING = booleanPreferencesKey("video_ambient_saving")
+
+    internal fun getVideoAmbientSettings(context: Context): Flow<com.android.purebilibili.feature.video.ambient.AmbientSettings> =
+        context.settingsDataStore.data.map { preferences ->
+            com.android.purebilibili.feature.video.ambient.AmbientSettings(
+                enabled = preferences[KEY_VIDEO_AMBIENT_ENABLED] ?: false,
+                strength = (preferences[KEY_VIDEO_AMBIENT_STRENGTH] ?: 1).coerceIn(0, 2),
+                powerSaving = preferences[KEY_VIDEO_AMBIENT_SAVING] ?: false,
+            )
+        }
+
+    internal suspend fun setVideoAmbientEnabled(context: Context, enabled: Boolean) {
+        context.settingsDataStore.edit { it[KEY_VIDEO_AMBIENT_ENABLED] = enabled }
+    }
+
+    internal suspend fun setVideoAmbientStrength(context: Context, strength: Int) {
+        context.settingsDataStore.edit { it[KEY_VIDEO_AMBIENT_STRENGTH] = strength.coerceIn(0, 2) }
+    }
+
+    internal suspend fun setVideoAmbientPowerSaving(context: Context, saving: Boolean) {
+        context.settingsDataStore.edit { it[KEY_VIDEO_AMBIENT_SAVING] = saving }
+    }
+
     fun getHideVideoPageStatusBar(context: Context): Flow<Boolean> = context.settingsDataStore.data
         .map { preferences -> preferences[KEY_HIDE_VIDEO_PAGE_STATUS_BAR] ?: false }
         .onEach { enabledFromDataStore ->
@@ -7587,6 +7669,8 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
         booleanPreferencesKey("miuix_transition_blur_enabled")
     private val KEY_VIDEO_SHARED_RETURN_GESTURE_FOLLOW_ENABLED =
         booleanPreferencesKey("video_shared_return_gesture_follow_enabled")
+    private val KEY_VIDEO_SHARED_RETURN_GESTURE_TRANSLATION_ENABLED =
+        booleanPreferencesKey("video_shared_return_gesture_translation_enabled")
     
     /**
      *  平板导航模式
@@ -7636,6 +7720,10 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
                     .coerceIn(0, 100),
             videoSharedReturnGestureFollowEnabled =
                 preferences[KEY_VIDEO_SHARED_RETURN_GESTURE_FOLLOW_ENABLED] ?: true,
+            videoReturnContentFollowProgressEnabled =
+                preferences[booleanPreferencesKey("video_return_content_follow_progress_enabled")] ?: true,
+            videoSharedReturnGestureTranslationEnabled =
+                preferences[KEY_VIDEO_SHARED_RETURN_GESTURE_TRANSLATION_ENABLED] ?: true,
         )
     }
 
@@ -7687,6 +7775,14 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
 
     suspend fun setVideoSharedReturnGestureFollowEnabled(context: Context, enabled: Boolean) {
         NavigationSettingsStore.setVideoSharedReturnGestureFollowEnabled(context, enabled)
+    }
+
+    suspend fun setVideoReturnContentFollowProgressEnabled(context: Context, enabled: Boolean) {
+        NavigationSettingsStore.setVideoReturnContentFollowProgressEnabled(context, enabled)
+    }
+
+    suspend fun setVideoSharedReturnGestureTranslationEnabled(context: Context, enabled: Boolean) {
+        NavigationSettingsStore.setVideoSharedReturnGestureTranslationEnabled(context, enabled)
     }
 
     fun getFullScreenSwipeBackEnabled(context: Context): Flow<Boolean> =
@@ -8030,6 +8126,10 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
                 KEY_VIDEO_SHARED_RETURN_GESTURE_FOLLOW_ENABLED,
                 SettingsShareSection.APPEARANCE,
             ),
+            BooleanShareablePreferenceDefinition(
+                KEY_VIDEO_SHARED_RETURN_GESTURE_TRANSLATION_ENABLED,
+                SettingsShareSection.APPEARANCE,
+            ),
             IntShareablePreferenceDefinition(KEY_VIDEO_SHARED_TRANSITION_SPEED, SettingsShareSection.APPEARANCE),
             IntShareablePreferenceDefinition(
                 KEY_VIDEO_SHARED_TRANSITION_CUSTOM_DURATION_MILLIS,
@@ -8058,6 +8158,7 @@ private val KEY_APP_FONT_WEIGHT = intPreferencesKey("app_font_weight")
             IntShareablePreferenceDefinition(KEY_COMMENT_DEFAULT_SORT_MODE, SettingsShareSection.PLAYBACK),
             BooleanShareablePreferenceDefinition(KEY_COMMENT_FRAUD_DETECTION_ENABLED, SettingsShareSection.PLAYBACK),
             BooleanShareablePreferenceDefinition(KEY_COMMENT_MEMBER_DECORATIONS_ENABLED, SettingsShareSection.PLAYBACK),
+            BooleanShareablePreferenceDefinition(KEY_DETAILED_COMMENT_TIME_ENABLED, SettingsShareSection.PLAYBACK),
             BooleanShareablePreferenceDefinition(KEY_IMAGE_PREVIEW_LONG_PRESS_SAVE_ENABLED, SettingsShareSection.PLAYBACK),
             BooleanShareablePreferenceDefinition(KEY_IMAGE_PREVIEW_3D_PAGE_ENABLED, SettingsShareSection.PLAYBACK),
             BooleanShareablePreferenceDefinition(KEY_STOP_PLAYBACK_ON_EXIT, SettingsShareSection.PLAYBACK),

@@ -14,6 +14,8 @@ val verifyPinnedSource by tasks.registering(Exec::class) {
     inputs.file("upstream-provenance.json")
     inputs.file("verify-source.py")
     inputs.dir("upstream")
+    inputs.dir("bilipai-v025-nav")
+    inputs.files("../../../miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt", "../../../miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/gesture/PredictiveBackHandler.kt", "../../../miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/gesture/NavPredictiveBackDriver.kt", "../../../miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/core/NavBackCompletionPolicy.kt")
 }
 
 abstract class BakeSquircleSdfTask : DefaultTask() {
@@ -157,6 +159,9 @@ kotlin {
     sourceSets {
         commonMain {
             kotlin.srcDirs(originalModules.map { "upstream/$it/src/commonMain/kotlin" })
+            // Keep the pinned source archive intact; borrow the complete BiliPai navigation patch.
+            kotlin.exclude("nav/core/NavDisplay.kt", "nav/gesture/PredictiveBackHandler.kt", "nav/gesture/NavPredictiveBackDriver.kt")
+            kotlin.srcDir("bilipai-v025-nav/src/commonMain/kotlin")
             kotlin.srcDir(bakeSquircleSdf)
             dependencies {
                 api("org.jetbrains.compose.foundation:foundation:1.12.1")

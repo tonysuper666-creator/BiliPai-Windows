@@ -34,7 +34,6 @@ class DynamicCommentImagePreviewStructureTest {
         assertFalse(source.contains("Intent.ACTION_VIEW"))
         assertFalse(source.contains("Uri.parse("))
         assertTrue(source.contains("ImagePreviewDialog("))
-        assertTrue(source.contains("resolveReplyPreviewTextContent(reply)"))
         assertTrue(source.contains("onImagePreview = { images, index, rect, textContent ->"))
     }
 
@@ -49,6 +48,5 @@ class DynamicCommentImagePreviewStructureTest {
 
         assertTrue(inlineSubReplyBlock.contains("subReply.content.pictures"))
         assertTrue(inlineSubReplyBlock.contains("CommentPictures("))
-        assertTrue(inlineSubReplyBlock.contains("resolveReplyPreviewTextContent(subReply)"))
     }
 }

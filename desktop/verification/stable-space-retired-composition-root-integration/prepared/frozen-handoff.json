@@ -1,0 +1,48 @@
+{
+  "rawArtifacts": [
+    {
+      "path": "actual91-01/RootSpaceFixture.kt",
+      "bytes": 27059,
+      "sha256Bytes": "a1d9213a7cbac4bec1486545e98e9e236007a7bc0051c0356e7637f9e35ac3a4"
+    },
+    {
+      "path": "actual91-01/compile-result.json",
+      "bytes": 190,
+      "sha256Bytes": "a979bc0f71c15a35142c6959d76af27eea5a9f83e33dfbb0ec822c0166fb3d4c"
+    },
+    {
+      "path": "actual91-01/compile.log",
+      "bytes": 0,
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "actual91-01/acceptance-result.json",
+      "bytes": 1016,
+      "sha256Bytes": "4b27d4bc085e6784be10cad982df700ff648ab540022fd7cd2b347acca2a0de6"
+    },
+    {
+      "path": "actual91-01/runtime.log",
+      "bytes": 6787,
+      "sha256Bytes": "aee2608dc10c2d6719abb20476d4e36b6b8db63fb16891b8e466a847007c5059"
+    },
+    {
+      "path": "actual91-01/pins-before.json",
+      "bytes": 41938,
+      "sha256Bytes": "8d25a6558def46a70422e2fed5ab07d4546f9f2beb859bbf1b9a5b1845feafd8"
+    },
+    {
+      "path": "actual91-01/pins-after.json",
+      "bytes": 41938,
+      "sha256Bytes": "8d25a6558def46a70422e2fed5ab07d4546f9f2beb859bbf1b9a5b1845feafd8"
+    },
+    {
+      "path": "prepare_evidence.py",
+      "bytes": 3124,
+      "sha256Bytes": "2463a271c3b9340976dfcbc2f4257c7b2ad0f112176757851f85dd9dd3d85480"
+    }
+  ],
+  "rawFiles": 8,
+  "actualPriorWindowPassed": false,
+  "normalCompilePassed": true,
+  "rootRuntimeAccepted": false
+}

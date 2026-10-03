@@ -1,0 +1,86 @@
+{
+  "passed": true,
+  "snapshot": 89,
+  "orderedRuntimeEntries": 105,
+  "explicitPreparedInputs": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\0\\DesktopOriginalSpaceRemainingLoadPolicy.kt",
+      "sha256Bytes": "d7212ff95573b4e9cd260d7d54eec55330876acac1edd106cf60b87981eb945f"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\1\\DesktopOriginalSpaceRunCatching.kt",
+      "sha256Bytes": "1f8a40bfdb776efbd47abc45bd572e92c319473b976046862b522870d100b4be"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\2\\SpaceDynamicLoadPolicy.kt",
+      "sha256Bytes": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\3\\SpaceLoadingSkeleton.kt",
+      "sha256Bytes": "e19764692980edb8f7a575e475108efb784e36538e551cf91c531f113c76768e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\4\\SpaceMemberGuardViewModel.kt",
+      "sha256Bytes": "bf1b2a760d514e1020193f17a126d541dfcd70ae4ae0f96300f19266644d1f6b"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\5\\SpaceScreen.kt",
+      "sha256Bytes": "a11ac3ea82c987d420342550b0efd315d26a9ad76754695e36670e54e5eb544c"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\6\\SpaceSelectionChipColorPolicy.kt",
+      "sha256Bytes": "3f54531e069c10778c63895ccbd38734acec7317821fe8010b13bb65f25ea910"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\7\\SpaceSupporterScreens.kt",
+      "sha256Bytes": "64fd7fde8afd2c9c15da020715b04ff989fa11fc383ce2fa264afaeca8663c3d"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\8\\SpaceTabChromePolicy.kt",
+      "sha256Bytes": "405e05b78f819da4e793258d7355254e6b70817b2803bfee01525bb785189421"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\9\\SpaceUpowerRankViewModel.kt",
+      "sha256Bytes": "93290b7b51a9086810a2e843edac0663c210252e628c6285463d40b12a8ac85a"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\10\\SpaceViewModel.kt",
+      "sha256Bytes": "ee73a225bfb9ed1c62d5b1535fac03839578eb9a38e32bfe41d5b68fdf03eebe"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\11\\DesktopOriginalSpaceBangumiRequests.kt",
+      "sha256Bytes": "213be1c61ac32b0a69de9683f132f56d0bc4a25123ec746e314e655ed802d805"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\12\\DesktopOriginalSpaceEnvironment.kt",
+      "sha256Bytes": "70423267e36b107e21f56e491212ed188d6b9c8c73fb2fc85b4d356fea773cea"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\13\\DesktopOriginalSpacePagesRoot.kt",
+      "sha256Bytes": "563671c643dee36efcb9a6c236dcb0fac83279c58bf3f4f8007a2be54537571e"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\14\\DesktopOriginalSpacePlatform.kt",
+      "sha256Bytes": "8464710c7e2634197016bf26706ee77c74b9db604b6ac2a53203b946e5fd9e60"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\15\\DesktopCommunityRepository.kt",
+      "sha256Bytes": "98107c0eaa15588e7ac5af4638cbf1833fff03151ee62fb0212074aa0bc4a8e2"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\16\\DesktopShell.kt",
+      "sha256Bytes": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\17\\DesktopOriginalPlaybackProgressStorage.kt",
+      "sha256Bytes": "ae1be99c675f89654c6bf75e4a85fa08a8ac7ca2d900207a4c4a0700a3e97bab"
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-space-pages-root-parity\\compile-runs\\11\\inputs\\18\\DesktopReadyOriginalRootMount.kt",
+      "sha256Bytes": "3d697f78e680df3dc20abf66021d6ec88801925d21a06ccce1307cc993eaceb4"
+    }
+  ],
+  "productionWrites": 0,
+  "sharedGradleRuns": 0,
+  "rootRuntimeAccepted": false
+}

@@ -1,0 +1,1340 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/data/DesktopCommunityRepository.kt
+@@ -44,6 +44,7 @@
+         playedTimeSec, realPlayedTimeSec, startTsSec, aid, epid, sid, videoType, subType, expectedSessionEpoch)
+     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
+     private val client = repository.httpClient.newBuilder().retryOnConnectionFailure(false).build()
++    internal val originalSpaceTransport: okhttp3.OkHttpClient get() = client
+     private fun retrofit(base: String) = Retrofit.Builder().baseUrl(base).client(client)
+         .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+     private val web = retrofit("https://api.bilibili.com/")
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackProgressStorage.kt
+@@ -90,5 +90,9 @@
+                 manager.savePosition(bvid, cid, positionMs, durationMs(bvid, cid))
+             }
+         }
++    internal fun cachedPositionForSpace(bvid: String, owned: () -> Boolean): Long {
++        if (!owned()) throw CancellationException("Space progress entry retired")
++        return manager.getCachedPosition(bvid)
++    }
+     suspend fun closeAndJoin(): Boolean = writer.closeAndJoin()
+ }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt
+@@ -92,6 +92,8 @@
+     val library: com.bilipai.desktop.DesktopLibrary,
+     val nowPlayingBinding: (DesktopHomeRetainedRoot) -> DesktopOriginalAudioNowPlayingBinding,
+     val nowPlayingPositionMs: (DesktopHomeRetainedRoot, DesktopOriginalNowPlayingSnapshot) -> Long?,
++    val originalSpacePlaylist: DesktopOriginalVideoPlaylistBinding,
++    val originalSpaceCachedPosition: (String) -> Long,
+ )
+ 
+ /** Shutdown order is captured entry/route admission first, drains outside Store locks, then
+@@ -109,6 +111,7 @@
+     val route = AtomicReference<DesktopOriginalRootRouteAssembly?>()
+     val personalLists = AtomicReference<DesktopPersonalListsRoot?>()
+     val messagePages = AtomicReference<DesktopOriginalMessagePagesRoot?>()
++    val spacePages = AtomicReference<DesktopOriginalSpacePagesRoot?>()
+     var imageTrim: DesktopApplicationImageCacheTrim? = null
+     fun isActive() = !closed.get() && retainer.isActive() && navigation.owns()
+     suspend fun closeAndJoin() = withContext(NonCancellable) {
+@@ -116,6 +119,7 @@
+         chromeRefresh.set(null)
+         route.getAndSet(null)?.close()
+         messagePages.getAndSet(null)?.closeAndJoin()
++        spacePages.getAndSet(null)?.closeAndJoin()
+         personalLists.getAndSet(null)?.closeAndJoin()
+         retainer.closeAndJoin()
+         imageTrim?.close(); imageTrim = null
+@@ -130,7 +134,7 @@
+     services: DesktopReadyOriginalRootServices,
+     handleReference: AtomicReference<DesktopReadyOriginalRootHandle?>,
+     modifier: Modifier,
+-    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot, DesktopHomeSettingsPort, DesktopOriginalMessagePagesRoot) -> Unit,
++    leaf: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean, DesktopPersonalListsRoot, DesktopHomeSettingsPort, DesktopOriginalMessagePagesRoot, DesktopOriginalSpacePagesRoot) -> Unit,
+ ) {
+     val scope = rememberCoroutineScope()
+     val applicationImages = LocalDesktopApplicationImageLoader.current
+@@ -169,7 +173,7 @@
+     DisposableEffect(handle) { onDispose {
+         // cancel admission synchronously, then drain in a NON-child shutdown task.
+         handleReference.compareAndSet(handle, null)
+-        handle.route.getAndSet(null)?.close(); handle.messagePages.get()?.close(); handle.retainer.retire()
++        handle.route.getAndSet(null)?.close(); handle.messagePages.get()?.close(); handle.spacePages.get()?.close(); handle.retainer.retire()
+         CoroutineScope(SupervisorJob() + Dispatchers.Default).launch { handle.closeAndJoin() }
+     } }
+     val physicalStack = remember(navigation) { mutableStateListOf<BiliPaiNavKey>(BiliPaiNavKey.MainHost) }
+@@ -236,6 +240,7 @@
+         try {
+             handle.route.getAndSet(null)?.close()
+             handle.messagePages.getAndSet(null)?.closeAndJoin()
++            handle.spacePages.getAndSet(null)?.closeAndJoin()
+             physicalStack.clear(); physicalStack.add(BiliPaiNavKey.MainHost)
+             handle.retainer.install(epoch, account?.mid, factory.factory)
+             installFailure = null
+@@ -284,6 +289,17 @@
+         val messagePages = rememberDesktopOriginalMessagePagesRoot(services.repository, services.community,
+             routes, desktopDetailRenderEffectsSupported())
+         SideEffect { if (handle.isActive() && messagePages.isOwned()) handle.messagePages.set(messagePages) else messagePages.close() }
++        val spacePages = remember(services.repository, services.community, routes) {
++            DesktopOriginalSpacePagesRoot(services.repository, services.community, routes,
++                services.community.originalSpaceTransport)
++        }
++        SideEffect { if (handle.isActive()) handle.spacePages.set(spacePages) else spacePages.close() }
++        LaunchedEffect(spacePages, routes) { snapshotFlow { physicalStack.toList() }.collect { spacePages.prune() } }
++        DisposableEffect(spacePages) { onDispose {
++            // Leave the last owner in the handle until its existing account/
++            // restore/shutdown drain has awaited it. Retirement cancels now.
++            spacePages.close()
++        } }
+         val personalLists = remember(root, services.library) { DesktopPersonalListsRoot(root.entry.gate,
+             services.repository, services.runtime.store, services.library,
+             services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze) }
+@@ -428,7 +444,7 @@
+                         clock.settleState == VideoCardTransitionSettleState.InteractiveSeek,
+                         clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress)) },
+                 Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable,
+-                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages) })
++                { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages, spacePages) })
+         }
+         }
+         }
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt
+@@ -1495,8 +1495,10 @@
+                         physicalDestination is BiliPaiNavKey.VideoDetail,actualWindow.width>actualWindow.height,
+                         physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library,
+                     { root -> originalNowPlayingFor(root,listen).binding },
+-                    { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) })
+-                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages ->
++                    { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) },
++                    ordinaryVideo.playlist,
++                    { bvid -> ordinaryVideoResources?.progress?.cachedPositionForSpace(bvid) { !isClosing() } ?: 0L })
++                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages,spacePages ->
+                     val messageRoutes = commands as DesktopOriginalRootRouteAssembly
+                     val messageLink: (String) -> Unit = { raw ->
+                         if (active) messageRoutes.callbackFor(entryKey) {
+@@ -1553,6 +1555,13 @@
+                             }
+                         Box(Modifier.weight(1f).fillMaxWidth()) {
+                         when {
++                            entryKey is BiliPaiNavKey.Space || entryKey is BiliPaiNavKey.UpowerRank || entryKey is BiliPaiNavKey.MemberGuard ->
++                                DesktopDetailWindow { DesktopOriginalSpacePageRootHost(entryKey, spacePages,
++                                    services.originalSpacePlaylist, services.originalSpaceCachedPosition,
++                                    { title, text, owned -> requestDesktopTextShare(services.textShare,
++                                        spacePages.entry(entryKey).environment.scope, title, text,
++                                        { owned() && active && messageRoutes.currentKey == entryKey && !isClosing() }, services.feedback) },
++                                    desktopDetailRenderEffectsSupported(), active) }
+                             entryKey is BiliPaiNavKey.Bangumi || entryKey is BiliPaiNavKey.BangumiDetail || entryKey is BiliPaiNavKey.BangumiReview ->
+                                 DesktopDetailWindow { DesktopOriginalBangumiPagesRootHost(entryKey, messageRoutes, repository, ordinaryVideoResources, active,
+                                     replaceSeason = { current, season -> messageRoutes.replaceBangumiDetail(current, season) }) }
+@@ -1868,23 +1877,6 @@
+                                 CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
+                                     onDynamicRoute=::openDynamicRoute,onMessageLink=messageLink),
+                                 onBack = { commands.back() }, onTopic = ::openTopic)
+-                            section == DesktopSection.USER -> {
+-                                val spaceTargetMid = userId
+-                                val spaceTargetEpoch = repository.sessionEpoch
+-                                val history = library.history().filter { it.authorMid == userId }
+-                                val progress = history.associate { card -> card.bvid to SpaceWatchProgress(card.bvid, card.preferredCid, card.title,
+-                                    card.progressSeconds ?: 0, card.duration, card.viewedAt) }
+-                                DesktopCompleteSpaceScreen(userId, repository, social, community, space, spaceContributions,
+-                                    ::openVideo, ::openUser, ::openArticle, ::openDynamic, ::openLive, ::openBangumi, ::openMusic,
+-                                    { showSeason(it, course = true) }, ::openResource, ::openCollection,
+-                                    onPlaylist = { playlist -> if (repository.sessionEpoch == spaceTargetEpoch && userId == spaceTargetMid) openListenSpaceQueue(playlist, spaceTargetMid, history) },
+-                                    onLogin = { loginDialog = true }, onExternalUrl = { raw ->
+-                                        runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
+-                                            runCatching { java.awt.Desktop.getDesktop().browse(uri) }
+-                                        }
+-                                    }, progressByBvid = progress, localPositionMs = { bvid -> ((history.firstOrNull { it.bvid == bvid }?.progressSeconds ?: 0) * 1000L) },
+-                                    locateBvid = (entryKey as? BiliPaiNavKey.Space)?.targetBvid?.takeIf{it.isNotBlank()} ?: playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword, onImagePreviewFeedback = { error = it })
+-                            }
+                             entryKey is BiliPaiNavKey.ArticleDetail -> {
+                                 val articleHomeSettings by originalHomePreferences.homeSettings.collectAsState()
+                                 DesktopDetailWindow {
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpaceEnvironment.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpaceEnvironment.kt
+@@ -0,0 +1,194 @@
++package com.bilipai.desktop.ui
++
++import com.android.purebilibili.core.network.*
++import com.android.purebilibili.data.model.response.*
++import com.android.purebilibili.data.repository.*
++import com.android.purebilibili.feature.list.DesktopFavoriteEnvironment
++import com.bilipai.desktop.data.DesktopRepository
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.*
++import okhttp3.Call
++import okhttp3.RequestBody
++import okhttp3.OkHttpClient
++import okhttp3.MediaType.Companion.toMediaType
++import retrofit2.converter.kotlinx.serialization.asConverterFactory
++import java.util.concurrent.ConcurrentHashMap
++import java.util.concurrent.atomic.AtomicBoolean
++import kotlin.coroutines.CoroutineContext
++import kotlin.coroutines.Continuation
++import java.lang.reflect.InvocationTargetException
++
++/** A retained Space NavEntry child over the same global session, APIs and Store.
++ * Public UP reads accept the original guest identity; account mutations still use
++ * the existing original ActionRepository protocol and its permission checks.
++ * Lock order is existing SessionStore -> Root entry -> this short state monitor.
++ * No transport, IO or join occurs inside those monitors.
++ */
++internal class DesktopOriginalSpaceEnvironment(
++    private val repository: DesktopRepository,
++    val epoch: Long,
++    val accountMid: Long?,
++    val upMid: Long,
++    parent: CoroutineScope,
++    private val retained: () -> Boolean,
++    private val visible: () -> Boolean,
++    private val commitEntry: ((() -> Unit) -> Boolean),
++    private val feedback: (String) -> Unit,
++    private val transport: OkHttpClient,
++) {
++    private val alive = AtomicBoolean(true)
++    private val lifetime = SupervisorJob(parent.coroutineContext[Job])
++    private val delegate = CoroutineScope(parent.coroutineContext + lifetime)
++    private val stateLock = Any()
++    private val permit = ThreadLocal<(() -> Boolean)?>()
++    private val channels = ConcurrentHashMap<String, Long>()
++    private val operations = mutableMapOf<String, Job>()
++    private val followOwner = repository.dynamicCacheSessionGuard.dynamicCacheOwner()
++    // Named type supplies a member launch: the unchanged original call captures
++    // inside its real caller Job, rather than inheriting a parent page token.
++    val scope = DesktopOriginalSpaceRequestScope(delegate) { block -> launchOwned(null,false,block) }
++    fun owns(): Boolean = alive.get() && lifetime.isActive && retained() &&
++        repository.sessionEpoch == epoch && repository.account.value?.mid == accountMid
++    private fun <T> admit(block: () -> T): T = repository.withProfileAccountAdmission(epoch,accountMid,::owns,commitEntry) {
++        synchronized(stateLock) {
++            if (!owns() || permit.get()?.invoke()==false) throw CancellationException("Space caller retired")
++            block()
++        }
++    }
++    fun checkpoint() = admit { Unit }
++    fun requireVisibleAction() = admit { if (!visible()) throw CancellationException("Space entry covered") }
++    fun preferenceWritePermit(store:com.bilipai.desktop.plugins.DesktopPluginStore):com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit =
++        admit { requireVisibleAction();com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit(store) }
++    fun requireMid(mid:Long) { require(mid>0 && mid==upMid) { "Space entry belongs to another UP" }; checkpoint() }
++    fun csrf():String? = admit { repository.ownedHomeCookie("bili_jct",epoch,::owns) }
++    fun primaryAccessToken():String? = admit { repository.ownedHomeAccessToken(epoch,::owns) }
++    fun primaryAccessTokenPlatform():String = admit { repository.accessTokenCredentials().second }
++    fun callFactory():Call.Factory = Call.Factory { request ->
++        val caller=permit.get() ?: throw java.io.IOException("Space request has no actual caller")
++        checkpoint()
++        val body=request.body
++        val oneShot=if(request.method=="POST" && body!=null) request.newBuilder().method(request.method,
++            object:RequestBody() {
++                override fun contentType()=body.contentType()
++                override fun contentLength()=body.contentLength()
++                override fun isOneShot()=true
++                override fun writeTo(sink:okio.BufferedSink)=body.writeTo(sink)
++            }).build() else request
++        repository.ownedHomeCallFactory(epoch,{owns()&&caller()},transport=transport).newCall(oneShot)
++    }
++    private val web = retrofit2.Retrofit.Builder().baseUrl("https://api.bilibili.com/")
++        .callFactory(callFactory()).addConverterFactory(kotlinx.serialization.json.Json {
++            ignoreUnknownKeys=true;coerceInputValues=true
++        }.asConverterFactory("application/json".toMediaType())).build()
++    // Capture the actual suspend caller at Retrofit invocation, including an
++    // async child. The request's fixed admission outlives this synchronous
++    // invocation and cannot fall back to its still-active parent after cancel.
++    private fun <T:Any> service(type:Class<T>):T {
++        val raw=web.create(type)
++        return type.cast(java.lang.reflect.Proxy.newProxyInstance(type.classLoader,arrayOf(type)) {_,method,args->
++            val continuation=args?.lastOrNull() as? Continuation<*>
++            if(continuation==null) return@newProxyInstance method.invoke(raw,*(args?:emptyArray()))
++            val actual=continuation.context[Job] ?: throw java.io.IOException("Space request has no actual caller")
++            val parentPermit=permit.get() ?: throw java.io.IOException("Space request has no entry admission")
++            val admitted={actual.isActive&&parentPermit()&&owns()}
++            permit.set(admitted)
++            try {checkpoint();method.invoke(raw,*(args?:emptyArray()))}
++            catch(failure:InvocationTargetException){throw failure.targetException}
++            finally {permit.set(parentPermit)}
++        })
++    }
++    val api:BilibiliApi = service(BilibiliApi::class.java)
++    val spaceApi:SpaceApi = service(SpaceApi::class.java)
++    private val bangumiApi:BangumiApi = service(BangumiApi::class.java)
++    private val buvidApi:BuvidApi = service(BuvidApi::class.java)
++    val history=DesktopOriginalHomeHistoryProtocol(api)
++    private val favoriteEnvironment=DesktopFavoriteEnvironment(delegate,api,spaceApi,null,bangumiApi,
++        {owns()&&permit.get()?.invoke()!=false},::csrf,{accountMid},feedback,
++        null,null,null,null,::primaryAccessToken,::primaryAccessTokenPlatform,
++        { change -> checkpoint();repository.followStateEvents.confirm(checkNotNull(followOwner),change) })
++    val favorites get()=favoriteEnvironment.favorite
++    val actions=DesktopOriginalSpaceActions(this,DesktopOriginalTabletOwnerSpaceActions(api),favoriteEnvironment.actions)
++    val bangumi=DesktopOriginalSpaceBangumiRequests(bangumiApi,this)
++    val followStateChanges:Flow<FollowStateChange> = repository.followStateEvents.changes
++        .filter { owns()&&it.owner.epoch==epoch&&repository.followStateEvents.isCurrent(it.owner) }.map { it.change }
++    suspend fun wbiKeys():Result<Pair<String,String>> {
++        currentCoroutineContext().ensureActive();checkpoint()
++        val caller=permit.get() ?: throw CancellationException("Space WBI has no caller")
++        return repository.homeWbiKeys(epoch,{owns()&&caller()},api).also { currentCoroutineContext().ensureActive();checkpoint() }
++    }
++    suspend fun ensureSession() {
++        val caller=permit.get() ?: throw CancellationException("Space visitor initialization has no caller")
++        repository.ensureOwnedHomeSession(epoch,{owns()&&caller()},buvidApi)
++        currentCoroutineContext().ensureActive();checkpoint()
++    }
++    suspend fun <T> withActualCaller(block:suspend()->T):T {
++        val caller=currentCoroutineContext().job
++        val allowed={caller.isActive&&owns()}
++        return withContext(permit.asContextElement(allowed)) {
++            checkpoint();block().also {ensureActive();checkpoint()}
++        }
++    }
++    suspend fun getSpaceAggregate(mid:Long):SpaceAggregateResponse {
++        requireMid(mid)
++        val response=spaceApi.getSpaceAggregate(buildSpaceAggregateParams(mid,primaryAccessToken(),primaryAccessTokenPlatform()))
++        currentCoroutineContext().ensureActive();checkpoint()
++        return response
++    }
++    fun <T> mutableStateFlow(initial:T):MutableStateFlow<T> {
++        val state=MutableStateFlow(initial)
++        return object:MutableStateFlow<T> by state {
++            override var value:T get()=state.value;set(next){admit { state.value=next }}
++            override fun compareAndSet(expect:T,update:T):Boolean=admit { state.compareAndSet(expect,update) }
++            override fun tryEmit(value:T):Boolean=admit { state.tryEmit(value) }
++            override suspend fun emit(value:T) { currentCoroutineContext().ensureActive();admit { state.value=value } }
++        }
++    }
++    fun launchMutation(channel:String,block:suspend CoroutineScope.()->Unit):Job=launchOwned(channel,true,block)
++    fun launchRead(channel:String,block:suspend CoroutineScope.()->Unit):Job=launchOwned(channel,false,block)
++    private fun launchOwned(channel:String?,mutation:Boolean,block:suspend CoroutineScope.()->Unit):Job {
++        lateinit var actual:Job
++        val previous:Job?
++        synchronized(stateLock) {
++            if(!owns() || mutation&&!visible()) return Job().also { it.cancel() }
++            if(mutation && channel!=null) operations[channel]?.takeIf { it.isActive }?.let { return it }
++            val ticket=if(channel==null)0L else (channels[channel]?:0L)+1L
++            if(channel!=null)channels[channel]=ticket
++            previous=channel?.let {operations[it]}
++            val allowed={actual.isActive&&owns()&&(channel==null||channels[channel]==ticket)}
++            actual=delegate.launch(permit.asContextElement(allowed),start=CoroutineStart.LAZY) {
++                checkpoint();block();currentCoroutineContext().ensureActive();checkpoint()
++            }
++            if(channel!=null)operations[channel]=actual
++        }
++        previous?.cancel();actual.start();return actual
++    }
++    fun close(){if(alive.compareAndSet(true,false))lifetime.cancel()}
++    suspend fun closeAndJoin():Boolean {
++        require(currentCoroutineContext()[Job]!==lifetime);close()
++        return withContext(NonCancellable) { withTimeoutOrNull(5000) { lifetime.join();true }?:false }
++    }
++}
++
++internal class DesktopOriginalSpaceRequestScope(private val delegate:CoroutineScope,
++    private val invoke:(suspend CoroutineScope.()->Unit)->Job):CoroutineScope {
++    override val coroutineContext:CoroutineContext get()=delegate.coroutineContext
++    fun launch(block:suspend CoroutineScope.()->Unit):Job=invoke(block)
++}
++/** Required action facets reuse the two installed original protocol producers. */
++internal class DesktopOriginalSpaceActions(private val environment:DesktopOriginalSpaceEnvironment,
++    private val relation:DesktopOriginalTabletOwnerSpaceActions,
++    private val groups:DesktopOriginalFavoriteActions) {
++    private suspend fun <T> owned(block:suspend()->T):T {
++        currentCoroutineContext().ensureActive();environment.checkpoint()
++        return block().also {currentCoroutineContext().ensureActive();environment.checkpoint()}
++    }
++    private suspend fun <T> result(block:suspend()->Result<T>):Result<T> = owned(block).also {
++        (it.exceptionOrNull() as? CancellationException)?.let {cancelled->throw cancelled}
++    }
++    suspend fun getRelationDetail(mid:Long)=owned {relation.getRelationDetail(mid)}
++    suspend fun checkFollowStatus(mid:Long)=owned {relation.checkFollowStatus(mid)}
++    suspend fun followUser(mid:Long,follow:Boolean)=result {groups.followUser(mid,follow)}
++    suspend fun getFollowGroupTags()=result {groups.getFollowGroupTags()}
++    suspend fun getUserFollowGroupIds(mid:Long)=result {groups.getUserFollowGroupIds(mid)}
++    suspend fun overwriteFollowGroupIds(targetMids:Set<Long>,selectedTagIds:Set<Long>)=result {groups.overwriteFollowGroupIds(targetMids,selectedTagIds)}
++}
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt
+@@ -0,0 +1,136 @@
++package com.bilipai.desktop.ui
++
++import androidx.compose.runtime.*
++import com.android.purebilibili.feature.space.*
++import com.android.purebilibili.navigation3.*
++import com.bilipai.desktop.data.*
++import kotlinx.coroutines.*
++import okhttp3.OkHttpClient
++import java.util.concurrent.atomic.AtomicBoolean
++
++/** One original Space VM per physical retained Space/Rank/Guard NavEntry. The
++ * supplied transport is Community's existing no-implicit-retry view of the same
++ * global client/dispatcher/pool/Jar. Construction starts no remote request.
++ */
++internal class DesktopOriginalSpacePagesRoot(
++    val repository:DesktopRepository,
++    val community:DesktopCommunityRepository,
++    val routes:DesktopOriginalRootRouteAssembly,
++    private val transport:OkHttpClient,
++) : AutoCloseable {
++    private val closed=AtomicBoolean(false)
++    private val lock=Any()
++    private val pages=linkedMapOf<BiliPaiNavKey,DesktopOriginalSpacePageEntry>()
++    private val retired=mutableListOf<DesktopOriginalSpaceEnvironment>()
++    private fun owns()=!closed.get()&&routes.owns()&&routes.root.isCurrentOwner()
++    fun entry(key:BiliPaiNavKey):DesktopOriginalSpacePageEntry {
++        val mid=when(key){is BiliPaiNavKey.Space->key.mid;is BiliPaiNavKey.UpowerRank->key.mid;is BiliPaiNavKey.MemberGuard->key.mid;else->error("Not a Space page")}
++        require(mid>0)
++        synchronized(lock) {
++            if(!owns()||!routes.containsEntry(key))throw CancellationException("Space entry removed")
++            return pages.getOrPut(key) {
++                val gate=routes.root.entry.gate
++                DesktopOriginalSpacePageEntry(DesktopOriginalSpaceEnvironment(repository,gate.epoch,gate.mid,mid,gate.scope,
++                    {owns()&&routes.containsEntry(key)},{owns()&&routes.currentKey==key},gate::commit,
++                    routes.root.environment.feedback,transport))
++            }
++        }
++    }
++    fun prune() {
++        val removed=synchronized(lock) { pages.keys.filterNot(routes::containsEntry).mapNotNull(pages::remove).map {it.environment}.also {retired.addAll(it)} }
++        removed.forEach {it.close()}
++    }
++    override fun close() {
++        val removed=synchronized(lock) {
++            if(!closed.compareAndSet(false,true))return
++            pages.values.map {it.environment}.also {retired.addAll(it);pages.clear()}
++        }
++        removed.forEach {it.close()}
++    }
++    suspend fun closeAndJoin() { close();val removed=synchronized(lock){retired.toList()}
++        withContext(NonCancellable){ removed.forEach {check(it.closeAndJoin()) {"Space child did not drain"}} }
++        synchronized(lock){retired.removeAll(removed.toSet())}
++    }
++}
++
++/** The original view models live in the retained physical entry record, not a
++ * composable remember whose disposal would erase tab/search/scroll metadata. */
++internal class DesktopOriginalSpacePageEntry(val environment:DesktopOriginalSpaceEnvironment) {
++    val viewModel by lazy {SpaceViewModel(environment)}
++    private var rank:SpaceUpowerRankViewModel?=null
++    private var guard:SpaceMemberGuardViewModel?=null
++    fun rank(mid:Long,name:String,count:Long):SpaceUpowerRankViewModel {
++        environment.requireMid(mid)
++        return rank?:SpaceUpowerRankViewModel(environment,mid,name,count).also {rank=it}
++    }
++    fun guard(mid:Long,name:String,count:Long):SpaceMemberGuardViewModel {
++        environment.requireMid(mid)
++        return guard?:SpaceMemberGuardViewModel(environment,mid,name,count).also {guard=it}
++    }
++}
++
++/** Mounted by the real Root leaf dispatcher, not DesktopSection.USER state. The
++ * shared comment/gallery session and original playlist are actual required Root
++ * owners; a second actor or renderer is never supplied as a fallback.
++ */
++@Composable internal fun DesktopOriginalSpacePageRootHost(
++    key:BiliPaiNavKey,
++    pages:DesktopOriginalSpacePagesRoot,
++    playlist:DesktopOriginalVideoPlaylistBinding,
++    cachedPosition:(String)->Long,
++    shareText:(String,String,()->Boolean)->Unit,
++    supportsRenderEffects:Boolean,
++    active:Boolean,
++) {
++    val routes=pages.routes
++    val entry=pages.entry(key)
++    val environment=entry.environment
++    val comments=LocalDesktopOriginalCommentRootOwner.current
++    val session=checkNotNull(LocalDesktopDynamicCardSession.current)
++    val home=routes.root.environment
++    val latestActive by rememberUpdatedState(active)
++    fun navigate(action:()->Unit){if(latestActive)routes.callbackFor(key,action)}
++    val platform=remember(environment,comments,session,playlist,home) {
++        DesktopOriginalSpacePlatform(entry,home,supportsRenderEffects,pages.community,session,comments,
++            playlist,cachedPosition,shareText,{id->navigate {routes.push(BiliPaiNavKey.DynamicDetail(id))}})
++    }
++    if(!environment.owns()||!session.matches(pages.repository,environment.epoch))return
++    val articleLink=LocalDesktopOriginalMessageLinkNavigation.current
++    CompositionLocalProvider(LocalDesktopOriginalSpacePlatform provides platform) {
++        when(key) {
++            is BiliPaiNavKey.Space->SpaceScreen(key.mid,key.targetBvid,
++                onBack={navigate {routes.back()}},
++                onVideoClick={bv,cid,progress->navigate {routes.video(BiliPaiNavKey.VideoDetail(bv,cid,resumePositionMs=progress,sourceRoute=key.toLegacyRoute()))}},
++                onAudioClick={sid->navigate {routes.push(BiliPaiNavKey.MusicDetail(sid))}},
++                onBangumiClick={id->if(id>0)navigate {routes.push(BiliPaiNavKey.BangumiDetail(id))}},
++                onCheeseClick={id->if(id>0)navigate {routes.push(BiliPaiNavKey.BangumiPlayer(id,0,isCourse=true))}},
++                onWebClick={url,title->navigate {routes.push(BiliPaiNavKey.Web(url,title))}},
++                onLiveClick={id,title,name->if(id>0)navigate {routes.push(BiliPaiNavKey.Live(id.toString(),title,name))}},
++                onUserClick={mid->navigate {routes.push(BiliPaiNavKey.Space(mid))}},
++                onTopicClick={id->if(id>0)navigate {routes.push(BiliPaiNavKey.TopicDetail(id))}},
++                onTopicKeywordClick={word->navigate {routes.push(BiliPaiNavKey.Search(word))}},
++                onPlayAllAudioClick={bv,progress->navigate {routes.push(BiliPaiNavKey.AudioMode(sourceBvid=bv,sourceResumePositionMs=progress))}},
++                onDynamicDetailClick={id->navigate {routes.push(BiliPaiNavKey.DynamicDetail(id))}},
++                // Existing original typed dispatcher resolves native article/opus
++                // before routing, using its sole captured Root request owner.
++                onArticleClick={id,_->if(id>0)navigate {articleLink("https://www.bilibili.com/read/cv$id")}},
++                onViewAllClick={type,id,mid,title,name->navigate {routes.push(when(type.lowercase()){
++                    "coin"->BiliPaiNavKey.LikedVideos(mid,name,true)
++                    "like","liked"->BiliPaiNavKey.LikedVideos(mid,name)
++                    else->BiliPaiNavKey.SeasonSeriesDetail(type,id,mid,title,name)
++                })}},
++                onLikedVideosClick={mid,name->navigate {routes.push(BiliPaiNavKey.LikedVideos(mid,name))}},
++                onMessageClick={mid,name,_->navigate {routes.push(BiliPaiNavKey.Chat(mid,1,name))}},
++                onFollowingClick={mid->navigate {routes.push(BiliPaiNavKey.Following(mid))}},
++                // v023 fans is an explicitly original Web leaf, not a native
++                // list promised by the full SpaceScreen closure.
++                onFansClick={mid->navigate {routes.push(BiliPaiNavKey.Web("https://space.bilibili.com/$mid/fans/fans","粉丝"))}},
++                onUpowerRankClick={mid,name,count->navigate {routes.push(BiliPaiNavKey.UpowerRank(mid,name,count))}},
++                onMemberGuardClick={mid,name,count->navigate {routes.push(BiliPaiNavKey.MemberGuard(mid,name,count))}},
++                sharedTransitionScope=null,animatedVisibilityScope=null)
++            is BiliPaiNavKey.UpowerRank->SpaceUpowerRankScreen(key.mid,key.name,key.count,{navigate {routes.back()}},{mid->navigate {routes.push(BiliPaiNavKey.Space(mid))}})
++            is BiliPaiNavKey.MemberGuard->SpaceMemberGuardScreen(key.mid,key.name,key.count,{navigate {routes.back()}},{mid->navigate {routes.push(BiliPaiNavKey.Space(mid))}})
++            else->error("Not an original Space page")
++        }
++    }
++}
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePlatform.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePlatform.kt
+@@ -0,0 +1,134 @@
++package com.bilipai.desktop.ui
++
++import androidx.compose.runtime.*
++import androidx.compose.ui.platform.LocalDensity
++import androidx.compose.ui.platform.LocalWindowInfo
++import com.android.purebilibili.core.database.entity.BlockedUp
++import com.android.purebilibili.data.model.response.*
++import com.android.purebilibili.data.repository.BlockedUpRelationSource
++import com.android.purebilibili.feature.dynamic.DynamicDeleteAction
++import com.android.purebilibili.feature.dynamic.components.*
++import com.android.purebilibili.feature.space.*
++import com.android.purebilibili.feature.video.player.*
++import com.bilipai.desktop.data.*
++import com.bilipai.desktop.plugins.booleanPreferencesKey
++import kotlinx.coroutines.*
++import kotlinx.coroutines.flow.*
++
++internal val LocalDesktopOriginalSpacePlatform=staticCompositionLocalOf<DesktopOriginalSpacePlatform> {
++    error("Original Space requires the retained same Root entry and actual shared consumers")
++}
++
++/** Renderer/side-effect ports over existing owners. A Space leaf owns its original
++ * VM state and child jobs; image, comments, native media, blocked records, playlist
++ * and preferences stay owned by the installed retained Root. No new HTTP client,
++ * persisted cache, session, renderer or settings default authority is constructed.
++ */
++internal class DesktopOriginalSpacePlatform(
++    val entry:DesktopOriginalSpacePageEntry,
++    val home:DesktopHomeEnvironment,
++    val supportsRenderEffects:Boolean,
++    private val community:DesktopCommunityRepository,
++    private val session:DesktopDynamicCardSession,
++    private val comments:DesktopOriginalCommentRootOwner,
++    private val rootPlaylist:DesktopOriginalVideoPlaylistBinding,
++    private val cachedVideoPosition:(String)->Long,
++    private val shareText:(String,String,()->Boolean)->Unit,
++    private val openDynamicDetail:(String)->Unit,
++) : AutoCloseable {
++    val environment get()=entry.environment
++    val viewModel get()=entry.viewModel
++    val locatePromptEnabled=home.pluginContext.store.snapshot("settings").map {
++        it[booleanPreferencesKey("space_played_video_locate_prompt_enabled")]?:true
++    }.distinctUntilChanged()
++    fun rank(mid:Long,name:String,count:Long):SpaceUpowerRankViewModel {
++        environment.requireMid(mid)
++        return entry.rank(mid,name,count)
++    }
++    fun guard(mid:Long,name:String,count:Long):SpaceMemberGuardViewModel {
++        environment.requireMid(mid)
++        return entry.guard(mid,name,count)
++    }
++    fun cachedPosition(bvid:String):Long { environment.checkpoint();return cachedVideoPosition(bvid) }
++    fun feedback(text:String) { if(environment.owns())home.feedback(text) }
++    fun shareSpace(mid:Long) { environment.requireMid(mid);environment.requireVisibleAction();shareText("分享空间","https://space.bilibili.com/$mid",environment::owns) }
++    val playlist=SpacePlaylist()
++    inner class SpacePlaylist {
++        fun setExternalPlaylist(items:List<PlaylistItem>,index:Int,source:ExternalPlaylistSource) {
++            environment.requireVisibleAction();rootPlaylist.setExternalPlaylist(items,index,source)
++        }
++        fun setPlayMode(mode:PlayMode) { environment.requireVisibleAction();rootPlaylist.setPlayMode(mode) }
++    }
++    val blockedUps=SpaceBlockedUps()
++    inner class SpaceBlockedUps {
++        fun isBlocked(mid:Long):Flow<Boolean> { environment.requireMid(mid);return community.blockedUpRepository.store.mids.map {mid in it}.distinctUntilChanged() }
++        private suspend fun check() { currentCoroutineContext().ensureActive();environment.requireVisibleAction() }
++        suspend fun blockUpWithBilibiliSync(mid:Long,name:String,face:String):com.android.purebilibili.data.repository.BlockedUpWriteResult =
++            ownedBlocked(mid,true,name,face)
++        suspend fun unblockUpWithBilibiliSync(mid:Long):com.android.purebilibili.data.repository.BlockedUpWriteResult = ownedBlocked(mid,false,"","")
++        private suspend fun ownedBlocked(mid:Long,block:Boolean,name:String,face:String):com.android.purebilibili.data.repository.BlockedUpWriteResult = environment.withActualCaller {
++            check();environment.requireMid(mid)
++            val caller=currentCoroutineContext()
++            fun assertOwned(){caller.ensureActive();environment.requireVisibleAction()}
++            val repository=community.blockedUpRepository
++            val store=repository.store
++            val permit={ environment.preferenceWritePermit(home.pluginContext.store) }
++            val result=if(block) repository.blockUpWithCapturedLocalWrite(mid,name,face,BlockedUpRelationSource.PROFILE,environment.epoch,
++                ::assertOwned,{store.upsertCaptured(it,::assertOwned,permit)},environment.api,environment::csrf,{environment.ensureSession()})
++            else repository.unblockUpWithCapturedLocalWrite(mid,BlockedUpRelationSource.PROFILE,environment.epoch,
++                ::assertOwned,{store.removeCaptured(it,::assertOwned,permit)},environment.api,environment::csrf,{environment.ensureSession()})
++            check();result
++        }
++    }
++    /** These flows are projections of the sole Root confirmed-like state, not a
++     * duplicate liked-ID cache. Original Space optimistic forward delta stays in
++     * its unchanged Screen remember state, scoped to that retained visit.
++     */
++    val dynamic=SpaceDynamicActions()
++    inner class SpaceDynamicActions {
++        val likeOverrides=session.likeOverrides
++        val likedDynamics=session.likeOverrides.map {map->map.filterValues {it}.keys}.stateIn(environment.scope,SharingStarted.Eagerly,session.likeOverrides.value.filterValues {it}.keys)
++        fun openCommentSheet(item:DynamicItem) { environment.requireVisibleAction();openDynamicDetail(item.id_str) }
++        private fun action(channel:String,onResult:(Boolean,String)->Unit,body:suspend()->String) {
++            environment.requireVisibleAction()
++            environment.launchMutation(channel) {
++                try {
++                    val message=body();ensureActive();environment.checkpoint()
++                    onResult(true,message)
++                } catch(cancelled:CancellationException){throw cancelled}
++                catch(failure:Exception){ensureActive();environment.checkpoint();onResult(false,failure.message?:"操作失败")}
++            }
++        }
++        fun likeDynamic(id:String,currentlyLiked:Boolean,onResult:(Boolean,String)->Unit) = action("like:$id",onResult) {
++            val next=!(session.likeOverrides.value[id]?:currentlyLiked)
++            comments.operations.setLike(id,next);environment.checkpoint();session.confirmLike(id,next)
++            if(next)"已点赞"else"已取消点赞"
++        }
++        fun deleteDynamic(action:DynamicDeleteAction,onResult:(Boolean,String)->Unit)=action("delete:${action.dynamicId}",onResult) {
++            comments.operations.delete(action);"删除成功"
++        }
++        fun toggleDynamicReserve(action:DynamicReserveAction,onResult:(Result<DynamicReserveResult>)->Unit) {
++            environment.requireVisibleAction()
++            environment.launchMutation("reserve:${action.reserveId}") {
++                val result=comments.operations.reserve(action);ensureActive();environment.checkpoint();onResult(result)
++            }
++        }
++        fun repostDynamic(id:String,content:String,alsoComment:Boolean,onResult:(Boolean,String)->Unit)=action("repost:$id",onResult) {
++            comments.operations.repost(id,content);environment.checkpoint()
++            val item=(viewModel.uiState.value as? SpaceUiState.Success)?.dynamics
++                ?.let(::resolveSpaceDynamicCardItems)?.firstOrNull {it.id_str==id}
++            val comment=if(alsoComment&&content.isNotBlank())item?.let {comments.operations.postSourceComment(it,content)}==true else true
++            if(!comment)"转发成功，评论同步失败"else if(alsoComment&&content.isNotBlank())"转发成功，已同步评论"else"转发成功"
++        }
++    }
++    override fun close(){environment.close()}
++    suspend fun closeAndJoin():Boolean=environment.closeAndJoin()
++}
++
++internal data class DesktopSpaceWindowBounds(val screenWidthDp:Int,val screenHeightDp:Int)
++internal object DesktopSpaceWindowConfiguration {
++    val current:DesktopSpaceWindowBounds @Composable get() {
++        val size=LocalWindowInfo.current.containerSize;val density=LocalDensity.current.density
++        return DesktopSpaceWindowBounds((size.width/density).toInt(),(size.height/density).toInt())
++    }
++}
+--- a/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesTest.kt
++++ b/desktop/src/test/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesTest.kt
+@@ -0,0 +1,241 @@
++package com.bilipai.desktop.ui
++
++import com.android.purebilibili.feature.space.*
++import com.android.purebilibili.data.model.response.*
++import com.bilipai.desktop.data.*
++import com.sun.net.httpserver.HttpServer
++import kotlinx.coroutines.*
++import kotlinx.coroutines.CancellationException
++import okhttp3.*
++import java.net.InetSocketAddress
++import java.net.Proxy
++import java.net.URLDecoder
++import java.nio.file.Files
++import java.util.concurrent.*
++import java.util.concurrent.atomic.*
++import kotlin.test.Test
++import kotlin.coroutines.CoroutineContext
++
++private data class SpaceHit(val method:String,val path:String,val query:Map<String,String>,val fields:Map<String,String>)
++private data class SpaceReply(val body:String="""{"code":0,"data":{}}""",val status:Int=200,val headers:Map<String,String> = emptyMap())
++private fun fields(raw:String)=raw.split('&').filter {it.isNotBlank()}.associate {
++    val parts=it.split('=',limit=2)
++    URLDecoder.decode(parts[0],Charsets.UTF_8) to URLDecoder.decode(parts.getOrElse(1){""},Charsets.UTF_8)
++}
++private class SpaceFixture(val guest:Boolean=false,context:CoroutineContext):AutoCloseable {
++    val root=Files.createTempDirectory("bp-space-")
++    val sessions=DesktopSessionStore(root.resolve("synthetic-session.json"),persistent=false)
++    val repository=DesktopRepository(sessions)
++    // The original lifecycle VM and real retained Root children share the UI
++    // dispatcher. Keep this event loop, while real HTTP completions stay on IO.
++    val parent=CoroutineScope(context.minusKey(Job)+SupervisorJob())
++    val retained=AtomicBoolean(true)
++    val visible=AtomicBoolean(true)
++    val lock=Any()
++    val hits=ConcurrentLinkedQueue<SpaceHit>()
++    val executor=Executors.newCachedThreadPool()
++    val server=HttpServer.create(InetSocketAddress("127.0.0.1",0),0)
++    @Volatile var response:(SpaceHit)->SpaceReply={default(it)}
++    val environment:DesktopOriginalSpaceEnvironment
++    val entry:DesktopOriginalSpacePageEntry
++    init {
++        if(!guest)sessions.saveAccount(mapOf("SESSDATA" to "synthetic-space-only","bili_jct" to "synthetic-space-csrf"),AccountSummary(42,"Space Fixture",""))
++        server.executor=executor
++        server.createContext("/") {exchange->
++            val body=exchange.requestBody.use {it.readBytes().toString(Charsets.UTF_8)}
++            val hit=SpaceHit(exchange.requestMethod,exchange.requestURI.path,fields(exchange.requestURI.rawQuery.orEmpty()),
++                if(exchange.requestHeaders.getFirst("Content-Type")?.startsWith("application/x-www-form-urlencoded")==true)fields(body)else emptyMap())
++            hits+=hit
++            try {val reply=response(hit);val bytes=reply.body.toByteArray();exchange.responseHeaders.set("Content-Type","application/json")
++                reply.headers.forEach {(k,v)->exchange.responseHeaders.set(k,v)}
++                exchange.sendResponseHeaders(reply.status,bytes.size.toLong());exchange.responseBody.use {it.write(bytes)}
++            }catch(_:java.io.IOException){}finally{exchange.close()}
++        }
++        server.start()
++        // Fixture ONLY: exact original hosts/routes rewrite to one task-owned
++        // loopback listener. Nothing may reach an unexpected external host.
++        val transport=repository.httpClient.newBuilder().retryOnConnectionFailure(false).proxy(Proxy.NO_PROXY)
++            .addInterceptor {chain->val request=chain.request()
++                check(request.url.host in setOf("api.bilibili.com","app.bilibili.com","api.live.bilibili.com"))
++                check(request.url.encodedPath in allowed) {"Unexpected fixture route"}
++                chain.proceed(request.newBuilder().url(request.url.newBuilder().scheme("http").host("127.0.0.1").port(server.address.port).build()).build())
++            }.build()
++        environment=DesktopOriginalSpaceEnvironment(repository,repository.sessionEpoch,if(guest)null else 42,77,parent,
++            retained::get,visible::get,{block->synchronized(lock){if(retained.get()){block();true}else false}},{},transport)
++        entry=DesktopOriginalSpacePageEntry(environment)
++    }
++    fun success()=entry.viewModel.uiState.value as? SpaceUiState.Success
++    suspend fun await(test:()->Boolean) {withTimeout(6000){while(!test())delay(10)}}
++    suspend fun loaded():SpaceViewModel {
++        val vm=entry.viewModel;vm.loadSpaceInfo(77)
++        await {success()?.videos?.isNotEmpty()==true && success()?.isLoadingMore==false}
++        return vm
++    }
++    suspend fun <T> call(body:suspend()->T):T=environment.withActualCaller(body)
++    fun default(hit:SpaceHit):SpaceReply=when(hit.path) {
++        "/x/v2/space"->SpaceReply("""{"code":0,"data":{"default_tab":"home","card":{"mid":"77","name":"Known UP","face":"https://fixture.invalid/face.png","sign":"Fixture signature"},"archive":{"count":90,"item":[{"bvid":"BVfixture1","title":"Aggregate title","cover":"https://fixture.invalid/cover.png"}]}}}""")
++        "/x/web-interface/nav"->SpaceReply("""{"code":0,"data":{"isLogin":true,"mid":42,"wbi_img":{"img_url":"https://fixture.invalid/0123456789abcdef0123456789abcdef.png","sub_url":"https://fixture.invalid/abcdef0123456789abcdef0123456789.png"}}}""")
++        "/x/space/wbi/arc/search"->SpaceReply(videoPage(hit.query["pn"]?.toIntOrNull()?:1))
++        "/x/space/wbi/acc/info"->SpaceReply("""{"code":0,"data":{"mid":77,"name":"Known UP","face":"https://fixture.invalid/face.png","is_followed":false}}""")
++        "/x/relation"->SpaceReply("""{"code":0,"data":{"attribute":0}}""")
++        "/x/relation/stat"->SpaceReply("""{"code":0,"data":{"mid":77,"following":4,"follower":11}}""")
++        "/x/space/upstat"->SpaceReply("""{"code":0,"data":{"archive":{"view":15},"likes":9}}""")
++        "/x/web-interface/history/cursor"->SpaceReply("""{"code":0,"data":{"list":[],"cursor":{"max":0,"view_at":0,"business":""}}}""")
++        "/x/polymer/web-space/seasons_series_list"->SpaceReply("""{"code":0,"data":{"items_lists":{"seasons_list":[],"series_list":[]}}}""")
++        "/x/v3/fav/folder/created/list-all","/x/v3/fav/folder/collected/list"->SpaceReply("""{"code":0,"data":{"list":[],"count":0}}""")
++        "/x/polymer/web-dynamic/v1/feed/space"->SpaceReply(dynamicPage("dyn1","Alpha original",false,""))
++        "/x/space/wbi/article"->SpaceReply("""{"code":0,"data":{"articles":[],"count":0,"pn":1,"ps":30}}""")
++        "/pugv/app/web/season/page"->SpaceReply("""{"code":0,"data":{"items":[],"page":{"next":false}}}""")
++        "/audio/music-service/web/song/upper"->SpaceReply("""{"code":0,"data":{"data":[{"id":501,"title":"Actual synthetic song","author":"Known UP","duration":130}],"totalSize":1,"pageCount":1,"curPage":1}}""")
++        "/x/upower/up/member/rank/v2"->SpaceReply(rankPage(91))
++        "/xlive/app-ucenter/v1/guard/MainGuardCardAll"->SpaceReply(guardPage(listOf(1,2,3,4),false))
++        "/x/relation/tags"->SpaceReply("""{"code":0,"data":[{"tagid":5,"name":"Known group","count":2}]}""")
++        "/x/relation/tag/user"->SpaceReply("""{"code":0,"data":{"5":"Known group"}}""")
++        "/x/space/notice"->SpaceReply("""{"code":0,"data":"Original notice"}""")
++        else->SpaceReply("""{"code":0,"data":{}}""")
++    }
++    override fun close(){runBlocking{retained.set(false);check(environment.closeAndJoin());parent.cancel()};server.stop(0);executor.shutdownNow();repository.httpClient.dispatcher.executorService.shutdownNow();repository.httpClient.connectionPool.evictAll()}
++    companion object {
++        val allowed=setOf("/x/v2/space","/x/web-interface/nav","/x/web-interface/card","/x/space/wbi/arc/search","/x/space/wbi/acc/info",
++            "/x/relation","/x/relation/stat","/x/space/upstat","/x/web-interface/history/cursor","/x/polymer/web-space/seasons_series_list",
++            "/x/v3/fav/folder/created/list-all","/x/v3/fav/folder/collected/list","/x/polymer/web-dynamic/v1/feed/space","/x/space/wbi/article",
++            "/pugv/app/web/season/page","/audio/music-service/web/song/upper","/x/upower/up/member/rank/v2","/xlive/app-ucenter/v1/guard/MainGuardCardAll",
++            "/x/relation/modify","/x/relation/tags","/x/relation/tag/user","/x/relation/tag/addUsers","/x/relation/tag/delUsers","/x/space/top/arc","/x/space/notice")
++    }
++}
++private fun videoPage(page:Int,bvid:String="BVfixture$page",count:Int=90)= """{"code":0,"data":{"list":{"vlist":[{"bvid":"$bvid","aid":100,"title":"Video $page","pic":"https://fixture.invalid/cover.png","mid":77,"author":"Known UP","typeid":4,"typename":"Known category"}],"tlist":{"4":{"tid":4,"name":"Known category","count":$count}}},"page":{"pn":$page,"ps":30,"count":$count}}}"""
++private fun dynamicPage(id:String,text:String,more:Boolean,offset:String)="""{"code":0,"data":{"has_more":$more,"offset":"$offset","items":[{"id_str":"$id","type":"DYNAMIC_TYPE_WORD","modules":{"module_author":{"mid":77,"name":"Known UP"},"module_dynamic":{"desc":{"text":"$text","rich_text_nodes":[]}}}}]}}"""
++private fun rankPage(mid:Int)="""{"code":0,"data":{"rank_info":[{"mid":$mid,"nickname":"Known supporter","day":8}],"level_info":[{"privilege_type":1,"name":"Known tier","member_total":1},{"privilege_type":2,"name":"Second tier","member_total":2}]}}"""
++private fun guardPage(ids:List<Int>,more:Boolean)="""{"code":0,"data":{"has_more":${if(more)1 else 0},"guard_top_list":[${ids.joinToString(","){"""{"uid":$it,"username":"Guard$it","guard_level":3}"""}}]}}"""
++
++class DesktopOriginalSpacePagesTest {
++    @Test fun actualOriginalAggregateLegacyHydrationAndPublicGuestReads():Unit=runBlocking {
++        SpaceFixture(true,currentCoroutineContext()).use {f->f.loaded();val state=checkNotNull(f.success())
++            check(state.userInfo.mid==77L&&state.userInfo.name=="Known UP")
++            check(state.videos.single().bvid=="BVfixture1")
++            check(f.hits.any {it.path=="/x/v2/space"&&it.query["vmid"]=="77"})
++            check(f.hits.none {it.method=="POST"})
++            check(f.hits.filter {it.path.endsWith("arc/search")}.all {it.query["mid"]=="77"&&it.query["ps"]=="30"&&it.query["w_rid"]?.length==32})
++        }
++    }
++    @Test fun rawAudioSidAndOriginalRequestDefaultsSurviveMapping():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val vm=f.loaded();vm.loadSpaceAudios(true);f.await {f.success()?.audios?.isNotEmpty()==true&&!f.success()!!.isLoadingAudios}
++            check(f.success()!!.audios.single().id==501L)
++            val hit=f.hits.first {it.path.endsWith("song/upper")};check(hit.query["uid"]=="77"&&hit.query["pn"]=="1"&&hit.query["ps"]=="30"&&hit.query["order"]=="1"&&hit.query["jsonp"]=="jsonp")
++        }
++    }
++    @Test fun videoPaginationAndOriginalOldestOrderingRemainReal():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val vm=f.loaded();vm.loadMoreVideos();f.await {f.success()?.videos?.size==2}
++            check(f.success()!!.videos.map {it.bvid}==listOf("BVfixture1","BVfixture2"))
++            vm.selectSortOrder(VideoSortOrder.OLDEST_PUBDATE);f.await {f.success()?.sortOrder==VideoSortOrder.OLDEST_PUBDATE&&!f.success()!!.isLoadingMore}
++            check(f.hits.last {it.path.endsWith("arc/search")}.query["pn"]=="3")
++            check(f.hits.last {it.path.endsWith("arc/search")}.query["order"]=="pubdate")
++        }
++    }
++    @Test fun actualDelayedPreviousSortCannotOverwriteChosenSort():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val vm=f.loaded();val entered=CountDownLatch(1);val release=CountDownLatch(1)
++            f.response={hit->if(hit.path.endsWith("arc/search")){
++                if(hit.query["order"]=="click"){entered.countDown();release.await(4,TimeUnit.SECONDS);SpaceReply(videoPage(1,"BVold"))}
++                else SpaceReply(videoPage(1,"BVnew"))
++            }else f.default(hit)}
++            vm.selectSortOrder(VideoSortOrder.CLICK);check(withContext(Dispatchers.IO){entered.await(3,TimeUnit.SECONDS)})
++            vm.selectSortOrder(VideoSortOrder.STOW);f.await {f.success()?.videos?.firstOrNull()?.bvid=="BVnew"};release.countDown();delay(80)
++            check(f.success()!!.sortOrder==VideoSortOrder.STOW&&f.success()!!.videos.single().bvid=="BVnew") {"sort=${f.success()!!.sortOrder}; ids=${f.success()!!.videos.map {it.bvid}}"}
++        }
++    }
++    @Test fun originalVideoFailureRetryIsBusinessBoundedNotTransportReplay():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val vm=f.loaded();val attempts=AtomicInteger()
++            f.response={hit->if(hit.path.endsWith("arc/search")){if(attempts.incrementAndGet()==1)SpaceReply("""{"code":-412,"message":"Synthetic rejection"}""")else SpaceReply(videoPage(1,"BVretry"))}else f.default(hit)}
++            vm.selectCategory(4);f.await {f.success()?.videos?.singleOrNull()?.bvid=="BVretry"}
++            check(attempts.get()==2&&f.hits.last {it.path.endsWith("arc/search")}.query["tid"]=="4")
++        }
++    }
++    @Test fun dynamicPaginationUsesOriginalOffsetFeaturesAndLocalRichTextSearch():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val vm=f.loaded();vm.selectMainTab(SpaceMainTab.DYNAMIC)
++            f.response={hit->if(hit.path.endsWith("feed/space"))SpaceReply(if(hit.query["offset"].isNullOrEmpty())dynamicPage("1","First text",true,"next")else dynamicPage("2","needle rich text",false,"end"))else f.default(hit)}
++            vm.loadSpaceDynamic(true);f.await {f.success()?.hasLoadedDynamicsOnce==true&&!f.success()!!.isLoadingDynamics}
++            vm.updateSearchQuery("needle");f.await {f.success()?.dynamics?.any {it.id_str=="2"}==true}
++            val state=f.success()!!;check(filterSpaceDynamicItemsByQuery(state.dynamics,"needle").single().id_str=="2")
++            val hit=f.hits.last {it.path.endsWith("feed/space")};check(hit.query["host_mid"]=="77"&&hit.query["offset"]=="next"&&hit.query["timezone_offset"]=="-480"&&!hit.query["features"].isNullOrBlank())
++        }
++    }
++    @Test fun rankLevelDelayedOldResponseCannotOverwriteChosenTier():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val entered=CountDownLatch(1);val release=CountDownLatch(1)
++            f.response={hit->if(hit.path.endsWith("rank/v2")){if(hit.query["privilege_type"]==null){entered.countDown();release.await(4,TimeUnit.SECONDS);SpaceReply(rankPage(10))}else SpaceReply(rankPage(20))}else f.default(hit)}
++            val vm=f.entry.rank(77,"Known UP",8);check(withContext(Dispatchers.IO){entered.await(3,TimeUnit.SECONDS)})
++            vm.selectLevel(1);f.await {!vm.uiState.value.isLoading&&vm.uiState.value.items.firstOrNull()?.mid==20L};release.countDown();delay(80)
++            check(vm.uiState.value.selectedPrivilegeType==1&&vm.uiState.value.items.single().mid==20L)
++            val hit=f.hits.last {it.path.endsWith("rank/v2")};check(hit.query["up_mid"]=="77"&&hit.query["pn"]=="1"&&hit.query["ps"]=="100"&&hit.query["web_location"]=="333.1196")
++        }
++    }
++    @Test fun guardOriginalPodiumAndPageDefaultsRemainReal():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->f.response={hit->if(hit.path.endsWith("MainGuardCardAll"))SpaceReply(if(hit.query["page"]=="1")guardPage(listOf(1,2,3,4),true)else guardPage(listOf(5,6),false))else f.default(hit)}
++            val vm=f.entry.guard(77,"Known UP",6);f.await {!vm.uiState.value.isLoading};check(vm.uiState.value.tops.map {it.uid}==listOf(1L,2L,3L))
++            vm.loadMore();f.await {vm.uiState.value.items.size==3};check(vm.uiState.value.items.map {it.uid}==listOf(4L,5L,6L))
++            check(f.hits.filter {it.path.endsWith("MainGuardCardAll")}.map {it.query["page"]}==listOf("1","2"))
++            check(f.hits.filter {it.path.endsWith("MainGuardCardAll")}.all {it.query["ruid"]=="77"&&it.query["page_size"]=="20"})
++        }
++    }
++    @Test fun followHttp503DoesNotImplicitlyReplayAndRollsBackOriginalState():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val vm=f.loaded();f.response={hit->if(hit.path=="/x/relation/modify")SpaceReply("""{"code":-1}""",503,mapOf("Retry-After" to "0"))else f.default(hit)}
++            vm.toggleFollow();f.await {f.hits.any {it.path=="/x/relation/modify"}&&!f.success()!!.userInfo.isFollowed};delay(100)
++            val posts=f.hits.filter {it.path=="/x/relation/modify"};check(posts.size==1&&posts.single().fields["fid"]=="77"&&posts.single().fields["act"]=="1"&&"re_src" !in posts.single().fields&&posts.single().fields["csrf"]=="synthetic-space-csrf")
++        }
++    }
++    @Test fun coveredEntryRejectsSubmitBeforeOptimisticFlagsThenCanSubmitOnBack():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val vm=f.loaded();f.visible.set(false)
++            check(runCatching {vm.toggleFollow()}.exceptionOrNull() is CancellationException)
++            check(f.hits.none {it.path=="/x/relation/modify"});f.visible.set(true)
++            vm.toggleFollow();f.await {f.hits.any {it.path=="/x/relation/modify"}&&f.success()!!.userInfo.isFollowed}
++            check(f.hits.count {it.path=="/x/relation/modify"}==1)
++        }
++    }
++    @Test fun sameMidEpochReplacementRejectsLateActualStatePublication():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val entered=CountDownLatch(1);val release=CountDownLatch(1)
++            f.response={hit->if(hit.path=="/x/v2/space"){entered.countDown();release.await(4,TimeUnit.SECONDS);f.default(hit)}else f.default(hit)}
++            val vm=f.entry.viewModel;vm.loadSpaceInfo(77);check(withContext(Dispatchers.IO){entered.await(3,TimeUnit.SECONDS)})
++            f.sessions.saveAccount(mapOf("SESSDATA" to "synthetic-space-only-B","bili_jct" to "synthetic-space-csrf-B"),AccountSummary(42,"Same MID successor",""))
++            release.countDown();delay(100);check(!f.environment.owns());check(vm.uiState.value !is SpaceUiState.Success)
++        }
++    }
++    @Test fun retainedEntryOwnsOriginalVmAndSelectionUntilRemovalDrain():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val vm=f.loaded();vm.selectMainTab(SpaceMainTab.FAVORITE);f.visible.set(false)
++            check(f.entry.viewModel===vm&&f.environment.owns());f.visible.set(true)
++            check(f.entry.viewModel.selectedMainTab.value==3)
++            f.retained.set(false);check(f.environment.closeAndJoin());check(!f.environment.owns())
++            check(runCatching {vm.loadSpaceInfo(77)}.exceptionOrNull() is CancellationException)
++        }
++    }
++    @Test fun actualCallerCancellationRejectsCookieAndStateWhileCloseDrains():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->val entered=CountDownLatch(1);val release=CountDownLatch(1)
++            f.response={hit->if(hit.path.endsWith("rank/v2")){entered.countDown();release.await(4,TimeUnit.SECONDS);SpaceReply(rankPage(777))}else f.default(hit)}
++            val result=CompletableDeferred<Unit>();val caller=f.parent.launch {f.call {f.environment.spaceApi.getUpowerRank(mapOf("up_mid" to "77"));f.environment.mutableStateFlow(0).value=1};result.complete(Unit)}
++            check(withContext(Dispatchers.IO){entered.await(3,TimeUnit.SECONDS)});caller.cancelAndJoin();release.countDown();delay(80)
++            check(!result.isCompleted);check(f.environment.closeAndJoin())
++        }
++    }
++    @Test fun immutableUpEntryRejectsWrongMidAndGuestFollowIsPermissionFailure():Unit=runBlocking {
++        SpaceFixture(true,currentCoroutineContext()).use {f->val vm=f.loaded()
++            check(runCatching {vm.loadSpaceInfo(88)}.isFailure)
++            val result=f.call {f.environment.actions.followUser(77,true)}
++            check(result.isFailure&&result.exceptionOrNull()!!.message!!.contains("登录"))
++            check(f.hits.none {it.path=="/x/relation/modify"})
++        }
++    }
++    @Test fun cancelledParallelRequestCannotAdoptCookiesWhileItsPageSurvives():Unit=runBlocking {
++        SpaceFixture(context=currentCoroutineContext()).use {f->
++            val entered=CountDownLatch(1);val release=CountDownLatch(1)
++            f.response={hit->if(hit.path.endsWith("rank/v2")) {
++                entered.countDown();release.await(4,TimeUnit.SECONDS)
++                SpaceReply(rankPage(777),headers=mapOf("Set-Cookie" to "buvid3=cancelled-child-only; Path=/; HttpOnly"))
++            }else f.default(hit)}
++            f.call {coroutineScope {
++                val child=async {f.environment.spaceApi.getUpowerRank(mapOf("up_mid" to "77"))}
++                check(withContext(Dispatchers.IO){entered.await(3,TimeUnit.SECONDS)})
++                child.cancelAndJoin();release.countDown();delay(80)
++                check(f.environment.owns());f.environment.checkpoint()
++                check("buvid3" !in f.sessions.currentCookies())
++            }}
++        }
++    }
++}
+--- a/desktop/tools/extract-upstream-space-pages.py
++++ b/desktop/tools/extract-upstream-space-pages.py
+@@ -0,0 +1,317 @@
++"""Full v023 Space VM/Screen bodies with declared Windows owner seams.
++Existing SpaceUiState, SpaceSubTab, original policies, cards and image owners stay unique.
++Every transform has an exact reversible source receipt; no route or DTO invention.
++"""
++from pathlib import Path
++import argparse, hashlib, importlib.util, json, re, subprocess, sys
++sys.dont_write_bytecode = True
++PIN = '3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
++BASE = 'app/src/main/java/com/android/purebilibili/'
++PATHS = [BASE+'feature/space/'+name+'.kt' for name in
++         ['SpaceViewModel','SpaceScreen','SpaceUpowerRankViewModel','SpaceMemberGuardViewModel','SpaceSupporterScreens','SpaceLoadingSkeleton']]
++PATHS += [BASE+'data/repository/BangumiRepository.kt']
++PATHS += [BASE+'feature/space/SpaceLoadPolicy.kt',BASE+'feature/space/SpaceDynamicLoadPolicy.kt']
++PATHS += [BASE+'feature/space/SpaceTabChromePolicy.kt',BASE+'feature/space/SpaceSelectionChipColorPolicy.kt']
++
++def digest(value): return hashlib.sha256(value.encode('utf8')).hexdigest()
++def module(name, path):
++    spec = importlib.util.spec_from_file_location(name,path)
++    result = importlib.util.module_from_spec(spec); spec.loader.exec_module(result); return result
++
++def generate(repo, out, include_screen=True):
++    parser = module('space_parser',repo/'desktop/tools/sync-upstream.py')
++    helper = module('space_graph',repo/'desktop/tools/extract-upstream-tablet-owner-space.py')
++    receipts = []
++    def source(path):
++        original = subprocess.check_output(['git','-C',str(repo),'show',PIN+':'+path]).decode('utf8').replace('\r\n','\n')
++        actual = (repo/path).read_text(encoding='utf8').replace('\r\n','\n')
++        assert original == actual, 'Pinned source changed: '+path
++        return original
++    originals = {path:source(path) for path in PATHS}
++    def produce(path, output_name, adapt):
++        original = originals[path]; steps = []
++        def edit(value, before, after, count=None):
++            assert before != after
++            positions = [m.start() for m in re.finditer(re.escape(before),value)]
++            assert positions and (count is None or len(positions)==count), (path,before[:100],len(positions),count)
++            result = value.replace(before,after)
++            steps.append(dict(beforeSha256=digest(value),afterSha256=digest(result),original=before,adapted=after,
++                positionsAfter=[pos+i*(len(after)-len(before)) for i,pos in enumerate(positions)]))
++            return result
++        def discard_logs(value):
++            while True:
++                match=re.search(r'(?:android\.util\.Log|com\.android\.purebilibili\.core\.util\.Logger)\.[deiw]\s*\(',value)
++                if match is None:return value
++                tokens=parser.kotlin_tokens(value);begin=next(i for i,t in enumerate(tokens)if t[1]>=match.start()and t[0]=='(')
++                end=begin;level=1
++                while level:end+=1;level+=(tokens[end][0]=='(')-(tokens[end][0]==')')
++                value=edit(value,value[match.start():tokens[end][2]],'Unit',1)
++        adapted = adapt(original,edit,discard_logs)
++        reversed_source = adapted
++        for step in reversed(steps):
++            assert digest(reversed_source)==step['afterSha256']
++            for pos in reversed(step['positionsAfter']):
++                assert reversed_source[pos:pos+len(step['adapted'])]==step['adapted']
++                reversed_source=reversed_source[:pos]+step['original']+reversed_source[pos+len(step['adapted']):]
++            assert digest(reversed_source)==step['beforeSha256']
++        assert reversed_source==original
++        destination=out/output_name;destination.parent.mkdir(parents=True,exist_ok=True)
++        destination.write_text(adapted,encoding='utf8',newline='\n')
++        receipts.append(dict(source=path,sha256LF=digest(original),generated=output_name,generatedSha256LF=digest(adapted),
++            completeOriginalFileReconstructed=True,transforms=steps))
++    pkg='com/android/purebilibili/feature/space/'
++    def vm(s,edit,logs):
++        prefix=s[:s.index('class SpaceViewModel(')]
++        imports=prefix[:prefix.index('enum class SpaceSubTab')]
++        # Original state/model declarations are already wholly emitted by the sole existing producers.
++        s=edit(s,prefix,imports,1)
++        for line in ['import androidx.lifecycle.ViewModel\n','import androidx.lifecycle.viewModelScope\n',
++                     'import com.android.purebilibili.core.network.NetworkModule\n',
++                     'import com.android.purebilibili.core.network.getSpaceAggregate\n',
++                     'import com.android.purebilibili.data.repository.BangumiRepository\n',
++                     'import com.android.purebilibili.data.repository.ActionRepository\n',
++                     'import com.android.purebilibili.data.repository.FavoriteRepository\n',
++                     'import com.android.purebilibili.data.repository.HistoryRepository\n']:
++            s=edit(s,line,'',1)
++        s=edit(s,'class SpaceViewModel(\n    private val savedStateHandle: SavedStateHandle = SavedStateHandle()\n) : ViewModel() {',
++            'internal class SpaceViewModel(\n    private val environment: com.bilipai.desktop.ui.DesktopOriginalSpaceEnvironment,\n    private val savedStateHandle: SavedStateHandle = SavedStateHandle()\n) {\n    private val viewModelScope get() = environment.scope',1)
++        for before,after in [('private val spaceApi = NetworkModule.spaceApi','private val spaceApi get() = environment.spaceApi'),
++                             ('MutableStateFlow(','environment.mutableStateFlow('),
++                             ('ActionRepository.followStateChanges','environment.followStateChanges'),
++                             ('ActionRepository','environment.actions'),('HistoryRepository','environment.history'),
++                             ('FavoriteRepository','environment.favorites'),('BangumiRepository','environment.bangumi'),
++                             ('NetworkModule.api','environment.api'),
++                             ('spaceApi.getSpaceAggregate(mid = mid)','environment.getSpaceAggregate(mid)'),
++                             ('fun loadSpaceInfo(mid: Long) {','fun loadSpaceInfo(mid: Long) {\n        environment.requireMid(mid)')]:
++            s=edit(s,before,after)
++        s=logs(s)
++        # Ensure a cancelled caller is never downgraded to original nullable fallback/UI Error.
++        if 'catch (_: Exception)' in s:s=edit(s,'catch (_: Exception)','catch (ignoredSpaceFailure: Exception)')
++        pattern=re.compile(r'catch \((\w+): Exception\) \{')
++        for name in dict.fromkeys(match.group(1) for match in pattern.finditer(s)):
++            old='catch ('+name+': Exception) {'
++            # One declared transform per spelling; repeated handlers must never
++            # multiply the inserted cancellation checkpoint on subsequent scans.
++            s=edit(s,old,old+'\n            if ('+name+' is CancellationException) throw '+name)
++        if 'runCatching {' in s:
++            s=edit(s,'runCatching {','ownedSpaceRunCatching {')
++            if 'return@runCatching' in s:s=edit(s,'return@runCatching','return@ownedSpaceRunCatching')
++        # The same global Repository WBI cache remains authoritative, not another retained key owner.
++        allmembers=helper.members(parser,helper.classbody(parser,s,'SpaceViewModel'))
++        old=allmembers['fetchWbiKeys'][0]['text']
++        s=edit(s,old,'    private suspend fun fetchWbiKeys(): Pair<String,String>? = environment.wbiKeys().getOrNull()',1)
++        for name in ['toggleFollow','saveFollowGroupSelection']:
++            body=helper.members(parser,helper.classbody(parser,s,'SpaceViewModel'))[name][0]['text']
++            new=body.replace('viewModelScope.launch {','environment.launchMutation("'+name+'") {',1)
++            at=new.index('{')+1
++            new=new[:at]+'\n        environment.requireVisibleAction()'+new[at:]
++            s=edit(s,body,new,1)
++        # The original dynamic search cancels its earlier actual Job. An owned
++        # mutable flow correctly rejects cancelled response publication, including
++        # the old catch block's cleanup. Reset that loading flag in the admitted
++        # NEW query action so the successor does not wait forever for a rejected
++        # stale cleanup. This is a declared Windows owner adaptation, not a new
++        # search endpoint or changed matching/prefetch policy.
++        declaration=helper.members(parser,helper.classbody(parser,s,'SpaceViewModel'))['updateSearchQuery'][0]['text']
++        updated=declaration.replace('searchQuery = query','searchQuery = query,\n            isLoadingDynamics = if (scope == SpaceSearchScope.DYNAMIC) false else current.isLoadingDynamics',1)
++        s=edit(s,declaration,updated,1)
++        # Original supplemental IP hydration suspends after taking a whole-state
++        # copy. Rebase only its supplemental fields on the latest admitted state
++        # after that response, preserving newer sort/search/list selections.
++        s=edit(s,'val updatedSupplementalState = applySpaceSupplementalData(','var updatedSupplementalState = applySpaceSupplementalData(',1)
++        old='val dynamicResp = ownedSpaceRunCatching { spaceApi.getSpaceDynamic(hostMid = mid) }.getOrNull()'
++        new=old+'''\n                    val latestState = _uiState.value as? SpaceUiState.Success ?: return@launch
++                    updatedSupplementalState = applySpaceSupplementalData(
++                        state = latestState,
++                        seasons = seasons,
++                        series = series,
++                        createdFavoriteFolders = createdFavoriteFolders,
++                        collectedFavoriteFolders = collectedFavoriteFolders,
++                        seasonArchives = seasonArchives,
++                        seriesArchives = seriesArchives
++                    )
++                    val currentInfo = updatedSupplementalState.userInfo'''
++        s=edit(s,old,new,1)
++        return s
++    produce(BASE+'feature/space/SpaceViewModel.kt',pkg+'SpaceViewModel.kt',vm)
++    for name in ['SpaceUpowerRankViewModel','SpaceMemberGuardViewModel']:
++        def support(s,edit,logs,name=name):
++            for line in ['import androidx.lifecycle.ViewModel\n','import androidx.lifecycle.viewModelScope\n','import com.android.purebilibili.core.network.NetworkModule\n']:
++                s=edit(s,line,'',1)
++            s=edit(s,'class '+name+'(','internal class '+name+'(\n    private val environment: com.bilipai.desktop.ui.DesktopOriginalSpaceEnvironment,',1)
++            s=edit(s,') : ViewModel() {',') {\n    private val viewModelScope get() = environment.scope',1)
++            s=edit(s,'private val spaceApi = NetworkModule.spaceApi','private val spaceApi get() = environment.spaceApi',1)
++            s=edit(s,'MutableStateFlow(','environment.mutableStateFlow(')
++            if 'NetworkModule.spaceApi' in s:s=edit(s,'NetworkModule.spaceApi','environment.spaceApi')
++            s=logs(s)
++            if 'runCatching {' in s:s=edit(s,'runCatching {','ownedSpaceRunCatching {')
++            if 'return@runCatching' in s:s=edit(s,'return@runCatching','return@ownedSpaceRunCatching')
++            if name=='SpaceUpowerRankViewModel':
++                s=edit(s,'viewModelScope.launch {','environment.launchRead("rank") {',1)
++                s=edit(s,'return@launch','return@launchRead')
++            else:
++                s=edit(s,'viewModelScope.launch {','environment.launchRead("guard") {',1)
++                s=edit(s,'return@launch','return@launchRead')
++            return s
++        produce(BASE+'feature/space/'+name+'.kt',pkg+name+'.kt',support)
++    def bangumi(s,edit,logs):
++        method=s[s.index('    suspend fun getMyFollowBangumi('):s.rfind('}')].rstrip()
++        prefix='''package com.bilipai.desktop.ui
++import com.android.purebilibili.core.network.BangumiApi
++import com.android.purebilibili.data.model.response.MyFollowBangumiData
++import kotlinx.coroutines.*
++internal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,private val environment:DesktopOriginalSpaceEnvironment) {
++'''
++        s=edit(s,s,prefix+method+'\n}\n',1)
++        s=edit(s,'TokenManager.midCache','environment.accountMid',1)
++        s=logs(s)
++        s=edit(s,'} catch (e: Exception) {','} catch (cancelled:CancellationException) { throw cancelled\n        } catch (e: Exception) {',1)
++        return s
++    produce(BASE+'data/repository/BangumiRepository.kt','com/bilipai/desktop/ui/DesktopOriginalSpaceBangumiRequests.kt',bangumi)
++    # Existing selected Space policy bodies keep their one original producer.
++    # Their shared generated outputs are explicit inputs; integration depends on
++    # those existing tasks before this one. Only previously uncompiled declarations
++    # from the complete original pure file enter the new source set.
++    policyOwners=[repo/'desktop/build/generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt',
++        repo/'desktop/build/generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt']
++    names=set()
++    for owner in policyOwners:
++        existing=owner.read_text(encoding='utf8').replace('\r\n','\n')
++        names.update(helper.members(parser,existing))
++    archiveOwner=repo/'desktop/build/generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt'
++    archiveDeclarations=helper.members(parser,archiveOwner.read_text(encoding='utf8'))
++    def verify_sole_declaration(original,existing):
++        # These sole producers change visibility only, and already own the full
++        # original body. Reject a changed mapping instead of dropping it by name.
++        normalize=lambda value: re.sub(r'^\s*(?:private|internal)\s+', '', value).strip()
++        assert normalize(original)==normalize(existing), 'Existing sole declaration drifted'
++    def remaining(s,edit,logs):
++        declarations=helper.members(parser,s)
++        for name in ['mapSeasonArchiveToVideoItem','mapSeriesArchiveToVideoItem']:
++            assert len(declarations[name])==len(archiveDeclarations[name])==1
++            declaration=declarations[name][0]['text']
++            verify_sole_declaration(declaration,archiveDeclarations[name][0]['text'])
++            s=edit(s,declaration,'',1)
++        for name in names:
++            if name in declarations:
++                for declaration in declarations[name]:s=edit(s,declaration['text'],'',1)
++        return s
++    produce(BASE+'feature/space/SpaceLoadPolicy.kt',pkg+'DesktopOriginalSpaceRemainingLoadPolicy.kt',remaining)
++    # No existing producer or class is present for this complete pure file in actual88.
++    # The shared task will emit it once; its original source remains a policy-extract
++    # identity, avoiding a second Sync direct owner.
++    produce(BASE+'feature/space/SpaceDynamicLoadPolicy.kt',pkg+'SpaceDynamicLoadPolicy.kt',lambda s,*_:s)
++    for name in ['SpaceTabChromePolicy','SpaceSelectionChipColorPolicy']:
++        produce(BASE+'feature/space/'+name+'.kt',pkg+name+'.kt',lambda s,*_:s)
++    if include_screen:
++        def screen(s,edit,logs):
++            for line in ['import android.os.Build\n','import android.content.Intent\n',
++                         'import androidx.lifecycle.viewmodel.compose.viewModel\n',
++                         'import coil3.imageLoader\n','import com.android.purebilibili.R\n',
++                         'import com.android.purebilibili.core.store.SettingsManager\n',
++                         'import com.android.purebilibili.feature.dynamic.DynamicViewModel\n',
++                         'import com.android.purebilibili.feature.dynamic.components.DynamicCommentOverlayHost\n',
++                         'import com.android.purebilibili.feature.video.controller.PlaybackProgressManager\n']:
++                s=edit(s,line,'',1)
++            s=edit(s,'import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect\n','',1)
++            for before,after in [
++                ('import androidx.lifecycle.compose.collectAsStateWithLifecycle','import androidx.compose.runtime.collectAsState'),
++                ('import androidx.compose.ui.platform.LocalContext','import coil3.compose.LocalPlatformContext as LocalContext'),
++                ('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.DesktopSpaceWindowConfiguration as LocalConfiguration'),
++                ('import androidx.compose.ui.res.stringResource','import com.bilipai.desktop.ui.desktopHomeStringResource as stringResource\nimport com.bilipai.desktop.ui.LocalDesktopOriginalSpacePlatform'),
++                ('fun SpaceScreen(','internal fun SpaceScreen('),
++                ('viewModel: SpaceViewModel = viewModel()','viewModel: SpaceViewModel = LocalDesktopOriginalSpacePlatform.current.viewModel'),
++                ('val dynamicInteractionViewModel: DynamicViewModel = viewModel()','val dynamicInteractionViewModel = LocalDesktopOriginalSpacePlatform.current.dynamic'),
++                ('collectAsStateWithLifecycle','collectAsState'),('initialValue =','initial ='),
++                ('shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT)','LocalDesktopOriginalSpacePlatform.current.supportsRenderEffects'),
++                ('com.android.purebilibili.core.store.TokenManager.midCache','LocalDesktopOriginalSpacePlatform.current.environment.accountMid'),
++                ('context.imageLoader','coil3.SingletonImageLoader.get(context)'),
++                ('SettingsManager.setGridColumnCountCompact(context, finalColumns)','LocalDesktopOriginalSpacePlatform.current.home.settings.setGridColumnCountCompact(finalColumns)'),
++                ('SettingsManager.setGridColumnCount(context, finalColumns)','LocalDesktopOriginalSpacePlatform.current.home.settings.setGridColumnCount(finalColumns)')]:
++                if before in s:s=edit(s,before,after)
++            s=edit(s,'val playbackProgressManager = remember(context) {\n        PlaybackProgressManager.getInstance(context)\n    }','val playbackProgressManager = LocalDesktopOriginalSpacePlatform.current',1)
++            s=edit(s,'playbackProgressManager.getCachedPosition(bvid)','playbackProgressManager.cachedPosition(bvid)',1)
++            s=edit(s,'val blockedUpRepository = remember { com.android.purebilibili.data.repository.BlockedUpRepository(context) }','val blockedUpRepository = LocalDesktopOriginalSpacePlatform.current.blockedUps',1)
++            s=edit(s,'com.android.purebilibili.core.store.SettingsManager\n        .getSpacePlayedVideoLocatePromptEnabled(context)','LocalDesktopOriginalSpacePlatform.current.locatePromptEnabled',1)
++            s=edit(s,'com.android.purebilibili.core.store.SettingsManager\n        .getHomeSettings(context)','LocalDesktopOriginalSpacePlatform.current.home.settings.homeSettings',1)
++            s=edit(s,'com.android.purebilibili.feature.video.player.PlaylistManager','LocalDesktopOriginalSpacePlatform.current.playlist')
++            # Android ACTION_SEND delegates to the same Root native share actor.
++            before='''val shareIntent = Intent(Intent.ACTION_SEND).apply {
++                                                    type = "text/plain"
++                                                    putExtra(Intent.EXTRA_TEXT, "https://space.bilibili.com/$mid")
++                                                }
++                                                context.startActivity(Intent.createChooser(shareIntent, "分享空间"))'''
++            s=edit(s,before,'LocalDesktopOriginalSpacePlatform.current.shareSpace(mid)',1)
++            # SpaceContent's actual original comment callback routes to dynamic detail;
++            # its dormant openCommentSheet callback has no calling card in v023.
++            # Preserve the callsite as a port, using the sole Root comment dispatcher.
++            before='''DynamicCommentOverlayHost(
++                            viewModel = dynamicInteractionViewModel,
++                            primaryItems = dynamicCardItems,
++                            toastContext = context,
++                            onUserClick = onUserClick,
++                        )'''
++            s=edit(s,before,'/* Space v023 sends every card comment click to onDynamicDetailClick; the sole Root full comment/detail route is retained. */',1)
++            while True:
++                match=re.search(r'android\.widget\.Toast\.makeText\(',s)
++                if match is None:break
++                tokens=parser.kotlin_tokens(s);start=next(i for i,t in enumerate(tokens)if t[1]>=match.start()and t[0]=='(')
++                end=start;level=1
++                while level:end+=1;level+=(tokens[end][0]=='(')-(tokens[end][0]==')')
++                raw=s[tokens[start][2]:tokens[end][1]]
++                args=raw.strip().split(',')
++                assert args[0].strip()=='context' and args[-1].strip()=='android.widget.Toast.LENGTH_SHORT',raw
++                text=raw[raw.index(',')+1:raw.rfind(',')].strip()
++                tail=s[tokens[end][2]:];assert tail.startswith('.show()')
++                s=edit(s,s[match.start():tokens[end][2]+len('.show()')],
++                    'LocalDesktopOriginalSpacePlatform.current.feedback('+text+')')
++            for match in list(re.finditer(r'R\.string\.(\w+)',s))[::-1]:
++                if match.group(0) in s:s=edit(s,match.group(0),'"'+match.group(1)+'"')
++            s=edit(s,'LocalDesktopOriginalSpacePlatform.current','desktopSpacePlatform')
++            s=edit(s,'viewModel: SpaceViewModel = desktopSpacePlatform.viewModel',
++                'viewModel: SpaceViewModel = LocalDesktopOriginalSpacePlatform.current.viewModel',1)
++            s=edit(s,'val context = LocalContext.current',
++                'val context = LocalContext.current\n    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current')
++            # Whole original handler already belongs to extract-space-overview.
++            declaration=helper.members(parser,s)['handleAggregateArchiveClick'][0]['text']
++            s=edit(s,declaration,'',1)
++            return logs(s)
++        produce(BASE+'feature/space/SpaceScreen.kt',pkg+'SpaceScreen.kt',screen)
++        def supporter_screen(s,edit,logs):
++            for line in ['import androidx.lifecycle.viewmodel.initializer\n','import androidx.lifecycle.viewmodel.viewModelFactory\n','import androidx.lifecycle.viewmodel.compose.viewModel\n']:
++                s=edit(s,line,'',1)
++            s=edit(s,'import androidx.lifecycle.compose.collectAsStateWithLifecycle','import androidx.compose.runtime.collectAsState\nimport com.bilipai.desktop.ui.LocalDesktopOriginalSpacePlatform',1)
++            s=edit(s,'collectAsStateWithLifecycle','collectAsState')
++            s=edit(s,'androidx.compose.ui.platform.LocalContext.current','coil3.compose.LocalPlatformContext.current')
++            for name,method in [('SpaceUpowerRankViewModel','rank'),('SpaceMemberGuardViewModel','guard')]:
++                start=s.index('    val viewModel: '+name+' = viewModel(');end=s.index('    val state by viewModel.uiState',start)
++                s=edit(s,s[start:end],'    val viewModel = LocalDesktopOriginalSpacePlatform.current.'+method+'(mid, name, count)\n',1)
++            originalGuardLabel=helper.members(parser,s)['resolveSpaceGuardLevelLabel']
++            guardOwner=repo/'desktop/build/generated/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt'
++            soleGuardLabel=helper.members(parser,guardOwner.read_text(encoding='utf8'))['resolveSpaceGuardLevelLabel']
++            assert len(originalGuardLabel)==len(soleGuardLabel)==1
++            verify_sole_declaration(originalGuardLabel[0]['text'],soleGuardLabel[0]['text'])
++            s=edit(s,originalGuardLabel[0]['text'],'',1)
++            return logs(s)
++        produce(BASE+'feature/space/SpaceSupporterScreens.kt',pkg+'SpaceSupporterScreens.kt',supporter_screen)
++        def skeleton(s,edit,logs):
++            for line in ['import androidx.compose.ui.platform.LocalContext\n','import com.android.purebilibili.core.store.SettingsManager\n']:
++                s=edit(s,line,'',1)
++            s=edit(s,'import androidx.lifecycle.compose.collectAsStateWithLifecycle','import androidx.compose.runtime.collectAsState\nimport com.bilipai.desktop.ui.LocalDesktopOriginalSpacePlatform',1)
++            s=edit(s,'    val context = LocalContext.current\n','',1)
++            s=edit(s,'SettingsManager.getHomeSettings(context)','LocalDesktopOriginalSpacePlatform.current.home.settings.homeSettings',1)
++            s=edit(s,'collectAsStateWithLifecycle','collectAsState');s=edit(s,'initialValue =','initial =')
++            return logs(s)
++        produce(BASE+'feature/space/SpaceLoadingSkeleton.kt',pkg+'SpaceLoadingSkeleton.kt',skeleton)
++    (out/pkg/'DesktopOriginalSpaceRunCatching.kt').write_text('''package com.android.purebilibili.feature.space
++import kotlinx.coroutines.CancellationException
++internal inline fun <T> ownedSpaceRunCatching(block:()->T):Result<T> = try { Result.success(block()) }
++catch(cancelled:CancellationException) { throw cancelled }
++catch(failure:Throwable) { Result.failure(failure) }
++''',encoding='utf8')
++    (out/'source-transform-replay.json').write_text(json.dumps(dict(pin=PIN,files=receipts),ensure_ascii=False,indent=2),encoding='utf8')
++    return receipts
++
++if __name__=='__main__':
++    p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--out',type=Path,required=True)
++    args=p.parse_args();print(json.dumps(generate(args.repo,args.out),ensure_ascii=False,default=str)[:1200])
+--- a/desktop/build.gradle.kts
++++ b/desktop/build.gradle.kts
+@@ -2227,3 +2227,24 @@
+ }
+ kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-pages")) }
+ tasks.named("compileKotlin") { dependsOn(extractOriginalMessagePages) }
++
++// Full original retained Space page, supporter leaves and business ViewModels.
++// Existing SpaceUiState/SubTab/selected policies, dynamic cards and gallery stay sole-owned.
++val extractOriginalSpacePages by tasks.registering(Exec::class) {
++    dependsOn(prepareUpstreamSources, extractUpstreamSpace, extractUpstreamSpaceOverview, extractUpstreamSpaceContributions,
++        extractOriginalVideoTabletFull, extractOriginalFavorites)
++    workingDir(projectDir)
++    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-space-pages.py",
++        "--repo", repositoryRoot.absolutePath,
++        "--out", layout.buildDirectory.dir("generated/original-space-pages").get().asFile.absolutePath)
++    inputs.files("tools/extract-upstream-space-pages.py", "tools/extract-upstream-tablet-owner-space.py", "tools/sync-upstream.py", sourceManifest)
++    inputs.files(layout.buildDirectory.file("generated/space-overview/com/android/purebilibili/feature/space/DesktopOriginalSpaceOverview.kt"),
++        layout.buildDirectory.file("generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt"),
++        layout.buildDirectory.file("generated/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt"),
++        layout.buildDirectory.file("generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt"))
++    inputs.files(sources.filter { "stable-original-space-pages-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
++        .map { File(repositoryRoot, it["path"].toString()) })
++    outputs.dir(layout.buildDirectory.dir("generated/original-space-pages"))
++}
++kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-space-pages")) }
++tasks.named("compileKotlin") { dependsOn(extractOriginalSpacePages) }
+--- a/desktop/upstream-sources.json
++++ b/desktop/upstream-sources.json
+@@ -548,7 +548,8 @@
+         "stable-favorites",
+         "home-bangumi-page",
+         "independent-bangumi-pages",
+-        "original-bangumi-player-full"
++        "original-bangumi-player-full",
++        "stable-original-space-pages-root-parity"
+       ],
+       "sha256": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612"
+     },
+@@ -3206,7 +3207,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+       "mode": "policy-extract",
+       "features": [
+-        "space"
++        "space",
++        "stable-original-space-pages-root-parity"
+       ],
+       "sha256": "ff810be21539ada00fd6043aac26d15c73f51c261f560a02c19879461797c4fb"
+     },
+@@ -3218,7 +3220,8 @@
+         "space-contributions",
+         "space-overview",
+         "stable-video-tablet-original",
+-        "stable-tablet-owner-space-original"
++        "stable-tablet-owner-space-original",
++        "stable-original-space-pages-root-parity"
+       ],
+       "sha256": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a"
+     },
+@@ -3226,7 +3229,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+       "mode": "policy-extract",
+       "features": [
+-        "space"
++        "space",
++        "stable-original-space-pages-root-parity"
+       ],
+       "sha256": "0970836848746c1b9eae833074d3dd6a125e25dc1ee23bb8aec25455cdf45758"
+     },
+@@ -3234,7 +3238,8 @@
+       "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+       "mode": "policy-extract",
+       "features": [
+-        "space"
++        "space",
++        "stable-original-space-pages-root-parity"
+       ],
+       "sha256": "ec6c4f47792e8bb318149a8aff355262d693bf63a57456365b26062ab1645937"
+     },
+@@ -3273,7 +3278,8 @@
+         "space-contributions",
+         "space-overview",
+         "stable-favorites",
+-        "stable-tablet-owner-space-original"
++        "stable-tablet-owner-space-original",
++        "stable-original-space-pages-root-parity"
+       ],
+       "sha256": "fad17890cf2f8a2d95fc80a706c6e66011dd992df3511d77ef957b1d90ed2c8c"
+     },
+@@ -3300,7 +3306,8 @@
+       "mode": "policy-extract",
+       "features": [
+         "space-overview",
+-        "space-image-preview"
++        "space-image-preview",
++        "stable-original-space-pages-root-parity"
+       ],
+       "sha256": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca"
+     },
+@@ -4481,7 +4488,8 @@
+         "stable-root-home-navigation",
+         "stable-home-concrete-mount",
+         "stable-personal-history-liked",
+-        "stable-personal-watchlater"
++        "stable-personal-watchlater",
++        "stable-original-space-pages-root-parity"
+       ],
+       "sha256": "218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59"
+     },
+@@ -10330,6 +10338,38 @@
+         "original-bangumi-player-full"
+       ],
+       "mode": "extracted"
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadingSkeleton.kt",
++      "sha256": "8adf4d2eca9225154b572c848c9ef151e8f241b757aaea707c4ee3bd9c84d90f",
++      "mode": "policy-extract",
++      "features": [
++        "stable-original-space-pages-root-parity"
++      ]
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceDynamicLoadPolicy.kt",
++      "sha256": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
++      "mode": "policy-extract",
++      "features": [
++        "stable-original-space-pages-root-parity"
++      ]
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceTabChromePolicy.kt",
++      "sha256": "405e05b78f819da4e793258d7355254e6b70817b2803bfee01525bb785189421",
++      "mode": "policy-extract",
++      "features": [
++        "stable-original-space-pages-root-parity"
++      ]
++    },
++    {
++      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSelectionChipColorPolicy.kt",
++      "sha256": "3f54531e069c10778c63895ccbd38734acec7317821fe8010b13bb65f25ea910",
++      "mode": "policy-extract",
++      "features": [
++        "stable-original-space-pages-root-parity"
++      ]
+     }
+   ],
+   "featureCoverage": {

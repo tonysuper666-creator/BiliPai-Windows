@@ -2,7 +2,6 @@ package com.android.purebilibili.core.ui.components
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.heightIn
@@ -58,7 +57,7 @@ fun AppPrimaryButton(
                 disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
                 disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             ),
-            contentPadding = PaddingValues(horizontal = AppSpacingTokens.ExtraLarge, vertical = AppSpacingTokens.Medium),
+            contentPadding = AppButtonDefaults.ContentPadding,
             interactionSource = interactionSource,
         ) {
             if (isLoading) {

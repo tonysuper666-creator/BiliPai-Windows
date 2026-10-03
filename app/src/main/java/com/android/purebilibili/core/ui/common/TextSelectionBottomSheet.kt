@@ -128,6 +128,8 @@ fun TextSelectionBottomSheet(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    // M3 路径的 modalWindowInsets 已消费导航栏 insets（此处为 0）；
+                    // 这层 padding 是给 CenteredDialog/平板限宽弹层路径兜底的，勿删。
                     .navigationBarsPadding()
                     .padding(horizontal = 20.dp, vertical = 8.dp)
             ) {

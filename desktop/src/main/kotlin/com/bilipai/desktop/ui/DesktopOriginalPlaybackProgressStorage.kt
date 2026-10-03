@@ -2,7 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.plugins.DesktopPluginStore
-import com.android.purebilibili.feature.video.controller.PlaybackProgressManager
+import com.android.purebilibili.core.player.PlaybackProgressManager
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.serialization.json.*
@@ -90,5 +90,9 @@ internal class DesktopOriginalGlobalPlaybackProgress(
                 manager.savePosition(bvid, cid, positionMs, durationMs(bvid, cid))
             }
         }
+    internal fun cachedPositionForSpace(bvid: String, owned: () -> Boolean): Long {
+        if (!owned()) throw CancellationException("Space progress entry retired")
+        return manager.getCachedPosition(bvid)
+    }
     suspend fun closeAndJoin(): Boolean = writer.closeAndJoin()
 }

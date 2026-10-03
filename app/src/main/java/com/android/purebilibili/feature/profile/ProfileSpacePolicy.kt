@@ -342,7 +342,8 @@ internal fun mergeProfileAggregateState(
             current.contributionVideos
         },
         contributionVideoCount = if (aggregate.archive != null && shouldSeedContributions) {
-            aggregate.archive.count
+            val checkedAggregateArchive = requireNotNull(aggregate.archive)
+            checkedAggregateArchive.count
         } else {
             current.contributionVideoCount
         },
@@ -518,9 +519,9 @@ fun resolveProfileDynamicCover(item: SpaceDynamicItem): String {
 fun resolveProfileDynamicImageUrls(item: SpaceDynamicItem): List<String> {
     val major = item.modules.module_dynamic?.major
     return when {
-        major?.draw?.items?.isNotEmpty() == true -> major.draw.items.mapNotNull { it.src.takeIf(String::isNotBlank) }
-        major?.opus?.pics?.isNotEmpty() == true -> major.opus.pics.mapNotNull { it.src.takeIf(String::isNotBlank) }
-        major?.article?.covers?.isNotEmpty() == true -> major.article.covers.mapNotNull { it.takeIf(String::isNotBlank) }
+        major?.draw?.items?.isNotEmpty() == true -> major?.draw?.items.orEmpty().mapNotNull { it.src.takeIf(String::isNotBlank) }
+        major?.opus?.pics?.isNotEmpty() == true -> major?.opus?.pics.orEmpty().mapNotNull { it.src.takeIf(String::isNotBlank) }
+        major?.article?.covers?.isNotEmpty() == true -> major?.article?.covers.orEmpty().mapNotNull { it.takeIf(String::isNotBlank) }
         else -> emptyList()
     }
 }

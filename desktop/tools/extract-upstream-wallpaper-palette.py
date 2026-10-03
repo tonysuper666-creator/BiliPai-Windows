@@ -2,9 +2,10 @@
 The schema and original quantizer are supplied by their existing sole producers.
 No external dependency, settings namespace or image/network owner is created.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,json,re,subprocess
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 PATH='app/src/main/java/com/android/purebilibili/feature/home/components/cards/WallpaperPaletteStore.kt'
 ORIGINAL_SHA='521e632d1b8f3655e862abbeb3624bfaabf144fd8274f5315a2f9d646adb2219'
 PREPARED_SHA='be96484050dfea039e5e0cb687712fa00c5a3e5940e0fc707a400749f7f3cf36'
@@ -31,7 +32,7 @@ def main():
  repo=Path(args.source_repo).resolve();out=Path(args.output_dir).resolve()
  manifest=json.loads((repo/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
  assert manifest['upstreamCommit']==COMMIT,'WallpaperPalette stable source identity changed'
- original=(repo/PATH).read_text(encoding='utf-8').replace('\r\n','\n')
+ original=(_desktop_canonical_source(repo, PATH)).read_text(encoding='utf-8').replace('\r\n','\n')
  assert digest(original)==ORIGINAL_SHA,'WallpaperPalette source content changed'
  blob=subprocess.run(['git','show',COMMIT+':'+PATH],cwd=repo,capture_output=True,check=True).stdout.decode().replace('\r\n','\n')
  assert blob==original,'WallpaperPalette source differs from pinned Git blob'

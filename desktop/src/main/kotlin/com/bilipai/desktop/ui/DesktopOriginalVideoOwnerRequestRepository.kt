@@ -144,6 +144,8 @@ internal class DesktopOriginalVideoOwnerNotesView(
     override suspend fun getVideoNoteSnapshot(aid: Long): Result<VideoNoteSnapshot> = notes().getVideoNoteSnapshot(aid)
     override suspend fun savePrivateNote(payload: VideoNoteSavePayload): Result<String> = notes().savePrivateNote(payload)
     override suspend fun deletePrivateNote(aid: Long, noteId: String): Result<Unit> = notes().deletePrivateNote(aid, noteId)
+    override suspend fun getPublicVideoNotePage(aid: Long, page: Int): Result<VideoNotePublicNotePage> = notes().getPublicVideoNotePage(aid, page)
+    override suspend fun getPublicNoteInfo(cvid: Long): Result<PublicVideoNoteInfoData> = notes().getPublicNoteInfo(cvid)
 }
 
 /** Capture before any Runtime wait. This continuation's immutable request,

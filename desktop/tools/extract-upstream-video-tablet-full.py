@@ -1,3 +1,4 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
 import hashlib,importlib.util,json,re,subprocess,sys,difflib
 sys.dont_write_bytecode=True
@@ -6,13 +7,27 @@ cli=argparse.ArgumentParser(description="Complete fixed-tag Tablet/Cinema and Bo
 cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path,required=True);cli.add_argument('--standalone',action='store_true')
 args=cli.parse_args();REPO=args.repo.resolve();LANE=args.output.resolve()
 FEATURE='stable-video-tablet-original'
-SOURCE_PINS={'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.kt': {'sha256LF': '31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f', 'gitBlob': '6227d6ebee10196bbe3cf3ba2cf74b63fde5593b'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoInfoEntrancePolicy.kt': {'sha256LF': '1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40', 'gitBlob': '93ef25f973ea749e0c196c3e44017f3e0d1fdd66'}, 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': {'sha256LF': '680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c', 'gitBlob': 'bf13a0defbea20cfe427048925082f5dcb2b3e35'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt': {'sha256LF': 'b19f5f30827945f4d295330b39e6441f94be721c59f63fbdb6a123152ccc56c4', 'gitBlob': 'c8a0b76ee6e62ab1a6bd0f4741649430d9e5fe47'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt': {'sha256LF': '49e852e2de272aff089a4fcaf20586e2e03c5fdc988aacbfd8f28a90b3812dbe', 'gitBlob': '08a9741165c7249af17d7cf986dfbe47d47b5f0f'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt': {'sha256LF': 'a0839c0c7d9b5a3e0e8ceefc85696d6018e75a1bb6bcba5c01f69c3aab3da169', 'gitBlob': '78a8d1894daa4296df52009830fe6e02466dd83f'}, 'app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt': {'sha256LF': '6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a', 'gitBlob': 'aea49e1e391f18e44f566c54fcbc4454f7f18fb2'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPane.kt': {'sha256LF': 'a2fc7ae37cbd5dab0a9cf36fc75f5bd0803d48df810270f76b3f72807da73d1f', 'gitBlob': 'a1ea77c9cda33ddb5bd83c8463e8ce426d0d8a48'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt': {'sha256LF': '11bded8eb078551356ee7c392102810f6703552786074e5574a751d1d5b2f4c4', 'gitBlob': 'af110162d01f8fa600ca9f7ff62f5ed7e2b9a5a4'}}
+SOURCE_PINS={'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayoutPolicy.kt': {'sha256LF': '31b95f171a3ebda26424a0ddc18d52911ec4be9181ec808cd28404bf837e0f7f', 'gitBlob': '6227d6ebee10196bbe3cf3ba2cf74b63fde5593b'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoInfoEntrancePolicy.kt': {'sha256LF': '1cf26d5e09804fd84ebd0e39e744e2dd025cf328983c73a26e64b0d112c24d40', 'gitBlob': '93ef25f973ea749e0c196c3e44017f3e0d1fdd66'}, 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': {'sha256LF': '5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c', 'gitBlob': '5d24281dc2152c1e2113ab3476418f61261cd15a'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletDanmakuChromeState.kt': {'sha256LF': 'b19f5f30827945f4d295330b39e6441f94be721c59f63fbdb6a123152ccc56c4', 'gitBlob': 'c8a0b76ee6e62ab1a6bd0f4741649430d9e5fe47'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt': {'sha256LF': 'f301b7b66fbced10e280c1a3777d545e3809194765f66fd724c2ed7192f215d8', 'gitBlob': '8b8bfb53a6ac38791439f39c67b547e5e80ceafe'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt': {'sha256LF': '58c3765fdf1f86f25589b338e3f60cf3ea9a575fd660ccce9df16117713fde76', 'gitBlob': 'c78953c63b47d50a99bc55ecc23a5bbe8f20bf82'}, 'app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt': {'sha256LF': 'c54a7d24b03ecd5ff177b98c9007756c7f1e87d3629218019dd34b76907212af', 'gitBlob': 'a27208c422d5b637a02a3086e546792fae125020'}, 'app/src/main/java/com/android/purebilibili/feature/video/screen/TabletOwnerUploadsPane.kt': {'sha256LF': 'a2fc7ae37cbd5dab0a9cf36fc75f5bd0803d48df810270f76b3f72807da73d1f', 'gitBlob': 'a1ea77c9cda33ddb5bd83c8463e8ce426d0d8a48'}, 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/BottomInputBar.kt': {'sha256LF': '11bded8eb078551356ee7c392102810f6703552786074e5574a751d1d5b2f4c4', 'gitBlob': 'af110162d01f8fa600ca9f7ff62f5ed7e2b9a5a4'}}
 DIRECT={p for p in SOURCE_PINS if p.endswith('TabletVideoLayoutPolicy.kt') or p.endswith('TabletVideoInfoEntrancePolicy.kt')}
 manifest=json.loads((REPO/'desktop/upstream-sources.json').read_text(encoding='utf-8'))
-assert manifest['upstreamCommit']=='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+assert manifest['upstreamCommit']=='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589';BASE='app/src/main/java/com/android/purebilibili/'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
 OUT=LANE;SOURCES={};CHANGES={};OUTPUTS=[]
+FRESH_V025_COMMENT_COUNTS={'com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt': {'isRepliesRefreshing': 2, 'repliesError': 2, 'onRefreshReplies': 2, 'onRefresh': 2}, 'com/android/purebilibili/feature/video/screen/DesktopOriginalVideoContentSection.kt': {'isRepliesRefreshing': 3, 'repliesError': 3, 'onRefreshReplies': 3, 'onRefresh': 0}, 'com/android/purebilibili/feature/video/screen/TabletVideoLayout.kt': {'isRepliesRefreshing': 0, 'repliesError': 3, 'onRefreshReplies': 0, 'onRefresh': 2}, 'com/android/purebilibili/feature/video/screen/TabletCinemaLayout.kt': {'isRepliesRefreshing': 0, 'repliesError': 4, 'onRefreshReplies': 0, 'onRefresh': 2}}
+
+def validate_fresh_v025_comment_consumer(output,text):
+ # Source pins/full inverse are checked before this writer. Fresh canonical
+ # bodies already contain the business fragments; the old incremental helper
+ # must not inject them a second time. Verify the actual canonical call counts.
+ import re
+ expected=FRESH_V025_COMMENT_COUNTS.get(output)
+ if expected is not None:
+  for field,count in expected.items():
+   actual=len(re.findall(r'\b'+field+r'\s*=',text))
+   if actual!=count:raise ValueError('Fresh canonical comment consumer mismatch: '+output+' '+field+' '+str(actual)+' != '+str(count))
+ return text
+
 def safe(p):
  s=str(Path(p).absolute());prefix=chr(92)*2+'?'+chr(92)
  return Path(s if s.startswith(prefix) else prefix+s)
@@ -25,10 +40,10 @@ selector=module('tablet_select',REPO/'desktop/tools/extract-appearance-platform.
 section=module('tablet_section',REPO/'desktop/tools/extract-upstream-video-player-section-full.py')
 section.parser=parser
 def read(rel):
- path=BASE+rel
+ path=_desktop_canonical_relative(REPO,BASE+rel)
  if path not in SOURCES:
   raw=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=REPO)
-  assert raw==safe(REPO/path).read_bytes().replace(b'\r\n',b'\n'),path
+  assert raw==safe(_desktop_canonical_source(REPO, path)).read_bytes().replace(b'\r\n',b'\n'),path
   SOURCES[path]={'text':raw.decode(),'sha256LF':sha(raw),'gitBlob':subprocess.check_output(['git','rev-parse',COMMIT+':'+path],cwd=REPO,text=True).strip()}
   assert SOURCES[path]['sha256LF']==SOURCE_PINS[path]['sha256LF'] and SOURCES[path]['gitBlob']==SOURCE_PINS[path]['gitBlob'],path
   if not args.standalone:
@@ -45,6 +60,7 @@ def replace(t,before,after,label='Explicit Windows source seam',all=False):
 def between(t,start,end,after,label):
  a=t.index(start);b=t.index(end,a);return replace(t,t[a:b],after,label)
 def emit(rel,t,original):
+ t=validate_fresh_v025_comment_consumer("com/android/purebilibili/"+rel,t)
  if BASE+original in DIRECT and not args.standalone:return
  p=OUT/'com/android/purebilibili'/rel;write(p,t)
  OUTPUTS.append({'path':str(p),'sha256LF':sha(t),'original':BASE+original})

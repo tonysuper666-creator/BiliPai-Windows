@@ -40,14 +40,16 @@ internal class DesktopWindowsProfilePlatform(
     override fun copyText(label:String,text:String) {
         EventQueue.invokeLater {if(owns() && scope.coroutineContext[Job]?.isActive==true)commit {if(!clipboard.copyText(text))actualFeedback("无法写入系统剪贴板，请稍后重试")}}
     }
-    override fun pickMedia(onSelected:(String?)->Unit) {
+    override fun pickMedia(onSelected:(String?)->Unit) = pickVisualFile(false, onSelected)
+    override fun pickQrImage(onSelected:(String?)->Unit) = pickVisualFile(true, onSelected)
+    private fun pickVisualFile(qr:Boolean,onSelected:(String?)->Unit) {
         checkpoint()
         scope.launch(Dispatchers.Swing) {
             checkpoint(currentCoroutineContext()[Job]);val dialog=AtomicReference<JDialog?>()
             val chooser=object:JFileChooser() {
                 override fun createDialog(parent:java.awt.Component?):JDialog=super.createDialog(parent).also(dialog::set)
-            }.apply {dialogTitle="选择壁纸图片 / 视频";isMultiSelectionEnabled=false;fileSelectionMode=JFileChooser.FILES_ONLY
-                fileFilter=FileNameExtensionFilter("图片 / 视频","jpg","jpeg","png","gif","webp","bmp","mp4","m4v","webm","mkv","mov","3gp")}
+            }.apply {dialogTitle=if(qr) "选择登录二维码图片" else "选择壁纸图片 / 视频";isMultiSelectionEnabled=false;fileSelectionMode=JFileChooser.FILES_ONLY
+                fileFilter=if(qr) FileNameExtensionFilter("二维码图片","jpg","jpeg","png","gif","webp","bmp") else FileNameExtensionFilter("图片 / 视频","jpg","jpeg","png","gif","webp","bmp","mp4","m4v","webm","mkv","mov","3gp")}
             val pickerJob=currentCoroutineContext()[Job]
             val watcher=scope.launch(Dispatchers.Default) {
                 try {while(true){if(pickerJob?.isActive!=true || !owns())break;delay(50)}}
@@ -60,6 +62,34 @@ internal class DesktopWindowsProfilePlatform(
             } finally {watcher.cancel();dialog.getAndSet(null)?.dispose()}
         }
     }
+    override suspend fun readQrImage(uri:String):java.awt.image.BufferedImage = withContext(Dispatchers.IO) {
+        val job=currentCoroutineContext()[Job];checkpoint(job)
+        val selected=java.net.URI(uri)
+        require(selected.scheme=="file") {"需要选择本机二维码图片"}
+        val path=java.nio.file.Path.of(selected).toAbsolutePath().normalize()
+        com.bilipai.desktop.update.UpdateStorage.existingPathWithoutLinks(path)
+        require(java.nio.file.Files.isRegularFile(path,java.nio.file.LinkOption.NOFOLLOW_LINKS))
+        require(java.nio.file.Files.size(path) in 1..16L*1024*1024) {"二维码图片过大"}
+        val raw=java.nio.file.Files.newInputStream(path,java.nio.file.StandardOpenOption.READ,java.nio.file.LinkOption.NOFOLLOW_LINKS).use { input ->
+            val result=java.io.ByteArrayOutputStream();val buffer=ByteArray(8192)
+            while(true) {checkpoint(job);val count=input.read(buffer);if(count<0)break;require(result.size()+count<=16*1024*1024);result.write(buffer,0,count)}
+            result.toByteArray()
+        }
+        checkpoint(job)
+        org.jetbrains.skia.Data.makeFromBytes(raw).use { data ->
+            org.jetbrains.skia.Codec.makeFromData(data).use { codec ->
+                require(codec.width.toLong()*codec.height in 1L..16_777_216L) {"二维码图片尺寸过大"}
+            }
+        }
+        val image=java.io.ByteArrayInputStream(raw).use(javax.imageio.ImageIO::read)
+            ?: org.jetbrains.skia.Image.makeFromEncoded(raw).use { native ->
+                native.encodeToData(org.jetbrains.skia.EncodedImageFormat.PNG)?.use { png ->
+                    java.io.ByteArrayInputStream(png.bytes).use(javax.imageio.ImageIO::read)
+                } ?: error("二维码图片无法解码")
+            }
+        try {checkpoint(job);image} catch(error:Throwable) {image.flush();throw error}
+    }
+
     override suspend fun importWallpaperMedia(uri:String,directory:File)=files.import(uri,directory,false)
     override suspend fun importWallpaperImage(uri:String,directory:File)=files.import(uri,directory,true)
     override suspend fun readOwnedBytes(body:ResponseBody)=files.read(body)

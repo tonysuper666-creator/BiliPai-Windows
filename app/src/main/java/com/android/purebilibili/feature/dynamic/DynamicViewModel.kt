@@ -981,6 +981,7 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
     val dynamicCommentSortMode: StateFlow<CommentSortMode> = _dynamicCommentSortMode.asStateFlow()
 
     private var subReplyLoadJob: Job? = null
+    private var subReplyLoadRequestId = 0L
     private val _subReplyState = MutableStateFlow(SubReplyUiState())
     val subReplyState: StateFlow<SubReplyUiState> = _subReplyState.asStateFlow()
 
@@ -993,6 +994,11 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
     
     private val _commentsLoading = MutableStateFlow(false)
     val commentsLoading: StateFlow<Boolean> = _commentsLoading.asStateFlow()
+
+    private val _commentsRefreshing = MutableStateFlow(false)
+    val commentsRefreshing: StateFlow<Boolean> = _commentsRefreshing.asStateFlow()
+    private val _commentsRefreshError = MutableStateFlow<String?>(null)
+    internal val commentsRefreshError: StateFlow<String?> = _commentsRefreshError.asStateFlow()
 
     private val _commentsLoadingMore = MutableStateFlow(false)
     val commentsLoadingMore: StateFlow<Boolean> = _commentsLoadingMore.asStateFlow()
@@ -1049,6 +1055,17 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
         )
     }
     
+    fun refreshComments() {
+        if (_commentsRefreshing.value ||
+            (_commentsLoading.value && _comments.value.isEmpty())
+        ) return
+        val item = _selectedDynamic.value ?: return
+        _commentsRefreshing.value = true
+        _commentsRefreshError.value = null
+        loadCommentsForDynamic(item = item, isRefresh = true)
+    }
+
+
     /**
      *  关闭评论弹窗
      */
@@ -1059,6 +1076,10 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
         _selectedDynamic.value = null
         _selectedCommentTarget.value = null
         _comments.value = emptyList()
+        _commentsLoading.value = false
+        _commentsRefreshing.value = false
+        _commentsRefreshError.value = null
+        subReplyLoadRequestId++
         subReplyLoadJob?.cancel()
         _subReplyState.value = SubReplyUiState()
         _commentReplyTarget.value = null
@@ -1090,21 +1111,31 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
     private fun loadCommentsForDynamic(
         item: DynamicItem,
         routedRootReplyId: Long = 0L,
-        routedTargetReplyId: Long = 0L
+        routedTargetReplyId: Long = 0L,
+        isRefresh: Boolean = false,
     ) {
         val requestId = ++commentLoadRequestId
         commentLoadJob?.cancel()
         commentLoadJob = viewModelScope.launch {
             val sortMode = _dynamicCommentSortMode.value
-            _commentsLoading.value = true
-            _commentsLoadingMore.value = false
-            _selectedCommentTarget.value = null
-            commentNextPage = 1
-            commentsEnd = true
-            commentGrpcNextOffset = null
             val fallbackCount = item.modules.module_stat?.comment?.count ?: 0
-            _commentTotalCount.value = fallbackCount
-            
+            if (isRefresh) {
+                _commentsLoading.value = false
+                _commentsRefreshing.value = true
+                _commentsRefreshError.value = null
+            } else {
+                _commentsLoading.value = true
+                _commentsRefreshing.value = false
+                _commentsRefreshError.value = null
+                _selectedCommentTarget.value = null
+                commentNextPage = 1
+                commentsEnd = true
+                commentGrpcNextOffset = null
+                _commentTotalCount.value = fallbackCount
+            }
+            _commentsLoadingMore.value = false
+
+            var firstFailureMessage: String? = null
             try {
                 var effectiveItem = item
                 var targets = resolveDynamicCommentTargets(effectiveItem)
@@ -1114,6 +1145,9 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
                         "未获取到评论参数，对齐 PiliPlus 动态详情拉取 basic 补全: dynamicId=${effectiveItem.id_str}"
                     )
                     DynamicRepository.getDynamicDetail(effectiveItem.id_str).getOrNull()?.let { fullDetail ->
+                        if (requestId != commentLoadRequestId || _selectedDynamic.value?.id_str != item.id_str) {
+                            return@launch
+                        }
                         effectiveItem = fullDetail
                         _selectedDynamic.value = fullDetail
                         targets = resolveDynamicCommentTargets(fullDetail)
@@ -1121,6 +1155,11 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
                 }
                 if (targets.isEmpty()) {
                     com.android.purebilibili.core.util.Logger.e("DynamicVM", "无法获取评论参数: type=${effectiveItem.type}")
+                    if (isRefresh && requestId == commentLoadRequestId &&
+                        _selectedDynamic.value?.id_str == item.id_str
+                    ) {
+                        _commentsRefreshError.value = "无法获取评论参数"
+                    }
                     return@launch
                 }
 
@@ -1163,11 +1202,12 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
                             grpcNextOffset = data.grpcNextOffset.takeIf { it.isNotBlank() }
                         )
                     }.onFailure { error ->
+                        firstFailureMessage = firstFailureMessage ?: error.message
                         com.android.purebilibili.core.util.Logger.w(
                             "DynamicVM",
                             "动态评论候选失败: oid=${target.oid}, type=${target.type}, count=$exactCount, error=${error.message}"
                         )
-                        if ((exactCount ?: 0) > 0) {
+                        if (!isRefresh && (exactCount ?: 0) > 0) {
                             attempts += DynamicCommentLoadAttempt(
                                 target = target,
                                 replies = emptyList(),
@@ -1181,15 +1221,15 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
                     }
                 }
 
+                if (requestId != commentLoadRequestId || _selectedDynamic.value?.id_str != item.id_str) {
+                    return@launch
+                }
                 val selected = selectPreferredDynamicCommentAttempt(
                     attempts = attempts,
                     expectedCount = fallbackCount
                 )
-                if (requestId != commentLoadRequestId) return@launch
                 if (selected != null) {
-                    if (_dynamicCommentSortMode.value != sortMode) {
-                        return@launch
-                    }
+                    if (_dynamicCommentSortMode.value != sortMode) return@launch
                     _selectedCommentTarget.value = selected.target
                     _comments.value = selected.replies
                     _commentTotalCount.value = selected.totalCount
@@ -1202,6 +1242,8 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
                             targetReplyId = routedTargetReplyId
                         )
                     }
+                } else if (isRefresh) {
+                    _commentsRefreshError.value = firstFailureMessage ?: "评论刷新失败"
                 } else {
                     _comments.value = emptyList()
                     _commentTotalCount.value = fallbackCount
@@ -1214,9 +1256,15 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
             } catch (e: Exception) {
                 com.android.purebilibili.core.util.Logger.e("DynamicVM", "加载评论异常: ${e.message}")
                 e.printStackTrace()
+                if (isRefresh && requestId == commentLoadRequestId &&
+                    _selectedDynamic.value?.id_str == item.id_str
+                ) {
+                    _commentsRefreshError.value = e.message ?: "评论刷新失败"
+                }
             } finally {
                 if (requestId == commentLoadRequestId) {
                     _commentsLoading.value = false
+                    _commentsRefreshing.value = false
                 }
             }
         }
@@ -1224,7 +1272,7 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
 
     fun loadMoreComments() {
         val target = _selectedCommentTarget.value ?: return
-        if (_commentsLoading.value || _commentsLoadingMore.value || commentsEnd) return
+        if (_commentsLoading.value || _commentsRefreshing.value || _commentsLoadingMore.value || commentsEnd) return
 
         val pageToLoad = commentNextPage
         val sortMode = _dynamicCommentSortMode.value
@@ -1346,6 +1394,7 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
         _subReplyState.value = _subReplyState.value.copy(
             visible = false,
             isLoading = true,
+            isRefreshing = false,
             error = null,
             targetReplyId = targetReplyId.takeIf { it != rootReplyId } ?: 0L
         )
@@ -1356,6 +1405,8 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
         rootReplyId: Long,
         targetReplyId: Long
     ) {
+        val requestId = ++subReplyLoadRequestId
+        subReplyLoadJob?.cancel()
         subReplyLoadJob = viewModelScope.launch {
             CommentRepository.getSortedSubCommentsForSubject(
                 oid = target.oid,
@@ -1364,12 +1415,17 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
                 mode = SubReplySortMode.TIME.apiMode,
                 targetReplyId = targetReplyId
             ).onSuccess { data ->
-                if (_selectedCommentTarget.value != target) return@onSuccess
+                if (requestId != subReplyLoadRequestId || _selectedCommentTarget.value != target) {
+                    return@onSuccess
+                }
                 showRoutedSubReply(data, rootReplyId, targetReplyId)
             }.onFailure { error ->
-                if (_selectedCommentTarget.value != target) return@onFailure
+                if (requestId != subReplyLoadRequestId || _selectedCommentTarget.value != target) {
+                    return@onFailure
+                }
                 _subReplyState.value = _subReplyState.value.copy(
                     isLoading = false,
+                    isRefreshing = false,
                     error = error.message ?: "回复加载失败"
                 )
             }
@@ -1419,8 +1475,13 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun closeSubReply() {
+        subReplyLoadRequestId++
         subReplyLoadJob?.cancel()
-        _subReplyState.value = _subReplyState.value.copy(visible = false, isLoading = false)
+        _subReplyState.value = _subReplyState.value.copy(
+            visible = false,
+            isLoading = false,
+            isRefreshing = false
+        )
     }
 
     fun setSubReplySortMode(mode: SubReplySortMode) {
@@ -1433,11 +1494,28 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
         loadSubReplies(target.oid, target.type, root.rpid, page = 1, paginationOffset = null)
     }
 
+    fun refreshSubReplies() {
+        val state = _subReplyState.value
+        val target = _selectedCommentTarget.value ?: return
+        val rootReply = state.rootReply ?: return
+        if (!state.visible || state.isRefreshing ||
+            (state.isLoading && state.items.isEmpty())
+        ) return
+        loadSubReplies(
+            oid = target.oid,
+            type = target.type,
+            rootId = rootReply.rpid,
+            page = 1,
+            paginationOffset = null,
+            isRefresh = true
+        )
+    }
+
     fun loadMoreSubReplies() {
         val state = _subReplyState.value
         val target = _selectedCommentTarget.value ?: return
         val rootReply = state.rootReply ?: return
-        if (state.isLoading || state.isEnd) return
+        if (state.isLoading || state.isRefreshing || state.isEnd) return
         val nextPage = if (state.error != null && state.items.isEmpty()) 1 else state.page + 1
         _subReplyState.value = state.copy(isLoading = true, error = null)
         loadSubReplies(
@@ -1454,60 +1532,92 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
         type: Int,
         rootId: Long,
         page: Int,
-        paginationOffset: String? = _subReplyState.value.grpcNextOffset
+        paginationOffset: String? = _subReplyState.value.grpcNextOffset,
+        isRefresh: Boolean = false,
     ) {
-        val sortMode = _subReplyState.value.sortMode
-        val targetReplyId = _subReplyState.value.targetReplyId.takeIf { page == 1 } ?: 0L
+        val state = _subReplyState.value
+        val sortMode = state.sortMode
+        val targetReplyId = state.targetReplyId.takeIf { page == 1 } ?: 0L
+        val requestId = ++subReplyLoadRequestId
         subReplyLoadJob?.cancel()
+        _subReplyState.value = if (isRefresh) {
+            state.copy(isLoading = true, isRefreshing = true, error = null)
+        } else {
+            state.copy(isLoading = true, isRefreshing = false, error = null)
+        }
         subReplyLoadJob = viewModelScope.launch {
-            val result = CommentRepository.getSortedSubCommentsForSubject(
-                oid = oid,
-                type = type,
-                rootId = rootId,
-                mode = sortMode.apiMode,
-                targetReplyId = targetReplyId,
-                paginationOffset = paginationOffset
-            )
-            result.onSuccess { data ->
-                val current = _subReplyState.value
-                val target = _selectedCommentTarget.value
-                if (!current.visible || current.rootReply?.rpid != rootId ||
-                    target?.oid != oid || target?.type != type || current.sortMode != sortMode
-                ) return@onSuccess
-                val newItems = data.replies.orEmpty()
-                val updatedItems = if (page == 1) {
-                    newItems
-                } else {
-                    (current.items + newItems).distinctBy { it.rpid }
+            try {
+                val result = CommentRepository.getSortedSubCommentsForSubject(
+                    oid = oid,
+                    type = type,
+                    rootId = rootId,
+                    mode = sortMode.apiMode,
+                    targetReplyId = targetReplyId,
+                    paginationOffset = paginationOffset
+                )
+                result.onSuccess { data ->
+                    val current = _subReplyState.value
+                    val target = _selectedCommentTarget.value
+                    if (requestId != subReplyLoadRequestId || !current.visible ||
+                        current.rootReply?.rpid != rootId || target?.oid != oid ||
+                        target?.type != type || current.sortMode != sortMode
+                    ) return@onSuccess
+                    val newItems = data.replies.orEmpty()
+                    val updatedItems = if (page == 1) {
+                        newItems
+                    } else {
+                        (current.items + newItems).distinctBy { it.rpid }
+                    }
+                    val remoteTotalCount = resolveSubReplyRemoteTotalCount(
+                        data = data,
+                        rootReply = current.rootReply
+                    )
+                    val totalCount = resolveSubReplyLoadedTotalCount(
+                        rootReply = current.rootReply,
+                        loadedReplyCount = updatedItems.size,
+                        remoteReplyCount = remoteTotalCount,
+                        previousTotalCount = if (isRefresh) 0 else current.totalCount
+                    )
+                    val isEnd = isSortedSubReplyPageEnd(data.cursor.isEnd, data.grpcNextOffset)
+                    _subReplyState.value = resolveDynamicSubReplyStateAfterSuccess(
+                        currentState = current,
+                        newItems = newItems,
+                        page = page,
+                        isEnd = isEnd,
+                        totalCount = totalCount,
+                        grpcNextOffset = data.grpcNextOffset
+                    )
+                }.onFailure { error ->
+                    val current = _subReplyState.value
+                    val target = _selectedCommentTarget.value
+                    if (requestId != subReplyLoadRequestId || !current.visible ||
+                        current.rootReply?.rpid != rootId || target?.oid != oid ||
+                        target?.type != type
+                    ) return@onFailure
+                    _subReplyState.value = resolveDynamicSubReplyStateAfterFailure(
+                        currentState = current,
+                        errorMessage = error.message ?: "回复加载失败"
+                    )
                 }
-                val remoteTotalCount = resolveSubReplyRemoteTotalCount(
-                    data = data,
-                    rootReply = current.rootReply
-                )
-                val totalCount = resolveSubReplyLoadedTotalCount(
-                    rootReply = current.rootReply,
-                    loadedReplyCount = updatedItems.size,
-                    remoteReplyCount = remoteTotalCount,
-                    previousTotalCount = current.totalCount
-                )
-                val isEnd = isSortedSubReplyPageEnd(data.cursor.isEnd, data.grpcNextOffset)
-                _subReplyState.value = resolveDynamicSubReplyStateAfterSuccess(
-                    currentState = current,
-                    newItems = newItems,
-                    page = page,
-                    isEnd = isEnd,
-                    totalCount = totalCount,
-                    grpcNextOffset = data.grpcNextOffset
-                )
-            }.onFailure { error ->
-                val target = _selectedCommentTarget.value
-                if (!_subReplyState.value.visible || _subReplyState.value.rootReply?.rpid != rootId ||
-                    target?.oid != oid || target?.type != type
-                ) return@onFailure
-                _subReplyState.value = resolveDynamicSubReplyStateAfterFailure(
-                    currentState = _subReplyState.value,
-                    errorMessage = error.message ?: "回复加载失败"
-                )
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                val current = _subReplyState.value
+                if (requestId == subReplyLoadRequestId && current.visible &&
+                    current.rootReply?.rpid == rootId
+                ) {
+                    _subReplyState.value = current.copy(error = e.message ?: "回复加载失败")
+                }
+            } finally {
+                if (requestId == subReplyLoadRequestId) {
+                    _subReplyState.update { current ->
+                        if (current.rootReply?.rpid == rootId) {
+                            current.copy(isLoading = false, isRefreshing = false)
+                        } else {
+                            current
+                        }
+                    }
+                }
             }
         }
     }
@@ -1930,10 +2040,11 @@ class DynamicViewModel(application: Application) : AndroidViewModel(application)
                 if (response.code != 0 || response.data == null) {
                     throw IllegalStateException(response.message.ifBlank { "预约操作失败" })
                 }
+                val data = requireNotNull(response.data)
                 val result = DynamicReserveResult(
-                    description = response.data.desc_update,
-                    reserveTotal = response.data.reserve_update,
-                    buttonStatus = response.data.final_btn_status,
+                    description = data.desc_update,
+                    reserveTotal = data.reserve_update,
+                    buttonStatus = data.final_btn_status,
                 )
                 if (action.buttonType > 0 && result.buttonStatus == action.buttonType) {
                     LiveReserveReminderScheduler.schedule(getApplication(), action)

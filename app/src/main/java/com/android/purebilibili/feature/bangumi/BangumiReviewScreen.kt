@@ -299,11 +299,12 @@ fun BangumiReviewScreen(
                                                             if (current.review_id != item.review_id) {
                                                                 current
                                                             } else {
-                                                                val liked = current.stat?.liked == 1
+                                                                val stat = current.stat
+                                                                val liked = stat?.liked == 1
                                                                 current.copy(
-                                                                    stat = current.stat?.copy(
+                                                                    stat = stat?.copy(
                                                                         liked = if (liked) 0 else 1,
-                                                                        likes = (current.stat.likes + if (liked) -1 else 1)
+                                                                        likes = (stat.likes + if (liked) -1 else 1)
                                                                             .coerceAtLeast(0)
                                                                     )
                                                                 )

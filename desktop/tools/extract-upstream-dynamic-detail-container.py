@@ -1,6 +1,7 @@
 """Original detail chrome/layout producer; platform interfaces are supplied by Root.
 Direct sources are emitted only in --standalone and copied once by the source registry in production.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib
 import importlib.util
@@ -27,7 +28,7 @@ def write(path, value):
     safe(path).write_text(value, encoding='utf-8', newline='\n')
 
 def read(path):
-    current = safe(REPO/path).read_text(encoding='utf-8').replace('\r\n','\n')
+    current = safe(_desktop_canonical_source(REPO, path)).read_text(encoding='utf-8').replace('\r\n','\n')
     if STANDALONE:
         original = subprocess.run(['git','show',TAG+':'+path],cwd=REPO,capture_output=True,check=True).stdout.decode().replace('\r\n','\n')
         assert current == original, path
@@ -169,6 +170,8 @@ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
     }
     val comments by session.comments.collectAsState()
     val commentsLoading by session.commentsLoading.collectAsState()
+    val commentsRefreshing by session.commentsRefreshing.collectAsState()
+    val commentsRefreshError by session.commentsRefreshError.collectAsState()
     val commentsLoadingMore by session.commentsLoadingMore.collectAsState()
     val commentTotalCount by session.commentTotalCount.collectAsState()
     val commentSortMode by session.dynamicCommentSortMode.collectAsState()
@@ -184,6 +187,9 @@ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
     var previewInitialIndex by remember { mutableIntStateOf(0) }
     var previewSourceRect by remember { mutableStateOf<ImagePreviewSourceAnchor?>(null) }
     var previewTextContent by remember { mutableStateOf<ImagePreviewTextContent?>(null) }
+    LaunchedEffect(commentsRefreshError) {
+        commentsRefreshError?.let { if (platform.isOwned()) platform.showFeedback(it) }
+    }
 '''+top+'''            is DesktopOriginalDynamicDetailUiState.Success -> {
 '''+success+thread+'''
                 if (showImagePreview && previewImages.isNotEmpty()) {

@@ -48,7 +48,7 @@ class PlayerPreferencesTest {
             assertEquals(0.0, loaded.volume)
             assertEquals(8.0, loaded.speed)
             assertEquals(1f, loaded.danmaku.opacity)
-            assertEquals(0.5f, loaded.danmaku.fontScale)
+            assertEquals(0.3f, loaded.danmaku.fontScale)
             assertEquals(listOf("abc"), loaded.danmaku.blockedKeywords)
             Files.writeString(file, "not a valid document")
             assertEquals(PlayerPreferences(), PlayerPreferencesStore(file).read())

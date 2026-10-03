@@ -1,0 +1,227 @@
+{
+  "codeHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+  "productionReadOnly": true,
+  "productionBuildExecuted": false,
+  "productionVersionModified": false,
+  "newWrapper": false,
+  "desktopChanged": false,
+  "userDataRead": false,
+  "configuration": [
+    {
+      "path": "desktop/tools/build.ps1",
+      "sourceHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+      "sha256Bytes": "01a313693ff8fdfc9a45a8f66717f34b00af3efbaf99f6c2ab529bb0da59be78",
+      "bytes": 11326,
+      "anchors": [
+        {
+          "line": 2,
+          "text": "param("
+        },
+        {
+          "line": 72,
+          "text": "        $gradleArguments += 'createDistributable'"
+        },
+        {
+          "line": 80,
+          "text": "    if (-not $executable) { throw 'createDistributable did not produce a native Windows launcher.' }"
+        },
+        {
+          "line": 134,
+          "text": "    Compress-Archive -Path (Join-Path $appRoot '*') -DestinationPath $stagedArchive"
+        },
+        {
+          "line": 140,
+          "text": "        $updaterSmokeRoot = Join-Path $desktopRoot ('build/reports/updater-smoke-' + [Guid]::NewGuid().ToString('N'))"
+        },
+        {
+          "line": 141,
+          "text": "        New-Item -ItemType Directory -Path $updaterSmokeRoot -Force | Out-Null"
+        },
+        {
+          "line": 142,
+          "text": "        $updaterSmokeArguments = @('-p', 'desktop', '--console=plain', 'updaterSmoke',"
+        },
+        {
+          "line": 143,
+          "text": "            \"-PupdateTestPackage=$archive\", \"-PupdateTestReport=$updaterSmokeRoot\")"
+        },
+        {
+          "line": 144,
+          "text": "        if ($PreviousUpdateTestPackage) { $updaterSmokeArguments += \"-PupdatePreviousPackage=$PreviousUpdateTestPackage\" }"
+        },
+        {
+          "line": 147,
+          "text": "            & (Join-Path $repoRoot 'gradlew.bat') @updaterSmokeArguments 2>&1 |"
+        },
+        {
+          "line": 148,
+          "text": "                Tee-Object -FilePath (Join-Path $updaterSmokeRoot 'updater-smoke-gradle.log')"
+        },
+        {
+          "line": 151,
+          "text": "        $updaterReportPath = Join-Path $updaterSmokeRoot 'updater-smoke.json'"
+        }
+      ]
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "sourceHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+      "sha256Bytes": "d51e0ea10c71ebb46ef476a74033d15e64928786868cbaa472d90f29ff9ca8b3",
+      "bytes": 146627,
+      "anchors": [
+        {
+          "line": 26,
+          "text": "val upstreamVersionCode = Regex(\"versionCode\\\\s*=\\\\s*(\\\\d+)\")"
+        },
+        {
+          "line": 28,
+          "text": "val windowsRevision = manifest[\"windowsRevision\"]?.toString() ?: \"1\""
+        },
+        {
+          "line": 29,
+          "text": "val windowsVersion = \"0.2.$upstreamVersionCode.$windowsRevision\""
+        },
+        {
+          "line": 1727,
+          "text": "            packageVersion = \"0.2.$upstreamVersionCode\""
+        }
+      ]
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "sourceHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+      "sha256Bytes": "2245139f2b5cb6ae7d6a02c90e43e89e3b35a5dd37710821edbc6b189ca7a23c",
+      "bytes": 431363,
+      "anchors": [
+        {
+          "line": 4,
+          "text": "  \"upstreamTag\": \"v0.2.3\","
+        },
+        {
+          "line": 5,
+          "text": "  \"upstreamCommit\": \"3d5d19a2f994daccd0e2f8b5f522b6d82f43d589\","
+        },
+        {
+          "line": 10139,
+          "text": "  \"windowsRevision\": 1,"
+        }
+      ]
+    },
+    {
+      "path": "app/build.gradle.kts",
+      "sourceHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+      "sha256Bytes": "44a86d765faaf08b2af1cc75cf4561a6364d7cee4a557888113478a5cc73aeef",
+      "bytes": 25342,
+      "anchors": [
+        {
+          "line": 123,
+          "text": "        versionCode = 415"
+        }
+      ]
+    },
+    {
+      "path": "gradle/wrapper/gradle-wrapper.properties",
+      "sourceHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+      "sha256Bytes": "3d1338e4e8c15cbe3bcb8300221375b3b274903d511567e49c74512b85ba64b8",
+      "bytes": 282,
+      "anchors": [
+        {
+          "line": 4,
+          "text": "distributionUrl=https\\://services.gradle.org/distributions/gradle-9.5.0-bin.zip"
+        }
+      ]
+    },
+    {
+      "path": "desktop/native/diagnostic-share/approved-development-build.json",
+      "sourceHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+      "sha256Bytes": "147c338a72845eee396a394760945e76c96803b89d224059deb284c91f2831cf",
+      "bytes": 83098,
+      "anchors": []
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopLibrary.kt",
+      "sourceHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+      "sha256Bytes": "a4884b5b92c11d089512609655773e65313774f6d06693d25fed056bb5400100",
+      "bytes": 5251,
+      "anchors": [
+        {
+          "line": 23,
+          "text": "    System.getenv(\"LOCALAPPDATA\") ?: System.getProperty(\"java.io.tmpdir\"), \"BiliPaiWindows\"),"
+        },
+        {
+          "line": 83,
+          "text": "        fun directoryForAccount(mid: Long?): Path {"
+        },
+        {
+          "line": 84,
+          "text": "            val base = Path.of(System.getenv(\"LOCALAPPDATA\") ?: System.getProperty(\"java.io.tmpdir\"), \"BiliPaiWindows\")"
+        }
+      ]
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/Main.kt",
+      "sourceHEAD": "529a79eb3182f51f449f4bbf5f66ff615113e248",
+      "sha256Bytes": "2fbef0b05d3b8d696394a8f774887ab408a8983f1c503c9669f5b38b84e8859c",
+      "bytes": 13289,
+      "anchors": [
+        {
+          "line": 56,
+          "text": "    if (args.firstOrNull() in setOf(\"--player-self-test\", \"--player-self-test-ci\")) {"
+        },
+        {
+          "line": 57,
+          "text": "        require(args.size == 2) { \"Usage: --player-self-test[-ci] <report-directory>\" }"
+        },
+        {
+          "line": 59,
+          "text": "            useNullAudioOutput = args.first() == \"--player-self-test-ci\")"
+        },
+        {
+          "line": 72,
+          "text": "    val healthIndex = args.indexOf(\"--update-health-file\")"
+        },
+        {
+          "line": 180,
+          "text": "                            require(marker.startsWith(root) && marker.fileName.toString() == \"startup-health.txt\")"
+        }
+      ]
+    }
+  ],
+  "native": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\resources\\common\\native\\windows-x64\\libmpv-2.dll",
+      "sha256Bytes": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+      "bytes": 120342528
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\resources\\common\\native\\windows-x64\\bilipai-diagnostic-share.dll",
+      "sha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3",
+      "bytes": 241152
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\resources\\common\\native\\windows-x64\\ffmpeg.exe",
+      "sha256Bytes": "9c60da6c0b083110d59084ea39f60ae149aa3e031c3b4bb4f573fafa1c1e7cea",
+      "bytes": 113981440
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\resources\\common\\native\\windows-x64\\ffprobe.exe",
+      "sha256Bytes": "67176fa62f89f94c3bcd379fd05677a25651569a2eb8880ec2194e62c82be412",
+      "bytes": 113775616
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\resources\\common\\native\\windows-x64\\provenance.json",
+      "sha256Bytes": "4cbf039ba6cf9a3de3191fb3eeb573fdda3133e5a9fd78a7eae84c92ad0a6859",
+      "bytes": 759
+    },
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai-v023\\desktop\\resources\\common\\native\\windows-x64\\ffmpeg-provenance.json",
+      "sha256Bytes": "746a583cd9e84092780de0975ae72323a8d2fd69ae276485bc7d13b3b66d41ac",
+      "bytes": 249177
+    }
+  ],
+  "frozenSearchHandoffSHA": "86589bf1f6e24b93d12c94143ca68119cf1e0c603c5e6f7bbc76767b0d6d05ec",
+  "existingWindowsVersion": "0.2.415.1",
+  "windowsRevision": 1,
+  "launchPackageVersion": "0.2.415",
+  "newDeploymentAndRealAccountAccepted": false
+}

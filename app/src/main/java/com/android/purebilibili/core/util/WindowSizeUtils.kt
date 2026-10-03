@@ -202,8 +202,8 @@ data class AppWindowAdaptiveInfo(
         get() = foldingFeature.posture
 
     val shouldAvoidHinge: Boolean
-        get() = foldingFeature.hasObstructingHinge &&
-            windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact
+        get() = foldingFeature.hasObstructingHinge ||
+            foldingFeature.layoutHinges().any { !it.isFlat }
 }
 
 /**

@@ -173,6 +173,37 @@ class DesktopUpdaterIntegrationTest {
                         put("health", healthEvidence(damaged.stagingDirectory))
                     }
 
+                    // Root composition must fail even though the EXE window and native player can start.
+                    // The former window-only ACK incorrectly accepted this authenticated fixture ZIP.
+                    val damagedRootZip = caseRoot.resolve("damaged-root-fixture.zip")
+                    val damagedRootEntries = damageRootWorkerCatalog(packagePath, damagedRootZip)
+                    fixture.publish("damaged-root", config.version, damagedRootZip)
+                    val damagedRootUpdater = updater()
+                    val damagedRootUpdate = assertIs<UpdateState.Available>(damagedRootUpdater.check()).update
+                    val damagedRoot = assertNotNull(damagedRootUpdater.prepareUpdate(damagedRootUpdate))
+                    val beforeRootDamageProcesses = launched.size
+                    assertFalse(damagedRootUpdater.activatePreparedUpdate(damagedRoot))
+                    assertTrue(launched.size > beforeRootDamageProcesses, "The broken Root fixture must reach actual EXE startup")
+                    assertFalse(launched.last().isAlive)
+                    assertContentEquals(originalActive, Files.readAllBytes(activeFile))
+                    assertTrue(goodProcess.isAlive)
+                    val failedRootLaunches = launchDirectories(damagedRoot.stagingDirectory)
+                    assertTrue(failedRootLaunches.isNotEmpty())
+                    failedRootLaunches.forEach { directory ->
+                        assertFalse(Files.exists(directory.resolve("startup-health.txt"), NOFOLLOW_LINKS),
+                            "A failed Root must never acknowledge startup")
+                        assertFalse(Files.exists(directory.resolve("startup-version.txt"), NOFOLLOW_LINKS),
+                            "Version publication must also wait for a real Root frame")
+                    }
+                    evidence["damagedRootStartupRejected"] = buildJsonObject {
+                        put("passed", true)
+                        put("fixtureZipSha256", sha256(damagedRootZip))
+                        put("modifiedEntries", buildJsonArray { damagedRootEntries.forEach { add(JsonPrimitive(it)) } })
+                        put("originalActiveBytesUnchanged", true)
+                        put("rootHealthAcknowledged", false)
+                        put("health", healthEvidence(damagedRoot.stagingDirectory))
+                    }
+
                     // Explicit fixture setup models a damaged registered active and its healthy previous install.
                     // Both carry the actual version: fallback must also update a changed path at the same version.
                     Files.writeString(activeFile, json.encodeToString(JsonObject.serializer(), buildJsonObject {
@@ -335,6 +366,27 @@ class DesktopUpdaterIntegrationTest {
             }
         }
         require(changed.isNotEmpty()) { "No bundled native player DLL was found to damage" }
+        return changed
+    }
+
+    private fun damageRootWorkerCatalog(source: Path, destination: Path): List<String> {
+        val changed = mutableListOf<String>()
+        ZipFile(source.toFile()).use { zip ->
+            ZipOutputStream(Files.newOutputStream(destination)).use { output ->
+                output.setLevel(Deflater.BEST_SPEED)
+                zip.entries().asSequence().forEach { entry ->
+                    output.putNextEntry(ZipEntry(entry.name))
+                    if (!entry.isDirectory) {
+                        if (entry.name.endsWith("/js-engine/classpath.json")) {
+                            changed.add(entry.name)
+                            output.write("{}".toByteArray(Charsets.UTF_8))
+                        } else zip.getInputStream(entry).use { it.copyTo(output) }
+                    }
+                    output.closeEntry()
+                }
+            }
+        }
+        require(changed.size == 1) { "Expected exactly one bundled Root JS worker catalog to damage" }
         return changed
     }
 

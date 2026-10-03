@@ -286,7 +286,7 @@ private const val BGM_RECOMMEND_PAGE_SIZE = 5
 private const val BGM_RECOMMEND_ROW_START_INDEX = 4
 /** 悬浮音频播放条的高度余量，避免底部面板内容被遮挡。 */
 private const val AUDIO_NOW_PLAYING_BAR_CLEARANCE_DP = 64
-private val BGM_DETAIL_CARD_HEIGHT = 168.dp
+private val BGM_DETAIL_CARD_MIN_HEIGHT = 168.dp
 
 /**
  * Video Title Section (Bilibili official style: compact layout)
@@ -914,22 +914,23 @@ fun VideoTitleWithDesc(
                 .resolveAppTagChipMetrics(videoTagSize)
             Column {
                 Spacer(Modifier.height(8.dp))
-                androidx.compose.foundation.layout.FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(tagMetrics.itemSpacingHorizontal),
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    videoTags.take(10).forEach { tag ->
-                        com.android.purebilibili.core.ui.components.AppTagChip(
-                            label = if (tag.tag_type == "bgm") tag.tag_name.replaceFirst("发现", "♫ BGM：") else tag.tag_name,
-                            onClick = {
-                                val bgm = resolveBgmTagInfo(tag)
-                                if (bgm != null) onBgmClick(bgm) else onTagClick(tag.tag_name)
-                            },
-                            modifier = Modifier
-                                .padding(bottom = tagMetrics.itemSpacingVertical)
-                                .copyOnLongPress(tag.tag_name, "标签"),
-                            size = videoTagSize,
-                        )
+                // Keep native touch expansion without reserving a 48dp layout box per tag.
+                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+                    androidx.compose.foundation.layout.FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(tagMetrics.itemSpacingHorizontal),
+                        verticalArrangement = Arrangement.spacedBy(tagMetrics.itemSpacingVertical)
+                    ) {
+                        videoTags.take(10).forEach { tag ->
+                            com.android.purebilibili.core.ui.components.AppTagChip(
+                                label = if (tag.tag_type == "bgm") tag.tag_name.replaceFirst("发现", "♫ BGM：") else tag.tag_name,
+                                onClick = {
+                                    val bgm = resolveBgmTagInfo(tag)
+                                    if (bgm != null) onBgmClick(bgm) else onTagClick(tag.tag_name)
+                                },
+                                modifier = Modifier.copyOnLongPress(tag.tag_name, "标签"),
+                                size = videoTagSize,
+                            )
+                        }
                     }
                 }
             }
@@ -2179,12 +2180,13 @@ private fun BgmSelectionStrip(
 }
 
 @Composable
-private fun BgmDetailCard(
+internal fun BgmDetailCard(
     bgm: BgmInfo,
     detail: BgmDetailData?,
     isLoading: Boolean,
     statLine: String?,
-    onOpenMusic: () -> Unit
+    onOpenMusic: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val scoreText = remember(detail) { resolveBgmScoreText(detail) }
     val displayStatLine = remember(statLine) { statLine ?: resolveUnavailableBgmStatLine() }
@@ -2198,7 +2200,7 @@ private fun BgmDetailCard(
     AppSurface(
         onClick = onOpenMusic,
         enabled = !isLoading,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp),
         shape = AppShapes.container(ContainerLevel.Floating),
@@ -2210,7 +2212,7 @@ private fun BgmDetailCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(BGM_DETAIL_CARD_HEIGHT)
+                    .heightIn(min = BGM_DETAIL_CARD_MIN_HEIGHT)
                     .padding(16.dp),
                 verticalAlignment = Alignment.Top
             ) {
@@ -2220,9 +2222,7 @@ private fun BgmDetailCard(
                 )
                 Spacer(modifier = Modifier.width(14.dp))
                 Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight(),
+                    modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.Top
                 ) {
                     AppText(
@@ -2273,7 +2273,9 @@ private fun BgmDetailCard(
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis
                     )
-                    Spacer(modifier = Modifier.weight(1f, fill = true))
+                    // The action follows natural content height instead of receiving only the
+                    // remaining pixels of a fixed-height card when the title/artist wraps.
+                    Spacer(modifier = Modifier.height(12.dp))
                     AppText(
                         text = "打开音乐详情",
                         style = MaterialTheme.typography.labelMedium,
@@ -2293,7 +2295,7 @@ private fun BgmDetailCardSkeleton() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(BGM_DETAIL_CARD_HEIGHT)
+                .heightIn(min = BGM_DETAIL_CARD_MIN_HEIGHT)
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {

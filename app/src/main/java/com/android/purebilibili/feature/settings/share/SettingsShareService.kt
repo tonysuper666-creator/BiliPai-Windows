@@ -122,11 +122,13 @@ class SettingsShareService(private val context: Context) : SettingsShareServiceC
         )
     }
 
-    internal suspend fun createLiquidGlassExportArtifact(): SettingsShareExportArtifact =
+    internal suspend fun createLiquidGlassExportArtifact(
+        profileName: String = LIQUID_GLASS_SETTINGS_SHARE_PROFILE_NAME,
+    ): SettingsShareExportArtifact =
         withContext(Dispatchers.IO) {
             val now = System.currentTimeMillis()
             val profile = buildSettingsShareProfile(
-                profileName = LIQUID_GLASS_SETTINGS_SHARE_PROFILE_NAME,
+                profileName = profileName,
                 appVersion = BuildConfig.VERSION_NAME,
                 exportedAtIso = Instant.ofEpochMilli(now).toString(),
                 rawSettings = SettingsManager.exportLiquidGlassShareableSettingsSnapshot(context),
@@ -179,6 +181,74 @@ class SettingsShareService(private val context: Context) : SettingsShareServiceC
             val artifact = createLiquidGlassExportArtifact()
             writeShareArtifactToCache(artifact)
         }
+    }
+
+    private val liquidGlassProfilesDirectory: File
+        get() = File(context.filesDir, "liquid-glass-profiles")
+
+    suspend fun listLiquidGlassProfiles(): List<SavedSettingsProfile> = withContext(Dispatchers.IO) {
+        liquidGlassProfilesDirectory.listFiles().orEmpty()
+            .filter { it.isFile && it.extension == "json" }
+            .mapNotNull { file ->
+                val rawJson = file.readText(Charsets.UTF_8)
+                // A damaged preset must not prevent other saved presets from being used.
+                val profile = try {
+                    decodeProfile(rawJson)
+                } catch (_: kotlinx.serialization.SerializationException) {
+                    return@mapNotNull null
+                }
+                SavedSettingsProfile(profile.profileName, file.name, profile.exportedAtIso)
+            }
+            .sortedByDescending { it.exportedAtIso }
+    }
+
+    suspend fun saveLiquidGlassProfile(name: String): SavedSettingsProfile = withContext(Dispatchers.IO) {
+        val normalizedName = name.trim().take(80).ifBlank { error("预设名称不能为空") }
+        val artifact = createLiquidGlassExportArtifact(normalizedName)
+        val fileName = "${java.util.UUID.randomUUID()}.json"
+        check(liquidGlassProfilesDirectory.isDirectory || liquidGlassProfilesDirectory.mkdirs()) {
+            "无法创建预设目录"
+        }
+        val file = File(liquidGlassProfilesDirectory, fileName)
+        val atomicFile = android.util.AtomicFile(file)
+        val output = atomicFile.startWrite()
+        try {
+            output.write(artifact.json.toByteArray(Charsets.UTF_8))
+            atomicFile.finishWrite(output)
+        } catch (error: Throwable) {
+            atomicFile.failWrite(output)
+            throw error
+        }
+        SavedSettingsProfile(normalizedName, fileName, artifact.profile.exportedAtIso)
+    }
+
+    private fun liquidGlassProfileFile(profile: SavedSettingsProfile): File {
+        val file = File(liquidGlassProfilesDirectory, profile.fileName)
+        require(file.parentFile?.canonicalFile == liquidGlassProfilesDirectory.canonicalFile) {
+            "无效的预设文件"
+        }
+        return file
+    }
+
+    suspend fun restoreLiquidGlassProfile(profile: SavedSettingsProfile): SettingsShareApplyResult =
+        withContext(Dispatchers.IO) {
+            val saved = decodeProfile(liquidGlassProfileFile(profile).readText(Charsets.UTF_8))
+            val allowedKeys = SettingsManager.getLiquidGlassShareableSettingsEntryDefinitions()
+                .mapTo(linkedSetOf()) { it.storageKey }
+            val settings = flattenSettingsShareSections(saved.sections).filterKeys(allowedKeys::contains)
+            require(settings.isNotEmpty()) { "预设没有可恢复的液态玻璃参数" }
+            SettingsManager.applyShareableSettingsSnapshot(context, settings)
+        }
+
+    suspend fun shareLiquidGlassProfile(profile: SavedSettingsProfile): Uri = withContext(Dispatchers.IO) {
+        val rawJson = liquidGlassProfileFile(profile).readText(Charsets.UTF_8)
+        val saved = decodeProfile(rawJson)
+        writeShareArtifactToCache(SettingsShareExportArtifact(profile.fileName, rawJson, saved))
+    }
+
+    suspend fun deleteLiquidGlassProfile(profile: SavedSettingsProfile) = withContext(Dispatchers.IO) {
+        val file = liquidGlassProfileFile(profile)
+        check(!file.exists() || file.delete()) { "无法删除预设" }
     }
 
     private fun writeShareArtifactToCache(artifact: SettingsShareExportArtifact): Uri {
@@ -303,6 +373,26 @@ class SettingsShareService(private val context: Context) : SettingsShareServiceC
             )
         }
     }
+
+    /** In-memory twin of [readImportSession] used by device transfer (no Uri involved). */
+    suspend fun buildTransferImportSession(rawJson: String): Result<SettingsShareImportSession> =
+        withContext(Dispatchers.IO) {
+            runCatching {
+                val profile = decodeProfile(rawJson)
+                val normalizedProfile = normalizeThemeSelectionForImport(profile.sections)
+                    .let { sections ->
+                        if (sections == profile.sections) profile else profile.copy(sections = sections)
+                    }
+                SettingsShareImportSession(
+                    profile = normalizedProfile,
+                    preview = resolveSettingsShareImportPreview(
+                        profile = normalizedProfile,
+                        definitions = SettingsManager.getShareableSettingsEntryDefinitions()
+                    ),
+                    rawJson = rawJson
+                )
+            }
+        }
 
     override suspend fun applyImport(session: SettingsShareImportSession): Result<SettingsShareApplyResult> =
         withContext(Dispatchers.IO) {

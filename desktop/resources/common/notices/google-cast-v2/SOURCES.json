@@ -593,8 +593,8 @@
     },
     {
       "path": "tools/extract-google-cast-platform.py",
-      "sha256": "09b0213de5471cf97a0f7afcdf4dee9114cfdeaba227b6dada3e818009cfe0bf",
-      "bytes": 2946
+      "sha256": "99b2bec6d90087c63e744ee64c63f2d4cc8da7e2fda2eb52b196362cd1d8edc7",
+      "bytes": 3102
     },
     {
       "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",

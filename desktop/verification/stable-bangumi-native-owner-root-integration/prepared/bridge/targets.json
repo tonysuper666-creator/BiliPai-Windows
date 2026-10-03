@@ -1,0 +1,64 @@
+{
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "candidateBase": "464f5573331dfc7f7c2f1e47a5bf6bbac8cfd201",
+  "candidateWritten": false,
+  "fullPlayerScreenPrepared": false,
+  "targetCount": 9,
+  "hunkCount": 17,
+  "targets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "beforeSha256LF": "ee32d8560212628ac434d3c4ac876362dcf312055149b5cd4985aaf93d7c543e",
+      "afterSha256LF": "613f8180f38cd861faddb046b06005f1e7a11585315d306e235911839ca0c311",
+      "hunkCount": 3
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "beforeSha256LF": "fe3efa7bd65b0dc682db49afffbf758fe07cb2302ac49c411dd40488099fd4e6",
+      "afterSha256LF": "c43b89c786ff9d372549a598366e9a375c8f017b6e2434f67ff4751b026d061a",
+      "hunkCount": 2
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "beforeSha256LF": "c7740b47fc03c0f331ae1b2376db52d0827f8a53da7f2726036c8c1f4be66066",
+      "afterSha256LF": "40ee9b47bade9d375a4b77f57410746ee0db6e0c0056c92deb67ddb2ad25a7a7",
+      "hunkCount": 3
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootFactory.kt",
+      "beforeSha256LF": "a091867b7afdd678b58af62c7947338f87af71b4624b01a0a8e831658e0e007f",
+      "afterSha256LF": "803a4380f85740a36924984ea2ddbb1e36e0520b2cf32b1b00845bbf643e0e24",
+      "hunkCount": 1
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "beforeSha256LF": "a276c009c4871907a9cee0d3c0c05b54d1475cf78c0a8962fc41e7670ae9e7fa",
+      "afterSha256LF": "3f4d58d2d6f85a82595c0c5f3214860e34f185ad721409db4edc670bcb89574c",
+      "hunkCount": 1
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+      "beforeSha256LF": "88e75afb8a4474c6e1e6902930a27c279398a4db16f21d8853e5aa516cdd7099",
+      "afterSha256LF": "70534aceed24cdca019ca08026bc8c05bc978a39a056bf3895f45415f380e2cc",
+      "hunkCount": 2
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "beforeSha256LF": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+      "afterSha256LF": "5d0a1aa363ee1da9816a3c05268fcce28541bcf59dc4b9650006e078b68ecc0c",
+      "hunkCount": 2
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256LF": "29c36bca7b98bebedc56db733f87aff94ca6561afd96a25e8aea661b16fba7a7",
+      "afterSha256LF": "240a19c530b8db9acb1f6802b54a600821c04989a5fb3ede2ea2f4d45f963107",
+      "hunkCount": 1
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256LF": "09334ae9b197ac5bdf1024d9efc23f4b4bbefa69c7ecfbe39f8bd6eedc2448a3",
+      "afterSha256LF": "58af65ee1a889ec615c860dc7639c1caba8be9edc67ac43670ed896d2860a9b0",
+      "hunkCount": 2
+    }
+  ]
+}

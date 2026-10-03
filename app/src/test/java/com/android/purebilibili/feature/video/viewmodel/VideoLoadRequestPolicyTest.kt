@@ -1,6 +1,6 @@
 package com.android.purebilibili.feature.video.viewmodel
 
-import com.android.purebilibili.feature.video.playback.policy.PlaybackQualityMode
+import com.android.purebilibili.core.player.policy.PlaybackQualityMode
 import com.android.purebilibili.feature.video.controller.QualityPermissionResult
 import com.android.purebilibili.data.model.VideoLoadError
 import kotlin.test.Test

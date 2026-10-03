@@ -329,7 +329,8 @@ class LivePlayerViewModel : ViewModel() {
                     // 1. 获取基础房间信息 (为了拿到 UID 和 在线人数)
                     val roomInfoResp = NetworkModule.api.getRoomInfo(roomId)
                     if (roomInfoResp.code == 0 && roomInfoResp.data != null) {
-                        val basicInfo = roomInfoResp.data
+                        val checkedRoomInfoRespData = requireNotNull(roomInfoResp.data)
+                        val basicInfo = checkedRoomInfoRespData
                         currentUid = basicInfo.uid
                         
                         // 临时构建 RoomInfo
@@ -346,13 +347,14 @@ class LivePlayerViewModel : ViewModel() {
                         // 2. 根据 UID 获取用户卡片 (为了拿到头像和名字)
                         if (currentUid > 0) {
                             val cardResp = NetworkModule.api.getUserCard(currentUid)
-                            if (cardResp.code == 0 && cardResp.data?.card != null) {
-                                val card = cardResp.data.card
+                            val cardData = cardResp.data
+                            val card = cardData?.card
+                            if (cardResp.code == 0 && cardData != null && card != null) {
                                 anchorInfo = AnchorInfo(
                                     uid = currentUid,
                                     uname = card.name,
                                     face = card.face,
-                                    followers = cardResp.data.follower.toLong(),
+                                    followers = cardData.follower.toLong(),
                                     officialTitle = card.Official?.title ?: ""
                                 )
                                 com.android.purebilibili.core.util.Logger.d("LivePlayerVM", "🔴 Fallback success: fetched anchor ${card.name}")
@@ -368,7 +370,8 @@ class LivePlayerViewModel : ViewModel() {
             if (anchorData != null || anchorInfo.uid > 0 || roomData != null) {
                  // 优先使用 LiveRoomDetail 的数据（如果不为空）
                  if (roomDetailResponse?.code == 0 && roomDetailResponse.data != null) {
-                     val data = roomDetailResponse.data
+                     val checkedRoomDetailResponseData = requireNotNull(roomDetailResponse.data)
+                     val data = checkedRoomDetailResponseData
                      currentUid = data.roomInfo?.uid ?: 0
                      
                      roomInfo = RoomInfo(
@@ -417,7 +420,8 @@ class LivePlayerViewModel : ViewModel() {
                     try {
                         val relationResp = NetworkModule.api.getRelation(currentUid)
                         if (relationResp.code == 0 && relationResp.data != null) {
-                            isFollowing = relationResp.data.isFollowing
+                            val checkedRelationRespData = requireNotNull(relationResp.data)
+                            isFollowing = checkedRelationRespData.isFollowing
                         }
                     } catch (e: Exception) { e.printStackTrace() }
                 }
@@ -491,9 +495,10 @@ class LivePlayerViewModel : ViewModel() {
             val response = api.getRelation(uid)
             
             if (response.code == 0 && response.data != null) {
+                val checkedResponseData = requireNotNull(response.data)
                 val currentState = _uiState.value as? LivePlayerState.Success ?: return
                 _uiState.value = currentState.copy(
-                    isFollowing = response.data.isFollowing
+                    isFollowing = checkedResponseData.isFollowing
                 )
             }
         } catch (e: Exception) {

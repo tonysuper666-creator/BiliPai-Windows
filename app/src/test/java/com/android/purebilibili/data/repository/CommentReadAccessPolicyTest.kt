@@ -12,6 +12,50 @@ import org.junit.Test
 class CommentReadAccessPolicyTest {
 
     @Test
+    fun `sorted thread location supplement preserves ranking cursor and existing controls`() {
+        val root = ReplyItem(rpid = 100L, replyControl = ReplyControl(location = "IP属地：上海"))
+        val data = ReplyData(
+            root = root,
+            replies = listOf(
+                ReplyItem(rpid = 3L, like = 99, replyControl = ReplyControl(translationSwitch = 2)),
+                ReplyItem(rpid = 1L, replyControl = ReplyControl(location = "IP属地：北京")),
+                ReplyItem(rpid = 2L),
+            ),
+            cursor = ReplyCursor(isEnd = false, next = 42),
+            grpcNextOffset = "hot-ranking-cursor",
+        )
+        val merged = mergeCommentReplyLocations(data, listOf(
+            ReplyItem(rpid = 1L, replyControl = ReplyControl(location = "IP属地：广东")),
+            ReplyItem(rpid = 3L, like = 0, replyControl = ReplyControl(location = "IP属地：江苏")),
+            ReplyItem(rpid = 999L, replyControl = ReplyControl(location = "IP属地：浙江")),
+        ))
+        assertEquals(listOf(3L, 1L, 2L), merged.replies.orEmpty().map { it.rpid })
+        assertEquals("IP属地：江苏", merged.replies.orEmpty()[0].replyControl?.location)
+        assertEquals(2, merged.replies.orEmpty()[0].replyControl?.translationSwitch)
+        assertEquals(99, merged.replies.orEmpty()[0].like)
+        assertEquals("IP属地：北京", merged.replies.orEmpty()[1].replyControl?.location)
+        assertEquals(data.replies.orEmpty()[2], merged.replies.orEmpty()[2])
+        assertEquals(root, merged.root)
+        assertEquals(data.cursor, merged.cursor)
+        assertEquals(data.grpcNextOffset, merged.grpcNextOffset)
+    }
+
+    @Test
+    fun `location supplement finds nested target without borrowing root location`() {
+        val data = ReplyData(replies = listOf(ReplyItem(rpid = 2L)))
+        val root = ReplyItem(
+            rpid = 1L,
+            replyControl = ReplyControl(location = "IP属地：上海"),
+            replies = listOf(ReplyItem(rpid = 2L, replyControl = ReplyControl(location = "IP属地：北京"))),
+        )
+        val candidates = collectReplyLocationCandidates(ReplyData(replies = listOf(root)))
+        val merged = mergeCommentReplyLocations(data, candidates)
+        assertEquals("IP属地：北京", merged.replies.orEmpty().single().replyControl?.location)
+        assertEquals(data, mergeCommentReplyLocations(data, listOf(root.copy(replies = null))))
+        assertEquals(data, mergeCommentReplyLocations(data, listOf(ReplyItem(rpid = 2L))))
+    }
+
+    @Test
     fun `resolveCommentReadPlan prefers auth for logged user`() {
         val plan = resolveCommentReadPlan(hasSession = true)
         assertEquals(CommentReadApiMode.AUTH, plan.primary)

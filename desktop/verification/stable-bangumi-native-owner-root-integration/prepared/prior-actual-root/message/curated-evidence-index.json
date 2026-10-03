@@ -1,0 +1,119 @@
+{
+  "status": "PASS_ACTUAL_ROOT_MESSAGE_GUEST_ONLY_SCOPE",
+  "rootMounted": true,
+  "productionOverlays": 0,
+  "userData": false,
+  "binaryJarsOrGeneratedTreesIncluded": false,
+  "rawCount": 18,
+  "rawBytes": 292662,
+  "rows": [
+    {
+      "relativePath": "ACTUAL-ROOT-READOUT.md",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\ACTUAL-ROOT-READOUT.md",
+      "sha256Bytes": "8c5a0b31825890dae315f1fcb8e93aec2f0384191ce0d7ca44446c2cf79ae5b6",
+      "bytes": 436
+    },
+    {
+      "relativePath": "RootMessageFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\RootMessageFixture.kt",
+      "sha256Bytes": "204bb1cb8f0754caeb1729e62480219ac885066fd06fec36377a260696e87e17",
+      "bytes": 25362
+    },
+    {
+      "relativePath": "preparation-provenance.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\preparation-provenance.json",
+      "sha256Bytes": "f8a2096456186f5a383756105f0e05dc03118fda6adbe89de7e1721f009e5ff3",
+      "bytes": 609
+    },
+    {
+      "relativePath": "run.py",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\run.py",
+      "sha256Bytes": "8a0ea0c59df95a7173724daef97164805b6dbfa158cce7b2c2378bc191a80181",
+      "bytes": 12077
+    },
+    {
+      "relativePath": "runs/actual88-01/RootMessageFixture.kt",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\RootMessageFixture.kt",
+      "sha256Bytes": "204bb1cb8f0754caeb1729e62480219ac885066fd06fec36377a260696e87e17",
+      "bytes": 25362
+    },
+    {
+      "relativePath": "runs/actual88-01/acceptance-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\acceptance-result.json",
+      "sha256Bytes": "c2b4663339b9e75ed16a74da1f733a3aefa8bafd00eb97b986e8ddcfd6a5a75f",
+      "bytes": 1037
+    },
+    {
+      "relativePath": "runs/actual88-01/compile-result.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\compile-result.json",
+      "sha256Bytes": "e51bb65d8373f138e693a416cf1bd09f7fb07d11dfd0db715b3f098aacae490f",
+      "bytes": 190
+    },
+    {
+      "relativePath": "runs/actual88-01/compile.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\compile.log",
+      "sha256Bytes": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "relativePath": "runs/actual88-01/compiler.args",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\compiler.args",
+      "sha256Bytes": "b9d6d56526c0f8e170bd12a6a44ca8f7f387c2c204cbaec710507843b20a3493",
+      "bytes": 26877
+    },
+    {
+      "relativePath": "runs/actual88-01/fixture-jar-pin.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\fixture-jar-pin.json",
+      "sha256Bytes": "2b8a8aeb55b16f057241e101367bcb7cfcfa9aae4b590f311dc1574e62d47fae",
+      "bytes": 114
+    },
+    {
+      "relativePath": "runs/actual88-01/pins-after.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\pins-after.json",
+      "sha256Bytes": "a92eb161ca971864c8015a104d76c3e9d74f10449e53a3f6979d56f78b25ebce",
+      "bytes": 42079
+    },
+    {
+      "relativePath": "runs/actual88-01/pins-before.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\pins-before.json",
+      "sha256Bytes": "a92eb161ca971864c8015a104d76c3e9d74f10449e53a3f6979d56f78b25ebce",
+      "bytes": 42079
+    },
+    {
+      "relativePath": "runs/actual88-01/runtime-command.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\runtime-command.json",
+      "sha256Bytes": "0827ad0cced3e4c2c143d7ade1fbd7a158aa69d208da9ae797d9de472b40c596",
+      "bytes": 29462
+    },
+    {
+      "relativePath": "runs/actual88-01/runtime-evidence/actual-root-message-final.png",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\runtime-evidence\\actual-root-message-final.png",
+      "sha256Bytes": "545d146680d1c45ac26bd7220d15f42e60073d0dd9f7595397d7639e8acc26f0",
+      "bytes": 35547
+    },
+    {
+      "relativePath": "runs/actual88-01/runtime-evidence/actual-root-message-guest-0.png",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\runtime-evidence\\actual-root-message-guest-0.png",
+      "sha256Bytes": "38c7cfe9f74b24dc05e7680e44c08a640f6ae93d40176e6e20862fcc1503a4d8",
+      "bytes": 35829
+    },
+    {
+      "relativePath": "runs/actual88-01/runtime-evidence/root-message-proof.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\runtime-evidence\\root-message-proof.json",
+      "sha256Bytes": "e027fed0333a25279d6e7d9e4fa8555653566ac317fe3eca6934d20ea4eba37e",
+      "bytes": 10019
+    },
+    {
+      "relativePath": "runs/actual88-01/runtime-owned-path.json",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\runtime-owned-path.json",
+      "sha256Bytes": "d46473100ce596db5e1917c8c3e24b2b54d0e9c078f46425ec5113e6d7bc42df",
+      "bytes": 210
+    },
+    {
+      "relativePath": "runs/actual88-01/runtime.log",
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-message-root-integration-acceptance\\runs\\actual88-01\\runtime.log",
+      "sha256Bytes": "932c33b60e0ce548fc4a3644f185bace4b99108d4d0e9c9c88ca92db7fd428d8",
+      "bytes": 5373
+    }
+  ]
+}

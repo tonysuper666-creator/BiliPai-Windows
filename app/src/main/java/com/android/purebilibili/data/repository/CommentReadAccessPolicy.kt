@@ -110,3 +110,33 @@ internal fun resolveCommentReadErrorMessage(code: Int): String {
         else -> "加载评论失败 ($code)"
     }
 }
+
+/** Location supplementation must not replace the gRPC ranking, cursor or reply controls. */
+internal fun mergeCommentReplyLocations(
+    data: ReplyData,
+    supplements: List<ReplyItem>,
+): ReplyData {
+    val locations = supplements.asSequence()
+        .filter { it.rpid > 0 && !it.replyControl?.location.isNullOrBlank() }
+        .associate { it.rpid to requireNotNull(it.replyControl).location }
+    if (locations.isEmpty()) return data
+    fun merge(item: ReplyItem): ReplyItem {
+        val location = locations[item.rpid]
+        val control = if (item.replyControl?.location.isNullOrBlank() && location != null) {
+            (item.replyControl ?: com.android.purebilibili.data.model.response.ReplyControl())
+                .copy(location = location)
+        } else item.replyControl
+        return item.copy(replyControl = control, replies = item.replies?.map(::merge))
+    }
+    return data.copy(
+        root = data.root?.let(::merge),
+        replies = data.replies?.map(::merge),
+    )
+}
+
+internal fun collectReplyLocationCandidates(data: ReplyData): List<ReplyItem> {
+    fun flatten(item: ReplyItem): List<ReplyItem> = listOf(item) +
+        item.replies.orEmpty().flatMap(::flatten)
+    return (listOfNotNull(data.root) + data.replies.orEmpty() + data.hots.orEmpty() +
+        data.collectTopReplies()).flatMap(::flatten).distinctBy { it.rpid }
+}

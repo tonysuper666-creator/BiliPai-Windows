@@ -1,4 +1,5 @@
 """Original follow event and home unfollow reducers; no persistent Android ViewModel replica."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -8,7 +9,7 @@ FUNCTIONS=['resolveDynamicStateAfterAuthorUnfollow','resolveFollowedUsersAfterAu
  'updateDynamicTimelinePage','mapDynamicTimelineItems','copyActiveTimelinePage']
 def module(repo,name,path):
  spec=importlib.util.spec_from_file_location(name,repo/path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
-def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 def inventory(repo):return [dict(path=p,mode='policy-extract',features=['dynamic-follow-observer-parity'],
  sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in PATHS]
 def generate(repo,output,standalone=False):

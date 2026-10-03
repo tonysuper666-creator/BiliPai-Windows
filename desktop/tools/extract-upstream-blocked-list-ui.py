@@ -1,11 +1,14 @@
 """Original BlockedListContent, padding, filename and repository pacing constants for Windows."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json
 BASE='app/src/main/java/com/android/purebilibili/'
 SOURCES=[BASE+'feature/settings/screen/BlockedListScreen.kt',BASE+'feature/settings/screen/BlockedListFileService.kt',
          BASE+'feature/settings/ui/SettingsPageScaffold.kt',BASE+'data/repository/BlockedUpRepository.kt',BASE+'data/repository/BilibiliBlockedListSyncRepository.kt',
          BASE+'core/ui/components/UserLevelBadge.kt']
-def original(repo,name):return (repo/name).read_text(encoding='utf-8').replace('\r\n','\n')
+DISSOLVE_CALLER_LEAVES=[('import com.android.purebilibili.core.ui.animation.jiggleOnDissolve', 'import com.bilipai.desktop.ui.jiggleOnDissolve'), ('com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(', 'com.bilipai.desktop.ui.DesktopReplyDissolvableContainer('), ('com.android.purebilibili.core.ui.animation.DissolveAnimationPreset.', 'com.bilipai.desktop.ui.DissolveAnimationPreset.')]
+
+def original(repo,name):return (_desktop_canonical_source(repo, name)).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(output,package,name,body):
     path=output/package.replace('.','/')/name;path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(body,encoding='utf-8',newline='\n');return path
@@ -18,8 +21,16 @@ def generate(repo,output):
     imports=[line for line in source[:start].splitlines() if line.startswith('import ') and not any(x in line for x in [
         'androidx.activity','androidx.lifecycle','LocalContext','ShareUtils','BlockedUpRepository','BilibiliBlockedListSyncRepository',
         'buildBlockedUpShareText','parseBlockedUpShareText','SettingsPageScaffold','rememberAppBackIcon','kotlinx.coroutines'])]
-    paths=[write(output,'com.android.purebilibili.feature.settings','DesktopUpstreamBlockedListContent.kt',
-        'package com.android.purebilibili.feature.settings\n'+ '\n'.join(imports)+'\n\n'+source[start:])]
+    content='package com.android.purebilibili.feature.settings\n'+ '\n'.join(imports)+'\n\n'+source[start:]
+    original_content=content;leaves=[]
+    for before,after in DISSOLVE_CALLER_LEAVES:
+        assert content.count(before)==1,before
+        at=content.index(before);leaves.append((at,before,after));content=content[:at]+after+content[at+len(before):]
+    inverse=content
+    for at,before,after in reversed(leaves):
+        assert inverse[at:at+len(after)]==after;inverse=inverse[:at]+before+inverse[at+len(after):]
+    assert inverse==original_content
+    paths=[write(output,'com.android.purebilibili.feature.settings','DesktopUpstreamBlockedListContent.kt',content)]
     scaffold=original(repo,SOURCES[2]);start=scaffold.index('internal val LocalSettingsTopContentPadding');end=scaffold.index('@Composable\ninternal fun SettingsBottomBarScrollEffect',start)
     paths.append(write(output,'com.android.purebilibili.feature.settings.ui','DesktopUpstreamBlockedListPadding.kt',
         'package com.android.purebilibili.feature.settings.ui\nimport androidx.compose.foundation.layout.PaddingValues\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.unit.dp\n\n'+scaffold[start:end]))

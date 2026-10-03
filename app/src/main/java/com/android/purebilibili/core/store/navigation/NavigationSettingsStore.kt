@@ -74,6 +74,8 @@ object NavigationSettingsStore {
         booleanPreferencesKey("miuix_transition_blur_enabled")
     private val keyVideoSharedReturnGestureFollowEnabled =
         booleanPreferencesKey("video_shared_return_gesture_follow_enabled")
+    private val keyVideoSharedReturnGestureTranslationEnabled =
+        booleanPreferencesKey("video_shared_return_gesture_translation_enabled")
     private val keyFullScreenSwipeBackEnabled =
         booleanPreferencesKey("full_screen_swipe_back_enabled")
     private val keyBottomBarOrder = stringPreferencesKey("bottom_bar_order")
@@ -220,6 +222,18 @@ object NavigationSettingsStore {
     suspend fun setVideoSharedReturnGestureFollowEnabled(context: Context, enabled: Boolean) {
         context.settingsDataStore.edit { preferences ->
             preferences[keyVideoSharedReturnGestureFollowEnabled] = enabled
+        }
+    }
+
+    suspend fun setVideoReturnContentFollowProgressEnabled(context: Context, enabled: Boolean) {
+        context.settingsDataStore.edit { preferences ->
+            preferences[booleanPreferencesKey("video_return_content_follow_progress_enabled")] = enabled
+        }
+    }
+
+    suspend fun setVideoSharedReturnGestureTranslationEnabled(context: Context, enabled: Boolean) {
+        context.settingsDataStore.edit { preferences ->
+            preferences[keyVideoSharedReturnGestureTranslationEnabled] = enabled
         }
     }
 

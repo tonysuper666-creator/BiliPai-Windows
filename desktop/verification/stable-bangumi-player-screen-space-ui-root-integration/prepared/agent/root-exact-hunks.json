@@ -1,0 +1,61 @@
+{
+  "base": "cd8317d54fff02c2d920e295397aef502333f69b",
+  "hunks": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoHolderRoute.kt",
+      "before": "    val subtitleMode: DesktopOriginalSubtitleModeBinding\n",
+      "after": "    val subtitleMode: DesktopOriginalSubtitleModeBinding\n    val bangumiPlayer: DesktopOriginalBangumiPlayerRootOwner\n",
+      "beforeCount": 1,
+      "baseSha256LF": "3ff595ca0aee2431d6d5fa69a7bada48e1cf45238c8e2e1a964ef17ba2602931",
+      "preparedSha256LF": "cf3d15a74ed35c4c5c3ff3efca5596284f1f624a98e517515f779319c698810f"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt",
+      "before": "    override val subtitleMode: DesktopOriginalSubtitleModeBinding,\n",
+      "after": "    override val subtitleMode: DesktopOriginalSubtitleModeBinding,\n    override val bangumiPlayer: DesktopOriginalBangumiPlayerRootOwner,\n",
+      "beforeCount": 1,
+      "baseSha256LF": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09",
+      "preparedSha256LF": "55acdd6bf9f52dc937d7be487f9988591cf6e9d7814b13b6833783e486c5f952"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootWindowPlatforms.kt",
+      "before": "        storyFeeds.close()\n",
+      "after": "        bangumiPlayer.close()\n        storyFeeds.close()\n",
+      "beforeCount": 1,
+      "baseSha256LF": "78c97d04a1ea10b545f1f468787f621c351c67ffcf1c552373465e3c32c23a09",
+      "preparedSha256LF": "55acdd6bf9f52dc937d7be487f9988591cf6e9d7814b13b6833783e486c5f952"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "before": "        return remember(owner, section, holder, tablet, music, portrait, audio, fullscreen, subtitle) {\n            DesktopOriginalVideoRootWindowPlatformsImpl(owner, section, holder, fullscreen, tablet, audio, music,\n                content, portrait, subtitle, windows, effect.displays, resources.captureProtection::refresh)\n        }\n",
+      "after": "        val textShare = checkNotNull(LocalDesktopTextShareBindings.current) {\n            \"Original PGC player requires the actual Root text share binding\"\n        }\n        val fullscreenState = remember(owner, effect) {\n            snapshotFlow { resources.isFullscreen() }.stateIn(gate.scope, SharingStarted.Eagerly, resources.isFullscreen())\n        }\n        val bangumiPlayer = remember(owner, section, holder, portrait, windows, textShare, fullscreenState) {\n            DesktopOriginalBangumiPlayerRootOwner(owner, shell, window, factory, resources,\n                section, holder, portrait, windows, textShare, fullscreenState)\n        }\n        return remember(owner, section, holder, tablet, music, portrait, audio, fullscreen, subtitle, bangumiPlayer) {\n            DesktopOriginalVideoRootWindowPlatformsImpl(owner, section, holder, fullscreen, tablet, audio, music,\n                content, portrait, subtitle, bangumiPlayer, windows, effect.displays, resources.captureProtection::refresh)\n        }\n",
+      "beforeCount": 1,
+      "baseSha256LF": "3f4d58d2d6f85a82595c0c5f3214860e34f185ad721409db4edc670bcb89574c",
+      "preparedSha256LF": "f9f6d90bedea4e54cff446cf889d9da9842b6875d586eaa49781ba696fff9370"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/DesktopShell.kt",
+      "before": "                            entryKey is BiliPaiNavKey.Bangumi || entryKey is BiliPaiNavKey.BangumiDetail || entryKey is BiliPaiNavKey.BangumiReview ->\n",
+      "after": "                            entryKey is BiliPaiNavKey.BangumiPlayer ->\n                                DesktopOriginalBangumiPlayerPhysicalLeaf(entryKey, ordinaryVideo, messageRoutes, active,\n                                    ::openVideoHonorLink, pendingOwner = {\n                                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {\n                                            ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()\n                                        }\n                                    })\n                            entryKey is BiliPaiNavKey.Bangumi || entryKey is BiliPaiNavKey.BangumiDetail || entryKey is BiliPaiNavKey.BangumiReview ->\n",
+      "beforeCount": 1,
+      "baseSha256LF": "c607d480c1f1e07ceb2c250625c56a9a69c2ca6a1c2778b75b145c4af04a2890",
+      "preparedSha256LF": "d7e4f01f5c269bbac504bbdd7b947b5232e7977ced29bd6e39f561e146b20c0a"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "before": "// Complete original PGC VM/Base/policies and playurl have one producer. This\n// installs shared native-owner plumbing; the original Player Screen is pending.\n",
+      "after": "// Complete original PGC VM/Base/policies and playurl have one producer;\n// the complete physical Player UI is produced separately below.\n",
+      "beforeCount": 1,
+      "baseSha256LF": "37e8f13a66643d9a056689bb76cedbbcde66346360bd935bd8bad13c94ae868a",
+      "preparedSha256LF": "f237a085614f78acc5929715cf6c046c738c66987458a6aecc81132fea1702f4"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "before": "val extractOriginalSubscriptionPage by tasks.registering(Exec::class) {\n",
+      "after": "val extractOriginalBangumiPlayerUi by tasks.registering(Exec::class) {\n    dependsOn(prepareUpstreamSources, extractOriginalBangumiPlayer, extractUpstreamMedia)\n    workingDir(projectDir)\n    commandLine(System.getenv(\"PYTHON_EXECUTABLE\") ?: \"python\", \"tools/extract-upstream-bangumi-player-ui.py\",\n        \"--repo\", repositoryRoot.absolutePath,\n        \"--output\", layout.buildDirectory.dir(\"generated/original-bangumi-player-ui\").get().asFile.absolutePath)\n    inputs.files(\"tools/extract-upstream-bangumi-player-ui.py\", \"tools/sync-upstream.py\", \"tools/extract-upstream-media.py\")\n    inputs.file(sourceManifest)\n    inputs.files(sources.filter { \"original-bangumi-player-ui\" in ((it[\"features\"] as? List<*>) ?: emptyList<Any>()) }\n        .map { File(repositoryRoot, it[\"path\"].toString()) })\n    outputs.dir(layout.buildDirectory.dir(\"generated/original-bangumi-player-ui\"))\n}\nkotlin.sourceSets.named(\"main\") { kotlin.srcDir(layout.buildDirectory.dir(\"generated/original-bangumi-player-ui\")) }\ntasks.named(\"compileKotlin\") { dependsOn(extractOriginalBangumiPlayerUi) }\n\nval extractOriginalSubscriptionPage by tasks.registering(Exec::class) {\n",
+      "beforeCount": 1,
+      "baseSha256LF": "37e8f13a66643d9a056689bb76cedbbcde66346360bd935bd8bad13c94ae868a",
+      "preparedSha256LF": "f237a085614f78acc5929715cf6c046c738c66987458a6aecc81132fea1702f4"
+    }
+  ]
+}

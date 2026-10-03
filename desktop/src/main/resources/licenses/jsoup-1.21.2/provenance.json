@@ -1,0 +1,13 @@
+{
+  "coordinate": "org.jsoup:jsoup:1.21.2",
+  "role": "same approved JS execution Host HTML DOMParser platform leaf; no HTTP use",
+  "artifactUrl": "https://repo.maven.apache.org/maven2/org/jsoup/jsoup/1.21.2/jsoup-1.21.2.jar",
+  "artifactBytes": 500363,
+  "artifactSha256": "f05496e255734759f0d4b5632da7b24f81313147c78c69e90ad045d096191344",
+  "publisherSha256Url": "https://repo.maven.apache.org/maven2/org/jsoup/jsoup/1.21.2/jsoup-1.21.2.jar.sha256",
+  "licenseUrl": "https://raw.githubusercontent.com/jhy/jsoup/jsoup-1.21.2/LICENSE",
+  "licenseSha256": "12f89090b34132ac86980044fba5f6d45cfbc02c1eb08e0b53a22b7cb40be446",
+  "officialReleaseUrl": "https://jsoup.org/news/release-1.21.2",
+  "workerClasspathChanges": 0,
+  "graalLockChanges": 0
+}

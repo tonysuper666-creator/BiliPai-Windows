@@ -131,7 +131,7 @@ private data class DesktopVideoCommentDetailRoute(val root: Long, val target: Lo
             if (subReplyState.visible) {
                 VideoInlineSubReplyDetailContent(subReplyState, commentState, emoteMap,
                     info.pages.firstOrNull { it.cid == info.cid }?.duration?.times(1000L),
-                    onLoadMore = viewModel::loadMoreSubReplies, onSortModeChange = viewModel::setSubReplySortMode,
+                    onLoadMore = viewModel::loadMoreSubReplies, onRefresh = viewModel::refreshSubReplies, onSortModeChange = viewModel::setSubReplySortMode,
                     onDismiss = viewModel::closeSubReply,
                     onRootCommentClick = { subReplyState.rootReply?.let { if (owned()) detailRoute = DesktopVideoCommentDetailRoute(it.rpid, subReplyState.targetReplyId) } },
                     onTimestampClick = { if (owned()) currentSeek(it) }, onImagePreview = ::imagePreview,
@@ -144,10 +144,10 @@ private data class DesktopVideoCommentDetailRoute(val root: Long, val target: Lo
                     onAvatarClick = { id -> id.toLongOrNull()?.let { if (owned()) currentUserClick(it) } },
                     modifier = Modifier.weight(1f))
             } else VideoCommentTab(listState, Modifier.weight(1f), info, commentState.replies,
-                commentState.replyCount, emoteMap, commentState.isRepliesLoading, commentState.isRepliesEnd,
+                commentState.replyCount, emoteMap, commentState.isRepliesLoading, commentState.isRepliesRefreshing, commentState.repliesError, commentState.isRepliesEnd,
                 commentState.voteCard, videoTags, onUpClick = { if (owned()) currentUserClick(it) },
                 onSubReplyClick = viewModel::openSubReply, onCommentReplyClick = ::openComposer,
-                onLoadMoreReplies = viewModel::loadComments, onImagePreview = ::imagePreview,
+                onLoadMoreReplies = viewModel::loadComments, onRefreshReplies = viewModel::refreshComments, onImagePreview = ::imagePreview,
                 onTimestampClick = { if (owned()) currentSeek(it) }, contentPadding = PaddingValues(bottom = 12.dp),
                 currentMid = commentState.currentMid, showUpFlag = commentState.showUpFlag,
                 dissolvingIds = commentState.dissolvingIds, onDeleteComment = viewModel::deleteComment,

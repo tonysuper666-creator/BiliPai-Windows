@@ -3,8 +3,10 @@ package com.bilipai.desktop.plugins.js
 import com.android.purebilibili.core.plugin.PluginCapability
 import com.android.purebilibili.core.plugin.js.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.*
 import okhttp3.Call
@@ -37,6 +39,8 @@ class DesktopJsPluginHost(
     private val ownerEpoch: (() -> Long)? = null,
 ) {
     private val gate = Any()
+    private val executionMutex = kotlinx.coroutines.sync.Mutex()
+    private val moduleCache = BiliPaiJsModuleResultCache(root.resolve("cache/bilipai_js_plugin_module_cache").toFile())
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true }
     private val client = OkHttpClient.Builder().cookieJar(CookieJar.NO_COOKIES)
         .callTimeout(8, TimeUnit.SECONDS).connectTimeout(5, TimeUnit.SECONDS)
@@ -64,6 +68,7 @@ class DesktopJsPluginHost(
         val old = synchronized(gate) {
             check(!stopped) { "JS 插件宿主已停止" }
             if (updated == installed && currentAccountEpoch == accountEpoch) return@synchronized emptyList()
+            moduleCache.clearAll()
             installed = updated; accountEpoch = currentAccountEpoch; revision++
             revisionFlow.value = revision
             externalLaunches.forEach(ExternalMediaLaunchStore::remove); externalLaunches.clear()
@@ -88,10 +93,11 @@ class DesktopJsPluginHost(
         }
     }
 
-    suspend fun loadModuleItems(pluginId: String, moduleId: String, paramsJson: String = "{}"): List<BiliPaiJsMediaItem> {
+    suspend fun loadModuleItems(pluginId: String, moduleId: String, paramsJson: String = "{}", expectedRevision: Long? = null): List<BiliPaiJsMediaItem> {
         require(paramsJson.toByteArray().size <= 65_536 && json.parseToJsonElement(paramsJson) is JsonObject) { "JS 插件参数无效" }
         val (authority, script, module) = synchronized(gate) {
             check(!stopped) { "JS 插件宿主已停止" }
+            if (expectedRevision != null) require(expectedRevision == revision) { "JS 插件授权已经变化" }
             val authorized = installed[pluginId] ?: error("JS 插件没有已批准的安装记录")
             val record = authorized.installed
             require(record.enabled) { "JS 插件未启用" }
@@ -103,17 +109,178 @@ class DesktopJsPluginHost(
             val capabilities = record.grantedCapabilities intersect record.manifest.permissions
             Triple(ExecutionAuthority(pluginId, revision, accountEpoch, capabilities, authorized), source, selected)
         }
-        val payload = execute(authority, script, buildBiliPaiJsModuleExpression(module.functionName, paramsJson))
+        currentCoroutineContext().ensureActive()
+        val cached = synchronized(gate) {
+            requireCurrent(authority)
+            managedPath(root.resolve("cache/bilipai_js_plugin_module_cache"))
+            moduleCache.read(pluginId, moduleId, paramsJson, module.cacheDuration)
+        }
+        val payload = cached ?: execute(authority, script, buildBiliPaiJsModuleExpression(module.functionName, paramsJson))
+        validatePayloadDepth(payload)
+        val media = json.decodeFromString(ListSerializer(BiliPaiJsMediaItem.serializer()), payload).also(::validateMedia)
+        currentCoroutineContext().ensureActive()
+        synchronized(gate) {
+            requireCurrent(authority)
+            if (cached == null) moduleCache.write(pluginId, moduleId, paramsJson, module.cacheDuration, payload)
+        }
+        return media
+    }
+
+
+    /** Same immutable approval, source bytes, account epoch and execution revision as ordinary modules. */
+    private fun captureAuthorizedExecution(expected: InstalledBiliPaiJsPlugin, expectedRevision: Long,
+        capability: PluginCapability? = null, requireEnabled: Boolean = true): Pair<ExecutionAuthority, String> = synchronized(gate) {
+        check(!stopped && expectedRevision == revision) { "JS 插件授权已经变化" }
+        val authorized = installed[expected.manifest.id] ?: error("JS 插件没有已批准的安装记录")
+        require(authorized.installed == expected && (expected.enabled || !requireEnabled)) { "JS 插件安装记录已经变化" }
+        val capabilities = expected.grantedCapabilities intersect expected.manifest.permissions
+        if (capability != null) require(capability in capabilities) { "JS 插件没有 ${capability.name} 授权" }
+        val authority = ExecutionAuthority(expected.manifest.id, revision, accountEpoch, capabilities, authorized)
+        requireCurrent(authority)
+        val script = managedScript(expected)
+        require(sha256(script.toByteArray(Charsets.UTF_8)) == authorized.approvedScriptSha256) { "JS 插件脚本已变化，请重新预览授权" }
+        authority to script
+    }
+
+    fun withOriginalPluginAdmission(expected: InstalledBiliPaiJsPlugin, expectedRevision: Long, allowDisabled: Boolean = false, commit: () -> Unit) = synchronized(gate) {
+        captureAuthorizedExecution(expected, expectedRevision, requireEnabled = !allowDisabled)
+        commit()
+        captureAuthorizedExecution(expected, expectedRevision, requireEnabled = !allowDisabled)
+        Unit
+    }
+
+    suspend fun loadOriginalModuleItems(installed: InstalledBiliPaiJsPlugin, module: BiliPaiJsModule,
+        paramsJson: String = "{}", expectedRevision: Long = executionRevision.value): Result<List<BiliPaiJsMediaItem>> = ownedJsResult {
+        captureAuthorizedExecution(installed, expectedRevision)
+        loadModuleItems(installed.manifest.id, module.id.ifBlank { module.functionName }, paramsJson, expectedRevision)
+    }
+
+    private suspend fun <T> ownedJsResult(block: suspend () -> T): Result<T> {
+        currentCoroutineContext().ensureActive()
+        return try { Result.success(block()).also { currentCoroutineContext().ensureActive() } }
+        catch (cancelled: CancellationException) { throw cancelled }
+        catch (failure: Exception) { currentCoroutineContext().ensureActive(); Result.failure(failure) }
+    }
+
+    private fun readOriginalCache(authority: ExecutionAuthority, pluginId: String, moduleId: String,
+        paramsJson: String, cacheDurationSeconds: Long): String? = synchronized(gate) {
+        requireCurrent(authority)
+        managedPath(root.resolve("cache/bilipai_js_plugin_module_cache"))
+        moduleCache.read(pluginId, moduleId, paramsJson, cacheDurationSeconds)
+    }
+    private fun writeOriginalCache(authority: ExecutionAuthority, pluginId: String, moduleId: String,
+        paramsJson: String, cacheDurationSeconds: Long, payload: String) = synchronized(gate) {
+        requireCurrent(authority)
+        managedPath(root.resolve("cache/bilipai_js_plugin_module_cache"))
+        moduleCache.write(pluginId, moduleId, paramsJson, cacheDurationSeconds, payload)
+    }
+
+
+    suspend fun loadDetailItems(
+        installed: InstalledBiliPaiJsPlugin,
+        link: String,
+        expectedRevision: Long = executionRevision.value
+    ): Result<List<BiliPaiJsMediaItem>> = ownedJsResult {
+        val (authority, script) = captureAuthorizedExecution(installed, expectedRevision, null)
+        val functionName = installed.manifest.detailFunctionName
+        if (functionName.isBlank()) {
+            throw IllegalArgumentException("插件未声明详情函数（detailFunctionName）")
+        }
+        val cacheKey = """{"link":${Json.encodeToString(link)}}"""
+        readOriginalCache(authority,
+            pluginId = installed.manifest.id,
+            moduleId = DETAIL_CACHE_MODULE_ID,
+            paramsJson = cacheKey,
+            cacheDurationSeconds = installed.manifest.detailCacheDuration
+        )?.let { cachedPayload ->
+            return@ownedJsResult decodeMediaItems(cachedPayload)
+        }
+        val expression = buildBiliPaiJsModuleExpression(
+            functionName = functionName,
+            paramsJson = cacheKey
+        )
+        val payload = execute(authority, script, expression)
+        writeOriginalCache(authority,
+            pluginId = installed.manifest.id,
+            moduleId = DETAIL_CACHE_MODULE_ID,
+            paramsJson = cacheKey,
+            cacheDurationSeconds = installed.manifest.detailCacheDuration,
+            payload = payload
+        )
+        currentCoroutineContext().ensureActive()
+        synchronized(gate) { requireCurrent(authority) }
+        decodeMediaItems(payload)
+    }
+
+    suspend fun loadDanmuComments(
+        installed: InstalledBiliPaiJsPlugin,
+        title: String,
+        expectedRevision: Long = executionRevision.value
+    ): Result<List<BiliPaiJsDanmuComment>> = ownedJsResult {
+        val (authority, script) = captureAuthorizedExecution(installed, expectedRevision, PluginCapability.DANMAKU_STREAM)
+        val functionName = installed.manifest.danmakuFunctionName
+        if (functionName.isBlank()) {
+            throw IllegalArgumentException("插件未声明弹幕函数（danmakuFunctionName）")
+        }
+        if (PluginCapability.DANMAKU_STREAM !in installed.grantedCapabilities) {
+            throw SecurityException("插件未获得 DANMAKU_STREAM 弹幕流权限")
+        }
+        val cacheKey = """{"title":${Json.encodeToString(title)}}"""
+        readOriginalCache(authority,
+            pluginId = installed.manifest.id,
+            moduleId = DANMAKU_CACHE_MODULE_ID,
+            paramsJson = cacheKey,
+            cacheDurationSeconds = installed.manifest.danmakuCacheDuration
+        )?.let { cachedPayload ->
+            return@ownedJsResult decodeDanmuComments(cachedPayload)
+        }
+        val expression = buildBiliPaiJsModuleExpression(
+            functionName = functionName,
+            paramsJson = cacheKey
+        )
+        val payload = execute(authority, script, expression)
+        writeOriginalCache(authority,
+            pluginId = installed.manifest.id,
+            moduleId = DANMAKU_CACHE_MODULE_ID,
+            paramsJson = cacheKey,
+            cacheDurationSeconds = installed.manifest.danmakuCacheDuration,
+            payload = payload
+        )
+        currentCoroutineContext().ensureActive()
+        synchronized(gate) { requireCurrent(authority) }
+        decodeDanmuComments(payload)
+    }
+
+    private fun decodeMediaItems(payload: String): List<BiliPaiJsMediaItem> {
         validatePayloadDepth(payload)
         return json.decodeFromString(ListSerializer(BiliPaiJsMediaItem.serializer()), payload).also(::validateMedia)
     }
 
+    private fun decodeDanmuComments(payload: String): List<BiliPaiJsDanmuComment> {
+        validatePayloadDepth(payload)
+        return json.decodeFromString(ListSerializer(BiliPaiJsDanmuComment.serializer()), payload).also { comments ->
+            require(comments.size <= 25_000 && comments.all { it.text.length <= 32_768 }) { "JS 插件弹幕超过宿主限制" }
+        }
+    }
+
+    /** Refresh remains a command on this same approved account/plugin owner. */
+    fun clearPluginCache(pluginId: String, expectedRevision: Long) = synchronized(gate) {
+        check(!stopped && expectedRevision == revision) { "JS 插件授权已经变化" }
+        if (ownerEpoch?.invoke()?.let { it != accountEpoch } == true)
+            throw CancellationException("JS 插件账号已经变化")
+        require(installed.containsKey(pluginId)) { "JS 插件不存在" }
+        managedPath(root.resolve("cache/bilipai_js_plugin_module_cache"))
+        moduleCache.clearPlugin(pluginId)
+    }
+
     /** Root consumes the original full stream list; this does not claim the native header adapter exists. */
-    fun createExternalLaunch(pluginId: String, item: BiliPaiJsMediaItem, selectedStreamIndex: Int = 0): String = synchronized(gate) {
+    fun createExternalLaunch(pluginId: String, item: BiliPaiJsMediaItem, selectedStreamIndex: Int = 0, expectedRevision: Long? = null): String = synchronized(gate) {
         check(!stopped)
         if (ownerEpoch?.invoke()?.let { it != accountEpoch } == true)
             throw CancellationException("JS 插件账号已经变化")
+        if (expectedRevision != null) require(expectedRevision == revision) { "JS 插件授权已经变化" }
         val record = installed[pluginId]?.installed ?: error("JS 插件不存在")
+        captureAuthorizedExecution(record, revision)
         require(record.enabled && PluginCapability.EXTERNAL_MEDIA_PLAYBACK in record.grantedCapabilities &&
             PluginCapability.EXTERNAL_MEDIA_PLAYBACK in record.manifest.permissions) { "JS 插件没有外部媒体播放授权" }
         val streams = resolveBiliPaiJsMediaStreams(item)
@@ -121,13 +288,20 @@ class DesktopJsPluginHost(
         require(externalLaunches.size < 16) { "JS 外部播放请求超过限制" }
         require(streams.all { stream -> stream.url.length <= 8192 && '\u0000' !in stream.url && stream.headers.size <= 64 &&
             stream.headers.all { (key, value) -> key.length <= 256 && value.length <= 8192 && key.none { it < ' ' || it == ':' } && value.none { it == '\r' || it == '\n' || it == '\u0000' } } })
-        ExternalMediaLaunchStore.put(item.title, item.coverUrl, streams, selectedStreamIndex).also { externalLaunches += it }
+        ExternalMediaLaunchStore.put(item.title, item.coverUrl, streams, selectedStreamIndex,
+            danmakuPluginId = record.manifest.id.takeIf { record.manifest.supportsDanmaku &&
+                PluginCapability.DANMAKU_STREAM in (record.grantedCapabilities intersect record.manifest.permissions) }).also { externalLaunches += it }
     }
     fun releaseExternalLaunch(launchId: String) = synchronized(gate) {
         if (externalLaunches.remove(launchId)) ExternalMediaLaunchStore.remove(launchId)
     }
 
-    private suspend fun execute(authority: ExecutionAuthority, script: String, expression: String): String = coroutineScope {
+    private suspend fun execute(authority: ExecutionAuthority, script: String, expression: String): String = executionMutex.withLock {
+        currentCoroutineContext().ensureActive()
+        synchronized(gate) { requireCurrent(authority) }
+        executeSerial(authority, script, expression)
+    }
+    private suspend fun executeSerial(authority: ExecutionAuthority, script: String, expression: String): String = coroutineScope {
         val callId = UUID.randomUUID().toString()
         val request = buildJsonObject {
             put("callId", callId); put("executionScript", buildBiliPaiJsExecutionScript(callId, script, expression))
@@ -158,6 +332,11 @@ class DesktopJsPluginHost(
         private var operations = 0
         private var logBytes = 0
         private var storage: DesktopBiliPaiJsStorageBridge? = null
+        // Execution-local HTML nodes. These cannot fetch URLs, write files or outlive the existing worker authority.
+        private val domNodes = java.util.IdentityHashMap<org.jsoup.nodes.Element, Int>()
+        private val domById = mutableMapOf<Int, org.jsoup.nodes.Element>()
+        private var domDocuments = 0
+        private var domOperations = 0
 
         override fun cancel() { cancelled.set(true); http.get()?.cancel() }
         override fun handle(workerFrame: String): DesktopJsWorkerProcess.FrameResult {
@@ -173,10 +352,12 @@ class DesktopJsPluginHost(
                     val name = message.getValue("name").jsonPrimitive.content
                     val args = message.getValue("args").jsonArray.map { it.jsonPrimitive.content }
                     val reply = try {
-                        check(++operations <= 128) { "JS 插件桥接操作超过限制" }
+                        if (name.startsWith("dom.")) check(++domOperations <= 8192) { "JS HTML 桥接操作超过限制" }
+                        else check(++operations <= 128) { "JS 插件桥接操作超过限制" }
                         val value = when (name) {
                             "http.get", "http.post" -> request(name, args)
                             "storage.get", "storage.set", "storage.remove" -> stored(name, args)
+                            "dom.parse", "dom.select", "dom.selectOne" -> dom(name, args)
                             "log.write" -> {
                                 require(args.size == 1)
                                 logBytes += args[0].toByteArray(Charsets.UTF_8).size
@@ -236,6 +417,55 @@ class DesktopJsPluginHost(
                 }
             } finally { http.compareAndSet(call, null) }
         }
+        private fun dom(name: String, args: List<String>): String {
+            checkLive()
+            val result = when (name) {
+                "dom.parse" -> {
+                    require(args.size == 1 && args[0].toByteArray(Charsets.UTF_8).size <= 262_144 && ++domDocuments <= 4) { "JS HTML 输入超过宿主限制" }
+                    val document = org.jsoup.Jsoup.parse(args[0])
+                    encodeDomNode(document, document = true)
+                }
+                else -> {
+                    require(args.size == 2 && args[1].length <= 1024) { "JS HTML 选择器无效" }
+                    val node = domById[args[0].toIntOrNull()] ?: error("JS HTML 节点已经失效")
+                    val selected = node.select(args[1]).filter { it !== node }
+                    require(selected.size <= 1024) { "JS HTML 选择结果超过宿主限制" }
+                    if (name == "dom.selectOne") selected.firstOrNull()?.let { encodeDomNode(it) } ?: JsonNull
+                    else JsonArray(selected.map { encodeDomNode(it) })
+                }
+            }
+            checkLive()
+            return result.toString().also { require(it.toByteArray(Charsets.UTF_8).size <= 524_288) { "JS HTML 返回值超过宿主限制" } }
+        }
+        private fun encodeDomNode(node: org.jsoup.nodes.Element, document: Boolean = false): JsonObject {
+            val id = domNodes[node] ?: (domNodes.size + 1).also {
+                require(it <= 4096) { "JS HTML 节点超过宿主限制" }
+                domNodes[node] = it; domById[it] = node
+            }
+            require(node.attributes().size() <= 128) { "JS HTML 节点属性超过宿主限制" }
+            val text = domTextContent(node); val html = node.html()
+            require(text.toByteArray(Charsets.UTF_8).size <= 262_144 && html.toByteArray(Charsets.UTF_8).size <= 262_144)
+            return buildJsonObject {
+                put("id", id); put("tagName", node.tagName()); put("textContent", text); put("innerHTML", html)
+                put("attributes", buildJsonObject { node.attributes().forEach {
+                    require(it.key.length <= 1024 && it.value.length <= 8192)
+                    put(it.key, it.value)
+                } })
+                if (document) {
+                    val root = node as org.jsoup.nodes.Document
+                    put("title", root.title()); put("body", encodeDomNode(root.body()))
+                }
+            }
+        }
+        private fun domTextContent(node: org.jsoup.nodes.Node, depth: Int = 0): String {
+            require(depth <= 64) { "JS HTML 节点层级超过宿主限制" }
+            return when (node) {
+                is org.jsoup.nodes.TextNode -> node.wholeText
+                is org.jsoup.nodes.DataNode -> node.wholeData
+                else -> node.childNodes().joinToString("") { domTextContent(it, depth + 1) }
+            }
+        }
+
         private fun stored(name: String, args: List<String>): String? = synchronized(gate) {
             permit(PluginCapability.PLUGIN_STORAGE)
             require(args.size == if (name == "storage.set") 2 else 1)
@@ -342,6 +572,8 @@ class DesktopJsPluginHost(
         require(!quoted && depth == 0) { "JS 插件回传结构无效" }
     }
     companion object {
+        private const val DETAIL_CACHE_MODULE_ID = "__detail__"
+        private const val DANMAKU_CACHE_MODULE_ID = "__danmaku__"
         fun scriptSha256(script: String) = sha256(script.toByteArray(Charsets.UTF_8))
         private fun sha256(bytes: ByteArray) = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
         private fun validateFilename(value: String) {

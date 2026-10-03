@@ -1,7 +1,8 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re,subprocess,sys
 sys.dont_write_bytecode=True
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 def sha(v):return hashlib.sha256(v).hexdigest()
 def wide(p):
  s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
@@ -13,7 +14,7 @@ def generate(repo,output,standalone=False):
  spec=importlib.util.spec_from_file_location('original',REPO/'desktop/tools/extract-upstream-danmaku-list-menu.py');e=importlib.util.module_from_spec(spec);spec.loader.exec_module(e)
  path='app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt'
  original=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=REPO).replace(b'\r\n',b'\n');s=original.decode()
- expect=raw(REPO/path);assert expect==original
+ expect=raw(_desktop_canonical_source(REPO,path));assert expect==original
  save(HERE/'original-retained'/Path(path+'.txt'),original)
  declarations=[];pieces=[]
  for name in ['DANMAKU_VIP_GRADUAL_COLOR_CODE','DANMAKU_UP_IDENTITY_CHECKBOX_TYPE']:

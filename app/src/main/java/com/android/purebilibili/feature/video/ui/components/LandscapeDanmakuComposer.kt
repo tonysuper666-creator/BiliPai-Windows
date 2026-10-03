@@ -46,6 +46,7 @@ import androidx.compose.material3.MaterialTheme
 import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.components.AppTextButton
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -92,11 +93,11 @@ fun LandscapeDanmakuComposer(
     val modeOptions = remember { danmakuSendModeOptions() }
     val fontSizeOptions = remember { danmakuSendFontSizeOptions() }
 
-    var text by remember { mutableStateOf(initialText) }
-    var selectedColor by remember { mutableIntStateOf(initialColor) }
-    var selectedMode by remember { mutableIntStateOf(initialMode) }
-    var selectedFontSize by remember { mutableIntStateOf(initialFontSize) }
-    var attentionCommandChecked by remember { mutableStateOf(initialAttentionCommand) }
+    var text by rememberSaveable { mutableStateOf(initialText) }
+    var selectedColor by rememberSaveable { mutableIntStateOf(initialColor) }
+    var selectedMode by rememberSaveable { mutableIntStateOf(initialMode) }
+    var selectedFontSize by rememberSaveable { mutableIntStateOf(initialFontSize) }
+    var attentionCommandChecked by rememberSaveable { mutableStateOf(initialAttentionCommand) }
     val useMiuixSpring = com.android.purebilibili.core.theme.LocalAppUiStyle.current == com.android.purebilibili.core.theme.AppUiStyle.MIUIX
     var showStylePanel by remember { mutableStateOf(false) }
     var showAdvancedOptions by remember { mutableStateOf(false) }
@@ -106,30 +107,30 @@ fun LandscapeDanmakuComposer(
     val focusRequester = remember { FocusRequester() }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    LaunchedEffect(
-        visible,
-        initialColor,
-        initialMode,
-        initialFontSize,
-        initialText,
-        initialAttentionCommand
-    ) {
-        if (!visible) return@LaunchedEffect
-        val selection = resolveDanmakuSendSelectionState(
-            initialColor = initialColor,
-            initialMode = initialMode,
-            initialFontSize = initialFontSize,
-            colorOptions = colorOptions.map { it.value },
-            modeOptions = modeOptions.map { it.value },
-            fontSizeOptions = fontSizeOptions.map { it.value }
-        )
-        text = initialText
-        selectedColor = selection.color
-        selectedMode = selection.mode
-        selectedFontSize = selection.fontSize
-        attentionCommandChecked = initialAttentionCommand
-        showStylePanel = false
-        showAdvancedOptions = false
+    var inputWasVisible by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(visible) {
+        if (!visible) {
+            inputWasVisible = false
+            return@LaunchedEffect
+        }
+        if (!inputWasVisible) {
+            inputWasVisible = true
+            val selection = resolveDanmakuSendSelectionState(
+                initialColor = initialColor,
+                initialMode = initialMode,
+                initialFontSize = initialFontSize,
+                colorOptions = colorOptions.map { it.value },
+                modeOptions = modeOptions.map { it.value },
+                fontSizeOptions = fontSizeOptions.map { it.value }
+            )
+            text = initialText
+            selectedColor = selection.color
+            selectedMode = selection.mode
+            selectedFontSize = selection.fontSize
+            attentionCommandChecked = initialAttentionCommand
+            showStylePanel = false
+            showAdvancedOptions = false
+        }
         delay(80)
         focusRequester.requestFocus()
         keyboardController?.show()

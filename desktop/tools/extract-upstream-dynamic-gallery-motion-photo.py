@@ -1,20 +1,23 @@
 """Select original Motion Photo packing and gallery-result policy; no new account/UI."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, difflib, hashlib, json, subprocess, sys
 sys.dont_write_bytecode = True
 
 PREVIEW = 'app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt'
 GALLERY = 'app/src/main/java/com/android/purebilibili/core/util/GalleryVisualMediaContracts.kt'
-TAG = 'v0.2.3'
+TAG = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 
 def digest(value): return hashlib.sha256(value.encode()).hexdigest()
 
 def generate(repo: Path, output: Path):
     repo, output = repo.resolve(), output.resolve()
+    value = str(output)
+    output = Path(value if value.startswith("\\\\?\\") else "\\\\?\\" + value)
     output.mkdir(parents=True, exist_ok=True)
     sources = {}
     for path in [PREVIEW, GALLERY]:
-        raw = (repo / path).read_text(encoding='utf-8').replace('\r\n', '\n')
+        raw = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
         tag_raw = subprocess.check_output(['git', 'show', TAG + ':' + path], cwd=repo).decode().replace('\r\n', '\n')
         assert raw == tag_raw, path + ' differs from pinned ' + TAG
         sources[path] = raw

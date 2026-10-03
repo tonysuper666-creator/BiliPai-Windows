@@ -1,7 +1,8 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, subprocess, sys
 sys.dont_write_bytecode=True
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 SOURCE='app/src/main/java/com/android/purebilibili/data/repository/StoryRepository.kt'
 OUTPUT='com/android/purebilibili/data/repository/DesktopOriginalVideoStoryFeedProtocol.kt'
 def wide(p):
@@ -10,7 +11,7 @@ def sha(s):return hashlib.sha256(s.encode()).hexdigest()
 def generate(repo,output,standalone=False):
  repo=Path(repo);output=Path(output)
  blob=subprocess.check_output(['git','-C',str(repo),'show',COMMIT+':'+SOURCE]).decode('utf-8').replace('\r\n','\n')
- assert wide(repo/SOURCE).read_bytes().replace(b'\r\n',b'\n').decode('utf-8-sig')==blob
+ assert wide(_desktop_canonical_source(repo, SOURCE)).read_bytes().replace(b'\r\n',b'\n').decode('utf-8-sig')==blob
  path=repo/'desktop/tools/extract-upstream-danmaku-list-menu.py'
  spec=importlib.util.spec_from_file_location('story_original_tokens',path);tokens=importlib.util.module_from_spec(spec);spec.loader.exec_module(tokens)
  original,start,end=tokens.function(blob,'getStoryFeed')

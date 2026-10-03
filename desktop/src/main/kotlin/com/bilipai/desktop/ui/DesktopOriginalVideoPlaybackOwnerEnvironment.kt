@@ -6,6 +6,7 @@ import com.android.purebilibili.core.plugin.Plugin
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.VideoNoteSnapshot
 import com.android.purebilibili.data.repository.VideoNoteSavePayload
+import com.android.purebilibili.data.repository.VideoNotePublicNotePage
 import com.android.purebilibili.data.repository.CreatorCardStats
 import com.android.purebilibili.feature.download.DownloadTask
 import com.android.purebilibili.feature.plugin.SponsorBlockPlugin
@@ -49,6 +50,8 @@ internal interface DesktopOriginalVideoOwnerNotes {
     suspend fun getVideoNoteSnapshot(aid:Long):Result<VideoNoteSnapshot>
     suspend fun savePrivateNote(payload:VideoNoteSavePayload):Result<String>
     suspend fun deletePrivateNote(aid:Long,noteId:String):Result<Unit>
+    suspend fun getPublicVideoNotePage(aid:Long,page:Int):Result<VideoNotePublicNotePage>
+    suspend fun getPublicNoteInfo(cvid:Long):Result<PublicVideoNoteInfoData>
 }
 
 internal interface DesktopOriginalVideoOwnerActions : DesktopOriginalVideoInitialActions {
@@ -104,6 +107,7 @@ internal interface DesktopOriginalVideoOwnerDownload {
 }
 
 internal interface DesktopOriginalVideoOwnerNetwork {
+    fun cdnNetwork():com.bilipai.desktop.player.cache.DesktopCdnNetworkObservation
     fun isMobileData():Boolean
     fun isWifi():Boolean
     fun getDefaultQualityId(context:DesktopOriginalPlayerSettingsContext):Int {
@@ -162,6 +166,7 @@ internal interface DesktopOriginalVideoOwnerPlugins {
     fun isPlaybackDispatchCurrent(expected:DesktopOriginalVideoAcceptedPublication):Boolean
     fun admitPlaybackDispatch(expected:DesktopOriginalVideoAcceptedPublication,action:()->Unit):Boolean
     fun observeInheritedPluginMute()
+    fun observeCdnTransferPlayback()
     /** Existing generation is retained for same BV/CID adoption. New native
      * publication establishes the one Runtime generation before this observer. */
     suspend fun ensureSponsorLoaded(expected:DesktopOriginalVideoAcceptedPublication,bvid:String,cid:Long)

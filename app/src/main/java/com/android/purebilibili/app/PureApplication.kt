@@ -322,7 +322,26 @@ class PureApplication : Application(), SingletonImageLoader.Factory, ComponentCa
         Logger.recordStartupStage(task.id)
         when (task.id) {
             "plugin_manager_context_init" -> PluginManager.initialize(this)
-            "network_module_init" -> NetworkModule.init(this)
+            "network_module_init" -> NetworkModule.init(
+                this,
+                com.android.purebilibili.core.network.CoreNetworkConfig(
+                    debug = BuildConfig.DEBUG,
+                    allowHardcodedDnsFallback = BuildConfig.ALLOW_HARDCODED_DNS_FALLBACK,
+                    log = { level, tag, message, error ->
+                        when (level) {
+                            "D" -> com.android.purebilibili.core.util.Logger.d(tag, message)
+                            "W" -> com.android.purebilibili.core.util.Logger.w(tag, message, error)
+                            "E" -> com.android.purebilibili.core.util.Logger.e(tag, message, error)
+                        }
+                    },
+                    reportApiError = { endpoint, code, message ->
+                        com.android.purebilibili.core.util.CrashReporter.reportApiError(
+                            endpoint = endpoint, httpCode = code, errorMessage = message,
+                        )
+                    },
+                    isPrivacyModeEnabled = SettingsManager::isPrivacyModeEnabledSync,
+                ),
+            )
             "token_manager_init" -> TokenManager.init(this)
             "wbi_key_restore" -> WbiKeyManager.restoreFromStorage(this)
             "video_repository_init" -> com.android.purebilibili.data.repository.VideoRepository.init(this)

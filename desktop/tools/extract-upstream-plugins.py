@@ -6,6 +6,7 @@ dependencies. Platform substitutions are exact and counted; source drift fails c
 The original plugin settings UI is supplied by Windows instead of copied Android UI.
 """
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 
 import argparse
 import hashlib
@@ -62,7 +63,7 @@ PLUGIN_ASSETS += ["app/src/main/res/raw/cdn_region_catalog.json"]
 
 
 def read(repo: Path, path: str) -> str:
-    return (repo / path).read_text(encoding="utf-8").replace("\r\n", "\n")
+    return (_desktop_canonical_source(repo, path)).read_text(encoding="utf-8").replace("\r\n", "\n")
 
 
 def parser_for(repo: Path):
@@ -505,7 +506,8 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
     body = substitute(body, "        val context = PluginManager.getContext()\n        val now = System.currentTimeMillis()\n        val current = CdnRegionPluginStore.read(context).also { cache = it }", "        val context = com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { PluginManager.getContext() }\n        val now = System.currentTimeMillis()\n        val current = CdnRegionPluginStore.read(context).also { value -> com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = value } }", 1)
     body = substitute(body, "        cache = next\n        CdnRegionPluginStore.write(context, next)", "        com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = next }\n        CdnRegionPluginStore.write(context, next)", 1)
     body = substitute(body, "        cache = next\n        com.bilipai.desktop.plugins.DesktopPluginApplicationScope.ioScope.launch {\n            CdnRegionPluginStore.write(PluginManager.getContext(), next)\n        }", "        com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal { cache = next }\n        com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.launchOrOriginal(com.bilipai.desktop.plugins.DesktopPluginApplicationScope.ioScope) {\n            CdnRegionPluginStore.write(com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { PluginManager.getContext() }, next)\n        }", 1)
-    body = substitute(body, "                com.bilipai.desktop.plugins.DesktopPluginRepositoryBinding.playbackClient.newCall(request).execute().use { response ->", "                val call = com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.playbackCallsOrOriginal { com.bilipai.desktop.plugins.DesktopPluginRepositoryBinding.playbackClient }.newCall(request)\n                com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.executeOrOriginal(call) { response ->", 1)
+    body = substitute(body, '                com.bilipai.desktop.plugins.DesktopPluginRepositoryBinding.playbackClient, url, CdnByteRange', '                com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.playbackCallsOrOriginal { com.bilipai.desktop.plugins.DesktopPluginRepositoryBinding.playbackClient }, url, CdnByteRange', 1)
+    body = substitute(body, '        val next = cache.copy(parallelDownloadEnabled = enabled)\n        CdnRegionPluginStore.write(PluginManager.getContext(), next)\n        cache = next\n        CdnTransferRuntime.configure(running, enabled && !next.experimentalRewriteEnabled)', '        com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.checkCurrentOrOriginal()\n        val next = cache.copy(parallelDownloadEnabled = enabled)\n        CdnRegionPluginStore.write(com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.contextOrOriginal { PluginManager.getContext() }, next)\n        com.bilipai.desktop.plugins.DesktopPlayerPluginWriteAdmission.mutateOrOriginal {\n            cache = next\n            CdnTransferRuntime.configure(running, enabled && !next.experimentalRewriteEnabled)\n        }', 1)
     generated.append(write(output, path, original, platform_logger(platform_context(body))))
 
     spec = importlib.util.spec_from_file_location('video_enhancement_platform', repo / 'desktop/tools/extract-video-enhancement.py')

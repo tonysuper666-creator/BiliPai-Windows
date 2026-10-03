@@ -37,6 +37,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.MoreVert
 import androidx.compose.material.icons.rounded.Search
+import androidx.compose.material.icons.rounded.QrCodeScanner
+import com.android.purebilibili.feature.login.OfficialQrAuthorizationDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.DisposableEffect
@@ -1513,6 +1515,13 @@ private fun ProfileTopActions(
     tint: Color,
     onWallpaperClick: (() -> Unit)? = null,
 ) {
+    var showQrAuthorization by remember { mutableStateOf(false) }
+    if (showQrAuthorization) {
+        OfficialQrAuthorizationDialog(onDismiss = { showQrAuthorization = false })
+    }
+    AppIconButton(onClick = { showQrAuthorization = true }) {
+        AppIcon(Icons.Rounded.QrCodeScanner, contentDescription = "扫码授权登录", tint = tint)
+    }
     AppIconButton(onClick = onSearchClick) {
         AppIcon(Icons.Rounded.Search, contentDescription = "搜索", tint = tint)
     }

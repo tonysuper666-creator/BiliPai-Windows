@@ -111,7 +111,7 @@ internal fun resolveDynamicAdditionalCard(additional: DynamicAdditional?): Dynam
         }
         "ADDITIONAL_TYPE_GOODS" -> additional.goods?.items?.firstOrNull()?.let { goods ->
             DynamicAdditionalCardModel(
-                title = goods.name.ifBlank { additional.goods.head_text.ifBlank { "商品" } },
+                title = goods.name.ifBlank { additional.goods?.head_text.orEmpty().ifBlank { "商品" } },
                 subtitle = goods.brief,
                 cover = goods.cover,
                 jumpUrl = goods.jump_url,

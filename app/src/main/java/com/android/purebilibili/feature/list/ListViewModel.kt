@@ -1,8 +1,10 @@
 // 文件路径: feature/list/ListViewModel.kt
 package com.android.purebilibili.feature.list
 
+import com.android.purebilibili.core.player.PlaybackProgressManager
+
 import android.app.Application
-import android.os.Build
+import com.android.purebilibili.core.ui.animation.gl.isThanosEffectSupported
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +15,7 @@ import com.android.purebilibili.core.refresh.HistoryRefreshBus
 import com.android.purebilibili.data.model.response.VideoItem
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -177,7 +180,7 @@ class HistoryViewModel(application: Application) : BaseListViewModel(application
     private var historyListType: String? = null
     
     private val progressManager by lazy {
-        com.android.purebilibili.feature.video.controller.PlaybackProgressManager.getInstance(
+        com.android.purebilibili.core.player.PlaybackProgressManager.getInstance(
             getApplication<Application>()
         )
     }
@@ -311,18 +314,33 @@ class HistoryViewModel(application: Application) : BaseListViewModel(application
         startDeleteSession(setOf(renderKey))
     }
 
-    private fun startDeleteSession(renderKeys: Set<String>) {
+    fun startVideosDissolve(renderKeys: Set<String>, visibleKeys: Set<String>) {
+        startDeleteSession(renderKeys, visibleKeys)
+    }
+
+    private fun startDeleteSession(renderKeys: Set<String>, visibleKeys: Set<String> = renderKeys) {
+        if (_deleteSession.value != null) return
         val session = createHistoryDeleteSession(
             targetKeys = renderKeys,
-            dissolveAnimationSafe = isHistoryDissolveAnimationSafe(
-                sdkInt = Build.VERSION.SDK_INT,
-                manufacturer = Build.MANUFACTURER.orEmpty()
-            )
+            dissolveAnimationSafe = isThanosEffectSupported(getApplication<Application>()),
+            visibleKeys = visibleKeys,
         ) ?: return
-        if (session.animationMode == HistoryDeleteAnimationMode.DIRECT_DELETE) {
+        if (session.animationMode == HistoryDeleteAnimationMode.DIRECT_DELETE ||
+            shouldFinalizeHistoryDeleteSession(session)
+        ) {
             deleteHistoryItems(session.targetKeys)
         } else {
             _deleteSession.value = session
+            viewModelScope.launch {
+                // Also cover navigation/viewport changes before a lazy row ever mounts.
+                // The normal per-card watchdog completes earlier; this bounds the whole session.
+                delay(6_000L)
+                val current = _deleteSession.value
+                if (current != null && current.targetKeys === session.targetKeys) {
+                    _deleteSession.value = null
+                    deleteHistoryItems(current.targetKeys)
+                }
+            }
         }
     }
 
@@ -398,7 +416,7 @@ class HistoryViewModel(application: Application) : BaseListViewModel(application
         }
         
         // 判断是否还有更多
-        hasMore = historyResult.list.isNotEmpty() && historyResult.cursor != null && historyResult.cursor.max > 0
+        hasMore = historyResult.list.isNotEmpty() && (historyResult.cursor?.max ?: 0L) > 0L
         _hasMoreState.value = hasMore
         
         // 保存历史记录项并转换为 VideoItem
@@ -468,7 +486,7 @@ class HistoryViewModel(application: Application) : BaseListViewModel(application
                 }
                 
                 // 判断是否还有更多
-                hasMore = historyResult.cursor != null && historyResult.cursor.max > 0
+                hasMore = (historyResult.cursor?.max ?: 0L) > 0L
                 _hasMoreState.value = hasMore
                 
                 // 保存历史记录项并转换为 VideoItem

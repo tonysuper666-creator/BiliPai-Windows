@@ -5,6 +5,7 @@ import com.android.purebilibili.core.ui.resolveFilledButtonContainerColor
 import com.android.purebilibili.core.ui.resolveFilledButtonContentColor
 import com.android.purebilibili.core.ui.components.AppIcon
 import com.android.purebilibili.core.ui.components.AppText
+import com.android.purebilibili.core.ui.components.AppTextButton
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -68,6 +70,7 @@ fun OfficialWallpaperSheet(
     viewModel: ProfileViewModel,
     onDismiss: () -> Unit
 ) {
+    val archiveUriHandler = LocalUriHandler.current
     val clearIcon = rememberAppClearIcon()
     val officialWallpapers by viewModel.officialWallpapers.collectAsStateWithLifecycle()
     val isLoading by viewModel.officialWallpapersLoading.collectAsStateWithLifecycle()
@@ -77,9 +80,7 @@ fun OfficialWallpaperSheet(
     
     // 初始化加载
     LaunchedEffect(Unit) {
-        if (officialWallpapers.isEmpty()) {
-            viewModel.loadOfficialWallpapers()
-        }
+        viewModel.loadOfficialWallpapers()
     }
 
     // ModalBottomSheet 容器
@@ -116,10 +117,42 @@ fun OfficialWallpaperSheet(
                     )
                     
                     // 占位，保持标题居中
-                    Spacer(modifier = Modifier.size(48.dp))
+                    AppTextButton(
+                        onClick = { viewModel.loadOfficialWallpapers() },
+                        enabled = !isLoading,
+                        modifier = Modifier.widthIn(min = 48.dp),
+                    ) {
+                        AppText(if (isLoading) "加载中" else "刷新")
+                    }
                 }
             }
             
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                AppText(
+                    "共 ${officialWallpapers.size} 张 · 历史来源",
+                    style = MaterialTheme.typography.labelSmall,
+                    modifier = Modifier.weight(1f),
+                )
+                com.android.purebilibili.data.repository.wallpaperArchiveSources.forEach { (name, url) ->
+                    AppTextButton(onClick = { archiveUriHandler.openUri(url) }) {
+                        AppText(if (name == "bili_app_splash") "开屏归档" else "插画归档", style = MaterialTheme.typography.labelSmall)
+                    }
+                }
+            }
+
+            if (error != null && officialWallpapers.isNotEmpty()) {
+                AppText(
+                    text = error.orEmpty(),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                )
+            }
+
             // 2. 内容区
             when {
                 isLoading && officialWallpapers.isEmpty() -> {
@@ -153,7 +186,7 @@ fun OfficialWallpaperSheet(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         modifier = Modifier.weight(1f)
                     ) {
-                        items(officialWallpapers, key = { it.id }) { item ->
+                        items(officialWallpapers, key = { resolveOfficialWallpaperDetailUrl(it) }) { item ->
                             val detailUrl = resolveOfficialWallpaperDetailUrl(item)
                             val imageUrl = resolveOfficialWallpaperThumbnailUrl(item)
                             val isSelected = selectedUrl == detailUrl

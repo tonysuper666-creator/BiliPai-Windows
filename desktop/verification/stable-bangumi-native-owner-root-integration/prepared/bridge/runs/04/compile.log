@@ -1,0 +1,12 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-native-owner-root-parity\generated-video\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1776:36: warning: condition is always 'true'.
+                hasGlobalContext = globalContext != null
+                                   ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-native-owner-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerViewModel.kt:346:68: warning: redundant call of conversion method.
+                            ?: cachedState.currentEpisode.duration.toLong().coerceAtLeast(0L)
+                                                                   ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-native-owner-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerViewModel.kt:1052:39: warning: unnecessary safe call on a non-null receiver of type 'AudioStreamCandidate'.
+            audio = selection.selected?.track,
+                                      ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-native-owner-root-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalVideoRootAssembler.kt:288:119: warning: expression is unused.
+                { enabled -> gate.scope.launch { desktopOriginalRootSetDiagnosticLogging(effect.settings, enabled) }; Unit },
+                                                                                                                      ^^^^

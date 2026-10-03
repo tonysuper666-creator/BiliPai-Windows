@@ -1,14 +1,15 @@
 """Selected complete stable Home protocols. No HTTP client/store/cache/DTO is generated.
 Production deliberately skips DIRECT WatchLaterRefreshBus; --standalone includes it only for tests.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
-import hashlib,importlib.util,json,textwrap,re,argparse
+import hashlib,importlib.util,json,textwrap,re,argparse,os
 BASE='app/src/main/java/com/android/purebilibili/'
 PREFIX=chr(92)*2+'?'+chr(92)
-SOURCE_PINS={'app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt': '1aa112f16f2ccecaf3d26e00e6092e24d96ac6020c7624eff32121dd5199a496', 'app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt': '4081b04ee97b4edab58507811d43b637afb78a04fd1b6f94ffa6697f72905c4a', 'app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt': '28748c0fd10125e603a8c0f28fff63781f87d3350e1446cc355622f447f8f86d', 'app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt': '405e952ef30ec06f14a155599a92641d533e73f28ea198f0aebfda90960a4bc8', 'app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt': 'd6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f', 'app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt': '67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d'}
+SOURCE_PINS={'app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt': 'acf05cba9a89666533378eef35a21609484a02ccd874a460c259c3f3363d1e64', 'core-data/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt': '1d6b92aab9f4bb63c6241375688619e58c62e358130af3ed761ef208d894c02c', 'app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt': '2d0007e82c53f1a4af5f4f298699decbc14c0623e88e50a3e7415c2ab3f374ac', 'app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt': 'bb055a1da8a8f7cf4f937c4a2f67a5d3fb2f7ff462274857780b55c4628a1eb9', 'app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt': 'd6a59bbf30b9c2058f352e299399713f9af13fd44262eeae6473e1447769087f', 'app/src/main/java/com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt': '67deacd84bee9f8803b2190e079d5486d2593bf26bc29d1a114ae259273fe87d'}
 
 def safe(p):
- s=str(Path(p).absolute());return Path(s if s.startswith(PREFIX) else PREFIX+s)
+ s=os.fspath(p);return Path(s if s.startswith(PREFIX) else PREFIX+os.path.abspath(s))
 def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n')
 def write(p,s):
  p=safe(p);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')
@@ -18,12 +19,12 @@ def load(p,n):
 
 def generate(repo,output,standalone=False):
     REPO=Path(repo);OUT=Path(output)
-    for path,expected in SOURCE_PINS.items():assert sha(read(REPO/path))==expected,path
+    for path,expected in SOURCE_PINS.items():assert sha(read(_desktop_canonical_source(REPO, path)))==expected,path
     parser=load(REPO/'desktop/tools/sync-upstream.py','home_port_parser')
     media=load(REPO/'desktop/tools/extract-upstream-media.py','home_port_selector')
     rows=[];pins={}
     def source(name):
-     path=BASE+'data/repository/'+name+'.kt';s=read(REPO/path);pins[path]=sha(s);return path,s
+     requested=BASE+'data/repository/'+name+'.kt';path=_desktop_canonical_source(REPO, requested).relative_to(REPO.resolve()).as_posix();s=read(_desktop_canonical_source(REPO, path));pins[path]=sha(s);return path,s
     def exact_replace(s,old,new):
      assert s.count(old)==1,(old[:80],s.count(old));return s.replace(old,new)
     def method(path,s,name,adapt=None):
@@ -81,12 +82,14 @@ import java.util.concurrent.ConcurrentHashMap
 /** Selected complete original home request bodies; required services are views of Root's graph. */
 internal class DesktopOriginalHomeVideoProtocol(private val environment:DesktopHomeProtocolEnvironment) : AutoCloseable {
     private val api get()=environment.api
+    private val SharedContentRepository = DesktopOriginalSharedContentRequests { environment.api }
 '''+originalFields+'\n\n'+body+'''
     override fun close() { homePreloadDeferred?.cancel(); homePreloadDeferred=null; preloadedHomeVideos=null; verticalVideoCache.clear() }
 }
 ''')
 
     def general_adapt(s):
+     s=s.replace('com.android.purebilibili.core.network.CoreDataLog.', 'com.android.purebilibili.core.util.Logger.')
      s=s.replace('e.printStackTrace()','// Windows boundary does not print raw URL/response exceptions.')
      s=s.replace('} catch (e: Exception) {','} catch (cancelled: CancellationException) { throw cancelled\n    } catch (e: Exception) {')
      return s
@@ -103,11 +106,11 @@ internal class DesktopOriginalHomeVideoProtocol(private val environment:DesktopH
     actionPath,action=source('ActionRepository')
     actionMethods=[method(actionPath,action,n,lambda s:general_adapt(s).replace('TokenManager.accessTokenCache','environment.accessToken()').replace('TokenManager.csrfCache','environment.csrf()')) for n in ['submitRecommendationFeedback','toggleWatchLater']]
     write(OUT/'com/android/purebilibili/data/repository/DesktopOriginalHomeActionProtocol.kt',imports+'\nimport com.android.purebilibili.core.refresh.WatchLaterRefreshBus\n\ninternal class DesktopOriginalHomeActionProtocol(private val environment:DesktopHomeProtocolEnvironment) {\n    private val api get()=environment.api\n'+'\n\n'.join(textwrap.indent(s,'    ') for s in actionMethods)+'\n}\n')
-    busPath=BASE+'core/refresh/WatchLaterRefreshBus.kt';bus=read(REPO/busPath);pins[busPath]=sha(bus)
+    busPath=BASE+'core/refresh/WatchLaterRefreshBus.kt';bus=read(_desktop_canonical_source(REPO, busPath));pins[busPath]=sha(bus)
     # Standalone compile copy. Production inventory declares this sole source DIRECT, and the final
     # production producer will skip it, just as the previous HomeVM DIRECT3 replay did.
     if standalone:write(OUT/'com/android/purebilibili/core/refresh/WatchLaterRefreshBus.kt',bus)
-    write(OUT/'home-protocol-identities.json',json.dumps({'pinnedCommit':'3d5d19a2f994daccd0e2f8b5f522b6d82f43d589','sourcePins':pins,'declarations':rows},indent=2)+'\n')
+    write(OUT/'home-protocol-identities.json',json.dumps({'pinnedCommit':'79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40','sourcePins':pins,'declarations':rows},indent=2)+'\n')
     return {'productionOutputs':6,'standaloneOutputs':7,'declarations':len(rows),'sourcePins':pins,'directOnly':BASE+'core/refresh/WatchLaterRefreshBus.kt'}
 
 if __name__=='__main__':

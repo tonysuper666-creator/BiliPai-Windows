@@ -272,6 +272,7 @@ internal fun resolveVideoCardSecondaryContentVisualFrame(
     isReturnGestureInProgress: Boolean,
     motionTier: MotionTier,
     sourceLayout: VideoCardSourceLayout = VideoCardSourceLayout.STACKED,
+    followProgressEnabled: Boolean = true,
 ): VideoCardSecondaryContentVisualFrame {
     val depth = resolveVisualProgress(morphDepthProgress, phase, VideoSharedTransitionDirection.ENTER)
     val returning = isVideoCardReturnContentYieldActive(
@@ -280,7 +281,7 @@ internal fun resolveVideoCardSecondaryContentVisualFrame(
         morphDepthProgress = depth,
     )
     // Match landing chrome alpha so detail body and source-card text crossfade as a pair.
-    val handoff = resolveVideoCardSourceChromeVisualFrame(
+    val handoff = if (!followProgressEnabled && depth > 0f) 0f else resolveVideoCardSourceChromeVisualFrame(
         morphDepthProgress = depth,
         phase = phase,
         isReturnGestureInProgress = isReturnGestureInProgress,

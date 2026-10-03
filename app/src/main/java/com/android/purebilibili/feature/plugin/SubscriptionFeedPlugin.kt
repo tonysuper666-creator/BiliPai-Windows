@@ -141,17 +141,23 @@ private fun SubscriptionFeedSettings(modifier: Modifier = Modifier) {
         modifier = modifier.padding(vertical = 8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        AppText(
+            text = "添加 RSS 或 Atom 地址，在首页集中阅读更新。可批量导入 OPML、地址列表或 RSS 表格。",
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodyMedium,
+        )
         AppOutlinedTextField(
             value = url,
             onValueChange = { url = it },
-            label = { AppText("订阅地址") },
+            labelText = "订阅地址",
+            placeholderText = "https://example.com/feed.xml",
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
         AppOutlinedTextField(
             value = title,
             onValueChange = { title = it },
-            label = { AppText("名称（可选，留空自动获取）") },
+            labelText = "名称（可选，留空自动获取）",
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
@@ -186,7 +192,8 @@ private fun SubscriptionFeedSettings(modifier: Modifier = Modifier) {
         AppOutlinedTextField(
             value = importText,
             onValueChange = { importText = it },
-            label = { AppText("批量导入：OPML、地址列表或 RSS 表格") },
+            labelText = "批量导入",
+            placeholderText = "粘贴 OPML、地址列表或 RSS 表格，每行一个地址",
             modifier = Modifier.fillMaxWidth(),
             minLines = 4,
         )

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Expose selected pure discovery declarations, preserving upstream declaration bodies."""
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 import argparse
 import hashlib
 import importlib.util
@@ -33,7 +34,7 @@ SOURCES = {
 
 def inventory(repo: Path) -> list[dict]:
     return [{"path": path, "mode": mode, "features": ["discovery"],
-             "sha256": hashlib.sha256((repo / path).read_text(encoding="utf-8").encode("utf-8")).hexdigest()}
+             "sha256": hashlib.sha256((_desktop_canonical_source(repo, path)).read_text(encoding="utf-8").encode("utf-8")).hexdigest()}
             for path, mode in SOURCES.items()]
 
 
@@ -56,7 +57,7 @@ def generate(repo: Path, output: Path) -> None:
          "import kotlinx.serialization.Serializable\nimport com.android.purebilibili.core.plugin.FeedKind\nimport com.android.purebilibili.data.model.response.VideoItem"),
     ]
     for relative, package, declarations, values, imports in selections:
-        source = (repo / relative).read_text(encoding="utf-8")
+        source = (_desktop_canonical_source(repo, relative)).read_text(encoding="utf-8")
         tokens = parser.kotlin_tokens(source)
         pieces = ["// GENERATED verbatim from " + relative, "package " + package, imports]
         for name in values:
@@ -132,7 +133,7 @@ def generate(repo: Path, output: Path) -> None:
         target = output / (package.replace(".", "/") + "/DesktopDiscovery" + Path(relative).stem + ".kt")
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
-    source = (repo / "app/src/main/java/com/android/purebilibili/feature/plugin/BiliPaiFeedFilterPlugin.kt").read_text(encoding="utf-8")
+    source = (_desktop_canonical_source(repo, "app/src/main/java/com/android/purebilibili/feature/plugin/BiliPaiFeedFilterPlugin.kt")).read_text(encoding="utf-8")
     tokens = parser.kotlin_tokens(source)
     methods = []
     for name in ["parseBanWordToRegex", "parseUidMap", "extractMid"]:
@@ -223,14 +224,14 @@ def generate_recommendation_platform(repo: Path, output: Path, parser) -> None:
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text("// GENERATED original declarations and Windows platform bindings.\npackage " + package + "\n\n" + body + "\n", encoding="utf-8")
 
-    settings = (repo / (BASE + "core/store/SettingsManager.kt")).read_text(encoding="utf-8")
+    settings = (_desktop_canonical_source(repo, BASE + "core/store/SettingsManager.kt")).read_text(encoding="utf-8")
     write("com.android.purebilibili.core.store", "DesktopDiscoverySettings.kt",
         "\n\n".join(constant(settings, name) for name in ("DEFAULT_HOME_REFRESH_COUNT", "MIN_HOME_REFRESH_COUNT", "MAX_HOME_REFRESH_COUNT")) +
         "\n\n" + selected(settings, "fun", "normalizeHomeRefreshCount", parser) +
         "\n\nobject DesktopFeedSettings {\n" + textwrap.indent(selected_enum(settings, "FeedApiType", parser), "    ") + "\n}")
 
     feedback_path = BASE + "core/store/TodayWatchFeedbackStore.kt"
-    feedback = (repo / feedback_path).read_text(encoding="utf-8")
+    feedback = (_desktop_canonical_source(repo, feedback_path)).read_text(encoding="utf-8")
     before = "import android.content.Context"
     if feedback.count(before) != 1:
         raise ValueError("Original negative feedback Context binding changed")
@@ -240,20 +241,20 @@ def generate_recommendation_platform(repo: Path, output: Path, parser) -> None:
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("// GENERATED original " + feedback_path + "; Context only is platform-bound.\n" + feedback, encoding="utf-8")
 
-    actions = (repo / (BASE + "data/repository/ActionRepository.kt")).read_text(encoding="utf-8")
+    actions = (_desktop_canonical_source(repo, BASE + "data/repository/ActionRepository.kt")).read_text(encoding="utf-8")
     write("com.android.purebilibili.data.repository", "DesktopRecommendationFeedbackRequests.kt",
         "import com.android.purebilibili.core.network.AppSignUtils\nimport com.android.purebilibili.data.model.response.*\n\n" +
         "\n\n".join([selected(actions, "class", "RecommendationFeedbackRequest", parser, True),
             selected(actions, "fun", "buildRecommendationFeedbackRequest", parser), selected(actions, "fun", "buildRecommendationFeedbackParams", parser)]))
 
-    blocked = (repo / (BASE + "data/repository/BlockedUpRepository.kt")).read_text(encoding="utf-8")
+    blocked = (_desktop_canonical_source(repo, BASE + "data/repository/BlockedUpRepository.kt")).read_text(encoding="utf-8")
     declarations = [constant(blocked, name) for name in ("BILIBILI_RELATION_ACT_BLOCK", "BILIBILI_RELATION_ACT_UNBLOCK", "BILIBILI_RELATION_PROFILE_BLOCK_RE_SRC", "BILIBILI_RELATION_COMMENT_BLOCK_RE_SRC")]
     declarations += [selected_enum(blocked, name, parser) for name in ("BilibiliBlockedListRemoteStatus", "BlockedUpRelationSource")]
     declarations += [selected(blocked, "class", "BlockedUpWriteResult", parser, True), selected(blocked, "fun", "resolveBlockedUpRelationReSrc", parser), selected(blocked, "fun", "buildBlockedUpWriteMessage", parser)]
     declarations.append("internal fun desktopBlockedRelationArguments(blocked: Boolean, source: BlockedUpRelationSource): Pair<Int, Int> =\n    (if (blocked) BILIBILI_RELATION_ACT_BLOCK else BILIBILI_RELATION_ACT_UNBLOCK) to resolveBlockedUpRelationReSrc(source)")
     write("com.android.purebilibili.data.repository", "DesktopBlockedCreatorPolicy.kt", "\n\n".join(declarations))
 
-    video = (repo / (BASE + "data/repository/VideoRepository.kt")).read_text(encoding="utf-8")
+    video = (_desktop_canonical_source(repo, BASE + "data/repository/VideoRepository.kt")).read_text(encoding="utf-8")
     builders = []
     for original, adapter, arguments in [
         ("fetchMobileFeed", "buildDesktopMobileRecommendParams", "idx: Int, refreshCount: Int, accessToken: String"),
@@ -276,7 +277,7 @@ def generate_recommendation_platform(repo: Path, output: Path, parser) -> None:
         builders.append("internal fun " + adapter + "(" + arguments + "): " + ("MutableMap" if original == "fetchMergedMobileFeed" else "Map") + "<String, String> {\n" + declaration + "\n    return params\n}")
     write("com.android.purebilibili.data.repository", "DesktopRecommendationAppParams.kt", "import com.android.purebilibili.core.network.AppSignUtils\n\n" + "\n\n".join(builders))
 
-    network = (repo / (BASE + "core/network/ApiClient.kt")).read_text(encoding="utf-8")
+    network = (_desktop_canonical_source(repo, BASE + "core/network/ApiClient.kt")).read_text(encoding="utf-8")
     header_bodies = []
     for prefix in ("if (androidHdLoginAppKeyHeader != null || isHdFeedRequest) {", "if (isHdFeedRequest) {"):
         if network.count(prefix) != 1:

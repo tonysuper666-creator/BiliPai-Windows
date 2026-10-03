@@ -1,0 +1,1964 @@
+{
+  "pin": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "files": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+      "sha256LF": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a",
+      "generated": "com/android/purebilibili/feature/space/SpaceViewModel.kt",
+      "generatedSha256LF": "ee73a225bfb9ed1c62d5b1535fac03839578eb9a38e32bfe41d5b68fdf03eebe",
+      "completeOriginalFileReconstructed": true,
+      "transforms": [
+        {
+          "beforeSha256": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a",
+          "afterSha256": "dca6e891d834ae4f03e8d850206016c14b1b841a5a2a0e5e663191a1d6d2cbc8",
+          "original": "package com.android.purebilibili.feature.space\n\nimport androidx.lifecycle.ViewModel\nimport androidx.lifecycle.SavedStateHandle\nimport androidx.lifecycle.viewModelScope\nimport com.android.purebilibili.core.network.NetworkModule\nimport com.android.purebilibili.core.network.WbiUtils\nimport com.android.purebilibili.core.network.getSpaceAggregate\nimport com.android.purebilibili.data.model.response.*\nimport com.android.purebilibili.data.repository.BangumiRepository\nimport com.android.purebilibili.data.repository.ActionRepository\nimport com.android.purebilibili.data.repository.FavoriteRepository\nimport com.android.purebilibili.data.repository.HistoryRepository\nimport com.android.purebilibili.data.repository.shouldContinueDynamicFetchAfterFilter\nimport com.android.purebilibili.feature.bangumi.MY_FOLLOW_TYPE_BANGUMI\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.Job\nimport kotlinx.coroutines.async\nimport kotlinx.coroutines.coroutineScope\nimport kotlinx.coroutines.delay\nimport kotlinx.coroutines.flow.MutableStateFlow\nimport kotlinx.coroutines.flow.asStateFlow\nimport kotlinx.coroutines.flow.update\nimport kotlinx.coroutines.launch\n\nenum class SpaceSubTab {\n    VIDEO,\n    AUDIO,\n    ARTICLE,\n    OPUS,\n    SEASON_VIDEO,\n    SERIES,\n    UGC_SEASON,\n    CHARGING_VIDEO,\n    COMIC\n}\n\n// UI 状态\nsealed class SpaceUiState {\n    object Loading : SpaceUiState()\n    data class Success(\n        val userInfo: SpaceUserInfo,\n        val relationStat: RelationStatData? = null,\n        val upStat: UpStatData? = null,\n        // 头部充电/大航海摘要（App 端 /x/v2/space，失败时为 null，行不显示）\n        val chargeGroup: SpaceSupporterGroup? = null,\n        val guardGroup: SpaceSupporterGroup? = null,\n        val videos: List<SpaceVideoItem> = emptyList(),\n        val totalVideos: Int = 0,\n        val isLoadingMore: Boolean = false,\n        val hasMoreVideos: Boolean = true,\n        val videoPageLoadCompletionVersion: Long = 0L,\n        val lastVideoPageLoadFailed: Boolean = false,\n        //  视频分类\n        val categories: List<SpaceVideoCategory> = emptyList(),\n        val selectedTid: Int = 0,  // 0 表示全部\n        //  视频排序\n        val sortOrder: VideoSortOrder = VideoSortOrder.PUBDATE,\n        //  合集和系列\n        val seasons: List<SeasonItem> = emptyList(),\n        val series: List<SeriesItem> = emptyList(),\n        val seasonArchives: Map<Long, List<SeasonArchiveItem>> = emptyMap(),  // season_id -> videos\n        val seriesArchives: Map<Long, List<SeriesArchiveItem>> = emptyMap(),   // series_id -> videos\n        val createdFavoriteFolders: List<FavFolder> = emptyList(),\n        val collectedFavoriteFolders: List<FavFolder> = emptyList(),\n        //  主页 Tab\n        val topVideo: SpaceTopArcData? = null,\n        val notice: String = \"\",\n        val homeFavoriteFolders: List<FavFolder> = emptyList(),\n        val homeFavoriteFolderCount: Int = 0,\n        val homeCoinVideos: List<SpaceAggregateArchiveItem> = emptyList(),\n        val homeCoinVideoCount: Int = 0,\n        val homeLikeVideos: List<SpaceAggregateArchiveItem> = emptyList(),\n        val homeLikeVideoCount: Int = 0,\n        val homeBangumiItems: List<SpaceAggregateArchiveItem> = emptyList(),\n        val homeBangumiCount: Int = 0,\n        val homeComicItems: List<SpaceAggregateArchiveItem> = emptyList(),\n        val homeComicCount: Int = 0,\n        val bangumiItems: List<FollowBangumiItem> = emptyList(),\n        val bangumiTotal: Int = 0,\n        val bangumiPage: Int = 1,\n        val isLoadingBangumi: Boolean = false,\n        val hasMoreBangumi: Boolean = true,\n        //  动态 Tab\n        val dynamics: List<SpaceDynamicItem> = emptyList(),\n        val dynamicOffset: String = \"\",\n        val hasMoreDynamics: Boolean = true,\n        val isLoadingDynamics: Boolean = false,\n        val hasLoadedDynamicsOnce: Boolean = false,\n        val lastDynamicLoadFailed: Boolean = false,\n        //  课堂 Tab\n        val cheeseItems: List<SpaceCheeseItem> = emptyList(),\n        val cheesePage: Int = 1,\n        val isLoadingCheese: Boolean = false,\n        val hasMoreCheese: Boolean = true,\n        val hasLoadedCheeseOnce: Boolean = false,\n        val lastCheeseLoadFailed: Boolean = false,\n        val hasCheeseTab: Boolean = false,\n        \n        //  Uploads Sub-Tab\n        val selectedSubTab: SpaceSubTab = SpaceSubTab.VIDEO,\n        val selectedContributionTabId: String = createSpaceContributionTabId(param = \"video\"),\n        val contributionTabs: List<SpaceContributionTab> = buildDefaultSpaceContributionTabs(),\n        val audios: List<SpaceAudioItem> = emptyList(),\n        val articles: List<SpaceArticleItem> = emptyList(),\n        val totalAudios: Int = 0,\n        val totalArticles: Int = 0,\n        val audioPage: Int = 1,\n        val articlePage: Int = 1,\n        val articleOffset: String = \"\",\n        val isLoadingAudios: Boolean = false,\n        val isLoadingArticles: Boolean = false,\n        val hasMoreAudios: Boolean = true,\n        val hasMoreArticles: Boolean = true,\n        val watchProgressByBvid: Map<String, SpaceWatchProgress> = emptyMap(),\n        val lastWatchedVideo: SpaceWatchProgress? = null,\n        val pendingLocateBvid: String? = null,\n        val locateMessage: String? = null,\n        val isSearchMode: Boolean = false,\n        val searchQuery: String = \"\",\n        val headerState: SpaceHeaderState = SpaceHeaderState(null, null, null, null, \"\", emptyList(), emptyList()),\n        val tabShellState: SpaceTabShellState = buildInitialTabShellState(),\n        val mainTabs: List<SpaceMainTabItem> = buildDefaultSpaceMainTabs()\n    ) : SpaceUiState()\n    data class Error(val message: String) : SpaceUiState()\n}\n\n",
+          "adapted": "package com.android.purebilibili.feature.space\n\nimport androidx.lifecycle.ViewModel\nimport androidx.lifecycle.SavedStateHandle\nimport androidx.lifecycle.viewModelScope\nimport com.android.purebilibili.core.network.NetworkModule\nimport com.android.purebilibili.core.network.WbiUtils\nimport com.android.purebilibili.core.network.getSpaceAggregate\nimport com.android.purebilibili.data.model.response.*\nimport com.android.purebilibili.data.repository.BangumiRepository\nimport com.android.purebilibili.data.repository.ActionRepository\nimport com.android.purebilibili.data.repository.FavoriteRepository\nimport com.android.purebilibili.data.repository.HistoryRepository\nimport com.android.purebilibili.data.repository.shouldContinueDynamicFetchAfterFilter\nimport com.android.purebilibili.feature.bangumi.MY_FOLLOW_TYPE_BANGUMI\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.Job\nimport kotlinx.coroutines.async\nimport kotlinx.coroutines.coroutineScope\nimport kotlinx.coroutines.delay\nimport kotlinx.coroutines.flow.MutableStateFlow\nimport kotlinx.coroutines.flow.asStateFlow\nimport kotlinx.coroutines.flow.update\nimport kotlinx.coroutines.launch\n\n",
+          "positionsAfter": [
+            0
+          ]
+        },
+        {
+          "beforeSha256": "dca6e891d834ae4f03e8d850206016c14b1b841a5a2a0e5e663191a1d6d2cbc8",
+          "afterSha256": "622022ce8dcffb2534c543b0f9401b7b0515df8ca7caad4ff240479eff7553c2",
+          "original": "import androidx.lifecycle.ViewModel\n",
+          "adapted": "",
+          "positionsAfter": [
+            48
+          ]
+        },
+        {
+          "beforeSha256": "622022ce8dcffb2534c543b0f9401b7b0515df8ca7caad4ff240479eff7553c2",
+          "afterSha256": "30d15a68b6bbae025e8816c7f77fb556f6c59a689b3a80bc42b7438ce53636d1",
+          "original": "import androidx.lifecycle.viewModelScope\n",
+          "adapted": "",
+          "positionsAfter": [
+            91
+          ]
+        },
+        {
+          "beforeSha256": "30d15a68b6bbae025e8816c7f77fb556f6c59a689b3a80bc42b7438ce53636d1",
+          "afterSha256": "1d366ef47faed2a9c8b3dd6fd579dc92a55da5389e7f79a0bac6c70a8b0bb712",
+          "original": "import com.android.purebilibili.core.network.NetworkModule\n",
+          "adapted": "",
+          "positionsAfter": [
+            91
+          ]
+        },
+        {
+          "beforeSha256": "1d366ef47faed2a9c8b3dd6fd579dc92a55da5389e7f79a0bac6c70a8b0bb712",
+          "afterSha256": "799a0d54f4213279d5ab2aa8cca58a11ada7233134e898f934f2a2c656e24e1e",
+          "original": "import com.android.purebilibili.core.network.getSpaceAggregate\n",
+          "adapted": "",
+          "positionsAfter": [
+            145
+          ]
+        },
+        {
+          "beforeSha256": "799a0d54f4213279d5ab2aa8cca58a11ada7233134e898f934f2a2c656e24e1e",
+          "afterSha256": "bb7f71eedad3d684fdc5049e9f70a8fb78d131d70e76ed48796892576ab711cf",
+          "original": "import com.android.purebilibili.data.repository.BangumiRepository\n",
+          "adapted": "",
+          "positionsAfter": [
+            199
+          ]
+        },
+        {
+          "beforeSha256": "bb7f71eedad3d684fdc5049e9f70a8fb78d131d70e76ed48796892576ab711cf",
+          "afterSha256": "9049629ae5d505faa03503ba10d622b5b259951c23d424081d63f2fdba07797e",
+          "original": "import com.android.purebilibili.data.repository.ActionRepository\n",
+          "adapted": "",
+          "positionsAfter": [
+            199
+          ]
+        },
+        {
+          "beforeSha256": "9049629ae5d505faa03503ba10d622b5b259951c23d424081d63f2fdba07797e",
+          "afterSha256": "bfda26b895777fa1ab07d2813355c907033681028d40c2bdfcef5cb4d2ed24be",
+          "original": "import com.android.purebilibili.data.repository.FavoriteRepository\n",
+          "adapted": "",
+          "positionsAfter": [
+            199
+          ]
+        },
+        {
+          "beforeSha256": "bfda26b895777fa1ab07d2813355c907033681028d40c2bdfcef5cb4d2ed24be",
+          "afterSha256": "93e0765afe08c1f3c6cae19622340426b9d379db5676d36bf41ff3de797c36ff",
+          "original": "import com.android.purebilibili.data.repository.HistoryRepository\n",
+          "adapted": "",
+          "positionsAfter": [
+            199
+          ]
+        },
+        {
+          "beforeSha256": "93e0765afe08c1f3c6cae19622340426b9d379db5676d36bf41ff3de797c36ff",
+          "afterSha256": "38db5ba208e15163848f8ac1d0cbb20863a28111382d4f1395b68c2258effc95",
+          "original": "class SpaceViewModel(\n    private val savedStateHandle: SavedStateHandle = SavedStateHandle()\n) : ViewModel() {",
+          "adapted": "internal class SpaceViewModel(\n    private val environment: com.bilipai.desktop.ui.DesktopOriginalSpaceEnvironment,\n    private val savedStateHandle: SavedStateHandle = SavedStateHandle()\n) {\n    private val viewModelScope get() = environment.scope",
+          "positionsAfter": [
+            702
+          ]
+        },
+        {
+          "beforeSha256": "38db5ba208e15163848f8ac1d0cbb20863a28111382d4f1395b68c2258effc95",
+          "afterSha256": "a4b60881bc00ecb94a9130787f7d09105ccd2fb4dd609b1aa9e97b0d9e03b8f4",
+          "original": "private val spaceApi = NetworkModule.spaceApi",
+          "adapted": "private val spaceApi get() = environment.spaceApi",
+          "positionsAfter": [
+            1076
+          ]
+        },
+        {
+          "beforeSha256": "a4b60881bc00ecb94a9130787f7d09105ccd2fb4dd609b1aa9e97b0d9e03b8f4",
+          "afterSha256": "406c2dd72f867cf5e8f2e5e1a49bb2b25814d6898cbd9514a51f5450049d3c65",
+          "original": "MutableStateFlow(",
+          "adapted": "environment.mutableStateFlow(",
+          "positionsAfter": [
+            1421,
+            1818,
+            2280,
+            2426
+          ]
+        },
+        {
+          "beforeSha256": "406c2dd72f867cf5e8f2e5e1a49bb2b25814d6898cbd9514a51f5450049d3c65",
+          "afterSha256": "ac7546b7c2230762c28da24365f24053b13a144bd76cd6614576fc032838068d",
+          "original": "ActionRepository.followStateChanges",
+          "adapted": "environment.followStateChanges",
+          "positionsAfter": [
+            3304
+          ]
+        },
+        {
+          "beforeSha256": "ac7546b7c2230762c28da24365f24053b13a144bd76cd6614576fc032838068d",
+          "afterSha256": "f1a04da9dccf4ba67fc51ff46eef6119453edd5195700ece9795fef48c56002c",
+          "original": "ActionRepository",
+          "adapted": "environment.actions",
+          "positionsAfter": [
+            10178,
+            15023,
+            15836,
+            92931,
+            96255,
+            97084,
+            97159
+          ]
+        },
+        {
+          "beforeSha256": "f1a04da9dccf4ba67fc51ff46eef6119453edd5195700ece9795fef48c56002c",
+          "afterSha256": "5a328b2b2d856078a41455c5ea2c384477d66edebce4dad318a33969e5ded18e",
+          "original": "HistoryRepository",
+          "adapted": "environment.history",
+          "positionsAfter": [
+            16516,
+            16757
+          ]
+        },
+        {
+          "beforeSha256": "5a328b2b2d856078a41455c5ea2c384477d66edebce4dad318a33969e5ded18e",
+          "afterSha256": "173f367ecc438b965e5017db575cf89d96747c08dc063cac4d867477e71c2862",
+          "original": "FavoriteRepository",
+          "adapted": "environment.favorites",
+          "positionsAfter": [
+            53395,
+            53661
+          ]
+        },
+        {
+          "beforeSha256": "173f367ecc438b965e5017db575cf89d96747c08dc063cac4d867477e71c2862",
+          "afterSha256": "9d42316368e56ae48fce751a566760068ecd3a688ba218ca10a43f68c2439173",
+          "original": "BangumiRepository",
+          "adapted": "environment.bangumi",
+          "positionsAfter": [
+            62793
+          ]
+        },
+        {
+          "beforeSha256": "9d42316368e56ae48fce751a566760068ecd3a688ba218ca10a43f68c2439173",
+          "afterSha256": "5ca817b8fc2a7403bf0c62cb5f35c352da9b10c0280f15cf6f34beba2ce04919",
+          "original": "NetworkModule.api",
+          "adapted": "environment.api",
+          "positionsAfter": [
+            37181,
+            39301
+          ]
+        },
+        {
+          "beforeSha256": "5ca817b8fc2a7403bf0c62cb5f35c352da9b10c0280f15cf6f34beba2ce04919",
+          "afterSha256": "1d865895f9dff99ae88a6770987f6e6d3ef75253fca2d800e28eb587de83cd52",
+          "original": "spaceApi.getSpaceAggregate(mid = mid)",
+          "adapted": "environment.getSpaceAggregate(mid)",
+          "positionsAfter": [
+            38029
+          ]
+        },
+        {
+          "beforeSha256": "1d865895f9dff99ae88a6770987f6e6d3ef75253fca2d800e28eb587de83cd52",
+          "afterSha256": "069c92ccad1dc6024f305eefdbf53a460aa893918eeb1697f02eaab0ba90d7bf",
+          "original": "fun loadSpaceInfo(mid: Long) {",
+          "adapted": "fun loadSpaceInfo(mid: Long) {\n        environment.requireMid(mid)",
+          "positionsAfter": [
+            4107
+          ]
+        },
+        {
+          "beforeSha256": "069c92ccad1dc6024f305eefdbf53a460aa893918eeb1697f02eaab0ba90d7bf",
+          "afterSha256": "0d9f6a493b626be7ce393212f8e52e7b82da08df85e1254e24cc0bc2be5a5334",
+          "original": "android.util.Log.e(\"SpaceVM\", \"Error loading space: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            9428
+          ]
+        },
+        {
+          "beforeSha256": "0d9f6a493b626be7ce393212f8e52e7b82da08df85e1254e24cc0bc2be5a5334",
+          "afterSha256": "7bef7e36793a918ff02b5409bae93535515cfdb25ab2ef167ef8e10e9fd1ff62",
+          "original": "android.util.Log.e(\"SpaceVM\", \"loadSpaceHeaderMetrics error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            14745
+          ]
+        },
+        {
+          "beforeSha256": "7bef7e36793a918ff02b5409bae93535515cfdb25ab2ef167ef8e10e9fd1ff62",
+          "afterSha256": "5df4f7f2a0be8832cedc9e032a8c374b9516491d31692fdcbee9bd0463326da2",
+          "original": "android.util.Log.e(\"SpaceVM\", \"loadSpaceLegacyProfileVisuals error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            20508
+          ]
+        },
+        {
+          "beforeSha256": "5df4f7f2a0be8832cedc9e032a8c374b9516491d31692fdcbee9bd0463326da2",
+          "afterSha256": "1339a4b5ad5e9f275240471c4692045b64868eaa44b0cd114ae7362037f0b308",
+          "original": "android.util.Log.e(\"SpaceVM\", \"hydrateInitialContributionVideos error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            23149
+          ]
+        },
+        {
+          "beforeSha256": "1339a4b5ad5e9f275240471c4692045b64868eaa44b0cd114ae7362037f0b308",
+          "afterSha256": "853de7f6248fa6b9233392d9bbf2d1457b097d6407abeadb329114b6a241d539",
+          "original": "com.android.purebilibili.core.util.Logger.d(\"SpaceVM\", \" Seasons: ${seasons.size}, Series: ${series.size}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            24761
+          ]
+        },
+        {
+          "beforeSha256": "853de7f6248fa6b9233392d9bbf2d1457b097d6407abeadb329114b6a241d539",
+          "afterSha256": "40a3990ab3206ebf4acc1260680274c82ae44d7f4fc48f33225bae91ee2af9b8",
+          "original": "android.util.Log.e(\"SpaceVM\", \"loadSpaceSupplemental error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            28403
+          ]
+        },
+        {
+          "beforeSha256": "40a3990ab3206ebf4acc1260680274c82ae44d7f4fc48f33225bae91ee2af9b8",
+          "afterSha256": "8c530fa316b0848b40f52144519b9ac17077d339b665281c10ee553a434add58",
+          "original": "android.util.Log.d(\"SpaceVM\", \"fetchSpaceSupporters failed: ${it.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            29422
+          ]
+        },
+        {
+          "beforeSha256": "8c530fa316b0848b40f52144519b9ac17077d339b665281c10ee553a434add58",
+          "afterSha256": "4d08eee5ea1079a92e6494ecfa416452ce8ce7943c3f72fdf8ff2cfcf1aafd5a",
+          "original": "android.util.Log.d(\"SpaceVM\", \" loadMoreVideos: page=$nextPage, tid=$currentTid, order=$currentOrder\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            32438
+          ]
+        },
+        {
+          "beforeSha256": "4d08eee5ea1079a92e6494ecfa416452ce8ce7943c3f72fdf8ff2cfcf1aafd5a",
+          "afterSha256": "4e4a8bd864702aa8311cec5a52c2e90fc20e96b3aa751ee2c370885c9298b537",
+          "original": "android.util.Log.d(\"SpaceVM\", \" loadMoreVideos success: +${result.list.vlist.size} videos, total=${newVideos.size}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            34357
+          ]
+        },
+        {
+          "beforeSha256": "4e4a8bd864702aa8311cec5a52c2e90fc20e96b3aa751ee2c370885c9298b537",
+          "afterSha256": "501e702dc66e5afd3b93fd3664220f84a8e5b9eb9accda21bf05215a71804519",
+          "original": "android.util.Log.e(\"SpaceVM\", \" loadMoreVideos failed: result is null\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            35044
+          ]
+        },
+        {
+          "beforeSha256": "501e702dc66e5afd3b93fd3664220f84a8e5b9eb9accda21bf05215a71804519",
+          "afterSha256": "08c7d450d1a57af45fa980cb4e9481bf2b896aee8e1860803fd617820dadd4be",
+          "original": "android.util.Log.e(\"SpaceVM\", \" loadMoreVideos error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            35648
+          ]
+        },
+        {
+          "beforeSha256": "08c7d450d1a57af45fa980cb4e9481bf2b896aee8e1860803fd617820dadd4be",
+          "afterSha256": "23e85afa93526cd43639b1b9f2dc3ecc9fd1c46b59543fff51305cd5bca77258",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchWbiKeys error: ${e.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            36661
+          ]
+        },
+        {
+          "beforeSha256": "23e85afa93526cd43639b1b9f2dc3ecc9fd1c46b59543fff51305cd5bca77258",
+          "afterSha256": "6e87bf38f9f48b3046028bc508772856c35e1c548c982b5fd2413b58eafa599d",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchSpaceAggregate error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            37249
+          ]
+        },
+        {
+          "beforeSha256": "6e87bf38f9f48b3046028bc508772856c35e1c548c982b5fd2413b58eafa599d",
+          "afterSha256": "fec0255a3dba8b441830fb9791f987dfbb3f63bee4d42a2721b12de8f150bd2c",
+          "original": "com.android.purebilibili.core.util.Logger.d(\"SpaceVM\", \"🔍 fetchSpaceInfo params: $params\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            37512
+          ]
+        },
+        {
+          "beforeSha256": "fec0255a3dba8b441830fb9791f987dfbb3f63bee4d42a2721b12de8f150bd2c",
+          "afterSha256": "9cb092b3589e657735c2b1578e0db2ca0ebfa1edf244d78540459184bfd4d832",
+          "original": "com.android.purebilibili.core.util.Logger.d(\"SpaceVM\", \" fetchSpaceInfo response: code=${response.code}, message=${response.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            37586
+          ]
+        },
+        {
+          "beforeSha256": "9cb092b3589e657735c2b1578e0db2ca0ebfa1edf244d78540459184bfd4d832",
+          "afterSha256": "c0cc8c1841f5984e09241478cce70462afab9ec1d08942e5af6399587d103a87",
+          "original": "android.util.Log.e(\"SpaceVM\", \" fetchSpaceInfo failed: code=${response.code}, message=${response.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            37664
+          ]
+        },
+        {
+          "beforeSha256": "c0cc8c1841f5984e09241478cce70462afab9ec1d08942e5af6399587d103a87",
+          "afterSha256": "a76facc77677f394c31f0fae580b031da4e4f53a2cf701abf90fad51c99dc617",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchSpaceInfo error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            37749
+          ]
+        },
+        {
+          "beforeSha256": "a76facc77677f394c31f0fae580b031da4e4f53a2cf701abf90fad51c99dc617",
+          "afterSha256": "b097fe8a8a90ad320b0529f330e857d98faae76b276ea17a2fb2074719a9460e",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchSpaceVideos error: ${e.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            40077
+          ]
+        },
+        {
+          "beforeSha256": "b097fe8a8a90ad320b0529f330e857d98faae76b276ea17a2fb2074719a9460e",
+          "afterSha256": "39fbc7365bc0166e29119ad0d3bb19955203270e89d9f242c5eb722bc7ba504c",
+          "original": "android.util.Log.d(\"SpaceVM\", \" selectSortOrder: order=${order.apiValue}, currentTid=$currentTid\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            42933
+          ]
+        },
+        {
+          "beforeSha256": "39fbc7365bc0166e29119ad0d3bb19955203270e89d9f242c5eb722bc7ba504c",
+          "afterSha256": "be2a9671148045d74c3e69c562e843fc76990034a4e6027f26b7a1edde14410d",
+          "original": "android.util.Log.d(\"SpaceVM\", \" selectCategory: tid=$tid, currentOrder=$currentOrder\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            46021
+          ]
+        },
+        {
+          "beforeSha256": "be2a9671148045d74c3e69c562e843fc76990034a4e6027f26b7a1edde14410d",
+          "afterSha256": "01466e3cae9008b63d91e7d797c70cd622ddadfeebefc2d84c801eb109dac84d",
+          "original": "android.util.Log.d(\"SpaceVM\", \" selectCategory success: ${result.data.list.vlist.size} videos\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            47781
+          ]
+        },
+        {
+          "beforeSha256": "01466e3cae9008b63d91e7d797c70cd622ddadfeebefc2d84c801eb109dac84d",
+          "afterSha256": "dec898e87fe035949425d591d2e1162f34787a92a9ef91ac14dc7012a7062ad9",
+          "original": "android.util.Log.e(\"SpaceVM\", \" selectCategory failed: result is null\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            48394
+          ]
+        },
+        {
+          "beforeSha256": "dec898e87fe035949425d591d2e1162f34787a92a9ef91ac14dc7012a7062ad9",
+          "afterSha256": "8fe9173278215b0887841090f7414313e60a484d5cc183eeaa58d1840cf9ba84",
+          "original": "android.util.Log.e(\"SpaceVM\", \" selectCategory error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            48548
+          ]
+        },
+        {
+          "beforeSha256": "8fe9173278215b0887841090f7414313e60a484d5cc183eeaa58d1840cf9ba84",
+          "afterSha256": "bd9731bef9c99b0ee0c62cbd98dfb6e2eae458c5e3179a4d299fb1f464b0db6b",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchSeasonsSeriesList failed: ${response.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            49976
+          ]
+        },
+        {
+          "beforeSha256": "bd9731bef9c99b0ee0c62cbd98dfb6e2eae458c5e3179a4d299fb1f464b0db6b",
+          "afterSha256": "1a2b7d2e7fc1950326cef67f565eb08ce5408ae9e1b753a6cc85adc3e640bb2d",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchSeasonsSeriesList error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            50061
+          ]
+        },
+        {
+          "beforeSha256": "1a2b7d2e7fc1950326cef67f565eb08ce5408ae9e1b753a6cc85adc3e640bb2d",
+          "afterSha256": "fb9962242ca1c22105fb8b98c8c8edae51d0ebc74482fb26aa94cac8df94c503",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchSeasonArchives failed: ${response.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            50427
+          ]
+        },
+        {
+          "beforeSha256": "fb9962242ca1c22105fb8b98c8c8edae51d0ebc74482fb26aa94cac8df94c503",
+          "afterSha256": "b3fae492bd4ba47b869a2c2d7556e91d6fb37e217db82d97f8279e11a2f8d459",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchSeasonArchives error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            50512
+          ]
+        },
+        {
+          "beforeSha256": "b3fae492bd4ba47b869a2c2d7556e91d6fb37e217db82d97f8279e11a2f8d459",
+          "afterSha256": "bd5d1001873a46caca9e3a02c345a7e36ea2b9ac881caaac47e7b9980ff41e37",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchSeriesArchives failed: ${response.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            50878
+          ]
+        },
+        {
+          "beforeSha256": "bd5d1001873a46caca9e3a02c345a7e36ea2b9ac881caaac47e7b9980ff41e37",
+          "afterSha256": "1704066adbb20bbabc5acfeb26803eedac9614e28a7f63134864176f4c49b8c4",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchSeriesArchives error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            50963
+          ]
+        },
+        {
+          "beforeSha256": "1704066adbb20bbabc5acfeb26803eedac9614e28a7f63134864176f4c49b8c4",
+          "afterSha256": "675fa7614825180f6e733b135684301658a9a5da2abee7119aeb6e75efaf7920",
+          "original": "android.util.Log.d(\"SpaceVM\", \" loadSpaceHome: topVideo=${topVideo?.title}, notice=${notice?.take(50)}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            52986
+          ]
+        },
+        {
+          "beforeSha256": "675fa7614825180f6e733b135684301658a9a5da2abee7119aeb6e75efaf7920",
+          "afterSha256": "d4f86fddbec6c116d91d21805d9d974f671ae143d3584103471cc123fb9cc4bb",
+          "original": "android.util.Log.e(\"SpaceVM\", \"loadSpaceHome error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            53044
+          ]
+        },
+        {
+          "beforeSha256": "d4f86fddbec6c116d91d21805d9d974f671ae143d3584103471cc123fb9cc4bb",
+          "afterSha256": "832e29116c7c538aa47daaa8e64f023dfa07e942b867585f04333bdbf7106a1d",
+          "original": "android.util.Log.d(\"SpaceVM\", \"fetchTopArc: code=${response.code}, msg=${response.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            53624
+          ]
+        },
+        {
+          "beforeSha256": "832e29116c7c538aa47daaa8e64f023dfa07e942b867585f04333bdbf7106a1d",
+          "afterSha256": "e490e295667f16258cd1a937cc5c01706760e5032166b24dbbdeb0c256cfe8f2",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchTopArc error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            53709
+          ]
+        },
+        {
+          "beforeSha256": "e490e295667f16258cd1a937cc5c01706760e5032166b24dbbdeb0c256cfe8f2",
+          "afterSha256": "039ae3e9b55d1a588c5d6c6a46dcd210b58e01059f2debfe1a60e0ad5cfe288d",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchNotice error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            54078
+          ]
+        },
+        {
+          "beforeSha256": "039ae3e9b55d1a588c5d6c6a46dcd210b58e01059f2debfe1a60e0ad5cfe288d",
+          "afterSha256": "7fb9d7eb6f41c87d95ebfcb81649c5fd0c16cec3c463c503c55d085666e983b6",
+          "original": "android.util.Log.e(\"SpaceVM\", \" loadSpaceDynamic failed: code=${response.code}, msg=${response.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            55305
+          ]
+        },
+        {
+          "beforeSha256": "7fb9d7eb6f41c87d95ebfcb81649c5fd0c16cec3c463c503c55d085666e983b6",
+          "afterSha256": "b0b67d13bb07030f65201288c95974cae1c343fcdbe1be983f8897f9c55913d1",
+          "original": "android.util.Log.d(\n                    \"SpaceVM\",\n                    \" loadSpaceDynamic: total=${accumulated.size}, hasMore=$hasMore, pagesFetched=$pagesFetched, failed=$failed\"\n                )",
+          "adapted": "Unit",
+          "positionsAfter": [
+            58490
+          ]
+        },
+        {
+          "beforeSha256": "b0b67d13bb07030f65201288c95974cae1c343fcdbe1be983f8897f9c55913d1",
+          "afterSha256": "80920a5774239f1554198a7b5aebdee6739778959e07728e2b17bcaca357ec8e",
+          "original": "android.util.Log.e(\"SpaceVM\", \"loadSpaceDynamic error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            58548
+          ]
+        },
+        {
+          "beforeSha256": "80920a5774239f1554198a7b5aebdee6739778959e07728e2b17bcaca357ec8e",
+          "afterSha256": "0b0503c7ce6ed2dd75e67f85ee2812d5da6b139143d801f7145fdfe93c98be18",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchNextSpaceDynamicPage error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            78965
+          ]
+        },
+        {
+          "beforeSha256": "0b0503c7ce6ed2dd75e67f85ee2812d5da6b139143d801f7145fdfe93c98be18",
+          "afterSha256": "887d594f936e45af0f9c33c83dafa36c4f2d7abf6aa39d6529bcbef4e81675eb",
+          "original": "android.util.Log.e(\"SpaceVM\", \"probeArticle error: ${e.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            86140
+          ]
+        },
+        {
+          "beforeSha256": "887d594f936e45af0f9c33c83dafa36c4f2d7abf6aa39d6529bcbef4e81675eb",
+          "afterSha256": "0ae7793cdbbbfb02e64963cccebdcfd40f834a97b8add35637e0f77a43fb67d0",
+          "original": "android.util.Log.e(\"SpaceVM\", \"probeCheese error: ${e.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            87698
+          ]
+        },
+        {
+          "beforeSha256": "0ae7793cdbbbfb02e64963cccebdcfd40f834a97b8add35637e0f77a43fb67d0",
+          "afterSha256": "588dde1e2a07c65e9aebe6f3c7681636a84e9b0b0fa5b291dc51f13032e039d6",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchAudio error: ${e.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            87954
+          ]
+        },
+        {
+          "beforeSha256": "588dde1e2a07c65e9aebe6f3c7681636a84e9b0b0fa5b291dc51f13032e039d6",
+          "afterSha256": "c2d5172fd9a9011e670bbce12339b0b3316b17331c6749a80e64f1eea3aef5ac",
+          "original": "android.util.Log.e(\"SpaceVM\", \"fetchArticle error: ${e.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            88642
+          ]
+        },
+        {
+          "beforeSha256": "c2d5172fd9a9011e670bbce12339b0b3316b17331c6749a80e64f1eea3aef5ac",
+          "afterSha256": "b2733b902414288bad81eb110feb7752f005f935d279a0f833389cac4b2f7071",
+          "original": "com.android.purebilibili.core.util.Logger.e(\n                        \"SpaceVM\",\n                        \"toggleFollow failed: ${result.exceptionOrNull()?.message}\"\n                    )",
+          "adapted": "Unit",
+          "positionsAfter": [
+            89931
+          ]
+        },
+        {
+          "beforeSha256": "b2733b902414288bad81eb110feb7752f005f935d279a0f833389cac4b2f7071",
+          "afterSha256": "68a9f14b6acefcdedf70083a1635787d8e95382a1fd1bb1e34ff279bd3d7d229",
+          "original": "com.android.purebilibili.core.util.Logger.e(\"SpaceVM\", \"modifyRelation error: ${e.message}\", e)",
+          "adapted": "Unit",
+          "positionsAfter": [
+            91528
+          ]
+        },
+        {
+          "beforeSha256": "68a9f14b6acefcdedf70083a1635787d8e95382a1fd1bb1e34ff279bd3d7d229",
+          "afterSha256": "2bf5e0d814d3a735dbbe6b9a3e3ab77b9b41e78d8fb86ec3fac9df7e2295b1e6",
+          "original": "com.android.purebilibili.core.util.Logger.e(\n                        \"SpaceVM\",\n                        \"saveFollowGroupSelection failed: ${e.message}\"\n                    )",
+          "adapted": "Unit",
+          "positionsAfter": [
+            92976
+          ]
+        },
+        {
+          "beforeSha256": "2bf5e0d814d3a735dbbe6b9a3e3ab77b9b41e78d8fb86ec3fac9df7e2295b1e6",
+          "afterSha256": "38a7a2e4bf02bfefdb316909f79f64a5294185a04aa0449f7c1c5b5cbf0a9218",
+          "original": "catch (_: Exception)",
+          "adapted": "catch (ignoredSpaceFailure: Exception)",
+          "positionsAfter": [
+            38536
+          ]
+        },
+        {
+          "beforeSha256": "38a7a2e4bf02bfefdb316909f79f64a5294185a04aa0449f7c1c5b5cbf0a9218",
+          "afterSha256": "441a6843d096edc91217c6b678e02acc99f8c236670b31bb39177bdac2305ef6",
+          "original": "catch (e: Exception) {",
+          "adapted": "catch (e: Exception) {\n            if (e is CancellationException) throw e",
+          "positionsAfter": [
+            9389,
+            14758,
+            20573,
+            23266,
+            28572,
+            35869,
+            36938,
+            37578,
+            38130,
+            39323,
+            39640,
+            40632,
+            46006,
+            49203,
+            50772,
+            51275,
+            51778,
+            53907,
+            54628,
+            55049,
+            59567,
+            65227,
+            80092,
+            82779,
+            85528,
+            87419,
+            89029,
+            89341,
+            90081,
+            92991,
+            100561
+          ]
+        },
+        {
+          "beforeSha256": "441a6843d096edc91217c6b678e02acc99f8c236670b31bb39177bdac2305ef6",
+          "afterSha256": "f359dc278dbd12dce848982662195b48603f30ebe50488b4cbc1fb8f600907b8",
+          "original": "catch (ignoredSpaceFailure: Exception) {",
+          "adapted": "catch (ignoredSpaceFailure: Exception) {\n            if (ignoredSpaceFailure is CancellationException) throw ignoredSpaceFailure",
+          "positionsAfter": [
+            39004
+          ]
+        },
+        {
+          "beforeSha256": "f359dc278dbd12dce848982662195b48603f30ebe50488b4cbc1fb8f600907b8",
+          "afterSha256": "b1fe37f0cf01043338a1767d33105d85822e73e580c6bb6ab64227e72b5a9fd2",
+          "original": "runCatching {",
+          "adapted": "ownedSpaceRunCatching {",
+          "positionsAfter": [
+            27054,
+            28832
+          ]
+        },
+        {
+          "beforeSha256": "b1fe37f0cf01043338a1767d33105d85822e73e580c6bb6ab64227e72b5a9fd2",
+          "afterSha256": "1e771c90b6b7bb24cb851642be52e741890d30182d9aaf6ffeba41c6c0e566ea",
+          "original": "return@runCatching",
+          "adapted": "return@ownedSpaceRunCatching",
+          "positionsAfter": [
+            29581
+          ]
+        },
+        {
+          "beforeSha256": "1e771c90b6b7bb24cb851642be52e741890d30182d9aaf6ffeba41c6c0e566ea",
+          "afterSha256": "d8612766d7de5c8a08248091b4941b44cfc11179621c627094b00af578348314",
+          "original": "    private suspend fun fetchWbiKeys(): Pair<String, String>? {\n        return try {\n            val navResp = environment.api.getNavInfo()\n            val wbiImg = navResp.data?.wbi_img ?: return null\n            val imgKey = wbiImg.img_url.substringAfterLast(\"/\").substringBefore(\".\")\n            val subKey = wbiImg.sub_url.substringAfterLast(\"/\").substringBefore(\".\")\n            Pair(imgKey, subKey)\n        } catch (e: Exception) {\n            if (e is CancellationException) throw e\n            Unit\n            null\n        }\n    }",
+          "adapted": "    private suspend fun fetchWbiKeys(): Pair<String,String>? = environment.wbiKeys().getOrNull()",
+          "positionsAfter": [
+            36553
+          ]
+        },
+        {
+          "beforeSha256": "d8612766d7de5c8a08248091b4941b44cfc11179621c627094b00af578348314",
+          "afterSha256": "6fc799bed52ca458714f25e9bd9ffe94cf5aa83659fafd1c8b29bfe9b8f4be7d",
+          "original": "    fun toggleFollow() {\n        val current = _uiState.value as? SpaceUiState.Success ?: return\n        if (followToggleInFlight) return\n        val isFollowing = current.userInfo.isFollowed\n        val mid = current.userInfo.mid\n\n        followToggleInFlight = true\n        viewModelScope.launch {\n            // 1. 乐观更新 UI\n            val nextFollowed = !isFollowing\n            val nextRelationStatus = if (nextFollowed) 2 else 0\n            val newUserInfo = current.userInfo.copy(\n                isFollowed = nextFollowed,\n                relationStatus = nextRelationStatus\n            )\n            _uiState.value = current.copy(\n                userInfo = newUserInfo,\n                headerState = current.headerState.copy(userInfo = newUserInfo)\n            )\n            \n            try {\n                // 2. 调用统一仓库逻辑\n                val result = environment.actions.followUser(mid = mid, follow = nextFollowed)\n                if (result.isFailure) {\n                    _uiState.value = current.copy(\n                        userInfo = current.userInfo,\n                        headerState = current.headerState.copy(userInfo = current.userInfo)\n                    )\n                    Unit\n                } else {\n                    val latestState = _uiState.value as? SpaceUiState.Success\n                    if (latestState != null) {\n                        _uiState.value = latestState.copy(\n                            userInfo = latestState.userInfo.copy(\n                                isFollowed = nextFollowed,\n                                relationStatus = nextRelationStatus\n                            ),\n                            headerState = latestState.headerState.copy(\n                                userInfo = latestState.userInfo.copy(\n                                    isFollowed = nextFollowed,\n                                    relationStatus = nextRelationStatus\n                                )\n                            )\n                        )\n                    }\n\n                    if (nextFollowed) {\n                        showFollowGroupDialogForUser(mid)\n                    }\n\n                    val relationStat = fetchRelationStat(mid)\n                    if (relationStat != null) {\n                        val currentState = _uiState.value as? SpaceUiState.Success\n                        if (currentState != null) {\n                            _uiState.value = currentState.copy(\n                                relationStat = relationStat,\n                                headerState = currentState.headerState.copy(relationStat = relationStat)\n                            )\n                        }\n                    }\n                }\n            } catch (e: Exception) {\n            if (e is CancellationException) throw e\n                // 失败回滚\n                Unit\n                _uiState.value = current.copy(\n                    userInfo = current.userInfo,\n                    headerState = current.headerState.copy(userInfo = current.userInfo)\n                ) // Revert\n            } finally {\n                followToggleInFlight = false\n            }\n        }\n    }",
+          "adapted": "    fun toggleFollow() {\n        environment.requireVisibleAction()\n        val current = _uiState.value as? SpaceUiState.Success ?: return\n        if (followToggleInFlight) return\n        val isFollowing = current.userInfo.isFollowed\n        val mid = current.userInfo.mid\n\n        followToggleInFlight = true\n        environment.launchMutation(\"toggleFollow\") {\n            // 1. 乐观更新 UI\n            val nextFollowed = !isFollowing\n            val nextRelationStatus = if (nextFollowed) 2 else 0\n            val newUserInfo = current.userInfo.copy(\n                isFollowed = nextFollowed,\n                relationStatus = nextRelationStatus\n            )\n            _uiState.value = current.copy(\n                userInfo = newUserInfo,\n                headerState = current.headerState.copy(userInfo = newUserInfo)\n            )\n            \n            try {\n                // 2. 调用统一仓库逻辑\n                val result = environment.actions.followUser(mid = mid, follow = nextFollowed)\n                if (result.isFailure) {\n                    _uiState.value = current.copy(\n                        userInfo = current.userInfo,\n                        headerState = current.headerState.copy(userInfo = current.userInfo)\n                    )\n                    Unit\n                } else {\n                    val latestState = _uiState.value as? SpaceUiState.Success\n                    if (latestState != null) {\n                        _uiState.value = latestState.copy(\n                            userInfo = latestState.userInfo.copy(\n                                isFollowed = nextFollowed,\n                                relationStatus = nextRelationStatus\n                            ),\n                            headerState = latestState.headerState.copy(\n                                userInfo = latestState.userInfo.copy(\n                                    isFollowed = nextFollowed,\n                                    relationStatus = nextRelationStatus\n                                )\n                            )\n                        )\n                    }\n\n                    if (nextFollowed) {\n                        showFollowGroupDialogForUser(mid)\n                    }\n\n                    val relationStat = fetchRelationStat(mid)\n                    if (relationStat != null) {\n                        val currentState = _uiState.value as? SpaceUiState.Success\n                        if (currentState != null) {\n                            _uiState.value = currentState.copy(\n                                relationStat = relationStat,\n                                headerState = currentState.headerState.copy(relationStat = relationStat)\n                            )\n                        }\n                    }\n                }\n            } catch (e: Exception) {\n            if (e is CancellationException) throw e\n                // 失败回滚\n                Unit\n                _uiState.value = current.copy(\n                    userInfo = current.userInfo,\n                    headerState = current.headerState.copy(userInfo = current.userInfo)\n                ) // Revert\n            } finally {\n                followToggleInFlight = false\n            }\n        }\n    }",
+          "positionsAfter": [
+            89926
+          ]
+        },
+        {
+          "beforeSha256": "6fc799bed52ca458714f25e9bd9ffe94cf5aa83659fafd1c8b29bfe9b8f4be7d",
+          "afterSha256": "f240017213cda7eb65b9ff989880efc08ffe6d0a1eb0044a353370b638d6db71",
+          "original": "    fun saveFollowGroupSelection() {\n        if (_isSavingFollowGroups.value || followGroupTargetMid <= 0L) return\n        val selected = _followGroupSelectedTagIds.value\n        viewModelScope.launch {\n            _isSavingFollowGroups.value = true\n            environment.actions\n                .overwriteFollowGroupIds(\n                    targetMids = setOf(followGroupTargetMid),\n                    selectedTagIds = selected\n                )\n                .onSuccess {\n                    dismissFollowGroupDialog()\n                }\n                .onFailure { e ->\n                    Unit\n                }\n            _isSavingFollowGroups.value = false\n        }\n    }",
+          "adapted": "    fun saveFollowGroupSelection() {\n        environment.requireVisibleAction()\n        if (_isSavingFollowGroups.value || followGroupTargetMid <= 0L) return\n        val selected = _followGroupSelectedTagIds.value\n        environment.launchMutation(\"saveFollowGroupSelection\") {\n            _isSavingFollowGroups.value = true\n            environment.actions\n                .overwriteFollowGroupIds(\n                    targetMids = setOf(followGroupTargetMid),\n                    selectedTagIds = selected\n                )\n                .onSuccess {\n                    dismissFollowGroupDialog()\n                }\n                .onFailure { e ->\n                    Unit\n                }\n            _isSavingFollowGroups.value = false\n        }\n    }",
+          "positionsAfter": [
+            93695
+          ]
+        },
+        {
+          "beforeSha256": "f240017213cda7eb65b9ff989880efc08ffe6d0a1eb0044a353370b638d6db71",
+          "afterSha256": "32f1f0e4cdc367457d79868c6858733c40308d5c5ff23b866f64a043eca4bf5f",
+          "original": "    fun updateSearchQuery(query: String) {\n        val current = _uiState.value as? SpaceUiState.Success ?: return\n        val scope = resolveSpaceSearchScope(\n            selectedMainTab = current.tabShellState.selectedTab,\n            selectedSubTab = current.selectedSubTab\n        )\n        if (scope == SpaceSearchScope.NONE) return\n\n        _uiState.value = current.copy(\n            isSearchMode = true,\n            searchQuery = query\n        )\n\n        activeSpaceSearchJob?.cancel()\n        when (scope) {\n            SpaceSearchScope.VIDEO -> {\n                activeSpaceSearchJob = viewModelScope.launch {\n                    delay(SPACE_DYNAMIC_SEARCH_DEBOUNCE_MS)\n                    currentKeyword = query.trim()\n                    refreshVideoSearchResults()\n                }\n            }\n            SpaceSearchScope.DYNAMIC -> {\n                activeSpaceSearchJob = viewModelScope.launch {\n                    delay(SPACE_DYNAMIC_SEARCH_DEBOUNCE_MS)\n                    prefetchSpaceDynamicsForSearch(query)\n                }\n            }\n            SpaceSearchScope.NONE -> Unit\n        }\n    }",
+          "adapted": "    fun updateSearchQuery(query: String) {\n        val current = _uiState.value as? SpaceUiState.Success ?: return\n        val scope = resolveSpaceSearchScope(\n            selectedMainTab = current.tabShellState.selectedTab,\n            selectedSubTab = current.selectedSubTab\n        )\n        if (scope == SpaceSearchScope.NONE) return\n\n        _uiState.value = current.copy(\n            isSearchMode = true,\n            searchQuery = query,\n            isLoadingDynamics = if (scope == SpaceSearchScope.DYNAMIC) false else current.isLoadingDynamics\n        )\n\n        activeSpaceSearchJob?.cancel()\n        when (scope) {\n            SpaceSearchScope.VIDEO -> {\n                activeSpaceSearchJob = viewModelScope.launch {\n                    delay(SPACE_DYNAMIC_SEARCH_DEBOUNCE_MS)\n                    currentKeyword = query.trim()\n                    refreshVideoSearchResults()\n                }\n            }\n            SpaceSearchScope.DYNAMIC -> {\n                activeSpaceSearchJob = viewModelScope.launch {\n                    delay(SPACE_DYNAMIC_SEARCH_DEBOUNCE_MS)\n                    prefetchSpaceDynamicsForSearch(query)\n                }\n            }\n            SpaceSearchScope.NONE -> Unit\n        }\n    }",
+          "positionsAfter": [
+            71863
+          ]
+        },
+        {
+          "beforeSha256": "32f1f0e4cdc367457d79868c6858733c40308d5c5ff23b866f64a043eca4bf5f",
+          "afterSha256": "75e71b0f287656d341cc8b5a8308c1deda47ba5837eba44da91dd439eb2b8316",
+          "original": "val updatedSupplementalState = applySpaceSupplementalData(",
+          "adapted": "var updatedSupplementalState = applySpaceSupplementalData(",
+          "positionsAfter": [
+            26361
+          ]
+        },
+        {
+          "beforeSha256": "75e71b0f287656d341cc8b5a8308c1deda47ba5837eba44da91dd439eb2b8316",
+          "afterSha256": "ee73a225bfb9ed1c62d5b1535fac03839578eb9a38e32bfe41d5b68fdf03eebe",
+          "original": "val dynamicResp = ownedSpaceRunCatching { spaceApi.getSpaceDynamic(hostMid = mid) }.getOrNull()",
+          "adapted": "val dynamicResp = ownedSpaceRunCatching { spaceApi.getSpaceDynamic(hostMid = mid) }.getOrNull()\n                    val latestState = _uiState.value as? SpaceUiState.Success ?: return@launch\n                    updatedSupplementalState = applySpaceSupplementalData(\n                        state = latestState,\n                        seasons = seasons,\n                        series = series,\n                        createdFavoriteFolders = createdFavoriteFolders,\n                        collectedFavoriteFolders = collectedFavoriteFolders,\n                        seasonArchives = seasonArchives,\n                        seriesArchives = seriesArchives\n                    )\n                    val currentInfo = updatedSupplementalState.userInfo",
+          "positionsAfter": [
+            27036
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+      "sha256LF": "0970836848746c1b9eae833074d3dd6a125e25dc1ee23bb8aec25455cdf45758",
+      "generated": "com/android/purebilibili/feature/space/SpaceUpowerRankViewModel.kt",
+      "generatedSha256LF": "93290b7b51a9086810a2e843edac0663c210252e628c6285463d40b12a8ac85a",
+      "completeOriginalFileReconstructed": true,
+      "transforms": [
+        {
+          "beforeSha256": "0970836848746c1b9eae833074d3dd6a125e25dc1ee23bb8aec25455cdf45758",
+          "afterSha256": "ec6bfc56766faac3547a9d909dd600b058508a6aec92bd05ff7bb15a5c303a65",
+          "original": "import androidx.lifecycle.ViewModel\n",
+          "adapted": "",
+          "positionsAfter": [
+            48
+          ]
+        },
+        {
+          "beforeSha256": "ec6bfc56766faac3547a9d909dd600b058508a6aec92bd05ff7bb15a5c303a65",
+          "afterSha256": "568a1feaee76e5fdd32cdc453db7310c8e373f05640f810ecb789ec5a5363023",
+          "original": "import androidx.lifecycle.viewModelScope\n",
+          "adapted": "",
+          "positionsAfter": [
+            48
+          ]
+        },
+        {
+          "beforeSha256": "568a1feaee76e5fdd32cdc453db7310c8e373f05640f810ecb789ec5a5363023",
+          "afterSha256": "10f36ca7bdaccafbc6696a4ec09ca36a24113ee86d821a1cbd35e5f26a2eedec",
+          "original": "import com.android.purebilibili.core.network.NetworkModule\n",
+          "adapted": "",
+          "positionsAfter": [
+            48
+          ]
+        },
+        {
+          "beforeSha256": "10f36ca7bdaccafbc6696a4ec09ca36a24113ee86d821a1cbd35e5f26a2eedec",
+          "afterSha256": "cf9ae46d7b952a489376012d08f453696e676c41b401c5a8e9f45a7fd79c76b3",
+          "original": "class SpaceUpowerRankViewModel(",
+          "adapted": "internal class SpaceUpowerRankViewModel(\n    private val environment: com.bilipai.desktop.ui.DesktopOriginalSpaceEnvironment,",
+          "positionsAfter": [
+            342
+          ]
+        },
+        {
+          "beforeSha256": "cf9ae46d7b952a489376012d08f453696e676c41b401c5a8e9f45a7fd79c76b3",
+          "afterSha256": "f7ba5d4d37f50d17e123c7e8f04520d20a181984730329276c50789a9c938dff",
+          "original": ") : ViewModel() {",
+          "adapted": ") {\n    private val viewModelScope get() = environment.scope",
+          "positionsAfter": [
+            546
+          ]
+        },
+        {
+          "beforeSha256": "f7ba5d4d37f50d17e123c7e8f04520d20a181984730329276c50789a9c938dff",
+          "afterSha256": "1d37f8cd209f60aa85fc8427f1fafeb0c26d6dbedc6345f8ddbafcf3d63132b4",
+          "original": "private val spaceApi = NetworkModule.spaceApi",
+          "adapted": "private val spaceApi get() = environment.spaceApi",
+          "positionsAfter": [
+            1089
+          ]
+        },
+        {
+          "beforeSha256": "1d37f8cd209f60aa85fc8427f1fafeb0c26d6dbedc6345f8ddbafcf3d63132b4",
+          "afterSha256": "1ff8dccb59577b7e2bc68146d53f864f91d54311917f680158b9f2a093a386a4",
+          "original": "MutableStateFlow(",
+          "adapted": "environment.mutableStateFlow(",
+          "positionsAfter": [
+            1166
+          ]
+        },
+        {
+          "beforeSha256": "1ff8dccb59577b7e2bc68146d53f864f91d54311917f680158b9f2a093a386a4",
+          "afterSha256": "f5f03ed5a3fff7e8e05d9ef3aab4b7cf1aacc4bb1a5dcd768eaafaa1dfd88071",
+          "original": "NetworkModule.spaceApi",
+          "adapted": "environment.spaceApi",
+          "positionsAfter": [
+            2532
+          ]
+        },
+        {
+          "beforeSha256": "f5f03ed5a3fff7e8e05d9ef3aab4b7cf1aacc4bb1a5dcd768eaafaa1dfd88071",
+          "afterSha256": "a06357d9f5692ea03419a45f8f6235f34d52591384154e8c48524cfed2314612",
+          "original": "android.util.Log.d(\"SpaceUpowerRank\", \"elec fallback failed: ${it.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            3186
+          ]
+        },
+        {
+          "beforeSha256": "a06357d9f5692ea03419a45f8f6235f34d52591384154e8c48524cfed2314612",
+          "afterSha256": "a087ffe8f56d6e48f7fadce05820061eccb980ac679b284a3265499efd2b3f63",
+          "original": "android.util.Log.e(\"SpaceUpowerRank\", \"load failed: ${e.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            5670
+          ]
+        },
+        {
+          "beforeSha256": "a087ffe8f56d6e48f7fadce05820061eccb980ac679b284a3265499efd2b3f63",
+          "afterSha256": "35e7f38dc23ab5019610d4ecb2840f4bb740ec4151e96380192b3406844ccf11",
+          "original": "runCatching {",
+          "adapted": "ownedSpaceRunCatching {",
+          "positionsAfter": [
+            1966
+          ]
+        },
+        {
+          "beforeSha256": "35e7f38dc23ab5019610d4ecb2840f4bb740ec4151e96380192b3406844ccf11",
+          "afterSha256": "36c4e45fe3a9f36487236165d79207bdceb21f7a2de345e1adeb651826dd9bbb",
+          "original": "return@runCatching",
+          "adapted": "return@ownedSpaceRunCatching",
+          "positionsAfter": [
+            2808
+          ]
+        },
+        {
+          "beforeSha256": "36c4e45fe3a9f36487236165d79207bdceb21f7a2de345e1adeb651826dd9bbb",
+          "afterSha256": "0050766f0570ad980646e01d05e6e8ab33e3773a83d76860cfe85569d9ce41dd",
+          "original": "viewModelScope.launch {",
+          "adapted": "environment.launchRead(\"rank\") {",
+          "positionsAfter": [
+            3272
+          ]
+        },
+        {
+          "beforeSha256": "0050766f0570ad980646e01d05e6e8ab33e3773a83d76860cfe85569d9ce41dd",
+          "afterSha256": "93290b7b51a9086810a2e843edac0663c210252e628c6285463d40b12a8ac85a",
+          "original": "return@launch",
+          "adapted": "return@launchRead",
+          "positionsAfter": [
+            4124,
+            4779
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+      "sha256LF": "ec6c4f47792e8bb318149a8aff355262d693bf63a57456365b26062ab1645937",
+      "generated": "com/android/purebilibili/feature/space/SpaceMemberGuardViewModel.kt",
+      "generatedSha256LF": "bf1b2a760d514e1020193f17a126d541dfcd70ae4ae0f96300f19266644d1f6b",
+      "completeOriginalFileReconstructed": true,
+      "transforms": [
+        {
+          "beforeSha256": "ec6c4f47792e8bb318149a8aff355262d693bf63a57456365b26062ab1645937",
+          "afterSha256": "9d533f73b3bf974acd6b932eb69dd06c69c37cd75b6c08c17c6ae7612833d3e6",
+          "original": "import androidx.lifecycle.ViewModel\n",
+          "adapted": "",
+          "positionsAfter": [
+            48
+          ]
+        },
+        {
+          "beforeSha256": "9d533f73b3bf974acd6b932eb69dd06c69c37cd75b6c08c17c6ae7612833d3e6",
+          "afterSha256": "7007834bd9a1038b5a91ce68fc44bdfd2a016ed5b68e7cb25f482588ac75266c",
+          "original": "import androidx.lifecycle.viewModelScope\n",
+          "adapted": "",
+          "positionsAfter": [
+            48
+          ]
+        },
+        {
+          "beforeSha256": "7007834bd9a1038b5a91ce68fc44bdfd2a016ed5b68e7cb25f482588ac75266c",
+          "afterSha256": "14f29b348dd8a3e10dce087e63d52ee30ddf44c2325fe68d28b9066de9f7acdc",
+          "original": "import com.android.purebilibili.core.network.NetworkModule\n",
+          "adapted": "",
+          "positionsAfter": [
+            48
+          ]
+        },
+        {
+          "beforeSha256": "14f29b348dd8a3e10dce087e63d52ee30ddf44c2325fe68d28b9066de9f7acdc",
+          "afterSha256": "677454b152ae053d2612bcc232d3c896f6f69038bfd5eaf539823d58fc784e77",
+          "original": "class SpaceMemberGuardViewModel(",
+          "adapted": "internal class SpaceMemberGuardViewModel(\n    private val environment: com.bilipai.desktop.ui.DesktopOriginalSpaceEnvironment,",
+          "positionsAfter": [
+            342
+          ]
+        },
+        {
+          "beforeSha256": "677454b152ae053d2612bcc232d3c896f6f69038bfd5eaf539823d58fc784e77",
+          "afterSha256": "88080fc275ab654c9d1a139f125ad4ef61b9582b8cb7e05275d32434b3a034c3",
+          "original": ") : ViewModel() {",
+          "adapted": ") {\n    private val viewModelScope get() = environment.scope",
+          "positionsAfter": [
+            546
+          ]
+        },
+        {
+          "beforeSha256": "88080fc275ab654c9d1a139f125ad4ef61b9582b8cb7e05275d32434b3a034c3",
+          "afterSha256": "456ddfb7af9af168a96cd9aab22ba1fe683b66dc26ec7b3b0bff8e8b8402d635",
+          "original": "private val spaceApi = NetworkModule.spaceApi",
+          "adapted": "private val spaceApi get() = environment.spaceApi",
+          "positionsAfter": [
+            1028
+          ]
+        },
+        {
+          "beforeSha256": "456ddfb7af9af168a96cd9aab22ba1fe683b66dc26ec7b3b0bff8e8b8402d635",
+          "afterSha256": "9d94c919b87e2245741775374937029a7ceb794bc8ed90ee4256279270cd6122",
+          "original": "MutableStateFlow(",
+          "adapted": "environment.mutableStateFlow(",
+          "positionsAfter": [
+            1105
+          ]
+        },
+        {
+          "beforeSha256": "9d94c919b87e2245741775374937029a7ceb794bc8ed90ee4256279270cd6122",
+          "afterSha256": "2f1d785ffaf890c408200ee0160741f8e2ab4134bfa53817f2e07ea0f556b4a3",
+          "original": "android.util.Log.e(\"SpaceMemberGuard\", \"load failed: ${e.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            3428
+          ]
+        },
+        {
+          "beforeSha256": "2f1d785ffaf890c408200ee0160741f8e2ab4134bfa53817f2e07ea0f556b4a3",
+          "afterSha256": "e72a357adeaf42b1138693ec5775498e3d8b12dd60621cad192c8df0bf0915f2",
+          "original": "viewModelScope.launch {",
+          "adapted": "environment.launchRead(\"guard\") {",
+          "positionsAfter": [
+            1842
+          ]
+        },
+        {
+          "beforeSha256": "e72a357adeaf42b1138693ec5775498e3d8b12dd60621cad192c8df0bf0915f2",
+          "afterSha256": "bf1b2a760d514e1020193f17a126d541dfcd70ae4ae0f96300f19266644d1f6b",
+          "original": "return@launch",
+          "adapted": "return@launchRead",
+          "positionsAfter": [
+            2643
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "sha256LF": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612",
+      "generated": "com/bilipai/desktop/ui/DesktopOriginalSpaceBangumiRequests.kt",
+      "generatedSha256LF": "213be1c61ac32b0a69de9683f132f56d0bc4a25123ec746e314e655ed802d805",
+      "completeOriginalFileReconstructed": true,
+      "transforms": [
+        {
+          "beforeSha256": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612",
+          "afterSha256": "426d40f3236c346e805de6a60c379574072962615024edafeb1722d3b5da4aab",
+          "original": "// 文件路径: data/repository/BangumiRepository.kt\npackage com.android.purebilibili.data.repository\n\nimport com.android.purebilibili.core.network.NetworkModule\nimport com.android.purebilibili.core.network.WbiKeyManager\nimport com.android.purebilibili.core.network.WbiUtils\nimport com.android.purebilibili.core.store.TokenManager\nimport com.android.purebilibili.core.util.IdUtils\nimport com.android.purebilibili.data.model.response.*\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.withContext\nimport kotlinx.serialization.decodeFromString\nimport kotlinx.serialization.json.Json\nimport kotlinx.serialization.json.contentOrNull\nimport kotlinx.serialization.json.intOrNull\nimport kotlinx.serialization.json.JsonObject\nimport kotlinx.serialization.json.jsonObject\nimport kotlinx.serialization.json.jsonPrimitive\n\ninternal data class BangumiPlayUrlPayload(\n    val code: Int = -1,\n    val message: String = \"\",\n    val videoInfo: BangumiVideoInfo? = null\n)\n\ninternal fun shouldFallbackToLegacyBangumiPlayUrl(payload: BangumiPlayUrlPayload): Boolean {\n    if (payload.code == 0) return payload.videoInfo == null\n    return payload.code == -400 || payload.code == -404\n}\n\ninternal fun validateBangumiPlayableVideoInfo(\n    videoInfo: BangumiVideoInfo\n): Result<BangumiVideoInfo> = when {\n    videoInfo.isDrm && !videoInfo.hasPlayableWebStream() -> Result.failure(\n        UnsupportedOperationException(\"该番剧使用 DRM 版权保护，当前版本暂不支持播放\")\n    )\n    else -> Result.success(videoInfo)\n}\n\n/**\n * Some PUGV responses keep the DRM marker while still returning a regular DASH/DURL stream.\n * PiliPlus hands those streams to its player, so the marker alone cannot be treated as a hard\n * failure. A response is unsupported only when it has no usable video URL at all.\n */\nprivate fun BangumiVideoInfo.hasPlayableWebStream(): Boolean {\n    if (dash?.video.orEmpty().any { it.getValidUrl().isNotBlank() }) return true\n    return (durl.orEmpty() + durls.orEmpty()).any { segment ->\n        segment.url.isNotBlank() || segment.backupUrl.orEmpty().any { it.isNotBlank() }\n    }\n}\n\ninternal fun buildBangumiPlayUrlParams(\n    epId: Long,\n    cid: Long,\n    qn: Int,\n    bvid: String? = null,\n    seasonId: Long? = null,\n    aid: Long = 0L,\n    tryLook: Boolean = true,\n    isCourse: Boolean = false\n): Map<String, String> {\n    val params = linkedMapOf<String, String>()\n    if (epId > 0L) {\n        params[\"ep_id\"] = epId.toString()\n    }\n    if (cid > 0L) {\n        params[\"cid\"] = cid.toString()\n    }\n    params[\"qn\"] = qn.toString()\n    // For courses/PUGV, fnval=4048 (aligned with PiliPlus), whereas PGC uses 12240\n    params[\"fnval\"] = if (isCourse) \"4048\" else \"12240\"\n    params[\"fnver\"] = \"0\"\n    params[\"fourk\"] = \"1\"\n    params[\"voice_balance\"] = \"1\"\n    params[\"gaia_source\"] = \"pre-load\"\n    params[\"isGaiaAvoided\"] = \"true\"\n    params[\"web_location\"] = \"1315873\"\n    if (seasonId != null && seasonId > 0L) {\n        params[\"season_id\"] = seasonId.toString()\n    }\n    if (tryLook) {\n        params[\"try_look\"] = \"1\"\n    }\n    val resolvedAid = when {\n        aid > 0L -> aid\n        !bvid.isNullOrBlank() -> IdUtils.bv2av(bvid)\n        else -> 0L\n    }\n    if (resolvedAid > 0L) {\n        params[\"avid\"] = resolvedAid.toString()\n    }\n    val resolvedBvid = when {\n        !bvid.isNullOrBlank() -> bvid\n        resolvedAid > 0L -> IdUtils.av2bv(resolvedAid)\n        else -> \"\"\n    }\n    if (resolvedBvid.isNotBlank()) {\n        params[\"bvid\"] = resolvedBvid\n    }\n    return params\n}\n\ninternal fun signBangumiPlayUrlParams(\n    params: Map<String, String>,\n    wbiKeys: Pair<String, String>?,\n    includeRiskFingerprint: Boolean = false\n): Map<String, String> {\n    val (imgKey, subKey) = wbiKeys ?: return params\n    if (imgKey.isBlank() || subKey.isBlank()) return params\n    return WbiUtils.sign(params, imgKey, subKey, includeRiskFingerprint = includeRiskFingerprint)\n}\n\ninternal fun decodeBangumiPlayUrlPayload(\n    rawJson: String,\n    json: Json = Json {\n        ignoreUnknownKeys = true\n        coerceInputValues = true\n    }\n): BangumiPlayUrlPayload {\n    val root = json.parseToJsonElement(rawJson).jsonObject\n    val code = root[\"code\"]?.jsonPrimitive?.intOrNull ?: -1\n    val message = root[\"message\"]?.jsonPrimitive?.contentOrNull.orEmpty()\n    val resultObject = root[\"result\"] as? JsonObject\n    val dataObject = root[\"data\"] as? JsonObject\n    val videoInfoElement = resultObject?.get(\"video_info\")\n        ?: dataObject?.get(\"video_info\")\n        ?: dataObject\n        ?: resultObject\n    val videoInfo = videoInfoElement?.let {\n        runCatching {\n            json.decodeFromString<BangumiVideoInfo>(it.toString())\n        }.onFailure { e ->\n            android.util.Log.w(\"BangumiRepo\", \"decodeBangumiPlayUrlPayload videoInfo parse failed: ${e.message}\")\n        }.getOrNull()\n    }\n    return BangumiPlayUrlPayload(\n        code = code,\n        message = message,\n        videoInfo = videoInfo\n    )\n}\n\ninternal fun shouldLoadBangumiSections(detail: BangumiDetail): Boolean {\n    return detail.episodes.isNullOrEmpty() || detail.section == null\n}\n\ninternal fun mergeBangumiDetailSections(\n    detail: BangumiDetail,\n    sections: BangumiSectionResult\n): BangumiDetail {\n    val mainEpisodes = mergeBangumiEpisodes(\n        primary = detail.episodes.orEmpty(),\n        fallback = sections.mainSection?.episodes.orEmpty()\n    )\n    val mergedSections = mergeBangumiSections(\n        primary = detail.section.orEmpty(),\n        fallback = sections.section.orEmpty()\n    )\n    return detail.copy(\n        episodes = mainEpisodes.takeIf { it.isNotEmpty() },\n        section = mergedSections.takeIf { it.isNotEmpty() }\n    )\n}\n\nprivate fun mergeBangumiEpisodes(\n    primary: List<BangumiEpisode>,\n    fallback: List<BangumiEpisode>\n): List<BangumiEpisode> {\n    return (primary + fallback).distinctBy { episode ->\n        when {\n            episode.id > 0L -> \"ep:${episode.id}\"\n            episode.cid > 0L -> \"cid:${episode.cid}\"\n            episode.bvid.isNotBlank() -> \"bvid:${episode.bvid}\"\n            else -> \"title:${episode.title}:${episode.longTitle}\"\n        }\n    }\n}\n\nprivate fun mergeBangumiSections(\n    primary: List<BangumiSection>,\n    fallback: List<BangumiSection>\n): List<BangumiSection> {\n    val merged = linkedMapOf<String, BangumiSection>()\n    (primary + fallback).forEach { section ->\n        val key = when {\n            section.id > 0L -> \"id:${section.id}\"\n            section.title.isNotBlank() -> \"title:${section.type}:${section.title}\"\n            else -> \"type:${section.type}\"\n        }\n        val previous = merged[key]\n        merged[key] = if (previous == null) {\n            section\n        } else {\n            previous.copy(\n                title = previous.title.ifBlank { section.title },\n                episodes = mergeBangumiEpisodes(\n                    primary = previous.episodes.orEmpty(),\n                    fallback = section.episodes.orEmpty()\n                ).takeIf { it.isNotEmpty() }\n            )\n        }\n    }\n    return merged.values.toList()\n}\n\n/**\n * 番剧/影视 Repository\n * 处理番剧、电影、电视剧、纪录片等 PGC 内容\n */\nobject BangumiRepository {\n    private val api = NetworkModule.bangumiApi\n    \n    /**\n     * 获取番剧时间表\n     * @param type 1=番剧 3=电影 4=国创\n     */\n    suspend fun getTimeline(\n        type: Int = 1,\n        before: Int = 3,\n        after: Int = 7,\n    ): Result<List<TimelineDay>> = withContext(Dispatchers.IO) {\n        try {\n            val response = api.getTimeline(\n                types = type,\n                before = before.coerceIn(0, 7),\n                after = after.coerceIn(0, 7),\n            )\n            if (response.code == 0 && response.result != null) {\n                Result.success(response.result)\n            } else {\n                Result.failure(Exception(\"获取时间表失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getTimeline error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n    \n    /**\n     * 获取番剧索引/列表\n     * @param seasonType 1=番剧 2=电影 3=纪录片 4=国创 5=电视剧 7=综艺\n     */\n    suspend fun getBangumiIndex(\n        seasonType: Int = 1,\n        page: Int = 1,\n        pageSize: Int = 20\n    ): Result<BangumiIndexData> = withContext(Dispatchers.IO) {\n        try {\n            val requestFilter = buildBangumiIndexRequestFilter(\n                filter = BangumiFilter(),\n                seasonType = seasonType\n            )\n            val response = api.getBangumiIndex(\n                seasonType = seasonType,\n                st = seasonType,  //  [修复] st 必须与 seasonType 相同\n                page = page,\n                pageSize = pageSize,\n                order = requestFilter.order,\n                sort = requestFilter.sortDirection,\n                area = requestFilter.area,\n                isFinish = requestFilter.isFinish,\n                year = requestFilter.year,\n                releaseDate = requestFilter.releaseDate,\n                styleId = requestFilter.styleId,\n                producerId = requestFilter.producerId,\n                seasonStatus = requestFilter.seasonStatus,\n                seasonVersion = requestFilter.seasonVersion,\n                spokenLanguageType = requestFilter.spokenLanguageType,\n                copyright = requestFilter.copyright,\n                seasonMonth = requestFilter.seasonMonth\n            )\n            if (response.code == 0 && response.data != null) {\n                Result.success(response.data)\n            } else {\n                Result.failure(Exception(\"获取番剧列表失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getBangumiIndex error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n    \n    /**\n     * 获取番剧详情\n     */\n    /**\n     * 获取番剧详情\n     */\n    suspend fun getSeasonDetail(seasonId: Long = 0, epId: Long = 0): Result<BangumiDetail> = withContext(Dispatchers.IO) {\n        try {\n            //  [修复] 使用 ResponseBody 自行解析，避免大型番剧导致 OOM\n            // 优先使用 epId (因为历史记录中的 seasonId 可能是 AVID，而 epId 是准确的)，如果 epId 为 0 则使用 seasonId\n            val responseBody = if (epId > 0) {\n                api.getSeasonDetail(epId = epId)\n            } else if (seasonId > 0) {\n                api.getSeasonDetail(seasonId = seasonId)\n            } else {\n                return@withContext Result.failure(Exception(\"参数错误: seasonId 和 epId 不能同时为空\"))\n            }\n\n            val jsonString = responseBody.string()\n            \n            // 使用 kotlinx.serialization.json 手动解析\n            val json = kotlinx.serialization.json.Json { \n                ignoreUnknownKeys = true \n                coerceInputValues = true\n            }\n            \n            val response = json.decodeFromString<BangumiDetailResponse>(jsonString)\n            \n            if (response.code == 0 && response.result != null) {\n                val rawDetail = response.result\n                val resolvedDetail = if (rawDetail.seasonId > 0L && shouldLoadBangumiSections(rawDetail)) {\n                    runCatching { api.getSeasonSections(rawDetail.seasonId) }\n                        .getOrNull()\n                        ?.takeIf { it.code == 0 }\n                        ?.result\n                        ?.let { mergeBangumiDetailSections(rawDetail, it) }\n                        ?: rawDetail\n                } else {\n                    rawDetail\n                }\n                //  [调试] 打印追番状态和认证信息\n                val userStatus = resolvedDetail.userStatus\n                android.util.Log.w(\"BangumiRepo\", \"\"\"\n                     getSeasonDetail 结果:\n                    - request seasonId: $seasonId, epId: $epId\n                    - result seasonId: ${resolvedDetail.seasonId}\n                    - title: ${resolvedDetail.title}\n                    - userStatus: $userStatus\n                    - follow: ${userStatus?.follow} (1=已追番, 0=未追番)\n                    - SESSDATA存在: ${com.android.purebilibili.core.store.TokenManager.sessDataCache?.isNotEmpty() == true}\n                \"\"\".trimIndent())\n                Result.success(resolvedDetail)\n            } else {\n                // 如果 PGC 接口返回错误（例如 -404 啥都木有），尝试 PUGV 课堂/课程接口\n                val pugvResult = getPugvSeasonDetail(seasonId = seasonId, epId = epId)\n                if (pugvResult.isSuccess) {\n                    return@withContext pugvResult\n                }\n                Result.failure(Exception(\"获取番剧详情失败: ${response.message}\"))\n            }\n        } catch (e: OutOfMemoryError) {\n            //  [修复] 捕获 OOM 错误，给出更友好的提示\n            android.util.Log.e(\"BangumiRepo\", \" getSeasonDetail OOM: 番剧数据过大，内存不足\", e)\n            System.gc() // 尝试触发 GC 回收内存\n            Result.failure(Exception(\"加载失败：番剧数据过大，请稍后重试\"))\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getSeasonDetail error: ${e.message}\")\n            val pugvResult = getPugvSeasonDetail(seasonId = seasonId, epId = epId)\n            if (pugvResult.isSuccess) {\n                return@withContext pugvResult\n            }\n            Result.failure(e)\n        }\n    }\n\n    /**\n     * 获取课堂/课程详情 (PUGV)\n     */\n    suspend fun getPugvSeasonDetail(seasonId: Long = 0, epId: Long = 0): Result<BangumiDetail> = withContext(Dispatchers.IO) {\n        try {\n            val responseBody = if (epId > 0) {\n                api.getPugvSeasonDetail(epId = epId)\n            } else if (seasonId > 0) {\n                api.getPugvSeasonDetail(seasonId = seasonId)\n            } else {\n                return@withContext Result.failure(Exception(\"参数错误: seasonId 和 epId 不能同时为空\"))\n            }\n\n            val jsonString = responseBody.string()\n            val json = Json {\n                ignoreUnknownKeys = true\n                coerceInputValues = true\n            }\n\n            val response = json.decodeFromString<com.android.purebilibili.data.model.response.PugvSeasonResponse>(jsonString)\n            if (response.code == 0 && response.data != null) {\n                val detail = response.data.toBangumiDetail()\n                android.util.Log.w(\"BangumiRepo\", \"getPugvSeasonDetail 成功: seasonId=${detail.seasonId}, title=${detail.title}, episodes=${detail.episodes?.size}\")\n                Result.success(detail)\n            } else {\n                Result.failure(Exception(response.message.ifBlank { \"获取课程详情失败\" }))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getPugvSeasonDetail error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n\n    suspend fun getBangumiMediaInfo(mediaId: Long): Result<BangumiMediaInfo> = withContext(Dispatchers.IO) {\n        if (mediaId <= 0L) {\n            return@withContext Result.failure(IllegalArgumentException(\"mediaId 必须大于 0\"))\n        }\n        runCatching {\n            val response = api.getBangumiMediaInfo(mediaId)\n            if (response.code != 0) {\n                error(\"获取剧集基本信息失败: ${response.message}\")\n            }\n            response.result?.media ?: error(\"剧集基本信息为空\")\n        }\n    }\n\n    suspend fun getSeasonSections(seasonId: Long): Result<BangumiSectionResult> = withContext(Dispatchers.IO) {\n        if (seasonId <= 0L) {\n            return@withContext Result.failure(IllegalArgumentException(\"seasonId 必须大于 0\"))\n        }\n        runCatching {\n            val response = api.getSeasonSections(seasonId)\n            if (response.code != 0) {\n                error(\"获取剧集分集失败: ${response.message}\")\n            }\n            response.result ?: error(\"剧集分集为空\")\n        }\n    }\n\n    suspend fun getSeasonDetailByMediaId(mediaId: Long): Result<BangumiDetail> {\n        return getBangumiMediaInfo(mediaId).fold(\n            onSuccess = { media ->\n                if (media.seasonId <= 0L) {\n                    Result.failure(IllegalStateException(\"基本信息未返回 seasonId\"))\n                } else {\n                    getSeasonDetail(seasonId = media.seasonId)\n                }\n            },\n            onFailure = { Result.failure(it) }\n        )\n    }\n    \n    /**\n     * 获取番剧播放地址\n     */\n    suspend fun getBangumiPlayUrl(\n        epId: Long,\n        qn: Int = 80,\n        cid: Long = 0L,\n        bvid: String? = null,\n        seasonId: Long? = null,\n        aid: Long = 0L,\n        isCourse: Boolean = false\n    ): Result<BangumiVideoInfo> = withContext(Dispatchers.IO) {\n        try {\n            android.util.Log.d(\"BangumiRepo\", \"📡 getBangumiPlayUrl: epId=$epId, cid=$cid, seasonId=$seasonId, aid=$aid, isCourse=$isCourse, qn=$qn\")\n            val baseParams = buildBangumiPlayUrlParams(\n                epId = epId,\n                cid = cid,\n                qn = qn,\n                bvid = bvid,\n                seasonId = seasonId,\n                aid = aid,\n                isCourse = isCourse\n            )\n            val wbiKeys = WbiKeyManager.getWbiKeys().getOrNull()\n                ?: WbiKeyManager.refreshKeys().getOrNull()\n            val signedParams = signBangumiPlayUrlParams(\n                params = baseParams,\n                wbiKeys = wbiKeys,\n                includeRiskFingerprint = isCourse\n            )\n            android.util.Log.d(\n                \"BangumiRepo\",\n                \"📡 getBangumiPlayUrl request params: wbiSigned=${signedParams.containsKey(\"w_rid\")}, keys=${signedParams.keys.sorted()}\"\n            )\n            val playbackApi = NetworkModule.playbackBangumiApi()\n\n            val finalResponse = if (isCourse) {\n                // 课程优先使用 PUGV playurl\n                val pugvResponse = runCatching {\n                    val pugvRawJson = playbackApi.getPugvPlayUrl(signedParams).string()\n                    decodeBangumiPlayUrlPayload(pugvRawJson)\n                }.getOrNull()\n                if (pugvResponse != null && pugvResponse.code == 0 && pugvResponse.videoInfo != null) {\n                    pugvResponse\n                } else {\n                    val primary = runCatching {\n                        decodeBangumiPlayUrlPayload(playbackApi.getBangumiPlayUrl(signedParams).string())\n                    }.getOrNull()\n                    primary?.takeIf { it.code == 0 && it.videoInfo != null }\n                        ?: pugvResponse\n                        ?: BangumiPlayUrlPayload(code = -1, message = \"获取播放地址失败\", videoInfo = null)\n                }\n            } else {\n                val primaryResponse = runCatching {\n                    decodeBangumiPlayUrlPayload(\n                        rawJson = playbackApi.getBangumiPlayUrl(\n                            signedParams\n                        ).string()\n                    )\n                }.getOrNull()\n                val response = if (primaryResponse != null && !shouldFallbackToLegacyBangumiPlayUrl(primaryResponse)) {\n                    primaryResponse\n                } else {\n                    runCatching {\n                        decodeBangumiPlayUrlPayload(\n                            rawJson = playbackApi.getBangumiPlayUrlLegacy(\n                                signedParams\n                            ).string()\n                        )\n                    }.getOrNull() ?: primaryResponse\n                }\n                // 如果常规 PGC playurl 失败（例如 -404 啥都木有，或异常），尝试 PUGV 课堂/课程 playurl\n                if (response != null && response.code == 0 && response.videoInfo != null) {\n                    response\n                } else {\n                    runCatching {\n                        val pugvRawJson = playbackApi.getPugvPlayUrl(signedParams).string()\n                        decodeBangumiPlayUrlPayload(pugvRawJson)\n                    }.getOrNull()?.takeIf { it.code == 0 && it.videoInfo != null }\n                        ?: response\n                        ?: BangumiPlayUrlPayload(code = -1, message = \"获取播放地址失败\", videoInfo = null)\n                }\n            }\n            android.util.Log.d(\n                \"BangumiRepo\",\n                \"📡 getBangumiPlayUrl response: code=${finalResponse.code}, msg=${finalResponse.message}, hasResult=${finalResponse.videoInfo != null}\"\n            )\n            \n            if (finalResponse.code == 0 && finalResponse.videoInfo != null) {\n                val result = finalResponse.videoInfo\n                android.util.Log.d(\n                    \"BangumiRepo\",\n                    \"📹 PlayUrl: quality=${result.quality}, hasDash=${result.dash != null}, \" +\n                        \"hasDurl=${!result.durl.isNullOrEmpty()}, preview=${result.isPreview}, \" +\n                        \"paid=${result.hasPaid}, drm=${result.isDrm}, status=${result.status}\"\n                )\n                validateBangumiPlayableVideoInfo(result)\n            } else {\n                val errorMsg = when (finalResponse.code) {\n                    -10403 -> \"需要大会员才能观看\"\n                    -404 -> \"视频或课程不存在\"\n                    -101 -> \"请先登录后观看\"\n                    -400 -> \"请求参数错误\"\n                    -403 -> if (isCourse) \"访问权限不足：该课程需购买后观看\" else \"访问权限不足\"\n                    else -> \"获取播放地址失败: ${finalResponse.message} (code=${finalResponse.code})\"\n                }\n                Result.failure(Exception(errorMsg))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getBangumiPlayUrl error: ${e.message}\", e)\n            Result.failure(e)\n        }\n    }\n    \n    /**\n     * 追番/追剧/收藏课程\n     */\n    suspend fun followBangumi(seasonId: Long, isCourse: Boolean = false): Result<Boolean> = withContext(Dispatchers.IO) {\n        try {\n            val csrf = TokenManager.csrfCache ?: return@withContext Result.failure(Exception(\"未登录\"))\n            android.util.Log.w(\"BangumiRepo\", \"📌 追番/收藏请求: seasonId=$seasonId, isCourse=$isCourse, csrf=${csrf.take(10)}...\")\n            if (isCourse) {\n                val pugvResponse = runCatching { api.addFavPugv(seasonId = seasonId, csrf = csrf) }.getOrNull()\n                return@withContext if (pugvResponse?.code == 0) {\n                    Result.success(true)\n                } else {\n                    Result.failure(Exception(pugvResponse?.message?.ifBlank { \"收藏课程失败\" } ?: \"收藏课程失败\"))\n                }\n            }\n            val response = api.followBangumi(seasonId = seasonId, csrf = csrf)\n            android.util.Log.w(\"BangumiRepo\", \"📌 追番响应: code=${response.code}, message=${response.message}\")\n            if (response.code == 0) {\n                Result.success(true)\n            } else {\n                // 如果常规追番失败，尝试课程收藏接口\n                val pugvResponse = runCatching { api.addFavPugv(seasonId = seasonId, csrf = csrf) }.getOrNull()\n                if (pugvResponse?.code == 0) {\n                    Result.success(true)\n                } else {\n                    Result.failure(Exception(\"追番/收藏失败: ${response.message}\"))\n                }\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"followBangumi error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n    \n    /**\n     * 取消追番/追剧/取消收藏课程\n     */\n    suspend fun unfollowBangumi(seasonId: Long, isCourse: Boolean = false): Result<Boolean> = withContext(Dispatchers.IO) {\n        try {\n            val csrf = TokenManager.csrfCache ?: return@withContext Result.failure(Exception(\"未登录\"))\n            if (isCourse) {\n                val pugvResponse = runCatching { api.delFavPugv(seasonId = seasonId, csrf = csrf) }.getOrNull()\n                return@withContext if (pugvResponse?.code == 0) {\n                    Result.success(true)\n                } else {\n                    Result.failure(Exception(pugvResponse?.message?.ifBlank { \"取消收藏失败\" } ?: \"取消收藏失败\"))\n                }\n            }\n            val response = api.unfollowBangumi(seasonId = seasonId, csrf = csrf)\n            if (response.code == 0) {\n                Result.success(true)\n            } else {\n                // 如果常规取消追番失败，尝试课程取消收藏接口\n                val pugvResponse = runCatching { api.delFavPugv(seasonId = seasonId, csrf = csrf) }.getOrNull()\n                if (pugvResponse?.code == 0) {\n                    Result.success(true)\n                } else {\n                    Result.failure(Exception(\"取消追番/收藏失败: ${response.message}\"))\n                }\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"unfollowBangumi error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n\n    /**\n     * 更新追番/追剧状态：1=想看，2=在看，3=看过\n     */\n    suspend fun updateBangumiFollowStatus(\n        seasonId: Long,\n        status: Int\n    ): Result<Boolean> = withContext(Dispatchers.IO) {\n        try {\n            val csrf = TokenManager.csrfCache ?: return@withContext Result.failure(Exception(\"未登录\"))\n            val response = api.updateBangumiFollowStatus(\n                seasonId = seasonId,\n                status = status,\n                csrf = csrf\n            )\n            if (response.code == 0) {\n                Result.success(true)\n            } else {\n                Result.failure(Exception(\"更新追番状态失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"updateBangumiFollowStatus error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n\n    suspend fun updateBangumiFollowStatuses(\n        seasonIds: Collection<Long>,\n        status: Int,\n    ): Result<Boolean> = withContext(Dispatchers.IO) {\n        val normalizedIds = seasonIds.asSequence().filter { it > 0L }.distinct().toList()\n        if (normalizedIds.isEmpty()) {\n            return@withContext Result.failure(IllegalArgumentException(\"请选择要更新的番剧\"))\n        }\n        try {\n            val csrf = TokenManager.csrfCache ?: return@withContext Result.failure(Exception(\"未登录\"))\n            val response = api.updateBangumiFollowStatusBatch(\n                seasonIds = normalizedIds.joinToString(\",\"),\n                status = status,\n                csrf = csrf,\n            )\n            if (response.code == 0) {\n                Result.success(true)\n            } else {\n                Result.failure(Exception(\"批量更新追番状态失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"updateBangumiFollowStatuses error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n\n    suspend fun getBangumiIndexConditions(\n        seasonType: Int? = null,\n        indexType: Int? = null,\n        type: Int = 0,\n    ): Result<BangumiIndexConditionData> = withContext(Dispatchers.IO) {\n        try {\n            val response = api.getBangumiIndexCondition(\n                seasonType = seasonType,\n                type = type,\n                indexType = indexType,\n            )\n            if (response.code == 0 && response.data != null) {\n                Result.success(response.data)\n            } else {\n                Result.failure(Exception(\"获取番剧索引条件失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getBangumiIndexConditions error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n\n    suspend fun getBangumiIndexPage(\n        seasonType: Int? = null,\n        indexType: Int? = null,\n        type: Int = 0,\n        page: Int = 1,\n        pageSize: Int = 21,\n        params: Map<String, String> = emptyMap(),\n    ): Result<BangumiIndexData> = withContext(Dispatchers.IO) {\n        try {\n            val query = params.toMutableMap().apply {\n                put(\"type\", type.toString())\n                put(\"page\", page.coerceAtLeast(1).toString())\n                put(\"pagesize\", pageSize.coerceAtLeast(1).toString())\n                seasonType?.let {\n                    put(\"season_type\", it.toString())\n                    putIfAbsent(\"st\", it.toString())\n                }\n                indexType?.let { put(\"index_type\", it.toString()) }\n            }\n            val response = api.getBangumiIndexResult(query)\n            if (response.code == 0 && response.data != null) {\n                Result.success(response.data)\n            } else {\n                Result.failure(Exception(\"获取番剧索引失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getBangumiIndexPage error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n    \n    /**\n     *  [新增] 获取番剧索引/列表（支持筛选）\n     */\n    suspend fun getBangumiIndexWithFilter(\n        seasonType: Int = 1,\n        page: Int = 1,\n        pageSize: Int = 20,\n        filter: BangumiFilter = BangumiFilter()\n    ): Result<BangumiIndexData> = withContext(Dispatchers.IO) {\n        try {\n            val requestFilter = buildBangumiIndexRequestFilter(\n                filter = filter,\n                seasonType = seasonType\n            )\n            val response = api.getBangumiIndex(\n                seasonType = seasonType,\n                st = seasonType,\n                page = page,\n                pageSize = pageSize,\n                order = requestFilter.order,\n                sort = requestFilter.sortDirection,\n                area = requestFilter.area,\n                isFinish = requestFilter.isFinish,\n                year = requestFilter.year,\n                releaseDate = requestFilter.releaseDate,\n                styleId = requestFilter.styleId,\n                producerId = requestFilter.producerId,\n                seasonStatus = requestFilter.seasonStatus,\n                seasonVersion = requestFilter.seasonVersion,\n                spokenLanguageType = requestFilter.spokenLanguageType,\n                copyright = requestFilter.copyright,\n                seasonMonth = requestFilter.seasonMonth\n            )\n            if (response.code == 0 && response.data != null) {\n                Result.success(response.data)\n            } else {\n                Result.failure(Exception(\"获取番剧列表失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getBangumiIndexWithFilter error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n    \n    /**\n     *  [新增] 搜索番剧\n     */\n    suspend fun searchBangumi(\n        keyword: String,\n        seasonType: Int = BangumiType.ANIME.value,\n        page: Int = 1,\n        pageSize: Int = 20\n    ): Result<BangumiSearchData> = withContext(Dispatchers.IO) {\n        try {\n            val navApi = NetworkModule.api\n            val searchApi = NetworkModule.searchApi\n            val searchType = resolveBangumiSearchTypeForSeasonType(seasonType)\n            \n            // 获取 WBI 密钥\n            val navResp = navApi.getNavInfo()\n            val wbiImg = navResp.data?.wbi_img\n            val imgKey = wbiImg?.img_url?.substringAfterLast(\"/\")?.substringBefore(\".\") ?: \"\"\n            val subKey = wbiImg?.sub_url?.substringAfterLast(\"/\")?.substringBefore(\".\") ?: \"\"\n            \n            val params = mutableMapOf(\n                \"keyword\" to keyword,\n                \"search_type\" to searchType.value,\n                \"page\" to page.toString(),\n                \"pagesize\" to pageSize.toString()\n            )\n            \n            // WBI 签名\n            val signedParams = if (imgKey.isNotEmpty()) WbiUtils.sign(params, imgKey, subKey) else params\n            val response = if (searchType == SearchType.MEDIA_FT) {\n                searchApi.searchMediaFt(signedParams)\n            } else {\n                searchApi.searchBangumi(signedParams)\n            }\n            \n            if (response.code == 0 && response.data != null) {\n                Result.success(response.data)\n            } else {\n                Result.failure(Exception(\"搜索番剧失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"searchBangumi error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n    \n    /**\n     *  [新增] 获取我的追番列表\n     */\n    suspend fun getMyFollowBangumi(\n        type: Int = 1,  // 1=追番 2=追剧\n        followStatus: Int? = null,\n        page: Int = 1,\n        pageSize: Int = 30,\n        vmid: Long? = null\n    ): Result<MyFollowBangumiData> = withContext(Dispatchers.IO) {\n        try {\n            val mid = vmid?.takeIf { it > 0L } ?: TokenManager.midCache ?: return@withContext Result.failure(Exception(\"未登录\"))\n            val response = api.getMyFollowBangumi(\n                vmid = mid,\n                type = type,\n                followStatus = followStatus,\n                pn = page,\n                ps = pageSize\n            )\n            if (response.code == 0 && response.data != null) {\n                Result.success(response.data)\n            } else {\n                Result.failure(Exception(\"获取追番列表失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getMyFollowBangumi error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n}\n",
+          "adapted": "package com.bilipai.desktop.ui\nimport com.android.purebilibili.core.network.BangumiApi\nimport com.android.purebilibili.data.model.response.MyFollowBangumiData\nimport kotlinx.coroutines.*\ninternal class DesktopOriginalSpaceBangumiRequests(private val api:BangumiApi,private val environment:DesktopOriginalSpaceEnvironment) {\n    suspend fun getMyFollowBangumi(\n        type: Int = 1,  // 1=追番 2=追剧\n        followStatus: Int? = null,\n        page: Int = 1,\n        pageSize: Int = 30,\n        vmid: Long? = null\n    ): Result<MyFollowBangumiData> = withContext(Dispatchers.IO) {\n        try {\n            val mid = vmid?.takeIf { it > 0L } ?: TokenManager.midCache ?: return@withContext Result.failure(Exception(\"未登录\"))\n            val response = api.getMyFollowBangumi(\n                vmid = mid,\n                type = type,\n                followStatus = followStatus,\n                pn = page,\n                ps = pageSize\n            )\n            if (response.code == 0 && response.data != null) {\n                Result.success(response.data)\n            } else {\n                Result.failure(Exception(\"获取追番列表失败: ${response.message}\"))\n            }\n        } catch (e: Exception) {\n            android.util.Log.e(\"BangumiRepo\", \"getMyFollowBangumi error: ${e.message}\")\n            Result.failure(e)\n        }\n    }\n}\n",
+          "positionsAfter": [
+            0
+          ]
+        },
+        {
+          "beforeSha256": "426d40f3236c346e805de6a60c379574072962615024edafeb1722d3b5da4aab",
+          "afterSha256": "6386c8a19ce6828fea1542428fe1db77101f431ad24fec1e71fde0e67299071f",
+          "original": "TokenManager.midCache",
+          "adapted": "environment.accountMid",
+          "positionsAfter": [
+            641
+          ]
+        },
+        {
+          "beforeSha256": "6386c8a19ce6828fea1542428fe1db77101f431ad24fec1e71fde0e67299071f",
+          "afterSha256": "5b324cae0b463fd66821f8f60080ae0026cb696d623d5e6f3c0b8c7d0eb1d53d",
+          "original": "android.util.Log.e(\"BangumiRepo\", \"getMyFollowBangumi error: ${e.message}\")",
+          "adapted": "Unit",
+          "positionsAfter": [
+            1207
+          ]
+        },
+        {
+          "beforeSha256": "5b324cae0b463fd66821f8f60080ae0026cb696d623d5e6f3c0b8c7d0eb1d53d",
+          "afterSha256": "213be1c61ac32b0a69de9683f132f56d0bc4a25123ec746e314e655ed802d805",
+          "original": "} catch (e: Exception) {",
+          "adapted": "} catch (cancelled:CancellationException) { throw cancelled\n        } catch (e: Exception) {",
+          "positionsAfter": [
+            1170
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadPolicy.kt",
+      "sha256LF": "fad17890cf2f8a2d95fc80a706c6e66011dd992df3511d77ef957b1d90ed2c8c",
+      "generated": "com/android/purebilibili/feature/space/DesktopOriginalSpaceRemainingLoadPolicy.kt",
+      "generatedSha256LF": "d7212ff95573b4e9cd260d7d54eec55330876acac1edd106cf60b87981eb945f",
+      "completeOriginalFileReconstructed": true,
+      "transforms": [
+        {
+          "beforeSha256": "fad17890cf2f8a2d95fc80a706c6e66011dd992df3511d77ef957b1d90ed2c8c",
+          "afterSha256": "19edb0c17f1d3a211f7fa4891e02516c4c308711ffcf8a6e90b0a8347a9f06fe",
+          "original": "internal fun normalizeSpaceVideoPage(\n    order: VideoSortOrder,\n    videos: List<SpaceVideoItem>\n): List<SpaceVideoItem> {\n    return if (order == VideoSortOrder.OLDEST_PUBDATE) videos.asReversed() else videos\n}",
+          "adapted": "",
+          "positionsAfter": [
+            10914
+          ]
+        },
+        {
+          "beforeSha256": "19edb0c17f1d3a211f7fa4891e02516c4c308711ffcf8a6e90b0a8347a9f06fe",
+          "afterSha256": "945dc2927a23659c5d6bc639542c28f6e476eca481d9a83f12e837c12960d710",
+          "original": "internal fun resolveSpaceTopImageItems(images: SpaceAggregateImages?): List<com.android.purebilibili.data.model.response.SpaceTopImageItem> {\n    if (images == null) return emptyList()\n    val collectionItems = images.collectionTopSimple?.top?.result.orEmpty()\n    if (collectionItems.isNotEmpty()) {\n        return collectionItems.mapNotNull { item ->\n            val detail = item.item\n            val img = detail?.image ?: detail?.animation\n            val defaultImg = img?.defaultImage?.takeIf { it.isNotBlank() }\n            val fullCover = item.cover.takeIf { it.isNotBlank() } ?: defaultImg ?: return@mapNotNull null\n            val header = defaultImg ?: fullCover\n            val dy = parseTopImageDy(img?.location.orEmpty(), img?.height ?: 0.0)\n            com.android.purebilibili.data.model.response.SpaceTopImageItem(\n                header = header,\n                fullCover = fullCover,\n                dy = dy,\n                title = item.title\n            )\n        }\n    }\n    return emptyList()\n}",
+          "adapted": "",
+          "positionsAfter": [
+            18065
+          ]
+        },
+        {
+          "beforeSha256": "945dc2927a23659c5d6bc639542c28f6e476eca481d9a83f12e837c12960d710",
+          "afterSha256": "191ee6569822e2c069afb4d5192461153afa995317d85fa852b09ae8fdfaf322",
+          "original": "internal fun resolveInitialSpaceVideoPage(\n    order: VideoSortOrder,\n    totalCount: Int,\n    pageSize: Int\n): Int {\n    val lastPage = resolveSpaceVideoLastPage(totalCount = totalCount, pageSize = pageSize)\n    return if (order == VideoSortOrder.OLDEST_PUBDATE) lastPage else 1\n}",
+          "adapted": "",
+          "positionsAfter": [
+            10189
+          ]
+        },
+        {
+          "beforeSha256": "191ee6569822e2c069afb4d5192461153afa995317d85fa852b09ae8fdfaf322",
+          "afterSha256": "fafb19aa4a4faecf003f66392590a8fb674bf5505f3b3326d09d179101b7140c",
+          "original": "internal fun resolveEmbeddedSeasonArchives(\n    seasons: List<SeasonItem>\n): Map<Long, List<SeasonArchiveItem>> {\n    return seasons.mapNotNull { season ->\n        val seasonId = season.meta.season_id\n        val archives = season.archives\n        if (seasonId > 0L && archives.isNotEmpty()) {\n            seasonId to archives\n        } else {\n            null\n        }\n    }.toMap()\n}",
+          "adapted": "",
+          "positionsAfter": [
+            6418
+          ]
+        },
+        {
+          "beforeSha256": "fafb19aa4a4faecf003f66392590a8fb674bf5505f3b3326d09d179101b7140c",
+          "afterSha256": "092dc6b5f97303facadc22b746b60bcdd6ac48128b744c209c64e01563a3ef81",
+          "original": "internal fun shouldApplySpaceLoadResult(\n    requestMid: Long,\n    activeMid: Long,\n    requestGeneration: Long,\n    activeGeneration: Long\n): Boolean {\n    return requestMid > 0L &&\n        requestMid == activeMid &&\n        requestGeneration == activeGeneration\n}",
+          "adapted": "",
+          "positionsAfter": [
+            4079
+          ]
+        },
+        {
+          "beforeSha256": "092dc6b5f97303facadc22b746b60bcdd6ac48128b744c209c64e01563a3ef81",
+          "afterSha256": "ef844b404864065abc1b4255a7eb1f8b00174de0b3b9c227e601af826206058a",
+          "original": "internal fun resolveSpaceAggregateLazyItemKey(\n    section: String,\n    index: Int,\n    item: SpaceAggregateArchiveItem,\n): String {\n    return \"${section}_${item.aid}_${item.bvid}_$index\"\n}",
+          "adapted": "",
+          "positionsAfter": [
+            7933
+          ]
+        },
+        {
+          "beforeSha256": "ef844b404864065abc1b4255a7eb1f8b00174de0b3b9c227e601af826206058a",
+          "afterSha256": "d385911f0ab5b511a7fffa9a00bb607144471eb128b5999a23f37eb5d3a628d8",
+          "original": "internal fun applySpaceSupplementalData(\n    state: SpaceUiState.Success,\n    seasons: List<SeasonItem>,\n    series: List<SeriesItem>,\n    createdFavoriteFolders: List<FavFolder>,\n    collectedFavoriteFolders: List<FavFolder>,\n    seasonArchives: Map<Long, List<SeasonArchiveItem>>,\n    seriesArchives: Map<Long, List<SeriesArchiveItem>>\n): SpaceUiState.Success {\n    val mergedContributionTabs = mergeSpaceContributionTabsWithCollections(\n        baseTabs = state.contributionTabs,\n        seasons = seasons,\n        series = series\n    )\n    val nextState = state.copy(\n        seasons = seasons,\n        series = series,\n        createdFavoriteFolders = createdFavoriteFolders,\n        collectedFavoriteFolders = collectedFavoriteFolders,\n        seasonArchives = mergeArchiveMapsByLargestList(state.seasonArchives, seasonArchives),\n        seriesArchives = mergeArchiveMapsByLargestList(state.seriesArchives, seriesArchives),\n        contributionTabs = mergedContributionTabs,\n        headerState = state.headerState.copy(\n            createdFavorites = createdFavoriteFolders,\n            collectedFavorites = collectedFavoriteFolders\n        )\n    )\n\n    val hasCollectionsLoaded = seasons.isNotEmpty() ||\n        series.isNotEmpty() ||\n        createdFavoriteFolders.isNotEmpty() ||\n        collectedFavoriteFolders.isNotEmpty()\n\n    return nextState.copy(\n        tabShellState = nextState.tabShellState.withUpdatedTab(SpaceMainTab.COLLECTIONS) {\n            it.copy(hasLoaded = hasCollectionsLoaded)\n        }\n    )\n}",
+          "adapted": "",
+          "positionsAfter": [
+            4081
+          ]
+        },
+        {
+          "beforeSha256": "d385911f0ab5b511a7fffa9a00bb607144471eb128b5999a23f37eb5d3a628d8",
+          "afterSha256": "662ffeb81fb98b4467cbc02fa683241be7771a6bd7db8ef218c68b500402eaab",
+          "original": "internal fun resolveNextSpaceVideoPage(\n    order: VideoSortOrder,\n    currentPage: Int,\n    totalCount: Int,\n    pageSize: Int\n): Int? {\n    val lastPage = resolveSpaceVideoLastPage(totalCount = totalCount, pageSize = pageSize)\n    if (lastPage <= 0) return null\n    return when (order) {\n        VideoSortOrder.OLDEST_PUBDATE -> currentPage.takeIf { it > 1 }?.minus(1)\n        else -> currentPage.takeIf { it < lastPage }?.plus(1)\n    }\n}",
+          "adapted": "",
+          "positionsAfter": [
+            7824
+          ]
+        },
+        {
+          "beforeSha256": "662ffeb81fb98b4467cbc02fa683241be7771a6bd7db8ef218c68b500402eaab",
+          "afterSha256": "dc44023597959c9be5b00118aeed18d24d2fc362e557fd00397e2e5ce4cea152",
+          "original": "internal enum class SpaceContributionVideoLayoutMode {\n    GRID,\n    SINGLE_COLUMN\n}",
+          "adapted": "",
+          "positionsAfter": [
+            11595
+          ]
+        },
+        {
+          "beforeSha256": "dc44023597959c9be5b00118aeed18d24d2fc362e557fd00397e2e5ce4cea152",
+          "afterSha256": "2a0ffb458c61442a36725b44ebb60c2a0bb7a0c22eb9657cc0fd2d0c3b3c1313",
+          "original": "internal fun resolveSpaceAggregateVideoId(item: SpaceAggregateArchiveItem): String? {\n    item.bvid.trim().takeIf { it.isNotEmpty() }?.let { return it }\n\n    val isVideoArchive = item.goto.equals(\"av\", ignoreCase = true) ||\n        item.goto.equals(\"video\", ignoreCase = true) ||\n        item.goto.equals(\"archive\", ignoreCase = true)\n    val hasExplicitVideoUri = item.uri.contains(\"/video/\", ignoreCase = true)\n    if (!isVideoArchive && !hasExplicitVideoUri) return null\n\n    sequenceOf(item.uri, item.param)\n        .map(String::trim)\n        .filter(String::isNotEmpty)\n        .mapNotNull { candidate ->\n            BilibiliNavigationTargetParser.parse(candidate)\n                ?.let { target -> (target as? BilibiliNavigationTarget.Video)?.videoId }\n        }\n        .firstOrNull()\n        ?.let { return it }\n\n    if (isVideoArchive) {\n        item.param.trim().toLongOrNull()?.takeIf { it > 0L }?.let { return \"av$it\" }\n        item.aid.takeIf { it > 0L }?.let { return \"av$it\" }\n    }\n    return null\n}",
+          "adapted": "",
+          "positionsAfter": [
+            6805
+          ]
+        },
+        {
+          "beforeSha256": "2a0ffb458c61442a36725b44ebb60c2a0bb7a0c22eb9657cc0fd2d0c3b3c1313",
+          "afterSha256": "9d6c5d3e55cb3d2d4c231dec6cdd5e31ab7b731b090fb9c922cc71c77fb1084f",
+          "original": "internal fun shouldApplySpaceVideoResult(\n    requestMid: Long,\n    activeMid: Long,\n    requestGeneration: Long,\n    activeGeneration: Long,\n    requestTid: Int,\n    activeTid: Int,\n    requestOrder: VideoSortOrder,\n    activeOrder: VideoSortOrder,\n    requestKeyword: String,\n    activeKeyword: String\n): Boolean {\n    return requestMid > 0L &&\n        requestMid == activeMid &&\n        requestGeneration == activeGeneration &&\n        requestTid == activeTid &&\n        requestOrder == activeOrder &&\n        requestKeyword == activeKeyword\n}",
+          "adapted": "",
+          "positionsAfter": [
+            23800
+          ]
+        },
+        {
+          "beforeSha256": "9d6c5d3e55cb3d2d4c231dec6cdd5e31ab7b731b090fb9c922cc71c77fb1084f",
+          "afterSha256": "4229a9554233419022928e5a1a61cad06974e5cb503f6c371e08cb1b2630d538",
+          "original": "internal fun resolveSpaceContributionVideoGridSpan(\n    layoutMode: SpaceContributionVideoLayoutMode,\n    maxLineSpan: Int\n): Int {\n    return when (layoutMode) {\n        SpaceContributionVideoLayoutMode.GRID -> 1\n        SpaceContributionVideoLayoutMode.SINGLE_COLUMN -> maxLineSpan\n    }\n}",
+          "adapted": "",
+          "positionsAfter": [
+            11091
+          ]
+        },
+        {
+          "beforeSha256": "4229a9554233419022928e5a1a61cad06974e5cb503f6c371e08cb1b2630d538",
+          "afterSha256": "e954434b2820069a8b4c913e06ad5eaa961b08679e9016c443484d057ed8050f",
+          "original": "internal fun defaultSpaceContributionVideoLayoutMode(): SpaceContributionVideoLayoutMode {\n    return SpaceContributionVideoLayoutMode.GRID\n}",
+          "adapted": "",
+          "positionsAfter": [
+            10582
+          ]
+        },
+        {
+          "beforeSha256": "e954434b2820069a8b4c913e06ad5eaa961b08679e9016c443484d057ed8050f",
+          "afterSha256": "e8da0b0dfab13acd8c1364a8a7e4ca57492db1505436c5fbd0c8e33de6f766e1",
+          "original": "internal fun resolveSpaceAggregateTopPhoto(\n    images: SpaceAggregateImages?,\n    isDarkTheme: Boolean = false,\n): String {\n    if (images == null) return \"\"\n    val collectionTopItem = images.collectionTopSimple?.top?.result?.firstOrNull()\n    val collectionPhoto = collectionTopItem?.item?.image?.defaultImage?.takeIf { it.isNotBlank() }\n        ?: collectionTopItem?.cover?.takeIf { it.isNotBlank() }\n    if (!collectionPhoto.isNullOrBlank()) {\n        return collectionPhoto\n    }\n    return if (isDarkTheme && images.nightImgUrl.isNotBlank()) {\n        images.nightImgUrl\n    } else {\n        images.imgUrl.ifBlank { images.nightImgUrl }\n    }\n}",
+          "adapted": "",
+          "positionsAfter": [
+            12303
+          ]
+        },
+        {
+          "beforeSha256": "e8da0b0dfab13acd8c1364a8a7e4ca57492db1505436c5fbd0c8e33de6f766e1",
+          "afterSha256": "55a47a65c384e90844c902227ff774dab9ad70a094ac9022910e8de08088834e",
+          "original": "internal data class SpaceUserCardVisuals(\n    val largePhoto: String = \"\",\n    val smallPhoto: String = \"\",\n    val ipLocation: String? = null,\n)",
+          "adapted": "",
+          "positionsAfter": [
+            7718
+          ]
+        },
+        {
+          "beforeSha256": "55a47a65c384e90844c902227ff774dab9ad70a094ac9022910e8de08088834e",
+          "afterSha256": "f0247ff53716a14bb65bf12e7c9a913e51d103f2cdde6d4e4c31a6702946b320",
+          "original": "private fun mapSpaceAggregateVideoItem(item: SpaceAggregateArchiveItem): SpaceVideoItem {\n    return SpaceVideoItem(\n        aid = item.aid,\n        bvid = item.bvid,\n        title = item.title,\n        pic = item.cover,\n        play = item.play,\n        comment = item.reply,\n        length = item.length,\n        created = item.ctime,\n        author = item.author,\n        typename = item.tname\n    )\n}",
+          "adapted": "",
+          "positionsAfter": [
+            23551
+          ]
+        },
+        {
+          "beforeSha256": "f0247ff53716a14bb65bf12e7c9a913e51d103f2cdde6d4e4c31a6702946b320",
+          "afterSha256": "421caf85fbb2d3fff537cb28d48970abb5d250fafb1e4ef2ca492e3fefd3887d",
+          "original": "private fun resolveSpaceVideoLastPage(totalCount: Int, pageSize: Int): Int {\n    if (totalCount <= 0 || pageSize <= 0) return 1\n    return ((totalCount - 1) / pageSize) + 1\n}",
+          "adapted": "",
+          "positionsAfter": [
+            24448
+          ]
+        },
+        {
+          "beforeSha256": "421caf85fbb2d3fff537cb28d48970abb5d250fafb1e4ef2ca492e3fefd3887d",
+          "afterSha256": "59d361596f88d97577ae133588ef27c6cb78adb3781372ea9efc4302bceb0d14",
+          "original": "internal data class SpaceInitialSeed(\n    val userInfo: SpaceUserInfo,\n    val relationStat: RelationStatData?,\n    val upStat: UpStatData?,\n    val videos: List<SpaceVideoItem>,\n    val totalVideos: Int,\n    val audios: List<SpaceAudioItem>,\n    val totalAudios: Int,\n    val articles: List<SpaceArticleItem>,\n    val totalArticles: Int,\n    val homeFavoriteFolders: List<FavFolder>,\n    val homeFavoriteFolderCount: Int,\n    val homeCoinVideos: List<SpaceAggregateArchiveItem>,\n    val homeCoinVideoCount: Int,\n    val homeLikeVideos: List<SpaceAggregateArchiveItem>,\n    val homeLikeVideoCount: Int,\n    val homeBangumiItems: List<SpaceAggregateArchiveItem>,\n    val homeBangumiCount: Int,\n    val homeComicItems: List<SpaceAggregateArchiveItem>,\n    val homeComicCount: Int,\n    val mainTabs: List<SpaceMainTabItem>,\n    val contributionTabs: List<SpaceContributionTab>,\n    val defaultMainTab: SpaceMainTab,\n    val defaultSubTab: SpaceSubTab,\n    val defaultContributionTabId: String,\n    val hasCheeseTab: Boolean = false\n)",
+          "adapted": "",
+          "positionsAfter": [
+            11126
+          ]
+        },
+        {
+          "beforeSha256": "59d361596f88d97577ae133588ef27c6cb78adb3781372ea9efc4302bceb0d14",
+          "afterSha256": "f31eb5bba396061bbe6974cf20f05ae86c929c167c4113cce3b19b3cac9704f3",
+          "original": "internal fun buildInitialSpaceSuccessState(\n    seed: SpaceInitialSeed,\n    selectedMainTab: SpaceMainTab,\n    selectedSubTab: SpaceSubTab = seed.defaultSubTab\n): SpaceUiState.Success {\n    val categories = extractSpaceVideoCategories(seed.videos)\n    val shouldShowInitialVideoLoading = shouldHydrateSpaceContributionVideos(\n        totalVideos = seed.totalVideos,\n        seededVideoCount = seed.videos.size,\n        pageSize = 30,\n        selectedSubTab = selectedSubTab,\n        selectedTid = 0,\n        currentOrder = VideoSortOrder.PUBDATE,\n        currentKeyword = \"\"\n    )\n    val seededContributionLoaded = seed.totalVideos > 0 || seed.totalAudios > 0 || seed.totalArticles > 0\n    var tabShellState = buildInitialTabShellState(selectedTab = selectedMainTab)\n        .withUpdatedTab(selectedMainTab) { it.copy(hasLoaded = true) }\n    if (seededContributionLoaded) {\n        tabShellState = tabShellState.withUpdatedTab(SpaceMainTab.CONTRIBUTION) { it.copy(hasLoaded = true) }\n    }\n    return SpaceUiState.Success(\n        userInfo = seed.userInfo,\n        relationStat = seed.relationStat,\n        upStat = seed.upStat,\n        videos = seed.videos,\n        totalVideos = seed.totalVideos,\n        categories = categories,\n        selectedSubTab = selectedSubTab,\n        selectedContributionTabId = seed.defaultContributionTabId,\n        contributionTabs = seed.contributionTabs,\n        audios = seed.audios,\n        articles = seed.articles,\n        totalAudios = seed.totalAudios,\n        totalArticles = seed.totalArticles,\n        homeFavoriteFolders = seed.homeFavoriteFolders,\n        homeFavoriteFolderCount = seed.homeFavoriteFolderCount,\n        homeCoinVideos = seed.homeCoinVideos,\n        homeCoinVideoCount = seed.homeCoinVideoCount,\n        homeLikeVideos = seed.homeLikeVideos,\n        homeLikeVideoCount = seed.homeLikeVideoCount,\n        homeBangumiItems = seed.homeBangumiItems,\n        homeBangumiCount = seed.homeBangumiCount,\n        homeComicItems = seed.homeComicItems,\n        homeComicCount = seed.homeComicCount,\n        isLoadingMore = shouldShowInitialVideoLoading,\n        hasMoreVideos = seed.totalVideos > seed.videos.size,\n        hasMoreAudios = seed.totalAudios > seed.audios.size,\n        hasMoreArticles = seed.totalArticles > seed.articles.size,\n        headerState = buildHeaderState(\n            userInfo = seed.userInfo,\n            relationStat = seed.relationStat,\n            upStat = seed.upStat,\n            topVideo = null,\n            notice = \"\",\n            createdFavorites = emptyList(),\n            collectedFavorites = emptyList()\n        ),\n        tabShellState = tabShellState,\n        mainTabs = seed.mainTabs,\n        hasCheeseTab = seed.hasCheeseTab\n    )\n}",
+          "adapted": "",
+          "positionsAfter": [
+            16446
+          ]
+        },
+        {
+          "beforeSha256": "f31eb5bba396061bbe6974cf20f05ae86c929c167c4113cce3b19b3cac9704f3",
+          "afterSha256": "2cced7149d920de50a08b911d32d19f88e24eb502a96a3af7dfb5ab99bf22ae1",
+          "original": "internal fun resolveSpaceAggregateDefaultSelection(\n    defaultTab: String,\n    contributionTabs: List<SpaceContributionTab>\n): Triple<SpaceMainTab, SpaceSubTab, String> {\n    val contributionTab = when (defaultTab.lowercase()) {\n        \"article\" -> contributionTabs.firstOrNull { it.subTab == SpaceSubTab.ARTICLE || it.subTab == SpaceSubTab.OPUS }\n        \"opus\" -> contributionTabs.firstOrNull { it.subTab == SpaceSubTab.OPUS || it.subTab == SpaceSubTab.ARTICLE }\n        \"audio\" -> contributionTabs.firstOrNull { it.subTab == SpaceSubTab.AUDIO }\n        \"season_video\" -> contributionTabs.firstOrNull { it.subTab == SpaceSubTab.SEASON_VIDEO }\n        \"series\" -> contributionTabs.firstOrNull { it.subTab == SpaceSubTab.SERIES }\n        \"ugcseason\" -> contributionTabs.firstOrNull { it.subTab == SpaceSubTab.UGC_SEASON }\n        \"comic\" -> contributionTabs.firstOrNull { it.subTab == SpaceSubTab.COMIC }\n        else -> contributionTabs.firstOrNull { it.subTab == SpaceSubTab.VIDEO } ?: contributionTabs.firstOrNull()\n    } ?: buildDefaultSpaceContributionTabs().first()\n\n    return when (defaultTab.lowercase()) {\n        \"dynamic\" -> Triple(SpaceMainTab.DYNAMIC, contributionTab.subTab, contributionTab.id)\n        \"home\" -> Triple(SpaceMainTab.HOME, contributionTab.subTab, contributionTab.id)\n        \"favorite\" -> Triple(SpaceMainTab.FAVORITE, contributionTab.subTab, contributionTab.id)\n        \"bangumi\" -> Triple(SpaceMainTab.BANGUMI, contributionTab.subTab, contributionTab.id)\n        else -> Triple(SpaceMainTab.HOME, contributionTab.subTab, contributionTab.id)\n    }\n}",
+          "adapted": "",
+          "positionsAfter": [
+            16448
+          ]
+        },
+        {
+          "beforeSha256": "2cced7149d920de50a08b911d32d19f88e24eb502a96a3af7dfb5ab99bf22ae1",
+          "afterSha256": "a9117864249f9f451aa3feae5fc59414bd1a09f2e309c9c807ae6c9f1d021814",
+          "original": "internal fun toggleSpaceContributionVideoLayoutMode(\n    current: SpaceContributionVideoLayoutMode\n): SpaceContributionVideoLayoutMode {\n    return when (current) {\n        SpaceContributionVideoLayoutMode.GRID -> SpaceContributionVideoLayoutMode.SINGLE_COLUMN\n        SpaceContributionVideoLayoutMode.SINGLE_COLUMN -> SpaceContributionVideoLayoutMode.GRID\n    }\n}",
+          "adapted": "",
+          "positionsAfter": [
+            10439
+          ]
+        },
+        {
+          "beforeSha256": "a9117864249f9f451aa3feae5fc59414bd1a09f2e309c9c807ae6c9f1d021814",
+          "afterSha256": "1840cfb5a808a2c0b86dde19188d0b53cb80bbf477b1457da230d0045d654dee",
+          "original": "internal fun resolveEmbeddedSeriesArchives(\n    series: List<SeriesItem>\n): Map<Long, List<SeriesArchiveItem>> {\n    return series.mapNotNull { seriesItem ->\n        val seriesId = seriesItem.meta.series_id\n        val archives = seriesItem.archives\n        if (seriesId > 0L && archives.isNotEmpty()) {\n            seriesId to archives\n        } else {\n            null\n        }\n    }.toMap()\n}",
+          "adapted": "",
+          "positionsAfter": [
+            4629
+          ]
+        },
+        {
+          "beforeSha256": "1840cfb5a808a2c0b86dde19188d0b53cb80bbf477b1457da230d0045d654dee",
+          "afterSha256": "755848ed7572bbee62330352108c3e8d09e5d87ee5b220be67594a98cda9fd6b",
+          "original": "internal fun resolveSpaceInitialSeedFromAggregate(\n    data: SpaceAggregateData,\n    cardLargePhoto: String = \"\",\n    cardSmallPhoto: String = \"\",\n    cardIpLocation: String? = null,\n): SpaceInitialSeed? {\n    val card = data.card ?: return null\n    val userMid = card.mid.toLongOrNull()?.takeIf { it > 0L } ?: return null\n    if (card.name.isBlank() || card.face.isBlank()) return null\n\n    val topPhoto = resolveSpaceTopPhoto(\n        topPhoto = resolveSpaceAggregateTopPhoto(data.images),\n        cardLargePhoto = cardLargePhoto,\n        cardSmallPhoto = cardSmallPhoto\n    )\n    val topImageItems = resolveSpaceTopImageItems(data.images)\n    val (isFollowed, relationStatus) = resolveSpaceRelationState(\n        aggregateRelation = data.relation,\n        relSpecial = data.relSpecial,\n        cardRelation = card.relation\n    )\n    val mainTabs = resolveSpaceMainTabs(data.tab2)\n    val contributionTabs = ensureSpaceContributionTabsForAvailableContent(\n        tabs = resolveSpaceContributionTabs(data.tab2),\n        hasArticles = (data.article?.count ?: 0) > 0 || data.article?.item.orEmpty().isNotEmpty()\n    )\n    val defaultSelection = resolveSpaceAggregateDefaultSelection(\n        defaultTab = data.defaultTab,\n        contributionTabs = contributionTabs\n    )\n    val ipFromTag = card.spaceTag.firstOrNull { it.type == \"location\" }?.title\n    val resolvedIpLocation = ipFromTag\n        ?: data.card?.ipLocation?.takeIf { it.isNotBlank() }\n        ?: cardIpLocation?.takeIf { it.isNotBlank() }\n    val filteredTags = card.spaceTag.filter { it.type in setOf(\"location\", \"real_name\") }\n    val resolvedSpaceTags = if (filteredTags.none { it.type == \"location\" } && !resolvedIpLocation.isNullOrBlank()) {\n        val locationTitle = if (resolvedIpLocation.startsWith(\"IP属地\")) resolvedIpLocation else \"IP属地：$resolvedIpLocation\"\n        filteredTags + SpaceTagItem(type = \"location\", title = locationTitle)\n    } else {\n        filteredTags\n    }\n\n    return SpaceInitialSeed(\n        userInfo = SpaceUserInfo(\n            mid = userMid,\n            name = card.name,\n            sex = card.sex,\n            face = card.face,\n            sign = card.sign,\n            level = card.levelInfo.currentLevel,\n            silence = card.silence,\n            official = card.officialVerify,\n            vip = card.vip,\n            isFollowed = isFollowed,\n            relationStatus = relationStatus,\n            topPhoto = topPhoto,\n            nightTopPhoto = data.images?.nightImgUrl.orEmpty(),\n            topImages = topImageItems,\n            followingsFollowed = card.followingsFollowedUpper,\n            spaceTags = resolvedSpaceTags,\n            liveRoom = data.live,\n            ipLocation = resolvedIpLocation,\n        ),\n        relationStat = RelationStatData(\n            mid = userMid,\n            following = card.attention,\n            follower = card.fans\n        ),\n        upStat = UpStatData(\n            archive = ArchiveStatInfo(view = 0),\n            likes = card.likes.likeNum\n        ),\n        videos = data.archive?.item.orEmpty().map(::mapSpaceAggregateVideoItem),\n        totalVideos = data.archive?.count ?: 0,\n        audios = data.audios?.item.orEmpty(),\n        totalAudios = data.audios?.count ?: 0,\n        articles = data.article?.item.orEmpty(),\n        totalArticles = data.article?.count ?: 0,\n        homeFavoriteFolders = data.favourite2?.item.orEmpty().map(::mapSpaceAggregateFavoriteFolder),\n        homeFavoriteFolderCount = data.favourite2?.count ?: 0,\n        homeCoinVideos = data.coinArchive?.item.orEmpty(),\n        homeCoinVideoCount = data.coinArchive?.count ?: 0,\n        homeLikeVideos = data.likeArchive?.item.orEmpty(),\n        homeLikeVideoCount = data.likeArchive?.count ?: 0,\n        homeBangumiItems = data.season?.item.orEmpty(),\n        homeBangumiCount = data.season?.count ?: 0,\n        homeComicItems = data.comic?.item.orEmpty(),\n        homeComicCount = data.comic?.count ?: 0,\n        mainTabs = mainTabs,\n        contributionTabs = contributionTabs,\n        defaultMainTab = defaultSelection.first,\n        defaultSubTab = defaultSelection.second,\n        defaultContributionTabId = defaultSelection.third,\n        hasCheeseTab = data.tab2.any { it.param.equals(\"cheese\", ignoreCase = true) }\n    )\n}",
+          "adapted": "",
+          "positionsAfter": [
+            11415
+          ]
+        },
+        {
+          "beforeSha256": "755848ed7572bbee62330352108c3e8d09e5d87ee5b220be67594a98cda9fd6b",
+          "afterSha256": "6c1b7ea0e5ad52ee94ced8a5175d9e63bfc0e7089168283d9ce35740f93524c0",
+          "original": "internal fun resolveSpaceContributionVideoItemKey(\n    layoutMode: SpaceContributionVideoLayoutMode,\n    bvid: String,\n    aid: Long\n): String {\n    // The wrapper retains one node while span/content changes; placement springs need a stable key.\n    return \"space_video_${bvid}_${aid}\"\n}",
+          "adapted": "",
+          "positionsAfter": [
+            10077
+          ]
+        },
+        {
+          "beforeSha256": "6c1b7ea0e5ad52ee94ced8a5175d9e63bfc0e7089168283d9ce35740f93524c0",
+          "afterSha256": "c948ffd2dc835c1b23aaa7dc9ef9440cae90a0aa26038ebfcb3d2afa39c4f263",
+          "original": "private fun extractSpaceVideoCategories(videos: List<SpaceVideoItem>): List<com.android.purebilibili.data.model.response.SpaceVideoCategory> {\n    return videos\n        .filter { it.typename.isNotBlank() }\n        .groupBy { it.typename }\n        .entries\n        .mapIndexed { index, entry ->\n            com.android.purebilibili.data.model.response.SpaceVideoCategory(\n                tid = index + 1,\n                name = entry.key,\n                count = entry.value.size\n            )\n        }\n}",
+          "adapted": "",
+          "positionsAfter": [
+            13285
+          ]
+        },
+        {
+          "beforeSha256": "c948ffd2dc835c1b23aaa7dc9ef9440cae90a0aa26038ebfcb3d2afa39c4f263",
+          "afterSha256": "83a0f45350d48fedfb7dcda92bc2a7bdda9574bebbe079b190e450d6a5505301",
+          "original": "private fun mapSpaceAggregateFavoriteFolder(item: SpaceAggregateFavoriteItem): FavFolder {\n    val resolvedId = item.mediaId.takeIf { it > 0L } ?: item.id.takeIf { it > 0L } ?: item.fid\n    return FavFolder(\n        id = resolvedId,\n        fid = item.fid,\n        mid = item.mid,\n        title = item.title,\n        media_count = item.media_count.takeIf { it > 0 } ?: item.count\n    )\n}",
+          "adapted": "",
+          "positionsAfter": [
+            12896
+          ]
+        },
+        {
+          "beforeSha256": "83a0f45350d48fedfb7dcda92bc2a7bdda9574bebbe079b190e450d6a5505301",
+          "afterSha256": "d4ef076441045f16c20057d9d5893fa52e0f9d8dfc9b9b147d4461ce560eaf2a",
+          "original": "internal fun resolveSpaceRelationState(\n    aggregateRelation: Int? = null,\n    relSpecial: Int? = null,\n    cardRelation: SpaceAggregateRelation? = null\n): Pair<Boolean, Int> {\n    if (aggregateRelation == -1) {\n        return Pair(false, 128)\n    }\n    val relation = cardRelation ?: SpaceAggregateRelation()\n    if (relation.isFollow == 1) {\n        val status = if (relSpecial == 1) {\n            -10\n        } else {\n            relation.status.takeIf { it != 0 } ?: 2\n        }\n        return Pair(true, status)\n    }\n    return Pair(false, 0)\n}",
+          "adapted": "",
+          "positionsAfter": [
+            10575
+          ]
+        },
+        {
+          "beforeSha256": "d4ef076441045f16c20057d9d5893fa52e0f9d8dfc9b9b147d4461ce560eaf2a",
+          "afterSha256": "b211c7c581363067c44b917e888aa698d5e01720d1daee15e94637b32bbee9e1",
+          "original": "internal fun shouldContinueSpaceBangumiPagination(\n    previousItemCount: Int,\n    mergedItemCount: Int,\n    incomingItemCount: Int,\n    responsePage: Int,\n    pageSize: Int,\n    total: Int,\n): Boolean {\n    if (incomingItemCount <= 0 || mergedItemCount <= previousItemCount) return false\n    if (mergedItemCount >= total.coerceAtLeast(0)) return false\n    return responsePage.coerceAtLeast(1) * pageSize.coerceAtLeast(1) < total\n}",
+          "adapted": "",
+          "positionsAfter": [
+            11910
+          ]
+        },
+        {
+          "beforeSha256": "b211c7c581363067c44b917e888aa698d5e01720d1daee15e94637b32bbee9e1",
+          "afterSha256": "aad3651da4b33c540513959559827b1b7ff63081942b3430d15c282ab4ce6f9e",
+          "original": "internal fun shouldHydrateSpaceContributionVideos(\n    totalVideos: Int,\n    seededVideoCount: Int,\n    pageSize: Int,\n    selectedSubTab: SpaceSubTab,\n    selectedTid: Int,\n    currentOrder: VideoSortOrder,\n    currentKeyword: String\n): Boolean {\n    // VIDEO / CHARGING_VIDEO 共用 videos 列表，充电专属默认 Tab 也需要首屏补齐。\n    if (selectedSubTab != SpaceSubTab.VIDEO && selectedSubTab != SpaceSubTab.CHARGING_VIDEO) {\n        return false\n    }\n    if (totalVideos <= 0) return false\n    val expectedVisibleCount = minOf(totalVideos, pageSize.coerceAtLeast(1))\n    if (seededVideoCount >= expectedVisibleCount) return false\n    if (selectedTid != 0) return false\n    if (currentOrder != VideoSortOrder.PUBDATE) return false\n    if (currentKeyword.isNotBlank()) return false\n    return true\n}",
+          "adapted": "",
+          "positionsAfter": [
+            10583
+          ]
+        },
+        {
+          "beforeSha256": "aad3651da4b33c540513959559827b1b7ff63081942b3430d15c282ab4ce6f9e",
+          "afterSha256": "52dcc3c6e04d17599147690c3dd0c03186e26b024f0c6a3f0f3cbb2b3fbdfcf2",
+          "original": "internal fun parseTopImageDy(location: String, height: Double): Float {\n    if (location.isBlank() || height <= 0.0) return 0f\n    return try {\n        val parts = location.split('-').drop(1).take(2).mapNotNull { it.toFloatOrNull() }\n        if (parts.size == 2) {\n            val start = parts[0]\n            val end = parts[1]\n            ((start + end) / height.toFloat() - 1f).coerceIn(-1f, 1f)\n        } else {\n            0f\n        }\n    } catch (_: Exception) {\n        0f\n    }\n}",
+          "adapted": "",
+          "positionsAfter": [
+            10083
+          ]
+        },
+        {
+          "beforeSha256": "52dcc3c6e04d17599147690c3dd0c03186e26b024f0c6a3f0f3cbb2b3fbdfcf2",
+          "afterSha256": "d7212ff95573b4e9cd260d7d54eec55330876acac1edd106cf60b87981eb945f",
+          "original": "private fun <T> mergeArchiveMapsByLargestList(\n    existing: Map<Long, List<T>>,\n    incoming: Map<Long, List<T>>\n): Map<Long, List<T>> {\n    return (existing.keys + incoming.keys).mapNotNull { id ->\n        val existingItems = existing[id].orEmpty()\n        val incomingItems = incoming[id].orEmpty()\n        val selectedItems = if (incomingItems.size >= existingItems.size) {\n            incomingItems\n        } else {\n            existingItems\n        }\n        if (selectedItems.isNotEmpty()) id to selectedItems else null\n    }.toMap()\n}",
+          "adapted": "",
+          "positionsAfter": [
+            4083
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceDynamicLoadPolicy.kt",
+      "sha256LF": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
+      "generated": "com/android/purebilibili/feature/space/SpaceDynamicLoadPolicy.kt",
+      "generatedSha256LF": "80f69bede8bf1b8605ad795a7b1e56ee4f62c728b9be83d842577225671865b4",
+      "completeOriginalFileReconstructed": true,
+      "transforms": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceTabChromePolicy.kt",
+      "sha256LF": "405e05b78f819da4e793258d7355254e6b70817b2803bfee01525bb785189421",
+      "generated": "com/android/purebilibili/feature/space/SpaceTabChromePolicy.kt",
+      "generatedSha256LF": "405e05b78f819da4e793258d7355254e6b70817b2803bfee01525bb785189421",
+      "completeOriginalFileReconstructed": true,
+      "transforms": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSelectionChipColorPolicy.kt",
+      "sha256LF": "3f54531e069c10778c63895ccbd38734acec7317821fe8010b13bb65f25ea910",
+      "generated": "com/android/purebilibili/feature/space/SpaceSelectionChipColorPolicy.kt",
+      "generatedSha256LF": "3f54531e069c10778c63895ccbd38734acec7317821fe8010b13bb65f25ea910",
+      "completeOriginalFileReconstructed": true,
+      "transforms": []
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "sha256LF": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+      "generated": "com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "generatedSha256LF": "a11ac3ea82c987d420342550b0efd315d26a9ad76754695e36670e54e5eb544c",
+      "completeOriginalFileReconstructed": true,
+      "transforms": [
+        {
+          "beforeSha256": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+          "afterSha256": "91dfaa867496cd717671ba3203db192af95cc3d2be2b1c90246ba9af695dd285",
+          "original": "import android.os.Build\n",
+          "adapted": "",
+          "positionsAfter": [
+            48
+          ]
+        },
+        {
+          "beforeSha256": "91dfaa867496cd717671ba3203db192af95cc3d2be2b1c90246ba9af695dd285",
+          "afterSha256": "7166b589d18f3229614a0af6fa05d6951f00cda78cfbf25c7a0e845eb0e70a26",
+          "original": "import android.content.Intent\n",
+          "adapted": "",
+          "positionsAfter": [
+            6730
+          ]
+        },
+        {
+          "beforeSha256": "7166b589d18f3229614a0af6fa05d6951f00cda78cfbf25c7a0e845eb0e70a26",
+          "afterSha256": "d49d3553a9d3bfeb460609ca1b3a1297355c76df0fc1a238b79f3323c2069501",
+          "original": "import androidx.lifecycle.viewmodel.compose.viewModel\n",
+          "adapted": "",
+          "positionsAfter": [
+            7358
+          ]
+        },
+        {
+          "beforeSha256": "d49d3553a9d3bfeb460609ca1b3a1297355c76df0fc1a238b79f3323c2069501",
+          "afterSha256": "6263c157b2692e51656ec1407f59775254b18f56fe2760c08a1e08fd57fa6290",
+          "original": "import coil3.imageLoader\n",
+          "adapted": "",
+          "positionsAfter": [
+            7390
+          ]
+        },
+        {
+          "beforeSha256": "6263c157b2692e51656ec1407f59775254b18f56fe2760c08a1e08fd57fa6290",
+          "afterSha256": "dd29ba681c1590190740ff12ee7a55374231afe821eb3dc746c6444684dd6d46",
+          "original": "import com.android.purebilibili.R\n",
+          "adapted": "",
+          "positionsAfter": [
+            7448
+          ]
+        },
+        {
+          "beforeSha256": "dd29ba681c1590190740ff12ee7a55374231afe821eb3dc746c6444684dd6d46",
+          "afterSha256": "5c83314458360cb1ec28656b23020012933b727653974b4bb6ce981e4ef24561",
+          "original": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "adapted": "",
+          "positionsAfter": [
+            9594
+          ]
+        },
+        {
+          "beforeSha256": "5c83314458360cb1ec28656b23020012933b727653974b4bb6ce981e4ef24561",
+          "afterSha256": "ed42d356fadc1e06b15263a445fd49afc85bafe5d62c7af341d5da4180769041",
+          "original": "import com.android.purebilibili.feature.dynamic.DynamicViewModel\n",
+          "adapted": "",
+          "positionsAfter": [
+            13486
+          ]
+        },
+        {
+          "beforeSha256": "ed42d356fadc1e06b15263a445fd49afc85bafe5d62c7af341d5da4180769041",
+          "afterSha256": "2a63d2229d594a952ed2bc052614379c3c5f7eb8fdd4bba9a12222a55fdaa048",
+          "original": "import com.android.purebilibili.feature.dynamic.components.DynamicCommentOverlayHost\n",
+          "adapted": "",
+          "positionsAfter": [
+            13972
+          ]
+        },
+        {
+          "beforeSha256": "2a63d2229d594a952ed2bc052614379c3c5f7eb8fdd4bba9a12222a55fdaa048",
+          "afterSha256": "c3f0fa58c5348e9bc66d276a7706a4f2b49b72ec2869530666ce1cbba0025db6",
+          "original": "import com.android.purebilibili.feature.video.controller.PlaybackProgressManager\n",
+          "adapted": "",
+          "positionsAfter": [
+            14646
+          ]
+        },
+        {
+          "beforeSha256": "c3f0fa58c5348e9bc66d276a7706a4f2b49b72ec2869530666ce1cbba0025db6",
+          "afterSha256": "018eff05af736805c066dd13a97b4238ea1d27021a2b4ef274ca7648b2bbd9ea",
+          "original": "import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect\n",
+          "adapted": "",
+          "positionsAfter": [
+            8661
+          ]
+        },
+        {
+          "beforeSha256": "018eff05af736805c066dd13a97b4238ea1d27021a2b4ef274ca7648b2bbd9ea",
+          "afterSha256": "283f8d48cead2eed242ffe559ad1fd9a9049871a81e32abc1659674a135b87c1",
+          "original": "import androidx.lifecycle.compose.collectAsStateWithLifecycle",
+          "adapted": "import androidx.compose.runtime.collectAsState",
+          "positionsAfter": [
+            5653
+          ]
+        },
+        {
+          "beforeSha256": "283f8d48cead2eed242ffe559ad1fd9a9049871a81e32abc1659674a135b87c1",
+          "afterSha256": "d3026e7f52fce481b1f20e1d52bf0071fbc6d6b2bc0bf155923db77312e6abd8",
+          "original": "import androidx.compose.ui.platform.LocalContext",
+          "adapted": "import coil3.compose.LocalPlatformContext as LocalContext",
+          "positionsAfter": [
+            6666
+          ]
+        },
+        {
+          "beforeSha256": "d3026e7f52fce481b1f20e1d52bf0071fbc6d6b2bc0bf155923db77312e6abd8",
+          "afterSha256": "416e8a8c5068ec42aa51cb504e811c38b4cc1e65aa6337df91a3b8e51b378bc0",
+          "original": "import androidx.compose.ui.platform.LocalConfiguration",
+          "adapted": "import com.bilipai.desktop.ui.DesktopSpaceWindowConfiguration as LocalConfiguration",
+          "positionsAfter": [
+            6611
+          ]
+        },
+        {
+          "beforeSha256": "416e8a8c5068ec42aa51cb504e811c38b4cc1e65aa6337df91a3b8e51b378bc0",
+          "afterSha256": "b6895935dfb16df4aa28e353417ab2d3174784caff02fe35d69299d5a98c3f2c",
+          "original": "import androidx.compose.ui.res.stringResource",
+          "adapted": "import com.bilipai.desktop.ui.desktopHomeStringResource as stringResource\nimport com.bilipai.desktop.ui.LocalDesktopOriginalSpacePlatform",
+          "positionsAfter": [
+            6940
+          ]
+        },
+        {
+          "beforeSha256": "b6895935dfb16df4aa28e353417ab2d3174784caff02fe35d69299d5a98c3f2c",
+          "afterSha256": "ae2c3295e28ca0086fbe85af2eed653dd4b893395f47764405de4927a8dbc4ec",
+          "original": "fun SpaceScreen(",
+          "adapted": "internal fun SpaceScreen(",
+          "positionsAfter": [
+            14891
+          ]
+        },
+        {
+          "beforeSha256": "ae2c3295e28ca0086fbe85af2eed653dd4b893395f47764405de4927a8dbc4ec",
+          "afterSha256": "8b2a36abf34c9c8c4aa4288f216ab42057092a56ee027973025b6d17b415f493",
+          "original": "viewModel: SpaceViewModel = viewModel()",
+          "adapted": "viewModel: SpaceViewModel = LocalDesktopOriginalSpacePlatform.current.viewModel",
+          "positionsAfter": [
+            16014
+          ]
+        },
+        {
+          "beforeSha256": "8b2a36abf34c9c8c4aa4288f216ab42057092a56ee027973025b6d17b415f493",
+          "afterSha256": "20df7c28afd330c6106e1004de607b7559b9cf43e44d0274a415292215d5b4e0",
+          "original": "val dynamicInteractionViewModel: DynamicViewModel = viewModel()",
+          "adapted": "val dynamicInteractionViewModel = LocalDesktopOriginalSpacePlatform.current.dynamic",
+          "positionsAfter": [
+            16675
+          ]
+        },
+        {
+          "beforeSha256": "20df7c28afd330c6106e1004de607b7559b9cf43e44d0274a415292215d5b4e0",
+          "afterSha256": "2db3668cd6373ae38190e5b9dd8cf7b2be323a2654caa95cf371fcb50871aa9a",
+          "original": "collectAsStateWithLifecycle",
+          "adapted": "collectAsState",
+          "positionsAfter": [
+            16796,
+            16880,
+            16971,
+            17134,
+            17204,
+            17294,
+            17376,
+            17456,
+            17642,
+            21705,
+            60720
+          ]
+        },
+        {
+          "beforeSha256": "2db3668cd6373ae38190e5b9dd8cf7b2be323a2654caa95cf371fcb50871aa9a",
+          "afterSha256": "01f41b49d22e40095128d568762fe40ed3fbed207364c1d14c8568942899f8a0",
+          "original": "initialValue =",
+          "adapted": "initial =",
+          "positionsAfter": [
+            17657,
+            21715,
+            60725
+          ]
+        },
+        {
+          "beforeSha256": "01f41b49d22e40095128d568762fe40ed3fbed207364c1d14c8568942899f8a0",
+          "afterSha256": "e8a026907289f9c741b682bbea3e03a4061df59912efaa7c9f6770e394857850",
+          "original": "shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT)",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.supportsRenderEffects",
+          "positionsAfter": [
+            18418
+          ]
+        },
+        {
+          "beforeSha256": "e8a026907289f9c741b682bbea3e03a4061df59912efaa7c9f6770e394857850",
+          "afterSha256": "8fe54112ca9e10e2fe6edaf6735b0aafd31898a71ef41e87e907bffd71f0edba",
+          "original": "com.android.purebilibili.core.store.TokenManager.midCache",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.environment.accountMid",
+          "positionsAfter": [
+            131577
+          ]
+        },
+        {
+          "beforeSha256": "8fe54112ca9e10e2fe6edaf6735b0aafd31898a71ef41e87e907bffd71f0edba",
+          "afterSha256": "693a227f5565e843cb472f17b23703a178b480e271f8ef2b93056482f0b03cb6",
+          "original": "context.imageLoader",
+          "adapted": "coil3.SingletonImageLoader.get(context)",
+          "positionsAfter": [
+            94627
+          ]
+        },
+        {
+          "beforeSha256": "693a227f5565e843cb472f17b23703a178b480e271f8ef2b93056482f0b03cb6",
+          "afterSha256": "1b1c329bae883ba1bd8b818408fb0f2779f72925816f0b71dc55c99d2b960602",
+          "original": "SettingsManager.setGridColumnCountCompact(context, finalColumns)",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.home.settings.setGridColumnCountCompact(finalColumns)",
+          "positionsAfter": [
+            72587
+          ]
+        },
+        {
+          "beforeSha256": "1b1c329bae883ba1bd8b818408fb0f2779f72925816f0b71dc55c99d2b960602",
+          "afterSha256": "d469a52051fd8bc0e3335943b4059901211c8cbbb705199a2d58b304ee8f0c74",
+          "original": "SettingsManager.setGridColumnCount(context, finalColumns)",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.home.settings.setGridColumnCount(finalColumns)",
+          "positionsAfter": [
+            72752
+          ]
+        },
+        {
+          "beforeSha256": "d469a52051fd8bc0e3335943b4059901211c8cbbb705199a2d58b304ee8f0c74",
+          "afterSha256": "1b0202f7b91723b82441b3e34d0f3612878ccfddee9fd7f63f5303c1a4bdbe37",
+          "original": "val playbackProgressManager = remember(context) {\n        PlaybackProgressManager.getInstance(context)\n    }",
+          "adapted": "val playbackProgressManager = LocalDesktopOriginalSpacePlatform.current",
+          "positionsAfter": [
+            16404
+          ]
+        },
+        {
+          "beforeSha256": "1b0202f7b91723b82441b3e34d0f3612878ccfddee9fd7f63f5303c1a4bdbe37",
+          "afterSha256": "3cec5226d6ee2c5f16d30546856e1c2eac797b4dbe776100d528345736f93ed3",
+          "original": "playbackProgressManager.getCachedPosition(bvid)",
+          "adapted": "playbackProgressManager.cachedPosition(bvid)",
+          "positionsAfter": [
+            16578
+          ]
+        },
+        {
+          "beforeSha256": "3cec5226d6ee2c5f16d30546856e1c2eac797b4dbe776100d528345736f93ed3",
+          "afterSha256": "09c76518a80523d89b60248f96693ca8141ec7e8808357bab2fc76bafa698ce6",
+          "original": "val blockedUpRepository = remember { com.android.purebilibili.data.repository.BlockedUpRepository(context) }",
+          "adapted": "val blockedUpRepository = LocalDesktopOriginalSpacePlatform.current.blockedUps",
+          "positionsAfter": [
+            17437
+          ]
+        },
+        {
+          "beforeSha256": "09c76518a80523d89b60248f96693ca8141ec7e8808357bab2fc76bafa698ce6",
+          "afterSha256": "7673c4128c90982c2ee3740acc3385ffb90317a84dcbdb495bdd34b0be2c1a95",
+          "original": "com.android.purebilibili.core.store.SettingsManager\n        .getSpacePlayedVideoLocatePromptEnabled(context)",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.locatePromptEnabled",
+          "positionsAfter": [
+            21513
+          ]
+        },
+        {
+          "beforeSha256": "7673c4128c90982c2ee3740acc3385ffb90317a84dcbdb495bdd34b0be2c1a95",
+          "afterSha256": "eacc376107f469e48c93094e01d14fe58d9f1d830e432d8dc5c95bd4d034fbc0",
+          "original": "com.android.purebilibili.core.store.SettingsManager\n        .getHomeSettings(context)",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.home.settings.homeSettings",
+          "positionsAfter": [
+            60499
+          ]
+        },
+        {
+          "beforeSha256": "eacc376107f469e48c93094e01d14fe58d9f1d830e432d8dc5c95bd4d034fbc0",
+          "afterSha256": "385b91794a17d6c47d5407b0a68965c8258e9fb4e5e95d9dfef69d1a965b8b56",
+          "original": "com.android.purebilibili.feature.video.player.PlaylistManager",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.playlist",
+          "positionsAfter": [
+            20623,
+            21073,
+            63422
+          ]
+        },
+        {
+          "beforeSha256": "385b91794a17d6c47d5407b0a68965c8258e9fb4e5e95d9dfef69d1a965b8b56",
+          "afterSha256": "a2f82850b1ea80fe779c2d10a1f1505780b88979d9b3a700d0ecd5348c9428c6",
+          "original": "val shareIntent = Intent(Intent.ACTION_SEND).apply {\n                                                    type = \"text/plain\"\n                                                    putExtra(Intent.EXTRA_TEXT, \"https://space.bilibili.com/$mid\")\n                                                }\n                                                context.startActivity(Intent.createChooser(shareIntent, \"分享空间\"))",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.shareSpace(mid)",
+          "positionsAfter": [
+            32112
+          ]
+        },
+        {
+          "beforeSha256": "a2f82850b1ea80fe779c2d10a1f1505780b88979d9b3a700d0ecd5348c9428c6",
+          "afterSha256": "0821c83230cec9759a6aea294de36435e4e1afda08695faf4cc16f97bff36e9d",
+          "original": "DynamicCommentOverlayHost(\n                            viewModel = dynamicInteractionViewModel,\n                            primaryItems = dynamicCardItems,\n                            toastContext = context,\n                            onUserClick = onUserClick,\n                        )",
+          "adapted": "/* Space v023 sends every card comment click to onDynamicDetailClick; the sole Root full comment/detail route is retained. */",
+          "positionsAfter": [
+            43997
+          ]
+        },
+        {
+          "beforeSha256": "0821c83230cec9759a6aea294de36435e4e1afda08695faf4cc16f97bff36e9d",
+          "afterSha256": "151c0b88c84483da498d96908fb4349868ade0de51f500c6a953bba6831024af",
+          "original": "android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_SHORT).show()",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.feedback(message)",
+          "positionsAfter": [
+            22290
+          ]
+        },
+        {
+          "beforeSha256": "151c0b88c84483da498d96908fb4349868ade0de51f500c6a953bba6831024af",
+          "afterSha256": "c974b7a6d30be782a364a8991f3d7948f2852e270b01007c17474d63130e6567",
+          "original": "android.widget.Toast.makeText(\n                                        context,\n                                        message,\n                                        android.widget.Toast.LENGTH_SHORT\n                                    ).show()",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.feedback(message)",
+          "positionsAfter": [
+            42614,
+            43055
+          ]
+        },
+        {
+          "beforeSha256": "c974b7a6d30be782a364a8991f3d7948f2852e270b01007c17474d63130e6567",
+          "afterSha256": "9e7bc4430dc745edb80099c16be14a3d32bb741be27049396844119e8889574b",
+          "original": "android.widget.Toast.makeText(\n                        context,\n                        message,\n                        android.widget.Toast.LENGTH_SHORT\n                    ).show()",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.feedback(message)",
+          "positionsAfter": [
+            47623
+          ]
+        },
+        {
+          "beforeSha256": "9e7bc4430dc745edb80099c16be14a3d32bb741be27049396844119e8889574b",
+          "afterSha256": "1ac6ced8169a6faeaa0b5602ab7bd734ce3fcdb6f815beaa3f9a71b5550f2c0b",
+          "original": "android.widget.Toast.makeText(\n                                    context,\n                                    result.message,\n                                    android.widget.Toast.LENGTH_SHORT\n                                ).show()",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.feedback(result.message)",
+          "positionsAfter": [
+            48896,
+            49146
+          ]
+        },
+        {
+          "beforeSha256": "1ac6ced8169a6faeaa0b5602ab7bd734ce3fcdb6f815beaa3f9a71b5550f2c0b",
+          "afterSha256": "8f5e0aa3cf3c7c8cde6ea1f17b686e5bcb2c8a83aa00417dee5cc1c0a2050279",
+          "original": "android.widget.Toast.makeText(\n                                    context,\n                                    \"可在「我的」页面编辑个人资料\",\n                                    android.widget.Toast.LENGTH_SHORT\n                                ).show()",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.feedback(\"可在「我的」页面编辑个人资料\")",
+          "positionsAfter": [
+            143316
+          ]
+        },
+        {
+          "beforeSha256": "8f5e0aa3cf3c7c8cde6ea1f17b686e5bcb2c8a83aa00417dee5cc1c0a2050279",
+          "afterSha256": "8afdb8d78ac3fd8640d7f4413738609cad926d22493864a23456ba485f23c4fc",
+          "original": "android.widget.Toast.makeText(\n                        context,\n                        \"$label: $value\",\n                        android.widget.Toast.LENGTH_SHORT\n                    ).show()",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.feedback(\"$label: $value\")",
+          "positionsAfter": [
+            226709
+          ]
+        },
+        {
+          "beforeSha256": "8afdb8d78ac3fd8640d7f4413738609cad926d22493864a23456ba485f23c4fc",
+          "afterSha256": "93bf4fe5cdbcd97e58016a49422d69a4d44d6c1394e07b147459496c2fcc37c4",
+          "original": "R.string.space_unblock_user",
+          "adapted": "\"space_unblock_user\"",
+          "positionsAfter": [
+            23498
+          ]
+        },
+        {
+          "beforeSha256": "93bf4fe5cdbcd97e58016a49422d69a4d44d6c1394e07b147459496c2fcc37c4",
+          "afterSha256": "661dcb054e70d4ae8295c9a3547cf013b3a5271a8e6f9427d875ad0f0137b76b",
+          "original": "R.string.space_block_user",
+          "adapted": "\"space_block_user\"",
+          "positionsAfter": [
+            23429
+          ]
+        },
+        {
+          "beforeSha256": "661dcb054e70d4ae8295c9a3547cf013b3a5271a8e6f9427d875ad0f0137b76b",
+          "afterSha256": "4b6934d6253d0af79fa9c78ed88d33b5082163942213ecc32918d47254553334",
+          "original": "R.string.common_more",
+          "adapted": "\"common_more\"",
+          "positionsAfter": [
+            23367
+          ]
+        },
+        {
+          "beforeSha256": "4b6934d6253d0af79fa9c78ed88d33b5082163942213ecc32918d47254553334",
+          "afterSha256": "d048cda49b8d44600932bd53e4a32b9d2eb11e7880023aaba89ac76e4bd4e369",
+          "original": "R.string.common_back",
+          "adapted": "\"common_back\"",
+          "positionsAfter": [
+            23310
+          ]
+        },
+        {
+          "beforeSha256": "d048cda49b8d44600932bd53e4a32b9d2eb11e7880023aaba89ac76e4bd4e369",
+          "afterSha256": "ca61f3d531b0f82924f790418c352f6febb6caf24b1bda7179388a65894c6357",
+          "original": "R.string.space_title",
+          "adapted": "\"space_title\"",
+          "positionsAfter": [
+            23253
+          ]
+        },
+        {
+          "beforeSha256": "ca61f3d531b0f82924f790418c352f6febb6caf24b1bda7179388a65894c6357",
+          "afterSha256": "7ddb2d4eff17801a0a61e95ab1908403e1edb069cbaacadca15e50ddf126b53d",
+          "original": "LocalDesktopOriginalSpacePlatform.current",
+          "adapted": "desktopSpacePlatform",
+          "positionsAfter": [
+            16042,
+            16413,
+            16627,
+            17400,
+            18264,
+            20518,
+            20947,
+            21344,
+            22122,
+            31858,
+            42369,
+            42789,
+            47336,
+            48588,
+            48817,
+            58744,
+            61668,
+            70645,
+            70789,
+            129675,
+            142861,
+            226233
+          ]
+        },
+        {
+          "beforeSha256": "7ddb2d4eff17801a0a61e95ab1908403e1edb069cbaacadca15e50ddf126b53d",
+          "afterSha256": "0c168bb3842473fc0bd637b881e9d9cbbe15ed1fc81e35e2d13e0bf2d420f06d",
+          "original": "viewModel: SpaceViewModel = desktopSpacePlatform.viewModel",
+          "adapted": "viewModel: SpaceViewModel = LocalDesktopOriginalSpacePlatform.current.viewModel",
+          "positionsAfter": [
+            16014
+          ]
+        },
+        {
+          "beforeSha256": "0c168bb3842473fc0bd637b881e9d9cbbe15ed1fc81e35e2d13e0bf2d420f06d",
+          "afterSha256": "0b472ca4ca029c955e3ac371ce031e06e60a7ca2858cda4cb7a025fa3926194b",
+          "original": "val context = LocalContext.current",
+          "adapted": "val context = LocalContext.current\n    val desktopSpacePlatform = LocalDesktopOriginalSpacePlatform.current",
+          "positionsAfter": [
+            16222,
+            58173,
+            129244,
+            162723,
+            167725,
+            178751,
+            190612,
+            226557,
+            228155
+          ]
+        },
+        {
+          "beforeSha256": "0b472ca4ca029c955e3ac371ce031e06e60a7ca2858cda4cb7a025fa3926194b",
+          "afterSha256": "a11ac3ea82c987d420342550b0efd315d26a9ad76754695e36670e54e5eb544c",
+          "original": "private fun handleAggregateArchiveClick(\n    item: SpaceAggregateArchiveItem,\n    onVideoClick: (String) -> Unit,\n    onAudioClick: (Long) -> Unit,\n    onBangumiClick: (Long) -> Unit,\n    onWebClick: (String, String) -> Unit\n) {\n    val videoId = resolveSpaceAggregateVideoId(item)\n    when {\n        videoId != null -> onVideoClick(videoId)\n        item.goto.contains(\"bangumi\", ignoreCase = true) ||\n            item.isPgc ||\n            item.coverIcon.contains(\"bangumi\", ignoreCase = true) -> {\n            item.param.toLongOrNull()?.takeIf { it > 0L }?.let(onBangumiClick)\n        }\n        item.goto.contains(\"audio\", ignoreCase = true) -> {\n            item.param.toLongOrNull()?.takeIf { it > 0L }?.let(onAudioClick)\n        }\n        item.uri.isNotBlank() -> onWebClick(item.uri, item.title)\n    }\n}",
+          "adapted": "",
+          "positionsAfter": [
+            241997
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+      "sha256LF": "ff810be21539ada00fd6043aac26d15c73f51c261f560a02c19879461797c4fb",
+      "generated": "com/android/purebilibili/feature/space/SpaceSupporterScreens.kt",
+      "generatedSha256LF": "64fd7fde8afd2c9c15da020715b04ff989fa11fc383ce2fa264afaeca8663c3d",
+      "completeOriginalFileReconstructed": true,
+      "transforms": [
+        {
+          "beforeSha256": "ff810be21539ada00fd6043aac26d15c73f51c261f560a02c19879461797c4fb",
+          "afterSha256": "1433051dee1049938bb934d4aa9ebf520183c06e3e42bed4b006bdf58ac05fac",
+          "original": "import androidx.lifecycle.viewmodel.initializer\n",
+          "adapted": "",
+          "positionsAfter": [
+            1009
+          ]
+        },
+        {
+          "beforeSha256": "1433051dee1049938bb934d4aa9ebf520183c06e3e42bed4b006bdf58ac05fac",
+          "afterSha256": "7bbb25be1672ba2bb2b723b831393d10433302ea9af48ff869dfce40434b95ef",
+          "original": "import androidx.lifecycle.viewmodel.viewModelFactory\n",
+          "adapted": "",
+          "positionsAfter": [
+            1009
+          ]
+        },
+        {
+          "beforeSha256": "7bbb25be1672ba2bb2b723b831393d10433302ea9af48ff869dfce40434b95ef",
+          "afterSha256": "96e07657ff0389b30ad2c26cbe6d3bb1ca70c239064739434898ed930cc7b09a",
+          "original": "import androidx.lifecycle.viewmodel.compose.viewModel\n",
+          "adapted": "",
+          "positionsAfter": [
+            1934
+          ]
+        },
+        {
+          "beforeSha256": "96e07657ff0389b30ad2c26cbe6d3bb1ca70c239064739434898ed930cc7b09a",
+          "afterSha256": "45bcb9063e39f660ee9f7947b037343d4e824d9f652f79696df5dd91362d012b",
+          "original": "import androidx.lifecycle.compose.collectAsStateWithLifecycle",
+          "adapted": "import androidx.compose.runtime.collectAsState\nimport com.bilipai.desktop.ui.LocalDesktopOriginalSpacePlatform",
+          "positionsAfter": [
+            1872
+          ]
+        },
+        {
+          "beforeSha256": "45bcb9063e39f660ee9f7947b037343d4e824d9f652f79696df5dd91362d012b",
+          "afterSha256": "69f538a2107fb2c9c3bb8a897229c3bc2cd9ec5f57031254e45287684c7b3863",
+          "original": "collectAsStateWithLifecycle",
+          "adapted": "collectAsState",
+          "positionsAfter": [
+            3341,
+            9032
+          ]
+        },
+        {
+          "beforeSha256": "69f538a2107fb2c9c3bb8a897229c3bc2cd9ec5f57031254e45287684c7b3863",
+          "afterSha256": "4fc5c81be500e770adae1913714c7590cdb09acdeddcde874c09fafa1c2cc2de",
+          "original": "androidx.compose.ui.platform.LocalContext.current",
+          "adapted": "coil3.compose.LocalPlatformContext.current",
+          "positionsAfter": [
+            16187
+          ]
+        },
+        {
+          "beforeSha256": "4fc5c81be500e770adae1913714c7590cdb09acdeddcde874c09fafa1c2cc2de",
+          "afterSha256": "07de5b89e2a5e41266a235ecbf60bbfb27f4c981a8d155aa00ea6969ac409521",
+          "original": "    val viewModel: SpaceUpowerRankViewModel = viewModel(\n        key = \"space_upower_rank_$mid\",\n        factory = viewModelFactory {\n            initializer {\n                SpaceUpowerRankViewModel(upMid = mid, upName = name, initialCount = count)\n            }\n        },\n    )\n",
+          "adapted": "    val viewModel = LocalDesktopOriginalSpacePlatform.current.rank(mid, name, count)\n",
+          "positionsAfter": [
+            3024
+          ]
+        },
+        {
+          "beforeSha256": "07de5b89e2a5e41266a235ecbf60bbfb27f4c981a8d155aa00ea6969ac409521",
+          "afterSha256": "64fd7fde8afd2c9c15da020715b04ff989fa11fc383ce2fa264afaeca8663c3d",
+          "original": "    val viewModel: SpaceMemberGuardViewModel = viewModel(\n        key = \"space_member_guard_$mid\",\n        factory = viewModelFactory {\n            initializer {\n                SpaceMemberGuardViewModel(ruid = mid, upName = name, initialCount = count)\n            }\n        },\n    )\n",
+          "adapted": "    val viewModel = LocalDesktopOriginalSpacePlatform.current.guard(mid, name, count)\n",
+          "positionsAfter": [
+            8516
+          ]
+        }
+      ]
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/space/SpaceLoadingSkeleton.kt",
+      "sha256LF": "8adf4d2eca9225154b572c848c9ef151e8f241b757aaea707c4ee3bd9c84d90f",
+      "generated": "com/android/purebilibili/feature/space/SpaceLoadingSkeleton.kt",
+      "generatedSha256LF": "e19764692980edb8f7a575e475108efb784e36538e551cf91c531f113c76768e",
+      "completeOriginalFileReconstructed": true,
+      "transforms": [
+        {
+          "beforeSha256": "8adf4d2eca9225154b572c848c9ef151e8f241b757aaea707c4ee3bd9c84d90f",
+          "afterSha256": "2237c88f3261201c240916267ddd9a1fce01cb39e77a85d886f97e487f3ccb48",
+          "original": "import androidx.compose.ui.platform.LocalContext\n",
+          "adapted": "",
+          "positionsAfter": [
+            1186
+          ]
+        },
+        {
+          "beforeSha256": "2237c88f3261201c240916267ddd9a1fce01cb39e77a85d886f97e487f3ccb48",
+          "afterSha256": "7585e6e46fc610f44115441e9a7e53feaa2078098f2379ffb6fddf3dfbec8419",
+          "original": "import com.android.purebilibili.core.store.SettingsManager\n",
+          "adapted": "",
+          "positionsAfter": [
+            1339
+          ]
+        },
+        {
+          "beforeSha256": "7585e6e46fc610f44115441e9a7e53feaa2078098f2379ffb6fddf3dfbec8419",
+          "afterSha256": "9bd47bf4033fcb76b403b953a5c9d9c9cc93f61357daa22174643bb20bc081b5",
+          "original": "import androidx.lifecycle.compose.collectAsStateWithLifecycle",
+          "adapted": "import androidx.compose.runtime.collectAsState\nimport com.bilipai.desktop.ui.LocalDesktopOriginalSpacePlatform",
+          "positionsAfter": [
+            1221
+          ]
+        },
+        {
+          "beforeSha256": "9bd47bf4033fcb76b403b953a5c9d9c9cc93f61357daa22174643bb20bc081b5",
+          "afterSha256": "7c4846c1306bc54dfadda7c1a993f00b1a3a48dca258f1f72872df5e2e2164a1",
+          "original": "    val context = LocalContext.current\n",
+          "adapted": "",
+          "positionsAfter": [
+            2162
+          ]
+        },
+        {
+          "beforeSha256": "7c4846c1306bc54dfadda7c1a993f00b1a3a48dca258f1f72872df5e2e2164a1",
+          "afterSha256": "82ad07ee9fc6fc93026cfdfa3129bd3d1e36094a8af3bf86292b266349b5b486",
+          "original": "SettingsManager.getHomeSettings(context)",
+          "adapted": "LocalDesktopOriginalSpacePlatform.current.home.settings.homeSettings",
+          "positionsAfter": [
+            2182
+          ]
+        },
+        {
+          "beforeSha256": "82ad07ee9fc6fc93026cfdfa3129bd3d1e36094a8af3bf86292b266349b5b486",
+          "afterSha256": "41c3b3837a80bd9b88c3b802ecad76533938342e3fd7a513e29e700bb3cfbec0",
+          "original": "collectAsStateWithLifecycle",
+          "adapted": "collectAsState",
+          "positionsAfter": [
+            2260
+          ]
+        },
+        {
+          "beforeSha256": "41c3b3837a80bd9b88c3b802ecad76533938342e3fd7a513e29e700bb3cfbec0",
+          "afterSha256": "e19764692980edb8f7a575e475108efb784e36538e551cf91c531f113c76768e",
+          "original": "initialValue =",
+          "adapted": "initial =",
+          "positionsAfter": [
+            2288
+          ]
+        }
+      ]
+    }
+  ]
+}

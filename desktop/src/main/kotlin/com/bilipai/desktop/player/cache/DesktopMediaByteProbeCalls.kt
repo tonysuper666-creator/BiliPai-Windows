@@ -30,6 +30,7 @@ internal class DesktopMediaByteProbeCalls(
         require(range != null && Regex("bytes=\\d+-\\d+").matches(range)) { "Captured probe requires an exact range" }
         val prepared = request.newBuilder().apply {
             track.headers.forEach { (key, value) -> header(key, value) }
+            tag(DesktopCdnRangeRequestPolicy::class.java, DesktopCdnRangeRequestPolicy)
             tag(DesktopMediaOriginHeaders::class.java, DesktopMediaOriginHeaders(track.headers,
                 track.urls.map { it.toHttpUrl().origin() }.toSet()))
         }.build()

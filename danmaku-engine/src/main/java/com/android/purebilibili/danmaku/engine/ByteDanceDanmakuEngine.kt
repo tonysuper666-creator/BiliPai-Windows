@@ -59,7 +59,7 @@ internal class ByteDanceDanmakuEngine(
             scroll.moveTime = config.scrollDurationMs
             scroll.lineHeight = config.lineHeightPx
             scroll.lineMargin = config.lineMarginPx
-            scroll.itemMargin = 24f * config.viewportScale
+            scroll.itemMargin = 24f
             scroll.lineCount = config.lineCount
             scroll.marginTop = config.topMarginPx
             top.lineHeight = config.lineHeightPx
@@ -85,13 +85,12 @@ internal class ByteDanceDanmakuEngine(
             when (data) {
                 is EngineTextData -> {
                     val item = data.sourceItem
-                    data.textSize = item.textSize?.times(config.viewportScale)
-                        ?: (config.textSizePx * item.textSizeScale)
-                    data.textStrokeWidth = item.textStrokeWidth?.times(config.viewportScale)
+                    data.textSize = item.textSize ?: (config.textSizePx * item.textSizeScale)
+                    data.textStrokeWidth = item.textStrokeWidth
                 }
                 is EngineBitmapData -> {
-                    data.width = data.sourceItem.bitmapWidth * config.viewportScale
-                    data.height = data.sourceItem.bitmapHeight * config.viewportScale
+                    data.width = data.sourceItem.bitmapWidth
+                    data.height = data.sourceItem.bitmapHeight
                 }
             }
         }
@@ -266,18 +265,18 @@ internal class ByteDanceDanmakuEngine(
         val sourceData = if (item.bitmap != null) {
             EngineBitmapData(item).apply {
                 bitmap = item.bitmap
-                width = item.bitmapWidth * currentConfig.viewportScale
-                height = item.bitmapHeight * currentConfig.viewportScale
+                width = item.bitmapWidth
+                height = item.bitmapHeight
             }
         } else {
             EngineTextData(item).apply {
                 text = item.text
-                textSize = item.textSize?.times(currentConfig.viewportScale) ?: item.textSizeScale
+                textSize = item.textSize ?: item.textSizeScale
                     .takeUnless { it == 1f }
                     ?.let { scale -> currentConfig.textSizePx * scale }
                 textColor = item.textColor
                 typeface = item.typeface
-                textStrokeWidth = item.textStrokeWidth?.times(currentConfig.viewportScale)
+                textStrokeWidth = item.textStrokeWidth
                 textStrokeColor = item.textStrokeColor
                 includeFontPadding = item.includeFontPadding
                 hasUnderline = item.hasUnderline

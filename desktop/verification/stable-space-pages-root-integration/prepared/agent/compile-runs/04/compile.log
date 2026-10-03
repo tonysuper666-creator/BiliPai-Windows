@@ -1,0 +1,60 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:162:46: error: unresolved reference 'shouldAllowRenderEffectBackedHazeEffect'.
+import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:513:63: error: unresolved reference 'resolveSpaceVideoSortCompactLabel'.
+                                                label = "≈≈–Ú£∫${resolveSpaceVideoSortCompactLabel(currentSuccessState?.sortOrder ?: VideoSortOrder.PUBDATE)}",
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:2634:30: error: unresolved reference 'resolveSpaceFollowButtonColors'.
+    val followButtonColors = resolveSpaceFollowButtonColors(
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3184:16: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val spec = remember(items, selectedId, uiStyle) {
+               ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3185:9: error: unresolved reference 'resolveSpaceSecondarySwitchChromeSpec'.
+        resolveSpaceSecondarySwitchChromeSpec(
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3194:40: error: unresolved reference 'horizontalPaddingDp'.
+            .padding(horizontal = spec.horizontalPaddingDp.dp, vertical = 6.dp),
+                                       ^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3201:26: error: unresolved reference 'shouldScrollSpaceSecondarySwitchForNonGlass'.
+            scrollable = shouldScrollSpaceSecondarySwitchForNonGlass(items.size),
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3202:27: error: unresolved reference 'resolveSpaceSecondarySwitchNonGlassMinTabWidthDp'.
+            minTabWidth = resolveSpaceSecondarySwitchNonGlassMinTabWidthDp().dp,
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3221:16: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+    val spec = remember(tabs, selectedTab) {
+               ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3222:9: error: unresolved reference 'resolveSpaceMainTabChromeSpec'.
+        resolveSpaceMainTabChromeSpec(tabs = tabs, selectedTab = selectedTab)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3234:31: error: unresolved reference 'scrollable'.
+            scrollable = spec.scrollable,
+                              ^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3235:41: error: unresolved reference 'dragSelectionEnabled'.
+            dragSelectionEnabled = spec.dragSelectionEnabled,
+                                        ^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3237:27: error: unresolved reference 'heightDp'.
+            height = spec.heightDp.dp,
+                          ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3238:36: error: unresolved reference 'indicatorHeightDp'.
+            indicatorHeight = spec.indicatorHeightDp.dp,
+                                   ^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3241:44: error: unresolved reference 'horizontalPaddingDp'.
+                .padding(horizontal = spec.horizontalPaddingDp.dp),
+                                           ^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:3305:28: error: unresolved reference 'resolveSpaceVideoSortCompactLabel'.
+                    text = resolveSpaceVideoSortCompactLabel(currentOrder) + "∑¢≤º",
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:4920:25: error: unresolved reference 'SpaceSelectionChipColors'.
+    followButtonColors: SpaceSelectionChipColors,
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:4961:40: error: unresolved reference 'backgroundColor'.
+            color = followButtonColors.backgroundColor,
+                                       ^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:4983:51: error: unresolved reference 'textColor'.
+                        tint = followButtonColors.textColor,
+                                                  ^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-space-pages-root-parity\compile-runs\04\inputs\5\SpaceScreen.kt:4991:48: error: unresolved reference 'textColor'.
+                    color = followButtonColors.textColor,
+                                               ^^^^^^^^^

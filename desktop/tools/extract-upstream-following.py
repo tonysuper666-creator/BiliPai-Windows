@@ -1,7 +1,8 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 #!/usr/bin/env python3
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,os,subprocess
-PIN='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
 def safe(p):
  s=os.path.abspath(p);prefix=chr(92)*2+'?'+chr(92)
@@ -11,7 +12,7 @@ def generate(repo,output,standalone=False):
  repo=Path(repo);out=Path(output);rows=[]
  def source(rel):
   path=BASE+rel+'.kt';b=subprocess.check_output(['git','show',PIN+':'+path],cwd=repo).replace(b'\r\n',b'\n')
-  s=safe(repo/path).read_text(encoding='utf-8').replace('\r\n','\n');assert b==s.encode(),path
+  s=safe(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n');assert b==s.encode(),path
   rows.append(dict(path=path,upstreamCommit=PIN,sha256LfUtf8=hashlib.sha256(b).hexdigest()));return s
  def emit(rel,s,direct=False):
   p='com/android/purebilibili/'+rel+'.kt';rows[-1]['output']=dict(path=p,mode='direct' if direct else 'selected',sha256LfUtf8=hashlib.sha256(s.encode()).hexdigest())

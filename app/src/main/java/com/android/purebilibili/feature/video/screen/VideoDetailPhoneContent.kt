@@ -257,6 +257,8 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                 ),
                                 commentState = VideoContentCommentState(
                                     isRepliesLoading = commentState.isRepliesLoading,
+                                    isRepliesRefreshing = commentState.isRepliesRefreshing,
+                                    repliesError = commentState.repliesError,
                                     isRepliesEnd = commentState.isRepliesEnd,
                                     voteCard = commentState.voteCard,
                                     sortMode = commentState.sortMode,
@@ -343,6 +345,7 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                     onSubReplyClick = commentActions.openSubReply,
                                     onCommentReplyClick = playbackActions.replyTo,
                                     onLoadMoreReplies = commentActions.loadComments,
+                                    onRefreshReplies = commentActions.refreshComments,
                                     onDeleteComment = commentActions.deleteComment,
                                     onDissolveStart = commentActions.startDissolve,
                                     onCommentLike = commentActions.likeComment,
@@ -360,12 +363,15 @@ internal fun VideoDetailPhoneSuccessContentLayer(
                                     onOpenVideoNoteEditor = playbackActions.openVideoNoteEditor,
                                     onCloseVideoNoteEditor = playbackActions.closeVideoNoteEditor,
                                     onVideoNoteDocumentChange = playbackActions.updateVideoNoteEditorDocument,
-                                    onInsertVideoNoteTimestamp = playbackActions.insertCurrentPlaybackTimestampIntoNote,
+                                    onInsertVideoNoteTimestamp = playbackActions.currentVideoNoteTimestamp,
                                     onVideoNoteTimestampClick = playbackActions.seekTo,
                                     onSaveVideoNote = playbackActions.saveVideoNote,
                                     onDeleteVideoNote = playbackActions.deleteVideoNote,
                                     onRetryVideoNote = playbackActions.retryVideoNote,
-                                    onPublicVideoNoteClick = { _, url -> if (url.isNotBlank()) onOpenBilibiliLink?.invoke(url) },
+                                    onLoadMorePublicVideoNotes = playbackActions.loadMorePublicVideoNotes,
+                                    onPublicVideoNoteClick = { cvid, _ ->
+                                        onOpenBilibiliLink?.invoke("https://www.bilibili.com/read/cv$cvid")
+                                    },
                                 ),
                                 uiActions = VideoContentUiActions(
                                     onSelectedTabChange = onSelectedTabChange,

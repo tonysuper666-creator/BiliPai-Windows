@@ -17,16 +17,17 @@ class DesktopPlaybackSelectionTest {
     private fun selected(data: PlayUrlData = this.data, codec: String? = null, quality: Int = 80): PlaybackSource? =
         with(repository) { data.toPlaybackSource(details, quality, codec) }
 
-    @Test fun defaultAvcSelectionRetainsActualServerCatalogAndQualityLabels() {
+    @Test fun defaultHevcSelectionRetainsActualServerCatalogAndQualityLabels() {
         val source = assertNotNull(selected())
-        assertEquals("https://media.invalid/avc", source.videoUrl)
-        assertEquals("avc1", source.videoCodecFamily)
+        assertEquals("https://media.invalid/hevc", source.videoUrl)
+        assertEquals("hev1", source.videoCodecFamily)
         assertSame(dash, source.cachedDashData)
         assertEquals(listOf(PlaybackQuality(80, "1080P"), PlaybackQuality(64, "720P")), source.availableQualities)
         assertEquals(30251, source.cachedDashData?.flac?.audio?.id)
     }
 
     @Test fun codecOverridesUseOriginalTrackSelectionAndExposeActualFamily() {
+        assertEquals("https://media.invalid/avc", selected(codec = "avc1")?.videoUrl)
         assertEquals("hev1", selected(codec = "HEV1.1.6.L120")?.videoCodecFamily)
         assertEquals("https://media.invalid/hevc", selected(codec = "hev1")?.videoUrl)
         assertEquals("av01", selected(codec = "av01")?.videoCodecFamily)
@@ -98,7 +99,9 @@ class DesktopPlaybackSelectionTest {
     @Test fun expiredOrClockReversedMediaUrlsAreNeverReused() {
         val cache = DesktopPlaybackCache(); val key = DesktopPlaybackCache.Key(1, details.bvid, 9, 80, null)
         cache.put(key, data, 80, 100)
-        assertNull(cache.get(key, 100 + 300_000))
+        assertSame(data, assertNotNull(cache.get(key, 100 + 300_000)).data)
+        assertSame(data, assertNotNull(cache.get(key, 100 + 600_000)).data)
+        assertNull(cache.get(key, 100 + 600_001))
         cache.put(key, data, 80, 100)
         assertNull(cache.get(key, 99))
     }

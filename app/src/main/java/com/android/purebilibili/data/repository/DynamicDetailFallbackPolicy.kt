@@ -222,7 +222,9 @@ internal fun mergeDynamicDetailInteractionMetadata(
     }
     val seedEmojiNodes = collectDynamicDetailSeedEmojiNodes(seedItem)
     val mergedContent = if (detailContent != null && seedEmojiNodes.isNotEmpty()) {
-        val mergedSummary = detailContent.major?.opus?.summary?.let { summary ->
+        val major = detailContent.major
+        val desc = detailContent.desc
+        val mergedSummary = major?.opus?.summary?.let { summary ->
             summary.copy(
                 rich_text_nodes = mergeDynamicDetailRichTextNodes(
                     detailNodes = summary.rich_text_nodes,
@@ -231,16 +233,16 @@ internal fun mergeDynamicDetailInteractionMetadata(
             )
         }
         val mergedMajor = if (mergedSummary != null) {
-            detailContent.major?.copy(
-                opus = detailContent.major.opus?.copy(summary = mergedSummary)
+            major?.copy(
+                opus = major.opus?.copy(summary = mergedSummary)
             )
         } else {
             detailContent.major
         }
         detailContent.copy(
-            desc = detailContent.desc?.copy(
+            desc = desc?.copy(
                 rich_text_nodes = mergeDynamicDetailRichTextNodes(
-                    detailNodes = detailContent.desc.rich_text_nodes,
+                    detailNodes = desc.rich_text_nodes,
                     seedEmojiNodes = seedEmojiNodes,
                 )
             )

@@ -24,7 +24,7 @@ import com.android.purebilibili.danmaku.engine.DanmakuRenderConfig
 import com.android.purebilibili.danmaku.engine.DanmakuRenderView
 import com.android.purebilibili.feature.live.LiveDanmakuItem
 import com.android.purebilibili.feature.video.danmaku.DanmakuTypeFilterSettings
-import com.android.purebilibili.feature.video.danmaku.DEFAULT_DANMAKU_TEXT_SIZE_PX
+import com.android.purebilibili.feature.video.danmaku.DANMAKU_BASE_TEXT_SIZE_DP
 import com.android.purebilibili.feature.video.danmaku.createBitmapDanmaku
 import com.android.purebilibili.feature.video.danmaku.resolveDanmakuRenderLayerType
 import com.android.purebilibili.feature.video.danmaku.resolveDanmakuPinnedDurationMillis
@@ -53,6 +53,7 @@ fun LiveDanmakuOverlay(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
+    val density = context.resources.displayMetrics.density
     val safeDisplayArea = displayArea.takeIf(Float::isFinite)?.coerceIn(0.25f, 1f) ?: 1f
     val latestDanmakuSettings by rememberUpdatedState(danmakuSettings)
     var renderView by remember { mutableStateOf<DanmakuRenderView?>(null) }
@@ -82,8 +83,8 @@ fun LiveDanmakuOverlay(
             .fillMaxWidth()
             .fillMaxHeight(safeDisplayArea),
         update = { view ->
-            val textSize = DEFAULT_DANMAKU_TEXT_SIZE_PX *
-                danmakuSettings.fontScale.coerceIn(0.3f, 2f)
+            val textSize = DANMAKU_BASE_TEXT_SIZE_DP *
+                density * danmakuSettings.fontScale.coerceIn(0.3f, 2f)
             val strokeWidth = danmakuSettings.strokeWidth.coerceAtLeast(0f)
             view.engine.updateConfig(
                 DanmakuRenderConfig(
@@ -121,8 +122,8 @@ fun LiveDanmakuOverlay(
             if (currentEngine != null && isStarted) {
                 val currentTime = SystemClock.elapsedRealtime() - startTime
                 val settings = latestDanmakuSettings
-                val textSize = DEFAULT_DANMAKU_TEXT_SIZE_PX *
-                    settings.fontScale.coerceIn(0.3f, 2f)
+                val textSize = DANMAKU_BASE_TEXT_SIZE_DP *
+                    density * settings.fontScale.coerceIn(0.3f, 2f)
 
                 while (pendingItemsBeforeStart.isNotEmpty()) {
                     pendingItems.addLast(
@@ -192,7 +193,7 @@ fun LiveDanmakuOverlay(
             }
 
             val currentTime = SystemClock.elapsedRealtime() - startTime
-            val textSize = DEFAULT_DANMAKU_TEXT_SIZE_PX * settings.fontScale.coerceIn(0.3f, 2f)
+            val textSize = DANMAKU_BASE_TEXT_SIZE_DP * density * settings.fontScale.coerceIn(0.3f, 2f)
             val renderItem = createLiveDanmakuItem(
                 item = item,
                 currentTime = currentTime,

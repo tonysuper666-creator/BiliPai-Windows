@@ -391,12 +391,30 @@ fun AnimationSettingsContent(
                         )
                         AppPreferenceDivider()
                         AppSwitchPreference(
+                            icon = rememberSettingsSemanticIcon(SettingsIconRole.ANIMATION),
+                            title = "返回内容跟随进度",
+                            subtitle = if (appNavigationSettings.videoReturnContentFollowProgressEnabled) {
+                                "返回时封面和底部信息随进度逐渐恢复为卡片"
+                            } else {
+                                "返回途中保留详情页内容，落位后切换为卡片"
+                            },
+                            checked = appNavigationSettings.videoReturnContentFollowProgressEnabled,
+                            onCheckedChange = { enabled ->
+                                scope.launch {
+                                    SettingsManager.setVideoReturnContentFollowProgressEnabled(context, enabled)
+                                }
+                            },
+                            enabled = state.cardTransitionEnabled,
+                            iconTint = iOSTeal,
+                        )
+                        AppPreferenceDivider()
+                        AppSwitchPreference(
                             icon = rememberSettingsSemanticIcon(SettingsIconRole.RETURN_GESTURE_POSE),
                             title = "视频返回跟手姿态",
                             subtitle = if (appNavigationSettings.videoSharedReturnGestureFollowEnabled) {
-                                "侧滑返回时整卡跟手平移，并绕握持点旋转；松手后仍落回原卡片"
+                                "返回时保留斜向 3D 旋转和透视；独立于二维跟手位移"
                             } else {
-                                "共享卡片仅按固定路径返回原位置"
+                                "关闭 3D 旋转和透视，二维位移由下方开关独立控制"
                             },
                             checked = appNavigationSettings.videoSharedReturnGestureFollowEnabled,
                             onCheckedChange = { enabled ->
@@ -405,6 +423,24 @@ fun AnimationSettingsContent(
                                         context,
                                         enabled,
                                     )
+                                }
+                            },
+                            enabled = state.cardTransitionEnabled,
+                            iconTint = iOSTeal,
+                        )
+                        AppPreferenceDivider()
+                        AppSwitchPreference(
+                            icon = rememberSettingsSemanticIcon(SettingsIconRole.ANIMATION),
+                            title = "视频返回跟手位移",
+                            subtitle = if (appNavigationSettings.videoSharedReturnGestureTranslationEnabled) {
+                                "整卡跟手平移，可横向和纵向移动；松手落回原卡片，取消平滑复位"
+                            } else {
+                                "共享卡片沿固定轨迹返回，3D 姿态由上方开关独立控制"
+                            },
+                            checked = appNavigationSettings.videoSharedReturnGestureTranslationEnabled,
+                            onCheckedChange = { enabled ->
+                                scope.launch {
+                                    SettingsManager.setVideoSharedReturnGestureTranslationEnabled(context, enabled)
                                 }
                             },
                             enabled = state.cardTransitionEnabled,

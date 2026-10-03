@@ -5,7 +5,7 @@ No parallel client, schema, store, WBI cache, record or account is emitted.
 from pathlib import Path
 import hashlib,importlib.util,json,subprocess,textwrap,sys
 sys.dont_write_bytecode=True
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 PATH='app/src/main/java/com/android/purebilibili/data/repository/CommentRepository.kt'
 def safe(p):
  s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\') else '\\\\?\\'+s)
@@ -20,7 +20,7 @@ def generate(repo: Path, output: Path, standalone: bool = False):
  protocol=load('pinned_fraud_source_loader',BASE/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
  sources,identities=protocol.load_pinned_sources(BASE,[PATH]);source=sources[PATH]
  assert identities[0]['pinnedCommit']==COMMIT
- assert sha(source)=='4950b91a708e4d22ddbc6b6f39ef6880879e175dad543ff1fd5b833518b2b820'
+ assert sha(source)=='1da1505d0ec3be32726ff5aacf462a1ee864be945283c7846b635cd6939cc9f4'
  host=load('fraud_host',BASE/'desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(BASE);parser=media.parser_for(BASE)
  # Its local helper is intentionally not imported; select/log-mask through the
  # same complete Kotlin token parser, not line-based body truncation.

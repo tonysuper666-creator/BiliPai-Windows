@@ -30,7 +30,7 @@ class DynamicLayoutPolicyTest {
         assertEquals(1840.dp, resolveDynamicTimelineMaxWidth())
         assertEquals(360.dp, resolveDynamicTimelineMinColumnWidth())
         assertEquals(18.dp, resolveDynamicTimelineHorizontalSpacing())
-        assertEquals(10.dp, resolveDynamicTimelineVerticalSpacing())
+        assertEquals(6.dp, resolveDynamicTimelineVerticalSpacing())
     }
 
     @Test

@@ -1,6 +1,7 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,json,hashlib,re
-PINS={'app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt': '40489c068b77bac5136d31209f1d6f25952d34831760ccf7b1feda9c56a52b98', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt': '5d6b6d24c41e7072b5f1e7107c65c632db7926fbf7da1cc35c61551bdf2a2045', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt': 'de00b9fc1ba0910d4b778c8d76e1f72237c74042fffb6ef14a3dadf2711604b3', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt': 'b9eef7947aa323c64188aaaf3cec36cafe840e3ad6753227739858acef6ec7f7', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt': 'ee8ac2498ab5de0f46aa01b81ab8f2bae11e7775ebea5b04b6220388206bfe8c', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt': 'c136016b778e72104b097752ef8d0e5ad29ec59d27b2af20a551f088230cd5b5', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowPolicy.kt': 'a3d3f01fd4d82bfdee083ccf6dbe89006d29791d3c4ffd61654bd944c9892e90', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt': '7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285', 'app/src/main/java/com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt': 'cb81ae57da657c0281db32f8765fd73d63c0827fd3bf361fe3e0c34d1f5c0f74', 'app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt': '358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612'}
+PINS={'app/src/main/java/com/android/purebilibili/feature/bangumi/HomeBangumiTabPage.kt': '40489c068b77bac5136d31209f1d6f25952d34831760ccf7b1feda9c56a52b98', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubViewModel.kt': '5d6b6d24c41e7072b5f1e7107c65c632db7926fbf7da1cc35c61551bdf2a2045', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubContent.kt': 'de00b9fc1ba0910d4b778c8d76e1f72237c74042fffb6ef14a3dadf2711604b3', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubSkeletons.kt': 'b9eef7947aa323c64188aaaf3cec36cafe840e3ad6753227739858acef6ec7f7', 'app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiHubBlurPolicy.kt': 'ee8ac2498ab5de0f46aa01b81ab8f2bae11e7775ebea5b04b6220388206bfe8c', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiHubPolicy.kt': 'c136016b778e72104b097752ef8d0e5ad29ec59d27b2af20a551f088230cd5b5', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/MyFollowPolicy.kt': '830651749a67b75417ed2f8d9ee3525d155bd3ccbcd8ada42572110500e15d73', 'app/src/main/java/com/android/purebilibili/feature/bangumi/policy/BangumiUiPolicy.kt': '7483af137b9c00e8b48343a09705f9584b0b7c5528d85c528ed35a334682f285', 'app/src/main/java/com/android/purebilibili/feature/bangumi/ui/list/BangumiListComponents.kt': 'cb81ae57da657c0281db32f8765fd73d63c0827fd3bf361fe3e0c34d1f5c0f74', 'app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt': '7a7f195be5ba108aaa3e9b05d7069e9c981183fa7a79fae751b8f0da25714c73'}
 BASE='app/src/main/java/com/android/purebilibili/'
 def sha(s):return hashlib.sha256(s.encode('utf-8')).hexdigest()
 def balanced(s,start):
@@ -31,9 +32,9 @@ def fn(s,name):
  opening=s.index('{',m.end());return s[start:balanced(s,opening)]
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',required=True);ap.add_argument('--output',required=True);a=ap.parse_args()
- root=Path(a.repo);out=Path(a.output);raw={}
+ root=Path(a.repo);value=str(Path(a.output).absolute());prefix=chr(92)*2+'?'+chr(92);out=Path(value if value.startswith(prefix) else prefix+value);raw={}
  for path,pin in PINS.items():
-  s=(root/path).read_text(encoding='utf-8');assert sha(s)==pin,path;raw[path]=s
+  s=(_desktop_canonical_source(root, path)).read_text(encoding='utf-8');assert sha(s)==pin,path;raw[path]=s
  rows=[]
  def emit(origin,s,name,changes=(),selected=None):
   package=re.search(r'(?m)^package (\S+)',raw[origin])[1]
@@ -95,6 +96,6 @@ def main():
  header='package com.android.purebilibili.data.repository\nimport com.android.purebilibili.data.model.response.*\nimport com.android.purebilibili.core.network.*\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.withContext\n'
  declaration='internal class DesktopOriginalBangumiHubRepository(private val api:BangumiApi, private val ownedNavApi:BilibiliApi, private val ownedSearchApi:SearchApi, private val csrf:()->String?,private val mid:()->Long?) {\n'
  emit(origin,header+declaration+'\n\n'.join(parts)+'\n}\n','DesktopOriginalBangumiHubRepository.kt',changes,methods)
- (out/'bangumi-page-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589',pins=PINS,emitted=rows,originalInverseTransformsVerified=True),indent=2)+'\n',encoding='utf-8')
+ (out/'bangumi-page-producer-inventory.json').write_text(json.dumps(dict(upstreamCommit='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40',pins=PINS,emitted=rows,originalInverseTransformsVerified=True),indent=2)+'\n',encoding='utf-8')
  print('Complete original Home Bangumi Hub emitted')
 if __name__=='__main__':main()

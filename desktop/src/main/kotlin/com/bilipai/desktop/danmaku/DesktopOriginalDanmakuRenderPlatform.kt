@@ -3,7 +3,7 @@ package com.bilipai.desktop.danmaku
 import com.android.purebilibili.danmaku.engine.DanmakuRenderConfig
 import com.android.purebilibili.feature.video.danmaku.DanmakuConfig
 import com.android.purebilibili.feature.video.danmaku.DanmakuViewport
-import com.android.purebilibili.feature.video.danmaku.resolveBilibiliDanmakuFontScale
+import com.android.purebilibili.danmaku.parser.resolveBilibiliDanmakuFontScale
 import com.android.purebilibili.feature.video.danmaku.resolveDanmakuViewport
 import java.awt.Font
 import java.awt.Graphics2D
@@ -64,7 +64,7 @@ internal data class DesktopDanmakuPaintGeometry(val viewport:DanmakuViewport,val
             val x=hypot(transform.scaleX,transform.shearY)
             val y=hypot(transform.shearX,transform.scaleY)
             if(!x.isFinite()||!y.isFinite()||x<=0.0||y<=0.0)return null
-            val viewport=resolveDanmakuViewport((width*x).roundToInt(),(height*y).roundToInt(),y.toFloat(),referenceShortSidePx) ?: return null
+            val viewport=resolveDanmakuViewport((width*x).roundToInt(),(height*y).roundToInt(),y.toFloat()) ?: return null
             return DesktopDanmakuPaintGeometry(viewport,x,y)
         }
     }

@@ -1,0 +1,18 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\generated\feature\bangumi\DesktopOriginalBangumiDetailScreen.kt:1653:22: warning: 'fun rememberModalBottomSheetState(skipPartiallyExpanded: Boolean = ..., confirmValueChange: (SheetValue) -> Boolean = ...): SheetState' is deprecated. Use rememberBottomSheetState with Hidden initial value.
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-pages-root-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalBangumiPagesRoot.kt:148:17: warning: 'when' is exhaustive so 'else' is redundant here.
+                else -> error("Unexpected original Bangumi page key")
+                ^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-native-owner-root-parity\generated-video\com\android\purebilibili\feature\video\viewmodel\VideoPlaybackViewModel.kt:1770:36: warning: condition is always 'true'.
+                hasGlobalContext = globalContext != null
+                                   ^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-native-owner-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerViewModel.kt:346:68: warning: redundant call of conversion method.
+                            ?: cachedState.currentEpisode.duration.toLong().coerceAtLeast(0L)
+                                                                   ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-native-owner-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerViewModel.kt:1052:39: warning: unnecessary safe call on a non-null receiver of type 'AudioStreamCandidate'.
+            audio = selection.selected?.track,
+                                      ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-native-owner-root-parity\prepared\desktop\src\main\kotlin\com\bilipai\desktop\ui\DesktopOriginalVideoRootAssembler.kt:288:119: warning: expression is unused.
+                { enabled -> gate.scope.launch { desktopOriginalRootSetDiagnosticLogging(effect.settings, enabled) }; Unit },
+                                                                                                                      ^^^^

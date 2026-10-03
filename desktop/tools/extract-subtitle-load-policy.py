@@ -1,4 +1,5 @@
 """Extract original UI-free subtitle retry and cue-quality decisions without changing their bodies."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse
 import hashlib
@@ -7,7 +8,7 @@ import importlib.util
 
 SOURCE='app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt'
 FUNCTIONS=('buildSubtitleTrackBindingKey','shouldRetrySubtitleLoadWithPlayerInfo','isLikelyLowQualitySubtitleTrack','resolveSubtitleTrackLoadDecision')
-def read(repo): return (repo/SOURCE).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo): return (_desktop_canonical_source(repo, SOURCE)).read_text(encoding='utf-8').replace('\r\n','\n')
 def selectors(repo):
     spec=importlib.util.spec_from_file_location('subtitle_original_selector',repo/'desktop/tools/extract-upstream-media.py')
     module=importlib.util.module_from_spec(spec)

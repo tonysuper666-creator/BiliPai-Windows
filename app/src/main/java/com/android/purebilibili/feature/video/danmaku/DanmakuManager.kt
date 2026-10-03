@@ -1,6 +1,8 @@
 // 文件路径: feature/video/danmaku/DanmakuManager.kt
 package com.android.purebilibili.feature.video.danmaku
 
+import com.android.purebilibili.danmaku.parser.*
+
 import android.content.Context
 import android.graphics.Typeface
 import android.os.SystemClock
@@ -19,6 +21,7 @@ import com.android.purebilibili.core.plugin.DanmakuStyle
 import com.android.purebilibili.core.plugin.PluginManager
 import com.android.purebilibili.core.plugin.json.JsonPluginManager
 import com.android.purebilibili.core.store.DanmakuSettings
+import com.android.purebilibili.danmaku.parser.resolveBilibiliDanmakuFontScale
 import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_BOTTOM
 import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_REVERSE
 import com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_SCROLL
@@ -1068,6 +1071,18 @@ class DanmakuManager private constructor(
 
     private var viewport: DanmakuViewport? = null
 
+    /**
+     * Hosts that only render (portrait pager, bangumi, offline, fullscreen overlay) rely on the
+     * render target's own size, so every surface applies the same style without describing its
+     * picture box first.
+     */
+    private fun resolveEffectiveViewport(view: DanmakuRenderView): DanmakuViewport? =
+        resolveDanmakuViewport(
+            widthPx = view.width,
+            heightPx = view.height,
+            density = context.resources.displayMetrics.density
+        )
+
     /** The player host supplies the same geometry to the engine and Compose overlays. */
     fun updateViewport(value: DanmakuViewport) {
         if (viewport == value) return
@@ -1085,7 +1100,7 @@ class DanmakuManager private constructor(
      */
     private fun applyConfigToController(reason: String) {
         controller?.let { ctrl ->
-            val currentViewport = viewport ?: return
+            val currentViewport = viewport ?: danmakuView?.let(::resolveEffectiveViewport) ?: return
             baseRenderConfig = config.resolveRenderConfig(currentViewport)
 
             // 记录设置后的基准时间，供倍速同步使用

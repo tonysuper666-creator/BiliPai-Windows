@@ -44,6 +44,7 @@ kotlin {
 }
 
 dependencies {
+    api(project(":design-tokens"))
     api(platform(libs.androidx.compose.bom))
     api("androidx.compose.ui:ui")
     api("androidx.compose.foundation:foundation")

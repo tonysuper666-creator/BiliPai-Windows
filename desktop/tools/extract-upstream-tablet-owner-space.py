@@ -1,8 +1,9 @@
 """Complete original SpaceViewModel initial-load call graph, with required captured Windows request ports."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re,subprocess,textwrap
-PIN='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589';BASE='app/src/main/java/com/android/purebilibili/'
-SOURCES=[BASE+'feature/space/SpaceViewModel.kt',BASE+'data/repository/ActionRepository.kt',BASE+'core/network/ApiClient.kt',BASE+'feature/space/SpaceLoadPolicy.kt']
+PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
+SOURCES=[BASE+'feature/space/SpaceViewModel.kt',BASE+'data/repository/ActionRepository.kt','core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt',BASE+'feature/space/SpaceLoadPolicy.kt']
 def module(name,path):
  spec=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 def members(parser,src):
@@ -53,7 +54,7 @@ def select_graph(allmembers,roots):
 def generate(repo,out):
  parser=module('tablet_space_parser',repo/'desktop/tools/sync-upstream.py');original={}
  for path in SOURCES:
-  blob=subprocess.check_output(['git','-C',str(repo),'show',PIN+':'+path]).decode('utf-8').replace('\r\n','\n');current=(repo/path).read_text(encoding='utf-8')
+  blob=subprocess.check_output(['git','-C',str(repo),'show',PIN+':'+path]).decode('utf-8').replace('\r\n','\n');current=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
   if current!=blob:raise ValueError('Pinned source differs: '+path)
   original[path]=blob
  vm=original[SOURCES[0]];body=classbody(parser,vm,'SpaceViewModel');allmembers=members(parser,body);selected=select_graph(allmembers,['loadSpaceInfo'])
@@ -99,7 +100,7 @@ import com.android.purebilibili.core.network.BilibiliApi
 import kotlinx.coroutines.*
 internal class DesktopOriginalTabletOwnerSpaceActions(private val api:BilibiliApi) {
 '''+ '\n\n'.join(re.sub(r'} catch \((\w+): Exception\) \{',r'} catch (cancelled: CancellationException) { throw cancelled\n            } catch (\1: Exception) {',t)for t in apieces)+'\n}\n'
- api=original[SOURCES[2]];start=api.index('suspend fun SpaceApi.getSpaceAggregate(');end=api.index('internal fun buildSpaceAggregateParams(',start);ext=api[start:end].strip()
+ api=original[SOURCES[2]];start=api.index('suspend fun SpaceApi.getSpaceAggregate(');end=api.index('fun buildSpaceAggregateParams(',start);ext=api[start:end].strip()
  adapted=ext.replace('suspend fun SpaceApi.getSpaceAggregate','internal suspend fun DesktopOriginalTabletOwnerSpaceEnvironment.getSpaceAggregate').replace('return getSpaceAggregate(','return spaceApi.getSpaceAggregate(').replace('TokenManager.accessTokenCache','primaryAccessToken()').replace('TokenManager.accessTokenPlatformCache','primaryAccessTokenPlatform()')
  at+='\n'+adapted+'\n';at=at.replace('import kotlinx.coroutines.*','import kotlinx.coroutines.*\nimport com.android.purebilibili.core.network.buildSpaceAggregateParams')
  def emit(pkg,name,text):

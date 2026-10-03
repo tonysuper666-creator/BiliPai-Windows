@@ -1,15 +1,16 @@
 """Source-preserving stable command overlay/grade extraction; direct UI is registry-owned."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,importlib.util,sys,textwrap
 sys.dont_write_bytecode=True
 BASE="app/src/main/java/com/android/purebilibili/"
-PINS={'app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt': 'a89141a1019a5257af51dfb76b6515a3811519dd2882f2ac71291055ba26b1fe', 'app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt': 'd09592b8d7e5e3fa5ae0d0f9e15dc13ca9378edf8fd185ebc6537d7613c7cff5'}
+PINS={'app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt': '4e57ab6372d3dfd4dc801c67f12e8c1e4263a846c06485a52ba8e91d3bd05e1f', 'app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt': 'b9393e987cfabe627baaf7ac2ed3e54fa8e84d9db0079e7f8b37760422a21d5b'}
 OPS_FRAGMENT='\n// STABLE_VIDEO_VOTE_GRADE_MEMBERS\n// Desktop command vote grade binding. Standard vote continues through submitVote.\nsuspend fun submitGradeDanmaku(aid: Long, cid: Long, progress: Long, gradeId: String, gradeScore: Int): Result<Unit> = result {\n    mutate { csrf ->\n        com.android.purebilibili.data.repository.DesktopVideoGradeProtocol(api)\n            .submitGradeDanmaku(aid, cid, progress, gradeId, gradeScore, csrf).getOrThrow()\n    }\n}\n'
 def generate(repo:Path,output:Path):
  spec=importlib.util.spec_from_file_location("video_vote_ast",repo/"desktop/tools/sync-upstream.py")
  parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
  def read(p):
-  s=(repo/p).read_text(encoding="utf-8").replace("\r\n","\n").replace("\r","\n")
+  s=(_desktop_canonical_source(repo, p)).read_text(encoding="utf-8").replace("\r\n","\n").replace("\r","\n")
   assert hashlib.sha256(s.encode()).hexdigest()==PINS[p],p
   return s
  def function(s,anchor):

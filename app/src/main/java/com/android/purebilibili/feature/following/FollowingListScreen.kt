@@ -247,9 +247,10 @@ class FollowingListViewModel : ViewModel() {
                 // 缓存只负责首屏快速展示，服务器第一页始终作为最新关注关系的真源。
                 val response = NetworkModule.api.getFollowings(mid, pn = 1, ps = 50)
                 if (response.code == 0 && response.data != null) {
-                    val initialUsers = response.data.list.orEmpty()
+                    val checkedResponseData = requireNotNull(response.data)
+                    val initialUsers = checkedResponseData.list.orEmpty()
                         .filterNot { removedUserMids.contains(it.mid) }
-                    val total = response.data.total
+                    val total = checkedResponseData.total
                     _uiState.value = FollowingListUiState.Success(
                         users = initialUsers,
                         total = total,
@@ -333,7 +334,8 @@ class FollowingListViewModel : ViewModel() {
                     delay(300)
                     val response = NetworkModule.api.getFollowings(mid, pn = page, ps = pageSize)
                     if (response.code == 0 && response.data != null) {
-                        val newUsers = response.data.list.orEmpty()
+                        val checkedResponseData = requireNotNull(response.data)
+                        val newUsers = checkedResponseData.list.orEmpty()
                             .filterNot { removedUserMids.contains(it.mid) }
                         if (newUsers.isNotEmpty()) {
                             currentUsers = mergeFollowingUsersOffMain(currentUsers, newUsers)

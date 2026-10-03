@@ -1,4 +1,5 @@
 """Original selected protocol producer; no snapshot or .local dependency."""
+from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
 import hashlib, re, subprocess, json
 def load_pinned_sources(repo: Path, paths):
@@ -18,16 +19,17 @@ def load_pinned_sources(repo: Path, paths):
         pins[row['path']] = row['sha256']
     sources = {}; identities = []
     for path in paths:
-        selected = repo / path
+        canonical_path = _desktop_canonical_relative(repo, path)
+        selected = _desktop_canonical_source(repo, path)
         assert not selected.is_symlink() and selected.resolve().is_relative_to(repo.resolve()), path
         text = normalized(selected)
         actual_sha = hashlib.sha256(text.encode('utf-8')).hexdigest()
-        assert actual_sha == pins[path], path + ' differs from fixed source manifest'
-        blob = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'rev-parse', commit + ':' + path], cwd=repo, text=True).strip()
-        current = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'hash-object', '--path=' + path, path], cwd=repo, text=True).strip()
+        assert actual_sha == pins[canonical_path], path + ' differs from fixed source manifest'
+        blob = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'rev-parse', commit + ':' + canonical_path], cwd=repo, text=True).strip()
+        current = subprocess.check_output(['git', '-c', 'core.longpaths=true', 'hash-object', '--path=' + canonical_path, canonical_path], cwd=repo, text=True).strip()
         assert blob == current, path + ' differs from fixed Git commit blob'
         sources[path] = text
-        identities.append(dict(path=path, pinnedCommit=commit, pinnedTag=manifest['upstreamTag'],
+        identities.append(dict(path=canonical_path, requestedPath=path, pinnedCommit=commit, pinnedTag=manifest['upstreamTag'],
             pinnedGitBlob=blob, currentGitBlob=current, sha256LfUtf8=actual_sha, matchesPinnedCommit=True))
     return sources, identities
 
@@ -252,6 +254,19 @@ def generate(repo: Path, output: Path):
             text = text.replace('val wbiKeys = getWbiKeysOrNull(apiClient)', 'val signedParams = ownedCatching { ownedCall { signParams(params) } }.getOrNull()')
             text = text.replace('if (wbiKeys != null)', 'if (signedParams != null)')
             text = text.replace('                    val (imgKey, subKey) = wbiKeys\n                    val signedParams = WbiUtils.sign(params, imgKey, subKey)\n', '')
+        if 'private suspend fun supplementSortedSubReplyLocations(' in text:
+            # Keep the original optional-read window/batch/ranking behavior. The
+            # required existing sign port owns WBI keys; no second manager/cache.
+            first='val keys = getWbiKeysOrNull() ?: return@withTimeoutOrNull'
+            replacement='ownedCatching { ownedCall { signParams(emptyMap()) } }.getOrNull() ?: return@withTimeoutOrNull'
+            assert text.count(first)==1
+            text=text.replace(first,replacement,1)
+            first='WbiUtils.sign(params, keys.first, keys.second)'
+            assert text.count(first)==1
+            text=text.replace(first,'ownedCall { signParams(params) }',1)
+            first='        return mergeCommentReplyLocations(data, supplements)'
+            assert text.count(first)==1
+            text=text.replace(first,'        currentCoroutineContext().ensureActive(); assertOwner()\n'+first,1)
         return owned_api_calls(text)
     A = 'app/src/main/java/com/android/purebilibili/'
     paths = [A + 'data/repository/' + name + '.kt' for name in ('CommentRepository', 'CommentReadAccessPolicy', 'CommentGrpcRepository')]
@@ -259,10 +274,10 @@ def generate(repo: Path, output: Path):
     sources, source_ids = load_pinned_sources(ROOT, paths)
     repo_path = paths[0]
     repo = sources[repo_path]
-    read_names = ['resolveReadApi', 'fetchNonWbiCommentFallback', 'fetchCommentsByApi', 'fetchGuestHotCommentsCompat', 'fetchLegacyHotCommentsCompat', 'fetchCommentEmptySuccessFallback', 'getCommentsForSubject', 'getCommentCountForSubject', 'getSortedSubCommentsForSubject', 'getSubCommentsForSubject', 'getDialogCommentsForSubject', 'shouldTryGrpcMainList', 'resolveCommentMainListPaginationParameters', 'resolveCommentMainListMode', 'shouldTryGrpcPagedRequest']
+    read_names = ['resolveReadApi', 'fetchNonWbiCommentFallback', 'fetchCommentsByApi', 'fetchGuestHotCommentsCompat', 'fetchLegacyHotCommentsCompat', 'fetchCommentEmptySuccessFallback', 'getCommentsForSubject', 'getCommentCountForSubject', 'getSortedSubCommentsForSubject', 'supplementSortedSubReplyLocations', 'getSubCommentsForSubject', 'getDialogCommentsForSubject', 'shouldTryGrpcMainList', 'resolveCommentMainListPaginationParameters', 'resolveCommentMainListMode', 'shouldTryGrpcPagedRequest']
     selected = '\n\n'.join((adapt_read(extract(repo, name, repo_path)) for name in read_names))
     header = '// GENERATED by protocol/produce.py; task-only prepared source.\n// Original: ' + repo_path + '\n// Original LF SHA-256: ' + digest(repo) + '\n'
-    protocol = header + 'package com.android.purebilibili.data.repository\nimport com.android.purebilibili.core.network.BilibiliApi\nimport com.android.purebilibili.data.model.response.*\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive\nimport kotlinx.coroutines.withContext\nimport kotlinx.serialization.encodeToString\nimport kotlinx.serialization.json.Json\nimport java.util.TreeMap\ninternal class DesktopDynamicCommentProtocol(\n    private val api: BilibiliApi,\n    private val guestApi: BilibiliApi,\n    private val commentGrpc: DesktopDynamicCommentGrpc,\n    private val hasSession: () -> Boolean,\n    private val signParams: suspend (Map<String,String>) -> Map<String,String>,\n    private val assertOwner: () -> Unit,\n) {\n    private val commentJson = Json { ignoreUnknownKeys = true }\n    private suspend inline fun <T> ownedCall(block: suspend () -> T): T {\n        currentCoroutineContext().ensureActive(); assertOwner()\n        return block().also { currentCoroutineContext().ensureActive(); assertOwner() }\n    }\n    private inline fun <T> ownedCatching(block: () -> T): Result<T> = try {\n        assertOwner(); Result.success(block().also { assertOwner() })\n    } catch (cancelled: CancellationException) { throw cancelled\n    } catch (failure: Exception) { assertOwner(); Result.failure(failure) }\n' + selected + '\n}\n'
+    protocol = header + 'package com.android.purebilibili.data.repository\nimport com.android.purebilibili.core.network.BilibiliApi\nimport com.android.purebilibili.data.model.response.*\nimport kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive\nimport kotlinx.coroutines.withContext\nimport kotlinx.coroutines.async\nimport kotlinx.coroutines.awaitAll\nimport kotlinx.coroutines.coroutineScope\nimport kotlinx.coroutines.withTimeoutOrNull\nimport kotlinx.serialization.encodeToString\nimport kotlinx.serialization.json.Json\nimport java.util.TreeMap\ninternal class DesktopDynamicCommentProtocol(\n    private val api: BilibiliApi,\n    private val guestApi: BilibiliApi,\n    private val commentGrpc: DesktopDynamicCommentGrpc,\n    private val hasSession: () -> Boolean,\n    private val signParams: suspend (Map<String,String>) -> Map<String,String>,\n    private val assertOwner: () -> Unit,\n) {\n    private val commentJson = Json { ignoreUnknownKeys = true }\n    private suspend inline fun <T> ownedCall(block: suspend () -> T): T {\n        currentCoroutineContext().ensureActive(); assertOwner()\n        return block().also { currentCoroutineContext().ensureActive(); assertOwner() }\n    }\n    private inline fun <T> ownedCatching(block: () -> T): Result<T> = try {\n        assertOwner(); Result.success(block().also { assertOwner() })\n    } catch (cancelled: CancellationException) { throw cancelled\n    } catch (failure: Exception) { assertOwner(); Result.failure(failure) }\n' + selected + '\n}\n'
     write(HERE / 'generated/com/android/purebilibili/data/repository/DesktopDynamicCommentProtocol.kt', protocol)
     policy_path = paths[1]
     policy = sources[policy_path]

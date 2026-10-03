@@ -445,11 +445,12 @@ private fun AicuRecordCard(
     onCopy: () -> Unit,
 ) {
     val target = remember(category, record) { aicuNativeTarget(category, record) }
+    val progressMs = record.progressMs
     AppCard(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             AppText(formatAicuTime(record.timestampSeconds) + when {
                 category == AicuCategory.COMMENT && record.rank in 1..2 -> " · ${if (record.rank == 1) "一级" else "二级"}评论"
-                category == AicuCategory.VIDEO_DANMAKU && record.progressMs != null -> " · 视频内 ${record.progressMs / 1000.0} 秒"
+                category == AicuCategory.VIDEO_DANMAKU && progressMs != null -> " · 视频内 ${progressMs / 1000.0} 秒"
                 else -> ""
             }, style = MaterialTheme.typography.bodySmall)
             if (record.authorName.isNotBlank()) AppText(record.authorName, style = MaterialTheme.typography.labelLarge)

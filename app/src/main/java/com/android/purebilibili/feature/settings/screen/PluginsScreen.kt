@@ -37,7 +37,10 @@ import com.android.purebilibili.core.plugin.evaluateExternalPluginInstall
 import com.android.purebilibili.core.plugin.js.BiliPaiJsPluginInstallStore
 import com.android.purebilibili.core.plugin.js.BiliPaiJsPluginManifest
 import com.android.purebilibili.core.plugin.js.BiliPaiJsRuntime
+import com.android.purebilibili.core.plugin.js.BiliPaiJsLayouts
+import com.android.purebilibili.feature.plugin.js.BiliPaiJsLayoutPresetStore
 import com.android.purebilibili.core.plugin.js.InstalledBiliPaiJsPlugin
+import com.android.purebilibili.core.plugin.js.isPlayable
 import com.android.purebilibili.core.plugin.js.resolveBiliPaiJsPluginCapabilities
 import com.android.purebilibili.core.plugin.kotlinpkg.ExternalKotlinPluginInstallStore
 import com.android.purebilibili.core.plugin.kotlinpkg.ExternalKotlinPluginPackagePreview
@@ -76,6 +79,8 @@ import com.android.purebilibili.core.ui.LocalBottomBarContentPadding
 import com.android.purebilibili.core.ui.adaptiveSquircleBackground
 import com.android.purebilibili.core.ui.components.AppAdaptiveSwitch
 import com.android.purebilibili.core.ui.components.AppCircularProgressIndicator
+import com.android.purebilibili.core.ui.components.AppSegmentOption
+import com.android.purebilibili.core.ui.components.AppThemeAdaptiveTabRow
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppOutlinedButton
 import com.android.purebilibili.core.ui.components.AppSurface
@@ -95,6 +100,8 @@ import com.android.purebilibili.feature.settings.buildUiSkinPackagePreview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
 import okhttp3.Request
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.purebilibili.core.ui.AppShapes
@@ -315,6 +322,8 @@ fun PluginsContent(
     var jsPreview by remember { mutableStateOf<BiliPaiJsPluginPreview?>(null) }
     var isJsPreviewLoading by remember { mutableStateOf(false) }
     var isJsInstalling by remember { mutableStateOf(false) }
+    var jsTestTarget by remember { mutableStateOf<InstalledBiliPaiJsPlugin?>(null) }
+    var layoutImportMessage by remember { mutableStateOf<String?>(null) }
     val uiSkinStore = remember(context) {
         UiSkinInstallStore.createDefault(context)
     }
@@ -437,6 +446,36 @@ fun PluginsContent(
             }.onFailure { error ->
                 jsImportError = error.message ?: "JS 插件预览失败"
             }
+        }
+    }
+
+    val bplayoutPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            val message = withContext(Dispatchers.IO) {
+                runCatching {
+                    val text = context.contentResolver.openInputStream(uri)?.use { stream ->
+                        stream.readBytes().decodeToString()
+                    } ?: throw IllegalArgumentException("无法读取 .bplayout 文件")
+                    val preset = BiliPaiJsLayoutPresetStore.parsePreset(text)
+                        .getOrElse { throw IllegalArgumentException("布局解析失败：${it.message}") }
+                    val targetPlugin = jsPluginStore.listInstalledPlugins()
+                        .firstOrNull { it.manifest.id == preset.pluginId }
+                        ?: throw IllegalArgumentException(
+                            "缺少插件：${preset.pluginId}。请先安装对应的 .bilipai.js，再导入此布局。"
+                        )
+                    val targetModule = targetPlugin.manifest.modules.firstOrNull {
+                        (it.id.ifBlank { it.functionName }) == preset.moduleId
+                    } ?: throw IllegalArgumentException(
+                        "插件 ${targetPlugin.manifest.title} 中没有模块 ${preset.moduleId}，布局可能来自旧版本。"
+                    )
+                    BiliPaiJsLayoutPresetStore.savePreset(context = context, preset = preset)
+                    "已应用布局「${preset.name.ifBlank { targetModule.title }}」：打开「${targetPlugin.manifest.title}」即可看到。"
+                }.getOrElse { error -> "导入失败：${error.message ?: "未知错误"}" }
+            }
+            layoutImportMessage = message
         }
     }
 
@@ -777,6 +816,11 @@ fun PluginsContent(
                             ) {
                                 AppText("本地文件")
                             }
+                            AppOutlinedButton(
+                                onClick = { bplayoutPicker.launch("*/*") }
+                            ) {
+                                AppText("导入布局")
+                            }
                         }
                     }
                 }
@@ -812,8 +856,10 @@ fun PluginsContent(
                                         installedJsPlugins = jsPluginStore.listInstalledPlugins()
                                     },
                                     onOpen = { onOpenJsPlugin(installed.manifest.id) },
+                                    onTest = { jsTestTarget = installed },
                                     onDelete = {
                                         jsPluginStore.removePlugin(installed.manifest.id)
+                                        jsRuntime.clearPluginCache(installed.manifest.id)
                                         installedJsPlugins = jsPluginStore.listInstalledPlugins()
                                     }
                                 )
@@ -1258,6 +1304,27 @@ fun PluginsContent(
             item { Spacer(modifier = Modifier.height(32.dp)) }
         }
     
+    layoutImportMessage?.let { message ->
+        AppAlertDialog(
+            onDismissRequest = { layoutImportMessage = null },
+            title = { AppText("布局导入结果") },
+            text = { AppText(message) },
+            confirmButton = {
+                AppTextButton(onClick = { layoutImportMessage = null }) {
+                    AppText("好")
+                }
+            }
+        )
+    }
+
+    jsTestTarget?.let { testTarget ->
+        JsPluginTestDialog(
+            installed = testTarget,
+            runtime = jsRuntime,
+            onDismiss = { jsTestTarget = null }
+        )
+    }
+
     if (showJsImportDialog) {
         AppAlertDialog(
             onDismissRequest = {
@@ -2364,6 +2431,7 @@ private fun InstalledJsPluginItem(
     installed: InstalledBiliPaiJsPlugin,
     onToggle: (Boolean) -> Unit,
     onOpen: () -> Unit,
+    onTest: () -> Unit,
     onDelete: () -> Unit
 ) {
     Column(
@@ -2408,6 +2476,12 @@ private fun InstalledJsPluginItem(
                 AppText("打开内容")
             }
             AppTextButton(
+                onClick = onTest,
+                enabled = installed.enabled
+            ) {
+                AppText("测试")
+            }
+            AppTextButton(
                 onClick = onDelete,
                 colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
             ) {
@@ -2415,6 +2489,132 @@ private fun InstalledJsPluginItem(
             }
         }
     }
+}
+
+@Composable
+private fun JsPluginTestDialog(
+    installed: InstalledBiliPaiJsPlugin,
+    runtime: BiliPaiJsRuntime,
+    onDismiss: () -> Unit
+) {
+    val modules = installed.manifest.modules
+    var selectedModule by remember(installed) { mutableStateOf(modules.firstOrNull()) }
+    var isRunning by remember { mutableStateOf(false) }
+    var resultText by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
+
+    fun runTest() {
+        val module = selectedModule ?: return
+        isRunning = true
+        resultText = null
+        scope.launch {
+            val startedAt = System.currentTimeMillis()
+            val result = runtime.loadModuleItems(
+                installed = installed,
+                module = module,
+                paramsJson = buildJsTestParamsJson(module)
+            )
+            val elapsedMillis = System.currentTimeMillis() - startedAt
+            isRunning = false
+            result.fold(
+                onSuccess = { items ->
+                    resultText = buildString {
+                        appendLine("成功：${items.size} 条，耗时 ${elapsedMillis} ms")
+                        items.take(5).forEachIndexed { index, item ->
+                            appendLine("${index + 1}. ${item.title}${if (item.isPlayable) " [可播]" else ""}")
+                        }
+                        if (items.size > 5) appendLine("… 共 ${items.size} 条")
+                    }
+                },
+                onFailure = { error ->
+                    resultText = "失败（${elapsedMillis} ms）：${error.message ?: "未知错误"}"
+                }
+            )
+        }
+    }
+
+    AppAlertDialog(
+        onDismissRequest = { if (!isRunning) onDismiss() },
+        icon = { AppIcon(com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_terminal_24), contentDescription = null) },
+        title = { AppText("测试：${installed.manifest.title}") },
+        text = {
+            Column {
+                AppText(
+                    text = "用默认参数运行模块函数，检查返回结构和耗时。完整内容体验请用「打开内容」。",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                if (modules.size > 1 && selectedModule != null) {
+                    AppThemeAdaptiveTabRow(
+                        options = modules.map { module -> AppSegmentOption(module, module.title) },
+                        selectedValue = selectedModule,
+                        onSelectionChange = { selectedModule = it },
+                        scrollable = modules.size > 4,
+                        dragSelectionEnabled = true,
+                        tapPressRefractionEnabled = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                } else {
+                    val currentModule = selectedModule
+                    if (currentModule != null) {
+                        AppText(
+                            text = currentModule.title,
+                            style = MaterialTheme.typography.titleSmall,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                if (isRunning) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        AppCircularProgressIndicator(modifier = Modifier.size(20.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        AppText("正在运行…")
+                    }
+                }
+                resultText?.let { text ->
+                    Spacer(modifier = Modifier.height(8.dp))
+                    AppText(
+                        text = text,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            AppTextButton(
+                onClick = { runTest() },
+                enabled = !isRunning && selectedModule != null
+            ) {
+                AppText("运行")
+            }
+        },
+        dismissButton = {
+            AppTextButton(onClick = onDismiss, enabled = !isRunning) {
+                AppText("关闭")
+            }
+        }
+    )
+}
+
+private fun buildJsTestParamsJson(module: com.android.purebilibili.core.plugin.js.BiliPaiJsModule): String {
+    return buildJsonObject {
+        module.params.forEach { param ->
+            when (param.type) {
+                com.android.purebilibili.core.plugin.js.BiliPaiJsParamTypes.PAGE ->
+                    put(param.name, JsonPrimitive(1))
+                com.android.purebilibili.core.plugin.js.BiliPaiJsParamTypes.OFFSET ->
+                    put(param.name, JsonPrimitive(0))
+                else -> put(param.name, JsonPrimitive(param.defaultValue))
+            }
+        }
+    }.toString()
 }
 
 @Composable

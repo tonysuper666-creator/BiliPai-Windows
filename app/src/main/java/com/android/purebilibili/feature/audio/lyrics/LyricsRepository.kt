@@ -195,13 +195,23 @@ private fun automaticSearchQueries(query: LyricQuery): List<LyricQuery> {
         ?.groupValues
         ?.getOrNull(1)
     val withoutPrefix = query.title.replace(Regex("^(?:【[^】]*】|\\[[^]]*])+"), "").trim()
-    val withoutVideoNoise = withoutPrefix.replace(
+    // 去掉文件名开头的音轨序号，如 "004.周杰伦-七里香" / "01 - 七里香"
+    val withoutTrackNumber = withoutPrefix
+        .replace(Regex("^(?:\\d{1,4}\\s*[.、·_－-]\\s*|\\d{1,4}\\s)+"), "")
+        .trim()
+    val withoutVideoNoise = withoutTrackNumber.replace(
         Regex(
             "(?i)(?:4k|8k|\\d{3,4}p|hdr|official|music video|video|audio|lyrics?|lyric video|mv|live|cover|remix|官方|现场版|完整版|高音质|歌词版|片段|舞台版)"
         ),
         " "
     ).trim()
-    val titleVariants = listOf(query.title, quotedTitle, withoutPrefix, withoutVideoNoise)
+    val titleVariants = listOf(
+        query.title,
+        quotedTitle,
+        withoutPrefix,
+        withoutTrackNumber,
+        withoutVideoNoise,
+    )
         .filterNotNull()
         .filter(String::isNotBlank)
         .distinct()
@@ -209,17 +219,32 @@ private fun automaticSearchQueries(query: LyricQuery): List<LyricQuery> {
         .filterNotNull()
         .filter(String::isNotBlank)
         .distinct()
+    // "周杰伦-七里香" / "周杰伦 - 七里香"：把连字符两侧当作 歌手-歌名 拆出
+    val dashSegments = withoutTrackNumber
+        .split(Regex("\\s*[-–—]\\s*"))
+        .map(String::trim)
+        .filter { it.isNotEmpty() && it.length <= 30 }
     val generated = buildList {
         titleVariants.forEach { title ->
             artistVariants.forEach { artist -> add(query.copy(title = title, artist = artist)) }
         }
         add(query.copy(title = query.artist, artist = query.title))
         quotedTitle?.let { add(query.copy(title = query.artist, artist = it)) }
+        if (dashSegments.size >= 2) {
+            val maybeArtist = dashSegments.first()
+            val maybeTitle = dashSegments.last()
+            if (maybeTitle != maybeArtist) {
+                add(query.copy(title = maybeTitle, artist = maybeArtist))
+                artistVariants.forEach { artist ->
+                    add(query.copy(title = maybeTitle, artist = artist))
+                }
+            }
+        }
     }
     return generated
         .filter { it.title.isNotBlank() }
         .distinctBy { "${it.title.trim().lowercase()}\u0000${it.artist.trim().lowercase()}" }
-        .take(8)
+        .take(12)
 }
 
 private fun lyricCandidateIdentity(candidate: LyricCandidate): String {

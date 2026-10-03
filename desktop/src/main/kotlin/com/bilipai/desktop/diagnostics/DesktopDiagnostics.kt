@@ -43,6 +43,18 @@ internal class DesktopDiagnostics(
         ensurePrivateFile(file.toPath())
         appendRollingDiagnosticLog(file,sanitizeDesktopDiagnosticText(entry.format())+"\n",if(isBasic)64*1024 else 256*1024)
     }
+    private val coreApiErrorPolicy = DesktopOriginalCoreApiErrorPolicy(
+        enabled = { mutableEnhanced.value },
+        emit = { message -> add("E", "ApiError", message) },
+        clock = clock,
+    )
+    fun reportApiError(endpoint:String, httpCode:Int, errorMessage:String):Boolean = synchronized(gate) {
+        if(closing)return false
+        val safeEndpoint = sanitizeDesktopDiagnosticText(normalizeApiErrorEndpoint(endpoint))
+        val safeMessage = sanitizeDesktopDiagnosticText(errorMessage)
+        submit { coreApiErrorPolicy.reportApiError(safeEndpoint, httpCode, safeMessage) }
+        true
+    }
     init {
         // Synchronous read of the same atomic settings key precedes the first accepted log.
         recordStartupStage("diagnostics_initialized")
@@ -283,6 +295,9 @@ internal object DesktopDiagnosticsBridge {
     private val active=AtomicReference<DesktopDiagnostics?>()
     fun install(consumer:DesktopDiagnostics) {check(active.compareAndSet(null,consumer)){"诊断记录器已安装"}}
     fun retire(consumer:DesktopDiagnostics) {active.compareAndSet(consumer,null)}
+    fun reportApiError(endpoint:String,httpCode:Int,errorMessage:String) {
+        active.get()?.reportApiError(endpoint,httpCode,errorMessage)
+    }
     fun record(level:String,tag:String,message:String,cause:Throwable?=null):Int {
         active.get()?.record(level,tag,message,cause)
         return 0

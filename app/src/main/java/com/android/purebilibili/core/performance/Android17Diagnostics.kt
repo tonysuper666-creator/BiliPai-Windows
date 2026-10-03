@@ -56,6 +56,24 @@ internal fun isAbnormalProcessExitReason(reason: Int): Boolean = reason in setOf
     ApplicationExitInfo.REASON_INITIALIZATION_FAILURE,
 )
 
+internal data class ProcessExitCandidate(
+    val processName: String?,
+    val timestamp: Long,
+    val reason: Int,
+)
+
+/** A normal latest exit must not fall back to an older crash or another process. */
+internal fun selectLatestAbnormalMainProcessExitIndex(
+    exits: List<ProcessExitCandidate>,
+    mainProcessName: String,
+): Int? {
+    val latestIndex = exits.indices
+        .filter { exits[it].processName == mainProcessName }
+        .maxByOrNull { exits[it].timestamp }
+        ?: return null
+    return latestIndex.takeIf { isAbnormalProcessExitReason(exits[it].reason) }
+}
+
 /**
  * 解析 API 31+ 的 ApplicationExitInfo 子原因（subReason）。
  */
@@ -286,10 +304,12 @@ internal object Android17Diagnostics {
         if (Logger.hasPendingCrashSnapshot(appContext)) return
         val manager = appContext.getSystemService(ActivityManager::class.java) ?: return
         runCatching {
-            val exitInfo = manager.getHistoricalProcessExitReasons(appContext.packageName, 0, 8)
-                .firstOrNull { info ->
-                    isAbnormalProcessExitReason(info.reason)
-                } ?: return
+            val exits = manager.getHistoricalProcessExitReasons(appContext.packageName, 0, 8)
+            val latestIndex = selectLatestAbnormalMainProcessExitIndex(
+                exits = exits.map { ProcessExitCandidate(it.processName, it.timestamp, it.reason) },
+                mainProcessName = appContext.applicationInfo.processName,
+            ) ?: return
+            val exitInfo = exits[latestIndex]
             val prefs = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             if (prefs.getLong(KEY_LAST_CRASH_SNAPSHOT_TIMESTAMP, 0L) == exitInfo.timestamp) return
             prefs.edit().putLong(KEY_LAST_CRASH_SNAPSHOT_TIMESTAMP, exitInfo.timestamp).apply()

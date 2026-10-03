@@ -1,6 +1,7 @@
 """Select original storage UI, setters/defaults, cache confirmation and pure auto policy.
 Actual Windows cache/download mutations are required platform owners, never Android directory scans.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re,textwrap,sys
 sys.dont_write_bytecode=True
@@ -16,7 +17,7 @@ def block(source,marker,parser):
  return source[start:start+tokens[end][2]]
 def generate(repo,out):
  parser=load('storage_tokens',repo/'desktop/tools/sync-upstream.py');media=load('storage_methods',repo/'desktop/tools/extract-upstream-media.py')
- raw={p:(repo/p).read_text(encoding='utf8').replace('\r\n','\n') for p in PATHS};sections,manager,cache,policy,animation,screen,mirrors=[raw[p]for p in PATHS]
+ raw={p:(_desktop_canonical_source(repo, p)).read_text(encoding='utf8').replace('\r\n','\n') for p in PATHS};sections,manager,cache,policy,animation,screen,mirrors=[raw[p]for p in PATHS]
  body=media.function(sections,'DataStorageSection',parser).replace('fun DataStorageSection(','internal fun DesktopOriginalDataStorageSection(')
  tokens=parser.kotlin_tokens(body);changes=[]
  for i,t in enumerate(tokens[:-1]):
@@ -73,7 +74,7 @@ import com.android.purebilibili.core.store.DesktopOriginalStorageSettings as Set
  vector=vectorHelper.vectors(repo).replace('DesktopSettingsSymbols','DesktopStorageSettingsSymbols').replace('DesktopSettingsVectors','DesktopStorageSettingsVectors')
  write(out/'com/bilipai/desktop/settings/DesktopStorageSettingsVectors.kt',vector)
  inventory=[dict(path=p,mode='direct' if p==PATHS[3]else'policy-extract',features=['desktop-storage-cache-settings-owner-parity'],sha256=hashlib.sha256(raw[p].encode()).hexdigest())for p in PATHS]
- inventory.append(dict(path=VECTOR,mode='direct',features=['desktop-storage-cache-settings-owner-parity'],sha256=hashlib.sha256((repo/VECTOR).read_bytes()).hexdigest()))
+ inventory.append(dict(path=VECTOR,mode='direct',features=['desktop-storage-cache-settings-owner-parity'],sha256=hashlib.sha256((_desktop_canonical_source(repo, VECTOR)).read_bytes()).hexdigest()))
  write(out/'storage-source-inventory.json',json.dumps(inventory,ensure_ascii=False,indent=2)+'\n')
  return inventory
 if __name__=='__main__':

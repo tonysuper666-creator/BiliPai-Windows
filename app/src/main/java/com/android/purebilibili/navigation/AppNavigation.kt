@@ -246,7 +246,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize // 确保 fillMaxSize 被导入
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.draw.clip
 import com.android.purebilibili.feature.home.components.FrostedSideBar
 import com.android.purebilibili.feature.privacy.PrivacyAuthenticationReason
 import com.android.purebilibili.feature.privacy.PrivacyAuthenticationRequest
@@ -2705,6 +2711,9 @@ fun AppNavigation(
                                 },
                                 onBack = { performSystemBackAction() },
                                 onOpenTrending = { pushNavigation3Key(BiliPaiNavKey.SearchTrending) },
+                                onNavigateSearchTarget = { target ->
+                                    openBilibiliNativeTargetInNavigation3(target)
+                                },
                                 onVideoClick = { bvid, cid, coverUrl ->
                                     navigateToVideoInNavigation3(
                                         bvid = bvid,
@@ -4360,9 +4369,13 @@ fun AppNavigation(
                         appNavigationSettings.miuixPredictiveBackMaxProgressPercent,
                     videoSharedReturnGestureFollowEnabled =
                         appNavigationSettings.videoSharedReturnGestureFollowEnabled,
+                    videoSharedReturnGestureTranslationEnabled =
+                        appNavigationSettings.videoSharedReturnGestureTranslationEnabled,
                     sourceMetadata = navigation3SourceMetadata,
                     programmaticBackDispatcher = navigation3ProgrammaticBackDispatcher,
                     // List cover waits for the live handoff window; list info is native throughout return.
+                    videoReturnContentFollowProgressEnabled =
+                        appNavigationSettings.videoReturnContentFollowProgressEnabled,
                     preferWholeCardReturn = false,
                     onBack = { performSystemBackAction() },
                     onPrepareVideoCardSharedReturn = {
@@ -4680,12 +4693,55 @@ fun AppNavigation(
                 }
             } else if (audioNowPlayingItem != null) {
                 val playbackManager = miniPlayerManager ?: MiniPlayerManager.getInstance(context)
+                // 听视频标题横条自动沉浸：听视频页 + 播放中静置 5 秒隐藏，点把柄恢复。
+                val immersiveBarEnabled by com.android.purebilibili.core.store.SettingsManager
+                    .getAudioNowPlayingBarImmersiveEnabled(context)
+                    .collectAsStateWithLifecycle(initialValue = true)
+                var immersiveBarHidden by remember { mutableStateOf(false) }
+                val isOnListenVideoScreen = currentNavigation3Key is BiliPaiNavKey.AudioMode
+                LaunchedEffect(
+                    immersiveBarEnabled,
+                    isOnListenVideoScreen,
+                    playbackManager.isPlaying,
+                    audioNowPlayingItem.bvid,
+                ) {
+                    if (immersiveBarEnabled && isOnListenVideoScreen && playbackManager.isPlaying) {
+                        immersiveBarHidden = false
+                        kotlinx.coroutines.delay(5000)
+                        immersiveBarHidden = true
+                    } else {
+                        immersiveBarHidden = false
+                    }
+                }
                 AudioNowPlayingBarPresenceHost(
-                    visible = showAudioNowPlayingIndependent,
+                    visible = showAudioNowPlayingIndependent && !(immersiveBarEnabled && immersiveBarHidden),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .zIndex(2f),
                 ) {
+                    if (immersiveBarEnabled && immersiveBarHidden) {
+                        // 沉浸态把柄：低调的居中小胶囊，点击唤回标题横条。
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(28.dp)
+                                .clickable(
+                                    interactionSource = remember {
+                                        androidx.compose.foundation.interaction.MutableInteractionSource()
+                                    },
+                                    indication = null,
+                                ) { immersiveBarHidden = false },
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .width(36.dp)
+                                    .height(4.dp)
+                                    .clip(androidx.compose.foundation.shape.RoundedCornerShape(50))
+                                    .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f))
+                            )
+                        }
+                    } else {
                     AudioNowPlayingBar(
                     state = AudioNowPlayingBarState(
                         bvid = audioNowPlayingItem.bvid,
@@ -4696,6 +4752,11 @@ fun AppNavigation(
                         isPlaying = playbackManager.isPlaying,
                         playbackSpeed = playbackManager.player?.playbackParameters?.speed ?: 1f
                     ),
+                    onManualHide = if (immersiveBarEnabled && isOnListenVideoScreen) {
+                        { immersiveBarHidden = true }
+                    } else {
+                        null
+                    },
                     isLayoutStable = !driveBottomBarByProgress,
                     sourceRoute = currentRoute ?: ScreenRoutes.Home.route,
                     handoff = audioNowPlayingHandoff,
@@ -4746,6 +4807,7 @@ fun AppNavigation(
                     liftAboveBottomBar = false,
                     consumeNavigationBarsPadding = true,
                     )
+                    }
                 }
             }
 

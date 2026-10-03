@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.test.assertIsDisplayed
@@ -34,6 +35,28 @@ class ImagePreviewDialogUiRegressionTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    @Test
+    fun replacingPreviewRequest_startsAtNewInitialPage() {
+        val replaceRequest = mutableStateOf(false)
+        // Distinct pager keys with empty image payloads: no network or decoding dependency.
+        val images = listOf("", " ", "  ")
+        composeTestRule.setContent {
+            MaterialTheme {
+                ImagePreviewDialog(
+                    images = if (replaceRequest.value) images.take(2) else images,
+                    initialIndex = if (replaceRequest.value) 0 else 2,
+                    onDismiss = {},
+                )
+                ImagePreviewOverlayHost()
+            }
+        }
+        composeTestRule.onNodeWithTag(IMAGE_PREVIEW_PAGE_INDICATOR_TAG)
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText("3 / 3").assertIsDisplayed()
+        composeTestRule.runOnIdle { replaceRequest.value = true }
+        composeTestRule.onNodeWithText("1 / 2").assertIsDisplayed()
+    }
 
     @Test
     fun doubleTapOnPreviewImage_keepsPreviewOpen() {

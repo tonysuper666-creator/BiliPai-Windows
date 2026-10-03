@@ -181,7 +181,7 @@ fun ForwardedContent(
                         runCatching { context.startActivity(inAppIntent) }
                     }
                 },
-                modifier = Modifier.padding(bottom = AppSpacingTokens.ExtraSmall),
+                modifier = Modifier.padding(bottom = AppSpacingTokens.Micro),
             )
         }
 

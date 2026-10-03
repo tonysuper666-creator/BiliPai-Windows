@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -49,6 +50,8 @@ import com.android.purebilibili.core.ui.components.AppCircularProgressIndicator
 import com.android.purebilibili.core.ui.components.AppIconButton
 import com.android.purebilibili.core.ui.components.AppIconButtonDefaults
 import com.android.purebilibili.core.ui.components.AppSurface
+import com.android.purebilibili.core.ui.AppModalBottomSheet
+import kotlinx.coroutines.launch
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.data.model.response.VideoshotData
 import com.android.purebilibili.data.model.response.UgcSeason
@@ -87,6 +90,9 @@ fun PortraitFullscreenOverlay(
     currentCid: Long = 0L,
     authorName: String = "",
     authorFace: String = "",
+    staff: List<com.android.purebilibili.data.model.response.VideoStaff> = emptyList(),
+    ownerMid: Long = 0L,
+    onStaffMemberClick: (Long) -> Unit = {},
     isPlaying: Boolean,
     progress: PlayerProgress,
     
@@ -263,6 +269,9 @@ fun PortraitFullscreenOverlay(
                         layoutPolicy = layoutPolicy,
                         authorName = authorName,
                         authorFace = authorFace,
+                        staff = staff,
+                        ownerMid = ownerMid,
+                        onStaffMemberClick = onStaffMemberClick,
                         title = title,
                         ugcSeason = ugcSeason,
                         currentBvid = currentBvid,
@@ -637,6 +646,9 @@ private fun PortraitVideoInfo(
     layoutPolicy: PortraitFullscreenOverlayLayoutPolicy,
     authorName: String,
     authorFace: String,
+    staff: List<com.android.purebilibili.data.model.response.VideoStaff> = emptyList(),
+    ownerMid: Long = 0L,
+    onStaffMemberClick: (Long) -> Unit = {},
     title: String,
     ugcSeason: UgcSeason? = null,
     currentBvid: String = "",
@@ -652,6 +664,13 @@ private fun PortraitVideoInfo(
     Column(
         modifier = modifier
     ) {
+        var showStaffSheet by remember { mutableStateOf(false) }
+        // 联合创作：UP 之外的成员；官方样式为多头像叠放 + 「等 N 人联合创作 ˅」
+        val coCreators = remember(staff, ownerMid) {
+            staff.filter { it.mid != ownerMid && (it.mid > 0L || it.name.isNotBlank()) }
+        }
+        val isCoCreation = staff.size > 1 && coCreators.isNotEmpty()
+
         // 第一行：头像 + 名字 + 关注按钮
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -659,7 +678,7 @@ private fun PortraitVideoInfo(
                 .padding(bottom = layoutPolicy.authorRowBottomPaddingDp.dp)
                 .clickable { onAuthorClick() }
         ) {
-            // 头像
+            // 头像（联合创作时 UP 头像后叠放成员头像）
             if (authorFace.isNotEmpty()) {
                 AsyncImage(
                     model = FormatUtils.fixImageUrl(authorFace),
@@ -672,6 +691,27 @@ private fun PortraitVideoInfo(
                 )
                 Spacer(modifier = Modifier.width(layoutPolicy.avatarNameSpacingDp.dp))
             }
+            if (isCoCreation) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable { showStaffSheet = true }
+                ) {
+                    coCreators.take(2).forEachIndexed { index, member ->
+                        AsyncImage(
+                            model = FormatUtils.fixImageUrl(member.face),
+                            contentDescription = member.name,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .offset(x = if (index == 0) 0.dp else (-(layoutPolicy.avatarSizeDp * 0.28f)).dp)
+                                .size(layoutPolicy.avatarSizeDp.dp)
+                                .clip(CircleShape)
+                                .background(Color.Gray)
+                                .border(1.dp, Color.Black.copy(alpha = 0.6f), CircleShape)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(layoutPolicy.avatarNameSpacingDp.dp))
+                }
+            }
             
             // 名字（seed 未带 owner 时勿只渲染裸 `@`）
             AppText(
@@ -682,6 +722,16 @@ private fun PortraitVideoInfo(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
+            if (isCoCreation) {
+                Spacer(modifier = Modifier.width(6.dp))
+                AppText(
+                    text = "等 ${staff.size} 人联合创作 ˅",
+                    color = Color.White.copy(alpha = 0.82f),
+                    fontSize = (layoutPolicy.authorNameFontSp - 1).coerceAtLeast(9).sp,
+                    maxLines = 1,
+                    modifier = Modifier.clickable { showStaffSheet = true }
+                )
+            }
             
             Spacer(modifier = Modifier.width(layoutPolicy.avatarNameSpacingDp.dp))
             
@@ -744,5 +794,132 @@ private fun PortraitVideoInfo(
                     modifier = Modifier.padding(bottom = 6.dp)
             )
         }
+
+        if (showStaffSheet && isCoCreation) {
+            PortraitStaffSheet(
+                staff = staff,
+                ownerMid = ownerMid,
+                onMemberClick = { member ->
+                    showStaffSheet = false
+                    onStaffMemberClick(member)
+                },
+                onDismiss = { showStaffSheet = false }
+            )
+        }
+    }
+}
+
+/** 联合创作成员列表：与官方一致展示头像 / 昵称 / 分工，UP 以外成员可关注、可进主页。 */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PortraitStaffSheet(
+    staff: List<com.android.purebilibili.data.model.response.VideoStaff>,
+    ownerMid: Long,
+    onMemberClick: (Long) -> Unit,
+    onDismiss: () -> Unit
+) {
+    // 成员关注状态：null=查询中；followStateChanges 与全局动作同步。
+    val followStates = remember(staff) { mutableStateMapOf<Long, Boolean>() }
+    LaunchedEffect(staff) {
+        staff.filter { it.mid > 0L && it.mid != ownerMid }.forEach { member ->
+            followStates[member.mid] =
+                com.android.purebilibili.data.repository.ActionRepository
+                    .checkFollowStatus(member.mid)
+        }
+    }
+    LaunchedEffect(Unit) {
+        com.android.purebilibili.data.repository.ActionRepository.followStateChanges.collect { change ->
+            if (followStates.containsKey(change.mid)) {
+                followStates[change.mid] = change.isFollowing
+            }
+        }
+    }
+    val scope = rememberCoroutineScope()
+    AppModalBottomSheet(
+        onDismissRequest = onDismiss,
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface
+    ) {
+        AppText(
+            text = "联合创作 · 共 ${staff.size} 人",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(horizontal = 20.dp, vertical = 10.dp)
+        )
+        staff.forEach { member ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(enabled = member.mid > 0L) { onMemberClick(member.mid) }
+                    .padding(horizontal = 20.dp, vertical = 8.dp)
+            ) {
+                AsyncImage(
+                    model = FormatUtils.fixImageUrl(member.face),
+                    contentDescription = member.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                )
+                Spacer(modifier = Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    AppText(
+                        text = member.name.ifBlank { "用户${member.mid}" },
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    if (member.title.isNotBlank()) {
+                        AppText(
+                            text = member.title,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                if (member.mid > 0L && member.mid != ownerMid) {
+                    val isFollowing = followStates[member.mid] ?: false
+                    AppSurface(
+                        shape = RoundedCornerShape(14.dp),
+                        color = if (isFollowing) {
+                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+                        } else {
+                            MaterialTheme.colorScheme.primary
+                        },
+                        modifier = Modifier.clickable {
+                            scope.launch {
+                                val target = !isFollowing
+                                val ok = com.android.purebilibili.data.repository.ActionRepository
+                                    .followUser(member.mid, target)
+                                    .getOrDefault(false)
+                                if (ok) followStates[member.mid] = target
+                            }
+                        }
+                    ) {
+                        AppText(
+                            text = if (isFollowing) "已关注" else "关注",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = if (isFollowing) {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.72f)
+                            } else {
+                                MaterialTheme.colorScheme.onPrimary
+                            },
+                            modifier = Modifier.padding(horizontal = 14.dp, vertical = 6.dp)
+                        )
+                    }
+                } else if (member.mid == ownerMid) {
+                    AppText(
+                        text = "UP 主",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+        }
+        Spacer(modifier = Modifier.navigationBarsPadding().height(12.dp))
     }
 }

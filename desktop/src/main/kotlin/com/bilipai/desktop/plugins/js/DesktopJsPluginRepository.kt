@@ -87,6 +87,26 @@ class DesktopJsPluginRepository(val context: DesktopPluginContext, val host: Des
         }
         bytes
     }
+
+    /** Original .bplayout schema and namespace, written through this same approved plugin/account. */
+    suspend fun importLayoutPreset(path: Path): Unit = withContext(Dispatchers.IO) {
+        checkOpen()
+        require(Files.isRegularFile(path) && Files.size(path) <= 1_048_576) { ".bplayout 文件无效或过大" }
+        val bytes = Files.newInputStream(path).use { it.readNBytes(1_048_577) }
+        require(bytes.size <= 1_048_576)
+        val preset = com.android.purebilibili.feature.plugin.js.BiliPaiJsLayoutPresetStore.parsePreset(decodeUtf8(bytes)).getOrThrow()
+        mutex.withLock {
+            checkOpen(); refresh()
+            val installed = store.listInstalledPlugins().singleOrNull { it.manifest.id == preset.pluginId }
+                ?: error("布局所需 JS 插件尚未安装")
+            require(installed.manifest.modules.any { it.id.ifBlank { it.functionName } == preset.moduleId }) { "布局所需 JS 模块不存在" }
+            val revision = host.executionRevision.value
+            host.withOriginalPluginAdmission(installed, revision, allowDisabled = true) {
+                com.android.purebilibili.feature.plugin.js.BiliPaiJsLayoutPresetStore.savePreset(context, preset)
+            }
+        }
+    }
+
     suspend fun install(preview: DesktopJsPluginPreview, grants: Set<PluginCapability>): InstalledBiliPaiJsPlugin = withContext(Dispatchers.IO) {
         require(grants.all { it in preview.manifest.permissions }) { "JS 插件授权包含未声明的权限" }
         require(DesktopJsPluginHost.scriptSha256(preview.script) == preview.scriptSha256) { "JS 插件预览摘要不一致" }

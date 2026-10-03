@@ -1,0 +1,94 @@
+{
+  "candidateBase": "464f5573331dfc7f7c2f1e47a5bf6bbac8cfd201",
+  "upstreamCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "immutableSnapshot": 88,
+  "orderedCpEntries": 105,
+  "installableBridgeSlice": true,
+  "installableFullPlayer": false,
+  "newFileCopyWhitelist": [
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiNativePresenter.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativePresenter.kt",
+      "sha256Bytes": "d783742df9fde979b2918bfe371178c92cb7c01c66b84abf0909435fbbbdf589"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiNativeSourcePlan.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativeSourcePlan.kt",
+      "sha256Bytes": "6a90f74d6caf9678cca92cb1d92a5baac82d4df722fb6d49c5e7bad996dfa29c"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPlayerPlatform.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerPlatform.kt",
+      "sha256Bytes": "5849e790175a7cb4b40a2e707c5c6fb21f0006fc3c43f8af003f191845bf4287"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPlayerRequestViews.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerRequestViews.kt",
+      "sha256Bytes": "b84edacf72b00fec21eeeef791a608965d45ff8a8b21b188f9d4df12b390c7a9"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiSharedPlaybackPresenter.kt",
+      "target": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiSharedPlaybackPresenter.kt",
+      "sha256Bytes": "ab5f2b7751af670621a94c43b8b09e4d0c6517f1f0aa4460221f73740f5b9eb5"
+    },
+    {
+      "source": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\prepared\\desktop\\tools\\extract-upstream-bangumi-player.py",
+      "target": "desktop/tools/extract-upstream-bangumi-player.py",
+      "sha256Bytes": "ae7891552d3c37b4371cbb52c0982fa319173b1c0e9589d8fd861407d7ee1675"
+    }
+  ],
+  "existingExactHunks": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\exact-hunks.json",
+    "sha256Bytes": "2bdd2e24c967a5c58b4d3d24f089413410fac89eacd9935cb3f3568e08871ef2"
+  },
+  "existingTargets": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\targets.json",
+    "sha256Bytes": "6ddfaef6e479967a7624bf1369e5bb9a9f2a1a40dddb8466ca91c251b120c3c3"
+  },
+  "wholeExistingFileOverwriteForbidden": true,
+  "generatedFilesCopyForbidden": true,
+  "generatedSoleProducers": [
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player.py",
+      "outputDirectory": "desktop/build/generated/original-bangumi-player",
+      "outputs": 7
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "outputsChanged": 1
+    }
+  ],
+  "registryDelta": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\registry-delta.json",
+    "sha256Bytes": "45e8e3ca9e70e17a2b570b41c38d6140f1f5fc6603a194c037ab76f91b858308"
+  },
+  "sourceInverseAudit": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\source-and-boundary-audit.json",
+    "sha256Bytes": "d01e2c39dd11e9555c101592e5b831dbeaae7fc9d7913b15a84dac6f8fdeed1a"
+  },
+  "sourcesBefore": 1219,
+  "sourcesAfter": 1225,
+  "resourcesBefore": 244,
+  "resourcesAfter": 244,
+  "newDependencies": [],
+  "narrowCompile": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\runs\\06\\result.json",
+    "sha256Bytes": "531aff7c3e534b4dfca812dfb9cbba4b2ef6b884a9e74864b61b0e954b98d2ab"
+  },
+  "cpuProof": {
+    "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\proof-runs\\04\\result.json",
+    "sha256Bytes": "f3b5c8ac4e78d7cd0af67c462aac207633559cb41350bdff0e6dfe79b4a41ca8"
+  },
+  "fullScreenPrepared": false,
+  "rootFullPlayerLeafWired": false,
+  "pugvCommentType33Wired": false,
+  "originalDownloadRootWired": false,
+  "pgcFinalRetirementHeartbeatWired": false,
+  "miniNextEpisodeRootWired": false,
+  "allPlayerFunctionsAccepted": false,
+  "normalProductCompile": false,
+  "rootRuntimeAccepted": false,
+  "nativeRuntimeAccepted": false,
+  "realAccountAccepted": false,
+  "productionWrites": 0
+}

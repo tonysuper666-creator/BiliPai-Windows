@@ -4,6 +4,7 @@ All selected algorithm bodies stay verbatim. Only the Android singleton network 
 becomes a Windows transport getter; the actual Retrofit declarations remain upstream.
 """
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 
 import argparse
 import hashlib
@@ -17,6 +18,7 @@ BASE = "app/src/main/java/com/android/purebilibili/"
 SOURCES = {
     BASE + "data/repository/BangumiRepository.kt": "policy-extract",
     BASE + "data/repository/DanmakuRepository.kt": "extracted",
+    "core-data/src/main/java/com/android/purebilibili/data/repository/DanmakuContentRepository.kt": "extracted",
     BASE + "feature/video/danmaku/DanmakuParser.kt": "extracted",
     BASE + "feature/download/DownloadDanmakuAssetService.kt": "direct",
     BASE + "feature/download/OfflineEpisodeQueuePolicy.kt": "direct",
@@ -37,7 +39,8 @@ SOURCES = {
 
 
 def read(repo: Path, path: str) -> str:
-    return (repo / path).read_text(encoding="utf-8").replace("\r\n", "\n")
+    from v025_source_paths import canonical_source
+    return canonical_source(repo,path).read_text(encoding="utf-8").replace("\r\n", "\n")
 
 
 def parser_for(repo: Path):
@@ -103,31 +106,38 @@ def generate(repo: Path, output: Path) -> list[Path]:
         pieces.append(function(source, name, parser))
     generated.append(write(output, "com/android/purebilibili/data/repository/DesktopMediaPgcPolicies.kt", path, source, "\n\n".join(pieces)))
 
-    path = BASE + "data/repository/DanmakuRepository.kt"
-    source = read(repo, path)
-    # Counts/constants are already extracted by extract-upstream-danmaku.py.
-    begin = source.index("    private val danmakuSegmentCache =")
-    end = source.index("\n\n    /**", begin)
-    fields = source[begin:end].rstrip()
-    expected_fields = ["danmakuSegmentCache", "MAX_SEGMENT_CACHE_COUNT", "MAX_SEGMENT_CACHE_BYTES", "MAX_SEGMENT_PARALLELISM", "danmakuSegmentCacheBytes"]
-    actual_fields = re.findall(r"\b(?:val|var)\s+(\w+)", fields)
-    if actual_fields != expected_fields:
-        raise ValueError(f"Upstream download cache fields changed: {actual_fields}")
-    pieces = ["package com.android.purebilibili.data.repository", "import kotlinx.coroutines.*",
-        "import kotlinx.coroutines.sync.Semaphore", "import kotlinx.coroutines.sync.withPermit",
-        data_class(source, "DanmakuSegmentCacheKey", parser),
-        "object DanmakuRepository {",
-        "    // Platform binding only: login cookies and HTTP client belong to Windows.\n    private val api get() = com.bilipai.desktop.download.DownloadDanmakuTransport.api",
-        fields]
-    for name in ["getDanmakuView", "getDanmakuSegment", "getDanmakuSegments", "getSpecialDanmakuSegments"]:
-        pieces.append(textwrap.indent(function(source, name, parser), "    "))
-    pieces.append("}")
-    generated.append(write(output, "com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt", path, source, "\n\n".join(pieces)))
+    account_path = BASE + "data/repository/DanmakuRepository.kt"
+    account_source = read(repo, account_path)
+    content_path = "core-data/src/main/java/com/android/purebilibili/data/repository/DanmakuContentRepository.kt"
+    content_source = read(repo, content_path)
+    # Entire canonical read/cache schema and object body in the existing owner.
+    # The account methods use the same already configured transport getter.
+    body = content_source
+    for original,replacement in {
+        "import com.android.purebilibili.core.network.NetworkModule\n": "",
+        "object DanmakuContentRepository {": "object DanmakuRepository {",
+        "    private val api = NetworkModule.api": "    private val api get() = com.bilipai.desktop.download.DownloadDanmakuTransport.api",
+    }.items():
+        if body.count(original) != 1:
+            raise ValueError("Original shared danmaku read/cache boundary changed: " + original)
+        body=body.replace(original,replacement,1)
+    closing=body.rfind("}")
+    if body[closing:].strip() != "}":
+        raise ValueError("Canonical danmaku content object closing changed")
+    pieces=[]
+    for name in ["getDanmakuView", "getSpecialDanmakuSegments"]:
+        pieces.append(textwrap.indent(function(account_source,name,parser),"    "))
+    # Legacy public clear entry is retained on the same existing object only.
+    pieces.append("    fun clearDanmakuCache() = clearCache()")
+    body=body[:closing]+"\n"+"\n\n".join(pieces)+"\n}"+body[closing+1:]
+    generated.append(write(output, "com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt", content_path, content_source, body))
 
     path = BASE + "feature/video/danmaku/DanmakuParser.kt"
     source = read(repo, path)
-    body = "package com.android.purebilibili.feature.video.danmaku\n\nobject DanmakuParser {\n" + textwrap.indent(function(source, "parseWebViewReply", parser), "    ") + "\n}"
-    generated.append(write(output, "com/android/purebilibili/feature/video/danmaku/DesktopDanmakuMetadataParser.kt", path, source, body))
+    from v025_source_paths import canonical_source
+    canonical_path=canonical_source(repo,path).relative_to(repo.resolve()).as_posix()
+    body = "package com.android.purebilibili.danmaku.parser\n\nobject DanmakuParser {\n" + textwrap.indent(function(source, "parseWebViewReply", parser), "    ") + "\n}"
+    generated.append(write(output, "com/android/purebilibili/danmaku/parser/DesktopDanmakuMetadataParser.kt", canonical_path, source, body))
 
     path = BASE + "feature/download/OfflineVideoPlaybackPolicy.kt"
     source = read(repo, path)

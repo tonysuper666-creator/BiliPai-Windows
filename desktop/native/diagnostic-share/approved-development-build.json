@@ -1,9 +1,9 @@
 {
   "approvedDevelopmentBuild": true,
   "publicReleaseAuthorizationVerified": false,
-  "sourceSha256Bytes": "4ca60493f8224eefa7c00684fd4fede6a8c7bbdc2b735e03c5bcdd02983807ca",
+  "sourceSha256Bytes": "fda0a20f990caa9c535ec9a20b6b85d6697f97a3b78040eaa7f7b4fb32151ce9",
   "controlledCompilerScriptSha256Bytes": "67adac30b8cb9aa5016f7dd2c6382fddac733ffadfbbc6f8c26ed24098d7c861",
-  "dllSha256Bytes": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3",
+  "dllSha256Bytes": "8d256ff3ea8ebd1b440f318bb33d99f4a20f128b1448d00cdefc909c22a091df",
   "sdkVersion": "10.0.26100.0",
   "msvcVersion": "14.44.35207",
   "flags": [

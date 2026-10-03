@@ -784,6 +784,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
     
     // 🔋 [后台优化] 低内存模式状态
     private var isLowMemoryMode = false
+    private var backgroundOptimizationPlayer: Player? = null
     private var savedTrackParams: androidx.media3.common.TrackSelectionParameters? = null
     private var backgroundHeavyOptimizationJob: Job? = null
     private var enteredBackgroundAtMs: Long = 0L
@@ -849,17 +850,42 @@ class MiniPlayerManager private constructor(private val context: Context) :
     
     // ========== 🔋 后台状态回调 ==========
     
-    override fun onEnterBackground() {
-        if (!isActive) return
-        
-        isLowMemoryMode = true
-        enteredBackgroundAtMs = SystemClock.elapsedRealtime()
+    /** Cancel work and discard resume flags before handing off or closing a player. */
+    private fun resetBackgroundOptimizationState() {
+        backgroundHeavyOptimizationJob?.cancel()
+        backgroundHeavyOptimizationJob = null
+        val owner = backgroundOptimizationPlayer
+        val originalParams = savedTrackParams
+        // Restore the departing player's own parameters while it is still managed/alive.
+        // Never apply these parameters to the replacement player.
+        if (owner != null && owner === player && originalParams != null) {
+            runCatching { owner.trackSelectionParameters = originalParams }
+                .onFailure { Logger.w(TAG, "Failed to restore departing player's tracks", it) }
+        }
+        backgroundOptimizationPlayer = null
+        savedTrackParams = null
+        isLowMemoryMode = false
+        enteredBackgroundAtMs = 0L
         didApplyHeavyBackgroundVideoOptimization = false
         didApplyIdlePlaybackRelease = false
         pendingHeavyBackgroundVideoOptimization = false
         pendingForegroundSurfaceRecovery = false
-        backgroundHeavyOptimizationJob?.cancel()
+        foregroundResumeIntent = false
+    }
+
+    private fun optimizeReplacementPlayerIfInBackground() {
+        if (BackgroundManager.isInBackground && backgroundOptimizationPlayer !== player) {
+            onEnterBackground()
+        }
+    }
+
+    override fun onEnterBackground() {
+        if (!isActive) return
         val currentPlayer = player ?: return
+        resetBackgroundOptimizationState()
+        backgroundOptimizationPlayer = currentPlayer
+        isLowMemoryMode = true
+        enteredBackgroundAtMs = SystemClock.elapsedRealtime()
         foregroundResumeIntent = isPlaybackActiveForLifecycle(
             isPlaying = currentPlayer.isPlaying,
             playWhenReady = currentPlayer.playWhenReady,
@@ -909,7 +935,10 @@ class MiniPlayerManager private constructor(private val context: Context) :
         backgroundHeavyOptimizationJob = scope.launch {
             delay(SHORT_BACKGROUND_LIGHT_MODE_MS)
             val elapsedMs = (SystemClock.elapsedRealtime() - enteredBackgroundAtMs).coerceAtLeast(0L)
-            val activePlayer = player ?: return@launch
+            // The timeout belongs to the player that entered background, not whichever
+            // player happens to be current when the coroutine wakes up.
+            if (player !== currentPlayer || backgroundOptimizationPlayer !== currentPlayer) return@launch
+            val activePlayer = currentPlayer
             if (
                 !shouldRunHeavyBackgroundVideoOptimization(
                     shouldDisableVideoTrack = pendingHeavyBackgroundVideoOptimization,
@@ -943,6 +972,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
         val forceDueToMemoryPressure = shouldForceHeavyBackgroundVideoOptimizationOnTrimLevel(level)
         val shouldKeepBackgroundAudio = shouldContinueBackgroundAudio()
         val activePlayer = player
+        if (activePlayer == null || backgroundOptimizationPlayer !== activePlayer) return
 
         if (
             shouldApplyPendingHeavyBackgroundVideoOptimizationOnMemoryPressure(
@@ -986,7 +1016,10 @@ class MiniPlayerManager private constructor(private val context: Context) :
     
     override fun onEnterForeground() {
         if (!isLowMemoryMode) return
-        
+        if (player == null || backgroundOptimizationPlayer !== player) {
+            resetBackgroundOptimizationState()
+            return
+        }
         isLowMemoryMode = false
         pendingHeavyBackgroundVideoOptimization = false
         backgroundHeavyOptimizationJob?.cancel()
@@ -1078,6 +1111,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
         wasPlaybackActive: Boolean,
         requestIdlePlaybackRelease: Boolean = false
     ) {
+        if (player !== currentPlayer || backgroundOptimizationPlayer !== currentPlayer) return
         if (savedTrackParams == null) {
             savedTrackParams = currentPlayer.trackSelectionParameters
         }
@@ -1115,6 +1149,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
     }
 
     private fun applyIdlePlaybackRelease(currentPlayer: Player) {
+        if (player !== currentPlayer || backgroundOptimizationPlayer !== currentPlayer) return
         if (didApplyIdlePlaybackRelease) return
         runCatching {
             currentPlayer.clearVideoSurface()
@@ -1301,6 +1336,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
      */
     fun clearExternalPlayerIfMatches(target: ExoPlayer): Boolean {
         if (_externalPlayer === target) {
+            resetBackgroundOptimizationState()
             Logger.d(TAG, "clearExternalPlayerIfMatches: cleared external player ${target.hashCode()}")
             target.removeListener(playerListener)
             _externalPlayer = null
@@ -1311,6 +1347,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
     
     //  [修复2] 清除外部播放器引用（从小窗返回全屏时调用）
     fun resetExternalPlayer() {
+        resetBackgroundOptimizationState()
         Logger.d(TAG, " resetExternalPlayer: clearing external player reference")
         _externalPlayer?.removeListener(playerListener)
         _externalPlayer = null
@@ -1780,6 +1817,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
             
             // 🔧 [修复] 标记非活跃状态，允许 VideoPlayerState.onDispose 正确释放资源
             // 解决音频泄漏问题：返回首页后音频仍继续播放
+            resetBackgroundOptimizationState()
             isActive = false
             playbackServiceRequested = false
             _externalPlayer?.removeListener(playerListener)
@@ -2057,6 +2095,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
      * 停止播放并关闭小窗
      */
     fun dismiss() {
+        resetBackgroundOptimizationState()
         Logger.d(TAG) { "Dismissing mini player (isLiveMode=$isLiveMode)" }
         
         //  [修复] 先停止所有播放器的声音
@@ -2154,6 +2193,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
         isLiveMode = false  // 📺 视频模式
         
         // 🛑 [修复] 如果存在旧的外部播放器且不同于新的（切换视频场景），必须释放旧的防止泄漏/重音
+        if (player !== externalPlayer) resetBackgroundOptimizationState()
         if (_externalPlayer != null && _externalPlayer != externalPlayer) {
             Logger.d(TAG, "🛑 Releasing old external player: ${_externalPlayer.hashCode()} -> ${externalPlayer.hashCode()}")
             try {
@@ -2174,6 +2214,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
         // 🎯 [修复] 统一 MediaSession 管理：将外部播放器关联到全局 Session
         // 这样在 Activity 销毁后，后台服务仍能通过此 Session 控制播放
         updateMediaSession(externalPlayer)
+        optimizeReplacementPlayerIfInBackground()
         requestForegroundServiceIfNeeded()
         
         // 同步播放状态
@@ -2216,6 +2257,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
         entryFromLeft = fromLeft
         
         // 释放旧的外部播放器（如果有且不同）
+        if (player !== externalPlayer) resetBackgroundOptimizationState()
         if (_externalPlayer != null && _externalPlayer != externalPlayer) {
             try {
                 _externalPlayer?.removeListener(playerListener)
@@ -2233,6 +2275,7 @@ class MiniPlayerManager private constructor(private val context: Context) :
         isMiniMode = false
 
         updateMediaSession(externalPlayer)
+        optimizeReplacementPlayerIfInBackground()
         requestForegroundServiceIfNeeded()
         isPlaying = resolveNotificationIsPlaying(
             playerIsPlaying = externalPlayer.isPlaying,

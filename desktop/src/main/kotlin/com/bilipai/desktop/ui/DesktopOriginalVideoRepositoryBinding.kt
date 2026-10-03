@@ -1,6 +1,8 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.BilibiliApi
+import com.android.purebilibili.core.network.BangumiApi
+import com.android.purebilibili.data.repository.DesktopOriginalBangumiPlayRequests
 import com.android.purebilibili.core.network.BuvidApi
 import com.android.purebilibili.core.network.SpaceApi
 import com.android.purebilibili.core.network.SearchApi
@@ -79,6 +81,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     private val capturedPrimaryStoryApi = repository.ownedHomeService(StoryApi::class.java, "https://app.bilibili.com/",
         receipt.accountEpoch, ::current)
     private val playbackApi = repository.ownedPlaybackService(BilibiliApi::class.java, authorization, ::current)
+    private val capturedPlaybackBangumiApi = repository.ownedPlaybackService(BangumiApi::class.java, authorization, ::current)
     private val guestApi = repository.ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/",
         receipt.accountEpoch, ::current, guest = true)
     private val buvidApi = repository.ownedHomeService(BuvidApi::class.java, "https://api.bilibili.com/",
@@ -132,6 +135,22 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     )
     val protocol = DesktopOriginalVideoLoadProtocol(environment)
     val rawRepository: DesktopOriginalVideoLoadRepository get() = protocol
+
+    /** Exact PGC view of THIS existing immutable request. No new client,
+     * playback-account cache or WBI authority. Original fallback bodies use
+     * Root's existing owned Home WBI cache/refresh with this captured API. */
+    fun bangumiPlayRequests(): DesktopOriginalBangumiPlayRequests = read {
+        DesktopOriginalBangumiPlayRequests(capturedPlaybackBangumiApi,
+            { bangumiWbiKeys(forceRefresh = false) },
+            { bangumiWbiKeys(forceRefresh = true) }, ::current)
+    }
+    private suspend fun bangumiWbiKeys(forceRefresh: Boolean): Result<Pair<String, String>> {
+        currentCoroutineContext().ensureActive(); assertCurrent()
+        val result = repository.homeWbiKeys(receipt.accountEpoch, ::current, capturedPrimaryApi, forceRefresh)
+        currentCoroutineContext().ensureActive(); assertCurrent()
+        return result
+    }
+
 
     /** Metadata facet of THIS captured request, not a latest-credential service. */
     val primaryApi: BilibiliApi get() = read { capturedPrimaryApi }
@@ -199,11 +218,12 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     }
 
     /** Same raw request's exact account/Job/entry admission for native byte preparation. */
-    fun captureMediaBytes(cache: com.bilipai.desktop.player.cache.DesktopMediaByteCache): DesktopOriginalVideoByteCacheRequest = read {
+    fun captureMediaBytes(cache: com.bilipai.desktop.player.cache.DesktopMediaByteCache,
+        network: () -> com.bilipai.desktop.player.cache.DesktopCdnNetworkObservation): DesktopOriginalVideoByteCacheRequest = read {
         val namespace = repository.capturePlaybackCachePartition(receipt, ::entryCurrent)
         DesktopOriginalVideoByteCacheRequest(cache,
             com.bilipai.desktop.player.cache.DesktopMediaByteRepositoryAdmission(repository, authorization,
-                namespace, requestJob, ::entryCurrent, commitIfEntryCurrent), ::assertCurrent)
+                namespace, requestJob, ::entryCurrent, commitIfEntryCurrent, network), ::assertCurrent)
     }
 
     companion object {

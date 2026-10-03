@@ -1,6 +1,6 @@
 package com.bilipai.desktop.danmaku
 
-import com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData
+import com.android.purebilibili.danmaku.parser.AdvancedDanmakuData
 import com.android.purebilibili.feature.video.danmaku.DanmakuTypeFilterSettings
 import com.android.purebilibili.feature.video.danmaku.shouldBlockDanmakuByRules
 import com.android.purebilibili.feature.video.danmaku.shouldDisplayAdvancedDanmaku

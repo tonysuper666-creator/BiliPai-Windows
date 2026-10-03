@@ -36,6 +36,7 @@ internal interface DesktopProfileAccountPort {
     fun currentMid(): Long?
     fun hasSession(): Boolean
     fun accessTokenCredentials(): Pair<String?, String>
+    fun qrAuthorizationSession(): com.android.purebilibili.feature.login.QrAuthorizationSession
     suspend fun saveMid(mid: Long)
     suspend fun saveVipStatus(vip: Boolean)
     suspend fun upsertCurrentAccount(nav: NavData?)
@@ -94,6 +95,8 @@ internal interface DesktopProfilePlatform {
     fun reportWallpaperPreviewFailure(failure: Throwable)
     fun acquireSystemBars(control: Boolean, lightStatusBars: Boolean): AutoCloseable
     fun pickMedia(onSelected: (String?) -> Unit)
+    fun pickQrImage(onSelected: (String?) -> Unit)
+    suspend fun readQrImage(uri: String): java.awt.image.BufferedImage
     fun feedback(message: String)
     fun copyText(label: String, text: String)
     suspend fun importWallpaperMedia(uri: String, directory: File): File
@@ -131,6 +134,7 @@ internal class DesktopProfileEnvironment(
     val dynamicApi: DynamicApi,
     val searchApi: SearchApi,
     val splash: DesktopOriginalProfileSplashProtocol,
+    val authorizationApi: PassportApi,
     val favorite: DesktopOriginalFavoriteRepository,
     val bangumi: DesktopOriginalFavoritePgc,
     val csrf: () -> String?,
@@ -200,6 +204,56 @@ internal class DesktopProfileNavigation(
     val onBangumiClick: (Long, Long) -> Unit,
     val onBangumiMoreClick: () -> Unit,
 )
+
+/** Original album scanner input over this same retained Profile window/file actor.
+ * No scanned URL is opened, no account or file state is stored, and disposal cancels its child. */
+@Composable internal fun DesktopProfileQrScanner(
+    onCode: (String) -> Unit, onError: (String) -> Unit,
+    singleShot: Boolean, acceptAnyQr: Boolean, modifier: Modifier = Modifier,
+) {
+    val environment = LocalDesktopProfileEnvironment.current
+    val latestCode by rememberUpdatedState(onCode)
+    val latestError by rememberUpdatedState(onError)
+    val active = remember(environment) { java.util.concurrent.atomic.AtomicBoolean(true) }
+    var child by remember(environment) { mutableStateOf<Job?>(null) }
+    var busy by remember(environment) { mutableStateOf(false) }
+    var accepted by remember(environment) { mutableStateOf(false) }
+    DisposableEffect(environment) {
+        onDispose { active.set(false); child?.cancel(); child = null }
+    }
+    com.android.purebilibili.core.ui.components.AppButton(
+        enabled = !busy && !(singleShot && accepted), modifier = modifier,
+        onClick = {
+            environment.ensureOwned()
+            environment.platform.pickQrImage { uri ->
+                if (uri != null && active.get() && environment.owns()) {
+                    child?.cancel()
+                    child = environment.launchOwned(Dispatchers.IO) {
+                        val caller = currentCoroutineContext()[Job] ?: error("Actual scanner caller required")
+                        try {
+                            environment.publishCallback { caller.ensureActive(); if (active.get()) busy = true }
+                            val image = environment.platform.readQrImage(uri)
+                            val code = try { com.android.purebilibili.feature.login.BiliPaiQrDecoder.decodeBitmap(image, acceptAnyQr) }
+                                finally { image.flush() }
+                            environment.publishCallback {
+                                caller.ensureActive()
+                                if (active.get()) {
+                                    if (code == null) latestError("未能识别二维码，请选择完整清晰的二维码图片")
+                                    else { accepted = singleShot; latestCode(code) }
+                                }
+                            }
+                        } catch (cancelled: CancellationException) { throw cancelled }
+                        catch (_: Exception) {
+                            environment.publishCallback { caller.ensureActive(); if (active.get()) latestError("二维码图片无法读取或识别，请重新选择") }
+                        } finally {
+                            if (environment.owns()) environment.commit { if (active.get()) busy = false }
+                        }
+                    }
+                }
+            }
+        },
+    ) { com.android.purebilibili.core.ui.components.AppText(if (busy) "正在识别…" else "选择二维码图片") }
+}
 
 internal class DesktopOriginalProfileBinding(val environment: DesktopProfileEnvironment) {
     val viewModel = ProfileViewModel(environment)

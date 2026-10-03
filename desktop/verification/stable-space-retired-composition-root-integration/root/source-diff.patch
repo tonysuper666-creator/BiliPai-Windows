@@ -1,0 +1,26 @@
+--- a/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt
++++ b/desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt
+@@ -34,6 +34,14 @@
+                     {owns()&&routes.containsEntry(key)},{owns()&&routes.currentKey==key},gate::commit,
+                     routes.root.environment.feedback,transport))
+             }
++        }
++    }
++    /** Navigation animations may recompose an outgoing physical entry after
++     * it has been removed. Such a view cannot create/revive a retained owner. */
++    fun entryIfRetained(key:BiliPaiNavKey):DesktopOriginalSpacePageEntry? = synchronized(lock) {
++        if(!owns()||!routes.containsEntry(key))return@synchronized null
++        try { entry(key) } catch(cancelled:CancellationException) {
++            if(!owns()||!routes.containsEntry(key))null else throw cancelled
+         }
+     }
+     fun prune() {
+@@ -84,7 +92,7 @@
+     backToTopPreferences:DesktopFavoritePreferences,
+ ) {
+     val routes=pages.routes
+-    val entry=pages.entry(key)
++    val entry=pages.entryIfRetained(key)?:return
+     val environment=entry.environment
+     val comments=LocalDesktopOriginalCommentRootOwner.current
+     val session=checkNotNull(LocalDesktopDynamicCardSession.current)

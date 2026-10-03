@@ -2,7 +2,7 @@ package com.bilipai.desktop.danmaku
 
 import com.android.purebilibili.data.repository.resolveDanmakuSegmentCount
 import com.android.purebilibili.feature.video.danmaku.CommandDanmakuItem
-import com.android.purebilibili.feature.video.danmaku.DanmakuProto
+import com.android.purebilibili.danmaku.parser.DanmakuProto
 import com.android.purebilibili.feature.video.danmaku.buildCommandDanmakuItem
 import com.android.purebilibili.feature.video.danmaku.segmentWindowForPosition
 import kotlinx.coroutines.CancellationException

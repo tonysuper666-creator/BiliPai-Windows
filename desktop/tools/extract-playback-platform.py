@@ -1,5 +1,6 @@
 """Preserve upstream recovery policy with five verified Media3 error constants."""
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 import argparse
 import hashlib
 import json
@@ -9,7 +10,7 @@ SOURCE = "app/src/main/java/com/android/purebilibili/feature/video/state/PlayerE
 SOURCES = {SOURCE: "extracted"}
 
 def read(repo: Path, path: str) -> str:
-    return (repo / path).read_text(encoding="utf-8").replace("\r\n", "\n")
+    return (_desktop_canonical_source(repo, path)).read_text(encoding="utf-8").replace("\r\n", "\n")
 
 def generate(repo: Path, output: Path) -> None:
     source = read(repo, SOURCE)

@@ -1,32 +1,57 @@
 package com.android.purebilibili.feature.video.ui.overlay
 
-import androidx.compose.ui.graphics.Color
-import com.android.purebilibili.feature.video.danmaku.CommandDanmakuType
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class CommandDanmakuOverlayPolicyTest {
 
     @Test
-    fun `follow and triple command does not unfollow existing followers`() {
-        val action = resolveAttentionCommandClickAction(attentionType = 2, isFollowing = true)
+    fun `triple action never implicitly follows the author`() {
+        for (isFollowing in listOf(false, true)) {
+            val action = resolveAttentionCommandClickAction(
+                attentionType = 2,
+                action = AttentionCommandAction.TRIPLE,
+                isFollowing = isFollowing,
+            )
+
+            assertEquals(false, action.shouldFollow)
+            assertEquals(true, action.shouldTriple)
+        }
+    }
+
+    @Test
+    fun `follow action is independent and ignores existing followers`() {
+        for (isFollowing in listOf(false, true)) {
+            val action = resolveAttentionCommandClickAction(
+                attentionType = 2,
+                action = AttentionCommandAction.FOLLOW,
+                isFollowing = isFollowing,
+            )
+
+            assertEquals(!isFollowing, action.shouldFollow)
+            assertEquals(false, action.shouldTriple)
+        }
+    }
+
+    @Test
+    fun `follow only command cannot trigger triple action`() {
+        val action = resolveAttentionCommandClickAction(
+            attentionType = 0,
+            action = AttentionCommandAction.TRIPLE,
+            isFollowing = false,
+        )
 
         assertEquals(false, action.shouldFollow)
-        assertEquals(true, action.shouldTriple)
+        assertEquals(false, action.shouldTriple)
     }
 
     @Test
-    fun `follow and triple command follows first when not following`() {
-        val action = resolveAttentionCommandClickAction(attentionType = 2, isFollowing = false)
-
-        assertEquals(true, action.shouldFollow)
-        assertEquals(true, action.shouldTriple)
-    }
-
-    @Test
-    fun `follow only command ignores already followed author`() {
-        val action = resolveAttentionCommandClickAction(attentionType = 0, isFollowing = true)
+    fun `triple only command cannot trigger follow action`() {
+        val action = resolveAttentionCommandClickAction(
+            attentionType = 1,
+            action = AttentionCommandAction.FOLLOW,
+            isFollowing = false,
+        )
 
         assertEquals(false, action.shouldFollow)
         assertEquals(false, action.shouldTriple)
@@ -52,11 +77,5 @@ class CommandDanmakuOverlayPolicyTest {
         assertEquals(192, resolveCommandDanmakuVerticalOffsetPx(320, 128, 0.8f))
         assertEquals(0, resolveCommandDanmakuVerticalOffsetPx(320, 400, 0.8f))
         assertEquals(0, resolveCommandDanmakuVerticalOffsetPx(320, 128, -0.2f))
-    }
-
-    @Test
-    fun `attention command container is transparent while info commands keep readable scrim`() {
-        assertEquals(Color.Transparent, resolveCommandDanmakuContainerColor(CommandDanmakuType.ATTENTION))
-        assertTrue(resolveCommandDanmakuContainerColor(CommandDanmakuType.UP).alpha > 0.5f)
     }
 }

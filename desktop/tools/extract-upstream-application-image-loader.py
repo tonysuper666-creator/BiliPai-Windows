@@ -1,16 +1,17 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re,subprocess
 arguments=argparse.ArgumentParser();arguments.add_argument('--repo',required=True);arguments.add_argument('--output',required=True);args=arguments.parse_args()
-REPO=Path(args.repo);LANE=Path(args.output);TAG='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+REPO=Path(args.repo);LANE=Path(args.output);TAG='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 LANE.mkdir(parents=True,exist_ok=True)
-SOURCE_PINS={'app/src/main/java/com/android/purebilibili/app/PureApplication.kt': '0fea2f786cb09c6d3abb856e23eba25bfdc73573f37d746d247fa3dd9f9721b4', 'app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt': 'b332821a90253f2cfee7dbdd1845d4708dad8e584878ac53da4f4dccdc9f2582', 'app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt': 'd4a95f3372db9b4434f21cdeeed67f96eac0ab456379d280e040c527b8452d88'}
+SOURCE_PINS={'app/src/main/java/com/android/purebilibili/app/PureApplication.kt': '70c522671e5e23941d8179caa905d263c52017e9ab2a06be29598cd7fceb6607', 'app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt': 'b332821a90253f2cfee7dbdd1845d4708dad8e584878ac53da4f4dccdc9f2582', 'app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt': 'd4a95f3372db9b4434f21cdeeed67f96eac0ab456379d280e040c527b8452d88'}
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def wide(p):
  s=str(Path(p).absolute());return Path(s if s.startswith('\\\\?\\')else'\\\\?\\'+s)
 spec=importlib.util.spec_from_file_location('parser',REPO/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
 rows=[];deltas=[];sources={}
 for name,path in [('application','app/src/main/java/com/android/purebilibili/app/PureApplication.kt'),('runtime','app/src/main/java/com/android/purebilibili/app/PureApplicationRuntimeConfig.kt'),('background','app/src/main/java/com/android/purebilibili/core/lifecycle/BackgroundMemoryTrimPolicy.kt')]:
- raw=(REPO/path).read_bytes().replace(b'\r\n',b'\n');blob=subprocess.check_output(['git','show',TAG+':'+path],cwd=REPO).replace(b'\r\n',b'\n');assert raw==blob
+ raw=(_desktop_canonical_source(REPO, path)).read_bytes().replace(b'\r\n',b'\n');blob=subprocess.check_output(['git','show',TAG+':'+path],cwd=REPO).replace(b'\r\n',b'\n');assert raw==blob
  assert sha(blob)==SOURCE_PINS[path];sources[name]=blob.decode()
  rows.append(dict(path=path,sha256=sha(blob),mode='policy-extract',features=['original-application-image-loader']))
 def function_block(source,name):
@@ -21,7 +22,7 @@ def function_block(source,name):
 body=function_block(sources['application'],'newImageLoader')
 def replace(before,after):
  global body
- assert body.count(before)==1,before;body=body.replace(before,after,1);deltas.append(dict(before=before,after=after))
+ assert body.count(before)==1,before;index=body.index(before);body=body.replace(before,after,1);deltas.append(dict(index=index,before=before,after=after))
 replace('override fun newImageLoader(context: android.content.Context): ImageLoader {','internal fun newImageLoader(context: coil3.PlatformContext, ownedCallFactory: okhttp3.Call.Factory, cacheDir: java.io.File): ImageLoader {')
 replace('PureApplicationRuntimeConfig.resolveImageMemoryCachePercent()','resolveOriginalImageMemoryCachePercent()')
 replace('ImageLoader.Builder(this)','ImageLoader.Builder(context)')
@@ -38,6 +39,11 @@ replace('''            //  允许适用图片使用 RGB_565，降低内存占用
 ''','''            // RGB_565 is an Android bitmap allocation hint; Skia owns Windows pixels.
 ''')
 replace('''            .also { _imageLoader = it }  // 保存引用''','''            // The one Windows application owner retains this returned exact loader.''')
+inverse=body
+for delta in reversed(deltas):
+ index=delta['index'];after=delta['after'];assert inverse[index:index+len(after)]==after
+ inverse=inverse[:index]+delta['before']+inverse[index+len(after):]
+assert inverse==function_block(sources['application'],'newImageLoader')
 decl='fun resolveImageMemoryCachePercent(): Double = 0.10';assert sources['runtime'].count(decl)==1
 imports='''package com.android.purebilibili.app
 import coil3.ImageLoader

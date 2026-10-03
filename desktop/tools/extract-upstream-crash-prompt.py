@@ -1,13 +1,14 @@
 """Exact MainActivity crash-prompt policy/dialog; only Android side effects become ports."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,sys
 sys.dont_write_bytecode=True
 SOURCE='app/src/main/java/com/android/purebilibili/MainActivity.kt'
-PIN='ddfdafed5f2eb7ad153894dd253e3cf079cfae4e5d670a8365ba6e9fb6b4d33a'
+PIN='fb836e7cd9a798e05230b6b92d813d99464ea170d863a1cf091a8ebbbef41ada'
 def load(p,name):
     s=importlib.util.spec_from_file_location(name,p);m=importlib.util.module_from_spec(s);s.loader.exec_module(m);return m
 def generate(repo,out):
-    text=(repo/SOURCE).read_text(encoding='utf-8').replace('\r\n','\n')
+    text=(_desktop_canonical_source(repo, SOURCE)).read_text(encoding='utf-8').replace('\r\n','\n')
     assert hashlib.sha256(text.encode()).hexdigest()==PIN,'Fixed original MainActivity changed'
     host=load(repo/'desktop/tools/extract-upstream-plugins.py','crashhost');media=host.media_extractor(repo);parser=media.parser_for(repo)
     start=text.index('internal enum class CrashLogPromptAction {')

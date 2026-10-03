@@ -11,6 +11,7 @@ import android.os.Build
 import android.provider.MediaStore
 import com.android.purebilibili.feature.dynamic.components.resolveDefaultImageMediaStoreRelativePath
 import com.android.purebilibili.feature.dynamic.components.saveBitmapToCustomImageSaveDirectory
+import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.data.model.response.ReplyItem
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
@@ -36,7 +37,11 @@ internal fun buildReplyCommentImageSpec(
     val url = resolveReplyCommentShareUrl(item)
     val likeText = item.like.takeIf { it > 0 }?.let { "${it}赞" }
     val metadata = listOfNotNull(
-        formatTime(item.ctime).takeIf { item.ctime > 0L },
+        //  [PiliPlus 对齐] 分享图 metadata 固定秒级绝对时间，不随详细时间开关变化。
+        FormatUtils.formatPrecisePublishTime(
+            timestampSeconds = item.ctime,
+            pattern = "yyyy-MM-dd HH:mm:ss"
+        ).takeIf { it.isNotBlank() },
         likeText
     ).joinToString(" · ")
     val generatedAt = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
@@ -56,7 +61,9 @@ suspend fun saveReplyCommentImageToGallery(
     item: ReplyItem
 ): Boolean = withContext(Dispatchers.IO) {
     runCatching {
-        val spec = buildReplyCommentImageSpec(item)
+        val spec = buildReplyCommentImageSpec(
+            item = item
+        )
         val bitmap = renderReplyCommentImage(spec)
         savePngBitmapToGallery(
             context = context,

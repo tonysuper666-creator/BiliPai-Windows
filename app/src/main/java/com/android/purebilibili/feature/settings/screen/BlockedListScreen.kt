@@ -1,4 +1,5 @@
 package com.android.purebilibili.feature.settings
+import com.android.purebilibili.core.ui.animation.jiggleOnDissolve
 import com.android.purebilibili.core.ui.components.AppText
 
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -58,6 +59,8 @@ fun BlockedListScreen(
     var syncingBlockedList by remember { mutableStateOf(false) }
     var refreshingProfiles by remember { mutableStateOf(false) }
     var blockedListSyncMessage by remember { mutableStateOf<String?>(null) }
+    // 取消关注时的溶解动画集合：onUnblock 回调在提升前声明，状态必须与之同层
+    var dissolvingBlockedMids by remember { mutableStateOf(setOf<Long>()) }
     val exportJsonLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/json")
     ) { uri ->
@@ -147,7 +150,15 @@ fun BlockedListScreen(
                     blockedListSyncMessage = repository.importBlockedUps(items).message
                 }
             },
+            dissolvingBlockedMids = dissolvingBlockedMids,
+            onDissolveEnd = { mid ->
+                dissolvingBlockedMids = dissolvingBlockedMids - mid
+            },
             onUnblock = { mid ->
+                // Starts the dissolve; actual removal lands in onUnblockConfirmed.
+                dissolvingBlockedMids = dissolvingBlockedMids + mid
+            },
+            onUnblockConfirmed = { mid ->
                 scope.launch {
                     blockedListSyncMessage = repository.unblockUpWithBilibiliSync(mid).message
                 }
@@ -169,6 +180,9 @@ fun BlockedListContent(
     onImportBlockedListJsonRequest: (() -> Unit)? = null,
     onImportBlockedList: ((String) -> Unit)? = null,
     onUnblock: (Long) -> Unit,
+    onUnblockConfirmed: (Long) -> Unit = {},
+    dissolvingBlockedMids: Set<Long> = emptySet(),
+    onDissolveEnd: (Long) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var showImportDialog by remember { mutableStateOf(false) }
@@ -267,19 +281,34 @@ fun BlockedListContent(
             }
             
             items(blockedUps, key = { it.mid }) { up ->
-                BlockedUpItem(
-                    mid = up.mid,
-                    name = up.name,
-                    face = up.face,
-                    level = up.level,
-                    sign = up.sign,
-                    vipLabel = up.vipLabel,
-                    officialTitle = up.officialTitle,
-                    follower = up.follower,
-                    archiveCount = up.archiveCount,
-                    isDeleted = up.isDeleted,
-                    onUnblock = { onUnblock(up.mid) }
-                )
+                val isDissolving = up.mid in dissolvingBlockedMids
+                com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(
+                    isDissolving = isDissolving,
+                    onDissolveComplete = {
+                        onDissolveEnd(up.mid)
+                        onUnblockConfirmed(up.mid)
+                    },
+                    cardId = "blocked_${up.mid}",
+                    preset = com.android.purebilibili.core.ui.animation.DissolveAnimationPreset.TELEGRAM_FAST,
+                    modifier = Modifier.jiggleOnDissolve(
+                        cardId = "blocked_${up.mid}",
+                        isCurrentCardDissolving = isDissolving,
+                    ),
+                ) {
+                    BlockedUpItem(
+                        mid = up.mid,
+                        name = up.name,
+                        face = up.face,
+                        level = up.level,
+                        sign = up.sign,
+                        vipLabel = up.vipLabel,
+                        officialTitle = up.officialTitle,
+                        follower = up.follower,
+                        archiveCount = up.archiveCount,
+                        isDeleted = up.isDeleted,
+                        onUnblock = { onUnblock(up.mid) }
+                    )
+                }
             }
         }
     }

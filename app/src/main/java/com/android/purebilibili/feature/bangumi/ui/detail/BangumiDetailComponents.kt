@@ -40,7 +40,7 @@ import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.data.model.response.BangumiDetail
 import com.android.purebilibili.data.model.response.BangumiEpisode
 import com.android.purebilibili.data.model.response.SeasonInfo
-import com.android.purebilibili.feature.video.controller.PlaybackProgressManager
+import com.android.purebilibili.core.player.PlaybackProgressManager
 
 /** 每集本地观看进度（0..1）；无 bvid / 无时长 / 无观看记录时返回 null。 */
 @Composable

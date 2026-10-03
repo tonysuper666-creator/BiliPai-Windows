@@ -1,3 +1,4 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import importlib.util,sys,re,json,hashlib,textwrap,argparse
 sys.dont_write_bytecode=True
@@ -20,7 +21,7 @@ def write(path,value):
     wide(path.parent).mkdir(parents=True,exist_ok=True);wide(path).write_text(value,encoding='utf-8',newline='\n')
 parser=load('full_parser',MAIN/'desktop/tools/sync-upstream.py')
 media=load('full_method',MAIN/'desktop/tools/extract-upstream-media.py')
-def source(path):return (REPO/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def source(path):return (_desktop_canonical_source(REPO, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 prefix='app/src/main/java/com/android/purebilibili/'
 bottomPath=prefix+'feature/settings/screen/BottomBarSettingsScreen.kt'
 managerPath=prefix+'core/store/SettingsManager.kt'
@@ -90,7 +91,7 @@ animationMethods=['getUiEntranceAnimationEnabled','setUiEntranceAnimationEnabled
     'getRelatedVideoTransitionEnabled','setRelatedVideoTransitionEnabled','getLiveSurfaceCardTransitionEnabled','setLiveSurfaceCardTransitionEnabled',
     'getVideoTransitionRealtimeBlurEnabled','setVideoTransitionRealtimeBlurEnabled','getFullScreenSwipeBackEnabled','setFullScreenSwipeBackEnabled',
     'setPredictiveBackEnabled','setPredictiveBackAnimationStyle','setPredictiveBackExitDirection','setMiuixTransitionBlurEnabled',
-    'setMiuixPredictiveBackMaxProgressPercent','setVideoSharedReturnGestureFollowEnabled','setVideoSharedTransitionSpeed','setVideoSharedTransitionCustomDurationMillis',
+    'setMiuixPredictiveBackMaxProgressPercent','setVideoSharedReturnGestureFollowEnabled','setVideoReturnContentFollowProgressEnabled','setVideoSharedReturnGestureTranslationEnabled','setVideoSharedTransitionSpeed','setVideoSharedTransitionCustomDurationMillis',
     'getHeaderBlurEnabled','setHeaderBlurEnabled','getProgressiveTopBlurEnabled','setProgressiveTopBlurEnabled',
     'getProgressiveTopFadeEnabled','setProgressiveTopFadeEnabled','getBottomBarBlurEnabled','setBottomBarBlurEnabled','getBlurIntensity','setBlurIntensity']
 names=sorted(set(names+animationMethods))

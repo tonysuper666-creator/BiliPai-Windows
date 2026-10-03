@@ -91,7 +91,6 @@ internal class LiveDanmakuRenderer(private val scope: CoroutineScope) {
             scheduler = DanmakuScheduler(entries.mapNotNull { it.rendered?.comment }, safeSettings,liveAdmission=true)
             lastSettings = safeSettings; lastRebuild = now; dirty = false
         }
-        val scale=config.viewportScale
         val rowHeight=config.lineHeightPx.toInt().coerceAtLeast(1)
         val indexed = entries.associateBy { it.comment.id }
         fun font(entry: Entry?): Font {

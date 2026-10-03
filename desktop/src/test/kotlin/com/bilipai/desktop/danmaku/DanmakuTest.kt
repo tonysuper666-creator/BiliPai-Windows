@@ -144,7 +144,7 @@ private fun DanmakuScheduler.frame(time:Double,width:Int,height:Int,rowHeight:In
     }
     val settings=currentSettings
     val config=settings.originalConfig(platform).resolveRenderConfig(
-        com.android.purebilibili.feature.video.danmaku.DanmakuViewport(width,height,1f,1f)
+        com.android.purebilibili.feature.video.danmaku.DanmakuViewport(width,height,1f)
     ).copy(lineHeightPx=rowHeight.toFloat(),lineMarginPx=0f,
         lineCount=(height*settings.displayAreaRatio/rowHeight).toInt().coerceAtLeast(0))
     return frame(time,width,height,config) {DesktopDanmakuTextMetrics(measure(it),rowHeight-6.0)}

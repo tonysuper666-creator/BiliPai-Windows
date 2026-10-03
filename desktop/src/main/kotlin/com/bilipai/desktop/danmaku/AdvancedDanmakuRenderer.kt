@@ -1,7 +1,7 @@
 package com.bilipai.desktop.danmaku
 
-import com.android.purebilibili.feature.video.danmaku.AdvancedDanmakuData
-import com.android.purebilibili.feature.video.danmaku.BasPathPoint
+import com.android.purebilibili.danmaku.parser.AdvancedDanmakuData
+import com.android.purebilibili.danmaku.parser.BasPathPoint
 import java.awt.AlphaComposite
 import java.awt.BasicStroke
 import java.awt.Color
@@ -50,12 +50,12 @@ class AdvancedDanmakuRenderer(comments: List<AdvancedDanmakuData>) {
         return result
     }
 
-    fun paint(context: Graphics2D, timeMs: Long, width: Int, height: Int, viewportScale: Float, settings: DanmakuSettings) {
+    fun paint(context: Graphics2D, timeMs: Long, width: Int, height: Int, settings: DanmakuSettings) {
         frame(timeMs, settings).forEach { item ->
             val drawing = context.create() as Graphics2D
             try {
                 drawing.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, item.alpha)
-                val size = (item.data.fontSize * settings.fontScale * viewportScale).toInt().coerceIn(8, 120)
+                val size = (item.data.fontSize * settings.fontScale).toInt().coerceIn(8, 120)
                 val font = Font("Microsoft YaHei UI", if (settings.fontWeight >= 5) Font.BOLD else Font.PLAIN, size)
                 val shape = font.createGlyphVector(drawing.fontRenderContext, item.text)
                     .getOutline(0f, font.getLineMetrics(item.text, drawing.fontRenderContext).ascent)
@@ -65,7 +65,7 @@ class AdvancedDanmakuRenderer(comments: List<AdvancedDanmakuData>) {
                 drawing.scale(item.pulseScale.toDouble(), item.pulseScale.toDouble())
                 if (settings.strokeEnabled && !item.data.noStroke && settings.strokeWidth > 0f) {
                     drawing.color = Color.BLACK
-                    drawing.stroke = BasicStroke(settings.strokeWidth * viewportScale, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)
+                    drawing.stroke = BasicStroke(settings.strokeWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)
                     drawing.draw(shape)
                 }
                 drawing.color = Color(item.data.color and 0xffffff)

@@ -167,10 +167,19 @@ fun main(args: Array<String>) {
                 onDispose { diagnosticWindow.compareAndSet(window, null) }
             }
             window.minimumSize = Dimension(960, 680)
+            var rootFrameOwner by remember { mutableStateOf<(() -> Boolean)?>(null) }
+            val startupHealthWritten = remember { java.util.concurrent.atomic.AtomicBoolean() }
             LaunchedEffect(Unit) {
                 withFrameNanos { }
                 diagnostics?.recordStartupStage("window_content_mounted")
-                if (healthPath != null && healthToken != null && playerResult.isSuccess) {
+            }
+            LaunchedEffect(rootFrameOwner) {
+                val ownsRoot = rootFrameOwner ?: return@LaunchedEffect
+                // The real active Root page has composed and drawn; await its next frame.
+                withFrameNanos { }
+                if (closing.get() || !ownsRoot()) return@LaunchedEffect
+                diagnostics?.recordStartupStage("original_root_content_mounted")
+                if (healthPath != null && healthToken != null && playerResult.isSuccess && !startupHealthWritten.get()) {
                     runCatching {
                         withContext(Dispatchers.IO) {
                             val root = UpdateStorage.verifiedRoot(java.nio.file.Path.of(
@@ -190,10 +199,12 @@ fun main(args: Array<String>) {
                                     java.nio.file.Files.isDirectory(directory, java.nio.file.LinkOption.NOFOLLOW_LINKS))
                             }
                             MpvStartupProbe.verify()
+                            check(!closing.get() && ownsRoot()) { "Application Root retired before startup verification" }
                             java.nio.file.Files.writeString(marker.resolveSibling("startup-version.txt"), DesktopUpdater.packagedVersion(),
                                 java.nio.file.StandardOpenOption.CREATE_NEW, java.nio.file.StandardOpenOption.WRITE)
                             java.nio.file.Files.writeString(marker, healthToken, java.nio.file.StandardOpenOption.CREATE_NEW,
                                 java.nio.file.StandardOpenOption.WRITE)
+                            startupHealthWritten.set(true)
                         }
                     }.onFailure { System.err.println("Update startup verification failed: ${it.message}") }
                 }
@@ -210,7 +221,10 @@ fun main(args: Array<String>) {
                 diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError,
                 danmakuPresentation = danmakuPresentation,
                 isFullscreen = { windowState.placement == WindowPlacement.Fullscreen },
-                setFullscreen = fullscreenControl::setFullscreen)
+                setFullscreen = fullscreenControl::setFullscreen,
+                onRootContentFrame = { owner ->
+                    if (!closing.get() && owner()) rootFrameOwner = owner
+                })
             }
             restartFailure?.let { message ->
                 androidx.compose.material3.AlertDialog(onDismissRequest = { restartFailure = null },

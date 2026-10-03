@@ -1,0 +1,91 @@
+STAGE await reference: actual Shell
+STAGE await condition: published actual Root
+STAGE await reference: actual Window route provider
+STAGE await reference: actual remembered full message Root
+PASS Actual message Root borrows same repository and guest gate
+PASS Actual typed message route accepted: Inbox
+STAGE await condition: actual guest message leaf: Inbox
+PASS Guest Inbox renders same actual Root login gate
+PASS Guest Inbox creates no authenticated message owner
+STAGE await condition: original guest Login button callback
+PASS Guest Inbox Canvas button pushes actual typed Login
+PASS Actual Login back accepted: Inbox
+STAGE await condition: back to actual retained guest leaf
+PASS Back retains exact message Root with no guest VM
+PASS Actual typed message route accepted: ReplyMe
+STAGE await condition: actual guest message leaf: ReplyMe
+PASS Guest ReplyMe renders same actual Root login gate
+PASS Guest ReplyMe creates no authenticated message owner
+STAGE await condition: original guest Login button callback
+PASS Guest ReplyMe Canvas button pushes actual typed Login
+PASS Actual Login back accepted: ReplyMe
+STAGE await condition: back to actual retained guest leaf
+PASS Back retains exact message Root with no guest VM
+PASS Actual typed message route accepted: AtMe
+STAGE await condition: actual guest message leaf: AtMe
+PASS Guest AtMe renders same actual Root login gate
+PASS Guest AtMe creates no authenticated message owner
+STAGE await condition: original guest Login button callback
+PASS Guest AtMe Canvas button pushes actual typed Login
+PASS Actual Login back accepted: AtMe
+STAGE await condition: back to actual retained guest leaf
+PASS Back retains exact message Root with no guest VM
+PASS Actual typed message route accepted: LikeMe
+STAGE await condition: actual guest message leaf: LikeMe
+PASS Guest LikeMe renders same actual Root login gate
+PASS Guest LikeMe creates no authenticated message owner
+STAGE await condition: original guest Login button callback
+PASS Guest LikeMe Canvas button pushes actual typed Login
+PASS Actual Login back accepted: LikeMe
+STAGE await condition: back to actual retained guest leaf
+PASS Back retains exact message Root with no guest VM
+PASS Actual typed message route accepted: SystemNotice
+STAGE await condition: actual guest message leaf: SystemNotice
+PASS Guest SystemNotice renders same actual Root login gate
+PASS Guest SystemNotice creates no authenticated message owner
+STAGE await condition: original guest Login button callback
+PASS Guest SystemNotice Canvas button pushes actual typed Login
+PASS Actual Login back accepted: SystemNotice
+STAGE await condition: back to actual retained guest leaf
+PASS Back retains exact message Root with no guest VM
+PASS Actual typed message route accepted: Chat(talkerId=123456, sessionType=1, userName=Fixture peer)
+STAGE await condition: actual guest message leaf: Chat(talkerId=123456, sessionType=1, userName=Fixture peer)
+PASS Guest Chat(talkerId=123456, sessionType=1, userName=Fixture peer) renders same actual Root login gate
+PASS Guest Chat(talkerId=123456, sessionType=1, userName=Fixture peer) creates no authenticated message owner
+STAGE await condition: original guest Login button callback
+PASS Guest Chat(talkerId=123456, sessionType=1, userName=Fixture peer) Canvas button pushes actual typed Login
+PASS Actual Login back accepted: Chat(talkerId=123456, sessionType=1, userName=Fixture peer)
+STAGE await condition: back to actual retained guest leaf
+PASS Back retains exact message Root with no guest VM
+PASS Actual settings cover accepted
+STAGE await condition: actual settings cover
+PASS Cover retains all six typed guest entries and unique message Root
+PASS Actual settings back accepted
+STAGE await condition: actual retained message return
+PASS Pop actual message entry: Chat(talkerId=123456, sessionType=1, userName=Fixture peer)
+STAGE await condition: actual removed guest route pruned
+PASS Popped guest key has no retained or authenticated owner
+PASS Pop actual message entry: SystemNotice
+STAGE await condition: actual removed guest route pruned
+PASS Popped guest key has no retained or authenticated owner
+PASS Pop actual message entry: LikeMe
+STAGE await condition: actual removed guest route pruned
+PASS Popped guest key has no retained or authenticated owner
+PASS Pop actual message entry: AtMe
+STAGE await condition: actual removed guest route pruned
+PASS Popped guest key has no retained or authenticated owner
+PASS Pop actual message entry: ReplyMe
+STAGE await condition: actual removed guest route pruned
+PASS Popped guest key has no retained or authenticated owner
+PASS Pop actual message entry: Inbox
+STAGE await condition: actual removed guest route pruned
+PASS Popped guest key has no retained or authenticated owner
+STAGE await condition: actual guest epoch retires old message/window owner
+PASS Real isolated guest epoch invalidates same actual message Root
+PASS Prior guest Root refuses late route and Store admission
+STAGE await reference: actual fresh message Root
+STAGE await reference: actual fresh Window owner
+PASS Fresh actual Root accepts guest typed message
+STAGE await condition: fresh guest message UI
+PASS Fresh message owner is same repository and guest gated
+PASS Actual Root close retires prior and fresh message/window owners

@@ -1,4 +1,5 @@
 """Original enhancement output policy, MIT notice and settings UI platform boundary."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import json
 import re
@@ -9,7 +10,7 @@ BASE = 'app/src/main/java/com/android/purebilibili/'
 def generate(repo: Path, output: Path, selector, parser, write, substitute):
     files = []
     path = BASE + 'feature/anime4k/Anime4KOutputPolicy.kt'
-    original = (repo / path).read_text(encoding='utf-8').replace('\r\n', '\n')
+    original = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
     body = substitute(original, '@file:androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n\n', '')
     body = substitute(body, 'import android.app.ActivityManager\n', '')
     body = substitute(body, 'import android.content.Context\n', '')
@@ -24,7 +25,7 @@ def generate(repo: Path, output: Path, selector, parser, write, substitute):
     files.append(write(output, path, original, aliases, 'DesktopMedia3ColorTransfers.kt'))
 
     path = BASE + 'feature/anime4k/gl/Fsr1Shaders.kt'
-    original = (repo / path).read_text(encoding='utf-8').replace('\r\n', '\n')
+    original = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
     notice = re.search(r' \* Copyright \(c\) 2021 Advanced Micro Devices.*? \* THE SOFTWARE\.', original, re.S)
     if notice is None:
         raise ValueError('Original AMD MIT notice changed')
@@ -36,7 +37,7 @@ def generate(repo: Path, output: Path, selector, parser, write, substitute):
     files.append(write(output, path, original, body, 'DesktopFsrShaderLicense.kt'))
 
     path = BASE + 'feature/plugin/Anime4KPlugin.kt'
-    original = (repo / path).read_text(encoding='utf-8').replace('\r\n', '\n')
+    original = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
     selectable = substitute(original, 'override fun SettingsContent()', 'fun SettingsContent()')
     body = selector.function(selectable, 'SettingsContent', parser)
     body = substitute(body, 'fun SettingsContent()', 'fun DesktopVideoEnhancementSettingsContent(configuration: com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration)')
@@ -54,7 +55,7 @@ def generate(repo: Path, output: Path, selector, parser, write, substitute):
     header += '\nimport androidx.compose.runtime.collectAsState\n\n@Composable\n'
     files.append(write(output, path, original, header + body, 'DesktopVideoEnhancementSettingsContent.kt'))
     path = BASE + 'feature/video/ui/components/Anime4KSettingsUi.kt'
-    original = (repo / path).read_text(encoding='utf-8').replace('\r\n', '\n')
+    original = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
     body = substitute(original, '当前设备不支持 OpenGL ES 3.0', '当前原生渲染管线不可用')
     files.append(write(output, path, original, body))
     return files

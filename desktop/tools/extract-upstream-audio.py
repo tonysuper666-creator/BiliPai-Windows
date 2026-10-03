@@ -1,5 +1,6 @@
 """Keep the upstream JVM lyrics/library sources and extract their platform-neutral queue/loader code verbatim."""
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 
 import argparse
 import hashlib
@@ -24,11 +25,11 @@ SOURCES = {
     AUDIO + "library/ListenVideoLibraryDataSource.kt": "extracted",
     "app/src/main/java/com/android/purebilibili/feature/video/player/PlaylistManager.kt": "extracted",
     "app/src/main/java/com/android/purebilibili/feature/list/FavoriteCollectionPolicy.kt": "extracted",
-    "app/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt": "extracted",
+    'core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt': "extracted",
 }
 
 def read_source(repo: Path, path: str) -> str:
-    return (repo / path).read_text(encoding="utf-8").replace("\r\n", "\n")
+    return (_desktop_canonical_source(repo, path)).read_text(encoding="utf-8").replace("\r\n", "\n")
 
 def section(text: str, start: str, end: str) -> str:
     if text.count(start) != 1 or text.count(end) != 1:
@@ -44,6 +45,7 @@ def write(output: Path, relative: str, source: str, original: str, body: str) ->
     return file
 
 def generate(repo: Path, output: Path) -> list[Path]:
+    output = Path(str(output) if str(output).startswith("\\\\?\\") else "\\\\?\\" + str(output.absolute()))
     generated = []
     source = AUDIO + "viewmodel/MusicViewModel.kt"
     original = read_source(repo, source)
@@ -71,7 +73,7 @@ def generate(repo: Path, output: Path) -> list[Path]:
         return value
     tokens = module("audio_lyrics_tokens", repo / "desktop/tools/sync-upstream.py")
     selector = module("audio_lyrics_selection", repo / "desktop/tools/extract-appearance-platform.py")
-    assert hashlib.sha256(original.encode()).hexdigest() == "d9705a700bbe14722b79d9bb484d70da0afb97ae1c9df393e7a271e4a0173d0c"
+    assert hashlib.sha256(original.encode()).hexdigest() == 'e5f8b1a5375cd071ac7114fec95624ca64365cb808a16758292a816d9f88aa25'
     inner = original[original.index("internal class MusicViewModel : ViewModel() {") + len("internal class MusicViewModel : ViewModel() {"):original.rfind("}")]
     names = ["_uiState", "uiState", "lyricsRepository", "lyricsJob", "lyricsOffsetSaveJob",
              "lastLyricsCacheKey", "lastLyricsQuery", "lastBilibiliLyrics", "adjustLyricsOffset",
@@ -137,9 +139,9 @@ def generate(repo: Path, output: Path) -> list[Path]:
         raise ValueError("Upstream library loader gained a platform dependency")
     generated.append(write(output, "com/android/purebilibili/feature/audio/library/DesktopListenVideoLibraryLoader.kt", source, original, body))
 
-    source = "app/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt"
+    source = 'core-data/src/main/java/com/android/purebilibili/data/repository/FavoriteRepository.kt'
     original = read_source(repo, source)
-    error = section(original, "internal class FavoriteRequestException(", "private fun favoriteApiFailure(")
+    error = section(original, "class FavoriteRequestException(", "private fun favoriteApiFailure(")
     generated.append(write(output, "com/android/purebilibili/data/repository/DesktopFavoriteRequestException.kt", source,
         original, "package com.android.purebilibili.data.repository\n\n" + error))
 

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.*
@@ -27,25 +28,7 @@ class PlayerControlsUiRegressionTest {
 
     @Test
     fun castButton_respectsVisibilitySetting() {
-        setTopBar(showCastButton = false)
-        composeTestRule.onNodeWithContentDescription("投屏").assertDoesNotExist()
-
-        setTopBar(showCastButton = true)
-        composeTestRule.onNodeWithContentDescription("投屏").assertExists()
-    }
-
-    @Test
-    fun progressPlacement_movesProgressAcrossControlRow() {
-        setBottomBar(PlayerProgressPlacement.ABOVE_CONTROLS)
-        assertProgressIsAboveControls()
-
-        setBottomBar(PlayerProgressPlacement.BOTTOM_EDGE)
-        val progress = composeTestRule.onNodeWithTag("player_progress").fetchSemanticsNode().boundsInRoot
-        val controls = composeTestRule.onNodeWithTag("player_control_row").fetchSemanticsNode().boundsInRoot
-        assertTrue(progress.top >= controls.bottom)
-    }
-
-    private fun setTopBar(showCastButton: Boolean) {
+        val castVisible = mutableStateOf(false)
         composeTestRule.setContent {
             MaterialTheme {
                 TopControlBar(
@@ -53,14 +36,20 @@ class PlayerControlsUiRegressionTest {
                     isFullscreen = false,
                     showCurrentTime = false,
                     showInteractiveActions = false,
-                    showCastButton = showCastButton,
+                    showCastButton = castVisible.value,
                     onBack = {}
                 )
             }
         }
+        composeTestRule.onNodeWithContentDescription("投屏").assertDoesNotExist()
+
+        composeTestRule.runOnIdle { castVisible.value = true }
+        composeTestRule.onNodeWithContentDescription("投屏").assertExists()
     }
 
-    private fun setBottomBar(progressPlacement: PlayerProgressPlacement) {
+    @Test
+    fun progressPlacement_movesProgressAcrossControlRow() {
+        val placement = mutableStateOf(PlayerProgressPlacement.ABOVE_CONTROLS)
         composeTestRule.setContent {
             MaterialTheme {
                 Box(
@@ -72,7 +61,7 @@ class PlayerControlsUiRegressionTest {
                         isPlaying = true,
                         progress = PlayerProgress(current = 30_000, duration = 120_000),
                         isFullscreen = false,
-                        progressPlacement = progressPlacement,
+                        progressPlacement = placement.value,
                         onPlayPauseClick = {},
                         onSeek = {},
                         onToggleFullscreen = {}
@@ -80,6 +69,12 @@ class PlayerControlsUiRegressionTest {
                 }
             }
         }
+        assertProgressIsAboveControls()
+
+        composeTestRule.runOnIdle { placement.value = PlayerProgressPlacement.BOTTOM_EDGE }
+        val progress = composeTestRule.onNodeWithTag("player_progress").fetchSemanticsNode().boundsInRoot
+        val controls = composeTestRule.onNodeWithTag("player_control_row").fetchSemanticsNode().boundsInRoot
+        assertTrue(progress.top >= controls.bottom)
     }
 
     private fun assertProgressIsAboveControls() {

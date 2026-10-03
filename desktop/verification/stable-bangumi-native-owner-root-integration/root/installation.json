@@ -1,0 +1,175 @@
+{
+  "baseCommit": "464f5573331dfc7f7c2f1e47a5bf6bbac8cfd201",
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "beforeSha256Bytes": "ee32d8560212628ac434d3c4ac876362dcf312055149b5cd4985aaf93d7c543e",
+      "afterSha256Bytes": "613f8180f38cd861faddb046b06005f1e7a11585315d306e235911839ca0c311",
+      "afterSha256LF": "613f8180f38cd861faddb046b06005f1e7a11585315d306e235911839ca0c311"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "beforeSha256Bytes": "fe3efa7bd65b0dc682db49afffbf758fe07cb2302ac49c411dd40488099fd4e6",
+      "afterSha256Bytes": "c43b89c786ff9d372549a598366e9a375c8f017b6e2434f67ff4751b026d061a",
+      "afterSha256LF": "c43b89c786ff9d372549a598366e9a375c8f017b6e2434f67ff4751b026d061a"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "beforeSha256Bytes": "c7740b47fc03c0f331ae1b2376db52d0827f8a53da7f2726036c8c1f4be66066",
+      "afterSha256Bytes": "40ee9b47bade9d375a4b77f57410746ee0db6e0c0056c92deb67ddb2ad25a7a7",
+      "afterSha256LF": "40ee9b47bade9d375a4b77f57410746ee0db6e0c0056c92deb67ddb2ad25a7a7"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootFactory.kt",
+      "beforeSha256Bytes": "a091867b7afdd678b58af62c7947338f87af71b4624b01a0a8e831658e0e007f",
+      "afterSha256Bytes": "803a4380f85740a36924984ea2ddbb1e36e0520b2cf32b1b00845bbf643e0e24",
+      "afterSha256LF": "803a4380f85740a36924984ea2ddbb1e36e0520b2cf32b1b00845bbf643e0e24"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "beforeSha256Bytes": "a276c009c4871907a9cee0d3c0c05b54d1475cf78c0a8962fc41e7670ae9e7fa",
+      "afterSha256Bytes": "3f4d58d2d6f85a82595c0c5f3214860e34f185ad721409db4edc670bcb89574c",
+      "afterSha256LF": "3f4d58d2d6f85a82595c0c5f3214860e34f185ad721409db4edc670bcb89574c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+      "beforeSha256Bytes": "88e75afb8a4474c6e1e6902930a27c279398a4db16f21d8853e5aa516cdd7099",
+      "afterSha256Bytes": "70534aceed24cdca019ca08026bc8c05bc978a39a056bf3895f45415f380e2cc",
+      "afterSha256LF": "70534aceed24cdca019ca08026bc8c05bc978a39a056bf3895f45415f380e2cc"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "beforeSha256Bytes": "7c096afc98856b9be17a5e1c66813938a8f656cd6071208e01fd41458f7971ce",
+      "afterSha256Bytes": "5d0a1aa363ee1da9816a3c05268fcce28541bcf59dc4b9650006e078b68ecc0c",
+      "afterSha256LF": "5d0a1aa363ee1da9816a3c05268fcce28541bcf59dc4b9650006e078b68ecc0c"
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "beforeSha256Bytes": "29c36bca7b98bebedc56db733f87aff94ca6561afd96a25e8aea661b16fba7a7",
+      "afterSha256Bytes": "240a19c530b8db9acb1f6802b54a600821c04989a5fb3ede2ea2f4d45f963107",
+      "afterSha256LF": "240a19c530b8db9acb1f6802b54a600821c04989a5fb3ede2ea2f4d45f963107"
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "beforeSha256Bytes": "09334ae9b197ac5bdf1024d9efc23f4b4bbefa69c7ecfbe39f8bd6eedc2448a3",
+      "afterSha256Bytes": "58af65ee1a889ec615c860dc7639c1caba8be9edc67ac43670ed896d2860a9b0",
+      "afterSha256LF": "58af65ee1a889ec615c860dc7639c1caba8be9edc67ac43670ed896d2860a9b0"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativePresenter.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "d783742df9fde979b2918bfe371178c92cb7c01c66b84abf0909435fbbbdf589",
+      "afterSha256LF": "d783742df9fde979b2918bfe371178c92cb7c01c66b84abf0909435fbbbdf589"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiNativeSourcePlan.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "6a90f74d6caf9678cca92cb1d92a5baac82d4df722fb6d49c5e7bad996dfa29c",
+      "afterSha256LF": "6a90f74d6caf9678cca92cb1d92a5baac82d4df722fb6d49c5e7bad996dfa29c"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerPlatform.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "5849e790175a7cb4b40a2e707c5c6fb21f0006fc3c43f8af003f191845bf4287",
+      "afterSha256LF": "5849e790175a7cb4b40a2e707c5c6fb21f0006fc3c43f8af003f191845bf4287"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiPlayerRequestViews.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "b84edacf72b00fec21eeeef791a608965d45ff8a8b21b188f9d4df12b390c7a9",
+      "afterSha256LF": "b84edacf72b00fec21eeeef791a608965d45ff8a8b21b188f9d4df12b390c7a9"
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalBangumiSharedPlaybackPresenter.kt",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "ab5f2b7751af670621a94c43b8b09e4d0c6517f1f0aa4460221f73740f5b9eb5",
+      "afterSha256LF": "ab5f2b7751af670621a94c43b8b09e4d0c6517f1f0aa4460221f73740f5b9eb5"
+    },
+    {
+      "path": "desktop/tools/extract-upstream-bangumi-player.py",
+      "beforeSha256Bytes": null,
+      "afterSha256Bytes": "ae7891552d3c37b4371cbb52c0982fa319173b1c0e9589d8fd861407d7ee1675",
+      "afterSha256LF": "ae7891552d3c37b4371cbb52c0982fa319173b1c0e9589d8fd861407d7ee1675"
+    }
+  ],
+  "sourceCount": 1225,
+  "resourceCount": 244,
+  "exactExistingTargets": 9,
+  "exactExistingFragments": 17,
+  "newCanonicalFiles": 6,
+  "actualProductOverrides": 0,
+  "frozenManifestSha256Bytes": "225b1e47214de40c3e0f3a19db177066bb4af89985345ddbcffb729bbb0edb8d",
+  "frozenContractSha256Bytes": "8a40e96100a8a8bcc06523ea3ebad33ce205232983d3f44b4afa05df9ffb032a",
+  "independentlyValidatedFrozenArtifacts": 96,
+  "reverseReplays": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRepositoryBinding.kt",
+      "exactHunks": 3,
+      "fullBeforeHashMatched": true,
+      "fullAfterHashMatched": true,
+      "reverseReplayByteEqualLF": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-video-full-owner.py",
+      "exactHunks": 2,
+      "fullBeforeHashMatched": true,
+      "fullAfterHashMatched": true,
+      "reverseReplayByteEqualLF": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPortraitPlatformBinding.kt",
+      "exactHunks": 3,
+      "fullBeforeHashMatched": true,
+      "fullAfterHashMatched": true,
+      "reverseReplayByteEqualLF": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootFactory.kt",
+      "exactHunks": 1,
+      "fullBeforeHashMatched": true,
+      "fullAfterHashMatched": true,
+      "reverseReplayByteEqualLF": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootAssembler.kt",
+      "exactHunks": 1,
+      "fullBeforeHashMatched": true,
+      "fullAfterHashMatched": true,
+      "reverseReplayByteEqualLF": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoRootTransport.kt",
+      "exactHunks": 2,
+      "fullBeforeHashMatched": true,
+      "fullAfterHashMatched": true,
+      "reverseReplayByteEqualLF": true
+    },
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalVideoNativeOwner.kt",
+      "exactHunks": 2,
+      "fullBeforeHashMatched": true,
+      "fullAfterHashMatched": true,
+      "reverseReplayByteEqualLF": true
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "exactHunks": 1,
+      "fullBeforeHashMatched": true,
+      "fullAfterHashMatched": true,
+      "reverseReplayByteEqualLF": true
+    },
+    {
+      "path": "desktop/upstream-sources.json",
+      "exactHunks": 2,
+      "fullBeforeHashMatched": true,
+      "fullAfterHashMatched": true,
+      "reverseReplayByteEqualLF": true
+    }
+  ],
+  "newDependencies": [],
+  "fullPlayerScreenAccepted": false,
+  "rootRuntimeAccepted": false,
+  "nativeRuntimeAccepted": false,
+  "realAccountAccepted": false,
+  "desktopPackageUpdated": false
+}

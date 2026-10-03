@@ -1,0 +1,10 @@
+{
+  "formatVersion": 1,
+  "name": "影视目录 · 日本动画网格",
+  "pluginId": "bilipai.official.bangumi",
+  "moduleId": "browse",
+  "layout": "grid",
+  "params": {
+    "category": "日本动画"
+  }
+}

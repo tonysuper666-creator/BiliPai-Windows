@@ -3,6 +3,7 @@ package com.bilipai.desktop.plugins
 import com.android.purebilibili.core.plugin.feed.*
 import com.android.purebilibili.feature.plugin.resolveImportPayload
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -126,6 +127,24 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
         FeedReadingStore.saveFullBody(context, feedItemKey(item), html)
         publishReading(FeedReadingStore.load(context))
     }
+    /** Local RSS notes reuse the original codec/merge policy and the same global Store backing. */
+    val articleNotes get() = ArticleNoteStore.observe(context)
+    suspend fun saveArticleNote(note: SavedArticleNote): Unit = mutation.withLock {
+        withContext(Dispatchers.IO) {
+            check(!stopped) { "订阅服务已停止" }
+            kotlinx.coroutines.currentCoroutineContext().ensureActive()
+            ArticleNoteStore.save(context, note)
+            kotlinx.coroutines.currentCoroutineContext().ensureActive()
+        }
+    }
+    suspend fun removeArticleNote(link: String): Boolean = mutation.withLock {
+        withContext(Dispatchers.IO) {
+            check(!stopped) { "订阅服务已停止" }
+            kotlinx.coroutines.currentCoroutineContext().ensureActive()
+            ArticleNoteStore.remove(context, link).also { kotlinx.coroutines.currentCoroutineContext().ensureActive() }
+        }
+    }
+
     private fun publishState(value: DesktopSubscriptionState, current: () -> Boolean = { !stopped }) =
         DesktopSubscriptionWriteAdmission.commitOrOriginal { if (current()) _state.value = value }
     private fun publishReading(reading: FeedReadingSnapshot) =

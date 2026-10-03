@@ -2,7 +2,11 @@ package com.android.purebilibili.core.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +23,7 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
@@ -86,6 +91,49 @@ internal fun AdaptiveAlertDialog(
         uiStyle = uiStyle,
         nativeMiuixPopupsEnabled = themeConfig.nativeMiuixPopupsEnabled,
     )
+    // 半开折叠屏：弹窗整体收进铰链安全侧，避免横跨折缝。
+    val hingeSafeRegions = LocalHingeSafeOverlayRegions.current.dialog
+    if (hingeSafeRegions != null) {
+        androidx.compose.ui.window.Dialog(
+            onDismissRequest = onDismissRequest,
+            properties = DialogProperties(
+                dismissOnBackPress = properties.dismissOnBackPress,
+                dismissOnClickOutside = properties.dismissOnClickOutside,
+                securePolicy = properties.securePolicy,
+                usePlatformDefaultWidth = false,
+                decorFitsSystemWindows = false,
+            ),
+        ) {
+            HingeSafeOverlayHost(
+                regionProvider = hingeSafeRegions,
+                modifier = Modifier.fillMaxSize().imePadding(),
+                onDismissRequest = if (properties.dismissOnClickOutside) onDismissRequest else null,
+            ) {
+                BoxWithConstraints {
+                    AppPopupSurface(
+                        type = AppPopupSurfaceType.DIALOG,
+                        modifier = modifier
+                            .widthIn(max = contentLayout.maxWidthDp.dp)
+                            .heightIn(max = maxHeight)
+                            .fillMaxWidth()
+                            .pointerInput(Unit) { detectTapGestures { } },
+                        shape = shape ?: if (renderer == AppAlertDialogRenderer.LOCAL_DIALOG) {
+                            AppShapes.resolveContainerShape(ContainerLevel.Dialog, uiStyle, liquidGlassEnabled = false)
+                        } else MaterialTheme.shapes.extraLarge,
+                        containerColor = containerColor ?: if (renderer == AppAlertDialogRenderer.LOCAL_DIALOG) {
+                            AppSurfaceTokens.cardContainer()
+                        } else MaterialTheme.colorScheme.surface,
+                        tonalElevation = tonalElevation ?: if (renderer == AppAlertDialogRenderer.LOCAL_DIALOG) {
+                            0.dp
+                        } else AlertDialogDefaults.TonalElevation,
+                    ) {
+                        MiuixAlertDialogBody(icon, title, text, confirmButton, dismissButton, constrainText = true)
+                    }
+                }
+            }
+        }
+        return
+    }
     when (renderer) {
         AppAlertDialogRenderer.LOCAL_DIALOG -> {
             val dialogShape = shape ?: AppShapes.resolveContainerShape(
@@ -153,6 +201,7 @@ private fun MiuixAlertDialogBody(
     text: @Composable (() -> Unit)?,
     confirmButton: @Composable (() -> Unit)?,
     dismissButton: @Composable (() -> Unit)?,
+    constrainText: Boolean = false,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -186,12 +235,14 @@ private fun MiuixAlertDialogBody(
         }
         if (text != null) {
             Box(
-                modifier = Modifier.padding(
-                    top = if (title != null) 8.dp else 12.dp,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 12.dp
-                ),
+                modifier = Modifier
+                    .then(if (constrainText) Modifier.weight(1f, fill = false) else Modifier)
+                    .padding(
+                        top = if (title != null) 8.dp else 12.dp,
+                        start = 16.dp,
+                        end = 16.dp,
+                        bottom = 12.dp,
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 ProvideTextStyle(

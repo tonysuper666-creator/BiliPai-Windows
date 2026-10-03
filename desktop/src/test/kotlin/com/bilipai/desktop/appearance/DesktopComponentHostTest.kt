@@ -48,7 +48,7 @@ class DesktopComponentHostTest {
         )))
         assertEquals(AppIconStyle.AUTO, state.appIconStyle)
         assertEquals(AppListItemStyle.AUTO, state.appListItemStyle)
-        assertEquals(AppThemeConfig(), buildDesktopAppThemeConfig(state))
+        assertEquals(AppThemeConfig(progressiveTopBlurEnabled = false), buildDesktopAppThemeConfig(state))
     }
 
     @OptIn(ExperimentalComposeUiApi::class)
@@ -63,9 +63,10 @@ class DesktopComponentHostTest {
         }
         try {
             scene.render().close()
-            assertEquals(Triple(AppIconStyle.AUTO, AppListItemStyle.AUTO, AppThemeConfig()), observed)
+            assertEquals(Triple(AppIconStyle.AUTO, AppListItemStyle.AUTO, AppThemeConfig(progressiveTopBlurEnabled = false)), observed)
             settings.value = settings.value.copy(appIconStyle = AppIconStyle.MD3_STANDARD, appListItemStyle = AppListItemStyle.CUSTOM,
-                globalTextTapCopyEnabled = true, uiEntranceAnimationEnabled = false)
+                globalTextTapCopyEnabled = true, uiEntranceAnimationEnabled = false,
+                progressiveTopBlurEnabled = true, headerBlurEnabled = false)
             scene.render().close()
             val updated = requireNotNull(observed)
             assertEquals(AppIconStyle.MD3_STANDARD, updated.first)
@@ -73,6 +74,8 @@ class DesktopComponentHostTest {
             assertTrue(updated.third.globalTextTapCopyEnabled)
             assertFalse(updated.third.uiEntranceAnimationEnabled)
             assertFalse(updated.third.liquidGlassEnabled)
+            assertTrue(updated.third.progressiveTopBlurEnabled)
+            assertFalse(updated.third.headerBlurEnabled)
         } finally { scene.close() }
     }
 }

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Complete original Category UI/VM; only lifecycle, owned requests and global settings are adapted."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, json
 SOURCE='app/src/main/java/com/android/purebilibili/feature/category/CategoryScreen.kt'
@@ -9,7 +10,7 @@ def write(path,text):
  Path(path).parent.mkdir(parents=True,exist_ok=True);Path(path).write_text(text,encoding='utf-8',newline='\n')
 
 def generate(repo,output,standalone=False):
- original=read(Path(repo)/SOURCE)
+ original=read(_desktop_canonical_source(repo, SOURCE))
  # Fixed identity is filled from git's exact v0.2.3 blob by the task source audit.
  assert sha(original)==ORIGINAL_SHA, 'Category source drift'
  text=original;changes=[]

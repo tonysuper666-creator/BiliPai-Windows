@@ -1,0 +1,40 @@
+PASS all original DURL entries and primary-or-backup order retained
+PASS original milliseconds converted to exact continuous segment seconds
+PASS same native EDL contains both physical segments
+PASS original seek and pause intent retained
+PASS original episode Referer retained
+PASS same-cache progressive plan has one track per segment
+PASS signed progressive backup URL retained as exact alias
+PASS same native headers used by all progressive cache tracks
+PASS retained preparation keeps complete multi-DURL and exact private headers
+PASS retained multi-DURL creates all original same-cache tracks
+PASS retained preparation cannot replace episode Referer
+PASS retained preparation rejects foreign signed selection
+PASS legitimate missing BVID and aid/cid stay absent
+PASS missing uploader and dimensions stay absent
+PASS season aggregate statistics never fabricated as episode statistics
+PASS actual episode title cover and raw response duration projected
+PASS wrong episode Referer rejected
+PASS incomplete progressive source rejected
+PASS reordered progressive source rejected
+PASS foreign signed URL rejected
+PASS metadata from another raw response rejected
+PASS course dedicated Referer and true uploader projected
+PASS complete original generated MPD retained byte-for-byte
+PASS actual selected signed mirrors used by accepted adaptive preparation
+PASS raw signed primary addresses retained as adaptive aliases
+PASS original cached raw Dash DTO remains unchanged
+PASS selected DASH mirrors and raw signed primary URLs reach original cache-key grouping
+PASS foreign DASH selection cannot adopt current receipt
+PASS actual native owner allocated one real requested source version
+PASS unmounted actual MPV has no fabricated loadfile ACK or frame
+PASS retired PGC rejected before accepted-media delegate preparation
+PASS rejected presenter created no delegate or native replacement
+PASS PGC takeover between preparation and final publication rejected
+PASS final rejection left actual MPV requested snapshot unchanged
+PASS superseded actual original Store token cannot publish
+PASS superseded request did not allocate another native source
+PASS cancelled actual caller job cannot publish
+PASS cancelled caller leaves native source and source version unchanged
+PASS cancelled initial request cannot execute even one queued native command
+PASS 39 assertions; actual original Store/native bookkeeping only; Root/HTTP/native ACK/frame/account acceptance=false

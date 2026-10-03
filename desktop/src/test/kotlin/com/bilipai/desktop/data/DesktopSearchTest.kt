@@ -142,11 +142,13 @@ class DesktopSearchTest {
         assertEquals("recorded", restored.history(1).value.first().keyword)
     }
 
-    @Test fun sourceDiscoverMergeDeduplicatesCaseAndBoundsConsecutiveFollowedCreators() {
-        val items = buildSearchRecommendItems(listOf("history"), listOf("UP1", "UP2", "UP3", "UP4"),
-            listOf(HotItem(keyword = "HISTORY"), HotItem(keyword = "official")), listOf(HotItem(keyword = "hot")), listOf("fallback"), 10)
-        assertEquals("history", items.first().keyword); assertEquals(1, items.count { it.keyword.equals("history", true) })
-        assertEquals(listOf("history", "UP1", "UP2", "official", "UP3", "UP4", "hot", "fallback"), items.map { it.keyword })
-        assertEquals("与最近搜索相关", items.first().recommend_reason); assertEquals("关注的 UP 主", items[1].recommend_reason)
+    @Test fun officialDiscoveryParametersUseCurrentCredentialPlatform() {
+        val guest = buildSearchRecommendParams(null, "", 123)
+        assertEquals("android", guest["mobi_app"])
+        assertEquals("123", guest["ts"])
+        assertFalse("access_key" in guest)
+        val signed = buildSearchRecommendParams("fixture-token", "tv", 124)
+        assertEquals("fixture-token", signed["access_key"])
+        assertNotNull(signed["sign"])
     }
 }

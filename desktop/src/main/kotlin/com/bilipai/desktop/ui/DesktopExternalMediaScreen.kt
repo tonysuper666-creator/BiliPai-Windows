@@ -13,6 +13,16 @@ import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.PlaybackSource
 import com.bilipai.desktop.player.copyPlaybackStreamHeaders
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.launch
+import com.bilipai.desktop.plugins.js.DesktopJsPluginHost
+import com.bilipai.desktop.danmaku.DanmakuOverlay
+import com.bilipai.desktop.danmaku.DanmakuDocument
+import com.bilipai.desktop.danmaku.DanmakuComment
+import com.android.purebilibili.feature.plugin.js.mapJsDanmuCommentsToItems
+import com.android.purebilibili.core.plugin.js.InstalledBiliPaiJsPlugin
 import java.net.URI
 import java.util.Collections
 
@@ -25,16 +35,60 @@ class DesktopExternalPageMemory(parent: CoroutineScope, player: MpvPlayer?) : De
     private var authority: () -> Boolean = { false }
     private var releaseLaunch: () -> Unit = {}
     private var completedSource: Long? = null
+    private var jsHost: DesktopJsPluginHost? = null
+    private var danmaku: DanmakuOverlay? = null
+    private var danmakuPlugin: InstalledBiliPaiJsPlugin? = null
+    private var executionRevision: Long = -1L
+    private var danmakuJob: Job? = null
+    private var danmakuSource: Long? = null
+
+    private fun clearDanmaku() {
+        danmakuJob?.cancel(); danmakuJob = null
+        danmakuSource?.let { danmaku?.clearOwnedDocument(it) }
+        danmakuSource = null
+    }
+
+    private fun loadDanmaku(current: ExternalMediaLaunchRequest, version: Long) {
+        val plugin = danmakuPlugin ?: return
+        val host = jsHost ?: return
+        val overlay = danmaku ?: return
+        if (current.danmakuPluginId != plugin.manifest.id) return
+        fun owned() = authority() && ownsNativeSource && sourceVersion == version && request === current &&
+            host.executionRevision.value == executionRevision
+        danmakuSource = version
+        danmakuJob = scope.launch {
+            try {
+                val comments = host.loadDanmuComments(plugin, current.title, executionRevision).getOrThrow()
+                ensureActive(); if (!owned()) return@launch
+                val items = mapJsDanmuCommentsToItems(comments)
+                val document = DanmakuDocument(items.mapIndexed { index, item ->
+                    DanmakuComment(index + 1, item.showAtTime / 1000.0,
+                        when (item.layerType) {
+                            com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_TOP -> 5
+                            com.android.purebilibili.danmaku.engine.DANMAKU_LAYER_BOTTOM -> 4
+                            else -> 1
+                        }, 25, (item.textColor ?: 0xffffff) and 0xffffff, item.text.orEmpty(), originalLocalItem = item)
+                })
+                overlay.setOwnedDocument(document, version, ::owned)
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) { if (owned()) error = failure.message ?: "JS 插件弹幕加载失败" }
+        }
+    }
     val authorizationCurrent get() = request == null || authority()
 
-    fun open(launchId: String, authorizationCurrent: () -> Boolean, releaseRequest: (String) -> Unit) {
+    fun open(launchId: String, authorizationCurrent: () -> Boolean, releaseRequest: (String) -> Unit,
+        host: DesktopJsPluginHost? = null, overlay: DanmakuOverlay? = null,
+        plugin: InstalledBiliPaiJsPlugin? = null, expectedRevision: Long = -1L) {
         check(authorizationCurrent()) { "插件播放授权已经变化，请重新打开内容" }
         val original = ExternalMediaLaunchStore.get(launchId) ?: error("播放请求已失效，请从插件内容重新打开")
         val detached = detachDesktopExternalRequest(original)
         stopPlayback()
         authority = authorizationCurrent
+        jsHost = host; danmaku = overlay; danmakuPlugin = plugin; executionRevision = expectedRevision
+        onBeforeStop = ::clearDanmaku
         releaseLaunch = { releaseRequest(launchId) }
-        release = { releaseLaunch(); request = null; completedSource = null }
+        release = { clearDanmaku(); releaseLaunch(); request = null; completedSource = null
+            jsHost = null; danmaku = null; danmakuPlugin = null; executionRevision = -1L }
         request = detached
         selectedIndex = detached.selectedStreamIndex
         selectStream(selectedIndex)
@@ -44,11 +98,13 @@ class DesktopExternalPageMemory(parent: CoroutineScope, player: MpvPlayer?) : De
         if (!authority()) { stopPlayback(); error = "插件播放授权已经变化，请重新打开内容"; return }
         val current = request ?: return
         val stream = current.streams.getOrNull(index) ?: return
+        clearDanmaku()
         try {
             val initialized = player ?: error("原生播放器未能初始化")
             sourceVersion = initialized.loadVersioned(PlaybackSource(videoUrl = stream.url,
                 referer = "", cookieHeader = "", title = current.title, streamHeaders = stream.headers))
             selectedIndex = index; loaded = true; error = null; completedSource = null
+            loadDanmaku(current, requireNotNull(sourceVersion))
         } catch (failure: Exception) {
             error = failure.message ?: "外部媒体无法播放"
         }

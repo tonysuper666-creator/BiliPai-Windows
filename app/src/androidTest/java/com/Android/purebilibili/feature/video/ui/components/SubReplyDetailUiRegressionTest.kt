@@ -62,6 +62,7 @@ class SubReplyDetailUiRegressionTest {
                         emoteMap = emptyMap(),
                         onDismiss = {},
                         onSortModeChange = {},
+                        onRefresh = {},
                         onLoadMore = {}
                     )
                 }
@@ -86,6 +87,7 @@ class SubReplyDetailUiRegressionTest {
                     emoteMap = emptyMap(),
                     onDismiss = {},
                     onLoadMore = {},
+                    onRefresh = {},
                     onSortModeChange = { mode ->
                         requestedModes += mode
                         state.value = state.value.copy(sortMode = mode)
@@ -116,6 +118,7 @@ class SubReplyDetailUiRegressionTest {
                         emoteMap = emptyMap(),
                         onDismiss = {},
                         onSortModeChange = {},
+                        onRefresh = {},
                         onLoadMore = {}
                     )
                 }
@@ -146,6 +149,7 @@ class SubReplyDetailUiRegressionTest {
                         onDismiss = {},
                         onSortModeChange = {},
                         onLoadMore = {},
+                        onRefresh = {},
                         onImagePreview = { images, index, _, _ ->
                             previewedImage = images[index]
                         }

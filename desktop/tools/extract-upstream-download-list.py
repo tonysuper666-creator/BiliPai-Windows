@@ -1,13 +1,14 @@
 """Complete fixed v0.2.3 download list; Windows owner/queue/path/Coil seams only."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,subprocess,textwrap
 
-COMMIT='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
 SOURCE_PINS={
- BASE+'feature/download/DownloadListScreen.kt':'ef589577cc3c4a7f533016e76b6a89bb2d9fb394c9bfd5710fba8f9cf3f05a15',
+ BASE+'feature/download/DownloadListScreen.kt':'0c2f1aa19895a2fa0f566055f84f6e172fd6c9629ac34d064c3379e0588c2895',
  BASE+'feature/download/DownloadStoragePolicy.kt':'a5b874db17777ade210027e7b517fe9a292a94fe117844d0ed139f9ce2d3f74c',
- BASE+'core/store/SettingsManager.kt':'680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c',
+ BASE+'core/store/SettingsManager.kt':'5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c',
  BASE+'feature/download/DownloadTaskPresentationPolicy.kt':'b7a3849710941b82fbba529d6f5f8f6e9d824a73ed75b2203f05f213ac89d54d',
 }
 def safe(p):
@@ -24,7 +25,7 @@ def generate(repo,output,standalone=False):
  manifest=json.loads(read(repo/'desktop/upstream-sources.json'))
  assert manifest['upstreamCommit']==COMMIT,'Target identity changed'
  for path,pin in SOURCE_PINS.items():
-  s=read(repo/path);assert sha(s)==pin,path
+  s=read(_desktop_canonical_source(repo, path));assert sha(s)==pin,path
   blob=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=repo).decode('utf-8').replace('\r\n','\n')
   assert s==blob,'Working original differs from fixed Git blob: '+path
   if not standalone:
@@ -62,6 +63,9 @@ def generate(repo,output,standalone=False):
  path=BASE+'feature/download/DownloadListScreen.kt';s=original[path];edits=[]
  for a,b in [
   ('import android.widget.Toast\n',''),
+  ('import com.android.purebilibili.core.ui.animation.jiggleOnDissolve','import com.bilipai.desktop.ui.jiggleOnDissolve'),
+  ('com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(','com.bilipai.desktop.ui.DesktopReplyDissolvableContainer('),
+  ('com.android.purebilibili.core.ui.animation.DissolveAnimationPreset.','com.bilipai.desktop.ui.DissolveAnimationPreset.'),
   ('import androidx.compose.ui.platform.LocalContext','import coil3.compose.LocalPlatformContext as LocalContext\nimport com.bilipai.desktop.ui.LocalDesktopOriginalDownloadListBindings\nimport com.bilipai.desktop.ui.desktopOriginalDownloadListScreenWidthDp'),
   ('import com.android.purebilibili.core.store.SettingsManager','import com.android.purebilibili.core.store.DesktopOriginalDownloadListSettings as SettingsManager'),
   ('import com.android.purebilibili.core.util.NetworkUtils\n',''),

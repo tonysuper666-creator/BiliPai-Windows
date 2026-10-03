@@ -1,9 +1,10 @@
 """Select the two actual original DataStorage backup rows; shared detail/group helpers stay unique."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
 
 SOURCE = 'app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt'
-def read(repo): return (repo/SOURCE).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo): return (_desktop_canonical_source(repo, SOURCE)).read_text(encoding='utf-8').replace('\r\n','\n')
 def helpers(repo):
     spec=importlib.util.spec_from_file_location('storage_source_helpers',repo/'desktop/tools/extract-upstream-plugins.py')
     host=importlib.util.module_from_spec(spec);spec.loader.exec_module(host)

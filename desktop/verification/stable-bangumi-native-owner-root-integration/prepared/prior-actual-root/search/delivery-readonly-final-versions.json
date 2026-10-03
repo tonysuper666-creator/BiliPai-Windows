@@ -1,0 +1,21 @@
+{
+  "codeHEADObserved": "464f5573331dfc7f7c2f1e47a5bf6bbac8cfd201",
+  "windowsRevision": 1,
+  "packageVersionNotBumpedByFixture": true,
+  "buildAndDeployNotRun": true,
+  "readOnlySourcePins": {
+    "desktop/tools/build.ps1": "cb9876b33e0e87e7a89027f2dba2f7f569e68f9b5e39adfe96032240d427a2fb",
+    "desktop/build.gradle.kts": "29c36bca7b98bebedc56db733f87aff94ca6561afd96a25e8aea661b16fba7a7",
+    "desktop/upstream-sources.json": "09334ae9b197ac5bdf1024d9efc23f4b4bbefa69c7ecfbe39f8bd6eedc2448a3",
+    "app/build.gradle.kts": "1db0cf9fff89f85f6632547672dec052d9503c5278e84167bbd949845f90d56c"
+  },
+  "nativePins": {
+    "libmpv-2.dll": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+    "bilipai-diagnostic-share.dll": "22b3636176561782b055345f3c663b5674247bd9cda37f5d94945886f60dd7d3"
+  },
+  "actualSearchSnapshot": 87,
+  "actualMessageSnapshot": 88,
+  "sameVersionOldDesktopPackageExists": true,
+  "uniqueDesktopDirectoryRequired": true,
+  "userDataReadOrChanged": false
+}

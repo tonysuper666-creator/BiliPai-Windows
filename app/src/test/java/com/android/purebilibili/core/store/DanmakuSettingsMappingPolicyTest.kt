@@ -237,6 +237,8 @@ class DanmakuSettingsMappingPolicyTest {
             booleanPreferencesKey("danmaku_landscape_enabled") to false,
             floatPreferencesKey("danmaku_portrait_font_scale") to 0.9f,
             floatPreferencesKey("danmaku_landscape_font_scale") to 1.6f,
+            floatPreferencesKey("danmaku_portrait_line_height") to 1.6f,
+            floatPreferencesKey("danmaku_landscape_line_height") to 1.1f,
             floatPreferencesKey("danmaku_portrait_area") to 0.25f,
             floatPreferencesKey("danmaku_landscape_area") to 0.75f,
             floatPreferencesKey("danmaku_opacity") to 0.4f,
@@ -255,6 +257,8 @@ class DanmakuSettingsMappingPolicyTest {
         assertFalse(landscape.enabled)
         assertEquals(1.6f, portrait.fontScale)
         assertEquals(1.6f, landscape.fontScale)
+        assertEquals(1.1f, portrait.lineHeight)
+        assertEquals(1.1f, landscape.lineHeight)
         assertEquals(0.75f, portrait.displayArea)
         assertEquals(0.75f, landscape.displayArea)
         assertEquals(0.55f, portrait.opacity)
@@ -270,6 +274,7 @@ class DanmakuSettingsMappingPolicyTest {
         val prefs = mutablePreferencesOf(
             booleanPreferencesKey("danmaku_portrait_enabled") to false,
             floatPreferencesKey("danmaku_portrait_font_scale") to 1.4f,
+            floatPreferencesKey("danmaku_portrait_line_height") to 1.3f,
             floatPreferencesKey("danmaku_portrait_area") to 0.75f
         )
 
@@ -280,6 +285,8 @@ class DanmakuSettingsMappingPolicyTest {
         assertFalse(landscape.enabled)
         assertEquals(1.4f, portrait.fontScale)
         assertEquals(1.4f, landscape.fontScale)
+        assertEquals(1.3f, portrait.lineHeight)
+        assertEquals(1.3f, landscape.lineHeight)
         assertEquals(0.75f, portrait.displayArea)
         assertEquals(0.75f, landscape.displayArea)
     }

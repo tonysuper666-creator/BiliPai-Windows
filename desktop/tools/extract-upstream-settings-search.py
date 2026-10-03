@@ -1,4 +1,5 @@
 """Original settings index/controllers/visuals with thin Windows storage/resource bindings."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re,xml.etree.ElementTree as ET
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -12,7 +13,7 @@ A='{http://schemas.android.com/apk/res/android}'
 def helper(repo):
  spec=importlib.util.spec_from_file_location('settings_helpers',repo/'desktop/tools/extract-upstream-plugins.py')
  h=importlib.util.module_from_spec(spec);spec.loader.exec_module(h);return h
-def read(repo,p):return (repo/p).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,p):return (_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').replace('\r\n','\n')
 def symbol_names(repo):return sorted(set(re.findall(r'R\.drawable\.(\w+)',read(repo,S+'SettingsSemanticIconPolicy.kt')+read(repo,S+'SettingsEntryVisualPolicy.kt'))))
 
 def vectors(repo):

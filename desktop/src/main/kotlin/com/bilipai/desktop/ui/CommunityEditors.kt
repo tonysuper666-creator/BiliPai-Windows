@@ -73,6 +73,9 @@ internal fun CommunityNoteEditor(video: VideoDetails, document: VideoNoteEditorD
                             FilterChip(block.unorderedList, { blocks = blocks.toMutableList().apply { set(index, block.copy(unorderedList = !block.unorderedList)) } }, label = { Text("列表") }, enabled = !busy)
                         }
                     }
+                    is VideoNoteBlock.Quote -> OutlinedTextField(block.text, { value ->
+                        blocks = blocks.toMutableList().apply { set(index, block.copy(text = value)) }
+                    }, enabled = !busy, minLines = 2, label = { Text("引用段落") }, modifier = Modifier.fillMaxWidth())
                     is VideoNoteBlock.Timestamp -> Text("▶ ${block.label} · 分P ${block.index + 1}")
                 }
                 TextButton(enabled = !busy, onClick = { blocks = blocks.filterIndexed { i, _ -> i != index } }) { Text("删除此段") }

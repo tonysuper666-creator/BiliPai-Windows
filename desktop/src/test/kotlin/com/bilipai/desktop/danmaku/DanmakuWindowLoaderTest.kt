@@ -26,7 +26,7 @@ class DanmakuWindowLoaderTest {
         val comment = DanmakuParser.parseProtobuf(listOf(field(1, bytes = element))).comments.single()
         val original = requireNotNull(comment.originalElement)
         val item = requireNotNull(com.android.purebilibili.feature.video.danmaku.DesktopOriginalDanmakuItemParser
-            .createTextDataFromProto(original)) as com.android.purebilibili.feature.video.danmaku.WeightedTextData
+            .createTextDataFromProto(original)) as com.android.purebilibili.danmaku.parser.WeightedTextData
         assertEquals(content, original.content)
         assertEquals("$content x3", item.text)
         assertEquals(321L, item.danmakuId)

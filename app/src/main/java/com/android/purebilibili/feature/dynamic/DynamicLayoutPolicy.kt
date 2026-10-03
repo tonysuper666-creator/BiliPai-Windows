@@ -17,7 +17,7 @@ internal fun resolveDynamicTimelineMinColumnWidth(): Dp = 360.dp
 
 internal fun resolveDynamicTimelineHorizontalSpacing(): Dp = 18.dp
 
-internal fun resolveDynamicTimelineVerticalSpacing(): Dp = 10.dp
+internal fun resolveDynamicTimelineVerticalSpacing(): Dp = 6.dp
 
 internal fun shouldUseDynamicManualPrependAnchor(
     feedLayoutMode: SettingsManager.DynamicFeedLayoutMode,

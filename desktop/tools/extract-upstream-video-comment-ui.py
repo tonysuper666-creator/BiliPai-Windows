@@ -1,7 +1,8 @@
 """Complete original video CommentTab/search/composer; Root owns all authority."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
-PIN='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
 CONTENT=BASE+'feature/video/screen/VideoContentSection.kt'
 PLAYBACK=BASE+'feature/video/viewmodel/VideoPlaybackViewModel.kt'
@@ -11,7 +12,7 @@ def mod(p,n):
 def replace_once(t,a,b):
     assert t.count(a)==1,(a,t.count(a));return t.replace(a,b)
 def inventory(repo):
-    return [dict(path=p,mode='policy-extract',features=['stable-video-original-comments'],sha256=hashlib.sha256((repo/p).read_text(encoding='utf-8').replace('\r\n','\n').encode()).hexdigest()) for p in SOURCES]
+    return [dict(path=p,mode='policy-extract',features=['stable-video-original-comments'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').replace('\r\n','\n').encode()).hexdigest()) for p in SOURCES]
 def generate(repo,output):
     shared=mod(Path(__file__).with_name('extract-upstream-dynamic-reply-protocol.py'),'original_video_comment_identity')
     original,identities=shared.load_pinned_sources(repo,SOURCES)

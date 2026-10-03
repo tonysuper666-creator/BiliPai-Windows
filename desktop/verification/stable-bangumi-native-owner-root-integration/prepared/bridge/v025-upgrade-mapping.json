@@ -1,0 +1,173 @@
+{
+  "v023Commit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "v025Commit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "currentBridgeBaseline": "v0.2.3",
+  "productBaselineChanged": false,
+  "currentPlayerBridgeUpgraded": false,
+  "entries": [
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt",
+      "v025Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerViewModel.kt",
+      "v023Sha256LF": "73217eeb5cd680ba132ff1f4cc46cf46c35ed4fc0e8b99a175694ee635bdc151",
+      "v025Sha256LF": "248357d5366512c99e1f4ef761cfe9fc4ed8bee0e625254af72f112823baf057",
+      "added": 9,
+      "removed": 7,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\BangumiPlayerViewModel.patch",
+      "patchSha256LF": "394df5e6e5eecd9bae39250975b028da0fbfbe51758bdeca0b11b1e8130ecec8",
+      "requiredAdaptation": "原完整业务顺序不变；迁移 core.player.PlaybackProgressManager import，保留新增明确 nonnull 断言；不能更换现有 Windows 唯一 progress/session owner",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+      "v025Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+      "v023Sha256LF": "287d6919dd09e53428a6b01b81b9ff588629441831134a59732ab80c75e3289a",
+      "v025Sha256LF": "cff9a1c2ffac42afb302b4aa89211686e7d866155e6c30874c94bf28df825a6b",
+      "added": 104,
+      "removed": 64,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\BangumiPlayerScreen.patch",
+      "patchSha256LF": "824b8f5bd202ea0167022a9a7bf529d62da55f8cae2eedd00b326f4e5aacc986",
+      "requiredAdaptation": "Windows 现有窗口 lease 对齐退出恢复系统栏语义；无折叠铰链时仍保留新 supportingContent 主/辅 pane 状态机与原 PUGV/下载/分享回调",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt",
+      "v025Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt",
+      "v023Sha256LF": "b07032c56edf4c39a34f9e16a1a55764f8082d3bb2909eb3e68e34b7651e79c4",
+      "v025Sha256LF": "d0311f2db0e0b75796fe0c3bf53a6d9b9bd494024bd1051d9d8e46478050576a",
+      "added": 109,
+      "removed": 103,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\BangumiPlayerOverlayHost.patch",
+      "patchSha256LF": "c1e07899ea05afd8446c03f407ceb3a2e6290df8049b08f593aea5051a4090bd",
+      "requiredAdaptation": "新原 overlay 接口由参数拆为 VideoPlayerOverlayState/Actions；将全部原回调映射现有同一 assembly overlay owner",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+      "v025Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+      "v023Sha256LF": "c0cfbb4c871ae3abfb9b0bf784f05db05b2564760f4fa3b235740e76c1d2c74d",
+      "v025Sha256LF": "e43b21c980760059ce7544af641f13b81e3da33a29cf6c15a24a03606cabfb31",
+      "added": 23,
+      "removed": 14,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\BangumiPlayerContent.patch",
+      "patchSha256LF": "ab1569950e2e35b5f8a28244b0203e8c071b6c371c165a46a6dec114231fb8ca",
+      "requiredAdaptation": "保持 episode keyed 状态；新增 comment covered blur +主评论/子回复 refresh 回调、nullable episodes/briefImgs；读取/发送 topic33 仍必须贯穿现有评论 owner",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicy.kt",
+      "v025Path": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiDashManifestPolicy.kt",
+      "v023Sha256LF": "061841fda22326b1c2f0cae94b7259ddf1135d11ac344ea7f238e7f58ba94395",
+      "v025Sha256LF": "9c0272e6ee761d8098460427ffafaa90f0b587789bdf6225b6199638e12708cc",
+      "added": 1,
+      "removed": 1,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\BangumiDashManifestPolicy.patch",
+      "patchSha256LF": "8d0b8cdf30057005edc863ca233a5533a6b7db1c6342a34f6d1042ed605e5973",
+      "requiredAdaptation": "只迁移新的 core.player.dash.buildLocalDashManifest source identity/path；复用原 MPD 构造与现有 Windows 单播放器",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "v025Path": "app/src/main/java/com/android/purebilibili/data/repository/BangumiRepository.kt",
+      "v023Sha256LF": "358d9c8f0b9a787de638c69db7b4bda67974b649b8db4fab4fb34f244e5ad612",
+      "v025Sha256LF": "7a7f195be5ba108aaa3e9b05d7069e9c981183fa7a79fae751b8f0da25714c73",
+      "added": 18,
+      "removed": 9,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\BangumiRepository.patch",
+      "patchSha256LF": "66e49051b04ad6f2bbbab0331c479507c56631ac6ae73026bb02081662f2c3df",
+      "requiredAdaptation": "本文件变化为多个成功 response 的明确 nonnull 断言；getBangumiPlayUrl 此版本完整 method 是否相等另由正文比对，不以整 Repo 移植替换现有唯一捕获请求",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "v025Path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "v023Sha256LF": "f05ef7834aa979f77c6e129cc9bcdbbd53f1695500d82719ef1183b4f8653f9e",
+      "v025Sha256LF": "63b0a8ff1541b5e8d29ed221cb4c7c3e1ad7c6102e3ee4816239703c7e769257",
+      "added": 330,
+      "removed": 237,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\CommentInputDialog.patch",
+      "patchSha256LF": "837eed4582ec44f855cc4e92a877ba6149ae368084fb9839c4829f8cac3f80d2",
+      "requiredAdaptation": "同原 composer owner 复用新增保存正文/选区/图片/转动态草稿、包排序、颜文字、CommentEmoteTextField 与 IME/面板状态机；Windows 键盘与窗口边界适配",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "v025Path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "v023Sha256LF": "b573d51d5ffd08d5f3bac2c09ab1b0f055a9494e8f92e0d9098feafa5258a517",
+      "v025Sha256LF": "cc5218c45a2d5fadbbb56bfb3fa3ece860f7c0324ccf9d55176339143ab78769",
+      "added": 75,
+      "removed": 31,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\VideoCommentViewModel.patch",
+      "patchSha256LF": "6cebc658ba05dc5fc9aae9bf97f5629843c0044f01d26dcaff534bea4b9a4e67",
+      "requiredAdaptation": "原请求 ID/job 取消、保持当前排序 refreshComments/refreshSubReplies 及失败状态；同实际 subject(type33)/Store/session/主 API 与 compositor",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "v025Path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "v023Sha256LF": "42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad",
+      "v025Sha256LF": "dbd4762470843e5d3776e2aa5ed830df4d4c8571980e70cf12cdc37bc4c92060",
+      "added": 103,
+      "removed": 55,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\ApiClient.patch",
+      "patchSha256LF": "051f8ba076d0594beaf3ceea77905a1c51cc49e916fd679af09ebbd680951292",
+      "requiredAdaptation": "模块路径移动、CoreNetworkRuntime/config/log、emote 包详情 API 与主登录协议变化；由 Root 全局授权 owner 统一移植，禁止本桥增加另一个 HTTP client/cookie jar 或修改 manifest baseline；此对照未发现播放并发插件实现，不能将其归给此文件",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/core/network/WbiKeyManager.kt",
+      "v025Path": "core-data/src/main/java/com/android/purebilibili/core/network/WbiKeyManager.kt",
+      "v023Sha256LF": "3430fc44a5df9b8c09d2a29456e15aa3c584dec68e089725353f831c9d9bfc51",
+      "v025Sha256LF": "2afee8e0e1762b8cbc18e81af99b5cb84b20e3a2ed867c1a2321ec8162eb87fb",
+      "added": 11,
+      "removed": 9,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\WbiKeyManager.patch",
+      "patchSha256LF": "b44865cb4363b65c5e73cf94db74f5abe727f295faddd00842e855ce57466ed1",
+      "requiredAdaptation": "模块路径移动；核心 runtime 取原主账户 nav API，Windows 仍使用同现有 homeWbiKeys 单缓存",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/feature/video/controller/PlaybackProgressManager.kt",
+      "v025Path": "core-player/src/main/java/com/android/purebilibili/core/player/PlaybackProgressManager.kt",
+      "v023Sha256LF": "878095967b5c71e2b5e31f4960e59111ac58939d2a6ae93619dab8bdc1cbb8c5",
+      "v025Sha256LF": "8fff2c1f37a6ca8ed56d3a9b1816b178108bb5837a4d3a89a44abfca6fdea282",
+      "added": 2,
+      "removed": 2,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\PlaybackProgressManager.patch",
+      "patchSha256LF": "7d14deb8103ee610d7192ef0f1389ee6b20c06af755915f788186f013741466e",
+      "requiredAdaptation": "该文件仅 package/log 移到 core-player；不能把路径搬迁算新后台进度功能。其他后台差量必须同 Windows 唯一 progress writer/Session/原 PGC type4 心跳，不添加第二进度 owner",
+      "applied": false,
+      "rootAccepted": false
+    },
+    {
+      "v023Path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "v025Path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "v023Sha256LF": "d6a73469c219cd573563df44a5947713adea6505ee1c8228432c9b46cdd672ae",
+      "v025Sha256LF": "94f0f773e693e430f0a4be8e0206b57f7f74dd00a84f5af571151b3278637426",
+      "added": 104,
+      "removed": 22,
+      "patchPath": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-native-owner-root-parity\\upgrade-mapping\\VideoPlaybackViewModel.patch",
+      "patchSha256LF": "260d3ccebeddfddbe636d46f293c1e78f3018980377b4bc39a9740ae5774d5e5",
+      "requiredAdaptation": "原普通 VM 新 SharedPlaybackSession/Repository 与后台 owner 转移需由 Root 主播放器统一迁移；本桥保留当前 v023 同 assembly 存活/令牌/授权/源事实，禁止把新版共享模块再实例化为第二 store/player",
+      "applied": false,
+      "rootAccepted": false
+    }
+  ],
+  "untracedRequestedDependencies": [
+    {
+      "feature": "并发授权取流插件",
+      "sourceIdentityVerified": false,
+      "rootOwnerUpgradeRequired": true,
+      "accepted": false
+    }
+  ]
+}

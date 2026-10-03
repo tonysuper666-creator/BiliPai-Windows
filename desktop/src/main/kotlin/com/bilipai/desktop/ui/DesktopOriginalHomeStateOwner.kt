@@ -46,6 +46,7 @@ interface DesktopOriginalHomeStateOwner {
  fun markRefreshNewItemsHandled(key:Long)
  fun markRecommendOldContentDividerRevealed(key:Long)
  fun addToWatchLater(bvid:String,aid:Long)
+ fun startVideoDissolve(bvid:String)
  fun completeVideoDissolve(bvid:String)
  fun markTodayWatchVideoOpened(video:VideoItem)
  fun switchTodayWatchMode(mode:TodayWatchMode)
@@ -54,5 +55,5 @@ interface DesktopOriginalHomeStateOwner {
  suspend fun getPreviewVideoUrl(bvid:String,cid:Long):String?
  fun undoRefresh()
  fun blockCreator(video:VideoItem)
- fun markNotInterested(video:VideoItem,reason:RecommendationFeedbackReason,cardAnimationEnabled:Boolean)
+ fun markNotInterested(video:VideoItem,reason:RecommendationFeedbackReason,dissolveAnimationEnabled:Boolean)
 }

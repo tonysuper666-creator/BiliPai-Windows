@@ -84,6 +84,8 @@ class DynamicSubReplyImagePreviewUiRegressionTest {
                             )
                         ),
                         onDismiss = {},
+                        onRefresh = {},
+                        onUserClick = {},
                         onLoadMore = {}
                     )
                     ImagePreviewOverlayHost(modifier = Modifier.fillMaxSize())
@@ -155,6 +157,8 @@ class DynamicSubReplyImagePreviewUiRegressionTest {
                             )
                         ),
                         onDismiss = {},
+                        onRefresh = {},
+                        onUserClick = {},
                         onLoadMore = {}
                     )
                     ImagePreviewOverlayHost(modifier = Modifier.fillMaxSize())

@@ -1,0 +1,12 @@
+desktop\.local\stable-space-root-integration-acceptance\runs\actual90-01\RootSpaceFixture.kt:262:24: error: cannot infer type for type parameter 'T'. Specify it explicitly.
+            val handle=awaitReference("actual ready Root handle"){refs.find<DesktopReadyRootHandle>()}
+                       ^^^^^^^^^^^^^^
+desktop\.local\stable-space-root-integration-acceptance\runs\actual90-01\RootSpaceFixture.kt:262:77: error: unresolved reference 'DesktopReadyRootHandle'.
+            val handle=awaitReference("actual ready Root handle"){refs.find<DesktopReadyRootHandle>()}
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-space-root-integration-acceptance\runs\actual90-01\RootSpaceFixture.kt:272:101: error: operator '===' cannot be applied to 'MatchGroup?' and 'DesktopOriginalSpacePagesRoot'.
+                checkThat("Physical Root owns original Space environment",entry.environment.owns()&&handle.spacePages.get()===pages)
+                                                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+desktop\.local\stable-space-root-integration-acceptance\runs\actual90-01\RootSpaceFixture.kt:272:108: error: unresolved reference 'spacePages'.
+                checkThat("Physical Root owns original Space environment",entry.environment.owns()&&handle.spacePages.get()===pages)
+                                                                                                           ^^^^^^^^^^

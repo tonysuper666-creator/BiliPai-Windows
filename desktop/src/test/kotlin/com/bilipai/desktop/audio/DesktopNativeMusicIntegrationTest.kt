@@ -87,18 +87,21 @@ private class MusicSessionFixture(
     val source: MusicDataSource,
     saved: ListenAudioSaved = ListenAudioSaved(),
     preferences: PlayerPreferences = PlayerPreferences(),
+    private val primaryRepository: DesktopRepository? = null,
 ) : AutoCloseable {
     val directory = Files.createTempDirectory("bilipai-native-music-offline-")
     val player = MpvPlayer()
     val store = ListenAudioStore(directory.resolve("listen.json"))
-    val repository = DesktopRepository(DesktopSessionStore.temporary())
+    val repository = primaryRepository ?: DesktopRepository(DesktopSessionStore.temporary())
     private val publicationGate = Any()
     private var publicationAlive = true
     lateinit var session: ListenAudioSession
     init {
         store.save(saved)
         onSwing { session = ListenAudioSession(repository, DesktopCommunityRepository(repository), player,
-            preferences, store = store, playbackDataSource = source, publication = com.bilipai.desktop.player.DesktopLocalPlaybackPublication(
+            preferences, store = store, playbackDataSource = source, publication = primaryRepository?.let {
+                com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(it, allowPrimaryAccountSource = true)
+            } ?: com.bilipai.desktop.player.DesktopLocalPlaybackPublication(
                     { synchronized(publicationGate) { publicationAlive } },
                     { admitted -> synchronized(publicationGate) { if (!publicationAlive) false else { admitted(); true } } })) }
     }
@@ -178,9 +181,11 @@ internal fun runNativeMusicOfflineCases(): Int = runBlocking {
     }
     case("retained session loads AU metadata and original timed lyrics with au cache key") {
         val api = SongApiFixture(); val source = MusicDataSource { api.audio.prepare(it) }
-        MusicSessionFixture(source, preferences = PlayerPreferences(audioOnly = false)).use { f ->
+        MusicSessionFixture(source, preferences = PlayerPreferences(audioOnly = false), primaryRepository = api.repository).use { f ->
             f.start(); f.await { !it.loading && it.active && it.lyrics != null && !it.lyricsLoading }
             equal(api.song, f.session.state.value.songInfo)
+            // Preserve actual API account authority through the same repository publication gate.
+            equal(api.repository.sessionEpoch, f.player.currentSourceSnapshot()?.source?.primaryAccountEpoch)
             equal("第一行", f.session.state.value.lyrics?.lines?.first()?.text)
             equal(3500L, f.session.state.value.lyrics?.lines?.get(1)?.startTimeMs)
             check(source.cache.documents.containsKey("au:81")); check(f.player.state.value.audioOnly)

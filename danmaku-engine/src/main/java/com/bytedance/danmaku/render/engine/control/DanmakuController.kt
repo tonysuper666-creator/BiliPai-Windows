@@ -16,12 +16,14 @@
 package com.bytedance.danmaku.render.engine.control
 
 import android.graphics.Canvas
+import android.os.SystemClock
 import android.view.MotionEvent
 import android.view.View
 import com.bytedance.danmaku.render.engine.data.DanmakuData
 import com.bytedance.danmaku.render.engine.data.DataManager
 import com.bytedance.danmaku.render.engine.render.IRenderLayer
 import com.bytedance.danmaku.render.engine.render.RenderEngine
+import com.bytedance.danmaku.render.engine.render.RenderClock
 import com.bytedance.danmaku.render.engine.render.cache.LayerBuffer
 import com.bytedance.danmaku.render.engine.render.draw.IDrawItemFactory
 import com.bytedance.danmaku.render.engine.touch.IItemClickListener
@@ -47,6 +49,8 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     private val mProfiler: Profiler = Profiler(config)
 
     private var mIsPlaying = false
+    private val renderClock = RenderClock()
+    internal val renderTimeMs: Long get() = renderClock.timeMs
     private var mIsTouchable = true
 
     init {
@@ -65,6 +69,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
             return
         }
         mIsPlaying = true
+        renderClock.resume(SystemClock.uptimeMillis())
         mDataManager.onPlay(playTime)
         mDanmakuView.postInvalidateCompat()
     }
@@ -73,6 +78,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      * Pause Danmakus and keep them on the screen
      */
     fun pause() {
+        renderClock.pause(SystemClock.uptimeMillis())
         mIsPlaying = false
         mDataManager.onPause()
     }
@@ -82,6 +88,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
      */
     fun stop() {
         mIsPlaying = false
+        renderClock.reset()
         mDataManager.onStop()
         clear()
     }
@@ -240,6 +247,7 @@ class DanmakuController(private var mDanmakuView: View): ConfigChangeListener, I
     internal fun draw(view: View, canvas: Canvas) {
         val playTime = mDataManager.queryPlayTime()
         if (mIsPlaying) {
+            renderClock.advance(SystemClock.uptimeMillis())
             val t0 = System.nanoTime()
             val newItems = mDataManager.queryDanmaku()
             val t1 = System.nanoTime()

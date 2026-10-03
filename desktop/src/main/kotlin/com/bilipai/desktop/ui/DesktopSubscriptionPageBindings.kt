@@ -10,6 +10,11 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.navigationevent.compose.LocalNavigationEventDispatcherOwner
 import com.android.purebilibili.core.plugin.feed.ParsedFeedItem
+import com.android.purebilibili.core.plugin.feed.SavedArticleNote
+import androidx.navigationevent.NavigationEventInfo
+import androidx.navigationevent.compose.NavigationBackHandler
+import androidx.navigationevent.compose.rememberNavigationEventState
+import kotlinx.serialization.json.booleanOrNull
 import com.android.purebilibili.core.plugin.feed.SubscriptionFeedStore
 import com.bilipai.desktop.plugins.*
 import kotlinx.coroutines.CancellationException
@@ -43,10 +48,19 @@ internal class DesktopSubscriptionPageBindings(
     val articleFontScale: Flow<Int> = runtime.store.snapshot("settings").map { snapshot ->
         snapshot[DesktopPreferenceKey("subscription_article_font_scale") { (it as? JsonPrimitive)?.intOrNull }] ?: 1
     }
+    val articleNotes get() = repository.articleNotes
+    val articleWallpaperEnabled: Flow<Boolean> = runtime.store.snapshot("settings").map { snapshot ->
+        snapshot[DesktopPreferenceKey("subscription_article_wallpaper_enabled") { (it as? JsonPrimitive)?.booleanOrNull }] ?: false
+    }
     fun isOwned(): Boolean = !closed.get() && stillOwned()
     fun commitUi(action: () -> Unit) {
         if (!isOwned()) return
         commitIfCurrent { if (isOwned()) action() }
+    }
+    suspend fun commitCallerUi(action: () -> Unit) {
+        val caller = currentCoroutineContext()
+        caller.ensureActive()
+        commitUi { caller.ensureActive(); action() }
     }
     fun articleOpenChanged(open: Boolean, callback: (Boolean) -> Unit) = commitUi {
         articleOpen = open
@@ -59,15 +73,22 @@ internal class DesktopSubscriptionPageBindings(
     suspend fun setRead(item: ParsedFeedItem, read: Boolean) = owned { repository.setRead(item, read) }
     suspend fun saveFullBody(item: ParsedFeedItem, html: String) = owned { repository.saveFullBody(item, html) }
     suspend fun fetchArticleBody(item: ParsedFeedItem): Result<String> = owned { repository.fetchArticleBody(item) }
-    suspend fun setArticleFontScale(value: Int) = owned {
+    suspend fun saveArticleNote(note: SavedArticleNote) = owned { repository.saveArticleNote(note) }
+    suspend fun removeArticleNote(link: String): Boolean = owned { repository.removeArticleNote(link) }
+    private suspend fun setting(key: String, value: JsonPrimitive) = owned {
         withContext(Dispatchers.IO) {
             currentCoroutineContext().ensureActive()
-            // Root Store -> retained entry -> original plugin backing. No reverse Root-lock acquisition.
-            DesktopSubscriptionWriteAdmission.commitOrOriginal {
-                runtime.store.update("settings", mapOf("subscription_article_font_scale" to JsonPrimitive(value.coerceIn(0, 2))))
+            runtime.store.updateOriginalFromSnapshot("settings",
+                DesktopSubscriptionWriteAdmission::checkCurrentRequestOrOriginal,
+                { DesktopSubscriptionWriteAdmission.acquirePreferencePermit(runtime.store) }) {
+                Unit to mapOf(key to value)
             }
         }
     }
+    suspend fun setArticleFontScale(value: Int) = setting("subscription_article_font_scale", JsonPrimitive(value.coerceIn(0, 2)))
+    suspend fun setArticleWallpaperEnabled(value: Boolean) = setting("subscription_article_wallpaper_enabled", JsonPrimitive(value))
+    fun showFeedback(message: String) = commitUi { feedback(message) }
+    fun shareArticle(text: String) = commitUi { gallery.shareText(text) }
     fun copyText(text: String) = commitUi {
         try { clipboard(text); feedback("已复制正文") }
         catch (cancelled: CancellationException) { throw cancelled }
@@ -83,6 +104,13 @@ internal class DesktopSubscriptionPageBindings(
 
 internal val LocalDesktopSubscriptionBindings = staticCompositionLocalOf<DesktopSubscriptionPageBindings> {
     error("The retained Root Subscription bindings are required")
+}
+
+/** Ordinary pure-reading back uses the SAME owned NavigationEvent dispatcher as article back. */
+@Composable internal fun DesktopSubscriptionBackHandler(enabled: Boolean, onBack: () -> Unit) {
+    val state = rememberNavigationEventState(NavigationEventInfo.None)
+    val callback by rememberUpdatedState(onBack)
+    NavigationBackHandler(state = state, isBackEnabled = enabled, onBackCompleted = { callback() })
 }
 
 /** Root supplies one retained binding; normal route invisibility never closes it. */

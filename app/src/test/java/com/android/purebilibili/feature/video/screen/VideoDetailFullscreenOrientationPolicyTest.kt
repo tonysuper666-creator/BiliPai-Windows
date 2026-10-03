@@ -1,11 +1,119 @@
 package com.android.purebilibili.feature.video.screen
 
 import android.content.pm.ActivityInfo
+import com.android.purebilibili.core.store.FullscreenMode
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class VideoDetailFullscreenOrientationPolicyTest {
+
+    @Test
+    fun `right landscape entry remains exact before fullscreen configuration arrives`() {
+        for (appAutoRotate in listOf(false, true)) {
+            assertEquals(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
+                resolvePhoneVideoRequestedOrientation(
+                    autoRotateEnabled = appAutoRotate,
+                    systemAutoRotateEnabled = true,
+                    fullscreenMode = FullscreenMode.HORIZONTAL,
+                    isCompactDevice = true,
+                    isOrientationDrivenFullscreen = true,
+                    isFullscreenMode = false,
+                    manualFullscreenRequested = true,
+                    currentRequestedOrientation = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `manual fullscreen tracks both sides with app auto rotate off and system rotation on`() {
+        assertTrue(shouldObservePhoneAutoRotate(
+            autoRotateEnabled = false,
+            systemAutoRotateEnabled = true,
+            isCompactDevice = true,
+            isOrientationDrivenFullscreen = true,
+            fullscreenMode = FullscreenMode.HORIZONTAL,
+            manualPortraitHoldActive = false,
+            manualFullscreenRequested = true,
+            isFullscreenMode = false,
+        ))
+        var request = requireNotNull(resolvePhoneVideoRequestedOrientation(
+            autoRotateEnabled = false,
+            systemAutoRotateEnabled = true,
+            fullscreenMode = FullscreenMode.HORIZONTAL,
+            isCompactDevice = true,
+            isOrientationDrivenFullscreen = true,
+            isFullscreenMode = false,
+            manualFullscreenRequested = true,
+            currentRequestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT,
+        ))
+        assertEquals(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE, request)
+        for ((degrees, expected) in listOf(
+            90 to ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
+            270 to ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE,
+            90 to ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE,
+        )) {
+            request = requireNotNull(resolvePhoneAutoRotateRequestedOrientation(
+                orientationDegrees = degrees,
+                isCurrentlyLandscape = true,
+                allowPortraitTransitions = false,
+            ))
+            assertFalse(shouldReleaseManualFullscreenRequestAfterSensorTarget(
+                manualFullscreenRequested = true,
+                sensorTargetOrientation = request,
+                autoRotateEnabled = false,
+            ))
+            // Configuration can still report portrait while the first request is pending.
+            for (fullscreen in listOf(false, true)) {
+                request = requireNotNull(resolvePhoneVideoRequestedOrientation(
+                    autoRotateEnabled = false,
+                    systemAutoRotateEnabled = true,
+                    fullscreenMode = FullscreenMode.HORIZONTAL,
+                    isCompactDevice = true,
+                    isOrientationDrivenFullscreen = true,
+                    isFullscreenMode = fullscreen,
+                    manualFullscreenRequested = true,
+                    currentRequestedOrientation = request,
+                ))
+                assertEquals(expected, request)
+            }
+        }
+        assertNull(resolvePhoneAutoRotateRequestedOrientation(
+            orientationDegrees = 0,
+            isCurrentlyLandscape = true,
+            allowPortraitTransitions = false,
+        ))
+    }
+
+    @Test
+    fun `system rotation lock prevents manual fullscreen side observation`() {
+        for (appAutoRotate in listOf(false, true)) {
+            assertFalse(shouldObservePhoneAutoRotate(
+                autoRotateEnabled = appAutoRotate,
+                systemAutoRotateEnabled = false,
+                isCompactDevice = true,
+                isOrientationDrivenFullscreen = true,
+                fullscreenMode = FullscreenMode.HORIZONTAL,
+                manualPortraitHoldActive = false,
+                manualFullscreenRequested = true,
+                isFullscreenMode = true,
+            ))
+        }
+        assertEquals(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE,
+            resolvePhoneVideoRequestedOrientation(
+                autoRotateEnabled = false,
+                systemAutoRotateEnabled = false,
+                fullscreenMode = FullscreenMode.HORIZONTAL,
+                isCompactDevice = true,
+                isOrientationDrivenFullscreen = true,
+                isFullscreenMode = false,
+                manualFullscreenRequested = true,
+            )
+        )
+    }
 
     @Test
     fun `auto rotate target protects against oscillation in both directions`() {

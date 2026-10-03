@@ -4,6 +4,7 @@ Usage: python extract-upstream-api.py --repo <repository> --output <generated-so
 Missing/changed declarations fail the build so an upstream update cannot silently use stale APIs.
 """
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 
 import argparse
 import hashlib
@@ -72,15 +73,54 @@ def extract_method(body: str, name: str) -> str:
     return declaration.strip()
 
 
+CORE_DIAGNOSTICS_SHA = '489dfcff60a50dc4382a8c2d18fd6db71fe93b396d51035a53c16b996ecbcce7'
+
+def generate_core_data_log(repo, output, parser):
+    import json
+    relative = 'core-data/src/main/java/com/android/purebilibili/core/network/CoreNetworkRuntime.kt'
+    original = _desktop_canonical_source(repo, relative).read_text(encoding='utf8').replace('\r\n', '\n')
+    assert hashlib.sha256(original.encode()).hexdigest() == CORE_DIAGNOSTICS_SHA
+    tokens = parser.kotlin_tokens(original)
+    first, last = parser.kotlin_structure(tokens, 'object', 'CoreDataLog')
+    beginning = original.rfind('\n', 0, tokens[first][1]) + 1
+    selected = original[beginning:tokens[last][2]]
+    adapted = selected
+    changes = [
+        ('CoreNetworkRuntime.config.log', 'DesktopCoreNetworkDiagnostics.log', 3),
+        ('CoreNetworkRuntime.config.reportApiError', 'DesktopCoreNetworkDiagnostics.reportApiError', 1),
+    ]
+    for before, after, count in changes:
+        assert adapted.count(before) == count
+        adapted = adapted.replace(before, after)
+    inverse = adapted
+    for before, after, count in reversed(changes):
+        assert inverse.count(after) == count
+        inverse = inverse.replace(after, before)
+    assert inverse == selected
+    leaf = '\nprivate object DesktopCoreNetworkDiagnostics {\n' + \
+        '    fun log(level:String, tag:String, message:String, error:Throwable?) {\n' + \
+        '        com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge.record(level, tag, message, error)\n    }\n' + \
+        '    fun reportApiError(endpoint:String, httpCode:Int, errorMessage:String) {\n' + \
+        '        com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge.reportApiError(endpoint, httpCode, errorMessage)\n    }\n}\n'
+    target = output / 'com/android/purebilibili/core/network/DesktopCoreDataLog.kt'
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text('package com.android.purebilibili.core.network\n\n' + adapted + leaf, encoding='utf8', newline='\n')
+    (output / 'core-data-log-source-proof.json').write_text(json.dumps(dict(
+        originalPath=relative, originalSha256LF=CORE_DIAGNOSTICS_SHA,
+        selectedSha256LF=hashlib.sha256(selected.encode()).hexdigest(),
+        adaptedSha256LF=hashlib.sha256(adapted.encode()).hexdigest(),
+        originalSelectedBodyInverseExact=True, callbackChanges=changes,
+        existingDiagnosticsConsumer=True, newConfigOrStoreOrClient=False), indent=2)+'\n', encoding='utf8')
+
 def generate(repo: Path, output: Path) -> Path:
-    source_path = repo / "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
+    source_path = _desktop_canonical_source(repo, 'core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt')
     source = source_path.read_text(encoding="utf-8")
     spec = importlib.util.spec_from_file_location("bilipai_kotlin_structure", repo / "desktop/tools/sync-upstream.py")
     parser = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(parser)
     tokens = parser.kotlin_tokens(source)
     sections = [match.group(0) for match in re.finditer(
-        r'(?m)^internal const val \w+\s*=\s*"[^"\n]+"', source)]
+        r'(?m)^(?:internal )?const val \w+\s*=\s*"[^"\n]+"', source)]
     # Keep every actual Retrofit interface and request DTO. Android transport/session
     # implementations remain in the platform adapter; no endpoint is retyped here.
     interfaces = list(re.finditer(r"(?m)^interface\s+(\w+)\s*\{", source))
@@ -116,7 +156,7 @@ def generate(repo: Path, output: Path) -> Path:
          ["PARTIAL_CONTENT_RANGE_REGEX"], ""),
     ]
     for relative, package, functions, constants, imports in policies:
-        policy_source = (repo / relative).read_text(encoding="utf-8")
+        policy_source = (_desktop_canonical_source(repo, relative)).read_text(encoding="utf-8")
         policy_tokens = parser.kotlin_tokens(policy_source)
         pieces = ["// GENERATED verbatim from " + relative, "package " + package, imports]
         for name in constants:
@@ -149,8 +189,8 @@ def generate(repo: Path, output: Path) -> Path:
         target = output / (package.replace(".", "/") + "/DesktopUpstreamPolicies.kt")
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
-    history_path = "app/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt"
-    history = (repo / history_path).read_text(encoding="utf-8")
+    history_path = 'core-data/src/main/java/com/android/purebilibili/data/repository/HistoryRepository.kt'
+    history = (_desktop_canonical_source(repo, history_path)).read_text(encoding="utf-8")
     history_tokens = parser.kotlin_tokens(history)
     pieces = ["// GENERATED verbatim from " + history_path, "package com.android.purebilibili.data.repository"]
     for kind, name, constructor_only in [("class", "HistoryCursorQuery", True), ("fun", "resolveHistoryCursorQuery", False)]:
@@ -161,8 +201,8 @@ def generate(repo: Path, output: Path) -> Path:
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
 
-    token_path = "app/src/main/java/com/android/purebilibili/core/store/TokenManager.kt"
-    token_source = (repo / token_path).read_text(encoding="utf-8")
+    token_path = 'core-data/src/main/java/com/android/purebilibili/core/store/TokenManager.kt'
+    token_source = (_desktop_canonical_source(repo, token_path)).read_text(encoding="utf-8")
     platform_constants = []
     for name in ["ACCESS_TOKEN_PLATFORM_TV", "ACCESS_TOKEN_PLATFORM_ANDROID"]:
         matches = list(re.finditer(r'(?m)^\s*const val ' + name + r'\s*=\s*"[^"\n]+"', token_source))
@@ -179,6 +219,7 @@ def generate(repo: Path, output: Path) -> Path:
         "internal object DesktopTokenPlatform {\n" + "\n".join("    " + line for line in platform_constants) + "\n}",
         source[begin:tokens[end][2]]]
     target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
+    generate_core_data_log(repo, output, parser)
     return destination
 
 

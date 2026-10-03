@@ -41,6 +41,14 @@ internal class DesktopProfileAccountsBinding(
     override fun currentMid(): Long? = admitted(entryJob) { activeAccountMid() }
     override fun hasSession(): Boolean = admitted(entryJob) { currentCookies()["SESSDATA"].orEmpty().isNotBlank() }
     override fun accessTokenCredentials(): Pair<String?, String> = admitted(entryJob) { accessTokenCredentials() }
+    override fun qrAuthorizationSession(): com.android.purebilibili.feature.login.QrAuthorizationSession = admitted(entryJob) {
+        val cookies = currentCookies()
+        val credentials = accessTokenCredentials()
+        com.android.purebilibili.feature.login.QrAuthorizationSession(
+            cookies["SESSDATA"].orEmpty(), cookies["bili_jct"].orEmpty(), activeAccountMid(),
+            cookies["buvid3"].orEmpty(), credentials.first.orEmpty(), credentials.second,
+        )
+    }
     override suspend fun saveMid(mid: Long) { admitted(caller()) { saveProfileMid(mid) } }
     override suspend fun saveVipStatus(vip: Boolean) { admitted(caller()) { saveProfileVipStatus(vip) } }
     override suspend fun upsertCurrentAccount(nav: NavData?) { admitted(caller()) { upsertProfileCurrentAccount(nav) } }

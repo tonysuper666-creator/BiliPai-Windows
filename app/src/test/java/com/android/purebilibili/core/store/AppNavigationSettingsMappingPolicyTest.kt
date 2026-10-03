@@ -35,6 +35,7 @@ class AppNavigationSettingsMappingPolicyTest {
         assertTrue(result.miuixTransitionBlurEnabled)
         assertEquals(100, result.miuixPredictiveBackMaxProgressPercent)
         assertTrue(result.videoSharedReturnGestureFollowEnabled)
+        assertTrue(result.videoSharedReturnGestureTranslationEnabled)
     }
 
     @Test
@@ -49,6 +50,20 @@ class AppNavigationSettingsMappingPolicyTest {
         assertTrue(result.tabletUseSidebar)
         assertTrue(defaultTabletUseSidebar(isTabletDevice = true))
         assertFalse(defaultTabletUseSidebar(isTabletDevice = false))
+    }
+
+    @Test
+    fun gestureRotationAndTranslationPreferencesAreIndependent() {
+        for (poseEnabled in listOf(false, true)) {
+            for (translationEnabled in listOf(false, true)) {
+                val result = mapAppNavigationSettingsFromPreferences(mutablePreferencesOf(
+                    booleanPreferencesKey("video_shared_return_gesture_follow_enabled") to poseEnabled,
+                    booleanPreferencesKey("video_shared_return_gesture_translation_enabled") to translationEnabled,
+                ))
+                assertEquals(poseEnabled, result.videoSharedReturnGestureFollowEnabled)
+                assertEquals(translationEnabled, result.videoSharedReturnGestureTranslationEnabled)
+            }
+        }
     }
 
     @Test

@@ -57,10 +57,7 @@ internal fun SettingsHomeSearchEntry(
         onClick = onClick,
         placeholder = placeholder,
         modifier = modifier
-            .padding(
-                horizontal = visualSpec.screenHorizontalPadding,
-                vertical = visualSpec.searchBarVerticalPadding,
-            ),
+            .padding(horizontal = visualSpec.screenHorizontalPadding),
     )
 }
 

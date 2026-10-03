@@ -1,0 +1,21 @@
+{
+  "baseCommit": "7637ac94555968f419e78ce496451523f9e194bb",
+  "sourceTargets": [
+    {
+      "path": "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalSpacePagesRoot.kt",
+      "beforeSha256Bytes": "ce9160a6a036fd99c0ec4c6895498c50ca44cd99f23a3aaa2db0e1129f56502a",
+      "afterSha256Bytes": "707cf84775c62f402de9514ad93c136230569be316ea3bfb79026692a017d319"
+    }
+  ],
+  "normalMainAndTestCompilePassed": true,
+  "actualProductOverrides": 0,
+  "junitMethods": 15,
+  "normalLogSha256Bytes": "7e00951fa325a790811ec818abbce2bc51948e483745b0b4b1bff937fa7166d7",
+  "priorFailedActualWindowRetained": true,
+  "rootRuntimeAccepted": false,
+  "realAccountAccepted": false,
+  "nativePlaybackAccepted": false,
+  "v025Accepted": false,
+  "newEXEDeployed": false,
+  "excludedCompiledProofFiles": []
+}

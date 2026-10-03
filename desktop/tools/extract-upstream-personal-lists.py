@@ -2,11 +2,12 @@
 """Pinned v0.2.3 original History navigation and article-policy selections.
 Full CommonListScreen/ViewModel/protocols remain the existing Favorites producer.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, os, re, textwrap
-PIN = '3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+PIN = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 SOURCE_SHA = {
-    'navigation/AppNavigation': '218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59',
+    'navigation/AppNavigation': '729021fb73c3ec4aa2aedb0d4de5706c3d72c43928f6b5f0a8da4e80c693ccca',
     'feature/search/SearchArticleNavigationPolicy': '98daed344df34c2f5a7ec69050a0959feec821445d63b7edbdd19b812ccb1495',
 }
 
@@ -22,7 +23,7 @@ def generate(repo, output):
     spec.loader.exec_module(parser)
     emitted = []
     def source(relative):
-        path = repo/'app/src/main/java/com/android/purebilibili'/f'{relative}.kt'
+        path = _desktop_canonical_source(repo, 'app/src/main/java/com/android/purebilibili/' + relative + '.kt')
         value = safe(path).read_text(encoding='utf-8').replace('\r\n','\n')
         if hashlib.sha256(value.encode('utf-8')).hexdigest() != SOURCE_SHA[relative]:
             raise ValueError(f'Pinned {PIN} source identity changed: {relative}')

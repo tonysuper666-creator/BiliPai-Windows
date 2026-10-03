@@ -102,6 +102,11 @@ internal val LocalDesktopOriginalSearchRoot = staticCompositionLocalOf<DesktopOr
             is BiliPaiNavKey.Search -> SearchScreen(viewModel=checkNotNull(entry.viewModel),userFace=account?.avatar.orEmpty(),
                 initialKeyword=entry.initialKeyword(),onInitialKeywordConsumed={ entry.initialKeywordConsumed() },
                 onBack={ navigate(onBack) },onOpenTrending={ navigate { commands.push(BiliPaiNavKey.SearchTrending) } },
+                onNavigateSearchTarget={ target ->
+                    var accepted=false
+                    navigate { accepted=dispatchDesktopReadyNativeTarget(commands.root,commands,target) }
+                    accepted
+                },
                 onVideoClick={ bvid,cid,cover -> navigate { commands.video(BiliPaiNavKey.VideoDetail(bvid,cid,cover,sourceRoute=key.toLegacyRoute())) } },
                 onWebClick={ url,title -> navigate { commands.push(BiliPaiNavKey.Web(url,title)) } },
                 onUpClick={ mid -> navigate { commands.push(BiliPaiNavKey.Space(mid)) } },

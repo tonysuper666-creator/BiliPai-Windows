@@ -107,13 +107,13 @@ internal class MusicViewModel : ViewModel() {
             }
 
             val infoResponse = AudioRepository.getSongInfo(sid)
-            if (infoResponse.code != 0 || infoResponse.data == null) {
+            val songInfo = infoResponse.data
+            if (infoResponse.code != 0 || songInfo == null) {
                 _uiState.update {
                     it.copy(isLoading = false, error = "加载歌曲信息失败: ${infoResponse.msg}")
                 }
                 return@launch
             }
-            val songInfo = infoResponse.data
             val streamResponse = AudioRepository.getSongStream(sid)
             val streamUrl = streamResponse.data?.cdns?.firstOrNull()
             if (streamResponse.code != 0 || streamUrl.isNullOrBlank()) {

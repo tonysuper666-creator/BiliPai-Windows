@@ -1,4 +1,5 @@
 """Source-owned dynamic comment VM slice. No duplicate model/account/cache."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import importlib.util
 import sys
@@ -11,7 +12,7 @@ def load(repo, name, path):
     spec=importlib.util.spec_from_file_location(name,repo/path)
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
 
-def read(repo,path):return (repo/path).read_text(encoding='utf-8').replace('\r\n','\n')
+def read(repo,path):return (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n','\n')
 
 def generate(repo,output):
     host=load(repo,'reply_vm_host','desktop/tools/extract-upstream-plugins.py')

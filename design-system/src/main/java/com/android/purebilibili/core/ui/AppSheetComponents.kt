@@ -7,7 +7,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +35,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -255,6 +259,8 @@ fun AppModalBottomSheet(
     val uiStyle = LocalAppUiStyle.current
     val miuixNonGlass = isMiuixNonGlassEnabled()
     val configuration = LocalConfiguration.current
+    // 半开折叠屏：sheet 整体收进铰链安全侧，避免横跨折缝。
+    val hingeSafeRegions = LocalHingeSafeOverlayRegions.current.sheet
     val layoutSpec = remember(configuration.screenWidthDp, miuixNonGlass) {
         resolveAppModalLayoutSpec(
             windowWidthDp = configuration.screenWidthDp,
@@ -289,7 +295,9 @@ fun AppModalBottomSheet(
     }
     // 返回统一走 ModalSheetNavigationHost（Dialog 窗口 NavigationBackHandler），
     // 关闭 Dialog 默认 dismissOnBackPress，避免侧边返回与 back 双触发。
-    if ((presentationOverride ?: layoutSpec.presentation) == AppModalPresentation.CenteredDialog) {
+    if (hingeSafeRegions != null ||
+        (presentationOverride ?: layoutSpec.presentation) == AppModalPresentation.CenteredDialog
+    ) {
         Dialog(
             onDismissRequest = onDismissRequest,
             properties = DialogProperties(
@@ -302,27 +310,35 @@ fun AppModalBottomSheet(
                 dismissOnBackPress = dismissOnBackPress,
                 onDismissRequest = onDismissRequest,
             ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    AppPopupSurface(
-                        type = AppPopupSurfaceType.DIALOG,
-                        modifier = Modifier
-                            .widthIn(max = layoutSpec.maxWidthDp.dp)
-                            .heightIn(
-                                max = (configuration.screenHeightDp *
-                                    layoutSpec.maxHeightFraction).dp
-                            )
-                            .then(modifier)
-                            .fillMaxWidth(),
-                        shape = centeredSheetShape,
-                        containerColor = resolvedContainerColor,
-                        contentColor = contentColor,
-                        tonalElevation = tonalElevation,
-                    ) {
-                        Column(content = content)
+                val surface: @Composable () -> Unit = {
+                    BoxWithConstraints {
+                        AppPopupSurface(
+                            type = AppPopupSurfaceType.DIALOG,
+                            modifier = modifier
+                                .widthIn(max = layoutSpec.maxWidthDp.dp)
+                                .heightIn(
+                                    max = minOf(maxHeight, (configuration.screenHeightDp *
+                                        layoutSpec.maxHeightFraction).dp)
+                                )
+                                .fillMaxWidth()
+                                .pointerInput(Unit) { detectTapGestures { } },
+                            shape = centeredSheetShape,
+                            containerColor = resolvedContainerColor,
+                            contentColor = contentColor,
+                            tonalElevation = tonalElevation,
+                        ) {
+                            Column(content = content)
+                        }
                     }
+                }
+                if (hingeSafeRegions != null) {
+                    HingeSafeOverlayHost(
+                        regionProvider = hingeSafeRegions,
+                        modifier = Modifier.fillMaxSize().imePadding(),
+                        onDismissRequest = onDismissRequest,
+                    ) { surface() }
+                } else {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { surface() }
                 }
             }
         }

@@ -257,13 +257,15 @@ class SeasonSeriesDetailViewModel(application: Application) : BaseListViewModel(
                 if (type == "season") {
                      val response = spaceApi.getSeasonArchives(mid, id, currentPage)
                      if (response.code == 0 && response.data != null) {
-                         val archives = response.data.archives
+                         val checkedResponseData = requireNotNull(response.data)
+                         val archives = checkedResponseData.archives
                          newItems = archives.map { item -> mapSeasonArchiveToVideoItem(item, mid, ownerName) }
                      }
                 } else if (type == "series") {
                      val response = spaceApi.getSeriesArchives(mid, id, currentPage)
                      if (response.code == 0 && response.data != null) {
-                         val archives = response.data.archives
+                         val checkedResponseData = requireNotNull(response.data)
+                         val archives = checkedResponseData.archives
                          newItems = archives.map { item -> mapSeriesArchiveToVideoItem(item, mid, ownerName) }
                      }
                 } else if (type == "favorite") {

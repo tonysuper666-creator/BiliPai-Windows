@@ -89,6 +89,8 @@ internal interface DesktopOriginalPortraitPlatform {
     val comments: VideoCommentViewModel
     val danmaku: DesktopOriginalPortraitDanmakuPort
     val requests: DesktopOriginalPortraitRequests
+    /** Same Assembly primary action invocation and Root account-tagged events. */
+    val creatorTeam: DesktopCreatorTeamBindings
     val externalPlaylist: StateFlow<Boolean>
     val favoriteQuickSaveDefaultFolder: Flow<Boolean>
     val blockedUps: DesktopOriginalPortraitBlockedUps

@@ -1,0 +1,7 @@
+Exception in thread "main" java.lang.NoClassDefFoundError: org/junit/jupiter/api/Test
+	at com.bilipai.desktop.ui.SpaceFixtureRunnerKt.main(SpaceFixtureRunner.kt:4)
+Caused by: java.lang.ClassNotFoundException: org.junit.jupiter.api.Test
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	... 1 more

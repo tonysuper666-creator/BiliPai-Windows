@@ -1,0 +1,106 @@
+def bangumi_shared_owner_delta(path, body):
+ if path != 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt': return body
+ def change(before, after, count=1):
+  nonlocal body
+  assert body.count(before) == count, (before, body.count(before), count)
+  body = body.replace(before, after)
+ # A presenter is a borrowed producer lifetime. The sole original Store token,
+ # real MPV source and receipt remain the media authority; no second generation.
+ change('    private var isPortraitPlaybackSessionActive = false\n', '''    private var isPortraitPlaybackSessionActive = false
+    @Volatile private var desktopBangumiPresenter: com.bilipai.desktop.ui.DesktopOriginalBangumiSharedPlaybackPresenter? = null
+
+    private fun hasDesktopBangumiPlayback(): Boolean = desktopBangumiPresenter != null ||
+        environment.plugins.capturePlaybackDispatch()?.nativeSource?.source?.referer?.let {
+            it.startsWith("https://www.bilibili.com/bangumi/play/ep") ||
+                it.startsWith("https://www.bilibili.com/cheese/play/ep")
+        } == true
+
+    internal fun isDesktopBangumiPresenterCurrent(value: com.bilipai.desktop.ui.DesktopOriginalBangumiSharedPlaybackPresenter): Boolean =
+        desktopBangumiPresenter === value
+
+    private fun retireDesktopBangumiPresenter() {
+        var previous: com.bilipai.desktop.ui.DesktopOriginalBangumiSharedPlaybackPresenter? = null
+        environment.commit { previous = desktopBangumiPresenter; desktopBangumiPresenter = null }
+        // Cancellation/cleanup is always outside Store/entry/native admission.
+        previous?.onSharedPlaybackReplaced()
+    }
+''')
+ change('        if (bvid.isBlank()) return\n', '''        if (bvid.isBlank()) return
+        val replacesBangumiPlayback = hasDesktopBangumiPlayback()
+        retireDesktopBangumiPresenter()
+''')
+ change('            force = force,\n            autoPlay = autoPlay,\n            ignoreSavedProgress = ignoreSavedProgress,\n',
+  '            force = force || replacesBangumiPlayback,\n            autoPlay = autoPlay,\n            ignoreSavedProgress = ignoreSavedProgress,\n')
+ change('    fun cancelDesktopPendingPlayback() {\n        environment.assertCurrent()\n', '''    fun cancelDesktopPendingPlayback() = cancelDesktopPendingPlayback(retainBangumiPresenter = false)
+
+    private fun cancelDesktopPendingPlayback(retainBangumiPresenter: Boolean) {
+        environment.assertCurrent()
+        if (!retainBangumiPresenter) retireDesktopBangumiPresenter()
+''')
+ change('    internal fun beginDesktopPortraitLoad(request: PlaybackRequest): Long {\n', '''    internal fun beginDesktopPortraitLoad(request: PlaybackRequest): Long = beginDesktopPortraitLoad(request, null)
+
+    internal fun beginDesktopPortraitLoad(request: PlaybackRequest,
+        bangumiPresenter: com.bilipai.desktop.ui.DesktopOriginalBangumiSharedPlaybackPresenter?): Long {
+''')
+ change('        cancelDesktopPendingPlayback()\n        heartbeatJob?.cancel()\n', '        cancelDesktopPendingPlayback(retainBangumiPresenter = bangumiPresenter != null)\n        heartbeatJob?.cancel()\n')
+ change('        var token: Long? = null\n        check(environment.commit {\n            token = playbackSessionStore.beginLoadRequest(request).requestToken\n', '''        var token: Long? = null
+        var previous: com.bilipai.desktop.ui.DesktopOriginalBangumiSharedPlaybackPresenter? = null
+        check(environment.commit {
+            previous = desktopBangumiPresenter
+            desktopBangumiPresenter = bangumiPresenter
+            token = playbackSessionStore.beginLoadRequest(request).requestToken
+''')
+ change('        return checkNotNull(token)\n    }\n\n    /** Consume actual Pager metadata', '''        if (previous !== bangumiPresenter) previous?.onSharedPlaybackReplaced()
+        return checkNotNull(token)
+    }
+
+    /** Consume actual Pager metadata''')
+ change('        admit: ((() -> Unit) -> Boolean),\n    ): Boolean {\n', '''        admit: ((() -> Unit) -> Boolean),
+    ): Boolean = adoptDesktopPortraitLoad(requestToken, result, isAcceptedCurrent, admit, null)
+
+    internal fun adoptDesktopPortraitLoad(
+        requestToken: Long,
+        result: com.android.purebilibili.feature.video.usecase.VideoLoadResult.Success,
+        isAcceptedCurrent: () -> Boolean,
+        admit: ((() -> Unit) -> Boolean),
+        bangumiPresenter: com.bilipai.desktop.ui.DesktopOriginalBangumiSharedPlaybackPresenter?,
+    ): Boolean {
+''')
+ change('        environment.assertCurrent()\n        val allVideoUrls = buildPlaybackVideoUrlCandidates(result.playUrl', '''        environment.assertCurrent()
+        if (desktopBangumiPresenter !== bangumiPresenter) return false
+        val allVideoUrls = buildPlaybackVideoUrlCandidates(result.playUrl''')
+ change('if (isAcceptedCurrent() && shouldApplyVideoLoadResult(currentLoadRequestToken,\n', 'if (desktopBangumiPresenter === bangumiPresenter && isAcceptedCurrent() && shouldApplyVideoLoadResult(currentLoadRequestToken,\n', 2)
+ change('        scheduleDeferredPostLoadWork(result.info.bvid, result.info.cid, result.info.aid,\n', '''        // PGC's full original VM owns epId/sid/type=4 heartbeat, Sponsor/OPED,
+        // playlist and permissions. Shared adoption above still publishes the
+        // actual Subject and Mini; ordinary deferred producers must not start.
+        if (bangumiPresenter != null) return true
+        scheduleDeferredPostLoadWork(result.info.bvid, result.info.cid, result.info.aid,
+''')
+ # No ordinary end, heartbeat, quality/CDN recovery or plugin action can run on
+ # the PGC source. Native cache-error recovery remains the shared owner observer.
+ for signature in (
+  '        override fun onPlaybackStateChanged(playbackState: Int) {\n',
+  '        override fun onIsPlayingChanged(isPlaying: Boolean) {\n',
+  '        override fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {\n',
+  '        override fun onRenderedFirstFrame() {\n',
+  '        override fun onSourceTransition(sourceVersion: Long) {\n',
+  '        override fun onTracksChanged(tracks: List<com.bilipai.desktop.player.PlayerTrack>) {\n',
+  '        override fun onPlayerError(error: com.bilipai.desktop.ui.DesktopOriginalNativePlaybackError) {\n',
+  '    private fun startHeartbeat() {\n',
+  '    private fun startPluginCheck() {\n',
+  '    private fun recordCreatorWatchProgressSnapshot() {\n',
+  '    fun changeQuality(qualityId: Int) {\n',
+  '    fun restoreFromCache(cachedState: VideoPlaybackUiState.Success, startPosition: Long = -1L) {\n',
+ ):
+  change(signature, signature + '        if (hasDesktopBangumiPlayback()) return\n')
+ change('    fun applyPlaybackSpeedFromUi(speed: Float): Boolean {\n',
+  '    fun applyPlaybackSpeedFromUi(speed: Float): Boolean {\n        if (hasDesktopBangumiPlayback()) return false\n')
+ change('    fun saveCurrentPosition() { playbackUseCase.savePosition(currentBvid, currentCid) }',
+  '    fun saveCurrentPosition() { if (!hasDesktopBangumiPlayback()) playbackUseCase.savePosition(currentBvid, currentCid) }')
+ change('    fun flushPlaybackHeartbeatSnapshot(reason: String = "manual") {\n',
+  '    fun flushPlaybackHeartbeatSnapshot(reason: String = "manual") {\n        if (hasDesktopBangumiPlayback()) return\n')
+ change('        reason: String\n    ): Boolean {\n        if (currentBvid.isBlank() || currentCid <= 0L) return false\n',
+  '        reason: String\n    ): Boolean {\n        if (hasDesktopBangumiPlayback()) return false\n        if (currentBvid.isBlank() || currentCid <= 0L) return false\n')
+ change('    override fun close() {\n', '    override fun close() {\n        retireDesktopBangumiPresenter()\n')
+ return body
+

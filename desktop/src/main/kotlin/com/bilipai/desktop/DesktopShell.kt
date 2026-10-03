@@ -140,7 +140,8 @@ internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playe
     applicationPluginStore: DesktopPluginStore? = null, isClosing: () -> Boolean = { false },
     diagnosticLifecycle: DesktopDiagnosticLifecycle? = null, diagnosticStartupError: String? = null,
     danmakuPresentation: DesktopDanmakuPresentationBinding,
-    isFullscreen: () -> Boolean, setFullscreen: (Boolean) -> Unit) {
+    isFullscreen: () -> Boolean, setFullscreen: (Boolean) -> Unit,
+    onRootContentFrame: ((() -> Boolean) -> Unit) = {}) {
     val applicationImages = LocalDesktopApplicationImageLoader.current
     val pluginStore = remember(applicationPluginStore) {
         (applicationPluginStore ?: DesktopPluginStore(DesktopLibrary.directoryForAccount(null))).also { store ->
@@ -190,7 +191,8 @@ internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playe
             registerShutdown, onRestart, pluginStore, discovery, closeDiscoveryStorage,
             isClosing = { rootClosing.get() || latestIsClosing() },
             diagnosticLifecycle = diagnosticLifecycle, diagnosticStartupError = diagnosticStartupError,
-            danmakuPresentation = danmakuPresentation, isFullscreen = isFullscreen, setFullscreen = setFullscreen)
+            danmakuPresentation = danmakuPresentation, isFullscreen = isFullscreen, setFullscreen = setFullscreen,
+            onRootContentFrame = onRootContentFrame)
     }
     diagnosticLifecycle?.crashPrompt?.let { prompt ->
         DesktopAppearanceTheme(startupTheme) {
@@ -207,7 +209,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     closeDiscoveryStorage: () -> Unit, isClosing: () -> Boolean,
     diagnosticLifecycle: DesktopDiagnosticLifecycle?, diagnosticStartupError: String?,
     danmakuPresentation: DesktopDanmakuPresentationBinding,
-    isFullscreen: () -> Boolean, setFullscreen: (Boolean) -> Unit) {
+    isFullscreen: () -> Boolean, setFullscreen: (Boolean) -> Unit,
+    onRootContentFrame: ((() -> Boolean) -> Unit)) {
     val applicationImages = LocalDesktopApplicationImageLoader.current
     val diagnostics = diagnosticLifecycle?.diagnostics
     val account by repository.account.collectAsState()
@@ -333,6 +336,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             })
     }
     val globalPluginContext = pluginRuntime.context
+    val detailedCommentTimeEnabled by remember(globalPluginContext) {
+        com.android.purebilibili.core.store.DesktopOriginalReplySettings.getDetailedCommentTimeEnabled(globalPluginContext)
+    }.collectAsState(initial = false)
     val dynamicTimelinePreferences = remember(pluginStore) {
         DesktopDynamicTimelinePreferences(globalPluginContext)
     }
@@ -974,7 +980,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             retainedMedia.acquire(retainedMedia.external)
             retainedMedia.external.open(launchId, authorizationCurrent = {
                 host.executionRevision.value == revision && repository.sessionEpoch == epoch
-            }, releaseRequest = host::releaseExternalLaunch)
+            }, releaseRequest = host::releaseExternalLaunch, host = host, overlay = danmaku,
+                plugin = pluginRuntime.jsPlugins.state.value.plugins.firstOrNull {
+                    it.installed.manifest.id == com.android.purebilibili.core.plugin.js.ExternalMediaLaunchStore.get(launchId)?.danmakuPluginId &&
+                        it.authorizationMatches && it.installed.enabled
+                }?.installed, expectedRevision = revision)
             rootRoutes()?.push(BiliPaiNavKey.ExternalMedia(launchId))
         } catch (failure: Exception) {
             host.releaseExternalLaunch(launchId)
@@ -1347,6 +1357,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             onCourseClick = { url, title ->
                 navigateOriginalDynamicCourse(url, title, onPlayer = { sid, eid, course -> showSeason(sid, eid, course) }, onWeb = ::openDynamicWeb)
             }),
+        com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext provides storageSettingsContext,
+        com.bilipai.desktop.ui.LocalDesktopDetailedCommentTimeContext provides globalPluginContext,
+        com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled provides detailedCommentTimeEnabled,
         LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences,
         LocalDesktopHomeCardProgress provides homeCardProgress,
         LocalDesktopHomeCardPreferences provides homeCardPreferences) {
@@ -1495,8 +1508,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                         physicalDestination is BiliPaiNavKey.VideoDetail,actualWindow.width>actualWindow.height,
                         physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library,
                     { root -> originalNowPlayingFor(root,listen).binding },
-                    { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) })
-                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize()) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages ->
+                    { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) },
+                    ordinaryVideo.playlist,
+                    { bvid -> ordinaryVideoResources?.progress?.cachedPositionForSpace(bvid) { !isClosing() } ?: 0L })
+                if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize(),onRootContentFrame) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages,spacePages ->
                     val messageRoutes = commands as DesktopOriginalRootRouteAssembly
                     val messageLink: (String) -> Unit = { raw ->
                         if (active) messageRoutes.callbackFor(entryKey) {
@@ -1553,6 +1568,20 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }
                         Box(Modifier.weight(1f).fillMaxWidth()) {
                         when {
+                            entryKey is BiliPaiNavKey.Space || entryKey is BiliPaiNavKey.UpowerRank || entryKey is BiliPaiNavKey.MemberGuard ->
+                                DesktopDetailWindow { DesktopOriginalSpacePageRootHost(entryKey, spacePages,
+                                    services.originalSpacePlaylist, services.originalSpaceCachedPosition,
+                                    { title, text, owned -> requestDesktopTextShare(services.textShare,
+                                        spacePages.entry(entryKey).environment.scope, title, text,
+                                        { owned() && active && messageRoutes.currentKey == entryKey && !isClosing() }, services.feedback) },
+                                    desktopDetailRenderEffectsSupported(), active, personalLists.preferences) }
+                            entryKey is BiliPaiNavKey.BangumiPlayer ->
+                                DesktopOriginalBangumiPlayerPhysicalLeaf(entryKey, ordinaryVideo, messageRoutes, active,
+                                    ::openVideoHonorLink, pendingOwner = {
+                                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                            ordinaryVideoResourceError?.let { Text(it) } ?: CircularProgressIndicator()
+                                        }
+                                    })
                             entryKey is BiliPaiNavKey.Bangumi || entryKey is BiliPaiNavKey.BangumiDetail || entryKey is BiliPaiNavKey.BangumiReview ->
                                 DesktopDetailWindow { DesktopOriginalBangumiPagesRootHost(entryKey, messageRoutes, repository, ordinaryVideoResources, active,
                                     replaceSeason = { current, season -> messageRoutes.replaceBangumiDetail(current, season) }) }
@@ -1799,7 +1828,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 TextButton(onClick = { commands.back() }) { Text("返回插件") }
                                 Box(Modifier.weight(1f).fillMaxWidth()) {
                                     DesktopJsPluginContentScreen(pluginRuntime.jsPlugins, jsPluginId,
-                                        onPlayMedia = ::openJsMedia, onFeedModule = { _, _ -> jsSubscriptionReader = true })
+                                        onPlayMedia = ::openJsMedia, onFeedModule = { _, _ -> jsSubscriptionReader = true }, onBack = { commands.back() })
                                 }
                             }
                             section == DesktopSection.EXTERNAL_MEDIA -> DesktopExternalMediaScreen(retainedMedia.external, player, playerContent,
@@ -1868,23 +1897,6 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
                                     onDynamicRoute=::openDynamicRoute,onMessageLink=messageLink),
                                 onBack = { commands.back() }, onTopic = ::openTopic)
-                            section == DesktopSection.USER -> {
-                                val spaceTargetMid = userId
-                                val spaceTargetEpoch = repository.sessionEpoch
-                                val history = library.history().filter { it.authorMid == userId }
-                                val progress = history.associate { card -> card.bvid to SpaceWatchProgress(card.bvid, card.preferredCid, card.title,
-                                    card.progressSeconds ?: 0, card.duration, card.viewedAt) }
-                                DesktopCompleteSpaceScreen(userId, repository, social, community, space, spaceContributions,
-                                    ::openVideo, ::openUser, ::openArticle, ::openDynamic, ::openLive, ::openBangumi, ::openMusic,
-                                    { showSeason(it, course = true) }, ::openResource, ::openCollection,
-                                    onPlaylist = { playlist -> if (repository.sessionEpoch == spaceTargetEpoch && userId == spaceTargetMid) openListenSpaceQueue(playlist, spaceTargetMid, history) },
-                                    onLogin = { loginDialog = true }, onExternalUrl = { raw ->
-                                        runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let { uri ->
-                                            runCatching { java.awt.Desktop.getDesktop().browse(uri) }
-                                        }
-                                    }, progressByBvid = progress, localPositionMs = { bvid -> ((history.firstOrNull { it.bvid == bvid }?.progressSeconds ?: 0) * 1000L) },
-                                    locateBvid = (entryKey as? BiliPaiNavKey.Space)?.targetBvid?.takeIf{it.isNotBlank()} ?: playing.details?.takeIf { it.authorMid == userId }?.bvid ?: history.firstOrNull()?.bvid, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword, onImagePreviewFeedback = { error = it })
-                            }
                             entryKey is BiliPaiNavKey.ArticleDetail -> {
                                 val articleHomeSettings by originalHomePreferences.homeSettings.collectAsState()
                                 DesktopDetailWindow {

@@ -1,0 +1,18 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerComponents.kt:71:49: error: unresolved reference 'resolveBangumiDanmakuTopInsetDp'.
+import com.android.purebilibili.feature.bangumi.resolveBangumiDanmakuTopInsetDp
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerComponents.kt:72:49: error: unresolved reference 'resolveBangumiPlayerTopControlsPaddingTopDp'.
+import com.android.purebilibili.feature.bangumi.resolveBangumiPlayerTopControlsPaddingTopDp
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerComponents.kt:74:44: error: unresolved reference 'SettingsManager'.
+import com.android.purebilibili.core.store.SettingsManager
+                                           ^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerComponents.kt:158:33: error: unresolved reference 'resolveBangumiPlayerTopControlsPaddingTopDp'.
+    val topControlsPaddingTop = resolveBangumiPlayerTopControlsPaddingTopDp(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerComponents.kt:162:27: error: unresolved reference 'resolveBangumiDanmakuTopInsetDp'.
+    val danmakuTopInset = resolveBangumiDanmakuTopInsetDp(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\ui\player\DesktopOriginalBangumiPlayerComponents.kt:208:27: error: unresolved reference 'SettingsManager'.
+    val longPressSpeed by SettingsManager.getLongPressSpeed(context)
+                          ^^^^^^^^^^^^^^^

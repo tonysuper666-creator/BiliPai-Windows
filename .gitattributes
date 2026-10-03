@@ -1,4 +1,14 @@
 # Pinned native dependency licenses are checked by SHA-256 as original bytes.
+# v0.2.5 catalog and raw upstream text pins retain their exact checkout bytes.
+desktop/tools/v025-canonical-sources.json -text
+"app/src/main/java/com/android/purebilibili/feature/onboarding/# 视频基本信息" -text
+app/src/main/res/raw/thanos_fragment.glsl -text
+app/src/main/res/raw/thanos_vertex.glsl -text
+danmaku-engine/LICENSE -text
+miuix-navigation/LICENSE -text
+plugins/community/bp_demo_focus_filter.bp -text
+plugins/tools/create-plugin.js -text
+desktop/verification/v025-current-integration/** -text
 desktop/third-party/ffmpeg/licenses/** -text
 desktop/third-party/libmpv/licenses/** -text
 desktop/third-party/graaljs/licenses/** -text
@@ -117,3 +127,7 @@ desktop/verification/stable-search-pages-root-integration/** -text
 desktop/verification/stable-bangumi-pages-root-integration/** -text
 desktop/verification/stable-root-share-provider-integration/** -text
 desktop/verification/stable-message-pages-root-integration/** -text
+desktop/verification/stable-bangumi-native-owner-root-integration/** -text
+desktop/verification/stable-space-pages-root-integration/** -text
+desktop/verification/stable-bangumi-player-screen-space-ui-root-integration/** -text
+desktop/verification/stable-space-retired-composition-root-integration/** -text

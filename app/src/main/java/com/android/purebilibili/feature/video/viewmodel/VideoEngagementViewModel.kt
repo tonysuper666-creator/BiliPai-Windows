@@ -78,7 +78,7 @@ private val DefaultVideoCoinBalanceLoader = VideoCoinBalanceLoader {
                 withTimeout(5_000L) { NetworkModule.api.getNavInfo() }
             }
             when {
-                response.code == 0 && response.data?.isLogin == true -> response.data.money
+                response.code == 0 && response.data?.isLogin == true -> requireNotNull(response.data).money
                 response.code == 0 -> -3.0
                 else -> -1.0
             }

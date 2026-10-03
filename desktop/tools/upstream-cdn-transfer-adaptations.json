@@ -1,0 +1,655 @@
+{
+  "officialCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "recipes": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnPlaybackDataSource.kt",
+      "originalSha256LF": "9e597b4caad37f2abbe172facc223b7ed713e1a9a986d2b5b0416588acd82e3c",
+      "gitBlob": "5302775cba64a9d2e5577019fd28075818eeda39",
+      "output": "com/android/purebilibili/feature/plugin/CdnPlaybackDataSource.kt",
+      "outputSha256LF": "672bab6762a239f22efab9a82451fcefef71926eaf41a5203df870e926ca5df0",
+      "mode": "policy-extract",
+      "edits": [
+        {
+          "kind": "equal",
+          "startLine": 0,
+          "endLineExclusive": 2,
+          "beforeSha256LF": "60a7835403c898fb1d67581cbf7c91101aa780aef304e017c0c3607df825399e",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 2,
+          "endLineExclusive": 12,
+          "beforeSha256LF": "a7079eec4a0c753942bbb749b2666894d8d6effb4de3738114af49dd52589500",
+          "after": "import java.net.URI\nimport kotlinx.coroutines.CancellationException\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 12,
+          "endLineExclusive": 14,
+          "beforeSha256LF": "cbdd4316db76ee0d89c450174c689ce8831e84c0d8bdd2b3f4db3d5acbe0ad36",
+          "after": null
+        },
+        {
+          "kind": "delete",
+          "startLine": 14,
+          "endLineExclusive": 15,
+          "beforeSha256LF": "db8a51525d066d4d312451bb9fe190a358b7730b609442a41e253e5446ce77ad",
+          "after": ""
+        },
+        {
+          "kind": "equal",
+          "startLine": 15,
+          "endLineExclusive": 23,
+          "beforeSha256LF": "52559e6b484f562cb24ffcbfce492ef44de7d89e739b2e18412b9b50bb4f0dfd",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 23,
+          "endLineExclusive": 23,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "import java.util.concurrent.atomic.AtomicBoolean\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 23,
+          "endLineExclusive": 28,
+          "beforeSha256LF": "88860aacab63af5fb4da47d897a6d79a4a23fdae3687c5f1fd9105dccd7089e4",
+          "after": null
+        },
+        {
+          "kind": "delete",
+          "startLine": 28,
+          "endLineExclusive": 29,
+          "beforeSha256LF": "de4290247003de66a6f21960ba72f641353ee0f591533d6a73d38aa5dd4c5e08",
+          "after": ""
+        },
+        {
+          "kind": "equal",
+          "startLine": 29,
+          "endLineExclusive": 30,
+          "beforeSha256LF": "8fceae1d8e56952d55ddd0749e264bd7e68c09cae386c12d24ae957acf336953",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 30,
+          "endLineExclusive": 36,
+          "beforeSha256LF": "71c1814bbd39305150cd90596038faeb44cdee7d65073769c94d169f7d6fa10d",
+          "after": "    private val upstream: CdnMediaDataSource,\n    private val background: Boolean,\n    private val client: Call.Factory,\n    private val platform: CdnPlaybackPlatform,\n) : CdnMediaDataSource {\n    private var spec: CdnMediaDataSpec? = null\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 36,
+          "endLineExclusive": 51,
+          "beforeSha256LF": "84cb359d82939840a2397dd8555adf84fff2475ddd6d7f633a146e4104e41cf0",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 51,
+          "endLineExclusive": 52,
+          "beforeSha256LF": "d87c76f77b95c99a815b0cf5e7da0213895050cd32acc997eb8a37c9ca3ef00d",
+          "after": "    override fun open(dataSpec: CdnMediaDataSpec): Long {\n        platform.assertCurrent()\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 52,
+          "endLineExclusive": 57,
+          "beforeSha256LF": "1fc8212a18e72fe3e15cea883fb70526b1ee5c257f4c11ce0dd683969f14f7b8",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 57,
+          "endLineExclusive": 62,
+          "beforeSha256LF": "97d80984985de5f1d082a09cb71c2673b8eae15f34bce51aa00e7dae86147deb",
+          "after": "        platform.assertCurrent()\n        if (CdnTransferRuntime.enabled) CdnTransferRuntime.networkChanged(platform.networkIdentity())\n        candidates = platform.authorizedCandidates(CdnTransferRuntime.candidates(dataSpec.uri.toString()))\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 62,
+          "endLineExclusive": 64,
+          "beforeSha256LF": "ab4065791db69edd360b3c668d1f2b04fd9e40f5268a8637a03ad65dce43d5a1",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 64,
+          "endLineExclusive": 65,
+          "beforeSha256LF": "7afb1ff2531f61c008efeac1d898ba9d7ee0cd7d924bf0f680d72a9444514913",
+          "after": "        val wifi = platform.isWifi()\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 65,
+          "endLineExclusive": 66,
+          "beforeSha256LF": "6b29c23ebe353cec6cb54076385d776e769f8acadef11b98df76eff96d33f97a",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 66,
+          "endLineExclusive": 67,
+          "beforeSha256LF": "b49b8290904cce62eeed06cf35fc5ea5eed3d2e0b77d75043e403e6ad1fdc719",
+          "after": "            dataSpec.httpMethod == CdnMediaDataSpec.HTTP_METHOD_GET && dataSpec.httpBody == null &&\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 67,
+          "endLineExclusive": 69,
+          "beforeSha256LF": "be6c627a04957199e239a1ca7af8cf0181f0eaa43880a8555952f193e171ac36",
+          "after": null
+        },
+        {
+          "kind": "delete",
+          "startLine": 69,
+          "endLineExclusive": 70,
+          "beforeSha256LF": "861e84fe869021f70f8409537be5c2b79968a252ff4f7071e35b9dd501735440",
+          "after": ""
+        },
+        {
+          "kind": "equal",
+          "startLine": 70,
+          "endLineExclusive": 72,
+          "beforeSha256LF": "f79c7c19217518ff3f21d669db15944018ecb69bd3dddb7216c1059289a3f3c4",
+          "after": null
+        },
+        {
+          "kind": "delete",
+          "startLine": 72,
+          "endLineExclusive": 73,
+          "beforeSha256LF": "e2ecf6eb99a86ee60ee6de34c86ea82ad55d5300fcb94ad47e1e0955ab9e384e",
+          "after": ""
+        },
+        {
+          "kind": "equal",
+          "startLine": 73,
+          "endLineExclusive": 78,
+          "beforeSha256LF": "a65513e9a0acad03d485f43cecc52042b409c0e14b2b399b222db5721ef3f156",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 78,
+          "endLineExclusive": 78,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "        platform.assertCurrent()\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 78,
+          "endLineExclusive": 80,
+          "beforeSha256LF": "31678ac59287b5986d8784bc7beff66dac9e3f200b753c0140ae1fa20c08bce6",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 80,
+          "endLineExclusive": 81,
+          "beforeSha256LF": "0a03f2e3248838489f979fd62db19177ef5e1907e8e0b55d5490bcc7545682e5",
+          "after": "        if (current.length != CDN_LENGTH_UNSET && consumed >= current.length) return CDN_RESULT_END_OF_INPUT\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 81,
+          "endLineExclusive": 94,
+          "beforeSha256LF": "3d5d779ca2b7630652c4bedd4319cd9996b7e9c9e7d2fa0b37a57c0d6712c64c",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 94,
+          "endLineExclusive": 95,
+          "beforeSha256LF": "fdbdf573753c7b69c9527ef4678a82b489580e4d13494be8995fbae3e19fc090",
+          "after": "                        !platform.isWifi()) {\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 95,
+          "endLineExclusive": 115,
+          "beforeSha256LF": "8e235fadff18b6d9e9183f733121cc8c9a66265a89b9616fc68e45711ca540e2",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 115,
+          "endLineExclusive": 115,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "        platform.assertCurrent()\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 115,
+          "endLineExclusive": 118,
+          "beforeSha256LF": "d7ddd5ef483a57b721ebc2f82c421ed9429a293ae7cfec4a9207b80bb70ee0d7",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 118,
+          "endLineExclusive": 119,
+          "beforeSha256LF": "253d8d9b31bf6b7cc7fca79e19d232f5bf3cf2fe70d0ad6bb12383b804fd4467",
+          "after": "            platform.bytesTransferred(count)\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 119,
+          "endLineExclusive": 120,
+          "beforeSha256LF": "dc292daa708eed9fe4357ecc5e49db1dd6ac984097dccacff09c76fb030b1c48",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 120,
+          "endLineExclusive": 121,
+          "beforeSha256LF": "f80b00039b92cd5456c553bacafec78f41a69b2fee23499de71bdb832763a9a6",
+          "after": "        } else if (count == CDN_RESULT_END_OF_INPUT && monitored) {\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 121,
+          "endLineExclusive": 126,
+          "beforeSha256LF": "d69ca5ca8b736f5ac1c9fdac092099e93f0355091a0693f81569a2d55c8395fb",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 126,
+          "endLineExclusive": 128,
+          "beforeSha256LF": "8d9b9e41af098773fcad972f5ea44282380f59b6f8fe6efae8e8979f04b6799e",
+          "after": "    override fun getUri(): URI? = if (delegateOpen) upstream.getUri() else spec?.uri\n    override fun getResponseHeaders(): Map<String, List<String>> = if (delegateOpen) upstream.getResponseHeaders() else emptyMap()\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 128,
+          "endLineExclusive": 148,
+          "beforeSha256LF": "d05ee97567f119e66583bbb1448d6537079bbb7f2a20a412400c627b9b0b6887",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 148,
+          "endLineExclusive": 149,
+          "beforeSha256LF": "4c89edfb7cc81020e69eb698499017dae1d29b38f1126dcebd7cfad46d7820dd",
+          "after": "            started = false\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 149,
+          "endLineExclusive": 152,
+          "beforeSha256LF": "999bdefeeaca6340e0290dc86e889c89d5e189aa5ba44b585b3b70734f4a62d8",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 152,
+          "endLineExclusive": 153,
+          "beforeSha256LF": "fe117941b10d05fdbf14f53eb18d44f7de6732b34d5e471e8f8f575872db8df1",
+          "after": "    private fun openDelegate(dataSpec: CdnMediaDataSpec): Long {\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 153,
+          "endLineExclusive": 187,
+          "beforeSha256LF": "064906818b4b6a326ee2620c4ff36583b48180eb9d9a806750125b4ec26ef653",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 187,
+          "endLineExclusive": 187,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "        val slotEnded = AtomicBoolean(false)\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 187,
+          "endLineExclusive": 189,
+          "beforeSha256LF": "8b7f0d8906f0ac494b7af771b15142f81a7b154e7c746d70c8b6c44de61df482",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 189,
+          "endLineExclusive": 191,
+          "beforeSha256LF": "0119aa88c7fa06c89ba6d04aae80fece6701f6d5aee06ca696e87af534f2bb49",
+          "after": "    private fun downloadWindow(dataSpec: CdnMediaDataSpec, start: Long, length: Long): ByteArray {\n        platform.assertCurrent()\n        val urls = CdnTransferRuntime.rank(platform.authorizedCandidates(candidates))\n        if (urls.isEmpty()) throw IOException(\"CDN parallel authorization expired\")\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 191,
+          "endLineExclusive": 213,
+          "beforeSha256LF": "c653ef379e19bb3c902f2be693996fbf6a85a7a1939ebba2989091b517acdf39",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 213,
+          "endLineExclusive": 213,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "                platform.assertCurrent()\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 213,
+          "endLineExclusive": 252,
+          "beforeSha256LF": "2656b92de7a6bcd00dd3a1b35f07743e6aee2743bf98b4eed017a60080ebade5",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 252,
+          "endLineExclusive": 252,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "            platform.assertCurrent()\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 252,
+          "endLineExclusive": 261,
+          "beforeSha256LF": "c578729520b31a74b174f2d6d519c006dd04fc7bf06919deceebae6bbf4f9a89",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 261,
+          "endLineExclusive": 262,
+          "beforeSha256LF": "b108412977eaea8d55d4df81461666962f58ec827a7ed8002662f12ec942be86",
+          "after": "        dataSpec: CdnMediaDataSpec,\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 262,
+          "endLineExclusive": 283,
+          "beforeSha256LF": "715c2fef3d0ad1f67781f0a6ac351a912deea5070e468142ca9a5326e789ae54",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 283,
+          "endLineExclusive": 283,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "            platform.assertCurrent()\n            platform.assertParallelUrl(url)\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 283,
+          "endLineExclusive": 290,
+          "beforeSha256LF": "cd7833d6020d6948e7908ab7b8164ca5d05f3f9adffbc344f0fd48b00e76efad",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 290,
+          "endLineExclusive": 292,
+          "beforeSha256LF": "44bcd6b73b32a6415403e9daa61f19d06639ecc21ef1f4d0eff5c5e77c7a04f3",
+          "after": "            client.newCall(platform.prepareRequest(request))\n        } catch (error: Exception) {\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 292,
+          "endLineExclusive": 293,
+          "beforeSha256LF": "7c61deb1beb290e0d17b09b1ee8172ebb8c1e55f3dfd4618bd6ff2926e3809db",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 293,
+          "endLineExclusive": 294,
+          "beforeSha256LF": "6fae6525b37e792d14f477d404da090b82be6159f5359d1f05f59a7df2a82cf1",
+          "after": "            if (error is CancellationException) closed = true\n            attempt.result.completeExceptionally(IOException(\"CDN invalid or retired request\", error))\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 294,
+          "endLineExclusive": 301,
+          "beforeSha256LF": "9c7a662c95e30a6c0fc1761f2b95521a94e6613ae32ab37cd637e616b1bf22e7",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 301,
+          "endLineExclusive": 302,
+          "beforeSha256LF": "0324c0d098b7701e3bb85c130323fe07f14e851109b59e6009ce5391bbd8640a",
+          "after": "        try { call.enqueue(object : Callback {\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 302,
+          "endLineExclusive": 312,
+          "beforeSha256LF": "9878caafa59ddfd6e1287e134676cade657746594b9a0d6b6a8f229823a5c387",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 312,
+          "endLineExclusive": 312,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "                        platform.assertCurrent()\n                        platform.assertParallelUrl(url)\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 312,
+          "endLineExclusive": 313,
+          "beforeSha256LF": "61e72c8a04bd55834cb32ba90f7477810b79873e7264426ecb54e10f022e2ac4",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 313,
+          "endLineExclusive": 313,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "                        platform.validateResponse(it)\n\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 313,
+          "endLineExclusive": 322,
+          "beforeSha256LF": "d1335babead910d020c8faf36705eab5d4bc727ffa72a77b941981cd6038a67d",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 322,
+          "endLineExclusive": 322,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "                                platform.assertCurrent()\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 322,
+          "endLineExclusive": 323,
+          "beforeSha256LF": "736c9d7abef6852d87d44d4e957790df838fcbe62a95cdb0c46f68d881a7b4cc",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 323,
+          "endLineExclusive": 323,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "                                platform.assertCurrent()\n                                platform.assertParallelUrl(url)\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 323,
+          "endLineExclusive": 334,
+          "beforeSha256LF": "dfebe5629a965ba265575967d58152438398bfe2c675826d3309dfbf1e671fc4",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 334,
+          "endLineExclusive": 334,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "                    platform.assertCurrent()\n                    platform.assertParallelUrl(url)\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 334,
+          "endLineExclusive": 348,
+          "beforeSha256LF": "1db46a125893507d9c9e1b95b6eb149a67d9a5b05057e77fdc0b2fc3e86c7bc8",
+          "after": null
+        },
+        {
+          "kind": "insert",
+          "startLine": 348,
+          "endLineExclusive": 348,
+          "beforeSha256LF": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "after": "                if (!attempt.slotEnded.compareAndSet(false, true)) return\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 348,
+          "endLineExclusive": 350,
+          "beforeSha256LF": "ab359d51374cd3ddafd575698e1aba0bcbf491ba3c232d27bdec9513dbac4f4f",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 350,
+          "endLineExclusive": 351,
+          "beforeSha256LF": "063d53ac6f842a02f8bf7345cb63d2f45e3e96fa7944d10c876075ccb508e3e1",
+          "after": "                val retired = try { platform.assertCurrent(); false } catch (_: CancellationException) { true }\n                CdnTransferRuntime.finish(host, success && !retired, attempt.status, canceled || closed || retired)\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 351,
+          "endLineExclusive": 352,
+          "beforeSha256LF": "5522c42cd19c6d03d808c452720552825b7ea1c5b491b218511cac7415cf9d9b",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 352,
+          "endLineExclusive": 353,
+          "beforeSha256LF": "f9b1982e8dd748118146b39a2d0062f4081e34779b8675c234c4fb124dc39390",
+          "after": "        }) } catch (failure: Exception) {\n            // Same owned Factory can reject enqueue after retirement. Cleanup is\n            // still mandatory and cannot depend on the retired source admission.\n            if (attempt.slotEnded.compareAndSet(false, true)) {\n                calls -= call\n                CdnTransferRuntime.permits.release()\n                CdnTransferRuntime.finish(host, false, canceled = true)\n            }\n            call.cancel()\n            attempt.result.completeExceptionally(IOException(\"CDN enqueue rejected\", failure))\n        }\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 353,
+          "endLineExclusive": 359,
+          "beforeSha256LF": "0d03b11a4b510ef785891ee7ec4d0bd757558d9a663cd10fb6b8e27d02e5902e",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 359,
+          "endLineExclusive": 370,
+          "beforeSha256LF": "e614ad8bd5a26f23131d1248465612982a1838d68471edccb4cc39d75fd39090",
+          "after": "    // The actual captured Repository Call.Factory owns its existing client/dispatcher/pool.\n    // This platform source cannot construct or select an alternate HTTP client.\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 370,
+          "endLineExclusive": 371,
+          "beforeSha256LF": "412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+          "after": null
+        }
+      ],
+      "inverseOriginalBodyExact": true
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnRangeRequest.kt",
+      "originalSha256LF": "8aad2ea2c40a74dca00971d34d05991d980097de8164f12443fee105ebf19102",
+      "gitBlob": "f1af307f08ccdbca863d31d0bdb1ad64ed33421e",
+      "output": "com/android/purebilibili/feature/plugin/CdnRangeRequest.kt",
+      "outputSha256LF": "0262df4a1600e985892ea2d3f84302ab2c7498a027fb4833e61e5cb2b5e8d327",
+      "mode": "policy-extract",
+      "edits": [
+        {
+          "kind": "equal",
+          "startLine": 0,
+          "endLineExclusive": 5,
+          "beforeSha256LF": "6fdf052869a9260f3668f3bbb19bdd54007954847a3904ca001dd2a1496f8887",
+          "after": null
+        },
+        {
+          "kind": "delete",
+          "startLine": 5,
+          "endLineExclusive": 6,
+          "beforeSha256LF": "db8a51525d066d4d312451bb9fe190a358b7730b609442a41e253e5446ce77ad",
+          "after": ""
+        },
+        {
+          "kind": "equal",
+          "startLine": 6,
+          "endLineExclusive": 15,
+          "beforeSha256LF": "4b59634f57b61cbd9b1517a304b7794e4f9bb5b35d2051824f868917958937b4",
+          "after": null
+        },
+        {
+          "kind": "replace",
+          "startLine": 15,
+          "endLineExclusive": 16,
+          "beforeSha256LF": "1ebd6266ebcf8c6b0e1bbd8d3b3bdd2c1418d47679134429d8ccba2b0d9554c9",
+          "after": "internal suspend fun readExactCdnRange(client: Call.Factory, url: String, range: CdnByteRange): CdnRangeSample {\n"
+        },
+        {
+          "kind": "equal",
+          "startLine": 16,
+          "endLineExclusive": 59,
+          "beforeSha256LF": "1f508c7dcbd75f593bad76ae24d1c3d1cbb007b67f2960a1dcbcff87bc7f2fb1",
+          "after": null
+        }
+      ],
+      "inverseOriginalBodyExact": true
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnTransferPolicy.kt",
+      "originalSha256LF": "1aef5c8de0d3a16d33ddfbce67fdd7e91a6ebd6549c83650a1b712d365546f30",
+      "gitBlob": "0fd7af63a7461e3ef06b622d91efa6d52b695b69",
+      "output": "com/android/purebilibili/feature/plugin/CdnTransferPolicy.kt",
+      "outputSha256LF": "1aef5c8de0d3a16d33ddfbce67fdd7e91a6ebd6549c83650a1b712d365546f30",
+      "mode": "policy-extract",
+      "edits": [
+        {
+          "kind": "equal",
+          "startLine": 0,
+          "endLineExclusive": 58,
+          "beforeSha256LF": "1aef5c8de0d3a16d33ddfbce67fdd7e91a6ebd6549c83650a1b712d365546f30",
+          "after": null
+        }
+      ],
+      "inverseOriginalBodyExact": true
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnTransferRuntime.kt",
+      "originalSha256LF": "6ddc2e515f6775da65869e50a2f846cdf87b6d84eca4bad3391f3fa26138e6e2",
+      "gitBlob": "e0e8d55bda5d97c7d1fbf8c9f9f9b6144b18a774",
+      "output": "com/android/purebilibili/feature/plugin/CdnTransferRuntime.kt",
+      "outputSha256LF": "6ddc2e515f6775da65869e50a2f846cdf87b6d84eca4bad3391f3fa26138e6e2",
+      "mode": "policy-extract",
+      "edits": [
+        {
+          "kind": "equal",
+          "startLine": 0,
+          "endLineExclusive": 239,
+          "beforeSha256LF": "6ddc2e515f6775da65869e50a2f846cdf87b6d84eca4bad3391f3fa26138e6e2",
+          "after": null
+        }
+      ],
+      "inverseOriginalBodyExact": true
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/plugin/CdnTransferPanel.kt",
+      "originalSha256LF": "20ad8a5abb767f96aee3b151a30319af0c4910a3f1ce3f27aa3b9b22826999cf",
+      "gitBlob": "2aa2b7c7cef9c93617ec2c0a1dbb60a56b5d4c60",
+      "output": "com/android/purebilibili/feature/plugin/CdnTransferPanel.kt",
+      "outputSha256LF": "20ad8a5abb767f96aee3b151a30319af0c4910a3f1ce3f27aa3b9b22826999cf",
+      "mode": "policy-extract",
+      "edits": [
+        {
+          "kind": "equal",
+          "startLine": 0,
+          "endLineExclusive": 183,
+          "beforeSha256LF": "20ad8a5abb767f96aee3b151a30319af0c4910a3f1ce3f27aa3b9b22826999cf",
+          "after": null
+        }
+      ],
+      "inverseOriginalBodyExact": true
+    }
+  ]
+}

@@ -275,7 +275,7 @@ def selected_api_contract(repo: Path, source: bytes, *, login_only: bool = False
     spec.loader.exec_module(extractor)
     text = normalized_source(source).decode("utf-8")
     tokens = kotlin_tokens(text)
-    constant = re.search(r'(?m)^internal const val FORCE_COOKIE_HEADER\s*=\s*"[^"\n]+"', text)
+    constant = re.search(r'(?m)^(?:internal )?const val FORCE_COOKIE_HEADER\s*=\s*"[^"\n]+"', text)
     if constant is None:
         raise UpdateError("Login cookie header constant changed; session adapter needs manual review.")
     declarations = [constant.group(0)]

@@ -1,7 +1,8 @@
 """Complete original stable Frosted navigation and audio bar source closure."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re,subprocess
-PIN='3d5d19a2f994daccd0e2f8b5f522b6d82f43d589'
+PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
 DIRECT=['feature/home/components/'+n for n in ['BottomBarUiSkin','BottomBarTypographySpec','BottomBarChromeMotionSpec','SideBarRendererPolicy','SideBarMotionSpec']]+['feature/audio/screen/'+n for n in ['AudioNowPlayingBar','AudioNowPlayingBarMotionPolicy','AudioNowPlayingVisibilityPolicy','MusicPlayerChromePolicy','MusicArtworkRotationPolicy','MusicPlayerLayoutPolicy']]+['core/ui/transition/NowPlayingBarHandoff','feature/audio/player/AudioNowPlayingSession']
 SOURCES=[BASE+p+'.kt' for p in DIRECT]+[BASE+'feature/home/components/BottomBar.kt',BASE+'core/store/SettingsManager.kt',BASE+'feature/home/components/TopTabStylePolicy.kt',BASE+'core/store/home/LiquidGlassSettingsStore.kt']
@@ -32,13 +33,13 @@ def declarations(parser,source):
    starts.append((name,start))
   depth+=(t=='{')-(t=='}');parens+=(t=='(')-(t==')');brackets+=(t=='[')-(t==']')
  return [(n,source[a:(starts[i+1][1] if i+1<len(starts) else len(source))].rstrip()+'\n') for i,(n,a) in enumerate(starts)]
-def inventory(repo):return [dict(path=p,mode='policy-extract',features=['stable-frosted-audio-renderer'],sha256=sha(read(repo/p))) for p in SOURCES]
+def inventory(repo):return [dict(path=p,mode='policy-extract',features=['stable-frosted-audio-renderer'],sha256=sha(read(_desktop_canonical_source(repo, p)))) for p in SOURCES]
 def generate(repo,output):
  manifest=json.loads(read(repo/'desktop/upstream-sources.json'));assert manifest['upstreamCommit']==PIN
  rows={r['path']:r for r in manifest['sources']};records=[];original={}
  parser=load(repo/'desktop/tools/sync-upstream.py','frosted_audio_tokens')
  for p in SOURCES:
-  s=read(repo/p);raw=subprocess.check_output(['git','show',PIN+':'+p],cwd=repo).decode().replace('\r\n','\n');assert s==raw,p
+  s=read(_desktop_canonical_source(repo, p));raw=subprocess.check_output(['git','show',PIN+':'+p],cwd=repo).decode().replace('\r\n','\n');assert s==raw,p
   assert p in rows and rows[p]['sha256']==sha(s),p
   original[p]=s
  def emit(p,t,name=None,selected=None,adaptations=()):
@@ -57,6 +58,17 @@ def generate(repo,output):
   if 'import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion' in t:
    t=t.replace('import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion','import com.bilipai.desktop.ui.rememberDesktopDynamicReduceMotion as rememberSystemReduceMotion');adapt.append('Same existing actual Windows system motion bridge')
   if rel.endswith('AudioNowPlayingBar'):
+   # ThanosEffectView attaches an Android Window/GL surface. Windows follows
+   # the original unsupported-GL dismissal branch under the same source lease.
+   start=t.index('    val dissolveContext = LocalContext.current')
+   end=t.index('    val handleExpand = {',start)
+   original_android_dissolve=t[start:end]
+   assert 'hostWindow == null || !isThanosEffectSupported(dissolveContext)' in original_android_dissolve
+   fallback='    val cancelDissolving = false\n    val dissolveContentHidden = false\n    var dissolveRecorded by remember { mutableStateOf(false) }\n    val dissolveLayer = rememberGraphicsLayer()\n    val handleCancelClick: () -> Unit = { if (sourceIsOwned()) onDismiss() }\n\n'
+   t=t[:start]+fallback+t[end:]
+   adapt.append(dict(platform='Original unsupported Android GL capability branch',original=original_android_dissolve,replacement=fallback,windowsThanosGlSupported=False))
+   for platform_import in ['import com.android.purebilibili.core.ui.animation.gl.ThanosEffectView\n','import com.android.purebilibili.core.ui.animation.gl.isThanosEffectSupported\n','import com.android.purebilibili.core.ui.findHostActivity\n','import androidx.compose.ui.graphics.asAndroidBitmap\n','import androidx.compose.ui.platform.LocalContext\n']:
+    assert t.count(platform_import)==1;t=t.replace(platform_import,'',1)
    assert t.count('    state: AudioNowPlayingBarState,')==1
    t=t.replace('    state: AudioNowPlayingBarState,','    state: AudioNowPlayingBarState,\n    sourceIsOwned: () -> Boolean,',1)
    t=t.replace('val handleExpand = {','val handleExpand = ownedExpand@{\n        if (!sourceIsOwned()) return@ownedExpand',1)

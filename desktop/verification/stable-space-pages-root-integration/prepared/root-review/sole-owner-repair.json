@@ -1,0 +1,38 @@
+{
+  "exactHunks": [
+    {
+      "path": "desktop/tools/extract-upstream-space-pages.py",
+      "before": "    def remaining(s,edit,logs):\n        declarations=helper.members(parser,s)\n",
+      "after": "    archiveOwner=repo/'desktop/build/generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt'\n    archiveDeclarations=helper.members(parser,archiveOwner.read_text(encoding='utf8'))\n    def verify_sole_declaration(original,existing):\n        # These sole producers change visibility only, and already own the full\n        # original body. Reject a changed mapping instead of dropping it by name.\n        normalize=lambda value: re.sub(r'^\\s*(?:private|internal)\\s+', '', value).strip()\n        assert normalize(original)==normalize(existing), 'Existing sole declaration drifted'\n    def remaining(s,edit,logs):\n        declarations=helper.members(parser,s)\n        for name in ['mapSeasonArchiveToVideoItem','mapSeriesArchiveToVideoItem']:\n            assert len(declarations[name])==len(archiveDeclarations[name])==1\n            declaration=declarations[name][0]['text']\n            verify_sole_declaration(declaration,archiveDeclarations[name][0]['text'])\n            s=edit(s,declaration,'',1)\n",
+      "position": 13228,
+      "reverseExact": true
+    },
+    {
+      "path": "desktop/tools/extract-upstream-space-pages.py",
+      "before": "            return logs(s)\n        produce(BASE+'feature/space/SpaceSupporterScreens.kt',pkg+'SpaceSupporterScreens.kt',supporter_screen)",
+      "after": "            originalGuardLabel=helper.members(parser,s)['resolveSpaceGuardLevelLabel']\n            guardOwner=repo/'desktop/build/generated/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt'\n            soleGuardLabel=helper.members(parser,guardOwner.read_text(encoding='utf8'))['resolveSpaceGuardLevelLabel']\n            assert len(originalGuardLabel)==len(soleGuardLabel)==1\n            verify_sole_declaration(originalGuardLabel[0]['text'],soleGuardLabel[0]['text'])\n            s=edit(s,originalGuardLabel[0]['text'],'',1)\n            return logs(s)\n        produce(BASE+'feature/space/SpaceSupporterScreens.kt',pkg+'SpaceSupporterScreens.kt',supporter_screen)",
+      "position": 23118,
+      "reverseExact": true
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "before": "    dependsOn(prepareUpstreamSources, extractUpstreamSpaceOverview, extractUpstreamSpaceContributions,\n        extractOriginalVideoTabletFull, extractOriginalFavorites)",
+      "after": "    dependsOn(prepareUpstreamSources, extractUpstreamSpace, extractUpstreamSpaceOverview, extractUpstreamSpaceContributions,\n        extractOriginalVideoTabletFull, extractOriginalFavorites)",
+      "position": 150715,
+      "reverseExact": true
+    },
+    {
+      "path": "desktop/build.gradle.kts",
+      "before": "        layout.buildDirectory.file(\"generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt\"))\n    inputs.files(sources.filter { \"stable-original-space-pages-root-parity\"",
+      "after": "        layout.buildDirectory.file(\"generated/space-contributions/com/android/purebilibili/feature/space/DesktopUpstreamSpaceContributionDeclarations.kt\"),\n        layout.buildDirectory.file(\"generated/space/com/android/purebilibili/feature/space/DesktopUpstreamSpaceDeclarations.kt\"),\n        layout.buildDirectory.file(\"generated/original-favorites/com/android/purebilibili/feature/space/DesktopFavoriteArchiveMappings.kt\"))\n    inputs.files(sources.filter { \"stable-original-space-pages-root-parity\"",
+      "position": 151481,
+      "reverseExact": true
+    }
+  ],
+  "beforeHashes": {
+    "desktop/tools/extract-upstream-space-pages.py": "37f377c2ded407a8710c210885d364f91636efa601bc8c10539985a24d49ba31",
+    "desktop/build.gradle.kts": "c41417155695148cee057d2e16bc345d10772f64d6f6e220563c3651b19e3ebc"
+  },
+  "newDependencies": [],
+  "failedNormalBuildPreserved": true
+}

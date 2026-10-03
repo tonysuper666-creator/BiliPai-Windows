@@ -1,0 +1,124 @@
+{
+  "baseCommit": "cd8317d54fff02c2d920e295397aef502333f69b",
+  "normalMainAndTestCompilePassed": true,
+  "actualProductOverrides": 0,
+  "sourceCount": 1234,
+  "resourceCount": 244,
+  "normalBuildLogSha256Bytes": "151f533151d1fc97c5850664bdce2863e5137408827bc309e67847deae784b6a",
+  "junitMethods": 15,
+  "fullOriginalUiBodies": 5,
+  "sourceInverseReconstructed": 5,
+  "normalGeneratedOutputs": 15,
+  "generated": [
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/core/store/DesktopOriginalBangumiPlayerUiSettings.kt",
+      "sha256Bytes": "5552fbf9efd040238a939540763ae03170e3f973b8027129ec004be0e2428b55",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerScreen.kt",
+      "sha256Bytes": "8dd80de1e959bb9f633a2455a83758e90a884e56f6378513a6b63ee725bd2344",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerUiPolicy.kt",
+      "sha256Bytes": "9c8b1809ff8d03d125e8ceae375fb6f67aa63679350a15626f820e455f6512be",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiSponsorPolicy.kt",
+      "sha256Bytes": "279b706c205bdbec5f76fba956dedbe6b7cb8a37f283b4499c5a84912edee160",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiCollapsedPlayerBar.kt",
+      "sha256Bytes": "54bab92afc3575fb29f28e269bbbdcdf4824cbd730b4695b2d625721af4f1ef0",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerComponents.kt",
+      "sha256Bytes": "284a136d96933974a36a5353a850b26be59eb5f589ca969c06d8b25300f29f9e",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerContent.kt",
+      "sha256Bytes": "6661c5832ad6b2f705df7b1a9b8cf528cb1f482a61b9a9067a6831fef111dae3",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player-ui/com/android/purebilibili/feature/bangumi/ui/player/DesktopOriginalBangumiPlayerOverlayHost.kt",
+      "sha256Bytes": "d9589706a1765b9dd01bce3f2ec10dff985227b7e2131b2f17aad5757d00f38b",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/core/player/DesktopOriginalBangumiBasePlayerViewModel.kt",
+      "sha256Bytes": "3cb3fd42aeeaba87a32746988214fc5f86408daa8d3e8f26cb381ba891449eb9",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt",
+      "sha256Bytes": "d83ada54257341092ab9ff0549cd05ff8ce14395b09ad1f3c352a2b6b6b70da9",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiDashManifestPolicy.kt",
+      "sha256Bytes": "342b8d27a9ee4b9ea22b7640eae25c15e9db7a2cb0da069d3a9fc99a73b5be3c",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiEpisodeSkipPolicy.kt",
+      "sha256Bytes": "1d5e0803dc92f9497c603be7a34eff81ab392bafc98975d110a52105790b14aa",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerOverlayPolicy.kt",
+      "sha256Bytes": "5f0bbe75750e01dab2c5804d030e8633c3148fd82c893805b48e09a5258e485a",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt",
+      "sha256Bytes": "6b3bc4b9da1af5390834d58f3cf0ead348cbae8614ae42a471fe8a55bd20a0f7",
+      "frozenByteEqual": true
+    },
+    {
+      "path": "original-bangumi-player/com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiResumePolicy.kt",
+      "sha256Bytes": "f891f4d060c64773e09cf44f8a8b3f797e5f2660168f862a3a6a0139d5730ef0",
+      "frozenByteEqual": true
+    }
+  ],
+  "inverse": [
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerContent.kt",
+      "originalSha256LF": "c0cfbb4c871ae3abfb9b0bf784f05db05b2564760f4fa3b235740e76c1d2c74d",
+      "completeNormalOriginalInverse": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt",
+      "originalSha256LF": "b07032c56edf4c39a34f9e16a1a55764f8082d3bb2909eb3e68e34b7651e79c4",
+      "completeNormalOriginalInverse": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiCollapsedPlayerBar.kt",
+      "originalSha256LF": "559f125ae24846591e45a77dcda3fdbdd330a96e2b4408cc87dcc6608bc51043",
+      "completeNormalOriginalInverse": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerComponents.kt",
+      "originalSha256LF": "ffee251ee24bcaf09870c4e787254fea544d02daac6b257fabe8ade9471f6ebb",
+      "completeNormalOriginalInverse": true
+    },
+    {
+      "source": "app/src/main/java/com/android/purebilibili/feature/bangumi/BangumiPlayerScreen.kt",
+      "originalSha256LF": "287d6919dd09e53428a6b01b81b9ff588629441831134a59732ab80c75e3289a",
+      "completeNormalOriginalInverse": true
+    }
+  ],
+  "priorActualSpaceCompositionFailurePreserved": true,
+  "spaceBackToTopActualRootBindingRepaired": true,
+  "rootRuntimeAccepted": false,
+  "realAccountAccepted": false,
+  "decodedNativePlaybackAccepted": false,
+  "newEXEDeployed": false,
+  "v025Accepted": false,
+  "allFeaturesComplete": false
+}

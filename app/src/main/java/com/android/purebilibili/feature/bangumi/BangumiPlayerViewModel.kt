@@ -19,7 +19,7 @@ import com.android.purebilibili.feature.video.player.PlaylistItem
 import com.android.purebilibili.feature.video.player.PlaylistManager
 import com.android.purebilibili.feature.download.DownloadManager
 import com.android.purebilibili.feature.download.DownloadTask
-import com.android.purebilibili.feature.video.controller.PlaybackProgressManager
+import com.android.purebilibili.core.player.PlaybackProgressManager
 import com.android.purebilibili.feature.video.playback.audio.AudioFallbackReason
 import com.android.purebilibili.feature.video.playback.audio.AudioQualityOption
 import com.android.purebilibili.feature.video.playback.audio.resolveAudioStreamSelection
@@ -516,8 +516,9 @@ class BangumiPlayerViewModel : BasePlayerViewModel() {
             }
             
             if (playData.dash != null) {
+                val checkedPlayDataDash = requireNotNull(playData.dash)
                 // DASH 格式
-                val dash = playData.dash
+                val dash = checkedPlayDataDash
                 //  设备支持 HEVC 时优先 hev1（HDR/杜比视界轨道基本为 HEVC），否则回退 avc1 保证可解码
                 val video = dash.getBestVideo(
                     playData.quality,
@@ -530,13 +531,13 @@ class BangumiPlayerViewModel : BasePlayerViewModel() {
                 //  [优化] 尝试主 URL，失败则使用备用 URL
                 videoUrl = video?.getValidUrl()
                 if (videoUrl.isNullOrEmpty() && video?.backupUrl?.isNotEmpty() == true) {
-                    videoUrl = video.backupUrl.firstOrNull()
+                    videoUrl = video?.backupUrl?.firstOrNull()
                     com.android.purebilibili.core.util.Logger.w("BangumiPlayerVM", " 主 URL 无效，使用备用 CDN: ${videoUrl?.take(60)}...")
                 }
                 
                 audioUrl = audio?.getValidUrl()
                 if (audioUrl.isNullOrEmpty() && audio?.backupUrl?.isNotEmpty() == true) {
-                    audioUrl = audio.backupUrl.firstOrNull()
+                    audioUrl = audio?.backupUrl?.firstOrNull()
                 }
 
                 // Keep the complete signed playurl candidates intact. The CDN plugin may only
@@ -639,12 +640,13 @@ class BangumiPlayerViewModel : BasePlayerViewModel() {
             if (isFollowed) {
                 followedSeasonIds.add(realSeasonId)
             }
+            val userStatus = detail.userStatus
             val correctedDetail = detail.copy(
-                userStatus = detail.userStatus?.copy(
+                userStatus = userStatus?.copy(
                     follow = if (isFollowed) 1 else 0,
                     followStatus = if (isFollowed) {
                         followStatusValueCache[realSeasonId]
-                            ?: maxOf(detail.userStatus.followStatus, BANGUMI_FOLLOW_STATUS_WANT)
+                            ?: maxOf(userStatus.followStatus, BANGUMI_FOLLOW_STATUS_WANT)
                     } else {
                         0
                     }
@@ -1400,7 +1402,7 @@ class BangumiPlayerViewModel : BasePlayerViewModel() {
                 }
 
                 _userCoinBalance.value = when {
-                    result.code == 0 && result.data?.isLogin == true -> result.data.money
+                    result.code == 0 && result.data?.isLogin == true -> requireNotNull(result.data).money
                     result.code == 0 -> -3.0
                     else -> -1.0
                 }

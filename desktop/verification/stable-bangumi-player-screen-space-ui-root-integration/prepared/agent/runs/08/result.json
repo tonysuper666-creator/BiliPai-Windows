@@ -1,0 +1,70 @@
+{
+  "passed": false,
+  "snapshot": 89,
+  "orderedCpEntries": 105,
+  "sourceCount": 12,
+  "explicitProspectiveSources": [
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\core\\store\\DesktopOriginalBangumiPlayerUiSettings.kt",
+      "sha256Bytes": "5552fbf9efd040238a939540763ae03170e3f973b8027129ec004be0e2428b55"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalBangumiPlayerScreen.kt",
+      "sha256Bytes": "e238d5f670b95aee19196eb35810ba82d9e8b8c45e140487e0bf61c51aeedf0e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalBangumiPlayerUiPolicy.kt",
+      "sha256Bytes": "9c8b1809ff8d03d125e8ceae375fb6f67aa63679350a15626f820e455f6512be"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\feature\\bangumi\\ui\\player\\DesktopOriginalBangumiCollapsedPlayerBar.kt",
+      "sha256Bytes": "54bab92afc3575fb29f28e269bbbdcdf4824cbd730b4695b2d625721af4f1ef0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\feature\\bangumi\\ui\\player\\DesktopOriginalBangumiPlayerComponents.kt",
+      "sha256Bytes": "284a136d96933974a36a5353a850b26be59eb5f589ca969c06d8b25300f29f9e"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\feature\\bangumi\\ui\\player\\DesktopOriginalBangumiPlayerContent.kt",
+      "sha256Bytes": "6661c5832ad6b2f705df7b1a9b8cf528cb1f482a61b9a9067a6831fef111dae3"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\generated\\com\\android\\purebilibili\\feature\\bangumi\\ui\\player\\DesktopOriginalBangumiPlayerOverlayHost.kt",
+      "sha256Bytes": "d9589706a1765b9dd01bce3f2ec10dff985227b7e2131b2f17aad5757d00f38b"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPlayerRootOwner.kt",
+      "sha256Bytes": "7b7b11c116a13d71b0d94929336947852db5aab02b9ae0ad5de84b520013d4c0"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPlayerScreenPlatform.kt",
+      "sha256Bytes": "fbb4627acf42331301ca9b944ec86835926ef2557b3bad4d7791f7102d1d3685"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiPrimaryApiView.kt",
+      "sha256Bytes": "833df46c322df29e3319ba1a771e0b71a81db4a14ebe41eaec87fb814b8492eb"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\prepared\\desktop\\src\\main\\kotlin\\com\\bilipai\\desktop\\ui\\DesktopOriginalBangumiRawDanmakuView.kt",
+      "sha256Bytes": "87b6308e8fe5ff9d574b6d6b94bfbf6edb7a06622dd55f38eb12802e44b2841c"
+    },
+    {
+      "path": "\\\\?\\C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\lifecycle-generated\\com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalBangumiPlayerViewModel.kt",
+      "sha256Bytes": "a01ad899c254a9ff1f59989f29e940a89f4d91955836ce79002cba93f55f4c18"
+    }
+  ],
+  "declaredProspectiveBridgeJar": null,
+  "intentionalExistingSourceOverlayFamilies": 1,
+  "declaredExistingSourceOverlays": [
+    {
+      "path": "C:\\Users\\TONYS\\Documents\\Codex\\2026-09-29\\https-github-com-jay3-yy-bilipai\\work\\BiliPai\\desktop\\.local\\stable-original-bangumi-player-screen-root-parity\\lifecycle-generated\\com\\android\\purebilibili\\feature\\bangumi\\DesktopOriginalBangumiPlayerViewModel.kt",
+      "reason": "Exact sole PGC producer lifecycle delta only: close removes its borrowed listener after source retirement"
+    }
+  ],
+  "productionWrites": 0,
+  "fullPlayerScreenPrepared": true,
+  "normalProductCompile": false,
+  "actualRootConsumer": false,
+  "nativeAccepted": false,
+  "accountAccepted": false
+}

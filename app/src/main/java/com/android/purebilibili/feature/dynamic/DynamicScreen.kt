@@ -70,6 +70,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalInspectionMode
@@ -1552,6 +1553,13 @@ private fun DynamicList(
         null
     }
 
+    val dynamicHorizontalArrangement = Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing())
+
+    com.android.purebilibili.core.ui.adaptive.AppHingeSafeContent(
+        modifier = modifier
+            .responsiveContentWidth(maxWidth = resolveDynamicTimelineMaxWidth())
+            .fillMaxSize(),
+    ) {
     FeedVerticalStaggeredGrid(
         columns = if (feedLayoutMode == SettingsManager.DynamicFeedLayoutMode.LIST) {
             //  [新增] 列表模式：单列居中（对齐 BiliPai dynamicsWaterfallFlow 的列表布局）
@@ -1572,11 +1580,9 @@ private fun DynamicList(
             top = statusBarHeight + topPaddingExtra,
             bottom = bottomPadding
         ),
-        horizontalArrangement = Arrangement.spacedBy(resolveDynamicTimelineHorizontalSpacing()),
+        horizontalArrangement = dynamicHorizontalArrangement,
         verticalItemSpacing = resolveDynamicTimelineVerticalSpacing(),
-        modifier = modifier
-            .responsiveContentWidth(maxWidth = resolveDynamicTimelineMaxWidth())
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         if (isSelectedUserTabActive) {
             item(
@@ -1708,6 +1714,7 @@ private fun DynamicList(
                 )
             }
         }
+    }
     }
 }
 

@@ -127,6 +127,10 @@ fun ArticleDetailScreen(
             )
         }
     ) { paddingValues ->
+        // 遮挡铰链时整页内容落入最大安全区，软折痕允许跨越；长文保持居中单栏。
+        com.android.purebilibili.core.ui.adaptive.AppHingeSafeContent(
+            modifier = Modifier.fillMaxSize(),
+        ) {
         when (val state = uiState) {
             ArticleDetailUiState.Loading -> {
                 ArticleDetailSkeleton(
@@ -167,6 +171,7 @@ fun ArticleDetailScreen(
                     onUserClick = onUserClick
                 )
             }
+        }
         }
     }
 }

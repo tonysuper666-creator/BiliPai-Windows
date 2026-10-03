@@ -107,7 +107,8 @@ data class CdnCandidateHealth(
     val manualProbeLatencyMs: Long? = null,
     val manualProbeSpeedKbps: Long? = null,
     val lastProbeAtMs: Long = 0L,
-    val lastUpdatedAtMs: Long = 0L
+    val lastUpdatedAtMs: Long = 0L,
+    val healthWindowStartedAtMs: Long = 0L
 )
 
 enum class CdnHealthEvent {

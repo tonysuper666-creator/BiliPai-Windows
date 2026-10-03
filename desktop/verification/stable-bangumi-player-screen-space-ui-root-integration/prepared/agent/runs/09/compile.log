@@ -1,0 +1,27 @@
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:683:36: warning: elvis operator (?:) always returns the left operand of non-nullable type 'DesktopOriginalMpvSectionControl'.
+            val player = exoPlayer ?: return@LaunchedEffect
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:767:50: warning: unnecessary safe call on a non-null receiver of type 'DesktopOriginalMpvSectionControl'.
+                            isPlaying = exoPlayer?.isPlaying == true,
+                                                 ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:768:52: warning: unnecessary safe call on a non-null receiver of type 'DesktopOriginalMpvSectionControl'.
+                            isCompleted = exoPlayer?.playbackState == Player.STATE_ENDED,
+                                                   ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:769:51: warning: unnecessary safe call on a non-null receiver of type 'DesktopOriginalMpvSectionControl'.
+                            hasPlayed = (exoPlayer?.currentPosition ?: 0L) > 0L,
+                                                  ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:773:46: warning: unnecessary safe call on a non-null receiver of type 'DesktopOriginalMpvSectionControl'.
+                                if (exoPlayer?.isPlaying == true) {
+                                             ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:774:46: warning: unnecessary safe call on a non-null receiver of type 'DesktopOriginalMpvSectionControl'.
+                                    exoPlayer?.pause()
+                                             ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerScreen.kt:776:46: warning: unnecessary safe call on a non-null receiver of type 'DesktopOriginalMpvSectionControl'.
+                                    exoPlayer?.play()
+                                             ^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\lifecycle-generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerViewModel.kt:346:68: warning: redundant call of conversion method.
+                            ?: cachedState.currentEpisode.duration.toLong().coerceAtLeast(0L)
+                                                                   ^^^^^^^^
+\\?\C:\Users\TONYS\Documents\Codex\2026-09-29\https-github-com-jay3-yy-bilipai\work\BiliPai\desktop\.local\stable-original-bangumi-player-screen-root-parity\lifecycle-generated\com\android\purebilibili\feature\bangumi\DesktopOriginalBangumiPlayerViewModel.kt:1052:39: warning: unnecessary safe call on a non-null receiver of type 'AudioStreamCandidate'.
+            audio = selection.selected?.track,
+                                      ^^

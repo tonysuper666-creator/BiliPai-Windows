@@ -6,6 +6,7 @@ import com.android.purebilibili.core.ui.resolveAppButtonContentPadding
 import com.android.purebilibili.core.ui.resolveFilledButtonContainerColor
 import com.android.purebilibili.core.ui.resolveFilledButtonContentColor
 import com.android.purebilibili.core.ui.AppChromeSizeTokens
+import com.android.purebilibili.core.ui.AppSpacingTokens
 import com.android.purebilibili.core.ui.renderer.miuix.AppMiuixButton
 import com.android.purebilibili.core.ui.renderer.miuix.AppMiuixChip
 import com.android.purebilibili.core.ui.renderer.miuix.AppMiuixFloatingActionButton
@@ -94,6 +95,8 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.SubcomposeLayout
@@ -138,17 +141,16 @@ internal fun TabPosition.toAppTabSlot(): AppTabSlot = AppTabSlot(
     contentWidth = contentWidth,
 )
 
-private fun resolveNonGlassButtonInsideMargin(
-    contentPadding: PaddingValues,
-    defaultMaterialPadding: PaddingValues,
-): PaddingValues = if (
-    shouldUseOfficialMiuixButtonPadding(
-        usesDefaultMaterialPadding = contentPadding == defaultMaterialPadding,
+/** Visual padding only; native button sizing and touch-target handling stay intact. */
+object AppButtonDefaults {
+    val ContentPadding = PaddingValues(
+        horizontal = AppSpacingTokens.Large,
+        vertical = AppSpacingTokens.Small,
     )
-) {
-    MiuixButtonDefaults.InsideMargin
-} else {
-    contentPadding
+    val TextButtonContentPadding = PaddingValues(
+        horizontal = AppSpacingTokens.Small,
+        vertical = AppSpacingTokens.ExtraSmall,
+    )
 }
 
 internal fun resolveElasticTabIndicatorBounds(
@@ -485,7 +487,7 @@ fun AppButton(
     border: BorderStroke? = null,
     defaultElevation: Dp = 0.dp,
     pressedElevation: Dp = defaultElevation,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = AppButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource? = null,
     content: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit,
 ) {
@@ -503,10 +505,7 @@ fun AppButton(
             modifier = interactionModifier,
             enabled = enabled,
             colors = miuixColors,
-            insideMargin = resolveNonGlassButtonInsideMargin(
-                contentPadding = contentPadding,
-                defaultMaterialPadding = ButtonDefaults.ContentPadding,
-            ),
+            insideMargin = contentPadding,
             interactionSource = resolvedInteractionSource,
             content = content,
         )
@@ -546,7 +545,7 @@ fun AppButton(
     colors: ButtonColors? = null,
     elevation: androidx.compose.material3.ButtonElevation? = ButtonDefaults.buttonElevation(),
     border: BorderStroke? = null,
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = AppButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource? = null,
     content: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit,
 ) {
@@ -566,10 +565,7 @@ fun AppButton(
             modifier = interactionModifier,
             enabled = enabled,
             colors = miuixColors,
-            insideMargin = resolveNonGlassButtonInsideMargin(
-                contentPadding = contentPadding,
-                defaultMaterialPadding = ButtonDefaults.ContentPadding,
-            ),
+            insideMargin = contentPadding,
             interactionSource = resolvedInteractionSource,
             content = content,
         )
@@ -602,7 +598,7 @@ fun AppTextButton(
     enabled: Boolean = true,
     shape: Shape = ButtonDefaults.textShape,
     colors: androidx.compose.material3.ButtonColors = ButtonDefaults.textButtonColors(),
-    contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
+    contentPadding: PaddingValues = AppButtonDefaults.TextButtonContentPadding,
     interactionSource: MutableInteractionSource? = null,
     content: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit,
 ) {
@@ -620,10 +616,7 @@ fun AppTextButton(
             modifier = interactionModifier,
             enabled = enabled,
             colors = miuixColors,
-            insideMargin = resolveNonGlassButtonInsideMargin(
-                contentPadding = contentPadding,
-                defaultMaterialPadding = ButtonDefaults.TextButtonContentPadding,
-            ),
+            insideMargin = contentPadding,
             interactionSource = resolvedInteractionSource,
             content = content,
         )
@@ -665,6 +658,7 @@ fun AppOutlinedTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    focusRequester: FocusRequester? = null,
     shape: Shape = OutlinedTextFieldDefaults.shape,
     colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
 ) {
@@ -675,34 +669,43 @@ fun AppOutlinedTextField(
             hasSuffix = suffix != null,
         )
     ) {
-        val resolvedLabel = labelText ?: placeholderText.orEmpty()
-        MiuixTextField(
-            value = value,
-            onValueChange = onValueChange,
+        androidx.compose.foundation.layout.Column(
             modifier = modifier,
-            label = resolvedLabel,
-            useLabelAsPlaceholder = labelText == null && !placeholderText.isNullOrEmpty(),
-            enabled = enabled,
-            readOnly = readOnly,
-            textStyle = textStyle,
-            keyboardOptions = keyboardOptions,
-            keyboardActions = keyboardActions,
-            leadingIcon = leadingIcon,
-            trailingIcon = trailingIcon,
-            singleLine = singleLine,
-            maxLines = maxLines,
-            minLines = minLines,
-            visualTransformation = visualTransformation,
-            interactionSource = interactionSource,
-            colors = MiuixTextFieldDefaults.textFieldColors(
-                borderColor = if (isError) {
-                    MaterialTheme.colorScheme.error
-                } else {
-                    MiuixTheme.colorScheme.primary
-                },
-            ),
-        )
-        supportingText?.invoke()
+            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(4.dp),
+        ) {
+            if (labelText == null) label?.invoke()
+            val resolvedLabel = labelText ?: placeholderText.orEmpty()
+            MiuixTextField(
+                value = value,
+                onValueChange = onValueChange,
+                // focusRequester 需要落在真正可聚焦的输入框上；外层 Column 只承担布局
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .then(focusRequester?.let { Modifier.focusRequester(it) } ?: Modifier),
+                label = resolvedLabel,
+                useLabelAsPlaceholder = labelText == null && !placeholderText.isNullOrEmpty(),
+                enabled = enabled,
+                readOnly = readOnly,
+                textStyle = textStyle,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                leadingIcon = leadingIcon,
+                trailingIcon = trailingIcon,
+                singleLine = singleLine,
+                maxLines = maxLines,
+                minLines = minLines,
+                visualTransformation = visualTransformation,
+                interactionSource = interactionSource,
+                colors = MiuixTextFieldDefaults.textFieldColors(
+                    borderColor = if (isError) {
+                        MaterialTheme.colorScheme.error
+                    } else {
+                        MiuixTheme.colorScheme.primary
+                    },
+                ),
+            )
+            supportingText?.invoke()
+        }
         return
     }
     val resolvedLabel = label ?: labelText?.let { text -> { Text(text) } }
@@ -710,7 +713,7 @@ fun AppOutlinedTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        modifier = modifier,
+        modifier = modifier.then(focusRequester?.let { Modifier.focusRequester(it) } ?: Modifier),
         enabled = enabled,
         readOnly = readOnly,
         textStyle = textStyle,
@@ -894,7 +897,7 @@ fun AppOutlinedButton(
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
     elevation: androidx.compose.material3.ButtonElevation? = null,
     border: BorderStroke? = ButtonDefaults.outlinedButtonBorder(enabled),
-    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    contentPadding: PaddingValues = AppButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource? = null,
     content: @Composable androidx.compose.foundation.layout.RowScope.() -> Unit,
 ) {
@@ -906,10 +909,7 @@ fun AppOutlinedButton(
             modifier = interactionModifier,
             enabled = enabled,
             colors = MiuixButtonDefaults.buttonColors(),
-            insideMargin = resolveNonGlassButtonInsideMargin(
-                contentPadding = contentPadding,
-                defaultMaterialPadding = ButtonDefaults.ContentPadding,
-            ),
+            insideMargin = contentPadding,
             interactionSource = resolvedInteractionSource,
             content = content,
         )

@@ -40,6 +40,18 @@ abstract class BaseRenderLine(private val mController: DanmakuController,
     protected val mConfig = mController.config
     protected val mDrawingItems = LinkedList<DrawItem<DanmakuData>>()
 
+    protected fun beginItemTiming(item: DrawItem<DanmakuData>) {
+        item.lastRenderTimeMs = mController.renderTimeMs
+    }
+
+    /** Update even individually paused items so they never catch up their paused interval. */
+    protected fun itemElapsedTimeMs(item: DrawItem<DanmakuData>): Long {
+        val now = mController.renderTimeMs
+        val elapsed = (now - item.lastRenderTimeMs).coerceAtLeast(0L)
+        item.lastRenderTimeMs = now
+        return if (item.isPaused) 0L else elapsed
+    }
+
     private val mBoundsPaint: Paint by lazy {
         Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG)
     }

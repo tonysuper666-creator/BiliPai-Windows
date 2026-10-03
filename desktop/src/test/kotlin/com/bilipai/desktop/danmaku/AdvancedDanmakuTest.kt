@@ -36,14 +36,14 @@ class AdvancedDanmakuTest {
         val renderer = AdvancedDanmakuRenderer(document.advanced)
         val image = BufferedImage(500, 300, BufferedImage.TYPE_INT_ARGB)
         val settings = DanmakuSettings(opacity = 1f, strokeEnabled = false)
-        image.createGraphics().use { renderer.paint(it, 1_000, image.width, image.height, 1f, settings) }
+        image.createGraphics().use { renderer.paint(it, 1_000, image.width, image.height, settings) }
         val pixels = (0 until image.height).flatMap { y -> (0 until image.width).map { x -> x to y } }
             .filter { (x, y) -> Color(image.getRGB(x, y), true).alpha > 0 }
         assertTrue(pixels.size > 100, "Advanced glyphs did not render")
         assertTrue(pixels.all { (x, y) -> x >= 100 && y >= 75 })
         assertTrue(pixels.any { (x, y) -> Color(image.getRGB(x, y), true).let { it.red > 200 && it.green < 30 && it.alpha in 120..130 } })
         val hidden = BufferedImage(500, 300, BufferedImage.TYPE_INT_ARGB)
-        hidden.createGraphics().use { renderer.paint(it, 1_000, hidden.width, hidden.height, 1f, settings.copy(allowSpecial = false)) }
+        hidden.createGraphics().use { renderer.paint(it, 1_000, hidden.width, hidden.height, settings.copy(allowSpecial = false)) }
         assertFalse((0 until hidden.height).any { y -> (0 until hidden.width).any { x -> hidden.getRGB(x, y) != 0 } })
     }
 

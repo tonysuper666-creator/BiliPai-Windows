@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import com.android.purebilibili.core.util.LocalAppWindowAdaptiveInfo
 import com.android.purebilibili.core.util.applyPlayerRequestedOrientation
+import com.android.purebilibili.core.util.layoutHinges
 import android.content.res.Configuration
 import android.media.AudioManager
 import android.net.Uri
@@ -105,6 +106,7 @@ fun OfflineVideoPlayerScreen(
     val context = LocalContext.current
     val activity = context as? Activity
     val displayContext = LocalAppWindowAdaptiveInfo.current.displayContext
+    val appWindowAdaptiveInfo = LocalAppWindowAdaptiveInfo.current
     val audioManager = remember { context.getSystemService(Context.AUDIO_SERVICE) as AudioManager }
     val maxVolume = remember { audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC) }
     val miniPlayerManager = remember(context) { MiniPlayerManager.getInstance(context) }
@@ -501,6 +503,8 @@ fun OfflineVideoPlayerScreen(
         }
     }
     
+    // 半开折叠姿态：媒体与控件整体收进首个安全区，不跨物理铰链（对齐主视频/番剧/直播）。
+    val offlinePlayerSurface: @Composable () -> Unit = {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -1103,6 +1107,19 @@ fun OfflineVideoPlayerScreen(
                 }
             }
         }
+    }
+    }
+    // 无二级内容的播放器仅避让物理遮挡铰链；软折痕跨整窗，避免半开下半屏留黑。
+    val offlineOccludingHingePresent = appWindowAdaptiveInfo.foldingFeature
+        .layoutHinges()
+        .any { it.isOccluding }
+    if (offlineOccludingHingePresent) {
+        com.android.purebilibili.core.ui.adaptive.AppHingePaneLayout(
+            modifier = Modifier.fillMaxSize().background(Color.Black),
+            primaryContent = offlinePlayerSurface,
+        )
+    } else {
+        offlinePlayerSurface()
     }
 }
 

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Original UP-space policies and request blocks; Android URI/logging only are bound to JVM."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
 
@@ -19,12 +20,12 @@ SOURCES = {
 }
 
 def inventory(repo):
-    return [dict(path=p,mode=m,features=['space'],sha256=hashlib.sha256((repo/p).read_bytes().replace(b'\r\n',b'\n')).hexdigest()) for p,m in SOURCES.items()]
+    return [dict(path=p,mode=m,features=['space'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_bytes().replace(b'\r\n',b'\n')).hexdigest()) for p,m in SOURCES.items()]
 
 def generate(repo, output, policy_only=False):
     spec=importlib.util.spec_from_file_location('space_parser',repo/'desktop/tools/sync-upstream.py')
     parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
-    def read(suffix): return (repo/BASE/suffix).read_text(encoding='utf-8')
+    def read(suffix): return (_desktop_canonical_source(repo, Path(BASE) / suffix)).read_text(encoding='utf-8')
     def write(package, name, source):
         target=output/package.replace('.','/')/name;target.parent.mkdir(parents=True,exist_ok=True)
         target.write_text(source,encoding='utf-8',newline='\n')
@@ -55,7 +56,7 @@ def generate(repo, output, policy_only=False):
         return textwrap.dedent(source[start:tokens[end][2]])
     for p, mode in SOURCES.items():
         if mode=='direct' and not policy_only:
-            source=(repo/p).read_text(encoding='utf-8')
+            source=(_desktop_canonical_source(repo, p)).read_text(encoding='utf-8')
             package=re.search(r'^package (.+)$',source,re.M).group(1)
             write(package,Path(p).name,source)
     profile=read('feature/space/SpaceProfileEnhancementPolicy.kt')

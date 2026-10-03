@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.PlaceholderVerticalAlign
@@ -99,7 +101,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 import com.android.purebilibili.core.ui.MediaContrastPalette
-import com.android.purebilibili.core.ui.blur.ChromeBackdropSource
 import com.android.purebilibili.core.ui.blur.hazeSourceCompat
 import com.android.purebilibili.core.ui.blur.rememberChromeBackdropSource
 import com.android.purebilibili.core.ui.blur.rememberRecoverableHazeState
@@ -109,7 +110,6 @@ import top.yukonga.miuix.kmp.blur.Backdrop
 import top.yukonga.miuix.kmp.blur.LayerBackdrop
 import top.yukonga.miuix.kmp.blur.layerBackdrop
 import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
-import dev.chrisbanes.haze.HazeState
 
 private const val MESSAGE_LARGE_VIDEO_COVER_ASPECT_RATIO = 4f / 3f
 private val CHAT_INPUT_DOCK_HEIGHT = AppSpacingTokens.TripleExtraLarge + AppSpacingTokens.Small
@@ -131,7 +131,7 @@ fun ChatScreen(
     viewModel: ChatViewModel = viewModel(factory = ChatViewModel.Factory(talkerId, sessionType))
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    var inputText by remember { mutableStateOf("") }
+    var inputText by rememberSaveable(talkerId, sessionType) { mutableStateOf("") }
     val listState = rememberLazyListState()
     var pendingWithdrawMessage by remember { mutableStateOf<PrivateMessageItem?>(null) }
     var showInterceptConfirm by remember { mutableStateOf(false) }
@@ -190,10 +190,8 @@ fun ChatScreen(
     }
     
     ChatWallpaperHost(
-        chromeBackdropSource = chatChromeSource,
-        hazeState = chatHazeState,
         wallpaperBackdrop = chatWallpaperBackdrop,
-    ) {
+    ) { wallpaperContent ->
     AppScaffold(
         containerColor = Color.Transparent,
         topBarSurfaceColor = AppSurfaceTokens.chromeBackground(),
@@ -233,134 +231,150 @@ fun ChatScreen(
             )
         },
     ) { paddingValues ->
+        val layoutDirection = LocalLayoutDirection.current
+        // Capture wallpaper and messages together, excluding the scaffold's top bar.
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .consumeWindowInsets(paddingValues)
+            Modifier.fillMaxSize()
+                .then(chatChromeSource?.modifier ?: Modifier)
+                .then(chatHazeState?.let { Modifier.hazeSourceCompat(it) } ?: Modifier)
         ) {
+            wallpaperContent()
+
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .then(chatContentBackdrop?.let { Modifier.layerBackdrop(it) } ?: Modifier)
+                    // Keep side/navigation-bar insets here, but let messages scroll
+                    // behind top chrome. The initial top gap belongs to LazyColumn.
+                    .padding(
+                        start = paddingValues.calculateStartPadding(layoutDirection),
+                        end = paddingValues.calculateEndPadding(layoutDirection),
+                        bottom = paddingValues.calculateBottomPadding(),
+                    )
+                    .consumeWindowInsets(paddingValues)
             ) {
-                when {
-                    uiState.isLoading -> {
-                        com.android.purebilibili.core.ui.CutePersonLoadingIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                    uiState.error != null -> {
-                        Column(
-                            modifier = Modifier.align(Alignment.Center),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            AppText(uiState.error ?: "加载失败")
-                            Spacer(modifier = Modifier.height(8.dp))
-                            AppButton(onClick = { viewModel.loadMessages() }) {
-                                AppText("重试")
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .then(chatContentBackdrop?.let { Modifier.layerBackdrop(it) } ?: Modifier)
+                ) {
+                    when {
+                        uiState.isLoading -> {
+                            com.android.purebilibili.core.ui.CutePersonLoadingIndicator(
+                                modifier = Modifier.align(Alignment.Center)
+                            )
+                        }
+                        uiState.error != null -> {
+                            Column(
+                                modifier = Modifier.align(Alignment.Center),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                AppText(uiState.error ?: "加载失败")
+                                Spacer(modifier = Modifier.height(8.dp))
+                                AppButton(onClick = { viewModel.loadMessages() }) {
+                                    AppText("重试")
+                                }
                             }
                         }
-                    }
-                    uiState.messages.isEmpty() -> {
-                        AppText(
-                            text = "暂无消息",
-                            modifier = Modifier.align(Alignment.Center),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    else -> {
-                        LazyColumn(
-                            state = listState,
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(
-                                start = 16.dp,
-                                top = 8.dp,
-                                end = 16.dp,
-                                bottom = CHAT_MESSAGE_LIST_BOTTOM_PADDING,
-                            ),
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            // 加载更多按钮
-                            if (uiState.hasMore) {
-                                item {
-                                    Box(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        if (uiState.isLoadingMore) {
-                                            com.android.purebilibili.core.ui.CutePersonLoadingIndicator(
-                                                size = 24.dp
-                                            )
-                                        } else {
-                                            AppTextButton(onClick = { viewModel.loadMoreMessages() }) {
-                                                AppText("加载更多")
+                        uiState.messages.isEmpty() -> {
+                            AppText(
+                                text = "暂无消息",
+                                modifier = Modifier.align(Alignment.Center),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                        else -> {
+                            LazyColumn(
+                                state = listState,
+                                modifier = Modifier.fillMaxSize(),
+                                contentPadding = PaddingValues(
+                                    start = 16.dp,
+                                    top = paddingValues.calculateTopPadding() + 8.dp,
+                                    end = 16.dp,
+                                    bottom = CHAT_MESSAGE_LIST_BOTTOM_PADDING,
+                                ),
+                                verticalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                // 加载更多按钮
+                                if (uiState.hasMore) {
+                                    item {
+                                        Box(
+                                            modifier = Modifier.fillMaxWidth(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            if (uiState.isLoadingMore) {
+                                                com.android.purebilibili.core.ui.CutePersonLoadingIndicator(
+                                                    size = 24.dp
+                                                )
+                                            } else {
+                                                AppTextButton(onClick = { viewModel.loadMoreMessages() }) {
+                                                    AppText("加载更多")
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                items(
+                                    items = uiState.messages,
+                                    key = { it.msg_key }
+                                ) { message ->
+                                    MessageBubble(
+                                        message = message,
+                                        isOwnMessage = message.sender_uid == viewModel.currentUserMid,
+                                        emoteInfos = uiState.emoteInfos,
+                                        videoPreviews = uiState.videoPreviews,
+                                        canWithdraw = message.sender_uid == viewModel.currentUserMid && message.msg_status != 1,
+                                        onLongPress = {
+                                            pendingWithdrawMessage = message
+                                        },
+                                        onVideoClick = { bvid ->
+                                            onNavigateToVideo(bvid)
+                                        },
+                                        onLinkClick = { link ->
+                                            onOpenBilibiliLink(link)
+                                        }
+                                    )
+                                }
                             }
-                            items(
-                                items = uiState.messages,
-                                key = { it.msg_key }
-                            ) { message ->
-                                MessageBubble(
-                                    message = message,
-                                    isOwnMessage = message.sender_uid == viewModel.currentUserMid,
-                                    emoteInfos = uiState.emoteInfos,
-                                    videoPreviews = uiState.videoPreviews,
-                                    canWithdraw = message.sender_uid == viewModel.currentUserMid && message.msg_status != 1,
-                                    onLongPress = {
-                                        pendingWithdrawMessage = message
-                                    },
-                                    onVideoClick = { bvid ->
-                                        onNavigateToVideo(bvid)
-                                    },
-                                    onLinkClick = { link ->
-                                        onOpenBilibiliLink(link)
-                                    }
-                                )
+                        }
+                    }
+
+                    // 发送错误提示
+                    uiState.sendError?.let { error ->
+                        AppSnackbar(
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .padding(16.dp),
+                            action = {
+                                AppTextButton(onClick = { viewModel.clearSendError() }) {
+                                    AppText("知道了")
+                                }
                             }
+                        ) {
+                            AppText(error)
                         }
                     }
                 }
 
-                // 发送错误提示
-                uiState.sendError?.let { error ->
-                    AppSnackbar(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(16.dp),
-                        action = {
-                            AppTextButton(onClick = { viewModel.clearSendError() }) {
-                                AppText("知道了")
-                            }
+                ChatInputBar(
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    text = inputText,
+                    onTextChange = { inputText = it },
+                    onSend = {
+                        if (inputText.isNotBlank()) {
+                            viewModel.sendMessage(inputText)
+                            inputText = ""
                         }
-                    ) {
-                        AppText(error)
-                    }
-                }
+                    },
+                    onPickImage = {
+                        imagePickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
+                    isSending = uiState.isSending,
+                    isUploadingImage = uiState.isUploadingImage,
+                    backdrop = chatInputBackdrop,
+                )
             }
-
-            ChatInputBar(
-                modifier = Modifier.align(Alignment.BottomCenter),
-                text = inputText,
-                onTextChange = { inputText = it },
-                onSend = {
-                    if (inputText.isNotBlank()) {
-                        viewModel.sendMessage(inputText)
-                        inputText = ""
-                    }
-                },
-                onPickImage = {
-                    imagePickerLauncher.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                },
-                isSending = uiState.isSending,
-                isUploadingImage = uiState.isUploadingImage,
-                backdrop = chatInputBackdrop,
-            )
         }
     }
     }
@@ -434,10 +448,8 @@ fun ChatScreen(
  */
 @Composable
 private fun ChatWallpaperHost(
-    chromeBackdropSource: ChromeBackdropSource?,
-    hazeState: HazeState?,
     wallpaperBackdrop: LayerBackdrop?,
-    content: @Composable () -> Unit,
+    content: @Composable (@Composable () -> Unit) -> Unit,
 ) {
     val context = LocalContext.current
     val configuredHomeWallpaperUri by SettingsManager.getHomeWallpaperUri(context)
@@ -481,27 +493,27 @@ private fun ChatWallpaperHost(
     }
     val wallpaperVisible = wallpaperAppearance.visible && wallpaperUri.isNotBlank()
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .then(chromeBackdropSource?.modifier ?: Modifier)
-                .then(hazeState?.let { Modifier.hazeSourceCompat(it) } ?: Modifier)
-                .then(wallpaperBackdrop?.let { Modifier.layerBackdrop(it) } ?: Modifier),
-        ) {
-            HomeWallpaperBackdrop(
-                wallpaperUri = wallpaperUri,
-                appearance = wallpaperAppearance,
-                baseColor = baseColor,
-                isDataSaverActive = isDataSaverActive,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
+    // Keep an opaque retained-navigation root. Its wallpaper is drawn inside the
+    // scaffold body so the external chrome source includes message content as well.
+    Box(modifier = Modifier.fillMaxSize().background(baseColor)) {
         CompositionLocalProvider(
             LocalGlobalWallpaperBackdropVisible provides wallpaperVisible,
             LocalWallpaperPalette provides wallpaperPalette,
         ) {
-            content()
+            content {
+                Box(
+                    Modifier.fillMaxSize()
+                        .then(wallpaperBackdrop?.let { Modifier.layerBackdrop(it) } ?: Modifier)
+                ) {
+                    HomeWallpaperBackdrop(
+                        wallpaperUri = wallpaperUri,
+                        appearance = wallpaperAppearance,
+                        baseColor = baseColor,
+                        isDataSaverActive = isDataSaverActive,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
         }
     }
 }
@@ -1447,10 +1459,11 @@ private fun getMessageTypeName(msgType: Int): String {
 // 会话列表组合期热路径：共享 formatter，避免每行每帧新建 SimpleDateFormat。
 // 仅主线程（Compose 组合）调用，不涉及 SimpleDateFormat 的线程安全问题。
 private val chatTimeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
-private val chatDateTimeFormatter = SimpleDateFormat("MM-dd HH:mm", Locale.getDefault())
+private val chatDateTimeFormatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 
 /**
- * 格式化消息时间
+ * 格式化消息时间：与 PiliPlus `DateFormatUtils.chatFormat` 对齐——
+ * 今天 HH:mm / 昨天 HH:mm / 更早 yyyy-MM-dd HH:mm。
  */
 private fun formatMessageTime(timestamp: Long): String {
     if (timestamp == 0L) return ""
@@ -1460,7 +1473,12 @@ private fun formatMessageTime(timestamp: Long): String {
 
     val sameDay = now.get(Calendar.YEAR) == msgTime.get(Calendar.YEAR) &&
             now.get(Calendar.DAY_OF_YEAR) == msgTime.get(Calendar.DAY_OF_YEAR)
+    if (sameDay) return chatTimeFormatter.format(Date(timestamp * 1000))
 
-    val formatter = if (sameDay) chatTimeFormatter else chatDateTimeFormatter
-    return formatter.format(Date(timestamp * 1000))
+    val yesterday = now.apply { add(Calendar.DAY_OF_YEAR, -1) }
+    val isYesterday = yesterday.get(Calendar.YEAR) == msgTime.get(Calendar.YEAR) &&
+            yesterday.get(Calendar.DAY_OF_YEAR) == msgTime.get(Calendar.DAY_OF_YEAR)
+    if (isYesterday) return "昨天 ${chatTimeFormatter.format(Date(timestamp * 1000))}"
+
+    return chatDateTimeFormatter.format(Date(timestamp * 1000))
 }

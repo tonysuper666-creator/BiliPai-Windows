@@ -188,7 +188,8 @@ fun LivePlayerScreen(
     val miniPlayerManager = remember { com.android.purebilibili.feature.video.player.MiniPlayerManager.getInstance(context) }
     val configuration = LocalConfiguration.current
     val windowSizeClass = LocalWindowSizeClass.current
-    val displayContext = LocalAppWindowAdaptiveInfo.current.displayContext
+    val hingeAdaptiveInfo = LocalAppWindowAdaptiveInfo.current
+    val displayContext = hingeAdaptiveInfo.displayContext
     val lifecycleOwner = LocalLifecycleOwner.current
     val coroutineScope = rememberCoroutineScope()
     val liveKeyboardFocusRequester = remember { FocusRequester() }
@@ -290,7 +291,8 @@ fun LivePlayerScreen(
         isLandscape = isLandscape,
         isTablet = isTablet,
         isFullscreen = isFullscreen,
-        isPortraitLive = isPortraitLive
+        isPortraitLive = isPortraitLive,
+        hasObstructingHinge = hingeAdaptiveInfo.shouldAvoidHinge,
     )
     val portraitPresentation = resolveLivePortraitPresentation(
         layoutMode = liveLayoutMode,
@@ -898,6 +900,17 @@ fun LivePlayerScreen(
         }
     }
 
+    //  [修复] 离开直播间时恢复系统栏：横屏沉浸只由上方 LaunchedEffect 的翻转分支解除，
+    //  此前 onDispose 不恢复，经小窗/深链等非翻转路径离开会泄漏隐藏的系统栏。
+    DisposableEffect(activity) {
+        onDispose {
+            val exitWindow = activity?.window ?: return@onDispose
+            val exitController = WindowCompat.getInsetsController(exitWindow, exitWindow.decorView)
+            exitController.show(WindowInsetsCompat.Type.systemBars())
+            exitController.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+        }
+    }
+
     val liveRequestedOrientationMode = remember(displayContext, isFullscreen, isPortraitLive) {
         resolveLiveRequestedOrientationMode(
             displayContext = displayContext,
@@ -1273,6 +1286,31 @@ fun LivePlayerScreen(
         Modifier
     }
 
+    val roomAppBar: @Composable () -> Unit = {
+        LivePortraitOverlayAppBar(
+            roomTitle = liveRoomTitle,
+            anchorInfo = anchorInfo,
+            subtitle = liveSubtitle,
+            onBack = { exitLiveRoom() },
+            onUserClick = onUserClick,
+            onCopyLink = { copyLiveUrl() },
+            onShare = { shareLiveUrl() },
+            onShareToMessage = { shareLiveToMessage() },
+            onOpenBrowser = { openLiveUrl() },
+            isFollowing = successState?.isFollowing ?: false,
+            currentQualityDesc = currentQualityDesc,
+            onFollowClick = { viewModel.toggleFollow() },
+            onQualityClick = { showQualityMenu = true },
+            onOpenRank = { showContributionRankSheet = true },
+            onOpenSend = { showSendDanmakuSheet = true },
+            onOpenBlock = { showBlockDialog = true },
+            redPocketInfo = successState?.redPocketInfo,
+            onRedPocketClick = {
+                successState?.redPocketInfo?.let { openRedPocket(it) }
+            }
+        )
+    }
+
     // 统一容器：SC 全屏浮层需要盖住四种布局的播放器/弹幕层
     Box(
         modifier = Modifier
@@ -1310,36 +1348,24 @@ fun LivePlayerScreen(
                 }
             }
     ) {
-    when (liveLayoutMode) {
-        LiveRoomLayoutMode.LandscapeSplit -> {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(roomColorTokens.baseBackgroundColor)
-            ) {
+    if (hingeAdaptiveInfo.shouldAvoidHinge) {
+        com.android.purebilibili.core.ui.adaptive.AppHingePaneLayout(
+            modifier = Modifier.fillMaxSize().background(roomColorTokens.baseBackgroundColor),
+            primaryContent = {
                 Column(Modifier.fillMaxSize()) {
-                    LivePortraitOverlayAppBar(
-                        roomTitle = liveRoomTitle,
-                        anchorInfo = anchorInfo,
-                        subtitle = liveSubtitle,
-                        onBack = { exitLiveRoom() },
-                        onUserClick = onUserClick,
-                        onCopyLink = { copyLiveUrl() },
-                        onShare = { shareLiveUrl() },
-                        onShareToMessage = { shareLiveToMessage() },
-                        onOpenBrowser = { openLiveUrl() },
-                        isFollowing = successState?.isFollowing ?: false,
-                        currentQualityDesc = currentQualityDesc,
-                        onFollowClick = { viewModel.toggleFollow() },
-                        onQualityClick = { showQualityMenu = true },
-                        onOpenRank = { showContributionRankSheet = true },
-                        onOpenSend = { showSendDanmakuSheet = true },
-                        onOpenBlock = { showBlockDialog = true },
-                        redPocketInfo = successState?.redPocketInfo,
-                        onRedPocketClick = {
-                            successState?.redPocketInfo?.let { openRedPocket(it) }
-                        }
-                    )
+                    if (!isFullscreen) roomAppBar()
+                    Box(Modifier.weight(1f).fillMaxWidth()) { playerContent() }
+                }
+            },
+            secondaryContent = if (isInteractionPanelVisible) {
+                { LiveLandscapeChatPanel(Modifier.fillMaxSize()) { interactionContent(false) } }
+            } else null,
+        )
+    } else when (liveLayoutMode) {
+        LiveRoomLayoutMode.LandscapeSplit -> {
+            Box(Modifier.fillMaxSize().background(roomColorTokens.baseBackgroundColor)) {
+                Column(Modifier.fillMaxSize()) {
+                    roomAppBar()
                     Row(
                         modifier = Modifier
                             .weight(1f)

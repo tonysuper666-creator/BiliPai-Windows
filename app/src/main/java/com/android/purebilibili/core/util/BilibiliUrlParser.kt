@@ -20,6 +20,9 @@ import java.nio.charset.StandardCharsets
 object BilibiliUrlParser {
     
     private const val TAG = "BilibiliUrlParser"
+    private const val SHORT_LINK_MAX_HOPS = 3
+    private const val SHORT_LINK_USER_AGENT =
+        "Mozilla/5.0 (Linux; Android 15) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36"
 
     private const val LIKELY_DYNAMIC_ID_MIN_VALUE = 100_000_000_000_000_000L
     
@@ -378,30 +381,45 @@ object BilibiliUrlParser {
     
     /**
      * 解析 b23.tv 短链接 (需要在 IO 线程调用)
-     * 
+     *
      * @param shortUrl b23.tv 短链接
      * @return 完整 URL 或 null
      */
     suspend fun resolveShortUrl(shortUrl: String): String? {
         return kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
             try {
-                val url = URL(shortUrl)
-                val connection = url.openConnection() as HttpURLConnection
-                connection.instanceFollowRedirects = false
-                connection.connectTimeout = 5000
-                connection.readTimeout = 5000
-                connection.requestMethod = "HEAD"
-                
-                val responseCode = connection.responseCode
-                if (responseCode in 300..399) {
-                    val redirectUrl = connection.getHeaderField("Location")
+                // 保留浏览器 UA，最多跟随三跳 b23.tv 重定向。
+                var current = shortUrl
+                var hop = 0
+                while (hop < SHORT_LINK_MAX_HOPS) {
+                    hop++
+                    val connection = URL(current).openConnection() as HttpURLConnection
+                    connection.instanceFollowRedirects = false
+                    connection.connectTimeout = 5000
+                    connection.readTimeout = 5000
+                    connection.requestMethod = "HEAD"
+                    connection.setRequestProperty("User-Agent", SHORT_LINK_USER_AGENT)
+
+                    val responseCode = connection.responseCode
+                    val location = connection.getHeaderField("Location")
+                    connection.disconnect()
+
+                    if (responseCode !in 200..399 || location.isNullOrBlank()) return@withContext null
+                    //  相对 Location 基于当前链接补全，并去掉结尾斜杠；b23 偶尔返回 /BVxxxx 这类相对路径
+                    val redirectUrl = (if (location.startsWith("http", ignoreCase = true)) {
+                        location
+                    } else {
+                        runCatching { URI(current).resolve(location).toString() }.getOrNull()
+                    })?.trimEnd('/') ?: return@withContext null
+
                     Logger.d(TAG, "Short URL redirected to: $redirectUrl")
-                    connection.disconnect()
-                    redirectUrl
-                } else {
-                    connection.disconnect()
-                    null
+                    if (redirectUrl.contains("b23.tv", ignoreCase = true)) {
+                        current = redirectUrl
+                        continue
+                    }
+                    return@withContext redirectUrl
                 }
+                null
             } catch (e: Exception) {
                 Logger.e(TAG, "Failed to resolve short URL: ${e.message}")
                 null

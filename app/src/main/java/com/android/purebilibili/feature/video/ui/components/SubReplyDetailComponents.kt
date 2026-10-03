@@ -23,6 +23,8 @@ import androidx.compose.material.icons.automirrored.outlined.Reply
 import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.Block
+import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.foundation.background
@@ -43,6 +45,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -85,6 +88,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import com.android.purebilibili.core.ui.common.TextSelectionBottomSheet
+import com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled
 import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.util.rememberStoragePermissionState
 import com.android.purebilibili.data.model.response.ReplyItem
@@ -99,6 +103,7 @@ import com.android.purebilibili.feature.video.viewmodel.CommentUiState
 import com.android.purebilibili.feature.video.viewmodel.SubReplySortMode
 import com.android.purebilibili.feature.video.viewmodel.SubReplyUiState
 import com.android.purebilibili.core.ui.AdaptiveLoadingIndicator
+import com.android.purebilibili.core.ui.AdaptivePullToRefreshBox
 import com.android.purebilibili.core.ui.AppShapes
 import com.android.purebilibili.core.ui.ContainerLevel
 import androidx.compose.material.icons.outlined.Delete
@@ -119,7 +124,14 @@ private val SUB_REPLY_DIRECTED_MESSAGE_PATTERN = Regex("""^\s*回复\s*@.+?[：:
 internal data class SubReplyDetailLayoutPolicy(
     val listBottomPaddingDp: Int,
     val footerTopPaddingDp: Int,
-    val overlayRootCommentEntry: Boolean
+    val overlayRootCommentEntry: Boolean,
+    val headerVerticalPaddingDp: Int,
+    val sectionVerticalPaddingDp: Int,
+    val sectionDividerThicknessDp: Int,
+    val commentVerticalPaddingDp: Int,
+    val avatarContentSpacingDp: Int,
+    val authorToContentSpacingDp: Int,
+    val contentToActionSpacingDp: Int,
 )
 
 /** Keeps the thread-detail avatar bound in sync with the main comment list. */
@@ -186,9 +198,16 @@ internal fun resolveSubReplyDetailLayoutPolicy(
     showRootCommentEntry: Boolean
 ): SubReplyDetailLayoutPolicy {
     return SubReplyDetailLayoutPolicy(
-        listBottomPaddingDp = 16,
+        listBottomPaddingDp = 8,
         footerTopPaddingDp = 0,
-        overlayRootCommentEntry = false
+        overlayRootCommentEntry = false,
+        headerVerticalPaddingDp = 0,
+        sectionVerticalPaddingDp = 0,
+        sectionDividerThicknessDp = 6,
+        commentVerticalPaddingDp = 10,
+        avatarContentSpacingDp = 8,
+        authorToContentSpacingDp = 8,
+        contentToActionSpacingDp = 8,
     )
 }
 
@@ -415,6 +434,7 @@ internal fun VideoInlineSubReplyDetailContent(
     emoteMap: Map<String, String>,
     maxTimestampMs: Long?,
     onLoadMore: () -> Unit,
+    onRefresh: () -> Unit,
     onSortModeChange: (SubReplySortMode) -> Unit,
     onDismiss: () -> Unit,
     onRootCommentClick: () -> Unit,
@@ -449,9 +469,11 @@ internal fun VideoInlineSubReplyDetailContent(
         onSortModeChange = onSortModeChange,
         remoteReplyCount = state.totalCount,
         isLoading = state.isLoading,
+        isRefreshing = state.isRefreshing,
         isEnd = state.isEnd,
         emoteMap = emoteMap,
         onLoadMore = onLoadMore,
+        onRefresh = onRefresh,
         onDismiss = onDismiss,
         applyStatusBarPadding = false,
         onRootCommentClick = onRootCommentClick,
@@ -489,9 +511,11 @@ internal fun SubReplyDetailContent(
     sortMode: SubReplySortMode,
     error: String?,
     isLoading: Boolean,
+    isRefreshing: Boolean = false,
     isEnd: Boolean,
     emoteMap: Map<String, String>,
     onLoadMore: () -> Unit,
+    onRefresh: () -> Unit,
     onSortModeChange: (SubReplySortMode) -> Unit,
     onDismiss: () -> Unit,
     applyStatusBarPadding: Boolean = false,
@@ -533,6 +557,13 @@ internal fun SubReplyDetailContent(
         .collectAsStateWithLifecycle(initialValue = false)
     val unusedShowUpFlag = showUpFlag
     val listState = rememberLazyListState()
+    var wasRefreshing by remember(rootReply.rpid) { mutableStateOf(false) }
+    LaunchedEffect(isRefreshing, error) {
+        if (wasRefreshing && !isRefreshing && error != null) {
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+        }
+        wasRefreshing = isRefreshing
+    }
     var highlightedTargetId by remember(rootReply.rpid) { mutableLongStateOf(0L) }
     var conversationAnchor by remember(rootReply.rpid) { mutableStateOf<ReplyItem?>(null) }
     var previousConversationMode by remember(rootReply.rpid) { mutableStateOf<Boolean?>(null) }
@@ -709,7 +740,12 @@ internal fun SubReplyDetailContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .then(if (applyStatusBarPadding) Modifier.statusBarsPadding() else Modifier)
-                .padding(start = 20.dp, end = 8.dp, top = 10.dp, bottom = 10.dp)
+                .padding(
+                    start = 16.dp,
+                    end = 8.dp,
+                    top = layoutPolicy.headerVerticalPaddingDp.dp,
+                    bottom = layoutPolicy.headerVerticalPaddingDp.dp
+                )
                 .then(headerDragModifier)
                 .testTag(SUB_REPLY_DETAIL_HEADER_TAG)
         ) {
@@ -737,11 +773,15 @@ internal fun SubReplyDetailContent(
         }
         AppHorizontalDivider(thickness = 0.5.dp, color = appearance.dividerColor)
 
+        AdaptivePullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = onRefresh,
+            modifier = Modifier.fillMaxWidth().weight(1f),
+        ) {
         LazyColumn(
             state = listState,
             modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f)
+                .fillMaxSize()
                 .testTag(SUB_REPLY_DETAIL_LIST_TAG),
             contentPadding = PaddingValues(bottom = layoutPolicy.listBottomPaddingDp.dp)
         ) {
@@ -752,6 +792,7 @@ internal fun SubReplyDetailContent(
                 ) {
                     Box(modifier = Modifier.testTag(SUB_REPLY_DETAIL_ROOT_TAG)) {
                         SubReplyDetailItem(
+                            layoutPolicy = layoutPolicy,
                             item = rootReply,
                             appearance = appearance,
                             isRootItem = true,
@@ -791,11 +832,14 @@ internal fun SubReplyDetailContent(
                     levelIndex = 1
                 ) {
                     Column {
-                        AppHorizontalDivider(thickness = 8.dp, color = appearance.sectionDividerColor)
+                        AppHorizontalDivider(
+                            thickness = layoutPolicy.sectionDividerThicknessDp.dp,
+                            color = appearance.sectionDividerColor
+                        )
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 12.dp)
+                                .padding(horizontal = 16.dp, vertical = layoutPolicy.sectionVerticalPaddingDp.dp)
                                 .testTag(SUB_REPLY_DETAIL_SECTION_TAG),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
@@ -826,6 +870,8 @@ internal fun SubReplyDetailContent(
                                                 conversationAnchor = null
                                             }
                                         }
+                                        .sizeIn(minHeight = 48.dp)
+                                        .wrapContentHeight()
                                         .padding(horizontal = 4.dp, vertical = 6.dp)
                                 )
                             } else {
@@ -871,6 +917,7 @@ internal fun SubReplyDetailContent(
                     modifier = Modifier.padding(bottom = 1.dp)
                 ) {
                     SubReplyDetailItem(
+                            layoutPolicy = layoutPolicy,
                             item = item,
                             appearance = appearance,
                             highlighted = item.rpid == highlightedTargetId,
@@ -932,14 +979,14 @@ internal fun SubReplyDetailContent(
                             text = "$error，点击重试",
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .clickable(onClick = onLoadMore)
+                                .clickable(onClick = onRefresh)
                                 .sizeIn(minHeight = 48.dp)
                                 .padding(16.dp),
                             textAlign = TextAlign.Center,
                             color = appearance.sortTint,
                         )
                     }
-                    isLoading && visibleReplies.isNotEmpty() -> {
+                    isLoading && !isRefreshing && visibleReplies.isNotEmpty() -> {
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -964,11 +1011,13 @@ internal fun SubReplyDetailContent(
                 }
             }
         }
+        }
     }
 }
 
 @Composable
 private fun SubReplyDetailItem(
+    layoutPolicy: SubReplyDetailLayoutPolicy,
     item: ReplyItem,
     appearance: SubReplyDetailAppearance,
     highlighted: Boolean = false,
@@ -994,6 +1043,7 @@ private fun SubReplyDetailItem(
     auxiliaryDecoration: SubReplyAuxiliaryDecoration?,
     showTrailingDivider: Boolean
 ) {
+    val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current
     val backgroundColor by animateColorAsState(
         targetValue = if (highlighted) {
             appearance.accentColor.copy(alpha = 0.14f)
@@ -1043,9 +1093,14 @@ private fun SubReplyDetailItem(
         }
     }
     val isUpComment = upMid > 0 && item.mid == upMid
-    val metadataText = remember(item.ctime, displayLocation) {
+    val metadataText = remember(item.ctime, displayLocation, detailedCommentTimeEnabled) {
         buildString {
-            append(formatTime(item.ctime))
+            append(
+                FormatUtils.formatCommentTime(
+                    timestampSeconds = item.ctime,
+                    detailedTimeEnabled = detailedCommentTimeEnabled
+                )
+            )
             if (!displayLocation.isNullOrEmpty()) {
                 append(" · $displayLocation")
             }
@@ -1206,8 +1261,12 @@ private fun SubReplyDetailItem(
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 14.dp, bottom = 14.dp, start = 16.dp, end = 16.dp)
+                .padding(
+                    top = layoutPolicy.commentVerticalPaddingDp.dp,
+                    bottom = layoutPolicy.commentVerticalPaddingDp.dp,
+                    start = 16.dp,
+                    end = 16.dp
+                )
         ) {
             ReplyMemberAvatar(
                 member = item.member,
@@ -1224,7 +1283,7 @@ private fun SubReplyDetailItem(
                 }
             )
 
-            Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(layoutPolicy.avatarContentSpacingDp.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Row(
@@ -1289,7 +1348,7 @@ private fun SubReplyDetailItem(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(layoutPolicy.authorToContentSpacingDp.dp))
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -1298,7 +1357,7 @@ private fun SubReplyDetailItem(
                     if (collapseHatedBody) {
                         AppText(
                             text = "已点踩的评论 · 点击展开",
-                            style = if (isRootItem) MaterialTheme.typography.bodyLarge else MaterialTheme.typography.bodyMedium,
+                            fontSize = VideoCommentTypographyTokens.body,
                             color = appearance.secondaryTextColor,
                             maxLines = 1,
                             overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
@@ -1315,7 +1374,8 @@ private fun SubReplyDetailItem(
                                 ReplyTextAction(
                                     label = "屏蔽该用户",
                                     appearance = appearance,
-                                    onClick = { confirmBlockUser = true }
+                                    onClick = { confirmBlockUser = true },
+                                    icon = Icons.Outlined.Block
                                 )
                                 ReplyTextAction(
                                     label = "举报",
@@ -1323,14 +1383,15 @@ private fun SubReplyDetailItem(
                                     onClick = {
                                         hatePromptHandled = true
                                         showReportDialog = true
-                                    }
+                                    },
+                                    icon = Icons.Outlined.Flag
                                 )
                             }
                         }
                     } else {
                 ReplyMessageText(
                     text = displayMessage,
-                    fontSize = if (isRootItem) MaterialTheme.typography.bodyLarge.fontSize else MaterialTheme.typography.bodyMedium.fontSize,
+                    fontSize = VideoCommentTypographyTokens.body,
                     color = appearance.primaryTextColor,
                     emoteMap = localEmoteMap,
                     content = item.content,
@@ -1348,7 +1409,7 @@ private fun SubReplyDetailItem(
                     Spacer(modifier = Modifier.height(8.dp))
                     Box(modifier = Modifier.heightIn(max = 220.dp)) {
                         CommentPictures(
-                            pictures = item.content.pictures,
+                            pictures = item.content.pictures.orEmpty(),
                             onImageClick = { images, index, rect ->
                                 onImagePreview?.invoke(
                                     images,
@@ -1358,7 +1419,7 @@ private fun SubReplyDetailItem(
                                         item = item,
                                         isLiked = isLiked,
                                         onLikeClick = onLikeClick,
-                                        onReplyClick = onReplyClick
+                                        onReplyClick = onReplyClick,
                                     )
                                 )
                             },
@@ -1369,7 +1430,7 @@ private fun SubReplyDetailItem(
                     }
                 }
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(layoutPolicy.contentToActionSpacingDp.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -1441,31 +1502,35 @@ private fun SubReplyDetailItem(
                     }
 
                     if (showConversationAction) {
-                        Spacer(modifier = Modifier.width(18.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
                         AppText(
                             text = "查看对话",
                             style = MaterialTheme.typography.labelMedium,
                             color = appearance.actionTint,
                             modifier = Modifier
+                                .sizeIn(minHeight = 32.dp)
                                 .testTag("$SUB_REPLY_DETAIL_CONVERSATION_TAG_PREFIX${item.rpid}")
                                 .clickable(enabled = onConversationClick != null) {
                                     onConversationClick?.invoke()
                                 }
+                                .wrapContentHeight()
                         )
                     }
 
                     Spacer(modifier = Modifier.weight(1f))
 
                     if (onDeleteClick != null) {
-                        AppIconButton(onClick = onDeleteClick) {
-                            AppIcon(
-                                imageVector = Icons.Outlined.Delete,
-                                contentDescription = "删除",
-                                tint = appearance.actionTint,
-                                modifier = Modifier.size(16.dp),
-                            )
+                        Box(modifier = Modifier.height(32.dp)) {
+                            AppIconButton(onClick = onDeleteClick) {
+                                AppIcon(
+                                    imageVector = Icons.Outlined.Delete,
+                                    contentDescription = "删除",
+                                    tint = appearance.actionTint,
+                                    modifier = Modifier.size(16.dp),
+                                )
+                            }
                         }
-                        Spacer(modifier = Modifier.width(18.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
                     }
 
                     val likeFilledIcon = rememberAppLikeFilledIcon()
@@ -1493,16 +1558,19 @@ private fun SubReplyDetailItem(
                     }
 
                     Spacer(modifier = Modifier.width(8.dp))
-                    AppIconButton(
-                        onClick = { onHateClick?.invoke() },
-                        enabled = onHateClick != null
-                    ) {
-                        AppIcon(
-                            imageVector = Icons.Filled.ThumbDown,
-                            contentDescription = if (isHated) "取消点踩" else "点踩评论",
-                            tint = if (isHated) MaterialTheme.colorScheme.error else appearance.actionTint,
-                            modifier = Modifier.size(16.dp)
-                        )
+                    // Bound the visible container, not Compose's expanded touch target.
+                    Box(modifier = Modifier.height(32.dp)) {
+                        AppIconButton(
+                            onClick = { onHateClick?.invoke() },
+                            enabled = onHateClick != null
+                        ) {
+                            AppIcon(
+                                imageVector = Icons.Filled.ThumbDown,
+                                contentDescription = if (isHated) "取消点踩" else "点踩评论",
+                                tint = if (isHated) MaterialTheme.colorScheme.error else appearance.actionTint,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
                     }
                 }
             }
@@ -1510,7 +1578,7 @@ private fun SubReplyDetailItem(
 
         if (showTrailingDivider) {
             AppHorizontalDivider(
-                modifier = Modifier.padding(start = 68.dp),
+                modifier = Modifier.padding(start = 16.dp + avatarSize + layoutPolicy.avatarContentSpacingDp.dp),
                 thickness = 0.5.dp,
                 color = appearance.dividerColor
             )
@@ -1606,7 +1674,7 @@ private fun SubReplyTextAction(
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .sizeIn(minWidth = 48.dp, minHeight = 48.dp)
+            .sizeIn(minWidth = 48.dp, minHeight = 32.dp)
             .clickable(role = Role.Button, onClick = onClick)
     ) {
         AppIcon(

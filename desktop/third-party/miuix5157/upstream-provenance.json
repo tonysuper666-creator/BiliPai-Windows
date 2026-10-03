@@ -1130,10 +1130,63 @@
       "sha256": "aff0e63ddb271481787ca12b4c7046a024e413268877c60f3e1b48ff68f0e7bc"
     }
   ],
-  "buildAdapter": "The existing seven original modules (core/shader/squircle/ui/preference/blur/selected-icons) common/Skiko/Desktop source sets remain in ONE JVM fork. Original function bodies are unchanged. Original Android/iOS/macOS/web variants are retained as reference source but excluded from this Windows build. Original miuix-nav is audited from the complete archive but not compiled by this existing fork. Kotlin/Compose compiler2.4.0 and CMP1.12.1 remain existing Windows platform build inputs; original SDF JVM constant chunking retained.",
+  "buildAdapter": "The existing eight original Miuix modules share ONE JVM source fork. Pinned common/Skiko/Desktop sources remain byte-audited at 5c91. Three pinned miuix-nav common files are excluded from compilation and replaced by complete original BiliPai vendored sources at fixed 79e8fa3, plus the new original NavBackCompletionPolicy interface. No navigation runtime, state holder, or window bridge is added. Android/iOS/macOS/web variants remain reference-only. Existing Kotlin/Compose compiler 2.4.0, CMP 1.12.1 and SDF chunking are unchanged.",
   "compiledSourceSets": [
     "commonMain",
     "skikoMain",
     "desktopMain"
-  ]
+  ],
+  "bilipaiNavigationPatch": {
+    "repository": "https://github.com/jay3-yy/BiliPai",
+    "commit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+    "sourceRoot": "bilipai-v025-nav/src/commonMain/kotlin",
+    "excludedPinnedRelativePaths": [
+      "nav/core/NavDisplay.kt",
+      "nav/gesture/PredictiveBackHandler.kt",
+      "nav/gesture/NavPredictiveBackDriver.kt"
+    ],
+    "reason": "Whole original BiliPai vendored navigation sources preserve per-session frozen completion policy, applied/peak progress, cancellation tail drain and stale-session ownership. The existing pinned common/Skiko expect/actual window bridge remains unchanged.",
+    "files": [
+      {
+        "originalPath": "miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+        "storagePath": "bilipai-v025-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavDisplay.kt",
+        "sha256Bytes": "49fd67bdcb922590a3ce2052764de4b6cd80606a516d83a0046b9495f1ede9e7",
+        "sha256LF": "49fd67bdcb922590a3ce2052764de4b6cd80606a516d83a0046b9495f1ede9e7",
+        "bytes": 57840,
+        "wholeOriginal": true,
+        "adaptations": 0,
+        "inversePassed": true
+      },
+      {
+        "originalPath": "miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/gesture/PredictiveBackHandler.kt",
+        "storagePath": "bilipai-v025-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/PredictiveBackHandler.kt",
+        "sha256Bytes": "1cd2aa6a09d2e3be3ddef5b7731ec809ffcbb502966398470d7c5336609d6555",
+        "sha256LF": "1cd2aa6a09d2e3be3ddef5b7731ec809ffcbb502966398470d7c5336609d6555",
+        "bytes": 10883,
+        "wholeOriginal": true,
+        "adaptations": 0,
+        "inversePassed": true
+      },
+      {
+        "originalPath": "miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/gesture/NavPredictiveBackDriver.kt",
+        "storagePath": "bilipai-v025-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/gesture/NavPredictiveBackDriver.kt",
+        "sha256Bytes": "ca6b21821cdb2486bd8e72fd1c76f12618f8ea48a143e2fa5e1ff9d9e25cb50e",
+        "sha256LF": "ca6b21821cdb2486bd8e72fd1c76f12618f8ea48a143e2fa5e1ff9d9e25cb50e",
+        "bytes": 2946,
+        "wholeOriginal": true,
+        "adaptations": 0,
+        "inversePassed": true
+      },
+      {
+        "originalPath": "miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/core/NavBackCompletionPolicy.kt",
+        "storagePath": "bilipai-v025-nav/src/commonMain/kotlin/top/yukonga/miuix/kmp/nav/core/NavBackCompletionPolicy.kt",
+        "sha256Bytes": "a772f6108ba97e978b981764da9d2ba789381e027c986ba735547f1298d5120b",
+        "sha256LF": "a772f6108ba97e978b981764da9d2ba789381e027c986ba735547f1298d5120b",
+        "bytes": 515,
+        "wholeOriginal": true,
+        "adaptations": 0,
+        "inversePassed": true
+      }
+    ]
+  }
 }

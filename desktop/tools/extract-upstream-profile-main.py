@@ -2,9 +2,10 @@
 Android account/settings/file/media operations become REQUIRED Windows ports, never fake Android.
 Existing StoredAccountSession, raw APIs/DTO, Favorite protocol and skin repeat policy are reused.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,json,importlib.util,re
-SOURCE_PINS={'app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt': '034c92c6622f540400972353e26ec1a61a022151cbb71e7c6ee45f4305617a0c', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt': 'a2a08a77fefc78f9cbe41760034e273bb34f5555b65e979f7e12fad147c333a1', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileChromePolicy.kt': '0a26a4799c92fdeaf1f10b470ab85aca7f6dd12a269add128c55a836752348ef', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.kt': '756136f81ec01df0575822ab2168851ffc43b34256eac13145adeb849d8319a1', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt': 'd7c2e8857b7006f7b11a97b27712f98a4b642342c22f75b190ccc6c93600de7e', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.kt': '7e170e76dcea8912827b0de91e385be9dafca82587cf5659fd1487433a8a9bba', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.kt': '88173befd9eac7db213b6e771e34ba9960a99a8b9e6f187fc01bc4348bcf7e3a', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt': 'cb193c0afc53bab41e26dbf97ceaf9ae63664cf365eeb81292e4bc963f468137', 'app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt': '0753f850d0feca7412619ad98cbf9a7b9243c51df67d99e6a7bac6032236c59c', 'app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.kt': 'b0f8d1a53099f1d0e6694c941479cf645b36533ce7fee931bab5245a8b7654c8', 'app/src/main/java/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt': '7aa9b8853899b0f4eb71e2e3414d173f8556fbc05ef4f4b56f7bffcfcadd2756', 'app/src/main/java/com/android/purebilibili/feature/profile/WallpaperImageImport.kt': '9d1d439a42738a9e1b92340e1b5c3e9c2abe5cf578cf3f605a43388f178cbc91', 'app/src/main/java/com/android/purebilibili/feature/profile/SplashWallpaperRandomPoolPolicy.kt': '693bf431e9f34e8ae87f6fa785d6259b58c75921785294f74c30b8df81c663d2', 'app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt': '8f6f22e673a0b8d11455b2c4762ec72ce98ea5ff68eb270d4f021748c289324b', 'design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/ProfileWallpaperTransformPolicy.kt': 'd196cef4d2e96343ce7d42b2147c9ffd2793458e8d6758a65942fe44b64f16f3', 'app/src/main/java/com/android/purebilibili/data/repository/SplashRepository.kt': 'b962ce085c19bf4afef44770640e0b029a020358048a15bbfc4f89a0577b5ed8', 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': '680005e1f25e8a365d30f0c78c988765e7d2140008c57d9bf31d859c5b835b1c', 'app/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt': 'c7619b2386b42349693098c28657867cf8b73af3a66e1353d039bdc037a68011', 'app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt': '42032bd904ecd3c2bb91f0d03134c7b409632b1aa08f844929e6db247bd852ad', 'app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt': '54e78abcf5182de4339a0fe8dd6331de5ee07f363115024e91e6a69f9d23850a', 'app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt': '218267eba2d04714c57d0a67d319d6c11856c7fca4471cee294ed9e999aefa59', 'app/src/main/java/com/android/purebilibili/core/ui/TopReadabilityChrome.kt': 'aa046cdbabbed0e6cc983756b0b524e5bd9eff5caa03572ffe963de24e27ad1b', 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt': '799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a', 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt': '0962e31c0e46ad0a870b4e5a4612ba1e7d31c4aa9a71cac2ea5480d6ca470372', 'app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionMotionSpec.kt': 'c1adf12dc3a718cd46b75c83bb7e767e1207e11a58f0abe7bb749157cfbfe7c8', 'app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt': '8be87ce3d877b5ad25793847ec0664d1196d8b5fe0abe700d2e29e0440a242c5', 'app/src/main/java/com/android/purebilibili/core/store/SplashWallpaperHistoryPolicy.kt': 'f18f960603e1d8b2fc2d12e1429209e3e98fb10c55817a603a35cc58b24f372d'}
+SOURCE_PINS={'app/src/main/java/com/android/purebilibili/feature/profile/ProfileScreen.kt': 'e39d9e4b1115ee9530345861e1ff4f5acdeead4552e51930e7e9410804869c47', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileViewModel.kt': 'b8f658eef9e4ac99479479b51b14a9d38d17f6bc7a669694e0b6ee4f02d9e411', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileChromePolicy.kt': '0a26a4799c92fdeaf1f10b470ab85aca7f6dd12a269add128c55a836752348ef', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileLayoutPolicy.kt': '756136f81ec01df0575822ab2168851ffc43b34256eac13145adeb849d8319a1', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileSpacePolicy.kt': '7379cef1ef5e616ee24643a38fac19ba424950d84698bb8a8b315e571df96a13', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileFavoriteFolderShortcutPolicy.kt': '7e170e76dcea8912827b0de91e385be9dafca82587cf5659fd1487433a8a9bba', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileDashboardPolicy.kt': '88173befd9eac7db213b6e771e34ba9960a99a8b9e6f187fc01bc4348bcf7e3a', 'app/src/main/java/com/android/purebilibili/feature/profile/ProfileLoadingSkeleton.kt': 'cb193c0afc53bab41e26dbf97ceaf9ae63664cf365eeb81292e4bc963f468137', 'app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSheet.kt': '6642b7e40608434645aade529197ddbdffa0cdcc1125dea058ac92fd848ebdc7', 'app/src/main/java/com/android/purebilibili/feature/profile/OfficialWallpaperSelectionPolicy.kt': 'b0f8d1a53099f1d0e6694c941479cf645b36533ce7fee931bab5245a8b7654c8', 'app/src/main/java/com/android/purebilibili/feature/profile/WallpaperAdjustmentSheet.kt': '7aa9b8853899b0f4eb71e2e3414d173f8556fbc05ef4f4b56f7bffcfcadd2756', 'app/src/main/java/com/android/purebilibili/feature/profile/WallpaperImageImport.kt': '9d1d439a42738a9e1b92340e1b5c3e9c2abe5cf578cf3f605a43388f178cbc91', 'app/src/main/java/com/android/purebilibili/feature/profile/SplashWallpaperRandomPoolPolicy.kt': '693bf431e9f34e8ae87f6fa785d6259b58c75921785294f74c30b8df81c663d2', 'app/src/main/java/com/android/purebilibili/core/ui/wallpaper/WallpaperMedia.kt': '8f6f22e673a0b8d11455b2c4762ec72ce98ea5ff68eb270d4f021748c289324b', 'design-system/src/main/java/com/android/purebilibili/core/ui/wallpaper/ProfileWallpaperTransformPolicy.kt': 'd196cef4d2e96343ce7d42b2147c9ffd2793458e8d6758a65942fe44b64f16f3', 'app/src/main/java/com/android/purebilibili/data/repository/SplashRepository.kt': '1711d3b1528e0a6ec06284bb8e419978e6aed10129722a1662a66cf14b6de867', 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': '5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c', 'core-data/src/main/java/com/android/purebilibili/core/store/AccountSessionStore.kt': '381d9323ba7e27d8a9c1b41cf518e66ba99df2b3bd0f13e4bdc29c92f97be660', 'core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt': 'dbd4762470843e5d3776e2aa5ed830df4d4c8571980e70cf12cdc37bc4c92060', 'app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt': '2c959020dec595839527d8c51ebbfb0a8fbf991290ec102cd18ac7b82054d176', 'app/src/main/java/com/android/purebilibili/navigation/AppNavigation.kt': '729021fb73c3ec4aa2aedb0d4de5706c3d72c43928f6b5f0a8da4e80c693ccca', 'app/src/main/java/com/android/purebilibili/core/ui/TopReadabilityChrome.kt': 'aa046cdbabbed0e6cc983756b0b524e5bd9eff5caa03572ffe963de24e27ad1b', 'app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoActionSection.kt': '799f5d6fdd39adba83bd59aa52860b3d3378908b135aed4c55527e50686dc03a', 'app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt': '0962e31c0e46ad0a870b4e5a4612ba1e7d31c4aa9a71cac2ea5480d6ca470372', 'app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionMotionSpec.kt': 'c1adf12dc3a718cd46b75c83bb7e767e1207e11a58f0abe7bb749157cfbfe7c8', 'app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt': '8be87ce3d877b5ad25793847ec0664d1196d8b5fe0abe700d2e29e0440a242c5', 'app/src/main/java/com/android/purebilibili/core/store/SplashWallpaperHistoryPolicy.kt': 'f18f960603e1d8b2fc2d12e1429209e3e98fb10c55817a603a35cc58b24f372d', 'app/src/main/java/com/android/purebilibili/data/repository/WallpaperArchiveRepository.kt': '8f517b1dc48816403e5eefbffa9129b93b5deacb45635b57f7b598b3c3ac512b', 'app/src/main/java/com/android/purebilibili/feature/login/BilibiliLoginQr.kt': '7f53eb43b0784b41b62e4d7772723a5615d9a24e923b5dded9d6e5597146daaf', 'app/src/main/java/com/android/purebilibili/feature/login/TvQrConfirmationPolicy.kt': '1f6e34f085f7d1b426c5056f25404ddfb1cfcaeb7517f593a9a7b28203c0eebf', 'app/src/main/java/com/android/purebilibili/feature/login/OfficialQrAuthorizationService.kt': 'a068a5154b2e69368b05a259d5f71a00c21d468288c267b36999edc72ba99e13', 'app/src/main/java/com/android/purebilibili/feature/login/OfficialQrAuthorizationViewModel.kt': 'a221aef955f0b8ad5c730ae7224b94e3b945474b6b11a4a0f46ebeb27dd8f039', 'app/src/main/java/com/android/purebilibili/feature/login/OfficialQrAuthorizationContent.kt': '2e9f2999a0655ddb888cd5ce4403561d5e13786f01b44e3e56a67ecca02b8432', 'app/src/main/java/com/android/purebilibili/feature/login/BiliPaiQrDecoder.kt': '680991f74374b905d931a98d64dad8704b540059e7d88520cd940f939e7302df', 'app/src/main/java/com/android/purebilibili/feature/agreement/UserAgreementGate.kt': 'f6585178b89ca2f40a74f03cea726ffc4aa2233410ad7f49987ef7f22c38afcc', 'app/src/main/java/com/android/purebilibili/feature/agreement/UserAgreementText.kt': '37419f5108276e5927dae91d512e34ddceb4c404b6f7b589107cb9780a4f175c'}
 BASE='app/src/main/java/com/android/purebilibili/'
 DIRECT_NAMES=['ProfileChromePolicy','ProfileLayoutPolicy','ProfileSpacePolicy','ProfileFavoriteFolderShortcutPolicy','ProfileDashboardPolicy','OfficialWallpaperSelectionPolicy','SplashWallpaperRandomPoolPolicy']
 def safe(p):
@@ -16,7 +17,7 @@ def sha(s):return hashlib.sha256(s.encode()).hexdigest()
 def load(p,n):
  sp=importlib.util.spec_from_file_location(n,p);m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m);return m
 def generate(repo,out,standalone=False):
- repo=Path(repo);out=Path(out);source={p:read(repo/p) for p in SOURCE_PINS}
+ repo=Path(repo);out=Path(out);source={p:read(_desktop_canonical_source(repo, p)) for p in SOURCE_PINS}
  for p,s in source.items():assert sha(s)==SOURCE_PINS[p],p
  parser=load(repo/'desktop/tools/sync-upstream.py','profile_parser');media=load(repo/'desktop/tools/extract-upstream-media.py','profile_selector');records=[]
  def emit(path,body,target=None):
@@ -210,12 +211,122 @@ import com.android.purebilibili.feature.video.ui.feedback.resolveVideoActionCoun
  s=s.replace('File(imagesDir, "profile_bg.jpg")','File(imagesDir, "profile_bg_${java.util.UUID.randomUUID()}.jpg")')
  emit(p,s)
  # The original extension's request semantics and sole existing buildSpaceAggregateParams stay intact.
- p=BASE+'core/network/ApiClient.kt';start=source[p].index('suspend fun SpaceApi.getSpaceAggregate(');end=source[p].index('internal fun buildSpaceAggregateParams(',start);body=source[p][start:end].strip()
+ p='core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt';start=source[p].index('suspend fun SpaceApi.getSpaceAggregate(');end=source[p].index('fun buildSpaceAggregateParams(',start);body=source[p][start:end].strip()
  body=body.replace('suspend fun SpaceApi.getSpaceAggregate','internal suspend fun DesktopProfileEnvironment.getDesktopProfileSpaceAggregate').replace('return getSpaceAggregate(','val credentials = accounts.accessTokenCredentials()\n    return spaceApi.getSpaceAggregate(').replace('TokenManager.accessTokenCache','credentials.first').replace('TokenManager.accessTokenPlatformCache','credentials.second')
  emit(p,'package com.bilipai.desktop.ui\nimport com.android.purebilibili.core.network.buildSpaceAggregateParams\n\n'+body+'\n','com/bilipai/desktop/ui/DesktopOriginalProfileSpaceAggregate.kt')
- p=BASE+'data/repository/SplashRepository.kt';s=source[p].replace('import com.android.purebilibili.core.network.NetworkModule\n','').replace('object SplashRepository {','internal class DesktopOriginalProfileSplashProtocol(private val api: com.android.purebilibili.core.network.SplashApi) {').replace('    private val api = NetworkModule.splashApi\n','')
+ p=BASE+'data/repository/SplashRepository.kt';s=source[p].replace('import com.android.purebilibili.core.network.NetworkModule\n','').replace('object SplashRepository {','internal class DesktopOriginalProfileSplashProtocol(private val api: com.android.purebilibili.core.network.SplashApi, archiveApi: WallpaperArchiveApi) {\n    private val archive = DesktopOriginalWallpaperArchiveRepository(archiveApi)').replace('    private val api = NetworkModule.splashApi\n','').replace('WallpaperArchiveRepository.', 'archive.')
  s=s.replace('} catch (e: Exception) {','} catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled\n            } catch (e: Exception) {').replace('e.printStackTrace()','// Root diagnostics controls exception disclosure.')
  emit(p,s,'com/android/purebilibili/data/repository/DesktopOriginalProfileSplashProtocol.kt')
+ emit_latest_profile_closures(source, emit, parser, media, standalone)
  write(out/'profile-selection-proof.json',json.dumps(records,ensure_ascii=False,indent=2))
+def emit_latest_profile_closures(source, emit, parser, media, standalone):
+ """Same producer. Original business remains whole except Android input/lifetime seams."""
+ import re
+ base='app/src/main/java/com/android/purebilibili/'
+ # Pure original policies are sole DIRECT inputs of sync-upstream; standalone is proof only.
+ for short in ['feature/login/BilibiliLoginQr.kt','feature/login/TvQrConfirmationPolicy.kt','feature/agreement/UserAgreementText.kt']:
+  path=base+short
+  if standalone:emit(path,source[path])
+ path=base+'data/repository/WallpaperArchiveRepository.kt';original=source[path]
+ s=original
+ for line in ['import java.util.concurrent.TimeUnit\n','import okhttp3.OkHttpClient\n','import okhttp3.MediaType.Companion.toMediaType\n','import retrofit2.Retrofit\n','import retrofit2.converter.kotlinx.serialization.asConverterFactory\n']:
+  assert s.count(line)==1;s=s.replace(line,'')
+ a=s.index('internal object WallpaperArchiveRepository {');b=s.index('    suspend fun loadSplashArchive()',a)
+ s=s[:a]+'internal class DesktopOriginalWallpaperArchiveRepository(private val api: WallpaperArchiveApi) {\n'+s[b:]
+ s=s.replace('/** Public archive requests use a separate client without Bilibili account headers or cookies. */','/** Same Root owned request factory; public archive requests contain no account cookies. */')
+ emit(path,s,'com/android/purebilibili/data/repository/DesktopOriginalWallpaperArchiveRepository.kt')
+ path=base+'feature/login/OfficialQrAuthorizationService.kt';emit(path,source[path])
+ path=base+'feature/login/OfficialQrAuthorizationViewModel.kt';s=source[path]
+ s=s.replace('import androidx.lifecycle.viewModelScope','import com.bilipai.desktop.ui.DesktopProfileEnvironment')
+ s=s.replace('import com.android.purebilibili.core.network.NetworkModule\n','').replace('import com.android.purebilibili.core.store.TokenManager\n','')
+ s=s.replace('internal class OfficialQrAuthorizationViewModel : ViewModel() {','internal class OfficialQrAuthorizationViewModel(private val environment: DesktopProfileEnvironment) : ViewModel() {\n    private val viewModelScope get() = environment.scope')
+ s=s.replace('OfficialQrAuthorizationService(NetworkModule.qrAuthorizationApi, ::readSession)','OfficialQrAuthorizationService(environment.authorizationApi, ::readSession)')
+ # Immediate actions are entry-owned; reset disposal has a separate non-reading cancellation path.
+ for signature in ['fun scan(raw: String) {','fun confirm() {','fun scannerFailed(message: String) {','fun reset() {']:
+  assert s.count(signature)==1;s=s.replace(signature,signature+'\n        environment.ensureOwned()')
+ s=s.replace('requestJob = viewModelScope.launch {','requestJob = environment.launchOwned {\n            val caller = kotlinx.coroutines.currentCoroutineContext()[Job] ?: error("Actual authorization caller Job required")')
+ assert s.count('val caller =')==2
+ # The caller cancellation check and the publication happen inside the SAME entry commit.
+ s=s.replace('                prepared = result\n                _state.value = QrAuthorizationState.Ready(qr.type, result.accountName, result.mid, result.location, result.locationDiffers)',
+ '                environment.publishCallback {\n                    caller.ensureActive()\n                    prepared = result\n                    _state.value = QrAuthorizationState.Ready(qr.type, result.accountName, result.mid, result.location, result.locationDiffers)\n                }')
+ for line in ['_state.value = QrAuthorizationState.Failed(error.message ?: "请先登录本应用")','_state.value = QrAuthorizationState.Failed(error.message.orEmpty())','_state.value = QrAuthorizationState.Failed("登录请求校验失败，请检查网络后重新扫描")','_state.value = QrAuthorizationState.Authorized(request.qr.type)']:
+  assert line in s;s=s.replace(line,'environment.publishCallback { caller.ensureActive(); '+line+' }')
+ before='''                _state.value = QrAuthorizationState.Failed(
+                    "未能确认授权结果，请先查看对方设备是否已登录；未登录时刷新二维码后重新扫描"
+                )'''
+ assert before in s;s=s.replace(before,'                environment.publishCallback { caller.ensureActive();\n'+before+'\n                }')
+ start=s.index('    private fun initialState():');s=s[:start]+'''    /** Disposal only cancels this original request and forgets its captured credentials.
+     * It does not read account state after the entry is retired. */
+    fun retire() {
+        requestJob?.cancel()
+        requestJob = null
+        prepared = null
+    }
+
+    private fun initialState(): QrAuthorizationState {
+        val session = readSession()
+        return if (session.sessData.isBlank() || session.csrf.isBlank())
+            QrAuthorizationState.LoginRequired else QrAuthorizationState.Idle
+    }
+
+    private fun readSession() = environment.accounts.qrAuthorizationSession()
+}
+'''
+ emit(path,s)
+ path=base+'feature/login/OfficialQrAuthorizationContent.kt';s=source[path]
+ s=s.replace('import androidx.lifecycle.compose.collectAsStateWithLifecycle','import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle')
+ s=s.replace('import androidx.lifecycle.viewmodel.compose.viewModel','import com.bilipai.desktop.ui.LocalDesktopProfileEnvironment\nimport com.bilipai.desktop.ui.DesktopProfileQrScanner')
+ s=s.replace('    viewModel: OfficialQrAuthorizationViewModel = viewModel(),','    viewModel: OfficialQrAuthorizationViewModel = remember(LocalDesktopProfileEnvironment.current) {\n        OfficialQrAuthorizationViewModel(LocalDesktopProfileEnvironment.current)\n    },')
+ # The current environment is read only in composition, never inside remember's non-composable calculation.
+ s=s.replace('OfficialQrAuthorizationViewModel(LocalDesktopProfileEnvironment.current)','OfficialQrAuthorizationViewModel(profileEnvironment)')
+ s=s.replace('    viewModel: OfficialQrAuthorizationViewModel = remember(LocalDesktopProfileEnvironment.current) {','    profileEnvironment: com.bilipai.desktop.ui.DesktopProfileEnvironment = LocalDesktopProfileEnvironment.current,\n    viewModel: OfficialQrAuthorizationViewModel = remember(profileEnvironment) {')
+ s=s.replace('onDispose { viewModel.reset() }','onDispose { viewModel.retire() }')
+ s=s.replace('BiliPaiTransferScanner(','DesktopProfileQrScanner(')
+ s=s.replace('"将二维码完整放入画面，避免反光，适当靠近。"','"选择其他设备登录二维码的图片，二维码需要完整清晰。"')
+ emit(path,s)
+ # Preserve the complete decoder. Only android.graphics.Bitmap+rotation is Windows image input.
+ path=base+'feature/login/BiliPaiQrDecoder.kt';s=source[path]
+ before='''    fun decodeBitmap(bitmap: android.graphics.Bitmap, acceptAny: Boolean = false): String? {
+        for (rotation in intArrayOf(0, 90, 180, 270)) {
+            val oriented = if (rotation == 0) bitmap else android.graphics.Bitmap.createBitmap(
+                bitmap, 0, 0, bitmap.width, bitmap.height,
+                android.graphics.Matrix().apply { postRotate(rotation.toFloat()) }, true,
+            )
+            val pixels = IntArray(oriented.width * oriented.height)
+            oriented.getPixels(pixels, 0, oriented.width, 0, 0, oriented.width, oriented.height)'''
+ after='''    fun decodeBitmap(bitmap: java.awt.image.BufferedImage, acceptAny: Boolean = false): String? {
+        for (rotation in intArrayOf(0, 90, 180, 270)) {
+            val originalPixels = bitmap.getRGB(0, 0, bitmap.width, bitmap.height, null, 0, bitmap.width)
+            val oriented = rotateDesktopQrPixels(originalPixels, bitmap.width, bitmap.height, rotation)
+            val pixels = oriented.third'''
+ assert before in s;s=s.replace(before,after).replace('RGBLuminanceSource(oriented.width, oriented.height, pixels)','RGBLuminanceSource(oriented.first, oriented.second, pixels)')
+ s+='''
+/** Same clockwise four-orientation album policy as Android Bitmap rotation. */
+private fun rotateDesktopQrPixels(pixels: IntArray, width: Int, height: Int, rotation: Int): Triple<Int, Int, IntArray> {
+    if (rotation == 0) return Triple(width, height, pixels)
+    val rw = if (rotation == 180) width else height
+    val rh = if (rotation == 180) height else width
+    val result = IntArray(pixels.size)
+    for (y in 0 until height) for (x in 0 until width) {
+        val index = when (rotation) {
+            90 -> x * rw + height - 1 - y
+            180 -> (height - 1 - y) * width + width - 1 - x
+            else -> (width - 1 - x) * rw + y
+        }
+        result[index] = pixels[y * width + x]
+    }
+    return Triple(rw, rh, result)
+}
+'''
+ emit(path,s)
+ # Original read-only agreement UI, not the Android initial gate or an additional preference owner.
+ path=base+'feature/agreement/UserAgreementGate.kt';s=source[path]
+ header='\n'.join(l for l in s.splitlines() if l.startswith('import ') and 'LocalActivity' not in l and 'LocalContext' not in l)
+ selected='package com.android.purebilibili.feature.agreement\n'+header+'\n\n'
+ for name in ['UserAgreementBody','LinkifiedText','UserAgreementReviewDialog']:
+  selected+='@Composable\n'+media.function(s,name,parser)+'\n\n'
+ selected+='private val URL_REGEX = Regex("""https?://[A-Za-z0-9./_%?=&:#~+-]+""")\n'
+ emit(path,selected,'com/android/purebilibili/feature/agreement/DesktopOriginalAgreementReview.kt')
+
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--repo',required=True);p.add_argument('--output',required=True);p.add_argument('--standalone',action='store_true');a=p.parse_args();generate(a.repo,a.output,a.standalone)

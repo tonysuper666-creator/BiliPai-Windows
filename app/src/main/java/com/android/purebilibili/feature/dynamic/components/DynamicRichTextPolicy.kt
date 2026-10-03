@@ -401,10 +401,11 @@ internal fun resolveDynamicRichTextNodeDisplayText(nodes: List<RichTextNode>): S
 }
 
 internal fun resolveDynamicRichTextNodeToken(node: RichTextNode): String {
+    val emojiText = node.emoji?.text
     return when {
         node.text.isNotBlank() -> node.text
         node.orig_text.isNotBlank() -> node.orig_text
-        node.emoji?.text?.isNotBlank() == true -> node.emoji.text
+        !emojiText.isNullOrBlank() -> emojiText
         else -> ""
     }
 }

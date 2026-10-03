@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Windows bindings for the original DLNA protocol and proxy implementations."""
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 import argparse
 import hashlib
 import importlib.util
@@ -25,7 +26,7 @@ SOURCES = {
 
 def inventory(repo: Path) -> list[dict]:
     return [{"path": path, "mode": mode, "features": ["dlna-cast"],
-             "sha256": hashlib.sha256((repo / path).read_text(encoding="utf-8").encode("utf-8")).hexdigest()}
+             "sha256": hashlib.sha256((_desktop_canonical_source(repo, path)).read_text(encoding="utf-8").encode("utf-8")).hexdigest()}
             for path, mode in SOURCES.items()]
 
 
@@ -41,7 +42,7 @@ def generate(repo: Path, output: Path) -> None:
     spec.loader.exec_module(parser)
 
     def read(path: str) -> str:
-        return (repo / path).read_text(encoding="utf-8")
+        return (_desktop_canonical_source(repo, path)).read_text(encoding="utf-8")
 
     def write(path: str, source: str) -> None:
         package = re.search(r"(?m)^package (\S+)$", source).group(1)

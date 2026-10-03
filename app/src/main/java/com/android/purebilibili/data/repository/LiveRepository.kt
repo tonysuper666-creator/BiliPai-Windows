@@ -501,14 +501,15 @@ object LiveRepository {
     ): Result<LiveFeedHomeSnapshot> = withContext(Dispatchers.IO) {
         try {
             val resp = api.getLiveFeedIndex(buildLiveAppFeedParams(page = page, moduleSelect = moduleSelect))
-            if (resp.code != 0 || resp.data == null) {
+            val data = resp.data
+            if (resp.code != 0 || data == null) {
                 return@withContext if (page == 1) {
                     fallbackLiveFeedHome()
                 } else {
                     Result.failure(Exception(resp.message.ifBlank { "直播 feed 加载失败" }))
                 }
             }
-            Result.success(parseLiveFeedHomeSnapshot(resp.data))
+            Result.success(parseLiveFeedHomeSnapshot(data))
         } catch (e: Exception) {
             if (page == 1) fallbackLiveFeedHome() else Result.failure(e)
         }
@@ -534,23 +535,24 @@ object LiveRepository {
                 )
             )
             if (resp.code == 0 && resp.data != null) {
-                val rooms = resp.data.list
+                val checkedRespData = requireNotNull(resp.data)
+                val rooms = checkedRespData.list
                     ?.filter { isUsableLiveFeedRoom(it) }
                     ?.map { it.toLiveRoom() }
                     ?.filter(::shouldKeepLiveSecondListRoom)
                     ?.distinctBy { it.roomid }
                     .orEmpty()
                 val hasMore = when {
-                    resp.data.hasMore != 0 -> resp.data.hasMore == 1
-                    resp.data.count > 0 -> page * 20 < resp.data.count
+                    checkedRespData.hasMore != 0 -> checkedRespData.hasMore == 1
+                    checkedRespData.count > 0 -> page * 20 < checkedRespData.count
                     else -> rooms.size >= 20
                 }
                 return@withContext Result.success(
                     LiveFeedHomeSnapshot(
                         rooms = rooms,
-                        sortTags = resp.data.newTags.orEmpty().filter { it.name.isNotBlank() || it.sortType.isNotBlank() },
+                        sortTags = checkedRespData.newTags.orEmpty().filter { it.name.isNotBlank() || it.sortType.isNotBlank() },
                         hasMore = hasMore,
-                        totalCount = resp.data.count,
+                        totalCount = checkedRespData.count,
                     )
                 )
             }
@@ -1185,10 +1187,11 @@ object LiveRepository {
                 signedParams = signWithWbi(emptyMap())
             )
 
-            if (resp.code == 0 && resp.data != null && hasPlayableLiveUrl(resp.data)) {
-                val xliveQualities = resp.data.playurl_info?.playurl?.gQnDesc.orEmpty()
-                if (xliveQualities.isNotEmpty() || !resp.data.quality_description.isNullOrEmpty()) {
-                    return@withContext Result.success(resp.data)
+            if (resp.code == 0 && resp.data != null && hasPlayableLiveUrl(requireNotNull(resp.data))) {
+                val checkedRespData = requireNotNull(resp.data)
+                val xliveQualities = checkedRespData.playurl_info?.playurl?.gQnDesc.orEmpty()
+                if (xliveQualities.isNotEmpty() || !checkedRespData.quality_description.isNullOrEmpty()) {
+                    return@withContext Result.success(checkedRespData)
                 }
                 val legacyResp = try {
                     api.getLivePlayUrlLegacy(cid = realRoomId, qn = qn)
@@ -1199,12 +1202,13 @@ object LiveRepository {
                     null
                 }
                 val mergedData = if (legacyResp?.code == 0 && legacyResp.data != null) {
-                    resp.data.copy(
-                        quality_description = legacyResp.data.quality_description,
-                        current_quality = legacyResp.data.current_quality.takeIf { it > 0 } ?: resp.data.current_quality
+                    val checkedLegacyRespData = requireNotNull(legacyResp.data)
+                    checkedRespData.copy(
+                        quality_description = checkedLegacyRespData.quality_description,
+                        current_quality = checkedLegacyRespData.current_quality.takeIf { it > 0 } ?: checkedRespData.current_quality
                     )
                 } else {
-                    resp.data
+                    checkedRespData
                 }
                 com.android.purebilibili.core.util.Logger.d("LiveRepo", " Merged data: qualityList=${mergedData.quality_description?.map { it.desc }}")
                 Result.success(mergedData)
@@ -1220,10 +1224,11 @@ object LiveRepository {
                 if (
                     legacyResp?.code == 0 &&
                     legacyResp.data != null &&
-                    hasPlayableLiveUrl(legacyResp.data)
+                    hasPlayableLiveUrl(requireNotNull(legacyResp.data))
                 ) {
+                    val checkedLegacyRespData = requireNotNull(legacyResp.data)
                     com.android.purebilibili.core.util.Logger.w("LiveRepo", "🔴 xlive API unavailable, falling back to legacy durl response")
-                    Result.success(legacyResp.data)
+                    Result.success(checkedLegacyRespData)
                 } else {
                     val reason = resp.message.ifBlank { "接口未返回可播放地址" }
                     Result.failure(Exception("获取直播流失败: $reason"))
@@ -1362,7 +1367,7 @@ object LiveRepository {
             val realRoomId = resolveRealRoomId(roomId)
             val resp = api.getLiveEmoticons(roomId = realRoomId)
             if (resp.code == 0 && resp.data?.data != null) {
-                val packages = resp.data.data.map { pkg ->
+                val packages = requireNotNull(resp.data?.data).map { pkg ->
                     LiveEmoticonPackage(
                         id = pkg.pkg_id,
                         name = pkg.pkg_name.ifBlank { "表情" },

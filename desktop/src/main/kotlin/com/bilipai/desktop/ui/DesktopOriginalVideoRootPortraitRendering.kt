@@ -129,7 +129,7 @@ internal class DesktopOriginalVideoRootPortraitRendering(
         val density = LocalDensity.current.density
         var measured by remember(this) { mutableStateOf(IntSize.Zero) }
         val bounds = modifier.onGloballyPositioned { if (owns()) measured = it.size }
-        val viewport = resolveDanmakuViewport(measured.width, measured.height, density, section.danmakuReferencePixels)
+        val viewport = resolveDanmakuViewport(measured.width, measured.height, density)
         // videoWidth/videoHeight/resizeMode remain the original caller metadata.
         // Physical bounds are the actual Modifier slot; no guessed video-aspect box.
         if (owns() && !pip && borrowedDanmaku > 0 && viewport != null) {

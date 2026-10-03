@@ -118,7 +118,7 @@ internal fun CommunitySearch(initialQuery: String, community: DesktopCommunityRe
     }
     LaunchedEffect(search, state, history, privacy, suggestionsEnabled, state.discoverRevision) {
         state.discoverError = null
-        try { state.discover = search.discover(history.map { it.keyword }, personalized = suggestionsEnabled && !privacy) }
+        try { state.discover = search.discover(personalized = suggestionsEnabled && !privacy) }
         catch (error: Exception) { if (error is CancellationException) throw error; state.discoverError = error }
     }
     LaunchedEffect(draft, submitted) {

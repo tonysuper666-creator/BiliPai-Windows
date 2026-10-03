@@ -1,7 +1,6 @@
 // 文件路径: core/theme/Theme.kt
 package com.android.purebilibili.core.theme
 
-import android.app.Activity
 import android.app.WallpaperManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -39,6 +38,7 @@ import com.android.purebilibili.core.ui.AppIconStyle
 import com.android.purebilibili.core.ui.AppListItemStyle
 import com.android.purebilibili.core.ui.LocalAppIconStyle
 import com.android.purebilibili.core.ui.LocalAppListItemStyle
+import com.android.purebilibili.core.ui.findHostActivity
 import com.android.purebilibili.core.ui.resolveAppIconStyle
 import com.android.purebilibili.core.ui.resolveAppListItemStyle
 import com.android.purebilibili.core.store.ThemeRoleOverrides
@@ -949,11 +949,18 @@ fun PureBiliBiliTheme(
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
+            val window = view.context.findHostActivity()?.window ?: return@SideEffect
+            val controller = WindowCompat.getInsetsController(window, view)
             // 设置状态栏图标颜色：
             // - 深色模式：使用浅色图标 (isAppearanceLightStatusBars = false)
             // - 浅色模式：使用深色图标 (isAppearanceLightStatusBars = true)
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+            // 这里是主题默认外观的兜底出口；有场景外观的页面（首页皮肤、视频沉浸等）
+            // 会在自己的 effect 中覆盖。仅在当前值与主题默认不一致时写入，
+            // 避免每次重组都重复设置与页面 effect 形成无谓竞争。
+            val themeDefaultLightBars = !darkTheme
+            if (controller.isAppearanceLightStatusBars != themeDefaultLightBars) {
+                controller.isAppearanceLightStatusBars = themeDefaultLightBars
+            }
         }
     }
 

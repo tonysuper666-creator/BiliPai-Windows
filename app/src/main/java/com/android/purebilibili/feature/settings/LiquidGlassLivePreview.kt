@@ -289,6 +289,8 @@ internal fun LiquidGlassAdjustmentPanel(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
+        LiquidGlassSavedPresets(modifier = Modifier.fillMaxWidth())
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -957,7 +959,7 @@ private fun LiquidGlassHomeSample(
                 Spacer(modifier = Modifier.width(8.dp))
                 Row(
                     modifier = Modifier
-                        .width(72.dp)
+                        .width(48.dp)
                         .height(48.dp)
                         .biliPaiFloatingDockShell(
                             backdrop = backdrop,
@@ -967,18 +969,13 @@ private fun LiquidGlassHomeSample(
                             liquidGlassTuning = tuning,
                         )
                         .padding(horizontal = 12.dp),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(
                         imageVector = com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_search_24),
                         contentDescription = "底栏搜索",
                         tint = bottomContentColor,
-                    )
-                    AppText(
-                        text = "搜索",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = bottomContentColor.copy(alpha = 0.8f),
                     )
                 }
             }

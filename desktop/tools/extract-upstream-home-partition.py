@@ -1,3 +1,4 @@
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,json,re
 PINS={'app/src/main/java/com/android/purebilibili/feature/partition/PartitionScreen.kt': '04ba7fe22888802cb1da9e4d91ef97df318c49b2a9aea37672a00f4b10504010', 'app/src/main/java/com/android/purebilibili/core/util/FeedRefreshPaging.kt': '7ed91d88e7198729fd2503db6317a0abe15c92efaed7c670bce122bd37c7ae98', 'app/src/main/java/com/android/purebilibili/core/ui/skeleton/ContentLoadingSkeletons.kt': '26bae6dfaa2f92b4418f37012821ca1a6c0bf5a7fcb82a47cd0369c86dc4b5f2', 'app/src/main/java/com/android/purebilibili/feature/common/VideoLazyKeyPolicy.kt': '628f76935eba485f1adf9b81774643fc3b33a791970e5144de032bdad4463312', 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt': 'a952a41fc91d694bdc0410f3bba89806acf0b2f33272c071aca97500bcbeb5ad'}
@@ -33,7 +34,7 @@ def main():
  ap=argparse.ArgumentParser();ap.add_argument('--repo',required=True);ap.add_argument('--output',required=True);a=ap.parse_args()
  root=Path(a.repo);out=Path(a.output);raw={}
  for path,pin in PINS.items():
-  s=(root/path).read_text(encoding='utf-8');assert sha(s)==pin,path;raw[path]=s
+  s=(_desktop_canonical_source(root, path)).read_text(encoding='utf-8');assert sha(s)==pin,path;raw[path]=s
  rows=[]
  def emit(path,s,origin,adaptations):
   p=out/path;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')

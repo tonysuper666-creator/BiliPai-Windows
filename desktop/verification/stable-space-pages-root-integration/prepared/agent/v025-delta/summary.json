@@ -1,0 +1,39 @@
+{
+  "fromCommit": "3d5d19a2f994daccd0e2f8b5f522b6d82f43d589",
+  "toCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "productionBaselineChanged": false,
+  "v025Compiled": false,
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceScreen.kt",
+      "v023Sha256LF": "2c7063c8c9b112b10f7b5394b34ddfc4362fcf2984d3eae3a3364469cc3557ca",
+      "v025Sha256LF": "4fa39d30048c5d3c371c0a7b44258370825c93b1e60e321bc8663e92e9311a2e",
+      "diff": "v025-delta\\SpaceScreen.diff",
+      "diffSha256": "ee837ddde3917a7449fff2e2aa73f3e7f87f2b9ecad4c80a5484b281d8016ff0"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SpaceViewModel.kt",
+      "v023Sha256LF": "6bd4febf61c59aca37d96de118f7dd2d8521ac1bff328c98b2fdec0219a5114a",
+      "v025Sha256LF": "c54a7d24b03ecd5ff177b98c9007756c7f1e87d3629218019dd34b76907212af",
+      "diff": "v025-delta\\SpaceViewModel.diff",
+      "diffSha256": "f2f4a9f536bd70248f8c46514a593d2ca15940b371aa4e508c7736d02f0a9a57"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/space/SeasonSeriesDetailViewModel.kt",
+      "v023Sha256LF": "78cceb2ae9880c0fe3f0611de4400bda036f53db6c21c722d6239c8f16803425",
+      "v025Sha256LF": "292617f21e44fbc1cfa9cb401e1cb07b4f62f34b74e51268d54be3f1cc700e9b",
+      "diff": "v025-delta\\SeasonSeriesDetailViewModel.diff",
+      "diffSha256": "809e3b25e1c8504b2762f7eb2be614c85a160c85c9e176a8eaf9697c8bbfaf96"
+    }
+  ],
+  "changes": [
+    "SpaceScreen: PlaybackProgressManager moves to core.player; AppHingeSafeContent covers SpaceContentBox; liveRoom stable smart cast; nullable cheese badge/status and banner title handling.",
+    "SpaceViewModel: require stable response.data locals in dynamic and cheese requests. No endpoint/parameter change in these three files.",
+    "SeasonSeriesDetailViewModel: require stable checked archive response.data. Existing full favorite producer owns this VM; this packet does not duplicate it."
+  ],
+  "upgradeObligations": [
+    "Rebase the full original producer and reverse receipts only after Root chooses a unified v025 source inventory.",
+    "Map hinge-safe content to actual Windows adaptive window, preserving explicit physical-fold differences.",
+    "Use the relocated sole progress owner; do not add a second progress cache or assert v023 proof accepts v025."
+  ]
+}

@@ -12,6 +12,20 @@ import kotlin.test.assertTrue
 class LiveRoomLayoutPolicyTest {
 
     @Test
+    fun `portrait folded room exposes the chat toggle for its safe secondary pane`() {
+        val mode = resolveLiveRoomLayoutMode(false, false, false, true, hasObstructingHinge = true)
+        assertEquals(LiveRoomLayoutMode.LandscapeSplit, mode)
+        assertTrue(shouldShowLiveChatToggle(mode))
+    }
+
+    @Test
+    fun `folded fullscreen preserves the standard interaction toggle`() {
+        val mode = resolveLiveRoomLayoutMode(false, true, true, true, hasObstructingHinge = true)
+        assertEquals(LiveRoomLayoutMode.LandscapeOverlay, mode)
+        assertTrue(shouldShowLiveChatToggle(mode))
+    }
+
+    @Test
     fun `only landscape video overlay uses media chat colors`() {
         assertTrue(shouldUseLiveChatMediaOverlay(LiveRoomLayoutMode.LandscapeOverlay))
         assertTrue(shouldUseLiveChatMediaOverlay(LiveRoomLayoutMode.PortraitVerticalOverlay))

@@ -4,6 +4,7 @@ Source/API coverage describes provenance, not successful end-to-end feature pari
 The feature acceptance matrix remains desktop/PARITY.md.
 """
 from __future__ import annotations
+from v025_source_paths import canonical_source as _desktop_canonical_source
 
 import argparse
 from collections import Counter
@@ -30,7 +31,7 @@ def audit(repo: Path) -> dict:
         normalization = item.get("hashNormalization", "lf")
         if normalization not in {"lf", "raw"}:
             raise ValueError("Unknown upstream hash normalization: " + item["path"])
-        contents = (repo / relative).read_bytes()
+        contents = (_desktop_canonical_source(repo, relative)).read_bytes()
         if normalization == "lf":
             contents = contents.replace(b"\r\n", b"\n")
         if hashlib.sha256(contents).hexdigest() != item["sha256"]:
@@ -52,7 +53,7 @@ def audit(repo: Path) -> dict:
             }
         return result
 
-    source = (repo / "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt").read_text(encoding="utf-8")
+    source = (_desktop_canonical_source(repo, "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt")).read_text(encoding="utf-8")
     generated_path = repo / "desktop/build/generated/api/com/android/purebilibili/core/network/DesktopUpstreamApi.kt"
     if not generated_path.is_file():
         raise ValueError("Build-generated API is missing; run compileKotlin first")

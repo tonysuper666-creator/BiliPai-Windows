@@ -65,12 +65,6 @@ class AppPrimitiveRendererPolicyTest {
     }
 
     @Test
-    fun officialButtonPaddingReplacesOnlyDefaultMaterialPadding() {
-        assertTrue(shouldUseOfficialMiuixButtonPadding(usesDefaultMaterialPadding = true))
-        assertFalse(shouldUseOfficialMiuixButtonPadding(usesDefaultMaterialPadding = false))
-    }
-
-    @Test
     fun fabUsesOfficialSixtyAndSmallStaysAtTouchMinimum() {
         assertEquals(60, resolveMiuixFabMinSizeDp(small = false))
         assertEquals(48, resolveMiuixFabMinSizeDp(small = true))

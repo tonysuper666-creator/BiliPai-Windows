@@ -72,8 +72,9 @@ private class DormantActor(val player: MpvPlayer) : AutoCloseable {
     private val actionClass = MpvPlayer::class.java.declaredClasses.single { it.simpleName == "Action" }
     private val snapshot = requireNotNull(player.currentSourceSnapshot())
     private val revision = MpvPlayer::class.java.getDeclaredField("playbackRevision").apply { isAccessible = true }.getLong(player)
+    private val initialMuted = MpvPlayer::class.java.getDeclaredField("requestedLoadMute").apply { isAccessible = true }.get(player) as Boolean?
     private val actor = clazz.declaredConstructors.single().apply { isAccessible = true }
-        .newInstance(player, 1L, snapshot.source, snapshot.sourceVersion, revision)
+        .newInstance(player, 1L, snapshot.source, snapshot.sourceVersion, revision, initialMuted)
     private val sessionField = MpvPlayer::class.java.getDeclaredField("session").apply { isAccessible = true }
     private val perform = clazz.getDeclaredMethod("perform", MpvNative::class.java, Pointer::class.java, actionClass).apply { isAccessible = true }
     @Suppress("UNCHECKED_CAST")
@@ -210,13 +211,17 @@ class DesktopAdvancedPlaybackSettingsTest {
         MpvPlayer().use { player ->
             val owner = player.loadVersioned(PlaybackSource("fixture.avi", startPositionSeconds = 3.0))
             DormantActor(player).use { actor ->
+                val recoveryHardwareWrites = actor.native.properties.count { it.first == "hwdec" }
                 check(player.recoverSource(owner, positionSeconds = 4.0, paused = true, forceSoftwareDecoding = true)); actor.drain()
-                equal(owner, player.currentSourceVersion); equal("hwdec" to "no", actor.native.properties.last())
+                equal(recoveryHardwareWrites + 1, actor.native.properties.count { it.first == "hwdec" })
+                equal(owner, player.currentSourceVersion); equal("hwdec" to "no", actor.native.properties.last { it.first == "hwdec" })
                 check(player.setHardwareDecodingEnabled(true)); actor.drain(); equal("hwdec" to "no", actor.native.properties.last())
                 check(player.setHardwareDecodingEnabled(false)); actor.drain()
+                val nextSourceHardwareWrites = actor.native.properties.count { it.first == "hwdec" }
                 player.load(PlaybackSource("next.avi")); actor.drain()
+                equal(nextSourceHardwareWrites + 1, actor.native.properties.count { it.first == "hwdec" })
                 equal(false, player.state.value.softwareDecodingRequested)
-                equal("hwdec" to "no", actor.native.properties.last())
+                equal("hwdec" to "no", actor.native.properties.last { it.first == "hwdec" })
                 check(player.setHardwareDecodingEnabled(true)); actor.drain(); equal("hwdec" to "auto-safe", actor.native.properties.last())
             }
         }

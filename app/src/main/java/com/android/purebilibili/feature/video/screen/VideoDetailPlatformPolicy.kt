@@ -626,6 +626,7 @@ internal fun resolvePhoneVideoRequestedOrientation(
     preferPortraitForFlatFoldable: Boolean = false,
     preserveExactLandscapeSide: Boolean = true,
     isCurrentlyLandscape: Boolean = false,
+    systemAutoRotateEnabled: Boolean = autoRotateEnabled,
 ): Int? {
     // A size class alone can classify a tablet or a large phone as a foldable. Keep this
     // preference out of compact layouts even if an upstream caller misclassifies the device.
@@ -655,7 +656,7 @@ internal fun resolvePhoneVideoRequestedOrientation(
                 resolveStableOrientationWhenAutoRotateDisabled(
                     requestedOrientation = fullscreenOrientation,
                     currentRequestedOrientation = currentRequestedOrientation,
-                    autoRotateEnabled = autoRotateEnabled
+                    autoRotateEnabled = systemAutoRotateEnabled
                 )
             }
             autoRotateEnabled -> ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
@@ -689,7 +690,7 @@ internal fun resolvePhoneVideoRequestedOrientation(
                 preserveCurrentExactLandscapeSideWhileFullscreen(
                     requestedOrientation = fullscreenOrientation,
                     currentRequestedOrientation = currentRequestedOrientation,
-                    isFullscreenMode = isFullscreenMode,
+                    isFullscreenMode = isFullscreenMode || manualFullscreenRequested,
                     preserveExactLandscapeSide = preserveExactLandscapeSide,
                 )
             }
@@ -717,11 +718,22 @@ internal fun resolvePhoneVideoRequestedOrientation(
             isVerticalVideo = isVerticalVideo,
             preferPortraitForFlatFoldable = preferPortraitForFoldableInnerScreen
         ) ?: ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-        resolveStableOrientationWhenAutoRotateDisabled(
-            requestedOrientation = fullscreenOrientation,
-            currentRequestedOrientation = currentRequestedOrientation,
-            autoRotateEnabled = autoRotateEnabled
-        )
+        // The app switch controls portrait/fullscreen transitions. A manual fullscreen
+        // still follows both landscape sides when system rotation is enabled.
+        if (systemAutoRotateEnabled) {
+            preserveCurrentExactLandscapeSideWhileFullscreen(
+                requestedOrientation = fullscreenOrientation,
+                currentRequestedOrientation = currentRequestedOrientation,
+                isFullscreenMode = isFullscreenMode || manualFullscreenRequested,
+                preserveExactLandscapeSide = preserveExactLandscapeSide,
+            )
+        } else {
+            resolveStableOrientationWhenAutoRotateDisabled(
+                requestedOrientation = fullscreenOrientation,
+                currentRequestedOrientation = currentRequestedOrientation,
+                autoRotateEnabled = false
+            )
+        }
     } else {
         // System rotation can now enter and leave landscape fullscreen on its own.
         ActivityInfo.SCREEN_ORIENTATION_USER
@@ -959,7 +971,8 @@ internal fun shouldAllowPhoneSensorPortraitTransition(
 internal fun shouldReleaseManualFullscreenRequestAfterSensorTarget(
     manualFullscreenRequested: Boolean,
     sensorTargetOrientation: Int?,
-): Boolean = manualFullscreenRequested &&
+    autoRotateEnabled: Boolean = true,
+): Boolean = autoRotateEnabled && manualFullscreenRequested &&
     sensorTargetOrientation != null &&
     isLandscapeRequestedOrientation(sensorTargetOrientation)
 
@@ -974,13 +987,16 @@ internal fun shouldObservePhoneAutoRotate(
     isPortraitFullscreen: Boolean = false,
     observeWhenAutoRotateDisabled: Boolean = false,
     isFullscreenMode: Boolean = false,
+    manualFullscreenRequested: Boolean = false,
+    systemAutoRotateEnabled: Boolean = true,
 ): Boolean {
+    if (!systemAutoRotateEnabled) return false
     // A cover display may be classified as a compact phone when its metrics refresh.
     // Keep tracking both landscape sides throughout fullscreen, regardless of that label.
     // Even with the app's auto-rotate switch off, an explicit fullscreen exit holds
     // portrait until the device is upright. Keep observing long enough to release it.
     if (!autoRotateEnabled && !observeWhenAutoRotateDisabled && !isFullscreenMode &&
-        !manualPortraitHoldActive) return false
+        !manualFullscreenRequested && !manualPortraitHoldActive) return false
     if (isInMultiWindowMode || isInPictureInPictureMode) return false
     // BiliPai-style: vertical immersive FS is not kicked by gravity / sensor landscape.
     if (isPortraitFullscreen) return false

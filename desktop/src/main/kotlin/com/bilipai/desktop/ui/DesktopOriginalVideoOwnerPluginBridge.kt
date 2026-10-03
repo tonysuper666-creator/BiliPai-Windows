@@ -78,6 +78,20 @@ internal class DesktopOriginalVideoOwnerPluginBridge(
         native.observeByteCacheFailure()
         native.observeInheritedPluginMute()
     }
+    override fun observeCdnTransferPlayback() {
+        if (CdnTransferRuntime.enabled) native.current()?.let { expected ->
+            native.admitPlaybackDispatch(expected) {
+                val state = native.player.state.value
+                val seconds = state.bufferedForwardSeconds?.takeIf { it.isFinite() && it >= 0.0 }
+                if (!state.ended && state.error == null && state.failure == null) {
+                    val video = state.videoBitrateBps?.coerceAtLeast(0) ?: 0L
+                    val audio = state.audioBitrateBps?.coerceAtLeast(0) ?: 0L
+                    val bitrate = if (video > Long.MAX_VALUE - audio) Long.MAX_VALUE else video + audio
+                    CdnTransferRuntime.playback(seconds?.let { (it * 1_000).coerceAtMost(Long.MAX_VALUE.toDouble()).toLong() } ?: 0L, bitrate)
+                }
+            }
+        }
+    }
 
     override suspend fun ensureSponsorLoaded(expected: DesktopOriginalVideoAcceptedPublication, bvid: String, cid: Long) {
         currentCoroutineContext().ensureActive()

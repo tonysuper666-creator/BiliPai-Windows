@@ -99,6 +99,9 @@ internal fun desktopHomeActualPlatform(background: DesktopHomeWindowBackgroundPo
     metrics: DesktopHomeActualMetrics, homeGraphicsLayerCaptureReady: Boolean): DesktopHomePlatform {
     val effects = desktopDetailRenderEffectsSupported()
     return DesktopHomePlatform(
+        // The existing Windows consumer has no ThanosEffectView/GLSurface renderer.
+        // Original Home uses its immediate completion path; no particle support is claimed.
+        supportsNativeParticleDissolve = false,
         supportsHomeChromeLiquidGlass = effects && homeGraphicsLayerCaptureReady,
         supportsDirectHazeLiquidGlassFallback = effects,
         legacyTopChromeSafetyGapRequired = false, // Actual Windows client area has no Android status-bar inset.

@@ -2,6 +2,7 @@
 Android services are explicit JVM bindings; direct originals compile only through shared Sync by default.
 Use --standalone for the isolated source proof. No theme/store/network authority is recreated here.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,importlib.util,json,re,sys,textwrap
 sys.dont_write_bytecode=True
@@ -12,7 +13,7 @@ def load(name,path):
 def write(path,text):
  target=Path('\\\\?\\'+str(path.absolute())) if sys.platform=='win32' and not str(path).startswith('\\\\?\\') else path
  target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text,encoding='utf-8',newline='\n')
-def read(path):return (REPO/path).read_text(encoding='utf-8')
+def read(path):return (_desktop_canonical_source(REPO, path)).read_text(encoding='utf-8')
 APP='app/src/main/java/com/android/purebilibili/'
 DS='design-system/src/main/java/com/android/purebilibili/'
 DIRECT=[APP+'feature/home/components/cards/'+n+'.kt' for n in [
@@ -36,7 +37,7 @@ DIRECT=[APP+'feature/home/components/cards/'+n+'.kt' for n in [
 DIRECT+=[DS+'core/ui/adaptive/RuntimeVisualGuardSignalPolicy.kt']
 EXTRACTED={
  APP+'core/util/HomeCoverReturnPrefetch.kt':['HomeCoverReturnPrefetchEntry','HomeCoverReturnPrefetchRegistry','resolveHomeCoverReturnPrefetchCandidates'],
- APP+'core/ui/CompositionLocals.kt':['LocalWallpaperHazeState'],
+ APP+'core/ui/CompositionLocals.kt':['LocalWallpaperHazeState','LocalDetailedCommentTimeEnabled'],
  APP+'feature/home/HomeScreen.kt':['LocalHomeWallpaperBackdrop','LocalHomeWallpaperBackdropReady','LocalHomeWallpaperIsStatic'],
  APP+'navigation/AppNavigationPlaybackPolicy.kt':['isVideoCardReturnTargetRoute','isVideoDetailRoute'],
  APP+'navigation/AppNavigation.kt':['VideoRoute'],
@@ -54,7 +55,7 @@ EXTRACTED={
  APP+'core/ui/blur/RecoverableVisualEffects.kt':['recoverableBlurGates','recoverableBlurEnabled'],
 }
 HEADER={
- 'CompositionLocals.kt':'import androidx.compose.runtime.staticCompositionLocalOf\nimport dev.chrisbanes.haze.HazeState\n',
+ 'CompositionLocals.kt':'import androidx.compose.runtime.compositionLocalOf\nimport androidx.compose.runtime.staticCompositionLocalOf\nimport dev.chrisbanes.haze.HazeState\n',
  'HomeScreen.kt':'import androidx.compose.runtime.staticCompositionLocalOf\nimport top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop\n',
  'VideoInfoDisplayPolicy.kt':'import com.android.purebilibili.core.util.FormatUtils\n',
  'DeviceUiProfileAdapter.kt':'import com.android.purebilibili.core.util.WindowWidthSizeClass\nimport com.android.purebilibili.core.ui.adaptive.AdaptiveWidthClass\n',
@@ -124,7 +125,7 @@ def generate(repo, output, standalone=False):
    expanded=full_home.existing_home_card_body(repo,path)
    out=HERE/'generated'/pkg.replace('.','/')/Path(path).name
    write(out,expanded)
-   rows.append(dict(path=path,mode='policy-extract',features=['home-full-card','home-page'],sha256=hashlib.sha256(source.encode()).hexdigest(),sha256Bytes=hashlib.sha256((REPO/path).read_bytes()).hexdigest(),changes=[dict(adapter='complete original depth/recoverable body, required actual Windows window boundary')],generated=str(out.relative_to(HERE))))
+   rows.append(dict(path=path,mode='policy-extract',features=['home-full-card','home-page'],sha256=hashlib.sha256(source.encode()).hexdigest(),sha256Bytes=hashlib.sha256((_desktop_canonical_source(REPO, path)).read_bytes()).hexdigest(),changes=[dict(adapter='complete original depth/recoverable body, required actual Windows window boundary')],generated=str(out.relative_to(HERE))))
    continue
   if path.endswith('VideoCardTransitionBackgroundPolicy.kt'):
    EXTRACTED[path]=list(dict.fromkeys(EXTRACTED[path]+re.findall(r'(?m)^(?:internal |private )?(?:const )?val (VIDEO_CARD_\w+)',source)))
@@ -136,7 +137,7 @@ def generate(repo, output, standalone=False):
     ('import android.os.Build\n',''),
     ('import androidx.compose.ui.platform.LocalContext','import coil3.PlatformContext'),
     ('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics'),
-    ('import com.android.purebilibili.feature.video.controller.PlaybackProgressManager','import com.bilipai.desktop.ui.LocalDesktopHomeCardProgress'),
+    ('import com.android.purebilibili.core.player.PlaybackProgressManager','import com.bilipai.desktop.ui.LocalDesktopHomeCardProgress'),
     ('import com.android.purebilibili.core.store.SettingsManager\n',''),
     ('LocalContext.current','PlatformContext.INSTANCE'),
     ('LocalConfiguration.current','DesktopHomeCardWindowMetrics.current'),
@@ -171,7 +172,7 @@ def generate(repo, output, standalone=False):
    body=body.replace('LaunchedEffect(bvid, cid)', 'LaunchedEffect(defaultVideoCardOnlineCountStore, bvid, cid)')
   out=HERE/'generated'/pkg.replace('.','/')/Path(path).name
   if path not in DIRECT or standalone:write(out,'// Original source '+path+'\n// LF SHA256 '+hashlib.sha256(source.encode()).hexdigest()+'\n'+body)
-  rows.append(dict(path=path,mode='direct' if path in DIRECT else 'policy-extract',features=['home-full-card'],sha256=hashlib.sha256(source.encode()).hexdigest(),sha256Bytes=hashlib.sha256((REPO/path).read_bytes()).hexdigest(),changes=changes,generated=str(out.relative_to(HERE))))
+  rows.append(dict(path=path,mode='direct' if path in DIRECT else 'policy-extract',features=['home-full-card'],sha256=hashlib.sha256(source.encode()).hexdigest(),sha256Bytes=hashlib.sha256((_desktop_canonical_source(REPO, path)).read_bytes()).hexdigest(),changes=changes,generated=str(out.relative_to(HERE))))
  write(HERE/'source-inventory.json',json.dumps(rows,indent=2)+'\n')
 
 
@@ -201,9 +202,7 @@ def generate_preferences():
   found=re.findall(r'private val '+key+r'\s*=\s*(?:boolean|int)PreferencesKey\("[^"]+"\)',source);assert len(found)==1,key;lines+=found
  setters=[media.function(source,r[2],parser) for r in mapping.values() if r[2]]+[media.function(source,'setShowOnlineCount',parser)]
  frost=appearance.declarations(parser,source,['resolveHomeCardFrostedGlassEnabled']) if False else None
- frostpath=REPO/'app/src/main/java/com/android/purebilibili/core/store/HomeCardAppearancePolicy.kt'
- if not frostpath.exists():
-  found=[p for p in (REPO/'app/src/main/java/com/android/purebilibili/core/store').glob('*.kt') if 'internal fun resolveHomeCardFrostedGlassEnabled' in p.read_text(encoding='utf-8')];assert len(found)==1;frostpath=found[0]
+ frostpath=_desktop_canonical_source(REPO,'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt')
  frostsource=frostpath.read_text(encoding='utf-8');frost=appearance.declarations(parser,frostsource,['resolveHomeCardFrostedGlassEnabled'])
  content='''package com.android.purebilibili.core.store
 import com.bilipai.desktop.plugins.DesktopPluginContext as Context
@@ -272,11 +271,11 @@ def inventory(repo):
   APP+'feature/home/components/cards/VideoCardCoverColorStore.kt']))
  # The frozen original frost resolver is in this source, not a desktop synthetic policy.
  paths=[p if not p.endswith('HomeCardAppearancePolicy.kt') else frost_source_path(repo) for p in paths]
- return [dict(path=p,mode='direct' if p in DIRECT else 'policy-extract',features=['home-full-card'],sha256=hashlib.sha256((repo/p).read_text(encoding='utf-8').encode()).hexdigest()) for p in dict.fromkeys(paths)]
+ return [dict(path=p,mode='direct' if p in DIRECT else 'policy-extract',features=['home-full-card'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').encode()).hexdigest()) for p in dict.fromkeys(paths)]
 def frost_source_path(repo):
- found=[p for p in (repo/'app/src/main/java/com/android/purebilibili/core/store').glob('*.kt') if 'internal fun resolveHomeCardFrostedGlassEnabled' in p.read_text(encoding='utf-8')]
- assert len(found)==1
- return str(found[0].relative_to(repo)).replace('\\','/')
+ source=_desktop_canonical_source(repo,'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt')
+ assert source.read_text(encoding='utf-8').count('internal fun resolveHomeCardFrostedGlassEnabled(')==1
+ return source.relative_to(Path(repo).resolve()).as_posix()
 if __name__=='__main__':
  import argparse
  ap=argparse.ArgumentParser();ap.add_argument('--repo',type=Path,required=True);ap.add_argument('--output',type=Path);ap.add_argument('--inventory',action='store_true');ap.add_argument('--standalone',action='store_true');args=ap.parse_args()

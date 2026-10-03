@@ -13,18 +13,19 @@ BASE = "app/src/main/java/com/android/purebilibili/"
 DIRECT = [BASE + "core/plugin/js/" + name + ".kt" for name in
     ("BiliPaiJsPluginModels", "ExternalMediaLaunchStore")]
 EXTRACTED = [BASE + name + ".kt" for name in
-    ("core/plugin/js/BiliPaiJsPluginInstallStore", "core/plugin/feed/FeedSourceCatalog")]
+    ("core/plugin/js/BiliPaiJsPluginInstallStore", "core/plugin/feed/FeedSourceCatalog", "core/plugin/js/BiliPaiJsModuleResultCache")]
 POLICIES = [BASE + name + ".kt" for name in
     ("core/plugin/js/BiliPaiJsRuntime", "feature/plugin/js/BiliPaiJsPluginContentScreen")]
 SOURCES = {**{path: "direct" for path in DIRECT}, **{path: "extracted" for path in EXTRACTED},
     **{path: "policy-extract" for path in POLICIES}}
+SCREEN_EXTRA = [BASE + "feature/plugin/js/BiliPaiJsLayoutPresetStore.kt", BASE + "feature/plugin/js/ExternalMediaDanmaku.kt"]
+DIRECT.append(SCREEN_EXTRA[1])
+SOURCES.update({SCREEN_EXTRA[0]: "extracted", SCREEN_EXTRA[1]: "direct"})
 REMOTE_SOURCE = BASE + "feature/settings/screen/PluginsScreen.kt"
 SOURCES[REMOTE_SOURCE] = "policy-extract"
 EXAMPLES = ["examples/plugins/tv-live.bilipai.js", "examples/plugins/huya-live.bilipai.js"]
 SCRIPT_METHODS = ("buildBiliPaiJsPreviewExpression", "buildBiliPaiJsModuleExpression", "buildBiliPaiJsExecutionScript")
-CONTENT_METHODS = ("buildParamsJson", "resolveBiliPaiJsInitialParamValues", "buildBiliPaiJsParamPreferenceKey",
-    "readBiliPaiJsParamValues", "persistBiliPaiJsParamValues", "safePreferencePart", "flattenMediaItems",
-    "resolveBiliPaiJsMediaItemLazyKey")
+CONTENT_METHODS = ('buildBiliPaiJsModuleParamsJson', 'resolveBiliPaiJsInitialParamValues', 'resolveBiliPaiJsInitialPage', 'resolveBiliPaiJsModuleId', 'buildBiliPaiJsParamPreferenceKey', 'readBiliPaiJsParamValues', 'persistBiliPaiJsParamValues', 'safePreferencePart', 'flattenMediaItems', 'resolveBiliPaiJsMediaItemLazyKey')
 
 
 def original_storage_bridge(original: str, parser) -> str:
@@ -49,6 +50,32 @@ def helper(repo: Path):
     return host
 
 
+def generate_original_content_screen(repo, output, host):
+    recipe = json.loads(Path(__file__).with_name("upstream-js-content-adaptations.json").read_text(encoding="utf8"))
+    source = host.read(repo, recipe["source"])
+    if hashlib.sha256(source.encode()).hexdigest() != recipe["sha256LF"]:
+        raise ValueError("Original JS whole content screen changed")
+    body = source
+    for row in recipe["changes"]:
+        body = host.substitute(body, row["before"], row["after"], row["count"])
+    undone = body
+    for row in reversed(recipe["changes"]):
+        before, after = row["before"], row["after"]
+        for index in range(len(row["beforePositions"]) - 1, -1, -1):
+            position = row["beforePositions"][index] + index * (len(after) - len(before))
+            if undone[position:position + len(after)] != after:
+                raise ValueError("Original JS whole screen inverse binding changed")
+            undone = undone[:position] + before + undone[position + len(after):]
+    if undone != source:
+        raise ValueError("Original JS whole screen inverse failed")
+    results = [host.write(output, recipe["source"], source, body, "OriginalBiliPaiJsPluginContentScreen.kt")]
+    preset = host.read(repo, SCREEN_EXTRA[0])
+    results.append(host.write(output, SCREEN_EXTRA[0], preset, host.platform_context(preset)))
+    mapping = host.read(repo, SCREEN_EXTRA[1])
+    host.prune_old_direct(output, SCREEN_EXTRA[1], mapping)
+    return results
+
+
 def generate(repo: Path, output: Path) -> list[Path]:
     host = helper(repo)
     parser = host.parser_for(repo)
@@ -64,6 +91,10 @@ def generate(repo: Path, output: Path) -> list[Path]:
                 "com.bilipai.desktop.plugins.writeDesktopPluginDocument(scriptFile, script)")
             body = host.substitute(body, 'metadataFile(installed.manifest.id)\n            .writeText(json.encodeToString(InstalledBiliPaiJsPlugin.serializer(), installed), Charsets.UTF_8)',
                 'com.bilipai.desktop.plugins.writeDesktopPluginDocument(metadataFile(installed.manifest.id),\n            json.encodeToString(InstalledBiliPaiJsPlugin.serializer(), installed))')
+        if path.endswith("BiliPaiJsModuleResultCache.kt"):
+            # Original complete cache uses this existing account/plugin directory.
+            body = host.substitute(body, 'File(context.cacheDir, "bilipai_js_plugin_module_cache")',
+                'File(File(context.filesDir, "cache"), "bilipai_js_plugin_module_cache")')
         result.append(host.write(output, path, original, body))
     path = POLICIES[0]
     original = host.read(repo, path)
@@ -103,6 +134,7 @@ def generate(repo: Path, output: Path) -> list[Path]:
         "import com.bilipai.desktop.plugins.js.DesktopJsRemoteNetwork as NetworkModule",
         "import com.bilipai.desktop.plugins.DesktopPluginUrl as Uri", download, validate])
     result.append(host.write(output, REMOTE_SOURCE, original, body, "DesktopJsRemoteImportPolicy.kt"))
+    result.extend(generate_original_content_screen(repo, output, host))
     return result
 
 

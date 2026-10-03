@@ -9,7 +9,7 @@ import re
 BASE = "design-system/src/main/java/com/android/purebilibili/core/ui/"
 DIRECT = [BASE + name + ".kt" for name in (
     "AppThemeConfig", "AppShapes", "AppSurfaceTokens", "AppSpacingTokens", "AppChromeSizeTokens",
-    "AppPopupSurface", "AppDialogComponents", "AdaptiveDialogComponents", "ButtonVisualPolicy",
+    "AppPopupSurface", "AppDialogComponents", "ButtonVisualPolicy",
     "AppPrimitiveThemeDefaults", "blur/BlurIntensity", "motion/MiuixPressFeedbackModifier")]
 DIRECT += [BASE + "components/" + name + ".kt" for name in (
     "AppPrimitiveComponents", "AppPrimitiveRendererPolicy", "AppDesktopInteraction", "AppPrimaryButton",
@@ -20,7 +20,7 @@ DIRECT += [BASE + "renderer/material3/AppMaterial3" + name + ".kt" for name in (
 DIRECT += [BASE + "renderer/miuix/AppMiuix" + name + ".kt" for name in (
     "ActionPrimitives", "Checkbox", "Card", "Icon", "Switch", "Surface", "Slider", "RadioButton",
     "IconButton", "HapticFeedback", "Text", "ProgressIndicator", "Badge")]
-ADAPTED = [BASE + "components/AppText.kt", BASE + "AppContentDialogLayoutPolicy.kt", BASE + "components/AppSlider.kt"]
+ADAPTED = [BASE + "components/AppText.kt", BASE + "AppContentDialogLayoutPolicy.kt", BASE + "components/AppSlider.kt", BASE + "AdaptiveDialogComponents.kt"]
 REUSED = [BASE + "renderer/miuix/AppMiuix" + name + ".kt" for name in ("Text", "ProgressIndicator")]
 POLICIES = [BASE + "components/AppSegmentedControl.kt"]
 
@@ -54,6 +54,18 @@ def adapt(path, source, host):
             "import androidx.compose.foundation.layout.wrapContentHeight\nimport androidx.compose.foundation.layout.wrapContentWidth\n")
         source = host.substitute(source, "        .padding(horizontal = policy.horizontalPaddingDp.dp)\n        .widthIn(",
             "        .padding(horizontal = policy.horizontalPaddingDp.dp)\n        .wrapContentWidth()\n        .widthIn(")
+    elif path.endswith("/AdaptiveDialogComponents.kt"):
+        # Windows DialogProperties has no Android secure-policy / decor-fit fields.
+        original=source;edits=[]
+        assert hashlib.sha256(original.encode()).hexdigest()=='509450b773b1b9916580985dc1f0be17fceaeb971af8dc595b10bd03ce9e562b'
+        for before,after in [('                securePolicy = properties.securePolicy,\n', ''), ('                decorFitsSystemWindows = false,\n', '')]:
+            assert source.count(before)==1;at=source.index(before);edits.append((at,before,after))
+            source=source[:at]+after+source[at+len(before):]
+        inverse=source
+        for at,before,after in reversed(edits):
+            assert inverse[at:at+len(after)]==after;inverse=inverse[:at]+before+inverse[at+len(after):]
+        assert inverse==original
+        assert hashlib.sha256(source.encode()).hexdigest()=='7644e0cefa05a536ce37abd80fe862d2ad8d5c2114ede93f48c68d892f9afe13'
     elif path.endswith("/AppSlider.kt"):
         source = host.substitute(source, "import android.os.SystemClock", "import com.bilipai.desktop.appearance.DesktopMonotonicClock as SystemClock")
     else: raise ValueError("No platform binding for " + path)
@@ -82,7 +94,7 @@ def generate(repo, output, standalone=False):
 
 def inventory(repo):
     host = helper(repo)
-    return [dict(path=p, mode="direct" if p in DIRECT else "policy-extract" if p in POLICIES else "platform-adapter-reference",
+    return [dict(path=p, mode="direct" if p in DIRECT else "policy-extract" if p in POLICIES or p.endswith("/AdaptiveDialogComponents.kt") else "platform-adapter-reference",
         features=["component-parity"], sha256=hashlib.sha256(host.read(repo, p).encode()).hexdigest()) for p in DIRECT + ADAPTED + POLICIES]
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@
 The original full-window sheet, draft controls and dialogs are retained.
 Source drift rejects the build by manifest LF hash and exact fixed Git blob.
 """
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib, importlib.util, json, sys
 sys.dont_write_bytecode = True
@@ -16,7 +17,7 @@ REFERENCES = [BASE + n + '.kt' for n in ['data/model/response/DynamicCreateModel
 # Actual Main dynamic-tabs owns this exact original top-level renderer.
 REFERENCES += [COMP + 'DynamicAdaptiveSegmentedControl.kt', BASE + 'feature/dynamic/DynamicViewModel.kt']
 
-def read(repo, p): return (repo / p).read_text(encoding='utf-8').replace('\r\n', '\n')
+def read(repo, p): return (_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').replace('\r\n', '\n')
 def load(repo, name, path):
     spec = importlib.util.spec_from_file_location(name, repo / path)
     module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module); return module
@@ -85,10 +86,10 @@ import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
     # Exact pure rich-text/layout/model policies needed by the future ReplyItemView
     # producer. This deliberately emits neither a fake ReplyItemView nor its
     # Android bitmap/gallery, translation, block-user or cached-title consumer.
-    a=s.index('private val EMOTE_TOKEN_PATTERN');b=s.index('// 标题缓存有界化：',a)
+    a=s.index('internal val EMOTE_TOKEN_PATTERN');b=s.index('// 标题缓存有界化：',a)
     c=s.index('internal data class ReplyItemLayoutPolicy',b);d=s.index('@Composable\nfun ReplyHeader',c)
     body=s[a:b]+s[c:d]
-    body+=appearance.declarations(parser,s,['normalizeHttpImageUrl','resolveDecorationImageUrl','parseHexColorOrNull','replyPublishDayFormatter','formatTime'])
+    body+=appearance.declarations(parser,s,['normalizeHttpImageUrl','resolveDecorationImageUrl','parseHexColorOrNull'])
     emit(p,'''package com.android.purebilibili.feature.video.ui.components
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.*
@@ -97,6 +98,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
 import androidx.compose.foundation.text.appendInlineContent
 import com.android.purebilibili.core.util.BilibiliUrlParser
+import com.android.purebilibili.core.util.FormatUtils
 import com.android.purebilibili.core.theme.calculateContrastRatio
 import com.android.purebilibili.core.ui.OfficialVerifyBadgeTone
 import com.android.purebilibili.data.model.response.*

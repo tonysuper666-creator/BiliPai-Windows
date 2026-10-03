@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Original aggregate seed, route dispatch and Space header/playback policies for Windows."""
+from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, textwrap
 BASE = 'app/src/main/java/com/android/purebilibili/'
@@ -11,12 +12,12 @@ SOURCES = {BASE+'feature/space/SpaceLoadPolicy.kt':'policy-extract',
     BASE+'feature/space/SpaceChargeBadgePolicy.kt':'direct'}
 
 def inventory(repo):
-    return [dict(path=p,mode=m,features=['space-overview'],sha256=hashlib.sha256((repo/p).read_bytes().replace(b'\r\n',b'\n')).hexdigest()) for p,m in SOURCES.items()]
+    return [dict(path=p,mode=m,features=['space-overview'],sha256=hashlib.sha256((_desktop_canonical_source(repo, p)).read_bytes().replace(b'\r\n',b'\n')).hexdigest()) for p,m in SOURCES.items()]
 
 def generate(repo, output, policy_only=False):
     spec=importlib.util.spec_from_file_location('space_overview_parser',repo/'desktop/tools/sync-upstream.py')
     parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
-    def read(suffix): return (repo/BASE/suffix).read_text(encoding='utf-8')
+    def read(suffix): return (_desktop_canonical_source(repo, Path(BASE) / suffix)).read_text(encoding='utf-8')
     def declaration(source, name, kind='fun'):
         tokens=parser.kotlin_tokens(source)
         starts=[]
@@ -65,7 +66,7 @@ def generate(repo, output, policy_only=False):
     if not policy_only:
         for path,mode in SOURCES.items():
             if mode=='direct':
-                original=(repo/path).read_text(encoding='utf-8')
+                original=(_desktop_canonical_source(repo, path)).read_text(encoding='utf-8')
                 write('com.android.purebilibili.feature.space',Path(path).name,original)
 
 if __name__=='__main__':

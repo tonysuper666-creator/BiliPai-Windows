@@ -1,6 +1,6 @@
 {
   "source": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
-  "sha256LF": "63ffd0eadd3080e2b304612c9c1e672f5f2370ca9c9db4f8040a52e85cbc15aa",
+  "sha256LF": "acfeb63539acaf710a4070f59220a1585a38fd1e034d6a7a56a82970998d4352",
   "target": "com/android/purebilibili/feature/home/DesktopOriginalHomeViewModel.kt",
   "operations": [
     {
@@ -263,6 +263,13 @@
       "reason": "explicit Windows ownership/context/import/signature adapter; original algorithm outside these exact ranges remains verbatim"
     },
     {
+      "originalStartLine": 918,
+      "originalEndLineExclusive": 919,
+      "expected": "    fun startVideoDissolve(bvid: String) {\n",
+      "replacement": "    override fun startVideoDissolve(bvid: String) {\n",
+      "reason": "Expose the existing original action through the same sole retained Home VM interface; its accepted ownership gate remains in the original adapter."
+    },
+    {
       "originalStartLine": 919,
       "originalEndLineExclusive": 919,
       "expected": "",
@@ -384,8 +391,8 @@
     {
       "originalStartLine": 1040,
       "originalEndLineExclusive": 1041,
-      "expected": "        cardAnimationEnabled: Boolean = true\n",
-      "replacement": "        cardAnimationEnabled: Boolean\n",
+      "expected": "        dissolveAnimationEnabled: Boolean = true\n",
+      "replacement": "        dissolveAnimationEnabled: Boolean\n",
       "reason": "explicit Windows ownership/context/import/signature adapter; original algorithm outside these exact ranges remains verbatim"
     },
     {
@@ -690,33 +697,33 @@
       "reason": "explicit Windows ownership/context/import/signature adapter; original algorithm outside these exact ranges remains verbatim"
     },
     {
-      "originalStartLine": 2090,
-      "originalEndLineExclusive": 2091,
+      "originalStartLine": 2091,
+      "originalEndLineExclusive": 2092,
       "expected": "                    } catch (e: Exception) {\n",
       "replacement": "                    } catch (cancelled: CancellationException) { throw cancelled } catch (e: Exception) {\n",
       "reason": "explicit Windows ownership/context/import/signature adapter; original algorithm outside these exact ranges remains verbatim"
     },
     {
-      "originalStartLine": 2105,
-      "originalEndLineExclusive": 2106,
+      "originalStartLine": 2106,
+      "originalEndLineExclusive": 2107,
       "expected": "        } catch (e: Exception) {\n",
       "replacement": "        } catch (cancelled: CancellationException) { throw cancelled } catch (e: Exception) {\n",
       "reason": "explicit Windows ownership/context/import/signature adapter; original algorithm outside these exact ranges remains verbatim"
     },
     {
-      "originalStartLine": 2111,
-      "originalEndLineExclusive": 2112,
+      "originalStartLine": 2112,
+      "originalEndLineExclusive": 2113,
       "expected": "    suspend fun getPreviewVideoUrl(bvid: String, cid: Long): String? {\n",
       "replacement": "    override suspend fun getPreviewVideoUrl(bvid: String, cid: Long): String? {\n        ensureOwned()\n",
       "reason": "explicit Windows ownership/context/import/signature adapter; original algorithm outside these exact ranges remains verbatim"
     },
     {
-      "originalStartLine": 2113,
-      "originalEndLineExclusive": 2115,
+      "originalStartLine": 2114,
+      "originalEndLineExclusive": 2116,
       "expected": "            com.android.purebilibili.data.repository.VideoRepository.getPreviewVideoUrl(bvid, cid)\n        } catch (e: Exception) {\n",
       "replacement": "            VideoRepository.getPreviewVideoUrl(bvid, cid)\n        } catch (cancelled: CancellationException) { throw cancelled } catch (e: Exception) {\n",
       "reason": "explicit Windows ownership/context/import/signature adapter; original algorithm outside these exact ranges remains verbatim"
     }
   ],
-  "desiredSha256LF": "f087ce6ec92c21ad4ef8563b5026aef631eadc2f91b74bc928b4a9327c38edcc"
+  "desiredSha256LF": "47d521bdd08682386f50ec3b252dcd485e6b7b0586d4eb92eb031c08f0d64c18"
 }

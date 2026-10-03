@@ -21,6 +21,14 @@ class SettingsSearchPolicyTest {
     }
 
     @Test
+    fun personalizationSwitchRemainsSearchable() {
+        assertEquals(
+            SettingsSearchTarget.PRIVACY_PERMISSION,
+            resolveSettingsSearchResults("个性化搜索推荐").firstOrNull()?.target
+        )
+    }
+
+    @Test
     fun queryByMessageNotificationTitleOrAlias_hitsMessageNotificationSetting() {
         val byTitle = resolveSettingsSearchResults("消息通知")
         val byAlias = resolveSettingsSearchResults("后台消息")

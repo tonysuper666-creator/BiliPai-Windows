@@ -3,9 +3,10 @@ package com.android.purebilibili.core.theme
 import androidx.compose.material3.MotionScheme
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Typography
+import com.android.purebilibili.core.ui.AppShapeTokens
 
-internal const val MD3_CORNER_RADIUS_SCALE = 0.9f
-internal const val MIUIX_CORNER_RADIUS_SCALE = 1.15f
+internal const val MD3_CORNER_RADIUS_SCALE = AppShapeTokens.MaterialCornerRadiusScale
+internal const val MIUIX_CORNER_RADIUS_SCALE = AppShapeTokens.MiuixCornerRadiusScale
 
 data class AndroidNativeChromeTokens(
     val containerCornerRadiusDp: Int,
