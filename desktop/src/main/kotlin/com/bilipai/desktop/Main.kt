@@ -29,29 +29,32 @@ import java.awt.Dimension
 
 fun main(args: Array<String>) {
     if (args.firstOrNull() == "--backend-smoke") {
-        runBlocking {
-            val guestDirectory = java.nio.file.Files.createTempDirectory("BiliPai-network-smoke-")
-            val guestSession = guestDirectory.resolve("session.json")
-            try {
-            val repository = DesktopRepository(DesktopSessionStore(guestSession))
-            println("BACKEND_SMOKE_STAGE popular")
-            val popular = repository.popular()
-            require(popular.isNotEmpty()) { "Popular feed was empty" }
-            println("BACKEND_SMOKE_STAGE search")
-            val search = repository.search("哔哩哔哩")
-            require(search.isNotEmpty()) { "Search was empty" }
-            println("BACKEND_SMOKE_STAGE details")
-            val details = repository.videoDetails(popular.first().bvid)
-            println("BACKEND_SMOKE_STAGE playback")
-            val playback = repository.playback(details)
-            require(playback.videoUrl.startsWith("https://"))
-            println("BACKEND_SMOKE_OK feed=${popular.size} search=${search.size} parts=${details.pages.size} dashAudio=${playback.audioUrl != null} quality=${playback.quality}")
-            } finally {
-                java.nio.file.Files.deleteIfExists(guestSession)
-                java.nio.file.Files.deleteIfExists(guestDirectory)
+        val smokeResult = runCatching {
+            runBlocking {
+                val guestDirectory = java.nio.file.Files.createTempDirectory("BiliPai-network-smoke-")
+                val guestSession = guestDirectory.resolve("session.json")
+                try {
+                    val repository = DesktopRepository(DesktopSessionStore(guestSession))
+                    println("BACKEND_SMOKE_STAGE popular")
+                    val popular = repository.popular()
+                    require(popular.isNotEmpty()) { "Popular feed was empty" }
+                    println("BACKEND_SMOKE_STAGE search")
+                    val search = repository.search("哔哩哔哩")
+                    require(search.isNotEmpty()) { "Search was empty" }
+                    println("BACKEND_SMOKE_STAGE details")
+                    val details = repository.videoDetails(popular.first().bvid)
+                    println("BACKEND_SMOKE_STAGE playback")
+                    val playback = repository.playback(details)
+                    require(playback.videoUrl.startsWith("https://"))
+                    println("BACKEND_SMOKE_OK feed=${popular.size} search=${search.size} parts=${details.pages.size} dashAudio=${playback.audioUrl != null} quality=${playback.quality}")
+                } finally {
+                    java.nio.file.Files.deleteIfExists(guestSession)
+                    java.nio.file.Files.deleteIfExists(guestDirectory)
+                }
             }
         }
-        return
+        smokeResult.exceptionOrNull()?.printStackTrace()
+        kotlin.system.exitProcess(if (smokeResult.isSuccess) 0 else 1)
     }
     if (args.firstOrNull() in setOf("--player-self-test", "--player-self-test-ci")) {
         require(args.size == 2) { "Usage: --player-self-test[-ci] <report-directory>" }
