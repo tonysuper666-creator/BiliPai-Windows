@@ -173,6 +173,36 @@ class DesktopUpdaterIntegrationTest {
                         put("health", healthEvidence(damaged.stagingDirectory))
                     }
 
+                    // Explicit fixture setup models a damaged registered active and its healthy previous install.
+                    // Both carry the actual version: fallback must also update a changed path at the same version.
+                    Files.writeString(activeFile, json.encodeToString(JsonObject.serializer(), buildJsonObject {
+                        put("repository", config.repository)
+                        put("version", healthyUpdate.version)
+                        put("executablePath", damaged.executable.toString())
+                        put("previousVersion", healthyUpdate.version)
+                        put("previousExecutablePath", healthy.executable.toString())
+                    }))
+                    val beforeFallbackProcesses = launched.size
+                    assertTrue(updater().launchRegisteredInstall(emptyArray()))
+                    val fallbackProcesses = launched.drop(beforeFallbackProcesses)
+                    assertEquals(2, fallbackProcesses.size)
+                    assertFalse(fallbackProcesses.first().isAlive)
+                    assertTrue(fallbackProcesses.last().isAlive)
+                    val fallbackRecord = json.parseToJsonElement(Files.readString(activeFile)).jsonObject
+                    assertEquals(healthy.executable.toString(), fallbackRecord.getValue("executablePath").jsonPrimitive.content)
+                    assertEquals(healthyUpdate.version, fallbackRecord.getValue("version").jsonPrimitive.content)
+                    evidence["registeredFallback"] = buildJsonObject {
+                        put("passed", true)
+                        put("registrySetupWasFixture", true)
+                        put("failedProcessId", fallbackProcesses.first().pid())
+                        put("healthyProcessId", fallbackProcesses.last().pid())
+                        put("activeExecutable", healthy.executable.toString())
+                    }
+                    fixture.publish("after-damaged-failure", config.version, packagePath)
+                    val recoveredDamage = assertIs<UpdateState.Available>(damagedUpdater.check()).update
+                    assertTrue(recoveredDamage.assetName.contains("after-damaged-failure"))
+                    evidence["failedPreparedCandidateRevoked"] = JsonPrimitive(true)
+
                     // Root composition must fail even though the EXE window and native player can start.
                     // The former window-only ACK incorrectly accepted this authenticated fixture ZIP.
                     val damagedRootZip = caseRoot.resolve("damaged-root-fixture.zip")
@@ -203,36 +233,6 @@ class DesktopUpdaterIntegrationTest {
                         put("rootHealthAcknowledged", false)
                         put("health", healthEvidence(damagedRoot.stagingDirectory))
                     }
-
-                    // Explicit fixture setup models a damaged registered active and its healthy previous install.
-                    // Both carry the actual version: fallback must also update a changed path at the same version.
-                    Files.writeString(activeFile, json.encodeToString(JsonObject.serializer(), buildJsonObject {
-                        put("repository", config.repository)
-                        put("version", healthyUpdate.version)
-                        put("executablePath", damaged.executable.toString())
-                        put("previousVersion", healthyUpdate.version)
-                        put("previousExecutablePath", healthy.executable.toString())
-                    }))
-                    val beforeFallbackProcesses = launched.size
-                    assertTrue(updater().launchRegisteredInstall(emptyArray()))
-                    val fallbackProcesses = launched.drop(beforeFallbackProcesses)
-                    assertEquals(2, fallbackProcesses.size)
-                    assertFalse(fallbackProcesses.first().isAlive)
-                    assertTrue(fallbackProcesses.last().isAlive)
-                    val fallbackRecord = json.parseToJsonElement(Files.readString(activeFile)).jsonObject
-                    assertEquals(healthy.executable.toString(), fallbackRecord.getValue("executablePath").jsonPrimitive.content)
-                    assertEquals(healthyUpdate.version, fallbackRecord.getValue("version").jsonPrimitive.content)
-                    evidence["registeredFallback"] = buildJsonObject {
-                        put("passed", true)
-                        put("registrySetupWasFixture", true)
-                        put("failedProcessId", fallbackProcesses.first().pid())
-                        put("healthyProcessId", fallbackProcesses.last().pid())
-                        put("activeExecutable", healthy.executable.toString())
-                    }
-                    fixture.publish("after-damaged-failure", config.version, packagePath)
-                    val recoveredDamage = assertIs<UpdateState.Available>(damagedUpdater.check()).update
-                    assertTrue(recoveredDamage.assetName.contains("after-damaged-failure"))
-                    evidence["failedPreparedCandidateRevoked"] = JsonPrimitive(true)
 
                     if (previousPath != null && previousConfig != null) {
                         require(previousConfig.repository == config.repository)
