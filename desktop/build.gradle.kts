@@ -380,6 +380,28 @@ val extractUpstreamSettingsCategories by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/settings-categories"))
 }
 
+val extractOriginalStaticSettingsPages by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractUpstreamSettingsSearch, extractUpstreamSettingsCategories)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-static-settings-pages.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/static-settings-pages").get().asFile.absolutePath)
+    inputs.file(sourceManifest)
+    inputs.files("tools/extract-upstream-static-settings-pages.py", "tools/v025_source_paths.py",
+        "tools/v025-canonical-sources.json", "tools/extract-upstream-settings-search.py")
+    inputs.files(sources.filter { "desktop-whole-static-settings-pages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.files(originalResources.filter { "desktop-whole-static-settings-pages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.files(listOf("app/src/main/res/values/strings.xml", "app/src/main/res/values-en/strings.xml",
+        "app/src/main/res/values-zh-rTW/strings.xml").map(::canonicalOriginalSource))
+    inputs.files(listOf("app/src/main/java/com/android/purebilibili/feature/settings/SettingsSemanticIconPolicy.kt",
+        "app/src/main/java/com/android/purebilibili/feature/settings/SettingsEntryVisualPolicy.kt").map(::canonicalOriginalSource))
+    outputs.dir(layout.buildDirectory.dir("generated/static-settings-pages"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/static-settings-pages")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalStaticSettingsPages) }
+
 val extractUpstreamSettingsHome by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamSettingsCategories)
     workingDir(projectDir)
@@ -1813,6 +1835,22 @@ tasks.register<JavaExec>("backendSmoke") {
     classpath = sourceSets["main"].runtimeClasspath
     mainClass.set("com.bilipai.desktop.MainKt")
     args("--backend-smoke")
+}
+
+tasks.register<JavaExec>("originalStaticSettingsUiSmoke") {
+    group = "verification"
+    description = "Render original static settings through the actual Main and owned live Root."
+    dependsOn("testClasses", "classes")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalStaticSettingsUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    providers.gradleProperty("rootValidationToken").orNull?.let { systemProperty("bilipai.rootValidationToken", it) }
+    doFirst {
+        args(requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
+    }
 }
 
 compose.desktop {

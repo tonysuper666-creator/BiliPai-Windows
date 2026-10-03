@@ -66,6 +66,7 @@ internal class DesktopOriginalRootPageBindings(
     onActiveDestination: (BiliPaiNavKey) -> Unit,
     saveableState: SaveableStateHolder,
     onRootContentFrame: () -> Unit = {},
+    onActivePageFrame: (BiliPaiNavKey, Boolean) -> Unit = { _, _ -> },
     leafContent: @Composable (BiliPaiNavKey, DesktopOriginalRootRouteCommands, Boolean, Boolean) -> Unit,
 ) {
     if (!routes.owns() || !environment.isCurrent()) return
@@ -142,7 +143,10 @@ internal class DesktopOriginalRootPageBindings(
             // This exists only inside a real page slot, after every Root initialization gate.
             Box(Modifier.fillMaxSize().drawWithContent {
                 drawContent()
-                if (contentReady && active && routes.owns()) onRootContentFrame()
+                if (contentReady && active && routes.owns()) {
+                    onRootContentFrame()
+                    onActivePageFrame(key, pagerHosted)
+                }
             }) {
             when (key) {
                 BiliPaiNavKey.Home -> DesktopRetainedHomePage(root, pages.window, homeNavigation,

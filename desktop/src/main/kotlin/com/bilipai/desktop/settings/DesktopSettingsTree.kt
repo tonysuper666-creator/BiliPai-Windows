@@ -24,6 +24,7 @@ internal fun DesktopSettingsTree(
     discovery: DesktopDiscoveryRepository,
     privacy: DesktopPrivacySectionBindings,
     onFailure: (Throwable) -> Unit,
+    onDetailBack: (SettingsSearchTarget) -> Unit = { navigator.pop() },
     appearanceContent: @Composable () -> Unit,
     pluginsContent: @Composable () -> Unit,
     playbackContent: @Composable (onDismiss: () -> Unit) -> Unit,
@@ -49,6 +50,10 @@ internal fun DesktopSettingsTree(
                     onCategoryClick = navigator::openCategory,
                     onResultClick = navigator::openSearchResult,
                     historyWritesScope = historyWritesScope)
+            } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.TIPS) {
+                TipsSettingsScreen(onBack = { onDetailBack(page.target) })
+            } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.OPEN_SOURCE_LICENSES) {
+                OpenSourceLicensesScreen(onBack = { onDetailBack(page.target) })
             } else {
                 Column(Modifier.fillMaxSize()) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp),
@@ -98,7 +103,25 @@ internal fun DesktopSettingsTree(
                                             SettingsSearchFocusController.request.value?.focusId) },
                                         onAnimationClick = { navigator.openDetail(SettingsSearchTarget.ANIMATION,
                                             SettingsSearchFocusController.request.value?.focusId) })
-                                    SettingsRootCategory.SYSTEM_ABOUT -> systemContent()
+                                    SettingsRootCategory.SYSTEM_ABOUT -> {
+                                        systemContent()
+                                        SettingsDetailGroup("帮助与工具") {
+                                            SettingsDetailEntrySection(listOf(SettingsDetailEntry(
+                                                target = SettingsSearchTarget.TIPS,
+                                                title = settingsDestinationCopy(SettingsSearchTarget.TIPS).title,
+                                                value = settingsDestinationCopy(SettingsSearchTarget.TIPS).summary,
+                                                onClick = { navigator.openDetail(SettingsSearchTarget.TIPS, null) },
+                                            )))
+                                        }
+                                        SettingsDetailGroup("关于与更新") {
+                                            SettingsDetailEntrySection(listOf(SettingsDetailEntry(
+                                                target = SettingsSearchTarget.OPEN_SOURCE_LICENSES,
+                                                title = settingsDestinationCopy(SettingsSearchTarget.OPEN_SOURCE_LICENSES).title,
+                                                value = settingsDestinationCopy(SettingsSearchTarget.OPEN_SOURCE_LICENSES).summary,
+                                                onClick = { navigator.openDetail(SettingsSearchTarget.OPEN_SOURCE_LICENSES, null) },
+                                            )))
+                                        }
+                                    }
                                     else -> AppText("该分类的原版设置和消费行为仍在移植中。", Modifier.padding(16.dp))
                                 }
                             }

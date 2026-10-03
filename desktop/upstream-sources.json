@@ -3798,7 +3798,8 @@
       "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsPageScaffold.kt",
       "mode": "policy-extract",
       "features": [
-        "settings-blocked-up"
+        "settings-blocked-up",
+        "desktop-whole-static-settings-pages"
       ],
       "sha256": "efd8d810300de3dc98dd2a695fb441b16d13720fbb54ab3a8b9e142ccc185d53"
     },
@@ -11094,6 +11095,30 @@
       ],
       "path": "miuix-navigation/src/main/java/top/yukonga/miuix/kmp/nav/core/NavBackCompletionPolicy.kt",
       "sha256": "a772f6108ba97e978b981764da9d2ba789381e027c986ba735547f1298d5120b"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/TipsSettingsScreen.kt",
+      "sha256": "5c3b38dd075082cc08468fadbd0915599563c02d5bdae56b2a431ed85dd4391a",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/OpenSourceLicensesScreen.kt",
+      "sha256": "f6b888b30850ee1c1c1ce87649e4eae148f7fddf6563934c38be0cbc5323bfe3",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/SettingsScreenPolicy.kt",
+      "sha256": "6b69e920307bd0d459a3106ae235eace3b4d3680551c690d9774f6368830d72b",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
     }
   ],
   "featureCoverage": {
@@ -11608,7 +11633,8 @@
       "path": "app/src/main/res/drawable/ms_flare_24.xml",
       "sha256": "facc06db9417c7407bc9c2aab4ac4a317f59f8f4f55c5773b05963b199d14848",
       "features": [
-        "settings-search-symbols"
+        "settings-search-symbols",
+        "desktop-whole-static-settings-pages"
       ]
     },
     {
@@ -11774,7 +11800,8 @@
       "sha256": "b0a011df19ee81eab7e1d822fb2a3d7b9b446bae8fccc83f2fd5450b12d850b8",
       "features": [
         "settings-search-symbols",
-        "desktop-full-navigation-settings"
+        "desktop-full-navigation-settings",
+        "desktop-whole-static-settings-pages"
       ]
     },
     {
@@ -11824,7 +11851,8 @@
       "path": "app/src/main/res/drawable/ms_link_24.xml",
       "sha256": "c1aad36fbc2f5857731304472eb30c26b81b385e05852be9d3f6575848b1f35e",
       "features": [
-        "settings-search-symbols"
+        "settings-search-symbols",
+        "desktop-whole-static-settings-pages"
       ]
     },
     {
@@ -12370,7 +12398,8 @@
       "path": "app/src/main/res/drawable/ms_thumb_up_fill_24.xml",
       "sha256": "6d590c4007a2fd5bd03cf805956b8ca898bea39fa850c262c5ac5b1c3c1cfc5a",
       "features": [
-        "settings-search-symbols"
+        "settings-search-symbols",
+        "desktop-whole-static-settings-pages"
       ]
     },
     {
@@ -12398,7 +12427,8 @@
       "path": "app/src/main/res/drawable/ms_touch_app_fill_24.xml",
       "sha256": "6f458f32092c163a11e9766dc5eb5238e9c6b210451ce02ef18ba54db1e970ca",
       "features": [
-        "settings-search-symbols"
+        "settings-search-symbols",
+        "desktop-whole-static-settings-pages"
       ]
     },
     {
@@ -12546,7 +12576,8 @@
     {
       "path": "app/src/main/res/drawable/ms_keyboard_arrow_right_24.xml",
       "features": [
-        "settings-category-symbols"
+        "settings-category-symbols",
+        "desktop-whole-static-settings-pages"
       ],
       "sha256": "d3f53b271fdb2150775b4252bf46139c3ab5ca872802372a1089e6e1dd6f2a35"
     },
@@ -12881,6 +12912,55 @@
         "desktop-storage-cache-settings-owner-parity"
       ],
       "sha256": "b38c518aa15e88cb9f2eda91aa5617427530ae9359a1b2c8ab96f7d16bffabe7"
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_cameraswitch_fill_24.xml",
+      "sha256": "76125f2c44ed822eda14265ee43488dcda85100f76c3cf0885c56061e7173a0e",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_card_giftcard_fill_24.xml",
+      "sha256": "7b96223cad7e43e62c270e2a31ab113af0482f87101d4b4ea7348f0447b09bfa",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_draw_fill_24.xml",
+      "sha256": "a58484797f1f4e45acb6a2781c8bfddc77cb133e32bfc7f950bd25509c00649b",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_find_in_page_24.xml",
+      "sha256": "99fbb5ab4383a55a2c60625068be60af98820d640c39ae0c8f27f6fa061c3898",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_label_fill_24.xml",
+      "sha256": "a8ef9e2b43987b62549efeaaad05ace7bc0423073def72d7be5892b284f964c8",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_picture_in_picture_fill_24.xml",
+      "sha256": "a18fc399d53212e1af89287663291843a8a7066225fd4721b6457cec1300bb7b",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_skip_next_fill_24.xml",
+      "sha256": "780b3df0c9108861210d916d2510a0c4e89370449232137d621b1e7c6e756d4b",
+      "features": [
+        "desktop-whole-static-settings-pages"
+      ]
     }
   ],
   "lastSourceReview": {

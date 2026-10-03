@@ -1536,6 +1536,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                         BiliPaiNavKey.HomeSettings -> settingsNavigator.openCategory(SettingsRootCategory.HOME_RECOMMENDATION)
                         BiliPaiNavKey.PermissionSettings -> settingsNavigator.openCategory(SettingsRootCategory.PRIVACY_PERMISSION)
                         BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP,null)
+                        BiliPaiNavKey.TipsSettings -> settingsNavigator.openDetail(SettingsSearchTarget.TIPS,null)
+                        BiliPaiNavKey.OpenSourceLicenses -> settingsNavigator.openDetail(SettingsSearchTarget.OPEN_SOURCE_LICENSES,null)
                         else -> Unit
                     }
                 }
@@ -1785,6 +1787,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             section == DesktopSection.SETTINGS -> DesktopSettingsTree(settingsNavigator, settingsSearchController,
                                 historyWritesScope = scope, discovery = discovery, privacy = privacyBindings,
                                 onFailure = { error = it.message ?: "设置保存失败" },
+                                onDetailBack = {
+                                    if (entryKey == BiliPaiNavKey.TipsSettings || entryKey == BiliPaiNavKey.OpenSourceLicenses)
+                                        commands.back()
+                                    else settingsNavigator.pop()
+                                },
                                 appearanceContent = { DesktopAppearanceSettings(appearance,
                                     onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } }) },
                                 pluginsContent = { PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin) },
@@ -1820,7 +1827,6 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             modifier = Modifier.fillMaxWidth())
                                     }
                                     diagnosticStartupError?.let { Text(it, Modifier.padding(12.dp), color = scheme.error) }
-                                    Text("许可和支持页面仍在移植中。", Modifier.padding(12.dp))
                                 })
                             section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings(appearance,
                                 onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } })
@@ -2072,6 +2078,7 @@ private fun desktopReadySection(key:BiliPaiNavKey):DesktopSection = when(key) {
     BiliPaiNavKey.Settings,is BiliPaiNavKey.SettingsCategory,BiliPaiNavKey.SettingsSearch,
         BiliPaiNavKey.HomeSettings,BiliPaiNavKey.IconSettings,BiliPaiNavKey.AnimationSettings,
         BiliPaiNavKey.PlaybackSettings,BiliPaiNavKey.PermissionSettings,BiliPaiNavKey.MessageNotificationSettings,
-        BiliPaiNavKey.BottomBarSettings,BiliPaiNavKey.SettingsShare,BiliPaiNavKey.WebDavBackup -> DesktopSection.SETTINGS
+        BiliPaiNavKey.BottomBarSettings,BiliPaiNavKey.SettingsShare,BiliPaiNavKey.WebDavBackup,
+        BiliPaiNavKey.TipsSettings,BiliPaiNavKey.OpenSourceLicenses -> DesktopSection.SETTINGS
     else -> DesktopSection.UNSUPPORTED // Explicit unsupported leaf; never Home or Notes.
 }

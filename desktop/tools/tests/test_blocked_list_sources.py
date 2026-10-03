@@ -22,8 +22,10 @@ class BlockedListSources(unittest.TestCase):
         source = extractor.original(REPO, extractor.SOURCES[2])
         marker = "internal val LocalSettingsTopContentPadding"
         end = source.index("@Composable\ninternal fun SettingsBottomBarScrollEffect", source.index(marker))
-        padding = (GENERATED / "com/android/purebilibili/feature/settings/ui/DesktopUpstreamBlockedListPadding.kt").read_text(encoding="utf-8")
-        self.assertEqual(source[source.index(marker):end], padding[padding.index(marker):])
+        scaffold = (REPO / "desktop/build/generated/static-settings-pages/com/android/purebilibili/feature/settings/ui/SettingsPageScaffold.kt").read_text(encoding="utf-8")
+        generated_end = scaffold.index("@Composable\ninternal fun SettingsBottomBarScrollEffect", scaffold.index(marker))
+        self.assertEqual(source[source.index(marker):end], scaffold[scaffold.index(marker):generated_end])
+        self.assertFalse((GENERATED / "com/android/purebilibili/feature/settings/ui/DesktopUpstreamBlockedListPadding.kt").exists())
         pacing = (GENERATED / "com/android/purebilibili/data/repository/DesktopUpstreamBlockedListPacing.kt").read_text(encoding="utf-8")
         for path in (extractor.SOURCES[3], extractor.SOURCES[4]):
             for line in extractor.original(REPO, path).splitlines():

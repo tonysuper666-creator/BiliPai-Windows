@@ -449,6 +449,9 @@ internal class DesktopReadyOriginalRootHandle(
                         clock.settleState == VideoCardTransitionSettleState.CancelRestore || clock.gestureRestoreInProgress)) },
                 Modifier.fillMaxSize(), chromeBindings, { active -> activeDestination = active; services.activeDestinationChanged(active) }, saveable,
                 onRootContentFrame = { if (ownsStartupRoot()) onRootContentFrame(ownsStartupRoot) },
+                onActivePageFrame = { key, hosted ->
+                    if (ownsStartupRoot()) DesktopOriginalRootValidationTap.frame(key, hosted, handle, routes)
+                },
                 leafContent = { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages, spacePages) })
         }
         }

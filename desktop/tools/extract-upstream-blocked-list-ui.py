@@ -1,4 +1,4 @@
-"""Original BlockedListContent, padding, filename and repository pacing constants for Windows."""
+"""Original BlockedListContent, filename and repository pacing constants for Windows."""
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,importlib.util,json
@@ -31,9 +31,15 @@ def generate(repo,output):
         assert inverse[at:at+len(after)]==after;inverse=inverse[:at]+before+inverse[at+len(after):]
     assert inverse==original_content
     paths=[write(output,'com.android.purebilibili.feature.settings','DesktopUpstreamBlockedListContent.kt',content)]
+    # The complete original SettingsPageScaffold now owns its padding local/helper.
+    # Retire only the exact old generated selection; unexpected edits are never deleted.
     scaffold=original(repo,SOURCES[2]);start=scaffold.index('internal val LocalSettingsTopContentPadding');end=scaffold.index('@Composable\ninternal fun SettingsBottomBarScrollEffect',start)
-    paths.append(write(output,'com.android.purebilibili.feature.settings.ui','DesktopUpstreamBlockedListPadding.kt',
-        'package com.android.purebilibili.feature.settings.ui\nimport androidx.compose.foundation.layout.PaddingValues\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.unit.dp\n\n'+scaffold[start:end]))
+    previous_padding=output/'com/android/purebilibili/feature/settings/ui/DesktopUpstreamBlockedListPadding.kt'
+    if previous_padding.exists():
+        expected='package com.android.purebilibili.feature.settings.ui\nimport androidx.compose.foundation.layout.PaddingValues\nimport androidx.compose.runtime.*\nimport androidx.compose.ui.unit.dp\n\n'+scaffold[start:end]
+        assert not previous_padding.is_symlink() and previous_padding.resolve().is_relative_to(output.resolve())
+        assert previous_padding.read_text(encoding='utf8').replace('\r\n','\n')==expected
+        previous_padding.unlink()
     file=original(repo,SOURCES[1]);filename=selector.selected(file,'fun','buildBlockedListJsonFileName',parser)
     paths.append(write(output,'com.android.purebilibili.feature.settings','DesktopUpstreamBlockedListFilename.kt',
         'package com.android.purebilibili.feature.settings\n\n'+filename+'\n'))
