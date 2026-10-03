@@ -86,6 +86,21 @@ settingsInner=settings[settings.index('object SettingsManager {')+len('object Se
 enum=selector.declarations(parser,settingsInner,['MusicLyricsUiStyle'])
 body,names=section.member_closure(settingsInner,['getMusicLyricsUiStyle','setMusicLyricsUiStyle','getStartupAutoPlayEnabledSync','getAudioNowPlayingBarEnabled'])
 if 'MusicLyricsUiStyle' in names:enum=''
+# The complete original startup consumer already exists in AudioModeMusicPlayer.
+# Its setter writes the canonical DataStore key; use that same Store first while
+# retaining the complete original SharedPreferences read as legacy fallback.
+body=replace(body, '''    fun getStartupAutoPlayEnabledSync(context: Context): Boolean {
+''', '''    fun getStartupAutoPlayEnabledSync(context: Context): Boolean {
+        context.requireCurrent()
+        val key = booleanPreferencesKey("startup_auto_play_enabled")
+        val canonical = com.bilipai.desktop.ui.DesktopOriginalPlaybackPreferenceOperation.currentOrNull()
+            ?.values(context)?.get(key)
+            ?: context.pluginContext.store.snapshot("settings").value[key]
+        if (canonical != null) {
+            context.requireCurrent()
+            return canonical
+        }
+''', 'Same original startup consumer reads staged/published canonical key before original legacy mirror')
 emit('core/store/DesktopOriginalMusicUiSettings.kt','''package com.android.purebilibili.core.store
 import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context
 import com.bilipai.desktop.ui.playerIntPreferencesKey as intPreferencesKey

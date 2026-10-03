@@ -26,7 +26,11 @@ class PlaybackSettingsExtractTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             module.generate(REPO, root, PLATFORM)
-            body = (root / 'com/android/purebilibili/feature/settings/DefaultAudioQualitySelection.kt').read_text(encoding='utf-8')
+            self.assertFalse((root / 'com/android/purebilibili/feature/settings/DefaultAudioQualitySelection.kt').exists())
+            spec = importlib.util.spec_from_file_location('whole_playback_settings', REPO / 'desktop/tools/extract-upstream-whole-playback-settings.py')
+            whole = importlib.util.module_from_spec(spec); spec.loader.exec_module(whole)
+            whole.main(REPO, root / 'whole')
+            body = (root / 'whole/generated/com/android/purebilibili/feature/settings/PlaybackSettingsSelectionPolicy.kt').read_text(encoding='utf-8')
             for name in ['normalizeDefaultAudioQualityOption', 'resolveDefaultAudioQualityOptions']:
                 self.assertIn(module.function(module.read(REPO, module.SETTINGS), name), body)
             constant = (root / 'com/android/purebilibili/core/store/player/DefaultAudioQuality.kt').read_text(encoding='utf-8')

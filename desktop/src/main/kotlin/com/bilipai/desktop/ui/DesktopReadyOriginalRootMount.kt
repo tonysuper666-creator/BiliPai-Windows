@@ -329,6 +329,11 @@ internal class DesktopReadyOriginalRootHandle(
         } }
         val profile = remember(root, windowBinding) { windowBinding.profile(root, services.profileAccounts(root.entry.gate)) }
         val originalSearch = remember(root, routes, windowBinding,personalLists) { windowBinding.searchRoot(root,routes,personalLists.preferences) }
+        val originalHomeSettings = remember(root, profile, windowBinding, personalLists) {
+            DesktopOriginalHomeSettingsRootServices(root.environment.settings, personalLists.preferences, services.feedback) { pageScope, owns, admit, write ->
+                windowBinding.homeSettingsProfile(root, profile, pageScope, owns, admit, write)
+            }
+        }
         SideEffect { originalSearch.prune() }
         DisposableEffect(originalSearch) { onDispose { originalSearch.close() } }
         var activeDestination by remember(root) { mutableStateOf<BiliPaiNavKey>(BiliPaiNavKey.Home) }
@@ -436,7 +441,14 @@ internal class DesktopReadyOriginalRootHandle(
             services.originalVideoWindowReady(originalVideoWindow)
             onDispose { services.originalVideoWindowRetired(originalVideoWindow) }
         }
-        CompositionLocalProvider(LocalDesktopOriginalOnboardingPreferences provides onboardingPreferences,
+        val originalAboutMetadata = remember(root, services.repository) {
+            com.bilipai.desktop.settings.DesktopOriginalAboutReleaseMetadata(services.repository.httpClient)
+        }
+        DesktopOriginalAboutAutomaticMetadata(routes, handleReference, services.runtime.context, services.imageLifetime,
+            originalAboutMetadata, { latest.rootAlive() }, { latest.feedback(it) })
+        CompositionLocalProvider(com.bilipai.desktop.settings.LocalDesktopOriginalAboutReleaseMetadata provides originalAboutMetadata,
+            LocalDesktopOriginalHomeSettingsRootServices provides originalHomeSettings,
+            LocalDesktopOriginalOnboardingPreferences provides onboardingPreferences,
             com.android.purebilibili.feature.aicu.LocalAicuNavigation provides { uid: Long? ->
             if (routes.owns()) routes.push(BiliPaiNavKey.AicuQuery(uid = uid ?: 0L))
         }, LocalDesktopOriginalVideoRootWindowEnvironment provides originalVideoWindow,

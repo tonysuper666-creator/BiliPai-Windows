@@ -126,6 +126,41 @@ internal class DesktopReadyHomeFactoryBinding(
             { text -> gate.commit { feedback(text) } }, ::diagnostic)
     }
 
+    /** HOME picker borrows existing Profile protocols; all platform effects are page-owned.
+     * No new Profile VM, persistent store, HTTP client, account or native player is constructed. */
+    fun homeSettingsProfile(root: DesktopHomeRetainedRoot, profile: DesktopOriginalProfileBinding,
+        pageScope: CoroutineScope, pageOwns: () -> Boolean, pageCommit: ((() -> Unit) -> Boolean),
+        writeHomeWallpaper: suspend (String) -> Unit): DesktopProfileEnvironment {
+        val gate = root.entry.gate
+        gate.assertOwned()
+        require(pageScope.coroutineContext[Job]?.isActive == true) { "Mounted Home settings page Job is required" }
+        fun owned() = gate.owns() && pageScope.coroutineContext[Job]?.isActive == true && pageOwns()
+        fun commit(action: () -> Unit): Boolean {
+            var applied = false
+            val accepted = pageCommit { if (owned()) { action(); applied = true } }
+            return accepted && applied
+        }
+        val base = profile.environment
+        val environment = createDesktopOriginalWindowsProfileEnvironment(context, runtime.store.root, pageScope,
+            ::owned, ::commit, base.api, base.spaceApi, base.dynamicApi, base.searchApi, base.splash,
+            base.authorizationApi, base.favorite, base.bangumi, base.csrf, base.accounts, appearance,
+            profileConfiguration, desktopDetailRenderEffectsSupported(), applicationIcon, actualWindow,
+            repository.ownedHomeCallFactory(gate.epoch, ::owned), profileMetadata,
+            (root.entry.embeddedPages as DesktopOriginalHomeEmbeddedAggregate).gallery.imageAssets,
+            clipboard, chrome, base.media, base.analytics, { text -> commit { feedback(text) } }, ::diagnostic)
+        // Whole original SplashWallpaperPickerSheet(target=HOME) calls only this setter.
+        // Replace the legacy Profile store writer with the same original preference final publisher.
+        val preferences = object : DesktopProfilePreferences by environment.preferences {
+            override suspend fun setHomeWallpaperUri(uri: String) {
+                environment.ensureOwned(); writeHomeWallpaper(uri); environment.ensureOwned()
+            }
+        }
+        return DesktopProfileEnvironment(pageScope, ::owned, ::commit, environment.api, environment.spaceApi,
+            environment.dynamicApi, environment.searchApi, environment.splash, environment.authorizationApi,
+            environment.favorite, environment.bangumi, environment.csrf, environment.accounts, preferences,
+            environment.platform, environment.media, environment.analytics)
+    }
+
     fun searchRoot(root: DesktopHomeRetainedRoot, routes: DesktopOriginalRootRouteAssembly,
         backToTop: DesktopFavoritePreferences): DesktopOriginalSearchRoot {
         val gate = root.entry.gate

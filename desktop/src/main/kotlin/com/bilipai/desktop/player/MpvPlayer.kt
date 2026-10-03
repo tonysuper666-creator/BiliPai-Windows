@@ -46,6 +46,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private val retiringCacheSessions=mutableSetOf<Session>()
     private var requestedLoadMute: Boolean? = null
     private var sourceVersion = 0L
+    private var pauseIntentSerial = 0L
+    private data class PendingPauseIntent(val serial: Long, val automatic: Boolean)
+    private var pendingPauseIntent: PendingPauseIntent? = null
+    private data class NativePauseReadIdentity(val version: Long, val revision: Long,
+        val source: PlaybackSource?, val serial: Long, val pending: PendingPauseIntent?)
+    @Volatile internal var pauseReadbackObserver: DesktopNativePauseReadbackObserver? = null
     private var playbackRevision = 0L
     private val nextAttemptId = AtomicLong()
     private val nextSeekId = AtomicLong()
@@ -148,6 +154,21 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         finally { completion.cancel() }
     }
 
+    /** Failure diagnostics only. Read on the existing native actor, await outside all gates.
+     * Fixed audio/clock properties never include source URLs, headers, tags or account data. */
+    internal suspend fun captureNativeAudioDiagnostic(): DesktopNativeAudioDiagnostic? {
+        val completion = CompletableDeferred<DesktopNativeAudioDiagnostic?>()
+        val queued = synchronized(lock) {
+            val active = session
+            if (closed.get() || active == null || active.closing.get()) false
+            else active.commands.offer(Action.AudioDiagnostic(sourceVersion, playbackRevision,
+                requestedSource, pauseIntentSerial, completion))
+        }
+        if (!queued) return null
+        return try { kotlinx.coroutines.withTimeoutOrNull(1_500L) { completion.await() } }
+        finally { completion.cancel() }
+    }
+
     /** Root calls inside its Store/entry admission after draining the previous owner.
      * Only publication changes: the already loaded source, clock, tracks and surface stay intact.
      * The expected publication identity prevents a second stale handoff from replacing a new owner. */
@@ -202,6 +223,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             requestedSource = retainedSource
             requestedLoadMute = startMuted
             val revision = ++playbackRevision
+            pauseIntentSerial++
+            pendingPauseIntent = null // this exact new Load owns startPaused, not a newer queued pause
             softwareTarget?.beginSource(sourceVersion, revision)
             mutableVideoOutput.update { it.copy(sourceVersion = sourceVersion, inputWidth = 0, inputHeight = 0, displayWidth = 0, displayHeight = 0, viewport = null, gamma = null, dolbyVisionProfile = null) }
             mutableVideoShaders.update { it.copy(active = false, executedPasses = emptyList()) }
@@ -219,9 +242,44 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         }
     }
 
-    fun setPaused(paused: Boolean) {
+    fun setPaused(paused: Boolean) = synchronized(lock) {
+        pauseIntentSerial++
+        pendingPauseIntent = PendingPauseIntent(pauseIntentSerial, automatic = false)
         mutableState.update { it.copy(paused = paused, nativePaused = null) }
-        send(Action.Property("pause", if (paused) "yes" else "no"))
+        send(Action.Property("pause", if (paused) "yes" else "no", pauseIntentSerial))
+    }
+    /** Caller enters the existing source publication before this short native lock.
+     * User pause/play commands supersede this exact automatic lifecycle intent.
+     */
+    internal fun pauseForBackground(expected: OwnedPlaybackSourceSnapshot): DesktopBackgroundPlaybackPauseToken? = synchronized(lock) {
+        val active = session ?: return@synchronized null
+        if (!ownsSourceSnapshot(expected) || !state.value.ready || state.value.ended || state.value.error != null ||
+            active.closing.get() || expected.source.nativePublication == null ||
+            (state.value.nativePaused ?: state.value.paused)) return@synchronized null
+        pauseIntentSerial++
+        pendingPauseIntent = PendingPauseIntent(pauseIntentSerial, automatic = true)
+        mutableState.update { it.copy(paused = true, nativePaused = null) }
+        active.commands.offer(Action.OwnedLifecyclePause(sourceVersion, playbackRevision, expected.source, pauseIntentSerial, true))
+        DesktopBackgroundPlaybackPauseToken(this, expected, pauseIntentSerial)
+    }
+    internal fun ownsBackgroundPauseToken(token: DesktopBackgroundPlaybackPauseToken): Boolean = synchronized(lock) {
+        token.player === this && ownsSourceSnapshot(token.source) && pauseIntentSerial == token.pauseIntentSerial
+    }
+    /** Effects disposal invalidates queued automatic commands, never user Property commands. */
+    internal fun invalidateBackgroundPauseIntents() { synchronized(lock) {
+        pauseIntentSerial++
+        if (pendingPauseIntent?.automatic == true) pendingPauseIntent = null
+    } }
+    internal fun resumeAfterBackground(token: DesktopBackgroundPlaybackPauseToken): Boolean = synchronized(lock) {
+        val active = session ?: return@synchronized false
+        if (token.player !== this || !ownsSourceSnapshot(token.source) || pauseIntentSerial != token.pauseIntentSerial ||
+            active.closing.get() || token.source.source.nativePublication == null ||
+            !state.value.ready || state.value.ended || state.value.error != null || !state.value.paused) return@synchronized false
+        pauseIntentSerial++
+        pendingPauseIntent = PendingPauseIntent(pauseIntentSerial, automatic = true)
+        mutableState.update { it.copy(paused = false, nativePaused = null) }
+        active.commands.offer(Action.OwnedLifecyclePause(sourceVersion, playbackRevision, token.source.source, pauseIntentSerial, false))
+        true
     }
     /** Atomic ownership check prevents an obsolete recovery from pausing a replacement stream. */
     internal fun pauseIfSourceVersion(expectedSourceVersion: Long, expectedFailureAttemptId: Long? = null): Boolean = synchronized(lock) {
@@ -332,6 +390,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     fun setLoop(looping: Boolean) {
         mutableState.update { it.copy(looping = looping) }
         send(Action.Property("loop-file", if (looping) "inf" else "no"))
+    }
+    /** Initial configuration of a fresh separate actor; never overwrite a loaded or previously used source. */
+    internal fun initializePreferencesBeforeFirstSource(preferences: PlayerPreferences): Boolean = synchronized(lock) {
+        if (closed.get() || requestedSource != null || sourceVersion != 0L) return@synchronized false
+        applyPreferences(preferences)
+        true
     }
     fun applyPreferences(preferences: PlayerPreferences) {
         val normalized = preferences.normalized()
@@ -491,6 +555,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             sourceVersion++
             if (videoShaderSourceVersion != null) installVideoShaders(PreparedVideoShaders(emptyList(), emptySet()))
             playbackRevision++
+            pauseIntentSerial++
+            pendingPauseIntent = null
             mutableVideoOutput.update { it.copy(sourceVersion = sourceVersion, inputWidth = 0, inputHeight = 0, displayWidth = 0, displayHeight = 0, viewport = null, gamma = null, dolbyVisionProfile = null) }
             send(Action.Command(listOf("stop")))
             mutableState.update {
@@ -540,6 +606,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private fun detach() {
         val previous = synchronized(lock) {
             attachedWindowId = null
+            pauseIntentSerial++
+            pendingPauseIntent = null // outgoing native Session is retired below; retained startPaused keeps user intent
             val snapshot = state.value
             if (snapshot.ready && !snapshot.loading && !snapshot.ended && snapshot.error == null) {
                 requestedSource = requestedSource?.copy(startPositionSeconds = snapshot.positionSeconds.coerceAtLeast(0.0),
@@ -582,15 +650,18 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         data class HardwareDecoding(val controlVersion: Long, val version: Long, val revision: Long) : Action
         data class SubtitleConfiguration(val controlVersion: Long, val version: Long, val revision: Long, val visible: Boolean) : Action
         data class VideoShaders(val version: Long, val configuration: PreparedVideoShaders) : Action
-        data class Property(val name: String, val value: String) : Action
+        data class Property(val name: String, val value: String, val pauseSerial: Long? = null) : Action
         data class OwnedVideoViewport(val version:Long,val revision:Long,val source:PlaybackSource,val value:DesktopNativeVideoViewportTransform):Action
         data class OwnedMute(val version: Long, val revision: Long, val source: PlaybackSource, val muted: Boolean) : Action
+        data class OwnedLifecyclePause(val version: Long, val revision: Long, val source: PlaybackSource, val intentSerial: Long, val paused: Boolean) : Action
         data class Command(val args: List<String>) : Action
         data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean,
             val admissionSource: PlaybackSource? = null) : Action
         data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>, val owned:OwnedPlaybackSourceSnapshot?=null, val revision:Long?=null) : Action
         data class IdleCacheBarrier(val token: Any, val completion: CompletableDeferred<Boolean>) : Action
         data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action
+        data class AudioDiagnostic(val version: Long, val revision: Long, val source: PlaybackSource?,
+            val pauseSerial: Long, val completion: CompletableDeferred<DesktopNativeAudioDiagnostic?>) : Action
     }
 
     private data class ExternalSubtitle(val path: Path, val title: String, val language: String, val selection: Int?, val nativeId: Int? = null)
@@ -692,6 +763,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     while (action != null) {
                         if (closing.get()) {
                             if (action is Action.IdleCacheBarrier) action.completion.complete(false)
+                            if (action is Action.AudioDiagnostic) action.completion.complete(null)
                             if (action is Action.Screenshot) action.completion.completeExceptionally(IllegalStateException("Player stopped before the screenshot was saved."))
                             break
                         }
@@ -716,6 +788,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 while (true) {
                     val pending = commands.poll() ?: break
                     if(pending is Action.IdleCacheBarrier)pending.completion.complete(false)
+                    if (pending is Action.AudioDiagnostic) pending.completion.complete(null)
                     if (pending is Action.Screenshot) pending.completion.completeExceptionally(IllegalStateException("Player stopped before the screenshot was saved."))
                 }
                 // The render context/thread MUST terminate before its core. Never call render APIs from this client worker.
@@ -734,6 +807,37 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         }
                     }
                 }
+            }
+        }
+
+        private fun captureAudioDiagnostic(native: MpvNative, handle: Pointer, action: Action.AudioDiagnostic) {
+            fun stillCurrent(): Boolean = synchronized(lock) {
+                !closed.get() && session === this && !closing.get() && sourceVersion == action.version &&
+                    playbackRevision == action.revision && requestedSource == action.source &&
+                    pauseIntentSerial == action.pauseSerial
+            }
+            if (!action.completion.isActive || !stillCurrent()) { action.completion.complete(null); return }
+            val values = linkedMapOf<String, DesktopNativeAudioProperty>()
+            for (name in DESKTOP_NATIVE_AUDIO_DIAGNOSTIC_PROPERTIES) {
+                if (!action.completion.isActive || !stillCurrent()) { action.completion.complete(null); return }
+                com.sun.jna.Memory(Native.POINTER_SIZE.toLong()).use { buffer ->
+                    buffer.clear()
+                    val code = native.mpv_get_property(handle, name, 1, buffer) // MPV_FORMAT_STRING
+                    val pointer = if (code >= 0) buffer.getPointer(0) else null
+                    val value = pointer?.let {
+                        try { diagnostics.sanitize(nativeText(it, 512)) }
+                        finally { native.mpv_free(it) }
+                    }
+                    values[name] = DesktopNativeAudioProperty(code, value)
+                }
+            }
+            val safeLogs = diagnostics.failure(null, "Read-only audio diagnostic", action.version, activeAttemptId).diagnostics
+            synchronized(lock) {
+                if (!action.completion.isActive || !stillCurrent()) action.completion.complete(null)
+                else action.completion.complete(DesktopNativeAudioDiagnostic(action.version, action.revision,
+                    action.pauseSerial, System.identityHashCode(this), Thread.currentThread().name,
+                    activeSourceVersion, activeRevision, fileLoaded, pendingPauseIntent != null,
+                    java.util.Collections.unmodifiableMap(values), safeLogs))
             }
         }
 
@@ -769,7 +873,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
 
         private fun perform(native: MpvNative, handle: Pointer, action: Action) {
             try {
-                if (action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.IdleCacheBarrier && action !is Action.OwnedMute && action !is Action.OwnedVideoViewport &&
+                if (action !is Action.AudioDiagnostic && action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.IdleCacheBarrier && action !is Action.OwnedMute && action !is Action.OwnedLifecyclePause && action !is Action.OwnedVideoViewport &&
                     !(action is Action.Seek && action.admissionSource != null)) publishState { it.copy(operationError = null) }
                 when (action) {
                     is Action.Load -> {
@@ -883,7 +987,39 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         }}
                         action.source.nativePublication?.admit(command)
                     }
-                    is Action.Property -> checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)
+                    is Action.Property -> {
+                        if (action.pauseSerial == null) checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)
+                        else synchronized(lock) {
+                            val pending = pendingPauseIntent
+                            // Automatic-effect disposal may advance the token serial, but it
+                            // must never revoke this exact still-pending explicit user Pause.
+                            if (session === this && !closing.get() && pending != null && pending.serial == action.pauseSerial && !pending.automatic) {
+                                checkResult(native, native.mpv_set_property_string(handle, action.name, action.value), action.name)
+                                pendingPauseIntent = null
+                            }
+                        }
+                    }
+                    is Action.OwnedLifecyclePause -> {
+                        val command = { synchronized(lock) {
+                            if (session === this && !closing.get() &&
+                                sourceVersion == action.version && playbackRevision == action.revision &&
+                                activeSourceVersion == action.version && activeRevision == action.revision &&
+                                requestedSource == action.source && pauseIntentSerial == action.intentSerial) {
+                                checkResult(native, native.mpv_set_property_string(handle, "pause", if (action.paused) "yes" else "no"), "pause")
+                                if (pendingPauseIntent == PendingPauseIntent(action.intentSerial, automatic = true)) pendingPauseIntent = null
+                                mutableState.update { it.copy(operationError = null) }
+                            }
+                        } }
+                        // Account/Root authority is checked again when the native actor
+                        // actually executes, with the established Session -> MPV lock order.
+                        val admitted = action.source.nativePublication?.admit(command) ?: false
+                        if (!admitted) synchronized(lock) {
+                            if (pendingPauseIntent == PendingPauseIntent(action.intentSerial, automatic = true)) {
+                                pendingPauseIntent = null
+                                pauseIntentSerial++ // rejected native pause grants no future resume token
+                            }
+                        }
+                    }
                     is Action.OwnedMute -> {
                         val command = { synchronized(lock) {
                             if (session === this && !closing.get() &&
@@ -910,6 +1046,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         pendingIdleCacheBarrier?.completion?.complete(false)
                         pendingIdleCacheBarrier = action
                     }
+                    is Action.AudioDiagnostic -> captureAudioDiagnostic(native, handle, action)
                     is Action.Barrier -> action.completion.complete(synchronized(lock) {
                         session === this && !closing.get() && sourceVersion == action.version &&
                             playbackRevision == action.revision && activeSourceVersion == action.version &&
@@ -917,6 +1054,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     })
                 }
             } catch (failure: Exception) {
+                if (action is Action.AudioDiagnostic) { action.completion.completeExceptionally(failure); return }
                 if(action is Action.IdleCacheBarrier) {action.completion.completeExceptionally(failure);return}
                 if (action is Action.Screenshot) {
                     action.completion.completeExceptionally(failure)
@@ -927,6 +1065,21 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         if (session === this && videoShaderVersion == action.version)
                             mutableVideoShaders.update { it.copy(active = false, error = diagnostics.sanitize(failure.message ?: "Video shader configuration failed.")) }
                     }
+                    return
+                }
+                if (action is Action.OwnedLifecyclePause) {
+                    action.source.nativePublication?.admit { synchronized(lock) {
+                        if (session === this && !closing.get() && sourceVersion == action.version &&
+                            playbackRevision == action.revision && activeSourceVersion == action.version && activeRevision == action.revision &&
+                            requestedSource == action.source && pauseIntentSerial == action.intentSerial)
+                            {
+                                if (pendingPauseIntent == PendingPauseIntent(action.intentSerial, automatic = true)) {
+                                    pendingPauseIntent = null
+                                    pauseIntentSerial++
+                                }
+                                mutableState.update { it.copy(operationError = diagnostics.sanitize(failure.message ?: "Background pause control failed.")) }
+                            }
+                    } }
                     return
                 }
                 if (action is Action.Load) publishFailure((failure as? MpvCallException)?.nativeCode,
@@ -1112,8 +1265,18 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 ?.takeIf { it.isFinite() && it >= 0.0 && it <= Long.MAX_VALUE.toDouble() }?.toLong() else null
             val videoBitrate = packetBitrate("video-bitrate")
             val audioBitrate = packetBitrate("audio-bitrate")
+            val pauseObserver = pauseReadbackObserver
+            pauseObserver?.beforeRead() // ordinary actor has drained; never inside MPV/publication locks
+            val pauseRead = synchronized(lock) {
+                NativePauseReadIdentity(activeSourceVersion, activeRevision,
+                    requestedSource.takeIf { sourceVersion == activeSourceVersion && playbackRevision == activeRevision },
+                    pauseIntentSerial, pendingPauseIntent)
+            }
             val nativePaused = when (property(native, handle, "pause")) { "yes" -> true; "no" -> false; else -> null }
             val paused = nativePaused ?: state.value.paused
+            val pauseObservation = DesktopNativePauseReadObservation(pauseRead.version, pauseRead.revision,
+                pauseRead.serial, pauseRead.pending != null, nativePaused)
+            pauseObserver?.afterRead(pauseObservation) // actual read, before final state publication
             val buffering = property(native, handle, "paused-for-cache") == "yes"
             val bufferedForward = if (fileLoaded) property(native, handle, "demuxer-cache-duration")?.toDoubleOrNull()
                 ?.takeIf { it.isFinite() && it >= 0.0 } else null
@@ -1164,15 +1327,22 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 if (session === this && sourceVersion == activeSourceVersion && playbackRevision == activeRevision)
                     mutableVideoOutput.update { it.copy(sourceVersion = activeSourceVersion, inputWidth = inputWidth, inputHeight = inputHeight, displayWidth = displayWidth, displayHeight = displayHeight, viewport = videoViewport, gamma = gamma, dolbyVisionProfile = dolbyVisionProfile) }
             }
+            var pauseFieldsPublished = false
             publishState {
+                val pauseCurrent = !closing.get() && pauseRead.source != null &&
+                    sourceVersion == pauseRead.version && playbackRevision == pauseRead.revision &&
+                    activeSourceVersion == pauseRead.version && activeRevision == pauseRead.revision &&
+                    requestedSource == pauseRead.source && pauseIntentSerial == pauseRead.serial &&
+                    pauseRead.pending == null && pendingPauseIntent == null
+                pauseFieldsPublished = fileLoaded && pauseCurrent
                 it.copy(
                     loading = if (fileLoaded) buffering else it.loading,
                     pausedForCache = fileLoaded && buffering,
                     bufferedForwardSeconds = bufferedForward,
                     videoBitrateBps = videoBitrate,
                     audioBitrateBps = audioBitrate,
-                    paused = if (it.ended) true else if (fileLoaded) paused else it.paused,
-                    nativePaused = if (fileLoaded) nativePaused else null,
+                    paused = if (it.ended) true else if (pauseFieldsPublished) paused else it.paused,
+                    nativePaused = if (!fileLoaded) null else if (pauseFieldsPublished) nativePaused else it.nativePaused,
                     positionSeconds = if (fileLoaded) position ?: it.positionSeconds else it.positionSeconds,
                     durationSeconds = if (fileLoaded) duration ?: it.durationSeconds else it.durationSeconds,
                     volume = volume ?: it.volume,
@@ -1191,6 +1361,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     tracks = if (fileLoaded) tracks else emptyList(),
                 )
             }
+            pauseObserver?.afterPublish(pauseObservation, pauseFieldsPublished) // state-copy completed, locks released
         }
 
         private fun refreshVideoShaders(native: MpvNative, handle: Pointer) {
@@ -1233,3 +1404,22 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
 }
 
 private class MpvCallException(val nativeCode: Int, message: String) : IllegalStateException(message)
+
+/** Internal read-only diagnostic transport; no source/metadata or playback controls. */
+internal data class DesktopNativeAudioProperty(val nativeCode: Int, val value: String?)
+internal data class DesktopNativeAudioDiagnostic(
+    val sourceVersion: Long, val playbackRevision: Long, val pauseIntentSerial: Long,
+    val sessionIdentity: Int, val workerThreadName: String,
+    val activeSourceVersion: Long, val activePlaybackRevision: Long,
+    val fileLoaded: Boolean, val pendingPauseIntent: Boolean,
+    val properties: Map<String, DesktopNativeAudioProperty>, val safeNativeLogs: List<String>,
+)
+private val DESKTOP_NATIVE_AUDIO_DIAGNOSTIC_PROPERTIES = listOf(
+    "mpv-version", "current-ao", "current-vo", "options/ao", "options/audio-exclusive",
+    "options/audio-fallback-to-null", "options/audio-device", "options/audio-client-name",
+    "aid", "audio-codec", "audio-params/format", "audio-params/samplerate", "audio-params/channel-count",
+    "audio-out-params/format", "audio-out-params/samplerate", "audio-out-params/channel-count",
+    "audio-device-list/count", "audio-delay", "volume", "mute", "pause", "time-pos", "duration",
+    "speed", "idle-active", "core-idle", "eof-reached", "seeking", "paused-for-cache",
+    "demuxer-cache-time", "cache-buffering-state", "track-list/count",
+)

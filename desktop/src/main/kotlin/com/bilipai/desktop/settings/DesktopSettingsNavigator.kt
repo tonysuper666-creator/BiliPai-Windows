@@ -34,6 +34,17 @@ internal class DesktopSettingsNavigator {
         push(DesktopSettingsPage.Search(++nextSearchToken))
     }
 
+    /** A returning actual SettingsSearch NavDisplay entry keeps its original query/history owner. */
+    fun activateSearch() {
+        val stack = mutableState.value.stack
+        val index = stack.indexOfLast { it is DesktopSettingsPage.Search }
+        if (index < 0) openSearch()
+        else {
+            SettingsSearchFocusController.clear()
+            mutableState.value = DesktopSettingsNavigationState(stack.take(index + 1))
+        }
+    }
+
     fun openCategory(category: SettingsRootCategory) {
         val canonical = canonicalSettingsRootCategory(category)
         val direct = resolveDesktopSettingsCategoryDirectTarget(canonical)

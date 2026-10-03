@@ -55,11 +55,15 @@ class SettingsSearchExtractionTest(unittest.TestCase):
   self.assertIn('title = result.title',s);self.assertIn('onClick = { onResultClick(result) }',s)
   self.assertIn('rememberVectorPainter(DesktopSettingsVectors.vector(it))',s)
   self.assertNotIn('R.string',s);self.assertNotIn('R.drawable',s)
- def test_navigation_remains_original_target_no_parallel_enum(self):
+ def test_navigation_keeps_complete_original_typed_root_policy(self):
   _,files=self.generate();s=files['SettingsSearchNavigationPolicy.kt']
   self.assertIn('resolveSettingsSceneDetailFocus(result.target)',s)
   self.assertIn('else -> resolveSettingsRootCategoryForSearchTarget(result.target)',s)
-  self.assertIn('category.searchTarget',s);self.assertNotIn('BiliPaiNavKey',s)
+  original=e.read(REPO,e.S+'SettingsSearchNavigationPolicy.kt')
+  header=f"// GENERATED from {e.S}SettingsSearchNavigationPolicy.kt; do not edit.\n// LF-normalized SHA-256: {hashlib.sha256(original.encode()).hexdigest()}\n"
+  self.assertEqual(header,s[:len(header)])
+  self.assertEqual(original,s[len(header):])
+  self.assertIn('BiliPaiNavKey.SettingsCategory(category)',s)
  def test_category_direct_target_changes_only_platform_route_types(self):
   _,files=self.generate();h=e.helper(REPO);m=h.media_extractor(REPO);parser=m.parser_for(REPO)
   original=m.function(e.read(REPO,e.S+'SettingsNavHierarchyPolicy.kt'),'resolveSettingsCategoryDirectTargetKey',parser)

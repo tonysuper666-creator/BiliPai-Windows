@@ -76,12 +76,9 @@ def generate(repo,output,standalone=False):
    source=h.substitute(source,'import androidx.datastore.preferences.core.stringPreferencesKey','import com.bilipai.desktop.plugins.stringPreferencesKey')
    source=source.replace('context.settingsDataStore','context.settingsSearchDataStore')
   elif path.endswith('SettingsSearchNavigationPolicy.kt'):
-   source=h.substitute(source,'import com.android.purebilibili.navigation3.BiliPaiNavKey\n','')
-   source=h.substitute(source,'): BiliPaiNavKey?','): SettingsSearchTarget?')
-   mapping={'AppearanceSettings':'APPEARANCE','HomeSettings':'HOME_FEED','AnimationSettings':'ANIMATION','PlaybackSettings':'PLAYBACK','BottomBarSettings':'BOTTOM_BAR','PermissionSettings':'PERMISSION','MessageNotificationSettings':'MESSAGE_NOTIFICATION','PluginsSettings()':'PLUGINS','SettingsShare':'SETTINGS_SHARE','WebDavBackup':'WEBDAV_BACKUP','OpenSourceLicenses':'OPEN_SOURCE_LICENSES','TipsSettings':'TIPS'}
-   for key,target in mapping.items():source=source.replace('BiliPaiNavKey.'+key,'SettingsSearchTarget.'+target)
-   source=h.substitute(source,'BiliPaiNavKey.SettingsCategory(category)','category.searchTarget')
-   if 'BiliPaiNavKey' in source:raise ValueError('New Android navigation binding needed')
+   # BiliPaiNavKey is now the actual Windows Root's shared original typed route API.
+   # Preserve the complete canonical policy verbatim; do not project category to a leaf target.
+   pass
   elif path.endswith('SettingsSearchUi.kt'):
    body='\n\n'.join('@Composable\n'+m.function(source,n,parser) for n in ['SettingsSearchBarSection','SettingsSearchResultsSection'])
    source=source[:source.index('@Composable')]+body

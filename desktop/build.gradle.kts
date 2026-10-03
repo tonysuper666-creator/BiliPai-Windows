@@ -2491,6 +2491,51 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalIconSettings) }
 tasks.named("processResources") { dependsOn(extractOriginalIconSettings) }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(extractOriginalIconSettings) }
 
+// Whole original HOME settings branch, original recipes and actual shared Root effects.
+val extractOriginalHomeSettings by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalProfileMain)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-settings-full-page.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/home-settings").get().asFile.absolutePath)
+    inputs.file(sourceManifest)
+    inputs.files("tools/extract-upstream-home-settings-full-page.py", "tools/v025_home_wallpaper_picker.py", "tools/extract-upstream-media.py",
+        "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py",
+        canonicalOriginalHelperFile, canonicalOriginalCatalogFile)
+    inputs.file(layout.buildDirectory.file("generated/profile-main/com/android/purebilibili/feature/profile/ProfileViewModel.kt"))
+    inputs.files(sources.filter { "desktop-whole-home-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.files(originalResources.filter { "desktop-whole-home-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/home-settings"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-settings/generated")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalHomeSettings) }
+
+// Complete fixed original About/support/contributors and both release-notes renderers.
+// Original APK data is metadata only; Windows update installation keeps its existing owner.
+val extractOriginalSystemAbout by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalIconSettings, extractUpstreamSettingsEntries, extractOriginalProfileMain)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-system-about.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/system-about").get().asFile.absolutePath,
+        "--resource-output", file("resources/common").absolutePath,
+        "--proof", layout.buildDirectory.file("reports/original-system-about-producer.json").get().asFile.absolutePath)
+    inputs.file(sourceManifest)
+    inputs.files("tools/extract-upstream-system-about.py", "tools/extract-upstream-profile-main.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py",
+        "tools/v025_source_paths.py", "tools/v025-canonical-sources.json")
+    inputs.files((sources + originalResources).filter { "desktop-whole-system-about-actions" in
+        ((it["features"] as? List<*>) ?: emptyList<Any>()) }.map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/system-about"))
+    outputs.dir(file("resources/common/original-about"))
+    outputs.file(layout.buildDirectory.file("reports/original-system-about-producer.json"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/system-about")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalSystemAbout) }
+tasks.named("processResources") { dependsOn(extractOriginalSystemAbout) }
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(extractOriginalSystemAbout) }
+
 // Canonical locator/catalog are explicit inputs of every original-source producer
 // and verifier, including consumers through existing imported producer helpers.
 val canonicalOriginalInputTasks = setOf(
@@ -2768,5 +2813,152 @@ tasks.register<JavaExec>("originalFraudDonateUiSmoke") {
         args(requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
             requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
             requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
+    }
+}
+
+// Complete original Playback screen/policy and selected original preference members.
+// No dependency changes. Only generated/ is a Kotlin root; original-lf/ is proof material.
+val extractOriginalWholePlaybackSettings by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalPlayerFullControls, extractOriginalStaticSettingsPages)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-whole-playback-settings.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/whole-playback-settings").get().asFile.absolutePath)
+    inputs.file(sourceManifest)
+    inputs.files("tools/extract-upstream-whole-playback-settings.py", "tools/v025_playback_settings_platform.py",
+        "tools/v025_source_paths.py", "tools/v025-canonical-sources.json", "tools/sync-upstream.py",
+        "tools/extract-upstream-video-player-full-controls.py", "tools/extract-appearance-platform.py",
+        "tools/extract-upstream-settings-search.py")
+    inputs.files(sources.filter { "desktop-whole-playback-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.files(originalResources.filter { "desktop-whole-playback-settings" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/whole-playback-settings"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/whole-playback-settings/generated")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalWholePlaybackSettings) }
+tasks.named("extractOriginalPlayerFullControls") { inputs.file("tools/v025_playback_settings_platform.py") }
+tasks.named("verifyOriginalPlayerFullControls") { inputs.file("tools/v025_playback_settings_platform.py") }
+
+// Opt-in actual original HOME settings UI; full ordinary runtime and unchanged Main.
+tasks.register<JavaExec>("originalHomeSettingsUiSmoke") {
+    group = "verification"
+    description = "Exercise original HomeSettings controls in the actual guest Root Window."
+    dependsOn("testClasses", "classes", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalHomeSettingsRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    providers.gradleProperty("rootValidationToken").orNull?.let {
+        systemProperty("bilipai.rootValidationToken", it)
+    }
+    doFirst {
+        args(requireNotNull(providers.gradleProperty("rootValidationMode").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
+    }
+}
+
+// Opt-in unchanged Main/actual original PlaybackSettings UI; normal full test runtime.
+tasks.register<JavaExec>("originalPlaybackSettingsUiSmoke") {
+    dependsOn("classes", "testClasses", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalPlaybackSettingsRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    doFirst {
+        systemProperty("bilipai.rootValidationToken", providers.gradleProperty("rootValidationToken").get())
+        args(providers.gradleProperty("rootValidationMode").get(), providers.gradleProperty("rootValidationReport").get(),
+            providers.gradleProperty("rootValidationHealth").get(), providers.gradleProperty("rootValidationToken").get())
+    }
+}
+
+// Opt-in actual Main About/Search fixture; full normal runtime/resources/default GPU.
+tasks.register<JavaExec>("originalSystemAboutUiSmoke") {
+    group = "verification"
+    description = "Exercise original About, agreement replay, and actual SettingsSearch category landings."
+    dependsOn("testClasses", "classes", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalSystemAboutRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    providers.gradleProperty("rootValidationToken").orNull?.let {
+        systemProperty("bilipai.rootValidationToken", it)
+    }
+    doFirst {
+        args(requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
+    }
+}
+
+// Independent actual local MPV regression; no Main, account, remote media or other-app pause.
+tasks.register<JavaExec>("originalPlaybackLegacyNativeSmoke") {
+    dependsOn("classes", "testClasses", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.player.OriginalPlaybackLegacyNativeFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    doFirst { args(providers.gradleProperty("nativeValidationReport").get()) }
+}
+
+// Opt-in original HOME native wallpaper UI; normal complete runtime, actual unchanged Main.
+tasks.register<JavaExec>("originalHomeWallpaperUiSmoke") {
+    group = "verification"
+    description = "Select private PNGs through the original owned native chooser and capture actual Home pixels."
+    dependsOn("testClasses", "classes", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalHomeWallpaperRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    providers.gradleProperty("rootValidationToken").orNull?.let { systemProperty("bilipai.rootValidationToken", it) }
+    doFirst {
+        args(requireNotNull(providers.gradleProperty("rootValidationMode").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationReport").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationHealth").orNull),
+            requireNotNull(providers.gradleProperty("rootValidationToken").orNull))
+    }
+}
+
+// Complete fixed original background policies/tests and the same ordinary native owner.
+val extractOriginalBackgroundPlaybackPolicy by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalWholePlaybackSettings)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-background-playback-policy.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-background-playback-policy").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-background-playback-policy.py", "tools/sync-upstream.py",
+        "tools/extract-appearance-platform.py", "tools/extract-upstream-video-player-full-controls.py", sourceManifest)
+    inputs.files(sources.filter { "desktop-original-background-policy" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-background-playback-policy"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-background-playback-policy/generated-main")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-background-playback-policy/generated-test")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalBackgroundPlaybackPolicy) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalBackgroundPlaybackPolicy) }
+tasks.register<JavaExec>("originalBackgroundPlaybackNativeSmoke") {
+    dependsOn("classes", "testClasses", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalBackgroundPlaybackNativeFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    doFirst { args(providers.gradleProperty("nativeValidationReport").get()) }
+}
+
+// Opt-in exact frozen typed PlaybackSettings render/back; unchanged Main, full normal runtime/default GPU.
+tasks.register<JavaExec>("originalTypedPlaybackSettingsUiSmoke") {
+    group = "verification"
+    description = "Exercise exact typed PlaybackSettings entry, original header Back and actual owned Escape."
+    dependsOn("classes", "testClasses", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.OriginalTypedPlaybackSettingsRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    doFirst {
+        systemProperty("bilipai.rootValidationToken", providers.gradleProperty("rootValidationToken").get())
+        args(providers.gradleProperty("rootValidationReport").get(), providers.gradleProperty("rootValidationHealth").get(),
+            providers.gradleProperty("rootValidationToken").get())
     }
 }

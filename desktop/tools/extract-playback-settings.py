@@ -56,11 +56,12 @@ def generate(repo: Path, output: Path, platform: Path) -> None:
     assert constant, 'Original default audio setting drifted'
     write('com/android/purebilibili/core/store/player/DefaultAudioQuality.kt',
         'package com.android.purebilibili.core.store.player\n\n' + constant.group().strip() + '\n', STORE)
-    write('com/android/purebilibili/feature/settings/DefaultAudioQualitySelection.kt',
-        'package com.android.purebilibili.feature.settings\n\nimport com.android.purebilibili.core.store.player.DEFAULT_AUDIO_QUALITY_FOLLOW_LAST\n' +
-        'import com.android.purebilibili.core.ui.components.AppSegmentOption\n\n' +
-        function(read(repo, SETTINGS), 'normalizeDefaultAudioQualityOption') + '\n\n' +
-        function(read(repo, SETTINGS), 'resolveDefaultAudioQualityOptions') + '\n', SETTINGS)
+    # Whole PlaybackSettingsSelectionPolicy now has one producer. Only remove the
+    # previously generated known two-function file; never delete an unknown output.
+    obsolete = output / 'com/android/purebilibili/feature/settings/DefaultAudioQualitySelection.kt'
+    if obsolete.exists():
+        assert hashlib.sha256(obsolete.read_bytes()).hexdigest() == 'e24f5f017c00dd4496c711eae48133946792914472cb3430cc80c6b35a9326ff', 'Stale policy output drifted'
+        obsolete.unlink()
     original = read(repo, FAILURE)
     old = 'import androidx.media3.common.PlaybackException'
     assert original.count(old) == 1, 'Original Media3 import drifted'

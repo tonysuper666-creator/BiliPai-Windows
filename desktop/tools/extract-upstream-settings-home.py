@@ -74,7 +74,13 @@ internal fun DesktopHomeRecommendationFields(
     function=media.function(original,'resolveFeedApiSegmentOptions',parser)
     function=function.replace('SettingsManager.FeedApiType','DesktopFeedSettings.FeedApiType')
     body='package com.android.purebilibili.feature.settings\nimport com.android.purebilibili.core.store.DesktopFeedSettings\nimport com.android.purebilibili.core.ui.components.AppSegmentOption\n\n'+function
-    files.append(host.write(output,path,original,body,'DesktopFeedApiSegmentOptions.kt'))
+    if standalone:
+        files.append(host.write(output,path,original,body,'DesktopFeedApiSegmentOptions.kt'))
+    else:
+     obsolete=output/'com/android/purebilibili/feature/settings/DesktopFeedApiSegmentOptions.kt'
+     if obsolete.exists():
+      assert hashlib.sha256(obsolete.read_bytes()).hexdigest()=='495c1589c5b579e446b27032d170a56bd94fb8c9b0690f24c2d11cdde0c62cca', 'Stale selected policy output drifted'
+      obsolete.unlink()
     return files
 
 def inventory(repo):return [dict(path=path,mode=mode,features=['settings-home-section-parity'],

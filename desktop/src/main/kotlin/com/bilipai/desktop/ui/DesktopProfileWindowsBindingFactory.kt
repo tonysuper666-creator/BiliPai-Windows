@@ -47,7 +47,43 @@ internal fun createDesktopOriginalWindowsProfileBinding(
     analytics:DesktopProfileAnalytics,
     feedback:(String)->Unit,
     diagnostic:(Throwable)->Unit,
-):DesktopOriginalProfileBinding {
+):DesktopOriginalProfileBinding = DesktopOriginalProfileBinding(
+    createDesktopOriginalWindowsProfileEnvironment(
+        context, stateDirectory, scope, owns, commit, api, spaceApi, dynamicApi, searchApi, splash, authorizationApi, favorite, bangumi, csrf, accounts, appearance, configuration, supportsRenderEffectBackedHaze, applicationIconModel, actualWindow, ownedCallFactory, metadata, assets, clipboard, chrome, media, analytics, feedback, diagnostic
+    )
+)
+
+internal fun createDesktopOriginalWindowsProfileEnvironment(
+    context:DesktopPluginContext,
+    stateDirectory:Path,
+    scope:CoroutineScope,
+    owns:()->Boolean,
+    commit:((()->Unit)->Boolean),
+    api:BilibiliApi,
+    spaceApi:SpaceApi,
+    dynamicApi:DynamicApi,
+    searchApi:SearchApi,
+    splash:DesktopOriginalProfileSplashProtocol,
+    authorizationApi:PassportApi,
+    favorite:DesktopOriginalFavoriteRepository,
+    bangumi:DesktopOriginalFavoritePgc,
+    csrf:()->String?,
+    accounts:DesktopProfileAccountPort,
+    appearance:DesktopThemePrefs,
+    configuration:StateFlow<DesktopProfileWindowConfiguration>,
+    supportsRenderEffectBackedHaze:Boolean,
+    applicationIconModel:Any,
+    actualWindow:Window,
+    ownedCallFactory:Call.Factory,
+    metadata:DesktopProfileVideoWidth,
+    assets:DesktopDynamicImageAssets,
+    clipboard:DesktopTextClipboard,
+    chrome:DesktopWindowsProfileChrome,
+    media:DesktopProfileMedia,
+    analytics:DesktopProfileAnalytics,
+    feedback:(String)->Unit,
+    diagnostic:(Throwable)->Unit,
+):DesktopProfileEnvironment {
     require(scope.coroutineContext[Job]!=null){"Actual retained Profile scope Job is required"}
     val files=DesktopProfileOwnedFiles(stateDirectory,owns,commit,metadata)
     val preferences=DesktopOriginalProfilePreferences(context.store,owns,commit) {mode->
@@ -55,6 +91,6 @@ internal fun createDesktopOriginalWindowsProfileBinding(
     }
     val platform=DesktopWindowsProfilePlatform(stateDirectory,configuration,supportsRenderEffectBackedHaze,
         applicationIconModel,actualWindow,scope,owns,commit,ownedCallFactory,files,assets,clipboard,chrome,feedback,diagnostic)
-    return DesktopOriginalProfileBinding(DesktopProfileEnvironment(scope,owns,commit,
-        api,spaceApi,dynamicApi,searchApi,splash,authorizationApi,favorite,bangumi,csrf,accounts,preferences,platform,media,analytics))
+    return DesktopProfileEnvironment(scope,owns,commit,
+        api,spaceApi,dynamicApi,searchApi,splash,authorizationApi,favorite,bangumi,csrf,accounts,preferences,platform,media,analytics)
 }

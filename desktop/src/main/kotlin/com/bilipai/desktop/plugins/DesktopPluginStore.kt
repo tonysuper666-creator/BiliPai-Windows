@@ -116,6 +116,7 @@ class DesktopPluginStore(val root: Path) {
         acquirePermit: () -> OriginalPreferenceWritePermit,
         edit: (DesktopPreferenceSnapshot) -> Pair<T, Map<String, Map<String, JsonElement?>>>,
     ): T {
+        var replacementFailures = 0
         while (true) {
             checkRequest()
             val snapshot = synchronized(backing) {
@@ -143,14 +144,20 @@ class DesktopPluginStore(val root: Path) {
                 Files.writeString(temporary, json.encodeToString(next))
                 FileChannel.open(temporary, StandardOpenOption.WRITE).use { it.force(true) }
                 val permit = acquirePermit()
+                var replacementFailure: java.nio.file.AccessDeniedException? = null
                 val committed = synchronized(backing) {
                     check(!backing.writesFrozen) { "插件已停止，不能写入旧设置实例" }
                     if (backing.document !== snapshot) false
                     else {
                         permit.consume(this)
-                        try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
-                        catch (_: java.nio.file.AtomicMoveNotSupportedException) {
-                            Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)
+                        try {
+                            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
+                            catch (_: java.nio.file.AtomicMoveNotSupportedException) {
+                                Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)
+                            }
+                        } catch (failure: java.nio.file.AccessDeniedException) {
+                            replacementFailure = failure
+                            return@synchronized false // no document or Flow publication
                         }
                         backing.document = next
                         updates.forEach { (namespace, values) -> backing.snapshots[namespace]?.value = DesktopPreferenceSnapshot(values) }
@@ -162,7 +169,10 @@ class DesktopPluginStore(val root: Path) {
                     }
                 }
                 if (committed) return result
-                // Conflict retires this unconsumed permit and owned temporary file; retry checks ownership afresh.
+                replacementFailure?.let { failure ->
+                    DesktopPreferenceReplacementRetry.waitOutsideAdmissionOrThrow(failure, ++replacementFailures, checkRequest)
+                }
+                // Conflict/retry retires this permit/temp. Fresh callback/CAS and fresh Root permit follow.
             } finally { Files.deleteIfExists(temporary) }
         }
     }
@@ -171,6 +181,7 @@ class DesktopPluginStore(val root: Path) {
     internal fun updateCapturedPlayback(name: String, values: Map<String, JsonElement?>,
         operation: DesktopPlayerPluginWriteAdmission.Operation, callerJob: kotlinx.coroutines.Job) {
         require(operation.context.store === this) { "Captured playback plugin has a different Store" }
+        var replacementFailures = 0
         while (true) {
             callerJob.ensureActive(); operation.check()
             val snapshot = synchronized(backing) {
@@ -193,14 +204,20 @@ class DesktopPluginStore(val root: Path) {
                 FileChannel.open(temporary, StandardOpenOption.WRITE).use { it.force(true) }
                 // Linearization only mints a permit. No backing monitor, rename or IO is held inside admission.
                 val permit = operation.permit(this, callerJob)
+                var replacementFailure: java.nio.file.AccessDeniedException? = null
                 val committed = synchronized(backing) {
                     check(!backing.writesFrozen) { "插件已停止，不能写入旧设置实例" }
                     if (backing.document !== snapshot) false
                     else {
                         permit.consume()
-                        try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
-                        catch (_: java.nio.file.AtomicMoveNotSupportedException) {
-                            Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)
+                        try {
+                            try { Files.move(temporary, backing.file, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING) }
+                            catch (_: java.nio.file.AtomicMoveNotSupportedException) {
+                                Files.move(temporary, backing.file, StandardCopyOption.REPLACE_EXISTING)
+                            }
+                        } catch (failure: java.nio.file.AccessDeniedException) {
+                            replacementFailure = failure
+                            return@synchronized false // no document or Flow publication
                         }
                         backing.document = next
                         backing.snapshots[name]?.value = DesktopPreferenceSnapshot(JsonObject(updated))
@@ -212,7 +229,12 @@ class DesktopPluginStore(val root: Path) {
                     }
                 }
                 if (committed) return
-                // Snapshot conflict discards this permit/temp and rechecks fixed ownership before retry.
+                replacementFailure?.let { failure ->
+                    DesktopPreferenceReplacementRetry.waitOutsideAdmissionOrThrow(failure, ++replacementFailures) {
+                        callerJob.ensureActive(); operation.check()
+                    }
+                }
+                // Snapshot conflict/retry discards this permit/temp and remints only after fresh ownership checks.
             } finally { Files.deleteIfExists(temporary) }
         }
     }

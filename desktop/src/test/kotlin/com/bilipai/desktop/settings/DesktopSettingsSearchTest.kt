@@ -48,7 +48,7 @@ class DesktopSettingsSearchTest {
         assertEquals("js_plugin",resolveSettingsNavParentRoute("external_media?source=fixture"))
         assertEquals(SettingsRootCategory.PLUGINS_EXTENSIONS,resolveSettingsRootCategoryForRoute("js_plugin?fixture=1"))
         assertTrue(isSettingsNavHierarchyTransition("settings_search","playback_settings"))
-        assertEquals(SettingsSearchTarget.DIAGNOSTICS,resolveSettingsSearchNavigation(SettingsSearchResult(SettingsSearchTarget.CHECK_UPDATE,"","","")))
+        assertEquals(com.android.purebilibili.navigation3.BiliPaiNavKey.SettingsCategory(SettingsRootCategory.SYSTEM_ABOUT),resolveSettingsSearchNavigation(SettingsSearchResult(SettingsSearchTarget.CHECK_UPDATE,"","","")))
         val c=DesktopSettingsSearchController(DesktopSettingsSearchRepository(context()){false})
         var category:SettingsRootCategory?=null;var destination:SettingsSearchResult?=null
         c.activate(SettingsSearchResult(SettingsSearchTarget.PRIVACY_PERMISSION,"","",""),{category=it},{destination=it})

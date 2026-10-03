@@ -65,6 +65,7 @@ import com.bilipai.desktop.download.DesktopDownloadManager
 import com.bilipai.desktop.download.DownloadMetadata
 import com.bilipai.desktop.download.DesktopDownloadNotifications
 import com.bilipai.desktop.player.MpvPlayer
+import com.bilipai.desktop.player.applyLegacyPreferenceChanges
 import com.bilipai.desktop.player.DesktopVideoEnhancementSession
 import com.bilipai.desktop.player.DesktopVideoEnhancementState
 import com.bilipai.desktop.plugins.DesktopVideoShaderResources
@@ -220,7 +221,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val preferenceStore = remember { PlayerPreferencesStore() }
     val preferenceWriter = remember(preferenceStore) { DesktopPlayerPreferencesWriter(preferenceStore::save) }
     val preferenceWriteFailed by preferenceWriter.failed.collectAsState()
-    var preferences by remember { mutableStateOf(preferenceStore.read().let { it.copy(speed = it.preferredSpeed) }) }
+    val originalHardwareDecodePreferences = remember(pluginStore) { DesktopOriginalHardwareDecodePreferences(pluginStore) }
+    val legacyHardwareDecodeFallback = remember(preferenceStore) { preferenceStore.read().hardwareDecodeEnabled }
+    var preferences by remember { mutableStateOf(preferenceStore.read().let { it.copy(speed = it.preferredSpeed,
+        hardwareDecodeEnabled = originalHardwareDecodePreferences.current(legacyHardwareDecodeFallback)) }) }
     val latestPreferences by rememberUpdatedState(preferences)
     val scope = rememberCoroutineScope()
     // App/window reference, independent of drawing, section and account MID.
@@ -641,6 +645,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var feedLoading by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     val rootFeedback = remember { SnackbarHostState() }
+    LaunchedEffect(originalHardwareDecodePreferences, storageSettingsContext) {
+        try { originalHardwareDecodePreferences.ensureMigrated(storageSettingsContext, legacyHardwareDecodeFallback) }
+        catch (cancelled: CancellationException) { throw cancelled }
+        catch (failure: Exception) { if (imageSaveLifetime.isActive()) error = failure.message ?: "硬件解码设置迁移失败" }
+    }
     LaunchedEffect(originalDanmakuPreferences) {
         try { originalDanmakuPreferences.importLegacyWindowsDanmakuIfAbsent(preferenceStore.read().danmaku) }
         catch (cancelled: CancellationException) { throw cancelled }
@@ -791,17 +800,37 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             }
         }
     }
-    fun changePreferences(next: PlayerPreferences) {
+    fun changePreferencesIntent(next: PlayerPreferences, forceSpeed: Boolean = false) {
         val previous = preferences
-        // Legacy Windows danmaku values are retained only for the one-time absent-key migration.
-        preferences = next.copy(danmaku = previous.danmaku).normalized()
-        player?.applyPreferences(preferences)
+        val hardwareIntent = next.hardwareDecodeEnabled != previous.hardwareDecodeEnabled
+        val speedIntent = forceSpeed || next.normalized().speed != previous.normalized().speed
+        if (hardwareIntent || speedIntent) scope.launch(Dispatchers.IO) {
+            try {
+                DesktopOriginalPlaybackPreferenceOperation.run(storageSettingsContext, imageSaveLifetime::isActive) {
+                    if (hardwareIntent) com.android.purebilibili.core.store.DesktopOriginalPlaybackSettingsPreferences
+                        .setHwDecode(storageSettingsContext, next.hardwareDecodeEnabled)
+                    if (speedIntent) com.android.purebilibili.core.store.player.DesktopOriginalVideoPlayerSettings
+                        .setLastPlaybackSpeed(storageSettingsContext, next.normalized().speed.toFloat())
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) { withContext(Dispatchers.Main) {
+                if (imageSaveLifetime.isActive()) error = failure.message ?: "播放设置保存失败"
+            } }
+        }
+        // Unchanged legacy values carry no native intent and cannot overwrite newer
+        // original player choices. Canonical hw decoding is projected independently.
+        preferences = next.copy(danmaku = previous.danmaku,
+            hardwareDecodeEnabled = originalHardwareDecodePreferences.current(legacyHardwareDecodeFallback)).normalized()
+        val nativeChanges = com.bilipai.desktop.player.DesktopLegacyPlaybackPreferenceChanges.between(previous, preferences)
+            .let { if (forceSpeed) it.copy(speed = true) else it }
+        player?.applyLegacyPreferenceChanges(nativeChanges, preferences)
         listen?.updatePreferences(preferences)
         danmaku?.applySettings(latestRendererDanmakuSettings)
-        playback.onPlaybackPreferencesChanged(previous, preferences)
+        playback.onPlaybackPreferencesChanged(previous, preferences, forceSpeed)
         val snapshot = preferences
         preferenceWriter.submit(snapshot)
     }
+    fun changePreferences(next: PlayerPreferences) = changePreferencesIntent(next)
     fun toggleOriginalDanmaku() {
         val targetEpoch = repository.sessionEpoch
         val targetVersion = player?.currentSourceVersion
@@ -1163,7 +1192,17 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     LaunchedEffect(retainedMedia, jsExecutionRevision, sessionEpoch) {
         if (!retainedMedia.external.authorizationCurrent) retainedMedia.external.stopPlayback()
     }
-    LaunchedEffect(player, danmaku) { player?.applyPreferences(preferences) }
+    LaunchedEffect(player) { player?.applyPreferences(preferences) }
+    LaunchedEffect(originalHardwareDecodePreferences, player, listen) {
+        originalHardwareDecodePreferences.changes(legacyHardwareDecodeFallback).collect { enabled ->
+            if (!imageSaveLifetime.isActive() || isClosing()) return@collect
+            val previous = preferences
+            preferences = previous.copy(hardwareDecodeEnabled = enabled)
+            player?.setHardwareDecodingEnabled(enabled)
+            listen?.onOriginalHardwareDecodeChanged(enabled)
+            playback.onPlaybackPreferencesChanged(previous, preferences)
+        }
+    }
     LaunchedEffect(danmaku, rendererDanmakuSettings) { danmaku?.applySettings(rendererDanmakuSettings) }
     LaunchedEffect(pluginRuntime, danmaku) {
         pluginRuntime.danmakuRevision.collect { danmaku?.setPluginDanmakuProcessor(pluginRuntime::processDanmaku) }
@@ -1179,6 +1218,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     LaunchedEffect(backup) { backup.automaticBackupIfDue() }
     LaunchedEffect(playback, hostVisible, pipActive) { playback.setInBackground(!hostVisible && !pipActive) }
+    DesktopOriginalBackgroundPlaybackEffects(storageSettingsContext, player,
+        hidden = !hostVisible, isPip = pipActive, isInAudioMode = physicalDestination is BiliPaiNavKey.AudioMode,
+        live = { imageSaveLifetime.isActive() && hostDisplayable && !isClosing() && !activatingUpdate && scope.isActive })
     LaunchedEffect(anyCasting) { if (anyCasting) {
         if (retainedMedia.current?.ownsNativeSource == true) player?.setPaused(true) else playback.pause()
         listen?.pause()
@@ -1275,7 +1317,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             PlayerKeyAction.ToggleDanmaku -> { toggleOriginalDanmaku(); true }
             PlayerKeyAction.PreviousPart -> { playback.previous(); true }
             PlayerKeyAction.NextPart -> { playback.next(); true }
-            is PlayerKeyAction.SetSpeed -> { changePreferences(preferences.copy(speed = action.speed.toDouble())); true }
+            is PlayerKeyAction.SetSpeed -> { changePreferencesIntent(preferences.copy(speed = action.speed.toDouble()), forceSpeed = true); true }
             else -> false
         }
     }
@@ -1549,13 +1591,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     if(active) when(entryKey) {
                         BiliPaiNavKey.Settings -> settingsNavigator.openRoot()
                         is BiliPaiNavKey.SettingsCategory -> settingsNavigator.openCategory(entryKey.category)
-                        BiliPaiNavKey.SettingsSearch -> settingsNavigator.openSearch()
+                        BiliPaiNavKey.SettingsSearch -> settingsNavigator.activateSearch()
                         BiliPaiNavKey.PlaybackSettings -> settingsNavigator.openDetail(SettingsSearchTarget.PLAYBACK,null)
                         BiliPaiNavKey.AnimationSettings -> settingsNavigator.openDetail(SettingsSearchTarget.ANIMATION,null)
                         BiliPaiNavKey.BottomBarSettings -> settingsNavigator.openDetail(SettingsSearchTarget.BOTTOM_BAR,null)
                         BiliPaiNavKey.SettingsShare -> settingsNavigator.openDetail(SettingsSearchTarget.SETTINGS_SHARE,null)
                         BiliPaiNavKey.MessageNotificationSettings -> settingsNavigator.openDetail(SettingsSearchTarget.MESSAGE_NOTIFICATION,null)
-                        BiliPaiNavKey.HomeSettings -> settingsNavigator.openCategory(SettingsRootCategory.HOME_RECOMMENDATION)
+                        BiliPaiNavKey.HomeSettings -> settingsNavigator.openDetail(SettingsSearchTarget.HOME_FEED,null)
                         BiliPaiNavKey.PermissionSettings -> settingsNavigator.openCategory(SettingsRootCategory.PRIVACY_PERMISSION)
                         BiliPaiNavKey.WebDavBackup -> settingsNavigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP,null)
                         BiliPaiNavKey.TipsSettings -> settingsNavigator.openDetail(SettingsSearchTarget.TIPS,null)
@@ -1815,11 +1857,54 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true },
                                 space = space, onResource = ::openResource, initialTitle = collectionTitle)
                             section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)
-                            section == DesktopSection.SETTINGS -> DesktopSettingsTree(settingsNavigator, settingsSearchController,
+                            section == DesktopSection.SETTINGS -> {
+                                val mountedSettingsPage = settingsNavigation.current
+                                val mountedSettingsHandle = homeRootRef.get()
+                                val settingsPageBackOwns = {
+                                    active && mountedSettingsHandle != null && homeRootRef.get() === mountedSettingsHandle &&
+                                        mountedSettingsHandle.isActive() && mountedSettingsHandle.route.get() === messageRoutes &&
+                                        mountedSettingsHandle.retainer.root.value === messageRoutes.root &&
+                                        messageRoutes.owns() && messageRoutes.currentKey == entryKey &&
+                                        settingsNavigator.state.value.current === mountedSettingsPage && services.imageLifetime.isActive() &&
+                                        hostVisible && hostDisplayable && !isClosing() && !activatingUpdate
+                                }
+                                val ownedSettingsPageBack: () -> Unit = {
+                                    if (settingsPageBackOwns()) {
+                                        if ((entryKey is BiliPaiNavKey.SettingsCategory && mountedSettingsPage is DesktopSettingsPage.Category) ||
+                                            (entryKey == BiliPaiNavKey.SettingsSearch && mountedSettingsPage is DesktopSettingsPage.Search))
+                                            messageRoutes.callbackFor(entryKey) { commands.back() }
+                                        else messageRoutes.root.entry.gate.commit {
+                                            if (settingsPageBackOwns()) settingsNavigator.pop()
+                                        }
+                                    }
+                                }
+                                // Home/Playback and About dialogs already register their deeper handlers.
+                                // Only the intermediate local category needs this parent-page Back owner.
+                                val settingsCategoryBackState = androidx.navigationevent.compose.rememberNavigationEventState(androidx.navigationevent.NavigationEventInfo.None)
+                                androidx.navigationevent.compose.NavigationBackHandler(state = settingsCategoryBackState,
+                                    isBackEnabled = mountedSettingsPage is DesktopSettingsPage.Category && settingsPageBackOwns(),
+                                    onBackCompleted = ownedSettingsPageBack)
+                                DesktopSettingsTree(settingsNavigator, settingsSearchController,
                                 historyWritesScope = scope, discovery = discovery, privacy = privacyBindings,
+                                onCategoryOpen = { category ->
+                                    if (com.android.purebilibili.feature.settings.canonicalSettingsRootCategory(category) == SettingsRootCategory.SYSTEM_ABOUT)
+                                        messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.SettingsCategory(SettingsRootCategory.SYSTEM_ABOUT)) }
+                                    else settingsNavigator.openCategory(category)
+                                },
+                                onOpenSearch = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.SettingsSearch) } },
+                                onSearchResult = { result ->
+                                    val ownerCategory = com.android.purebilibili.feature.settings.resolveSettingsRootCategoryForSearchTarget(result.target)
+                                    if (ownerCategory == SettingsRootCategory.SYSTEM_ABOUT) {
+                                        com.android.purebilibili.feature.settings.resolveSettingsSearchNavigation(result)?.let { target ->
+                                            messageRoutes.callbackFor(entryKey) { commands.push(target) }
+                                        }
+                                    } else settingsNavigator.openSearchResult(result)
+                                },
+                                onPageBack = ownedSettingsPageBack,
+
                                 onFailure = { error = it.message ?: "设置保存失败" },
                                 onDetailBack = {
-                                    if (entryKey == BiliPaiNavKey.TipsSettings || entryKey == BiliPaiNavKey.OpenSourceLicenses)
+                                    if (entryKey == BiliPaiNavKey.TipsSettings || entryKey == BiliPaiNavKey.OpenSourceLicenses || entryKey == BiliPaiNavKey.PlaybackSettings || entryKey == BiliPaiNavKey.HomeSettings)
                                         commands.back()
                                     else settingsNavigator.pop()
                                 },
@@ -1827,7 +1912,18 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } },
                                     onNavigateToIconSettings = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } }) },
                                 pluginsContent = { PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin) },
-                                playbackContent = { dismiss -> PlaybackSettingsDialog(preferences, ::changePreferences, dismiss) },
+                                playbackContent = { page, back ->
+                                    DesktopOriginalPlaybackSettingsRootHost(messageRoutes, homeRootRef, entryKey, page,
+                                        settingsNavigator, globalPluginContext, repository, services.imageLifetime,
+                                        originalHomePreferences.homeSettings, originalHardwareDecodePreferences,
+                                        legacyHardwareDecodeFallback,
+                                        active = active && hostVisible && hostDisplayable && !isClosing() && !activatingUpdate,
+                                        pictureInPictureAvailable = { pip != null && player != null && !isClosing() && !activatingUpdate },
+                                        onFailure = { error = it.message ?: "播放设置保存失败" }, onNotice = { error = it },
+                                        logSettingChange = { name, value ->
+                                            com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge.record("INFO", "PlaybackSettings", "$name=$value")
+                                        }, onBack = back)
+                                },
                                 backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,
                                     initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
                                 blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { loginDialog = true }) },
@@ -1845,6 +1941,30 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 onDismiss = dismiss)
                                         }
                                         com.android.purebilibili.feature.settings.DesktopOriginalDonateDialog(donateBindings)
+                                    }
+                                },
+                                homeContent = { page, back ->
+                                    val capturedHandle = homeRootRef.get()
+                                    val currentHomeSettingsActive by rememberUpdatedState(active)
+                                    val homeSettingsServices = LocalDesktopOriginalHomeSettingsRootServices.current
+                                    if (capturedHandle != null && capturedHandle.isActive() && active) {
+                                        val owns = { currentHomeSettingsActive && homeRootRef.get() === capturedHandle &&
+                                            capturedHandle.isActive() && capturedHandle.route.get() === messageRoutes &&
+                                            settingsNavigator.state.value.current === page && services.imageLifetime.isActive() &&
+                                            !isClosing() && !activatingUpdate }
+                                        val admit: ((() -> Unit) -> Boolean) = { action ->
+                                            var applied = false
+                                            val accepted = messageRoutes.root.entry.gate.commit {
+                                                services.imageLifetime.withCommit {
+                                                    if (owns()) { action(); applied = true }
+                                                }
+                                            }
+                                            accepted && applied
+                                        }
+                                        DesktopOriginalHomeSettingsRootHost(page, homeSettingsServices, globalPluginContext,
+                                            owns = owns, admit = admit, onBack = { if (owns()) back() },
+                                            onNotice = { if (owns()) services.feedback(it) },
+                                            onFailure = { if (owns()) error = it.message ?: "首页设置保存失败" })
                                     }
                                 },
                                 commentFraudHistoryContent = { page, back ->
@@ -1897,7 +2017,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         onMessage = { imageSaveMessage = it }, openInitially = openInitially)
                                     imageSaveMessage?.let { Text(it, Modifier.padding(12.dp)) }
                                 },
-                                systemContent = {
+                                systemContent = { aboutPage, requestDonate ->
+                                    DesktopOriginalSystemAboutRootHost(messageRoutes, entryKey, aboutPage, settingsNavigator,
+                                        homeRootRef, globalPluginContext, services.imageLifetime, active,
+                                        onWindowsUpdate = { updatesDialog = true; scope.launch { updater.check() } },
+                                        onDonate = requestDonate,
+                                        onFailure = { error = it.message ?: "系统与关于操作失败" },
+                                        onNotice = { error = it })
                                     com.bilipai.desktop.settings.DesktopNetworkProxySettings(globalPluginContext, repository.httpClient,
                                         onFailure = { error = it.message ?: "代理设置保存失败" })
                                     TextButton(onClick = { updatesDialog = true; scope.launch { updater.check() } }) { Text("检查 Windows 更新") }
@@ -1909,6 +2035,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     }
                                     diagnosticStartupError?.let { Text(it, Modifier.padding(12.dp), color = scheme.error) }
                                 })
+                            }
                             section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings(appearance,
                                 onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } },
                                 onNavigateToIconSettings = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } })

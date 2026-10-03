@@ -67,7 +67,13 @@ object DesktopOriginalHomeCardSettings {
  body='package com.android.purebilibili.feature.home\nimport androidx.compose.ui.unit.Dp\nimport androidx.compose.ui.unit.dp\nimport com.android.purebilibili.core.util.WindowWidthSizeClass\nimport com.android.purebilibili.core.store.HomeFeedCardWidthPreset\n\n'+appearance.declarations(parser,source,['resolveHomeFeedMaxContentWidth','isCompactHomeFeedScreen','resolveHomeFeedStoredColumnCount','resolveHomeFeedGridColumns'])
  emit(path,body,'DesktopOriginalHomeCardGridPolicy.kt')
  path=BASE+'feature/settings/PlaybackSettingsSelectionPolicy.kt';source=read(repo,path)
- emit(path,'package com.android.purebilibili.feature.settings\nimport com.android.purebilibili.core.store.HomeFeedCardWidthPreset\nimport com.android.purebilibili.core.ui.components.AppSegmentOption\n\n'+media.function(source,'resolveHomeFeedCardWidthPresetSegmentOptions',parser),'DesktopOriginalHomeCardWidthOptions.kt')
+ if standalone:
+  emit(path,'package com.android.purebilibili.feature.settings\nimport com.android.purebilibili.core.store.HomeFeedCardWidthPreset\nimport com.android.purebilibili.core.ui.components.AppSegmentOption\n\n'+media.function(source,'resolveHomeFeedCardWidthPresetSegmentOptions',parser),'DesktopOriginalHomeCardWidthOptions.kt')
+ else:
+  obsolete=out/'com/android/purebilibili/feature/settings/DesktopOriginalHomeCardWidthOptions.kt'
+  if obsolete.exists():
+   assert hashlib.sha256(obsolete.read_bytes()).hexdigest()=='f2dc6641152f80088b4522051f238ecdd69929574913b4ac5384e4e5447bb85f', 'Stale selected policy output drifted'
+   obsolete.unlink()
  path=BASE+'feature/settings/screen/AppearanceSettingsScreen.kt';source=read(repo,path)
  calls=[]
  for title in ['title = "网格列数"','title = "推荐流卡片宽度"','title = "卡片封面比例：']:

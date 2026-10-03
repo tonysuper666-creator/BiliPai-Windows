@@ -97,6 +97,83 @@ class ListenAudioStoreTest {
         } finally { session?.close(); player.close(); deleteDirectory(directory) }
     }
 
+    @Test fun `fresh separate audio actor is configured in constructor before identical window update`() {
+        val directory = Files.createTempDirectory("bilipai-listen-initial-actor-")
+        val player = MpvPlayer()
+        var session: ListenAudioSession? = null
+        try {
+            val repository = DesktopRepository(DesktopSessionStore(directory.resolve("account.json"), persistent = false))
+            val initial = PlayerPreferences(volume = 32.0, speed = 1.5, muted = true, audioOnly = false,
+                playbackMode = com.bilipai.desktop.player.PlaybackMode.REPEAT_ONE)
+            SwingUtilities.invokeAndWait {
+                session = ListenAudioSession(repository, DesktopCommunityRepository(repository), player,
+                    initialPreferences = initial, store = ListenAudioStore(directory.resolve("listen.json")))
+                assertTrue(player.state.value.audioOnly)
+                assertEquals(32.0, player.state.value.volume)
+                assertEquals(1.5, player.state.value.speed)
+                assertTrue(player.state.value.muted)
+                assertTrue(player.state.value.looping)
+                assertEquals(0L, player.currentSourceVersion)
+                kotlin.test.assertNull(player.currentSourceSnapshot())
+                requireNotNull(session).updatePreferences(initial)
+                assertTrue(player.state.value.audioOnly)
+                assertEquals(1.5, player.state.value.speed)
+                assertFalse(initial.audioOnly)
+            }
+        } finally { session?.close(); player.close(); deleteDirectory(directory) }
+    }
+
+    @Test fun `new audio session cannot initialize over an existing foreign source or its local controls`() {
+        val directory = Files.createTempDirectory("bilipai-listen-foreign-initial-")
+        val player = MpvPlayer()
+        var session: ListenAudioSession? = null
+        try {
+            val repository = DesktopRepository(DesktopSessionStore(directory.resolve("account.json"), persistent = false))
+            player.applyPreferences(PlayerPreferences(volume = 67.0, speed = 2.0, muted = false, audioOnly = false,
+                hardwareDecodeEnabled = false, playbackMode = com.bilipai.desktop.player.PlaybackMode.REPEAT_ONE))
+            val version = player.loadVersioned(PlaybackSource("file:///C:/private-not-decoded.mp4", title = "Existing foreign source"))
+            val source = requireNotNull(player.currentSourceSnapshot())
+            SwingUtilities.invokeAndWait {
+                session = ListenAudioSession(repository, DesktopCommunityRepository(repository), player,
+                    initialPreferences = PlayerPreferences(volume = 32.0, speed = 1.5, muted = true),
+                    store = ListenAudioStore(directory.resolve("listen.json")))
+                assertTrue(player.ownsSourceSnapshot(source))
+                assertEquals(version, player.currentSourceVersion)
+                assertEquals(67.0, player.state.value.volume)
+                assertEquals(2.0, player.state.value.speed)
+                assertFalse(player.state.value.audioOnly)
+                assertFalse(player.state.value.muted)
+                assertFalse(player.state.value.hardwareDecodeEnabled)
+                assertTrue(player.state.value.looping)
+                requireNotNull(session).close()
+                assertTrue(player.ownsSourceSnapshot(source))
+            }
+        } finally { session?.close(); player.close(); deleteDirectory(directory) }
+    }
+
+    @Test fun `later audio window volume delta preserves newer source local speed loop and view choices`() {
+        val directory = Files.createTempDirectory("bilipai-listen-later-delta-")
+        val player = MpvPlayer()
+        var session: ListenAudioSession? = null
+        try {
+            val repository = DesktopRepository(DesktopSessionStore(directory.resolve("account.json"), persistent = false))
+            val initial = PlayerPreferences(volume = 32.0, speed = 1.5, muted = true, audioOnly = false)
+            SwingUtilities.invokeAndWait {
+                session = ListenAudioSession(repository, DesktopCommunityRepository(repository), player,
+                    initialPreferences = initial, store = ListenAudioStore(directory.resolve("listen.json")))
+                val version = player.loadVersioned(PlaybackSource("file:///C:/private-later-control.mp4", title = "Local control source"))
+                player.setSpeed(2.0); player.setAudioOnly(false); player.setLoop(true); player.setMuted(false)
+                requireNotNull(session).updatePreferences(initial.copy(volume = 41.0))
+                assertEquals(version, player.currentSourceVersion)
+                assertEquals(41.0, player.state.value.volume)
+                assertEquals(2.0, player.state.value.speed)
+                assertFalse(player.state.value.audioOnly)
+                assertFalse(player.state.value.muted)
+                assertTrue(player.state.value.looping)
+            }
+        } finally { session?.close(); player.close(); deleteDirectory(directory) }
+    }
+
     private fun deleteDirectory(directory: java.nio.file.Path) {
         Files.list(directory).use { files -> files.forEach { Files.deleteIfExists(it) } }
         Files.deleteIfExists(directory)

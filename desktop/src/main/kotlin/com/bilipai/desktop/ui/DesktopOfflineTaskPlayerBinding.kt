@@ -10,6 +10,7 @@ import com.bilipai.desktop.download.DownloadTask
 import com.bilipai.desktop.player.MpvPlayer
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.atomic.AtomicReference
 
 /** A navigation consumer of the existing offline memory, not a second player or task store. */
 class DesktopOfflineTaskPlayerBinding(
@@ -34,6 +35,7 @@ class DesktopOfflineTaskPlayerBinding(
     @Volatile private var closed = false
     @Volatile private var acceptedVersion: Long? = null
     @Volatile private var acceptedTaskId: String? = null
+    private val nativePublication = AtomicReference<DesktopOfflineNativeSourcePublication?>()
     private var request: Job? = null
     private val completion = entryScope.coroutineContext[Job]?.invokeOnCompletion { close() }
     init { require(entryScope.coroutineContext[Job] != null) { "Offline task requires an owned entry Job" } }
@@ -66,6 +68,7 @@ class DesktopOfflineTaskPlayerBinding(
     private fun openOwned(taskId: String, onOnlinePlay: (DownloadTask) -> Unit, onEpisode:((String)->Unit)?): Job? {
         if (!isOwned()) return null
         val version = generation.incrementAndGet()
+        nativePublication.getAndSet(null)?.close()
         request?.cancel()
         val pending = entryScope.launch(start = CoroutineStart.LAZY) {
             try {
@@ -94,10 +97,20 @@ class DesktopOfflineTaskPlayerBinding(
                     val initialized = player ?: throw IllegalStateException(playerError() ?: "播放器未能初始化")
                     retained.acquire(memory)
                     memory.stopPlayback()
-                    val nativeVersion = initialized.loadVersioned(source)
+                    val sourcePublication = DesktopOfflineNativeSourcePublication(initialized,
+                        { ownsRequest(version) && ownsAcceptedSource() && acceptedTaskId == taskId },
+                        { action -> admit(version, action) })
+                    val nativeVersion = try {
+                        initialized.loadVersioned(source.copy(nativePublication = sourcePublication))
+                    } catch (failure: Throwable) { sourcePublication.close(); throw failure }
                     acceptedVersion = nativeVersion; acceptedTaskId = taskId
                     memory.sourceVersion = nativeVersion; memory.current = taskId
                     memory.loaded = true; memory.opening = false; memory.error = null
+                    try {
+                        sourcePublication.bind(checkNotNull(initialized.currentSourceSnapshot())
+                            .also { check(it.sourceVersion == nativeVersion) })
+                    } catch (failure: Throwable) { sourcePublication.close(); throw failure }
+                    nativePublication.set(sourcePublication)
                     opening = false; error = null
                     memory.checkpoint = ::checkpoint
                     memory.onBeforeStop = { if (ownsAcceptedSource()) overlay?.setDocument(DanmakuDocument()) }
@@ -185,6 +198,7 @@ class DesktopOfflineTaskPlayerBinding(
         val version=generation.get()
         admit(version) {
             if(ownsAcceptedSource() && acceptedTaskId==taskId && acceptedVersion==nativeVersion) {
+                nativePublication.getAndSet(null)?.close()
                 memory.stopPlayback();memory.current=null
                 acceptedVersion=null;acceptedTaskId=null
             }
@@ -205,6 +219,7 @@ class DesktopOfflineTaskPlayerBinding(
     override fun close() {
         if (closed) return
         closed = true; generation.incrementAndGet(); request?.cancel(); completion?.dispose()
+        nativePublication.getAndSet(null)?.close()
         opening = false
         val retiringVersion = acceptedVersion
         val retiringTask = acceptedTaskId

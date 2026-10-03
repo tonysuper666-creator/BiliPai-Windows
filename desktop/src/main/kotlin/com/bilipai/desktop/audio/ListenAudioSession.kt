@@ -10,6 +10,7 @@ import com.bilipai.desktop.player.ownedSource
 import com.bilipai.desktop.player.tryAdmit
 import com.bilipai.desktop.player.PlaybackMode
 import com.bilipai.desktop.player.PlayerPreferences
+import com.bilipai.desktop.player.applyLegacyPreferenceChanges
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.swing.Swing
@@ -61,6 +62,7 @@ internal class ListenAudioSession(
     private val mutableState = MutableStateFlow(ListenAudioState(saved.queue, saved.currentIndex, saved.recent, saved.favorites))
     val state: StateFlow<ListenAudioState> = mutableState.asStateFlow()
     private var preferences = initialPreferences.normalized()
+    private var lastWindowPreferences = preferences
     private var playJob: Job? = null
     private var lyricsJob: Job? = null
     private var savingJob: Job? = null
@@ -85,6 +87,7 @@ internal class ListenAudioSession(
     private fun sessionIsCurrent() = !closed && scope.isActive && repository.sessionEpoch == sessionEpoch
 
     init {
+        if (sessionIsCurrent()) player.initializePreferencesBeforeFirstSource(preferences.copy(audioOnly = true))
         scope.launch {
             repository.sessionEpochFlow.first { it != sessionEpoch }
             close()
@@ -118,11 +121,22 @@ internal class ListenAudioSession(
         }
     }
 
+    /** Window preference deltas preserve newer source-local speed/audio/loop choices. */
     fun updatePreferences(next: PlayerPreferences) {
         if (!sessionIsCurrent()) return
-        preferences = next.normalized()
-        player.applyPreferences(preferences.copy(audioOnly = true))
-        player.setLoop(preferences.playbackMode == PlaybackMode.REPEAT_ONE && !mutableState.value.sleepAfterTrack)
+        val normalized = next.normalized()
+        val changes = com.bilipai.desktop.player.DesktopLegacyPlaybackPreferenceChanges.between(lastWindowPreferences, normalized)
+        lastWindowPreferences = normalized
+        preferences = changes.mergeInto(preferences, normalized)
+        player.applyLegacyPreferenceChanges(changes, preferences,
+            listenOnly = true, sleepAfterTrack = mutableState.value.sleepAfterTrack)
+    }
+
+    fun onOriginalHardwareDecodeChanged(enabled: Boolean) {
+        if (!sessionIsCurrent()) return
+        lastWindowPreferences = lastWindowPreferences.copy(hardwareDecodeEnabled = enabled)
+        preferences = preferences.copy(hardwareDecodeEnabled = enabled)
+        player.setHardwareDecodingEnabled(enabled)
     }
 
     fun play(items: List<PlaylistItem>, index: Int = 0) = playStartingAt(items, index, 0.0)
@@ -177,8 +191,10 @@ internal class ListenAudioSession(
                 }
                 val resolvedIndex = mutableState.value.queue.indexOfFirst { it.bvid == item.bvid }
                 if (resolvedIndex < 0) return@launch
+                // A new source explicitly initializes this separate audio actor.
                 preferences = preferences.copy(speed = preferences.preferredSpeed)
-                updatePreferences(preferences)
+                player.applyPreferences(preferences.copy(audioOnly = true))
+                player.setLoop(preferences.playbackMode == PlaybackMode.REPEAT_ONE && !mutableState.value.sleepAfterTrack)
                 if (!sessionIsCurrent()) return@launch
                 val callerJob = currentCoroutineContext()[Job]
                 val retained = publication.ownedSource(prepared.source.copy(startPositionSeconds = startPosition),

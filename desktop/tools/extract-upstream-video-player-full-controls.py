@@ -1,5 +1,6 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
+from v025_playback_settings_platform import player_settings_body as _playback_player_settings_body, control_settings_body as _playback_control_settings_body
 import hashlib,importlib.util,json,re,subprocess,sys,zipfile
 from v025_source_paths import canonical_source as _desktop_canonical_source
 sys.dont_write_bytecode=True
@@ -153,6 +154,7 @@ def main():
  body=body[:a]+'''    fun getLongPressSpeed(context: Context): Flow<Float> =
         DesktopOriginalLongPressSpeedSettings.getLongPressSpeed(context.pluginContext)
 '''+body[b:]
+ body=_playback_player_settings_body(body)
  keys=selector.declarations(parser,read(rel),['defaultAudioQualityPreferenceKey','longPressSpeedPreferenceKey','playbackSpeedOptionsPreferenceKey'])
  # The last selected top-level val would include the following whole object;
  # use its exact single line instead of the generic last-declaration selector.
@@ -203,7 +205,7 @@ import kotlinx.coroutines.flow.combine
  rel='core/store/SettingsManager.kt';t=read(rel);obj=t[t.index('{',t.index('object SettingsManager'))+1:t.rfind('}')]
  names=['getDoubleTapSeekEnabled','setDoubleTapSeekEnabled','getSeekForwardSeconds','setSeekForwardSeconds','getSeekBackwardSeconds','setSeekBackwardSeconds','getLongPressSpeed','setLongPressSpeed','getLongPressSpeedLockEnabled','setLongPressSpeedLockEnabled','setLongPressSpeedLockHintShown','getTwoFingerVerticalSpeedEnabled','setTwoFingerVerticalSpeedEnabled','getTwoFingerHorizontalSpeedEnabled','setTwoFingerHorizontalSpeedEnabled','getPlaybackSpeedOptions','getDefaultPlaybackSpeed','setDefaultPlaybackSpeed','getRememberLastPlaybackSpeed','setRememberLastPlaybackSpeed','getProgressPeakDanmakuEnabled','setProgressPeakDanmakuEnabled']
  names+=['getShowFullscreenLockButton','getShowFullscreenScreenshotButton','getShowFullscreenBatteryLevel','getShowFullscreenTime','getShowFullscreenActionItems','getShowOnlineCount','getBottomProgressBehavior','getPlayerControlVisibilitySettings','getPlayerProgressPlacement','getPlaybackCompletionBehavior','getPlaybackCompletionBehaviorSync','setPlaybackCompletionBehavior','getHideVideoPageStatusBar','getHideVideoPageStatusBarSync','getCardAnimationEnabled','setLastPlaybackSpeed']
- body,closure=member_closure(obj,names);keys=''
+ body,closure=member_closure(obj,names);body=_playback_control_settings_body(body);keys=''
  imports='''package com.android.purebilibili.core.store
 import com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext as Context
 import com.bilipai.desktop.ui.playerBooleanPreferencesKey as booleanPreferencesKey

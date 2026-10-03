@@ -18,7 +18,8 @@ class HomeCardOriginalSourceTest(unittest.TestCase):
    self.assertTrue(output.endswith(original));self.assertEqual('direct',next(row['mode'] for row in gen.inventory(REPO) if row['path']==gen.BASE+short))
  def test_production_generator_does_not_duplicate_shared_direct_sources(self):
   directory=self.generate(False)
-  self.assertEqual(5,len(list(directory.rglob('*.kt'))))
+  self.assertEqual(4,len(list(directory.rglob('*.kt'))))
+  self.assertFalse((directory/'com/android/purebilibili/feature/settings/DesktopOriginalHomeCardWidthOptions.kt').exists())
   for short in gen.DIRECT:self.assertFalse((directory/'com/android/purebilibili'/short).exists())
  def test_exact_actual_persisted_four_expressions_are_emitted(self):
   directory=self.generate();generated=(directory/'com/android/purebilibili/core/store/DesktopOriginalHomeCardSettings.kt').read_text(encoding='utf-8')

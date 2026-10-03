@@ -27,12 +27,17 @@ internal fun DesktopSettingsTree(
     onDetailBack: (SettingsSearchTarget) -> Unit = { navigator.pop() },
     appearanceContent: @Composable () -> Unit,
     pluginsContent: @Composable () -> Unit,
-    playbackContent: @Composable (onDismiss: () -> Unit) -> Unit,
+    playbackContent: @Composable (page: DesktopSettingsPage.Detail, onBack: () -> Unit) -> Unit,
     backupContent: @Composable (target: SettingsSearchTarget, onDismiss: () -> Unit) -> Unit,
     blockedListContent: @Composable () -> Unit,
     donateContent: @Composable (entry: DesktopSettingsDonateEntry, onDismiss: () -> Unit) -> Unit,
     commentFraudHistoryContent: @Composable (page: DesktopSettingsPage.CommentFraudHistory, onBack: () -> Unit) -> Unit,
-    systemContent: @Composable () -> Unit,
+    homeContent: @Composable (page: DesktopSettingsPage.Detail, onBack: () -> Unit) -> Unit,
+    systemContent: @Composable (page: DesktopSettingsPage, onDonate: () -> Unit) -> Unit,
+    onCategoryOpen: (SettingsRootCategory) -> Unit = navigator::openCategory,
+    onOpenSearch: () -> Unit = navigator::openSearch,
+    onSearchResult: (SettingsSearchResult) -> Unit = navigator::openSearchResult,
+    onPageBack: () -> Unit = { navigator.pop() },
     storageContent: @Composable (target: SettingsSearchTarget?) -> Unit,
     imageSavePathContent: @Composable (openInitially: Boolean) -> Unit = {
         AppText("图片保存位置设置仍在移植中。", Modifier.padding(12.dp))
@@ -43,6 +48,13 @@ internal fun DesktopSettingsTree(
     var boundary by remember { mutableStateOf<String?>(null) }
     var nextDonateToken by remember { mutableLongStateOf(0L) }
     var donateEntry by remember { mutableStateOf<DesktopSettingsDonateEntry?>(null) }
+    val requestDonate: () -> Unit = {
+        val token = ++nextDonateToken
+        val parent = page
+        donateEntry = DesktopSettingsDonateEntry(token, parent) {
+            donateEntry?.entryToken == token && navigator.state.value.current === parent
+        }
+    }
     LaunchedEffect(page) { if (donateEntry?.parentPage !== page) donateEntry = null }
     DisposableEffect(Unit) { onDispose { donateEntry = null } }
     CompositionLocalProvider(
@@ -54,21 +66,25 @@ internal fun DesktopSettingsTree(
             if (page is DesktopSettingsPage.CommentFraudHistory) {
                 commentFraudHistoryContent(page) { navigator.pop() }
             } else if (page is DesktopSettingsPage.Search) {
-                DesktopSettingsSearchScreen(search, onBack = { navigator.pop() },
-                    onCategoryClick = navigator::openCategory,
-                    onResultClick = navigator::openSearchResult,
+                DesktopSettingsSearchScreen(search, onBack = onPageBack,
+                    onCategoryClick = onCategoryOpen,
+                    onResultClick = onSearchResult,
                     historyWritesScope = historyWritesScope)
+            } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.HOME_FEED) {
+                homeContent(page) { onDetailBack(page.target) }
             } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.TIPS) {
                 TipsSettingsScreen(onBack = { onDetailBack(page.target) })
             } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.OPEN_SOURCE_LICENSES) {
                 OpenSourceLicensesScreen(onBack = { onDetailBack(page.target) })
+            } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.PLAYBACK) {
+                playbackContent(page) { onDetailBack(page.target) }
             } else {
                 Column(Modifier.fillMaxSize()) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        if (page != DesktopSettingsPage.Root) AppTextButton(onClick = { navigator.pop() }) { AppText("返回") }
+                        if (page != DesktopSettingsPage.Root) AppTextButton(onClick = onPageBack) { AppText("返回") }
                         Spacer(Modifier.weight(1f))
-                        AppTextButton(onClick = navigator::openSearch) { AppText("搜索设置") }
+                        AppTextButton(onClick = onOpenSearch) { AppText("搜索设置") }
                     }
                     val nestedPageOwnsScroll = page is DesktopSettingsPage.Detail &&
                         page.target in setOf(SettingsSearchTarget.APPEARANCE, SettingsSearchTarget.PLUGINS, SettingsSearchTarget.BLOCKED_LIST,
@@ -79,14 +95,8 @@ internal fun DesktopSettingsTree(
                         when (page) {
                             DesktopSettingsPage.Root -> {
                                 SettingsCategoryHeader("设置")
-                                SettingsRootCategoryListSection(resolveSettingsRootCategoryOrder(), navigator::openCategory,
-                                    onDonateClick = {
-                                        val token = ++nextDonateToken
-                                        val parent = page
-                                        donateEntry = DesktopSettingsDonateEntry(token, parent) {
-                                            donateEntry?.entryToken == token && navigator.state.value.current === parent
-                                        }
-                                    })
+                                SettingsRootCategoryListSection(resolveSettingsRootCategoryOrder(), onCategoryOpen,
+                                    onDonateClick = requestDonate)
                             }
                             is DesktopSettingsPage.Category -> {
                                 SettingsCategoryHeader(page.category.title)
@@ -97,10 +107,14 @@ internal fun DesktopSettingsTree(
                                             SettingsSearchFocusController.request.value?.focusId)
                                     }
                                     SettingsRootCategory.HOME_RECOMMENDATION -> {
+                                        DesktopOriginalHomeSettingsCategoryEntry {
+                                            navigator.openDetail(SettingsSearchTarget.HOME_FEED,
+                                                SettingsSearchFocusController.request.value?.focusId)
+                                        }
                                         SettingsDetailGroup("推荐流与动态") {
                                             DesktopHomeRecommendationSettings(discovery, onFailure)
                                         }
-                                        AppText("首页布局、动态布局和标签设置尚未完整移植。", Modifier.padding(vertical = 12.dp))
+                                        AppText("动态布局和标签设置尚未完整移植。", Modifier.padding(vertical = 12.dp))
                                     }
                                     SettingsRootCategory.PRIVACY_PERMISSION -> SettingsDetailGroup("隐私与权限") {
                                         DesktopPrivacySection(privacy,
@@ -118,23 +132,7 @@ internal fun DesktopSettingsTree(
                                         onAnimationClick = { navigator.openDetail(SettingsSearchTarget.ANIMATION,
                                             SettingsSearchFocusController.request.value?.focusId) })
                                     SettingsRootCategory.SYSTEM_ABOUT -> {
-                                        systemContent()
-                                        SettingsDetailGroup("帮助与工具") {
-                                            SettingsDetailEntrySection(listOf(SettingsDetailEntry(
-                                                target = SettingsSearchTarget.TIPS,
-                                                title = settingsDestinationCopy(SettingsSearchTarget.TIPS).title,
-                                                value = settingsDestinationCopy(SettingsSearchTarget.TIPS).summary,
-                                                onClick = { navigator.openDetail(SettingsSearchTarget.TIPS, null) },
-                                            )))
-                                        }
-                                        SettingsDetailGroup("关于与更新") {
-                                            SettingsDetailEntrySection(listOf(SettingsDetailEntry(
-                                                target = SettingsSearchTarget.OPEN_SOURCE_LICENSES,
-                                                title = settingsDestinationCopy(SettingsSearchTarget.OPEN_SOURCE_LICENSES).title,
-                                                value = settingsDestinationCopy(SettingsSearchTarget.OPEN_SOURCE_LICENSES).summary,
-                                                onClick = { navigator.openDetail(SettingsSearchTarget.OPEN_SOURCE_LICENSES, null) },
-                                            )))
-                                        }
+                                        systemContent(page, requestDonate)
                                     }
                                     else -> AppText("该分类的原版设置和消费行为仍在移植中。", Modifier.padding(16.dp))
                                 }
@@ -144,15 +142,9 @@ internal fun DesktopSettingsTree(
                                 when (page.target) {
                                     SettingsSearchTarget.APPEARANCE -> appearanceContent()
                                     SettingsSearchTarget.PLUGINS -> pluginsContent()
-                                    SettingsSearchTarget.PLAYBACK -> {
-                                        if (page.focusId != null && page.focusId !in supportedDesktopPlaybackFocusIds) {
-                                            AppText("搜索命中的具体设置尚未移植；当前播放设置中没有对应控件。", Modifier.padding(12.dp))
-                                        }
-                                        playbackContent { navigator.pop() }
-                                    }
+                                    SettingsSearchTarget.PLAYBACK -> Unit // Whole original page owns its scaffold above.
                                     SettingsSearchTarget.BOTTOM_BAR -> DesktopNavigationInteractionSettings(SettingsSearchTarget.BOTTOM_BAR, onFailure)
                                     SettingsSearchTarget.ANIMATION -> DesktopNavigationInteractionSettings(SettingsSearchTarget.ANIMATION, onFailure)
-                                    SettingsSearchTarget.HOME_FEED -> DesktopHomeRecommendationSettings(discovery, onFailure)
                                     SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE -> {
                                         AppText("此处使用 Windows 的 WebDAV 和 ZIP 备份窗口；原版全部存储设置仍在移植中。", Modifier.padding(12.dp))
                                         backupContent(page.target) { navigator.pop() }
@@ -181,8 +173,3 @@ internal fun DesktopSettingsTree(
         }
     }
 }
-
-private val supportedDesktopPlaybackFocusIds = setOf(
-    SettingsSearchFocusIds.PLAYBACK_DECODER, SettingsSearchFocusIds.PLAYBACK_NETWORK,
-    SettingsSearchFocusIds.PLAYBACK_INTERACTION, SettingsSearchFocusIds.PLAYBACK_SPEED,
-)

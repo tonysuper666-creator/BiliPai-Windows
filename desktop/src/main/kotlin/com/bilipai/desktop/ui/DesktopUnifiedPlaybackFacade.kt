@@ -231,7 +231,7 @@ internal class DesktopUnifiedPlaybackFacade(
         a.playback.loadVideo(success.info.bvid, success.info.aid, force = true, autoPlay = !paused,
             cid = page.cid, fallbackResumePositionMs = (position.coerceAtLeast(0.0)*1000).toLong())
     }
-    fun onPlaybackPreferencesChanged(previous: PlayerPreferences, next: PlayerPreferences) {
+    fun onPlaybackPreferencesChanged(previous: PlayerPreferences, next: PlayerPreferences, forceSpeed: Boolean = false) {
         val a = held() ?: return
         val normalized = next.normalized()
         val accepted = a.native.current()
@@ -239,7 +239,7 @@ internal class DesktopUnifiedPlaybackFacade(
             a.native.admitPlaybackDispatch(accepted) { a.section.nativePlayer.setHardwareDecodingEnabled(normalized.hardwareDecodeEnabled, accepted.sourceVersion) }
         if (previous.videoCodecPreference != normalized.videoCodecPreference) a.playback.setVideoCodec(normalized.videoCodecPreference)
         if (previous.videoSecondCodecPreference != normalized.videoSecondCodecPreference) a.playback.setVideoSecondCodec(normalized.videoSecondCodecPreference)
-        if (previous.speed != normalized.speed) a.playback.applyPlaybackSpeedFromUi(normalized.speed.toFloat())
+        if (forceSpeed || previous.speed != normalized.speed) a.playback.applyPlaybackSpeedFromUi(normalized.speed.toFloat())
         if (previous.subtitleAutoPreference != normalized.subtitleAutoPreference) changeSubtitleAutoPreference(a, normalized.subtitleAutoPreference)
     }
     fun selectAudioQuality(preferenceId: Int) { held()?.playback?.setAudioQuality(preferenceId) }

@@ -1,7 +1,7 @@
 from pathlib import Path
 import hashlib,importlib.util,json,sys,tempfile,unittest
 sys.dont_write_bytecode=True
-REPO=next(p for p in Path(__file__).resolve().parents if (p/'AGENTS.md').exists())
+REPO=next(p for p in Path(__file__).resolve().parents if (p/'desktop/build.gradle.kts').is_file() and (p/'app/src/main/java').is_dir())
 spec=importlib.util.spec_from_file_location('full_card_source',REPO/'desktop/tools/extract-upstream-home-full-card.py')
 g=importlib.util.module_from_spec(spec);spec.loader.exec_module(g)
 class HomeFullCardSourcesTest(unittest.TestCase):

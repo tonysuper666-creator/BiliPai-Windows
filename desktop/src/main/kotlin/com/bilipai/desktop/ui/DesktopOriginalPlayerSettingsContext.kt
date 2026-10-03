@@ -34,13 +34,16 @@ class DesktopOriginalPlayerSettingsContext internal constructor(
         return DesktopOriginalPlayerMirrorPreferences(this, name)
     }
     internal fun isLargeScreenOrFoldableConfiguration(): Boolean {
-        requireCurrent()
+        // Pure platform defaults remain valid for the original outgoing retained composition.
+        // They neither admit a settings write nor access native playback/account services.
         return checkNotNull(largeScreenOrFoldableConfiguration) { "Root actual physical monitor device default is required" }.invoke()
     }
     internal fun defaultPlayerDiagnosticLoggingEnabled(): Boolean {
-        requireCurrent()
+        // Original BuildConfig-derived default is a pure value, also read as collect initialValue.
+        // Page retirement still guards every write permit, commit and native overlay below.
         return com.android.purebilibili.core.store.resolveDefaultPlayerDiagnosticLoggingEnabled(checkNotNull(isDebugBuild) { "Root actual build type is required" }.invoke())
     }
+    internal fun isCurrentForOriginalWrite(): Boolean = isCurrent()
     internal fun requireCurrent() { if (!isCurrent()) throw CancellationException("Original player settings owner retired") }
     internal fun preferenceWritePermit(checkRequest: () -> Unit): com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit {
         lateinit var permit: com.bilipai.desktop.plugins.DesktopPluginStore.OriginalPreferenceWritePermit
@@ -84,10 +87,13 @@ internal class DesktopOriginalPlayerPreferenceValues(private val snapshot: Deskt
 }
 
 internal class DesktopOriginalPlayerSettingsDataStore(private val context: DesktopOriginalPlayerSettingsContext) {
-    val data get() = context.pluginContext.store.snapshot("settings").map(::DesktopOriginalPlayerPreferenceValues)
+    val data get() = DesktopOriginalPlaybackPreferenceOperation.currentOrNull()?.let {
+        kotlinx.coroutines.flow.flowOf(it.values(context))
+    } ?: context.pluginContext.store.snapshot("settings").map(::DesktopOriginalPlayerPreferenceValues)
     suspend fun edit(block: (DesktopOriginalPlayerPreferenceValues) -> Unit): DesktopOriginalPlayerPreferenceValues = withContext(Dispatchers.IO) {
         val caller = currentCoroutineContext()
         caller.ensureActive()
+        DesktopOriginalPlaybackPreferenceOperation.currentOrNull()?.let { return@withContext it.edit(context, block) }
         lateinit var result: DesktopOriginalPlayerPreferenceValues
         fun checkRequest() {
             caller.ensureActive()
@@ -103,7 +109,8 @@ internal class DesktopOriginalPlayerSettingsDataStore(private val context: Deskt
 }
 
 internal class DesktopOriginalPlayerMirrorPreferences(private val context: DesktopOriginalPlayerSettingsContext, private val name: String) {
-    private fun values() = context.pluginContext.store.preferences(name)
+    private fun values() = DesktopOriginalPlaybackPreferenceOperation.currentOrNull()?.mirrorValues(context, name)
+        ?: context.pluginContext.store.preferences(name)
     fun contains(key: String) = values().containsKey(key)
     fun getBoolean(key: String, default: Boolean) = (values()[key] as? JsonPrimitive)?.booleanOrNull ?: default
     fun getFloat(key: String, default: Float) = (values()[key] as? JsonPrimitive)?.floatOrNull ?: default
@@ -123,6 +130,7 @@ internal class DesktopOriginalPlayerMirrorPreferences(private val context: Deskt
         }
         fun apply() {
             val edits = changes.toMap()
+            DesktopOriginalPlaybackPreferenceOperation.currentOrNull()?.let { it.mirror(context, name, edits); return }
             fun checkRequest() {
                 context.requireCurrent()
                 com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.checkCurrentRequestOrOriginal()

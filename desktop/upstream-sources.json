@@ -1813,7 +1813,10 @@
         "original-bangumi-player-ui",
         "v025-comment-parity",
         "desktop-v025-complete-player-parity",
-        "desktop-whole-icon-settings"
+        "desktop-whole-icon-settings",
+        "desktop-whole-playback-settings",
+        "desktop-whole-home-settings",
+        "desktop-whole-system-about-actions"
       ],
       "mode": "policy-extract"
     },
@@ -3492,7 +3495,8 @@
         "audio",
         "playback-settings-parity",
         "settings-home-section-parity",
-        "settings-home-card-parity"
+        "settings-home-card-parity",
+        "desktop-whole-playback-settings"
       ]
     },
     {
@@ -3669,7 +3673,9 @@
       "mode": "policy-extract",
       "features": [
         "settings-search-parity",
-        "desktop-whole-icon-settings"
+        "desktop-whole-icon-settings",
+        "desktop-whole-playback-settings",
+        "desktop-whole-home-settings"
       ],
       "sha256": "eda6a70ef0e32386580c96badf27ea808d3a29af08acf2628e3439aecf5ad787"
     },
@@ -3698,7 +3704,9 @@
         "desktop-navigation-interaction-settings",
         "desktop-storage-cache-settings-owner-parity",
         "desktop-whole-comment-fraud-history",
-        "desktop-whole-original-donate-dialog"
+        "desktop-whole-original-donate-dialog",
+        "desktop-whole-home-settings",
+        "desktop-whole-system-about-actions"
       ],
       "sha256": "e306f73ee7cf49877248eb01063816d50f43f61b47c9d41a52ab372917de54f7"
     },
@@ -4000,7 +4008,8 @@
       "mode": "policy-extract",
       "features": [
         "settings-home-card-parity",
-        "home-full-card"
+        "home-full-card",
+        "desktop-whole-home-settings"
       ],
       "sha256": "91d372c45a2d2c5b784c53b9890db4a67f361b41841feab08a44d2855c5e4ace"
     },
@@ -6376,7 +6385,8 @@
       "sha256": "d26cf8e888df01a42da29ebc747e1c4540c00bd74530f390b727e75ffc59ed50",
       "features": [
         "stable-favorites",
-        "stable-favorite-folder-sheet"
+        "stable-favorite-folder-sheet",
+        "desktop-whole-playback-settings"
       ],
       "mode": "selected"
     },
@@ -7553,7 +7563,8 @@
       "sha256": "b8f658eef9e4ac99479479b51b14a9d38d17f6bc7a669694e0b6ee4f02d9e411",
       "mode": "policy-extract",
       "features": [
-        "profile-main-original"
+        "profile-main-original",
+        "desktop-whole-home-settings"
       ]
     },
     {
@@ -10226,7 +10237,8 @@
       "path": "app/src/main/java/com/android/purebilibili/core/store/BackToTopSettingsStore.kt",
       "sha256": "7cfc48da9652fa33262fb1ce4458b84ea442a0e34733f846836b21a9dc73c97e",
       "features": [
-        "desktop-full-original-search-root-parity"
+        "desktop-full-original-search-root-parity",
+        "desktop-whole-home-settings"
       ],
       "mode": "platform-rewrite"
     },
@@ -10709,7 +10721,8 @@
       "mode": "policy-extract",
       "features": [
         "v025-comment-parity",
-        "video-ambient-original-settings-ui"
+        "video-ambient-original-settings-ui",
+        "desktop-whole-playback-settings"
       ],
       "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/PlaybackSettingsScreen.kt",
       "sha256": "0e3121d36ba9b94f855e2b8ff3349f945816259f922dd82166fcf5f252b3e3bd"
@@ -11034,7 +11047,8 @@
       "mode": "policy-extract",
       "features": [
         "profile-main-original",
-        "profile-v025-catalog-authorization"
+        "profile-v025-catalog-authorization",
+        "desktop-whole-system-about-actions"
       ]
     },
     {
@@ -11223,6 +11237,190 @@
         "desktop-whole-icon-settings"
       ],
       "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/PlayerSettingsCache.kt",
+      "sha256": "abdd5b47d273176f3d61d1c13e3f25a673bda7025ea8cba82e4eeca78215b18b",
+      "features": [
+        "desktop-whole-playback-settings"
+      ],
+      "mode": "extracted"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/profile/SplashWallpaperPickerSheet.kt",
+      "sha256": "5f12de49fb65f3aea34800fba8ae3512a549835c48b63281be85a766ec89eb1b",
+      "features": [
+        "desktop-whole-home-settings"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/policy/AppearanceSettingsLayoutPolicy.kt",
+      "sha256": "e43f6ef01194630951fb53bcd2064fdc067db3a14c0d5d9b60a0654d0d36ad94",
+      "features": [
+        "desktop-whole-home-settings"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/AppUpdateAutoCheckGate.kt",
+      "sha256": "0344d17c85d2cba4bfbead2818f4f4eb2ecff3ed086a81daac584feb02c7d487",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateDialogHost.kt",
+      "sha256": "f21e679a9385857f01ae0ac20ed7cbdda84dc580c0f411ae87419a49e1816929",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppBuildVerificationRuntime.kt",
+      "sha256": "e07ae96f157cf2fedbb86fbc51f5ac9d4ae08c7ea6e743da265bfe22c72d68ef",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/build.gradle.kts",
+      "sha256": "683162c801ebca4ba7507dd217f255549b99a5ad787807b236e4de1231d2a3d6",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateDownloadState.kt",
+      "sha256": "408eb012d9bf13a3572b6a7ad387620746db060aa1695eb11c01382cd4685531",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateReleaseNotesPolicy.kt",
+      "sha256": "35ab448c8a9b0668dae15ce3973b602d788643ed27b7cd873dc6ad339c037223",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateDialogVisualPolicy.kt",
+      "sha256": "3dbc67dc81047f94732fa49162d59ab6f70bebf9eb5b16814814ed67044fdba4",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateUiPolicy.kt",
+      "sha256": "6b9ca58f4c36546d84a28657e77dc6317061de818f95ebbac6d49947d2c890ce",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateAssetSelectionPolicy.kt",
+      "sha256": "f0e6975b91175cd2fa7c5cc38437f04d901feeebb4fd93b1a5c478b74c7623cb",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppBuildVerificationPolicy.kt",
+      "sha256": "7ce463d0649e60349ef3859b0b9bff55ea0477cc3822ed36232efdac24d3a0b9",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/AppUpdateChecker.kt",
+      "sha256": "a2b899c898dd9e080bb33fc1a3b41f3a8b84a1ca497b225acdebe7bafec17794",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/Material3AppUpdateDialog.kt",
+      "sha256": "791583a1d22cd467bb1f5c916468e844181e95d80fe745b3dff43637f4e3571e",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/update/MiuixAppUpdateDialog.kt",
+      "sha256": "70d37b93b966f397358ce27663e5e0b8e480b1fe34dea65b18eccc6fc1e6fa14",
+      "mode": "platform-adapter-reference",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/screenshot/AppScreenshotPolicy.kt",
+      "sha256": "79489bcfe046a2e3c9556fd5523c04728621da20871f23c044d01f21025da632",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-playback-settings"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/screenshot/AppScreenshotRegionPolicy.kt",
+      "sha256": "258a4463293ecb0daab1be3a27d8e711e04f5a8b0a81d5579796a2427aa2e0b5",
+      "mode": "direct",
+      "features": [
+        "desktop-whole-playback-settings"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/player/MiniPlayerManager.kt",
+      "sha256": "3e4eb4dc7e1598f9607f87dd6b22820a7c2a6d49003963cedb401be4e696f6df",
+      "mode": "policy-extract",
+      "features": [
+        "desktop-original-background-policy"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/playback/session/PlaybackLifecycleCoordinator.kt",
+      "sha256": "90c5b5c94e469b28c16589a124534e9408c2f42bfec5cb85132b08045b18dc2b",
+      "mode": "policy-extract",
+      "features": [
+        "desktop-original-background-policy"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/state/PlayerLifecyclePlaybackPolicy.kt",
+      "sha256": "5e56e5ec25137796da32726b34a4f80eb9813d75cf93ae07f4526a6a1299b696",
+      "mode": "policy-extract",
+      "features": [
+        "desktop-original-background-policy"
+      ]
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/playback/session/PlaybackLifecycleCoordinatorTest.kt",
+      "sha256": "b703dea4b3107ed0ea28efc60ffd2cc7e96b4a7f57e7e90e96ed1a7f954781e2",
+      "mode": "policy-extract",
+      "features": [
+        "desktop-original-background-policy"
+      ]
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/player/BackgroundPlaybackPolicyTest.kt",
+      "sha256": "ee59d1219d3d3ddfd7d1e58033c5c89b5f01f7c181495dc34fdb55450cf9caf3",
+      "mode": "policy-extract",
+      "features": [
+        "desktop-original-background-policy"
+      ]
     }
   ],
   "featureCoverage": {
@@ -11254,7 +11452,7 @@
     "topic": "original-detail-sort-pagination-participation-rich-link-keyword-and-back-route-integrated-offline-tested",
     "playback-settings": "original-codec-audio-subtitle-policy-integrated-native-hardware-and-pair-tested-account-subtitle-retry-pending"
   },
-  "windowsRevision": 1,
+  "windowsRevision": 2,
   "hashNormalization": "lf",
   "resources": [
     {
@@ -11694,7 +11892,8 @@
       "path": "app/src/main/res/drawable/ms_edit_note_24.xml",
       "sha256": "4cbd128be9fa8ac5a53bf7c5a08948e0f847af99d7943b66840c26653b73ebef",
       "features": [
-        "settings-search-symbols"
+        "settings-search-symbols",
+        "desktop-whole-home-settings"
       ]
     },
     {
@@ -11883,7 +12082,8 @@
       "sha256": "b105df7f824e7eafbd0a73ebc55085134409161d606894c97685ba1cd38cbcc2",
       "features": [
         "settings-search-symbols",
-        "desktop-whole-icon-settings"
+        "desktop-whole-icon-settings",
+        "desktop-whole-playback-settings"
       ]
     },
     {
@@ -12683,7 +12883,9 @@
       "path": "app/src/main/res/drawable/ms_keyboard_arrow_right_24.xml",
       "features": [
         "settings-category-symbols",
-        "desktop-whole-static-settings-pages"
+        "desktop-whole-static-settings-pages",
+        "desktop-whole-playback-settings",
+        "desktop-whole-home-settings"
       ],
       "sha256": "d3f53b271fdb2150775b4252bf46139c3ab5ca872802372a1089e6e1dd6f2a35"
     },
@@ -13255,6 +13457,93 @@
       "sha256": "8323deed996998c054e7de6ddab910286661ac44cf2a202144ef2d411bdc164e",
       "features": [
         "desktop-whole-icon-settings"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_gesture_24.xml",
+      "sha256": "04768a45defd4d6e85df835a151cb3d0aab8dfcf4113f368c3b06ae37e40669c",
+      "features": [
+        "desktop-whole-playback-settings"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_router_24.xml",
+      "sha256": "c9a3dba933d97855fd823ca3ebb38c046d3b2c0722f8d4dc050c1562e5923ff1",
+      "features": [
+        "desktop-whole-playback-settings"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_warning_24.xml",
+      "sha256": "eec68dd9db555e0c89b06d3b32215d5e5fc56d7a447db197b5057c93e899ae60",
+      "features": [
+        "desktop-whole-playback-settings"
+      ],
+      "mode": "resource"
+    },
+    {
+      "path": "app/src/main/res/drawable/ms_format_list_bulleted_24.xml",
+      "sha256": "a654dae477269b1387817471f9b9c0dc1624b3662b1a933e5e09414be12567df",
+      "features": [
+        "desktop-whole-home-settings"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable-nodpi/avatar_chenx_dust.webp",
+      "sha256": "6bd10701b79de88a710085adc83c2bfeb6b423fb8dfc1a95f566b60ac1104eb7",
+      "hashNormalization": "raw",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable-nodpi/avatar_jay3_yy.webp",
+      "sha256": "9f8cf840441ef3731337fcc9c03eb0eb006f499dc1871d9ada9083ab0d712582",
+      "hashNormalization": "raw",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable-nodpi/avatar_lekoowo.webp",
+      "sha256": "6476dd362822eb59128a7d98720c85d97a6476a6324956c496167b5d40c44ae1",
+      "hashNormalization": "raw",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable-nodpi/avatar_mvanhorn.webp",
+      "sha256": "b620dc5436dfe3e26a1c2bddc2fbea0fa8131ec02fc0eca1745bb453917f1ea9",
+      "hashNormalization": "raw",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable-nodpi/avatar_qyo123oyq.jpg",
+      "sha256": "b3e5d2b196bb9aa5d62e37ad71bfe43d4dc9175e245d7c21b359c8584653d37a",
+      "hashNormalization": "raw",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable-nodpi/avatar_tanakalun.webp",
+      "sha256": "c335060e273f0d837495e81aa39c9fcac76e2b09e445859b115fc2c69d8543fb",
+      "hashNormalization": "raw",
+      "features": [
+        "desktop-whole-system-about-actions"
+      ]
+    },
+    {
+      "path": "app/src/main/res/drawable-nodpi/avatar_usontong.webp",
+      "sha256": "c8e5fa77d68c018fc50b2e5793138bc686b1bd2020b07d8a25041b817dbe29b2",
+      "hashNormalization": "raw",
+      "features": [
+        "desktop-whole-system-about-actions"
       ]
     }
   ],

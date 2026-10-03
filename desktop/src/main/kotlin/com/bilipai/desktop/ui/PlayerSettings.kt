@@ -52,7 +52,9 @@ fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: 
     val commentContext = LocalDesktopDetailedCommentTimeContext.current
     val commentScope = rememberCoroutineScope()
     val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current
+    val initialDraft = remember { preferences }
     var draft by remember { mutableStateOf(preferences) }
+    var hardwareDecodeDraftChanged by remember { mutableStateOf(false) }
     var newSpeed by remember { mutableStateOf("") }
     var speedError by remember { mutableStateOf<String?>(null) }
     AlertDialog(onDismissRequest = onDismiss, title = { Text("播放设置") }, text = {
@@ -67,7 +69,7 @@ fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: 
             PlayerSwitch("记住上次播放倍速", draft.rememberLastSpeed) { draft = draft.copy(rememberLastSpeed = it) }
             com.android.purebilibili.feature.settings.DesktopOriginalVideoAmbientSettingsContent()
             Column(Modifier.desktopSettingsSearchFocusAnchor(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.PLAYBACK_DECODER), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                PlayerSwitch("启用硬件解码", draft.hardwareDecodeEnabled) { draft = draft.copy(hardwareDecodeEnabled = it) }
+                PlayerSwitch("启用硬件解码", draft.hardwareDecodeEnabled) { hardwareDecodeDraftChanged = true; draft = draft.copy(hardwareDecodeEnabled = it) }
                 val codecOptions = listOf("avc1" to "AVC", "hev1" to "HEVC", "av01" to "AV1")
                 Text("首选视频编码", style = MaterialTheme.typography.titleSmall)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -130,10 +132,16 @@ fun PlaybackSettingsDialog(preferences: PlayerPreferences, onPreferencesChange: 
             }
             speedError?.let { Text(it, color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.bodySmall) }
             PlayerSwitch("仅播放音频", draft.audioOnly) { draft = draft.copy(audioOnly = it) }
-            TextButton(onClick = { draft = PlayerPreferences(danmaku = draft.danmaku) }) { Text("恢复播放默认设置") }
+            TextButton(onClick = { hardwareDecodeDraftChanged = true; draft = PlayerPreferences(danmaku = draft.danmaku) }) { Text("恢复播放默认设置") }
         }
     }, confirmButton = { Button(onClick = {
-        onPreferencesChange(resolvePlaybackSettingsDraftSave(draft, latestPreferences)); onDismiss()
+        val saved = resolvePlaybackSettingsDraftSave(draft, latestPreferences)
+        val speedIntent = draft.speed != initialDraft.speed || draft.defaultSpeed != initialDraft.defaultSpeed ||
+            draft.rememberLastSpeed != initialDraft.rememberLastSpeed || draft.speedOptions != initialDraft.speedOptions
+        onPreferencesChange(saved.copy(
+            speed = if (speedIntent) saved.speed else latestPreferences.speed,
+            hardwareDecodeEnabled = if (hardwareDecodeDraftChanged) draft.hardwareDecodeEnabled else latestPreferences.hardwareDecodeEnabled))
+        onDismiss()
     }) { Text("保存") } }, dismissButton = { TextButton(onClick = onDismiss) { Text("取消") } })
 }
 
