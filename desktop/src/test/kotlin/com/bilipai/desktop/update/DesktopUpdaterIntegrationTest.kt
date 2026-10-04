@@ -108,7 +108,11 @@ class DesktopUpdaterIntegrationTest {
                     assertFalse(Files.exists(activeFile), "Preparation must not register an installation")
                     assertTrue(healthyUpdater.activatePreparedUpdate(healthy))
                     val goodProcess = launched.last()
-                    assertTrue(goodProcess.isAlive)
+                    fun assertHealthyInstanceAlive(stage: String) {
+                        assertTrue(goodProcess.isAlive, "Healthy EXE exited $stage: pid=${goodProcess.pid()}, " +
+                            "exitCode=${runCatching { goodProcess.exitValue() }.getOrNull()}")
+                    }
+                    assertHealthyInstanceAlive("after activation")
                     val originalActive = Files.readAllBytes(activeFile)
                     val originalRecord = json.parseToJsonElement(originalActive.toString(Charsets.UTF_8)).jsonObject
                     assertEquals(healthyUpdate.version, originalRecord.getValue("version").jsonPrimitive.content)
@@ -130,7 +134,7 @@ class DesktopUpdaterIntegrationTest {
                     assertEquals(beforeHashProcesses, launched.size)
                     assertContentEquals(originalActive, Files.readAllBytes(activeFile))
                     assertEquals(beforeHashStages, ownedStages(updateRoot, config.repository))
-                    assertTrue(goodProcess.isAlive)
+                    assertHealthyInstanceAlive("after rejecting the wrong hash")
                     evidence["wrongHashRejected"] = JsonPrimitive(true)
 
                     // This failure fixture deliberately advertises a different version from its real resource.
@@ -164,7 +168,7 @@ class DesktopUpdaterIntegrationTest {
                     assertTrue(launched.size > beforeDamageProcesses, "The damaged fixture must reach actual EXE startup")
                     assertFalse(launched.last().isAlive)
                     assertContentEquals(originalActive, Files.readAllBytes(activeFile))
-                    assertTrue(goodProcess.isAlive)
+                    assertHealthyInstanceAlive("after rejecting damaged native startup")
                     evidence["damagedStartupRejected"] = buildJsonObject {
                         put("passed", true)
                         put("fixtureZipSha256", sha256(damagedZip))
@@ -216,7 +220,7 @@ class DesktopUpdaterIntegrationTest {
                     assertTrue(launched.size > beforeRootDamageProcesses, "The broken Root fixture must reach actual EXE startup")
                     assertFalse(launched.last().isAlive)
                     assertContentEquals(originalActive, Files.readAllBytes(activeFile))
-                    assertTrue(goodProcess.isAlive)
+                    assertHealthyInstanceAlive("after rejecting damaged Root startup")
                     val failedRootLaunches = launchDirectories(damagedRoot.stagingDirectory)
                     assertTrue(failedRootLaunches.isNotEmpty())
                     failedRootLaunches.forEach { directory ->
@@ -280,6 +284,13 @@ class DesktopUpdaterIntegrationTest {
             failure = error
             evidence["error"] = JsonPrimitive("${error.javaClass.simpleName}: ${error.message.orEmpty()}")
         } finally {
+            evidence["directProcessesBeforeCleanup"] = buildJsonArray {
+                launched.toList().forEach { process -> add(buildJsonObject {
+                    put("processId", process.pid())
+                    put("alive", process.isAlive)
+                    runCatching { process.exitValue() }.getOrNull()?.let { put("exitCode", it) }
+                }) }
+            }
             withContext(NonCancellable) {
                 launched.toList().asReversed().forEach { process ->
                     runCatching { StartupHealth.terminate(process) }.onFailure { if (failure == null) failure = it }
