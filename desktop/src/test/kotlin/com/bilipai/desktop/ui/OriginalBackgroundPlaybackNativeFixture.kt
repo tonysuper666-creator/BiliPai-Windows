@@ -105,6 +105,8 @@ object OriginalBackgroundPlaybackNativeFixture {
         } }
         val pip = PictureInPictureController(player, onRestore = {
             window.contentPane.add(player.surface); window.validate(); window.repaint()
+        }, onDetachSurface = {
+            window.contentPane.remove(player.surface); window.validate(); window.repaint()
         })
         val controller = edt { DesktopOriginalBackgroundPlaybackController(player) { live.get() && window.isDisplayable } }
         val store = DesktopPluginStore(report.resolve("private-settings")); val context = DesktopOriginalPlayerSettingsContext(

@@ -46,6 +46,8 @@ class PictureInPictureController(
     private val onPrevious: (() -> Unit)? = null,
     private val onNext: (() -> Unit)? = null,
     private val onSeekTo: ((Double) -> Unit)? = null,
+    /** Direct Swing hosts remove their slot here; Compose hosts observe active. */
+    private val onDetachSurface: (() -> Unit)? = null,
 ) : AutoCloseable {
     private val mutableActive = MutableStateFlow(false)
     val active: StateFlow<Boolean> = mutableActive.asStateFlow()
@@ -53,6 +55,15 @@ class PictureInPictureController(
     val error: StateFlow<String?> = mutableError.asStateFlow()
     private var frame: JFrame? = null
     private var timer: Timer? = null
+    private var handoffTimer: Timer? = null
+    private var handoff: DesktopNativePresentationTransfer? = null
+    private var returning = false
+    private var restoreRequested = false
+    private var notifyRestore = true
+    private var peerRemovalRequested = false
+    private var nativeRelease: (() -> Boolean)? = null
+    private var handoffStartedNanos = 0L
+    private var surfaceHoverListener: MouseAdapter? = null
     private var title = "BiliPai"
     private var hover = false
     private var resizing = false
@@ -68,18 +79,15 @@ class PictureInPictureController(
         this.owner = owner
         this.title = title
         mutableError.value = null
-        val existing = frame
-        if (existing != null) { existing.title = title; existing.toFront(); return@onUi }
-        mutableActive.value = true
-        // Compose observes the ownership change before the next AWT event mounts the surface.
-        SwingUtilities.invokeLater {
-            if (!mutableActive.value || frame != null) return@invokeLater
-            try { mount(owner) } catch (failure: Throwable) {
-                unmount()
-                mutableError.value = failure.message ?: "浮窗播放器未能初始化"
-                onRestore()
-            }
+        frame?.let { it.title = title; it.toFront(); return@onUi }
+        if (handoffTimer != null) return@onUi
+        val source = player.currentSourceSnapshot()
+        val transfer = source?.let(player::beginPresentationTransfer)
+        if (transfer == null) {
+            mutableError.value = "视频尚未就绪，暂时不能打开浮窗"
+            return@onUi
         }
+        beginHandoff(transfer, toMain = false, notify = true)
     }
 
     fun updateTitle(title: String) = onUi { this.title = title; frame?.title = title }
@@ -90,23 +98,150 @@ class PictureInPictureController(
         previousButton?.isEnabled = hasPrevious; nextButton?.isEnabled = hasNext
     }
 
-    fun restore() = onUi {
-        unmount()
-        onRestore()
-        owner?.let { it.toFront(); it.requestFocus() }
+    fun restore() = onUi { requestReturn(notify = true) }
+
+    override fun close() = onUi { requestReturn(notify = false) }
+
+    private fun requestReturn(notify: Boolean) {
+        if (handoffTimer != null) {
+            restoreRequested = true
+            notifyRestore = notify
+            return
+        }
+        if (frame == null) return
+        val transfer = player.currentSourceSnapshot()?.let(player::beginPresentationTransfer)
+        if (transfer != null) beginHandoff(transfer, toMain = true, notify = notify)
+        else {
+            // An ended, failed or retired source still needs a real worker-release
+            // confirmation before the floating HWND can be disposed.
+            nativeRelease = player.releasePresentationForDisposal()
+            returning = true; notifyRestore = notify
+            startHandoffTimer()
+        }
     }
 
-    override fun close() = onUi { unmount() }
+    private fun beginHandoff(transfer: DesktopNativePresentationTransfer, toMain: Boolean, notify: Boolean) {
+        handoff = transfer
+        returning = toMain
+        restoreRequested = false
+        notifyRestore = notify
+        peerRemovalRequested = false
+        nativeRelease = null
+        startHandoffTimer()
+    }
 
-    private fun unmount() {
+    private fun startHandoffTimer() {
+        handoffStartedNanos = System.nanoTime()
+        handoffTimer = Timer(25) { advanceHandoff() }.apply { start() }
+    }
+
+    private fun advanceHandoff() {
+        if (System.nanoTime() - handoffStartedNanos > 15_000_000_000L)
+            mutableError.value = "原生播放器仍在释放窗口，浮窗切换尚未完成"
+        nativeRelease?.let { released ->
+            if (!released()) return
+            nativeRelease = null
+            unmountWindow()
+            mutableActive.value = false
+            player.resumeCurrentPresentationPeer()
+            finishHandoff(restored = notifyRestore)
+            return
+        }
+        val transfer = handoff ?: return
+        if (!player.isPresentationTransferCurrent(transfer)) {
+            if (transfer.cancelledFloatingPeerNeedsDisposal(frame != null, returning, restoreRequested)) {
+                // addNotify may have created the new HWND before old-source
+                // admission rejected attach. Drain any worker, then remove that
+                // actual floating peer instead of waiting for it to disappear.
+                nativeRelease = player.releasePresentationForDisposal()
+                handoff = null
+                return
+            }
+            // A fresh source which has already started on the new peer keeps
+            // that peer. Only the old pre-attach worker must finish draining.
+            if (!transfer.hasAttachedPeer && transfer.resume != null && !player.presentationWorkerReleased(transfer)) return
+            if (!transfer.hasAttachedPeer && transfer.resume != null && peerRemovalRequested &&
+                !player.wasPresentationPeerReleased(transfer)) return
+            player.retirePresentationTransfer(transfer)
+            if (!transfer.hasAttachedPeer && transfer.resume != null) {
+                if (peerRemovalRequested) mutableActive.value = false
+                else player.resumeCurrentPresentationPeer()
+            }
+            mutableError.value = "播放来源已改变，浮窗切换已取消"
+            finishHandoff(restored = returning && frame == null && notifyRestore)
+            return
+        }
+        when (transfer.phase) {
+            DesktopNativePresentationTransfer.Phase.REQUESTED -> Unit
+            DesktopNativePresentationTransfer.Phase.CAPTURED -> {
+                if (!player.presentationWorkerReleased(transfer)) return
+                if (returning) {
+                    unmountWindow() // removeNotify confirms release of the old peer.
+                    mutableActive.value = false
+                    finishHandoff(restored = notifyRestore)
+                } else if (restoreRequested && !peerRemovalRequested) {
+                    if (player.resumePresentationInCurrentPeer(transfer)) {
+                        // Retain the handoff until the real resumed frame/pause ACK.
+                        returning = true
+                    }
+                } else if (!peerRemovalRequested) {
+                    peerRemovalRequested = true
+                    mutableActive.value = true // Root now removes its native peer.
+                    try { onDetachSurface?.invoke() } catch (_: Throwable) {
+                        nativeRelease = player.releasePresentationForDisposal()
+                        notifyRestore = true
+                        mutableError.value = "主播放器未能释放浮窗表面"
+                    }
+                }
+            }
+            DesktopNativePresentationTransfer.Phase.PEER_RELEASED -> {
+                if (!player.presentationPeerReleased(transfer)) return
+                if (returning || restoreRequested) {
+                    mutableActive.value = false
+                    finishHandoff(restored = notifyRestore)
+                } else {
+                    try {
+                        val parent = owner?.takeIf { it.isDisplayable }
+                            ?: error("主播放器窗口已关闭")
+                        mount(parent)
+                    } catch (_: Throwable) {
+                        // Do not destroy a newly attached HWND while its worker
+                        // might still be initializing. Use the same release fence.
+                        nativeRelease = player.releasePresentationForDisposal()
+                        notifyRestore = true
+                        mutableError.value = "浮窗播放器未能初始化"
+                    }
+                }
+            }
+            DesktopNativePresentationTransfer.Phase.ATTACHED -> Unit
+            DesktopNativePresentationTransfer.Phase.ACKNOWLEDGED -> {
+                val returnAfterAttach = restoreRequested && frame != null
+                val restored = returning && frame == null && notifyRestore
+                finishHandoff(restored)
+                if (returnAfterAttach) requestReturn(notifyRestore)
+            }
+            DesktopNativePresentationTransfer.Phase.RETIRED -> Unit
+        }
+    }
+
+    private fun finishHandoff(restored: Boolean) {
+        handoffTimer?.stop(); handoffTimer = null
+        handoff = null; nativeRelease = null
+        if (restored) {
+            onRestore()
+            owner?.let { it.toFront(); it.requestFocus() }
+        }
+    }
+
+    private fun unmountWindow() {
         timer?.stop(); timer = null
+        surfaceHoverListener?.let(player.surface::removeMouseListener); surfaceHoverListener = null
         frame?.let { window ->
             window.contentPane.remove(player.surface)
             window.dispose()
         }
         frame = null
         previousButton = null; nextButton = null
-        mutableActive.value = false
     }
 
     private fun mount(owner: Window) {
@@ -165,6 +300,7 @@ class PictureInPictureController(
             override fun mouseEntered(e: MouseEvent) { hover = true; progress.repaint() }
             override fun mouseExited(e: MouseEvent) { hover = false; progress.repaint() }
         }
+        surfaceHoverListener = hoverListener
         listOf(header, label, controls, progress, player.surface).forEach { it.addMouseListener(hoverListener) }
         val drag = object : MouseAdapter() {
             private var start: Point? = null

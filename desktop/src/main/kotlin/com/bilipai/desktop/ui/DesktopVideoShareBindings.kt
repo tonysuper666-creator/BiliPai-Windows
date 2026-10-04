@@ -28,19 +28,39 @@ internal class DesktopVideoShareBindings(
     private val nativeAvailable: () -> Boolean,
     private val windowWidthDp: () -> Int,
     private val windowHeightDp: () -> Int,
+    private val presentationAdmission: ((() -> Unit) -> Boolean)? = null,
+    private val nativeHandoffOwner: (() -> Boolean)? = null,
 ) {
+    /** Borrow all existing Root effects; only add the popup's exact source lifetime. */
+    fun forPresentation(owns: () -> Boolean, admit: ((() -> Unit) -> Boolean),
+        handoffOwned: () -> Boolean): DesktopVideoShareBindings =
+        DesktopVideoShareBindings(operations, following, sendText, files, mid,
+            { isOwned() && owns() }, copy, feedback, textShare, mediaShare, chooseSave,
+            nativeAvailable, windowWidthDp, windowHeightDp, admit, { isOwned() && handoffOwned() })
+
+    fun withAdmission(action: () -> Unit): Boolean {
+        if (!isOwned()) return false
+        var applied = false
+        val publish = { if (isOwned()) { action(); applied = true }; Unit }
+        val gate = presentationAdmission
+        return (if (gate == null) { publish(); applied } else gate(publish)) && applied
+    }
+
+    private fun acceptEffect() {
+        if (!withAdmission {}) throw CancellationException("视频分享来源已退役")
+    }
     fun isOwned() = owner() && operations.isOwned()
     private suspend fun checkOwned() { currentCoroutineContext().ensureActive();if(!isOwned())throw CancellationException("视频分享页面已退役") }
     val screenHeightDp: Int get() = windowHeightDp().also { require(it > 0) }
     val isLandscape: Boolean get() = windowWidthDp().also { require(it > 0) } > screenHeightDp
     fun currentMid(): Long? { if(!isOwned())throw CancellationException("分享账号已退役");return mid() }
-    fun showFeedback(message: String) { if(isOwned())feedback(message) }
-    fun copyText(text:String) { if(!isOwned())throw CancellationException("分享页面已退役");copy(text) }
+    fun showFeedback(message: String) { withAdmission { feedback(message) } }
+    fun copyText(text:String) { acceptEffect();if(!isOwned())throw CancellationException("分享页面已退役");copy(text) }
     suspend fun getFollowings(mid:Long,page:Int,pageSize:Int):FollowingsResponse {
         checkOwned();return following.getFollowings(mid,page,pageSize).also {checkOwned()}
     }
     suspend fun sendTextMessage(receiverId:Long,content:String):Result<SendMessageData> {
-        checkOwned();return sendText(receiverId,content).also {checkOwned()}
+        checkOwned();acceptEffect();return sendText(receiverId,content).also {checkOwned()}
     }
     fun availableTargets(mimeType:String):List<VideoShareAppTarget> {
         if(!isOwned())return emptyList()
@@ -60,15 +80,19 @@ internal class DesktopVideoShareBindings(
                     checkOwned()
                     if(card == null) {showFeedback("卡片生成失败，未保存");return}
                     val destination=chooseSave(resolveVideoShareCardFileName(payload),card.mimeType) ?: return
-                    checkOwned();files.save(card,destination);checkOwned();files.retire(card,true);showFeedback("分享卡片已保存")
+                    checkOwned();acceptEffect();files.save(card,destination,::withAdmission);checkOwned();files.retire(card,true);showFeedback("分享卡片已保存")
                 }
                 VideoShareTarget.SYSTEM_SHARE,VideoShareTarget.MORE -> {
                     if(!nativeAvailable()) {showFeedback("Windows 系统分享暂不可用，可复制链接或保存卡片");return}
-                    val shown=if(media == null)textShare.share(resolveVideoShareChooserTitle(payload),payload.text,::isOwned)
-                    else {
-                        files.mayExpose(media)
-                        try { mediaShare(media.path,resolveVideoShareChooserTitle(payload),payload.url,::isOwned) { safe -> files.retire(media,safe) } }
-                        catch(failure:Throwable) { /* possibly supplied file is conservatively retained */ throw failure }
+                    acceptEffect()
+                    val handoff = DesktopWindowsNativeShareHandoff(::isOwned, nativeHandoffOwner ?: ::isOwned, ::withAdmission)
+                    val shown = handoff.open { nativeOwned ->
+                        if(media == null)textShare.share(resolveVideoShareChooserTitle(payload),payload.text,nativeOwned)
+                        else {
+                            files.mayExpose(media)
+                            try { mediaShare(media.path,resolveVideoShareChooserTitle(payload),payload.url,nativeOwned) { safe -> files.retire(media,safe) } }
+                            catch(failure:Throwable) { /* possibly supplied file is conservatively retained */ throw failure }
+                        }
                     }
                     checkOwned();if(!shown)showFeedback("系统分享面板未打开，未确认发送")
                 }

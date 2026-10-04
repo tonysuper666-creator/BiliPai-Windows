@@ -1257,6 +1257,7 @@ val extractSharedLiquidTabs by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/shared-liquid-tabs").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-shared-liquid-tabs.py", "tools/sync-upstream.py")
+    inputs.dir("upstream-slices/v027-liquid-glass-lens")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-shared-liquid-tabs" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })

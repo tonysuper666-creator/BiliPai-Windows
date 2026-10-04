@@ -11,6 +11,81 @@ def wide(p):
  s=os.path.abspath(p);prefix=chr(92)*2+'?'+chr(92)
  return Path(s if s.startswith(prefix) else prefix+s) if os.name=='nt' else Path(s)
 def sha(t):return hashlib.sha256(t.encode()).hexdigest()
+
+def composer_source_lifetime_delta(path, body, audit_edits=None):
+ if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body
+ original=body
+ edits=[(
+  '    private var wasPlayingBeforeDanmakuComposer = false\n',
+  '''    private var wasPlayingBeforeDanmakuComposer = false
+    private val desktopDanmakuComposerLifetime = com.bilipai.desktop.ui.DesktopWindowsDanmakuComposerLifetime<
+        com.bilipai.desktop.ui.DesktopWindowsDanmakuComposerSource,
+        com.bilipai.desktop.player.DesktopBackgroundPlaybackPauseToken>(
+        captureSource = { exoPlayer?.nativePlayer?.let { player ->
+            player.currentSourceSnapshot()?.let { com.bilipai.desktop.ui.DesktopWindowsDanmakuComposerSource(player, it) }
+        } },
+        pause = { it.player.pauseForBackground(it.snapshot) },
+        resume = { it.player.resumeAfterBackground(it) },
+        sameSource = { first, second -> com.bilipai.desktop.ui.desktopWindowsDanmakuComposerSourceMatches(first, second) },
+    )
+
+    internal fun captureDesktopDanmakuComposerStamp(): Any? = desktopDanmakuComposerLifetime.stamp()
+    internal fun retireDesktopDanmakuComposer(expected: Any) {
+        if (desktopDanmakuComposerLifetime.retire(expected)) {
+            // Disposal may follow actual account/entry retirement. Its bounded
+            // cleanup cannot turn that expected rejection into a Compose failure.
+            environment.commit {
+                _showDanmakuDialog.value = false
+                wasPlayingBeforeDanmakuComposer = false
+            }
+        }
+    }
+'''),(
+  '''        wasPlayingBeforeDanmakuComposer = exoPlayer?.isPlaying == true
+        if (wasPlayingBeforeDanmakuComposer) {
+            exoPlayer?.pause()
+        }
+''',
+  '''        wasPlayingBeforeDanmakuComposer = exoPlayer?.isPlaying == true
+        desktopDanmakuComposerLifetime.open(wasPlayingBeforeDanmakuComposer)
+'''),(
+  '''        _showDanmakuDialog.value = false
+        if (wasPlayingBeforeDanmakuComposer) {
+            wasPlayingBeforeDanmakuComposer = false
+            exoPlayer?.play()
+        }
+''',
+  '''        _showDanmakuDialog.value = false
+        wasPlayingBeforeDanmakuComposer = false
+        desktopDanmakuComposerLifetime.dismiss()
+'''),(
+  '        val clickedNativeSource = exoPlayer?.nativePlayer?.currentSourceSnapshot() ?: return\n',
+  '''        val clickedNativeSource = exoPlayer?.nativePlayer?.currentSourceSnapshot() ?: return
+        val clickedComposerStamp = desktopDanmakuComposerLifetime.stamp()
+'''),(
+  '''                    hideDanmakuSendDialog()
+                    _composerDrafts.update {
+                        it.copy(danmaku = DanmakuComposerDraft())
+                    }
+''',
+  '''                    desktopDanmakuComposerLifetime.completeSubmission(clickedComposerStamp) {
+                        hideDanmakuSendDialog()
+                        _composerDrafts.update {
+                            it.copy(danmaku = DanmakuComposerDraft())
+                        }
+                    }
+''')]
+ for before,after in edits:
+  assert body.count(before)==1, 'original danmaku composer lifetime anchor'
+  body=body.replace(before,after,1)
+ inverse=body
+ for before,after in reversed(edits):
+  assert inverse.count(after)==1
+  inverse=inverse.replace(after,before,1)
+ assert inverse==original, 'complete original composer lifetime inverse'
+ if audit_edits is not None:audit_edits.extend(edits)
+ return body
+
 def retained_handoff_platform_delta(path, body):
  if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body
  before='                                 if (!p.isPlaying) p.play()\n'
@@ -517,6 +592,7 @@ def generate(repo,output,standalone=False):
   body=bangumi_shared_owner_delta(recipe['output'],body)
   body=owned_chapter_result_delta(recipe['output'],body)
   body=owned_bgm_result_delta(recipe['output'],body)
+  body=composer_source_lifetime_delta(recipe['output'],body)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)

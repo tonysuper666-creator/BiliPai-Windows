@@ -10,6 +10,9 @@ internal class DesktopOriginalHomeOverlayBindings(
     private val consent:DesktopCrashConsentBindings,
     private val owned:()->Boolean,
 ) : DesktopHomeOverlayPorts {
+    fun shareForPresentation(owns: () -> Boolean, admit: ((() -> Unit) -> Boolean),
+        handoffOwned: () -> Boolean): DesktopVideoShareBindings =
+        share.forPresentation({ owned() && owns() }, admit, { owned() && handoffOwned() })
     @Composable override fun VideoShareSheetHost(payload:VideoSharePayload?,onDismiss:()->Unit) {
         if(owned())CompositionLocalProvider(LocalDesktopVideoShareBindings provides share) {
             com.android.purebilibili.feature.video.share.VideoShareSheetHost(payload,onDismiss={if(owned())onDismiss()})

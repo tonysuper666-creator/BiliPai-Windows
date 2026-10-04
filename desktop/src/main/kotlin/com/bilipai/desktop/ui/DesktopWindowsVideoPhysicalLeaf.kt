@@ -60,6 +60,7 @@ internal class DesktopWindowsVideoActions(
     val nativeKey: (androidx.compose.ui.input.key.KeyEvent) -> Boolean,
     val collectionQueue: @Composable (DesktopWindowsVideoCollectionQueuePresentation) -> Unit,
     val bgm: @Composable (DesktopWindowsVideoBgmPresentation) -> Unit,
+    val interaction: @Composable (DesktopWindowsVideoInteractionPresentation) -> Unit,
 )
 
 /** Windows renderer over the installed original VM/owner/MPV. Native peer stays in Root; this leaf reports its viewport only. */
@@ -152,11 +153,18 @@ internal class DesktopWindowsVideoActions(
     }
     var showCollection by remember(assembly, collectionQueueSource) { mutableStateOf(false) }
     var showPlaybackQueue by remember(assembly, collectionQueueSource) { mutableStateOf(false) }
+    var interactionMode by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoInteraction?>(null) }
     fun collectionQueueCurrent(): Boolean = current() && collectionQueueSource != null &&
         assembly.native.isCurrent(collectionQueueSource) && assembly.playback.captureDesktopPlaybackState().let {
             it is VideoPlaybackUiState.Success && it.info.bvid == collectionQueueSource.request.bvid &&
                 it.info.cid == collectionQueueSource.request.cid
         }
+    fun interactionCurrent(): Boolean = collectionQueueCurrent() && rootEnvironment.currentKey() === route
+    fun openInteraction(mode: DesktopWindowsVideoInteraction) { if (interactionCurrent()) interactionMode = mode }
+    val aiSummaryEntryEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoContentSettings
+        .getVideoAiSummaryEntryEnabled(platforms.holder.settingsContext).collectAsState(true)
+    val videoNoteEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoContentSettings
+        .getVideoNoteEnabled(platforms.holder.settingsContext).collectAsState(true)
     val bgmResult by assembly.playback.desktopBgmResult.collectAsState(null)
     val canOpenCollection = success?.info?.ugc_season != null && collectionQueueSource != null
     val canOpenPlaybackQueue = collectionQueueSource != null && playlistItems.isNotEmpty()
@@ -355,6 +363,9 @@ internal class DesktopWindowsVideoActions(
                     canOpenCollection = canOpenCollection, canOpenPlaybackQueue = canOpenPlaybackQueue,
                     onOpenCollection = { if (collectionQueueCurrent()) { showPlaybackQueue = false; showCollection = true } },
                     onOpenPlaybackQueue = { if (collectionQueueCurrent()) { showCollection = false; showPlaybackQueue = true } },
+                    canOpenInteraction = interactionCurrent(),
+                    onSendDanmaku = { openInteraction(DesktopWindowsVideoInteraction.DANMAKU) },
+                    onShareVideo = { openInteraction(DesktopWindowsVideoInteraction.SHARE) },
                     chapters = chapters, chaptersSource = chaptersSource, onChapterSeek = ::seekChapter,
                     onPlayPause = { command { native.togglePause() } },
                     onPrevious = { if (current()) shell.playback.previous() }, onNext = { if (current()) shell.playback.next() },
@@ -396,6 +407,12 @@ internal class DesktopWindowsVideoActions(
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.toggleWatchLater() }) { Text("稍后再看") }
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.openCoinDialog() }) { Text("投币") }
                                 TextButton(onClick = { if (current()) actions.download(assembly, success) }) { Text("下载当前画质") }
+                                TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.SHARE) }, enabled = interactionCurrent()) { Text("分享视频") }
+                            }
+                            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.DANMAKU) }, enabled = interactionCurrent()) { Text("发送弹幕") }
+                                if (aiSummaryEntryEnabled) TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.AI_SUMMARY) }, enabled = interactionCurrent()) { Text("AI 总结") }
+                                if (videoNoteEnabled) TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.NOTES) }, enabled = interactionCurrent()) { Text("视频笔记") }
                             }
                             collectionQueueSource?.let { source ->
                                 bgmResult?.takeIf { desktopWindowsVideoBgmMatchesSource(it,
@@ -459,6 +476,11 @@ internal class DesktopWindowsVideoActions(
                 },
             )
         }
+    }
+
+    interactionMode?.takeIf { interactionCurrent() }?.let { mode ->
+        actions.interaction(DesktopWindowsVideoInteractionPresentation(assembly,
+            checkNotNull(collectionQueueSource), mode, ::interactionCurrent, { interactionMode = null }))
     }
 
     if (success != null && collectionQueueSource != null && collectionQueueCurrent() &&

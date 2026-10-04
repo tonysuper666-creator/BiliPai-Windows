@@ -241,6 +241,10 @@ object DesktopOriginalVideoControlSettings {
   t=read(rel).replace('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.DesktopHomeCardWindowMetrics as LocalConfiguration')
   t=t.replace('import android.content.res.Configuration\n','').replace('Configuration.ORIENTATION_LANDSCAPE','2').replace('configuration.orientation','(if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1)')
   t=re.sub(r'(?m)^\s*decorFitsSystemWindows = false,?\s*\n','',t)
+  if rel=='feature/video/ui/components/DanmakuSendDialog.kt':
+   t=adapt(t, 'import androidx.compose.ui.window.Dialog\n',
+       'import com.bilipai.desktop.ui.DesktopWindowsVideoInteractionDialog as Dialog\n',
+       'Whole original composer uses opt-in owned Windows native container')
   emit(rel,t,rel,'complete-original-sheet-input-color-ui-window-config-adapt')
  rel='core/ui/performance/PanelFrameRateOverridePolicy.kt';t=read(rel)
  imports='''package com.android.purebilibili.core.ui.performance

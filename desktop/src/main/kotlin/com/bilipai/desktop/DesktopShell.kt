@@ -795,7 +795,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             }
         }
     }
-    fun changePreferencesIntent(next: PlayerPreferences, forceSpeed: Boolean = false) {
+    fun changePreferencesIntent(next: PlayerPreferences, forceSpeed: Boolean = false, forceMute: Boolean = false) {
         val previous = preferences
         val hardwareIntent = next.hardwareDecodeEnabled != previous.hardwareDecodeEnabled
         val speedIntent = forceSpeed || next.normalized().speed != previous.normalized().speed
@@ -818,6 +818,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             hardwareDecodeEnabled = originalHardwareDecodePreferences.current(legacyHardwareDecodeFallback)).normalized()
         val nativeChanges = com.bilipai.desktop.player.DesktopLegacyPlaybackPreferenceChanges.between(previous, preferences)
             .let { if (forceSpeed) it.copy(speed = true) else it }
+            .let { if (forceMute) it.copy(muted = true) else it }
         player?.applyLegacyPreferenceChanges(nativeChanges, preferences)
         listen?.updatePreferences(preferences)
         danmaku?.applySettings(latestRendererDanmakuSettings)
@@ -1307,7 +1308,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             is PlayerKeyAction.SeekPercent -> { playback.seekTo(snapshot.durationSeconds * action.fraction); true }
             PlayerKeyAction.VolumeUp -> { changePreferences(preferences.copy(volume = snapshot.volume + 5)); true }
             PlayerKeyAction.VolumeDown -> { changePreferences(preferences.copy(volume = snapshot.volume - 5)); true }
-            PlayerKeyAction.ToggleMute -> { changePreferences(preferences.copy(muted = !snapshot.muted)); true }
+            PlayerKeyAction.ToggleMute -> { changePreferencesIntent(preferences.copy(muted = !snapshot.muted), forceMute = true); true }
             PlayerKeyAction.ToggleFullscreen -> { toggleOriginalFullscreen(); true }
             PlayerKeyAction.ToggleDanmaku -> { toggleOriginalDanmaku(); true }
             PlayerKeyAction.PreviousPart -> { playback.previous(); true }
@@ -1768,6 +1769,34 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                     // Browser dispatch is outside the BGM final publication monitor.
                                                     desktopOriginalOpenMessageLink(raw,commands,entryKey.toLegacyRoute())
                                                 } })
+                                        },
+                                        interaction = { presentation ->
+                                            val windowEnvironment = LocalDesktopOriginalVideoRootWindowEnvironment.current
+                                            val overlays = windowEnvironment.root.environment.overlays as DesktopOriginalHomeOverlayBindings
+                                            fun ownedInteraction() = !isClosing() && !activatingUpdate && active && hostVisible && hostDisplayable &&
+                                                messageRoutes.currentKey === entryKey && ordinaryVideo.slot.currentAssembly() === presentation.assembly &&
+                                                presentation.stillOwned() && ordinaryVideo.factoryFor(presentation.assembly)
+                                                    .isPresentationCurrent(presentation.assembly, presentation.sourceOwner)
+                                            // After a real system chooser opens, normal sheet disposal does
+                                            // not revoke it. The same captured Root/account/full source does.
+                                            fun ownedShareSource() = !isClosing() && !activatingUpdate &&
+                                                ordinaryVideo.slot.currentAssembly() === presentation.assembly &&
+                                                presentation.assembly.native.isCurrent(presentation.sourceOwner) &&
+                                                ordinaryVideo.factoryFor(presentation.assembly)
+                                                    .isPresentationCurrent(presentation.assembly, presentation.sourceOwner)
+                                            DesktopWindowsVideoInteractionSection(presentation,
+                                                LocalDesktopOriginalVideoRootPlatforms.current!!.holder.settingsContext,
+                                                { action -> ownedInteraction() && ordinaryVideo.factoryFor(presentation.assembly)
+                                                    .withPresentationAdmission(presentation.assembly, presentation.sourceOwner, action) },
+                                                overlays::shareForPresentation,
+                                                nativeHandoffOwned = ::ownedShareSource,
+                                                openLink = { url -> if (ownedInteraction())
+                                                    desktopOriginalOpenMessageLink(url, commands, entryKey.toLegacyRoute()) },
+                                                shareText = { title, text, handoff ->
+                                                    if (ownedInteraction() && handoff.isOwned()) requestDesktopTextShare(
+                                                        DesktopTextShareBindings { actualTitle, actualText, _ ->
+                                                            handoff.open { owned -> rootTextShareBindings.share(actualTitle, actualText, owned) }
+                                                        }, scope, title, text, handoff::isOwned, { error = it }) })
                                         },
                                         enhancement = { DesktopVideoEnhancementControls(enhancementState, pluginRuntime.enhancementConfiguration,
                                             onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) }, onSettings = { enhancementSettings = true }) },

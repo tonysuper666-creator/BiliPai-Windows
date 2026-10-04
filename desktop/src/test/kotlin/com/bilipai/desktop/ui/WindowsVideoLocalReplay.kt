@@ -43,7 +43,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private val collectionInput = System.getProperty("bilipai.validation.collectionInput") == "true"
     private val metadataInput = System.getProperty("bilipai.validation.metadataInput") == "true"
     private val bgmInput = System.getProperty("bilipai.validation.bgmInput") == "true"
-    private val mediaSeconds = if (bgmInput) 180 else SECONDS
+    private val originalInteractionInput = System.getProperty("bilipai.validation.originalInteractionInput") == "true"
+    private val mediaSeconds = if (System.getProperty("bilipai.validation.pipInput") == "true") 300 else if (bgmInput) 180 else SECONDS
     private val secondCid = 7008L
     private val base: String get() = "http://127.0.0.1:${server.address.port}"
     private var installed = false
@@ -127,7 +128,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             if (metadataInput) require(path != "/x/relation/modify") {
                 "Creator metadata layout replay must not submit follow mutations"
             }
-            if (bgmInput) require(request.method == "GET") {
+            if (bgmInput || originalInteractionInput) require(request.method == "GET") {
                 "BGM guest replay must not submit any account mutation"
             }
             val body = when (path) {
@@ -205,6 +206,18 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                             put("play", 42); put("danmu", 0); put("duration", mediaSeconds); put("label", ""); put("label_list", JsonArray(emptyList())) })
                     }) }) }.toString()
                 } else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
+                "/x/web-interface/view/conclusion/get" -> if (originalInteractionInput) {
+                    require(url.queryParameter("bvid") == bvid && url.queryParameter("cid")?.toLongOrNull() in setOf(cid, secondCid))
+                    """{"code":0,"data":{"code":0,"model_result":{"result_type":2,"summary":"本地合成总结","outline":[{"title":"本地章节","timestamp":20,"part_outline":[{"timestamp":20,"content":"本地要点"}]}]}}}"""
+                } else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
+                "/x/note/is_forbid" -> if (originalInteractionInput) {
+                    require(url.queryParameter("aid")?.toLongOrNull() == aid)
+                    """{"code":0,"data":{"forbid_note_entrance":false}}"""
+                } else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
+                "/x/note/publish/list/archive" -> if (originalInteractionInput) {
+                    require(url.queryParameter("oid")?.toLongOrNull() == aid && url.queryParameter("oid_type") == "0")
+                    """{"code":0,"data":{"list":[],"page":{"total":0,"size":10,"num":1},"show_public_note":true}}"""
+                } else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
                 "/x/player/videoshot" -> """{"code":0,"data":{"index":[],"image":[]}}"""
                 "/x/web-interface/archive/related", "/x/tag/archive/tags" -> """{"code":0,"data":[]}"""
                 "/x/v2/reply/wbi/main", "/x/v2/reply/main" -> """{"code":0,"data":{"replies":[],"top_replies":[],"cursor":{"is_begin":true,"is_end":true,"all_count":0,"next":0,"prev":0},"page":{"count":0,"num":1,"size":20}}}"""
@@ -247,6 +260,11 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                 it["bgmCid"]?.jsonPrimitive?.longOrNull == cid } >= 2) { "BGM P1 must be reloaded after P2 through the original collection" }
             require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" })
         }
+        if (originalInteractionInput) {
+            for (path in listOf("/x/web-interface/view/conclusion/get", "/x/note/is_forbid", "/x/note/publish/list/archive"))
+                require(requests.any { it["path"]?.jsonPrimitive?.content == path && it["mapped"]?.jsonPrimitive?.booleanOrNull == true })
+            require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" })
+        }
         Files.writeString(report.resolve("local-replay-receipt.json"), buildJsonObject {
             put("schema", 1); put("mode", "LOCAL_API_SHAPE_REAL_LOOPBACK_MEDIA_ACTUAL_MAIN_LAYOUT_ONLY")
             put("sameActualRepository", true); put("realBilibiliDataAccepted", false); put("realAccountUsed", false)
@@ -260,6 +278,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("videoMetadataIsSynthetic", metadataInput)
             put("bgmMetadataIsSynthetic", bgmInput); put("bgmDetailAndRecommendResponsesAreSynthetic", bgmInput)
             put("singleBgmDetailOnlyScope", bgmInput)
+            put("originalInteractionMetadataIsSynthetic", originalInteractionInput)
+            put("originalInteractionRemoteMutationSubmitted", false)
             put("singleBgmRecommendationRequested", requests.any { it["bgmStage"]?.jsonPrimitive?.content == "recommend" &&
                 it["musicId"]?.jsonPrimitive?.content == "fixture-p1" })
             put("bgmAccountMutationSubmitted", false); put("commentsSent", false)

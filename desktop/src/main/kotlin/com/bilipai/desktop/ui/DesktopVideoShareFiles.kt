@@ -99,7 +99,8 @@ internal class DesktopVideoShareFiles(
         if(safe)Files.deleteIfExists(file.path)
     }
     private fun verify(file:VideoShareCoverFile) {require(file.path.toAbsolutePath().normalize().parent==root);UpdateStorage.existingPathWithoutLinks(file.path)}
-    suspend fun save(file:VideoShareCoverFile,target:Path) = withContext(Dispatchers.IO) {
+    suspend fun save(file:VideoShareCoverFile,target:Path,
+        finalAdmission: ((() -> Unit) -> Boolean)? = null) = withContext(Dispatchers.IO) {
         checkpoint();verify(file)
         val absolute=target.toAbsolutePath().normalize();val parent=requireNotNull(absolute.parent)
         UpdateStorage.existingPathWithoutLinks(parent)
@@ -112,7 +113,15 @@ internal class DesktopVideoShareFiles(
             }}
             checkpoint()
             val callerJob=currentCoroutineContext()[Job]
-            if(!commit {callerJob?.ensureActive();checkOwner();Files.move(temp,absolute)})throw CancellationException("分享保存已退役")
+            // Copying remains outside publication. Video's optional source gate
+            // is OUTSIDE the retained Root commit, preserving source -> Home entry
+            // order already used by source-owned feedback. Legacy callers are unchanged.
+            val publish = {
+                if(!commit {callerJob?.ensureActive();checkOwner();Files.move(temp,absolute)})
+                    throw CancellationException("分享保存已退役")
+            }
+            if (finalAdmission == null) publish()
+            else if (!finalAdmission(publish)) throw CancellationException("分享保存来源已退役")
         } finally {Files.deleteIfExists(temp)}
     }
     /** Same pool, ordinary validated files only; never counts unknown files as reclaimable. */

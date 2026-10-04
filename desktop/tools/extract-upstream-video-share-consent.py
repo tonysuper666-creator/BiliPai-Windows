@@ -16,6 +16,73 @@ def read(p):return safe(p).read_text(encoding='utf-8-sig').replace('\r\n','\n')
 def sha(s):return hashlib.sha256(s.encode()).hexdigest()
 def inventory(repo):
  return [dict(path=p,mode='policy-extract',features=['video-share-original-windows'],sha256=h) for p,h in SOURCE_PINS.items() if any(p.endswith('/'+name+'.kt') for name in ['VideoShareSheet','VideoSharePolicy','VideoShareSheetMotion','VideoShareToFollowingDialog','VideoShareMoreTargetsSheet','VideoShareCoverService','VideoShareCardService','CrashTrackingConsentDialog','MessageRepository'])]
+
+def share_presentation_delta(target,body,audit_edits=None):
+ """Whole original UI, with only native container and final UI publication ports.
+ Legacy Home bindings retain their existing gate; Video adds its required lease.
+ Network, file, clipboard and native system I/O never run inside these blocks.
+ """
+ if not any(target.endswith('/'+name+'.kt') for name in ('VideoShareSheet','VideoShareToFollowingDialog','VideoShareMoreTargetsSheet')):return body,0
+ original=body;edits=[]
+ def change(before,after,count=1):
+  nonlocal body
+  assert body.count(before)==count,(target,'share presentation anchor',before,body.count(before))
+  body=body.replace(before,after,count);edits.append((before,after,count))
+ change('import com.android.purebilibili.core.ui.AppModalBottomSheet\n',
+        'import com.bilipai.desktop.ui.DesktopWindowsVideoInteractionModalSheet as AppModalBottomSheet\n')
+ if target.endswith('/VideoShareSheet.kt'):
+  change('                                        showFollowingPicker = true\n','                                        context.withAdmission { showFollowingPicker = true }\n')
+  change('                                    switchingSheet = true\n','                                    if (!context.withAdmission { switchingSheet = true }) return@VideoShareSheetItemView\n')
+  change('                                    sharingTarget = item.target\n','                                    if (!context.withAdmission { sharingTarget = item.target }) return@VideoShareSheetItemView\n',2)
+  change('                                            sharingTarget = null\n','                                            context.withAdmission { sharingTarget = null }\n',2)
+  before='''                                                moreShareMedia = shareMedia
+                                                showMoreTargets = true
+                                                openedLocalTargets = true
+'''
+  change(before,'''                                                context.withAdmission {
+'''+''.join('    '+line for line in before.splitlines(keepends=True))+'''                                                }
+''')
+ elif target.endswith('/VideoShareToFollowingDialog.kt'):
+  change('''        loading = true
+        error = null
+''','''        if (!context.withAdmission { loading = true; error = null }) return
+''')
+  change('                error = response.message.ifBlank { "关注列表加载失败 (${response.code})" }\n',
+         '                context.withAdmission { error = response.message.ifBlank { "关注列表加载失败 (${response.code})" } }\n')
+  before='''            followings = (followings + page).distinctBy(FollowingUser::mid)
+            total = data.total
+            nextPage++
+            if (page.isEmpty() || nextPage > (total + 49) / 50) total = followings.size
+'''
+  change(before,'            context.withAdmission {\n'+''.join('    '+line for line in before.splitlines(keepends=True))+'            }\n')
+  change('            error = failure.message ?: "关注列表加载失败"\n','            context.withAdmission { error = failure.message ?: "关注列表加载失败" }\n')
+  change('            loading = false\n','            context.withAdmission { loading = false }\n')
+  change('''                        sending = true
+                        sendStatus = null
+''','''                        if (!context.withAdmission { sending = true; sendStatus = null }) return@AppButton
+''')
+  before='''                            sending = false
+                            if (failed.isEmpty()) {
+                                onSuccess(sent)
+                                onDismiss()
+                            } else {
+                                selectedIds = failed
+                                sendStatus = "已发送 $sent 人，${failed.size} 人未发送" +
+                                    firstFailure?.let { "（$it）" }.orEmpty() +
+                                    "；可重试选中的失败对象"
+                            }
+'''
+  change(before,'                            context.withAdmission {\n'+''.join('    '+line for line in before.splitlines(keepends=True))+'                            }\n')
+ else:
+  change('                                onTargetClick(target)\n','                                context.withAdmission { onTargetClick(target) }\n')
+  change('                        onSystemChooserClick()\n','                        context.withAdmission { onSystemChooserClick() }\n')
+ inverse=body
+ for before,after,count in reversed(edits):
+  assert inverse.count(after)==count
+  inverse=inverse.replace(after,before,count)
+ assert inverse==original,(target,'whole original share final-publication inverse')
+ if audit_edits is not None:audit_edits.extend(edits)
+ return body,sum(count for _,_,count in edits)
 def generate(repo,out,standalone=False):
  repo=Path(repo);out=Path(out);originals={};files=[];proof=[]
  for path,digest in SOURCE_PINS.items():
@@ -33,8 +100,9 @@ def generate(repo,out,standalone=False):
    pos=e['offset'];assert inverse[pos:pos+len(e['after'])]==e['after'],(spec['target'],pos)
    inverse=inverse[:pos]+e['before']+inverse[pos+len(e['after']):]
   assert inverse==original and sha(body)==spec['outputSha256LF'],spec['target']
+  body,presentation_edits=share_presentation_delta(spec['target'],body)
   target=safe(out/spec['target']);target.parent.mkdir(parents=True,exist_ok=True);target.write_text(body,encoding='utf-8',newline='\n');files.append(target)
-  proof.append({k:v for k,v in spec.items() if k!='operations'} | dict(adaptationOperations=len(spec['operations']),inverseByteEqual=True))
+  proof.append({k:v for k,v in spec.items() if k!='operations'} | dict(outputSha256LF=sha(body),adaptationOperations=len(spec['operations']),inverseByteEqual=True,windowsPresentationEdits=presentation_edits,windowsPresentationInverseByteEqual=True))
  proof_path=safe(out/'video-share-consent-selection-proof.json');proof_path.parent.mkdir(parents=True,exist_ok=True);proof_path.write_text(json.dumps(dict(pinnedCommit=COMMIT,selectedSources=proof),ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
  return files
 if __name__=='__main__':

@@ -41,6 +41,7 @@ internal fun DesktopWindowsVideoControlBar(
     qualities: List<Pair<Int, String>>, selectedQuality: Int?,
     canOpenCollection: Boolean, canOpenPlaybackQueue: Boolean,
     onOpenCollection: () -> Unit, onOpenPlaybackQueue: () -> Unit,
+    canOpenInteraction: Boolean, onSendDanmaku: () -> Unit, onShareVideo: () -> Unit,
     chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
     onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit,
     onPlayPause: () -> Unit, onPrevious: () -> Unit, onNext: () -> Unit,
@@ -151,7 +152,7 @@ internal fun DesktopWindowsVideoControlBar(
                         }
                         DesktopWindowsPlayerMenu(more, onDismissRequest = { more = false },
                             preferredHeight = if (expanded) (64 + (if (canOpenCollection) 48 else 0) +
-                                (if (canOpenPlaybackQueue) 48 else 0)).dp else 420.dp) {
+                                 (if (canOpenPlaybackQueue) 48 else 0) + 96).dp else 516.dp) {
                             if (!expanded) {
                                 DropdownMenuItem(text = { Text("上一集") }, enabled = enabled && hasPrevious,
                                     onClick = { onPrevious(); more = false })
@@ -181,6 +182,10 @@ internal fun DesktopWindowsVideoControlBar(
                                 onClick = { more = false; onOpenCollection() })
                             if (canOpenPlaybackQueue) DropdownMenuItem(text = { Text("播放队列") }, enabled = enabled,
                                 onClick = { more = false; onOpenPlaybackQueue() })
+                            DropdownMenuItem(text = { Text("发送弹幕") }, enabled = enabled && canOpenInteraction,
+                                onClick = { more = false; onSendDanmaku() })
+                            DropdownMenuItem(text = { Text("分享视频") }, enabled = enabled && canOpenInteraction,
+                                onClick = { more = false; onShareVideo() })
                             DropdownMenuItem(text = { Text("简介、分P与播放设置") }, onClick = { onOpenIntroduction(); more = false })
                         }
                         if (!showEnhancementStatus && chapters != null && chaptersSource != null)

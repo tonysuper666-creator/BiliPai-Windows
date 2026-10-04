@@ -24,6 +24,8 @@ import com.android.purebilibili.feature.home.resolveHomeWallpaperBackdropAppeara
 import com.android.purebilibili.feature.home.components.LocalLiquidGlassRenderConfig
 import com.android.purebilibili.feature.home.components.biliPaiFloatingDockShell
 import com.android.purebilibili.feature.home.components.liquid.InnerShadow
+import com.android.purebilibili.feature.home.components.liquid.ROUNDED_RECT_REFRACTION_SHADER
+import com.android.purebilibili.feature.home.components.liquid.ROUNDED_RECT_REFRACTION_WITH_DISPERSION_SHADER
 import com.android.purebilibili.feature.home.components.liquid.innerShadow
 import com.bilipai.desktop.appearance.isDesktopInDarkTheme
 import org.jetbrains.skia.RuntimeEffect
@@ -178,119 +180,3 @@ internal fun DesktopWindowsGlassSurface(
         color = if (enabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainerLow,
         content = content)
 }
-
-// Copyright 2026, compose-miuix-ui contributors; Apache-2.0.
-// Original Lens.kt constants verbatim, original LF SHA256: 579ced36f6e1f15cb9d906b42c4cf64180c598a7f5083189c12cc30ceea00e8e
-// Compiled only for capability preflight; rendering calls original lens().
-private const val ROUNDED_RECT_SDF = """
-float radiusAt(float2 coord, float4 radii) {
-    if (coord.x >= 0.0) {
-        if (coord.y <= 0.0) return radii.y;
-        else return radii.z;
-    } else {
-        if (coord.y <= 0.0) return radii.x;
-        else return radii.w;
-    }
-}
-
-float sdRoundedRect(float2 coord, float2 halfSize, float radius) {
-    float2 cornerCoord = abs(coord) - (halfSize - float2(radius));
-    float outside = length(max(cornerCoord, 0.0)) - radius;
-    float inside = min(max(cornerCoord.x, cornerCoord.y), 0.0);
-    return outside + inside;
-}
-
-float2 gradSdRoundedRect(float2 coord, float2 halfSize, float radius) {
-    float2 cornerCoord = abs(coord) - (halfSize - float2(radius));
-    if (cornerCoord.x >= 0.0 || cornerCoord.y >= 0.0) {
-        return sign(coord) * normalize(max(cornerCoord, 0.0));
-    } else {
-        float gradX = step(cornerCoord.y, cornerCoord.x);
-        return sign(coord) * float2(gradX, 1.0 - gradX);
-    }
-}
-"""
-
-private const val ROUNDED_RECT_REFRACTION_SHADER = """
-uniform shader content;
-
-uniform float2 size;
-uniform float2 offset;
-uniform float4 cornerRadii;
-uniform float refractionHeight;
-uniform float refractionAmount;
-uniform float depthEffect;
-
-$ROUNDED_RECT_SDF
-
-float circleMap(float x) {
-    float clampedX = clamp(x, 0.0, 1.0);
-    return 1.0 - sqrt(max(1.0 - clampedX * clampedX, 0.0));
-}
-
-half4 main(float2 coord) {
-    float2 halfSize = size * 0.5;
-    float2 centeredCoord = (coord + offset) - halfSize;
-    float radius = radiusAt(centeredCoord, cornerRadii);
-
-    float sd = sdRoundedRect(centeredCoord, halfSize, radius);
-    if (-sd >= refractionHeight) {
-        return content.eval(coord);
-    }
-    sd = min(sd, 0.0);
-
-    float d = circleMap(1.0 - -sd / refractionHeight) * refractionAmount;
-    float gradRadius = min(radius * 1.5, min(halfSize.x, halfSize.y));
-    float2 grad = normalize(gradSdRoundedRect(centeredCoord, halfSize, gradRadius) + depthEffect * normalize(centeredCoord));
-
-    float2 refractedCoord = coord + d * grad;
-    return content.eval(refractedCoord);
-}
-"""
-
-private const val ROUNDED_RECT_REFRACTION_WITH_DISPERSION_SHADER = """
-uniform shader content;
-
-uniform float2 size;
-uniform float2 offset;
-uniform float4 cornerRadii;
-uniform float refractionHeight;
-uniform float refractionAmount;
-uniform float depthEffect;
-uniform float chromaticAberration;
-
-$ROUNDED_RECT_SDF
-
-float circleMap(float x) {
-    float clampedX = clamp(x, 0.0, 1.0);
-    return 1.0 - sqrt(max(1.0 - clampedX * clampedX, 0.0));
-}
-
-half4 main(float2 coord) {
-    float2 halfSize = size * 0.5;
-    float2 centeredCoord = (coord + offset) - halfSize;
-    float radius = radiusAt(centeredCoord, cornerRadii);
-
-    float sd = sdRoundedRect(centeredCoord, halfSize, radius);
-    if (-sd >= refractionHeight) {
-        return content.eval(coord);
-    }
-    sd = min(sd, 0.0);
-
-    float d = circleMap(1.0 - -sd / refractionHeight) * refractionAmount;
-    float gradRadius = min(radius * 1.5, min(halfSize.x, halfSize.y));
-    float2 grad = normalize(gradSdRoundedRect(centeredCoord, halfSize, gradRadius) + depthEffect * normalize(centeredCoord));
-
-    float2 refractedCoord = coord + d * grad;
-    float dispersionIntensity = chromaticAberration * ((centeredCoord.x * centeredCoord.y) / (halfSize.x * halfSize.y));
-    float2 dispersedCoord = d * grad * dispersionIntensity;
-
-    // 物理光学三通道（RGB）波长色散：采样数从 7 次降低至 3 次（减少 57% GPU 纹理采样），
-    // 消除冗余多次采样的混色浑浊感，色散边缘更清澈通透，大幅降低显存带宽与 TMU 压力。
-    half r = content.eval(refractedCoord + dispersedCoord).r;
-    half4 gSample = content.eval(refractedCoord);
-    half b = content.eval(refractedCoord - dispersedCoord).b;
-
-    return half4(r, gSample.g, b, gSample.a);
-}
-"""

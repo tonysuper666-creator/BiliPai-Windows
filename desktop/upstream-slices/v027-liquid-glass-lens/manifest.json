@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf",
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt",
+  "archiveFile": "Lens.kt",
+  "gitBlobOid": "f968235238d14c6563ca9424c70ac433967058cd",
+  "sha256Bytes": "ebf283f428d780760f311daf5f44f3efbc4f448ec2f97049595e8ab622cb431d",
+  "sha256LF": "ebf283f428d780760f311daf5f44f3efbc4f448ec2f97049595e8ab622cb431d",
+  "bytes": 8134
+}

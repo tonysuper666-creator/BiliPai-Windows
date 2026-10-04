@@ -180,6 +180,9 @@ object PlayerSelfTest {
                 requireNotNull(frame).contentPane.add(player.surface)
                 requireNotNull(frame).validate()
                 pipRestored = true
+            }, onDetachSurface = {
+                requireNotNull(frame).contentPane.remove(player.surface)
+                requireNotNull(frame).validate()
             })
             SwingUtilities.invokeAndWait { requireNotNull(pip).open(requireNotNull(frame), "Native PiP smoke") }
             waitFor(player, "floating native player preserves position/subtitles") {
@@ -210,9 +213,38 @@ object PlayerSelfTest {
             waitFor(player, "repeat current file") { !it.ended && it.positionSeconds < 2.0 && !it.paused }
             checks["singleFileLoop"] = "passed"
             player.setLoop(false)
+            player.setPaused(true)
+            waitFor(player, "pause before terminal floating-window check") { it.nativePaused == true }
+            val terminalPresentationSource = requireNotNull(player.currentSourceSnapshot())
+            pipRestored = false
+            SwingUtilities.invokeAndWait { requireNotNull(pip).open(requireNotNull(frame), "Native PiP EOF smoke") }
+            waitFor(player, "same paused source in floating window before EOF") {
+                requireNotNull(pip).active.value && player.surface.isShowing &&
+                    SwingUtilities.getWindowAncestor(player.surface) !== frame &&
+                    it.ready && !it.loading && it.nativePaused == true && it.firstVideoFrameReady &&
+                    player.ownsSourceSnapshot(terminalPresentationSource)
+            }
+            player.setPaused(false)
             player.seekTo(9.0)
-            waitFor(player, "end of file") { it.ended }
+            waitFor(player, "end of file inside floating window") { it.ended }
             checks["endOfFile"] = "passed"
+            val endedPosition = player.state.value.positionSeconds
+            SwingUtilities.invokeAndWait { requireNotNull(pip).restore() }
+            waitFor(player, "EOF return restores an idle Main core without replay") {
+                pipRestored && !requireNotNull(pip).active.value && player.surface.isShowing &&
+                    SwingUtilities.getWindowAncestor(player.surface) === frame &&
+                    it.ready && !it.loading && it.ended && it.paused &&
+                    player.ownsSourceSnapshot(terminalPresentationSource)
+            }
+            Thread.sleep(1_200)
+            check(player.state.value.ended && player.state.value.paused &&
+                abs(player.state.value.positionSeconds - endedPosition) < .2 &&
+                player.ownsSourceSnapshot(terminalPresentationSource)) { "Returning an ended PiP implicitly replayed its source." }
+            val terminalNative = requireNotNull(runBlocking { player.captureNativeAudioDiagnostic() })
+            val idle = requireNotNull(terminalNative.properties["idle-active"])
+            check(!terminalNative.fileLoaded && terminalNative.sourceVersion == terminalPresentationSource.sourceVersion &&
+                idle.nativeCode >= 0 && idle.value == "yes") { "EOF PiP return loaded media without a replay command." }
+            checks["nativeFloatingEofReturnPreservesTerminalSource"] = "passed"
             val replayOwnership = player.currentSourceVersion
             player.togglePause()
             waitFor(player, "replay after end of file") { !it.loading && !it.ended && !it.paused && it.positionSeconds < 2.0 && it.videoCodec != null }

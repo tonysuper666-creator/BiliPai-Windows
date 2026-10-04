@@ -12,6 +12,36 @@ def sha(s):return hashlib.sha256(s.encode()).hexdigest()
 def load(n,p):
  spec=importlib.util.spec_from_file_location(n,p);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 def one(s,a,b):assert s.count(a)==1,(s.count(a),a[:100]);return s.replace(a,b,1)
+V027_LENS_COMMIT='e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf'
+V027_LENS_PATH=HOME+'liquid/Lens.kt'
+V027_LENS_ARCHIVE=Path('desktop/upstream-slices/v027-liquid-glass-lens')
+V027_LENS_SHA256='ebf283f428d780760f311daf5f44f3efbc4f448ec2f97049595e8ab622cb431d'
+V027_LENS_BLOB='f968235238d14c6563ca9424c70ac433967058cd'
+V027_LENS_BYTES=8134
+LENS_PREFLIGHT_CONSTANTS=('ROUNDED_RECT_REFRACTION_SHADER','ROUNDED_RECT_REFRACTION_WITH_DISPERSION_SHADER')
+
+def fixed_v027_lens(repo):
+ root=Path(repo)/V027_LENS_ARCHIVE
+ manifest=json.loads(safe(root/'manifest.json').read_bytes())
+ expected=dict(schemaVersion=1,fixedUpstreamCommit=V027_LENS_COMMIT,originalPath=V027_LENS_PATH,
+  archiveFile='Lens.kt',gitBlobOid=V027_LENS_BLOB,sha256Bytes=V027_LENS_SHA256,
+  sha256LF=V027_LENS_SHA256,bytes=V027_LENS_BYTES)
+ assert manifest==expected,'Changed fixed v027 Lens manifest identity'
+ blob=safe(root/'Lens.kt').read_bytes()
+ assert len(blob)==V027_LENS_BYTES and hashlib.sha256(blob).hexdigest()==V027_LENS_SHA256,'Changed fixed v027 Lens bytes'
+ assert hashlib.sha1(b'blob '+str(len(blob)).encode()+b'\0'+blob).hexdigest()==V027_LENS_BLOB,'Changed fixed v027 Lens blob OID'
+ normalized=blob.replace(b'\r\n',b'\n')
+ assert hashlib.sha256(normalized).hexdigest()==V027_LENS_SHA256,'Changed fixed v027 Lens normalized identity'
+ return normalized.decode('utf-8'),dict(pinnedCommit=V027_LENS_COMMIT,gitBlobOid=V027_LENS_BLOB,
+  path=(V027_LENS_ARCHIVE/'Lens.kt').as_posix(),previousPath=V027_LENS_PATH,
+  sha256Bytes=V027_LENS_SHA256,sha256LF=V027_LENS_SHA256,bytes=V027_LENS_BYTES,
+  mode='explicit-whole-v027-lens-slice-not-overall-canonical-advance')
+
+def lens_preflight_visibility_transforms():
+ # Render and capability preflight compile the SAME two original shader values.
+ # No shader algorithm/string is copied, edited or independently maintained.
+ return [('private const val '+name+' =','internal const val '+name+' =') for name in LENS_PREFLIGHT_CONSTANTS]
+
 def generate(repo: Path, output: Path, standalone: bool = False):
  REPO=Path(repo);HERE=Path(output)
  parser=load('liquid_selected_parser',REPO/'desktop/tools/sync-upstream.py')
@@ -34,7 +64,10 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   return [(name,source[start:(starts[i+1][1] if i+1<len(starts) else len(source))].rstrip()+'\n') for i,(name,start) in enumerate(starts)]
  records=[]
  def emit(path,names=None,imports='',transforms=()):
-  source=read(_desktop_canonical_source(REPO, path));original=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=REPO).decode().replace('\r\n','\n');assert source==original,path
+  identity=None
+  if path==V027_LENS_PATH:source,identity=fixed_v027_lens(REPO)
+  else:
+   source=read(_desktop_canonical_source(REPO, path));original=subprocess.check_output(['git','show',COMMIT+':'+path],cwd=REPO).decode().replace('\r\n','\n');assert source==original,path
   package=re.search(r'(?m)^package (\S+)',source).group(1)
   selected=[]
   if names is None:text=source
@@ -47,13 +80,16 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   adaptations=[]
   for a,b in transforms:text=one(text,a,b);adaptations.append(dict(original=a,replacement=b))
   output=HERE/'generated'/package.replace('.','/')/Path(path).name
-  write(output,'// OriginalSource: '+path+'\n// OriginalSHA256: '+sha(source)+'\n'+text)
-  records.append(dict(path=path,sha256LF=sha(source),output=str(output.relative_to(HERE)),mode='direct' if names is None else 'selected',declarations=[{k:v for k,v in x.items() if k!='body'} for x in selected],adaptations=adaptations))
+  write(output,'// OriginalSource: '+path+'\n// OriginalSHA256: '+sha(source)+'\n'+('// OriginalCommit: '+identity['pinnedCommit']+'\n' if identity else '')+text)
+  record=dict(path=path,sha256LF=sha(source),output=str(output.relative_to(HERE)),mode='direct' if names is None else 'selected',declarations=[{k:v for k,v in x.items() if k!='body'} for x in selected],adaptations=adaptations)
+  if identity:record['sourceIdentity']=identity
+  records.append(record)
  inv={'sources': [{'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt'}]}
  for row in inv['sources']:
   p=row['path'];t=[]
   if p.endswith('LiquidGlassAdaptiveReadability.kt'):continue
-  s=read(_desktop_canonical_source(REPO, p))
+  s=fixed_v027_lens(REPO)[0] if p==V027_LENS_PATH else read(_desktop_canonical_source(REPO, p))
+  if p==V027_LENS_PATH:t+=lens_preflight_visibility_transforms()
   if p.endswith('AppLiquidAwareTabRow.kt'):
    t += [('import androidx.compose.ui.Modifier','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.excludeFromLiquidBackground'),('        modifier = modifier,\n        enabled = enabled,','        modifier = modifier.excludeFromLiquidBackground(),\n        enabled = enabled,')]
   selected_names=None;selected_imports=''
@@ -119,7 +155,7 @@ private suspend fun sampleWindowLuminance(activity: DesktopLiquidReadabilityEnvi
     activity.sampleBitmap(sourceBounds, ADAPTIVE_READABILITY_SAMPLE_WIDTH, ADAPTIVE_READABILITY_SAMPLE_HEIGHT)
         ?.averageRelativeLuminance()
 ''')
- write(HERE/'source-inventory.json',json.dumps(dict(originalCommit=COMMIT,sourceCount=len(records),sources=records,explicitActualReuse=['resolveSharedBottomBarCapsuleShape','BILIPAI_PROGRESSIVE_TOP_BLUR_START_FRACTION','desktopDetailRenderEffectsSupported','DesktopDynamicWindowConfiguration','AppNativeTabRow','AppNativeSegmentedControl','AppSegmentOption','resolveReadableNativeTabMinWidth'],noNewHomeSettings=True,noNewSettingsManager=True,noNewStore=True,noNewClient=True),ensure_ascii=False,indent=2)+'\n')
+ write(HERE/'source-inventory.json',json.dumps(dict(originalCommit=COMMIT,sourceCount=len(records),sources=records,sourceOverrides=[row['sourceIdentity'] for row in records if 'sourceIdentity' in row],explicitActualReuse=['resolveSharedBottomBarCapsuleShape','BILIPAI_PROGRESSIVE_TOP_BLUR_START_FRACTION','desktopDetailRenderEffectsSupported','DesktopDynamicWindowConfiguration','AppNativeTabRow','AppNativeSegmentedControl','AppSegmentOption','resolveReadableNativeTabMinWidth'],noNewHomeSettings=True,noNewSettingsManager=True,noNewStore=True,noNewClient=True),ensure_ascii=False,indent=2)+'\n')
  return sorted(safe(HERE/'generated').rglob('*.kt'))
 if __name__=='__main__':
  import argparse

@@ -606,6 +606,13 @@ object WindowsVideoActualRootUiFixture {
         ownedKey(edt { actualComposeInput() }, java.awt.event.KeyEvent.VK_0, java.awt.event.InputEvent.CTRL_DOWN_MASK)
         awaitScale(125, before)
 
+        // Scale/layout completion can outlast the native focus activation. Start
+        // the viewport click from the actually focused Compose window, as a
+        // foreground user click would; the production adapter must then move
+        // focus to the Canvas itself.
+        val beforeViewportInput = edt { actualComposeInput() }
+        focused(beforeViewportInput)
+        awaitFocus(beforeViewportInput)
         // Real native viewport click transfers focus through the installed production adapter.
         edt {
             current(); check(actualCanvas.isShowing)
@@ -646,17 +653,29 @@ object WindowsVideoActualRootUiFixture {
         }
         val editorInput = edt { actualEditorComponent() }
         await("real comment editor owns keyboard focus") { edt {
-            current(); editorValue() == "fixture" && actualEditor().accessibleStateSet.contains(AccessibleState.FOCUSED) &&
-                java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().focusOwner === editorInput &&
-                editorInput.isFocusOwner
+            current(); sameNative()
+            // Editing invalidates Compose's semantics before its next full
+            // publication. Keep the strict pane/editor checks, but await that
+            // publication instead of failing on its temporary partial tree.
+            runCatching {
+                editorValue() == "fixture" && actualEditor().accessibleStateSet.contains(AccessibleState.FOCUSED) &&
+                    java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().focusOwner === editorInput &&
+                    editorInput.isFocusOwner
+            }.getOrDefault(false)
         } }
         edt { requireNotNull(actualEditor().accessibleEditableText).selectText(0, 0) }
         val beforeEditorSeek = actualPlayer.state.value.seekCompletedId
         val beforeEditorPosition = actualPlayer.state.value.positionSeconds
         ownedKey(editorInput, java.awt.event.KeyEvent.VK_RIGHT)
-        await("original editor Right advances text caret") { edt { actualEditor().accessibleText?.caretPosition == 1 } }
+        await("original editor Right advances text caret") { edt {
+            current(); sameNative()
+            runCatching { actualEditor().accessibleText?.caretPosition == 1 }.getOrDefault(false)
+        } }
         ownedKey(editorInput, java.awt.event.KeyEvent.VK_SPACE, typed = ' ')
-        await("original editor receives actual typed space") { edt { editorValue() == "f ixture" } }
+        await("original editor receives actual typed space") { edt {
+            current(); sameNative()
+            runCatching { editorValue() == "f ixture" }.getOrDefault(false)
+        } }
         Thread.sleep(1000)
         sameNative(); check(playing()); check(actualPlayer.state.value.seekCompletedId == beforeEditorSeek)
         val advance = actualPlayer.state.value.positionSeconds - beforeEditorPosition
@@ -2019,6 +2038,334 @@ object WindowsVideoActualRootUiFixture {
             "actualMainSceneLayerCountRestored" to JsonPrimitive(edt { actualMainSceneLayers().size })))
     }
 
+    private fun exerciseOriginalVideoInteractions() {
+        sameNative(); check(playing())
+        val (assembly, publication) = actualHotOwner()
+        val original = accepted
+        val layers = edt { actualMainSceneLayers() }
+        fun currentSource() {
+            sameNative()
+            check(accepted == original && assembly.owns() && assembly.native.isCurrent(publication))
+            check(actualPlayer.state.value.volume == 0.0 && actualPlayer.state.value.muted)
+        }
+        fun dialog(title: String): javax.swing.JDialog? = edt {
+            currentSource()
+            Window.getWindows().filterIsInstance<javax.swing.JDialog>().filter {
+                it.isShowing && it.isDisplayable && ownedWindow(it) && it.title == title
+            }.singleOrNull()
+        }
+        fun openMore(label: String) {
+            click("更多播放操作")
+            await("actual menu for original $label") { edt { playerMenuSurface() != null } }
+            clickFeatureItem(edt { requireNotNull(playerMenuSurface()) }, label)
+        }
+        openMore("发送弹幕")
+        await("original guest danmaku login feedback") { edt {
+            currentSource()
+            all().any { hasLabel(it, "请先登录后再发送弹幕") && visible(it) }
+        } }
+        check(!assembly.playback.showDanmakuDialog.value && !assembly.playback.isSendingDanmaku.value)
+        check(dialog("发送弹幕") == null && playing())
+        record("174-original-danmaku-guest", mapOf(
+            "actualMenuItemUsed" to JsonPrimitive("发送弹幕"),
+            "originalLoginFeedbackVisible" to JsonPrimitive("请先登录后再发送弹幕"),
+            "originalComposerVisible" to JsonPrimitive(false),
+            "fullOriginalPublicationStillOwned" to JsonPrimitive(true),
+            "realAccountUsed" to JsonPrimitive(false), "remoteSendSubmitted" to JsonPrimitive(false)))
+        openMore("分享视频")
+        await("actual native original share dialog") { dialog("分享视频") != null }
+        val share = requireNotNull(dialog("分享视频"))
+        val shareLabels = listOf("链接", "卡片", "B 站好友", "复制链接", "更多", "取消")
+        await("complete original share controls") { edt {
+            currentSource()
+            val nodes = descendants(share.accessibleContext)
+            shareLabels.all { label -> nodes.any { hasLabel(it, label) && visible(it, share) } }
+        } }
+        edt {
+            check(share.isModal && ownedWindow(share) && window().bounds.contains(share.bounds))
+            captureOwnedExtraSurface("175-original-video-share", share)
+        }
+        clickFeatureItem(share, "取消")
+        await("original share cancel retires native dialog") { edt {
+            currentSource()
+            !share.isShowing && !share.isDisplayable && playerMenuSurface() == null
+        } }
+        record("175-original-video-share", mapOf(
+            "actualMenuItemUsed" to JsonPrimitive("分享视频"),
+            "actualOriginalLabels" to JsonArray(shareLabels.map(::JsonPrimitive)),
+            "actualCancelControlUsed" to JsonPrimitive("取消"),
+            "fullOriginalPublicationStillOwned" to JsonPrimitive(true),
+            "clipboardWritten" to JsonPrimitive(false), "systemShareInvoked" to JsonPrimitive(false)))
+        click("暂停")
+        await("native pause before original AI timestamp") { actualPlayer.state.value.nativePaused == true }
+        click("详情")
+        await("original interaction detail entries") { edt { runCatching { detailPaneScope() }.isSuccess } }
+        edt {
+            val tab = descendants(detailPaneScope()).single { it.accessibleName == "简介与分P" &&
+                visible(it) && it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
+                (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
+            clickOwnedComposeMouse(window(), tab)
+        }
+        await("actual introduction tab selected for original interaction entries") { edt {
+            currentSource()
+            runCatching {
+                descendants(detailPaneScope()).single { it.accessibleName == "简介与分P" &&
+                    visible(it) && it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB }
+                    .accessibleStateSet.let { it.contains(AccessibleState.SELECTED) || it.contains(AccessibleState.CHECKED) }
+            }.getOrDefault(false)
+        } }
+        fun detailEntry(label: String) {
+            fun visibleEntry(): Boolean {
+                var found = false
+                await("complete actual detail pane after original modal retirement") { edt {
+                    currentSource()
+                    val pane = runCatching { detailPaneScope() }.getOrNull() ?: return@edt false
+                    found = descendants(pane).any { hasLabel(it, label) && visible(it) }
+                    true
+                } }
+                return found
+            }
+            for (attempt in 0 until 18) {
+                if (visibleEntry()) break
+                await("complete actual detail pane before its scroll input") { edt {
+                    currentSource()
+                    if (runCatching { detailPaneScope() }.isFailure) return@edt false
+                    ownedWheel(actualComposeInput(), 1, false)
+                    true
+                } }
+                Thread.sleep(120)
+            }
+            check(visibleEntry()) { "Original detail entry is not visible: $label" }
+            clickFeatureItem(edt { window() }, label)
+        }
+        fun closeNativeDialog(surface: javax.swing.JDialog) {
+            edt {
+                currentSource(); check(surface.isShowing && ownedWindow(surface))
+                surface.dispatchEvent(java.awt.event.WindowEvent(surface, java.awt.event.WindowEvent.WINDOW_CLOSING))
+            }
+            await("owned original dialog title-bar close") { !surface.isShowing && !surface.isDisplayable }
+            currentSource()
+        }
+        detailEntry("AI 总结")
+        await("original AI summary shown in native dialog") { dialog("AI 总结")?.let { surface -> edt {
+            val nodes = descendants(surface.accessibleContext)
+            listOf("本地章节", "本地合成总结").all { label -> nodes.any { hasLabel(it, label) && visible(it, surface) } }
+        } } == true }
+        val summary = requireNotNull(dialog("AI 总结"))
+        edt { captureOwnedExtraSurface("176-original-ai-summary", summary) }
+        val priorSeek = actualPlayer.state.value.seekCompletedId
+        clickFeatureItem(summary, "本地章节")
+        await("original AI timestamp is acknowledged by the same native source") {
+            currentSource()
+            actualPlayer.state.value.let { it.nativePaused == true && it.seekCompletedId > priorSeek &&
+                kotlin.math.abs(it.positionSeconds - 20.0) < .6 &&
+                kotlin.math.abs((it.seekCompletedPositionSeconds ?: -100.0) - 20.0) < .6 }
+        }
+        record("176-original-ai-summary", mapOf("actualOriginalSummary" to JsonPrimitive("本地合成总结"),
+            "actualTimestampControlUsed" to JsonPrimitive("本地章节"), "nativeSeekSeconds" to JsonPrimitive(20.0),
+            "previousSeekId" to JsonPrimitive(priorSeek), "nativeSeekCompletedId" to JsonPrimitive(actualPlayer.state.value.seekCompletedId),
+            "fullOriginalPublicationStillOwned" to JsonPrimitive(true)))
+        closeNativeDialog(summary)
+        detailEntry("视频笔记")
+        await("original guest note list shown in native dialog") { dialog("视频笔记")?.let { surface -> edt {
+            descendants(surface.accessibleContext).any { hasLabel(it, "登录后开始记笔记") && visible(it, surface) }
+        } } == true }
+        val notes = requireNotNull(dialog("视频笔记"))
+        edt {
+            val nodes = descendants(notes.accessibleContext)
+            check(nodes.any { hasLabel(it, "登录后开始记笔记") && visible(it, notes) &&
+                !it.accessibleStateSet.contains(AccessibleState.ENABLED) })
+            captureOwnedExtraSurface("177-original-video-notes-guest", notes)
+        }
+        record("177-original-video-notes-guest", mapOf(
+            "actualOriginalLoginAction" to JsonPrimitive("登录后开始记笔记"),
+            "originalGuestEditorDisabled" to JsonPrimitive(true), "fullOriginalPublicationStillOwned" to JsonPrimitive(true),
+            "realAccountUsed" to JsonPrimitive(false), "remoteNoteSavedOrDeleted" to JsonPrimitive(false)))
+        closeNativeDialog(notes)
+        click("关闭详情")
+        await("interaction details close restores compact Main controls") { edt {
+            all().none { hasLabel(it, "关闭详情") && visible(it) } && runCatching { videoScope() }.isSuccess
+        } }
+        click("播放")
+        await("original Play after AI and notes") { playing() }
+        await("original interaction windows restore Main input layers") { edt {
+            val now = actualMainSceneLayers()
+            currentSource()
+            now.size == layers.size && now.all { layer -> layers.any { it === layer } }
+        } }
+        clockAndCapture("178-original-interactions-resumed")
+    }
+
+    private fun exercisePictureInPicture() {
+        sameNative(); check(playing())
+        val (assembly, publication) = actualHotOwner()
+        val initial = actualPlayer.state.value
+        var expectedMuted = initial.muted
+        fun samePublication() {
+            check(actualPlayer.ownsSourceSnapshot(accepted) && assembly.owns() && assembly.native.isCurrent(publication)) {
+                "PiP changed the full original accepted source"
+            }
+            val state = actualPlayer.state.value
+            check(state.volume == initial.volume && state.muted == expectedMuted && state.speed == initial.speed)
+        }
+        fun pipWindow(): JFrame? = edt {
+            current(); samePublication()
+            (SwingUtilities.getWindowAncestor(actualCanvas) as? JFrame)?.takeIf {
+                it !== window() && it.isShowing && it.isAlwaysOnTop && actualCanvas.isShowing && actualCanvas.isDisplayable
+            }
+        }
+        fun pipReady(paused: Boolean): Boolean {
+            if (pipWindow() == null) return false
+            val state = actualPlayer.state.value
+            check(state.error == null)
+            return state.ready && !state.loading && !state.ended && state.firstVideoFrameReady &&
+                state.videoCodec != null && state.audioCodec != null && state.nativePaused == paused
+        }
+        fun awaitNativeMute(muted: Boolean) {
+            check(!SwingUtilities.isEventDispatchThread())
+            await("actual native mute acknowledgement: $muted") {
+                // Queue the read behind the actual button/key command. The UI's
+                // optimistic intent alone does not prove mpv applied the mute.
+                val native = runBlocking { actualPlayer.captureNativeAudioDiagnostic() }
+                    ?: return@await false
+                check(native.sourceVersion == accepted.sourceVersion &&
+                    native.activeSourceVersion == accepted.sourceVersion &&
+                    native.playbackRevision == native.activePlaybackRevision && native.fileLoaded)
+                val mute = native.properties.getValue("mute")
+                val volume = native.properties.getValue("volume")
+                mute.nativeCode >= 0 && mute.value == (if (muted) "yes" else "no") &&
+                    volume.nativeCode >= 0 && volume.value?.toDoubleOrNull() == 0.0 &&
+                    actualPlayer.state.value.muted == muted
+            }
+            samePublication()
+        }
+        fun captureNativeWindow(id: String, floating: Boolean = true): Pair<Int, Int> {
+            val bounds = edt {
+                val nativeWindow = if (floating) requireNotNull(pipWindow()) else window().also { sameNative() }
+                samePublication()
+                check(nativeComponents(nativeWindow).filterIsInstance<Canvas>().filter { canvas ->
+                    canvas.isShowing && canvas.width > 100 && canvas.height > 80 &&
+                        SwingUtilities.getWindowAncestor(canvas) === nativeWindow &&
+                        canvas.javaClass.declaredFields.any { it.type == MpvPlayer::class.java }
+                }.single() === actualCanvas)
+                if (floating) check(nativeComponents(window()).none { it === actualCanvas })
+                val pane = (nativeWindow as javax.swing.RootPaneContainer).contentPane
+                val client = Rectangle(pane.locationOnScreen, pane.size)
+                val surface = Rectangle(actualCanvas.locationOnScreen, actualCanvas.size)
+                check(surface.width > 100 && surface.height > 80 && client.contains(surface))
+                check(nativeWindow.graphicsConfiguration.bounds.contains(surface))
+                surface
+            }
+            // Capture only this fixture's actual Canvas rectangle, after proving
+            // its expected current window and retained player identity. Decoded pixels alone do not pass.
+            val image = java.awt.Robot().createScreenCapture(bounds)
+            ImageIO.write(image, "png", report.resolve("$id-screen.png").toFile())
+            var cyan = 0; var pink = 0
+            for (y in 0 until image.height) for (x in 0 until image.width) {
+                val color = java.awt.Color(image.getRGB(x, y))
+                if (color.blue > 180 && color.green > 135 && color.red < 135) cyan++
+                // RTX HDR can lift the synthetic pink from SDR (250,106,151)
+                // to (255,204,248) in the desktop capture. Its red/blue chroma
+                // still separates it from black, gray, white and the cyan disk.
+                if (color.red > 180 && color.blue > 100 && color.red > color.green + 25 &&
+                    color.blue > color.green + 20) pink++
+            }
+            check(cyan >= 100 && pink >= 100) { "Actual native screen $id did not show fixture video (cyan=$cyan,pink=$pink)" }
+            return cyan to pink
+        }
+        fun captureReturn(id: String) {
+            val colors = captureNativeWindow(id, floating = false)
+            record(id, mapOf("sameAcceptedSourceVersion" to JsonPrimitive(accepted.sourceVersion),
+                "fullOriginalPublicationStillOwned" to JsonPrimitive(true), "sameActualCanvasInMain" to JsonPrimitive(true),
+                "actualScreenCyanPixels" to JsonPrimitive(colors.first), "actualScreenPinkPixels" to JsonPrimitive(colors.second)))
+        }
+        fun pressActualPipButton(tooltip: String) = edt {
+            val pip = requireNotNull(pipWindow())
+            val button = nativeComponents(pip).filterIsInstance<javax.swing.JButton>()
+                .single { it.toolTipText == tooltip }
+            check(button.isShowing && button.isEnabled && SwingUtilities.getWindowAncestor(button) === pip)
+            val now = System.currentTimeMillis()
+            val x = button.width / 2; val y = button.height / 2
+            button.dispatchEvent(MouseEvent(button, MouseEvent.MOUSE_ENTERED, now, 0, x, y, 0, false))
+            button.dispatchEvent(MouseEvent(button, MouseEvent.MOUSE_PRESSED, now + 1, InputEvent.BUTTON1_DOWN_MASK,
+                x, y, 1, false, MouseEvent.BUTTON1))
+            button.dispatchEvent(MouseEvent(button, MouseEvent.MOUSE_RELEASED, now + 2, 0,
+                x, y, 1, false, MouseEvent.BUTTON1))
+        }
+        val before = actualPlayer.state.value.positionSeconds
+        check(before > 5.0)
+        click("浮窗")
+        await("same actual Canvas and complete source playing in independent PiP") { pipReady(false) }
+        val first = actualPlayer.state.value.positionSeconds
+        check(first >= before - 1.0) { "PiP replayed the route's original start position" }
+        Thread.sleep(1500)
+        check(pipReady(false)); samePublication()
+        val after = actualPlayer.state.value.positionSeconds
+        check(after > first + .5)
+        val colors = captureNativeWindow("170-pip-playing")
+        record("170-pip-playing", mapOf("sameAcceptedSourceVersion" to JsonPrimitive(accepted.sourceVersion),
+            "fullOriginalPublicationStillOwned" to JsonPrimitive(true), "sameActualCanvas" to JsonPrimitive(true),
+            "independentNativeWindow" to JsonPrimitive(true), "actualOpenControlUsed" to JsonPrimitive("浮窗"),
+            "clockBefore" to JsonPrimitive(before), "clockFirstPip" to JsonPrimitive(first), "clockAfter" to JsonPrimitive(after),
+            "actualScreenCyanPixels" to JsonPrimitive(colors.first), "actualScreenPinkPixels" to JsonPrimitive(colors.second),
+            "volumeMuteSpeedPreserved" to JsonPrimitive(true)))
+        pressActualPipButton("返回主播放器")
+        await("actual PiP Return restores same Main Canvas and original source") {
+            edt { runCatching { sameNative(); samePublication(); playing() }.getOrDefault(false) }
+        }
+        check(actualPlayer.state.value.positionSeconds >= after - 1.0)
+        clockAndCapture("171-pip-return-playing")
+        captureReturn("171-pip-return-visible")
+
+        click("暂停")
+        await("original main Pause has native readback before PiP") { actualPlayer.state.value.nativePaused == true }
+        val pausedPosition = actualPlayer.state.value.positionSeconds
+        click("浮窗")
+        await("paused original source in actual PiP") { pipReady(true) }
+        Thread.sleep(800)
+        check(pipReady(true) && kotlin.math.abs(actualPlayer.state.value.positionSeconds - pausedPosition) < .5)
+        check(initial.volume == 0.0 && initial.muted)
+        pressActualPipButton("静音/取消静音")
+        expectedMuted = false
+        await("actual PiP mute button changes runtime intent while volume stays zero") {
+            actualPlayer.state.value.let { !it.muted && it.volume == 0.0 && it.nativePaused == true }
+        }
+        awaitNativeMute(false)
+        val pausedColors = captureNativeWindow("172-pip-paused")
+        record("172-pip-paused", mapOf("sameAcceptedSourceVersion" to JsonPrimitive(accepted.sourceVersion),
+            "fullOriginalPublicationStillOwned" to JsonPrimitive(true), "sameActualCanvas" to JsonPrimitive(true),
+            "pausedPosition" to JsonPrimitive(pausedPosition), "nativePausePreserved" to JsonPrimitive(true),
+            "runtimeMuteChangedThroughActualPipControl" to JsonPrimitive(true), "runtimeMuted" to JsonPrimitive(false),
+            "nativeMuteAcknowledged" to JsonPrimitive(true),
+            "actualScreenCyanPixels" to JsonPrimitive(pausedColors.first), "actualScreenPinkPixels" to JsonPrimitive(pausedColors.second),
+            "volumeMuteSpeedPreserved" to JsonPrimitive(true)))
+        pressActualPipButton("返回主播放器")
+        await("paused same source restored to Main through actual PiP Return") { edt {
+            runCatching { sameNative(); samePublication()
+                val state = actualPlayer.state.value
+                state.ready && !state.loading && state.nativePaused == true && state.firstVideoFrameReady
+            }.getOrDefault(false)
+        } }
+        Thread.sleep(600)
+        check(kotlin.math.abs(actualPlayer.state.value.positionSeconds - pausedPosition) < .5)
+        samePublication()
+        check(!actualPlayer.state.value.muted && actualPlayer.state.value.volume == 0.0)
+        awaitNativeMute(false)
+        record("172-pip-runtime-mute-return", mapOf("sameAcceptedSourceVersion" to JsonPrimitive(accepted.sourceVersion),
+            "fullOriginalPublicationStillOwned" to JsonPrimitive(true), "runtimeMuted" to JsonPrimitive(false),
+            "nativeMuteAcknowledged" to JsonPrimitive(true),
+            "originalLoadMuteNotReapplied" to JsonPrimitive(true), "nativePausePreserved" to JsonPrimitive(true)))
+        ownedKey(actualPlayer.surface, java.awt.event.KeyEvent.VK_M)
+        expectedMuted = true
+        await("Main native keyboard restores private silent mute intent") { actualPlayer.state.value.muted }
+        awaitNativeMute(true)
+        click("播放")
+        await("original main Play remains usable after both PiP round trips") { playing() }
+        clockAndCapture("173-pip-paused-return-playing")
+        captureReturn("173-pip-paused-return-visible")
+        samePublication()
+    }
+
     private fun exercise(replay: Boolean, localReplay: WindowsVideoLocalReplay?) {
         val initial = videoFrame()
         videoKey = initial.key as BiliPaiNavKey.VideoDetail
@@ -2072,6 +2419,14 @@ object WindowsVideoActualRootUiFixture {
         videoFrame(beforeRestore); Thread.sleep(1200)
         clockAndCapture("150-restored-playing")
         if (System.getProperty("bilipai.validation.scaleInput") == "true") exerciseOwnedScaleAndKeyboard()
+        if (System.getProperty("bilipai.validation.pipInput") == "true") {
+            check(replay) { "PiP proof requires private local API and media" }
+            exercisePictureInPicture()
+        }
+        if (System.getProperty("bilipai.validation.originalInteractionInput") == "true") {
+            check(replay) { "Original interaction proof requires the private guest replay" }
+            exerciseOriginalVideoInteractions()
+        }
         if (System.getProperty("bilipai.validation.hotInput") == "true") {
             check(replay) { "Hot UI proof requires the private actual Main local replay" }
             exerciseHotDanmaku(requireNotNull(localReplay))
@@ -2177,6 +2532,13 @@ object WindowsVideoActualRootUiFixture {
                         put("bgmInputProofCompleted", System.getProperty("bilipai.validation.bgmInput") == "true")
                         put("bgmApiResponsesAreSynthetic", System.getProperty("bilipai.validation.bgmInput") == "true")
                         put("bgmAccountMutationAccepted", false); put("commentsSent", false)
+                        put("pipInputProofRequested", System.getProperty("bilipai.validation.pipInput") == "true")
+                        put("pipInputProofCompleted", System.getProperty("bilipai.validation.pipInput") == "true")
+                        put("pipRapidCancellationAccepted", false)
+                        put("originalInteractionProofRequested", System.getProperty("bilipai.validation.originalInteractionInput") == "true")
+                        put("originalInteractionProofCompleted", System.getProperty("bilipai.validation.originalInteractionInput") == "true")
+                        put("originalLoggedInDanmakuSendAccepted", false)
+                        put("originalSystemShareAccepted", false)
                         put("realAccountUsed", false); put("physicalStackWrittenByFixture", System.getProperty("bilipai.validation.nvidiaInput") == "true")
                         put("directPhysicalStackListMutation", false)
                         put("newNativeActorCreatedByFixture", false); put("newRootCreatedByFixture", false)
