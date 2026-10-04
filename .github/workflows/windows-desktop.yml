@@ -140,7 +140,14 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Windows-native-player-smoke-evidence
-          path: desktop/build/reports/*/native-player-smoke.*
+          path: |
+            desktop/build/reports/*/native-player-smoke.*
+            desktop/build/reports/*/native-overlay-before.png
+            desktop/build/reports/*/native-overlay-failed.png
+            desktop/build/reports/*/native-overlay-failed-state.txt
+            desktop/build/reports/*/native-danmaku-overlay.png
+            desktop/build/reports/*/native-danmaku-plugin-style.png
+            desktop/build/reports/*/native-eye-protection.png
           if-no-files-found: warn
       - name: Upload packaged updater evidence
         if: always()
