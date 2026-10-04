@@ -28,7 +28,7 @@ class WorkerJdkFetchTest(unittest.TestCase):
             root = Path(temp); archive, digest = self.archive_fixture(root)
             output = root / "fixed-jdk"; output.mkdir()
             with patch.object(fetcher.worker, "JDK_SHA256", digest):
-                self.assertEqual(fetcher.fetch(archive, output, True), output)
+                self.assertEqual(fetcher.fetch(archive, output, True), output.resolve())
                 fetcher.worker.verify_jdk(output, archive)
             self.assertEqual((output / "bin/java.exe").read_bytes(), b"fixed java fixture")
 
