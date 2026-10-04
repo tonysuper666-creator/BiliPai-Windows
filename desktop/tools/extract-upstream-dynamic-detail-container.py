@@ -15,7 +15,7 @@ HERE = Path(__file__).resolve().parent
 OUTPUT = HERE / 'generated'
 STANDALONE = False
 REPO = next(p for p in HERE.parents if (p / '.git').exists())
-TAG = 'v0.2.3-alpha.9'
+ORIGINAL_COMMIT = 'fcf84853b287662e8a9129ea0d38576c36522a34'
 BASE = 'app/src/main/java/com/android/purebilibili/'
 DESIGN = 'design-system/src/main/java/com/android/purebilibili/'
 
@@ -30,7 +30,7 @@ def write(path, value):
 def read(path):
     current = safe(_desktop_canonical_source(REPO, path)).read_text(encoding='utf-8').replace('\r\n','\n')
     if STANDALONE:
-        original = subprocess.run(['git','show',TAG+':'+path],cwd=REPO,capture_output=True,check=True).stdout.decode().replace('\r\n','\n')
+        original = subprocess.run(['git','show',ORIGINAL_COMMIT+':'+path],cwd=REPO,capture_output=True,check=True).stdout.decode().replace('\r\n','\n')
         assert current == original, path
     return current
 

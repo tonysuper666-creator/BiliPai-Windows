@@ -7,6 +7,7 @@ import hashlib, json, re, subprocess, textwrap
 HERE = Path(__file__).resolve().parent
 ROOT = next(p for p in HERE.parents if (p / '.git').exists())
 ORIGINAL = 'app/src/main/java/com/android/purebilibili/feature/dynamic/components/ImagePreviewDialog.kt'
+ORIGINAL_COMMIT = 'fcf84853b287662e8a9129ea0d38576c36522a34'
 ORIGINAL_SHA = '8ab6d642e5085483ffa5fbe684cb962468c6b93daec46c1eb768e98f8b3fe0b0'
 
 def safe(p):
@@ -20,7 +21,7 @@ def write(p, content):
 def sha(p): return hashlib.sha256(safe(p).read_bytes()).hexdigest()
 
 def generate(repo, output, standalone=False):
-    raw = subprocess.check_output(['git', 'show', 'v0.2.3-alpha.9:' + ORIGINAL], cwd=repo)
+    raw = subprocess.check_output(['git', 'show', ORIGINAL_COMMIT + ':' + ORIGINAL], cwd=repo)
     text = raw.decode('utf-8').replace('\r\n', '\n')
     assert hashlib.sha256(text.encode()).hexdigest() == ORIGINAL_SHA
     lines = text.splitlines(keepends=True)
@@ -79,7 +80,7 @@ internal fun desktopOriginalStaticGalleryFileName(imageUrl: String): String {{
         assert normalized(body) in normalized(pure)
         audit.append(dict(fragment=label, originalSha256Lf=hashlib.sha256(body.encode()).hexdigest(), tokenBodyPreserved=True))
     audit_record = dict(
-        originalTag='v0.2.3-alpha.9', originalCommit='fcf84853b287662e8a9129ea0d38576c36522a34',
+        originalTag='v0.2.3-alpha.9', originalCommit=ORIGINAL_COMMIT,
         originalPath=ORIGINAL, originalSha256Lf=ORIGINAL_SHA, fragments=audit,
         declaredAdapters=['Split original local assignments into four uniquely named internal stateless functions', 'Indentation only for selected bodies', 'Added function-level return statements', 'Original raw-branch predicate reused directly'],
         originalAndroidCoilBitmapEncodingBodyRetainedAsReferenceOnly=True,
