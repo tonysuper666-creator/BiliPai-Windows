@@ -17,6 +17,7 @@ desktop/third-party/ffmpeg/licenses/** -text
 desktop/third-party/libmpv/licenses/** -text
 desktop/third-party/graaljs/licenses/** -text
 desktop/third-party/miuix5157/upstream/** -text
+desktop/third-party/miuix5157/bilipai-v025-nav/** -text
 desktop/src/main/resources/licenses/appearance/** -text
 desktop/src/main/resources/licenses/dynamic-media/** -text
 desktop/src/main/resources/licenses/pinyin4j-2.5.0/** -text
