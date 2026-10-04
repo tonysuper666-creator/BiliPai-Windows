@@ -36,7 +36,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Verify updater and publication safety policies
-        run: python -m unittest discover -s desktop/tools/tests -p 'test_*.py'
+        run: python desktop/tools/run-tool-tests.py --stage policies
       - name: Check upstream source and Windows publication independently
         id: check
         env:
@@ -49,10 +49,10 @@ jobs:
           def command(*args):
               return subprocess.run(args, check=True, capture_output=True, text=True).stdout
           report = json.loads(command('python', 'desktop/tools/sync-upstream.py', '--check'))
-          publication = json.loads(command('python', 'desktop/tools/publish-release.py', '--check', '--repository', os.environ['GITHUB_REPOSITORY']))
           Path(os.environ['RUNNER_TEMP'], 'upstream-check.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+          publication = json.loads(command('python', 'desktop/tools/publish-release.py', '--check', '--repository', os.environ['GITHUB_REPOSITORY']))
           needed = False
-          if report['status'] == 'updateAvailable':
+          if report['status'] == 'updateAvailable' and report.get('autoBuildEligible') is True:
               prs = json.loads(command('gh', 'pr', 'list', '--repo', os.environ['GITHUB_REPOSITORY'], '--head', report['candidateBranch'], '--state', 'all', '--json', 'number'))
               needed = not prs
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
@@ -60,6 +60,13 @@ jobs:
               output.write(f"publication_needed={str(publication['publicationNeeded']).lower()}\n")
               output.write(f"source_sha={publication['sourceSha']}\n")
           print(json.dumps({'upstream': report, 'windowsPublication': publication}, indent=2))
+      - name: Preserve upstream compatibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-upstream-compatibility
+          path: ${{ runner.temp }}/upstream-check.json
+          if-no-files-found: warn
 
   candidate:
     needs: detect

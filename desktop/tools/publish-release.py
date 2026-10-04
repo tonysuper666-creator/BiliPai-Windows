@@ -17,7 +17,7 @@ spec = importlib.util.spec_from_file_location("windows_sync", Path(__file__).wit
 sync = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(sync)
 ReleaseError = sync.UpdateError
-GATES = ("kotlinUnitTests", "guestNetworkBackendSmoke", "packagedNativePlayerSmoke", "packagedUpdaterSmoke")
+GATES = ("kotlinUnitTests", "pythonSourceContractTests", "guestNetworkBackendSmoke", "packagedNativePlayerSmoke", "packagedUpdaterSmoke")
 
 
 def valid_repository(repository: str) -> str:
@@ -50,7 +50,7 @@ def asset_names(version: str) -> tuple[str, str, str]:
 
 def validate_gates(gate: dict) -> None:
     if gate.get("passed") is not True or any(gate.get(name) != "passed" for name in GATES):
-        raise ReleaseError("Unit tests, guest backend smoke, packaged native smoke, and updater smoke must all pass.")
+        raise ReleaseError("Unit tests, Python source contracts, guest backend smoke, packaged native smoke, and updater smoke must all pass.")
 
 
 def checksum(contents: bytes, archive_name: str) -> str:
@@ -211,6 +211,8 @@ def publication_status(github: GitHub, manifest: dict, version: str, source_sha:
 def publish(github: GitHub, manifest: dict, version: str, source_sha: str,
             assets_root: Path, gate: dict) -> dict:
     validate_gates(gate)
+    if gate.get("windowsSourceCommit") != validate_sha(source_sha):
+        raise ReleaseError("Release gate does not match the exact Windows source commit.")
     archive_name, checksum_name, source_name = asset_names(version)
     archive = assets_root / archive_name
     if not archive.is_file() or not zipfile.is_zipfile(archive):
@@ -302,8 +304,7 @@ def main() -> int:
         remote_repository = sync.publication_check(repo)
         if remote_repository.lower() != valid_repository(args.repository).lower():
             raise ReleaseError("Publication repository differs from the checkout's personal Windows remote.")
-        if sync.git(repo, "status", "--porcelain", "--untracked-files=all", "--",
-                    "desktop", ".github", "app", "settings-core"):
+        if sync.git(repo, "status", "--porcelain", "--untracked-files=all"):
             raise ReleaseError("Commit reviewed Windows sources first; a dirty checkout cannot attest an exact source SHA.")
         manifest = sync.read_manifest(repo)
         head = sync.git(repo, "rev-parse", "HEAD")

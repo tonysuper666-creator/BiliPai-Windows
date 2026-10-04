@@ -23,6 +23,30 @@ def entry_calls(source):
         result.append([x[0] for x in lex[start:end+1]])
     return result
 
+def block_tokens(lex, opening):
+    assert lex[opening] == '{'
+    end = opening + 1; depth = 1
+    while depth:
+        depth += (lex[end] == '{') - (lex[end] == '}')
+        end += 1
+    return lex[opening + 1:end - 1]
+
+def original_playback_body_tokens(source):
+    lex = tokens(source); removals = []
+    for index, token in enumerate(lex[:-1]):
+        if token == 'SettingsRootCategoryEntranceSection' and lex[index + 1] == '{':
+            contents = block_tokens(lex, index + 1)
+            removals.extend(((index, index + 2), (index + 2 + len(contents), index + 3 + len(contents))))
+    assert len(removals) == 4
+    for begin, end in reversed(removals):
+        del lex[begin:end]
+    for _ in range(2):
+        index = lex.index('actions')
+        assert lex[index:index + 3] == ['actions', '.', 'onPlaybackClick']
+        lex[index:index + 3] = ['onPlaybackClick']
+    assert 'actions' not in lex
+    return lex
+
 class SettingsEntryExtractionTest(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(prefix='settings-entry-extract-')
@@ -58,7 +82,14 @@ class SettingsEntryExtractionTest(unittest.TestCase):
         self.assertEqual(len(generated),2)
         self.assertIn('PLAYBACK_DECODER',generated[0]);self.assertNotIn('PLAYBACK_NETWORK',generated[0])
         self.assertIn('PLAYBACK_INTERACTION',generated[1])
-        self.assertIn('Spacer(modifier = Modifier.height(12.dp))',self.files['SettingsPlaybackCategoryEntries.kt'])
+        # All canonical branch statements survive the two entrance-wrapper and
+        # callback adaptations. v025 has no old synthetic 12dp Spacer here.
+        whole = media.function(self.files['SettingsPlaybackCategoryEntries.kt'],
+                               'SettingsPlaybackCategoryEntrySection', parser)
+        generated_body = tokens(whole)
+        column = generated_body.index('Column')
+        self.assertEqual(block_tokens(generated_body, column + 1),
+                         original_playback_body_tokens(tool.original_playback_branch(REPO)))
         self.assertNotIn('SettingsRootCategoryEntranceSection',self.files['SettingsPlaybackCategoryEntries.kt'])
         self.assertNotIn('SettingsRootCategoryState',self.files['SettingsPlaybackCategoryEntries.kt'])
         self.assertNotIn('SettingsRootCategoryActions',self.files['SettingsPlaybackCategoryEntries.kt'])

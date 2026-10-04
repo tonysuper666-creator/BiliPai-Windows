@@ -1,4 +1,6 @@
 import importlib.util
+import hashlib
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -26,9 +28,29 @@ class JsSourceParityTest(unittest.TestCase):
 
     def test_pure_schema_and_launch_store_stay_direct_and_are_not_duplicated(self):
         rows = EXTRACTOR.inventory(ROOT)
-        self.assertEqual(7, len(rows))
-        self.assertEqual(7, len({row["path"] for row in rows}))
-        self.assertEqual(6, len(self.files))
+        expected = {
+            EXTRACTOR.BASE + "core/plugin/js/BiliPaiJsPluginModels.kt": "direct",
+            EXTRACTOR.BASE + "core/plugin/js/ExternalMediaLaunchStore.kt": "direct",
+            EXTRACTOR.BASE + "feature/plugin/js/ExternalMediaDanmaku.kt": "direct",
+            EXTRACTOR.BASE + "core/plugin/js/BiliPaiJsPluginInstallStore.kt": "extracted",
+            EXTRACTOR.BASE + "core/plugin/feed/FeedSourceCatalog.kt": "extracted",
+            EXTRACTOR.BASE + "core/plugin/js/BiliPaiJsModuleResultCache.kt": "extracted",
+            EXTRACTOR.BASE + "feature/plugin/js/BiliPaiJsLayoutPresetStore.kt": "extracted",
+            EXTRACTOR.BASE + "core/plugin/js/BiliPaiJsRuntime.kt": "policy-extract",
+            EXTRACTOR.BASE + "feature/plugin/js/BiliPaiJsPluginContentScreen.kt": "policy-extract",
+            EXTRACTOR.BASE + "feature/settings/screen/PluginsScreen.kt": "policy-extract",
+        }
+        self.assertEqual({row["path"]: row["mode"] for row in rows}, expected)
+        self.assertEqual(len(rows), len(expected))
+        self.assertEqual({file.name for file in self.files}, {
+            "BiliPaiJsPluginInstallStore.kt", "FeedSourceCatalog.kt", "BiliPaiJsModuleResultCache.kt",
+            "DesktopBiliPaiJsScriptPolicy.kt", "DesktopBiliPaiJsStorageBridge.kt",
+            "DesktopBiliPaiJsContentPolicy.kt", "DesktopJsRemoteImportPolicy.kt",
+            "OriginalBiliPaiJsPluginContentScreen.kt", "BiliPaiJsLayoutPresetStore.kt",
+        })
+        host = EXTRACTOR.helper(ROOT)
+        for row in rows:
+            self.assertEqual(row["sha256"], hashlib.sha256(host.read(ROOT, row["path"]).encode()).hexdigest())
         for path in EXTRACTOR.DIRECT:
             self.assertNotIn(Path(path).name, {file.name for file in self.files})
 
@@ -73,6 +95,47 @@ class JsSourceParityTest(unittest.TestCase):
         self.assertIn("PluginCapability.NETWORK in installed.grantedCapabilities", output)
         self.assertIn('it.kind.equals("feed", ignoreCase = true)', output)
         self.assertNotIn("loadModuleItems", output)
+
+    def test_v025_module_cache_and_layout_preset_store_keep_complete_original_bodies(self):
+        host = EXTRACTOR.helper(ROOT)
+        for source_path, output_name in (
+            (EXTRACTOR.BASE + "core/plugin/js/BiliPaiJsModuleResultCache.kt", "BiliPaiJsModuleResultCache"),
+            (EXTRACTOR.BASE + "feature/plugin/js/BiliPaiJsLayoutPresetStore.kt", "BiliPaiJsLayoutPresetStore"),
+        ):
+            original = host.read(ROOT, source_path)
+            expected = host.platform_context(original)
+            if output_name == "BiliPaiJsModuleResultCache":
+                android_cache = 'File(context.cacheDir, "bilipai_js_plugin_module_cache")'
+                windows_cache = 'File(File(context.filesDir, "cache"), "bilipai_js_plugin_module_cache")'
+                self.assertEqual(expected.count(android_cache), 1)
+                expected = expected.replace(android_cache, windows_cache, 1)
+            self.assertEqual(self.file(output_name).split("\n", 2)[2], expected.strip() + "\n")
+
+    def test_complete_original_content_screen_inverts_every_recorded_platform_edit(self):
+        host = EXTRACTOR.helper(ROOT)
+        recipe = json.loads(SCRIPT.with_name("upstream-js-content-adaptations.json").read_text(encoding="utf-8"))
+        original = host.read(ROOT, recipe["source"])
+        self.assertEqual(hashlib.sha256(original.encode()).hexdigest(), recipe["sha256LF"])
+        expected = original
+        for edit in recipe["changes"]:
+            self.assertEqual(expected.count(edit["before"]), edit["count"])
+            expected = expected.replace(edit["before"], edit["after"], edit["count"])
+        emitted = self.file("OriginalBiliPaiJsPluginContentScreen").split("\n", 2)[2]
+        self.assertEqual(emitted, expected.strip() + "\n")
+        # host.write strips boundary whitespace after the edits. Restore the
+        # adapted boundary, which may differ from the original after deleting
+        # Android-only trailing helpers, before checking every inverse position.
+        leading = len(expected) - len(expected.lstrip())
+        trailing = expected[len(expected.rstrip()):]
+        reconstructed = expected[:leading] + emitted[:-1] + trailing
+        for edit in reversed(recipe["changes"]):
+            before, after = edit["before"], edit["after"]
+            self.assertEqual(len(edit["beforePositions"]), edit["count"])
+            for index in range(len(edit["beforePositions"]) - 1, -1, -1):
+                position = edit["beforePositions"][index] + index * (len(after) - len(before))
+                self.assertEqual(reconstructed[position:position + len(after)], after)
+                reconstructed = reconstructed[:position] + before + reconstructed[position + len(after):]
+        self.assertEqual(reconstructed, original)
 
     def test_example_snapshots_are_real_upstream_source_files(self):
         for path in EXTRACTOR.EXAMPLES:

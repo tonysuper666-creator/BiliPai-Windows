@@ -7,12 +7,17 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+from v025_source_paths import canonical_source
 
 spec = importlib.util.spec_from_file_location("sync_upstream", Path(__file__).parents[1] / "sync-upstream.py")
 sync = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(sync)
 OLD = "a" * 40
 NEW = "b" * 40
+
+
+def tree_blob(path, contents, mode="100644"):
+    return {"path": path, "type": "blob", "mode": mode, "sha": sync.blob_oid(contents)}
 
 
 class ReleasePolicyTests(unittest.TestCase):
@@ -69,6 +74,130 @@ class InventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(sync.UpdateError, "differs"):
             sync.read_manifest(self.repo)
 
+    def populate_inventory(self, count):
+        self.manifest["sources"] = []
+        for index in range(count):
+            relative = f"app/Api{index}.kt"
+            contents = f"source {index}\n".encode("utf-8")
+            (self.repo / relative).write_bytes(contents)
+            self.manifest["sources"].append({"path": relative, "sha256": sync.source_digest(contents)})
+        (self.repo / "desktop/upstream-sources.json").write_text(json.dumps(self.manifest), encoding="utf-8")
+
+    def test_inventory_accepts_complete_sources_above_legacy_count_limit(self):
+        for count in (201, 1327):
+            with self.subTest(count=count):
+                self.populate_inventory(count)
+                self.assertEqual(sync.read_manifest(self.repo), self.manifest)
+
+    def test_large_inventory_still_verifies_the_final_source(self):
+        self.populate_inventory(1327)
+        (self.repo / self.manifest["sources"][-1]["path"]).write_bytes(b"unreviewed final source")
+        with self.assertRaisesRegex(sync.UpdateError, "differs"):
+            sync.read_manifest(self.repo)
+
+    def test_large_inventory_still_rejects_duplicate_paths(self):
+        self.populate_inventory(1327)
+        self.manifest["sources"][-1] = dict(self.manifest["sources"][0])
+        (self.repo / "desktop/upstream-sources.json").write_text(json.dumps(self.manifest), encoding="utf-8")
+        with self.assertRaisesRegex(sync.UpdateError, "Duplicate source"):
+            sync.read_manifest(self.repo)
+
+    def test_oversized_inventory_is_rejected_before_source_validation(self):
+        self.manifest["padding"] = "x" * sync.MAX_MANIFEST_BYTES
+        (self.repo / "desktop/upstream-sources.json").write_text(json.dumps(self.manifest), encoding="utf-8")
+        with self.assertRaisesRegex(sync.UpdateError, "configuration input budget"):
+            sync.read_manifest(self.repo)
+
+    def test_raw_resource_hash_does_not_normalize_png_bytes(self):
+        contents = b"\x89PNG\r\n\x1a\nfixture\r\n"
+        (self.repo / "app/image.png").write_bytes(contents)
+        self.manifest["resources"] = [{"path": "app/image.png", "sha256": hashlib.sha256(contents).hexdigest(),
+                                       "hashNormalization": "raw"}]
+        manifest_file = self.repo / "desktop/upstream-sources.json"
+        manifest_file.write_text(json.dumps(self.manifest), encoding="utf-8")
+        self.assertEqual(sync.read_manifest(self.repo), self.manifest)
+        self.manifest["resources"][0]["sha256"] = sync.source_digest(contents)
+        manifest_file.write_text(json.dumps(self.manifest), encoding="utf-8")
+        with self.assertRaisesRegex(sync.UpdateError, "differs"):
+            sync.read_manifest(self.repo)
+
+    def test_source_and_resource_duplicate_identity_is_rejected(self):
+        self.manifest["resources"] = [dict(self.manifest["sources"][0])]
+        (self.repo / "desktop/upstream-sources.json").write_text(json.dumps(self.manifest), encoding="utf-8")
+        with self.assertRaisesRegex(sync.UpdateError, "Duplicate source/resource"):
+            sync.read_manifest(self.repo)
+
+    def test_unchanged_large_inventory_skips_all_raw_downloads_without_inventing_compatibility(self):
+        self.populate_inventory(1328)
+        tree = {"tree": [tree_blob(item["path"], (self.repo / item["path"]).read_bytes())
+                         for item in self.manifest["sources"]]}
+        with patch.object(sync, "latest_release", return_value={"tag_name": "new"}), \
+             patch.object(sync, "resolve_tag", return_value=NEW), \
+             patch.object(sync, "request_json", return_value=tree), \
+             patch.object(sync, "source_bytes") as fetch:
+            report, hashes = sync.check_update(self.repo, self.manifest)
+        fetch.assert_not_called()
+        self.assertEqual(len(hashes), 1328)
+        self.assertEqual(report["unchangedBlobInputs"], 1328)
+        self.assertEqual(report["sourceDownloads"], 0)
+        self.assertEqual(report["status"], "updateAvailable")
+        self.assertFalse(report["autoBuildEligible"])
+        self.assertFalse(report["autoPublishEligible"])
+        self.assertEqual(report["buildCompatibility"]["status"], "manualAdaptationRequired")
+        self.assertEqual(report["buildCompatibility"]["reasons"][0]["code"], "canonicalBaselineUnavailable")
+
+    def test_invalid_tree_structure_never_uses_unverified_blob_ids(self):
+        invalid = [
+            {"tree": [{}]}, {"tree": "not a tree"}, {"tree": [], "truncated": True},
+            {"tree": [tree_blob("app/Api.kt", b"old source"), tree_blob("app/Api.kt", b"old source")]},
+        ]
+        for tree in invalid:
+            with self.subTest(tree=tree), \
+                 patch.object(sync, "latest_release", return_value={"tag_name": "new"}), \
+                 patch.object(sync, "resolve_tag", return_value=NEW), \
+                 patch.object(sync, "request_json", return_value=tree), \
+                 patch.object(sync, "source_bytes") as fetch:
+                with self.assertRaises(sync.UpdateError):
+                    sync.check_update(self.repo, self.manifest)
+                fetch.assert_not_called()
+
+    def test_fixed_commit_download_must_match_the_returned_tree_blob(self):
+        tree = {"tree": [tree_blob("app/Api.kt", b"verified incoming") ]}
+        with patch.object(sync, "latest_release", return_value={"tag_name": "new"}), \
+             patch.object(sync, "resolve_tag", return_value=NEW), \
+             patch.object(sync, "request_json", return_value=tree), \
+             patch.object(sync, "source_bytes", return_value=b"different incoming") as fetch:
+            with self.assertRaisesRegex(sync.UpdateError, "blob identity"):
+                sync.check_update(self.repo, self.manifest)
+        fetch.assert_called_once_with(NEW, "app/Api.kt")
+
+    def test_unknown_catalog_is_fatal_instead_of_an_unproven_ready_baseline(self):
+        catalog = self.repo / sync.CANONICAL_CATALOG_PATH
+        catalog.parent.mkdir(parents=True)
+        catalog.write_text("{}", encoding="utf-8")
+        with patch.object(sync, "latest_release", return_value={"tag_name": "new"}), \
+             patch.object(sync, "resolve_tag", return_value=NEW):
+            with self.assertRaisesRegex(sync.UpdateError, "Unknown canonical source catalog"):
+                sync.check_update(self.repo, self.manifest)
+
+    def test_compatibility_rejection_keeps_dirty_first_and_never_fetches(self):
+        report = {"status": "updateAvailable", "autoBuildEligible": False,
+                  "buildCompatibility": {"status": "manualAdaptationRequired"}}
+        with patch.object(sync, "git", return_value="") as git:
+            with self.assertRaisesRegex(sync.UpdateError, "compatibility preflight"):
+                sync.sync_update(self.repo, self.manifest, report, {}, self.repo / "updates", None)
+        git.assert_called_once_with(self.repo, "status", "--porcelain")
+
+    def test_candidate_worktree_cannot_write_inside_the_original_checkout(self):
+        report = {"status": "updateAvailable", "autoBuildEligible": True,
+                  "buildCompatibility": {"status": "ready"}}
+        for root in (self.repo, self.repo / "updates"):
+            with self.subTest(root=root), patch.object(sync, "git", return_value="") as git:
+                with self.assertRaisesRegex(sync.UpdateError, "outside the original checkout"):
+                    sync.sync_update(self.repo, self.manifest, report, {}, root, None)
+                git.assert_called_once_with(self.repo, "status", "--porcelain")
+        self.assertFalse((self.repo / "updates").exists())
+
     def test_inventory_hashes_ignore_checkout_crlf(self):
         (self.repo / "app/Api.kt").write_bytes(b"source\r\nsecond line\r\n")
         self.manifest["sources"][0]["sha256"] = sync.source_digest(b"source\nsecond line\n")
@@ -83,10 +212,11 @@ class InventoryTests(unittest.TestCase):
             sync.read_manifest(self.repo)
 
     def test_upstream_crlf_only_changes_are_not_feature_changes(self):
+        (self.repo / "app/Api.kt").write_bytes(b"source\n")
         self.manifest["sources"][0]["sha256"] = sync.source_digest(b"source\n")
         with patch.object(sync, "latest_release", return_value={"tag_name": "alpha.10"}), \
              patch.object(sync, "resolve_tag", return_value=NEW), \
-             patch.object(sync, "request_json", return_value={"tree": [{"path": "app/Api.kt", "type": "blob", "mode": "100644"}]}), \
+             patch.object(sync, "request_json", return_value={"tree": [tree_blob("app/Api.kt", b"source\r\n")]}), \
              patch.object(sync, "source_bytes", return_value=b"source\r\n"):
             report, hashes = sync.check_update(self.repo, self.manifest)
         self.assertEqual(report["changedReusedSources"], [])
@@ -100,7 +230,7 @@ class InventoryTests(unittest.TestCase):
     def test_changed_reused_sources_flag_only_declared_features(self):
         with patch.object(sync, "latest_release", return_value={"tag_name": "alpha.10", "prerelease": True}), \
              patch.object(sync, "resolve_tag", return_value=NEW), \
-             patch.object(sync, "request_json", return_value={"tree": [{"path": "app/Api.kt", "type": "blob", "mode": "100644"}]}), \
+             patch.object(sync, "request_json", return_value={"tree": [tree_blob("app/Api.kt", b"new source")]}), \
              patch.object(sync, "source_bytes", return_value=b"new source"), \
              patch.object(sync, "git") as git:
             report, hashes = sync.check_update(self.repo, self.manifest)
@@ -113,15 +243,20 @@ class InventoryTests(unittest.TestCase):
         with patch.object(sync, "latest_release", return_value={"tag_name": "alpha.10"}), \
              patch.object(sync, "resolve_tag", return_value=NEW), \
              patch.object(sync, "request_json", return_value={"tree": []}):
-            with self.assertRaisesRegex(sync.UpdateError, "removed or moved"):
-                sync.check_update(self.repo, self.manifest)
+            report, _ = sync.check_update(self.repo, self.manifest)
+        self.assertEqual(report["status"], "updateAvailable")
+        self.assertFalse(report["autoBuildEligible"])
+        self.assertIn({"code": "inputRemovedOrMoved", "path": "app/Api.kt"},
+                      [{"code": item["code"], "path": item["path"]} for item in report["buildCompatibility"]["reasons"]])
 
     def test_symlink_in_upstream_inventory_is_rejected(self):
         with patch.object(sync, "latest_release", return_value={"tag_name": "alpha.10"}), \
              patch.object(sync, "resolve_tag", return_value=NEW), \
-             patch.object(sync, "request_json", return_value={"tree": [{"path": "app/Api.kt", "type": "blob", "mode": "120000"}]}):
-            with self.assertRaises(sync.UpdateError):
-                sync.check_update(self.repo, self.manifest)
+             patch.object(sync, "request_json", return_value={"tree": [tree_blob("app/Api.kt", b"target", mode="120000")]}):
+            report, _ = sync.check_update(self.repo, self.manifest)
+        self.assertFalse(report["autoBuildEligible"])
+        self.assertFalse(report["autoPublishEligible"])
+        self.assertIn("inputNotRegularFile", [item["code"] for item in report["buildCompatibility"]["reasons"]])
 
     def test_moved_existing_tag_is_not_silently_trusted(self):
         with patch.object(sync, "latest_release", return_value={"tag_name": self.manifest["upstreamTag"]}), \
@@ -178,16 +313,103 @@ object AndroidOnlySingleton { val feature = "old" }
                 sync.publication_check(self.repo)
 
 
+class CanonicalCompatibilityTests(unittest.TestCase):
+    def setUp(self):
+        self.repo = Path(__file__).parents[3]
+        self.manifest = sync.read_manifest(self.repo)
+        self.catalog = sync.canonical_baseline(self.repo, self.manifest)
+        self.entries = sync.compatibility_inputs(self.repo, self.manifest, self.catalog)
+        self.tree = {"tree": [{"path": item["path"], "type": "blob", "mode": "100644",
+                               "sha": self.catalog["paths"][item["path"]]["blob"]} for item in self.entries]}
+
+    def report(self, changed=None):
+        changed = changed or {}
+        tree = {"tree": [tree_blob(item["path"], changed[item["path"]]) if item["path"] in changed else item
+                         for item in self.tree["tree"]]}
+
+        def fetch(commit, path):
+            self.assertEqual(commit, NEW)
+            self.assertIn(path, changed)
+            return changed[path]
+
+        with patch.object(sync, "latest_release", return_value={"tag_name": "fixed-next", "prerelease": True}), \
+             patch.object(sync, "resolve_tag", return_value=NEW), \
+             patch.object(sync, "request_json", return_value=tree), \
+             patch.object(sync, "source_bytes", side_effect=fetch) as downloaded:
+            report, hashes = sync.check_update(self.repo, self.manifest)
+        self.assertEqual(downloaded.call_count, len(changed))
+        return report, hashes
+
+    def test_current_complete_fixed_baseline_skips_downloads_and_allows_build_only(self):
+        report, hashes = self.report()
+        self.assertEqual(report["status"], "updateAvailable")
+        self.assertTrue(report["autoBuildEligible"])
+        self.assertTrue(report["autoPublishEligible"])
+        self.assertEqual(report["buildCompatibility"]["status"], "ready")
+        self.assertEqual(report["buildCompatibility"]["reasons"], [])
+        self.assertEqual(report["buildCompatibility"]["checkedInputCount"], len(self.entries))
+        self.assertGreater(len(self.entries), 1327)
+        self.assertEqual(len(hashes), len(self.entries))
+        self.assertEqual(report["unchangedBlobInputs"], len(self.entries))
+        self.assertEqual(report["sourceDownloads"], 0)
+
+    def test_changed_canonical_source_is_reported_without_rewriting_any_pin(self):
+        row = self.manifest["sources"][0]
+        before = json.dumps(self.manifest, sort_keys=True)
+        contents = sync.normalized_source((self.repo / row["path"]).read_bytes()) + b"\n// changed upstream\n"
+        report, hashes = self.report({row["path"]: contents})
+        self.assertFalse(report["autoBuildEligible"])
+        self.assertFalse(report["autoPublishEligible"])
+        self.assertEqual(report["changedReusedSources"], [row["path"]])
+        self.assertEqual(hashes[row["path"]], sync.source_digest(contents))
+        self.assertEqual(json.dumps(self.manifest, sort_keys=True), before)
+        reason = report["buildCompatibility"]["reasons"][0]
+        self.assertEqual((reason["code"], reason["path"], reason["oldSha256"]),
+                         ("canonicalInputChanged", row["path"], row["sha256"]))
+
+    def test_raw_png_change_uses_raw_digest_and_is_an_explicit_resource_adaptation(self):
+        row = next(item for item in self.manifest["resources"]
+                   if item.get("hashNormalization") == "raw" and item["path"].endswith(".png"))
+        contents = (self.repo / row["path"]).read_bytes() + b"\r\nupstream resource change"
+        report, hashes = self.report({row["path"]: contents})
+        self.assertEqual(report["changedResources"], [row["path"]])
+        self.assertEqual(report["changedReusedSources"], [])
+        self.assertFalse(report["autoBuildEligible"])
+        self.assertEqual(hashes[row["path"]], hashlib.sha256(contents).hexdigest())
+        self.assertNotEqual(hashes[row["path"]], sync.source_digest(contents))
+        self.assertEqual(report["buildCompatibility"]["reasons"][0]["hashNormalization"], "raw")
+
+    def test_version_build_configuration_change_blocks_even_when_declared_sources_do_not_change(self):
+        path = "app/build.gradle.kts"
+        contents = sync.normalized_source((self.repo / path).read_bytes()) + b"\n// upstream build change\n"
+        report, _ = self.report({path: contents})
+        self.assertFalse(report["autoBuildEligible"])
+        self.assertEqual(report["changedReusedSources"], [])
+        self.assertEqual(report["changedResources"], [])
+        reason = report["buildCompatibility"]["reasons"][0]
+        self.assertEqual((reason["path"], reason["kind"]), (path, "buildConfiguration"))
+
+    def test_crlf_only_change_preserves_lf_contract_after_exact_blob_verification(self):
+        row = self.manifest["sources"][0]
+        contents = sync.normalized_source((self.repo / row["path"]).read_bytes()).replace(b"\n", b"\r\n")
+        report, _ = self.report({row["path"]: contents})
+        self.assertEqual(report["sourceDownloads"], 1)
+        self.assertTrue(report["autoBuildEligible"])
+        self.assertEqual(report["changedReusedSources"], [])
+
+
 class ApiClientRiskTests(unittest.TestCase):
     def setUp(self):
         self.repo = Path(__file__).parents[3]
-        self.path = "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
-        self.source = (self.repo / self.path).read_bytes()
+        original = canonical_source(self.repo, "app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt")
+        self.path = original.relative_to(self.repo).as_posix()
+        self.source = sync.normalized_source(original.read_bytes())
         manifest = json.loads((self.repo / "desktop/upstream-sources.json").read_text(encoding="utf-8"))
-        self.manifest = {**manifest, "sources": [next(item for item in manifest["sources"] if item["path"] == self.path)]}
+        self.manifest = {**manifest, "sources": [next(item for item in manifest["sources"] if item["path"] == self.path)], "resources": []}
 
     def report(self, candidate):
-        tree = {"tree": [{"path": self.path, "type": "blob", "mode": "100644"}]}
+        build = canonical_source(self.repo, "app/build.gradle.kts").read_bytes()
+        tree = {"tree": [tree_blob(self.path, candidate), tree_blob("app/build.gradle.kts", sync.normalized_source(build))]}
         with patch.object(sync, "latest_release", return_value={"tag_name": "sensitive-test"}), \
              patch.object(sync, "resolve_tag", return_value=NEW), \
              patch.object(sync, "request_json", return_value=tree), \
@@ -205,7 +427,10 @@ class ApiClientRiskTests(unittest.TestCase):
             (b'.cookieJar(appSessionCookieJar)', b'.cookieJar(PlaybackAccountCookieJar(account))'),
             (b'chain.proceed(applyForcedCookieHeader(chain.request()))', b'chain.proceed(chain.request())'),
             (b'.value(guestBuvid3)', b'.value("changed-visitor")'),
-            (b'.baseUrl("https://passport.bilibili.com/")', b'.baseUrl("https://changed.bilibili.com/")'),
+            (b'.baseUrl("https://passport.bilibili.com/").client(okHttpClient)',
+             b'.baseUrl("https://changed.bilibili.com/").client(okHttpClient)'),
+            (b'.baseUrl("https://passport.bilibili.com/")\n            .client(createQrAuthorizationClient(okHttpClient))',
+             b'.baseUrl("https://changed.bilibili.com/")\n            .client(createQrAuthorizationClient(okHttpClient))'),
             (b'"11111111"', b'"changed-session-id"'),
             (b'val b_4: String = ""', b'val b_4: String? = null'),
             (b'PlaybackAccountCookieJar(account: StoredAccountSession)', b'PlaybackAccountCookieJar(account: StoredAccountSession = defaultAccount())'),
@@ -241,7 +466,9 @@ class ApiClientRiskTests(unittest.TestCase):
                 report = self.report(candidate)
                 self.assertFalse(report["windowsApiContractChanged"])
                 self.assertFalse(report["networkBehaviorChanged"])
-                self.assertTrue(report["autoPublishEligible"])
+                self.assertFalse(report["autoBuildEligible"])
+                self.assertFalse(report["autoPublishEligible"])
+                self.assertIn("canonicalInputChanged", [item["code"] for item in report["buildCompatibility"]["reasons"]])
                 self.assertEqual(report["manualReviewReasons"], [])
 
     def test_sensitive_import_changes_are_not_hidden_by_unchanged_bodies(self):
@@ -283,12 +510,30 @@ class ApiClientRiskTests(unittest.TestCase):
             self.changed(b'object NetworkModule {', b'object NetworkModule { val broken = "unterminated'),
         ]
         for candidate in candidates:
-            with self.subTest(candidateLength=len(candidate)), self.assertRaises(sync.UpdateError):
-                self.report(candidate)
+            with self.subTest(candidateLength=len(candidate)):
+                report = self.report(candidate)
+                self.assertFalse(report["autoBuildEligible"])
+                self.assertFalse(report["autoPublishEligible"])
+                self.assertEqual(report["sensitiveReviewFailed"], [self.path])
+                self.assertTrue(report["manualReviewReasons"])
 
 
 class IsolatedWorktreeTests(unittest.TestCase):
     def test_failed_build_preserves_original_branch_and_files(self):
+        self.run_candidate("failedBuild")
+
+    def test_successful_build_is_bound_to_the_precommitted_clean_candidate(self):
+        self.run_candidate("success")
+
+    def test_policy_source_mutation_blocks_the_build(self):
+        self.run_candidate("policyMutation")
+
+    def test_successful_command_cannot_publish_dirty_or_recommitted_source(self):
+        for outcome in ("buildMutation", "buildCommit"):
+            with self.subTest(outcome=outcome):
+                self.run_candidate(outcome)
+
+    def run_candidate(self, outcome):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             repo = root / "repo"
@@ -324,27 +569,74 @@ class IsolatedWorktreeTests(unittest.TestCase):
                 "status": "updateAvailable", "candidateCommit": incoming,
                 "candidateBranch": "windows/upstream-new", "candidateTag": "new",
                 "changedReusedSources": ["app/Api.kt"], "featuresNeedingReview": [],
+                "autoBuildEligible": True, "buildCompatibility": {"status": "ready"},
             }
             real_run = sync.run
+            observed = []
+            verified_manifest = None
 
             def simulated_build(command, cwd, **kwargs):
-                if command[:2] == ["git", "fetch"] or command[0] == sync.sys.executable:
+                nonlocal verified_manifest
+                if command[:2] == ["git", "fetch"]:
                     return subprocess.CompletedProcess(command, 0, "", "")
-                if command[0] == "pwsh":
-                    raise sync.UpdateError("simulated failed Windows build")
+                if command[0] == sync.sys.executable or command[0] == "pwsh":
+                    stage = "policies" if command[0] == sync.sys.executable else "build"
+                    self.assertEqual(sync.git(cwd, "status", "--porcelain"), "")
+                    self.assertEqual(sync.git(cwd, "rev-parse", "HEAD"), report["candidateHead"])
+                    current_manifest = (cwd / "desktop/upstream-sources.json").read_bytes()
+                    self.assertEqual(json.loads(current_manifest)["lastSourceReview"]["status"],
+                                     "requiresBuildVerification")
+                    if stage == "policies":
+                        self.assertEqual(command[1:], ["desktop/tools/run-tool-tests.py", "--stage", "policies"])
+                        verified_manifest = current_manifest
+                    else:
+                        self.assertEqual(current_manifest, verified_manifest)
+                        self.assertIn("-ReleaseGate", command)
+                    observed.append(stage)
+                    if (outcome == "policyMutation" and stage == "policies") or (
+                            outcome in {"buildMutation", "buildCommit"} and stage == "build"):
+                        (cwd / "app/Api.kt").write_bytes(b"unverified mutation")
+                        if outcome == "buildCommit":
+                            sync.git(cwd, "commit", "-am", "Unverified post-build source")
+                    if outcome == "failedBuild" and stage == "build":
+                        raise sync.UpdateError("simulated failed Windows build")
+                    return subprocess.CompletedProcess(command, 0, "", "")
                 return real_run(command, cwd, **kwargs)
 
             with patch.object(sync, "run", side_effect=simulated_build):
-                with self.assertRaisesRegex(sync.UpdateError, "Original checkout preserved"):
-                    sync.sync_update(repo, manifest, report,
-                                     {"app/Api.kt": hashlib.sha256(b"new").hexdigest()}, root / "updates", None)
+                if outcome == "success":
+                    result = sync.sync_update(repo, manifest, report,
+                                              {"app/Api.kt": hashlib.sha256(b"new").hexdigest()}, root / "updates", None,
+                                              release_gate=True)
+                    self.assertIs(result, report)
+                else:
+                    with self.assertRaisesRegex(sync.UpdateError, "Original checkout preserved"):
+                        sync.sync_update(repo, manifest, report,
+                                         {"app/Api.kt": hashlib.sha256(b"new").hexdigest()}, root / "updates", None,
+                                         release_gate=True)
             self.assertEqual(sync.git(repo, "rev-parse", "HEAD"), original_head)
             self.assertEqual(sync.git(repo, "branch", "--show-current"), "main")
             self.assertEqual(sync.git(repo, "status", "--porcelain"), "")
             self.assertEqual((repo / "app/Api.kt").read_bytes(), b"old")
             self.assertTrue(Path(report["candidatePath"]).is_dir())
-            self.assertEqual((Path(report["candidatePath"]) / "app/Api.kt").read_bytes(), b"new")
-            self.assertEqual(report["status"], "candidateFailed")
+            candidate = Path(report["candidatePath"])
+            expected_bytes = b"unverified mutation" if outcome in {"policyMutation", "buildMutation", "buildCommit"} else b"new"
+            self.assertEqual((candidate / "app/Api.kt").read_bytes(), expected_bytes)
+            self.assertEqual(report["status"], "candidateReady" if outcome == "success" else "candidateFailed")
+            self.assertEqual(observed, ["policies"] if outcome == "policyMutation" else ["policies", "build"])
+            if outcome in {"success", "failedBuild"}:
+                self.assertEqual(sync.git(candidate, "rev-parse", "HEAD"), report["candidateHead"])
+                self.assertEqual(sync.git(candidate, "status", "--porcelain"), "")
+            if outcome == "success":
+                self.assertEqual(report["buildStatus"], "passed")
+                self.assertTrue(report["releaseGatePassed"])
+                self.assertEqual((candidate / "desktop/upstream-sources.json").read_bytes(), verified_manifest)
+            elif outcome in {"policyMutation", "buildMutation", "buildCommit"}:
+                self.assertIn("source changed", report["error"])
+                self.assertNotEqual(report["buildStatus"], "passed")
+                self.assertNotIn("releaseGatePassed", report)
+            committed_manifest = json.loads((candidate / "desktop/upstream-sources.json").read_text())
+            self.assertEqual(committed_manifest["lastSourceReview"]["status"], "requiresBuildVerification")
 
 
 if __name__ == "__main__":

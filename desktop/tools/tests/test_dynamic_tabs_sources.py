@@ -1,8 +1,9 @@
 from pathlib import Path
 import importlib.util,hashlib,tempfile,unittest,sys
 sys.dont_write_bytecode=True
-HERE=Path(__file__).resolve();REPO=next(p for p in HERE.parents if (p/'AGENTS.md').exists())
-if len(sys.argv)>1 and (Path(sys.argv[1])/'AGENTS.md').is_file():REPO=Path(sys.argv.pop(1)).resolve()
+HERE=Path(__file__).resolve();REPO=next(p for p in HERE.parents
+ if (p/'desktop/tools/extract-upstream-dynamic-tabs.py').is_file() and (p/'desktop/upstream-sources.json').is_file())
+if len(sys.argv)>1 and (Path(sys.argv[1])/'desktop/tools/extract-upstream-dynamic-tabs.py').is_file() and (Path(sys.argv[1])/'desktop/upstream-sources.json').is_file():REPO=Path(sys.argv.pop(1)).resolve()
 TOOL=HERE.parents[1]/'extract-upstream-dynamic-tabs.py'
 s=importlib.util.spec_from_file_location('tabs_source_test',TOOL);g=importlib.util.module_from_spec(s);s.loader.exec_module(g)
 class DynamicTabsSourcesTest(unittest.TestCase):

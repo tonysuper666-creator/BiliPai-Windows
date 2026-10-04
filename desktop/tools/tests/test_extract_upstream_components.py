@@ -43,7 +43,7 @@ class ComponentsExtractionTest(unittest.TestCase):
     def test_product_generation_emits_only_platform_bindings_and_selected_policy(self):
         with tempfile.TemporaryDirectory() as name:
             emitted = module.generate(REPO, Path(name))
-            self.assertEqual({p.name for p in emitted}, {"AppText.kt", "AppSlider.kt", "AppContentDialogLayoutPolicy.kt", "AppScrollableUnderlinePolicy.kt"})
+            self.assertEqual({p.name for p in emitted}, {"AppText.kt", "AppSlider.kt", "AppContentDialogLayoutPolicy.kt", "AppScrollableUnderlinePolicy.kt", "AdaptiveDialogComponents.kt"})
             for path in emitted: self.assertNotRegex(body(path), r"(?m)^import android\.")
 
     def test_all_adapter_public_component_parameters_defaults_and_overloads_are_original(self):
@@ -70,6 +70,24 @@ class ComponentsExtractionTest(unittest.TestCase):
         expected = original.replace("import android.os.SystemClock", "import com.bilipai.desktop.appearance.DesktopMonotonicClock as SystemClock")
         self.assertEqual(module.adapt(path, original, host), expected)
         self.assertIn("nowMs - lastHapticTimeMs >= 55L", expected)
+
+    def test_adaptive_dialog_is_whole_original_except_two_android_properties(self):
+        path = module.BASE + "AdaptiveDialogComponents.kt"
+        original = host.read(REPO, path)
+        expected = original
+        for android_property in (
+            "                securePolicy = properties.securePolicy,\n",
+            "                decorFitsSystemWindows = false,\n",
+        ):
+            self.assertEqual(expected.count(android_property), 1)
+            expected = expected.replace(android_property, "", 1)
+        self.assertEqual(module.adapt(path, original, host), expected)
+        inventory = {entry["path"]: entry for entry in module.inventory(REPO)}
+        self.assertEqual(inventory[path]["mode"], "policy-extract")
+        self.assertNotIn(path, module.DIRECT)
+        with tempfile.TemporaryDirectory() as name:
+            generated = next(p for p in module.generate(REPO, Path(name)) if p.name == "AdaptiveDialogComponents.kt")
+            self.assertEqual(body(generated), expected.strip() + "\n")
 
     def test_clipboard_preserves_gesture_and_copy_success_gate_without_reading_user_clipboard(self):
         path = module.BASE + "components/AppText.kt"

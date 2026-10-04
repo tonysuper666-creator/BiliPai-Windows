@@ -17,6 +17,13 @@ import urllib.request
 
 UPSTREAM = "jay3-yy/BiliPai"
 SAFE_WORKFLOWS = {"windows-desktop.yml", "windows-upstream-sync.yml"}
+# Bound configuration input before JSON decoding, independently of how many
+# explicitly pinned files Windows reuses. The current complete inventory is
+# under 0.5 MiB; this budget leaves room to grow without a stale file-count cap.
+MAX_MANIFEST_BYTES = 4 * 1024 * 1024
+CANONICAL_CATALOG_SHA256 = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
+CANONICAL_BASELINE_COMMIT = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
+CANONICAL_CATALOG_PATH = "desktop/tools/v025-canonical-sources.json"
 
 
 class UpdateError(RuntimeError):
@@ -28,8 +35,21 @@ def normalized_source(source: bytes) -> bytes:
     return source.replace(b"\r\n", b"\n")
 
 
-def source_digest(source: bytes) -> str:
-    return hashlib.sha256(normalized_source(source)).hexdigest()
+def normalized_input(source: bytes, normalization: str = "lf") -> bytes:
+    if normalization == "lf":
+        return normalized_source(source)
+    if normalization == "raw":
+        return source
+    raise UpdateError(f"Unknown source hash normalization: {normalization}")
+
+
+def source_digest(source: bytes, normalization: str = "lf") -> str:
+    return hashlib.sha256(normalized_input(source, normalization)).hexdigest()
+
+
+def blob_oid(contents: bytes) -> str:
+    # Git's blob object ID identifies the exact bytes in the fixed release tree.
+    return hashlib.sha1(b"blob " + str(len(contents)).encode("ascii") + b"\0" + contents).hexdigest()
 
 
 def run(command: list[str], cwd: Path, *, check: bool = True, stream: bool = False) -> subprocess.CompletedProcess[str]:
@@ -80,12 +100,30 @@ def source_path(value: object) -> str:
     return value
 
 
+def local_input(repo: Path, item: dict) -> bytes:
+    path = source_path(item.get("path"))
+    local = repo.joinpath(*PurePosixPath(path).parts)
+    if local.is_symlink() or not local.resolve().is_relative_to(repo.resolve()):
+        raise UpdateError(f"Reused source/resource escapes the repository: {path}")
+    try:
+        contents = local.read_bytes()
+    except OSError as error:
+        raise UpdateError(f"Cannot read reused source/resource {path}: {error}") from error
+    if source_digest(contents, item.get("hashNormalization", "lf")) != item["sha256"]:
+        raise UpdateError(f"Local reused source/resource differs from its pinned inventory: {path}")
+    return contents
+
+
 def read_manifest(repo: Path) -> dict:
     try:
-        manifest = json.loads((repo / "desktop/upstream-sources.json").read_text(encoding="utf-8-sig"))
+        with (repo / "desktop/upstream-sources.json").open("rb") as source:
+            contents = source.read(MAX_MANIFEST_BYTES + 1)
+        if len(contents) > MAX_MANIFEST_BYTES:
+            raise UpdateError("Source inventory exceeds the 4 MiB configuration input budget.")
+        manifest = json.loads(contents.decode("utf-8-sig"))
     except (OSError, ValueError) as error:
         raise UpdateError(f"Cannot read desktop/upstream-sources.json: {error}") from error
-    if manifest.get("schemaVersion") != 1 or manifest.get("upstreamRepository") != UPSTREAM:
+    if not isinstance(manifest, dict) or manifest.get("schemaVersion") != 1 or manifest.get("upstreamRepository") != UPSTREAM:
         raise UpdateError("Unsupported manifest schema or upstream repository.")
     if manifest.get("hashNormalization") != "lf":
         raise UpdateError("Source inventory must declare hashNormalization=lf.")
@@ -94,24 +132,98 @@ def read_manifest(repo: Path) -> dict:
     if not isinstance(manifest.get("upstreamTag"), str) or not manifest["upstreamTag"]:
         raise UpdateError("upstreamTag must be nonempty.")
     sources = manifest.get("sources")
-    if not isinstance(sources, list) or not sources or len(sources) > 200:
-        raise UpdateError("Manifest requires 1 to 200 explicit reused source files.")
+    if not isinstance(sources, list) or not sources:
+        raise UpdateError("Manifest requires a nonempty list of explicit reused source files.")
+    resources = manifest.get("resources", [])
+    if not isinstance(resources, list):
+        raise UpdateError("Manifest resources must be a list of explicitly pinned files.")
     seen = set()
-    for item in sources:
+    for item in sources + resources:
+        if not isinstance(item, dict):
+            raise UpdateError("Source/resource inventory entries must be objects.")
         path = source_path(item.get("path"))
         if path in seen or not re.fullmatch(r"[0-9a-f]{64}", item.get("sha256", "")):
-            raise UpdateError(f"Duplicate source or invalid SHA-256: {path}")
+            raise UpdateError(f"Duplicate source/resource or invalid SHA-256: {path}")
         seen.add(path)
-        local = repo.joinpath(*PurePosixPath(path).parts)
-        if local.is_symlink() or not local.resolve().is_relative_to(repo.resolve()):
-            raise UpdateError(f"Reused source escapes the repository: {path}")
-        if not local.is_file() or source_digest(local.read_bytes()) != item["sha256"]:
-            raise UpdateError(f"Local reused source differs from its pinned inventory: {path}")
-        if not isinstance(item.get("features", []), list):
+        local_input(repo, item)
+        if not isinstance(item.get("features", []), list) or not all(isinstance(value, str) for value in item.get("features", [])):
             raise UpdateError(f"features must be a list: {path}")
     if not isinstance(manifest.get("featureCoverage", {}), dict):
         raise UpdateError("featureCoverage must be an object.")
     return manifest
+
+
+def canonical_baseline(repo: Path, manifest: dict) -> dict | None:
+    path = repo / CANONICAL_CATALOG_PATH
+    if not path.exists() and not path.is_symlink():
+        # Older source-only fixtures have no proof of the complete build baseline.
+        return None
+    if path.is_symlink() or not path.resolve().is_relative_to(repo.resolve()) or not path.is_file():
+        raise UpdateError("Canonical source catalog escapes the repository or is not a regular file.")
+    try:
+        contents = path.read_bytes()
+        if hashlib.sha256(contents).hexdigest() != CANONICAL_CATALOG_SHA256:
+            raise UpdateError("Unknown canonical source catalog; manual baseline review is required.")
+        catalog = json.loads(contents.decode("utf-8-sig"))
+    except (OSError, ValueError) as error:
+        raise UpdateError(f"Cannot read canonical source catalog: {error}") from error
+    if (not isinstance(catalog, dict) or catalog.get("schemaVersion") != 1 or
+            catalog.get("upstreamCommit") != CANONICAL_BASELINE_COMMIT or
+            not isinstance(catalog.get("paths"), dict) or not catalog["paths"] or
+            not isinstance(catalog.get("sourceRoots"), list) or not catalog["sourceRoots"] or
+            not all(isinstance(value, str) and value.endswith("/") for value in catalog["sourceRoots"])):
+        raise UpdateError("Unknown canonical baseline structure or commit; manual review is required.")
+    for name, pin in catalog["paths"].items():
+        source_path(name)
+        if (not isinstance(pin, dict) or not re.fullmatch(r"[0-9a-f]{40}", pin.get("blob", "")) or
+                not re.fullmatch(r"[0-9a-f]{64}", pin.get("sha256", "")) or
+                pin.get("hashNormalization") not in {"lf", "raw"}):
+            raise UpdateError(f"Unknown canonical source pin structure: {name}")
+    return catalog
+
+
+def compatibility_inputs(repo: Path, manifest: dict, catalog: dict | None) -> list[dict]:
+    entries = [{**item, "kind": kind} for kind, key in (("source", "sources"), ("resource", "resources"))
+               for item in manifest.get(key, [])]
+    if catalog is not None:
+        build_path = "app/build.gradle.kts"
+        if build_path not in catalog["paths"]:
+            raise UpdateError("Canonical baseline does not pin the upstream version/build configuration.")
+        if not any(item["path"] == build_path for item in entries):
+            entries.append({"path": build_path, **catalog["paths"][build_path], "kind": "buildConfiguration"})
+        for item in entries:
+            if item["path"] == build_path:
+                item["kind"] = "buildConfiguration"
+        for item in entries:
+            pin = catalog["paths"].get(item["path"])
+            if (pin is None or pin["sha256"] != item["sha256"] or
+                    pin["hashNormalization"] != item.get("hashNormalization", "lf")):
+                raise UpdateError(f"Inventory differs from the reviewed canonical baseline: {item['path']}")
+    # Verify local bytes even for callers that supplied an in-memory test inventory.
+    for item in entries:
+        local_input(repo, item)
+    return entries
+
+
+def release_tree(tree: object) -> dict[str, dict]:
+    if not isinstance(tree, dict) or tree.get("truncated") or not isinstance(tree.get("tree"), list):
+        raise UpdateError("Cannot verify the complete upstream source inventory.")
+    result = {}
+    for item in tree["tree"]:
+        if not isinstance(item, dict):
+            raise UpdateError("Invalid upstream tree entry structure.")
+        name = item.get("path")
+        if (not isinstance(name, str) or not name or "\\" in name or ":" in name or
+                PurePosixPath(name).is_absolute() or ".." in PurePosixPath(name).parts or
+                str(PurePosixPath(name)) != name or name in result or
+                item.get("type") not in {"blob", "tree", "commit"} or
+                not re.fullmatch(r"[0-9a-f]{40}", item.get("sha", ""))):
+            raise UpdateError("Invalid or duplicate upstream tree entry: " + str(name))
+        allowed_modes = {"blob": {"100644", "100755", "120000"}, "tree": {"040000"}, "commit": {"160000"}}
+        if item.get("mode") not in allowed_modes[item["type"]]:
+            raise UpdateError("Invalid upstream tree entry mode: " + name)
+        result[name] = item
+    return result
 
 
 def latest_release() -> dict:
@@ -341,45 +453,87 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
     commit = resolve_tag(tag)
     if tag == manifest["upstreamTag"] and commit != manifest["upstreamCommit"]:
         raise UpdateError("The pinned upstream tag moved to another commit; manual review is required.")
+    catalog = canonical_baseline(repo, manifest)
+    entries = compatibility_inputs(repo, manifest, catalog)
+    reasons = [] if catalog is not None else [{
+        "code": "canonicalBaselineUnavailable", "path": CANONICAL_CATALOG_PATH,
+        "message": "No reviewed complete canonical build baseline; automatic construction is disabled.",
+    }]
+    compatibility = {
+        "status": "ready" if catalog is not None else "manualAdaptationRequired",
+        "canonicalCatalogSha256": CANONICAL_CATALOG_SHA256 if catalog is not None else None,
+        "canonicalBaselineCommit": catalog["upstreamCommit"] if catalog is not None else None,
+        "checkedInputCount": len(entries), "reasons": reasons,
+    }
     report = {
         "upstreamRepository": UPSTREAM, "currentTag": manifest["upstreamTag"],
         "currentCommit": manifest["upstreamCommit"], "candidateTag": tag,
         "candidateCommit": commit, "prerelease": bool(release.get("prerelease")),
         "releaseUrl": release.get("html_url"), "candidateBranch": branch_name(tag, commit),
         "status": "upToDate" if commit == manifest["upstreamCommit"] else "updateAvailable",
-        "changedReusedSources": [], "featuresNeedingReview": [],
+        "changedReusedSources": [], "changedResources": [], "featuresNeedingReview": [],
         "featureCoverage": manifest.get("featureCoverage", {}), "loginApiChanged": False,
         "windowsApiContractChanged": False, "networkBehaviorChanged": False,
-        "autoPublishEligible": True, "manualReviewReasons": [],
+        "autoBuildEligible": not reasons, "buildCompatibility": compatibility,
+        "autoPublishEligible": not reasons, "manualReviewReasons": [], "sensitiveReviewFailed": [],
+        "unchangedBlobInputs": 0, "sourceDownloads": 0,
         "coverageNote": "Only explicitly ported Windows features are built. A new APK release does not imply new Windows feature support.",
     }
     if report["status"] == "upToDate":
         return report, {}
-    tree = request_json(f"git/trees/{commit}?recursive=1")
-    if not isinstance(tree, dict) or tree.get("truncated"):
-        raise UpdateError("Cannot verify the complete upstream source inventory.")
-    paths = {item["path"] for item in tree.get("tree", []) if item.get("type") == "blob"
-             and item.get("mode") in {"100644", "100755"}}
+    tree = release_tree(request_json(f"git/trees/{commit}?recursive=1"))
     hashes, features, review_reasons = {}, set(), []
-    for item in manifest["sources"]:
+    for item in entries:
         path = item["path"]
-        if path not in paths:
-            raise UpdateError(f"Reused source removed or moved upstream: {path}. Manual adaptation required.")
-        contents = source_bytes(commit, path)
-        hashes[path] = source_digest(contents)
-        if hashes[path] != item["sha256"]:
-            report["changedReusedSources"].append(path)
+        previous = local_input(repo, item)
+        normalization = item.get("hashNormalization", "lf")
+        incoming = tree.get(path)
+        contents = None
+        new_hash = None
+        if incoming is None or incoming["type"] != "blob" or incoming["mode"] not in {"100644", "100755"}:
+            reasons.append({
+                "code": "inputRemovedOrMoved" if incoming is None else "inputNotRegularFile",
+                "path": path, "kind": item["kind"], "oldSha256": item["sha256"],
+                "newSha256": None, "hashNormalization": normalization,
+                "message": "Pinned Windows input is missing or no longer a regular upstream file.",
+            })
+        else:
+            baseline_oid = catalog["paths"][path]["blob"] if catalog is not None else blob_oid(normalized_input(previous, normalization))
+            if incoming["sha"] == baseline_oid:
+                new_hash = item["sha256"]
+                report["unchangedBlobInputs"] += 1
+            else:
+                contents = source_bytes(commit, path)
+                report["sourceDownloads"] += 1
+                if blob_oid(contents) != incoming["sha"]:
+                    raise UpdateError(f"Fixed-commit source does not match its complete-tree blob identity: {path}")
+                new_hash = source_digest(contents, normalization)
+            hashes[path] = new_hash
+            if new_hash != item["sha256"]:
+                reasons.append({
+                    "code": "canonicalInputChanged" if catalog is not None else "pinnedInputChanged",
+                    "path": path, "kind": item["kind"], "oldSha256": item["sha256"],
+                    "newSha256": new_hash, "hashNormalization": normalization,
+                    "message": "Review the canonical original and affected Windows adaptation; fixed pins were not rewritten.",
+                })
+        if new_hash != item["sha256"]:
+            if item["kind"] == "source":
+                report["changedReusedSources"].append(path)
+            elif item["kind"] == "resource":
+                report["changedResources"].append(path)
             source_features = set(item.get("features", []))
-            if path.endswith("core/network/ApiClient.kt"):
+            if item["kind"] == "source" and path.endswith("core/network/ApiClient.kt") and contents is not None:
                 try:
-                    previous = repo.joinpath(*PurePosixPath(path).parts).read_bytes()
                     report["loginApiChanged"] = selected_login_api(repo, contents) != selected_login_api(
                         repo, previous)
                     report["windowsApiContractChanged"] = selected_api_contract(repo, contents) != selected_api_contract(repo, previous)
                     report["networkBehaviorChanged"] = selected_network_behavior(contents) != selected_network_behavior(previous)
-                except (ValueError, OSError, ImportError) as error:
-                    raise UpdateError(f"Sensitive Windows network extraction failed; manual review required: {error}") from error
-                if not report["loginApiChanged"] and not report["networkBehaviorChanged"]:
+                except (UpdateError, ValueError, OSError, ImportError) as error:
+                    report["sensitiveReviewFailed"].append(path)
+                    review_reasons.append(f"Sensitive Windows network extraction failed; manual review required: {path}")
+                    reasons.append({"code": "sensitiveReviewFailed", "path": path, "kind": "source",
+                                    "message": str(error)[:2000]})
+                if path not in report["sensitiveReviewFailed"] and not report["loginApiChanged"] and not report["networkBehaviorChanged"]:
                     source_features.discard("login")
                 if report["windowsApiContractChanged"] or report["networkBehaviorChanged"]:
                     review_reasons.append(f"Windows API/account/visitor network behavior changed: {path}")
@@ -389,7 +543,9 @@ def check_update(repo: Path, manifest: dict) -> tuple[dict, dict[str, str]]:
                 review_reasons.append(f"Authentication/update contract changed: {path}")
     report["featuresNeedingReview"] = sorted(features)
     report["manualReviewReasons"] = review_reasons
-    report["autoPublishEligible"] = not review_reasons
+    compatibility["status"] = "manualAdaptationRequired" if reasons else "ready"
+    report["autoBuildEligible"] = not reasons
+    report["autoPublishEligible"] = not reasons and not review_reasons
     return report, hashes
 
 
@@ -431,6 +587,12 @@ def sync_update(repo: Path, manifest: dict, report: dict, hashes: dict[str, str]
         return report
     if git(repo, "status", "--porcelain"):
         raise UpdateError("Commit the Windows changes first. The original dirty checkout is left untouched.")
+    if report.get("autoBuildEligible") is not True or report.get("buildCompatibility", {}).get("status") != "ready":
+        raise UpdateError("Automatic candidate build is disabled by the compatibility preflight: "
+                          + json.dumps(report.get("buildCompatibility", {}), ensure_ascii=False))
+    worktree_root = worktree_root.resolve()
+    if worktree_root.is_relative_to(repo.resolve()):
+        raise UpdateError("Candidate worktrees must be outside the original checkout.")
     commit, branch = report["candidateCommit"], report["candidateBranch"]
     git(repo, "fetch", "--no-tags", f"https://github.com/{UPSTREAM}.git", commit)
     ancestry = run(["git", "merge-base", "--is-ancestor", manifest["upstreamCommit"], commit], repo, check=False)
@@ -439,11 +601,10 @@ def sync_update(repo: Path, manifest: dict, report: dict, hashes: dict[str, str]
     if git(repo, "diff", "--name-only", manifest["upstreamCommit"], commit, "--", "desktop"):
         raise UpdateError("Upstream added a desktop directory. Reconcile ownership manually before building it.")
     upstream_paths = git(repo, "diff", "--name-only", manifest["upstreamCommit"], commit).splitlines()
-    reused_paths = {entry["path"] for entry in manifest["sources"]}
+    reused_paths = {entry["path"] for entry in manifest["sources"] + manifest.get("resources", [])}
     report["upstreamChangedPaths"] = upstream_paths
     report["unportedChangedPaths"] = [path for path in upstream_paths if path not in reused_paths]
     base = git(repo, "rev-parse", "HEAD")
-    worktree_root = worktree_root.resolve()
     candidate = worktree_root / branch.replace("/", "-")
     if candidate.exists() or git(repo, "branch", "--list", branch):
         raise UpdateError(f"Candidate already exists: {branch}. Review it before making another candidate.")
@@ -470,20 +631,36 @@ def sync_update(repo: Path, manifest: dict, report: dict, hashes: dict[str, str]
         candidate_manifest["windowsRevision"] = (
             int(manifest.get("windowsRevision", 1)) + 1 if new_code == old_code else 1)
         report["windowsBuildVersion"] = f"0.2.{new_code}.{candidate_manifest['windowsRevision']}"
-        for item in candidate_manifest["sources"]:
+        for item in candidate_manifest["sources"] + candidate_manifest.get("resources", []):
             path = item["path"]
-            local_hash = source_digest(candidate.joinpath(*PurePosixPath(path).parts).read_bytes())
+            local_hash = source_digest(candidate.joinpath(*PurePosixPath(path).parts).read_bytes(),
+                                       item.get("hashNormalization", "lf"))
             if local_hash != hashes[path]:
                 raise UpdateError(f"Merged source is not the verified upstream source: {path}")
             item["sha256"] = hashes[path]
+        # The version/build configuration is a canonical input even when a
+        # legacy manifest does not list it as a reused source.
+        if "app/build.gradle.kts" in hashes and source_digest(
+                (candidate / "app/build.gradle.kts").read_bytes()) != hashes["app/build.gradle.kts"]:
+            raise UpdateError("Merged build configuration is not the verified upstream input.")
         candidate_manifest["lastSourceReview"] = {
             "changedReusedSources": report["changedReusedSources"],
+            "changedResources": report.get("changedResources", []),
             "featuresNeedingReview": report["featuresNeedingReview"],
-            "status": "releaseGatePending" if release_gate else "requiresHumanFunctionalReview",
+            "status": "requiresBuildVerification",
         }
         (candidate / "desktop/upstream-sources.json").write_text(
             json.dumps(candidate_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        run([sys.executable, "-m", "unittest", "discover", "-s", "desktop/tools/tests", "-p", "test_*.py"], candidate)
+        # Only the isolated candidate is committed. Test/build evidence must bind
+        # this immutable source; no post-build manifest edit can acquire its ACK.
+        git(candidate, "add", "desktop/upstream-sources.json")
+        git(candidate, "commit", "-m", f"Update Windows sources to {report['candidateTag']}")
+        report["candidateHead"] = git(candidate, "rev-parse", "HEAD")
+        if git(candidate, "status", "--porcelain"):
+            raise UpdateError("Committed candidate is dirty before verification.")
+        run([sys.executable, "desktop/tools/run-tool-tests.py", "--stage", "policies"], candidate)
+        if git(candidate, "rev-parse", "HEAD") != report["candidateHead"] or git(candidate, "status", "--porcelain"):
+            raise UpdateError("Candidate source changed during policy verification.")
         build_command = ["pwsh", "-NoProfile", "-File", "desktop/tools/build.ps1"]
         if java_home:
             build_command.extend(["-JavaHome", java_home])
@@ -491,15 +668,10 @@ def sync_update(repo: Path, manifest: dict, report: dict, hashes: dict[str, str]
             build_command.append("-ReleaseGate")
         report["buildStatus"] = "building"
         run(build_command, candidate, stream=True)
+        if git(candidate, "rev-parse", "HEAD") != report["candidateHead"] or git(candidate, "status", "--porcelain"):
+            raise UpdateError("Candidate source changed during its successful build; no publication is allowed.")
         report["buildStatus"] = "passed"
         report["releaseGatePassed"] = release_gate
-        candidate_manifest["lastSourceReview"]["status"] = (
-            "releaseGatePassed" if release_gate else "requiresHumanFunctionalReview")
-        (candidate / "desktop/upstream-sources.json").write_text(
-            json.dumps(candidate_manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        git(candidate, "add", "desktop/upstream-sources.json")
-        git(candidate, "commit", "-m", f"Update Windows sources to {report['candidateTag']}")
-        report["candidateHead"] = git(candidate, "rev-parse", "HEAD")
         report["status"] = "candidateReady"
         return report
     except (UpdateError, OSError) as error:

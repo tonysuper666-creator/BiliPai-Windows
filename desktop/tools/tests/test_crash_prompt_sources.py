@@ -1,5 +1,6 @@
 from pathlib import Path
 import importlib.util
+import re
 import tempfile
 import unittest
 
@@ -13,7 +14,7 @@ spec.loader.exec_module(producer)
 
 class OriginalCrashPromptSources(unittest.TestCase):
     def test_original_expression_policies_and_dialog_actions_reach_product(self):
-        original = (REPO / producer.SOURCE).read_text(encoding='utf-8')
+        original = producer._desktop_canonical_source(REPO, producer.SOURCE).read_text(encoding='utf-8')
         package = GENERATED / 'com/android/purebilibili'
         policy = (package / 'DesktopCrashLogPromptPolicy.kt').read_text(encoding='utf-8')
         start = original.index('internal enum class CrashLogPromptAction {')
@@ -38,10 +39,14 @@ class OriginalCrashPromptSources(unittest.TestCase):
     def test_changed_original_is_rejected_before_output(self):
         with tempfile.TemporaryDirectory(prefix='bp-crash-source-pin-') as folder:
             fake = Path(folder)
-            source = fake / producer.SOURCE
+            original = producer._desktop_canonical_source(REPO, producer.SOURCE)
+            source = fake / original.relative_to(REPO)
             source.parent.mkdir(parents=True)
-            source.write_text((REPO / producer.SOURCE).read_text(encoding='utf-8') + '\n// changed\n', encoding='utf-8')
-            with self.assertRaisesRegex(AssertionError, 'Fixed original MainActivity changed'):
+            source.write_text(original.read_text(encoding='utf-8') + '\n// changed\n', encoding='utf-8')
+            # The canonical source gate now rejects changed bytes before the
+            # producer's narrower MainActivity pin or any output creation.
+            expected='^Canonical original source digest mismatch: '+re.escape(original.relative_to(REPO).as_posix())+'$'
+            with self.assertRaisesRegex(ValueError, expected):
                 producer.generate(fake, fake / 'output')
             self.assertFalse((fake / 'output').exists())
 

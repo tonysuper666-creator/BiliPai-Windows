@@ -13,7 +13,21 @@ param(
 $ErrorActionPreference = 'Stop'
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $desktopRoot = Join-Path $repoRoot 'desktop'
+# Even parameter/JDK failures must invalidate evidence from an earlier build.
+$gatePath = Join-Path $desktopRoot 'build/release-gate.json'
+if (Test-Path -LiteralPath $gatePath) { Remove-Item -LiteralPath $gatePath -Force }
 if ($ReleaseGate -and $SkipTests) { throw 'ReleaseGate cannot skip unit tests.' }
+$releaseSourceSha = $null
+if ($ReleaseGate) {
+    $releaseSourceSha = & git -C $repoRoot rev-parse HEAD
+    if ($LASTEXITCODE -ne 0 -or $releaseSourceSha -cnotmatch '^[0-9a-f]{40}$') {
+        throw 'ReleaseGate requires a fixed Windows source commit.'
+    }
+    $sourceChanges = & git -C $repoRoot status --porcelain --untracked-files=all
+    if ($LASTEXITCODE -ne 0 -or $sourceChanges) {
+        throw 'ReleaseGate requires committed Windows sources in a clean checkout.'
+    }
+}
 # Independent smoke checks may use SkipTests; only the full ReleaseGate creates release evidence.
 if ($PreviousUpdateTestPackage -and -not ($ReleaseGate -or $UpdaterSmoke)) {
     throw 'PreviousUpdateTestPackage requires UpdaterSmoke or ReleaseGate.'
@@ -38,9 +52,6 @@ if (-not $JavaHome -or -not (Test-Path -LiteralPath (Join-Path $JavaHome 'bin/ja
 $JavaHome = [IO.Path]::GetFullPath($JavaHome)
 $originalJavaHome, $originalPath = $env:JAVA_HOME, $env:PATH
 try {
-    # Evidence from an earlier successful build must never validate a failed rerun.
-    $gatePath = Join-Path $desktopRoot 'build/release-gate.json'
-    if (Test-Path -LiteralPath $gatePath) { Remove-Item -LiteralPath $gatePath -Force }
     $env:JAVA_HOME = $JavaHome
     $env:PATH = (Join-Path $JavaHome 'bin') + [IO.Path]::PathSeparator + $originalPath
     & (Join-Path $JavaHome 'bin/java.exe') -version
@@ -73,6 +84,13 @@ try {
         if ($Installer) { $gradleArguments += 'packageMsi' }
         & (Join-Path $repoRoot 'gradlew.bat') @gradleArguments
         if ($LASTEXITCODE -ne 0) { throw "Windows Gradle build failed ($LASTEXITCODE)." }
+        if (-not $SkipTests) {
+            # These contracts inspect the actual generated Kotlin and resources.
+            # They must run after Gradle generation, before packaging/publication.
+            $pythonExecutable = if ($env:PYTHON_EXECUTABLE) { $env:PYTHON_EXECUTABLE } else { 'python' }
+            & $pythonExecutable (Join-Path $PSScriptRoot 'run-tool-tests.py') --stage generated
+            if ($LASTEXITCODE -ne 0) { throw "Windows source contract tests failed ($LASTEXITCODE)." }
+        }
     } finally { Pop-Location }
 
     $appRoot = Join-Path $desktopRoot 'build/compose/binaries/main/app'
@@ -157,9 +175,19 @@ try {
         }
     }
     if ($ReleaseGate) {
+        $verifiedSourceSha = & git -C $repoRoot rev-parse HEAD
+        if ($LASTEXITCODE -ne 0 -or $verifiedSourceSha -cne $releaseSourceSha) {
+            throw 'Windows source commit changed during release verification.'
+        }
+        $sourceChanges = & git -C $repoRoot status --porcelain --untracked-files=all
+        if ($LASTEXITCODE -ne 0 -or $sourceChanges) {
+            throw 'Windows sources changed during release verification.'
+        }
         $releaseGateReport = [ordered]@{
             passed = $true
+            windowsSourceCommit = $releaseSourceSha
             kotlinUnitTests = 'passed'
+            pythonSourceContractTests = 'passed'
             guestNetworkBackendSmoke = 'passed'
             packagedNativePlayerSmoke = 'passed'
             packagedUpdaterSmoke = 'passed'

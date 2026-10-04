@@ -1,7 +1,8 @@
 from pathlib import Path
 import importlib.util,tempfile,unittest,sys
 sys.dont_write_bytecode=True
-REPO=next(p for p in Path(__file__).resolve().parents if (p/'AGENTS.md').exists())
+REPO=next(p for p in Path(__file__).resolve().parents
+ if (p/'desktop/tools/extract-upstream-dynamic-tabs.py').is_file() and (p/'desktop/upstream-sources.json').is_file())
 def module(name,path):
  spec=importlib.util.spec_from_file_location(name,REPO/path);value=importlib.util.module_from_spec(spec);spec.loader.exec_module(value);return value
 tabs=module('cache_tabs_sources','desktop/tools/extract-upstream-dynamic-tabs.py')

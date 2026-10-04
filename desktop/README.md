@@ -44,7 +44,9 @@ Windows 分支现在按桌面使用重新组织界面，复用上游接口、模
 pwsh -NoProfile -File desktop/tools/build.ps1 -JavaHome 'D:/toolchain/jdk-21'
 ```
 
-该脚本校验并下载固定 SHA-256 的 libmpv 与 FFmpeg/FFprobe，执行 Windows 单元测试和 `createDistributable`，然后生成 `desktop/build/distributions/BiliPai-Windows-<Windows版本>-x64.zip` 及相邻的 `.zip.sha256`。默认生成便携包。需要 MSI 时加 `-Installer`，并准备 Compose 打包所需的 WiX 工具。
+该脚本校验并下载固定 SHA-256 的 libmpv 与 FFmpeg/FFprobe，执行 Windows 单元测试和 `createDistributable`，在实际 Kotlin 和资源生成后执行全部 Python 源码契约测试，再生成 `desktop/build/distributions/BiliPai-Windows-<Windows版本>-x64.zip` 及相邻的 `.zip.sha256`。默认生成便携包。需要 MSI 时加 `-Installer`，并准备 Compose 打包所需的 WiX 工具。
+
+`python desktop/tools/run-tool-tests.py --stage policies` 只运行不依赖构建产物的同步与发布策略测试，适用于全新检出和定时检测。`--stage generated` 运行全部工具测试，包含实际生成文件和打包资源核验，须在正常 Gradle 生成之后运行。两个阶段均自动配置源码定位器的 Python 导入路径；完整发布证据必须包含 `pythonSourceContractTests=passed`，仅通过检测阶段不能发布。
 
 发布前的完整检查：
 
@@ -52,13 +54,15 @@ pwsh -NoProfile -File desktop/tools/build.ps1 -JavaHome 'D:/toolchain/jdk-21'
 pwsh -NoProfile -File desktop/tools/build.ps1 -JavaHome 'D:/toolchain/jdk-21' -ReleaseGate
 ```
 
+完整发布必须从干净、已提交的源码开始，并在检查结束时再次确认提交与工作区没有变化。发布报告绑定该 Windows 提交、版本和 ZIP 哈希；缺少源码绑定的旧报告不能为另一个提交提供发布证明。
+
 用 `-NativeSmoke` 可以单独执行打包后的原生播放器检查并产生原生报告。Windows CI 对每次普通构建也执行此检查；完整发行仍须通过 `-ReleaseGate` 的所有门槛。
 
 用 `-NativeMuxSmoke` 可以单独验证打包后的 FFmpeg/FFprobe，检查双轨、音频、渐进流及三种多段合并文件的编解码、时长和二进制摘要；六种输出必须全部通过，缺报告即失败。
 
 用 `-UpdaterSmoke` 可以在 ZIP 和 SHA-256 文件生成后，单独执行隔离的更新集成检查。它通过 loopback HTTP 测试服务下载真实便携 ZIP，校验哈希与安装根目录，并验证实际 EXE 的启动、激活和失败回退；报告固定为 `desktop/build/reports/updater-smoke-*/updater-smoke.json`，绑定本次 Windows 版本和 ZIP SHA-256。测试使用独立的用户数据目录，不读取真实账号；新版本健康检查窗口可能发起隔离访客请求，因此这项检查并非完全离线。它不证明 GitHub 正式发行流程或线上 B 站 DASH 已通过。可选 `-PreviousUpdateTestPackage <旧版ZIP>` 用于额外检查真实旧版 EXE 的更新转发。Windows CI 默认执行此检查并单独上传报告与日志。独立 smoke 开关不会生成完整发布通过证据；`-SkipTests` 不会跳过所选 smoke。
 
-发布门槛包括 Windows 单元测试、访客模式推荐/搜索/视频详情/DASH 地址解析、**打包后的 EXE** 离线视频、音频、暂停、进度、速度和错误恢复检查，以及绑定本次 ZIP 的更新集成检查。`-ReleaseGate` 同时启用原生与更新 smoke，只有 ZIP、SHA-256 和全部检查成功后才写入 `desktop/build/release-gate.json`。网络请求被拒绝或任一检查失败会停止发布，不会跳过门槛。原生报告位于 `desktop/build/reports/release-gate-*`。CI 使用真实音视频解码与同步检查，并将声音输出送往空设备；本地保留声音设备检查。登录状态和新 Android 功能仍需要相应维护；这些自动检查不能证明完整 Android 功能已被移植。
+发布门槛包括 Windows 单元测试、完整 Python 源码契约测试、访客模式推荐/搜索/视频详情/DASH 地址解析、**打包后的 EXE** 离线视频、音频、暂停、进度、速度和错误恢复检查，以及绑定本次 ZIP 的更新集成检查。`-ReleaseGate` 同时启用原生与更新 smoke，只有 ZIP、SHA-256 和全部检查成功后才写入 `desktop/build/release-gate.json`。网络请求被拒绝或任一检查失败会停止发布，不会跳过门槛。原生报告位于 `desktop/build/reports/release-gate-*`。CI 使用真实音视频解码与同步检查，并将声音输出送往空设备；本地保留声音设备检查。登录状态和新 Android 功能仍需要相应维护；这些自动检查不能证明完整 Android 功能已被移植。
 
 ## 跟随频繁的上游更新
 
@@ -75,6 +79,8 @@ python desktop/tools/sync-upstream.py --sync --release-gate --java-home 'D:/tool
 ```
 
 更新器读取 GitHub `/releases`，包含 alpha/prerelease，解析 tag 对应的完整 commit SHA，核验复用文件是否仍存在以及内容哈希。它在另一个 Git worktree 和独立分支合并更新，保留已经审核的 Windows 工作流。原工作区必须先提交；冲突、移除源码、接口变化或测试失败时保留候选目录供排查，原工作区和已发布的便携包继续保留。脚本本身不会 push 或发布。
+
+兼容预检覆盖复用源码、资源及版本配置；通过已固定的完整 Git tree 识别未变化文件，只下载变化项，二进制资源按原始字节校验。当前 Windows 构建仍严格绑定已审核的 v0.2.5 canonical 源码和适配配方。输入变化时，报告保留 `updateAvailable`，列出具体路径与摘要，并标记 `manualAdaptationRequired`；定时任务保存报告并跳过已知不能构建的候选，不会自动重写源码 pin 或宣称新功能已移植。完整输入保持兼容的候选先提交到隔离分支，再针对固定提交运行全部构建检查。
 
 报告列出复用文件变化、需要复核的功能、认证接口变化、其余尚未移植的上游文件变化和当前 Windows 覆盖范围。对 `ApiClient.kt` 会比较实际复用的登录接口声明，以及 Cookie、授权和访客网络实现。普通未采用的 Android 接口或无关单例变化不会被当作登录风险；登录策略、登录模型、实际认证声明或敏感网络实现变化会转入人工审核。无法可靠识别敏感源码结构时停止自动发布，保留上一可用版。
 
@@ -97,7 +103,7 @@ Windows 分支的原 Android 工作流完整保存在 `.github/upstream-workflow
 
 源码同步与 Windows 发布完成分别记录。即使源码显示 `upToDate`，工作流仍会验证固定 Windows 版本的标签、Release、ZIP、SHA-256 和源码证据附件。源码已经推送但发布派发失败、Release 缺少附件或仍是 draft 时，下一次检测会从固定的源码 SHA 重试发布。派发步骤具有独立的 `actions: write` 权限。
 
-`Windows desktop build` 可手动触发。`release=true` 执行完整检查并创建 Windows prerelease；`source_sha` 指定确切的构建来源，`expected_head` 再次校验来源。标签会独立核验确切提交，即使标签存在但 Release 尚未创建也不会复用错误提交。发布先创建 draft，上传并校验 ZIP、SHA-256 和 `BiliPai-Windows-<版本>-source.json`，全部附件完整后才公开。重试会保留已有有效 ZIP，只补齐缺失附件。若远端 ZIP 与本次检查的字节不同，必须已有对应源码、哈希及四项门槛证据才可复用；缺少证据时停止，需验证远端确切 ZIP 或增加 revision。附件内容冲突同样停止并要求增加 revision。发布不生成 Android APK，也不启用原 Android 发布流程。
+`Windows desktop build` 可手动触发。`release=true` 执行完整检查并创建 Windows prerelease；`source_sha` 指定确切的构建来源，`expected_head` 再次校验来源。标签会独立核验确切提交，即使标签存在但 Release 尚未创建也不会复用错误提交。发布先创建 draft，上传并校验 ZIP、SHA-256 和 `BiliPai-Windows-<版本>-source.json`，全部附件完整后才公开。重试会保留已有有效 ZIP，只补齐缺失附件。若远端 ZIP 与本次检查的字节不同，必须已有对应源码、哈希及全部门槛证据才可复用；缺少证据时停止，需验证远端确切 ZIP 或增加 revision。附件内容冲突同样停止并要求增加 revision。发布不生成 Android APK，也不启用原 Android 发布流程。
 
 ## 版本检查和便携更新
 

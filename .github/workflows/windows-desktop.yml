@@ -78,7 +78,7 @@ jobs:
           python-version: '3.12'
       - name: Verify updater and publication safety policies
         shell: pwsh
-        run: python -m unittest discover -s desktop/tools/tests -p 'test_*.py'
+        run: python desktop/tools/run-tool-tests.py --stage policies
       - name: Reject inherited publication workflows and upstream remote
         if: steps.plan.outputs.release == 'true'
         shell: pwsh
@@ -157,11 +157,11 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: BiliPai-Windows-x64
-          path: release-assets
+          path: ${{ runner.temp }}/release-assets
       - uses: actions/download-artifact@v4
         with:
           name: Windows-release-smoke-evidence
-          path: release-evidence
+          path: ${{ runner.temp }}/release-evidence
       - name: Finish draft, verify immutable tag and all assets, then publish
         env:
           GH_TOKEN: ${{ github.token }}
@@ -169,4 +169,4 @@ jobs:
         run: >-
           python desktop/tools/publish-release.py --publish
           --repository "$GITHUB_REPOSITORY" --source-sha "$SOURCE_SHA"
-          --assets release-assets --gate release-evidence/release-gate.json
+          --assets "$RUNNER_TEMP/release-assets" --gate "$RUNNER_TEMP/release-evidence/release-gate.json"

@@ -16,7 +16,21 @@ class BlockedListSources(unittest.TestCase):
         source = extractor.original(REPO, extractor.SOURCES[0])
         marker = "@Composable\nfun BlockedListContent("
         generated = (GENERATED / "com/android/purebilibili/feature/settings/DesktopUpstreamBlockedListContent.kt").read_text(encoding="utf-8")
-        self.assertEqual(source[source.index(marker):], generated[generated.index(marker):])
+        reconstructed = generated[generated.index(marker):]
+        # Only the approved Windows dissolve caller identities differ. The
+        # complete management UI and helpers must invert to the canonical body.
+        for original, windows in (
+            ("com.android.purebilibili.core.ui.animation.MaybeDissolvableVideoCard(",
+             "com.bilipai.desktop.ui.DesktopReplyDissolvableContainer("),
+            ("com.android.purebilibili.core.ui.animation.DissolveAnimationPreset.",
+             "com.bilipai.desktop.ui.DissolveAnimationPreset."),
+        ):
+            self.assertEqual(source[source.index(marker):].count(original), 1)
+            self.assertEqual(reconstructed.count(windows), 1)
+            reconstructed = reconstructed.replace(windows, original, 1)
+        self.assertEqual(source[source.index(marker):], reconstructed)
+        self.assertIn("import com.bilipai.desktop.ui.jiggleOnDissolve\n", generated)
+        self.assertNotIn("import com.android.purebilibili.core.ui.animation.jiggleOnDissolve\n", generated)
 
     def test_original_padding_and_network_pacing_reach_the_product(self):
         source = extractor.original(REPO, extractor.SOURCES[2])

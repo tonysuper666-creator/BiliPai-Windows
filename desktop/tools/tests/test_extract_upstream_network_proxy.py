@@ -43,7 +43,7 @@ class NetworkProxyExtractionTest(unittest.TestCase):
             'buildAppProxySelector(systemSelector: () -> java.net.ProxySelector? = { java.net.ProxySelector.getDefault() }):',
             'buildAppProxySelector():').replace('systemSelector()?.select(uri).orEmpty()', 'getDefault()?.select(uri).orEmpty()')
         selector = selector.replace('recordDesktopProxyConnectionFailure(ioe)',
-            'com.android.purebilibili.core.util.Logger.w(\n                "ApiClient",\n'
+            'com.android.purebilibili.core.network.CoreDataLog.w(\n                "ApiClient",\n'
             '                "Proxy connect failed uri=$uri sa=$sa: ${ioe?.message}"\n            )')
         self.assertEqual(selector, media.function(original, 'buildAppProxySelector', parser))
         self.assertEqual(media.function(source, 'buildPlaybackOkHttpClient', parser),

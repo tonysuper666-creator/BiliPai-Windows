@@ -17,7 +17,7 @@ VERSION = "0.2.406.1"
 TAG = "Windows-v" + VERSION
 MANIFEST = {"upstreamRepository": "jay3-yy/BiliPai", "upstreamTag": "v0.2.3-alpha.9",
             "upstreamCommit": OTHER, "hashNormalization": "lf", "featureCoverage": {"playback": "native"}}
-GATE = {"passed": True, **{name: "passed" for name in publication.GATES}}
+GATE = {"passed": True, "windowsSourceCommit": SOURCE, **{name: "passed" for name in publication.GATES}}
 ARCHIVE, CHECKSUM, EVIDENCE = publication.asset_names(VERSION)
 
 
@@ -210,7 +210,7 @@ class PublicationTests(unittest.TestCase):
             self.publish(github)
         self.assertEqual(github.operations, [])
 
-    def test_passed_boolean_cannot_replace_the_four_release_gates(self):
+    def test_passed_boolean_cannot_replace_the_release_gates(self):
         github = FakeGitHub()
         with self.assertRaisesRegex(publication.ReleaseError, "must all pass"):
             self.publish(github, {"passed": True})
@@ -224,12 +224,33 @@ class PublicationTests(unittest.TestCase):
             self.publish(github, gate)
         self.assertEqual(github.operations, [])
 
+    def test_report_without_generated_source_contracts_cannot_publish(self):
+        github = FakeGitHub()
+        gate = {**GATE, "windowsVersion": VERSION, "portableZipSha256": self.local_digest}
+        del gate["pythonSourceContractTests"]
+        with self.assertRaisesRegex(publication.ReleaseError, "must all pass"):
+            self.publish(github, gate)
+        self.assertEqual(github.operations, [])
+
     def test_gate_for_another_package_cannot_publish_checked_local_zip(self):
         github = FakeGitHub()
         gate = {**GATE, "windowsVersion": VERSION, "portableZipSha256": "f" * 64}
         with self.assertRaisesRegex(publication.ReleaseError, "does not match the checked Windows package"):
             self.publish(github, gate)
         self.assertEqual(github.operations, [])
+
+    def test_same_version_package_cannot_be_relabelled_with_another_source_commit(self):
+        for commit in (None, OTHER):
+            with self.subTest(commit=commit):
+                github = FakeGitHub()
+                gate = {**GATE, "windowsVersion": VERSION, "portableZipSha256": self.local_digest}
+                if commit is None:
+                    del gate["windowsSourceCommit"]
+                else:
+                    gate["windowsSourceCommit"] = commit
+                with self.assertRaisesRegex(publication.ReleaseError, "exact Windows source commit"):
+                    self.publish(github, gate)
+                self.assertEqual(github.operations, [])
 
     def test_gate_for_another_version_cannot_publish_checked_local_zip(self):
         github = FakeGitHub()

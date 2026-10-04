@@ -40,7 +40,7 @@ class PreferenceExtractionTest(unittest.TestCase):
     def test_product_outputs_only_adapters_and_selected_host_local(self):
         with tempfile.TemporaryDirectory() as name:
             emitted = module.generate(REPO, Path(name))
-            self.assertEqual({p.name for p in emitted}, {"AdaptivePreferenceComponents.kt", "AdaptiveContentCardComponents.kt", "AppSelectionPreferenceComponents.kt", "AppWallpaperBackdropLocal.kt"})
+            self.assertEqual({p.name for p in emitted}, {"AdaptivePreferenceComponents.kt", "AdaptiveContentCardComponents.kt", "AppSelectionPreferenceComponents.kt", "AppWallpaperBackdropLocal.kt", "AppNavigationComponents.kt"})
             for path in emitted: self.assertNotRegex(body(path), r"(?m)^import (?:android\.|androidx\.activity\.)")
 
     def test_all_original_signatures_including_generic_selection_remain_exact(self):
@@ -95,10 +95,22 @@ class PreferenceExtractionTest(unittest.TestCase):
             declaration = re.search(r"(?m)^val LocalGlobalWallpaperBackdropVisible[^\n]+", body(local))[0]
             self.assertIn(declaration, host.read(REPO, module.POLICIES[0]))
 
+    def test_navigation_facade_has_one_explicit_producer_and_no_body_changes(self):
+        path = module.BASE + "components/AppNavigationComponents.kt"
+        original = host.read(REPO, path)
+        self.assertIn(path, module.ADAPTED)
+        self.assertNotIn(path, module.DIRECT)
+        self.assertEqual(module.adapt(path, original, host), original)
+        with tempfile.TemporaryDirectory() as name:
+            generated = next(p for p in module.generate(REPO, Path(name)) if p.name == "AppNavigationComponents.kt")
+            self.assertEqual(body(generated), original.strip() + "\n")
+        inventory = {entry["path"]: entry for entry in module.inventory(REPO)}
+        self.assertEqual(inventory[path]["mode"], "platform-adapter-reference")
+
     def test_inventory_lf_hashes_and_direct_adapter_boundary(self):
         inventory = module.inventory(REPO)
         self.assertEqual(len(inventory), 28); self.assertEqual(len({e["path"] for e in inventory}), 28)
-        self.assertEqual(sum(e["mode"] == "direct" for e in inventory), 24)
+        self.assertEqual(sum(e["mode"] == "direct" for e in inventory), 23)
         for entry in inventory:
             original = host.read(REPO, entry["path"])
             self.assertNotIn("\r", original)

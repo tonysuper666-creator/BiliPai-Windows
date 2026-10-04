@@ -51,9 +51,18 @@ class OriginalPrivacyExtractionTest(unittest.TestCase):
             media.function(original,'getPrivacyContentAuthenticationEnabled',parser))
         self.assertIn('booleanPreferencesKey("privacy_content_authentication_enabled")',self.files['DesktopPrivacyAuthenticationSettings.kt'])
         self.assertNotIn('privacy_mode_enabled',self.files['DesktopPrivacyAuthenticationSettings.kt'])
+        # These complete original declarations have one actual SearchScreen owner;
+        # the privacy producer must not recreate them in its retired policy leaf.
+        search=tool.load(REPO/'desktop/tools/extract-upstream-search-pages.py','privacy_full_search_test')
+        output=self.output/'complete-search'
+        search.generate(REPO,output)
+        screens=list(output.rglob('SearchScreen.kt'))
+        self.assertEqual(1,len(screens))
+        complete=screens[0].read_text(encoding='utf-8')
         for name in ['resolveSearchSubmitKeyword','resolveSearchDefaultPlaceholder']:
-            self.assertEqual(media.function(self.files['PrivacySearchHintPolicy.kt'],name,parser),
+            self.assertEqual(media.function(complete,name,parser),
                 media.function(tool.read(REPO,tool.SEARCH),name,parser))
+            self.assertNotIn('fun '+name+'(',self.files['PrivacySearchHintPolicy.kt'])
 
     def test_shield_is_one_exact_original_xml_asset_with_same_paths(self):
         root=ET.fromstring(tool.read(REPO,tool.ASSET))
