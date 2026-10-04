@@ -48,7 +48,8 @@ import kotlinx.coroutines.launch
                 allowScroll=value.allowScroll,allowTop=value.allowTop,allowBottom=value.allowBottom,
                 allowColorful=value.allowColorful,allowSpecial=value.allowSpecial,
                 weightFilterLevel=value.weightFilterLevel,hideInteractiveCommands=value.hideInteractiveCommands,
-                showBlockRuleEditor=true,showSmartOcclusionSection=true,showSyncSection=isLoggedIn,
+                // Windows consumes the existing web-mask path, but has no real-time face detector.
+                showBlockRuleEditor=true,showSmartOcclusionSection=false,showSyncSection=isLoggedIn,
                 cloudSyncEnabled=cloudSyncEnabled,blockRulesRaw=value.blockRulesRaw,
                 smartOcclusion=value.smartOcclusion,fullscreenWidthMode=value.fullscreenPanelWidthMode,
                 portraitDisplayAreaMode=value.portraitDisplayAreaMode,syncUiState=cloudSync.uiState,

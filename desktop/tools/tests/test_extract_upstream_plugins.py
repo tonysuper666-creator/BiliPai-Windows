@@ -45,6 +45,29 @@ class PluginExtractorTest(unittest.TestCase):
         self.assertIn("DesktopPluginContext as Context", body)
         self.assertIn("prefs[key] = configJson", body)
 
+    def test_fresh_subscription_output_uses_the_fixed_allocator_without_renumbering(self):
+        body = self.output_for("com.android.purebilibili.core.plugin.feed", "DesktopSavedSubscriptionFeed")
+        original = EXTRACTOR.read(ROOT, EXTRACTOR.BASE + "core/plugin/feed/SubscriptionFeedStore.kt")
+        expected = EXTRACTOR.platform_context(EXTRACTOR.subscription_feed_identity_fix(original))
+        self.assertEqual(expected.strip() + "\n", body.split("\n", 2)[2])
+        self.assertEqual(EXTRACTOR.SUBSCRIPTION_ID_FIX_HELPER_SHA256,
+            hashlib.sha256(EXTRACTOR.SUBSCRIPTION_ID_FIX_HELPER.encode()).hexdigest())
+        self.assertEqual(1, body.count(EXTRACTOR.SUBSCRIPTION_ID_FIX_HELPER))
+        self.assertIn("val usedIds = current.map { it.id }.toMutableSet()", body)
+        self.assertIn("usedIds += feed.id\n            current += feed", body)
+        self.assertIn("existing?.id ?: uniqueFeedId(trimmedUrl, current.map { it.id }.toSet())", body)
+        self.assertIn("204b5891d005c0cac525ca6fdd328b4534c4f3a6a3966917610eee528d3b2785", body.splitlines()[1])
+        selector, parser = EXTRACTOR.media_extractor(ROOT), EXTRACTOR.parser_for(ROOT)
+        for name in ("list", "remove", "removeAll", "setEnabled", "write", "file"):
+            self.assertEqual(selector.function(original, name, parser), selector.function(body, name, parser))
+
+    def test_subscription_identity_fix_rejects_changed_canonical_inputs(self):
+        original = EXTRACTOR.read(ROOT, EXTRACTOR.BASE + "core/plugin/feed/SubscriptionFeedStore.kt")
+        with self.assertRaisesRegex(ValueError, "Canonical subscription Store changed"):
+            EXTRACTOR.subscription_feed_identity_fix(original.replace("var added = 0", "var added = 1"))
+        with self.assertRaisesRegex(ValueError, "Canonical subscription Store changed"):
+            EXTRACTOR.subscription_feed_identity_fix(EXTRACTOR.subscription_feed_identity_fix(original))
+
     def test_json_rule_engine_has_one_reviewed_color_binding(self):
         source = EXTRACTOR.read(ROOT, EXTRACTOR.BASE + "core/plugin/json/RuleEngine.kt")
         body = self.output_for("com.android.purebilibili.core.plugin.json", "RuleEngine")

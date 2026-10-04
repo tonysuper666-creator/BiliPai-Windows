@@ -19,6 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean
     overlay:DanmakuOverlay,
     cid:Long,
     sourceVersion:Long,
+    sourceLease:DesktopOriginalVideoAcceptedPublication,
     stillOwned:()->Boolean,
     window:Window,
     presentation:DesktopDanmakuPresentation,
@@ -33,12 +34,13 @@ import java.util.concurrent.atomic.AtomicBoolean
     enabledChangeVersion:Long,
 ) {
     val capturedEpoch=owner.operations.expectedEpoch
-    val currentStillOwned by rememberUpdatedState(stillOwned)
-    val currentPosition by rememberUpdatedState(currentPositionMs)
-    val currentSeek by rememberUpdatedState(seekFromUser)
     val account by repository.account.collectAsState()
     val card=LocalDesktopDynamicCardBindings.current
-    key(owner,cid,sourceVersion,capturedEpoch) {
+    key(owner,cid,sourceVersion,sourceLease,capturedEpoch,window) {
+        // Keep callbacks within this exact source lease; a successor must not refresh an old job's owner.
+        val currentStillOwned by rememberUpdatedState(stillOwned)
+        val currentPosition by rememberUpdatedState(currentPositionMs)
+        val currentSeek by rememberUpdatedState(seekFromUser)
         val admissionLock=remember{Any()}
         val alive=remember{AtomicBoolean(true)}
         val pageScope=remember{CoroutineScope(owner.scope.coroutineContext+SupervisorJob(owner.scope.coroutineContext[Job]))}

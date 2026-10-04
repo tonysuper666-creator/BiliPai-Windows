@@ -986,6 +986,12 @@ object WindowsVideoActualRootUiFixture {
         click("更多播放操作")
         await("actual visible player operation menu") { edt { playerMenuSurface() != null } }
         val surface = edt { requireNotNull(playerMenuSurface()) }
+        edt {
+            check(surface is javax.swing.JDialog && !surface.isModal && ownedWindow(surface)) {
+                "Player menu must be a modeless owned native window above the Canvas"
+            }
+            check(window().bounds.contains(surface.bounds)) { "Player menu must fit within the actual owner window" }
+        }
         actions.capture("112-owned-player-menu", edt { current() })
         if (surface !== edt { window() }) edt { captureOwnedExtraSurface("112-owned-player-menu-popup", surface) }
         edt {
@@ -1006,9 +1012,11 @@ object WindowsVideoActualRootUiFixture {
         record("112-owned-player-menu", mapOf("actualOpenControlUsed" to JsonPrimitive("更多播放操作"),
             "actualMenuItemUsed" to JsonPrimitive("简介、分P与播放设置"), "actualMenuItemWhollyVisible" to JsonPrimitive(true),
             "actualMenuSurfaceClass" to JsonPrimitive(surface.javaClass.name),
+            "ownedModelessPopup" to JsonPrimitive(true), "popupFitsOwnerWindow" to JsonPrimitive(true),
             "actualMenuSurfaceKind" to JsonPrimitive(if (surface === edt { window() }) "inline-main" else "owned-popup"),
             "sameNativeSource" to JsonPrimitive(true), "clockBefore" to JsonPrimitive(before), "clockAfter" to JsonPrimitive(after),
             "volumeAndMutePreserved" to JsonPrimitive(true)))
+        if (System.getProperty("bilipai.validation.featureInput") == "true") exerciseDanmakuSettings()
         click("关闭详情")
         await("actual menu detail close restores compact player") { edt {
             // Compose may publish removed-panel semantics before restoring the sibling bar/header tree.
@@ -1018,6 +1026,170 @@ object WindowsVideoActualRootUiFixture {
                 runCatching { videoScope("NVIDIA 增强详情") }.isSuccess
         } }
         sameNative(); check(playing())
+    }
+
+    private fun ownedFeatureSurface(vararg anchors: String): Window? {
+        current()
+        val main = window()
+        val surfaces = listOf<Window>(main) + Window.getWindows().filter {
+            it !== main && it.isShowing && it.isDisplayable && ownedWindow(it) &&
+                (it is javax.swing.JWindow || it is javax.swing.JDialog)
+        }
+        return surfaces.filter { surface ->
+            val children = descendants(surface.accessibleContext)
+            anchors.all { label -> children.any { hasLabel(it, label) && visible(it, surface) } }
+        }.also { check(it.size <= 1) { "Ambiguous owned feature surface: ${anchors.toList()}" } }.singleOrNull()
+    }
+
+    private fun clickFeatureItem(surface: Window, label: String) {
+        check(EventQueue.isDispatchThread()); current(); sameNative()
+        val item = descendants(surface.accessibleContext).filter { node ->
+            (node.accessibleName == label || node.accessibleName.orEmpty().startsWith("$label, ")) &&
+                node.accessibleRole != javax.accessibility.AccessibleRole.SCROLL_PANE && visible(node, surface) &&
+                node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                (node.accessibleAction?.accessibleActionCount ?: 0) == 1
+        }.single()
+        clickOwnedComposeMouse(surface, item)
+    }
+
+    private fun exerciseChapterControls() {
+        sameNative(); check(playing())
+        click("暂停")
+        await("actual Pause before exact chapter seek") { sameNative(); actualPlayer.state.value.nativePaused == true }
+        val beforeLayers = edt { actualMainSceneLayers() }
+        fun choose(label: String, seconds: Double) {
+            val seekId = actualPlayer.state.value.seekCompletedId
+            click("视频章节")
+            await("actual original chapter menu") { edt { ownedFeatureSurface("00:00 · 开场", "00:20 · 中段", "00:40 · 收尾") != null } }
+            val surface = edt { requireNotNull(ownedFeatureSurface("00:00 · 开场", "00:20 · 中段", "00:40 · 收尾")) }
+            if (seconds == 20.0) {
+                actions.capture("114-original-chapter-menu", edt { current() })
+                if (surface !== edt { window() }) edt { captureOwnedExtraSurface("114-original-chapter-menu-popup", surface) }
+            }
+            edt { clickFeatureItem(surface, label) }
+            await("actual MPV chapter seek completion at $seconds seconds") {
+                sameNative(); actualPlayer.state.value.let {
+                    it.seekCompletedId > seekId && it.error == null && it.nativePaused == true &&
+                        kotlin.math.abs((it.seekCompletedPositionSeconds ?: -100.0) - seconds) < .6 &&
+                        kotlin.math.abs(it.positionSeconds - seconds) < .6
+                }
+            }
+            await("chapter menu input layer retires") { edt {
+                val layers = actualMainSceneLayers()
+                ownedFeatureSurface("00:00 · 开场", "00:20 · 中段", "00:40 · 收尾") == null &&
+                    layers.size == beforeLayers.size && layers.all { layer -> beforeLayers.any { it === layer } } &&
+                    runCatching { videoScope("视频章节") }.isSuccess
+            } }
+            record(if (seconds == 20.0) "114-original-chapter-seek" else "115-original-chapter-return", mapOf(
+                "actualControlUsed" to JsonPrimitive(label), "expectedPositionSeconds" to JsonPrimitive(seconds),
+                "nativeState" to safeState(), "sameNativeSource" to JsonPrimitive(true),
+                "previousSeekId" to JsonPrimitive(seekId), "inputMechanism" to JsonPrimitive("OWNED_COMPOSE_AWT_MOUSE_EVENT")))
+        }
+        choose("00:20 · 中段", 20.0)
+        choose("00:00 · 开场", 0.0)
+        click("播放")
+        await("actual chapter source resumes without replacement") { sameNative(); playing() }
+    }
+
+    private fun privateDanmakuOpacity(): Double? {
+        val file = actions.local.resolve("BiliPaiWindows/plugin-settings.json")
+        if (!Files.exists(file)) return null
+        return Json.parseToJsonElement(Files.readString(file)).jsonObject["settings"]?.jsonObject
+            ?.get("danmaku_portrait_opacity")?.jsonPrimitive?.doubleOrNull
+    }
+
+    private fun wheelDanmakuSettings(surface: Window, rotation: Int) = edt {
+        current(); sameNative(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+        val panels = descendants(surface.accessibleContext).filter { node ->
+            val children = descendants(node)
+            listOf("弹幕设置", "透明度", "查看弹幕列表", "关闭").all { label -> children.any { hasLabel(it, label) } }
+        }
+        val panel = panels.minBy { descendants(it).size }
+        val input = nativeComponents(surface).filter { it.isShowing && it.isDisplayable &&
+            SwingUtilities.getWindowAncestor(it) === surface && it.keyListeners.any { listener ->
+                listener.javaClass.name == "androidx.compose.ui.scene.ComposeSceneMediator\$keyListener\$1"
+            } }.single()
+        val content = (surface as javax.swing.RootPaneContainer).contentPane
+        val viewport = Rectangle(content.locationOnScreen.x, content.locationOnScreen.y, content.width, content.height)
+        val inputBounds = Rectangle(input.locationOnScreen.x, input.locationOnScreen.y, input.width, input.height)
+        val component = requireNotNull(panel.accessibleComponent)
+        val origin = requireNotNull(component.locationOnScreen)
+        val area = Rectangle(origin.x, origin.y, component.size.width, component.size.height).intersection(viewport).intersection(inputBounds)
+        check(area.width > 20 && area.height > 20) { "No owned visible original danmaku panel scroll area" }
+        val point = java.awt.Point(area.x + area.width / 2 - inputBounds.x, area.y + area.height / 2 - inputBounds.y)
+        check(input.contains(point))
+        input.dispatchEvent(java.awt.event.MouseWheelEvent(input, MouseEvent.MOUSE_WHEEL, System.currentTimeMillis(), 0,
+            point.x, point.y, 0, false, java.awt.event.MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, rotation))
+    }
+
+    private fun exerciseDanmakuSettings() {
+        repeat(12) {
+            if (edt { descendants(detailPaneScope()).any { node -> node.accessibleName == "弹幕设置" && visible(node) } }) return@repeat
+            ownedWheel(edt { actualComposeInput() }, 2, false); Thread.sleep(150)
+        }
+        val beforeLayers = edt { actualMainSceneLayers() }
+        fun open() {
+            click("弹幕设置")
+            await("original danmaku settings opens from current Windows details") { edt {
+                ownedFeatureSurface("弹幕设置", "查看弹幕列表", "关闭") != null
+            } }
+        }
+        fun close(surface: Window) {
+            repeat(12) {
+                if (edt { descendants(surface.accessibleContext).any { node ->
+                    node.accessibleName == "关闭" && visible(node, surface)
+                } }) return@repeat
+                wheelDanmakuSettings(surface, -3); Thread.sleep(150)
+            }
+            edt { clickFeatureItem(surface, "关闭") }
+            await("original danmaku modal input layers retire") { edt {
+                val layers = actualMainSceneLayers()
+                ownedFeatureSurface("弹幕设置", "查看弹幕列表", "关闭") == null &&
+                    ownedFeatureSurface("弹幕列表", "暂无弹幕数据", "关闭") == null &&
+                    layers.size == beforeLayers.size && layers.all { layer -> beforeLayers.any { it === layer } } &&
+                    runCatching { detailPaneScope() }.isSuccess
+            } }
+        }
+        open()
+        val surface = edt { requireNotNull(ownedFeatureSurface("弹幕设置", "查看弹幕列表", "关闭")) }
+        actions.capture("113-original-danmaku-settings", edt { current() })
+        if (surface !== edt { window() }) edt { captureOwnedExtraSurface("113-original-danmaku-settings-dialog", surface) }
+        fun opacitySlider(): AccessibleContext = edt {
+            current()
+            descendants(surface.accessibleContext).single {
+                it.accessibleName == "透明度" && it.accessibleRole == javax.accessibility.AccessibleRole.SLIDER
+            }
+        }
+        // The original non-fullscreen panel has a bounded vertical scroll area.
+        repeat(12) {
+            if (edt { runCatching { visible(opacitySlider(), surface) }.getOrDefault(false) }) return@repeat
+            wheelDanmakuSettings(surface, 2)
+            Thread.sleep(150)
+        }
+        await("original opacity slider wholly visible") { edt { visible(opacitySlider(), surface) } }
+        val prior = privateDanmakuOpacity()
+        edt { clickOwnedComposeMouse(surface, opacitySlider()) }
+        await("original opacity setter persisted the real pointer release") {
+            privateDanmakuOpacity()?.let { it in .4.. .9 && it != prior } == true
+        }
+        val changed = requireNotNull(privateDanmakuOpacity())
+        close(surface); open()
+        check(privateDanmakuOpacity() == changed)
+        val reopened = edt { requireNotNull(ownedFeatureSurface("弹幕设置", "查看弹幕列表", "关闭")) }
+        edt { clickFeatureItem(reopened, "查看弹幕列表") }
+        await("original empty raw document renders a real list rather than a blank modal") { edt {
+            ownedFeatureSurface("弹幕列表", "暂无弹幕数据", "关闭") != null
+        } }
+        val pool = edt { requireNotNull(ownedFeatureSurface("弹幕列表", "暂无弹幕数据", "关闭")) }
+        actions.capture("113-original-danmaku-pool", edt { current() })
+        if (pool !== edt { window() }) edt { captureOwnedExtraSurface("113-original-danmaku-pool-dialog", pool) }
+        close(pool)
+        sameNative(); check(playing())
+        record("113-original-danmaku-settings-and-pool", mapOf(
+            "sameNativeSource" to JsonPrimitive(true), "actualSettingsEntryUsed" to JsonPrimitive(true),
+            "actualOriginalEmptyPoolVisible" to JsonPrimitive(true), "actualOpacityDurable" to JsonPrimitive(changed),
+            "reopenPreservedOpacity" to JsonPrimitive(true), "realAccountUsed" to JsonPrimitive(false),
+            "remoteDanmakuActionSubmitted" to JsonPrimitive(false)))
     }
 
     /** Read only the already initialized, owned Compose 1.12.1 scene's attached input layers. */
@@ -1052,12 +1224,14 @@ object WindowsVideoActualRootUiFixture {
         sameNative(); click("NVIDIA 增强详情")
         await("complete actual owned NVIDIA enhancement dialog") { edt { nvidiaDialogSurface() != null } }
         val openedDialogLayers = edt { actualMainSceneLayers() }
-        check(openedDialogLayers.size > beforeDialogLayers.size &&
+        check(openedDialogLayers.size == beforeDialogLayers.size &&
             beforeDialogLayers.all { before -> openedDialogLayers.any { it === before } }) {
-            "Actual NVIDIA dialog must add its own Main scene input layer"
+            "Native NVIDIA dialog must not leave an inline layer beneath the video Canvas"
         }
+        edt { check(nvidiaSurface() !== window() && ownedWindow(nvidiaSurface())) }
         record("nvidia-video-dialog-open", mapOf("actualControlUsed" to JsonPrimitive("NVIDIA 增强详情"),
             "sameNativeSource" to JsonPrimitive(true), "completeDialogAndOriginalSwitch" to JsonPrimitive(true),
+            "ownedNativeDialogAboveVideo" to JsonPrimitive(true),
             "actualMainSceneLayerCountBefore" to JsonPrimitive(beforeDialogLayers.size),
             "actualMainSceneLayerCountOpen" to JsonPrimitive(openedDialogLayers.size)))
         ensureNvidiaVisible()
@@ -1074,7 +1248,8 @@ object WindowsVideoActualRootUiFixture {
         }
         val state = actualPlayer.nvidiaVideoState.value
         await("actual main-session GPU name rendered through its UI StateFlow") { edt {
-            current(); all().any { it.accessibleName.orEmpty().contains(requireNotNull(state.gpuName)) }
+            current(); descendants(nvidiaSurface().accessibleContext)
+                .any { it.accessibleName.orEmpty().contains(requireNotNull(state.gpuName)) }
         } }
         record("nvidia-main-native-output", mapOf("actualMainPlayerIdentity" to JsonPrimitive(System.identityHashCode(actualPlayer)),
             "actualHardwareDecoder" to JsonPrimitive(actualPlayer.state.value.hardwareDecoder),
@@ -1092,6 +1267,7 @@ object WindowsVideoActualRootUiFixture {
             "vsrPositiveRequiredByThisUiTest" to JsonPrimitive(false), "hdrPositiveRequiredByThisUiTest" to JsonPrimitive(false),
             "configurationSharedAcrossSettingsAndControls" to JsonPrimitive(true)))
         actions.capture("nvidia-main-native-output", edt { current() })
+        edt { captureOwnedExtraSurface("nvidia-main-native-output-dialog", nvidiaSurface()) }
         edt {
             val surface = nvidiaSurface()
             val done = descendants(surface.accessibleContext).filter { node -> node.accessibleName == "完成" &&
@@ -1136,6 +1312,7 @@ object WindowsVideoActualRootUiFixture {
         check(initialPlacement == WindowPlacement.Floating)
         clockAndCapture("110-ordinary-playing")
         exercisePlayerMenu()
+        if (System.getProperty("bilipai.validation.featureInput") == "true") exerciseChapterControls()
         if (System.getProperty("bilipai.validation.nvidiaInput") == "true") exerciseMainNvidiaControls()
         val beforeFullscreen = edt { current().serial }
         click("全屏")
@@ -1225,6 +1402,7 @@ object WindowsVideoActualRootUiFixture {
                         put("nvidiaUiProofCompleted", System.getProperty("bilipai.validation.nvidiaInput") == "true")
                         put("interactionProofRequested", System.getProperty("bilipai.validation.scaleInput") == "true")
                         put("interactionProofCompleted", System.getProperty("bilipai.validation.scaleInput") == "true")
+                        put("featureInputProofCompleted", System.getProperty("bilipai.validation.featureInput") == "true")
                         put("realAccountUsed", false); put("physicalStackWrittenByFixture", System.getProperty("bilipai.validation.nvidiaInput") == "true")
                         put("directPhysicalStackListMutation", false)
                         put("newNativeActorCreatedByFixture", false); put("newRootCreatedByFixture", false)

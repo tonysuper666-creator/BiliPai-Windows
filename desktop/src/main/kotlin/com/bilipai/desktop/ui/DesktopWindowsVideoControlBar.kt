@@ -20,6 +20,9 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.android.purebilibili.feature.video.ui.overlay.normalizeViewPointSegments
+import com.android.purebilibili.feature.video.ui.overlay.findViewPointSegmentAt
 import com.android.purebilibili.core.util.FormatUtils
 import com.bilipai.desktop.player.PlayerState
 
@@ -36,16 +39,20 @@ internal fun DesktopWindowsVideoControlBar(
     state: PlayerState, sourceVersion: Long, enabled: Boolean, fullscreen: Boolean,
     detailsOpen: Boolean, hasPrevious: Boolean, hasNext: Boolean, canPictureInPicture: Boolean,
     qualities: List<Pair<Int, String>>, selectedQuality: Int?,
+    chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
+    onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit,
     onPlayPause: () -> Unit, onPrevious: () -> Unit, onNext: () -> Unit,
     onMute: () -> Unit, onVolume: (Double) -> Unit, onSpeed: (Double) -> Unit,
     onQuality: (Int) -> Unit, onSeek: (Double) -> Unit, onPictureInPicture: () -> Unit,
     onFullscreen: () -> Unit, onDetails: () -> Unit, onOpenIntroduction: () -> Unit,
     enhancement: @Composable () -> Unit,
 ) {
+    val durationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
+    val segments = remember(chapters, durationMs) { normalizeViewPointSegments(chapters?.points.orEmpty(), durationMs) }
     DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(horizontal = 8.dp)) {
             DesktopWindowsThinSeek(state.positionSeconds, state.durationSeconds, sourceVersion,
-                enabled && state.durationSeconds > 0.0, onSeek)
+                enabled && state.durationSeconds > 0.0, chapters, chaptersSource, onChapterSeek, onSeek)
             BoxWithConstraints(Modifier.fillMaxWidth()) {
                 val expanded = maxWidth >= 940.dp
                 val showEnhancementStatus = maxWidth >= 520.dp
@@ -53,8 +60,9 @@ internal fun DesktopWindowsVideoControlBar(
                 var speedMenu by remember { mutableStateOf(false) }
                 var qualityMenu by remember { mutableStateOf(false) }
                 var volumeMenu by remember { mutableStateOf(false) }
+                var chapterMenu by remember(chapters, chaptersSource, sourceVersion) { mutableStateOf(false) }
                 LaunchedEffect(enabled) {
-                    if (!enabled) { more = false; speedMenu = false; qualityMenu = false; volumeMenu = false }
+                    if (!enabled) { more = false; speedMenu = false; qualityMenu = false; volumeMenu = false; chapterMenu = false }
                 }
                 Row(Modifier.fillMaxWidth().heightIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = onPlayPause, enabled = enabled && state.ready, modifier = Modifier.size(44.dp)) {
@@ -79,7 +87,7 @@ internal fun DesktopWindowsVideoControlBar(
                                 Icon(if (state.muted) Icons.Default.VolumeOff else Icons.Default.VolumeUp,
                                     contentDescription = "音量与静音")
                             }
-                            DropdownMenu(volumeMenu, onDismissRequest = { volumeMenu = false }) {
+                            DesktopWindowsPlayerMenu(volumeMenu, onDismissRequest = { volumeMenu = false }, preferredHeight = 144.dp) {
                                 DropdownMenuItem(text = { Text(if (state.muted) "取消静音" else "静音") }, onClick = onMute)
                                 Text("音量 ${state.volume.toInt()}%", Modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.labelMedium)
                                 Slider(state.volume.toFloat().coerceIn(0f, 100f), { onVolume(it.toDouble()) },
@@ -89,7 +97,7 @@ internal fun DesktopWindowsVideoControlBar(
                         Box {
                             TextButton(onClick = { speedMenu = true }, enabled = enabled,
                                 modifier = Modifier.semantics { contentDescription = "倍速" }) { Text("${state.speed}×") }
-                            DropdownMenu(speedMenu, onDismissRequest = { speedMenu = false }) {
+                            DesktopWindowsPlayerMenu(speedMenu, onDismissRequest = { speedMenu = false }, preferredHeight = 256.dp) {
                                 listOf(.75, 1.0, 1.25, 1.5, 2.0).forEach { speed ->
                                     DropdownMenuItem(text = { Text("${speed}×") }, onClick = { onSpeed(speed); speedMenu = false })
                                 }
@@ -100,10 +108,25 @@ internal fun DesktopWindowsVideoControlBar(
                                 modifier = Modifier.semantics { contentDescription = "画质" }) {
                                 Text(qualities.firstOrNull { it.first == selectedQuality }?.second ?: "画质", maxLines = 1)
                             }
-                            DropdownMenu(qualityMenu, onDismissRequest = { qualityMenu = false }) {
+                            DesktopWindowsPlayerMenu(qualityMenu, onDismissRequest = { qualityMenu = false },
+                                preferredHeight = (qualities.size * 48 + 16).coerceIn(64, 420).dp) {
                                 qualities.forEach { (id, label) ->
                                     DropdownMenuItem(text = { Text(label) }, onClick = { onQuality(id); qualityMenu = false })
                                 }
+                            }
+                        }
+                    }
+                    if (showEnhancementStatus && chapters != null && chaptersSource != null && segments.isNotEmpty()) Box {
+                        IconButton(onClick = { chapterMenu = true }, enabled = enabled, modifier = Modifier.size(44.dp)) {
+                            Icon(Icons.Default.ListAlt, contentDescription = "视频章节")
+                        }
+                        DesktopWindowsPlayerMenu(chapterMenu, onDismissRequest = { chapterMenu = false },
+                            preferredHeight = (segments.size * 48 + 16).coerceIn(64, 420).dp) {
+                            segments.forEach { segment ->
+                                DropdownMenuItem(text = {
+                                    Text("${FormatUtils.formatDuration(segment.fromMs)} · ${segment.content}", maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis)
+                                }, enabled = enabled, onClick = { onChapterSeek(chapters, chaptersSource, segment.fromMs); chapterMenu = false })
                             }
                         }
                     }
@@ -124,7 +147,8 @@ internal fun DesktopWindowsVideoControlBar(
                         IconButton(onClick = { more = true }, modifier = Modifier.size(44.dp)) {
                             Icon(Icons.Default.MoreVert, contentDescription = "更多播放操作")
                         }
-                        DropdownMenu(more, onDismissRequest = { more = false }) {
+                        DesktopWindowsPlayerMenu(more, onDismissRequest = { more = false },
+                            preferredHeight = if (expanded) 64.dp else 420.dp) {
                             if (!expanded) {
                                 DropdownMenuItem(text = { Text("上一集") }, enabled = enabled && hasPrevious,
                                     onClick = { onPrevious(); more = false })
@@ -147,8 +171,19 @@ internal fun DesktopWindowsVideoControlBar(
                                 DropdownMenuItem(text = { Text("浮窗") }, enabled = enabled && canPictureInPicture,
                                     onClick = { onPictureInPicture(); more = false })
                             }
+                            if (!showEnhancementStatus && chapters != null && chaptersSource != null && segments.isNotEmpty())
+                                DropdownMenuItem(text = { Text("视频章节") }, enabled = enabled,
+                                    onClick = { more = false; chapterMenu = true })
                             DropdownMenuItem(text = { Text("简介、分P与播放设置") }, onClick = { onOpenIntroduction(); more = false })
                         }
+                        if (!showEnhancementStatus && chapters != null && chaptersSource != null)
+                            DesktopWindowsPlayerMenu(chapterMenu, onDismissRequest = { chapterMenu = false },
+                                preferredHeight = (segments.size * 48 + 16).coerceIn(64, 420).dp) {
+                                segments.forEach { segment ->
+                                    DropdownMenuItem(text = { Text("${FormatUtils.formatDuration(segment.fromMs)} · ${segment.content}") },
+                                        enabled = enabled, onClick = { onChapterSeek(chapters, chaptersSource, segment.fromMs); chapterMenu = false })
+                                }
+                            }
                     }
                 }
             }
@@ -156,49 +191,84 @@ internal fun DesktopWindowsVideoControlBar(
     }
 }
 
-/** A 3dp rail inside a full 44dp input region. Drag previews locally and commits once on release. */
+/** One 44dp input region: the thin rail retains precise seek; its chapter labels
+ * jump to the original normalized start on click. Drag and keyboard always seek precisely. */
 @Composable
 private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVersion: Long,
-    enabled: Boolean, onSeek: (Double) -> Unit) {
+    enabled: Boolean, chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
+    onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit, onSeek: (Double) -> Unit) {
     val total = duration.takeIf { it.isFinite() && it > 0.0 } ?: 1.0
-    var scrub by remember(sourceVersion) { mutableStateOf<Double?>(null) }
+    val durationMs = if (duration.isFinite() && duration > 0.0) (duration * 1000.0).toLong() else 0L
+    val segments = remember(chapters, durationMs) { normalizeViewPointSegments(chapters?.points.orEmpty(), durationMs) }
+    var scrub by remember(sourceVersion, chapters, chaptersSource) { mutableStateOf<Double?>(null) }
     val latestSeek by rememberUpdatedState(onSeek)
+    val latestChapterSeek by rememberUpdatedState(onChapterSeek)
     val value = (scrub ?: position.takeIf { it.isFinite() } ?: 0.0).coerceIn(0.0, total)
+    val currentSegment = findViewPointSegmentAt(segments, (value * 1000.0).toLong())
     val inactive = MaterialTheme.colorScheme.onSurface.copy(alpha = .16f)
     val active = MaterialTheme.colorScheme.primary
-    Canvas(Modifier.fillMaxWidth().height(44.dp).semantics {
-        contentDescription = "播放进度"
-        progressBarRangeInfo = ProgressBarRangeInfo(value.toFloat(), 0f..total.toFloat())
-        if (!enabled) disabled()
-        setProgress { requested -> if (enabled) { latestSeek(requested.toDouble().coerceIn(0.0, total)); true } else false }
-    }.onKeyEvent { event ->
-        if (!enabled || event.type != KeyEventType.KeyDown) false else {
-            val target = when (event.key) {
-                Key.DirectionLeft -> value - 5.0
-                Key.DirectionRight -> value + 5.0
-                Key.MoveHome -> 0.0
-                Key.MoveEnd -> total
-                else -> null
+    Box(Modifier.fillMaxWidth().height(44.dp)) {
+        Canvas(Modifier.fillMaxSize().semantics {
+            contentDescription = "播放进度"
+            progressBarRangeInfo = ProgressBarRangeInfo(value.toFloat(), 0f..total.toFloat())
+            if (!enabled) disabled()
+            setProgress { requested -> if (enabled) { latestSeek(requested.toDouble().coerceIn(0.0, total)); true } else false }
+        }.onKeyEvent { event ->
+            if (!enabled || event.type != KeyEventType.KeyDown) false else {
+                val target = when (event.key) {
+                    Key.DirectionLeft -> value - 5.0
+                    Key.DirectionRight -> value + 5.0
+                    Key.MoveHome -> 0.0
+                    Key.MoveEnd -> total
+                    else -> null
+                }
+                if (target == null) false else { latestSeek(target.coerceIn(0.0, total)); true }
             }
-            if (target == null) false else { latestSeek(target.coerceIn(0.0, total)); true }
+        }.focusable(enabled).pointerInput(enabled, total, sourceVersion, chapters, chaptersSource) {
+            if (enabled) awaitEachGesture {
+                val down = awaitFirstDown(requireUnconsumed = false)
+                if (!currentEvent.buttons.isPrimaryPressed) return@awaitEachGesture
+                fun seconds(x: Float) = (x / size.width.coerceAtLeast(1)).coerceIn(0f, 1f) * total
+                val chapterClick = segments.isNotEmpty() && down.position.y >= size.height / 2f
+                var dragged = false
+                scrub = seconds(down.position.x)
+                down.consume()
+                try {
+                    val released = drag(down.id) { change ->
+                        if ((change.position - down.position).getDistance() > viewConfiguration.touchSlop) dragged = true
+                        scrub = seconds(change.position.x); change.consume()
+                    }
+                    if (released) scrub?.let { selected ->
+                        if (chapterClick && !dragged && chapters != null && chaptersSource != null) {
+                            findViewPointSegmentAt(segments, (selected * 1000.0).toLong())?.let {
+                                latestChapterSeek(chapters, chaptersSource, it.fromMs)
+                            }
+                        } else latestSeek(selected)
+                    }
+                } finally { scrub = null }
+            }
+        }) {
+            val y = if (segments.isEmpty()) size.height / 2f else 14.dp.toPx()
+            val end = (size.width * (value / total)).toFloat()
+            drawLine(inactive, Offset(0f, y), Offset(size.width, y), strokeWidth = 3.dp.toPx())
+            drawLine(active, Offset(0f, y), Offset(end, y), strokeWidth = 3.dp.toPx())
+            segments.forEach { segment ->
+                val x = size.width * (segment.fromMs.toDouble() / durationMs).toFloat()
+                drawLine(inactive.copy(alpha = .8f), Offset(x, y - 3.dp.toPx()), Offset(x, y + 3.dp.toPx()), strokeWidth = 1.dp.toPx())
+            }
+            drawCircle(active, radius = (if (scrub == null) 3.dp else 5.dp).toPx(), center = Offset(end, y))
         }
-    }.focusable(enabled).pointerInput(enabled, total, sourceVersion) {
-        if (enabled) awaitEachGesture {
-            val down = awaitFirstDown(requireUnconsumed = false)
-            if (!currentEvent.buttons.isPrimaryPressed) return@awaitEachGesture
-            fun seconds(x: Float) = (x / size.width.coerceAtLeast(1)).coerceIn(0f, 1f) * total
-            scrub = seconds(down.position.x)
-            down.consume()
-            try {
-                val released = drag(down.id) { change -> scrub = seconds(change.position.x); change.consume() }
-                if (released) scrub?.let(latestSeek)
-            } finally { scrub = null }
+        if (segments.isNotEmpty()) Row(Modifier.fillMaxWidth().height(18.dp).align(Alignment.BottomCenter),
+            verticalAlignment = Alignment.CenterVertically) {
+            var cursor = 0L
+            segments.forEach { segment ->
+                if (segment.fromMs > cursor) Spacer(Modifier.weight((segment.fromMs - cursor).toFloat()))
+                Text(segment.content, Modifier.weight((segment.toMs - segment.fromMs).toFloat()).padding(horizontal = 2.dp),
+                    color = if (currentSegment === segment) active else MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                cursor = segment.toMs
+            }
+            if (cursor < durationMs) Spacer(Modifier.weight((durationMs - cursor).toFloat()))
         }
-    }) {
-        val y = size.height / 2f
-        val end = (size.width * (value / total)).toFloat()
-        drawLine(inactive, Offset(0f, y), Offset(size.width, y), strokeWidth = 3.dp.toPx())
-        drawLine(active, Offset(0f, y), Offset(end, y), strokeWidth = 3.dp.toPx())
-        drawCircle(active, radius = (if (scrub == null) 3.dp else 5.dp).toPx(), center = Offset(end, y))
     }
 }

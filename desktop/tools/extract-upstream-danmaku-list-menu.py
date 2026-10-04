@@ -82,6 +82,7 @@ def generate(repo:Path,output:Path,standalone=False):
  for line in ['import android.content.ClipData\n','import android.content.ClipboardManager\n','import android.content.Context\n','import android.widget.Toast\n']:
   s=adapt(s,line,'// Windows port: '+line.rstrip()+'\n',rows)
  s=adapt(s,'import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.ui.LocalDesktopDanmakuBindings as LocalContext',rows)
+ s=adapt(s,'import com.android.purebilibili.core.ui.AppModalBottomSheet','import com.bilipai.desktop.ui.DesktopWindowsDanmakuPoolSheet as AppModalBottomSheet',rows)
  before='''                                Toast.makeText(
                                     context,
                                     "已跳转至 ${FormatUtils.formatDuration(item.showAtTime)}",

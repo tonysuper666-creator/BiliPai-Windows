@@ -1345,6 +1345,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
 
     BoxWithConstraints(Modifier.fillMaxSize()) {
+    val measuredRootConstraints = constraints
     DesktopAppearanceTheme(themeSettings, windowSmallestWidthDp = minOf(maxWidth.value, maxHeight.value).toInt()) {
     val scheme = MaterialTheme.colorScheme
     val strings = LocalDesktopStrings.current
@@ -1398,6 +1399,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         onDispose { registration?.close() }
     }
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
+        LocalDesktopWindowsPlayerWindow provides hostWindow,
         LocalDesktopWindowsVideoEnhancement provides DesktopWindowsVideoEnhancementUiBinding(
             pluginRuntime.enhancementConfiguration, enhancement?.state ?: emptyEnhancement),
         LocalDesktopLiquidTabSettings provides liquidTabSettings,
@@ -1664,7 +1666,19 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 DesktopDetailWindow { DesktopOriginalMessagePageRootHost(entryKey, messagePages, messageRoutes, active) }
                             entryKey is BiliPaiNavKey.CommentDetail ->
                                 DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }
-                            entryKey is BiliPaiNavKey.VideoDetail ->
+                            entryKey is BiliPaiNavKey.VideoDetail -> {
+                                val observedDanmakuAssembly by ordinaryVideo.slot.assemblies.collectAsState()
+                                val danmakuAssembly = observedDanmakuAssembly
+                                val danmakuSuccess = danmakuAssembly?.playback?.uiState?.collectAsState()?.value as?
+                                    com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Success
+                                val danmakuSource = danmakuAssembly?.takeIf { it.owns() }?.native?.current()?.takeIf {
+                                    danmakuSuccess != null && danmakuSuccess.info.bvid == it.request.bvid && danmakuSuccess.info.cid == it.request.cid
+                                }
+                                fun ownsDanmakuSource(): Boolean = !isClosing() && !activatingUpdate && active &&
+                                    hostVisible && hostDisplayable && messageRoutes.currentKey == entryKey &&
+                                    danmakuAssembly != null && ordinaryVideo.slot.currentAssembly() === danmakuAssembly &&
+                                    danmakuAssembly.owns() && danmakuSource != null &&
+                                    danmakuAssembly.native.isCurrent(danmakuSource)
                                 DesktopWindowsVideoPhysicalLeaf(entryKey, ordinaryVideo,
                                     active && hostVisible && hostDisplayable, isFullscreen(), pipActive,
                                     preferences.copy(danmaku = rendererDanmakuSettings), ::changePreferences,
@@ -1727,11 +1741,41 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         enhancement = { DesktopVideoEnhancementControls(enhancementState, pluginRuntime.enhancementConfiguration,
                                             onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) }, onSettings = { enhancementSettings = true }) },
                                         openLink = { raw -> desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute()) },
-                                        login = { loginDialog = true }, danmakuSettings = { originalDanmakuSettingsVisible = true },
+                                        login = { loginDialog = true }, danmakuSettings = {
+                                            if (danmaku != null && hostWindow != null && danmakuSource != null &&
+                                                danmakuSource.request.cid > 0L && ownsDanmakuSource()) originalDanmakuSettingsVisible = true
+                                            else error = "当前视频弹幕尚未准备，请稍后重试"
+                                        },
                                         toggleDanmaku = ::toggleOriginalDanmaku, notice = { error = it },
                                         focusChanged = { focused -> if(messageRoutes.currentKey==entryKey) playerFocused=focused },
                                         nativeKey = { event -> if(!isClosing() && !activatingUpdate && active && hostVisible && hostDisplayable &&
                                             messageRoutes.currentKey==entryKey) latestRootKeyHandler(event) else false }))
+                                if (danmaku != null && hostWindow != null && danmakuSource != null && danmakuSource.request.cid > 0L) {
+                                    DisposableEffect(danmakuAssembly, danmakuSource, entryKey) {
+                                        onDispose { originalDanmakuSettingsVisible = false; originalDanmakuPoolVisible = false }
+                                    }
+                                    DesktopOriginalDanmakuRootHost(
+                                        owner = LocalDesktopOriginalCommentRootOwner.current,
+                                        repository = repository, globalStore = pluginStore, overlay = danmaku,
+                                        cid = danmakuSource.request.cid, sourceVersion = danmakuSource.sourceVersion,
+                                        sourceLease = danmakuSource,
+                                        stillOwned = ::ownsDanmakuSource, window = hostWindow,
+                                        presentation = danmakuPresentation.currentPresentation(),
+                                        viewport = with(androidx.compose.ui.platform.LocalDensity.current) {
+                                            DesktopDanmakuSettingsViewport(
+                                                measuredRootConstraints.maxWidth.toDp().value.toInt().coerceAtLeast(1),
+                                                measuredRootConstraints.maxHeight.toDp().value.toInt().coerceAtLeast(1))
+                                        },
+                                        currentPositionMs = { ((player?.state?.value?.positionSeconds ?: 0.0) * 1_000).toLong() },
+                                        seekFromUser = { position -> if (ownsDanmakuSource()) playback.seekTo(position / 1_000.0) },
+                                        showSettings = originalDanmakuSettingsVisible, showPool = originalDanmakuPoolVisible,
+                                        onShowPool = { if (ownsDanmakuSource()) { originalDanmakuSettingsVisible = false; originalDanmakuPoolVisible = true } },
+                                        onDismissSettings = { originalDanmakuSettingsVisible = false },
+                                        onDismissPool = { originalDanmakuPoolVisible = false },
+                                        enabledChangeVersion = originalDanmakuEnabledChangeVersion,
+                                    )
+                                }
+                            }
                             entryKey is BiliPaiNavKey.AudioMode ->
                                 DesktopOriginalVideoPhysicalLeaf(entryKey, ordinaryVideo, commands, active,
                                     commands::back, ::openVideoHonorLink,

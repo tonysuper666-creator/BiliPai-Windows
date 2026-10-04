@@ -58,6 +58,24 @@ def generate(repo,output,standalone=False):
  s=adapt(s,'import androidx.activity.result.contract.ActivityResultContracts','import com.bilipai.desktop.ui.DesktopDanmakuOpenRuleDocument',patches)
  s=adapt(s,'import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.LocalDesktopDanmakuSettingsViewport as LocalConfiguration',patches)
  s=adapt(s,'import androidx.compose.ui.platform.LocalContext','import com.bilipai.desktop.ui.LocalDesktopDanmakuSettingsPlatform as LocalContext',patches)
+ s=adapt(s,'import androidx.compose.ui.window.Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsDanmakuDialog as Dialog\n',patches)
+ s=adapt(s,'import androidx.compose.ui.Modifier\n','import androidx.compose.ui.Modifier\nimport androidx.compose.ui.semantics.contentDescription\nimport androidx.compose.ui.semantics.semantics\n',patches)
+ s=adapt(s,'text = settingsScope.badgeLabel,','text = if (isFullscreenStyle) "全屏播放" else "窗口播放",',patches)
+ s=adapt(s,'text = settingsScope.subtitle,','text = "开关、字号、行距和区域与全屏播放同步，其余样式独立",',patches)
+ s=adapt(s,'text = "竖屏弹幕显示区域",','text = "窗口弹幕显示区域",',patches)
+ s=adapt(s,'''                colors = AppSliderDefaults.colors(
+                    thumbColor = colors.sliderThumbColor,
+                    activeTrackColor = colors.sliderActiveTrackColor,
+                    inactiveTrackColor = colors.sliderInactiveTrackColor
+                ),
+                modifier = Modifier.fillMaxWidth()
+''','''                colors = AppSliderDefaults.colors(
+                    thumbColor = colors.sliderThumbColor,
+                    activeTrackColor = colors.sliderActiveTrackColor,
+                    inactiveTrackColor = colors.sliderInactiveTrackColor
+                ),
+                modifier = Modifier.fillMaxWidth().semantics { contentDescription = label }
+''',patches)
  s=adapt(s,'import com.android.purebilibili.data.repository.DanmakuRepository','// Root supplies the sole owned cloud API through the platform binding.',patches)
  s=adapt(s,'contract = ActivityResultContracts.OpenDocument()','contract = DesktopDanmakuOpenRuleDocument',patches)
  s=adapt(s,'context.contentResolver.openInputStream(uri)','context.openRuleInput(uri)',patches)

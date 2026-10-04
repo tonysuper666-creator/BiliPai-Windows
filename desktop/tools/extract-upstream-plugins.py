@@ -91,6 +91,62 @@ def platform_context(source: str) -> str:
     return source
 
 
+# Only the RSS identity fix is borrowed; the canonical v0.2.5 Store/schema stay pinned.
+# The complete helper is identical in v0.2.6 ad85f33c5d3713d0bf95e13aecaef8572e9e7623
+# and v0.2.7 e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf, SubscriptionFeedStore.kt:132-142.
+SUBSCRIPTION_ID_FIX_SOURCE_SHA256 = "dc594289c735aa8f9cb72a1d67d72e411d0784d15038399199cd39b04a3cae6a"
+SUBSCRIPTION_ID_FIX_HELPER_SHA256 = "bc8ef4c4c3babe62671e4a41d6722c1aaabcb8d40ffd567449e1d530510e5ead"
+SUBSCRIPTION_ID_FIX_HELPER = '''    /** url 的 32 位哈希；与现有条目冲突时追加序号，避免两个订阅共用 id 造成连删/筛选串台。 */
+    private fun uniqueFeedId(url: String, usedIds: Set<String>): String {
+        val base = url.hashCode().toUInt().toString(16)
+        if (base !in usedIds) return base
+        var suffix = 1
+        while (true) {
+            val candidate = "$base-$suffix"
+            if (candidate !in usedIds) return candidate
+            suffix += 1
+        }
+    }
+'''
+
+
+def subscription_feed_identity_fix(source: str) -> str:
+    """Apply the fixed upstream ID allocator without renumbering persisted feeds."""
+    if hashlib.sha256(source.encode()).hexdigest() != "204b5891d005c0cac525ca6fdd328b4534c4f3a6a3966917610eee528d3b2785":
+        raise ValueError("Canonical subscription Store changed before the bounded ID fix")
+    if hashlib.sha256(SUBSCRIPTION_ID_FIX_HELPER.encode()).hexdigest() != SUBSCRIPTION_ID_FIX_HELPER_SHA256:
+        raise ValueError("Fixed upstream subscription ID helper changed")
+    source = substitute(source,
+        "        val seen = current.map { it.url }.toMutableSet()\n",
+        "        val seen = current.map { it.url }.toMutableSet()\n"
+        "        val usedIds = current.map { it.id }.toMutableSet()\n")
+    source = substitute(source,
+        "            current += SavedSubscriptionFeed(\n"
+        "                id = url.hashCode().toUInt().toString(16),",
+        "            val feed = SavedSubscriptionFeed(\n"
+        "                id = uniqueFeedId(url, usedIds),")
+    source = substitute(source,
+        "            )\n            added += 1\n",
+        "            )\n            usedIds += feed.id\n            current += feed\n            added += 1\n")
+    source = substitute(source,
+        "        val feed = SavedSubscriptionFeed(\n"
+        "            id = trimmedUrl.hashCode().toUInt().toString(16),",
+        "        val current = list(context)\n"
+        "        // An existing URL keeps its persisted ID and associated reading keys.\n"
+        "        val existing = current.firstOrNull { it.url == trimmedUrl }\n"
+        "        val feed = SavedSubscriptionFeed(\n"
+        "            id = existing?.id ?: uniqueFeedId(trimmedUrl, current.map { it.id }.toSet()),")
+    source = substitute(source,
+        "        val current = list(context).filterNot { it.url == feed.url }\n"
+        "        write(context, current + feed)",
+        "        write(context, current.filterNot { it.url == feed.url } + feed)")
+    return substitute(source,
+        "    private fun write(context: Context, feeds: List<SavedSubscriptionFeed>) {",
+        "    // ID allocator: upstream v0.2.7 e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf:132-142.\n"
+        + SUBSCRIPTION_ID_FIX_HELPER + "\n"
+        "    private fun write(context: Context, feeds: List<SavedSubscriptionFeed>) {")
+
+
 def platform_logger(source: str) -> str:
     return substitute(source, "import com.android.purebilibili.core.util.Logger", "import com.bilipai.desktop.plugins.DesktopPluginLog as Logger")
 
@@ -375,7 +431,7 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
                          ('FeedReadingStore', 'FeedReadingStore.kt')]:
         path = BASE + 'core/plugin/feed/' + name + '.kt'
         original = read(repo, path)
-        body = platform_context(original)
+        body = platform_context(subscription_feed_identity_fix(original) if name == 'SubscriptionFeedStore' else original)
         if name in ('FeedConditionalStore', 'FeedReadingStore'):
             body = substitute(body, 'import android.util.AtomicFile',
                 'import com.bilipai.desktop.plugins.DesktopPluginAtomicFile as AtomicFile')

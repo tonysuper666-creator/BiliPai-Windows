@@ -62,11 +62,14 @@ internal fun DesktopOriginalDanmakuHost(
     }
     if(!environment.isOwned()||!platform.isOwned())return
     CompositionLocalProvider(LocalDesktopDanmakuBindings provides platform) {
-        if(showPool&&snapshot!=null)DanmakuPoolSheet(
-            danmakuList=items,currentPositionMs=currentPositionMs,onSeekTo=environment::seekTo,
-            likedDanmakuIds=liked,onLikeDanmaku={dmid,like->session.likeDanmaku(dmid,like)},
-            onRecallDanmaku=session::recallDanmaku,onReportDanmaku={dmid,reason->session.reportDanmaku(dmid,reason)},
-            onBlockSender={block(DanmakuBlockActionTarget.USER,it)},onDismiss=onDismissPool)
+        // The original sheet has an explicit empty state, including before a raw document arrives.
+        if(showPool)DesktopWindowsPlayerDialog("弹幕列表",onDismissPool) {
+            DanmakuPoolSheet(
+                danmakuList=items,currentPositionMs=currentPositionMs,onSeekTo=environment::seekTo,
+                likedDanmakuIds=liked,onLikeDanmaku={dmid,like->session.likeDanmaku(dmid,like)},
+                onRecallDanmaku=session::recallDanmaku,onReportDanmaku={dmid,reason->session.reportDanmaku(dmid,reason)},
+                onBlockSender={block(DanmakuBlockActionTarget.USER,it)},onDismiss=onDismissPool)
+        }
         if(menu.visible)DanmakuContextMenu(
             text=menu.text,onDismiss=session::hideDanmakuMenu,onLike={session.likeDanmaku(menu.dmid)},
             onRecall={session.recallDanmaku(menu.dmid)},canRecall=menu.isSelf,

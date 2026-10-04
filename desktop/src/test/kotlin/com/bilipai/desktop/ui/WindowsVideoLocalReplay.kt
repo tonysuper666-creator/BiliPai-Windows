@@ -126,7 +126,11 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                     """{"code":0,"data":{"quality":32,"format":"dash","timelength":60000,"accept_quality":[32],"accept_description":["Local replay"],"video_codecid":7,"dash":{"duration":60,"minBufferTime":1.5,"video":[{"id":32,"baseUrl":"$base/video.avi","bandwidth":1000000,"mime_type":"video/x-msvideo","codecs":"avc1.640028","width":320,"height":180,"frameRate":"20","codecid":7}],"audio":[{"id":30280,"baseUrl":"$base/audio.wav","bandwidth":768000,"mime_type":"audio/wav","codecs":"pcm_s16le"}]}}}"""
                 }
                 "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":false,"mid":0,"wbi_img":{"img_url":"https://fixture.invalid/${"a".repeat(32)}.png","sub_url":"https://fixture.invalid/${"b".repeat(32)}.png"}}}"""
-                "/x/player/v2", "/x/player/wbi/v2" -> """{"code":0,"data":{"aid":$aid,"cid":$cid,"bvid":"$bvid","subtitle":{"subtitles":[]},"view_points":[]}}"""
+                "/x/player/v2", "/x/player/wbi/v2" -> {
+                    val chapters = if (System.getProperty("bilipai.validation.featureInput") == "true")
+                        """[{"content":"开场","from":0,"to":20},{"content":"中段","from":20,"to":40},{"content":"收尾","from":40,"to":60}]""" else "[]"
+                    """{"code":0,"data":{"aid":$aid,"cid":$cid,"bvid":"$bvid","subtitle":{"subtitles":[]},"view_points":$chapters}}"""
+                }
                 "/x/player/videoshot" -> """{"code":0,"data":{"index":[],"image":[]}}"""
                 "/x/web-interface/archive/related", "/x/tag/archive/tags" -> """{"code":0,"data":[]}"""
                 "/x/v2/reply/wbi/main", "/x/v2/reply/main" -> """{"code":0,"data":{"replies":[],"top_replies":[],"cursor":{"is_begin":true,"is_end":true,"all_count":0,"next":0,"prev":0},"page":{"count":0,"num":1,"size":20}}}"""
@@ -163,6 +167,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("newRootCreated", false); put("newPlayerCreated", false); put("newControllerCreated", false)
             put("originalVmStateWritten", false); put("actualNativeStateWritten", false); put("physicalStackWritten", false)
             put("metadataBvid", bvid); put("metadataCid", cid); put("mediaSeconds", SECONDS)
+            put("chapterMetadataIsSynthetic", System.getProperty("bilipai.validation.featureInput") == "true")
             put("container", "MJPEG_AVI_PLUS_PCM_WAV"); put("qualityMetadataIsSynthetic", true)
             put("codecMetadataIsSynthetic", true); put("realDASHCodecAccepted", false)
             put("apiRequests", JsonArray(requests.toList())); put("loopbackRequests", JsonArray(mediaRequests.toList()))

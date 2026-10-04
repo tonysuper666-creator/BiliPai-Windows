@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.android.purebilibili.core.ui.AppAlertDialog
+import com.android.purebilibili.core.ui.components.AppSurface
 import com.android.purebilibili.core.ui.components.AppSwitchPreference
 import com.android.purebilibili.core.ui.components.AppButtonDefaults
 import com.android.purebilibili.core.ui.components.AppText
@@ -29,11 +29,19 @@ internal val LocalDesktopWindowsVideoEnhancement = staticCompositionLocalOf<Desk
 
 @Composable
 fun DesktopVideoEnhancementSettingsDialog(configuration: DesktopVideoEnhancementConfiguration, onDismiss: () -> Unit) {
-    AppAlertDialog(onDismissRequest = onDismiss, title = { AppText("NVIDIA 自动增强") }, text = {
-        Column(Modifier.heightIn(max = 560.dp).verticalScroll(rememberScrollState())) {
-            DesktopVideoEnhancementSettingsContent(configuration)
+    DesktopWindowsPlayerDialog("NVIDIA 自动增强", onDismiss, preferredHeightDp = 360) {
+        AppSurface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.surface) {
+            Column(Modifier.fillMaxSize().padding(24.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                AppText("NVIDIA 自动增强", style = MaterialTheme.typography.titleLarge)
+                Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
+                    DesktopVideoEnhancementSettingsContent(configuration)
+                }
+                AppTextButton(onClick = onDismiss, modifier = Modifier.align(androidx.compose.ui.Alignment.End)) {
+                    AppText("完成")
+                }
+            }
         }
-    }, confirmButton = { AppTextButton(onClick = onDismiss) { AppText("完成") } })
+    }
 }
 
 internal val LocalDesktopVideoEnhancementCompact = staticCompositionLocalOf { false }

@@ -130,6 +130,15 @@ internal class DesktopWindowsVideoActions(
     val subject by assembly.playback.subjectSnapshot.collectAsState()
     val favoriteEvent by assembly.playback.favoriteFolderSaveEvent.collectAsState()
     val success = original as? VideoPlaybackUiState.Success
+    val chapterResult by assembly.playback.desktopChapterResult.collectAsState(null)
+    // The list is stamped by its accepted player-info result, never by the current screen.
+    val chaptersSource = assembly.native.current()
+    val chapters = chapterResult?.takeIf { result ->
+        val accepted = chaptersSource
+        current() && assembly.playback.captureDesktopChapterResult() === result && accepted != null &&
+            accepted.request.bvid == result.bvid && accepted.request.cid == result.cid &&
+            success != null && success.info.bvid == result.bvid && success.info.cid == result.cid
+    }
     val resumeSuggestion by assembly.playback.resumePlaybackSuggestion.collectAsState()
     val engagement by assembly.domains.engagement.uiState.collectAsState()
     var bootstrapError by remember(assembly, route) { mutableStateOf<String?>(null) }
@@ -209,6 +218,20 @@ internal class DesktopWindowsVideoActions(
         val admitted = assembly.native.admitPlaybackDispatch(accepted) { if (current()) { block(); dispatched = true } }
         return admitted && dispatched
     }
+    fun seekChapter(expected: DesktopOriginalVideoChapterResult, accepted: DesktopOriginalVideoAcceptedPublication, positionMs: Long) {
+        if (!current() || !assembly.native.isCurrent(accepted)) return
+        assembly.native.admitPlaybackDispatch(accepted) {
+            if (!current()) return@admitPlaybackDispatch
+            val session = assembly.playback.captureDesktopLoadState()
+            val duration = native.state.value.durationSeconds
+            val durationMs = if (duration.isFinite() && duration > 0.0) (duration * 1000.0).toLong() else 0L
+            if (accepted.request.bvid == expected.bvid && accepted.request.cid == expected.cid &&
+                isDesktopOriginalVideoChapterSeekCurrent(expected, assembly.playback.captureDesktopChapterResult(),
+                    session.currentBvid, session.currentCid, session.currentLoadRequestToken, positionMs, durationMs)) {
+                assembly.playback.seekTo(positionMs)
+            }
+        }
+    }
     fun setSpeed(speed: Double) {
         if (current()) {
             assembly.playback.applyPlaybackSpeedFromUi(speed.toFloat())
@@ -266,6 +289,7 @@ internal class DesktopWindowsVideoActions(
                     canPictureInPicture = !pipActive && success != null && state.videoCodec != null && !state.audioOnly,
                     qualities = success?.let { value -> value.qualityIds.mapIndexed { index, id -> id to (value.qualityLabels.getOrNull(index) ?: id.toString()) } }.orEmpty(),
                     selectedQuality = success?.currentQuality,
+                    chapters = chapters, chaptersSource = chaptersSource, onChapterSeek = ::seekChapter,
                     onPlayPause = { command { native.togglePause() } },
                     onPrevious = { if (current()) shell.playback.previous() }, onNext = { if (current()) shell.playback.next() },
                     onMute = { if(command { native.setMuted(!state.muted) }) preferencesChanged(preferences.copy(muted=!state.muted)) },

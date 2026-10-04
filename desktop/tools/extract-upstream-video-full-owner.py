@@ -321,6 +321,69 @@ def bangumi_shared_owner_delta(path, body):
  change('    override fun close() {\n', '    override fun close() {\n        retireDesktopBangumiPresenter()\n')
  return body
 
+def owned_chapter_result_delta(path, body):
+ if path != 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt': return body
+ def change(before, after):
+  nonlocal body
+  assert body.count(before) == 1, (before, body.count(before))
+  body = body.replace(before, after, 1)
+ change('    val viewPoints = _viewPoints.asStateFlow()\n', '''    val viewPoints = _viewPoints.asStateFlow()
+    private val _desktopChapterResult = MutableStateFlow<com.bilipai.desktop.ui.DesktopOriginalVideoChapterResult?>(null)
+    // The original session and raw state invalidate old metadata immediately on a new load.
+    // This projection does not label an existing list with a later video's identity.
+    internal val desktopChapterResult = combine(_desktopChapterResult, playbackSessionStore.state, _uiState) { result, session, state ->
+        val success = state as? VideoPlaybackUiState.Success
+        if (success == null || success.info.bvid != session.currentBvid || success.info.cid != session.currentCid) null
+        else com.bilipai.desktop.ui.desktopOriginalVideoChaptersForOwner(result,
+            session.currentBvid, session.currentCid, session.currentLoadRequestToken)
+    }
+    internal fun captureDesktopChapterResult(): com.bilipai.desktop.ui.DesktopOriginalVideoChapterResult? {
+        val session = playbackSessionState
+        val state = _uiState.value as? VideoPlaybackUiState.Success ?: return null
+        if (state.info.bvid != session.currentBvid || state.info.cid != session.currentCid) return null
+        return com.bilipai.desktop.ui.desktopOriginalVideoChaptersForOwner(_desktopChapterResult.value,
+            session.currentBvid, session.currentCid, session.currentLoadRequestToken)
+    }
+''')
+ before = '''                    val points = data.viewPoints
+                    if (points.isNotEmpty()) {
+                        _viewPoints.value = points
+                        Logger.d("PlayerVM", "📖 Loaded ${points.size} chapter points")
+                    } else {
+                        _viewPoints.value = emptyList()
+                    }
+'''
+ # Keep the original result checks and original list branch. Final admission makes
+ # its response stamp and list one publication; no extra request or load algorithm.
+ after = '''                    val points = data.viewPoints
+                    var chapterApplied = false
+                    if (!environment.commit {
+                            val chapterState = _uiState.value as? VideoPlaybackUiState.Success
+                            if (chapterState != null && chapterState.info.bvid == bvid && chapterState.info.cid == cid && shouldApplyPlayerInfoResult(
+                                    activeRequestToken = currentLoadRequestToken,
+                                    resultRequestToken = requestToken,
+                                    expectedBvid = bvid, expectedCid = cid,
+                                    currentBvid = currentBvid, currentCid = currentCid
+                                )) {
+                                _desktopChapterResult.value = com.bilipai.desktop.ui.DesktopOriginalVideoChapterResult(bvid, cid, requestToken, points)
+''' + ''.join('            ' + line if line.strip() else line for line in before.splitlines(keepends=True)[1:]) + '''                                chapterApplied = true
+                            }
+                        } || !chapterApplied) return@onSuccess
+'''
+ change(before, after)
+ # Only the original current request reaches these failure blocks. Do not let
+ # stale cancellation clear a later response admitted by the same retained VM.
+ for indent in ('                    ', '                '):
+  before = indent + '_viewPoints.value = emptyList()\n' + indent + '_pbpProgressData.value = null\n'
+  after = indent + '''environment.commit {
+''' + indent + '''    val previous = _desktopChapterResult.value
+''' + indent + '''    if (com.bilipai.desktop.ui.desktopOriginalVideoChaptersForOwner(previous, bvid, cid, requestToken) === previous && previous != null)
+''' + indent + '''        _desktopChapterResult.value = null
+''' + indent + '''}
+''' + before
+  change(before, after)
+ return body
+
 def generate(repo,output,standalone=False):
  outputs=[]
  for recipe in RECIPES:
@@ -342,6 +405,7 @@ def generate(repo,output,standalone=False):
   body=captured_audio_download_delta(recipe['output'],body)
   body=story_portrait_adoption_delta(recipe['output'],body)
   body=bangumi_shared_owner_delta(recipe['output'],body)
+  body=owned_chapter_result_delta(recipe['output'],body)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
