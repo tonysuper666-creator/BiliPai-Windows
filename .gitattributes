@@ -135,3 +135,4 @@ desktop/verification/stable-bangumi-native-owner-root-integration/** -text
 desktop/verification/stable-space-pages-root-integration/** -text
 desktop/verification/stable-bangumi-player-screen-space-ui-root-integration/** -text
 desktop/verification/stable-space-retired-composition-root-integration/** -text
+desktop/upstream-slices/** -text

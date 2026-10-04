@@ -39,6 +39,8 @@ internal fun DesktopWindowsVideoControlBar(
     state: PlayerState, sourceVersion: Long, enabled: Boolean, fullscreen: Boolean,
     detailsOpen: Boolean, hasPrevious: Boolean, hasNext: Boolean, canPictureInPicture: Boolean,
     qualities: List<Pair<Int, String>>, selectedQuality: Int?,
+    canOpenCollection: Boolean, canOpenPlaybackQueue: Boolean,
+    onOpenCollection: () -> Unit, onOpenPlaybackQueue: () -> Unit,
     chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
     onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit,
     onPlayPause: () -> Unit, onPrevious: () -> Unit, onNext: () -> Unit,
@@ -148,7 +150,8 @@ internal fun DesktopWindowsVideoControlBar(
                             Icon(Icons.Default.MoreVert, contentDescription = "更多播放操作")
                         }
                         DesktopWindowsPlayerMenu(more, onDismissRequest = { more = false },
-                            preferredHeight = if (expanded) 64.dp else 420.dp) {
+                            preferredHeight = if (expanded) (64 + (if (canOpenCollection) 48 else 0) +
+                                (if (canOpenPlaybackQueue) 48 else 0)).dp else 420.dp) {
                             if (!expanded) {
                                 DropdownMenuItem(text = { Text("上一集") }, enabled = enabled && hasPrevious,
                                     onClick = { onPrevious(); more = false })
@@ -174,6 +177,10 @@ internal fun DesktopWindowsVideoControlBar(
                             if (!showEnhancementStatus && chapters != null && chaptersSource != null && segments.isNotEmpty())
                                 DropdownMenuItem(text = { Text("视频章节") }, enabled = enabled,
                                     onClick = { more = false; chapterMenu = true })
+                            if (canOpenCollection) DropdownMenuItem(text = { Text("视频合集") }, enabled = enabled,
+                                onClick = { more = false; onOpenCollection() })
+                            if (canOpenPlaybackQueue) DropdownMenuItem(text = { Text("播放队列") }, enabled = enabled,
+                                onClick = { more = false; onOpenPlaybackQueue() })
                             DropdownMenuItem(text = { Text("简介、分P与播放设置") }, onClick = { onOpenIntroduction(); more = false })
                         }
                         if (!showEnhancementStatus && chapters != null && chaptersSource != null)

@@ -121,6 +121,42 @@ class DanmakuOverlay internal constructor(
     private var poolSourceVersion: Long? = null
     private val mutablePoolSourceRevision = MutableStateFlow(0L)
     val poolSourceRevision: StateFlow<Long> = mutablePoolSourceRevision.asStateFlow()
+    private data class HotDocument(val generation:Long,val revision:Long,val comments:List<DanmakuComment>)
+    private var hotDocument:HotDocument? = null
+    private data class HotReservation(val sourceVersion:Long,val token:Any,val heightPx:Float)
+    @Volatile private var hotReservation:HotReservation? = null
+
+    /** A projection of the actual installed plugin output, before duplicate merging.
+     * The original raw pool remains untouched. Settings are applied at read time. */
+    internal fun hotItemsFor(cid:Long,sourceVersion:Long):List<com.android.purebilibili.danmaku.engine.DanmakuItem> {
+        val captured=synchronized(requestLock) {
+            val document=hotDocument
+            if(!originalDocumentOwned(sourceVersion) || commandCid!=cid || document==null ||
+                document.generation!=generation.get() || document.revision!=documentRevision.get())null
+            else document to settings
+        } ?: return emptyList()
+        val items=desktopOriginalHotDanmakuItems(captured.first.comments,captured.second)
+        return synchronized(requestLock) {
+            if(!originalDocumentOwned(sourceVersion) || commandCid!=cid || hotDocument!==captured.first ||
+                captured.first.generation!=generation.get() || captured.first.revision!=documentRevision.get() ||
+                settings!=captured.second)emptyList() else items
+        }
+    }
+
+    /** Identity registration prevents a retiring popup from clearing its successor's track reservation. */
+    internal fun reserveHotBar(sourceVersion:Long,token:Any,heightPx:Float):Boolean = synchronized(requestLock) {
+        if(!originalDocumentOwned(sourceVersion))false else {
+            hotReservation=HotReservation(sourceVersion,token,heightPx)
+            SwingUtilities.invokeLater {if(!closed.get())panel.repaint()};true
+        }
+    }
+    internal fun updateHotBarReservation(sourceVersion:Long,token:Any,heightPx:Float):Boolean = synchronized(requestLock) {
+        if(!originalDocumentOwned(sourceVersion) || hotReservation?.token!==token || hotReservation?.sourceVersion!=sourceVersion)false
+        else {hotReservation=HotReservation(sourceVersion,token,heightPx);SwingUtilities.invokeLater {if(!closed.get())panel.repaint()};true}
+    }
+    internal fun releaseHotBarReservation(token:Any) = synchronized(requestLock) {
+        if(hotReservation?.token===token) {hotReservation=null;SwingUtilities.invokeLater {if(!closed.get())panel.repaint()}}
+    }
     /** Derived view of the sole raw document, with no second item/cache authority. */
     fun poolSourceFor(cid: Long, sourceVersion: Long): DanmakuPoolSourceSnapshot? = synchronized(requestLock) {
         if (closed.get() || liveMode || cid <= 0L || commandCid != cid || poolSourceVersion != sourceVersion ||
@@ -351,7 +387,7 @@ class DanmakuOverlay internal constructor(
     private data class PendingLive(val generation: Long, val item: LiveDanmakuItem)
     private val pendingLive = ArrayBlockingQueue<PendingLive>(600)
     private val measuredWidths = mutableMapOf<Pair<Int,Font>, Int>()
-    private data class ConfigKey(val settings:DanmakuSettings,val viewport:DanmakuViewport,val font:Font,val live:Boolean,val maskReady:Boolean)
+    private data class ConfigKey(val settings:DanmakuSettings,val viewport:DanmakuViewport,val font:Font,val live:Boolean,val maskReady:Boolean,val hotReservedHeightPx:Float=0f)
     private var resolvedConfig:Pair<ConfigKey,DanmakuRenderConfig>?=null
     private val panel:JComponent = object : JComponent() {
         override fun paintComponent(graphics: Graphics) {
@@ -386,8 +422,9 @@ class DanmakuOverlay internal constructor(
                     finally {physical.dispose()}
                   } else {
                 // Uses the actual Root-monitor geometry resolved once above.
-                val key=ConfigKey(configuration,viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false,webMaskAvailable())
-                val config=resolvedConfig?.takeIf { it.first==key }?.second ?: configuration.originalConfig(renderPlatform).resolveRenderConfig(viewport).copy(maskEnabled=key.maskReady).also { resolvedConfig=key to it }
+                val reserved=hotReservation?.takeIf {it.sourceVersion==poolSourceVersion && player.ownsSourceVersion(it.sourceVersion)}?.heightPx ?: 0f
+                val key=ConfigKey(configuration,viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false,webMaskAvailable(),reserved)
+                val config=resolvedConfig?.takeIf { it.first==key }?.second ?: configuration.originalConfig(renderPlatform,reserved).resolveRenderConfig(viewport).copy(maskEnabled=key.maskReady).also { resolvedConfig=key to it }
                 val physical=context.create() as Graphics2D
                 try {
                     geometry.configurePhysicalPixels(physical)
@@ -720,16 +757,28 @@ class DanmakuOverlay internal constructor(
             mutableAdvanced.value = document.advanced
             documentRevision.incrementAndGet().also { mutablePoolSourceRevision.value = it } to pluginProcessor
         }
-        fun install(processed: DanmakuDocument, nextStyles: Map<Int, DanmakuStyle>) = SwingUtilities.invokeLater {
-            if (!closed.get() && version == generation.get() && revision == documentRevision.get() && currentOfflineDocumentOwned()) {
-                mutableCount.value = processed.size
-                styles = nextStyles
-                val currentLocalPhase=synchronized(requestLock) {immediateLocalPhase?.takeIf {it===originalLocalInjectionPhase}}
-                scheduler = DanmakuScheduler(processed.comments, settings,liveAdmission=false,immediateLocalPhase=currentLocalPhase)
-                originalInstalledGeneration=version;originalInstalledRevision=revision
-                advancedRenderer = AdvancedDanmakuRenderer(processed.advanced)
-                measuredWidths.clear()
-                panel.repaint()
+        fun install(processed: DanmakuDocument, nextStyles: Map<Int, DanmakuStyle>) {
+            SwingUtilities.invokeLater {
+                fun current() = !closed.get() && version==generation.get() && revision==documentRevision.get() && currentOfflineDocumentOwned()
+                val captured=synchronized(requestLock) {if(current())settings to originalLocalInjectionPhase else null} ?: return@invokeLater
+                // Parsing/filter preparation is outside the publication monitor. The renderer and hot view
+                // are swapped together only if this exact document/settings/phase still owns the result.
+                val nextScheduler=DanmakuScheduler(processed.comments,captured.first,liveAdmission=false,
+                    immediateLocalPhase=immediateLocalPhase?.takeIf {it===captured.second})
+                val nextAdvanced=AdvancedDanmakuRenderer(processed.advanced)
+                val applied=synchronized(requestLock) {
+                    if(!current() || settings!=captured.first || originalLocalInjectionPhase!==captured.second)false
+                    else {
+                        styles=nextStyles;scheduler=nextScheduler;advancedRenderer=nextAdvanced
+                        hotDocument=HotDocument(version,revision,processed.comments)
+                        originalInstalledGeneration=version;originalInstalledRevision=revision
+                        measuredWidths.clear();true
+                    }
+                }
+                if(applied) {
+                    if(synchronized(requestLock){current()})mutableCount.value=processed.size
+                    panel.repaint()
+                } else if(synchronized(requestLock){current()})install(processed,nextStyles)
             }
         }
         if (processor == null) install(document, emptyMap())

@@ -1196,6 +1196,7 @@ val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-danmaku-settings").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-danmaku-settings.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py")
+    inputs.dir("upstream-slices/v027-danmaku-hot-settings")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-danmaku-settings-panel" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -1210,12 +1211,30 @@ val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-danmaku-list-menu").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-danmaku-list-menu.py", "tools/extract-upstream-dynamic-reply-protocol.py")
+    inputs.dir("upstream-slices/v027-danmaku-config")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-danmaku-list-menu" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-danmaku-list-menu"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuListMenu) }
+
+// Explicit fixed-v027 slice; the overall canonical baseline remains v025.
+val extractOriginalHotDanmaku by tasks.registering(Exec::class) {
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-hot-danmaku.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-hot-danmaku").get().asFile.absolutePath,
+        "--tests-output", layout.buildDirectory.dir("generated/original-hot-danmaku-tests").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-hot-danmaku.py")
+    inputs.dir("upstream-slices/v027-hot-danmaku")
+    outputs.dir(layout.buildDirectory.dir("generated/original-hot-danmaku"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-hot-danmaku-tests"))
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalHotDanmaku) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalHotDanmaku) }
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-hot-danmaku/com")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-hot-danmaku-tests/com")) }
 
 val extractCommentFraudProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)

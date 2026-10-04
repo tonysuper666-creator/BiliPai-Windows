@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf",
+  "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+  "archiveFile": "DanmakuConfig.kt",
+  "sha256Bytes": "147f68bcc1ed0517d1b25476254cf6a55cc9d8f09d82003027ed6f92752adfd4",
+  "bytes": 10722,
+  "sha256LF": "147f68bcc1ed0517d1b25476254cf6a55cc9d8f09d82003027ed6f92752adfd4"
+}

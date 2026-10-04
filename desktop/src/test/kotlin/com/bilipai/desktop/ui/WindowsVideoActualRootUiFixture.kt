@@ -150,14 +150,29 @@ object WindowsVideoActualRootUiFixture {
         val smallest = requireNotNull(sizes.values.minOrNull())
         return candidates.filter { sizes[it] == smallest }.single()
     }
-    private fun click(label: String) = edt {
-        val scope = videoScope(label)
-        val controls = descendants(scope).filter { hasLabel(it, label) && visible(it) &&
-            it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
-        check(controls.size == 1) { "Expected one actual visible '$label' in complete Windows video leaf, got ${controls.size}" }
-        record("mouse-${rows.size}-$label", mapOf("label" to JsonPrimitive(label), "matches" to JsonPrimitive(controls.size),
-            "inputMechanism" to JsonPrimitive("OWNED_COMPOSE_AWT_MOUSE_EVENT")))
-        clickOwnedComposeMouse(window(), controls.single())
+    private fun click(label: String) {
+        // Closing an owned menu can restore focus before Compose has republished
+        // the full accessible tree. Wait for the same strict complete scope and
+        // unique real control; actual Root/source retirement still fails immediately.
+        await("complete actual video controls and unique '$label' after native menu retirement") { edt {
+            current()
+            check((routes.currentKey as? BiliPaiNavKey.VideoDetail)?.bvid == video)
+            if (::accepted.isInitialized) sameNative()
+            val scope = runCatching { videoScope(label) }.getOrNull() ?: return@edt false
+            descendants(scope).count { hasLabel(it, label) && visible(it) &&
+                it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+        } }
+        edt {
+            val scope = videoScope(label)
+            if (::accepted.isInitialized) sameNative()
+            val controls = descendants(scope).filter { hasLabel(it, label) && visible(it) &&
+                it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
+            check(controls.size == 1) { "Expected one actual visible '$label' in complete Windows video leaf, got ${controls.size}" }
+            record("mouse-${rows.size}-$label", mapOf("label" to JsonPrimitive(label), "matches" to JsonPrimitive(controls.size),
+                "inputMechanism" to JsonPrimitive("OWNED_COMPOSE_AWT_MOUSE_EVENT")))
+            clickOwnedComposeMouse(window(), controls.single())
+        }
     }
     private fun clickOwnedComposeMouse(surface: Window, control: AccessibleContext) {
         current()
@@ -1042,14 +1057,21 @@ object WindowsVideoActualRootUiFixture {
     }
 
     private fun clickFeatureItem(surface: Window, label: String) {
-        check(EventQueue.isDispatchThread()); current(); sameNative()
-        val item = descendants(surface.accessibleContext).filter { node ->
-            (node.accessibleName == label || node.accessibleName.orEmpty().startsWith("$label, ")) &&
-                node.accessibleRole != javax.accessibility.AccessibleRole.SCROLL_PANE && visible(node, surface) &&
-                node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
-                (node.accessibleAction?.accessibleActionCount ?: 0) == 1
-        }.single()
-        clickOwnedComposeMouse(surface, item)
+        check(!EventQueue.isDispatchThread())
+        await("owned feature tree restores one real '$label' control") { edt {
+            current(); sameNative()
+            check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+            val item = descendants(surface.accessibleContext).filter { node ->
+                hasLabel(node, label) &&
+                    node.accessibleRole != javax.accessibility.AccessibleRole.SCROLL_PANE && visible(node, surface) &&
+                    node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                    (node.accessibleAction?.accessibleActionCount ?: 0) == 1
+            }.singleOrNull() ?: return@edt false
+            // Resolve and deliver on the same EDT turn; a successful delivery is
+            // never retried while waiting for the caller's separate outcome oracle.
+            clickOwnedComposeMouse(surface, item)
+            true
+        } }
     }
 
     private fun exerciseChapterControls() {
@@ -1066,7 +1088,7 @@ object WindowsVideoActualRootUiFixture {
                 actions.capture("114-original-chapter-menu", edt { current() })
                 if (surface !== edt { window() }) edt { captureOwnedExtraSurface("114-original-chapter-menu-popup", surface) }
             }
-            edt { clickFeatureItem(surface, label) }
+            clickFeatureItem(surface, label)
             await("actual MPV chapter seek completion at $seconds seconds") {
                 sameNative(); actualPlayer.state.value.let {
                     it.seekCompletedId > seekId && it.error == null && it.nativePaused == true &&
@@ -1089,6 +1111,269 @@ object WindowsVideoActualRootUiFixture {
         choose("00:00 · 开场", 0.0)
         click("播放")
         await("actual chapter source resumes without replacement") { sameNative(); playing() }
+    }
+
+    /** Fixed read-only path from this actual native source to its original owner.
+     * The one lambda's typed receiver is inspected; no arbitrary object graph,
+     * credential primitive or callback is read or invoked. */
+    private fun actualHotOwner(): Pair<DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication> = edt {
+        current(); sameNative()
+        val initial = accepted.source.nativePublication as? DesktopOriginalVideoInitialPublication
+            ?: error("Hot UI proof requires the actual original initial native publication")
+        val predicate = DesktopOriginalVideoInitialPublication::class.java.getDeclaredField("ownsAccepted")
+            .apply { check(trySetAccessible()) }.get(initial)
+        check(predicate is Function0<*>)
+        val nativeFields = predicate.javaClass.declaredFields.filter { it.type == DesktopOriginalVideoNativeOwner::class.java }
+        check(nativeFields.size == 1) { "Original publication must capture exactly its one native owner" }
+        val native = nativeFields.single().apply { check(trySetAccessible()) }.get(predicate) as DesktopOriginalVideoNativeOwner
+        check(native.player === actualPlayer)
+        val entry = DesktopOriginalVideoNativeOwner::class.java.getDeclaredField("isEntryCurrent")
+            .apply { check(trySetAccessible()) }.get(native) as? kotlin.jvm.internal.CallableReference
+            ?: error("Original native owner must retain its actual owner::owns reference")
+        check(entry.name == "owns")
+        val assembly = entry.boundReceiver as? DesktopOriginalVideoOwnerAssembly
+            ?: error("Original source entry receiver is not its actual Assembly")
+        check(assembly.javaClass == DesktopOriginalVideoOwnerAssembly::class.java && assembly.native === native &&
+            assembly.section.nativePlayer === actualPlayer && assembly.owns())
+        val source = requireNotNull(native.current())
+        check(native.isCurrent(source) && source.nativeSource.sourceVersion == accepted.sourceVersion &&
+            source.nativeSource.source == accepted.source && actualPlayer.ownsSourceSnapshot(accepted))
+        val binding = assembly.environment.danmaku
+        check(binding.javaClass == DesktopOriginalVideoOwnerDanmakuBinding::class.java)
+        val overlay = DesktopOriginalVideoOwnerDanmakuBinding::class.java.getDeclaredField("overlay")
+            .apply { check(trySetAccessible()) }.get(binding) as com.bilipai.desktop.danmaku.DanmakuOverlay
+        val playerField = com.bilipai.desktop.danmaku.DanmakuOverlay::class.java.getDeclaredField("player")
+            .apply { check(trySetAccessible()) }
+        check(playerField.get(overlay) === actualPlayer)
+        assembly to source
+    }
+
+    private fun exerciseHotDanmaku(localReplay: WindowsVideoLocalReplay) {
+        check(System.getProperty("bilipai.validation.featureInput") == "true") {
+            "Hot proof follows the unchanged original empty-pool feature proof"
+        }
+        sameNative(); check(playing())
+        val originalSource = accepted
+        val (assembly, source) = actualHotOwner()
+        fun pureRootOwned(): Boolean {
+            val frame = latest.get() ?: return false
+            return frame.handle === owner && frame.routes === routes && owner.isActive() &&
+                owner.route.get() === routes && owner.retainer.root.value === routes.root &&
+                routes.root.entry.gate.scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true &&
+                (frame.key as? BiliPaiNavKey.VideoDetail)?.bvid == video
+        }
+        fun assertNoMutation() {
+            // The existing private replay records fixed origin/path/method only.
+            // No account/header/query value is inspected or emitted here.
+            val field = WindowsVideoLocalReplay::class.java.getDeclaredField("requests").apply { check(trySetAccessible()) }
+            val requests = field.get(localReplay) as CopyOnWriteArrayList<*>
+            check(requests.filterIsInstance<JsonObject>().none { request ->
+                request["method"]?.jsonPrimitive?.contentOrNull == "POST" ||
+                    request["path"]?.jsonPrimitive?.contentOrNull in setOf("/x/v2/dm/post", "/x/v2/dm/thumbup/add")
+            }) { "Hot UI cancellation must not submit an account mutation" }
+        }
+        assertNoMutation()
+        // Freeze only through the real original Pause control. Its 1100ms count
+        // animation then finishes without advancing the original recent-item window.
+        click("暂停")
+        await("actual paused original source before hot count animation") {
+            sameNative(); actualPlayer.state.value.nativePaused == true
+        }
+        val transport = WindowsHotDanmakuTransportFixture.install(assembly, actualPlayer, source,
+            requireNotNull(System.getProperty("bilipai.rootValidationToken")), ::pureRootOwned)
+        try {
+            runBlocking { transport.reload() }
+            fun hotSurface(): Window? = edt {
+                ownedFeatureSurface("高赞验收", "×42", "发一条同款弹幕")
+            }
+            await("original high-like text and finished count render in actual native popup") { hotSurface() != null }
+            val popup = requireNotNull(hotSurface())
+            edt { captureOwnedExtraSurface("157-original-hot-danmaku-popup", popup) }
+            fun hotItem(): AccessibleContext = edt {
+                current(); sameNative()
+                check(popup is javax.swing.JDialog && !popup.isModal && popup !== window() && ownedWindow(popup))
+                val children = descendants(popup.accessibleContext)
+                fun bounds(node: AccessibleContext): Rectangle {
+                    val component = requireNotNull(node.accessibleComponent)
+                    return Rectangle(component.locationOnScreen, component.size)
+                }
+                fun anchor(label: String) = bounds(children.single {
+                    it.accessibleName == label && visible(it, popup)
+                })
+                // The original FlowRow flattens both items into one accessibility
+                // group. Locate the real send control between its count and the
+                // next item's text, using their current measured screen bounds.
+                val text = anchor("高赞验收")
+                val count = anchor("×42")
+                val next = anchor("同款验收")
+                check(text.x + text.width <= count.x && count.x + count.width < next.x)
+                children.single { node ->
+                    hasLabel(node, "发一条同款弹幕") && visible(node, popup) &&
+                        node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                        (node.accessibleAction?.accessibleActionCount ?: 0) == 1 && bounds(node).let { box ->
+                            box.x >= count.x + count.width && box.x + box.width <= next.x &&
+                                box.y < text.y + text.height && box.y + box.height > text.y
+                        }
+                }
+            }
+            hotItem()
+            actions.capture("157-original-hot-danmaku", edt { current() })
+            val beforeLayers = edt { actualMainSceneLayers() }
+            edt {
+                clickOwnedComposeMouse(popup, hotItem())
+            }
+            await("original same-send confirmation in its owned native dialog") { edt {
+                ownedFeatureSurface("发送同款弹幕？", "将在当前播放位置发送：\n高赞验收", "发送", "取消") != null
+            } }
+            val confirmation = edt {
+                requireNotNull(ownedFeatureSurface("发送同款弹幕？", "将在当前播放位置发送：\n高赞验收", "发送", "取消"))
+            }
+            edt {
+                check(confirmation is javax.swing.JDialog && confirmation.isModal && confirmation !== popup && ownedWindow(confirmation))
+                captureOwnedExtraSurface("157-original-hot-same-send-confirmation", confirmation)
+            }
+            clickFeatureItem(confirmation, "取消")
+            await("cancel removes actual same-send native window and returns the original hot popup") { edt {
+                val layers = actualMainSceneLayers()
+                !confirmation.isShowing && !confirmation.isDisplayable &&
+                    ownedFeatureSurface("发送同款弹幕？", "发送", "取消") == null &&
+                    layers.size == beforeLayers.size && layers.all { layer -> beforeLayers.any { it === layer } } &&
+                    runCatching { hotItem() }.isSuccess
+            } }
+            sameNative(); check(accepted == originalSource && actualPlayer.ownsSourceSnapshot(originalSource))
+            check(!assembly.playback.isSendingDanmaku.value); assertNoMutation()
+            record("157-original-hot-same-send-cancel", mapOf(
+                "originalHotTextVisible" to JsonPrimitive("高赞验收"), "originalAnimatedCountVisible" to JsonPrimitive("×42"),
+                "actualSameSendControlUsed" to JsonPrimitive("发一条同款弹幕"), "actualOriginalConfirmationVisible" to JsonPrimitive(true),
+                "actualCancelControlUsed" to JsonPrimitive("取消"), "sameActualPlayerOverlaySource" to JsonPrimitive(true),
+                "realAccountUsed" to JsonPrimitive(false), "remoteLikeOrSendSubmitted" to JsonPrimitive(false)))
+        } finally {
+            transport.close()
+            Files.writeString(report.resolve("original-hot-transport.json"), transport.receipt().toString(), CREATE_NEW, WRITE)
+        }
+        sameNative(); assertNoMutation()
+        click("播放")
+        await("original source resumes after actual hot confirmation cancellation") { sameNative(); playing() }
+        clockAndCapture("157-original-hot-cancel-resumed")
+    }
+
+    private fun privateCollectionSort(): String? {
+        val file = actions.local.resolve("BiliPaiWindows/plugin-settings.json")
+        if (!Files.exists(file, NOFOLLOW_LINKS)) return null
+        check(Files.isRegularFile(file, NOFOLLOW_LINKS) && !Files.isSymbolicLink(file))
+        val settings = Json.parseToJsonElement(Files.readString(file)).jsonObject["settings"]?.jsonObject ?: return null
+        val encoded = settings["collection_sort_preferences"]?.jsonPrimitive?.contentOrNull ?: return null
+        return Json.parseToJsonElement(encoded).jsonObject["5007"]?.jsonPrimitive?.contentOrNull
+    }
+
+    /** Source replacement is intentional only here, after every same-source layout oracle.
+     * All navigation and queue mutation comes from the complete original collection UI. */
+    private fun exerciseCollectionAndQueue() {
+        sameNative(); check(playing())
+        val beforeLayers = edt { actualMainSceneLayers() }
+        val originalSource = accepted
+        fun openFromMore(label: String) {
+            sameNative(); click("更多播放操作")
+            await("actual owned More menu contains $label") { edt {
+                val surface = playerMenuSurface() ?: return@edt false
+                descendants(surface.accessibleContext).count { it.accessibleName == label && visible(it, surface) &&
+                    it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+            } }
+            val menu = edt { requireNotNull(playerMenuSurface()) }
+            clickFeatureItem(menu, label)
+        }
+        fun collection(): Window? = edt {
+            // Original clickable intro merges its text into the disclosure's
+            // semantics. Its full rendered text is preserved in the owned PNG.
+            ownedFeatureSurface("合集", "展开简介", "关闭",
+                "1.Local replay P1", "2.Local replay P2")
+        }
+        var collectionOpening = 0
+        fun awaitCollection(): Window {
+            val opening = ++collectionOpening
+            await("actual owned collection native window and its original toolbar") { edt {
+                val surface = Window.getWindows().filterIsInstance<javax.swing.JDialog>().singleOrNull {
+                    it.isShowing && it.isDisplayable && it.title == "视频合集" && ownedWindow(it)
+                } ?: return@edt false
+                if (descendants(surface.accessibleContext).none { it.accessibleName == "合集" && visible(it, surface) }) return@edt false
+                captureOwnedExtraSurface("158-collection-open-$opening", surface)
+                true
+            } }
+            await("complete original collection in its owned bounded native Window") { collection() != null }
+            return requireNotNull(collection()).also { surface -> edt {
+                check(surface is javax.swing.JDialog && surface !== window() && ownedWindow(surface))
+                check(descendants(surface.accessibleContext).count { it.accessibleName == "分享合集" && visible(it, surface) } == 1)
+            } }
+        }
+        fun awaitClosed() {
+            await("collection/queue owned input windows retire") { edt {
+                val layers = actualMainSceneLayers()
+                playerMenuSurface() == null && ownedFeatureSurface("合集", "关闭", "2.Local replay P2") == null &&
+                    ownedFeatureSurface("关闭播放队列", "当前播放") == null &&
+                    layers.size == beforeLayers.size && layers.all { layer -> beforeLayers.any { it === layer } } &&
+                    runCatching { videoScope("详情") }.isSuccess
+            } }
+            sameNative()
+        }
+        openFromMore("视频合集")
+        val first = awaitCollection()
+        actions.capture("158-original-collection", edt { current() })
+        edt { captureOwnedExtraSurface("158-original-collection-dialog", first) }
+        clickFeatureItem(first, "排序：正序")
+        await("original collection sort setter persisted and original label updates") {
+            privateCollectionSort() == "DESCENDING" && edt {
+                descendants(first.accessibleContext).count { it.accessibleName == "排序：倒序" && visible(it, first) } == 1
+            }
+        }
+        clickFeatureItem(first, "关闭")
+        awaitClosed()
+        check(playing()); check(actualPlayer.ownsSourceSnapshot(originalSource))
+        openFromMore("视频合集")
+        val reopened = awaitCollection()
+        edt {
+            check(descendants(reopened.accessibleContext).count { it.accessibleName == "排序：倒序" && visible(it, reopened) } == 1)
+        }
+        clickFeatureItem(reopened, "2.Local replay P2")
+        // Require a real new native publication on the same actor/Canvas. No fixture
+        // assignment to VM, original playlist, physical stack or native state is made.
+        var newSource: OwnedPlaybackSourceSnapshot? = null
+        await("original collection part selection loads a new actual native source") {
+            val candidate = actualPlayer.currentSourceSnapshot() ?: return@await false
+            if (candidate.sourceVersion <= originalSource.sourceVersion ||
+                candidate.source.nativePublication == null || candidate.source.nativePublication === originalSource.source.nativePublication ||
+                !actualPlayer.ownsSourceSnapshot(candidate) || !playing()) return@await false
+            edt {
+                current()
+                check(nativeComponents(window()).filterIsInstance<Canvas>().filter { it.isShowing && it.width > 100 && it.height > 80 &&
+                    SwingUtilities.getWindowAncestor(it) === window() &&
+                    it.javaClass.declaredFields.any { field -> field.type == MpvPlayer::class.java } }.single() === actualCanvas)
+                check(SwingUtilities.getWindowAncestor(actualPlayer.surface) === window())
+            }
+            newSource = candidate; true
+        }
+        check(!actualPlayer.ownsSourceSnapshot(originalSource))
+        accepted = requireNotNull(newSource)
+        awaitClosed(); clockAndCapture("159-original-collection-part-playing")
+        openFromMore("播放队列")
+        await("whole original current playback queue in its owned native Window") { edt {
+            ownedFeatureSurface("关闭播放队列", "当前播放", "1个视频") != null
+        } }
+        val queue = edt { requireNotNull(ownedFeatureSurface("关闭播放队列", "当前播放", "1个视频")) }
+        edt { check(queue is javax.swing.JDialog && queue !== window() && ownedWindow(queue)) }
+        actions.capture("159-original-playback-queue", edt { current() })
+        edt { captureOwnedExtraSurface("159-original-playback-queue-dialog", queue) }
+        clickFeatureItem(queue, "关闭播放队列")
+        awaitClosed(); sameNative(); check(playing())
+        record("159-original-collection-and-queue", mapOf(
+            "actualOpenControlUsed" to JsonPrimitive("更多播放操作"), "originalCollectionBodyVisible" to JsonPrimitive(true),
+            "originalIntroAndBothPartChipsVisible" to JsonPrimitive(true), "originalSortDurable" to JsonPrimitive("DESCENDING"),
+            "introTextEvidence" to JsonPrimitive("OWNED_SCREENSHOT_WITH_ORIGINAL_DISCLOSURE_SEMANTICS"),
+            "originalSortReopened" to JsonPrimitive(true), "actualOriginalPartControlUsed" to JsonPrimitive("2.Local replay P2"),
+            "previousNativeSourceVersion" to JsonPrimitive(originalSource.sourceVersion), "newNativeSourceVersion" to JsonPrimitive(accepted.sourceVersion),
+            "sameActualMpvAndCanvas" to JsonPrimitive(true), "actualQueueOpenedAndClosed" to JsonPrimitive(true),
+            "queueIndexedSelectionAccepted" to JsonPrimitive(false), "realAccountSubscriptionAccepted" to JsonPrimitive(false),
+            "remoteSubscriptionMutationSubmitted" to JsonPrimitive(false), "nativeState" to safeState()))
     }
 
     private fun privateDanmakuOpacity(): Double? {
@@ -1141,7 +1426,7 @@ object WindowsVideoActualRootUiFixture {
                 } }) return@repeat
                 wheelDanmakuSettings(surface, -3); Thread.sleep(150)
             }
-            edt { clickFeatureItem(surface, "关闭") }
+            clickFeatureItem(surface, "关闭")
             await("original danmaku modal input layers retire") { edt {
                 val layers = actualMainSceneLayers()
                 ownedFeatureSurface("弹幕设置", "查看弹幕列表", "关闭") == null &&
@@ -1176,7 +1461,7 @@ object WindowsVideoActualRootUiFixture {
         close(surface); open()
         check(privateDanmakuOpacity() == changed)
         val reopened = edt { requireNotNull(ownedFeatureSurface("弹幕设置", "查看弹幕列表", "关闭")) }
-        edt { clickFeatureItem(reopened, "查看弹幕列表") }
+        clickFeatureItem(reopened, "查看弹幕列表")
         await("original empty raw document renders a real list rather than a blank modal") { edt {
             ownedFeatureSurface("弹幕列表", "暂无弹幕数据", "关闭") != null
         } }
@@ -1289,7 +1574,7 @@ object WindowsVideoActualRootUiFixture {
             "actualMainSceneLayerCountRestored" to JsonPrimitive(edt { actualMainSceneLayers().size })))
     }
 
-    private fun exercise(replay: Boolean) {
+    private fun exercise(replay: Boolean, localReplay: WindowsVideoLocalReplay?) {
         val initial = videoFrame()
         videoKey = initial.key as BiliPaiNavKey.VideoDetail
         noStartupMobilePrompts()
@@ -1342,6 +1627,14 @@ object WindowsVideoActualRootUiFixture {
         videoFrame(beforeRestore); Thread.sleep(1200)
         clockAndCapture("150-restored-playing")
         if (System.getProperty("bilipai.validation.scaleInput") == "true") exerciseOwnedScaleAndKeyboard()
+        if (System.getProperty("bilipai.validation.hotInput") == "true") {
+            check(replay) { "Hot UI proof requires the private actual Main local replay" }
+            exerciseHotDanmaku(requireNotNull(localReplay))
+        }
+        if (System.getProperty("bilipai.validation.collectionInput") == "true") {
+            check(replay) { "Collection/queue layout proof requires private synthetic metadata" }
+            exerciseCollectionAndQueue()
+        }
         val beforeBack = edt { current().serial }
         click("返回")
         if (replay) returnReplaySearchToHome(beforeBack)
@@ -1389,7 +1682,7 @@ object WindowsVideoActualRootUiFixture {
                         exerciseNoSourceNvidiaSettings()
                     }
                     if (replay != null) enterVideoThroughActualSearch(replay)
-                    exercise(replayMode)
+                    exercise(replayMode, replay)
                     replay?.writeReceipt()
                     val receipt = buildJsonObject {
                         put("schema", 1); put("actualMainInvocations", 1); put("actualMainReturned", false)
@@ -1403,6 +1696,12 @@ object WindowsVideoActualRootUiFixture {
                         put("interactionProofRequested", System.getProperty("bilipai.validation.scaleInput") == "true")
                         put("interactionProofCompleted", System.getProperty("bilipai.validation.scaleInput") == "true")
                         put("featureInputProofCompleted", System.getProperty("bilipai.validation.featureInput") == "true")
+                        put("hotInputProofRequested", System.getProperty("bilipai.validation.hotInput") == "true")
+                        put("hotInputProofCompleted", System.getProperty("bilipai.validation.hotInput") == "true")
+                        put("hotLikeOrSendAccepted", false)
+                        put("collectionInputProofRequested", System.getProperty("bilipai.validation.collectionInput") == "true")
+                        put("collectionInputProofCompleted", System.getProperty("bilipai.validation.collectionInput") == "true")
+                        put("queueIndexedSelectionAccepted", false)
                         put("realAccountUsed", false); put("physicalStackWrittenByFixture", System.getProperty("bilipai.validation.nvidiaInput") == "true")
                         put("directPhysicalStackListMutation", false)
                         put("newNativeActorCreatedByFixture", false); put("newRootCreatedByFixture", false)

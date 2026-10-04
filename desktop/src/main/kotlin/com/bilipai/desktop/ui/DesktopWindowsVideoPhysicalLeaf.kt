@@ -53,6 +53,7 @@ internal class DesktopWindowsVideoActions(
     val notice: (String) -> Unit,
     val focusChanged: (Boolean) -> Unit,
     val nativeKey: (androidx.compose.ui.input.key.KeyEvent) -> Boolean,
+    val collectionQueue: @Composable (DesktopWindowsVideoCollectionQueuePresentation) -> Unit,
 )
 
 /** Windows renderer over the installed original VM/owner/MPV. No phone Holder, movable content or transition layout. */
@@ -130,6 +131,19 @@ internal class DesktopWindowsVideoActions(
     val subject by assembly.playback.subjectSnapshot.collectAsState()
     val favoriteEvent by assembly.playback.favoriteFolderSaveEvent.collectAsState()
     val success = original as? VideoPlaybackUiState.Success
+    val playlistItems by assembly.environment.playlist.playlist.collectAsState()
+    val collectionQueueSource = assembly.native.current()?.takeIf { accepted ->
+        current() && success?.info?.let { it.bvid == accepted.request.bvid && it.cid == accepted.request.cid } == true
+    }
+    var showCollection by remember(assembly, collectionQueueSource) { mutableStateOf(false) }
+    var showPlaybackQueue by remember(assembly, collectionQueueSource) { mutableStateOf(false) }
+    fun collectionQueueCurrent(): Boolean = current() && collectionQueueSource != null &&
+        assembly.native.isCurrent(collectionQueueSource) && assembly.playback.captureDesktopPlaybackState().let {
+            it is VideoPlaybackUiState.Success && it.info.bvid == collectionQueueSource.request.bvid &&
+                it.info.cid == collectionQueueSource.request.cid
+        }
+    val canOpenCollection = success?.info?.ugc_season != null && collectionQueueSource != null
+    val canOpenPlaybackQueue = collectionQueueSource != null && playlistItems.isNotEmpty()
     val chapterResult by assembly.playback.desktopChapterResult.collectAsState(null)
     // The list is stamped by its accepted player-info result, never by the current screen.
     val chaptersSource = assembly.native.current()
@@ -289,6 +303,9 @@ internal class DesktopWindowsVideoActions(
                     canPictureInPicture = !pipActive && success != null && state.videoCodec != null && !state.audioOnly,
                     qualities = success?.let { value -> value.qualityIds.mapIndexed { index, id -> id to (value.qualityLabels.getOrNull(index) ?: id.toString()) } }.orEmpty(),
                     selectedQuality = success?.currentQuality,
+                    canOpenCollection = canOpenCollection, canOpenPlaybackQueue = canOpenPlaybackQueue,
+                    onOpenCollection = { if (collectionQueueCurrent()) { showPlaybackQueue = false; showCollection = true } },
+                    onOpenPlaybackQueue = { if (collectionQueueCurrent()) { showCollection = false; showPlaybackQueue = true } },
                     chapters = chapters, chaptersSource = chaptersSource, onChapterSeek = ::seekChapter,
                     onPlayPause = { command { native.togglePause() } },
                     onPrevious = { if (current()) shell.playback.previous() }, onNext = { if (current()) shell.playback.next() },
@@ -381,6 +398,15 @@ internal class DesktopWindowsVideoActions(
                     } else Text("正在读取评论", style = MaterialTheme.typography.bodyMedium)
                 },
             )
+        }
+    }
+
+    if (success != null && collectionQueueSource != null && collectionQueueCurrent() &&
+        (showCollection || showPlaybackQueue)) {
+        CompositionLocalProvider(LocalDesktopOriginalVideoHolderPlatform provides platforms.holder) {
+            actions.collectionQueue(DesktopWindowsVideoCollectionQueuePresentation(assembly, success,
+                collectionQueueSource, showCollection && canOpenCollection, showPlaybackQueue && canOpenPlaybackQueue,
+                ::collectionQueueCurrent, { showCollection = false }, { showPlaybackQueue = false }))
         }
     }
 

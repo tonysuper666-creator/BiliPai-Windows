@@ -32,6 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean
     onDismissSettings:()->Unit,
     onDismissPool:()->Unit,
     enabledChangeVersion:Long,
+    hotLink:DesktopWindowsHotDanmakuLink,
 ) {
     val capturedEpoch=owner.operations.expectedEpoch
     val account by repository.account.collectAsState()
@@ -64,6 +65,11 @@ import java.util.concurrent.atomic.AtomicBoolean
         val environment=remember{DesktopDanmakuSessionEnvironment(cid,sourceVersion,capturedEpoch,pageScope,actions,
             ::owned,{repository.account.value?.mid?:0L},owner.feedback,{if(owned())currentSeek(it)})}
         val session=remember{DesktopOriginalDanmakuSession(environment)}
+        val hotAttachment=remember{DesktopWindowsHotDanmakuAttachment(sourceLease,environment,session,preferences)}
+        DisposableEffect(hotLink,hotAttachment) {
+            hotLink.bind(hotAttachment)
+            onDispose {hotLink.release(hotAttachment)}
+        }
         DisposableEffect(pageScope,session) {onDispose {
             synchronized(admissionLock){alive.set(false)}
             session.close();pageScope.cancel()

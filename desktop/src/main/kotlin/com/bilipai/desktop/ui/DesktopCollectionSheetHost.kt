@@ -7,6 +7,7 @@ import com.android.purebilibili.feature.video.ui.components.CollectionSheet
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.settings.LocalDesktopDynamicTimelinePreferences
+import com.bilipai.desktop.settings.DesktopCollectionPreferenceWriteOperation
 import java.util.concurrent.atomic.AtomicBoolean
 
 internal class DesktopCollectionBindings(
@@ -15,11 +16,25 @@ internal class DesktopCollectionBindings(
     private val stillOwned: () -> Boolean,
     private val feedback: (String) -> Unit,
     private val share: (String, String, () -> Boolean) -> Unit,
+    private val commitIfCurrent: ((() -> Unit) -> Boolean) = operations::withOwnedEditorImageAdmission,
 ) {
-    fun showFeedback(message: String) { if (stillOwned()) feedback(message) }
+    fun isOwned(): Boolean = operations.isOwned() && stillOwned()
+    fun showFeedback(message: String) { if (isOwned()) feedback(message) }
     fun shareCollection(context: DesktopPluginContext, title: String, mid: Long, seasonId: Long) {
         check(context === this.context)
-        if (stillOwned()) share(title, buildDesktopCollectionShareText(title, mid, seasonId), stillOwned)
+        if (isOwned()) share(title, buildDesktopCollectionShareText(title, mid, seasonId), ::isOwned)
+    }
+    suspend fun <T> withOwnedCollectionPreferences(block: suspend () -> T): T =
+        DesktopCollectionPreferenceWriteOperation.withOwned(context, ::isOwned, commitIfCurrent, block)
+
+    /** A popup borrows this exact Root authority, with an additional disposal lease. */
+    fun forWindow(windowOwned: () -> Boolean): DesktopCollectionBindings {
+        fun owned() = isOwned() && windowOwned()
+        return DesktopCollectionBindings(context, operations.forEditor(::owned), ::owned,
+            feedback, share, { action ->
+                var entered = false
+                commitIfCurrent { if (owned()) { action(); entered = true } } && entered
+            })
     }
 }
 internal val LocalDesktopCollectionBindings = staticCompositionLocalOf<DesktopCollectionBindings> {
@@ -56,26 +71,8 @@ internal fun DesktopCollectionSheetHost(
         var showSheet by remember { mutableStateOf(false) }
         CompositionLocalProvider(LocalDesktopCollectionBindings provides bindings) {
             CollectionRow(season, details.bvid, currentCid, isPlaying, onClick = { if (owned()) showSheet = true })
-            if (showSheet) CollectionSheet(season, details.bvid, currentCid, onDismiss = { showSheet = false },
-                onEpisodeClick = { episode ->
-                    if (owned()) {
-                        val collection = desktopUgcCollection(details, currentCid = currentCid)
-                        val queue = collection?.queue.orEmpty()
-                        val bvid = discoveryEpisodeBvid(episode)
-                        val card = queue.firstOrNull { it.bvid == bvid && (episode.cid <= 0 || it.preferredCid == episode.cid) }
-                            ?: queue.firstOrNull { it.bvid == bvid }
-                        if (card != null) {
-                            val selected = card.copy(preferredCid = episode.cid.takeIf { it > 0 } ?: card.preferredCid,
-                                pageIndex = episode.pages.indexOfFirst { it.cid == episode.cid }.coerceAtLeast(0))
-                            showSheet = false
-                            // Root selects queues by (bvid,cid). A clicked part may
-                            // differ from the season's default CID; keep it in the
-                            // same queue position so Root cannot fall back to #0.
-                            val selectedQueue = queue.toMutableList().apply { set(indexOf(card), selected) }
-                            onPlayQueue(selectedQueue, selected)
-                        }
-                    }
-                })
+            if (showSheet) DesktopWindowsVideoCollectionSheetHost(details, currentCid, bindings, alive,
+                ::owned, onPlayQueue, onDismiss = { showSheet = false })
         }
     }
 }

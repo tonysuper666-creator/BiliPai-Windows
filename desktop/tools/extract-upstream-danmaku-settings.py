@@ -4,9 +4,31 @@ import hashlib,importlib.util,json,re,subprocess,sys
 sys.dont_write_bytecode=True
 HERE=Path(__file__).resolve().parent;MAIN=next(p for p in HERE.parents if (p/'.git').exists());STABLE=MAIN.parent/'BiliPai-v023'
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40';BASE='app/src/main/java/com/android/purebilibili/'
+HOT_SETTINGS_COMMIT='e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf'
+HOT_SETTINGS_ARCHIVE=Path('desktop/upstream-slices/v027-danmaku-hot-settings')
+HOT_SETTINGS_PINS={
+ BASE+'core/store/SettingsManager.kt':'c663a85253bfcbfc7ab8538b8df2e085f91af46e01edbe1b4add497fd621d47e',
+ BASE+'feature/video/ui/components/DanmakuSettingsPanel.kt':'73930e1db4996b67f0cf20702dd4a5bcc86115c030a241ac999d91b8faecac6e',
+}
 def sha(s):return hashlib.sha256(s.encode('utf-8')).hexdigest()
 def write(p,s):p.parent.mkdir(parents=True,exist_ok=True);p.write_text(s,encoding='utf-8',newline='\n')
 def save(p,s):write(p,json.dumps(s,ensure_ascii=False,indent=2)+'\n')
+def hot_settings_originals(repo):
+ root=repo/HOT_SETTINGS_ARCHIVE
+ manifest=json.loads((root/'manifest.json').read_bytes())
+ if manifest.get('schemaVersion')!=1 or manifest.get('fixedUpstreamCommit')!=HOT_SETTINGS_COMMIT:raise ValueError('Unknown fixed hot-danmaku settings slice')
+ rows=manifest.get('files',[])
+ if len(rows)!=len(HOT_SETTINGS_PINS) or {row['originalPath'] for row in rows}!=set(HOT_SETTINGS_PINS):raise ValueError('Fixed hot-danmaku settings input set changed')
+ originals={}
+ for row in rows:
+  path=row['originalPath'];expected=HOT_SETTINGS_PINS[path]
+  if row['archiveFile']!=Path(path).name or row['sha256Bytes']!=expected:raise ValueError('Fixed hot-danmaku settings identity changed: '+path)
+  raw=(root/row['archiveFile']).read_bytes()
+  if hashlib.sha256(raw).hexdigest()!=expected or len(raw)!=row['bytes']:raise ValueError('Fixed hot-danmaku settings bytes changed: '+path)
+  normalized=raw.replace(b'\r\n',b'\n')
+  if hashlib.sha256(normalized).hexdigest()!=row['sha256LF']:raise ValueError('Fixed hot-danmaku settings normalized identity changed: '+path)
+  originals[path]=normalized.decode('utf-8')
+ return originals,rows
 spec=importlib.util.spec_from_file_location('source_parser',HERE/'extract-upstream-danmaku-list-menu.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
 def decl(s,name,indent=''):
  mask=parser.masked(s)
@@ -37,6 +59,10 @@ def schema(s,name):
 def generate(repo,output,standalone=False):
  paths=[BASE+x for x in ['feature/video/ui/components/DanmakuSettingsPanel.kt','core/store/SettingsManager.kt','feature/video/danmaku/DanmakuSettingsPolicy.kt','feature/video/danmaku/DanmakuCloudRuleSyncPolicy.kt','feature/video/danmaku/DanmakuSyncStatusPolicy.kt','data/repository/DanmakuRepository.kt','feature/video/ui/section/VideoPlayerSectionPolicy.kt','feature/video/ui/section/VideoPlayerSection.kt']]
  sources={};ids=[];emitted=[]
+ hot_sources,hot_source_ids=hot_settings_originals(repo)
+ hot_ui=hot_sources[BASE+'feature/video/ui/components/DanmakuSettingsPanel.kt']
+ hot_manager=hot_sources[BASE+'core/store/SettingsManager.kt']
+ hot_members=[]
  for path in paths:
   from v025_source_paths import canonical_source
   canonical_file=canonical_source(repo,path)
@@ -54,6 +80,22 @@ def generate(repo,output,standalone=False):
  def adapt(s,a,b,rows):assert s.count(a)==1,(a,s.count(a));rows.append(dict(before=a,after=b));return s.replace(a,b)
  # Full original UI, all three sections and manager/import/cloud/add/delete branches.
  s=sources[paths[0]];patches=[]
+ # Adopt only the two complete v027 settings clauses. Every other original v025
+ # UI declaration and all Windows platform adaptations retain their existing owner.
+ hot_state_start=hot_ui.index('    val settingsContext = LocalContext.current\n')
+ hot_state_end=hot_ui.index('    var showBlockManager by remember',hot_state_start)
+ hot_state=hot_ui[hot_state_start:hot_state_end]
+ hot_rows_start=hot_ui.index('                                DanmakuFilterSwitchRow(\n                                    label = "顶部计数弹幕",')
+ hot_rows_end=hot_ui.index('                                DanmakuFilterSwitchRow(\n                                    label = "海量弹幕模式",',hot_rows_start)
+ hot_rows=hot_ui[hot_rows_start:hot_rows_end]
+ s=adapt(s,'    var showBlockManager by remember',hot_state+'    var showBlockManager by remember',patches)
+ s=adapt(s,'                                DanmakuFilterSwitchRow(\n                                    label = "海量弹幕模式",',hot_rows+'                                DanmakuFilterSwitchRow(\n                                    label = "海量弹幕模式",',patches)
+ s=adapt(s,'import androidx.compose.ui.Modifier\n','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.LocalDesktopDanmakuHotSettingsBindings\n',patches)
+ s=adapt(s,'    val settingsContext = LocalContext.current\n','    val settingsContext = LocalDesktopDanmakuHotSettingsBindings.current\n',patches)
+ for name,argument in [('getDanmakuHotBarEnabled',''),('getHotDanmakuExpandedMode',''),('setDanmakuHotBarEnabled',', enabled'),('setHotDanmakuExpandedMode',', enabled')]:
+  s=adapt(s,'SettingsManager.'+name+'(settingsContext'+argument+')','settingsContext.'+name+'('+argument.removeprefix(', ')+')',patches)
+ s=adapt(s,'.collectAsStateWithLifecycle(initialValue = true)','.collectAsState(initial = true)',patches)
+ s=adapt(s,'.collectAsStateWithLifecycle(initialValue = false)','.collectAsState(initial = false)',patches)
  s=adapt(s,'import androidx.activity.compose.rememberLauncherForActivityResult','import com.bilipai.desktop.ui.rememberDesktopDanmakuRuleImportLauncher as rememberLauncherForActivityResult',patches)
  s=adapt(s,'import androidx.activity.result.contract.ActivityResultContracts','import com.bilipai.desktop.ui.DesktopDanmakuOpenRuleDocument',patches)
  s=adapt(s,'import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.LocalDesktopDanmakuSettingsViewport as LocalConfiguration',patches)
@@ -138,6 +180,17 @@ internal class DesktopOriginalDanmakuCloudRuleProtocol(
   raw,start=decl(original,name,'    ');s=raw.replace('context: Context, ','').replace('        context: Context,\n','').replace('context: Context','').replace('context.settingsDataStore.edit','writeOriginal')
   selected.append(s);setterrows.append(dict(member=name,sourceLine=original[:start].count('\n')+1,originalBodySha256LF=sha(raw),adaptedBodySha256LF=sha(s),changes='Context argument removed; original edit body delegates owned global Store atomic update.'))
  cloudGet=decl(original,'getDanmakuCloudSyncEnabled','    ')[0].replace('context: Context','').replace('context.settingsDataStore.data','store.snapshot("settings")')
+ hot_keys=[];hot_methods=[]
+ for key in ['KEY_DANMAKU_HOT_BAR_ENABLED','KEY_HOT_DANMAKU_EXPANDED_MODE']:
+  match=re.search(r'(?m)^    private val '+key+r'\s*=\s*booleanPreferencesKey\("[^"]+"\)',hot_manager)
+  if match is None:raise ValueError('Fixed original hot-danmaku key missing: '+key)
+  hot_keys.append(match.group(0))
+  hot_members.append(dict(member=key,pinnedCommit=HOT_SETTINGS_COMMIT,sourceLine=hot_manager[:match.start()].count('\n')+1,originalBodySha256LF=sha(match.group(0))))
+ for name in ['getDanmakuHotBarEnabled','setDanmakuHotBarEnabled','getHotDanmakuExpandedMode','setHotDanmakuExpandedMode']:
+  raw,start=decl(hot_manager,name,'    ')
+  port=raw.replace('context: Context, ','').replace('context: Context','').replace('context.settingsDataStore.data','store.snapshot("settings")').replace('context.settingsDataStore.edit','writeOriginal')
+  hot_methods.append(port)
+  hot_members.append(dict(member=name,pinnedCommit=HOT_SETTINGS_COMMIT,sourceLine=hot_manager[:start].count('\n')+1,originalBodySha256LF=sha(raw),adaptedBodySha256LF=sha(port),changes='Only remove Context argument and delegate Flow/complete original edit body to this same owned global Store.'))
  body='''package com.bilipai.desktop.settings
 import com.android.purebilibili.core.store.*
 import com.android.purebilibili.feature.video.danmaku.*
@@ -171,6 +224,8 @@ internal class DesktopOriginalDanmakuPreferences(
         }
     }
     fun currentSettings(scope:DanmakuSettingsScope)=mapDanmakuSettingsFromPreferences(store.snapshot("settings").value,scope)
+    fun currentDanmakuHotBarEnabled():Boolean=store.snapshot("settings").value[KEY_DANMAKU_HOT_BAR_ENABLED] ?: true
+    fun currentHotDanmakuExpandedMode():Boolean=store.snapshot("settings").value[KEY_HOT_DANMAKU_EXPANDED_MODE] ?: false
     suspend fun setDanmakuBlockRulesRaw(value:String,scope:DanmakuSettingsScope)=blocks.setDanmakuBlockRulesRaw(value,scope)
     internal suspend fun migrateMissingOriginalLegacyValues(values:Map<String,JsonElement>) {
         writeOriginal { editor -> values.forEach { (name,value) ->
@@ -178,7 +233,7 @@ internal class DesktopOriginalDanmakuPreferences(
             if(editor[key]==null)editor.values[name]=value
         } }
     }
-'''+keys+'\n\n'+mapping+'\n\n'+getter+'\n\n'+cloudGet+'\n\n'+'\n\n'.join(selected)+'\n}\n'
+'''+keys+'\n\n'+'\n'.join(hot_keys)+'\n\n'+mapping+'\n\n'+getter+'\n\n'+cloudGet+'\n\n'+'\n\n'.join(selected+hot_methods)+'\n}\n'
  emit('com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences.kt',body,paths[1],'selected-original-global-store-adapter')
  # Direction is original player presentation policy, not desktop window aspect guess.
  policy=decl(sources[paths[6]],'resolveVideoPlayerDanmakuSettingsScope')[0]
@@ -246,7 +301,7 @@ internal class DesktopDanmakuCloudSyncBinding(
 }
 '''
  emit('com/bilipai/desktop/ui/DesktopOriginalDanmakuCloudSyncBinding.kt',body,paths[7],'selected-original-state-effects-bridge')
- save(output/'source-inventory.json',dict(pinnedCommit=COMMIT,sourceIdentities=ids,outputs=emitted,cloudProtocolMembers=contracts,settingsSetterMembers=setterrows,existingReferences=['DanmakuSettingsScope (installed original-danmaku-list-menu producer)','DesktopDanmakuBlockPreferences (same installed body/Root global backing)','DanmakuKeywordFilterPolicy/Proto/models/Root Repository/Operations/Store/Session (reference, never re-emit)','Original AppThemeAdaptiveTabRow/full shared renderer (reference)']))
+ save(output/'source-inventory.json',dict(pinnedCommit=COMMIT,sourceIdentities=ids,outputs=emitted,cloudProtocolMembers=contracts,settingsSetterMembers=setterrows,hotSettingsSlice=dict(pinnedCommit=HOT_SETTINGS_COMMIT,sourceIdentities=hot_source_ids,members=hot_members,uiClauses=[dict(sourceLine=hot_ui[:hot_state_start].count('\n')+1,originalSha256LF=sha(hot_state)),dict(sourceLine=hot_ui[:hot_rows_start].count('\n')+1,originalSha256LF=sha(hot_rows))]),existingReferences=['DanmakuSettingsScope (installed original-danmaku-list-menu producer)','DesktopDanmakuBlockPreferences (same installed body/Root global backing)','DanmakuKeywordFilterPolicy/Proto/models/Root Repository/Operations/Store/Session (reference, never re-emit)','Original AppThemeAdaptiveTabRow/full shared renderer (reference)']))
  return emitted
 if __name__=='__main__':
  import argparse

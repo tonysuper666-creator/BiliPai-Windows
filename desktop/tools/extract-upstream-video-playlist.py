@@ -67,6 +67,7 @@ def generate(repo, output, standalone=False):
  extra='''
     /** Read-only use of the ORIGINAL playlist session token for Root clients. */
     fun isSessionCurrent(session: PlaylistSession): Boolean = session == activePlaylistSession
+    internal fun captureDesktopSession(): PlaylistSession = activePlaylistSession
 
     /** Same original session/state, with the existing Windows CID identity policy.
      * The reconciler's opaque keys never reach persisted items/API/native playback. */

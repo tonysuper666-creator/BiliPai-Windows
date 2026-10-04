@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf",
+  "scope": "Explicit v027 hot-danmaku source slice; overall v025 canonical baseline unchanged",
+  "files": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/HotDanmakuPolicy.kt",
+      "archiveFile": "HotDanmakuPolicy.kt",
+      "sha256Bytes": "2be4cad461dfd9ad04eb3b37d762055deaa10ad6cb3c3c0c6702db11d78ed8ee",
+      "bytes": 1595,
+      "sha256LF": "2be4cad461dfd9ad04eb3b37d762055deaa10ad6cb3c3c0c6702db11d78ed8ee"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/HotDanmakuBar.kt",
+      "archiveFile": "HotDanmakuBar.kt",
+      "sha256Bytes": "cec2fd00ba5e15a8a5830df30302c59144a75f2c8edd5fde8a890daaf9b8fb5b",
+      "bytes": 10056,
+      "sha256LF": "cec2fd00ba5e15a8a5830df30302c59144a75f2c8edd5fde8a890daaf9b8fb5b"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSameSendConfirmation.kt",
+      "archiveFile": "DanmakuSameSendConfirmation.kt",
+      "sha256Bytes": "23b033faa6b20e884e8fd319204b221d28aa3ca680874d108ee5ca9406f5a665",
+      "bytes": 929,
+      "sha256LF": "23b033faa6b20e884e8fd319204b221d28aa3ca680874d108ee5ca9406f5a665"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/ui/components/AnimatedCountText.kt",
+      "archiveFile": "AnimatedCountText.kt",
+      "sha256Bytes": "c00947788875769a3410ca345c9b9334cf796ad0328a1e48cfa0038d060d92a9",
+      "bytes": 4793,
+      "sha256LF": "c00947788875769a3410ca345c9b9334cf796ad0328a1e48cfa0038d060d92a9"
+    },
+    {
+      "originalPath": "app/src/test/java/com/android/purebilibili/feature/video/danmaku/HotDanmakuPolicyTest.kt",
+      "archiveFile": "HotDanmakuPolicyTest.kt",
+      "sha256Bytes": "bf7e4cb2058777508d6724a02cff72ddc54057dbe938355504863428fb472110",
+      "bytes": 2475,
+      "sha256LF": "bf7e4cb2058777508d6724a02cff72ddc54057dbe938355504863428fb472110"
+    }
+  ]
+}

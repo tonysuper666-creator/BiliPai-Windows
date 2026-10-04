@@ -156,6 +156,7 @@ def danmaku_submission_lifetime_delta(path, body):
  admission='''        val clickedBvid = current.info.bvid
         val clickedCid = currentCid
         val clickedLoadToken = currentLoadRequestToken
+        val clickedNativeSource = exoPlayer?.nativePlayer?.currentSourceSnapshot() ?: return
         var submissionId = 0L
         if (!environment.commit {
             submissionId = ++desktopDanmakuSubmissionSerial
@@ -168,7 +169,8 @@ def danmaku_submission_lifetime_delta(path, body):
         }
         fun ensureSubmissionSubject() {
             environment.assertCurrent()
-            if (currentBvid != clickedBvid || currentCid != clickedCid || currentLoadRequestToken != clickedLoadToken)
+            if (currentBvid != clickedBvid || currentCid != clickedCid || currentLoadRequestToken != clickedLoadToken ||
+                exoPlayer?.nativePlayer?.ownsSourceSnapshot(clickedNativeSource) != true)
                 throw kotlinx.coroutines.CancellationException("Danmaku clicked subject retired")
         }
         val submission = try { environment.invocations.launch {
@@ -194,7 +196,13 @@ def danmaku_submission_lifetime_delta(path, body):
         submission.invokeOnCompletion { releaseSubmission() }
     }
 ''',1)
- return body[:a]+part+body[z:]
+ sent='DanmakuSentData(message, actualColor, mode, fontSize)'
+ assert part.count(sent)==1
+ part=part.replace(sent,'DanmakuSentData(message, actualColor, mode, fontSize, clickedBvid, clickedCid, clickedLoadToken, clickedNativeSource)')
+ body=body[:a]+part+body[z:]
+ schema='data class DanmakuSentData(val text: String, val color: Int, val mode: Int, val fontSize: Int)'
+ assert body.count(schema)==1
+ return body.replace(schema,schema[:-1]+', val bvid: String, val cid: Long, val loadToken: Long, val nativeSource: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot)')
 
 
 

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf",
+  "purpose": "Selected original HotBar settings only; v025 canonical baseline unchanged",
+  "files": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "archiveFile": "SettingsManager.kt",
+      "bytes": 404536,
+      "sha256Bytes": "c663a85253bfcbfc7ab8538b8df2e085f91af46e01edbe1b4add497fd621d47e",
+      "sha256LF": "c663a85253bfcbfc7ab8538b8df2e085f91af46e01edbe1b4add497fd621d47e",
+      "gitBlob": "41a1e038c5b341d6ad0f33e6a4f4eca1e55e6ba0"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSettingsPanel.kt",
+      "archiveFile": "DanmakuSettingsPanel.kt",
+      "bytes": 99668,
+      "sha256Bytes": "73930e1db4996b67f0cf20702dd4a5bcc86115c030a241ac999d91b8faecac6e",
+      "sha256LF": "73930e1db4996b67f0cf20702dd4a5bcc86115c030a241ac999d91b8faecac6e",
+      "gitBlob": "b4d15ddf02e00253283f87c60e00b55f15e7f719"
+    }
+  ]
+}

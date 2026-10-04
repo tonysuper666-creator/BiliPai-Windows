@@ -71,13 +71,14 @@ internal data class DesktopDanmakuPaintGeometry(val viewport:DanmakuViewport,val
 }
 
 /** Ephemeral settings-to-config projection. No persistent keys, pool, account or renderer is constructed. */
-internal fun DanmakuSettings.originalConfig(platform:DesktopOriginalDanmakuRenderPlatform):DanmakuConfig =
+internal fun DanmakuSettings.originalConfig(platform:DesktopOriginalDanmakuRenderPlatform,hotBarReservedHeightPx:Float=0f):DanmakuConfig =
     DanmakuConfig(platform).also {
         it.isEnabled=enabled;it.opacity=opacity;it.fontScale=fontScale;it.fontWeight=fontWeight
         it.speedFactor=speedFactor;it.scrollDurationSeconds=scrollDurationSeconds;it.displayAreaRatio=displayAreaRatio
         it.lineHeight=lineHeight;it.strokeEnabled=strokeEnabled;it.strokeWidth=strokeWidth
         it.staticDurationSeconds=staticDurationSeconds;it.scrollFixedVelocity=scrollFixedVelocity
         it.staticDanmakuToScroll=staticDanmakuToScroll;it.massiveMode=massiveMode
+        it.hotBarReservedHeightPx=hotBarReservedHeightPx
         it.mergeDuplicates=mergeDuplicates;it.duplicateMergeWindowMs=duplicateMergeWindowMs
         it.duplicateMergeCountThreshold=duplicateMergeCountThreshold
         it.allowScroll=allowScroll;it.allowTop=allowTop;it.allowBottom=allowBottom

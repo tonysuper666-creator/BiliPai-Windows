@@ -39,10 +39,14 @@ def generate(repo, output):
                 'import coil3.compose.LocalPlatformContext\nimport com.bilipai.desktop.ui.LocalDesktopCollectionBindings')
     body=change(body, 'import com.android.purebilibili.core.store.SettingsManager',
                 'import com.android.purebilibili.core.store.DesktopOriginalCollectionSettings as SettingsManager')
+    body=change(body, 'import com.android.purebilibili.core.ui.AppModalBottomSheet',
+                'import com.bilipai.desktop.ui.DesktopWindowsCollectionModalSheet as AppModalBottomSheet')
     body=change(body, 'val context = LocalContext.current','val platform = LocalDesktopCollectionBindings.current\n    val context = platform.context')
     body=change(body, 'ImageRequest.Builder(LocalContext.current)', 'ImageRequest.Builder(LocalPlatformContext.current)')
     body=change(body, 'com.android.purebilibili.core.util.ShareUtils.shareCollection(',
                 'platform.shareCollection(')
+    body=change(body, 'SettingsManager.setCollectionSortMode(context, collectionSubscriptionId, nextMode)',
+                'platform.withOwnedCollectionPreferences { SettingsManager.setCollectionSortMode(context, collectionSubscriptionId, nextMode) }')
     emit(path,body,'DesktopOriginalCollectionSheet.kt')
 
     path=APP+'feature/video/ui/components/CollectionSubscriptionButton.kt';body=read(path)
@@ -59,6 +63,8 @@ def generate(repo, output):
     pattern=r'Toast\.makeText\(\s*context,\s*(.*?),\s*Toast\.LENGTH_SHORT\s*\)\.show\(\)'
     body,n=re.subn(pattern,lambda m:'platform.showFeedback('+m[1].strip()+')',body,flags=re.S)
     assert n==2 and 'Toast' not in body
+    body=change(body, 'SettingsManager.setCollectionSubscription(context, collectionId, subscribed)',
+                'platform.withOwnedCollectionPreferences { SettingsManager.setCollectionSubscription(context, collectionId, subscribed) }', count=2)
     # UI lifetime keys/disposal use the same account/source owner as its host.
     emit(path,body,'DesktopOriginalCollectionSubscriptionButton.kt')
 

@@ -6,7 +6,41 @@ import com.android.purebilibili.feature.video.danmaku.DanmakuCloudSyncUiState
 import com.android.purebilibili.feature.video.ui.components.DanmakuSettingsPanel
 import com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+
+/** A view of this exact existing source/page's preferences, never another Store.
+ * The original v027 UI launches its own caller; final persistence still uses the
+ * existing Root admission and full snapshot update in preferences.writeOriginal. */
+internal class DesktopDanmakuHotSettingsBindings(
+    private val preferences: DesktopOriginalDanmakuPreferences,
+    private val platform: DesktopDanmakuSettingsPlatform,
+) {
+    fun getDanmakuHotBarEnabled(): Flow<Boolean> = preferences.getDanmakuHotBarEnabled()
+    fun getHotDanmakuExpandedMode(): Flow<Boolean> = preferences.getHotDanmakuExpandedMode()
+    suspend fun setDanmakuHotBarEnabled(enabled: Boolean) = update { preferences.setDanmakuHotBarEnabled(enabled) }
+    suspend fun setHotDanmakuExpandedMode(enabled: Boolean) = update { preferences.setHotDanmakuExpandedMode(enabled) }
+    private suspend fun update(action: suspend () -> Unit) {
+        currentCoroutineContext().ensureActive()
+        if (!platform.isOwned()) throw CancellationException("Hot-danmaku settings owner retired")
+        try {
+            action()
+            currentCoroutineContext().ensureActive()
+            if (!platform.isOwned()) throw CancellationException("Hot-danmaku settings owner retired")
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (failure: Exception) {
+            currentCoroutineContext().ensureActive()
+            if (!platform.isOwned()) throw CancellationException("Hot-danmaku settings owner retired")
+            platform.showFeedback(failure.message ?: "计数弹幕设置保存失败")
+        }
+    }
+}
+
+internal val LocalDesktopDanmakuHotSettingsBindings = staticCompositionLocalOf<DesktopDanmakuHotSettingsBindings> {
+    error("Original hot-danmaku settings require the actual source-owned preferences")
+}
 
 /** Complete original panel consumes the sole global preference snapshot and all original setters. */
 @Composable internal fun DesktopOriginalDanmakuSettingsHost(
@@ -35,6 +69,9 @@ import kotlinx.coroutines.launch
         }
         if(platform.isOwned()) {
         CompositionLocalProvider(LocalDesktopDanmakuSettingsPlatform provides platform,
+            LocalDesktopDanmakuHotSettingsBindings provides remember(preferences, platform) {
+                DesktopDanmakuHotSettingsBindings(preferences, platform)
+            },
             LocalDesktopDanmakuSettingsViewport provides viewport) {
             DanmakuSettingsPanel(
                 isFullscreen=presentation!=DesktopDanmakuPresentation.INLINE,

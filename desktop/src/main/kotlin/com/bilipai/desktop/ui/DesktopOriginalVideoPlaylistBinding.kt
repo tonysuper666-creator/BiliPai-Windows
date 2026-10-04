@@ -68,6 +68,12 @@ internal class DesktopOriginalVideoPlaylistBinding(
     fun getPlayModeText(): String { assertOwned(); return original.getPlayModeText() }
     fun getPlayModeIcon(): String { assertOwned(); return original.getPlayModeIcon() }
     fun isSessionCurrent(session: PlaylistSession): Boolean { assertOwned(); return original.isSessionCurrent(session) }
+    fun captureSession(): PlaylistSession { assertOwned(); return original.captureDesktopSession() }
+    /** Keep the source list/session check and original selection in one Root admission. */
+    fun playAtIfCurrent(session:PlaylistSession,items:List<PlaylistItem>,index:Int,item:PlaylistItem):PlaylistItem? = mutate {
+        if(!original.isSessionCurrent(session) || original.playlist.value!==items ||
+            items.getOrNull(index)!==item)null else original.playAt(index)
+    }
     fun replaceQueueIfCurrent(items: List<PlaylistItem>, index: Int, session: PlaylistSession): Boolean =
         mutate { original.replaceQueueIfCurrent(items,index,session) }
     fun resolveSelectedCidIfCurrent(session: PlaylistSession, bvid: String, expectedCid: Long, resolvedCid: Long): Boolean =

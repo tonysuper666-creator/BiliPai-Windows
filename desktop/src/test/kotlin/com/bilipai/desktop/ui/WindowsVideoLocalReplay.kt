@@ -40,6 +40,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private val json = Json { ignoreUnknownKeys = true }
     private val cid = 7007L
     private val aid = 170001L
+    private val collectionInput = System.getProperty("bilipai.validation.collectionInput") == "true"
+    private val secondCid = 7008L
     private val base: String get() = "http://127.0.0.1:${server.address.port}"
     private var installed = false
     init {
@@ -115,22 +117,35 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             require(url.host in setOf("api.bilibili.com", "api.vc.bilibili.com", "app.bilibili.com")) {
                 "LOCAL replay forbids requests outside mapped API or exact owned loopback media"
             }
+            if (collectionInput) require(path !in setOf("/x/v3/fav/season/fav", "/x/v3/fav/season/unfav")) {
+                "Collection layout replay must not submit subscription mutations"
+            }
             val body = when (path) {
                 "/x/web-interface/view" -> {
                     val requested = request.url.queryParameter("bvid")
                     require(requested == null || requested == bvid)
-                    """{"code":0,"data":{"bvid":"$bvid","aid":$aid,"cid":$cid,"title":"Windows local layout replay","desc":"LOCAL REPLAY — media/layout only; not live Bilibili acceptance","pic":"","owner":{"mid":1,"name":"Local fixture","face":""},"stat":{"view":0,"reply":0,"like":0},"dimension":{"width":320,"height":180,"rotate":0},"pages":[{"cid":$cid,"page":1,"part":"Local replay","duration":60,"dimension":{"width":320,"height":180,"rotate":0}}]}}"""
+                    val original = """{"code":0,"data":{"bvid":"$bvid","aid":$aid,"cid":$cid,"title":"Windows local layout replay","desc":"LOCAL REPLAY — media/layout only; not live Bilibili acceptance","pic":"","owner":{"mid":1,"name":"Local fixture","face":""},"stat":{"view":0,"reply":0,"like":0},"dimension":{"width":320,"height":180,"rotate":0},"pages":[{"cid":$cid,"page":1,"part":"Local replay","duration":60,"dimension":{"width":320,"height":180,"rotate":0}}]}}"""
+                    if (collectionInput) collectionMetadata(original) else original
                 }
                 "/x/player/wbi/playurl", "/x/player/playurl" -> {
-                    require(request.url.queryParameter("bvid") == bvid && request.url.queryParameter("cid") == cid.toString())
+                    val allowedCids = if (collectionInput) setOf(cid.toString(), secondCid.toString()) else setOf(cid.toString())
+                    require(request.url.queryParameter("bvid") == bvid && request.url.queryParameter("cid") in allowedCids)
+                    if (collectionInput) requests.add(buildJsonObject {
+                        put("collectionPlayurlCid", requireNotNull(request.url.queryParameter("cid")).toLong())
+                    })
                     """{"code":0,"data":{"quality":32,"format":"dash","timelength":60000,"accept_quality":[32],"accept_description":["Local replay"],"video_codecid":7,"dash":{"duration":60,"minBufferTime":1.5,"video":[{"id":32,"baseUrl":"$base/video.avi","bandwidth":1000000,"mime_type":"video/x-msvideo","codecs":"avc1.640028","width":320,"height":180,"frameRate":"20","codecid":7}],"audio":[{"id":30280,"baseUrl":"$base/audio.wav","bandwidth":768000,"mime_type":"audio/wav","codecs":"pcm_s16le"}]}}}"""
                 }
                 "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":false,"mid":0,"wbi_img":{"img_url":"https://fixture.invalid/${"a".repeat(32)}.png","sub_url":"https://fixture.invalid/${"b".repeat(32)}.png"}}}"""
                 "/x/player/v2", "/x/player/wbi/v2" -> {
+                    val requestedCid = if (collectionInput) request.url.queryParameter("cid")?.toLongOrNull()
+                        ?.also { require(it == cid || it == secondCid) } ?: cid else cid
                     val chapters = if (System.getProperty("bilipai.validation.featureInput") == "true")
                         """[{"content":"开场","from":0,"to":20},{"content":"中段","from":20,"to":40},{"content":"收尾","from":40,"to":60}]""" else "[]"
-                    """{"code":0,"data":{"aid":$aid,"cid":$cid,"bvid":"$bvid","subtitle":{"subtitles":[]},"view_points":$chapters}}"""
+                    """{"code":0,"data":{"aid":$aid,"cid":$requestedCid,"bvid":"$bvid","subtitle":{"subtitles":[]},"view_points":$chapters}}"""
                 }
+                "/x/web-interface/archive/relation" -> if (collectionInput)
+                    """{"code":0,"data":{"like":false,"favorite":false,"season_fav":false,"coin":0,"dislike":false}}"""
+                    else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
                 "/x/player/videoshot" -> """{"code":0,"data":{"index":[],"image":[]}}"""
                 "/x/web-interface/archive/related", "/x/tag/archive/tags" -> """{"code":0,"data":[]}"""
                 "/x/v2/reply/wbi/main", "/x/v2/reply/main" -> """{"code":0,"data":{"replies":[],"top_replies":[],"cursor":{"is_begin":true,"is_end":true,"all_count":0,"next":0,"prev":0},"page":{"count":0,"num":1,"size":20}}}"""
@@ -161,6 +176,10 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
         require(requests.any { it["path"]?.jsonPrimitive?.content in setOf("/x/player/wbi/playurl", "/x/player/playurl") })
         require(mediaRequests.any { it["file"]?.jsonPrimitive?.content == "video.avi" && it["method"]?.jsonPrimitive?.content == "GET" })
         require(mediaRequests.any { it["file"]?.jsonPrimitive?.content == "audio.wav" && it["method"]?.jsonPrimitive?.content == "GET" })
+        if (collectionInput) {
+            require(requests.any { it["collectionPlayurlCid"]?.jsonPrimitive?.longOrNull == secondCid })
+            require(requests.none { it["path"]?.jsonPrimitive?.content in setOf("/x/v3/fav/season/fav", "/x/v3/fav/season/unfav") })
+        }
         Files.writeString(report.resolve("local-replay-receipt.json"), buildJsonObject {
             put("schema", 1); put("mode", "LOCAL_API_SHAPE_REAL_LOOPBACK_MEDIA_ACTUAL_MAIN_LAYOUT_ONLY")
             put("sameActualRepository", true); put("realBilibiliDataAccepted", false); put("realAccountUsed", false)
@@ -168,10 +187,37 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("originalVmStateWritten", false); put("actualNativeStateWritten", false); put("physicalStackWritten", false)
             put("metadataBvid", bvid); put("metadataCid", cid); put("mediaSeconds", SECONDS)
             put("chapterMetadataIsSynthetic", System.getProperty("bilipai.validation.featureInput") == "true")
+            put("collectionMetadataIsSynthetic", collectionInput)
+            put("collectionMetadataCid2", if (collectionInput) JsonPrimitive(secondCid) else JsonNull)
+            put("collectionSubscriptionMutationSubmitted", false)
             put("container", "MJPEG_AVI_PLUS_PCM_WAV"); put("qualityMetadataIsSynthetic", true)
             put("codecMetadataIsSynthetic", true); put("realDASHCodecAccepted", false)
             put("apiRequests", JsonArray(requests.toList())); put("loopbackRequests", JsonArray(mediaRequests.toList()))
         }.toString(), CREATE_NEW, WRITE)
+    }
+    private fun collectionMetadata(original: String): String {
+        val root = json.parseToJsonElement(original).jsonObject.toMutableMap()
+        val data = root.getValue("data").jsonObject.toMutableMap()
+        val pages = buildJsonArray {
+            add(buildJsonObject { put("cid", cid); put("page", 1); put("part", "Local replay P1"); put("duration", 60) })
+            add(buildJsonObject { put("cid", secondCid); put("page", 2); put("part", "Local replay P2"); put("duration", 60) })
+        }
+        data["pages"] = pages
+        data["ugc_season"] = buildJsonObject {
+            put("id", 5007); put("title", "Local fixture collection"); put("mid", 1); put("ep_count", 1)
+            put("intro", "LOCAL collection intro — original full UI and queue only"); put("cover", "")
+            put("sections", buildJsonArray { add(buildJsonObject {
+                put("id", 1); put("season_id", 5007); put("title", "本地合集分区")
+                put("episodes", buildJsonArray { add(buildJsonObject {
+                    put("id", aid); put("aid", aid); put("bvid", bvid); put("cid", cid)
+                    put("title", "Windows local layout replay"); put("pages", pages)
+                    put("arc", buildJsonObject { put("aid", aid); put("title", "Windows local layout replay")
+                        put("pic", ""); put("duration", 60); put("stat", buildJsonObject { put("view", 123) }) })
+                }) })
+            }) })
+        }
+        root["data"] = JsonObject(data)
+        return JsonObject(root).toString()
     }
     fun writeFailureReceipt() {
         Files.writeString(report.resolve("failure-local-replay.json"), buildJsonObject {

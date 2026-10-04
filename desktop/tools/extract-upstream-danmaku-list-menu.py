@@ -48,6 +48,30 @@ COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
 PATHS=[BASE+x for x in ['feature/video/ui/components/DanmakuPoolSheet.kt','feature/video/ui/components/DanmakuContextMenu.kt','feature/video/viewmodel/VideoPlaybackViewModel.kt','feature/video/danmaku/DanmakuParser.kt','feature/video/danmaku/WeightedTextData.kt','feature/video/danmaku/DanmakuManager.kt','feature/video/danmaku/DanmakuConfig.kt','data/repository/DanmakuRepository.kt','core/store/SettingsManager.kt','feature/video/screen/VideoDetailOverlayHost.kt','feature/video/ui/section/VideoPlayerSection.kt']]+['danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt',BASE+'feature/video/danmaku/FaceOcclusionPolicy.kt',BASE+'feature/video/ui/overlay/LiveDanmakuOverlay.kt','danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/ByteDanceDanmakuEngine.kt',BASE+'feature/video/danmaku/WebMaskParser.kt',BASE+'feature/video/danmaku/DanmakuPlaybackSyncPolicy.kt']
 
+V027_CONFIG_COMMIT='e5a6b59a69ed2de9ea4e69dc7675ea05de495ebf'
+V027_CONFIG_ARCHIVE=Path('desktop/upstream-slices/v027-danmaku-config')
+V027_CONFIG_SHA256='147f68bcc1ed0517d1b25476254cf6a55cc9d8f09d82003027ed6f92752adfd4'
+
+def fixed_v027_config(repo):
+ # One explicit complete source slice; the canonical v025 files and pins above
+ # remain checked against their original commit, not silently replaced.
+ import os
+ def raw(path):
+  path=Path(path).resolve()
+  return (Path('\\\\?\\'+str(path)) if os.name=='nt' else path).read_bytes()
+ root=repo/V027_CONFIG_ARCHIVE
+ manifest=json.loads(raw(root/'manifest.json'))
+ assert manifest.get('schemaVersion')==1 and manifest.get('fixedUpstreamCommit')==V027_CONFIG_COMMIT,'Unknown v027 config manifest'
+ assert manifest.get('originalPath')==PATHS[6] and manifest.get('archiveFile')=='DanmakuConfig.kt','Unknown v027 config source'
+ assert manifest.get('sha256Bytes')==V027_CONFIG_SHA256,'Changed v027 config pin'
+ blob=raw(root/'DanmakuConfig.kt')
+ assert hashlib.sha256(blob).hexdigest()==V027_CONFIG_SHA256 and len(blob)==manifest.get('bytes'),'Changed fixed v027 config bytes'
+ normalized=blob.replace(b'\r\n',b'\n')
+ assert hashlib.sha256(normalized).hexdigest()==manifest.get('sha256LF'),'Changed v027 config normalized identity'
+ return normalized.decode('utf-8'),dict(path=(V027_CONFIG_ARCHIVE/'DanmakuConfig.kt').as_posix(),previousPath=PATHS[6],
+  pinnedCommit=V027_CONFIG_COMMIT,sha256Bytes=V027_CONFIG_SHA256,sha256LF=hashlib.sha256(normalized).hexdigest(),
+  mode='explicit-complete-v027-config-slice-not-overall-canonical-advance')
+
 def class_body(s,name,indent=''):
  m=re.search(r'(?m)^'+indent+r'(?:(?:internal|private|open|data|enum)\s+)*class '+name+r'\b',masked(s));assert m,name
  mask=masked(s);a=mask.index('{',m.start());b=balanced(mask,a,'{','}');return s[m.start():b]
@@ -59,6 +83,28 @@ def drop_logs(body,patches):
   assert not body[a:m.start()].strip();before=body[a:b]+'\n';assert body.count(before)==1
   body=adapt(body,before,'',patches)
 
+def adapt_complete_v027_config(full_config):
+ # Complete original configuration and every pure policy are retained. These are
+ # the existing required Windows font/chrome/log carriers, not reserve formulas.
+ rows=[];s=full_config
+ s=adapt(s,'import android.content.Context','import com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatform',rows)
+ s=adapt(s,'import android.graphics.Typeface','import java.awt.Font as Typeface',rows)
+ s=adapt(s,'import android.os.Build','import com.bilipai.desktop.danmaku.DesktopDanmakuConfigLog',rows)
+ s=adapt(s,'class DanmakuConfig {','class DanmakuConfig internal constructor(private val platform: DesktopOriginalDanmakuRenderPlatform) {',rows)
+ s=adapt(s,'typeface = resolveDanmakuTypeface(fontWeight),','typeface = resolveDanmakuTypeface(fontWeight, platform),',rows)
+ s=adapt(s,'strokeColor = android.graphics.Color.BLACK,','strokeColor = java.awt.Color.BLACK.rgb,',rows)
+ status=function(full_config,'getStatusBarHeight','        ')[0]
+ s=adapt(s,status,'        internal fun getStatusBarHeight(platform: DesktopOriginalDanmakuRenderPlatform): Int = platform.systemChromeInsetPx()',rows)
+ font=function(full_config,'resolveDanmakuTypeface','')[0]
+ s=adapt(s,font,'internal fun resolveDanmakuTypeface(fontWeight: Int, platform: DesktopOriginalDanmakuRenderPlatform): Typeface = platform.resolveTypeface(fontWeight)',rows)
+ s=adapt(s,'        android.util.Log.i(','        DesktopDanmakuConfigLog.i(',rows)
+ reverse=s
+ for patch in reversed(rows):
+  assert patch['after'] and reverse.count(patch['after'])==1
+  reverse=reverse.replace(patch['after'],patch['before'])
+ assert reverse==full_config,'Complete fixed-v027 config inverse failed'
+ return s,rows
+
 def generate(repo:Path,output:Path,standalone=False):
  source={};identities=[];emitted=[]
  for path in PATHS:
@@ -68,6 +114,8 @@ def generate(repo:Path,output:Path,standalone=False):
   blob=subprocess.check_output(['git','show',COMMIT+':'+canonical_path],cwd=repo).decode('utf-8').replace('\r\n','\n')
   assert canonical_file.read_text(encoding='utf-8').replace('\r\n','\n')==blob,path
   source[path]=blob;identities.append(dict(path=canonical_path,previousPath=path,pinnedCommit=COMMIT,sha256LF=sha(blob),gitBlob=subprocess.check_output(['git','rev-parse',COMMIT+':'+canonical_path],cwd=repo,text=True).strip()))
+ full_config,config_identity=fixed_v027_config(repo)
+ adapted_config,config_patches=adapt_complete_v027_config(full_config)
  def emit(path,text,origin,mode,patches=None,original=None):
   write(output/path,text);row=dict(path=path,origin=origin,mode=mode,sha256LF=sha(text),adaptations=patches or [])
   if original is not None:
@@ -128,19 +176,9 @@ import com.android.purebilibili.danmaku.parser.resolveBilibiliDanmakuFontScale
  emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt',body,PATHS[3],'selected-original-factories-and-click-policies')
 
  # Full original neutral config and pure geometry/timing algorithms. Only actual Windows platform carriers change.
- full_config=source[PATHS[6]];rows=[];s=full_config
- s=adapt(s,'import android.content.Context','import com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatform',rows)
- s=adapt(s,'import android.graphics.Typeface','import java.awt.Font as Typeface',rows)
- s=adapt(s,'import android.os.Build','import com.bilipai.desktop.danmaku.DesktopDanmakuConfigLog',rows)
- s=adapt(s,'class DanmakuConfig {','class DanmakuConfig internal constructor(private val platform: DesktopOriginalDanmakuRenderPlatform) {',rows)
- s=adapt(s,'typeface = resolveDanmakuTypeface(fontWeight),','typeface = resolveDanmakuTypeface(fontWeight, platform),',rows)
- s=adapt(s,'strokeColor = android.graphics.Color.BLACK,','strokeColor = java.awt.Color.BLACK.rgb,',rows)
- status=function(full_config,'getStatusBarHeight','        ')[0]
- s=adapt(s,status,'        internal fun getStatusBarHeight(platform: DesktopOriginalDanmakuRenderPlatform): Int = platform.systemChromeInsetPx()',rows)
- font=function(full_config,'resolveDanmakuTypeface','')[0]
- s=adapt(s,font,'internal fun resolveDanmakuTypeface(fontWeight: Int, platform: DesktopOriginalDanmakuRenderPlatform): Typeface = platform.resolveTypeface(fontWeight)',rows)
- s=adapt(s,'        android.util.Log.i(','        DesktopDanmakuConfigLog.i(',rows)
- emit('com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt',s,PATHS[6],'selected-full-config-with-required-windows-platform',rows,full_config)
+ identities.append(config_identity)
+ emit('com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt',adapted_config,config_identity['path'],'fixed-v027-full-config-with-required-windows-platform',config_patches,full_config)
+ emitted[-1]['upstreamCommit']=V027_CONFIG_COMMIT
  # Full original constructor, preserving every default except the required real platform font carrier.
  models=source[PATHS[11]];start=models.index('data class DanmakuRenderConfig(')
  end=balanced(masked(models),models.index('(',start));raw=models[start:end];rows=[]
@@ -399,7 +437,7 @@ internal class DesktopOriginalDanmakuSession(private val environment:DesktopDanm
  imports='package com.android.purebilibili.feature.video.danmaku\n'+'\n'.join(constants)+'\n\n'
  emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicy.kt',imports+raw+'\n',PATHS[16],'selected-complete-original-refresh-interval-and-normalization')
 
- inventory=dict(upstreamCommit=COMMIT,sources=identities,emitted=emitted,standalone=standalone,
+ inventory=dict(upstreamCommit=COMMIT,originalConfigUpstreamCommit=V027_CONFIG_COMMIT,sources=identities,emitted=emitted,standalone=standalone,
   directReferences=[dict(path=PATHS[4],sha256LF=sha(weighted))],
   pending=['Actual Root smart SVG mask/native paint acceptance','Separate command-vote native acceptance (ordinary original layers are passive)','Portrait SCREEN_TOP placement and separate portrait-fullscreen renderer','Full original Android Live append-only queue/bitmap release closure','ByteDance collision/native engine parity and original special-mode renderer closure','Actual Root window/DPI/runtime acceptance for this source-only delta'],
   originalDefectAdaptation='DanmakuPoolItemRow ignored supplied onLongClick; only clickable->combinedClickable plus import changed.',

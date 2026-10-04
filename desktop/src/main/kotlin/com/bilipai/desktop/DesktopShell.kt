@@ -1667,6 +1667,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             entryKey is BiliPaiNavKey.CommentDetail ->
                                 DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }
                             entryKey is BiliPaiNavKey.VideoDetail -> {
+                                val hotDanmakuLink=remember(entryKey){DesktopWindowsHotDanmakuLink()}
                                 val observedDanmakuAssembly by ordinaryVideo.slot.assemblies.collectAsState()
                                 val danmakuAssembly = observedDanmakuAssembly
                                 val danmakuSuccess = danmakuAssembly?.playback?.uiState?.collectAsState()?.value as?
@@ -1722,6 +1723,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 } }, onLogin = { loginDialog = true }, feedback = { error = it })
                                         },
                                         overlay = {
+                                            if(player!=null && danmaku!=null && danmakuAssembly!=null && danmakuSource!=null && rendererDanmakuSettings.enabled && !pipActive && ownsDanmakuSource())
+                                                DesktopWindowsHotDanmakuHost(hotDanmakuLink,danmakuSource,danmaku,player,danmakuAssembly,::ownsDanmakuSource,
+                                                    {action->ownsDanmakuSource() && ordinaryVideo.factoryFor(danmakuAssembly).withPresentationAdmission(danmakuAssembly,danmakuSource,action)})
                                             if (player != null && danmaku != null && commandDetails != null && commandCid > 0 &&
                                                 player.ownsSourceVersion(commandVersion) && playback.currentCastSource(commandVersion) != null && rendererDanmakuSettings.enabled) {
                                                 val capturedEpoch = sessionEpoch
@@ -1738,6 +1742,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                     onFeedback = { error = it })
                                             }
                                         },
+                                        collectionQueue = { presentation ->
+                                            DesktopWindowsVideoCollectionQueueRoot(presentation,ordinaryVideo.playlist,
+                                                ::openQueue,{error=it},{title,text,owned->
+                                                    requestDesktopTextShare(rootTextShareBindings,scope,title,text,owned,{error=it})},
+                                                {action->presentation.stillOwned() && ordinaryVideo.factoryFor(presentation.assembly)
+                                                    .withPresentationAdmission(presentation.assembly,presentation.sourceOwner,action)})
+                                        },
                                         enhancement = { DesktopVideoEnhancementControls(enhancementState, pluginRuntime.enhancementConfiguration,
                                             onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) }, onSettings = { enhancementSettings = true }) },
                                         openLink = { raw -> desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute()) },
@@ -1751,6 +1762,23 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         nativeKey = { event -> if(!isClosing() && !activatingUpdate && active && hostVisible && hostDisplayable &&
                                             messageRoutes.currentKey==entryKey) latestRootKeyHandler(event) else false }))
                                 if (danmaku != null && hostWindow != null && danmakuSource != null && danmakuSource.request.cid > 0L) {
+                                    LaunchedEffect(danmakuAssembly,danmakuSource,danmaku) {
+                                        danmakuAssembly.playback.danmakuSentEvent.collect { event ->
+                                            // A delayed successful send may remain in the original channel across a source change.
+                                            // Consume it once, and only append to its exact accepted native source/load.
+                                            if(ownsDanmakuSource())ordinaryVideo.factoryFor(danmakuAssembly).withPresentationAdmission(danmakuAssembly,danmakuSource) {
+                                                val session=danmakuAssembly.playback.captureDesktopLoadState()
+                                                if(ownsDanmakuSource() && event.nativeSource.sourceVersion==danmakuSource.sourceVersion &&
+                                                    event.nativeSource.source==danmakuSource.nativeSource.source &&
+                                                    event.bvid==danmakuSource.request.bvid && event.cid==danmakuSource.request.cid &&
+                                                    event.loadToken==session.currentLoadRequestToken && event.bvid==session.currentBvid && event.cid==session.currentCid)
+                                                    danmaku.addOriginalPortraitDanmaku(danmakuSource.sourceVersion,event.text,event.color,event.mode,event.fontSize)
+                                            }
+                                        }
+                                    }
+                                    LaunchedEffect(danmakuAssembly,danmakuSource) {
+                                        danmakuAssembly.playback.toastEvent.collect { if(ownsDanmakuSource())error=it.message }
+                                    }
                                     DisposableEffect(danmakuAssembly, danmakuSource, entryKey) {
                                         onDispose { originalDanmakuSettingsVisible = false; originalDanmakuPoolVisible = false }
                                     }
@@ -1773,6 +1801,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         onDismissSettings = { originalDanmakuSettingsVisible = false },
                                         onDismissPool = { originalDanmakuPoolVisible = false },
                                         enabledChangeVersion = originalDanmakuEnabledChangeVersion,
+                                        hotLink = hotDanmakuLink,
                                     )
                                 }
                             }
