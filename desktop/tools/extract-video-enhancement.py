@@ -38,22 +38,18 @@ def generate(repo: Path, output: Path, selector, parser, write, substitute):
 
     path = BASE + 'feature/plugin/Anime4KPlugin.kt'
     original = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
-    selectable = substitute(original, 'override fun SettingsContent()', 'fun SettingsContent()')
-    body = selector.function(selectable, 'SettingsContent', parser)
-    body = substitute(body, 'fun SettingsContent()', 'fun DesktopVideoEnhancementSettingsContent(configuration: com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration)')
-    body = substitute(body, 'configState.collectAsStateWithLifecycle()', 'configuration.configState.collectAsState()')
-    body = substitute(body, 'onValueChange = ::setFsrSharpness', 'onValueChange = { configuration.setFsrSharpness(it) }')
-    body = substitute(body, 'setAlgorithm(algorithm)', 'configuration.setAlgorithm(algorithm)')
-    body = substitute(body, 'setPreset(preset)', 'configuration.setPreset(preset)')
-    body = substitute(body, 'setRememberAcrossVideos(', 'configuration.setRememberAcrossVideos(', 2)
-    imports = re.findall(r'(?m)^import [^\n]+', original)
-    imports = [line for line in imports if line.startswith(('import androidx.compose.foundation.layout.',
-        'import androidx.compose.material3.MaterialTheme', 'import androidx.compose.runtime.',
-        'import androidx.compose.ui.Modifier', 'import androidx.compose.ui.unit.dp',
-        'import com.android.purebilibili.core.ui.', 'import com.android.purebilibili.feature.anime4k.'))]
-    header = 'package com.bilipai.desktop.ui\n\n' + '\n'.join(imports)
-    header += '\nimport androidx.compose.runtime.collectAsState\n\n@Composable\n'
-    files.append(write(output, path, original, header + body, 'DesktopVideoEnhancementSettingsContent.kt'))
+    # Keep Android source/provenance intact. The Windows settings entrance uses
+    # one actual Root NVIDIA preference/session and exposes no old algorithm UI.
+    body = '''package com.bilipai.desktop.ui
+
+import androidx.compose.runtime.Composable
+
+@Composable
+fun DesktopVideoEnhancementSettingsContent(configuration: com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration) {
+    DesktopWindowsVideoEnhancementSettingsContent(configuration)
+}
+'''
+    files.append(write(output, path, original, body, 'DesktopVideoEnhancementSettingsContent.kt'))
     path = BASE + 'feature/video/ui/components/Anime4KSettingsUi.kt'
     original = (_desktop_canonical_source(repo, path)).read_text(encoding='utf-8').replace('\r\n', '\n')
     body = substitute(original, '当前设备不支持 OpenGL ES 3.0', '当前原生渲染管线不可用')

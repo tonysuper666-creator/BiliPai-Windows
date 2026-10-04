@@ -25,14 +25,14 @@ class DesktopWindowsSettingsCatalogTest {
         assertEquals(mountedTargets, targets)
         assertTrue(targets.intersect(removedTargets).isEmpty())
         val focusEntries = desktopWindowsSettingsSearchEntries.filter { it.focus != null }
-        assertEquals(setOf(SettingsSearchTarget.PLAYBACK to "windows_audio_output",
-            SettingsSearchTarget.APPEARANCE to "windows_display_scale"),
-            focusEntries.map { it.target to it.focus }.toSet())
-        assertEquals(2, focusEntries.size)
+        val expectedFocusAnchors = setOf(SettingsSearchTarget.PLAYBACK to "windows_audio_output",
+            SettingsSearchTarget.APPEARANCE to "windows_display_scale",
+            SettingsSearchTarget.PLAYBACK to "windows_video_enhancement")
+        assertEquals(expectedFocusAnchors, focusEntries.map { it.target to it.focus }.toSet())
+        assertEquals(3, focusEntries.size)
         // No obsolete original phone focus token is advertised by the new controller.
         assertTrue(desktopWindowsSettingsSearchEntries.all { it.focus == null ||
-            (it.target to it.focus) in setOf(SettingsSearchTarget.PLAYBACK to "windows_audio_output",
-                SettingsSearchTarget.APPEARANCE to "windows_display_scale") })
+            (it.target to it.focus) in expectedFocusAnchors })
     }
 
     @Test fun actualControllerCannotFindPhonePermissionGestureOrPortraitControls() {
@@ -68,6 +68,20 @@ class DesktopWindowsSettingsCatalogTest {
         assertEquals("windows_display_scale", controller.results.value.single().focusId)
         controller.setQuery("Ctrl")
         assertEquals("windows_display_scale", controller.results.value.single().focusId)
+    }
+
+    @Test fun nvidiaQueriesReachOnePlaybackFocusAndOldAlgorithmsAreNotSearchable() {
+        val controller = controller()
+        for (query in listOf("NVIDIA", "RTX", "VSR", "HDR", "超分辨率")) {
+            controller.setQuery(query)
+            val result = controller.results.value.single()
+            assertEquals(SettingsSearchTarget.PLAYBACK, result.target)
+            assertEquals("windows_video_enhancement", result.focusId)
+        }
+        for (query in listOf("Anime4K", "FSR", "CNN")) {
+            controller.setQuery(query)
+            assertTrue(controller.results.value.isEmpty(), "Obsolete algorithm remains searchable: $query")
+        }
     }
 
     @Test fun eachPublishedResultDispatchesToTheMountedCategoryOrExactDetailAndFocus() {

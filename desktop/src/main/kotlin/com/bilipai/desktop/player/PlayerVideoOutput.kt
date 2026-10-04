@@ -5,7 +5,7 @@ data class PlayerVideoOutputState(
     val sourceVersion: Long = 0,
     val maximumTextureDimension: Int? = null,
     val intermediateFormat: String? = null,
-    /** Actual decoded texture size; display aspect corrections do not change FSR's input texel grid. */
+    /** Pre-filter decoded size; never feed an enhanced output back into its own sizing policy. */
     val inputWidth: Int = 0,
     val inputHeight: Int = 0,
     val displayWidth: Int = 0,
@@ -14,6 +14,8 @@ data class PlayerVideoOutputState(
     val dolbyVisionProfile: Int? = null,
     /** Actual same-poll OSD video bounds; absent while no owned native video is ready. */
     val viewport:PlayerVideoViewport? = null,
+    /** Actual video HWND's monitor, including Windows' HDR user switch and active color mode. */
+    val hdrDisplay: WindowsHdrDisplayState = WindowsHdrDisplayState(),
 )
 
 /** Native OSD observations, including legitimate negative crop/pan margins. No aspect/fit inference. */

@@ -1,10 +1,8 @@
 package com.bilipai.desktop.player
 
-import com.android.purebilibili.feature.anime4k.*
-import com.bilipai.desktop.plugins.DesktopVideoShaderResources
+import com.android.purebilibili.feature.anime4k.Anime4KBypassReason
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import java.nio.file.Path
 import java.util.concurrent.atomic.AtomicBoolean
 
 data class DesktopVideoEnhancementState(
@@ -14,200 +12,211 @@ data class DesktopVideoEnhancementState(
     val available: Boolean = false,
     val active: Boolean = false,
     val pending: Boolean = false,
+    // Compatibility for generated original declarations, never an Android algorithm authority.
     val bypassReason: Anime4KBypassReason = Anime4KBypassReason.DISABLED,
     val error: String? = null,
+    val statusText: String = "等待视频播放",
+    val driverVsrAccepted: Boolean = false,
+    val driverHdrAccepted: Boolean = false,
+    val hdrConversionActive: Boolean = false,
+    val gpuName: String? = null,
+    val targetTransfer: String? = null,
+    val targetPrimaries: String? = null,
+    val hdrDisplayEnabled: Boolean = false,
 )
 
-/** Original per-BV/remember/output/fallback policies, with native media and shader ownership guards. */
+/** One Windows NVIDIA session on the main native video actor. Every video kind
+ * derives ownership from that actor's complete source snapshot; BV labels only
+ * describe UI identity. No plugin, GLSL shader or second decoding surface is used. */
 class DesktopVideoEnhancementSession(
     private val player: MpvPlayer,
-    private val config: StateFlow<Anime4KConfig>,
-    private val pluginEnabled: StateFlow<Boolean>,
-    private val anime4kResources: DesktopVideoShaderResources,
-    fsrCacheRoot: Path,
-    private val pip: StateFlow<Boolean>,
+    private val automaticEnabled: StateFlow<Boolean>,
     private val hostStarted: StateFlow<Boolean>,
-    private val enablePlugin: suspend () -> Unit,
-    private val rememberCurrentEnabled: (Boolean) -> Unit,
+    private val pip: StateFlow<Boolean>,
+    private val setAutomaticEnabled: (Boolean) -> Deferred<Unit>,
     private val sessionEpoch: () -> Long = { 0L },
-    private val enablePluginGuarded: (suspend (() -> Boolean) -> Unit)? = null,
 ) : AutoCloseable {
-    private data class Identity(val key: String? = null, val version: Long = 0, val override: Boolean? = null, val epoch: Long = 0L)
-    private data class Settings(val config: Anime4KConfig, val enabled: Boolean, val pip: Boolean, val started: Boolean)
+    private data class Label(val key: String? = null, val version: Long = 0, val epoch: Long = 0)
     private data class Frame(val ready: Boolean, val hasVideo: Boolean, val audioOnly: Boolean, val ended: Boolean, val failed: Boolean)
-    private data class Output(val version: Long, val maximumTexture: Int?, val width: Int, val height: Int,
-        val sourceWidth: Int, val sourceHeight: Int, val gamma: String?, val dolbyVisionProfile: Int?)
-    private data class Input(val settings: Settings, val identity: Identity, val frame: Frame, val output: Output, val pipelineFailed: Boolean)
-    private data class OwnedShaders(val version: Long, val sourceVersion: Long)
-    private val identity = MutableStateFlow(Identity(epoch = sessionEpoch()))
-    private val pipelineFailed = MutableStateFlow(false)
-    private val mutableState = MutableStateFlow(DesktopVideoEnhancementState())
+    private data class Settings(val enabled: Boolean, val started: Boolean, val pip: Boolean)
+    private data class Target(val sourceVersion: Long, val transfer: String?, val primaries: String?)
+    private data class Input(val settings: Settings, val label: Label, val frame: Frame, val output: PlayerVideoOutputState, val target: Target)
+    private class Request(val source: OwnedPlaybackSourceSnapshot, val epoch: Long, val options: NvidiaVideoOptions) {
+        fun matches(other: Request) = epoch == other.epoch && options == other.options &&
+            source.sourceVersion == other.source.sourceVersion && source.source == other.source.source
+    }
+    private class Owned(val request: Request, val token: Long)
+    private val label = MutableStateFlow(Label(epoch = sessionEpoch()))
+    private val mutableState = MutableStateFlow(DesktopVideoEnhancementState(requested = automaticEnabled.value))
     val state: StateFlow<DesktopVideoEnhancementState> = mutableState.asStateFlow()
-    private val fsrResources = DesktopFsrVideoShaderResources(fsrCacheRoot)
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
     private val closed = AtomicBoolean()
-    private val shaderOwnershipLock = Any()
-    @Volatile private var ownedShaders: OwnedShaders? = null
+    private val ownershipLock = Any()
+    private var owned: Owned? = null
 
     init {
         scope.launch {
-            config.map { it.algorithm }.distinctUntilChanged().collect { pipelineFailed.value = false }
-        }
-        scope.launch {
-            player.videoShaderState.collect { native ->
-                val owned = ownedShaders ?: return@collect
-                if (native.configurationVersion != owned.version || identity.value.version != owned.sourceVersion ||
-                    !player.ownsSourceVersion(owned.sourceVersion)) return@collect
-                mutableState.update { it.copy(active = native.active, pending = !native.active && native.error == null, error = native.error) }
-                if (native.error != null) pipelineFailed.value = true
-            }
-        }
-        scope.launch {
-            val settings = combine(config, pluginEnabled, pip, hostStarted) { configuration, enabled, pictureInPicture, started ->
-                Settings(configuration, enabled, pictureInPicture, started)
-            }
+            val settings = combine(automaticEnabled, hostStarted, pip) { enabled, started, inPip -> Settings(enabled, started, inPip) }
             val frame = player.state.map { Frame(it.ready, it.videoCodec != null, it.audioOnly, it.ended, it.error != null) }.distinctUntilChanged()
-            // Applied FBO format is observed by shaderState; it must not retrigger and reinstall its own configuration.
-            val output = player.videoOutput.map { Output(it.sourceVersion, it.maximumTextureDimension, it.displayWidth, it.displayHeight,
-                it.inputWidth, it.inputHeight, it.gamma, it.dolbyVisionProfile) }.distinctUntilChanged()
-            combine(settings, identity, frame, output, pipelineFailed) { configuration, video, playback, native, failed ->
-                Input(configuration, video, playback, native, failed)
-            }.distinctUntilChanged().collectLatest(::apply)
+            // Output format/driver ACK cannot reconfigure its own processing.
+            // Only the actual display target is a distinct native decision input.
+            val target = player.nvidiaVideoState.map { Target(it.sourceVersion, it.targetTransfer, it.targetPrimaries) }.distinctUntilChanged()
+            combine(settings, label, frame, player.videoOutput, target) { preferences, identity, playback, output, destination ->
+                Input(preferences, identity, playback, output, destination)
+            }.distinctUntilChanged().collect(::apply)
         }
+        scope.launch { player.nvidiaVideoState.collect(::observeNative) }
     }
 
-    /** Ordinary parts share bvid, matching upstream remember(bvid, player); ownership is still each native source token. */
+    /** Missing BV/PGC/live/story IDs never deny the actual source enhancement. */
     fun bindVideoIdentity(key: String?, sourceVersion: Long) {
         if (closed.get()) return
         require(key == null || (key.isNotBlank() && key.length <= 128))
-        val epoch = sessionEpoch()
-        identity.update { previous ->
-            if (previous.key != key || previous.epoch != epoch) pipelineFailed.value = false
-            Identity(key, sourceVersion, previous.override.takeIf { key != null && previous.key == key && previous.epoch == epoch }, epoch)
-        }
+        val updated = Label(key, sourceVersion, sessionEpoch())
+        if (label.value != updated) label.value = updated
     }
 
+    /** Check the source/epoch before submitting to the existing config worker.
+     * An accepted global setting is durable; completion cannot alter a new source's status. */
     fun setCurrentVideoEnabled(enabled: Boolean): Job? {
         if (closed.get()) return null
-        val snapshot = identity.value
-        if (snapshot.key == null || snapshot.epoch != sessionEpoch() || !player.ownsSourceVersion(snapshot.version)) return null
-        pipelineFailed.value = false
-        identity.update { if (it.key == snapshot.key && it.version == snapshot.version) it.copy(override = enabled) else it }
+        val source = player.currentSourceSnapshot() ?: return null
+        val epoch = sessionEpoch()
+        if (!owns(source, epoch)) return null
         return scope.launch {
+            if (!owns(source, epoch)) return@launch
             try {
-                if (!ownsToggle(snapshot, enabled)) return@launch
-                if (enabled && !pluginEnabled.value) {
-                    if (enablePluginGuarded == null) enablePlugin()
-                    else enablePluginGuarded { ownsToggle(snapshot, enabled) }
-                }
-                ensureActive()
-                if (ownsToggle(snapshot, enabled)) rememberCurrentEnabled(enabled)
-            } catch (cancelled: CancellationException) {
-                throw cancelled
-            } catch (_: Exception) {
-                if (ownsToggle(snapshot, enabled)) {
-                    mutableState.update { it.copy(pending = false, error = "启用画质增强失败，请重试") }
-                    pipelineFailed.value = true
-                }
-            }
-        }
-    }
-
-    private fun ownsToggle(snapshot: Identity, enabled: Boolean): Boolean = !closed.get() &&
-        snapshot.epoch == sessionEpoch() && identity.value.let {
-            it.key == snapshot.key && it.version == snapshot.version && it.epoch == snapshot.epoch && it.override == enabled
-        } && player.ownsSourceVersion(snapshot.version)
-
-    private suspend fun apply(input: Input) {
-        val video = input.identity
-        val settings = input.settings
-        val belongs = !closed.get() && video.epoch == sessionEpoch() && video.key != null &&
-            video.version == input.output.version && player.ownsSourceVersion(video.version)
-        val requested = video.override ?: resolveInitialVideoEnhancementEnabled(settings.enabled, settings.config)
-        val available = input.output.maximumTexture != null && !input.pipelineFailed
-        val transfer = when (input.output.gamma?.lowercase()) {
-            // video-params/gamma uses pl_csp_trc_names from the pinned mpv csputils.c.
-            "pq" -> com.bilipai.desktop.player.platform.DesktopMedia3ColorTransfers.COLOR_TRANSFER_ST2084
-            "hlg" -> com.bilipai.desktop.player.platform.DesktopMedia3ColorTransfers.COLOR_TRANSFER_HLG
-            else -> 0
-        }
-        val decision = resolveAnime4KOutputDecision(
-            pluginEnabled = settings.enabled && requested && belongs,
-            glAvailable = available,
-            colorTransfer = transfer,
-            sampleMimeType = if (input.output.dolbyVisionProfile != null) "video/dolby-vision" else null,
-            isInPipMode = settings.pip,
-            isAudioOnly = input.frame.audioOnly,
-            hostLifecycleStarted = settings.started,
-        )
-        mutableState.value = DesktopVideoEnhancementState(video.key, video.version, settings.enabled && requested && belongs,
-            available, bypassReason = decision.bypassReason, error = mutableState.value.error.takeIf { input.pipelineFailed })
-        if (!decision.shouldUsePipeline || !input.frame.ready || !input.frame.hasVideo || input.frame.ended || input.frame.failed ||
-            input.output.sourceWidth <= 0 || input.output.sourceHeight <= 0 || input.output.width <= 0 || input.output.height <= 0) {
-            clearOwnedShaders()
-            return
-        }
-        try {
-            val (paths, options) = when (settings.config.algorithm) {
-                VideoEnhancementAlgorithm.ANIME4K -> anime4kResources.resolveAnime4KPaths(settings.config.preset) to PlayerVideoShaderOptions("rgba16hf")
-                VideoEnhancementAlgorithm.FSR_1_0 -> {
-                    val program = DesktopFsrHookAdapter.prepare(input.output.sourceWidth, input.output.sourceHeight,
-                        input.output.width, input.output.height, requireNotNull(input.output.maximumTexture), settings.config.fsrSharpness)
-                    if (program == null) { clearOwnedShaders(); return }
-                    fsrResources.resolve(program) to PlayerVideoShaderOptions(program.requiredIntermediateFormat, program.parameters, program.requiredPassDescriptions)
-                }
-            }
-            currentCoroutineContext().ensureActive()
-            if (closed.get() || identity.value != video || video.epoch != sessionEpoch()) return
-            val token = synchronized(shaderOwnershipLock) {
-                // close() must never race a final install after it has cleared its owned configuration.
-                if (closed.get() || identity.value != video || video.epoch != sessionEpoch()) null else {
-                    player.setVideoShadersIfSourceVersion(video.version, paths, options)?.also {
-                        ownedShaders = OwnedShaders(it, video.version)
+                setAutomaticEnabled(enabled).await()
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) {
+                synchronized(ownershipLock) {
+                    if (owns(source, epoch)) mutableState.update {
+                        it.copy(error = "保存 NVIDIA 自动增强设置失败，请重试", statusText = "设置保存失败，视频继续原有输出")
                     }
                 }
-            } ?: return
-            mutableState.update { it.copy(pending = true, active = false, error = null) }
-            val began = System.nanoTime()
-            while (currentCoroutineContext().isActive && !closed.get() && identity.value == video && player.ownsSourceVersion(video.version)) {
-                val actual = player.videoShaderState.value
-                if (actual.configurationVersion != token) {
-                    mutableState.update { it.copy(active = false, pending = false) }
-                    return
-                }
-                if (actual.active) { mutableState.update { it.copy(active = true, pending = false) }; return }
-                if (actual.error != null) { pipelineFailed.value = true; return }
-                val playback = player.state.value
-                if (shouldFallbackAnime4KBeforeFirstFrame(
-                        pipelineRequested = true, inputSurfaceReady = playback.ready, displayedFirstFrame = actual.active,
-                        playWhenReady = !playback.paused, mediaItemCount = if (player.ownsSourceVersion(video.version)) 1 else 0,
-                        elapsedMs = (System.nanoTime() - began) / 1_000_000L)) {
-                    mutableState.update { it.copy(error = "画质增强未显示首帧，已恢复原始视频输出。") }
-                    pipelineFailed.value = true
-                    return
-                }
-                delay(40)
-            }
-        } catch (cancelled: CancellationException) {
-            throw cancelled
-        } catch (failure: Exception) {
-            if (identity.value == video && player.ownsSourceVersion(video.version) && !closed.get()) {
-                mutableState.update { it.copy(error = "画质增强无法初始化：${failure.javaClass.simpleName}") }
-                pipelineFailed.value = true
             }
         }
     }
 
-    private fun clearOwnedShaders(): Unit = synchronized(shaderOwnershipLock) {
-        val owned = ownedShaders ?: return@synchronized
-        player.clearVideoShadersIfConfigurationVersion(owned.version)
-        if (ownedShaders === owned) ownedShaders = null
+    private fun owns(source: OwnedPlaybackSourceSnapshot, epoch: Long): Boolean = !closed.get() &&
+        epoch == sessionEpoch() && player.ownsSourceSnapshot(source) &&
+        (source.source.authorizationReceipt?.accountEpoch ?: source.source.primaryAccountEpoch ?: epoch) == epoch
+
+    private fun apply(input: Input): Unit = synchronized(ownershipLock) {
+        if (closed.get()) return@synchronized
+        val source = player.currentSourceSnapshot()
+        val epoch = input.label.epoch
+        val current = source != null && owns(source, epoch) && source.sourceVersion == input.output.sourceVersion
+        val identity = if (current) input.label.key.takeIf { input.label.version == source!!.sourceVersion }
+            ?: "video:${source!!.sourceVersion}" else null
+        val native = player.nvidiaVideoState.value
+        val available = native.gpuVendorId == 0x10de && native.currentGpuContext?.startsWith("d3d11") == true
+        fun bypass(reason: Anime4KBypassReason, text: String) {
+            clearOwnedLocked()
+            mutableState.value = DesktopVideoEnhancementState(identity, source?.sourceVersion ?: 0,
+                input.settings.enabled, available, bypassReason = reason,
+                statusText = native.gpuName?.let { "$it；$text" } ?: text, gpuName = native.gpuName,
+                targetTransfer = native.targetTransfer, targetPrimaries = native.targetPrimaries,
+                hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled)
+        }
+        if (!input.settings.enabled) { bypass(Anime4KBypassReason.DISABLED, "NVIDIA 自动增强已关闭，原画直出"); return@synchronized }
+        if (!current) { bypass(Anime4KBypassReason.NONE, "等待当前视频源"); return@synchronized }
+        if (!input.settings.started && !input.settings.pip) {
+            bypass(Anime4KBypassReason.HOST_NOT_STARTED, "播放器当前不可见，原画输出"); return@synchronized
+        }
+        if (input.frame.audioOnly) { bypass(Anime4KBypassReason.AUDIO_ONLY, "仅音频播放，无需画面增强"); return@synchronized }
+        if (!input.frame.ready || !input.frame.hasVideo || input.frame.ended || input.frame.failed) {
+            bypass(Anime4KBypassReason.NONE, "等待可用视频画面"); return@synchronized
+        }
+        val decision = resolveDesktopNvidiaVideoDecision(input.output.inputWidth, input.output.inputHeight,
+            input.output.displayWidth, input.output.displayHeight, input.output.maximumTextureDimension,
+            input.output.gamma, input.output.dolbyVisionProfile, input.output.hdrDisplay.hdrEnabled,
+            input.target.transfer.takeIf { input.target.sourceVersion == source!!.sourceVersion },
+            input.target.primaries.takeIf { input.target.sourceVersion == source!!.sourceVersion })
+        if (!decision.needsProcessing) {
+            val text = when (decision.kind) {
+                DesktopNvidiaVideoDecisionKind.WAITING_VIDEO -> "等待实际视频尺寸，原画输出"
+                DesktopNvidiaVideoDecisionKind.WAITING_GPU_LIMIT -> "等待 GPU 输出能力，原画输出"
+                else -> if (decision.sourceIsHdr) "原生 HDR / Dolby Vision 内容，保留原生输出" else "当前尺寸无需放大，原画直出"
+            }
+            bypass(Anime4KBypassReason.NONE, text); return@synchronized
+        }
+        val request = Request(checkNotNull(source), epoch, NvidiaVideoOptions(decision.scale, decision.hdr))
+        val previous = owned
+        if (previous != null && previous.request.matches(request)) {
+            mutableState.update { it.copy(hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled) }
+            observeNativeLocked(native, previous)
+            return@synchronized
+        }
+        // Native actor performs source publication admission outside its MPV lock.
+        clearOwnedLocked()
+        if (!owns(request.source, request.epoch)) return@synchronized
+        val token = player.setNvidiaVideoEnhancementIfSourceSnapshot(request.source, request.options)
+        if (token == null) {
+            mutableState.value = DesktopVideoEnhancementState(identity, source!!.sourceVersion, true, available,
+                statusText = "当前视频源已切换，等待新画面", gpuName = native.gpuName,
+                hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled)
+            return@synchronized
+        }
+        owned = Owned(request, token)
+        mutableState.value = DesktopVideoEnhancementState(identity, source!!.sourceVersion, true, available,
+            pending = true, bypassReason = Anime4KBypassReason.NONE, statusText = "正在请求 NVIDIA 硬件增强",
+            gpuName = native.gpuName, hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled)
+        observeNativeLocked(player.nvidiaVideoState.value, checkNotNull(owned))
+    }
+
+    private fun observeNative(native: NvidiaVideoState): Unit = synchronized(ownershipLock) {
+        val current = owned ?: return@synchronized
+        observeNativeLocked(native, current)
+    }
+
+    private fun observeNativeLocked(native: NvidiaVideoState, current: Owned) {
+        if (owned !== current || !owns(current.request.source, current.request.epoch)) return
+        if (native.configurationVersion != current.token || native.sourceVersion != current.request.source.sourceVersion) {
+            mutableState.update { it.copy(active = false, pending = false, error = null,
+                driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = false,
+                statusText = "当前硬件增强配置已更换，等待当前输出") }
+            return
+        }
+        val hdrPresented = native.hdrConversionActive && mutableState.value.hdrDisplayEnabled && native.active &&
+            nvidiaHdrTarget(native.targetTransfer, native.targetPrimaries)
+        val status = when {
+            native.error != null -> "NVIDIA 增强异常：${native.error}"
+            native.pending -> "正在请求 NVIDIA 硬件增强"
+            native.active -> buildList {
+                if (native.driverVsrAccepted) add("驱动已接受 VSR")
+                if (hdrPresented) add("HDR 转换帧与 HDR 显示目标均已就绪")
+                else if (native.hdrConversionActive) add("已产生 HDR 转换帧，HDR 显示目标尚未就绪")
+                else if (native.driverHdrAccepted) add("驱动已接受 HDR，等待转换帧与 HDR 显示目标")
+                if (isEmpty()) add("硬件输出已就绪")
+                if (native.inputWidth > 0 && native.outputWidth > 0)
+                    add("${native.inputWidth}×${native.inputHeight} → ${native.outputWidth}×${native.outputHeight}")
+            }.joinToString("；")
+            native.hdrConversionActive -> "已产生 HDR 转换帧，HDR 显示目标尚未就绪"
+            else -> "等待 NVIDIA 硬件输出，视频保持原有画面"
+        }
+        mutableState.update { it.copy(available = native.gpuVendorId == 0x10de || native.driverVsrAccepted || native.driverHdrAccepted,
+            active = native.active, pending = native.pending, error = native.error,
+            statusText = native.gpuName?.let { name -> "$name；$status" } ?: status, gpuName = native.gpuName,
+            targetTransfer = native.targetTransfer, targetPrimaries = native.targetPrimaries,
+            driverVsrAccepted = native.driverVsrAccepted, driverHdrAccepted = native.driverHdrAccepted,
+            hdrConversionActive = native.hdrConversionActive) }
+    }
+
+    private fun clearOwnedLocked() {
+        val previous = owned ?: return
+        owned = null
+        player.clearNvidiaVideoEnhancementIfConfigurationVersion(previous.token)
     }
 
     override fun close() {
         if (closed.compareAndSet(false, true)) {
             scope.cancel()
-            clearOwnedShaders()
+            synchronized(ownershipLock) {
+                clearOwnedLocked()
+                mutableState.value = DesktopVideoEnhancementState(requested = automaticEnabled.value,
+                    statusText = "视频增强会话已关闭")
+            }
         }
     }
 }

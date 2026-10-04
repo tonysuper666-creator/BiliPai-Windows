@@ -59,7 +59,6 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
     private val currentVideo = AtomicReference<CurrentVideo?>()
     private val json = Json { ignoreUnknownKeys = true; encodeDefaults = true; prettyPrint = true }
     val eyeProtection = EyeProtectionPlugin()
-    val videoEnhancement = Anime4KPlugin()
     val enhancementConfiguration: DesktopVideoEnhancementConfiguration
     private val danmakuEnhance = DanmakuEnhancePlugin()
     private val sponsorBlock = SponsorBlockPlugin()
@@ -98,9 +97,7 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         PluginManager.register(sponsorBlock)
         PluginManager.register(danmakuEnhance)
         PluginManager.register(eyeProtection)
-        PluginManager.register(videoEnhancement)
-        enhancementConfiguration = DesktopVideoEnhancementConfiguration(videoEnhancement,
-            ready = { PluginManager.awaitPluginReady(Anime4KPlugin.PLUGIN_ID) },
+        enhancementConfiguration = DesktopVideoEnhancementConfiguration(store,
             // Accepted config writes drain even after shutdown begins, before store.freezeWrites().
             serialize = { operation -> configurationMutex.withLock { operation() } },
             acceptChanges = { !closing.get() })

@@ -1,105 +1,87 @@
 package com.bilipai.desktop.player
 
-import com.android.purebilibili.feature.anime4k.*
-import com.bilipai.desktop.plugins.DesktopVideoShaderResources
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopVideoEnhancementSessionTest {
-    @Test fun manualVideoSwitchPersistsAcrossPartsOfTheSameBvAndResetsForTheNextBv() = runBlocking<Unit> {
-        val cache = Files.createTempDirectory("bilipai-enhancement-session-fixture-")
-        val configurations = MutableStateFlow(Anime4KConfig())
+    @Test fun automaticPreferenceCoversUnlabelledSourcesAndRemainsGlobalAcrossVideos() = runBlocking<Unit> {
         val enabled = MutableStateFlow(true)
-        val remembered = mutableListOf<Boolean>()
-        try {
-            MpvPlayer().use { player ->
-                DesktopVideoEnhancementSession(player, configurations, enabled,
-                    DesktopVideoShaderResources(cache) { error("No GPU/frame exists in this offline fixture.") }, cache,
-                    MutableStateFlow(false), MutableStateFlow(true), {}, remembered::add).use { enhancement ->
-                    val first = player.loadVersioned(PlaybackSource("file:///C:/same-bv-first-part.avi"))
-                    enhancement.bindVideoIdentity("BV-fixture-one", first)
-                    assertNotNull(enhancement.setCurrentVideoEnabled(true)).join()
-                    awaitState { enhancement.state.value.sourceVersion == first && enhancement.state.value.requested }
-                    val nextPart = player.loadVersioned(PlaybackSource("file:///C:/same-bv-second-part.avi"))
-                    enhancement.bindVideoIdentity("BV-fixture-one", nextPart)
-                    awaitState { enhancement.state.value.sourceVersion == nextPart && enhancement.state.value.requested }
-                    val nextVideo = player.loadVersioned(PlaybackSource("file:///C:/another-bv.avi"))
-                    enhancement.bindVideoIdentity("BV-fixture-two", nextVideo)
-                    awaitState { enhancement.state.value.sourceVersion == nextVideo && !enhancement.state.value.requested }
-                    assertEquals(listOf(true), remembered)
-                    assertFalse(enhancement.state.value.available)
-                    assertEquals(Anime4KBypassReason.DISABLED, enhancement.state.value.bypassReason)
-                    assertTrue(player.videoShaderState.value.requestedFiles.isEmpty())
-                }
+        val writes = mutableListOf<Boolean>()
+        MpvPlayer().use { player ->
+            DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                writes += it; enabled.value = it; CompletableDeferred(Unit)
+            }).use { enhancement ->
+                val live = player.loadVersioned(PlaybackSource("file:///C:/unlabelled-video-fixture.avi"))
+                awaitState { enhancement.state.value.sourceVersion == live && enhancement.state.value.identity == "video:$live" }
+                assertTrue(enhancement.state.value.requested)
+                assertFalse(enhancement.state.value.active)
+                assertTrue(player.videoShaderState.value.requestedFiles.isEmpty())
+                assertNotNull(enhancement.setCurrentVideoEnabled(false)).join()
+                awaitState { !enhancement.state.value.requested }
+                val episode = player.loadVersioned(PlaybackSource("file:///C:/pgc-video-fixture.avi"))
+                enhancement.bindVideoIdentity(null, episode)
+                awaitState { enhancement.state.value.sourceVersion == episode }
+                assertFalse(enhancement.state.value.requested)
+                assertEquals(listOf(false), writes)
+                assertTrue(player.videoShaderState.value.requestedFiles.isEmpty())
             }
-        } finally { Files.deleteIfExists(cache) }
+        }
     }
 
-    @Test fun aLateEnableCompletionCannotRememberTheSwitchForAReplacedNativeOwner() = runBlocking<Unit> {
-        val cache = Files.createTempDirectory("bilipai-enhancement-cancel-fixture-")
-        val enableStarted = CompletableDeferred<Unit>()
-        val allowEnable = CompletableDeferred<Unit>()
-        val enabled = MutableStateFlow(false)
-        val remembered = mutableListOf<Boolean>()
-        try {
-            MpvPlayer().use { player ->
-                DesktopVideoEnhancementSession(player, MutableStateFlow(Anime4KConfig()), enabled,
-                    DesktopVideoShaderResources(cache) { error("No GPU/frame exists in this offline fixture.") }, cache,
-                    MutableStateFlow(false), MutableStateFlow(true), {
-                        enableStarted.complete(Unit)
-                        allowEnable.await()
-                        enabled.value = true
-                    }, remembered::add).use { enhancement ->
-                    val first = player.loadVersioned(PlaybackSource("file:///C:/owned.avi"))
-                    enhancement.bindVideoIdentity("BV-old", first)
-                    val request = assertNotNull(enhancement.setCurrentVideoEnabled(true))
-                    withTimeout(3_000) { enableStarted.await() }
-                    val replacement = player.loadVersioned(PlaybackSource("file:///C:/foreign.avi"))
-                    allowEnable.complete(Unit)
-                    withTimeout(3_000) { request.join() }
-                    assertTrue(remembered.isEmpty())
-                    assertNull(enhancement.setCurrentVideoEnabled(false))
-                    assertNotEquals(first, replacement)
-                }
+    @Test fun failedOldSettingCompletionCannotPublishErrorIntoAReplacementSource() = runBlocking<Unit> {
+        val submitted = CompletableDeferred<Unit>()
+        val persistence = CompletableDeferred<Unit>()
+        MpvPlayer().use { player ->
+            DesktopVideoEnhancementSession(player, MutableStateFlow(true), MutableStateFlow(true), MutableStateFlow(false), {
+                submitted.complete(Unit); persistence
+            }).use { enhancement ->
+                val old = player.loadVersioned(PlaybackSource("file:///C:/old-video-fixture.avi"))
+                awaitState { enhancement.state.value.sourceVersion == old }
+                val job = assertNotNull(enhancement.setCurrentVideoEnabled(false))
+                withTimeout(3_000) { submitted.await() }
+                val replacement = player.loadVersioned(PlaybackSource("file:///C:/replacement-video-fixture.avi"))
+                enhancement.bindVideoIdentity(null, replacement)
+                awaitState { enhancement.state.value.sourceVersion == replacement }
+                persistence.completeExceptionally(IllegalStateException("private fixture persistence failure"))
+                withTimeout(3_000) { job.join() }
+                assertNull(enhancement.state.value.error)
+                assertEquals(replacement, enhancement.state.value.sourceVersion)
             }
-        } finally { allowEnable.complete(Unit); Files.deleteIfExists(cache) }
+        }
+    }
+
+    @Test fun closingThePlayerRevokesToggleEvenIfTheNumericSourceVersionDidNotChange() = runBlocking<Unit> {
+        val writes = mutableListOf<Boolean>()
+        MpvPlayer().use { player ->
+            DesktopVideoEnhancementSession(player, MutableStateFlow(true), MutableStateFlow(true), MutableStateFlow(false), {
+                writes += it; CompletableDeferred(Unit)
+            }).use { enhancement ->
+                val version = player.loadVersioned(PlaybackSource("file:///C:/closing-video-fixture.avi"))
+                awaitState { enhancement.state.value.sourceVersion == version }
+                player.close()
+                assertEquals(version, player.currentSourceVersion)
+                assertNull(enhancement.setCurrentVideoEnabled(false))
+                assertTrue(writes.isEmpty())
+            }
+        }
+    }
+
+    @Test fun anUnmountedSessionDoesNotClearAForeignNativeConfigurationWhenClosing() = runBlocking<Unit> {
+        MpvPlayer().use { player ->
+            val enhancement = DesktopVideoEnhancementSession(player, MutableStateFlow(false),
+                MutableStateFlow(true), MutableStateFlow(false), { CompletableDeferred(Unit) })
+            val version = player.loadVersioned(PlaybackSource("file:///C:/foreign-config-fixture.avi"))
+            awaitState { enhancement.state.value.sourceVersion == version }
+            val foreign = assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(version, NvidiaVideoOptions(2.0)))
+            enhancement.close()
+            assertEquals(foreign, player.nvidiaVideoState.value.configurationVersion)
+            assertNull(enhancement.setCurrentVideoEnabled(true))
+            assertFalse(enhancement.state.value.active)
+        }
     }
 
     private suspend fun awaitState(condition: () -> Boolean) = withTimeout(3_000) {
         while (!condition()) delay(10)
-    }
-
-    @Test fun closingAnUnmountedNativePlayerRevokesItsOwnerEvenWhenItsNumericVersionDidNotChange() = runBlocking<Unit> {
-        val cache = Files.createTempDirectory("bilipai-enhancement-close-fixture-")
-        val enableStarted = CompletableDeferred<Unit>()
-        val allowEnable = CompletableDeferred<Unit>()
-        val enabled = MutableStateFlow(false)
-        val remembered = mutableListOf<Boolean>()
-        try {
-            MpvPlayer().use { player ->
-                DesktopVideoEnhancementSession(player, MutableStateFlow(Anime4KConfig()), enabled,
-                    DesktopVideoShaderResources(cache) { error("No GPU/frame exists in this offline fixture.") }, cache,
-                    MutableStateFlow(false), MutableStateFlow(true), {
-                        enableStarted.complete(Unit)
-                        allowEnable.await()
-                        enabled.value = true
-                    }, remembered::add).use { enhancement ->
-                    val owner = player.loadVersioned(PlaybackSource("file:///C:/closed-owner.avi"))
-                    enhancement.bindVideoIdentity("BV-closing", owner)
-                    val request = assertNotNull(enhancement.setCurrentVideoEnabled(true))
-                    withTimeout(3_000) { enableStarted.await() }
-                    assertTrue(player.ownsSourceVersion(owner))
-                    player.close()
-                    assertEquals(owner, player.currentSourceVersion)
-                    assertFalse(player.ownsSourceVersion(owner))
-                    allowEnable.complete(Unit)
-                    withTimeout(3_000) { request.join() }
-                    assertTrue(remembered.isEmpty())
-                    assertNull(enhancement.setCurrentVideoEnabled(false))
-                }
-            }
-        } finally { allowEnable.complete(Unit); Files.deleteIfExists(cache) }
     }
 }

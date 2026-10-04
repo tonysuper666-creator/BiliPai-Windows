@@ -280,6 +280,10 @@ object WindowsVideoActualRootUiFixture {
             "nativeScreenshotWidth" to JsonPrimitive(image.width), "nativeScreenshotHeight" to JsonPrimitive(image.height),
             "sampledNativeColourCount" to JsonPrimitive(colours.size),
             "windowPlacement" to JsonPrimitive(edt { (window() as ComposeWindow).placement.toString() })))
+        val expectedPlacement = if (id == "120-fullscreen-playing") WindowPlacement.Fullscreen else WindowPlacement.Floating
+        check(edt { (window() as ComposeWindow).placement == expectedPlacement }) {
+            "Unexpected actual window placement during $id; expected $expectedPlacement (captured before failure)"
+        }
     }
     private var replaySearchKey: BiliPaiNavKey? = null
     private fun scopeWithEditableSearch(): AccessibleContext {
@@ -409,31 +413,61 @@ object WindowsVideoActualRootUiFixture {
         val focus = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()
         window().isActive && focus.focusedWindow === window() && focus.focusOwner === input && input.isFocusOwner
     } }
-    private fun ownedKey(input: Component, keyCode: Int, modifiers: Int = 0, typed: Char? = null) = edt {
-        current(); check(input.isShowing && input.isDisplayable && input.isFocusOwner &&
-            SwingUtilities.getWindowAncestor(input) === window())
-        val now = System.currentTimeMillis()
-        val pressed = java.awt.event.KeyEvent(input, java.awt.event.KeyEvent.KEY_PRESSED, now,
-            modifiers, keyCode, typed ?: java.awt.event.KeyEvent.CHAR_UNDEFINED)
-        input.dispatchEvent(pressed)
-        typed?.let { input.dispatchEvent(java.awt.event.KeyEvent(input, java.awt.event.KeyEvent.KEY_TYPED, now + 1,
-            modifiers, java.awt.event.KeyEvent.VK_UNDEFINED, it)) }
-        input.dispatchEvent(java.awt.event.KeyEvent(input, java.awt.event.KeyEvent.KEY_RELEASED, now + 2,
-            modifiers, keyCode, typed ?: java.awt.event.KeyEvent.CHAR_UNDEFINED))
-        record("owned-key-${rows.size}", mapOf("keyCode" to JsonPrimitive(keyCode), "modifiers" to JsonPrimitive(modifiers),
-            "pressedConsumed" to JsonPrimitive(pressed.isConsumed), "sameActualFocusedWindow" to JsonPrimitive(true),
-            "inputClass" to JsonPrimitive(input.javaClass.name), "mechanism" to JsonPrimitive("OWNED_AWT_KEY_EVENT")))
+    private fun ownedKey(input: Component, keyCode: Int, modifiers: Int = 0, typed: Char? = null) {
+        val alreadyFocused = edt {
+            current()
+            val focus = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()
+            window().isActive && focus.focusedWindow === window() && focus.focusOwner === input && input.isFocusOwner
+        }
+        if (!alreadyFocused) { focused(input); awaitFocus(input) }
+        edt {
+            current(); check(input.isShowing && input.isDisplayable && input.isFocusOwner &&
+                SwingUtilities.getWindowAncestor(input) === window())
+            val now = System.currentTimeMillis()
+            val pressed = java.awt.event.KeyEvent(input, java.awt.event.KeyEvent.KEY_PRESSED, now,
+                modifiers, keyCode, typed ?: java.awt.event.KeyEvent.CHAR_UNDEFINED)
+            input.dispatchEvent(pressed)
+            typed?.let { input.dispatchEvent(java.awt.event.KeyEvent(input, java.awt.event.KeyEvent.KEY_TYPED, now + 1,
+                modifiers, java.awt.event.KeyEvent.VK_UNDEFINED, it)) }
+            input.dispatchEvent(java.awt.event.KeyEvent(input, java.awt.event.KeyEvent.KEY_RELEASED, now + 2,
+                modifiers, keyCode, typed ?: java.awt.event.KeyEvent.CHAR_UNDEFINED))
+            record("owned-key-${rows.size}", mapOf("keyCode" to JsonPrimitive(keyCode), "modifiers" to JsonPrimitive(modifiers),
+                "pressedConsumed" to JsonPrimitive(pressed.isConsumed), "sameActualFocusedWindow" to JsonPrimitive(true),
+                "inputClass" to JsonPrimitive(input.javaClass.name), "mechanism" to JsonPrimitive("OWNED_AWT_KEY_EVENT")))
+        }
     }
     private fun ownedWheel(input: Component, rotation: Int, ctrl: Boolean, point: java.awt.Point? = null) = edt {
         current(); check(input.isShowing && input.isDisplayable && SwingUtilities.getWindowAncestor(input) === window())
-        val location = point ?: java.awt.Point(input.width / 3, input.height - 40)
-        check(input.contains(location))
+        check((window() as ComposeWindow).placement == WindowPlacement.Floating) {
+            "Owned detail/scale wheel requires the actual Floating layout; fullscreen hides the comment pane"
+        }
+        val content = window().contentPane
+        val client = Rectangle(content.locationOnScreen.x, content.locationOnScreen.y, content.width, content.height)
+        val inputBounds = Rectangle(input.locationOnScreen.x, input.locationOnScreen.y, input.width, input.height)
+        val location = point ?: run {
+            sameNative()
+            val canvasBounds = Rectangle(actualCanvas.locationOnScreen.x, actualCanvas.locationOnScreen.y,
+                actualCanvas.width, actualCanvas.height)
+            val lowerPane = Rectangle(canvasBounds.x, canvasBounds.y + canvasBounds.height,
+                canvasBounds.width, client.y + client.height - canvasBounds.y - canvasBounds.height)
+                .intersection(client).intersection(inputBounds)
+            check(lowerPane.width > 20 && lowerPane.height > 20) { "No current owned lower detail area outside the video Canvas" }
+            java.awt.Point(lowerPane.x + lowerPane.width / 2 - inputBounds.x,
+                lowerPane.y + lowerPane.height / 2 - inputBounds.y)
+        }
+        val screen = java.awt.Point(location.x + inputBounds.x, location.y + inputBounds.y)
+        check(input.contains(location) && client.contains(screen) && inputBounds.contains(screen)) {
+            "Owned wheel point is outside the current input/client intersection"
+        }
         val event = java.awt.event.MouseWheelEvent(input, java.awt.event.MouseEvent.MOUSE_WHEEL,
             System.currentTimeMillis(), if (ctrl) java.awt.event.InputEvent.CTRL_DOWN_MASK else 0,
             location.x, location.y, 0, false, java.awt.event.MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, rotation)
         input.dispatchEvent(event)
         record("owned-wheel-${rows.size}", mapOf("rotation" to JsonPrimitive(rotation), "ctrl" to JsonPrimitive(ctrl),
             "consumed" to JsonPrimitive(event.isConsumed), "inputClass" to JsonPrimitive(input.javaClass.name),
+            "screenX" to JsonPrimitive(screen.x), "screenY" to JsonPrimitive(screen.y),
+            "inputWidth" to JsonPrimitive(input.width), "inputHeight" to JsonPrimitive(input.height),
+            "windowPlacement" to JsonPrimitive((window() as ComposeWindow).placement.toString()),
             "mechanism" to JsonPrimitive("OWNED_AWT_WHEEL_EVENT")))
     }
     private fun awaitScale(expected: Int, after: Long) {
@@ -489,21 +523,19 @@ object WindowsVideoActualRootUiFixture {
     }
     private fun exerciseOwnedScaleAndKeyboard() {
         sameNative(); check(playing()); check(privateScalePercent() == 125)
-        val input = edt { actualComposeInput() }
-        focused(input); awaitFocus(input)
         var before = edt { current().serial }
-        ownedKey(input, java.awt.event.KeyEvent.VK_MINUS, java.awt.event.InputEvent.CTRL_DOWN_MASK)
+        ownedKey(edt { actualComposeInput() }, java.awt.event.KeyEvent.VK_MINUS, java.awt.event.InputEvent.CTRL_DOWN_MASK)
         awaitScale(120, before)
         clockAndCapture("151-ctrl-minus-scale-120")
         before = edt { current().serial }
-        ownedKey(input, java.awt.event.KeyEvent.VK_EQUALS, java.awt.event.InputEvent.CTRL_DOWN_MASK)
+        ownedKey(edt { actualComposeInput() }, java.awt.event.KeyEvent.VK_EQUALS, java.awt.event.InputEvent.CTRL_DOWN_MASK)
         awaitScale(125, before)
         before = edt { current().serial }
-        ownedWheel(input, -1, true)
+        ownedWheel(edt { actualComposeInput() }, -1, true)
         awaitScale(130, before)
         clockAndCapture("152-ctrl-wheel-scale-130")
         before = edt { current().serial }
-        ownedKey(input, java.awt.event.KeyEvent.VK_0, java.awt.event.InputEvent.CTRL_DOWN_MASK)
+        ownedKey(edt { actualComposeInput() }, java.awt.event.KeyEvent.VK_0, java.awt.event.InputEvent.CTRL_DOWN_MASK)
         awaitScale(125, before)
 
         // Real native viewport click transfers focus through the installed production adapter.
@@ -570,6 +602,221 @@ object WindowsVideoActualRootUiFixture {
         check(privateScalePercent() == 125)
     }
 
+    // Opt-in test-only addition to the actual Main fixture; no preference setter or native command.
+    private fun privateNvidiaEnabled(): Boolean? {
+        val root = com.bilipai.desktop.DesktopLibrary.directoryForAccount(null).toAbsolutePath().normalize()
+        val privateRoot = Path.of(requireNotNull(System.getenv("LOCALAPPDATA"))).toAbsolutePath().normalize()
+        check(root.startsWith(privateRoot))
+        val file = root.resolve("plugin-settings.json")
+        if (!Files.exists(file, NOFOLLOW_LINKS)) return null
+        check(Files.isRegularFile(file, NOFOLLOW_LINKS) && !Files.isSymbolicLink(file))
+        val namespace = Json.parseToJsonElement(Files.readString(file)).jsonObject["windows_video_enhancement"]?.jsonObject
+            ?: return null
+        check(namespace["migration_version"]?.jsonPrimitive?.intOrNull == 1)
+        return namespace["enabled"]?.jsonPrimitive?.booleanOrNull
+    }
+
+    private fun nvidiaControl(): AccessibleContext {
+        current()
+        val candidates = all().filter { hasLabel(it, "NVIDIA 自动增强") && visible(it) &&
+            it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
+        check(candidates.size == 1) { "Expected exactly one visible NVIDIA control, got ${candidates.size}" }
+        return candidates.single()
+    }
+
+    private fun nvidiaChecked(): Boolean {
+        val switches = descendants(nvidiaControl()).filter {
+            it.accessibleRole == javax.accessibility.AccessibleRole.CHECK_BOX ||
+                it.accessibleRole == javax.accessibility.AccessibleRole.TOGGLE_BUTTON
+        }
+        check(switches.size == 1) { "NVIDIA row must contain its one actual switch" }
+        return switches.single().accessibleStateSet.let { it.contains(AccessibleState.CHECKED) || it.contains(AccessibleState.SELECTED) }
+    }
+
+    private fun wheelNvidiaPane(rotation: Int) = edt {
+        current()
+        val input = actualComposeInput()
+        val content = window().contentPane
+        val client = Rectangle(content.locationOnScreen.x, content.locationOnScreen.y, content.width, content.height)
+        val panes = all().filter { node ->
+            val children = descendants(node)
+            // The NVIDIA row has a merged accessible name (title plus subtitle),
+            // so test each child with the exact-label parser. Settings body also
+            // has its two unique headers when the lower NVIDIA row is offscreen.
+            val settingsBody = children.any { it.accessibleName == "解码与画质" } &&
+                children.any { it.accessibleName == "倍速与字幕" }
+            node.accessibleStateSet.contains(AccessibleState.SHOWING) && (settingsBody ||
+                (node.accessibleRole == javax.accessibility.AccessibleRole.SCROLL_PANE &&
+                    children.any { hasLabel(it, "NVIDIA 自动增强") }))
+        }
+        check(panes.isNotEmpty()) { "No actual NVIDIA settings scroll pane" }
+        val sizes = panes.associateWith { descendants(it).size }
+        val minimum = requireNotNull(sizes.values.minOrNull())
+        val pane = panes.filter { sizes[it] == minimum }.single()
+        fun contextBounds(context: AccessibleContext): Rectangle {
+            check(context.accessibleStateSet.contains(AccessibleState.SHOWING))
+            val component = requireNotNull(context.accessibleComponent)
+            val position = requireNotNull(component.locationOnScreen)
+            check(component.size.width > 0 && component.size.height > 0)
+            return Rectangle(position.x, position.y, component.size.width, component.size.height)
+        }
+        var scrollArea = contextBounds(pane).intersection(client).intersection(
+            Rectangle(input.locationOnScreen.x, input.locationOnScreen.y, input.width, input.height))
+        var parent = pane.accessibleParent?.accessibleContext
+        var depth = 0
+        while (parent != null) {
+            check(++depth <= 80) { "NVIDIA pane accessible parent cycle" }
+            if (parent.accessibleStateSet.contains(AccessibleState.SHOWING) && parent.accessibleComponent != null)
+                scrollArea = scrollArea.intersection(contextBounds(parent))
+            parent = parent.accessibleParent?.accessibleContext
+        }
+        check(scrollArea.width > 20 && scrollArea.height > 20) { "NVIDIA scroll pane has no visible owned client area" }
+        val screen = java.awt.Point(scrollArea.x + scrollArea.width / 2, scrollArea.y + scrollArea.height / 2)
+        val point = java.awt.Point(screen.x - input.locationOnScreen.x, screen.y - input.locationOnScreen.y)
+        check(input.contains(point) && client.contains(screen) && scrollArea.contains(screen))
+        // Skia itself uses java.awt.Canvas. Only the existing MpvPlayer-owned Canvas
+        // is a video viewport, and its visible parent intersections define its hit area.
+        val nativeAreas = nativeComponents(window()).filterIsInstance<Canvas>().filter { canvas ->
+            canvas.isShowing && canvas.isDisplayable && SwingUtilities.getWindowAncestor(canvas) === window() &&
+                canvas.javaClass.enclosingClass == MpvPlayer::class.java &&
+                canvas.javaClass.declaredFields.count { it.type == MpvPlayer::class.java } == 1
+        }.mapNotNull { canvas ->
+            var area = Rectangle(canvas.locationOnScreen.x, canvas.locationOnScreen.y, canvas.width, canvas.height).intersection(client)
+            var ancestor: Component? = canvas.parent
+            while (ancestor != null && ancestor !== window()) {
+                check(ancestor.isShowing && ancestor.isDisplayable)
+                area = area.intersection(Rectangle(ancestor.locationOnScreen.x, ancestor.locationOnScreen.y, ancestor.width, ancestor.height))
+                ancestor = ancestor.parent
+            }
+            check(ancestor === window())
+            area.takeIf { it.width > 0 && it.height > 0 }
+        }
+        check(nativeAreas.none { it.contains(screen) }) { "NVIDIA settings wheel would target the native video viewport" }
+        record("nvidia-wheel-${rows.size}", mapOf("inputMechanism" to JsonPrimitive("OWNED_COMPOSE_AWT_MOUSE_WHEEL"),
+            "screenX" to JsonPrimitive(screen.x), "screenY" to JsonPrimitive(screen.y),
+            "visiblePaneX" to JsonPrimitive(scrollArea.x), "visiblePaneY" to JsonPrimitive(scrollArea.y),
+            "visiblePaneWidth" to JsonPrimitive(scrollArea.width), "visiblePaneHeight" to JsonPrimitive(scrollArea.height),
+            "actualVisibleVideoViewports" to JsonPrimitive(nativeAreas.size), "rotation" to JsonPrimitive(rotation)))
+        input.dispatchEvent(java.awt.event.MouseWheelEvent(input, java.awt.event.MouseWheelEvent.MOUSE_WHEEL,
+            System.currentTimeMillis(), 0, point.x, point.y, 0, false,
+            java.awt.event.MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, rotation))
+    }
+
+    private fun ensureNvidiaVisible() {
+        repeat(70) {
+            if (edt { runCatching { nvidiaControl() }.isSuccess }) return
+            wheelNvidiaPane(3); Thread.sleep(140)
+        }
+        error("NVIDIA control was not reached by actual owned wheel input")
+    }
+
+    private fun toggleNvidia(expected: Boolean, id: String) {
+        ensureNvidiaVisible()
+        edt {
+            check(nvidiaChecked() != expected) { "NVIDIA toggle must actually change the setting" }
+            clickOwnedComposeMouse(window(), nvidiaControl())
+        }
+        await("actual NVIDIA switch and same private Store publish $expected") {
+            privateNvidiaEnabled() == expected && edt { runCatching { nvidiaChecked() == expected }.getOrDefault(false) }
+        }
+        record(id, mapOf("actualChecked" to JsonPrimitive(expected), "actualDurableValue" to JsonPrimitive(expected),
+            "inputMechanism" to JsonPrimitive("OWNED_COMPOSE_AWT_MOUSE_EVENT"), "fixturePreferenceWrite" to JsonPrimitive(false)))
+        actions.capture(id, edt { current() })
+    }
+
+    private fun openNvidiaSettingsTyped() {
+        await("actual Home before typed Windows settings") { edt {
+            val frame = pendingCurrent() ?: return@edt false
+            frame.key == BiliPaiNavKey.Home && frame.pagerHosted && routes.currentKey == BiliPaiNavKey.MainHost
+        } }
+        val prior = edt { current().serial }
+        edt { current(); check(routes.push(BiliPaiNavKey.PlaybackSettings)) }
+        await("actual typed PlaybackSettings drawn") { edt {
+            val frame = pendingCurrent() ?: return@edt false
+            frame.serial > prior && frame.key == BiliPaiNavKey.PlaybackSettings && routes.currentKey == frame.key &&
+                all().any { it.accessibleName == "播放与音频" && it.accessibleRole == javax.accessibility.AccessibleRole.LABEL }
+        } }
+        ensureNvidiaVisible()
+        record("nvidia-settings-entry-${rows.size}", mapOf("entryMechanism" to JsonPrimitive("ACTUAL_SAME_ROUTES_PUSH_ON_EDT"),
+            "naturalSettingsNavigationAccepted" to JsonPrimitive(false), "directStackMutation" to JsonPrimitive(false)))
+    }
+
+    private fun backFromNvidiaSettings() {
+        val prior = edt { current().serial }
+        edt {
+            current(); check(routes.currentKey == BiliPaiNavKey.PlaybackSettings)
+            val title = all().filter { it.accessibleName == "播放与音频" &&
+                it.accessibleRole == javax.accessibility.AccessibleRole.LABEL &&
+                (it.accessibleAction?.accessibleActionCount ?: 0) == 0 && visible(it) }.single()
+            val component = requireNotNull(title.accessibleComponent)
+            val point = requireNotNull(component.locationOnScreen)
+            val center = point.y + component.size.height / 2
+            val back = all().filter { node ->
+                if (!hasLabel(node, "返回") || node.accessibleRole != javax.accessibility.AccessibleRole.PUSH_BUTTON ||
+                    (node.accessibleAction?.accessibleActionCount ?: 0) != 1 || !visible(node)) return@filter false
+                val control = requireNotNull(node.accessibleComponent)
+                val position = requireNotNull(control.locationOnScreen)
+                kotlin.math.abs(position.y + control.size.height / 2 - center) <= 12 && position.x < point.x
+            }.single()
+            clickOwnedComposeMouse(window(), back)
+        }
+        await("actual settings Back returns the same Home") { edt {
+            val frame = pendingCurrent() ?: return@edt false
+            frame.serial > prior && frame.key == BiliPaiNavKey.Home && frame.pagerHosted &&
+                routes.currentKey == BiliPaiNavKey.MainHost && routes.stack.toList() == listOf(BiliPaiNavKey.MainHost)
+        } }
+    }
+
+    private fun exerciseNoSourceNvidiaSettings() {
+        openNvidiaSettingsTyped()
+        await("actual initial NVIDIA migration ON") { privateNvidiaEnabled() == true && edt { nvidiaChecked() } }
+        toggleNvidia(false, "nvidia-no-source-off")
+        backFromNvidiaSettings()
+        openNvidiaSettingsTyped()
+        check(privateNvidiaEnabled() == false && edt { !nvidiaChecked() })
+        record("nvidia-no-source-reopen-off", mapOf("actualDurableValue" to JsonPrimitive(false),
+            "reopenedWithinSameMain" to JsonPrimitive(true), "coldProcessAccepted" to JsonPrimitive(false),
+            "playbackRouteSubmittedByFixture" to JsonPrimitive(false)))
+        toggleNvidia(true, "nvidia-no-source-on")
+        backFromNvidiaSettings()
+    }
+
+    private fun exerciseMainNvidiaControls() {
+        sameNative(); ensureNvidiaVisible()
+        check(privateNvidiaEnabled() == true && edt { nvidiaChecked() })
+        toggleNvidia(false, "nvidia-video-controls-off")
+        await("OFF retires current source enhancement without stopping media") {
+            sameNative(); val state = actualPlayer.nvidiaVideoState.value
+            !state.active && !state.pending && !state.driverVsrAccepted && !state.driverHdrAccepted && playing()
+        }
+        toggleNvidia(true, "nvidia-video-controls-on")
+        await("actual main native NVIDIA GPU identification") {
+            sameNative(); val state = actualPlayer.nvidiaVideoState.value
+            state.sourceVersion == accepted.sourceVersion && state.gpuVendorId == 0x10de && !state.gpuName.isNullOrBlank()
+        }
+        val state = actualPlayer.nvidiaVideoState.value
+        await("actual main-session GPU name rendered through its UI StateFlow") { edt {
+            current(); all().any { it.accessibleName.orEmpty().contains(requireNotNull(state.gpuName)) }
+        } }
+        record("nvidia-main-native-output", mapOf("actualMainPlayerIdentity" to JsonPrimitive(System.identityHashCode(actualPlayer)),
+            "actualHardwareDecoder" to JsonPrimitive(actualPlayer.state.value.hardwareDecoder),
+            "sourceVersion" to JsonPrimitive(state.sourceVersion), "configurationVersion" to JsonPrimitive(state.configurationVersion),
+            "gpuName" to JsonPrimitive(state.gpuName), "gpuVendorId" to JsonPrimitive(state.gpuVendorId),
+            "currentGpuContext" to JsonPrimitive(state.currentGpuContext), "driverVsrAccepted" to JsonPrimitive(state.driverVsrAccepted),
+            "driverHdrAccepted" to JsonPrimitive(state.driverHdrAccepted), "active" to JsonPrimitive(state.active),
+            "pending" to JsonPrimitive(state.pending), "error" to JsonPrimitive(state.error),
+            "inputWidth" to JsonPrimitive(state.inputWidth), "inputHeight" to JsonPrimitive(state.inputHeight),
+            "outputWidth" to JsonPrimitive(state.outputWidth), "outputHeight" to JsonPrimitive(state.outputHeight),
+            "outputTransfer" to JsonPrimitive(state.outputTransfer), "targetTransfer" to JsonPrimitive(state.targetTransfer),
+            "targetPrimaries" to JsonPrimitive(state.targetPrimaries),
+            "hdrDisplayEnabled" to JsonPrimitive(actualPlayer.videoOutput.value.hdrDisplay.hdrEnabled),
+            "hdrConversionActive" to JsonPrimitive(state.hdrConversionActive),
+            "vsrPositiveRequiredByThisUiTest" to JsonPrimitive(false), "hdrPositiveRequiredByThisUiTest" to JsonPrimitive(false),
+            "configurationSharedAcrossSettingsAndControls" to JsonPrimitive(true)))
+        actions.capture("nvidia-main-native-output", edt { current() })
+        repeat(20) { wheelNvidiaPane(-5); Thread.sleep(35) }
+    }
+
     private fun exercise(replay: Boolean) {
         val initial = videoFrame()
         videoKey = initial.key as BiliPaiNavKey.VideoDetail
@@ -592,6 +839,7 @@ object WindowsVideoActualRootUiFixture {
         val initialPlacement = edt { (window() as ComposeWindow).placement }
         check(initialPlacement == WindowPlacement.Floating)
         clockAndCapture("110-ordinary-playing")
+        if (System.getProperty("bilipai.validation.nvidiaInput") == "true") exerciseMainNvidiaControls()
         val beforeFullscreen = edt { current().serial }
         click("全屏")
         await("actual ComposeWindow fullscreen placement") { edt { (window() as ComposeWindow).placement == WindowPlacement.Fullscreen } }
@@ -661,6 +909,10 @@ object WindowsVideoActualRootUiFixture {
                     ownedWindowIdentity = edt { System.identityHashCode(window()) }
                     check(first.key != BiliPaiNavKey.Onboarding) { "Windows startup still mounted the mobile agreement gate" }
                     actions.awaitActualHealth(health)
+                    if (System.getProperty("bilipai.validation.nvidiaInput") == "true") {
+                        check(replay != null) { "NVIDIA UI proof requires the private local replay" }
+                        exerciseNoSourceNvidiaSettings()
+                    }
                     if (replay != null) enterVideoThroughActualSearch(replay)
                     exercise(replayMode)
                     replay?.writeReceipt()
@@ -671,9 +923,12 @@ object WindowsVideoActualRootUiFixture {
                         put("sameLiveRootAndWindow", true); put("requestedBvid", video)
                         put("guestRealApi", !replayMode); put("apiReplayInjected", replayMode); put("loopbackMediaInjected", replayMode)
                         put("validationScope", if (replayMode) "LOCAL_API_SHAPE_REAL_LOOPBACK_MEDIA_LAYOUT_ONLY" else "GUEST_LIVE_API")
+                        put("nvidiaUiProofRequested", System.getProperty("bilipai.validation.nvidiaInput") == "true")
+                        put("nvidiaUiProofCompleted", System.getProperty("bilipai.validation.nvidiaInput") == "true")
                         put("interactionProofRequested", System.getProperty("bilipai.validation.scaleInput") == "true")
                         put("interactionProofCompleted", System.getProperty("bilipai.validation.scaleInput") == "true")
-                        put("realAccountUsed", false); put("physicalStackWrittenByFixture", false)
+                        put("realAccountUsed", false); put("physicalStackWrittenByFixture", System.getProperty("bilipai.validation.nvidiaInput") == "true")
+                        put("directPhysicalStackListMutation", false)
                         put("newNativeActorCreatedByFixture", false); put("newRootCreatedByFixture", false)
                         put("fixturePrivateSilentPreferenceSeed", true); put("fixtureVolume", 0); put("fixtureMuted", true)
                         put("allRoutesAccepted", false); put("newExeDeployed", false); put("exclusiveAudioAccepted", false)

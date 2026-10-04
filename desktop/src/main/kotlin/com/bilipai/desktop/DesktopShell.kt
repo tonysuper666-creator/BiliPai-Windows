@@ -68,8 +68,6 @@ import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.applyLegacyPreferenceChanges
 import com.bilipai.desktop.player.DesktopVideoEnhancementSession
 import com.bilipai.desktop.player.DesktopVideoEnhancementState
-import com.bilipai.desktop.plugins.DesktopVideoShaderResources
-import com.android.purebilibili.feature.plugin.Anime4KPlugin
 import com.bilipai.desktop.player.PlayerPreferences
 import com.bilipai.desktop.player.PlayerPreferencesStore
 import com.bilipai.desktop.player.DesktopSubtitleAssets
@@ -512,22 +510,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         onSeekTo = { pipSeek.get().invoke(it) }) } }
     val emptyPipState = remember { MutableStateFlow(false) }
     val pipActive by (pip?.active ?: emptyPipState).collectAsState()
-    val enhancementEnabled = remember(pluginRuntime) { MutableStateFlow(false) }
     val enhancementHostStarted = remember { MutableStateFlow(false) }
-    LaunchedEffect(pluginRuntime) {
-        pluginRuntime.plugins.collect { plugins ->
-            enhancementEnabled.value = plugins.any { it.plugin === pluginRuntime.videoEnhancement && it.enabled }
-        }
-    }
     val enhancement = remember(player, pluginRuntime) { player?.let { nativePlayer ->
-        val cache = DesktopLibrary.directoryForAccount(null).resolve("video-shaders")
-        DesktopVideoEnhancementSession(nativePlayer, pluginRuntime.videoEnhancement.configState, enhancementEnabled,
-            DesktopVideoShaderResources(cache.resolve("anime4k")), cache.resolve("fsr"),
-            pip?.active ?: emptyPipState, enhancementHostStarted,
-            enablePlugin = { pluginRuntime.setEnabled(Anime4KPlugin.PLUGIN_ID, true) },
-            rememberCurrentEnabled = { pluginRuntime.enhancementConfiguration.rememberCurrentVideoEnabled(it) },
-            sessionEpoch = { repository.sessionEpoch },
-            enablePluginGuarded = { stillOwned -> pluginRuntime.setEnabled(Anime4KPlugin.PLUGIN_ID, true, stillOwned) })
+        DesktopVideoEnhancementSession(nativePlayer, pluginRuntime.enhancementConfiguration.automaticEnabled,
+            enhancementHostStarted, pip?.active ?: emptyPipState,
+            pluginRuntime.enhancementConfiguration::setAutomaticEnabled,
+            sessionEpoch = { repository.sessionEpoch })
     } }
     val emptyEnhancement = remember { MutableStateFlow(DesktopVideoEnhancementState()) }
     val enhancementState by (enhancement?.state ?: emptyEnhancement).collectAsState()
@@ -1410,6 +1398,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         onDispose { registration?.close() }
     }
     CompositionLocalProvider(LocalDesktopBrowseMemory provides browseMemory, LocalUiSkinState provides packages.skin,
+        LocalDesktopWindowsVideoEnhancement provides DesktopWindowsVideoEnhancementUiBinding(
+            pluginRuntime.enhancementConfiguration, enhancement?.state ?: emptyEnhancement),
         LocalDesktopLiquidTabSettings provides liquidTabSettings,
         LocalDesktopLiquidReadabilityEnvironment provides liquidEnvironment,
         com.android.purebilibili.core.ui.LocalAppThemeConfig provides effectiveThemeConfig,
@@ -1506,7 +1496,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             renderSurface = !pipActive, onPictureInPicture = if (pip != null && hostWindow != null) ({ pip.open(hostWindow, initialized.state.value.sourceTitle) }) else null)
                         if (section != DesktopSection.STORY) DesktopVideoEnhancementControls(enhancementState,
                             pluginRuntime.enhancementConfiguration,
-                            onToggle = { enabled -> enhancement?.setCurrentVideoEnabled(enabled) },
+                            onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) },
                             onSettings = { enhancementSettings = true })
                         }
                     }
@@ -1735,7 +1725,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             }
                                         },
                                         enhancement = { DesktopVideoEnhancementControls(enhancementState, pluginRuntime.enhancementConfiguration,
-                                            onToggle = { enabled -> enhancement?.setCurrentVideoEnabled(enabled) }, onSettings = { enhancementSettings = true }) },
+                                            onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) }, onSettings = { enhancementSettings = true }) },
                                         openLink = { raw -> desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute()) },
                                         login = { loginDialog = true }, danmakuSettings = { originalDanmakuSettingsVisible = true },
                                         toggleDanmaku = ::toggleOriginalDanmaku, notice = { error = it },

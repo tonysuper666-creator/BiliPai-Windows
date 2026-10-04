@@ -45,6 +45,19 @@ def emit(rel,t,origin,mode):
 
 def adapt(t,before,after,label):
  assert t.count(before)==1,(label,t.count(before));ADAPT.append(dict(label=label,before=before,after=after));return t.replace(before,after,1)
+def windows_nvidia_enhancement_leaf(source,record=False):
+ """Replace only the legacy enhancement widget; all other original controls remain."""
+ start_marker='            item {\n                Column(modifier = Modifier.fillMaxWidth()) {\n                    VideoSettingsSwitchRow(\n                        icon = qualityIcon,\n                        title = "画质增强",'
+ end_marker='\n\n            // [New] 资源下载'
+ if source.count(start_marker)!=1:raise ValueError('Original video enhancement widget boundary changed')
+ start=source.index(start_marker);end=source.index(end_marker,start)
+ original=source[start:end]
+ for name in ('VideoEnhancementAlgorithmOptions(', 'Anime4KPresetOptions(', 'FsrSharpnessOptions('):
+  if original.count(name)!=1:raise ValueError('Original video enhancement choice changed: '+name)
+ replacement='            item {\n                com.bilipai.desktop.ui.DesktopWindowsVideoEnhancementSettingsContent()\n                SettingsDivider()\n            }'
+ if record:ADAPT.append(dict(label='windows-nvidia-only-enhancement-widget',before=original,after=replacement))
+ return source[:start]+replacement+source[end:]
+
 def full_direct(rel,className=None):
  t=read(rel)
  if rel in EXISTING_DIRECT:
@@ -180,7 +193,7 @@ import kotlinx.coroutines.flow.combine
 '''+keys+'''\nobject DesktopOriginalVideoPlayerSettings {
 '''+body+'\n}\n'
  emit('core/store/player/DesktopOriginalVideoPlayerSettings.kt',adapted,rel,'complete-original-player-settings-object-canonical-longpress-reference-owned-global-context')
- # Whole menu/sheet declarations; no branch is replaced by a settings shortcut.
+ # Whole menu/sheet declarations; the legacy enhancement widget is a Windows NVIDIA leaf.
  for rel in ['feature/video/ui/components/SpeedSelectionPanel.kt','feature/video/ui/components/ChapterListPanel.kt','feature/video/ui/components/LandscapeSidePanel.kt','feature/video/ui/components/PagesSelectorLayoutPolicy.kt','feature/video/ui/gesture/TwoFingerSpeedGesturePolicy.kt','feature/video/ui/components/VideoSettingsPanelActionPolicy.kt','feature/video/ui/components/ModalChildScroll.kt']:
   full_direct(rel)
  for rel in ['feature/video/ui/components/QualityMenu.kt','feature/video/ui/components/VideoSettingsPanel.kt','feature/video/ui/components/PagesSelector.kt']:
@@ -193,6 +206,7 @@ import kotlinx.coroutines.flow.combine
   t=t.replace('com.android.purebilibili.core.store.SettingsManager','com.android.purebilibili.core.store.DesktopOriginalVideoControlSettings')
   t=t.replace('import android.content.res.Configuration\n','').replace('Configuration.ORIENTATION_LANDSCAPE','2')
   t=t.replace('configuration.orientation','(if (configuration.screenWidthDp > configuration.screenHeightDp) 2 else 1)')
+  if rel=='feature/video/ui/components/VideoSettingsPanel.kt':t=windows_nvidia_enhancement_leaf(t,record=True)
   emit(rel,t,rel,'complete-original-menu-sheet-global-context-adapt')
  rel='core/ui/components/PlaybackSpeedPreferenceControl.kt';t=read(rel)
  # formatPlaybackSpeed is already sole-owned by existing actual playback settings.

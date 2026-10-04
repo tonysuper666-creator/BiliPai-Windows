@@ -63,7 +63,8 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
 
         error?.let { message -> item { Text(message, color = MaterialTheme.colorScheme.error) } }
         if (busy != null) item { LinearProgressIndicator(Modifier.fillMaxWidth()) }
-        items(plugins, key = { it.plugin.id }) { info ->
+        item { DesktopWindowsVideoEnhancementSettingsContent() }
+        items(plugins.filter { it.plugin.id != "anime4k" }, key = { it.plugin.id }) { info ->
             Surface(shape = MaterialTheme.shapes.medium, color = MaterialTheme.colorScheme.surfaceVariant) {
                 Row(Modifier.fillMaxWidth().padding(14.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                     Column(Modifier.weight(1f)) {
@@ -128,7 +129,6 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
         "bilipai_feed_filter" -> DiscoveryFilterDialog(DesktopDiscoveryFilters(enabled, config), runtime.store, { selected = null }, { selected = null })
         "danmaku_enhance" -> DanmakuPluginSettings(runtime, { selected = null })
         "eye_protection" -> EyePluginSettings(runtime, { selected = null })
-        Anime4KPlugin.PLUGIN_ID -> DesktopVideoEnhancementSettingsDialog(runtime.enhancementConfiguration) { selected = null }
         SPONSOR_BLOCK_PLUGIN_ID -> SponsorPluginSettings(runtime, { selected = null })
         runtime.googleCast.id -> DesktopGoogleCastDialog(runtime.context, runtime.googleCast, media = { null }, onDismiss = { selected = null })
         else -> selected?.let { DesktopAdditionalPluginSettings(it, runtime, { selected = null }, onVideo, onPlayQueue) }

@@ -119,6 +119,10 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
             }
             DesktopWindowsAudioOutputSettings(context)
         }
+        DesktopWindowsSettingsGroup("视频增强", modifier = Modifier.desktopSettingsSearchFocusAnchor(
+            SettingsSearchTarget.PLAYBACK, "windows_video_enhancement")) {
+            DesktopWindowsVideoEnhancementSettingsContent()
+        }
         DesktopWindowsSettingsGroup("桌面操作") {
             Text("F11：窗口全屏　　Esc：退出全屏或返回")
             Text("音量、静音和弹幕开关可直接在播放器中调整。",
