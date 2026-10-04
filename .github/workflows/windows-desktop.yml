@@ -99,6 +99,15 @@ jobs:
           $sdk = ($receipt -join "`n") | ConvertFrom-Json
           if ($sdk.passed -ne $true -or $sdk.sdkInputsExact -ne $true -or [IO.Path]::GetFullPath($sdk.sdkRoot) -ne [IO.Path]::GetFullPath($sdkRoot)) { throw 'SDK provisioning did not produce the exact isolated root.' }
           "BILIPAI_NATIVE_SHARE_SDK_ROOT=$sdkRoot" | Add-Content -LiteralPath $env:GITHUB_ENV
+      - name: Stage the reviewed MSVC tools in an isolated temporary directory
+        shell: pwsh
+        run: |
+          $vcRoot = Join-Path $env:RUNNER_TEMP 'bilipai-native-share-vc'
+          $receipt = python desktop/tools/provision-native-diagnostic-msvc.py --repo "$env:GITHUB_WORKSPACE" --temp-root "$env:RUNNER_TEMP" --output "$vcRoot"
+          if ($LASTEXITCODE -ne 0) { throw 'Reviewed VC provisioning failed; no native build is allowed.' }
+          $vc = ($receipt -join "`n") | ConvertFrom-Json
+          if ($vc.passed -ne $true -or $vc.vcInputsExact -ne $true -or $vc.compilerBinSetExact -ne $true -or $vc.englishResourcesExact -ne $true -or [IO.Path]::GetFullPath($vc.vcRoot) -ne [IO.Path]::GetFullPath($vcRoot)) { throw 'VC provisioning did not produce the exact isolated root.' }
+          "BILIPAI_NATIVE_SHARE_VC_ROOT=$vcRoot" | Add-Content -LiteralPath $env:GITHUB_ENV
       - name: Build tested portable Windows package
         shell: pwsh
         env:

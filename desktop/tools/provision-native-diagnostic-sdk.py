@@ -31,6 +31,7 @@ class Package:
     bytes: int
     sha512_base64: str
     kind: str
+    sha256_hex: str | None = None
 
     @property
     def filename(self):
@@ -91,17 +92,22 @@ def verify_archive(path, package):
     if path.stat().st_size != package.bytes:
         raise ValueError("SDK package length differs: " + package.name)
     digest = hashlib.sha512()
+    sha256_digest = hashlib.sha256()
     with path.open("rb") as handle:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
+            sha256_digest.update(chunk)
     if digest.digest() != base64.b64decode(package.sha512_base64, validate=True):
         raise ValueError("SDK package SHA512 differs: " + package.name)
+    if package.sha256_hex is not None and sha256_digest.hexdigest() != package.sha256_hex:
+        raise ValueError("Reviewed package SHA256 differs: " + package.name)
 
 
 def download_package(package, destination):
     # Exact immutable URL and full bytes/digest, including the signed package.
     # Do not publish a partially downloaded archive or accept a short read.
     digest = hashlib.sha512()
+    sha256_digest = hashlib.sha256()
     count = 0
     with file_path(destination).open("xb") as handle:
         # A short transport response can resume only its exact missing suffix.
@@ -128,6 +134,7 @@ def download_package(package, destination):
                     if count > package.bytes:
                         raise ValueError("SDK package exceeds its fixed length")
                     digest.update(chunk)
+                    sha256_digest.update(chunk)
                     handle.write(chunk)
             if count == package.bytes:
                 break
@@ -135,9 +142,11 @@ def download_package(package, destination):
                 raise ValueError("SDK package truncated with no progress")
     if count != package.bytes or digest.digest() != base64.b64decode(package.sha512_base64, validate=True):
         raise ValueError("SDK package truncated or SHA512 differs: " + package.name)
+    if package.sha256_hex is not None and sha256_digest.hexdigest() != package.sha256_hex:
+        raise ValueError("Reviewed package SHA256 differs: " + package.name)
 
 
-def extract_package(archive, package, sdk_root):
+def extract_package(archive, package, sdk_root, *, path_mapper=mapped_path):
     verify_archive(archive, package)
     sdk_root = file_path(sdk_root.resolve())
     selected = []
@@ -146,6 +155,7 @@ def extract_package(archive, package, sdk_root):
         if len(entries) > MAX_ENTRIES or sum(e.file_size for e in entries) > MAX_EXPANDED_BYTES:
             raise ValueError("SDK archive resource boundary exceeded")
         seen = {}
+        mapped_names = set()
         for entry in entries:
             # ZipInfo normalizes backslashes/NUL on Windows; inspect the raw
             # spelling too so unsafe names cannot hide behind that conversion.
@@ -159,15 +169,23 @@ def extract_package(archive, package, sdk_root):
             mode = entry.external_attr >> 16
             if entry.flag_bits & 1 or stat.S_ISLNK(mode) or stat.S_IFMT(mode) not in (0, stat.S_IFREG, stat.S_IFDIR):
                 raise ValueError("Unsupported SDK archive entry type")
-            mapped = mapped_path(entry.filename, package.kind)
+            mapped = path_mapper(entry.filename, package.kind)
             if mapped and not entry.is_dir():
-                selected.append((entry, checked_path(mapped)))
+                pure_mapped = checked_path(mapped)
+                mapped_key = str(pure_mapped).casefold()
+                if mapped_key in mapped_names:
+                    raise ValueError("Reviewed archive has duplicate mapped Windows paths")
+                mapped_names.add(mapped_key)
+                selected.append((entry, pure_mapped))
         # Reject file/child collisions even for excluded package metadata.
         for key, entry in seen.items():
             for parent in PurePosixPath(key).parents:
                 previous = seen.get(str(parent))
                 if previous is not None and not previous.is_dir():
                     raise ValueError("SDK archive has a file/directory collision")
+        for key in mapped_names:
+            if any(str(parent) in mapped_names for parent in PurePosixPath(key).parents):
+                raise ValueError("Reviewed archive has a mapped file/directory collision")
         if not selected:
             raise ValueError("SDK package has no selected SDK inputs")
         for entry, pure in selected:
