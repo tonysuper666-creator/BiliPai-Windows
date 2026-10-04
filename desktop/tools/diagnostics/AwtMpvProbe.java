@@ -39,6 +39,8 @@ public final class AwtMpvProbe {
     private final long started = System.nanoTime(), deadline;
     private final Map<String, Object> result = new LinkedHashMap<>();
     private final List<Object> observations = new ArrayList<>();
+    private final List<Object> captureTimeline = new ArrayList<>();
+    private int droppedCaptures;
     private volatile String lastReport = "{}";
     private JFrame frame;
     private Canvas canvas;
@@ -61,6 +63,8 @@ public final class AwtMpvProbe {
             "pink", "R>180,G<145,B=100..200,count>=100"));
         result.put("alphaGate", "0.25 < dim/baseline < 0.6; abs(restored-baseline) < 5");
         result.put("observations", observations);
+        result.put("captureTimeline", captureTimeline);
+        result.put("captureTimelineDropped", 0);
         publishReport();
     }
 
@@ -143,7 +147,7 @@ public final class AwtMpvProbe {
                 actor.setPause(true);
                 waitCondition("native pause readback", 1_500, () -> "yes".equals(actor.value("pause")));
                 // Replace the moving-video baseline with a physical capture of the paused frame.
-                BufferedImage paused = capture();
+                BufferedImage paused = capture("paused-native-baseline");
                 if (!hasVideoColors(paused)) throw new GateFailure("Paused native baseline lost the original visible colors");
                 ImageIO.write(paused, "png", output.resolve("screen-paused.png").toFile());
             }
@@ -155,7 +159,7 @@ public final class AwtMpvProbe {
             code = error instanceof GateFailure ? 1 : error instanceof ProbeTimeout ? 124 : 2;
             result.put("failure", Map.of("type", error.getClass().getSimpleName(), "message", safe(error.getMessage())));
             try { observe("failure"); } catch (Throwable diagnostic) { result.put("telemetryError", safe(diagnostic.toString())); }
-            try { if (canvas != null) ImageIO.write(capture(), "png", output.resolve("screen-failed.png").toFile()); }
+            try { if (canvas != null) ImageIO.write(capture("failure"), "png", output.resolve("screen-failed.png").toFile()); }
             catch (Throwable diagnostic) { result.put("failureCaptureError", safe(diagnostic.toString())); }
         } finally {
             if (actor != null) {
@@ -220,7 +224,7 @@ public final class AwtMpvProbe {
     }
 
     private void alphaStages() throws Exception {
-        BufferedImage baseline = capture();
+        BufferedImage baseline = capture("alpha-baseline");
         double original = brightness(baseline);
         result.put("pausedOrSolidBaseline", imageStats(baseline));
         require(original > 5.0, "A black baseline cannot prove alpha composition");
@@ -268,7 +272,7 @@ public final class AwtMpvProbe {
         BufferedImage image = null;
         do {
             checkDeadline();
-            image = capture();
+            image = capture(stage);
             if (predicate.test(image)) {
                 ImageIO.write(image, "png", output.resolve(file).toFile());
                 result.put(stage, imageStats(image)); observe(stage); return image;
@@ -280,16 +284,50 @@ public final class AwtMpvProbe {
         throw new GateFailure("Physical screen gate failed: " + stage + " " + (image == null ? "no capture" : json(imageStats(image))));
     }
 
-    private BufferedImage capture() throws Exception {
+    private BufferedImage capture(String stage) throws Exception {
+        long beganMs = elapsedMs();
         Rectangle bounds = edt(() -> {
             require(frame.isShowing() && canvas.isShowing() && canvas.getWidth() > 0 && canvas.getHeight() > 0, "Own Canvas is not showing");
-            frame.toFront(); frame.requestFocus();
             Rectangle rect = viewport();
             require(screenBounds.contains(rect), "Own Canvas extends outside its physical monitor capture region");
             return rect;
         });
         Toolkit.getDefaultToolkit().sync();
-        return new Robot(edt(() -> canvas.getGraphicsConfiguration().getDevice())).createScreenCapture(bounds);
+        BufferedImage image = new Robot(edt(() -> canvas.getGraphicsConfiguration().getDevice())).createScreenCapture(bounds);
+        recordCapture(stage, beganMs, bounds, image);
+        return image;
+    }
+
+    /** Diagnostic reads only: capturing pixels never requests focus, paint, or stacking changes. */
+    private void recordCapture(String stage, long beganMs, Rectangle bounds, BufferedImage image) {
+        Map<String, Object> row = new LinkedHashMap<>();
+        row.put("stage", stage); row.put("beganMs", beganMs); row.put("capturedMs", elapsedMs());
+        row.put("captureScreenBounds", rect(bounds)); row.put("pixels", imageStats(image));
+        // One immutable readback snapshot from the same native actor; no new mpv command/query.
+        Map<String, Object> nativeSnapshot = actor == null ? Map.of() : actor.snapshot;
+        row.put("nativePause", nativeSnapshot.get("pause")); row.put("nativeClock", nativeSnapshot.get("time-pos"));
+        try {
+            row.putAll(edt(() -> {
+                Map<String, Object> facts = new LinkedHashMap<>();
+                facts.put("telemetryMs", elapsedMs()); facts.put("frameFocused", frame.isFocused());
+                facts.put("frameNative", windowFacts(Native.getComponentPointer(frame)));
+                facts.put("canvasNative", windowFacts(Native.getComponentPointer(canvas)));
+                if (overlay != null && overlay.isDisplayable())
+                    facts.put("overlayNative", windowFacts(Native.getComponentPointer(overlay)));
+                Object childEntry = nativeSnapshot.get("window-id");
+                if (childEntry instanceof Map<?, ?> entry && entry.get("value") instanceof String rawChild) {
+                    long id = rawChild.startsWith("0x") ? Long.parseUnsignedLong(rawChild.substring(2), 16) : Long.parseUnsignedLong(rawChild);
+                    if (id != 0) facts.put("mpvChildNative", windowFacts(new Pointer(id)));
+                }
+                return facts;
+            }));
+        } catch (Exception | LinkageError unavailable) {
+            // Supplemental telemetry must not replace the physical screen gate or its original cause.
+            if (unavailable instanceof InterruptedException) Thread.currentThread().interrupt();
+            row.put("telemetryError", unavailable.getClass().getSimpleName());
+        }
+        if (captureTimeline.size() == 32) { captureTimeline.removeFirst(); droppedCaptures++; }
+        captureTimeline.add(row); result.put("captureTimelineDropped", droppedCaptures); publishReport();
     }
 
     private Rectangle viewport() {
