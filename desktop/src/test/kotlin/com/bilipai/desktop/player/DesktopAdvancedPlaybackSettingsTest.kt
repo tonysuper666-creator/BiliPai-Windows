@@ -73,8 +73,12 @@ private class DormantActor(val player: MpvPlayer) : AutoCloseable {
     private val snapshot = requireNotNull(player.currentSourceSnapshot())
     private val revision = MpvPlayer::class.java.getDeclaredField("playbackRevision").apply { isAccessible = true }.getLong(player)
     private val initialMuted = MpvPlayer::class.java.getDeclaredField("requestedLoadMute").apply { isAccessible = true }.get(player) as Boolean?
-    private val actor = clazz.declaredConstructors.single().apply { isAccessible = true }
-        .newInstance(player, 1L, snapshot.source, snapshot.sourceVersion, revision, initialMuted)
+    private val actor = clazz.getDeclaredConstructor(
+        MpvPlayer::class.java, java.lang.Long.TYPE, PlaybackSource::class.java,
+        java.lang.Long.TYPE, java.lang.Long.TYPE, java.lang.Boolean::class.java,
+        DesktopNativePresentationTransfer::class.java, DesktopNativeTerminalPresentation::class.java,
+    ).apply { isAccessible = true }
+        .newInstance(player, 1L, snapshot.source, snapshot.sourceVersion, revision, initialMuted, null, null)
     private val sessionField = MpvPlayer::class.java.getDeclaredField("session").apply { isAccessible = true }
     private val perform = clazz.getDeclaredMethod("perform", MpvNative::class.java, Pointer::class.java, actionClass).apply { isAccessible = true }
     @Suppress("UNCHECKED_CAST")

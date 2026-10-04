@@ -194,6 +194,15 @@ jobs:
             } catch { Write-Host 'Native build failure runner context unavailable.' }
             throw
           }
+      - name: Upload unit test JUnit XML
+        if: always()
+        timeout-minutes: 3
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-unit-test-junit-xml
+          path: desktop/build/test-results/test/TEST-*.xml
+          if-no-files-found: warn
+          retention-days: 7
       - name: Upload packaged native player evidence
         if: always()
         uses: actions/upload-artifact@v4
