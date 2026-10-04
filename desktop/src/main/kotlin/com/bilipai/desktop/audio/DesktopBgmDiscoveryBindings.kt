@@ -11,6 +11,7 @@ import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 
 internal interface DesktopBgmDiscoveryRequests {
+    fun withAdmission(action: () -> Unit): Boolean
     suspend fun getBgmDetail(musicId: String, aid: Long, cid: Long): Result<BgmDetailData?>
     suspend fun getBgmRecommendVideos(musicId: String, aid: Long, cid: Long, page: Int, pageSize: Int): Result<List<BgmRecommendVideo>>
 }
@@ -22,6 +23,14 @@ internal class DesktopBgmDiscoveryOperationsBinding(
     private val operations: DesktopDynamicCardOperations,
     private val currentTarget: () -> Boolean,
 ) : DesktopBgmDiscoveryRequests {
+    override fun withAdmission(action: () -> Unit): Boolean {
+        var applied = false
+        return try {
+            operations.withOwnedEditorImageAdmission {
+                if (currentTarget() && operations.isOwned()) { action(); applied = true }
+            } && applied
+        } catch (_: CancellationException) { false }
+    }
     private suspend fun owned() {
         currentCoroutineContext().ensureActive()
         if (!currentTarget() || !operations.isOwned()) throw CancellationException("BGM video part owner retired")
@@ -32,6 +41,11 @@ internal class DesktopBgmDiscoveryOperationsBinding(
     override suspend fun getBgmRecommendVideos(musicId: String, aid: Long, cid: Long, page: Int, pageSize: Int): Result<List<BgmRecommendVideo>> {
         owned(); return operations.getBgmRecommendVideos(musicId, aid, cid, page, pageSize).also { owned() }
     }
+}
+
+/** Final publication is a short same-owner mutation; cancellation never becomes a song error. */
+internal fun DesktopBgmDiscoveryRequests.commitBgmDiscoveryState(action: () -> Unit) {
+    if (!withAdmission(action)) throw CancellationException("BGM discovery presentation retired")
 }
 
 /** Windows binding of Android Uri.getQueryParameter: plus characters remain literal. */

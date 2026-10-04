@@ -34,6 +34,8 @@ internal interface DesktopOriginalVideoOwnerRepository : DesktopOriginalVideoLoa
     suspend fun refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn:Boolean,cachedIsVip:Boolean,storedQuality:Int,autoHighestEnabled:Boolean):Boolean
     suspend fun getCreatorCardStats(mid:Long):Result<CreatorCardStats>
     suspend fun getBgmList(aid:Long,bvid:String,cid:Long):Result<List<BgmInfo>>
+    suspend fun getBgmDetail(musicId:String,aid:Long,cid:Long):Result<BgmDetailData?>
+    suspend fun getBgmRecommendVideos(musicId:String,aid:Long,cid:Long,page:Int,pageSize:Int):Result<List<BgmRecommendVideo>>
     suspend fun getVideoshot(bvid:String,cid:Long):VideoshotData?
     suspend fun getPlayerInfo(bvid:String,cid:Long):Result<PlayerInfoData>
     suspend fun getPbpProgressData(bvid:String,cid:Long,aid:Long=0L):Result<PbpProgressData>

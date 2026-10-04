@@ -392,6 +392,108 @@ def owned_chapter_result_delta(path, body):
   change(before, after)
  return body
 
+def owned_bgm_result_delta(path, body, inverse=None):
+ if path != 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt': return body
+ def change(before, after):
+  nonlocal body
+  assert body.count(before) == 1, ('owned BGM anchor', before, body.count(before))
+  body = body.replace(before, after, 1)
+  if inverse is not None: inverse.append((before, after))
+ change('    // Internal state\n', '''    private val _desktopBgmRequest = MutableStateFlow<com.bilipai.desktop.ui.DesktopOriginalVideoBgmRequest?>(null)
+    private val _desktopBgmResult = MutableStateFlow<com.bilipai.desktop.ui.DesktopOriginalVideoBgmResult?>(null)
+    internal val desktopBgmResult = combine(_desktopBgmResult, _desktopBgmRequest, playbackSessionStore.state, _uiState) { result, request, session, state ->
+        val success = state as? VideoPlaybackUiState.Success
+        com.bilipai.desktop.ui.desktopOriginalVideoBgmForOwner(result, request, session, success,
+            success?.isQualitySwitching == true && pendingPageSwitchCid != null)
+    }
+    internal fun captureDesktopBgmResult(): com.bilipai.desktop.ui.DesktopOriginalVideoBgmResult? {
+        val success = _uiState.value as? VideoPlaybackUiState.Success
+        return com.bilipai.desktop.ui.desktopOriginalVideoBgmForOwner(_desktopBgmResult.value,
+            _desktopBgmRequest.value, playbackSessionState, success,
+            success?.isQualitySwitching == true && pendingPageSwitchCid != null)
+    }
+
+    private fun publishDesktopBgmResult(
+        request: com.bilipai.desktop.ui.DesktopOriginalVideoBgmRequest,
+        caller: Job,
+        update: (VideoPlaybackUiState.Success) -> VideoPlaybackUiState.Success,
+    ): Boolean {
+        var applied = false
+        val admitted = environment.commit {
+            // Equivalent to the original Flow.update CAS loop, with the result's
+            // request/caller checked inside final Root admission on EVERY attempt.
+            while (caller.isActive) {
+                val current = _uiState.value as? VideoPlaybackUiState.Success ?: break
+                if (!com.bilipai.desktop.ui.desktopOriginalVideoBgmRequestIsCurrent(request,
+                        _desktopBgmRequest.value, playbackSessionState, current, caller.isActive,
+                        current.isQualitySwitching && pendingPageSwitchCid != null)) break
+                val next = update(current)
+                if (_uiState.compareAndSet(current, next)) {
+                    _desktopBgmResult.value = com.bilipai.desktop.ui.DesktopOriginalVideoBgmResult(
+                        request, next.bgmInfo, next.bgmInfoList)
+                    applied = true
+                    break
+                }
+            }
+        }
+        return admitted && applied
+    }
+
+    // Internal state
+''')
+ change('''        playerInfoJob?.cancel()
+        _pbpProgressData.value = null
+        playerInfoJob = environment.invocations.launch {
+''', '''        val desktopBgmRequest = com.bilipai.desktop.ui.DesktopOriginalVideoBgmRequest(bvid, cid, requestToken)
+        var bgmRequestIssued = false
+        if (!environment.commit {
+                val current = _uiState.value as? VideoPlaybackUiState.Success
+                if (com.bilipai.desktop.ui.desktopOriginalVideoBgmRequestIsCurrent(desktopBgmRequest,
+                        desktopBgmRequest, playbackSessionState, current, true,
+                        current?.isQualitySwitching == true && pendingPageSwitchCid != null)) {
+                    _desktopBgmRequest.value = desktopBgmRequest
+                    _desktopBgmResult.value = null
+                    _uiState.update { state ->
+                        val success = state as? VideoPlaybackUiState.Success
+                        if (com.bilipai.desktop.ui.desktopOriginalVideoBgmRequestIsCurrent(desktopBgmRequest,
+                                _desktopBgmRequest.value, playbackSessionState, success, true,
+                                success?.isQualitySwitching == true && pendingPageSwitchCid != null))
+                            checkNotNull(success).copy(bgmInfo = null, bgmInfoList = emptyList()) else state
+                    }
+                    bgmRequestIssued = true
+                }
+            } || !bgmRequestIssued) return
+        playerInfoJob?.cancel()
+        _pbpProgressData.value = null
+        playerInfoJob = environment.invocations.launch {
+            val desktopBgmCaller = checkNotNull(kotlinx.coroutines.currentCoroutineContext()[Job])
+''')
+ change('''                        _uiState.update { current ->
+                            if (current is VideoPlaybackUiState.Success) {
+                                current.copy(bgmInfo = checkedDataBgmInfo)
+                            } else current
+                        }
+''', '''                        publishDesktopBgmResult(desktopBgmRequest, desktopBgmCaller) { current ->
+                            current.copy(bgmInfo = checkedDataBgmInfo)
+                        }
+''')
+ change('''                                _uiState.update { current ->
+                                    if (current is VideoPlaybackUiState.Success) {
+                                        current.copy(bgmInfoList = bgmList)
+                                    } else current
+                                }
+''', '''                                publishDesktopBgmResult(desktopBgmRequest, desktopBgmCaller) { current ->
+                                    current.copy(bgmInfoList = bgmList.toList())
+                                }
+''')
+ # Keep failed-switch rollback to the original current state. Only the transition
+ # and successfully committed new part must not inherit the previous part's BGM.
+ change('''        val subtitleClearedState = clearTransientPlaybackPreviewData(clearSubtitleFields(current))
+''', '''        val subtitleClearedState = clearTransientPlaybackPreviewData(clearSubtitleFields(current))
+            .copy(bgmInfo = null, bgmInfoList = emptyList())
+''')
+ return body
+
 def generate(repo,output,standalone=False):
  outputs=[]
  for recipe in RECIPES:
@@ -414,6 +516,7 @@ def generate(repo,output,standalone=False):
   body=story_portrait_adoption_delta(recipe['output'],body)
   body=bangumi_shared_owner_delta(recipe['output'],body)
   body=owned_chapter_result_delta(recipe['output'],body)
+  body=owned_bgm_result_delta(recipe['output'],body)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)

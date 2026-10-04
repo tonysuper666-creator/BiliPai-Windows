@@ -450,27 +450,60 @@ internal suspend fun DesktopOriginalCommentFraudRepository.savePublishedCommentR
 def generate_bgm_discovery(original,shared,emit,changes):
     path=BASE+'feature/video/ui/section/VideoInfoSection.kt';raw=original[path]
     mask=shared.masked(raw);match=re.search(r'(?m)^private fun InlineBgmSection\(',mask);assert match
-    start=raw.rfind('@Composable',0,match.start());body=raw[start:]
-    body=replace_once(body,'private fun InlineBgmSection(','internal fun DesktopOriginalInlineBgmSection(')
-    body=body.replace('(String, android.os.Bundle?) -> Unit','(String, Long) -> Unit')
-    body=replace_once(body,'                                buildVideoNavigationOptions(targetCid = video.cid)','                                video.cid')
+    start=raw.rfind('@Composable',0,match.start());body=raw[start:];original_tail=body
+    adaptations=[]
+    def adapt(before,after,count=1):
+        nonlocal body
+        assert body.count(before)==count,(before,count,body.count(before))
+        cursor=0
+        for _ in range(count):
+            index=body.index(before,cursor)
+            adaptations.append(dict(index=index,before=before,after=after))
+            body=body[:index]+after+body[index+len(before):]
+            cursor=index+len(after)
+    adapt('private fun InlineBgmSection(','internal fun DesktopOriginalInlineBgmSection(')
+    adapt('(String, android.os.Bundle?) -> Unit','(String, Long) -> Unit',2)
+    adapt('                                buildVideoNavigationOptions(targetCid = video.cid)','                                video.cid')
     first=body.index('internal fun resolveBgmTagInfo(');last=body.index('private fun resolveQueryLongParam(',first)
-    body=body[:first]+body[last:] # The original two shared helpers already have one existing producer.
-    body=replace_once(body,'    return android.net.Uri.parse(url).getQueryParameter(key)?.toLongOrNull() ?: 0L','    return com.bilipai.desktop.audio.desktopBgmQueryParameter(url, key)?.toLongOrNull() ?: 0L')
+    adapt(body[first:last],'') # The original two shared helpers already have one existing producer.
+    adapt('    return android.net.Uri.parse(url).getQueryParameter(key)?.toLongOrNull() ?: 0L','    return com.bilipai.desktop.audio.desktopBgmQueryParameter(url, key)?.toLongOrNull() ?: 0L')
     # Coil's existing desktop platform context preserves image loading/rendering.
     # Home card style comes from the already mounted Root settings owner.
-    old='''    val context = LocalContext.current
+    old="""    val context = LocalContext.current
     val homeFeedCardStyle by SettingsManager
         .getHomeFeedCardStyle(context)
-        .collectAsStateWithLifecycle(initialValue = HomeFeedCardStyle.BILIPAI)'''
-    new='''    val preferences = checkNotNull(com.bilipai.desktop.settings.LocalDesktopHomeCardPreferences.current)
+        .collectAsStateWithLifecycle(initialValue = HomeFeedCardStyle.BILIPAI)"""
+    new="""    val preferences = checkNotNull(com.bilipai.desktop.settings.LocalDesktopHomeCardPreferences.current)
     val homeSettings by preferences.settings.collectAsState(preferences.initialSettings())
-    val homeFeedCardStyle = homeSettings.homeFeedCardStyle'''
-    assert body.count(old)==2;body=body.replace(old,new)
-    body=replace_once(body,'    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)','    val requests = com.bilipai.desktop.audio.LocalDesktopBgmDiscoveryRequests.current\n    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)')
-    body=body.replace('ViewGrpcRepository.getBgmDetail(','requests.getBgmDetail(').replace('ViewGrpcRepository.getBgmRecommendVideos(','requests.getBgmRecommendVideos(')
-    body=replace_once(body,'                cid = cid\n            )','                cid = cid,\n                requests = requests\n            )')
-    body=replace_once(body,'    cid: Long\n) {\n    val currentState = itemStateByKey[itemKey] ?: return','    cid: Long,\n    requests: com.bilipai.desktop.audio.DesktopBgmDiscoveryRequests,\n) {\n    val currentState = itemStateByKey[itemKey] ?: return')
+    val homeFeedCardStyle = homeSettings.homeFeedCardStyle"""
+    adapt(old,new,2)
+    adapt('    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)','    val requests = com.bilipai.desktop.audio.LocalDesktopBgmDiscoveryRequests.current\n    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)')
+    adapt('ViewGrpcRepository.getBgmDetail(','requests.getBgmDetail(')
+    adapt('ViewGrpcRepository.getBgmRecommendVideos(','requests.getBgmRecommendVideos(',2)
+    adapt('                cid = cid\n            )','                cid = cid,\n                requests = requests\n            )')
+    adapt('    cid: Long\n) {\n    val currentState = itemStateByKey[itemKey] ?: return','    cid: Long,\n    requests: com.bilipai.desktop.audio.DesktopBgmDiscoveryRequests,\n) {\n    val currentState = itemStateByKey[itemKey] ?: return')
+    # Native video is heavyweight: only this selector's surface becomes an owned Dialog.
+    adapt('    com.android.purebilibili.core.ui.AppModalBottomSheet(\n        onDismissRequest = onDismiss,\n        sheetState = sheetState,\n        dragHandle = null\n    ) {',
+          '    com.bilipai.desktop.ui.DesktopWindowsBgmModalSheet(\n        title = title,\n        onDismissRequest = onDismiss,\n        sheetState = sheetState\n    ) {')
+    adapt('.fillMaxHeight(0.68f)', '.fillMaxHeight(com.bilipai.desktop.ui.desktopWindowsBgmSelectionHeightFraction())')
+    # Preserve each complete original state assignment, but publish under the same owner.
+    assignments=list(re.finditer(r'(?m)^( *)itemStateByKey\[(?:selectedItemKey|itemKey)\] = ',shared.masked(body)))
+    assert len(assignments)==4
+    original_assignments=[]
+    for assignment in assignments:
+        open_paren=body.index('(',assignment.end());depth=1;cursor=open_paren+1;masked=shared.masked(body)
+        while depth:
+            if masked[cursor]=='(':depth+=1
+            elif masked[cursor]==')':depth-=1
+            cursor+=1
+        original_assignments.append((assignment.group(1),body[assignment.start():cursor]))
+    for indent,assignment in original_assignments:
+        adapt(assignment,indent+'requests.commitBgmDiscoveryState {\n'+textwrap.indent(assignment,'    ')+'\n'+indent+'}')
+    inverse=body
+    for row in reversed(adaptations):
+        index=row['index'];after=row['after'];assert inverse[index:index+len(after)]==after
+        inverse=inverse[:index]+row['before']+inverse[index+len(after):]
+    assert inverse==original_tail
     constants='\n'.join(line for line in raw.splitlines() if re.match(r'private (?:const )?val (?:BGM_DISCOVERY_LOAD_DELAY_MS|BGM_RECOMMEND_PAGE_SIZE|BGM_RECOMMEND_ROW_START_INDEX|AUDIO_NOW_PLAYING_BAR_CLEARANCE_DP|BGM_DETAIL_CARD_MIN_HEIGHT)\b',line))
     assert len(constants.splitlines())==5
     imports='''package com.android.purebilibili.feature.video.ui.section
@@ -508,10 +541,11 @@ import com.android.purebilibili.feature.video.ui.components.VideoCardSkeleton
 import com.android.purebilibili.feature.video.ui.components.ShimmerContainer
 import com.android.purebilibili.feature.video.ui.components.SkeletonBox
 import kotlinx.coroutines.delay
+import com.bilipai.desktop.audio.commitBgmDiscoveryState
 '''
     body=imports+'\n'+constants+'\n\n'+body
     emit('com/android/purebilibili/feature/video/ui/section/DesktopOriginalBgmDiscovery.kt',body)
-    changes.append(dict(source=path,strategy='Entire original BGM-only InlineBgmSection/BgmInfoRow/selection sheet/detail/recommendation paging/strip/skeleton + all consumed pure helpers. Existing shared display/tag helpers remain sole-owned. Android Bundle/Uri/Coil/context/settings singletons map to same existing Root owners/typed cid; no UI simplification.',originalSha256=hashlib.sha256(raw.encode()).hexdigest(),generatedSha256=hashlib.sha256(body.encode()).hexdigest()))
+    changes.append(dict(source=path,strategy='Entire original BGM-only InlineBgmSection/BgmInfoRow/selection sheet/detail/recommendation paging/strip/skeleton + all consumed pure helpers. Existing shared display/tag helpers remain sole-owned. Android Bundle/Uri/Coil/context/settings singletons map to same existing Root owners/typed cid; Windows selector changes only its native container and four final same-owner state admission seams, with complete original tail inverse.',originalSha256=hashlib.sha256(raw.encode()).hexdigest(),generatedSha256=hashlib.sha256(body.encode()).hexdigest(),originalTailSha256LF=hashlib.sha256(original_tail.encode()).hexdigest(),adaptations=adaptations,exactOriginalTailInverse=True,originalStateAssignments=4,nativeSelectorContainerOnly=True))
     for suffix in ['core/ui/LocalNavigationBackHandler','feature/video/ui/components/VideoCardSkeleton']:
         path=BASE+suffix+'.kt';body=original[path]
         emit('com/android/purebilibili/'+suffix+'.kt',body)

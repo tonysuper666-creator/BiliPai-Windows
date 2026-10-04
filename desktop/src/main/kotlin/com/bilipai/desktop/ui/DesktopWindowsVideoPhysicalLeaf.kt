@@ -14,13 +14,17 @@ import androidx.compose.material3.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.text.input.TextFieldValue
 import com.android.purebilibili.navigation3.BiliPaiNavKey
@@ -55,9 +59,10 @@ internal class DesktopWindowsVideoActions(
     val focusChanged: (Boolean) -> Unit,
     val nativeKey: (androidx.compose.ui.input.key.KeyEvent) -> Boolean,
     val collectionQueue: @Composable (DesktopWindowsVideoCollectionQueuePresentation) -> Unit,
+    val bgm: @Composable (DesktopWindowsVideoBgmPresentation) -> Unit,
 )
 
-/** Windows renderer over the installed original VM/owner/MPV. No phone Holder, movable content or transition layout. */
+/** Windows renderer over the installed original VM/owner/MPV. Native peer stays in Root; this leaf reports its viewport only. */
 @Composable internal fun DesktopWindowsVideoPhysicalLeaf(
     route: BiliPaiNavKey.VideoDetail,
     shell: DesktopOriginalVideoShellOwner,
@@ -84,6 +89,15 @@ internal class DesktopWindowsVideoActions(
     val routeState = LocalDesktopOriginalRootVideoRouteState.current
     SideEffect { shell.publishVideoRouteState(assembly, routeState) }
     val native = assembly.section.nativePlayer
+    val nativeSurface = checkNotNull(LocalDesktopWindowsNativeVideoSurface.current) {
+        "Windows video requires its retained Root native surface"
+    }
+    check(nativeSurface.player === native) { "Windows video native surface belongs to another player" }
+    val rootEnvironment = LocalDesktopOriginalVideoRootWindowEnvironment.current
+    val viewportLease = remember(nativeSurface) { Any() }
+    DisposableEffect(nativeSurface, route, viewportLease) { onDispose {
+        nativeSurface.releaseViewport(route, viewportLease)
+    } }
     val currentActive by rememberUpdatedState(active)
     fun current(): Boolean = currentActive && shell.slot.currentAssembly() === assembly && assembly.owns()
     val latestActions by rememberUpdatedState(actions)
@@ -143,6 +157,7 @@ internal class DesktopWindowsVideoActions(
             it is VideoPlaybackUiState.Success && it.info.bvid == collectionQueueSource.request.bvid &&
                 it.info.cid == collectionQueueSource.request.cid
         }
+    val bgmResult by assembly.playback.desktopBgmResult.collectAsState(null)
     val canOpenCollection = success?.info?.ugc_season != null && collectionQueueSource != null
     val canOpenPlaybackQueue = collectionQueueSource != null && playlistItems.isNotEmpty()
     val chapterResult by assembly.playback.desktopChapterResult.collectAsState(null)
@@ -173,19 +188,38 @@ internal class DesktopWindowsVideoActions(
         onDispose { registration.close() }
     }
 
-    // The Canvas below is mounted once before waiting for the real native worker.
-    // A covered route is canceled; no guessed ready/Success or duplicate load precedes decoder initialization.
-    LaunchedEffect(assembly, route.bvid, route.cid, route.resumePositionMs, active) {
+    // Root keeps the Canvas peer while an opaque detail route covers this leaf.
+    // A returning actual entry may retain only its exact admitted publication;
+    // a new same-value/BV-only entry still follows the original load protocol.
+    fun samePhysicalEntry(): Boolean = current() && rootEnvironment.currentKey() === route
+    // Mount-local only: on Back, verify the saved exact receipt BEFORE any
+    // current-source projection may replace it. This flag never grants ownership.
+    var presentationVerified by remember(assembly, nativeSurface, route.openId, route.bvid, route.cid) { mutableStateOf(false) }
+    SideEffect {
+        if (presentationVerified && samePhysicalEntry())
+            nativeSurface.recordPresentedSource(route, assembly, ::samePhysicalEntry)
+    }
+    LaunchedEffect(assembly, route.openId, route.bvid, route.cid, route.resumePositionMs, active) {
         if (!active) return@LaunchedEffect
         try {
             native.state.first { actual ->
-                if (!current()) throw CancellationException("Windows video entry retired")
+                if (!samePhysicalEntry()) throw CancellationException("Windows video entry retired")
                 if (!actual.ready && actual.error != null) error(actual.error!!)
                 actual.ready
             }
-            if (!current()) throw CancellationException("Windows video entry retired")
-            shell.playback.openVideoDetail(VideoCard(route.bvid, "", route.coverUrl, "", 0, 0,
+            if (!samePhysicalEntry()) throw CancellationException("Windows video entry retired")
+            if (nativeSurface.retainPresentedEntry(route, assembly, ::samePhysicalEntry)) {
+                presentationVerified = true
+                return@LaunchedEffect
+            }
+            val prior = assembly.native.current()
+            val retained = shell.playback.openVideoDetail(VideoCard(route.bvid, "", route.coverUrl, "", 0, 0,
                 preferredCid = route.cid), route.resumePositionMs, keepMatchingSource = true)
+            if (samePhysicalEntry()) {
+                nativeSurface.recordBootstrap(route, assembly, prior, retained)
+                nativeSurface.recordPresentedSource(route, assembly, ::samePhysicalEntry)
+                presentationVerified = true
+            }
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) { if (current()) bootstrapError = failure.message ?: "播放器初始化失败" }
     }
@@ -212,8 +246,12 @@ internal class DesktopWindowsVideoActions(
         }
     }
 
-    var detailsOpen by remember(assembly) { mutableStateOf(false) }
-    var detailsTab by remember(assembly) { mutableStateOf(DesktopWindowsVideoDetailsTab.INTRODUCTION) }
+    // The original Nav entry may leave composition while a detail route covers
+    // it. Preserve its panel intent through the entry's existing saveable owner.
+    var detailsOpen by rememberSaveable(assembly) { mutableStateOf(false) }
+    var detailsTab by rememberSaveable(assembly, stateSaver = Saver<DesktopWindowsVideoDetailsTab, String>(
+        save = { it.name }, restore = { DesktopWindowsVideoDetailsTab.valueOf(it) },
+    )) { mutableStateOf(DesktopWindowsVideoDetailsTab.INTRODUCTION) }
     LaunchedEffect(assembly, route.commentRootRpid, route.commentTargetRpid) {
         if (current() && route.commentRootRpid > 0L) {
             detailsTab = DesktopWindowsVideoDetailsTab.COMMENTS
@@ -271,9 +309,19 @@ internal class DesktopWindowsVideoActions(
                 // Fill all remaining height; there is no phone-derived fraction or maximum 380dp video height.
                 var viewportSize by remember(native) { mutableStateOf(IntSize.Zero) }
                 Box(Modifier.fillMaxWidth().weight(1f).background(Color.Black).onSizeChanged { viewportSize = it }
+                    .onGloballyPositioned { coordinates ->
+                        // Store pixels only, never a LayoutCoordinates object.
+                        // Host-hidden still keeps the peer; outgoing entries may
+                        // not overwrite the current physical route's viewport.
+                        if (rootEnvironment.currentKey() === route && rootEnvironment.owns() &&
+                            shell.slot.currentAssembly() === assembly && assembly.owns() && !pipActive) {
+                            val origin = coordinates.positionInWindow()
+                            nativeSurface.reportViewport(route, viewportLease,
+                                Rect(origin.x, origin.y, origin.x + coordinates.size.width, origin.y + coordinates.size.height))
+                        }
+                    }
                     .focusRequester(viewportFocus).onFocusChanged { if(current()) actions.focusChanged(it.hasFocus) }.focusable()) {
                     if (active && !pipActive) {
-                        SwingPanel(factory = { native.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
                         DesktopVideoCommandPopup(viewportSize, {
                             Box(Modifier.fillMaxSize()) {
                                 actions.overlay()
@@ -348,6 +396,12 @@ internal class DesktopWindowsVideoActions(
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.toggleWatchLater() }) { Text("稍后再看") }
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.openCoinDialog() }) { Text("投币") }
                                 TextButton(onClick = { if (current()) actions.download(assembly, success) }) { Text("下载当前画质") }
+                            }
+                            collectionQueueSource?.let { source ->
+                                bgmResult?.takeIf { desktopWindowsVideoBgmMatchesSource(it,
+                                    assembly.playback.captureDesktopBgmResult(), source.request) }?.let { music ->
+                                    actions.bgm(DesktopWindowsVideoBgmPresentation(assembly, source, music, ::current))
+                                }
                             }
                             Text(success.info.desc, style = MaterialTheme.typography.bodyMedium)
                             if (success.info.pages.size > 1) {

@@ -42,12 +42,15 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private val aid = 170001L
     private val collectionInput = System.getProperty("bilipai.validation.collectionInput") == "true"
     private val metadataInput = System.getProperty("bilipai.validation.metadataInput") == "true"
+    private val bgmInput = System.getProperty("bilipai.validation.bgmInput") == "true"
+    private val mediaSeconds = if (bgmInput) 180 else SECONDS
     private val secondCid = 7008L
     private val base: String get() = "http://127.0.0.1:${server.address.port}"
     private var installed = false
     init {
+        require(!bgmInput || collectionInput) { "BGM replay needs the original two-part collection flow" }
         require(!Files.exists(media, NOFOLLOW_LINKS)); Files.createDirectory(media)
-        createVideo(media.resolve("video.avi").toFile()); createAudio(media.resolve("audio.wav").toFile())
+        createVideo(media.resolve("video.avi").toFile(), mediaSeconds); createAudio(media.resolve("audio.wav").toFile(), mediaSeconds)
         server.executor = executor
         mapOf("/video.avi" to "video/x-msvideo", "/audio.wav" to "audio/wav").forEach { (path, type) ->
             server.createContext(path) { exchange ->
@@ -124,11 +127,14 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             if (metadataInput) require(path != "/x/relation/modify") {
                 "Creator metadata layout replay must not submit follow mutations"
             }
+            if (bgmInput) require(request.method == "GET") {
+                "BGM guest replay must not submit any account mutation"
+            }
             val body = when (path) {
                 "/x/web-interface/view" -> {
                     val requested = request.url.queryParameter("bvid")
                     require(requested == null || requested == bvid)
-                    val original = """{"code":0,"data":{"bvid":"$bvid","aid":$aid,"cid":$cid,"title":"Windows local layout replay","desc":"LOCAL REPLAY — media/layout only; not live Bilibili acceptance","pic":"","owner":{"mid":1,"name":"Local fixture","face":""},"stat":{"view":0,"reply":0,"like":0},"dimension":{"width":320,"height":180,"rotate":0},"pages":[{"cid":$cid,"page":1,"part":"Local replay","duration":60,"dimension":{"width":320,"height":180,"rotate":0}}]}}"""
+                    val original = """{"code":0,"data":{"bvid":"$bvid","aid":$aid,"cid":$cid,"title":"Windows local layout replay","desc":"LOCAL REPLAY — media/layout only; not live Bilibili acceptance","pic":"","owner":{"mid":1,"name":"Local fixture","face":""},"stat":{"view":0,"reply":0,"like":0},"dimension":{"width":320,"height":180,"rotate":0},"pages":[{"cid":$cid,"page":1,"part":"Local replay","duration":$mediaSeconds,"dimension":{"width":320,"height":180,"rotate":0}}]}}"""
                     val collected = if (collectionInput) collectionMetadata(original) else original
                     if (metadataInput) videoMetadata(collected) else collected
                 }
@@ -138,7 +144,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                     if (collectionInput) requests.add(buildJsonObject {
                         put("collectionPlayurlCid", requireNotNull(request.url.queryParameter("cid")).toLong())
                     })
-                    """{"code":0,"data":{"quality":32,"format":"dash","timelength":60000,"accept_quality":[32],"accept_description":["Local replay"],"video_codecid":7,"dash":{"duration":60,"minBufferTime":1.5,"video":[{"id":32,"baseUrl":"$base/video.avi","bandwidth":1000000,"mime_type":"video/x-msvideo","codecs":"avc1.640028","width":320,"height":180,"frameRate":"20","codecid":7}],"audio":[{"id":30280,"baseUrl":"$base/audio.wav","bandwidth":768000,"mime_type":"audio/wav","codecs":"pcm_s16le"}]}}}"""
+                    """{"code":0,"data":{"quality":32,"format":"dash","timelength":${mediaSeconds * 1000},"accept_quality":[32],"accept_description":["Local replay"],"video_codecid":7,"dash":{"duration":$mediaSeconds,"minBufferTime":1.5,"video":[{"id":32,"baseUrl":"$base/video.avi","bandwidth":1000000,"mime_type":"video/x-msvideo","codecs":"avc1.640028","width":320,"height":180,"frameRate":"20","codecid":7}],"audio":[{"id":30280,"baseUrl":"$base/audio.wav","bandwidth":768000,"mime_type":"audio/wav","codecs":"pcm_s16le"}]}}}"""
                 }
                 "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":false,"mid":0,"wbi_img":{"img_url":"https://fixture.invalid/${"a".repeat(32)}.png","sub_url":"https://fixture.invalid/${"b".repeat(32)}.png"}}}"""
                 "/x/player/v2", "/x/player/wbi/v2" -> {
@@ -146,11 +152,59 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                         ?.also { require(it == cid || it == secondCid) } ?: cid else cid
                     val chapters = if (System.getProperty("bilipai.validation.featureInput") == "true")
                         """[{"content":"开场","from":0,"to":20},{"content":"中段","from":20,"to":40},{"content":"收尾","from":40,"to":60}]""" else "[]"
-                    """{"code":0,"data":{"aid":$aid,"cid":$requestedCid,"bvid":"$bvid","subtitle":{"subtitles":[]},"view_points":$chapters}}"""
+                    val bgm = if (bgmInput) ",\"bgm_info\":${bgmSong(if (requestedCid == cid) "fixture-p1" else "fixture-p2-a")}" else ""
+                    """{"code":0,"data":{"aid":$aid,"cid":$requestedCid,"bvid":"$bvid","subtitle":{"subtitles":[]},"view_points":$chapters$bgm}}"""
                 }
                 "/x/web-interface/archive/relation" -> if (collectionInput)
                     """{"code":0,"data":{"like":false,"favorite":false,"season_fav":false,"coin":0,"dislike":false}}"""
                     else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
+                "/x/copyright-music-publicity/bgm/multiple/music" -> if (bgmInput) {
+                    val part = requireNotNull(url.queryParameter("cid")?.toLongOrNull())
+                    require(url.queryParameter("aid")?.toLongOrNull() == aid && part in setOf(cid, secondCid))
+                    // Empty P1 list exercises the original single-song fallback; P2
+                    // uses the real DTO list and its original selection strip.
+                    val songs = if (part == cid) emptyList() else listOf("fixture-p2-a", "fixture-p2-b")
+                    requests.add(buildJsonObject { put("bgmStage", "multiple"); put("bgmCid", part); put("songCount", songs.size) })
+                    buildJsonObject { put("code", 0); put("data", buildJsonObject {
+                        put("list", JsonArray(songs.map(::bgmSong)))
+                    }) }.toString()
+                } else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
+                "/x/copyright-music-publicity/bgm/detail" -> if (bgmInput) {
+                    val id = requireNotNull(url.queryParameter("music_id"))
+                    val part = bgmCid(id)
+                    require(url.queryParameter("relation_from") == "bgm_page" && url.queryParameter("cid")?.toLongOrNull() == part)
+                    val requestedAid = url.queryParameter("aid")?.toLongOrNull() ?: 0L
+                    require(requestedAid == 0L || requestedAid == aid)
+                    requests.add(buildJsonObject { put("bgmStage", "detail"); put("musicId", id)
+                        put("bgmCid", part); put("bgmAid", requestedAid) })
+                    buildJsonObject { put("code", 0); put("data", buildJsonObject {
+                        put("music_title", bgmTitle(id)); put("origin_artist", "本地艺人"); put("origin_artist_list", "本地艺人")
+                        put("music_source", "LOCAL 原格式回放"); put("album", "私有验收"); put("mv_cover", "")
+                        put("wish_listen", false); put("wish_count", 3); put("listen_pv", 42); put("music_hot", 18)
+                        put("artists_list", buildJsonArray { add(buildJsonObject { put("mid", 0); put("name", "本地艺人"); put("face", "") }) })
+                        put("music_comment", buildJsonObject { put("state", 0); put("nums", 0); put("oid", 0); put("page_type", 0) })
+                        put("flow_attr", buildJsonObject { put("no_share", true); put("no_comment", true) })
+                        put("hot_song_heat", buildJsonObject { put("last_heat", 18); put("song_heat", buildJsonArray {
+                            add(buildJsonObject { put("date", 1728000000); put("heat", 18) })
+                        }) })
+                    }) }.toString()
+                } else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
+                "/x/copyright-music-publicity/bgm/recommend_list" -> if (bgmInput) {
+                    val id = requireNotNull(url.queryParameter("music_id")); val part = bgmCid(id)
+                    val requestedCid = url.queryParameter("cid")?.toLongOrNull() ?: 0L
+                    val requestedAid = url.queryParameter("aid")?.toLongOrNull() ?: 0L
+                    require((requestedCid == 0L && requestedAid == 0L) || (requestedCid == part && requestedAid == aid))
+                    val page = url.queryParameter("pn")?.toIntOrNull() ?: 1
+                    val size = url.queryParameter("ps")?.toIntOrNull() ?: 5
+                    require(page >= 1 && size == 5)
+                    requests.add(buildJsonObject { put("bgmStage", "recommend"); put("musicId", id)
+                        put("bgmCid", requestedCid); put("bgmAid", requestedAid); put("page", page); put("pageSize", size) })
+                    buildJsonObject { put("code", 0); put("data", buildJsonObject { put("list", buildJsonArray {
+                        if (page == 1) add(buildJsonObject { put("aid", aid); put("bvid", bvid); put("cid", part); put("cover", "")
+                            put("title", "${bgmTitle(id)}关联视频"); put("mid", 0); put("up_nick_name", "本地验收")
+                            put("play", 42); put("danmu", 0); put("duration", mediaSeconds); put("label", ""); put("label_list", JsonArray(emptyList())) })
+                    }) }) }.toString()
+                } else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
                 "/x/player/videoshot" -> """{"code":0,"data":{"index":[],"image":[]}}"""
                 "/x/web-interface/archive/related", "/x/tag/archive/tags" -> """{"code":0,"data":[]}"""
                 "/x/v2/reply/wbi/main", "/x/v2/reply/main" -> """{"code":0,"data":{"replies":[],"top_replies":[],"cursor":{"is_begin":true,"is_end":true,"all_count":0,"next":0,"prev":0},"page":{"count":0,"num":1,"size":20}}}"""
@@ -185,22 +239,65 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             require(requests.any { it["collectionPlayurlCid"]?.jsonPrimitive?.longOrNull == secondCid })
             require(requests.none { it["path"]?.jsonPrimitive?.content in setOf("/x/v3/fav/season/fav", "/x/v3/fav/season/unfav") })
         }
+        if (bgmInput) {
+            requireBgmRequests("fixture-p1", cid, discovery = false)
+            requireBgmRequests("fixture-p2-a", secondCid, discovery = true)
+            requireBgmRequests("fixture-p2-b", secondCid, discovery = true)
+            require(requests.count { it["bgmStage"]?.jsonPrimitive?.content == "multiple" &&
+                it["bgmCid"]?.jsonPrimitive?.longOrNull == cid } >= 2) { "BGM P1 must be reloaded after P2 through the original collection" }
+            require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" })
+        }
         Files.writeString(report.resolve("local-replay-receipt.json"), buildJsonObject {
             put("schema", 1); put("mode", "LOCAL_API_SHAPE_REAL_LOOPBACK_MEDIA_ACTUAL_MAIN_LAYOUT_ONLY")
             put("sameActualRepository", true); put("realBilibiliDataAccepted", false); put("realAccountUsed", false)
             put("newRootCreated", false); put("newPlayerCreated", false); put("newControllerCreated", false)
             put("originalVmStateWritten", false); put("actualNativeStateWritten", false); put("physicalStackWritten", false)
-            put("metadataBvid", bvid); put("metadataCid", cid); put("mediaSeconds", SECONDS)
+            put("metadataBvid", bvid); put("metadataCid", cid); put("mediaSeconds", mediaSeconds)
             put("chapterMetadataIsSynthetic", System.getProperty("bilipai.validation.featureInput") == "true")
             put("collectionMetadataIsSynthetic", collectionInput)
             put("collectionMetadataCid2", if (collectionInput) JsonPrimitive(secondCid) else JsonNull)
             put("collectionSubscriptionMutationSubmitted", false)
             put("videoMetadataIsSynthetic", metadataInput)
+            put("bgmMetadataIsSynthetic", bgmInput); put("bgmDetailAndRecommendResponsesAreSynthetic", bgmInput)
+            put("singleBgmDetailOnlyScope", bgmInput)
+            put("singleBgmRecommendationRequested", requests.any { it["bgmStage"]?.jsonPrimitive?.content == "recommend" &&
+                it["musicId"]?.jsonPrimitive?.content == "fixture-p1" })
+            put("bgmAccountMutationSubmitted", false); put("commentsSent", false)
             put("creatorFollowMutationSubmitted", false)
             put("container", "MJPEG_AVI_PLUS_PCM_WAV"); put("qualityMetadataIsSynthetic", true)
             put("codecMetadataIsSynthetic", true); put("realDASHCodecAccepted", false)
             put("apiRequests", JsonArray(requests.toList())); put("loopbackRequests", JsonArray(mediaRequests.toList()))
         }.toString(), CREATE_NEW, WRITE)
+    }
+    private fun bgmCid(id: String): Long = when (id) {
+        "fixture-p1" -> cid
+        "fixture-p2-a", "fixture-p2-b" -> secondCid
+        else -> error("Unknown synthetic BGM identity")
+    }
+    private fun bgmTitle(id: String): String = when (id) {
+        "fixture-p1" -> "P1原音乐"
+        "fixture-p2-a" -> "P2第一首"
+        "fixture-p2-b" -> "P2第二首"
+        else -> error("Unknown synthetic BGM identity")
+    }
+    private fun bgmSong(id: String): JsonObject = buildJsonObject {
+        put("music_id", id); put("music_title", bgmTitle(id)); put("actor", "本地艺人"); put("cover_url", "")
+        put("jump_url", "https://www.bilibili.com/music/detail?music_id=$id&aid=$aid&cid=${bgmCid(id)}")
+    }
+    fun requireBgmRequests(id: String, expectedCid: Long, discovery: Boolean) {
+        require(bgmInput && bgmCid(id) == expectedCid)
+        require(requests.any { it["bgmStage"]?.jsonPrimitive?.content == "detail" &&
+            it["musicId"]?.jsonPrimitive?.content == id && it["bgmCid"]?.jsonPrimitive?.longOrNull == expectedCid })
+        val recommendations = requests.filter { it["bgmStage"]?.jsonPrimitive?.content == "recommend" &&
+            it["musicId"]?.jsonPrimitive?.content == id }
+        if (discovery) {
+            require(recommendations.any { it["bgmCid"]?.jsonPrimitive?.longOrNull == expectedCid })
+        } else {
+            // The original typed detail with showVideos=false loads only its
+            // detail; recommendation requests belong to the multi-song selector.
+            require(recommendations.isEmpty()) { "Original detail-only BGM route unexpectedly requested recommendation videos" }
+        }
+        require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" })
     }
     private fun videoMetadata(original: String): String {
         val root = json.parseToJsonElement(original).jsonObject.toMutableMap()
@@ -221,8 +318,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
         val root = json.parseToJsonElement(original).jsonObject.toMutableMap()
         val data = root.getValue("data").jsonObject.toMutableMap()
         val pages = buildJsonArray {
-            add(buildJsonObject { put("cid", cid); put("page", 1); put("part", "Local replay P1"); put("duration", 60) })
-            add(buildJsonObject { put("cid", secondCid); put("page", 2); put("part", "Local replay P2"); put("duration", 60) })
+            add(buildJsonObject { put("cid", cid); put("page", 1); put("part", "Local replay P1"); put("duration", mediaSeconds) })
+            add(buildJsonObject { put("cid", secondCid); put("page", 2); put("part", "Local replay P2"); put("duration", mediaSeconds) })
         }
         data["pages"] = pages
         data["ugc_season"] = buildJsonObject {
@@ -234,7 +331,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                     put("id", aid); put("aid", aid); put("bvid", bvid); put("cid", cid)
                     put("title", "Windows local layout replay"); put("pages", pages)
                     put("arc", buildJsonObject { put("aid", aid); put("title", "Windows local layout replay")
-                        put("pic", ""); put("duration", 60); put("stat", buildJsonObject { put("view", 123) }) })
+                        put("pic", ""); put("duration", mediaSeconds); put("stat", buildJsonObject { put("view", 123) }) })
                 }) })
             }) })
         }
@@ -256,12 +353,12 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private const val FPS = 20
     private const val SECONDS = 60
 
-    private fun createVideo(file: File) {
-        val frames = List(FPS * SECONDS) { index ->
+    private fun createVideo(file: File, seconds: Int = SECONDS) {
+        val frames = List(FPS * seconds) { index ->
             val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB)
             image.createGraphics().apply {
                 color = Color(24, 27, 38); fillRect(0, 0, WIDTH, HEIGHT)
-                color = Color(250, 106, 151); fillRect(0, HEIGHT - 24, WIDTH * index / (FPS * SECONDS), 24)
+                color = Color(250, 106, 151); fillRect(0, HEIGHT - 24, WIDTH * index / (FPS * seconds), 24)
                 color = Color(82, 191, 248); fillOval(10 + index % 260, 45, 44, 44)
                 color = Color.WHITE; font = Font("SansSerif", Font.BOLD, 16)
                 drawString("BiliPai · Native Windows", 18, 30)
@@ -296,10 +393,10 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
         file.writeBytes("RIFF".toByteArray(Charsets.US_ASCII) + leInts(body.size) + body)
     }
 
-    private fun createAudio(file: File) {
+    private fun createAudio(file: File, seconds: Int = SECONDS) {
         val sampleRate = 48_000
-        val samples = ByteBuffer.allocate(sampleRate * SECONDS * 2).order(ByteOrder.LITTLE_ENDIAN)
-        repeat(sampleRate * SECONDS) { index ->
+        val samples = ByteBuffer.allocate(sampleRate * seconds * 2).order(ByteOrder.LITTLE_ENDIAN)
+        repeat(sampleRate * seconds) { index ->
             val amplitude = (sin(index * 2.0 * Math.PI * 440.0 / sampleRate) * 1_500).toInt().toShort()
             samples.putShort(amplitude)
         }

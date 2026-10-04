@@ -96,6 +96,17 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
         metadata.refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn, cachedIsVip, storedQuality, autoHighestEnabled)
     override suspend fun getCreatorCardStats(mid: Long): Result<CreatorCardStats> = creator.getCreatorCardStats(mid)
     override suspend fun getBgmList(aid: Long, bvid: String, cid: Long): Result<List<BgmInfo>> = bgm.getBgmList(aid, bvid, cid)
+    override suspend fun getBgmDetail(musicId: String, aid: Long, cid: Long): Result<BgmDetailData?> =
+        readBgm { bgm.getBgmDetail(musicId, aid, cid) }
+    override suspend fun getBgmRecommendVideos(musicId: String, aid: Long, cid: Long, page: Int, pageSize: Int): Result<List<BgmRecommendVideo>> =
+        readBgm { bgm.getBgmRecommendVideos(musicId, aid, cid, page, pageSize) }
+    private suspend fun <T> readBgm(block: suspend () -> Result<T>): Result<T> {
+        currentCoroutineContext().ensureActive(); binding.assertCurrent()
+        return block().also { result ->
+            currentCoroutineContext().ensureActive(); binding.assertCurrent()
+            (result.exceptionOrNull() as? CancellationException)?.let { throw it }
+        }
+    }
     override suspend fun getVideoshot(bvid: String, cid: Long): VideoshotData? = metadata.getVideoshot(bvid, cid)
     override suspend fun getPlayerInfo(bvid: String, cid: Long): Result<PlayerInfoData> = metadata.getPlayerInfo(bvid, cid)
     override suspend fun getPbpProgressData(bvid: String, cid: Long, aid: Long): Result<PbpProgressData> =

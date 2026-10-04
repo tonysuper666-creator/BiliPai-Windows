@@ -31,6 +31,8 @@ internal class DesktopOriginalVideoOwnerRepositoryView(
     override suspend fun refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn:Boolean,cachedIsVip:Boolean,storedQuality:Int,autoHighestEnabled:Boolean):Boolean = request().refreshVipStatusForPreferredQualityIfNeeded(isLoggedIn,cachedIsVip,storedQuality,autoHighestEnabled)
     override suspend fun getCreatorCardStats(mid:Long):Result<CreatorCardStats> = request().getCreatorCardStats(mid)
     override suspend fun getBgmList(aid:Long,bvid:String,cid:Long):Result<List<BgmInfo>> = request().getBgmList(aid,bvid,cid)
+    override suspend fun getBgmDetail(musicId:String,aid:Long,cid:Long):Result<BgmDetailData?> = request().getBgmDetail(musicId,aid,cid)
+    override suspend fun getBgmRecommendVideos(musicId:String,aid:Long,cid:Long,page:Int,pageSize:Int):Result<List<BgmRecommendVideo>> = request().getBgmRecommendVideos(musicId,aid,cid,page,pageSize)
     override suspend fun getVideoshot(bvid:String,cid:Long):VideoshotData? = request().getVideoshot(bvid,cid)
     override suspend fun getPlayerInfo(bvid:String,cid:Long):Result<PlayerInfoData> = request().getPlayerInfo(bvid,cid)
     override suspend fun getPbpProgressData(bvid:String,cid:Long,aid:Long):Result<PbpProgressData> = request().getPbpProgressData(bvid,cid,aid)

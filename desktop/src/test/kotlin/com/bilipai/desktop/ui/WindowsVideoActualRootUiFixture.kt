@@ -1305,6 +1305,403 @@ object WindowsVideoActualRootUiFixture {
         clockAndCapture("157-original-hot-cancel-resumed")
     }
 
+    /** Read only the already accepted original owner and its synchronous BGM stamp.
+     * Successful request completion is not treated as metadata retirement. */
+    private fun awaitBgmOwner(cid: Long, musicIds: List<String>): Pair<DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoBgmResult> {
+        var captured: Pair<DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoBgmResult>? = null
+        await("same original BGM publication for CID $cid") {
+            val (assembly, source) = actualHotOwner()
+            val music = assembly.playback.captureDesktopBgmResult() ?: return@await false
+            val session = assembly.playback.captureDesktopLoadState()
+            val songs = com.android.purebilibili.feature.video.ui.section.resolveDisplayBgmList(music.bgmInfo, music.bgmInfoList)
+            if (source.request.bvid != video || source.request.cid != cid || music.bvid != video || music.cid != cid ||
+                session.currentBvid != video || session.currentCid != cid ||
+                session.currentLoadRequestToken != music.requestToken || songs.map { it.musicId } != musicIds ||
+                !desktopWindowsVideoBgmMatchesSource(music, assembly.playback.captureDesktopBgmResult(), source.request)) return@await false
+            captured = assembly to music; true
+        }
+        return requireNotNull(captured)
+    }
+
+    private fun openBgmIntroduction(header: String) {
+        sameNative()
+        if (edt { all().none { it.accessibleName == "关闭详情" && visible(it) } }) click("详情")
+        await("complete current BGM details pane") { edt { sameNative(); runCatching { detailPaneScope() }.isSuccess } }
+        edt {
+            current(); sameNative()
+            val tab = descendants(detailPaneScope()).single { it.accessibleName == "简介与分P" &&
+                it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB && visible(it) }
+            if (!tab.accessibleStateSet.contains(AccessibleState.SELECTED) && !tab.accessibleStateSet.contains(AccessibleState.CHECKED)) {
+                clickOwnedComposeMouse(window(), tab)
+            }
+        }
+        await("original introduction tree after real tab input") { edt {
+            sameNative()
+            val scope = runCatching { detailPaneScope() }.getOrNull() ?: return@edt false
+            descendants(scope).count { it.accessibleName == "BGM" &&
+                it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+        } }
+        val (assembly, source) = actualHotOwner()
+        val music = requireNotNull(assembly.playback.captureDesktopBgmResult())
+        check(desktopWindowsVideoBgmMatchesSource(music, assembly.playback.captureDesktopBgmResult(), source.request))
+        val songs = com.android.purebilibili.feature.video.ui.section.resolveDisplayBgmList(music.bgmInfo, music.bgmInfoList)
+        check(songs.isNotEmpty())
+        val expectedText = buildString {
+            append("发现音乐《"); append(songs.first().musicTitle.ifBlank { "未知音乐" }); append("》")
+            if (songs.size > 1) append("等${songs.size}首音乐")
+            else songs.first().actor.takeIf { it.isNotBlank() }?.let { append(" · $it") }
+        }
+        check(expectedText == header) { "Original admitted BGM result does not match its expected visual row text" }
+        fun headerVisible() = edt {
+            sameNative()
+            val scope = runCatching { detailPaneScope() }.getOrNull() ?: return@edt false
+            descendants(scope).count { it.accessibleName == "BGM" && visible(it) &&
+                it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+        }
+        // The original row merges its visual title into the music icon's "BGM"
+        // semantics. Its admitted result proves the text; owned PNGs prove rendering.
+        // Scroll the original bounded details viewport; never relocate its native Canvas.
+        repeat(8) { if (!headerVisible()) { ownedWheel(edt { actualComposeInput() }, -3, false); Thread.sleep(100) } }
+        repeat(20) { if (!headerVisible()) { ownedWheel(edt { actualComposeInput() }, 1, false); Thread.sleep(100) } }
+        await("one fully visible original BGM row") { headerVisible() }
+    }
+
+    private fun clickBgmInlineRow() {
+        await("one current fully visible original BGM row in its introduction scope") { edt {
+            current(); sameNative()
+            val scope = runCatching { detailPaneScope() }.getOrNull() ?: return@edt false
+            val row = descendants(scope).filter { it.accessibleName == "BGM" && visible(it) &&
+                it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }.singleOrNull()
+                ?: return@edt false
+            clickOwnedComposeMouse(window(), row); true
+        } }
+    }
+
+    private fun closeBgmIntroduction() {
+        click("关闭详情")
+        await("BGM details closed with the same native source") { edt {
+            sameNative(); all().none { it.accessibleName == "关闭详情" && visible(it) } &&
+                runCatching { videoScope("详情") }.isSuccess
+        } }
+    }
+
+    private fun exerciseSingleBgm(localReplay: WindowsVideoLocalReplay) {
+        sameNative(); check(playing())
+        val originalSource = accepted
+        val (assembly, music) = awaitBgmOwner(7007L, listOf("fixture-p1"))
+        val header = "发现音乐《P1原音乐》 · 本地艺人"
+        openBgmIntroduction(header)
+        actions.capture("158-original-single-bgm-entry", edt { current() })
+        val serial = edt { current().serial }
+        clickBgmInlineRow()
+        await("original single-song typed BGM detail route with its real CID") { edt {
+            val frame = pendingCurrent() ?: return@edt false
+            val key = frame.key as? BiliPaiNavKey.BgmDetail ?: return@edt false
+            frame.serial > serial && key.musicId == "fixture-p1" && key.cid == 7007L && key.aid == 0L && !key.showVideos
+        } }
+        fun pageScope(): AccessibleContext = edt {
+            current()
+            val key = routes.currentKey as? BiliPaiNavKey.BgmDetail ?: error("Original BGM route retired")
+            check(key.musicId == "fixture-p1" && key.cid == 7007L && actualPlayer.ownsSourceSnapshot(originalSource))
+            val candidates = all().filter { scope ->
+                val children = descendants(scope)
+                listOf("音乐详情", "刷新", "P1原音乐", "这首音乐暂未开放评论").all { label ->
+                    children.any { hasLabel(it, label) && visible(it) }
+                } && children.count { hasLabel(it, "返回") && visible(it) &&
+                    it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+            }
+            check(candidates.isNotEmpty()) { "No complete original loaded BGM detail scope" }
+            val counts = candidates.associateWith { descendants(it).size }
+            candidates.filter { counts.getValue(it) == counts.values.min() }.single()
+        }
+        val lastScopeFailure = AtomicReference<Throwable?>()
+        try {
+            await("complete original BGM detail from synthetic real-format response") { edt {
+                runCatching { pageScope() }.onFailure { lastScopeFailure.set(it) }.isSuccess
+            } }
+        } catch (failure: Throwable) {
+            // Failure-only inspection of this owned guest page. Preserve the exact
+            // completion oracle and never invoke an action or publish player state.
+            val diagnostic = edt {
+                val children = all()
+                val anchors = listOf("音乐详情", "刷新", "P1原音乐", "这首音乐暂未开放评论")
+                val content = window().contentPane
+                val viewport = Rectangle(content.locationOnScreen, content.size)
+                fun geometry(node: AccessibleContext): JsonObject = buildJsonObject {
+                    val bounds = runCatching {
+                        val component = requireNotNull(node.accessibleComponent)
+                        Rectangle(requireNotNull(component.locationOnScreen), component.size)
+                    }.getOrNull()
+                    put("role", node.accessibleRole.toString()); put("actions", node.accessibleAction?.accessibleActionCount ?: 0)
+                    put("enabled", node.accessibleStateSet.contains(AccessibleState.ENABLED))
+                    put("showing", node.accessibleStateSet.contains(AccessibleState.SHOWING))
+                    put("passesExistingVisible", runCatching { visible(node) }.getOrDefault(false))
+                    put("bounds", bounds?.let { buildJsonObject { put("x", it.x); put("y", it.y); put("width", it.width); put("height", it.height) } } ?: JsonNull)
+                    put("fullyInsideOwnedClient", bounds?.let { viewport.contains(it) } ?: false)
+                }
+                val candidates = children.filter { scope ->
+                    val nodes = descendants(scope)
+                    anchors.all { label -> nodes.any { hasLabel(it, label) && runCatching { visible(it) }.getOrDefault(false) } } &&
+                        nodes.count { hasLabel(it, "返回") && runCatching { visible(it) }.getOrDefault(false) &&
+                            it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+                }
+                val sizes = candidates.map { descendants(it).size }
+                val currentSource = actualPlayer.currentSourceSnapshot()
+                val exception = lastScopeFailure.get()
+                buildJsonObject {
+                    put("observation", "FAILURE_ONLY_READONLY_ACTUAL_GUEST_BGM_PAGE")
+                    put("expectedMusicId", "fixture-p1"); put("expectedCid", 7007)
+                    put("frameKeyType", latest.get()?.key?.javaClass?.simpleName ?: "missing")
+                    put("actualRouteType", routes.currentKey.javaClass.simpleName)
+                    put("sameRootAndRouteAssembly", latest.get()?.let { it.handle === owner && it.routes === routes } == true)
+                    put("assemblyOwned", assembly.owns()); put("rootOwned", owner.isActive() && routes.owns())
+                    put("originalSourceVersion", originalSource.sourceVersion)
+                    put("currentSourceVersion", currentSource?.sourceVersion?.let(::JsonPrimitive) ?: JsonNull)
+                    put("originalSnapshotStillOwned", actualPlayer.ownsSourceSnapshot(originalSource))
+                    put("currentFullSourceEqualsOriginal", currentSource?.source == originalSource.source)
+                    put("sameNativePublicationIdentity", currentSource?.source?.nativePublication === originalSource.source.nativePublication)
+                    put("candidateCount", candidates.size); put("candidateDescendantCounts", JsonArray(sizes.map(::JsonPrimitive)))
+                    put("minimumCandidateTieCount", sizes.minOrNull()?.let { minimum -> sizes.count { it == minimum } } ?: 0)
+                    put("anchorMatches", buildJsonObject {
+                        (anchors + "返回").forEach { label -> put(label, buildJsonObject {
+                            val matches = children.filter { hasLabel(it, label) }
+                            put("directExactNameCount", matches.count { it.accessibleName == label })
+                            put("existingHasLabelCount", matches.size)
+                            put("visibleMatchCount", matches.count { runCatching { visible(it) }.getOrDefault(false) })
+                            put("matches", JsonArray(matches.take(24).map(::geometry)))
+                        }) }
+                    })
+                    put("lastFailureType", exception?.javaClass?.name?.let(::JsonPrimitive) ?: JsonNull)
+                    put("lastFailureFixedMessage", exception?.message?.takeIf {
+                        it in setOf("Check failed.", "No complete original loaded BGM detail scope", "List has more than one element.", "List is empty.", "Original BGM route retired")
+                    }?.let(::JsonPrimitive) ?: JsonNull)
+                    put("lastFailureFrames", JsonArray(exception?.stackTrace?.take(10)?.map { frame -> buildJsonObject {
+                        put("class", frame.className); put("method", frame.methodName); put("line", frame.lineNumber)
+                    } }.orEmpty()))
+                    put("businessStateWritten", false); put("inputDelivered", false); put("urlsHeadersOrAccountValuesRecorded", false)
+                }
+            }
+            Files.writeString(report.resolve("failure-original-bgm-detail-scope.json"), diagnostic.toString(), CREATE_NEW, WRITE)
+            throw failure
+        }
+        localReplay.requireBgmRequests("fixture-p1", 7007L, discovery = false)
+        actions.capture("158-original-single-bgm-detail", edt { current() })
+        record("158-original-single-bgm-detail", mapOf(
+            "actualOriginalInlineControlUsed" to JsonPrimitive("BGM"), "originalResultExpectedRenderedText" to JsonPrimitive(header),
+            "originalResultMusicTitle" to JsonPrimitive(requireNotNull(music.bgmInfo).musicTitle),
+            "originalResultActor" to JsonPrimitive(requireNotNull(music.bgmInfo).actor),
+            "visualTextEvidence" to JsonPrimitive("OWNED_SCREENSHOT_ORIGINAL_MERGED_BGM_ROW"), "actualTypedMusicId" to JsonPrimitive("fixture-p1"),
+            "actualTypedCid" to JsonPrimitive(7007), "originalMetadataCid" to JsonPrimitive(music.cid),
+            "actualTypedShowVideos" to JsonPrimitive(false), "originalDetailOnlyRequestContract" to JsonPrimitive(true),
+            "recommendationRequestObserved" to JsonPrimitive(false),
+            "actualOriginalDetailLoaded" to JsonPrimitive(true), "realAccountUsed" to JsonPrimitive(false),
+            "remoteWishOrCommentSubmitted" to JsonPrimitive(false)))
+        val beforeBack = edt { current().serial }
+        await("original BGM page Back input") { edt {
+            val scope = runCatching { pageScope() }.getOrNull() ?: return@edt false
+            val back = descendants(scope).filter { hasLabel(it, "返回") && visible(it) &&
+                it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single()
+            clickOwnedComposeMouse(window(), back); true
+        } }
+        videoFrame(beforeBack)
+        await("same original video controls restored after BGM Back") { edt {
+            sameNative(); runCatching { videoScope("关闭详情") }.isSuccess
+        } }
+        check(assembly.owns() && actualPlayer.ownsSourceSnapshot(originalSource))
+        awaitBgmOwner(7007L, listOf("fixture-p1"))
+        if (actualPlayer.state.value.nativePaused == true) {
+            click("播放"); await("original source resumes after BGM detail Back") { sameNative(); playing() }
+        }
+        closeBgmIntroduction(); clockAndCapture("158-original-single-bgm-return")
+    }
+
+    private fun wheelBgmSelection(surface: Window, rotation: Int) = edt {
+        current(); sameNative(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+        val input = nativeComponents(surface).single { it.isShowing && it.isDisplayable &&
+            SwingUtilities.getWindowAncestor(it) === surface && it.keyListeners.any { listener ->
+                listener.javaClass.name == "androidx.compose.ui.scene.ComposeSceneMediator\$keyListener\$1"
+            } }
+        val content = (surface as javax.swing.RootPaneContainer).contentPane
+        val viewport = Rectangle(content.locationOnScreen, content.size)
+        val inputBounds = Rectangle(input.locationOnScreen, input.size)
+        val area = viewport.intersection(inputBounds)
+        check(area.width > 100 && area.height > 100)
+        val point = java.awt.Point(area.x + area.width / 2 - inputBounds.x, area.y + area.height / 2 - inputBounds.y)
+        check(input.contains(point))
+        input.dispatchEvent(java.awt.event.MouseWheelEvent(input, MouseEvent.MOUSE_WHEEL, System.currentTimeMillis(), 0,
+            point.x, point.y, 0, false, java.awt.event.MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, rotation))
+    }
+
+    private fun exerciseMultipleBgmAndReturn(localReplay: WindowsVideoLocalReplay) {
+        sameNative(); check(playing())
+        val p2Source = accepted
+        val (assembly, p2Music) = awaitBgmOwner(7008L, listOf("fixture-p2-a", "fixture-p2-b"))
+        val header = "发现音乐《P2第一首》等2首音乐"
+        openBgmIntroduction(header)
+        check(p2Music.bgmInfoList.map { it.musicTitle } == listOf("P2第一首", "P2第二首"))
+        val layers = edt { actualMainSceneLayers() }
+        clickBgmInlineRow()
+        fun selector(): Window? = edt { ownedFeatureSurface("发现音乐", "关闭", "P2第一首", "P2第二首") }
+        await("original multi-song selector in a separate actual owned Windows dialog") { selector() != null }
+        val surface = requireNotNull(selector())
+        edt {
+            check(surface is javax.swing.JDialog && surface !== window() && surface.title == "发现音乐" && ownedWindow(surface))
+            val client = window().contentPane
+            val viewport = Rectangle(client.locationOnScreen, client.size)
+            val body = surface.contentPane
+            val dialogClient = Rectangle(body.locationOnScreen, body.size)
+            if (!viewport.contains(dialogClient)) runCatching {
+                fun rect(value: Rectangle) = buildJsonObject {
+                    put("x", value.x); put("y", value.y); put("width", value.width); put("height", value.height)
+                }
+                fun geometry(value: Window) = buildJsonObject {
+                    put("class", value.javaClass.name); put("identity", System.identityHashCode(value))
+                    put("outer", rect(value.bounds)); put("showing", value.isShowing); put("displayable", value.isDisplayable)
+                    val pane = (value as javax.swing.RootPaneContainer).contentPane
+                    put("client", rect(Rectangle(pane.locationOnScreen, pane.size)))
+                    put("insets", buildJsonObject {
+                        put("top", value.insets.top); put("left", value.insets.left)
+                        put("bottom", value.insets.bottom); put("right", value.insets.right)
+                    })
+                    put("awtDensityX", value.graphicsConfiguration.defaultTransform.scaleX)
+                    put("awtDensityY", value.graphicsConfiguration.defaultTransform.scaleY)
+                }
+                val frame = current()
+                val currentLayers = actualMainSceneLayers()
+                Files.writeString(report.resolve("failure-bgm-selector-geometry.json"), buildJsonObject {
+                    put("scope", "FAILURE_ONLY_REAL_OWNED_WINDOW_GEOMETRY")
+                    put("main", geometry(window())); put("dialog", geometry(surface))
+                    put("configuredComposeScalePercent", privateScalePercent())
+                    put("configuredComposeScaleIsNotObservedDensity", true)
+                    put("mainClientContainsDialogClient", viewport.contains(dialogClient))
+                    put("serial", frame.serial); put("keyType", frame.key.javaClass.simpleName)
+                    put("ownedByActualMain", ownedWindow(surface)); put("dialogTitle", "发现音乐")
+                    put("ownerChain", JsonArray(generateSequence(surface as Window?) { it.owner }.take(8).map { value ->
+                        buildJsonObject {
+                            put("class", value.javaClass.name); put("identity", System.identityHashCode(value))
+                            put("isActualMain", value === window()); put("showing", value.isShowing)
+                        }
+                    }.toList()))
+                    put("mainSceneLayerCountBefore", layers.size); put("mainSceneLayerCountAtFailure", currentLayers.size)
+                    put("mainSceneLayersUnchanged", currentLayers.size == layers.size && currentLayers.all { layer -> layers.any { it === layer } })
+                    put("mainSceneLayerClasses", JsonArray(currentLayers.map { JsonPrimitive(it.javaClass.name) }))
+                    put("sameActualPlayerAndFullSource", actualPlayer.ownsSourceSnapshot(p2Source))
+                }.toString(), CREATE_NEW, WRITE)
+            }
+            check(viewport.contains(dialogClient)) { "BGM selector exceeds its actual Main client: Main=$viewport Dialog=$dialogClient" }
+        }
+        edt { captureOwnedExtraSurface("159-original-bgm-selector-ready", surface) }
+        fun requireRecommended(id: String, title: String, stage: String) {
+            await("original BGM detail/recommend requests complete with CID7008 for $id") {
+                sameNative()
+                runCatching { localReplay.requireBgmRequests(id, 7008L, discovery = true) }.isSuccess
+            }
+            fun rendered() = edt { current(); sameNative(); descendants(surface.accessibleContext).any {
+                hasLabel(it, "视频标题: ${title}关联视频") && visible(it, surface)
+            } }
+            repeat(14) { if (!rendered()) { wheelBgmSelection(surface, 1); Thread.sleep(100) } }
+            edt { captureOwnedExtraSurface("$stage-before-visible-oracle", surface) }
+            await("original related-video title actually visible in the bounded selector") { rendered() }
+            edt { captureOwnedExtraSurface(stage, surface) }
+        }
+        requireRecommended("fixture-p2-a", "P2第一首", "159-original-bgm-first-recommendation")
+        // Return to the real original strip, then deliver once to its only
+        // clickable second-song Column (no second detail-card title exists yet).
+        repeat(10) {
+            val available = edt { descendants(surface.accessibleContext).count { hasLabel(it, "P2第二首") &&
+                visible(it, surface) && it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1 }
+            if (!available) { wheelBgmSelection(surface, -2); Thread.sleep(100) }
+        }
+        clickFeatureItem(surface, "P2第二首")
+        requireRecommended("fixture-p2-b", "P2第二首", "159-original-bgm-second-recommendation")
+        // Header is part of the same original scroll content, not a fake toolbar.
+        repeat(12) {
+            val closeVisible = edt { descendants(surface.accessibleContext).count { hasLabel(it, "关闭") &&
+                visible(it, surface) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1 }
+            if (!closeVisible) { wheelBgmSelection(surface, -3); Thread.sleep(100) }
+        }
+        clickFeatureItem(surface, "关闭")
+        await("original BGM close disposes its native window and restores the original video input layers") { edt {
+            sameNative()
+            val currentLayers = actualMainSceneLayers()
+            !surface.isShowing && !surface.isDisplayable &&
+                currentLayers.size == layers.size && currentLayers.all { layer -> layers.any { it === layer } } &&
+                runCatching { detailPaneScope() }.isSuccess
+        } }
+        check(assembly.owns() && assembly.playback.captureDesktopBgmResult()?.request === p2Music.request &&
+            actualPlayer.ownsSourceSnapshot(p2Source))
+        record("159-original-multiple-bgm-selector", mapOf(
+            "actualOriginalInlineControlUsed" to JsonPrimitive("BGM"), "originalResultExpectedRenderedText" to JsonPrimitive(header),
+            "originalResultMusicTitles" to JsonArray(p2Music.bgmInfoList.map { JsonPrimitive(it.musicTitle) }),
+            "originalResultActor" to JsonPrimitive(p2Music.bgmInfoList.first().actor),
+            "visualTextEvidence" to JsonPrimitive("OWNED_SCREENSHOT_ORIGINAL_MERGED_BGM_ROW"),
+            "originalBothSongsVisible" to JsonPrimitive(true), "actualOriginalSecondSongControlUsed" to JsonPrimitive("P2第二首"),
+            "actualDiscoveryCid" to JsonPrimitive(7008), "actualOwnedNativeWindow" to JsonPrimitive(true),
+            "originalDetailAndRecommendationsLoadedForBothSongs" to JsonPrimitive(true), "actualOriginalCloseUsed" to JsonPrimitive(true),
+            "sourceVersion" to JsonPrimitive(p2Source.sourceVersion), "sameActualMpvAndCanvas" to JsonPrimitive(true),
+            "remoteWishOrCommentSubmitted" to JsonPrimitive(false)))
+        closeBgmIntroduction()
+        click("更多播放操作")
+        await("actual More menu for the original return-to-P1 collection") { edt {
+            val menu = playerMenuSurface() ?: return@edt false
+            descendants(menu.accessibleContext).count { hasLabel(it, "视频合集") && visible(it, menu) &&
+                (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+        } }
+        clickFeatureItem(edt { requireNotNull(playerMenuSurface()) }, "视频合集")
+        await("complete original collection for P2-to-P1 return") { edt {
+            ownedFeatureSurface("合集", "展开简介", "关闭", "1.Local replay P1", "2.Local replay P2") != null
+        } }
+        val collection = edt { requireNotNull(ownedFeatureSurface("合集", "展开简介", "关闭", "1.Local replay P1", "2.Local replay P2")) }
+        clickFeatureItem(collection, "1.Local replay P1")
+        var p1Source: OwnedPlaybackSourceSnapshot? = null
+        await("original P1 control replaces the actual native source on its same actor and Canvas") {
+            val candidate = actualPlayer.currentSourceSnapshot() ?: return@await false
+            if (candidate.sourceVersion <= p2Source.sourceVersion || candidate.source.nativePublication == null ||
+                candidate.source.nativePublication === p2Source.source.nativePublication || !actualPlayer.ownsSourceSnapshot(candidate) || !playing()) return@await false
+            edt {
+                current()
+                check(nativeComponents(window()).filterIsInstance<Canvas>().filter { it.isShowing && it.width > 100 && it.height > 80 &&
+                    SwingUtilities.getWindowAncestor(it) === window() &&
+                    it.javaClass.declaredFields.any { field -> field.type == MpvPlayer::class.java } }.single() === actualCanvas)
+                check(SwingUtilities.getWindowAncestor(actualPlayer.surface) === window())
+            }
+            p1Source = candidate; true
+        }
+        accepted = requireNotNull(p1Source)
+        check(!actualPlayer.ownsSourceSnapshot(p2Source))
+        await("old collection and BGM input windows remain retired after source replacement") { edt {
+            sameNative()
+            !collection.isShowing && !collection.isDisplayable && !surface.isShowing && !surface.isDisplayable &&
+                runCatching { videoScope("详情") }.isSuccess
+        } }
+        val (currentAssembly, p1Music) = awaitBgmOwner(7007L, listOf("fixture-p1"))
+        check(currentAssembly === assembly && p1Music.request !== p2Music.request)
+        val source = requireNotNull(assembly.native.current())
+        check(!desktopWindowsVideoBgmMatchesSource(p2Music, assembly.playback.captureDesktopBgmResult(), source.request))
+        openBgmIntroduction("发现音乐《P1原音乐》 · 本地艺人")
+        edt {
+            check(descendants(detailPaneScope()).count { it.accessibleName == "BGM" && visible(it) &&
+                (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1)
+            check(p1Music.bgmInfo?.musicTitle == "P1原音乐" && p1Music.bgmInfo?.actor == "本地艺人" && p1Music.bgmInfoList.isEmpty())
+            check(Window.getWindows().none { it is javax.swing.JDialog && it.title == "发现音乐" && it.isShowing && ownedWindow(it) })
+        }
+        actions.capture("159-original-bgm-source-return-p1", edt { current() })
+        record("159-original-bgm-source-retired", mapOf(
+            "previousCid" to JsonPrimitive(7008), "currentCid" to JsonPrimitive(7007),
+            "previousNativeSourceVersion" to JsonPrimitive(p2Source.sourceVersion), "newNativeSourceVersion" to JsonPrimitive(accepted.sourceVersion),
+            "originalCollectionReturnControlUsed" to JsonPrimitive("1.Local replay P1"),
+            "oldMetadataRequestRetired" to JsonPrimitive(true), "newOriginalMetadataRequestIdentity" to JsonPrimitive(true),
+            "oldMultiSongUiAbsent" to JsonPrimitive(true),
+            "visualTextEvidence" to JsonPrimitive("OWNED_SCREENSHOT_ORIGINAL_MERGED_BGM_ROW"),
+            "currentOriginalInlineAccessibleLabel" to JsonPrimitive("BGM"),
+            "currentOriginalSingleTitle" to JsonPrimitive("P1原音乐"), "currentOriginalSingleActor" to JsonPrimitive("本地艺人"),
+            "oldOwnedSelectorRemainsDisposed" to JsonPrimitive(true),
+            "sameActualMpvAndCanvas" to JsonPrimitive(true), "syntheticApiResponsesOnly" to JsonPrimitive(true),
+            "remoteWishOrCommentSubmitted" to JsonPrimitive(false)))
+        closeBgmIntroduction(); clockAndCapture("159-original-bgm-p1-playing")
+    }
+
     private fun privateCollectionSort(): String? {
         val file = actions.local.resolve("BiliPaiWindows/plugin-settings.json")
         if (!Files.exists(file, NOFOLLOW_LINKS)) return null
@@ -1679,6 +2076,10 @@ object WindowsVideoActualRootUiFixture {
             check(replay) { "Hot UI proof requires the private actual Main local replay" }
             exerciseHotDanmaku(requireNotNull(localReplay))
         }
+        if (System.getProperty("bilipai.validation.bgmInput") == "true") {
+            check(replay && System.getProperty("bilipai.validation.collectionInput") == "true")
+            exerciseSingleBgm(requireNotNull(localReplay))
+        }
         if (System.getProperty("bilipai.validation.collectionInput") == "true") {
             check(replay) { "Collection/queue layout proof requires private synthetic metadata" }
             exerciseCollectionAndQueue()
@@ -1698,6 +2099,11 @@ object WindowsVideoActualRootUiFixture {
                     all().none { it.accessibleName == "关闭详情" && visible(it) }
                 } }
             }
+        }
+        // Preserve .8's P2 metadata/source-version proof above, then perform the
+        // optional original BGM P2-to-P1 return as its own source-changing phase.
+        if (System.getProperty("bilipai.validation.bgmInput") == "true") {
+            exerciseMultipleBgmAndReturn(requireNotNull(localReplay))
         }
         val beforeBack = edt { current().serial }
         click("返回")
@@ -1767,6 +2173,10 @@ object WindowsVideoActualRootUiFixture {
                         put("collectionInputProofCompleted", System.getProperty("bilipai.validation.collectionInput") == "true")
                         put("queueIndexedSelectionAccepted", false)
                         put("videoMetadataProofCompleted", System.getProperty("bilipai.validation.metadataInput") == "true")
+                        put("bgmInputProofRequested", System.getProperty("bilipai.validation.bgmInput") == "true")
+                        put("bgmInputProofCompleted", System.getProperty("bilipai.validation.bgmInput") == "true")
+                        put("bgmApiResponsesAreSynthetic", System.getProperty("bilipai.validation.bgmInput") == "true")
+                        put("bgmAccountMutationAccepted", false); put("commentsSent", false)
                         put("realAccountUsed", false); put("physicalStackWrittenByFixture", System.getProperty("bilipai.validation.nvidiaInput") == "true")
                         put("directPhysicalStackListMutation", false)
                         put("newNativeActorCreatedByFixture", false); put("newRootCreatedByFixture", false)

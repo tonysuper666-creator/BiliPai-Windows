@@ -1749,6 +1749,26 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 {action->presentation.stillOwned() && ordinaryVideo.factoryFor(presentation.assembly)
                                                     .withPresentationAdmission(presentation.assembly,presentation.sourceOwner,action)})
                                         },
+                                        bgm = { presentation ->
+                                            fun ownedBgm() = !isClosing() && !activatingUpdate && active && hostVisible && hostDisplayable &&
+                                                messageRoutes.currentKey == entryKey && ordinaryVideo.slot.currentAssembly() === presentation.assembly &&
+                                                presentation.stillOwned() && ordinaryVideo.factoryFor(presentation.assembly)
+                                                    .isPresentationCurrent(presentation.assembly,presentation.sourceOwner)
+                                            DesktopWindowsVideoBgmSection(DesktopWindowsVideoBgmPresentation(
+                                                presentation.assembly,presentation.sourceOwner,presentation.result,::ownedBgm),
+                                                { action -> ownedBgm() && ordinaryVideo.factoryFor(presentation.assembly)
+                                                    .withPresentationAdmission(presentation.assembly,presentation.sourceOwner,action) },
+                                                onDetail = { target -> if(ownedBgm()) messageRoutes.callbackFor(entryKey) {
+                                                    commands.push(BiliPaiNavKey.BgmDetail(target.musicId,target.aid,target.cid,target.showVideos))
+                                                } },
+                                                onRelatedVideo = { bvid,cid -> if(ownedBgm()) messageRoutes.callbackFor(entryKey) {
+                                                    openVideo(VideoCard(bvid,"","","",0,0,preferredCid=cid))
+                                                } },
+                                                onExternalUrl = { raw -> if(ownedBgm()) {
+                                                    // Browser dispatch is outside the BGM final publication monitor.
+                                                    desktopOriginalOpenMessageLink(raw,commands,entryKey.toLegacyRoute())
+                                                } })
+                                        },
                                         enhancement = { DesktopVideoEnhancementControls(enhancementState, pluginRuntime.enhancementConfiguration,
                                             onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) }, onSettings = { enhancementSettings = true }) },
                                         openLink = { raw -> desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute()) },
