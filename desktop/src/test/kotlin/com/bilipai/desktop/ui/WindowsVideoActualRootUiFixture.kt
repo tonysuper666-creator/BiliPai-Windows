@@ -1031,6 +1031,7 @@ object WindowsVideoActualRootUiFixture {
             "actualMenuSurfaceKind" to JsonPrimitive(if (surface === edt { window() }) "inline-main" else "owned-popup"),
             "sameNativeSource" to JsonPrimitive(true), "clockBefore" to JsonPrimitive(before), "clockAfter" to JsonPrimitive(after),
             "volumeAndMutePreserved" to JsonPrimitive(true)))
+        if (System.getProperty("bilipai.validation.metadataInput") == "true") exerciseVideoMetadata("112")
         if (System.getProperty("bilipai.validation.featureInput") == "true") exerciseDanmakuSettings()
         click("关闭详情")
         await("actual menu detail close restores compact player") { edt {
@@ -1041,6 +1042,53 @@ object WindowsVideoActualRootUiFixture {
                 runCatching { videoScope("NVIDIA 增强详情") }.isSuccess
         } }
         sameNative(); check(playing())
+    }
+
+    private fun exerciseVideoMetadata(stage: String) {
+        sameNative(); check(playing())
+        val source = requireNotNull(actualPlayer.currentSourceSnapshot())
+        fun named(node: AccessibleContext, label: String) =
+            Regex("(^|[\\r\\n,，])\\s*${Regex.escape(label)}\\s*($|[\\r\\n,，])")
+                .containsMatchIn(node.accessibleName.orEmpty())
+        fun labelVisible(label: String) = edt {
+            sameNative()
+            val scope = runCatching { detailPaneScope() }.getOrNull() ?: return@edt false
+            descendants(scope).any { named(it, label) && visible(it) }
+        }
+        val labels = listOf("每周必看验收", "演绎内容，仅作原版声明布局验收", "未经作者授权，请勿转载",
+            "创作团队", "共 1 位", "原版团队验收 头像")
+        for ((index, label) in labels.withIndex()) {
+            await("original video metadata loaded: $label") { edt {
+                // A real Tab click can temporarily publish only its focused node.
+                // Wait for the complete same-source details tree, without retrying input.
+                sameNative()
+                val scope = runCatching { detailPaneScope() }.getOrNull() ?: return@edt false
+                descendants(scope).any { named(it, label) }
+            } }
+            for (attempt in 0 until 16) {
+                if (labelVisible(label)) break
+                ownedWheel(edt { actualComposeInput() }, 1, false); Thread.sleep(150)
+            }
+            check(labelVisible(label)) { "Original metadata is outside its visible details viewport: $label" }
+            if (index in listOf(0, 2, 5)) actions.capture("$stage-original-metadata-$index", edt { current() })
+        }
+        edt {
+            val members = descendants(detailPaneScope()).filter {
+                named(it, "原版团队验收 头像") && visible(it) &&
+                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1
+            }
+            check(members.isNotEmpty()) { "Original creator chip lost its space navigation action" }
+            check(descendants(detailPaneScope()).any { hasLabel(it, "关注") && visible(it) &&
+                (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }) { "Original team follow action is missing" }
+        }
+        sameNative()
+        check(actualPlayer.ownsSourceSnapshot(source))
+        record("$stage-original-video-metadata", mapOf(
+            "actualOriginalLabels" to JsonArray(labels.map(::JsonPrimitive)),
+            "originalTeamNavigationAndFollowControlsVisible" to JsonPrimitive(true),
+            "sameActualPlayerAndSource" to JsonPrimitive(true), "sourceVersion" to JsonPrimitive(source.sourceVersion),
+            "realAccountUsed" to JsonPrimitive(false), "honorNavigationAccepted" to JsonPrimitive(false),
+            "creatorFollowSubmitted" to JsonPrimitive(false)))
     }
 
     private fun ownedFeatureSurface(vararg anchors: String): Window? {
@@ -1634,6 +1682,22 @@ object WindowsVideoActualRootUiFixture {
         if (System.getProperty("bilipai.validation.collectionInput") == "true") {
             check(replay) { "Collection/queue layout proof requires private synthetic metadata" }
             exerciseCollectionAndQueue()
+            if (System.getProperty("bilipai.validation.metadataInput") == "true") {
+                click("详情")
+                await("details reopened on the second accepted native part") { edt {
+                    runCatching { detailPaneScope() }.isSuccess
+                } }
+                edt {
+                    val tab = descendants(detailPaneScope()).single { it.accessibleName == "简介与分P" &&
+                        it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB && visible(it) }
+                    clickOwnedComposeMouse(window(), tab)
+                }
+                exerciseVideoMetadata("159")
+                click("关闭详情")
+                await("metadata details retired before real Back") { edt {
+                    all().none { it.accessibleName == "关闭详情" && visible(it) }
+                } }
+            }
         }
         val beforeBack = edt { current().serial }
         click("返回")
@@ -1702,6 +1766,7 @@ object WindowsVideoActualRootUiFixture {
                         put("collectionInputProofRequested", System.getProperty("bilipai.validation.collectionInput") == "true")
                         put("collectionInputProofCompleted", System.getProperty("bilipai.validation.collectionInput") == "true")
                         put("queueIndexedSelectionAccepted", false)
+                        put("videoMetadataProofCompleted", System.getProperty("bilipai.validation.metadataInput") == "true")
                         put("realAccountUsed", false); put("physicalStackWrittenByFixture", System.getProperty("bilipai.validation.nvidiaInput") == "true")
                         put("directPhysicalStackListMutation", false)
                         put("newNativeActorCreatedByFixture", false); put("newRootCreatedByFixture", false)

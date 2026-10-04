@@ -60,6 +60,9 @@ class DanmakuOverlay internal constructor(
     private val generation = AtomicLong()
     private val documentRevision = AtomicLong()
     private val requestLock = Any()
+    // The existing document-processing ticket, distinct from local raw-list
+    // revisions. Appending a self item must not cancel/re-run an in-flight plugin.
+    private var documentInstallRevision=0L
     private var cacheMaintenance=false
     @Volatile private var windowLoader:DanmakuWindowLoader?=null
     private val requests = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -121,7 +124,10 @@ class DanmakuOverlay internal constructor(
     private var poolSourceVersion: Long? = null
     private val mutablePoolSourceRevision = MutableStateFlow(0L)
     val poolSourceRevision: StateFlow<Long> = mutablePoolSourceRevision.asStateFlow()
-    private data class HotDocument(val generation:Long,val revision:Long,val comments:List<DanmakuComment>)
+    private data class HotDocument(val generation:Long,val revision:Long,val comments:List<DanmakuComment>,
+        // Processing provenance only: includes raw locals dropped by the plugin.
+        // Their absence from a visible scheduler is not permission to inject them again.
+        val processedLocalIds:Set<Int>)
     private var hotDocument:HotDocument? = null
     private data class HotReservation(val sourceVersion:Long,val token:Any,val heightPx:Float)
     @Volatile private var hotReservation:HotReservation? = null
@@ -267,13 +273,51 @@ class DanmakuOverlay internal constructor(
             val comment=DanmakuComment(previous+1,item.showAtTime/1000.0,mode,fontSize,
                 (item.textColor ?: color) and 0xffffff,item.text.orEmpty(),originalLocalItem=item,
                 originalLocalInjectionPhase=originalLocalInjectionPhase)
-            val next=rawDocument.copy(comments=(rawDocument.comments+comment)
+            rawDocument=rawDocument.copy(comments=(rawDocument.comments+comment)
                 .sortedBy {it.timeSeconds})
-            // Consecutive local appends remain downstream of ordinary preprocessing
-            // until a genuine settings/plugin/document rebuild retires this phase.
-            installDocument(next,generation.get(),originalLocalInjectionPhase)
+            documentRevision.incrementAndGet().also {mutablePoolSourceRevision.value=it}
+            publishOriginalLocalAppend(generation.get(),documentInstallRevision)
             true
         }
+
+    /** Mutate only the installed timeline; a pending full pipeline picks up all
+     * late local additions and applies their current/retired phase at publication. */
+    private fun publishOriginalLocalAppend(version:Long,installRevision:Long) {
+        SwingUtilities.invokeLater {installOriginalLocalAppend(version,installRevision)}
+    }
+
+    private fun installOriginalLocalAppend(version:Long,installRevision:Long) {
+        check(SwingUtilities.isEventDispatchThread())
+        var count:Int?=null
+        var appliedRevision=0L
+        synchronized(requestLock) {
+            if(closed.get() || cacheMaintenance || generation.get()!=version ||
+                documentInstallRevision!=installRevision || !currentOfflineDocumentOwned())return
+            if(originalInstalledGeneration!=version || originalInstalledRevision<installRevision)return
+            val installed=hotDocument?.takeIf {it.generation==version && it.revision==originalInstalledRevision}
+                ?: return
+            // Reconcile against the actual current settings phase on EDT. A
+            // settings publication may precede its queued scheduler update.
+            val known=installed.processedLocalIds
+            val local=rawDocument.comments.filter {it.originalLocalItem!=null && it.id !in known}
+            val added=scheduler.appendOriginalLocalComments(local,originalLocalInjectionPhase,settings,
+                allowPhaseRetirement=true) ?: return
+            val processed=(installed.comments+added).sortedBy {it.timeSeconds}
+            val revision=documentRevision.get()
+            hotDocument=HotDocument(version,revision,processed,known+added.map {it.id})
+            originalInstalledRevision=revision
+            appliedRevision=revision
+            count=processed.size+rawDocument.advanced.size
+            // Existing styles, advanced renderer, text measurements, active
+            // occupants and clock remain untouched by a local append.
+        }
+        count?.let {
+            if(synchronized(requestLock) {!closed.get() && generation.get()==version &&
+                documentInstallRevision==installRevision && documentRevision.get()==appliedRevision &&
+                currentOfflineDocumentOwned()})mutableCount.value=it
+            panel.repaint()
+        }
+    }
 
     private fun originalClickBinding():OriginalClickBinding? {
         originalClickBindings.entries.removeIf {!it.value.owns()}
@@ -748,35 +792,50 @@ class DanmakuOverlay internal constructor(
         installDocument(document, version)
     }
 
-    private fun installDocument(document: DanmakuDocument, version: Long, immediateLocalPhase:Any? = null) {
+    private data class DocumentInstallSnapshot(val settings:DanmakuSettings,val phase:Any,
+        val raw:DanmakuDocument,val revision:Long)
+
+    private fun installDocument(document: DanmakuDocument, version: Long) {
         val (revision, processor) = synchronized(requestLock) {
             if (cacheMaintenance || version != generation.get() || closed.get() || !currentOfflineDocumentOwned()) return
-            if(immediateLocalPhase==null)originalLocalInjectionPhase=Any()
+            originalLocalInjectionPhase=Any()
             pluginJob?.cancel()
             rawDocument = document.copy(serverDisabled = rawDocument.serverDisabled || document.serverDisabled)
             mutableAdvanced.value = document.advanced
-            documentRevision.incrementAndGet().also { mutablePoolSourceRevision.value = it } to pluginProcessor
+            documentRevision.incrementAndGet().also {
+                documentInstallRevision=it;mutablePoolSourceRevision.value = it
+            } to pluginProcessor
         }
+        val inputIds=document.comments.mapTo(hashSetOf()) {it.id}
+        val inputLocalIds=document.comments.asSequence().filter {it.originalLocalItem!=null}.map {it.id}.toSet()
         fun install(processed: DanmakuDocument, nextStyles: Map<Int, DanmakuStyle>) {
             SwingUtilities.invokeLater {
-                fun current() = !closed.get() && version==generation.get() && revision==documentRevision.get() && currentOfflineDocumentOwned()
-                val captured=synchronized(requestLock) {if(current())settings to originalLocalInjectionPhase else null} ?: return@invokeLater
+                fun current() = !closed.get() && version==generation.get() && revision==documentInstallRevision && currentOfflineDocumentOwned()
+                val captured=synchronized(requestLock) {
+                    if(current())DocumentInstallSnapshot(settings,originalLocalInjectionPhase,rawDocument,documentRevision.get()) else null
+                } ?: return@invokeLater
+                // Local sends accepted while this pipeline was busy are already
+                // downstream of preprocessing. Merge them once into this result.
+                val local=captured.raw.comments.filter {it.originalLocalItem!=null &&
+                    it.id !in inputIds}
+                val installedComments=(processed.comments+local).sortedBy {it.timeSeconds}
                 // Parsing/filter preparation is outside the publication monitor. The renderer and hot view
                 // are swapped together only if this exact document/settings/phase still owns the result.
-                val nextScheduler=DanmakuScheduler(processed.comments,captured.first,liveAdmission=false,
-                    immediateLocalPhase=immediateLocalPhase?.takeIf {it===captured.second})
+                val nextScheduler=DanmakuScheduler(installedComments,captured.settings,liveAdmission=false,
+                    immediateLocalPhase=captured.phase)
                 val nextAdvanced=AdvancedDanmakuRenderer(processed.advanced)
                 val applied=synchronized(requestLock) {
-                    if(!current() || settings!=captured.first || originalLocalInjectionPhase!==captured.second)false
+                    if(!current() || settings!=captured.settings || originalLocalInjectionPhase!==captured.phase ||
+                        rawDocument!==captured.raw || documentRevision.get()!=captured.revision)false
                     else {
                         styles=nextStyles;scheduler=nextScheduler;advancedRenderer=nextAdvanced
-                        hotDocument=HotDocument(version,revision,processed.comments)
-                        originalInstalledGeneration=version;originalInstalledRevision=revision
+                        hotDocument=HotDocument(version,captured.revision,installedComments,inputLocalIds+local.map {it.id})
+                        originalInstalledGeneration=version;originalInstalledRevision=captured.revision
                         measuredWidths.clear();true
                     }
                 }
                 if(applied) {
-                    if(synchronized(requestLock){current()})mutableCount.value=processed.size
+                    if(synchronized(requestLock){current()})mutableCount.value=installedComments.size+processed.advanced.size
                     panel.repaint()
                 } else if(synchronized(requestLock){current()})install(processed,nextStyles)
             }
@@ -788,8 +847,7 @@ class DanmakuOverlay internal constructor(
             val nextStyles = mutableMapOf<Int, DanmakuStyle>()
             document.comments.forEachIndexed { index, comment ->
                 if (index % 128 == 0) ensureActive()
-                if(immediateLocalPhase!=null && comment.originalLocalInjectionPhase===immediateLocalPhase && comment.originalLocalItem!=null)next+=comment
-                else applyDesktopDanmakuPlugin(comment, processor)?.let { transformed ->
+                applyDesktopDanmakuPlugin(comment, processor)?.let { transformed ->
                     next += transformed.comment
                     transformed.style?.let { nextStyles[transformed.comment.id] = it }
                 }
@@ -797,7 +855,7 @@ class DanmakuOverlay internal constructor(
             install(document.copy(comments = next), nextStyles)
           }
           synchronized(requestLock) {
-              if (version == generation.get() && revision == documentRevision.get() && !closed.get()) pluginJob = processing
+              if (version == generation.get() && revision == documentInstallRevision && !closed.get()) pluginJob = processing
               else processing.cancel()
           }
         }

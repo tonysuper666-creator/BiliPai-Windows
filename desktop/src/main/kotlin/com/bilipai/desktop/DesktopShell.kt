@@ -1752,6 +1752,22 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         enhancement = { DesktopVideoEnhancementControls(enhancementState, pluginRuntime.enhancementConfiguration,
                                             onToggle = { enabled -> if (!isClosing() && !activatingUpdate) pluginRuntime.enhancementConfiguration.setAutomaticEnabled(enabled) }, onSettings = { enhancementSettings = true }) },
                                         openLink = { raw -> desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute()) },
+                                        honorLink = { assembly, source, url ->
+                                            if (!isClosing() && !activatingUpdate && active && hostVisible && hostDisplayable &&
+                                                messageRoutes.currentKey == entryKey && ordinaryVideo.slot.currentAssembly() === assembly && assembly.owns()) {
+                                                val internalTarget = com.android.purebilibili.core.util.BilibiliNavigationTargetParser.parse(url) is
+                                                    com.android.purebilibili.core.util.BilibiliNavigationTarget.PopularFeed
+                                                var externalLinkAdmitted = false
+                                                ordinaryVideo.factoryFor(assembly).withPresentationAdmission(assembly, source) {
+                                                    messageRoutes.callbackFor(entryKey) {
+                                                        if (internalTarget) openVideoHonorLink(url)
+                                                        else externalLinkAdmitted = true
+                                                    }
+                                                }
+                                                // System browser I/O follows the accepted click outside the session/entry monitor.
+                                                if (externalLinkAdmitted) openVideoHonorLink(url)
+                                            }
+                                        },
                                         login = { loginDialog = true }, danmakuSettings = {
                                             if (danmaku != null && hostWindow != null && danmakuSource != null &&
                                                 danmakuSource.request.cid > 0L && ownsDanmakuSource()) originalDanmakuSettingsVisible = true

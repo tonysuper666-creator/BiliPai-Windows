@@ -49,6 +49,7 @@ internal class DesktopWindowsVideoActions(
     val overlay: @Composable () -> Unit,
     val enhancement: @Composable () -> Unit,
     val openLink: (String) -> Unit,
+    val honorLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String) -> Unit,
     val login: () -> Unit, val danmakuSettings: () -> Unit, val toggleDanmaku: () -> Unit,
     val notice: (String) -> Unit,
     val focusChanged: (Boolean) -> Unit,
@@ -333,6 +334,11 @@ internal class DesktopWindowsVideoActions(
                         if (success != null) {
                             Text(success.info.title, style = MaterialTheme.typography.titleMedium)
                             TextButton(onClick = { if (current()) actions.user(success.info.owner.mid) }) { Text(success.info.owner.name) }
+                            collectionQueueSource?.let { source ->
+                                DesktopWindowsVideoMetadataSection(assembly, success.info, source,
+                                    platforms.holder.settingsContext, platforms.portrait.creatorTeam,
+                                    ::current, actions.user) { url -> latestActions.honorLink(assembly, source, url) }
+                            }
                             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 TextButton(onClick = { if (current()) assembly.domains.engagement.toggleLike() }) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
                                 actions.favorite(assembly, success, ::current)

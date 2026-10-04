@@ -12,7 +12,7 @@ data class PositionedDanmaku(val comment: DanmakuComment, val x: Double, val bas
 
 /** Media-time scheduler: pause freezes positions; seeking rebuilds only the visible window. */
 class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings, private val liveAdmission:Boolean, immediateLocalPhase:Any? = null) {
-    private val originalComments = comments.sortedBy {it.timeSeconds}
+    private var originalComments = comments.sortedBy {it.timeSeconds}
     private var settings = settings.normalized()
     private var initialLocalPhase=immediateLocalPhase
     private var comments = prepareComments()
@@ -21,6 +21,9 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
         val end get() = comment.timeSeconds + duration
     }
     private val active = mutableListOf<Scheduled>()
+    // A late local insertion can precede the already consumed cursor. Admit that
+    // insertion once without winding back through consumed/collision-dropped items.
+    private val pendingLocalComments = mutableListOf<DanmakuComment>()
     private var cursor = 0
     private var previousTime = Double.NaN
     private data class Geometry(val width:Int,val height:Int,val config:DanmakuRenderConfig) {
@@ -30,20 +33,62 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
     }
     private var viewport:Geometry?=null
 
-    fun resetTimeline() { active.clear(); previousTime=Double.NaN }
+    fun resetTimeline() { active.clear(); pendingLocalComments.clear(); previousTime=Double.NaN }
+
+    /** Append downstream of ordinary filtering/merging, as original controller.append.
+     * All access belongs to the existing renderer EDT. A conflicting identity or
+     * a retired preprocessing phase requires normal filtered-timeline preparation. */
+    internal fun appendOriginalLocalComments(next:List<DanmakuComment>,phase:Any,
+        currentSettings:DanmakuSettings=this.settings,allowPhaseRetirement:Boolean=false):List<DanmakuComment>? {
+        if(!allowPhaseRetirement && initialLocalPhase!=null && initialLocalPhase!==phase)return null
+        if(next.any {it.originalLocalItem==null || it.originalLocalInjectionPhase==null ||
+                (!allowPhaseRetirement && it.originalLocalInjectionPhase!==phase)})return null
+        val known=originalComments.associateBy {it.id}
+        val unique=next.distinctBy {it.id}
+        if(unique.size!=next.size || next.any {known[it.id]?.let {old->old!=it}==true})return null
+        val added=unique.filter {it.id !in known}.sortedBy {it.timeSeconds}
+        val normalized=currentSettings.normalized()
+        val rebuild=normalized!=settings || (initialLocalPhase!=null && initialLocalPhase!==phase) ||
+            added.any {it.originalLocalInjectionPhase!==phase}
+        if(added.isEmpty() && !rebuild)return emptyList()
+        originalComments=(originalComments+added).sortedBy {it.timeSeconds}
+        if(rebuild) {
+            // Only a real settings/phase retirement takes the normal rebuild path.
+            // Old local items now pass filters; new-phase items stay downstream.
+            settings=normalized;initialLocalPhase=phase;pendingLocalComments.clear()
+            comments=prepareComments();previousTime=Double.NaN
+            return added
+        }
+        initialLocalPhase=phase
+        val timeline=comments.toMutableList()
+        added.forEach {comment->
+            // Stable insertion after equal timestamps retains the ordinary order.
+            var low=0;var high=timeline.size
+            while(low<high) {
+                val middle=(low+high) ushr 1
+                if(timeline[middle].timeSeconds<=comment.timeSeconds)low=middle+1 else high=middle
+            }
+            timeline.add(low,comment)
+            if(low<cursor) {cursor++;pendingLocalComments+=comment}
+        }
+        pendingLocalComments.sortBy {it.timeSeconds}
+        comments=timeline
+        return added
+    }
 
     fun applySettings(settings: DanmakuSettings) {
         val normalized = settings.normalized()
         if (normalized == this.settings) return
         this.settings = normalized
         initialLocalPhase=null
+        pendingLocalComments.clear()
         comments = prepareComments()
         previousTime = Double.NaN
     }
 
     internal fun observeOriginalLocalInjectionPhase(current:Any) {
         if(initialLocalPhase!=null && initialLocalPhase!==current) {
-            initialLocalPhase=null;comments=prepareComments();previousTime=Double.NaN
+            initialLocalPhase=null;pendingLocalComments.clear();comments=prepareComments();previousTime=Double.NaN
         }
     }
 
@@ -62,6 +107,7 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
         if (!previousTime.isFinite() || time < previousTime || abs(time - previousTime) > 1.0 ||
             previousGeometry==null || !previousGeometry.onlyReservationChanged(geometry)) {
             active.clear()
+            pendingLocalComments.clear()
             val longestDuration = maxOf(config.scrollDurationMs, config.pinnedDurationMs)/1000.0
             cursor = lowerBound((time - longestDuration).coerceAtLeast(0.0))
         } else if (previousGeometry!=geometry) {
@@ -79,6 +125,7 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
             // Keep already admitted lifetimes (hidden) and consume arrivals while
             // there are no tracks. Restoring space must not replay dropped items.
             while(cursor<comments.size && comments[cursor].timeSeconds<=time)cursor++
+            pendingLocalComments.removeAll {it.timeSeconds<=time}
             active.removeAll {it.end<=time}
             previousTime=time
             return emptyList()
@@ -86,8 +133,7 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
         val lineStep=(config.lineHeightPx+config.lineMarginPx).toDouble()
         // Exact original ByteDanceDanmakuEngine.updateConfig pinned-layer budget; no invented extra tracks.
         val pinnedLineCount=desktopOriginalDanmakuPinnedLineCount(config)
-        while (cursor < comments.size && comments[cursor].timeSeconds <= time) {
-            val comment = comments[cursor++]
+        fun admit(comment:DanmakuComment) {
             active.removeAll { it.end <= comment.timeSeconds }
             val layer=resolveDanmakuRenderLayerType(comment.mode,settings.staticDanmakuToScroll)
             val metrics=measure(comment)
@@ -117,6 +163,10 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
                 active += Scheduled(comment,layer,track,top,top+metrics.ascent,textWidth,duration)
             }
         }
+        while(pendingLocalComments.isNotEmpty() && pendingLocalComments.first().timeSeconds<=time)
+            admit(pendingLocalComments.removeAt(0))
+        while (cursor < comments.size && comments[cursor].timeSeconds <= time)
+            admit(comments[cursor++])
         active.removeAll { it.end <= time }
         previousTime = time
         return active.filter { scheduled ->

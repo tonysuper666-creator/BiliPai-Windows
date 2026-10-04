@@ -41,6 +41,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private val cid = 7007L
     private val aid = 170001L
     private val collectionInput = System.getProperty("bilipai.validation.collectionInput") == "true"
+    private val metadataInput = System.getProperty("bilipai.validation.metadataInput") == "true"
     private val secondCid = 7008L
     private val base: String get() = "http://127.0.0.1:${server.address.port}"
     private var installed = false
@@ -120,12 +121,16 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             if (collectionInput) require(path !in setOf("/x/v3/fav/season/fav", "/x/v3/fav/season/unfav")) {
                 "Collection layout replay must not submit subscription mutations"
             }
+            if (metadataInput) require(path != "/x/relation/modify") {
+                "Creator metadata layout replay must not submit follow mutations"
+            }
             val body = when (path) {
                 "/x/web-interface/view" -> {
                     val requested = request.url.queryParameter("bvid")
                     require(requested == null || requested == bvid)
                     val original = """{"code":0,"data":{"bvid":"$bvid","aid":$aid,"cid":$cid,"title":"Windows local layout replay","desc":"LOCAL REPLAY — media/layout only; not live Bilibili acceptance","pic":"","owner":{"mid":1,"name":"Local fixture","face":""},"stat":{"view":0,"reply":0,"like":0},"dimension":{"width":320,"height":180,"rotate":0},"pages":[{"cid":$cid,"page":1,"part":"Local replay","duration":60,"dimension":{"width":320,"height":180,"rotate":0}}]}}"""
-                    if (collectionInput) collectionMetadata(original) else original
+                    val collected = if (collectionInput) collectionMetadata(original) else original
+                    if (metadataInput) videoMetadata(collected) else collected
                 }
                 "/x/player/wbi/playurl", "/x/player/playurl" -> {
                     val allowedCids = if (collectionInput) setOf(cid.toString(), secondCid.toString()) else setOf(cid.toString())
@@ -190,10 +195,27 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("collectionMetadataIsSynthetic", collectionInput)
             put("collectionMetadataCid2", if (collectionInput) JsonPrimitive(secondCid) else JsonNull)
             put("collectionSubscriptionMutationSubmitted", false)
+            put("videoMetadataIsSynthetic", metadataInput)
+            put("creatorFollowMutationSubmitted", false)
             put("container", "MJPEG_AVI_PLUS_PCM_WAV"); put("qualityMetadataIsSynthetic", true)
             put("codecMetadataIsSynthetic", true); put("realDASHCodecAccepted", false)
             put("apiRequests", JsonArray(requests.toList())); put("loopbackRequests", JsonArray(mediaRequests.toList()))
         }.toString(), CREATE_NEW, WRITE)
+    }
+    private fun videoMetadata(original: String): String {
+        val root = json.parseToJsonElement(original).jsonObject.toMutableMap()
+        val data = root.getValue("data").jsonObject.toMutableMap()
+        data["honor_reply"] = buildJsonObject { put("honor", buildJsonArray { add(buildJsonObject {
+            put("aid", aid); put("type", 2); put("weekly_recommend_num", 390)
+            put("honor_name", "每周必看验收"); put("honor_url", "bilibili://popular/weekly?number=390")
+        }) }) }
+        data["argue_info"] = buildJsonObject { put("argue_msg", "演绎内容，仅作原版声明布局验收") }
+        data["rights"] = buildJsonObject { put("no_reprint", 1); put("is_cooperation", 1) }
+        data["staff"] = buildJsonArray { add(buildJsonObject {
+            put("mid", 2); put("name", "原版团队验收"); put("title", "联合创作"); put("face", "")
+        }) }
+        root["data"] = JsonObject(data)
+        return JsonObject(root).toString()
     }
     private fun collectionMetadata(original: String): String {
         val root = json.parseToJsonElement(original).jsonObject.toMutableMap()
