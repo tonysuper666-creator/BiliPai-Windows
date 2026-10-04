@@ -43,10 +43,11 @@ def lens_preflight_visibility_transforms():
  return [('private const val '+name+' =','internal const val '+name+' =') for name in LENS_PREFLIGHT_CONSTANTS]
 
 def desktop_glass_theme_transforms(path):
- # Original shadows/readability scrims follow the actual app palette, not OS mode.
+ # Original shadows/readability scrims and reused containers follow the app palette.
  # Keep every original expression; only its required platform theme read changes.
  return [('import androidx.compose.foundation.isSystemInDarkTheme\n',
-  'import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme\n')] if path==HOME+'FloatingDockChrome.kt' else []
+  'import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme\n')] if path in (
+   HOME+'FloatingDockChrome.kt', HOME+'BottomBarMatchedLiquidChrome.kt') else []
 
 def generate(repo: Path, output: Path, standalone: bool = False):
  REPO=Path(repo);HERE=Path(output)
