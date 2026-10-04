@@ -35,6 +35,7 @@ object PlayerSelfTest {
         var mediaSession: WindowsMediaSession? = null
         var pip: PictureInPictureController? = null
         val checks = linkedMapOf<String, String>()
+        val visibilityTrace = NativeVisibilityTrace()
         var passed = false
         try {
             check(!GraphicsEnvironment.isHeadless()) { "Native screen rendering requires an interactive desktop." }
@@ -66,7 +67,7 @@ object PlayerSelfTest {
             waitFor(player, "audio/video clock synchronization") { it.avSyncSeconds != null && abs(it.avSyncSeconds) < 0.2 }
             checks["avSyncSeconds"] = player.state.value.avSyncSeconds.toString()
             checks["nativeWindowFocusedAtPixelCapture"] = waitForRenderedVideo(player, requireNotNull(frame),
-                File(outputDirectory, "native-player-smoke.png")).toString()
+                File(outputDirectory, "native-player-smoke.png"), visibilityTrace).toString()
             checks["nativeVideoRendering"] = "passed"
             player.setPaused(true)
             waitFor(player, "actual native pause and synchronized position readback") { it.paused && it.nativePaused == true }
@@ -291,6 +292,9 @@ object PlayerSelfTest {
         } catch (failure: Throwable) {
             val cause = (failure as? InvocationTargetException)?.targetException ?: failure
             checks["failure"] = cause.message ?: cause.javaClass.simpleName
+            runCatching { appendFailureDiagnostics(player, visibilityTrace, checks) }.onFailure {
+                checks["failureObservation.diagnosticError"] = it.javaClass.simpleName
+            }
         } finally {
             mediaSession?.close()
             pip?.close()
@@ -312,7 +316,80 @@ object PlayerSelfTest {
         return passed
     }
 
-    private fun waitForRenderedVideo(player: MpvPlayer, window: JFrame, screenshot: File): Boolean {
+    /** Per-invocation observations only; never an alternate visibility or rendering gate. */
+    private class NativeVisibilityTrace {
+        var attempts = 0
+        var lastGeometry: Map<String, String> = emptyMap()
+
+        fun observe(player: MpvPlayer, window: JFrame, elapsedMillis: Long) {
+            check(SwingUtilities.isEventDispatchThread())
+            attempts++
+            lastGeometry = runCatching {
+                fun rect(value: Rectangle) = "${value.x},${value.y},${value.width},${value.height}"
+                val surface = player.surface
+                val windowBounds = if (window.isShowing) window.locationOnScreen.let {
+                    Rectangle(it.x, it.y, window.width, window.height)
+                } else null
+                val surfaceBounds = if (surface.isShowing) surface.locationOnScreen.let {
+                    Rectangle(it.x, it.y, surface.width, surface.height)
+                } else null
+                val fields = linkedMapOf(
+                    "elapsedMillis" to elapsedMillis.toString(),
+                    "windowIdentity" to System.identityHashCode(window).toString(),
+                    "windowDisplayable" to window.isDisplayable.toString(),
+                    "windowShowing" to window.isShowing.toString(),
+                    "windowFocused" to window.isFocused.toString(),
+                    "windowActive" to window.isActive.toString(),
+                    "surfaceDisplayable" to surface.isDisplayable.toString(),
+                    "surfaceShowing" to surface.isShowing.toString(),
+                    "surfaceSameWindow" to (SwingUtilities.getWindowAncestor(surface) === window).toString(),
+                    "windowBounds" to (windowBounds?.let(::rect) ?: "unavailable"),
+                    "surfaceBounds" to (surfaceBounds?.let(::rect) ?: "unavailable"),
+                )
+                surface.graphicsConfiguration?.let { config ->
+                    fields["surfaceGraphicsBounds"] = rect(config.bounds)
+                    fields["surfaceScale"] = "${config.defaultTransform.scaleX},${config.defaultTransform.scaleY}"
+                    windowBounds?.let { fields["surfaceMonitor.windowIntersection"] = rect(it.intersection(config.bounds)) }
+                    surfaceBounds?.let { fields["surfaceMonitor.surfaceIntersection"] = rect(it.intersection(config.bounds)) }
+                }
+                fields
+            }.getOrElse { mapOf("diagnosticError" to it.javaClass.simpleName) }
+        }
+    }
+
+    /** Same actor, existing fixed native-property whitelist and 1.5s timeout; no commands or source metadata. */
+    private fun appendFailureDiagnostics(player: MpvPlayer, trace: NativeVisibilityTrace, checks: MutableMap<String, String>) {
+        fun put(name: String, value: Any?) { checks["failureObservation.$name"] = value?.toString()?.take(512) ?: "unavailable" }
+        put("geometryAttempts", trace.attempts)
+        trace.lastGeometry.forEach { (key, value) -> put("geometry.$key", value) }
+        val state = player.state.value
+        put("state.ready", state.ready); put("state.loading", state.loading)
+        put("state.paused", state.paused); put("state.nativePaused", state.nativePaused); put("state.ended", state.ended)
+        put("state.positionSeconds", state.positionSeconds); put("state.durationSeconds", state.durationSeconds)
+        put("state.firstVideoFrameReady", state.firstVideoFrameReady); put("state.hardwareDecoder", state.hardwareDecoder)
+        val output = player.videoOutput.value
+        put("output.sourceVersion", output.sourceVersion)
+        put("output.inputDimensions", "${output.inputWidth},${output.inputHeight}")
+        put("output.viewport", output.viewport)
+        val gpu = player.nvidiaVideoState.value
+        put("gpu.sourceVersion", gpu.sourceVersion); put("gpu.name", gpu.gpuName)
+        put("gpu.vendorId", gpu.gpuVendorId); put("gpu.context", gpu.currentGpuContext)
+        // Flow values above and the actor response below are separately timed observations.
+        val native = runBlocking { player.captureNativeAudioDiagnostic() }
+        put("native.available", native != null)
+        if (native == null) return
+        put("native.sourceVersion", native.sourceVersion); put("native.playbackRevision", native.playbackRevision)
+        put("native.activeSourceVersion", native.activeSourceVersion); put("native.activePlaybackRevision", native.activePlaybackRevision)
+        put("native.sessionIdentity", native.sessionIdentity); put("native.workerThread", native.workerThreadName)
+        put("native.fileLoaded", native.fileLoaded); put("native.pendingPauseIntent", native.pendingPauseIntent)
+        listOf("current-vo", "pause", "time-pos", "duration", "idle-active", "core-idle", "eof-reached", "seeking").forEach { name ->
+            val property = native.properties[name]
+            put("native.$name.code", property?.nativeCode); put("native.$name.value", property?.value)
+        }
+        native.safeNativeLogs.takeLast(16).forEachIndexed { index, value -> put("native.safeLog$index", value) }
+    }
+
+    private fun waitForRenderedVideo(player: MpvPlayer, window: JFrame, screenshot: File, trace: NativeVisibilityTrace): Boolean {
         val robot = Robot()
         val deadline = System.nanoTime() + 5_000_000_000L
         var failure = "The native test window did not become visible on the desktop."
@@ -333,6 +410,7 @@ object PlayerSelfTest {
                     bounds = Rectangle(position.x, position.y, window.width, window.height) to
                         Rectangle(surface.x, surface.y, player.surface.width, player.surface.height)
                 }
+                trace.observe(player, window, (System.nanoTime() - (deadline - 5_000_000_000L)) / 1_000_000L)
             }
             bounds?.let { (windowBounds, surfaceBounds) ->
                 ImageIO.write(robot.createScreenCapture(windowBounds), "png", screenshot)

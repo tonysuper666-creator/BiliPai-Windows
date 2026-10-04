@@ -117,7 +117,24 @@ jobs:
           $parameters = @{ NativeSmoke = $true; UpdaterSmoke = $true }
           if ('${{ inputs.installer }}' -eq 'true') { $parameters.Installer = $true }
           if ($env:MAKE_RELEASE -eq 'true') { $parameters.ReleaseGate = $true }
-          & ./desktop/tools/build.ps1 @parameters
+          try { & ./desktop/tools/build.ps1 @parameters }
+          catch {
+            # Workflow process facts, not proof of the native JVM's desktop or visible video.
+            try {
+              $process = [Diagnostics.Process]::GetCurrentProcess()
+              try {
+                $context = [ordered]@{
+                  owner = 'workflow-pwsh'
+                  processId = $process.Id
+                  sessionId = $process.SessionId
+                  userInteractive = [Environment]::UserInteractive
+                  sessionName = if ($env:SESSIONNAME) { $env:SESSIONNAME.Substring(0, [Math]::Min(128, $env:SESSIONNAME.Length)) } else { $null }
+                }
+                Write-Host ('Native build failure runner context: ' + ($context | ConvertTo-Json -Compress))
+              } finally { $process.Dispose() }
+            } catch { Write-Host 'Native build failure runner context unavailable.' }
+            throw
+          }
       - name: Upload packaged native player evidence
         if: always()
         uses: actions/upload-artifact@v4
