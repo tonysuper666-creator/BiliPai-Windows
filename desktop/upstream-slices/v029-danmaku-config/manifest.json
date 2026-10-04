@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "files": [
+    {
+      "archiveFile": "DanmakuConfig.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt",
+      "bytes": 11122,
+      "sha256Bytes": "75e2ec45b13d175b35f5a477c99f38cff007e11776414ea68062c3439e532c37",
+      "sha256LF": "75e2ec45b13d175b35f5a477c99f38cff007e11776414ea68062c3439e532c37",
+      "gitBlob": "31f4683dcee303fba18e735db132763c76eaabbd"
+    },
+    {
+      "archiveFile": "DanmakuConfigPolicyTest.kt",
+      "originalPath": "app/src/test/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt",
+      "bytes": 7178,
+      "sha256Bytes": "427e5c4c7a8ab91965e6525abc5edc47a68440a2b26265d85ceee8a7a9fafd64",
+      "sha256LF": "427e5c4c7a8ab91965e6525abc5edc47a68440a2b26265d85ceee8a7a9fafd64",
+      "gitBlob": "f4b2386f33f3c9a5e5f7d8b8414b129716aaada8"
+    },
+    {
+      "archiveFile": "LiveDanmakuOverlay.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuOverlay.kt",
+      "bytes": 11989,
+      "sha256Bytes": "5a2006af013f34f13b11d02adfb4d6b6642d11f6baa9a1d4ecef193969ed0c99",
+      "sha256LF": "5a2006af013f34f13b11d02adfb4d6b6642d11f6baa9a1d4ecef193969ed0c99",
+      "gitBlob": "9283ef6a9eb05e662f65cdd7801c12f453285b8b"
+    }
+  ]
+}

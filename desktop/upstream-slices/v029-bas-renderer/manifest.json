@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "canonicalBaselineAdvanced": false,
+  "scope": "Whole original scene painter and retained configure/frame/hit/drag algorithm; Windows raster leaf only, no Overlay/source/target action wiring",
+  "license": "Application GPL-3.0; existing danmaku-engine core Apache-2.0; existing Skiko dependency only",
+  "files": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BasScenePainter.kt",
+      "archiveFile": "BasScenePainter.kt",
+      "bytes": 13789,
+      "sha256Bytes": "768bd16faedf4d4696546fcfb7595a0b31ad8e0e6422ea23b0b725e5e8eec94b",
+      "gitBlob": "4f11f2d7c1557eb2f26215b448f3eb0accf2b2ab",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BasScenePainter.kt"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BasDanmakuOverlay.kt",
+      "archiveFile": "BasDanmakuOverlay.kt",
+      "bytes": 9623,
+      "sha256Bytes": "3593305c47470a87f5d89e3b1d358c0be146ce1183bb09fb1753f49388b000b6",
+      "gitBlob": "c028f1f3bd09ff766647756c954d5abf31b59a8f",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/BasDanmakuOverlay.kt"
+    }
+  ]
+}

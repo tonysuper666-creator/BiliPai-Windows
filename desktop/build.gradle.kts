@@ -1216,6 +1216,7 @@ val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/original-danmaku-list-menu").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-danmaku-list-menu.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     inputs.dir("upstream-slices/v027-danmaku-config")
+    inputs.dir("upstream-slices/v029-danmaku-config")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-danmaku-list-menu" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -1256,6 +1257,19 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalBasCore) }
 tasks.named("compileTestKotlin") { dependsOn(extractOriginalBasCore) }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-bas-core/com")) }
 kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-bas-core-tests/com")) }
+
+// Whole fixed-v029 painter and retained frame/input algorithms, with Windows graphics seams.
+val extractOriginalBasRenderer by tasks.registering(Exec::class) {
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bas-renderer.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-bas-renderer").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-bas-renderer.py")
+    inputs.dir("upstream-slices/v029-bas-renderer")
+    outputs.dir(layout.buildDirectory.dir("generated/original-bas-renderer"))
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalBasRenderer) }
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-bas-renderer/com")) }
 
 val extractCommentFraudProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)

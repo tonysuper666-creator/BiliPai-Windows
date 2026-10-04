@@ -301,6 +301,7 @@ object PlayerSelfTest {
             checks["nativeHttpFailureAuthorizedCdnRecoveryAndRedaction"] = "passed"
             DesktopOverlayNativeSmoke.run(player, outputDirectory)
             checks["nativeOverlayPluginStyleAndEyeTint"] = "passed"
+            checks["nativeBasXmlPixelsAndCanvasSeek"] = "passed"
             DesktopShaderNativeSmoke.run(player, outputDirectory)
             checks["nativeAnime4KPresetsExecutedAndChangedPixels"] = "passed"
             DesktopRetainedMediaNativeSmoke.run(player, requireNotNull(frame), video)

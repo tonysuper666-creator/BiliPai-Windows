@@ -87,6 +87,11 @@ internal class LiveDanmakuRenderer(private val scope: CoroutineScope) {
         val now = System.nanoTime()
         expire(now)
         val safeSettings = settings.normalized()
+        val previousSettings=lastSettings
+        if(previousSettings!=null && previousSettings.hasSameTimelinePolicy(safeSettings)) {
+            scheduler.applySettings(safeSettings)
+            lastSettings=safeSettings
+        }
         if (lastSettings != safeSettings || (dirty && now - lastRebuild > 100_000_000L)) {
             scheduler = DanmakuScheduler(entries.mapNotNull { it.rendered?.comment }, safeSettings,liveAdmission=true)
             lastSettings = safeSettings; lastRebuild = now; dirty = false

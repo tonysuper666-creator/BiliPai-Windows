@@ -70,18 +70,32 @@ class CompleteV027DanmakuConfigTest(unittest.TestCase):
         with self.assertRaises(AssertionError):
             tool.adapt_complete_v027_config(original.replace('typeface = resolveDanmakuTypeface(fontWeight),','typeface = anotherFont(),'))
 
-    def test_all_twelve_original_policy_tests_only_change_framework_imports(self):
+    def test_all_twelve_original_policy_tests_keep_full_inverse_with_explicit_inline_presentation(self):
         raw=(REPO/tool.V027_CONFIG_ARCHIVE/'DanmakuConfigPolicyTest.kt').read_bytes()
         self.assertEqual(hashlib.sha256(raw).hexdigest(),'e1a17f9fc160cab2f0b7287e701d53e8e179d33b6154cbb494bccb900ad25c6a')
         original=raw.decode('utf-8').replace('\r\n','\n')
         expected=original
-        for before,after in [('import org.junit.Assert.assertEquals','import kotlin.test.assertEquals'),
+        edits=[('import org.junit.Assert.assertEquals','import kotlin.test.assertEquals'),
                              ('import org.junit.Assert.assertTrue','import kotlin.test.assertTrue'),
-                             ('import org.junit.Test','import kotlin.test.Test')]:
+                             ('import org.junit.Test','import kotlin.test.Test'),
+               # v029 makes presentation explicit. Preserve the old assertion:
+               # changing only viewport geometry cannot itself imply fullscreen.
+               ('fun `text size ignores the container box so every surface renders the same`()',
+                'fun `viewport geometry alone does not imply fullscreen presentation`()'),
+               ('resolveDanmakuTextSizePx(inline.density, 1f)',
+                'resolveDanmakuTextSizePx(inline.density, 1f, isFullscreen = false)'),
+               ('resolveDanmakuTextSizePx(fullscreen.density, 1f)',
+                'resolveDanmakuTextSizePx(fullscreen.density, 1f, isFullscreen = false)')]
+        for before,after in edits:
             self.assertEqual(expected.count(before),1)
             expected=expected.replace(before,after)
         adapted=(REPO/'desktop/src/test/kotlin/com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt').read_text(encoding='utf-8')
         self.assertEqual(adapted,expected)
+        restored=adapted
+        for before,after in reversed(edits):
+            self.assertEqual(restored.count(after),1)
+            restored=restored.replace(after,before)
+        self.assertEqual(restored,original)
         self.assertEqual(adapted.count('@Test'),12)
 
 

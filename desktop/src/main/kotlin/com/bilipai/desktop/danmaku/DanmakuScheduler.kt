@@ -27,9 +27,9 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
     private var cursor = 0
     private var previousTime = Double.NaN
     private data class Geometry(val width:Int,val height:Int,val config:DanmakuRenderConfig) {
-        fun onlyReservationChanged(next:Geometry):Boolean =
-            width==next.width && height==next.height &&
-                config.copy(topMarginPx=next.config.topMarginPx,lineCount=next.config.lineCount)==next.config
+        fun sameMeasurement(next:Geometry):Boolean = config.textSizePx==next.config.textSizePx &&
+            config.typeface==next.config.typeface && config.strokeWidthPx==next.config.strokeWidthPx &&
+            config.lineHeightPx==next.config.lineHeightPx
     }
     private var viewport:Geometry?=null
 
@@ -48,8 +48,9 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
         if(unique.size!=next.size || next.any {known[it.id]?.let {old->old!=it}==true})return null
         val added=unique.filter {it.id !in known}.sortedBy {it.timeSeconds}
         val normalized=currentSettings.normalized()
-        val rebuild=normalized!=settings || (initialLocalPhase!=null && initialLocalPhase!==phase) ||
+        val rebuild=!settings.hasSameTimelinePolicy(normalized) || (initialLocalPhase!=null && initialLocalPhase!==phase) ||
             added.any {it.originalLocalInjectionPhase!==phase}
+        settings=normalized
         if(added.isEmpty() && !rebuild)return emptyList()
         originalComments=(originalComments+added).sortedBy {it.timeSeconds}
         if(rebuild) {
@@ -79,7 +80,9 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
     fun applySettings(settings: DanmakuSettings) {
         val normalized = settings.normalized()
         if (normalized == this.settings) return
+        val presentationOnly=this.settings.hasSameTimelinePolicy(normalized)
         this.settings = normalized
+        if(presentationOnly)return
         initialLocalPhase=null
         pendingLocalComments.clear()
         comments = prepareComments()
@@ -105,19 +108,25 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
         val geometry = Geometry(width, height, config)
         val previousGeometry=viewport
         if (!previousTime.isFinite() || time < previousTime || abs(time - previousTime) > 1.0 ||
-            previousGeometry==null || !previousGeometry.onlyReservationChanged(geometry)) {
+            previousGeometry==null) {
             active.clear()
             pendingLocalComments.clear()
             val longestDuration = maxOf(config.scrollDurationMs, config.pinnedDurationMs)/1000.0
             cursor = lowerBound((time - longestDuration).coerceAtLeast(0.0))
         } else if (previousGeometry!=geometry) {
-            // The hot bar is a changing vertical budget, not a seek. Preserve each
-            // admitted item's age/x/duration and the consumed document cursor.
-            val shift=(config.topMarginPx-previousGeometry.config.topMarginPx).toDouble()
+            // Font/DPI/fullscreen/resize changes are not a seek. Keep the consumed
+            // cursor, collision drops, pending locals, each start time and lifetime.
+            active.removeAll {it.end<=time}
+            val remeasure=!previousGeometry.sameMeasurement(geometry)
+            val lineStep=(config.lineHeightPx+config.lineMarginPx).toDouble()
             for(index in active.indices) {
                 val item=active[index]
-                if(item.layer!=DANMAKU_LAYER_BOTTOM)
-                    active[index]=item.copy(trackTop=item.trackTop+shift,baseline=item.baseline+shift)
+                val metrics=if(remeasure)measure(item.comment) else null
+                val top=if(item.layer==DANMAKU_LAYER_BOTTOM)
+                    height-config.bottomMarginPx-config.lineHeightPx-item.track*lineStep
+                    else config.topMarginPx+item.track*lineStep
+                active[index]=item.copy(trackTop=top,baseline=top+(metrics?.ascent ?: (item.baseline-item.trackTop)),
+                    width=metrics?.width?.coerceAtLeast(1) ?: item.width)
             }
         }
         viewport=geometry

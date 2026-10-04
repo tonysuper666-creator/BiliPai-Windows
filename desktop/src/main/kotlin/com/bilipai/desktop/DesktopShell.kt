@@ -1200,8 +1200,43 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
     }
     LaunchedEffect(danmaku, rendererDanmakuSettings) { danmaku?.applySettings(rendererDanmakuSettings) }
+    SideEffect {
+        // Shared Main video actor: ordinary/PGC/offline/live use actual Root placement;
+        // an independent PiP presentation is inline even when Main remains fullscreen.
+        if(imageSaveLifetime.isActive() && !isClosing() && !activatingUpdate && commandSnapshot!=null)
+            danmaku?.bindOriginalPresentation(commandSnapshot,
+                !pipActive && originalDanmakuPresentation!=DesktopDanmakuPresentation.INLINE)
+    }
     LaunchedEffect(pluginRuntime, danmaku) {
-        pluginRuntime.danmakuRevision.collect { danmaku?.setPluginDanmakuProcessor(pluginRuntime::processDanmaku) }
+        pluginRuntime.danmakuRevision.collect {
+            danmaku?.setPluginDanmakuProcessors(pluginRuntime::processDanmaku, pluginRuntime.captureBasDanmakuProcessor())
+        }
+    }
+    val basAssembly by ordinaryVideo.slot.assemblies.collectAsState()
+    val basSource = basAssembly?.native?.current()
+    DisposableEffect(danmaku, basAssembly, basSource, physicalDestination) {
+        val assembly = basAssembly
+        val expected = basSource
+        val route = physicalDestination
+        val factory = assembly?.let(ordinaryVideo::factoryFor)
+        fun owned() = imageSaveLifetime.isActive() && !isClosing() && !activatingUpdate &&
+            assembly != null && expected != null && factory != null &&
+            ordinaryVideo.slot.currentAssembly() === assembly && factory.isPresentationCurrent(assembly, expected) &&
+            ((pip?.active?.value == true) || (hostVisible && hostDisplayable &&
+                physicalDestination == route && route is BiliPaiNavKey.VideoDetail))
+        val binding = if (danmaku != null && assembly != null && expected != null && factory != null) {
+            val actions = DesktopWindowsBasActions(expected, assembly.native::current, ::owned,
+                admit = { action -> assembly.native.admitPlaybackDispatch(expected, action) },
+                originalSeek = assembly.playback::seekTo, originalPause = assembly.section::pause,
+                openExternal = { uri ->
+                    runCatching { java.awt.Desktop.getDesktop().browse(uri) }
+                        .onFailure { error = "无法打开弹幕链接" }.isSuccess
+                })
+            danmaku.acquireBasActions(expected.nativeSource, expected.request.cid, ::owned,
+                admit = { action -> owned() && factory.withPresentationAdmission(assembly, expected, action) },
+                activate = actions::dispatch)
+        } else null
+        onDispose { binding?.close() }
     }
     LaunchedEffect(native.paused, native.loading, native.durationSeconds, native.error) {
         eyePlaybackActive.value = !native.paused && !native.loading && native.durationSeconds > 0 && native.error == null

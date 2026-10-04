@@ -59,6 +59,10 @@ internal object DesktopDanmakuConfigLog {
 /** AWT paints in logical units; original algorithms receive the corresponding actual device pixels. */
 internal data class DesktopDanmakuPaintGeometry(val viewport:DanmakuViewport,val scaleX:Double,val scaleY:Double) {
     fun configurePhysicalPixels(context:Graphics2D) {context.scale(1.0/scaleX,1.0/scaleY)}
+    /** Section geometry is useful, but its Compose density may include Ctrl UI zoom. */
+    fun sectionViewport(section:DanmakuViewport?):DanmakuViewport = section?.takeIf {
+        it.widthPx==viewport.widthPx && it.heightPx==viewport.heightPx
+    }?.copy(density=viewport.density) ?: viewport
     companion object {
         fun from(width:Int,height:Int,transform:AffineTransform,referenceShortSidePx:Float):DesktopDanmakuPaintGeometry? {
             val x=hypot(transform.scaleX,transform.shearY)

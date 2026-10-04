@@ -86,6 +86,25 @@ def substitute(source: str, before: str, after: str, count: int = 1) -> str:
     return source.replace(before, after)
 
 
+def preserve_danmaku_cancellation(method: str, name: str) -> str:
+    """Windows coroutine lifetime adaptation of both complete original ports.
+
+    Keep ordinary plugin/JSON failures and batch order unchanged. Cancellation
+    must retire staged output instead of silently falling back to old content.
+    The original canonical SHA stays pinned; all four catch edits invert exactly.
+    """
+    if name not in ("runDanmakuFilters", "collectDanmakuStyle"):
+        raise ValueError("Cancellation adaptation is restricted to original danmaku ports")
+    before = "} catch (e: Exception) {"
+    after = "} catch (cancelled: kotlinx.coroutines.CancellationException) {\n                throw cancelled\n            } catch (e: Exception) {"
+    if after in method:
+        raise ValueError("Original danmaku port already has the Windows cancellation adaptation")
+    adapted = substitute(method, before, after, 2)
+    if substitute(adapted, after, before, 2) != method:
+        raise ValueError("Original danmaku cancellation adaptation cannot be inverted")
+    return adapted
+
+
 def platform_context(source: str) -> str:
     source = substitute(source, "import android.content.Context", "import com.bilipai.desktop.plugins.DesktopPluginContext as Context")
     return source
@@ -392,6 +411,7 @@ def generate(repo: Path, output: Path) -> list[Path]:
     for name in ("runDanmakuFilters", "collectDanmakuStyle", "mergeDanmakuStyle"):
         method = selector.function(source, name, parser)
         if name != "mergeDanmakuStyle":
+            method = preserve_danmaku_cancellation(method, name)
             method = substitute(method, "private fun " + name, "internal fun " + name)
         pieces.append(textwrap.indent(method, "    "))
     pieces.append("}")

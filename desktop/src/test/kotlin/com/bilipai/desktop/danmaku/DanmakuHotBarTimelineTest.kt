@@ -88,7 +88,7 @@ class DanmakuHotBarTimelineTest {
         assertEquals(listOf(0,1),frame(scheduler,0.3,config()).map{it.comment.id})
     }
 
-    @Test fun `other render geometry still rebuilds instead of treating a resize as reservation`() {
+    @Test fun `render geometry remeasures admitted items without replaying consumed arrivals`() {
         val scheduler=scheduler(listOf(comment(0,0.0)))
         var measurements=0
         val measure:(DanmakuComment)->DesktopDanmakuTextMetrics={measurements++;DesktopDanmakuTextMetrics(100,20.0)}

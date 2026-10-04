@@ -8,7 +8,10 @@ import com.android.purebilibili.danmaku.engine.DanmakuRenderConfig
 import com.android.purebilibili.feature.video.danmaku.CommandDanmakuItem
 import com.android.purebilibili.feature.live.LiveDanmakuItem
 import com.android.purebilibili.core.plugin.DanmakuStyle
+import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
+import com.android.purebilibili.danmaku.parser.bas.BasTarget
 import com.bilipai.desktop.player.MpvPlayer
+import com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot
 import com.sun.jna.Native
 import com.sun.jna.Pointer
 import com.sun.jna.win32.StdCallLibrary
@@ -55,6 +58,9 @@ class DanmakuOverlay internal constructor(
     private val renderPlatform:DesktopOriginalDanmakuRenderPlatform,
     httpClient: OkHttpClient = ApiDesktopDanmakuSource.publicClient(),
     private val source: DesktopDanmakuSource = ApiDesktopDanmakuSource(httpClient),
+    // Explicit independent embedding/fixture permit. Main leaves this absent:
+    // its BAS publication requires the exact Root source/account/entry binding.
+    private val basStandaloneAdmission: ((OwnedPlaybackSourceSnapshot, () -> Unit) -> Boolean)? = null,
 ) : DesktopOriginalWebMaskOwner(), AutoCloseable {
     private val closed = AtomicBoolean(false)
     private val generation = AtomicLong()
@@ -87,6 +93,10 @@ class DanmakuOverlay internal constructor(
     val commandItems: StateFlow<List<CommandDanmakuItem>> = mutableCommands.asStateFlow()
     private val mutableAdvanced = MutableStateFlow(emptyList<com.android.purebilibili.danmaku.parser.AdvancedDanmakuData>())
     val advancedItems: StateFlow<List<com.android.purebilibili.danmaku.parser.AdvancedDanmakuData>> = mutableAdvanced.asStateFlow()
+    private val sourcePresentation=DesktopDanmakuSourcePresentation(player)
+    /** Same full source/recovery identity; this short presentation write takes no Overlay monitor. */
+    internal fun bindOriginalPresentation(expected:OwnedPlaybackSourceSnapshot,fullscreen:Boolean):Boolean =
+        sourcePresentation.update(expected,fullscreen)
     @Volatile private var originalSectionViewport: Pair<Long,Boolean>? = null
     @Volatile private var originalSectionDanmakuViewport: Pair<Long,DanmakuViewport>? = null
     @Volatile private var originalSeekScrub: Pair<Long,Boolean>? = null
@@ -314,7 +324,9 @@ class DanmakuOverlay internal constructor(
         count?.let {
             if(synchronized(requestLock) {!closed.get() && generation.get()==version &&
                 documentInstallRevision==installRevision && documentRevision.get()==appliedRevision &&
-                currentOfflineDocumentOwned()})mutableCount.value=it
+                currentOfflineDocumentOwned()}) {
+                vodBaseGeneration=version; vodBaseCount=it; updateVodCount()
+            }
             panel.repaint()
         }
     }
@@ -422,6 +434,153 @@ class DanmakuOverlay internal constructor(
     private var ownerWasActive = false
     private var scheduler = DanmakuScheduler(emptyList(), settings,liveAdmission=false)
     private var advancedRenderer = AdvancedDanmakuRenderer(emptyList())
+    private val basRenderer = DesktopBasRenderer()
+    private var basFilterJob: Job? = null
+    private val basFilterTicket = AtomicLong()
+    private var basPluginProcessor: DesktopBasPluginProcessor? = null
+    private data class BasInstallation(
+        val generation: Long, val installRevision: Long, val raw: List<BasDanmaku>,
+        val settings: DanmakuSettings, val processor: DesktopBasPluginProcessor?,
+        val source: OwnedPlaybackSourceSnapshot?, val items: List<BasDanmaku>, val ticket: Long,
+        val rejections: Map<DesktopBasRejection, Int> = emptyMap(),
+    )
+    private val mutableBasRejections = MutableStateFlow<Map<DesktopBasRejection, Int>>(emptyMap())
+    internal val basRejections: StateFlow<Map<DesktopBasRejection, Int>> = mutableBasRejections.asStateFlow()
+    private var basInstallation: BasInstallation? = null
+    private var vodBaseCount = 0
+    private var vodBaseGeneration = Long.MIN_VALUE
+    private class BasActionBinding(val source: OwnedPlaybackSourceSnapshot,
+        val owned: () -> Boolean, val admit: ((() -> Unit) -> Boolean), val activate: (BasTarget) -> Boolean)
+    @Volatile private var basActionBinding: BasActionBinding? = null
+    private var basPaintFrame: DesktopBasInputFrame? = null // EDT, only a completed actual panel paint.
+    private val basInput = DesktopBasOverlayInput(basRenderer) { basPaintFrame?.takeIf { it.isCurrent() } }
+
+    /** Root supplies a full accepted source and a lock-order-safe presentation predicate. */
+    internal fun acquireBasActions(source: OwnedPlaybackSourceSnapshot,
+        cid: Long?, owned: () -> Boolean, admit: ((() -> Unit) -> Boolean), activate: (BasTarget) -> Boolean): AutoCloseable {
+        check(SwingUtilities.isEventDispatchThread())
+        val binding = BasActionBinding(source, owned, admit, activate)
+        basActionBinding = binding
+        basPaintFrame = null; basInput.cancel()
+        // An admitted same-part recovery can replace URLs without changing the
+        // numeric native version. Reuse the sole raw pool under the new Root lease.
+        val needsRefresh = synchronized(requestLock) {
+            !liveMode && !cacheMaintenance && !closed.get() && rawDocument.bas.isNotEmpty() &&
+                (cid == null || commandCid == cid) && (poolSourceVersion == null || poolSourceVersion == source.sourceVersion) &&
+                owned() && currentOfflineDocumentOwned() && player.ownsSourceSnapshot(source) &&
+                basInstallation?.let { basCurrent(it) && sameBasSource(it.source, source) } != true
+        }
+        if (needsRefresh) refreshBasDocument()
+        return AutoCloseable {
+            check(SwingUtilities.isEventDispatchThread())
+            if (basActionBinding === binding) {
+                basActionBinding = null; basPaintFrame = null; basInput.cancel()
+            }
+        }
+    }
+
+    private fun sameBasSource(left: OwnedPlaybackSourceSnapshot?, right: OwnedPlaybackSourceSnapshot): Boolean =
+        left?.sourceVersion == right.sourceVersion && left?.source == right.source
+
+    private fun basCurrent(value: BasInstallation): Boolean = !closed.get() && !cacheMaintenance && !liveMode &&
+        generation.get() == value.generation && documentInstallRevision == value.installRevision &&
+        basFilterTicket.get() == value.ticket && rawDocument.bas === value.raw && settings.hasSameBasFilterPolicy(value.settings) &&
+        basPluginProcessor === value.processor && currentOfflineDocumentOwned() &&
+        value.source?.let { player.ownsSourceSnapshot(it) && (poolSourceVersion == null || poolSourceVersion == it.sourceVersion) } == true
+
+    private fun updateVodCount() {
+        if (!liveMode) mutableCount.value = (if(vodBaseGeneration==generation.get())vodBaseCount else 0) +
+            (basInstallation?.takeIf(::basCurrent)?.items?.size ?: 0)
+    }
+
+    private fun clearBasPresentation() {
+        basInstallation=null;basPaintFrame=null;basInput.cancel();basRenderer.clear();mutableBasRejections.value=emptyMap()
+    }
+
+    /** Refilter raw BAS separately: changing its settings must not replay ordinary plugins or lanes. */
+    private fun refreshBasDocument() {
+        val captured = synchronized(requestLock) {
+            basFilterJob?.cancel()
+            val ticket = basFilterTicket.incrementAndGet()
+            if (closed.get() || cacheMaintenance || liveMode) return
+            BasInstallation(generation.get(), documentInstallRevision, rawDocument.bas, settings, basPluginProcessor,
+                player.currentSourceSnapshot(), emptyList(), ticket)
+        }
+        val job = requests.launch(Dispatchers.Default) {
+            ensureActive()
+            val context = coroutineContext
+            val processor = captured.processor?.let { delegate -> DesktopBasPluginProcessor(
+                filter = { context.ensureActive(); delegate.filter(it) },
+                style = { context.ensureActive(); delegate.style(it) }) }
+            val rejections = linkedMapOf<DesktopBasRejection, Int>()
+            val processed = filterDesktopBasDanmaku(captured.raw, captured.settings, processor,
+                DesktopBasDocumentBudget()) { _, reason ->
+                context.ensureActive(); rejections[reason] = (rejections[reason] ?: 0) + 1
+            }
+            ensureActive()
+            SwingUtilities.invokeLater {
+                val binding = basActionBinding?.takeIf { sameBasSource(captured.source, it.source) }
+                var installed = false
+                val publish = {
+                    synchronized(requestLock) {
+                        if (basCurrent(captured) && (binding == null || (basActionBinding === binding && binding.owned()))) {
+                            basInstallation = captured.copy(items = processed, rejections = rejections.toMap())
+                            mutableBasRejections.value = rejections.toMap()
+                            installed = true
+                        }
+                    }
+                }
+                if (binding != null) {
+                    // Root: Store -> entry -> Overlay. Its short native check is
+                    // released before this monitor; never native.admit -> Overlay.
+                    if (!binding.admit(publish)) installed = false
+                } else if (captured.source != null && basStandaloneAdmission != null) {
+                    if (!basStandaloneAdmission.invoke(captured.source, publish)) installed = false
+                }
+                if (installed) {
+                    basPaintFrame = null; basInput.cancel(); basRenderer.clear()
+                    updateVodCount(); panel.repaint()
+                }
+            }
+        }
+        synchronized(requestLock) {
+            if (basFilterTicket.get() == captured.ticket && !closed.get()) basFilterJob = job else job.cancel()
+        }
+    }
+
+    private fun paintBas(context: Graphics2D, geometry: DesktopDanmakuPaintGeometry) {
+        val installation = basInstallation?.takeIf(::basCurrent) ?: return
+        if (installation.items.isEmpty()) return
+        val config = settings
+        basRenderer.configure(installation.items, geometry.viewport.widthPx, geometry.viewport.heightPx,
+            config.opacity, config.fontScale, config.fontWeight)
+        basRenderer.frame((displayTime * 1_000).toLong().coerceAtLeast(0L))
+        val physical = context.create() as Graphics2D
+        val painted = try {
+            geometry.configurePhysicalPixels(physical)
+            physical.composite = AlphaComposite.SrcOver // Original BAS painter applies opacity once.
+            basRenderer.paint(physical)
+        } finally { physical.dispose() }
+        val binding = basActionBinding ?: return
+        if (!painted || !panel.isShowing || overlay?.isShowing != true || !binding.owned() ||
+            installation.source?.sourceVersion != binding.source.sourceVersion ||
+            installation.source?.source != binding.source.source || !player.ownsSourceSnapshot(binding.source)) return
+        val origin = panel.locationOnScreen
+        val inputGeometry = DesktopBasInputGeometry(origin.x, origin.y, panel.width, panel.height, geometry.scaleX, geometry.scaleY)
+        val revision = documentRevision.get()
+        basPaintFrame = DesktopBasInputFrame(binding, installation, inputGeometry, isCurrent = {
+            val native = player.state.value
+            val transform = panel.graphicsConfiguration?.defaultTransform
+            basActionBinding === binding && basInstallation === installation && basCurrent(installation) &&
+                documentRevision.get() == revision && binding.owned() && settings == config && settings.enabled && settings.allowSpecial &&
+                player.ownsSourceSnapshot(binding.source) && native.ready && native.firstVideoFrameReady &&
+                !native.loading && !native.ended && !native.audioOnly && native.error == null && native.failure == null &&
+                originalSeekScrub?.let { it.first == binding.source.sourceVersion && it.second } != true &&
+                panel.isShowing && overlay?.isShowing == true && panel.locationOnScreen == origin &&
+                panel.width == inputGeometry.width && panel.height == inputGeometry.height &&
+                transform?.scaleX == geometry.scaleX && transform?.scaleY == geometry.scaleY
+        }, activate = binding.activate)
+    }
     private var lastPosition = Double.NaN
     private var sampleTimeNanos = 0L
     private var anchoredPosition = 0.0
@@ -431,11 +590,12 @@ class DanmakuOverlay internal constructor(
     private data class PendingLive(val generation: Long, val item: LiveDanmakuItem)
     private val pendingLive = ArrayBlockingQueue<PendingLive>(600)
     private val measuredWidths = mutableMapOf<Pair<Int,Font>, Int>()
-    private data class ConfigKey(val settings:DanmakuSettings,val viewport:DanmakuViewport,val font:Font,val live:Boolean,val maskReady:Boolean,val hotReservedHeightPx:Float=0f)
+    private data class ConfigKey(val settings:DanmakuSettings,val viewport:DanmakuViewport,val font:Font,val live:Boolean,val maskReady:Boolean,val hotReservedHeightPx:Float=0f,val fullscreen:Boolean=false)
     private var resolvedConfig:Pair<ConfigKey,DanmakuRenderConfig>?=null
     private val panel:JComponent = object : JComponent() {
         override fun paintComponent(graphics: Graphics) {
             originalPaintFrame=null
+            basPaintFrame=null
             val context = graphics.create() as Graphics2D
             try {
                 context.composite = AlphaComposite.Src
@@ -447,10 +607,10 @@ class DanmakuOverlay internal constructor(
                 val geometry=DesktopDanmakuPaintGeometry.from(width,height,context.transform,renderPlatform.maximumDisplayShortSidePx()) ?: return
                 // The original Section supplies density/scale only for this same physical viewport.
                 // A SCREEN_TOP region outside the actual Canvas remains a separate platform gap.
-                val viewport=if(liveMode)geometry.viewport else originalSectionDanmakuViewport?.takeIf {
-                    it.first==poolSourceVersion && player.ownsSourceVersion(it.first) &&
-                    it.second.widthPx==geometry.viewport.widthPx && it.second.heightPx==geometry.viewport.heightPx
-                }?.second ?: geometry.viewport
+                val viewport=geometry.sectionViewport(if(liveMode)null else originalSectionDanmakuViewport?.takeIf {
+                    it.first==poolSourceVersion && player.ownsSourceVersion(it.first)
+                }?.second)
+                val fullscreen=sourcePresentation.isFullscreen()
                 val configuration = settings
                 if (configuration.enabled && currentOfflineDocumentOwned() &&
                     originalSectionViewport?.let { !player.ownsSourceVersion(it.first) || it.second } != false &&
@@ -458,17 +618,17 @@ class DanmakuOverlay internal constructor(
                   context.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, configuration.opacity)
                   if (liveMode) {
                     // Uses the actual Root-monitor geometry resolved once above.
-                    val key=ConfigKey(configuration,geometry.viewport,renderPlatform.resolveTypeface(configuration.fontWeight),true,false)
+                    val key=ConfigKey(configuration,geometry.viewport,renderPlatform.resolveTypeface(configuration.fontWeight),true,false,fullscreen=fullscreen)
                     val bandHeight=(geometry.viewport.heightPx*configuration.displayAreaRatio).toInt().coerceAtLeast(1)
-                    val config=resolvedConfig?.takeIf { it.first==key }?.second ?: com.android.purebilibili.feature.video.danmaku.resolveDesktopOriginalLiveDanmakuRenderConfig(configuration,geometry.viewport.widthPx,bandHeight,configuration.displayAreaRatio,geometry.viewport.density,renderPlatform).also { resolvedConfig=key to it }
+                    val config=resolvedConfig?.takeIf { it.first==key }?.second ?: com.android.purebilibili.feature.video.danmaku.resolveDesktopOriginalLiveDanmakuRenderConfig(configuration,geometry.viewport.widthPx,bandHeight,configuration.displayAreaRatio,geometry.viewport.density,renderPlatform,isFullscreen=fullscreen).also { resolvedConfig=key to it }
                     val physical=context.create() as Graphics2D
                     try {geometry.configurePhysicalPixels(physical);physical.composite=AlphaComposite.getInstance(AlphaComposite.SRC_OVER,config.alpha/255f);liveRenderer.paint(physical,geometry.viewport.widthPx,geometry.viewport.heightPx,bandHeight,config,configuration)}
                     finally {physical.dispose()}
                   } else {
                 // Uses the actual Root-monitor geometry resolved once above.
                 val reserved=hotReservation?.takeIf {it.sourceVersion==poolSourceVersion && player.ownsSourceVersion(it.sourceVersion)}?.heightPx ?: 0f
-                val key=ConfigKey(configuration,viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false,webMaskAvailable(),reserved)
-                val config=resolvedConfig?.takeIf { it.first==key }?.second ?: configuration.originalConfig(renderPlatform,reserved).resolveRenderConfig(viewport).copy(maskEnabled=key.maskReady).also { resolvedConfig=key to it }
+                val key=ConfigKey(configuration,viewport,renderPlatform.resolveTypeface(configuration.fontWeight),false,webMaskAvailable(),reserved,fullscreen)
+                val config=resolvedConfig?.takeIf { it.first==key }?.second ?: configuration.originalConfig(renderPlatform,reserved).resolveRenderConfig(viewport,fullscreen).copy(maskEnabled=key.maskReady).also { resolvedConfig=key to it }
                 val physical=context.create() as Graphics2D
                 try {
                     geometry.configurePhysicalPixels(physical)
@@ -530,6 +690,7 @@ class DanmakuOverlay internal constructor(
                     }
                 } finally {physical.dispose()}
                 advancedRenderer.paint(context, (displayTime * 1000).toLong(), width, height, configuration)
+                paintBas(context, geometry)
                   }
                 }
                 ownedViewportBrightness()?.let { (_,brightness) -> DesktopEyeTint(1f-brightness,0f).paint(context,width,height) }
@@ -544,8 +705,13 @@ class DanmakuOverlay internal constructor(
     fun applySettings(settings: DanmakuSettings) {
         val normalized = settings.normalized()
         val smartChanged=this.settings.smartOcclusionEnabled!=normalized.smartOcclusionEnabled
-        synchronized(requestLock) {if(this.settings!=normalized)originalLocalInjectionPhase=Any();this.settings=normalized}
+        val basFilterChanged=!this.settings.hasSameBasFilterPolicy(normalized)
+        synchronized(requestLock) {
+            if(!this.settings.hasSameTimelinePolicy(normalized))originalLocalInjectionPhase=Any()
+            this.settings=normalized
+        }
         if(smartChanged)onWebMaskSettingChanged()
+        if(basFilterChanged)refreshBasDocument()
         SwingUtilities.invokeLater {
             if (!closed.get()) {
                 scheduler.applySettings(this.settings)
@@ -579,9 +745,12 @@ class DanmakuOverlay internal constructor(
         true
     }
 
-    fun setPluginDanmakuProcessor(processor: DanmakuPluginProcessor?) {
+    fun setPluginDanmakuProcessor(processor: DanmakuPluginProcessor?) = setPluginDanmakuProcessors(processor, null)
+
+    internal fun setPluginDanmakuProcessors(processor: DanmakuPluginProcessor?, basProcessor: DesktopBasPluginProcessor?) {
         val vod = synchronized(requestLock) {
             pluginProcessor = processor
+            basPluginProcessor = basProcessor
             if (!liveMode && !cacheMaintenance) rawDocument to generation.get() else null
         }
         vod?.let { (document, version) -> installDocument(document, version) }
@@ -616,7 +785,7 @@ class DanmakuOverlay internal constructor(
         mutableError.value = null; mutableFormat.value = null
         SwingUtilities.invokeLater {
             if (!closed.get() && version == generation.get() && liveMode) {
-                liveRenderer.reset(); mutableCount.value = 0; panel.repaint()
+                clearBasPresentation();liveRenderer.reset(); mutableCount.value = 0; panel.repaint()
             }
         }
         return version
@@ -734,6 +903,7 @@ class DanmakuOverlay internal constructor(
                     check(!closed.get() && cacheMaintenance && version==generation.get())
                     scheduler=DanmakuScheduler(emptyList(),settings,liveAdmission=false)
                     advancedRenderer=AdvancedDanmakuRenderer(emptyList());styles=emptyMap();measuredWidths.clear()
+                    clearBasPresentation()
                     mutableCount.value=0;panel.repaint();painted.complete(Unit)
                 } catch(failure:Throwable) { painted.completeExceptionally(failure) }
             }
@@ -765,7 +935,7 @@ class DanmakuOverlay internal constructor(
             SwingUtilities.invokeLater {
                 if (!closed.get() && clearedGeneration == generation.get()) {
                     scheduler = DanmakuScheduler(emptyList(), settings, liveAdmission = false)
-                    advancedRenderer = AdvancedDanmakuRenderer(emptyList()); panel.repaint()
+                    advancedRenderer = AdvancedDanmakuRenderer(emptyList()); clearBasPresentation(); panel.repaint()
                 }
             }
         }
@@ -835,11 +1005,14 @@ class DanmakuOverlay internal constructor(
                     }
                 }
                 if(applied) {
-                    if(synchronized(requestLock){current()})mutableCount.value=installedComments.size+processed.advanced.size
+                    if(synchronized(requestLock){current()}) {
+                        vodBaseGeneration=version; vodBaseCount=installedComments.size+processed.advanced.size; updateVodCount()
+                    }
                     panel.repaint()
                 } else if(synchronized(requestLock){current()})install(processed,nextStyles)
             }
         }
+        refreshBasDocument()
         if (processor == null) install(document, emptyMap())
         else {
           val processing = requests.launch(Dispatchers.Default) {
@@ -873,6 +1046,10 @@ class DanmakuOverlay internal constructor(
             refreshWebMaskWindow(maskPosition)
         }
         val surface = player.surface
+        basInput.attach(surface.components.filterIsInstance<java.awt.Canvas>().singleOrNull())
+        if (basInstallation?.let(::basCurrent) == false) {
+            clearBasPresentation(); updateVodCount()
+        }
         if (liveMode) {
             repeat(200) {
                 val pending = pendingLive.poll()
@@ -886,7 +1063,7 @@ class DanmakuOverlay internal constructor(
             currentOwner != null && currentOwner.isVisible &&
             (currentOwner !is Frame || currentOwner.extendedState and Frame.ICONIFIED == 0) &&
             playerState.ready && playerState.firstVideoFrameReady && playerState.videoCodec != null && playerState.error == null && !playerState.ended && !playerState.audioOnly
-        if (!visible) { originalPaintFrame=null;originalPointerHit=null;overlay?.isVisible = false; ownerWasActive = false; return }
+        if (!visible) { originalPaintFrame=null;originalPointerHit=null;basPaintFrame=null;basInput.cancel();overlay?.isVisible = false; ownerWasActive = false; return }
         if (currentOwner != owner) {
             overlay?.dispose()
             owner = currentOwner
@@ -957,7 +1134,11 @@ class DanmakuOverlay internal constructor(
         if (closed.compareAndSet(false, true)) {
             synchronized(requestLock) { generation.incrementAndGet();originalClickBindings.clear();loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel(); retireWebMaskSource() }
             requests.cancel()
-            SwingUtilities.invokeLater {originalPaintFrame=null;originalPointerHit=null;timer.stop(); overlay?.dispose(); overlay = null }
+            SwingUtilities.invokeLater {
+                originalPaintFrame=null;originalPointerHit=null;basPaintFrame=null;basActionBinding=null
+                basInput.close();basRenderer.close();basInstallation=null
+                timer.stop(); overlay?.dispose(); overlay = null
+            }
         }
     }
 

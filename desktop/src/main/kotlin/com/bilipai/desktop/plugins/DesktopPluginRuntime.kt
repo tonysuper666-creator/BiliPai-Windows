@@ -244,6 +244,24 @@ class DesktopPluginRuntime(val store: DesktopPluginStore,
         return processed to DesktopPluginDanmakuPolicy.collectDanmakuStyle(processed, native, jsonEnabled)
     }
 
+    /** One enabled-plugin snapshot for Mode 9's filter -> parse -> style stages.
+     * The raw BAS script never goes through ordinary text truncation/type mapping. */
+    internal fun captureBasDanmakuProcessor(): com.bilipai.desktop.danmaku.DesktopBasPluginProcessor? {
+        if (closing.get()) return null
+        val native = PluginManager.getEnabledDanmakuPlugins()
+        val jsonEnabled = jsonPlugins.value.any { it.enabled && it.plugin.type == "danmaku" }
+        if (native.isEmpty() && !jsonEnabled) return null
+        return com.bilipai.desktop.danmaku.DesktopBasPluginProcessor(
+            filter = { item ->
+                if (closing.get()) throw CancellationException("BAS plugin runtime retired")
+                DesktopPluginDanmakuPolicy.runDanmakuFilters(item, native, jsonEnabled)
+            },
+            style = { item ->
+                if (closing.get()) throw CancellationException("BAS plugin runtime retired")
+                DesktopPluginDanmakuPolicy.collectDanmakuStyle(item, native, jsonEnabled)
+            })
+    }
+
     fun eyePaint(playbackActive: StateFlow<Boolean>): Flow<DesktopEyePaint> = combine(
         eyeProtection.brightnessLevel, eyeProtection.warmFilterStrength,
         eyeProtection.weakenDuringPlayback, playbackActive

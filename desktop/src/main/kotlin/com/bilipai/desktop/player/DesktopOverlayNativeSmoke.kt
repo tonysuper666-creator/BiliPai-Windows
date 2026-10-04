@@ -81,6 +81,56 @@ internal object DesktopOverlayNativeSmoke {
             ImageIO.write(dimmed, "png", File(outputDirectory, "native-eye-protection.png"))
             SwingUtilities.invokeAndWait { overlay.setEyeProtection(0f, 0f) }
             waitImage("remove eye tint restores the native decoded video") { kotlin.math.abs(brightness(it) - baselineBrightness) < 5.0 }
+
+            // This fixture runs only when the explicit native smoke is launched (CI in this task).
+            // Exercise real XML -> BAS plugin/filter publication -> original painter -> HWND -> Canvas input.
+            val basSource = requireNotNull(player.currentSourceSnapshot())
+            val seekId = java.util.concurrent.atomic.AtomicLong()
+            var basBinding: AutoCloseable? = null
+            fun ownsBas() = player.ownsSourceSnapshot(basSource)
+            try {
+                SwingUtilities.invokeAndWait {
+                    overlay.applySettings(DanmakuSettings(opacity=1f, fontScale=1f, displayAreaRatio=1f))
+                    overlay.setPluginDanmakuProcessors(null, null)
+                    val document = DanmakuParser.parseDocument("""<i><d p="0,9,25,16777215,0,0,fixture,901"><![CDATA[
+                        def path p {d="M0 0 L60 0 L60 24 L0 24 Z" x=20 y=20 fillColor=0xff0000 duration=60s}
+                        def text t {content="BAS NATIVE" x=130 y=20 fontSize=20 color=0x00ffff duration=60s}
+                        def button b {text="GO" x=40 y=70 fillColor=0x0000ff target=seek {time=3.25s} duration=60s}
+                    ]]></d></i>""")
+                    check(document.comments.isEmpty() && document.bas.size == 1)
+                    check(overlay.setOwnedDocument(document, basSource.sourceVersion, ::ownsBas))
+                    basBinding = overlay.acquireBasActions(basSource, null, ::ownsBas,
+                        admit = { action -> if (ownsBas()) { action(); true } else false }) { target ->
+                        if (target !is com.android.purebilibili.danmaku.parser.bas.BasTarget.Seek) false
+                        else player.admitSourceSnapshot(basSource) {
+                            seekId.set(requireNotNull(player.seekToTrackedIfSourceVersion(basSource.sourceVersion, target.timeMs/1000.0)))
+                        }
+                    }
+                }
+                ImageIO.write(waitImage("BAS-only original SVG/text/button above native video") {
+                    red(it)>500 && blue(it)>100
+                }, "png", File(outputDirectory, "native-bas-overlay.png"))
+                check(overlay.commentCount.value == 1)
+                var click: java.awt.Point? = null
+                SwingUtilities.invokeAndWait {
+                    val origin = player.surface.locationOnScreen
+                    val transform = player.surface.graphicsConfiguration.defaultTransform
+                    click = java.awt.Point(origin.x+(50/transform.scaleX).toInt(), origin.y+(80/transform.scaleY).toInt())
+                }
+                val point = requireNotNull(click)
+                robot.mouseMove(point.x, point.y)
+                robot.mousePress(java.awt.event.InputEvent.BUTTON1_DOWN_MASK)
+                robot.delay(40)
+                robot.mouseRelease(java.awt.event.InputEvent.BUTTON1_DOWN_MASK)
+                val deadline = System.nanoTime()+10_000_000_000L
+                while(System.nanoTime()<deadline && (seekId.get()<=0 || player.state.value.seekCompletedId!=seekId.get())) Thread.sleep(25)
+                val readback = player.state.value
+                check(seekId.get()>0 && readback.seekCompletedId==seekId.get() && ownsBas() &&
+                    !readback.loading && readback.paused && kotlin.math.abs(readback.positionSeconds-3.25)<0.3) {
+                    "The real BAS Canvas button did not complete its captured-source native seek."
+                }
+                File(outputDirectory, "native-bas-proof.json").writeText("""{"passed":true,"basOnlyCount":1,"realCanvasClick":true,"nativeSeekCompleted":true,"fullNativeSourcePreserved":true,"originalVmMounted":false,"externalBrowserTested":false}"""+"\n")
+            } finally { SwingUtilities.invokeAndWait { basBinding?.close() } }
         } finally {
             overlay.close()
             SwingUtilities.invokeAndWait { }

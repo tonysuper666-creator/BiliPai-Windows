@@ -105,6 +105,43 @@ def adapt_complete_v027_config(full_config):
  assert reverse==full_config,'Complete fixed-v027 config inverse failed'
  return s,rows
 
+V029_CONFIG_COMMIT='a4b77f894d0a2dd26c0b9fc144b8adb88ac05480'
+V029_CONFIG_ARCHIVE=Path('desktop/upstream-slices/v029-danmaku-config')
+V029_CONFIG_MANIFEST_SHA256='cabd015637886290b93dd357d247ccedb919d605fc0d4459337588a47d97706f'
+V029_CONFIG_PINS={'DanmakuConfig.kt': ('app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt', '75e2ec45b13d175b35f5a477c99f38cff007e11776414ea68062c3439e532c37'), 'DanmakuConfigPolicyTest.kt': ('app/src/test/java/com/android/purebilibili/feature/video/danmaku/DanmakuConfigPolicyTest.kt', '427e5c4c7a8ab91965e6525abc5edc47a68440a2b26265d85ceee8a7a9fafd64'), 'LiveDanmakuOverlay.kt': ('app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/LiveDanmakuOverlay.kt', '5a2006af013f34f13b11d02adfb4d6b6642d11f6baa9a1d4ecef193969ed0c99')}
+
+def fixed_v029_config_files(repo):
+ root=repo/V029_CONFIG_ARCHIVE
+ raw=(root/'manifest.json').read_bytes()
+ assert hashlib.sha256(raw).hexdigest()==V029_CONFIG_MANIFEST_SHA256,'Changed v029 config manifest bytes'
+ manifest=json.loads(raw)
+ assert manifest.get('schemaVersion')==1 and manifest.get('fixedUpstreamCommit')==V029_CONFIG_COMMIT,'Unknown v029 config manifest'
+ rows=manifest.get('files',[])
+ assert len(rows)==3 and {r['archiveFile'] for r in rows}==set(V029_CONFIG_PINS),'Unknown v029 source set'
+ source={};identities=[]
+ for row in rows:
+  name=row['archiveFile'];original_path,pin=V029_CONFIG_PINS[name]
+  assert row['originalPath']==original_path and row['sha256Bytes']==pin,'Changed v029 config source pin'
+  blob=(root/name).read_bytes();normalized=blob.replace(b'\r\n',b'\n')
+  assert hashlib.sha256(blob).hexdigest()==pin and len(blob)==row['bytes'],'Changed fixed v029 source bytes'
+  assert hashlib.sha256(normalized).hexdigest()==row['sha256LF'],'Changed v029 source LF bytes'
+  assert hashlib.sha1(b'blob '+str(len(blob)).encode()+b'\0'+blob).hexdigest()==row['gitBlob'],'Changed v029 Git blob'
+  source[name]=normalized.decode('utf-8')
+  identities.append(dict(path=(V029_CONFIG_ARCHIVE/name).as_posix(),previousPath=original_path,pinnedCommit=V029_CONFIG_COMMIT,sha256Bytes=pin,sha256LF=row['sha256LF'],mode='explicit-v029-font-config-slice-not-overall-canonical-advance'))
+ return source,identities
+
+def adapt_complete_v029_config(full_config):
+ s,rows=adapt_complete_v027_config(full_config)
+ # Compatibility for existing original callers; production supplies the actual Root presentation explicitly.
+ s=adapt(s,'fun resolveRenderConfig(viewport: DanmakuViewport, isFullscreen: Boolean):',
+     'fun resolveRenderConfig(viewport: DanmakuViewport, isFullscreen: Boolean = false):',rows)
+ reverse=s
+ for patch in reversed(rows):
+  assert reverse.count(patch['after'])==1
+  reverse=reverse.replace(patch['after'],patch['before'])
+ assert reverse==full_config,'Complete fixed-v029 config inverse failed'
+ return s,rows
+
 def generate(repo:Path,output:Path,standalone=False):
  source={};identities=[];emitted=[]
  for path in PATHS:
@@ -114,8 +151,9 @@ def generate(repo:Path,output:Path,standalone=False):
   blob=subprocess.check_output(['git','show',COMMIT+':'+canonical_path],cwd=repo).decode('utf-8').replace('\r\n','\n')
   assert canonical_file.read_text(encoding='utf-8').replace('\r\n','\n')==blob,path
   source[path]=blob;identities.append(dict(path=canonical_path,previousPath=path,pinnedCommit=COMMIT,sha256LF=sha(blob),gitBlob=subprocess.check_output(['git','rev-parse',COMMIT+':'+canonical_path],cwd=repo,text=True).strip()))
- full_config,config_identity=fixed_v027_config(repo)
- adapted_config,config_patches=adapt_complete_v027_config(full_config)
+ v029_source,v029_identities=fixed_v029_config_files(repo)
+ full_config=v029_source['DanmakuConfig.kt'];config_identity=v029_identities[0]
+ adapted_config,config_patches=adapt_complete_v029_config(full_config)
  def emit(path,text,origin,mode,patches=None,original=None):
   write(output/path,text);row=dict(path=path,origin=origin,mode=mode,sha256LF=sha(text),adaptations=patches or [])
   if original is not None:
@@ -176,9 +214,9 @@ import com.android.purebilibili.danmaku.parser.resolveBilibiliDanmakuFontScale
  emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuItemParser.kt',body,PATHS[3],'selected-original-factories-and-click-policies')
 
  # Full original neutral config and pure geometry/timing algorithms. Only actual Windows platform carriers change.
- identities.append(config_identity)
- emit('com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt',adapted_config,config_identity['path'],'fixed-v027-full-config-with-required-windows-platform',config_patches,full_config)
- emitted[-1]['upstreamCommit']=V027_CONFIG_COMMIT
+ identities.extend(v029_identities)
+ emit('com/android/purebilibili/feature/video/danmaku/DanmakuConfig.kt',adapted_config,config_identity['path'],'fixed-v029-full-config-with-required-windows-platform',config_patches,full_config)
+ emitted[-1]['upstreamCommit']=V029_CONFIG_COMMIT
  # Full original constructor, preserving every default except the required real platform font carrier.
  models=source[PATHS[11]];start=models.index('data class DanmakuRenderConfig(')
  end=balanced(masked(models),models.index('(',start));raw=models[start:end];rows=[]
@@ -192,15 +230,16 @@ import com.android.purebilibili.danmaku.parser.resolveBilibiliDanmakuFontScale
  original_map=function(manager,'mapLayerTypeToDanmakuType')[0]
  layer_map=original_map.replace('    private fun','internal fun',1)
  emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalDanmakuLayerPolicy.kt','package com.android.purebilibili.feature.video.danmaku\nimport com.android.purebilibili.danmaku.engine.*\n\n'+render_layer+'\n\n'+layer_map+'\n',PATHS[5],'selected-complete-layer-mapping')
- live=source[PATHS[13]];start=live.index('            val textSize = DANMAKU_BASE_TEXT_SIZE_DP *');end=live.index('\n        }\n    )',start);raw=live[start:end];rows=[];s=raw
+ live=v029_source['LiveDanmakuOverlay.kt'];start=live.index('            val textSize = resolveDanmakuTextSizePx(');end=live.index('\n        }\n    )',start);raw=live[start:end];rows=[];s=raw
  s=adapt(s,'            view.engine.updateConfig(','            return (',rows)
  s=adapt(s,'typeface = resolveDanmakuTypeface(danmakuSettings.fontWeight),','typeface = resolveDanmakuTypeface(danmakuSettings.fontWeight, platform),',rows)
  s=adapt(s,'speedFactor = danmakuSettings.speed,','speedFactor = danmakuSettings.speedFactor,',rows)
  s=adapt(s,'viewportWidthPx = view.width','viewportWidthPx = viewWidthPx',rows)
  s=adapt(s,'visibleHeightPx = view.height.toFloat(),','visibleHeightPx = viewHeightPx.toFloat(),',rows)
- s=adapt(s,'val strokeWidth = danmakuSettings.strokeWidth.coerceAtLeast(0f)','val strokeWidth = if(danmakuSettings.strokeEnabled)danmakuSettings.strokeWidth.coerceAtLeast(0f) else 0f',rows)
- body='package com.android.purebilibili.feature.video.danmaku\nimport com.android.purebilibili.danmaku.engine.DanmakuRenderConfig\nimport com.bilipai.desktop.danmaku.DanmakuSettings\nimport com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatform\n\ninternal fun resolveDesktopOriginalLiveDanmakuRenderConfig(danmakuSettings:DanmakuSettings,viewWidthPx:Int,viewHeightPx:Int,safeDisplayArea:Float,density:Float,platform:DesktopOriginalDanmakuRenderPlatform):DanmakuRenderConfig {\n'+s+'\n}\n'
- emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalLiveDanmakuRenderConfig.kt',body,PATHS[13],'selected-complete-original-live-config-constructor',rows)
+ s=adapt(s,'val strokeWidth = resolveDanmakuStrokeWidthPx(density, danmakuSettings.strokeWidth)','val strokeWidth = if(danmakuSettings.strokeEnabled)resolveDanmakuStrokeWidthPx(density, danmakuSettings.strokeWidth) else 0f',rows)
+ body='package com.android.purebilibili.feature.video.danmaku\nimport com.android.purebilibili.danmaku.engine.DanmakuRenderConfig\nimport com.bilipai.desktop.danmaku.DanmakuSettings\nimport com.bilipai.desktop.danmaku.DesktopOriginalDanmakuRenderPlatform\n\ninternal fun resolveDesktopOriginalLiveDanmakuRenderConfig(danmakuSettings:DanmakuSettings,viewWidthPx:Int,viewHeightPx:Int,safeDisplayArea:Float,density:Float,platform:DesktopOriginalDanmakuRenderPlatform,isFullscreen:Boolean=false):DanmakuRenderConfig {\n'+s+'\n}\n'
+ emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalLiveDanmakuRenderConfig.kt',body,v029_identities[2]['path'],'selected-complete-original-live-config-constructor',rows)
+ live=source[PATHS[13]]
  start=live.index('            val typeFilter = DanmakuTypeFilterSettings(');end=live.index('            val currentEngine = engine',start);raw=live[start:end];rows=[];s=raw
  s=adapt(s,'                return@collect','                return false',rows) if s.count('                return@collect')==1 else s
  # Three original rejection paths become the corresponding Boolean-policy returns, with exact count-bound replacement.
@@ -437,7 +476,7 @@ internal class DesktopOriginalDanmakuSession(private val environment:DesktopDanm
  imports='package com.android.purebilibili.feature.video.danmaku\n'+'\n'.join(constants)+'\n\n'
  emit('com/android/purebilibili/feature/video/danmaku/DesktopOriginalWebMaskRefreshPolicy.kt',imports+raw+'\n',PATHS[16],'selected-complete-original-refresh-interval-and-normalization')
 
- inventory=dict(upstreamCommit=COMMIT,originalConfigUpstreamCommit=V027_CONFIG_COMMIT,sources=identities,emitted=emitted,standalone=standalone,
+ inventory=dict(upstreamCommit=COMMIT,originalConfigUpstreamCommit=V029_CONFIG_COMMIT,retainedLegacyConfigUpstreamCommit=V027_CONFIG_COMMIT,sources=identities,emitted=emitted,standalone=standalone,
   directReferences=[dict(path=PATHS[4],sha256LF=sha(weighted))],
   pending=['Actual Root smart SVG mask/native paint acceptance','Separate command-vote native acceptance (ordinary original layers are passive)','Portrait SCREEN_TOP placement and separate portrait-fullscreen renderer','Full original Android Live append-only queue/bitmap release closure','ByteDance collision/native engine parity and original special-mode renderer closure','Actual Root window/DPI/runtime acceptance for this source-only delta'],
   originalDefectAdaptation='DanmakuPoolItemRow ignored supplied onLongClick; only clickable->combinedClickable plus import changed.',

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "hashNormalization": "raw",
+  "canonicalBaselineAdvanced": false,
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicy.kt",
+      "gitBlob": "c68f44691c763ccf0795192675f1fb64a616e9ba",
+      "bytes": 2677,
+      "sha256Raw": "363cb7000c2de1037effb1b7a638d96cf7e69f11928b5f7840de08350edaf5da",
+      "url": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicy.kt",
+      "archiveFile": "BasDanmakuFilterPolicy.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "gitBlob": "cbc074ababb0a0ca866aefba731892a243b2de2d",
+      "bytes": 132378,
+      "sha256Raw": "5951d425ad3aa159468a6c811a534552d927d77fefed8de18580fae73ce4758f",
+      "url": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "archiveFile": "DanmakuManager.kt"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicyTest.kt",
+      "gitBlob": "6f481ae7055047bbf97d1943f74bdf9ab69ffce7",
+      "bytes": 2897,
+      "sha256Raw": "ddbff928a5145a8ad433d1efa87782ca8cd711139dfbc9b2fa53444406ebb5e1",
+      "url": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/test/java/com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicyTest.kt",
+      "archiveFile": "BasDanmakuFilterPolicyTest.kt"
+    }
+  ]
+}
