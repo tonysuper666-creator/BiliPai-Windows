@@ -47,7 +47,7 @@ def main():
         expected = lf(path).rstrip('\n')
         if name == 'grade':
             raw = path.read_bytes()
-            assert hashlib.sha256(raw).hexdigest() == '46c54c11f7e8f1461dcf92989058eccd1497fd1da69e0fd7f6ca979f6814b3a3'
+            assert hashlib.sha256(raw).hexdigest() == '9e8cc08a84eb42cb1ae59364598d91a9d4920a55dfe20a136889bf2112a37ba8'
             expected = expected.lstrip('\n')
         if name == 'bgm':
             expected = expected.lstrip('\n')

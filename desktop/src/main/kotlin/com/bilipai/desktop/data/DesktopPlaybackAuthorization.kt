@@ -23,16 +23,22 @@ internal class DesktopOriginalPlaybackAccountCookieJar(account: StoredAccountSes
     ).filterValues { it.isNotBlank() }.toMutableMap()
 
     override fun saveFromResponse(url: okhttp3.HttpUrl, responseCookies: List<okhttp3.Cookie>) {
+        if (!url.isHttps || !DesktopSessionStore.isBilibiliHost(url.host)) return
         synchronized(cookieLock) {
-            responseCookies.forEach { cookie -> cookies[cookie.name] = cookie.value }
+            responseCookies.filter { cookie ->
+                DesktopSessionStore.isBilibiliHost(cookie.domain) &&
+                    (cookie.domain == url.host || !cookie.hostOnly && url.host.endsWith(".${cookie.domain}"))
+            }.forEach { cookie -> cookies[cookie.name] = cookie.value }
         }
     }
 
     override fun loadForRequest(url: okhttp3.HttpUrl): List<okhttp3.Cookie> {
-        val domain = if (url.host.endsWith("bilibili.com")) "bilibili.com" else url.host
+        // v0.2.9 restricts account cookies to the Bilibili domain boundary. This
+        // jar is also read directly for native media headers, outside SessionStore.
+        if (!url.isHttps || !DesktopSessionStore.isBilibiliHost(url.host)) return emptyList()
         return synchronized(cookieLock) {
             cookies.map { (name, value) ->
-                okhttp3.Cookie.Builder().domain(domain).name(name).value(value).build()
+                okhttp3.Cookie.Builder().domain("bilibili.com").secure().name(name).value(value).build()
             }
         }
     }

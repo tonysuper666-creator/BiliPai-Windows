@@ -243,6 +243,90 @@ internal class DesktopUnifiedPlaybackFacade(
         if (previous.subtitleAutoPreference != normalized.subtitleAutoPreference) changeSubtitleAutoPreference(a, normalized.subtitleAutoPreference)
     }
     fun selectAudioQuality(preferenceId: Int) { held()?.playback?.setAudioQuality(preferenceId) }
+    /** Capture the actual source and raw VM state before opening an audio popup. */
+    fun captureAudioSelection(expectedAssembly: DesktopOriginalVideoOwnerAssembly,
+        expected: DesktopOriginalVideoAcceptedPublication,
+        presentationCurrent: () -> Boolean): DesktopWindowsVideoAudioSelection? {
+        checkAudioUiDispatcher()
+        if (!presentationCurrent()) return null
+        val a = held()?.takeIf { it === expectedAssembly } ?: return null
+        var captured: DesktopWindowsVideoAudioSelection? = null
+        a.native.admitPlaybackDispatch(expected) {
+            val raw = a.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success
+            val session = a.captureLoadState()
+            if (presentationCurrent() && raw != null && !raw.isQualitySwitching && raw.info.bvid == expected.request.bvid &&
+                raw.info.cid == expected.request.cid && session.currentBvid == raw.info.bvid &&
+                session.currentCid == raw.info.cid) {
+                captured = DesktopWindowsVideoAudioSelection(a, expected, raw, session.currentLoadRequestToken, presentationCurrent)
+            }
+        }
+        return captured
+    }
+    fun isAudioSelectionCurrent(selection: DesktopWindowsVideoAudioSelection): Boolean {
+        if (!selection.presentationCurrent()) return false
+        val a = held() ?: return false
+        if (a !== selection.assembly || !a.native.isCurrent(selection.accepted)) return false
+        return try {
+            desktopWindowsAudioSelectionIdentityCurrent(selection.accepted, a.native.current(),
+                selection.success, a.playback.captureDesktopPlaybackState(), selection.loadToken, a.captureLoadState())
+        } catch (_: CancellationException) { false }
+    }
+    fun selectAudioLanguage(selection: DesktopWindowsVideoAudioSelection, language: String?): Boolean {
+        val a = selection.assembly
+        return consumeAudioLanguage(selection.success, language, { isAudioSelectionCurrent(selection) },
+            admit = { action -> a.native.admitPlaybackDispatch(selection.accepted, action) },
+            readNative = { a.section.nativePlayer.state.value },
+            checkpoint = a.playback::saveCurrentPosition,
+            reload = { change ->
+                val request = change.request
+                // The original VM owns cancellation, request token, transport and native publication.
+                // Full load/checkpoint work runs after Store/entry/native monitors have returned.
+                a.playback.loadVideo(request.bvid, request.aid, force = request.force,
+                    autoPlay = request.autoPlay, cid = request.cid, audioLang = request.audioLang,
+                    fallbackResumePositionMs = change.positionMs,
+                    desktopExplicitStartPositionMs = change.positionMs)
+            })
+    }
+    fun selectNativeAudioTrack(selection: DesktopWindowsVideoAudioSelection, id: Int): Boolean =
+        consumeNativeAudioTrack(id, { isAudioSelectionCurrent(selection) },
+            admit = { action -> selection.assembly.native.admitPlaybackDispatch(selection.accepted, action) },
+            readNative = { selection.assembly.section.nativePlayer.state.value },
+            select = selection.assembly.section.nativePlayer::selectAudioTrack)
+
+    companion object {
+        private fun checkAudioUiDispatcher() {
+            check(javax.swing.SwingUtilities.isEventDispatchThread()) { "Audio selection requires the desktop UI dispatcher" }
+        }
+        /** Actual facade dispatcher, shared with headless consumption tests; never performs IO inside admit. */
+        internal fun consumeAudioLanguage(success: VideoPlaybackUiState.Success, language: String?,
+            current: () -> Boolean, admit: ((() -> Unit) -> Boolean), readNative: () -> PlayerState,
+            checkpoint: () -> Unit, reload: (DesktopWindowsAudioLanguageSelection) -> Unit): Boolean {
+            checkAudioUiDispatcher()
+            if (!current()) return false
+            var change: DesktopWindowsAudioLanguageSelection? = null
+            if (!admit { if (current()) change = resolveDesktopWindowsAudioLanguageSelection(success, language, readNative()) }) return false
+            val selected = change ?: return false
+            if (!current()) return false
+            try { checkpoint() } catch (_: CancellationException) { return false }
+            if (!current()) return false
+            reload(selected)
+            return true
+        }
+        internal fun consumeNativeAudioTrack(id: Int, current: () -> Boolean,
+            admit: ((() -> Unit) -> Boolean), readNative: () -> PlayerState, select: (Int) -> Unit): Boolean {
+            checkAudioUiDispatcher()
+            if (id <= 0 || !current()) return false
+            var selected = false
+            val admitted = admit {
+                val native = if (current()) readNative() else null
+                if (native != null && native.ready && !native.loading && native.error == null && native.failure == null &&
+                    desktopWindowsNativeAudioTracks(native).any { it.id == id && !it.selected }) {
+                    select(id); selected = true
+                }
+            }
+            return admitted && selected
+        }
+    }
     fun setAutomaticSubtitleMode(mode: SubtitleDisplayMode): Boolean = held()?.let { setSubtitleMode(it,mode) } == true
     fun switchQuality(quality: Int) { held()?.playback?.changeQuality(quality) }
     fun retry() { held()?.playback?.retry() }

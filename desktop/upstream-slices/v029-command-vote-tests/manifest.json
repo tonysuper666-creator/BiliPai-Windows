@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "tag": "v0.2.9",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicyTest.kt",
+      "gitBlob": "f0f3bf5e0a1a3ebe006c0a43b1d2d981f1d921a5",
+      "bytes": 18579,
+      "sha256": "13005cce5d2277464608d14500fb00978ebe217e490052ea9bc01ba117836aae",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/test/java/com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicyTest.kt"
+    },
+    {
+      "tag": "v0.2.9",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayStateTest.kt",
+      "gitBlob": "258ad34b2286f7402088ac77910b0a5ad4213044",
+      "bytes": 7638,
+      "sha256": "affcb2ce0dec65e48bbb75969ab2902f8d84c21157c810a975a02a1b0a8bfb72",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayStateTest.kt"
+    },
+    {
+      "tag": "v0.2.9",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayPolicyTest.kt",
+      "gitBlob": "221759b368860b20c83e001c36dec8b661c0d023",
+      "bytes": 4754,
+      "sha256": "7b84159743a530ec7295c08d93902aecde1c0c476051f877fff414f763895dce",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayPolicyTest.kt"
+    },
+    {
+      "tag": "v0.2.9",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "path": "app/src/test/java/com/android/purebilibili/data/repository/DanmakuRepositoryPolicyTest.kt",
+      "gitBlob": "44100f1206ed559d8c07bd25d2fcd3b2cdb467cf",
+      "bytes": 5296,
+      "sha256": "f9b22207531205964d66aade778f0aced6ddba218a52292ec0a0475fe53a4af0",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/test/java/com/android/purebilibili/data/repository/DanmakuRepositoryPolicyTest.kt"
+    }
+  ],
+  "testAdaptations": [
+    {
+      "originalPath": "app/src/test/java/com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicyTest.kt",
+      "wholeOriginalPreserved": true,
+      "testCount": 29,
+      "target": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicyTest.kt"
+    },
+    {
+      "originalPath": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayStateTest.kt",
+      "wholeOriginalPreserved": true,
+      "testCount": 12,
+      "target": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayStateTest.kt"
+    },
+    {
+      "originalPath": "app/src/test/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayPolicyTest.kt",
+      "wholeOriginalPreserved": true,
+      "testCount": 12,
+      "target": "desktop/src/test/kotlin/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayPolicyTest.kt"
+    },
+    {
+      "originalPath": "app/src/test/java/com/android/purebilibili/data/repository/DanmakuRepositoryPolicyTest.kt",
+      "selectedBodySha256LF": "34cbbd63ae65b494ecd7708d8c8361beae3182213fc4ca95ac202ae38109e4d6",
+      "testCount": 3,
+      "target": "desktop/src/test/kotlin/com/android/purebilibili/data/repository/DesktopV029GradeSummaryPolicyTest.kt"
+    }
+  ]
+}

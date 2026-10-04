@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "scope": "Selected original comment display and image-preview time only; canonical v025 sources remain pinned.",
+  "files": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "archiveFile": "ReplyComponents.kt",
+      "bytes": 132262,
+      "sha256Bytes": "edba82de5f1e9726c104f3ec38d003cc566e72d99b10afcbd57d9a7c3f7848e9",
+      "sha256LF": "edba82de5f1e9726c104f3ec38d003cc566e72d99b10afcbd57d9a7c3f7848e9",
+      "gitBlob": "ebce1b2b777967c0d53d761be2adf9c0a7ce6ff1"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/SubReplyDetailComponents.kt",
+      "archiveFile": "SubReplyDetailComponents.kt",
+      "bytes": 71788,
+      "sha256Bytes": "7b937a3be2194b2e51563a884a18d1d93c2f1eb67335b0b98b81743ff745311b",
+      "sha256LF": "7b937a3be2194b2e51563a884a18d1d93c2f1eb67335b0b98b81743ff745311b",
+      "gitBlob": "3419e36b69246b29ec4357aacf25995eeb762842"
+    }
+  ]
+}

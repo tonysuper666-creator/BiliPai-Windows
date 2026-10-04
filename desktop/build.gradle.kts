@@ -1019,6 +1019,8 @@ val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/dynamic-editor").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-editor.py", "tools/extract-upstream-dynamic-reply-protocol.py", "upstream-sources.json", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
+    inputs.file("tools/v029_comment_time.py")
+    inputs.dir("upstream-slices/v029-comment-time")
     inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-editor"))
@@ -1047,6 +1049,8 @@ val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/dynamic-reply").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-dynamic-reply.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
+    inputs.file("tools/v029_comment_time.py")
+    inputs.dir("upstream-slices/v029-comment-time")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-reply"))
@@ -1236,6 +1240,23 @@ tasks.named("compileTestKotlin") { dependsOn(extractOriginalHotDanmaku) }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-hot-danmaku/com")) }
 kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-hot-danmaku-tests/com")) }
 
+// Explicit v029 BAS grammar/timeline slice. No Android renderer or canonical-baseline update.
+val extractOriginalBasCore by tasks.registering(Exec::class) {
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bas-core.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-bas-core").get().asFile.absolutePath,
+        "--tests-output", layout.buildDirectory.dir("generated/original-bas-core-tests").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-bas-core.py")
+    inputs.dir("upstream-slices/v029-bas-core")
+    outputs.dir(layout.buildDirectory.dir("generated/original-bas-core"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-bas-core-tests"))
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalBasCore) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalBasCore) }
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-bas-core/com")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-bas-core-tests/com")) }
+
 val extractCommentFraudProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -1311,6 +1332,8 @@ val extractStableVideoVotes by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-stable-video-votes.py",
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/video-votes").get().asFile.absolutePath)
     inputs.files("tools/extract-stable-video-votes.py", "tools/sync-upstream.py", sourceManifest)
+    inputs.file("tools/v029_command_vote.py")
+    inputs.dir("upstream-slices/v029-command-vote")
     inputs.files(
         canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt"),
         canonicalOriginalSource("app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"),
@@ -1968,6 +1991,7 @@ val extractOriginalOfflinePlayer by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-offline-player.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/original-offline-player").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-offline-player.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", sourceManifest)
+    inputs.files(fileTree("upstream-slices/v029-offline-error"))
     inputs.files(sources.filter { "stable-offline-player-original" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-offline-player"))
@@ -2117,6 +2141,8 @@ val extractOriginalVideoPlayerSectionFull by tasks.registering(Exec::class) {
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/original-video-player-section-full").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-player-section-full.py", "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
+    inputs.file("tools/v029_command_vote.py")
+    inputs.dir("upstream-slices/v029-command-vote")
     inputs.files(sources.filter { "stable-video-player-section-full" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-player-section-full"))

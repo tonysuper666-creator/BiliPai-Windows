@@ -15,6 +15,8 @@ import com.android.purebilibili.feature.video.ui.components.VideoCommentVoteCard
 import com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlay
 import com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlayState
 import com.android.purebilibili.feature.video.ui.overlay.rememberCommandDanmakuOverlayState
+import com.android.purebilibili.feature.video.ui.overlay.submitOriginalDesktopCommandVote
+import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.bilipai.desktop.data.DesktopDynamicCardOperations
 import com.bilipai.desktop.data.DesktopRepository
 import com.bilipai.desktop.danmaku.DanmakuOverlay
@@ -104,64 +106,65 @@ internal fun DesktopVideoCommentVoteCardHost(
     }
 }
 
-/** Actual player command data, actual viewport size and original timed UI.
- * This scope is votes/grades only; it does not advertise inactive attention or
- * triple actions. Root binds the required grade callback to the same Operations
- * member hunk, while ordinary vote continues through its existing submitVote.
- */
-@Composable
-internal fun rememberDesktopVideoCommandVoteState(
-    epoch: Long, sourceVersion: Long, bvid: String, cid: Long,
-): CommandDanmakuOverlayState = rememberCommandDanmakuOverlayState(listOf(epoch, sourceVersion, bvid, cid))
-
+/** Complete v029 vote/grade cards bound to the captured accepted source. */
 @Composable
 internal fun DesktopVideoCommandVoteContent(
     repository: DesktopRepository,
     player: MpvPlayer,
-    sourceVersion: Long,
-    bvid: String,
+    sourceLease: Any,
     aid: Long,
     cid: Long,
     danmaku: DanmakuOverlay,
-    commandState: CommandDanmakuOverlayState,
     fontScale: Float,
     hideInteractiveCommands: Boolean,
     stillOwned: () -> Boolean,
-    submitGrade: suspend (DesktopDynamicCardOperations, Long, Long, Long, String, Int) -> Result<Unit>,
+    withAdmission: (() -> Unit) -> Boolean,
+    capturePlaybackState: () -> VideoPlaybackUiState?,
     onFeedback: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val native by player.state.collectAsState()
-    val commandItems by danmaku.commandItems.collectAsState()
-    // Read the actual flow for recomposition, then retrieve only the sole list
-    // owned by this CID under the same admission/publication lock.
-    val cidOwnedCommands = commandItems.let { danmaku.commandItemsFor(cid) }
-    val key = listOf("video-command-vote", sourceVersion, bvid, aid, cid)
-    val nativeOwned = { sourceVersion > 0 && player.currentSourceVersion == sourceVersion &&
-        native.ready && aid > 0 && cid > 0 && stillOwned() }
-    DesktopVideoVoteBindings(repository, key, nativeOwned, onFeedback) { operations, owned ->
+    val epoch by repository.sessionEpochFlow.collectAsState()
+    val capturedEpoch = epoch
+    val session = checkNotNull(LocalDesktopDynamicCardSession.current)
+    // A replacement accepted object creates a new scope. Old jobs retain their
+    // original predicate rather than receiving a successor's closure on recomposition.
+    val alive = remember(repository, capturedEpoch, session, sourceLease) { AtomicBoolean(true) }
+    val capturedOwns = remember(alive) { stillOwned }
+    val capturedAdmission = remember(alive) { withAdmission }
+    val capturedState = remember(alive) { capturePlaybackState }
+    val feedback by rememberUpdatedState(onFeedback)
+    val current = remember(alive) { { alive.get() && session.matches(repository, capturedEpoch) && capturedOwns() } }
+    val operations = remember(alive) { DesktopDynamicCardOperations(repository, capturedEpoch, current, session.emotes) }
+    val platform = remember(alive) {
+        DesktopWindowsCommandVoteBinding(sourceLease, aid, cid, current, current, capturedAdmission,
+            readVote = { _, id -> operations.getVoteInfo(id) },
+            writeVote = { _, id, indexes -> operations.submitVote(id, indexes, "").map { Unit } },
+            writeGrade = { _, aid, cid, progress, id, score -> operations.submitGradeDanmaku(aid, cid, progress, id, score) },
+            readGrade = { _, cid, aid, id -> operations.getGradeDanmakuSummary(cid, aid, id) },
+            onFeedback = { feedback(it) })
+    }
+    DisposableEffect(alive) { onDispose { alive.set(false) } }
+    key(alive) {
         val scope = rememberCoroutineScope()
+        val commandState = rememberCommandDanmakuOverlayState(sourceLease)
+        val native by player.state.collectAsState()
+        val commandItems by danmaku.commandItems.collectAsState()
+        val cidOwnedCommands = commandItems.let { danmaku.commandItemsFor(cid) }
         var measured by remember { mutableStateOf(IntSize.Zero) }
         val density = LocalDensity.current
         val viewport = resolveDanmakuViewport(measured.width, measured.height, density.density)
+        // ATTENTION is not mounted until real follow/triple ports are connected.
         val items = filterVisibleCommandDanmakuItems(cidOwnedCommands, hideInteractiveCommands)
             .filter { it.type == CommandDanmakuType.VOTE }
-        Box(modifier.fillMaxSize().onSizeChanged { measured = it }) {
-            if (viewport != null && owned()) CommandDanmakuOverlay(items, player, viewport, commandState, fontScale,
-                onFollowClick = {}, onTripleClick = {}, onVoteSubmit = { item, option, optionIndex ->
-                    if (owned() && item.voteId.isNotBlank()) scope.launch {
-                        val result = if (option.score != null) {
-                            submitGrade(operations, aid, cid, item.startTimeMs, item.voteId, option.score)
-                        } else {
-                            val id = item.voteId.toLongOrNull()
-                            if (id == null) Result.success(Unit) else
-                                operations.submitVote(id, listOf(optionIndex), "").map { Unit }
-                        }
-                        ensureActive()
-                        if (owned() && result.isFailure) onFeedback(result.exceptionOrNull()?.message ?:
-                            if (option.score != null) "打分失败" else "投票失败")
-                    }
-                })
+        CompositionLocalProvider(LocalDesktopWindowsCommandVotePlatform provides platform) {
+            Box(modifier.fillMaxSize().onSizeChanged { measured = it }) {
+                if (viewport != null && native.ready && current()) CommandDanmakuOverlay(
+                    items = items, player = player, viewport = viewport, bottomInsetPx = 0,
+                    state = commandState, fontScale = fontScale, onFollowClick = {}, onTripleClick = {},
+                    onVoteSubmit = { item, option, index ->
+                        submitOriginalDesktopCommandVote(item, option, index, capturedState(), commandState, scope, platform)
+                    })
+            }
         }
     }
 }

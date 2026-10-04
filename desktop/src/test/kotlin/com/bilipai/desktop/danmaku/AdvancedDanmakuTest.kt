@@ -8,14 +8,15 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class AdvancedDanmakuTest {
-    @Test fun `XML modes seven and nine use upstream BAS interpolation and ignore executable mode eight`() {
+    @Test fun `XML mode seven retains array interpolation and rejects mode nine arrays and executable mode eight`() {
         val document = DanmakuParser.parseDocument("""<i>
             <d p="1,7,25,16711680,0,0,hash,10">[0.2,0.3,"1-0",2,"BAS",30,0,0.8,0.7,2,0,"false","","0"]</d>
             <d p="1,9,25,16777215,0,0,hash,11">[336,219,"",3,"mode9"]</d>
             <d p="1,8,25,16777215,0,0,hash,12">arbitrary executable code</d>
             <d p="2,1,25,16777215,0,0,abcd,20">normal</d>
         </i>""")
-        assertEquals(listOf("BAS", "mode9"), document.advanced.map { it.content })
+        assertEquals(listOf("BAS"), document.advanced.map { it.content })
+        assertTrue(document.bas.isEmpty())
         assertEquals(listOf("normal"), document.comments.map { it.text })
         assertEquals("abcd", document.comments.single().userHash)
         assertEquals(20L, document.comments.single().serverId)
@@ -26,7 +27,8 @@ class AdvancedDanmakuTest {
         assertEquals(0.65f, halfway.x, 0.0001f)
         assertEquals(0.6f, halfway.y, 0.0001f)
         assertEquals(0.5f, halfway.alpha, 0.0001f)
-        assertEquals(0.5f, document.advanced[1].startX)
+        val pixelCoordinates = DanmakuParser.parseDocument("""<i><d p="1,7,25,16777215">[336,219,"",3,"pixel coordinates"]</d></i>""")
+        assertEquals(0.5f, pixelCoordinates.advanced.single().startX)
         assertTrue(renderer.frame(6_000, DanmakuSettings()).isEmpty())
         assertEquals(halfway, renderer.frame(2_000, DanmakuSettings(opacity = 1f)).first())
     }

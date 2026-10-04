@@ -815,6 +815,12 @@ suspend fun submitGradeDanmaku(aid: Long, cid: Long, progress: Long, gradeId: St
     }
 }
 
+suspend fun getGradeDanmakuSummary(cid: Long, aid: Long, gradeId: String): Result<com.android.purebilibili.data.model.response.GradeDanmakuSummary> = result {
+    read {
+        com.android.purebilibili.data.repository.DesktopVideoGradeProtocol(api)
+            .getGradeDanmakuSummary(cid, aid, gradeId).getOrThrow()
+    }
+}
 // STABLE_ORIGINAL_COMMENT_FRAUD_MEMBERS
     // Desktop original fraud protocol binding; BGM owns records/status/policy.
     private val originalCommentFraud = com.android.purebilibili.data.repository.DesktopOriginalCommentFraudProtocol(

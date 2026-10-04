@@ -7,6 +7,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,6 +28,7 @@ import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.semantics.Role
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.android.purebilibili.feature.video.viewmodel.CommentSortMode
@@ -153,6 +155,8 @@ internal class DesktopWindowsVideoActions(
     }
     var showCollection by remember(assembly, collectionQueueSource) { mutableStateOf(false) }
     var showPlaybackQueue by remember(assembly, collectionQueueSource) { mutableStateOf(false) }
+    var audioLanguageMenu by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoAudioSelection?>(null) }
+    var audioTrackMenu by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoAudioSelection?>(null) }
     var interactionMode by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoInteraction?>(null) }
     fun collectionQueueCurrent(): Boolean = current() && collectionQueueSource != null &&
         assembly.native.isCurrent(collectionQueueSource) && assembly.playback.captureDesktopPlaybackState().let {
@@ -450,8 +454,29 @@ internal class DesktopWindowsVideoActions(
                                 onClick={if(current()) subtitleOverride=mode}, label={Text(when(mode) {SubtitleDisplayMode.OFF->"字幕关闭";SubtitleDisplayMode.PRIMARY_ONLY->"主字幕";SubtitleDisplayMode.SECONDARY_ONLY->"副字幕";SubtitleDisplayMode.BILINGUAL->"双语字幕"})}) }
                         }
                         success?.let { value ->
+                            val languages = desktopWindowsAudioLanguageOptions(value)
+                            val audioTracks = desktopWindowsNativeAudioTracks(state)
+                            if (languages.isNotEmpty() || audioTracks.size > 1) {
+                                Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    if (languages.isNotEmpty()) TextButton(onClick = {
+                                        collectionQueueSource?.let { accepted ->
+                                            audioLanguageMenu = shell.playback.captureAudioSelection(assembly, accepted, ::collectionQueueCurrent)
+                                        }
+                                    }, enabled = collectionQueueCurrent() && !value.isQualitySwitching) {
+                                        val language = desktopWindowsCurrentAudioLanguage(value)
+                                        Text("音频语言：${languages.firstOrNull { it.language == language }?.label ?: language ?: "原声"}", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    }
+                                    if (audioTracks.size > 1) TextButton(onClick = {
+                                        collectionQueueSource?.let { accepted ->
+                                            audioTrackMenu = shell.playback.captureAudioSelection(assembly, accepted, ::collectionQueueCurrent)
+                                        }
+                                    }, enabled = collectionQueueCurrent() && !value.isQualitySwitching && state.ready && !state.loading) {
+                                        Text("音轨：${audioTracks.firstOrNull { it.selected }?.let(::desktopWindowsNativeAudioTrackLabel) ?: "未选择"}", maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                    }
+                                }
+                            }
                             if (value.availableAudioQualities.isNotEmpty()) {
-                                Text("音轨画质", style = MaterialTheme.typography.labelLarge)
+                                Text("音质", style = MaterialTheme.typography.labelLarge)
                                 Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                     value.availableAudioQualities.forEach { audio ->
                                         FilterChip(value.requestedAudioQuality == audio.preferenceId,
@@ -475,6 +500,50 @@ internal class DesktopWindowsVideoActions(
                     } else Text("正在读取评论", style = MaterialTheme.typography.bodyMedium)
                 },
             )
+        }
+    }
+
+    audioLanguageMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }?.let { selection ->
+        val options = desktopWindowsAudioLanguageOptions(selection.success)
+        DesktopWindowsPlayerDialog("音频语言", { audioLanguageMenu = null }, preferredHeightDp = (180 + 48 * options.size).coerceIn(220, 420)) {
+            Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("音频语言", style = MaterialTheme.typography.titleMedium)
+                LazyColumn(Modifier.weight(1f)) {
+                    items(options) { option ->
+                        val selected = option.language == desktopWindowsCurrentAudioLanguage(selection.success)
+                        Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).selectable(selected, role = Role.RadioButton, onClick = {
+                                audioLanguageMenu = null
+                                if (!shell.playback.selectAudioLanguage(selection, option.language) &&
+                                    option.language != desktopWindowsCurrentAudioLanguage(selection.success)) actions.notice("音频选项已变化，请重新打开")
+                            }), verticalAlignment = Alignment.CenterVertically) {
+                            RadioButton(selected = selected, onClick = null)
+                            Text(option.label, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
+                    }
+                }
+                TextButton(onClick = { audioLanguageMenu = null }) { Text("完成") }
+            }
+        }
+    }
+    audioTrackMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }?.let { selection ->
+        val tracks = desktopWindowsNativeAudioTracks(state)
+        DesktopWindowsPlayerDialog("音轨", { audioTrackMenu = null }, preferredHeightDp = (180 + 48 * tracks.size).coerceIn(220, 420)) {
+            Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("音轨", style = MaterialTheme.typography.titleMedium)
+                LazyColumn(Modifier.weight(1f)) {
+                    items(tracks) { track ->
+                        Row(Modifier.fillMaxWidth().heightIn(min = 48.dp).selectable(track.selected, role = Role.RadioButton, onClick = {
+                                audioTrackMenu = null
+                                if (!shell.playback.selectNativeAudioTrack(selection, track.id) && !track.selected)
+                                    actions.notice("音轨选项已变化，请重新打开")
+                            }), verticalAlignment = Alignment.CenterVertically) {
+                            RadioButton(selected = track.selected, onClick = null)
+                            Text(desktopWindowsNativeAudioTrackLabel(track), maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
+                    }
+                }
+                TextButton(onClick = { audioTrackMenu = null }) { Text("完成") }
+            }
         }
     }
 
@@ -572,8 +641,8 @@ private fun desktopWindowsNativeVideoKey(event:java.awt.event.KeyEvent):androidx
             OutlinedCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(10.dp)) {
                     TextButton(onClick = { if (current()) onUser(reply.mid) }) { Text(reply.member.uname) }
-                    // Original PiliPlus rule: top-level comments are always precise to the second.
-                    Text(FormatUtils.formatPrecisePublishTime(reply.ctime, pattern="yyyy-MM-dd HH:mm:ss"),
+                    // Original v029 comment display follows the same detailed-time preference as preview/thread replies.
+                    Text(FormatUtils.formatCommentTime(reply.ctime, detailedTimeEnabled=detailedCommentTimeEnabled),
                         style=MaterialTheme.typography.bodySmall, color=MaterialTheme.colorScheme.onSurfaceVariant)
                     RichCommentText(reply.content.message,14.sp,emoteMap=emotes,content=reply.content,
                         onUserClick={if(current())onUser(it)},onUrlClick={if(current())openLink(it)},onTimestampClick={if(current())seek(it/1000.0)})

@@ -146,8 +146,12 @@ class DanmakuWindowLoader(
             .distinctBy { if (it.serverId > 0) "id:${it.serverId}" else "${it.timeSeconds}:${it.mode}:${it.color}:${it.text}" }
             .sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id })
             .take(25_000).mapIndexed { index, comment -> comment.copy(id = index) }
+        val basBudget=DesktopBasDocumentBudget()
+        val bas=(first.bas+second.bas).distinctBy { if(it.id>0)"id:${it.id}" else "${it.startTimeMs}:${it.source}" }
+            .sortedBy {it.startTimeMs}.filter(basBudget::retainCompiled).take(5_000)
         return DanmakuDocument(comments, (first.advanced + second.advanced).distinctBy { it.id }.sortedBy { it.startTimeMs }.take(5_000),
-            first.serverDisabled || second.serverDisabled)
+            first.serverDisabled || second.serverDisabled,
+            bas)
     }
 
     private fun requireProtocolBytes(bytes: ByteArray) {

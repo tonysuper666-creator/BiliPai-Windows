@@ -315,6 +315,20 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
     }
     override suspend fun submitVote(voteId:Long,optionIndexes:List<Int>):Result<Unit> = request { it.submitVote(voteId,optionIndexes,"").map { Unit } }
 
+    override fun commandVotePlatform(): DesktopWindowsCommandVotePlatform? {
+        val value = resources.native.current() ?: return null
+        val current = { resources.isForegroundOwned() && resources.native.isCurrent(value) }
+        return DesktopWindowsCommandVoteBinding(value, value.request.aid, value.request.cid,
+            current = current, cleanupCurrent = { resources.native.isCurrent(value) },
+            admission = { action -> resources.withPresentationAdmission(value, action) },
+            readVote = { job, id -> resources.operations(value, job).getVoteInfo(id) },
+            writeVote = { job, id, indexes -> resources.operations(value, job).submitVote(id, indexes, "").map { Unit } },
+            writeGrade = { job, aid, cid, progress, id, score ->
+                resources.operations(value, job).submitGradeDanmaku(aid, cid, progress, id, score) },
+            readGrade = { job, cid, aid, id -> resources.operations(value, job).getGradeDanmakuSummary(cid, aid, id) },
+            onFeedback = resources.reportUnsupported)
+    }
+
     @Composable override fun NativeViewport(modifier:Modifier,layout:VideoViewportLayout,resizeMode:Int,revealAlpha:Float,
         revealScale:Float,freeScale:Float,panX:Float,panY:Float,flipHorizontal:Boolean,flipVertical:Boolean,visible:Boolean,keepAwake:Boolean) {
         val value=resources.native.current()

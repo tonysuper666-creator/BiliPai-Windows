@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "upstreamRepository": "https://github.com/jay3-yy/BiliPai",
+  "upstreamTag": "v0.2.9",
+  "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "baselineCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "scope": "offline failure policy and exact error presentation fragments; original v025 whole screen is retained",
+  "sources": [
+    {
+      "file": "OfflinePlaybackErrorPolicy.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflinePlaybackErrorPolicy.kt",
+      "gitBlob": "162f96fa8088b68280bd48dd76a8fdfdbdf430a3",
+      "sha256": "db6e4f773e9899334aced6ca67f60670141875cad3fd62add057928e73d783c1",
+      "bytes": 1379,
+      "lfOnly": true
+    },
+    {
+      "file": "OfflinePlaybackErrorPolicyTest.kt",
+      "path": "app/src/test/java/com/android/purebilibili/feature/download/OfflinePlaybackErrorPolicyTest.kt",
+      "gitBlob": "420789b96824bee01f8b152991bc9a16ade8202b",
+      "sha256": "d78b57dc74f8a33f775fbe85016b465d58d413e451375d7b752ac92312f3dec3",
+      "bytes": 1000,
+      "lfOnly": true
+    },
+    {
+      "file": "OfflineVideoPlayerScreen.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt",
+      "gitBlob": "b2f0fb96b7a3fc0e60273881e756f5827a998138",
+      "sha256": "70e0e12e79c1ba1bc62517d071b51e1e20efde7ccf0e246f6bd7fcfc50e38034",
+      "bytes": 58421,
+      "lfOnly": true
+    }
+  ],
+  "media3": {
+    "sourceUrl": "https://dl.google.com/dl/android/maven2/androidx/media3/media3-common/1.10.1/media3-common-1.10.1-sources.jar",
+    "archiveSha256": "472586b0da9837abba8cfd1e3113b81c801fe265f9fadc5ceca4011dba4255ba",
+    "file": "PlaybackException.java",
+    "sha256": "69da08c287ad71041ea95ec30fef1a2c2b0683b70051b129ef585393c2a0c550",
+    "bytes": 27189,
+    "constants": {
+      "ERROR_CODE_IO_FILE_NOT_FOUND": 2005,
+      "ERROR_CODE_IO_NO_PERMISSION": 2006,
+      "ERROR_CODE_PARSING_CONTAINER_MALFORMED": 3001,
+      "ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED": 3003,
+      "ERROR_CODE_DECODER_INIT_FAILED": 4001,
+      "ERROR_CODE_DECODING_FAILED": 4003,
+      "ERROR_CODE_DECODING_FORMAT_UNSUPPORTED": 4005
+    }
+  }
+}

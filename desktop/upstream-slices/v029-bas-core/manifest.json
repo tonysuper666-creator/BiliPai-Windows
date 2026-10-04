@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "canonicalBaselineAdvanced": false,
+  "scope": "Pure Mode9 BAS grammar and absolute-time timeline only; no Windows scene painter or target input bridge",
+  "license": "Original danmaku-engine Apache-2.0 (danmaku-engine/LICENSE); application GPL-3.0; no new dependency",
+  "files": [
+    {
+      "originalPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasEasing.kt",
+      "archiveFile": "BasEasing.kt",
+      "bytes": 3526,
+      "sha256Bytes": "9ca169cf7d22d3d1f375baab5452b27f7b5dac005ad4c6a407d4bb3619567875",
+      "gitBlob": "4b3ce8b009cf5f5c755c11560a3840341217f0fa",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasEasing.kt",
+      "testSource": false,
+      "originalTestCount": 0
+    },
+    {
+      "originalPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasLexer.kt",
+      "archiveFile": "BasLexer.kt",
+      "bytes": 6570,
+      "sha256Bytes": "ef3062ce0429438d107ad764724f18ee68a84eee036ec9c5116cb93fec86e8b4",
+      "gitBlob": "b25505a5244547cf51f2cf592f23daf55bb96eb9",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasLexer.kt",
+      "testSource": false,
+      "originalTestCount": 0
+    },
+    {
+      "originalPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasModels.kt",
+      "archiveFile": "BasModels.kt",
+      "bytes": 3430,
+      "sha256Bytes": "42adfe867013ac8648e7e52b9d2e19e1275514d367954b24d6a84e05a55ac09d",
+      "gitBlob": "8d6618098feef29a01e7b207d9c2eafb3ed77d62",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasModels.kt",
+      "testSource": false,
+      "originalTestCount": 0
+    },
+    {
+      "originalPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasScriptParser.kt",
+      "archiveFile": "BasScriptParser.kt",
+      "bytes": 24873,
+      "sha256Bytes": "4938b7f94033191da01d87371f245d601f3371ef039d3a757fe8d04098916357",
+      "gitBlob": "9849f33b6b1a51c76e9d911e375094b9f724a308",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasScriptParser.kt",
+      "testSource": false,
+      "originalTestCount": 0
+    },
+    {
+      "originalPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasTimeline.kt",
+      "archiveFile": "BasTimeline.kt",
+      "bytes": 10649,
+      "sha256Bytes": "1eb0fb616eaa067e98429293aa610c151baef3ee71ec4b3f79bcb28e98eb269a",
+      "gitBlob": "48687c8cbfd24c33576ac7ed5ce9a36c4c572343",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/bas/BasTimeline.kt",
+      "testSource": false,
+      "originalTestCount": 0
+    },
+    {
+      "originalPath": "danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasDurationTest.kt",
+      "archiveFile": "BasDurationTest.kt",
+      "bytes": 4750,
+      "sha256Bytes": "5bf2ffad1b73d91f79beec2539cb3a18c7e46513f89eb81a5b7626c040c45f12",
+      "gitBlob": "31a87a747f3e5e4599ad8288e02c02d04d4dc701",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasDurationTest.kt",
+      "testSource": true,
+      "originalTestCount": 7
+    },
+    {
+      "originalPath": "danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasLexerTest.kt",
+      "archiveFile": "BasLexerTest.kt",
+      "bytes": 2012,
+      "sha256Bytes": "367e65e3e7845c225c8bd15dc3eb8c6e28753c0ed8213094d9e4894fc90a0414",
+      "gitBlob": "ae7a26fe6b99dfc6729e8bbaff175fcc27d6826c",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasLexerTest.kt",
+      "testSource": true,
+      "originalTestCount": 3
+    },
+    {
+      "originalPath": "danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasPathFrameTest.kt",
+      "archiveFile": "BasPathFrameTest.kt",
+      "bytes": 2038,
+      "sha256Bytes": "32b60ad4e1e57ef7a7884bf0755f2171ebef781a1308c598d112841ff4f4df32",
+      "gitBlob": "c09880a652e13d57890fa6eadcdb8704507de5ce",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasPathFrameTest.kt",
+      "testSource": true,
+      "originalTestCount": 2
+    },
+    {
+      "originalPath": "danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasScriptParserTest.kt",
+      "archiveFile": "BasScriptParserTest.kt",
+      "bytes": 9047,
+      "sha256Bytes": "2c3116f805433a28086e647b7f8fe7da164f953bc369f14ac82f87812129be49",
+      "gitBlob": "5e958d9f3234093faa354a56243bf04cc794a0ed",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasScriptParserTest.kt",
+      "testSource": true,
+      "originalTestCount": 12
+    },
+    {
+      "originalPath": "danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasTimelineTest.kt",
+      "archiveFile": "BasTimelineTest.kt",
+      "bytes": 9674,
+      "sha256Bytes": "1d01aa4cc221da4ac8a24ae6397e2a30b8fa94c96933c72a08fa4e51e6be7f3b",
+      "gitBlob": "b6f234125d8e14c4b6114821caf1ff5155e1c270",
+      "sourceUrl": "https://github.com/jay3-yy/BiliPai/blob/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/bas/BasTimelineTest.kt",
+      "testSource": true,
+      "originalTestCount": 13
+    }
+  ]
+}

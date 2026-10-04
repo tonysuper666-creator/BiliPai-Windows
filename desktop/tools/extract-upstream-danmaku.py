@@ -14,7 +14,7 @@ SOURCES = {
     FEATURE_ROOT + "DanmakuSegmentWindowPolicy.kt": "direct",
     FEATURE_ROOT + "DanmakuKeywordFilterPolicy.kt": "direct",
     FEATURE_ROOT + "DanmakuTypeFilterPolicy.kt": "direct",
-    FEATURE_ROOT + "CommandDanmakuPolicy.kt": "direct",
+    FEATURE_ROOT + "CommandDanmakuPolicy.kt": "extracted",
     FEATURE_ROOT + "AdvancedDanmakuData.kt": "extracted",
     FEATURE_ROOT + "DanmakuParser.kt": "extracted",
     "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt": "extracted",

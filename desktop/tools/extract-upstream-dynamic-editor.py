@@ -4,6 +4,7 @@ The original full-window sheet, draft controls and dialogs are retained.
 Source drift rejects the build by manifest LF hash and exact fixed Git blob.
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
+from v029_comment_time import apply as apply_original_comment_time
 from pathlib import Path
 import hashlib, importlib.util, json, sys
 sys.dont_write_bytecode = True
@@ -83,6 +84,9 @@ import com.android.purebilibili.feature.video.viewmodel.CommentSortMode
 import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
 '''+body,'DesktopOriginalDynamicInlineCommentHeader.kt')
     p=BASE+'feature/video/ui/components/ReplyComponents.kt';s=source_texts[p]
+    s, time_selection = apply_original_comment_time(repo, p, s)
+    (output / 'v029-comment-time-selection.json').write_text(
+        json.dumps(time_selection, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     # Exact pure rich-text/layout/model policies needed by the future ReplyItemView
     # producer. This deliberately emits neither a fake ReplyItemView nor its
     # Android bitmap/gallery, translation, block-user or cached-title consumer.

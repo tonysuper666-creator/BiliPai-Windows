@@ -477,8 +477,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var originalDanmakuSettingsVisible by remember(sessionEpoch, commandCid, commandVersion) { mutableStateOf(false) }
     var originalDanmakuPoolVisible by remember(sessionEpoch, commandCid, commandVersion) { mutableStateOf(false) }
     var originalDanmakuEnabledChangeVersion by remember(sessionEpoch, commandCid, commandVersion) { mutableLongStateOf(0L) }
-    val commandState = rememberDesktopVideoCommandVoteState(sessionEpoch, commandVersion,
-        commandDetails?.bvid.orEmpty(), commandCid)
+    val commandSnapshotNow = player?.currentSourceSnapshot()
+    val commandSnapshot = remember(player, commandSnapshotNow?.sourceVersion, commandSnapshotNow?.source) { commandSnapshotNow }
     var subtitleDialog by remember { mutableStateOf(false) }
     var subtitleDialogTarget by remember { mutableStateOf<DesktopSubtitleDialogTarget?>(null) }
     var section by remember { mutableStateOf(DesktopSection.HOME) }
@@ -1474,26 +1474,32 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             onOriginalDanmakuToggle = ::toggleOriginalDanmaku,
                             surfaceOnly = section == DesktopSection.STORY,
 
-                            commandOverlay = if (initialized === player && danmaku != null &&
+                            commandOverlay = if (initialized === player && danmaku != null && commandSnapshot != null &&
                                 (showVideo || section == DesktopSection.STORY) && commandDetails != null &&
-                                commandCid > 0 && initialized.ownsSourceVersion(commandVersion) &&
+                                commandCid > 0 && initialized.ownsSourceSnapshot(commandSnapshot) &&
                                 playback.currentCastSource(commandVersion) != null && rendererDanmakuSettings.enabled) ({
                                 val capturedEpoch = sessionEpoch
                                 val capturedInfo = commandDetails
                                 val capturedCid = commandCid
-                                val capturedVersion = commandVersion
-                                DesktopVideoCommandVoteContent(repository, initialized, capturedVersion,
-                                    capturedInfo.bvid, capturedInfo.aid, capturedCid, danmaku, commandState,
+                                val capturedSource = commandSnapshot
+                                val currentCommand = {
+                                    repository.sessionEpoch == capturedEpoch && initialized.ownsSourceSnapshot(capturedSource) &&
+                                        playback.state.value.details?.bvid == capturedInfo.bvid &&
+                                        playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == capturedCid &&
+                                        playback.currentCastSource(capturedSource.sourceVersion) != null
+                                }
+                                DesktopVideoCommandVoteContent(repository, initialized, capturedSource,
+                                    capturedInfo.aid, capturedCid, danmaku,
                                     fontScale = rendererDanmakuSettings.fontScale,
                                     hideInteractiveCommands = rendererDanmakuSettings.hideInteractiveCommands,
-                                    stillOwned = {
-                                        repository.sessionEpoch == capturedEpoch && initialized.ownsSourceVersion(capturedVersion) &&
-                                            playback.state.value.details?.bvid == capturedInfo.bvid &&
-                                            playback.state.value.details?.pages?.getOrNull(playback.state.value.currentPart)?.cid == capturedCid &&
-                                            playback.currentCastSource(capturedVersion) != null
-                                    }, submitGrade = { operations, aid, cid, progress, gradeId, score ->
-                                        operations.submitGradeDanmaku(aid, cid, progress, gradeId, score)
-                                    }, onFeedback = { error = it })
+                                    stillOwned = currentCommand,
+                                    withAdmission = { action -> repository.withPrimaryPlaybackAdmission(capturedEpoch, currentCommand) {
+                                        if (currentCommand()) { action(); true } else false
+                                    } },
+                                    capturePlaybackState = { playback.state.value.details?.raw?.let { raw ->
+                                        com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Success(
+                                            info = raw.copy(cid = capturedCid), playUrl = capturedSource.source.videoUrl)
+                                    } }, onFeedback = { error = it })
                             }) else null,
                             onSeekTo = if ((showVideo || section == DesktopSection.STORY) && playing.details != null) playback::seekTo else null,
                             renderSurface = !pipActive, onPictureInPicture = if (pip != null && hostWindow != null) ({ pip.open(hostWindow, initialized.state.value.sourceTitle) }) else null)
@@ -1727,19 +1733,18 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             if(player!=null && danmaku!=null && danmakuAssembly!=null && danmakuSource!=null && rendererDanmakuSettings.enabled && !pipActive && ownsDanmakuSource())
                                                 DesktopWindowsHotDanmakuHost(hotDanmakuLink,danmakuSource,danmaku,player,danmakuAssembly,::ownsDanmakuSource,
                                                     {action->ownsDanmakuSource() && ordinaryVideo.factoryFor(danmakuAssembly).withPresentationAdmission(danmakuAssembly,danmakuSource,action)})
-                                            if (player != null && danmaku != null && commandDetails != null && commandCid > 0 &&
-                                                player.ownsSourceVersion(commandVersion) && playback.currentCastSource(commandVersion) != null && rendererDanmakuSettings.enabled) {
-                                                val capturedEpoch = sessionEpoch
-                                                val capturedInfo = commandDetails
-                                                val capturedCid = commandCid
-                                                val capturedVersion = commandVersion
-                                                DesktopVideoCommandVoteContent(repository, player, capturedVersion,
-                                                    capturedInfo.bvid, capturedInfo.aid, capturedCid, danmaku, commandState,
+                                            if (player != null && danmaku != null && danmakuAssembly != null && danmakuSource != null &&
+                                                rendererDanmakuSettings.enabled && !pipActive && ownsDanmakuSource()) {
+                                                val capturedAssembly = danmakuAssembly
+                                                val capturedSource = danmakuSource
+                                                DesktopVideoCommandVoteContent(repository, player, capturedSource,
+                                                    capturedSource.request.aid, capturedSource.request.cid, danmaku,
                                                     fontScale = rendererDanmakuSettings.fontScale,
                                                     hideInteractiveCommands = rendererDanmakuSettings.hideInteractiveCommands,
-                                                    stillOwned = { messageRoutes.currentKey == entryKey && repository.sessionEpoch == capturedEpoch &&
-                                                        player.ownsSourceVersion(capturedVersion) && playback.currentCastSource(capturedVersion) != null },
-                                                    submitGrade = { operations, aid, cid, progress, gradeId, score -> operations.submitGradeDanmaku(aid, cid, progress, gradeId, score) },
+                                                    stillOwned = ::ownsDanmakuSource,
+                                                    withAdmission = { action -> ownsDanmakuSource() && ordinaryVideo.factoryFor(capturedAssembly)
+                                                        .withPresentationAdmission(capturedAssembly, capturedSource, action) },
+                                                    capturePlaybackState = capturedAssembly.playback::captureDesktopPlaybackState,
                                                     onFeedback = { error = it })
                                             }
                                         },

@@ -599,7 +599,7 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/CommandDanmakuPolicy.kt",
-      "mode": "direct",
+      "mode": "extracted",
       "features": [
         "source-parity"
       ],
@@ -5547,7 +5547,7 @@
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlayState.kt",
       "sha256": "f280d4ef1dbf9baf1a856d6ce7ca0dd2f7841fce67f24f4a2c57ca1cefeb21ce",
-      "mode": "direct",
+      "mode": "extracted",
       "features": [
         "stable-video-vote-parity",
         "playback",
@@ -11452,7 +11452,7 @@
     "topic": "original-detail-sort-pagination-participation-rich-link-keyword-and-back-route-integrated-offline-tested",
     "playback-settings": "original-codec-audio-subtitle-policy-integrated-native-hardware-and-pair-tested-account-subtitle-retry-pending"
   },
-  "windowsRevision": 11,
+  "windowsRevision": 12,
   "hashNormalization": "lf",
   "resources": [
     {

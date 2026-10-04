@@ -5,6 +5,7 @@ format helpers. This producer owns only their original UI consumers, Android
 platform seams and original thread renderer. Never emit that policy twice.
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
+from v029_comment_time import apply as apply_original_comment_time
 from pathlib import Path
 import hashlib
 import importlib.util
@@ -78,6 +79,8 @@ def adapt_common(body):
     body = body.replace('Toast.LENGTH_LONG', 'Toast.LENGTH_SHORT')
     body = body.replace('    val context = LocalContext.current\n    val scope = rememberCoroutineScope()',
                         '    val context = LocalContext.current\n    val platform = LocalDesktopCommentBindings.current\n    val scope = rememberCoroutineScope()')
+    body = body.replace('    val context = LocalContext.current\n    val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current\n    val scope = rememberCoroutineScope()',
+                        '    val context = LocalContext.current\n    val platform = LocalDesktopCommentBindings.current\n    val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current\n    val scope = rememberCoroutineScope()')
     if 'var wasRefreshing by remember(rootReply.rpid)' in body:
         body = body.replace('    val context = LocalContext.current\n    val showLoadedReplyCount', '    val context = LocalContext.current\n    val platform = LocalDesktopCommentBindings.current\n    val showLoadedReplyCount')
     body = body.replace('    val blockedUpRepository = remember { BlockedUpRepository.getInstance(context) }\n', '')
@@ -157,6 +160,7 @@ def generate(repo, output):
         emitted.append(host.write(output, path, read(repo, path), body, filename))
 
     original = read(repo, REPLY)
+    original, reply_time_selection = apply_original_comment_time(repo, REPLY, original)
     imports = original[:original.index('internal val EMOTE_TOKEN_PATTERN')]
     # Only private file helpers are repeated. All public/internal policies and
     # types are the editor's single existing source-owned producers.
@@ -198,6 +202,9 @@ def generate(repo, output):
     emit(REPLY, shared.drop_logs(adapt_common(imports + private_helpers + ui)), 'DesktopOriginalReplyComponents.kt')
 
     original = read(repo, SUB)
+    original, sub_time_selection = apply_original_comment_time(repo, SUB, original)
+    (output / 'v029-comment-time-selection.json').write_text(
+        json.dumps([reply_time_selection, sub_time_selection], ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     # The actual sole full generic VideoCommentVM is now installed. Preserve
     # its full original video inline wrapper in this sole existing producer.
     body = original

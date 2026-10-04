@@ -3,6 +3,9 @@ package com.bilipai.desktop.danmaku
 import com.android.purebilibili.danmaku.parser.AdvancedDanmakuData
 import com.android.purebilibili.danmaku.parser.DanmakuProto
 import com.android.purebilibili.danmaku.parser.DesktopAdvancedDanmakuParser
+import com.android.purebilibili.danmaku.parser.bas.BasDanmaku
+import com.android.purebilibili.danmaku.parser.bas.BasParseException
+import com.android.purebilibili.danmaku.parser.bas.BasScriptParser
 import org.xml.sax.Attributes
 import org.xml.sax.helpers.DefaultHandler
 import java.io.ByteArrayInputStream
@@ -31,8 +34,10 @@ data class DanmakuComment(
     val originalLocalInjectionPhase:Any? = null,
 )
 
-data class DanmakuDocument(val comments: List<DanmakuComment> = emptyList(), val advanced: List<AdvancedDanmakuData> = emptyList(), val serverDisabled: Boolean = false) {
-    val size: Int get() = comments.size + advanced.size
+data class DanmakuDocument(val comments: List<DanmakuComment> = emptyList(), val advanced: List<AdvancedDanmakuData> = emptyList(), val serverDisabled: Boolean = false,
+    // Fixed v029 Mode9 grammar/timeline only. Windows BAS painting and target input are not mounted yet.
+    val bas: List<BasDanmaku> = emptyList()) {
+    val size: Int get() = comments.size + advanced.size + bas.size
 }
 
 /** Secure streaming parser for Bilibili's public XML comment endpoint. */
@@ -62,15 +67,18 @@ object DanmakuParser {
         parser.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "")
         val comments = mutableListOf<DanmakuComment>()
         val advanced = mutableListOf<AdvancedDanmakuData>()
+        val bas = mutableListOf<BasDanmaku>()
+        val basBudget=DesktopBasDocumentBudget()
         val handler = object : DefaultHandler() {
             var pending: DanmakuComment? = null
             val text = StringBuilder()
             val sourceText = StringBuilder()
+            var basOversized = false
             override fun startElement(uri: String?, localName: String?, qName: String?, attributes: Attributes) {
                 if (qName != "d") return
                 pending = null
-                text.clear(); sourceText.clear()
-                if (comments.size >= MAX_COMMENTS && advanced.size >= MAX_ADVANCED_COMMENTS) return
+                text.clear(); sourceText.clear(); basOversized = false
+                if (comments.size >= MAX_COMMENTS && advanced.size >= MAX_ADVANCED_COMMENTS && bas.size >= MAX_ADVANCED_COMMENTS) return
                 val fields = attributes.getValue("p")?.split(',') ?: return
                 if (fields.size < 4) return
                 val time = fields[0].toDoubleOrNull() ?: return
@@ -78,7 +86,7 @@ object DanmakuParser {
                 val size = fields[2].toIntOrNull() ?: return
                 val color = fields[3].toIntOrNull() ?: return
                 if (!time.isFinite() || time < 0 || (mode !in 1..7 && mode != 9)) return
-                if (mode >= 7 && advanced.size >= MAX_ADVANCED_COMMENTS || mode <= 6 && comments.size >= MAX_COMMENTS) return
+                if (mode == 7 && advanced.size >= MAX_ADVANCED_COMMENTS || mode == 9 && bas.size >= MAX_ADVANCED_COMMENTS || mode <= 6 && comments.size >= MAX_COMMENTS) return
                 pending = DanmakuComment(comments.size, time, mode, size.coerceIn(12, 48), color and 0xffffff, "",
                     serverId = fields.getOrNull(7)?.toLongOrNull() ?: 0L, userHash = fields.getOrNull(6).orEmpty().take(200),
                     originalXmlAttributes = attributes.getValue("p"))
@@ -86,11 +94,19 @@ object DanmakuParser {
             override fun characters(characters: CharArray, start: Int, length: Int) {
                 if (pending != null && pending?.mode in 1..6) sourceText.append(characters, start, length)
                 val limit = if ((pending?.mode ?: 0) >= 7) 16_384 else 300
+                if (pending?.mode == 9 && length > limit - text.length) basOversized = true
                 if (pending != null && text.length < limit) text.append(characters, start, minOf(length, limit - text.length))
             }
             override fun endElement(uri: String?, localName: String?, qName: String?) {
                 if (qName != "d") return
                 pending?.let {
+                    if (it.mode == 9) {
+                        // BAS newline-delimited comments and escaped strings must reach its lexer unchanged.
+                        if (!basOversized) parseBas(text.toString(), (it.timeSeconds * 1000).toLong(), it.color,
+                            it.serverId, it.userHash, budget=basBudget)?.let(bas::add)
+                        pending = null
+                        return
+                    }
                     val content = text.toString().replace(Regex("[\\r\\n\\t]+"), " ").trim()
                     if (content.isNotEmpty()) {
                         if (it.mode >= 7) {
@@ -111,12 +127,15 @@ object DanmakuParser {
             override fun read(): Int = super.read().also { if (it != -1) count(1) }
             override fun read(bytes: ByteArray, offset: Int, length: Int): Int = `in`.read(bytes, offset, length).also(::count)
         }, handler)
-        return DanmakuDocument(comments.sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id }), advanced.sortedBy { it.startTimeMs })
+        return DanmakuDocument(comments.sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id }), advanced.sortedBy { it.startTimeMs },
+            bas = bas.sortedBy { it.startTimeMs })
     }
 
     fun parseProtobuf(segments: List<ByteArray>): DanmakuDocument {
         val comments = mutableListOf<DanmakuComment>()
         val advanced = mutableListOf<AdvancedDanmakuData>()
+        val bas = mutableListOf<BasDanmaku>()
+        val basBudget=DesktopBasDocumentBudget()
         require(segments.sumOf { it.size.toLong() } <= MAX_DOCUMENT_BYTES) { "Danmaku window is too large." }
         var serverDisabled = false
         segments.forEach { bytes ->
@@ -133,15 +152,33 @@ object DanmakuParser {
                             if (count > 1) "$content x$count" else content, item.id, item.midHash.take(200), item.weight,
                             item.colorful == DanmakuProto.DmColorfulTypeVipGradualColor, originalElement = item)
                     }
-                    7, 9 -> if (advanced.size < MAX_ADVANCED_COMMENTS && item.content.length <= 16_384) {
+                    7 -> if (advanced.size < MAX_ADVANCED_COMMENTS && item.content.length <= 16_384) {
                         DesktopAdvancedDanmakuParser.parseAdvancedDanmaku(item.content, item.progress.toLong(), item.color and 0xffffff)
                             ?.copy(id = "proto_${item.id}_${item.progress}")?.let { normalizeAdvanced(it)?.let(advanced::add) }
+                    }
+                    9 -> if (bas.size < MAX_ADVANCED_COMMENTS) {
+                        parseBas(item.content, item.progress.toLong(), item.color and 0xffffff,
+                            item.id, item.midHash.take(200), item.weight, item.isSelf,basBudget)?.let(bas::add)
                     }
                 }
             }
         }
         return DanmakuDocument(comments.sortedWith(compareBy<DanmakuComment> { it.timeSeconds }.thenBy { it.id }),
-            advanced.distinctBy { it.id }.sortedBy { it.startTimeMs }, serverDisabled)
+            advanced.distinctBy { it.id }.sortedBy { it.startTimeMs }, serverDisabled,
+            bas.distinctBy { if (it.id > 0) "id:${it.id}" else "${it.startTimeMs}:${it.source}" }.sortedBy { it.startTimeMs })
+    }
+
+    /** Bound untrusted scene work without changing any fixed original grammar/timeline body. */
+    private fun parseBas(source: String, startTimeMs: Long, color: Int, id: Long,
+        userHash: String = "", weight: Int = 0, isSelf: Boolean = false,budget:DesktopBasDocumentBudget): BasDanmaku? {
+        if(startTimeMs<0)return null
+        val estimate=DesktopBasParseBudget.estimate(source) ?: return null
+        if(!budget.reserve(estimate))return null
+        return try {
+            val program = BasScriptParser.parse(source)
+            if (program.elements.isEmpty() || program.elements.size > 256 || program.transitions.size > 1_024) null
+            else BasDanmaku(id, startTimeMs, source, program, userHash, weight, isSelf, color).takeIf(budget::retain)
+        } catch (_: BasParseException) { null }
     }
 
     /** Reject pathological numeric values before they reach AWT transforms; parser functions remain upstream code. */

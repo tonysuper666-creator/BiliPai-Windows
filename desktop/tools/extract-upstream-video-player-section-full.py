@@ -170,6 +170,11 @@ def render_section():
  t=between(t,'                AndroidView(\n                    factory = { ctx ->\n                        DanmakuRenderView(ctx)','                com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlay(', '''                platform.NativeDanmakuSurface(viewport, Modifier.fillMaxSize())
 ''','Sole native Overlay paints ordinary/advanced raw document; no parallel DanmakuRenderView/Advanced renderer')
  t=t.replace('com.android.purebilibili.data.repository.DanmakuRepository.submitGradeDanmaku(', 'platform.submitGradeDanmaku(').replace('com.android.purebilibili.data.repository.DynamicVoteRepository.submitVote(', 'platform.submitVote(')
+ import v029_command_vote as command_vote
+ command_edits=[];command_before=t
+ t=command_vote.section_delta(t,command_edits)
+ assert command_vote.inverse(t,command_edits)==command_before
+ write(OUTPUT/"v029-command-section-proof.json",json.dumps({"upstreamCommit":command_vote.COMMIT,"fullPreviousSectionInverse":True,"edits":command_edits},ensure_ascii=False,indent=2)+"\n")
  t=between(t,'                        if (!enabled) {\n                            pendingDanmakuCloudSync = null','                    },\n                    onDanmakuSyncNowClick', '''                    platform.cloudSync.onEnabledChange(enabled)
 ''','Cloud enable edits notify same actor')
  # This obsolete v023 ambient/screenshot seam no longer exists in canonical v025.

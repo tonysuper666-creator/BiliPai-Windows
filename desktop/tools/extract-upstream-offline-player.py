@@ -21,6 +21,98 @@ def policyfunction(r,n):
  begin=r.index('internal fun '+n+'(')
  next=re.search(r'\ninternal (?:fun|class|enum)',r[begin+1:])
  return r[begin:begin+1+next.start()].rstrip() if next else r[begin:].rstrip()
+
+OFFLINE_ERROR_COMMIT='a4b77f894d0a2dd26c0b9fc144b8adb88ac05480'
+OFFLINE_ERROR_PINS={
+ 'OfflinePlaybackErrorPolicy.kt':('db6e4f773e9899334aced6ca67f60670141875cad3fd62add057928e73d783c1','162f96fa8088b68280bd48dd76a8fdfdbdf430a3'),
+ 'OfflinePlaybackErrorPolicyTest.kt':('d78b57dc74f8a33f775fbe85016b465d58d413e451375d7b752ac92312f3dec3','420789b96824bee01f8b152991bc9a16ade8202b'),
+ 'OfflineVideoPlayerScreen.kt':('70e0e12e79c1ba1bc62517d071b51e1e20efde7ccf0e246f6bd7fcfc50e38034','b2f0fb96b7a3fc0e60273881e756f5827a998138'),
+}
+OFFLINE_ERROR_IMPORT='import androidx.media3.common.PlaybackException'
+OFFLINE_ERROR_DESKTOP_IMPORT='import com.bilipai.desktop.player.platform.DesktopOfflineMedia3ErrorCodes as PlaybackException'
+OFFLINE_ERROR_CODES={
+ 'ERROR_CODE_IO_FILE_NOT_FOUND':2005,'ERROR_CODE_IO_NO_PERMISSION':2006,
+ 'ERROR_CODE_PARSING_CONTAINER_MALFORMED':3001,'ERROR_CODE_PARSING_CONTAINER_UNSUPPORTED':3003,
+ 'ERROR_CODE_DECODER_INIT_FAILED':4001,'ERROR_CODE_DECODING_FAILED':4003,
+ 'ERROR_CODE_DECODING_FORMAT_UNSUPPORTED':4005,
+}
+
+def offline_error_sources(repo):
+ folder=repo/'desktop/upstream-slices/v029-offline-error'
+ manifest=json.loads(read(folder/'manifest.json'))
+ assert manifest['upstreamCommit']==OFFLINE_ERROR_COMMIT and manifest['baselineCommit']==COMMIT
+ assert len(manifest['sources'])==len(OFFLINE_ERROR_PINS)
+ result={}
+ for leaf,(pin,blob) in OFFLINE_ERROR_PINS.items():
+  rows=[r for r in manifest['sources'] if r['file']==leaf];assert len(rows)==1,leaf
+  row=rows[0];data=safe(folder/leaf).read_bytes()
+  expected=('app/src/test/java/com/android/purebilibili/feature/download/' if leaf.endswith('Test.kt') else BASE+'feature/download/')+leaf
+  assert row['path']==expected and row['sha256']==pin and row['gitBlob']==blob
+  assert row['bytes']==len(data) and row['lfOnly'] and b'\r' not in data
+  assert hashlib.sha256(data).hexdigest()==pin,leaf
+  assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest()==blob,leaf
+  result[leaf]=data.decode('utf-8')
+ evidence=manifest['media3'];assert evidence['file']=='PlaybackException.java'
+ assert evidence['sourceUrl']=='https://dl.google.com/dl/android/maven2/androidx/media3/media3-common/1.10.1/media3-common-1.10.1-sources.jar'
+ data=safe(folder/evidence['file']).read_bytes();assert evidence['bytes']==len(data)
+ assert evidence['archiveSha256']=='472586b0da9837abba8cfd1e3113b81c801fe265f9fadc5ceca4011dba4255ba'
+ assert evidence['sha256']=='69da08c287ad71041ea95ec30fef1a2c2b0683b70051b129ef585393c2a0c550'
+ assert hashlib.sha256(data).hexdigest()==evidence['sha256'] and evidence['constants']==OFFLINE_ERROR_CODES
+ for name,value in OFFLINE_ERROR_CODES.items():
+  assert re.findall(r'public static final int '+name+r' = (\d+);',data.decode())==[str(value)],name
+ return result
+
+def offline_error_policy(source):
+ assert source.count(OFFLINE_ERROR_IMPORT)==1
+ adapted=source.replace(OFFLINE_ERROR_IMPORT,OFFLINE_ERROR_DESKTOP_IMPORT)
+ assert adapted.replace(OFFLINE_ERROR_DESKTOP_IMPORT,OFFLINE_ERROR_IMPORT)==source
+ return adapted
+
+def offline_error_ui(previous,original):
+ """Selected complete v029 failure blocks, after the reversible whole v025 platform recipe."""
+ changes=[];fragments=[];s=previous
+ def section(begin,end):
+  assert original.count(begin)==1,begin
+  a=original.index(begin);b=original.index(end,a)
+  fragment=original[a:b];fragments.append({'sha256LF':sha(fragment),'original':fragment})
+  return fragment
+ def replace(before,after,label):
+  nonlocal s
+  assert s.count(before)==1,label
+  index=s.index(before);changes.append({'index':index,'before':before,'after':after,'label':label})
+  s=s[:index]+after+s[index+len(before):]
+ replace('import androidx.compose.foundation.background\n','import androidx.compose.foundation.background\nimport androidx.compose.foundation.rememberScrollState\nimport androidx.compose.foundation.verticalScroll\n','failure scroll imports')
+ replace('import com.android.purebilibili.core.ui.components.AppButton\n','import com.android.purebilibili.core.ui.components.AppButton\nimport com.android.purebilibili.core.ui.components.AppTextButton\n','original return button import')
+ state=section('    var playbackFailure by remember(player)', '    val offlineSessionRegistered')
+ replace('    val offlineSessionRegistered',state+'    val offlineSessionRegistered','original failure and retry state')
+ cursor=section('                currentPositionMs = if (activePlayer.playerError', '\n                durationMs = activePlayer.duration')
+ cursor=cursor.replace('Player.STATE_IDLE','DesktopOfflinePlaybackState.IDLE')
+ replace('                currentPositionMs = activePlayer.currentPosition,',cursor,'last good persisted cursor')
+ tracking=section('            if (player.playbackState == Player.STATE_READY && player.playerError == null)', '            delay(if (showControls)')
+ replace('            isPlaying = player.isPlaying\n','            isPlaying = player.isPlaying\n'+tracking.replace('Player.STATE_READY','DesktopOfflinePlaybackState.READY'),'ready-only cursor capture')
+ listener=section('    DisposableEffect(player) {\n        val listener = object : Player.Listener {\n            override fun onPlayerError', '    LaunchedEffect(player, file.absolutePath, task.id, retryVersion)')
+ adapted=listener.replace('Player.Listener','DesktopOfflineMpvListener').replace('error: PlaybackException','error: DesktopOfflinePlaybackError').replace('Player.STATE_READY','DesktopOfflinePlaybackState.READY')
+ assert adapted.replace('DesktopOfflineMpvListener','Player.Listener').replace('error: DesktopOfflinePlaybackError','error: PlaybackException').replace('DesktopOfflinePlaybackState.READY','Player.STATE_READY')==listener
+ old='    LaunchedEffect(player, file.absolutePath, task.id) {\n        player.load { nextTaskId -> currentTaskId = nextTaskId; showControls = true }\n    }\n'
+ new=adapted+'    LaunchedEffect(player, file.absolutePath, task.id, retryVersion) {\n        val restoredPosition = if (retryVersion > 0) lastKnownPlaybackPosition else task.lastPlaybackPositionMs.coerceAtLeast(0L)\n        playbackFailure = player.load(forceReload = retryVersion > 0, resumePositionMs = restoredPosition) { nextTaskId ->\n            currentTaskId = nextTaskId; showControls = true\n        }\n    }\n'
+ replace(old,new,'original listener and explicit retry load')
+ guard='            if (\n                player.playerError == null && player.playbackState == Player.STATE_READY &&\n                abs(resolvedPosition - lastPersistedPosition) >= 2_000L\n            ) {'
+ assert guard in original;fragments.append({'sha256LF':sha(guard),'original':guard})
+ replace('            if (abs(resolvedPosition - lastPersistedPosition) >= 2_000L) {',guard.replace('Player.STATE_READY','DesktopOfflinePlaybackState.READY'),'do not checkpoint failures')
+ replace('            .pointerInput(Unit) {\n                detectDragGestures(', '            .pointerInput(player, playbackFailure) {\n                if (playbackFailure != null) return@pointerInput\n                detectDragGestures(', 'failure disables drag')
+ replace('            .pointerInput(Unit) {\n                detectTapGestures(', '            .pointerInput(player, playbackFailure, longPressSpeed) {\n                if (playbackFailure != null) return@pointerInput\n                detectTapGestures(', 'failure disables tap and long press')
+ replace('visible = showControls && !isPlaying,','visible = showControls && !isPlaying && playbackFailure == null,','failure hides central play')
+ failure=section('        playbackFailure?.let { failure ->', '    }\n    }\n    // 无二级内容')
+ # The existing foreground is already hosted by the owned native command popup.
+ end='    }\n    }\n    }\n    // 无二级内容'
+ replace(end,failure+end,'whole original failure message retry and return UI')
+ reverse=s
+ for change in changes[::-1]:
+  i=change['index'];after=change['after'];assert reverse[i:i+len(after)]==after,change['label']
+  reverse=reverse[:i]+change['before']+reverse[i+len(after):]
+ assert reverse==previous,'v029 failure UI inverse failed'
+ return s,changes,fragments
+
 def generate(repo,output,standalone=False):
  repo=Path(repo).resolve();output=Path(output).resolve();manifest=json.loads(read(repo/'desktop/upstream-sources.json'))
  assert manifest['upstreamCommit']==COMMIT,'Fixed target changed'
@@ -42,9 +134,17 @@ def generate(repo,output,standalone=False):
   i=change['index'];after=change['after'];assert reverse[i:i+len(after)]==after,change['label']
   reverse=reverse[:i]+change['before']+reverse[i+len(after):]
  assert reverse==originals[path],'Full original UI inverse failed'
+ error_sources=offline_error_sources(repo)
+ s,error_delta,error_fragments=offline_error_ui(s,error_sources['OfflineVideoPlayerScreen.kt'])
  assert 'ExoPlayer' not in s and 'import android.' not in s and 'MiniPlayerManager' not in s
  destination='com/android/purebilibili/feature/download/OfflineVideoPlayerScreen.kt';write(output/destination,s)
  records.append({'path':path,'sha256LF':SOURCE_PINS[path],'output':destination,'outputSha256LF':sha(s),'fullFourDeclarationsRetained':True,'exactInversePass':True})
+ destination='com/android/purebilibili/feature/download/OfflinePlaybackErrorPolicy.kt'
+ body=offline_error_policy(error_sources['OfflinePlaybackErrorPolicy.kt']);write(output/destination,body)
+ records.append({'path':'app/src/main/java/com/android/purebilibili/feature/download/OfflinePlaybackErrorPolicy.kt','fixedCommit':OFFLINE_ERROR_COMMIT,'output':destination,'outputSha256LF':sha(body),'wholeOriginal':True,'exactInversePass':True})
+ constants='package com.bilipai.desktop.player.platform\n\n/** Exact offline-policy constants from the pinned Media3 1.10.1 source archive. */\ninternal object DesktopOfflineMedia3ErrorCodes {\n'+''.join('    const val '+name+' = '+str(value)+'\n' for name,value in OFFLINE_ERROR_CODES.items())+'}\n'
+ write(output/'com/bilipai/desktop/player/platform/DesktopOfflineMedia3ErrorCodes.kt',constants)
+ write(output/'v029-offline-error-receipt.json',json.dumps({'fixedCommit':OFFLINE_ERROR_COMMIT,'completeOriginalPolicySha256LF':sha(error_sources['OfflinePlaybackErrorPolicy.kt']),'originalTestSha256LF':sha(error_sources['OfflinePlaybackErrorPolicyTest.kt']),'adaptedTestSha256LF':sha(offline_error_policy(error_sources['OfflinePlaybackErrorPolicyTest.kt'])),'exactTestInversePass':True,'selectedOriginalUiFragments':error_fragments,'exactSequentialUiDelta':error_delta,'twoLayerUiInversePass':True,'media3Constants':OFFLINE_ERROR_CODES,'runtimeVerified':False},ensure_ascii=False,indent=2))
  path=BASE+'feature/download/OfflineVideoPlaybackPolicy.kt';r=originals[path]
  names=['resolveOfflineVideoStartFullscreen','shouldResumePlaybackAfterOfflineSeek','shouldShowOfflineDanmakuControl','shouldShowOfflineDanmakuLayer','resolveOfflineSeekProgressFromTouch','resolveOfflineSeekPositionFromTouch']
  selected='\n\n'.join(policyfunction(r,n) for n in names)

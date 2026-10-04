@@ -569,6 +569,70 @@ def owned_bgm_result_delta(path, body, inverse=None):
 ''')
  return body
 
+def explicit_audio_start_position_delta(path, body, audit_edits=None):
+ if path != 'com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt': return body
+ original=body;edits=[]
+ def change(before,after):
+  nonlocal body
+  assert body.count(before)==1,(before,body.count(before))
+  index=body.index(before);body=body[:index]+after+body[index+len(before):]
+  edits.append(dict(offset=index,before=before,after=after))
+ change('''internal fun resolveRequestedStartPositionMs(
+    cachedPositionMs: Long,
+    fallbackResumePositionMs: Long
+): Long {
+''', '''internal fun resolveRequestedStartPositionMs(
+    cachedPositionMs: Long,
+    fallbackResumePositionMs: Long,
+    desktopExplicitStartPositionMs: Long? = null
+): Long {
+    // One explicit source replacement retains its actual position, including 0.
+    // Ordinary loads keep the original saved-progress policy and stored history.
+    desktopExplicitStartPositionMs?.let { require(it >= 0L); return it }
+''')
+ change('''        cid: Long = 0L,
+        fallbackResumePositionMs: Long = 0L
+    ) {
+        if (bvid.isBlank()) return
+''', '''        cid: Long = 0L,
+        fallbackResumePositionMs: Long = 0L,
+        desktopExplicitStartPositionMs: Long? = null
+    ) {
+        require(desktopExplicitStartPositionMs == null || desktopExplicitStartPositionMs >= 0L)
+        if (bvid.isBlank()) return
+''')
+ change('''        val requestedStartPositionMs = resolveRequestedStartPositionMs(
+            cachedPositionMs = cachedPosition,
+            fallbackResumePositionMs = fallbackResumePositionMs
+        )
+''', '''        val requestedStartPositionMs = resolveRequestedStartPositionMs(
+            cachedPositionMs = cachedPosition,
+            fallbackResumePositionMs = fallbackResumePositionMs,
+            desktopExplicitStartPositionMs = desktopExplicitStartPositionMs
+        )
+''')
+ change('''                        var startPos = resolveRequestedStartPositionMs(
+                            cachedPositionMs = loadResult.cachedPositionMs,
+                            fallbackResumePositionMs = fallbackResumePositionMs
+                        )
+''', '''                        var startPos = resolveRequestedStartPositionMs(
+                            cachedPositionMs = loadResult.cachedPositionMs,
+                            fallbackResumePositionMs = fallbackResumePositionMs,
+                            desktopExplicitStartPositionMs = desktopExplicitStartPositionMs
+                        )
+''')
+ change('''                        if (videoDuration > 0 && startPos >= videoDuration - 5000) {
+''', '''                        if (com.bilipai.desktop.ui.desktopWindowsShouldRestartPlaybackAtEnd(videoDuration, startPos, desktopExplicitStartPositionMs)) {
+''')
+ restored=body
+ for edit in reversed(edits):
+  index=edit['offset'];after=edit['after']
+  assert restored[index:index+len(after)]==after
+  restored=restored[:index]+edit['before']+restored[index+len(after):]
+ assert restored==original
+ if audit_edits is not None:audit_edits.extend(edits)
+ return body
+
 def generate(repo,output,standalone=False):
  outputs=[]
  for recipe in RECIPES:
@@ -592,6 +656,7 @@ def generate(repo,output,standalone=False):
   body=bangumi_shared_owner_delta(recipe['output'],body)
   body=owned_chapter_result_delta(recipe['output'],body)
   body=owned_bgm_result_delta(recipe['output'],body)
+  body=explicit_audio_start_position_delta(recipe['output'],body)
   body=composer_source_lifetime_delta(recipe['output'],body)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:

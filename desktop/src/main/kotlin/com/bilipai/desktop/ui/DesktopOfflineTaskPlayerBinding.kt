@@ -31,10 +31,14 @@ class DesktopOfflineTaskPlayerBinding(
         private set
     var error by mutableStateOf<String?>(null)
         private set
+    internal var loadErrorCode: Int? = null
+        private set
     private val generation = AtomicLong()
     @Volatile private var closed = false
     @Volatile private var acceptedVersion: Long? = null
     @Volatile private var acceptedTaskId: String? = null
+    @Volatile private var acceptedTask: DownloadTask? = null
+    private var acceptedOriginalScreen = false
     private val nativePublication = AtomicReference<DesktopOfflineNativeSourcePublication?>()
     private var request: Job? = null
     private val completion = entryScope.coroutineContext[Job]?.invokeOnCompletion { close() }
@@ -58,26 +62,60 @@ class DesktopOfflineTaskPlayerBinding(
     internal fun selectedTarget(task: DownloadTask): DownloadTaskClickTarget? =
         resolveDownloadTaskClickTarget(task.item, networkAvailable())
 
+    /** Original local screen requires a readable managed file, whereas the task
+     * list still retains its existing online fallback. Run disk checks outside
+     * Root/native admission and use actual typed failures, never message parsing.
+     */
+    private fun requireOriginalManagedFile(task:DownloadTask) {
+        require(task.status==com.android.purebilibili.feature.download.DownloadStatus.COMPLETED) { "下载尚未完成" }
+        val output=task.item.filePath?.takeIf(String::isNotBlank)?.let(java.nio.file.Path::of)
+            ?: throw java.io.FileNotFoundException("Offline managed media is missing")
+        val path=output.toAbsolutePath().normalize()
+        val directory=java.nio.file.Path.of(task.directory).toAbsolutePath().normalize()
+        require(path.startsWith(directory)) { "下载文件不在任务目录" }
+        val attributes=java.nio.file.Files.readAttributes(path,java.nio.file.attribute.BasicFileAttributes::class.java)
+        require(attributes.isRegularFile) { "下载文件不是普通媒体文件" }
+        java.nio.file.Files.newByteChannel(path).use { }
+    }
+
     /** Used by the taskId route and the existing original episode queue. */
     fun open(taskId: String, onOnlinePlay: (DownloadTask) -> Unit): Job? = openOwned(taskId,onOnlinePlay,null)
 
     /** The complete original screen owns its episode state, asset effect and two-second checkpoint effect. */
-    internal fun openOriginal(taskId:String,onEpisode:(String)->Unit):Job? =
-        openOwned(taskId,{throw IllegalStateException("视频文件已被删除")},onEpisode)
+    internal fun openOriginal(taskId:String,forceReload:Boolean=false,resumePositionMs:Long?=null,onEpisode:(String)->Unit):Job? =
+        openOwned(taskId,{throw IllegalStateException("视频文件已被删除")},onEpisode,forceReload,resumePositionMs)
 
-    private fun openOwned(taskId: String, onOnlinePlay: (DownloadTask) -> Unit, onEpisode:((String)->Unit)?): Job? {
+    private fun openOwned(taskId: String, onOnlinePlay: (DownloadTask) -> Unit, onEpisode:((String)->Unit)?,
+        forceReload:Boolean=false,resumePositionMs:Long?=null): Job? {
         if (!isOwned()) return null
+        // A recomposed mount is not an explicit retry. Reuse only the same managed
+        // task under its full current Root -> receipt -> native source admission.
+        // Checkpoint-only task updates do not change that media identity.
+        val prior=request
+        val task=acceptedTask
+        if(!forceReload && prior!=null && !prior.isCancelled && task!=null &&
+            acceptedTaskId==taskId && acceptedOriginalScreen==(onEpisode!=null)) {
+            var reusable=false
+            nativePublication.get()?.admit {
+                reusable=isOwned() && ownsAcceptedSource() && matches(selectedTask(taskId),task)
+            }
+            if(reusable)return prior
+        }
         val version = generation.incrementAndGet()
         nativePublication.getAndSet(null)?.close()
         request?.cancel()
         val pending = entryScope.launch(start = CoroutineStart.LAZY) {
             try {
                 val task = selectedTask(taskId) ?: throw IllegalArgumentException("视频文件不存在")
-                val target = withContext(Dispatchers.IO) { selectedTarget(task) }
+                val target = withContext(Dispatchers.IO) {
+                    if(onEpisode!=null)requireOriginalManagedFile(task)
+                    selectedTarget(task)
+                }
                 ensureActive()
                 if (!ownsRequest(version)) return@launch
                 when (target) {
                     DownloadTaskClickTarget.OnlinePlayer -> {
+                        if(onEpisode!=null)withContext(Dispatchers.IO) { requireOriginalManagedFile(task) }
                         admit(version) {
                             check(matches(selectedTask(taskId), task)) { "缓存任务已变更，请重新打开" }
                             opening = false
@@ -85,11 +123,26 @@ class DesktopOfflineTaskPlayerBinding(
                         }
                         return@launch
                     }
-                    null -> throw IllegalStateException("缓存文件不可用，连接网络后可回退在线播放")
+                    null -> {
+                        if(onEpisode!=null)withContext(Dispatchers.IO) { requireOriginalManagedFile(task) }
+                        throw IllegalStateException("缓存文件不可用，连接网络后可回退在线播放")
+                    }
                     DownloadTaskClickTarget.OfflinePlayer -> Unit
                 }
                 // Existing manager performs the exact completed-task and managed-file checks outside admission.
-                val source = withContext(Dispatchers.IO) { manager.offlinePlayback(taskId) }
+                val source = withContext(Dispatchers.IO) {
+                    val loaded=try { manager.offlinePlayback(taskId) } catch(failure:Exception) {
+                        // If the manager's boolean check lost a file/permission race,
+                        // recover the actual typed condition from this same managed path.
+                        if(onEpisode!=null)requireOriginalManagedFile(task)
+                        throw failure
+                    }
+                    loaded.also { local ->
+                        // Test actual read permission after the manager's managed-path checks.
+                        // No media bytes are decoded here; real MPV remains the sole decoder.
+                        java.nio.file.Files.newByteChannel(java.nio.file.Path.of(local.videoUrl)).use { }
+                    }
+                }
                 val queue = withContext(Dispatchers.IO) { manager.offlineEpisodeQueue(taskId) }
                 ensureActive()
                 admit(version) {
@@ -101,9 +154,12 @@ class DesktopOfflineTaskPlayerBinding(
                         { ownsRequest(version) && ownsAcceptedSource() && acceptedTaskId == taskId },
                         { action -> admit(version, action) })
                     val nativeVersion = try {
-                        initialized.loadVersioned(source.copy(nativePublication = sourcePublication))
+                        initialized.loadVersioned(source.copy(nativePublication = sourcePublication,
+                            startPositionSeconds=if(forceReload && resumePositionMs!=null)
+                                resumePositionMs.coerceAtLeast(0L)/1000.0 else source.startPositionSeconds))
                     } catch (failure: Throwable) { sourcePublication.close(); throw failure }
-                    acceptedVersion = nativeVersion; acceptedTaskId = taskId
+                    acceptedVersion = nativeVersion; acceptedTaskId = taskId; acceptedTask=task
+                    acceptedOriginalScreen=onEpisode!=null
                     memory.sourceVersion = nativeVersion; memory.current = taskId
                     memory.loaded = true; memory.opening = false; memory.error = null
                     try {
@@ -111,7 +167,7 @@ class DesktopOfflineTaskPlayerBinding(
                             .also { check(it.sourceVersion == nativeVersion) })
                     } catch (failure: Throwable) { sourcePublication.close(); throw failure }
                     nativePublication.set(sourcePublication)
-                    opening = false; error = null
+                    opening = false; error = null; loadErrorCode=null
                     memory.checkpoint = ::checkpoint
                     memory.onBeforeStop = { if (ownsAcceptedSource()) overlay?.setDocument(DanmakuDocument()) }
                     memory.release = { memory.assetsJob?.cancel(); memory.checkpointJob?.cancel() }
@@ -134,11 +190,14 @@ class DesktopOfflineTaskPlayerBinding(
                 }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (failure: Exception) {
-                admit(version) { error = failure.message ?: "离线播放失败"; opening = false }
+                admit(version) {
+                    loadErrorCode=desktopOfflineLoadErrorCode(failure)
+                    error = failure.message ?: "离线播放失败"; opening = false
+                }
             }
         }
         request = pending
-        admit(version) { opening = true; error = null }
+        admit(version) { opening = true; error = null; loadErrorCode=null }
         pending.start()
         return pending
     }
@@ -150,6 +209,8 @@ class DesktopOfflineTaskPlayerBinding(
         if (!isOwned() || !ownsAcceptedSource()) return
         val id = acceptedTaskId ?: return
         val native = player?.state?.value ?: return
+        if(native.error!=null || native.loading || native.pausedForCache ||
+            !(native.firstVideoFrameReady || native.videoCodec!=null || native.audioCodec!=null))return
         withOwnedAdmission {
             if (isOwned() && ownsAcceptedSource() && selectedTask(id) != null)
                 manager.savePlaybackPosition(id, (native.positionSeconds * 1000).toLong(), (native.durationSeconds * 1000).toLong())
@@ -200,7 +261,7 @@ class DesktopOfflineTaskPlayerBinding(
             if(ownsAcceptedSource() && acceptedTaskId==taskId && acceptedVersion==nativeVersion) {
                 nativePublication.getAndSet(null)?.close()
                 memory.stopPlayback();memory.current=null
-                acceptedVersion=null;acceptedTaskId=null
+                acceptedVersion=null;acceptedTaskId=null;acceptedTask=null
             }
         }
     }
@@ -235,6 +296,6 @@ class DesktopOfflineTaskPlayerBinding(
         // Join that existing serial UI actor before clearing the shared overlay or native memory.
         if (javax.swing.SwingUtilities.isEventDispatchThread()) retireNative()
         else javax.swing.SwingUtilities.invokeLater(retireNative)
-        acceptedVersion = null; acceptedTaskId = null
+        acceptedVersion = null; acceptedTaskId = null; acceptedTask = null
     }
 }

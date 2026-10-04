@@ -10,6 +10,7 @@ import com.bilipai.desktop.download.DownloadMuxer
 import com.bilipai.desktop.download.DownloadTask
 import com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication
 import com.bilipai.desktop.player.MpvPlayer
+import com.bilipai.desktop.player.platform.DesktopOfflineMedia3ErrorCodes
 import kotlinx.coroutines.*
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
@@ -21,7 +22,7 @@ import kotlin.test.*
  * No native Window or decoded playback is claimed by these tests.
  */
 class DesktopOfflineNativeSourcePublicationTest {
-    private class Fixture : AutoCloseable {
+    private class Fixture(private val networkAvailable:Boolean=false) : AutoCloseable {
         val directory = Files.createTempDirectory("bp-offline-publication-")
         val sessions = DesktopSessionStore(directory.resolve("private-session.json"), persistent = false)
         val repository = DesktopRepository(sessions)
@@ -55,7 +56,7 @@ class DesktopOfflineNativeSourcePublicationTest {
         val entryScope = CoroutineScope(SupervisorJob(scope.coroutineContext[Job]) + Dispatchers.Default)
         val binding = DesktopOfflineTaskPlayerBinding(manager, retained, null, entryScope,
             rootGate.epoch, { repository.sessionEpoch }, rootGate::owns, rootGate::commit,
-            { false }, { "No decoder used by headless source identity test" })
+            { networkAvailable }, { "No decoder used by headless source identity test" })
         suspend fun open(index: Int) {
             checkNotNull(binding.open(tasks[index].id) { error("Private completed file must open offline") }).join()
             assertNull(binding.error)
@@ -142,6 +143,84 @@ class DesktopOfflineNativeSourcePublicationTest {
             val publication = assertNotNull(f.source().source.nativePublication)
             f.entryScope.cancel()
             assertFalse(publication.admit { error("Cancelled caller page must not dispatch") })
+        }
+    }
+
+    @Test fun `repeated original mount reuses only its actual accepted full source`(): Unit = runBlocking {
+        Fixture().use { f ->
+            val first=assertNotNull(f.binding.openOriginal(f.tasks[0].id) { });first.join()
+            val before=f.source()
+            val repeated=assertNotNull(f.binding.openOriginal(f.tasks[0].id) { });repeated.join()
+            assertSame(first,repeated)
+            assertEquals(before.sourceVersion,f.source().sourceVersion)
+            assertEquals(before.source,f.source().source)
+            assertTrue(assertNotNull(before.source.nativePublication).admit { })
+        }
+    }
+
+    @Test fun `explicit original retry creates a new admitted load at the last good cursor`(): Unit = runBlocking {
+        Fixture().use { f ->
+            assertNotNull(f.binding.openOriginal(f.tasks[0].id) { }).join()
+            val before=f.source()
+            assertNotNull(f.binding.openOriginal(f.tasks[0].id,forceReload=true,resumePositionMs=7_250L) { }).join()
+            val retry=f.source()
+            assertTrue(retry.sourceVersion>before.sourceVersion)
+            assertEquals(7.25,retry.source.startPositionSeconds)
+            assertFalse(assertNotNull(before.source.nativePublication).admit { error("Retry retires old source") })
+            assertTrue(assertNotNull(retry.source.nativePublication).admit { })
+        }
+    }
+
+    @Test fun `original episode switch creates its own source without applying a foreign retry cursor`(): Unit = runBlocking {
+        Fixture().use { f ->
+            assertNotNull(f.binding.openOriginal(f.tasks[0].id) { }).join()
+            val before=f.source()
+            assertNotNull(f.binding.openOriginal(f.tasks[1].id,resumePositionMs=9_000L) { }).join()
+            val replacement=f.source()
+            assertTrue(replacement.sourceVersion>before.sourceVersion)
+            assertEquals(f.tasks[1].item.filePath,replacement.source.videoUrl)
+            assertEquals(f.tasks[1].item.lastPlaybackPositionMs/1000.0,replacement.source.startPositionSeconds)
+            assertFalse(assertNotNull(before.source.nativePublication).admit { error("Previous episode cannot dispatch") })
+            assertTrue(assertNotNull(replacement.source.nativePublication).admit { })
+        }
+    }
+
+    @Test fun `same task with a foreign same version file cannot deduplicate a mount`(): Unit = runBlocking {
+        Fixture().use { f ->
+            assertNotNull(f.binding.openOriginal(f.tasks[0].id) { }).join()
+            val before=f.source()
+            assertTrue(f.player.recoverSource(before.sourceVersion,replacement=before.source.copy(videoUrl=f.tasks[1].item.filePath!!)))
+            assertNotNull(f.binding.openOriginal(f.tasks[0].id) { }).join()
+            val corrected=f.source()
+            assertTrue(corrected.sourceVersion>before.sourceVersion)
+            assertEquals(before.source.videoUrl,corrected.source.videoUrl)
+            assertTrue(assertNotNull(corrected.source.nativePublication).admit { })
+        }
+    }
+
+    @Test fun `actual deleted managed file publishes original missing-file failure before native load`(): Unit = runBlocking {
+        Fixture().use { f ->
+            Files.delete(java.nio.file.Path.of(f.tasks[0].item.filePath!!))
+            assertNotNull(f.binding.openOriginal(f.tasks[0].id) { error("Deleted original source must not select another episode") }).join()
+            assertEquals(DesktopOfflineMedia3ErrorCodes.ERROR_CODE_IO_FILE_NOT_FOUND,f.binding.loadErrorCode)
+            assertNotNull(f.binding.error)
+            assertNull(f.player.currentSourceSnapshot())
+            assertFalse(f.binding.opening)
+            assertFalse(com.android.purebilibili.feature.download.resolveOfflinePlaybackFailure(f.binding.loadErrorCode!!).canRetry)
+        }
+    }
+
+    @Test fun `task list still uses original online fallback for a deleted completed file`(): Unit = runBlocking {
+        Fixture(networkAvailable=true).use { f ->
+            Files.delete(java.nio.file.Path.of(f.tasks[0].item.filePath!!))
+            var onlineCalls=0
+            assertNotNull(f.binding.open(f.tasks[0].id) { task ->
+                assertEquals(f.tasks[0].id,task.id);onlineCalls++
+            }).join()
+            assertEquals(1,onlineCalls)
+            assertNull(f.binding.error)
+            assertNull(f.binding.loadErrorCode)
+            assertNull(f.player.currentSourceSnapshot())
         }
     }
 }

@@ -100,6 +100,7 @@ internal interface DesktopOriginalVideoSectionPlatform {
     fun recordDanmakuToggle(enabled: Boolean)
     suspend fun submitGradeDanmaku(aid: Long, cid: Long, progress: Long, gradeId: String, gradeScore: Int): Result<Unit>
     suspend fun submitVote(voteId: Long, optionIndexes: List<Int>): Result<Unit>
+    fun commandVotePlatform(): DesktopWindowsCommandVotePlatform?
     /** Reuse the sole Surface's actual Canvas/Popup. Texture alpha/clip/Haze and
      * navigation transforms require an explicit capability, not a fabricated Android View.
      */

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Fixed upstream target review; not an accepted build baseline or feature completion claim",
+  "tag": "v0.2.9",
+  "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "releaseUrl": "https://github.com/jay3-yy/BiliPai/releases/tag/v0.2.9",
+  "publishedAt": "2026-10-04T18:29:13Z",
+  "apkSha256": "4977de0e1bfd46ad2012db79a7fd5c1e271401930c5d38327ab3b5b1e0ae6175",
+  "apkBytes": 27481274,
+  "officialAssetDigestMatched": true,
+  "apkExecuted": false,
+  "acceptedCanonicalTag": "v0.2.5",
+  "acceptedCanonicalCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "compatibility": {
+    "auditInputWindowsCommit": "49a09746d89a635162c60afcfe750da3785b519f",
+    "inputs": 1613,
+    "unchangedInputs": 1451,
+    "changedSourceInputs": 161,
+    "changedResourceInputs": 0,
+    "changedBuildConfigurationInputs": 1,
+    "status": "manualAdaptationRequired",
+    "autoBuildEligible": false,
+    "autoPublishEligible": false,
+    "windowsApiContractChanged": false,
+    "networkBehaviorChanged": true,
+    "policyFile": "desktop/tools/sync-upstream.py",
+    "policySha256": "fd14626e386f1108771f784e1d0ba9fe76aae6638be129ec2bfa555d91d1d98b",
+    "canonicalCatalogSha256": "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc",
+    "completeFixedTreeSha256": "55be284ea806276d420a03d16acfd45badf3e341369e450d02bd3eab4e6f8946",
+    "note": "Source identity counts are not runtime feature-completion percentages. The catalog hash identifies the recorded pre-adaptation audit at auditInputWindowsCommit; selected slice integration may change compile modes without changing the accepted canonical source pins."
+  },
+  "integrationScope": "Selected fixed slices are reviewed independently; the canonical v0.2.5 pin remains unchanged."
+}
