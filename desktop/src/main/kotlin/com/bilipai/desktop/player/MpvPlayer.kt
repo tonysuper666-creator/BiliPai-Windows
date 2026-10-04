@@ -1259,8 +1259,14 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 // The pinned option validator enumerates actual DXGI adapters. A missing
                 // NVIDIA prefix is rejected without changing the original auto selection.
                 // Never interpret this request as observed GPU/RTX execution.
-                if (softwareTarget == null && com.sun.jna.Platform.isWindows())
+                if (softwareTarget == null && com.sun.jna.Platform.isWindows()) {
+                    // Select presentation only before initialization. A complete all-software
+                    // DXGI inventory selects bitblt; hardware/unknown inventories retain flip.
+                    // This does not change GPU selection, source ownership, or runtime VO state.
+                    if (DesktopWindowsDxgiAdapters.probe().useBitblt())
+                        checkResult(native, native.mpv_set_option_string(handle, "d3d11-flip", "no"), "d3d11-flip")
                     native.mpv_set_option_string(handle, "d3d11-adapter", "NVIDIA")
+                }
                 options.forEach { (name, value) -> checkResult(native, native.mpv_set_option_string(handle, name, value), name) }
                 // Keep bounded fixed GPU/RTX observations; discard all other verbose text.
                 checkResult(native, native.mpv_request_log_messages(handle, "v"), "request-log-messages")

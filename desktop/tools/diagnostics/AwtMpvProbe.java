@@ -7,6 +7,7 @@ import com.sun.jna.Structure;
 import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.win32.StdCallLibrary;
+import com.bilipai.desktop.player.DesktopWindowsDxgiAdapters;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -72,7 +73,7 @@ public final class AwtMpvProbe {
                     cli.put(args[i], args[i + 1]) != null) throw new IllegalArgumentException("Invalid or duplicate CLI argument");
             }
             String name = cli.get("--case");
-            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-bitblt").contains(name))
+            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-bitblt", "mpv-adaptive").contains(name))
                 throw new IllegalArgumentException("--case must select one diagnostic case");
             Path output = Path.of(Objects.requireNonNull(cli.get("--output"), "Missing --output")).toAbsolutePath().normalize();
             if (Files.exists(output, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("--output must not exist");
@@ -127,10 +128,14 @@ public final class AwtMpvProbe {
                     "audioSampleRate", 48000, "audioChannels", 1, "volume", 0, "muted", true));
                 long hwnd = edt(() -> Pointer.nativeValue(Native.getComponentPointer(canvas)) & 0xffffffffL);
                 requireOwn(new Pointer(hwnd));
-                actor = new MpvActor(dll, hwnd, video, audio, caseName.equals("mpv-bitblt"));
+                actor = new MpvActor(dll, hwnd, video, audio, caseName);
                 actor.start();
                 waitCondition("native initialization", 7_000, () -> actor.ready.isDone());
                 actor.ready.get();
+                if (caseName.equals("mpv-adaptive")) {
+                    waitCondition("actual adaptive presentation option", 1_500, () ->
+                        actor.expectedFlip.equals(actor.value("options/d3d11-flip")));
+                }
                 waitCondition("file-loaded and real clock", 5_000, () -> actor.fileLoaded && actor.number("time-pos") >= 1.1);
                 double time = actor.number("time-pos");
                 waitCondition("real clock advancement", 1_500, () -> actor.number("time-pos") > time + 0.1);
@@ -155,6 +160,7 @@ public final class AwtMpvProbe {
         } finally {
             if (actor != null) {
                 result.put("native", actor.snapshot);
+                result.put("presentationSelection", actor.presentationSelection);
                 try { actor.close(); nativeClosed = true; }
                 catch (Throwable cleanup) { result.put("nativeCleanupError", safe(cleanup.toString())); }
                 try { Files.writeString(output.resolve("native-log.txt"), actor.logs(), StandardOpenOption.CREATE_NEW); }
@@ -441,10 +447,12 @@ public final class AwtMpvProbe {
         private final Deque<String> recentLogs = new ArrayDeque<>();
         private final Path dll, video, audio;
         private final long hwnd;
-        private final boolean bitblt;
+        private final String selectedCase;
+        volatile String expectedFlip = "yes";
+        volatile Map<String, Object> presentationSelection = Map.of();
         private final Thread worker;
-        MpvActor(Path dll, long hwnd, Path video, Path audio, boolean bitblt) {
-            this.dll = dll; this.hwnd = hwnd; this.video = video; this.audio = audio; this.bitblt = bitblt;
+        MpvActor(Path dll, long hwnd, Path video, Path audio, String selectedCase) {
+            this.dll = dll; this.hwnd = hwnd; this.video = video; this.audio = audio; this.selectedCase = selectedCase;
             worker = new Thread(this::run, "probe-single-mpv-actor"); worker.setDaemon(true);
         }
         void start() { worker.start(); }
@@ -464,7 +472,24 @@ public final class AwtMpvProbe {
                 options.put("vo", "gpu"); options.put("gpu-api", "d3d11"); options.put("hwdec", "auto-safe");
                 options.put("ao", "null"); options.put("ao-null-untimed", "no"); options.put("volume", "0"); options.put("mute", "yes");
                 options.put("audio-files", audio.toString().replace(";", "\\;"));
-                if (bitblt) options.put("d3d11-flip", "no"); // Default case does not override this option.
+                boolean bitblt = selectedCase.equals("mpv-bitblt");
+                if (selectedCase.equals("mpv-adaptive")) {
+                    // Compile and call the same production helper, not a diagnostic copy of the policy.
+                    DesktopWindowsDxgiAdapters.Snapshot inventory = DesktopWindowsDxgiAdapters.probe();
+                    bitblt = inventory.useBitblt();
+                    Map<String, Object> selection = new LinkedHashMap<>();
+                    selection.put("policy", "complete-all-software-dxgi");
+                    selection.put("complete", inventory.complete()); selection.put("error", inventory.error());
+                    selection.put("useBitblt", bitblt);
+                    selection.put("adapters", inventory.adapters().stream().map(adapter -> Map.of(
+                        "vendorId", adapter.vendorId(), "deviceId", adapter.deviceId(), "flags", adapter.flags(),
+                        "description", adapter.description(), "isSoftware", adapter.isSoftware())).toList());
+                    // Match production's existing validated NVIDIA preference; rejection keeps auto.
+                    selection.put("nvidiaPreferenceReturnCode", api.mpv_set_option_string(handle, "d3d11-adapter", "NVIDIA"));
+                    presentationSelection = Collections.unmodifiableMap(selection);
+                }
+                expectedFlip = bitblt ? "no" : "yes";
+                if (bitblt) options.put("d3d11-flip", "no"); // Default/hardware cases leave the pinned default untouched.
                 for (Map.Entry<String, String> option : options.entrySet()) check(api, api.mpv_set_option_string(handle, option.getKey(), option.getValue()), option.getKey());
                 check(api, api.mpv_request_log_messages(handle, "v"), "request-log-messages");
                 check(api, api.mpv_initialize(handle), "initialize");

@@ -97,6 +97,9 @@ jobs:
             ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.json
             ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.png
             ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.txt
+            ${{ runner.temp }}/bilipai-render-probe/mpv-adaptive/*.json
+            ${{ runner.temp }}/bilipai-render-probe/mpv-adaptive/*.png
+            ${{ runner.temp }}/bilipai-render-probe/mpv-adaptive/*.txt
           if-no-files-found: warn
 
   windows:

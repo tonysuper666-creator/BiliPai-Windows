@@ -1,7 +1,7 @@
 """Bounded Windows rendering diagnosis; never builds or publishes the application.
 
 Each Java child owns its own windows and mpv handle. A failed observation remains
-a failed case; all three cases still run so one failure cannot hide another path.
+a failed case; all cases still run so one failure cannot hide another path.
 Only fixed local-fixture images, measurements and bounded logs are collected.
 """
 import argparse
@@ -24,7 +24,7 @@ ARCHIVE_URLS = [
     'https://github.com/tonysuper666-creator/BiliPai-Windows/releases/download/runtime-mpv-20260903/mpv-dev-20260903-x64.7z',
     'https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20260903/mpv-dev-x86_64-20260903-git-69e63f425a.7z',
 ]
-CASES = ('awt-alpha-only', 'mpv-default-flip', 'mpv-bitblt')
+CASES = ('awt-alpha-only', 'mpv-default-flip', 'mpv-bitblt', 'mpv-adaptive')
 
 
 def digest(path):
@@ -197,12 +197,14 @@ def main():
         dll = verified(native / 'libmpv-2.dll', 120342528, DLL_SHA)
         summary['dllSha256'] = digest(dll)
         source = Path(__file__).with_name('AwtMpvProbe.java').resolve(strict=True)
+        adapter_source = (source.parents[2] / 'src/main/java/com/bilipai/desktop/player/DesktopWindowsDxgiAdapters.java').resolve(strict=True)
         summary['sourceSha256'] = digest(source)
+        summary['productionAdapterSourceSha256'] = digest(adapter_source)
         summary['runnerSha256'] = digest(__file__)
         classes = output / 'classes'
         classes.mkdir()
         with (output / 'compile.log').open('xb') as log:
-            subprocess.run([str(javac), '-encoding', 'UTF-8', '-cp', str(jna), '-d', str(classes), str(source)],
+            subprocess.run([str(javac), '-encoding', 'UTF-8', '-cp', str(jna), '-d', str(classes), str(adapter_source), str(source)],
                            cwd=output, env=env, check=True, stdout=log, stderr=subprocess.STDOUT, timeout=20)
         for case in CASES:
             try:
@@ -214,7 +216,7 @@ def main():
             if row.get('processStillRunning'):
                 summary['remainingCasesSkipped'] = 'Previous owned JVM did not terminate'
                 break
-        summary['passed'] = len(summary['cases']) == 3 and all(row['passed'] for row in summary['cases'])
+        summary['passed'] = len(summary['cases']) == len(CASES) and all(row['passed'] for row in summary['cases'])
     except Exception as error:
         summary['error'] = type(error).__name__ + ': ' + str(error)[:1000]
     finally:
