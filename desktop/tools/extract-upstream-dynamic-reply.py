@@ -399,7 +399,6 @@ import com.bilipai.desktop.ui.LocalDesktopCommentBindings
     # Full AicuNavigationPolicy is mode=direct; prepareUpstreamSources is its sole producer.
     legacy_aicu=output/'com/android/purebilibili/feature/aicu/DesktopOriginalReplyAicuNavigation.kt'
     if legacy_aicu.exists():
-        import hashlib
         assert not legacy_aicu.is_symlink() and legacy_aicu.resolve().is_relative_to(output.resolve())
         assert hashlib.sha256(legacy_aicu.read_bytes().replace(b"\r\n",b"\n")).hexdigest()=="62516206102de9ff99b64c6228e2360cfda7830f4a2751d4608a27dac48a934c"
         legacy_aicu.unlink()
