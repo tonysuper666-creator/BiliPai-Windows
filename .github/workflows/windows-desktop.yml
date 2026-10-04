@@ -19,6 +19,10 @@ on:
         description: Fixed source commit to build, including publication recovery
         type: string
         default: ''
+      render_diagnostic:
+        description: Run only the isolated AWT and mpv rendering experiment; never build or publish the app
+        type: boolean
+        default: false
   push:
     branches: ['desktop/windows']
     paths:
@@ -43,8 +47,60 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  render-diagnostic:
+    if: github.repository != 'jay3-yy/BiliPai' && github.event_name == 'workflow_dispatch' && inputs.render_diagnostic == true
+    runs-on: windows-latest
+    timeout-minutes: 8
+    steps:
+      - name: Enable Git long paths
+        shell: pwsh
+        run: git config --global core.longpaths true
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha || github.sha }}
+          persist-credentials: false
+      - name: Verify diagnostic source
+        shell: pwsh
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+        run: |
+          $head = git rev-parse HEAD
+          foreach ($required in @($env:SOURCE_SHA, $env:EXPECTED_HEAD)) {
+            if ($required -and ($required -notmatch '^[0-9a-f]{40}$' -or $head -ne $required)) { throw 'Diagnostic checkout differs from the fixed commit.' }
+          }
+          if ('${{ inputs.release }}' -eq 'true') { throw 'Rendering diagnostics cannot publish a release.' }
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run isolated physical-screen experiments
+        shell: pwsh
+        run: python desktop/tools/diagnostics/run-render-probe.py --java-home "$env:JAVA_HOME" --output "$env:RUNNER_TEMP/bilipai-render-probe"
+      - name: Upload rendering diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-render-diagnostic
+          path: |
+            ${{ runner.temp }}/bilipai-render-probe/summary.json
+            ${{ runner.temp }}/bilipai-render-probe/*.log
+            ${{ runner.temp }}/bilipai-render-probe/awt-alpha-only/*.json
+            ${{ runner.temp }}/bilipai-render-probe/awt-alpha-only/*.png
+            ${{ runner.temp }}/bilipai-render-probe/awt-alpha-only/*.txt
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip/*.json
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip/*.png
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip/*.txt
+            ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.json
+            ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.png
+            ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.txt
+          if-no-files-found: warn
+
   windows:
-    if: github.repository != 'jay3-yy/BiliPai'
+    if: github.repository != 'jay3-yy/BiliPai' && inputs.render_diagnostic != true
     runs-on: windows-latest
     timeout-minutes: 35
     outputs:
