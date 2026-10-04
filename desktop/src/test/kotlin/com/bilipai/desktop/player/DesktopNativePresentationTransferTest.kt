@@ -206,4 +206,62 @@ class DesktopNativePresentationTransferTest {
         assertFalse(token.acknowledge(22.0, false))
         assertTrue(token.cancelledFloatingPeerNeedsDisposal(true, returning = true, restoreRequested = false))
     }
+
+    @Test fun `timeout winning before capture leaves source unchanged and permits a new request`() {
+        val token = transfer { false }
+        assertTrue(token.cancelRequested())
+        assertNull(token.resume)
+        assertFalse(token.hasReleasedPeer)
+        assertFalse(token.hasAttachedPeer)
+        assertSame(original, token.source.source)
+        assertFalse(token.capture(22.0, true, 3))
+        assertFalse(token.cancelRequested())
+        val retry = transfer()
+        assertTrue(retry.capture(22.0, true, 3))
+        assertTrue(retry.peerReleased())
+        assertTrue(retry.attach())
+        assertTrue(retry.acknowledge(22.0, true))
+    }
+
+    @Test fun `capture winning timeout race preserves cursor and real worker release fence`() {
+        var exited = false
+        val token = transfer { exited }
+        assertTrue(token.capture(22.0, true, 3))
+        assertFalse(token.cancelRequested())
+        assertEquals(DesktopNativePresentationTransfer.Phase.CAPTURED, token.phase)
+        assertEquals(22.0, assertNotNull(token.resume).positionSeconds)
+        assertFalse(token.peerReleased())
+        exited = true
+        assertTrue(token.peerReleased())
+        assertFalse(token.cancelRequested())
+        assertTrue(token.attach())
+        assertFalse(token.cancelRequested())
+        assertTrue(token.acknowledge(22.0, true))
+        assertFalse(token.cancelRequested())
+    }
+
+    @Test fun `atomic player cancellation clears only its exact requested token and no user intent`() {
+        MpvPlayer().use { player ->
+            player.loadVersioned(original)
+            player.setPaused(true); player.setMuted(false); player.setVolume(0.0); player.setSpeed(1.5)
+            val snapshot = assertNotNull(player.currentSourceSnapshot())
+            val before = player.state.value
+            val token = DesktopNativePresentationTransfer(snapshot, 1, 100, { false })
+            // Headless lifecycle state only: no HWND or native worker is created.
+            val field = MpvPlayer::class.java.getDeclaredField("presentationTransfer").apply { isAccessible = true }
+            val barrier = MpvPlayer::class.java.getDeclaredField("presentationHandoffPending").apply { isAccessible = true }
+            field.set(player, token); barrier.setBoolean(player, true)
+            assertTrue(player.cancelRequestedPresentationTransfer(token))
+            assertNull(field.get(player))
+            assertFalse(barrier.getBoolean(player))
+            assertEquals(before, player.state.value)
+            assertTrue(player.ownsSourceSnapshot(snapshot))
+            val retry = DesktopNativePresentationTransfer(snapshot, 1, 100, { false })
+            field.set(player, retry); barrier.setBoolean(player, true)
+            assertFalse(player.cancelRequestedPresentationTransfer(token))
+            assertSame(retry, field.get(player))
+            assertTrue(barrier.getBoolean(player))
+            assertTrue(player.cancelRequestedPresentationTransfer(retry))
+        }
+    }
 }

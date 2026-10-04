@@ -70,6 +70,13 @@ internal class DesktopNativePresentationTransfer(
         retire()
         return true
     }
+    /** Timeout cancellation may only retire a request which has never captured
+     * a cursor or begun releasing its original worker/peer. */
+    fun cancelRequested(): Boolean {
+        if (phase != Phase.REQUESTED) return false
+        retire()
+        return true
+    }
     /** Called only after source admission has rejected this handoff. A newly
      * created floating peer still requires worker drain before it can unmount,
      * even when its original transfer never reached attach(). */

@@ -136,8 +136,15 @@ class PictureInPictureController(
     }
 
     private fun advanceHandoff() {
-        if (System.nanoTime() - handoffStartedNanos > 15_000_000_000L)
+        if (System.nanoTime() - handoffStartedNanos > 15_000_000_000L) {
+            val requested = handoff
+            if (requested != null && player.cancelRequestedPresentationTransfer(requested)) {
+                mutableError.value = "浮窗切换等待超时，请稍后重试"
+                finishHandoff(restored = false) // The current window/source/pause never left.
+                return
+            }
             mutableError.value = "原生播放器仍在释放窗口，浮窗切换尚未完成"
+        }
         nativeRelease?.let { released ->
             if (!released()) return
             nativeRelease = null

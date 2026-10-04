@@ -213,6 +213,15 @@ object PlayerSelfTest {
             waitFor(player, "repeat current file") { !it.ended && it.positionSeconds < 2.0 && !it.paused }
             checks["singleFileLoop"] = "passed"
             player.setLoop(false)
+            // A loop can publish position zero before its native seek has
+            // restarted playback. Establish the independent EOF fixture only
+            // after a real seek acknowledgement and a moving playback clock.
+            val terminalSetupSeek = requireNotNull(player.seekToTracked(2.0))
+            waitFor(player, "settled playback before terminal floating-window check") {
+                it.seekCompletedId == terminalSetupSeek &&
+                    abs((it.seekCompletedPositionSeconds ?: 0.0) - 2.0) < 0.3 &&
+                    it.positionSeconds > 2.2 && !it.paused && !it.ended
+            }
             player.setPaused(true)
             waitFor(player, "pause before terminal floating-window check") { it.nativePaused == true }
             val terminalPresentationSource = requireNotNull(player.currentSourceSnapshot())

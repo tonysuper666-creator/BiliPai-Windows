@@ -271,6 +271,16 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     internal fun wasPresentationPeerReleased(token: DesktopNativePresentationTransfer): Boolean = synchronized(lock) {
         token.hasReleasedPeer && !canvas.isDisplayable
     }
+    /** Competes with capture under the same lock. No worker, peer, source or
+     * user controls have changed while the exact token remains REQUESTED. */
+    internal fun cancelRequestedPresentationTransfer(token: DesktopNativePresentationTransfer): Boolean = synchronized(lock) {
+        if (presentationTransfer !== token || !token.cancelRequested()) false
+        else {
+            presentationTransfer = null
+            presentationHandoffPending = false
+            true
+        }
+    }
     internal fun resumePresentationInCurrentPeer(token: DesktopNativePresentationTransfer): Boolean {
         var resumed = false
         admitPresentation(token.source.source) { synchronized(lock) {
