@@ -2,6 +2,9 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.drag
@@ -25,6 +28,11 @@ import com.android.purebilibili.feature.video.ui.overlay.normalizeViewPointSegme
 import com.android.purebilibili.feature.video.ui.overlay.findViewPointSegmentAt
 import com.android.purebilibili.core.util.FormatUtils
 import com.bilipai.desktop.player.PlayerState
+import top.yukonga.miuix.kmp.basic.PlainTooltip as MiuixPlainTooltip
+import top.yukonga.miuix.kmp.basic.TooltipAnchorPosition
+import top.yukonga.miuix.kmp.basic.TooltipBox as MiuixTooltipBox
+import top.yukonga.miuix.kmp.basic.TooltipDefaults as MiuixTooltipDefaults
+import top.yukonga.miuix.kmp.basic.rememberTooltipState as rememberMiuixTooltipState
 
 /** Shared original glass/fallback surface. The heavyweight video is never sampled by this layer. */
 @Composable
@@ -68,15 +76,15 @@ internal fun DesktopWindowsVideoControlBar(
                     if (!enabled) { more = false; speedMenu = false; qualityMenu = false; volumeMenu = false; chapterMenu = false }
                 }
                 Row(Modifier.fillMaxWidth().heightIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = onPlayPause, enabled = enabled && state.ready, modifier = Modifier.size(44.dp)) {
+                    DesktopWindowsPlayerIconButton(tooltip = if (state.paused || state.ended) "播放" else "暂停", onClick = onPlayPause, enabled = enabled && state.ready, modifier = Modifier.size(44.dp)) {
                         Icon(if (state.paused || state.ended) Icons.Default.PlayArrow else Icons.Default.Pause,
                             contentDescription = if (state.paused || state.ended) "播放" else "暂停")
                     }
                     if (expanded) {
-                        IconButton(onClick = onPrevious, enabled = enabled && hasPrevious, modifier = Modifier.size(44.dp)) {
+                        DesktopWindowsPlayerIconButton(tooltip = "上一集", onClick = onPrevious, enabled = enabled && hasPrevious, modifier = Modifier.size(44.dp)) {
                             Icon(Icons.Default.SkipPrevious, contentDescription = "上一集")
                         }
-                        IconButton(onClick = onNext, enabled = enabled && hasNext, modifier = Modifier.size(44.dp)) {
+                        DesktopWindowsPlayerIconButton(tooltip = "下一集", onClick = onNext, enabled = enabled && hasNext, modifier = Modifier.size(44.dp)) {
                             Icon(Icons.Default.SkipNext, contentDescription = "下一集")
                         }
                     }
@@ -86,7 +94,7 @@ internal fun DesktopWindowsVideoControlBar(
                         maxLines = 1, overflow = TextOverflow.Ellipsis)
                     if (expanded) {
                         Box {
-                            IconButton(onClick = { volumeMenu = true }, enabled = enabled, modifier = Modifier.size(44.dp)) {
+                            DesktopWindowsPlayerIconButton(tooltip = "音量与静音", onClick = { volumeMenu = true }, enabled = enabled, modifier = Modifier.size(44.dp)) {
                                 Icon(if (state.muted) Icons.Default.VolumeOff else Icons.Default.VolumeUp,
                                     contentDescription = "音量与静音")
                             }
@@ -120,7 +128,7 @@ internal fun DesktopWindowsVideoControlBar(
                         }
                     }
                     if (showEnhancementStatus && chapters != null && chaptersSource != null && segments.isNotEmpty()) Box {
-                        IconButton(onClick = { chapterMenu = true }, enabled = enabled, modifier = Modifier.size(44.dp)) {
+                        DesktopWindowsPlayerIconButton(tooltip = "视频章节", onClick = { chapterMenu = true }, enabled = enabled, modifier = Modifier.size(44.dp)) {
                             Icon(Icons.Default.ListAlt, contentDescription = "视频章节")
                         }
                         DesktopWindowsPlayerMenu(chapterMenu, onDismissRequest = { chapterMenu = false },
@@ -134,20 +142,20 @@ internal fun DesktopWindowsVideoControlBar(
                         }
                     }
                     DesktopVideoEnhancementCompactSlot(showStatus = showEnhancementStatus) { enhancement() }
-                    IconButton(onClick = onDetails, modifier = Modifier.size(44.dp)) {
+                    DesktopWindowsPlayerIconButton(tooltip = "详情", onClick = onDetails, modifier = Modifier.size(44.dp)) {
                         Icon(Icons.Default.Info, contentDescription = "详情",
                             tint = if (detailsOpen) MaterialTheme.colorScheme.primary else LocalContentColor.current)
                     }
-                    if (expanded) IconButton(onClick = onPictureInPicture,
+                    if (expanded) DesktopWindowsPlayerIconButton(tooltip = "浮窗", onClick = onPictureInPicture,
                         enabled = enabled && canPictureInPicture, modifier = Modifier.size(44.dp)) {
                         Icon(Icons.Default.PictureInPictureAlt, contentDescription = "浮窗")
                     }
-                    IconButton(onClick = onFullscreen, modifier = Modifier.size(44.dp)) {
+                    DesktopWindowsPlayerIconButton(tooltip = if (fullscreen) "退出全屏" else "全屏", onClick = onFullscreen, modifier = Modifier.size(44.dp)) {
                         Icon(if (fullscreen) Icons.Default.FullscreenExit else Icons.Default.Fullscreen,
                             contentDescription = if (fullscreen) "退出全屏" else "全屏")
                     }
                     Box {
-                        IconButton(onClick = { more = true }, modifier = Modifier.size(44.dp)) {
+                        DesktopWindowsPlayerIconButton(tooltip = "更多播放操作", onClick = { more = true }, modifier = Modifier.size(44.dp)) {
                             Icon(Icons.Default.MoreVert, contentDescription = "更多播放操作")
                         }
                         DesktopWindowsPlayerMenu(more, onDismissRequest = { more = false },
@@ -200,6 +208,32 @@ internal fun DesktopWindowsVideoControlBar(
                 }
             }
         }
+    }
+}
+
+/** Reuse the original Miuix tooltip without adding a long-click action to the button. */
+@Composable
+private fun DesktopWindowsPlayerIconButton(
+    tooltip: String, onClick: () -> Unit, enabled: Boolean = true,
+    modifier: Modifier = Modifier, content: @Composable () -> Unit,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val hovered by interactionSource.collectIsHoveredAsState()
+    val focused by interactionSource.collectIsFocusedAsState()
+    val tooltipState = rememberMiuixTooltipState(isPersistent = true)
+    LaunchedEffect(hovered, focused, enabled) {
+        if (enabled && (hovered || focused)) tooltipState.show() else tooltipState.dismiss()
+    }
+    MiuixTooltipBox(
+        positionProvider = MiuixTooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above, 4.dp),
+        tooltip = { MiuixPlainTooltip {
+            Text(tooltip, color = MiuixTooltipDefaults.plainTooltipContentColor,
+                style = MaterialTheme.typography.bodySmall, maxLines = 1, overflow = TextOverflow.Ellipsis)
+        } },
+        state = tooltipState, focusable = false, enableUserInput = false,
+    ) {
+        IconButton(onClick = { tooltipState.dismiss(); onClick() }, enabled = enabled,
+            modifier = modifier, interactionSource = interactionSource, content = content)
     }
 }
 

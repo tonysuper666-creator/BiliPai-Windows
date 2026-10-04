@@ -9,6 +9,11 @@ import com.bilipai.desktop.player.PlayerPreferences
 import com.bilipai.desktop.player.PlayerPreferencesStore
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.*
+import com.sun.jna.Memory
+import com.sun.jna.Native
+import com.sun.jna.Pointer
+import com.sun.jna.ptr.IntByReference
+import com.sun.jna.win32.StdCallLibrary
 import java.awt.Canvas
 import java.awt.Component
 import java.awt.Container
@@ -236,6 +241,88 @@ object WindowsVideoActualRootUiFixture {
         record("actual-native-owner", mapOf("canvasClass" to JsonPrimitive(actualCanvas.javaClass.name),
             "sameActualSurfaceAndCanvas" to JsonPrimitive(true), "nativeActorIdentity" to JsonPrimitive(System.identityHashCode(actualPlayer))))
     }
+    private interface FailureWindowApi : StdCallLibrary {
+        fun GetWindowThreadProcessId(hwnd: Pointer, pid: IntByReference): Int
+        fun IsWindowVisible(hwnd: Pointer): Boolean
+        fun IsIconic(hwnd: Pointer): Boolean
+        fun GetWindowLongW(hwnd: Pointer, index: Int): Int
+        fun GetWindowRect(hwnd: Pointer, rect: Pointer): Boolean
+        fun GetClientRect(hwnd: Pointer, rect: Pointer): Boolean
+        fun ClientToScreen(hwnd: Pointer, point: Pointer): Boolean
+        fun GetWindowPlacement(hwnd: Pointer, placement: Pointer): Boolean
+    }
+    private val failureWindowApi: FailureWindowApi by lazy { Native.load("user32", FailureWindowApi::class.java) }
+    private fun failureWindowGeometry(phase: String): JsonObject = edt {
+        val main = window()
+        check(System.identityHashCode(main) == ownedWindowIdentity)
+        fun rectangle(value: Rectangle) = buildJsonObject {
+            put("x", value.x); put("y", value.y); put("width", value.width); put("height", value.height)
+        }
+        fun awt(component: Component): JsonObject = buildJsonObject {
+            put("class", component.javaClass.name); put("identity", System.identityHashCode(component))
+            put("showing", component.isShowing); put("displayable", component.isDisplayable)
+            put("localBounds", rectangle(component.bounds))
+            put("screenBounds", runCatching { rectangle(Rectangle(component.locationOnScreen, component.size)) }.getOrNull() ?: JsonNull)
+        }
+        fun native(component: Component): JsonObject = buildJsonObject {
+            // Read only these two already-owned peers; never query another process or restore a window.
+            check(component === main || (::actualCanvas.isInitialized && component === actualCanvas &&
+                SwingUtilities.getWindowAncestor(component) === main))
+            if (!component.isDisplayable) { put("available", false); return@buildJsonObject }
+            val hwnd = Native.getComponentPointer(component)
+            val pid = IntByReference()
+            check(failureWindowApi.GetWindowThreadProcessId(hwnd, pid) != 0 &&
+                Integer.toUnsignedLong(pid.value) == ProcessHandle.current().pid())
+            put("available", true); put("ownPidVerified", true)
+            put("hwnd", java.lang.Long.toUnsignedString(Pointer.nativeValue(hwnd)))
+            put("visible", failureWindowApi.IsWindowVisible(hwnd)); put("iconic", failureWindowApi.IsIconic(hwnd))
+            val style = failureWindowApi.GetWindowLongW(hwnd, -16)
+            put("style", Integer.toUnsignedString(style)); put("minimizeStyleBit", style and 0x20000000 != 0)
+            Memory(16).use { rect ->
+                if (failureWindowApi.GetWindowRect(hwnd, rect)) put("windowScreenRect", rectangle(Rectangle(
+                    rect.getInt(0), rect.getInt(4), rect.getInt(8) - rect.getInt(0), rect.getInt(12) - rect.getInt(4))))
+                else put("windowRectQueryError", Native.getLastError())
+                if (failureWindowApi.GetClientRect(hwnd, rect)) Memory(8).use { origin ->
+                    origin.clear()
+                    if (failureWindowApi.ClientToScreen(hwnd, origin)) put("clientScreenRect", rectangle(Rectangle(
+                        origin.getInt(0), origin.getInt(4), rect.getInt(8) - rect.getInt(0), rect.getInt(12) - rect.getInt(4))))
+                    else put("clientOriginQueryError", Native.getLastError())
+                } else put("clientRectQueryError", Native.getLastError())
+            }
+            if (component === main) Memory(44).use { placement ->
+                // Win32 WINDOWPLACEMENT: three UINTs, two POINTs and one RECT (44 bytes).
+                placement.clear(); placement.setInt(0, 44)
+                if (failureWindowApi.GetWindowPlacement(hwnd, placement)) put("placement", buildJsonObject {
+                    put("flags", placement.getInt(4)); put("showCmd", placement.getInt(8))
+                    put("normalPosition", rectangle(Rectangle(placement.getInt(28), placement.getInt(32),
+                        placement.getInt(36) - placement.getInt(28), placement.getInt(40) - placement.getInt(32))))
+                }) else put("placementQueryError", Native.getLastError())
+            }
+        }
+        buildJsonObject {
+            put("scope", "FAILURE_ONLY_OWNED_WINDOW_READ_ONLY"); put("phase", phase)
+            put("observedAtEpochMillis", System.currentTimeMillis()); put("capturedOnEdt", true)
+            put("windowRestoredOrRetried", false); put("geometryOracleRelaxed", false)
+            put("composePlacement", (main as ComposeWindow).placement.toString())
+            put("awtExtendedState", main.extendedState)
+            put("awtIconified", main.extendedState and java.awt.Frame.ICONIFIED != 0)
+            put("focused", main.isFocused); put("active", main.isActive)
+            put("mainAwt", awt(main)); put("clientAwt", awt(main.contentPane))
+            val configuration = main.graphicsConfiguration
+            put("monitorAwt", rectangle(configuration.bounds))
+            put("awtScaleX", configuration.defaultTransform.scaleX); put("awtScaleY", configuration.defaultTransform.scaleY)
+            put("nativeCoordinateSpace", "USER32_SCREEN_COORDINATES_NO_APPLICATION_SCALE_CONVERSION")
+            put("mainNative", runCatching { native(main) }.getOrElse { buildJsonObject { put("queryFailureType", it.javaClass.name) } })
+            if (::actualCanvas.isInitialized) {
+                put("canvasAwt", awt(actualCanvas))
+                put("canvasOwnedByMain", SwingUtilities.getWindowAncestor(actualCanvas) === main)
+                put("canvasNative", runCatching { native(actualCanvas) }.getOrElse { buildJsonObject { put("queryFailureType", it.javaClass.name) } })
+            }
+        }
+    }
+    private fun writeFailureWindowGeometry(phase: String) {
+        Files.writeString(report.resolve("failure-owned-window-geometry.json"), failureWindowGeometry(phase).toString(), CREATE_NEW, WRITE)
+    }
     private fun sameNative() = edt {
         current()
         check(nativeComponents(window()).filterIsInstance<Canvas>().filter { it.isShowing && it.width > 100 && it.height > 80 &&
@@ -247,6 +334,7 @@ object WindowsVideoActualRootUiFixture {
         val position = actualCanvas.locationOnScreen
         check(actualCanvas.width > 0 && actualCanvas.height > 0 &&
             view.contains(Rectangle(position.x, position.y, actualCanvas.width, actualCanvas.height))) {
+            runCatching { writeFailureWindowGeometry("FIRST_CANVAS_CLIENT_CONTAINMENT_FAILURE") }
             "Actual native Canvas is clipped outside owned window client"
         }
     }
@@ -1145,7 +1233,7 @@ object WindowsVideoActualRootUiFixture {
         sameNative(); check(playing())
         click("暂停")
         await("actual Pause before exact chapter seek") { sameNative(); actualPlayer.state.value.nativePaused == true }
-        val beforeLayers = edt { actualMainSceneLayers() }
+        val beforeLayers = settledMainInputLayers("chapter-before")
         fun choose(label: String, seconds: Double) {
             val seekId = actualPlayer.state.value.seekCompletedId
             click("视频章节")
@@ -1163,6 +1251,11 @@ object WindowsVideoActualRootUiFixture {
                         kotlin.math.abs(it.positionSeconds - seconds) < .6
                 }
             }
+            await("chapter native menu closes before Main tooltip settlement") { edt {
+                ownedFeatureSurface("00:00 · 开场", "00:20 · 中段", "00:40 · 收尾") == null &&
+                    runCatching { videoScope("视频章节") }.isSuccess
+            } }
+            settledMainInputLayers("chapter-after-$seconds")
             await("chapter menu input layer retires") { edt {
                 val layers = actualMainSceneLayers()
                 ownedFeatureSurface("00:00 · 开场", "00:20 · 中段", "00:40 · 收尾") == null &&
@@ -1285,7 +1378,7 @@ object WindowsVideoActualRootUiFixture {
             }
             hotItem()
             actions.capture("157-original-hot-danmaku", edt { current() })
-            val beforeLayers = edt { actualMainSceneLayers() }
+            val beforeLayers = settledMainInputLayers("hot-confirmation-before")
             edt {
                 clickOwnedComposeMouse(popup, hotItem())
             }
@@ -1558,7 +1651,7 @@ object WindowsVideoActualRootUiFixture {
         val header = "发现音乐《P2第一首》等2首音乐"
         openBgmIntroduction(header)
         check(p2Music.bgmInfoList.map { it.musicTitle } == listOf("P2第一首", "P2第二首"))
-        val layers = edt { actualMainSceneLayers() }
+        val layers = settledMainInputLayers("bgm-selector-before")
         clickBgmInlineRow()
         fun selector(): Window? = edt { ownedFeatureSurface("发现音乐", "关闭", "P2第一首", "P2第二首") }
         await("original multi-song selector in a separate actual owned Windows dialog") { selector() != null }
@@ -1734,7 +1827,7 @@ object WindowsVideoActualRootUiFixture {
      * All navigation and queue mutation comes from the complete original collection UI. */
     private fun exerciseCollectionAndQueue() {
         sameNative(); check(playing())
-        val beforeLayers = edt { actualMainSceneLayers() }
+        val beforeLayers = settledMainInputLayers("collection-queue-before")
         val originalSource = accepted
         fun openFromMore(label: String) {
             sameNative(); click("更多播放操作")
@@ -1771,6 +1864,12 @@ object WindowsVideoActualRootUiFixture {
             } }
         }
         fun awaitClosed() {
+            await("collection/queue native windows close before Main tooltip settlement") { edt {
+                playerMenuSurface() == null && ownedFeatureSurface("合集", "关闭", "2.Local replay P2") == null &&
+                    ownedFeatureSurface("关闭播放队列", "当前播放") == null &&
+                    runCatching { videoScope("详情") }.isSuccess
+            } }
+            settledMainInputLayers("collection-queue-after-${rows.size}")
             await("collection/queue owned input windows retire") { edt {
                 val layers = actualMainSceneLayers()
                 playerMenuSurface() == null && ownedFeatureSurface("合集", "关闭", "2.Local replay P2") == null &&
@@ -1876,7 +1975,7 @@ object WindowsVideoActualRootUiFixture {
             if (edt { descendants(detailPaneScope()).any { node -> node.accessibleName == "弹幕设置" && visible(node) } }) return@repeat
             ownedWheel(edt { actualComposeInput() }, 2, false); Thread.sleep(150)
         }
-        val beforeLayers = edt { actualMainSceneLayers() }
+        val beforeLayers = settledMainInputLayers("danmaku-before", requireDetails = true)
         fun open() {
             click("弹幕设置")
             await("original danmaku settings opens from current Windows details") { edt {
@@ -1941,6 +2040,97 @@ object WindowsVideoActualRootUiFixture {
             "remoteDanmakuActionSubmitted" to JsonPrimitive(false)))
     }
 
+    // These names identify the nine tooltip-bearing IconButton positions, including
+    // the playback/fullscreen variants. The actual role/state is always read below.
+    private val playerIconTooltipNames = setOf("播放", "暂停", "上一集", "下一集", "音量与静音",
+        "视频章节", "详情", "浮窗", "全屏", "退出全屏", "更多播放操作")
+
+    private fun focusedPlayerTooltipButtons(): List<AccessibleContext> = all().filter { node ->
+        node.accessibleName in playerIconTooltipNames &&
+            node.accessibleRole == javax.accessibility.AccessibleRole.PUSH_BUTTON &&
+            node.accessibleStateSet.contains(AccessibleState.FOCUSED)
+    }
+
+    private fun showingPlayerTooltipLabels(): List<AccessibleContext> = all().filter { node ->
+        node.accessibleName in playerIconTooltipNames &&
+            node.accessibleRole == javax.accessibility.AccessibleRole.LABEL &&
+            node.accessibleStateSet.contains(AccessibleState.SHOWING) &&
+            (node.accessibleAction?.accessibleActionCount ?: 0) == 0
+    }
+
+    private fun mainInputLayerFacts(layers: List<Any> = actualMainSceneLayers()): Map<String, JsonElement> {
+        check(EventQueue.isDispatchThread()); current()
+        fun nodeFacts(nodes: List<AccessibleContext>) = JsonArray(nodes.map { node -> buildJsonObject {
+            put("name", node.accessibleName); put("roleDisplay", node.accessibleRole.toString())
+            put("focused", node.accessibleStateSet.contains(AccessibleState.FOCUSED))
+            put("showing", node.accessibleStateSet.contains(AccessibleState.SHOWING))
+            put("actionCount", node.accessibleAction?.accessibleActionCount ?: 0)
+        } })
+        return mapOf("actualMainLayerCount" to JsonPrimitive(layers.size),
+            "actualMainLayers" to JsonArray(layers.map { layer -> buildJsonObject {
+                put("class", layer.javaClass.name); put("identity", System.identityHashCode(layer))
+            } }), "actualTooltipLabels" to nodeFacts(showingPlayerTooltipLabels()),
+            "actualFocusedTooltipButtons" to nodeFacts(focusedPlayerTooltipButtons()))
+    }
+
+    /** End only real hover/focus input before comparing modal layer identities.
+     * Persistent tooltips are ordinary dynamic Popup layers, not leaked modal input.
+     * No tooltip state or attached-layer collection is modified by the fixture. */
+    private fun settledMainInputLayers(scenario: String, requireDetails: Boolean = false): List<Any> {
+        record("main-input-$scenario-initial", edt { sameNative(); mainInputLayerFacts() })
+        val input = edt {
+            current(); sameNative()
+            actualComposeInput().also { component ->
+                check(component.isShowing && component.isDisplayable &&
+                    SwingUtilities.getWindowAncestor(component) === window())
+                component.dispatchEvent(MouseEvent(component, MouseEvent.MOUSE_EXITED,
+                    System.currentTimeMillis(), 0, -1, -1, 0, false, MouseEvent.NOBUTTON))
+            }
+        }
+        var tabSteps = 0
+        while (tabSteps < 16) {
+            var focusedTooltip: Boolean? = null
+            await("complete same-source Main focus semantics before $scenario Tab") { edt {
+                current(); sameNative()
+                if (runCatching { videoScope() }.isFailure) false else {
+                    focusedTooltip = focusedPlayerTooltipButtons().isNotEmpty(); true
+                }
+            } }
+            if (focusedTooltip != true) break
+            ownedKey(input, java.awt.event.KeyEvent.VK_TAB)
+            tabSteps++
+            Thread.sleep(100)
+        }
+        record("main-input-$scenario-delivered", edt { mainInputLayerFacts() } + mapOf(
+            "mouseExitedDeliveredToActualMainInput" to JsonPrimitive(true),
+            "ownedTabSteps" to JsonPrimitive(tabSteps), "activatedControl" to JsonPrimitive(false)))
+        var previous: List<Any>? = null
+        var stableSince = 0L
+        var settled: List<Any>? = null
+        await("real Main tooltip hover/focus and exit layers settle before $scenario") { edt {
+            current(); sameNative()
+            val complete = runCatching { videoScope(); if (requireDetails) detailPaneScope() }.isSuccess
+            if (!complete || focusedPlayerTooltipButtons().isNotEmpty() || showingPlayerTooltipLabels().isNotEmpty()) {
+                previous = null; stableSince = 0L; false
+            } else {
+                val now = actualMainSceneLayers()
+                val before = previous
+                if (before != null && now.size == before.size && now.all { layer -> before.any { it === layer } }) {
+                    if (System.nanoTime() - stableSince >= Duration.ofMillis(300).toNanos()) {
+                        settled = now; true
+                    } else false
+                } else {
+                    previous = now; stableSince = System.nanoTime(); false
+                }
+            }
+        } }
+        return requireNotNull(settled).also { layers ->
+            record("main-input-$scenario-stable", edt { mainInputLayerFacts(layers) } + mapOf(
+                "ownedTabSteps" to JsonPrimitive(tabSteps), "tooltipLabelsAbsent" to JsonPrimitive(true),
+                "tooltipButtonsUnfocused" to JsonPrimitive(true), "layerIdentityStableMillis" to JsonPrimitive(300)))
+        }
+    }
+
     /** Read only the already initialized, owned Compose 1.12.1 scene's attached input layers. */
     private fun actualMainSceneLayers(): List<Any> {
         check(EventQueue.isDispatchThread()); current()
@@ -1969,7 +2159,8 @@ object WindowsVideoActualRootUiFixture {
     }
 
     private fun exerciseMainNvidiaControls() {
-        val beforeDialogLayers = edt { sameNative(); check(nvidiaDialogSurface() == null); actualMainSceneLayers() }
+        edt { sameNative(); check(nvidiaDialogSurface() == null) }
+        val beforeDialogLayers = settledMainInputLayers("nvidia-before")
         sameNative(); click("NVIDIA 增强详情")
         await("complete actual owned NVIDIA enhancement dialog") { edt { nvidiaDialogSurface() != null } }
         val openedDialogLayers = edt { actualMainSceneLayers() }
@@ -2024,6 +2215,10 @@ object WindowsVideoActualRootUiFixture {
                 (node.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single()
             clickOwnedComposeMouse(surface, done)
         }
+        await("actual NVIDIA native dialog closes before Main tooltip settlement") { edt {
+            sameNative(); nvidiaDialogSurface() == null && runCatching { videoScope("详情") }.isSuccess
+        } }
+        settledMainInputLayers("nvidia-after")
         await("actual NVIDIA dialog input-layer retirement restores current ordinary video") { edt {
             sameNative()
             val currentLayers = actualMainSceneLayers()
@@ -2042,7 +2237,7 @@ object WindowsVideoActualRootUiFixture {
         sameNative(); check(playing())
         val (assembly, publication) = actualHotOwner()
         val original = accepted
-        val layers = edt { actualMainSceneLayers() }
+        val layers = settledMainInputLayers("original-interactions-before")
         fun currentSource() {
             sameNative()
             check(accepted == original && assembly.owns() && assembly.native.isCurrent(publication))
@@ -2188,6 +2383,7 @@ object WindowsVideoActualRootUiFixture {
         } }
         click("播放")
         await("original Play after AI and notes") { playing() }
+        settledMainInputLayers("original-interactions-after")
         await("original interaction windows restore Main input layers") { edt {
             val now = actualMainSceneLayers()
             currentSource()
@@ -2624,7 +2820,12 @@ object WindowsVideoActualRootUiFixture {
                         }
                         Files.writeString(report.resolve("failure-source-admission.json"), admission.toString(), CREATE_NEW, WRITE)
                     } }
+                    runCatching { writeFailureWindowGeometry("FAILURE_HANDLER_FALLBACK") }
                     runCatching { actions.capture("failure-owned-window", edt { current() }) }
+                    runCatching {
+                        Files.writeString(report.resolve("failure-main-input-layers.json"),
+                            JsonObject(edt { mainInputLayerFacts() }).toString(), CREATE_NEW, WRITE)
+                    }
                     runCatching { Files.writeString(report.resolve("failure-observations.json"), JsonArray(rows.toList()).toString(), CREATE_NEW, WRITE) }
                     kotlin.system.exitProcess(91)
                 }

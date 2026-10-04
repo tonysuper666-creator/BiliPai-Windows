@@ -1,5 +1,8 @@
 package com.bilipai.desktop.ui
 
+import androidx.compose.foundation.VerticalScrollbar
+import androidx.compose.foundation.defaultScrollbarStyle
+import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -80,21 +83,31 @@ internal class DesktopOriginalRootChromeBindings(
         // This publishes the real Windows shader capability gate, not feed pixels.
         Row(Modifier.fillMaxSize()) {
             if (!video) DesktopWindowsGlassSurface(shape = androidx.compose.foundation.shape.RoundedCornerShape(0.dp)) {
-                Column(Modifier.width(172.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    Text("BiliPai", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(8.dp))
-                    TextButton(onClick = { if (routes.owns()) binding.actions.searchClick() }, modifier = Modifier.fillMaxWidth()) { Text("搜索") }
-                    HorizontalDivider(Modifier.padding(vertical = 6.dp))
-                    visibleItems.forEach { item ->
-                        val selected = key == BiliPaiNavKey.MainHost && item == currentItem || key.toLegacyRoute() == item.route
-                        if (selected) FilledTonalButton(onClick = { if (routes.owns()) onItemClick(item) }, modifier = Modifier.fillMaxWidth()) { Text(item.label) }
-                        else TextButton(onClick = { if (routes.owns()) onItemClick(item) }, modifier = Modifier.fillMaxWidth()) { Text(item.label) }
-                    }
-                    TextButton(onClick = { if (routes.owns()) routes.push(BiliPaiNavKey.DownloadList) }, modifier = Modifier.fillMaxWidth()) { Text("下载与离线") }
-                    binding.accountSwitcher?.let { switch ->
+                val sidebarScroll = rememberScrollState()
+                Box(Modifier.width(172.dp).fillMaxHeight()) {
+                    Column(Modifier.fillMaxSize().verticalScroll(sidebarScroll).padding(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Text("BiliPai", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(8.dp))
+                        TextButton(onClick = { if (routes.owns()) binding.actions.searchClick() }, modifier = Modifier.fillMaxWidth()) { Text("搜索") }
                         HorizontalDivider(Modifier.padding(vertical = 6.dp))
-                        TextButton(onClick = { if (routes.owns()) switch() }, modifier = Modifier.fillMaxWidth()) { Text("切换账号") }
+                        visibleItems.forEach { item ->
+                            val selected = key == BiliPaiNavKey.MainHost && item == currentItem || key.toLegacyRoute() == item.route
+                            if (selected) FilledTonalButton(onClick = { if (routes.owns()) onItemClick(item) }, modifier = Modifier.fillMaxWidth()) { Text(item.label) }
+                            else TextButton(onClick = { if (routes.owns()) onItemClick(item) }, modifier = Modifier.fillMaxWidth()) { Text(item.label) }
+                        }
+                        TextButton(onClick = { if (routes.owns()) routes.push(BiliPaiNavKey.DownloadList) }, modifier = Modifier.fillMaxWidth()) { Text("下载与离线") }
+                        binding.accountSwitcher?.let { switch ->
+                            HorizontalDivider(Modifier.padding(vertical = 6.dp))
+                            TextButton(onClick = { if (routes.owns()) switch() }, modifier = Modifier.fillMaxWidth()) { Text("切换账号") }
+                        }
                     }
+                    if (sidebarScroll.maxValue > 0) VerticalScrollbar(
+                        adapter = rememberScrollbarAdapter(sidebarScroll),
+                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight().padding(vertical = 12.dp, horizontal = 3.dp),
+                        style = defaultScrollbarStyle().copy(thickness = 4.dp,
+                            unhoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .28f),
+                            hoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .60f)),
+                    )
                 }
             }
             Column(Modifier.weight(1f).fillMaxHeight()) {

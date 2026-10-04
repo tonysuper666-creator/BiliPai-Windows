@@ -42,6 +42,12 @@ def lens_preflight_visibility_transforms():
  # No shader algorithm/string is copied, edited or independently maintained.
  return [('private const val '+name+' =','internal const val '+name+' =') for name in LENS_PREFLIGHT_CONSTANTS]
 
+def desktop_glass_theme_transforms(path):
+ # Original shadows/readability scrims follow the actual app palette, not OS mode.
+ # Keep every original expression; only its required platform theme read changes.
+ return [('import androidx.compose.foundation.isSystemInDarkTheme\n',
+  'import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme\n')] if path==HOME+'FloatingDockChrome.kt' else []
+
 def generate(repo: Path, output: Path, standalone: bool = False):
  REPO=Path(repo);HERE=Path(output)
  parser=load('liquid_selected_parser',REPO/'desktop/tools/sync-upstream.py')
@@ -86,7 +92,7 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   records.append(record)
  inv={'sources': [{'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/AppLiquidAwareTabRow.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/TabSelectionScroll.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/core/ui/components/LiquidDockViewport.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarLiquidSegmentedControl.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarFloatingSegmentedControl.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBar.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingBottomBarGeometry.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/BottomBarMatchedLiquidChrome.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/FloatingDockChrome.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassTuning.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassShader.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassSelectionContentPolicy.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/LiquidGlassAdaptiveReadability.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlight.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightPalette.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/InteractiveHighlightMotionSpec.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DragGestureInspector.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/miuix/DampedDragAnimation.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Lens.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/Vibrancy.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/InnerShadow.kt'}, {'path': 'app/src/main/java/com/android/purebilibili/feature/home/components/liquid/CombinedBackdrop.kt'}]}
  for row in inv['sources']:
-  p=row['path'];t=[]
+  p=row['path'];t=desktop_glass_theme_transforms(p)
   if p.endswith('LiquidGlassAdaptiveReadability.kt'):continue
   s=fixed_v027_lens(REPO)[0] if p==V027_LENS_PATH else read(_desktop_canonical_source(REPO, p))
   if p==V027_LENS_PATH:t+=lens_preflight_visibility_transforms()

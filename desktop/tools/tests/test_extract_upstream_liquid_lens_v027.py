@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import json
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -16,6 +17,43 @@ spec = importlib.util.spec_from_file_location("liquid_lens_v027", TOOLS / "extra
 tool = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(tool)
 LENS_OUTPUT = "generated/com/android/purebilibili/feature/home/components/liquid/Lens.kt"
+
+
+class DesktopOriginalLiquidGlassThemeBindingTest(unittest.TestCase):
+    # This class reads fixed sources and evaluates the pure recipe only. No generator/output.
+    def test_fixed_original_dock_complete_inverse_preserves_both_glass_algorithms(self):
+        path = tool.HOME + "FloatingDockChrome.kt"
+        original = tool.read(tool._desktop_canonical_source(REPO, path))
+        fixed = subprocess.check_output(["git", "show", tool.COMMIT + ":" + path], cwd=REPO).decode("utf-8").replace("\r\n", "\n")
+        self.assertEqual(fixed, original)
+        transforms = tool.desktop_glass_theme_transforms(path)
+        self.assertEqual([("import androidx.compose.foundation.isSystemInDarkTheme\n",
+            "import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme\n")], transforms)
+        adapted = original
+        for before, after in transforms:
+            adapted = tool.one(adapted, before, after)
+        restored = adapted
+        for before, after in reversed(transforms):
+            restored = tool.one(restored, after, before)
+        self.assertEqual(fixed, restored)
+        self.assertEqual(tool.sha(fixed), tool.sha(restored))
+        # The actual caller count and complete original render bodies remain unchanged.
+        self.assertEqual(original.count("isSystemInDarkTheme()"), adapted.count("isSystemInDarkTheme()"))
+
+    def test_missing_or_duplicate_original_theme_import_is_rejected(self):
+        path = tool.HOME + "FloatingDockChrome.kt"
+        original = tool.read(tool._desktop_canonical_source(REPO, path))
+        before, after = tool.desktop_glass_theme_transforms(path)[0]
+        for altered in (original.replace(before, "", 1), original + before):
+            with self.subTest(import_count=altered.count(before)):
+                with self.assertRaises(AssertionError):
+                    tool.one(altered, before, after)
+
+    def test_theme_recipe_is_scoped_to_exact_original_dock_path(self):
+        for path in (tool.V027_LENS_PATH, tool.HOME + "FloatingBottomBar.kt",
+            tool.HOME + "BottomBarMatchedLiquidChrome.kt", "other/FloatingDockChrome.kt"):
+            with self.subTest(path=path):
+                self.assertEqual([], tool.desktop_glass_theme_transforms(path))
 
 
 class FixedOriginalLiquidLensTest(unittest.TestCase):

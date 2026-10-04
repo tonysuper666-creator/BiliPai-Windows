@@ -438,11 +438,9 @@ object PlayerSelfTest {
             var bounds: Pair<Rectangle, Rectangle>? = null
             var focused = false
             SwingUtilities.invokeAndWait {
-                // Foreground apps can cover a decoded native surface. Keep this
-                // opt-in test above them and verify actual desktop pixels. Windows
-                // can deny focus to a background process even while its window is visible.
-                window.toFront()
-                window.requestFocus()
+                // Startup requests the foreground once and keeps this owned window on top.
+                // Screen sampling is read-only: repeated focus/stacking requests can disturb
+                // native presentation. Retain the actual focus and physical-pixel checks.
                 focused = window.isFocused
                 if (window.isShowing && player.surface.isShowing &&
                     player.surface.width > 0 && player.surface.height > 0) {
