@@ -94,6 +94,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Verify source-independent policies before SDK provisioning
+        shell: pwsh
+        run: python desktop/tools/run-tool-tests.py --stage policies
+      - name: Stage the reviewed Windows SDK in an isolated temporary directory
+        shell: pwsh
+        run: |
+          $sdkRoot = Join-Path $env:RUNNER_TEMP 'bilipai-native-share-sdk'
+          $receipt = python desktop/tools/provision-native-diagnostic-sdk.py --repo "$env:GITHUB_WORKSPACE" --temp-root "$env:RUNNER_TEMP" --output "$sdkRoot"
+          if ($LASTEXITCODE -ne 0) { throw 'Reviewed SDK provisioning failed; no native build is allowed.' }
+          $sdk = ($receipt -join "`n") | ConvertFrom-Json
+          if ($sdk.passed -ne $true -or $sdk.sdkInputsExact -ne $true -or [IO.Path]::GetFullPath($sdk.sdkRoot) -ne [IO.Path]::GetFullPath($sdkRoot)) { throw 'SDK provisioning did not produce the exact isolated root.' }
+          "BILIPAI_NATIVE_SHARE_SDK_ROOT=$sdkRoot" | Add-Content -LiteralPath $env:GITHUB_ENV
       - name: Build isolated candidate with all release gates
         id: candidate
         shell: pwsh

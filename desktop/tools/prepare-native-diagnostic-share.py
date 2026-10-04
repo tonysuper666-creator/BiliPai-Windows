@@ -31,7 +31,7 @@ def main():
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--asset-dir', type=Path, required=True)
     p.add_argument('--vc-root', type=Path)
-    p.add_argument('--sdk-root', type=Path, default=Path('C:/Program Files (x86)/Windows Kits/10'))
+    p.add_argument('--sdk-root', type=Path, default=Path(os.environ.get('BILIPAI_NATIVE_SHARE_SDK_ROOT', 'C:/Program Files (x86)/Windows Kits/10')))
     args = p.parse_args()
     if sys.platform != 'win32':
         raise RuntimeError('The Windows diagnostic share bridge requires Windows x64.')

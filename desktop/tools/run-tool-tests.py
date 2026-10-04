@@ -20,7 +20,7 @@ def main() -> int:
     sys.path.insert(0, str(tools))
     os.environ["PYTHONPATH"] = os.pathsep.join(filter(None, (
         str(tools), os.environ.get("PYTHONPATH", ""))))
-    patterns = ("test_sync_upstream.py", "test_publish_release.py") if args.stage == "policies" else ("test_*.py",)
+    patterns = ("test_sync_upstream.py", "test_publish_release.py", "test_provision_native_diagnostic_sdk.py") if args.stage == "policies" else ("test_*.py",)
     suite = unittest.TestSuite()
     for pattern in patterns:
         discovered = unittest.defaultTestLoader.discover(str(tests), pattern=pattern)
