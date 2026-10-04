@@ -45,131 +45,109 @@ internal fun DesktopSettingsTree(
 ) {
     val navigation by navigator.state.collectAsState()
     val page = navigation.current
-    var boundary by remember { mutableStateOf<String?>(null) }
     var nextDonateToken by remember { mutableLongStateOf(0L) }
     var donateEntry by remember { mutableStateOf<DesktopSettingsDonateEntry?>(null) }
     val requestDonate: () -> Unit = {
         val token = ++nextDonateToken
-        val parent = page
-        donateEntry = DesktopSettingsDonateEntry(token, parent) {
-            donateEntry?.entryToken == token && navigator.state.value.current === parent
+        donateEntry = DesktopSettingsDonateEntry(token, page) {
+            donateEntry?.entryToken == token && navigator.state.value.current === page
         }
     }
     LaunchedEffect(page) { if (donateEntry?.parentPage !== page) donateEntry = null }
     DisposableEffect(Unit) { onDispose { donateEntry = null } }
-    CompositionLocalProvider(
-        LocalAppPreferenceIconTreatment provides AppPreferenceIconTreatment.FILLED,
-        LocalAppPreferenceGroupPresentation provides if (isMiuixNonGlassEnabled())
-            AppPreferenceGroupPresentation.CARD else AppPreferenceGroupPresentation.FLAT,
-    ) {
-        AppSurface(Modifier.fillMaxSize()) {
-            if (page is DesktopSettingsPage.CommentFraudHistory) {
-                commentFraudHistoryContent(page) { navigator.pop() }
-            } else if (page is DesktopSettingsPage.Search) {
-                DesktopSettingsSearchScreen(search, onBack = onPageBack,
-                    onCategoryClick = onCategoryOpen,
-                    onResultClick = onSearchResult,
-                    historyWritesScope = historyWritesScope)
-            } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.HOME_FEED) {
-                homeContent(page) { onDetailBack(page.target) }
-            } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.TIPS) {
-                TipsSettingsScreen(onBack = { onDetailBack(page.target) })
-            } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.OPEN_SOURCE_LICENSES) {
-                OpenSourceLicensesScreen(onBack = { onDetailBack(page.target) })
-            } else if (page is DesktopSettingsPage.Detail && page.target == SettingsSearchTarget.PLAYBACK) {
-                playbackContent(page) { onDetailBack(page.target) }
-            } else {
-                Column(Modifier.fillMaxSize()) {
-                    Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        if (page != DesktopSettingsPage.Root) AppTextButton(onClick = onPageBack) { AppText("返回") }
-                        Spacer(Modifier.weight(1f))
-                        AppTextButton(onClick = onOpenSearch) { AppText("搜索设置") }
-                    }
-                    val nestedPageOwnsScroll = page is DesktopSettingsPage.Detail &&
-                        page.target in setOf(SettingsSearchTarget.APPEARANCE, SettingsSearchTarget.PLUGINS, SettingsSearchTarget.BLOCKED_LIST,
-                            SettingsSearchTarget.BOTTOM_BAR, SettingsSearchTarget.ANIMATION)
-                    Column(Modifier.weight(1f).fillMaxWidth()
-                        .then(if (nestedPageOwnsScroll) Modifier else Modifier.verticalScroll(rememberScrollState()))
-                        .padding(horizontal = 16.dp, vertical = 8.dp)) {
-                        when (page) {
-                            DesktopSettingsPage.Root -> {
-                                SettingsCategoryHeader("设置")
-                                SettingsRootCategoryListSection(resolveSettingsRootCategoryOrder(), onCategoryOpen,
-                                    onDonateClick = requestDonate)
-                            }
-                            is DesktopSettingsPage.Category -> {
-                                SettingsCategoryHeader(page.category.title)
-                                when (canonicalSettingsRootCategory(page.category)) {
-                                    SettingsRootCategory.PLAYBACK_QUALITY -> SettingsPlaybackCategoryEntrySection {
-                                        // The original entry supplies DECODER or INTERACTION before this callback.
-                                        navigator.openDetail(SettingsSearchTarget.PLAYBACK,
-                                            SettingsSearchFocusController.request.value?.focusId)
-                                    }
-                                    SettingsRootCategory.HOME_RECOMMENDATION -> {
-                                        DesktopOriginalHomeSettingsCategoryEntry {
-                                            navigator.openDetail(SettingsSearchTarget.HOME_FEED,
-                                                SettingsSearchFocusController.request.value?.focusId)
-                                        }
-                                        SettingsDetailGroup("推荐流与动态") {
-                                            DesktopHomeRecommendationSettings(discovery, onFailure)
-                                        }
-                                        AppText("动态布局和标签设置尚未完整移植。", Modifier.padding(vertical = 12.dp))
-                                    }
-                                    SettingsRootCategory.PRIVACY_PERMISSION -> SettingsDetailGroup("隐私与权限") {
-                                        DesktopPrivacySection(privacy,
-                                            onPermissionClick = { navigator.openDetail(SettingsSearchTarget.PERMISSION, null) },
-                                            onMessageNotificationClick = { navigator.openDetail(SettingsSearchTarget.MESSAGE_NOTIFICATION, null) },
-                                            onBlockedListClick = { navigator.openDetail(SettingsSearchTarget.BLOCKED_LIST, null) },
-                                            onCommentFraudHistoryClick = navigator::openCommentFraudHistory)
-                                    }
-                                    SettingsRootCategory.STORAGE_BACKUP -> {
-                                        storageContent(null)
-                                    }
-                                    SettingsRootCategory.NAVIGATION_INTERACTION -> SettingsNavigationInteractionCategoryEntrySection(
-                                        onBottomBarClick = { navigator.openDetail(SettingsSearchTarget.BOTTOM_BAR,
-                                            SettingsSearchFocusController.request.value?.focusId) },
-                                        onAnimationClick = { navigator.openDetail(SettingsSearchTarget.ANIMATION,
-                                            SettingsSearchFocusController.request.value?.focusId) })
-                                    SettingsRootCategory.SYSTEM_ABOUT -> {
-                                        systemContent(page, requestDonate)
-                                    }
-                                    else -> AppText("该分类的原版设置和消费行为仍在移植中。", Modifier.padding(16.dp))
-                                }
-                            }
-                            is DesktopSettingsPage.Detail -> {
-                                SettingsCategoryHeader(settingsDestinationCopy(page.target).title)
-                                when (page.target) {
-                                    SettingsSearchTarget.APPEARANCE -> appearanceContent()
-                                    SettingsSearchTarget.PLUGINS -> pluginsContent()
-                                    SettingsSearchTarget.PLAYBACK -> Unit // Whole original page owns its scaffold above.
-                                    SettingsSearchTarget.BOTTOM_BAR -> DesktopNavigationInteractionSettings(SettingsSearchTarget.BOTTOM_BAR, onFailure)
-                                    SettingsSearchTarget.ANIMATION -> DesktopNavigationInteractionSettings(SettingsSearchTarget.ANIMATION, onFailure)
-                                    SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE -> {
-                                        AppText("此处使用 Windows 的 WebDAV 和 ZIP 备份窗口；原版全部存储设置仍在移植中。", Modifier.padding(12.dp))
-                                        backupContent(page.target) { navigator.pop() }
-                                    }
-                                    SettingsSearchTarget.PERMISSION -> AppText("Windows 权限状态与检查尚未接入，当前不能确认权限是否可用。", Modifier.padding(12.dp))
-                                    SettingsSearchTarget.MESSAGE_NOTIFICATION -> AppText("原版消息通知调度和 Windows 通知权限尚未接入。", Modifier.padding(12.dp))
-                                    SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()
-                                    SettingsSearchTarget.DOWNLOAD_PATH, SettingsSearchTarget.CLEAR_CACHE -> storageContent(page.target)
-                                    SettingsSearchTarget.IMAGE_SAVE_PATH -> imageSavePathContent(true)
-                                    else -> AppText("该原版设置页面仍在移植中。", Modifier.padding(12.dp))
-                                }
-                            }
-                            is DesktopSettingsPage.Search, is DesktopSettingsPage.CommentFraudHistory -> Unit
+    val groups = listOf(
+        "播放与音频" to SettingsRootCategory.PLAYBACK_QUALITY,
+        "首页与推荐" to SettingsRootCategory.HOME_RECOMMENDATION,
+        "外观与显示" to SettingsRootCategory.APPEARANCE_THEME,
+        "缓存与备份" to SettingsRootCategory.STORAGE_BACKUP,
+        "隐私与屏蔽" to SettingsRootCategory.PRIVACY_PERMISSION,
+        "插件与扩展" to SettingsRootCategory.PLUGINS_EXTENSIONS,
+        "更新与诊断" to SettingsRootCategory.SYSTEM_ABOUT,
+    )
+    androidx.compose.material3.Surface(Modifier.fillMaxSize()) {
+        Column(Modifier.fillMaxSize()) {
+            Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically) {
+                if (page != DesktopSettingsPage.Root) androidx.compose.material3.TextButton(onClick = onPageBack) {
+                    androidx.compose.material3.Text("返回")
+                }
+                androidx.compose.material3.Text("Windows 设置", style = androidx.compose.material3.MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.weight(1f))
+                androidx.compose.material3.TextButton(onClick = onOpenSearch) { androidx.compose.material3.Text("搜索设置") }
+            }
+            androidx.compose.material3.HorizontalDivider()
+            Row(Modifier.weight(1f).fillMaxWidth()) {
+                Column(Modifier.width(160.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    groups.forEach { (title, category) ->
+                        androidx.compose.material3.TextButton(onClick = { onCategoryOpen(category) }, modifier = Modifier.fillMaxWidth()) {
+                            androidx.compose.material3.Text(title)
                         }
-                        Spacer(Modifier.height(16.dp))
+                    }
+                }
+                androidx.compose.material3.VerticalDivider()
+                Box(Modifier.weight(1f).fillMaxHeight()) {
+                    when (page) {
+                        DesktopSettingsPage.Root -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),
+                            verticalArrangement = Arrangement.spacedBy(14.dp)) {
+                            androidx.compose.material3.Text("适合鼠标、键盘与桌面窗口的设置。")
+                            groups.forEach { (title, category) ->
+                                androidx.compose.material3.OutlinedButton(onClick = { onCategoryOpen(category) }, modifier = Modifier.fillMaxWidth()) {
+                                    androidx.compose.material3.Text(title)
+                                }
+                            }
+                        }
+                        is DesktopSettingsPage.Search -> DesktopSettingsSearchScreen(search, onBack = onPageBack,
+                            onCategoryClick = onCategoryOpen, onResultClick = onSearchResult, historyWritesScope = historyWritesScope)
+                        is DesktopSettingsPage.CommentFraudHistory -> commentFraudHistoryContent(page) { navigator.pop() }
+                        is DesktopSettingsPage.Detail -> when (page.target) {
+                            SettingsSearchTarget.PLAYBACK -> playbackContent(page) { onDetailBack(page.target) }
+                            SettingsSearchTarget.HOME_FEED -> homeContent(page) { onDetailBack(page.target) }
+                            SettingsSearchTarget.APPEARANCE -> appearanceContent()
+                            SettingsSearchTarget.PLUGINS -> pluginsContent()
+                            SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()
+                            SettingsSearchTarget.TIPS -> com.bilipai.desktop.ui.DesktopWindowsTipsSettings(onBack = { onDetailBack(page.target) })
+                            SettingsSearchTarget.OPEN_SOURCE_LICENSES -> OpenSourceLicensesScreen(onBack = { onDetailBack(page.target) })
+                            SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE -> backupContent(page.target) { navigator.pop() }
+                            SettingsSearchTarget.DOWNLOAD_PATH, SettingsSearchTarget.CLEAR_CACHE -> Column(Modifier.verticalScroll(rememberScrollState()).padding(20.dp)) {
+                                storageContent(page.target)
+                            }
+                            SettingsSearchTarget.IMAGE_SAVE_PATH -> Column(Modifier.verticalScroll(rememberScrollState()).padding(20.dp)) { imageSavePathContent(true) }
+                            else -> androidx.compose.material3.Text("此入口不属于当前 Windows 设置。", Modifier.padding(20.dp))
+                        }
+                        is DesktopSettingsPage.Category -> Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(20.dp),
+                            verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                            when (canonicalSettingsRootCategory(page.category)) {
+                                SettingsRootCategory.PLAYBACK_QUALITY -> androidx.compose.material3.OutlinedButton(onClick = {
+                                    navigator.openDetail(SettingsSearchTarget.PLAYBACK, null)
+                                }) { androidx.compose.material3.Text("打开播放与 Windows 音频设置") }
+                                SettingsRootCategory.HOME_RECOMMENDATION -> {
+                                    androidx.compose.material3.OutlinedButton(onClick = { navigator.openDetail(SettingsSearchTarget.HOME_FEED, null) }) {
+                                        androidx.compose.material3.Text("首页布局、轮播与背景")
+                                    }
+                                    DesktopHomeRecommendationSettings(discovery, onFailure)
+                                }
+                                SettingsRootCategory.PRIVACY_PERMISSION -> DesktopPrivacySection(privacy,
+                                    onPermissionClick = {}, onMessageNotificationClick = {},
+                                    onBlockedListClick = { navigator.openDetail(SettingsSearchTarget.BLOCKED_LIST, null) },
+                                    onCommentFraudHistoryClick = navigator::openCommentFraudHistory)
+                                SettingsRootCategory.STORAGE_BACKUP -> storageContent(null)
+                                SettingsRootCategory.SYSTEM_ABOUT -> systemContent(page, requestDonate)
+                                SettingsRootCategory.APPEARANCE_THEME -> androidx.compose.material3.OutlinedButton(onClick = { navigator.openDetail(SettingsSearchTarget.APPEARANCE, null) }) {
+                                    androidx.compose.material3.Text("打开外观设置")
+                                }
+                                SettingsRootCategory.PLUGINS_EXTENSIONS -> androidx.compose.material3.OutlinedButton(onClick = { navigator.openDetail(SettingsSearchTarget.PLUGINS, null) }) {
+                                    androidx.compose.material3.Text("打开插件设置")
+                                }
+                                else -> androidx.compose.material3.Text("此分类已从 Windows 设置中移除。")
+                            }
+                        }
                     }
                 }
             }
         }
         donateEntry?.takeIf { it.parentPage === page }?.let { entry ->
             donateContent(entry) { if (donateEntry === entry) donateEntry = null }
-        }
-        boundary?.let { message ->
-            AlertDialog(onDismissRequest = { boundary = null }, title = { Text("功能尚未接入") },
-                text = { Text(message) }, confirmButton = { TextButton(onClick = { boundary = null }) { Text("关闭") } })
         }
     }
 }

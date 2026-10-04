@@ -18,7 +18,7 @@ class DesktopSettingsSearchController(private val repository: DesktopSettingsSea
 
     fun setQuery(query: String) {
         mutableQuery.value = query
-        mutableResults.value = resolveSettingsSearchResults(query, maxResults = 20)
+        mutableResults.value = resolveDesktopWindowsSettingsSearchResults(query)
         mutableError.value = null
     }
 

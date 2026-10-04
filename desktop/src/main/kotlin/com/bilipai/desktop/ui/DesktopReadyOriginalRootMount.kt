@@ -292,15 +292,13 @@ internal class DesktopReadyOriginalRootHandle(
         }
         val transitionDuration = if (reduceMotion) VideoCardTransitionVisualTimeline.REDUCED_MOTION_DURATION_MILLIS
             else resolveVideoSharedTransitionDurationMillis(speedSettings, adaptiveTransition)
-        val portraitEntry by navPreferences.directPortraitStoryEntry.collectAsState()
-        val portraitNow by rememberUpdatedState(portraitEntry)
         val resolver = remember(root, handle) { DesktopOriginalRootVideoResolver(root,
-            { portraitNow }, { prefs.homeSettings.value.cardTransitionEnabled },
             { preferencesPlatform.currentNetwork().profilePresent }, services.downloadItems, services.feedback) }
         val routes = remember(root) { DesktopOriginalRootRouteAssembly(root, physicalStack,
             DesktopOriginalRootRoutePlatform(services.navigationAdmission, services.beforeNavigationCommit,
                 resolver::resolve, saveable::removeState, services.backAtHomeRoot),
-            { prefs.navigation.value.orderedVisibleTabIds.map { it.lowercase() }.toSet() }) }
+            { com.android.purebilibili.feature.home.components.BottomNavItem.entries
+                .filter { it != com.android.purebilibili.feature.home.components.BottomNavItem.STORY }.map { it.route }.toSet() }) }
         val ownsStartupRoot = remember(root, handle, routes) {
             { handle.isActive() && root.isCurrentOwner() && routes.owns() }
         }

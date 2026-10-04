@@ -108,11 +108,9 @@ fun DesktopAppearanceSettings(
                     AppFontWeightPreset.FOLLOW_THEME -> strings.desktop("跟随默认", "跟隨預設", "Follow Theme")
                     else -> it.fontWeight?.weight.toString()
                 }) }, !busy) { update { prefs.setFontWeight(it) } }
-            AppearanceChoice(strings.desktop("界面缩放", "介面縮放", "UI scale"), settings.appUiScalePreset,
-                AppUiScalePreset.entries.map { AppSegmentOption(it, "${(it.densityMultiplier * 100).toInt()}%") }, !busy) { update { prefs.setUiScale(it) } }
-            AppearanceChoice(strings.desktop("DPI 覆盖", "DPI 覆寫", "DPI override"), settings.appDpiOverridePercent,
-                listOf(AppSegmentOption(0, strings["theme_mode_follow_system"])) + (90..115).map { AppSegmentOption(it, "$it%") }, !busy) { update { prefs.setDpiOverride(it) } }
+            // Whole-window Windows zoom is separate from the retained original font choices.
         }
+        DesktopWindowsDisplayScaleSettings()
         DesktopAppearanceButton(strings["icon_settings_title"], onNavigateToIconSettings,
             modifier = Modifier.fillMaxWidth(), enabled = !busy)
         RoleOverridesEditor(settings, !busy) { update { prefs.setRoleOverrides(it) } }

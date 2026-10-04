@@ -78,26 +78,19 @@ internal class DesktopOriginalRootPageBindings(
     if (!pages.profile.environment.owns()) return
     val homeSettings by root.environment.settings.homeSettings.collectAsState()
     val navigationSettings by root.environment.settings.navigation.collectAsState()
-    val visibleItems = remember(navigationSettings.orderedVisibleTabIds) {
-        resolveVisibleBottomBarItems(navigationSettings.orderedVisibleTabIds)
-    }
-    val pagerState = rememberPagerState(pageCount = { visibleItems.size.coerceAtLeast(1) })
-    val mainPager = rememberMainBottomPagerState(pagerState)
+    // Desktop sections stay available independently of an old phone bottom-bar configuration.
+    val visibleItems = remember { BottomNavItem.entries.filter { it != BottomNavItem.STORY } }
+    var selectedPage by androidx.compose.runtime.saveable.rememberSaveable { mutableIntStateOf(0) }
     var contentReady by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { withFrameNanos { }; contentReady = true }
-    LaunchedEffect(pagerState.currentPage, mainPager) { mainPager.syncPage() }
-    LaunchedEffect(visibleItems, mainPager.selectedPage) {
-        val last = visibleItems.lastIndex
-        if (last >= 0 && mainPager.selectedPage > last) mainPager.switchToPage(last)
-    }
-    val currentItem = resolveBottomPagerItemForPage(mainPager.selectedPage, visibleItems)
-    val selectPage: (BiliPaiNavKey) -> Boolean = remember(routes, visibleItems, mainPager) {
+    val currentItem = resolveBottomPagerItemForPage(selectedPage, visibleItems)
+    val selectPage: (BiliPaiNavKey) -> Boolean = remember(routes, visibleItems) {
         { key ->
             val page = resolveBottomPagerPageForRoute(key.toLegacyRoute(), visibleItems)
             if (page == null) false
             else {
                 if (shouldResetNavigation3BackStackForBottomPager(routes.stack)) routes.returnToMainHostAdmitted()
-                mainPager.switchToPage(page)
+                selectedPage = page
                 true
             }
         }
@@ -163,7 +156,7 @@ internal class DesktopOriginalRootPageBindings(
                     skinSquaredBackgroundImagePath = skin?.profileSquaredBackgroundImagePath,
                     skinVideoBackgroundPath = skin?.profileVideoBackgroundPath,
                     skinVideoPlayMode = skin?.profileVideoPlayMode,
-                    deferImmersiveRenderBudget = resolveBottomPagerRenderBudget(mainPager.isNavigating).deferProfileImmersiveBackground,
+                    deferImmersiveRenderBudget = false,
                     scrollToTopChannel = pages.profileScrollToTop)
                 is BiliPaiNavKey.Category -> DesktopCategoryRouteHost(routes.category(key),
                     { routes.callbackFor(key) { routes.back() } },
@@ -234,7 +227,7 @@ internal class DesktopOriginalRootPageBindings(
     // Dock is outside NavDisplay captured content but must use the very same physical Root dispatcher.
     CompositionLocalProvider(LocalNavigationEventDispatcherOwner provides environment.rootNavigationEventOwner,
         LocalDesktopHomeMediaPorts provides root.media, LocalDesktopHomeEnvironment provides root.environment) {
-    DesktopOriginalRootChrome(routes, pages, chrome, currentItem, mainPager, visibleItems,
+    DesktopOriginalRootChrome(routes, pages, chrome, currentItem, visibleItems,
         { item -> routes.push(bottomPagerNavKeyForItem(item)) }) {
         val actualBottomBarVisible = LocalBottomBarVisible.current
         DesktopOriginalNavigationHost(environment, routes.stack, homeSettings, navigationSettings,
@@ -243,9 +236,11 @@ internal class DesktopOriginalRootPageBindings(
             { routes.back() }, onPrepareVideoCardSharedReturn, onRelatedVideoDetailReturned,
             returnState.previousTransitionSessions.isNotEmpty() || returnState.previousVideoSources.isNotEmpty(), modifier) {
             key ->
-            if (key == BiliPaiNavKey.MainHost) DesktopOriginalMainHostPager(visibleItems, pagerState, mainPager,
-                contentReady, saveableState, { actualBottomBarVisible }, renderPage)
-            else renderPage(key, routes.currentKey == key, false)
+            if (key == BiliPaiNavKey.MainHost) {
+                saveableState.SaveableStateProvider(resolveBottomPagerSaveableStateKey(currentItem)) {
+                    renderPage(bottomPagerNavKeyForItem(currentItem), routes.currentKey == key, true)
+                }
+            } else renderPage(key, routes.currentKey == key, false)
         }
     }
     }

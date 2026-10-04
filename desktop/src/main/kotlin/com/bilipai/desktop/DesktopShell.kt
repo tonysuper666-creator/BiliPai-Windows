@@ -195,11 +195,8 @@ internal fun DesktopApp(repository: DesktopRepository, player: MpvPlayer?, playe
             danmakuPresentation = danmakuPresentation, isFullscreen = isFullscreen, setFullscreen = setFullscreen,
             onRootContentFrame = onRootContentFrame)
     }
-    diagnosticLifecycle?.crashPrompt?.let { prompt ->
-        DesktopAppearanceTheme(startupTheme) {
-            DesktopCrashPromptHost(prompt) { chooseDesktopDiagnosticExportFile(hostWindow) }
-        }
-    }
+    // Startup remains unobstructed. Existing diagnostic snapshots are available
+    // through the user-opened diagnostic settings; no prompt marker is cleared here.
 }
 
 @Composable
@@ -390,6 +387,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val storageSettingsContext=remember(globalPluginContext,imageSaveLifetime) {
         DesktopOriginalPlayerSettingsContext(globalPluginContext,imageSaveLifetime::isActive,imageSaveLifetime::withCommit)
     }
+    val windowsDisplayScale = com.bilipai.desktop.appearance.LocalDesktopWindowsDisplayScale.current
+    DisposableEffect(windowsDisplayScale, storageSettingsContext) {
+        val registration = windowsDisplayScale.registerWindowContext(storageSettingsContext)
+        onDispose { registration.close() }
+    }
     val downloads = remember(repository,storageSettingsContext) { DesktopDownloadManager(repository) {
         val raw=(storageSettingsContext.pluginContext.store.preferences("settings")["download_path"] as? kotlinx.serialization.json.JsonPrimitive)?.takeIf { it.isString }?.content
         storageSettingsContext.requireCurrent()
@@ -423,6 +425,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         check(ordinaryVideoResourceJob.compareAndSet(null, creatorJob))
         try {
             val resources = withContext(Dispatchers.IO) {
+                com.bilipai.desktop.ui.ensureDesktopWindowsPlaybackDefaults(storageSettingsContext)
                 val created = DesktopOriginalVideoAppResources.create(globalPluginContext, repository, scope,
                     DesktopLibrary.directoryForAccount(null).resolve("video-media-bytes")) {
                     ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(it))
@@ -449,6 +452,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val storyOwner by storyHost.owner.collectAsState()
     var systemTargetAudio by remember { mutableStateOf(false) }
     val audioPlayer = remember(player) { player?.let { MpvPlayer() } }
+    val windowsAudioOutputController = remember(pluginStore, player, audioPlayer, scope) {
+        com.bilipai.desktop.player.DesktopWindowsAudioOutputController(pluginStore, scope, player, audioPlayer)
+    }
+    DisposableEffect(windowsAudioOutputController) { onDispose { windowsAudioOutputController.close() } }
     val diagnosticObservers = remember(diagnosticLifecycle, player, audioPlayer) {
         listOfNotNull(
             player?.let { diagnosticLifecycle?.observePlayback(it.state, scope) },
@@ -1432,6 +1439,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 navigateOriginalDynamicCourse(url, title, onPlayer = { sid, eid, course -> showSeason(sid, eid, course) }, onWeb = ::openDynamicWeb)
             }),
         com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext provides storageSettingsContext,
+        com.bilipai.desktop.ui.LocalDesktopWindowsAudioOutputController provides windowsAudioOutputController,
         com.bilipai.desktop.ui.LocalDesktopDetailedCommentTimeContext provides globalPluginContext,
         com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled provides detailedCommentTimeEnabled,
         LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences,
@@ -1666,7 +1674,75 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 DesktopDetailWindow { DesktopOriginalMessagePageRootHost(entryKey, messagePages, messageRoutes, active) }
                             entryKey is BiliPaiNavKey.CommentDetail ->
                                 DesktopDetailWindow { DesktopOriginalCommentDetailRootHost(entryKey, messageRoutes, active) }
-                            entryKey is BiliPaiNavKey.VideoDetail || entryKey is BiliPaiNavKey.AudioMode ->
+                            entryKey is BiliPaiNavKey.VideoDetail ->
+                                DesktopWindowsVideoPhysicalLeaf(entryKey, ordinaryVideo,
+                                    active && hostVisible && hostDisplayable, isFullscreen(), pipActive,
+                                    preferences.copy(danmaku = rendererDanmakuSettings), ::changePreferences,
+                                    DesktopWindowsVideoActions(
+                                        back = commands::back, fullscreen = ::toggleOriginalFullscreen,
+                                        pictureInPicture = { if (pip != null && hostWindow != null) pip.open(hostWindow, player?.state?.value?.sourceTitle.orEmpty()) },
+                                        user = { commands.push(BiliPaiNavKey.Space(it)) }, video = ::openVideo,
+                                        download = { owner, success ->
+                                            val expected = owner.native.current()
+                                            if (expected != null && success.info.bvid == expected.request.bvid && success.info.cid == expected.request.cid) {
+                                                val source = playback.currentCastSource(expected.sourceVersion)
+                                                if (source != null) scope.launch(Dispatchers.IO) {
+                                                    fun owned() = !isClosing() && !activatingUpdate && messageRoutes.currentKey == entryKey &&
+                                                        ordinaryVideo.slot.currentAssembly() === owner && owner.owns() && owner.native.isCurrent(expected)
+                                                    try {
+                                                        ensureActive()
+                                                        if (!owned()) throw CancellationException("Windows video download entry retired")
+                                                        val page = success.info.pages.firstOrNull { it.cid == success.info.cid }
+                                                        downloads.enqueue(source.toNativePlayback(), metadata = com.bilipai.desktop.download.DownloadMetadata(
+                                                            bvid = success.info.bvid, cid = success.info.cid, aid = success.info.aid,
+                                                            cover = success.info.pic, author = success.info.owner.name,
+                                                            durationSeconds = page?.duration?.coerceIn(0L, Int.MAX_VALUE.toLong())?.toInt() ?: 0, quality = success.currentQuality,
+                                                            qualityLabel = success.qualityLabels.getOrNull(success.qualityIds.indexOf(success.currentQuality)).orEmpty(),
+                                                            episodeLabel = page?.part, episodeCount = success.info.pages.size.coerceAtLeast(1)), stillOwned = ::owned)
+                                                        withContext(Dispatchers.Main) { if (owned()) error = "已添加到下载队列" }
+                                                    } catch (cancelled: CancellationException) { throw cancelled }
+                                                    catch (failure: Exception) { withContext(Dispatchers.Main) { if (owned()) error = failure.message ?: "下载失败" } }
+                                                } else error = "当前播放来源尚未完成授权，请稍后重试"
+                                            }
+                                        },
+                                        favorite = { owner, success, current ->
+                                            val engagement by owner.domains.engagement.uiState.collectAsState()
+                                            val expected = owner.native.current()
+                                            DesktopVideoFavoriteRoot(success.info.aid, repository, community, pluginStore,
+                                                engagement.isFavorited, engagement.favoriteCount,
+                                                stillOwned = { current() && expected != null && owner.native.isCurrent(expected) },
+                                                onFavoriteLoaded = { value -> if (current()) owner.domains.engagement.applyFavoriteFolderResult(value) },
+                                                onFavoriteSaved = { value, count -> if (current() && expected != null && owner.native.isCurrent(expected)) {
+                                                    owner.domains.engagement.applyFavoriteFolderResult(value)
+                                                    owner.domains.engagement.uiState.value.subject?.let { subject -> owner.domains.engagement.confirmDesktopFavoriteCount(subject, count) }
+                                                } }, onLogin = { loginDialog = true }, feedback = { error = it })
+                                        },
+                                        overlay = {
+                                            if (player != null && danmaku != null && commandDetails != null && commandCid > 0 &&
+                                                player.ownsSourceVersion(commandVersion) && playback.currentCastSource(commandVersion) != null && rendererDanmakuSettings.enabled) {
+                                                val capturedEpoch = sessionEpoch
+                                                val capturedInfo = commandDetails
+                                                val capturedCid = commandCid
+                                                val capturedVersion = commandVersion
+                                                DesktopVideoCommandVoteContent(repository, player, capturedVersion,
+                                                    capturedInfo.bvid, capturedInfo.aid, capturedCid, danmaku, commandState,
+                                                    fontScale = rendererDanmakuSettings.fontScale,
+                                                    hideInteractiveCommands = rendererDanmakuSettings.hideInteractiveCommands,
+                                                    stillOwned = { messageRoutes.currentKey == entryKey && repository.sessionEpoch == capturedEpoch &&
+                                                        player.ownsSourceVersion(capturedVersion) && playback.currentCastSource(capturedVersion) != null },
+                                                    submitGrade = { operations, aid, cid, progress, gradeId, score -> operations.submitGradeDanmaku(aid, cid, progress, gradeId, score) },
+                                                    onFeedback = { error = it })
+                                            }
+                                        },
+                                        enhancement = { DesktopVideoEnhancementControls(enhancementState, pluginRuntime.enhancementConfiguration,
+                                            onToggle = { enabled -> enhancement?.setCurrentVideoEnabled(enabled) }, onSettings = { enhancementSettings = true }) },
+                                        openLink = { raw -> desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute()) },
+                                        login = { loginDialog = true }, danmakuSettings = { originalDanmakuSettingsVisible = true },
+                                        toggleDanmaku = ::toggleOriginalDanmaku, notice = { error = it },
+                                        focusChanged = { focused -> if(messageRoutes.currentKey==entryKey) playerFocused=focused },
+                                        nativeKey = { event -> if(!isClosing() && !activatingUpdate && active && hostVisible && hostDisplayable &&
+                                            messageRoutes.currentKey==entryKey) latestRootKeyHandler(event) else false }))
+                            entryKey is BiliPaiNavKey.AudioMode ->
                                 DesktopOriginalVideoPhysicalLeaf(entryKey, ordinaryVideo, commands, active,
                                     commands::back, ::openVideoHonorLink,
                                     { enabled -> enhancementHostStarted.value = enabled },
@@ -2024,16 +2100,16 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         onDonate = requestDonate,
                                         onFailure = { error = it.message ?: "系统与关于操作失败" },
                                         onNotice = { error = it })
-                                    com.bilipai.desktop.settings.DesktopNetworkProxySettings(globalPluginContext, repository.httpClient,
-                                        onFailure = { error = it.message ?: "代理设置保存失败" })
-                                    TextButton(onClick = { updatesDialog = true; scope.launch { updater.check() } }) { Text("检查 Windows 更新") }
                                     diagnostics?.let { localDiagnostics ->
+                                        Text("本地诊断", style = MaterialTheme.typography.titleMedium)
                                         DesktopDiagnosticSettingsSection(localDiagnostics,
                                             onLocalLogs = { showDiagnosticViewer = true },
                                             onFailure = { error = "诊断设置保存失败，请重试" },
                                             modifier = Modifier.fillMaxWidth())
                                     }
                                     diagnosticStartupError?.let { Text(it, Modifier.padding(12.dp), color = scheme.error) }
+                                    com.bilipai.desktop.settings.DesktopNetworkProxySettings(globalPluginContext, repository.httpClient,
+                                        onFailure = { error = it.message ?: "代理设置保存失败" })
                                 })
                             }
                             section == DesktopSection.APPEARANCE -> DesktopAppearanceSettings(appearance,

@@ -52,39 +52,11 @@ internal fun DesktopOriginalNavigationHost(
         LocalSavedStateRegistryOwner provides environment.rootSavedStateRegistryOwner,
         LocalNavigationEventDispatcherOwner provides environment.rootNavigationEventOwner,
     ) {
-        val appearance = remember(homeSettings) { resolveAppNavigationAppearance(homeSettings) }
-        val videoTransitionRealtimeBlurEnabled by DesktopOriginalNavigationHostSettings
-            .getVideoTransitionRealtimeBlurEnabled(environment.context)
-            .collectAsStateWithLifecycle(initialValue = false)
-        val relatedVideoTransitionEnabled by DesktopOriginalNavigationHostSettings
-            .getRelatedVideoTransitionEnabled(environment.context)
-            .collectAsStateWithLifecycle(initialValue = true)
-        BiliPaiNavDisplayHost(
+        DesktopWindowsNavigationDisplay(
+            environment = environment,
             backStack = backStack,
-            cardTransitionEnabled = resolveVideoCardTransitionEnabledForSource(
-                cardTransitionEnabled = appearance.cardTransitionEnabled && !reduceMotion,
-                relatedVideoTransitionEnabled = relatedVideoTransitionEnabled,
-                sourceRoute = sourceMetadata.sourceRoute,
-            ),
-            videoTransitionRealtimeBlurEnabled = videoTransitionRealtimeBlurEnabled,
-            isLightBackground = isLightBackground,
-            reduceMotion = reduceMotion,
-            videoSharedTransitionDurationMillis = videoSharedTransitionDurationMillis,
             videoCardClock = videoCardClock,
-            predictiveBackAnimationStyle = if (navigationSettings.predictiveBackEnabled) BiliPaiPredictiveBackAnimationStyle.fromStorageValue(
-                navigationSettings.predictiveBackAnimationStyle,
-            ) else BiliPaiPredictiveBackAnimationStyle.NONE,
-            predictiveBackExitDirection = BiliPaiPredictiveBackExitDirection.fromStorageValue(
-                navigationSettings.predictiveBackExitDirection,
-            ),
-            miuixTransitionBlurEnabled = navigationSettings.miuixTransitionBlurEnabled,
-            miuixPredictiveBackMaxProgressPercent = navigationSettings.miuixPredictiveBackMaxProgressPercent,
-            videoSharedReturnGestureFollowEnabled = navigationSettings.videoSharedReturnGestureFollowEnabled,
-            videoSharedReturnGestureTranslationEnabled = navigationSettings.videoSharedReturnGestureTranslationEnabled,
-            videoReturnContentFollowProgressEnabled = navigationSettings.videoReturnContentFollowProgressEnabled,
-            sourceMetadata = sourceMetadata,
             programmaticBackDispatcher = programmaticBackDispatcher,
-            preferWholeCardReturn = preferWholeCardReturn,
             onBack = onBack,
             onPrepareVideoCardSharedReturn = onPrepareVideoCardSharedReturn,
             onRelatedVideoDetailReturned = onRelatedVideoDetailReturned,

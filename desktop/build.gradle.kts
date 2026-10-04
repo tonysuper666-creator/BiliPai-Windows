@@ -2962,3 +2962,49 @@ tasks.register<JavaExec>("originalTypedPlaybackSettingsUiSmoke") {
             providers.gradleProperty("rootValidationToken").get())
     }
 }
+
+// Opt-in actual unchanged Main, Windows video controls, real native player/default GPU.
+tasks.register<JavaExec>("windowsVideoActualRootUiSmoke") {
+    group = "verification"
+    dependsOn("classes", "testClasses", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    doFirst {
+        systemProperty("bilipai.rootValidationToken", providers.gradleProperty("rootValidationToken").get())
+        args(providers.gradleProperty("rootValidationReport").get(), providers.gradleProperty("rootValidationHealth").get(),
+            providers.gradleProperty("rootValidationToken").get(), providers.gradleProperty("rootValidationVideo").get())
+    }
+}
+
+// Opt-in test-only official-shaped API replay + actual loopback media on unchanged Main.
+tasks.register<JavaExec>("windowsVideoLocalReplayUiSmoke") {
+    group = "verification"
+    dependsOn("classes", "testClasses", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    doFirst {
+        systemProperty("bilipai.rootValidationToken", providers.gradleProperty("rootValidationToken").get())
+        args(providers.gradleProperty("rootValidationReport").get(), providers.gradleProperty("rootValidationHealth").get(),
+            providers.gradleProperty("rootValidationToken").get(), providers.gradleProperty("rootValidationVideo").get(), "replay")
+    }
+}
+
+// Opt-in additional actual owned scale/native/editor input; baseline video tasks unchanged.
+tasks.register<JavaExec>("windowsVideoInteractionRootUiSmoke") {
+    group = "verification"
+    dependsOn("classes", "testClasses", "prepareAppResources")
+    classpath = sourceSets["test"].runtimeClasspath
+    mainClass.set("com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture")
+    systemProperty("compose.application.resources.dir", file("resources/common").absolutePath)
+    systemProperty("file.encoding", "UTF-8")
+    systemProperty("bilipai.validation.scaleInput", "true")
+    doFirst {
+        systemProperty("bilipai.rootValidationToken", providers.gradleProperty("rootValidationToken").get())
+        args(providers.gradleProperty("rootValidationReport").get(), providers.gradleProperty("rootValidationHealth").get(),
+            providers.gradleProperty("rootValidationToken").get(), providers.gradleProperty("rootValidationVideo").get(), "replay")
+    }
+}

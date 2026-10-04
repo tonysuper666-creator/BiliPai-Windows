@@ -73,23 +73,11 @@ internal fun DesktopOriginalHomeSettingsRootHost(
         NavigationBackHandler(state = navigationBackState, isBackEnabled = current(), onBackCompleted = ownedBack)
         val viewModel = remember(context, actions) { DesktopOriginalHomeSettingsViewModel(context, actions) }
         val bottomContentPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-        SettingsPageScaffold(
-            title = "首页设置",
-            onBack = ownedBack,
-            backContentDescription = strings["common_back"],
-            bottomContentPadding = bottomContentPadding,
-            scrollHost = SettingsPageScrollHost.External,
-            externalContentHandlesTopPadding = true,
-            topBarBlurEnabled = state.isHeaderBlurEnabled,
+        CompositionLocalProvider(
+            LocalDesktopOriginalPlayerSettingsContext provides context,
+            LocalDesktopProfileEnvironment provides environment,
         ) {
-            CompositionLocalProvider(
-                LocalSettingsLiquidGlassEnabled provides (state.androidNativeLiquidGlassEnabled && platform.supportsHomeChromeLiquidGlass),
-                LocalDesktopOriginalPlayerSettingsContext provides context,
-                LocalDesktopProfileEnvironment provides environment,
-            ) {
-                DesktopOriginalHomeSettingsContent(modifier, state, viewModel, context, imageContext,
-                    actions, services.backToTop, actualWindowSizeClass)
-            }
+            DesktopWindowsHomeSettings(state, viewModel, context, actions, environment, ownedBack)
         }
     }
 }

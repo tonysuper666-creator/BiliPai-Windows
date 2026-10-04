@@ -12,17 +12,45 @@ import java.nio.file.Files
 import java.util.concurrent.atomic.AtomicBoolean
 
 class DesktopOriginalOnboardingPreferencesTest {
-    @Test fun oldFirstLaunchFlagCannotBypassVersionedAgreement(): Unit = runBlocking {
-        val context = DesktopPluginContext(DesktopPluginStore(Files.createTempDirectory("bp-onboarding-legacy-")))
-        context.getSharedPreferences(APP_WELCOME_PREFS_NAME, 0).edit().putBoolean("first_launch_shown", true).apply()
+    @Test fun freshWindowsStartupGoesHomeWithoutAcceptingOrWritingPreferences() {
+        val root = Files.createTempDirectory("bp-windows-startup-fresh-")
+        val context = DesktopPluginContext(DesktopPluginStore(root))
         val preferences = DesktopOriginalOnboardingPreferences(context)
-        assertTrue(preferences.isRequired())
-        assertEquals(listOf(BiliPaiNavKey.Onboarding), preferences.initialStack())
-        assertFalse(canAcknowledgeUserAgreement(true, false, true))
-        assertTrue(canAcknowledgeUserAgreement(true, true, true))
+        assertFalse(preferences.isRequired())
+        assertFalse(preferences.openPortraitFeedOnStartup)
+        assertEquals(listOf(BiliPaiNavKey.MainHost), preferences.initialStack())
+        assertTrue(context.store.preferences(APP_WELCOME_PREFS_NAME).isEmpty())
+        assertTrue(context.store.preferences("settings").isEmpty())
+        assertFalse(Files.exists(root.resolve("plugin-settings.json")))
     }
 
-    @Test fun durableOriginalFlagsAndStartupPolicyShareSameStore(): Unit = runBlocking {
+    @Test fun oldWindowsStartupPreferencesArePreservedByteForByte() {
+        val root = Files.createTempDirectory("bp-windows-startup-old-")
+        val context = DesktopPluginContext(DesktopPluginStore(root))
+        context.getSharedPreferences(APP_WELCOME_PREFS_NAME, 0).edit()
+            .putBoolean("first_launch_shown", true)
+            .putBoolean(USER_AGREEMENT_ACK_KEY, false)
+            .putBoolean(RELEASE_DISCLAIMER_ACK_KEY, false).apply()
+        context.getSharedPreferences("settings", 0).edit()
+            .putBoolean("launch_to_portrait_feed_on_startup", true)
+            .putBoolean("crash_tracking_enabled", false)
+            .putBoolean("crash_tracking_consent_shown", false)
+            .putBoolean("enhanced_diagnostic_logging_enabled", false).apply()
+        val file = root.resolve("plugin-settings.json")
+        val before = Files.readAllBytes(file)
+        val preferences = DesktopOriginalOnboardingPreferences(context)
+        assertFalse(preferences.isRequired())
+        assertFalse(preferences.openPortraitFeedOnStartup)
+        assertEquals(listOf(BiliPaiNavKey.MainHost), preferences.initialStack())
+        assertEquals(listOf(BiliPaiNavKey.MainHost), preferences.initialStack(false))
+        assertArrayEquals(before, Files.readAllBytes(file))
+        assertFalse(context.store.preferences(APP_WELCOME_PREFS_NAME)[USER_AGREEMENT_ACK_KEY]!!.jsonPrimitive.boolean)
+        assertFalse(context.store.preferences(APP_WELCOME_PREFS_NAME)[RELEASE_DISCLAIMER_ACK_KEY]!!.jsonPrimitive.boolean)
+        assertFalse(context.store.preferences("settings")["crash_tracking_consent_shown"]!!.jsonPrimitive.boolean)
+        assertFalse(context.store.preferences("settings")["enhanced_diagnostic_logging_enabled"]!!.jsonPrimitive.boolean)
+    }
+
+    @Test fun explicitManualAcknowledgementKeepsOriginalDurabilityAndCannotChangeWindowsStartup(): Unit = runBlocking {
         val root = Files.createTempDirectory("bp-onboarding-persist-")
         val context = DesktopPluginContext(DesktopPluginStore(root))
         context.getSharedPreferences(APP_WELCOME_PREFS_NAME, 0).edit().putString("keep", "original").apply()
@@ -36,7 +64,8 @@ class DesktopOriginalOnboardingPreferencesTest {
         assertEquals("original", welcome["keep"]!!.jsonPrimitive.content)
         val restarted = DesktopOriginalOnboardingPreferences(DesktopPluginContext(DesktopPluginStore(root)))
         assertFalse(restarted.isRequired())
-        assertEquals(listOf(BiliPaiNavKey.MainHost, BiliPaiNavKey.Story()), restarted.initialStack())
+        assertFalse(restarted.openPortraitFeedOnStartup)
+        assertEquals(listOf(BiliPaiNavKey.MainHost), restarted.initialStack())
         assertEquals(listOf(BiliPaiNavKey.MainHost), restarted.initialStack(includeStartupPortraitFeed = false))
     }
 
@@ -48,7 +77,7 @@ class DesktopOriginalOnboardingPreferencesTest {
         assertThrows(CancellationException::class.java) {
             runBlocking { preferences.acknowledge(owned::get) { action -> owned.set(false); action(); true } }
         }
-        assertTrue(preferences.isRequired())
+        assertFalse(preferences.isRequired())
         assertFalse(Files.exists(root.resolve("plugin-settings.json")))
         assertTrue(context.store.preferences(APP_WELCOME_PREFS_NAME).isEmpty())
         assertThrows(CancellationException::class.java) { runBlocking { preferences.acknowledge({ true }, { false }) } }
@@ -62,7 +91,7 @@ class DesktopOriginalOnboardingPreferencesTest {
         val obstructedFile = Files.createDirectory(root.resolve("plugin-settings.json"))
         Files.writeString(obstructedFile.resolve("block"), "prevent replacement")
         assertThrows(Exception::class.java) { runBlocking { preferences.acknowledge({ true }, { it(); true }) } }
-        assertTrue(preferences.isRequired())
+        assertFalse(preferences.isRequired())
         assertTrue(context.store.preferences(APP_WELCOME_PREFS_NAME).isEmpty())
     }
 }

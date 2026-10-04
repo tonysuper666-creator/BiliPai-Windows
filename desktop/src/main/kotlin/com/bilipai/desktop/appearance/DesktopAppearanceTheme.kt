@@ -80,9 +80,18 @@ fun DesktopAppearanceTheme(
     val languages = systemLanguageTags ?: remember { WindowsUiLanguage.preferredTags() }
     val strings = remember(settings.appLanguage, languages) { DesktopStrings.forLanguage(settings.appLanguage, languages) }
     val density = LocalDensity.current
-    val metrics = remember(density.density, windowSmallestWidthDp, settings.appUiScalePreset, settings.appFontSizePreset, settings.appDpiOverridePercent) {
-        buildDisplayMetricsSnapshot((density.density * 160).toInt(), windowSmallestWidthDp,
-            settings.appUiScalePreset, settings.appFontSizePreset, settings.appDpiOverridePercent.takeIf { it != 0 })
+    val systemDensity = LocalDesktopWindowsSystemDensity.current ?: density
+    val windowsMultiplier = density.density / systemDensity.density
+    val metrics = remember(density.density, systemDensity.density, windowSmallestWidthDp, settings.appFontSizePreset) {
+        // Android's persisted display preset/override remains archived; Windows uses exactly
+        // its real system DPI multiplied by the user zoom in the outer Main scope.
+        buildDisplayMetricsSnapshot((systemDensity.density * 160).toInt(),
+            (windowSmallestWidthDp * windowsMultiplier).toInt(), AppUiScalePreset.STANDARD,
+            settings.appFontSizePreset, null).copy(
+                effectiveDensityMultiplier = windowsMultiplier,
+                effectiveDensityDpi = (density.density * 160).toInt(),
+                effectiveSmallestWidthDp = windowSmallestWidthDp,
+                isNarrowWidth = windowSmallestWidthDp in 1 until 360)
     }
     val typography = remember(settings.uiStyle, settings.appFontSizePreset, settings.appFontWeightPreset) {
         resolveMaterialTypography(settings.uiStyle).scaled(settings.appFontSizePreset.multiplier)
@@ -103,7 +112,7 @@ fun DesktopAppearanceTheme(
         LocalCornerRadiusScale provides resolveCornerRadiusScale(settings.uiStyle),
         LocalDesktopStrings provides strings,
         LocalDisplayMetricsSnapshot provides metrics,
-        LocalDensity provides Density(density.density * metrics.effectiveDensityMultiplier, density.fontScale),
+        LocalDensity provides density,
     ) {
         MiuixTheme(controller = controller, textStyles = textStyles) {
             MaterialTheme(colorScheme = palette.material, typography = typography,

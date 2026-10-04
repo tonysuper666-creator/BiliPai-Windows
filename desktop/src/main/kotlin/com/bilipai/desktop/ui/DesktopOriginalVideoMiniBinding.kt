@@ -24,14 +24,19 @@ internal class DesktopOriginalVideoMiniBinding(
     override val player: DesktopOriginalMpvSectionControl? get() = owned()?.let { if (it.native.current() != null) it.section else null }
     override fun syncCurrentVideoInfo(state: VideoPlaybackUiState.Success) {
         val assembly = owned() ?: throw CancellationException("Original Mini owner retired")
-        val current = assembly.playback.uiState.value as? VideoPlaybackUiState.Success
+        // The original VM calls this immediately after publishing _uiState. Its
+        // public stateIn projection can still contain Loading on this continuation.
+        val current = assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success
         if (current?.info?.bvid != state.info.bvid || current.info.cid != state.info.cid)
             throw CancellationException("Original Mini metadata subject replaced")
+        val accepted = assembly.native.current()
+        if (accepted?.request?.bvid != state.info.bvid || accepted.request.cid != state.info.cid)
+            throw CancellationException("Original Mini accepted source replaced")
         onMetadata(assembly, state)
     }
     override fun updateCachedVideoTags(bvid: String, tags: List<VideoTag>) {
         val assembly = owned() ?: throw CancellationException("Original Mini tags owner retired")
-        val current = assembly.playback.uiState.value as? VideoPlaybackUiState.Success
+        val current = assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success
         if (current?.info?.bvid != bvid || current.videoTags != tags)
             throw CancellationException("Original Mini tag snapshot replaced")
         // Actual full VM published these exact tags before this original callback.

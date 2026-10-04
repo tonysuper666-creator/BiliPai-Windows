@@ -103,105 +103,33 @@ import java.util.concurrent.atomic.AtomicReference
         }
     })
     key(pageIdentity) {
-    CompositionLocalProvider(LocalDesktopOriginalAboutBindings provides bindings, LocalUriHandler provides uriHandler) {
-        SettingsDetailGroup("帮助与工具") {
-            SupportToolsSection(
-                onTipsClick = { if (current()) routes.callbackFor(entryKey) { routes.push(BiliPaiNavKey.TipsSettings) } },
-                onOpenLinksClick = { uriHandler.openUri(DESKTOP_ORIGINAL_DEFAULT_LINK_SETTINGS_URI) },
-            )
+        CompositionLocalProvider(LocalDesktopOriginalAboutBindings provides bindings, LocalUriHandler provides uriHandler) {
+            DesktopWindowsSettingsGroup("更新与关于") {
+                androidx.compose.material3.Text("BiliPai Windows · 上游基线 v0.2.5")
+                androidx.compose.material3.OutlinedButton(onClick = { if (current()) windowsUpdateNow() }) {
+                    androidx.compose.material3.Text("检查 Windows 更新")
+                }
+                androidx.compose.material3.TextButton(onClick = { uriHandler.openUri(OFFICIAL_GITHUB_URL) }) {
+                    androidx.compose.material3.Text("上游源码与更新日志")
+                }
+            }
+            DesktopWindowsSettingsGroup("帮助与许可") {
+                androidx.compose.material3.TextButton(onClick = {
+                    if (current()) routes.callbackFor(entryKey) { routes.push(BiliPaiNavKey.TipsSettings) }
+                }) { androidx.compose.material3.Text("使用说明") }
+                androidx.compose.material3.TextButton(onClick = {
+                    if (current()) routes.callbackFor(entryKey) { routes.push(BiliPaiNavKey.OpenSourceLicenses) }
+                }) { androidx.compose.material3.Text("开源许可证") }
+                androidx.compose.material3.TextButton(onClick = { if (current()) agreement = true }) {
+                    androidx.compose.material3.Text("用户协议与隐私政策")
+                }
+                androidx.compose.material3.TextButton(onClick = { if (current()) donateNow() }) {
+                    androidx.compose.material3.Text("支持原作者")
+                }
+            }
+            if (foreground && current() && agreement)
+                com.android.purebilibili.feature.agreement.UserAgreementReviewDialog { agreement = false }
         }
-        SettingsDetailGroup("关于与更新") {
-            AppPreference(
-                icon = DesktopSettingsVectors.vector("ms_gavel_24"),
-                title = "用户协议与隐私政策", value = "查看全文",
-                onClick = { if (current()) agreement = true },
-            )
-            SettingsAdaptiveDivider()
-            AboutSection(
-                versionName = DESKTOP_ORIGINAL_ABOUT_VERSION,
-                appIconKey = icon.appIcon,
-                easterEggEnabled = easterEgg,
-                onLicenseClick = { if (current()) routes.callbackFor(entryKey) { routes.push(BiliPaiNavKey.OpenSourceLicenses) } },
-                onGithubClick = { uriHandler.openUri(OFFICIAL_GITHUB_URL) },
-                onVerificationClick = { uriHandler.openUri(OFFICIAL_GITHUB_URL) },
-                onBuildSourceClick = { uriHandler.openUri(OFFICIAL_GITHUB_URL) },
-                onBuildFingerprintClick = { uriHandler.openUri(OFFICIAL_GITHUB_URL) },
-                onCheckUpdateClick = { if (current()) windowsUpdateNow() },
-                onViewReleaseNotesClick = {
-                    if (current()) scope.launch {
-                        try {
-                            val result = metadata.check(DESKTOP_ORIGINAL_ABOUT_VERSION, DESKTOP_ORIGINAL_ABOUT_VERSION_CODE,
-                                channel == DesktopOriginalAboutSettings.AppUpdateChannel.BETA, current, admit, silent = true)
-                            ensureActive()
-                            if (current()) result?.fold(
-                                onSuccess = { releaseNotes = it },
-                                onFailure = { failureNow(it) }) ?: noticeNow("正在检查更新，请稍候")
-                        } catch (cancelled: CancellationException) { throw cancelled }
-                    }
-                },
-                autoCheckUpdateEnabled = autoCheck,
-                onAutoCheckUpdateChange = { value -> bindings.update { preferences.setAutoCheck(value) } },
-                appUpdateChannel = channel,
-                onAppUpdateChannelChange = { value -> bindings.update { preferences.setChannel(value) } },
-                onVersionClick = {
-                    if (current()) {
-                        versionClicks++
-                        val threshold = EasterEggs.VERSION_EASTER_EGG_THRESHOLD
-                        val remaining = (threshold - versionClicks).coerceAtLeast(0)
-                        val message = EasterEggs.getVersionClickMessage(versionClicks, threshold)
-                        if (EasterEggs.isVersionEasterEggTriggered(versionClicks, threshold)) {
-                            easterDialog = true; noticeNow(message)
-                        } else if (versionClicks >= 2 || remaining <= 3) noticeNow(message)
-                    }
-                },
-                onReplayOnboardingClick = { if (current()) routes.callbackFor(entryKey) { routes.push(BiliPaiNavKey.Onboarding) } },
-                onEasterEggChange = { value -> bindings.update { preferences.setEasterEgg(value) } },
-                updateStatusText = release.status,
-                isCheckingUpdate = release.checking,
-                verificationLabel = "未验证",
-                verificationSubtitle = "Windows 构建尚未绑定公开发布证明",
-                buildSourceValue = "Windows 本地构建",
-                buildSourceSubtitle = "上游 v0.2.5；Windows 适配构建与上游 APK 分别验证",
-                buildFingerprintSubtitle = "当前页面尚未获得可核对的 Windows 发布校验信息",
-                versionClickCount = versionClicks,
-            )
-            AppText("更新日志来自上游项目；Windows 安装包由 Windows 更新器检查。", Modifier.padding(16.dp),
-                style = MaterialTheme.typography.bodySmall)
-        }
-        ReleaseChannelPinnedCard(
-            onGithubClick = { uriHandler.openUri(OFFICIAL_GITHUB_URL) },
-            onTelegramClick = { uriHandler.openUri(OFFICIAL_TELEGRAM_CHANNEL_URL) },
-            onTelegramGroupClick = { uriHandler.openUri(OFFICIAL_TELEGRAM_GROUP_URL) },
-            onDisclaimerClick = { if (current()) disclaimer = true },
-        )
-        // Original action search results land on this category. Keep that policy, then make
-        // its original targets reachable here without performing an action on search click.
-        SettingsDetailGroup("关注作者") {
-            SettingsDetailEntrySection(listOf(
-                SettingsDetailEntry(SettingsSearchTarget.TWITTER,
-                    settingsDestinationCopy(SettingsSearchTarget.TWITTER).title,
-                    settingsDestinationCopy(SettingsSearchTarget.TWITTER).summary,
-                    onClick = { uriHandler.openUri("https://x.com/YangY_0x00") }),
-                SettingsDetailEntry(SettingsSearchTarget.DONATE,
-                    settingsDestinationCopy(SettingsSearchTarget.DONATE).title,
-                    settingsDestinationCopy(SettingsSearchTarget.DONATE).summary,
-                    onClick = { if (current()) donateNow() }),
-            ))
-        }
-        if (foreground && current()) {
-            if (agreement) com.android.purebilibili.feature.agreement.UserAgreementReviewDialog { agreement = false }
-            if (disclaimer) ReleaseChannelDisclaimerDialog(
-                onDismiss = { disclaimer = false },
-                onOpenGithub = { uriHandler.openUri(OFFICIAL_GITHUB_URL) },
-                onOpenTelegram = { uriHandler.openUri(OFFICIAL_TELEGRAM_CHANNEL_URL) })
-            if (easterDialog) AppAlertDialog(
-                onDismissRequest = { easterDialog = false; versionClicks = 0 },
-                title = { AppText("你发现了彩蛋！", fontWeight = androidx.compose.ui.text.font.FontWeight.Bold) },
-                text = { AppText("感谢你使用 BiliPai！这是一个用爱发电的开源项目。") },
-                confirmButton = { AppDialogAction(onClick = { easterDialog = false; versionClicks = 0 }) { AppText("我知道了！") } })
-            releaseNotes?.let { update -> DesktopOriginalAboutReleaseNotesDialog(update) { releaseNotes = null } }
-        }
-    }
     }
 }
 

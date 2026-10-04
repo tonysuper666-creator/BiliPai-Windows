@@ -117,6 +117,15 @@ swap('''    ): VideoLoadResult {
         try {''','Task-owned entry admission before original cooldown/network work')
 swap('''            return detailResult.fold(''','''            environment.assertOwned()
             return detailResult.fold(''','Retired task cannot apply original load result/cooldown success')
+# Windows transport restrictions must survive the original IOException branch.
+# Only the error presentation boundary changes; original requests/cooldown stay intact.
+swap('VideoLoadError.fromException(e).isRetryable()',
+     'com.bilipai.desktop.ui.desktopWindowsVideoLoadCanRetry(e)',
+     'Windows HTTP restriction retains existing retry availability')
+before='VideoLoadError.fromException(e)';after='com.bilipai.desktop.ui.desktopWindowsVideoLoadError(e)'
+assert s.count(before)==3,('Windows HTTP restriction classification',s.count(before))
+s=s.replace(before,after)
+replacements.append(dict(label='Windows typed HTTP restriction before generic IOException',before=before,after=after,count=3))
 s=s.replace('@androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)\n','')
 s=s.replace('player.setMediaSource(finalSource)','environment.media.accept(finalSource)')
 s=s.replace('val mediaItem = MediaItem.fromUri(url)\n        player.setMediaItem(mediaItem)','val mediaItem = environment.media.prepareProgressive(url)\n        environment.media.accept(mediaItem)')

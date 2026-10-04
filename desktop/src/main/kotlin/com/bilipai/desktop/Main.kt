@@ -5,6 +5,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.withFrameNanos
@@ -158,6 +159,10 @@ fun main(args: Array<String>) {
                 }
             }
         }
+        val windowsDisplayScale = remember(applicationPluginStore, applicationScope) {
+            com.bilipai.desktop.appearance.DesktopWindowsDisplayScaleController(applicationPluginStore, applicationScope)
+        }
+        DisposableEffect(windowsDisplayScale) { onDispose { windowsDisplayScale.close() } }
         val windowKeyFallback = remember { com.bilipai.desktop.ui.DesktopWindowKeyFallback() }
         DisposableEffect(windowKeyFallback) { onDispose { windowKeyFallback.close() } }
         Window(
@@ -170,8 +175,25 @@ fun main(args: Array<String>) {
                 diagnosticWindow.set(window)
                 onDispose { diagnosticWindow.compareAndSet(window, null) }
             }
-            window.minimumSize = Dimension(960, 680)
+            val systemDisplayDensity = androidx.compose.ui.platform.LocalDensity.current
+            val windowsDisplaySettings by windowsDisplayScale.settings.collectAsState()
+            androidx.compose.runtime.SideEffect {
+                val bounds = window.graphicsConfiguration.bounds
+                val insets = java.awt.Toolkit.getDefaultToolkit().getScreenInsets(window.graphicsConfiguration)
+                val usable = java.awt.Rectangle(bounds.x + insets.left, bounds.y + insets.top,
+                    (bounds.width - insets.left - insets.right).coerceAtLeast(1),
+                    (bounds.height - insets.top - insets.bottom).coerceAtLeast(1))
+                window.minimumSize = com.bilipai.desktop.appearance.desktopWindowsSafeMinimumSize(
+                    systemDisplayDensity.density, windowsDisplaySettings.percent, usable,
+                    window.graphicsConfiguration.defaultTransform.scaleX, window.graphicsConfiguration.defaultTransform.scaleY)
+            }
             var rootFrameOwner by remember { mutableStateOf<(() -> Boolean)?>(null) }
+            DisposableEffect(window, windowsDisplayScale) {
+                val input = com.bilipai.desktop.appearance.DesktopWindowsDisplayScaleInput(window, windowsDisplayScale) {
+                    !closing.get() && rootFrameOwner?.invoke() == true
+                }
+                onDispose { input.close() }
+            }
             val startupHealthWritten = remember { java.util.concurrent.atomic.AtomicBoolean() }
             LaunchedEffect(Unit) {
                 withFrameNanos { }
@@ -213,6 +235,7 @@ fun main(args: Array<String>) {
                     }.onFailure { System.err.println("Update startup verification failed: ${it.message}") }
                 }
             }
+            com.bilipai.desktop.appearance.DesktopWindowsDisplayScaleScope(windowsDisplayScale) {
             val danmakuPresentation = com.bilipai.desktop.ui.rememberDesktopWindowsDanmakuPresentation(window, windowState)
             val fullscreenControl = com.bilipai.desktop.ui.rememberDesktopWindowsFullscreenControl(window, windowState)
             androidx.compose.runtime.CompositionLocalProvider(
@@ -237,6 +260,7 @@ fun main(args: Array<String>) {
                     text = { androidx.compose.material3.Text(message) },
                     confirmButton = { androidx.compose.material3.TextButton(onClick = { restartFailure = null }) { androidx.compose.material3.Text("关闭") } })
             }
+            } // Windows user scale applies once to all Main content and its dialogs.
         }
     }
 }

@@ -16,8 +16,7 @@ internal class DesktopOriginalHomeOverlayBindings(
         }
     }
     @Composable override fun CrashTrackingConsentDialog(onDismiss:()->Unit) {
-        if(owned())CompositionLocalProvider(LocalDesktopCrashConsentBindings provides consent) {
-            com.android.purebilibili.feature.home.components.CrashTrackingConsentDialog(onDismiss={if(owned())onDismiss()})
-        }
+        // Windows diagnostics are chosen explicitly in settings; startup does not prompt
+        // or accept a choice. Keep the current persisted diagnostic value unchanged.
     }
 }

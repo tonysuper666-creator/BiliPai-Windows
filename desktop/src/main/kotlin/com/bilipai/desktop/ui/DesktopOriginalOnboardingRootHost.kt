@@ -18,15 +18,14 @@ import kotlinx.coroutines.*
 import kotlinx.serialization.json.JsonPrimitive
 import java.util.concurrent.atomic.AtomicReference
 
-/** Same global Store, original namespace/keys and window-captured startup preference.
- * Legacy first_launch_shown never bypasses the original versioned agreement gate. */
+/** Windows starts directly in Home. Legal/help documents remain available in settings.
+ * This startup policy neither accepts an agreement nor writes diagnostic consent. */
 internal class DesktopOriginalOnboardingPreferences(context: DesktopPluginContext) {
     private val store = context.store
     private val welcome = context.getSharedPreferences(APP_WELCOME_PREFS_NAME, DesktopPluginContext.MODE_PRIVATE)
-    val openPortraitFeedOnStartup = context.getSharedPreferences("settings", DesktopPluginContext.MODE_PRIVATE)
-        .getBoolean("launch_to_portrait_feed_on_startup", false)
+    val openPortraitFeedOnStartup = false
 
-    fun isRequired(): Boolean = isUserAgreementRequired(welcome.getBoolean(USER_AGREEMENT_ACK_KEY, false))
+    fun isRequired(): Boolean = false
     fun initialStack(includeStartupPortraitFeed: Boolean = true): List<BiliPaiNavKey> = resolveInitialBiliPaiBackStack(
         firstRoute = ScreenRoutes.Home.route,
         onboardingRequired = isRequired(),

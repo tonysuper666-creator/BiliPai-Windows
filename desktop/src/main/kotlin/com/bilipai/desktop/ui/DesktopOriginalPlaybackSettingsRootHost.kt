@@ -120,7 +120,7 @@ internal fun DesktopOriginalPlaybackSettingsRootHost(
         }
         CompositionLocalProvider(LocalDesktopOriginalPlayerSettingsContext provides context) {
             key(context) {
-                PlaybackSettingsScreen(bindings, onBack = ownedBack)
+                DesktopWindowsPlaybackSettings(bindings, onBack = ownedBack)
             }
         }
     } else {
