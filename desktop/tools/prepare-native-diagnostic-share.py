@@ -60,7 +60,11 @@ def main():
         root, relative = row['path'].split('/', 1)
         target = (roots[root] / relative).resolve(strict=True)
         assert target.is_relative_to(roots[root]), row['path']
-        assert target.stat().st_size == row['bytes'] and sha(target) == row['sha256Bytes'], row['path']
+        actual_bytes, actual_sha = target.stat().st_size, sha(target)
+        assert actual_bytes == row['bytes'] and actual_sha == row['sha256Bytes'], json.dumps({
+            'path': row['path'], 'expectedBytes': row['bytes'], 'actualBytes': actual_bytes,
+            'expectedSha256': row['sha256Bytes'], 'actualSha256': actual_sha,
+        })
         return target
     for key in ['transitiveHeaders', 'searchedLibrariesConservativePins', 'compilerBinDirectoryConservativePins']:
         for row in approval[key]:
