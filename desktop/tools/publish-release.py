@@ -17,7 +17,8 @@ spec = importlib.util.spec_from_file_location("windows_sync", Path(__file__).wit
 sync = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(sync)
 ReleaseError = sync.UpdateError
-GATES = ("kotlinUnitTests", "pythonSourceContractTests", "guestNetworkBackendSmoke", "packagedNativePlayerSmoke", "packagedUpdaterSmoke")
+GATES = ("kotlinUnitTests", "pythonSourceContractTests", "guestNetworkBackendSmoke", "packagedNativePlayerSmoke",
+         "packagedUpdaterSmoke", "packagedNativeDownloadMuxSmoke")
 
 
 def valid_repository(repository: str) -> str:
@@ -50,7 +51,7 @@ def asset_names(version: str) -> tuple[str, str, str]:
 
 def validate_gates(gate: dict) -> None:
     if gate.get("passed") is not True or any(gate.get(name) != "passed" for name in GATES):
-        raise ReleaseError("Unit tests, Python source contracts, guest backend smoke, packaged native smoke, and updater smoke must all pass.")
+        raise ReleaseError("Unit tests, Python source contracts, guest backend smoke, packaged native smoke, updater smoke, and native download mux smoke must all pass.")
 
 
 def checksum(contents: bytes, archive_name: str) -> str:

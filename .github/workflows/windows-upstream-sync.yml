@@ -184,9 +184,9 @@ jobs:
     needs: [detect, candidate]
     if: >-
       always() && needs.detect.result == 'success' &&
-      (needs.candidate.result == 'success' || needs.candidate.result == 'skipped') &&
       vars.BILIPAI_WINDOWS_AUTO_PUBLISH == 'true' &&
-      (needs.detect.outputs.publication_needed == 'true' || needs.candidate.outputs.source_sha != '')
+      (needs.detect.outputs.publication_needed == 'true' ||
+       (needs.candidate.result == 'success' && needs.candidate.outputs.source_sha != ''))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -195,7 +195,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.candidate.outputs.source_sha || needs.detect.outputs.source_sha }}
+          ref: ${{ needs.candidate.result == 'success' && needs.candidate.outputs.source_sha || needs.detect.outputs.source_sha }}
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:

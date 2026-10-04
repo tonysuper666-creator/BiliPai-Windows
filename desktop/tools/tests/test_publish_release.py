@@ -1,8 +1,10 @@
+import ast
 import hashlib
 import importlib.util
 import io
 import json
 from pathlib import Path
+import re
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -232,6 +234,30 @@ class PublicationTests(unittest.TestCase):
             self.publish(github, gate)
         self.assertEqual(github.operations, [])
 
+    def test_native_download_mux_must_pass_before_any_publication_mutation(self):
+        for outcome in (None, "failed", True):
+            with self.subTest(outcome=outcome):
+                github = FakeGitHub()
+                gate = {**GATE, "windowsVersion": VERSION, "portableZipSha256": self.local_digest}
+                if outcome is None:
+                    gate.pop("packagedNativeDownloadMuxSmoke", None)
+                else:
+                    gate["packagedNativeDownloadMuxSmoke"] = outcome
+                with self.assertRaisesRegex(publication.ReleaseError, "must all pass"):
+                    self.publish(github, gate)
+                self.assertEqual(github.operations, [])
+
+    def test_release_evidence_records_and_requires_native_download_mux(self):
+        assets = self.complete_assets()
+        value = json.loads(assets[EVIDENCE])
+        self.assertEqual(value["releaseGate"]["packagedNativeDownloadMuxSmoke"], "passed")
+        del value["releaseGate"]["packagedNativeDownloadMuxSmoke"]
+        assets[EVIDENCE] = json.dumps(value).encode("utf-8")
+        github = FakeGitHub(tag=SOURCE, exists=True, assets=assets)
+        with self.assertRaisesRegex(publication.ReleaseError, "must all pass"):
+            self.publish(github)
+        self.assertEqual(github.operations, [])
+
     def test_gate_for_another_package_cannot_publish_checked_local_zip(self):
         github = FakeGitHub()
         gate = {**GATE, "windowsVersion": VERSION, "portableZipSha256": "f" * 64}
@@ -272,6 +298,54 @@ class PublicationTests(unittest.TestCase):
             self.publish(github)
         self.assertEqual(github.assets[ARCHIVE], b"broken package")
         self.assertEqual(github.operations, [])
+
+
+class PublicationRecoveryWorkflowTests(unittest.TestCase):
+    """Evaluate the checked-in job guards/ref, without dispatching any workflow."""
+    @classmethod
+    def setUpClass(cls):
+        workflow = Path(__file__).resolve().parents[3] / ".github/workflows/windows-upstream-sync.yml"
+        cls.job = workflow.read_text(encoding="utf-8").split("\n  recover_publication:\n", 1)[1]
+        cls.condition = re.search(r"\n    if: >-\n(.*?)\n    runs-on:", cls.job, re.S).group(1)
+        cls.checkout = re.search(r"\n          ref: \$\{\{ (.*?) \}\}", cls.job).group(1)
+
+    def evaluate(self, expression, *, candidate="failure", candidate_sha=OTHER, publication="true",
+                 detect="success", auto_publish="true"):
+        values = {"needs.detect.result": detect, "needs.candidate.result": candidate,
+                  "vars.BILIPAI_WINDOWS_AUTO_PUBLISH": auto_publish,
+                  "needs.detect.outputs.publication_needed": publication,
+                  "needs.detect.outputs.source_sha": SOURCE,
+                  "needs.candidate.outputs.source_sha": candidate_sha}
+        expression = expression.replace("always()", "True")
+        expression = re.sub(r"\b(?:needs|vars)\.[A-Za-z0-9_.]+", lambda m: repr(values[m.group()]), expression)
+        expression = " ".join(expression.replace("&&", " and ").replace("||", " or ").split())
+        tree = ast.parse(expression, mode="eval")
+        allowed = (ast.Expression, ast.BoolOp, ast.And, ast.Or, ast.Compare, ast.Eq, ast.NotEq, ast.Constant)
+        self.assertTrue(all(isinstance(node, allowed) for node in ast.walk(tree)), expression)
+        return eval(compile(tree, "checked-in-recovery-expression", "eval"), {"__builtins__": {}})
+
+    def test_failed_candidate_does_not_block_existing_source_publication_recovery(self):
+        self.assertTrue(self.evaluate(self.condition))
+        # Even a leftover failed-candidate output cannot replace detect's fixed SHA.
+        self.assertEqual(self.evaluate(self.checkout), SOURCE)
+
+    def test_failed_candidate_without_existing_publication_cannot_trigger_release(self):
+        self.assertFalse(self.evaluate(self.condition, publication="false"))
+        self.assertEqual(self.evaluate(self.checkout, publication="false"), SOURCE)
+
+    def test_successful_validated_candidate_is_used_and_can_trigger_publication(self):
+        self.assertTrue(self.evaluate(self.condition, candidate="success", publication="false"))
+        self.assertEqual(self.evaluate(self.checkout, candidate="success"), OTHER)
+
+    def test_skipped_or_cancelled_candidate_recovers_only_the_detect_source(self):
+        for result in ("skipped", "cancelled"):
+            with self.subTest(result=result):
+                self.assertTrue(self.evaluate(self.condition, candidate=result))
+                self.assertEqual(self.evaluate(self.checkout, candidate=result), SOURCE)
+
+    def test_failed_detect_or_disabled_publication_cannot_dispatch_recovery(self):
+        self.assertFalse(self.evaluate(self.condition, detect="failure"))
+        self.assertFalse(self.evaluate(self.condition, auto_publish="false"))
 
 
 if __name__ == "__main__":
