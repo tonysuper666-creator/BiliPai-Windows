@@ -51,6 +51,9 @@ jobs:
       release: ${{ steps.plan.outputs.release }}
       source_sha: ${{ steps.plan.outputs.source_sha }}
     steps:
+      - name: Enable Git long paths on the Windows runner
+        shell: pwsh
+        run: git config --global core.longpaths true
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.source_sha || github.sha }}
