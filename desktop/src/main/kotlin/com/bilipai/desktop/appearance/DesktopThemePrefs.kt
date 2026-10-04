@@ -66,6 +66,9 @@ class DesktopThemePrefs(
 
     /** Same atomic new-key + old-key removal semantics as ThemeSelectionStore. */
     suspend fun ensureMigrated() = withContext(Dispatchers.IO) {
+        val caller = kotlinx.coroutines.currentCoroutineContext()
+        caller.ensureActive()
+        store.updateFromSnapshot(NAMESPACE) {
         val current = store.preferences(NAMESPACE)
         val edits = linkedMapOf<String, JsonElement?>()
         val state = initialSettings()
@@ -78,7 +81,15 @@ class DesktopThemePrefs(
         if (current.int("theme_mode_v2") == null) edits["theme_mode_v2"] = JsonPrimitive(state.themeMode.value)
         if (current.int("dark_theme_style_v1") == null) edits["dark_theme_style_v1"] = JsonPrimitive(state.darkThemeStyle.value)
         if (current.int("app_language_v1") == null) edits["app_language_v1"] = JsonPrimitive(state.appLanguage.value)
-        if (edits.isNotEmpty()) store.update(NAMESPACE, edits)
+        // Windows v5 selects original glass ON once. The mark and preference
+        // share one atomic Store write; subsequent manual OFF is never reset.
+        if (current.boolean("windows_liquid_glass_default_v1") != true) {
+            edits["android_native_liquid_glass_enabled"] = JsonPrimitive(true)
+            edits["windows_liquid_glass_default_v1"] = JsonPrimitive(true)
+        }
+        caller.ensureActive()
+        edits
+        }
     }
 
     suspend fun setUiStyle(style: AppUiStyle) = save(mapOf(
@@ -132,6 +143,10 @@ class DesktopThemePrefs(
     suspend fun setDpiOverride(percent: Int) = save("app_dpi_override_percent", JsonPrimitive(if (percent == 0) 0 else percent.coerceIn(90, 115)))
     suspend fun setIconStyle(style: AppIconStyle) = save("app_icon_style", JsonPrimitive(style.name))
     suspend fun setListItemStyle(style: AppListItemStyle) = save("app_list_item_style", JsonPrimitive(style.name))
+    suspend fun setLiquidGlassEnabled(value: Boolean) = save(mapOf(
+        "android_native_liquid_glass_enabled" to JsonPrimitive(value),
+        "windows_liquid_glass_default_v1" to JsonPrimitive(true),
+    ))
     suspend fun setHapticFeedback(value: Boolean) = save("haptic_feedback_enabled", JsonPrimitive(value))
     suspend fun setGlobalTextTapCopy(value: Boolean) = save("global_text_tap_copy_enabled", JsonPrimitive(value))
     suspend fun setUiEntranceAnimation(value: Boolean) = save("ui_entrance_animation_enabled", JsonPrimitive(value))

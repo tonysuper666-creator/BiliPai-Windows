@@ -1,5 +1,6 @@
 package com.bilipai.desktop.appearance
 
+import com.bilipai.desktop.ui.LocalDesktopWindowsGlassMaterial
 import com.bilipai.desktop.settings.desktopSettingsSearchFocusAnchor
 import com.android.purebilibili.feature.settings.SettingsSearchTarget
 import com.android.purebilibili.feature.settings.SettingsSearchFocusIds
@@ -39,6 +40,7 @@ fun DesktopAppearanceSettings(
 ) {
     val settings by prefs.settings.collectAsState(prefs.initialSettings())
     val strings = LocalDesktopStrings.current
+    val glassMaterial = LocalDesktopWindowsGlassMaterial.current
     val scope = rememberCoroutineScope()
     var error by remember { mutableStateOf<String?>(null) }
     var busy by remember { mutableStateOf(true) }
@@ -65,6 +67,24 @@ fun DesktopAppearanceSettings(
         DesktopAppearanceCard(Modifier.fillMaxWidth().desktopSettingsSearchFocusAnchor(SettingsSearchTarget.APPEARANCE, SettingsSearchFocusIds.APPEARANCE_THEME)) {
             AppearanceChoice(strings["appearance_ui_preset_title"], settings.uiStyle,
                 resolveThemeSelectionOptions("Material 3", "Miuix"), !busy) { update { prefs.setUiStyle(it) } }
+            AppSwitchPreference(
+                title = strings.desktop("原版液态玻璃", "原版液態玻璃", "Original liquid glass"),
+                subtitle = strings.desktop("复用原版折射与材质，跟随应用背景。", "重用原版折射與材質，跟隨應用背景。", "Original refraction and material, using the app background."),
+                checked = settings.liquidGlassEnabled, enabled = !busy,
+                onCheckedChange = { update { prefs.setLiquidGlassEnabled(it) } },
+            )
+            val glassStatus = when {
+                !settings.liquidGlassEnabled -> strings.desktop("普通材质", "一般材質", "Standard material")
+                glassMaterial == null -> strings.desktop("玻璃背景正在准备", "玻璃背景準備中", "Preparing glass background")
+                !glassMaterial.renderer.supported -> strings.desktop("当前渲染器不支持玻璃，使用普通材质", "目前渲染器不支援玻璃，使用一般材質", "Glass is unsupported; standard material is in use")
+                !glassMaterial.sourceReady -> strings.desktop("玻璃渲染器可用，背景正在准备", "玻璃渲染器可用，背景準備中", "Glass renderer available; preparing background")
+                glassMaterial.sourceHasWallpaper -> strings.desktop("原版玻璃：渲染器可用，背景已就绪（已配置壁纸）", "原版玻璃：渲染器可用，背景已就緒（已設定桌布）", "Original glass: renderer available, background ready (wallpaper configured)")
+                else -> strings.desktop("原版玻璃：渲染器可用，原版纯色背景已就绪", "原版玻璃：渲染器可用，原版純色背景已就緒", "Original glass: renderer available, original solid background ready")
+            }
+            DesktopAppearanceText(glassStatus, Modifier.padding(horizontal = 16.dp, vertical = 8.dp), style = MaterialTheme.typography.bodySmall)
+            if (settings.liquidGlassEnabled && glassMaterial?.renderer?.supported == false) {
+                glassMaterial.renderer.error?.let { DesktopAppearanceText(it, Modifier.padding(horizontal = 16.dp), style = MaterialTheme.typography.bodySmall) }
+            }
             AppearanceChoice(strings["appearance_theme_mode_title"], settings.themeMode,
                 resolveThemeModeSegmentOptions(strings["theme_mode_follow_system"], strings["theme_mode_light"], strings["theme_mode_dark"]), !busy) { update { prefs.setThemeMode(it) } }
             AppearanceChoice(strings["appearance_dark_theme_style_title"], settings.darkThemeStyle,

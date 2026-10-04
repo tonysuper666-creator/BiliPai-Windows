@@ -52,7 +52,6 @@ internal class DesktopOriginalRootChromeBindings(
         snapshot.active && visibility.sessionActive && !visibility.inPipMode
     val navigation = binding.nowPlayingNavigation()
     SideEffect {
-        binding.onSourceReady(false) // The desktop layout never needs a captured phone transition layer.
         audio?.publishBarOverlayVisible(audioVisible)
     }
     DisposableEffect(audio) { onDispose { audio?.publishBarOverlayVisible(false) } }
@@ -62,8 +61,25 @@ internal class DesktopOriginalRootChromeBindings(
         LocalSetBottomBarVisible provides pages.setBottomBarVisible,
         LocalGlobalWallpaperBackdropVisible provides false,
     ) {
+        val homeSettings by routes.root.environment.settings.homeSettings.collectAsState()
+        val wallpaperUri by routes.root.environment.settings.homeWallpaperUri.collectAsState()
+        CompositionLocalProvider(LocalDesktopHomeMediaPorts provides routes.root.media) {
+        DesktopWindowsGlassBackgroundHost(
+            sourceOwner = routes.root, wallpaperUri = wallpaperUri, home = homeSettings,
+            showHomeWallpaper = key == BiliPaiNavKey.MainHost && currentItem == BottomNavItem.HOME,
+            isDataSaverActive = routes.root.environment.settings.isDataSaverActive(),
+            owns = { routes.owns() && binding.owner.isOwned() },
+        ) {
+        val glassMaterial = LocalDesktopWindowsGlassMaterial.current
+        SideEffect {
+            binding.onSourceReady(glassMaterial != null && glassMaterial.renderer.supported &&
+                glassMaterial.sourceReady && glassMaterial.owns())
+        }
+        DisposableEffect(binding.owner) { onDispose { binding.onSourceReady(false) } }
+        // The Home renderer still independently requires its OWN ready backdrop.
+        // This publishes the real Windows shader capability gate, not feed pixels.
         Row(Modifier.fillMaxSize()) {
-            if (!video) Surface(color = MaterialTheme.colorScheme.surfaceContainerLow) {
+            if (!video) DesktopWindowsGlassSurface(shape = androidx.compose.foundation.shape.RoundedCornerShape(0.dp)) {
                 Column(Modifier.width(172.dp).fillMaxHeight().verticalScroll(rememberScrollState()).padding(12.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Text("BiliPai", style = MaterialTheme.typography.titleLarge, modifier = Modifier.padding(8.dp))
@@ -83,7 +99,7 @@ internal class DesktopOriginalRootChromeBindings(
             }
             Column(Modifier.weight(1f).fillMaxHeight()) {
                 Box(Modifier.weight(1f).fillMaxWidth()) { content() }
-                if (audioVisible && audio != null && snapshot != null) Surface(tonalElevation = 2.dp) {
+                if (audioVisible && audio != null && snapshot != null) DesktopWindowsGlassSurface(Modifier.fillMaxWidth()) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(snapshot.item.title, Modifier.weight(1f), maxLines = 1)
@@ -95,6 +111,8 @@ internal class DesktopOriginalRootChromeBindings(
                     }
                 }
             }
+        }
+        }
         }
     }
 }

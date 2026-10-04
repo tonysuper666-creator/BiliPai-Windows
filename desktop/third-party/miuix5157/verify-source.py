@@ -1,17 +1,52 @@
 from pathlib import Path
 import argparse, hashlib, json, os
+WINDOWS_NUMERIC_PATH="miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/Shaders.kt"
+WINDOWS_NUMERIC_STORAGE="miuix-blur/src/commonMain/kotlin/blur/internal/Shaders.kt"
+WINDOWS_NUMERIC_ORIGINAL_SHA="f787566fb38ddd47676de91cef1016f3b8cc9b8cdadec0ed6fea8b8a0a7a7f08"
+WINDOWS_NUMERIC_BEFORE=b"    float2 dir = normalize(coord.xy - corner.xy);\n"
+WINDOWS_NUMERIC_AFTER=b"""    // Windows Skia: the inner corner boundary can have zero XY displacement.
+    // Its flat normal must remain finite; all non-zero directions stay unchanged.
+    if (coord.x == corner.x && coord.y == corner.y) {
+        return float3(0.0, 0.0, -1.0);
+    }
+    float2 dir = normalize(coord.xy - corner.xy);
+"""
+
+def verify_windows_numeric_patch(entry,patch,payload):
+ assert entry["path"]==patch["path"]==WINDOWS_NUMERIC_PATH
+ assert entry["storagePath"]==patch["storagePath"]==WINDOWS_NUMERIC_STORAGE
+ assert patch["id"]=="bloom-stroke-zero-vector-normal"
+ assert patch["upstreamCommit"]=="5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca"
+ assert entry["sha256"]==patch["originalSha256"]==WINDOWS_NUMERIC_ORIGINAL_SHA
+ assert patch["before"].encode("utf-8")==WINDOWS_NUMERIC_BEFORE
+ assert patch["after"].encode("utf-8")==WINDOWS_NUMERIC_AFTER
+ assert hashlib.sha256(payload).hexdigest()==patch["patchedSha256"]
+ assert payload.count(WINDOWS_NUMERIC_AFTER)==1,"Windows numeric patch must occur exactly once"
+ restored=payload.replace(WINDOWS_NUMERIC_AFTER,WINDOWS_NUMERIC_BEFORE,1)
+ assert restored.count(WINDOWS_NUMERIC_BEFORE)==1
+ assert hashlib.sha256(restored).hexdigest()==entry["sha256"],"Windows numeric patch inverse differs from pinned original bytes"
+
 ap=argparse.ArgumentParser();ap.add_argument("--root",type=Path,required=True);args=ap.parse_args()
 root=args.root.resolve()
 if os.name=="nt" and not str(root).startswith("\\\\?\\"):root=Path("\\\\?\\"+str(root))
 source=root/"upstream"
 provenance=json.loads((root/"upstream-provenance.json").read_text(encoding="utf-8"))
 assert provenance["commit"]=="5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca"
+windowsPatches=provenance["windowsNumericPatches"]
+assert isinstance(windowsPatches,list) and len(windowsPatches)==1,"Only the reviewed Windows BloomStroke numeric patch is allowed"
+windowsPatch=windowsPatches[0]
+assert windowsPatch["path"]==WINDOWS_NUMERIC_PATH
+assert sum(entry["path"]==WINDOWS_NUMERIC_PATH for entry in provenance["files"])==1
 declared=set()
 for entry in provenance["files"]:
  path=source/entry.get("storagePath",entry["path"])
  assert path.is_file() and not path.is_symlink() and path.resolve().is_relative_to(source.resolve()),entry["path"]
- digest=hashlib.sha256(path.read_bytes()).hexdigest()
- assert digest==entry["sha256"],entry["path"]
+ payload=path.read_bytes()
+ digest=hashlib.sha256(payload).hexdigest()
+ if entry["path"]==WINDOWS_NUMERIC_PATH:
+  verify_windows_numeric_patch(entry,windowsPatch,payload)
+ else:
+  assert digest==entry["sha256"],entry["path"]
  if path.suffix==".kt" and any("/src/"+s+"/" in entry["path"] for s in provenance["compiledSourceSets"]):declared.add(path.resolve())
 actual={p.resolve() for p in source.rglob("*.kt") if any("/src/"+s+"/" in p.as_posix() for s in provenance["compiledSourceSets"])}
 assert actual==declared,"Unexpected unreviewed compiled source"
@@ -48,4 +83,4 @@ build=(root/"build.gradle.kts").read_text(encoding="utf8")
 expectedExclude='kotlin.exclude("nav/core/NavDisplay.kt", "nav/gesture/PredictiveBackHandler.kt", "nav/gesture/NavPredictiveBackDriver.kt")'
 assert build.count(expectedExclude)==1
 assert build.count('kotlin.srcDir("bilipai-v025-nav/src/commonMain/kotlin")')==1
-print("Exact Miuix5c91 pinned source + whole BiliPai79 navigation patch PASS:",len(provenance["files"]),"pinned files;",len(compiled),"compiled source files;",len(patchedDeclared),"whole original patch files")
+print("Miuix5c91 pinned + Windows numeric patch (exact inverse verified) + whole BiliPai79 navigation patch PASS:",len(provenance["files"]),"pinned files;",len(compiled),"compiled source files;",len(patchedDeclared),"whole original patch files")

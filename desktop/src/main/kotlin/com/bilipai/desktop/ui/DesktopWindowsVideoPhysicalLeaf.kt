@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
@@ -186,127 +188,178 @@ internal class DesktopWindowsVideoActions(
         }
     }
 
-    BoxWithConstraints(Modifier.fillMaxSize().padding(12.dp)) {
-    val showSidebar = !fullscreen && maxWidth >= 1050.dp
-    val viewportHeight = if (fullscreen) (maxHeight - 172.dp).coerceAtLeast(80.dp)
-        else minOf(380.dp, (maxHeight * .46f).coerceAtLeast(80.dp))
-    Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                TextButton(onClick = { if (current()) actions.back() }) { Text("返回") }
-                Text(success?.info?.title ?: "视频", Modifier.weight(1f), style = MaterialTheme.typography.titleMedium, maxLines=1, overflow=TextOverflow.Ellipsis)
-                TextButton(onClick = { if (current()) actions.fullscreen() }) { Text(if (fullscreen) "退出全屏" else "全屏") }
-            }
-            // One unchanging native component slot: resize/fullscreen does not move it across layouts.
-            var viewportSize by remember(native) { mutableStateOf(IntSize.Zero) }
-            Box(Modifier.fillMaxWidth().height(viewportHeight).background(Color.Black).onSizeChanged { viewportSize = it }
-                .focusRequester(viewportFocus).onFocusChanged { if(current()) actions.focusChanged(it.hasFocus) }.focusable()) {
-                if (active && !pipActive) {
-                    SwingPanel(factory = { native.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
-                    DesktopVideoCommandPopup(viewportSize, {
-                        Box(Modifier.fillMaxSize()) {
-                            actions.overlay()
-                            val positionMs = (state.positionSeconds * 1000.0).toLong()
-                            val primary = if (subtitleMode == SubtitleDisplayMode.PRIMARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
-                                success?.subtitlePrimaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
-                            val secondary = if (subtitleMode == SubtitleDisplayMode.SECONDARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
-                                success?.subtitleSecondaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
-                            if (current() && success?.subtitleOwnerBvid == success?.info?.bvid &&
-                                success?.subtitleOwnerCid == success?.info?.cid && (primary != null || secondary != null))
-                                Column(Modifier.align(Alignment.BottomCenter).padding(14.dp).background(Color.Black.copy(alpha=.65f)).padding(6.dp)) {
-                                    primary?.let { Text(it, color=Color.White, fontSize=20.sp) }
-                                    secondary?.let { Text(it, color=Color.White, fontSize=16.sp) }
-                                }
+    var detailsOpen by remember(assembly) { mutableStateOf(false) }
+    var detailsTab by remember(assembly) { mutableStateOf(DesktopWindowsVideoDetailsTab.INTRODUCTION) }
+    LaunchedEffect(assembly, route.commentRootRpid, route.commentTargetRpid) {
+        if (current() && route.commentRootRpid > 0L) {
+            detailsTab = DesktopWindowsVideoDetailsTab.COMMENTS
+            detailsOpen = true
+        }
+    }
+    val composerState by assembly.domains.composer.uiState.collectAsState()
+    // UI selection survives closing the panel; the existing composer remains the sole text authority.
+    var commentDraft by remember(assembly) { mutableStateOf(TextFieldValue(composerState.commentDraft)) }
+    LaunchedEffect(composerState.commentDraft) {
+        if (commentDraft.text != composerState.commentDraft) commentDraft = TextFieldValue(composerState.commentDraft)
+    }
+    fun command(block: () -> Unit): Boolean {
+        val accepted = assembly.native.current() ?: return false
+        if (!current()) return false
+        var dispatched = false
+        val admitted = assembly.native.admitPlaybackDispatch(accepted) { if (current()) { block(); dispatched = true } }
+        return admitted && dispatched
+    }
+    fun setSpeed(speed: Double) {
+        if (current()) {
+            assembly.playback.applyPlaybackSpeedFromUi(speed.toFloat())
+            preferencesChanged(preferences.copy(speed = speed))
+        }
+    }
+    BoxWithConstraints(Modifier.fillMaxSize().padding(8.dp)) {
+        // Keep one Row and one native slot through every width/fullscreen/panel change.
+        // A narrow window still reserves real sibling space: a heavyweight Canvas cannot be covered by a Compose sheet.
+        val detailsWidth = minOf(360.dp, maxWidth * .43f)
+        Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()) {
+                    Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        IconButton(onClick = { if (current()) actions.back() }, modifier = Modifier.size(44.dp)) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "返回")
                         }
-                    }, native.surface)
-                } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
-            }
-            fun command(block: () -> Unit): Boolean {
-                val accepted = assembly.native.current() ?: return false
-                if (!current()) return false
-                var dispatched = false
-                val admitted = assembly.native.admitPlaybackDispatch(accepted) { if (current()) { block(); dispatched = true } }
-                return admitted && dispatched
-            }
-            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Button(onClick = { command { native.togglePause() } }, enabled = state.ready && success != null) {
-                    Text(if (state.paused || state.ended) "播放" else "暂停")
+                        Text(success?.info?.title ?: "视频", Modifier.weight(1f), style = MaterialTheme.typography.titleSmall,
+                            maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    }
                 }
-                TextButton(onClick = { if (current()) shell.playback.previous() }, enabled = shell.playback.hasPrevious) { Text("上一集") }
-                TextButton(onClick = { if (current()) shell.playback.next() }, enabled = shell.playback.hasNext) { Text("下一集") }
-                TextButton(onClick = { if(command { native.setMuted(!state.muted) }) preferencesChanged(preferences.copy(muted=!state.muted)) }) { Text(if (state.muted) "取消静音" else "静音") }
-                Slider(value = state.volume.toFloat().coerceIn(0f, 100f), onValueChange = { value ->
-                    if(command { native.setVolume(value.toDouble()) }) preferencesChanged(preferences.copy(volume = value.toDouble()))
-                }, valueRange = 0f..100f, enabled=current() && state.ready && success!=null, modifier = Modifier.width(120.dp))
-                TextButton(onClick = { if (current()) actions.pictureInPicture() }, enabled = !pipActive && success != null && state.videoCodec != null && !state.audioOnly) { Text("浮窗") }
-            }
-            var scrub by remember(assembly) { mutableStateOf<Float?>(null) }
-            val duration = state.durationSeconds.toFloat().takeIf { it.isFinite() && it > 0f } ?: 1f
-            Slider(value = (scrub ?: state.positionSeconds.toFloat()).coerceIn(0f, duration),
-                onValueChange = { scrub = it }, onValueChangeFinished = {
-                    scrub?.let { if (current()) shell.playback.seekTo(it.toDouble()) }; scrub = null
-                }, valueRange = 0f..duration, enabled = success != null && state.durationSeconds > 0)
-            if (!fullscreen) LazyColumn(Modifier.weight(1f).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            item { Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                listOf(0.75, 1.0, 1.25, 1.5, 2.0).forEach { speed ->
-                    FilterChip(state.speed == speed, onClick = { if (current()) {
-                        assembly.playback.applyPlaybackSpeedFromUi(speed.toFloat())
-                        preferencesChanged(preferences.copy(speed = speed))
-                    } }, label = { Text("${speed}×") })
+                // Fill all remaining height; there is no phone-derived fraction or maximum 380dp video height.
+                var viewportSize by remember(native) { mutableStateOf(IntSize.Zero) }
+                Box(Modifier.fillMaxWidth().weight(1f).background(Color.Black).onSizeChanged { viewportSize = it }
+                    .focusRequester(viewportFocus).onFocusChanged { if(current()) actions.focusChanged(it.hasFocus) }.focusable()) {
+                    if (active && !pipActive) {
+                        SwingPanel(factory = { native.surface }, background = Color.Black, modifier = Modifier.fillMaxSize())
+                        DesktopVideoCommandPopup(viewportSize, {
+                            Box(Modifier.fillMaxSize()) {
+                                actions.overlay()
+                                val positionMs = (state.positionSeconds * 1000.0).toLong()
+                                val primary = if (subtitleMode == SubtitleDisplayMode.PRIMARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
+                                    success?.subtitlePrimaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
+                                val secondary = if (subtitleMode == SubtitleDisplayMode.SECONDARY_ONLY || subtitleMode == SubtitleDisplayMode.BILINGUAL)
+                                    success?.subtitleSecondaryCues?.let { resolveSubtitleTextAt(it, positionMs) } else null
+                                if (current() && success?.subtitleOwnerBvid == success?.info?.bvid &&
+                                    success?.subtitleOwnerCid == success?.info?.cid && (primary != null || secondary != null))
+                                    Column(Modifier.align(Alignment.BottomCenter).padding(14.dp).background(Color.Black.copy(alpha=.65f)).padding(6.dp)) {
+                                        primary?.let { Text(it, color=Color.White, fontSize=20.sp) }
+                                        secondary?.let { Text(it, color=Color.White, fontSize=16.sp) }
+                                    }
+                            }
+                        }, native.surface)
+                    } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
                 }
-                FilterChip(state.audioOnly, onClick = { if(command { native.setAudioOnly(!state.audioOnly) }) preferencesChanged(preferences.copy(audioOnly=!state.audioOnly)) }, label = { Text("仅音频") })
-                FilterChip(preferences.danmaku.enabled, onClick = { if (current()) actions.toggleDanmaku() }, label = { Text("弹幕") })
-                TextButton(onClick = { if (current()) actions.danmakuSettings() }) { Text("弹幕设置") }
-                SubtitleDisplayMode.entries.forEach { mode -> FilterChip(subtitleMode==mode,
-                    onClick={if(current()) subtitleOverride=mode}, label={Text(when(mode) {SubtitleDisplayMode.OFF->"字幕关闭";SubtitleDisplayMode.PRIMARY_ONLY->"主字幕";SubtitleDisplayMode.SECONDARY_ONLY->"副字幕";SubtitleDisplayMode.BILINGUAL->"双语字幕"})}) }
-            } }
-            item { actions.enhancement() }
-            item { bootstrapError?.let { Text(it, color = MaterialTheme.colorScheme.error) } }
-            item { playback.error?.let { failure ->
-                Row { Text(failure, Modifier.weight(1f), color = MaterialTheme.colorScheme.error)
-                    TextButton(onClick = { if (current()) shell.playback.retry() }) { Text("重试") } }
-            } }
-            if (success != null) {
-                item { Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    success.qualityIds.forEachIndexed { i, quality ->
-                        FilterChip(success.currentQuality == quality, onClick = { if (current()) shell.playback.switchQuality(quality) },
-                            label = { Text(success.qualityLabels.getOrNull(i) ?: quality.toString()) })
-                    }
-                } }
-                item { Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TextButton(onClick = { if (current()) actions.user(success.info.owner.mid) }) { Text(success.info.owner.name) }
-                    TextButton(onClick = { if (current()) assembly.domains.engagement.toggleLike() }) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
-                    actions.favorite(assembly, success, ::current)
-                    TextButton(onClick = { if (current()) actions.download(assembly, success) }) { Text("下载当前画质") }
-                    TextButton(onClick = { if (current()) assembly.domains.engagement.toggleFollow() }) { Text(if(engagement.isFollowing) "已关注" else "关注") }
-                    TextButton(onClick = { if(current()) assembly.domains.engagement.toggleWatchLater() }) { Text("稍后再看") }
-                    TextButton(onClick = { if(current()) assembly.domains.engagement.openCoinDialog() }) { Text("投币") }
-                } }
-                item { Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    success.availableAudioQualities.forEach { audio ->
-                        FilterChip(success.requestedAudioQuality == audio.preferenceId,
-                            onClick = { if (current()) shell.playback.selectAudioQuality(audio.preferenceId) }, label = { Text(audio.label) })
-                    }
-                    success.subtitleTracks.forEach { track -> TextButton(onClick={if(current()) assembly.playback.selectSubtitleTrack(track.trackKey)}) {Text(track.lanDoc)} }
-                } }
-                    item { Text(success.info.desc) }
-                    if (success.info.pages.size > 1) items(success.info.pages.size) { i ->
-                        TextButton(onClick = { if (current()) shell.playback.playPart(i) }) { Text("P${i + 1} · ${success.info.pages[i].part}") }
-                    }
-                    item { CompositionLocalProvider(LocalDesktopCommentBindings provides platforms.holder.commentsPlatform) {
-                        DesktopWindowsVideoComments(assembly, current = ::current, onUser = actions.user, login = actions.login, openLink=actions.openLink, seek=shell.playback::seekTo)
-                    } }
+                if (bootstrapError != null || playback.error != null) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Text(bootstrapError ?: playback.error.orEmpty(), Modifier.weight(1f), style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error)
+                    TextButton(onClick = { if (current()) shell.playback.retry() }) { Text("重试") }
+                }
+                DesktopWindowsVideoControlBar(
+                    state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,
+                    enabled = current() && success != null, fullscreen = fullscreen, detailsOpen = detailsOpen,
+                    hasPrevious = shell.playback.hasPrevious, hasNext = shell.playback.hasNext,
+                    canPictureInPicture = !pipActive && success != null && state.videoCodec != null && !state.audioOnly,
+                    qualities = success?.let { value -> value.qualityIds.mapIndexed { index, id -> id to (value.qualityLabels.getOrNull(index) ?: id.toString()) } }.orEmpty(),
+                    selectedQuality = success?.currentQuality,
+                    onPlayPause = { command { native.togglePause() } },
+                    onPrevious = { if (current()) shell.playback.previous() }, onNext = { if (current()) shell.playback.next() },
+                    onMute = { if(command { native.setMuted(!state.muted) }) preferencesChanged(preferences.copy(muted=!state.muted)) },
+                    onVolume = { value -> if(command { native.setVolume(value) }) preferencesChanged(preferences.copy(volume=value)) },
+                    onSpeed = ::setSpeed,
+                    onQuality = { quality -> if (current()) shell.playback.switchQuality(quality) },
+                    onSeek = { seconds -> if (current()) shell.playback.seekTo(seconds) },
+                    onPictureInPicture = { if (current()) actions.pictureInPicture() },
+                    onFullscreen = { if (current()) actions.fullscreen() },
+                    onDetails = { if (current()) detailsOpen = !detailsOpen },
+                    onOpenIntroduction = { if (current()) {
+                        detailsTab = DesktopWindowsVideoDetailsTab.INTRODUCTION
+                        detailsOpen = true
+                    } },
+                    enhancement = actions.enhancement,
+                )
             }
-            }
-        }
-        if(showSidebar) LazyColumn(Modifier.width(260.dp).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            item { Text("相关推荐", style = MaterialTheme.typography.titleMedium) }
-            items(playback.related, key = { it.bvid }) { video ->
-                OutlinedButton(onClick = { if (current()) actions.video(video) }, modifier = Modifier.fillMaxWidth()) { Text(video.title) }
-            }
+            if (detailsOpen) DesktopWindowsVideoDetailsPanel(
+                modifier = Modifier.width(detailsWidth).fillMaxHeight(), selectedTab = detailsTab,
+                onTabChange = { detailsTab = it }, onClose = { if (current()) detailsOpen = false },
+                current = ::current, related = playback.related, onVideo = actions.video,
+                introduction = {
+                    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        if (success != null) {
+                            Text(success.info.title, style = MaterialTheme.typography.titleMedium)
+                            TextButton(onClick = { if (current()) actions.user(success.info.owner.mid) }) { Text(success.info.owner.name) }
+                            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                TextButton(onClick = { if (current()) assembly.domains.engagement.toggleLike() }) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
+                                actions.favorite(assembly, success, ::current)
+                                TextButton(onClick = { if (current()) assembly.domains.engagement.toggleFollow() }) { Text(if(engagement.isFollowing) "已关注" else "关注") }
+                            }
+                            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                TextButton(onClick = { if(current()) assembly.domains.engagement.toggleWatchLater() }) { Text("稍后再看") }
+                                TextButton(onClick = { if(current()) assembly.domains.engagement.openCoinDialog() }) { Text("投币") }
+                                TextButton(onClick = { if (current()) actions.download(assembly, success) }) { Text("下载当前画质") }
+                            }
+                            Text(success.info.desc, style = MaterialTheme.typography.bodyMedium)
+                            if (success.info.pages.size > 1) {
+                                Text("分P", style = MaterialTheme.typography.titleSmall)
+                                success.info.pages.forEachIndexed { index, part ->
+                                    TextButton(onClick = { if (current()) shell.playback.playPart(index) }, modifier = Modifier.fillMaxWidth()) {
+                                        Text("P${index + 1} · ${part.part}")
+                                    }
+                                }
+                            }
+                        } else Text("正在读取视频信息", style = MaterialTheme.typography.bodyMedium)
+                        HorizontalDivider()
+                        Text("播放设置", style = MaterialTheme.typography.titleSmall)
+                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            FilterChip(state.audioOnly, onClick = { if(command { native.setAudioOnly(!state.audioOnly) }) preferencesChanged(preferences.copy(audioOnly=!state.audioOnly)) }, label = { Text("仅音频") })
+                            FilterChip(preferences.danmaku.enabled, onClick = { if (current()) actions.toggleDanmaku() }, label = { Text("弹幕") })
+                            TextButton(onClick = { if (current()) actions.danmakuSettings() }) { Text("弹幕设置") }
+                        }
+                        Text("视频编码", style = MaterialTheme.typography.labelLarge)
+                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            listOf("hev1" to "HEVC", "av01" to "AV1", "avc1" to "H.264").forEach { (codec, label) ->
+                                FilterChip(preferences.videoCodecPreference == codec,
+                                    onClick = { if(current()) preferencesChanged(preferences.copy(videoCodecPreference=codec)) }, label = { Text(label) })
+                            }
+                        }
+                        Text("字幕显示", style = MaterialTheme.typography.labelLarge)
+                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            SubtitleDisplayMode.entries.forEach { mode -> FilterChip(subtitleMode==mode,
+                                onClick={if(current()) subtitleOverride=mode}, label={Text(when(mode) {SubtitleDisplayMode.OFF->"字幕关闭";SubtitleDisplayMode.PRIMARY_ONLY->"主字幕";SubtitleDisplayMode.SECONDARY_ONLY->"副字幕";SubtitleDisplayMode.BILINGUAL->"双语字幕"})}) }
+                        }
+                        success?.let { value ->
+                            if (value.availableAudioQualities.isNotEmpty()) {
+                                Text("音轨画质", style = MaterialTheme.typography.labelLarge)
+                                Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                    value.availableAudioQualities.forEach { audio ->
+                                        FilterChip(value.requestedAudioQuality == audio.preferenceId,
+                                            onClick = { if (current()) shell.playback.selectAudioQuality(audio.preferenceId) }, label = { Text(audio.label) })
+                                    }
+                                }
+                            }
+                            if (value.subtitleTracks.isNotEmpty()) {
+                                Text("字幕轨道", style = MaterialTheme.typography.labelLarge)
+                                value.subtitleTracks.forEach { track -> TextButton(onClick={if(current()) assembly.playback.selectSubtitleTrack(track.trackKey)}) {Text(track.lanDoc)} }
+                            }
+                        }
+                        Text("当前视频：${state.videoCodec ?: "—"} · ${state.videoWidth}×${state.videoHeight}\n音频：${state.audioCodec ?: "—"}",
+                            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                },
+                comments = {
+                    if (success != null) CompositionLocalProvider(LocalDesktopCommentBindings provides platforms.holder.commentsPlatform) {
+                        DesktopWindowsVideoComments(assembly, current = ::current, onUser = actions.user, login = actions.login,
+                            openLink=actions.openLink, seek=shell.playback::seekTo, draft=commentDraft, onDraftChange={commentDraft=it})
+                    } else Text("正在读取评论", style = MaterialTheme.typography.bodyMedium)
+                },
+            )
         }
     }
-    }
+
     // Consume only the original VM suggestion; its coordinator owns the threshold,
     // saved-history lookup, preference and once-per-target acknowledgement.
     val resumeAnchor = assembly.native.current()?.takeIf { expected ->
@@ -351,6 +404,7 @@ private fun desktopWindowsNativeVideoKey(event:java.awt.event.KeyEvent):androidx
 
 @Composable private fun DesktopWindowsVideoComments(assembly: DesktopOriginalVideoOwnerAssembly,
     current: () -> Boolean, onUser: (Long) -> Unit, login: () -> Unit, openLink:(String)->Unit, seek:(Double)->Unit,
+    draft: TextFieldValue, onDraftChange: (TextFieldValue) -> Unit,
 ) {
     val vm = assembly.domains.comments
     val state by vm.commentState.collectAsState()
@@ -360,19 +414,19 @@ private fun desktopWindowsNativeVideoKey(event:java.awt.event.KeyEvent):androidx
     val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current
     var emotes by remember(assembly,platform) {mutableStateOf(platform.emotes.snapshot())}
     LaunchedEffect(assembly,platform) {val loaded=platform.emotes.ensureLoaded();if(current()&&platform.isOwned())emotes=loaded}
-    var draft by remember(assembly) {mutableStateOf(TextFieldValue(composer.commentDraft))}
-    LaunchedEffect(composer.commentDraft) {if(draft.text!=composer.commentDraft)draft=TextFieldValue(composer.commentDraft)}
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text("评论 ${state.replyCount}", Modifier.weight(1f))
+            TextButton(onClick = { if (current()) vm.refreshComments() }, enabled = !state.isRepliesRefreshing) { Text("刷新") }
+        }
+        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             CommentSortMode.entries.forEach { mode ->
                 FilterChip(state.sortMode == mode, onClick = { if (current()) vm.setSortMode(mode) }, label = { Text(mode.label) })
             }
-            TextButton(onClick = { if (current()) vm.refreshComments() }, enabled = !state.isRepliesRefreshing) { Text("刷新") }
         }
         state.repliesError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
         state.sendError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-        CommentEmoteTextField(draft, onValueChange={if(current()) {draft=it;assembly.domains.composer.updateCommentDraft(it.text)}},
+        CommentEmoteTextField(draft, onValueChange={if(current()) {onDraftChange(it);assembly.domains.composer.updateCommentDraft(it.text)}},
             emoteUrls=emotes,enabled=current(),readOnly=false,hint=state.replyTarget?.let {"回复 ${it.member.uname}"}?:"评论",
             textStyle=MaterialTheme.typography.bodyMedium.copy(color=MaterialTheme.colorScheme.onSurface),hintColor=MaterialTheme.colorScheme.onSurfaceVariant,
             cursorColor=MaterialTheme.colorScheme.primary,onBeginEditing={},modifier=Modifier.fillMaxWidth().height(64.dp))

@@ -490,6 +490,11 @@ float3 getNormal(float2 fragCoord, float sdf, float R) {
     corner.x = min(corner.x, xy_a.x);
     corner.y = min(corner.y, xy_a.y);
 
+    // Windows Skia: the inner corner boundary can have zero XY displacement.
+    // Its flat normal must remain finite; all non-zero directions stay unchanged.
+    if (coord.x == corner.x && coord.y == corner.y) {
+        return float3(0.0, 0.0, -1.0);
+    }
     float2 dir = normalize(coord.xy - corner.xy);
     corner += dir * (R - innerBlurRadius);
 

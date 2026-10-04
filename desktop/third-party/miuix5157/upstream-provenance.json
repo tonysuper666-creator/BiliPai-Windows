@@ -1130,7 +1130,7 @@
       "sha256": "aff0e63ddb271481787ca12b4c7046a024e413268877c60f3e1b48ff68f0e7bc"
     }
   ],
-  "buildAdapter": "The existing eight original Miuix modules share ONE JVM source fork. Pinned common/Skiko/Desktop sources remain byte-audited at 5c91. Three pinned miuix-nav common files are excluded from compilation and replaced by complete original BiliPai vendored sources at fixed 79e8fa3, plus the new original NavBackCompletionPolicy interface. No navigation runtime, state holder, or window bridge is added. Android/iOS/macOS/web variants remain reference-only. Existing Kotlin/Compose compiler 2.4.0, CMP 1.12.1 and SDF chunking are unchanged.",
+  "buildAdapter": "The existing eight original Miuix modules share ONE JVM source fork. Pinned common/Skiko/Desktop sources remain audited against 5c91, with the sole Windows BloomStroke zero-vector guard recorded below and verified by exact raw-byte inverse. Three pinned miuix-nav common files are excluded from compilation and replaced by complete original BiliPai vendored sources at fixed 79e8fa3, plus the new original NavBackCompletionPolicy interface. No navigation runtime, state holder, or window bridge is added. Android/iOS/macOS/web variants remain reference-only. Existing Kotlin/Compose compiler 2.4.0, CMP 1.12.1 and SDF chunking are unchanged.",
   "compiledSourceSets": [
     "commonMain",
     "skikoMain",
@@ -1188,5 +1188,18 @@
         "inversePassed": true
       }
     ]
-  }
+  },
+  "windowsNumericPatches": [
+    {
+      "id": "bloom-stroke-zero-vector-normal",
+      "path": "miuix-blur/src/commonMain/kotlin/top/yukonga/miuix/kmp/blur/internal/Shaders.kt",
+      "storagePath": "miuix-blur/src/commonMain/kotlin/blur/internal/Shaders.kt",
+      "upstreamCommit": "5c91d5e5ce1a2fc7e8bdc1258a881c555102bbca",
+      "originalSha256": "f787566fb38ddd47676de91cef1016f3b8cc9b8cdadec0ed6fea8b8a0a7a7f08",
+      "patchedSha256": "1cf6b7315f38d43289f3276aee663f9f403f8448331a8fa1abcfe2822b0e358f",
+      "before": "    float2 dir = normalize(coord.xy - corner.xy);\n",
+      "after": "    // Windows Skia: the inner corner boundary can have zero XY displacement.\n    // Its flat normal must remain finite; all non-zero directions stay unchanged.\n    if (coord.x == corner.x && coord.y == corner.y) {\n        return float3(0.0, 0.0, -1.0);\n    }\n    float2 dir = normalize(coord.xy - corner.xy);\n",
+      "reason": "Windows Skia may normalize a zero XY displacement at the inner corner boundary. Return the finite flat interior normal only for that exact zero vector; retain every original non-zero direction and all lens, vibrancy, rim-highlight and shadow behavior. Actual visual A/B verification remains separate."
+    }
+  ]
 }

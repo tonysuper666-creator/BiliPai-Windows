@@ -6,9 +6,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.AppAlertDialog
 import com.android.purebilibili.core.ui.components.AppSwitchPreference
+import com.android.purebilibili.core.ui.components.AppButtonDefaults
 import com.android.purebilibili.core.ui.components.AppText
 import com.android.purebilibili.core.ui.components.AppTextButton
 import com.bilipai.desktop.player.DesktopVideoEnhancementState
@@ -33,9 +36,41 @@ fun DesktopVideoEnhancementSettingsDialog(configuration: DesktopVideoEnhancement
     }, confirmButton = { AppTextButton(onClick = onDismiss) { AppText("完成") } })
 }
 
+internal val LocalDesktopVideoEnhancementCompact = staticCompositionLocalOf { false }
+private val LocalDesktopVideoEnhancementCompactStatus = staticCompositionLocalOf { true }
+
+/** Compact presentation only. All switch and detail operations still use the original Root binding. */
+@Composable
+internal fun DesktopVideoEnhancementCompactSlot(showStatus: Boolean = true, content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalDesktopVideoEnhancementCompact provides true,
+        LocalDesktopVideoEnhancementCompactStatus provides showStatus, content = content)
+}
+
 @Composable
 fun DesktopVideoEnhancementControls(state: DesktopVideoEnhancementState,
     configuration: DesktopVideoEnhancementConfiguration, onToggle: (Boolean) -> Unit, onSettings: () -> Unit) {
+    if (LocalDesktopVideoEnhancementCompact.current) {
+        val enabled by configuration.automaticEnabled.collectAsState()
+        val configurationError by configuration.error.collectAsState()
+        val label = when {
+            configurationError != null || state.error != null -> "异常"
+            !enabled -> "关闭"
+            state.active && state.driverVsrAccepted && state.hdrConversionActive -> "VSR · HDR"
+            state.active && state.hdrConversionActive -> "HDR"
+            state.active && state.driverVsrAccepted -> "VSR"
+            state.pending -> "处理中"
+            else -> "原画"
+        }
+        val showStatus = LocalDesktopVideoEnhancementCompactStatus.current
+        AppTextButton(onClick = onSettings, modifier = (if (showStatus) Modifier.heightIn(min = 44.dp) else Modifier.size(44.dp))
+            .semantics { contentDescription = "NVIDIA 增强详情" },
+            contentPadding = if (showStatus) AppButtonDefaults.TextButtonContentPadding else PaddingValues(4.dp)) {
+            AppText(if (showStatus) "NVIDIA · $label" else "RTX", style = MaterialTheme.typography.labelMedium,
+                maxLines = 1, softWrap = false,
+                color = if (configurationError != null || state.error != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary)
+        }
+        return
+    }
     DesktopWindowsVideoEnhancementBody(configuration, state, onToggle)
     AppTextButton(onClick = onSettings) { AppText("NVIDIA 增强详情") }
 }

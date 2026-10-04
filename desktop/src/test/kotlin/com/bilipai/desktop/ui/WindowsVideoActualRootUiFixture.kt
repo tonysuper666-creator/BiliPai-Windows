@@ -75,11 +75,12 @@ object WindowsVideoActualRootUiFixture {
     private fun hasLabel(context: AccessibleContext, label: String): Boolean =
         Regex("(^|[\\r\\n,，])\\s*${Regex.escape(label)}\\s*($|[\\r\\n,，])").containsMatchIn(context.accessibleName.orEmpty()) ||
             descendants(context).any { it.accessibleName == label }
-    private fun visible(context: AccessibleContext): Boolean {
+    private fun visible(context: AccessibleContext, surface: Window = window()): Boolean {
         val component = context.accessibleComponent ?: return false
         val origin = component.locationOnScreen ?: return false
         val size = component.size
-        val main = window().contentPane
+        check(surface.isShowing && ownedWindow(surface))
+        val main = (surface as javax.swing.RootPaneContainer).contentPane
         val viewport = Rectangle(main.locationOnScreen.x, main.locationOnScreen.y, main.width, main.height)
         return context.accessibleStateSet.contains(AccessibleState.SHOWING) && size.width > 0 && size.height > 0 &&
             viewport.contains(Rectangle(origin.x, origin.y, size.width, size.height))
@@ -387,10 +388,11 @@ object WindowsVideoActualRootUiFixture {
         searchMouse("返回")
     }
 
-    private fun actualComposeInput(): Component {
+    private fun actualComposeInput(surface: Window = window()): Component {
         current()
-        return nativeComponents(window()).filter { component -> component.isShowing && component.isDisplayable &&
-            component.isEnabled && SwingUtilities.getWindowAncestor(component) === window() && component.keyListeners.any {
+        check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+        return nativeComponents(surface).filter { component -> component.isShowing && component.isDisplayable &&
+            component.isEnabled && SwingUtilities.getWindowAncestor(component) === surface && component.keyListeners.any {
                 it.javaClass.name == "androidx.compose.ui.scene.ComposeSceneMediator\$keyListener\$1"
             } }.single()
     }
@@ -413,14 +415,15 @@ object WindowsVideoActualRootUiFixture {
         val focus = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()
         window().isActive && focus.focusedWindow === window() && focus.focusOwner === input && input.isFocusOwner
     } }
-    private fun ownedKey(input: Component, keyCode: Int, modifiers: Int = 0, typed: Char? = null) {
+    private fun ownedKey(input: Component, keyCode: Int, modifiers: Int = 0, typed: Char? = null,
+        navigationTarget: BiliPaiNavKey? = null) {
         val alreadyFocused = edt {
             current()
             val focus = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()
             window().isActive && focus.focusedWindow === window() && focus.focusOwner === input && input.isFocusOwner
         }
         if (!alreadyFocused) { focused(input); awaitFocus(input) }
-        edt {
+        val delivered = edt {
             current(); check(input.isShowing && input.isDisplayable && input.isFocusOwner &&
                 SwingUtilities.getWindowAncestor(input) === window())
             val now = System.currentTimeMillis()
@@ -431,10 +434,15 @@ object WindowsVideoActualRootUiFixture {
                 modifiers, java.awt.event.KeyEvent.VK_UNDEFINED, it)) }
             input.dispatchEvent(java.awt.event.KeyEvent(input, java.awt.event.KeyEvent.KEY_RELEASED, now + 2,
                 modifiers, keyCode, typed ?: java.awt.event.KeyEvent.CHAR_UNDEFINED))
-            record("owned-key-${rows.size}", mapOf("keyCode" to JsonPrimitive(keyCode), "modifiers" to JsonPrimitive(modifiers),
+            mapOf("keyCode" to JsonPrimitive(keyCode), "modifiers" to JsonPrimitive(modifiers),
                 "pressedConsumed" to JsonPrimitive(pressed.isConsumed), "sameActualFocusedWindow" to JsonPrimitive(true),
-                "inputClass" to JsonPrimitive(input.javaClass.name), "mechanism" to JsonPrimitive("OWNED_AWT_KEY_EVENT")))
+                "inputClass" to JsonPrimitive(input.javaClass.name), "mechanism" to JsonPrimitive("OWNED_AWT_KEY_EVENT"))
         }
+        if (navigationTarget != null) await("actual target frame after owned navigation key: $navigationTarget") { edt {
+            val frame = pendingCurrent() ?: return@edt false
+            frame.key == navigationTarget
+        } }
+        record("owned-key-${rows.size}", delivered)
     }
     private fun ownedWheel(input: Component, rotation: Int, ctrl: Boolean, point: java.awt.Point? = null) = edt {
         current(); check(input.isShowing && input.isDisplayable && SwingUtilities.getWindowAncestor(input) === window())
@@ -446,19 +454,22 @@ object WindowsVideoActualRootUiFixture {
         val inputBounds = Rectangle(input.locationOnScreen.x, input.locationOnScreen.y, input.width, input.height)
         val location = point ?: run {
             sameNative()
-            val canvasBounds = Rectangle(actualCanvas.locationOnScreen.x, actualCanvas.locationOnScreen.y,
-                actualCanvas.width, actualCanvas.height)
-            val lowerPane = Rectangle(canvasBounds.x, canvasBounds.y + canvasBounds.height,
-                canvasBounds.width, client.y + client.height - canvasBounds.y - canvasBounds.height)
+            val target = if (ctrl) descendants(videoScope("详情")).filter { node -> node.accessibleName == "详情" &&
+                visible(node) && (node.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single() else detailPaneScope()
+            val component = requireNotNull(target.accessibleComponent)
+            val origin = requireNotNull(component.locationOnScreen)
+            val area = Rectangle(origin.x, origin.y, component.size.width, component.size.height)
                 .intersection(client).intersection(inputBounds)
-            check(lowerPane.width > 20 && lowerPane.height > 20) { "No current owned lower detail area outside the video Canvas" }
-            java.awt.Point(lowerPane.x + lowerPane.width / 2 - inputBounds.x,
-                lowerPane.y + lowerPane.height / 2 - inputBounds.y)
+            check(area.width > 20 && area.height > 20) { "No current owned visible wheel area in its actual control/detail pane" }
+            java.awt.Point(area.x + area.width / 2 - inputBounds.x, area.y + area.height / 2 - inputBounds.y)
         }
         val screen = java.awt.Point(location.x + inputBounds.x, location.y + inputBounds.y)
         check(input.contains(location) && client.contains(screen) && inputBounds.contains(screen)) {
             "Owned wheel point is outside the current input/client intersection"
         }
+        val canvasBounds = Rectangle(actualCanvas.locationOnScreen.x, actualCanvas.locationOnScreen.y,
+            actualCanvas.width, actualCanvas.height)
+        check(!canvasBounds.contains(screen)) { "Owned scale/detail wheel must not target the actual native video Canvas" }
         val event = java.awt.event.MouseWheelEvent(input, java.awt.event.MouseEvent.MOUSE_WHEEL,
             System.currentTimeMillis(), if (ctrl) java.awt.event.InputEvent.CTRL_DOWN_MASK else 0,
             location.x, location.y, 0, false, java.awt.event.MouseWheelEvent.WHEEL_UNIT_SCROLL, 3, rotation)
@@ -482,8 +493,50 @@ object WindowsVideoActualRootUiFixture {
             "nativeState" to safeState(), "actualCanvasWidth" to JsonPrimitive(edt { actualCanvas.width }),
             "actualCanvasHeight" to JsonPrimitive(edt { actualCanvas.height })))
     }
+    private fun detailPaneScope(): AccessibleContext {
+        current(); videoScope("关闭详情")
+        val candidates = all().filter { scope ->
+            val children = descendants(scope)
+            scope.accessibleName == "视频详情面板" && visible(scope) &&
+                children.count { it.accessibleName == "关闭详情" && visible(it) &&
+                (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1 &&
+                listOf("简介与分P", "评论", "相关推荐").all { label -> children.count {
+                    it.accessibleName == label && visible(it) &&
+                        it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
+                        (it.accessibleAction?.accessibleActionCount ?: 0) == 1
+                } == 1 }
+        }
+        check(candidates.isNotEmpty()) { "No complete visible actual video detail pane with its three tabs and close control" }
+        val counts = candidates.associateWith { descendants(it).size }
+        val minimum = requireNotNull(counts.values.minOrNull())
+        return candidates.filter { counts[it] == minimum }.single()
+    }
+    private fun commentsTabSelected(): Boolean {
+        val tab = descendants(detailPaneScope()).filter { it.accessibleName == "评论" && visible(it) &&
+            it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
+            (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single()
+        return tab.accessibleStateSet.contains(AccessibleState.SELECTED) || tab.accessibleStateSet.contains(AccessibleState.CHECKED)
+    }
+    private fun openCommentDetails() {
+        sameNative(); click("详情")
+        await("actual right detail pane opened") { edt { runCatching { detailPaneScope() }.isSuccess } }
+        edt {
+            val tab = descendants(detailPaneScope()).filter { it.accessibleName == "评论" && visible(it) &&
+                it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
+                (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single()
+            clickOwnedComposeMouse(window(), tab)
+        }
+        await("actual comments tab selected on the same video detail pane") { edt {
+            runCatching { commentsTabSelected() }.getOrDefault(false)
+        } }
+        sameNative(); check(playing())
+        actions.capture("156-original-comment-detail-pane", edt { current() })
+        record("156-original-comment-detail-pane", mapOf("actualDetailControlUsed" to JsonPrimitive("详情"),
+            "actualCommentsTabUsed" to JsonPrimitive(true), "sameNativeSource" to JsonPrimitive(true),
+            "originalNativeEditorForced" to JsonPrimitive(false)))
+    }
     private fun actualEditor(): AccessibleContext {
-        current(); videoScope("取消回复")
+        current(); check(commentsTabSelected()); videoScope("取消回复")
         // SwingPanel's native editor can be an AWT sibling of the Skia semantics tree.
         // The current typed page, complete original header/footer and exact owned
         // native editor identity remain mandatory; never select a label first.
@@ -564,7 +617,8 @@ object WindowsVideoActualRootUiFixture {
         }
         record("154-native-right-seek", mapOf("nativeState" to safeState(), "previousSeekId" to JsonPrimitive(seekId)))
 
-        // Scroll only the visible lower detail pane. Never force a VM, send/post or write selection fields.
+        openCommentDetails()
+        // Scroll only the actual right detail pane. Never force a VM, send/post or write selection fields.
         repeat(12) {
             if (edt { runCatching { actualEditor() }.isSuccess }) return@repeat
             edt { ownedWheel(actualComposeInput(), 3, false) }; Thread.sleep(300)
@@ -600,6 +654,13 @@ object WindowsVideoActualRootUiFixture {
             "remoteCommentSubmitted" to JsonPrimitive(false), "nativeState" to safeState()))
         edt { requireNotNull(actualEditor().accessibleEditableText).setTextContents("") }
         check(privateScalePercent() == 125)
+        click("关闭详情")
+        await("actual detail close restores the same compact player") { edt {
+            all().none { it.accessibleName == "关闭详情" && visible(it) } && runCatching { videoScope("详情") }.isSuccess
+        } }
+        sameNative(); check(playing())
+        record("158-original-detail-pane-closed", mapOf("actualCloseControlUsed" to JsonPrimitive("关闭详情"),
+            "sameNativeSource" to JsonPrimitive(true), "remoteCommentSubmitted" to JsonPrimitive(false)))
     }
 
     // Opt-in test-only addition to the actual Main fixture; no preference setter or native command.
@@ -616,9 +677,122 @@ object WindowsVideoActualRootUiFixture {
         return namespace["enabled"]?.jsonPrimitive?.booleanOrNull
     }
 
+    private fun privateGlassDefaultMigrated(): Boolean {
+        val root = com.bilipai.desktop.DesktopLibrary.directoryForAccount(null).toAbsolutePath().normalize()
+        val privateRoot = Path.of(requireNotNull(System.getenv("LOCALAPPDATA"))).toAbsolutePath().normalize()
+        check(root.startsWith(privateRoot))
+        val file = root.resolve("plugin-settings.json")
+        if (!Files.exists(file, NOFOLLOW_LINKS)) return false
+        check(Files.isRegularFile(file, NOFOLLOW_LINKS) && !Files.isSymbolicLink(file))
+        val settings = Json.parseToJsonElement(Files.readString(file)).jsonObject["settings"]?.jsonObject ?: return false
+        return settings["windows_liquid_glass_default_v1"]?.jsonPrimitive?.booleanOrNull == true &&
+            settings["android_native_liquid_glass_enabled"]?.jsonPrimitive?.booleanOrNull == true
+    }
+
+    private fun glassControl(): AccessibleContext {
+        current(); check(routes.currentKey == BiliPaiNavKey.AppearanceSettings)
+        return all().filter { node -> hasLabel(node, "原版液态玻璃") && visible(node) &&
+            node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+            (node.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single()
+    }
+
+    private fun exerciseDefaultGlassAppearance() {
+        await("same actual Home before typed appearance content") { edt {
+            val frame = pendingCurrent() ?: return@edt false
+            frame.key == BiliPaiNavKey.Home && frame.pagerHosted && routes.currentKey == BiliPaiNavKey.MainHost
+        } }
+        actions.capture("glass-default-home-sidebar", edt { current() })
+        val prior = edt { current().serial }
+        edt { current(); check(routes.push(BiliPaiNavKey.AppearanceSettings)) }
+        val expectedStatus = "原版玻璃：渲染器可用，原版纯色背景已就绪"
+        await("actual appearance default glass ON and real renderer/background draw ready") {
+            privateGlassDefaultMigrated() && edt {
+                val frame = pendingCurrent() ?: return@edt false
+                if (frame.serial <= prior || frame.key != BiliPaiNavKey.AppearanceSettings || routes.currentKey != frame.key) return@edt false
+                runCatching {
+                    val switches = descendants(glassControl()).filter { it.accessibleRole == javax.accessibility.AccessibleRole.CHECK_BOX ||
+                        it.accessibleRole == javax.accessibility.AccessibleRole.TOGGLE_BUTTON }
+                    check(switches.size == 1)
+                    val checked = switches.single().accessibleStateSet.let {
+                        it.contains(AccessibleState.CHECKED) || it.contains(AccessibleState.SELECTED)
+                    }
+                    checked && all().count { it.accessibleName == expectedStatus && visible(it) } == 1
+                }.getOrDefault(false)
+            }
+        }
+        actions.capture("glass-default-appearance", edt { current() })
+        record("glass-default-appearance", mapOf("entryMechanism" to JsonPrimitive("ACTUAL_SAME_ROUTES_PUSH_ON_EDT"),
+            "naturalAppearanceNavigationAccepted" to JsonPrimitive(false), "actualDefaultGlassChecked" to JsonPrimitive(true),
+            "actualMigrationAndPreferenceDurable" to JsonPrimitive(true), "actualStatusText" to JsonPrimitive(expectedStatus),
+            "shaderCapabilityAvailable" to JsonPrimitive(true), "actualBackgroundDrawReady" to JsonPrimitive(true),
+            "configuredWallpaper" to JsonPrimitive(false), "fixtureTextureSeeded" to JsonPrimitive(false),
+            "nativeVideoUsedAsBackdrop" to JsonPrimitive(false), "naturalWallpaperUploadAccepted" to JsonPrimitive(false)))
+        val beforeBack = edt { current().serial }
+        ownedKey(edt { actualComposeInput() }, java.awt.event.KeyEvent.VK_ESCAPE, navigationTarget = BiliPaiNavKey.Home)
+        await("actual appearance Escape returns same Home") { edt {
+            val frame = pendingCurrent() ?: return@edt false
+            frame.serial > beforeBack && frame.key == BiliPaiNavKey.Home && frame.pagerHosted &&
+                routes.currentKey == BiliPaiNavKey.MainHost && routes.stack.toList() == listOf(BiliPaiNavKey.MainHost)
+        } }
+    }
+
+    private fun nvidiaDialogSurface(): Window? {
+        current()
+        val main = window()
+        val surfaces = listOf<Window>(main) + Window.getWindows().filterIsInstance<javax.swing.JDialog>()
+            .filter { it.isShowing && it.isDisplayable && ownedWindow(it) }
+        val matches = surfaces.filter { surface -> descendants(surface.accessibleContext).let { nodes ->
+            nodes.any { it.accessibleName == "NVIDIA 自动增强" && visible(it, surface) } &&
+                nodes.any { hasLabel(it, "NVIDIA 自动增强") &&
+                    it.accessibleName.orEmpty().contains("所有视频统一使用 NVIDIA 视频增强") &&
+                    visible(it, surface) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } &&
+                nodes.count { it.accessibleName == "完成" && visible(it, surface) &&
+                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+        } }
+        check(matches.size <= 1) { "More than one complete owned NVIDIA enhancement dialog" }
+        return matches.singleOrNull()
+    }
+
+    private fun nvidiaSurface(): Window {
+        current()
+        if (routes.currentKey is BiliPaiNavKey.VideoDetail)
+            return requireNotNull(nvidiaDialogSurface()) { "Video enhancement must use its complete actual owned dialog" }
+        check(routes.currentKey == BiliPaiNavKey.PlaybackSettings)
+        return window()
+    }
+
+    /** Same owned Skia screenshot API as the existing Main/Aicu fixtures; no global capture. */
+    private fun captureOwnedExtraSurface(id: String, surface: Window) {
+        current(); check(surface.isShowing && surface.isDisplayable && surface !== window() && ownedWindow(surface))
+        val nodes = descendants(surface.accessibleContext)
+        Files.writeString(report.resolve("$id-accessibility.tsv"), nodes.joinToString("\n") {
+            "${it.accessibleName}\t${it.accessibleRole}\t${it.accessibleStateSet}\t${it.accessibleAction?.accessibleActionCount ?: 0}"
+        }, CREATE_NEW, WRITE)
+        val type = Class.forName("org.jetbrains.skiko.SkiaLayer")
+        val layer = nativeComponents(surface).filter { type.isInstance(it) }.single()
+        val renderer = type.getMethod("getRenderApi").invoke(layer).toString()
+        check(renderer == "DIRECT3D")
+        surface.javaClass.methods.firstOrNull { it.name == "renderImmediately" && it.parameterCount == 0 }?.invoke(surface)
+        val bitmap = requireNotNull(type.getMethod("screenshot").invoke(layer))
+        try {
+            val imageType = Class.forName("org.jetbrains.skia.Image")
+            val companion = imageType.getField("Companion").get(null)
+            val image = companion.javaClass.getMethod("makeFromBitmap", bitmap.javaClass).invoke(companion, bitmap)
+            try {
+                val format = Class.forName("org.jetbrains.skia.EncodedImageFormat")
+                val data = requireNotNull(imageType.getMethod("encodeToData", format, Int::class.javaPrimitiveType,
+                    Int::class.javaPrimitiveType).invoke(image, format.getField("PNG").get(null), 100, 6))
+                try { Files.write(report.resolve("$id.png"), data.javaClass.getMethod("getBytes").invoke(data) as ByteArray, CREATE_NEW, WRITE) }
+                finally { data.javaClass.getMethod("close").invoke(data) }
+            } finally { imageType.getMethod("close").invoke(image) }
+        } finally { bitmap.javaClass.getMethod("close").invoke(bitmap) }
+        Files.writeString(report.resolve("$id-frame.txt"), "${current().key}\n${current().serial}\n$renderer\n", CREATE_NEW, WRITE)
+    }
+
     private fun nvidiaControl(): AccessibleContext {
         current()
-        val candidates = all().filter { hasLabel(it, "NVIDIA 自动增强") && visible(it) &&
+        val surface = nvidiaSurface()
+        val candidates = descendants(surface.accessibleContext).filter { hasLabel(it, "NVIDIA 自动增强") && visible(it, surface) &&
             it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
         check(candidates.size == 1) { "Expected exactly one visible NVIDIA control, got ${candidates.size}" }
         return candidates.single()
@@ -703,6 +877,12 @@ object WindowsVideoActualRootUiFixture {
     }
 
     private fun ensureNvidiaVisible() {
+        if (edt { routes.currentKey is BiliPaiNavKey.VideoDetail }) {
+            await("complete visible NVIDIA switch in the actual owned enhancement dialog") {
+                edt { runCatching { nvidiaControl() }.isSuccess }
+            }
+            return
+        }
         repeat(70) {
             if (edt { runCatching { nvidiaControl() }.isSuccess }) return
             wheelNvidiaPane(3); Thread.sleep(140)
@@ -714,14 +894,18 @@ object WindowsVideoActualRootUiFixture {
         ensureNvidiaVisible()
         edt {
             check(nvidiaChecked() != expected) { "NVIDIA toggle must actually change the setting" }
-            clickOwnedComposeMouse(window(), nvidiaControl())
+            clickOwnedComposeMouse(nvidiaSurface(), nvidiaControl())
         }
         await("actual NVIDIA switch and same private Store publish $expected") {
             privateNvidiaEnabled() == expected && edt { runCatching { nvidiaChecked() == expected }.getOrDefault(false) }
         }
+        val surface = edt { nvidiaSurface() }
         record(id, mapOf("actualChecked" to JsonPrimitive(expected), "actualDurableValue" to JsonPrimitive(expected),
+            "actualNvidiaSurfaceClass" to JsonPrimitive(surface.javaClass.name),
+            "actualNvidiaSurfaceKind" to JsonPrimitive(if (surface === edt { window() }) "inline-main" else "owned-dialog"),
             "inputMechanism" to JsonPrimitive("OWNED_COMPOSE_AWT_MOUSE_EVENT"), "fixturePreferenceWrite" to JsonPrimitive(false)))
         actions.capture(id, edt { current() })
+        if (surface !== edt { window() }) edt { captureOwnedExtraSurface("$id-dialog", surface) }
     }
 
     private fun openNvidiaSettingsTyped() {
@@ -781,8 +965,102 @@ object WindowsVideoActualRootUiFixture {
         backFromNvidiaSettings()
     }
 
+    private fun playerMenuSurface(): Window? {
+        current()
+        val main = window()
+        val surfaces = listOf<Window>(main) + Window.getWindows().filter { it !== main &&
+            it.isShowing && it.isDisplayable && ownedWindow(it) &&
+            (it is javax.swing.JWindow || it is javax.swing.JDialog) }
+        val matches = surfaces.filter { surface -> descendants(surface.accessibleContext).count { node ->
+            node.accessibleName == "简介、分P与播放设置" && visible(node, surface) &&
+                node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                (node.accessibleAction?.accessibleActionCount ?: 0) == 1
+        } == 1 }
+        check(matches.size <= 1) { "More than one owned complete player operation menu" }
+        return matches.singleOrNull()
+    }
+
+    private fun exercisePlayerMenu() {
+        sameNative(); check(playing())
+        val before = actualPlayer.state.value.positionSeconds
+        click("更多播放操作")
+        await("actual visible player operation menu") { edt { playerMenuSurface() != null } }
+        val surface = edt { requireNotNull(playerMenuSurface()) }
+        actions.capture("112-owned-player-menu", edt { current() })
+        if (surface !== edt { window() }) edt { captureOwnedExtraSurface("112-owned-player-menu-popup", surface) }
+        edt {
+            val item = descendants(surface.accessibleContext).filter { node ->
+                node.accessibleName == "简介、分P与播放设置" && visible(node, surface) &&
+                    node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                    (node.accessibleAction?.accessibleActionCount ?: 0) == 1
+            }.single()
+            clickOwnedComposeMouse(surface, item)
+        }
+        await("actual menu item opens the right detail pane and closes its menu") { edt {
+            playerMenuSurface() == null && runCatching { detailPaneScope() }.isSuccess
+        } }
+        Thread.sleep(700)
+        sameNative(); check(playing())
+        val after = actualPlayer.state.value.positionSeconds
+        check(after > before + .25 && actualPlayer.state.value.volume == 0.0 && actualPlayer.state.value.muted)
+        record("112-owned-player-menu", mapOf("actualOpenControlUsed" to JsonPrimitive("更多播放操作"),
+            "actualMenuItemUsed" to JsonPrimitive("简介、分P与播放设置"), "actualMenuItemWhollyVisible" to JsonPrimitive(true),
+            "actualMenuSurfaceClass" to JsonPrimitive(surface.javaClass.name),
+            "actualMenuSurfaceKind" to JsonPrimitive(if (surface === edt { window() }) "inline-main" else "owned-popup"),
+            "sameNativeSource" to JsonPrimitive(true), "clockBefore" to JsonPrimitive(before), "clockAfter" to JsonPrimitive(after),
+            "volumeAndMutePreserved" to JsonPrimitive(true)))
+        click("关闭详情")
+        await("actual menu detail close restores compact player") { edt {
+            // Compose may publish removed-panel semantics before restoring the sibling bar/header tree.
+            // Require the same real native owner plus the complete original controls before the next click.
+            sameNative()
+            all().none { it.accessibleName == "关闭详情" && visible(it) } &&
+                runCatching { videoScope("NVIDIA 增强详情") }.isSuccess
+        } }
+        sameNative(); check(playing())
+    }
+
+    /** Read only the already initialized, owned Compose 1.12.1 scene's attached input layers. */
+    private fun actualMainSceneLayers(): List<Any> {
+        check(EventQueue.isDispatchThread()); current()
+        fun fixedField(subject: Any, ownerClass: String, name: String): Any? {
+            check(subject.javaClass.name == ownerClass) { "Unexpected actual Compose owner: ${subject.javaClass.name}" }
+            val field = subject.javaClass.getDeclaredField(name)
+            check(field.trySetAccessible())
+            return field.get(subject)
+        }
+        val panel = requireNotNull(fixedField(window(), "androidx.compose.ui.awt.ComposeWindow", "composePanel"))
+        val container = requireNotNull(fixedField(panel, "androidx.compose.ui.awt.ComposeWindowPanel", "_composeContainer"))
+        val mediator = requireNotNull(fixedField(container, "androidx.compose.ui.scene.ComposeContainer", "mediator"))
+        val sceneLazy = fixedField(mediator, "androidx.compose.ui.scene.ComposeSceneMediator", "scene\$delegate") as Lazy<*>
+        check(sceneLazy.isInitialized()) { "Actual Main scene must already be initialized" }
+        val scene = requireNotNull(sceneLazy.value)
+        val platformLayers = (fixedField(container, "androidx.compose.ui.scene.ComposeContainer", "layers") as List<*>)
+            .map { requireNotNull(it) }
+        val canvasLayers = when (scene.javaClass.name) {
+            "androidx.compose.ui.scene.CanvasLayersComposeSceneImpl" ->
+                (fixedField(scene, "androidx.compose.ui.scene.CanvasLayersComposeSceneImpl", "layers") as List<*>)
+                    .map { requireNotNull(it) }
+            "androidx.compose.ui.scene.PlatformLayersComposeSceneImpl" -> emptyList()
+            else -> error("Unexpected actual Main scene: ${scene.javaClass.name}")
+        }
+        return platformLayers + canvasLayers
+    }
+
     private fun exerciseMainNvidiaControls() {
-        sameNative(); ensureNvidiaVisible()
+        val beforeDialogLayers = edt { sameNative(); check(nvidiaDialogSurface() == null); actualMainSceneLayers() }
+        sameNative(); click("NVIDIA 增强详情")
+        await("complete actual owned NVIDIA enhancement dialog") { edt { nvidiaDialogSurface() != null } }
+        val openedDialogLayers = edt { actualMainSceneLayers() }
+        check(openedDialogLayers.size > beforeDialogLayers.size &&
+            beforeDialogLayers.all { before -> openedDialogLayers.any { it === before } }) {
+            "Actual NVIDIA dialog must add its own Main scene input layer"
+        }
+        record("nvidia-video-dialog-open", mapOf("actualControlUsed" to JsonPrimitive("NVIDIA 增强详情"),
+            "sameNativeSource" to JsonPrimitive(true), "completeDialogAndOriginalSwitch" to JsonPrimitive(true),
+            "actualMainSceneLayerCountBefore" to JsonPrimitive(beforeDialogLayers.size),
+            "actualMainSceneLayerCountOpen" to JsonPrimitive(openedDialogLayers.size)))
+        ensureNvidiaVisible()
         check(privateNvidiaEnabled() == true && edt { nvidiaChecked() })
         toggleNvidia(false, "nvidia-video-controls-off")
         await("OFF retires current source enhancement without stopping media") {
@@ -814,7 +1092,25 @@ object WindowsVideoActualRootUiFixture {
             "vsrPositiveRequiredByThisUiTest" to JsonPrimitive(false), "hdrPositiveRequiredByThisUiTest" to JsonPrimitive(false),
             "configurationSharedAcrossSettingsAndControls" to JsonPrimitive(true)))
         actions.capture("nvidia-main-native-output", edt { current() })
-        repeat(20) { wheelNvidiaPane(-5); Thread.sleep(35) }
+        edt {
+            val surface = nvidiaSurface()
+            val done = descendants(surface.accessibleContext).filter { node -> node.accessibleName == "完成" &&
+                visible(node, surface) && node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                (node.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single()
+            clickOwnedComposeMouse(surface, done)
+        }
+        await("actual NVIDIA dialog input-layer retirement restores current ordinary video") { edt {
+            sameNative()
+            val currentLayers = actualMainSceneLayers()
+            nvidiaDialogSurface() == null && currentLayers.size == beforeDialogLayers.size &&
+                currentLayers.all { layer -> beforeDialogLayers.any { it === layer } } &&
+                runCatching { videoScope("详情") }.isSuccess
+        } }
+        sameNative(); check(playing()); check(privateNvidiaEnabled() == true)
+        record("nvidia-video-dialog-closed", mapOf("actualControlUsed" to JsonPrimitive("完成"),
+            "sameNativeSource" to JsonPrimitive(true), "actualDurableValue" to JsonPrimitive(true),
+            "actualMainSceneInputLayersRestored" to JsonPrimitive(true),
+            "actualMainSceneLayerCountRestored" to JsonPrimitive(edt { actualMainSceneLayers().size })))
     }
 
     private fun exercise(replay: Boolean) {
@@ -839,6 +1135,7 @@ object WindowsVideoActualRootUiFixture {
         val initialPlacement = edt { (window() as ComposeWindow).placement }
         check(initialPlacement == WindowPlacement.Floating)
         clockAndCapture("110-ordinary-playing")
+        exercisePlayerMenu()
         if (System.getProperty("bilipai.validation.nvidiaInput") == "true") exerciseMainNvidiaControls()
         val beforeFullscreen = edt { current().serial }
         click("全屏")
@@ -911,6 +1208,7 @@ object WindowsVideoActualRootUiFixture {
                     actions.awaitActualHealth(health)
                     if (System.getProperty("bilipai.validation.nvidiaInput") == "true") {
                         check(replay != null) { "NVIDIA UI proof requires the private local replay" }
+                        exerciseDefaultGlassAppearance()
                         exerciseNoSourceNvidiaSettings()
                     }
                     if (replay != null) enterVideoThroughActualSearch(replay)
