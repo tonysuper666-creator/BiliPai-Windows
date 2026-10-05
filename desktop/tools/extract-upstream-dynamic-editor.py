@@ -5,6 +5,7 @@ Source drift rejects the build by manifest LF hash and exact fixed Git blob.
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from v029_comment_time import apply as apply_original_comment_time
+from v029_reply_renderer import rich_link_policy as advance_reply_link_policy
 from pathlib import Path
 import hashlib, importlib.util, json, sys
 sys.dont_write_bytecode = True
@@ -85,6 +86,9 @@ import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
 '''+body,'DesktopOriginalDynamicInlineCommentHeader.kt')
     p=BASE+'feature/video/ui/components/ReplyComponents.kt';s=source_texts[p]
     s, time_selection = apply_original_comment_time(repo, p, s)
+    s, link_selection = advance_reply_link_policy(repo, s)
+    (output / 'v029-reply-link-selection.json').write_text(
+        json.dumps(link_selection, ensure_ascii=True, indent=2) + '\n', encoding='utf8')
     (output / 'v029-comment-time-selection.json').write_text(
         json.dumps(time_selection, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     # Exact pure rich-text/layout/model policies needed by the future ReplyItemView

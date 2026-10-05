@@ -1041,6 +1041,7 @@ val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-editor.py", "tools/extract-upstream-dynamic-reply-protocol.py", "upstream-sources.json", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.file("tools/v029_comment_time.py")
+    inputs.file("tools/v029_reply_renderer.py")
     inputs.dir("upstream-slices/v029-comment-time")
     inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -1071,6 +1072,7 @@ val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-reply.py", "tools/extract-upstream-plugins.py",
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.file("tools/v029_comment_time.py")
+    inputs.file("tools/v029_reply_renderer.py")
     inputs.dir("upstream-slices/v029-comment-time")
     inputs.file("tools/v021_comment_renderer.py")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
