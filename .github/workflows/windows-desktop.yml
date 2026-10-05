@@ -221,6 +221,8 @@ jobs:
           name: Windows-native-player-smoke-evidence
           path: |
             desktop/build/reports/*/native-player-smoke.*
+            desktop/build/reports/*/native-player-smoke*.png
+            desktop/build/reports/*/native-player-smoke*.json
             desktop/build/reports/*/native-overlay-before.png
             desktop/build/reports/*/native-overlay-failed.png
             desktop/build/reports/*/native-overlay-failed-state.txt
@@ -257,6 +259,8 @@ jobs:
           path: |
             desktop/build/release-gate.json
             desktop/build/reports/release-gate-*/native-player-smoke.*
+            desktop/build/reports/release-gate-*/native-player-smoke*.png
+            desktop/build/reports/release-gate-*/native-player-smoke*.json
             desktop/build/reports/updater-smoke-*/updater-smoke.json
           if-no-files-found: error
       - name: Upload optional installer

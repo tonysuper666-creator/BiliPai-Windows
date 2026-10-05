@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "hashNormalization": "raw",
+  "purpose": "Fixed original brand-motion source/resource archive. WELCOME is archival-only, never a runtime resource. The canonical v025 catalog is unchanged.",
+  "files": [
+    {
+      "path": "brand-motion/src/main/java/com/android/purebilibili/core/ui/BlueSnowMaidAnimation.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "5e807b4c72ce72722b0b24ba95aa0a5f88c45dc7",
+      "bytes": 11105,
+      "sha256Bytes": "459d914d7a32ef73cf87c13c2b3f0f05e42c5e03eff9078cfad89a1495fee1f3",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/java/com/android/purebilibili/core/ui/BlueSnowMaidAnimation.kt"
+    },
+    {
+      "path": "brand-motion/src/main/java/com/android/purebilibili/core/ui/motion/ReduceMotion.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "9a0295d9aa9e3460b4eac30f3e0d11a90d96dcd9",
+      "bytes": 1919,
+      "sha256Bytes": "c866be7aef5df1f8b5bd9e955c096677bd83cc8dd202c7ef54da13e90cecd342",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/java/com/android/purebilibili/core/ui/motion/ReduceMotion.kt"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_clean_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "8c9013960e061bc83e801c6a9ca158ec694f9368",
+      "bytes": 265883,
+      "sha256Bytes": "070f46f2e8fb2cef9c6bd6f69134cd18a35d23b5d5fedc825f47ba7f7118cc5f",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_clean_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_cleaning_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "b6ff425529c6842fabce980847967343dbe2ef2f",
+      "bytes": 284005,
+      "sha256Bytes": "a5d33af4736fb49894166460891b481035718966d748d0a29bd67fe88aa7cbe2",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_cleaning_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_coin_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "e24556060062634347fdc6e8777ec5a19242d5c4",
+      "bytes": 345538,
+      "sha256Bytes": "c6697462dc1fdaa4d89ee6f52cfc403be276d09ae64a853ded9e1bf1078927ba",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_coin_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_dislike_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "bb9bb4482e08c653bc84893ca4dd1e037d893cce",
+      "bytes": 334295,
+      "sha256Bytes": "6926a6feab28480c6407176b0a450afa86f9429d1b0baef9e4a2ca50235ed164",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_dislike_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_download_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "2c211455c64036cb07183982d52f01acc9cab9da",
+      "bytes": 339191,
+      "sha256Bytes": "d70e3a96571753a169fdd6e757095b85a0067ddcc374c4371d63d0cd870be998",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_download_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_empty_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "b17abd73338b45a6c7666c7b0eb972f3aad4c5f8",
+      "bytes": 345329,
+      "sha256Bytes": "eca102d1aed331897c70718461efb26f93fc2cdecf260c21a310216e46f5e73d",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_empty_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_favorite_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "2291053a10a9ea0e657f3eaf00f00530af4b9b77",
+      "bytes": 335862,
+      "sha256Bytes": "911bd4e5bae0a0fabd623ad0f2525f846be264fb7ce0eba9184e35c9d8098db8",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_favorite_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_follow_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "a86a993ab8c08f8f773bed3bc9c7d9dac60206ab",
+      "bytes": 345931,
+      "sha256Bytes": "34bd5cb465d5c44ff10fcab66a1e13fb98060daee4a3c98df711e1e22e9a93d8",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_follow_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_retry_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "3be17d0b712c1c5d5bcdc8db7c63d6100509a2c5",
+      "bytes": 345913,
+      "sha256Bytes": "f5a55f6bc600ae77c90f21220c0e96449db9961bbb51534697602d6e66bee6a2",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_retry_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_search_empty_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "9fb79c87e71b4d42b3ca56d6419e48a331c3624e",
+      "bytes": 355956,
+      "sha256Bytes": "790f83e1001edced37b3a577b1034ed0de7c21ca51914284b160334807074354",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_search_empty_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_share_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "697b5722c48842c4d791b6ebe7ab86050e126060",
+      "bytes": 350403,
+      "sha256Bytes": "b05e3e6d7edb06de6d8f61c42cf5f6f335a5d787bb91dfe6d8f8425b5565595d",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_share_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "fb7682f9fc33c49b568ec139aa0a433ce6566276",
+      "bytes": 312825,
+      "sha256Bytes": "4552cb29d6afb96c0a8f34bb6de4e61348d026f2e619031ee91886ceb09bd6b9",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_triple_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "99c14c92fe773f80c4a27750c77ff0e93e7724f2",
+      "bytes": 263847,
+      "sha256Bytes": "43b595eacce5b614fb4cb88d795770509df40777cfe907e7984f236fbbdba8f9",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_triple_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/drawable-nodpi/bilipai_maid_unfollow_static.png",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "16bf249562969bf9bccb0e50a8a4ad0464a3f87d",
+      "bytes": 335013,
+      "sha256Bytes": "69003236e78a64b73954b8858d24d9bb4402d0a04e979efb916ad2f804ec1e18",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/drawable-nodpi/bilipai_maid_unfollow_static.png"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_clean_complete.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "4420ca47b1bc1b822512016165188153bc7ef609",
+      "bytes": 21138,
+      "sha256Bytes": "e95aedfbb087cd6a823220b2d4d7709bfeeaf0d62a3b2b9504ba8c170eca0540",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_clean_complete.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_cleaning.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "cc2a33ff64535b0bf06af8418f12cf4b0f59b757",
+      "bytes": 11263,
+      "sha256Bytes": "b0ee249303e1168981c413efef893f4f9473a123c48516be25832accd30fe919",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_cleaning.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_coin_success.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "2cc126f260eaea7152ea345f2a24bbd5f8369627",
+      "bytes": 9852,
+      "sha256Bytes": "c1ead46a0d661a87cb28aee378aafdf215391ba1cc8983b81f008f69f5948c0c",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_coin_success.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_dislike_confirmed.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "1867e0fd2a5a4b1e1e41118df6aadbeadf89b291",
+      "bytes": 10622,
+      "sha256Bytes": "5e860b1495823cb4afd503301cd65ff183c9011c91d1fd20ae82959ca30ef667",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_dislike_confirmed.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_download_complete.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "56f128bdb1e11ab83624c8eb0204b620f27a445f",
+      "bytes": 13911,
+      "sha256Bytes": "bd4ddd7fc3abb6b3ae0c9db487ba1cf844036dcf1b2047616409e9a463fad5a8",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_download_complete.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_empty.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "797c50a9abeb3d5f21da3120b5a174612be13dd8",
+      "bytes": 7887,
+      "sha256Bytes": "c79e76e412987b36c918f971e65297ab1e0a6a16b9b93194babe9fc7f99f1479",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_empty.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_favorite_saved.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "d9dcd079414d7c6fd970301257069af6123dfc7d",
+      "bytes": 11862,
+      "sha256Bytes": "e2d954c7d316810447b6c45e157daf4ad3a2ef18d0ba0e3951ae438743b47ff2",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_favorite_saved.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_follow_success.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "0495c5600f13c2365742f692e8e9ee137d834ccf",
+      "bytes": 13793,
+      "sha256Bytes": "998a2402b4813e4b9fd4b99392ba020b907895c7dc18c721ed0d8f310adefe14",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_follow_success.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_retry.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "03ce0ae2a4e98e6fcb529671975f6a43b6f09b65",
+      "bytes": 13066,
+      "sha256Bytes": "27a7563f144d8115525b82fc9b4785ea6c411b72f7e76726dbb45a9cab036694",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_retry.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_search_empty.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "68829dc4e3a8112f00b778ae5c772e75aaa43e09",
+      "bytes": 11423,
+      "sha256Bytes": "406e52b79263b063e1fbd7bb68db2237f4a89766ff80efb933bf6ea720994505",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_search_empty.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_share_ready.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "4732faeaf9ed9a7cd69f657b0e4d02ed18fa7c5f",
+      "bytes": 13157,
+      "sha256Bytes": "6423129bc67e875ad189663c7f3cfa262cb64e563ff6989f964b4378dd9bfc32",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_share_ready.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_triple_success.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "89862552fa70a02aade580c5b698211c7f6fb86f",
+      "bytes": 16166,
+      "sha256Bytes": "cfb3373e6abcf8fbea3c0c5da2b4e904c2c353a425df2067cff216fb88153009",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_triple_success.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_unfollow_complete.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "429761bc4c45a943db3f2da0143769114ba5e060",
+      "bytes": 6697,
+      "sha256Bytes": "bc4b03766e01163e2b4c696de1b5aaa87982829dd8f31fce51236b038326f164",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_unfollow_complete.json"
+    },
+    {
+      "path": "brand-motion/src/main/res/raw/bilipai_maid_welcome.json",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "d01059e6a01317112fd8e1058a4bdc4a9dcc2911",
+      "bytes": 19135,
+      "sha256Bytes": "74283d23c0a30cbd02710b93b75d2f0ca52ed25f35a456ea9e9cdf6f7fcbc807",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/brand-motion/src/main/res/raw/bilipai_maid_welcome.json"
+    }
+  ]
+}

@@ -16,6 +16,8 @@ import javax.imageio.ImageIO
 import javax.swing.JFrame
 import javax.swing.SwingUtilities
 import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.floor
 import kotlin.math.sin
 
 /** An opt-in native integration smoke test; no internet, account, or ffmpeg needed. */
@@ -360,6 +362,7 @@ object PlayerSelfTest {
     private class NativeVisibilityTrace {
         var attempts = 0
         var lastGeometry: Map<String, String> = emptyMap()
+        var lastPixelCapture: Map<String, String> = emptyMap()
 
         fun observe(player: MpvPlayer, window: JFrame, elapsedMillis: Long) {
             check(SwingUtilities.isEventDispatchThread())
@@ -402,6 +405,7 @@ object PlayerSelfTest {
         fun put(name: String, value: Any?) { checks["failureObservation.$name"] = value?.toString()?.take(512) ?: "unavailable" }
         put("geometryAttempts", trace.attempts)
         trace.lastGeometry.forEach { (key, value) -> put("geometry.$key", value) }
+        trace.lastPixelCapture.forEach { (key, value) -> put("pixels.$key", value) }
         val state = player.state.value
         put("state.ready", state.ready); put("state.loading", state.loading)
         put("state.paused", state.paused); put("state.nativePaused", state.nativePaused); put("state.ended", state.ended)
@@ -432,6 +436,12 @@ object PlayerSelfTest {
     private fun waitForRenderedVideo(player: MpvPlayer, window: JFrame, screenshot: File, trace: NativeVisibilityTrace): Boolean {
         val robot = Robot()
         val deadline = System.nanoTime() + 5_000_000_000L
+        val context = File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-context.png")
+        val firstRejected = File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-first-rejected.png")
+        val firstRejectedObservations = File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-first-rejected.json")
+        val observations = File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-capture.json")
+        firstRejected.delete()
+        firstRejectedObservations.delete()
         var failure = "The native test window did not become visible on the desktop."
         while (System.nanoTime() < deadline) {
             var bounds: Pair<Rectangle, Rectangle>? = null
@@ -451,17 +461,96 @@ object PlayerSelfTest {
                 trace.observe(player, window, (System.nanoTime() - (deadline - 5_000_000_000L)) / 1_000_000L)
             }
             bounds?.let { (windowBounds, surfaceBounds) ->
-                ImageIO.write(robot.createScreenCapture(windowBounds), "png", screenshot)
+                val beforeSampleNanos = System.nanoTime()
+                val beforeState = player.state.value
+                val beforeOutput = player.videoOutput.value
+                val captureStartNanos = System.nanoTime()
+                val surfaceImage = robot.createScreenCapture(surfaceBounds)
+                val captureEndNanos = System.nanoTime()
+                val afterState = player.state.value
+                val afterOutput = player.videoOutput.value
+                val afterSampleNanos = System.nanoTime()
+                // This later full-window image supplies context, not a same-frame proof.
+                ImageIO.write(robot.createScreenCapture(windowBounds), "png", context)
+                fun rect(value: Rectangle) = "${value.x},${value.y},${value.width},${value.height}"
+                val fields = linkedMapOf(
+                    "image" to screenshot.name,
+                    "imageKind" to "physical surface; exactly the BufferedImage checked below",
+                    "contextImage" to context.name,
+                    "contextTiming" to "separate later Robot capture; not the validated frame",
+                    "nativeStateTiming" to "near cached StateFlow reads; not same-instant native property ACKs, nor atomic with pixels or each other",
+                    "windowBoundsAwtLogical" to rect(windowBounds),
+                    "surfaceBoundsAwtLogical" to rect(surfaceBounds),
+                    "surfaceImagePixels" to "${surfaceImage.width},${surfaceImage.height}",
+                    "focusedNearCapture" to focused.toString(),
+                    "beforeSampleNanos" to beforeSampleNanos.toString(),
+                    "captureStartNanos" to captureStartNanos.toString(),
+                    "captureEndNanos" to captureEndNanos.toString(),
+                    "afterSampleNanos" to afterSampleNanos.toString(),
+                    "beforePositionSeconds" to beforeState.positionSeconds.toString(),
+                    "afterPositionSeconds" to afterState.positionSeconds.toString(),
+                    "beforeNativePaused" to beforeState.nativePaused.toString(),
+                    "afterNativePaused" to afterState.nativePaused.toString(),
+                    "beforeOutputSourceVersion" to beforeOutput.sourceVersion.toString(),
+                    "afterOutputSourceVersion" to afterOutput.sourceVersion.toString(),
+                    "beforeViewport" to beforeOutput.viewport.toString(),
+                    "afterViewport" to afterOutput.viewport.toString(),
+                )
                 try {
-                    checkRenderedVideo(robot.createScreenCapture(surfaceBounds))
+                    check(beforeOutput.sourceVersion > 0 && beforeOutput.sourceVersion == afterOutput.sourceVersion &&
+                        beforeOutput.inputWidth == WIDTH && beforeOutput.inputHeight == HEIGHT &&
+                        afterOutput.inputWidth == WIDTH && afterOutput.inputHeight == HEIGHT &&
+                        beforeOutput.viewport != null && beforeOutput.viewport == afterOutput.viewport) {
+                        "Native fixture viewport was unavailable or changed across the physical capture."
+                    }
+                    val integrity = saveCheckedSurfaceCapture(surfaceImage, screenshot, requireNotNull(beforeOutput.viewport))
+                    fields["validated"] = "true"
+                    fields["cyanPixels"] = integrity.cyanPixels.toString()
+                    fields["pinkPixels"] = integrity.pinkPixels.toString()
+                    integrity.bands.forEachIndexed { index, band -> fields["backgroundBand.$index"] = band.toString() }
+                    fields["earlierRejectedCapture"] = firstRejected.exists().toString()
+                    if (firstRejected.exists()) fields["firstRejectedImage"] = firstRejected.name
+                    writePixelCaptureObservations(observations, fields)
+                    trace.lastPixelCapture = fields
                     return focused
                 } catch (notRendered: IllegalStateException) {
                     failure = notRendered.message ?: "The native video surface was not rendered."
+                    fields["validated"] = "false"
+                    fields["failure"] = failure
+                    fields["firstRejectedImage"] = firstRejected.name
+                    if (!firstRejected.exists()) {
+                        ImageIO.write(surfaceImage, "png", firstRejected)
+                        writePixelCaptureObservations(firstRejectedObservations, fields)
+                    }
+                    writePixelCaptureObservations(observations, fields)
+                    trace.lastPixelCapture = fields
                 }
             }
             Thread.sleep(100)
         }
         error("Timed out waiting for visible native video rendering: $failure")
+    }
+
+    private fun writePixelCaptureObservations(file: File, fields: Map<String, String>) {
+        file.writeText(fields.entries.joinToString(prefix = "{\n", postfix = "\n}\n", separator = ",\n") {
+            "  ${jsonString(it.key)}: ${jsonString(it.value)}"
+        })
+    }
+
+    internal data class FixtureBackgroundBand(
+        val physicalBounds: Rectangle,
+        val fillFraction: Double,
+        val minimumRowFill: Double,
+        val minimumColumnFill: Double,
+    )
+
+    internal data class RenderedFixtureIntegrity(val cyanPixels: Int, val pinkPixels: Int, val bands: List<FixtureBackgroundBand>)
+
+    /** The exact same pixels checked here are encoded into the published surface PNG. No second capture. */
+    internal fun saveCheckedSurfaceCapture(image: BufferedImage, screenshot: File, viewport: PlayerVideoViewport): RenderedFixtureIntegrity {
+        val integrity = checkRenderedFixtureSurface(image, viewport)
+        check(ImageIO.write(image, "png", screenshot)) { "No PNG encoder for validated native surface." }
+        return integrity
     }
 
     internal fun checkRenderedVideo(image: BufferedImage) {
@@ -475,6 +564,53 @@ object PlayerSelfTest {
         check(cyanPixels >= 100 && pinkPixels >= 100) {
             "Decoded video was not visible on the native Windows surface (cyan=$cyanPixels, pink=$pinkPixels)."
         }
+    }
+
+    /** Additional fixture-only spatial gate; every physical caller must supply actual native OSD bounds. */
+    internal fun checkRenderedFixtureSurface(image: BufferedImage, viewport: PlayerVideoViewport): RenderedFixtureIntegrity {
+        checkRenderedVideo(image)
+        // Diagnostic counts only: acceptance above remains the unchanged existing checker.
+        var cyanPixels = 0
+        var pinkPixels = 0
+        for (y in 0 until image.height) for (x in 0 until image.width) {
+            val color = Color(image.getRGB(x, y))
+            if (color.blue > 180 && color.green > 135 && color.red < 135) cyanPixels++
+            if (color.red > 180 && color.green < 145 && color.blue in 100..200) pinkPixels++
+        }
+        // Actual createFixtureFrame geometry: the moving circle occupies y45..88,
+        // labels end at y135, and the progress block starts at y156. These two
+        // static interior background strips are untouched in every encoded frame.
+        // Native OSD bounds (including crop/pan margins) supply the transform; no
+        // screenshot-aspect or current-position inference selects the regions.
+        val transform = viewport.sourceToPhysicalTransform(image.width, image.height, WIDTH, HEIGHT)
+        val bands = listOf(Rectangle(4, 98, WIDTH - 8, 12), Rectangle(4, 143, WIDTH - 8, 8)).map { sourceBand ->
+            val mapped = transform.createTransformedShape(sourceBand).bounds2D
+            val left = maxOf(0, ceil(mapped.minX).toInt() + 1)
+            val top = maxOf(0, ceil(mapped.minY).toInt() + 1)
+            val right = minOf(image.width, floor(mapped.maxX).toInt() - 1)
+            val bottom = minOf(image.height, floor(mapped.maxY).toInt() - 1)
+            check(right - left >= 8 && bottom - top >= 2) { "Native fixture background strip was not sufficiently visible." }
+            val rows = IntArray(bottom - top)
+            val columns = IntArray(right - left)
+            var good = 0
+            for (y in top until bottom) for (x in left until right) {
+                val color = Color(image.getRGB(x, y))
+                // Interior MJPEG/color-conversion tolerance. Pure black is 38
+                // blue levels from the source background and cannot be accepted.
+                if (abs(color.red - 24) <= 18 && abs(color.green - 27) <= 18 && abs(color.blue - 38) <= 18) {
+                    good++; rows[y - top]++; columns[x - left]++
+                }
+            }
+            val width = right - left
+            val height = bottom - top
+            val band = FixtureBackgroundBand(Rectangle(left, top, width, height), good.toDouble() / (width * height),
+                rows.minOrNull()!!.toDouble() / width, columns.minOrNull()!!.toDouble() / height)
+            check(band.fillFraction >= 0.98 && band.minimumRowFill >= 0.95 && band.minimumColumnFill >= 0.95) {
+                "Native fixture background was discontinuous: $band"
+            }
+            band
+        }
+        return RenderedFixtureIntegrity(cyanPixels, pinkPixels, bands)
     }
 
     private fun waitFor(player: MpvPlayer, operation: String, allowError: Boolean = false, condition: (PlayerState) -> Boolean) {
@@ -508,9 +644,10 @@ object PlayerSelfTest {
     private const val FPS = 20
     private const val SECONDS = 10
 
-    private fun createVideo(file: File) {
-        val frames = List(FPS * SECONDS) { index ->
-            val image = BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB)
+    /** Same generated MJPEG frame; exposed only for headless image-contract tests. */
+    internal fun createFixtureFrame(index: Int): BufferedImage {
+        require(index in 0 until FPS * SECONDS)
+        return BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB).also { image ->
             image.createGraphics().apply {
                 color = Color(24, 27, 38); fillRect(0, 0, WIDTH, HEIGHT)
                 color = Color(250, 106, 151); fillRect(0, HEIGHT - 24, WIDTH * index / (FPS * SECONDS), 24)
@@ -521,6 +658,12 @@ object PlayerSelfTest {
                 drawString("DASH test: ${index / FPS}.${index % FPS * 5}s", 18, 135)
                 dispose()
             }
+        }
+    }
+
+    private fun createVideo(file: File) {
+        val frames = List(FPS * SECONDS) { index ->
+            val image = createFixtureFrame(index)
             ByteArrayOutputStream().also { ImageIO.write(image, "jpg", it) }.toByteArray()
         }
         val avih = leInts(1_000_000 / FPS, 0, 0, 0x10, frames.size, 0, 1, 64 * 1024, WIDTH, HEIGHT, 0, 0, 0, 0)

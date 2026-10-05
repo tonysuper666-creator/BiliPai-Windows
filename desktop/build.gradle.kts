@@ -3119,3 +3119,23 @@ tasks.register<JavaExec>("windowsVideoInteractionRootUiSmoke") {
             providers.gradleProperty("rootValidationToken").get(), providers.gradleProperty("rootValidationVideo").get(), "replay")
     }
 }
+// Fixed original brand identities/resources; Android BlueSnow/ReduceMotion remain raw references only.
+val extractOriginalBrandMotion by tasks.registering(Exec::class) {
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-brand-motion.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-brand-motion").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-brand-motion.py")
+    inputs.dir("upstream-slices/v029-brand-motion")
+    outputs.dir(layout.buildDirectory.dir("generated/original-brand-motion"))
+}
+// Test runtime uses the main classpath resources; no duplicate test/raw resource root.
+kotlin.sourceSets.named("main") {
+    kotlin.srcDir(layout.buildDirectory.dir("generated/original-brand-motion/kotlin"))
+}
+sourceSets.named("main") {
+    resources.srcDir(layout.buildDirectory.dir("generated/original-brand-motion/resources"))
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalBrandMotion) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalBrandMotion) }
+tasks.named("processResources") { dependsOn(extractOriginalBrandMotion) }
