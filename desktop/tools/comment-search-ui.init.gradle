@@ -1,0 +1,67 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
+// Private manual acceptance only. The original JavaExec/Main/args stay intact.
+gradle.projectsEvaluated {
+    def ui = rootProject.tasks.named('windowsVideoLocalReplayUiSmoke', JavaExec)
+    def receipt = new File(rootProject.providers.gradleProperty('commentSearchRuntime').get())
+    def phase = rootProject.providers.gradleProperty('commentSearchPhase').get()
+    if (!(phase in ['prepare', 'run'])) throw new GradleException('Unknown comment-search phase')
+    ui.configure { systemProperty('bilipai.validation.commentSearchInput', 'true') }
+    def expectedJava = new File(System.getenv('JAVA_HOME'), 'bin/java.exe').canonicalFile
+    // Capture the original lazy model, without resolving it in projectsEvaluated.
+    def originalClasspath = ui.get().classpath
+    def snapshot = { JavaExec task ->
+        // Every invocation is a same-project task action holding its project lock.
+        def java = task.javaLauncher.get().executablePath.asFile
+        if (java.canonicalFile != expectedJava)
+            throw new GradleException('Original Main must use the explicitly selected fixed JDK')
+        def originalPaths = originalClasspath.files.collect { it.absolutePath }
+        def effectivePaths = task.classpath.files.collect { it.absolutePath }
+        if (originalPaths.isEmpty() || effectivePaths != originalPaths)
+            throw new GradleException('Effective Main runtime differs from the original task model')
+        [schema: 1, task: task.name, mainClass: task.mainClass.get(),
+         classpath: originalPaths, javaExecutable: java.absolutePath,
+         applicationResources: task.systemProperties['compose.application.resources.dir']]
+    }
+    if (phase == 'prepare') {
+        rootProject.tasks.register('prepareCommentSearchUiRuntime') {
+            dependsOn(ui.get().taskDependencies.getDependencies(ui.get()))
+            doLast {
+                if (receipt.exists()) throw new GradleException('Runtime receipt already exists')
+                receipt.text = JsonOutput.prettyPrint(JsonOutput.toJson(snapshot(ui.get()))) + '\n'
+            }
+        }
+    } else {
+        if (!receipt.isFile()) throw new GradleException('Prepared runtime receipt missing')
+        def prepared = new JsonSlurper().parse(receipt)
+        if (prepared.schema != 1 || prepared.task != 'windowsVideoLocalReplayUiSmoke' ||
+            prepared.mainClass != 'com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture' ||
+            !(prepared.classpath instanceof List) || prepared.classpath.isEmpty() ||
+            !prepared.classpath.every { it instanceof String && !it.isBlank() } ||
+            !(prepared.javaExecutable instanceof String) ||
+            !(prepared.applicationResources instanceof String))
+            throw new GradleException('Prepared original Main runtime receipt is invalid')
+        def assertRuntime = {
+            // Re-read the receipt and resolve the captured original classpath only
+            // inside an owning task action, before any original Main can execute.
+            if (new JsonSlurper().parse(receipt) != prepared || snapshot(ui.get()) != prepared)
+                throw new GradleException('The actual original UI runtime differs from preparation')
+        }
+        ui.configure { task ->
+            // Plain files remove implicit classpath builtBy edges as well as the
+            // explicit dependencies. The saved original model is still verified.
+            task.setClasspath(rootProject.files(prepared.classpath))
+            task.setDependsOn([])
+            task.doFirst { assertRuntime() }
+        }
+        // No GUI, player or compilation dependencies. Root can execute this exact
+        // same verifier offline with valid and deliberately altered receipts.
+        rootProject.tasks.register('verifyCommentSearchUiRuntime') {
+            doLast {
+                assertRuntime()
+                logger.lifecycle('Verified the prepared original Main runtime without launching UI.')
+            }
+        }
+    }
+}

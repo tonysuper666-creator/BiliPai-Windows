@@ -23,6 +23,10 @@ on:
         description: Run only the isolated AWT and mpv rendering experiment; never build or publish the app
         type: boolean
         default: false
+      comment_search_ui:
+        description: Independently exercise original Main comment search with isolated guest read replay; never package or publish
+        type: boolean
+        default: false
       diagnostic_suite:
         description: Isolated rendering experiment selected only when render_diagnostic is enabled
         type: choice
@@ -55,7 +59,7 @@ jobs:
   render-diagnostic:
     if: >-
       github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
-      && (github.repository != 'jay3-yy/BiliPai' && github.event_name == 'workflow_dispatch' && inputs.render_diagnostic == true)
+      && (github.repository != 'jay3-yy/BiliPai' && github.event_name == 'workflow_dispatch' && inputs.render_diagnostic == true && inputs.comment_search_ui != true)
     runs-on: windows-latest
     timeout-minutes: 12
     steps:
@@ -116,10 +120,175 @@ jobs:
           if-no-files-found: warn
           retention-days: 1
 
+  comment-search-ui:
+    if: >-
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+      && github.event_name == 'workflow_dispatch' && inputs.comment_search_ui == true
+    runs-on: windows-latest
+    timeout-minutes: 25
+    env:
+      GRADLE_USER_HOME: ${{ runner.temp }}/bilipai-comment-search-gradle
+    steps:
+      - name: Enable Git long paths
+        shell: pwsh
+        run: git config --global core.longpaths true
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Verify fixed independent Main acceptance source
+        id: source
+        shell: pwsh
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          EXPECTED_HEAD: ${{ inputs.expected_head }}
+          RENDER_DIAGNOSTIC: ${{ inputs.render_diagnostic }}
+          MAKE_RELEASE: ${{ inputs.release }}
+          MAKE_INSTALLER: ${{ inputs.installer }}
+        run: |
+          $head = git rev-parse HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Source HEAD could not be read.' }
+          foreach ($required in @($env:SOURCE_SHA, $env:EXPECTED_HEAD)) {
+            if ($required -cnotmatch '^[0-9a-f]{40}$' -or $head -cne $required) { throw 'Main acceptance requires the exact source and expected HEAD.' }
+          }
+          if ($env:RENDER_DIAGNOSTIC -eq 'true' -or $env:MAKE_RELEASE -eq 'true' -or $env:MAKE_INSTALLER -eq 'true') {
+            throw 'Independent comment acceptance cannot combine rendering experiments, packaging or publication.'
+          }
+          "source_sha=$head" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Select the existing fully verified fixed JDK for this independent mode
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $cache = Join-Path $env:GITHUB_WORKSPACE 'desktop/.gradle/js-worker-cache'
+          $archive = Join-Path $cache 'fixed-jdk.zip'
+          $jdkHome = Join-Path $cache 'fixed-jdk'
+          python desktop/tools/fetch-js-worker-jdk.py --archive "$archive" --output "$jdkHome"
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed JDK acquisition and complete archive-member verification failed.' }
+          $release = Get-Content -LiteralPath (Join-Path $jdkHome 'release') -Raw
+          if ($release -cnotmatch '(?m)^JAVA_VERSION="21\.0\.12\.1"\r?$') { throw 'The selected JDK release differs from the existing fixed project package.' }
+          "JAVA_HOME=$jdkHome" | Add-Content -LiteralPath $env:GITHUB_ENV
+          "BILIPAI_COMMENT_JDK_ARCHIVE=$archive" | Add-Content -LiteralPath $env:GITHUB_ENV
+          "PYTHON_EXECUTABLE=$((Get-Command python).Source)" | Add-Content -LiteralPath $env:GITHUB_ENV
+      - name: Verify safety policies
+        shell: pwsh
+        run: python desktop/tools/run-tool-tests.py --stage policies
+      - name: Stage the reviewed Windows SDK in an isolated temporary directory
+        shell: pwsh
+        run: |
+          $sdkRoot = Join-Path $env:RUNNER_TEMP 'bilipai-native-share-sdk'
+          $receipt = python desktop/tools/provision-native-diagnostic-sdk.py --repo "$env:GITHUB_WORKSPACE" --temp-root "$env:RUNNER_TEMP" --output "$sdkRoot"
+          if ($LASTEXITCODE -ne 0) { throw 'Reviewed SDK provisioning failed; no native build is allowed.' }
+          $sdk = ($receipt -join "`n") | ConvertFrom-Json
+          if ($sdk.passed -ne $true -or $sdk.sdkInputsExact -ne $true -or [IO.Path]::GetFullPath($sdk.sdkRoot) -ne [IO.Path]::GetFullPath($sdkRoot)) { throw 'SDK provisioning did not produce the exact isolated root.' }
+          "BILIPAI_NATIVE_SHARE_SDK_ROOT=$sdkRoot" | Add-Content -LiteralPath $env:GITHUB_ENV
+      - name: Stage the reviewed MSVC tools in an isolated temporary directory
+        shell: pwsh
+        run: |
+          $vcRoot = Join-Path $env:RUNNER_TEMP 'bilipai-native-share-vc'
+          $receipt = python desktop/tools/provision-native-diagnostic-msvc.py --repo "$env:GITHUB_WORKSPACE" --temp-root "$env:RUNNER_TEMP" --output "$vcRoot"
+          if ($LASTEXITCODE -ne 0) { throw 'Reviewed VC provisioning failed; no native build is allowed.' }
+          $vc = ($receipt -join "`n") | ConvertFrom-Json
+          if ($vc.passed -ne $true -or $vc.vcInputsExact -ne $true -or $vc.compilerBinSetExact -ne $true -or $vc.englishResourcesExact -ne $true -or [IO.Path]::GetFullPath($vc.vcRoot) -ne [IO.Path]::GetFullPath($vcRoot)) { throw 'VC provisioning did not produce the exact isolated root.' }
+          "BILIPAI_NATIVE_SHARE_VC_ROOT=$vcRoot" | Add-Content -LiteralPath $env:GITHUB_ENV
+      - name: Stage the existing pinned native runtimes
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & ./desktop/tools/fetch-mpv.ps1
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned mpv acquisition failed; Main must not start.' }
+          & ./desktop/tools/fetch-ffmpeg.ps1
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned FFmpeg acquisition failed; Main must not start.' }
+          $nativeSource = Join-Path $env:GITHUB_WORKSPACE 'desktop/native/windows-x64'
+          $nativeResources = Join-Path $env:GITHUB_WORKSPACE 'desktop/resources/common/native/windows-x64'
+          New-Item -ItemType Directory -Path $nativeResources -Force | Out-Null
+          Copy-Item -LiteralPath (Join-Path $nativeSource 'libmpv-2.dll') -Destination $nativeResources -Force
+          foreach ($fileName in @('ffmpeg.exe', 'ffprobe.exe', 'ffmpeg-provenance.json')) {
+              Copy-Item -LiteralPath (Join-Path $nativeSource $fileName) -Destination $nativeResources -Force
+          }
+          $licenseSource = Join-Path $nativeSource 'licenses'
+          if (Test-Path -LiteralPath $licenseSource) {
+              Copy-Item -LiteralPath $licenseSource -Destination $nativeResources -Recurse -Force
+          }
+          Copy-Item -LiteralPath (Join-Path $nativeSource 'provenance.json') -Destination $nativeResources -Force
+      - name: Prepare the original Main test runtime without opening a window
+        timeout-minutes: 15
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $runtime = Join-Path $env:RUNNER_TEMP 'bilipai-comment-runtime.json'
+          & ./gradlew.bat -p desktop --no-daemon --console=plain --max-workers=2 "-Dorg.gradle.jvmargs=-Xmx4g" `
+            "-Porg.gradle.java.installations.paths=$env:JAVA_HOME" -Porg.gradle.java.installations.auto-detect=false `
+            -Porg.gradle.java.installations.auto-download=false -I desktop/tools/comment-search-ui.init.gradle `
+            -PcommentSearchPhase=prepare "-PcommentSearchRuntime=$runtime" prepareCommentSearchUiRuntime
+          if ($LASTEXITCODE -ne 0) { throw 'Original Main test runtime preparation failed.' }
+      - name: Exercise the actual Main comment search and owned reply dialogs
+        timeout-minutes: 5
+        shell: pwsh
+        env:
+          SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
+        run: |
+          python desktop/tools/run-comment-search-ui.py --run --repo "$env:GITHUB_WORKSPACE" --java-home "$env:JAVA_HOME" --jdk-archive "$env:BILIPAI_COMMENT_JDK_ARCHIVE" `
+            --runtime "$env:RUNNER_TEMP/bilipai-comment-runtime.json" --source-sha "$env:SOURCE_SHA" `
+            --output "$env:RUNNER_TEMP/bilipai-comment-search-ui"
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Main comment acceptance failed; inspect exact owned-window evidence.' }
+      - name: Upload only the independent Main comment evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-Main-comment-search-evidence
+          path: |
+            ${{ runner.temp }}/bilipai-comment-runtime.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/intent.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/result.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/gradle.log
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/observations.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/local-replay-receipt.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-local-replay.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/110-ordinary-playing.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/110-ordinary-playing-native.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/110-ordinary-playing-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/110-ordinary-playing-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/160-original-back-home.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/160-original-back-home-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/160-original-back-home-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/178-comment-search-loading-cancel-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/178-comment-search-loading-cancel-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/179-comment-search-retry-error-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/179-comment-search-retry-error-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/180-comment-search-page-progress-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/180-comment-search-page-progress-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/181-comment-search-all-hot-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/181-comment-search-all-hot-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/182-comment-search-up-only-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/182-comment-search-up-only-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/183-comment-search-charged-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/183-comment-search-charged-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/184-comment-search-all-latest-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/184-comment-search-all-latest-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/185-comment-search-original-subreply-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/185-comment-search-original-subreply-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/comment-search-failure-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/comment-search-failure-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-native-state.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-source-admission.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window-geometry.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-main-input-layers.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-observations.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-thread-stacks.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window-accessibility.tsv
+          if-no-files-found: warn
+          retention-days: 1
+
   windows:
     if: >-
       github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
-      && (github.repository != 'jay3-yy/BiliPai' && inputs.render_diagnostic != true)
+      && (github.repository != 'jay3-yy/BiliPai' && inputs.render_diagnostic != true && inputs.comment_search_ui != true)
     runs-on: windows-latest
     timeout-minutes: 35
     outputs:

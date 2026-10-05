@@ -380,6 +380,7 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
             condition = re.match(r"(?:      [^\n]*(?:\n|$))+", body[match.end() + 1:]).group()
         values = {"github.repository": "tonysuper666-creator/BiliPai-Windows", "github.event.repository.private": False,
                   "github.event_name": "workflow_dispatch", "inputs.render_diagnostic": job == "render-diagnostic",
+                  "inputs.comment_search_ui": job == "comment-search-ui",
                   "vars.BILIPAI_WINDOWS_AUTO_SYNC": "true", "vars.BILIPAI_WINDOWS_AUTO_PUBLISH": "true",
                   "needs.windows.outputs.release": "true", "needs.detect.outputs.update_needed": "true",
                   "needs.detect.result": "success", "needs.candidate.result": "success",
@@ -389,7 +390,7 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
 
     def test_all_server_jobs_require_own_public_repository(self):
         self.assertEqual(set(self.workflows), {"windows-desktop.yml", "windows-upstream-sync.yml"})
-        self.assertEqual(len(self.jobs), 6)
+        self.assertEqual(len(self.jobs), 7)
         for name, job in self.jobs:
             with self.subTest(name=name, job=job):
                 self.assertTrue(self.admitted(name, job))
@@ -410,7 +411,7 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                 with self.subTest(name=name, job=job):
                     self.assertEqual(re.findall(r"(?m)^          retention-days: (.+)$", step), ["1"])
                     self.assertRegex(step, r"(?m)^          if-no-files-found: (warn|error)$")
-        self.assertEqual(uploads, 9)
+        self.assertEqual(uploads, 10)
 
     def test_only_standard_runner_labels_and_readonly_default_permissions(self):
         for (name, job), body in self.jobs.items():
@@ -425,6 +426,16 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         self.assertFalse(self.admitted(name, "render-diagnostic", **{"github.event_name": "push"}))
         self.assertFalse(self.admitted(name, "windows", **{"inputs.render_diagnostic": True}))
         self.assertFalse(self.admitted(name, "publish", **{"needs.windows.outputs.release": ""}))
+
+    def test_comment_search_is_manual_only_and_excludes_normal_jobs(self):
+        name = "windows-desktop.yml"
+        self.assertTrue(self.admitted(name, "comment-search-ui"))
+        self.assertFalse(self.admitted(name, "comment-search-ui", **{"github.event_name": "push"}))
+        self.assertFalse(self.admitted(name, "comment-search-ui", **{"inputs.comment_search_ui": False}))
+        self.assertFalse(self.admitted(name, "windows", **{"inputs.comment_search_ui": True}))
+        self.assertFalse(self.admitted(name, "render-diagnostic", **{"inputs.comment_search_ui": True}))
+        self.assertFalse(self.admitted(name, "publish", **{"needs.windows.outputs.release": ""}))
+        self.assertRegex(self.workflows[name], r"(?m)^      comment_search_ui:$")
 
     def test_manual_dispatch_remains_without_duplicate_github_schedule(self):
         name = "windows-upstream-sync.yml"
