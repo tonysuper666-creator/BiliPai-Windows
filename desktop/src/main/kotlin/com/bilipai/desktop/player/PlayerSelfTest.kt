@@ -645,7 +645,7 @@ object PlayerSelfTest {
             if (color.red > 180 && color.green < 145 && color.blue in 100..200) pinkPixels++
         }
         // Actual createFixtureFrame geometry: the moving circle occupies y45..88,
-        // labels end at y135, and the progress block starts at y156. These two
+        // labels end at y135, and the progress block starts at y164. These two
         // static interior background strips are untouched in every encoded frame.
         // Native OSD bounds (including crop/pan margins) supply the transform; no
         // screenshot-aspect or current-position inference selects the regions.
@@ -717,7 +717,7 @@ object PlayerSelfTest {
         return BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB).also { image ->
             image.createGraphics().apply {
                 color = Color(24, 27, 38); fillRect(0, 0, WIDTH, HEIGHT)
-                color = Color(250, 106, 151); fillRect(0, HEIGHT - 24, WIDTH * index / (FPS * SECONDS), 24)
+                color = Color(250, 106, 151); fillRect(0, HEIGHT - 16, WIDTH * index / (FPS * SECONDS), 16)
                 color = Color(82, 191, 248); fillOval(10 + index % 260, 45, 44, 44)
                 color = Color.WHITE; font = Font("SansSerif", Font.BOLD, 16)
                 drawString("BiliPai · Native Windows", 18, 30)

@@ -511,7 +511,7 @@ public final class AwtMpvProbe {
         transform.translate(viewport.left(), viewport.top());
         transform.scale(viewport.contentWidth() / (double) WIDTH, viewport.contentHeight() / (double) HEIGHT);
         List<Object> bands = new ArrayList<>();
-        // Circle ends at y88, labels at y135, progress starts at y156. Never test those dynamic regions.
+        // Circle ends at y88, labels at y135, progress starts at y164; JPEG block y144..159 is background. Never test those dynamic regions.
         for (Rectangle source : List.of(new Rectangle(4, 98, WIDTH - 8, 12), new Rectangle(4, 143, WIDTH - 8, 8))) {
             java.awt.geom.Rectangle2D mapped = transform.createTransformedShape(source).getBounds2D();
             int left = Math.max(0, (int) Math.ceil(mapped.getMinX()) + 1), top = Math.max(0, (int) Math.ceil(mapped.getMinY()) + 1);
@@ -1249,7 +1249,7 @@ public final class AwtMpvProbe {
             Graphics2D g = image.createGraphics();
             try {
                 g.setColor(new Color(24, 27, 38)); g.fillRect(0, 0, WIDTH, HEIGHT);
-                g.setColor(new Color(250, 106, 151)); g.fillRect(0, HEIGHT - 24, WIDTH * index / (FPS * SECONDS), 24);
+                g.setColor(new Color(250, 106, 151)); g.fillRect(0, HEIGHT - 16, WIDTH * index / (FPS * SECONDS), 16);
                 g.setColor(new Color(82, 191, 248)); g.fillOval(10 + index % 260, 45, 44, 44);
                 g.setColor(Color.WHITE); g.setFont(new Font("SansSerif", Font.BOLD, 16)); g.drawString("BiliPai · Native Windows", 18, 30);
                 g.setFont(new Font("Monospaced", Font.PLAIN, 15)); g.drawString("DASH test: " + index / FPS + "." + index % FPS * 5 + "s", 18, 135);

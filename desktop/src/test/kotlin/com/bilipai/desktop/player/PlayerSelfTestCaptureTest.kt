@@ -29,6 +29,34 @@ class PlayerSelfTestCaptureTest {
         }
     }
 
+    @Test fun everyDefaultEncodedFrameKeepsTheOriginalBackgroundBandsOutsideProgressCompression(): Unit {
+        val sourceViewport = PlayerVideoViewport(320, 180, 0, 0, 320, 180)
+        val windowViewport = PlayerVideoViewport(704, 401, 0, 2, 704, 396)
+        for (index in 0 until 200) {
+            val encoded = ByteArrayOutputStream()
+            val frame = PlayerSelfTest.createFixtureFrame(index)
+            assertTrue(ImageIO.write(frame, "jpg", encoded))
+            frame.flush()
+            val decoded = ImageIO.read(ByteArrayInputStream(encoded.toByteArray()))
+            assertEquals(320, decoded.width)
+            assertEquals(180, decoded.height)
+            // Frames 0..4 intentionally have fewer than 100 pink pixels. Native
+            // acceptance starts after 1.1s (frame 22), long after this color onset.
+            if (index < 5) {
+                val failure = assertFailsWith<IllegalStateException> {
+                    PlayerSelfTest.checkRenderedFixtureSurface(decoded, sourceViewport)
+                }
+                assertTrue(failure.message.orEmpty().contains("cyan="))
+            } else {
+                assertEquals(2, PlayerSelfTest.checkRenderedFixtureSurface(decoded, sourceViewport).bands.size)
+                val physical = project(decoded, 704, 401, windowViewport)
+                assertEquals(2, PlayerSelfTest.checkRenderedFixtureSurface(physical, windowViewport).bands.size)
+                physical.flush()
+            }
+            decoded.flush()
+        }
+    }
+
     @Test fun realOsdMarginsMapLetterboxedAndCroppedFramesWithoutTestingBlackBars(): Unit {
         val decoded = jpeg(PlayerSelfTest.createFixtureFrame(40), 0.75f)
         // Nonuniform crop/pan and system-pixel OSD are legitimate native observations.
