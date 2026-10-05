@@ -25,11 +25,20 @@ import java.awt.image.BufferedImage
 private enum class LoginMethod(val label: String) { TV("TV 扫码"), WEB("网页扫码"), PASSWORD("密码"), SMS("短信"), COOKIE("Cookie"), ACCOUNTS("账号") }
 
 @Composable
-fun AdvancedLoginDialog(repository: DesktopRepository, onDismiss: () -> Unit, onComplete: (AccountSummary) -> Unit) {
+internal fun AdvancedLoginDialog(repository: DesktopRepository, updateHold: DesktopLoginUpdateHold, onDismiss: () -> Unit, onComplete: (AccountSummary) -> Unit) {
+    if (!updateHold.canBegin()) return
+    val instance = remember(updateHold) { updateHold.newInstance() }
+    var admitted by remember(instance) { mutableStateOf(false) }
+    DisposableEffect(instance) {
+        admitted = instance.mount()
+        onDispose { admitted = false; instance.close() }
+    }
+    if (!admitted) return
     val account by repository.account.collectAsState()
     val login = remember(repository) { DesktopLoginRepository(repository) }
     val bridge = remember(login) { DesktopCaptchaBridge(login) }
     var method by remember { mutableStateOf(if (account == null) LoginMethod.TV else LoginMethod.ACCOUNTS) }
+    CompositionLocalProvider(LocalDesktopLoginUpdateInstance provides instance) {
     AlertDialog(onDismissRequest = onDismiss, title = { Text("账号与登录") }, text = {
         Column(Modifier.width(650.dp).heightIn(max = 670.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -49,16 +58,21 @@ fun AdvancedLoginDialog(repository: DesktopRepository, onDismiss: () -> Unit, on
             }
         }
     }, confirmButton = { TextButton(onClick = onDismiss) { Text("关闭") } })
+    }
 }
 
-private class LoginWork(private val scope: CoroutineScope) {
+private val LocalDesktopLoginUpdateInstance = staticCompositionLocalOf<DesktopLoginUpdateHold.Instance> {
+    error("Login form requires its mounted Main instance")
+}
+
+internal class LoginWork(private val scope: CoroutineScope, private val instance: DesktopLoginUpdateHold.Instance) {
     var busy by mutableStateOf(false); private set
     var error by mutableStateOf<String?>(null); private set
     var notice by mutableStateOf<String?>(null)
-    fun run(block: suspend () -> Unit) {
-        if (busy) return
+    fun run(block: suspend () -> Unit): Job? {
+        if (busy) return null
         busy = true; error = null; notice = null
-        scope.launch {
+        return launchTrackedLogin(scope, instance, onRejected = { busy = false }) {
             try { block() }
             catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure.message ?: "登录操作失败" }
             finally { busy = false }
@@ -66,7 +80,11 @@ private class LoginWork(private val scope: CoroutineScope) {
     }
 }
 
-@Composable private fun rememberLoginWork(): LoginWork { val scope = rememberCoroutineScope(); return remember(scope) { LoginWork(scope) } }
+@Composable private fun rememberLoginWork(): LoginWork {
+    val scope = rememberCoroutineScope()
+    val instance = LocalDesktopLoginUpdateInstance.current
+    return remember(scope, instance) { LoginWork(scope, instance) }
+}
 @Composable private fun LoginWorkState(work: LoginWork) {
     if (work.busy) { LinearProgressIndicator(Modifier.fillMaxWidth()); Text("处理中…") }
     work.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
@@ -80,7 +98,10 @@ private fun LoginQrForm(login: DesktopLoginRepository, tv: Boolean, onComplete: 
     var status by remember { mutableStateOf("正在获取二维码…") }
     var error by remember { mutableStateOf<String?>(null) }
     val complete by rememberUpdatedState(onComplete)
-    LaunchedEffect(generation) {
+    val scope = rememberCoroutineScope()
+    val instance = LocalDesktopLoginUpdateInstance.current
+    DisposableEffect(scope, instance, generation) {
+        val job = launchTrackedLogin(scope, instance) {
         qr = null; error = null; status = "正在获取二维码…"
         try {
             val current = if (tv) login.beginTvQr() else login.beginWebQr()
@@ -91,12 +112,14 @@ private fun LoginQrForm(login: DesktopLoginRepository, tv: Boolean, onComplete: 
                 when (val result = if (tv) login.pollTvQr(current.key) else login.pollWebQr(current.key)) {
                     QrLoginState.Waiting -> status = "请使用哔哩哔哩手机客户端扫码"
                     QrLoginState.Scanned -> status = "已扫码，请在手机上确认登录"
-                    QrLoginState.Expired -> { status = "二维码已过期，请刷新"; return@LaunchedEffect }
-                    is QrLoginState.Complete -> { complete(result.account); return@LaunchedEffect }
+                    QrLoginState.Expired -> { status = "二维码已过期，请刷新"; return@launchTrackedLogin }
+                    is QrLoginState.Complete -> { complete(result.account); return@launchTrackedLogin }
                 }
             }
             status = "二维码已过期，请刷新"
         } catch (failure: Exception) { if (failure is CancellationException) throw failure; error = failure.message ?: "获取二维码失败" }
+        }
+        onDispose { job.cancel() }
     }
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
         qr?.let { value ->
@@ -152,9 +175,14 @@ private fun LoginSmsForm(login: DesktopLoginRepository, bridge: DesktopCaptchaBr
     var sms by remember { mutableStateOf<DesktopSmsSession?>(null) }
     var pendingCaptcha by remember { mutableStateOf<CaptchaData?>(null) }
     var risk by remember { mutableStateOf<DesktopLoginResult.RiskRequired?>(null) }
-    LaunchedEffect(login) {
-        try { val loaded = login.phoneRegions(); regions = loaded; region = loaded.firstOrNull { it.cid == region.cid } ?: resolveDefaultPhoneRegion(loaded) }
-        catch (failure: Exception) { if (failure is CancellationException) throw failure }
+    val scope = rememberCoroutineScope()
+    val instance = LocalDesktopLoginUpdateInstance.current
+    DisposableEffect(scope, instance, login) {
+        val job = launchTrackedLogin(scope, instance) {
+            try { val loaded = login.phoneRegions(); regions = loaded; region = loaded.firstOrNull { it.cid == region.cid } ?: resolveDefaultPhoneRegion(loaded) }
+            catch (failure: Exception) { if (failure is CancellationException) throw failure }
+        }
+        onDispose { job.cancel() }
     }
     fun accept(result: DesktopLoginResult) { when(result) {
         is DesktopLoginResult.Complete -> { code = ""; onComplete(result.account) }

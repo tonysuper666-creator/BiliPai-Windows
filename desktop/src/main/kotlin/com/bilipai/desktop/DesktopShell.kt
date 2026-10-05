@@ -302,6 +302,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         !isClosing() && !activatingUpdate
     }
     val dynamicEditorSubmissions by dynamicEditor.submissions.collectAsState()
+    val latestLoginActivatingUpdate by rememberUpdatedState(activatingUpdate)
+    val loginUpdateHold = remember(repository, scope) {
+        DesktopLoginUpdateHold(mainOwned = { !latestDynamicIsClosing() && scope.isActive },
+            startAllowed = { !latestLoginActivatingUpdate })
+    }
+    val loginUpdateActivity by loginUpdateHold.activity.collectAsState()
+    DisposableEffect(loginUpdateHold) { onDispose { loginUpdateHold.close() } }
     val originalDanmakuBlocks = remember(pluginStore, dynamicEditor) {
         DesktopDanmakuBlockPreferences(pluginStore, dynamicEditor.operations::withOwnedEditorImageAdmission)
     }
@@ -675,6 +682,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     val clipboardFailure by WindowsTextClipboard.lastFailure.collectAsState()
     var loginDialog by remember { mutableStateOf(false) }
+    fun openLogin() { if (loginUpdateHold.canBegin()) loginDialog = true }
     var jsPluginId by remember { mutableStateOf("") }
     var jsSubscriptionReader by remember { mutableStateOf(false) }
     var castDialog by remember { mutableStateOf(false) }
@@ -1333,11 +1341,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         finally { feedLoading = false }
     }
     LaunchedEffect(Unit) { updater.autoCheck(); while (true) { delay(6 * 60 * 60 * 1000L); updater.autoCheck() } }
-    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, activatingUpdate, updateJob) {
+    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
             is UpdateState.Available -> if (automaticUpdates) prepareUpdate(status.update, false)
-            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation()) {
+            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation()) {
                 activatingUpdate = true
                 updateJob = scope.launch(start = CoroutineStart.LAZY) {
                     try { if (updater.activatePreparedUpdate(status.prepared)) onExit() }
@@ -1621,7 +1629,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     { expectedEpoch,expectedMid -> authenticationInvalidations.trySend(expectedEpoch to expectedMid); Unit },
                     { gate -> DesktopProfileAccountsBinding(repository,gate.epoch,gate.mid,
                         requireNotNull(gate.scope.coroutineContext[Job]),gate::owns,gate::commit) },
-                    { onExit() },{loginDialog=true},if(account!=null)({repository.logout()})else null,
+                    { onExit() },{openLogin()},if(account!=null)({repository.logout()})else null,
                     dynamicCardRegistry::currentAllUpdateBaseline,null,favoritesEntry?.searchChannel,null,
                     { originalNowPlaying.get()?.second?.dismiss() },
                     { DesktopOriginalNowPlayingVisibility(originalNowPlaying.get()?.second?.owner?.current()?.active==true,
@@ -1784,7 +1792,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 onFavoriteSaved = { value, count -> if (current() && expected != null && owner.native.isCurrent(expected)) {
                                                     owner.domains.engagement.applyFavoriteFolderResult(value)
                                                     owner.domains.engagement.uiState.value.subject?.let { subject -> owner.domains.engagement.confirmDesktopFavoriteCount(subject, count) }
-                                                } }, onLogin = { loginDialog = true }, feedback = { error = it }, sourceOwner = expected)
+                                                } }, onLogin = { openLogin() }, feedback = { error = it }, sourceOwner = expected)
                                         },
                                         overlay = {
                                             if(player!=null && danmaku!=null && danmakuAssembly!=null && danmakuSource!=null && rendererDanmakuSettings.enabled && !pipActive && ownsDanmakuSource())
@@ -1893,7 +1901,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 if (externalLinkAdmitted) openVideoHonorLink(url)
                                             }
                                         },
-                                        login = { loginDialog = true }, danmakuSettings = {
+                                        login = { openLogin() }, danmakuSettings = {
                                             if (danmaku != null && hostWindow != null && danmakuSource != null &&
                                                 danmakuSource.request.cid > 0L && ownsDanmakuSource()) originalDanmakuSettingsVisible = true
                                             else error = "当前视频弹幕尚未准备，请稍后重试"
@@ -2134,7 +2142,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         isCurrentPage = active && !activatingUpdate)
                                 }
                             }
-                            section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { loginDialog = true },
+                            section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { openLogin() },
                                 space = space, onResource = ::openResource, initialTitle = collectionTitle)
                             section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)
                             section == DesktopSection.SETTINGS -> {
@@ -2206,7 +2214,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 },
                                 backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit, updateHold = backupUpdateHold,
                                     initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
-                                blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { loginDialog = true }) },
+                                blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { openLogin() }) },
                                 donateContent = { donateEntry, dismiss ->
                                     val capturedHandle = homeRootRef.get()
                                     val currentDonateActive by rememberUpdatedState(active)
@@ -2355,12 +2363,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     openQueue(cards,cards.firstOrNull{it.bvid==video.bvid} ?: VideoCard(video.bvid,video.title,video.pic,video.owner.name,video.stat.view.toLong(),video.duration,preferredCid=video.cid))},isClosing=isClosing)
                             entryKey == BiliPaiNavKey.Login -> Column(Modifier.fillMaxSize()) {
                                 TextButton(onClick={commands.back()}) {Text("返回")}
-                                AdvancedLoginDialog(repository,onDismiss={commands.back()},onComplete={commands.back()})
+                                AdvancedLoginDialog(repository,loginUpdateHold,onDismiss={commands.back()},onComplete={commands.back()})
                             }
                             entryKey is BiliPaiNavKey.Web -> Column {
                                 Text(entryKey.title);TextButton(onClick={openDynamicWeb(entryKey.url,entryKey.title)}){Text("在浏览器打开")}
                             }
-                            section == DesktopSection.LISTEN -> if (listen != null) ListenBrowserScreen(listen, preferences, ::changePreferences, ::openVideo, { loginDialog = true })
+                            section == DesktopSection.LISTEN -> if (listen != null) ListenBrowserScreen(listen, preferences, ::changePreferences, ::openVideo, { openLogin() })
                                 else Text(playerError ?: "音频播放器未能初始化")
                             section == DesktopSection.BGM -> bgmRequest?.let { request ->
                                 DesktopBgmDetailRootHost(request, repository, community, commentFraud,
@@ -2372,7 +2380,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         runCatching { java.net.URI(imageUrl(raw)) }.getOrNull()?.takeIf { it.scheme in setOf("http", "https") }?.let {
                                             runCatching { java.awt.Desktop.getDesktop().browse(it) }
                                         }
-                                    }, onLogin = { loginDialog = true },
+                                    }, onLogin = { openLogin() },
                                     onMediaSearch = { _, title, _ -> commands.push(BiliPaiNavKey.Search(title)) })
                             }
                             section == DesktopSection.MUSIC -> {
@@ -2389,7 +2397,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         }
                                     })
                             section == DesktopSection.TOPIC -> DesktopTopicDetailScreen(topicId, storyTopic, community,
-                                CommunityNavigation(::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
+                                CommunityNavigation(::openVideo, ::openUser, ::openArticle, { openLogin() }, ::openLive, ::openBangumi, ::openDynamic, ::openTopic, ::openTopicKeyword,
                                     onDynamicRoute=::openDynamicRoute,onMessageLink=messageLink),
                                 onBack = { commands.back() }, onTopic = ::openTopic)
                             entryKey is BiliPaiNavKey.ArticleDetail -> {
@@ -2407,7 +2415,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     DesktopSection.ARTICLE -> CommunitySection.ARTICLE
                                     else -> CommunitySection.NOTES
                                 }, repository, social, community, submitted, userId, articleId, noteVideo,
-                                    ::openVideo, ::openUser, ::openArticle, { loginDialog = true }, ::openLive, ::openBangumi, runtime = pluginRuntime,
+                                    ::openVideo, ::openUser, ::openArticle, { openLogin() }, ::openLive, ::openBangumi, runtime = pluginRuntime,
                                     initialDynamicId = dynamicRoute?.dynamicId.takeIf { section == DesktopSection.DYNAMIC }, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword,
                                     defaultSearchHintEnabled = defaultSearchHintEnabled,
                                     initialCommentRootRpid=dynamicRoute?.rootReplyId?:0L,initialCommentTargetRpid=dynamicRoute?.targetReplyId?:0L)
@@ -2430,7 +2438,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             SnackbarHost(rootFeedback, Modifier.align(Alignment.BottomCenter).padding(16.dp))
         }
         }
-        if (loginDialog) AdvancedLoginDialog(repository, onDismiss = { loginDialog = false }, onComplete = { loginDialog = false })
+        if (loginDialog) AdvancedLoginDialog(repository, loginUpdateHold, onDismiss = { loginDialog = false }, onComplete = { loginDialog = false })
         if (enhancementSettings) DesktopVideoEnhancementSettingsDialog(pluginRuntime.enhancementConfiguration) { enhancementSettings = false }
         if (combinedBackupSettings) BackupSettingsDialog(backup, { combinedBackupSettings = false }, onExit, updateHold = backupUpdateHold)
         if (showDiagnosticViewer && diagnostics != null) {
@@ -2457,7 +2465,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (googleCastDialog) DesktopGoogleCastDialog(pluginRuntime.context, pluginRuntime.googleCast,
             media = castMediaFactory, onDismiss = { googleCastDialog = false })
         PluginCareReminder(pluginRuntime)
-        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation() || backupUpdateHold.blocksUpdateInstallation(),
+        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation() || backupUpdateHold.blocksUpdateInstallation() || loginUpdateHold.blocksUpdateInstallation(),
             playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
             onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false })
