@@ -24,49 +24,90 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      # Authenticated release enumeration must include drafts left by failed uploads.
-      contents: write
+      # This stage never builds, pushes, opens a PR, dispatches, or publishes.
+      contents: read
     outputs:
       update_needed: ${{ steps.check.outputs.update_needed }}
       publication_needed: ${{ steps.check.outputs.publication_needed }}
       source_sha: ${{ steps.check.outputs.source_sha }}
+    env:
+      BILIPAI_WINDOWS_CHECK_SOURCE_SHA: 47beb8ce531bc46d7eb24c0f48a6c5ff6284e2fd
     steps:
+      - name: Validate required fixed own source
+        shell: python
+        run: |
+          import os, re
+          source = os.environ['BILIPAI_WINDOWS_CHECK_SOURCE_SHA']
+          if os.environ['GITHUB_REPOSITORY'] != 'tonysuper666-creator/BiliPai-Windows':
+              raise RuntimeError('Read-only detection requires the reviewed own repository.')
+          if not re.fullmatch(r'[0-9a-f]{40}', source) or source == '0' * 40:
+              raise RuntimeError('A verified full own source commit must replace the preparation placeholder.')
       - uses: actions/checkout@v4
         with:
+          repository: tonysuper666-creator/BiliPai-Windows
+          ref: ${{ env.BILIPAI_WINDOWS_CHECK_SOURCE_SHA }}
           fetch-depth: 1
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Verify updater and publication safety policies
-        run: python -m unittest discover -s desktop/tools/tests -p 'test_*.py'
-      - name: Check upstream source and Windows publication independently
+        shell: python
+        run: |
+          import os, subprocess
+          source = os.environ['BILIPAI_WINDOWS_CHECK_SOURCE_SHA']
+          actual = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          if actual != source:
+              raise RuntimeError('Checked source differs from the reviewed immutable own commit.')
+          subprocess.run(['git', 'diff', '--exit-code', 'HEAD', '--'], check=True)
+          subprocess.run(['python', 'desktop/tools/run-tool-tests.py', '--stage', 'policies'], check=True)
+          subprocess.run(['git', 'diff', '--exit-code', 'HEAD', '--'], check=True)
+      - name: Check upstream compatibility without building or publishing
         id: check
         env:
           GITHUB_TOKEN: ${{ github.token }}
-          GH_TOKEN: ${{ github.token }}
         shell: python
         run: |
           import json, os, subprocess
           from pathlib import Path
-          def command(*args):
-              return subprocess.run(args, check=True, capture_output=True, text=True).stdout
-          report = json.loads(command('python', 'desktop/tools/sync-upstream.py', '--check'))
-          publication = json.loads(command('python', 'desktop/tools/publish-release.py', '--check', '--repository', os.environ['GITHUB_REPOSITORY']))
-          Path(os.environ['RUNNER_TEMP'], 'upstream-check.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
-          needed = False
-          if report['status'] == 'updateAvailable':
-              prs = json.loads(command('gh', 'pr', 'list', '--repo', os.environ['GITHUB_REPOSITORY'], '--head', report['candidateBranch'], '--state', 'all', '--json', 'number'))
-              needed = not prs
+          source = os.environ['BILIPAI_WINDOWS_CHECK_SOURCE_SHA']
+          if subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() != source:
+              raise RuntimeError('Read-only check source changed after policies.')
           with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as output:
-              output.write(f"update_needed={str(needed).lower()}\n")
-              output.write(f"publication_needed={str(publication['publicationNeeded']).lower()}\n")
-              output.write(f"source_sha={publication['sourceSha']}\n")
-          print(json.dumps({'upstream': report, 'windowsPublication': publication}, indent=2))
+              output.write('update_needed=false\npublication_needed=false\n')
+              output.write('source_sha=' + source + '\n')
+          result = subprocess.run(['python', 'desktop/tools/sync-upstream.py', '--check'],
+                                  capture_output=True, text=True, encoding='utf-8')
+          receipt = {'mode': 'readOnlyDetection', 'checkedOwnSourceSha': source,
+                     'candidateBuildEnabled': False, 'publicationEnabled': False,
+                     'checkExitCode': result.returncode}
+          failed = result.returncode != 0
+          if not failed:
+              try:
+                  receipt['upstream'] = json.loads(result.stdout)
+              except (ValueError, TypeError) as error:
+                  failed = True
+                  receipt['error'] = 'Invalid compatibility report: ' + str(error)
+                  receipt['stdout'] = result.stdout[-16000:]
+          else:
+              receipt['error'] = result.stderr[-16000:]
+              receipt['stdout'] = result.stdout[-16000:]
+          Path(os.environ['RUNNER_TEMP'], 'upstream-check.json').write_text(
+              json.dumps(receipt, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+          print(json.dumps(receipt, ensure_ascii=False, indent=2))
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a', encoding='utf-8') as summary:
+              summary.write('### Read-only upstream compatibility check\n\n')
+              summary.write('<pre>' + json.dumps(receipt, ensure_ascii=False, indent=2)
+                            .replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;') + '</pre>\n')
+          subprocess.run(['git', 'diff', '--exit-code', 'HEAD', '--'], check=True)
+          if subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() != source:
+              raise RuntimeError('Read-only check changed the immutable own source.')
+          if failed:
+              raise RuntimeError('Read-only upstream check failed; complete error is retained in the check receipt and job log.')
 
   candidate:
     needs: detect
-    if: ${{ github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false && (needs.detect.outputs.update_needed == 'true') }}
+    if: ${{ github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false && false && (needs.detect.outputs.update_needed == 'true') }}
     runs-on: windows-latest
     timeout-minutes: 45
     permissions:
@@ -177,7 +218,7 @@ jobs:
   recover_publication:
     needs: [detect, candidate]
     if: >-
-      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false &&
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false && false &&
       (
       always() && needs.detect.result == 'success' &&
       (needs.candidate.result == 'success' || needs.candidate.result == 'skipped') &&
