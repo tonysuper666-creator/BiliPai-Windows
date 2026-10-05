@@ -588,6 +588,8 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "home-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v029_brand_consumers.py")
+    inputs.dir("upstream-slices/v029-brand-consumers")
     outputs.dir(layout.buildDirectory.dir("generated/home-page"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalHomePage) }
@@ -959,6 +961,8 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(sources.filter { "home-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v029_brand_consumers.py")
+    inputs.dir("upstream-slices/v029-brand-consumers")
     outputs.dir(layout.buildDirectory.dir("generated/home-full-card"))
 }
 
@@ -1131,6 +1135,8 @@ val extractBgmDetail by tasks.registering(Exec::class) {
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-bgm-native-detail" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v029_brand_consumers.py")
+    inputs.dir("upstream-slices/v029-brand-consumers")
     outputs.dir(layout.buildDirectory.dir("generated/bgm-detail"))
 }
 tasks.named("compileKotlin") { dependsOn(extractBgmDetail) }
@@ -3119,13 +3125,14 @@ tasks.register<JavaExec>("windowsVideoInteractionRootUiSmoke") {
             providers.gradleProperty("rootValidationToken").get(), providers.gradleProperty("rootValidationVideo").get(), "replay")
     }
 }
-// Fixed original brand identities/resources; Android BlueSnow/ReduceMotion remain raw references only.
+// Fixed original brand identities/resources and complete BlueSnow body; existing Windows ReduceMotion binding.
 val extractOriginalBrandMotion by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-brand-motion.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-brand-motion").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-brand-motion.py")
+    inputs.file("tools/v029_brand_motion_ui.py")
     inputs.dir("upstream-slices/v029-brand-motion")
     outputs.dir(layout.buildDirectory.dir("generated/original-brand-motion"))
 }

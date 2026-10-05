@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "hashNormalization": "raw",
+  "purpose": "Complete original consumer/helper sources. Existing sole Error/Empty producers remain authoritative; no WELCOME runtime entry.",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "94f83a0fe49c8032b2b6f93545ef55736b5e64fe",
+      "bytes": 9702,
+      "sha256Bytes": "c1fc19689430cfe902f26704ddbd50905b041e02c3fc17ff0b3a3abb518bf8c0",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/core/ui/LottieComponents.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/BlueSnowMaidAnimation.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "b350fbaf9726812e8bffb860656a07ac2ca3ae9f",
+      "bytes": 546,
+      "sha256Bytes": "853a58c0e68ca6f78a69d25b4c9d1b7d62ad5d80a74c15246ff74a898420ce35",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/core/ui/BlueSnowMaidAnimation.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/MaidStateViewport.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "bf8a7ce42601ce26f17d010054d20da398a9dd4e",
+      "bytes": 1279,
+      "sha256Bytes": "e8948712f02980014d953abc3cc91db17615249ee2b47d95c158f9be5ff7a85f",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/core/ui/MaidStateViewport.kt"
+    }
+  ]
+}

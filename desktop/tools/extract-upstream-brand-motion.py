@@ -1,13 +1,14 @@
-"""Sole fixed-v029 brand catalog/resources producer; no Android lifecycle adaptation.
+"""Sole fixed-v029 brand catalog, resources and complete BlueSnow UI producer.
 
 Every original is checked as raw bytes against the immutable archive manifest.
-Only the original enum identity is adapted; the complete BlueSnow/ReduceMotion
-sources stay in the reference archive, outside all runtime source/resource roots.
+The enum and complete BlueSnow body have separate reversible adaptations.
+Original raw sources stay in the reference archive; ReduceMotion uses the existing Windows binding.
 """
 from __future__ import annotations
 
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -23,6 +24,11 @@ REDUCE_MOTION = "brand-motion/src/main/java/com/android/purebilibili/core/ui/mot
 CATALOG_PATH = "kotlin/com/bilipai/desktop/brand/DesktopMaidAnimation.kt"
 CATALOG_SHA256 = "15291a833f8e9d90731bdb5c1f8707a63c9958f395fb6938f6b5b49b1910a6c9"
 PROOF_PATH = "brand-motion-source-proof.json"
+UI_PATH = "kotlin/com/android/purebilibili/core/ui/BlueSnowMaidAnimation.kt"
+UI_PROOF_PATH = "brand-motion-ui-source-proof.json"
+_ui_spec = importlib.util.spec_from_file_location("v029_brand_motion_ui", Path(__file__).with_name("v029_brand_motion_ui.py"))
+brand_ui = importlib.util.module_from_spec(_ui_spec)
+_ui_spec.loader.exec_module(brand_ui)
 ENUM_ROW = re.compile(r"    (\w+)\(R\.raw\.(\w+), (\d+)L, R\.drawable\.(\w+)(, loopsWhileVisible = true)?\)(,?)")
 
 
@@ -203,8 +209,20 @@ enum class DesktopMaidAnimation(
                  fullSourceInverseSha256Bytes=sha256(restored_full_source),
                  runtimeUniquePairs=13, runtimeEnumIdentities=14, welcome="raw archive only; no runtime JSON or PNG",
                  runtimeOutputs=[dict(path=path, bytes=len(data), sha256Bytes=sha256(data)) for path, data in sorted(outputs.items())],
-                 scope="Catalog identity/schema/resources only. Original BlueSnow/ReduceMotion lifecycle remains unadapted, outside runtime. No renderer or animation UI acceptance.")
+                 scope="Catalog identity/schema/resources only. BlueSnow UI has its own full-source proof. No renderer or animation UI acceptance is inferred from this proof.")
     outputs[PROOF_PATH] = (json.dumps(proof, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    ui, recipe = brand_ui.adapt_blue_snow_with_recipe(originals[BLUE_SNOW])
+    restored_ui = brand_ui.reverse_blue_snow(ui, recipe).encode("utf-8")
+    if restored_ui != originals[BLUE_SNOW]:
+        raise ValueError("Complete BlueSnow UI inverse mismatch")
+    outputs[UI_PATH] = ui.encode("utf-8")
+    ui_proof = dict(fixedUpstreamCommit=COMMIT, originalPath=BLUE_SNOW,
+                    originalSha256Bytes=sha256(originals[BLUE_SNOW]),
+                    fullSourceInverseSha256Bytes=sha256(restored_ui),
+                    generatedPath=UI_PATH, generatedSha256Bytes=sha256(outputs[UI_PATH]),
+                    countedAdaptations=recipe,
+                    scope="Complete original BlueSnow lifecycle body with Windows resources, Canvas, clock and foreground ports. Execution and visible rendering require separate validation.")
+    outputs[UI_PROOF_PATH] = (json.dumps(ui_proof, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     return outputs
 
 
@@ -229,7 +247,7 @@ def generate(repo: Path, output: Path) -> dict:
             target.write_bytes(data)
     return dict(originalFiles=len(originals), countedAdaptations=17, fullSourceInverse=True,
                 catalogSha256Bytes=CATALOG_SHA256, runtimeUniquePairs=13, runtimeEnumIdentities=14,
-                generatedFiles=len(outputs), welcomeRuntimeAllowed=False)
+                generatedFiles=len(outputs), blueSnowCountedAdaptations=20, welcomeRuntimeAllowed=False)
 
 
 def main() -> None:

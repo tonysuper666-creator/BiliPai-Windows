@@ -2,6 +2,7 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
+from v029_brand_consumers import empty_consumer
 BASE='app/src/main/java/com/android/purebilibili/'
 BGM=BASE+'feature/audio/bgm/'
 SOURCES=[BGM+n+'.kt' for n in ['BgmDetailViewModel','BgmDetailPolicy','BgmHeatChart','BgmDetailScreen']]+[BASE+n+'.kt' for n in ['data/repository/ViewGrpcRepository','data/model/response/PlayerInfoResponse','core/network/ApiClient','navigation/AppNavigation','core/util/BilibiliNavigationTargetParser','feature/video/viewmodel/VideoCommentViewModel','feature/video/ui/components/CommentInputDialog','feature/video/ui/components/CommentSortFilterBar','data/repository/CommentFraudDetectionPolicy','data/model/CommentFraudStatus','core/database/entity/CommentFraudRecord','core/database/dao/CommentFraudDao','data/repository/CommentFraudRepository']]
@@ -345,31 +346,10 @@ def generate_ui(repo,original,shared,emit,changes):
     path='design-system/src/main/java/com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt'
     emit('com/android/purebilibili/core/ui/motion/VerticalContentRevealMotionPolicy.kt',original[path])
     retained(path,original[path],'Full original Compose reveal motion file, LF-identical.')
-    path=BASE+'core/ui/LottieComponents.kt';raw=original[path]
-    mask=shared.masked(raw);m=re.search(r'(?m)^fun EmptyState\(',mask);start=raw.rfind('@Composable',0,m.start())
-    opening=mask.index('{',shared.balanced(mask,mask.index('(',m.start())));end=shared.balanced(mask,opening,'{','}')
-    body=raw[start:end]
-    body=replace_once(body,'        LottieAnimation(\n            url = LottieUrls.EMPTY,\n            size = 150.dp\n        )','        com.bilipai.desktop.ui.DesktopBgmLottie(\n            url = LottieUrls.EMPTY,\n            size = 150.dp\n        )')
-    constants=re.search(r'object LottieUrls \{[\s\S]*?\n\}',raw).group()
-    cute_mask=shared.masked(raw);cute_match=re.search(r'(?m)^fun CutePersonLoadingIndicator\(',cute_mask)
-    cute_start=raw.rfind('@Composable',0,cute_match.start())
-    cute_opening=cute_mask.index('{',shared.balanced(cute_mask,cute_mask.index('(',cute_match.start())))
-    cute_end=shared.balanced(cute_mask,cute_opening,'{','}')
-    cute_body=raw[cute_start:cute_end]
-    body='''package com.android.purebilibili.core.ui
-import com.android.purebilibili.core.ui.components.AppText
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.graphics.Color
-'''+constants+'\n\n'+body+'\n\n'+cute_body+'\n'
+    path=BASE+'core/ui/LottieComponents.kt'
+    body,audit=empty_consumer(original[path])
     emit('com/android/purebilibili/core/ui/DesktopOriginalBgmEmptyState.kt',body)
-    retained(path,body,'Complete original EmptyState body and original LottieUrls; only Android Lottie animation API maps to existing Skottie with required same-owner anonymous loader.')
+    changes.append(dict(strategy='Complete fixed-v029 EmptyState body; original same-action/replay/default parameters; existing legacy LottieUrls/CutePersonLoadingIndicator retained in this sole output',**audit))
 
 
 def generate_comment_detail(original,shared,emit,changes):

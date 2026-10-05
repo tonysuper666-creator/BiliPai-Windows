@@ -68,8 +68,24 @@ class BrandMotionProducerTest(unittest.TestCase):
                         self.assertEqual(brand.wide(REPO / brand.ARCHIVE / original_path).read_bytes(), target.read_bytes())
                     else:
                         self.assertFalse(target.exists())
-            self.assertEqual(28, len(brand.files_under(output)))
-            self.assertFalse(any(path.endswith("BlueSnowMaidAnimation.kt") or path.endswith("ReduceMotion.kt") for path in brand.files_under(output)))
+            self.assertEqual(30, len(brand.files_under(output)))
+            self.assertEqual(1, sum(path.endswith("BlueSnowMaidAnimation.kt") for path in brand.files_under(output)))
+            self.assertFalse(any(path.endswith("ReduceMotion.kt") for path in brand.files_under(output)))
+
+    def test_complete_blue_snow_ui_has_its_own_exact_inverse(self):
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "generated"
+            brand.generate(REPO, output)
+            proof = json.loads((output / brand.UI_PROOF_PATH).read_bytes())
+            code = (output / brand.UI_PATH).read_text(encoding="utf-8")
+            original = brand.wide(REPO / brand.ARCHIVE / brand.BLUE_SNOW).read_bytes()
+            self.assertEqual(20, len(proof["countedAdaptations"]))
+            self.assertEqual(original, brand.brand_ui.reverse_blue_snow(code, proof["countedAdaptations"]).encode("utf-8"))
+            self.assertEqual(proof["originalSha256Bytes"], proof["fullSourceInverseSha256Bytes"])
+            self.assertEqual(brand.sha256(code.encode("utf-8")), proof["generatedSha256Bytes"])
+            changed = code.replace("LottieCompositionSpec.Animation(animation)", "LottieCompositionSpec.Animation(other)")
+            with self.assertRaisesRegex(ValueError, "inverse mismatch"):
+                brand.brand_ui.reverse_blue_snow(changed, proof["countedAdaptations"])
 
     def test_json_tamper_rejected_before_any_generation(self):
         with tempfile.TemporaryDirectory() as temp:
