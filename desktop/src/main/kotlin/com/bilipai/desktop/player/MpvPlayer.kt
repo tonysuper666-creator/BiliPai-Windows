@@ -1580,7 +1580,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         activeShaderVersion = action.version
                         activeShaders = action.configuration
                         lastShaderPoll = 0L
-                        refreshPausedVideoFrame(native, handle, action.version)
+                        // Clearing hooks already requests a retained-frame redraw in vo=gpu.
+                        // An additional seek resets that frame queue while the renderer is rebuilding.
+                        if (action.configuration.paths.isNotEmpty()) {
+                            refreshPausedVideoFrame(native, handle, action.version)
+                        }
                         refreshVideoShaders(native, handle)
                     }
                     is Action.OwnedVideoViewport -> {
@@ -1743,7 +1747,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
 
         private fun refreshPausedVideoFrame(native: MpvNative, handle: Pointer, shaderVersion: Long) {
             // vo=gpu can retain its old paused render texture after a shader option changes.
-            // A same-position exact seek requests a new decoded render, including when clearing hooks.
+            // A same-position exact seek requests a new decoded render for an enabled shader chain.
             // User seeks already cause that render and must keep their own target/completion identity.
             if (!fileLoaded || state.value.audioOnly || seekTracker.hasPendingSeek || property(native, handle, "pause") != "yes" ||
                 property(native, handle, "seeking") == "yes") return
