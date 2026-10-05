@@ -37,10 +37,17 @@ internal class DesktopOriginalVideoEngagementEnvironment(
  * accompanies only the two explicitly dispatched command-card operations,
  * including their IO continuations and original nested feedback jobs.
  */
-internal class DesktopOriginalVideoEngagementPresentation(
+internal class DesktopOriginalVideoEngagementPresentation private constructor(
     private val owns: () -> Boolean,
     private val admission: (() -> Unit) -> Boolean,
+    internal val feedbackSource: DesktopWindowsVideoFeedbackSource?,
 ) {
+    // Exact old two-lambda API, including trailing-lambda callers.
+    constructor(owns: () -> Boolean, admission: (() -> Unit) -> Boolean) : this(owns, admission, null)
+    constructor(sourceOwner: DesktopOriginalVideoAcceptedPublication,
+        subject: com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot,
+        owns: () -> Boolean, admission: (() -> Unit) -> Boolean) :
+        this(owns, admission, DesktopWindowsVideoFeedbackSource(sourceOwner, subject))
     fun isOwned(): Boolean = owns()
     fun admit(action: () -> Unit): Boolean {
         if (!isOwned()) return false

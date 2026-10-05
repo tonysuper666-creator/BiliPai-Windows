@@ -19,7 +19,7 @@ internal class DesktopWindowsCommandAttentionBinding(
 ) : AutoCloseable {
     private val alive = AtomicBoolean(true)
     val state: StateFlow<VideoEngagementUiState> get() = engagement.uiState
-    private val presentation = DesktopOriginalVideoEngagementPresentation(::isOwned, withAdmission)
+    private val presentation = DesktopOriginalVideoEngagementPresentation(sourceLease, subject, ::isOwned, withAdmission)
 
     fun isOwned(): Boolean = alive.get() && stillOwned() &&
         sourceLease.request.bvid == subject.bvid && sourceLease.request.cid == subject.cid &&

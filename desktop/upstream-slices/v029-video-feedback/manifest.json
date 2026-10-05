@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "scope": "confirmed video engagement feedback only; canonical baseline unchanged",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "gitBlob": "7357f4d342257e47566e9eac57c9bd1afede84d4",
+      "bytes": 28127,
+      "sha256": "9c2d1edc7f28e09dd3c37c04ee006ee345d9d74fabd1c3dcfdc9f9312788e3d0",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt",
+      "gitBlob": "5d14844addee599a208005331f9d232a92aa2ac2",
+      "bytes": 13049,
+      "sha256": "a55c7f44a80b6a26279c401d6e7a84afeda1844f33f6b80c95a010ba55702f6a",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailFeedbackOverlayAdapter.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt",
+      "gitBlob": "04d60e1423e5f45a640990bcc5b3c11ac467b507",
+      "bytes": 4967,
+      "sha256": "9df5cfb65a8303ac49821be356c899bf12e7e2dbcaab80e27ebde93eff7e0232",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CelebrationAnimations.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt",
+      "gitBlob": "ab7dc02a955cc11439eeb774289e45410611aba3",
+      "bytes": 990,
+      "sha256": "15d803c80018a16b4ca0bb37bf7b89bab65bb18e102bcd2c84fca991833fe822",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt",
+      "gitBlob": "0873e5808de0201dea49acdd3156fbefc1318150",
+      "bytes": 642,
+      "sha256": "ac32f597609d7fa820d04d4fe6b3fc6071fe94a431c22ca4ae9d20e90d1605e4",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt",
+      "gitBlob": "c24f5df7ddfde5b31fc06f479589bfaa5dd600e7",
+      "bytes": 2458,
+      "sha256": "30efe7e71fb018abc8036168e0cb2bd0cf2dc4c83c95ff45d345f0b0a1c0b776",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackPolicy.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareFeedbackEvents.kt",
+      "gitBlob": "fb4b592a0ee7f25c656e268d31d227d96397532c",
+      "bytes": 606,
+      "sha256": "de58027fb9ea61b7ed25039665968899fe7d4efaccc8ecfc4fe5192631b9f050",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareFeedbackEvents.kt"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicyTest.kt",
+      "gitBlob": "c60b481ed7fa3b3ac119db6757994fe221040654",
+      "bytes": 1718,
+      "sha256": "799fc379ef166dfb610410c27d8ec1ef3b0dfdb6b49c2678b2637f5b1416e67a",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/test/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicyTest.kt"
+    }
+  ]
+}

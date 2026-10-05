@@ -44,6 +44,18 @@ def confirmed_favorite_receipt_delta(path,t):
 
 def emit(path,t,origin,mode):
     t=confirmed_favorite_receipt_delta(path,t)
+    from v029_video_feedback import apply_video_feedback, celebration_source, OUTPUT_ANIMATIONS, COMMIT as FEEDBACK_COMMIT
+    t,feedbackProof=apply_video_feedback(path,t,parser)
+    from v029_video_feedback_origin import apply_feedback_origin
+    t,feedbackOriginProof=apply_feedback_origin(path,t)
+    if feedbackOriginProof is not None:
+        save(OUTPUT/'v029-video-feedback-origin-proof.json',feedbackOriginProof)
+    if feedbackProof is not None:
+        save(OUTPUT/'v029-video-feedback-state-proof.json',feedbackProof)
+        animation,animationProof=celebration_source()
+        write(OUTPUT/OUTPUT_ANIMATIONS,animation)
+        save(OUTPUT/'v029-video-feedback-celebration-proof.json',animationProof)
+        OUTPUTS.append(dict(path=OUTPUT_ANIMATIONS,origin=animationProof['origin'],mode='fixed-v029-complete-feedback-animations-platform-symbol-adapt',fixedCommit=FEEDBACK_COMMIT,sha256LF=sha(animation),physicalLines=len(animation.splitlines()),generated=True))
     if STANDALONE or mode!='direct':write(OUTPUT/path,t)
     OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=sha(t),physicalLines=len(t.splitlines()),generated=STANDALONE or mode!='direct'))
 def function_range(t,name):
