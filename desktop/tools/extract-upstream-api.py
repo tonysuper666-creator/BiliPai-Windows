@@ -156,13 +156,15 @@ def generate(repo: Path, output: Path) -> Path:
         selectedSha256LF=hashlib.sha256(after.encode()).hexdigest(),
         canonicalSelectedInverse=True, mappings=[dict(before=before,after=after)],
         wholeCanonicalInterfacesPreserved=True), indent=2)+"\n", encoding="utf8")
+    from v030_live_stream import api_delta, emit_models as emit_live_models
+    live_api_body = api_delta("\n\n".join(sections), repo, output)
     generated = "\n".join([
         "// GENERATED from upstream ApiClient.kt; edit the original API or extraction selection, never this file.",
         "// SHA-256: " + hashlib.sha256(source_path.read_bytes()).hexdigest(),
         "package com.android.purebilibili.core.network", "",
         "import com.android.purebilibili.data.model.response.*",
         "import retrofit2.Response", "import retrofit2.http.*", "import okhttp3.ResponseBody", "",
-        "\n\n".join(sections), "",
+        live_api_body, "",
     ])
     destination = output / "com/android/purebilibili/core/network/DesktopUpstreamApi.kt"
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -242,6 +244,7 @@ def generate(repo: Path, output: Path) -> Path:
     generate_core_data_log(repo, output, parser)
     from v029_comment_search import emit_models
     emit_models(repo, output)
+    emit_live_models(repo, output)
     return destination
 
 

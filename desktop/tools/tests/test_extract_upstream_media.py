@@ -37,7 +37,7 @@ internal fun next(): Int { return 1 }
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
             generated = media.generate(REPO, output)
-            self.assertEqual(9, len(generated))
+            self.assertEqual(11, len(generated))
             pgc = (output / "com/android/purebilibili/data/repository/DesktopMediaPgcPolicies.kt").read_text(encoding="utf-8")
             original = media.read(REPO, media.BASE + "data/repository/BangumiRepository.kt")
             for name in ["decodeBangumiPlayUrlPayload", "mergeBangumiDetailSections", "validateBangumiPlayableVideoInfo"]:

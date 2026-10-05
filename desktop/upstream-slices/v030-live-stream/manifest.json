@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt",
+      "gitBlob": "0c69a011fa66f0c9829b066aa4fa149a865c996c",
+      "sha256Bytes": "554ca3c32522c88148144c4221879701657aab296519ea0da4162661039d4857",
+      "bytes": 56832,
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/app/src/main/java/com/android/purebilibili/data/repository/LiveRepository.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LivePlaybackPolicy.kt",
+      "gitBlob": "934b8669be7c7dc09e93b10b211be30a8466b912",
+      "sha256Bytes": "451dc433f3776053ec09f010e0b5926e4806d8b6eb3e62fc711bd6a36d61398e",
+      "bytes": 8312,
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/app/src/main/java/com/android/purebilibili/feature/live/LivePlaybackPolicy.kt"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/live/LivePlaybackPolicyTest.kt",
+      "gitBlob": "a766c1240ad0d2395a2b295382679c28bd09db98",
+      "sha256Bytes": "e4e6075af50f86a3037f5ebaa0681cc603122d87d64f60b0080b9b69307919a0",
+      "bytes": 16757,
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/app/src/test/java/com/android/purebilibili/feature/live/LivePlaybackPolicyTest.kt"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "gitBlob": "76c1f1dcc3e99579b0684bc6f5d8d2e248697570",
+      "sha256Bytes": "1ed0da47deb801a5a2f6f2a63e6bf2e9e8674bb861e573b45956f1bd5ed2febb",
+      "bytes": 151172,
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/LiveModels.kt",
+      "gitBlob": "30e2200509bae1c1e5d325adc1205cf354910eec",
+      "sha256Bytes": "95ef6390a7f370a470b17d79aadfa87145aa0003dd5334e5d2becd1e4529b160",
+      "bytes": 14794,
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/core-data/src/main/java/com/android/purebilibili/data/model/response/LiveModels.kt"
+    }
+  ]
+}

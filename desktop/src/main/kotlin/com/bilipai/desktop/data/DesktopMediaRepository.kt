@@ -25,6 +25,8 @@ import com.android.purebilibili.data.repository.LivePrefetchDanmaku
 import com.android.purebilibili.data.repository.parseLiveDanmakuPermission
 import com.android.purebilibili.data.repository.parseLiveDanmakuHistoryItems
 import com.android.purebilibili.data.repository.resolveDesktopLiveDanmakuHosts
+import com.android.purebilibili.data.repository.requestOriginalDesktopLiveStream
+import com.android.purebilibili.feature.live.resolveLivePlayback
 import com.bilipai.desktop.player.PlaybackSegment
 import com.android.purebilibili.data.repository.decodeBangumiPlayUrlPayload
 import com.android.purebilibili.data.repository.shouldFallbackToLegacyBangumiPlayUrl
@@ -132,21 +134,9 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
         if (room.locked) throw BiliApiException(-403, "该直播间暂不可观看")
         if (!room.isLive) throw BiliApiException(-1, "主播尚未开播")
         repository.ensureSession()
-        val primary = api.live.getLivePlayUrl(roomId = room.roomId, quality = quality, onlyAudio = if (onlyAudio) 1 else null,
-            signedParams = repository.signWebParams(emptyMap()))
-        if (primary.code in setOf(-101, -352, -412, -403)) checkCode(primary.code, primary.message)
-        val selected = if (primary.code == 0) primary.data?.let { selectLive(it, room, quality) } else null
-        if (selected != null) {
-            if (selected.qualities.isNotEmpty()) return@withContext selected
-            val legacyQuality = try {
-                api.live.getLivePlayUrlLegacy(room.roomId, quality).takeIf { it.code == 0 }?.data?.quality_description
-            } catch (cancelled: CancellationException) { throw cancelled
-            } catch (_: Exception) { null }
-            return@withContext selected.copy(qualities = legacyQuality.orEmpty().map { MediaQuality(it.qn, it.desc) })
-        }
-        val legacy = api.live.getLivePlayUrlLegacy(room.roomId, quality)
-        checkCode(legacy.code, legacy.message)
-        legacy.data?.let { selectLive(it, room, quality) } ?: throw BiliApiException(-1, "直播接口没有返回可播放流")
+        val data = requestOriginalDesktopLiveStream(api.live,
+            { params -> repository.signWebParams(params) }, room.roomId, quality, onlyAudio).getOrThrow()
+        selectLive(data, room, quality) ?: throw BiliApiException(-1, "直播接口没有返回可播放流")
     }
 
     /** Every connection obtains a fresh token using this shared session's signed API. */
@@ -397,23 +387,14 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
 
     companion object {
         internal fun selectLive(data: LivePlayUrlData, room: LiveRoomDetails, quality: Int): LivePlaybackInfo? {
-            val qualities = (data.playurl_info?.playurl?.gQnDesc.orEmpty() + data.quality_description.orEmpty())
-                .distinctBy { it.qn }.map { MediaQuality(it.qn, it.desc) }
-            val codecs = data.playurl_info?.playurl?.stream.orEmpty().flatMap { stream ->
-                stream.format.orEmpty().flatMap { format -> format.codec.orEmpty().map { codec ->
-                    Triple(if (codec.codecName == "avc") 0 else if (codec.codecName == "hevc") 1 else 2,
-                        if (stream.protocolName == "http_hls") 0 else 1, codec)
-                } }
-            }.sortedWith(compareBy({ it.first }, { it.second }))
-            for ((_, _, codec) in codecs) {
-                if (codec.baseUrl.isBlank()) continue
-                val urls = codec.url_info.orEmpty().mapNotNull { info -> playableUrl(info.host + codec.baseUrl + info.extra) }.distinct()
+            val resolved = resolveLivePlayback(data, quality) ?: return null
+            for (candidate in resolved.candidates) {
+                val urls = candidate.urls.mapNotNull(::playableUrl).distinct()
                 if (urls.isNotEmpty()) return LivePlaybackInfo(PlaybackSource(urls.first(), null, room.title,
-                    "https://live.bilibili.com/${room.roomId}", quality = codec.currentQn.takeIf { it > 0 } ?: quality), qualities, urls.drop(1))
+                    "https://live.bilibili.com/${room.roomId}", quality = candidate.currentQuality),
+                    candidate.qualityList.map { MediaQuality(it.qn, it.desc) }, urls.drop(1))
             }
-            val urls = data.durl.orEmpty().mapNotNull { playableUrl(it.url) }
-            return urls.firstOrNull()?.let { LivePlaybackInfo(PlaybackSource(it, null, room.title,
-                "https://live.bilibili.com/${room.roomId}", quality = data.current_quality.takeIf { q -> q > 0 } ?: quality), qualities, urls.drop(1)) }
+            return null
         }
 
         internal fun selectBangumi(info: BangumiVideoInfo, season: BangumiSeason, episode: BangumiEpisode, quality: Int): PlaybackSource {

@@ -128,6 +128,8 @@ val extractUpstreamApi by tasks.registering(Exec::class) {
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
     inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/network/CoreNetworkRuntime.kt"))
     inputs.file("tools/extract-upstream-api.py")
+    inputs.file("tools/v030_live_stream.py")
+    inputs.dir("upstream-slices/v030-live-stream")
     inputs.file("tools/extract-upstream-special-danmaku.py")
     inputs.dir("upstream-slices/v029-special-danmaku")
     inputs.file("tools/sync-upstream.py")
@@ -147,15 +149,22 @@ val extractUpstreamMedia by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-media.py",
-        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/media").get().asFile.absolutePath)
+        "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/media").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/live-stream-original-tests").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-media.py")
+    inputs.file("tools/v030_live_stream.py")
+    inputs.dir("upstream-slices/v030-live-stream")
     inputs.file("tools/extract-upstream-special-danmaku.py")
     inputs.dir("upstream-slices/v029-special-danmaku")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { "media" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/media"))
+    outputs.dir(layout.buildDirectory.dir("generated/live-stream-original-tests"))
 }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/live-stream-original-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractUpstreamMedia) }
+
 val extractUpstreamAudio by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)

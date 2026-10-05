@@ -91,7 +91,7 @@ def write(output: Path, relative: str, original_path: str, original: str, body: 
     return result
 
 
-def generate(repo: Path, output: Path) -> list[Path]:
+def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[Path]:
     parser = parser_for(repo)
     generated = []
     path = BASE + "data/repository/BangumiRepository.kt"
@@ -226,6 +226,8 @@ def generate(repo: Path, output: Path) -> list[Path]:
     for name in ["isBangumiFollowed", "resolveBangumiFollowStatusLabel", "resolveBangumiMergedFollowStatus"]:
         body += function(source, name, parser) + "\n\n"
     generated.append(write(output, "com/android/purebilibili/feature/bangumi/DesktopFollowPolicies.kt", path, source, body))
+    from v030_live_stream import emit_media
+    generated.extend(emit_media(repo, output, test_output))
     return generated
 
 
@@ -233,6 +235,7 @@ if __name__ == "__main__":
     command = argparse.ArgumentParser(description=__doc__)
     command.add_argument("--repo", type=Path, required=True)
     command.add_argument("--output", type=Path)
+    command.add_argument("--test-output", type=Path)
     command.add_argument("--inventory", action="store_true")
     arguments = command.parse_args()
     repo = arguments.repo.resolve()
@@ -240,7 +243,7 @@ if __name__ == "__main__":
         print(json.dumps([{"path": path, "mode": mode, "features": ["media", "downloads"],
             "sha256": hashlib.sha256(read(repo, path).encode()).hexdigest()} for path, mode in SOURCES.items()], indent=2))
     elif arguments.output:
-        for path in generate(repo, arguments.output.resolve()):
+        for path in generate(repo, arguments.output.resolve(), arguments.test_output.resolve() if arguments.test_output else None):
             print(path)
     else:
         command.error("Pass --output or --inventory")

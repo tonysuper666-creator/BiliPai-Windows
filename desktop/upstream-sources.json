@@ -366,7 +366,7 @@
       "features": [
         "source-parity"
       ],
-      "mode": "direct"
+      "mode": "policy-extract"
     },
     {
       "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/MessageResponse.kt",
