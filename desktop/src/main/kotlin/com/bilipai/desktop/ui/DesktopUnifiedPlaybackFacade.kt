@@ -53,13 +53,15 @@ internal class DesktopUnifiedPlaybackFacade(
     val state: StateFlow<DesktopPlaybackState> = assemblies.flatMapLatest { assembly ->
         if (assembly == null) combine(playlist.playlist, playlist.currentIndex) { items, index ->
             DesktopPlaybackState(queue = items.map(::favoriteQueueVideoCard), queueIndex = index)
-        } else combine(combine(assembly.playback.uiState, assembly.domains.engagement.uiState) { ui, engagement ->
-                if (ui is VideoPlaybackUiState.Success) ui.withEngagementUiState(engagement) else ui
+        } else combine(combine(assembly.playback.uiState, assembly.domains.engagement.uiState,
+                assembly.playback.desktopPlaybackRecoveryState) { ui, engagement, recovery ->
+                (if (ui is VideoPlaybackUiState.Success) ui.withEngagementUiState(engagement) else ui) to recovery
             }.combine(combine(dismissedError,pendingCardResolution) { dismissed, pending -> dismissed to pending }) { ui, transient -> ui to transient }, playlist.playlist, playlist.currentIndex,
             assembly.playback.showSkipButton, assembly.playback.currentSponsorSegment) { ui, items, index, showSkip, segment ->
             if (!assembly.owns() || currentAssembly() !== assembly || !ownsRoot()) DesktopPlaybackState()
             else {
-                val playbackUi = ui.first
+                val playbackUi = ui.first.first
+                val recovery = ui.first.second
                 val success = playbackUi as? VideoPlaybackUiState.Success
                 val info = success?.info
                 val details = info?.let { raw -> VideoDetails(raw.bvid, raw.aid, raw.title, raw.desc, raw.pic,
@@ -71,9 +73,12 @@ internal class DesktopUnifiedPlaybackFacade(
                     availableQualities = success?.qualityIds?.mapIndexed { i, id -> PlaybackQuality(id, success.qualityLabels.getOrNull(i) ?: id.toString()) }.orEmpty(),
                     related = success?.related?.map { related -> VideoCard(related.bvid, related.title, related.pic,
                         related.owner.name, related.stat.view.toLong(), related.duration, authorMid = related.owner.mid) }.orEmpty(),
-                    error = (playbackUi as? VideoPlaybackUiState.Error)?.takeUnless { it === ui.second.first }?.msg,
+                    error = if (recovery.status == PlaybackStatus.Failed) recovery.message
+                        else if (recovery.status == PlaybackStatus.Recovering) null
+                        else (playbackUi as? VideoPlaybackUiState.Error)?.takeUnless { it === ui.second.first }?.msg,
                     queue = items.map(::favoriteQueueVideoCard), queueIndex = index,
-                    recovering = success?.isQualitySwitching == true,
+                    recovering = recovery.status == PlaybackStatus.Recovering || success?.isQualitySwitching == true,
+                    recoveryMessage = recovery.recoveryStage,
                     manualSkip = if (showSkip && segment != null) SkipAction.ShowButton(segment.endTimeMs,
                         assembly.playback.currentSkipReason.value ?: segment.category, segment.UUID) else null)
             }

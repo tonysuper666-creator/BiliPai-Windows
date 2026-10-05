@@ -106,7 +106,7 @@ internal fun DesktopVideoCommentVoteCardHost(
     }
 }
 
-/** Complete v029 vote/grade cards bound to the captured accepted source. */
+/** Complete v029 vote/grade and optional real ATTENTION card callbacks. */
 @Composable
 internal fun DesktopVideoCommandVoteContent(
     repository: DesktopRepository,
@@ -120,6 +120,7 @@ internal fun DesktopVideoCommandVoteContent(
     stillOwned: () -> Boolean,
     withAdmission: (() -> Unit) -> Boolean,
     capturePlaybackState: () -> VideoPlaybackUiState?,
+    attention: DesktopWindowsCommandAttentionBinding?,
     onFeedback: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -153,14 +154,17 @@ internal fun DesktopVideoCommandVoteContent(
         var measured by remember { mutableStateOf(IntSize.Zero) }
         val density = LocalDensity.current
         val viewport = resolveDanmakuViewport(measured.width, measured.height, density.density)
-        // ATTENTION is not mounted until real follow/triple ports are connected.
+        val attentionState = attention?.state?.collectAsState()?.value
+        val attentionOwned = attention != null && attention.sourceLease === sourceLease && attention.isOwned()
         val items = filterVisibleCommandDanmakuItems(cidOwnedCommands, hideInteractiveCommands)
-            .filter { it.type == CommandDanmakuType.VOTE }
+            .filter { it.type == CommandDanmakuType.VOTE || (it.type == CommandDanmakuType.ATTENTION && attentionOwned) }
         CompositionLocalProvider(LocalDesktopWindowsCommandVotePlatform provides platform) {
             Box(modifier.fillMaxSize().onSizeChanged { measured = it }) {
                 if (viewport != null && native.ready && current()) CommandDanmakuOverlay(
                     items = items, player = player, viewport = viewport, bottomInsetPx = 0,
-                    state = commandState, fontScale = fontScale, onFollowClick = {}, onTripleClick = {},
+                    state = commandState, fontScale = fontScale, isFollowing = attentionState?.isFollowing ?: false,
+                    onFollowClick = { if (attentionOwned && current()) attention?.follow() },
+                    onTripleClick = { if (attentionOwned && current()) attention?.triple() },
                     onVoteSubmit = { item, option, index ->
                         submitOriginalDesktopCommandVote(item, option, index, capturedState(), commandState, scope, platform)
                     })

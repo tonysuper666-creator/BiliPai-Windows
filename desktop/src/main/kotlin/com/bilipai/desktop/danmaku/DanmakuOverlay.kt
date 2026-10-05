@@ -22,12 +22,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import okhttp3.OkHttpClient
@@ -779,7 +781,7 @@ class DanmakuOverlay internal constructor(
     fun enterLive(): Long {
         val version = synchronized(requestLock) {
             check(!cacheMaintenance) { "弹幕缓存正在维护" }
-            generation.incrementAndGet().also { loadJob?.cancel(); windowJob?.cancel(); retireWebMaskSource(); liveMode = true; pendingLive.clear() }
+            generation.incrementAndGet().also { loadJob?.cancel(); windowJob?.cancel(); windowLoader?.close();windowLoader=null;retireWebMaskSource(); liveMode = true; pendingLive.clear() }
                 .also { offlineDocumentOwner=null; commandCid = null; mutableCommands.value = emptyList(); mutableAdvanced.value=emptyList(); originalSectionDanmakuViewport=null }
         }
         mutableError.value = null; mutableFormat.value = null
@@ -810,10 +812,15 @@ class DanmakuOverlay internal constructor(
     }
 
     private suspend fun loadSource(playbackSource: DesktopDanmakuSource, cid: Long, aid: Long, durationSeconds: Double, expectedSourceVersion: Long?, maskSource:DesktopOwnedWebMaskSource?, offlineOwner:(()->Boolean)? = null) {
+        val sourceSnapshot=player.currentSourceSnapshot()?.takeIf {expectedSourceVersion==null || it.sourceVersion==expectedSourceVersion}
+        val windowAdmission=WindowAdmission(sourceSnapshot,offlineOwner,
+            basActionBinding?.let {sourceSnapshot!=null && sameBasSource(sourceSnapshot,it.source)}==true ||
+                synchronized(requestLock) {originalClickBindings.isNotEmpty()})
         val version = synchronized(requestLock) {
             check(!cacheMaintenance && !closed.get()) { "弹幕缓存正在维护" }
             generation.incrementAndGet().also {
-                loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()
+                loadJob?.cancel(); windowJob?.cancel(); windowLoader?.close();windowLoader=null
+                liveMode = false; pendingLive.clear()
                 // Clear the old document before publishing a new CID/version identity.
                 rawDocument = DanmakuDocument()
                 poolSourceVersion = expectedSourceVersion
@@ -825,30 +832,50 @@ class DanmakuOverlay internal constructor(
         synchronized(requestLock){if(version==generation.get() && !closed.get())bindWebMaskSource(maskSource)}
         lastWebMaskRefreshNanos=Long.MIN_VALUE;lastWebMaskPositionMs=Long.MIN_VALUE
         installDocument(DanmakuDocument(), version)
+        val loadingLoader=java.util.concurrent.atomic.AtomicReference<DanmakuWindowLoader?>()
         val loading = synchronized(requestLock) {
           if(cacheMaintenance || closed.get() || version!=generation.get())throw CancellationException("弹幕缓存维护或请求已退役")
           requests.async {
-            val loader = DanmakuWindowLoader(playbackSource, cid, aid, (durationSeconds * 1000).toLong())
-            synchronized(requestLock) { if(!cacheMaintenance && version==generation.get())windowLoader=loader }
+            val loader = DanmakuWindowLoader(playbackSource, cid, aid, (durationSeconds * 1000).toLong(),requests) {
+                resolvedConfig?.second?.let {maxOf(it.scrollDurationMs,it.pinnedDurationMs)} ?:
+                    (maxOf(settings.scrollDurationSeconds,settings.staticDurationSeconds)*settings.speedFactor*1_000).toLong()
+            }
+            loadingLoader.set(loader)
+            val admitted=synchronized(requestLock) {
+                if(!cacheMaintenance && version==generation.get() && !closed.get()) {windowLoader=loader;true} else false
+            }
+            if(!admitted) {loader.close();throw CancellationException("Special loader owner retired")}
             val result = loader.initial((player.state.value.positionSeconds * 1000).toLong())
-            publish(result, version)
+            publish(result, version, windowAdmission)
             synchronized(requestLock) {
                 if (version == generation.get() && !closed.get() && currentOfflineDocumentOwned()) {
                     windowJob = requests.launch {
-                        player.state.map { loader.windowForPosition((it.positionSeconds * 1000).toLong()) }
+                      try {
+                        val windowContext=currentCoroutineContext()
+                        combine(player.state,loader.specialRevision) {state,_->
+                            loader.refreshKey((state.positionSeconds*1_000).toLong(),state.seekCompletedId)
+                        }
                             .distinctUntilChanged().collectLatest {
                                 try {
-                                    if(!currentOfflineDocumentOwned())throw CancellationException("Offline document owner retired")
+                                    if(!currentOfflineDocumentOwned() || sourceSnapshot?.let { !player.ownsSourceSnapshot(it) }==true) {
+                                        // collectLatest runs its action in a child. Throwing CE there
+                                        // alone leaves the collector and its sibling index IO alive.
+                                        windowContext.cancel(CancellationException("Document source owner retired"))
+                                        return@collectLatest
+                                    }
                                     if(version==generation.get() && !closed.get())onWebMaskSegmentWindowChanged()
-                                    val next = loader.move((player.state.value.positionSeconds * 1000).toLong())
-                                    if (next != null) publish(next, version)
+                                    val next = loader.move((player.state.value.positionSeconds * 1000).toLong(),player.state.value.seekCompletedId)
+                                    if (next != null) publish(next, version, windowAdmission)
                                 } catch (failure: Exception) {
                                     if (failure is CancellationException) throw failure
                                     if (version == generation.get() && !closed.get())
                                         mutableError.value = "弹幕分段加载失败：${failure.message ?: "network error"}"
                                 }
                             }
+                      } finally {loader.close()}
                     }
+                } else {
+                    loader.close()
                 }
             }
         }
@@ -859,19 +886,84 @@ class DanmakuOverlay internal constructor(
         try {
             loading.await()
         } catch (failure: Exception) {
-            if (failure is CancellationException) { loading.cancel(); throw failure }
+            if (failure is CancellationException) { loadingLoader.get()?.close();loading.cancel();throw failure }
+            loadingLoader.get()?.close()
             if (version == generation.get() && !closed.get()) mutableError.value = "弹幕加载失败：${failure.message ?: "network error"}"
         }
     }
 
-    private fun publish(result: DanmakuWindowResult, version: Long) {
-        synchronized(requestLock) {
-            if (version != generation.get() || closed.get() || !currentOfflineDocumentOwned()) return
-            mutableError.value = result.warning
-            mutableCommands.value = result.commands
-            mutableFormat.value = result.format
-            installDocument(result.document, version)
+    private class WindowAdmission(val source:OwnedPlaybackSourceSnapshot?,val legacyOwned:(()->Boolean)?,formal:Boolean) {
+        val formalOwnerRequired=AtomicBoolean(formal)
+    }
+    /** A request which acquired a formal Root owner can never fall back after
+     * that owner retires. Independent embeddings require their explicit port. */
+    private fun admitWindow(receipt:WindowAdmission,action:()->Unit):Boolean {
+        val source=receipt.source
+        if(source==null) {action();return true}
+        val bas=basActionBinding?.takeIf {sameBasSource(source,it.source)}
+        if(bas!=null) {
+            receipt.formalOwnerRequired.set(true)
+            return bas.admit {if(basActionBinding===bas && bas.owned() && player.ownsSourceSnapshot(source))action()}
         }
+        val original=synchronized(requestLock) {originalClickBindings.values.lastOrNull {it.owns()}}
+        if(original!=null) {
+            receipt.formalOwnerRequired.set(true)
+            return original.admit(source.sourceVersion) {
+                synchronized(requestLock) {if(originalClickBindings[original.token]===original && original.owns() && player.ownsSourceSnapshot(source))action()}
+            }
+        }
+        if(receipt.formalOwnerRequired.get())return false
+        basStandaloneAdmission?.let {return it(source,action)}
+        if(receipt.legacyOwned?.invoke()==true && currentOfflineDocumentOwned() && player.ownsSourceSnapshot(source)) {action();return true}
+        return false
+    }
+
+    private fun publish(result: DanmakuWindowResult, version: Long, receipt:WindowAdmission) {
+        val source=receipt.source
+        admitWindow(receipt) {
+            synchronized(requestLock) {
+                if(version!=generation.get() || closed.get() || !currentOfflineDocumentOwned() ||
+                    source?.let {!player.ownsSourceSnapshot(it)}==true)return@synchronized
+                val position=(player.state.value.positionSeconds*1_000).toLong()
+                if(result.specialStartMs!=null && result.specialEndMs!=null &&
+                    position !in result.specialStartMs until result.specialEndMs)return@synchronized
+                mutableError.value=result.warning;mutableCommands.value=result.commands;mutableFormat.value=result.format
+                if(result.specialOnly)publishSpecialWindow(result.document,version,receipt)
+                else {
+                    val local=rawDocument.comments.filter {it.originalLocalItem!=null}
+                    val comments=(result.document.comments+local).distinctBy {it.id}.sortedBy {it.timeSeconds}
+                    installDocument(result.document.copy(comments=comments),version)
+                }
+            }
+        }
+    }
+
+    /** Ordinary lanes/styles, consumed cursor, plugin job and local phase remain
+     * intact when only the short special window changes. Pending ordinary work
+     * merges this latest advanced list at its existing final install boundary. */
+    private fun publishSpecialWindow(document:DanmakuDocument,version:Long,receipt:WindowAdmission) {
+        val source=receipt.source
+        if(rawDocument.advanced==document.advanced && rawDocument.bas==document.bas)return
+        rawDocument=rawDocument.copy(advanced=document.advanced,bas=document.bas,
+            serverDisabled=rawDocument.serverDisabled || document.serverDisabled)
+        mutableAdvanced.value=document.advanced
+        val revision=documentRevision.incrementAndGet();mutablePoolSourceRevision.value=revision
+        val advanced=document.advanced
+        SwingUtilities.invokeLater {
+            admitWindow(receipt) {
+                synchronized(requestLock) {
+                    if(version==generation.get() && !closed.get() && currentOfflineDocumentOwned() &&
+                        rawDocument.advanced===advanced && source?.let {!player.ownsSourceSnapshot(it)}!=true) {
+                        advancedRenderer=AdvancedDanmakuRenderer(advanced)
+                        hotDocument?.takeIf {it.generation==version}?.let {hotDocument=it.copy(revision=documentRevision.get())}
+                        if(originalInstalledGeneration==version)originalInstalledRevision=documentRevision.get()
+                        if(vodBaseGeneration==version)vodBaseCount=(hotDocument?.comments?.size ?: rawDocument.comments.size)+advanced.size
+                        updateVodCount();panel.repaint()
+                    }
+                }
+            }
+        }
+        refreshBasDocument()
     }
 
     internal fun cacheMemoryEstimate(): Long = synchronized(requestLock) {
@@ -892,7 +984,7 @@ class DanmakuOverlay internal constructor(
         try {
             jobs.forEach {it.join()};checkRequest()
             synchronized(requestLock) {
-                check(!closed.get());loadJob=null;windowJob=null;pluginJob=null;windowLoader=null
+                check(!closed.get());loadJob=null;windowJob=null;pluginJob=null;windowLoader?.close();windowLoader=null
                 rawDocument=DanmakuDocument();offlineDocumentOwner=null;poolSourceVersion=null
                 commandCid=null;pendingLive.clear();mutableCommands.value=emptyList();mutableAdvanced.value=emptyList()
                 mutableError.value=null;mutableFormat.value=null;originalLocalInjectionPhase=Any();documentRevision.incrementAndGet()
@@ -916,7 +1008,7 @@ class DanmakuOverlay internal constructor(
         val version = synchronized(requestLock) {
             if (cacheMaintenance || closed.get() || !player.ownsSourceVersion(expectedSourceVersion) || !stillOwned()) return false
             generation.incrementAndGet().also {
-                loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel(); liveMode = false; pendingLive.clear()
+                loadJob?.cancel(); windowJob?.cancel();windowLoader?.close();windowLoader=null;pluginJob?.cancel(); liveMode = false; pendingLive.clear()
                 retireWebMaskSource(); rawDocument = DanmakuDocument()
                 poolSourceVersion = expectedSourceVersion; offlineDocumentOwner = expectedSourceVersion to stillOwned
                 commandCid = null; mutableCommands.value = emptyList(); mutableAdvanced.value = emptyList()
@@ -928,7 +1020,7 @@ class DanmakuOverlay internal constructor(
     }
     internal fun clearOwnedDocument(expectedSourceVersion: Long) = synchronized(requestLock) {
         if (poolSourceVersion == expectedSourceVersion && offlineDocumentOwner?.first == expectedSourceVersion) {
-            generation.incrementAndGet(); loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel()
+            generation.incrementAndGet(); loadJob?.cancel(); windowJob?.cancel(); windowLoader?.close();windowLoader=null;pluginJob?.cancel()
             offlineDocumentOwner = null; poolSourceVersion = null; rawDocument = DanmakuDocument()
             mutableCommands.value = emptyList(); mutableAdvanced.value = emptyList(); mutableCount.value = 0
             val clearedGeneration = generation.get()
@@ -951,7 +1043,7 @@ class DanmakuOverlay internal constructor(
             check(!cacheMaintenance) { "弹幕缓存正在维护" }
             check(!cacheMaintenance && !closed.get()) { "弹幕缓存正在维护" }
             generation.incrementAndGet().also {
-                loadJob?.cancel(); windowJob?.cancel(); liveMode = false; pendingLive.clear()
+                loadJob?.cancel(); windowJob?.cancel(); windowLoader?.close();windowLoader=null;liveMode = false; pendingLive.clear()
                 retireWebMaskSource()
                 offlineDocumentOwner=null
                 commandCid = null; mutableCommands.value = emptyList()
@@ -993,7 +1085,7 @@ class DanmakuOverlay internal constructor(
                 // are swapped together only if this exact document/settings/phase still owns the result.
                 val nextScheduler=DanmakuScheduler(installedComments,captured.settings,liveAdmission=false,
                     immediateLocalPhase=captured.phase)
-                val nextAdvanced=AdvancedDanmakuRenderer(processed.advanced)
+                val nextAdvanced=AdvancedDanmakuRenderer(captured.raw.advanced)
                 val applied=synchronized(requestLock) {
                     if(!current() || settings!=captured.settings || originalLocalInjectionPhase!==captured.phase ||
                         rawDocument!==captured.raw || documentRevision.get()!=captured.revision)false
@@ -1006,7 +1098,7 @@ class DanmakuOverlay internal constructor(
                 }
                 if(applied) {
                     if(synchronized(requestLock){current()}) {
-                        vodBaseGeneration=version; vodBaseCount=installedComments.size+processed.advanced.size; updateVodCount()
+                        vodBaseGeneration=version; vodBaseCount=installedComments.size+captured.raw.advanced.size; updateVodCount()
                     }
                     panel.repaint()
                 } else if(synchronized(requestLock){current()})install(processed,nextStyles)
@@ -1132,7 +1224,7 @@ class DanmakuOverlay internal constructor(
 
     override fun close() {
         if (closed.compareAndSet(false, true)) {
-            synchronized(requestLock) { generation.incrementAndGet();originalClickBindings.clear();loadJob?.cancel(); windowJob?.cancel(); pluginJob?.cancel(); retireWebMaskSource() }
+            synchronized(requestLock) { generation.incrementAndGet();originalClickBindings.clear();loadJob?.cancel(); windowJob?.cancel(); windowLoader?.close();windowLoader=null;pluginJob?.cancel(); retireWebMaskSource() }
             requests.cancel()
             SwingUtilities.invokeLater {
                 originalPaintFrame=null;originalPointerHit=null;basPaintFrame=null;basActionBinding=null

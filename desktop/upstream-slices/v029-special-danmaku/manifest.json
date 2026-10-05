@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "canonicalBaselineAdvanced": false,
+  "scope": "Seekable special-danmaku byte index, short lifetime window and special-only offline streaming; original BAS core unchanged",
+  "files": [
+    {
+      "archiveFile": "SpecialDanmakuIndexReader.kt",
+      "originalPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/SpecialDanmakuIndexReader.kt",
+      "sha256Bytes": "d2ad5a2b07bc0cbc41514296607e2083c8a30db9c539313faba049d370dad22e",
+      "gitBlob": "91d4365d0bf004a9d8a15b47ef8e7debe79fce6e",
+      "bytes": 5372,
+      "testSource": false,
+      "originalTests": 0
+    },
+    {
+      "archiveFile": "SpecialDanmakuWindow.kt",
+      "originalPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/parser/SpecialDanmakuWindow.kt",
+      "sha256Bytes": "223d7794053490c807c8da2997b4665ebf2d6cc44a8ff4df3eb7ae8d66eee86e",
+      "gitBlob": "7099c055305b9faa5318b4d719e170e3adf357dd",
+      "bytes": 5432,
+      "testSource": false,
+      "originalTests": 0
+    },
+    {
+      "archiveFile": "SpecialDanmakuSource.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/SpecialDanmakuSource.kt",
+      "sha256Bytes": "50e277c19c3dce988363ffbdfbcbb46e982d5c5407b09d4528151973df946f96",
+      "gitBlob": "1e308a2686c1ef287e94a820ecfa5ede84e3e4f6",
+      "bytes": 7256,
+      "testSource": false,
+      "originalTests": 0
+    },
+    {
+      "archiveFile": "SpecialDanmakuIndexReaderTest.kt",
+      "originalPath": "danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/SpecialDanmakuIndexReaderTest.kt",
+      "sha256Bytes": "43f63cf8eae3e1e2726e6e5adbcbeb3c7522681118dea51e752dec1894eca49f",
+      "gitBlob": "62acfd70c6c74691fcfa2302f5d2868341de488e",
+      "bytes": 10546,
+      "testSource": true,
+      "originalTests": 8
+    },
+    {
+      "archiveFile": "SpecialDanmakuWindowTest.kt",
+      "originalPath": "danmaku-engine/src/test/java/com/android/purebilibili/danmaku/parser/SpecialDanmakuWindowTest.kt",
+      "sha256Bytes": "a6b93b1a88152e37c9938fd36becd0fe79e35cc996f8c69e81c2be351b1b61f6",
+      "gitBlob": "dc822728ed4720513c2b3e352055817d9f4dca32",
+      "bytes": 7847,
+      "testSource": true,
+      "originalTests": 7
+    },
+    {
+      "archiveFile": "DownloadDanmakuAssetService.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt",
+      "sha256Bytes": "19ba7c2f4af4a093492fb5f04275732f097fbd00e1b4cda487243c59c84b596a",
+      "gitBlob": "83406644d846e8dfb21bc1a3c30678994727f400",
+      "bytes": 5975,
+      "testSource": false,
+      "originalTests": 0
+    },
+    {
+      "archiveFile": "DanmakuRepository.kt",
+      "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt",
+      "sha256Bytes": "18cffbda990c2e513c4434e68219d75f96b5cdfccdfa4366bb2481005c6d03a1",
+      "gitBlob": "0d27799985b3ad8c5e8734df3fe6c088c12fd6c1",
+      "bytes": 37240,
+      "testSource": false,
+      "originalTests": 0
+    },
+    {
+      "archiveFile": "ApiClient.kt",
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/core/network/ApiClient.kt",
+      "sha256Bytes": "b6262b7ecd75350ec0a808e79a3daf8f38e1ef1910c4ceb4c8d9b4aa64c7d844",
+      "gitBlob": "d3448e44290850a71f784bc4ea3c3bcaef270888",
+      "bytes": 151832,
+      "testSource": false,
+      "originalTests": 0
+    }
+  ]
+}

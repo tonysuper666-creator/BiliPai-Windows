@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "hashNormalization": "raw",
+  "canonicalBaselineAdvanced": false,
+  "files": [
+    {
+      "archiveFile": "ChatTimelinePolicy.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatTimelinePolicy.kt",
+      "bytes": 1082,
+      "sha256Raw": "07c546fb7606cbad712bb891d9c6646fe59464b858944449bef67070c69a8ed0",
+      "gitBlob": "7df65fe0ef0aeac2ee06ae1a6e7529dd013c6c03"
+    },
+    {
+      "archiveFile": "ChatViewModel.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatViewModel.kt",
+      "bytes": 20503,
+      "sha256Raw": "4ff7fff77b68f81d26161b08b0a17a21f276617ecae1d8da29cc96e944c04c2e",
+      "gitBlob": "de285bcf822fa148d2545baba2caea5427fafdd5"
+    },
+    {
+      "archiveFile": "ChatScreen.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/ChatScreen.kt",
+      "bytes": 65055,
+      "sha256Raw": "1a680aa9a922dca724c943f7c6cadbe1f1691c123995e3e9530e554ba0aa6b2f",
+      "gitBlob": "5906cd542df5e37a2bc29ec1aca0e0e0639861ca"
+    },
+    {
+      "archiveFile": "ChatTimelinePolicyTest.kt",
+      "path": "app/src/test/java/com/android/purebilibili/feature/message/ChatTimelinePolicyTest.kt",
+      "bytes": 1638,
+      "sha256Raw": "139ad0a5bfe33388153a2c949fd737ee3b634552d236a8e6802f3061c010283b",
+      "gitBlob": "cb1db0725445d40341080eb0b72515a15a134122"
+    },
+    {
+      "archiveFile": "ListLoadError.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/common/ListLoadError.kt",
+      "bytes": 1150,
+      "sha256Raw": "6fc1d252d9d1d02eff83cf1d9eabd6ff0a645c4876aab81fa225148119a31a32",
+      "gitBlob": "eb7f6c04af7910b7a5c4ee4b0b494c33a4a028bd"
+    }
+  ]
+}

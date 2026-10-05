@@ -352,6 +352,8 @@ internal class DesktopWindowsVideoActions(
                         }, native.surface)
                     } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
                 }
+                if (playback.recovering && playback.recoveryMessage != null)
+                    Text(playback.recoveryMessage.orEmpty(), Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodySmall)
                 if (bootstrapError != null || playback.error != null) Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                     Text(bootstrapError ?: playback.error.orEmpty(), Modifier.weight(1f), style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error)

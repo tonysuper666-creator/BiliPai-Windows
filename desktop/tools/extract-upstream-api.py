@@ -136,6 +136,26 @@ def generate(repo: Path, output: Path) -> Path:
         start, end = parser.kotlin_structure(tokens, "fun", name)
         beginning = source.rfind("\n", 0, tokens[start][1]) + 1
         sections.append(source[beginning:tokens[end][2]])
+    # One fixed v029 streaming declaration pair, on the existing BilibiliApi.
+    special_spec = importlib.util.spec_from_file_location("desktop_special_api", repo / "desktop/tools/extract-upstream-special-danmaku.py")
+    special = importlib.util.module_from_spec(special_spec)
+    special_spec.loader.exec_module(special)
+    before = "    @GET\n    suspend fun getDanmakuSpecialDm(@retrofit2.http.Url url: String): ResponseBody"
+    after = special.special_api_declarations(repo)
+    joined = "\n\n".join(sections)
+    if joined.count(before) != 1 or "suspend fun getDanmakuSpecialRange(" in joined:
+        raise ValueError("Canonical special API streaming seam changed")
+    sections = [part.replace(before, after, 1) for part in sections]
+    adapted = "\n\n".join(sections)
+    if adapted.count(after) != 1 or adapted.replace(after, before, 1) != joined:
+        raise ValueError("Whole canonical API streaming inverse changed")
+    output.mkdir(parents=True, exist_ok=True)
+    import json
+    (output / "special-api-source-proof.json").write_text(json.dumps(dict(
+        originalCommit=special.COMMIT, originalApiRawSha256=special.PINS["ApiClient.kt"],
+        selectedSha256LF=hashlib.sha256(after.encode()).hexdigest(),
+        canonicalSelectedInverse=True, mappings=[dict(before=before,after=after)],
+        wholeCanonicalInterfacesPreserved=True), indent=2)+"\n", encoding="utf8")
     generated = "\n".join([
         "// GENERATED from upstream ApiClient.kt; edit the original API or extraction selection, never this file.",
         "// SHA-256: " + hashlib.sha256(source_path.read_bytes()).hexdigest(),

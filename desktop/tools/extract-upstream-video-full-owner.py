@@ -3,6 +3,7 @@ Sole producer. Production skips exact DIRECT files, provided once by sole Sync.
 Each explicit platform edit is pinned to its exact original line span/body hash.
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
+from v029_failure_recovery import owner_delta as _failure_recovery_delta, emit_metadata as _failure_metadata
 from pathlib import Path
 import argparse,hashlib,json,os
 COMMIT='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
@@ -658,13 +659,17 @@ def generate(repo,output,standalone=False):
   body=owned_bgm_result_delta(recipe['output'],body)
   body=explicit_audio_start_position_delta(recipe['output'],body)
   body=composer_source_lifetime_delta(recipe['output'],body)
+  recovery_edits=[]
+  body=_failure_recovery_delta(recipe['output'],body,recovery_edits)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
    target.write_text(body,encoding='utf-8',newline='\n')
-  outputs.append(dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode=recipe['mode'],generated=emitted))
+  outputs.append(dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode=recipe['mode'],generated=emitted,
+                      failureRecoveryInverseEdits=recovery_edits))
  outputs.append(generate_original_video_action_status(repo,output))
  outputs.append(generate_original_video_progress(repo,output))
+ outputs.append(_failure_metadata(repo,output))
  return outputs
 if __name__=='__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--repo',required=True);parser.add_argument('--output',required=True);parser.add_argument('--standalone',action='store_true')

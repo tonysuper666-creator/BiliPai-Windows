@@ -2,6 +2,7 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re
+import v029_chat_sources
 BASE='app/src/main/java/com/android/purebilibili/'
 DIRECT=[BASE+'feature/message/'+n+'.kt' for n in ['ChatMessageMutationPolicy','MessageGlassSurfacePolicy','MessagePreviewParser']]+[BASE+'feature/message/feed/SystemNoticeContentPolicy.kt']
 PATHS=DIRECT+[BASE+'feature/message/MessageCenterPolicy.kt']+[BASE+'feature/message/'+n+'.kt' for n in ['InboxViewModel','ChatViewModel','InboxScreen','ChatScreen','MessageCenterScreen','MessageGlassSurface']]+[BASE+'feature/message/feed/'+n+'.kt' for n in ['ReplyMeScreen','AtMeScreen','LikeMeScreen','SystemNoticeScreen','MessageFeedCommon']]+[BASE+'data/repository/MessageRepository.kt',BASE+'feature/message/MessageAppScaffold.kt']
@@ -79,7 +80,7 @@ def generate(repo,out,standalone=False):
  if 'import kotlinx.coroutines.CancellationException' not in s:s=s.replace('import kotlinx.coroutines.Dispatchers','import kotlinx.coroutines.CancellationException\nimport kotlinx.coroutines.Dispatchers')
  emit('com/android/purebilibili/data/repository/DesktopOriginalMessageRepository.kt',s)
  for name in ['InboxViewModel','ChatViewModel']:
-  p=BASE+'feature/message/'+name+'.kt';s=read(repo,p)
+  p=BASE+'feature/message/'+name+'.kt';s=v029_chat_sources.read(repo,name+'.kt') if name=='ChatViewModel' else read(repo,p)
   s='\n'.join(l for l in s.splitlines()if not l.startswith(('import android.','import androidx.lifecycle.','import com.android.purebilibili.core.store.TokenManager','import com.android.purebilibili.data.repository.MessageRepository','import com.android.purebilibili.data.repository.VideoRepository')))+'\n'
   s=s.replace('package com.android.purebilibili.feature.message','package com.android.purebilibili.feature.message\nimport com.bilipai.desktop.ui.*')
   if name=='InboxViewModel':
@@ -102,12 +103,12 @@ def generate(repo,out,standalone=False):
    s=s.replace('runCatching {\n                    val bytes','owner.runCatching {\n                    val bytes')
   s=s.replace('MutableStateFlow(InboxUiState())','owner.stateFlow(InboxUiState())').replace('MutableStateFlow(ChatUiState())','owner.stateFlow(ChatUiState())')
   s=s.replace('viewModelScope.launch','owner.launch').replace('MessageRepository.','owner.requests.')
-  reads={'loadSessions':'inbox-list','refresh':'inbox-list','loadMoreSessions':'inbox-more'} if name=='InboxViewModel' else {'loadMessages':'chat-list','loadMoreMessages':'chat-more','loadSessionControlInfo':'chat-control'}
+  reads={'loadSessions':'inbox-list','refresh':'inbox-list','loadMoreSessions':'inbox-more'} if name=='InboxViewModel' else {'loadMessages':'chat-latest','loadMoreMessages':'chat-more','loadSessionControlInfo':'chat-control'}
   writes={'toggleTop','removeSession','toggleDnd','toggleIntercept','markDustbinRead','clearDustbinSessions'} if name=='InboxViewModel' else {'sendMessage','sendImageMessage','updateSessionControl','withdrawMessage','markAsRead'}
   for method,channel in reads.items():
    try:body=function(s,method)
    except Exception:continue
-   dep=', dependsOn = "'+('inbox-list' if name=='InboxViewModel' else 'chat-list')+'"' if 'More' in method else ''
+   dep=', dependsOn = "inbox-list"' if name=='InboxViewModel' and 'More' in method else ''
    new=body.replace('owner.launch {','owner.launchRead("'+channel+'"'+dep+') {',1)
    if 'More' not in method:new=new.replace('copy(isLoading = true, error = null)','copy(isLoading = true, isLoadingMore = false, isRefreshing = false, error = null)').replace('copy(isRefreshing = true, error = null)','copy(isLoading = false, isLoadingMore = false, isRefreshing = true, error = null)')
    if name=='ChatViewModel':new=new.replace('isRefreshing = false, ','')
@@ -117,7 +118,12 @@ def generate(repo,out,standalone=False):
    except Exception:continue
    channel='chat-send' if method in {'sendMessage','sendImageMessage'} else method
    s=s.replace(body,body.replace('owner.launch {','owner.launchMutation("'+channel+'") {',1),1)
+  if name=='ChatViewModel':
+   s=v029_chat_sources.adapt_refresh(s)
+   v029_chat_sources.record_adaptation(repo,out,name+'.kt',s)
   emit('com/android/purebilibili/feature/message/'+name+'.kt',s)
+ emit('com/android/purebilibili/feature/message/ChatTimelinePolicy.kt',v029_chat_sources.read(repo,'ChatTimelinePolicy.kt'))
+ emit('com/android/purebilibili/feature/common/ListLoadError.kt',v029_chat_sources.read(repo,'ListLoadError.kt'))
  for name in ['ReplyMeScreen','AtMeScreen','LikeMeScreen','SystemNoticeScreen']:
   p=BASE+'feature/message/feed/'+name+'.kt';s=ui(read(repo,p));vm=name.replace('Screen','ViewModel')
   s=s.replace('import com.android.purebilibili.data.repository.MessageRepository','import com.bilipai.desktop.ui.DesktopMessagePageAdmission')
@@ -137,14 +143,14 @@ def generate(repo,out,standalone=False):
  removed=function(s,'MessageFeedError');s=s.replace('@Composable\n'+removed,'',1)
  emit('com/android/purebilibili/feature/message/feed/DesktopOriginalMessageFeedCommon.kt',s)
  for name in ['InboxScreen','ChatScreen','MessageCenterScreen','MessageGlassSurface']:
-  p=BASE+'feature/message/'+name+'.kt';s=ui(read(repo,p))
+  p=BASE+'feature/message/'+name+'.kt';s=ui(v029_chat_sources.read(repo,name+'.kt') if name=='ChatScreen' else read(repo,p))
   s=s.replace('InboxViewModel = viewModel()','InboxViewModel = LocalDesktopMessagePageOwner.current.inbox')
   s=s.replace('ChatViewModel = viewModel(factory = ChatViewModel.Factory(talkerId, sessionType))','ChatViewModel = LocalDesktopMessagePageOwner.current.chat(talkerId, sessionType)')
   if name=='ChatScreen':
    s=s.replace('import com.android.purebilibili.core.store.SettingsManager','')
    s=s.replace('import com.android.purebilibili.feature.home.components.cards.WallpaperPaletteStore','')
    s=s.replace('import com.android.purebilibili.core.util.PickGalleryVisualMedia','').replace('import com.android.purebilibili.core.ui.blur.shouldAllowRenderEffectBackedHazeEffect','')
-   begin=s.index('    val imagePickerLauncher = rememberLauncherForActivityResult(');end=s.index('    // 滚动到底部',begin)
+   begin=s.index('    val imagePickerLauncher = rememberLauncherForActivityResult(');end=s.index('    val latestMessageKey =',begin)
    s=s[:begin]+'    val imagePickerLauncher = rememberDesktopMessageImagePicker { image -> image?.let(viewModel::sendImageMessage) }\n    \n'+s[end:]
    s=re.sub(r'imagePickerLauncher\.launch\(\s*PickVisualMediaRequest\(ActivityResultContracts\.PickVisualMedia\.ImageOnly\)\s*\)','imagePickerLauncher.launch()',s)
    s=s.replace('Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU','LocalDesktopMessagePageOwner.current.supportsRenderEffects').replace('shouldAllowRenderEffectBackedHazeEffect(Build.VERSION.SDK_INT)','LocalDesktopMessagePageOwner.current.supportsRenderEffects')
@@ -163,6 +169,9 @@ def generate(repo,out,standalone=False):
     s=s.replace(body,new,1)
   if name=='MessageCenterScreen':
    s=s.replace('    val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()','    val pageOwner = LocalDesktopMessagePageOwner.current\n    androidx.compose.runtime.SideEffect { pageOwner.keepPaneChat(activeTalkerId, activeSessionType) }\n    val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()',1)
+  if name=='ChatScreen':
+   s=v029_chat_sources.adapt_screen(s,function)
+   v029_chat_sources.record_adaptation(repo,out,name+'.kt',s)
   emit('com/android/purebilibili/feature/message/'+name+'.kt',s)
  emit('com/android/purebilibili/feature/message/MessageAppScaffold.kt',message_scaffold_source(repo))
  return files

@@ -466,7 +466,7 @@ object PlayerSelfTest {
         error("Timed out waiting for visible native video rendering: $failure")
     }
 
-    private fun checkRenderedVideo(image: BufferedImage) {
+    internal fun checkRenderedVideo(image: BufferedImage) {
         var cyanPixels = 0
         var pinkPixels = 0
         for (y in 0 until image.height) for (x in 0 until image.width) {

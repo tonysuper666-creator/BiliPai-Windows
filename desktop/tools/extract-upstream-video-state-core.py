@@ -3,6 +3,7 @@ No independent network/store/native player. DIRECT sources are Sync-owned in pro
 Full original PlaybackVM/5464 Holder remain next; this core is not a mounted page.
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
+from v029_failure_recovery import typed_protocol_delta as _typed_failure_protocol, usecase_delta as _typed_failure_usecase, verified_sources as _failure_sources
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re,types
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
@@ -28,6 +29,10 @@ def original(path):
  raw=wide(_desktop_canonical_source(REPO, path)).read_bytes().replace(b'\r\n',b'\n');assert digest(raw)==SOURCE_PINS[path],path+' differs from fixed stable source'
  SOURCES[path]=dict(path=path,sha256LF=digest(raw),commit=COMMIT);return raw.decode('utf-8')
 def emit(path,text,origin,mode):
+ edits=[]
+ if path=='com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt':text=_typed_failure_protocol(text,edits)
+ if path=='com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt':text=_typed_failure_usecase(text,edits)
+ if edits:AUDITS[path.rsplit('/',1)[-1]+'.failure-recovery-inverse.json']=edits
  generated=STANDALONE or mode!='direct';OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=digest(text),generated=generated))
  if generated:
   target=wide(OUTPUT/path);target.parent.mkdir(parents=True,exist_ok=True);target.write_text(text,encoding='utf-8',newline='\n')
@@ -264,6 +269,7 @@ def build_core():
 def generate(repo,output,standalone=False):
  global REPO,OUTPUT,STANDALONE,lex,sel,decls,p,OUTPUTS,SOURCES,AUDITS
  REPO=Path(repo);OUTPUT=Path(output);STANDALONE=standalone;OUTPUTS=[];SOURCES={};AUDITS={}
+ _failure_sources(repo)
  lex=mod('stateLexer',REPO/'desktop/tools/extract-upstream-dynamic-reply-protocol.py')
  sel=mod('stateSelect',REPO/'desktop/tools/extract-upstream-video-detail-full-units.py');sel.parser=mod('stateTokens',REPO/'desktop/tools/sync-upstream.py')
  decls=mod('stateDecls',REPO/'desktop/tools/extract-appearance-platform.py')

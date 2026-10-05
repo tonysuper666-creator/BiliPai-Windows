@@ -57,7 +57,11 @@ internal object DesktopOverlayNativeSmoke {
         fun blue(image: BufferedImage) = pixels(image) { it.blue > 190 && it.red < 60 && it.green < 60 }
         try {
             check(player.state.value.paused && player.state.value.videoCodec != null)
-            val baseline = capture()
+            // Native decode/seek acknowledgment can precede DWM presentation.
+            // A black baseline makes the later eye-tint brightness oracle invalid.
+            val baseline = waitImage("decoded fixture pixels before overlay baseline") {
+                runCatching { PlayerSelfTest.checkRenderedVideo(it) }.isSuccess
+            }
             ImageIO.write(baseline, "png", File(outputDirectory, "native-overlay-before.png"))
             check(red(baseline) < 20 && blue(baseline) < 20) { "The local native fixture already contains the overlay's proof colors." }
             SwingUtilities.invokeAndWait {

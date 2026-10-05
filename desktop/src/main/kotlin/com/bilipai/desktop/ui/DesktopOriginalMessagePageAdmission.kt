@@ -77,8 +77,23 @@ internal class DesktopMessagePageAdmission(
     fun launchMutation(channel: String, block: suspend CoroutineScope.() -> Unit): Job =
         launchOwned(channel, null, true, block)
 
+    /** A visible screen's refresh uses this child's transport but keeps caller cancellation. */
+    suspend fun awaitRead(channel: String, block: suspend CoroutineScope.() -> Unit) {
+        val result = CompletableDeferred<Unit>()
+        val caller = currentCoroutineContext()[Job]
+        val job = launchOwned(channel, null, false, {
+            try { block(); result.complete(Unit) }
+            catch (failure: Exception) { result.completeExceptionally(failure) }
+        }, caller)
+        job.invokeOnCompletion { cause ->
+            if (!result.isCompleted) result.completeExceptionally(cause ?: CancellationException("Message refresh retired"))
+        }
+        try { result.await() }
+        finally { job.cancel(); withContext(NonCancellable) { job.join() } }
+    }
+
     private fun launchOwned(channel: String?, dependsOn: String?, mutation: Boolean,
-        block: suspend CoroutineScope.() -> Unit): Job {
+        block: suspend CoroutineScope.() -> Unit, caller: Job? = null): Job {
         val job: Job
         val previous: Job?
         var dependent: Job? = null
@@ -95,7 +110,7 @@ internal class DesktopMessagePageAdmission(
                 dependent = operations[dependentChannel]
             }
             lateinit var actual: Job
-            val allowed = { actual.isActive && isOwned() && (channel == null || revision[channel] == ticket) &&
+            val allowed = { actual.isActive && caller?.isActive != false && isOwned() && (channel == null || revision[channel] == ticket) &&
                 (dependsOn == null || (revision[dependsOn] ?: 0L) == dependency) }
             actual = scope.launch(permit.asContextElement(allowed), start = CoroutineStart.LAZY) {
                 assertCurrent(); block(); assertCurrent()

@@ -14,6 +14,26 @@ import kotlinx.coroutines.sync.Semaphore
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.sync.withPermit
 
+import com.android.purebilibili.danmaku.parser.IndexedSpecialDanmakuSource
+import com.android.purebilibili.danmaku.parser.SpecialDanmakuIndexReader
+import com.android.purebilibili.danmaku.parser.SpecialDanmakuWindow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.joinAll
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import java.io.IOException
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
+
 enum class DanmakuFormat { PROTOBUF, XML }
 data class DanmakuWindowResult(
     val document: DanmakuDocument,
@@ -21,7 +41,12 @@ data class DanmakuWindowResult(
     val segments: List<Int> = emptyList(),
     val commands: List<CommandDanmakuItem> = emptyList(),
     val warning: String? = null,
+    val specialOnly: Boolean = false,
+    val specialStartMs: Long? = null,
+    val specialEndMs: Long? = null,
 )
+
+data class DanmakuRefreshKey(val segments:List<Int>,val specialBucket:Long,val indexRevision:Long,val seekRevision:Long,val retreatRevision:Long)
 
 /** Three-segment playback windows and bounded per-content LRU caching follow the upstream policy. */
 class DanmakuWindowLoader(
@@ -29,7 +54,9 @@ class DanmakuWindowLoader(
     private val cid: Long,
     private val aid: Long = 0,
     private val durationMs: Long = 0,
-) {
+    indexingScope:CoroutineScope?=null,
+    private val standardDurationMs:()->Long={10_000L},
+) : AutoCloseable {
     init { require(cid > 0 && aid >= 0 && durationMs >= 0) }
     private val mutex = Mutex()
     private val cache = LinkedHashMap<Int, ByteArray>(8, 0.75f, true)
@@ -38,19 +65,48 @@ class DanmakuWindowLoader(
     private var metadataAvailable = false
     private var activeSegments = emptyList<Int>()
     private var xmlFallback: DanmakuDocument? = null
-    private var special = DanmakuDocument()
+    private var legacySpecial = DanmakuDocument()
+    private val specialMutex=Mutex()
+    private val specialWindow=SpecialDanmakuWindow()
+    private val indexOwner=SupervisorJob(indexingScope?.coroutineContext?.get(Job))
+    private val indexes=CoroutineScope((indexingScope?.coroutineContext ?: Dispatchers.IO)+indexOwner)
+    private val waitForIndexes=indexingScope==null
+    private val closed=AtomicBoolean(false)
+    private val indexEntries=AtomicInteger()
+    private val mutableSpecialRevision=MutableStateFlow(0L)
+    val specialRevision:StateFlow<Long> = mutableSpecialRevision.asStateFlow()
+    @Volatile private var hasSpecial=false
+    private var activeRefresh:DanmakuRefreshKey?=null
+    private val refreshLock=Any()
+    private var observedPosition=Long.MIN_VALUE
+    private var observedSeekId=0L
+    private var retreatRevision=0L
+    private var ordinary:DanmakuDocument?=null
+    private var ordinaryFormat=DanmakuFormat.PROTOBUF
+    private var ordinaryWarning:String?=null
+    private var previousSpecial=DanmakuDocument()
+    private var previousDocument:DanmakuDocument?=null
     private var commands = emptyList<CommandDanmakuItem>()
-    private var metadataWarning: String? = null
+    @Volatile private var metadataWarning: String? = null
 
     internal fun cachedBytes(): Long = synchronized(cache) {cacheBytes}
 
     fun windowForPosition(positionMs: Long) = segmentWindowForPosition(positionMs, totalSegments)
+    fun refreshKey(positionMs:Long,seekCompletedId:Long=0):DanmakuRefreshKey = synchronized(refreshLock) {
+        if(observedPosition!=Long.MIN_VALUE && positionMs<observedPosition-50)retreatRevision++
+        observedPosition=positionMs;observedSeekId=maxOf(observedSeekId,seekCompletedId)
+        DanmakuRefreshKey(windowForPosition(positionMs),
+            if(hasSpecial)positionMs.coerceAtLeast(0)/DesktopSpecialSourceLimits.REFRESH_GUARD_MS else 0,
+            mutableSpecialRevision.value,if(hasSpecial)observedSeekId else 0,if(hasSpecial)retreatRevision else 0)
+    }
+    override fun close() {if(closed.compareAndSet(false,true))indexOwner.cancel()}
+    private fun checkCurrent() {check(!closed.get()) {"Special source owner retired"}}
 
     suspend fun initial(positionMs: Long = 0): DanmakuWindowResult = mutex.withLock {
         source.offlineSegmentCount?.let { count ->
             totalSegments = count.coerceIn(1, 10_000)
             metadataAvailable = true
-            special = loadSpecial(source.offlineSpecialIds)
+            startSpecial(source.offlineSpecialIds)
             return@withLock loadWindow(positionMs)
         }
         val metadata = try {
@@ -65,67 +121,111 @@ class DanmakuWindowLoader(
         metadataAvailable = metadata != null
         totalSegments = resolveDanmakuSegmentCount(durationMs, metadata?.dmSge?.total?.toInt()).coerceIn(1, 10_000)
         commands = metadata?.commandDms.orEmpty().take(500).mapNotNull(::buildCommandDanmakuItem)
-        special = loadSpecial(metadata?.specialDms.orEmpty())
+        startSpecial(metadata?.specialDms.orEmpty())
         loadWindow(positionMs)
     }
 
-    suspend fun move(positionMs: Long): DanmakuWindowResult? = mutex.withLock {
-        if (windowForPosition(positionMs) == activeSegments || !metadataAvailable && xmlFallback != null) return@withLock null
+    suspend fun move(positionMs: Long,seekCompletedId:Long=0): DanmakuWindowResult? = mutex.withLock {
+        checkCurrent()
+        // XML fallback is one complete document, not a segmented playback window.
+        // Indexed special sources still need their independent short-window refresh.
+        if(!hasSpecial && ordinaryFormat==DanmakuFormat.XML && xmlFallback!=null)return@withLock null
+        if(refreshKey(positionMs,seekCompletedId)==activeRefresh)return@withLock null
         loadWindow(positionMs)
     }
 
     private suspend fun loadWindow(positionMs: Long): DanmakuWindowResult {
-        val indices = windowForPosition(positionMs)
-        val results = coroutineScope {
-            indices.map { index -> async {
-                val cached = synchronized(cache) { cache[index] }
-                if (cached != null) return@async index to Result.success(cached)
-                val bytes = try {
-                    source.segment(cid, index).also(::requireProtocolBytes).let { Result.success(it) }
-                } catch (failure: Exception) {
-                    if (failure is CancellationException) throw failure
-                    Result.failure(failure)
-                }
-                bytes.getOrNull()?.let { store(index, it) }
-                index to bytes
-            } }.awaitAll()
+        checkCurrent()
+        val indices=windowForPosition(positionMs)
+        val indicesUnchanged=indices==activeSegments && ordinary!=null
+        if(!indicesUnchanged && !(!metadataAvailable && xmlFallback!=null)) {
+            val results=coroutineScope {
+                indices.map {index->async {
+                    val cached=synchronized(cache){cache[index]}
+                    if(cached!=null)return@async index to Result.success(cached)
+                    val bytes=try {Result.success(source.segment(cid,index).also(::requireProtocolBytes))}
+                    catch(failure:Exception) {if(failure is CancellationException)throw failure;Result.failure(failure)}
+                    bytes.getOrNull()?.let {store(index,it)}
+                    index to bytes
+                }}.awaitAll()
+            }
+            val available=results.mapNotNull {it.second.getOrNull()}
+            if(available.isNotEmpty()) {
+                ordinary=DanmakuParser.parseProtobuf(available)
+                ordinaryFormat=DanmakuFormat.PROTOBUF
+                ordinaryWarning=if(available.size<indices.size)"部分弹幕分段未加载（${available.size}/${indices.size}），已显示可用内容。" else null
+            } else {
+                val xml=xmlFallback ?: try {DanmakuParser.parseDocument(source.xml(cid).inputStream()).also {xmlFallback=it}}
+                catch(failure:Exception) {if(failure is CancellationException)throw failure;throw IllegalStateException("分段与兼容弹幕均加载失败",failure)}
+                ordinary=xml;ordinaryFormat=DanmakuFormat.XML
+                ordinaryWarning="当前使用 XML 兼容弹幕，分段接口暂不可用。"
+            }
         }
-        val available = results.mapNotNull { it.second.getOrNull() }
-        if (available.isNotEmpty()) {
-            val document = DanmakuParser.parseProtobuf(available)
-            activeSegments = indices
-            val partial = if (available.size < indices.size) "部分弹幕分段未加载（${available.size}/${indices.size}），已显示可用内容。" else null
-            return DanmakuWindowResult(combine(document, special), DanmakuFormat.PROTOBUF, indices, commands,
-                partial ?: metadataWarning)
-        }
-        val xml = xmlFallback ?: try {
-            DanmakuParser.parseDocument(source.xml(cid).inputStream()).also { xmlFallback = it }
-        } catch (failure: Exception) {
-            if (failure is CancellationException) throw failure
-            throw IllegalStateException("分段与兼容弹幕均加载失败：${failure.message ?: "network error"}", failure)
-        }
-        activeSegments = indices
-        return DanmakuWindowResult(combine(xml, special), DanmakuFormat.XML, emptyList(), commands,
-            "当前使用 XML 兼容弹幕，分段接口暂不可用。")
-    }
-
-    private suspend fun loadSpecial(urls: List<String>): DanmakuDocument = coroutineScope {
-        val parallel = Semaphore(2)
-        val parts = urls.distinct().take(8).map { url -> async {
-            parallel.withPermit {
-                try {
-                    val bytes = source.special(url)
-                    require(bytes.size <= 2 * 1024 * 1024) { "Special danmaku is too large." }
-                    if (bytes.take(64).toByteArray().toString(Charsets.UTF_8).trimStart().startsWith("<"))
-                        DanmakuParser.parseDocument(bytes.inputStream()) else DanmakuParser.parseProtobuf(listOf(bytes))
-                } catch (failure: Exception) {
-                    if (failure is CancellationException) throw failure
-                    metadataWarning = "部分高级弹幕暂未加载。"
-                    DanmakuDocument()
+        val base=requireNotNull(ordinary)
+        val key=refreshKey(positionMs)
+        val ranged=if(!hasSpecial)null else try {
+            specialMutex.withLock {
+                DesktopSpecialParseScope.withCombined(base.bas+legacySpecial.bas) {
+                    specialWindow.load(positionMs,DesktopSpecialSourceLimits.LOOK_AHEAD_MS,standardDurationMs().coerceAtLeast(0))
                 }
             }
-        } }.awaitAll()
-        parts.fold(DanmakuDocument(), ::combine)
+        } catch(failure:Exception) {
+            if(failure is CancellationException)throw failure
+            metadataWarning="部分高级弹幕短窗口暂未加载。"
+            null
+        }
+        checkCurrent();currentCoroutineContext().ensureActive()
+        if(ranged!=null)previousSpecial=DanmakuDocument(ranged.parsed.standardList,ranged.parsed.advancedList,bas=ranged.parsed.basList)
+        val combined=combine(base,combine(legacySpecial,previousSpecial))
+        val specialOnly=indicesUnchanged && previousDocument?.comments==combined.comments
+        previousDocument=combined;activeSegments=indices;activeRefresh=key
+        return DanmakuWindowResult(combined,ordinaryFormat,
+            if(ordinaryFormat==DanmakuFormat.PROTOBUF)indices else emptyList(),commands,ordinaryWarning ?: metadataWarning,
+            specialOnly,ranged?.startTimeMs,ranged?.endTimeMs)
+    }
+
+    /** Each compact index becomes ready independently. No whole-file cache. */
+    private suspend fun startSpecial(urls:List<String>) {
+        hasSpecial=urls.isNotEmpty()
+        if(!hasSpecial)return
+        if(urls.distinct().size>DesktopSpecialSourceLimits.MAX_SOURCES)metadataWarning="部分高级弹幕超出来源数量限制。"
+        val parallel=Semaphore(4)
+        val jobs=urls.distinct().take(DesktopSpecialSourceLimits.MAX_SOURCES).map {url->
+            indexes.launch(Dispatchers.IO) {
+                parallel.withPermit {
+                    try {
+                        val special=source.openSpecial(url)
+                        require(special.byteLength in 0..DesktopSpecialSourceLimits.MAX_FILE_BYTES)
+                        if(special.byteLength==0L)return@withPermit
+                        val prefix=if(special is DesktopLegacySpecialXmlSource)special.readRange(0,minOf(64L,special.byteLength).toInt()) else byteArrayOf()
+                        if(prefix.toString(Charsets.UTF_8).trimStart().startsWith("<")) {
+                            require(special.byteLength<=2*1024*1024) {"Legacy XML special source is too large"}
+                            val document=DanmakuParser.parseDocument(special.readRange(0,special.byteLength.toInt()).inputStream())
+                            specialMutex.withLock {checkCurrent();legacySpecial=combine(legacySpecial,document)}
+                        } else {
+                            val reader=SpecialDanmakuIndexReader(special.byteLength,special::readRange)
+                            val entries=buildList {
+                                while(true) {
+                                    currentCoroutineContext().ensureActive()
+                                    val entry=reader.next() ?: break
+                                    if(indexEntries.incrementAndGet()>DesktopSpecialSourceLimits.MAX_ENTRIES)
+                                        throw IOException("Special index exceeds its global entry budget")
+                                    if(entry.byteLength>4*1024*1024)throw IOException("Special envelope exceeds its parser budget")
+                                    add(entry)
+                                }
+                            }
+                            specialMutex.withLock {checkCurrent();specialWindow.addSource(IndexedSpecialDanmakuSource(special,entries))}
+                        }
+                    } catch(failure:Exception) {
+                        if(failure is CancellationException)throw failure
+                        metadataWarning="部分高级弹幕索引暂未加载。"
+                    }
+                    if(!closed.get())mutableSpecialRevision.update {it+1}
+                }
+            }
+        }
+        // Actual Overlay uses its owned scope and publishes ready files immediately.
+        if(waitForIndexes)jobs.joinAll()
     }
 
     private fun store(index: Int, bytes: ByteArray) = synchronized(cache) {

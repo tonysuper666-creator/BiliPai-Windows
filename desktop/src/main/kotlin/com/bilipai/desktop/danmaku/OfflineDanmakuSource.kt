@@ -4,6 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.nio.file.Files
 import java.nio.file.Path
+import com.android.purebilibili.danmaku.parser.SpecialDanmakuSource
+import com.android.purebilibili.data.repository.LocalSpecialDanmakuSource
 
 /** List positions are the original one-based segment slots; a missing file stays in its slot. */
 class OfflineDanmakuSource(
@@ -36,6 +38,17 @@ class OfflineDanmakuSource(
         val index = offlineSpecialIds.indexOf(url)
         require(index >= 0) { "Unknown offline special danmaku asset." }
         return read(special[index], 2 * 1024 * 1024)
+    }
+
+    override suspend fun openSpecial(url:String):SpecialDanmakuSource = withContext(Dispatchers.IO) {
+        val index=offlineSpecialIds.indexOf(url)
+        require(index>=0) {"Unknown offline special danmaku asset"}
+        val path=special[index]
+        require(Files.isRegularFile(path) && !Files.isSymbolicLink(path)) {"Offline special asset is unavailable"}
+        require(Files.size(path)<=DesktopSpecialSourceLimits.MAX_FILE_BYTES) {"Offline special asset is too large"}
+        // The sole download manager already validated this path against its task directory.
+        val original=LocalSpecialDanmakuSource(path.toFile())
+        object:SpecialDanmakuSource by original,DesktopLegacySpecialXmlSource {}
     }
 
     private suspend fun read(file: Path, limit: Int): ByteArray = withContext(Dispatchers.IO) {

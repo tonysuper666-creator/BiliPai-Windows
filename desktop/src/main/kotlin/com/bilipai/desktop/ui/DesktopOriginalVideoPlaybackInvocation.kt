@@ -49,10 +49,38 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
     private val capture: suspend () -> DesktopOriginalVideoPlaybackInvocation,
     private val status: DesktopOriginalVideoPlaybackStatus,
     private val acceptedMedia: () -> DesktopOriginalVideoMediaPort,
+    private val acceptedFailureMedia: ((DesktopOriginalNativeRecoveryTicket) -> DesktopOriginalVideoMediaPort)? = null,
 ) {
     private val closed = AtomicBoolean(false)
     private val currentThreadInvocation = ThreadLocal<DesktopOriginalVideoPlaybackInvocation?>()
     private val invocationKey = object : CoroutineContext.Key<InvocationElement> {}
+    private val currentThreadFailure = ThreadLocal<FailureElement?>()
+    private val failureKey = object : CoroutineContext.Key<FailureElement> {}
+
+    private inner class FailureElement(val ticket: DesktopOriginalNativeRecoveryTicket) :
+        ThreadContextElement<FailureElement?> {
+        private val caller = java.util.concurrent.atomic.AtomicReference<Job?>()
+        private val capturedMedia = java.util.concurrent.atomic.AtomicReference<DesktopOriginalVideoMediaPort?>()
+        fun media(): DesktopOriginalVideoMediaPort {
+            val job = checkNotNull(caller.get())
+            if (!job.isActive) throw CancellationException("Native recovery caller retired")
+            capturedMedia.get()?.let { return it }
+            // Preparation remains outside monitors. All original AAC/CDN stages
+            // share this operation's exact successor chain, not a latest getter.
+            val prepared = checkNotNull(acceptedFailureMedia) { "Actual native failure media port is required" }(ticket.forCaller(job))
+            return if (capturedMedia.compareAndSet(null, prepared)) prepared else checkNotNull(capturedMedia.get())
+        }
+        override val key: CoroutineContext.Key<*> get() = failureKey
+        override fun updateThreadContext(context: CoroutineContext): FailureElement? {
+            // The first continuation is the actual entry launch Job; nested
+            // withContext/async completion must not replace it with a temporary Job.
+            caller.compareAndSet(null, checkNotNull(context[Job]))
+            return currentThreadFailure.get().also { currentThreadFailure.set(this) }
+        }
+        override fun restoreThreadContext(context: CoroutineContext, oldState: FailureElement?) {
+            if (oldState == null) currentThreadFailure.remove() else currentThreadFailure.set(oldState)
+        }
+    }
 
     private inner class InvocationElement(val invocation: DesktopOriginalVideoPlaybackInvocation) :
         ThreadContextElement<DesktopOriginalVideoPlaybackInvocation?> {
@@ -105,12 +133,14 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
     fun launch(
         context: CoroutineContext = kotlin.coroutines.EmptyCoroutineContext,
         start: CoroutineStart = CoroutineStart.DEFAULT,
+        desktopFailure: DesktopOriginalNativeRecoveryTicket? = null,
         block: suspend CoroutineScope.() -> Unit,
     ): Job {
         assertCurrent()
         // Preserve original dispatchers/start modes. Capture happens in the actual
         // launched Job, not before launch or in a completed factory coroutine.
-        return entryScope.launch(context, start) { withInvocation(block) }
+        val ownedContext = desktopFailure?.let { context + FailureElement(it) } ?: context
+        return entryScope.launch(ownedContext, start) { withInvocation(block) }
     }
 
     val repository: DesktopOriginalVideoLoadRepository = object : DesktopOriginalVideoLoadRepository {
@@ -134,8 +164,17 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
     // Only a synchronous call span. Fixed accepted media must not be rebuilt
     // between withPlaybackIntent/prepare/accept, especially outside an invocation.
     private val lexicalMedia = ThreadLocal<DesktopOriginalVideoMediaPort?>()
-    private fun activeMedia(): DesktopOriginalVideoMediaPort = lexicalMedia.get()
-        ?: activeThreadInvocation()?.media ?: acceptedMedia().also { assertCurrent() }
+    private fun activeMedia(): DesktopOriginalVideoMediaPort {
+        assertCurrent()
+        val request = activeThreadInvocation()
+        return lexicalMedia.get() ?: currentThreadFailure.get()?.media() ?: request?.media ?: acceptedMedia().also { assertCurrent() }
+    }
+
+    fun admitRecoveryAction(action: () -> Unit): Boolean {
+        val media = activeMedia() as? DesktopOriginalNativeRecoveryMediaPort
+            ?: error("Actual native recovery completion admission is required")
+        return media.admitRecoveryAction(action)
+    }
 
     val media: DesktopOriginalVideoMediaPort = object : DesktopOriginalVideoMediaPort {
         override fun withPlaybackIntent(startPositionMs:Long,playWhenReady:Boolean,action:()->Unit) {

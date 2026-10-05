@@ -94,6 +94,8 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
         include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        // The fixed v029 special producer owns this one whole source now.
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt"))
     }
     into(generatedUpstream)
     inputs.file(sourceManifest)
@@ -126,6 +128,8 @@ val extractUpstreamApi by tasks.registering(Exec::class) {
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
     inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/network/CoreNetworkRuntime.kt"))
     inputs.file("tools/extract-upstream-api.py")
+    inputs.file("tools/extract-upstream-special-danmaku.py")
+    inputs.dir("upstream-slices/v029-special-danmaku")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { it["mode"] == "policy-extract" }.map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/api"))
@@ -145,6 +149,8 @@ val extractUpstreamMedia by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-media.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/media").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-media.py")
+    inputs.file("tools/extract-upstream-special-danmaku.py")
+    inputs.dir("upstream-slices/v029-special-danmaku")
     inputs.file("tools/sync-upstream.py")
     inputs.files(sources.filter { "media" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -1271,6 +1277,23 @@ val extractOriginalBasRenderer by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractOriginalBasRenderer) }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-bas-renderer/com")) }
 
+// Incremental special-segment indexes and the original short playback window.
+val extractOriginalSpecialDanmaku by tasks.registering(Exec::class) {
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-special-danmaku.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-special-danmaku").get().asFile.absolutePath,
+        "--tests-output", layout.buildDirectory.dir("generated/original-special-danmaku-tests").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-special-danmaku.py")
+    inputs.dir("upstream-slices/v029-special-danmaku")
+    outputs.dir(layout.buildDirectory.dir("generated/original-special-danmaku"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-special-danmaku-tests"))
+}
+tasks.named("compileKotlin") { dependsOn(extractOriginalSpecialDanmaku) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalSpecialDanmaku) }
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-special-danmaku/com")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-special-danmaku-tests/com")) }
+
 val extractCommentFraudProtocol by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
@@ -2139,6 +2162,8 @@ val extractOriginalVideoStateCore by tasks.registering(Exec::class) {
         "--output", layout.buildDirectory.dir("generated/original-video-state-core").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-state-core.py", "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/extract-upstream-video-detail-full-units.py", "tools/sync-upstream.py", "tools/extract-appearance-platform.py", sourceManifest)
+    inputs.file("tools/v029_failure_recovery.py")
+    inputs.dir("upstream-slices/v029-playback-recovery")
     inputs.files(sources.filter { "stable-video-state-core" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-state-core"))
@@ -2268,6 +2293,8 @@ val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-full-owner").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-full-owner.py", sourceManifest)
+    inputs.file("tools/v029_failure_recovery.py")
+    inputs.dir("upstream-slices/v029-playback-recovery")
     inputs.files(sources.filter { "stable-original-video-full-owner" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/original-video-full-owner"))
@@ -2398,6 +2425,8 @@ val extractOriginalMessagePages by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-message-pages.py",
         "--repo", repositoryRoot.absolutePath,
         "--out", layout.buildDirectory.dir("generated/original-message-pages").get().asFile.absolutePath)
+    inputs.dir("upstream-slices/v029-chat-timeline")
+    inputs.file("tools/v029_chat_sources.py")
     inputs.files("tools/extract-upstream-message-pages.py", "tools/extract-appearance-platform.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", sourceManifest)
     inputs.files(sources.filter { "stable-original-message-pages-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }

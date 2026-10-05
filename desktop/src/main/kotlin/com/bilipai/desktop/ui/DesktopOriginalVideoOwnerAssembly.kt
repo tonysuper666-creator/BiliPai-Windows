@@ -190,7 +190,8 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                     currentUserMuted, owner::owns, commitIfEntryCurrent, onAccepted, mediaByteAdmission)
                 owner.invocations = DesktopOriginalVideoPlaybackInvocationPorts(entryScope, owner::owns,
                     capture = { captureInvocation(owner.captureLoadState(), owner.native) }, status,
-                    acceptedMedia = { owner.native.acceptedMedia(prepareAcceptedMedia) })
+                    acceptedMedia = { owner.native.acceptedMedia(prepareAcceptedMedia) },
+                    acceptedFailureMedia = { ticket -> owner.native.acceptedMedia(prepareAcceptedMedia, ticket) { true } })
                 val repositoryView = DesktopOriginalVideoOwnerRepositoryView(owner.invocations, readOwnedCooldown)
                 val account = DesktopOriginalVideoOwnerAccountView(owner.invocations, readHasPrimarySession,
                     readHasPrimaryAccessToken, readPrimaryMid)

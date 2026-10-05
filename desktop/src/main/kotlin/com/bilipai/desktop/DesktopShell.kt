@@ -1534,7 +1534,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     capturePlaybackState = { playback.state.value.details?.raw?.let { raw ->
                                         com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Success(
                                             info = raw.copy(cid = capturedCid), playUrl = capturedSource.source.videoUrl)
-                                    } }, onFeedback = { error = it })
+                                    } }, attention = null, onFeedback = { error = it })
                             }) else null,
                             onSeekTo = if ((showVideo || section == DesktopSection.STORY) && playing.details != null) playback::seekTo else null,
                             renderSurface = !pipActive, onPictureInPicture = if (pip != null && hostWindow != null) ({ pip.open(hostWindow, initialized.state.value.sourceTitle) }) else null)
@@ -1772,6 +1772,16 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 rendererDanmakuSettings.enabled && !pipActive && ownsDanmakuSource()) {
                                                 val capturedAssembly = danmakuAssembly
                                                 val capturedSource = danmakuSource
+                                                val commandEngagement by capturedAssembly.domains.engagement.uiState.collectAsState()
+                                                val attentionSubject = commandEngagement.subject
+                                                val attention = remember(capturedAssembly, capturedSource, attentionSubject) {
+                                                    attentionSubject?.let { subject -> DesktopWindowsCommandAttentionBinding(
+                                                        capturedSource, capturedAssembly.domains.engagement, subject,
+                                                        stillOwned = ::ownsDanmakuSource,
+                                                        withAdmission = { action -> ownsDanmakuSource() && ordinaryVideo.factoryFor(capturedAssembly)
+                                                            .withPresentationAdmission(capturedAssembly, capturedSource, action) }) }
+                                                }
+                                                DisposableEffect(attention) { onDispose { attention?.close() } }
                                                 DesktopVideoCommandVoteContent(repository, player, capturedSource,
                                                     capturedSource.request.aid, capturedSource.request.cid, danmaku,
                                                     fontScale = rendererDanmakuSettings.fontScale,
@@ -1780,6 +1790,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                     withAdmission = { action -> ownsDanmakuSource() && ordinaryVideo.factoryFor(capturedAssembly)
                                                         .withPresentationAdmission(capturedAssembly, capturedSource, action) },
                                                     capturePlaybackState = capturedAssembly.playback::captureDesktopPlaybackState,
+                                                    attention = attention,
                                                     onFeedback = { error = it })
                                             }
                                         },

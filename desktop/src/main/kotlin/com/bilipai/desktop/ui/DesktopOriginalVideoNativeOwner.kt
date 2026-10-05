@@ -313,13 +313,37 @@ internal class DesktopOriginalVideoNativeOwner(
     /** Optional concrete presenter admission is evaluated in the SAME final
      * Store -> entry -> native gate. It is not a new source authority. */
     internal fun acceptedMedia(prepare: (DesktopOriginalVideoAcceptedPublication) -> DesktopOriginalVideoMediaPort,
-        isPresenterCurrent: () -> Boolean): DesktopOriginalVideoMediaPort {
-        val lease = current() ?: throw CancellationException("No owned accepted ordinary source")
+        isPresenterCurrent: () -> Boolean): DesktopOriginalVideoMediaPort = acceptedMedia(prepare, null, isPresenterCurrent)
+
+    internal fun acceptedMedia(prepare: (DesktopOriginalVideoAcceptedPublication) -> DesktopOriginalVideoMediaPort,
+        desktopFailure: DesktopOriginalNativeRecoveryTicket?, isPresenterCurrent: () -> Boolean): DesktopOriginalVideoMediaPort {
+        var lease = current() ?: throw CancellationException("No owned accepted ordinary source")
+        var failureConsumed = false
+        if (desktopFailure != null && desktopFailure.source !== lease)
+            throw CancellationException("Native recovery accepted source replaced")
+        fun callerCurrent() = desktopFailure == null || desktopFailure.caller?.isActive == true
+        if (!callerCurrent() || (desktopFailure != null && player.state.value.failure?.attemptId != desktopFailure.failureAttemptId))
+            throw CancellationException("Native recovery caller/attempt retired before preparation")
         if (!isPresenterCurrent()) throw CancellationException("Accepted presenter retired before preparation")
         val delegate = prepare(lease)
-        fun current() = owns(lease) && isPresenterCurrent()
+        fun current() = callerCurrent() && owns(lease) && isPresenterCurrent() && (desktopFailure == null ||
+            if (failureConsumed) player.state.value.failure == null else
+            player.state.value.failure?.let { it.sourceVersion == lease.sourceVersion &&
+                it.attemptId == desktopFailure.failureAttemptId } == true)
         fun checkCurrent() { if (!current()) throw CancellationException("Accepted ordinary source/presenter retired") }
-        return object : DesktopOriginalVideoMediaPort {
+        return object : DesktopOriginalNativeRecoveryMediaPort {
+            override fun admitRecoveryAction(action: () -> Unit): Boolean {
+                checkCurrent()
+                var applied = false
+                publication.admit(lease.nativeSource.source, ::current) {
+                    if (!withEntryAdmission {
+                        if (!player.admitSourceSnapshot(lease.nativeSource) {
+                            checkCurrent(); action(); applied = true
+                        }) throw CancellationException("Recovery completion source retired")
+                    }) throw CancellationException("Recovery completion entry retired")
+                }
+                return applied
+            }
             override fun withPlaybackIntent(startPositionMs:Long,playWhenReady:Boolean,action:()->Unit) {
                 checkCurrent()
                 delegate.withPlaybackIntent(startPositionMs,playWhenReady) {
@@ -342,20 +366,28 @@ internal class DesktopOriginalVideoNativeOwner(
                     throw CancellationException("Accepted recovery receipt changed")
                 publication.admit(source, ::current) {
                     if (!withEntryAdmission {
-                        checkCurrent()
+                        val previous = lease
+                        if (!player.admitSourceSnapshot(previous.nativeSource) {
+                        checkCurrent() // Caller/complete source/attempt after taking the actual MPV lock.
                         lateinit var next: DesktopOriginalVideoAcceptedPublication
                         val retained = retainedSource(source) { owns(next) && isPresenterCurrent() }
-                        if (!player.recoverSource(lease.sourceVersion,retained,
-                                positionSeconds = source.startPositionSeconds,paused = source.startPaused))
+                        if (!player.recoverSource(previous.sourceVersion,retained,
+                                positionSeconds = source.startPositionSeconds,paused = source.startPaused,
+                                expectedFailureAttemptId = desktopFailure?.failureAttemptId?.takeUnless { failureConsumed }))
                             throw CancellationException("Accepted ordinary recovery retired")
-                        next = DesktopOriginalVideoAcceptedPublication(lease.request,
-                            checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == lease.sourceVersion) })
+                        next = DesktopOriginalVideoAcceptedPublication(previous.request,
+                            checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == previous.sourceVersion) })
                         accepted.set(next)
-                        bindAcceptedTransport(next, lease) { owns(next) && isPresenterCurrent() }
-                        inheritedMute.get()?.takeIf { it.lease === lease }?.let { previous ->
-                            inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))
+                        bindAcceptedTransport(next, previous) { owns(next) && isPresenterCurrent() }
+                        inheritedMute.get()?.takeIf { it.lease === previous }?.let { mute ->
+                            inheritedMute.compareAndSet(mute, InheritedMute(next, mute.interval))
                         }
+                        // Only this operation's own accepted transition is retained.
+                        // Another source/recovery/attempt still retires current().
+                        lease = next
+                        failureConsumed = desktopFailure != null
                         onAccepted(next)
+                        }) throw CancellationException("Accepted ordinary recovery source changed")
                     }) throw CancellationException("Accepted ordinary entry retired")
                 }
             }

@@ -127,8 +127,32 @@ def generate(repo: Path, output: Path) -> list[Path]:
     pieces=[]
     for name in ["getDanmakuView", "getSpecialDanmakuSegments"]:
         pieces.append(textwrap.indent(function(account_source,name,parser),"    "))
+    special_spec=importlib.util.spec_from_file_location("desktop_special_download",repo / "desktop/tools/extract-upstream-special-danmaku.py")
+    special=importlib.util.module_from_spec(special_spec);special_spec.loader.exec_module(special)
+    special_source=special.checked_inputs(repo)["DanmakuRepository.kt"][1]
+    original_download=function(special_source,"downloadSpecialDanmaku",parser)
+    download=original_download
+    download_changes=[
+        ("api.getDanmakuSpecialDm(resolvedUrl).use { body ->", "com.bilipai.desktop.danmaku.DesktopSpecialBodyRead.use(api.getDanmakuSpecialDm(resolvedUrl)) { body ->"),
+        ('android.util.Log.w("DanmakuRepo", "Special danmaku export failed: ${e.message}")', 'android.util.Log.w("DanmakuRepo", "Special danmaku export failed")'),
+    ]
+    for before,after in download_changes:
+        if download.count(before)!=1:raise ValueError("Special offline streaming port changed")
+        download=download.replace(before,after,1)
+    inverse=download
+    for before,after in reversed(download_changes):inverse=inverse.replace(after,before,1)
+    if inverse!=original_download:raise ValueError("Original special export inverse changed")
+    pieces.append(textwrap.indent(download,"    "))
+    body=body.replace("package com.android.purebilibili.data.repository", "package com.android.purebilibili.data.repository\n\nimport java.io.File\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive",1)
+    output.mkdir(parents=True,exist_ok=True)
+    (output/"special-download-source-proof.json").write_text(json.dumps(dict(
+        originalCommit=special.COMMIT, originalRawSha256=special.PINS["DanmakuRepository.kt"],
+        originalSelectedBodyInverseExact=True, selectedSha256LF=hashlib.sha256(original_download.encode()).hexdigest(),
+        mappings=[dict(before=b,after=a) for b,a in download_changes],
+        existingRepositoryAndTransport=True,standardWholeDownloadUnchanged=True),indent=2)+"\n",encoding="utf8")
     # Legacy public clear entry is retained on the same existing object only.
     pieces.append("    fun clearDanmakuCache() = clearCache()")
+    closing=body.rfind("}")
     body=body[:closing]+"\n"+"\n\n".join(pieces)+"\n}"+body[closing+1:]
     generated.append(write(output, "com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt", content_path, content_source, body))
 

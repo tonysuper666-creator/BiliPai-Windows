@@ -178,7 +178,7 @@ def engagement():
     for s in ['import androidx.lifecycle.ViewModel\n','import androidx.lifecycle.viewModelScope\n','import com.android.purebilibili.core.store.TokenManager\n','import com.android.purebilibili.core.network.NetworkModule\n']:
         header=header.replace(s,'')
     header=header.replace('import com.android.purebilibili.core.store.SettingsManager','import com.android.purebilibili.core.store.DesktopOriginalVideoInfoSettings as SettingsManager')
-    header+='import com.bilipai.desktop.ui.DesktopOriginalVideoEngagementEnvironment\nimport kotlinx.coroutines.*\n'
+    header+='import com.bilipai.desktop.ui.DesktopOriginalVideoEngagementEnvironment\nimport com.bilipai.desktop.ui.DesktopOriginalVideoEngagementPresentation\nimport kotlin.coroutines.EmptyCoroutineContext\nimport kotlinx.coroutines.*\n'
     models=t[t.index('data class VideoEngagementSeed'):t.index('private val DefaultVideoCoinBalanceLoader')]
     actions=t[t.index('interface VideoEngagementActions'):t.index('class VideoEngagementViewModel(')]
     actions=actions.replace('private val useCase: VideoInteractionUseCase = VideoInteractionUseCase()','private val useCase: VideoInteractionUseCase')
@@ -223,6 +223,7 @@ def engagement():
     body=adapt(body,'            val balance = coinBalanceLoader.load()','            val balance = coinBalanceLoader.load()\n            currentCoroutineContext().ensureActive(); environment.assertOwned()\n            if (_uiState.value.subject?.generation != capturedSubject?.generation) return@launch','Reject coin balance after old subject retires')
     body=adapt(body,'    internal fun emitMessage(message: String) {','    internal fun emitMessage(message: String) {\n        val capturedGeneration = _uiState.value.subject?.generation','Capture delayed original feedback subject')
     body=adapt(body,'environment.assertOwned();\n sendOwned(VideoEngagementEvent.Message(message))','environment.assertOwned();\n            if (_uiState.value.subject?.generation != capturedGeneration) return@launch\n            sendOwned(VideoEngagementEvent.Message(message))','Reject replacement subject during original feedback launch')
+    body=engagement_presentation_delta(body)
     header+='import kotlinx.coroutines.flow.mapNotNull\n'
     emit('com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt',header+models+actions+body,p,'complete-original-engagement-state-actions-algorithm-owned-platform')
     factory='''internal fun originalVideoEngagementActions(useCase: VideoInteractionUseCase): VideoEngagementActions = DefaultVideoEngagementActions(useCase)
@@ -245,6 +246,58 @@ def engagement():
     p=BASE+'feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt';emit('com/android/purebilibili/feature/video/ui/feedback/VideoActionFeedbackMessagePolicy.kt',read(p),p,'direct')
     protocol()
 
+def engagement_presentation_delta(body):
+    """Keep the complete original actions; carry one caller's accepted lease.
+    Each adaptation is counted and inversely checked against the prior owned
+    full-body platform projection. Canonical v025 pins are unchanged.
+    """
+    before=body;first=len(ADAPTATIONS)
+    body=adapt(body,'private val _events = Channel<Pair<Long?, VideoEngagementEvent>>(Channel.BUFFERED)',
+        'private val _events = Channel<Triple<Long?, DesktopOriginalVideoEngagementPresentation?, VideoEngagementEvent>>(Channel.BUFFERED)',
+        'Queued original events also retain the captured presentation permission')
+    body=adapt(body,'_events.send(_uiState.value.subject?.generation to event)',
+        '_events.send(Triple(_uiState.value.subject?.generation, DesktopOriginalVideoEngagementPresentation.capture(), event))',
+        'Stamp the existing event channel without changing its public event schema')
+    body=adapt(body,'''val events = _events.receiveAsFlow().mapNotNull { (generation, event) ->
+        if (environment.isOwned() && _uiState.value.subject?.generation == generation) event else null
+    }''','''val events = _events.receiveAsFlow().mapNotNull { (generation, presentation, event) ->
+        var eligible = false
+        val check = { eligible = environment.isOwned() && _uiState.value.subject?.generation == generation }
+        val admitted = if (presentation == null) { check(); true } else presentation.admit(check)
+        if (admitted && eligible) event else null
+    }''','Reject old accepted-source events even when the subject generation is unchanged')
+    for name,old,new in [
+        ('toggleFollow','fun toggleFollow(mid: Long? = null, currentlyFollowing: Boolean? = null)',
+            'fun toggleFollow(mid: Long? = null, currentlyFollowing: Boolean? = null, presentation: DesktopOriginalVideoEngagementPresentation? = null)'),
+        ('doTripleAction','        onResult: ((TripleActionResult) -> Unit)? = null',
+            '        onResult: ((TripleActionResult) -> Unit)? = null,\n        presentation: DesktopOriginalVideoEngagementPresentation? = null'),
+    ]:
+        a,b=function_range(body,name);method=body[a:b]
+        assert method.count(old)==method.count('viewModelScope.launch {')==1,name
+        changed=method.replace(old,new,1).replace('viewModelScope.launch {',
+            'viewModelScope.launch(presentation?.context ?: EmptyCoroutineContext) {',1)
+        # Preserve both the original visual state and its modified-field receipt
+        # in one bounded commit. Nothing in these ranges suspends or performs IO.
+        start=changed.index('                    locallyModifiedFields =') if name=='toggleFollow' else changed.index('                    val visual =')
+        end=changed.index('                    emitMessage(if (following)') if name=='toggleFollow' else changed.index('                    if (result.favoriteSuccess) {\n                        sendOwned(')
+        bounded=changed[start:end]
+        changed=changed[:start]+'                    environment.commit {\n'+''.join('    '+line if line.strip() else line for line in bounded.splitlines(keepends=True))+'                    }\n'+changed[end:]
+        body=adapt(body,method,changed,'Original '+name+' complete body receives and launches the captured presentation permission')
+    body=adapt(body,'        val capturedGeneration = _uiState.value.subject?.generation\n        viewModelScope.launch {',
+        '        val capturedGeneration = _uiState.value.subject?.generation\n        val presentation = DesktopOriginalVideoEngagementPresentation.capture()\n        viewModelScope.launch(presentation?.context ?: EmptyCoroutineContext) {',
+        'Original nested feedback launch inherits the same captured permission')
+    edits=ADAPTATIONS[first:]
+    inverse=body
+    for edit in reversed(edits):
+        assert inverse.count(edit['after'])==1,edit['label']
+        inverse=inverse.replace(edit['after'],edit['before'],1)
+    assert inverse==before,'Complete engagement presentation adaptation inverse differs'
+    save(OUTPUT/'engagement-presentation-proof.json',dict(
+        upstreamCommit=COMMIT,originalSourceSha256LF=SOURCE_PINS[BASE+'feature/video/viewmodel/VideoEngagementViewModel.kt']['sha256LF'],
+        previousOwnedBodySha256LF=sha(before),adaptedOwnedBodySha256LF=sha(body),
+        fullOwnedBodyInverse=True,adaptations=edits,scope='Same retained original VM/actions; command-card presentation permission only'))
+    return body
+
 def protocol():
     p=BASE+'data/repository/ActionRepository.kt';t=read(p);methods=[]
     names=['followUser','favoriteVideo','getDefaultFolderId','likeVideo','dislikeVideo','coinVideo','tripleAction','toggleWatchLater','checkLikeStatus','checkFavoriteStatus','checkFollowStatus','checkCoinStatus']
@@ -253,6 +306,10 @@ def protocol():
         body=body.replace('TokenManager.csrfCache','readCsrf()').replace('TokenManager.midCache','readMid()').replace('TokenManager.sessDataCache','readSessData()').replace('TokenManager.accessTokenCache','readAccessToken()')
         body=body.replace('com.android.purebilibili.core.util.Logger','Logger').replace('android.util.Log.e','Logger.e')
         body=body.replace('_followStateChanges.tryEmit(FollowStateChange(mid = mid, isFollowing = follow))','confirmFollow(FollowStateChange(mid = mid, isFollowing = follow))')
+        if name=='followUser':
+            body=adapt(body,'confirmFollow(FollowStateChange(mid = mid, isFollowing = follow))',
+                'DesktopOriginalVideoEngagementPresentation.commitCurrent { assertOwned(); confirmFollow(FollowStateChange(mid = mid, isFollowing = follow)) }',
+                'Source admission precedes the existing success-only account follow event')
         body=body.replace('withContext(Dispatchers.IO) {','withContext(Dispatchers.IO) {\n            currentCoroutineContext().ensureActive(); assertOwned()')
         # Guard response publication and any original success bus before updating UI consumers.
         body=body.replace('                if (response.code == 0) {','                currentCoroutineContext().ensureActive(); assertOwned()\n                if (response.code == 0) {')
@@ -268,6 +325,7 @@ import com.android.purebilibili.core.network.BilibiliApi
 import com.android.purebilibili.data.model.response.FavFolder
 import com.android.purebilibili.core.refresh.WatchLaterRefreshBus
 import com.bilipai.desktop.ui.DesktopOriginalVideoInteractionLog as Logger
+import com.bilipai.desktop.ui.DesktopOriginalVideoEngagementPresentation
 import kotlinx.coroutines.*
 
 /** Original action bodies on the already-owned Root API; no network/session/store is built. */
@@ -277,10 +335,14 @@ internal class DesktopOriginalVideoEngagementProtocol(
     private val readMid: () -> Long?,
     private val readSessData: () -> String?,
     private val readAccessToken: () -> String?,
-    private val assertOwned: () -> Unit,
+    private val ownerCheckpoint: () -> Unit,
     private val confirmFollow: (FollowStateChange) -> Unit,
     private val folderProtocol: DesktopOriginalFavoriteFolderProtocol,
 ) {
+    private fun assertOwned() {
+        DesktopOriginalVideoEngagementPresentation.assertCurrent()
+        ownerCheckpoint()
+    }
     suspend fun getFavoriteFolders(aid:Long?=null):Result<List<FavFolder>> = folderProtocol.getFavoriteFolders(aid)
     suspend fun updateFavoriteFolders(aid:Long,addFolderIds:Set<Long>,removeFolderIds:Set<Long>):Result<Boolean> = folderProtocol.updateFavoriteFolders(aid,addFolderIds,removeFolderIds)
 '''

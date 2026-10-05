@@ -65,7 +65,14 @@ internal fun next(): Int { return 1 }
             account_members.append("    fun clearDanmakuCache() = clearCache()")
             closing = expected_cache.rfind("}")
             expected_cache = expected_cache[:closing] + "\n" + "\n\n".join(account_members) + "\n}" + expected_cache[closing + 1:]
-            self.assertEqual(repository.split("\n", 2)[2], expected_cache.strip() + "\n")
+            adapted_cache=repository.split("\n",2)[2]
+            streaming_member=textwrap.indent(media.function(repository,"downloadSpecialDanmaku",media.parser_for(REPO)),"    ")
+            self.assertEqual(1,adapted_cache.count(streaming_member))
+            adapted_cache=adapted_cache.replace(streaming_member+"\n\n", "", 1)
+            extra_imports="\n\nimport java.io.File\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive"
+            self.assertEqual(1,adapted_cache.count(extra_imports))
+            adapted_cache=adapted_cache.replace(extra_imports,"",1)
+            self.assertEqual(adapted_cache, expected_cache.strip()+"\n")
             live = (output / "com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt").read_text(encoding="utf-8")
             live_original = media.read(REPO, media.BASE + "core/network/socket/LiveDanmakuClient.kt")
             for name in ["sendAuthPacket", "startHeartbeat", "startHealthCheck", "scheduleReconnect", "handleMessage"]:

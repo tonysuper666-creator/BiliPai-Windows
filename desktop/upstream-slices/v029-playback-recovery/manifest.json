@@ -1,0 +1,30 @@
+{
+  "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "scope": "Neutral metadata and original bounded failure/recovery policy; no Android playback engine",
+  "sources": [
+    {
+      "file": "SharedPlaybackSession.kt",
+      "path": "core-player/src/main/java/com/android/purebilibili/core/player/SharedPlaybackSession.kt",
+      "gitBlob": "47c7fe24bf37770755a7bc2db59008a46c99bd05",
+      "bytes": 21663,
+      "sha256": "4323002bba1f63770991956e3754b76dadf9136aea87e4d8a072c16a016ef63c",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/core-player/src/main/java/com/android/purebilibili/core/player/SharedPlaybackSession.kt"
+    },
+    {
+      "file": "PlayerErrorRecoveryPolicy.kt",
+      "path": "core-player/src/main/java/com/android/purebilibili/core/player/PlayerErrorRecoveryPolicy.kt",
+      "gitBlob": "e3f81db718c0455b0acd61241e75126cddb69c4b",
+      "bytes": 2078,
+      "sha256": "98385054c413bda87e5948d0dcc945e42afa9abaa46379cf9a8f286429e4d28d",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/core-player/src/main/java/com/android/purebilibili/core/player/PlayerErrorRecoveryPolicy.kt"
+    },
+    {
+      "file": "PlayerErrorRecoveryPolicyTest.kt",
+      "path": "app/src/test/java/com/android/purebilibili/feature/video/state/PlayerErrorRecoveryPolicyTest.kt",
+      "gitBlob": "ea3d46752a228ce3871301aa1620abf4ad2f932c",
+      "bytes": 4572,
+      "sha256": "f863de4ca8dd501834f420e4f99d45dc0fbab4f4e280952a4f1fa295326a8a0e",
+      "url": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/test/java/com/android/purebilibili/feature/video/state/PlayerErrorRecoveryPolicyTest.kt"
+    }
+  ]
+}

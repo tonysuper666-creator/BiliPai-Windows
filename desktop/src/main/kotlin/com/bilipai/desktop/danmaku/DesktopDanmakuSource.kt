@@ -1,6 +1,8 @@
 package com.bilipai.desktop.danmaku
 
 import com.android.purebilibili.core.network.BilibiliApi
+import com.android.purebilibili.danmaku.parser.SpecialDanmakuSource
+import com.android.purebilibili.data.repository.RemoteSpecialDanmakuSource
 import com.bilipai.desktop.player.PlaybackSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -26,11 +28,15 @@ interface DesktopDanmakuSource {
     suspend fun segment(cid: Long, index: Int): ByteArray
     suspend fun xml(cid: Long): ByteArray
     suspend fun special(url: String): ByteArray
+    /** Small legacy injectables retain their existing contract. Production overrides
+     * this with a seekable transport, so playback never fetches a whole special file. */
+    suspend fun openSpecial(url: String): SpecialDanmakuSource = DesktopMemorySpecialSource(special(url))
 }
 
 class ApiDesktopDanmakuSource(client: OkHttpClient = publicClient()) : DesktopDanmakuSource {
-    // Upstream's ResponseBody routes are not annotated @Streaming; Retrofit therefore buffers
-    // them. Bound the network source before its converter runs, rather than only after bytes().
+    // Ordinary upstream ResponseBody routes buffer in Retrofit; special range/export
+    // declarations use the fixed v029 @Streaming contract. Bound ordinary routes Bound the network source before its converter runs, rather than only after bytes().
+    private val originalClient=client
     private val boundedClient = client.newBuilder().addNetworkInterceptor { chain ->
         val response = chain.proceed(chain.request())
         val body = response.body
@@ -50,6 +56,25 @@ class ApiDesktopDanmakuSource(client: OkHttpClient = publicClient()) : DesktopDa
     override suspend fun special(url: String): ByteArray {
         val normalized = trustedSpecialUrl(url)
         return read { api.getDanmakuSpecialDm(normalized) }
+    }
+    override suspend fun openSpecial(url:String):SpecialDanmakuSource {
+        val normalized=trustedSpecialUrl(url)
+        val transportBytes=java.util.concurrent.atomic.AtomicLong()
+        // Each source has its own bounded transfer receipt. Up to eight sources
+        // therefore have a finite session IO cap, including original 200 discard.
+        val rangeClient=originalClient.newBuilder().addNetworkInterceptor {chain->
+            trustedSpecialUrl(chain.request().url.toString()) // Reject a redirect before sending to it.
+            val response=chain.proceed(chain.request())
+            response.newBuilder().body(BoundedDanmakuBody(response.body,
+                DesktopSpecialSourceLimits.MAX_TRANSFER_BYTES) {count->
+                if(transportBytes.addAndGet(count)>DesktopSpecialSourceLimits.MAX_TRANSFER_BYTES)
+                    throw IOException("Special source exceeds its transfer budget")
+            }).build()
+        }.build()
+        val rangeApi=Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(rangeClient).build().create(BilibiliApi::class.java)
+        return RemoteSpecialDanmakuSource.open(rangeApi,normalized).also {
+            require(it.byteLength in 1..DesktopSpecialSourceLimits.MAX_FILE_BYTES) {"Special source is too large"}
+        }
     }
     private suspend fun read(fetch: suspend () -> ResponseBody) = withContext(Dispatchers.IO) {
         fetch().use { body ->
@@ -89,13 +114,14 @@ class ApiDesktopDanmakuSource(client: OkHttpClient = publicClient()) : DesktopDa
     }
 }
 
-private class BoundedDanmakuBody(private val delegate: ResponseBody) : ResponseBody() {
+internal class BoundedDanmakuBody(private val delegate: ResponseBody,
+    private val limit:Long=DanmakuParser.MAX_DOCUMENT_BYTES.toLong(),private val charge:(Long)->Unit={}): ResponseBody() {
     private val bounded = object : ForwardingSource(delegate.source()) {
         private var consumed = 0L
         override fun read(sink: Buffer, byteCount: Long): Long {
-            val count = super.read(sink, byteCount.coerceAtMost(DanmakuParser.MAX_DOCUMENT_BYTES - consumed + 1))
-            if (count > 0) consumed += count
-            if (consumed > DanmakuParser.MAX_DOCUMENT_BYTES) throw IOException("Danmaku document is too large.")
+            val count = super.read(sink, byteCount.coerceAtMost(limit - consumed + 1))
+            if (count > 0) {consumed += count;charge(count)}
+            if (consumed > limit) throw IOException("Danmaku document is too large.")
             return count
         }
     }.buffer()

@@ -117,6 +117,140 @@ private fun feedJson(ids:List<Int>,cursor:Long,time:Long,end:Boolean) = buildJso
     put("code",0);put("data",buildJsonObject {put("cursor",buildJsonObject {put("id",cursor);put("time",time);put("is_end",end)});put("items",JsonArray(ids.map { buildJsonObject { put("id",it);put("reply_time",time) } }))})
 }.toString()
 
+private fun chatJson(ids: LongRange, more: Boolean, withdrawn: Long = 0) = buildJsonObject {
+    put("code", 0)
+    put("data", buildJsonObject {
+        put("min_seqno", ids.first); put("max_seqno", ids.last); put("has_more", if (more) 1 else 0)
+        put("messages", JsonArray(ids.reversed().map { id -> buildJsonObject {
+            put("msg_key", id); put("msg_seqno", id); put("sender_uid", 7); put("receiver_id", 42)
+            put("timestamp", id); put("content", "{\"content\":\"fixture $id\"}")
+            put("msg_status", if (id == withdrawn) 1 else 0)
+        } }))
+    })
+}.toString()
+
+class DesktopV029ChatTimelineIntegrationTest {
+    private suspend fun ready(f: MessagePageTestFixture, vm: ChatViewModel) {
+        val field = vm.javaClass.getDeclaredField("latestMessagesJob").apply { isAccessible = true }
+        f.waitFor { vm.uiState.value.messagesLoaded && (field.get(vm) as? Job)?.isActive != true }
+    }
+
+    @Test fun actualRefreshFillsGapAndPreservesPreviouslyLoadedHistory(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val resumed = AtomicBoolean(false)
+            f.respond = { hit -> if (hit.path.endsWith("fetch_session_msgs")) {
+                val cursor = hit.query["end_seqno"]?.toLongOrNull() ?: 0L
+                MessagePageTestReply(when {
+                    cursor == 40L -> chatJson(1L..40L, false)
+                    cursor == 70L -> chatJson(40L..69L, true, 50)
+                    resumed.get() -> chatJson(70L..99L, true)
+                    else -> chatJson(40L..69L, true)
+                })
+            } else f.default(hit) }
+            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+            vm.loadMoreMessages(); f.waitFor { vm.uiState.value.messages.size == 69 && !vm.uiState.value.isLoadingMore }
+            check(vm.uiState.value.minSeqno == 1L && !vm.uiState.value.hasMore)
+            resumed.set(true); vm.refreshMessages()
+            check(vm.uiState.value.messages.map { it.msg_seqno } == (1L..99L).toList())
+            check(vm.uiState.value.messages.single { it.msg_seqno == 50L }.msg_status == 1)
+            check(vm.uiState.value.minSeqno == 1L && !vm.uiState.value.hasMore)
+            check(f.hits.count { it.query["end_seqno"] == "70" } == 1)
+        }
+    }
+
+    @Test fun actualRefreshErrorRetainsContentAndRetryClearsError(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+            val before = vm.uiState.value.messages
+            f.respond = { hit -> if (hit.path.endsWith("fetch_session_msgs"))
+                MessagePageTestReply("""{"code":-400,"message":"controlled refresh failure"}""") else f.default(hit) }
+            vm.refreshMessages()
+            check(vm.uiState.value.messages === before && vm.uiState.value.error == null)
+            check(vm.uiState.value.refreshError != null)
+            f.respond = { f.default(it) }; vm.refreshMessages()
+            check(vm.uiState.value.refreshError == null && vm.uiState.value.messages.map { it.msg_key } == listOf(8L, 9L))
+        }
+    }
+
+    @Test fun visibleRefreshCancellationRejectsLateReply(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+            val before = vm.uiState.value.messages
+            val entered = CompletableDeferred<Unit>(); val released = CountDownLatch(1)
+            f.respond = { hit -> if (hit.path.endsWith("fetch_session_msgs")) {
+                entered.complete(Unit); released.await(3, TimeUnit.SECONDS); MessagePageTestReply(chatJson(8L..10L, false))
+            } else f.default(hit) }
+            val refresh = launch { vm.refreshMessages() }
+            withTimeout(5_000) { entered.await() }; refresh.cancelAndJoin(); released.countDown()
+            check(vm.uiState.value.messages === before && vm.uiState.value.refreshError == null)
+        }
+    }
+
+    @Test fun accountReplacementRetiresActualInFlightRefresh(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+            val before = vm.uiState.value.messages
+            val entered = CompletableDeferred<Unit>(); val released = CountDownLatch(1)
+            f.respond = { hit -> if (hit.path.endsWith("fetch_session_msgs")) {
+                entered.complete(Unit); released.await(3, TimeUnit.SECONDS); MessagePageTestReply(chatJson(8L..10L, false))
+            } else f.default(hit) }
+            val refresh = launch { vm.refreshMessages() }
+            withTimeout(5_000) { entered.await() }
+            f.sessions.saveAccount(mapOf("SESSDATA" to "synthetic-replaced", "bili_jct" to "synthetic-replaced"), AccountSummary(42, "Fixture", ""))
+            released.countDown(); withTimeout(5_000) { refresh.join() }
+            check(vm.uiState.value.messages === before && vm.uiState.value.refreshError == null)
+            check(refresh.isCancelled)
+        }
+    }
+
+    @Test fun rejectedSendRetainsDraftAcknowledgementAndSuccessCanBeConsumed(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+            f.respond = { hit -> if (hit.path.endsWith("send_msg"))
+                MessagePageTestReply("""{"code":-400,"message":"controlled send failure"}""") else f.default(hit) }
+            vm.sendMessage("keep draft"); f.waitFor { !vm.uiState.value.isSending && vm.uiState.value.sendError != null }
+            check(vm.uiState.value.sentText == null && vm.uiState.value.scrollToLatestVersion == 0L)
+            f.respond = { f.default(it) }; vm.sendMessage("keep draft")
+            f.waitFor { vm.uiState.value.sentText == "keep draft" && !vm.uiState.value.isSending }
+            vm.consumeSentText("different draft"); check(vm.uiState.value.sentText == "keep draft")
+            vm.consumeSentText("keep draft"); check(vm.uiState.value.sentText == null)
+        }
+    }
+
+    @Test fun coveredPageCannotSetPendingOrSendAndRapidVisibleCallsSubmitOnce(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val vm = ChatViewModel(7, 1, f.admission); ready(f, vm)
+            f.visible.set(false); vm.sendMessage("hidden")
+            check(!vm.uiState.value.isSending && f.hits.none { it.path.endsWith("send_msg") })
+            f.visible.set(true)
+            val entered = CompletableDeferred<Unit>(); val released = CountDownLatch(1)
+            f.respond = { hit -> if (hit.path.endsWith("send_msg")) {
+                entered.complete(Unit); released.await(3, TimeUnit.SECONDS); f.default(hit)
+            } else f.default(hit) }
+            vm.sendMessage("visible"); vm.sendMessage("visible")
+            withTimeout(5_000) { entered.await() }; vm.sendMessage("visible"); released.countDown()
+            f.waitFor { vm.uiState.value.sentText == "visible" && !vm.uiState.value.isSending }
+            check(f.hits.count { it.path.endsWith("send_msg") } == 1)
+        }
+    }
+
+    @Test fun externalRefreshCallerRetiresNonCancellableFinalPublication(): Unit = runBlocking {
+        MessagePageTestFixture().use { f ->
+            val state = f.admission.stateFlow(0)
+            val entered = CompletableDeferred<Unit>(); val released = CompletableDeferred<Unit>()
+            val caller = launch {
+                f.admission.awaitRead("chat-refresh") {
+                    entered.complete(Unit)
+                    withContext(NonCancellable) { released.await(); state.value = 1 }
+                }
+            }
+            entered.await(); caller.cancel(); released.complete(Unit)
+            withTimeout(5_000) { caller.join() }
+            check(state.value == 0 && caller.isCancelled)
+        }
+    }
+}
+
 
 class DesktopOriginalMessagePagesTest {
     @Test fun originalInboxCategoriesUnreadAndCursorDuplicateRetry(): Unit = runBlocking {
