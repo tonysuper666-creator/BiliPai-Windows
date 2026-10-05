@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.android.purebilibili.feature.settings.webdav.WebDavBackupConfig
 import com.bilipai.desktop.backup.DesktopBackupCoordinator
+import com.bilipai.desktop.backup.DesktopBackupUpdateHold
 import kotlinx.coroutines.launch
 import java.nio.file.Path
 import java.time.Instant
@@ -22,8 +23,16 @@ import javax.swing.filechooser.FileNameExtensionFilter
 enum class DesktopBackupSettingsSection { ALL, LOCAL_SETTINGS, WEBDAV }
 
 @Composable
-fun BackupSettingsDialog(backup: DesktopBackupCoordinator, onDismiss: () -> Unit, onExit: () -> Unit = onDismiss,
+internal fun BackupSettingsDialog(backup: DesktopBackupCoordinator, onDismiss: () -> Unit, onExit: () -> Unit = onDismiss,
+    updateHold: DesktopBackupUpdateHold,
     initialSection: DesktopBackupSettingsSection = DesktopBackupSettingsSection.ALL) {
+    val instance = remember(backup, updateHold) { Any() }
+    var admitted by remember(instance) { mutableStateOf(false) }
+    DisposableEffect(instance) {
+        admitted = updateHold.mountEditor(instance)
+        onDispose { updateHold.unmountEditor(instance) }
+    }
+    if (!admitted) return
     val state by backup.state.collectAsState()
     val scope = rememberCoroutineScope()
     var url by remember { mutableStateOf(state.snapshot.config.baseUrl) }

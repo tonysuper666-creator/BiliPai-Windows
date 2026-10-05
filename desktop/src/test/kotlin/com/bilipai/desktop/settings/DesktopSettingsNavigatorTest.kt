@@ -62,4 +62,22 @@ class DesktopSettingsNavigatorTest {
         assertNull(navigator.state.value.searchEntryToken)
         assertNull(SettingsSearchFocusController.request.value)
     }
+
+    @Test fun deniedBackupEntryDoesNotPushOrChangeExistingSearchFocus() {
+        var canEdit = true
+        val navigator = DesktopSettingsNavigator { target ->
+            target !in setOf(SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE) || canEdit
+        }
+        navigator.openDetail(SettingsSearchTarget.PLAYBACK, SettingsSearchFocusIds.PLAYBACK_DECODER)
+        val existing = navigator.state.value
+        val focus = SettingsSearchFocusController.request.value
+        canEdit = false
+        navigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP, null)
+        navigator.openDetail(SettingsSearchTarget.SETTINGS_SHARE, null)
+        assertSame(existing, navigator.state.value)
+        assertSame(focus, SettingsSearchFocusController.request.value)
+        canEdit = true
+        navigator.openDetail(SettingsSearchTarget.WEBDAV_BACKUP, null)
+        assertEquals(DesktopSettingsPage.Detail(SettingsSearchTarget.WEBDAV_BACKUP, null), navigator.state.value.current)
+    }
 }

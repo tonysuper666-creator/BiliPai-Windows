@@ -89,6 +89,7 @@ import com.android.purebilibili.feature.settings.SettingsSearchTarget
 import com.android.purebilibili.feature.settings.SettingsRootCategory
 import com.bilipai.desktop.plugins.DesktopEyePaint
 import com.bilipai.desktop.backup.DesktopBackupCoordinator
+import com.bilipai.desktop.backup.DesktopBackupUpdateHold
 import com.bilipai.desktop.backup.DesktopBackupStore
 import com.bilipai.desktop.cast.DesktopCastController
 import com.bilipai.desktop.cast.DesktopCastMediaResolver
@@ -295,6 +296,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         DesktopDynamicCardSession(repository, sessionEpoch, stillOwned = { !latestDynamicIsClosing() })
     }
     var activatingUpdate by remember { mutableStateOf(false) }
+    val backupUpdateHold = remember { DesktopBackupUpdateHold { !latestDynamicIsClosing() && !activatingUpdate } }
+    val backupUpdateActivity by backupUpdateHold.activity.collectAsState()
     val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession) {
         !isClosing() && !activatingUpdate
     }
@@ -356,7 +359,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val defaultSearchHintEnabled by remember(globalPluginContext) {
         SearchHintSettingsStore.isEnabled(globalPluginContext)
     }.collectAsState(initial = true)
-    val settingsNavigator = remember { DesktopSettingsNavigator() }
+    val settingsNavigator = remember(backupUpdateHold) { DesktopSettingsNavigator { target ->
+        target !in setOf(SettingsSearchTarget.WEBDAV_BACKUP, SettingsSearchTarget.SETTINGS_SHARE) ||
+            backupUpdateHold.canBeginEditing()
+    } }
     val settingsNavigation by settingsNavigator.state.collectAsState()
     val settingsSearchRepository = remember(globalPluginContext, community.searchPreferences) {
         DesktopSettingsSearchRepository(globalPluginContext, community.searchPreferences::isPrivacyModeEnabledSync)
@@ -613,7 +619,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             community.searchPreferences.freezeWritesForRestore()
             pluginRuntime.shutdownForRestore()
             preferenceWriter.flushAndClose()
-        }, afterRestore = { withContext(Dispatchers.Main) { onExit() } })
+        }, afterRestore = { withContext(Dispatchers.Main) { onExit() } },
+            beforeOperation = { operation -> withContext(Dispatchers.Main.immediate) { backupUpdateHold.beginOperation(operation) } })
     }
     SideEffect {
         registerShutdown?.invoke {
@@ -1326,11 +1333,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         finally { feedLoading = false }
     }
     LaunchedEffect(Unit) { updater.autoCheck(); while (true) { delay(6 * 60 * 60 * 1000L); updater.autoCheck() } }
-    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, activatingUpdate, updateJob) {
+    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
             is UpdateState.Available -> if (automaticUpdates) prepareUpdate(status.update, false)
-            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation()) {
+            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation()) {
                 activatingUpdate = true
                 updateJob = scope.launch(start = CoroutineStart.LAZY) {
                     try { if (updater.activatePreparedUpdate(status.prepared)) onExit() }
@@ -2197,7 +2204,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge.record("INFO", "PlaybackSettings", "$name=$value")
                                         }, onBack = back)
                                 },
-                                backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit,
+                                backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit, updateHold = backupUpdateHold,
                                     initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
                                 blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { loginDialog = true }) },
                                 donateContent = { donateEntry, dismiss ->
@@ -2425,7 +2432,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
         if (loginDialog) AdvancedLoginDialog(repository, onDismiss = { loginDialog = false }, onComplete = { loginDialog = false })
         if (enhancementSettings) DesktopVideoEnhancementSettingsDialog(pluginRuntime.enhancementConfiguration) { enhancementSettings = false }
-        if (combinedBackupSettings) BackupSettingsDialog(backup, { combinedBackupSettings = false }, onExit)
+        if (combinedBackupSettings) BackupSettingsDialog(backup, { combinedBackupSettings = false }, onExit, updateHold = backupUpdateHold)
         if (showDiagnosticViewer && diagnostics != null) {
             DesktopLocalDiagnosticViewer(diagnostics,
                 onDismiss = { showDiagnosticViewer = false },
@@ -2450,7 +2457,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (googleCastDialog) DesktopGoogleCastDialog(pluginRuntime.context, pluginRuntime.googleCast,
             media = castMediaFactory, onDismiss = { googleCastDialog = false })
         PluginCareReminder(pluginRuntime)
-        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation(),
+        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation() || backupUpdateHold.blocksUpdateInstallation(),
             playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
             onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false })

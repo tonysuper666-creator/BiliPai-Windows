@@ -18,7 +18,7 @@ internal data class DesktopSettingsNavigationState(val stack: List<DesktopSettin
     val searchEntryToken get() = stack.filterIsInstance<DesktopSettingsPage.Search>().lastOrNull()?.entryToken
 }
 
-internal class DesktopSettingsNavigator {
+internal class DesktopSettingsNavigator(private val canOpenDetail: (SettingsSearchTarget) -> Boolean = { true }) {
     private val mutableState = MutableStateFlow(DesktopSettingsNavigationState(listOf(DesktopSettingsPage.Root)))
     val state = mutableState.asStateFlow()
     private var nextSearchToken = 0L
@@ -56,6 +56,7 @@ internal class DesktopSettingsNavigator {
     }
 
     fun openDetail(target: SettingsSearchTarget, focusId: String?) {
+        if (!canOpenDetail(target)) return
         SettingsSearchFocusController.submit(target, focusId)
         push(DesktopSettingsPage.Detail(target, focusId))
     }

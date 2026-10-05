@@ -4,8 +4,11 @@ import com.android.purebilibili.feature.settings.webdav.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -27,6 +30,7 @@ class DesktopBackupCoordinator(private val store: DesktopBackupStore,
     private val scheduler: DesktopBackupScheduler = WindowsBackupScheduler(store.directory),
     private val beforeRestore: suspend () -> Unit = {},
     private val afterRestore: suspend () -> Unit = {},
+    private val beforeOperation: suspend (Job) -> Boolean = { true },
     private val clock: () -> Long = System::currentTimeMillis) {
     private val archive = DesktopBackupArchive(store.directory)
     private val service = WebDavBackupService(archive)
@@ -108,28 +112,36 @@ class DesktopBackupCoordinator(private val store: DesktopBackupStore,
         mutableState.update { it.copy(snapshot = saved, backups = (listOf(entry) + it.backups).distinctBy(WebDavBackupEntry::href)) }
     }
 
-    private suspend fun operation(success: String?, block: suspend () -> Unit): Result<Unit> = withContext(Dispatchers.IO) {
-        if (!operations.tryLock()) return@withContext Result.failure(IllegalStateException("已有备份操作正在执行"))
-        mutableState.update { it.copy(busy = true, message = null, error = false) }
-        try {
-            Files.createDirectories(store.directory)
-            FileChannel.open(store.directory.resolve(".webdav-backup.lock"), StandardOpenOption.CREATE, StandardOpenOption.WRITE).use { channel ->
-                val lock = runCatching { channel.tryLock() }.getOrNull() ?: error("另一客户端正在执行备份操作")
-                lock.use { block() }
-            }
-            mutableState.update { it.copy(message = success) }
-            Result.success(Unit)
-        } catch (cancelled: CancellationException) { throw cancelled
-        } catch (failure: Exception) {
-            // Do not show credentials or server URLs from OkHttp/parser errors.
-            val message = failure.message.orEmpty()
-            val status = Regex("HTTP\\s+(\\d{3})").find(message)?.value
-            val visible = if (failure is IllegalArgumentException || failure is IllegalStateException)
-                message.substringBefore("http", message).take(200).ifBlank { "备份操作失败" }
-            else "备份操作失败" + (status?.let { "：$it" } ?: "，请检查网络与服务器配置")
-            mutableState.update { it.copy(message = visible, error = true) }
-            Result.failure(failure)
-        } finally { mutableState.update { it.copy(busy = false) }; operations.unlock() }
+    private suspend fun operation(success: String?, block: suspend () -> Unit): Result<Unit> = coroutineScope {
+        // Reserve the actual operation before IO can publish its later busy state.
+        currentCoroutineContext().ensureActive()
+        if (!beforeOperation(currentCoroutineContext().job)) {
+            return@coroutineScope Result.failure(IllegalStateException("更新安装已开始，暂时无法执行备份操作"))
+        }
+        currentCoroutineContext().ensureActive()
+        withContext(Dispatchers.IO) {
+            if (!operations.tryLock()) return@withContext Result.failure(IllegalStateException("已有备份操作正在执行"))
+            mutableState.update { it.copy(busy = true, message = null, error = false) }
+            try {
+                Files.createDirectories(store.directory)
+                FileChannel.open(store.directory.resolve(".webdav-backup.lock"), StandardOpenOption.CREATE, StandardOpenOption.WRITE).use { channel ->
+                    val lock = runCatching { channel.tryLock() }.getOrNull() ?: error("另一客户端正在执行备份操作")
+                    lock.use { block() }
+                }
+                mutableState.update { it.copy(message = success) }
+                Result.success(Unit)
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (failure: Exception) {
+                // Do not show credentials or server URLs from OkHttp/parser errors.
+                val message = failure.message.orEmpty()
+                val status = Regex("HTTP\\s+(\\d{3})").find(message)?.value
+                val visible = if (failure is IllegalArgumentException || failure is IllegalStateException)
+                    message.substringBefore("http", message).take(200).ifBlank { "备份操作失败" }
+                else "备份操作失败" + (status?.let { "：$it" } ?: "，请检查网络与服务器配置")
+                mutableState.update { it.copy(message = visible, error = true) }
+                Result.failure(failure)
+            } finally { mutableState.update { it.copy(busy = false) }; operations.unlock() }
+        }
     }
 
     private fun validateServer(config: WebDavBackupConfig) {
