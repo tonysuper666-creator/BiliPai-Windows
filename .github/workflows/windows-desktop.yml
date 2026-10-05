@@ -267,6 +267,8 @@ jobs:
             ${{ runner.temp }}/bilipai-comment-search-ui/result.json
             ${{ runner.temp }}/bilipai-comment-search-ui/gradle.log
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/observations.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/actual-main-runtime-start.json
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/actual-main-runtime-end.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/local-replay-receipt.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-local-replay.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/110-ordinary-playing.png

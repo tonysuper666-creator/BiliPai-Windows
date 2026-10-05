@@ -51,6 +51,7 @@ object WindowsVideoActualRootUiFixture {
     private lateinit var actualCanvas: Canvas
     private lateinit var accepted: OwnedPlaybackSourceSnapshot
     private var ownedWindowIdentity = 0
+    @Volatile private var runtimeMainWindow: ComposeWindow? = null
     private var videoKey: BiliPaiNavKey.VideoDetail? = null
 
     private fun <T> edt(block: () -> T): T {
@@ -90,6 +91,88 @@ object WindowsVideoActualRootUiFixture {
         return context.accessibleStateSet.contains(AccessibleState.SHOWING) && size.width > 0 && size.height > 0 &&
             viewport.contains(Rectangle(origin.x, origin.y, size.width, size.height))
     }
+    /** Reads only the first captured Main peer. No window search, reflection, focus or paint. */
+    private fun actualMainBackendSelectionOnEdt(): WindowsMainBackendSelectionObservation {
+        check(EventQueue.isDispatchThread())
+        val main = runtimeMainWindow
+        fun rootCurrent(frame: DesktopOriginalRootValidationTap.Frame?): Boolean {
+            if (frame == null || !::owner.isInitialized || !::routes.isInitialized) return false
+            return frame.handle === owner && frame.routes === routes && owner.isActive() &&
+                routes.owns() && owner.route.get() === routes
+        }
+        fun routeCurrent(frame: DesktopOriginalRootValidationTap.Frame?): Boolean =
+            rootCurrent(frame) && frame != null &&
+                (if (frame.pagerHosted) routes.currentKey == BiliPaiNavKey.MainHost else frame.key == routes.currentKey)
+        val frame = latest.get()
+        val identity = main?.let(System::identityHashCode)
+        val identityMatches = identity != null && identity == ownedWindowIdentity
+        val showing = main?.isShowing
+        val displayable = main?.isDisplayable
+        val reason = when {
+            main == null -> "OWNED_MAIN_NOT_CAPTURED"
+            !identityMatches -> "OWNED_MAIN_IDENTITY_MISMATCH"
+            !rootCurrent(frame) -> "ROOT_OR_ROUTE_OWNER_RETIRED"
+            !routeCurrent(frame) -> "CURRENT_ROUTE_FRAME_NOT_PUBLISHED"
+            displayable != true -> "OWNED_MAIN_NOT_DISPLAYABLE"
+            showing != true -> "OWNED_MAIN_NOT_SHOWING"
+            else -> null
+        }
+        if (reason != null) return WindowsMainBackendSelectionObservation(
+            frameSerial = frame?.serial, capturedWindowIdentity = identity,
+            windowIdentityMatches = identityMatches, windowShowing = showing,
+            windowDisplayable = displayable, rootOwnershipCurrent = rootCurrent(frame),
+            routeFrameCurrent = routeCurrent(frame), unavailableReason = reason,
+        )
+        val api = runCatching { requireNotNull(main).renderApi.name }
+        val after = latest.get()
+        val stillCurrent = rootCurrent(after) && routeCurrent(after) && main != null &&
+            main.isShowing && main.isDisplayable && runtimeMainWindow === main &&
+            System.identityHashCode(main) == ownedWindowIdentity
+        return WindowsMainBackendSelectionObservation(
+            frameSerial = after?.serial, capturedWindowIdentity = identity,
+            windowIdentityMatches = identityMatches, windowShowing = main?.isShowing,
+            windowDisplayable = main?.isDisplayable, rootOwnershipCurrent = rootCurrent(after),
+            routeFrameCurrent = routeCurrent(after), renderApi = api.getOrNull()?.takeIf { stillCurrent },
+            unavailableReason = when {
+                !stillCurrent -> "MAIN_OWNERSHIP_CHANGED_DURING_BACKEND_READ"
+                api.isFailure -> "PUBLIC_BACKEND_GETTER_FAILED"
+                api.getOrNull() == "UNKNOWN" -> "SKIKO_SELECTION_UNKNOWN"
+                else -> null
+            },
+            diagnosticExceptionType = api.exceptionOrNull()?.javaClass?.name,
+        )
+    }
+    private fun actualMainBackendSelection(): WindowsMainBackendSelectionObservation {
+        if (runtimeMainWindow == null) return WindowsMainBackendSelectionObservation(unavailableReason = "OWNED_MAIN_NOT_CAPTURED")
+        if (EventQueue.isDispatchThread()) return actualMainBackendSelectionOnEdt()
+        val pending = java.util.concurrent.CompletableFuture<WindowsMainBackendSelectionObservation>()
+        EventQueue.invokeLater {
+            if (!pending.isCancelled) pending.complete(runCatching { actualMainBackendSelectionOnEdt() }.getOrElse { error ->
+                WindowsMainBackendSelectionObservation(unavailableReason = "EDT_BACKEND_OBSERVATION_FAILED",
+                    diagnosticExceptionType = error.javaClass.name)
+            })
+        }
+        return try {
+            pending.get(1, java.util.concurrent.TimeUnit.SECONDS)
+        } catch (error: Exception) {
+            pending.cancel(false)
+            if (error is InterruptedException) Thread.currentThread().interrupt()
+            WindowsMainBackendSelectionObservation(unavailableReason =
+                if (error is java.util.concurrent.TimeoutException) "EDT_BACKEND_OBSERVATION_TIMED_OUT" else "EDT_BACKEND_OBSERVATION_UNAVAILABLE",
+                diagnosticExceptionType = error.javaClass.name)
+        }
+    }
+    private fun writeActualMainRuntimeEvidence(stage: String, phase: String, primaryFailure: Throwable? = null) {
+        runCatching {
+            require(stage == "start" || stage == "end")
+            val evidence = WindowsActualMainRuntimeEvidence.capture(phase, actualMainBackendSelection())
+            Files.writeString(report.resolve("actual-main-runtime-$stage.json"), evidence.toString(), CREATE_NEW, WRITE)
+        }.exceptionOrNull()?.let { diagnosticFailure ->
+            if (primaryFailure != null && primaryFailure !== diagnosticFailure) primaryFailure.addSuppressed(diagnosticFailure)
+            else System.err.println("Actual Main runtime diagnostic unavailable: ${diagnosticFailure.javaClass.name}")
+        }
+    }
+
     private fun current(): DesktopOriginalRootValidationTap.Frame {
         check(EventQueue.isDispatchThread())
         val frame = requireNotNull(latest.get())
@@ -3332,9 +3415,14 @@ object WindowsVideoActualRootUiFixture {
                     await("first actual drawn Root") { latest.get() != null }
                     val first = requireNotNull(latest.get())
                     owner = first.handle; routes = first.routes
-                    ownedWindowIdentity = edt { System.identityHashCode(window()) }
+                    ownedWindowIdentity = edt {
+                        val main = window() as ComposeWindow
+                        runtimeMainWindow = main
+                        System.identityHashCode(main)
+                    }
                     check(first.key != BiliPaiNavKey.Onboarding) { "Windows startup still mounted the mobile agreement gate" }
                     actions.awaitActualHealth(health)
+                    writeActualMainRuntimeEvidence("start", "FIRST_DRAWN_ROOT_AND_ACTUAL_HEALTH")
                     if (System.getProperty("bilipai.validation.commentSearchInput") == "true" ||
                         System.getProperty("bilipai.validation.composerInput") == "true") {
                         check(replay != null)
@@ -3407,9 +3495,11 @@ object WindowsVideoActualRootUiFixture {
                         put("observations", JsonArray(rows.toList()))
                     }
                     Files.writeString(report.resolve("observations.json"), Json { prettyPrint = true }.encodeToString(JsonObject.serializer(), receipt), CREATE_NEW, WRITE)
+                    writeActualMainRuntimeEvidence("end", "BEFORE_REQUESTED_ACTUAL_EXIT")
                     completed.set(true)
                     actions.closeOwnedWindow(edt { current() })
                 } catch (failure: Throwable) {
+                    writeActualMainRuntimeEvidence("end", "FAILURE_HANDLER_BEFORE_OWNED_EXIT", failure)
                     failure.printStackTrace()
                     runCatching { replay?.writeFailureReceipt() }
                     runCatching {

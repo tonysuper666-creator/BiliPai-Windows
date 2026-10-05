@@ -398,6 +398,7 @@ def main():
         sourceInventorySha256=sha(json.dumps(before).encode()), compiledInventorySha256=sha(json.dumps(compiled_before).encode()),
         selectedJdk=jdk, process=process, failure=failure, additionalFailures=additional_failures, captures=captures, logSha256=sha(log),
         fixtureDefaultRendererPolicyMarker="DIRECT3D", actualMainSkikoRenderApiMeasured=False,
+        runnerMainObservationScope="RUNNER_SELF_SAMPLING_ONLY",
         physicalTextHumanReviewRequired=True, physicalVisibilityReviewed=False,
         fullNativeScreenGateExecuted=False, fullNativeScreenGatePassed=False, releaseGatePassed=False,
         portablePackageAccepted=False, newExeDeployed=False, realAccountUsed=False, fourKTested=False)
