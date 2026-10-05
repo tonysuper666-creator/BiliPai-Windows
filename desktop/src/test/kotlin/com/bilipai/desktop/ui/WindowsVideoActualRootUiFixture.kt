@@ -473,13 +473,19 @@ object WindowsVideoActualRootUiFixture {
         }
     }
     private var replaySearchKey: BiliPaiNavKey? = null
+    private fun originalSearchHeaderLabels(label: String): Set<String> = when (label) {
+        "返回" -> setOf("返回", "Back")
+        "搜索" -> setOf("搜索", "Search", "搜尋")
+        else -> error("Unexpected original Search header control: $label")
+    }
     private fun scopeWithEditableSearch(): AccessibleContext {
         current(); check(routes.currentKey is BiliPaiNavKey.Search)
         val candidates = all().filter { scope ->
             val children = descendants(scope)
             children.count { it.accessibleEditableText != null && visible(it) } == 1 &&
                 listOf("返回", "搜索").all { label -> children.count {
-                    hasLabel(it, label) && visible(it) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1
+                    originalSearchHeaderLabels(label).any { alias -> hasLabel(it, alias) } &&
+                        visible(it) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1
                 } == 1 }
         }
         check(candidates.isNotEmpty()) { "No complete original visible search header/editor" }
@@ -494,7 +500,7 @@ object WindowsVideoActualRootUiFixture {
     }
     private fun searchMouse(label: String) = edt {
         val scope = scopeWithEditableSearch()
-        val control = descendants(scope).filter { hasLabel(it, label) && visible(it) &&
+        val control = descendants(scope).filter { originalSearchHeaderLabels(label).any { alias -> hasLabel(it, alias) } && visible(it) &&
             it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single()
         record("search-mouse-${rows.size}-$label", mapOf("inputMechanism" to JsonPrimitive("OWNED_COMPOSE_AWT_MOUSE_EVENT")))
         clickOwnedComposeMouse(window(), control)

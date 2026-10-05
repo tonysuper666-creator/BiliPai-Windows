@@ -144,6 +144,17 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                 return@addInterceptor Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200)
                     .message("LOCAL visitor bootstrap").body("<html></html>".toResponseBody("text/html".toMediaType())).build()
             }
+            // Search startup uses three exact original read APIs, including the separate hotword host.
+            // This does not add that host to the generic API allowlist or change the loopback media path.
+            searchStartupResponse(request, ::requireOwnerBoolean)?.let { response ->
+                try {
+                    requireOwner()
+                    requests.add(buildJsonObject { put("path", path); put("method", request.method)
+                        put("localReplay", true); put("mapped", true); put("searchStartupRead", true)
+                        put("bodyBytes", requireNotNull(response.body).contentLength()) })
+                    return@addInterceptor response
+                } catch (failure: Throwable) { response.close(); throw failure }
+            }
             // API responses remain memory-only. Every other origin is forbidden, never proceeded.
             require(url.host in setOf("api.bilibili.com", "api.vc.bilibili.com", "app.bilibili.com")) {
                 "LOCAL replay forbids requests outside mapped API or exact owned loopback media"
@@ -434,6 +445,29 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     override fun close() { composerScript?.close(); commentScript?.close(); server.stop(0); executor.shutdownNow() }
     companion object {
         fun create(report: Path, bvid: String) = WindowsVideoLocalReplay(report, bvid)
+
+        /** Same handler consumed by install and pure OkHttp tests. No socket, account or media authority. */
+        internal fun searchStartupResponse(request: okhttp3.Request, stillOwned: () -> Boolean): Response? {
+            val url = request.url
+            val body = when {
+                url.host == "api.bilibili.com" && url.encodedPath == "/x/web-interface/wbi/search/default" ->
+                    """{"code":0,"data":{"show_name":"本地搜索回放","url":""}}"""
+                url.host == "s.search.bilibili.com" && url.encodedPath == "/main/hotword" ->
+                    """{"code":0,"top_list":[],"list":[]}"""
+                url.host == "app.bilibili.com" && url.encodedPath == "/x/v2/search/recommend" ->
+                    """{"code":0,"data":{"list":[]}}"""
+                else -> return null
+            }
+            check(stillOwned()) { "Owned search startup replay retired" }
+            require(request.method == "GET" && url.scheme == "https" && url.port == 443 &&
+                url.username.isEmpty() && url.password.isEmpty() && url.encodedFragment == null) {
+                "Search startup replay requires the exact HTTPS read origin and method"
+            }
+            val response = Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200)
+                .message("LOCAL search startup replay").body(body.toResponseBody("application/json".toMediaType())).build()
+            try { check(stillOwned()) { "Owned search startup replay retired" }; return response }
+            catch (failure: Throwable) { response.close(); throw failure }
+        }
     private const val WIDTH = 320
     private const val HEIGHT = 180
     private const val FPS = 20
