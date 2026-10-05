@@ -1,6 +1,7 @@
 package com.bilipai.desktop.player
 
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import java.awt.Color
 import java.awt.Font
 import java.awt.GraphicsEnvironment
@@ -365,6 +366,7 @@ object PlayerSelfTest {
         var attempts = 0
         var lastGeometry: Map<String, String> = emptyMap()
         var lastPixelCapture: Map<String, String> = emptyMap()
+        var failedNativeFrameCapture: Map<String, String> = emptyMap()
 
         fun observe(player: MpvPlayer, window: JFrame, elapsedMillis: Long) {
             check(SwingUtilities.isEventDispatchThread())
@@ -408,6 +410,7 @@ object PlayerSelfTest {
         put("geometryAttempts", trace.attempts)
         trace.lastGeometry.forEach { (key, value) -> put("geometry.$key", value) }
         trace.lastPixelCapture.forEach { (key, value) -> put("pixels.$key", value) }
+        trace.failedNativeFrameCapture.forEach { (key, value) -> put("failureNativeFrame.$key", value) }
         val state = player.state.value
         put("state.ready", state.ready); put("state.loading", state.loading)
         put("state.paused", state.paused); put("state.nativePaused", state.nativePaused); put("state.ended", state.ended)
@@ -436,6 +439,7 @@ object PlayerSelfTest {
     }
 
     private fun waitForRenderedVideo(player: MpvPlayer, window: JFrame, screenshot: File, trace: NativeVisibilityTrace): Boolean {
+        val initialSource = player.currentSourceSnapshot()
         val robot = Robot()
         val deadline = System.nanoTime() + 5_000_000_000L
         val context = File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-context.png")
@@ -530,7 +534,68 @@ object PlayerSelfTest {
             }
             Thread.sleep(100)
         }
-        error("Timed out waiting for visible native video rendering: $failure")
+        val primaryFailure = IllegalStateException("Timed out waiting for visible native video rendering: $failure")
+        val fields = linkedMapOf<String, String>()
+        trace.failedNativeFrameCapture = fields
+        throw observeFailedNativeFrame(player, initialSource,
+            File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-failure-native-video.png"), primaryFailure, fields)
+    }
+
+    /** Auxiliary later-frame evidence after physical failure only. This always returns the original failure. */
+    internal fun observeFailedNativeFrame(player: MpvPlayer, expected: OwnedPlaybackSourceSnapshot?, destination: File,
+        primaryFailure: Throwable, fields: MutableMap<String, String>): Throwable {
+        fields["physicalResult"] = "failed; auxiliary capture cannot change the physical gate"
+        fields["image"] = destination.name
+        fields["imageKind"] = "later mpv video screenshot; not the failed Robot image or proof of Windows presentation"
+        fields["nativeStateTiming"] = "near cached StateFlow reads; not atomic with screenshot or native property ACKs"
+        fields["timeoutMillis"] = "3000"
+        fields["jvmRuntimeVersion"] = System.getProperty("java.runtime.version", "unavailable").take(128)
+        fields["jvmVmVersion"] = System.getProperty("java.vm.version", "unavailable").take(128)
+        fields["jvmVendor"] = System.getProperty("java.vendor", "unavailable").take(128)
+        fields["expectedSourceVersion"] = expected?.sourceVersion?.toString() ?: "unavailable"
+        fields["beforePositionSeconds"] = player.state.value.positionSeconds.toString()
+        fields["beforeNativePaused"] = player.state.value.nativePaused.toString()
+        fields["sourceOwnedBefore"] = (expected != null && player.ownsSourceSnapshot(expected)).toString()
+        try {
+            if (expected == null) fields["status"] = "source-unavailable"
+            else if (!player.ownsSourceSnapshot(expected)) fields["status"] = "source-retired"
+            else {
+                // Existing sole worker checks full source and playback revision before the screenshot command.
+                runBlocking { withTimeout(3_000L) {
+                    player.captureScreenshotForSource(expected, destination.toPath(), includeSubtitles = false)
+                } }
+                fields["status"] = "captured"
+                val image = requireNotNull(ImageIO.read(destination)) { "Auxiliary native screenshot is not an image." }
+                fields["imagePixels"] = "${image.width},${image.height}"
+                fields["decodedFixtureSizeMatches"] = (image.width == WIDTH && image.height == HEIGHT).toString()
+                try {
+                    checkRenderedVideo(image) // Original color-presence classifier; never a physical success path.
+                    fields["decodedFixtureColorsPresent"] = "true"
+                } catch (colorFailure: IllegalStateException) {
+                    fields["decodedFixtureColorsPresent"] = "false"
+                    fields["decodedColorFailure"] = colorFailure.message.orEmpty().take(512)
+                    primaryFailure.addSuppressed(colorFailure)
+                }
+            }
+        } catch (auxiliaryFailure: Throwable) {
+            fields["status"] = "capture-unavailable"
+            fields["captureErrorType"] = auxiliaryFailure.javaClass.simpleName
+            fields["captureErrorMessage"] = auxiliaryFailure.message.orEmpty().take(512)
+            if (auxiliaryFailure !== primaryFailure) primaryFailure.addSuppressed(auxiliaryFailure)
+        }
+        fields["afterPositionSeconds"] = player.state.value.positionSeconds.toString()
+        fields["afterNativePaused"] = player.state.value.nativePaused.toString()
+        fields["sourceOwnedAfter"] = (expected != null && player.ownsSourceSnapshot(expected)).toString()
+        fields["imageExists"] = destination.isFile.toString()
+        try {
+            writePixelCaptureObservations(File(destination.parentFile, "${destination.nameWithoutExtension}.json"), fields)
+        } catch (observationFailure: Throwable) {
+            // Retain this error in the primary JSON trace even when the separate sidecar cannot be written.
+            fields["sidecarErrorType"] = observationFailure.javaClass.simpleName
+            fields["sidecarErrorMessage"] = observationFailure.message.orEmpty().take(512)
+            if (observationFailure !== primaryFailure) primaryFailure.addSuppressed(observationFailure)
+        }
+        return primaryFailure
     }
 
     private fun writePixelCaptureObservations(file: File, fields: Map<String, String>) {
