@@ -396,3 +396,5 @@ Windows 分支的原 Android 工作流完整保存在 `.github/upstream-workflow
 ## 依赖与许可
 
 原 BiliPai 许可见仓库 `LICENSE`。Windows 播放器依赖来源、固定下载链接、档案和 DLL 校验值记录在 `desktop/native/windows-x64/provenance.json`。`desktop/third-party/libmpv` 保存 mpv、FFmpeg 的原许可文本及固定源码、构建配方引用，构建时核验摘要并一并打包。固定播放器档案及源码档案保存在 Windows 仓库的 `runtime-mpv-20260903` 依赖发行中，供上游清理旧二进制后仍可构建。
+
+插件 JS 运行环境另行携带固定 Temurin JDK 的根目录 `NOTICE`，构建同时校验原始档案、条目、仓库副本和最终资源清单，并将声明文件的摘要写入构建来源记录。本次正常 `prepareJsWorkerResources` 完成编译与运行环境生成，152 个输出文件校验通过，相关 Python 测试 18 项通过；没有构建或启动新的应用 EXE。GraalJS 清单仍保留 `complete:false`，逐依赖的内嵌和重定位组件归属尚待补齐。

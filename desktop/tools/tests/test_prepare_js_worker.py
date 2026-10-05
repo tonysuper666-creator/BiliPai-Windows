@@ -147,4 +147,72 @@ class WorkerResourcesTest(unittest.TestCase):
             with self.assertRaises(ValueError): worker.verify_existing(root, inputs, lock, runtime_lock)
             self.assertEqual(extra.read_bytes(), b"must remain")
 
+class WorkerJdkNoticeTest(unittest.TestCase):
+    def fixture(self, root):
+        payload = b"fixed synthetic Temurin NOTICE\n"
+        archive = root / "jdk.zip"
+        with zipfile.ZipFile(archive, "w") as packed: packed.writestr(worker.JDK_NOTICE_ENTRY, payload)
+        notice_root = root / "source"; notice_root.mkdir()
+        (notice_root / worker.JDK_NOTICE_FILE).write_bytes(payload)
+        archive_sha = hashlib.sha256(archive.read_bytes()).hexdigest()
+        row = {"url": worker.JDK_URL, "sourceType": "fixed-jdk-archive-entry", "archiveSha256": archive_sha,
+            "archiveEntry": worker.JDK_NOTICE_ENTRY, "file": "licenses/" + worker.JDK_NOTICE_FILE,
+            "bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()}
+        return archive, notice_root, {"complete": False, "sources": [row]}, archive_sha
+
+    def test_fixed_archive_notice_bytes_are_consumed_by_actual_prepare_copy(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); archive, source, catalog, fixed_sha = self.fixture(root)
+            with patch.object(worker, "JDK_SHA256", fixed_sha):
+                receipt = worker.verify_jdk_notice(archive, catalog, source)
+            catalog_path = root / "catalog.json"; worker.write_json(catalog_path, catalog)
+            output = root / "out"; output.mkdir()
+            worker.copy_notices(source, catalog_path, output)
+            notice = output / receipt["file"]
+            worker.verify_file(notice, receipt)
+            self.assertEqual(notice.read_bytes(), (source / worker.JDK_NOTICE_FILE).read_bytes())
+            self.assertFalse(json.loads((output / "notices/catalog.json").read_text())["complete"])
+
+    def test_changed_notice_source_or_catalog_cannot_claim_archive_identity(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); archive, source, catalog, fixed_sha = self.fixture(root)
+            with patch.object(worker, "JDK_SHA256", fixed_sha):
+                row = catalog["sources"][0]
+                row["sha256"] = "0" * 64
+                with self.assertRaises(ValueError): worker.verify_jdk_notice(archive, catalog, source)
+                row["sha256"] = hashlib.sha256((source / worker.JDK_NOTICE_FILE).read_bytes()).hexdigest()
+                (source / worker.JDK_NOTICE_FILE).write_bytes(b"x" * row["bytes"])
+                with self.assertRaises(ValueError): worker.verify_jdk_notice(archive, catalog, source)
+
+    def test_missing_duplicate_or_wrong_origin_notice_is_rejected(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); archive, source, catalog, fixed_sha = self.fixture(root)
+            row = catalog["sources"][0]
+            with patch.object(worker, "JDK_SHA256", fixed_sha):
+                for rows in ([], [row, row], [dict(row, archiveEntry="foreign/NOTICE")],
+                             [dict(row, file="licenses/../" + worker.JDK_NOTICE_FILE)],
+                             [dict(row, url="https://example.invalid/NOTICE")]):
+                    with self.subTest(rows=rows), self.assertRaises(ValueError):
+                        worker.verify_jdk_notice(archive, {"sources": rows}, source)
+
+    def test_changed_archive_is_rejected_before_notice_copy(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); archive, source, catalog, fixed_sha = self.fixture(root)
+            archive.write_bytes(archive.read_bytes() + b"changed")
+            with patch.object(worker, "JDK_SHA256", fixed_sha), self.assertRaises(ValueError):
+                worker.verify_jdk_notice(archive, catalog, source)
+            self.assertFalse((root / "out").exists())
+
+    def test_cached_provenance_cannot_omit_the_current_notice_receipt(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            inputs, lock, runtime_lock, _ = WorkerResourcesTest().cache_fixture(root)
+            receipt = {"file": "notices/" + worker.JDK_NOTICE_FILE, "archiveEntry": worker.JDK_NOTICE_ENTRY,
+                "bytes": 5, "sha256": "0" * 64}
+            inputs["workerJdkNotice"] = receipt
+            provenance = {"owner": worker.OWNER, "inputs": inputs}
+            worker.write_json(root / "provenance.json", provenance)
+            with self.assertRaisesRegex(ValueError, "NOTICE provenance differs"):
+                worker.verify_existing(root, inputs, lock, runtime_lock)
+
 if __name__ == "__main__": unittest.main()

@@ -20,6 +20,8 @@ JDK_URL = "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-
 MODULES = ("java.base", "java.logging", "java.management", "java.transaction.xa", "java.xml", "java.sql", "jdk.management", "jdk.unsupported")
 MAIN = "com.bilipai.desktop.plugins.js.DesktopJsPluginWorker"
 OWNER = "bilipai-js-worker-v1"
+JDK_NOTICE_FILE = "temurin-21.0.12.1-NOTICE"
+JDK_NOTICE_ENTRY = "jdk-21.0.12.1+1/NOTICE"
 
 def digest(path: Path) -> str:
     with path.open("rb") as source:
@@ -61,6 +63,34 @@ def verify_jdk(home: Path, archive: Path) -> None:
                 expected = hashlib.file_digest(original, "sha256").hexdigest()
             if digest(path) != expected: raise ValueError("Fixed JDK extraction checksum mismatch")
 
+def verify_jdk_notice(archive: Path, notices: dict, notice_root: Path) -> dict:
+    matches = [row for row in notices["sources"] if row.get("file") == "licenses/" + JDK_NOTICE_FILE]
+    if len(matches) != 1: raise ValueError("Fixed worker JDK root NOTICE is missing or repeated")
+    row = matches[0]
+    if row.get("sourceType") != "fixed-jdk-archive-entry" or row.get("url") != JDK_URL or row.get("archiveSha256") != JDK_SHA256 or row.get("archiveEntry") != JDK_NOTICE_ENTRY:
+        raise ValueError("Worker JDK NOTICE origin differs from the fixed archive")
+    if digest(archive) != JDK_SHA256: raise ValueError("Worker JDK NOTICE archive checksum differs")
+    with zipfile.ZipFile(archive) as source:
+        member = source.getinfo(JDK_NOTICE_ENTRY)
+        if member.is_dir() or not 0 < member.file_size <= 65536: raise ValueError("Worker JDK NOTICE archive entry is invalid")
+        payload = source.read(member)
+    actual = {"file": "notices/" + JDK_NOTICE_FILE, "archiveEntry": JDK_NOTICE_ENTRY,
+        "bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()}
+    if (row.get("bytes"), row.get("sha256")) != (actual["bytes"], actual["sha256"]):
+        raise ValueError("Worker JDK NOTICE catalog differs from the fixed archive bytes")
+    verify_file(safe_relative(notice_root, JDK_NOTICE_FILE), row)
+    return actual
+
+def copy_notices(notice_root: Path, notice_catalog: Path, output: Path) -> None:
+    notices = json.loads(notice_catalog.read_text(encoding="utf-8"))
+    target_notices = output / "notices"; target_notices.mkdir()
+    for row in notices["sources"]:
+        name = PurePosixPath(row["file"]).name
+        source = safe_relative(notice_root, name)
+        verify_file(source, row)
+        shutil.copyfile(source, safe_relative(target_notices, name))
+    shutil.copyfile(notice_catalog, target_notices / "catalog.json")
+
 def clean_env() -> dict:
     # Java options, PATH classpath and preload variables never enter build tools or guest processes.
     return {key: value for key, value in os.environ.items() if key.upper() in {"SYSTEMROOT", "WINDIR", "TEMP", "TMP"}}
@@ -93,6 +123,8 @@ def verify_existing(output: Path, inputs: dict, lock: list[dict], runtime_lock: 
     provenance = json.loads((output / "provenance.json").read_text(encoding="utf-8"))
     if provenance.get("owner") != OWNER or provenance.get("inputs") != inputs:
         raise ValueError("Existing worker provenance differs from current source/lock/notices/JDK inputs")
+    if provenance.get("workerJdkNotice") != inputs.get("workerJdkNotice"):
+        raise ValueError("Existing worker JDK NOTICE provenance differs")
     catalog_path = output / "classpath.json"
     if catalog_path.stat().st_size > 262_144: raise ValueError("Existing worker catalog is oversized")
     catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
@@ -142,6 +174,7 @@ def prepare(repo: Path, output: Path, jdk: Path, archive: Path, cache: Path, loc
     for row in notices["sources"]:
         verify_file(safe_relative(notice_root, PurePosixPath(row["file"]).name), row)
     verify_jdk(jdk, archive)
+    worker_jdk_notice = verify_jdk_notice(archive, notices, notice_root)
     worker_source = repo / "desktop/js-worker/src/main/java/com/bilipai/desktop/plugins/js/DesktopJsPluginWorker.java"
     if not worker_source.is_file():
         worker_source = Path(__file__).resolve().parent / "js-worker/src/main/java/com/bilipai/desktop/plugins/js/DesktopJsPluginWorker.java"
@@ -152,7 +185,8 @@ def prepare(repo: Path, output: Path, jdk: Path, archive: Path, cache: Path, loc
     inputs = {"version": 2, "workerSourceSha256": digest(worker_source), "mavenLockSha256": digest(lock_path),
         "noticeCatalogSha256": digest(notice_catalog), "runtimeLockSha256": digest(runtime_lock_path),
         "noticeFiles": {PurePosixPath(row["file"]).name: row["sha256"] for row in notices["sources"]},
-        "jdkArchiveSha256": JDK_SHA256, "prepareToolSha256": digest(Path(__file__))}
+        "jdkArchiveSha256": JDK_SHA256, "prepareToolSha256": digest(Path(__file__)),
+        "workerJdkNotice": worker_jdk_notice}
     if existing:
         catalog = verify_existing(output, inputs, lock, runtime_lock)
         # The worker has no publisher binary: recompile its two deterministic classes to bind a cache to the current source.
@@ -193,17 +227,13 @@ def prepare(repo: Path, output: Path, jdk: Path, archive: Path, cache: Path, loc
     for row in runtime_lock["files"]: verify_file(safe_relative(runtime, row["file"]), row)
     if {path.relative_to(runtime).as_posix() for path in runtime.rglob("*") if path.is_file()} != {row["file"] for row in runtime_lock["files"]}:
         raise ValueError("Fresh linked runtime has extra or missing files")
-    target_notices = output / "notices"; target_notices.mkdir()
-    for row in notices["sources"]:
-        name = PurePosixPath(row["file"]).name
-        shutil.copyfile(safe_relative(notice_root, name), safe_relative(target_notices, name))
-    shutil.copyfile(notice_catalog, target_notices / "catalog.json")
+    copy_notices(notice_root, notice_catalog, output)
     write_json(output / "engine-artifacts.json", lock)
     provenance = {"owner": OWNER, "jdkVersion": JDK_VERSION, "jdkArchiveUrl": JDK_URL,
         "jdkArchiveSha256": JDK_SHA256, "workerSourceSha256": digest(worker_source),
         "engineVersion": VERSION, "runtimeModules": MODULES,
         "command": "jlink --add-modules java.base,java.sql,jdk.management,jdk.unsupported --strip-debug --no-header-files --no-man-pages --compress=zip-6",
-        "licenseCatalogComplete": bool(notices.get("complete")), "inputs": inputs}
+        "licenseCatalogComplete": bool(notices.get("complete")), "workerJdkNotice": worker_jdk_notice, "inputs": inputs}
     write_json(output / "provenance.json", provenance)
     catalog = {"owner": OWNER, "schemaVersion": 1, "engineVersion": VERSION, "jdkVersion": JDK_VERSION,
         "mainClass": MAIN, "classpath": [record(output, worker, "worker"), *[record(output, path, "engine") for path in engine_files]],
