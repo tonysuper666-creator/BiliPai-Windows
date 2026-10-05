@@ -304,6 +304,8 @@ object PlayerSelfTest {
             DesktopOverlayNativeSmoke.run(player, outputDirectory)
             checks["nativeOverlayPluginStyleAndEyeTint"] = "passed"
             checks["nativeBasXmlPixelsAndCanvasSeek"] = "passed"
+            com.bilipai.desktop.ui.DesktopFeedbackCarrierNativeSmoke.run(player, outputDirectory)
+            checks["nativeDecorativeFeedbackCarrierPixelsInputAndLifetime"] = "passed"
             DesktopRetainedMediaNativeSmoke.run(player, requireNotNull(frame), video)
             checks["nativeRetainedMediaHostJobsAndOwnership"] = "passed"
             val streamHeaderCases = DesktopStreamHeaderNativeSmoke.run(player, video)
