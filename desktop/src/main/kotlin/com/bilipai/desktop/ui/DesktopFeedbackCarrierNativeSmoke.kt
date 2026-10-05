@@ -76,6 +76,7 @@ internal object DesktopFeedbackCarrierNativeSmoke {
         var windowIdentity: Any? = null
         var available = false
         var rejected = false
+        var rejectionSourceOwned: Boolean? = null
         var retired = false
         var presses = 0
         var releases = 0
@@ -84,6 +85,15 @@ internal object DesktopFeedbackCarrierNativeSmoke {
         var playbackPreserved = false
         var cleanupFailed = false
         var failure: Throwable? = null
+        val styleMessages = java.util.concurrent.CopyOnWriteArrayList<String>()
+        val styleLogger = java.util.logging.Logger.getLogger("DesktopDecorativeWindowStyle")
+        val styleHandler = object : java.util.logging.Handler() {
+            override fun publish(record: java.util.logging.LogRecord?) {
+                if (record != null && styleMessages.size < 16) styleMessages.add(record.message.orEmpty().take(320))
+            }
+            override fun flush() = Unit
+            override fun close() = Unit
+        }
         val createdChildren = linkedSetOf<java.awt.Window>()
         val mouse = object : MouseAdapter() {
             override fun mousePressed(event: MouseEvent) { if (event.component === canvas && event.button == MouseEvent.BUTTON1) presses++ }
@@ -103,6 +113,9 @@ internal object DesktopFeedbackCarrierNativeSmoke {
             val added = owner.ownedWindows.filter { it !in initialChildren }
             createdChildren.addAll(added)
             check(added.size <= 1) { "Foreign owned window appeared during carrier creation." }
+            // Capture the actual peer before checking rejection. Otherwise an
+            // early native-style rejection reports only the still-null field.
+            popup = added.singleOrNull() as? ComposeDialog
         } }
         fun await(label: String, condition: () -> Boolean) {
             val end = minOf(deadline, System.nanoTime()+6_000_000_000L)
@@ -141,6 +154,11 @@ internal object DesktopFeedbackCarrierNativeSmoke {
                 put("available",available); put("rejected",rejected)
                 put("popupShowing",child?.isShowing==true); put("popupDisplayable",child?.isDisplayable==true)
                 put("popupTransparent",child?.isTransparent==true)
+                put("popupFocusable",child?.focusableWindowState==true)
+                put("popupAutoRequestFocus",child?.isAutoRequestFocus==true)
+                put("popupRenderApi",child?.renderApi?.name)
+                put("popupBackgroundAlpha",child?.background?.alpha)
+                put("popupOpaque",child?.isOpaque)
                 fun geometry(window: java.awt.Component): String = "${window.x},${window.y},${window.width},${window.height}"
                 put("ownerBounds",geometry(owner)); put("canvasBoundsInParent",geometry(canvas))
                 child?.let { put("popupBounds",geometry(it)) }
@@ -166,6 +184,7 @@ internal object DesktopFeedbackCarrierNativeSmoke {
                 "Carrier $stage did not preserve its expected native visibility: $value"
             }
         }
+        styleLogger.addHandler(styleHandler)
         try {
             val baseline = capture()
             // Exactly the established physical two-color oracle, not MPV's
@@ -195,7 +214,7 @@ internal object DesktopFeedbackCarrierNativeSmoke {
                             onWindowAvailability={ identity,ready ->
                                 if(windowIdentity==null) windowIdentity=identity else check(windowIdentity===identity)
                                 available=ready
-                            },onWindowRejected={ rejected=true }) {
+                            },onWindowRejected={ rejected=true; rejectionSourceOwned=ownsSource() }) {
                             // No clickable/indication/pointerInput: all input
                             // must pass through the actual Skiko child window.
                             ComposeCanvas(Modifier.fillMaxSize()) {
@@ -306,6 +325,7 @@ internal object DesktopFeedbackCarrierNativeSmoke {
                     abs(state.positionSeconds-incoming.positionSeconds)<0.2)
                 playbackPreserved=true
             }
+            cleanupStep { styleLogger.removeHandler(styleHandler) }
             closed=!cleanupFailed && windowDisposed && playbackPreserved
         }
         val receipt=buildJsonObject {
@@ -314,6 +334,8 @@ internal object DesktopFeedbackCarrierNativeSmoke {
             put("syntheticCarrierLayoutMetadata",true); put("cleanupGraceful",closed); put("carrierWindowDisposed",windowDisposed)
             put("borrowedNativePlayerClosed",false)
             put("sameIncomingSourceAndPlaybackIntent",playbackPreserved); put("actualCanvasPresses",presses); put("actualCanvasReleases",releases)
+            put("sourceOwnedAtRejection",rejectionSourceOwned)
+            put("nativeStyleMessages",JsonArray(styleMessages.map(::JsonPrimitive)))
             put("stages",JsonArray(stages)); failure?.let { put("failureType",it.javaClass.simpleName); put("failure",it.message.orEmpty().take(500)) }
         }
         runCatching { Files.writeString(outputDirectory.toPath().resolve("native-feedback-carrier.json"),receipt.toString()+"\n",CREATE_NEW,WRITE) }
