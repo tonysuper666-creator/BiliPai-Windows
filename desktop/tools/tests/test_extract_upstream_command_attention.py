@@ -29,10 +29,22 @@ class CommandAttentionExtractionTest(unittest.TestCase):
             self.assertEqual("62c0eae9b9447cfd615a5972ab8f58be906ca2a0cee184ccd57cf8b997ebbb1f", proof["originalSourceSha256LF"])
             self.assertTrue(proof["fullOwnedBodyInverse"])
             inverse = actual
+            # The same sole producer now applies confirmed feedback after the
+            # command permission stage. Undo each complete stage, checking its
+            # actual input/output digest, before checking the older recipe.
+            for name in ("v029-video-feedback-origin-proof.json", "v029-video-feedback-state-proof.json"):
+                later = json.loads((out / name).read_text(encoding="utf-8"))
+                self.assertEqual(later["afterSha256LF"], hashlib.sha256(inverse.encode()).hexdigest())
+                for edit in reversed(later["edits"]):
+                    self.assertEqual(1, inverse.count(edit["after"]), edit["label"])
+                    inverse = inverse.replace(edit["after"], edit["before"], 1)
+                self.assertEqual(later["beforeSha256LF"], hashlib.sha256(inverse.encode()).hexdigest())
             for edit in reversed(proof["adaptations"]):
                 self.assertEqual(1, inverse.count(edit["after"]), edit["label"])
                 inverse = inverse.replace(edit["after"], edit["before"], 1)
-            with patch.object(units, "engagement_presentation_delta", side_effect=lambda body: body):
+            with patch.object(units, "engagement_presentation_delta", side_effect=lambda body: body), \
+                    patch("v029_video_feedback.apply_video_feedback", side_effect=lambda path, body, parser: (body, None)), \
+                    patch("v029_video_feedback_origin.apply_feedback_origin", side_effect=lambda path, body: (body, None)):
                 units.generate(REPO, before)
             self.assertEqual(units.wide(before / VM).read_text(encoding="utf-8"), inverse)
             self.assertEqual((before / "video-operations-members.fragment").read_bytes(), (out / "video-operations-members.fragment").read_bytes())

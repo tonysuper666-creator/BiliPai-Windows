@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/CacheClearAnimation.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "eb92a28e668f7144dbeb5da381b6cfd54aab87c5",
+      "bytes": 21954,
+      "sha256Bytes": "2ea795802be10e92b290418f812c2b70e3f8944ae76dee6ad8542ac4e11aaa9c",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/settings/ui/CacheClearAnimation.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/CacheClearUiPolicy.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "d54468300d948fb19d3712747dd3053559904b58",
+      "bytes": 8055,
+      "sha256Bytes": "5a3659469307fd48462114c2c88b2873078ee0448e39f6960846cd23a7bb5d70",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/settings/CacheClearUiPolicy.kt"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/settings/CacheClearUiPolicyTest.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "ca5d1c993fac01bab0fb5dd6d601d302e45b554e",
+      "bytes": 9355,
+      "sha256Bytes": "1cb25076e470fe45ff23d0845484435f6819363c2fced30f29c9dbb7ca51f98a",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/test/java/com/android/purebilibili/feature/settings/CacheClearUiPolicyTest.kt"
+    }
+  ],
+  "scope": "Complete original cache-clear Compose UI and tests; policy remains the existing sole canonical producer."
+}

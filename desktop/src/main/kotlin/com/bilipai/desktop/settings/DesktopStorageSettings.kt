@@ -56,5 +56,12 @@ internal fun DesktopStorageSettings(
                 } catch(failure: Throwable) {progress=null;throw failure}
             }
         }, onDismiss={showClear=false})
-    progress?.let { CacheClearAnimationDialog(it) { if(it.isComplete)progress=null } }
+    progress?.let { capturedProgress ->
+        DesktopWindowsCacheClearProgressHost(
+            progress = capturedProgress,
+            stillOwned = owner::isActive,
+            isCurrent = { progress === capturedProgress },
+            onDismiss = { if (owner.isActive() && progress === capturedProgress && capturedProgress.isComplete) progress = null },
+        )
+    }
 }

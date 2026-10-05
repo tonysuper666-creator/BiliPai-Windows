@@ -1168,6 +1168,8 @@ val extractOriginalFavorites by tasks.registering(Exec::class) {
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.file("tools/v029_brand_callers.py")
     inputs.dir("upstream-slices/v029-brand-callers")
+    inputs.file("tools/v029_brand_history.py")
+    inputs.dir("upstream-slices/v029-brand-history")
     outputs.dir(layout.buildDirectory.dir("generated/original-favorites"))
 }
 val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {
@@ -2421,7 +2423,8 @@ val extractOriginalStorageSettings by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-storage-settings.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/original-storage-settings").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/original-storage-settings").get().asFile.absolutePath,
+        "--tests-output", layout.buildDirectory.dir("generated/original-storage-settings-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-storage-settings.py", "tools/extract-upstream-media.py",
         "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py")
     inputs.file(sourceManifest)
@@ -2429,10 +2432,15 @@ val extractOriginalStorageSettings by tasks.registering(Exec::class) {
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "desktop-storage-cache-settings-owner-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v029_brand_cache_clear.py")
+    inputs.dir("upstream-slices/v029-brand-cache-clear")
     outputs.dir(layout.buildDirectory.dir("generated/original-storage-settings"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-storage-settings-tests"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-storage-settings")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalStorageSettings) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-storage-settings-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalStorageSettings) }
 
 // Complete original Search/SearchTrending page and VM bodies. Common DIRECT sources stay
 // solely with prepareUpstreamSources; no selected duplicate submit/tab-order declarations.

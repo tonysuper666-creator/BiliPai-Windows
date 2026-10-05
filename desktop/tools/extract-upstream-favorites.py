@@ -19,6 +19,9 @@ def emit(p,s):
 parser=None
 records=[]
 def source(rel):
+ if rel in {'feature/list/ListViewModel','feature/list/CommonListScreen','feature/common/ListLoadError'}:
+  from v029_brand_history import selected_source
+  s,row=selected_source(rel);records.append(row);return s
  path=BASE+rel+'.kt';s=read(_desktop_canonical_source(REPO, path))
  path=_desktop_canonical_source(REPO,path).relative_to(REPO).as_posix()
  blob=subprocess.check_output(['git','show','79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40:'+path],cwd=REPO)
@@ -27,10 +30,14 @@ def source(rel):
  return s
 def output(rel,s,mode):
  s=re.sub(r'(\banimate\(\s*)initial\s*=',r'\1initialValue =',s)
- if rel=='feature/list/CommonListScreen':
+ if rel=='feature/list/CommonListScreen' and records[-1]['upstreamCommit']!='a4b77f894d0a2dd26c0b9fc144b8adb88ac05480':
   from v029_brand_callers import adapt_brand_callers
   s,brandCallerAudit=adapt_brand_callers(s,'list')
   records[-1]['windowsBrandConsumerAdaptation']=brandCallerAudit
+ if records[-1].get('historySourceAdaptation'):
+  from v029_brand_history import generated_audit
+  originalRel={'feature/list/DesktopOriginalListViewModels':'feature/list/ListViewModel'}.get(rel,rel)
+  records[-1]['historyGeneratedAdaptation']=generated_audit(originalRel,s)
  emit('com/android/purebilibili/'+rel+'.kt',s)
  records[-1].update(output='com/android/purebilibili/'+rel+'.kt',selection=mode,outputSha256=hashlib.sha256(s.encode()).hexdigest())
 def rmfun(s,name):
@@ -120,6 +127,8 @@ def produce():
  body='package com.android.purebilibili.data.repository\n'+ '\n'.join(l for l in s.splitlines() if l.startswith('import ') and 'NetworkModule'not in l and 'TokenManager'not in l and 'WbiKeyManager'not in l)+'\nclass DesktopOriginalFavoritePgc(private val environment: com.android.purebilibili.feature.list.DesktopFavoriteEnvironment) {\nprivate val api=environment.bangumiApi\n'+ '\n'.join(members)+'\n}\n'
  body=body.replace('TokenManager.csrfCache','environment.csrf()').replace('TokenManager.midCache','environment.currentMid()').replace('NetworkModule.api.','environment.api.');output('data/repository/DesktopOriginalFavoritePgc',body,'complete original followed-PGC request bodies only')
  # Full original list state/VM classes, including unmounted history/liked compile dependencies.
+ # Reference only: the existing sole Message producer emits this exact v029 component.
+ source("feature/common/ListLoadError")
  s=source('feature/list/ListViewModel')
  s='\n'.join(l for l in s.splitlines() if not l.startswith('import android.') and not l.startswith('import androidx.lifecycle.') and not any(x in l for x in ['import com.android.purebilibili.core.network.NetworkModule','import com.android.purebilibili.core.coroutines.AppScope','import com.android.purebilibili.core.refresh.HistoryRefreshBus']))+'\n'
  a=s.index('class LikedVideosViewModelFactory');b=s.index('// --- 历史记录',a);s=s[:a]+s[b:]
@@ -255,6 +264,8 @@ def generate(repo:Path,output:Path,standalone=False):
  for row in records:
   entry=canonical.setdefault(row['path'],dict(path=row['path'],upstreamCommit=row['upstreamCommit'],sha256LfUtf8=row['sha256LfUtf8'],outputs=[],selections=[]))
   if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
+  for key in ['historySourceAdaptation','historyGeneratedAdaptation','rawSha256Bytes','gitBlob']:
+   if key in row:entry[key]=row[key]
   if row.get('selection') and row['selection'] not in entry['selections']:entry['selections'].append(row['selection'])
   for emitted in row.get('outputs',[]):
    if emitted not in entry['outputs']:entry['outputs'].append(emitted)

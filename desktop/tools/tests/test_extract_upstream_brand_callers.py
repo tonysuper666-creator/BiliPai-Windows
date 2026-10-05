@@ -57,6 +57,21 @@ class BrandCallerProducerTest(unittest.TestCase):
         output,rows=self.generated('extract-upstream-favorites.py','list')
         row=next(r for r in rows if r['path'].endswith('/CommonListScreen.kt'))
         body=(output/'com/android/purebilibili/feature/list/CommonListScreen.kt').read_text(encoding='utf-8')
+        if row.get('historyGeneratedAdaptation'):
+            helper=load('history_brand_caller_source_contract','v029_brand_history.py')
+            audit=row['historyGeneratedAdaptation'];inverse=body
+            for edit in reversed(audit['edits']):
+                at=edit['index'];self.assertEqual(inverse[at:at+len(edit['after'])],edit['after'])
+                inverse=inverse[:at]+edit['before']+inverse[at+len(edit['after']):]
+            raw=helper.load_raw('feature/list/CommonListScreen')
+            self.assertEqual(inverse,raw)
+            self.assertEqual(sha(body),audit['generatedSha256LfUtf8'])
+            self.assertEqual(row['upstreamCommit'],helper.COMMIT)
+            for unchanged in ['historyViewModel.retryHistory()', 'historyViewModel.loadMore(retry = true)', 'onRetryLoadMore:', 'loadMoreError:']:
+                self.assertEqual(body.count(unchanged),raw.count(unchanged))
+            self.assertEqual(len(list((output/'com').rglob('CommonListScreen.kt'))),1)
+            self.assertEqual(row['historySourceAdaptation']['count'],4)
+            return
         audit=row['windowsBrandConsumerAdaptation'];self.assertEqual(audit['countedAdaptations'],3)
         inverse=self.inverse(body,audit)
         source_before=self.helper()._sources()['v025/app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt']

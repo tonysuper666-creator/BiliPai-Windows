@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "scope": "Complete original v029 list state/VM and CommonList caller. Retry component is raw reference only: existing sole message producer emits the exact same fixed original. Real recap/RSS ports pending, no empty header.",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "b16b278d54b29e512f98fb1cf8bd07e38d861b37",
+      "bytes": 67599,
+      "sha256Bytes": "a5ca3f58b081d907a928418aab33bb880683f99acdf426403314fd4b614f5f70",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "f3ca9bafa474a07e753c9e328c3b9d9fe74cab10",
+      "bytes": 178540,
+      "sha256Bytes": "e5676f371841e43225e8f88d71bcd62137df22bb13bca4aeb378a4fc4d73c5cd",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/common/ListLoadError.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "eb7f6c04af7910b7a5c4ee4b0b494c33a4a028bd",
+      "bytes": 1150,
+      "sha256Bytes": "6fc1d252d9d1d02eff83cf1d9eabd6ff0a645c4876aab81fa225148119a31a32",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/common/ListLoadError.kt"
+    }
+  ]
+}

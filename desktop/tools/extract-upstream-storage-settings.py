@@ -2,6 +2,7 @@
 Actual Windows cache/download mutations are required platform owners, never Android directory scans.
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
+from v029_brand_cache_clear import generated_sources as _cache_clear_sources, checked_sources as _cache_clear_raw, POLICY as _cache_clear_policy
 from pathlib import Path
 import argparse,hashlib,importlib.util,json,re,textwrap,sys
 sys.dont_write_bytecode=True
@@ -15,7 +16,7 @@ def block(source,marker,parser):
  start=source.index(marker);tokens=parser.kotlin_tokens(source[start:]);opening=next(i for i,t in enumerate(tokens)if t[0]=='{');depth=1;end=opening
  while depth:end+=1;depth+=(tokens[end][0]=='{')-(tokens[end][0]=='}')
  return source[start:start+tokens[end][2]]
-def generate(repo,out):
+def generate(repo,out,tests_output=None):
  parser=load('storage_tokens',repo/'desktop/tools/sync-upstream.py');media=load('storage_methods',repo/'desktop/tools/extract-upstream-media.py')
  raw={p:(_desktop_canonical_source(repo, p)).read_text(encoding='utf8').replace('\r\n','\n') for p in PATHS};sections,manager,cache,policy,animation,screen,mirrors=[raw[p]for p in PATHS]
  body=media.function(sections,'DataStorageSection',parser).replace('fun DataStorageSection(','internal fun DesktopOriginalDataStorageSection(')
@@ -67,17 +68,23 @@ import com.android.purebilibili.core.store.DesktopOriginalStorageSettings as Set
 /** Original pure cache decisions/breakdown. Android Context file-walk and mutation code is never copied. */
 '''+enumCache+'\n'+auto+'\nobject CacheUtils {\n'+textwrap.indent(breakdown+'\n'+formatter,'    ')+'\n}\n')
  # CacheClearUiPolicy is mode=direct: existing prepareUpstreamSources is its sole producer.
- # This original Compose dialog/animation is platform-neutral. Keep its complete confirmation interaction.
- animation=animation.replace(',\n            decorFitsSystemWindows = false','').replace('com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_check_fill_24)','com.bilipai.desktop.settings.DesktopStorageSettingsVectors.vector("ms_check_fill_24")')
- write(out/'com/android/purebilibili/feature/settings/CacheClearAnimation.kt',animation)
+ # Fixed v029 complete UI replaces only the old animation family. Its policy is
+ # byte-identical to the existing canonical direct source; never emit another FQCN.
+ _,cache_clear_raw=_cache_clear_raw()
+ if policy!=cache_clear_raw[_cache_clear_policy]:raise ValueError('Existing sole CacheClearUiPolicy differs from fixed v029 policy')
+ cache_clear_sources,cache_clear_proofs=_cache_clear_sources(tests_output)
+ for path,body in cache_clear_sources.items():write(out/path,body)
+ write(out/'cache-clear-source-inventory.json',json.dumps(cache_clear_proofs,ensure_ascii=False,indent=2)+'\n')
  vectorHelper=load('storage_vector',repo/'desktop/tools/extract-upstream-settings-search.py');vectorHelper.symbol_names=lambda unused:['ms_check_fill_24']
  vector=vectorHelper.vectors(repo).replace('DesktopSettingsSymbols','DesktopStorageSettingsSymbols').replace('DesktopSettingsVectors','DesktopStorageSettingsVectors')
  write(out/'com/bilipai/desktop/settings/DesktopStorageSettingsVectors.kt',vector)
  inventory=[dict(path=p,mode='direct' if p==PATHS[3]else'policy-extract',features=['desktop-storage-cache-settings-owner-parity'],sha256=hashlib.sha256(raw[p].encode()).hexdigest())for p in PATHS]
+ inventory[4].update(mode='reference-only',supersededBy='fixed-v029-complete-cache-clear-ui')
+ inventory.extend(dict(proof,mode='complete-original-adapted',features=['desktop-v029-cache-clear-ui'])for proof in cache_clear_proofs)
  inventory.append(dict(path=VECTOR,mode='direct',features=['desktop-storage-cache-settings-owner-parity'],sha256=hashlib.sha256((_desktop_canonical_source(repo, VECTOR)).read_bytes()).hexdigest()))
  write(out/'storage-source-inventory.json',json.dumps(inventory,ensure_ascii=False,indent=2)+'\n')
  return inventory
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--inventory',type=Path);a=p.parse_args();rows=generate(a.repo.resolve(),a.output.resolve())
+ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--inventory',type=Path);p.add_argument('--tests-output',type=Path);a=p.parse_args();rows=generate(a.repo.resolve(),a.output.resolve(),a.tests_output.resolve() if a.tests_output else None)
  if a.inventory:write(a.inventory,json.dumps(rows,ensure_ascii=False,indent=2)+'\n')
  print('Generated exact original storage families',len(rows))
