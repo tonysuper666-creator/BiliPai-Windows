@@ -2418,7 +2418,10 @@ object WindowsVideoActualRootUiFixture {
                     (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
                 clickOwnedComposeMouse(window(), tab)
             }
-            await("same-source actual comment tab selected") { edt { commentsTabSelected() } }
+            await("same-source actual comment tab selected") { edt {
+                current(); sameNative()
+                runCatching { commentsTabSelected() }.getOrDefault(false)
+            } }
         }
         click("暂停")
         await("real native pause before optional comment search") { sameNative(); actualPlayer.state.value.nativePaused == true }
@@ -2687,7 +2690,10 @@ object WindowsVideoActualRootUiFixture {
                     (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
                 clickOwnedComposeMouse(window(), tab)
             }
-            await("actual authenticated comment tab selected") { edt { commentsTabSelected() } }
+            await("actual authenticated comment tab selected") { edt {
+                current(); sameNative()
+                runCatching { commentsTabSelected() }.getOrDefault(false)
+            } }
         }
         click("暂停")
         await("native pause ACK before editor input") { sameNative(); actualPlayer.state.value.nativePaused == true }
@@ -2792,7 +2798,7 @@ object WindowsVideoActualRootUiFixture {
             capture("210-composer-text-draft", first)
             close(first)
             check(draft()?.text == WindowsCommentComposerReplay.DRAFT)
-            val second = open()
+            var second = open()
             check(composer.commentStamp.value !== firstStamp)
             await("original editor reopens actual retained text") { edt {
                 currentSource()
@@ -2832,6 +2838,23 @@ object WindowsVideoActualRootUiFixture {
             clickFeatureItem(second, WindowsCommentComposerReplay.FRIEND_NAME)
             await("original mention insertion updates the original draft") { edt {
                 currentSource(); draft()?.text?.contains("@${WindowsCommentComposerReplay.FRIEND_NAME}") == true
+            } }
+            val mentionedDraft = edt {
+                currentSource()
+                requireNotNull(draft()).also {
+                    check(!it.syncToDynamic && it.imageUris.isEmpty())
+                    check(it.text.contains(WindowsCommentComposerReplay.DRAFT) &&
+                        it.text.contains(WindowsCommentComposerReplay.EMOTE) &&
+                        it.text.contains("@${WindowsCommentComposerReplay.FRIEND_NAME}"))
+                }
+            }
+            // Persist the actual selected mention before any later editing,
+            // sync toggle or image selection can incidentally publish it.
+            close(second)
+            second = open()
+            await("original mention draft survives immediate close and reopen without another edit") { edt {
+                currentSource()
+                draft() == mentionedDraft && editorText(second) == mentionedDraft.text
             } }
             clickFeatureItem(second, "转发到动态")
             await("original sync-to-dynamic toggle publishes its true draft flag") { edt {

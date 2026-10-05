@@ -276,8 +276,13 @@ def dialog_delta(repo,output,canonical,body):
     if canonical.replace('\r\n','\n') != sources[DIALOG]: raise ValueError('Complete original input dialog changed between fixed025 and fixed029')
     before=body
     body=replace(body,'import androidx.compose.ui.window.Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n')
+    # The original mention insertion only updated local editor state. Publish
+    # through the same caller-owned draft port before an immediate dismissal.
+    mention='                                    textFieldValue = TextFieldValue(nextText, nextSelection)\n'
+    body=replace(body,mention,mention+'                                    onDraftChange(nextText, selectedImageUris, isForwardToDynamic)\n')
     save(output,'v029-domain-comment-dialog-source',dict(upstreamCommit=COMMIT,rawSources=PINS,
-        fixedCanonicalEntireBodyIdentical=True,platformContainerOnly=whole_proof(before,body)))
+        fixedCanonicalEntireBodyIdentical=True,mentionDraftPublicationRepair=True,
+        platformAndDraftPublication=whole_proof(before,body)))
     return body
 
 # Inserted by private preparation from the exact fixed source manifest.

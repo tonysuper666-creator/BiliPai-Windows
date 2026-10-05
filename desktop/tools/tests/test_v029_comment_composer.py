@@ -84,12 +84,17 @@ class OriginalDomainCommentComposerTests(unittest.TestCase):
         self.assertEqual(2,body.count('fun DesktopOriginalVideoCommentInputOverlay('))
         schema=self.body('comment','VideoComposerDraftState.kt')
         self.assertEqual(adapter.fixed(REPO)[adapter.BASE+'feature/video/viewmodel/VideoComposerDraftState.kt'].replace('import android.net.Uri\n','').replace('List<Uri>','List<String>'),schema)
-    def test_full_original_dialog_only_changes_the_owned_container_adapter(self):
+    def test_full_original_dialog_adapts_container_and_publishes_selected_mention_draft(self):
         proof=self.proof('bgm','v029-domain-comment-dialog-source')
-        body=self.body('bgm','CommentInputDialog.kt');legacy=inverse(body,proof['platformContainerOnly'])
+        body=self.body('bgm','CommentInputDialog.kt');legacy=inverse(body,proof['platformAndDraftPublication'])
         self.assertTrue(proof['fixedCanonicalEntireBodyIdentical'])
-        self.assertEqual(1,len(proof['platformContainerOnly']['indexedEdits']))
-        self.assertEqual(legacy.replace('import androidx.compose.ui.window.Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n'),body)
+        self.assertTrue(proof['mentionDraftPublicationRepair'])
+        self.assertEqual(2,len(proof['platformAndDraftPublication']['indexedEdits']))
+        mention='                                    textFieldValue = TextFieldValue(nextText, nextSelection)\n'
+        self.assertEqual(1,legacy.count(mention))
+        expected=legacy.replace('import androidx.compose.ui.window.Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n')
+        expected=expected.replace(mention,mention+'                                    onDraftChange(nextText, selectedImageUris, isForwardToDynamic)\n')
+        self.assertEqual(expected,body)
     def test_changed_domain_body_cannot_reuse_a_complete_inverse_receipt(self):
         proof=self.proof('holder','v029-domain-comment-composer-source')
         body=self.body('holder','VideoComposerViewModel.kt')
