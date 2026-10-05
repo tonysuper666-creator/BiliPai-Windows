@@ -58,6 +58,7 @@ public final class AwtMpvProbe {
     private final List<Object> observations = new ArrayList<>();
     private final List<Object> captureTimeline = new ArrayList<>();
     private int droppedCaptures;
+    private boolean surfacePhysicalFailure;
     private volatile String lastReport = "{}";
     private JFrame frame;
     private Canvas canvas;
@@ -79,6 +80,10 @@ public final class AwtMpvProbe {
         result.put("screenGate", Map.of("cyan", "B>180,G>135,R<135,count>=100",
             "pink", "R>180,G<145,B=100..200,count>=100"));
         result.put("alphaGate", "0.25 < dim/baseline < 0.6; abs(restored-baseline) < 5");
+        if (dll != null && !shaderCase()) result.put("fixtureBackgroundGate", Map.of(
+            "sourceBands", "(4,98,312,12);(4,143,312,8)", "rgbTolerance", 18,
+            "minimumFill", 0.98, "minimumRowFill", 0.95, "minimumColumnFill", 0.95,
+            "viewport", "actual same-actor OSD dimensions and crop/pan margins; no aspect inference"));
         result.put("observations", observations);
         result.put("captureTimeline", captureTimeline);
         result.put("captureTimelineDropped", 0);
@@ -162,12 +167,17 @@ public final class AwtMpvProbe {
                 waitCondition("file-loaded and real clock", 5_000, () -> actor.fileLoaded && actor.number("time-pos") >= 1.1);
                 double time = actor.number("time-pos");
                 waitCondition("real clock advancement", 1_500, () -> actor.number("time-pos") > time + 0.1);
-                waitScreen("native Windows cyan/pink visibility", "screen-baseline.png", 5_000, AwtMpvProbe::hasVideoColors);
+                if (shaderCase()) waitScreen("native Windows cyan/pink visibility", "screen-baseline.png", 5_000, AwtMpvProbe::hasVideoColors);
+                else waitFixtureScreen("native Windows cyan/pink visibility", "screen-baseline.png", 5_000);
                 actor.setPause(true);
                 waitCondition("native pause readback", 1_500, () -> "yes".equals(actor.value("pause")));
                 // Replace the moving-video baseline with a physical capture of the paused frame.
                 BufferedImage paused = capture("paused-native-baseline");
-                if (!hasVideoColors(paused)) throw new GateFailure("Paused native baseline lost the original visible colors");
+                if (!hasVideoColors(paused)) {
+                    surfacePhysicalFailure = !shaderCase();
+                    throw new GateFailure("Paused native baseline lost the original visible colors");
+                }
+                if (!shaderCase()) checkSurfaceFixture(paused, "paused-native-baseline");
                 ImageIO.write(paused, "png", output.resolve("screen-paused.png").toFile());
             }
             if (shaderCase()) shaderStages(); else alphaStages();
@@ -180,6 +190,10 @@ public final class AwtMpvProbe {
             try { observe("failure"); } catch (Throwable diagnostic) { result.put("telemetryError", safe(diagnostic.toString())); }
             try { if (canvas != null) ImageIO.write(capture("failure"), "png", output.resolve("screen-failed.png").toFile()); }
             catch (Throwable diagnostic) { result.put("failureCaptureError", safe(diagnostic.toString())); }
+            if (surfacePhysicalFailure && actor != null && !shaderCase()) {
+                try { observeFailedSurfaceWindow(); }
+                catch (Throwable diagnostic) { result.put("failureAuxiliaryError", safe(diagnostic.toString())); }
+            }
         } finally {
             if (actor != null) {
                 result.put("native", actor.snapshot);
@@ -418,6 +432,7 @@ public final class AwtMpvProbe {
         result.put("alpha", Map.of("baselineBrightness", original, "dimBrightness", brightness(dim),
             "dimRatio", brightness(dim) / original, "restoredBrightness", brightness(restored),
             "restoreDelta", Math.abs(brightness(restored) - original), "requestedOpacity", 0.6));
+        if (dll != null && !shaderCase()) checkSurfaceFixture(restored, "alpha-restored");
         observe("alpha-restored");
     }
 
@@ -447,6 +462,147 @@ public final class AwtMpvProbe {
         if (image != null) ImageIO.write(image, "png", output.resolve(file).toFile());
         if (image != null) result.put(stage, imageStats(image));
         throw new GateFailure("Physical screen gate failed: " + stage + " " + (image == null ? "no capture" : json(imageStats(image))));
+    }
+
+    /** Same fixed MJPEG geometry and thresholds as PlayerSelfTest, adapted to the probe's actual OSD poll. */
+    static record FixtureViewport(int osdWidth, int osdHeight, int left, int top, int contentWidth, int contentHeight) {
+        FixtureViewport {
+            require(osdWidth > 0 && osdHeight > 0 && contentWidth > 0 && contentHeight > 0, "Invalid native fixture viewport");
+        }
+        static FixtureViewport from(Map<String, Object> snapshot) {
+            int w = integer(snapshot, "osd-dimensions/w"), h = integer(snapshot, "osd-dimensions/h");
+            int l = integer(snapshot, "osd-dimensions/ml"), r = integer(snapshot, "osd-dimensions/mr");
+            int t = integer(snapshot, "osd-dimensions/mt"), b = integer(snapshot, "osd-dimensions/mb");
+            require("320".equals(nativeValue(snapshot, "video-dec-params/w")) &&
+                "180".equals(nativeValue(snapshot, "video-dec-params/h")), "Native fixture decoded dimensions changed");
+            return new FixtureViewport(w, h, l, t, w - l - r, h - t - b);
+        }
+        private static int integer(Map<String, Object> snapshot, String name) {
+            String value = nativeValue(snapshot, name);
+            require(value != null, "Native fixture viewport unavailable: " + name);
+            try { return Integer.parseInt(value); }
+            catch (NumberFormatException invalid) { throw new IllegalStateException("Invalid native fixture viewport: " + name); }
+        }
+    }
+
+    static Map<String, Object> checkFixtureSurface(BufferedImage image, FixtureViewport viewport) {
+        require(hasVideoColors(image), "Native Windows fixture lost original cyan/pink pixel thresholds");
+        require(viewport != null, "Native fixture viewport unavailable");
+        java.awt.geom.AffineTransform transform = java.awt.geom.AffineTransform.getScaleInstance(
+            image.getWidth() / (double) viewport.osdWidth(), image.getHeight() / (double) viewport.osdHeight());
+        transform.translate(viewport.left(), viewport.top());
+        transform.scale(viewport.contentWidth() / (double) WIDTH, viewport.contentHeight() / (double) HEIGHT);
+        List<Object> bands = new ArrayList<>();
+        // Circle ends at y88, labels at y135, progress starts at y156. Never test those dynamic regions.
+        for (Rectangle source : List.of(new Rectangle(4, 98, WIDTH - 8, 12), new Rectangle(4, 143, WIDTH - 8, 8))) {
+            java.awt.geom.Rectangle2D mapped = transform.createTransformedShape(source).getBounds2D();
+            int left = Math.max(0, (int) Math.ceil(mapped.getMinX()) + 1), top = Math.max(0, (int) Math.ceil(mapped.getMinY()) + 1);
+            int right = Math.min(image.getWidth(), (int) Math.floor(mapped.getMaxX()) - 1);
+            int bottom = Math.min(image.getHeight(), (int) Math.floor(mapped.getMaxY()) - 1);
+            require(right - left >= 8 && bottom - top >= 2, "Native fixture background strip was not sufficiently visible");
+            int[] rows = new int[bottom - top], columns = new int[right - left]; int good = 0;
+            for (int y = top; y < bottom; y++) for (int x = left; x < right; x++) {
+                Color color = new Color(image.getRGB(x, y));
+                if (Math.abs(color.getRed() - 24) <= 18 && Math.abs(color.getGreen() - 27) <= 18 && Math.abs(color.getBlue() - 38) <= 18) {
+                    good++; rows[y - top]++; columns[x - left]++;
+                }
+            }
+            int width = right - left, height = bottom - top;
+            double fill = good / (double) (width * height);
+            double row = Arrays.stream(rows).min().orElseThrow() / (double) width;
+            double column = Arrays.stream(columns).min().orElseThrow() / (double) height;
+            Map<String, Object> band = Map.of("physicalBounds", rect(new Rectangle(left, top, width, height)),
+                "fillFraction", fill, "minimumRowFill", row, "minimumColumnFill", column);
+            require(fill >= 0.98 && row >= 0.95 && column >= 0.95, "Native fixture background was discontinuous: " + json(band));
+            bands.add(band);
+        }
+        return Map.of("bands", bands, "viewport", viewport.toString(), "pixels", imageStats(image));
+    }
+
+    private static String nativeValue(Map<String, Object> snapshot, String name) {
+        Object row = snapshot.get(name);
+        return row instanceof Map<?, ?> values && values.get("value") instanceof String value ? value : null;
+    }
+
+    private void checkSurfaceFixture(BufferedImage image, String stage) {
+        try { result.put(stage + "FixtureIntegrity", checkFixtureSurface(image, FixtureViewport.from(actor.snapshot))); }
+        catch (IllegalStateException invalid) {
+            surfacePhysicalFailure = true;
+            throw new GateFailure("Physical screen gate failed: " + stage + " " + safe(invalid.getMessage()));
+        }
+    }
+
+    private BufferedImage waitFixtureScreen(String stage, String file, long budgetMs) throws Exception {
+        long end = stageDeadline(budgetMs); BufferedImage image = null; String rejected = "No physical capture";
+        do {
+            checkDeadline(); Map<String, Object> before = actor.snapshot;
+            image = capture(stage); Map<String, Object> after = actor.snapshot;
+            try {
+                FixtureViewport viewport = FixtureViewport.from(before);
+                require(viewport.equals(FixtureViewport.from(after)) &&
+                    Objects.equals(nativeValue(before, "playlist/0/id"), nativeValue(after, "playlist/0/id")) &&
+                    nativeValue(before, "playlist/0/id") != null, "Native fixture viewport/source changed across physical capture");
+                Map<String, Object> integrity = checkFixtureSurface(image, viewport);
+                ImageIO.write(image, "png", output.resolve(file).toFile());
+                result.put(stage, imageStats(image)); result.put(stage + "FixtureIntegrity", integrity);
+                observe(stage); return image;
+            } catch (IllegalStateException invalid) { rejected = safe(invalid.getMessage()); }
+            Thread.sleep(100);
+        } while (System.nanoTime() < end);
+        if (image != null) { ImageIO.write(image, "png", output.resolve(file).toFile()); result.put(stage, imageStats(image)); }
+        result.put("fixtureIntegrityFailure", rejected); surfacePhysicalFailure = true;
+        throw new GateFailure("Physical screen gate failed: " + stage + " " + rejected);
+    }
+
+    /** One later window capture only. GPU capture may fall back to software; the physical failure remains unchanged. */
+    private void observeFailedSurfaceWindow() throws Exception {
+        Map<String, Object> row = new LinkedHashMap<>(); result.put("failedSurfaceWindowAuxiliary", row);
+        row.put("auxiliaryOnly", true); row.put("physicalResult", "failed; retained independently of this auxiliary capture");
+        row.put("imageKind", "later mpv window-size capture requested; GPU re-render may fall back to software; not swapchain readback or physical-screen proof");
+        row.put("nativeTiming", "near cached same-actor snapshots; not atomic with Robot pixels or screenshot command");
+        if (deadline - System.nanoTime() <= TimeUnit.SECONDS.toNanos(6)) {
+            row.put("status", "skipped: original case deadline reserves native/window cleanup"); return;
+        }
+        Map<String, Object> before = actor.snapshot; String entry = nativeValue(before, "playlist/0/id");
+        row.put("nativeBefore", before); row.put("screenshotSwBefore", nativeValue(before, "options/screenshot-sw"));
+        if (actor.failure != null || !actor.fileLoaded || entry == null || !"1".equals(nativeValue(before, "playlist-count"))) {
+            row.put("status", "skipped: original single source/actor is unavailable"); return;
+        }
+        CompletableFuture<Integer> command = null;
+        try {
+            BufferedImage physical = capture("failure-before-window-auxiliary");
+            ImageIO.write(physical, "png", output.resolve("screen-before-window-auxiliary.png").toFile());
+            require(entry.equals(actor.value("playlist/0/id")) && actor.failure == null, "Original source retired before window auxiliary");
+            Path target = output.resolve("native-failure-window.png");
+            command = actor.command("screenshot-to-file", target.toString(), "window");
+            command.get(Math.min(TimeUnit.SECONDS.toNanos(3), Math.max(1, deadline - System.nanoTime() - TimeUnit.SECONDS.toNanos(3))), TimeUnit.NANOSECONDS);
+            require(Files.isRegularFile(target) && Files.size(target) > 0 && Files.size(target) <= 32 * 1024 * 1024, "Auxiliary native image absent/oversized");
+            BufferedImage image = ImageIO.read(target.toFile());
+            require(image != null && (long) image.getWidth() * image.getHeight() <= 16_000_000, "Auxiliary native image invalid/oversized");
+            FixtureViewport viewport = FixtureViewport.from(before);
+            boolean matches = image.getWidth() == viewport.osdWidth() && image.getHeight() == viewport.osdHeight();
+            row.put("image", target.getFileName().toString()); row.put("sha256", sha256(target));
+            Map<String, Object> stats = new LinkedHashMap<>(imageStats(image)); stats.put("physicalScreenCapture", false);
+            row.put("pixels", stats); row.put("matchesObservedOsdSize", matches);
+            require(matches, "Auxiliary window image did not match observed OSD size; window-size comparison unavailable");
+            row.put("status", "captured");
+        } catch (Exception | LinkageError invalid) {
+            if (command != null && !command.isDone()) command.cancel(false);
+            if (invalid instanceof InterruptedException) Thread.currentThread().interrupt();
+            row.put("status", "auxiliary failed"); row.put("error", safe(invalid.toString()));
+        } finally {
+            Map<String, Object> after = actor.snapshot; row.put("nativeAfter", after);
+            row.put("sameObservedEntry", entry.equals(nativeValue(after, "playlist/0/id")));
+            row.put("screenshotSwAfter", nativeValue(after, "options/screenshot-sw"));
+            try {
+                BufferedImage physical = capture("failure-after-window-auxiliary");
+                ImageIO.write(physical, "png", output.resolve("screen-after-window-auxiliary.png").toFile());
+                row.put("physicalAfter", imageStats(physical));
+            } catch (Exception | LinkageError invalid) { row.put("physicalAfterError", safe(invalid.toString())); }
+            row.put("fallbackLogs", actor.logs().lines().filter(line -> line.contains("Falling back to software screenshot")).limit(12).toList());
+            row.put("fallbackLogTiming", "bounded actor log drained near auxiliary capture; absence is not proof GPU screenshot path succeeded");
+            publishReport();
+        }
     }
 
     private BufferedImage capture(String stage) throws Exception {
@@ -638,7 +794,9 @@ public final class AwtMpvProbe {
         private static final String[] PROPERTIES = {"mpv-version", "current-vo", "current-gpu-context", "vo-configured", "time-pos", "pause",
             "video-codec", "hwdec-current", "video-dec-params/w", "video-dec-params/h", "video-out-params/w", "video-out-params/h", "window-id",
             "options/d3d11-flip", "options/d3d11-warp", "options/d3d11-output-mode", "options/d3d11-sync-interval", "options/d3d11-output-format",
-            "options/d3d11-output-csp", "frame-drop-count", "volume", "mute", "current-ao", "audio-codec"};
+            "options/d3d11-output-csp", "frame-drop-count", "volume", "mute", "current-ao", "audio-codec",
+            "osd-dimensions/w", "osd-dimensions/h", "osd-dimensions/ml", "osd-dimensions/mr", "osd-dimensions/mt", "osd-dimensions/mb",
+            "options/screenshot-sw", "playlist/0/id", "playlist-count"};
         private static final String[] SHADER_PROPERTIES = {"seeking", "playlist/0/id", "playlist-count", "playlist-pos", "video-frame-info/picture-type",
             "options/gpu-dumb-mode", "options/fbo-format", "glsl-shader-opts", "video-params/gamma", "video-out-params/gamma", "video-target-params/gamma"};
         final CompletableFuture<Void> ready = new CompletableFuture<>();
@@ -766,7 +924,8 @@ public final class AwtMpvProbe {
                         Pointer data = event.getPointer(16);
                         if (data != null) {
                             String prefix = nativeText(data.getPointer(0), 96);
-                            if (prefix.startsWith("vo") || prefix.startsWith("vd") || data.getInt(24) <= 30)
+                            if (prefix.startsWith("vo") || prefix.startsWith("vd") ||
+                                (!selectedCase.startsWith("shader-clear-") && prefix.equals("screenshot")) || data.getInt(24) <= 30)
                                 log(prefix + " [" + nativeText(data.getPointer(8), 32) + "] " + nativeText(data.getPointer(16), 1024));
                         }
                     }
