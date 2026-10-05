@@ -106,7 +106,7 @@ internal fun DesktopVideoCommentVoteCardHost(
     }
 }
 
-/** Complete v029 vote/grade and optional real ATTENTION card callbacks. */
+/** Complete original command cards; ATTENTION retains its real owned callbacks. */
 @Composable
 internal fun DesktopVideoCommandVoteContent(
     repository: DesktopRepository,
@@ -156,8 +156,8 @@ internal fun DesktopVideoCommandVoteContent(
         val viewport = resolveDanmakuViewport(measured.width, measured.height, density.density)
         val attentionState = attention?.state?.collectAsState()?.value
         val attentionOwned = attention != null && attention.sourceLease === sourceLease && attention.isOwned()
-        val items = filterVisibleCommandDanmakuItems(cidOwnedCommands, hideInteractiveCommands)
-            .filter { it.type == CommandDanmakuType.VOTE || (it.type == CommandDanmakuType.ATTENTION && attentionOwned) }
+        val items = desktopWindowsVisibleCommandCards(
+            cidOwnedCommands, hideInteractiveCommands, attentionOwned)
         CompositionLocalProvider(LocalDesktopWindowsCommandVotePlatform provides platform) {
             Box(modifier.fillMaxSize().onSizeChanged { measured = it }) {
                 if (viewport != null && native.ready && current()) CommandDanmakuOverlay(
