@@ -238,7 +238,10 @@ def main():
     repo = no_links(args.repo)
     if not re.fullmatch('[0-9a-f]{40}', args.source_sha) or git(repo,'rev-parse','HEAD').decode().strip() != args.source_sha:
         raise ValueError('Fixed source HEAD mismatch')
-    if git(repo,'status','--porcelain','--untracked-files=all').strip(): raise ValueError('Source checkout is dirty')
+    source_changes = git(repo,'status','--porcelain','--untracked-files=all').strip()
+    if source_changes:
+        # Path-only evidence; preserve the admission failure without printing file contents.
+        raise ValueError('Source checkout is dirty: ' + repr(source_changes[:12000].decode('utf-8', errors='replace')))
     output = Path(os.path.abspath(args.output)); parent = no_links(output.parent)
     if parent != no_links(Path(os.environ['RUNNER_TEMP'])) or output.exists(): raise ValueError('Output must be a fresh direct runner-temp child')
     output.mkdir(); report = output / 'actual-ui'; report.mkdir()

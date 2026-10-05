@@ -122,6 +122,10 @@ desktop/verification/stable-full-video-root-joint-integration/** -text
 desktop/verification/stable-video-initial-request-boundary/** -text
 desktop/resources/common/notices/pinyin4j-2.5.0/** -text
 
+# Sync copies these notices as exact source bytes; checkout must use the same bytes.
+desktop/resources/common/notices/google-cast-v2/** -text
+desktop/third-party/google-cast-v2/SOURCES.json -text
+
 desktop/verification/stable-navigation-interaction-settings/** -text
 desktop/verification/stable-desktop-delivery-83/** -text
 desktop/verification/stable-image-preview-native-share/** -text

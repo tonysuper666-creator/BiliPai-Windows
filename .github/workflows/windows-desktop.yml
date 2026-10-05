@@ -161,6 +161,12 @@ jobs:
           if ($env:RENDER_DIAGNOSTIC -eq 'true' -or $env:MAKE_RELEASE -eq 'true' -or $env:MAKE_INSTALLER -eq 'true') {
             throw 'Independent comment acceptance cannot combine rendering experiments, packaging or publication.'
           }
+          $sourceChanges = git status --porcelain --untracked-files=all
+          if ($LASTEXITCODE -ne 0) { throw 'Initial source status could not be read.' }
+          if ($sourceChanges) {
+              Write-Host ($sourceChanges -join "`n")
+              throw 'Initial checkout is dirty before runtime preparation.'
+          }
           "source_sha=$head" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
       - uses: actions/setup-python@v5
         with:
