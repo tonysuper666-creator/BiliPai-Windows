@@ -15,16 +15,20 @@ internal fun tabsDynamic(id:String,mid:Long=42,type:String="DYNAMIC_TYPE_WORD",v
     """{"id_str":"$id","type":"$type","visible":$visible,"modules":{"module_author":{"mid":$mid,"name":"User-$mid","face":"","pub_ts":100},"module_dynamic":{"desc":{"text":"Dynamic-$id"}}}}""")
 internal fun tabsResponse(rows:List<DynamicItem>,offset:String="",more:Boolean=false)=DynamicFeedResponse(data=DynamicFeedData(rows,offset,more))
 private suspend fun eventually(ready:()->Boolean)=withTimeout(2500){while(!ready())delay(5)}
-private fun prefs()=DesktopDynamicTabsPreferences(DesktopPluginContext(DesktopPluginStore(Files.createTempDirectory("dynamic-tabs-"))))
+class DesktopDynamicTabsTest {
+    private val ownedCaches=mutableListOf<com.bilipai.desktop.data.DesktopDynamicCache>()
+    @AfterTest fun closeOwnedCaches():Unit=runBlocking {
+        try { ownedCaches.forEach { it.shutdownForRestore() } } finally { ownedCaches.clear() }
+    }
+private fun prefs()=dynamicAccountTestPreferences(DesktopPluginContext(DesktopPluginStore(Files.createTempDirectory("dynamic-tabs-")))) { ownedCaches+=it }
 private fun state(scope:CoroutineScope,prefs:DesktopDynamicTabsPreferences=prefs(),
     owned:()->Boolean={true},follow:suspend(Int)->FollowingsData={FollowingsData()},
     live:suspend()->List<LiveRoom> = {emptyList()},unread:suspend()->UplistData?={null},
     request:suspend(Map<String,String>)->DynamicFeedResponse={tabsResponse(emptyList())})=
     DesktopDynamicUsersState(scope,prefs,42,follow,live,unread,request,owned)
 
-class DesktopDynamicTabsTest {
     @Test fun defaultsKeysAndSharedBackingRestoreOriginalSelection():Unit=runBlocking {
-        val one=prefs();val two=DesktopDynamicTabsPreferences(DesktopPluginContext(DesktopPluginStore(one.context.store.root)))
+        val one=prefs();val two=DesktopDynamicTabsPreferences(one.context,one.account)
         assertEquals(defaultDynamicTabVisibleIds,one.visibleTabs.first());assertEquals(allDynamicTabSpecs.map{it.id},one.tabOrder.first())
         assertFalse(one.allTabUsers.first());assertEquals(0,one.selectedTab)
         one.setVisibleTabs(setOf("article","up"));two.setOrder(listOf("up","article"));one.setAllTabUsers(true);two.setSelectedTab(3)
@@ -33,7 +37,7 @@ class DesktopDynamicTabsTest {
         val disk=Json.parseToJsonElement(Files.readString(one.context.store.root.resolve("plugin-settings.json"))).jsonObject
         assertEquals("article,up",disk["settings"]!!.jsonObject["dynamic_tab_visible_tabs"]!!.jsonPrimitive.content)
         assertEquals("up,article",disk["settings"]!!.jsonObject["dynamic_tab_order"]!!.jsonPrimitive.content)
-        assertEquals(3,disk["dynamic_user_prefs"]!!.jsonObject["dynamic_selected_tab"]!!.jsonPrimitive.int)
+        assertEquals(3,disk["dynamic_user_prefs_42"]!!.jsonObject["dynamic_selected_tab"]!!.jsonPrimitive.int)
         val restored=state(this,two);assertEquals(3,restored.selectedLogicalTab);restored.close()
         one.setVisibleTabs(setOf("up"));one.setOrder(listOf("up"));one.setSelectedTab(3)
         one.toggleUserPreference("dynamic_hidden_users",77)

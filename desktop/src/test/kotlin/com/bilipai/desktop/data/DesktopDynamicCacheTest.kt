@@ -17,7 +17,7 @@ import kotlin.test.*
 
 private fun cachedDynamic(id: String): DynamicItem = Json.decodeFromString(
     """{"id_str":"$id","type":"DYNAMIC_TYPE_WORD","modules":{}}""")
-private fun cacheValues(store: DesktopPluginStore) = store.preferences(Keys.PREFS_DYNAMIC_CACHE)
+private fun cacheValues(store: DesktopPluginStore, mid:Long? = 42L) = store.preferences(com.android.purebilibili.feature.dynamic.dynamicAccountStorageName(Keys.PREFS_DYNAMIC_CACHE,mid))
 private class CacheFixture(persistentSession: Boolean = false) {
     val root = Files.createTempDirectory("bp-dynamic-cache-")
     val sessions = DesktopSessionStore(root.resolve("session.json"), persistentSession)
@@ -111,7 +111,7 @@ class DesktopDynamicCacheTest {
         val payload = Json.parseToJsonElement(encoded).jsonArray.mapIndexed { index, item ->
             if (index == 0) JsonObject(item.jsonObject + ("unknown_upstream_field" to JsonPrimitive(1))) else item
         }
-        f.store.update(Keys.PREFS_DYNAMIC_CACHE, mapOf(Keys.KEY_DYNAMIC_CACHE to JsonPrimitive(JsonArray(payload).toString())))
+        f.store.update(session.cacheNamespace, mapOf(Keys.KEY_DYNAMIC_CACHE to JsonPrimitive(JsonArray(payload).toString())))
         val firstOwner = session.owner
         f.cache.shutdownForRestore(); f.store.freezeWrites()
         val restoredSessions = DesktopSessionStore(f.root.resolve("session.json"))
@@ -140,10 +140,10 @@ class DesktopDynamicCacheTest {
         assertNull(cacheValues(f.store)[Keys.KEY_NOT_INTERESTED_DYNAMIC_IDS])
         assertFailsWith<IllegalStateException> { guest.markNotInterested("late-guest") }
         f.sessions.logout(); val newGuest = checkNotNull(f.cache.openCurrent())
-        assertTrue(newGuest.cachedAllItems.value.isEmpty()); assertTrue(newGuest.notInterestedIds.value.isEmpty())
+        assertTrue(newGuest.cachedAllItems.value.isEmpty()); assertEquals(setOf("guest-hidden"),newGuest.notInterestedIds.value)
         newGuest.markNotInterested("new-guest")
-        assertNull(cacheValues(f.store)[Keys.KEY_DYNAMIC_CACHE]); assertNull(cacheValues(f.store)[Keys.KEY_DYNAMIC_CACHE_TIME])
-        assertEquals(setOf("new-guest"), newGuest.notInterestedIds.value)
+        assertNull(cacheValues(f.store,null)[Keys.KEY_DYNAMIC_CACHE]); assertNull(cacheValues(f.store,null)[Keys.KEY_DYNAMIC_CACHE_TIME])
+        assertEquals(setOf("guest-hidden","new-guest"), newGuest.notInterestedIds.value)
         f.cache.shutdownForRestore()
     }
 
@@ -195,10 +195,10 @@ class DesktopDynamicCacheTest {
         guard.release.countDown(); assertTrue(late.await().isFailure)
         assertEquals(setOf("old-hidden"), old.notInterestedIds.value)
         val current = checkNotNull(cache.openCurrent())
-        assertNotEquals(old.owner, current.owner); assertTrue(current.notInterestedIds.value.isEmpty())
+        assertNotEquals(old.owner, current.owner); assertEquals(setOf("old-hidden"),current.notInterestedIds.value)
         current.markNotInterested("current-hidden")
-        assertEquals(setOf("current-hidden"), current.notInterestedIds.value)
-        assertEquals(listOf("current-hidden"), cacheValues(f.store)[Keys.KEY_NOT_INTERESTED_DYNAMIC_IDS]!!.jsonArray.map { it.jsonPrimitive.content })
+        assertEquals(setOf("old-hidden","current-hidden"), current.notInterestedIds.value)
+        assertEquals(listOf("old-hidden","current-hidden"), cacheValues(f.store)[Keys.KEY_NOT_INTERESTED_DYNAMIC_IDS]!!.jsonArray.map { it.jsonPrimitive.content })
         cache.shutdownForRestore()
     }
 
@@ -224,7 +224,7 @@ class DesktopDynamicCacheTest {
         assertTrue(session.cachedAllItems.value.isEmpty()); assertNull(session.writeFailure.value)
         f.cache.shutdownForRestore()
         val root = Files.createTempDirectory("bp-invalid-dynamic-cache-")
-        Files.writeString(root.resolve("plugin-settings.json"), """{"dynamic_cache":"invalid","unrelated":{"keep":7}}""")
+        Files.writeString(root.resolve("plugin-settings.json"), """{"dynamic_cache_42":"invalid","unrelated":{"keep":7}}""")
         val malformedStore = DesktopPluginStore(root); val cache = DesktopDynamicCache(f.sessions, malformedStore)
         val usable = checkNotNull(cache.openCurrent())
         assertTrue(usable.cachedAllItems.value.isEmpty()); assertNotNull(usable.writeFailure.value)

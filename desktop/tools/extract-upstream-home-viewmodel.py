@@ -5,6 +5,7 @@ No DTO, HTTP graph, item authority or second recommendation planner is generated
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse,hashlib,json,importlib.util
+from v029_home_load import home_vm_delta, sources as home_load_sources
 
 SOURCE_PINS={'app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt': 'acfeb63539acaf710a4070f59220a1585a38fd1e034d6a7a56a82970998d4352', 'app/src/main/java/com/android/purebilibili/core/util/EasterEggs.kt': '1a4758cc65806db893da7942433a4ba44fd2b91c1396bf1653dbdcd59dc6827f', 'app/src/main/java/com/android/purebilibili/feature/home/TodayWatchRefreshPolicy.kt': '14aed865e65aa2a8f79db3760abd9931b36c5b719676eb577241601cd90be454', 'app/src/main/java/com/android/purebilibili/feature/home/HomeFollowFeedMappingPolicy.kt': '45dc3e2eb12e82a5dc2d0fec4bf82a03154444fd4519f6b2256c98f19ab2d630', 'app/src/main/java/com/android/purebilibili/feature/plugin/BiliPaiFeedFilterPlugin.kt': '10c8ec1f6ae455fc6e488908c948a8e424080faa3c772788194dcdd3bd2adff3', 'app/src/main/java/com/android/purebilibili/feature/message/MessageCenterPolicy.kt': 'b341edc17ccbe4d802341635279bc98e7cd308c067d96ab2f4e549b175703605'}
 BASE='app/src/main/java/com/android/purebilibili/'
@@ -33,7 +34,7 @@ def owned_today_watch_feedback_delta(vm):
  vm=vm.replace('        ) }) throw CancellationException("Home entry retired")\n','        )\n',1)
  return vm
 
-def generate(repo,output,standalone=False):
+def generate(repo,output,standalone=False,test_output=None):
  repo=Path(repo);output=Path(output)
  for path,expected in SOURCE_PINS.items():assert sha(read(_desktop_canonical_source(repo, path)))==expected,path
  tool=Path(__file__)
@@ -51,7 +52,13 @@ def generate(repo,output,standalone=False):
  assert vm.count(visibility)==1
  vm=vm.replace(visibility,'internal fun RecommendationResult.toTodayWatchPlan')
  vm=owned_today_watch_feedback_delta(vm)
+ home_load_audits=[]
+ vm=home_vm_delta(repo,vm,home_load_audits)
  write(output/spec['target'],vm)
+ write(output/'home-load-v029-adaptations.json',json.dumps(dict(upstreamCommit='a4b77f894d0a2dd26c0b9fc144b8adb88ac05480',audits=home_load_audits),ensure_ascii=False,indent=2)+'\n')
+ if test_output is not None:
+  original_test=home_load_sources(repo)['app/src/test/java/com/android/purebilibili/feature/home/HomeLoadSequencePolicyTest.kt']
+  write(Path(test_output)/'com/android/purebilibili/feature/home/HomeLoadSequencePolicyTest.kt',original_test)
  parser=load(repo/'desktop/tools/sync-upstream.py','home_vm_parser')
  media=load(repo/'desktop/tools/extract-upstream-media.py','home_vm_media')
  constSource=read(_desktop_canonical_source(repo, BASE + 'feature/plugin/BiliPaiFeedFilterPlugin.kt'))
@@ -69,5 +76,5 @@ def generate(repo,output,standalone=False):
  return {'pinnedCommit':'79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40','vmOriginalSha256LF':spec['sha256LF'],'vmDesiredSha256LF':sha(vm),'preparedBaseVmDesiredSha256LF':spec['desiredSha256LF'],'solePlanConverterVisibilityAdaptation':True,'adaptationOperations':len(spec['operations']),'productionOutputs':3,'standaloneOnlyDirect':DIRECT}
 
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--standalone',action='store_true');a=p.parse_args()
- print(json.dumps(generate(a.repo,a.output,a.standalone),ensure_ascii=False))
+ p=argparse.ArgumentParser();p.add_argument('--repo',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--standalone',action='store_true');p.add_argument('--test-output',type=Path);a=p.parse_args()
+ print(json.dumps(generate(a.repo,a.output,a.standalone,a.test_output),ensure_ascii=False))

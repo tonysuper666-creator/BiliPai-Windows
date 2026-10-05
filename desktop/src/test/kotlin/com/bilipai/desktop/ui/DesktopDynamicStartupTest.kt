@@ -10,8 +10,13 @@ import java.util.concurrent.atomic.AtomicLong
 import kotlin.test.*
 
 private suspend fun startupEventually(ready:()->Boolean)=withTimeout(5000){while(!ready())delay(5)}
-private fun startupPreferences()=DesktopDynamicTabsPreferences(
-    DesktopPluginContext(DesktopPluginStore(Files.createTempDirectory("dynamic-startup-"))))
+class DesktopDynamicStartupTest {
+    private val ownedCaches=mutableListOf<com.bilipai.desktop.data.DesktopDynamicCache>()
+    @AfterTest fun closeOwnedCaches():Unit=runBlocking {
+        try { ownedCaches.forEach { it.shutdownForRestore() } } finally { ownedCaches.clear() }
+    }
+private fun startupPreferences()=dynamicAccountTestPreferences(
+    DesktopPluginContext(DesktopPluginStore(Files.createTempDirectory("dynamic-startup-")))) { ownedCaches+=it }
 private fun followingRows(page:Int,total:Int)=FollowingsData(
     ((page-1)*50+1..minOf(page*50,total)).map{FollowingUser(it.toLong(),"User-$it","")},total)
 private fun startupState(scope:CoroutineScope,prefs:DesktopDynamicTabsPreferences=startupPreferences(),
@@ -21,7 +26,6 @@ private fun startupState(scope:CoroutineScope,prefs:DesktopDynamicTabsPreference
     DesktopDynamicUsersState(scope,prefs,42,following,live,unread,
         requestPage={tabsResponse(emptyList())},stillOwned=owned,nowMs=now,startupDelay=wait)
 
-class DesktopDynamicStartupTest {
     @Test fun startupWaitsForFeedAndLiveThenLoadsOnlyOneFollowingPage():Unit=runBlocking {
         val feedEntered=CompletableDeferred<Unit>();val liveEntered=CompletableDeferred<Unit>()
         val feedDone=CompletableDeferred<Unit>();val liveDone=CompletableDeferred<Unit>()

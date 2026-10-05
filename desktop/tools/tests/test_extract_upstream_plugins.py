@@ -194,14 +194,19 @@ class PluginExtractorTest(unittest.TestCase):
             path.write_bytes(b"package sample\r\nfun ok() = true\r\n")
             self.assertEqual("package sample\nfun ok() = true\n", EXTRACTOR.read(repo, "sample.kt"))
 
-    def test_shader_and_catalog_resource_digests_follow_original_sources(self):
+    def test_retired_shader_provenance_is_preserved_but_only_catalog_resource_is_compiled(self):
         assets = EXTRACTOR.asset_inventory(ROOT)
         self.assertEqual(11, len(assets))
         self.assertEqual(len(assets), len({row["path"] for row in assets}))
         body = next(path.read_text(encoding="utf-8") for path in self.files if path.name == "DesktopPluginAssetHashes.kt")
         for row in assets:
             self.assertEqual("asset", row["mode"])
-            self.assertIn(row["path"] + '\" to \"' + row["sha256"], body)
+            entry = row["path"] + '\" to \"' + row["sha256"]
+            if row["path"].startswith("app/src/main/assets/anime4k/"):
+                self.assertNotIn(entry, body)
+            else:
+                self.assertEqual("app/src/main/res/raw/cdn_region_catalog.json", row["path"])
+                self.assertIn(entry, body)
 
     def test_original_background_jobs_are_owned_and_awaitable(self):
         for path in self.files:

@@ -302,8 +302,6 @@ object PlayerSelfTest {
             DesktopOverlayNativeSmoke.run(player, outputDirectory)
             checks["nativeOverlayPluginStyleAndEyeTint"] = "passed"
             checks["nativeBasXmlPixelsAndCanvasSeek"] = "passed"
-            DesktopShaderNativeSmoke.run(player, outputDirectory)
-            checks["nativeAnime4KPresetsExecutedAndChangedPixels"] = "passed"
             DesktopRetainedMediaNativeSmoke.run(player, requireNotNull(frame), video)
             checks["nativeRetainedMediaHostJobsAndOwnership"] = "passed"
             val streamHeaderCases = DesktopStreamHeaderNativeSmoke.run(player, video)

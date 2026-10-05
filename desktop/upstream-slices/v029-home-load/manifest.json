@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeViewModel.kt",
+      "sha256Raw": "2f9d546a8a200bc45c4c95ae8e4911e78ce37e95975c2a089af871573176ec64",
+      "sha256LF": "2f9d546a8a200bc45c4c95ae8e4911e78ce37e95975c2a089af871573176ec64",
+      "bytes": 95810,
+      "gitBlob": "b21ecb819deef220a034b8038f160ef9ae08ef3c"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeUiState.kt",
+      "sha256Raw": "7cb53d55271535fa9a8bb11527945592d0721384e7e9ce114cd448d1db8b8a23",
+      "sha256LF": "7cb53d55271535fa9a8bb11527945592d0721384e7e9ce114cd448d1db8b8a23",
+      "bytes": 8195,
+      "gitBlob": "2c0619530cb4e01fa28be67b7502e675a7ab5bc5"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/HomeCategoryPage.kt",
+      "sha256Raw": "5d8ce3009fc0509114d1e974eb82c68c94df320ef7491509428be591d5f0be97",
+      "sha256LF": "5d8ce3009fc0509114d1e974eb82c68c94df320ef7491509428be591d5f0be97",
+      "bytes": 64939,
+      "gitBlob": "4b6ec2710ce33bee02ee2d2b33c95e6726429158"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/common/ListLoadError.kt",
+      "sha256Raw": "6fc1d252d9d1d02eff83cf1d9eabd6ff0a645c4876aab81fa225148119a31a32",
+      "sha256LF": "6fc1d252d9d1d02eff83cf1d9eabd6ff0a645c4876aab81fa225148119a31a32",
+      "bytes": 1150,
+      "gitBlob": "eb7f6c04af7910b7a5c4ee4b0b494c33a4a028bd"
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/feature/home/HomeLoadSequencePolicyTest.kt",
+      "sha256Raw": "eb2d55619897cc866ae0991b3715fac1217871a3d0b240a6c1ddc57af532fcb0",
+      "sha256LF": "eb2d55619897cc866ae0991b3715fac1217871a3d0b240a6c1ddc57af532fcb0",
+      "bytes": 2168,
+      "gitBlob": "8ffff18fa138ba07ba1b20052c4d861a25024007"
+    }
+  ]
+}

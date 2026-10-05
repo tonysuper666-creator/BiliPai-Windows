@@ -1912,7 +1912,7 @@
       "features": [
         "plugins"
       ],
-      "mode": "direct"
+      "mode": "reference-only"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KDisplayPolicy.kt",
@@ -3516,7 +3516,7 @@
         "plugins",
         "playback"
       ],
-      "mode": "direct"
+      "mode": "reference-only"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KFirstFrameFallbackPolicy.kt",

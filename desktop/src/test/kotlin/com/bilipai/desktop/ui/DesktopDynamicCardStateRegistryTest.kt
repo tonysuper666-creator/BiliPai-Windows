@@ -3,6 +3,7 @@ package com.bilipai.desktop.ui
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.dynamic.applyDynamicLikeCountChange
 import com.android.purebilibili.feature.dynamic.DynamicLikeRequestGate
+import com.android.purebilibili.feature.dynamic.dynamicAccountStorageName
 import com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicCacheKeys as Keys
 import com.bilipai.desktop.data.*
 import com.bilipai.desktop.plugins.*
@@ -26,9 +27,11 @@ private class MutationFixture {
     val cache = DesktopDynamicCache(sessions, store)
     fun login(token: String = "fixture-A") = sessions.saveAccount(mapOf("SESSDATA" to token), AccountSummary(42, "Fixture", ""))
     fun registry() = DesktopDynamicCardStateRegistry(sessions, cache, sessions.generation)
+    fun cacheNamespace() = dynamicAccountStorageName(Keys.PREFS_DYNAMIC_CACHE,
+        checkNotNull(sessions.dynamicCacheOwner()).mid)
     suspend fun cachedItems(): List<DynamicItem> {
         cache.flush()
-        val encoded = store.preferences(Keys.PREFS_DYNAMIC_CACHE)[Keys.KEY_DYNAMIC_CACHE]?.jsonPrimitive?.content
+        val encoded = store.preferences(cacheNamespace())[Keys.KEY_DYNAMIC_CACHE]?.jsonPrimitive?.content
         return encoded?.let { Json.decodeFromString<List<DynamicItem>>(it) }.orEmpty()
     }
 }
@@ -108,7 +111,7 @@ class DesktopDynamicCardStateRegistryTest {
     @Test fun selectedUpAndAllMirrorAreChangedExactlyOnce(): Unit = runBlocking {
         val f = MutationFixture(); f.login(); val registry = f.registry()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-        val prefs = DesktopDynamicTabsPreferences(DesktopPluginContext(f.store))
+        val prefs = DesktopDynamicTabsPreferences(DesktopPluginContext(f.store),checkNotNull(f.cache.openCurrent()))
         val item = mutationItem()
         val users = DesktopDynamicUsersState(scope, prefs, 42, { FollowingsData() }, { emptyList() }, { null },
             { mutationResponse(listOf(item)) }, { true })
@@ -144,7 +147,7 @@ class DesktopDynamicCardStateRegistryTest {
         registry.bindings.markNotInterested("123"); session.saveTimeline(emptyList()); f.cache.flush()
         assertEquals(listOf("123"), raw.rows.map { it.id_str })
         assertEquals(setOf("123"), session.notInterestedIds.value)
-        assertFalse(Keys.KEY_DYNAMIC_CACHE in f.store.preferences(Keys.PREFS_DYNAMIC_CACHE))
+        assertFalse(Keys.KEY_DYNAMIC_CACHE in f.store.preferences(f.cacheNamespace()))
         registry.close(); f.cache.shutdownForRestore()
     }
 

@@ -42,7 +42,7 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
     val cacheFailure by cache.writeFailure.collectAsState()
     val scope=rememberCoroutineScope()
     val cardRegistry=checkNotNull(LocalDesktopDynamicCardStateRegistry.current){"Root dynamic mutation registry is not mounted"}
-    val tabsPreferences=remember(preferences){DesktopDynamicTabsPreferences(preferences.context)}
+    val tabsPreferences=remember(preferences,cache){DesktopDynamicTabsPreferences(preferences.context,cache)}
     val users=remember(mid,capturedEpoch,tabsPreferences) {
         DesktopDynamicUsersState(scope,tabsPreferences,mid,
             followingPage={community.followings(mid,it).data},

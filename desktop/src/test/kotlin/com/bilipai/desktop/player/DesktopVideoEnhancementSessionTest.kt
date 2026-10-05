@@ -16,7 +16,6 @@ class DesktopVideoEnhancementSessionTest {
                 awaitState { enhancement.state.value.sourceVersion == live && enhancement.state.value.identity == "video:$live" }
                 assertTrue(enhancement.state.value.requested)
                 assertFalse(enhancement.state.value.active)
-                assertTrue(player.videoShaderState.value.requestedFiles.isEmpty())
                 assertNotNull(enhancement.setCurrentVideoEnabled(false)).join()
                 awaitState { !enhancement.state.value.requested }
                 val episode = player.loadVersioned(PlaybackSource("file:///C:/pgc-video-fixture.avi"))
@@ -24,7 +23,6 @@ class DesktopVideoEnhancementSessionTest {
                 awaitState { enhancement.state.value.sourceVersion == episode }
                 assertFalse(enhancement.state.value.requested)
                 assertEquals(listOf(false), writes)
-                assertTrue(player.videoShaderState.value.requestedFiles.isEmpty())
             }
         }
     }

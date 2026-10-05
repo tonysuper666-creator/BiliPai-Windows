@@ -76,17 +76,49 @@ class EnhancementExtractionTest(unittest.TestCase):
             with self.subTest(candidateSize=len(source)), self.assertRaises(ValueError):
                 controls.windows_nvidia_enhancement_leaf(source)
 
-    def test_shader_notice_comes_from_original_amd_mit_notice(self):
+    def test_retired_glsl_backend_is_not_generated_but_upstream_inputs_remain_exact(self):
         with tempfile.TemporaryDirectory() as directory:
             files = self.generate(Path(directory))
-            result = next(path for path in files if path.name == 'DesktopFsrShaderLicense.kt').read_text(encoding='utf-8')
-        self.assertIn('Copyright (c) 2021 Advanced Micro Devices', result)
-        self.assertIn('Permission is hereby granted, free of charge', result)
-        self.assertIn('THE SOFTWARE IS PROVIDED "AS IS"', result)
-        original = plugins.read(ROOT, enhancement.BASE + 'feature/anime4k/gl/Fsr1Shaders.kt')
-        for line in result.splitlines():
-            if line.startswith(('Copyright', 'Permission', 'THE SOFTWARE')):
-                self.assertIn(line, original)
+        self.assertNotIn('DesktopFsrShaderLicense.kt', {path.name for path in files})
+        rows = {row['path']: row for row in plugins.inventory(ROOT)}
+        for name in ('Fsr1Shaders.kt', 'MpvAnime4KShader.kt', 'Anime4KShaderRepository.kt'):
+            path = enhancement.BASE + 'feature/anime4k/gl/' + name
+            self.assertEqual('reference-only', rows[path]['mode'])
+            self.assertNotIn(path, plugins.DIRECT)
+            self.assertEqual(hashlib.sha256(plugins.read(ROOT, path).encode()).hexdigest(), rows[path]['sha256'])
+
+    def test_native_normal_initialization_and_self_test_have_no_retired_shader_command(self):
+        # Inspect the actual source using the existing Kotlin body parser, including run/init.
+        selector, parser = plugins.media_extractor(ROOT), plugins.parser_for(ROOT)
+        source = (ROOT / 'desktop/src/main/kotlin/com/bilipai/desktop/player/MpvPlayer.kt').read_text(encoding='utf-8')
+        run = selector.function(source, 'run', parser)
+        self.assertIn('native.mpv_initialize(handle)', run)
+        self.assertIn('perform(native, handle, Action.Load(', run)
+        self.assertIn('applyNvidiaVideo(native, handle, action)', source)
+        for legacy in ('Action.VideoShaders', 'glsl-shaders', 'glsl-shader-opts', 'MpvVideoShaderProperties',
+                       'setVideoShaders', 'refreshPausedVideoFrame'):
+            self.assertNotIn(legacy, source)
+        self_test = (ROOT / 'desktop/src/main/kotlin/com/bilipai/desktop/player/PlayerSelfTest.kt').read_text(encoding='utf-8')
+        self.assertNotIn('DesktopShaderNativeSmoke', self_test)
+        self.assertNotIn('nativeAnime4KPresetsExecutedAndChangedPixels', self_test)
+        self.assertIn('DesktopOverlayNativeSmoke.run', self_test)
+
+    def test_incremental_generation_retires_only_its_owned_old_renderer_aliases(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            origin = enhancement.BASE + 'feature/anime4k/gl/Fsr1Shaders.kt'
+            owned = output / 'com/bilipai/desktop/player/DesktopFsrShaderLicense.kt'
+            owned.parent.mkdir(parents=True)
+            owned.write_text(f'// GENERATED from {origin}; do not edit.\nold generated leaf\n', encoding='utf-8')
+            foreign = output / 'com/android/purebilibili/feature/anime4k/gl/DesktopAnime4KShaderList.kt'
+            foreign.parent.mkdir(parents=True)
+            foreign.write_bytes(b'// foreign source is retained\n')
+            before = foreign.read_bytes()
+            plugins.prune_retired_renderer_outputs(ROOT, output)
+            self.assertFalse(owned.exists())
+            self.assertEqual(before, foreign.read_bytes())
+            with self.assertRaises(ValueError):
+                plugins.checked_output(output, output / '..' / 'outside.kt')
 
 
 if __name__ == '__main__':

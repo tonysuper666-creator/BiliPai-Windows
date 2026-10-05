@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "sources": [
+    {
+      "file": "DynamicAccountCachePolicy.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicAccountCachePolicy.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "b261eb475e95f3f86679c2beffb207e6646cd412",
+      "sha256Raw": "2bb62ce8e2061d17d3ee6d8925e22d1a9053f8198b8832131b7facb0f3a3eea9",
+      "bytes": 244,
+      "generated": true
+    },
+    {
+      "file": "DynamicAccountCachePolicyTest.kt",
+      "path": "app/src/test/java/com/android/purebilibili/feature/dynamic/DynamicAccountCachePolicyTest.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "c85ff4476388590d28389ca1b436b4e415fd910a",
+      "sha256Raw": "8d5e6e8357c81ac289aeb1e361de3d0ce79ca79b3411918730e3f106bdab14bc",
+      "bytes": 912,
+      "generated": true
+    },
+    {
+      "file": "DynamicViewModel.kt",
+      "path": "app/src/main/java/com/android/purebilibili/feature/dynamic/DynamicViewModel.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "0a5243930c2572d024fab17840f1f9d9d100a2f9",
+      "sha256Raw": "f53e125cfd9bbfe23e315ae4524b03170a3bfcd0f28454f7220a08d60e360746",
+      "bytes": 107595,
+      "generated": false
+    }
+  ]
+}

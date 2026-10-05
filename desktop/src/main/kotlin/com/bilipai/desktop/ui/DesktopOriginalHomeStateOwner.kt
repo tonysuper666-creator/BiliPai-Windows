@@ -42,6 +42,8 @@ interface DesktopOriginalHomeStateOwner {
  fun switchCategory(category:HomeCategory)
  fun switchPopularSubCategory(subCategory:PopularSubCategory)
  fun switchLiveSubCategory(subCategory:LiveSubCategory)
+ fun loadMoreIfSelected(category:HomeCategory,popular:PopularSubCategory)
+ fun refreshIfSelected(category:HomeCategory,popular:PopularSubCategory)
  fun loadMore()
  fun markRefreshNewItemsHandled(key:Long)
  fun markRecommendOldContentDividerRevealed(key:Long)

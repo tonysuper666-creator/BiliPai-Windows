@@ -49,8 +49,14 @@ SOURCES = {**{path: "direct" for path in DIRECT}, **{path: "extracted" for path 
 SOURCES[BASE + "feature/home/HomeUiState.kt"] = "policy-extract"
 EXTRACTED.append(BASE + "feature/home/HomeViewModel.kt")
 SOURCES[BASE + "feature/home/HomeViewModel.kt"] = "policy-extract"
-DIRECT += [BASE + 'feature/anime4k/gl/Fsr1Shaders.kt', BASE + 'feature/anime4k/Anime4KFirstFrameFallbackPolicy.kt']
-SOURCES.update({path: 'direct' for path in DIRECT[-2:]})
+DIRECT += [BASE + 'feature/anime4k/Anime4KFirstFrameFallbackPolicy.kt']
+SOURCES[DIRECT[-1]] = 'direct'
+# The user removed the old Windows GLSL renderer. Keep its exact upstream inputs for audit only.
+for legacy in (BASE + 'feature/anime4k/gl/Fsr1Shaders.kt', BASE + 'feature/anime4k/gl/MpvAnime4KShader.kt'):
+    if legacy in DIRECT:
+        DIRECT.remove(legacy)
+    SOURCES[legacy] = 'reference-only'
+SOURCES[BASE + 'feature/anime4k/gl/Anime4KShaderRepository.kt'] = 'reference-only'
 SOURCES[BASE + 'feature/anime4k/Anime4KOutputPolicy.kt'] = 'policy-extract'
 SOURCES[BASE + 'feature/anime4k/gl/Anime4KPipelineRenderer.kt'] = 'reference-only'
 SOURCES[BASE + 'feature/anime4k/gl/FboManager.kt'] = 'reference-only'
@@ -202,6 +208,24 @@ def prune_old_direct(output: Path, path: str, original: str) -> None:
         target.unlink()
 
 
+def prune_retired_renderer_outputs(repo: Path, output: Path) -> None:
+    # Incremental generation must also retire our previous renderer aliases.
+    # Delete only an exact generator-owned first line at these two known paths.
+    for path, relative in (
+        (BASE + 'feature/anime4k/gl/Fsr1Shaders.kt', 'com/bilipai/desktop/player/DesktopFsrShaderLicense.kt'),
+        (BASE + 'feature/anime4k/gl/Anime4KShaderRepository.kt',
+         'com/android/purebilibili/feature/anime4k/gl/DesktopAnime4KShaderList.kt'),
+    ):
+        target = checked_output(output, output / relative)
+        if target.is_file():
+            with target.open('rb') as stream:
+                first = stream.readline(4096).rstrip(b'\r\n')
+            if first == f'// GENERATED from {path}; do not edit.'.encode('utf-8'):
+                target.unlink()
+    for path in (BASE + 'feature/anime4k/gl/Fsr1Shaders.kt', BASE + 'feature/anime4k/gl/MpvAnime4KShader.kt'):
+        prune_old_direct(output, path, read(repo, path))
+
+
 def write(output: Path, path: str, original: str, body: str, name: str | None = None) -> Path:
     target = output_target(output, path, body, name)
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -271,6 +295,7 @@ def bind_owned_scopes(source: str, owner: str) -> str:
 def generate(repo: Path, output: Path) -> list[Path]:
     parser = parser_for(repo)
     generated = []
+    prune_retired_renderer_outputs(repo, output)
     for path in DIRECT:
         source = read(repo, path)
         if re.search(r"(?m)^import android\.", source):
@@ -428,7 +453,8 @@ def generate(repo: Path, output: Path) -> list[Path]:
             method = selector.function(source, name, parser)
         pieces.append(method)
     generated.append(write(output, path, source, "\n\n".join(pieces), "DesktopTodayWatchPlanConversion.kt"))
-    rows = asset_inventory(repo)
+    # Keep retired shader digests in the audit inventory; only retained payloads enter the app.
+    rows = [row for row in asset_inventory(repo) if not row['path'].startswith('app/src/main/assets/anime4k/')]
     entries = ",\n".join("        " + json.dumps(row["path"]) + " to " + json.dumps(row["sha256"]) for row in rows)
     body = "package com.bilipai.desktop.plugins\n\ninternal object DesktopPluginAssetHashes {\n    val hashes = mapOf(\n" + entries + "\n    )\n}\n"
     generated.append(write(output, PLUGIN_ASSETS[0], read(repo, PLUGIN_ASSETS[0]), body, "DesktopPluginAssetHashes.kt"))
@@ -559,12 +585,6 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
     for name in ('toTodayWatchMode', 'toTodayWatchCreatorSignal'):
         body += '\n\n' + selector.function(original, name, parser)
     generated.append(write(output, path, original, platform_logger(body)))
-
-    path = BASE + 'feature/anime4k/gl/Anime4KShaderRepository.kt'
-    original = read(repo, path)
-    body = 'package com.android.purebilibili.feature.anime4k.gl\n\nimport com.android.purebilibili.feature.anime4k.Anime4KShaderChain\n\n'
-    body += selector.function(original, 'resolveAnime4KShaderFiles', parser)
-    generated.append(write(output, path, original, body, 'DesktopAnime4KShaderList.kt'))
 
     path = BASE + 'feature/plugin/CdnRegionPlugin.kt'
     original = read(repo, path)

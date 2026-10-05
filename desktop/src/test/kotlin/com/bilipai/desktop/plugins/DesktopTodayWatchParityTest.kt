@@ -4,10 +4,6 @@ import com.android.purebilibili.core.plugin.*
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.home.*
 import com.android.purebilibili.feature.plugin.TodayWatchPlugin
-import com.android.purebilibili.feature.anime4k.Anime4KPreset
-import kotlinx.coroutines.runBlocking
-import java.io.ByteArrayInputStream
-import java.nio.file.Files
 import kotlin.test.*
 
 class DesktopTodayWatchParityTest {
@@ -43,25 +39,6 @@ class DesktopTodayWatchParityTest {
         assertFalse(consumeVideoFromTodayWatchPlan(consumed.updatedPlan, "one", 6).consumedApplied)
     }
 
-    @Test fun `original shader resource chain verifies cache and repairs corrupted files`(): Unit = runBlocking {
-        val resources = DesktopVideoShaderResources(Files.createTempDirectory("plugin-shaders-"))
-        val first = resources.resolveAnime4KPaths(Anime4KPreset.FAST)
-        assertEquals(7, first.size)
-        assertTrue(first.all { it.isAbsolute && Files.isRegularFile(it) })
-        val bytes = Files.readAllBytes(first.first())
-        Files.writeString(first.first(), "broken shader")
-        val restored = resources.resolveAnime4KPaths(Anime4KPreset.FAST)
-        assertEquals(first, restored)
-        assertContentEquals(bytes, Files.readAllBytes(restored.first()))
-        assertEquals(6, resources.resolveAnime4KPaths(Anime4KPreset.QUALITY).size)
-    }
-
-    @Test fun `tampered source shader is refused before entering the native renderer`(): Unit = runBlocking {
-        val resources = DesktopVideoShaderResources(Files.createTempDirectory("plugin-shaders-invalid-")) {
-            ByteArrayInputStream("//!DESC counterfeit\nvec4 hook() { return vec4(0); }".toByteArray())
-        }
-        assertFailsWith<IllegalStateException> { resources.resolveAnime4KPaths(Anime4KPreset.FAST) }
-    }
     private fun video(bvid: String, mid: Long) = VideoItem(bvid = bvid, cid = 10, title = "学习视频$bvid", duration = 100,
         owner = Owner(mid = mid, name = "作者$mid"), stat = Stat(view = 10_000), pubdate = 1_000)
 }

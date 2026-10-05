@@ -5,39 +5,45 @@ import com.android.purebilibili.core.store.DesktopDynamicTabsSettings
 import com.android.purebilibili.feature.dynamic.*
 import com.android.purebilibili.feature.settings.DesktopDynamicTabsSettingsFields
 import com.bilipai.desktop.plugins.*
+import com.bilipai.desktop.data.DesktopDynamicCacheSession
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.*
 
-/** Same global settings and original dynamic_user_prefs namespace, never a new account store. */
-internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext) {
-    init {context.store.requireObjectNamespace("settings");context.store.requireObjectNamespace(DesktopOriginalDynamicUserPreferenceKeys.PREFS_DYNAMIC_USERS)}
+/** Global display settings; original MID/guest user preferences in the same Root Store. */
+internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext, internal val account:DesktopDynamicCacheSession? = null) {
+    init {context.store.requireObjectNamespace("settings")}
+    private fun requireAccount()=checkNotNull(account){"Dynamic user preferences require the actual current Root cache session"}
     val visibleTabs=DesktopDynamicTabsSettings.getDynamicTabVisibleTabs(context)
     val tabOrder=DesktopDynamicTabsSettings.getDynamicTabOrder(context)
     val allTabUsers=DesktopDynamicTabsSettings.getDynamicAllTabHorizontalUserListVisible(context)
     // These are synchronous maps of the already loaded StateFlow, with no disk/network wait.
     val initialVisibleTabs:Set<String> get()=runBlocking{visibleTabs.first()}
     val initialTabOrder:List<String> get()=runBlocking{tabOrder.first()}
-    val users=context.store.snapshot(DesktopOriginalDynamicUserPreferenceKeys.PREFS_DYNAMIC_USERS)
-    private val shared=context.getSharedPreferences(DesktopOriginalDynamicUserPreferenceKeys.PREFS_DYNAMIC_USERS,DesktopPluginContext.MODE_PRIVATE)
-    val selectedTab:Int get()=resolveDynamicSelectedTab(if(shared.all.containsKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB))shared.getInt(DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB,0)else null,5)
+    val users get()=requireAccount().userPreferences(context.store)
+    val selectedTab:Int get()=resolveDynamicSelectedTab(users.value[selectedKey],5)
     private val selectedKey=dynamicIntPreferencesKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB)
-    val selectedTabFlow=users.map{resolveDynamicSelectedTab(it[selectedKey],5)}
+    val selectedTabFlow by lazy {users.map{resolveDynamicSelectedTab(it[selectedKey],5)}}
     private fun setKey(name:String)=DesktopPreferenceKey(name){value:JsonElement->
         require(value is JsonArray){"动态用户设置格式无效"}
         val array=value
         require(array.all{it is JsonPrimitive&&it.isString}){"动态用户设置格式无效"}
         array.mapNotNull{(it as? JsonPrimitive)?.takeIf{p->p.isString}?.content?.toLongOrNull()}.toSet()}
-    val pinned=users.map{it[setKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS)].orEmpty()}
-    val hidden=users.map{it[setKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS)].orEmpty()}
+    val pinned by lazy {users.map{it[setKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS)].orEmpty()}}
+    val hidden by lazy {users.map{it[setKey(DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS)].orEmpty()}}
     val initialPinned:Set<Long> get()=runBlocking{pinned.first()}
     val initialHidden:Set<Long> get()=runBlocking{hidden.first()}
     val initialAllTabUsers:Boolean get()=runBlocking{allTabUsers.first()}
-    suspend fun setSelectedTab(value:Int)=withContext(Dispatchers.IO){
-        context.store.requireObjectNamespace(DesktopOriginalDynamicUserPreferenceKeys.PREFS_DYNAMIC_USERS)
-        shared.edit().putInt(DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB,resolveDynamicSelectedTab(value,5)).apply()
+    private suspend fun writeUser(edit:(DesktopPreferenceSnapshot)->Map<String,JsonElement?>) {
+        val session=requireAccount()
+        val caller=currentCoroutineContext()[Job] ?: error("Dynamic preference write requires a caller Job")
+        caller.ensureActive()
+        withContext(Dispatchers.IO) { session.updateUserPreferences(context.store,caller,edit) }
+    }
+    suspend fun setSelectedTab(value:Int)=writeUser {
+        mapOf(DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB to JsonPrimitive(resolveDynamicSelectedTab(value,5)))
     }
     suspend fun setVisibleTabs(value:Set<String>)=DesktopDynamicTabsSettings.setDynamicTabVisibleTabs(context,value)
     suspend fun setOrder(value:List<String>)=DesktopDynamicTabsSettings.setDynamicTabOrder(context,value)
@@ -45,16 +51,17 @@ internal class DesktopDynamicTabsPreferences(val context:DesktopPluginContext) {
     suspend fun toggleVisibility(id:String)=setVisibleTabs(resolveDynamicVisibleTabIdsAfterToggle(visibleTabs.first(),id))
     // StringSet has no Android platform representation on Windows. A JSON array preserves
     // the original set of decimal MID strings in the same original namespace and key.
-    suspend fun toggleUserPreference(name:String,uid:Long)=withContext(Dispatchers.IO){
+    suspend fun toggleUserPreference(name:String,uid:Long) {
         require(name==DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS||name==DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS)
-        context.store.requireObjectNamespace(DesktopOriginalDynamicUserPreferenceKeys.PREFS_DYNAMIC_USERS)
-        val current=context.store.preferences(DesktopOriginalDynamicUserPreferenceKeys.PREFS_DYNAMIC_USERS)[name]
-        require(current==null||current is JsonArray){"动态用户设置格式无效"}
-        val ids=current.orEmpty().map {
-            require(it is JsonPrimitive&&it.isString){"动态用户设置格式无效"};it.content
-        }.toMutableSet()
-        if(!ids.add(uid.toString()))ids.remove(uid.toString())
-        context.store.update(DesktopOriginalDynamicUserPreferenceKeys.PREFS_DYNAMIC_USERS,mapOf(name to JsonArray(ids.map(::JsonPrimitive))))
+        writeUser { snapshot ->
+            val current=snapshot[DesktopPreferenceKey<JsonElement>(name){it}]
+            require(current==null||current is JsonArray){"动态用户设置格式无效"}
+            val ids=(current as? JsonArray).orEmpty().map {
+                require(it is JsonPrimitive&&it.isString){"动态用户设置格式无效"};it.content
+            }.toMutableSet()
+            if(!ids.add(uid.toString()))ids.remove(uid.toString())
+            mapOf(name to JsonArray(ids.map(::JsonPrimitive)))
+        }
     }
 }
 

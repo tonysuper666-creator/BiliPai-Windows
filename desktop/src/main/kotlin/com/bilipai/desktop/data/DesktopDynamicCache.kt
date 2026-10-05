@@ -3,6 +3,10 @@ package com.bilipai.desktop.data
 import com.android.purebilibili.data.model.response.DynamicItem
 import com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicCacheKeys
 import com.android.purebilibili.feature.dynamic.normalizeDynamicNotInterestedIds
+import com.android.purebilibili.feature.dynamic.dynamicAccountStorageName
+import com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicUserPreferenceKeys
+import com.bilipai.desktop.plugins.DesktopPreferenceKey
+import com.bilipai.desktop.plugins.DesktopPreferenceSnapshot
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -14,14 +18,14 @@ import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 
-/** One Root-owned writer for the original global dynamic cache namespace. */
+/** One Root-owned writer; the original MID/guest policy selects namespaces in the same Store. */
 internal class DesktopDynamicCache(
     private val guard: DesktopDynamicCacheSessionGuard,
     private val store: DesktopPluginStore,
     private val nowMs: () -> Long = System::currentTimeMillis,
 ) {
     private sealed interface Work {
-        data class Open(val owner: DesktopDynamicCacheOwner, val result: CompletableDeferred<DesktopDynamicCacheSession?>) : Work
+        data class Open(val owner: DesktopDynamicCacheOwner, val caller: Job, val result: CompletableDeferred<DesktopDynamicCacheSession?>) : Work
         data object SaveLatest : Work
         data class Mark(val session: DesktopDynamicCacheSession, val id: String, val result: CompletableDeferred<Unit>) : Work
         data class Barrier(val result: CompletableDeferred<Unit>) : Work
@@ -37,7 +41,7 @@ internal class DesktopDynamicCache(
     @Volatile private var active: DesktopDynamicCacheSession? = null
     private val worker = scope.launch {
         for (work in queue) when (work) {
-            is Work.Open -> try { work.result.complete(open(work.owner)) }
+            is Work.Open -> try { work.result.complete(open(work.owner, work.caller)) }
                 catch (failure: Exception) { work.result.completeExceptionally(failure) }
             Work.SaveLatest -> {
                 val pending = synchronized(gate) { pendingSave.also { pendingSave = null; saveQueued = false } }
@@ -57,7 +61,7 @@ internal class DesktopDynamicCache(
     suspend fun openCurrent(): DesktopDynamicCacheSession? {
         val owner = guard.dynamicCacheOwner() ?: return null
         val result = CompletableDeferred<DesktopDynamicCacheSession?>()
-        enqueue(Work.Open(owner, result))
+        enqueue(Work.Open(owner, currentCoroutineContext()[Job] ?: error("Dynamic cache requires a caller Job"), result))
         return result.await()
     }
 
@@ -69,6 +73,11 @@ internal class DesktopDynamicCache(
 
     internal fun saveTimeline(session: DesktopDynamicCacheSession, items: List<DynamicItem>) {
         try {
+            // Original DynamicViewModel does not persist or cold-seed a guest timeline.
+            if (session.owner.mid <= 0L) {
+                check(withCurrentSession(session) {}) { "账号已切换，请重新加载" }
+                return
+            }
             val accepted = withCurrentSession(session) {
                 synchronized(gate) {
                     check(accepting) { "动态缓存已停止" }
@@ -121,78 +130,123 @@ internal class DesktopDynamicCache(
         check(active === session && guard.dynamicCacheOwner() == session.owner) { "账号已切换，请重新加载" }
     }
 
-    private fun open(owner: DesktopDynamicCacheOwner): DesktopDynamicCacheSession? {
-        var session: DesktopDynamicCacheSession? = null
-        val current = guard.withCurrentDynamicCacheOwner(owner) {
-            if (active?.owner == owner) { session = active; return@withCurrentDynamicCacheOwner }
-            val values = try {
-                store.requireObjectNamespace(DesktopOriginalDynamicCacheKeys.PREFS_DYNAMIC_CACHE)
-                store.preferences(DesktopOriginalDynamicCacheKeys.PREFS_DYNAMIC_CACHE)
-            } catch (failure: Exception) {
-                // A local cache problem is visible, but must not prevent a usable network feed.
-                session = DesktopDynamicCacheSession(this, owner, emptyList(), emptySet()).also {
-                    it.mutableWriteFailure.value = failure; active = it
-                }
-                return@withCurrentDynamicCacheOwner
-            }
-            val owned = ownerTag(values) == owner.namespaceTag
-            val cached = if (owned) {
-                val encoded = (values[DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE] as? JsonPrimitive)
-                    ?.takeIf { it.isString }?.content
-                encoded?.let { runCatching { json.decodeFromString<List<DynamicItem>>(it) }.getOrNull() }.orEmpty()
-            } else emptyList()
-            val ids = if (owned) decodeIds(values) else emptySet()
-            session = DesktopDynamicCacheSession(this, owner, cached, ids).also { active = it }
+    private fun currentOwner(owner: DesktopDynamicCacheOwner, caller: Job? = null) {
+        caller?.ensureActive()
+        check(guard.dynamicCacheOwner() == owner) { "账号已切换，请重新加载" }
+    }
+
+    private fun permit(owner: DesktopDynamicCacheOwner, caller: Job? = null,
+                       session: DesktopDynamicCacheSession? = null,
+                       requireAccepting: Boolean = false): DesktopPluginStore.OriginalPreferenceWritePermit {
+        var result: DesktopPluginStore.OriginalPreferenceWritePermit? = null
+        check(guard.withCurrentDynamicCacheOwner(owner) {
+            caller?.ensureActive()
+            if (session != null) check(active === session) { "动态缓存实例已退休" }
+            if (requireAccepting) synchronized(gate) { check(accepting) { "动态缓存已停止" } }
+            result = DesktopPluginStore.OriginalPreferenceWritePermit(store)
+        }) { "账号已切换，请重新加载" }
+        return checkNotNull(result)
+    }
+
+    /** Legacy namespaces are preserved. Only their exact current credential owner tag proves migration. */
+    private fun migrateOwnedLegacy(owner: DesktopDynamicCacheOwner, caller: Job, legacyName: String,
+                                   name: String, keys: List<String>) {
+        currentOwner(owner, caller)
+        store.requireObjectNamespace(name)
+        if (store.preferences(name).isNotEmpty()) return
+        val legacy = store.preferences(legacyName)
+        if (ownerTag(legacy) != owner.namespaceTag) return
+        val copied = keys.mapNotNull { key -> legacy[key]?.let { key to it } }.toMap()
+        store.updateOriginalFromSnapshot(name, { currentOwner(owner, caller) },
+            { permit(owner, caller) }) { snapshot ->
+            val alreadyPresent = (keys + OWNER_KEY).any { snapshot[rawKey(it)] != null }
+            Unit to if (alreadyPresent) emptyMap() else copied + (OWNER_KEY to JsonPrimitive(owner.namespaceTag))
         }
-        return if (current) session else null
+    }
+
+    private fun open(owner: DesktopDynamicCacheOwner, caller: Job): DesktopDynamicCacheSession? {
+        currentOwner(owner, caller)
+        active?.takeIf { it.owner == owner }?.let { current ->
+            return if (guard.withCurrentDynamicCacheOwner(owner) { caller.ensureActive() }) current else null
+        }
+        val name = dynamicAccountStorageName(DesktopOriginalDynamicCacheKeys.PREFS_DYNAMIC_CACHE, owner.mid)
+        var failure: Exception? = null
+        val values = try {
+            migrateOwnedLegacy(owner, caller, DesktopOriginalDynamicCacheKeys.PREFS_DYNAMIC_CACHE, name,
+                listOf(DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE,
+                    DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE_TIME,
+                    DesktopOriginalDynamicCacheKeys.KEY_NOT_INTERESTED_DYNAMIC_IDS))
+            val users = DesktopOriginalDynamicUserPreferenceKeys.PREFS_DYNAMIC_USERS
+            migrateOwnedLegacy(owner, caller, users, dynamicAccountStorageName(users, owner.mid),
+                listOf(DesktopOriginalDynamicUserPreferenceKeys.KEY_PINNED_USERS,
+                    DesktopOriginalDynamicUserPreferenceKeys.KEY_HIDDEN_USERS,
+                    DesktopOriginalDynamicUserPreferenceKeys.KEY_SELECTED_TAB))
+            store.requireObjectNamespace(name)
+            store.preferences(name)
+        } catch (cancelled: CancellationException) { throw cancelled }
+          catch (error: Exception) { failure = error; JsonObject(emptyMap()) }
+        currentOwner(owner, caller)
+        val cached = if (owner.mid > 0L) {
+            val encoded = (values[DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE] as? JsonPrimitive)
+                ?.takeIf { it.isString }?.content
+            encoded?.let { runCatching { json.decodeFromString<List<DynamicItem>>(it) }.getOrNull() }.orEmpty()
+        } else emptyList()
+        val session = DesktopDynamicCacheSession(this, owner, cached, decodeIds(values)).also {
+            it.mutableWriteFailure.value = failure
+        }
+        return if (guard.withCurrentDynamicCacheOwner(owner) { caller.ensureActive(); active = session }) session else null
+    }
+
+    internal fun userPreferences(session: DesktopDynamicCacheSession, target: DesktopPluginStore): StateFlow<DesktopPreferenceSnapshot> {
+        require(target === store) { "Dynamic preferences require the same Root Store" }
+        var result: StateFlow<DesktopPreferenceSnapshot>? = null
+        check(withCurrentSession(session) {
+            store.requireObjectNamespace(session.userPreferenceNamespace)
+            result = store.snapshot(session.userPreferenceNamespace)
+        }) { "账号已切换，请重新加载" }
+        return checkNotNull(result)
+    }
+
+    internal fun updateUserPreferences(session: DesktopDynamicCacheSession, target: DesktopPluginStore,
+                                      caller: Job, edit: (DesktopPreferenceSnapshot) -> Map<String, JsonElement?>) {
+        require(target === store) { "Dynamic preferences require the same Root Store" }
+        store.updateOriginalFromSnapshot(session.userPreferenceNamespace,
+            { caller.ensureActive(); requireCurrent(session); synchronized(gate) { check(accepting) { "动态缓存已停止" } } },
+            { permit(session.owner, caller, session, requireAccepting = true) }) { snapshot ->
+            Unit to (edit(snapshot) + (OWNER_KEY to JsonPrimitive(session.owner.namespaceTag)))
+        }
     }
 
     private fun save(pending: PendingSave) {
         val session = pending.session
         requireCurrent(session)
         val payload = pending.items.takeIf { it.isNotEmpty() }?.let { json.encodeToString(it) }
-        val accepted = guard.withCurrentDynamicCacheOwner(session.owner) {
-            store.updateFromSnapshot(DesktopOriginalDynamicCacheKeys.PREFS_DYNAMIC_CACHE) {
-                ownerChanges(session.owner).apply {
-                    put(DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE, payload?.let(::JsonPrimitive))
-                    put(DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE_TIME, payload?.let { JsonPrimitive(nowMs()) })
-                }
-            }
+        store.updateOriginalFromSnapshot(session.cacheNamespace, { requireCurrent(session) },
+            { permit(session.owner, session = session) }) {
+            Unit to mapOf(OWNER_KEY to JsonPrimitive(session.owner.namespaceTag),
+                DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE to payload?.let(::JsonPrimitive),
+                DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE_TIME to payload?.let { JsonPrimitive(nowMs()) })
+        }
+        check(withCurrentSession(session) {
             session.mutableCachedAllItems.value = pending.items
             session.mutableWriteFailure.value = null
-        }
-        check(accepted) { "账号已切换，请重新加载" }
+        }) { "账号已切换，请重新加载" }
     }
 
     private fun mark(session: DesktopDynamicCacheSession, id: String) {
         requireCurrent(session)
-        val accepted = guard.withCurrentDynamicCacheOwner(session.owner) {
-            var next = emptySet<String>()
-            store.updateFromSnapshot(DesktopOriginalDynamicCacheKeys.PREFS_DYNAMIC_CACHE) {
-                val values = store.preferences(DesktopOriginalDynamicCacheKeys.PREFS_DYNAMIC_CACHE)
-                val owned = ownerTag(values) == session.owner.namespaceTag
-                next = normalizeDynamicNotInterestedIds((if (owned) decodeIds(values) else emptySet()) + id,
-                    DesktopOriginalDynamicCacheKeys.MAX_NOT_INTERESTED_DYNAMIC_IDS)
-                ownerChanges(session.owner).apply {
-                    put(DesktopOriginalDynamicCacheKeys.KEY_NOT_INTERESTED_DYNAMIC_IDS, JsonArray(next.map(::JsonPrimitive)))
-                }
-            }
+        val next = store.updateOriginalFromSnapshot(session.cacheNamespace, { requireCurrent(session) },
+            { permit(session.owner, session = session) }) { snapshot ->
+            val ids = snapshot[rawKey(DesktopOriginalDynamicCacheKeys.KEY_NOT_INTERESTED_DYNAMIC_IDS)]
+                ?.let { decodeIds(JsonObject(mapOf(DesktopOriginalDynamicCacheKeys.KEY_NOT_INTERESTED_DYNAMIC_IDS to it))) }.orEmpty()
+            val normalized = normalizeDynamicNotInterestedIds(ids + id, DesktopOriginalDynamicCacheKeys.MAX_NOT_INTERESTED_DYNAMIC_IDS)
+            normalized to mapOf(OWNER_KEY to JsonPrimitive(session.owner.namespaceTag),
+                DesktopOriginalDynamicCacheKeys.KEY_NOT_INTERESTED_DYNAMIC_IDS to JsonArray(normalized.map(::JsonPrimitive)))
+        }
+        check(withCurrentSession(session) {
             session.mutableNotInterestedIds.value = next
             session.mutableWriteFailure.value = null
-        }
-        check(accepted) { "账号已切换，请重新加载" }
-    }
-
-    /** Called under both the original SessionStore and PluginStore monitors. */
-    private fun ownerChanges(owner: DesktopDynamicCacheOwner): MutableMap<String, JsonElement?> {
-        val values = store.preferences(DesktopOriginalDynamicCacheKeys.PREFS_DYNAMIC_CACHE)
-        return linkedMapOf<String, JsonElement?>(OWNER_KEY to JsonPrimitive(owner.namespaceTag)).apply {
-            if (ownerTag(values) != owner.namespaceTag) {
-                put(DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE, null)
-                put(DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE_TIME, null)
-                put(DesktopOriginalDynamicCacheKeys.KEY_NOT_INTERESTED_DYNAMIC_IDS, null)
-            }
-        }
+        }) { "账号已切换，请重新加载" }
     }
 
     private fun decodeIds(values: JsonObject): Set<String> = normalizeDynamicNotInterestedIds(
@@ -206,6 +260,7 @@ internal class DesktopDynamicCache(
     private companion object {
         const val OWNER_KEY = "_desktop_session_owner_v1"
         val json = Json { ignoreUnknownKeys = true }
+        fun rawKey(name: String) = DesktopPreferenceKey<JsonElement>(name) { it }
     }
 }
 
@@ -215,6 +270,12 @@ internal class DesktopDynamicCacheSession internal constructor(
     cachedAll: List<DynamicItem>,
     notInterested: Set<String>,
 ) {
+    internal val cacheNamespace = dynamicAccountStorageName(DesktopOriginalDynamicCacheKeys.PREFS_DYNAMIC_CACHE, owner.mid)
+    internal val userPreferenceNamespace = dynamicAccountStorageName(DesktopOriginalDynamicUserPreferenceKeys.PREFS_DYNAMIC_USERS, owner.mid)
+    internal fun userPreferences(store: DesktopPluginStore) = cache.userPreferences(this, store)
+    internal fun updateUserPreferences(store: DesktopPluginStore, caller: Job,
+                                      edit: (DesktopPreferenceSnapshot) -> Map<String, JsonElement?>) =
+        cache.updateUserPreferences(this, store, caller, edit)
     internal val mutableCachedAllItems = MutableStateFlow(cachedAll)
     internal val mutableNotInterestedIds = MutableStateFlow(notInterested)
     internal val mutableWriteFailure = MutableStateFlow<Throwable?>(null)

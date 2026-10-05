@@ -583,6 +583,8 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-page").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-page.py", "tools/sync-upstream.py")
+    inputs.file("tools/v029_home_load.py")
+    inputs.dir("upstream-slices/v029-home-load")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "home-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -596,12 +598,16 @@ val extractOriginalHomeViewModel by tasks.registering(Exec::class) {
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-viewmodel.py",
         "--repo", repositoryRoot.absolutePath,
-        "--output", layout.buildDirectory.dir("generated/home-viewmodel").get().asFile.absolutePath)
+        "--output", layout.buildDirectory.dir("generated/home-viewmodel").get().asFile.absolutePath,
+        "--test-output", layout.buildDirectory.dir("generated/home-load-tests").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-viewmodel.py", "tools/extract-upstream-home-viewmodel-adaptations.json",
         "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.file("tools/v029_home_load.py")
+    inputs.dir("upstream-slices/v029-home-load")
     inputs.files(sources.filter { "home-viewmodel" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/home-viewmodel"))
+    outputs.dir(layout.buildDirectory.dir("generated/home-load-tests"))
 }
 val extractOriginalHomeProtocols by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources)
@@ -620,6 +626,8 @@ kotlin.sourceSets.named("main") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/home-protocols"))
 }
 tasks.named("compileKotlin") { dependsOn(extractOriginalHomeViewModel, extractOriginalHomeProtocols) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/home-load-tests")) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalHomeViewModel) }
 // Existing full-card expansion calls the sole Home-page producer for two wallpaper outputs.
 // Root already registered that dependency with UI524; keep it, and keep the full-card feature input.
 // Never use --standalone in production: DIRECT3 VM policies and DIRECT1 WatchLater bus are copied
@@ -1415,6 +1423,22 @@ val extractUpstreamDynamicTabs by tasks.registering(Exec::class) {
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-tabs"))
 }
 
+val extractOriginalDynamicAccountPolicy by tasks.registering(Exec::class) {
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-dynamic-account.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-dynamic-account").get().asFile.absolutePath,
+        "--tests-output", layout.buildDirectory.dir("generated/original-dynamic-account-tests").get().asFile.absolutePath)
+    inputs.file("tools/extract-upstream-dynamic-account.py")
+    inputs.dir("upstream-slices/v029-dynamic-account")
+    outputs.dir(layout.buildDirectory.dir("generated/original-dynamic-account"))
+    outputs.dir(layout.buildDirectory.dir("generated/original-dynamic-account-tests"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-dynamic-account")) }
+kotlin.sourceSets.named("test") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-dynamic-account-tests")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalDynamicAccountPolicy) }
+tasks.named("compileTestKotlin") { dependsOn(extractOriginalDynamicAccountPolicy) }
+
 val extractUpstreamDynamicFollow by tasks.registering(Exec::class) {
     dependsOn(prepareUpstreamSources, extractUpstreamDynamicSettings, extractUpstreamDynamicTabs)
     workingDir(projectDir)
@@ -1739,8 +1763,6 @@ tasks.named("processResources") { dependsOn(extractUpstreamAppearance) }
 
 val prepareOriginalPluginResources by tasks.registering(Sync::class) {
     dependsOn(prepareUpstreamSources)
-    from(File(repositoryRoot, "app/src/main/assets/anime4k")) { into("anime4k"); include(originalResources.filter {
-        it["path"].toString().startsWith("app/src/main/assets/anime4k/") }.map { File(it["path"].toString()).name }) }
     from(canonicalOriginalSource("app/src/main/res/raw/cdn_region_catalog.json")) { into("plugin") }
     from(canonicalOriginalSource("app/src/main/assets/rovniced-skin-catalog.json"))
     into(layout.buildDirectory.dir("generated/plugin-resources"))
