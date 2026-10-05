@@ -59,6 +59,7 @@ public final class AwtMpvProbe {
     private final List<Object> captureTimeline = new ArrayList<>();
     private int droppedCaptures;
     private boolean surfacePhysicalFailure;
+    private final boolean debugObservations;
     private volatile String lastReport = "{}";
     private JFrame frame;
     private Canvas canvas;
@@ -70,8 +71,9 @@ public final class AwtMpvProbe {
     private DwmApi dwm;
     private Rectangle screenBounds;
 
-    private AwtMpvProbe(String caseName, Path output, Path dll, Path shaderRoot) {
+    private AwtMpvProbe(String caseName, Path output, Path dll, Path shaderRoot, boolean debugObservations) {
         this.caseName = caseName; this.output = output; this.dll = dll; this.shaderRoot = shaderRoot;
+        this.debugObservations = debugObservations;
         deadline = started + TimeUnit.SECONDS.toNanos(shaderCase() ? 90 : caseName.equals("awt-alpha-only") ? 25 : 30);
         result.put("schema", 1); result.put("case", caseName); result.put("diagnosticOnly", true);
         result.put("passed", false); result.put("beganUtc", Instant.now().toString());
@@ -95,13 +97,19 @@ public final class AwtMpvProbe {
         try {
             Map<String, String> cli = new LinkedHashMap<>();
             for (int i = 0; i < args.length; i += 2) {
-                if (i + 1 >= args.length || !Set.of("--case", "--output", "--mpv", "--shader-root").contains(args[i]) ||
+                if (i + 1 >= args.length || !Set.of("--case", "--output", "--mpv", "--shader-root", "--surface-debug-observations").contains(args[i]) ||
                     cli.put(args[i], args[i + 1]) != null) throw new IllegalArgumentException("Invalid or duplicate CLI argument");
             }
             String name = cli.get("--case");
-            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-bitblt", "mpv-adaptive",
+            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive",
                 "shader-clear-default-retained", "shader-clear-default-seek", "shader-clear-nodumb-retained", "shader-clear-nodumb-seek").contains(name))
                 throw new IllegalArgumentException("--case must select one diagnostic case");
+            String debugFlag = cli.getOrDefault("--surface-debug-observations", "false");
+            if (!Set.of("true", "false").contains(debugFlag)) throw new IllegalArgumentException("Invalid debug observation flag");
+            boolean debugObservations = debugFlag.equals("true");
+            if (debugObservations && !Set.of("mpv-default-flip", "mpv-default-debug").contains(name))
+                throw new IllegalArgumentException("Debug observations require the explicit surface-debug cases");
+            if (name.equals("mpv-default-debug") && !debugObservations) throw new IllegalArgumentException("Debug case requires explicit observations");
             Path output = Path.of(Objects.requireNonNull(cli.get("--output"), "Missing --output")).toAbsolutePath().normalize();
             if (Files.exists(output, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("--output must not exist");
             Path parent = Objects.requireNonNull(output.getParent()).toRealPath();
@@ -109,7 +117,7 @@ public final class AwtMpvProbe {
             Files.createDirectory(output);
             Path dll = name.equals("awt-alpha-only") ? null : Path.of(Objects.requireNonNull(cli.get("--mpv"), "Missing --mpv")).toRealPath();
             Path shaders = name.startsWith("shader-clear-") ? Path.of(Objects.requireNonNull(cli.get("--shader-root"), "Missing --shader-root")).toRealPath() : null;
-            code = new AwtMpvProbe(name, output, dll, shaders).run();
+            code = new AwtMpvProbe(name, output, dll, shaders, debugObservations).run();
         } catch (Throwable error) {
             System.err.println(error.getClass().getSimpleName() + ": " + safe(error.getMessage()));
         }
@@ -156,7 +164,7 @@ public final class AwtMpvProbe {
                     "audioSampleRate", 48000, "audioChannels", 1, "volume", 0, "muted", true));
                 long hwnd = edt(() -> Pointer.nativeValue(Native.getComponentPointer(canvas)) & 0xffffffffL);
                 requireOwn(new Pointer(hwnd));
-                actor = new MpvActor(dll, hwnd, video, audio, caseName);
+                actor = new MpvActor(dll, hwnd, video, audio, caseName, debugObservations);
                 actor.start();
                 waitCondition("native initialization", 7_000, () -> actor.ready.isDone());
                 actor.ready.get();
@@ -202,6 +210,10 @@ public final class AwtMpvProbe {
                 catch (Throwable cleanup) { result.put("nativeCleanupError", safe(cleanup.toString())); }
                 try { Files.writeString(output.resolve("native-log.txt"), actor.logs(), StandardOpenOption.CREATE_NEW); }
                 catch (Throwable cleanup) { result.put("logWriteError", safe(cleanup.toString())); }
+                if (debugObservations) {
+                    result.put("loadedRuntimeModules", actor.runtimeModules);
+                    result.put("gpuDebugObservation", actor.debugObservation());
+                }
                 result.put("nativeLifecycle", Map.of("fileLoaded", actor.fileLoaded, "playbackRestartObserved", actor.playbackRestart,
                     "terminated", actor.terminated.get(), "droppedLogLines", actor.droppedLines));
             }
@@ -815,11 +827,14 @@ public final class AwtMpvProbe {
         private final Path dll, video, audio;
         private final long hwnd;
         private final String selectedCase;
+        private final boolean debugObservations;
+        volatile Map<String, Object> runtimeModules = Map.of();
         volatile String expectedFlip = "yes";
         volatile Map<String, Object> presentationSelection = Map.of();
         private final Thread worker;
-        MpvActor(Path dll, long hwnd, Path video, Path audio, String selectedCase) {
+        MpvActor(Path dll, long hwnd, Path video, Path audio, String selectedCase, boolean debugObservations) {
             this.dll = dll; this.hwnd = hwnd; this.video = video; this.audio = audio; this.selectedCase = selectedCase;
+            this.debugObservations = debugObservations;
             worker = new Thread(this::run, "probe-single-mpv-actor"); worker.setDaemon(true);
         }
         void start() { worker.start(); }
@@ -882,6 +897,7 @@ public final class AwtMpvProbe {
                     if (selectedCase.contains("-nodumb-")) options.put("gpu-dumb-mode", "no");
                     options.put("screenshot-format", "png");
                 }
+                if (selectedCase.equals("mpv-default-debug")) options.put("gpu-debug", "yes");
                 boolean bitblt = selectedCase.equals("mpv-bitblt");
                 if (selectedCase.equals("mpv-adaptive")) {
                     // Compile and call the same production helper, not a diagnostic copy of the policy.
@@ -901,7 +917,7 @@ public final class AwtMpvProbe {
                 expectedFlip = bitblt ? "no" : "yes";
                 if (bitblt) options.put("d3d11-flip", "no"); // Default/hardware cases leave the pinned default untouched.
                 for (Map.Entry<String, String> option : options.entrySet()) check(api, api.mpv_set_option_string(handle, option.getKey(), option.getValue()), option.getKey());
-                check(api, api.mpv_request_log_messages(handle, "v"), "request-log-messages");
+                check(api, api.mpv_request_log_messages(handle, debugObservations ? "debug" : "v"), "request-log-messages");
                 check(api, api.mpv_initialize(handle), "initialize");
                 check(api, api.mpv_command(handle, new StringArray(new String[]{"loadfile", video.toString(), "replace"}, "UTF-8")), "loadfile");
                 ready.complete(null);
@@ -933,6 +949,7 @@ public final class AwtMpvProbe {
                         Map<String, Object> values = new LinkedHashMap<>();
                         List<String> names = new ArrayList<>(Arrays.asList(PROPERTIES));
                         if (selectedCase.startsWith("shader-clear-")) names.addAll(Arrays.asList(SHADER_PROPERTIES));
+                        if (debugObservations) names.add("options/gpu-debug");
                         for (String property : names) {
                             try (Memory memory = new Memory(Native.POINTER_SIZE)) {
                                 memory.clear(); int code = api.mpv_get_property(handle, property, 1, memory);
@@ -954,6 +971,7 @@ public final class AwtMpvProbe {
                 }
             } catch (Throwable error) { failure = error; ready.completeExceptionally(error); log("ACTOR_FAILURE " + safe(error.toString())); }
             finally {
+                if (debugObservations) runtimeModules = loadedRuntimeModules();
                 NativeTask<?> task;
                 while ((task = tasks.poll()) != null) task.result().completeExceptionally(new IllegalStateException("Own native actor stopped"));
                 if (api != null && handle != null) {
@@ -961,6 +979,46 @@ public final class AwtMpvProbe {
                     catch (Throwable error) { failure = error; log("DESTROY_FAILURE " + safe(error.toString())); }
                 } else terminated.set(true);
             }
+        }
+
+        // One sample on the sole worker, before its device is destroyed. No module is loaded by this query.
+        private Map<String, Object> loadedRuntimeModules() {
+            Map<String, Object> facts = new LinkedHashMap<>();
+            facts.put("scope", "own JVM loaded modules at worker retirement; not device identity or debug-layer ACK");
+            facts.put("ownPid", PID);
+            List<Object> modules = new ArrayList<>(); facts.put("modules", modules);
+            try {
+                Kernel32 kernel = Native.load("kernel32", Kernel32.class);
+                for (String name : List.of("d3d10warp.dll", "d3d11.dll", "dxgi.dll", "d3d11sdklayers.dll", "dxgidebug.dll")) {
+                    Map<String, Object> row = new LinkedHashMap<>(); row.put("name", name); modules.add(row);
+                    Native.setLastError(0);
+                    Pointer module = kernel.GetModuleHandleW(new com.sun.jna.WString(name));
+                    row.put("loaded", module != null); row.put("handleQueryLastError", Native.getLastError());
+                    if (module == null) continue;
+                    char[] path = new char[32768]; Native.setLastError(0);
+                    int length = kernel.GetModuleFileNameW(module, path, path.length);
+                    row.put("pathQueryLastError", Native.getLastError());
+                    if (length <= 0 || length >= path.length) { row.put("pathUnavailable", true); continue; }
+                    String actual = new String(path, 0, length);
+                    if (!Path.of(actual).getFileName().toString().equalsIgnoreCase(name)) {
+                        row.put("pathUnavailable", true); row.put("reason", "module basename did not match"); continue;
+                    }
+                    row.put("path", actual);
+                }
+            } catch (Throwable unavailable) { facts.put("error", safe(unavailable.toString())); }
+            return Collections.unmodifiableMap(facts);
+        }
+        private Map<String, Object> debugObservation() {
+            String text = logs();
+            List<String> fallback = text.lines().filter(line -> line.contains("gpu-debug disabled due to error:")).limit(12).toList();
+            List<String> messages = text.lines().filter(line -> line.matches("vo/gpu/d3d11 \\[.*\\] [0-9]+: .*" )).limit(24).toList();
+            Map<String, Object> facts = new LinkedHashMap<>();
+            facts.put("requested", selectedCase.equals("mpv-default-debug"));
+            facts.put("state", !fallback.isEmpty() ? "EXPLICIT_FALLBACK" : !messages.isEmpty() ? "ACTUAL_MESSAGE_OBSERVED" :
+                selectedCase.equals("mpv-default-debug") ? "REQUESTED_UNCONFIRMED" : "NOT_REQUESTED");
+            facts.put("fallbackLogs", fallback); facts.put("debugLayerMessages", messages);
+            facts.put("limits", "No device GetCreationFlags/InfoQueue queried; modules/options or absent logs are not SDK/debug-layer ACK");
+            return facts;
         }
         private synchronized void log(String value) {
             String row = safe(value); if (firstLogs.size() < 150) firstLogs.add(row);
@@ -1064,7 +1122,10 @@ public final class AwtMpvProbe {
     public interface DwmApi extends StdCallLibrary {
         int DwmIsCompositionEnabled(IntByReference enabled); int DwmGetWindowAttribute(Pointer hwnd, int attribute, IntByReference value, int size);
     }
-    public interface Kernel32 extends StdCallLibrary { boolean ProcessIdToSessionId(int processId, IntByReference sessionId); int GetCurrentThreadId(); }
+    public interface Kernel32 extends StdCallLibrary {
+        boolean ProcessIdToSessionId(int processId, IntByReference sessionId); int GetCurrentThreadId();
+        Pointer GetModuleHandleW(com.sun.jna.WString name); int GetModuleFileNameW(Pointer module, char[] path, int size);
+    }
     public interface WtsApi extends StdCallLibrary {
         boolean WTSQuerySessionInformationW(Pointer server, int sessionId, int kind, PointerByReference buffer, IntByReference bytes);
         void WTSFreeMemory(Pointer memory);

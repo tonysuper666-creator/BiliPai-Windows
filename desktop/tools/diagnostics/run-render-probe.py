@@ -25,6 +25,7 @@ ARCHIVE_URLS = [
     'https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20260903/mpv-dev-x86_64-20260903-git-69e63f425a.7z',
 ]
 CASES = ('awt-alpha-only', 'mpv-default-flip', 'mpv-bitblt', 'mpv-adaptive')
+SURFACE_DEBUG_CASES = ('mpv-default-flip', 'mpv-default-debug')
 SHADER_CASES = ('shader-clear-default-retained', 'shader-clear-default-seek',
                 'shader-clear-nodumb-retained', 'shader-clear-nodumb-seek')
 SHADER_INPUT_PINS = {
@@ -153,7 +154,50 @@ def prepare_shaders(repo, destination):
     return {'sourceInputs': source_rows, 'assets': assets, 'originalPresetChains': preset_chains, 'originalChains': chains}
 
 
-def run_case(case, java, classes, jna, dll, output, java_home, shaders=None):
+
+def read_reported_runtime_modules(observation, env, cwd):
+    """Bounded file metadata for actual own-JVM module paths, never a module-load/device probe."""
+    allowed = {'d3d10warp.dll', 'd3d11.dll', 'dxgi.dll', 'd3d11sdklayers.dll', 'dxgidebug.dll'}
+    rows = []
+    windows = Path(next(value for key, value in env.items() if key.casefold() == 'systemroot')).resolve(strict=True)
+    for module in observation.get('modules', []):
+        name = module['name']
+        assert name in allowed and type(module['loaded']) is bool
+        row = dict(name=name, loaded=module['loaded']); rows.append(row)
+        if not module['loaded'] or not module.get('path'):
+            row['metadataStatus'] = 'No observed loaded path'; continue
+        path = Path(module['path'])
+        if (not path.is_absolute() or path.name.lower() != name or path.is_symlink() or
+                not path.resolve(strict=True).is_relative_to(windows)):
+            row['metadataStatus'] = 'Observed module path outside approved Windows directory'; continue
+        path = path.resolve(strict=True)
+        assert path.is_file() and 0 < path.stat().st_size <= 128 * 1024 * 1024
+        row.update(path=str(path), bytes=path.stat().st_size, sha256=digest(path))
+    script = r"""[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+$request = [Console]::In.ReadToEnd() | ConvertFrom-Json
+$rows = @($request.paths | ForEach-Object {
+    $file = Get-Item -LiteralPath $_ -ErrorAction Stop
+    @{path=$file.FullName; fileVersion=$file.VersionInfo.FileVersion; productVersion=$file.VersionInfo.ProductVersion}
+})
+$os = Get-ItemProperty -LiteralPath 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion' -ErrorAction Stop
+@{modules=$rows; windowsRegistryBuild=@{currentBuildNumber=$os.CurrentBuildNumber; ubr=$os.UBR; displayVersion=$os.DisplayVersion}} | ConvertTo-Json -Depth 5 -Compress
+"""
+    result = subprocess.run(['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', script],
+        input=json.dumps({'paths': [r['path'] for r in rows if 'path' in r]}), cwd=cwd, env=env,
+        text=True, encoding='utf-8', errors='strict', capture_output=True, check=True, timeout=10,
+        creationflags=subprocess.CREATE_NO_WINDOW)
+    assert len(result.stdout) <= 32768
+    details = json.loads(result.stdout)
+    versions = {r['path'].casefold(): r for r in details['modules']}
+    for row in rows:
+        if 'path' in row:
+            version = versions[row['path'].casefold()]
+            row.update(fileVersion=version['fileVersion'], productVersion=version['productVersion'], metadataStatus='Measured file metadata')
+    return dict(modules=rows, windowsRegistryBuild=details['windowsRegistryBuild'],
+        scope='Actual loaded paths sampled at worker retirement; filesystem versions/hashes read after exit; registry build metadata; not D3D device/debug ACK')
+
+
+def run_case(case, java, classes, jna, dll, output, java_home, shaders=None, debug_observations=False):
     work = output / (case + '-work')
     work.mkdir()
     data = work / 'private-data'
@@ -163,6 +207,9 @@ def run_case(case, java, classes, jna, dll, output, java_home, shaders=None):
                '--case', case, '--output', str(case_output)]
     if case != 'awt-alpha-only':
         command += ['--mpv', str(dll)]
+    if debug_observations:
+        assert case in SURFACE_DEBUG_CASES
+        command += ['--surface-debug-observations', 'true']
     if case in SHADER_CASES:
         command += ['--shader-root', str(shaders)]
     started = time.monotonic()
@@ -210,6 +257,11 @@ def run_case(case, java, classes, jna, dll, output, java_home, shaders=None):
                     assert result['nativeClosed'] is True
             row.update(receipt=str(receipt), receiptSha256=digest(receipt),
                        passed=not forced and code == 0, result=result)
+            if debug_observations:
+                try:
+                    row['runtimeFileObservations'] = read_reported_runtime_modules(result['loadedRuntimeModules'], environment(java_home, data), work)
+                except Exception as error:
+                    row['runtimeObservationError'] = type(error).__name__ + ': ' + str(error)[:500]
         except Exception as error:
             row['receiptError'] = type(error).__name__
     else:
@@ -223,7 +275,7 @@ def main():
     parser.add_argument('--java-home', type=Path, required=True)
     parser.add_argument('--mpv-archive', type=Path)
     parser.add_argument('--jna-jar', type=Path)
-    parser.add_argument('--suite', choices=('surface', 'shader-clear'), default='surface')
+    parser.add_argument('--suite', choices=('surface', 'shader-clear', 'surface-debug'), default='surface')
     args = parser.parse_args()
     sys.stdout.reconfigure(encoding='utf-8')
     if os.name != 'nt':
@@ -231,7 +283,7 @@ def main():
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     started = time.monotonic()
-    cases = SHADER_CASES if args.suite == 'shader-clear' else CASES
+    cases = SHADER_CASES if args.suite == 'shader-clear' else SURFACE_DEBUG_CASES if args.suite == 'surface-debug' else CASES
     summary = {'diagnosticOnly': True, 'productReleaseGatePassed': False, 'suite': args.suite, 'cases': [], 'passed': False}
     try:
         java_home = args.java_home.resolve(strict=True)
@@ -279,7 +331,7 @@ def main():
                            cwd=output, env=env, check=True, stdout=log, stderr=subprocess.STDOUT, timeout=20)
         for case in cases:
             try:
-                row = run_case(case, java, classes, jna, dll, output, java_home, shaders)
+                row = run_case(case, java, classes, jna, dll, output, java_home, shaders, debug_observations=args.suite == 'surface-debug')
             except Exception as error:
                 row = {'case': case, 'passed': False, 'runnerError': type(error).__name__}
             summary['cases'].append(row)
