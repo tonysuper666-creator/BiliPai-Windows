@@ -51,4 +51,6 @@ def generate(repo,output,standalone=False):
  emit('feature/following/FollowingListScreen',s)
  return rows
 if __name__=='__main__':
- cli=argparse.ArgumentParser();cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path,required=True);cli.add_argument('--standalone',action='store_true');a=cli.parse_args();print(json.dumps(generate(a.repo,a.output,a.standalone),ensure_ascii=False,indent=2))
+ # Gradle captures stdout using the Windows locale; JSON escapes preserve the
+ # complete Unicode report even when a runner's pipe encoding is cp1252.
+ cli=argparse.ArgumentParser();cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path,required=True);cli.add_argument('--standalone',action='store_true');a=cli.parse_args();print(json.dumps(generate(a.repo,a.output,a.standalone),ensure_ascii=True,indent=2))

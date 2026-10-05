@@ -7,6 +7,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -145,6 +146,27 @@ class BrandSuccessProducerTest(unittest.TestCase):
             self.assertEqual(13, report["runtimeUniquePairs"])
             self.assertFalse(report["welcomeRuntimeAllowed"])
             self.assertEqual(26, len(producer.files_under(output / "resources/brand-motion")))
+
+    def test_following_cli_preserves_unicode_report_on_cp1252_pipe(self):
+        producer = load("brand_success_following_cli_contract", TOOLS / "extract-upstream-following.py")
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp) / "cli"
+            environment = os.environ.copy()
+            environment.update(PYTHONIOENCODING="cp1252:strict", PYTHONUTF8="0")
+            completed = subprocess.run(
+                [sys.executable, str(TOOLS / "extract-upstream-following.py"),
+                 "--repo", str(REPO), "--output", str(output), "--standalone"],
+                cwd=REPO, env=environment, capture_output=True,
+            )
+            self.assertEqual(0, completed.returncode, completed.stderr.decode("cp1252", "replace"))
+            report = json.loads(completed.stdout.decode("ascii"))
+            expected = producer.generate(REPO, Path(temp) / "reference", True)
+            self.assertEqual(expected, report)
+            # Escaping stdout must retain the original Chinese adaptation text.
+            self.assertTrue(any(ord(character) > 127 for character in json.dumps(report, ensure_ascii=False)))
+            for row in report:
+                emitted = row["output"]
+                self.assertEqual(emitted["sha256LfUtf8"], sha(producer.safe(output / emitted["path"]).read_bytes()))
 
 
 if __name__ == "__main__":
