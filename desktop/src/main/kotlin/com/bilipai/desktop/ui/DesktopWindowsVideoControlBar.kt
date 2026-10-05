@@ -56,6 +56,7 @@ internal fun DesktopWindowsVideoControlBar(
     onMute: () -> Unit, onVolume: (Double) -> Unit, onSpeed: (Double) -> Unit,
     onQuality: (Int) -> Unit, onSeek: (Double) -> Unit, onPictureInPicture: () -> Unit,
     onFullscreen: () -> Unit, onDetails: () -> Unit, onOpenIntroduction: () -> Unit,
+    sponsorSkip: @Composable () -> Unit,
     enhancement: @Composable () -> Unit,
 ) {
     val durationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
@@ -141,6 +142,7 @@ internal fun DesktopWindowsVideoControlBar(
                             }
                         }
                     }
+                    sponsorSkip()
                     DesktopVideoEnhancementCompactSlot(showStatus = showEnhancementStatus) { enhancement() }
                     DesktopWindowsPlayerIconButton(tooltip = "详情", onClick = onDetails, modifier = Modifier.size(44.dp)) {
                         Icon(Icons.Default.Info, contentDescription = "详情",

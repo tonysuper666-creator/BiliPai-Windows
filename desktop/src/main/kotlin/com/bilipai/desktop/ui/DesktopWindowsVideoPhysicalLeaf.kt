@@ -150,6 +150,7 @@ internal class DesktopWindowsVideoActions(
     }
     val state by native.state.collectAsState()
     val playback by shell.playback.state.collectAsState()
+    val manualSponsorSegment by assembly.playback.currentSponsorSegment.collectAsState()
     val original by assembly.playback.uiState.collectAsState()
     val subject by assembly.playback.subjectSnapshot.collectAsState()
     val favoriteEvent by assembly.playback.favoriteFolderSaveEvent.collectAsState()
@@ -419,6 +420,10 @@ internal class DesktopWindowsVideoActions(
                         detailsTab = DesktopWindowsVideoDetailsTab.INTRODUCTION
                         detailsOpen = true
                     } },
+                    sponsorSkip = {
+                        DesktopWindowsSponsorSkipSection(shell.playback, assembly, collectionQueueSource,
+                            playback.manualSkip, manualSponsorSegment, ::interactionCurrent)
+                    },
                     enhancement = actions.enhancement,
                 )
             }

@@ -166,6 +166,7 @@ internal object DesktopFeedbackCarrierNativeSmoke {
                 child?.takeIf { it.isDisplayable }?.let {
                     val style=user32.GetWindowLongW(Native.getWindowPointer(it),-20)
                     put("extendedStyle", "0x"+style.toUInt().toString(16))
+                    put("transparentNoActivate",DesktopDecorativeWindowStylePolicy.inputPolicyAcknowledged(style))
                     put("layeredTransparentNoActivate",DesktopDecorativeWindowStylePolicy.acknowledged(style))
                 }
             }
@@ -174,12 +175,15 @@ internal object DesktopFeedbackCarrierNativeSmoke {
             val value=facts(stage)
             stages+=value
             fun flag(key:String)=value[key]?.jsonPrimitive?.booleanOrNull
+            val hidden=stage=="hidden"
             check(flag("sameFullSource")==true && flag("nativePaused")==true && flag("rejected")==false &&
                 flag("popupDisplayable")==true && flag("popupTransparent")==true &&
-                flag("popupIsForeground")==false && flag("layeredTransparentNoActivate")==true) {
+                flag("popupIsForeground")==false && flag("popupFocusable")==false && flag("popupAutoRequestFocus")==false &&
+                flag("transparentNoActivate")==true &&
+                (if (hidden) flag("popupOpaque")==false && value["popupBackgroundAlpha"]?.jsonPrimitive?.intOrNull in 0..254
+                    else flag("layeredTransparentNoActivate")==true)) {
                 "Carrier $stage lost its transparent/non-activating owned native peer: $value"
             }
-            val hidden=stage=="hidden"
             check(flag("ownerIconified")==hidden && flag("available")==!hidden && flag("popupShowing")==!hidden) {
                 "Carrier $stage did not preserve its expected native visibility: $value"
             }

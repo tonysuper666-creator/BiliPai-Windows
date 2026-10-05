@@ -219,10 +219,12 @@ private class DesktopCommandPopupWindow(
         if (window.bounds != rectangle) window.bounds = rectangle
         if (window.isAlwaysOnTop != owner.isAlwaysOnTop) window.isAlwaysOnTop = owner.isAlwaysOnTop
         if (decorative) {
-            // Establish mouse-through while the new peer is still hidden. The
-            // componentShown listener rechecks after Skiko's own listeners.
+            // AWT applies layered transparency during show, including restore.
+            // Prepare input policy while hidden without claiming availability;
+            // componentShown requires all native flags after Skiko's listeners.
             if (!window.isDisplayable) window.addNotify()
-            if (!checkNotNull(ownsPresentation).invoke() || !DesktopDecorativeWindowStyle.applyTo(window)) {
+            if (!checkNotNull(ownsPresentation).invoke() || !(if (window.isShowing)
+                DesktopDecorativeWindowStyle.applyTo(window) else DesktopDecorativeWindowStyle.prepareToShow(window))) {
                 publishWindowAvailability(false, force = true); window.isVisible = false
                 checkNotNull(onDecorativeRejection).invoke(); return
             }

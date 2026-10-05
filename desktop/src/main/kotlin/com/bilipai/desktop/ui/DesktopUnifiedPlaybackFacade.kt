@@ -299,6 +299,27 @@ internal class DesktopUnifiedPlaybackFacade(
             select = selection.assembly.section.nativePlayer::selectAudioTrack)
 
     companion object {
+        /** Shared by the actual facade and headless complete-VM command tests.
+         * Admission only starts the existing invocation; no plugin IO or new actor lives here. */
+        internal fun consumeManualSponsorSkip(expected: SkipAction.ShowButton,
+            segment: com.android.purebilibili.data.model.response.SponsorSegment,
+            current: () -> Boolean, admit: ((() -> Unit) -> Boolean),
+            read: () -> Pair<SkipAction.ShowButton?, com.android.purebilibili.data.model.response.SponsorSegment?>,
+            execute: () -> Unit): Boolean {
+            checkAudioUiDispatcher()
+            if (expected.skipToMs <= 0L || expected.segmentId.isBlank() || !current()) return false
+            var dispatched = false
+            val admitted = admit {
+                if (current()) {
+                    val (shown, active) = read()
+                    if (active === segment && shown == expected && expected.segmentId == segment.UUID &&
+                        expected.skipToMs == segment.endTimeMs) {
+                        execute(); dispatched = true
+                    }
+                }
+            }
+            return admitted && dispatched
+        }
         private fun checkAudioUiDispatcher() {
             check(javax.swing.SwingUtilities.isEventDispatchThread()) { "Audio selection requires the desktop UI dispatcher" }
         }
@@ -338,7 +359,26 @@ internal class DesktopUnifiedPlaybackFacade(
     fun seek(cid: Long, seconds: Double) { held()?.let { a -> if (a.native.current()?.request?.cid == cid) seekTo(seconds) } }
     fun seekTo(seconds: Double) { if (seconds.isFinite()) held()?.playback?.seekTo((seconds.coerceAtLeast(0.0)*1000).toLong()) }
     fun seekBy(seconds: Double) { if (seconds.isFinite()) held()?.let { seekTo(it.section.currentPosition/1000.0+seconds) } }
-    fun executeManualSkip() { held()?.playback?.skipCurrentSponsorSegment() }
+    /** Same UI callback and complete original VM action, with its rendered source/segment receipt. */
+    fun executeManualSkip(expectedAssembly: DesktopOriginalVideoOwnerAssembly,
+        expected: DesktopOriginalVideoAcceptedPublication,
+        segment: com.android.purebilibili.data.model.response.SponsorSegment,
+        action: SkipAction.ShowButton, presentationCurrent: () -> Boolean): Boolean {
+        checkAudioUiDispatcher()
+        val a = held()?.takeIf { it === expectedAssembly } ?: return false
+        return consumeManualSponsorSkip(action, segment,
+            current = { presentationCurrent() && held() === a && a.native.isCurrent(expected) &&
+                (a.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success)?.let {
+                    !it.isQualitySwitching && it.info.bvid == expected.request.bvid && it.info.cid == expected.request.cid
+                } == true },
+            admit = { block -> a.native.admitPlaybackDispatch(expected, block) },
+            read = {
+                val active = a.playback.currentSponsorSegment.value
+                val shown = if (a.playback.showSkipButton.value && active != null)
+                    SkipAction.ShowButton(active.endTimeMs, a.playback.currentSkipReason.value ?: active.category, active.UUID) else null
+                shown to active
+            }, execute = a.playback::skipCurrentSponsorSegment)
+    }
     internal fun currentCastSource(expectedSourceVersion: Long): com.bilipai.desktop.data.PlaybackSource? {
         val a=held() ?: return null;val accepted=a.native.current() ?: return null;val success=currentSuccess(a) ?: return null
         if (accepted.sourceVersion!=expectedSourceVersion || accepted.request.bvid!=success.info.bvid || accepted.request.cid!=success.info.cid) return null
