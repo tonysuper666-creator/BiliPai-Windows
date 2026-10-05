@@ -53,7 +53,9 @@ internal class DesktopPersonalListNavigation(
         }
     }
     val window = LocalWindowSizeClass.current
-    CompositionLocalProvider(LocalDesktopFavoriteBindings provides bindings,
+    val recap = remember(entry) { if (model is HistoryViewModel) entry.recap else null }
+    CompositionLocalProvider(LocalDesktopPersonalRecapBindings provides recap,
+        LocalDesktopFavoriteBindings provides bindings,
         LocalDesktopFavoriteViewport provides DesktopFavoriteViewport(window.widthDp.value.toInt(),window.heightDp.value.toInt())) {
         CommonListScreen(model, onBack = { if (entry.owns()) onBack() },
             onVideoClick = { bvid, cid, cover, vertical ->

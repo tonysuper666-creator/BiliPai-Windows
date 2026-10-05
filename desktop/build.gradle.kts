@@ -184,6 +184,8 @@ val extractUpstreamPlugins by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-plugins.py",
         "--repo", repositoryRoot.absolutePath, "--output", layout.buildDirectory.dir("generated/plugins").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-plugins.py")
+    inputs.file("tools/v029_history_recap.py")
+    inputs.dir("upstream-slices/v029-history-recap")
     inputs.file("tools/extract-video-enhancement.py")
     inputs.file("third-party/fsr-hdr-platform.json")
     inputs.file("tools/extract-upstream-media.py")
@@ -1170,6 +1172,8 @@ val extractOriginalFavorites by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v029-brand-callers")
     inputs.file("tools/v029_brand_history.py")
     inputs.dir("upstream-slices/v029-brand-history")
+    inputs.file("tools/v029_history_recap.py")
+    inputs.dir("upstream-slices/v029-history-recap")
     outputs.dir(layout.buildDirectory.dir("generated/original-favorites"))
 }
 val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {

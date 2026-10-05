@@ -47,6 +47,8 @@ DIRECT += ['network-core/src/main/java/com/android/purebilibili/core/network/pol
 EXTRACTED += ['app/src/main/java/com/android/purebilibili/feature/plugin/HomeFeedAnonymizerPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/SubscriptionFeedPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/Anime4KPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/AdFilterInsightPolicy.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/AdFilterPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/home/HomeUiState.kt', 'app/src/main/java/com/android/purebilibili/core/store/TodayWatchProfileStore.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/TodayWatchPlugin.kt', 'app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KShaderRepository.kt', 'app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt', 'app/src/main/java/com/android/purebilibili/feature/plugin/CdnRegionPlugin.kt']
 SOURCES = {**{path: "direct" for path in DIRECT}, **{path: "extracted" for path in EXTRACTED}}
 SOURCES[BASE + "feature/home/HomeUiState.kt"] = "policy-extract"
+# Keep the original v025 input for audit; only the explicitly pinned v029 Store is emitted.
+SOURCES[BASE + 'core/plugin/feed/FeedReadingStore.kt'] = 'reference-only'
 EXTRACTED.append(BASE + "feature/home/HomeViewModel.kt")
 SOURCES[BASE + "feature/home/HomeViewModel.kt"] = "policy-extract"
 DIRECT += [BASE + 'feature/anime4k/Anime4KFirstFrameFallbackPolicy.kt']
@@ -476,11 +478,15 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
                          ('FeedConditionalStore', 'DesktopFeedConditionalValidators.kt'),
                          ('FeedReadingStore', 'FeedReadingStore.kt')]:
         path = BASE + 'core/plugin/feed/' + name + '.kt'
+        if name == 'FeedReadingStore':
+            from v029_history_recap import feed_store_source
+            original, body, row = feed_store_source()
+            generated.append(write(output, row['path'], original, body, target))
+            continue
         original = read(repo, path)
         body = platform_context(subscription_feed_identity_fix(original) if name == 'SubscriptionFeedStore' else original)
-        if name in ('FeedConditionalStore', 'FeedReadingStore'):
-            body = substitute(body, 'import android.util.AtomicFile',
-                'import com.bilipai.desktop.plugins.DesktopPluginAtomicFile as AtomicFile')
+        if name == 'FeedConditionalStore':
+            body = substitute(body, 'import android.util.AtomicFile', 'import com.bilipai.desktop.plugins.DesktopPluginAtomicFile as AtomicFile')
         generated.append(write(output, path, original, body, target))
 
     for name in ('HomeFeedAnonymizerPlugin', 'SubscriptionFeedPlugin', 'Anime4KPlugin'):
@@ -613,8 +619,12 @@ def generate_additional(repo: Path, output: Path) -> list[Path]:
     return generated
 
 def inventory(repo: Path) -> list[dict]:
-    return [{"path": path, "role": "plugins", "mode": mode,
+    rows = [{"path": path, "role": "plugins", "mode": mode,
              "sha256": hashlib.sha256(read(repo, path).encode()).hexdigest()} for path, mode in SOURCES.items()]
+    from v029_history_recap import feed_store_source
+    _, _, selected = feed_store_source()
+    rows.append(dict(selected, role="plugins", mode="extracted", sha256=selected['sha256LfUtf8']))
+    return rows
 
 
 def asset_inventory(repo: Path) -> list[dict]:

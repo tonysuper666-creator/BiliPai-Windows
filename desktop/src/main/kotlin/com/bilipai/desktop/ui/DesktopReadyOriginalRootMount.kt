@@ -319,7 +319,7 @@ internal class DesktopReadyOriginalRootHandle(
             spacePages.close()
         } }
         val personalLists = remember(root, services.library) { DesktopPersonalListsRoot(root.entry.gate,
-            services.repository, services.runtime.store, services.library,
+            services.repository, services.runtime.store, services.runtime.context, services.library,
             services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze) }
         SideEffect { handle.personalLists.set(personalLists); personalLists.prune(physicalStack.toList()) }
         DisposableEffect(personalLists) { onDispose {

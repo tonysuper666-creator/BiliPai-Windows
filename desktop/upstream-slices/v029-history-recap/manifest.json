@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "37564f4a9ec0863ab0bd24194855c0c1f9f82a49",
+      "sha256Bytes": "7c0b7727e49f9d152f0310b7391528854f85984bc36a71f12700d142c588a8d6",
+      "bytes": 5750,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedSourceCatalog.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "4d652016426859fcc7087b3e5c2f179c8bdb012e",
+      "sha256Bytes": "e5063972eb7f5ecaf1c68056e75fa57c84b15ad91f89ef5b1c21cfba370ef7ca",
+      "bytes": 4074,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedSourceCatalog.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "46713d0db12a5a20cd2d10b3a297cbf0f6134f66",
+      "sha256Bytes": "df0b6a9fb178b1a1f124af594b5d5d8ccd216286db11eb75e6fe8c6168e6cf84",
+      "bytes": 79781,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/home/subscription/SubscriptionFeedPage.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "0e3ba91eda50c77195930bd9ffc2b447a557e702",
+      "sha256Bytes": "def520af9293c76711364e216186d1fddcc90e0d2810d7f42170c2b74cef3865",
+      "bytes": 405563,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "4ce530cad0845b325ffa89cff08b46ac03c18664",
+      "sha256Bytes": "46a495b02f231c230ff36da7a5164ec5fe47dd59555cae80ff6868f82a48b2a8",
+      "bytes": 106620,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/settings/ui/SettingsSections.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/HistoryRecapCard.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "6b03b623227971badc4ee58f5836726f4d4a1440",
+      "sha256Bytes": "0cd8a074a85fff5c4fb91085cbc3baa4252f273f92c6a26289d23aeb54349a09",
+      "bytes": 17567,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/list/HistoryRecapCard.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/PersonalRecapPolicy.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "bd47649e07acb7bd276d9eea34fea8e49602f574",
+      "sha256Bytes": "39ed16d7fcc0e00ea79d5cab5eb2c5852132685281ecef3b73b8e0718240268e",
+      "bytes": 6260,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/list/PersonalRecapPolicy.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/PersonalRecapCharts.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "6825abea1522058fc65a015f69b5cbb69bc5d96f",
+      "sha256Bytes": "22220577365a82f2a19d3e0c77e872f09cd9d5867bd26f22e2df339bacd92aac",
+      "bytes": 7190,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/list/PersonalRecapCharts.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "f3ca9bafa474a07e753c9e328c3b9d9fe74cab10",
+      "sha256Bytes": "e5676f371841e43225e8f88d71bcd62137df22bb13bca4aeb378a4fc4d73c5cd",
+      "bytes": 178540,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "b16b278d54b29e512f98fb1cf8bd07e38d861b37",
+      "sha256Bytes": "a5ca3f58b081d907a928418aab33bb880683f99acdf426403314fd4b614f5f70",
+      "bytes": 67599,
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/list/ListViewModel.kt"
+    }
+  ]
+}

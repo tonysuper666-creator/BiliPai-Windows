@@ -103,7 +103,8 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
     }
     suspend fun setRead(item: ParsedFeedItem, read: Boolean): Unit = mutation.withLock {
         check(!stopped) { "订阅服务已停止" }
-        FeedReadingStore.setRead(context, feedItemKey(item), read)
+        if (read) FeedReadingStore.recordRead(context, feedItemKey(item))
+        else FeedReadingStore.setRead(context, feedItemKey(item), false)
         publishReading(FeedReadingStore.load(context))
     }
     suspend fun loadFullArticle(item: ParsedFeedItem): String {
@@ -152,7 +153,8 @@ class DesktopSubscriptionRepository(private val context: DesktopPluginContext,
     private fun publishProgress(value: DesktopSubscriptionState, current: () -> Boolean) =
         DesktopSubscriptionWriteAdmission.commitOrOriginal {
             if (current()) _state.value = value.copy(reading = value.reading.copy(
-                readKeys = _state.value.reading.readKeys, fullBodies = _state.value.reading.fullBodies))
+                readKeys = _state.value.reading.readKeys, fullBodies = _state.value.reading.fullBodies,
+                readTimestamps = _state.value.reading.readTimestamps, readProgress = _state.value.reading.readProgress))
         }
     private fun publishCleanupState(current: () -> Boolean = { true }) =
         DesktopSubscriptionWriteAdmission.cleanupOrOriginal { if (current()) _state.value = _state.value.copy(loading = false) }

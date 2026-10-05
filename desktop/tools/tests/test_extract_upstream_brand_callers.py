@@ -70,7 +70,12 @@ class BrandCallerProducerTest(unittest.TestCase):
             for unchanged in ['historyViewModel.retryHistory()', 'historyViewModel.loadMore(retry = true)', 'onRetryLoadMore:', 'loadMoreError:']:
                 self.assertEqual(body.count(unchanged),raw.count(unchanged))
             self.assertEqual(len(list((output/'com').rglob('CommonListScreen.kt'))),1)
-            self.assertEqual(row['historySourceAdaptation']['count'],4)
+            self.assertEqual(row['historySourceAdaptation']['count'],2)
+            edits=row['historySourceAdaptation']['edits']
+            self.assertEqual(len([e for e in edits if e['after']=='']),1)
+            self.assertEqual(len([e for e in edits if 'requireDesktopPersonalRecapBinding().enabled' in e['after']]),1)
+            self.assertIn('snapshotCache = historyViewModel?.recapSnapshots',body)
+            self.assertIn('headerContent = recapHeader',body)
             return
         audit=row['windowsBrandConsumerAdaptation'];self.assertEqual(audit['countedAdaptations'],3)
         inverse=self.inverse(body,audit)

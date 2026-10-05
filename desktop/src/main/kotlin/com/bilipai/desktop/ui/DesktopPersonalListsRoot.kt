@@ -20,6 +20,7 @@ internal class DesktopPersonalListsRoot(
     val gate: DesktopHomeRetainedGate,
     private val repository: DesktopRepository,
     private val globalStore: DesktopPluginStore,
+    internal val recapContext: com.bilipai.desktop.plugins.DesktopPluginContext,
     library: DesktopLibrary,
     privacyModeEnabled: () -> Boolean,
     feedback: (String) -> Unit,
@@ -28,6 +29,7 @@ internal class DesktopPersonalListsRoot(
     private val closed = AtomicBoolean(false)
     private val job = SupervisorJob(gate.scope.coroutineContext[Job])
     val scope = CoroutineScope(gate.scope.coroutineContext + job)
+    init { require(recapContext.store === globalStore) { "History recap must use Root's existing Store" } }
     val preferences = DesktopFavoritePreferences(globalStore)
     val historySearchChannel = Channel<String>(Channel.CONFLATED)
     val historyScrollToTopChannel = Channel<Unit>(Channel.CONFLATED)
@@ -172,6 +174,11 @@ internal class DesktopPersonalListEntry(
     lateinit var categories: FavoriteCategoryViewModel; private set
     private var queue: DesktopFavoriteQueueBridge? = null
     val saveableKey: String = java.util.UUID.randomUUID().toString()
+    val recap by lazy {
+        assertOwned()
+        check(viewModel is HistoryViewModel) { "Recap requires the actual History entry" }
+        DesktopPersonalRecapBinding(root.recapContext, environment, root.preferences, ::owns, ::commit)
+    }
     fun owns(): Boolean = !closed.get() && job.isActive && root.owns()
     fun assertOwned() { if (!owns()) throw CancellationException("Personal list entry retired") }
     fun commit(block: () -> Unit): Boolean = root.gate.commit { if (owns()) block() } && owns()

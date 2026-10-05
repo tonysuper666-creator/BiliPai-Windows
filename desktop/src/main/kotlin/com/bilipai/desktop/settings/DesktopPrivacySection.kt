@@ -19,6 +19,8 @@ fun DesktopPrivacySection(bindings: DesktopPrivacySectionBindings,
     val privacy by bindings.searchPreferences.privacyMode.collectAsState()
     val suggestions by bindings.searchPreferences.suggestionsEnabled.collectAsState()
     val hints = desktopWindowsSettingsValue(remember(bindings) { bindings.defaultHintEnabled })
+    val recap = desktopWindowsSettingsValue(remember(bindings) { bindings.personalRecapEnabled })
+    val settings = LocalDesktopOriginalPlayerSettingsContext.current
     val error by bindings.error.collectAsState()
     Column {
         DesktopWindowsSettingsGroup("搜索与历史") {
@@ -26,6 +28,10 @@ fun DesktopPrivacySection(bindings: DesktopPrivacySectionBindings,
             DesktopWindowsSettingsSwitch("个性化搜索推荐", suggestions,
                 description = "使用官方搜索推荐；关闭时使用公开热搜。") { value ->
                 scope.launch { bindings.setSuggestionsEnabled(value) }
+            }
+            DesktopWindowsSettingsSwitch("我的回顾", recap,
+                description = "在历史页显示阅读与观看统计、趋势图和最近爱看的 UP 主。") { value ->
+                scope.launch { bindings.setPersonalRecapEnabled(settings, value) }
             }
             DesktopWindowsSettingsSwitch("不新增播放和搜索历史", privacy,
                 description = "已有记录保留。") { value -> scope.launch { bindings.setPrivacyMode(value) } }

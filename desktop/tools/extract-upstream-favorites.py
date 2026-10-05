@@ -12,7 +12,8 @@ def read(p):return safe(p).read_text(encoding='utf-8').replace('\r\n','\n').repl
 def emit(p,s):
  relative=str(p).replace(chr(92),'/')
  row=records[-1]
- mode='direct' if hashlib.sha256(s.encode()).hexdigest()==row['sha256LfUtf8'] else 'selected'
+ # The new recap raw is emitted only by this producer, even when a pure file is verbatim.
+ mode='selected' if row.get('recapGeneratedAdaptation') else 'direct' if hashlib.sha256(s.encode()).hexdigest()==row['sha256LfUtf8'] else 'selected'
  row.setdefault('outputs',[]).append(dict(path=relative,sha256LfUtf8=hashlib.sha256(s.encode()).hexdigest(),mode=mode))
  if mode=='direct' and not STANDALONE:return
  p=OUT/p;safe(p).parent.mkdir(parents=True,exist_ok=True);safe(p).write_text(s,encoding='utf-8',newline='\n')
@@ -105,6 +106,11 @@ def produce():
    funcs=originals[a:b].replace('favoriteApiFailure','desktopFavoriteApiFailure').replace('favoriteHttpFailure','desktopFavoriteHttpFailure')+decl(originals,'FavoriteResourceRequestParams')+decl(originals,'resolveFavoriteResourceRequestParams')
    s=s[:s.index('class DesktopOriginalFavoriteRepository')]+funcs+s[s.index('class DesktopOriginalFavoriteRepository'):]
   output('data/repository/DesktopOriginal'+name,s,'entire original repository; shared API/identity constructor only, original protocol/parser/management bodies retained')
+ # Complete pinned recap/Store-settings bodies are owned by this sole Favorites producer.
+ from v029_history_recap import favorite_sources
+ for recapRel,recapOriginal,recapBody,recapRow in favorite_sources():
+  records.append(recapRow)
+  output(recapRel,recapBody,'complete original v029 recap/selected original setting bodies; actual retained History entry ports')
  # Original selected action + PGC repository methods, exact request body/fields.
  s=source('data/repository/ActionRepository');members=[]
  for name in ['createFavFolder','favoriteVideo','getDefaultFolderId','toggleWatchLater',
@@ -266,6 +272,7 @@ def generate(repo:Path,output:Path,standalone=False):
   if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
   for key in ['historySourceAdaptation','historyGeneratedAdaptation','rawSha256Bytes','gitBlob']:
    if key in row:entry[key]=row[key]
+  if row.get('recapGeneratedAdaptation'):entry['recapGeneratedAdaptation']=row['recapGeneratedAdaptation']
   if row.get('selection') and row['selection'] not in entry['selections']:entry['selections'].append(row['selection'])
   for emitted in row.get('outputs',[]):
    if emitted not in entry['outputs']:entry['outputs'].append(emitted)

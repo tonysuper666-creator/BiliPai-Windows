@@ -1,6 +1,6 @@
 """Fixed full v029 History/List source, bounded Windows adaptation.
 
-Recap is pending real RSS ports; no empty header or request stub is installed.
+Recap is mounted through the same real RSS Store and retained History entry ports.
 Existing sole producer applies its original environment/platform adapters after
 the counted omissions below. No API/state algorithm is rewritten here.
 """
@@ -43,21 +43,17 @@ def selected_source(rel):
         nonlocal body
         if body.count(before)!=1:raise ValueError('history counted adaptation not unique: '+label)
         at=body.index(before);body=body[:at]+after+body[at+len(before):];edits.append(dict(index=at,before=before,after=after,label=label))
-    if rel=='feature/list/ListViewModel':
-        replace('    internal val recapSnapshots = mutableMapOf<PersonalRecapWindow, HistoryRecapSnapshot>()\n','','recap-cache-needs-real-RSS-owner')
-    elif rel=='feature/list/CommonListScreen':
-        replace('    val personalRecapEnabled = if (historyViewModel != null) {\n        SettingsManager.getSubscriptionRecapEnabled(LocalContext.current)\n            .collectAsStateWithLifecycle(initialValue = false).value\n    } else false\n','','recap-preference-not-mounted-without-real-ports')
-        start=body.index('                            val recapHeader: (@Composable () -> Unit)? = if (')
-        end=body.index('                            CommonListContent(',start)
-        replace(body[start:end],'','recap-request-and-header-not-mounted')
-        replace('                                headerContent = recapHeader,\n','','no-empty-recap-header-callback')
+    if rel=='feature/list/CommonListScreen':
+        replace('SettingsManager.getSubscriptionRecapEnabled(LocalContext.current)',
+            'com.bilipai.desktop.ui.requireDesktopPersonalRecapBinding().enabled',
+            'same-original-recap-key-through-required-History-entry')
         replace('                        useLookaheadBounds = onHistoryLongDelete == null || onHistoryDissolveComplete == null,\n','','existing-Windows-shared-layout-component-has-no-new-lookahead-parameter')
     inverse=body
     for e in reversed(edits):
         at=e['index'];assert inverse[at:at+len(e['after'])]==e['after'];inverse=inverse[:at]+e['before']+inverse[at+len(e['after']):]
     assert inverse==original
     path=PREFIX+rel+'.kt';pin=PINS[path]
-    row=dict(path='desktop/upstream-slices/v029-brand-history/'+path,upstreamCommit=COMMIT,sha256LfUtf8=sha(original.encode()),rawSha256Bytes=pin['sha256Bytes'],gitBlob=pin['gitBlob'],historySourceAdaptation=dict(edits=edits,count=len(edits),fullRawInverseExact=True,afterSha256LfUtf8=sha(body.encode()),recapPending=True))
+    row=dict(path='desktop/upstream-slices/v029-brand-history/'+path,upstreamCommit=COMMIT,sha256LfUtf8=sha(original.encode()),rawSha256Bytes=pin['sha256Bytes'],gitBlob=pin['gitBlob'],historySourceAdaptation=dict(edits=edits,count=len(edits),fullRawInverseExact=True,afterSha256LfUtf8=sha(body.encode()),recapPending=False))
     return body,row
 def generated_audit(rel,body):
     """Verify every existing platform adaptation plus omission to the full raw.
@@ -80,4 +76,4 @@ above remain named, counted, and separately invertible.
     for e in reversed(edits):
         at=e['index'];assert cursor[at:at+len(e['after'])]==e['after'];cursor=cursor[:at]+e['before']+cursor[at+len(e['after']):]
     assert cursor==original
-    return dict(fullRawInverseExact=True,upstreamCommit=COMMIT,rawManifestSha256Bytes=MANIFEST_SHA256,originalRawSha256Bytes=sha(original.encode()),generatedSha256LfUtf8=sha(body.encode()),countedOutputAdaptations=len(edits),edits=edits,scope='Named source omissions plus unchanged existing sole producer environment/Android aliases. Complete v029 original business/renderer bodies inverse exactly; recap actual owner/header pending.')
+    return dict(fullRawInverseExact=True,upstreamCommit=COMMIT,rawManifestSha256Bytes=MANIFEST_SHA256,originalRawSha256Bytes=sha(original.encode()),generatedSha256LfUtf8=sha(body.encode()),countedOutputAdaptations=len(edits),edits=edits,scope='Original recap state/header are restored; only the unsupported Lookahead parameter remains omitted. All original and platform bodies inverse exactly.')

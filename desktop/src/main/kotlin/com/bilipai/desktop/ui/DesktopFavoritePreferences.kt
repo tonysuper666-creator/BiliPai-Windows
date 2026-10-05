@@ -20,6 +20,7 @@ class DesktopFavoritePreferences(val store:DesktopPluginStore) {
     private val values=store.snapshot("settings")
     val homeSettings=values.map(::decodeDesktopFavoriteHomeAppearance).distinctUntilChanged()
     fun initialHomeSettings()=decodeDesktopFavoriteHomeAppearance(values.value)
+    val personalRecapEnabled=DesktopPersonalRecapSettings.getSubscriptionRecapEnabled(DesktopPluginContext(store))
     val showOnlineCount=values.map{it[favoriteBooleanKey("show_online_count")]?:false}.distinctUntilChanged()
     private fun navigation(snapshot:DesktopPreferenceSnapshot)=DesktopFavoriteNavigationAppearance(
         DesktopFavoriteNavigationTypes.BottomBarVisibilityMode.fromValue(snapshot[favoriteIntKey("bottom_bar_visibility_mode")]

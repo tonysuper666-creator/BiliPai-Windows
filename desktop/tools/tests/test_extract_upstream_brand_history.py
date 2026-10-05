@@ -57,28 +57,29 @@ class BrandHistoryProducerTest(unittest.TestCase):
         catalog=load('history_canonical_contract','v025_source_paths.py')._catalog()
         # The raw new three-file slice does not change the existing canonical catalog.
         for row in rows:
-            if row in history:continue
+            if row in history or "recapGeneratedAdaptation" in row:continue
             self.assertEqual(row['upstreamCommit'],catalog['upstreamCommit'])
             self.assertEqual(row['sha256LfUtf8'],catalog['paths'][row['path']]['sha256'])
         repository=(output/'com/android/purebilibili/data/repository/DesktopOriginalHistoryRepository.kt').read_text(encoding='utf-8')
         self.assertIn('private val api = environment.api',repository)
         self.assertIn('if (e is kotlinx.coroutines.CancellationException) throw e',repository)
         self.assertNotIn('fixture.invalid',repository)
-    def test_named_omissions_only_exclude_unmounted_recap_and_new_layout_argument(self):
+    def test_restored_recap_preserves_original_cache_header_retry_and_only_layout_omission(self):
         helper=self.helper()
         model,model_row=helper.selected_source('feature/list/ListViewModel')
         screen,screen_row=helper.selected_source('feature/list/CommonListScreen')
-        self.assertEqual(model_row['historySourceAdaptation']['count'],1)
-        self.assertEqual(screen_row['historySourceAdaptation']['count'],4)
-        edits=model_row['historySourceAdaptation']['edits']+screen_row['historySourceAdaptation']['edits']
-        self.assertTrue(all(e['after']=='' for e in edits))
-        # Full original error/pagination callbacks are untouched by the five omissions.
+        self.assertEqual(model_row['historySourceAdaptation']['count'],0)
+        self.assertEqual(screen_row['historySourceAdaptation']['count'],2)
+        edits=screen_row['historySourceAdaptation']['edits']
+        self.assertEqual(len([e for e in edits if e['after']=='']),1)
+        self.assertEqual(len([e for e in edits if 'requireDesktopPersonalRecapBinding().enabled' in e['after']]),1)
+        # Full original error/pagination callbacks remain byte-identical in frequency.
         for rel,body in [('feature/list/ListViewModel',model),('feature/list/CommonListScreen',screen)]:
             raw=helper.load_raw(rel)
             for name in ['retryHistory()', 'loadMore(retry = true)', 'loadMoreError']:
                 self.assertEqual(body.count(name),raw.count(name))
-        self.assertNotIn('recapHeader',screen)
-        self.assertNotIn('recapSnapshots',model)
+        self.assertIn('recapHeader',screen)
+        self.assertIn('recapSnapshots',model)
         self.assertIn('headerContent: (@Composable () -> Unit)? = null',screen)
     def mutated(self):
         helper=self.helper();temp=tempfile.TemporaryDirectory(prefix='brand-history-raw-');self.addCleanup(temp.cleanup)

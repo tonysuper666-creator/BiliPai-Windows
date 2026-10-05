@@ -25,6 +25,7 @@ class DesktopPrivacySectionBindings(
     val context: DesktopPluginContext,
     val searchPreferences: DesktopSearchPreferences,
 ) {
+    val personalRecapEnabled = com.bilipai.desktop.ui.DesktopPersonalRecapSettings.getSubscriptionRecapEnabled(context)
     val defaultHintEnabled: Flow<Boolean> = SearchHintSettingsStore.isEnabled(context)
     val authenticationConfigured: Flow<Boolean> = DesktopPrivacyAuthenticationSettings.getPrivacyContentAuthenticationEnabled(context)
     private val _error = MutableStateFlow<String?>(null)
@@ -32,6 +33,10 @@ class DesktopPrivacySectionBindings(
 
     suspend fun setDefaultHintEnabled(enabled: Boolean): Boolean = write {
         SearchHintSettingsStore.setEnabled(context, enabled)
+    }
+    suspend fun setPersonalRecapEnabled(settings: com.bilipai.desktop.ui.DesktopOriginalPlayerSettingsContext, enabled: Boolean): Boolean = write {
+        require(settings.pluginContext.store === context.store) { "Recap settings must use Root's existing Store" }
+        com.bilipai.desktop.ui.DesktopPersonalRecapSettings.setSubscriptionRecapEnabled(settings, enabled)
     }
     suspend fun setPrivacyMode(enabled: Boolean): Boolean = write { searchPreferences.setPrivacyMode(enabled) }
     suspend fun setSuggestionsEnabled(enabled: Boolean): Boolean = write { searchPreferences.setSuggestionsEnabled(enabled) }
