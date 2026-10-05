@@ -1862,6 +1862,7 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform { excludeTags("packaged-updater", "native-mux", "js-worker") }
+    systemProperty("java.awt.headless", "true")
     systemProperty("bilipai.js.workerResources", jsWorkerOutput.get().asFile.absolutePath)
 }
 tasks.register<Test>("jsWorkerSmoke") {

@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.ImageComposeScene
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.Density
@@ -153,6 +154,11 @@ class DesktopBrandComponentUiTest {
                 error.value = false
                 fixture.await("$style original empty content") { fixture.hasText("原空内容验收") }
                 fixture.awaitArtwork(DesktopMaidAnimation.EMPTY)
+                // Retain the current input state separately: the real character replay click
+                // leaves the mouse over this same-size clickable region after switching UI.
+                fixture.assertArtwork(DesktopMaidAnimation.EMPTY, "${style.name.lowercase()}-empty-hovered")
+                fixture.movePointerAway()
+                fixture.pumpFor(500)
                 fixture.assertArtwork(DesktopMaidAnimation.EMPTY, "${style.name.lowercase()}-empty")
                 fixture.clickText("重新加载内容")
                 fixture.await("$style original empty action dispatch") { actions == 1 }
@@ -242,6 +248,12 @@ class DesktopBrandComponentUiTest {
             node.config.getOrNull(SemanticsActions.OnClick) != null && nodes(node).any { text(it, value) }
         }.minBy { it.boundsInRoot.width * it.boundsInRoot.height })
         fun clickReplay() = click(nodes().single { it.config.getOrNull(SemanticsActions.OnClick)?.label == "重播蓝雪女仆动画" })
+        fun movePointerAway() {
+            // Real Mouse Move inside the CPU scene, outside the character/actions. This does
+            // not change any indication, production preference, bitmap, or component state.
+            scene.sendPointerEvent(PointerEventType.Move, Offset(8f, 8f), timeMillis = lastNanos / 1_000_000,
+                buttons = PointerButtons())
+        }
         suspend fun awaitArtwork(animation: DesktopMaidAnimation) {
             await("actual packaged ${animation.name} character") { runCatching { assertArtwork(animation); true }.getOrDefault(false) }
         }
