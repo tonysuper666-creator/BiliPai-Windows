@@ -45,6 +45,9 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private val bgmInput = System.getProperty("bilipai.validation.bgmInput") == "true"
     private val originalInteractionInput = System.getProperty("bilipai.validation.originalInteractionInput") == "true"
     private val commentSearchInput = System.getProperty("bilipai.validation.commentSearchInput") == "true"
+    private val composerInput = System.getProperty("bilipai.validation.composerInput") == "true"
+    private val composerScript = if (composerInput) WindowsCommentComposerReplay(report) else null
+    val commentComposerReplay: WindowsCommentComposerReplay get() = requireNotNull(composerScript)
     private val commentScript = if (commentSearchInput) WindowsCommentSearchReplay() else null
     val commentSearchReplay: WindowsCommentSearchReplay get() = requireNotNull(commentScript)
     private val mediaSeconds = if (System.getProperty("bilipai.validation.pipInput") == "true") 300 else if (bgmInput) 180 else SECONDS
@@ -56,6 +59,10 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
         require(!commentSearchInput || (!bgmInput && !originalInteractionInput && !collectionInput &&
             System.getProperty("bilipai.validation.pipInput") != "true")) {
             "Comment search is a separate same-source guest branch; existing no-POST/source-changing modes stay unchanged"
+        }
+        require(!composerInput || (!commentSearchInput && !bgmInput && !originalInteractionInput && !collectionInput &&
+            System.getProperty("bilipai.validation.pipInput") != "true")) {
+            "Composer is an isolated synthetic-session read-only branch"
         }
         require(!Files.exists(media, NOFOLLOW_LINKS)); Files.createDirectory(media)
         createVideo(media.resolve("video.avi").toFile(), mediaSeconds); createAudio(media.resolve("audio.wav").toFile(), mediaSeconds)
@@ -96,9 +103,11 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     fun install(repository: DesktopRepository, owns: () -> Boolean) {
         require(!installed && owns() && repository.account.value == null)
         val epoch = repository.sessionEpoch
+        composerScript?.bindGuest(repository)
         val client = repository.httpClient.newBuilder().followRedirects(false).followSslRedirects(false).addInterceptor { chain ->
-            fun requireOwner() = require(owns() && repository.sessionEpoch == epoch && repository.account.value == null) {
-                "LOCAL replay original guest Root/session owner retired"
+            fun requireOwner() = require(owns() && (composerScript?.ownsSession(repository)
+                ?: (repository.sessionEpoch == epoch && repository.account.value == null))) {
+                "LOCAL replay exact Root/session owner retired"
             }
             requireOwner()
             fun requireOwnerBoolean(): Boolean { requireOwner(); return true }
@@ -126,9 +135,23 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                     return@addInterceptor response
                 } catch (failure: Throwable) { response.close(); throw failure }
             }
+            // The real visitor bootstrap may recur after the real Store epoch changes.
+            // It too is memory-only; no browser origin is allowed through a socket.
+            if (composerInput && url.scheme == "https" && url.host == "www.bilibili.com" &&
+                url.port == 443 && path == "/" && request.method == "GET" && url.encodedQuery == null &&
+                url.encodedFragment == null && url.username.isEmpty() && url.password.isEmpty()) {
+                requireOwner()
+                return@addInterceptor Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200)
+                    .message("LOCAL visitor bootstrap").body("<html></html>".toResponseBody("text/html".toMediaType())).build()
+            }
             // API responses remain memory-only. Every other origin is forbidden, never proceeded.
             require(url.host in setOf("api.bilibili.com", "api.vc.bilibili.com", "app.bilibili.com")) {
                 "LOCAL replay forbids requests outside mapped API or exact owned loopback media"
+            }
+            if (composerInput) {
+                composerScript?.intercept(chain, ::requireOwnerBoolean)?.let { response ->
+                    try { requireOwner(); return@addInterceptor response } catch (failure: Throwable) { response.close(); throw failure }
+                }
             }
             if (commentSearchInput) {
                 require(request.method == "GET" || (request.method == "POST" && url.host == "app.bilibili.com" &&
@@ -162,7 +185,11 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                     })
                     """{"code":0,"data":{"quality":32,"format":"dash","timelength":${mediaSeconds * 1000},"accept_quality":[32],"accept_description":["Local replay"],"video_codecid":7,"dash":{"duration":$mediaSeconds,"minBufferTime":1.5,"video":[{"id":32,"baseUrl":"$base/video.avi","bandwidth":1000000,"mime_type":"video/x-msvideo","codecs":"avc1.640028","width":320,"height":180,"frameRate":"20","codecid":7}],"audio":[{"id":30280,"baseUrl":"$base/audio.wav","bandwidth":768000,"mime_type":"audio/wav","codecs":"pcm_s16le"}]}}}"""
                 }
-                "/x/web-interface/nav" -> """{"code":0,"data":{"isLogin":false,"mid":0,"wbi_img":{"img_url":"https://fixture.invalid/${"a".repeat(32)}.png","sub_url":"https://fixture.invalid/${"b".repeat(32)}.png"}}}"""
+                "/x/frontend/finger/spi" -> if (composerInput)
+                    """{"code":0,"data":{"b_3":"LOCAL-COMPOSER-BUVID3","b_4":"LOCAL-COMPOSER-BUVID4"}}"""
+                    else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
+                "/x/web-interface/nav" -> composerScript?.nav()
+                    ?: """{"code":0,"data":{"isLogin":false,"mid":0,"wbi_img":{"img_url":"https://fixture.invalid/${"a".repeat(32)}.png","sub_url":"https://fixture.invalid/${"b".repeat(32)}.png"}}}"""
                 "/x/player/v2", "/x/player/wbi/v2" -> {
                     val requestedCid = if (collectionInput) request.url.queryParameter("cid")?.toLongOrNull()
                         ?.also { require(it == cid || it == secondCid) } ?: cid else cid
@@ -253,7 +280,21 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             require(owns() && repository.sessionEpoch == epoch && repository.account.value == null)
             DesktopRepository::class.java.getDeclaredField(name).apply { check(trySetAccessible()) }.set(repository, value)
         }
-        set("api", api); set("client", client); set("visitorInitialized", true); set("visitorGeneration", epoch)
+        set("api", api); set("client", client)
+        if (composerInput) {
+            // The real account replacement creates new request views. All its
+            // repository transports must keep the same memory-only interceptor.
+            val retrofit = Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(client)
+                .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+            set("buvidApi", retrofit.create(com.android.purebilibili.core.network.BuvidApi::class.java))
+            set("searchApi", retrofit.create(com.android.purebilibili.core.network.SearchApi::class.java))
+            set("dynamicApi", retrofit.create(com.android.purebilibili.core.network.DynamicApi::class.java))
+            val passport = Retrofit.Builder().baseUrl("https://passport.bilibili.com/").client(client)
+                .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build()
+                .create(com.android.purebilibili.core.network.PassportApi::class.java)
+            set("passportApi", passport); set("validationPassportApi", passport)
+        }
+        set("visitorInitialized", true); set("visitorGeneration", epoch)
         set("wbiKeys", "a".repeat(32) to "b".repeat(32)); set("wbiExpiresAt", System.currentTimeMillis() + 3_600_000)
         set("wbiGeneration", epoch); installed = true
     }
@@ -280,6 +321,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                 require(requests.any { it["path"]?.jsonPrimitive?.content == path && it["mapped"]?.jsonPrimitive?.booleanOrNull == true })
             require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" })
         }
+        val composerReceipt = composerScript?.receipt()
         val commentReceipt = commentScript?.receipt()
         if (commentSearchInput) require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" &&
             (it["host"]?.jsonPrimitive?.content != "app.bilibili.com" ||
@@ -299,6 +341,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("singleBgmDetailOnlyScope", bgmInput)
             put("commentSearchResponsesAreSynthetic", commentSearchInput)
             put("commentSearch", commentReceipt ?: JsonNull)
+            put("composerInputResponsesAreSynthetic", composerInput)
+            put("composerInput", composerReceipt ?: JsonNull)
             put("originalInteractionMetadataIsSynthetic", originalInteractionInput)
             put("originalInteractionRemoteMutationSubmitted", false)
             put("singleBgmRecommendationRequested", requests.any { it["bgmStage"]?.jsonPrimitive?.content == "recommend" &&
@@ -384,9 +428,10 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("installed", installed); put("ownedMediaPort", server.address.port)
             put("requests", JsonArray(requests.toList())); put("loopbackRequests", JsonArray(mediaRequests.toList()))
             put("realAccountUsed", false); put("headersOrQueryValuesRecorded", false)
+            put("composerInput", composerScript?.receipt(requireComplete = false) ?: JsonNull)
         }.toString(), CREATE_NEW, WRITE)
     }
-    override fun close() { commentScript?.close(); server.stop(0); executor.shutdownNow() }
+    override fun close() { composerScript?.close(); commentScript?.close(); server.stop(0); executor.shutdownNow() }
     companion object {
         fun create(report: Path, bvid: String) = WindowsVideoLocalReplay(report, bvid)
     private const val WIDTH = 320

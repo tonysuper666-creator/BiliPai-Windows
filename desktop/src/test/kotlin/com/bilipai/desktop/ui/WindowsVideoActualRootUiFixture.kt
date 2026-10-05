@@ -444,7 +444,46 @@ object WindowsVideoActualRootUiFixture {
             check(messages.repository.account.value == null)
             messages.repository
         }
-        replay.install(repository) { owner.isActive() && routes.owns() && owner.route.get() === routes }
+        replay.install(repository) {
+            owner.isActive() && if (System.getProperty("bilipai.validation.composerInput") == "true" &&
+                replay.commentComposerReplay.authenticated(repository)) {
+                // The Window-level handle intentionally survives account changes.
+                // Only the actually installed epoch-current retained Home may read
+                // synthetic transport before its new route Frame is drawn.
+                owner.retainer.current()?.capturedEpoch == replay.commentComposerReplay.epoch()
+            } else routes.owns() && owner.route.get() === routes
+        }
+        if (System.getProperty("bilipai.validation.composerInput") == "true") {
+            val previousOwner = owner
+            val previousRoutes = routes
+            val previousRetained = requireNotNull(owner.retainer.current())
+            replay.commentComposerReplay.seedSyntheticSession(repository, actions.local)
+            await("real Root account/epoch replacement after same-Store synthetic seed") { edt {
+                val frame = latest.get() ?: return@edt false
+                if (frame.routes === previousRoutes || previousRoutes.owns() ||
+                    previousRetained.isCurrentOwner() || !frame.handle.isActive() ||
+                    !frame.routes.owns() || frame.handle.route.get() !== frame.routes ||
+                    System.identityHashCode(window()) != ownedWindowIdentity || frame.key != BiliPaiNavKey.Home ||
+                    !frame.pagerHosted || frame.routes.currentKey != BiliPaiNavKey.MainHost) return@edt false
+                val messages = frame.handle.messagePages.get() ?: return@edt false
+                val spaces = frame.handle.spacePages.get() ?: return@edt false
+                if (!messages.isOwned() || messages.repository !== repository || spaces.repository !== repository ||
+                    spaces.routes !== frame.routes || !replay.commentComposerReplay.authenticated(repository)) return@edt false
+                val retained = frame.handle.retainer.current() ?: return@edt false
+                if (retained === previousRetained || retained.capturedEpoch != replay.commentComposerReplay.epoch() ||
+                    !retained.isCurrentOwner()) return@edt false
+                // Adopt only the Root actually published by Main; no fixture Root
+                // factory, route mutation or VM field writes are involved.
+                owner = frame.handle; routes = frame.routes
+                true
+            } }
+            record("composer-synthetic-session-actual-root-generation", mapOf(
+                "sameActualRepository" to JsonPrimitive(true), "originalGuestEntryAndRoutesRetired" to JsonPrimitive(true),
+                "sameWindowLevelRootHandle" to JsonPrimitive(owner === previousOwner), "actualRetainedHomeGenerationChanged" to JsonPrimitive(true),
+                "actualAccountEpoch" to JsonPrimitive(repository.sessionEpoch),
+                "syntheticPrimaryMid" to JsonPrimitive(WindowsCommentComposerReplay.MID),
+                "sameNativeMainWindow" to JsonPrimitive(true), "loginUiAccepted" to JsonPrimitive(false)))
+        }
         await("complete actual desktop sidebar and wholly visible Search target") { edt {
             val frame = pendingCurrent() ?: return@edt false
             frame.key == BiliPaiNavKey.Home && frame.pagerHosted &&
@@ -2525,6 +2564,305 @@ object WindowsVideoActualRootUiFixture {
         }
     }
 
+    private fun exerciseCommentComposer(localReplay: WindowsVideoLocalReplay) {
+        check(!EventQueue.isDispatchThread())
+        sameNative(); check(playing())
+        val script = localReplay.commentComposerReplay
+        val (assembly, publication) = actualHotOwner()
+        val comments = assembly.domains.comments
+        val composer = assembly.domains.composer
+        val original = accepted
+        val originalMain = edt { window() }
+        val originalBounds = edt { Rectangle(originalMain.bounds) }
+        val prefs = PlayerPreferencesStore().read()
+        val repository = edt { current(); requireNotNull(owner.messagePages.get()).repository }
+        check(script.authenticated(repository) && repository.sessionEpoch == script.epoch())
+        val beforeLayers = settledMainInputLayers("composer-before")
+        await("same authenticated comment owner and original ordinary HOT replies") { edt {
+            current(); sameNative()
+            comments.commentState.value.let { !it.isRepliesLoading && !it.isRepliesRefreshing &&
+                it.replies.isNotEmpty() && it.currentMid == WindowsCommentComposerReplay.MID && it.canInputComment }
+        } }
+        val mainReplies = comments.commentState.value.replies
+        val nextPage = comments.commentState.value.nextPage
+        val repliesEnd = comments.commentState.value.isRepliesEnd
+        if (edt { runCatching { detailPaneScope() }.isFailure }) {
+            click("详情")
+            await("actual detail viewport before composer input") { edt { runCatching { detailPaneScope() }.isSuccess } }
+        }
+        if (!edt { commentsTabSelected() }) {
+            edt {
+                current(); sameNative()
+                val tab = descendants(detailPaneScope()).single { it.accessibleName == "评论" && visible(it) &&
+                    it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
+                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
+                clickOwnedComposeMouse(window(), tab)
+            }
+            await("actual authenticated comment tab selected") { edt { commentsTabSelected() } }
+        }
+        click("暂停")
+        await("native pause ACK before editor input") { sameNative(); actualPlayer.state.value.nativePaused == true }
+        Thread.sleep(300)
+        val baseline = actualPlayer.state.value
+        val ownedPeers = linkedSetOf<javax.swing.JDialog>()
+        fun currentSource() {
+            current(); sameNative()
+            check(accepted === original && window() === originalMain && window().bounds == originalBounds &&
+                assembly.owns() && assembly.native.isCurrent(publication) && assembly.domains.composer === composer &&
+                assembly.domains.comments === comments && actualPlayer.ownsSourceSnapshot(original) &&
+                script.authenticated(repository) && PlayerPreferencesStore().read() == prefs)
+            actualPlayer.state.value.let { state ->
+                check(state.nativePaused == true && state.paused && state.seekCompletedId == baseline.seekCompletedId &&
+                    state.volume == baseline.volume && state.muted == baseline.muted && state.speed == baseline.speed &&
+                    kotlin.math.abs(state.positionSeconds - baseline.positionSeconds) <= 0.25) {
+                    "Original comment editor changed the complete paused playback source/state"
+                }
+            }
+            comments.commentState.value.let { state ->
+                check(state.replies == mainReplies && state.nextPage == nextPage && state.isRepliesEnd == repliesEnd &&
+                    !state.isRepliesLoading && !state.isRepliesRefreshing && state.currentMid == WindowsCommentComposerReplay.MID)
+            }
+            check(!composer.isSendingComment.value) { "This fixture must never publish a comment" }
+        }
+        fun dialog(title: String): javax.swing.JDialog? = edt {
+            currentSource()
+            Window.getWindows().filterIsInstance<javax.swing.JDialog>().filter {
+                it.isShowing && it.isDisplayable && ownedWindow(it) && it.title == title
+            }.also { check(it.size <= 1) { "Duplicate actual '$title' peer" } }.singleOrNull()?.also { ownedPeers.add(it) }
+        }
+        fun has(surface: Window, label: String): Boolean = edt {
+            currentSource(); descendants(surface.accessibleContext).any { hasLabel(it, label) && visible(it, surface) }
+        }
+        fun capture(id: String, surface: Window) {
+            val bounds = edt {
+                currentSource()
+                check(surface.isShowing && surface.isDisplayable && ownedWindow(surface) && surface !== originalMain &&
+                    originalMain.bounds.contains(surface.bounds) && surface.graphicsConfiguration.bounds.contains(surface.bounds))
+                Files.writeString(report.resolve("$id-accessibility.tsv"), descendants(surface.accessibleContext).joinToString("\n") {
+                    "${it.accessibleName}\t${it.accessibleRole}\t${it.accessibleStateSet}\t${it.accessibleAction?.accessibleActionCount ?: 0}"
+                }, CREATE_NEW, WRITE)
+                Rectangle(surface.bounds)
+            }
+            check(ImageIO.write(java.awt.Robot().createScreenCapture(bounds), "png", report.resolve("$id-screen.png").toFile()))
+            edt { currentSource(); check(surface.isShowing && surface.bounds == bounds) }
+        }
+        fun draft() = composer.composerDrafts.value.comments[0L]
+        fun editor(surface: Window): AccessibleContext {
+            currentSource()
+            return descendants(surface.accessibleContext).filter { it.accessibleEditableText != null && visible(it, surface) }.single()
+        }
+        fun editorText(surface: Window): String {
+            val text = requireNotNull(editor(surface).accessibleText)
+            return (0 until text.charCount).joinToString("") { index ->
+                requireNotNull(text.getAtIndex(javax.accessibility.AccessibleText.CHARACTER, index))
+            }
+        }
+        fun open(): javax.swing.JDialog {
+            edt { currentSource(); check(composer.commentStamp.value == null && !composer.showCommentDialog.value) }
+            clickFeatureItem(originalMain, "发表评论")
+            await("actual original composer native peer and source-bound domain stamp") {
+                val peer = dialog("发表评论") ?: return@await false
+                edt {
+                    currentSource()
+                    val stamp = composer.commentStamp.value ?: return@edt false
+                    stamp.presentation.sourceLease === publication && stamp.presentation.nativeOwner === originalMain &&
+                        stamp.presentation.isCurrent() && composer.showCommentDialog.value &&
+                        listOf("表情", "提及用户", "图片", "转发到动态", "发布").all { has(peer, it) } &&
+                        runCatching { editor(peer) }.isSuccess
+                }
+            }
+            return requireNotNull(dialog("发表评论"))
+        }
+        fun close(surface: javax.swing.JDialog) {
+            edt { currentSource(); surface.dispatchEvent(java.awt.event.WindowEvent(surface, java.awt.event.WindowEvent.WINDOW_CLOSING)) }
+            await("original editor closes exact native peer/stamp and optional mention job") { edt {
+                currentSource(); !surface.isShowing && !surface.isDisplayable && composer.commentStamp.value == null &&
+                    !composer.showCommentDialog.value && !composer.commentMentionSearchState.value.isLoading
+            } }
+        }
+        fun swingMouse(component: Component) {
+            check(EventQueue.isDispatchThread())
+            currentSource()
+            check(component.isShowing && component.isEnabled && component.isDisplayable &&
+                SwingUtilities.getWindowAncestor(component)?.let(::ownedWindow) == true)
+            val now = System.currentTimeMillis(); val x = component.width / 2; val y = component.height / 2
+            component.dispatchEvent(MouseEvent(component, MouseEvent.MOUSE_MOVED, now, 0, x, y, 0, false))
+            component.dispatchEvent(MouseEvent(component, MouseEvent.MOUSE_PRESSED, now + 1,
+                InputEvent.BUTTON1_DOWN_MASK, x, y, 1, false, MouseEvent.BUTTON1))
+            component.dispatchEvent(MouseEvent(component, MouseEvent.MOUSE_RELEASED, now + 2, 0, x, y, 1, false, MouseEvent.BUTTON1))
+        }
+        var firstFailure: Throwable? = null
+        check(dialog("发表评论") == null && dialog("选择图片") == null)
+        try {
+            val first = open()
+            val firstStamp = requireNotNull(composer.commentStamp.value)
+            edt { currentSource(); editor(first).accessibleEditableText.setTextContents(WindowsCommentComposerReplay.DRAFT) }
+            await("original text field publishes the root draft") { edt {
+                currentSource(); draft()?.text == WindowsCommentComposerReplay.DRAFT
+            } }
+            capture("210-composer-text-draft", first)
+            close(first)
+            check(draft()?.text == WindowsCommentComposerReplay.DRAFT)
+            val second = open()
+            check(composer.commentStamp.value !== firstStamp)
+            await("original editor reopens actual retained text") { edt {
+                currentSource()
+                editorText(second) == WindowsCommentComposerReplay.DRAFT && draft()?.text == WindowsCommentComposerReplay.DRAFT
+            } }
+            capture("211-composer-reopened-draft", second)
+            clickFeatureItem(second, "表情")
+            await("original API emote is visible in the complete original grid") { has(second, WindowsCommentComposerReplay.EMOTE) }
+            capture("212-composer-original-emote", second)
+            clickFeatureItem(second, WindowsCommentComposerReplay.EMOTE)
+            await("actual emote click updates the original draft") { edt {
+                currentSource(); draft()?.text?.contains(WindowsCommentComposerReplay.EMOTE) == true
+            } }
+            // Hide the actual emote panel before the original mention toolbar.
+            clickFeatureItem(second, "表情")
+            await("original emote panel naturally retires before mention toolbar input") {
+                !has(second, WindowsCommentComposerReplay.EMOTE)
+            }
+            clickFeatureItem(second, "提及用户")
+            await("original mention query field appears") { has(second, "搜索好友昵称") }
+            edt {
+                currentSource()
+                val fields = descendants(second.accessibleContext).filter { it.accessibleEditableText != null && visible(it, second) }
+                val query = fields.filter { hasLabel(it, "搜索好友昵称") }.singleOrNull()
+                    ?: fields.single { it.accessibleText?.charCount == 0 }
+                query.accessibleEditableText.setTextContents(WindowsCommentComposerReplay.MENTION_QUERY)
+            }
+            await("original debounced mention request result is rendered") {
+                has(second, WindowsCommentComposerReplay.FRIEND_NAME) && edt {
+                    currentSource(); composer.commentMentionSearchState.value.let {
+                        !it.isLoading && it.query == WindowsCommentComposerReplay.MENTION_QUERY &&
+                            it.users.singleOrNull()?.uid == WindowsCommentComposerReplay.FRIEND_MID
+                    }
+                }
+            }
+            capture("213-composer-original-mention", second)
+            clickFeatureItem(second, WindowsCommentComposerReplay.FRIEND_NAME)
+            await("original mention insertion updates the original draft") { edt {
+                currentSource(); draft()?.text?.contains("@${WindowsCommentComposerReplay.FRIEND_NAME}") == true
+            } }
+            clickFeatureItem(second, "转发到动态")
+            await("original sync-to-dynamic toggle publishes its true draft flag") { edt {
+                currentSource(); draft()?.syncToDynamic == true
+            } }
+            // Real Compose mouse release is posted asynchronously: its original
+            // picker enters a Swing modal secondary loop on EDT. Never block
+            // this worker in invokeAndWait until the chooser has been answered.
+            val postedFailure = AtomicReference<Throwable?>()
+            val posted = AtomicBoolean(false)
+            EventQueue.invokeLater {
+                runCatching {
+                    currentSource()
+                    val imageButton = descendants(second.accessibleContext).single { hasLabel(it, "图片") &&
+                        visible(it, second) && it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                        (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
+                    clickOwnedComposeMouse(second, imageButton); posted.set(true)
+                }.exceptionOrNull()?.let(postedFailure::set)
+            }
+            await("actual original OS chooser opens after asynchronous toolbar input") {
+                postedFailure.get()?.let { throw it }
+                posted.get() && dialog("选择图片") != null
+            }
+            val pickerPeer = requireNotNull(dialog("选择图片"))
+            val chooser = edt {
+                currentSource()
+                check(pickerPeer.isModal && ownedWindow(pickerPeer))
+                nativeComponents(pickerPeer).filterIsInstance<javax.swing.JFileChooser>().single()
+            }
+            capture("214-composer-owned-os-chooser", pickerPeer)
+            edt {
+                currentSource()
+                check(chooser.dialogType == javax.swing.JFileChooser.OPEN_DIALOG && chooser.isMultiSelectionEnabled)
+                val inputs = nativeComponents(chooser).filterIsInstance<javax.swing.JTextField>().filter { it.isShowing && it.isEnabled }
+                val named = inputs.filter { field ->
+                    val context = field.accessibleContext
+                    val labels = context.accessibleRelationSet.get(javax.accessibility.AccessibleRelation.LABELED_BY)?.target.orEmpty()
+                    val text = context.accessibleName.orEmpty() + labels.filterIsInstance<javax.swing.JLabel>().joinToString { it.text.orEmpty() }
+                    text.contains("文件名") || text.contains("File name", ignoreCase = true)
+                }
+                val filename = named.singleOrNull() ?: inputs.single()
+                check(script.image.toRealPath().parent == report && Files.isRegularFile(script.image, NOFOLLOW_LINKS) && !Files.isSymbolicLink(script.image))
+                filename.accessibleContext.accessibleEditableText.setTextContents(script.image.toAbsolutePath().toString())
+                val expected = chooser.approveButtonText ?: javax.swing.UIManager.getString("FileChooser.openButtonText")
+                val approve = pickerPeer.rootPane.defaultButton?.takeIf { it.isShowing && it.isEnabled && SwingUtilities.isDescendingFrom(it, chooser) }
+                    ?: nativeComponents(chooser).filterIsInstance<javax.swing.JButton>().single { it.isShowing && it.isEnabled && it.text == expected }
+                // Ordinary native button mouse input, not setSelectedFile,
+                // approveSelection, selected-image injection or VM writes.
+                swingMouse(approve)
+            }
+            await("real picker disposes and original input retains selected private PNG") { edt {
+                currentSource(); !pickerPeer.isShowing && !pickerPeer.isDisplayable && draft()?.imageUris?.size == 1 &&
+                    has(second, "已选 1/9 张") && has(second, "已选图片")
+            } }
+            val withImage = requireNotNull(draft())
+            check(withImage.text.contains(WindowsCommentComposerReplay.DRAFT) && withImage.text.contains(WindowsCommentComposerReplay.EMOTE) &&
+                withImage.text.contains("@${WindowsCommentComposerReplay.FRIEND_NAME}") && withImage.syncToDynamic)
+            capture("215-composer-selected-private-image", second)
+            close(second)
+            val third = open()
+            await("reopened editor restores text/emote/mention/image/sync together") { edt {
+                currentSource(); draft() == withImage && has(third, "已选 1/9 张") && has(third, "已选图片") &&
+                    editorText(third) == withImage.text
+            } }
+            capture("216-composer-restored-complete-draft", third)
+            clickFeatureItem(third, "移除")
+            await("original remove image action updates only the current draft") { edt {
+                currentSource(); draft()?.imageUris?.isEmpty() == true && draft()?.text == withImage.text && draft()?.syncToDynamic == true
+            } }
+            capture("217-composer-image-removed", third)
+            close(third)
+            record("composer-original-input-closed-without-publish", mapOf(
+                "sameActualComposerDomain" to JsonPrimitive(true), "sourcePausedAndPreferencesPreserved" to JsonPrimitive(true),
+                "textDraftRestored" to JsonPrimitive(true), "originalEmoteAndMentionInserted" to JsonPrimitive(true),
+                "originalSyncFlagRestored" to JsonPrimitive(true), "realOwnedOsChooserPrivatePngSelected" to JsonPrimitive(true),
+                "selectedImageRemoved" to JsonPrimitive(true), "publishClicked" to JsonPrimitive(false),
+                "realCredentialsUsed" to JsonPrimitive(false), "originalImageUploadAccepted" to JsonPrimitive(false)))
+        } catch (failure: Throwable) {
+            firstFailure = failure
+            runCatching { val peer = edt { ownedPeers.lastOrNull { it.isShowing && it.isDisplayable } }
+                if (peer != null) capture("composer-input-failure", peer) }.exceptionOrNull()?.let(failure::addSuppressed)
+            throw failure
+        } finally {
+            var cleanupFailure: Throwable? = null
+            for (peer in ownedPeers.toList().asReversed()) {
+                val failure = runCatching { edt {
+                    var parent: Window? = peer
+                    while (parent != null && parent !== originalMain) parent = parent.owner
+                    if (peer.isDisplayable && parent === originalMain)
+                        peer.dispatchEvent(java.awt.event.WindowEvent(peer, java.awt.event.WindowEvent.WINDOW_CLOSING))
+                }
+                    val deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(5)
+                    while ((peer.isShowing || peer.isDisplayable) && System.nanoTime() < deadline) Thread.sleep(50)
+                    check(!peer.isShowing && !peer.isDisplayable) { "Captured composer/chooser peer did not dispose in cleanup" }
+                }.exceptionOrNull()
+                if (failure != null) {
+                    val previous = cleanupFailure
+                    if (previous == null) cleanupFailure = failure else previous.addSuppressed(failure)
+                }
+            }
+            if (cleanupFailure != null) {
+                val primary = firstFailure
+                if (primary != null) primary.addSuppressed(cleanupFailure) else throw cleanupFailure
+            }
+        }
+        click("关闭详情")
+        await("actual comment detail viewport retires after editor proof") { edt {
+            currentSource(); all().none { it.accessibleName == "关闭详情" && visible(it) }
+        } }
+        val afterLayers = settledMainInputLayers("composer-after")
+        check(afterLayers.size == beforeLayers.size && beforeLayers.all { old -> afterLayers.any { it === old } }) {
+            "Original composer must restore the exact Main scene layer identities"
+        }
+        click("播放")
+        val clock = actualPlayer.state.value.positionSeconds
+        await("same original native source resumes after original composer close") {
+            sameNative(); assembly.native.isCurrent(publication) && playing() && actualPlayer.state.value.positionSeconds > clock + 0.20
+        }
+    }
+
     private fun exerciseOriginalVideoInteractions() {
         sameNative(); check(playing())
         val (assembly, publication) = actualHotOwner()
@@ -2876,7 +3214,10 @@ object WindowsVideoActualRootUiFixture {
         val initialPlacement = edt { (window() as ComposeWindow).placement }
         check(initialPlacement == WindowPlacement.Floating)
         clockAndCapture("110-ordinary-playing")
-        if (System.getProperty("bilipai.validation.commentSearchInput") == "true") {
+        if (System.getProperty("bilipai.validation.composerInput") == "true") {
+            check(replay) { "Composer proof requires private synthetic API/session and loopback media" }
+            exerciseCommentComposer(requireNotNull(localReplay))
+        } else if (System.getProperty("bilipai.validation.commentSearchInput") == "true") {
             check(replay) { "Comment search proof requires the isolated guest API/loopback replay" }
             exerciseCommentSearch(requireNotNull(localReplay))
         } else {
@@ -2994,9 +3335,16 @@ object WindowsVideoActualRootUiFixture {
                     ownedWindowIdentity = edt { System.identityHashCode(window()) }
                     check(first.key != BiliPaiNavKey.Onboarding) { "Windows startup still mounted the mobile agreement gate" }
                     actions.awaitActualHealth(health)
-                    if (System.getProperty("bilipai.validation.commentSearchInput") == "true") {
+                    if (System.getProperty("bilipai.validation.commentSearchInput") == "true" ||
+                        System.getProperty("bilipai.validation.composerInput") == "true") {
                         check(replay != null)
-                        for (mode in listOf("nvidiaInput", "scaleInput", "featureInput", "hotInput"))
+                        require(!(System.getProperty("bilipai.validation.commentSearchInput") == "true" &&
+                            System.getProperty("bilipai.validation.composerInput") == "true"))
+                        val excluded = if (System.getProperty("bilipai.validation.composerInput") == "true")
+                            listOf("nvidiaInput", "scaleInput", "featureInput", "hotInput", "collectionInput",
+                                "metadataInput", "bgmInput", "pipInput", "originalInteractionInput")
+                            else listOf("nvidiaInput", "scaleInput", "featureInput", "hotInput")
+                        for (mode in excluded)
                             require(System.getProperty("bilipai.validation.$mode") != "true") { "Run comment search as its bounded independent branch" }
                         boundCommentSearchWindow()
                     }
@@ -3038,7 +3386,12 @@ object WindowsVideoActualRootUiFixture {
                         put("commentSearchInputProofCompleted", System.getProperty("bilipai.validation.commentSearchInput") == "true")
                         put("commentSearchReadResponsesAreSynthetic", System.getProperty("bilipai.validation.commentSearchInput") == "true")
                         put("commentSearchPhysicalTextHumanReviewRequired", System.getProperty("bilipai.validation.commentSearchInput") == "true")
-                        put("ordinaryFullscreenResizeRegressionExecuted", System.getProperty("bilipai.validation.commentSearchInput") != "true")
+                        put("composerInputProofRequested", System.getProperty("bilipai.validation.composerInput") == "true")
+                        put("composerInputProofCompleted", System.getProperty("bilipai.validation.composerInput") == "true")
+                        put("syntheticAccountSeededThroughActualSessionStore", System.getProperty("bilipai.validation.composerInput") == "true")
+                        put("commentPublishingAccepted", false); put("imageUploadAccepted", false); put("loginUiAccepted", false)
+                        put("ordinaryFullscreenResizeRegressionExecuted", System.getProperty("bilipai.validation.commentSearchInput") != "true" &&
+                            System.getProperty("bilipai.validation.composerInput") != "true")
                         put("commentSearchFourKTested", false)
                         put("originalInteractionProofRequested", System.getProperty("bilipai.validation.originalInteractionInput") == "true")
                         put("originalInteractionProofCompleted", System.getProperty("bilipai.validation.originalInteractionInput") == "true")
