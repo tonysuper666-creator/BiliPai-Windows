@@ -25,7 +25,7 @@ ARCHIVE_URLS = [
     'https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20260903/mpv-dev-x86_64-20260903-git-69e63f425a.7z',
 ]
 CASES = ('awt-alpha-only', 'mpv-default-flip', 'mpv-bitblt', 'mpv-adaptive')
-SURFACE_DEBUG_CASES = ('mpv-default-flip', 'mpv-default-debug')
+SURFACE_DEBUG_CASES = ('mpv-default-flip', 'mpv-bitblt', 'mpv-default-debug')
 SHADER_CASES = ('shader-clear-default-retained', 'shader-clear-default-seek',
                 'shader-clear-nodumb-retained', 'shader-clear-nodumb-seek')
 SHADER_INPUT_PINS = {

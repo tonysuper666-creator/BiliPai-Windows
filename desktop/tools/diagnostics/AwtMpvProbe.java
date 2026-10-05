@@ -107,7 +107,7 @@ public final class AwtMpvProbe {
             String debugFlag = cli.getOrDefault("--surface-debug-observations", "false");
             if (!Set.of("true", "false").contains(debugFlag)) throw new IllegalArgumentException("Invalid debug observation flag");
             boolean debugObservations = debugFlag.equals("true");
-            if (debugObservations && !Set.of("mpv-default-flip", "mpv-default-debug").contains(name))
+            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug").contains(name))
                 throw new IllegalArgumentException("Debug observations require the explicit surface-debug cases");
             if (name.equals("mpv-default-debug") && !debugObservations) throw new IllegalArgumentException("Debug case requires explicit observations");
             Path output = Path.of(Objects.requireNonNull(cli.get("--output"), "Missing --output")).toAbsolutePath().normalize();
@@ -199,6 +199,8 @@ public final class AwtMpvProbe {
             try { if (canvas != null) ImageIO.write(capture("failure"), "png", output.resolve("screen-failed.png").toFile()); }
             catch (Throwable diagnostic) { result.put("failureCaptureError", safe(diagnostic.toString())); }
             if (surfacePhysicalFailure && actor != null && !shaderCase()) {
+                try { observeFailedSurfaceVideo(); }
+                catch (Throwable diagnostic) { result.put("failureVideoAuxiliaryError", safe(diagnostic.toString())); }
                 try { observeFailedSurfaceWindow(); }
                 catch (Throwable diagnostic) { result.put("failureAuxiliaryError", safe(diagnostic.toString())); }
             }
@@ -211,6 +213,10 @@ public final class AwtMpvProbe {
                 try { Files.writeString(output.resolve("native-log.txt"), actor.logs(), StandardOpenOption.CREATE_NEW); }
                 catch (Throwable cleanup) { result.put("logWriteError", safe(cleanup.toString())); }
                 if (debugObservations) {
+                    result.put("criticalNativeLogs", actor.criticalLogFacts());
+                    result.put("requestedStartupOptions", actor.requestedStartupOptions);
+                    try { Files.writeString(output.resolve("native-key-log.txt"), actor.criticalLogText(), StandardOpenOption.CREATE_NEW); }
+                    catch (Throwable diagnostic) { result.put("criticalLogWriteError", safe(diagnostic.toString())); }
                     result.put("loadedRuntimeModules", actor.runtimeModules);
                     result.put("gpuDebugObservation", actor.debugObservation());
                 }
@@ -566,6 +572,50 @@ public final class AwtMpvProbe {
         throw new GateFailure("Physical screen gate failed: " + stage + " " + rejected);
     }
 
+    /** Failure-only decoded input; never contributes to the physical screen gate. */
+    private void observeFailedSurfaceVideo() throws Exception {
+        Map<String, Object> row = new LinkedHashMap<>(); result.put("failedSurfaceVideoAuxiliary", row);
+        row.put("auxiliaryOnly", true); row.put("physicalResult", "failed; retained independently of this auxiliary capture");
+        row.put("imageKind", "later decoded video-mode capture; not GPU output, swapchain or physical-screen proof");
+        row.put("nativeTiming", "same actor/entry checks on native worker; cached state and Robot pixels are near samples, not atomic");
+        if (deadline - System.nanoTime() <= TimeUnit.SECONDS.toNanos(9)) {
+            row.put("status", "skipped: original deadline reserves existing window auxiliary and cleanup"); return;
+        }
+        Map<String, Object> before = actor.snapshot; String entry = nativeValue(before, "playlist/0/id");
+        row.put("nativeBefore", before);
+        if (actor.failure != null || !actor.fileLoaded || entry == null || !"1".equals(nativeValue(before, "playlist-count"))) {
+            row.put("status", "skipped: original single source/actor is unavailable"); return;
+        }
+        CompletableFuture<Map<String, Object>> command = null;
+        try {
+            Path target = output.resolve("native-failure-video.png");
+            command = actor.screenshotForEntry(entry, target, "video");
+            row.put("workerSource", command.get(Math.min(TimeUnit.SECONDS.toNanos(3),
+                Math.max(1, deadline - System.nanoTime() - TimeUnit.SECONDS.toNanos(6))), TimeUnit.NANOSECONDS));
+            require(Files.isRegularFile(target) && Files.size(target) > 0 && Files.size(target) <= 32 * 1024 * 1024,
+                "Auxiliary decoded video absent/oversized");
+            BufferedImage image = ImageIO.read(target.toFile());
+            require(image != null && (long) image.getWidth() * image.getHeight() <= 16_000_000,
+                "Auxiliary decoded video invalid/oversized");
+            int width = Integer.parseInt(nativeValue(before, "video-dec-params/w"));
+            int height = Integer.parseInt(nativeValue(before, "video-dec-params/h"));
+            boolean matches = image.getWidth() == width && image.getHeight() == height;
+            row.put("image", target.getFileName().toString()); row.put("sha256", sha256(target));
+            Map<String, Object> pixels = new LinkedHashMap<>(imageStats(image)); pixels.put("physicalScreenCapture", false);
+            row.put("pixels", pixels); row.put("matchesObservedDecodedSize", matches);
+            require(matches, "Auxiliary video did not match observed decoded dimensions");
+            row.put("status", "captured");
+        } catch (Exception | LinkageError invalid) {
+            if (command != null && !command.isDone()) command.cancel(false);
+            if (invalid instanceof InterruptedException) Thread.currentThread().interrupt();
+            row.put("status", "auxiliary failed"); row.put("error", safe(invalid.toString()));
+        } finally {
+            Map<String, Object> after = actor.snapshot; row.put("nativeAfter", after);
+            row.put("sameObservedEntry", entry.equals(nativeValue(after, "playlist/0/id")));
+            publishReport();
+        }
+    }
+
     /** One later window capture only. GPU capture may fall back to software; the physical failure remains unchanged. */
     private void observeFailedSurfaceWindow() throws Exception {
         Map<String, Object> row = new LinkedHashMap<>(); result.put("failedSurfaceWindowAuxiliary", row);
@@ -580,14 +630,14 @@ public final class AwtMpvProbe {
         if (actor.failure != null || !actor.fileLoaded || entry == null || !"1".equals(nativeValue(before, "playlist-count"))) {
             row.put("status", "skipped: original single source/actor is unavailable"); return;
         }
-        CompletableFuture<Integer> command = null;
+        CompletableFuture<Map<String, Object>> command = null;
         try {
             BufferedImage physical = capture("failure-before-window-auxiliary");
             ImageIO.write(physical, "png", output.resolve("screen-before-window-auxiliary.png").toFile());
             require(entry.equals(actor.value("playlist/0/id")) && actor.failure == null, "Original source retired before window auxiliary");
             Path target = output.resolve("native-failure-window.png");
-            command = actor.command("screenshot-to-file", target.toString(), "window");
-            command.get(Math.min(TimeUnit.SECONDS.toNanos(3), Math.max(1, deadline - System.nanoTime() - TimeUnit.SECONDS.toNanos(3))), TimeUnit.NANOSECONDS);
+            command = actor.screenshotForEntry(entry, target, "window");
+            row.put("workerSource", command.get(Math.min(TimeUnit.SECONDS.toNanos(3), Math.max(1, deadline - System.nanoTime() - TimeUnit.SECONDS.toNanos(3))), TimeUnit.NANOSECONDS));
             require(Files.isRegularFile(target) && Files.size(target) > 0 && Files.size(target) <= 32 * 1024 * 1024, "Auxiliary native image absent/oversized");
             BufferedImage image = ImageIO.read(target.toFile());
             require(image != null && (long) image.getWidth() * image.getHeight() <= 16_000_000, "Auxiliary native image invalid/oversized");
@@ -611,7 +661,7 @@ public final class AwtMpvProbe {
                 ImageIO.write(physical, "png", output.resolve("screen-after-window-auxiliary.png").toFile());
                 row.put("physicalAfter", imageStats(physical));
             } catch (Exception | LinkageError invalid) { row.put("physicalAfterError", safe(invalid.toString())); }
-            row.put("fallbackLogs", actor.logs().lines().filter(line -> line.contains("Falling back to software screenshot")).limit(12).toList());
+            row.put("fallbackLogs", actor.fallbackLogText().lines().filter(line -> line.contains("Falling back to software screenshot")).limit(12).toList());
             row.put("fallbackLogTiming", "bounded actor log drained near auxiliary capture; absence is not proof GPU screenshot path succeeded");
             publishReport();
         }
@@ -824,6 +874,10 @@ public final class AwtMpvProbe {
         volatile int droppedLines;
         private final List<String> firstLogs = new ArrayList<>();
         private final Deque<String> recentLogs = new ArrayDeque<>();
+        private final List<String> severityLogs = new ArrayList<>(), infoQueueLogs = new ArrayList<>(),
+            fallbackLogs = new ArrayList<>(), deviceLogs = new ArrayList<>();
+        private int severityOverflow, infoQueueOverflow, fallbackOverflow, deviceOverflow;
+        volatile Map<String, String> requestedStartupOptions = Map.of();
         private final Path dll, video, audio;
         private final long hwnd;
         private final String selectedCase;
@@ -856,6 +910,27 @@ public final class AwtMpvProbe {
         }
         CompletableFuture<Integer> command(String... args) {
             return submit((api, handle) -> { int code = api.mpv_command(handle, new StringArray(args, "UTF-8")); check(api, code, args[0]); return code; });
+        }
+        CompletableFuture<Map<String, Object>> screenshotForEntry(String entry, Path target, String mode) {
+            require(Set.of("video", "window").contains(mode), "Unsupported auxiliary screenshot mode");
+            CompletableFuture<Map<String, Object>> result = new CompletableFuture<>();
+            if (stopping.get() || failure != null || terminated.get()) {
+                result.completeExceptionally(new IllegalStateException("Own native actor unavailable"));
+            } else tasks.offer(new NativeTask<>((api, handle) -> {
+                require(!result.isDone() && !stopping.get() && failure == null && fileLoaded,
+                    "Original actor retired/capture canceled before auxiliary command");
+                String before = readString(api, handle, "playlist/0/id");
+                String countBefore = readString(api, handle, "playlist-count");
+                require(entry.equals(before) && "1".equals(countBefore), "Original single entry retired before auxiliary command");
+                int code = api.mpv_command(handle, new StringArray(new String[]{"screenshot-to-file", target.toString(), mode}, "UTF-8"));
+                check(api, code, "source-owned auxiliary screenshot");
+                String after = readString(api, handle, "playlist/0/id");
+                String countAfter = readString(api, handle, "playlist-count");
+                require(entry.equals(after) && "1".equals(countAfter), "Original single entry retired during auxiliary command");
+                return Map.of("mode", mode, "entryBefore", before, "entryAfter", after,
+                    "playlistCountBefore", countBefore, "playlistCountAfter", countAfter, "commandCode", code);
+            }, result));
+            return result;
         }
         CompletableFuture<Map<String, Object>> shaders(List<String> paths, boolean refresh) {
             return submit((api, handle) -> {
@@ -916,6 +991,7 @@ public final class AwtMpvProbe {
                 }
                 expectedFlip = bitblt ? "no" : "yes";
                 if (bitblt) options.put("d3d11-flip", "no"); // Default/hardware cases leave the pinned default untouched.
+                if (debugObservations) requestedStartupOptions = Collections.unmodifiableMap(new LinkedHashMap<>(options));
                 for (Map.Entry<String, String> option : options.entrySet()) check(api, api.mpv_set_option_string(handle, option.getKey(), option.getValue()), option.getKey());
                 check(api, api.mpv_request_log_messages(handle, debugObservations ? "debug" : "v"), "request-log-messages");
                 check(api, api.mpv_initialize(handle), "initialize");
@@ -1009,9 +1085,9 @@ public final class AwtMpvProbe {
             return Collections.unmodifiableMap(facts);
         }
         private Map<String, Object> debugObservation() {
-            String text = logs();
+            String text = fallbackLogText();
             List<String> fallback = text.lines().filter(line -> line.contains("gpu-debug disabled due to error:")).limit(12).toList();
-            List<String> messages = text.lines().filter(line -> line.matches("vo/gpu/d3d11 \\[.*\\] [0-9]+: .*" )).limit(24).toList();
+            List<String> messages; synchronized (this) { messages = List.copyOf(infoQueueLogs).stream().limit(24).toList(); }
             Map<String, Object> facts = new LinkedHashMap<>();
             facts.put("requested", selectedCase.equals("mpv-default-debug"));
             facts.put("state", !fallback.isEmpty() ? "EXPLICIT_FALLBACK" : !messages.isEmpty() ? "ACTUAL_MESSAGE_OBSERVED" :
@@ -1020,8 +1096,40 @@ public final class AwtMpvProbe {
             facts.put("limits", "No device GetCreationFlags/InfoQueue queried; modules/options or absent logs are not SDK/debug-layer ACK");
             return facts;
         }
+        private synchronized String fallbackLogText() {
+            return debugObservations ? String.join("\n", fallbackLogs) : logs();
+        }
+        private synchronized Map<String, Object> criticalLogFacts() {
+            return Map.of("scope", "independent first-message bounded buckets; unrelated shader text cannot evict them",
+                "severity", List.copyOf(severityLogs), "infoQueue", List.copyOf(infoQueueLogs),
+                "fallback", List.copyOf(fallbackLogs), "device", List.copyOf(deviceLogs),
+                "limits", Map.of("severity", 64, "infoQueue", 128, "fallback", 16, "device", 32),
+                "overflow", Map.of("severity", severityOverflow, "infoQueue", infoQueueOverflow,
+                    "fallback", fallbackOverflow, "device", deviceOverflow));
+        }
+        private synchronized String criticalLogText() {
+            return json(criticalLogFacts()) + "\n";
+        }
         private synchronized void log(String value) {
-            String row = safe(value); if (firstLogs.size() < 150) firstLogs.add(row);
+            String row = safe(value);
+            if (debugObservations) {
+                if (row.contains(" [warn] ") || row.contains(" [error] ") || row.contains(" [fatal] ") ||
+                    row.startsWith("ACTOR_FAILURE ") || row.startsWith("DESTROY_FAILURE ")) {
+                    if (severityLogs.size() < 64) severityLogs.add(row); else severityOverflow++;
+                }
+                if (row.matches("(?s)vo/gpu/d3d11 \\[.*?\\] [0-9]+: .*")) {
+                    if (infoQueueLogs.size() < 128) infoQueueLogs.add(row); else infoQueueOverflow++;
+                }
+                if (row.contains("gpu-debug disabled due to error:") || row.contains("Falling back to software screenshot")) {
+                    if (fallbackLogs.size() < 16) fallbackLogs.add(row); else fallbackOverflow++;
+                }
+                if (row.contains("Device Name:") || row.contains("Device ID:") || row.contains("LUID:") ||
+                    row.contains("Using a software adapter") || row.contains("Using flip-model presentation") ||
+                    row.contains("Using bitblt-model presentation")) {
+                    if (deviceLogs.size() < 32) deviceLogs.add(row); else deviceOverflow++;
+                }
+            }
+            if (firstLogs.size() < 150) firstLogs.add(row);
             else { if (recentLogs.size() == 150) { recentLogs.removeFirst(); droppedLines++; } recentLogs.addLast(row); }
         }
         synchronized String logs() { return String.join("\n", firstLogs) + "\n--- later bounded log ---\n" + String.join("\n", recentLogs) + "\n"; }
