@@ -35,6 +35,12 @@ private class MessagePageTestFixture : AutoCloseable {
     val retained=AtomicBoolean(true)
     val visible=AtomicBoolean(true)
     val rootLock=Any()
+    val canBeginEditor=AtomicBoolean(true)
+    val editorActivity=AtomicInteger()
+    @Volatile var onEditorActivity:()->Unit={}
+    val pluginContext=DesktopPluginContext(DesktopPluginStore(root.resolve("global")))
+    lateinit var community:DesktopCommunityRepository
+    private val pageOwners=mutableListOf<DesktopOriginalMessagePageOwner>()
     val hits=ConcurrentLinkedQueue<MessagePageTestHit>()
     val executor=Executors.newCachedThreadPool()
     val server=HttpServer.create(InetSocketAddress("127.0.0.1",0),0)
@@ -66,12 +72,30 @@ private class MessagePageTestFixture : AutoCloseable {
             }.build()
         admission=DesktopMessagePageAdmission(repository,repository.sessionEpoch,42,scope,retained::get,visible::get,
             { action->synchronized(rootLock) { if(retained.get()) {action();true}else false } },
-            { services.userInfo(it) },{ services.videoInfo(it) })
-        val store=DesktopBlockedUpStore(DesktopPluginContext(DesktopPluginStore(root.resolve("global"))))
-        val community=DesktopCommunityRepository(repository,store)
+            { services.userInfo(it) },{ services.videoInfo(it) },canBeginEditor::get,{editorActivity.incrementAndGet();onEditorActivity()})
+        val store=DesktopBlockedUpStore(pluginContext)
+        community=DesktopCommunityRepository(repository,store)
         // MessagePageTestFixture transport ONLY: actual Community factory and protocol/body/settings are unchanged.
         community.javaClass.getDeclaredField("client").apply { isAccessible=true;set(community,transport) }
         services=community.originalMessagePages(admission);admission.requests=services.requests
+    }
+    suspend fun pageOwner():DesktopOriginalMessagePageOwner {
+        val lifecycleOwner=object:androidx.lifecycle.LifecycleOwner {
+            override val lifecycle:androidx.lifecycle.Lifecycle=androidx.lifecycle.LifecycleRegistry.createUnsafe(this).apply {
+                currentState=androidx.lifecycle.Lifecycle.State.RESUMED
+            }
+        }
+        // Only unused rendering ports reject calls. The actual message owner, repository,
+        // account admission, settings projection and loopback request view remain real.
+        val home=DesktopHomeEnvironment(
+            DesktopOriginalHomePreferences.create(pluginContext.store,scope,false,{false}),pluginContext,lifecycleOwner,
+            kotlinx.coroutines.flow.MutableStateFlow(false),unusedMessageUiPort(DesktopHomeAnalyticsPort::class.java),
+            { DesktopOriginalHomeGlobalNamespace(pluginContext.store,it) },kotlinx.coroutines.flow.MutableStateFlow(null),
+            {_,_->}, {}, {_,_->}, unusedMessageUiPort(DesktopHomeEmbeddedPages::class.java),{_,_->false},{},
+            unusedMessageUiPort(DesktopHomeOverlayPorts::class.java))
+        return DesktopOriginalMessagePageOwner(repository,community,repository.sessionEpoch,42,scope,
+            retained::get,visible::get,{action->synchronized(rootLock){if(retained.get()){action();true}else false}},
+            home,{},false,canBeginEditor::get,{editorActivity.incrementAndGet();onEditorActivity()}).also(pageOwners::add)
     }
     suspend fun <T> call(block:suspend()->T):T {
         val result=CompletableDeferred<T>();val job=admission.launch {
@@ -96,7 +120,7 @@ private class MessagePageTestFixture : AutoCloseable {
         "/web_im/v1/web_im/send_msg" -> MessagePageTestReply("""{"code":0,"data":{"msg_key":101}}""")
         else -> MessagePageTestReply("""{"code":0}""")
     }
-    suspend fun shutdown() { retained.set(false);admission.retireAndJoin();scope.cancel();server.stop(0);executor.shutdownNow();repository.httpClient.dispatcher.executorService.shutdownNow();repository.httpClient.connectionPool.evictAll() }
+    suspend fun shutdown() { retained.set(false);pageOwners.forEach { it.closeAndJoin() };admission.retireAndJoin();scope.cancel();server.stop(0);executor.shutdownNow();repository.httpClient.dispatcher.executorService.shutdownNow();repository.httpClient.connectionPool.evictAll() }
     override fun close() { runBlocking { shutdown() } }
     companion object {
         val allowedPaths=setOf("/session_svr/v1/session_svr/single_unread","/x/msgfeed/unread","/session_svr/v1/session_svr/get_sessions",
@@ -410,5 +434,146 @@ class DesktopOriginalMessagePagesTest {
         vm.removeSession(vm.uiState.value.sessions.first());delay(100);check(f.hits.size==before)
         f.visible.set(true);vm.removeSession(vm.uiState.value.sessions.first());f.waitFor { f.hits.any { it.path.endsWith("remove_session") } }
             }
+    }
+}
+
+
+@Suppress("UNCHECKED_CAST")
+private fun <T> unusedMessageUiPort(type:Class<T>):T = java.lang.reflect.Proxy.newProxyInstance(
+    type.classLoader,arrayOf(type)) { _,method,_-> error("Unexpected rendering port ${method.name}") } as T
+
+/** Actual PageOwner/ChatViewModel/owned Job regression; no OS window or real account. */
+class DesktopMessageUpdateInstallationHoldTest {
+    private suspend fun ready(f:MessagePageTestFixture,vm:ChatViewModel) {
+        f.waitFor { vm.uiState.value.messagesLoaded && !vm.uiState.value.isLoading }
+    }
+    private fun child(vm:ChatViewModel):DesktopMessagePageAdmission =
+        vm.javaClass.getDeclaredField("owner").apply{isAccessible=true}.get(vm) as DesktopMessagePageAdmission
+    private fun sendJob(vm:ChatViewModel):Job {
+        val admission=child(vm)
+        @Suppress("UNCHECKED_CAST")
+        val jobs=admission.javaClass.getDeclaredField("operations").apply{isAccessible=true}.get(admission) as Map<String,Job>
+        return checkNotNull(jobs["chat-send"])
+    }
+    private class SendDrain(val job:Job,val release:CompletableDeferred<Unit>,val response:CountDownLatch):AutoCloseable {
+        override fun close(){response.countDown();release.complete(Unit)}
+    }
+    private suspend fun blockedSend(f:MessagePageTestFixture,vm:ChatViewModel):SendDrain {
+        val entered=CompletableDeferred<Unit>();val response=CountDownLatch(1)
+        f.respond={ hit->if(hit.path.endsWith("send_msg")) {
+            entered.complete(Unit);response.await(3,TimeUnit.SECONDS);f.default(hit)
+        }else f.default(hit) }
+        vm.sendMessage("synthetic draft; no real message")
+        withTimeout(5_000){entered.await()}
+        val job=sendJob(vm);val cleanupEntered=CompletableDeferred<Unit>();val release=CompletableDeferred<Unit>()
+        // Attach bounded cleanup to the exact original send Job. Cancellation cannot drain
+        // that actual Job until its child cleanup has finished; no synthetic busy counter.
+        CoroutineScope(job+Dispatchers.Default).launch {
+            withContext(NonCancellable){withTimeout(5_000){cleanupEntered.complete(Unit);release.await()}}
+        }
+        withTimeout(5_000){cleanupEntered.await()}
+        return SendDrain(job,release,response)
+    }
+
+    @Test fun emptyInboxAndNotificationsDoNotHoldInstallation():Unit=runBlocking {
+        MessagePageTestFixture().use { f->
+            val page=f.pageOwner();val inbox=page.inbox
+            f.waitFor{!inbox.uiState.value.isLoading}
+            check(inbox.uiState.value.sessions.isNotEmpty())
+            check(!page.blocksUpdateInstallation())
+            page.replyMe
+            check(!page.blocksUpdateInstallation())
+        }
+    }
+    @Test fun actualPaneRetainsSameVmWhileCoveredAndExplicitBackReleases():Unit=runBlocking {
+        MessagePageTestFixture().use { f->
+            val page=f.pageOwner();var selected=0L
+            check(page.selectPaneChat(7,1){selected=7});check(selected==7L && page.blocksUpdateInstallation())
+            val vm=page.chat(7,1);ready(f,vm)
+            val messages=vm.uiState.value.messages
+            f.visible.set(false);f.canBeginEditor.set(false)
+            check(page.retainPaneChat(7,1) && page.chat(7,1)===vm)
+            check(page.blocksUpdateInstallation() && vm.uiState.value.messages===messages)
+            check(!page.selectPaneChat(8,1){error("covered selection")})
+            f.visible.set(true);f.canBeginEditor.set(true)
+            page.keepPaneChat(0,1)
+            check(!page.blocksUpdateInstallation())
+        }
+    }
+    @Test fun installingRejectsNewPaneAndOriginalSendBeforeJobStart():Unit=runBlocking {
+        MessagePageTestFixture().use { f->
+            val page=f.pageOwner();f.canBeginEditor.set(false)
+            check(!page.selectPaneChat(7,1){error("installing selection")})
+            check(!page.retainPaneChat(7,1) && !page.blocksUpdateInstallation())
+            check(runCatching{page.chat(7,1)}.exceptionOrNull() is CancellationException)
+            f.canBeginEditor.set(true);val vm=page.chat(7,1);ready(f,vm)
+            f.canBeginEditor.set(false);val hits=f.hits.count{it.path.endsWith("send_msg")}
+            vm.sendMessage("must not start")
+            check(!vm.uiState.value.isSending && !child(vm).hasPendingEditorMutations())
+            check(f.hits.count{it.path.endsWith("send_msg")}==hits)
+        }
+    }
+    @Test fun compactPaneExitRetainsExactSendUntilItsRealCleanupDrains():Unit=runBlocking {
+        MessagePageTestFixture().use { f->
+            val page=f.pageOwner();val vm=page.chat(7,1);ready(f,vm)
+            blockedSend(f,vm).use { send->
+                check(child(vm).hasPendingEditorMutations())
+                page.keepPaneChat(0L,0)
+                check(send.job.isCancelled && !send.job.isCompleted)
+                check(page.blocksUpdateInstallation())
+                send.close();withTimeout(5_000){send.job.join()}
+                f.waitFor{!page.blocksUpdateInstallation()}
+                check(vm.uiState.value.sentText==null)
+            }
+        }
+    }
+    @Test fun oldSendCompletionCannotReleaseSuccessorPaneReservation():Unit=runBlocking {
+        MessagePageTestFixture().use { f->
+            val page=f.pageOwner();val old=page.chat(7,1);ready(f,old)
+            blockedSend(f,old).use { send->
+                check(page.selectPaneChat(8,1){})
+                val successor=page.chat(8,1);page.keepPaneChat(8,1)
+                check(old!==successor && send.job.isCancelled && page.blocksUpdateInstallation())
+                send.close();withTimeout(5_000){send.job.join()}
+                f.waitFor{!child(old).hasPendingEditorMutations()}
+                check(page.blocksUpdateInstallation() && page.chat(8,1)===successor)
+                page.keepPaneChat(0,1);check(!page.blocksUpdateInstallation())
+            }
+        }
+    }
+    @Test fun retiredOwnerAndCloseAndJoinKeepExactPendingJobUntilDrained():Unit=runBlocking {
+        MessagePageTestFixture().use { f->
+            val page=f.pageOwner();val vm=page.chat(7,1);ready(f,vm)
+            blockedSend(f,vm).use { send->
+                f.retained.set(false);page.close()
+                check(!page.isOwned() && page.blocksUpdateInstallation())
+                val drained=async{page.closeAndJoin()}
+                check(!send.job.isCompleted && !page.isDrained())
+                check(!page.selectPaneChat(8,1){error("retired selection")})
+                send.close();withTimeout(5_000){drained.await()}
+                f.waitFor{!page.blocksUpdateInstallation()}
+                check(page.isDrained() && vm.uiState.value.sentText==null)
+            }
+        }
+    }
+    @Test fun lazyMutationCancelledBeforeStartCannotLeakItsExactReservation():Unit=runBlocking {
+        MessagePageTestFixture().use { f->
+            val page=f.pageOwner();val vm=page.chat(7,1);ready(f,vm);val admission=child(vm)
+            f.onEditorActivity={if(admission.hasPendingEditorMutations())f.scope.cancel()}
+            val job=admission.launchMutation("chat-send"){error("cancelled LAZY body started")}
+            check(job.isCancelled && job.isCompleted)
+            check(!admission.hasPendingEditorMutations() && !page.blocksUpdateInstallation())
+            check(f.hits.none{it.path.endsWith("send_msg")})
+        }
+    }
+    @Test fun sameMidAccountEpochReplacementCannotRebindOldPane():Unit=runBlocking {
+        MessagePageTestFixture().use { f->
+            val page=f.pageOwner();val vm=page.chat(7,1);ready(f,vm)
+            f.sessions.saveAccount(mapOf("SESSDATA" to "synthetic-new-epoch","bili_jct" to "synthetic"),AccountSummary(42,"Fixture",""))
+            check(!page.isOwned() && !page.blocksUpdateInstallation())
+            check(!page.retainPaneChat(7,1) && !page.selectPaneChat(8,1){error("old owner rebound")})
+            val count=f.hits.count{it.path.endsWith("send_msg")};vm.sendMessage("old epoch")
+            check(f.hits.count{it.path.endsWith("send_msg")}==count && !child(vm).hasPendingEditorMutations())
+        }
     }
 }

@@ -30,6 +30,25 @@ def message_scaffold_source(repo):
 
 def read(repo,p):return(_desktop_canonical_source(repo, p)).read_text(encoding='utf-8').replace('\r\n','\n')
 def inventory(repo):return [dict(path=p,mode='direct' if p in DIRECT else 'policy-extract',features=['stable-original-message-pages-root-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest())for p in PATHS]
+MESSAGE_EDITOR_HOLD_EDITS = [{'name': 'register-real-restored-pane-before-render', 'before': '    val pageOwner = LocalDesktopMessagePageOwner.current\n    androidx.compose.runtime.SideEffect { pageOwner.keepPaneChat(activeTalkerId, activeSessionType) }', 'after': '    val pageOwner = LocalDesktopMessagePageOwner.current\n    val retainedPaneChat = activeTalkerId != 0L && pageOwner.retainPaneChat(activeTalkerId, activeSessionType)\n    androidx.compose.runtime.SideEffect { pageOwner.keepPaneChat(activeTalkerId, activeSessionType) }', 'count': 1}, {'name': 'admit-new-pane-before-original-selection', 'before': '                    activeTalkerId = talkerId\n                    activeSessionType = sessionType\n                    activeUserName = userName', 'after': '                    pageOwner.selectPaneChat(talkerId, sessionType) {\n                        activeTalkerId = talkerId\n                        activeSessionType = sessionType\n                        activeUserName = userName\n                    }', 'count': 1}, {'name': 'render-only-the-actual-retained-chat', 'before': '            if (activeTalkerId != 0L) {\n                key(activeTalkerId, activeSessionType) {', 'after': '            if (activeTalkerId != 0L && retainedPaneChat) {\n                key(activeTalkerId, activeSessionType) {', 'count': 1}, {'name': 'compact-exit-retires-only-this-message-center-pane', 'before': '    if (!useTwoPane) {\n        InboxScreen(', 'after': '    if (!useTwoPane) {\n        val compactPageOwner = LocalDesktopMessagePageOwner.current\n        androidx.compose.runtime.SideEffect { compactPageOwner.keepPaneChat(0L, 0) }\n        InboxScreen(', 'count': 1}]
+def message_editor_hold(body, out):
+ before=body
+ for edit in MESSAGE_EDITOR_HOLD_EDITS:
+  assert body.count(edit['before'])==edit['count'],edit['name']
+  body=body.replace(edit['before'],edit['after'])
+ inverse=body
+ for edit in reversed(MESSAGE_EDITOR_HOLD_EDITS):
+  assert inverse.count(edit['after'])==edit['count'],edit['name']
+  inverse=inverse.replace(edit['after'],edit['before'])
+ assert inverse==before
+ (out/'message-editor-hold-source-inventory.json').write_text(json.dumps({
+  'path':'com/android/purebilibili/feature/message/MessageCenterScreen.kt',
+  'initialDraftOrMessageBusinessChanged':False,'fullInverse':True,
+  'beforeSha256LF':hashlib.sha256(before.encode()).hexdigest(),
+  'afterSha256LF':hashlib.sha256(body.encode()).hexdigest(),'edits':MESSAGE_EDITOR_HOLD_EDITS
+ },ensure_ascii=True,indent=2)+'\n',encoding='utf8',newline='\n')
+ return body
+
 def generate(repo,out,standalone=False):
  spec=importlib.util.spec_from_file_location('message_decl',repo/'desktop/tools/extract-appearance-platform.py');decl=importlib.util.module_from_spec(spec);spec.loader.exec_module(decl)
  spec=importlib.util.spec_from_file_location('message_host',repo/'desktop/tools/extract-upstream-plugins.py');host=importlib.util.module_from_spec(spec);spec.loader.exec_module(host);media=host.media_extractor(repo)
@@ -169,6 +188,7 @@ def generate(repo,out,standalone=False):
     s=s.replace(body,new,1)
   if name=='MessageCenterScreen':
    s=s.replace('    val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()','    val pageOwner = LocalDesktopMessagePageOwner.current\n    androidx.compose.runtime.SideEffect { pageOwner.keepPaneChat(activeTalkerId, activeSessionType) }\n    val windowAdaptiveInfo = currentWindowAdaptiveInfoV2()',1)
+   s=message_editor_hold(s,out)
   if name=='ChatScreen':
    s=v029_chat_sources.adapt_screen(s,function)
    v029_chat_sources.record_adaptation(repo,out,name+'.kt',s)

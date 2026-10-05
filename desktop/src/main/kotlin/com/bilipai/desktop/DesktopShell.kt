@@ -296,6 +296,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         DesktopDynamicCardSession(repository, sessionEpoch, stillOwned = { !latestDynamicIsClosing() })
     }
     var activatingUpdate by remember { mutableStateOf(false) }
+    // Keep the prior message owner until the existing handle has drained it
+    // and the successor retained Root publishes its own actual leaf.
+    var messageUpdateRoot by remember { mutableStateOf<DesktopOriginalMessagePagesRoot?>(null) }
+    val emptyMessageActivity = remember { MutableStateFlow(0L) }
+    val messageUpdateActivity by (messageUpdateRoot?.updateActivity ?: emptyMessageActivity).collectAsState()
     val backupUpdateHold = remember { DesktopBackupUpdateHold { !latestDynamicIsClosing() && !activatingUpdate } }
     val backupUpdateActivity by backupUpdateHold.activity.collectAsState()
     val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession) {
@@ -1341,11 +1346,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         finally { feedLoading = false }
     }
     LaunchedEffect(Unit) { updater.autoCheck(); while (true) { delay(6 * 60 * 60 * 1000L); updater.autoCheck() } }
-    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, activatingUpdate, updateJob) {
+    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, messageUpdateRoot, messageUpdateActivity, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
             is UpdateState.Available -> if (automaticUpdates) prepareUpdate(status.update, false)
-            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation()) {
+            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation() && messageUpdateRoot?.blocksUpdateInstallation() != true) {
                 activatingUpdate = true
                 updateJob = scope.launch(start = CoroutineStart.LAZY) {
                     try { if (updater.activatePreparedUpdate(status.prepared)) onExit() }
@@ -1472,6 +1477,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         LocalDesktopTextShareBindings provides rootTextShareBindings,
         LocalDesktopImageSaveLocations provides imageSaveLocations,
         LocalDesktopDynamicEditorActions provides dynamicEditor.actions,
+        LocalDesktopMessageEditorStartAllowed provides { !isClosing() && !activatingUpdate },
         LocalDesktopDynamicCardStateRegistry provides dynamicCardRegistry,
         LocalDesktopDynamicCardMutations provides dynamicCardRegistry.bindings,
         LocalDesktopDynamicCardNavigation provides com.android.purebilibili.feature.dynamic.components.DynamicCardNavigationActions(
@@ -1641,6 +1647,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     ordinaryVideo.playlist,
                     { bvid -> ordinaryVideoResources?.progress?.cachedPositionForSpace(bvid) { !isClosing() } ?: 0L })
                 if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize(),onRootContentFrame) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages,spacePages ->
+                    SideEffect { messageUpdateRoot = messagePages }
                     val messageRoutes = commands as DesktopOriginalRootRouteAssembly
                     val messageLink: (String) -> Unit = { raw ->
                         if (active) messageRoutes.callbackFor(entryKey) {
@@ -2465,7 +2472,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (googleCastDialog) DesktopGoogleCastDialog(pluginRuntime.context, pluginRuntime.googleCast,
             media = castMediaFactory, onDismiss = { googleCastDialog = false })
         PluginCareReminder(pluginRuntime)
-        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation() || backupUpdateHold.blocksUpdateInstallation() || loginUpdateHold.blocksUpdateInstallation(),
+        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation() || backupUpdateHold.blocksUpdateInstallation() || loginUpdateHold.blocksUpdateInstallation() || messageUpdateRoot?.blocksUpdateInstallation() == true,
             playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
             onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false })

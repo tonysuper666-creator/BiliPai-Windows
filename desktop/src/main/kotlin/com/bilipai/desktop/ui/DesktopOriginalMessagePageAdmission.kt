@@ -21,6 +21,8 @@ internal class DesktopMessagePageAdmission(
     private val commitEntry: ((() -> Unit) -> Boolean),
     private val userInfo: suspend (Long) -> UserBasicInfo?,
     private val videoInfo: suspend (String) -> Result<ViewInfo>,
+    private val canBeginEditorWork: () -> Boolean = { true },
+    private val editorActivityChanged: () -> Unit = {},
 ) {
     private val lock = Any()
     private val live = AtomicBoolean(true)
@@ -29,6 +31,15 @@ internal class DesktopMessagePageAdmission(
     private val revision = java.util.concurrent.ConcurrentHashMap<String, Long>()
     private val operations = mutableMapOf<String, Job>()
     private val permit = ThreadLocal<(() -> Boolean)?>()
+    private val editorMutations = MutableStateFlow<Set<Job>>(emptySet())
+    fun hasPendingEditorMutations(): Boolean = editorMutations.value.isNotEmpty()
+
+    /** Same Store -> entry -> local gate; the block may only reserve editor/UI state. */
+    fun admitEditorStart(block: () -> Unit): Boolean = try {
+        var applied = false
+        admit { if (visible() && canBeginEditorWork()) { block(); applied = true } }
+        applied
+    } catch (_: CancellationException) { false }
     lateinit var requests: DesktopOriginalMessageRepository
         internal set
 
@@ -94,34 +105,51 @@ internal class DesktopMessagePageAdmission(
 
     private fun launchOwned(channel: String?, dependsOn: String?, mutation: Boolean,
         block: suspend CoroutineScope.() -> Unit, caller: Job? = null): Job {
-        val job: Job
-        val previous: Job?
+        var job: Job? = null
+        var previous: Job? = null
         var dependent: Job? = null
-        synchronized(lock) {
-            if (!isOwned() || mutation && !visible()) return Job().also { it.cancel() }
-            if (mutation && channel != null) operations[channel]?.takeIf { it.isActive }?.let { return it }
-            val ticket = if (channel != null) (revision[channel] ?: 0L) + 1 else 0L
-            if (channel != null) revision[channel] = ticket
-            val dependency = dependsOn?.let { revision[it] ?: 0L }
-            previous = channel?.let { operations[it] }
-            if (dependsOn == null && channel?.endsWith("-list") == true) {
-                val dependentChannel=channel.removeSuffix("-list")+"-more"
-                revision[dependentChannel]=(revision[dependentChannel] ?: 0L)+1L
-                dependent = operations[dependentChannel]
+        var created = false
+        try {
+            admit {
+                if (mutation && (!visible() || !canBeginEditorWork())) return@admit
+                val existing = if (mutation && channel != null) operations[channel]
+                    ?.takeIf { !it.isCompleted && !it.isCancelled } else null
+                if (existing != null) { job = existing; return@admit }
+                val ticket = if (channel != null) (revision[channel] ?: 0L) + 1 else 0L
+                if (channel != null) revision[channel] = ticket
+                val dependency = dependsOn?.let { revision[it] ?: 0L }
+                previous = channel?.let { operations[it] }
+                if (dependsOn == null && channel?.endsWith("-list") == true) {
+                    val dependentChannel=channel.removeSuffix("-list")+"-more"
+                    revision[dependentChannel]=(revision[dependentChannel] ?: 0L)+1L
+                    dependent = operations[dependentChannel]
+                }
+                lateinit var actual: Job
+                val allowed = { actual.isActive && caller?.isActive != false && isOwned() && (channel == null || revision[channel] == ticket) &&
+                    (dependsOn == null || (revision[dependsOn] ?: 0L) == dependency) }
+                actual = scope.launch(permit.asContextElement(allowed), start = CoroutineStart.LAZY) {
+                    assertCurrent(); block(); assertCurrent()
+                }
+                job = actual
+                created = true
+                if (channel != null) operations[channel] = actual
+                if (mutation) editorMutations.update { it + actual }
             }
-            lateinit var actual: Job
-            val allowed = { actual.isActive && caller?.isActive != false && isOwned() && (channel == null || revision[channel] == ticket) &&
-                (dependsOn == null || (revision[dependsOn] ?: 0L) == dependency) }
-            actual = scope.launch(permit.asContextElement(allowed), start = CoroutineStart.LAZY) {
-                assertCurrent(); block(); assertCurrent()
+        } catch (_: CancellationException) { return Job().also { it.cancel() } }
+        val actual = job ?: return Job().also { it.cancel() }
+        if (!created) return actual
+        if (mutation) {
+            // Exact real Job completion; never re-enter Store/entry admission here.
+            actual.invokeOnCompletion {
+                editorMutations.update { it - actual }
+                editorActivityChanged()
             }
-            job = actual
-            if (channel != null) operations[channel] = job
+            editorActivityChanged()
         }
         previous?.cancel()
         dependent?.cancel()
-        job.start()
-        return job
+        actual.start()
+        return actual
     }
 
     /** Synchronous direct VM actions also use Store -> entry gate; no IO in this transaction. */
