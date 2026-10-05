@@ -126,12 +126,14 @@ jobs:
       && github.event_name == 'workflow_dispatch' && inputs.comment_search_ui == true
     runs-on: windows-latest
     timeout-minutes: 25
-    env:
-      GRADLE_USER_HOME: ${{ runner.temp }}/bilipai-comment-search-gradle
     steps:
       - name: Enable Git long paths
         shell: pwsh
-        run: git config --global core.longpaths true
+        run: |
+          git config --global core.longpaths true
+          if ($LASTEXITCODE -ne 0) { throw 'Git long-path configuration failed.' }
+          $gradleHome = Join-Path $env:RUNNER_TEMP 'bilipai-comment-search-gradle'
+          "GRADLE_USER_HOME=$gradleHome" | Add-Content -LiteralPath $env:GITHUB_ENV
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.source_sha || github.sha }}

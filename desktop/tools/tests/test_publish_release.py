@@ -437,6 +437,12 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         self.assertFalse(self.admitted(name, "publish", **{"needs.windows.outputs.release": ""}))
         self.assertRegex(self.workflows[name], r"(?m)^      comment_search_ui:$")
 
+    def test_job_environment_does_not_resolve_runner_context_before_allocation(self):
+        for (name, job), body in self.jobs.items():
+            with self.subTest(name=name, job=job):
+                for block in re.findall(r"(?m)^    env:\n((?:      [^\n]*(?:\n|$))+)", body):
+                    self.assertNotRegex(block, r"\$\{\{[^}]*\brunner\.")
+
     def test_manual_dispatch_remains_without_duplicate_github_schedule(self):
         name = "windows-upstream-sync.yml"
         self.assertRegex(self.workflows[name], r"(?m)^  workflow_dispatch:$")
