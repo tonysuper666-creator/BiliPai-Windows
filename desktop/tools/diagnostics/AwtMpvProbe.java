@@ -32,10 +32,27 @@ public final class AwtMpvProbe {
     private static final String DLL_SHA = "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4";
     private static final long DLL_BYTES = 120342528L;
     private static final int WIDTH = 320, HEIGHT = 180, FPS = 20, SECONDS = 10;
+    private static final List<String> FAST = List.of("Anime4K_Clamp_Highlights.glsl", "Anime4K_Restore_CNN_M.glsl",
+        "Anime4K_Restore_CNN_S.glsl", "Anime4K_Upscale_CNN_x2_M.glsl", "Anime4K_AutoDownscalePre_x2.glsl",
+        "Anime4K_AutoDownscalePre_x4.glsl", "Anime4K_Upscale_CNN_x2_S.glsl");
+    private static final List<String> QUALITY = List.of("Anime4K_Clamp_Highlights.glsl", "Anime4K_Restore_CNN_VL.glsl",
+        "Anime4K_Upscale_CNN_x2_VL.glsl", "Anime4K_AutoDownscalePre_x2.glsl", "Anime4K_AutoDownscalePre_x4.glsl",
+        "Anime4K_Upscale_CNN_x2_M.glsl");
+    private static final Map<String, String> SHADER_PINS = Map.ofEntries(
+        Map.entry("Anime4K_AutoDownscalePre_x2.glsl", "8c58291740146bd766a4d73f132775a797fe80f7d07919b5d767e27a5dc85656"),
+        Map.entry("Anime4K_AutoDownscalePre_x4.glsl", "5af62d8cd844916dc1126613e13bad3beab195787f93a71200b47c6ec78f2e41"),
+        Map.entry("Anime4K_Clamp_Highlights.glsl", "6dafe6d4ccaed8f1675d1b5b13e2d1a981f1f65849f54ea71b897f2f439ecfed"),
+        Map.entry("Anime4K_Restore_CNN_M.glsl", "67ea3ed26539e8de3b7d307688535d2ff17e8d147e11dda0247da7770dbecf41"),
+        Map.entry("Anime4K_Restore_CNN_S.glsl", "97c24dc370ab300c108bfaa09db7f175aeff343674842c299cf3940a3d330427"),
+        Map.entry("Anime4K_Restore_CNN_VL.glsl", "35036722733305cd4d4e57660b883bbe2569ba2914033c254327107d7b77e35e"),
+        Map.entry("Anime4K_Upscale_CNN_x2_M.glsl", "716e02098a68f0d648761f2b96b4dd139e1cb09b174bb369fca3aa34328fff7e"),
+        Map.entry("Anime4K_Upscale_CNN_x2_S.glsl", "4c53ec2e287908f7ee7bcb266b0170421626d663576468b7d7dafc62962649a4"),
+        Map.entry("Anime4K_Upscale_CNN_x2_VL.glsl", "5638fe31c37c151a3443fea3451a3ef91af073f4dbb9615f6c0d1e29db11493d"));
     private static final long PID = ProcessHandle.current().pid();
     private final String caseName;
     private final Path output;
     private final Path dll;
+    private final Path shaderRoot;
     private final long started = System.nanoTime(), deadline;
     private final Map<String, Object> result = new LinkedHashMap<>();
     private final List<Object> observations = new ArrayList<>();
@@ -52,9 +69,9 @@ public final class AwtMpvProbe {
     private DwmApi dwm;
     private Rectangle screenBounds;
 
-    private AwtMpvProbe(String caseName, Path output, Path dll) {
-        this.caseName = caseName; this.output = output; this.dll = dll;
-        deadline = started + TimeUnit.SECONDS.toNanos(caseName.equals("awt-alpha-only") ? 25 : 30);
+    private AwtMpvProbe(String caseName, Path output, Path dll, Path shaderRoot) {
+        this.caseName = caseName; this.output = output; this.dll = dll; this.shaderRoot = shaderRoot;
+        deadline = started + TimeUnit.SECONDS.toNanos(shaderCase() ? 90 : caseName.equals("awt-alpha-only") ? 25 : 30);
         result.put("schema", 1); result.put("case", caseName); result.put("diagnosticOnly", true);
         result.put("passed", false); result.put("beganUtc", Instant.now().toString());
         result.put("ownPid", PID); result.put("javaVersion", System.getProperty("java.version"));
@@ -73,11 +90,12 @@ public final class AwtMpvProbe {
         try {
             Map<String, String> cli = new LinkedHashMap<>();
             for (int i = 0; i < args.length; i += 2) {
-                if (i + 1 >= args.length || !Set.of("--case", "--output", "--mpv").contains(args[i]) ||
+                if (i + 1 >= args.length || !Set.of("--case", "--output", "--mpv", "--shader-root").contains(args[i]) ||
                     cli.put(args[i], args[i + 1]) != null) throw new IllegalArgumentException("Invalid or duplicate CLI argument");
             }
             String name = cli.get("--case");
-            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-bitblt", "mpv-adaptive").contains(name))
+            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-bitblt", "mpv-adaptive",
+                "shader-clear-default-retained", "shader-clear-default-seek", "shader-clear-nodumb-retained", "shader-clear-nodumb-seek").contains(name))
                 throw new IllegalArgumentException("--case must select one diagnostic case");
             Path output = Path.of(Objects.requireNonNull(cli.get("--output"), "Missing --output")).toAbsolutePath().normalize();
             if (Files.exists(output, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("--output must not exist");
@@ -85,7 +103,8 @@ public final class AwtMpvProbe {
             output = parent.resolve(output.getFileName());
             Files.createDirectory(output);
             Path dll = name.equals("awt-alpha-only") ? null : Path.of(Objects.requireNonNull(cli.get("--mpv"), "Missing --mpv")).toRealPath();
-            code = new AwtMpvProbe(name, output, dll).run();
+            Path shaders = name.startsWith("shader-clear-") ? Path.of(Objects.requireNonNull(cli.get("--shader-root"), "Missing --shader-root")).toRealPath() : null;
+            code = new AwtMpvProbe(name, output, dll, shaders).run();
         } catch (Throwable error) {
             System.err.println(error.getClass().getSimpleName() + ": " + safe(error.getMessage()));
         }
@@ -151,7 +170,7 @@ public final class AwtMpvProbe {
                 if (!hasVideoColors(paused)) throw new GateFailure("Paused native baseline lost the original visible colors");
                 ImageIO.write(paused, "png", output.resolve("screen-paused.png").toFile());
             }
-            alphaStages();
+            if (shaderCase()) shaderStages(); else alphaStages();
             observe("gates-passed");
             code = 0;
         } catch (Throwable error) {
@@ -196,6 +215,152 @@ public final class AwtMpvProbe {
         }
         if (original != null) System.err.println(original.getClass().getSimpleName() + ": " + safe(original.getMessage()));
         return code;
+    }
+
+    private boolean shaderCase() { return caseName.startsWith("shader-clear-"); }
+
+    private List<String> shaderPaths(List<String> names) throws Exception {
+        List<String> paths = new ArrayList<>();
+        for (String name : names) {
+            Path file = shaderRoot.resolve(name);
+            require(!Files.isSymbolicLink(file) && file.toRealPath().getParent().equals(shaderRoot) &&
+                Files.size(file) <= 1_048_576 && sha256(file).equals(SHADER_PINS.get(name)), "Fixed original shader bytes differ: " + name);
+            String path = file.toRealPath().toString();
+            require(path.indexOf('\0') < 0 && path.indexOf('\n') < 0 && path.indexOf('\r') < 0, "Invalid shader path");
+            // Match nativeVideoShaderPath: pinned mpv does not add Win32's extended prefix.
+            paths.add(path.startsWith("\\\\?\\") ? path : path.startsWith("\\\\") ? "\\\\?\\UNC\\" + path.substring(2) : "\\\\?\\" + path);
+        }
+        return List.copyOf(paths);
+    }
+
+    private Set<String> descriptions(List<String> names) throws Exception {
+        Set<String> result = new LinkedHashSet<>();
+        for (String name : names) for (String line : Files.readAllLines(shaderRoot.resolve(name), StandardCharsets.UTF_8)) {
+            String stripped = line.stripLeading();
+            if (stripped.startsWith("//!DESC ")) result.add(stripped.substring(8).strip());
+        }
+        require(!result.isEmpty(), "Original shader has no render pass descriptions");
+        return result;
+    }
+
+    private void shaderPlaybackGuard(String entry, double position) {
+        require(actor.failure == null && actor.fileLoaded && "yes".equals(actor.value("pause")) &&
+            Objects.equals(entry, actor.value("playlist/0/id")), "Shader stage changed loaded source identity or pause state");
+        require(Math.abs(position - actor.number("time-pos")) < 0.15, "Shader stage changed paused position by >=0.15 seconds");
+    }
+
+    private void shaderStages() throws Exception {
+        // A tracked local setup seek proves the initial paused frame is not a pending prior render.
+        int restart = actor.restartCount;
+        actor.command("seek", "2.0", "absolute+exact").get(3, TimeUnit.SECONDS);
+        waitCondition("paused 2.0 setup seek PLAYBACK_RESTART and readback", 8_000, () -> actor.restartCount > restart &&
+            "yes".equals(actor.value("pause")) && "no".equals(actor.value("seeking")) && Math.abs(actor.number("time-pos") - 2.0) < 0.15);
+        String entry = actor.value("playlist/0/id");
+        require(entry != null && "1".equals(actor.value("playlist-count")), "Missing exact one-file native playlist identity");
+        double position = actor.number("time-pos");
+        List<String> fast = shaderPaths(FAST), quality = shaderPaths(QUALITY);
+        Set<String> fastDescriptions = descriptions(FAST), qualityDescriptions = descriptions(QUALITY);
+        Set<String> fastExclusive = new LinkedHashSet<>(fastDescriptions); fastExclusive.removeAll(qualityDescriptions);
+        Set<String> qualityExclusive = new LinkedHashSet<>(qualityDescriptions); qualityExclusive.removeAll(fastDescriptions);
+        require(!fastExclusive.isEmpty() && !qualityExclusive.isEmpty(), "Original preset-exclusive passes missing");
+        actor.shaders(List.of(), false).get(3, TimeUnit.SECONDS);
+        waitCondition("initial empty NODE readback", 2_000, () -> actor.shaderFiles != null && actor.shaderFiles.isEmpty());
+        Thread.sleep(200);
+        BufferedImage baseline = waitScreen("shader-before", "shader-before.png", 5_000, AwtMpvProbe::hasVideoColors);
+        Thread.sleep(150);
+        double noise = difference(baseline, capture("shader-baseline-noise")).meanDelta();
+        result.put("shaderExperiment", Map.ofEntries(Map.entry("gpuDumbModeRequested", caseName.contains("-nodumb-") ? "no" : "pinned default"),
+            Map.entry("clearExtraSeek", caseName.endsWith("-seek")), Map.entry("nonEmptyExtraSeek", true),
+            Map.entry("defaultD3d11FlipUnchanged", true), Map.entry("baselinePosition", position), Map.entry("playlistEntryId", entry),
+            Map.entry("baselineNoise", noise), Map.entry("fastChain", FAST), Map.entry("qualityChain", QUALITY), Map.entry("fixedAssetSha256", SHADER_PINS),
+            Map.entry("pixelGate", "preset meanDelta>max(0.1,noise*3) and changedPixels>100; clear meanDelta<=max(0.1,noise*2); abs(position delta)<0.15")));
+        List<Object> stages = new ArrayList<>(); result.put("shaderStages", stages);
+        List<String> failures = new ArrayList<>();
+        for (int index = 0; index < 3; index++) {
+            String stage = index == 0 ? "fast" : index == 1 ? "quality" : "clear";
+            List<String> paths = index == 0 ? fast : index == 1 ? quality : List.of();
+            Set<String> exclusive = index == 0 ? fastExclusive : qualityExclusive;
+            Map<String, Object> row = new LinkedHashMap<>(); row.put("stage", stage); row.put("passed", false);
+            stages.add(row); BufferedImage image = null;
+            try {
+                shaderPlaybackGuard(entry, position);
+                row.put("command", actor.shaders(paths, index < 2 || caseName.endsWith("-seek")).get(3, TimeUnit.SECONDS));
+                waitCondition(stage + " actual NODE and exclusive executed pass", 15_000, () -> {
+                    shaderPlaybackGuard(entry, position);
+                    return paths.equals(actor.shaderFiles) && (paths.isEmpty() || actor.shaderPasses.stream()
+                        .anyMatch(pass -> exclusive.stream().anyMatch(pass::contains)));
+                });
+                long end = stageDeadline(5_000); PixelDifference delta = null;
+                boolean matched = false;
+                do {
+                    checkDeadline(); shaderPlaybackGuard(entry, position);
+                    image = capture("shader-" + stage); delta = difference(baseline, image);
+                    matched = index == 2 ? delta.meanDelta() <= Math.max(0.1, noise * 2) :
+                        delta.meanDelta() > Math.max(0.1, noise * 3) && delta.changedPixels() > 100;
+                    if (matched) break;
+                    Thread.sleep(50);
+                } while (System.nanoTime() < end);
+                row.put("meanDelta", delta == null ? -1 : delta.meanDelta());
+                row.put("changedPixels", delta == null ? -1 : delta.changedPixels());
+                if (!matched) throw new GateFailure("Original physical shader pixel gate failed: " + stage);
+                shaderPlaybackGuard(entry, position);
+                row.put("passed", true);
+            } catch (Exception error) {
+                row.put("failure", Map.of("type", error.getClass().getSimpleName(), "message", safe(error.getMessage())));
+                failures.add(stage + ": " + safe(error.getMessage()));
+            } finally {
+                if (image == null) image = capture("shader-" + stage + "-failure");
+                ImageIO.write(image, "png", output.resolve("shader-" + stage + (Boolean.TRUE.equals(row.get("passed")) ? ".png" : "-failed.png")).toFile());
+                row.put("pixels", imageStats(image)); row.put("rows", scanRows(image)); row.put("native", actor.snapshot);
+                row.put("appliedFiles", actor.shaderFiles); row.put("executedPasses", actor.shaderPasses);
+                row.put("restartEvents", actor.restartCount); observe("shader-" + stage); publishReport();
+            }
+        }
+        // These commands can themselves redraw. Run only AFTER all physical pass/fail decisions.
+        List<Object> auxiliary = new ArrayList<>(); result.put("nativeScreenshotsAfterPixelGates", auxiliary);
+        for (String mode : List.of("video", "window")) {
+            Map<String, Object> row = new LinkedHashMap<>(); row.put("mode", mode); row.put("auxiliaryOnly", true); auxiliary.add(row);
+            Path target = output.resolve("native-clear-" + mode + ".png");
+            try {
+                actor.command("screenshot-to-file", target.toString(), mode).get(3, TimeUnit.SECONDS);
+                require(Files.isRegularFile(target) && Files.size(target) <= 32 * 1024 * 1024, "Native screenshot absent/oversized");
+                BufferedImage nativeImage = ImageIO.read(target.toFile());
+                require(nativeImage != null && nativeImage.getWidth() <= 16_384 && nativeImage.getHeight() <= 16_384, "Native screenshot image invalid");
+                row.put("written", true); row.put("sha256", sha256(target)); row.put("pixels", imageStats(nativeImage)); row.put("rows", scanRows(nativeImage));
+            } catch (Exception error) { row.put("written", false); row.put("error", safe(error.toString())); }
+        }
+        BufferedImage after = capture("after-auxiliary-native-screenshot");
+        ImageIO.write(after, "png", output.resolve("screen-after-native-screenshots.png").toFile());
+        result.put("afterAuxiliaryMeanDelta", difference(baseline, after).meanDelta());
+        shaderPlaybackGuard(entry, position);
+        Files.writeString(output.resolve("shader-state.txt"), json(result) + "\n", StandardOpenOption.CREATE_NEW);
+        if (!failures.isEmpty()) throw new GateFailure(String.join("; ", failures));
+    }
+
+    private record PixelDifference(double meanDelta, int changedPixels) { }
+    private static PixelDifference difference(BufferedImage before, BufferedImage after) {
+        require(before.getWidth() == after.getWidth() && before.getHeight() == after.getHeight(), "Physical capture geometry changed");
+        long sum = 0; int changed = 0;
+        for (int y = 0; y < before.getHeight(); y++) for (int x = 0; x < before.getWidth(); x++) {
+            int a = before.getRGB(x, y), b = after.getRGB(x, y);
+            int r = Math.abs(((a >>> 16) & 255) - ((b >>> 16) & 255));
+            int g = Math.abs(((a >>> 8) & 255) - ((b >>> 8) & 255)); int blue = Math.abs((a & 255) - (b & 255));
+            sum += r + g + blue; if (Math.max(r, Math.max(g, blue)) > 8) changed++;
+        }
+        return new PixelDifference(sum / (before.getWidth() * (double) before.getHeight() * 3), changed);
+    }
+
+    private static List<Object> scanRows(BufferedImage image) {
+        List<Object> rows = new ArrayList<>();
+        for (int y = 0; y < image.getHeight(); y++) {
+            long brightness = 0; int nonBlack = 0;
+            for (int x = 0; x < image.getWidth(); x++) {
+                int c = image.getRGB(x, y), r = (c >>> 16) & 255, g = (c >>> 8) & 255, b = c & 255;
+                brightness += r + g + b; if (Math.max(r, Math.max(g, b)) > 8) nonBlack++;
+            }
+            rows.add(Map.of("row", y, "mean", brightness / (image.getWidth() * 3.0), "nonBlackPixels", nonBlack));
+        }
+        return rows;
     }
 
     private void createWindow() throws Exception {
@@ -474,12 +639,18 @@ public final class AwtMpvProbe {
             "video-codec", "hwdec-current", "video-dec-params/w", "video-dec-params/h", "video-out-params/w", "video-out-params/h", "window-id",
             "options/d3d11-flip", "options/d3d11-warp", "options/d3d11-output-mode", "options/d3d11-sync-interval", "options/d3d11-output-format",
             "options/d3d11-output-csp", "frame-drop-count", "volume", "mute", "current-ao", "audio-codec"};
+        private static final String[] SHADER_PROPERTIES = {"seeking", "playlist/0/id", "playlist-count", "playlist-pos", "video-frame-info/picture-type",
+            "options/gpu-dumb-mode", "options/fbo-format", "glsl-shader-opts", "video-params/gamma", "video-out-params/gamma", "video-target-params/gamma"};
         final CompletableFuture<Void> ready = new CompletableFuture<>();
         final AtomicBoolean stopping = new AtomicBoolean(), terminated = new AtomicBoolean();
         final BlockingQueue<String> pauseCommands = new LinkedBlockingQueue<>();
+        final BlockingQueue<NativeTask<?>> tasks = new LinkedBlockingQueue<>();
         volatile Map<String, Object> snapshot = Map.of();
         volatile Throwable failure;
         volatile boolean fileLoaded, playbackRestart;
+        volatile int restartCount;
+        volatile List<String> shaderFiles;
+        volatile List<String> shaderPasses = List.of();
         volatile int droppedLines;
         private final List<String> firstLogs = new ArrayList<>();
         private final Deque<String> recentLogs = new ArrayDeque<>();
@@ -497,6 +668,37 @@ public final class AwtMpvProbe {
         String value(String key) { Object row = snapshot.get(key); return row instanceof Map<?, ?> map ? (String) map.get("value") : null; }
         double number(String key) { try { return Double.parseDouble(value(key)); } catch (RuntimeException invalid) { return -1; } }
         void setPause(boolean value) { pauseCommands.offer(value ? "yes" : "no"); }
+        private interface NativeOperation<T> { T run(Mpv api, Pointer handle) throws Exception; }
+        private record NativeTask<T>(NativeOperation<T> operation, CompletableFuture<T> result) {
+            void perform(Mpv api, Pointer handle) {
+                try { result.complete(operation.run(api, handle)); }
+                catch (Throwable error) { result.completeExceptionally(error); }
+            }
+        }
+        private <T> CompletableFuture<T> submit(NativeOperation<T> operation) {
+            CompletableFuture<T> result = new CompletableFuture<>();
+            if (stopping.get() || failure != null || terminated.get()) result.completeExceptionally(new IllegalStateException("Own native actor unavailable"));
+            else tasks.offer(new NativeTask<>(operation, result));
+            return result;
+        }
+        CompletableFuture<Integer> command(String... args) {
+            return submit((api, handle) -> { int code = api.mpv_command(handle, new StringArray(args, "UTF-8")); check(api, code, args[0]); return code; });
+        }
+        CompletableFuture<Map<String, Object>> shaders(List<String> paths, boolean refresh) {
+            return submit((api, handle) -> {
+                check(api, api.mpv_set_property_string(handle, "fbo-format", "auto"), "fbo-format");
+                check(api, api.mpv_set_property_string(handle, "glsl-shader-opts", ""), "glsl-shader-opts");
+                try (Nodes nodes = new Nodes()) { check(api, api.mpv_set_property(handle, "glsl-shaders", 6, nodes.array(paths)), "glsl-shaders NODE"); }
+                String pause = readString(api, handle, "pause"), seeking = readString(api, handle, "seeking");
+                String clock = readString(api, handle, "time-pos"); boolean issued = false;
+                if (refresh && fileLoaded && "yes".equals(pause) && !"yes".equals(seeking) && clock != null) {
+                    check(api, api.mpv_command(handle, new StringArray(new String[]{"seek", clock, "absolute+exact"}, "UTF-8")), "refresh paused video shaders"); issued = true;
+                }
+                Map<String, Object> result = new LinkedHashMap<>(); result.put("requestedFiles", paths); result.put("extraSeekRequested", refresh);
+                result.put("extraSeekIssued", issued); result.put("nativePauseBeforeSeek", pause); result.put("nativeSeekingBeforeSeek", seeking);
+                result.put("nativePositionBeforeSeek", clock); result.put("restartCountBeforeSeek", restartCount); return result;
+            });
+        }
         private void run() {
             Mpv api = null; Pointer handle = null;
             try {
@@ -510,6 +712,18 @@ public final class AwtMpvProbe {
                 options.put("vo", "gpu"); options.put("gpu-api", "d3d11"); options.put("hwdec", "auto-safe");
                 options.put("ao", "null"); options.put("ao-null-untimed", "no"); options.put("volume", "0"); options.put("mute", "yes");
                 options.put("audio-files", audio.toString().replace(";", "\\;"));
+                if (selectedCase.startsWith("shader-clear-")) {
+                    // Match production: default flip, optional NVIDIA preference; no software-bitblt substitution.
+                    DesktopWindowsDxgiAdapters.Snapshot inventory = DesktopWindowsDxgiAdapters.probe();
+                    Map<String, Object> selection = new LinkedHashMap<>(); selection.put("policy", "production-default-flip");
+                    selection.put("complete", inventory.complete()); selection.put("error", inventory.error());
+                    selection.put("adapters", inventory.adapters().stream().map(adapter -> Map.of("vendorId", adapter.vendorId(),
+                        "deviceId", adapter.deviceId(), "flags", adapter.flags(), "description", adapter.description(), "isSoftware", adapter.isSoftware())).toList());
+                    selection.put("nvidiaPreferenceReturnCode", api.mpv_set_option_string(handle, "d3d11-adapter", "NVIDIA"));
+                    presentationSelection = Collections.unmodifiableMap(selection);
+                    if (selectedCase.contains("-nodumb-")) options.put("gpu-dumb-mode", "no");
+                    options.put("screenshot-format", "png");
+                }
                 boolean bitblt = selectedCase.equals("mpv-bitblt");
                 if (selectedCase.equals("mpv-adaptive")) {
                     // Compile and call the same production helper, not a diagnostic copy of the policy.
@@ -537,11 +751,13 @@ public final class AwtMpvProbe {
                 while (!stopping.get()) {
                     String pause;
                     while ((pause = pauseCommands.poll()) != null) check(api, api.mpv_set_property_string(handle, "pause", pause), "pause");
+                    NativeTask<?> task;
+                    while ((task = tasks.poll()) != null) task.perform(api, handle);
                     Pointer event = api.mpv_wait_event(handle, 0.025);
                     int id = event.getInt(0);
                     if (id == 1) throw new IllegalStateException("Unexpected mpv shutdown");
                     if (id == 8) fileLoaded = true;
-                    if (id == 21) playbackRestart = true;
+                    if (id == 21) { playbackRestart = true; restartCount++; }
                     if (id == 7) {
                         fileLoaded = false; Pointer data = event.getPointer(16);
                         if (data != null && data.getInt(0) == 4) throw new IllegalStateException("END_FILE native error " + data.getInt(4));
@@ -556,7 +772,9 @@ public final class AwtMpvProbe {
                     }
                     if (System.nanoTime() - last >= 150_000_000L) {
                         Map<String, Object> values = new LinkedHashMap<>();
-                        for (String property : PROPERTIES) {
+                        List<String> names = new ArrayList<>(Arrays.asList(PROPERTIES));
+                        if (selectedCase.startsWith("shader-clear-")) names.addAll(Arrays.asList(SHADER_PROPERTIES));
+                        for (String property : names) {
                             try (Memory memory = new Memory(Native.POINTER_SIZE)) {
                                 memory.clear(); int code = api.mpv_get_property(handle, property, 1, memory);
                                 Pointer text = code >= 0 ? memory.getPointer(0) : null;
@@ -566,11 +784,19 @@ public final class AwtMpvProbe {
                                 values.put(property, Collections.unmodifiableMap(entry));
                             }
                         }
+                        if (selectedCase.startsWith("shader-clear-")) {
+                            shaderFiles = readNodeStrings(api, handle, "glsl-shaders");
+                            shaderPasses = readPasses(api, handle);
+                            values.put("glsl-shaders-NODE", shaderFiles); values.put("vo-passes-descriptions-NODE", shaderPasses);
+                            values.put("restartEventCount", restartCount);
+                        }
                         snapshot = Collections.unmodifiableMap(values); last = System.nanoTime();
                     }
                 }
             } catch (Throwable error) { failure = error; ready.completeExceptionally(error); log("ACTOR_FAILURE " + safe(error.toString())); }
             finally {
+                NativeTask<?> task;
+                while ((task = tasks.poll()) != null) task.result().completeExceptionally(new IllegalStateException("Own native actor stopped"));
                 if (api != null && handle != null) {
                     try { api.mpv_terminate_destroy(handle); terminated.set(true); }
                     catch (Throwable error) { failure = error; log("DESTROY_FAILURE " + safe(error.toString())); }
@@ -589,6 +815,69 @@ public final class AwtMpvProbe {
         private static void check(Mpv api, int code, String operation) {
             if (code < 0) throw new IllegalStateException("mpv " + operation + " returned " + code + ": " + api.mpv_error_string(code));
         }
+        private static String readString(Mpv api, Pointer handle, String name) {
+            try (Memory memory = new Memory(8)) {
+                memory.clear(); if (api.mpv_get_property(handle, name, 1, memory) < 0) return null;
+                Pointer text = memory.getPointer(0);
+                try { return text == null ? null : nativeText(text, 8192); } finally { if (text != null) api.mpv_free(text); }
+            }
+        }
+        private static List<Pointer> nodeArray(Pointer node, int max) {
+            if (node == null || node.getInt(8) != 7) return null;
+            Pointer list = node.getPointer(0); if (list == null) return null;
+            int count = list.getInt(0); if (count < 0 || count > max) return null;
+            Pointer values = list.getPointer(8); if (values == null) return count == 0 ? List.of() : null;
+            List<Pointer> result = new ArrayList<>(); for (int i = 0; i < count; i++) result.add(values.share(i * 16L)); return result;
+        }
+        private static Map<String, Pointer> nodeMap(Pointer node, int max) {
+            if (node == null || node.getInt(8) != 8) return Map.of();
+            Pointer list = node.getPointer(0); if (list == null) return Map.of(); int count = list.getInt(0);
+            if (count < 0 || count > max) return Map.of(); Pointer values = list.getPointer(8), keys = list.getPointer(16);
+            if (count > 0 && (values == null || keys == null)) return Map.of();
+            Map<String, Pointer> result = new LinkedHashMap<>();
+            for (int i = 0; i < count; i++) result.put(nativeText(keys.getPointer(i * 8L), 8192), values.share(i * 16L)); return result;
+        }
+        private static List<String> readNodeStrings(Mpv api, Pointer handle, String name) {
+            try (Memory root = new Memory(16)) {
+                root.clear(); if (api.mpv_get_property(handle, name, 6, root) < 0) return null;
+                try {
+                    List<Pointer> nodes = nodeArray(root, 32); if (nodes == null) return null;
+                    List<String> result = new ArrayList<>(); for (Pointer node : nodes) {
+                        if (node.getInt(8) != 1) return null; result.add(nativeText(node.getPointer(0), 8192));
+                    } return List.copyOf(result);
+                } finally { api.mpv_free_node_contents(root); }
+            }
+        }
+        private static List<String> readPasses(Mpv api, Pointer handle) {
+            try (Memory root = new Memory(16)) {
+                root.clear(); if (api.mpv_get_property(handle, "vo-passes", 6, root) < 0) return List.of();
+                try {
+                    Set<String> descriptions = new LinkedHashSet<>();
+                    for (Pointer frame : nodeMap(root, 8).values()) {
+                        List<Pointer> passes = nodeArray(frame, 512); if (passes == null) continue;
+                        for (Pointer pass : passes) {
+                            Pointer desc = nodeMap(pass, 16).get("desc");
+                            if (desc != null && desc.getInt(8) == 1 && descriptions.size() < 512) descriptions.add(nativeText(desc.getPointer(0), 8192));
+                        }
+                    } return List.copyOf(descriptions);
+                } finally { api.mpv_free_node_contents(root); }
+            }
+        }
+    }
+
+    /** Same pinned x64 mpv_node ABI as MpvNodes; all memory lives through synchronous set_property. */
+    private static final class Nodes implements AutoCloseable {
+        private final List<Memory> buffers = new ArrayList<>();
+        private Memory buffer(long bytes) { Memory m = new Memory(Math.max(1, bytes)); m.clear(); buffers.add(m); return m; }
+        Pointer array(List<String> strings) {
+            Memory root = buffer(16), list = buffer(24), values = buffer(strings.size() * 16L);
+            for (int i = 0; i < strings.size(); i++) {
+                byte[] bytes = strings.get(i).getBytes(StandardCharsets.UTF_8); Memory text = buffer(bytes.length + 1L); text.write(0, bytes, 0, bytes.length);
+                values.setPointer(i * 16L, text); values.setInt(i * 16L + 8, 1);
+            }
+            list.setInt(0, strings.size()); list.setPointer(8, values); root.setPointer(0, list); root.setInt(8, 7); return root;
+        }
+        @Override public void close() { for (int i = buffers.size() - 1; i >= 0; i--) buffers.get(i).close(); }
     }
 
     private static String nativeText(Pointer value, int maximum) {
@@ -600,7 +889,9 @@ public final class AwtMpvProbe {
         Pointer mpv_create(); int mpv_initialize(Pointer handle); void mpv_terminate_destroy(Pointer handle);
         int mpv_set_option_string(Pointer handle, String name, String value);
         int mpv_set_property_string(Pointer handle, String name, String value);
+        int mpv_set_property(Pointer handle, String name, int format, Pointer data);
         int mpv_get_property(Pointer handle, String name, int format, Pointer data);
+        void mpv_free_node_contents(Pointer node);
         int mpv_command(Pointer handle, StringArray args); int mpv_request_log_messages(Pointer handle, String level);
         Pointer mpv_wait_event(Pointer handle, double timeout); String mpv_error_string(int error); void mpv_free(Pointer data);
     }

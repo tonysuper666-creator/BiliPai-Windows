@@ -25,6 +25,24 @@ ARCHIVE_URLS = [
     'https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20260903/mpv-dev-x86_64-20260903-git-69e63f425a.7z',
 ]
 CASES = ('awt-alpha-only', 'mpv-default-flip', 'mpv-bitblt', 'mpv-adaptive')
+SHADER_CASES = ('shader-clear-default-retained', 'shader-clear-default-seek',
+                'shader-clear-nodumb-retained', 'shader-clear-nodumb-seek')
+SHADER_INPUT_PINS = {
+    'desktop/tools/extract-upstream-plugins.py': 'ea953855350a7077dca7295e16a9b7819ee838de2f8e01f3481a6aab20864685',
+    'app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KConfig.kt': '2bdfd821d4f0d03f1a7dad1c06779df254d7cfc5763c36e917ea981f7dd712b7',
+    'app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KShaderRepository.kt': '4bda89a5f97a455931ec77c225ea0a7a2f5a725f58ca3655314c2679a9e4f89b',
+}
+SHADER_PINS = {
+    'Anime4K_AutoDownscalePre_x2.glsl': '8c58291740146bd766a4d73f132775a797fe80f7d07919b5d767e27a5dc85656',
+    'Anime4K_AutoDownscalePre_x4.glsl': '5af62d8cd844916dc1126613e13bad3beab195787f93a71200b47c6ec78f2e41',
+    'Anime4K_Clamp_Highlights.glsl': '6dafe6d4ccaed8f1675d1b5b13e2d1a981f1f65849f54ea71b897f2f439ecfed',
+    'Anime4K_Restore_CNN_M.glsl': '67ea3ed26539e8de3b7d307688535d2ff17e8d147e11dda0247da7770dbecf41',
+    'Anime4K_Restore_CNN_S.glsl': '97c24dc370ab300c108bfaa09db7f175aeff343674842c299cf3940a3d330427',
+    'Anime4K_Restore_CNN_VL.glsl': '35036722733305cd4d4e57660b883bbe2569ba2914033c254327107d7b77e35e',
+    'Anime4K_Upscale_CNN_x2_M.glsl': '716e02098a68f0d648761f2b96b4dd139e1cb09b174bb369fca3aa34328fff7e',
+    'Anime4K_Upscale_CNN_x2_S.glsl': '4c53ec2e287908f7ee7bcb266b0170421626d663576468b7d7dafc62962649a4',
+    'Anime4K_Upscale_CNN_x2_VL.glsl': '5638fe31c37c151a3443fea3451a3ef91af073f4dbb9615f6c0d1e29db11493d',
+}
 
 
 def digest(path):
@@ -92,7 +110,50 @@ def command_info(executable, args, env, cwd):
             'versionOutput': (result.stdout + result.stderr)[:4096]}
 
 
-def run_case(case, java, classes, jna, dll, output, java_home):
+def prepare_shaders(repo, destination):
+    """Read only fixed sole-producer inputs; no generation or network source retrieval."""
+    source_rows = []
+    for relative, expected in SHADER_INPUT_PINS.items():
+        source = repo / relative
+        if source.is_symlink() or not source.resolve(strict=True).is_relative_to(repo):
+            raise ValueError('Shader source escapes checkout')
+        raw = source.read_bytes()
+        normalized = raw.replace(b'\r\n', b'\n')
+        if hashlib.sha256(normalized).hexdigest() != expected:
+            raise ValueError('Fixed shader recipe/source differs: ' + relative)
+        source_rows.append({'path': relative, 'sha256': expected, 'rawSha256': hashlib.sha256(raw).hexdigest(), 'normalization': 'LF'})
+    # Validate order against the fixed original repository body, not generated build output.
+    config = (repo / 'app/src/main/java/com/android/purebilibili/feature/anime4k/Anime4KConfig.kt').read_text(encoding='utf-8')
+    preset_chains = dict(re.findall(r'Anime4KPreset\.(FAST|QUALITY) -> Anime4KRenderProfile\(\s*shaderChain\s*=\s*Anime4KShaderChain\.(\w+)\s*\)', config))
+    if preset_chains != {'FAST': 'KAZUMI_EFFICIENCY', 'QUALITY': 'KAZUMI_QUALITY'}:
+        raise ValueError('Fixed original preset-to-chain mapping differs')
+    original = (repo / 'app/src/main/java/com/android/purebilibili/feature/anime4k/gl/Anime4KShaderRepository.kt').read_text(encoding='utf-8')
+    chains = {}
+    for name in ('KAZUMI_EFFICIENCY', 'KAZUMI_QUALITY'):
+        match = re.search(r'Anime4KShaderChain\.' + name + r' -> listOf\((.*?)\)', original, re.S)
+        if not match:
+            raise ValueError('Original shader chain missing')
+        chains[name] = re.findall(r'"(Anime4K_[^"\r\n]+\.glsl)"', match.group(1))
+    java_text = Path(__file__).with_name('AwtMpvProbe.java').read_text(encoding='utf-8')
+    for java_name, name in (('FAST', 'KAZUMI_EFFICIENCY'), ('QUALITY', 'KAZUMI_QUALITY')):
+        match = re.search(r'List<String> ' + java_name + r' = List\.of\((.*?)\);', java_text, re.S)
+        if not match or re.findall(r'"([^"\r\n]+\.glsl)"', match.group(1)) != chains[name]:
+            raise ValueError('Diagnostic preset order differs from fixed original')
+    destination.mkdir()
+    assets = []
+    for name, expected in SHADER_PINS.items():
+        source = repo / 'app/src/main/assets/anime4k' / name
+        if source.is_symlink() or not source.resolve(strict=True).is_relative_to(repo) or source.stat().st_size > 1_048_576:
+            raise ValueError('Original shader path/size rejected')
+        raw = source.read_bytes().replace(b'\r\n', b'\n')
+        if hashlib.sha256(raw).hexdigest() != expected or b'//!HOOK ' not in raw or b'//!DESC ' not in raw:
+            raise ValueError('Fixed original shader bytes differ: ' + name)
+        (destination / name).write_bytes(raw)
+        assets.append({'file': name, 'sha256': expected, 'bytes': len(raw)})
+    return {'sourceInputs': source_rows, 'assets': assets, 'originalPresetChains': preset_chains, 'originalChains': chains}
+
+
+def run_case(case, java, classes, jna, dll, output, java_home, shaders=None):
     work = output / (case + '-work')
     work.mkdir()
     data = work / 'private-data'
@@ -102,15 +163,18 @@ def run_case(case, java, classes, jna, dll, output, java_home):
                '--case', case, '--output', str(case_output)]
     if case != 'awt-alpha-only':
         command += ['--mpv', str(dll)]
+    if case in SHADER_CASES:
+        command += ['--shader-root', str(shaders)]
     started = time.monotonic()
     forced = False
     cleanup_errors = []
-    with (output / (case + '-process.log')).open('xb') as log:
+    process_log = work / 'process.log' if case in SHADER_CASES else output / (case + '-process.log')
+    with process_log.open('xb') as log:
         process = subprocess.Popen(command, cwd=work, env=environment(java_home, data),
                                    stdout=log, stderr=subprocess.STDOUT,
                                    creationflags=subprocess.CREATE_NO_WINDOW)
         try:
-            code = process.wait(timeout=35 if case == 'awt-alpha-only' else 40)
+            code = process.wait(timeout=100 if case in SHADER_CASES else 35 if case == 'awt-alpha-only' else 40)
         except subprocess.TimeoutExpired:
             forced = True
         except Exception as error:
@@ -159,6 +223,7 @@ def main():
     parser.add_argument('--java-home', type=Path, required=True)
     parser.add_argument('--mpv-archive', type=Path)
     parser.add_argument('--jna-jar', type=Path)
+    parser.add_argument('--suite', choices=('surface', 'shader-clear'), default='surface')
     args = parser.parse_args()
     sys.stdout.reconfigure(encoding='utf-8')
     if os.name != 'nt':
@@ -166,7 +231,8 @@ def main():
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     started = time.monotonic()
-    summary = {'diagnosticOnly': True, 'productReleaseGatePassed': False, 'cases': [], 'passed': False}
+    cases = SHADER_CASES if args.suite == 'shader-clear' else CASES
+    summary = {'diagnosticOnly': True, 'productReleaseGatePassed': False, 'suite': args.suite, 'cases': [], 'passed': False}
     try:
         java_home = args.java_home.resolve(strict=True)
         java, javac = java_home / 'bin/java.exe', java_home / 'bin/javac.exe'
@@ -201,14 +267,19 @@ def main():
         summary['sourceSha256'] = digest(source)
         summary['productionAdapterSourceSha256'] = digest(adapter_source)
         summary['runnerSha256'] = digest(__file__)
+        shaders = None
+        if args.suite == 'shader-clear':
+            shaders = dependencies / 'original-shaders'
+            summary['shaderResources'] = prepare_shaders(source.parents[3], shaders)
+            summary['audioOutputMode'] = 'CI timed null output; no local audio/hardware acceptance'
         classes = output / 'classes'
         classes.mkdir()
         with (output / 'compile.log').open('xb') as log:
             subprocess.run([str(javac), '-encoding', 'UTF-8', '-cp', str(jna), '-d', str(classes), str(adapter_source), str(source)],
                            cwd=output, env=env, check=True, stdout=log, stderr=subprocess.STDOUT, timeout=20)
-        for case in CASES:
+        for case in cases:
             try:
-                row = run_case(case, java, classes, jna, dll, output, java_home)
+                row = run_case(case, java, classes, jna, dll, output, java_home, shaders)
             except Exception as error:
                 row = {'case': case, 'passed': False, 'runnerError': type(error).__name__}
             summary['cases'].append(row)
@@ -216,7 +287,7 @@ def main():
             if row.get('processStillRunning'):
                 summary['remainingCasesSkipped'] = 'Previous owned JVM did not terminate'
                 break
-        summary['passed'] = len(summary['cases']) == len(CASES) and all(row['passed'] for row in summary['cases'])
+        summary['passed'] = len(summary['cases']) == len(cases) and all(row['passed'] for row in summary['cases'])
     except Exception as error:
         summary['error'] = type(error).__name__ + ': ' + str(error)[:1000]
     finally:

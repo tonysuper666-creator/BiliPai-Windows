@@ -23,6 +23,11 @@ on:
         description: Run only the isolated AWT and mpv rendering experiment; never build or publish the app
         type: boolean
         default: false
+      diagnostic_suite:
+        description: Isolated rendering experiment selected only when render_diagnostic is enabled
+        type: choice
+        options: [surface, shader-clear]
+        default: surface
   push:
     branches: ['desktop/windows']
     paths:
@@ -50,7 +55,7 @@ jobs:
   render-diagnostic:
     if: github.repository != 'jay3-yy/BiliPai' && github.event_name == 'workflow_dispatch' && inputs.render_diagnostic == true
     runs-on: windows-latest
-    timeout-minutes: 8
+    timeout-minutes: 12
     steps:
       - name: Enable Git long paths
         shell: pwsh
@@ -79,7 +84,9 @@ jobs:
           python-version: '3.12'
       - name: Run isolated physical-screen experiments
         shell: pwsh
-        run: python desktop/tools/diagnostics/run-render-probe.py --java-home "$env:JAVA_HOME" --output "$env:RUNNER_TEMP/bilipai-render-probe"
+        env:
+          DIAGNOSTIC_SUITE: ${{ inputs.diagnostic_suite || 'surface' }}
+        run: python desktop/tools/diagnostics/run-render-probe.py --suite "$env:DIAGNOSTIC_SUITE" --java-home "$env:JAVA_HOME" --output "$env:RUNNER_TEMP/bilipai-render-probe"
       - name: Upload rendering diagnostic evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -100,6 +107,10 @@ jobs:
             ${{ runner.temp }}/bilipai-render-probe/mpv-adaptive/*.json
             ${{ runner.temp }}/bilipai-render-probe/mpv-adaptive/*.png
             ${{ runner.temp }}/bilipai-render-probe/mpv-adaptive/*.txt
+            ${{ runner.temp }}/bilipai-render-probe/shader-clear-*/*.json
+            ${{ runner.temp }}/bilipai-render-probe/shader-clear-*/*.png
+            ${{ runner.temp }}/bilipai-render-probe/shader-clear-*/*.txt
+            ${{ runner.temp }}/bilipai-render-probe/shader-clear-*/*.log
           if-no-files-found: warn
 
   windows:
