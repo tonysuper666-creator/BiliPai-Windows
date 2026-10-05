@@ -72,8 +72,8 @@ def domain_delta(repo, output, path, body):
         '''        val stamp = _commentStamp.value ?: return
         commentEmoteJob = launchCommentOwned {
             environment.loadCommentEmotePackages()''')
-    members=replace(members,'''                    ensureCommentOwned() 
-                    _emotePackages.value = it 
+    members=replace(members,'''                    ensureCommentOwned()\x20
+                    _emotePackages.value = it\x20
                     isEmotesLoaded = true''', '''                    ensureCommentOwned()
                     publishCommentUi(stamp) {
                         _emotePackages.value = it
@@ -143,7 +143,7 @@ def domain_delta(repo, output, path, body):
     members=replace(members,'_commentSentEvent.trySend(reply)','_commentSentEvent.trySend(com.bilipai.desktop.ui.DesktopOriginalVideoCommentSentReceipt(sendAid, reply))')
     members=replace(members,'''                .onFailure { error ->
                     ensureCommentOwned()
-                    
+\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20
                     commentToast(error.message ?: "发送失败")''', '''                .onFailure { error ->
                     if (error is CancellationException) throw error
                     ensureCommentOwned()
