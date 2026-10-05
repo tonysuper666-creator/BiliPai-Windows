@@ -531,7 +531,15 @@ internal class DesktopWindowsVideoActions(
                 comments = {
                     if (success != null) CompositionLocalProvider(LocalDesktopCommentBindings provides platforms.holder.commentsPlatform) {
                         DesktopWindowsVideoComments(assembly, current = ::current, onUser = actions.user, login = actions.login,
-                            openLink=actions.openLink, seek=shell.playback::seekTo, draft=commentDraft, onDraftChange={commentDraft=it})
+                            openLink=actions.openLink, seek=shell.playback::seekTo, draft=commentDraft, onDraftChange={commentDraft=it},
+                            search = { collectionQueueSource?.let { captured ->
+                                val factory = shell.factoryFor(assembly)
+                                DesktopWindowsCommentSearchSection(assembly.domains.comments, captured, success.info.owner.mid,
+                                    stillOwned = { interactionCurrent() && factory.isPresentationCurrent(assembly, captured) &&
+                                        assembly.native.isCurrent(captured) },
+                                    admission = { action -> factory.withPresentationAdmission(assembly, captured, action) },
+                                    onComment = { reply -> assembly.domains.comments.openSubReply(reply) })
+                            } })
                     } else Text("正在读取评论", style = MaterialTheme.typography.bodyMedium)
                 },
             )
@@ -641,6 +649,7 @@ private fun desktopWindowsNativeVideoKey(event:java.awt.event.KeyEvent):androidx
 @Composable private fun DesktopWindowsVideoComments(assembly: DesktopOriginalVideoOwnerAssembly,
     current: () -> Boolean, onUser: (Long) -> Unit, login: () -> Unit, openLink:(String)->Unit, seek:(Double)->Unit,
     draft: TextFieldValue, onDraftChange: (TextFieldValue) -> Unit,
+    search: @Composable () -> Unit,
 ) {
     val vm = assembly.domains.comments
     val state by vm.commentState.collectAsState()
@@ -653,6 +662,7 @@ private fun desktopWindowsNativeVideoKey(event:java.awt.event.KeyEvent):androidx
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text("评论 ${state.replyCount}", Modifier.weight(1f))
+            search()
             TextButton(onClick = { if (current()) vm.refreshComments() }, enabled = !state.isRepliesRefreshing) { Text("刷新") }
         }
         Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -676,6 +686,9 @@ private fun desktopWindowsNativeVideoKey(event:java.awt.event.KeyEvent):androidx
             OutlinedCard(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(10.dp)) {
                     TextButton(onClick = { if (current()) onUser(reply.mid) }) { Text(reply.member.uname) }
+                    com.android.purebilibili.feature.video.ui.components.resolveChargedReplyLabel(reply)?.let {
+                        com.android.purebilibili.feature.video.ui.components.ChargedReplyTag(it)
+                    }
                     // Original v029 comment display follows the same detailed-time preference as preview/thread replies.
                     Text(FormatUtils.formatCommentTime(reply.ctime, detailedTimeEnabled=detailedCommentTimeEnabled),
                         style=MaterialTheme.typography.bodySmall, color=MaterialTheme.colorScheme.onSurfaceVariant)
@@ -695,6 +708,9 @@ private fun desktopWindowsNativeVideoKey(event:java.awt.event.KeyEvent):androidx
             replies.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
             replies.items.forEach { child ->
                 Column(Modifier.fillMaxWidth()) {
+                    com.android.purebilibili.feature.video.ui.components.resolveChargedReplyLabel(child)?.let {
+                        com.android.purebilibili.feature.video.ui.components.ChargedReplyTag(it)
+                    }
                     Text("${child.member.uname}: ${child.content.message}")
                     Text(FormatUtils.formatCommentTime(child.ctime, detailedTimeEnabled=detailedCommentTimeEnabled),
                         style=MaterialTheme.typography.bodySmall, color=MaterialTheme.colorScheme.onSurfaceVariant)

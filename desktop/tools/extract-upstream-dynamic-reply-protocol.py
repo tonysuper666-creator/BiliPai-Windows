@@ -1,6 +1,7 @@
 """Original selected protocol producer; no snapshot or .local dependency."""
 from v025_source_paths import canonical_source as _desktop_canonical_source, canonical_relative as _desktop_canonical_relative
 from pathlib import Path
+import v029_comment_search as comment_search
 import hashlib, re, subprocess, json
 def load_pinned_sources(repo: Path, paths):
     """One fixed manifest commit plus Git blobs; never silently accept a local edit."""
@@ -283,7 +284,7 @@ def generate(repo: Path, output: Path):
     policy = sources[policy_path]
     write(HERE / 'generated/com/android/purebilibili/data/repository/DesktopOriginalCommentReadAccessPolicy.kt', '// GENERATED original full read policy; sole producer.\n// Original: ' + policy_path + '\n// Original LF SHA-256: ' + digest(policy) + '\n' + policy)
     grpc_path = paths[2]
-    original_grpc = sources[grpc_path]
+    original_grpc, grpc_selection = comment_search.select_full(ROOT,grpc_path,sources[grpc_path])
     grpc = original_grpc.replace('import com.android.purebilibili.core.network.grpc.BiliGrpcClient\n', '')
     grpc = grpc.replace('internal object CommentGrpcRepository {', 'internal class DesktopDynamicCommentGrpc(\n    private val requestTransport: suspend (String, ByteArray) -> ByteArray,\n    private val assertOwner: () -> Unit,\n) {\n    private suspend fun request(path: String, message: ByteArray): ByteArray {\n        kotlinx.coroutines.currentCoroutineContext().ensureActive(); assertOwner()\n        return requestTransport(path, message).also { kotlinx.coroutines.currentCoroutineContext().ensureActive(); assertOwner() }\n    }\n    private inline fun <T> ownedCatching(block: () -> T): Result<T> = try {\n        assertOwner(); Result.success(block().also { assertOwner() })\n    } catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled\n    } catch (failure: Exception) { assertOwner(); Result.failure(failure) }\n')
     grpc = grpc.replace('private const val PATH_', 'private val PATH_')
@@ -292,6 +293,8 @@ def generate(repo: Path, output: Path):
     for name in ('getMainList', 'getDetailList', 'getDialogList'):
         grpc = grpc.replace('    fun ' + name + '(', '    suspend fun ' + name + '(')
     grpc = grpc.replace('import kotlinx.coroutines.Dispatchers\n', 'import kotlinx.coroutines.Dispatchers\nimport kotlinx.coroutines.ensureActive\n')
+    grpc_selection['originalToPlatform']=comment_search.whole_proof(original_grpc,grpc)
+    write(HERE/'v029-comment-grpc-source.json',json.dumps(grpc_selection,ensure_ascii=False,indent=2)+'\n')
     write(HERE / 'generated/com/android/purebilibili/data/repository/DesktopDynamicCommentGrpc.kt', '// GENERATED original full builders/parser with owned transport only.\n// Original: ' + grpc_path + '\n// Original LF SHA-256: ' + digest(original_grpc) + '\n' + grpc)
     fragment = '// Paste inside existing DesktopDynamicCardOperations; no package/class/API/model producer.\n// Requires the frozen editor\'s existing private uploadEditorCommentImage (one upload body).\nprivate val guestCommentApi = guestWeb.create(BilibiliApi::class.java)\nprivate val commentGrpc = com.android.purebilibili.data.repository.DesktopDynamicCommentGrpc(grpc::request, ::assertOwned)\nprivate val commentProtocol = com.android.purebilibili.data.repository.DesktopDynamicCommentProtocol(\n    api, guestCommentApi, commentGrpc,\n    { assertOwned(); !repository.authCookies()["SESSDATA"].isNullOrEmpty() },\n    { params -> assertOwned(); repository.signWebParams(params).also { assertOwned() } },\n    ::assertOwned,\n)\n'
     read_signatures = {'getCommentsForSubject': ('oid:Long,type:Int,page:Int,ps:Int=20,mode:Int=3,paginationOffset:String?=null,fallbackOnMissingLocation:Boolean=false', 'oid,type,page,ps,mode,paginationOffset,fallbackOnMissingLocation', 'ReplyData'), 'getCommentCountForSubject': ('oid:Long,type:Int', 'oid,type', 'Int'), 'getSortedSubCommentsForSubject': ('oid:Long,type:Int,rootId:Long,mode:Int,paginationOffset:String?=null,targetReplyId:Long=0L', 'oid,type,rootId,mode,paginationOffset,targetReplyId', 'ReplyData'), 'getSubCommentsForSubject': ('oid:Long,type:Int,rootId:Long,page:Int,ps:Int=20,paginationOffset:String?=null,preferRestPaging:Boolean=true', 'oid,type,rootId,page,ps,paginationOffset,preferRestPaging', 'ReplyData'), 'getDialogCommentsForSubject': ('oid:Long,type:Int,rootId:Long,dialogId:Long,page:Int,paginationOffset:String?=null', 'oid,type,rootId,dialogId,page,paginationOffset', 'ReplyData')}

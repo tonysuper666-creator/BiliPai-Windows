@@ -3173,3 +3173,12 @@ sourceSets.named("main") {
 tasks.named("compileKotlin") { dependsOn(extractOriginalBrandMotion) }
 tasks.named("compileTestKotlin") { dependsOn(extractOriginalBrandMotion) }
 tasks.named("processResources") { dependsOn(extractOriginalBrandMotion) }
+
+// Fixed original comment search and charged-reply inputs on their existing producers.
+listOf("extractUpstreamApi", "extractBgmDetail", "extractVideoCommentUi",
+    "extractUpstreamDynamicReply", "extractUpstreamDynamicReplyProtocol").forEach { taskName ->
+    tasks.named(taskName) {
+        inputs.file("tools/v029_comment_search.py")
+        inputs.dir("upstream-slices/v029-comment-search")
+    }
+}

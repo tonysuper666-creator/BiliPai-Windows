@@ -3,6 +3,7 @@ from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
 from v029_brand_consumers import empty_consumer
+import v029_comment_search as comment_search
 BASE='app/src/main/java/com/android/purebilibili/'
 BGM=BASE+'feature/audio/bgm/'
 SOURCES=[BGM+n+'.kt' for n in ['BgmDetailViewModel','BgmDetailPolicy','BgmHeatChart','BgmDetailScreen']]+[BASE+n+'.kt' for n in ['data/repository/ViewGrpcRepository','data/model/response/PlayerInfoResponse','core/network/ApiClient','navigation/AppNavigation','core/util/BilibiliNavigationTargetParser','feature/video/viewmodel/VideoCommentViewModel','feature/video/ui/components/CommentInputDialog','feature/video/ui/components/CommentSortFilterBar','data/repository/CommentFraudDetectionPolicy','data/model/CommentFraudStatus','core/database/entity/CommentFraudRecord','core/database/dao/CommentFraudDao','data/repository/CommentFraudRepository']]
@@ -226,7 +227,7 @@ def generate_ui(repo,original,shared,emit,changes):
             tail=mask[end:].lstrip();padding=len(mask[end:])-len(tail)
             if tail.startswith('{'):end=shared.balanced(mask,end+padding,'{','}')
         return text[:m.start()]+text[end:]
-    path=BASE+'feature/video/viewmodel/VideoCommentViewModel.kt';body=original[path]
+    path=BASE+'feature/video/viewmodel/VideoCommentViewModel.kt';body, comment_selection = comment_search.select_full(repo,path,original[path]); comment_raw=body
     for name in ['CommentSortMode','SubReplyUiState','resolveSubReplyRemoteTotalCount','resolveSubReplyLoadedTotalCount','resolveRoutedCommentRootReply']:
         body=remove_declaration(body,name)
     body='\n'.join(l for l in body.splitlines() if not l.startswith('import android.') and not any(l==x for x in ['import androidx.lifecycle.ViewModel','import androidx.lifecycle.viewModelScope','import com.android.purebilibili.core.network.NetworkModule','import com.android.purebilibili.data.repository.CommentRepository','import com.android.purebilibili.data.repository.CommentFraudRepository']))+'\n'
@@ -260,6 +261,10 @@ def generate_ui(repo,original,shared,emit,changes):
     body=re.sub(r'(\.onSuccess\s*\{(?:\s*\w+\s*->)?)',r'\1\n                ensureRequestOwned()',body)
     body=re.sub(r'(\.onFailure\s*\{(?:\s*\w+\s*->)?)',r'\1\n                ensureRequestOwned()',body)
     body=replace_once(body,'            val picturesResult = uploadCommentPictures(imageUris)','            ensureRequestOwned()\n            val picturesResult = uploadCommentPictures(imageUris)')
+    body, search_lifetime = comment_search.vm_delta(body)
+    comment_selection['originalToPlatform'] = comment_search.whole_proof(comment_raw,body)
+    comment_selection['searchLifetime'] = search_lifetime
+    changes.append(dict(source=path,v029CommentSearch=comment_selection))
     emit('com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt',body)
     retained(path,body,'Full original generic VM, including typed subjects, paging, subreply/conversation, send/pictures/sync, reactions, delete, original fraud hooks; sole editor/count-helper declarations omitted because already emitted once. Android lifecycle/Uri/currentMid/fraud persistence become required same-owner seams. No DynamicItem surrogate.')
     path=BASE+'feature/video/ui/components/CommentInputDialog.kt';body=original[path]

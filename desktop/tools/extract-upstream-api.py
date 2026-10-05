@@ -240,6 +240,8 @@ def generate(repo: Path, output: Path) -> Path:
         source[begin:tokens[end][2]]]
     target.write_text("\n\n".join(pieces) + "\n", encoding="utf-8")
     generate_core_data_log(repo, output, parser)
+    from v029_comment_search import emit_models
+    emit_models(repo, output)
     return destination
 
 

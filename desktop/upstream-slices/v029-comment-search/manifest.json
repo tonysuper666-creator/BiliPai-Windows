@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 30902,
+      "sha256Bytes": "29fc38e81f8a7d0593ae120770f6c98f20e76d0136e7768743e7adbe73b6afff",
+      "gitBlob": "a919e0cf1b31aa1af693c0af88e1f57319aa6d71",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentSearchSheet.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 61124,
+      "sha256Bytes": "7fbb7f374ed79d39c1751c59441588c3159bd3540340bd8b15d27987edec22fa",
+      "gitBlob": "b691cb61687329d8f5aebaff3a19da5490520417",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCommentViewModel.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 132262,
+      "sha256Bytes": "edba82de5f1e9726c104f3ec38d003cc566e72d99b10afcbd57d9a7c3f7848e9",
+      "gitBlob": "ebce1b2b777967c0d53d761be2adf9c0a7ce6ff1",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/video/ui/components/ReplyComponents.kt"
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 23622,
+      "sha256Bytes": "4b15b412ca09d075b598a752af2e79412bfaef0f57c638de197cbc311304f606",
+      "gitBlob": "02c34879a7ea0d1ab0430894b266afb82fdb4216",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/core-data/src/main/java/com/android/purebilibili/data/model/response/ResponseModels.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 30152,
+      "sha256Bytes": "d8a63c16adf2c0a7ac9a96bf2d8d2a5101b9a087017b44fab13fbef36177f02f",
+      "gitBlob": "1964d34ea6509f070400775be53fda3e8632d555",
+      "upstreamUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/data/repository/CommentGrpcRepository.kt"
+    }
+  ]
+}

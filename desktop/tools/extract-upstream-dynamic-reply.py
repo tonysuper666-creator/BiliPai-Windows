@@ -6,6 +6,7 @@ platform seams and original thread renderer. Never emit that policy twice.
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from v029_comment_time import apply as apply_original_comment_time
+from v029_comment_search import charged_delta
 from pathlib import Path
 import hashlib
 import importlib.util
@@ -161,11 +162,13 @@ def generate(repo, output):
 
     original = read(repo, REPLY)
     original, reply_time_selection = apply_original_comment_time(repo, REPLY, original)
+    original, charged_selection = charged_delta(repo, original)
+    (output / "v029-charged-reply-source.json").write_text(json.dumps(charged_selection,ensure_ascii=False,indent=2)+"\n",encoding="utf8")
     imports = original[:original.index('internal val EMOTE_TOKEN_PATTERN')]
     # Only private file helpers are repeated. All public/internal policies and
     # types are the editor's single existing source-owned producers.
     private_helpers = appearance.declarations(parser, original, [
-        'COMMENT_INLINE_UP_BADGE_ID',
+        'COMMENT_INLINE_UP_BADGE_ID', 'COMMENT_INLINE_CHARGED_BADGE_ID',
         'COMMENT_INLINE_VERIFY_PERSONAL_BADGE_ID', 'COMMENT_INLINE_VERIFY_ORGANIZATION_BADGE_ID',
         'REPLY_VIDEO_TITLE_CACHE_MAX_ENTRIES', 'replyVideoTitleCache',
         'resolveReplyActionSheetLabel', 'isReplyActionDestructive',
@@ -198,6 +201,11 @@ def generate(repo, output):
                       '    val titlePlatform = LocalDesktopCommentBindings.current\n'
                       '    val videoReference = remember(text) { resolveReplyVideoReference(text) }')
     ui = ui.replace('LocalDesktopCommentBindings.current.videoTitle(bvid)', 'titlePlatform.videoTitle(bvid)')
+    # Desktop text has no Android font-padding option; retain the original
+    # font size, optical offset and explicit line-height trimming.
+    ui = replace_once(ui,
+        'platformStyle = androidx.compose.ui.text.PlatformTextStyle(includeFontPadding = false),',
+        'platformStyle = null,')
     shared=load(repo,'reply_new_log_boundary','desktop/tools/extract-upstream-dynamic-reply-protocol.py')
     emit(REPLY, shared.drop_logs(adapt_common(imports + private_helpers + ui)), 'DesktopOriginalReplyComponents.kt')
 

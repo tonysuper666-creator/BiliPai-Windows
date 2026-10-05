@@ -164,7 +164,7 @@ private data class DesktopVideoCommentDetailRoute(val root: Long, val target: Lo
         }
         DesktopOriginalVideoCommentInputOverlay(composer, commentState, { if (owned()) currentPosition() else 0L })
         VideoDetailCommentFraudOverlayAdapter(platform, composer, viewModel, info.aid, fraudEnabled)
-        if (searchVisible) CommentSearchSheet(commentState.replies, info.owner.mid,
+        if (searchVisible) CommentSearchSheet(replies = commentState.replies, upMid = info.owner.mid,
             onCommentClick = { if (owned()) { searchVisible = false; viewModel.openSubReply(it) } },
             onSubReplyClick = { rootReply -> if (owned()) { searchVisible = false; viewModel.openSubReply(rootReply) } },
             onDismiss = { searchVisible = false })

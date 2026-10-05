@@ -2,6 +2,7 @@
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
+import v029_comment_search as comment_search
 PIN='79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 BASE='app/src/main/java/com/android/purebilibili/'
 CONTENT=BASE+'feature/video/screen/VideoContentSection.kt'
@@ -50,11 +51,16 @@ import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextConte
     emit('feature/video/screen/VideoCommentPerformancePolicy.kt',original[path],path,'Full original LF-identical pure policy file.')
     path=BASE+'core/ui/blur/FloatingChromeBackdrop.kt'
     emit('core/ui/blur/FloatingChromeBackdrop.kt',original[path],path,'Full original nullable backdrop CompositionLocal; source search uses its original null fallback without cropping UI branches.')
-    path=BASE+'feature/video/ui/components/CommentSearchSheet.kt';body=original[path]
+    path=BASE+'feature/video/ui/components/CommentSearchSheet.kt';body,comment_selection=comment_search.select_full(repo,path,original[path]);comment_raw=body
     body=body.replace('import android.widget.Toast\n','').replace('import androidx.compose.ui.platform.LocalClipboardManager\n','').replace('import androidx.compose.ui.platform.LocalContext','import coil3.compose.LocalPlatformContext as LocalContext\nimport com.bilipai.desktop.ui.LocalDesktopCommentBindings')
     body=replace_once(body,'    val clipboardManager = LocalClipboardManager.current','    val platform = LocalDesktopCommentBindings.current')
     body=replace_once(body,'clipboardManager.setText(AnnotatedString(entry.reply.content.message))','platform.copyText(entry.reply.content.message, "评论")')
     body=replace_once(body,'Toast.makeText(context, "评论已复制", Toast.LENGTH_SHORT).show()','platform.showFeedback("评论已复制")')
+    old='import com.android.purebilibili.core.ui.AppModalBottomSheet'
+    assert body.count(old)==1
+    body=body.replace(old,'import com.bilipai.desktop.ui.DesktopWindowsCommentSearchModalSheet as AppModalBottomSheet',1)
+    comment_selection['originalToPlatform']=comment_search.whole_proof(comment_raw,body)
+    (output/'v029-comment-search-ui-source.json').write_text(json.dumps(comment_selection,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
     emit('feature/video/ui/components/CommentSearchSheet.kt',body,path,'Full original local loaded-raw-reply search/filter/highlight/sort/search result UI and helpers. Existing clipboard/feedback and Coil context platform seams only; upstream glassActive=false is retained verbatim.')
     path=BASE+'feature/video/viewmodel/VideoComposerDraftState.kt';body=original[path].replace('import android.net.Uri\n','').replace('List<Uri>','List<String>')
     emit('feature/video/viewmodel/VideoComposerDraftState.kt',body,path,'Full original draft schema/key; Android Uri only maps to selected opaque file URI Strings. Ephemeral same-video state, no persistence or second player.')
