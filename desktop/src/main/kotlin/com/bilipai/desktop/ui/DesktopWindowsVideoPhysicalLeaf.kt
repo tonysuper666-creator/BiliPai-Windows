@@ -70,6 +70,7 @@ internal class DesktopWindowsVideoActions(
     route: BiliPaiNavKey.VideoDetail,
     shell: DesktopOriginalVideoShellOwner,
     active: Boolean,
+    presentationAlive: Boolean,
     fullscreen: Boolean,
     pipActive: Boolean,
     preferences: PlayerPreferences,
@@ -102,9 +103,13 @@ internal class DesktopWindowsVideoActions(
         nativeSurface.releaseViewport(route, viewportLease)
     } }
     val currentActive by rememberUpdatedState(active)
-    fun current(): Boolean = currentActive && shell.slot.currentAssembly() === assembly && assembly.owns()
-    val latestActions by rememberUpdatedState(actions)
+    val currentPresentationAlive by rememberUpdatedState(presentationAlive)
     val latestPip by rememberUpdatedState(pipActive)
+    fun current(): Boolean = currentActive && shell.slot.currentAssembly() === assembly && assembly.owns()
+    fun feedbackPresentationCurrent(): Boolean = currentPresentationAlive && !latestPip &&
+        rootEnvironment.owns() && rootEnvironment.currentKey() === route &&
+        shell.slot.currentAssembly() === assembly && assembly.owns()
+    val latestActions by rememberUpdatedState(actions)
     val viewportFocus = remember(assembly) { androidx.compose.ui.focus.FocusRequester() }
     // Listen only to this actual native host and its one non-focusable MPV Canvas.
     // A comment editor is outside this component tree and retains its native input.
@@ -184,13 +189,23 @@ internal class DesktopWindowsVideoActions(
     val resumeSuggestion by assembly.playback.resumePlaybackSuggestion.collectAsState()
     val engagement by assembly.domains.engagement.uiState.collectAsState()
     val engagementSubject = engagement.subject
-    val engagementBinding = remember(assembly, collectionQueueSource, engagementSubject) {
-        val expected = collectionQueueSource
+    // The original interaction menus keep collectionQueueSource's foreground
+    // permission. Confirmed/in-flight feedback borrows the same actual accepted
+    // source with its exact Root lifetime; minimization must not null its key.
+    val feedbackSource = assembly.native.current()?.takeIf { accepted ->
+        feedbackPresentationCurrent() && success?.info?.let {
+            it.bvid == accepted.request.bvid && it.cid == accepted.request.cid
+        } == true
+    }
+    val engagementBinding = remember(assembly, feedbackSource, engagementSubject, presentationAlive, pipActive) {
+        val expected = feedbackSource
         if (expected == null || engagementSubject == null) null
         else {
             val factory = shell.factoryFor(assembly)
             DesktopWindowsVideoEngagementBinding(expected, assembly.domains.engagement, engagementSubject,
                 stillOwned = { current() && rootEnvironment.currentKey() === route && assembly.native.isCurrent(expected) },
+                stillFeedbackOwned = { feedbackPresentationCurrent() && factory.isPresentationCurrent(assembly, expected) &&
+                    assembly.native.isCurrent(expected) },
                 admission = { action -> factory.withPresentationAdmission(assembly, expected, action) })
         }
     }
@@ -364,6 +379,9 @@ internal class DesktopWindowsVideoActions(
                             }
                         }, native.surface)
                     } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
+                    if (presentationAlive && !pipActive) engagementBinding?.let { binding ->
+                        DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface)
+                    }
                 }
                 if (playback.recovering && playback.recoveryMessage != null)
                     Text(playback.recoveryMessage.orEmpty(), Modifier.fillMaxWidth(), style = MaterialTheme.typography.bodySmall)
@@ -418,7 +436,7 @@ internal class DesktopWindowsVideoActions(
                                     ::current, actions.user) { url -> latestActions.honorLink(assembly, source, url) }
                             }
                             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                TextButton(onClick = { if (current()) assembly.domains.engagement.toggleLike() }) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
+                                TextButton(onClick = { engagementBinding?.like() }, enabled = engagementBinding?.isOwned() == true) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
                                 actions.favorite(assembly, success, ::current)
                                 TextButton(onClick = { engagementBinding?.toggleFollow() }, enabled = engagementBinding?.isOwned() == true) { Text(if(engagement.isFollowing) "已关注" else "关注") }
                                 TextButton(onClick = { engagementBinding?.triple() }, enabled = engagementBinding?.isOwned() == true) { Text("三连") }
@@ -603,7 +621,7 @@ internal class DesktopWindowsVideoActions(
         onDismissRequest={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)},
         title={Text("投币")}, text={Text("选择投币数量")},
         confirmButton={Row {listOf(1,2).forEach {count-> TextButton(onClick={if(current()) {
-            assembly.domains.engagement.doCoin(count,false);assembly.domains.engagement.setCoinDialogVisible(false)
+            if (engagementBinding?.coin(count, false) == true) assembly.domains.engagement.setCoinDialogVisible(false)
         }}) {Text("${count}枚")} }}},
         dismissButton={TextButton(onClick={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)}) {Text("取消")}})
 }

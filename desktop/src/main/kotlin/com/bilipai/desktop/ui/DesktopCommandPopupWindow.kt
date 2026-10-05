@@ -110,7 +110,11 @@ private class DesktopCommandPopupWindow(
     private val anchorComponent: Component,
     private val onNativeWindowAvailability: ((Window, Boolean) -> Unit)?,
     private val onWindowAvailability: (Any, Boolean) -> Unit,
+    private val decorative: Boolean = false,
+    private val ownsPresentation: (() -> Boolean)? = null,
+    private val onDecorativeRejection: (() -> Unit)? = null,
 ) : AutoCloseable {
+    init { require(!decorative || (ownsPresentation != null && onDecorativeRejection != null)) }
     private var closed = false
     private var requested = IntSize.Zero
     private var presented = false
@@ -119,8 +123,8 @@ private class DesktopCommandPopupWindow(
     private var modal = false
     private val windowIdentity = Any()
     private var windowReady = false
-    private fun publishWindowAvailability(ready: Boolean) {
-        if (windowReady != ready) {
+    private fun publishWindowAvailability(ready: Boolean, force: Boolean = false) {
+        if (force || windowReady != ready) {
             windowReady = ready
             popup?.let { onNativeWindowAvailability?.invoke(it, ready) }
             onWindowAvailability(windowIdentity, ready)
@@ -134,7 +138,11 @@ private class DesktopCommandPopupWindow(
             SwingUtilities.invokeLater {
                 if (!closed && popup === shown && shown.isShowing && owner.isShowing &&
                     anchorComponent.isShowing && SwingUtilities.getWindowAncestor(anchorComponent) === owner) {
-                    publishWindowAvailability(true)
+                    if (decorative && (!checkNotNull(ownsPresentation).invoke() ||
+                        !DesktopDecorativeWindowStyle.applyTo(shown))) {
+                        publishWindowAvailability(false, force = true); shown.isVisible = false
+                        checkNotNull(onDecorativeRejection).invoke()
+                    } else publishWindowAvailability(true)
                 }
             }
         }
@@ -178,10 +186,10 @@ private class DesktopCommandPopupWindow(
             type = Window.Type.POPUP
             // Actual AWT anchor gives valid geometry independently of occluded Compose layout.
             // Start with no input region, while keeping the composition mounted.
-            shape = Area()
+            if (!decorative) shape = Area()
             addComponentListener(popupVisibilityListener)
             compositionLocalContext = context
-            setContent { CompositionLocalProvider(LocalDesktopCommandHitRegions provides regions) { content() } }
+            setContent { CompositionLocalProvider(LocalDesktopCommandHitRegions provides if (decorative) null else regions) { content() } }
         }
         owner.addComponentListener(moveListener)
         owner.addWindowListener(windowListener)
@@ -201,7 +209,7 @@ private class DesktopCommandPopupWindow(
         check(SwingUtilities.isEventDispatchThread())
         if (closed) return
         val window = popup ?: return
-        val showing = presented && owner.isShowing && (owner !is Frame || owner.extendedState and Frame.ICONIFIED == 0) &&
+        val showing = presented && (!decorative || checkNotNull(ownsPresentation).invoke()) && owner.isShowing && (owner !is Frame || owner.extendedState and Frame.ICONIFIED == 0) &&
             anchorComponent.isShowing && SwingUtilities.getWindowAncestor(anchorComponent) === owner &&
             requested.width > 0 && requested.height > 0 && anchorComponent.width > 0 && anchorComponent.height > 0
         if (!showing) { publishWindowAvailability(false); window.isVisible = false; return }
@@ -210,12 +218,27 @@ private class DesktopCommandPopupWindow(
         val rectangle = Rectangle(location.x, location.y, anchorComponent.width, anchorComponent.height)
         if (window.bounds != rectangle) window.bounds = rectangle
         if (window.isAlwaysOnTop != owner.isAlwaysOnTop) window.isAlwaysOnTop = owner.isAlwaysOnTop
-        applyShape()
-        if (!window.isVisible) { window.isVisible = true; applyShape() }
+        if (decorative) {
+            // Establish mouse-through while the new peer is still hidden. The
+            // componentShown listener rechecks after Skiko's own listeners.
+            if (!window.isDisplayable) window.addNotify()
+            if (!checkNotNull(ownsPresentation).invoke() || !DesktopDecorativeWindowStyle.applyTo(window)) {
+                publishWindowAvailability(false, force = true); window.isVisible = false
+                checkNotNull(onDecorativeRejection).invoke(); return
+            }
+            if (!checkNotNull(ownsPresentation).invoke()) {
+                publishWindowAvailability(false, force = true); window.isVisible = false
+                checkNotNull(onDecorativeRejection).invoke(); return
+            }
+            if (!window.isVisible) window.isVisible = true
+        } else {
+            applyShape()
+            if (!window.isVisible) { window.isVisible = true; applyShape() }
+        }
     }
     private fun applyShape() {
         check(SwingUtilities.isEventDispatchThread())
-        if (closed) return
+        if (closed || decorative) return
         val window = popup ?: return
         val transform = window.graphicsConfiguration.defaultTransform
         val shape = Area()
@@ -296,7 +319,9 @@ internal fun DesktopShapedVideoCommandPopup(
     val density = LocalDensity.current
     val latestDensity by rememberUpdatedState(density)
     val host = remember(owner, anchorComponent) {
-        DesktopCommandPopupWindow(owner, anchorComponent, { window, ready -> latestNativeWindowAvailability?.invoke(window, ready) }) { identity, ready -> latestWindowAvailability?.invoke(identity, ready) }
+        DesktopCommandPopupWindow(owner, anchorComponent,
+            onNativeWindowAvailability = { window, ready -> latestNativeWindowAvailability?.invoke(window, ready) },
+            onWindowAvailability = { identity, ready -> latestWindowAvailability?.invoke(identity, ready) })
     }
     DisposableEffect(host) {
         host.create(context) {
@@ -307,4 +332,51 @@ internal fun DesktopShapedVideoCommandPopup(
         onDispose { host.close() }
     }
     SideEffect { host.update(context, surfaceSize, presented) }
+}
+
+/** Decorative-only extension of the existing owned carrier. Never commands,
+ * dialogs or retry controls. The actual Leaf supplies confirmed immutable-source
+ * metadata and the original factory account/entry admission. Native input pass-
+ * through and visible pixels still require actual Main acceptance. */
+@Composable
+internal fun DesktopDecorativeVideoFeedbackPopup(
+    surfaceSize: IntSize,
+    anchorComponent: Component,
+    sourceOwner: DesktopOriginalVideoAcceptedPublication,
+    subject: com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot,
+    ownsPresentation: () -> Boolean,
+    onWindowAvailability: (Any, Boolean) -> Unit,
+    onWindowRejected: () -> Unit,
+    content: @Composable (windowAvailable: Boolean) -> Unit,
+) {
+    key(sourceOwner, subject) {
+        if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return@key
+        val owner = LocalAwtWindow.current ?: return@key
+        val context = currentCompositionLocalContext
+        // Keyed source scope prevents an old disposal callback from writing the
+        // successor's available state. The original lifecycle and Root foreground
+        // providers travel through this existing CompositionLocalContext.
+        var available by remember { mutableStateOf(false) }
+        val latestCurrent by rememberUpdatedState(ownsPresentation)
+        val latestContent by rememberUpdatedState(content)
+        val latestAvailability by rememberUpdatedState(onWindowAvailability)
+        val latestRejection by rememberUpdatedState(onWindowRejected)
+        val density = LocalDensity.current
+        val latestDensity by rememberUpdatedState(density)
+        val host = remember(owner, anchorComponent) {
+            DesktopCommandPopupWindow(owner, anchorComponent, onNativeWindowAvailability = null,
+                onWindowAvailability = { identity, ready -> available = ready; latestAvailability(identity, ready) },
+                decorative = true, ownsPresentation = { latestCurrent() },
+                onDecorativeRejection = { latestRejection() })
+        }
+        DisposableEffect(host) {
+            host.create(context) {
+                CompositionLocalProvider(LocalDensity provides latestDensity) {
+                    Box(Modifier.fillMaxSize()) { latestContent(available && latestCurrent()) }
+                }
+            }
+            onDispose { host.close() }
+        }
+        SideEffect { host.update(context, surfaceSize, latestCurrent()) }
+    }
 }

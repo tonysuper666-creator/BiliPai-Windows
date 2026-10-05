@@ -41,14 +41,38 @@ internal class DesktopOriginalVideoEngagementPresentation private constructor(
     private val owns: () -> Boolean,
     private val admission: (() -> Unit) -> Boolean,
     internal val feedbackSource: DesktopWindowsVideoFeedbackSource?,
+    private val feedbackOwns: () -> Boolean,
+    private val feedbackAdmission: (() -> Unit) -> Boolean,
 ) {
+    private val feedbackRetired = java.util.concurrent.atomic.AtomicBoolean(false)
     // Exact old two-lambda API, including trailing-lambda callers.
-    constructor(owns: () -> Boolean, admission: (() -> Unit) -> Boolean) : this(owns, admission, null)
+    constructor(owns: () -> Boolean, admission: (() -> Unit) -> Boolean) : this(owns, admission, null, owns, admission)
     constructor(sourceOwner: DesktopOriginalVideoAcceptedPublication,
         subject: com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot,
         owns: () -> Boolean, admission: (() -> Unit) -> Boolean) :
-        this(owns, admission, DesktopWindowsVideoFeedbackSource(sourceOwner, subject))
+        this(owns, admission, DesktopWindowsVideoFeedbackSource(sourceOwner, subject), owns, admission)
+    constructor(sourceOwner: DesktopOriginalVideoAcceptedPublication,
+        subject: com.android.purebilibili.feature.video.viewmodel.VideoSubjectSnapshot,
+        owns: () -> Boolean, admission: (() -> Unit) -> Boolean,
+        feedbackOwns: () -> Boolean, feedbackAdmission: (() -> Unit) -> Boolean) :
+        this(owns, admission, DesktopWindowsVideoFeedbackSource(sourceOwner, subject), feedbackOwns, feedbackAdmission)
     fun isOwned(): Boolean = owns()
+    /** Exact source/account/entry lifetime. Temporary hide and an ephemeral
+     * command window do not retire an admitted operation or confirmed receipt.
+     * A real retirement cannot resurrect on a later ABA. */
+    fun isFeedbackOwned(): Boolean {
+        if (feedbackRetired.get()) return false
+        if (!feedbackOwns()) { feedbackRetired.set(true); return false }
+        return !feedbackRetired.get()
+    }
+    fun retireFeedbackIfInvalid() { isFeedbackOwned() }
+    fun admitFeedback(action: () -> Unit): Boolean {
+        if (!isFeedbackOwned()) return false
+        var applied = false
+        return feedbackAdmission {
+            if (isFeedbackOwned()) { action(); applied = true }
+        } && applied
+    }
     fun admit(action: () -> Unit): Boolean {
         if (!isOwned()) return false
         var applied = false
@@ -56,24 +80,32 @@ internal class DesktopOriginalVideoEngagementPresentation private constructor(
             if (isOwned()) { action(); applied = true }
         } && applied
     }
-    val context: CoroutineContext = Element(this)
+    /** Capture a bounded start permit synchronously, before original launch.
+     * Nested original work inherits its actual active caller; background UI can
+     * never create a new admitted operation by borrowing this presentation. */
+    val context: CoroutineContext get() {
+        val parent = active.get()?.takeIf { it.presentation === this }
+        val started = if (parent == null) admit {} else
+            parent.started && parent.job?.isActive != false && isFeedbackOwned()
+        return Element(this, started)
+    }
 
-    private class Element(val presentation: DesktopOriginalVideoEngagementPresentation) :
+    private class Element(val presentation: DesktopOriginalVideoEngagementPresentation, val started: Boolean) :
         ThreadContextElement<Active?>, AbstractCoroutineContextElement(Key) {
         companion object Key : CoroutineContext.Key<Element>
         override fun updateThreadContext(context: CoroutineContext): Active? = active.get().also {
-            active.set(Active(presentation, context[Job]))
+            active.set(Active(presentation, context[Job], started))
         }
         override fun restoreThreadContext(context: CoroutineContext, oldState: Active?) {
             if (oldState == null) active.remove() else active.set(oldState)
         }
     }
-    private data class Active(val presentation: DesktopOriginalVideoEngagementPresentation, val job: Job?)
+    private data class Active(val presentation: DesktopOriginalVideoEngagementPresentation, val job: Job?, val started: Boolean)
     companion object {
         private val active = ThreadLocal<Active?>()
         fun capture(): DesktopOriginalVideoEngagementPresentation? = active.get()?.presentation
         fun currentIsOwned(): Boolean = active.get()?.let {
-            it.job?.isActive != false && it.presentation.isOwned()
+            it.started && it.job?.isActive != false && it.presentation.isFeedbackOwned()
         } ?: true
         fun assertCurrent() {
             if (!currentIsOwned()) throw CancellationException("Original engagement presentation retired")
@@ -83,7 +115,7 @@ internal class DesktopOriginalVideoEngagementPresentation private constructor(
             assertCurrent()
             val captured = capture()
             if (captured == null) action()
-            else if (!captured.admit { assertCurrent(); action() })
+            else if (!captured.admitFeedback { assertCurrent(); action() })
                 throw CancellationException("Original engagement presentation admission retired")
         }
     }

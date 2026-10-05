@@ -10,16 +10,29 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 /** Explicit ordinary actions use the same original engagement owner, including
  * its guest guard, partial triple result, feedback and account/source admission. */
-internal class DesktopWindowsVideoEngagementBinding(
+internal class DesktopWindowsVideoEngagementBinding private constructor(
     val sourceOwner: DesktopOriginalVideoAcceptedPublication,
     private val engagement: VideoEngagementViewModel,
     val subject: VideoSubjectSnapshot,
     private val stillOwned: () -> Boolean,
+    private val stillFeedbackOwned: () -> Boolean,
     admission: (() -> Unit) -> Boolean,
+    private val feedbackSurvivesUiClose: Boolean,
 ) : AutoCloseable {
+    constructor(sourceOwner: DesktopOriginalVideoAcceptedPublication, engagement: VideoEngagementViewModel,
+        subject: VideoSubjectSnapshot, stillOwned: () -> Boolean, admission: (() -> Unit) -> Boolean) :
+        this(sourceOwner, engagement, subject, stillOwned, stillOwned, admission, false)
+    constructor(sourceOwner: DesktopOriginalVideoAcceptedPublication, engagement: VideoEngagementViewModel,
+        subject: VideoSubjectSnapshot, stillOwned: () -> Boolean, stillFeedbackOwned: () -> Boolean,
+        admission: (() -> Unit) -> Boolean) :
+        this(sourceOwner, engagement, subject, stillOwned, stillFeedbackOwned, admission, true)
     private val alive = AtomicBoolean(true)
     val state: StateFlow<VideoEngagementUiState> get() = engagement.uiState
-    private val presentation = DesktopOriginalVideoEngagementPresentation(sourceOwner, subject, ::isOwned, admission)
+    private val presentation = DesktopOriginalVideoEngagementPresentation(sourceOwner, subject, ::isOwned, admission,
+        ::feedbackLifetimeOwned, admission)
+    private fun feedbackLifetimeOwned(): Boolean = (feedbackSurvivesUiClose || alive.get()) && stillFeedbackOwned() && subject.aid > 0L && subject.ownerMid > 0L &&
+        sourceOwner.request.bvid == subject.bvid && sourceOwner.request.cid == subject.cid && state.value.subject == subject
+    fun isFeedbackOwned(): Boolean = alive.get() && presentation.isFeedbackOwned()
 
     fun isOwned(): Boolean = alive.get() && stillOwned() && subject.aid > 0L && subject.ownerMid > 0L &&
         sourceOwner.request.bvid == subject.bvid && sourceOwner.request.cid == subject.cid && state.value.subject == subject
@@ -58,9 +71,9 @@ internal class DesktopWindowsVideoEngagementBinding(
     }
     fun feedback(kind: DesktopWindowsVideoFeedbackKind): DesktopWindowsVideoFeedbackOrigin? {
         var selected: DesktopWindowsVideoFeedbackOrigin? = null
-        presentation.admit {
+        presentation.admitFeedback {
             val expected = state.value.desktopFeedbackOrigin(kind)
-            if (isOwned() && expected != null) expected.admitCurrent(sourceOwner, subject) {
+            if (isFeedbackOwned() && expected != null) expected.admitCurrent(sourceOwner, subject) {
                 if (state.value.desktopFeedbackOrigin(kind) === expected) selected = expected
             }
         }
@@ -73,8 +86,8 @@ internal class DesktopWindowsVideoEngagementBinding(
     fun cancelFeedback(expected: DesktopWindowsVideoFeedbackOrigin): Boolean = consumeFeedback(expected, completed = false)
     private fun consumeFeedback(expected: DesktopWindowsVideoFeedbackOrigin, completed: Boolean): Boolean {
         var applied = false
-        val admitted = presentation.admit {
-            if (isOwned() && state.value.desktopFeedbackOrigin(expected.kind) === expected)
+        val admitted = presentation.admitFeedback {
+            if (isFeedbackOwned() && state.value.desktopFeedbackOrigin(expected.kind) === expected)
                 expected.admitCurrent(sourceOwner, subject) {
                 if (state.value.desktopFeedbackOrigin(expected.kind) !== expected) return@admitCurrent
                 when (expected.kind) {
@@ -90,7 +103,8 @@ internal class DesktopWindowsVideoEngagementBinding(
         return admitted && applied
     }
     fun admit(action: () -> Unit): Boolean = presentation.admit(action)
-    override fun close() { alive.set(false) }
+    fun admitFeedback(action: () -> Unit): Boolean = presentation.admitFeedback { if (isFeedbackOwned()) action() } && isFeedbackOwned()
+    override fun close() { alive.set(false); presentation.retireFeedbackIfInvalid() }
 }
 
 /** Full original group dialog, inside the existing fixed-size owned native

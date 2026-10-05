@@ -1722,8 +1722,15 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     danmakuAssembly != null && ordinaryVideo.slot.currentAssembly() === danmakuAssembly &&
                                     danmakuAssembly.owns() && danmakuSource != null &&
                                     danmakuAssembly.native.isCurrent(danmakuSource)
+                                fun ownsDanmakuFeedbackSource(): Boolean = !isClosing() && !activatingUpdate && active && !pipActive &&
+                                    hostDisplayable && messageRoutes.currentKey === entryKey &&
+                                    danmakuAssembly != null && ordinaryVideo.slot.currentAssembly() === danmakuAssembly &&
+                                    danmakuAssembly.owns() && danmakuSource != null &&
+                                    ordinaryVideo.factoryFor(danmakuAssembly).isPresentationCurrent(danmakuAssembly, danmakuSource) &&
+                                    danmakuAssembly.native.isCurrent(danmakuSource)
                                 DesktopWindowsVideoPhysicalLeaf(entryKey, ordinaryVideo,
-                                    active && hostVisible && hostDisplayable, isFullscreen(), pipActive,
+                                    active && hostVisible && hostDisplayable,
+                                    active && hostDisplayable && !isClosing() && !activatingUpdate, isFullscreen(), pipActive,
                                     preferences.copy(danmaku = rendererDanmakuSettings), ::changePreferences,
                                     DesktopWindowsVideoActions(
                                         back = commands::back, fullscreen = ::toggleOriginalFullscreen,
@@ -1778,6 +1785,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                     attentionSubject?.let { subject -> DesktopWindowsCommandAttentionBinding(
                                                         capturedSource, capturedAssembly.domains.engagement, subject,
                                                         stillOwned = ::ownsDanmakuSource,
+                                                        stillFeedbackOwned = ::ownsDanmakuFeedbackSource,
+                                                        feedbackAdmission = { action -> ownsDanmakuFeedbackSource() && ordinaryVideo.factoryFor(capturedAssembly)
+                                                            .withPresentationAdmission(capturedAssembly, capturedSource, action) },
                                                         withAdmission = { action -> ownsDanmakuSource() && ordinaryVideo.factoryFor(capturedAssembly)
                                                             .withPresentationAdmission(capturedAssembly, capturedSource, action) }) }
                                                 }

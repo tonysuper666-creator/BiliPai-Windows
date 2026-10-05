@@ -48,6 +48,10 @@ def emit(path,t,origin,mode):
     t,feedbackProof=apply_video_feedback(path,t,parser)
     from v029_video_feedback_origin import apply_feedback_origin
     t,feedbackOriginProof=apply_feedback_origin(path,t)
+    from v029_video_feedback_host import apply_feedback_lifetime
+    t,feedbackLifetimeProof=apply_feedback_lifetime(path,t)
+    if feedbackLifetimeProof is not None:
+        save(OUTPUT/'v029-video-feedback-lifetime-proof.json',feedbackLifetimeProof)
     if feedbackOriginProof is not None:
         save(OUTPUT/'v029-video-feedback-origin-proof.json',feedbackOriginProof)
     if feedbackProof is not None:
@@ -56,6 +60,11 @@ def emit(path,t,origin,mode):
         write(OUTPUT/OUTPUT_ANIMATIONS,animation)
         save(OUTPUT/'v029-video-feedback-celebration-proof.json',animationProof)
         OUTPUTS.append(dict(path=OUTPUT_ANIMATIONS,origin=animationProof['origin'],mode='fixed-v029-complete-feedback-animations-platform-symbol-adapt',fixedCommit=FEEDBACK_COMMIT,sha256LF=sha(animation),physicalLines=len(animation.splitlines()),generated=True))
+        from v029_video_feedback_host import feedback_motion_source, OUTPUT_MOTION
+        motion,motionProof=feedback_motion_source()
+        write(OUTPUT/OUTPUT_MOTION,motion)
+        save(OUTPUT/'v029-video-feedback-motion-proof.json',motionProof)
+        OUTPUTS.append(dict(path=OUTPUT_MOTION,origin=motionProof['origin'],mode='fixed-v029-complete-decoration-blocks-owned-window',fixedCommit=FEEDBACK_COMMIT,sha256LF=sha(motion),physicalLines=len(motion.splitlines()),generated=True))
     if STANDALONE or mode!='direct':write(OUTPUT/path,t)
     OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=sha(t),physicalLines=len(t.splitlines()),generated=STANDALONE or mode!='direct'))
 def function_range(t,name):

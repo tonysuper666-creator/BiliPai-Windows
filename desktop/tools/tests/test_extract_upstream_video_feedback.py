@@ -50,7 +50,9 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         cls.addClassCleanup(cls.temp.cleanup)
         cls.output = Path(cls.temp.name) / "generated"
         producer.generate(REPO, cls.output, True)
-        cls.vm = read(cls.output / feedback.OUTPUT_VM)
+        cls.final_vm = read(cls.output / feedback.OUTPUT_VM)
+        cls.lifetime_proof = json.loads(read(cls.output / 'v029-video-feedback-lifetime-proof.json'))
+        cls.vm = undo(cls.final_vm, cls.lifetime_proof)
         cls.state_proof = json.loads(read(cls.output / "v029-video-feedback-state-proof.json"))
         cls.origin_proof = json.loads(read(cls.output / "v029-video-feedback-origin-proof.json"))
         cls.animation_proof = json.loads(read(cls.output / "v029-video-feedback-celebration-proof.json"))
@@ -70,7 +72,9 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         vm = [row for row in outputs if row["path"] == feedback.OUTPUT_VM]
         animation = [row for row in outputs if row["path"] == feedback.OUTPUT_ANIMATIONS]
         self.assertEqual(1, len(vm)); self.assertEqual(1, len(animation))
-        self.assertEqual(vm[0]["sha256LF"], self.origin_proof["afterSha256LF"])
+        self.assertEqual(vm[0]["sha256LF"], self.lifetime_proof["afterSha256LF"])
+        self.assertEqual(self.origin_proof["afterSha256LF"], self.lifetime_proof["beforeSha256LF"])
+        self.assertEqual(feedback.sha(self.vm), self.origin_proof["afterSha256LF"])
         self.assertEqual(animation[0]["fixedCommit"], feedback.COMMIT)
 
     def test_complete_vm_two_stage_inverse_and_reapplication_are_exact(self):
@@ -165,7 +169,8 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         self.assertIn("expected.admitCurrent(sourceOwner, subject)", binding)
         self.assertIn("state.value.desktopFeedbackOrigin(expected.kind) === expected", binding)
         self.assertIn("constructor(owns: () -> Boolean, admission: (() -> Unit) -> Boolean)", presentation)
-        self.assertIn("DesktopOriginalVideoEngagementPresentation(sourceLease, subject, ::isOwned, withAdmission)", command)
+        self.assertIn("DesktopOriginalVideoEngagementPresentation(sourceLease, subject, ::isOwned, withAdmission,", command)
+        self.assertIn("::feedbackLifetimeOwned, feedbackAdmission", command)
 
     def test_foreign_paths_noop_and_wrong_or_duplicate_stage_anchors_fail_closed(self):
         self.assertEqual(origin.apply_feedback_origin("foreign.kt", "unchanged"), ("unchanged", None))

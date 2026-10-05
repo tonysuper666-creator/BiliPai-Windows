@@ -10,16 +10,30 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Root supplies the immutable accepted publication and its real Store -> entry
  * presentation permit. This class owns neither HTTP nor a second state cache.
  */
-internal class DesktopWindowsCommandAttentionBinding(
+internal class DesktopWindowsCommandAttentionBinding private constructor(
     val sourceLease: DesktopOriginalVideoAcceptedPublication,
     private val engagement: VideoEngagementViewModel,
     private val subject: VideoSubjectSnapshot,
     private val stillOwned: () -> Boolean,
+    private val stillFeedbackOwned: () -> Boolean,
+    private val feedbackAdmission: (() -> Unit) -> Boolean,
     withAdmission: (() -> Unit) -> Boolean,
+    private val feedbackSurvivesUiClose: Boolean,
 ) : AutoCloseable {
+    constructor(sourceLease: DesktopOriginalVideoAcceptedPublication, engagement: VideoEngagementViewModel,
+        subject: VideoSubjectSnapshot, stillOwned: () -> Boolean, withAdmission: (() -> Unit) -> Boolean) :
+        this(sourceLease, engagement, subject, stillOwned, stillOwned, withAdmission, withAdmission, false)
+    constructor(sourceLease: DesktopOriginalVideoAcceptedPublication, engagement: VideoEngagementViewModel,
+        subject: VideoSubjectSnapshot, stillOwned: () -> Boolean, stillFeedbackOwned: () -> Boolean,
+        feedbackAdmission: (() -> Unit) -> Boolean, withAdmission: (() -> Unit) -> Boolean) :
+        this(sourceLease, engagement, subject, stillOwned, stillFeedbackOwned, feedbackAdmission, withAdmission, true)
     private val alive = AtomicBoolean(true)
     val state: StateFlow<VideoEngagementUiState> get() = engagement.uiState
-    private val presentation = DesktopOriginalVideoEngagementPresentation(sourceLease, subject, ::isOwned, withAdmission)
+    private val presentation = DesktopOriginalVideoEngagementPresentation(sourceLease, subject, ::isOwned, withAdmission,
+        ::feedbackLifetimeOwned, feedbackAdmission)
+    private fun feedbackLifetimeOwned(): Boolean = (feedbackSurvivesUiClose || alive.get()) && stillFeedbackOwned() &&
+        sourceLease.request.bvid == subject.bvid && sourceLease.request.cid == subject.cid &&
+        subject.aid > 0L && subject.ownerMid > 0L && state.value.subject == subject
 
     fun isOwned(): Boolean = alive.get() && stillOwned() &&
         sourceLease.request.bvid == subject.bvid && sourceLease.request.cid == subject.cid &&
@@ -48,5 +62,5 @@ internal class DesktopWindowsCommandAttentionBinding(
         return true
     }
 
-    override fun close() { alive.set(false) }
+    override fun close() { alive.set(false); presentation.retireFeedbackIfInvalid() }
 }

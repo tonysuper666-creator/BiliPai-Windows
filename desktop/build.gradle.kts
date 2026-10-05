@@ -2040,6 +2040,7 @@ val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py", sourceManifest)
     inputs.file("tools/v029_video_feedback.py")
     inputs.file("tools/v029_video_feedback_origin.py")
+    inputs.file("tools/v029_video_feedback_host.py")
     inputs.dir("upstream-slices/v029-video-feedback")
     inputs.files(sources.filter { "stable-video-detail-full-units" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })

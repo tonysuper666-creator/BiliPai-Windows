@@ -23,12 +23,12 @@ class DesktopWindowsVideoFeedbackOrigin private constructor(
     private val presentation: DesktopOriginalVideoEngagementPresentation,
 ) {
     internal fun isCurrent(accepted: DesktopOriginalVideoAcceptedPublication, subject: VideoSubjectSnapshot): Boolean =
-        source.accepted === accepted && source.subject == subject && presentation.isOwned()
+        source.accepted === accepted && source.subject == subject && presentation.isFeedbackOwned()
 
     internal fun admitCurrent(accepted: DesktopOriginalVideoAcceptedPublication, subject: VideoSubjectSnapshot, action: () -> Unit): Boolean {
         if (!isCurrent(accepted, subject)) return false
         var applied = false
-        return presentation.admit {
+        return presentation.admitFeedback {
             if (isCurrent(accepted, subject)) { action(); applied = true }
         } && applied
     }
@@ -39,7 +39,7 @@ class DesktopWindowsVideoFeedbackOrigin private constructor(
             if (instanceId <= 0 || subject == null) return null
             val presentation = DesktopOriginalVideoEngagementPresentation.capture() ?: return null
             val source = presentation.feedbackSource ?: return null
-            if (source.subject != subject || !presentation.isOwned()) return null
+            if (source.subject != subject || !DesktopOriginalVideoEngagementPresentation.currentIsOwned() || !presentation.isFeedbackOwned()) return null
             return DesktopWindowsVideoFeedbackOrigin(source, kind, instanceId, presentation)
         }
     }
