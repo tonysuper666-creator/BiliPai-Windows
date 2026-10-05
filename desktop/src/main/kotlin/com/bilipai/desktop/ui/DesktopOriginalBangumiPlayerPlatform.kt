@@ -102,6 +102,16 @@ internal class DesktopOriginalBangumiPlayerEnvironment(
     val owns: () -> Boolean,
     val ownsPlaybackSource: () -> Boolean,
 ) {
+    /** Read the existing Root quality mirror once per initial PGC request. */
+    fun autoHighestQualityEnabled(): Boolean {
+        assertCurrent()
+        settings.requireCurrent()
+        val enabled = com.android.purebilibili.core.store.DesktopOriginalVideoOwnerSettings
+            .getAutoHighestQualitySync(settings)
+        settings.requireCurrent()
+        assertCurrent()
+        return enabled
+    }
     suspend fun rewriteCandidates(plugin: PlaybackCdnPlugin, videoUrls: List<String>, audioUrls: List<String>) =
         rewriteCandidatesPort(plugin, videoUrls, audioUrls)
     fun publishExternalPlaylist(items: List<PlaylistItem>, startIndex: Int, source: ExternalPlaylistSource) =

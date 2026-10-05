@@ -31,6 +31,22 @@ def bangumi_native_metadata_delta(path, body):
   body=body.replace(before,'        val added = try { environment.addDownloadTask(task) } catch (cancelled: kotlinx.coroutines.CancellationException) {\n            throw cancelled\n        } catch (failure: Exception) {\n            environment.launch { _toastEvent.send(failure.message ?: "当前集暂时无法下载") }\n            return\n        }\n')
  return body
 
+PGC_DEFAULT_QUALITY_EDITS = [{'name': 'same-original-default-policy', 'before': 'import com.android.purebilibili.core.player.BasePlayerViewModel\n', 'after': 'import com.android.purebilibili.core.player.BasePlayerViewModel\nimport com.android.purebilibili.core.util.resolvePlaybackDefaultQualityId\nimport com.android.purebilibili.data.model.VideoQuality\n', 'count': 1}, {'name': 'initial-only-original-default-resolution', 'before': '    private fun resolveBangumiInitialQuality(): Int {\n        val isVip = VideoRepository.isPlaybackVip()\n        val isLoggedIn = VideoRepository.isPlaybackLoggedIn()\n        return when {\n', 'after': '    private fun resolveBangumiInitialQuality(autoHighestEnabled: Boolean): Int {\n        val isVip = VideoRepository.isPlaybackVip()\n        val isLoggedIn = VideoRepository.isPlaybackLoggedIn()\n        if (autoHighestEnabled) return resolvePlaybackDefaultQualityId(\n            storedQuality = 80, autoHighestEnabled = true, isLoggedIn = isLoggedIn, isVip = isVip\n        )\n        return when {\n', 'count': 1}, {'name': 'capture-one-root-setting-for-initial-request', 'before': '        var requestedQn = resolveBangumiInitialQuality()\n', 'after': '        val autoHighestEnabled = environment.autoHighestQualityEnabled()\n        var requestedQn = resolveBangumiInitialQuality(autoHighestEnabled)\n', 'count': 1}, {'name': 'retain-actual-initial-selected-quality', 'before': '            var videoUrl: String? = null\n            var audioUrl: String? = null\n', 'after': '            var videoUrl: String? = null\n            var selectedVideoQuality: Int? = null\n            var audioUrl: String? = null\n', 'count': 1}, {'name': 'initial-only-auto-target-with-existing-hdr-capability', 'before': '                val video = dash.getBestVideo(\n                    playData.quality,\n                    preferCodec = resolveBangumiPreferredCodec(isCourse)\n                )\n', 'after': '                // Auto-highest changes only the initial default. The original PGC\n                // HDR request requires both HDR and HEVC; no Dolby Vision capability\n                // is supplied by this presenter, so it must not infer DV support.\n                val initialSelectionDash = if (autoHighestEnabled) dash.copy(video = dash.video.filter {\n                    it.id != VideoQuality.DOLBY_VISION.code &&\n                        (it.id != VideoQuality.HDR.code ||\n                            (environment.hdrSupported() && environment.hevcSupported()))\n                }) else dash\n                val video = initialSelectionDash.getBestVideo(\n                    if (autoHighestEnabled) requestedQn else playData.quality,\n                    preferCodec = resolveBangumiPreferredCodec(isCourse)\n                )\n                if (autoHighestEnabled) selectedVideoQuality = video?.id\n', 'count': 1}, {'name': 'publish-selected-initial-quality-not-response-default', 'before': '                audioUrl = audioUrl,\n                quality = playData.quality,\n                acceptQuality = qualityOptions.ids,\n', 'after': '                audioUrl = audioUrl,\n                quality = selectedVideoQuality ?: playData.quality,\n                acceptQuality = qualityOptions.ids,\n', 'count': 1}]
+PGC_DEFAULT_QUALITY_PROOFS = []
+def bangumi_default_quality_delta(path, body):
+ if path != 'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt': return body
+ before=body
+ for edit in PGC_DEFAULT_QUALITY_EDITS:
+  assert body.count(edit["before"]) == edit["count"], edit["name"]
+  body=body.replace(edit["before"], edit["after"])
+ inverse=body
+ for edit in reversed(PGC_DEFAULT_QUALITY_EDITS):
+  assert inverse.count(edit["after"]) == edit["count"], edit["name"]
+  inverse=inverse.replace(edit["after"], edit["before"])
+ assert inverse == before
+ PGC_DEFAULT_QUALITY_PROOFS.append({"path":path,"beforeSha256LF":sha(before),"afterSha256LF":sha(body),"completeInverse":True,"edits":PGC_DEFAULT_QUALITY_EDITS})
+ return body
+
 for recipe in RECIPES:
  raw=(_desktop_canonical_source(repo, recipe['originalPath'])).read_text(encoding='utf8').replace('\r\n','\n');assert sha(raw)==recipe['originalSha256LF']
  body=raw
@@ -40,6 +56,7 @@ for recipe in RECIPES:
   body=''.join(lines[:i])+edit['after']+''.join(lines[j:])
  assert sha(body)==recipe['adaptedSha256LF']
  body=bangumi_native_metadata_delta(recipe['output'],body)
+ body=bangumi_default_quality_delta(recipe['output'],body)
  target=out/recipe['output'];target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text('// GENERATED full original body; upstream '+PROTOCOL['upstreamCommit']+'; LF '+recipe['originalSha256LF']+'\n'+body,encoding='utf8',newline='\n')
 spec=importlib.util.spec_from_file_location('parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
@@ -53,4 +70,5 @@ helper=media.function(raw,'signBangumiPlayUrlParams',parser);assert sha(helper)=
 assert helper in PREFIX
 target=out/'com/android/purebilibili/data/repository/DesktopOriginalBangumiPlayRequests.kt';target.parent.mkdir(parents=True,exist_ok=True)
 target.write_text('// GENERATED complete original getBangumiPlayUrl; upstream '+PROTOCOL['upstreamCommit']+'; LF '+PROTOCOL['originalSourceSHA']+'\n'+PREFIX+body+'\n}\n',encoding='utf8')
+(out/'pgc-default-quality-source-inventory.json').write_text(json.dumps({'upstreamCommit':PROTOCOL['upstreamCommit'],'originalPinsUnchanged':True,'initialOnly':True,'fullBodies':PGC_DEFAULT_QUALITY_PROOFS},ensure_ascii=True,indent=2)+'\n',encoding='utf8',newline='\n')
 print('Complete original PGC body outputs:',len(RECIPES)+1,'; actual Root/native ports are required')
