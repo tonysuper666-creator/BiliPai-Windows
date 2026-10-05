@@ -40,11 +40,15 @@ internal fun DesktopWindowsVideoDetailsPanel(
                         text = { Text(tab.title, style = MaterialTheme.typography.labelMedium, maxLines = 1) })
                 }
             }
-            LazyColumn(Modifier.fillMaxWidth().weight(1f), contentPadding = PaddingValues(12.dp),
+            // The original comment tab owns its LazyColumn/weight. Give it a
+            // finite sibling viewport, never an unbounded outer list item.
+            if (selectedTab == DesktopWindowsVideoDetailsTab.COMMENTS) {
+                Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp)) { comments() }
+            } else LazyColumn(Modifier.fillMaxWidth().weight(1f), contentPadding = PaddingValues(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 when (selectedTab) {
                     DesktopWindowsVideoDetailsTab.INTRODUCTION -> item { introduction() }
-                    DesktopWindowsVideoDetailsTab.COMMENTS -> item { comments() }
+                    DesktopWindowsVideoDetailsTab.COMMENTS -> Unit // Rendered in the bounded sibling above.
                     DesktopWindowsVideoDetailsTab.RELATED -> {
                         if (related.isEmpty()) item { Text("暂无相关推荐", style = MaterialTheme.typography.bodyMedium) }
                         items(related, key = { it.bvid }) { video ->

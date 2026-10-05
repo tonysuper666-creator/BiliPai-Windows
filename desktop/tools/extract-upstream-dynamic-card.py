@@ -4,6 +4,7 @@ Production direct inputs are copied only by prepareUpstreamSources. Isolated
 compilation explicitly asks for standalone output of those exact bodies.
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
+from v021_comment_renderer import adapt as adapt_comment_presentation
 from pathlib import Path
 import argparse, hashlib, importlib.util, json
 BASE = 'app/src/main/java/com/android/purebilibili/'
@@ -22,7 +23,13 @@ def generate(repo,output,standalone=False,shared_closure=False):
  host=module(repo,'full_card_host','desktop/tools/extract-upstream-plugins.py');media=host.media_extractor(repo);parser=media.parser_for(repo)
  appearance=module(repo,'full_card_decl','desktop/tools/extract-appearance-platform.py')
  output.mkdir(parents=True,exist_ok=True);files=[]
- def emit(path,body,name):files.append(host.write(output,path,read(repo,path),body,name))
+ def emit(path,body,name):
+  body,proof=adapt_comment_presentation(body,name)
+  if proof is not None:
+   proof['canonicalPath']=path
+   proof['canonicalLfSha256']=hashlib.sha256(read(repo,path).encode()).hexdigest()
+   (output/'windows-comment-image-presentation.json').write_text(json.dumps(proof,ensure_ascii=True,indent=2)+'\n',encoding='utf8')
+  files.append(host.write(output,path,read(repo,path),body,name))
  def replace(source,old,new):return host.substitute(source,old,new)
  def fun(s,n):return media.function(s,n,parser)
  def decl(s,n):

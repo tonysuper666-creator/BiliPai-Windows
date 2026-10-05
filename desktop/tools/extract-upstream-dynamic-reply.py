@@ -7,6 +7,7 @@ platform seams and original thread renderer. Never emit that policy twice.
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from v029_comment_time import apply as apply_original_comment_time
 from v029_comment_search import charged_delta
+from v021_comment_renderer import adapt as adapt_comment_presentation
 from pathlib import Path
 import hashlib
 import importlib.util
@@ -157,7 +158,15 @@ def generate(repo, output):
     output.mkdir(parents=True, exist_ok=True)
     emitted = []
 
+    comment_presentation_proofs = []
     def emit(path, body, filename):
+        body, proof = adapt_comment_presentation(body, filename)
+        if proof is not None:
+            proof["canonicalPath"] = path
+            proof["canonicalLfSha256"] = hashlib.sha256(read(repo, path).encode()).hexdigest()
+            comment_presentation_proofs.append(proof)
+            (output / "windows-comment-presentation.json").write_text(
+                json.dumps(comment_presentation_proofs, ensure_ascii=True, indent=2) + "\n", encoding="utf8")
         emitted.append(host.write(output, path, read(repo, path), body, filename))
 
     original = read(repo, REPLY)

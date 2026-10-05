@@ -977,6 +977,7 @@ val extractUpstreamDynamicFullCard by tasks.registering(Exec::class) {
     inputs.files("tools/extract-upstream-dynamic-card.py", "tools/extract-dynamic-message-share.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py",
         "tools/extract-upstream-api.py", "tools/extract-appearance-platform.py", "tools/sync-upstream.py")
+    inputs.file("tools/v021_comment_renderer.py")
     inputs.files(sources.filter { "settings-dynamic-full-card-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-full-card"))
@@ -1071,6 +1072,7 @@ val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.file("tools/v029_comment_time.py")
     inputs.dir("upstream-slices/v029-comment-time")
+    inputs.file("tools/v021_comment_renderer.py")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     outputs.dir(layout.buildDirectory.dir("generated/dynamic-reply"))

@@ -44,12 +44,19 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private val metadataInput = System.getProperty("bilipai.validation.metadataInput") == "true"
     private val bgmInput = System.getProperty("bilipai.validation.bgmInput") == "true"
     private val originalInteractionInput = System.getProperty("bilipai.validation.originalInteractionInput") == "true"
+    private val commentSearchInput = System.getProperty("bilipai.validation.commentSearchInput") == "true"
+    private val commentScript = if (commentSearchInput) WindowsCommentSearchReplay() else null
+    val commentSearchReplay: WindowsCommentSearchReplay get() = requireNotNull(commentScript)
     private val mediaSeconds = if (System.getProperty("bilipai.validation.pipInput") == "true") 300 else if (bgmInput) 180 else SECONDS
     private val secondCid = 7008L
     private val base: String get() = "http://127.0.0.1:${server.address.port}"
     private var installed = false
     init {
         require(!bgmInput || collectionInput) { "BGM replay needs the original two-part collection flow" }
+        require(!commentSearchInput || (!bgmInput && !originalInteractionInput && !collectionInput &&
+            System.getProperty("bilipai.validation.pipInput") != "true")) {
+            "Comment search is a separate same-source guest branch; existing no-POST/source-changing modes stay unchanged"
+        }
         require(!Files.exists(media, NOFOLLOW_LINKS)); Files.createDirectory(media)
         createVideo(media.resolve("video.avi").toFile(), mediaSeconds); createAudio(media.resolve("audio.wav").toFile(), mediaSeconds)
         server.executor = executor
@@ -94,6 +101,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                 "LOCAL replay original guest Root/session owner retired"
             }
             requireOwner()
+            fun requireOwnerBoolean(): Boolean { requireOwner(); return true }
             val request = chain.request(); val url = request.url; val path = url.encodedPath
             requests.add(buildJsonObject { put("stage", "requestObserved"); put("scheme", url.scheme)
                 put("host", url.host); put("port", url.port); put("path", path); put("method", request.method)
@@ -121,6 +129,13 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             // API responses remain memory-only. Every other origin is forbidden, never proceeded.
             require(url.host in setOf("api.bilibili.com", "api.vc.bilibili.com", "app.bilibili.com")) {
                 "LOCAL replay forbids requests outside mapped API or exact owned loopback media"
+            }
+            if (commentSearchInput) {
+                require(request.method == "GET" || (request.method == "POST" && url.host == "app.bilibili.com" &&
+                    WindowsCommentSearchReplay.isReadRpc(path))) { "Comment search guest replay forbids account mutation POST" }
+                commentScript?.intercept(chain, ::requireOwnerBoolean)?.let { response ->
+                    try { requireOwner(); return@addInterceptor response } catch (failure: Throwable) { response.close(); throw failure }
+                }
             }
             if (collectionInput) require(path !in setOf("/x/v3/fav/season/fav", "/x/v3/fav/season/unfav")) {
                 "Collection layout replay must not submit subscription mutations"
@@ -265,6 +280,10 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                 require(requests.any { it["path"]?.jsonPrimitive?.content == path && it["mapped"]?.jsonPrimitive?.booleanOrNull == true })
             require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" })
         }
+        val commentReceipt = commentScript?.receipt()
+        if (commentSearchInput) require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" &&
+            (it["host"]?.jsonPrimitive?.content != "app.bilibili.com" ||
+                !WindowsCommentSearchReplay.isReadRpc(it["path"]?.jsonPrimitive?.content.orEmpty())) })
         Files.writeString(report.resolve("local-replay-receipt.json"), buildJsonObject {
             put("schema", 1); put("mode", "LOCAL_API_SHAPE_REAL_LOOPBACK_MEDIA_ACTUAL_MAIN_LAYOUT_ONLY")
             put("sameActualRepository", true); put("realBilibiliDataAccepted", false); put("realAccountUsed", false)
@@ -278,6 +297,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("videoMetadataIsSynthetic", metadataInput)
             put("bgmMetadataIsSynthetic", bgmInput); put("bgmDetailAndRecommendResponsesAreSynthetic", bgmInput)
             put("singleBgmDetailOnlyScope", bgmInput)
+            put("commentSearchResponsesAreSynthetic", commentSearchInput)
+            put("commentSearch", commentReceipt ?: JsonNull)
             put("originalInteractionMetadataIsSynthetic", originalInteractionInput)
             put("originalInteractionRemoteMutationSubmitted", false)
             put("singleBgmRecommendationRequested", requests.any { it["bgmStage"]?.jsonPrimitive?.content == "recommend" &&
@@ -365,7 +386,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("realAccountUsed", false); put("headersOrQueryValuesRecorded", false)
         }.toString(), CREATE_NEW, WRITE)
     }
-    override fun close() { server.stop(0); executor.shutdownNow() }
+    override fun close() { commentScript?.close(); server.stop(0); executor.shutdownNow() }
     companion object {
         fun create(report: Path, bvid: String) = WindowsVideoLocalReplay(report, bvid)
     private const val WIDTH = 320

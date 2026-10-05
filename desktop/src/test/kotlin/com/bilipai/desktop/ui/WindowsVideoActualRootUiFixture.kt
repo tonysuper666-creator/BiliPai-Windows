@@ -2233,6 +2233,298 @@ object WindowsVideoActualRootUiFixture {
             "actualMainSceneLayerCountRestored" to JsonPrimitive(edt { actualMainSceneLayers().size })))
     }
 
+    private fun boundCommentSearchWindow() {
+        val target = edt {
+            current()
+            val main = window()
+            check((main as ComposeWindow).placement == WindowPlacement.Floating)
+            val configuration = main.graphicsConfiguration
+            val monitor = configuration.bounds
+            val insets = java.awt.Toolkit.getDefaultToolkit().getScreenInsets(configuration)
+            val usable = Rectangle(monitor.x + insets.left, monitor.y + insets.top,
+                monitor.width - insets.left - insets.right, monitor.height - insets.top - insets.bottom)
+            check(usable.width > 640 && usable.height > 480 && usable.width >= main.minimumSize.width &&
+                usable.height >= main.minimumSize.height) { "The actual runner viewport cannot contain this application's safe minimum" }
+            main.bounds = usable
+            main.validate()
+            usable
+        }
+        await("owned Main fits the actual runner monitor without changing app scale") { edt {
+            current(); window().bounds == target && window().graphicsConfiguration.bounds.contains(window().bounds)
+        } }
+        record("comment-search-bounded-main", mapOf(
+            "scope" to JsonPrimitive("ONLY_ACTUAL_AVAILABLE_RUNNER_VIEWPORT"),
+            "x" to JsonPrimitive(target.x), "y" to JsonPrimitive(target.y),
+            "width" to JsonPrimitive(target.width), "height" to JsonPrimitive(target.height),
+            "fourKTested" to JsonPrimitive(false), "fullscreenResizeRegressionExecuted" to JsonPrimitive(false),
+            "appScaleChangedByFixture" to JsonPrimitive(false)))
+    }
+
+    private fun exerciseCommentSearch(localReplay: WindowsVideoLocalReplay) {
+        check(!EventQueue.isDispatchThread())
+        sameNative(); check(playing())
+        val script = localReplay.commentSearchReplay
+        val (assembly, publication) = actualHotOwner()
+        val comments = assembly.domains.comments
+        val original = accepted
+        val originalMain = edt { window() }
+        val beforeLayers = settledMainInputLayers("comment-search-before")
+        await("actual current comment owner finished the ordinary HOT list") { edt {
+            current(); sameNative()
+            comments.commentState.value.let { !it.isRepliesLoading && !it.isRepliesRefreshing && it.replies.isNotEmpty() }
+        } }
+        check(comments.commentState.value.sortMode.apiMode == 3) { "The isolated fixture must retain the ordinary HOT list" }
+        val mainReplies = comments.commentState.value.replies
+        val mainNextPage = comments.commentState.value.nextPage
+        val mainEnd = comments.commentState.value.isRepliesEnd
+        // Open the actual detail tab before pausing; no navigation/VM fields are set.
+        if (edt { runCatching { detailPaneScope() }.isFailure }) {
+            click("详情")
+            await("owned detail viewport before comment search") { edt { runCatching { detailPaneScope() }.isSuccess } }
+        }
+        if (!edt { commentsTabSelected() }) {
+            edt {
+                current(); sameNative()
+                val tab = descendants(detailPaneScope()).single { it.accessibleName == "评论" && visible(it) &&
+                    it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
+                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
+                clickOwnedComposeMouse(window(), tab)
+            }
+            await("same-source actual comment tab selected") { edt { commentsTabSelected() } }
+        }
+        click("暂停")
+        await("real native pause before optional comment search") { sameNative(); actualPlayer.state.value.nativePaused == true }
+        Thread.sleep(300)
+        val baseline = actualPlayer.state.value
+        val ownedPeers = linkedSetOf<javax.swing.JDialog>()
+        fun currentSource() {
+            current(); sameNative()
+            check(accepted === original && assembly.owns() && assembly.native.isCurrent(publication) &&
+                assembly.domains.comments === comments && actualPlayer.ownsSourceSnapshot(original))
+            actualPlayer.state.value.let { state ->
+                check(state.nativePaused == true && state.paused && state.seekCompletedId == baseline.seekCompletedId &&
+                    state.volume == baseline.volume && state.muted == baseline.muted && state.speed == baseline.speed &&
+                    kotlin.math.abs(state.positionSeconds - baseline.positionSeconds) <= 0.25) {
+                    "Optional search changed the paused current playback source/state"
+                }
+            }
+            comments.commentState.value.let { state ->
+                check(state.replies == mainReplies && state.nextPage == mainNextPage && state.isRepliesEnd == mainEnd &&
+                    !state.isRepliesLoading && !state.isRepliesRefreshing)
+            }
+        }
+        fun dialog(title: String): javax.swing.JDialog? = edt {
+            currentSource()
+            Window.getWindows().filterIsInstance<javax.swing.JDialog>().filter {
+                it.isShowing && it.isDisplayable && ownedWindow(it) && it.title == title
+            }.also { check(it.size <= 1) { "Duplicate owned '$title' native peer" } }.singleOrNull()
+                ?.also { ownedPeers.add(it) }
+        }
+        fun visibleLabel(surface: Window, label: String): Boolean = edt {
+            currentSource()
+            descendants(surface.accessibleContext).any { hasLabel(it, label) && visible(it, surface) }
+        }
+        fun capture(id: String, surface: Window) {
+            val bounds = edt {
+                currentSource()
+                check(surface.isShowing && surface.isDisplayable && ownedWindow(surface) && surface !== window())
+                check(window().bounds.contains(surface.bounds) && surface.graphicsConfiguration.bounds.contains(surface.bounds))
+                Files.writeString(report.resolve("$id-accessibility.tsv"), descendants(surface.accessibleContext).joinToString("\n") {
+                    "${it.accessibleName}\t${it.accessibleRole}\t${it.accessibleStateSet}\t${it.accessibleAction?.accessibleActionCount ?: 0}"
+                }, CREATE_NEW, WRITE)
+                Rectangle(surface.bounds)
+            }
+            // Pure physical read of this exact owned peer. No focus, repaint,
+            // renderImmediately or decoded-video substitution is used to capture it.
+            val screen = java.awt.Robot().createScreenCapture(bounds)
+            check(ImageIO.write(screen, "png", report.resolve("$id-screen.png").toFile()))
+            edt { currentSource(); check(surface.isShowing && surface.bounds == bounds) }
+        }
+        fun openSearch(): javax.swing.JDialog {
+            edt { currentSource() }
+            clickFeatureItem(edt { window() }, "搜索评论")
+            await("actual original search sheet on its owned native peer") { dialog("搜索评论") != null }
+            val surface = requireNotNull(dialog("搜索评论"))
+            await("complete original search/filter/sort controls") {
+                listOf("搜索评论", "关闭", "全部评论", "只看UP主", "充电评论", "最热", "最新").all { visibleLabel(surface, it) }
+            }
+            edt { currentSource(); check(surface.isModal && ownedWindow(surface) && window().bounds.contains(surface.bounds)) }
+            return surface
+        }
+        fun awaitClosed(surface: javax.swing.JDialog) = await("original search peer disposed, optional request retired") { edt {
+            currentSource(); !surface.isShowing && !surface.isDisplayable && dialog("搜索评论") == null
+        } }
+        fun closeSearch(surface: javax.swing.JDialog) {
+            clickFeatureItem(surface, "关闭")
+            awaitClosed(surface)
+        }
+        fun resultRow(surface: Window, label: String): AccessibleContext? {
+            currentSource()
+            val rows = descendants(surface.accessibleContext).filter { node ->
+                hasLabel(node, label) && node.accessibleRole != javax.accessibility.AccessibleRole.SCROLL_PANE &&
+                    visible(node, surface) && node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                    (node.accessibleAction?.accessibleActionCount ?: 0) == 1
+            }
+            check(rows.size <= 1) { "Ambiguous original result row '$label'" }
+            return rows.singleOrNull()
+        }
+        fun assertResultOrder(surface: Window, first: String, second: String) {
+            await("original sort displays '$first' above '$second'") { edt {
+                currentSource()
+                val a = resultRow(surface, first)?.accessibleComponent?.locationOnScreen ?: return@edt false
+                val b = resultRow(surface, second)?.accessibleComponent?.locationOnScreen ?: return@edt false
+                a.y < b.y
+            } }
+        }
+        var firstFailure: Throwable? = null
+        // An existing peer belongs to another flow and must never become our
+        // cleanup target. Each subsequently observed exact peer is registered
+        // before controls/state assertions can fail.
+        check(dialog("搜索评论") == null && dialog("评论回复") == null)
+        try {
+            val cancelled = openSearch()
+            await("real optional TIME request held before cancellation") {
+                edt { currentSource(); comments.fullSearchState.value.isLoading } && script.firstSearchReadObserved()
+            }
+            await("original initial progress is visibly rendered") { visibleLabel(cancelled, "全量加载中 0/0") }
+            capture("178-comment-search-loading-cancel", cancelled)
+            closeSearch(cancelled)
+            await("closing the sheet cancels the exact real OkHttp optional read") {
+                script.cancelledSearchCallObserved() && edt { currentSource(); !comments.fullSearchState.value.isLoading }
+            }
+            check(comments.fullSearchReplies.value.isEmpty()) { "Cancelled optional search published a late page" }
+            script.failNextSearch()
+            val retried = openSearch()
+            await("original failure exposes the actual retry action") {
+                visibleLabel(retried, "加载失败，点此重试") && edt {
+                    currentSource(); comments.fullSearchState.value.let { !it.isLoading && !it.isReady && it.error != null }
+                }
+            }
+            capture("179-comment-search-retry-error", retried)
+            script.completeNextSearch()
+            clickFeatureItem(retried, "加载失败，点此重试")
+            await("actual original first-page progress before final read response") {
+                script.secondSearchPageObserved() && visibleLabel(retried, "全量加载中 2/3") && edt {
+                    currentSource(); comments.fullSearchState.value.let { it.isLoading && it.loadedCount == 2 && it.totalCount == 3 }
+                }
+            }
+            capture("180-comment-search-page-progress", retried)
+            script.releaseFinalPage()
+            await("full original two-page result pool ready") {
+                visibleLabel(retried, "已全量加载 3 条") && edt {
+                    currentSource(); comments.fullSearchState.value.let { it.isReady && !it.isLoading && it.error == null && it.loadedCount == 3 } &&
+                        comments.fullSearchReplies.value.map { it.rpid } == listOf(WindowsCommentSearchReplay.ROOT_A,
+                            WindowsCommentSearchReplay.ROOT_B, WindowsCommentSearchReplay.ROOT_C)
+                }
+            }
+            edt {
+                currentSource()
+                val editor = descendants(retried.accessibleContext).single { it.accessibleEditableText != null && visible(it, retried) }
+                editor.accessibleEditableText.setTextContents(WindowsCommentSearchReplay.QUERY)
+            }
+            await("original search text really consumed by its mounted field") { edt {
+                currentSource()
+                val editor = descendants(retried.accessibleContext).single { it.accessibleEditableText != null && visible(it, retried) }
+                val text = requireNotNull(editor.accessibleText)
+                buildString { repeat(text.charCount) { append(text.getAtIndex(javax.accessibility.AccessibleText.CHARACTER, it).orEmpty()) } } ==
+                    WindowsCommentSearchReplay.QUERY
+            } }
+            await("ALL filter flattens three roots plus two original children") { visibleLabel(retried, "找到 5 条") }
+            assertResultOrder(retried, WindowsCommentSearchReplay.ROOT_C_TEXT, WindowsCommentSearchReplay.CHILD_A_TEXT)
+            capture("181-comment-search-all-hot", retried)
+            clickFeatureItem(retried, "只看UP主")
+            await("original UP filter retains only the actual up-mid root and child") {
+                visibleLabel(retried, "找到 2 条") && visibleLabel(retried, WindowsCommentSearchReplay.ROOT_B_TEXT) &&
+                    visibleLabel(retried, WindowsCommentSearchReplay.CHILD_B_TEXT)
+            }
+            capture("182-comment-search-up-only", retried)
+            clickFeatureItem(retried, "充电评论")
+            await("charged filter consumes actual protobuf field 31") {
+                visibleLabel(retried, "找到 1 条") && visibleLabel(retried, WindowsCommentSearchReplay.ROOT_C_TEXT)
+            }
+            capture("183-comment-search-charged", retried)
+            clickFeatureItem(retried, "全部评论")
+            clickFeatureItem(retried, "最新")
+            await("ALL result pool restored after scope selection") { visibleLabel(retried, "找到 5 条") }
+            assertResultOrder(retried, WindowsCommentSearchReplay.ROOT_B_TEXT, WindowsCommentSearchReplay.CHILD_A_TEXT)
+            capture("184-comment-search-all-latest", retried)
+            clickFeatureItem(retried, WindowsCommentSearchReplay.CHILD_A_TEXT)
+            awaitClosed(retried)
+            await("whole original subreply content in its actual owned native window") { dialog("评论回复") != null }
+            val replies = requireNotNull(dialog("评论回复"))
+            await("original result callback opens the parent root on the SAME comment VM") { edt {
+                currentSource(); comments.subReplyState.value.let {
+                    it.visible && !it.isLoading && it.error == null && it.rootReply?.rpid == WindowsCommentSearchReplay.ROOT_A &&
+                        it.items.any { reply -> reply.rpid == WindowsCommentSearchReplay.CHILD_A }
+                }
+            } }
+            await("actual root and child displayed by original reply detail") {
+                visibleLabel(replies, WindowsCommentSearchReplay.ROOT_A_TEXT) && visibleLabel(replies, WindowsCommentSearchReplay.CHILD_A_TEXT)
+            }
+            capture("185-comment-search-original-subreply", replies)
+            edt {
+                currentSource(); check(ownedWindow(replies) && replies.isShowing && replies.isDisplayable)
+                replies.dispatchEvent(java.awt.event.WindowEvent(replies, java.awt.event.WindowEvent.WINDOW_CLOSING))
+            }
+            await("owned reply title-bar close consumes original dismiss") { edt {
+                currentSource(); !replies.isShowing && !replies.isDisplayable && !comments.subReplyState.value.visible
+            } }
+            edt { currentSource() }
+            check(dialog("搜索评论") == null && dialog("评论回复") == null)
+            val transport = script.receipt()
+            record("186-original-comment-search-completed", mapOf(
+                "sameOriginalCommentVm" to JsonPrimitive(true), "sameAcceptedPublicationIdentity" to JsonPrimitive(true),
+                "samePausedNativeSourceAndPreferences" to JsonPrimitive(true), "mainCommentsUnchanged" to JsonPrimitive(true),
+                "actualOriginalCloseRetryScopeSortAndSubreplyConsumed" to JsonPrimitive(true),
+                "fieldInputMechanism" to JsonPrimitive("ACTUAL_ACCESSIBLE_EDITABLE_TEXT_SET_CONTENTS"),
+                "physicalOwnedDialogCapturesCollected" to JsonPrimitive(true), "physicalTextVisibilityHumanReviewRequired" to JsonPrimitive(true),
+                "transport" to transport, "realAccountUsed" to JsonPrimitive(false), "accountMutationSubmitted" to JsonPrimitive(false)))
+        } catch (failure: Throwable) {
+            firstFailure = failure
+            runCatching {
+                val peer = edt { ownedPeers.lastOrNull { it.isShowing && it.isDisplayable } }
+                if (peer != null) capture("comment-search-failure", peer)
+            }.exceptionOrNull()?.let(failure::addSuppressed)
+            throw failure
+        } finally {
+            // Close only the exact peer created by this branch; never cancel the
+            // owner/VM or touch another window. Release held transport on failure.
+            var cleanupFailure: Throwable? = null
+            for (peer in ownedPeers.toList().asReversed()) {
+                val failure = runCatching { edt {
+                    var owner: Window? = peer
+                    while (owner != null && owner !== originalMain) owner = owner.owner
+                    if (peer.isShowing && peer.isDisplayable && owner === originalMain)
+                        peer.dispatchEvent(java.awt.event.WindowEvent(peer, java.awt.event.WindowEvent.WINDOW_CLOSING))
+                } }.exceptionOrNull()
+                if (failure != null) {
+                    val previous = cleanupFailure
+                    if (previous == null) cleanupFailure = failure else previous.addSuppressed(failure)
+                }
+            }
+            script.releaseOnFailure()
+            if (cleanupFailure != null) {
+                val primary = firstFailure
+                if (primary != null) primary.addSuppressed(cleanupFailure) else throw cleanupFailure
+            }
+        }
+        if (edt { runCatching { detailPaneScope() }.isSuccess }) {
+            click("关闭详情")
+            await("same detail viewport retired after optional search") { edt {
+                current(); sameNative(); all().none { it.accessibleName == "关闭详情" && visible(it) }
+            } }
+        }
+        val afterLayers = settledMainInputLayers("comment-search-after")
+        check(afterLayers.size == beforeLayers.size && beforeLayers.all { old -> afterLayers.any { it === old } }) {
+            "Optional comment search must restore the exact original Main scene layer identities"
+        }
+        click("播放")
+        val clock = actualPlayer.state.value.positionSeconds
+        await("same original native source resumes after closing search and reply") {
+            sameNative(); assembly.native.isCurrent(publication) && playing() && actualPlayer.state.value.positionSeconds > clock + 0.20
+        }
+    }
+
     private fun exerciseOriginalVideoInteractions() {
         sameNative(); check(playing())
         val (assembly, publication) = actualHotOwner()
@@ -2584,6 +2876,10 @@ object WindowsVideoActualRootUiFixture {
         val initialPlacement = edt { (window() as ComposeWindow).placement }
         check(initialPlacement == WindowPlacement.Floating)
         clockAndCapture("110-ordinary-playing")
+        if (System.getProperty("bilipai.validation.commentSearchInput") == "true") {
+            check(replay) { "Comment search proof requires the isolated guest API/loopback replay" }
+            exerciseCommentSearch(requireNotNull(localReplay))
+        } else {
         exercisePlayerMenu()
         if (System.getProperty("bilipai.validation.featureInput") == "true") exerciseChapterControls()
         if (System.getProperty("bilipai.validation.nvidiaInput") == "true") exerciseMainNvidiaControls()
@@ -2656,6 +2952,7 @@ object WindowsVideoActualRootUiFixture {
         if (System.getProperty("bilipai.validation.bgmInput") == "true") {
             exerciseMultipleBgmAndReturn(requireNotNull(localReplay))
         }
+        }
         val beforeBack = edt { current().serial }
         click("返回")
         if (replay) returnReplaySearchToHome(beforeBack)
@@ -2697,6 +2994,12 @@ object WindowsVideoActualRootUiFixture {
                     ownedWindowIdentity = edt { System.identityHashCode(window()) }
                     check(first.key != BiliPaiNavKey.Onboarding) { "Windows startup still mounted the mobile agreement gate" }
                     actions.awaitActualHealth(health)
+                    if (System.getProperty("bilipai.validation.commentSearchInput") == "true") {
+                        check(replay != null)
+                        for (mode in listOf("nvidiaInput", "scaleInput", "featureInput", "hotInput"))
+                            require(System.getProperty("bilipai.validation.$mode") != "true") { "Run comment search as its bounded independent branch" }
+                        boundCommentSearchWindow()
+                    }
                     if (System.getProperty("bilipai.validation.nvidiaInput") == "true") {
                         check(replay != null) { "NVIDIA UI proof requires the private local replay" }
                         exerciseDefaultGlassAppearance()
@@ -2731,6 +3034,12 @@ object WindowsVideoActualRootUiFixture {
                         put("pipInputProofRequested", System.getProperty("bilipai.validation.pipInput") == "true")
                         put("pipInputProofCompleted", System.getProperty("bilipai.validation.pipInput") == "true")
                         put("pipRapidCancellationAccepted", false)
+                        put("commentSearchProofRequested", System.getProperty("bilipai.validation.commentSearchInput") == "true")
+                        put("commentSearchInputProofCompleted", System.getProperty("bilipai.validation.commentSearchInput") == "true")
+                        put("commentSearchReadResponsesAreSynthetic", System.getProperty("bilipai.validation.commentSearchInput") == "true")
+                        put("commentSearchPhysicalTextHumanReviewRequired", System.getProperty("bilipai.validation.commentSearchInput") == "true")
+                        put("ordinaryFullscreenResizeRegressionExecuted", System.getProperty("bilipai.validation.commentSearchInput") != "true")
+                        put("commentSearchFourKTested", false)
                         put("originalInteractionProofRequested", System.getProperty("bilipai.validation.originalInteractionInput") == "true")
                         put("originalInteractionProofCompleted", System.getProperty("bilipai.validation.originalInteractionInput") == "true")
                         put("originalLoggedInDanmakuSendAccepted", false)

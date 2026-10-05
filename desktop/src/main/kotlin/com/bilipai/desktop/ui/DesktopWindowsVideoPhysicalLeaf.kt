@@ -535,16 +535,22 @@ internal class DesktopWindowsVideoActions(
                 },
                 comments = {
                     if (success != null) CompositionLocalProvider(LocalDesktopCommentBindings provides platforms.holder.commentsPlatform) {
-                        DesktopWindowsVideoComments(assembly, current = ::current, onUser = actions.user, login = actions.login,
+                        collectionQueueSource?.let { commentSource ->
+                        val commentFactory = shell.factoryFor(assembly)
+                        DesktopWindowsVideoCommentsSection(assembly, success, commentSource,
+                            current = { interactionCurrent() && commentFactory.isPresentationCurrent(assembly, commentSource) && assembly.native.isCurrent(commentSource) },
+                            admission = { action -> commentFactory.withPresentationAdmission(assembly, commentSource, action) },
+                            onUser = actions.user, login = actions.login,
                             openLink=actions.openLink, seek=shell.playback::seekTo, draft=commentDraft, onDraftChange={commentDraft=it},
-                            search = { collectionQueueSource?.let { captured ->
+                            search = { openComment -> collectionQueueSource?.let { captured ->
                                 val factory = shell.factoryFor(assembly)
                                 DesktopWindowsCommentSearchSection(assembly.domains.comments, captured, success.info.owner.mid,
                                     stillOwned = { interactionCurrent() && factory.isPresentationCurrent(assembly, captured) &&
                                         assembly.native.isCurrent(captured) },
                                     admission = { action -> factory.withPresentationAdmission(assembly, captured, action) },
-                                    onComment = { reply -> assembly.domains.comments.openSubReply(reply) })
+                                    onComment = openComment)
                             } })
+                        }
                     } else Text("正在读取评论", style = MaterialTheme.typography.bodyMedium)
                 },
             )
@@ -650,79 +656,3 @@ private fun desktopWindowsNativeVideoKey(event:java.awt.event.KeyEvent):androidx
         isAltPressed = event.isAltDown, isCtrlPressed = event.isControlDown,
         isMetaPressed = event.isMetaDown, isShiftPressed = event.isShiftDown, nativeEvent = event,
     )
-
-@Composable private fun DesktopWindowsVideoComments(assembly: DesktopOriginalVideoOwnerAssembly,
-    current: () -> Boolean, onUser: (Long) -> Unit, login: () -> Unit, openLink:(String)->Unit, seek:(Double)->Unit,
-    draft: TextFieldValue, onDraftChange: (TextFieldValue) -> Unit,
-    search: @Composable () -> Unit,
-) {
-    val vm = assembly.domains.comments
-    val state by vm.commentState.collectAsState()
-    val replies by vm.subReplyState.collectAsState()
-    val composer by assembly.domains.composer.uiState.collectAsState()
-    val platform=LocalDesktopCommentBindings.current
-    val detailedCommentTimeEnabled = LocalDetailedCommentTimeEnabled.current
-    var emotes by remember(assembly,platform) {mutableStateOf(platform.emotes.snapshot())}
-    LaunchedEffect(assembly,platform) {val loaded=platform.emotes.ensureLoaded();if(current()&&platform.isOwned())emotes=loaded}
-    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text("评论 ${state.replyCount}", Modifier.weight(1f))
-            search()
-            TextButton(onClick = { if (current()) vm.refreshComments() }, enabled = !state.isRepliesRefreshing) { Text("刷新") }
-        }
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            CommentSortMode.entries.forEach { mode ->
-                FilterChip(state.sortMode == mode, onClick = { if (current()) vm.setSortMode(mode) }, label = { Text(mode.label) })
-            }
-        }
-        state.repliesError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-        state.sendError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-        CommentEmoteTextField(draft, onValueChange={if(current()) {onDraftChange(it);assembly.domains.composer.updateCommentDraft(it.text)}},
-            emoteUrls=emotes,enabled=current(),readOnly=false,hint=state.replyTarget?.let {"回复 ${it.member.uname}"}?:"评论",
-            textStyle=MaterialTheme.typography.bodyMedium.copy(color=MaterialTheme.colorScheme.onSurface),hintColor=MaterialTheme.colorScheme.onSurfaceVariant,
-            cursorColor=MaterialTheme.colorScheme.primary,onBeginEditing={},modifier=Modifier.fillMaxWidth().height(64.dp))
-        Row {
-            TextButton(onClick = { if (current()) vm.cancelReply() }) { Text("取消回复") }
-            Button(onClick = { if (current()) {
-                if (state.currentMid <= 0L) login() else vm.sendComment(composer.commentDraft)
-            } }, enabled = current() && !state.isSending && composer.commentDraft.isNotBlank()) { Text(if (state.isSending) "发送中" else "发送") }
-        }
-        state.replies.forEach { reply ->
-            OutlinedCard(Modifier.fillMaxWidth()) {
-                Column(Modifier.padding(10.dp)) {
-                    TextButton(onClick = { if (current()) onUser(reply.mid) }) { Text(reply.member.uname) }
-                    com.android.purebilibili.feature.video.ui.components.resolveChargedReplyLabel(reply)?.let {
-                        com.android.purebilibili.feature.video.ui.components.ChargedReplyTag(it)
-                    }
-                    // Original v029 comment display follows the same detailed-time preference as preview/thread replies.
-                    Text(FormatUtils.formatCommentTime(reply.ctime, detailedTimeEnabled=detailedCommentTimeEnabled),
-                        style=MaterialTheme.typography.bodySmall, color=MaterialTheme.colorScheme.onSurfaceVariant)
-                    RichCommentText(reply.content.message,14.sp,emoteMap=emotes,content=reply.content,
-                        onUserClick={if(current())onUser(it)},onUrlClick={if(current())openLink(it)},onTimestampClick={if(current())seek(it/1000.0)})
-                    Row {
-                        TextButton(onClick = { if (current()) vm.likeComment(reply.rpid) }) { Text("赞 ${reply.like}") }
-                        TextButton(onClick = { if (current()) vm.replyTo(reply) }) { Text("回复") }
-                        TextButton(onClick = { if (current()) vm.openSubReply(reply) }) { Text("楼中楼 ${reply.rcount}") }
-                    }
-                }
-            }
-        }
-        if (!state.isRepliesEnd) TextButton(onClick = { if (current()) vm.loadComments() }, enabled = !state.isRepliesLoading) { Text("加载更多") }
-        if (replies.visible) {
-            TextButton(onClick = { if (current()) vm.closeSubReply() }) { Text("关闭楼中楼") }
-            replies.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-            replies.items.forEach { child ->
-                Column(Modifier.fillMaxWidth()) {
-                    com.android.purebilibili.feature.video.ui.components.resolveChargedReplyLabel(child)?.let {
-                        com.android.purebilibili.feature.video.ui.components.ChargedReplyTag(it)
-                    }
-                    Text("${child.member.uname}: ${child.content.message}")
-                    Text(FormatUtils.formatCommentTime(child.ctime, detailedTimeEnabled=detailedCommentTimeEnabled),
-                        style=MaterialTheme.typography.bodySmall, color=MaterialTheme.colorScheme.onSurfaceVariant)
-                }
-            }
-            TextButton(onClick = { if (current()) vm.refreshSubReplies() }) { Text("刷新楼中楼") }
-            if (!replies.isEnd) TextButton(onClick = { if (current()) vm.loadMoreSubReplies() }) { Text("加载更多回复") }
-        }
-    }
-}

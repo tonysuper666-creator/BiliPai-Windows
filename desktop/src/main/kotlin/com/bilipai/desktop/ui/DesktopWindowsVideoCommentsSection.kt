@@ -1,0 +1,204 @@
+package com.bilipai.desktop.ui
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import com.android.purebilibili.core.store.DesktopOriginalReplySettings
+import com.android.purebilibili.data.model.CommentFraudStatus
+import com.android.purebilibili.data.model.response.ReplyItem
+import com.android.purebilibili.data.repository.resolveCommentFraudLightMessage
+import com.android.purebilibili.data.repository.shouldShowCommentFraudResultDialog
+import com.android.purebilibili.feature.dynamic.components.*
+import com.android.purebilibili.feature.video.screen.VideoCommentTab
+import com.android.purebilibili.feature.video.screen.shouldUseLightweightCommentRendering
+import com.android.purebilibili.feature.video.ui.components.*
+import com.android.purebilibili.feature.video.viewmodel.*
+import kotlinx.coroutines.ensureActive
+
+/** The UI dispatch port borrows the sole existing comment VM. Its lifetime only
+ * guards NEW callbacks; the VM retains its original typed-subject/account
+ * policy for a same-AID mutation that has already been dispatched. */
+internal class DesktopWindowsVideoCommentActions(
+    val viewModel: VideoCommentViewModel,
+    private val presentation: DesktopWindowsCommentPresentation,
+) {
+    var threadVisible by mutableStateOf(false)
+        private set
+    fun refresh() = presentation.dispatch { viewModel.refreshComments() }
+    fun loadMore() = presentation.dispatch { viewModel.loadComments() }
+    fun sort(mode: CommentSortMode) = presentation.dispatch { viewModel.setSortMode(mode) }
+    fun thread(reply: ReplyItem, target: Long) = presentation.dispatch { viewModel.openSubReply(reply, target); threadVisible = true }
+    fun closeThread() = presentation.dispatch { threadVisible = false; viewModel.closeSubReply() }
+    fun refreshThread() = presentation.dispatch { viewModel.refreshSubReplies() }
+    fun loadThread() = presentation.dispatch { viewModel.loadMoreSubReplies() }
+    fun sortThread(mode: SubReplySortMode) = presentation.dispatch { viewModel.setSubReplySortMode(mode) }
+    fun conversation(reply: ReplyItem) = presentation.dispatch { viewModel.openSubReplyConversation(reply) }
+    fun conversationBack() = presentation.dispatch { viewModel.closeSubReplyConversation() }
+    fun reply(reply: ReplyItem) = presentation.dispatch { viewModel.replyTo(reply) }
+    fun like(id: Long) = presentation.dispatch { viewModel.likeComment(id) }
+    fun hate(id: Long) = presentation.dispatch { viewModel.hateComment(id) }
+    fun report(id: Long, reason: Int) = presentation.dispatch { viewModel.reportComment(id, reason) }
+    fun top(reply: ReplyItem) = presentation.dispatch { viewModel.toggleTopComment(reply) }
+    fun fraud(reply: ReplyItem) = presentation.dispatch { viewModel.checkCommentFraud(reply) }
+    fun dissolve(id: Long) = presentation.dispatch { viewModel.startDissolve(id) }
+    fun delete(id: Long) = presentation.dispatch { viewModel.deleteComment(id) }
+    fun dissolveThread(id: Long) = presentation.dispatch { viewModel.startSubDissolve(id) }
+    fun deleteThread(id: Long) = presentation.dispatch { viewModel.deleteSubComment(id) }
+}
+
+private data class DesktopWindowsCommentPreview(
+    val images: List<String>, val index: Int, val anchor: ImagePreviewSourceAnchor?,
+    val text: ImagePreviewTextContent?,
+)
+
+/** Complete original root/thread renderers, with the actual domain VMs and
+ * bounded viewport. This host never initializes, closes or replaces those VMs. */
+@Composable
+internal fun DesktopWindowsVideoCommentsSection(
+    assembly: DesktopOriginalVideoOwnerAssembly,
+    success: VideoPlaybackUiState.Success,
+    source: DesktopOriginalVideoAcceptedPublication,
+    current: () -> Boolean,
+    admission: (() -> Unit) -> Boolean,
+    onUser: (Long) -> Unit, login: () -> Unit, openLink: (String) -> Unit, seek: (Double) -> Unit,
+    draft: TextFieldValue, onDraftChange: (TextFieldValue) -> Unit,
+    search: @Composable ((ReplyItem) -> Unit) -> Unit,
+) {
+    val parent = LocalDesktopWindowsPlayerWindow.current
+    key(assembly, source, parent) {
+        val latestCurrent by rememberUpdatedState(current)
+        val latestAdmission by rememberUpdatedState(admission)
+        val presentation = remember { DesktopWindowsCommentPresentation(source, parent,
+            current = { latestCurrent() }, admission = { action -> latestAdmission(action) }) }
+        DisposableEffect(presentation) { onDispose { presentation.close() } }
+        val vm = assembly.domains.comments
+        val ui = remember { DesktopWindowsVideoCommentActions(vm, presentation) }
+        val basePlatform = LocalDesktopCommentBindings.current
+        val baseGallery = LocalDesktopDynamicCardBindings.current
+        val platform = remember(basePlatform) { desktopWindowsCommentPlatform(basePlatform, presentation) }
+        val gallery = remember(baseGallery) { desktopWindowsCommentGallery(baseGallery, presentation) }
+        val state by vm.commentState.collectAsState()
+        val replies by vm.subReplyState.collectAsState()
+        val composer by assembly.domains.composer.uiState.collectAsState()
+        val decorations by remember(platform) { DesktopOriginalReplySettings.getCommentMemberDecorationsEnabled(platform.context) }.collectAsState(false)
+        val fraudEnabled by remember(platform) { DesktopOriginalReplySettings.getCommentFraudDetectionEnabled(platform.context) }.collectAsState(true)
+        val listState = rememberLazyListState()
+        var emotes by remember { mutableStateOf(platform.emotes.snapshot()) }
+        var preview by remember { mutableStateOf<DesktopWindowsCommentPreview?>(null) }
+        var fraudStatus by remember { mutableStateOf<CommentFraudStatus?>(null) }
+        LaunchedEffect(presentation, platform) {
+            val loaded = platform.emotes.ensureLoaded()
+            ensureActive()
+            presentation.dispatch { emotes = loaded }
+        }
+        LaunchedEffect(presentation, vm) {
+            vm.fraudEvent.collect { status ->
+                val light = resolveCommentFraudLightMessage(status)
+                if (light != null) platform.showFeedback(light)
+                else if (shouldShowCommentFraudResultDialog(status)) presentation.dispatch { fraudStatus = status }
+            }
+        }
+        val previewClick: (List<String>, Int, ImagePreviewSourceAnchor?, ImagePreviewTextContent?) -> Unit = { images, index, anchor, text ->
+            presentation.dispatch { preview = DesktopWindowsCommentPreview(images.toList(), index, anchor, text) }
+        }
+        val userClick: (Long) -> Unit = { id -> if (presentation.allowsEffect()) onUser(id) }
+        val urlClick: (String) -> Unit = { url -> if (presentation.allowsEffect()) openLink(url) }
+        val timeClick: (Long) -> Unit = { ms -> if (presentation.allowsEffect()) seek(ms / 1000.0) }
+        val replyClick: (ReplyItem) -> Unit = { reply ->
+            if (presentation.allowsEffect()) {
+                if (state.currentMid <= 0L) login() else ui.reply(reply)
+            }
+        }
+        val input: @Composable () -> Unit = {
+            state.sendError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+            CommentEmoteTextField(draft, onValueChange = { value -> presentation.dispatch {
+                    onDraftChange(value); assembly.domains.composer.updateCommentDraft(value.text)
+                } }, emoteUrls = emotes, enabled = presentation.isCurrent() && state.canInputComment,
+                readOnly = false, hint = state.replyTarget?.let { "回复 ${it.member.uname}" } ?: state.rootInputHint,
+                textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
+                hintColor = MaterialTheme.colorScheme.onSurfaceVariant, cursorColor = MaterialTheme.colorScheme.primary,
+                onBeginEditing = {}, modifier = Modifier.fillMaxWidth().height(64.dp))
+            Row {
+                TextButton(onClick = { presentation.dispatch { vm.cancelReply() } }) { Text("取消回复") }
+                Button(onClick = {
+                    if (presentation.allowsEffect()) {
+                        if (state.currentMid <= 0L) login()
+                        else presentation.dispatch { vm.sendComment(composer.commentDraft, fraudDetectionEnabled = fraudEnabled) }
+                    }
+                }, enabled = presentation.isCurrent() && state.canInputComment && !state.isSending && composer.commentDraft.isNotBlank()) {
+                    Text(if (state.isSending) "发送中" else "发送")
+                }
+            }
+        }
+        CompositionLocalProvider(LocalDesktopCommentBindings provides platform,
+            LocalDesktopDynamicCardBindings provides gallery,
+            LocalDesktopWindowsCommentPresentation provides presentation) {
+            Column(Modifier.fillMaxSize()) {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) { search { reply -> ui.thread(reply, 0L) } }
+                if (!ui.threadVisible || !replies.visible) input()
+                VideoCommentTab(listState, Modifier.weight(1f), success.info, state.replies, state.replyCount,
+                    emotes, state.isRepliesLoading, state.isRepliesRefreshing, state.repliesError, state.isRepliesEnd,
+                    state.voteCard, success.videoTags, onUpClick = userClick,
+                    onSubReplyClick = { reply, target -> ui.thread(reply, target) }, onCommentReplyClick = replyClick,
+                    onLoadMoreReplies = { ui.loadMore() }, onRefreshReplies = { ui.refresh() }, onImagePreview = previewClick,
+                    onTimestampClick = timeClick, contentPadding = PaddingValues(bottom = 12.dp),
+                    currentMid = state.currentMid, showUpFlag = state.showUpFlag, dissolvingIds = state.dissolvingIds,
+                    onDeleteComment = { ui.delete(it) }, onDissolveStart = { ui.dissolve(it) },
+                    onCommentLike = { ui.like(it) }, onCommentHate = { ui.hate(it) },
+                    likedComments = state.likedComments, hatedComments = state.hatedComments,
+                    onCommentUrlClick = urlClick, onReportComment = { id, reason -> ui.report(id, reason) },
+                    onToggleTopComment = { ui.top(it) }, onCheckCommentFraud = { ui.fraud(it) },
+                    showIdentityDecorations = decorations,
+                    lightweightCommentRendering = shouldUseLightweightCommentRendering(1,
+                        !assembly.section.nativePlayer.state.value.paused, listState.isScrollInProgress),
+                    sortMode = state.sortMode, onSortModeChange = { ui.sort(it) },
+                    // Windows has no separate original floating sort dock;
+                    // retain the complete original sort control in this header.
+                    showNativeSortHeader = true,
+                    showSortControlInHeader = true)
+            }
+            if (ui.threadVisible && replies.visible && presentation.isCurrent()) {
+                DesktopWindowsPlayerDialog("评论回复", { ui.closeThread() }) {
+                    DesktopCommentDialogNavigationHost {
+                        Column(Modifier.fillMaxSize()) {
+                            VideoInlineSubReplyDetailContent(replies, state, emotes,
+                                success.info.pages.firstOrNull { it.cid == success.info.cid }?.duration?.times(1000L),
+                                onLoadMore = { ui.loadThread() }, onRefresh = { ui.refreshThread() },
+                                onSortModeChange = { ui.sortThread(it) }, onDismiss = { ui.closeThread() },
+                                // The original inline layout hides its separate root entry;
+                                // returning from a conversation uses this same VM's root thread.
+                                onRootCommentClick = { ui.conversationBack() }, onTimestampClick = timeClick,
+                                onImagePreview = previewClick, onReplyClick = replyClick,
+                                onConversationClick = { ui.conversation(it) }, onConversationBack = { ui.conversationBack() },
+                                onDissolveStart = { ui.dissolveThread(it) }, onDeleteComment = { ui.deleteThread(it) },
+                                onCheckCommentFraud = { ui.fraud(it) }, onCommentLike = { ui.like(it) },
+                                onCommentHate = { ui.hate(it) }, onReportComment = { id, reason -> ui.report(id, reason) },
+                                onUrlClick = urlClick, showIdentityDecorations = decorations,
+                                onAvatarClick = { id -> id.toLongOrNull()?.let(userClick) }, modifier = Modifier.weight(1f))
+                            input()
+                        }
+                    }
+                }
+            }
+            fraudStatus?.takeIf { presentation.isCurrent() }?.let { captured ->
+                DesktopWindowsPlayerDialog("评论检测", { presentation.dispatch { fraudStatus = null; vm.dismissFraudResult() } }, preferredHeightDp = 440) {
+                    CommentFraudResultDialog(captured,
+                        onDismiss = { presentation.dispatch { fraudStatus = null; vm.dismissFraudResult() } },
+                        onDeleteComment = if (captured == CommentFraudStatus.SHADOW_BANNED) ({ if (state.fraudDetectRpid > 0L) ui.dissolve(state.fraudDetectRpid); Unit }) else null)
+                }
+            }
+            preview?.takeIf { presentation.isCurrent() }?.let { captured ->
+                key(captured) {
+                    ImagePreviewDialog(captured.images, captured.index, sourceRect = captured.anchor?.rect,
+                        sourceRects = captured.anchor?.galleryRects ?: emptyMap(), sourceKey = captured.anchor?.sourceKey,
+                        sourceCornerRadiusDp = captured.anchor?.cornerRadiusDp ?: 0f, textContent = captured.text,
+                        onDismiss = { if (preview === captured) preview = null })
+                }
+            }
+        }
+    }
+}
