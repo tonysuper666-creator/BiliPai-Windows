@@ -44,7 +44,7 @@ concurrency:
 
 jobs:
   windows:
-    if: github.repository != 'jay3-yy/BiliPai'
+    if: ${{ github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false && (github.repository != 'jay3-yy/BiliPai') }}
     runs-on: windows-latest
     timeout-minutes: 35
     outputs:
@@ -99,6 +99,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
+          retention-days: 1
           name: Windows-native-player-smoke-evidence
           path: desktop/build/reports/*/native-player-smoke.*
           if-no-files-found: warn
@@ -106,6 +107,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
+          retention-days: 1
           name: Windows-updater-smoke-evidence
           path: |
             desktop/build/reports/updater-smoke-*/updater-smoke.json
@@ -114,6 +116,7 @@ jobs:
       - name: Upload portable package
         uses: actions/upload-artifact@v4
         with:
+          retention-days: 1
           name: BiliPai-Windows-x64
           path: |
             desktop/build/distributions/*.zip
@@ -123,6 +126,7 @@ jobs:
         if: steps.plan.outputs.release == 'true'
         uses: actions/upload-artifact@v4
         with:
+          retention-days: 1
           name: Windows-release-smoke-evidence
           path: |
             desktop/build/release-gate.json
@@ -133,13 +137,14 @@ jobs:
         if: inputs.installer == true
         uses: actions/upload-artifact@v4
         with:
+          retention-days: 1
           name: BiliPai-Windows-MSI
           path: desktop/build/compose/binaries/main/msi/*.msi
           if-no-files-found: error
 
   publish:
     needs: windows
-    if: needs.windows.outputs.release == 'true'
+    if: ${{ github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false && (needs.windows.outputs.release == 'true') }}
     runs-on: ubuntu-latest
     concurrency:
       group: windows-release-publication
