@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.store.DesktopOriginalReplySettings
 import com.android.purebilibili.data.model.CommentFraudStatus
@@ -13,6 +12,7 @@ import com.android.purebilibili.data.model.response.ReplyItem
 import com.android.purebilibili.data.repository.resolveCommentFraudLightMessage
 import com.android.purebilibili.data.repository.shouldShowCommentFraudResultDialog
 import com.android.purebilibili.feature.dynamic.components.*
+import com.android.purebilibili.feature.video.screen.DesktopOriginalVideoCommentInputOverlay
 import com.android.purebilibili.feature.video.screen.VideoCommentTab
 import com.android.purebilibili.feature.video.screen.shouldUseLightweightCommentRendering
 import com.android.purebilibili.feature.video.ui.components.*
@@ -39,6 +39,7 @@ internal class DesktopWindowsVideoCommentActions(
     fun conversation(reply: ReplyItem) = presentation.dispatch { viewModel.openSubReplyConversation(reply) }
     fun conversationBack() = presentation.dispatch { viewModel.closeSubReplyConversation() }
     fun reply(reply: ReplyItem) = presentation.dispatch { viewModel.replyTo(reply) }
+    fun replyingRoot() = presentation.dispatch { viewModel.cancelReply() }
     fun like(id: Long) = presentation.dispatch { viewModel.likeComment(id) }
     fun hate(id: Long) = presentation.dispatch { viewModel.hateComment(id) }
     fun report(id: Long, reason: Int) = presentation.dispatch { viewModel.reportComment(id, reason) }
@@ -65,7 +66,6 @@ internal fun DesktopWindowsVideoCommentsSection(
     current: () -> Boolean,
     admission: (() -> Unit) -> Boolean,
     onUser: (Long) -> Unit, login: () -> Unit, openLink: (String) -> Unit, seek: (Double) -> Unit,
-    draft: TextFieldValue, onDraftChange: (TextFieldValue) -> Unit,
     search: @Composable ((ReplyItem) -> Unit) -> Unit,
 ) {
     val parent = LocalDesktopWindowsPlayerWindow.current
@@ -74,7 +74,8 @@ internal fun DesktopWindowsVideoCommentsSection(
         val latestAdmission by rememberUpdatedState(admission)
         val presentation = remember { DesktopWindowsCommentPresentation(source, parent,
             current = { latestCurrent() }, admission = { action -> latestAdmission(action) }) }
-        DisposableEffect(presentation) { onDispose { presentation.close() } }
+        val composerVm = assembly.domains.composer
+        DisposableEffect(presentation, composerVm) { onDispose { composerVm.retireCommentPresentation(presentation); presentation.close() } }
         val vm = assembly.domains.comments
         val ui = remember { DesktopWindowsVideoCommentActions(vm, presentation) }
         val basePlatform = LocalDesktopCommentBindings.current
@@ -83,7 +84,7 @@ internal fun DesktopWindowsVideoCommentsSection(
         val gallery = remember(baseGallery) { desktopWindowsCommentGallery(baseGallery, presentation) }
         val state by vm.commentState.collectAsState()
         val replies by vm.subReplyState.collectAsState()
-        val composer by assembly.domains.composer.uiState.collectAsState()
+        val composerStamp by composerVm.commentStamp.collectAsState()
         val decorations by remember(platform) { DesktopOriginalReplySettings.getCommentMemberDecorationsEnabled(platform.context) }.collectAsState(false)
         val fraudEnabled by remember(platform) { DesktopOriginalReplySettings.getCommentFraudDetectionEnabled(platform.context) }.collectAsState(true)
         val listState = rememberLazyListState()
@@ -110,28 +111,19 @@ internal fun DesktopWindowsVideoCommentsSection(
         val timeClick: (Long) -> Unit = { ms -> if (presentation.allowsEffect()) seek(ms / 1000.0) }
         val replyClick: (ReplyItem) -> Unit = { reply ->
             if (presentation.allowsEffect()) {
-                if (state.currentMid <= 0L) login() else ui.reply(reply)
+                if (state.currentMid <= 0L) login() else {
+                    ui.reply(reply); composerVm.openCommentComposer(presentation, reply)
+                }
             }
         }
         val input: @Composable () -> Unit = {
-            state.sendError?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-            CommentEmoteTextField(draft, onValueChange = { value -> presentation.dispatch {
-                    onDraftChange(value); assembly.domains.composer.updateCommentDraft(value.text)
-                } }, emoteUrls = emotes, enabled = presentation.isCurrent() && state.canInputComment,
-                readOnly = false, hint = state.replyTarget?.let { "回复 ${it.member.uname}" } ?: state.rootInputHint,
-                textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
-                hintColor = MaterialTheme.colorScheme.onSurfaceVariant, cursorColor = MaterialTheme.colorScheme.primary,
-                onBeginEditing = {}, modifier = Modifier.fillMaxWidth().height(64.dp))
-            Row {
-                TextButton(onClick = { presentation.dispatch { vm.cancelReply() } }) { Text("取消回复") }
-                Button(onClick = {
-                    if (presentation.allowsEffect()) {
-                        if (state.currentMid <= 0L) login()
-                        else presentation.dispatch { vm.sendComment(composer.commentDraft, fraudDetectionEnabled = fraudEnabled) }
-                    }
-                }, enabled = presentation.isCurrent() && state.canInputComment && !state.isSending && composer.commentDraft.isNotBlank()) {
-                    Text(if (state.isSending) "发送中" else "发送")
+            TextButton(onClick = {
+                if (presentation.allowsEffect()) {
+                    if (state.currentMid <= 0L) login()
+                    else { ui.replyingRoot(); composerVm.openCommentComposer(presentation) }
                 }
+            }, enabled = presentation.isCurrent() && state.canInputComment) {
+                Text(if (state.canInputComment) "发表评论" else state.rootInputHint)
             }
         }
         CompositionLocalProvider(LocalDesktopCommentBindings provides platform,
@@ -182,6 +174,14 @@ internal fun DesktopWindowsVideoCommentsSection(
                             input()
                         }
                     }
+                }
+            }
+            composerStamp?.takeIf { it.presentation === presentation && presentation.isCurrent() }?.let { stamp ->
+                key(stamp) {
+                    DesktopOriginalVideoCommentInputOverlay(composerVm, stamp, state,
+                        currentVideoPositionMsProvider = {
+                            if (presentation.isCurrent()) (assembly.section.nativePlayer.state.value.positionSeconds * 1000.0).toLong() else 0L
+                        })
                 }
             }
             fraudStatus?.takeIf { presentation.isCurrent() }?.let { captured ->

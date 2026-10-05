@@ -5,6 +5,9 @@ import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.video.viewmodel.*
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.collect
+import com.android.purebilibili.core.store.DesktopOriginalReplySettings
 import java.util.concurrent.atomic.AtomicBoolean
 
 /** Construction only: the four original domains share one retained detail entry.
@@ -86,8 +89,23 @@ internal class DesktopOriginalVideoDomainOwners private constructor(
         VideoCoinBalanceLoader { request { coinBalance.load() } }, ::owned,
         { block -> commit(block) },
     ))
-    val composer = VideoComposerViewModel(DesktopOriginalVideoComposerEnvironment(scope, ::owned, ::commit))
     val comments = VideoCommentViewModel(scope, requests)
+    val composer = VideoComposerViewModel(DesktopOriginalVideoComposerEnvironment(
+        scope, ::owned, ::commit, requests,
+        commentInfo = { (currentPlaybackState() as? VideoPlaybackUiState.Success)?.info },
+        loadCommentEmotePackages = { request { root.operations.getBgmEmotePackages() } },
+        searchCommentMentionUsers = { keyword -> request { root.operations.searchMentionUsers(keyword) } },
+        commentFeedback = root.feedback,
+    ))
+    private val commentReceiptJob = scope.launch {
+        composer.commentSentEvent.collect { receipt ->
+            val fraudEnabled = DesktopOriginalReplySettings.getCommentFraudDetectionEnabled(context).first()
+            currentCoroutineContext().ensureActive(); assertOwned()
+            // Existing VM owns typed-AID/account admission; do not borrow the
+            // current UI AID for a late, already dispatched original mutation.
+            comments.onExternalCommentSent(receipt.aid, receipt.reply, fraudEnabled)
+        }
+    }
     val supplement = VideoSupplementViewModel(
         DesktopOriginalVideoSupplementEnvironment(scope, ::owned, ::commit),
         VideoSupplementLoader { subject ->

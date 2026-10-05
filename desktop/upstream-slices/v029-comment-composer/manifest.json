@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "a7655b4bcd5fbe40a3e7d95dac2e28a797a7c341",
+      "rawSha256": "45009eec81d77beb29d41ab5894b75407fbec110032db60a1f84565e08be70f3",
+      "bytes": 408734
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerDraftState.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "6bee22ff931a4fe6ada17de45d4c0010db2556f6",
+      "rawSha256": "6d083e05389f81252b6635a26834e985acbef211523e7b8097da1588f0d91757",
+      "bytes": 608
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoComposerViewModel.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "f0386145720d34c9ec5e46a6ae2fa4336b1108f9",
+      "rawSha256": "6500e13a311b41e86e35b60d1fb3144cdb658b5ce09bd2d6f20ef467b325312d",
+      "bytes": 1874
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailInputOverlayAdapter.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "0acb9165274c8eefeafecabe0908df620c3219bb",
+      "rawSha256": "dd79197d956204ecc4c4d5f2c6ea1522e7c2caf29344cdaa3cdc0235b58de150",
+      "bytes": 10375
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CommentInputDialog.kt",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "295a8ca27659ec6f0af7bfb086d991dc55715916",
+      "rawSha256": "63b0a8ff1541b5e8d29ed221cb4c7c3e1ad7c6102e3ee4816239703c7e769257",
+      "bytes": 57445
+    }
+  ]
+}

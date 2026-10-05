@@ -1131,6 +1131,8 @@ val extractUpstreamDynamicDetailProtocol by tasks.registering(Exec::class) {
 }
 
 val extractBgmDetail by tasks.registering(Exec::class) {
+    inputs.files("tools/v029_comment_composer.py", "tools/v029_comment_search.py")
+    inputs.dir("upstream-slices/v029-comment-composer")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bgm-detail.py",
@@ -1148,6 +1150,8 @@ val extractBgmDetail by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractBgmDetail) }
 
 val extractVideoCommentUi by tasks.registering(Exec::class) {
+    inputs.files("tools/v029_comment_composer.py", "tools/v029_comment_search.py")
+    inputs.dir("upstream-slices/v029-comment-composer")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-comment-ui.py",
@@ -2353,6 +2357,9 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoFullOwner) }
 // DIRECT10 are copied once by prepareUpstreamSources; production omits --standalone.
 
 val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
+    inputs.files("tools/v029_comment_composer.py", "tools/v029_comment_search.py")
+    inputs.dir("upstream-slices/v029-comment-composer")
+    inputs.files("tools/extract-upstream-video-comment-ui.py", "tools/extract-upstream-dynamic-reply-protocol.py")
     dependsOn(prepareUpstreamSources, extractOriginalVideoFullOwner, extractOriginalVideoFullscreenPager,
         extractOriginalVideoTabletFull)
     workingDir(projectDir)

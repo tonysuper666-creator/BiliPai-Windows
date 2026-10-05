@@ -95,6 +95,8 @@ def generate(repo, output, standalone=False):
         text=holder_subtitle_registration_delta(s['output'],text)
         text=story_dialog_admission_delta(s['output'],text)
         text=validate_fresh_v025_comment_consumer(s['output'],text)
+        from v029_comment_composer import domain_delta
+        text=domain_delta(repo,output,s['output'],text)
         target=_wide(output/s['output']);target.parent.mkdir(parents=True,exist_ok=True)
         target.write_bytes(text.encode('utf8'));written.append(target)
     return written

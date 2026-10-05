@@ -65,7 +65,7 @@ import com.android.purebilibili.feature.dynamic.components.ImagePreviewTextConte
     path=BASE+'feature/video/viewmodel/VideoComposerDraftState.kt';body=original[path].replace('import android.net.Uri\n','').replace('List<Uri>','List<String>')
     emit('feature/video/viewmodel/VideoComposerDraftState.kt',body,path,'Full original draft schema/key; Android Uri only maps to selected opaque file URI Strings. Ephemeral same-video state, no persistence or second player.')
     generate_composer(original,shared,emit,function)
-    generate_input_and_fraud(original,shared,emit,function)
+    generate_input_and_fraud(repo,output,original,shared,emit,function)
     p=output/'video-comment-source-identities.json';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(dict(upstreamCommit=PIN,sources=identities,selections=selections),indent=2,ensure_ascii=False)+'\n',encoding='utf-8',newline='\n')
     for path,raw in original.items():
         p=output/'original-retained'/(path+'.txt');v=str(p.absolute());p=Path('\\\\?\\'+v);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(raw,encoding='utf-8',newline='\n')
@@ -157,7 +157,7 @@ internal class DesktopOriginalVideoCommentComposer(
 '''
     emit('feature/video/viewmodel/DesktopOriginalVideoCommentComposer.kt',header+fields+'\n}\n\n'+mention+'\n\n'+helpers+'\n',PLAYBACK,'Original comment-only field/method blocks: full drafts, root/reply capture, lazy emotes, 250ms mention latest-query policy, stream9 send, original receipt channel and selected original reply/aid helpers. Existing required metadata/requests replace Android player lifecycle/context/singletons; matching cancellation releases busy only.')
 
-def generate_input_and_fraud(original,shared,emit,function):
+def generate_input_and_fraud(repo,output,original,shared,emit,function):
     path=BASE+'feature/video/screen/VideoDetailInputOverlayAdapter.kt';raw=original[path]
     begin=raw.index('@Immutable\nprivate data class CommentInputSnapshot(');end=raw.index('@OptIn(ExperimentalLayoutApi::class)',begin)
     types=raw[begin:end].replace('List<Uri>','List<String>')
@@ -178,7 +178,9 @@ import com.android.purebilibili.feature.video.ui.components.CommentInputDialog
     currentVideoPositionMsProvider: () -> Long,
 ) {
 '''+collect+'}\n'
-    emit('feature/video/screen/DesktopOriginalVideoCommentInputOverlay.kt',header+'\n'+types+'\n'+owner+'\n'+body+'\n',path,'Entire original comment snapshot/actions/input-content and original comment-only owner call block; existing full CommentInputDialog reused, required original composer/current actual position replace Android VideoPlaybackVM only.')
+    from v029_comment_composer import overlay_delta
+    full_body=overlay_delta(repo,output,header+'\n'+types+'\n'+owner+'\n'+body+'\n')
+    emit('feature/video/screen/DesktopOriginalVideoCommentInputOverlay.kt',full_body,path,'Entire original comment snapshot/actions/input-content and original comment-only owner call block; existing full CommentInputDialog reused, required original composer/current actual position replace Android VideoPlaybackVM only.')
     path=BASE+'feature/video/screen/VideoDetailCommentFraudOverlayAdapter.kt';body=original[path]
     body=body.replace('import android.content.Context\n','').replace('import android.widget.Toast\n','').replace('import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackViewModel','import com.android.purebilibili.feature.video.viewmodel.DesktopOriginalVideoCommentComposer\nimport com.bilipai.desktop.ui.DesktopCommentPlatform')
     body=replace_once(body,'context: Context,','platform: DesktopCommentPlatform,')

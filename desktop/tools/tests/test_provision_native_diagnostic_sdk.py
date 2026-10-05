@@ -8,6 +8,7 @@ import importlib.util
 import io
 import json
 import os
+import re
 import shutil
 import stat
 import sys
@@ -279,14 +280,15 @@ class SdkProvisionTests(unittest.TestCase):
         self.assertEqual(captured[0].sdk_root, self.temp)
         self.assertEqual(captured[1].sdk_root, self.output)
 
-    def test_both_ci_build_paths_provision_after_policies_before_build(self):
+    def test_each_ci_build_path_provisions_after_its_own_policies_before_build(self):
         root = TOOLS.parents[1]
-        cases = (("windows-desktop.yml", "Build tested portable Windows package"),
-                 ("windows-upstream-sync.yml", "Build isolated candidate with all release gates"))
-        for filename, build in cases:
+        cases = (("windows-desktop.yml", "windows", "Build tested portable Windows package"),
+                 ("windows-desktop.yml", "comment-search-ui", "Prepare the original Main test runtime without opening a window"),
+                 ("windows-upstream-sync.yml", "candidate", "Build isolated candidate with all release gates"))
+        for filename, job, build in cases:
             source = (root / ".github/workflows" / filename).read_text(encoding="utf-8")
-            if filename == "windows-upstream-sync.yml":
-                source = source.split("\n  candidate:\n", 1)[1].split("\n  recover_publication:\n", 1)[0]
+            source = source.split("\n  " + job + ":\n", 1)[1]
+            source = re.split(r"(?m)^  [A-Za-z0-9_-]+:\n", source, maxsplit=1)[0]
             policy = source.index("python desktop/tools/run-tool-tests.py --stage policies")
             provisioning = source.index("python desktop/tools/provision-native-diagnostic-sdk.py")
             self.assertLess(policy, provisioning)

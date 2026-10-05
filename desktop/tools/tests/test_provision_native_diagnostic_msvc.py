@@ -8,6 +8,7 @@ import importlib.util
 import io
 import json
 import os
+import re
 import stat
 import sys
 import tempfile
@@ -345,11 +346,15 @@ class MsvcProvisionTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "resource boundary"):
                 MODULE.SDK.extract_package(archive, package, self.temp, path_mapper=MODULE.mapped_path)
 
-    def test_both_workflows_stage_vc_and_export_existing_root_env_before_build(self):
+    def test_each_build_job_stages_vc_and_exports_existing_root_env_before_build(self):
         repo = TOOLS.parents[1]
-        for filename, build_label in (("windows-desktop.yml", "Build tested portable Windows package"),
-                                      ("windows-upstream-sync.yml", "Build isolated candidate with all release gates")):
+        cases = (("windows-desktop.yml", "windows", "Build tested portable Windows package"),
+                 ("windows-desktop.yml", "comment-search-ui", "Prepare the original Main test runtime without opening a window"),
+                 ("windows-upstream-sync.yml", "candidate", "Build isolated candidate with all release gates"))
+        for filename, job, build_label in cases:
             workflow = (repo / ".github/workflows" / filename).read_text(encoding="utf-8")
+            workflow = workflow.split("\n  " + job + ":\n", 1)[1]
+            workflow = re.split(r"(?m)^  [A-Za-z0-9_-]+:\n", workflow, maxsplit=1)[0]
             sdk = workflow.index("python desktop/tools/provision-native-diagnostic-sdk.py")
             vc = workflow.index("python desktop/tools/provision-native-diagnostic-msvc.py")
             export = workflow.index('"BILIPAI_NATIVE_SHARE_VC_ROOT=$vcRoot"')
@@ -358,6 +363,7 @@ class MsvcProvisionTests(unittest.TestCase):
             self.assertLess(sdk, vc)
             self.assertLess(vc, export)
             self.assertLess(export, build)
+            self.assertEqual(workflow.count("python desktop/tools/provision-native-diagnostic-msvc.py"), 1)
             self.assertIn("$vc.vcInputsExact -ne $true", workflow)
             self.assertIn("$vc.compilerBinSetExact -ne $true", workflow)
             self.assertIn("$vc.englishResourcesExact -ne $true", workflow)

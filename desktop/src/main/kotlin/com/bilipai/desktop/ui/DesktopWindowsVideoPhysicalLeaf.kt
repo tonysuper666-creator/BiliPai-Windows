@@ -27,7 +27,6 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.semantics.Role
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
@@ -300,12 +299,6 @@ internal class DesktopWindowsVideoActions(
             detailsOpen = true
         }
     }
-    val composerState by assembly.domains.composer.uiState.collectAsState()
-    // UI selection survives closing the panel; the existing composer remains the sole text authority.
-    var commentDraft by remember(assembly) { mutableStateOf(TextFieldValue(composerState.commentDraft)) }
-    LaunchedEffect(composerState.commentDraft) {
-        if (commentDraft.text != composerState.commentDraft) commentDraft = TextFieldValue(composerState.commentDraft)
-    }
     fun command(block: () -> Unit): Boolean {
         val accepted = assembly.native.current() ?: return false
         if (!current()) return false
@@ -541,7 +534,7 @@ internal class DesktopWindowsVideoActions(
                             current = { interactionCurrent() && commentFactory.isPresentationCurrent(assembly, commentSource) && assembly.native.isCurrent(commentSource) },
                             admission = { action -> commentFactory.withPresentationAdmission(assembly, commentSource, action) },
                             onUser = actions.user, login = actions.login,
-                            openLink=actions.openLink, seek=shell.playback::seekTo, draft=commentDraft, onDraftChange={commentDraft=it},
+                            openLink=actions.openLink, seek=shell.playback::seekTo,
                             search = { openComment -> collectionQueueSource?.let { captured ->
                                 val factory = shell.factoryFor(assembly)
                                 DesktopWindowsCommentSearchSection(assembly.domains.comments, captured, success.info.owner.mid,
