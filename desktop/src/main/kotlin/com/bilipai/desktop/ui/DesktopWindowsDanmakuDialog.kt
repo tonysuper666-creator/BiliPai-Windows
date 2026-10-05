@@ -1,13 +1,11 @@
 package com.bilipai.desktop.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeDialog
 import androidx.compose.ui.input.key.Key
@@ -80,10 +78,12 @@ internal fun DesktopWindowsPlayerDialog(
         }
         // No update callback writes geometry: the user keeps normal drag/resize.
         CompositionLocalProvider(LocalDensity provides parentDensity) {
-            BoxWithConstraints(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surface)) {
-                CompositionLocalProvider(LocalDesktopDanmakuSettingsViewport provides DesktopDanmakuSettingsViewport(
-                    maxWidth.value.toInt().coerceAtLeast(1), maxHeight.value.toInt().coerceAtLeast(1))) {
-                    content()
+            DesktopWindowsPopupMaterialHost(sourceOwner = window, owns = { window.isDisplayable }) {
+                BoxWithConstraints(Modifier.fillMaxSize()) {
+                    CompositionLocalProvider(LocalDesktopDanmakuSettingsViewport provides DesktopDanmakuSettingsViewport(
+                        maxWidth.value.toInt().coerceAtLeast(1), maxHeight.value.toInt().coerceAtLeast(1))) {
+                        content()
+                    }
                 }
             }
         }

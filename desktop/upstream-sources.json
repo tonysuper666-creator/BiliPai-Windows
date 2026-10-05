@@ -11421,61 +11421,6 @@
       "features": [
         "desktop-original-background-policy"
       ]
-    },
-    {
-      "path": "desktop/upstream-slices/v029-history-recap/app/src/main/java/com/android/purebilibili/core/plugin/feed/FeedReadingStore.kt",
-      "sha256": "7c0b7727e49f9d152f0310b7391528854f85984bc36a71f12700d142c588a8d6",
-      "features": [
-        "plugins"
-      ],
-      "mode": "extracted",
-      "hashNormalization": "raw",
-      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
-      "gitBlob": "37564f4a9ec0863ab0bd24194855c0c1f9f82a49"
-    },
-    {
-      "path": "desktop/upstream-slices/v029-history-recap/app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
-      "sha256": "def520af9293c76711364e216186d1fddcc90e0d2810d7f42170c2b74cef3865",
-      "features": [
-        "stable-favorites"
-      ],
-      "mode": "extracted",
-      "hashNormalization": "raw",
-      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
-      "gitBlob": "0e3ba91eda50c77195930bd9ffc2b447a557e702"
-    },
-    {
-      "path": "desktop/upstream-slices/v029-history-recap/app/src/main/java/com/android/purebilibili/feature/list/HistoryRecapCard.kt",
-      "sha256": "0cd8a074a85fff5c4fb91085cbc3baa4252f273f92c6a26289d23aeb54349a09",
-      "features": [
-        "stable-favorites"
-      ],
-      "mode": "extracted",
-      "hashNormalization": "raw",
-      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
-      "gitBlob": "6b03b623227971badc4ee58f5836726f4d4a1440"
-    },
-    {
-      "path": "desktop/upstream-slices/v029-history-recap/app/src/main/java/com/android/purebilibili/feature/list/PersonalRecapPolicy.kt",
-      "sha256": "39ed16d7fcc0e00ea79d5cab5eb2c5852132685281ecef3b73b8e0718240268e",
-      "features": [
-        "stable-favorites"
-      ],
-      "mode": "extracted",
-      "hashNormalization": "raw",
-      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
-      "gitBlob": "bd47649e07acb7bd276d9eea34fea8e49602f574"
-    },
-    {
-      "path": "desktop/upstream-slices/v029-history-recap/app/src/main/java/com/android/purebilibili/feature/list/PersonalRecapCharts.kt",
-      "sha256": "22220577365a82f2a19d3e0c77e872f09cd9d5867bd26f22e2df339bacd92aac",
-      "features": [
-        "stable-favorites"
-      ],
-      "mode": "extracted",
-      "hashNormalization": "raw",
-      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
-      "gitBlob": "6825abea1522058fc65a015f69b5cbb69bc5d96f"
     }
   ],
   "featureCoverage": {

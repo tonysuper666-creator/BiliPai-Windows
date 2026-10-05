@@ -1,3 +1,5 @@
+@file:OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+
 package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.layout.Box
@@ -7,6 +9,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.awt.LocalAwtWindow
+import com.android.purebilibili.core.ui.LocalAppPopupSurfaceRenderer
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.BlurEffect
 import androidx.compose.ui.graphics.Color
@@ -58,6 +62,7 @@ internal data class DesktopWindowsGlassMaterialBinding(
     val sourceReady: Boolean,
     val sourceHasWallpaper: Boolean,
     val owns: () -> Boolean,
+    val window: java.awt.Window? = null,
 )
 
 internal val LocalDesktopWindowsGlassMaterial = staticCompositionLocalOf<DesktopWindowsGlassMaterialBinding?> { null }
@@ -104,6 +109,7 @@ internal fun DesktopWindowsGlassBackgroundHost(
     owns: () -> Boolean,
     content: @Composable () -> Unit,
 ) {
+    val window = LocalAwtWindow.current
     val dark = isDesktopInDarkTheme()
     val color = MaterialTheme.colorScheme.background
     val density = LocalDensity.current.density
@@ -126,8 +132,12 @@ internal fun DesktopWindowsGlassBackgroundHost(
         val sourceReady = acknowledgedDraw?.let { it.source === source && it.epoch == lease.epoch.get() &&
             it.size == lease.size.get() && it.size.width > 0 && it.size.height > 0 } == true
         val material = DesktopWindowsGlassMaterialBinding(backdrop, renderer, sourceReady,
-            appearance.visible && sourceUri.isNotBlank(), { lease.alive.get() && latestOwns() })
-        CompositionLocalProvider(LocalDesktopWindowsGlassMaterial provides material) {
+            appearance.visible && sourceUri.isNotBlank(), { lease.alive.get() && latestOwns() }, window)
+        val configuration = DesktopWindowsGlassSourceConfiguration(wallpaperUri, home,
+            showHomeWallpaper, isDataSaverActive, { lease.alive.get() && latestOwns() })
+        CompositionLocalProvider(LocalDesktopWindowsGlassMaterial provides material,
+            LocalDesktopWindowsGlassSourceConfiguration provides configuration,
+            LocalAppPopupSurfaceRenderer provides DesktopWindowsPopupSurfaceRenderer) {
             Box(Modifier.fillMaxSize()) {
                 HomeWallpaperBackdrop(sourceUri, appearance, color, isDataSaverActive,
                     playbackEnabled = false,
@@ -160,23 +170,37 @@ internal fun DesktopWindowsGlassSurface(
     shape: Shape = RoundedCornerShape(16.dp),
     content: @Composable () -> Unit,
 ) {
+    val material = desktopWindowsGlassSurfaceMaterial(modifier, shape, MaterialTheme.colorScheme.surfaceContainerLow)
+    // One stable Surface/content callsite across preference, ACK and resize.
+    Surface(material.modifier, shape = shape,
+        color = if (material.enabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainerLow,
+        content = content)
+}
+
+internal data class DesktopWindowsGlassSurfaceMaterial(val modifier: Modifier, val enabled: Boolean)
+
+/** Shared original material projection for both panels and AppPopupSurface.
+ * A native child must supply its own layer; inherited Root coordinates are unsafe. */
+@Composable
+internal fun desktopWindowsGlassSurfaceMaterial(
+    modifier: Modifier,
+    shape: Shape,
+    containerColor: Color,
+): DesktopWindowsGlassSurfaceMaterial {
     val material = LocalDesktopWindowsGlassMaterial.current
     val tuning = LocalLiquidGlassRenderConfig.current.tuning
     val enabled = LocalAppThemeConfig.current.liquidGlassEnabled && material != null &&
-        material.renderer.supported && material.sourceReady && material.owns()
+        material.window === LocalAwtWindow.current && material.renderer.supported &&
+        material.sourceReady && material.owns()
     val base = modifier.excludeFromLiquidBackground()
     val surfaceModifier = if (enabled) base.biliPaiFloatingDockShell(
         backdrop = material!!.backdrop,
-        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        containerColor = containerColor,
         pressProgress = 0f,
         shape = shape,
         enabled = true,
         drawLens = true,
         liquidGlassTuning = tuning,
     ).innerShadow(shape) { InnerShadow(radius = 8.dp, color = Color.Black.copy(alpha = 0.15f)) } else base
-    // One stable Surface/content callsite for ON/OFF, first ACK and resize. Only
-    // material/color changes; comment fields and open menus keep composition/focus.
-    Surface(surfaceModifier, shape = shape,
-        color = if (enabled) Color.Transparent else MaterialTheme.colorScheme.surfaceContainerLow,
-        content = content)
+    return DesktopWindowsGlassSurfaceMaterial(surfaceModifier, enabled)
 }

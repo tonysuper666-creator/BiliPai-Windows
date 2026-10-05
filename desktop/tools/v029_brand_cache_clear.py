@@ -75,6 +75,8 @@ def _adapt(original,pairs):
 def animation_source():
     _,raw=checked_sources()
     pairs=[
+        ('same-root-owned-popup-dialog', 'import androidx.compose.ui.window.Dialog\n',
+            'import com.bilipai.desktop.ui.DesktopWindowsPopupDialog as Dialog\n'),
         ('actual-renderer-capability-import','import android.os.Build\n','import com.bilipai.desktop.ui.desktopDetailRenderEffectsSupported\n'),
         ('same-root-navigation-input','androidx.activity.compose.BackHandler(enabled = progress.isComplete)',
             'com.android.purebilibili.core.ui.LocalNavigationBackHandler(enabled = progress.isComplete)'),

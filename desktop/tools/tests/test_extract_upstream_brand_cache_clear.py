@@ -35,12 +35,12 @@ class BrandCacheClearProducerTest(unittest.TestCase):
     @classmethod
     def tearDownClass(cls): cls.temp.cleanup()
 
-    def test_actual_sole_cli_emits_complete_fixed_ui_with_four_counted_ports_and_full_inverse(self):
+    def test_actual_sole_cli_emits_complete_fixed_ui_with_five_counted_ports_and_full_inverse(self):
         relative='com/android/purebilibili/feature/settings/CacheClearAnimation.kt'
         text=(self.after/relative).read_text(encoding='utf-8')
         proofs=json.loads((self.after/'cache-clear-source-inventory.json').read_text(encoding='utf-8'))
         proof=proofs[0]
-        self.assertEqual(4,len(proof['countedAdaptations']))
+        self.assertEqual(5,len(proof['countedAdaptations']))
         self.assertEqual(self.raw[brand.ANIMATION],brand.reverse(text,proof['countedAdaptations']))
         self.assertTrue(proof['exactFullSourceInverse'])
         self.assertEqual(proof['generatedSha256LF'],brand.digest(text.encode()))
@@ -55,7 +55,11 @@ class BrandCacheClearProducerTest(unittest.TestCase):
         self.assertIn('ModalWindowBlurBehindEffect(enabled = true)',omissions[0]['before'])
         self.assertIn('original dialog scrim/AppPopupSurface fallback',omissions[0]['after'])
         self.assertNotIn('ModalWindowBlurBehindEffect',text)
-        self.assertIn('import androidx.compose.ui.window.Dialog',text)
+        self.assertIn('import com.bilipai.desktop.ui.DesktopWindowsPopupDialog as Dialog',text)
+        self.assertNotIn('import androidx.compose.ui.window.Dialog\n',text)
+        dialogs=[row for row in proof['countedAdaptations'] if row['label']=='same-root-owned-popup-dialog']
+        self.assertEqual(1,len(dialogs))
+        self.assertEqual('import androidx.compose.ui.window.Dialog\n',dialogs[0]['before'])
         self.assertIn('AppPopupSurface(',text)
         self.assertIn('type = AppPopupSurfaceType.DIALOG',text)
         self.assertIn('containerColor = MaterialTheme.colorScheme.surface',text)
@@ -129,8 +133,8 @@ class BrandCacheClearProducerTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'source pin mismatch'):brand.animation_source()
 
     def test_real_caller_keeps_clear_progress_failure_algorithms_and_host_is_presentation_only(self):
-        caller=(REPO/'desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopStorageSettings.kt').read_text(encoding='utf-8')
-        host=(REPO/'desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopWindowsCacheClearProgressHost.kt').read_text(encoding='utf-8')
+        caller=(BASE/'desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopStorageSettings.kt').read_text(encoding='utf-8')
+        host=(BASE/'desktop/src/main/kotlin/com/bilipai/desktop/settings/DesktopWindowsCacheClearProgressHost.kt').read_text(encoding='utf-8')
         self.assertEqual(1,caller.count('owner.clear(captured)'))
         self.assertIn('progress=CacheClearProgress(0,1)',caller)
         self.assertIn('catch(failure: Throwable) {progress=null;throw failure}',caller)
