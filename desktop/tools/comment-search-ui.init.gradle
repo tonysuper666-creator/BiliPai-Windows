@@ -7,7 +7,18 @@ gradle.projectsEvaluated {
     def receipt = new File(rootProject.providers.gradleProperty('commentSearchRuntime').get())
     def phase = rootProject.providers.gradleProperty('commentSearchPhase').get()
     if (!(phase in ['prepare', 'run'])) throw new GradleException('Unknown comment-search phase')
-    ui.configure { systemProperty('bilipai.validation.commentSearchInput', 'true') }
+    def uiCase = rootProject.providers.gradleProperty('commentUiCase').orElse('search').get()
+    if (!(uiCase in ['search', 'composer'])) throw new GradleException('Unknown independent comment UI case')
+    ui.configure {
+        systemProperty('bilipai.validation.commentSearchInput', (uiCase == 'search').toString())
+        systemProperty('bilipai.validation.composerInput', (uiCase == 'composer').toString())
+        if (uiCase == 'composer') {
+            ['nvidiaInput', 'scaleInput', 'featureInput', 'hotInput', 'collectionInput',
+             'metadataInput', 'bgmInput', 'pipInput', 'originalInteractionInput'].each {
+                systemProperty('bilipai.validation.' + it, 'false')
+            }
+        }
+    }
     def expectedJava = new File(System.getenv('JAVA_HOME'), 'bin/java.exe').canonicalFile
     // Capture the original lazy model, without resolving it in projectsEvaluated.
     def originalClasspath = ui.get().classpath
@@ -20,7 +31,7 @@ gradle.projectsEvaluated {
         def effectivePaths = task.classpath.files.collect { it.absolutePath }
         if (originalPaths.isEmpty() || effectivePaths != originalPaths)
             throw new GradleException('Effective Main runtime differs from the original task model')
-        [schema: 1, task: task.name, mainClass: task.mainClass.get(),
+        [schema: 1, commentUiCase: uiCase, task: task.name, mainClass: task.mainClass.get(),
          classpath: originalPaths, javaExecutable: java.absolutePath,
          applicationResources: task.systemProperties['compose.application.resources.dir']]
     }
@@ -35,7 +46,7 @@ gradle.projectsEvaluated {
     } else {
         if (!receipt.isFile()) throw new GradleException('Prepared runtime receipt missing')
         def prepared = new JsonSlurper().parse(receipt)
-        if (prepared.schema != 1 || prepared.task != 'windowsVideoLocalReplayUiSmoke' ||
+        if (prepared.schema != 1 || prepared.commentUiCase != uiCase || prepared.task != 'windowsVideoLocalReplayUiSmoke' ||
             prepared.mainClass != 'com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture' ||
             !(prepared.classpath instanceof List) || prepared.classpath.isEmpty() ||
             !prepared.classpath.every { it instanceof String && !it.isBlank() } ||
@@ -53,7 +64,23 @@ gradle.projectsEvaluated {
             // explicit dependencies. The saved original model is still verified.
             task.setClasspath(rootProject.files(prepared.classpath))
             task.setDependsOn([])
-            task.doFirst { assertRuntime() }
+            task.doFirst {
+                assertRuntime()
+                if (uiCase == 'composer') {
+                    // Only the actual child Main JVM receives this property. Never
+                    // change the Gradle JVM home or the no-window preparation phase.
+                    def local = System.getenv('LOCALAPPDATA')
+                    if (!local) throw new GradleException('Private composer LOCALAPPDATA missing')
+                    def privateHome = new File(local).canonicalFile
+                    def marker = new File(privateHome, '.bilipai-root-validation')
+                    def token = rootProject.providers.gradleProperty('rootValidationToken').get()
+                    if (privateHome.parentFile != new File(System.getProperty('java.io.tmpdir')).canonicalFile ||
+                        !privateHome.name.startsWith('BiliPai-v025-root-routes-') ||
+                        !marker.isFile() || marker.getText('UTF-8') != token)
+                        throw new GradleException('Actual composer Main requires the same token-owned private home')
+                    task.systemProperty('user.home', privateHome.absolutePath)
+                }
+            }
         }
         // No GUI, player or compilation dependencies. Root can execute this exact
         // same verifier offline with valid and deliberately altered receipts.

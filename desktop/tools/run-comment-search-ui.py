@@ -12,6 +12,32 @@ CAPTURES = [
     '182-comment-search-up-only', '183-comment-search-charged',
     '184-comment-search-all-latest', '185-comment-search-original-subreply',
 ]
+
+CAPTURES_BY_CASE = {
+    'search': CAPTURES,
+    'composer': [
+        '210-composer-text-draft', '211-composer-reopened-draft',
+        '212-composer-original-emote', '213-composer-original-mention',
+        '214-composer-owned-os-chooser', '215-composer-selected-private-image',
+        '216-composer-restored-complete-draft', '217-composer-image-removed',
+    ],
+}
+
+def validate_ui_case(ui_case):
+    if ui_case not in CAPTURES_BY_CASE: raise ValueError('Unknown independent comment UI case')
+    return ui_case
+
+def validate_runtime(runtime, ui_case):
+    validate_ui_case(ui_case)
+    if (runtime.get('schema') != 1 or runtime.get('task') != 'windowsVideoLocalReplayUiSmoke' or
+        runtime.get('mainClass') != 'com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture' or
+        runtime.get('commentUiCase') != ui_case or
+        not isinstance(runtime.get('classpath'), list) or not runtime['classpath'] or
+        not all(isinstance(item, str) and item.strip() for item in runtime['classpath']) or
+        not isinstance(runtime.get('javaExecutable'), str) or not runtime['javaExecutable'].strip() or
+        not isinstance(runtime.get('applicationResources'), str) or not runtime['applicationResources'].strip()):
+        raise ValueError('Prepared original Main runtime/case mismatch')
+
 def sha(data): return hashlib.sha256(data).hexdigest()
 def read(path): return path.read_bytes()
 def load(path): return json.loads(read(path))
@@ -182,15 +208,14 @@ def run_owned(command, cwd, env, log, timeout_seconds, state):
         state.update(forcedCleanup=forced, timedOut=timed_out, cleanupErrors=cleanup_errors,
                      elapsedSeconds=round(time.monotonic() - started, 3))
 
-def verify(report, local, health, token, process):
+def verify(report, local, health, token, process, ui_case='search'):
+    validate_ui_case(ui_case)
     if process['exitCode'] != 0 or process['forcedCleanup'] or not process['cleanupCompleted']:
         raise ValueError('Original UI task did not finish naturally')
     if read(no_links(health)).decode() != token or not read(no_links(health.with_name('startup-version.txt'))).decode().strip():
         raise ValueError('Actual Main startup identity missing')
     receipt = load(no_links(report / 'observations.json'))
-    for key in ('allPreExitAssertionsPassed','sameLiveRootAndWindow','apiReplayInjected','loopbackMediaInjected',
-                'commentSearchProofRequested','commentSearchInputProofCompleted','commentSearchReadResponsesAreSynthetic',
-                'commentSearchPhysicalTextHumanReviewRequired'):
+    for key in ('allPreExitAssertionsPassed','sameLiveRootAndWindow','apiReplayInjected','loopbackMediaInjected'):
         if receipt.get(key) is not True: raise ValueError('Missing actual Main assertion: ' + key)
     if receipt.get('actualMainInvocations') != 1 or receipt.get('defaultRenderer') != 'DIRECT3D':
         raise ValueError('Unexpected Main invocation/default renderer policy marker')
@@ -201,25 +226,85 @@ def verify(report, local, health, token, process):
         raise ValueError('Root/window observations changed identity')
     if not all(row['sameRootAndRouteAssembly'] is True for row in rows): raise ValueError('Root source retired')
     by = {row['id']: row for row in rows}
-    proof = by['186-original-comment-search-completed']
-    for key in ('sameOriginalCommentVm','sameAcceptedPublicationIdentity','samePausedNativeSourceAndPreferences',
-                'mainCommentsUnchanged','actualOriginalCloseRetryScopeSortAndSubreplyConsumed','physicalOwnedDialogCapturesCollected'):
-        if proof.get(key) is not True: raise ValueError('Missing original comment assertion: ' + key)
     if by['160-original-back-home'].get('physicalStack') != ['MainHost']: raise ValueError('Actual Back did not return Home')
     transport = load(no_links(report / 'local-replay-receipt.json'))
-    if transport.get('realAccountUsed') is not False or transport.get('commentSearchResponsesAreSynthetic') is not True:
-        raise ValueError('Unexpected account/transport')
-    detail = transport['commentSearch']
-    for key in ('actualOptionalCallCancellationObserved','grpcAndRestErrorStageObserved','originalTwoPageLoadCompleted'):
-        if detail.get(key) is not True: raise ValueError('Original read cycle not completed')
-    if detail.get('chargedControlProtobufField') != 31 or detail.get('subReplyOriginalRootRequested') != 91001:
-        raise ValueError('Wrong original protobuf/root identity')
+    if ui_case == 'search':
+        for key in ('commentSearchProofRequested','commentSearchInputProofCompleted','commentSearchReadResponsesAreSynthetic',
+                    'commentSearchPhysicalTextHumanReviewRequired'):
+            if receipt.get(key) is not True: raise ValueError('Missing actual Main assertion: ' + key)
+        for key in ('composerInputProofRequested','composerInputProofCompleted','syntheticAccountSeededThroughActualSessionStore'):
+            if receipt.get(key) is not False: raise ValueError('Mixed comment UI proof')
+        if transport.get('composerInputResponsesAreSynthetic') is not False or transport.get('composerInput') is not None:
+            raise ValueError('Mixed comment replay modes')
+        proof = by['186-original-comment-search-completed']
+        for key in ('sameOriginalCommentVm','sameAcceptedPublicationIdentity','samePausedNativeSourceAndPreferences',
+                    'mainCommentsUnchanged','actualOriginalCloseRetryScopeSortAndSubreplyConsumed','physicalOwnedDialogCapturesCollected'):
+            if proof.get(key) is not True: raise ValueError('Missing original comment assertion: ' + key)
+        if transport.get('realAccountUsed') is not False or transport.get('commentSearchResponsesAreSynthetic') is not True:
+            raise ValueError('Unexpected account/transport')
+        detail = transport['commentSearch']
+        for key in ('actualOptionalCallCancellationObserved','grpcAndRestErrorStageObserved','originalTwoPageLoadCompleted'):
+            if detail.get(key) is not True: raise ValueError('Original read cycle not completed')
+        if detail.get('chargedControlProtobufField') != 31 or detail.get('subReplyOriginalRootRequested') != 91001:
+            raise ValueError('Wrong original protobuf/root identity')
+    else:
+        for key in ('composerInputProofRequested','composerInputProofCompleted','syntheticAccountSeededThroughActualSessionStore'):
+            if receipt.get(key) is not True: raise ValueError('Missing actual composer assertion: ' + key)
+        for key in ('commentSearchProofRequested','commentSearchInputProofCompleted','commentSearchReadResponsesAreSynthetic',
+                    'commentSearchPhysicalTextHumanReviewRequired','commentPublishingAccepted','imageUploadAccepted','loginUiAccepted',
+                    'commentsSent','nvidiaUiProofRequested','nvidiaUiProofCompleted','interactionProofRequested','interactionProofCompleted',
+                    'featureInputProofCompleted','hotInputProofRequested','hotInputProofCompleted','collectionInputProofRequested',
+                    'collectionInputProofCompleted','videoMetadataProofCompleted','bgmInputProofRequested','bgmInputProofCompleted',
+                    'pipInputProofRequested','pipInputProofCompleted','originalInteractionProofRequested','originalInteractionProofCompleted',
+                    'physicalStackWrittenByFixture','directPhysicalStackListMutation','newNativeActorCreatedByFixture','newRootCreatedByFixture'):
+            if receipt.get(key) is not False: raise ValueError('Unexpected composer acceptance scope: ' + key)
+        session = by['composer-synthetic-session-actual-root-generation']
+        for key in ('sameActualRepository','originalGuestEntryAndRoutesRetired','actualRetainedHomeGenerationChanged','sameNativeMainWindow'):
+            if session.get(key) is not True: raise ValueError('Missing actual session generation: ' + key)
+        epoch = session.get('actualAccountEpoch')
+        if (session.get('syntheticPrimaryMid') != 990000024 or type(epoch) is not int or epoch <= 0 or
+            session.get('loginUiAccepted') is not False or type(session.get('sameWindowLevelRootHandle')) is not bool):
+            raise ValueError('Unexpected actual synthetic account generation')
+        proof = by['composer-original-input-closed-without-publish']
+        for key in ('sameActualComposerDomain','sourcePausedAndPreferencesPreserved','textDraftRestored',
+                    'originalEmoteAndMentionInserted','originalSyncFlagRestored','realOwnedOsChooserPrivatePngSelected','selectedImageRemoved'):
+            if proof.get(key) is not True: raise ValueError('Missing original composer assertion: ' + key)
+        for key in ('publishClicked','realCredentialsUsed','originalImageUploadAccepted'):
+            if proof.get(key) is not False: raise ValueError('Composer mutation was accepted: ' + key)
+        if transport.get('sameActualRepository') is not True or transport.get('composerInputResponsesAreSynthetic') is not True:
+            raise ValueError('Composer used another repository or non-synthetic transport')
+        for key in ('realBilibiliDataAccepted','realAccountUsed','newRootCreated','newPlayerCreated','newControllerCreated',
+                    'originalVmStateWritten','actualNativeStateWritten','physicalStackWritten','commentSearchResponsesAreSynthetic',
+                    'commentsSent','creatorFollowMutationSubmitted','bgmAccountMutationSubmitted',
+                    'originalInteractionRemoteMutationSubmitted','collectionSubscriptionMutationSubmitted'):
+            if transport.get(key) is not False: raise ValueError('Unexpected composer transport scope: ' + key)
+        if transport.get('commentSearch') is not None: raise ValueError('Mixed comment replay modes')
+        detail = transport['composerInput']
+        for key in ('syntheticSessionSeededThroughActualStore','imageCreatedByFixture','emoteImagesArePrivateFiles'):
+            if detail.get(key) is not True: raise ValueError('Missing original composer input precondition: ' + key)
+        for key in ('loginUiAccepted','realAccountUsed','mutationRequestsPermitted'):
+            if detail.get(key) is not False: raise ValueError('Unexpected synthetic session permission: ' + key)
+        if (detail.get('syntheticPrimaryMid') != 990000024 or type(detail.get('syntheticAccountEpoch')) is not int or
+            detail['syntheticAccountEpoch'] != epoch or detail.get('imageFile') != 'composer-private-image.png'):
+            raise ValueError('Synthetic session/image identity changed')
+        image_bytes = read(no_links(report / 'composer-private-image.png'))
+        if not re.fullmatch('[0-9a-f]{64}', detail.get('imageSha256','')) or sha(image_bytes) != detail['imageSha256']:
+            raise ValueError('Private chooser image changed')
+        reads = detail['reads']
+        if (not any(item.get('kind') == 'emote' and item.get('path') in ('/x/emote/user/panel/web','/x/emote/package') for item in reads) or
+            not any(item.get('kind') == 'mention' and item.get('query') == '合成' for item in reads)):
+            raise ValueError('Original emote/mention APIs were not consumed')
+        forbidden_gets = {'/x/relation/modify','/x/web-interface/archive/like','/x/v2/reply/add','/x/v2/reply/action',
+                          '/x/v2/reply/hate','/x/v2/reply/del','/x/v2/reply/report','/x/dynamic/feed/create/dyn',
+                          '/x/dynamic/feed/create/dyn/submit','/x/v3/fav/resource/deal'}
+        if any(item.get('method') not in ('GET','POST') or item.get('path') in forbidden_gets for item in transport['apiRequests']):
+            raise ValueError('Composer transport observed a mutation')
     for request in transport['apiRequests']:
         if request['method'] == 'POST' and (request['host'] != 'app.bilibili.com' or request['path'] not in (
             '/bilibili.main.community.reply.v1.Reply/MainList','/bilibili.main.community.reply.v1.Reply/DetailList')):
             raise ValueError('Unexpected guest mutation POST')
     captures = []
-    for name in CAPTURES:
+    for name in CAPTURES_BY_CASE[ui_case]:
         image = no_links(report / (name + '-screen.png')); data = read(image)
         if not data.startswith(b'\x89PNG\r\n\x1a\n') or data[12:16] != b'IHDR': raise ValueError('Physical capture is not PNG')
         width, height = struct.unpack('>II', data[16:24])
@@ -232,6 +317,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('repo','java-home','jdk-archive','runtime','output'): parser.add_argument('--' + name, type=Path, required=True)
     parser.add_argument('--source-sha', required=True); parser.add_argument('--run', action='store_true')
+    parser.add_argument('--comment-ui-case', choices=tuple(CAPTURES_BY_CASE), default='search')
     args = parser.parse_args()
     if not args.run or os.name != 'nt' or ctypes.sizeof(ctypes.c_void_p) != 8:
         parser.error('Explicit manual 64-bit Windows execution is required')
@@ -246,7 +332,7 @@ def main():
     if parent != no_links(Path(os.environ['RUNNER_TEMP'])) or output.exists(): raise ValueError('Output must be a fresh direct runner-temp child')
     output.mkdir(); report = output / 'actual-ui'; report.mkdir()
     runtime_path = no_links(args.runtime); runtime = load(runtime_path)
-    if runtime.get('mainClass') != 'com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture': raise ValueError('Wrong original Main fixture')
+    validate_runtime(runtime, args.comment_ui_case)
     java_home = no_links(args.java_home)
     if Path(runtime['javaExecutable']).resolve() != (java_home / 'bin/java.exe').resolve(): raise ValueError('Original task uses another JDK')
     archive = no_links(args.jdk_archive)
@@ -269,6 +355,7 @@ def main():
                actualMainSystemPropertiesRecorded=False, previousPackageRuntimeProven=False)
     before = sources(repo); compiled_before = compiled_inputs(runtime)
     local = no_links(Path(tempfile.mkdtemp(prefix='BiliPai-v025-root-routes-')))
+    local = no_links(local.resolve(strict=True))
     token = str(uuid.uuid4())
     with (local / '.bilipai-root-validation').open('x', encoding='utf-8') as marker: marker.write(token)
     health = local / 'BiliPai/updates' / ('staged-comment-search-' + uuid.uuid4().hex) / ('launch-' + str(uuid.uuid4())) / 'startup-health.txt'
@@ -280,16 +367,17 @@ def main():
                '-Porg.gradle.java.installations.paths=' + str(java_home),
                '-Porg.gradle.java.installations.auto-detect=false', '-Porg.gradle.java.installations.auto-download=false',
                '-I', str(no_links(Path(__file__).with_name('comment-search-ui.init.gradle'))),
-               '-PcommentSearchPhase=run', '-PcommentSearchRuntime=' + str(runtime_path), 'windowsVideoLocalReplayUiSmoke',
+               '-PcommentSearchPhase=run', '-PcommentUiCase=' + args.comment_ui_case,
+               '-PcommentSearchRuntime=' + str(runtime_path), 'windowsVideoLocalReplayUiSmoke',
                '-ProotValidationReport=' + str(report), '-ProotValidationHealth=' + str(health),
                '-ProotValidationToken=' + token, '-ProotValidationVideo=BV1xx411c7mD']
-    save(output / 'intent.json', dict(schema=1, sourceSha=args.source_sha, task='windowsVideoLocalReplayUiSmoke',
+    save(output / 'intent.json', dict(schema=1, sourceSha=args.source_sha, commentUiCase=args.comment_ui_case, task='windowsVideoLocalReplayUiSmoke',
         privateLocalAppData=str(local), health=str(health), token=token, runtimeSha256=sha(read(runtime_path)),
         selectedJdk=jdk, rendererOverride=None, noDaemon=True, guiTimeoutSeconds=180, fullNativeScreenGateExecuted=False, releaseGatePassed=False))
     process = {}; captures = None; failure = None; additional_failures = []
     try:
         process = run_owned(command, repo, env, output / 'gradle.log', 180, process)
-        captures = verify(report, local, health, token, process)
+        captures = verify(report, local, health, token, process, args.comment_ui_case)
     except Exception as error: failure = type(error).__name__ + ': ' + str(error)
     def check_after(action):
         nonlocal failure
@@ -305,7 +393,7 @@ def main():
     if log is None: log = b''
     bad_log = any(text in log for text in (b'Error was captured in composition', b'layout state is not idle before measure starts', b'Exception in thread'))
     passed = failure is None and captures is not None and before == after and compiled_before == compiled_after and not bad_log
-    result = dict(schema=1, passed=passed, functionalAssertionsPassed=passed, sourceSha=args.source_sha,
+    result = dict(schema=1, passed=passed, functionalAssertionsPassed=passed, sourceSha=args.source_sha, commentUiCase=args.comment_ui_case,
         sourcePinsUnchanged=before == after, preparedRuntimeUnchanged=compiled_before == compiled_after,
         sourceInventorySha256=sha(json.dumps(before).encode()), compiledInventorySha256=sha(json.dumps(compiled_before).encode()),
         selectedJdk=jdk, process=process, failure=failure, additionalFailures=additional_failures, captures=captures, logSha256=sha(log),

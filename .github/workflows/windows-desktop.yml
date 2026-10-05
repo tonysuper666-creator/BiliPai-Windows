@@ -27,6 +27,11 @@ on:
         description: Independently exercise original Main comment search with isolated guest read replay; never package or publish
         type: boolean
         default: false
+      comment_ui_case:
+        description: Read-only actual Main case selected only when comment_search_ui is enabled; composer uses a private synthetic session
+        type: choice
+        options: [search, composer]
+        default: search
       verify_previous_update:
         description: Also test forwarding from the exact previously delivered Windows EXE in the isolated updater fixture
         type: boolean
@@ -130,6 +135,8 @@ jobs:
       && github.event_name == 'workflow_dispatch' && inputs.comment_search_ui == true
     runs-on: windows-latest
     timeout-minutes: 25
+    env:
+      COMMENT_UI_CASE: ${{ inputs.comment_ui_case || 'search' }}
     steps:
       - name: Enable Git long paths
         shell: pwsh
@@ -231,21 +238,22 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
+          if ($env:COMMENT_UI_CASE -cnotin @('search', 'composer')) { throw 'Unknown independent comment UI case.' }
           $runtime = Join-Path $env:RUNNER_TEMP 'bilipai-comment-runtime.json'
           $initScript = Join-Path $env:GITHUB_WORKSPACE 'desktop/tools/comment-search-ui.init.gradle'
           & ./gradlew.bat -p desktop --no-daemon --console=plain --max-workers=2 "-Dorg.gradle.jvmargs=-Xmx4g" `
             "-Porg.gradle.java.installations.paths=$env:JAVA_HOME" "-Porg.gradle.java.installations.auto-detect=false" `
             "-Porg.gradle.java.installations.auto-download=false" -I "$initScript" `
-            -PcommentSearchPhase=prepare "-PcommentSearchRuntime=$runtime" prepareCommentSearchUiRuntime
+            -PcommentSearchPhase=prepare "-PcommentUiCase=$env:COMMENT_UI_CASE" "-PcommentSearchRuntime=$runtime" prepareCommentSearchUiRuntime
           if ($LASTEXITCODE -ne 0) { throw 'Original Main test runtime preparation failed.' }
-      - name: Exercise the actual Main comment search and owned reply dialogs
+      - name: Exercise the selected actual Main comment UI with owned dialogs
         timeout-minutes: 5
         shell: pwsh
         env:
           SOURCE_SHA: ${{ steps.source.outputs.source_sha }}
         run: |
           python desktop/tools/run-comment-search-ui.py --run --repo "$env:GITHUB_WORKSPACE" --java-home "$env:JAVA_HOME" --jdk-archive "$env:BILIPAI_COMMENT_JDK_ARCHIVE" `
-            --runtime "$env:RUNNER_TEMP/bilipai-comment-runtime.json" --source-sha "$env:SOURCE_SHA" `
+            --runtime "$env:RUNNER_TEMP/bilipai-comment-runtime.json" --source-sha "$env:SOURCE_SHA" --comment-ui-case "$env:COMMENT_UI_CASE" `
             --output "$env:RUNNER_TEMP/bilipai-comment-search-ui"
           if ($LASTEXITCODE -ne 0) { throw 'Actual Main comment acceptance failed; inspect exact owned-window evidence.' }
       - name: Upload only the independent Main comment evidence
@@ -286,6 +294,24 @@ jobs:
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/185-comment-search-original-subreply-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/comment-search-failure-screen.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/comment-search-failure-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/210-composer-text-draft-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/210-composer-text-draft-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/211-composer-reopened-draft-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/211-composer-reopened-draft-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/212-composer-original-emote-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/212-composer-original-emote-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/213-composer-original-mention-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/213-composer-original-mention-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/214-composer-owned-os-chooser-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/214-composer-owned-os-chooser-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/215-composer-selected-private-image-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/215-composer-selected-private-image-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/216-composer-restored-complete-draft-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/216-composer-restored-complete-draft-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/217-composer-image-removed-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/217-composer-image-removed-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/composer-input-failure-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/composer-input-failure-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-native-state.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-source-admission.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window-geometry.json
