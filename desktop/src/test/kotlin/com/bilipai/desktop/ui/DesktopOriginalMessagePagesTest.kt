@@ -445,7 +445,12 @@ private fun <T> unusedMessageUiPort(type:Class<T>):T = java.lang.reflect.Proxy.n
 /** Actual PageOwner/ChatViewModel/owned Job regression; no OS window or real account. */
 class DesktopMessageUpdateInstallationHoldTest {
     private suspend fun ready(f:MessagePageTestFixture,vm:ChatViewModel) {
-        f.waitFor { vm.uiState.value.messagesLoaded && !vm.uiState.value.isLoading }
+        val initialLoad = checkNotNull(vm.javaClass.getDeclaredField("latestMessagesJob")
+            .apply { isAccessible = true }.get(vm) as? Job)
+        // Loaded UI precedes the original asynchronous read ACK. Settle that startup
+        // mutation before checking whether a later editor action starts any work.
+        f.waitFor { initialLoad.isCompleted && vm.uiState.value.messagesLoaded &&
+            !vm.uiState.value.isLoading && !child(vm).hasPendingEditorMutations() }
     }
     private fun child(vm:ChatViewModel):DesktopMessagePageAdmission =
         vm.javaClass.getDeclaredField("owner").apply{isAccessible=true}.get(vm) as DesktopMessagePageAdmission
