@@ -1166,6 +1166,8 @@ val extractOriginalFavorites by tasks.registering(Exec::class) {
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "stable-favorites" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v029_brand_callers.py")
+    inputs.dir("upstream-slices/v029-brand-callers")
     outputs.dir(layout.buildDirectory.dir("generated/original-favorites"))
 }
 val extractOriginalFavoriteFolder by tasks.registering(Exec::class) {
@@ -2441,6 +2443,8 @@ val extractOriginalSearchPages by tasks.registering(Exec::class) {
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "desktop-full-original-search-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
+    inputs.file("tools/v029_brand_callers.py")
+    inputs.dir("upstream-slices/v029-brand-callers")
     outputs.dir(layout.buildDirectory.dir("generated/original-search-pages"))
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-search-pages")) }

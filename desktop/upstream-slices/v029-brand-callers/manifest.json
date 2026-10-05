@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "scope": "Selected exact brand consumer caller deltas. Existing v025 full-body/Windows adaptations retained; no VM/owner/API changes.",
+  "files": [
+    {
+      "path": "v025/app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "sourcePath": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "upstreamCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+      "gitBlob": "b048012d6e40f6733dfde6e4ed8555142f1c53fa",
+      "bytes": 228832,
+      "sha256Bytes": "d5e95624fa21466c605516bb7b517c8265349a32795c9e9da65344f9ed9dd603",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40/app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt"
+    },
+    {
+      "path": "v025/app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "sourcePath": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "upstreamCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+      "gitBlob": "f01065ca999bd7d73ff6fcd82b73b2c508c4e4c9",
+      "bytes": 172189,
+      "sha256Bytes": "f64e32dbbc823cbe49a7d4e7de1c4f66fd162ae78ff62ba5e0dfd66995ecd486",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40/app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt"
+    },
+    {
+      "path": "v029/app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "sourcePath": "app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "c2d56636da1978719bb9f62117437ce7810c0e27",
+      "bytes": 227666,
+      "sha256Bytes": "4460e81628fdb54a013f09b147e7bdcaeeddb6f2ee23ff375b9c5825f4b92745",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/search/SearchScreen.kt"
+    },
+    {
+      "path": "v029/app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "sourcePath": "app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt",
+      "upstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "gitBlob": "f3ca9bafa474a07e753c9e328c3b9d9fe74cab10",
+      "bytes": 178540,
+      "sha256Bytes": "e5676f371841e43225e8f88d71bcd62137df22bb13bca4aeb378a4fc4d73c5cd",
+      "sourceUrl": "https://raw.githubusercontent.com/jay3-yy/BiliPai/a4b77f894d0a2dd26c0b9fc144b8adb88ac05480/app/src/main/java/com/android/purebilibili/feature/list/CommonListScreen.kt"
+    }
+  ]
+}

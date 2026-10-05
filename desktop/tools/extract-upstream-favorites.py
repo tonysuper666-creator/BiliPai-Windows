@@ -27,6 +27,10 @@ def source(rel):
  return s
 def output(rel,s,mode):
  s=re.sub(r'(\banimate\(\s*)initial\s*=',r'\1initialValue =',s)
+ if rel=='feature/list/CommonListScreen':
+  from v029_brand_callers import adapt_brand_callers
+  s,brandCallerAudit=adapt_brand_callers(s,'list')
+  records[-1]['windowsBrandConsumerAdaptation']=brandCallerAudit
  emit('com/android/purebilibili/'+rel+'.kt',s)
  records[-1].update(output='com/android/purebilibili/'+rel+'.kt',selection=mode,outputSha256=hashlib.sha256(s.encode()).hexdigest())
 def rmfun(s,name):
@@ -250,6 +254,7 @@ def generate(repo:Path,output:Path,standalone=False):
  canonical={}
  for row in records:
   entry=canonical.setdefault(row['path'],dict(path=row['path'],upstreamCommit=row['upstreamCommit'],sha256LfUtf8=row['sha256LfUtf8'],outputs=[],selections=[]))
+  if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
   if row.get('selection') and row['selection'] not in entry['selections']:entry['selections'].append(row['selection'])
   for emitted in row.get('outputs',[]):
    if emitted not in entry['outputs']:entry['outputs'].append(emitted)
