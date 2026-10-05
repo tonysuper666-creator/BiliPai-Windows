@@ -483,6 +483,10 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     internal suspend fun ensureSession() = ensureVisitorSession()
     internal suspend fun signWebParams(params: Map<String, String>, includeRiskFingerprint: Boolean = false,
         forceRefresh: Boolean = false) = sign(params, includeRiskFingerprint, forceRefresh)
+    internal suspend fun signPrimaryLiveWebParams(params: Map<String, String>, expectedEpoch: Long,
+        stillOwned: () -> Boolean): Map<String, String> = sign(params,
+        requestApi = ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/", expectedEpoch, stillOwned),
+        expectedEpoch = expectedEpoch, stillOwned = stillOwned)
     internal fun accessTokenCredentials(): Pair<String?, String> = sessions.accessTokenCredentials()
     internal fun appCredentials(): DesktopAppCredentials? = sessions.appCredentials()
     internal fun loginIdentityBuvid(): String = sessions.loginIdentityBuvid()

@@ -90,7 +90,7 @@ class V030LiveStreamSourceTests(unittest.TestCase):
             output = Path(temporary) / "main"
             tests = Path(temporary) / "tests"
             generated = media.generate(REPO, output, tests)
-            self.assertEqual(11, len(generated))
+            self.assertEqual(13, len(generated))
             sources = live.fixed_sources()
             request = (output / "com/android/purebilibili/data/repository/DesktopOriginalLiveStreamRequest.kt").read_text(encoding="utf8")
             proof = json.loads((output / "v030-live-request-source-proof.json").read_text(encoding="utf8"))
@@ -108,7 +108,7 @@ class V030LiveStreamSourceTests(unittest.TestCase):
             original_tests = (tests / "com/android/purebilibili/feature/live/LivePlaybackPolicyTest.kt").read_text(encoding="utf8")
             test_proof = json.loads((tests / "v030-live-original-test-source-proof.json").read_text(encoding="utf8"))
             self.assertEqual(14, test_proof["originalTestCount"])
-            self.assertEqual(9, original_tests.count("@Test"))
+            self.assertEqual(12, original_tests.count("@Test"))
             self.assertEqual(sources[live.TEST], live.replay(original_tests, test_proof["completeBody"]["indexedEdits"], True))
             self.assertNotIn("import androidx.media3", original_tests)
 

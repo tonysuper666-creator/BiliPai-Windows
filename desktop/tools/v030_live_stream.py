@@ -137,15 +137,23 @@ def emit_models(repo, output):
 
 def stream_policy(source):
     before = source; edits = []
-    for name in ['androidx.media3.common.PlaybackException', 'androidx.media3.common.Player',
+    source = counted(source, 'import androidx.media3.common.PlaybackException\n',
+        'import com.bilipai.desktop.player.DesktopLiveFailureCode as PlaybackException\n',
+        'named original failure categories supplied by typed MPV adapter', edits)
+    source = counted(source, '    errorCode: Int,\n', '    errorCode: PlaybackException,\n',
+        'typed platform event instead of unrelated MPV numeric error code', edits)
+    for name in ['androidx.media3.common.Player',
                  'com.android.purebilibili.feature.video.ui.components.VideoAspectRatio']:
         source = counted(source, 'import ' + name + '\n', '', 'omit unconsumed Android player import', edits)
-    for name in ['resolveLivePlaybackErrorRecovery', 'shouldRecoverUnexpectedLiveEnd', 'resolveLiveViewportAspectRatio']:
+    for name in ['shouldRecoverUnexpectedLiveEnd', 'resolveLiveViewportAspectRatio']:
         pattern = r'(?m)^internal fun ' + name + r'\('
         start = re.search(pattern, source).start()
         next_decl = re.search(r'(?m)^(?:internal|private) (?:fun|class|data class|sealed|enum)', source[start + 1:])
         end = start + 1 + next_decl.start() if next_decl else len(source)
         source = counted(source, source[start:end], '', 'omit unconsumed platform-only ' + name, edits)
+    for name in ['LivePlaybackCandidate', 'ResolvedLivePlayback']:
+        source = counted(source, 'internal data class ' + name, 'data class ' + name,
+                         'original immutable candidate metadata returned by public Windows media value', edits)
     return source, edits, whole_proof(before, source)
 
 def emit_media(repo, output, test_output=None):
@@ -183,7 +191,10 @@ def emit_media(repo, output, test_output=None):
 def emit_tests(output, source=None):
     source = source if source is not None else fixed_sources()[TEST]
     original = source; edits = []
-    for name in ['androidx.media3.common.PlaybackException', 'androidx.media3.common.Player',
+    source = counted(source, 'import androidx.media3.common.PlaybackException\n',
+        'import com.bilipai.desktop.player.DesktopLiveFailureCode as PlaybackException\n',
+        'same named event categories as the actual Windows policy consumer', edits)
+    for name in ['androidx.media3.common.Player',
                  'com.android.purebilibili.feature.video.ui.components.VideoAspectRatio']:
         source = counted(source, 'import ' + name + '\n', '', 'omit tests for platform-only methods', edits)
     annotations = list(re.finditer(r'(?m)^    @Test\n', source))
@@ -192,7 +203,7 @@ def emit_tests(output, source=None):
         if index + 1 < len(annotations): end = annotations[index + 1].start()
         else: end = source.index('    private fun playbackData(', start)
         method = source[start:end]
-        if any(name in method for name in ['resolveLiveViewportAspectRatio(', 'resolveLivePlaybackErrorRecovery(', 'shouldRecoverUnexpectedLiveEnd(']):
+        if any(name in method for name in ['resolveLiveViewportAspectRatio(', 'shouldRecoverUnexpectedLiveEnd(']):
             source = source[:start] + source[end:]
     target = safe(output / 'com/android/purebilibili/feature/live/LivePlaybackPolicyTest.kt')
     target.parent.mkdir(parents=True, exist_ok=True); target.write_text(source, encoding='utf8', newline='\n')

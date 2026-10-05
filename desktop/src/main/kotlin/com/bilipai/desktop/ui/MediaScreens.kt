@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.job
 
 @Composable
 fun LiveBrowserScreen(
@@ -55,6 +56,9 @@ fun LiveBrowserScreen(
     val scope = memory.scope
     val account by repository.account.collectAsState()
     var sessionAccount by remember { mutableStateOf(account) }
+    val accountEpoch by repository.sessionEpochFlow.collectAsState()
+    var sessionEpoch by remember { mutableLongStateOf(accountEpoch) }
+    var sourcePicker by remember(memory) { mutableStateOf<DesktopLiveSourceSelection?>(null) }
     var section by memory::section
     var query by memory::query
     var submitted by memory::submitted
@@ -84,8 +88,10 @@ fun LiveBrowserScreen(
     fun stopOwned() { memory.stopPlayback() }
     fun connectChat() {
         val current = room ?: return
+        val chatEpoch = repository.sessionEpoch
         val session = DesktopLiveSession(repository, media, current.roomId)
         memory.connectChat(session, overlay) actionHandler@ { action ->
+            if (memory.chat !== session || repository.sessionEpoch != chatEpoch || !memory.scope.isActive) return@actionHandler
             val token = memory.liveToken
         when (action) {
             is com.android.purebilibili.feature.live.LiveRealtimeAction.EmitChat -> token?.let { overlay?.emitLive(action.item, it) }
@@ -97,43 +103,99 @@ fun LiveBrowserScreen(
             is com.android.purebilibili.feature.live.LiveRealtimeAction.RoomBlocked -> { stopOwned(); error = action.message }
             is com.android.purebilibili.feature.live.LiveRealtimeAction.RoomUnavailable -> { stopOwned(); room = room?.copy(liveStatus = action.liveStatus); error = action.message }
             is com.android.purebilibili.feature.live.LiveRealtimeAction.RefreshPlayback -> {
+                val binding = memory.captureLiveSourceBinding() ?: return@actionHandler
                 val current = room ?: return@actionHandler
+                val caller = currentCoroutineContext().job
+                val requestedQuality = quality
+                val audioOnly = onlyAudio
+                val owned = { caller.isActive && memory.chat === session && binding.current() }
                 try {
-                    val info = action.playUrlData?.let { DesktopMediaRepository.selectLive(it, current, quality) }
-                        ?: media.livePlaybackInfo(current.copy(liveStatus = 1), quality, onlyAudio)
-                    stream = info; room = current.copy(liveStatus = 1)
-                    if (sourceVersion == player?.currentSourceVersion) sourceVersion = player?.loadVersioned(info.source.toNativePlayback())
+                    // Realtime video URL payloads cannot silently replace an audio-only request.
+                    val info = if (!audioOnly) action.playUrlData?.let {
+                        DesktopMediaRepository.selectLive(it, current, requestedQuality)
+                    } else null
+                    val refreshed = info ?: media.livePlaybackInfo(current.copy(liveStatus = 1),
+                        requestedQuality, audioOnly, chatEpoch, owned)
+                    currentCoroutineContext().ensureActive()
+                    if (owned()) binding.refresh(refreshed, caller)
                 } catch (cancelled: CancellationException) { throw cancelled
-                } catch (failure: Exception) { error = failure.message ?: "直播流刷新失败" }
+                } catch (failure: Exception) {
+                    desktopLiveAdmission(repository, chatEpoch, owned) {
+                        if (owned()) error = failure.message ?: "直播流刷新失败"
+                    }
+                }
             }
             else -> Unit
         }
         }
     }
-    fun closeRoom() { playJob?.cancel(); stopOwned(); room = null; stream = null; opening = false; error = null }
+    fun closeRoom() {
+        sourcePicker?.close(); sourcePicker = null
+        playJob?.cancel(); stopOwned(); room = null; stream = null; opening = false; error = null
+    }
     fun playRoom(id: Long, selectedQuality: Int = quality) {
         // Capture user intent before IO; a server downgrade is only actual stream state.
         quality = selectedQuality
+        sourcePicker?.close(); sourcePicker = null
         retained?.acquire(memory)
         playJob?.cancel(); stopOwned(); opening = true; error = null
+        val requestEpoch = repository.sessionEpoch
+        val audioOnly = onlyAudio
+        val nativeVersion = player?.currentSourceVersion
         memory.launchRequest {
+            val caller = currentCoroutineContext().job
+            val owned = { caller.isActive && memory.playJob === caller && memory.scope.isActive &&
+                repository.sessionEpoch == requestEpoch && player?.currentSourceVersion == nativeVersion }
             try {
                 val initialized = player ?: throw IllegalStateException(playerError ?: "播放器未能初始化")
-                val details = room?.takeIf { it.roomId == id } ?: media.liveRoom(id)
+                val details = room?.takeIf { it.roomId == id } ?: media.liveRoom(id, requestEpoch, owned)
                 currentCoroutineContext().ensureActive()
-                room = details
-                val info = media.livePlaybackInfo(details, selectedQuality, onlyAudio)
+                if (!desktopLiveAdmission(repository, requestEpoch, owned) { room = details }) return@launchRequest
+                val info = media.livePlaybackInfo(details, selectedQuality, audioOnly, requestEpoch, owned)
                 currentCoroutineContext().ensureActive()
-                stream = info
-                sourceVersion = initialized.loadVersioned(info.source.toNativePlayback())
-                loaded = true
-                connectChat()
+                desktopLiveAdmission(repository, requestEpoch, owned) {
+                    val version = initialized.loadVersioned(info.source.toNativePlayback())
+                    check(version == initialized.currentSourceVersion)
+                    memory.installLivePlayback(info, requireNotNull(initialized.currentSourceSnapshot()),
+                        desktopLiveRecoveryPorts(repository, media, requestEpoch))
+                    loaded = true
+                    connectChat()
+                }
             } catch (cancelled: CancellationException) { throw cancelled
-            } catch (failure: Exception) { if (memory.isCurrentRequest()) { error = failure.message ?: "直播播放失败"; loaded = false }
-            } finally { if (memory.isCurrentRequest()) opening = false }
+            } catch (failure: Exception) {
+                desktopLiveAdmission(repository, requestEpoch, owned) {
+                    error = failure.message ?: "直播播放失败"; loaded = false
+                }
+            } finally { if (memory.playJob === caller) opening = false }
         }
     }
-    LaunchedEffect(account) { if (sessionAccount != account) { sessionAccount = account; closeRoom(); cards = emptyList(); generation++ } }
+    LaunchedEffect(account, accountEpoch) {
+        if (sessionAccount != account || sessionEpoch != accountEpoch) {
+            sessionAccount = account; sessionEpoch = accountEpoch
+            closeRoom(); cards = emptyList(); generation++
+        }
+    }
+    DisposableEffect(memory) { onDispose { sourcePicker?.close() } }
+    sourcePicker?.let { selection ->
+        DisposableEffect(selection) { onDispose { selection.close() } }
+        if (selection.current()) {
+            DesktopWindowsPlayerDialog("直播线路", onDismissRequest = {
+                selection.close(); if (sourcePicker === selection) sourcePicker = null
+            }, preferredHeightDp = 640) {
+                com.android.purebilibili.feature.live.components.LiveStreamSourceSheet(
+                    candidates = selection.binding.info.resolvedPlayback?.candidates.orEmpty(),
+                    activeCandidateIndex = selection.binding.info.candidateIndex,
+                    activeUrlIndex = selection.binding.info.urlIndex,
+                    onSelect = { candidate, url ->
+                        if (selection.switch(candidate, url)) {
+                            selection.close(); if (sourcePicker === selection) sourcePicker = null
+                        }
+                    },
+                    onDismiss = { selection.close(); if (sourcePicker === selection) sourcePicker = null },
+                )
+            }
+        }
+    }
     val chat = memory.chat
     LaunchedEffect(initialRoomId) { if (initialRoomId > 0 && (memory.initialRoomRequest != initialRoomId || room == null)) {
         memory.initialRoomRequest = initialRoomId; playRoom(initialRoomId)
@@ -202,6 +264,11 @@ fun LiveBrowserScreen(
                 Text("仅音频")
                 Checkbox(danmakuEnabled, { danmakuEnabled = it; overlay?.enabled = it }); Text("弹幕")
                 Spacer(Modifier.weight(1f))
+                OutlinedButton(onClick = {
+                    memory.captureLiveSourceBinding()?.let { binding ->
+                        sourcePicker?.close(); sourcePicker = DesktopLiveSourceSelection(binding)
+                    }
+                }, enabled = memory.captureLiveSourceBinding() != null) { Text("直播线路") }
                 OutlinedButton(onClick = { playRoom(current.roomId) }, enabled = !opening) { Text("重新连接") }
             }
         }

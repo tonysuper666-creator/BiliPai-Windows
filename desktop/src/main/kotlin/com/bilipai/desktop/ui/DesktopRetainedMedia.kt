@@ -21,6 +21,7 @@ sealed class DesktopMediaPageMemory(parent: CoroutineScope, internal val player:
     internal var checkpoint: () -> Unit = {}
     internal var onBeforeStop: () -> Unit = {}
     internal var release: () -> Unit = {}
+    internal var onRetireSource: () -> Unit = {}
     var previous by mutableStateOf<(() -> Unit)?>(null)
     var next by mutableStateOf<(() -> Unit)?>(null)
     val ownsNativeSource get() = sourceVersion != null && sourceVersion == player?.currentSourceVersion
@@ -37,6 +38,7 @@ sealed class DesktopMediaPageMemory(parent: CoroutineScope, internal val player:
 
     /** A foreign source can release this memory, but can never be stopped by it. */
     fun stopPlayback() {
+        onRetireSource()
         playJob?.cancel(); playJob = null
         if (ownsNativeSource) { checkpoint(); onBeforeStop(); player?.stopIfSourceVersion(sourceVersion!!) }
         sourceVersion = null; loaded = false; opening = false; previous = null; next = null
@@ -47,6 +49,17 @@ sealed class DesktopMediaPageMemory(parent: CoroutineScope, internal val player:
 }
 
 class DesktopLivePageMemory(parent: CoroutineScope, player: MpvPlayer?) : DesktopMediaPageMemory(parent, player) {
+    internal var liveSourceSnapshot: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot? = null
+    internal var recoveryPorts: DesktopLiveRecoveryPorts? = null
+    internal var remainingLiveReloadAttempts = com.android.purebilibili.feature.live.MAX_PLAYBACK_RELOAD_ATTEMPTS
+    internal var recoveryObserver: Job? = null
+    internal var handledLiveFailure: com.bilipai.desktop.player.PlayerFailure? = null
+    init {
+        onRetireSource = {
+            liveSourceSnapshot = null; recoveryPorts = null; handledLiveFailure = null
+            recoveryObserver?.cancel(); recoveryObserver = null
+        }
+    }
     var section by mutableStateOf("热门")
     var query by mutableStateOf("")
     var submitted by mutableStateOf("")

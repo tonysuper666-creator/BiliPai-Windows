@@ -228,6 +228,8 @@ def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[
     generated.append(write(output, "com/android/purebilibili/feature/bangumi/DesktopFollowPolicies.kt", path, source, body))
     from v030_live_stream import emit_media
     generated.extend(emit_media(repo, output, test_output))
+    from v030_live_recovery import emit_recovery
+    generated.extend(emit_recovery(repo, output))
     return generated
 
 

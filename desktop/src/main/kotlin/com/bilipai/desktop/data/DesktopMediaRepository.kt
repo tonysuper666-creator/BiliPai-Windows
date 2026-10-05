@@ -107,14 +107,22 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
         }, page, page < (data?.pageinfo?.total_page ?: page), (data?.livingNum ?: 0) + (data?.notLivingNum ?: 0))
     }
 
-    suspend fun liveRoom(roomId: Long): LiveRoomDetails = withContext(Dispatchers.IO) {
+    suspend fun liveRoom(roomId: Long, expectedEpoch: Long = repository.sessionEpoch,
+        stillOwned: () -> Boolean = { true }): LiveRoomDetails = withContext(Dispatchers.IO) {
         require(roomId > 0)
-        repository.ensureSession()
-        val initialized = api.live.getLiveRoomInit(roomId)
+        val caller = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
+        val current = { caller?.isActive == true && stillOwned() }
+        repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
+        repository.ensureOwnedHomeSession(expectedEpoch, current, repository.ownedHomeService(
+            com.android.purebilibili.core.network.BuvidApi::class.java, "https://api.bilibili.com/", expectedEpoch, current))
+        val ownedApi = repository.ownedHomeService(com.android.purebilibili.core.network.BilibiliApi::class.java,
+            "https://api.bilibili.com/", expectedEpoch, current)
+        val initialized = ownedApi.getLiveRoomInit(roomId)
         checkCode(initialized.code, initialized.message)
         val init = initialized.data ?: throw BiliApiException(-1, "直播间信息为空")
         val realId = init.roomId.takeIf { it > 0 } ?: throw BiliApiException(-1, "直播间不存在")
-        val response = api.live.getLiveRoomDetail(realId)
+        val response = ownedApi.getLiveRoomDetail(realId)
+        repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
         checkCode(response.code, response.message)
         val data = response.data ?: throw BiliApiException(-1, "直播间详情为空")
         val room = data.roomInfo ?: throw BiliApiException(-1, "直播间详情为空")
@@ -129,13 +137,21 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
     suspend fun livePlayback(room: LiveRoomDetails, quality: Int = 10000, onlyAudio: Boolean = false): PlaybackSource =
         livePlaybackInfo(room, quality, onlyAudio).source
 
-    suspend fun livePlaybackInfo(room: LiveRoomDetails, quality: Int = 10000, onlyAudio: Boolean = false): LivePlaybackInfo = withContext(Dispatchers.IO) {
+    suspend fun livePlaybackInfo(room: LiveRoomDetails, quality: Int = 10000, onlyAudio: Boolean = false,
+        expectedEpoch: Long = repository.sessionEpoch, stillOwned: () -> Boolean = { true }): LivePlaybackInfo = withContext(Dispatchers.IO) {
         require(quality > 0)
         if (room.locked) throw BiliApiException(-403, "该直播间暂不可观看")
         if (!room.isLive) throw BiliApiException(-1, "主播尚未开播")
-        repository.ensureSession()
-        val data = requestOriginalDesktopLiveStream(api.live,
-            { params -> repository.signWebParams(params) }, room.roomId, quality, onlyAudio).getOrThrow()
+        val caller = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
+        val current = { caller?.isActive == true && stillOwned() }
+        repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
+        repository.ensureOwnedHomeSession(expectedEpoch, current, repository.ownedHomeService(
+            com.android.purebilibili.core.network.BuvidApi::class.java, "https://api.bilibili.com/", expectedEpoch, current))
+        val ownedApi = repository.ownedHomeService(com.android.purebilibili.core.network.BilibiliApi::class.java,
+            "https://api.bilibili.com/", expectedEpoch, current)
+        val data = requestOriginalDesktopLiveStream(ownedApi,
+            { params -> repository.signPrimaryLiveWebParams(params, expectedEpoch, current) }, room.roomId, quality, onlyAudio).getOrThrow()
+        repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
         selectLive(data, room, quality) ?: throw BiliApiException(-1, "直播接口没有返回可播放流")
     }
 
@@ -388,13 +404,15 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
     companion object {
         internal fun selectLive(data: LivePlayUrlData, room: LiveRoomDetails, quality: Int): LivePlaybackInfo? {
             val resolved = resolveLivePlayback(data, quality) ?: return null
-            for (candidate in resolved.candidates) {
+            val candidates = resolved.candidates.mapNotNull { candidate ->
                 val urls = candidate.urls.mapNotNull(::playableUrl).distinct()
-                if (urls.isNotEmpty()) return LivePlaybackInfo(PlaybackSource(urls.first(), null, room.title,
-                    "https://live.bilibili.com/${room.roomId}", quality = candidate.currentQuality),
-                    candidate.qualityList.map { MediaQuality(it.qn, it.desc) }, urls.drop(1))
+                if (urls.isEmpty()) null else candidate.copy(urls = urls)
             }
-            return null
+            val candidate = candidates.firstOrNull() ?: return null
+            return LivePlaybackInfo(PlaybackSource(candidate.urls.first(), null, room.title,
+                "https://live.bilibili.com/${room.roomId}", quality = candidate.currentQuality),
+                candidate.qualityList.map { MediaQuality(it.qn, it.desc) }, candidate.urls.drop(1),
+                resolved.copy(candidates = candidates))
         }
 
         internal fun selectBangumi(info: BangumiVideoInfo, season: BangumiSeason, episode: BangumiEpisode, quality: Int): PlaybackSource {

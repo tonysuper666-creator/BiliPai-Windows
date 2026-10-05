@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LivePlayerViewModel.kt",
+      "gitBlob": "605d846a97f2faaf5af468d5757d180caf1ba098",
+      "sha256Bytes": "e86a019aa43d9d5aca595ff6073bb0cf50d00436142bb5a0bda50655b2507e74",
+      "bytes": 63055,
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/app/src/main/java/com/android/purebilibili/feature/live/LivePlayerViewModel.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/LivePlayerScreen.kt",
+      "gitBlob": "e3adc45d4cc252a01fce28d8703ddfa49fa94cf1",
+      "sha256Bytes": "7445e2c4ade4a53784acb5d425cba42e5391066eb39ae6a0fe479d4256a912b6",
+      "bytes": 133571,
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/app/src/main/java/com/android/purebilibili/feature/live/LivePlayerScreen.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/live/components/LiveStreamSourceSheet.kt",
+      "gitBlob": "d946f012c92dc45fd5cc7f76d9eae10f0e558f0f",
+      "sha256Bytes": "2ff81ee9da7cc3660df803d0a1f3fbcc38711952b791f531ce47e06960012fcf",
+      "bytes": 6138,
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/app/src/main/java/com/android/purebilibili/feature/live/components/LiveStreamSourceSheet.kt"
+    }
+  ]
+}

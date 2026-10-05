@@ -17,7 +17,9 @@ data class LiveRoomDetails(val roomId: Long, val title: String, val cover: Strin
 
 data class MediaQuality(val id: Int, val label: String)
 data class LivePlaybackInfo(val source: PlaybackSource, val qualities: List<MediaQuality>,
-                            val backupUrls: List<String> = emptyList())
+                            val backupUrls: List<String> = emptyList(),
+                            val resolvedPlayback: com.android.purebilibili.feature.live.ResolvedLivePlayback? = null,
+                            val candidateIndex: Int = 0, val urlIndex: Int = 0)
 
 data class BangumiCard(val seasonId: Long, val title: String, val cover: String, val subtitle: String = "",
                        val badge: String = "", val score: String = "", val mediaId: Long = 0,
