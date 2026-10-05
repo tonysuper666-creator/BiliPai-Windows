@@ -2,6 +2,9 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.hoverable
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsHoveredAsState
@@ -46,6 +49,7 @@ internal fun DesktopWindowsPlayerSurface(modifier: Modifier = Modifier,
 internal fun DesktopWindowsVideoControlBar(
     state: PlayerState, sourceVersion: Long, enabled: Boolean, fullscreen: Boolean,
     detailsOpen: Boolean, hasPrevious: Boolean, hasNext: Boolean, canPictureInPicture: Boolean,
+    onInteractionHoldChanged: (Boolean) -> Unit,
     qualities: List<Pair<Int, String>>, selectedQuality: Int?,
     canOpenCollection: Boolean, canOpenPlaybackQueue: Boolean,
     onOpenCollection: () -> Unit, onOpenPlaybackQueue: () -> Unit,
@@ -61,10 +65,17 @@ internal fun DesktopWindowsVideoControlBar(
 ) {
     val durationMs = state.durationSeconds.takeIf { it.isFinite() && it > 0.0 }?.let { (it * 1000.0).toLong() } ?: 0L
     val segments = remember(chapters, durationMs) { normalizeViewPointSegments(chapters?.points.orEmpty(), durationMs) }
-    DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()) {
+    val interactions = remember { MutableInteractionSource() }
+    val hovered by interactions.collectIsHoveredAsState()
+    var focused by remember { mutableStateOf(false) }
+    var scrubbing by remember(sourceVersion, chapters, chaptersSource) { mutableStateOf(false) }
+    val latestHold by rememberUpdatedState(onInteractionHoldChanged)
+    DisposableEffect(Unit) { onDispose { latestHold(false) } }
+    DesktopWindowsPlayerSurface(Modifier.fillMaxWidth().onFocusChanged { focused = it.hasFocus }
+        .focusGroup().hoverable(interactions)) {
         Column(Modifier.padding(horizontal = 8.dp)) {
             DesktopWindowsThinSeek(state.positionSeconds, state.durationSeconds, sourceVersion,
-                enabled && state.durationSeconds > 0.0, chapters, chaptersSource, onChapterSeek, onSeek)
+                enabled && state.durationSeconds > 0.0, chapters, chaptersSource, onChapterSeek, { scrubbing = it }, onSeek)
             BoxWithConstraints(Modifier.fillMaxWidth()) {
                 val expanded = maxWidth >= 940.dp
                 val showEnhancementStatus = maxWidth >= 520.dp
@@ -73,6 +84,7 @@ internal fun DesktopWindowsVideoControlBar(
                 var qualityMenu by remember { mutableStateOf(false) }
                 var volumeMenu by remember { mutableStateOf(false) }
                 var chapterMenu by remember(chapters, chaptersSource, sourceVersion) { mutableStateOf(false) }
+                SideEffect { latestHold(hovered || focused || scrubbing || more || speedMenu || qualityMenu || volumeMenu || chapterMenu) }
                 LaunchedEffect(enabled) {
                     if (!enabled) { more = false; speedMenu = false; qualityMenu = false; volumeMenu = false; chapterMenu = false }
                 }
@@ -244,12 +256,14 @@ private fun DesktopWindowsPlayerIconButton(
 @Composable
 private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVersion: Long,
     enabled: Boolean, chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
-    onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit, onSeek: (Double) -> Unit) {
+    onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit,
+    onScrubbingChanged: (Boolean) -> Unit, onSeek: (Double) -> Unit) {
     val total = duration.takeIf { it.isFinite() && it > 0.0 } ?: 1.0
     val durationMs = if (duration.isFinite() && duration > 0.0) (duration * 1000.0).toLong() else 0L
     val segments = remember(chapters, durationMs) { normalizeViewPointSegments(chapters?.points.orEmpty(), durationMs) }
     var scrub by remember(sourceVersion, chapters, chaptersSource) { mutableStateOf<Double?>(null) }
     val latestSeek by rememberUpdatedState(onSeek)
+    val latestScrubbing by rememberUpdatedState(onScrubbingChanged)
     val latestChapterSeek by rememberUpdatedState(onChapterSeek)
     val value = (scrub ?: position.takeIf { it.isFinite() } ?: 0.0).coerceIn(0.0, total)
     val currentSegment = findViewPointSegmentAt(segments, (value * 1000.0).toLong())
@@ -281,6 +295,7 @@ private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVer
                 var dragged = false
                 scrub = seconds(down.position.x)
                 down.consume()
+                latestScrubbing(true)
                 try {
                     val released = drag(down.id) { change ->
                         if ((change.position - down.position).getDistance() > viewConfiguration.touchSlop) dragged = true
@@ -293,7 +308,7 @@ private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVer
                             }
                         } else latestSeek(selected)
                     }
-                } finally { scrub = null }
+                } finally { scrub = null; latestScrubbing(false) }
             }
         }) {
             val y = if (segments.isEmpty()) size.height / 2f else 14.dp.toPx()

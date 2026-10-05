@@ -1,6 +1,11 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.hoverable
+import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import kotlinx.coroutines.delay
 import androidx.compose.foundation.focusable
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.focusRequester
@@ -110,6 +115,37 @@ internal class DesktopWindowsVideoActions(
         shell.slot.currentAssembly() === assembly && assembly.owns()
     val latestActions by rememberUpdatedState(actions)
     val viewportFocus = remember(assembly) { androidx.compose.ui.focus.FocusRequester() }
+    // UI state only: the original Root/entry/source owns every operation.
+    val chromeSource = assembly.native.current()
+    val chrome = remember(assembly, DesktopWindowsFullscreenChromeEntryKey(route), chromeSource) { DesktopWindowsFullscreenChromeState() }
+    val latestChrome by rememberUpdatedState(chrome)
+    val latestChromeSource by rememberUpdatedState(chromeSource)
+    val latestChromeRoute by rememberUpdatedState(route)
+    val latestFullscreen by rememberUpdatedState(fullscreen)
+    fun chromeCurrent(): Boolean = current() && !latestPip && rootEnvironment.owns() &&
+        rootEnvironment.currentKey() === latestChromeRoute && latestChromeSource?.let(assembly.native::isCurrent) == true
+    fun chromeActivity() { if (latestFullscreen && chromeCurrent()) latestChrome.reveal() }
+    val chromeWindow = LocalDesktopWindowsPlayerWindow.current
+    var chromeWindowFocused by remember(chromeWindow) { mutableStateOf(chromeWindow?.isFocused == true) }
+    var barInteractionHeld by remember(chrome) { mutableStateOf(false) }
+    var topFocused by remember(chrome) { mutableStateOf(false) }
+    val topInteractions = remember(chrome) { MutableInteractionSource() }
+    val topHovered by topInteractions.collectIsHoveredAsState()
+    // Only the exact existing Main window; no global input/window observer.
+    DisposableEffect(chromeWindow) {
+        val listener = object : java.awt.event.WindowFocusListener {
+            override fun windowGainedFocus(event: java.awt.event.WindowEvent) {
+                chromeWindowFocused = true
+                chromeActivity()
+            }
+            override fun windowLostFocus(event: java.awt.event.WindowEvent) {
+                chromeWindowFocused = false
+                chromeActivity()
+            }
+        }
+        chromeWindow?.addWindowFocusListener(listener)
+        onDispose { chromeWindow?.removeWindowFocusListener(listener) }
+    }
     // Listen only to this actual native host and its one non-focusable MPV Canvas.
     // A comment editor is outside this component tree and retains its native input.
     DisposableEffect(assembly, native.surface) {
@@ -118,15 +154,21 @@ internal class DesktopWindowsVideoActions(
         surface.isFocusable = true
         val focus = object : java.awt.event.FocusAdapter() {
             override fun focusGained(event: java.awt.event.FocusEvent) {
+                chromeActivity()
                 if(current() && !latestPip) latestActions.focusChanged(true)
             }
             override fun focusLost(event: java.awt.event.FocusEvent) {
+                chromeActivity()
                 if(current()) latestActions.focusChanged(false)
             }
         }
         val mouse = object : java.awt.event.MouseAdapter() {
+            override fun mouseEntered(event: java.awt.event.MouseEvent) { if (surface.isShowing) chromeActivity() }
+            override fun mouseMoved(event: java.awt.event.MouseEvent) { if (surface.isShowing) chromeActivity() }
+            override fun mouseDragged(event: java.awt.event.MouseEvent) { if (surface.isShowing) chromeActivity() }
             override fun mousePressed(event: java.awt.event.MouseEvent) {
                 if(current() && !latestPip && surface.isShowing) {
+                    chromeActivity()
                     viewportFocus.requestFocus()
                     surface.requestFocusInWindow()
                 }
@@ -134,14 +176,18 @@ internal class DesktopWindowsVideoActions(
         }
         val key = object : java.awt.event.KeyAdapter() {
             override fun keyPressed(event: java.awt.event.KeyEvent) {
-                if(!event.isConsumed && current() && !latestPip && surface.isFocusOwner && surface.isShowing &&
-                    latestActions.nativeKey(desktopWindowsNativeVideoKey(event))) event.consume()
+                if(!event.isConsumed && current() && !latestPip && surface.isFocusOwner && surface.isShowing) {
+                    chromeActivity()
+                    if (latestActions.nativeKey(desktopWindowsNativeVideoKey(event))) event.consume()
+                }
             }
         }
         surface.addFocusListener(focus);surface.addMouseListener(mouse);surface.addKeyListener(key)
         val canvas = surface.components.filterIsInstance<java.awt.Canvas>().single()
         canvas.addMouseListener(mouse)
+        canvas.addMouseMotionListener(mouse); surface.addMouseMotionListener(mouse)
         onDispose {
+            canvas.removeMouseMotionListener(mouse); surface.removeMouseMotionListener(mouse)
             canvas.removeMouseListener(mouse);surface.removeMouseListener(mouse)
             surface.removeFocusListener(focus);surface.removeKeyListener(key);surface.isFocusable=oldFocusable
             latestActions.focusChanged(false)
@@ -299,6 +345,21 @@ internal class DesktopWindowsVideoActions(
             detailsOpen = true
         }
     }
+    val chromeHeld = topHovered || topFocused || barInteractionHeld || detailsOpen ||
+        showCollection || showPlaybackQueue || audioLanguageMenu != null || audioTrackMenu != null || interactionMode != null
+    val chromeCanAutoHide = desktopWindowsFullscreenChromeCanAutoHide(fullscreen, active && !pipActive,
+        chromeWindowFocused, chromeHeld, state, bootstrapError != null || playback.error != null || playback.recovering)
+    val latestChromeCanAutoHide by rememberUpdatedState(chromeCanAutoHide)
+    // Gate changes reset the idle period; a new accepted source gets new UI state.
+    LaunchedEffect(chrome, fullscreen, active, pipActive, chromeCanAutoHide) { chrome.reveal() }
+    LaunchedEffect(chrome, chromeCanAutoHide, chrome.visible, chrome.activityRevision) {
+        if (chromeCanAutoHide && chrome.visible) {
+            val revision = chrome.activityRevision
+            delay(chrome.remainingIdleMillis())
+            chrome.hideIfIdle(revision, latestChrome === chrome && latestChromeCanAutoHide && chromeCurrent())
+        }
+    }
+    val chromeVisible = !fullscreen || chrome.visible
     fun command(block: () -> Unit): Boolean {
         val accepted = assembly.native.current() ?: return false
         if (!current()) return false
@@ -326,13 +387,14 @@ internal class DesktopWindowsVideoActions(
             preferencesChanged(preferences.copy(speed = speed))
         }
     }
-    BoxWithConstraints(Modifier.fillMaxSize().padding(8.dp)) {
+    BoxWithConstraints(Modifier.fillMaxSize().padding(if (fullscreen) 0.dp else 8.dp)) {
         // Keep one Row and one native slot through every width/fullscreen/panel change.
         // A narrow window still reserves real sibling space: a heavyweight Canvas cannot be covered by a Compose sheet.
         val detailsWidth = minOf(360.dp, maxWidth * .43f)
         Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()) {
+            Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (chromeVisible) 6.dp else 0.dp)) {
+                if (chromeVisible) DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()
+                    .onFocusChanged { topFocused = it.hasFocus }.focusGroup().hoverable(topInteractions)) {
                     Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = { if (current()) actions.back() }, modifier = Modifier.size(44.dp)) {
                             Icon(Icons.Default.ArrowBack, contentDescription = "返回")
@@ -385,9 +447,12 @@ internal class DesktopWindowsVideoActions(
                         color = MaterialTheme.colorScheme.error)
                     TextButton(onClick = { if (current()) shell.playback.retry() }) { Text("重试") }
                 }
-                DesktopWindowsVideoControlBar(
+                if (chromeVisible) DesktopWindowsVideoControlBar(
                     state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,
                     enabled = current() && success != null, fullscreen = fullscreen, detailsOpen = detailsOpen,
+                    onInteractionHoldChanged = { held ->
+                        if (barInteractionHeld != held) { barInteractionHeld = held; chromeActivity() }
+                    },
                     hasPrevious = shell.playback.hasPrevious, hasNext = shell.playback.hasNext,
                     canPictureInPicture = !pipActive && success != null && state.videoCodec != null && !state.audioOnly,
                     qualities = success?.let { value -> value.qualityIds.mapIndexed { index, id -> id to (value.qualityLabels.getOrNull(index) ?: id.toString()) } }.orEmpty(),
