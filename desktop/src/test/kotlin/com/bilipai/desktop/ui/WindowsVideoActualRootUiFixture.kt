@@ -305,14 +305,22 @@ object WindowsVideoActualRootUiFixture {
         check(routes.stack.none { it == BiliPaiNavKey.Onboarding })
         check(all().none { it.accessibleName == "帮助改进应用" || it.accessibleName == "使用须知" })
     }
-    private fun acquireActualNativePlayer() = edt {
-        current(); videoScope()
-        val candidates = nativeComponents(window()).filterIsInstance<Canvas>().filter { canvas ->
+    private fun actualNativeCanvasCandidates(): List<Canvas> =
+        nativeComponents(window()).filterIsInstance<Canvas>().filter { canvas ->
             canvas.isShowing && canvas.isDisplayable && canvas.width > 100 && canvas.height > 80 &&
                 SwingUtilities.getWindowAncestor(canvas) === window() &&
+                canvas.javaClass.enclosingClass == MpvPlayer::class.java &&
                 canvas.javaClass.declaredFields.count { it.type == MpvPlayer::class.java } == 1
         }
-        check(candidates.size == 1) { "Expected exactly one actual ordinary native Canvas, got ${candidates.size}" }
+    private fun acquireActualNativePlayer() =
+        await("actual complete Windows video controls and original native surface") { edt {
+        val frame = pendingCurrent() ?: return@edt false
+        check((frame.key as? BiliPaiNavKey.VideoDetail)?.bvid == video)
+        // Compose's own Skia Canvas can precede the retained MPV peer. Observe
+        // and acquire the exact player Canvas in the same EDT turn.
+        val candidates = actualNativeCanvasCandidates()
+        check(candidates.size <= 1) { "Multiple actual ordinary native Canvases during startup" }
+        if (candidates.isEmpty() || runCatching { videoScope() }.isFailure) return@edt false
         actualCanvas = candidates.single()
         check(actualCanvas.javaClass.enclosingClass == MpvPlayer::class.java)
         // Only the fixed owned Canvas outer-player field, never arbitrary object/callback/account reflection.
@@ -323,7 +331,8 @@ object WindowsVideoActualRootUiFixture {
         check(SwingUtilities.getWindowAncestor(actualPlayer.surface) === window())
         record("actual-native-owner", mapOf("canvasClass" to JsonPrimitive(actualCanvas.javaClass.name),
             "sameActualSurfaceAndCanvas" to JsonPrimitive(true), "nativeActorIdentity" to JsonPrimitive(System.identityHashCode(actualPlayer))))
-    }
+        true
+    } }
     private interface FailureWindowApi : StdCallLibrary {
         fun GetWindowThreadProcessId(hwnd: Pointer, pid: IntByReference): Int
         fun IsWindowVisible(hwnd: Pointer): Boolean
@@ -3308,11 +3317,6 @@ object WindowsVideoActualRootUiFixture {
         val initial = videoFrame()
         videoKey = initial.key as BiliPaiNavKey.VideoDetail
         noStartupMobilePrompts()
-        await("actual complete Windows video controls and original native surface") { edt {
-            val frame = pendingCurrent() ?: return@edt false
-            frame.key is BiliPaiNavKey.VideoDetail && runCatching { videoScope() }.isSuccess &&
-                nativeComponents(window()).filterIsInstance<Canvas>().any { it.isShowing && it.isDisplayable && it.width > 100 && it.height > 80 }
-        } }
         acquireActualNativePlayer()
         await("actual source loaded") { actualPlayer.currentSourceSnapshot() != null && actualPlayer.state.value.firstVideoFrameReady }
         if (actualPlayer.state.value.nativePaused == true) {
