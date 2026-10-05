@@ -60,7 +60,8 @@ class DesktopLivePageMemory(parent: CoroutineScope, player: MpvPlayer?) : Deskto
     var loading by mutableStateOf(false)
     var room by mutableStateOf<LiveRoomDetails?>(null)
     var stream by mutableStateOf<LivePlaybackInfo?>(null)
-    var quality by mutableIntStateOf(150)
+    // Requested quality survives server fallback; actual quality lives in stream.source.
+    var quality by mutableIntStateOf(10000)
     var onlyAudio by mutableStateOf(false)
     var initialRoomRequest by mutableLongStateOf(0)
     var chat by mutableStateOf<DesktopLiveSession?>(null)

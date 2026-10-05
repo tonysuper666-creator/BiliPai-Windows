@@ -5,6 +5,8 @@ import com.android.purebilibili.data.model.response.DynamicPublishDraft
 import com.android.purebilibili.feature.dynamic.components.DynamicPublishComposer
 import com.bilipai.desktop.data.DesktopDynamicCardOperations
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 /** Owner/lifetime seam for the original composer. It never creates a session. */
@@ -17,6 +19,7 @@ internal fun DesktopOriginalDynamicEditorHost(
     imagePicker: (Int, (List<String>) -> Unit) -> Unit,
     dateTimePicker: (Long, (Int, Int, Int, Int, Int) -> Unit) -> Unit,
     imageProvider: suspend (String) -> Triple<String?, String?, okhttp3.RequestBody>,
+    registerSubmission: (Job) -> Boolean,
     onDismiss: () -> Unit,
     onPublished: (String) -> Unit,
     onEdited: (String, DynamicPublishDraft) -> Unit,
@@ -42,7 +45,7 @@ internal fun DesktopOriginalDynamicEditorHost(
                 if (!submitting && session.isOwned() && operations.isOwned()) {
                     submitting = true
                     errorMessage = null
-                    scope.launch {
+                    val submission = scope.launch(start = CoroutineStart.LAZY) {
                         try {
                             if (dynamicId == null) {
                                 operations.publishDynamic(draft, imageProvider).fold(
@@ -64,6 +67,10 @@ internal fun DesktopOriginalDynamicEditorHost(
                         } finally {
                             submitting = false
                         }
+                    }
+                    if (!registerSubmission(submission) || !submission.start()) {
+                        submitting = false
+                        submission.cancel()
                     }
                 }
             },

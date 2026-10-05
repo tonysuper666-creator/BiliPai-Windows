@@ -294,7 +294,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val dynamicCardSession = remember(repository, sessionEpoch) {
         DesktopDynamicCardSession(repository, sessionEpoch, stillOwned = { !latestDynamicIsClosing() })
     }
-    val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession)
+    var activatingUpdate by remember { mutableStateOf(false) }
+    val dynamicEditor = rememberDesktopDynamicEditorRoot(repository, dynamicCardSession) {
+        !isClosing() && !activatingUpdate
+    }
+    val dynamicEditorSubmissions by dynamicEditor.submissions.collectAsState()
     val originalDanmakuBlocks = remember(pluginStore, dynamicEditor) {
         DesktopDanmakuBlockPreferences(pluginStore, dynamicEditor.operations::withOwnedEditorImageAdmission)
     }
@@ -706,7 +710,6 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var automaticUpdates by remember { mutableStateOf(settingsLibrary.automaticUpdates) }
     var updateJob by remember { mutableStateOf<Job?>(null) }
     var manuallyRequested by remember { mutableStateOf(false) }
-    var activatingUpdate by remember { mutableStateOf(false) }
     // Store's nav invalidation callback only enqueues. Never start inline coroutine cleanup
     // or dispatcher cancellation while that original Store callback owns its monitor.
     val authenticationInvalidations = remember(repository) { Channel<Pair<Long,Long>>(Channel.UNLIMITED) }
@@ -1323,11 +1326,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         finally { feedLoading = false }
     }
     LaunchedEffect(Unit) { updater.autoCheck(); while (true) { delay(6 * 60 * 60 * 1000L); updater.autoCheck() } }
-    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, activatingUpdate, updateJob) {
+    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
             is UpdateState.Available -> if (automaticUpdates) prepareUpdate(status.update, false)
-            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive) {
+            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation()) {
                 activatingUpdate = true
                 updateJob = scope.launch(start = CoroutineStart.LAZY) {
                     try { if (updater.activatePreparedUpdate(status.prepared)) onExit() }
@@ -2447,7 +2450,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (googleCastDialog) DesktopGoogleCastDialog(pluginRuntime.context, pluginRuntime.googleCast,
             media = castMediaFactory, onDismiss = { googleCastDialog = false })
         PluginCareReminder(pluginRuntime)
-        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate,
+        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation(),
             playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
             onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false })
@@ -2505,7 +2508,7 @@ private fun DesktopVideoPage(playing: DesktopPlaybackState, player: MpvPlayer?, 
 }
 
 @Composable
-private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activating: Boolean, playbackActive: Boolean,
+private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activating: Boolean, editActive: Boolean, playbackActive: Boolean,
     onAutomatic: (Boolean) -> Unit, onPrepare: (WindowsUpdate) -> Unit, onActivate: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(onDismissRequest = onDismiss, title = { Text("Windows 更新") }, text = {
         Column(Modifier.width(380.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -2517,7 +2520,7 @@ private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activati
                 is UpdateState.Available -> "新版本 ${status.update.version}，${status.update.size / 1024 / 1024} MB"
                 is UpdateState.Downloading -> "正在下载：${status.receivedBytes / 1024 / 1024} / ${status.totalBytes / 1024 / 1024} MB"
                 UpdateState.Verifying -> "正在校验更新包"
-                is UpdateState.Prepared -> if (playbackActive) "更新已下载，关闭播放后安装" else "更新已下载，等待安装"
+                is UpdateState.Prepared -> if (editActive) "更新已下载，结束编辑后安装" else if (playbackActive) "更新已下载，关闭播放后安装" else "更新已下载，等待安装"
                 UpdateState.Launching -> "正在启动新版本"
                 UpdateState.Launched -> "新版本已启动"
                 is UpdateState.Failed -> status.message
@@ -2527,7 +2530,7 @@ private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activati
     }, confirmButton = {
         when(val status = state) {
             is UpdateState.Available -> TextButton(onClick = { onPrepare(status.update) }, enabled = !activating) { Text("下载并更新") }
-            is UpdateState.Prepared -> TextButton(onClick = onActivate, enabled = !activating) { Text(if (playbackActive) "关闭播放后更新" else "安装更新") }
+            is UpdateState.Prepared -> TextButton(onClick = onActivate, enabled = !activating) { Text(if (editActive) "结束编辑后更新" else if (playbackActive) "关闭播放后更新" else "安装更新") }
             else -> TextButton(onClick = onDismiss) { Text("完成") }
         }
     })

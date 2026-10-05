@@ -26,6 +26,17 @@ class DesktopMediaRepositoryTest {
         assertEquals(MediaQuality(150, "高清"), selected.qualities.single())
     }
 
+    @Test fun `original quality request keeps server downgraded quality as actual`() {
+        val data = LivePlayUrlData(playurl_info = PlayurlInfo(Playurl(stream = listOf(
+            StreamInfo("http_hls", listOf(FormatInfo("fmp4", listOf(CodecInfo("avc", 150,
+                baseUrl = "/index.m3u8", url_info = listOf(UrlInfo("https://first.example"))))))),
+        ), gQnDesc = listOf(LiveQuality(10000, "原画"), LiveQuality(150, "高清")))))
+        val selected = requireNotNull(DesktopMediaRepository.selectLive(data, room, 10000))
+        assertEquals(150, selected.source.quality)
+        assertEquals(listOf(10000, 150), selected.qualities.map { it.id })
+        assertEquals("https://first.example/index.m3u8", selected.source.videoUrl)
+    }
+
     @Test fun `legacy live supports muxed URL and rejects file protocols`() {
         val data = LivePlayUrlData(durl = listOf(LiveDurl("file:///etc/passwd"), LiveDurl("//cdn.example/live.flv")), current_quality = 80)
         assertEquals("https://cdn.example/live.flv", DesktopMediaRepository.selectLive(data, room, 150)?.source?.videoUrl)

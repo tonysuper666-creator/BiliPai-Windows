@@ -124,10 +124,10 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
             init.isLocked || init.isHidden || (init.encrypted && !init.pwdVerified) || room.lockStatus != 0 || room.hiddenStatus != 0)
     }
 
-    suspend fun livePlayback(room: LiveRoomDetails, quality: Int = 150, onlyAudio: Boolean = false): PlaybackSource =
+    suspend fun livePlayback(room: LiveRoomDetails, quality: Int = 10000, onlyAudio: Boolean = false): PlaybackSource =
         livePlaybackInfo(room, quality, onlyAudio).source
 
-    suspend fun livePlaybackInfo(room: LiveRoomDetails, quality: Int = 150, onlyAudio: Boolean = false): LivePlaybackInfo = withContext(Dispatchers.IO) {
+    suspend fun livePlaybackInfo(room: LiveRoomDetails, quality: Int = 10000, onlyAudio: Boolean = false): LivePlaybackInfo = withContext(Dispatchers.IO) {
         require(quality > 0)
         if (room.locked) throw BiliApiException(-403, "该直播间暂不可观看")
         if (!room.isLive) throw BiliApiException(-1, "主播尚未开播")

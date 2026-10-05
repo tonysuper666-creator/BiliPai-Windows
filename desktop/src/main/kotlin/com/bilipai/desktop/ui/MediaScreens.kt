@@ -112,6 +112,8 @@ fun LiveBrowserScreen(
     }
     fun closeRoom() { playJob?.cancel(); stopOwned(); room = null; stream = null; opening = false; error = null }
     fun playRoom(id: Long, selectedQuality: Int = quality) {
+        // Capture user intent before IO; a server downgrade is only actual stream state.
+        quality = selectedQuality
         retained?.acquire(memory)
         playJob?.cancel(); stopOwned(); opening = true; error = null
         memory.launchRequest {
@@ -122,7 +124,7 @@ fun LiveBrowserScreen(
                 room = details
                 val info = media.livePlaybackInfo(details, selectedQuality, onlyAudio)
                 currentCoroutineContext().ensureActive()
-                stream = info; quality = info.source.quality
+                stream = info
                 sourceVersion = initialized.loadVersioned(info.source.toNativePlayback())
                 loaded = true
                 connectChat()
@@ -192,7 +194,7 @@ fun LiveBrowserScreen(
                 if (player != null && loaded && memory.ownsNativeSource) Box(Modifier.weight(3f).fillMaxHeight()) { playerContent(player) }
                 chat?.let { LiveChatPanel(it, account != null, Modifier.weight(1f).fillMaxHeight()) }
             }
-            MediaSelector(stream?.qualities.orEmpty().map { it.label }, stream?.qualities?.firstOrNull { it.id == quality }?.label.orEmpty()) { label ->
+            MediaSelector(stream?.qualities.orEmpty().map { it.label }, stream?.qualities?.firstOrNull { it.id == stream?.source?.quality }?.label.orEmpty()) { label ->
                 stream?.qualities?.firstOrNull { it.label == label }?.let { playRoom(current.roomId, it.id) }
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
