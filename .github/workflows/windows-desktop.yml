@@ -27,6 +27,10 @@ on:
         description: Independently exercise original Main comment search with isolated guest read replay; never package or publish
         type: boolean
         default: false
+      verify_previous_update:
+        description: Also test forwarding from the exact previously delivered Windows EXE in the isolated updater fixture
+        type: boolean
+        default: false
       diagnostic_suite:
         description: Isolated rendering experiment selected only when render_diagnostic is enabled
         type: choice
@@ -294,6 +298,9 @@ jobs:
       && (github.repository != 'jay3-yy/BiliPai' && inputs.render_diagnostic != true && inputs.comment_search_ui != true)
     runs-on: windows-latest
     timeout-minutes: 35
+    permissions:
+      contents: read
+      actions: read
     outputs:
       release: ${{ steps.plan.outputs.release }}
       source_sha: ${{ steps.plan.outputs.source_sha }}
@@ -355,13 +362,37 @@ jobs:
           $vc = ($receipt -join "`n") | ConvertFrom-Json
           if ($vc.passed -ne $true -or $vc.vcInputsExact -ne $true -or $vc.compilerBinSetExact -ne $true -or $vc.englishResourcesExact -ne $true -or [IO.Path]::GetFullPath($vc.vcRoot) -ne [IO.Path]::GetFullPath($vcRoot)) { throw 'VC provisioning did not produce the exact isolated root.' }
           "BILIPAI_NATIVE_SHARE_VC_ROOT=$vcRoot" | Add-Content -LiteralPath $env:GITHUB_ENV
+      - name: Download the exact previously delivered updater baseline
+        if: github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: 11337715963
+          run-id: 37290919690
+          repository: tonysuper666-creator/BiliPai-Windows
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/bilipai-previous-update-package
+          merge-multiple: true
+      - name: Verify the previous ZIP before the existing isolated updater test
+        if: github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $previousZip = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package/BiliPai-Windows-0.2.427.17-x64.zip'
+          python desktop/tools/verify-updater-baseline.py --package "$previousZip"
+          if ($LASTEXITCODE -ne 0) { throw 'The actual previous EXE package could not be verified.' }
+          "BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE=$previousZip" | Add-Content -LiteralPath $env:GITHUB_ENV
       - name: Build tested portable Windows package
         shell: pwsh
         env:
           BILIPAI_WINDOWS_RELEASE_REPOSITORY: ${{ github.repository }}
           MAKE_RELEASE: ${{ steps.plan.outputs.release }}
+          VERIFY_PREVIOUS_UPDATE: ${{ github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true }}
         run: |
           $parameters = @{ NativeSmoke = $true; UpdaterSmoke = $true }
+          if ($env:VERIFY_PREVIOUS_UPDATE -eq 'true') {
+              if (-not $env:BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE) { throw 'Requested previous-EXE verification has no verified baseline.' }
+              $parameters.PreviousUpdateTestPackage = $env:BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE
+          }
           if ('${{ inputs.installer }}' -eq 'true') { $parameters.Installer = $true }
           if ($env:MAKE_RELEASE -eq 'true') { $parameters.ReleaseGate = $true }
           try { & ./desktop/tools/build.ps1 @parameters }

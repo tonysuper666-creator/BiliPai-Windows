@@ -2,6 +2,7 @@
 from contextlib import ExitStack
 from pathlib import Path
 import argparse
+import ast
 import base64
 import hashlib
 import importlib.util
@@ -297,7 +298,12 @@ class SdkProvisionTests(unittest.TestCase):
             self.assertIn('"BILIPAI_NATIVE_SHARE_SDK_ROOT=$sdkRoot" | Add-Content -LiteralPath $env:GITHUB_ENV', source)
             self.assertIn('--temp-root "$env:RUNNER_TEMP" --output "$sdkRoot"', source)
         driver = (TOOLS / "run-tool-tests.py").read_text(encoding="utf-8")
-        self.assertIn('"test_provision_native_diagnostic_sdk.py") if args.stage == "policies"', driver)
+        choices = [node.value for node in ast.walk(ast.parse(driver)) if isinstance(node, ast.Assign)
+                   and any(isinstance(target, ast.Name) and target.id == "patterns" for target in node.targets)]
+        self.assertEqual(len(choices), 1)
+        self.assertIsInstance(choices[0], ast.IfExp)
+        self.assertEqual(ast.dump(choices[0].test), ast.dump(ast.parse('args.stage == "policies"', mode="eval").body))
+        self.assertEqual(ast.literal_eval(choices[0].body).count("test_provision_native_diagnostic_sdk.py"), 1)
 
     def test_windows_long_sdk_path_preserves_exact_bytes(self):
         # The CI root is short; a developer's private verification root may not be.
