@@ -163,7 +163,9 @@ def generate(repo, output):
         outputs.append(relative)
     emit("main/com/android/purebilibili/feature/video/danmaku/DesktopOriginalBasDanmakuFilterPolicy.kt", "BasDanmakuFilterPolicy.kt", read(repo, "BasDanmakuFilterPolicy.kt"))
     original, adapted, edits = adapt_pipeline(read(repo, "DanmakuManager.kt"))
-    emit("main/com/bilipai/desktop/danmaku/DesktopBasPluginFilter.kt", "DanmakuManager.kt", SUPPORT + adapted)
+    # The selected original method includes a separator blank line. Keep that in
+    # the inverse ledger, but emit the standalone platform file with one final LF.
+    emit("main/com/bilipai/desktop/danmaku/DesktopBasPluginFilter.kt", "DanmakuManager.kt", (SUPPORT + adapted).rstrip("\n") + "\n")
     emit("test/com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicyTest.kt", "BasDanmakuFilterPolicyTest.kt", read(repo, "BasDanmakuFilterPolicyTest.kt"))
     proof = {"commit": COMMIT, "pipelineWholeInverse": inverse(adapted, edits) == original,
         "pipelineSelectedSha256LF": hashlib.sha256(original.encode()).hexdigest(), "edits": edits,

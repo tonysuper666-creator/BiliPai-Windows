@@ -137,3 +137,8 @@ desktop/verification/stable-space-pages-root-integration/** -text
 desktop/verification/stable-bangumi-player-screen-space-ui-root-integration/** -text
 desktop/verification/stable-space-retired-composition-root-integration/** -text
 desktop/upstream-slices/** -text
+
+# These checked-in leaves are reproduced byte-for-byte by the BAS slice producer.
+desktop/src/main/kotlin/com/android/purebilibili/feature/video/danmaku/DesktopOriginalBasDanmakuFilterPolicy.kt text eol=lf
+desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopBasPluginFilter.kt text eol=lf
+desktop/src/test/kotlin/com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicyTest.kt text eol=lf
