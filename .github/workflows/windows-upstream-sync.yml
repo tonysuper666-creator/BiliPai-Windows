@@ -2,8 +2,6 @@ name: Prepare Windows upstream update
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '23 */2 * * *'
 
 # Automatic sync/publication is dormant until explicitly enabled on a personal repo.
 permissions:
