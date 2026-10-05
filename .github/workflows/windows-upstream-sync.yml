@@ -16,8 +16,8 @@ concurrency:
 jobs:
   detect:
     if: >-
-      github.repository != 'jay3-yy/BiliPai' &&
-      (github.event_name == 'workflow_dispatch' || vars.BILIPAI_WINDOWS_AUTO_SYNC == 'true')
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+      && (github.repository != 'jay3-yy/BiliPai' && (github.event_name == 'workflow_dispatch' || vars.BILIPAI_WINDOWS_AUTO_SYNC == 'true'))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -67,10 +67,13 @@ jobs:
           name: Windows-upstream-compatibility
           path: ${{ runner.temp }}/upstream-check.json
           if-no-files-found: warn
+          retention-days: 1
 
   candidate:
     needs: detect
-    if: needs.detect.outputs.update_needed == 'true'
+    if: >-
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+      && (needs.detect.outputs.update_needed == 'true')
     runs-on: windows-latest
     timeout-minutes: 45
     permissions:
@@ -140,6 +143,7 @@ jobs:
             ${{ runner.temp }}/windows-updates/**/desktop/build/distributions/*.zip
             ${{ runner.temp }}/windows-updates/**/desktop/build/distributions/*.zip.sha256
           if-no-files-found: error
+          retention-days: 1
       - name: Advance personal Windows branch to validated low-risk sources
         id: advance
         if: steps.candidate.outputs.autopublish == 'true'
@@ -204,10 +208,8 @@ jobs:
   recover_publication:
     needs: [detect, candidate]
     if: >-
-      always() && needs.detect.result == 'success' &&
-      vars.BILIPAI_WINDOWS_AUTO_PUBLISH == 'true' &&
-      (needs.detect.outputs.publication_needed == 'true' ||
-       (needs.candidate.result == 'success' && needs.candidate.outputs.source_sha != ''))
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+      && (always() && needs.detect.result == 'success' && vars.BILIPAI_WINDOWS_AUTO_PUBLISH == 'true' && (needs.detect.outputs.publication_needed == 'true' || (needs.candidate.result == 'success' && needs.candidate.outputs.source_sha != '')))
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:

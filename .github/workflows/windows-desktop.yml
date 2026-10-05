@@ -53,7 +53,9 @@ concurrency:
 
 jobs:
   render-diagnostic:
-    if: github.repository != 'jay3-yy/BiliPai' && github.event_name == 'workflow_dispatch' && inputs.render_diagnostic == true
+    if: >-
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+      && (github.repository != 'jay3-yy/BiliPai' && github.event_name == 'workflow_dispatch' && inputs.render_diagnostic == true)
     runs-on: windows-latest
     timeout-minutes: 12
     steps:
@@ -112,9 +114,12 @@ jobs:
             ${{ runner.temp }}/bilipai-render-probe/shader-clear-*/*.txt
             ${{ runner.temp }}/bilipai-render-probe/shader-clear-*/*.log
           if-no-files-found: warn
+          retention-days: 1
 
   windows:
-    if: github.repository != 'jay3-yy/BiliPai' && inputs.render_diagnostic != true
+    if: >-
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+      && (github.repository != 'jay3-yy/BiliPai' && inputs.render_diagnostic != true)
     runs-on: windows-latest
     timeout-minutes: 35
     outputs:
@@ -213,7 +218,7 @@ jobs:
           name: Windows-unit-test-junit-xml
           path: desktop/build/test-results/test/TEST-*.xml
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 1
       - name: Upload packaged native player evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -234,6 +239,7 @@ jobs:
             desktop/build/reports/*/native-anime4k-failed-state.txt
             desktop/build/reports/*/native-eye-protection.png
           if-no-files-found: warn
+          retention-days: 1
       - name: Upload packaged updater evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -243,6 +249,7 @@ jobs:
             desktop/build/reports/updater-smoke-*/updater-smoke.json
             desktop/build/reports/updater-smoke-*/**/*.log
           if-no-files-found: warn
+          retention-days: 1
       - name: Upload portable package
         uses: actions/upload-artifact@v4
         with:
@@ -251,6 +258,7 @@ jobs:
             desktop/build/distributions/*.zip
             desktop/build/distributions/*.zip.sha256
           if-no-files-found: error
+          retention-days: 1
       - name: Upload release smoke evidence
         if: steps.plan.outputs.release == 'true'
         uses: actions/upload-artifact@v4
@@ -263,6 +271,7 @@ jobs:
             desktop/build/reports/release-gate-*/native-player-smoke*.json
             desktop/build/reports/updater-smoke-*/updater-smoke.json
           if-no-files-found: error
+          retention-days: 1
       - name: Upload optional installer
         if: inputs.installer == true
         uses: actions/upload-artifact@v4
@@ -270,10 +279,13 @@ jobs:
           name: BiliPai-Windows-MSI
           path: desktop/build/compose/binaries/main/msi/*.msi
           if-no-files-found: error
+          retention-days: 1
 
   publish:
     needs: windows
-    if: needs.windows.outputs.release == 'true'
+    if: >-
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+      && (needs.windows.outputs.release == 'true')
     runs-on: ubuntu-latest
     concurrency:
       group: windows-release-publication

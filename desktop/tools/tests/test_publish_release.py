@@ -300,6 +300,21 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(github.operations, [])
 
 
+def evaluate_workflow_guard(test, expression, values):
+    """Evaluate only the boolean subset used by the actual checked-in jobs."""
+    expression = expression.replace("always()", "True")
+    # Preserve quoted outputs like 'true'; only convert unquoted boolean literals.
+    expression = re.sub(r"(?<![A-Za-z0-9_'\".])(?:true|false)(?![A-Za-z0-9_'\".])",
+                        lambda m: "True" if m.group() == "true" else "False", expression)
+    expression = re.sub(r"\b(?:needs|vars|github|inputs)\.[A-Za-z0-9_.]+",
+                        lambda m: repr(values[m.group()]), expression)
+    expression = " ".join(expression.replace("&&", " and ").replace("||", " or ").split())
+    tree = ast.parse(expression, mode="eval")
+    allowed = (ast.Expression, ast.BoolOp, ast.And, ast.Or, ast.Compare, ast.Eq, ast.NotEq, ast.Constant)
+    test.assertTrue(all(isinstance(node, allowed) for node in ast.walk(tree)), expression)
+    return eval(compile(tree, "checked-in-workflow-expression", "eval"), {"__builtins__": {}})
+
+
 class PublicationRecoveryWorkflowTests(unittest.TestCase):
     """Evaluate the checked-in job guards/ref, without dispatching any workflow."""
     @classmethod
@@ -310,19 +325,13 @@ class PublicationRecoveryWorkflowTests(unittest.TestCase):
         cls.checkout = re.search(r"\n          ref: \$\{\{ (.*?) \}\}", cls.job).group(1)
 
     def evaluate(self, expression, *, candidate="failure", candidate_sha=OTHER, publication="true",
-                 detect="success", auto_publish="true"):
-        values = {"needs.detect.result": detect, "needs.candidate.result": candidate,
+                 detect="success", auto_publish="true", repository="tonysuper666-creator/BiliPai-Windows", private=False):
+        values = {"github.repository": repository, "github.event.repository.private": private, "needs.detect.result": detect, "needs.candidate.result": candidate,
                   "vars.BILIPAI_WINDOWS_AUTO_PUBLISH": auto_publish,
                   "needs.detect.outputs.publication_needed": publication,
                   "needs.detect.outputs.source_sha": SOURCE,
                   "needs.candidate.outputs.source_sha": candidate_sha}
-        expression = expression.replace("always()", "True")
-        expression = re.sub(r"\b(?:needs|vars)\.[A-Za-z0-9_.]+", lambda m: repr(values[m.group()]), expression)
-        expression = " ".join(expression.replace("&&", " and ").replace("||", " or ").split())
-        tree = ast.parse(expression, mode="eval")
-        allowed = (ast.Expression, ast.BoolOp, ast.And, ast.Or, ast.Compare, ast.Eq, ast.NotEq, ast.Constant)
-        self.assertTrue(all(isinstance(node, allowed) for node in ast.walk(tree)), expression)
-        return eval(compile(tree, "checked-in-recovery-expression", "eval"), {"__builtins__": {}})
+        return evaluate_workflow_guard(self, expression, values)
 
     def test_failed_candidate_does_not_block_existing_source_publication_recovery(self):
         self.assertTrue(self.evaluate(self.condition))
@@ -346,6 +355,89 @@ class PublicationRecoveryWorkflowTests(unittest.TestCase):
     def test_failed_detect_or_disabled_publication_cannot_dispatch_recovery(self):
         self.assertFalse(self.evaluate(self.condition, detect="failure"))
         self.assertFalse(self.evaluate(self.condition, auto_publish="false"))
+
+
+class OwnPublicWindowsWorkflowTests(unittest.TestCase):
+    """Read every active server job and upload step, not a stand-in condition."""
+    @classmethod
+    def setUpClass(cls):
+        folder = Path(__file__).resolve().parents[3] / ".github/workflows"
+        cls.workflows = {path.name: path.read_text(encoding="utf-8") for path in folder.glob("*.yml")}
+        cls.jobs = {}
+        for name, source in cls.workflows.items():
+            body = source.split("\njobs:\n", 1)[1]
+            starts = list(re.finditer(r"(?m)^  ([A-Za-z0-9_-]+):$", body))
+            for index, start in enumerate(starts):
+                end = starts[index + 1].start() if index + 1 < len(starts) else len(body)
+                cls.jobs[(name, start.group(1))] = body[start.start():end]
+
+    def admitted(self, name, job, **changes):
+        body = self.jobs[(name, job)]
+        match = re.search(r"(?m)^    if: (.+)$", body)
+        self.assertIsNotNone(match, "Every server job needs its own condition")
+        condition = match.group(1)
+        if condition == ">-":
+            condition = re.match(r"(?:      [^\n]*(?:\n|$))+", body[match.end() + 1:]).group()
+        values = {"github.repository": "tonysuper666-creator/BiliPai-Windows", "github.event.repository.private": False,
+                  "github.event_name": "workflow_dispatch", "inputs.render_diagnostic": job == "render-diagnostic",
+                  "vars.BILIPAI_WINDOWS_AUTO_SYNC": "true", "vars.BILIPAI_WINDOWS_AUTO_PUBLISH": "true",
+                  "needs.windows.outputs.release": "true", "needs.detect.outputs.update_needed": "true",
+                  "needs.detect.result": "success", "needs.candidate.result": "success",
+                  "needs.detect.outputs.publication_needed": "true", "needs.candidate.outputs.source_sha": SOURCE}
+        values.update(changes)
+        return evaluate_workflow_guard(self, condition, values)
+
+    def test_all_server_jobs_require_own_public_repository(self):
+        self.assertEqual(set(self.workflows), {"windows-desktop.yml", "windows-upstream-sync.yml"})
+        self.assertEqual(len(self.jobs), 6)
+        for name, job in self.jobs:
+            with self.subTest(name=name, job=job):
+                self.assertTrue(self.admitted(name, job))
+                for repository in ("jay3-yy/BiliPai", "someone/BiliPai-Windows", "tonysuper666-creator/another-repo"):
+                    self.assertFalse(self.admitted(name, job, **{"github.repository": repository}))
+                self.assertFalse(self.admitted(name, job, **{"github.event.repository.private": True}))
+
+    def test_every_upload_has_one_day_retention_and_original_missing_file_policy(self):
+        uploads = 0
+        for (name, job), body in self.jobs.items():
+            starts = list(re.finditer(r"(?m)^      - ", body))
+            for index, start in enumerate(starts):
+                end = starts[index + 1].start() if index + 1 < len(starts) else len(body)
+                step = body[start.start():end]
+                if "uses: actions/upload-artifact@" not in step:
+                    continue
+                uploads += 1
+                with self.subTest(name=name, job=job):
+                    self.assertEqual(re.findall(r"(?m)^          retention-days: (.+)$", step), ["1"])
+                    self.assertRegex(step, r"(?m)^          if-no-files-found: (warn|error)$")
+        self.assertEqual(uploads, 9)
+
+    def test_only_standard_runner_labels_and_readonly_default_permissions(self):
+        for (name, job), body in self.jobs.items():
+            with self.subTest(name=name, job=job):
+                self.assertIn(re.search(r"(?m)^    runs-on: (.+)$", body).group(1), ("windows-latest", "ubuntu-latest"))
+        for source in self.workflows.values():
+            self.assertRegex(source, r"(?m)^permissions:\n  contents: read$")
+
+    def test_diagnostic_dispatch_keeps_normal_build_and_publish_excluded(self):
+        name = "windows-desktop.yml"
+        self.assertTrue(self.admitted(name, "render-diagnostic"))
+        self.assertFalse(self.admitted(name, "render-diagnostic", **{"github.event_name": "push"}))
+        self.assertFalse(self.admitted(name, "windows", **{"inputs.render_diagnostic": True}))
+        self.assertFalse(self.admitted(name, "publish", **{"needs.windows.outputs.release": ""}))
+
+    def test_manual_and_two_hour_schedule_keep_original_enablement(self):
+        name = "windows-upstream-sync.yml"
+        self.assertIn("- cron: '23 */2 * * *'", self.workflows[name])
+        self.assertTrue(self.admitted(name, "detect", **{"vars.BILIPAI_WINDOWS_AUTO_SYNC": "false"}))
+        self.assertFalse(self.admitted(name, "detect", **{"github.event_name": "schedule", "vars.BILIPAI_WINDOWS_AUTO_SYNC": "false"}))
+        self.assertTrue(self.admitted(name, "detect", **{"github.event_name": "schedule"}))
+
+    def test_candidate_and_publish_retain_original_required_outputs(self):
+        self.assertFalse(self.admitted("windows-upstream-sync.yml", "candidate", **{"needs.detect.outputs.update_needed": "false"}))
+        self.assertFalse(self.admitted("windows-desktop.yml", "publish", **{"needs.windows.outputs.release": "false"}))
+        self.assertFalse(self.admitted("windows-upstream-sync.yml", "recover_publication", **{"needs.detect.result": "failure"}))
+        self.assertFalse(self.admitted("windows-upstream-sync.yml", "recover_publication", **{"vars.BILIPAI_WINDOWS_AUTO_PUBLISH": "false"}))
 
 
 if __name__ == "__main__":
