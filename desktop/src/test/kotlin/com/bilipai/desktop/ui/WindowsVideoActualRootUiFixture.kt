@@ -3313,6 +3313,104 @@ object WindowsVideoActualRootUiFixture {
         samePublication()
     }
 
+    /** Opt-in actual Main input proof; no UI timer/state/native/source injection. */
+    private fun exerciseFullscreenIdleChrome() {
+        val entry = edt { current(); routes.currentKey }
+        val mainBounds = edt { Rectangle(window().bounds) }
+        fun ownedFullscreen() {
+            sameNative()
+            check(routes.currentKey === entry && window().bounds == mainBounds &&
+                (window() as ComposeWindow).placement == WindowPlacement.Fullscreen)
+        }
+        fun completeChrome(): Boolean = edt {
+            ownedFullscreen()
+            val scope = runCatching { videoScope("播放进度") }.getOrNull() ?: return@edt false
+            val nodes = descendants(scope)
+            listOf("返回", "退出全屏", "更多播放操作").all { label ->
+                nodes.count { hasLabel(it, label) && visible(it) &&
+                    it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+            }
+        }
+        fun moveOnCanvas(focus: Boolean = false) = edt {
+            ownedFullscreen()
+            val now = System.currentTimeMillis()
+            // A real crossing leaves the prior Compose button before entering
+            // the retained heavyweight peer. Deliver both to these owned inputs.
+            val compose = actualComposeInput()
+            compose.dispatchEvent(MouseEvent(compose, MouseEvent.MOUSE_EXITED, now, 0, -1, -1, 0, false))
+            val x = actualCanvas.width / 2; val y = actualCanvas.height / 2
+            actualCanvas.dispatchEvent(MouseEvent(actualCanvas, MouseEvent.MOUSE_MOVED, now + 1, 0, x, y, 0, false))
+            if (focus) {
+                actualCanvas.dispatchEvent(MouseEvent(actualCanvas, MouseEvent.MOUSE_PRESSED, now + 2,
+                    InputEvent.BUTTON1_DOWN_MASK, x, y, 1, false, MouseEvent.BUTTON1))
+                actualCanvas.dispatchEvent(MouseEvent(actualCanvas, MouseEvent.MOUSE_RELEASED, now + 3,
+                    0, x, y, 1, false, MouseEvent.BUTTON1))
+            }
+        }
+        fun bounds() = edt { ownedFullscreen(); Rectangle(actualCanvas.locationOnScreen, actualCanvas.size) }
+        fun capture(id: String, properties: Map<String, JsonElement>) {
+            edt { ownedFullscreen() }
+            actions.capture(id, edt { current() })
+            edt { ownedFullscreen() }
+            record(id, properties + mapOf("sameAcceptedSourceVersion" to JsonPrimitive(accepted.sourceVersion),
+                "fullImmutableSourceStillOwned" to JsonPrimitive(true), "sameActualCanvasRetained" to JsonPrimitive(true),
+                "nativeState" to safeState(), "physicalVideoPixelsIndependentlyChecked" to JsonPrimitive(false)))
+        }
+        check(playing() && actualPlayer.state.value.durationSeconds - actualPlayer.state.value.positionSeconds > 12.0) {
+            "Fullscreen idle proof requires a playing fixture with more than 12 seconds remaining"
+        }
+        moveOnCanvas(focus = true)
+        awaitFocus(actualPlayer.surface)
+        await("complete fullscreen chrome after actual retained-Canvas input") { completeChrome() }
+        val shown = bounds()
+        val started = System.nanoTime()
+        val beforePosition = actualPlayer.state.value.positionSeconds
+        var hidden: Rectangle? = null
+        await("after at least four seconds of observed idle both real chrome rows are hidden on the same Canvas/source") { edt {
+            ownedFullscreen()
+            check(playing())
+            val area = Rectangle(actualCanvas.locationOnScreen, actualCanvas.size)
+            val anchorsGone = listOf("返回", "退出全屏", "播放进度", "更多播放操作").none { label ->
+                all().any { hasLabel(it, label) && visible(it) }
+            }
+            if (anchorsGone && area.y < shown.y && area.y + area.height > shown.y + shown.height &&
+                area.x == shown.x && area.width == shown.width &&
+                System.nanoTime() - started >= 4_000_000_000L && actualPlayer.state.value.positionSeconds > beforePosition + .5) {
+                hidden = area; true
+            } else false
+        } }
+        capture("121-fullscreen-idle-hidden", mapOf("idleMillis" to JsonPrimitive((System.nanoTime() - started) / 1_000_000L),
+            "clockBefore" to JsonPrimitive(beforePosition), "clockAfter" to JsonPrimitive(actualPlayer.state.value.positionSeconds),
+            "shownCanvasHeight" to JsonPrimitive(shown.height), "hiddenCanvasHeight" to JsonPrimitive(requireNotNull(hidden).height),
+            "topAndBottomControlsHidden" to JsonPrimitive(true)))
+        moveOnCanvas()
+        await("actual retained-Canvas mouse move restores complete fullscreen controls and original viewport") {
+            completeChrome() && bounds() == shown && playing()
+        }
+        capture("122-fullscreen-mouse-restored", mapOf("inputMechanism" to JsonPrimitive("OWNED_ACTUAL_CANVAS_MOUSE_MOVED"),
+            "topAndBottomControlsRestored" to JsonPrimitive(true)))
+        click("暂停")
+        await("actual fullscreen Pause is acknowledged by the original native player") { sameNative(); actualPlayer.state.value.nativePaused == true }
+        moveOnCanvas(focus = true)
+        awaitFocus(actualPlayer.surface)
+        await("complete fullscreen chrome has settled while native pause remains acknowledged") {
+            completeChrome() && actualPlayer.state.value.nativePaused == true
+        }
+        val pausedAt = actualPlayer.state.value.positionSeconds
+        val pausedStart = System.nanoTime()
+        await("paused fullscreen retains complete controls beyond its idle delay") {
+            check(completeChrome()) { "Original fullscreen chrome disappeared while native pause was acknowledged" }
+            val state = actualPlayer.state.value
+            check(state.nativePaused == true && kotlin.math.abs(state.positionSeconds - pausedAt) < .15)
+            System.nanoTime() - pausedStart >= 4_500_000_000L
+        }
+        capture("123-fullscreen-paused-hold", mapOf("nativePauseAcknowledged" to JsonPrimitive(true),
+            "controlsStayedVisible" to JsonPrimitive(true), "menuHoldExecuted" to JsonPrimitive(false)))
+        click("播放")
+        await("original fullscreen Play resumes the same native source before normal fullscreen exit") { sameNative(); playing() }
+    }
+
     private fun exercise(replay: Boolean, localReplay: WindowsVideoLocalReplay?) {
         val initial = videoFrame()
         videoKey = initial.key as BiliPaiNavKey.VideoDetail
@@ -3345,6 +3443,7 @@ object WindowsVideoActualRootUiFixture {
         await("actual ComposeWindow fullscreen placement") { edt { (window() as ComposeWindow).placement == WindowPlacement.Fullscreen } }
         videoFrame(beforeFullscreen); Thread.sleep(1200)
         clockAndCapture("120-fullscreen-playing")
+        if (System.getProperty("bilipai.validation.fullscreenIdleInput") == "true") exerciseFullscreenIdleChrome()
         click("退出全屏")
         await("actual ComposeWindow floating placement restored") { edt { (window() as ComposeWindow).placement == WindowPlacement.Floating } }
         Thread.sleep(1200)
