@@ -222,9 +222,10 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $runtime = Join-Path $env:RUNNER_TEMP 'bilipai-comment-runtime.json'
+          $initScript = Join-Path $env:GITHUB_WORKSPACE 'desktop/tools/comment-search-ui.init.gradle'
           & ./gradlew.bat -p desktop --no-daemon --console=plain --max-workers=2 "-Dorg.gradle.jvmargs=-Xmx4g" `
             "-Porg.gradle.java.installations.paths=$env:JAVA_HOME" -Porg.gradle.java.installations.auto-detect=false `
-            -Porg.gradle.java.installations.auto-download=false -I desktop/tools/comment-search-ui.init.gradle `
+            -Porg.gradle.java.installations.auto-download=false -I "$initScript" `
             -PcommentSearchPhase=prepare "-PcommentSearchRuntime=$runtime" prepareCommentSearchUiRuntime
           if ($LASTEXITCODE -ne 0) { throw 'Original Main test runtime preparation failed.' }
       - name: Exercise the actual Main comment search and owned reply dialogs
