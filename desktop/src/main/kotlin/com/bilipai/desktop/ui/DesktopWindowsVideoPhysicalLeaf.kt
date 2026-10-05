@@ -183,6 +183,18 @@ internal class DesktopWindowsVideoActions(
     }
     val resumeSuggestion by assembly.playback.resumePlaybackSuggestion.collectAsState()
     val engagement by assembly.domains.engagement.uiState.collectAsState()
+    val engagementSubject = engagement.subject
+    val engagementBinding = remember(assembly, collectionQueueSource, engagementSubject) {
+        val expected = collectionQueueSource
+        if (expected == null || engagementSubject == null) null
+        else {
+            val factory = shell.factoryFor(assembly)
+            DesktopWindowsVideoEngagementBinding(expected, assembly.domains.engagement, engagementSubject,
+                stillOwned = { current() && rootEnvironment.currentKey() === route && assembly.native.isCurrent(expected) },
+                admission = { action -> factory.withPresentationAdmission(assembly, expected, action) })
+        }
+    }
+    DisposableEffect(engagementBinding) { onDispose { engagementBinding?.close() } }
     var bootstrapError by remember(assembly, route) { mutableStateOf<String?>(null) }
     val completion by remember(platforms.holder.settingsContext) {
         DesktopOriginalVideoControlSettings.getPlaybackCompletionBehavior(platforms.holder.settingsContext)
@@ -240,6 +252,7 @@ internal class DesktopWindowsVideoActions(
         // These are state-domain effects only. They bind the existing four VMs without mounting the phone screen.
         VideoDetailDomainEffects(platforms.holder.settingsContext, active, original, subject, favoriteEvent,
             assembly.playback, assembly.domains.engagement, assembly.domains.composer, assembly.domains.supplement)
+        DesktopWindowsVideoFollowGroupSection(assembly, engagementBinding)
     }
     val preferredSort = DesktopOriginalReplySettings.getCommentDefaultSortModeSync(platforms.holder.settingsContext.pluginContext)
     LaunchedEffect(assembly, success?.info?.aid, success?.info?.owner?.mid, active, preferredSort) {
@@ -407,7 +420,8 @@ internal class DesktopWindowsVideoActions(
                             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 TextButton(onClick = { if (current()) assembly.domains.engagement.toggleLike() }) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
                                 actions.favorite(assembly, success, ::current)
-                                TextButton(onClick = { if (current()) assembly.domains.engagement.toggleFollow() }) { Text(if(engagement.isFollowing) "已关注" else "关注") }
+                                TextButton(onClick = { engagementBinding?.toggleFollow() }, enabled = engagementBinding?.isOwned() == true) { Text(if(engagement.isFollowing) "已关注" else "关注") }
+                                TextButton(onClick = { engagementBinding?.triple() }, enabled = engagementBinding?.isOwned() == true) { Text("三连") }
                             }
                             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.toggleWatchLater() }) { Text("稍后再看") }

@@ -634,8 +634,240 @@ def explicit_audio_start_position_delta(path, body, audit_edits=None):
  if audit_edits is not None:audit_edits.extend(edits)
  return body
 
+def follow_group_source_lifetime_delta(rel,body,audit_edits=None):
+ if not rel.endswith('/VideoPlaybackViewModel.kt'):return body
+ original=body;edits=[]
+ def change(before,after):
+  nonlocal body
+  assert body.count(before)==1,('follow-group lifetime',before[:80],body.count(before))
+  index=body.index(before);body=body[:index]+after+body[index+len(before):]
+  edits.append(dict(offset=index,before=before,after=after))
+ change('''import kotlinx.coroutines.flow.receiveAsFlow
+''','''import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.filterNotNull
+''')
+ change('''    private val _toastEvent = Channel<PlayerToastMessage>()
+    val toastEvent = _toastEvent.receiveAsFlow()
+''','''    private val _toastEvent = Channel<PlayerToastMessage>()
+    private val _desktopFollowGroupToasts = Channel<Triple<com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest, PlayerToastMessage, Boolean>>()
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    val toastEvent = kotlinx.coroutines.flow.merge<Triple<com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest?, PlayerToastMessage, Boolean>>(
+        _toastEvent.receiveAsFlow().map { Triple(null, it, false) }, _desktopFollowGroupToasts.receiveAsFlow())
+        .map { (request, message, completed) ->
+            if (request == null || desktopFollowGroupFeedbackCurrent(request, completed)) message else null
+        }.filterNotNull()
+''')
+ change('''    fun showFollowGroupDialogForUser(mid: Long) {
+        if (mid <= 0L) return
+        followGroupTargetMid = mid
+        _followGroupDialogVisible.value = true
+        loadFollowGroupsForTarget()
+    }
+
+    fun dismissFollowGroupDialog() {
+        _followGroupDialogVisible.value = false
+    }
+
+    fun toggleFollowGroupSelection(tagId: Long) {
+        if (tagId == 0L) return
+        _followGroupSelectedTagIds.update { selected ->
+            if (selected.contains(tagId)) selected - tagId else selected + tagId
+        }
+    }
+
+    fun saveFollowGroupSelection() {
+        if (_isSavingFollowGroups.value || followGroupTargetMid <= 0L) return
+        val selected = _followGroupSelectedTagIds.value
+        environment.invocations.launch {
+            _isSavingFollowGroups.value = true
+            environment.actions
+                .overwriteFollowGroupIds(
+                    targetMids = setOf(followGroupTargetMid),
+                    selectedTagIds = selected
+                )
+                .onSuccess {
+                    dismissFollowGroupDialog()
+                    toast("分组设置已保存")
+                }
+                .onFailure { e ->
+                    toast("分组设置失败: ${e.message}")
+                }
+            _isSavingFollowGroups.value = false
+        }
+    }
+
+    private fun loadFollowGroupsForTarget() {
+        val targetMid = followGroupTargetMid
+        if (targetMid <= 0L) return
+        environment.invocations.launch {
+            _isFollowGroupsLoading.value = true
+            val tagsResult = environment.actions.getFollowGroupTags()
+            val userGroupResult = environment.actions.getUserFollowGroupIds(targetMid)
+
+            tagsResult.onSuccess { tags ->
+                _followGroupTags.value = tags.filter { it.tagid != 0L }
+            }.onFailure { e ->
+                _followGroupTags.value = emptyList()
+                toast("加载分组失败: ${e.message}")
+            }
+
+            userGroupResult.onSuccess { groupIds ->
+                _followGroupSelectedTagIds.value = groupIds.filterNot { it == 0L }.toSet()
+            }.onFailure {
+                _followGroupSelectedTagIds.value = emptySet()
+            }
+
+            _isFollowGroupsLoading.value = false
+        }
+    }
+''','''    private val _desktopFollowGroupRequest = MutableStateFlow<com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest?>(null)
+    val desktopFollowGroupRequest = _desktopFollowGroupRequest.asStateFlow()
+    private val desktopLatestFollowGroupRequest = MutableStateFlow<com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest?>(null)
+    private fun desktopFollowGroupRequestForAction() =
+        com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest.dispatchedRequest() ?: _desktopFollowGroupRequest.value
+
+    fun showFollowGroupDialogForUser(mid: Long) {
+        if (mid <= 0L) return
+        val source = environment.plugins.capturePlaybackDispatch() ?: return
+        val request = com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest(source, mid,
+            { captured -> environment.scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != false && _desktopFollowGroupRequest.value === captured &&
+                environment.plugins.isPlaybackDispatchCurrent(source) },
+            { action -> environment.plugins.admitPlaybackDispatch(source) { environment.commit(action) } })
+        val previous = _desktopFollowGroupRequest.value
+        var installed = false
+        environment.plugins.admitPlaybackDispatch(source) {
+            environment.commit {
+                if (_desktopFollowGroupRequest.value === previous) {
+                    _desktopFollowGroupRequest.value = request
+                    desktopLatestFollowGroupRequest.value = request
+                    followGroupTargetMid = mid
+                    _followGroupDialogVisible.value = true
+                    _isFollowGroupsLoading.value = false
+                    _isSavingFollowGroups.value = false
+                    installed = true
+                }
+            }
+        }
+        if (!installed) { request.close(); return }
+        previous?.close() // Cancel only the old exact jobs, outside admission.
+        loadFollowGroupsForTarget(request)
+    }
+
+    fun dismissFollowGroupDialog() {
+        val request = desktopFollowGroupRequestForAction() ?: return
+        if (request.commit {
+            _followGroupDialogVisible.value = false
+            _isFollowGroupsLoading.value = false
+            _isSavingFollowGroups.value = false
+            _desktopFollowGroupRequest.value = null
+        }) request.close()
+    }
+
+    fun toggleFollowGroupSelection(tagId: Long) {
+        if (tagId == 0L) return
+        val request = desktopFollowGroupRequestForAction() ?: return
+        request.commit {
+            _followGroupSelectedTagIds.update { selected ->
+                if (selected.contains(tagId)) selected - tagId else selected + tagId
+            }
+        }
+    }
+
+    fun saveFollowGroupSelection() {
+        val request = desktopFollowGroupRequestForAction() ?: return
+        if (!request.isOwned() || _isSavingFollowGroups.value || request.targetMid <= 0L) return
+        val targetMid = request.targetMid
+        val selected = _followGroupSelectedTagIds.value.toSet()
+        val ticket = request.ticket(com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest.Operation.SAVE)
+        val job = environment.invocations.launch(start = kotlinx.coroutines.CoroutineStart.LAZY) {
+            try {
+                ensureActive(); request.assertCurrent(ticket)
+                val result = environment.actions.overwriteFollowGroupIds(
+                    targetMids = setOf(targetMid), selectedTagIds = selected)
+                ensureActive(); request.assertCurrent(ticket)
+                (result.exceptionOrNull() as? CancellationException)?.let { throw it }
+                var saved = false
+                var message: String? = null
+                if (!request.publish(ticket) {
+                    result.onSuccess {
+                        _followGroupDialogVisible.value = false
+                        _isSavingFollowGroups.value = false
+                        _desktopFollowGroupRequest.value = null
+                        saved = true
+                        message = "分组设置已保存"
+                    }.onFailure { e -> message = "分组设置失败: ${e.message}" }
+                }) throw CancellationException("Follow-group save publication retired")
+                if (saved) request.close()
+                message?.let { desktopFollowGroupToast(request, it, completed = saved) }
+            } finally {
+                request.finish(ticket) { _isSavingFollowGroups.value = false }
+            }
+        }
+        if (request.begin(ticket, job) { _isSavingFollowGroups.value = true }) job.start()
+    }
+
+    private fun loadFollowGroupsForTarget(request: com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest) {
+        val targetMid = request.targetMid
+        if (targetMid <= 0L) return
+        val ticket = request.ticket(com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest.Operation.LOAD)
+        val job = environment.invocations.launch(start = kotlinx.coroutines.CoroutineStart.LAZY) {
+            try {
+                ensureActive(); request.assertCurrent(ticket)
+                val tagsResult = environment.actions.getFollowGroupTags()
+                ensureActive(); request.assertCurrent(ticket)
+                (tagsResult.exceptionOrNull() as? CancellationException)?.let { throw it }
+                val userGroupResult = environment.actions.getUserFollowGroupIds(targetMid)
+                ensureActive(); request.assertCurrent(ticket)
+                (userGroupResult.exceptionOrNull() as? CancellationException)?.let { throw it }
+                var message: String? = null
+                if (!request.publish(ticket) {
+                    tagsResult.onSuccess { tags ->
+                        _followGroupTags.value = tags.filter { it.tagid != 0L }
+                    }.onFailure { e ->
+                        _followGroupTags.value = emptyList()
+                        message = "加载分组失败: ${e.message}"
+                    }
+                    userGroupResult.onSuccess { groupIds ->
+                        _followGroupSelectedTagIds.value = groupIds.filterNot { it == 0L }.toSet()
+                    }.onFailure { _followGroupSelectedTagIds.value = emptySet() }
+                }) throw CancellationException("Follow-group load publication retired")
+                request.assertCurrent(ticket)
+                message?.let { desktopFollowGroupToast(request, it) }
+            } finally {
+                request.finish(ticket) { _isFollowGroupsLoading.value = false }
+            }
+        }
+        if (request.begin(ticket, job) { _isFollowGroupsLoading.value = true }) job.start()
+    }
+
+    private fun desktopFollowGroupFeedbackCurrent(
+        request: com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest, completed: Boolean
+    ): Boolean = desktopLatestFollowGroupRequest.value === request &&
+        environment.scope.coroutineContext[kotlinx.coroutines.Job]?.isActive != false && environment.plugins.isPlaybackDispatchCurrent(request.sourceOwner) &&
+        (completed || request.isOwned())
+
+    private fun desktopFollowGroupToast(
+        request: com.bilipai.desktop.ui.DesktopWindowsVideoFollowGroupRequest, message: String, completed: Boolean = false
+    ) {
+        environment.invocations.launch {
+            ensureActive()
+            if (!desktopFollowGroupFeedbackCurrent(request, completed))
+                throw CancellationException("Follow-group feedback retired")
+            _desktopFollowGroupToasts.send(Triple(request, buildPlayerToastMessage(message), completed))
+        }
+    }
+''')
+ restored=body
+ for edit in reversed(edits):
+  index=edit['offset'];after=edit['after']
+  assert restored[index:index+len(after)]==after
+  restored=restored[:index]+edit['before']+restored[index+len(after):]
+ assert restored==original
+ if audit_edits is not None:audit_edits.extend(edits)
+ return body
+
 def generate(repo,output,standalone=False):
- outputs=[]
+ outputs=[];follow_group_audits=[]
  for recipe in RECIPES:
   raw=wide(_desktop_canonical_source(repo, recipe['originalPath'])).read_text(encoding='utf-8').replace('\r\n','\n')
   assert sha(raw)==recipe['originalSha256LF'],recipe['originalPath']+' differs from pinned stable source'
@@ -659,6 +891,13 @@ def generate(repo,output,standalone=False):
   body=owned_bgm_result_delta(recipe['output'],body)
   body=explicit_audio_start_position_delta(recipe['output'],body)
   body=composer_source_lifetime_delta(recipe['output'],body)
+  follow_group_edits=[]
+  follow_group_before_sha=sha(body)
+  body=follow_group_source_lifetime_delta(recipe['output'],body,follow_group_edits)
+  if follow_group_edits:
+   follow_group_audits.append(dict(path=recipe['output'],origin=recipe['originalPath'],
+       originalSha256LF=recipe['originalSha256LF'],beforeSha256LF=follow_group_before_sha,
+       afterSha256LF=sha(body),inverseEdits=follow_group_edits))
   recovery_edits=[]
   body=_failure_recovery_delta(recipe['output'],body,recovery_edits)
   emitted=standalone or recipe['mode']!='direct'
@@ -666,10 +905,18 @@ def generate(repo,output,standalone=False):
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
    target.write_text(body,encoding='utf-8',newline='\n')
   outputs.append(dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode=recipe['mode'],generated=emitted,
-                      failureRecoveryInverseEdits=recovery_edits))
+                      failureRecoveryInverseEdits=recovery_edits,followGroupInverseEdits=follow_group_edits))
  outputs.append(generate_original_video_action_status(repo,output))
  outputs.append(generate_original_video_progress(repo,output))
  outputs.append(_failure_metadata(repo,output))
+ metadata_path=Path(output)/'original-video-follow-group-lifetime.json'
+ metadata_path.parent.mkdir(parents=True,exist_ok=True)
+ metadata_path.write_text(json.dumps(dict(schemaVersion=1,upstreamCommit=COMMIT,
+     adaptation='Windows exact accepted source and dialog request lifetime; original group API and UI preserved',
+     inverseOrder='Restore failureRecoveryInverseEdits before followGroupInverseEdits',
+     audits=follow_group_audits),ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
+ outputs.append(dict(path=metadata_path.name,origin='Windows follow-group lifetime adaptation',
+     sha256LF=sha(metadata_path.read_text(encoding='utf-8')),mode='metadata',generated=True))
  return outputs
 if __name__=='__main__':
  parser=argparse.ArgumentParser();parser.add_argument('--repo',required=True);parser.add_argument('--output',required=True);parser.add_argument('--standalone',action='store_true')
