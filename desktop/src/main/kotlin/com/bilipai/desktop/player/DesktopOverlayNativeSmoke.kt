@@ -25,6 +25,8 @@ internal object DesktopOverlayNativeSmoke {
             Thread.sleep(25)
         }
         check(player.state.value.firstVideoFrameReady && player.state.value.nativePaused == true) { "Native overlay source did not display a paused decoded frame." }
+        val originalSource = requireNotNull(player.currentSourceSnapshot())
+        val originalPosition = player.state.value.positionSeconds
         val overlay = DanmakuOverlay(player, renderPlatform = DesktopWindowsDanmakuRenderPlatform { requireNotNull(SwingUtilities.getWindowAncestor(player.surface)) }, source = noNetwork)
         val robot = Robot()
         fun capture(): BufferedImage {
@@ -134,6 +136,21 @@ internal object DesktopOverlayNativeSmoke {
         } finally {
             overlay.close()
             SwingUtilities.invokeAndWait { }
+        }
+        // The BAS click deliberately seeks. Restore this fixture's incoming paused
+        // frame before the next independent pixel test captures its baseline.
+        var restoreId: Long? = null
+        check(player.admitSourceSnapshot(originalSource) {
+            restoreId = player.seekToTrackedIfSourceVersion(originalSource.sourceVersion, originalPosition)
+        }) { "BAS fixture lost its original playback source before restoration." }
+        val restore = requireNotNull(restoreId)
+        val restoreDeadline = System.nanoTime() + 10_000_000_000L
+        while (System.nanoTime() < restoreDeadline && player.state.value.seekCompletedId != restore) Thread.sleep(25)
+        val restored = player.state.value
+        check(restored.seekCompletedId == restore && player.ownsSourceSnapshot(originalSource) &&
+            restored.paused && restored.nativePaused == true && !restored.loading &&
+            kotlin.math.abs(restored.positionSeconds - originalPosition) < 0.1) {
+            "BAS fixture did not restore its incoming paused frame."
         }
     }
 

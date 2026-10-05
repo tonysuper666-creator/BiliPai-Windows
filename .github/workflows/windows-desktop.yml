@@ -217,6 +217,8 @@ jobs:
             desktop/build/reports/*/native-danmaku-plugin-style.png
             desktop/build/reports/*/native-bas-overlay.png
             desktop/build/reports/*/native-bas-proof.json
+            desktop/build/reports/*/native-anime4k-*.png
+            desktop/build/reports/*/native-anime4k-failed-state.txt
             desktop/build/reports/*/native-eye-protection.png
           if-no-files-found: warn
       - name: Upload packaged updater evidence

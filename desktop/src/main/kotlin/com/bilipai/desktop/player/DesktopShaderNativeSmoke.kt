@@ -84,6 +84,12 @@ internal object DesktopShaderNativeSmoke {
             }
             Thread.sleep(50)
         }
+        val failed = capture()
+        val delta = difference(baseline, failed)
+        ImageIO.write(failed, "png", File(outputDirectory, "native-anime4k-failed.png"))
+        File(outputDirectory, "native-anime4k-failed-state.txt").writeText(
+            "baselinePosition=$position\nactualPosition=${player.state.value.positionSeconds}\n" +
+                "noise=$noise\nmeanDelta=${delta.first}\nchangedPixels=${delta.second}\n")
         error("Clearing shader hooks did not restore the unfiltered native video frame.")
     }
 
