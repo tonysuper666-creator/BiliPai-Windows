@@ -350,8 +350,27 @@ internal fun DesktopDecorativeVideoFeedbackPopup(
     content: @Composable (windowAvailable: Boolean) -> Unit,
 ) {
     key(sourceOwner, subject) {
-        if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return@key
-        val owner = LocalAwtWindow.current ?: return@key
+        DesktopDecorativeBrandSuccessPopup(surfaceSize, anchorComponent, sourceOwner, ownsPresentation,
+            onWindowAvailability, onWindowRejected, content)
+    }
+}
+
+/** Same carrier for the original Root business receipt; no fake video subject. */
+@Composable
+internal fun DesktopDecorativeBrandSuccessPopup(
+    surfaceSize: IntSize,
+    anchorComponent: Component,
+    receipt: Any,
+    ownsPresentation: () -> Boolean,
+    onWindowAvailability: (Any, Boolean) -> Unit,
+    onWindowRejected: () -> Unit,
+    content: @Composable (windowAvailable: Boolean) -> Unit,
+) {
+    // Keep early exits outside Compose's inline key block. The current compiler
+    // otherwise leaves a NON_LOCAL_RETURN marker with an illegal JVM method name.
+    if (surfaceSize.width <= 0 || surfaceSize.height <= 0) return
+    val owner = LocalAwtWindow.current ?: return
+    key(receipt) {
         val context = currentCompositionLocalContext
         // Keyed source scope prevents an old disposal callback from writing the
         // successor's available state. The original lifecycle and Root foreground

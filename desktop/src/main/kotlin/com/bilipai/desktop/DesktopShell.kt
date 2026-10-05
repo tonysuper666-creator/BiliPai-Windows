@@ -390,7 +390,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         val registration = windowsDisplayScale.registerWindowContext(storageSettingsContext)
         onDispose { registration.close() }
     }
-    val downloads = remember(repository,storageSettingsContext) { DesktopDownloadManager(repository) {
+    val brandSuccessEvents = remember(repository) {
+        com.android.purebilibili.core.events.BrandSuccessEvents { !isClosing() }
+    }
+    DisposableEffect(brandSuccessEvents) { onDispose { brandSuccessEvents.close() } }
+    val downloads = remember(repository,storageSettingsContext,brandSuccessEvents) { DesktopDownloadManager(repository,brandSuccessEvents) {
         val raw=(storageSettingsContext.pluginContext.store.preferences("settings")["download_path"] as? kotlinx.serialization.json.JsonPrimitive)?.takeIf { it.isString }?.content
         storageSettingsContext.requireCurrent()
         resolveDesktopOriginalDownloadDestination(raw,DesktopDownloadManager.defaultDownloadRoot())
@@ -1470,6 +1474,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         com.bilipai.desktop.ui.LocalDesktopWindowsAudioOutputController provides windowsAudioOutputController,
         com.bilipai.desktop.ui.LocalDesktopDetailedCommentTimeContext provides globalPluginContext,
         com.android.purebilibili.core.ui.LocalDetailedCommentTimeEnabled provides detailedCommentTimeEnabled,
+        LocalDesktopBrandSuccessEvents provides brandSuccessEvents,
         LocalDesktopDynamicTimelinePreferences provides dynamicTimelinePreferences,
         LocalDesktopHomeCardProgress provides homeCardProgress,
         LocalDesktopHomeCardPreferences provides homeCardPreferences) {
@@ -1769,7 +1774,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 onFavoriteSaved = { value, count -> if (current() && expected != null && owner.native.isCurrent(expected)) {
                                                     owner.domains.engagement.applyFavoriteFolderResult(value)
                                                     owner.domains.engagement.uiState.value.subject?.let { subject -> owner.domains.engagement.confirmDesktopFavoriteCount(subject, count) }
-                                                } }, onLogin = { loginDialog = true }, feedback = { error = it })
+                                                } }, onLogin = { loginDialog = true }, feedback = { error = it }, sourceOwner = expected)
                                         },
                                         overlay = {
                                             if(player!=null && danmaku!=null && danmakuAssembly!=null && danmakuSource!=null && rendererDanmakuSettings.enabled && !pipActive && ownsDanmakuSource())
@@ -1781,7 +1786,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 val capturedSource = danmakuSource
                                                 val commandEngagement by capturedAssembly.domains.engagement.uiState.collectAsState()
                                                 val attentionSubject = commandEngagement.subject
-                                                val attention = remember(capturedAssembly, capturedSource, attentionSubject) {
+                                                val attention = remember(capturedAssembly, capturedSource, attentionSubject, brandSuccessEvents) {
                                                     attentionSubject?.let { subject -> DesktopWindowsCommandAttentionBinding(
                                                         capturedSource, capturedAssembly.domains.engagement, subject,
                                                         stillOwned = ::ownsDanmakuSource,
@@ -1789,7 +1794,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                         feedbackAdmission = { action -> ownsDanmakuFeedbackSource() && ordinaryVideo.factoryFor(capturedAssembly)
                                                             .withPresentationAdmission(capturedAssembly, capturedSource, action) },
                                                         withAdmission = { action -> ownsDanmakuSource() && ordinaryVideo.factoryFor(capturedAssembly)
-                                                            .withPresentationAdmission(capturedAssembly, capturedSource, action) }) }
+                                                            .withPresentationAdmission(capturedAssembly, capturedSource, action) }).also { it.mountBrandFeedback(brandSuccessEvents) } }
                                                 }
                                                 DisposableEffect(attention) { onDispose { attention?.close() } }
                                                 DesktopVideoCommandVoteContent(repository, player, capturedSource,

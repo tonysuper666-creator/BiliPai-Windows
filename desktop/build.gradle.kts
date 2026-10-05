@@ -1159,6 +1159,8 @@ val extractVideoCommentUi by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
 
 val extractOriginalFavorites by tasks.registering(Exec::class) {
+    inputs.file("tools/v029_brand_success.py")
+    inputs.dir("upstream-slices/v029-brand-success")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-favorites.py",
@@ -2135,6 +2137,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalPlayerFullControls, veri
 
 // After extractOriginalWatchLater; same compiler/dependencies and one source graph.
 val extractOriginalFollowing by tasks.registering(Exec::class) {
+    inputs.file("tools/v029_brand_success.py")
+    inputs.dir("upstream-slices/v029-brand-success")
     dependsOn(prepareUpstreamSources, extractOriginalFavorites, extractOriginalWatchLater)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-following.py",
@@ -3148,6 +3152,8 @@ tasks.register<JavaExec>("windowsVideoInteractionRootUiSmoke") {
 }
 // Fixed original brand identities/resources and complete BlueSnow body; existing Windows ReduceMotion binding.
 val extractOriginalBrandMotion by tasks.registering(Exec::class) {
+    inputs.file("tools/v029_brand_success.py")
+    inputs.dir("upstream-slices/v029-brand-success")
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-brand-motion.py",
         "--repo", repositoryRoot.absolutePath,

@@ -197,7 +197,8 @@ internal class DesktopWindowsVideoActions(
             it.bvid == accepted.request.bvid && it.cid == accepted.request.cid
         } == true
     }
-    val engagementBinding = remember(assembly, feedbackSource, engagementSubject, presentationAlive, pipActive) {
+    val brandEvents = LocalDesktopBrandSuccessEvents.current
+    val engagementBinding = remember(assembly, feedbackSource, engagementSubject, presentationAlive, pipActive, brandEvents) {
         val expected = feedbackSource
         if (expected == null || engagementSubject == null) null
         else {
@@ -206,7 +207,7 @@ internal class DesktopWindowsVideoActions(
                 stillOwned = { current() && rootEnvironment.currentKey() === route && assembly.native.isCurrent(expected) },
                 stillFeedbackOwned = { feedbackPresentationCurrent() && factory.isPresentationCurrent(assembly, expected) &&
                     assembly.native.isCurrent(expected) },
-                admission = { action -> factory.withPresentationAdmission(assembly, expected, action) })
+                admission = { action -> factory.withPresentationAdmission(assembly, expected, action) }).also { it.mountBrandFeedback(brandEvents) }
         }
     }
     DisposableEffect(engagementBinding) { onDispose { engagementBinding?.close() } }

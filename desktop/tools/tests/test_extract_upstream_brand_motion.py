@@ -68,7 +68,7 @@ class BrandMotionProducerTest(unittest.TestCase):
                         self.assertEqual(brand.wide(REPO / brand.ARCHIVE / original_path).read_bytes(), target.read_bytes())
                     else:
                         self.assertFalse(target.exists())
-            self.assertEqual(30, len(brand.files_under(output)))
+            self.assertEqual(33, len(brand.files_under(output)))
             self.assertEqual(1, sum(path.endswith("BlueSnowMaidAnimation.kt") for path in brand.files_under(output)))
             self.assertFalse(any(path.endswith("ReduceMotion.kt") for path in brand.files_under(output)))
 

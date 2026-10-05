@@ -25,6 +25,7 @@ internal class DesktopPersonalListsRoot(
     privacyModeEnabled: () -> Boolean,
     feedback: (String) -> Unit,
     val globalHazeState: dev.chrisbanes.haze.HazeState,
+    private val brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents,
 ) : AutoCloseable {
     private val closed = AtomicBoolean(false)
     private val job = SupervisorJob(gate.scope.coroutineContext[Job])
@@ -74,7 +75,7 @@ internal class DesktopPersonalListsRoot(
             cachedPosition, { check(); privacy() }, WatchLaterRefreshBus::notifyChanged,
             { repository.ownedHomeAccessToken(gate.epoch, owned) },
             { repository.withPrimaryPlaybackAdmission(gate.epoch, owned) { repository.accessTokenCredentials().second } },
-            { change -> check(); repository.followStateEvents.confirm(capturedFollowOwner,change) })
+            { change -> check(); repository.followStateEvents.confirm(capturedFollowOwner,change) }).also { it.mountBrandFeedback(brandEvents, commit) }
     }
 
     fun watchLater(key: BiliPaiNavKey): DesktopWatchLaterEntry {

@@ -26,6 +26,13 @@ class DesktopFavoriteFolderEnvironment(
     private val onFavoriteSaved:(Boolean,Int)->Unit,
     private val feedback:(String)->Unit,
 ) {
+    private var brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents? = null
+    private var captureBrandOrigin: (suspend () -> DesktopBrandSuccessOrigin?)? = null
+    fun mountBrandFeedback(events: com.android.purebilibili.core.events.BrandSuccessEvents,
+        capture: suspend () -> DesktopBrandSuccessOrigin?) {
+        assertOwned(); check(brandEvents == null || brandEvents === events)
+        brandEvents = events; captureBrandOrigin = capture
+    }
     private val closed=AtomicBoolean(false)
     fun close() { closed.set(true) }
     fun assertOwned() { if(closed.get() || !scope.isActive || !stillOwned()) throw CancellationException("Favorite drawer owner retired") }
@@ -33,7 +40,13 @@ class DesktopFavoriteFolderEnvironment(
     fun currentFavoriteCount():Int { assertOwned();return readFavoriteCount() }
     suspend fun getFavoriteFolders(aid:Long?):Result<List<FavFolder>> { assertOwned();return loadFolders(aid).also { assertOwned() } }
     suspend fun updateFavoriteFolders(aid:Long,addFolderIds:Set<Long>,removeFolderIds:Set<Long>):Result<Boolean> {
-        assertOwned();return saveFolders(aid,addFolderIds,removeFolderIds).also { assertOwned() }
+        assertOwned()
+        val origin = captureBrandOrigin?.invoke()
+        val result = saveFolders(aid,addFolderIds,removeFolderIds)
+        assertOwned()
+        if (result.isSuccess && addFolderIds.isNotEmpty() && origin != null)
+            brandEvents?.favoriteSaved(origin)
+        return result
     }
     suspend fun createFavFolder(title:String,intro:String,isPrivate:Boolean):Result<Boolean> {
         assertOwned();return createFolder(title,intro,isPrivate).also { assertOwned() }

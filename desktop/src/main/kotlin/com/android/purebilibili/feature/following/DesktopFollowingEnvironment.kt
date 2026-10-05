@@ -29,7 +29,7 @@ abstract class DesktopFollowingScopedOwner(protected val environment:DesktopFoll
 class DesktopFollowingOwnedActions(private val environment:DesktopFollowingEnvironment) {
     private val action get()=environment.favorites.actions
     suspend fun getAllFollowGroupUsers()=environment.owned {action.getAllFollowGroupUsers()}
-    suspend fun followUser(mid:Long,follow:Boolean)=environment.owned {action.followUser(mid,follow)}
+    suspend fun followUser(mid:Long,follow:Boolean,emitBrandFeedback:Boolean=true)=environment.owned {action.followUser(mid,follow,emitBrandFeedback)}
     suspend fun getFollowGroupTags()=environment.owned {action.getFollowGroupTags()}
     suspend fun getFollowGroupMemberMids(tagId:Long,targetMids:Set<Long>)=environment.owned {action.getFollowGroupMemberMids(tagId,targetMids)}
     suspend fun getUserFollowGroupIds(mid:Long)=environment.owned {action.getUserFollowGroupIds(mid)}

@@ -46,6 +46,8 @@ def generate(repo,output,standalone=False):
  spec=importlib.util.spec_from_file_location('following_parser',repo/'desktop/tools/extract-upstream-dynamic-reply-protocol.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)
  spec=importlib.util.spec_from_file_location('following_fav',repo/'desktop/tools/extract-upstream-favorites.py');fav=importlib.util.module_from_spec(spec);spec.loader.exec_module(fav);fav.parser=parser
  s=fav.drop_logs(s)
+ from v029_brand_success import following_delta
+ s,businessAudit=following_delta(s);rows[-1]['windowsBrandSuccessAdaptation']=businessAudit
  emit('feature/following/FollowingListScreen',s)
  return rows
 if __name__=='__main__':

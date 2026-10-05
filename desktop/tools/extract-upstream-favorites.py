@@ -126,7 +126,10 @@ def produce():
  body=body.replace('val response = api.','val response = environment.api.').replace('                    api.','                    environment.api.')
  body=body.replace('TokenManager.midCache','environment.currentMid()').replace('val response = api.','val response = environment.api.')
  body=body.replace('_followStateChanges.tryEmit(FollowStateChange(mid = mid, isFollowing = follow))','environment.confirmFollow(FollowStateChange(mid = mid, isFollowing = follow))')
- body=drop_logs(body);output('data/repository/DesktopOriginalFavoriteActions',body,'selected complete original create-folder/quick-save/default-folder/watchlater members; latter is compile-only auxiliary history dependency')
+ body=drop_logs(body)
+ from v029_brand_success import favorites_delta
+ body,businessAudit=favorites_delta(body);records[-1]['windowsBrandSuccessAdaptation']=businessAudit
+ output('data/repository/DesktopOriginalFavoriteActions',body,'selected complete original create-folder/quick-save/default-folder/watchlater members; latter is compile-only auxiliary history dependency')
  s=source('data/repository/BangumiRepository');members=[]
  for name in ['getMyFollowBangumi','unfollowBangumi','updateBangumiFollowStatus']:
   a,b=parser.fun_span(s,name);members.append(s[a:b])
@@ -270,6 +273,7 @@ def generate(repo:Path,output:Path,standalone=False):
  for row in records:
   entry=canonical.setdefault(row['path'],dict(path=row['path'],upstreamCommit=row['upstreamCommit'],sha256LfUtf8=row['sha256LfUtf8'],outputs=[],selections=[]))
   if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
+  if row.get('windowsBrandSuccessAdaptation'):entry['windowsBrandSuccessAdaptation']=row['windowsBrandSuccessAdaptation']
   for key in ['historySourceAdaptation','historyGeneratedAdaptation','rawSha256Bytes','gitBlob']:
    if key in row:entry[key]=row[key]
   if row.get('recapGeneratedAdaptation'):entry['recapGeneratedAdaptation']=row['recapGeneratedAdaptation']

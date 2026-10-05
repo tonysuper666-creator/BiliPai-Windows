@@ -223,6 +223,11 @@ enum class DesktopMaidAnimation(
                     countedAdaptations=recipe,
                     scope="Complete original BlueSnow lifecycle body with Windows resources, Canvas, clock and foreground ports. Execution and visible rendering require separate validation.")
     outputs[UI_PROOF_PATH] = (json.dumps(ui_proof, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    from v029_brand_success import runtime_outputs
+    business = runtime_outputs()
+    if set(business) & set(outputs):
+        raise ValueError("Brand success output collision")
+    outputs.update(business)
     return outputs
 
 

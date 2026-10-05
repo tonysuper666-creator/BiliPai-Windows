@@ -16,10 +16,11 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepository, social: DesktopSocialRepository,
+internal fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepository, social: DesktopSocialRepository,
     community: DesktopCommunityRepository, onUser: (Long) -> Unit, onLogin: () -> Unit, onNotes: (VideoDetails) -> Unit,
     onSeek: (cid: Long, seconds: Double) -> Unit, commentContent: @Composable () -> Unit,
-    globalStore: DesktopPluginStore, stillOwned: () -> Boolean, onFavoriteCount: (Int) -> Unit, modifier: Modifier = Modifier,
+    globalStore: DesktopPluginStore, stillOwned: () -> Boolean, onFavoriteCount: (Int) -> Unit,
+    sourceOwner: DesktopOriginalVideoAcceptedPublication?, modifier: Modifier = Modifier,
     cid: Long = details.pages.firstOrNull()?.cid ?: 0L) {
     val scope = rememberCoroutineScope()
     val account by repository.account.collectAsState()
@@ -71,7 +72,7 @@ fun VideoEngagementPanel(details: VideoDetails, repository: DesktopRepository, s
                     raw.stat.favorite, ::owned,
                     onFavoriteLoaded = { value -> relationRevision++; relation = (relation ?: VideoRelation(false, false, 0)).copy(favorited = value) },
                     onFavoriteSaved = { value, count -> relationRevision++; relation = (relation ?: VideoRelation(false, false, 0)).copy(favorited = value); onFavoriteCount(count) },
-                    onLogin = onLogin, feedback = { message -> favoriteMessage = message }) }
+                    onLogin = onLogin, feedback = { message -> favoriteMessage = message }, sourceOwner = sourceOwner) }
                 CommunityAction("加入稍后再看", onLogin, action = { social.setWatchLater(details.aid, true) })
                 CommunityAction("移出稍后再看", onLogin, action = { social.setWatchLater(details.aid, false) })
                 TextButton(onClick = { onNotes(details) }) { Text("视频笔记") }

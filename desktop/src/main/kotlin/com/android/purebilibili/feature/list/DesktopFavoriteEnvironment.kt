@@ -31,6 +31,25 @@ class DesktopFavoriteEnvironment @JvmOverloads constructor(
     private val readAccessTokenPlatform: (() -> String)?,
     private val followStateChanged: ((FollowStateChange) -> Unit)? = null,
 ) {
+    private var brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents? = null
+    private var brandAdmission: ((() -> Unit) -> Boolean)? = null
+    fun mountBrandFeedback(events: com.android.purebilibili.core.events.BrandSuccessEvents,
+        admission: (() -> Unit) -> Boolean) {
+        assertOwned(); check(brandEvents == null || brandEvents === events)
+        brandEvents = events; brandAdmission = admission
+    }
+    suspend fun captureBrandFeedback(): com.bilipai.desktop.ui.DesktopBrandSuccessOrigin? {
+        currentCoroutineContext().ensureActive(); assertOwned()
+        val caller = currentCoroutineContext()[Job] ?: return null
+        val permit = brandAdmission ?: return null
+        return com.bilipai.desktop.ui.DesktopBrandSuccessOrigin(caller, ::isOwned, permit)
+    }
+    fun confirmBrandFavorite(origin: com.bilipai.desktop.ui.DesktopBrandSuccessOrigin?) {
+        if (origin != null) brandEvents?.favoriteSaved(origin)
+    }
+    fun confirmBrandFollow(origin: com.bilipai.desktop.ui.DesktopBrandSuccessOrigin?, following: Boolean, detail: String? = null) {
+        if (origin != null) brandEvents?.followChanged(origin, following, detail)
+    }
     fun isOwned(): Boolean = stillOwned() && scope.isActive
     fun assertOwned() { if (!isOwned()) throw CancellationException("Favorites owner retired") }
     fun csrf(): String? { assertOwned(); return readCsrf() }

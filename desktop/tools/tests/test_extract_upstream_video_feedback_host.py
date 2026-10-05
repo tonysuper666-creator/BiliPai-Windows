@@ -104,7 +104,7 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
         read_end = leaf.index("val engagementBinding = remember", read_start)
         self.assertIn("feedbackPresentationCurrent()", leaf[read_start:read_end])
         self.assertNotIn("current() &&", leaf[read_start:read_end])
-        self.assertIn("remember(assembly, feedbackSource, engagementSubject, presentationAlive, pipActive)", leaf)
+        self.assertIn("remember(assembly, feedbackSource, engagementSubject, presentationAlive, pipActive, brandEvents)", leaf)
         self.assertIn("val expected = feedbackSource", leaf)
         feedback_index = leaf.index("DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface)")
         self.assertIn("if (presentationAlive && !pipActive)", leaf[feedback_index - 150:feedback_index])

@@ -27,6 +27,9 @@ internal class DesktopWindowsCommandAttentionBinding private constructor(
         subject: VideoSubjectSnapshot, stillOwned: () -> Boolean, stillFeedbackOwned: () -> Boolean,
         feedbackAdmission: (() -> Unit) -> Boolean, withAdmission: (() -> Unit) -> Boolean) :
         this(sourceLease, engagement, subject, stillOwned, stillFeedbackOwned, feedbackAdmission, withAdmission, true)
+    fun mountBrandFeedback(events: com.android.purebilibili.core.events.BrandSuccessEvents) {
+        presentation.mountBrandFeedback(events)
+    }
     private val alive = AtomicBoolean(true)
     val state: StateFlow<VideoEngagementUiState> get() = engagement.uiState
     private val presentation = DesktopOriginalVideoEngagementPresentation(sourceLease, subject, ::isOwned, withAdmission,

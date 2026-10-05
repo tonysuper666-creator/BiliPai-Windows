@@ -26,6 +26,9 @@ internal class DesktopWindowsVideoEngagementBinding private constructor(
         subject: VideoSubjectSnapshot, stillOwned: () -> Boolean, stillFeedbackOwned: () -> Boolean,
         admission: (() -> Unit) -> Boolean) :
         this(sourceOwner, engagement, subject, stillOwned, stillFeedbackOwned, admission, true)
+    fun mountBrandFeedback(events: com.android.purebilibili.core.events.BrandSuccessEvents) {
+        presentation.mountBrandFeedback(events)
+    }
     private val alive = AtomicBoolean(true)
     val state: StateFlow<VideoEngagementUiState> get() = engagement.uiState
     private val presentation = DesktopOriginalVideoEngagementPresentation(sourceOwner, subject, ::isOwned, admission,

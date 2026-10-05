@@ -426,9 +426,10 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         self.assertFalse(self.admitted(name, "windows", **{"inputs.render_diagnostic": True}))
         self.assertFalse(self.admitted(name, "publish", **{"needs.windows.outputs.release": ""}))
 
-    def test_manual_and_two_hour_schedule_keep_original_enablement(self):
+    def test_manual_dispatch_remains_without_duplicate_github_schedule(self):
         name = "windows-upstream-sync.yml"
-        self.assertIn("- cron: '23 */2 * * *'", self.workflows[name])
+        self.assertRegex(self.workflows[name], r"(?m)^  workflow_dispatch:$")
+        self.assertNotRegex(self.workflows[name], r"(?m)^  schedule:")
         self.assertTrue(self.admitted(name, "detect", **{"vars.BILIPAI_WINDOWS_AUTO_SYNC": "false"}))
         self.assertFalse(self.admitted(name, "detect", **{"github.event_name": "schedule", "vars.BILIPAI_WINDOWS_AUTO_SYNC": "false"}))
         self.assertTrue(self.admitted(name, "detect", **{"github.event_name": "schedule"}))

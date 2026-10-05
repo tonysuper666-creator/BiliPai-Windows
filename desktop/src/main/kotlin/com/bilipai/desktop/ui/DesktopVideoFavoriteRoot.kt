@@ -26,17 +26,20 @@ import java.util.concurrent.atomic.AtomicBoolean
     globalStore: DesktopPluginStore, favorited: Boolean?, currentFavoriteCount: Int,
     stillOwned: () -> Boolean, onFavoriteLoaded: (Boolean) -> Unit,
     onFavoriteSaved: (Boolean, Int) -> Unit, onLogin: () -> Unit, feedback: (String) -> Unit,
+    sourceOwner: DesktopOriginalVideoAcceptedPublication?,
 ) {
+    val brandEvents = LocalDesktopBrandSuccessEvents.current
     val epoch by repository.sessionEpochFlow.collectAsState()
     val viewport = DesktopWindowConfiguration.current
     val preferences = remember(globalStore) { DesktopFavoriteInteractionPreferences(globalStore) }
     val quick by preferences.getQuickSaveDefaultFolder().collectAsState(DEFAULT_FAVORITE_QUICK_SAVE_DEFAULT_FOLDER)
-    val latestOwned by rememberUpdatedState(stillOwned)
+    // Ownership observer is scoped below by complete accepted identity.
     val latestCount by rememberUpdatedState(currentFavoriteCount)
     val latestLoaded by rememberUpdatedState(onFavoriteLoaded)
     val latestSaved by rememberUpdatedState(onFavoriteSaved)
     val latestFeedback by rememberUpdatedState(feedback)
-    key(aid, epoch) {
+    key(aid, epoch, sourceOwner) {
+        val latestOwned by rememberUpdatedState(stillOwned)
         val capturedEpoch = epoch
         val alive = remember { AtomicBoolean(true) }
         val parent = rememberCoroutineScope()
@@ -53,7 +56,11 @@ import java.util.concurrent.atomic.AtomicBoolean
         fun notify(message: String) { commit { latestFeedback(message) } }
         val environment = remember {
             DesktopFavoriteEnvironment.forFolderDrawer(scope, community.favoriteApi, ::owned,
-                repository::requireCsrf, { repository.account.value?.mid }, ::notify)
+                repository::requireCsrf, { repository.account.value?.mid }, ::notify).also { env ->
+                    env.mountBrandFeedback(brandEvents) { action ->
+                        try { commit(action); true } catch (_: CancellationException) { false }
+                    }
+                }
         }
         val protocol = remember {
             DesktopOriginalFavoriteFolderProtocol(environment.api, environment::currentMid,
@@ -64,7 +71,9 @@ import java.util.concurrent.atomic.AtomicBoolean
                 protocol::getFavoriteFolders, protocol::updateFavoriteFolders,
                 environment.actions::createFavFolder,
                 { value -> commit { latestLoaded(value) } },
-                { value, count -> commit { latestSaved(value, count) } }, ::notify)
+                { value, count -> commit { latestSaved(value, count) } }, ::notify).also {
+                    it.mountBrandFeedback(brandEvents, environment::captureBrandFeedback)
+                }
         }
         val session = remember { DesktopOriginalFavoriteFolderSession(folderEnvironment) }
         val folderSaving by session.isSavingFavoriteFolders.collectAsState()

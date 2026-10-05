@@ -44,6 +44,10 @@ internal class DesktopOriginalVideoEngagementPresentation private constructor(
     private val feedbackOwns: () -> Boolean,
     private val feedbackAdmission: (() -> Unit) -> Boolean,
 ) {
+    private var brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents? = null
+    fun mountBrandFeedback(events: com.android.purebilibili.core.events.BrandSuccessEvents) {
+        check(brandEvents == null || brandEvents === events); brandEvents = events
+    }
     private val feedbackRetired = java.util.concurrent.atomic.AtomicBoolean(false)
     // Exact old two-lambda API, including trailing-lambda callers.
     constructor(owns: () -> Boolean, admission: (() -> Unit) -> Boolean) : this(owns, admission, null, owns, admission)
@@ -103,6 +107,15 @@ internal class DesktopOriginalVideoEngagementPresentation private constructor(
     private data class Active(val presentation: DesktopOriginalVideoEngagementPresentation, val job: Job?, val started: Boolean)
     companion object {
         private val active = ThreadLocal<Active?>()
+        fun confirmBrandFollow(following: Boolean) {
+            val request = active.get() ?: return
+            val caller = request.job ?: return
+            if (!request.started || !caller.isActive) return
+            val presentation = request.presentation
+            val events = presentation.brandEvents ?: return
+            val origin = DesktopBrandSuccessOrigin(caller, presentation::isFeedbackOwned, presentation::admitFeedback)
+            events.followChanged(origin, following)
+        }
         fun capture(): DesktopOriginalVideoEngagementPresentation? = active.get()?.presentation
         fun currentIsOwned(): Boolean = active.get()?.let {
             it.started && it.job?.isActive != false && it.presentation.isFeedbackOwned()

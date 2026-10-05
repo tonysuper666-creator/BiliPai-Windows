@@ -50,7 +50,10 @@ internal class DesktopOriginalVideoOwnerActionView(
         { request().binding.assertCurrent() },
         { change ->
             val captured = request().binding
-            if (!captured.admitCurrentMutation { confirmFollow(change) })
+            if (!captured.admitCurrentMutation {
+                    confirmFollow(change)
+                    DesktopOriginalVideoEngagementPresentation.confirmBrandFollow(change.isFollowing)
+                })
                 throw CancellationException("Original confirmed follow request retired")
         }, DesktopOriginalFavoriteFolderProtocol(api, { request().binding.primaryMid() },
             { request().binding.primaryCsrf() }, { request().binding.assertCurrent() }))

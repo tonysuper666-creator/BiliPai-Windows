@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "fixedUpstreamCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/ui/BrandSuccessFeedbackHost.kt",
+      "gitBlob": "94133080edc4a2919fbea0a3bb8bcef93de9b99b",
+      "rawSha256": "abb0c6a7c6d649897565867419d6ae01d446116bda51dd8b4474af007218e55e",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 8566,
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/events/BrandSuccessEvents.kt",
+      "gitBlob": "d39167cff2a6ed8f5558e09b44823f7a09c8e9ee",
+      "rawSha256": "a560d93b65a72c3673d9ceef2ab156a2382b416f87de29696b7225fa717274ed",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 1931,
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "gitBlob": "347a2b7765cce511c59722a6da25feee4a8e9623",
+      "rawSha256": "f458b3a1accc976074a1751c3ba7e100f53369014927d4948eab367f860191ca",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 33106,
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/download/DownloadManager.kt",
+      "gitBlob": "f5e52a1cc8ef117c5ca60276c91aa3ef6b3f185a",
+      "rawSha256": "30dac93c67115c22763b9c74939f9bf527b9200fbadebec7ec8077b5f8f86e28",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 39969,
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/following/FollowingListScreen.kt",
+      "gitBlob": "36cf42aef9122a972082803a706a64844a6a215e",
+      "rawSha256": "9c5c711758e4c8986811a24a6eebf983c7840df6a4ed3b922c946ca55459a4e8",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 65427,
+      "referenceOnly": true
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/MainActivity.kt",
+      "gitBlob": "4182b3e5e675ba120b6535c0ea1419e4d7daa872",
+      "rawSha256": "2b31724a2bae899f653724e70d8b122ad3168a90f43dc16e3f737fdc8cb85e4b",
+      "commit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+      "bytes": 137296,
+      "referenceOnly": true
+    }
+  ]
+}

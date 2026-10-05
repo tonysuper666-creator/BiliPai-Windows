@@ -269,7 +269,8 @@ internal class DesktopDynamicCardOperations(
             { assertOwned(); repository.account.value?.mid },
             { assertOwned(); repository.authCookies()["SESSDATA"] },
             { assertOwned(); repository.accessTokenCredentials().first }, ::assertOwned,
-            { change -> assertOwned(); repository.followStateEvents.confirm(checkNotNull(owner),change) },
+            { change -> assertOwned(); repository.followStateEvents.confirm(checkNotNull(owner),change)
+                com.bilipai.desktop.ui.DesktopOriginalVideoEngagementPresentation.confirmBrandFollow(change.isFollowing) },
             com.android.purebilibili.data.repository.DesktopOriginalFavoriteFolderProtocol(api,
                 { assertOwned(); repository.account.value?.mid }, { assertOwned(); repository.requireCsrf() }, ::assertOwned))
         val original = com.android.purebilibili.feature.video.viewmodel.originalVideoEngagementActions(

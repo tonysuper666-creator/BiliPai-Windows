@@ -411,6 +411,21 @@ internal class DesktopOriginalVideoCreatorCard(private val api:BilibiliApi,priva
         }
     }
 '''
+    brandBefore = fragment
+    brandFirst = len(ADAPTATIONS)
+    fragment = adapt(fragment,
+        '{ change -> assertOwned(); repository.followStateEvents.confirm(checkNotNull(owner),change) },',
+        '{ change -> assertOwned(); repository.followStateEvents.confirm(checkNotNull(owner),change)\n                com.bilipai.desktop.ui.DesktopOriginalVideoEngagementPresentation.confirmBrandFollow(change.isFollowing) },',
+        'Confirmed original protocol callback submits only its originating Windows brand receipt')
+    brandEdits = ADAPTATIONS[brandFirst:]
+    brandInverse = fragment
+    for edit in reversed(brandEdits):
+        assert brandInverse.count(edit['after']) == 1, edit['label']
+        brandInverse = brandInverse.replace(edit['after'], edit['before'], 1)
+    assert brandInverse == brandBefore
+    save(OUTPUT/'brand-success-operations-proof.json', dict(schemaVersion=1,
+        originalProtocolCommit=COMMIT, fixedBrandCommit='a4b77f894d0a2dd26c0b9fc144b8adb88ac05480',
+        beforeSha256LF=sha(brandBefore), afterSha256LF=sha(fragment), fullInverseExact=True, edits=brandEdits))
     write(OUTPUT/'video-operations-members.fragment',fragment)
 def generate(repo,output,standalone=False):
     global REPO,OUTPUT,STANDALONE,parser,media,selector,SOURCES,OUTPUTS,ADAPTATIONS

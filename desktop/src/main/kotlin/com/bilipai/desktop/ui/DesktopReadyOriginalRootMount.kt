@@ -3,6 +3,7 @@ package com.bilipai.desktop.ui
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import com.android.purebilibili.core.ui.BrandSuccessFeedbackHost
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
@@ -318,9 +319,10 @@ internal class DesktopReadyOriginalRootHandle(
             // restore/shutdown drain has awaited it. Retirement cancels now.
             spacePages.close()
         } }
-        val personalLists = remember(root, services.library) { DesktopPersonalListsRoot(root.entry.gate,
+        val brandEvents = LocalDesktopBrandSuccessEvents.current
+        val personalLists = remember(root, services.library, brandEvents) { DesktopPersonalListsRoot(root.entry.gate,
             services.repository, services.runtime.store, services.runtime.context, services.library,
-            services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze) }
+            services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze, brandEvents) }
         SideEffect { handle.personalLists.set(personalLists); personalLists.prune(physicalStack.toList()) }
         DisposableEffect(personalLists) { onDispose {
             handle.personalLists.compareAndSet(personalLists, null); personalLists.close()
@@ -469,6 +471,7 @@ internal class DesktopReadyOriginalRootHandle(
         }
         services.originalVideoWindowContent(originalVideoWindow) {
         DesktopHomeWindowGlobals(resources, sourceReady, { url, size, count -> root.ErrorAnimation(url, size, count) }) {
+            androidx.compose.foundation.layout.Box(Modifier.fillMaxSize()) {
             DesktopOriginalRootStack(routes, environment, pages, rootThemeColor.luminance() > .5f,
                 reduceMotion, transitionDuration, programmaticBack,
                 false, prepareReturn,
@@ -482,6 +485,8 @@ internal class DesktopReadyOriginalRootHandle(
                     if (ownsStartupRoot()) DesktopOriginalRootValidationTap.frame(key, hosted, handle, routes)
                 },
                 leafContent = { key, commands, active, hosted -> leaf(key, commands, active, hosted, personalLists, root.environment.settings, messagePages, spacePages) })
+            BrandSuccessFeedbackHost(brandEvents)
+            }
         }
         }
         }

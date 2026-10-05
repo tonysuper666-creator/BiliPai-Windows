@@ -28,6 +28,7 @@ class DesktopDownloadManager internal constructor(
     private val danmakuDownloader: (suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?>)? = null,
     private val publication: com.bilipai.desktop.player.DesktopPlaybackPublication,
     private val defaultDestination: () -> Path = Companion::defaultDownloadRoot,
+    private val brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents? = null,
 ) : AutoCloseable {
     constructor(repository: DesktopRepository) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),
         defaultSourceResolver(repository), defaultDanmakuDownloader(repository), com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository))
@@ -35,6 +36,11 @@ class DesktopDownloadManager internal constructor(
     constructor(repository: DesktopRepository, defaultDestination: () -> Path) : this(repository.playbackHttpClient,
         defaultStateFile(), WindowsFfmpegMuxer(), defaultSourceResolver(repository), defaultDanmakuDownloader(repository),
         com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository), defaultDestination)
+
+    constructor(repository: DesktopRepository, brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents,
+        defaultDestination: () -> Path) : this(repository.playbackHttpClient, defaultStateFile(), WindowsFfmpegMuxer(),
+        defaultSourceResolver(repository), defaultDanmakuDownloader(repository),
+        com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository), defaultDestination, brandEvents)
 
     /** Future admissions only. An explicit original task directory wins; queued roots never migrate. */
     internal fun destinationFor(explicit: String? = null): Path =
@@ -277,6 +283,24 @@ class DesktopDownloadManager internal constructor(
                 synchronized(lock) { persistLocked(force = true) }
                 task = synchronized(lock) { mutableTasks.value.first { it.id == id } }
             }
+            val brandSource = task.playbackSource()
+            val brandCreatedAt = task.item.createdAt
+            val brandOrigin = pendingJob?.let { worker -> com.bilipai.desktop.ui.DesktopBrandSuccessOrigin(worker,
+                { synchronized(lock) { !closed && mutableTasks.value.any {
+                    it.id == id && it.item.createdAt == brandCreatedAt && it.status == DownloadStatus.COMPLETED
+                } } && publication.isCurrent(brandSource) },
+                { action ->
+                    try {
+                        publication.admit(brandSource, { synchronized(lock) { !closed && mutableTasks.value.any {
+                            it.id == id && it.item.createdAt == brandCreatedAt && it.status == DownloadStatus.COMPLETED
+                        } } }) {
+                            synchronized(lock) {
+                                if (!closed && mutableTasks.value.any { it.id == id && it.item.createdAt == brandCreatedAt && it.status == DownloadStatus.COMPLETED }) action()
+                            }
+                        }
+                        true
+                    } catch (_: CancellationException) { false }
+                }) }
             publication.admit(task.playbackSource(), owned) { Unit }
             currentCoroutineContext().ensureActive()
             val directory = ensureOwnedDirectory(task)
@@ -314,6 +338,10 @@ class DesktopDownloadManager internal constructor(
             // COMPLETED is observable immediately; finish owned temporary track cleanup first.
             update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.COMPLETED, progress = 1f,
                 filePath = output.toString(), fileSize = outputSize, errorMessage = null)) }
+            // Keep the completed task even if decoration fails or its account retires.
+            if (brandOrigin != null) runCatching {
+                brandEvents?.downloadCompleted(brandOrigin, id, brandCreatedAt, task.title)
+            }
         } catch (cancelled: CancellationException) {
             update(id, true) { task -> if (task.status in setOf(DownloadStatus.PAUSED, DownloadStatus.QUEUED)) task
                 else task.copy(item = task.item.copy(status = DownloadStatus.PAUSED)) }
