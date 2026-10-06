@@ -314,7 +314,7 @@ internal class DesktopDynamicCardOperations(
             override suspend fun toggleFavorite(aid:Long,currentlyFavorited:Boolean,bvid:String)=result { mutate { original.toggleFavorite(aid,currentlyFavorited,bvid).getOrThrow() } }
             override suspend fun toggleWatchLater(aid:Long,currentlyInWatchLater:Boolean,bvid:String)=result { mutate { original.toggleWatchLater(aid,currentlyInWatchLater,bvid).getOrThrow() } }
             override suspend fun doCoin(aid:Long,count:Int,alsoLike:Boolean,bvid:String)=result { mutate { original.doCoin(aid,count,alsoLike,bvid).getOrThrow() } }
-            override suspend fun doTripleAction(aid:Long)=result { mutate { original.doTripleAction(aid).getOrThrow() } }
+            override suspend fun doTripleAction(aid:Long,coinCount:Int)=result { mutate { original.doTripleAction(aid,coinCount).getOrThrow() } }
         }
     }
 

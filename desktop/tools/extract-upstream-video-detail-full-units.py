@@ -65,6 +65,9 @@ def emit(path,t,origin,mode):
         write(OUTPUT/OUTPUT_MOTION,motion)
         save(OUTPUT/'v029-video-feedback-motion-proof.json',motionProof)
         OUTPUTS.append(dict(path=OUTPUT_MOTION,origin=motionProof['origin'],mode='fixed-v029-complete-decoration-blocks-owned-window',fixedCommit=FEEDBACK_COMMIT,sha256LF=sha(motion),physicalLines=len(motion.splitlines()),generated=True))
+    from v031_repost_coin import apply_and_record
+    t,repostProof=apply_and_record(path,t,OUTPUT)
+    if repostProof is not None:mode="fixed-v031-repost-coin-owned-delta"
     if STANDALONE or mode!='direct':write(OUTPUT/path,t)
     OUTPUTS.append(dict(path=path,origin=origin,mode=mode,sha256LF=sha(t),physicalLines=len(t.splitlines()),generated=STANDALONE or mode!='direct'))
 def function_range(t,name):
@@ -186,6 +189,9 @@ import kotlinx.coroutines.flow.*
 '''+selected(t,['PlayerControlVisibilitySettings'])+'\ninternal object DesktopOriginalVideoInfoSettings {\n'+selected(manager,names)+'\n}\n'
     emit('com/android/purebilibili/core/store/DesktopOriginalVideoInfoSettings.kt',settings,p,'original-key-read-write-bridge-same-global-store')
     engagement()
+    from v031_repost_coin import direct_outputs
+    for output,text,origin in direct_outputs():
+        emit(output,text,origin,"fixed-v031-complete-original-source")
     read(BASE+'core/util/AnalyticsHelper.kt') # Original event/default/privacy contract for the local diagnostics platform port.
     save(OUTPUT/'source-bindings.json',dict(pinnedCommit=COMMIT,sourceIdentities=[dict(path=p,**{k:v for k,v in r.items() if k!='text'}) for p,r in SOURCES.items()],outputs=OUTPUTS,adaptations=ADAPTATIONS,scope='Complete original ordinary information/actions and shared gesture units. Full ordinary player overlays and page assembly are next, not yet claimed.',existingReferenceOwners=['metadata honor/team','BGM discovery full subtree','profile public TripleProgressIcon','Home resolveCompactPublishTimeRowText'],actualProductAcceptance=False))
     print(json.dumps(dict(sources=len(SOURCES),outputs=len(OUTPUTS)),ensure_ascii=False))
@@ -407,7 +413,7 @@ internal class DesktopOriginalVideoCreatorCard(private val api:BilibiliApi,priva
             override suspend fun toggleFavorite(aid:Long,currentlyFavorited:Boolean,bvid:String)=result { mutate { original.toggleFavorite(aid,currentlyFavorited,bvid).getOrThrow() } }
             override suspend fun toggleWatchLater(aid:Long,currentlyInWatchLater:Boolean,bvid:String)=result { mutate { original.toggleWatchLater(aid,currentlyInWatchLater,bvid).getOrThrow() } }
             override suspend fun doCoin(aid:Long,count:Int,alsoLike:Boolean,bvid:String)=result { mutate { original.doCoin(aid,count,alsoLike,bvid).getOrThrow() } }
-            override suspend fun doTripleAction(aid:Long)=result { mutate { original.doTripleAction(aid).getOrThrow() } }
+            override suspend fun doTripleAction(aid:Long,coinCount:Int)=result { mutate { original.doTripleAction(aid,coinCount).getOrThrow() } }
         }
     }
 '''

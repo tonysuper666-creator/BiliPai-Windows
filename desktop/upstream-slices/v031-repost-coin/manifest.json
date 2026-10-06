@@ -1,0 +1,48 @@
+{
+  "upstreamCommit": "10c08edadc07c56842402e27048855f4f3c95c38",
+  "scope": "Fixed repost coin vertical slice; all source files complete and Git blob verified",
+  "sources": [
+    {
+      "path": "ActionRepository.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/ActionRepository.kt",
+      "bytes": 33209,
+      "sha256": "10d74c33ab95e7ca3a6d4950467d1a731157b84c2aff598e5e44c384493753e3",
+      "gitBlob": "63742e45498d44639c8302ffbb55358e573bc928"
+    },
+    {
+      "path": "CoinDialog.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt",
+      "bytes": 5380,
+      "sha256": "8db4f2a2733097fe4c5df8c6385f4724016c737721e2f7f12b5ec92e6603fd92",
+      "gitBlob": "b5c4eb9c36b78e458f356e4d135ed99012bdd61a"
+    },
+    {
+      "path": "TripleActionVisualStatePolicy.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt",
+      "bytes": 1433,
+      "sha256": "1466388193a622351eae3d3a8d63dd58b393bb46ae6321c29db275658ff6d74b",
+      "gitBlob": "474e4ddd37ffa40b50f0d2659c5a115d328cf7d7"
+    },
+    {
+      "path": "VideoDetailResponse.kt",
+      "origin": "core-data/src/main/java/com/android/purebilibili/data/model/response/VideoDetailResponse.kt",
+      "bytes": 6786,
+      "sha256": "0d42125b33ef0b59b94a4073bc47bc223708cfc8a47e230cc38c27d7dee32989",
+      "gitBlob": "411a75247767dd800d5efaecb3e41919113dc4ec"
+    },
+    {
+      "path": "VideoEngagementViewModel.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoEngagementViewModel.kt",
+      "bytes": 28841,
+      "sha256": "13e819da4fe0e39ed730309f76354ddf9e046fdc39c9c76de30ec46aaed137f7",
+      "gitBlob": "391b6c1dfefe24fb17072945823ae46d239ef281"
+    },
+    {
+      "path": "VideoInteractionUseCase.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoInteractionUseCase.kt",
+      "bytes": 7262,
+      "sha256": "2586051bc40d2cbd1544aab1d15217e0be0e9268ff8ce518a04c842dd49c20f5",
+      "gitBlob": "8ce07a22a86cf1fe54f9d2936c3a6a83a65c7743"
+    }
+  ]
+}

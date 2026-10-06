@@ -112,7 +112,7 @@ internal class DesktopOriginalStoryFeedOwners(
                     }
                     if (currentRoute() && dialogSource != null) {
                         CoinDialog(visible=engagement.coinDialogVisible, currentCoinCount=engagement.coinCount,
-                            userBalance=engagement.userCoinBalance,
+                            userBalance=engagement.userCoinBalance, maxCoins=engagement.coinLimit,
                             onDismiss={ admitDialog { assembly.domains.engagement.setCoinDialogVisible(false) } },
                             onConfirm={ count,alsoLike -> admitDialog { assembly.domains.engagement.doCoin(count,alsoLike) }; Unit })
                         VideoDetailFavoriteFolderOverlayAdapter(favoriteVisible, assembly.playback, ::admitDialog)

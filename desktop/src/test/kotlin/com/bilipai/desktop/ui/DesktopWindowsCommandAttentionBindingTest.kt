@@ -46,7 +46,7 @@ class DesktopWindowsCommandAttentionBindingTest {
             override suspend fun toggleFollow(mid: Long, currentlyFollowing: Boolean): Result<Boolean> {
                 assertEquals(0, admissionDepth); follows += mid to currentlyFollowing; return followResult()
             }
-            override suspend fun doTripleAction(aid: Long): Result<TripleActionResult> {
+            override suspend fun doTripleAction(aid: Long, coinCount: Int): Result<TripleActionResult> {
                 assertEquals(0, admissionDepth); triples += aid; return tripleResult()
             }
             override suspend fun toggleLike(aid: Long, currentlyLiked: Boolean, bvid: String) = error("not selected")

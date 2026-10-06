@@ -881,6 +881,7 @@ internal class DesktopWindowsVideoActions(
         }
     }
     if(engagement.coinDialogVisible) {
+        val remainingCoins=(engagement.coinLimit-engagement.coinCount).coerceIn(0,engagement.coinLimit)
         DesktopWindowsPlayerDialog(
             title = "投币",
             onDismissRequest = { if(current()) assembly.domains.engagement.setCoinDialogVisible(false) },
@@ -888,8 +889,11 @@ internal class DesktopWindowsVideoActions(
         ) {
             AlertDialog(
             onDismissRequest={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)},
-            title={Text("投币")}, text={Text("选择投币数量")},
-            confirmButton={Row {listOf(1,2).forEach {count-> TextButton(onClick={if(current()) {
+            title={Text("投币")}, text={Column {
+                Text(if(remainingCoins==0) "已达到该视频的投币上限" else "选择投币数量（还可投${remainingCoins}枚）")
+                if(engagement.isRepost) Text("转载视频最多可投1枚硬币")
+            }},
+            confirmButton={Row {(1..remainingCoins).forEach {count-> TextButton(onClick={if(current()) {
                 if (engagementBinding?.coin(count, false) == true) assembly.domains.engagement.setCoinDialogVisible(false)
             }}) {Text("${count}枚")} }}},
             dismissButton={TextButton(onClick={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)}) {Text("取消")}})
