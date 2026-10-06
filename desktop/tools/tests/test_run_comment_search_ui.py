@@ -516,10 +516,36 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         preparation = fixture.split('await("first actual drawn Root")', 1)[1].split('if (replay != null) enterVideoThroughActualSearch', 1)[0]
         self.assertIn('System.getProperty("bilipai.validation.fullscreenIdleInput") == "true") {', preparation)
         self.assertIn('boundCommentSearchWindow()', preparation)
-        self.assertEqual(seam.count('sameCaptureOwner()'), 4)
-        self.assertIn('captureMain === window()', seam)
-        self.assertIn('bounds() == expectedCanvas && nativeCanvasMatches(expectedCanvas)', seam)
-        self.assertIn('if (expectedChromeVisible) completeChrome() else anchorsGone()', seam)
+        # Normal capture and failure-only diagnostics each define their own owner
+        # check. Keep each scope exact, including the order around Robot and PNG IO.
+        capture_start = '        fun capture(id: String, expectedCanvas:'
+        failure_start = '        fun captureFullscreenFailureScreen()'
+        self.assertEqual(seam.count(capture_start), 1)
+        self.assertEqual(seam.count(failure_start), 1)
+        capture = seam.split(capture_start, 1)[1].split('        var chromeDiagnosticCount =', 1)[0]
+        failure = seam.split(failure_start, 1)[1].split('        check(playing()', 1)[0]
+        for scope, read, write in (
+            (capture, 'val screen = java.awt.Robot().createScreenCapture(client)',
+             'check(ImageIO.write(screen, "png", report.resolve("$id-screen.png").toFile()))'),
+            (failure, 'val image = canvasRobot.createScreenCapture(captured.third)',
+             'Files.newOutputStream(report.resolve(name), CREATE_NEW, WRITE).use { check(ImageIO.write(image, "png", it)) }'),
+        ):
+            self.assertEqual(scope.count('fun sameCaptureOwner() = edt'), 1)
+            self.assertEqual(scope.count('sameCaptureOwner()'), 4)
+            markers = {'sameCaptureOwner()', read, write}
+            self.assertEqual([line.strip() for line in scope.splitlines() if line.strip() in markers],
+                             ['sameCaptureOwner()', read, 'sameCaptureOwner()', write, 'sameCaptureOwner()'])
+        self.assertIn('sameCaptureState()\n            actions.capture(id, edt { current() })\n            sameCaptureState()', capture)
+        self.assertIn('fun sameCaptureOwner() = edt {\n                sameCaptureState()', capture)
+        self.assertIn('captureMain === window()', capture)
+        self.assertIn('bounds() == expectedCanvas && nativeCanvasMatches(expectedCanvas)', capture)
+        self.assertIn('if (expectedChromeVisible) completeChrome() else anchorsGone()', capture)
+        self.assertIn('actualPlayer.state.value.nativePaused == expectedPaused', capture)
+        self.assertIn('Native.getWindowPointer(main) == hwnd && failureWindowApi.GetForegroundWindow() == hwnd', failure)
+        self.assertIn('Integer.toUnsignedLong(pid.value) == ProcessHandle.current().pid()', failure)
+        self.assertIn('failureWindowApi.ClientToScreen(hwnd, origin)', failure)
+        self.assertIn('"diagnosticOnly" to JsonPrimitive(true)', failure)
+        self.assertIn('"physicalVideoPixelsIndependentlyChecked" to JsonPrimitive(false)', failure)
         self.assertIn('capture("121-fullscreen-idle-hidden", requireNotNull(hidden), false, false,', seam)
         self.assertIn('physicalVideoPixelsIndependentlyChecked', seam)
         self.assertIn('canvasRobot.mouseMove(point.x, point.y)', seam)

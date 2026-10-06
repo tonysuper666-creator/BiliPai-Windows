@@ -90,7 +90,7 @@ class V030LiveStreamSourceTests(unittest.TestCase):
             output = Path(temporary) / "main"
             tests = Path(temporary) / "tests"
             generated = media.generate(REPO, output, tests)
-            # The sole media output is 15 main files plus three complete socket
+            # The sole media output is 16 main files plus three complete socket
             # tests; the existing stream test is emitted separately as before.
             main_names = {
                 'com/android/purebilibili/data/repository/DesktopMediaPgcPolicies.kt',
@@ -108,6 +108,7 @@ class V030LiveStreamSourceTests(unittest.TestCase):
                 'com/android/purebilibili/feature/live/DesktopOriginalLiveStreamPolicy.kt',
                 'com/android/purebilibili/feature/live/components/LiveStreamSourceSheet.kt',
                 'com/android/purebilibili/feature/live/DesktopLiveReloadBudget.kt',
+                'com/android/purebilibili/feature/live/components/DesktopOriginalLiveChatImage.kt',
             }
             socket_test_names = {
                 'com/android/purebilibili/core/network/socket/LiveDanmakuClientTest.kt',
@@ -119,7 +120,7 @@ class V030LiveStreamSourceTests(unittest.TestCase):
             normal = lambda path: str(path).removeprefix("\\\\?\\").replace("\\", "/")
             expected = {normal(output / path) for path in main_names} | {normal(tests / path) for path in socket_test_names}
             actual = [normal(path) for path in generated]
-            self.assertEqual(15, len(main_names)); self.assertEqual(3, len(socket_test_names))
+            self.assertEqual(16, len(main_names)); self.assertEqual(3, len(socket_test_names))
             self.assertEqual(expected, set(actual))
             self.assertEqual(len(expected), len(actual))
             sources = live.fixed_sources()
