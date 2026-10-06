@@ -409,6 +409,9 @@ internal class DesktopWindowsVideoActions(
     // The original Nav entry may leave composition while a detail route covers
     // it. Preserve its panel intent through the entry's existing saveable owner.
     var detailsOpen by rememberSaveable(assembly) { mutableStateOf(false) }
+    val feedbackPlacementDiagnostic = System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true"
+    // Validation-only plain counters: no Compose state, listener, action or normal-run allocation.
+    val detailsCallbackCounts = if (feedbackPlacementDiagnostic) remember(assembly, native.surface) { LongArray(2) } else null
     var detailsTab by rememberSaveable(assembly, stateSaver = Saver<DesktopWindowsVideoDetailsTab, String>(
         save = { it.name }, restore = { DesktopWindowsVideoDetailsTab.valueOf(it) },
     )) { mutableStateOf(DesktopWindowsVideoDetailsTab.INTRODUCTION) }
@@ -425,7 +428,7 @@ internal class DesktopWindowsVideoActions(
     val chromeCanAutoHide = desktopWindowsFullscreenChromeCanAutoHide(fullscreen, active && !pipActive,
         chromeWindowFocused, chromeHeld, state, bootstrapError != null || playback.error != null || playback.recovering)
     val latestChromeCanAutoHide by rememberUpdatedState(chromeCanAutoHide)
-    if (System.getProperty("bilipai.validation.fullscreenIdleInput") == "true") {
+    if (System.getProperty("bilipai.validation.fullscreenIdleInput") == "true" || feedbackPlacementDiagnostic) {
         // Fixture-only readback on this exact retained surface; no controller or
         // globally registered owner. Returned values never retain live objects.
         val latestChromeDiagnostic by rememberUpdatedState<() -> Map<String, Any>>({
@@ -481,7 +484,11 @@ internal class DesktopWindowsVideoActions(
                 "sourceCaptured" to (latestChromeSource != null),
                 "sourceCurrent" to (latestChromeSource?.let(assembly.native::isCurrent) == true),
                 "chromeCurrent" to chromeCurrent(), "latestChromeIdentityMatches" to (latestChrome === chrome),
-            )
+            ).apply {
+                detailsCallbackCounts?.let { counts ->
+                    put("detailsCallbackAttempts", counts[0]); put("detailsCallbackAccepted", counts[1])
+                }
+            }
         })
         DisposableEffect(assembly, native.surface, chromeWindow) {
             val surface = native.surface
@@ -630,7 +637,13 @@ internal class DesktopWindowsVideoActions(
                     onSeek = { seconds -> if (current()) shell.playback.seekTo(seconds) },
                     onPictureInPicture = { if (current()) actions.pictureInPicture() },
                     onFullscreen = { if (current()) actions.fullscreen() },
-                    onDetails = { if (current()) detailsOpen = !detailsOpen },
+                    onDetails = {
+                        detailsCallbackCounts?.let { if (it[0] < Long.MAX_VALUE) it[0]++ }
+                        if (current()) {
+                            detailsCallbackCounts?.let { if (it[1] < Long.MAX_VALUE) it[1]++ }
+                            detailsOpen = !detailsOpen
+                        }
+                    },
                     onOpenIntroduction = { if (current()) {
                         detailsTab = DesktopWindowsVideoDetailsTab.INTRODUCTION
                         detailsOpen = true
