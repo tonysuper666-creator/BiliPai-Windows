@@ -30,6 +30,8 @@ internal class DesktopBasRenderer(private val touchSlopPx:Float=8f):AutoCloseabl
     private var raster:BufferedImage?=null
     private var closed=false
     private var frameReady=false
+    private var framePositionMs:Long?=null
+    private var rasterRevision=-1L
     private var pressedHit:DesktopBasHit?=null
     private var displayOpacity=1f
     private var displayFontScale=1f
@@ -60,14 +62,17 @@ internal class DesktopBasRenderer(private val touchSlopPx:Float=8f):AutoCloseabl
                 }
             }
             val next=DesktopBasViewport(widthPx,heightPx)
-            if(this.items!==items || next!=viewport || displayOpacity!=opacity || displayFontScale!=fontScale || displayFontWeight!=fontWeight)
-                cancelPress()
+            // Only the exact immutable document/viewport/style key invalidates a retained frame.
+            if(this.items===items && next==viewport && displayOpacity.toBits()==opacity.toBits() &&
+                displayFontScale.toBits()==fontScale.toBits() && displayFontWeight==fontWeight)return
+            cancelPress();frameReady=false;framePositionMs=null;rasterRevision=-1L;paintedRevision=-1L
             if(next!=viewport)releaseRaster()
             this.items=items;viewport=next
             displayOpacity=opacity;displayFontScale=fontScale;displayFontWeight=fontWeight
             scenes.configure(items,next,opacity,fontScale,fontWeight)
-            frameRevision++;paintedRevision=-1L;frameReady=false;status=DesktopBasRenderStatus(true)
+            frameRevision++;status=DesktopBasRenderStatus(true)
         }catch(rejected:DesktopBasRenderRejected){reject(rejected)}
+        catch(error:Exception){clear();throw error}
     }
 
     fun frame(positionMs:Long) {
@@ -75,6 +80,9 @@ internal class DesktopBasRenderer(private val touchSlopPx:Float=8f):AutoCloseabl
         if(!status.accepted || viewport==null)return
         try {
             if(positionMs<0L)throw DesktopBasRenderRejected("BAS invalid media clock")
+            if(frameReady && framePositionMs==positionMs)return
+            // Never publish an incomplete timeline update as a reusable frame.
+            frameReady=false;framePositionMs=null;rasterRevision=-1L;paintedRevision=-1L
             var activeElements=0
             for(item in items) {
                 val relative=positionMs-item.startTimeMs
@@ -84,15 +92,17 @@ internal class DesktopBasRenderer(private val touchSlopPx:Float=8f):AutoCloseabl
             }
             if(budget.retainedElements+activeElements>DesktopBasRenderLimits.MAX_RETAINED_ELEMENTS)scenes.evictInactive(positionMs)
             budget.beginFrame();scenes.frame(positionMs)
-            frameRevision++;paintedRevision=-1L;frameReady=true
+            frameRevision++;framePositionMs=positionMs;frameReady=true
             status=DesktopBasRenderStatus(true,scenes.activeCount)
         }catch(rejected:DesktopBasRenderRejected){reject(rejected)}
+        catch(error:Exception){clear();throw error}
     }
 
     /** No per-node full-window image; one Skia raster + one premultiplied Java raster reused by size. */
     private fun drawRaster():BufferedImage? {
         val stage=viewport ?: return null
         if(!status.accepted || !frameReady)return null
+        if(rasterRevision==frameRevision)return checkNotNull(raster)
         try {
             DesktopBasRenderLimits.pixels(stage.widthPx,stage.heightPx)
             if(bitmap==null) {
@@ -118,12 +128,17 @@ internal class DesktopBasRenderer(private val touchSlopPx:Float=8f):AutoCloseabl
                 check(view.rowBytes==stage.widthPx*4 && view.addr!=0L)
                 Pointer(view.addr).read(0L,pixels,0,pixels.size)
             }
+            // Commit the single retained raster only after both drawing and bounded readback finish.
+            rasterRevision=frameRevision
             return output
         }catch(rejected:DesktopBasRenderRejected){reject(rejected);return null}
+        catch(error:Exception){releaseRaster();throw error}
     }
 
     fun paint(graphics:Graphics2D):Boolean {
         check(!closed)
+        // A cached image is not evidence that this destination Graphics accepted a paint.
+        paintedRevision=-1L
         if(!status.accepted || !frameReady || viewport==null)return false
         if(status.activeScenes==0) {
             // The owning overlay clears its panel before every paint. No BAS means
@@ -182,9 +197,9 @@ internal class DesktopBasRenderer(private val touchSlopPx:Float=8f):AutoCloseabl
 
     fun clear() {
         scenes.clear();pressedHit=null;items=emptyList();viewport=null;releaseRaster()
-        frameRevision++;paintedRevision=-1L;frameReady=false;status=DesktopBasRenderStatus(true)
+        frameRevision++;paintedRevision=-1L;frameReady=false;framePositionMs=null;status=DesktopBasRenderStatus(true)
     }
     private fun reject(error:DesktopBasRenderRejected){clear();status=DesktopBasRenderStatus(false,reason=error.reason)}
-    private fun releaseRaster(){canvas?.close();canvas=null;bitmap?.close();bitmap=null;raster?.flush();raster=null}
+    private fun releaseRaster(){rasterRevision=-1L;canvas?.close();canvas=null;bitmap?.close();bitmap=null;raster?.flush();raster=null}
     override fun close(){if(!closed){clear();closed=true}}
 }
