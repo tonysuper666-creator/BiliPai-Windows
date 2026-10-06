@@ -1,4 +1,6 @@
 import importlib.util
+import hashlib
+import json
 from pathlib import Path
 import tempfile
 import shutil
@@ -38,7 +40,31 @@ internal fun next(): Int { return 1 }
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
             generated = media.generate(REPO, output)
-            self.assertEqual(15, len(generated))
+            self.assertEqual(16, len(generated))
+            image_path = output / "com/android/purebilibili/feature/live/components/DesktopOriginalLiveChatImage.kt"
+            self.assertTrue(any(path.samefile(image_path) for path in generated))
+            image = image_path.read_bytes()
+            proof = json.loads((output / "v030-live-chat-image-source-proof.json").read_bytes())
+            from v030_live_stream import safe
+            fixed_root = REPO / "desktop/upstream-slices/v030-live-chat-image"
+            fixed_identity = json.loads(safe(fixed_root / "manifest.json").read_bytes())["source"]
+            self.assertEqual(fixed_identity, proof["source"])
+            fixed = safe(fixed_root / fixed_identity["path"]).read_bytes()
+            selected = fixed[proof["selectedByteStart"]:proof["selectedByteEnd"]]
+            self.assertEqual(selected, proof["selectedUtf8"].encode("utf8"))
+            self.assertEqual(hashlib.sha256(selected).hexdigest(), proof["selectedSha256"])
+            self.assertEqual(hashlib.sha256(image).hexdigest(), proof["generatedSha256"])
+            self.assertFalse(proof["wholeOriginalComposable"])
+            self.assertTrue(proof["rangeInverseVerified"])
+            # Reconstruct the original bytes from the actual generated function,
+            # independently of the generator's reported inverse-success flag.
+            emitted = media.function(image.decode("utf8"), "DesktopOriginalLiveChatImage", media.parser_for(REPO))
+            restored = textwrap.dedent(emitted[emitted.index("{") + 1:emitted.rfind("}")].strip("\n"))
+            for edit in reversed(proof["adaptations"]):
+                self.assertEqual(1, edit["count"])
+                self.assertEqual(1, restored.count(edit["after"]))
+                restored = restored.replace(edit["after"], edit["before"], 1)
+            self.assertEqual(selected, textwrap.indent(restored, " " * proof["indentationRemoved"]).encode("utf8"))
             pgc = (output / "com/android/purebilibili/data/repository/DesktopMediaPgcPolicies.kt").read_text(encoding="utf-8")
             original = media.read(REPO, media.BASE + "data/repository/BangumiRepository.kt")
             for name in ["decodeBangumiPlayUrlPayload", "mergeBangumiDetailSections", "validateBangumiPlayableVideoInfo"]:
@@ -93,6 +119,31 @@ internal fun next(): Int { return 1 }
             live_policy_original = media.read(REPO, media.BASE + "data/repository/LiveRepository.kt")
             for name in ["parseLiveDanmakuPermission", "parseLiveDanmakuHistoryItems", "buildLiveHeartbeatQuery"]:
                 self.assertIn(media.function(live_policy_original, name, media.parser_for(REPO)), live_policy)
+
+    def test_live_image_source_and_identity_tampering_fail_closed(self):
+        from v030_live_stream import safe
+        relative = Path("desktop/upstream-slices/v030-live-chat-image")
+        for corrupt in ("raw-source", "manifest-identity"):
+            with self.subTest(corrupt=corrupt), tempfile.TemporaryDirectory() as temporary:
+                changed_repo = Path(temporary) / "changed-original"
+                fixed = safe(changed_repo / relative)
+                shutil.copytree(safe(REPO / relative), fixed)
+                manifest = fixed / "manifest.json"
+                identity = json.loads(manifest.read_bytes())
+                if corrupt == "raw-source":
+                    source = safe(fixed / identity["source"]["path"])
+                    raw = source.read_bytes()
+                    self.assertEqual(1, raw.count(b"model = item.emoticonUrl,"))
+                    source.write_bytes(raw.replace(b"model = item.emoticonUrl,", b"model = item.emoticonURL,", 1))
+                    expected = "Live chat image raw source changed"
+                else:
+                    identity["source"]["upstreamCommit"] = "0" * 40
+                    manifest.write_bytes(json.dumps(identity).encode("utf8"))
+                    expected = "Live chat image source identity changed"
+                output = Path(temporary) / "output"
+                with self.assertRaisesRegex(ValueError, expected):
+                    media.emit_live_chat_image(changed_repo, output)
+                self.assertFalse(output.exists(), "Untrusted input must fail before generated output is written")
 
     def test_new_cache_dependency_requires_explicit_review(self):
         real_read = media.read

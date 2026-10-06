@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "source": {
+    "path": "app/src/main/java/com/android/purebilibili/feature/live/components/LiveChatSection.kt",
+    "upstreamCommit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+    "gitBlob": "c76fca866b728bec8fba64eb753cb7c5823810ea",
+    "sha256": "a947af01db7208d3a04f0902aa74a08716552614388bb445a4663cddd61dc914",
+    "bytes": 33625
+  }
+}

@@ -91,6 +91,66 @@ def write(output: Path, relative: str, original_path: str, original: str, body: 
     return result
 
 
+def emit_live_chat_image(repo: Path, output: Path) -> list[Path]:
+    """Exact fixed source RANGE, not a whole upstream composable; existing Coil owner only."""
+    from v030_live_stream import safe
+    identity = dict(path="app/src/main/java/com/android/purebilibili/feature/live/components/LiveChatSection.kt",
+        upstreamCommit="0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+        gitBlob="c76fca866b728bec8fba64eb753cb7c5823810ea",
+        sha256="a947af01db7208d3a04f0902aa74a08716552614388bb445a4663cddd61dc914", bytes=33625)
+    root = repo / "desktop/upstream-slices/v030-live-chat-image"
+    if json.loads(safe(root / "manifest.json").read_bytes()) != dict(schema=1, source=identity):
+        raise ValueError("Live chat image source identity changed")
+    raw = safe(root / identity["path"]).read_bytes()
+    if len(raw) != identity["bytes"] or hashlib.sha256(raw).hexdigest() != identity["sha256"] or \
+            hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest() != identity["gitBlob"]:
+        raise ValueError("Live chat image raw source changed")
+    selected = b"""                    AsyncImage(
+                        model = item.emoticonUrl,
+                        contentDescription = item.text,
+                        modifier = Modifier.size(AppSpacingTokens.DoubleExtraLarge)
+                    )"""
+    if raw.count(selected) != 1:
+        raise ValueError("Original live chat image call is missing or ambiguous")
+    offset = raw.index(selected)
+    original = "\n".join(line[20:] for line in selected.decode("utf8").splitlines())
+    before = "    modifier = Modifier.size(AppSpacingTokens.DoubleExtraLarge)\n"
+    after = "    modifier = Modifier.size(AppSpacingTokens.DoubleExtraLarge),\n    onError = { onError() }\n"
+    if original.count(before) != 1:
+        raise ValueError("Original live image modifier changed")
+    adapted = original.replace(before, after, 1)
+    inverse = adapted.replace(after, before, 1)
+    if inverse != original or textwrap.indent(inverse, " " * 20).encode("utf8") != selected:
+        raise ValueError("Original live chat image range inverse failed")
+    header = """// GENERATED from a fixed LiveChatSection.kt byte range; not a whole upstream composable.
+package com.android.purebilibili.feature.live.components
+
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import coil3.compose.AsyncImage
+import com.android.purebilibili.core.ui.AppSpacingTokens
+import com.android.purebilibili.feature.live.LiveDanmakuItem
+
+@Composable
+internal fun DesktopOriginalLiveChatImage(item: LiveDanmakuItem, onError: () -> Unit) {
+"""
+    body = header + textwrap.indent(adapted, "    ") + "\n}\n"
+    target = safe(output / "com/android/purebilibili/feature/live/components/DesktopOriginalLiveChatImage.kt")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(body.encode("utf8"))
+    proof = dict(source=identity, wholeOriginalComposable=False,
+        selectedByteStart=offset, selectedByteEnd=offset + len(selected),
+        selectedSha256=hashlib.sha256(selected).hexdigest(), selectedUtf8=selected.decode("utf8"),
+        rangeInverseVerified=True, indentationRemoved=20,
+        adaptations=[dict(before=before, after=after, count=1,
+            reason="Existing Windows text fallback after the same Coil image request fails")],
+        generatedSha256=hashlib.sha256(target.read_bytes()).hexdigest(),
+        sharedExistingCoilSingleton=True, newNetworkBusiness=False, animationParityClaimed=False)
+    safe(output / "v030-live-chat-image-source-proof.json").write_bytes((json.dumps(proof, indent=2) + "\n").encode())
+    return [target]
+
+
 def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[Path]:
     parser = parser_for(repo)
     generated = []
@@ -217,6 +277,7 @@ def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[
     generated.extend(emit_media(repo, output, test_output))
     from v030_live_recovery import emit_recovery
     generated.extend(emit_recovery(repo, output))
+    generated.extend(emit_live_chat_image(repo, output))
     return generated
 
 

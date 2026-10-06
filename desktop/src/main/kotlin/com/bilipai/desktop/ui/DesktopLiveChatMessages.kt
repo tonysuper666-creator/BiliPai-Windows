@@ -19,6 +19,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.feature.live.LiveDanmakuItem
+import com.android.purebilibili.feature.live.shouldRenderLiveDanmakuImageEmoticon
+import com.android.purebilibili.feature.live.components.DesktopOriginalLiveChatImage
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -121,8 +123,15 @@ internal fun DesktopLiveChatMessages(
                     }.joinToString(" · "), style = MaterialTheme.typography.labelSmall,
                         color = if (item.isSelf) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
                     if (item.replyToName.isNotBlank()) Text("回复 ${item.replyToName}", style = MaterialTheme.typography.labelSmall)
-                    Text(item.text.ifBlank { if (item.emoticonUrl != null) "[表情]" else "" },
-                        color = Color(item.color or (0xff shl 24)))
+                    var imageFailed by remember(sessionKey, item.emoticonUrl) { mutableStateOf(false) }
+                    if (shouldRenderLiveDanmakuImageEmoticon(item.emoticonUrl) && !imageFailed) {
+                        key(sessionKey, item.emoticonUrl) {
+                            DesktopOriginalLiveChatImage(item, onError = { imageFailed = true })
+                        }
+                    } else {
+                        Text(item.text.ifBlank { if (item.emoticonUrl != null) "[表情]" else "" },
+                            color = Color(item.color or (0xff shl 24)))
+                    }
                 }
             }
         }
