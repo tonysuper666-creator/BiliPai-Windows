@@ -32,6 +32,9 @@ public final class AwtMpvProbe {
     private static final String DLL_SHA = "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4";
     private static final long DLL_BYTES = 120342528L;
     private static final int WIDTH = 320, HEIGHT = 180, FPS = 20, SECONDS = 10;
+    private static final String ZOOM_CASE = "mpv-default-flip-zoom-equivalent";
+    // aspect.c: 704x396 fit -> 712x401 cover; actual OSD readbacks decide comparability.
+    private static final double EQUIVALENT_ZOOM = Math.log(401.0 / 396.0) / Math.log(2.0);
     private static final List<String> FAST = List.of("Anime4K_Clamp_Highlights.glsl", "Anime4K_Restore_CNN_M.glsl",
         "Anime4K_Restore_CNN_S.glsl", "Anime4K_Upscale_CNN_x2_M.glsl", "Anime4K_AutoDownscalePre_x2.glsl",
         "Anime4K_AutoDownscalePre_x4.glsl", "Anime4K_Upscale_CNN_x2_S.glsl");
@@ -61,6 +64,8 @@ public final class AwtMpvProbe {
     private boolean surfacePhysicalFailure;
     private final boolean debugObservations;
     private final Double preMountPanscan;
+    private int zoomPrimaryCaptures;
+    private boolean allZoomPrimaryCapturesComparable = true;
     private volatile String lastReport = "{}";
     private JFrame frame;
     private Canvas canvas;
@@ -78,7 +83,7 @@ public final class AwtMpvProbe {
         // SelfTest stores this request before Canvas.addNotify creates the native session.
         preMountPanscan = switch (caseName) {
             case "mpv-default-flip-panscan1", "mpv-default-flip-panscan1-clear" -> 1.0;
-            case "mpv-default-flip-panscan0" -> 0.0;
+            case "mpv-default-flip-panscan0", ZOOM_CASE -> 0.0;
             default -> null;
         };
         deadline = started + TimeUnit.SECONDS.toNanos(shaderCase() ? 90 : caseName.equals("awt-alpha-only") ? 25 : 30);
@@ -86,6 +91,8 @@ public final class AwtMpvProbe {
         result.put("passed", false); result.put("beganUtc", Instant.now().toString());
         result.put("ownPid", PID); result.put("javaVersion", System.getProperty("java.version"));
         if (preMountPanscan != null) result.put("preMountPanscan", preMountPanscan);
+        if (caseName.equals(ZOOM_CASE)) result.put("equivalentZoomGeometry", Map.of(
+            "status", "notComparable", "reason", "No primary physical sample yet", "requestedZoom", EQUIVALENT_ZOOM));
         result.put("javaVendor", System.getProperty("java.vendor"));
         result.put("screenGate", Map.of("cyan", "B>180,G>135,R<135,count>=100",
             "pink", "R>180,G<145,B=100..200,count>=100"));
@@ -109,13 +116,13 @@ public final class AwtMpvProbe {
                     cli.put(args[i], args[i + 1]) != null) throw new IllegalArgumentException("Invalid or duplicate CLI argument");
             }
             String name = cli.get("--case");
-            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear",
+            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE,
                 "shader-clear-default-retained", "shader-clear-default-seek", "shader-clear-nodumb-retained", "shader-clear-nodumb-seek").contains(name))
                 throw new IllegalArgumentException("--case must select one diagnostic case");
             String debugFlag = cli.getOrDefault("--surface-debug-observations", "false");
             if (!Set.of("true", "false").contains(debugFlag)) throw new IllegalArgumentException("Invalid debug observation flag");
             boolean debugObservations = debugFlag.equals("true");
-            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear").contains(name))
+            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE).contains(name))
                 throw new IllegalArgumentException("Debug observations require the explicit surface-debug cases");
             if (name.equals("mpv-default-debug") && !debugObservations) throw new IllegalArgumentException("Debug case requires explicit observations");
             Path output = Path.of(Objects.requireNonNull(cli.get("--output"), "Missing --output")).toAbsolutePath().normalize();
@@ -179,7 +186,8 @@ public final class AwtMpvProbe {
                 if (preMountPanscan != null) {
                     // Match ready + activeVideoPanscan before PlayerSelfTest calls load.
                     waitCondition("retained pre-mount panscan readback before first load", 1_500, () ->
-                        actor.number("panscan") == preMountPanscan && actor.number("playlist-count") == 0 && !actor.fileLoaded);
+                        actor.number("panscan") == preMountPanscan && actor.number("playlist-count") == 0 && !actor.fileLoaded &&
+                        (!caseName.equals(ZOOM_CASE) || Math.abs(actor.number("video-zoom") - EQUIVALENT_ZOOM) <= 0.000001));
                     result.put("retainedPanscanLoadOrder", actor.loadAfterRetainedPanscan().get(3, TimeUnit.SECONDS));
                 }
                 if (caseName.equals("mpv-adaptive")) {
@@ -564,6 +572,29 @@ public final class AwtMpvProbe {
         return row instanceof Map<?, ?> values && values.get("value") instanceof String value ? value : null;
     }
 
+    /** Read-only equivalence facts, separate from all physical gates and their pass/fail verdict. */
+    static Map<String, Object> equivalentZoomFacts(Map<String, Object> snapshot, int physicalWidth, int physicalHeight) {
+        Map<String, String> expected = Map.of("osd-dimensions/w", "704", "osd-dimensions/h", "401",
+            "osd-dimensions/ml", "-4", "osd-dimensions/mr", "-4", "osd-dimensions/mt", "0", "osd-dimensions/mb", "0",
+            "video-dec-params/w", "320", "video-dec-params/h", "180", "playlist-count", "1");
+        Map<String, Object> actual = new LinkedHashMap<>(); boolean matches = physicalWidth == 704 && physicalHeight == 401;
+        for (Map.Entry<String, String> item : expected.entrySet()) {
+            String value = nativeValue(snapshot, item.getKey()); actual.put(item.getKey(), value);
+            matches &= item.getValue().equals(value);
+        }
+        for (String key : List.of("panscan", "video-zoom", "playlist/0/id", "pause", "current-vo", "current-gpu-context"))
+            actual.put(key, nativeValue(snapshot, key));
+        try { matches &= Double.parseDouble(nativeValue(snapshot, "panscan")) == 0.0 &&
+            Math.abs(Double.parseDouble(nativeValue(snapshot, "video-zoom")) - EQUIVALENT_ZOOM) <= 0.000001; }
+        catch (RuntimeException unavailable) { matches = false; }
+        matches &= "1".equals(nativeValue(snapshot, "playlist/0/id")) && "gpu".equals(nativeValue(snapshot, "current-vo")) &&
+            "d3d11".equals(nativeValue(snapshot, "current-gpu-context"));
+        return Map.of("status", matches ? "comparable" : "notComparable", "comparable", matches,
+            "expected", expected, "actual", actual, "requestedZoom", EQUIVALENT_ZOOM,
+            "physicalWidth", physicalWidth, "physicalHeight", physicalHeight,
+            "nativeTiming", "same-actor cached poll near physical sample; not an atomic native/pixel snapshot");
+    }
+
     private void checkSurfaceFixture(BufferedImage image, String stage) {
         try { result.put(stage + "FixtureIntegrity", checkFixtureSurface(image, FixtureViewport.from(actor.snapshot))); }
         catch (IllegalStateException invalid) {
@@ -810,6 +841,15 @@ public final class AwtMpvProbe {
         // One immutable readback snapshot from the same native actor; no new mpv command/query.
         Map<String, Object> nativeSnapshot = actor == null ? Map.of() : actor.snapshot;
         row.put("nativePause", nativeSnapshot.get("pause")); row.put("nativeClock", nativeSnapshot.get("time-pos"));
+        if (caseName.equals(ZOOM_CASE) && stage.equals("native Windows cyan/pink visibility")) {
+            Map<String, Object> geometry = equivalentZoomFacts(nativeSnapshot, image.getWidth(), image.getHeight());
+            row.put("equivalentZoomGeometry", geometry); zoomPrimaryCaptures++;
+            allZoomPrimaryCapturesComparable &= Boolean.TRUE.equals(geometry.get("comparable"));
+            result.put("equivalentZoomGeometry", Map.of("status", allZoomPrimaryCapturesComparable ? "comparable" : "notComparable",
+                "allPrimaryCapturesComparable", allZoomPrimaryCapturesComparable, "primaryCaptureCount", zoomPrimaryCaptures,
+                "lastPrimarySample", geometry, "physicalGateUnchanged", true,
+                "reference", "panscan=1 at the fixed 704x401 OSD and 320x180 source; geometry equivalence only"));
+        }
         try {
             row.putAll(edt(() -> {
                 Map<String, Object> facts = new LinkedHashMap<>();
@@ -1041,13 +1081,20 @@ public final class AwtMpvProbe {
                 require(!fileLoaded && "0".equals(count) && before != null &&
                     Double.parseDouble(before) == preMountPanscan, "Retained panscan/empty source changed before first load");
                 // Match Action.Load -> clearSectionViewport before loadfile on this same worker.
-                for (String[] option : new String[][] {{"video-zoom", "0"}, {"video-pan-x", "0"},
+                for (String[] option : new String[][] {{"video-zoom", selectedCase.equals(ZOOM_CASE) ? Double.toString(EQUIVALENT_ZOOM) : "0"}, {"video-pan-x", "0"},
                     {"video-pan-y", "0"}, {"keepaspect", "yes"}, {"panscan", preMountPanscan.toString()}})
                     check(api, api.mpv_set_property_string(handle, option[0], option[1]), option[0]);
                 String applied = readString(api, handle, "panscan");
                 require(applied != null && Double.parseDouble(applied) == preMountPanscan,
                     "Load viewport reset did not retain pre-mount panscan");
+                String zoom = selectedCase.equals(ZOOM_CASE) ? readString(api, handle, "video-zoom") : null;
+                if (selectedCase.equals(ZOOM_CASE)) require(zoom != null && Math.abs(Double.parseDouble(zoom) - EQUIVALENT_ZOOM) <= 0.000001,
+                    "Equivalent zoom was not retained by first-load viewport reset");
                 check(api, api.mpv_command(handle, new StringArray(new String[]{"loadfile", video.toString(), "replace"}, "UTF-8")), "loadfile");
+                if (selectedCase.equals(ZOOM_CASE)) return Map.of("preMountRequest", preMountPanscan, "nativeBeforeLoad", before,
+                    "playlistCountBeforeLoad", count, "nativeAfterViewportReset", applied,
+                    "loadCommandAccepted", true, "sameActorWorker", Thread.currentThread() == worker,
+                    "requestedZoom", EQUIVALENT_ZOOM, "zoomAfterViewportReset", zoom);
                 return Map.of("preMountRequest", preMountPanscan, "nativeBeforeLoad", before,
                     "playlistCountBeforeLoad", count, "nativeAfterViewportReset", applied,
                     "loadCommandAccepted", true, "sameActorWorker", Thread.currentThread() == worker);
@@ -1164,6 +1211,7 @@ public final class AwtMpvProbe {
                 options.put("ao", "null"); options.put("ao-null-untimed", "no"); options.put("volume", "0"); options.put("mute", "yes");
                 options.put("audio-files", audio.toString().replace(";", "\\;"));
                 if (preMountPanscan != null) options.put("panscan", preMountPanscan.toString());
+                if (selectedCase.equals(ZOOM_CASE)) options.put("video-zoom", Double.toString(EQUIVALENT_ZOOM));
                 if (selectedCase.startsWith("shader-clear-")) {
                     // Match production: default flip, optional NVIDIA preference; no software-bitblt substitution.
                     DesktopWindowsDxgiAdapters.Snapshot inventory = DesktopWindowsDxgiAdapters.probe();
@@ -1232,6 +1280,7 @@ public final class AwtMpvProbe {
                         if (selectedCase.startsWith("shader-clear-")) names.addAll(Arrays.asList(SHADER_PROPERTIES));
                         if (debugObservations) names.add("options/gpu-debug");
                         if (preMountPanscan != null) names.add("panscan");
+                        if (selectedCase.equals(ZOOM_CASE)) names.add("video-zoom");
                         for (String property : names) {
                             try (Memory memory = new Memory(Native.POINTER_SIZE)) {
                                 memory.clear(); int code = api.mpv_get_property(handle, property, 1, memory);
