@@ -192,6 +192,75 @@ class DesktopWindowsVideoCommentActionsTest {
             p.close();assertTrue(h.failures.isEmpty(),h.failures.toString())
         }
     }
+    @Test fun routedFailureRequiresManualRetryAndPreservesExactRequest(): Unit = runBlocking {
+        Harness().use { h -> val p=h.presentation();val ui=h.ui(p)
+            h.subResult={Result.failure(IllegalStateException("fixture route failure"))}
+            val route=DesktopWindowsVideoRoutedCommentRequest(700,701)
+            assertTrue(ui.threadFromRoute(route));assertTrue(route.handled)
+            assertSame(route,ui.routedThread);assertTrue(ui.threadVisible)
+            assertFalse(h.vm.subReplyState.value.visible);assertFalse(h.vm.subReplyState.value.isLoading)
+            assertEquals("fixture route failure",h.vm.subReplyState.value.error)
+            yield();assertEquals(1,h.subCalls.size)
+            val result=CompletableDeferred<Result<ReplyData>>()
+            h.subResult={result.await()}
+            assertTrue(ui.retryRoutedThread(route));assertTrue(route.handled)
+            assertTrue(h.vm.subReplyState.value.isLoading);assertFalse(ui.retryRoutedThread(route))
+            assertEquals(List(2){SubCall(170001,1,700,701)},h.subCalls)
+            result.complete(Result.success(data(701,end=true).copy(root=ReplyItem(rpid=700,oid=170001))))
+            assertTrue(h.vm.subReplyState.value.visible);assertEquals(700L,h.vm.subReplyState.value.rootReply?.rpid)
+            assertEquals(701L,h.vm.subReplyState.value.targetReplyId);assertNull(h.vm.subReplyState.value.error)
+            assertFalse(ui.retryRoutedThread(route));assertEquals(2,h.subCalls.size)
+            p.close();assertTrue(h.failures.isEmpty(),h.failures.toString())
+        }
+    }
+    @Test fun routedMissingRootUsesOriginalErrorAndCanBeManuallyRetried(): Unit = runBlocking {
+        Harness().use { h -> val p=h.presentation();val ui=h.ui(p)
+            h.subResult={Result.success(data(701,end=true).copy(root=null))}
+            val route=DesktopWindowsVideoRoutedCommentRequest(700,701)
+            assertTrue(ui.threadFromRoute(route));assertSame(route,ui.routedThread)
+            assertFalse(h.vm.subReplyState.value.visible)
+            assertEquals("回复可能已被删除或不可见",h.vm.subReplyState.value.error)
+            h.subResult={call->Result.success(data(701,end=true).copy(root=ReplyItem(rpid=call.root,oid=call.oid)))}
+            assertTrue(ui.retryRoutedThread(route));assertTrue(h.vm.subReplyState.value.visible)
+            assertEquals(List(2){SubCall(170001,1,700,701)},h.subCalls);assertTrue(route.handled)
+            p.close();assertTrue(h.failures.isEmpty(),h.failures.toString())
+        }
+    }
+    @Test fun routedRetryCannotOutliveCloseOrReplaceAnOrdinaryThread(): Unit = runBlocking {
+        Harness().use { h -> val p=h.presentation();val ui=h.ui(p)
+            h.subResult={Result.failure(IllegalStateException("fixture route failure"))}
+            val route=DesktopWindowsVideoRoutedCommentRequest(700,701)
+            assertTrue(ui.threadFromRoute(route));assertTrue(ui.closeThread())
+            assertNull(ui.routedThread);assertFalse(ui.threadVisible);assertTrue(route.handled)
+            assertFalse(ui.retryRoutedThread(route));assertFalse(ui.threadFromRoute(route))
+            val nextRoute=DesktopWindowsVideoRoutedCommentRequest(800,801)
+            assertTrue(ui.threadFromRoute(nextRoute));assertFalse(ui.retryRoutedThread(route))
+            assertTrue(ui.thread(ReplyItem(rpid=90,oid=170001),99));assertNull(ui.routedThread)
+            assertFalse(ui.retryRoutedThread(nextRoute));assertEquals(90L,h.vm.subReplyState.value.rootReply?.rpid)
+            assertEquals(listOf(SubCall(170001,1,700,701),SubCall(170001,1,800,801),SubCall(170001,1,90,99)),h.subCalls)
+            p.close();assertTrue(h.failures.isEmpty(),h.failures.toString())
+        }
+    }
+    @Test fun routeFailureCannotAuthorizeRetryAfterSourceAccountOrAdmissionRetires(): Unit = runBlocking {
+        for (retirement in listOf("source","account","admission","dispose")) Harness().use { h ->
+            val p=h.presentation();val ui=h.ui(p)
+            h.subResult={Result.failure(IllegalStateException("fixture route failure"))}
+            val route=DesktopWindowsVideoRoutedCommentRequest(700,701)
+            assertTrue(ui.threadFromRoute(route));assertTrue(route.handled)
+            when(retirement) {
+                "source"->h.source=Any()
+                "account"->h.account=false
+                "admission"->h.permit=false
+                else->p.close()
+            }
+            assertFalse(ui.retryRoutedThread(route));assertEquals(1,h.subCalls.size)
+            val next=h.presentation();val successor=h.ui(next)
+            assertFalse(successor.threadVisible);assertNull(successor.routedThread)
+            assertFalse(successor.threadFromRoute(route));assertFalse(successor.retryRoutedThread(route))
+            assertEquals(1,h.subCalls.size);next.close();p.close()
+            assertTrue(h.failures.isEmpty(),h.failures.toString())
+        }
+    }
     @Test fun retainedSameAidThreadDoesNotAutomaticallyReopenInNewSourceUi(): Unit = runBlocking {
         Harness().use {h ->val a=h.presentation();val old=h.ui(a)
             old.thread(ReplyItem(rpid=90),0);assertTrue(old.threadVisible)

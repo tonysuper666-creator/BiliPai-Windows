@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.store.DesktopOriginalReplySettings
@@ -44,22 +45,36 @@ internal class DesktopWindowsVideoCommentActions(
 ) {
     var threadVisible by mutableStateOf(false)
         private set
+    var routedThread by mutableStateOf<DesktopWindowsVideoRoutedCommentRequest?>(null)
+        private set
     fun refresh() = presentation.dispatch { viewModel.refreshComments() }
     fun loadMore() = presentation.dispatch { viewModel.loadComments() }
     fun sort(mode: CommentSortMode) = presentation.dispatch { viewModel.setSortMode(mode) }
-    fun thread(reply: ReplyItem, target: Long) = presentation.dispatch { viewModel.openSubReply(reply, target); threadVisible = true }
+    fun thread(reply: ReplyItem, target: Long) = presentation.dispatch { routedThread = null; viewModel.openSubReply(reply, target); threadVisible = true }
     fun threadFromRoute(request: DesktopWindowsVideoRoutedCommentRequest): Boolean {
         var started = false
         presentation.dispatch {
             if (!request.handled && viewModel.openSubReplyFromRoute(request.rootReplyId, request.targetReplyId)) {
                 threadVisible = true
+                routedThread = request
                 request.handled = true
                 started = true
             }
         }
         return started
     }
-    fun closeThread() = presentation.dispatch { threadVisible = false; viewModel.closeSubReply() }
+    fun retryRoutedThread(captured: DesktopWindowsVideoRoutedCommentRequest): Boolean {
+        var started = false
+        presentation.dispatch {
+            val state = viewModel.subReplyState.value
+            if (threadVisible && routedThread === captured && !state.visible &&
+                !state.isLoading && state.error != null) {
+                started = viewModel.openSubReplyFromRoute(captured.rootReplyId, captured.targetReplyId)
+            }
+        }
+        return started
+    }
+    fun closeThread() = presentation.dispatch { threadVisible = false; routedThread = null; viewModel.closeSubReply() }
     fun refreshThread() = presentation.dispatch { viewModel.refreshSubReplies() }
     fun loadThread() = presentation.dispatch { viewModel.loadMoreSubReplies() }
     fun sortThread(mode: SubReplySortMode) = presentation.dispatch { viewModel.setSubReplySortMode(mode) }
@@ -184,9 +199,11 @@ internal fun DesktopWindowsVideoCommentsSection(
                     showNativeSortHeader = true,
                     showSortControlInHeader = true)
             }
-            if (ui.threadVisible && replies.visible && presentation.isCurrent()) {
+            val capturedRoutedThread = ui.routedThread
+            if (ui.threadVisible && (replies.visible || capturedRoutedThread != null) && presentation.isCurrent()) {
                 DesktopWindowsPlayerDialog("评论回复", { ui.closeThread() }) {
                     DesktopCommentDialogNavigationHost {
+                        if (replies.visible && replies.rootReply != null) {
                         Column(Modifier.fillMaxSize()) {
                             VideoInlineSubReplyDetailContent(replies, state, emotes,
                                 success.info.pages.firstOrNull { it.cid == success.info.cid }?.duration?.times(1000L),
@@ -203,6 +220,23 @@ internal fun DesktopWindowsVideoCommentsSection(
                                 onUrlClick = urlClick, showIdentityDecorations = decorations,
                                 onAvatarClick = { id -> id.toLongOrNull()?.let(userClick) }, modifier = Modifier.weight(1f))
                             input()
+                        }
+                        } else if (capturedRoutedThread != null) {
+                            Column(Modifier.fillMaxSize().padding(24.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center) {
+                                if (replies.isLoading) {
+                                    CircularProgressIndicator()
+                                    Spacer(Modifier.height(12.dp))
+                                    Text("正在加载评论回复…")
+                                } else {
+                                    Text(replies.error ?: "回复加载失败")
+                                    Spacer(Modifier.height(12.dp))
+                                    TextButton(onClick = { ui.retryRoutedThread(capturedRoutedThread) }) {
+                                        Text("重试")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
