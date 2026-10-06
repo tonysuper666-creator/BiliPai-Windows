@@ -119,6 +119,9 @@ jobs:
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-debug/*.json
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-debug/*.png
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-debug/*.txt
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1/*.json
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1/*.png
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1/*.txt
             ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.json
             ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.png
             ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.txt

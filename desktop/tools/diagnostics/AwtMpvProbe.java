@@ -60,6 +60,7 @@ public final class AwtMpvProbe {
     private int droppedCaptures;
     private boolean surfacePhysicalFailure;
     private final boolean debugObservations;
+    private final Double preMountPanscan;
     private volatile String lastReport = "{}";
     private JFrame frame;
     private Canvas canvas;
@@ -74,10 +75,13 @@ public final class AwtMpvProbe {
     private AwtMpvProbe(String caseName, Path output, Path dll, Path shaderRoot, boolean debugObservations) {
         this.caseName = caseName; this.output = output; this.dll = dll; this.shaderRoot = shaderRoot;
         this.debugObservations = debugObservations;
+        // SelfTest stores this request before Canvas.addNotify creates the native session.
+        preMountPanscan = caseName.equals("mpv-default-flip-panscan1") ? 1.0 : null;
         deadline = started + TimeUnit.SECONDS.toNanos(shaderCase() ? 90 : caseName.equals("awt-alpha-only") ? 25 : 30);
         result.put("schema", 1); result.put("case", caseName); result.put("diagnosticOnly", true);
         result.put("passed", false); result.put("beganUtc", Instant.now().toString());
         result.put("ownPid", PID); result.put("javaVersion", System.getProperty("java.version"));
+        if (preMountPanscan != null) result.put("preMountPanscan", preMountPanscan);
         result.put("javaVendor", System.getProperty("java.vendor"));
         result.put("screenGate", Map.of("cyan", "B>180,G>135,R<135,count>=100",
             "pink", "R>180,G<145,B=100..200,count>=100"));
@@ -101,13 +105,13 @@ public final class AwtMpvProbe {
                     cli.put(args[i], args[i + 1]) != null) throw new IllegalArgumentException("Invalid or duplicate CLI argument");
             }
             String name = cli.get("--case");
-            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive",
+            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive", "mpv-default-flip-panscan1",
                 "shader-clear-default-retained", "shader-clear-default-seek", "shader-clear-nodumb-retained", "shader-clear-nodumb-seek").contains(name))
                 throw new IllegalArgumentException("--case must select one diagnostic case");
             String debugFlag = cli.getOrDefault("--surface-debug-observations", "false");
             if (!Set.of("true", "false").contains(debugFlag)) throw new IllegalArgumentException("Invalid debug observation flag");
             boolean debugObservations = debugFlag.equals("true");
-            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug").contains(name))
+            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug", "mpv-default-flip-panscan1").contains(name))
                 throw new IllegalArgumentException("Debug observations require the explicit surface-debug cases");
             if (name.equals("mpv-default-debug") && !debugObservations) throw new IllegalArgumentException("Debug case requires explicit observations");
             Path output = Path.of(Objects.requireNonNull(cli.get("--output"), "Missing --output")).toAbsolutePath().normalize();
@@ -164,10 +168,16 @@ public final class AwtMpvProbe {
                     "audioSampleRate", 48000, "audioChannels", 1, "volume", 0, "muted", true));
                 long hwnd = edt(() -> Pointer.nativeValue(Native.getComponentPointer(canvas)) & 0xffffffffL);
                 requireOwn(new Pointer(hwnd));
-                actor = new MpvActor(dll, hwnd, video, audio, caseName, debugObservations);
+                actor = new MpvActor(dll, hwnd, video, audio, caseName, debugObservations, preMountPanscan);
                 actor.start();
                 waitCondition("native initialization", 7_000, () -> actor.ready.isDone());
                 actor.ready.get();
+                if (preMountPanscan != null) {
+                    // Match ready + activeVideoPanscan before PlayerSelfTest calls load.
+                    waitCondition("retained pre-mount panscan readback before first load", 1_500, () ->
+                        actor.number("panscan") == preMountPanscan && actor.number("playlist-count") == 0 && !actor.fileLoaded);
+                    result.put("retainedPanscanLoadOrder", actor.loadAfterRetainedPanscan().get(3, TimeUnit.SECONDS));
+                }
                 if (caseName.equals("mpv-adaptive")) {
                     waitCondition("actual adaptive presentation option", 1_500, () ->
                         actor.expectedFlip.equals(actor.value("options/d3d11-flip")));
@@ -175,6 +185,8 @@ public final class AwtMpvProbe {
                 waitCondition("file-loaded and real clock", 5_000, () -> actor.fileLoaded && actor.number("time-pos") >= 1.1);
                 double time = actor.number("time-pos");
                 waitCondition("real clock advancement", 1_500, () -> actor.number("time-pos") > time + 0.1);
+                if (preMountPanscan != null) require(actor.number("panscan") == preMountPanscan,
+                    "Retained pre-mount panscan changed after first load");
                 if (shaderCase()) waitScreen("native Windows cyan/pink visibility", "screen-baseline.png", 5_000, AwtMpvProbe::hasVideoColors);
                 else waitFixtureScreen("native Windows cyan/pink visibility", "screen-baseline.png", 5_000);
                 actor.setPause(true);
@@ -882,13 +894,14 @@ public final class AwtMpvProbe {
         private final long hwnd;
         private final String selectedCase;
         private final boolean debugObservations;
+        private final Double preMountPanscan;
         volatile Map<String, Object> runtimeModules = Map.of();
         volatile String expectedFlip = "yes";
         volatile Map<String, Object> presentationSelection = Map.of();
         private final Thread worker;
-        MpvActor(Path dll, long hwnd, Path video, Path audio, String selectedCase, boolean debugObservations) {
+        MpvActor(Path dll, long hwnd, Path video, Path audio, String selectedCase, boolean debugObservations, Double preMountPanscan) {
             this.dll = dll; this.hwnd = hwnd; this.video = video; this.audio = audio; this.selectedCase = selectedCase;
-            this.debugObservations = debugObservations;
+            this.debugObservations = debugObservations; this.preMountPanscan = preMountPanscan;
             worker = new Thread(this::run, "probe-single-mpv-actor"); worker.setDaemon(true);
         }
         void start() { worker.start(); }
@@ -910,6 +923,26 @@ public final class AwtMpvProbe {
         }
         CompletableFuture<Integer> command(String... args) {
             return submit((api, handle) -> { int code = api.mpv_command(handle, new StringArray(args, "UTF-8")); check(api, code, args[0]); return code; });
+        }
+        CompletableFuture<Map<String, Object>> loadAfterRetainedPanscan() {
+            require(preMountPanscan != null, "Only the retained panscan case defers its first load");
+            return submit((api, handle) -> {
+                String before = readString(api, handle, "panscan");
+                String count = readString(api, handle, "playlist-count");
+                require(!fileLoaded && "0".equals(count) && before != null &&
+                    Double.parseDouble(before) == preMountPanscan, "Retained panscan/empty source changed before first load");
+                // Match Action.Load -> clearSectionViewport before loadfile on this same worker.
+                for (String[] option : new String[][] {{"video-zoom", "0"}, {"video-pan-x", "0"},
+                    {"video-pan-y", "0"}, {"keepaspect", "yes"}, {"panscan", preMountPanscan.toString()}})
+                    check(api, api.mpv_set_property_string(handle, option[0], option[1]), option[0]);
+                String applied = readString(api, handle, "panscan");
+                require(applied != null && Double.parseDouble(applied) == preMountPanscan,
+                    "Load viewport reset did not retain pre-mount panscan");
+                check(api, api.mpv_command(handle, new StringArray(new String[]{"loadfile", video.toString(), "replace"}, "UTF-8")), "loadfile");
+                return Map.of("preMountRequest", preMountPanscan, "nativeBeforeLoad", before,
+                    "playlistCountBeforeLoad", count, "nativeAfterViewportReset", applied,
+                    "loadCommandAccepted", true, "sameActorWorker", Thread.currentThread() == worker);
+            });
         }
         CompletableFuture<Map<String, Object>> screenshotForEntry(String entry, Path target, String mode) {
             require(Set.of("video", "window").contains(mode), "Unsupported auxiliary screenshot mode");
@@ -960,6 +993,7 @@ public final class AwtMpvProbe {
                 options.put("vo", "gpu"); options.put("gpu-api", "d3d11"); options.put("hwdec", "auto-safe");
                 options.put("ao", "null"); options.put("ao-null-untimed", "no"); options.put("volume", "0"); options.put("mute", "yes");
                 options.put("audio-files", audio.toString().replace(";", "\\;"));
+                if (preMountPanscan != null) options.put("panscan", preMountPanscan.toString());
                 if (selectedCase.startsWith("shader-clear-")) {
                     // Match production: default flip, optional NVIDIA preference; no software-bitblt substitution.
                     DesktopWindowsDxgiAdapters.Snapshot inventory = DesktopWindowsDxgiAdapters.probe();
@@ -995,7 +1029,8 @@ public final class AwtMpvProbe {
                 for (Map.Entry<String, String> option : options.entrySet()) check(api, api.mpv_set_option_string(handle, option.getKey(), option.getValue()), option.getKey());
                 check(api, api.mpv_request_log_messages(handle, debugObservations ? "debug" : "v"), "request-log-messages");
                 check(api, api.mpv_initialize(handle), "initialize");
-                check(api, api.mpv_command(handle, new StringArray(new String[]{"loadfile", video.toString(), "replace"}, "UTF-8")), "loadfile");
+                if (preMountPanscan == null)
+                    check(api, api.mpv_command(handle, new StringArray(new String[]{"loadfile", video.toString(), "replace"}, "UTF-8")), "loadfile");
                 ready.complete(null);
                 long last = 0;
                 while (!stopping.get()) {
@@ -1026,6 +1061,7 @@ public final class AwtMpvProbe {
                         List<String> names = new ArrayList<>(Arrays.asList(PROPERTIES));
                         if (selectedCase.startsWith("shader-clear-")) names.addAll(Arrays.asList(SHADER_PROPERTIES));
                         if (debugObservations) names.add("options/gpu-debug");
+                        if (preMountPanscan != null) names.add("panscan");
                         for (String property : names) {
                             try (Memory memory = new Memory(Native.POINTER_SIZE)) {
                                 memory.clear(); int code = api.mpv_get_property(handle, property, 1, memory);
