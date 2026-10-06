@@ -543,8 +543,8 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true
         uses: actions/download-artifact@v4
         with:
-          artifact-ids: 11382277176
-          run-id: 37392787564
+          artifact-ids: 11406965300
+          run-id: 37446361644
           repository: tonysuper666-creator/BiliPai-Windows
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/bilipai-previous-update-package
@@ -554,7 +554,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $previousZip = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package/BiliPai-Windows-0.2.427.24-x64.zip'
+          $previousZip = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package/BiliPai-Windows-0.2.427.30-x64.zip'
           python desktop/tools/verify-updater-baseline.py --package "$previousZip"
           if ($LASTEXITCODE -ne 0) { throw 'The actual previous EXE package could not be verified.' }
           "BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE=$previousZip" | Add-Content -LiteralPath $env:GITHUB_ENV

@@ -448,7 +448,7 @@ pwsh -NoProfile -File desktop/tools/build.ps1 -JavaHome 'D:/toolchain/jdk-21' -R
 
 用 `-UpdaterSmoke` 可以在 ZIP 和 SHA-256 文件生成后，单独执行隔离的更新集成检查。它通过 loopback HTTP 测试服务下载真实便携 ZIP，校验哈希与安装根目录，并验证实际 EXE 的启动、激活和失败回退；报告固定为 `desktop/build/reports/updater-smoke-*/updater-smoke.json`，绑定本次 Windows 版本和 ZIP SHA-256。测试使用独立的用户数据目录，不读取真实账号；新版本健康检查窗口可能发起隔离访客请求，因此这项检查并非完全离线。它不证明 GitHub 正式发行流程或线上 B 站 DASH 已通过。可选 `-PreviousUpdateTestPackage <旧版ZIP>` 用于额外检查真实旧版 EXE 的更新转发。Windows CI 默认执行此检查并单独上传报告与日志。独立 smoke 开关不会生成完整发布通过证据；`-SkipTests` 不会跳过所选 smoke。
 
-手动普通 Windows 构建可开启 `verify_previous_update`，使用已经交付的 `.24` 真实安装包验证旧 EXE 转入新版本。工作流按固定运行和 artifact ID 下载，再核验便携 ZIP 的完整长度与 SHA-256，之后才传给现有隔离更新检查；包不可获取或字节不符时停止，不退回“未提供旧包”的较窄测试。该基线来自个人仓库运行 `37392787564`，不是线上自动选择最新旧版；基线过期后须重新审核替换。源码校验通过仅证明测试输入正确，真实转发仍以当次更新器报告为准。[跨运行下载所需权限与参数](https://github.com/actions/download-artifact/tree/v4#download-artifacts-from-other-workflow-runs-or-repositories)遵循 GitHub 官方说明。
+手动普通 Windows 构建可开启 `verify_previous_update`，使用已经交付的 `.30` 真实安装包验证旧 EXE 转入新版本。工作流按固定运行和 artifact ID 下载，再核验便携 ZIP 的完整长度与 SHA-256，之后才传给现有隔离更新检查；包不可获取或字节不符时停止，不退回“未提供旧包”的较窄测试。该基线来自个人仓库运行 `37446361644`，不是线上自动选择最新旧版；基线过期后须重新审核替换。源码校验通过仅证明测试输入正确，真实转发仍以当次更新器报告为准。[跨运行下载所需权限与参数](https://github.com/actions/download-artifact/tree/v4#download-artifacts-from-other-workflow-runs-or-repositories)遵循 GitHub 官方说明。
 
 发布门槛包括 Windows 单元测试、完整 Python 源码契约测试、访客模式推荐/搜索/视频详情/DASH 地址解析、**打包后的 EXE** 离线视频、音频、暂停、进度、速度和错误恢复检查，以及绑定本次 ZIP 的更新集成检查。`-ReleaseGate` 同时启用原生与更新 smoke，只有 ZIP、SHA-256 和全部检查成功后才写入 `desktop/build/release-gate.json`。网络请求被拒绝或任一检查失败会停止发布，不会跳过门槛。原生报告位于 `desktop/build/reports/release-gate-*`。CI 使用真实音视频解码与同步检查，并将声音输出送往空设备；本地保留声音设备检查。登录状态和新 Android 功能仍需要相应维护；这些自动检查不能证明完整 Android 功能已被移植。
 
