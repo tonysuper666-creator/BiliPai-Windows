@@ -71,6 +71,12 @@ object WindowsVideoActualRootUiFixture {
     private lateinit var actualPlayer: MpvPlayer
     private lateinit var actualCanvas: Canvas
     private lateinit var accepted: OwnedPlaybackSourceSnapshot
+    // Only the observer thread writes this. A retained initial pixel failure can
+    // collect independent UI evidence but must never reach the success receipt.
+    private class InitialVideoPixelFailure(colourCount: Int) : IllegalStateException(
+        "Actual mpv video-mode screenshot sampled uniform ($colourCount colours)",
+    )
+    private var initialVideoPixelFailure: InitialVideoPixelFailure? = null
     private var ownedWindowIdentity = 0
     @Volatile private var runtimeMainWindow: ComposeWindow? = null
     private var videoKey: BiliPaiNavKey.VideoDetail? = null
@@ -472,7 +478,7 @@ object WindowsVideoActualRootUiFixture {
         put("sourceVersion", actualPlayer.currentSourceVersion)
         // No URL, header, credentials, raw full-source serialization or endpoint enumeration.
     }
-    private fun clockAndCapture(id: String) {
+    private fun clockAndCapture(id: String, allowInitialUniformDiagnostic: Boolean = false) {
         sameNative(); await("actual native playback frame/clock for $id") { playing() }
         val before = actualPlayer.state.value.positionSeconds
         Thread.sleep(2000)
@@ -490,7 +496,30 @@ object WindowsVideoActualRootUiFixture {
         val colours = mutableSetOf<Int>()
         for (y in 0 until image.height step maxOf(1, image.height / 32))
             for (x in 0 until image.width step maxOf(1, image.width / 32)) colours.add(image.getRGB(x, y))
-        check(colours.size > 1) { "Actual decoded native screenshot was uniform" }
+        val expectedPlacement = if (id == "120-fullscreen-playing") WindowPlacement.Fullscreen else WindowPlacement.Floating
+        check(edt { (window() as ComposeWindow).placement == expectedPlacement }) {
+            "Unexpected actual window placement during $id; expected $expectedPlacement (captured before failure)"
+        }
+        if (colours.size <= 1) {
+            val failure = InitialVideoPixelFailure(colours.size)
+            if (!allowInitialUniformDiagnostic || id != "110-ordinary-playing") throw failure
+            check(initialVideoPixelFailure == null) { "Initial video pixel failure was already recorded" }
+            initialVideoPixelFailure = failure
+            record("110-initial-video-pixel-failure", mapOf(
+                "diagnosticOnly" to JsonPrimitive(true), "initialVideoPixelAssertionPassed" to JsonPrimitive(false),
+                "overallFailureRetained" to JsonPrimitive(true), "independentUiEvidenceContinues" to JsonPrimitive(true),
+                "imageSource" to JsonPrimitive("MPV_SCREENSHOT_TO_FILE_VIDEO_MODE"),
+                "imageIsAtomicWithClockOrUi" to JsonPrimitive(false), "softwareOnlyCaptureProven" to JsonPrimitive(false),
+                "desktopPhysicalReadback" to JsonPrimitive(false), "bvid" to JsonPrimitive(video),
+                "sameAcceptedSourceVersion" to JsonPrimitive(accepted.sourceVersion),
+                "fullImmutableSourceStillOwned" to JsonPrimitive(true), "nativeState" to safeState(),
+                "clockBefore" to JsonPrimitive(before), "clockAfter" to JsonPrimitive(after),
+                "actualNativeScreenshot" to JsonPrimitive(nativeImage.fileName.toString()),
+                "nativeScreenshotWidth" to JsonPrimitive(image.width), "nativeScreenshotHeight" to JsonPrimitive(image.height),
+                "sampledNativeColourCount" to JsonPrimitive(colours.size),
+                "windowPlacement" to JsonPrimitive(expectedPlacement.toString())))
+            return // Never emit the normal 110 passed observation for a failed image.
+        }
         record(id, mapOf("bvid" to JsonPrimitive(video), "sameAcceptedSourceVersion" to JsonPrimitive(accepted.sourceVersion),
             "fullImmutableSourceStillOwned" to JsonPrimitive(true), "nativeState" to safeState(),
             "clockBefore" to JsonPrimitive(before), "clockAfter" to JsonPrimitive(after),
@@ -498,10 +527,6 @@ object WindowsVideoActualRootUiFixture {
             "nativeScreenshotWidth" to JsonPrimitive(image.width), "nativeScreenshotHeight" to JsonPrimitive(image.height),
             "sampledNativeColourCount" to JsonPrimitive(colours.size),
             "windowPlacement" to JsonPrimitive(edt { (window() as ComposeWindow).placement.toString() })))
-        val expectedPlacement = if (id == "120-fullscreen-playing") WindowPlacement.Fullscreen else WindowPlacement.Floating
-        check(edt { (window() as ComposeWindow).placement == expectedPlacement }) {
-            "Unexpected actual window placement during $id; expected $expectedPlacement (captured before failure)"
-        }
     }
     private var replaySearchKey: BiliPaiNavKey? = null
     private fun originalSearchHeaderLabels(label: String): Set<String> = when (label) {
@@ -4321,7 +4346,12 @@ object WindowsVideoActualRootUiFixture {
         val originalBounds = edt { Rectangle(window().bounds) }
         val initialPlacement = edt { (window() as ComposeWindow).placement }
         check(initialPlacement == WindowPlacement.Floating)
-        clockAndCapture("110-ordinary-playing")
+        val independentComposerReplay = replay && localReplay != null &&
+            System.getProperty("bilipai.validation.composerInput") == "true" &&
+            listOf("commentSearchInput", "videoDynamicShareInput", "fullscreenIdleInput", "nvidiaInput",
+                "scaleInput", "featureInput", "hotInput", "collectionInput", "metadataInput", "bgmInput",
+                "pipInput", "originalInteractionInput").none { System.getProperty("bilipai.validation.$it") == "true" }
+        clockAndCapture("110-ordinary-playing", allowInitialUniformDiagnostic = independentComposerReplay)
         if (System.getProperty("bilipai.validation.videoDynamicShareInput") == "true") {
             check(replay) { "Video share proof requires the explicit synthetic protocol/session replay" }
             exerciseVideoDynamicShare(requireNotNull(localReplay))
@@ -4498,6 +4528,12 @@ object WindowsVideoActualRootUiFixture {
                     }
                     if (replay != null) enterVideoThroughActualSearch(replay)
                     exercise(replayMode, replay)
+                    initialVideoPixelFailure?.let { failure ->
+                        record("initial-video-pixel-failure-independent-ui-completed", mapOf(
+                            "diagnosticOnly" to JsonPrimitive(true), "independentUiActionsCompleted" to JsonPrimitive(true),
+                            "initialVideoPixelAssertionPassed" to JsonPrimitive(false), "overallFailureRetained" to JsonPrimitive(true)))
+                        throw failure // Must precede every success receipt and completed=true.
+                    }
                     replay?.writeReceipt()
                     val receipt = buildJsonObject {
                         put("schema", 1); put("actualMainInvocations", 1); put("actualMainReturned", false)
@@ -4560,6 +4596,9 @@ object WindowsVideoActualRootUiFixture {
                     completed.set(true)
                     actions.closeOwnedWindow(edt { current() })
                 } catch (failure: Throwable) {
+                    // A later source/clock/UI assertion stops immediately; retain the
+                    // initial pixel failure as additional evidence without masking it.
+                    initialVideoPixelFailure?.takeIf { it !== failure }?.let { failure.addSuppressed(it) }
                     writeActualMainRuntimeEvidence("end", "FAILURE_HANDLER_BEFORE_OWNED_EXIT", failure)
                     failure.printStackTrace()
                     runCatching { replay?.writeFailureReceipt() }
