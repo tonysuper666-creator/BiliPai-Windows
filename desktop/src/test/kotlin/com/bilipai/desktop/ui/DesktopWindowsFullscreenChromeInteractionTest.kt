@@ -101,6 +101,103 @@ class DesktopWindowsFullscreenChromeInteractionTest {
         assertEquals(1, publications)
     }
 
+    @Test fun peerGeometryChangeWithoutScreenMovementCannotUndoIdleHide() {
+        var now = 0L
+        val chrome = DesktopWindowsFullscreenChromeState { now }
+        val motion = DesktopWindowsNativePointerMotion()
+        val shownOrigin = java.awt.Point(8, 94)
+        val shownLocal = java.awt.Point(504, 271)
+        val hiddenOrigin = java.awt.Point(8, 31)
+        val hiddenLocal = java.awt.Point(504, 334)
+        fun absolute(origin: java.awt.Point, local: java.awt.Point) =
+            java.awt.Point(origin.x + local.x, origin.y + local.y)
+        fun move(point: java.awt.Point) {
+            if (motion.observe(point)) chrome.reveal(DesktopWindowsFullscreenChromeActivity.NATIVE_MOVE)
+        }
+        move(absolute(shownOrigin, shownLocal))
+        val revision = chrome.activityRevision
+        now = 4_000_000_000L
+        assertTrue(chrome.hideIfIdle(revision, allowed(DesktopWindowsFullscreenChromeInteraction(), true, true)))
+        move(absolute(hiddenOrigin, hiddenLocal)) // different local Y, unchanged actual OS cursor
+        assertFalse(chrome.visible)
+        assertEquals(revision, chrome.activityRevision)
+        assertEquals(0L, chrome.remainingIdleMillis())
+        move(java.awt.Point(513, 365)) // one real screen pixel remains sufficient
+        assertTrue(chrome.visible)
+        assertEquals(revision + 1, chrome.activityRevision)
+        assertEquals(4_000L, chrome.remainingIdleMillis())
+        assertEquals(DesktopWindowsFullscreenChromeActivity.NATIVE_MOVE.code, chrome.lastRevealReasonCode)
+    }
+
+    @Test fun realDepartureAndReturnToSameNativePointRemainActivity() {
+        val motion = DesktopWindowsNativePointerMotion()
+        assertTrue(motion.observe(java.awt.Point(512, 365)))
+        assertFalse(motion.observe(java.awt.Point(512, 365))) // duplicate parent/Canvas event
+        // Exit or Compose controls record the physical departure without revealing.
+        motion.observe(java.awt.Point(512, 650))
+        assertTrue(motion.observe(java.awt.Point(512, 365))) // actual re-entry, even at the old point
+        assertTrue(motion.observe(java.awt.Point(513, 365))) // actual drag/move
+        assertFalse(motion.observe(java.awt.Point(513, 365)))
+    }
+
+    @Test fun delayedInsideExitCannotConsumeRealMovementButOutsideExitAndPressStillRecord() {
+        val motion = DesktopWindowsNativePointerMotion()
+        var now = 0L
+        val chrome = DesktopWindowsFullscreenChromeState { now }
+        motion.observe(java.awt.Point(512, 365))
+        now = 4_000_000_000L
+        assertTrue(chrome.hideIfIdle(chrome.activityRevision, true))
+        val returnedPoint = java.awt.Point(513, 365)
+        assertFalse(motion.observe(returnedPoint, withinSurface = true, departureOnly = true))
+        assertEquals(java.awt.Point(512, 365), motion.lastScreenPoint)
+        assertFalse(chrome.visible)
+        if (motion.observe(returnedPoint, withinSurface = true))
+            chrome.reveal(DesktopWindowsFullscreenChromeActivity.NATIVE_MOVE)
+        assertTrue(chrome.visible)
+        assertEquals(DesktopWindowsFullscreenChromeActivity.NATIVE_MOVE.code, chrome.lastRevealReasonCode)
+        // A confirmed departure is recorded so returning to the same old point is movement.
+        assertTrue(motion.observe(java.awt.Point(513, 650), withinSurface = false, departureOnly = true))
+        assertTrue(motion.observe(returnedPoint, withinSurface = true))
+        // Press takes the normal path and seeds current position even with no prior Move.
+        val pressed = DesktopWindowsNativePointerMotion()
+        assertTrue(pressed.observe(returnedPoint, withinSurface = true))
+        chrome.reveal(DesktopWindowsFullscreenChromeActivity.NATIVE_PRESS)
+        assertFalse(pressed.observe(returnedPoint, withinSurface = true))
+    }
+
+    @Test fun unavailableScreenReadCannotInventMovementOrForgetTheLastPoint() {
+        val motion = DesktopWindowsNativePointerMotion()
+        assertFalse(motion.observe(null))
+        assertNull(motion.lastScreenPoint)
+        val first = java.awt.Point(512, 365)
+        assertTrue(motion.observe(first))
+        first.translate(100, 100)
+        assertFalse(motion.observe(null))
+        assertFalse(motion.observe(java.awt.Point(512, 365)))
+        val returned = requireNotNull(motion.lastScreenPoint)
+        returned.translate(100, 100)
+        assertEquals(java.awt.Point(512, 365), motion.lastScreenPoint)
+    }
+
+    @Test fun clicksKeysAndFocusStillRevealWithoutPointerMotion() {
+        var now = 0L
+        val chrome = DesktopWindowsFullscreenChromeState { now }
+        val motion = DesktopWindowsNativePointerMotion()
+        motion.observe(java.awt.Point(512, 365))
+        for (reason in listOf(DesktopWindowsFullscreenChromeActivity.NATIVE_PRESS,
+            DesktopWindowsFullscreenChromeActivity.NATIVE_KEY,
+            DesktopWindowsFullscreenChromeActivity.NATIVE_FOCUS_GAINED,
+            DesktopWindowsFullscreenChromeActivity.WINDOW_FOCUS_GAINED)) {
+            now += 4_000_000_000L
+            assertTrue(chrome.hideIfIdle(chrome.activityRevision, true))
+            assertFalse(motion.observe(java.awt.Point(512, 365)))
+            chrome.reveal(reason)
+            assertTrue(chrome.visible)
+            assertEquals(4_000L, chrome.remainingIdleMillis())
+            assertEquals(reason.code, chrome.lastRevealReasonCode)
+        }
+    }
+
     @Test fun nativeOwnershipNeverBypassesPauseWindowOrEntryGuards() {
         val stale = DesktopWindowsFullscreenChromeInteraction(hovered = true, focused = true)
         assertFalse(allowed(stale, true, true, playing.copy(nativePaused = true, paused = true)))

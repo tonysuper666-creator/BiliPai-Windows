@@ -124,7 +124,9 @@ internal class DesktopWindowsVideoActions(
     val latestFullscreen by rememberUpdatedState(fullscreen)
     fun chromeCurrent(): Boolean = current() && !latestPip && rootEnvironment.owns() &&
         rootEnvironment.currentKey() === latestChromeRoute && latestChromeSource?.let(assembly.native::isCurrent) == true
-    fun chromeActivity() { if (latestFullscreen && chromeCurrent()) latestChrome.reveal() }
+    fun chromeActivity(reason: DesktopWindowsFullscreenChromeActivity) {
+        if (latestFullscreen && chromeCurrent()) latestChrome.reveal(reason)
+    }
     val chromeWindow = LocalDesktopWindowsPlayerWindow.current
     var chromeWindowFocused by remember(chromeWindow) { mutableStateOf(chromeWindow?.isFocused == true) }
     var barInteraction by remember(chrome) { mutableStateOf(DesktopWindowsFullscreenChromeInteraction()) }
@@ -132,9 +134,15 @@ internal class DesktopWindowsVideoActions(
     // Keep them separate: moving over video does not steal keyboard focus from a control.
     var nativePointerOnVideo by remember(assembly, native.surface) { mutableStateOf(false) }
     var nativeKeyboardOnVideo by remember(assembly, native.surface) { mutableStateOf(false) }
+    val nativePointerMotion = remember(assembly, native.surface) { DesktopWindowsNativePointerMotion() }
     fun observeChromePointer() {
         if (!current() || latestPip) return
-        desktopWindowsObserveNativePointer(native.surface) { point -> nativePointerOnVideo = point != null }
+        desktopWindowsObserveNativePointer(native.surface) { point ->
+            nativePointerOnVideo = point != null
+            // Remember a real departure without turning a Compose notification
+            // into native activity or consuming a subsequent native Move.
+            if (point == null) nativePointerMotion.observe(desktopWindowsNativePointerScreenPosition())
+        }
     }
     var topFocused by remember(chrome) { mutableStateOf(false) }
     val topInteractions = remember(chrome) { MutableInteractionSource() }
@@ -144,13 +152,13 @@ internal class DesktopWindowsVideoActions(
         val listener = object : java.awt.event.WindowFocusListener {
             override fun windowGainedFocus(event: java.awt.event.WindowEvent) {
                 chromeWindowFocused = true
-                chromeActivity()
+                chromeActivity(DesktopWindowsFullscreenChromeActivity.WINDOW_FOCUS_GAINED)
             }
             override fun windowLostFocus(event: java.awt.event.WindowEvent) {
                 chromeWindowFocused = false
                 nativePointerOnVideo = false
                 nativeKeyboardOnVideo = false
-                chromeActivity()
+                chromeActivity(DesktopWindowsFullscreenChromeActivity.WINDOW_FOCUS_LOST)
             }
         }
         chromeWindow?.addWindowFocusListener(listener)
@@ -166,37 +174,41 @@ internal class DesktopWindowsVideoActions(
         val focus = object : java.awt.event.FocusAdapter() {
             override fun focusGained(event: java.awt.event.FocusEvent) {
                 nativeKeyboardOnVideo = current() && !latestPip && surface.isFocusOwner
-                chromeActivity()
+                chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_FOCUS_GAINED)
                 if(current() && !latestPip) latestActions.focusChanged(true)
             }
             override fun focusLost(event: java.awt.event.FocusEvent) {
                 nativeKeyboardOnVideo = false
-                chromeActivity()
+                chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_FOCUS_LOST)
                 if(current()) latestActions.focusChanged(false)
             }
         }
-        fun observeNativePointer(event: java.awt.event.MouseEvent, activity: Boolean) {
+        fun observeNativePointer(reason: DesktopWindowsFullscreenChromeActivity?, departureOnly: Boolean = false) {
             if (!current() || latestPip || !surface.isShowing) return
-            val point = javax.swing.SwingUtilities.convertPoint(event.component, event.point, surface)
-            nativePointerOnVideo = surface.contains(point)
-            if (activity && nativePointerOnVideo) chromeActivity()
+            desktopWindowsObserveNativePointer(surface) { point ->
+                nativePointerOnVideo = point != null
+                val moved = nativePointerMotion.observe(desktopWindowsNativePointerScreenPosition(),
+                    withinSurface = nativePointerOnVideo, departureOnly = departureOnly)
+                if (reason != null && moved && nativePointerOnVideo) chromeActivity(reason)
+            }
         }
         val mouse = object : java.awt.event.MouseAdapter() {
-            // A layout expansion may re-enter the same heavyweight peer without
-            // a new user movement. An already owned pointer must not undo hiding.
-            override fun mouseEntered(event: java.awt.event.MouseEvent) { observeNativePointer(event, !nativePointerOnVideo) }
-            override fun mouseMoved(event: java.awt.event.MouseEvent) { observeNativePointer(event, true) }
-            override fun mouseDragged(event: java.awt.event.MouseEvent) { observeNativePointer(event, true) }
-            override fun mouseExited(event: java.awt.event.MouseEvent) {
-                // Layout/peer transitions can report an old exit point. Reconcile
-                // against the same physical host without creating new activity.
-                if (current() && !latestPip) desktopWindowsObserveNativePointer(surface) { point ->
-                    nativePointerOnVideo = point != null
-                }
+            // Peer geometry can change event-local coordinates or emit Enter/Move.
+            // Only actual screen movement restarts idle; ownership is still read back.
+            override fun mouseEntered(event: java.awt.event.MouseEvent) {
+                observeNativePointer(DesktopWindowsFullscreenChromeActivity.NATIVE_ENTER)
             }
+            override fun mouseMoved(event: java.awt.event.MouseEvent) {
+                observeNativePointer(DesktopWindowsFullscreenChromeActivity.NATIVE_MOVE)
+            }
+            override fun mouseDragged(event: java.awt.event.MouseEvent) {
+                observeNativePointer(DesktopWindowsFullscreenChromeActivity.NATIVE_DRAG)
+            }
+            override fun mouseExited(event: java.awt.event.MouseEvent) { observeNativePointer(null, departureOnly = true) }
             override fun mousePressed(event: java.awt.event.MouseEvent) {
                 if(current() && !latestPip && surface.isShowing) {
-                    observeNativePointer(event, true)
+                    observeNativePointer(null)
+                    chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_PRESS)
                     viewportFocus.requestFocus()
                     surface.requestFocusInWindow()
                 }
@@ -205,7 +217,7 @@ internal class DesktopWindowsVideoActions(
         val key = object : java.awt.event.KeyAdapter() {
             override fun keyPressed(event: java.awt.event.KeyEvent) {
                 if(!event.isConsumed && current() && !latestPip && surface.isFocusOwner && surface.isShowing) {
-                    chromeActivity()
+                    chromeActivity(DesktopWindowsFullscreenChromeActivity.NATIVE_KEY)
                     if (latestActions.nativeKey(desktopWindowsNativeVideoKey(event))) event.consume()
                 }
             }
@@ -424,7 +436,16 @@ internal class DesktopWindowsVideoActions(
                 pointerReadAvailable = true
                 pointerPosition = point
             }
+            val screenPointer = desktopWindowsNativePointerScreenPosition()
+            val lastScreenPointer = nativePointerMotion.lastScreenPoint
             linkedMapOf(
+                "lastRevealReasonCode" to chrome.lastRevealReasonCode,
+                "nativePointerScreenReadAvailable" to (screenPointer != null),
+                "nativePointerScreenX" to (screenPointer?.x ?: 0),
+                "nativePointerScreenY" to (screenPointer?.y ?: 0),
+                "nativeLastPointerScreenKnown" to (lastScreenPointer != null),
+                "nativeLastPointerScreenX" to (lastScreenPointer?.x ?: 0),
+                "nativeLastPointerScreenY" to (lastScreenPointer?.y ?: 0),
                 "chromeIdentity" to System.identityHashCode(chrome),
                 "sourceIdentity" to System.identityHashCode(chromeSource),
                 "routeIdentity" to System.identityHashCode(route),
@@ -477,7 +498,9 @@ internal class DesktopWindowsVideoActions(
         }
     }
     // Gate changes reset the idle period; a new accepted source gets new UI state.
-    LaunchedEffect(chrome, fullscreen, active, pipActive, chromeCanAutoHide) { chrome.reveal() }
+    LaunchedEffect(chrome, fullscreen, active, pipActive, chromeCanAutoHide) {
+        chrome.reveal(DesktopWindowsFullscreenChromeActivity.GATE_CHANGED)
+    }
     LaunchedEffect(chrome, chromeCanAutoHide, chrome.visible, chrome.activityRevision) {
         if (chromeCanAutoHide && chrome.visible) {
             val revision = chrome.activityRevision
@@ -582,7 +605,8 @@ internal class DesktopWindowsVideoActions(
                         if (barInteraction != interaction) {
                             val previouslyHeld = barInteraction.held(nativePointerOnVideo, nativeKeyboardOnVideo)
                             barInteraction = interaction
-                            if (previouslyHeld != interaction.held(nativePointerOnVideo, nativeKeyboardOnVideo)) chromeActivity()
+                            if (previouslyHeld != interaction.held(nativePointerOnVideo, nativeKeyboardOnVideo))
+                                chromeActivity(DesktopWindowsFullscreenChromeActivity.CONTROL_HOLD_CHANGED)
                         }
                     },
                     onChromePointerInput = ::observeChromePointer,

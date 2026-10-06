@@ -17,6 +17,34 @@ internal class DesktopWindowsFullscreenChromeEntryKey(private val entry: Any) {
     override fun hashCode(): Int = System.identityHashCode(entry)
 }
 
+/** Stable scalar diagnostic codes; none of them changes playback admission. */
+internal enum class DesktopWindowsFullscreenChromeActivity(val code: Int) {
+    UNSPECIFIED(0), GATE_CHANGED(1), WINDOW_FOCUS_GAINED(2), WINDOW_FOCUS_LOST(3),
+    NATIVE_FOCUS_GAINED(4), NATIVE_FOCUS_LOST(5), NATIVE_ENTER(6), NATIVE_MOVE(7),
+    NATIVE_DRAG(8), NATIVE_PRESS(9), NATIVE_KEY(10), CONTROL_HOLD_CHANGED(11),
+}
+
+/** One mounted native host's physical pointer history, not event-local coordinates.
+ * A resized/repositioned heavyweight peer can emit Move without OS cursor movement. */
+internal class DesktopWindowsNativePointerMotion {
+    private var lastScreenPosition: java.awt.Point? = null
+    val lastScreenPoint: java.awt.Point? get() = lastScreenPosition?.let { java.awt.Point(it) }
+
+    fun observe(screenPosition: java.awt.Point?, withinSurface: Boolean = true, departureOnly: Boolean = false): Boolean {
+        // A delayed Exit can arrive after the cursor has returned. Do not consume
+        // that real inside movement before the pending Enter/Move observes it.
+        if (departureOnly && withinSurface) return false
+        if (screenPosition == null) return false
+        val moved = lastScreenPosition != screenPosition
+        lastScreenPosition = java.awt.Point(screenPosition)
+        return moved
+    }
+}
+
+/** Called only by the mounted host's input/readback callbacks; no global listener. */
+internal fun desktopWindowsNativePointerScreenPosition(): java.awt.Point? =
+    runCatching { java.awt.MouseInfo.getPointerInfo()?.location }.getOrNull()
+
 /** Mount-local UI timing, never a playback/source/window authority. */
 internal class DesktopWindowsFullscreenChromeState(private val clockNanos: () -> Long = System::nanoTime) {
     var visible by mutableStateOf(true)
@@ -24,8 +52,11 @@ internal class DesktopWindowsFullscreenChromeState(private val clockNanos: () ->
     var activityRevision by mutableLongStateOf(0L)
         private set
     private var lastActivityNanos = clockNanos()
+    var lastRevealReasonCode: Int = DesktopWindowsFullscreenChromeActivity.UNSPECIFIED.code
+        private set
 
-    fun reveal() {
+    fun reveal(reason: DesktopWindowsFullscreenChromeActivity = DesktopWindowsFullscreenChromeActivity.UNSPECIFIED) {
+        lastRevealReasonCode = reason.code
         visible = true
         lastActivityNanos = clockNanos()
         activityRevision++
