@@ -10,7 +10,6 @@ import androidx.compose.ui.semantics.*
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.unit.dp
 import coil3.PlatformContext
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
@@ -19,7 +18,7 @@ import kotlinx.coroutines.*
 import java.awt.Dimension
 import java.awt.Font
 import java.awt.image.BufferedImage
-import javax.swing.ImageIcon
+import com.bilipai.desktop.appearance.LocalDesktopWindowsSystemDensity
 import javax.swing.JScrollPane
 import javax.swing.SwingUtilities
 import okio.buffer
@@ -37,9 +36,10 @@ import okio.buffer
     val scope=remember(platform,images){CoroutineScope(parent.coroutineContext+SupervisorJob(parent.coroutineContext[Job]))}
     val change by rememberUpdatedState(onValueChange);val begin by rememberUpdatedState(onBeginEditing)
     val density=LocalDensity.current
-    val textPx=with(density){textStyle.fontSize.toPx()}.takeIf{it.isFinite()&&it>0}?:14f
-    val size=with(density){22.dp.roundToPx()}.coerceAtLeast(1)
-    val padding=with(density){2.dp.roundToPx()}.coerceAtLeast(0)
+    // Native Font/Icon dimensions use Swing logical units; the decoded raster keeps physical pixels.
+    val metrics=desktopInlineEmoteMetrics(density,LocalDesktopWindowsSystemDensity.current?:density,textStyle.fontSize)
+    val size=metrics.rasterSize
+    val padding=metrics.rasterPadding
     val editor=remember(platform,images){DesktopInlineEmotePane(EMOTE_TOKEN_PATTERN,platform::isOwned)}
     DisposableEffect(editor,scope) {onDispose{scope.cancel();if(SwingUtilities.isEventDispatchThread())editor.retire()else SwingUtilities.invokeLater(editor::retire)}}
     val requests=remember(editor){mutableMapOf<String,Job>()}
@@ -57,12 +57,12 @@ import okio.buffer
         insertTextAtCursor {replacement->if(!enabled||readOnly||!platform.isOwned())false else {editor.replaceSelection(replacement.text);true}}
         setSelection {start,end,_->if(start !in 0..value.text.length||end !in 0..value.text.length)false else {editor.caret.setDot(start);editor.caret.moveDot(end);true}}
     },update={
-        val imageRevision=editor.updateImageSize(size,padding) {
+        val imageRevision=editor.updateImageSize(metrics.logicalSize,metrics.logicalPadding,size,padding) {
             requests.values.forEach { it.cancel() }; requests.clear()
         }
         editor.valueChanged={if(platform.isOwned())change(it)}
         editor.beginEditing={if(platform.isOwned())begin()}
-        editor.font=Font("Dialog",if((textStyle.fontWeight?.weight?:400)>=600)Font.BOLD else Font.PLAIN,textPx.toInt().coerceAtLeast(1))
+        editor.font=Font("Dialog",if((textStyle.fontWeight?.weight?:400)>=600)Font.BOLD else Font.PLAIN,1).deriveFont(metrics.logicalFontSize)
         editor.foreground=java.awt.Color(textStyle.color.toArgb(),true)
         editor.caretColor=java.awt.Color(cursorColor.toArgb(),true)
         editor.selectionColor=java.awt.Color(cursorColor.copy(alpha=.3f).toArgb(),true)
@@ -105,7 +105,7 @@ import okio.buffer
                             // Retire a decoded lease even when cancellation/epoch replacement
                             // occurs between finishing the cache read and EDT publication.
                             if(!scope.isActive||!platform.isOwned()){animation?.close();return@launch}
-                            val icon=if(animation==null)ImageIcon(raster)else try{DesktopInlineAnimatedEmoteIcon(animation,size,padding)}catch(failure:Throwable){animation.close();throw failure}
+                            val icon=if(animation==null)DesktopInlineRasterEmoteIcon(raster,metrics.logicalSize,metrics.logicalPadding,size,padding)else try{DesktopInlineAnimatedEmoteIcon(animation,size,metrics.logicalPadding,metrics.logicalSize)}catch(failure:Throwable){animation.close();throw failure}
                             if(animation==null)rasterTransferred=true
                             editor.imageReady(url,icon,imageRevision)
                         }finally{if(!rasterTransferred)raster.flush()}

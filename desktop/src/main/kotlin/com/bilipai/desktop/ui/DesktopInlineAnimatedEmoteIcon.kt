@@ -15,20 +15,21 @@ internal class DesktopInlineAnimatedEmoteIcon(
     private val animation:DesktopAnimatedSkinImage,
     private val size:Int,
     private val padding:Int,
+    private val logicalSize:Int = size,
 ) : Icon,AutoCloseable {
     private val bitmap=Bitmap().apply {check(allocN32Pixels(size,size))}
     private val canvas=Canvas(bitmap)
     private val raster=BufferedImage(size,size,BufferedImage.TYPE_INT_ARGB)
     private val started=System.nanoTime()
     private var closed=false
-    override fun getIconWidth()=size+padding*2
-    override fun getIconHeight()=size
+    override fun getIconWidth()=logicalSize+padding*2
+    override fun getIconHeight()=logicalSize
     override fun paintIcon(component:Component?,graphics:Graphics,x:Int,y:Int) {
         if(closed)return
         canvas.clear(0)
         animation.render(canvas,Rect.makeWH(size.toFloat(),size.toFloat()),(System.nanoTime()-started)/1_000_000_000.0)
         for(row in 0 until size)for(column in 0 until size)raster.setRGB(column,row,bitmap.getColor(column,row))
-        graphics.drawImage(raster,x+padding,y,component)
+        graphics.drawImage(raster,x+padding,y,logicalSize,logicalSize,component)
     }
     override fun close() {if(!closed){closed=true;canvas.close();bitmap.close();animation.close();raster.flush()}}
 }

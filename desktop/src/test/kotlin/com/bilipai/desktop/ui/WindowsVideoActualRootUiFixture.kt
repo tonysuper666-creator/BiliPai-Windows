@@ -3472,10 +3472,23 @@ object WindowsVideoActualRootUiFixture {
                 cleanupFailure?.let { error -> failure?.addSuppressed(error) ?: throw error }
             }
         }
-        exerciseCommentDialogScaleInput()
         val afterLayers = settledMainInputLayers("feedback-after")
         check(afterLayers.size == beforeLayers.size && beforeLayers.all { old -> afterLayers.any { it === old } }) {
             "Full-client feedback must restore the exact Main input layer identities"
+        }
+        // Complete the original feedback hover/focus retirement before admitting
+        // the independent dialog-scale phase. Never retry the detail activation.
+        edt {
+            guard()
+            val focus = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()
+            check(originalMain.isActive && focus.focusedWindow === originalMain)
+        }
+        record("feedback-native-editor-input-admission", edt { mainInputLayerFacts() } + mapOf(
+            "mainActiveAndFocused" to JsonPrimitive(true), "scalePercent" to JsonPrimitive(privateScalePercent())))
+        exerciseCommentDialogScaleInput()
+        val afterScaleLayers = settledMainInputLayers("feedback-comment-dialog-scale-after")
+        check(afterScaleLayers.size == beforeLayers.size && beforeLayers.all { old -> afterScaleLayers.any { it === old } }) {
+            "Comment-dialog scale input must restore the exact original Main input layer identities"
         }
         val resumeHandles = edt { guard(); nativeHandles() }
         val beforeNative = requireNotNull(runBlocking { actualPlayer.captureNativeAudioDiagnostic() })

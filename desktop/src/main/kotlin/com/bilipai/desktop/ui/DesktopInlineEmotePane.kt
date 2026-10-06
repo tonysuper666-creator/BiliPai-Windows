@@ -73,7 +73,8 @@ internal class DesktopInlineEmotePane(
     private var urls: Map<String,String> = emptyMap()
     private val icons = linkedMapOf<String,Icon>()
     /** Identity, not only dimensions: returning to a previous scale starts a new lease. */
-    internal class ImageRevision internal constructor(val size: Int, val padding: Int)
+    internal class ImageRevision internal constructor(val size: Int, val padding: Int,
+        val rasterSize: Int, val rasterPadding: Int)
     private var imageRevision: ImageRevision? = null
     private var syncing = false
     private var rendering = false
@@ -201,6 +202,7 @@ internal class DesktopInlineEmotePane(
         if(closed||rendering)return
         rendering=true
         hasVisibleAnimation=false
+        var decorationChanged = false
         try {
             // Remove just the drawing attributes. Preserve native IME attributes.
             var at=0
@@ -210,6 +212,7 @@ internal class DesktopInlineEmotePane(
                     val attrs=SimpleAttributeSet(element.attributes)
                     attrs.removeAttribute(StyleConstants.IconAttribute);attrs.removeAttribute(AbstractDocument.ElementNameAttribute)
                     styledDocument.setCharacterAttributes(at,end-at,attrs,true)
+                    decorationChanged = true
                 }
                 at=maxOf(at+1,end)
             }
@@ -222,16 +225,33 @@ internal class DesktopInlineEmotePane(
                 if(icon==null){requestImage(url);return@forEach}
                 val attrs=SimpleAttributeSet();StyleConstants.setIcon(attrs,icon)
                 styledDocument.setCharacterAttributes(start,end-start,attrs,false)
+                decorationChanged = true
                 if(icon is DesktopInlineAnimatedEmoteIcon)hasVisibleAnimation=true
             }
         } finally{rendering=false}
+        if (decorationChanged) refreshEmoteViews()
+    }
+    /** IconView caches its constructor's Icon. Rebuild only this document's
+     * paragraph views after decoration changes, using the current standard factory.
+     * The editor, document, caret and IME attributes remain the same objects. */
+    private fun refreshEmoteViews() {
+        val root = getUI().getRootView(this)
+        val section = root.getView(0)
+        val model = styledDocument.defaultRootElement
+        check(section.element === model)
+        val factory = requireNotNull(root.viewFactory)
+        section.replace(0, section.viewCount, Array(model.elementCount) { factory.create(model.getElement(it)) })
+        section.preferenceChanged(null, true, true)
+        revalidate()
     }
     /** Called in the same SwingPanel update as bind; it never replaces the document. */
-    fun updateImageSize(size: Int, padding: Int, cancelRequests: () -> Unit): ImageRevision {
+    fun updateImageSize(size: Int, padding: Int, rasterSize: Int = size, rasterPadding: Int = padding,
+        cancelRequests: () -> Unit): ImageRevision {
         check(SwingUtilities.isEventDispatchThread())
-        require(size > 0 && padding >= 0)
-        imageRevision?.takeIf { it.size == size && it.padding == padding }?.let { return it }
-        val revision = ImageRevision(size, padding)
+        require(size > 0 && padding >= 0 && rasterSize > 0 && rasterPadding >= 0)
+        imageRevision?.takeIf { it.size == size && it.padding == padding &&
+            it.rasterSize == rasterSize && it.rasterPadding == rasterPadding }?.let { return it }
+        val revision = ImageRevision(size, padding, rasterSize, rasterPadding)
         imageRevision = revision // Reject the old lease before cancelling any pending work.
         cancelRequests()
         animationTimer.stop(); hasVisibleAnimation = false
