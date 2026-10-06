@@ -13,14 +13,14 @@ import stat
 
 BASELINE = dict(
     repository="tonysuper666-creator/BiliPai-Windows",
-    runId=37446361644,
-    artifactId=11406965300,
+    runId=37457251147,
+    artifactId=11412610506,
     artifactName="BiliPai-Windows-x64",
-    sourceSha="5c1a6acae5fff18db2a8494f81f26e63278e1788",
-    version="0.2.427.30",
-    filename="BiliPai-Windows-0.2.427.30-x64.zip",
-    bytes=377377814,
-    sha256="bdd71c5469cba059c03b725632aedb7ad2a70d5e95e19cb62b04c372cb0923e5",
+    sourceSha="8329ffed439af628d9d9670dea30a7895cf5f724",
+    version="0.2.427.31",
+    filename="BiliPai-Windows-0.2.427.31-x64.zip",
+    bytes=377379715,
+    sha256="057efb5759e4df0128d31866fc586b6ffae780de9b3e8fb2dfb1af283a4b563d",
 )
 
 

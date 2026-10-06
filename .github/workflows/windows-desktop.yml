@@ -1,4 +1,5 @@
 name: Windows desktop build
+run-name: "Windows desktop | ${{ inputs.source_sha || github.sha }} | ${{ inputs.comment_search_ui == true && format('ui-{0}', inputs.comment_ui_case || 'search') || inputs.render_diagnostic == true && format('render-{0}', inputs.diagnostic_suite || 'surface') || 'build' }}"
 
 on:
   workflow_dispatch:
@@ -423,6 +424,8 @@ jobs:
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/216-composer-restored-complete-draft-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/217-composer-image-removed-screen.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/217-composer-image-removed-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/218-composer-same-editor-after-image-paint-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/218-composer-same-editor-after-image-paint-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/composer-input-failure-screen.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/composer-input-failure-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/220-feedback-client-baseline-screen.png
@@ -543,8 +546,8 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true
         uses: actions/download-artifact@v4
         with:
-          artifact-ids: 11406965300
-          run-id: 37446361644
+          artifact-ids: 11412610506
+          run-id: 37457251147
           repository: tonysuper666-creator/BiliPai-Windows
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/bilipai-previous-update-package
@@ -554,7 +557,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $previousZip = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package/BiliPai-Windows-0.2.427.30-x64.zip'
+          $previousZip = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package/BiliPai-Windows-0.2.427.31-x64.zip'
           python desktop/tools/verify-updater-baseline.py --package "$previousZip"
           if ($LASTEXITCODE -ne 0) { throw 'The actual previous EXE package could not be verified.' }
           "BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE=$previousZip" | Add-Content -LiteralPath $env:GITHUB_ENV
