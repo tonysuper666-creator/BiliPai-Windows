@@ -1,9 +1,10 @@
 package com.bilipai.desktop.ui
 
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
@@ -60,3 +61,36 @@ internal fun ColumnScope.desktopCommentComposerInputHeight(min: Dp, max: Dp): Mo
 internal fun desktopCommentComposerClientHeightDp(originalHeightDp: Int): Int =
     if (LocalDesktopNativeCommentComposerClient.current) LocalWindowSizeClass.current.heightDp.value.toInt()
     else originalHeightDp
+
+/** Only the native client keeps attachments in its existing toolbar budget.
+ * The original tool/send slots and image callbacks retain their original owners.
+ * Both scroll viewports receive finite Row weight; no lazy list is nested inside
+ * an unbounded horizontal scroller. Legacy callers retain the original row. */
+@Composable
+internal fun DesktopCommentComposerToolbar(
+    modifier: Modifier,
+    toolHeight: Dp,
+    toolSpacing: Dp,
+    attachments: (@Composable RowScope.() -> Unit)?,
+    tools: @Composable RowScope.() -> Unit,
+    send: @Composable () -> Unit,
+) {
+    val native = LocalDesktopNativeCommentComposerClient.current
+    Row(modifier.then(if (native) Modifier.height(toolHeight) else Modifier),
+        verticalAlignment = Alignment.CenterVertically) {
+        Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(toolSpacing), content = tools)
+        if (native && attachments != null) {
+            Spacer(Modifier.width(8.dp))
+            Row(Modifier.weight(.6f), verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp), content = attachments)
+        }
+        Spacer(Modifier.width(8.dp))
+        send()
+    }
+}
+
+@Composable
+internal fun desktopCommentComposerImagePanelBudget(imageCount: Int): Int =
+    if (LocalDesktopNativeCommentComposerClient.current || imageCount == 0) 0 else 112

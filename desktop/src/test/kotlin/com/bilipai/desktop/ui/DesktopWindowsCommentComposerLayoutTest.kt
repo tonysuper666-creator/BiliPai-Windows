@@ -2,6 +2,8 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ImageComposeScene
@@ -65,6 +67,73 @@ class DesktopWindowsCommentComposerLayoutTest {
             assertEquals(604f, fixture.toolbar.bottom)
             assertEquals(999, fixture.panelHeightBasis)
         } finally { fixture.close() }
+    }
+
+    @Test fun attachmentChangesKeepTheActualToolbarBudgetAndEditorCompositionAtNarrowHighScale() {
+        check(GraphicsEnvironment.isHeadless())
+        for (density in listOf(1.25f, 2f)) {
+            val count = mutableStateOf(0)
+            var editor = Rect.Zero
+            var send = Rect.Zero
+            var tray = Rect.Zero
+            var firstImage = Rect.Zero
+            var identity: Any? = null
+            var panelBudget = -1
+            val scene = ImageComposeScene(768, 720, Density(density)) {
+                CompositionLocalProvider(LocalDesktopNativeCommentComposerClient provides true) {
+                    Column(Modifier.fillMaxSize().padding(16.dp)) {
+                        Box(Modifier.fillMaxWidth().then(desktopCommentComposerInputHeight(64.dp, 112.dp))
+                            .onGloballyPositioned { editor = it.boundsInRoot() }) {
+                            identity = remember { Any() }
+                        }
+                        panelBudget = desktopCommentComposerImagePanelBudget(count.value)
+                        // Production toolbar measures both finite scroll slots and the
+                        // fixed send slot. Sentinels only replace unchanged child UI.
+                        DesktopCommentComposerToolbar(
+                            modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                            toolHeight = 40.dp, toolSpacing = 2.dp,
+                            attachments = if (count.value > 0) {{
+                                Box(Modifier.size(24.dp, 16.dp))
+                                Row(Modifier.weight(1f).onGloballyPositioned { tray = it.boundsInRoot() }
+                                    .horizontalScroll(rememberScrollState()),
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    repeat(count.value) { index ->
+                                        key(index) {
+                                            Box(Modifier.size(40.dp).then(if (index == 0)
+                                                Modifier.onGloballyPositioned { firstImage = it.boundsInRoot() }
+                                                else Modifier))
+                                        }
+                                    }
+                                }
+                            }} else null,
+                            tools = { repeat(5) { Box(Modifier.size(40.dp)) } },
+                            send = { Box(Modifier.size(64.dp, 36.dp)
+                                .onGloballyPositioned { send = it.boundsInRoot() }) },
+                        )
+                    }
+                }
+            }
+            try {
+                fun render() { repeat(4) { scene.render(System.nanoTime()).close() } }
+                render()
+                val originalEditor = editor
+                val originalSend = send
+                val originalIdentity = identity
+                for (images in listOf(1, 9, 0)) {
+                    count.value = images; render()
+                    assertEquals(originalEditor, editor)
+                    assertEquals(originalSend, send)
+                    assertSame(originalIdentity, identity)
+                    assertEquals(0, panelBudget)
+                    assertTrue(send.right <= 768f && send.bottom <= 720f)
+                    if (images > 0) {
+                        assertTrue(tray.width >= 40f * density, "one whole thumbnail must fit at $density")
+                        assertTrue(firstImage.left >= tray.left && firstImage.right <= tray.right)
+                        assertTrue(firstImage.top >= editor.bottom && firstImage.bottom <= send.bottom + 4f * density)
+                    }
+                }
+            } finally { scene.close() }
+        }
     }
 
     private class Fixture(native: Boolean, initialHeight: Int) : AutoCloseable {

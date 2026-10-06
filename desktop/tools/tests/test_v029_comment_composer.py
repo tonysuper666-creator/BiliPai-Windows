@@ -89,18 +89,41 @@ class OriginalDomainCommentComposerTests(unittest.TestCase):
         body=self.body('bgm','CommentInputDialog.kt');legacy=inverse(body,proof['platformAndDraftPublication'])
         self.assertTrue(proof['fixedCanonicalEntireBodyIdentical'])
         self.assertTrue(proof['mentionDraftPublicationRepair'])
-        self.assertEqual(7,len(proof['platformAndDraftPublication']['indexedEdits']))
-        mention='                                    textFieldValue = TextFieldValue(nextText, nextSelection)\n'
-        self.assertEqual(1,legacy.count(mention))
-        expected=legacy.replace('import androidx.compose.ui.window.Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n')
-        expected=expected.replace(mention,mention+'                                    onDraftChange(nextText, selectedImageUris, isForwardToDynamic)\n')
+        # This pins the complete existing platform-adapted original input, not
+        # a second Python implementation of the new layout transformation.
+        self.assertEqual('159b43eb173ab24892169bbb02f83f3567d42237182ff284de2a2742eccfab28', hashlib.sha256(legacy.encode()).hexdigest())
+        self.assertEqual(16,len(proof['platformAndDraftPublication']['indexedEdits']))
         self.assertTrue(proof['windowsNativeClientLayoutOnly'])
-        expected=expected.replace('import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\nimport com.bilipai.desktop.ui.desktopCommentComposerSurfaceHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerColumnHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerInputHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerClientHeightDp\n')
-        expected=expected.replace('            val availablePanelHeightDp = configuration.heightDp.value.toInt() -\n','            val availablePanelHeightDp = desktopCommentComposerClientHeightDp(configuration.heightDp.value.toInt()) -\n')
-        expected=expected.replace('                        .wrapContentHeight(),\n','                        .then(desktopCommentComposerSurfaceHeight()),\n')
-        expected=expected.replace('                        modifier = Modifier\n                            .padding(layoutPolicy.sheetHorizontalPaddingDp.dp)\n','                        modifier = Modifier\n                            .then(desktopCommentComposerColumnHeight())\n                            .padding(layoutPolicy.sheetHorizontalPaddingDp.dp)\n')
-        expected=expected.replace('                                .heightIn(\n                                    min = layoutPolicy.inputBoxMinHeightDp.dp,\n                                    max = layoutPolicy.inputBoxMaxHeightDp.dp\n                                )\n','                                .then(desktopCommentComposerInputHeight(\n                                    min = layoutPolicy.inputBoxMinHeightDp.dp,\n                                    max = layoutPolicy.inputBoxMaxHeightDp.dp\n                                ))\n')
-        self.assertEqual(expected,body)
+        # The native provider wraps Dialog content, not CommentInputDialog's caller.
+        content = '        ) {\n            val density = LocalDensity.current\n'
+        native_read = '            val nativeAttachments = com.bilipai.desktop.ui.LocalDesktopNativeCommentComposerClient.current\n'
+        self.assertEqual(1,body.count(native_read))
+        self.assertIn(content + native_read + '            val imeBottomPx =',body)
+        self.assertLess(body.index('        Dialog('), body.index(native_read))
+        attachments = proof['windowsStableAttachmentToolbar']
+        self.assertTrue(attachments['singleOriginalImageItemBody'])
+        self.assertTrue(attachments['toolAndSendBodiesVerbatim'])
+        import textwrap
+        item_start = legacy.index('                                    Box(', legacy.index('                        if (selectedImageUris.isNotEmpty()) {'))
+        item_end = legacy.index('\n                                }\n', item_start)
+        item = legacy[item_start:item_end]
+        self.assertEqual(attachments['originalItemSha256LF'],hashlib.sha256(item.encode()).hexdigest())
+        start = body.index('\n', body.index('    val selectedImageThumbnail:')) + 1
+        end = body.index('\n    }\n', start)
+        moved = textwrap.dedent(body[start:end])
+        self.assertEqual(textwrap.dedent(item),inverse(moved,attachments['imageItemSizeAdaptation']))
+        self.assertEqual(1,body.count('model = uri,'))
+        for first,last,key in [
+            ('                                // 转发到动态','\n                            }\n\n                            Spacer','originalToolsSha256LF'),
+            ('                            // 发送按钮','\n                        }','originalSendSha256LF')]:
+            start=legacy.index(first);end=legacy.index(last,start);section=legacy[start:end]
+            self.assertEqual(attachments[key],hashlib.sha256(section.encode()).hexdigest())
+            self.assertEqual(1,body.count(section))
+        editor_start=legacy.index('                            CommentEmoteTextField(')
+        editor_end=legacy.index('\n                        AnimatedVisibility(',editor_start)
+        self.assertIn(legacy[editor_start:editor_end],body)
+        changed=body.replace('selectedImageThumbnail(uri, 40.dp)','selectedImageThumbnail(uri, 64.dp)',1)
+        with self.assertRaises(ValueError):inverse(changed,proof['platformAndDraftPublication'])
     def test_changed_domain_body_cannot_reuse_a_complete_inverse_receipt(self):
         proof=self.proof('holder','v029-domain-comment-composer-source')
         body=self.body('holder','VideoComposerViewModel.kt')
