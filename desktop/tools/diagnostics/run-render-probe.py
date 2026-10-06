@@ -27,7 +27,8 @@ ARCHIVE_URLS = [
 CASES = ('awt-alpha-only', 'mpv-default-flip', 'mpv-bitblt', 'mpv-adaptive')
 SURFACE_DEBUG_CASES = ('mpv-default-flip', 'mpv-bitblt', 'mpv-default-debug', 'mpv-default-flip-panscan1',
                        'mpv-default-flip-panscan0', 'mpv-default-flip-panscan1-clear', 'mpv-default-flip-zoom-equivalent')
-LOAD_ORDER_CASES = ('mpv-default-flip-panscan1-immediate', 'mpv-default-flip-panscan1')
+LOAD_ORDER_CASES = ('mpv-default-flip-panscan1-immediate', 'mpv-default-flip-panscan1',
+                    'mpv-default-flip-panscan1-immediate-dumb')
 SHADER_CASES = ('shader-clear-default-retained', 'shader-clear-default-seek',
                 'shader-clear-nodumb-retained', 'shader-clear-nodumb-seek')
 SHADER_INPUT_PINS = {

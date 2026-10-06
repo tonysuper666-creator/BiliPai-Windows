@@ -35,6 +35,10 @@ public final class AwtMpvProbe {
     private static final String ZOOM_CASE = "mpv-default-flip-zoom-equivalent";
     private static final String IMMEDIATE_PANSCAN_CASE = "mpv-default-flip-panscan1-immediate";
     private static final String RETAINED_PANSCAN_CASE = "mpv-default-flip-panscan1";
+    private static final String DUMB_IMMEDIATE_PANSCAN_CASE = "mpv-default-flip-panscan1-immediate-dumb";
+    private static boolean immediatePanscanCase(String name) {
+        return name.equals(IMMEDIATE_PANSCAN_CASE) || name.equals(DUMB_IMMEDIATE_PANSCAN_CASE);
+    }
     // aspect.c: 704x396 fit -> 712x401 cover; actual OSD readbacks decide comparability.
     private static final double EQUIVALENT_ZOOM = Math.log(401.0 / 396.0) / Math.log(2.0);
     private static final List<String> FAST = List.of("Anime4K_Clamp_Highlights.glsl", "Anime4K_Restore_CNN_M.glsl",
@@ -85,7 +89,7 @@ public final class AwtMpvProbe {
         this.debugObservations = debugObservations; this.loadOrderObservations = loadOrderObservations;
         // SelfTest stores this request before Canvas.addNotify creates the native session.
         preMountPanscan = switch (caseName) {
-            case RETAINED_PANSCAN_CASE, "mpv-default-flip-panscan1-clear", IMMEDIATE_PANSCAN_CASE -> 1.0;
+            case RETAINED_PANSCAN_CASE, "mpv-default-flip-panscan1-clear", IMMEDIATE_PANSCAN_CASE, DUMB_IMMEDIATE_PANSCAN_CASE -> 1.0;
             case "mpv-default-flip-panscan0", ZOOM_CASE -> 0.0;
             default -> null;
         };
@@ -95,8 +99,8 @@ public final class AwtMpvProbe {
         result.put("ownPid", PID); result.put("javaVersion", System.getProperty("java.version"));
         if (preMountPanscan != null) result.put("preMountPanscan", preMountPanscan);
         if (loadOrderObservations) result.put("loadOrderExperiment", Map.of("diagnosticOnly", true,
-            "expectedSequence", caseName.equals(IMMEDIATE_PANSCAN_CASE) ? "immediate" : "retained",
-            "scope", "First-load scheduling comparison only; not a product fix or release gate"));
+            "expectedSequence", immediatePanscanCase(caseName) ? "immediate" : "retained",
+            "scope", "First-load scheduling and paired dumb-path comparison only; not a product fix or release gate"));
         if (caseName.equals(ZOOM_CASE)) result.put("equivalentZoomGeometry", Map.of(
             "status", "notComparable", "reason", "No primary physical sample yet", "requestedZoom", EQUIVALENT_ZOOM));
         result.put("javaVendor", System.getProperty("java.vendor"));
@@ -122,21 +126,21 @@ public final class AwtMpvProbe {
                     cli.put(args[i], args[i + 1]) != null) throw new IllegalArgumentException("Invalid or duplicate CLI argument");
             }
             String name = cli.get("--case");
-            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE, IMMEDIATE_PANSCAN_CASE,
+            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE, IMMEDIATE_PANSCAN_CASE, DUMB_IMMEDIATE_PANSCAN_CASE,
                 "shader-clear-default-retained", "shader-clear-default-seek", "shader-clear-nodumb-retained", "shader-clear-nodumb-seek").contains(name))
                 throw new IllegalArgumentException("--case must select one diagnostic case");
             String debugFlag = cli.getOrDefault("--surface-debug-observations", "false");
             if (!Set.of("true", "false").contains(debugFlag)) throw new IllegalArgumentException("Invalid debug observation flag");
             boolean debugObservations = debugFlag.equals("true");
-            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE, IMMEDIATE_PANSCAN_CASE).contains(name))
+            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE, IMMEDIATE_PANSCAN_CASE, DUMB_IMMEDIATE_PANSCAN_CASE).contains(name))
                 throw new IllegalArgumentException("Debug observations require the explicit surface-debug cases");
             if (name.equals("mpv-default-debug") && !debugObservations) throw new IllegalArgumentException("Debug case requires explicit observations");
             String loadOrderFlag = cli.getOrDefault("--load-order-observations", "false");
             if (!Set.of("true", "false").contains(loadOrderFlag)) throw new IllegalArgumentException("Invalid load-order observation flag");
             boolean loadOrderObservations = loadOrderFlag.equals("true");
-            if (loadOrderObservations && (!debugObservations || !Set.of(IMMEDIATE_PANSCAN_CASE, RETAINED_PANSCAN_CASE).contains(name)))
-                throw new IllegalArgumentException("Load-order observations require the explicit two-case group");
-            if (name.equals(IMMEDIATE_PANSCAN_CASE) && !loadOrderObservations)
+            if (loadOrderObservations && (!debugObservations || !Set.of(IMMEDIATE_PANSCAN_CASE, RETAINED_PANSCAN_CASE, DUMB_IMMEDIATE_PANSCAN_CASE).contains(name)))
+                throw new IllegalArgumentException("Load-order observations require the explicit three-case group");
+            if (immediatePanscanCase(name) && !loadOrderObservations)
                 throw new IllegalArgumentException("Immediate comparison requires explicit load-order observations");
             Path output = Path.of(Objects.requireNonNull(cli.get("--output"), "Missing --output")).toAbsolutePath().normalize();
             if (Files.exists(output, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("--output must not exist");
@@ -196,7 +200,7 @@ public final class AwtMpvProbe {
                 actor.start();
                 waitCondition("native initialization", 7_000, () -> actor.ready.isDone());
                 actor.ready.get();
-                if (preMountPanscan != null && !caseName.equals(IMMEDIATE_PANSCAN_CASE)) {
+                if (preMountPanscan != null && !immediatePanscanCase(caseName)) {
                     // Match ready + activeVideoPanscan before PlayerSelfTest calls load.
                     waitCondition("retained pre-mount panscan readback before first load", 1_500, () ->
                         actor.number("panscan") == preMountPanscan && actor.number("playlist-count") == 0 && !actor.fileLoaded &&
@@ -226,6 +230,8 @@ public final class AwtMpvProbe {
                 ImageIO.write(paused, "png", output.resolve("screen-paused.png").toFile());
             }
             if (shaderCase()) shaderStages(); else alphaStages();
+            if (caseName.equals(DUMB_IMMEDIATE_PANSCAN_CASE))
+                require(actor.dumbModeBranchObserved, "Requested dumb mode was not confirmed by the fixed renderer branch log");
             observe("gates-passed");
             code = 0;
         } catch (Throwable error) {
@@ -255,7 +261,15 @@ public final class AwtMpvProbe {
             if (actor != null) {
                 result.put("native", actor.snapshot);
                 result.put("presentationSelection", actor.presentationSelection);
-                if (loadOrderObservations) result.put("firstLoadOrder", actor.firstLoadOrder);
+                if (loadOrderObservations) {
+                    result.put("firstLoadOrder", actor.firstLoadOrder);
+                    result.put("renderPathEvidence", Map.of(
+                        "scope", "Observed renderer branch log and bounded same-actor pass descriptions; not atomic with physical pixels",
+                        "dumbModeBranchObserved", actor.dumbModeBranchObserved,
+                        "advancedScalerPassObserved", actor.advancedScalerPassObserved,
+                        "branchLog", actor.dumbModeBranchObserved ? "No advanced processing required. Enabling dumb mode." : "",
+                        "latestPassDescriptions", actor.renderPassDescriptions));
+                }
                 try { actor.close(); nativeClosed = true; }
                 catch (Throwable cleanup) { result.put("nativeCleanupError", safe(cleanup.toString())); }
                 try { Files.writeString(output.resolve("native-log.txt"), actor.logs(), StandardOpenOption.CREATE_NEW); }
@@ -1127,6 +1141,8 @@ public final class AwtMpvProbe {
         volatile int restartCount;
         volatile List<String> shaderFiles;
         volatile List<String> shaderPasses = List.of();
+        volatile List<String> renderPassDescriptions = List.of();
+        volatile boolean dumbModeBranchObserved, advancedScalerPassObserved;
         volatile int droppedLines;
         private final List<String> firstLogs = new ArrayList<>();
         private final Deque<String> recentLogs = new ArrayDeque<>();
@@ -1181,7 +1197,7 @@ public final class AwtMpvProbe {
             Map<String, Object> order = new LinkedHashMap<>();
             try {
                 if (loadOrderObservations) {
-                    boolean immediate = selectedCase.equals(IMMEDIATE_PANSCAN_CASE);
+                    boolean immediate = immediatePanscanCase(selectedCase);
                     order.put("sequence", immediate ? "immediate" : "retained");
                     order.put("timeOrigin", "System.nanoTime relative to this actor creation");
                     order.put("initializeReturnedNanos", initializeReturnedNanos);
@@ -1367,6 +1383,8 @@ public final class AwtMpvProbe {
                 options.put("ao", "null"); options.put("ao-null-untimed", "no"); options.put("volume", "0"); options.put("mute", "yes");
                 options.put("audio-files", audio.toString().replace(";", "\\;"));
                 if (preMountPanscan != null) options.put("panscan", preMountPanscan.toString());
+                // Diagnostic paired with IMMEDIATE_PANSCAN_CASE: the only startup option difference.
+                if (selectedCase.equals(DUMB_IMMEDIATE_PANSCAN_CASE)) options.put("gpu-dumb-mode", "yes");
                 if (selectedCase.equals(ZOOM_CASE)) options.put("video-zoom", Double.toString(EQUIVALENT_ZOOM));
                 if (selectedCase.startsWith("shader-clear-")) {
                     // Match production: default flip, optional NVIDIA preference; no software-bitblt substitution.
@@ -1404,7 +1422,7 @@ public final class AwtMpvProbe {
                 check(api, api.mpv_request_log_messages(handle, debugObservations ? "debug" : "v"), "request-log-messages");
                 check(api, api.mpv_initialize(handle), "initialize");
                 if (loadOrderObservations) initializeReturnedNanos = System.nanoTime() - actorCreatedNanos;
-                if (selectedCase.equals(IMMEDIATE_PANSCAN_CASE)) loadWithRetainedPanscan(api, handle);
+                if (immediatePanscanCase(selectedCase)) loadWithRetainedPanscan(api, handle);
                 else if (preMountPanscan == null)
                     check(api, api.mpv_command(handle, new StringArray(new String[]{"loadfile", video.toString(), "replace"}, "UTF-8")), "loadfile");
                 if (loadOrderObservations) readyPublishedNanos = System.nanoTime() - actorCreatedNanos;
@@ -1439,6 +1457,7 @@ public final class AwtMpvProbe {
                         List<String> names = new ArrayList<>(Arrays.asList(PROPERTIES));
                         if (selectedCase.startsWith("shader-clear-")) names.addAll(Arrays.asList(SHADER_PROPERTIES));
                         if (debugObservations) names.add("options/gpu-debug");
+                        if (loadOrderObservations) names.add("options/gpu-dumb-mode");
                         if (preMountPanscan != null) names.add("panscan");
                         if (selectedCase.equals(ZOOM_CASE)) names.add("video-zoom");
                         for (String property : names) {
@@ -1457,7 +1476,15 @@ public final class AwtMpvProbe {
                             values.put("glsl-shaders-NODE", shaderFiles); values.put("vo-passes-descriptions-NODE", shaderPasses);
                             values.put("restartEventCount", restartCount);
                         }
-                        if (loadOrderObservations) propertyPolls++;
+                        if (loadOrderObservations) {
+                            // Read-only evidence on the same actor for all three comparisons. No screenshot/rebuild.
+                            renderPassDescriptions = readPasses(api, handle).stream().limit(32)
+                                .map(description -> description.substring(0, Math.min(256, description.length()))).toList();
+                            advancedScalerPassObserved |= renderPassDescriptions.stream().anyMatch(description ->
+                                description.startsWith("scale=lanczos") || description.startsWith("cscale=lanczos"));
+                            values.put("vo-passes-descriptions-NODE", renderPassDescriptions);
+                            propertyPolls++;
+                        }
                         snapshot = Collections.unmodifiableMap(values); last = System.nanoTime();
                     }
                 }
@@ -1528,6 +1555,10 @@ public final class AwtMpvProbe {
         }
         private synchronized void log(String value) {
             String row = safe(value);
+            // Fixed mpv 69e63f425a video.c:4084; an options readback alone is not execution evidence.
+            if (loadOrderObservations && value.strip().equals(
+                    "vo/gpu [v] No advanced processing required. Enabling dumb mode."))
+                dumbModeBranchObserved = true;
             if (debugObservations) {
                 if (row.contains(" [warn] ") || row.contains(" [error] ") || row.contains(" [fatal] ") ||
                     row.startsWith("ACTOR_FAILURE ") || row.startsWith("DESTROY_FAILURE ")) {
