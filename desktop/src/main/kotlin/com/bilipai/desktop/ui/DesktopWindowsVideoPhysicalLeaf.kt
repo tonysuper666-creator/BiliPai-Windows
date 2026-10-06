@@ -656,20 +656,20 @@ internal class DesktopWindowsVideoActions(
                                     platforms.holder.settingsContext, platforms.portrait.creatorTeam,
                                     ::current, actions.user) { url -> latestActions.honorLink(assembly, source, url) }
                             }
-                            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                 TextButton(onClick = { engagementBinding?.like() }, enabled = engagementBinding?.isOwned() == true,
                                     modifier = Modifier.desktopWindowsFeedbackLikeAnchor(feedbackBounds)) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
                                 actions.favorite(assembly, success, ::current)
                                 TextButton(onClick = { engagementBinding?.toggleFollow() }, enabled = engagementBinding?.isOwned() == true) { Text(if(engagement.isFollowing) "已关注" else "关注") }
                                 TextButton(onClick = { engagementBinding?.triple() }, enabled = engagementBinding?.isOwned() == true) { Text("三连") }
                             }
-                            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.toggleWatchLater() }) { Text("稍后再看") }
                                 TextButton(onClick = { if(current()) assembly.domains.engagement.openCoinDialog() }) { Text("投币") }
                                 TextButton(onClick = { if (current()) actions.download(assembly, success) }) { Text("下载当前画质") }
                                 TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.SHARE) }, enabled = interactionCurrent()) { Text("分享视频") }
                             }
-                            Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                            FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                 TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.DANMAKU) }, enabled = interactionCurrent()) { Text("发送弹幕") }
                                 if (aiSummaryEntryEnabled) TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.AI_SUMMARY) }, enabled = interactionCurrent()) { Text("AI 总结") }
                                 if (videoNoteEnabled) TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.NOTES) }, enabled = interactionCurrent()) { Text("视频笔记") }
