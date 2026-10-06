@@ -51,6 +51,56 @@ class DesktopWindowsFullscreenChromeInteractionTest {
         assertFalse(allowed(retained, false, false))
     }
 
+    /** A headless point-read seam exercises ownership arbitration, not OS input. */
+    private class NativePointerRead : java.awt.Container() {
+        var showing = true
+        var point: java.awt.Point? = java.awt.Point(50, 25)
+        var failRead = false
+        var queries = 0
+        init { setSize(100, 50) }
+        override fun isShowing() = showing
+        override fun getMousePosition(allowChildren: Boolean): java.awt.Point? {
+            queries++
+            assertTrue(allowChildren, "The MPV Canvas is a heavyweight child of the retained JPanel")
+            if (failRead) error("Native read unavailable")
+            return point
+        }
+    }
+
+    @Test fun staleComposeNotificationKeepsActualNativePointerUntilItReallyLeaves() {
+        val surface = NativePointerRead()
+        val retainedHover = DesktopWindowsFullscreenChromeInteraction(hovered = true)
+        var nativePointer = true
+        var now = 0L
+        val chrome = DesktopWindowsFullscreenChromeState { now }
+        desktopWindowsObserveNativePointer(surface) { nativePointer = it != null }
+        now = 4_000_000_000L
+        assertTrue(chrome.hideIfIdle(chrome.activityRevision, allowed(retainedHover, nativePointer, true)))
+        assertEquals(1, surface.queries)
+        surface.point = null // physical cursor returned to a Compose control
+        desktopWindowsObserveNativePointer(surface) { nativePointer = it != null }
+        chrome.reveal()
+        now += 4_000_000_000L
+        assertFalse(chrome.hideIfIdle(chrome.activityRevision, allowed(retainedHover, nativePointer, true)))
+        assertFalse(nativePointer)
+    }
+
+    @Test fun unavailableNativeHostOrReadCannotTransferPointerOwnership() {
+        val surface = NativePointerRead()
+        var publications = 0
+        surface.showing = false
+        desktopWindowsObserveNativePointer(surface) { publications++ }
+        assertEquals(0, surface.queries)
+        surface.showing = true
+        surface.failRead = true
+        desktopWindowsObserveNativePointer(surface) { publications++ }
+        assertEquals(1, surface.queries)
+        assertEquals(0, publications)
+        surface.failRead = false
+        desktopWindowsObserveNativePointer(surface) { publications++ }
+        assertEquals(1, publications)
+    }
+
     @Test fun nativeOwnershipNeverBypassesPauseWindowOrEntryGuards() {
         val stale = DesktopWindowsFullscreenChromeInteraction(hovered = true, focused = true)
         assertFalse(allowed(stale, true, true, playing.copy(nativePaused = true, paused = true)))

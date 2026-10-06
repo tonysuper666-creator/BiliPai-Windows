@@ -128,10 +128,14 @@ internal class DesktopWindowsVideoActions(
     val chromeWindow = LocalDesktopWindowsPlayerWindow.current
     var chromeWindowFocused by remember(chromeWindow) { mutableStateOf(chromeWindow?.isFocused == true) }
     var barInteraction by remember(chrome) { mutableStateOf(DesktopWindowsFullscreenChromeInteraction()) }
-    // These claims come only from this actual native host's AWT input events.
+    // These claims come from this actual native host's AWT input and pointer readback.
     // Keep them separate: moving over video does not steal keyboard focus from a control.
     var nativePointerOnVideo by remember(assembly, native.surface) { mutableStateOf(false) }
     var nativeKeyboardOnVideo by remember(assembly, native.surface) { mutableStateOf(false) }
+    fun observeChromePointer() {
+        if (!current() || latestPip) return
+        desktopWindowsObserveNativePointer(native.surface) { point -> nativePointerOnVideo = point != null }
+    }
     var topFocused by remember(chrome) { mutableStateOf(false) }
     val topInteractions = remember(chrome) { MutableInteractionSource() }
     val topHovered by topInteractions.collectIsHoveredAsState()
@@ -183,7 +187,13 @@ internal class DesktopWindowsVideoActions(
             override fun mouseEntered(event: java.awt.event.MouseEvent) { observeNativePointer(event, !nativePointerOnVideo) }
             override fun mouseMoved(event: java.awt.event.MouseEvent) { observeNativePointer(event, true) }
             override fun mouseDragged(event: java.awt.event.MouseEvent) { observeNativePointer(event, true) }
-            override fun mouseExited(event: java.awt.event.MouseEvent) { observeNativePointer(event, false) }
+            override fun mouseExited(event: java.awt.event.MouseEvent) {
+                // Layout/peer transitions can report an old exit point. Reconcile
+                // against the same physical host without creating new activity.
+                if (current() && !latestPip) desktopWindowsObserveNativePointer(surface) { point ->
+                    nativePointerOnVideo = point != null
+                }
+            }
             override fun mousePressed(event: java.awt.event.MouseEvent) {
                 if(current() && !latestPip && surface.isShowing) {
                     observeNativePointer(event, true)
@@ -408,6 +418,12 @@ internal class DesktopWindowsVideoActions(
         // globally registered owner. Returned values never retain live objects.
         val latestChromeDiagnostic by rememberUpdatedState<() -> Map<String, Any>>({
             check(java.awt.EventQueue.isDispatchThread())
+            var pointerReadAvailable = false
+            var pointerPosition: java.awt.Point? = null
+            desktopWindowsObserveNativePointer(native.surface) { point ->
+                pointerReadAvailable = true
+                pointerPosition = point
+            }
             linkedMapOf(
                 "chromeIdentity" to System.identityHashCode(chrome),
                 "sourceIdentity" to System.identityHashCode(chromeSource),
@@ -422,6 +438,10 @@ internal class DesktopWindowsVideoActions(
                 "windowActiveActual" to (chromeWindow?.isActive == true),
                 "nativeKeyboardFocusActual" to native.surface.isFocusOwner,
                 "nativePointerClaim" to nativePointerOnVideo, "nativeKeyboardClaim" to nativeKeyboardOnVideo,
+                "nativePointerReadAvailable" to pointerReadAvailable,
+                "nativePointerWithinSurface" to (pointerPosition != null),
+                "nativePointerLocalX" to (pointerPosition?.x ?: 0), "nativePointerLocalY" to (pointerPosition?.y ?: 0),
+                "nativeSurfaceWidth" to native.surface.width, "nativeSurfaceHeight" to native.surface.height,
                 "topHovered" to topHovered, "topFocused" to topFocused,
                 "barHovered" to barInteraction.hovered, "barFocused" to barInteraction.focused,
                 "barOperationHeld" to barInteraction.operationHeld, "detailsOpen" to detailsOpen,
@@ -500,7 +520,7 @@ internal class DesktopWindowsVideoActions(
         Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (chromeVisible) 6.dp else 0.dp)) {
                 if (chromeVisible) DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()
-                    .desktopWindowsChromePointerInput { nativePointerOnVideo = false }
+                    .desktopWindowsChromePointerInput(::observeChromePointer)
                     .onFocusChanged { topFocused = it.hasFocus }.focusGroup().hoverable(topInteractions)) {
                     Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = { if (current()) actions.back() }, modifier = Modifier.size(44.dp)) {
@@ -565,7 +585,7 @@ internal class DesktopWindowsVideoActions(
                             if (previouslyHeld != interaction.held(nativePointerOnVideo, nativeKeyboardOnVideo)) chromeActivity()
                         }
                     },
-                    onChromePointerInput = { nativePointerOnVideo = false },
+                    onChromePointerInput = ::observeChromePointer,
                     hasPrevious = shell.playback.hasPrevious, hasNext = shell.playback.hasNext,
                     canPictureInPicture = !pipActive && success != null && state.videoCodec != null && !state.audioOnly,
                     qualities = success?.let { value -> value.qualityIds.mapIndexed { index, id -> id to (value.qualityLabels.getOrNull(index) ?: id.toString()) } }.orEmpty(),

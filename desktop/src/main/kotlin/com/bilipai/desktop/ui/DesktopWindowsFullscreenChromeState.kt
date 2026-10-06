@@ -58,7 +58,18 @@ internal data class DesktopWindowsFullscreenChromeInteraction(
         operationHeld || (hovered && !nativePointerOnVideo) || (focused && !nativeKeyboardOnVideo)
 }
 
-/** Actual Compose pointer input returns pointer ownership from the native video. */
+/** Reconcile a local Compose pointer notification with this mounted AWT host.
+ * Include the heavyweight Canvas child. An unavailable host/read publishes
+ * nothing, so it cannot transfer ownership on the strength of a stale event. */
+internal fun desktopWindowsObserveNativePointer(
+    surface: java.awt.Container, onObserved: (java.awt.Point?) -> Unit,
+) {
+    if (!surface.isShowing) return
+    val observed = runCatching { surface.getMousePosition(true)?.takeIf(surface::contains) }
+    observed.onSuccess(onObserved)
+}
+
+/** A Compose notification prompts physical pointer reconciliation by its owner. */
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 internal fun Modifier.desktopWindowsChromePointerInput(onPointer: () -> Unit): Modifier =
     onPointerEvent(PointerEventType.Enter) { onPointer() }
