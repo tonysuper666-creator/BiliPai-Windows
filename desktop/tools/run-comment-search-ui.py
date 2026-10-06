@@ -23,7 +23,145 @@ CAPTURES_BY_CASE = {
     ],
 }
 
-CAPTURES_BY_CASE['feedback'] = CAPTURES_BY_CASE['composer'] + [
+ATTACHMENT_STABLE_CAPTURES = [
+    'attachments-v1-zero', 'attachments-v1-one', 'attachments-v1-nine-last-visible',
+    'attachments-v1-last-removed-eight', 'attachments-v1-removed-zero',
+]
+ATTACHMENT_STABLE_IDS = ('composer-stable-image-215-v1', 'composer-stable-attachments-v1')
+
+
+def verify_stable_attachments_v1(by, assets):
+    """Strict .34 layout/input records; neither a present fence nor a pixel verdict."""
+    def need(value, label):
+        if not value: raise ValueError('Stable attachments v1: ' + label)
+    def integer(value, minimum=-(1 << 31), maximum=(1 << 31)-1):
+        return type(value) is int and minimum <= value <= maximum
+    def shape(value, keys, label):
+        need(type(value) is dict and set(value) == set(keys), 'exact fields: ' + label)
+    def rect(value):
+        shape(value, ('x','y','width','height'), 'rectangle')
+        need(all(integer(v) for v in value.values()) and value['width'] > 0 and value['height'] > 0, 'positive rectangle')
+    def contains(parent, child):
+        rect(parent); rect(child)
+        return (child['x'] >= parent['x'] and child['y'] >= parent['y'] and
+                child['x']+child['width'] <= parent['x']+parent['width'] and
+                child['y']+child['height'] <= parent['y']+parent['height'])
+    common = {'id','serial','keyType','sameRootAndRouteAssembly','actualWindowIdentity'}
+    def record(value, keys):
+        shape(value, common | set(keys), 'record')
+        need(integer(value['serial'],1,(1 << 63)-1) and integer(value['actualWindowIdentity']) and
+             value['sameRootAndRouteAssembly'] is True and type(value['keyType']) is str and
+             0 < len(value['keyType']) <= 128, 'same root record identity')
+        need(value['contract'] == 'windows-comment-attachments-stable-editor/v1', 'independent version')
+        need(value['physicalPixelsRequireReview'] is True and value['wholeUiPhysicalPass'] is False and
+             value['forcedRepaintOrLayout'] is False, 'physical scope')
+    classes = dict(pane='com.bilipai.desktop.ui.DesktopInlineEmotePane', viewport='javax.swing.JViewport',
+        scroll='com.bilipai.desktop.ui.DesktopCommentEmoteScrollPane', interopGroup='androidx.compose.ui.awt.SwingInteropViewGroup')
+    def geometry(value):
+        shape(value, {'sameOwnedEditor',*classes}, 'four component geometry')
+        need(value['sameOwnedEditor'] is True, 'same editor')
+        for name, expected in classes.items():
+            node = value[name]
+            shape(node, ('identity','class','bounds','screenBounds','visibleRect','opaque','showing'), name)
+            need(integer(node['identity']) and node['class'] == expected and type(node['opaque']) is bool and
+                 node['showing'] is True, 'component class/identity/showing')
+            for key in ('bounds','screenBounds','visibleRect'): rect(node[key])
+            bounds,screen,visible = (node[k] for k in ('bounds','screenBounds','visibleRect'))
+            need(bounds['width'] == screen['width'] and bounds['height'] == screen['height'], 'screen dimensions')
+            need(contains(dict(x=0,y=0,width=bounds['width'],height=bounds['height']), visible), 'component visible bounds')
+        for child, parent in (('pane','viewport'),('viewport','scroll'),('scroll','interopGroup')):
+            need(all(value[child]['screenBounds'][axis] == value[parent]['screenBounds'][axis]+value[child]['bounds'][axis]
+                     for axis in ('x','y')), 'direct parent coordinates')
+    immediate = by.get(ATTACHMENT_STABLE_IDS[0])
+    record(immediate, ('contract','dialogIdentity','beforeGeometry','immediateGeometry','robotStartNanos','robotEndNanos',
+        'selectedImageCount','sameDialogAndEditor','original215Retained','forcedRepaintOrLayout','physicalPixelsRequireReview','wholeUiPhysicalPass'))
+    need(integer(immediate['dialogIdentity']) and immediate['selectedImageCount'] == 1 and
+         type(immediate['selectedImageCount']) is int and immediate['sameDialogAndEditor'] is True and
+         immediate['original215Retained'] is True, 'original immediate 215 retained')
+    for key in ('robotStartNanos','robotEndNanos'): need(integer(immediate[key],-(1 << 63),(1 << 63)-1), 'signed nanoTime')
+    delta = ((immediate['robotEndNanos'] - immediate['robotStartNanos'] + (1 << 63)) % (1 << 64)) - (1 << 63)
+    need(delta >= 0, 'capture order')
+    geometry(immediate['beforeGeometry']); geometry(immediate['immediateGeometry'])
+    need(immediate['beforeGeometry'] == immediate['immediateGeometry'], '215 changed actual geometry')
+    row = by.get(ATTACHMENT_STABLE_IDS[1])
+    record(row, ('contract','clientWidthBeforeBaseline','states','toolScroll','imageButtonAtToolEnd','attachmentScroll',
+        'removals','privateUniqueAssetCount','realRobotInput','selectedFilesInjected','draftWrittenByFixtureInPhase',
+        'forcedRepaintOrLayout','physicalPixelsRequireReview','wholeUiPhysicalPass'))
+    need(row['clientWidthBeforeBaseline'] == 640 and type(row['clientWidthBeforeBaseline']) is int and
+         row['privateUniqueAssetCount'] == 9 and type(row['privateUniqueAssetCount']) is int and
+         row['realRobotInput'] is True and row['selectedFilesInjected'] is False and
+         row['draftWrittenByFixtureInPhase'] is False, 'input mechanism/source')
+    need(type(assets) is list and len(assets) == 8, 'eight private unique assets')
+    for index, asset in enumerate(assets,2):
+        shape(asset, ('file','bytes','sha256'), 'private asset')
+        need(asset['file'] == 'composer-private-additional-images/%02d.png' % index and
+             integer(asset['bytes'],1,32768) and type(asset['sha256']) is str and
+             len(asset['sha256']) == 64 and all(c in '0123456789abcdef' for c in asset['sha256']), 'private asset identity/budget')
+    need(len({asset['sha256'] for asset in assets}) == 8, 'distinct image bytes')
+    stages = ['zero','cancel-zero','one','nine','cancel-nine','nine-last-visible'] + ['removed-%d' % n for n in range(8,-1,-1)]
+    states = row['states']
+    need(type(states) is list and len(states) == len(stages), 'complete count transitions')
+    fixed = None; nine = None
+    for index, (observed, stage) in enumerate(zip(states, stages)):
+        shape(observed, ('stage','state','assetIndices'), 'state observation')
+        need(observed['stage'] == stage, 'state order')
+        state = observed['state']
+        shape(state, ('dialogIdentity','dialogHwnd','dialogBounds','clientBounds','geometry','documentIdentity','caretIdentity',
+            'caretDot','caretMark','rawText','selectionStart','selectionEnd','composition','viewportPosition','draftText','syncToDynamic','publishBounds'), 'native state')
+        for key in ('dialogIdentity','documentIdentity','caretIdentity','caretDot','caretMark','selectionStart','selectionEnd'):
+            need(integer(state[key]), 'native Int ' + key)
+        need(integer(state['dialogHwnd'],1,(1 << 63)-1), 'native HWND')
+        for key in ('dialogBounds','clientBounds','publishBounds'): rect(state[key])
+        need(state['clientBounds']['width'] == 640 and contains(state['dialogBounds'],state['clientBounds']) and
+             contains(state['clientBounds'],state['publishBounds']), 'same visible client/send')
+        geometry(state['geometry'])
+        need(type(state['rawText']) is str and state['rawText'] == state['draftText'] and
+             0 < len(state['rawText']) <= 4096 and state['syncToDynamic'] is True and
+             state['caretDot'] == state['selectionEnd'] and state['caretMark'] == state['selectionStart'] and
+             all(0 <= state[k] <= len(state['rawText']) for k in ('caretDot','caretMark')), 'same original draft/selection')
+        shape(state['viewportPosition'], ('x','y'), 'viewport position')
+        need(all(integer(v,0) for v in state['viewportPosition'].values()), 'native viewport position')
+        if state['composition'] is not None:
+            shape(state['composition'], ('start','end'), 'IME composition')
+            need(all(integer(v,0,len(state['rawText'])) for v in state['composition'].values()), 'IME composition range')
+        if fixed is None: fixed = state
+        need(state == fixed, 'same editor/document/caret/draft/geometry at every count')
+        indices = observed['assetIndices']
+        need(type(indices) is list and all(integer(v,0,8) for v in indices) and len(indices) == len(set(indices)), 'unique selected asset IDs')
+        if stage == 'nine':
+            nine = indices
+            need(len(nine) == 9 and nine[0] == 0 and set(nine) == set(range(9)), 'one plus eight real files')
+        expected = [] if stage in ('zero','cancel-zero') else [0] if stage == 'one' else nine
+        if stage.startswith('removed-'): expected = nine[:int(stage.removeprefix('removed-'))]
+        need(indices == expected, 'exact retained/remove-last sequence')
+    def scroll(value):
+        shape(value, ('before','after','maximum','viewport'), 'real horizontal scroll')
+        need(all(type(value[k]) in (int,float) and not isinstance(value[k],bool) and math.isfinite(value[k])
+                 for k in ('before','after','maximum')) and value['before'] == 0 and
+             value['after'] == value['maximum'] > 0, 'real movement to finite end')
+        rect(value['viewport']); need(contains(fixed['clientBounds'],value['viewport']), 'scroll inside same client')
+    scroll(row['toolScroll']); scroll(row['attachmentScroll'])
+    need(row['toolScroll']['viewport'] != row['attachmentScroll']['viewport'], 'independent scroll viewports')
+    need(contains(row['toolScroll']['viewport'],row['imageButtonAtToolEnd']), 'Images exposed at actual tool end')
+    need(type(row['removals']) is list and len(row['removals']) == 9, 'nine single real removals')
+    for index, removal in enumerate(row['removals']):
+        shape(removal, ('beforeCount','afterCount','removedAssetIndex','hitBounds','thumbnailBounds','effectiveViewport','scrollBefore'), 'remove observation')
+        need(all(type(removal[k]) is int for k in ('beforeCount','afterCount','removedAssetIndex')) and
+             removal['beforeCount'] == 9-index and removal['afterCount'] == 8-index and
+             removal['removedAssetIndex'] == nine[8-index], 'last URI removed once')
+        need(contains(removal['effectiveViewport'],removal['hitBounds']) and
+             contains(removal['effectiveViewport'],removal['thumbnailBounds']) and
+             contains(fixed['clientBounds'],removal['effectiveViewport']), 'remove hit fully inside effective clip')
+        need(type(removal['scrollBefore']) in (int,float) and math.isfinite(removal['scrollBefore']) and removal['scrollBefore'] >= 0,
+             'actual read-only scroll position')
+    return dict(composerStableAttachmentsContract='windows-comment-attachments-stable-editor/v1',
+        composerStableAttachmentsValidated=True, composerStableAttachmentStates=states,
+        composerStableAttachmentInputScope='SOURCE_PINNED_REAL_ROBOT_AND_SAVED_SAME_EDITOR_GEOMETRY',
+        composerPhysicalPixelsRequireReview=True, composerWholeUiPhysicalPass=False,
+        composerLiveOwnershipIndependentlyObserved=False, desktopPresentationProvenByPaint=False)
+
+
+CAPTURES_BY_CASE['feedback'] = CAPTURES_BY_CASE['composer'] + ATTACHMENT_STABLE_CAPTURES + [
     '220-feedback-client-baseline',
     '221-feedback-like-button-anchor',
     '222-feedback-owned-editor-hidden-carrier',
@@ -535,7 +673,15 @@ def verify(report, local, health, token, process, ui_case='search'):
                (feedback and item.get('method') == 'POST' and item.get('host') == 'api.bilibili.com' and
                 item.get('path') == '/x/web-interface/archive/like')) for item in transport['apiRequests']):
             raise ValueError('Composer transport observed a mutation')
+    if not feedback and any(key in by for key in ATTACHMENT_STABLE_IDS):
+        raise ValueError('Mixed stable attachment feedback records')
     if feedback:
+        additional = transport['composerInput'].get('additionalPrivateImages')
+        verify_stable_attachments_v1(by, additional)
+        for item in additional:
+            data = read(no_links(report / item['file']))
+            if len(data) != item['bytes'] or sha(data) != item['sha256']:
+                raise ValueError('Private additional chooser image changed')
         detail = transport['brandFeedbackPlacement']
         for key in ('actualOriginalLikeProtocolConsumed','syntheticResponsesOnly'):
             if detail.get(key) is not True: raise ValueError('Missing original brand feedback protocol: ' + key)

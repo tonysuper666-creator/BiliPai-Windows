@@ -4195,7 +4195,7 @@ object WindowsVideoActualRootUiFixture {
         click("播放"); await("same source resumes after original video share") { sameNative(); playing() }
     }
 
-    private fun exerciseCommentComposer(localReplay: WindowsVideoLocalReplay, observeImagePaint: Boolean = false) {
+    private fun exerciseCommentComposer(localReplay: WindowsVideoLocalReplay, verifyStableAttachments: Boolean = false) {
         check(!EventQueue.isDispatchThread())
         sameNative(); check(playing())
         val script = localReplay.commentComposerReplay
@@ -4320,7 +4320,12 @@ object WindowsVideoActualRootUiFixture {
                 }
             }
         }
-        var imagePaintProbe: DesktopInlineEmotePaintProbe? = null
+        fun stableEditorGeometry(surface: Window, pane: DesktopInlineEmotePane): JsonObject =
+            JsonObject(editorGeometry(surface, pane).mapValues { (name, value) ->
+                // Invalidated layout flags may vary during a legal paint; every actual
+                // identity, class, local/screen/visible bound and height remains exact.
+                if (name == "sameOwnedEditor") value else JsonObject(value.jsonObject - "valid")
+            })
         fun editor(surface: Window): AccessibleContext {
             currentSource()
             check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
@@ -4371,6 +4376,333 @@ object WindowsVideoActualRootUiFixture {
             component.dispatchEvent(MouseEvent(component, MouseEvent.MOUSE_PRESSED, now + 1,
                 InputEvent.BUTTON1_DOWN_MASK, x, y, 1, false, MouseEvent.BUTTON1))
             component.dispatchEvent(MouseEvent(component, MouseEvent.MOUSE_RELEASED, now + 2, 0, x, y, 1, false, MouseEvent.BUTTON1))
+        }
+        fun stableAttachments(surface: javax.swing.JDialog) {
+            check(!EventQueue.isDispatchThread())
+            val robot = java.awt.Robot().apply { autoDelay = 8 }
+            fun key(code: Int) { robot.keyPress(code); robot.keyRelease(code) }
+            fun chord(modifier: Int, code: Int) {
+                robot.keyPress(modifier)
+                try { key(code) } finally { robot.keyRelease(modifier) }
+            }
+            fun press(bounds: Rectangle) {
+                edt { currentSource(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface)) }
+                check(bounds.width > 0 && bounds.height > 0)
+                robot.mouseMove(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+                robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+                try { Thread.sleep(35) } finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+            }
+            fun componentBounds(component: Component): Rectangle {
+                check(component.isShowing && component.isDisplayable && component.isEnabled)
+                return Rectangle(component.locationOnScreen, component.size)
+            }
+            fun contextBounds(context: AccessibleContext): Rectangle {
+                val component = requireNotNull(context.accessibleComponent)
+                return Rectangle(requireNotNull(component.locationOnScreen), component.size)
+            }
+            fun effectiveBounds(context: AccessibleContext): Rectangle {
+                var result = Rectangle(surface.contentPane.locationOnScreen, surface.contentPane.size)
+                var parent: AccessibleContext? = context
+                while (parent != null && parent !== surface.accessibleContext) {
+                    val node = parent
+                    val bounds = contextBounds(node)
+                    check(bounds.width > 0 && bounds.height > 0) { "Empty attachment ancestor bounds" }
+                    result = result.intersection(bounds)
+                    parent = node.accessibleParent?.accessibleContext
+                }
+                check(parent === surface.accessibleContext) { "Attachment target left captured dialog" }
+                return result
+            }
+            fun targets(label: String): List<AccessibleContext> = descendants(surface.accessibleContext).filter {
+                hasLabel(it, label) && it.accessibleRole == (if (label == "移除")
+                    javax.accessibility.AccessibleRole.GROUP_BOX else javax.accessibility.AccessibleRole.PUSH_BUTTON) &&
+                    it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1
+            }
+            fun exposed(label: String): Rectangle? {
+                val matches = targets(label).filter { contextBounds(it).let { bounds ->
+                    bounds.width > 0 && bounds.height > 0 && effectiveBounds(it).contains(bounds) } }
+                check(matches.size <= 1) { "Ambiguous fully exposed attachment control: $label" }
+                return matches.singleOrNull()?.let(::contextBounds)
+            }
+            fun click(label: String) {
+                val bounds = edt { currentSource(); requireNotNull(exposed(label)) }
+                press(bounds)
+            }
+            // One declared native resize BEFORE the baseline, never repeated to search
+            // for a passing layout. This forces meaningful finite toolbar overflow.
+            val resize = edt {
+                currentSource(); check(surface.isResizable && surface.isActive)
+                val old = Rectangle(surface.bounds)
+                val width = 640 + surface.insets.left + surface.insets.right
+                check(old.width > width && width >= surface.minimumSize.width)
+                Triple(old, width, componentBounds(surface.contentPane))
+            }
+            robot.mouseMove(resize.first.x + resize.first.width - 2, resize.first.y + resize.first.height / 2)
+            robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+            try { robot.mouseMove(resize.first.x + resize.second - 2, resize.first.y + resize.first.height / 2) }
+            finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+            await("single native resize establishes declared 640 pixel comment client") { edt {
+                currentSource(); surface.contentPane.width == 640 && surface.height == resize.first.height &&
+                    surface.x == resize.first.x && surface.y == resize.first.y && originalMain.bounds.contains(surface.bounds)
+            } }
+            val pane = edt { nativeEditor(surface) }
+            val document = edt { pane.document }; val caret = edt { pane.caret }
+            val stamp = edt { requireNotNull(composer.commentStamp.value) }
+            val hwnd = edt { Pointer.nativeValue(Native.getWindowPointer(surface)) }
+            val value = edt { pane.rawValue() }; val originalDraft = edt { requireNotNull(draft()) }
+            check(originalDraft.imageUris.isEmpty())
+            val extraImages = script.prepareAdditionalImages()
+            val paths = listOf(script.image) + extraImages
+            val uris = paths.map { it.toUri().toString() }
+            fun rect(bounds: Rectangle) = buildJsonObject {
+                put("x", bounds.x); put("y", bounds.y); put("width", bounds.width); put("height", bounds.height)
+            }
+            fun guard() {
+                currentSource()
+                check(surface.isShowing && surface.isDisplayable && ownedWindow(surface) &&
+                    nativeEditor(surface) === pane && pane.document === document && pane.caret === caret &&
+                    Pointer.nativeValue(Native.getWindowPointer(surface)) == hwnd && composer.commentStamp.value === stamp &&
+                    stamp.presentation.isCurrent() && pane.rawValue() == value &&
+                    draft()?.text == originalDraft.text && draft()?.syncToDynamic == originalDraft.syncToDynamic)
+            }
+            fun snapshot(): JsonObject {
+                guard()
+                val viewport = pane.parent as javax.swing.JViewport
+                val raw = pane.rawValue()
+                return buildJsonObject {
+                    put("dialogIdentity", System.identityHashCode(surface)); put("dialogHwnd", hwnd)
+                    put("dialogBounds", rect(surface.bounds)); put("clientBounds", rect(componentBounds(surface.contentPane)))
+                    put("geometry", stableEditorGeometry(surface, pane))
+                    put("documentIdentity", System.identityHashCode(document)); put("caretIdentity", System.identityHashCode(caret))
+                    put("caretDot", caret.dot); put("caretMark", caret.mark)
+                    put("rawText", raw.text); put("selectionStart", raw.selection.start); put("selectionEnd", raw.selection.end)
+                    put("composition", raw.composition?.let { buildJsonObject {
+                        put("start", it.start); put("end", it.end) } } ?: JsonNull)
+                    put("viewportPosition", buildJsonObject { put("x", viewport.viewPosition.x); put("y", viewport.viewPosition.y) })
+                    put("draftText", requireNotNull(draft()).text); put("syncToDynamic", requireNotNull(draft()).syncToDynamic)
+                    put("publishBounds", rect(requireNotNull(exposed("发布"))))
+                }
+            }
+            var baseline: JsonObject? = null; var stableSince = 0L
+            await("stable empty attachment editor before real input") { edt {
+                val next = snapshot(); val now = System.nanoTime()
+                if (next != baseline) { baseline = next; stableSince = now; false }
+                else now - stableSince >= Duration.ofMillis(200).toNanos()
+            } }
+            val fixed = requireNotNull(baseline)
+            val states = mutableListOf<JsonObject>()
+            fun state(stage: String, expected: List<String>, frame: String? = null) {
+                var since = 0L
+                await("same native editor geometry and exact real attachments: $stage") { edt {
+                    guard()
+                    val ready = snapshot() == fixed && draft()?.imageUris == expected &&
+                        (expected.isEmpty() || has(surface, "已选 ${expected.size}/9 张")) &&
+                        (expected.isNotEmpty() || (targets("移除").isEmpty() && !has(surface, "已选图片") &&
+                            descendants(surface.accessibleContext).none { Regex("已选\\s+\\d+/9\\s+张").containsMatchIn(it.accessibleName.orEmpty()) }))
+                    val now = System.nanoTime()
+                    if (!ready) { since = 0L; false } else {
+                        if (since == 0L) since = now
+                        now - since >= Duration.ofMillis(200).toNanos()
+                    }
+                } }
+                val observed = edt {
+                    guard(); check(snapshot() == fixed && draft()?.imageUris == expected)
+                    buildJsonObject {
+                        put("stage", stage); put("state", snapshot())
+                        put("assetIndices", JsonArray(expected.map { uri -> JsonPrimitive(uris.indexOf(uri).also { check(it >= 0) }) }))
+                    }
+                }
+                states += observed
+                if (frame != null) capture(frame, surface) { guard(); check(snapshot() == fixed && draft()?.imageUris == expected) }
+            }
+            fun scroller(label: String): AccessibleContext {
+                val target = if (label == "移除") targets(label).first() else targets(label).single()
+                var node = target.accessibleParent?.accessibleContext
+                while (node != null && node !== surface.accessibleContext) {
+                    if (node.accessibleRole == javax.accessibility.AccessibleRole.SCROLL_PANE &&
+                        descendants(node).any { it.accessibleRole == javax.accessibility.AccessibleRole.SCROLL_BAR &&
+                            it.accessibleStateSet.contains(AccessibleState.HORIZONTAL) }) return node
+                    node = node.accessibleParent?.accessibleContext
+                }
+                error("No actual horizontal viewport for $label")
+            }
+            fun bar(scope: AccessibleContext) = descendants(scope).single {
+                it.accessibleRole == javax.accessibility.AccessibleRole.SCROLL_BAR && it.accessibleStateSet.contains(AccessibleState.HORIZONTAL) }
+                .accessibleValue.let { requireNotNull(it) }
+            fun scrollToBoundary(scope: AccessibleContext, toEnd: Boolean, requireMotion: Boolean): JsonObject {
+                val start = edt { guard(); bar(scope).currentAccessibleValue.toDouble() }
+                val max = edt { guard(); bar(scope).maximumAccessibleValue.toDouble() }
+                check(start.isFinite() && max.isFinite() && max > 0 && start in 0.0..max)
+                val viewport = edt { guard(); effectiveBounds(scope).also { check(it.width > 0 && it.height > 0) } }
+                val deadline = System.nanoTime() + Duration.ofSeconds(3).toNanos()
+                val target = if (toEnd) max else 0.0
+                var end = start
+                while (end != target && System.nanoTime() < deadline) {
+                    robot.mouseMove(viewport.x + viewport.width / 2, viewport.y + viewport.height / 2)
+                    robot.keyPress(java.awt.event.KeyEvent.VK_SHIFT)
+                    try { robot.mouseWheel(if (toEnd) 8 else -8) } finally { robot.keyRelease(java.awt.event.KeyEvent.VK_SHIFT) }
+                    Thread.sleep(25)
+                    end = edt { guard(); check(bar(scope).maximumAccessibleValue.toDouble() == max); bar(scope).currentAccessibleValue.toDouble() }
+                }
+                check(end == target && (!requireMotion || end != start)) { "Real horizontal wheel did not expose the end" }
+                return buildJsonObject { put("before", start); put("after", end); put("maximum", max); put("viewport", rect(viewport)) }
+            }
+            fun chooser(): Pair<javax.swing.JDialog, javax.swing.JFileChooser> {
+                if (edt { guard(); exposed("图片") == null })
+                    scrollToBoundary(edt { guard(); scroller("图片") }, toEnd = true, requireMotion = false)
+                click("图片")
+                await("Robot opens original owned image chooser") { dialog("选择图片") != null }
+                return edt {
+                    guard(); val peer = requireNotNull(dialog("选择图片"))
+                    check(peer.isModal && peer.owner === originalMain && ownedWindow(peer))
+                    peer to nativeComponents(peer).filterIsInstance<javax.swing.JFileChooser>().single().also {
+                        check(it.isShowing && it.dialogType == javax.swing.JFileChooser.OPEN_DIALOG && it.isMultiSelectionEnabled)
+                    }
+                }
+            }
+            fun cancelPicker(pair: Pair<javax.swing.JDialog, javax.swing.JFileChooser>) {
+                val button = edt {
+                    guard(); val expected = javax.swing.UIManager.getString("FileChooser.cancelButtonText")
+                    nativeComponents(pair.second).filterIsInstance<javax.swing.JButton>().single {
+                        it.isShowing && it.isEnabled && it.text == expected }
+                }
+                press(edt { componentBounds(button) })
+                await("Robot cancels exact owned chooser") { edt { guard(); !pair.first.isDisplayable && !pair.first.isShowing } }
+            }
+            fun typePath(pair: Pair<javax.swing.JDialog, javax.swing.JFileChooser>, path: Path) {
+                val filename = edt {
+                    guard()
+                    val inputs = nativeComponents(pair.second).filterIsInstance<javax.swing.JTextField>().filter { it.isShowing && it.isEnabled }
+                    val named = inputs.filter { field ->
+                        val context = field.accessibleContext
+                        val labels = context.accessibleRelationSet.get(javax.accessibility.AccessibleRelation.LABELED_BY)?.target.orEmpty()
+                        val text = context.accessibleName.orEmpty() + labels.filterIsInstance<javax.swing.JLabel>().joinToString { it.text.orEmpty() }
+                        text.contains("文件名") || text.contains("File name", ignoreCase = true)
+                    }
+                    named.singleOrNull() ?: inputs.single()
+                }
+                val text = path.toAbsolutePath().toString()
+                check(text.all { it in 'a'..'z' || it in 'A'..'Z' || it in '0'..'9' || it in " :/\\-_." })
+                press(edt { componentBounds(filename) })
+                await("actual filename native focus") { edt { guard(); filename.isFocusOwner } }
+                chord(java.awt.event.KeyEvent.VK_CONTROL, java.awt.event.KeyEvent.VK_A)
+                for (character in text) {
+                    edt { guard(); check(filename.isFocusOwner && pair.first.isShowing && pair.first.isDisplayable) }
+                    val upper = character.isUpperCase() || character == ':' || character == '_'
+                    val code = when (character) {
+                        ':' -> java.awt.event.KeyEvent.VK_SEMICOLON
+                        '_' -> java.awt.event.KeyEvent.VK_MINUS
+                        else -> java.awt.event.KeyEvent.getExtendedKeyCodeForChar(character.uppercaseChar().code)
+                    }
+                    check(code != java.awt.event.KeyEvent.VK_UNDEFINED)
+                    if (upper) robot.keyPress(java.awt.event.KeyEvent.VK_SHIFT)
+                    try { key(code) } finally { if (upper) robot.keyRelease(java.awt.event.KeyEvent.VK_SHIFT) }
+                }
+                edt { guard(); check(filename.isFocusOwner && filename.text == text) }
+            }
+            fun approve(pair: Pair<javax.swing.JDialog, javax.swing.JFileChooser>) {
+                val button = edt {
+                    guard(); val expected = pair.second.approveButtonText ?: javax.swing.UIManager.getString("FileChooser.openButtonText")
+                    pair.first.rootPane.defaultButton?.takeIf { it.isShowing && it.isEnabled && SwingUtilities.isDescendingFrom(it, pair.second) }
+                        ?: nativeComponents(pair.second).filterIsInstance<javax.swing.JButton>().single { it.isShowing && it.isEnabled && it.text == expected }
+                }
+                press(edt { componentBounds(button) })
+                await("Robot approves exact owned chooser") { edt { guard(); !pair.first.isDisplayable && !pair.first.isShowing } }
+            }
+            state("zero", emptyList(), "attachments-v1-zero")
+            cancelPicker(chooser()); state("cancel-zero", emptyList())
+            val one = chooser(); typePath(one, script.image); approve(one)
+            state("one", uris.take(1), "attachments-v1-one")
+            val eight = chooser(); typePath(eight, extraImages.first().parent)
+            key(java.awt.event.KeyEvent.VK_ENTER)
+            var list: javax.swing.JList<*>? = null; var listReadySince = 0L
+            await("actual private eight-file chooser list completes async directory model") { edt {
+                guard()
+                val candidates = nativeComponents(eight.second).filterIsInstance<javax.swing.JList<*>>().filter { candidate ->
+                    candidate.isShowing && candidate.isEnabled && candidate.model.size == 8 &&
+                        (0 until 8).map { candidate.model.getElementAt(it) as? java.io.File }.all { it != null } &&
+                        (0 until 8).map { (candidate.model.getElementAt(it) as java.io.File).toPath().toRealPath() }.toSet() == extraImages.toSet()
+                }
+                check(candidates.size <= 1)
+                val next = candidates.singleOrNull()
+                val ready = next != null && eight.second.currentDirectory.toPath().toRealPath() == extraImages.first().parent &&
+                    next.selectionMode == javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION
+                val now = System.nanoTime()
+                if (!ready || next !== list) { list = next; listReadySince = now; false }
+                else now - listReadySince >= Duration.ofMillis(200).toNanos()
+            } }
+            val selectedList = requireNotNull(list)
+            val cell = edt {
+                guard(); val bounds = selectedList.getCellBounds(0, 0)
+                check(selectedList.visibleRect.contains(bounds))
+                Rectangle(bounds).apply { translate(selectedList.locationOnScreen.x, selectedList.locationOnScreen.y) }
+            }
+            press(cell)
+            await("real chooser list owns Ctrl+A focus") { edt { guard(); selectedList.isFocusOwner } }
+            chord(java.awt.event.KeyEvent.VK_CONTROL, java.awt.event.KeyEvent.VK_A)
+            val orderedEight = edt {
+                guard(); check(selectedList.selectedIndices.toList() == (0 until 8).toList())
+                eight.second.selectedFiles.map { it.toPath().toRealPath() }.also {
+                    check(it.size == 8 && it.toSet() == extraImages.toSet()) }
+            }
+            approve(eight)
+            val ordered = uris.take(1) + orderedEight.map { it.toUri().toString() }
+            state("nine", ordered)
+            val tools = edt { guard(); scroller("图片") }
+            scrollToBoundary(tools, toEnd = false, requireMotion = false)
+            edt { guard(); check(exposed("图片") == null) { "Required tool overflow did not clip Images at the start" } }
+            val toolScroll = scrollToBoundary(tools, toEnd = true, requireMotion = true)
+            val imageButtonAtEnd = edt { guard(); rect(requireNotNull(exposed("图片"))) }
+            cancelPicker(chooser()); state("cancel-nine", ordered)
+            val attachments = edt { guard(); scroller("移除").also { check(it !== tools) } }
+            scrollToBoundary(attachments, toEnd = false, requireMotion = false)
+            val attachmentScroll = scrollToBoundary(attachments, toEnd = true, requireMotion = true)
+            fun lastAttachmentHit(count: Int): Pair<Rectangle, Rectangle> {
+                guard()
+                val controls = targets("移除"); check(controls.size == count)
+                val target = controls.maxBy { contextBounds(it).x }
+                val scope = scroller("移除")
+                val images = descendants(scope).filter { it.accessibleName == "已选图片" }
+                check(images.size == count)
+                val bounds = contextBounds(target)
+                val image = images.single { contextBounds(it).contains(bounds) }
+                check(image === images.maxBy { contextBounds(it).x })
+                val imageBounds = contextBounds(image)
+                val viewport = effectiveBounds(scope)
+                check(effectiveBounds(target).contains(bounds) && viewport.contains(bounds) &&
+                    effectiveBounds(image).contains(imageBounds) && viewport.contains(imageBounds))
+                return bounds to imageBounds
+            }
+            edt { lastAttachmentHit(9) }
+            state("nine-last-visible", ordered, "attachments-v1-nine-last-visible")
+            val removals = mutableListOf<JsonObject>()
+            var remaining = ordered
+            while (remaining.isNotEmpty()) {
+                val before = remaining
+                val hit = edt {
+                    guard()
+                    val scope = scroller("移除")
+                    val viewport = effectiveBounds(scope)
+                    Triple(lastAttachmentHit(before.size), viewport, bar(scope).currentAccessibleValue.toDouble())
+                }
+                press(hit.first.first)
+                remaining = before.dropLast(1)
+                state("removed-${remaining.size}", remaining, when (remaining.size) {
+                    8 -> "attachments-v1-last-removed-eight"; 0 -> "attachments-v1-removed-zero"; else -> null })
+                removals += buildJsonObject { put("beforeCount", before.size); put("afterCount", remaining.size)
+                    put("removedAssetIndex", uris.indexOf(before.last())); put("hitBounds", rect(hit.first.first)); put("thumbnailBounds", rect(hit.first.second))
+                    put("effectiveViewport", rect(hit.second)); put("scrollBefore", hit.third) }
+            }
+            record("composer-stable-attachments-v1", mapOf(
+                "contract" to JsonPrimitive("windows-comment-attachments-stable-editor/v1"),
+                "clientWidthBeforeBaseline" to JsonPrimitive(640), "states" to JsonArray(states),
+                "toolScroll" to toolScroll, "imageButtonAtToolEnd" to imageButtonAtEnd,
+                "attachmentScroll" to attachmentScroll, "removals" to JsonArray(removals),
+                "privateUniqueAssetCount" to JsonPrimitive(9), "realRobotInput" to JsonPrimitive(true),
+                "selectedFilesInjected" to JsonPrimitive(false), "draftWrittenByFixtureInPhase" to JsonPrimitive(false),
+                "forcedRepaintOrLayout" to JsonPrimitive(false), "physicalPixelsRequireReview" to JsonPrimitive(true),
+                "wholeUiPhysicalPass" to JsonPrimitive(false)))
         }
         var firstFailure: Throwable? = null
         check(dialog("发表评论") == null && dialog("选择图片") == null)
@@ -4567,12 +4899,9 @@ object WindowsVideoActualRootUiFixture {
             await("original sync-to-dynamic toggle publishes its true draft flag") { edt {
                 currentSource(); draft()?.syncToDynamic == true
             } }
-            val imageBaseline = if (observeImagePaint) edt {
-                currentSource()
-                val pane = nativeEditor(second)
-                val scroll = pane.parent.parent as javax.swing.JScrollPane
-                val probe = pane.observeCompletedPaints().also { imagePaintProbe = it }
-                Triple(pane, scroll, probe) to Triple(scroll.height, editorGeometry(second, pane), probe.snapshot()?.sequence ?: 0L)
+            val imageBaseline = if (verifyStableAttachments) edt {
+                currentSource(); val pane = nativeEditor(second)
+                pane to stableEditorGeometry(second, pane)
             } else null
             // Real Compose mouse release is posted asynchronously: its original
             // picker enters a Swing modal secondary loop on EDT. Never block
@@ -4627,70 +4956,24 @@ object WindowsVideoActualRootUiFixture {
             check(withImage.text.contains(WindowsCommentComposerReplay.DRAFT) && withImage.text.contains(WindowsCommentComposerReplay.EMOTE) &&
                 withImage.text.contains("@${WindowsCommentComposerReplay.FRIEND_NAME}") && withImage.syncToDynamic)
             val selectedImageRobotTimes = capture("215-composer-selected-private-image", second,
-                observeRobotTiming = observeImagePaint)
+                observeRobotTiming = verifyStableAttachments)
             if (imageBaseline != null) {
-                val (original215RobotStartNanos, original215RobotEndNanos) = requireNotNull(selectedImageRobotTimes)
-                val (selectedPane, selectedScroll, selectedPaint) = imageBaseline.first
-                val (beforeImageHeight, beforeImageGeometry, beforeImagePaintSequence) = imageBaseline.second
-                // Keep 215 as the immediate, unmodified physical sample. Observe the
-                // SAME dialog/editor afterward; no repaint, layout call, input or reopen.
-                val (immediateGeometry, immediatePaint) = edt { editorGeometry(second, selectedPane) to selectedPaint.snapshot() }
-                var observedPaint: DesktopInlineEmotePaintProbe.Receipt? = null
-                var observedGeometry: JsonObject? = null
-                val paintDeadline = System.nanoTime() + Duration.ofSeconds(3).toNanos()
-                while (System.nanoTime() < paintDeadline) {
-                    observedPaint = edt {
-                        currentSource(); check(nativeEditor(second) === selectedPane && draft() == withImage)
-                        val scroll = selectedPane.parent.parent as javax.swing.JScrollPane
-                        val viewport = selectedPane.parent as javax.swing.JViewport
-                        selectedPaint.snapshot()?.takeIf { receipt ->
-                            scroll === selectedScroll && scroll.height < beforeImageHeight &&
-                                receipt.scrollIdentity == System.identityHashCode(selectedScroll) &&
-                                receipt.scrollWidth == scroll.width && receipt.scrollHeight == scroll.height &&
-                                receipt.viewportWidth == viewport.width && receipt.viewportHeight == viewport.height &&
-                                receipt.sequence > beforeImagePaintSequence && receipt.width == selectedPane.width &&
-                                receipt.height == selectedPane.height && selectedPane.visibleRect == Rectangle(
-                                    receipt.visibleX, receipt.visibleY, receipt.visibleWidth, receipt.visibleHeight)
-                        }?.also { observedGeometry = editorGeometry(second, selectedPane) }
-                    }
-                    if (observedPaint != null) break
-                    Thread.sleep(25) // Bounded observation of actual paint completion, never a repaint delay.
+                // The old 215 capture stays immediate and precedes these reads.
+                // .34 has a distinct invariant, not the old shrink/no-paint branch.
+                val (start, end) = requireNotNull(selectedImageRobotTimes)
+                val after = edt {
+                    currentSource(); check(draft() == withImage)
+                    stableEditorGeometry(second, imageBaseline.first)
                 }
-                val afterPaintGeometry = observedGeometry ?: edt { editorGeometry(second, selectedPane) }
-                fun paintJson(value: DesktopInlineEmotePaintProbe.Receipt?): JsonElement = value?.let {
-                    buildJsonObject {
-                        put("sequence", it.sequence); put("width", it.width); put("height", it.height)
-                        put("visibleX", it.visibleX); put("visibleY", it.visibleY)
-                        put("visibleWidth", it.visibleWidth); put("visibleHeight", it.visibleHeight)
-                        put("scrollIdentity", it.scrollIdentity); put("scrollWidth", it.scrollWidth); put("scrollHeight", it.scrollHeight)
-                        put("viewportWidth", it.viewportWidth); put("viewportHeight", it.viewportHeight)
-                        put("completedAtNanos", it.completedAtNanos)
-                    }
-                } ?: JsonNull
-                record("composer-same-editor-image-paint-diagnostic", mapOf(
-                    "sameDialogAndEditor" to JsonPrimitive(true), "original215Retained" to JsonPrimitive(true),
-                    "original215RobotStartNanos" to JsonPrimitive(original215RobotStartNanos),
-                    "original215RobotEndNanos" to JsonPrimitive(original215RobotEndNanos),
+                check(after == imageBaseline.second) { "Attachments resized the same original native editor" }
+                record("composer-stable-image-215-v1", mapOf(
+                    "contract" to JsonPrimitive("windows-comment-attachments-stable-editor/v1"),
                     "dialogIdentity" to JsonPrimitive(System.identityHashCode(second)),
-                    "selectedImageCount" to JsonPrimitive(withImage.imageUris.size), "draftUnchanged" to JsonPrimitive(true),
-                    "beforeImagePaintSequence" to JsonPrimitive(beforeImagePaintSequence),
-                    "beforeImageGeometry" to beforeImageGeometry, "immediateGeometry" to immediateGeometry,
-                    "afterPaintGeometry" to afterPaintGeometry, "immediatePaint" to paintJson(immediatePaint),
-                    "observedPaint" to paintJson(observedPaint), "newSizeVisiblePanePaintObserved" to JsonPrimitive(observedPaint != null),
-                    "repaintOrLayoutRequested" to JsonPrimitive(false), "sameDialogReopened" to JsonPrimitive(false),
-                    "physicalPixelsRequireReview" to JsonPrimitive(true), "desktopPresentationProvenByPaint" to JsonPrimitive(false)))
-                if (observedPaint != null) {
-                    val (robotStartNanos, robotEndNanos) = requireNotNull(capture(
-                        "218-composer-same-editor-after-image-paint", second, observeRobotTiming = true) {
-                        check(editorGeometry(second, selectedPane) == afterPaintGeometry && draft() == withImage)
-                    })
-                    record("composer-same-editor-image-paint-frame", mapOf(
-                        "frame" to JsonPrimitive("218-composer-same-editor-after-image-paint-screen.png"),
-                        "robotStartNanos" to JsonPrimitive(robotStartNanos), "robotEndNanos" to JsonPrimitive(robotEndNanos),
-                        "sameDialogAndEditor" to JsonPrimitive(true), "geometryGuardedBeforeAndAfter" to JsonPrimitive(true),
-                        "physicalPixelsRequireReview" to JsonPrimitive(true), "desktopPresentationProvenByPaint" to JsonPrimitive(false)))
-                }
-                edt { selectedPaint.close(); imagePaintProbe = null }
+                    "beforeGeometry" to imageBaseline.second, "immediateGeometry" to after,
+                    "robotStartNanos" to JsonPrimitive(start), "robotEndNanos" to JsonPrimitive(end),
+                    "selectedImageCount" to JsonPrimitive(1), "sameDialogAndEditor" to JsonPrimitive(true),
+                    "original215Retained" to JsonPrimitive(true), "forcedRepaintOrLayout" to JsonPrimitive(false),
+                    "physicalPixelsRequireReview" to JsonPrimitive(true), "wholeUiPhysicalPass" to JsonPrimitive(false)))
             }
             close(second)
             val third = open()
@@ -4719,6 +5002,7 @@ object WindowsVideoActualRootUiFixture {
                 }
             } }
             capture("217-composer-image-removed", third)
+            if (verifyStableAttachments) stableAttachments(third)
             close(third)
             record("composer-original-input-closed-without-publish", mapOf(
                 "sameActualComposerDomain" to JsonPrimitive(true), "sourcePausedAndPreferencesPreserved" to JsonPrimitive(true),
@@ -4732,8 +5016,7 @@ object WindowsVideoActualRootUiFixture {
                 if (peer != null) capture("composer-input-failure", peer) }.exceptionOrNull()?.let(failure::addSuppressed)
             throw failure
         } finally {
-            var cleanupFailure: Throwable? = if (imagePaintProbe != null)
-                runCatching { edt { imagePaintProbe?.close(); imagePaintProbe = null } }.exceptionOrNull() else null
+            var cleanupFailure: Throwable? = null
             for (peer in ownedPeers.toList().asReversed()) {
                 val failure = runCatching { edt {
                     var parent: Window? = peer
@@ -5387,7 +5670,7 @@ object WindowsVideoActualRootUiFixture {
         } else if (System.getProperty("bilipai.validation.composerInput") == "true") {
             check(replay) { "Composer proof requires private synthetic API/session and loopback media" }
             val feedbackPlacementInput = System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true"
-            exerciseCommentComposer(requireNotNull(localReplay), observeImagePaint = feedbackPlacementInput)
+            exerciseCommentComposer(requireNotNull(localReplay), verifyStableAttachments = feedbackPlacementInput)
             if (feedbackPlacementInput) exerciseBrandFeedbackPlacement(localReplay)
         } else if (System.getProperty("bilipai.validation.commentSearchInput") == "true") {
             check(replay) { "Comment search proof requires the isolated guest API/loopback replay" }
