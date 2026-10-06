@@ -236,12 +236,16 @@ public final class AwtMpvProbe {
             try { if (canvas != null) ImageIO.write(capture("failure"), "png", output.resolve("screen-failed.png").toFile()); }
             catch (Throwable diagnostic) { result.put("failureCaptureError", safe(diagnostic.toString())); }
             if (surfacePhysicalFailure && actor != null && !shaderCase()) {
-                try { observeFailedSurfaceVideo(); }
-                catch (Throwable diagnostic) { result.put("failureVideoAuxiliaryError", safe(diagnostic.toString())); }
-                try { observeFailedSurfaceWindow(); }
-                catch (Throwable diagnostic) { result.put("failureAuxiliaryError", safe(diagnostic.toString())); }
-                try { observeFailedSurfaceSoftwareVideo(); }
-                catch (Throwable diagnostic) { result.put("failureSoftwareVideoAuxiliaryError", safe(diagnostic.toString())); }
+                if (loadOrderObservations) {
+                    observeFailedSurfaceCpuFirst();
+                } else {
+                    try { observeFailedSurfaceVideo(); }
+                    catch (Throwable diagnostic) { result.put("failureVideoAuxiliaryError", safe(diagnostic.toString())); }
+                    try { observeFailedSurfaceWindow(); }
+                    catch (Throwable diagnostic) { result.put("failureAuxiliaryError", safe(diagnostic.toString())); }
+                    try { observeFailedSurfaceSoftwareVideo(); }
+                    catch (Throwable diagnostic) { result.put("failureSoftwareVideoAuxiliaryError", safe(diagnostic.toString())); }
+                }
             }
         } finally {
             if (actor != null && caseName.equals("mpv-default-flip-panscan1-clear")) {
@@ -693,6 +697,81 @@ public final class AwtMpvProbe {
         }
     }
 
+    /** Failure-only ordering experiment; no auxiliary result can repair the original screen failure. */
+    private void observeFailedSurfaceCpuFirst() {
+        Map<String, Object> row = new LinkedHashMap<>(); result.put("failedSurfaceCaptureOrder", row);
+        row.put("auxiliaryOnly", true); row.put("physicalFailurePreserved", true);
+        row.put("requestedOrder", List.of("Robot before CPU", "CPU video screenshot-sw=yes", "Robot after CPU",
+            "Robot before GPU video request", "GPU video request screenshot-sw=no", "Robot after GPU video request", "window request"));
+        row.put("nativeTiming", "same actor/entry and own HWND geometry checked around each Robot sample; cached native readbacks and pixels are not atomic");
+        try {
+            require(deadline - System.nanoTime() > TimeUnit.SECONDS.toNanos(13),
+                "Insufficient original deadline for CPU-first observations and unchanged cleanup reserve");
+            MpvActor owner = actor; String entry = owner.value("playlist/0/id");
+            Map<String, Object> ownership = auxiliaryOwner(owner, entry); row.put("ownership", ownership);
+            captureOwnedAuxiliaryBoundary(row, "beforeSoftwareVideo", "screen-before-software-video-auxiliary.png", owner, entry, ownership);
+            try { observeFailedSurfaceSoftwareVideo(); }
+            finally { captureOwnedAuxiliaryBoundary(row, "afterSoftwareVideo", "screen-after-software-video-auxiliary.png", owner, entry, ownership); }
+            Object software = result.get("failedSurfaceSoftwareVideoAuxiliary");
+            require(software instanceof Map<?, ?> value && "captured".equals(value.get("status")) &&
+                value.get("workerSource") instanceof Map<?, ?> receipt && Boolean.TRUE.equals(receipt.get("captured")) &&
+                Boolean.TRUE.equals(receipt.get("screenshotSwRestored")) && Boolean.TRUE.equals(receipt.get("sourceRetainedAfterRestore")) &&
+                "no".equals(receipt.get("screenshotSwBefore")) && "yes".equals(receipt.get("screenshotSwDuring")) &&
+                "no".equals(receipt.get("screenshotSwAfter")),
+                "CPU capture or original screenshot-sw=no restoration unproven; refusing subsequent GPU requests");
+            row.put("cpuCaptureAndRestorationVerifiedBeforeGpu", true);
+            captureOwnedAuxiliaryBoundary(row, "beforeVideo", "screen-before-video-auxiliary.png", owner, entry, ownership);
+            try { observeFailedSurfaceVideo(); }
+            finally { captureOwnedAuxiliaryBoundary(row, "afterVideo", "screen-after-video-auxiliary.png", owner, entry, ownership); }
+            Object video = result.get("failedSurfaceVideoAuxiliary");
+            require(video instanceof Map<?, ?> value && "captured".equals(value.get("status")),
+                "First GPU video request incomplete; refusing later window request");
+            observeFailedSurfaceWindow();
+            row.put("status", "sequence finished; original physical failure unchanged");
+        } catch (Throwable diagnostic) {
+            if (diagnostic instanceof InterruptedException) Thread.currentThread().interrupt();
+            row.put("status", "sequence incomplete; no further auxiliary requests"); row.put("error", safe(diagnostic.toString()));
+        } finally { publishReport(); }
+    }
+
+    /** Read only scalar facts; no focus, rendering, playback or native option mutation. */
+    private Map<String, Object> auxiliaryOwner(MpvActor owner, String entry) throws Exception {
+        require(actor == owner && owner != null && owner.failure == null && owner.fileLoaded && !owner.terminated.get() &&
+            entry != null && entry.equals(owner.value("playlist/0/id")) && "1".equals(owner.value("playlist-count")),
+            "Original single source/actor unavailable for ordered physical observation");
+        String rawChild = owner.value("window-id");
+        require(rawChild != null, "Original mpv child HWND unavailable");
+        long childId = rawChild.startsWith("0x") ? Long.parseUnsignedLong(rawChild.substring(2), 16) : Long.parseUnsignedLong(rawChild);
+        return edt(() -> {
+            require(frame.isShowing() && canvas.isShowing() && childId != 0, "Original native viewport is not showing");
+            Map<String, Object> root = windowFacts(Native.getComponentPointer(frame));
+            Map<String, Object> surface = windowFacts(Native.getComponentPointer(canvas));
+            Map<String, Object> child = windowFacts(new Pointer(childId));
+            Map<String, Object> bounds = rect(viewport());
+            require(Boolean.TRUE.equals(root.get("visible")) && Boolean.TRUE.equals(surface.get("visible")) && Boolean.TRUE.equals(child.get("visible")) &&
+                root.get("hwnd").equals(surface.get("parentHwnd")) && surface.get("hwnd").equals(child.get("parentHwnd")) &&
+                bounds.equals(surface.get("clientScreenRect")) && bounds.equals(child.get("clientScreenRect")),
+                "Original own frame/Canvas/mpv child chain or client geometry changed");
+            return Map.of("ownPid", PID, "ownPidVerified", true, "frameHwnd", root.get("hwnd"), "canvasHwnd", surface.get("hwnd"),
+                "mpvChildHwnd", child.get("hwnd"), "clientScreenRect", bounds);
+        });
+    }
+
+    private void captureOwnedAuxiliaryBoundary(Map<String, Object> sequence, String label, String file,
+        MpvActor owner, String entry, Map<String, Object> ownership) throws Exception {
+        Map<String, Object> row = new LinkedHashMap<>(); sequence.put(label, row);
+        row.put("beganMs", elapsedMs()); row.put("nativeBefore", owner.snapshot);
+        Map<String, Object> before = auxiliaryOwner(owner, entry); row.put("ownershipBefore", before);
+        require(ownership.equals(before), "Original owner or bounds changed before physical sample");
+        BufferedImage physical = capture("failure-" + label + "-ordered-auxiliary");
+        Map<String, Object> after = auxiliaryOwner(owner, entry); row.put("ownershipAfter", after);
+        row.put("nativeAfter", owner.snapshot); row.put("capturedMs", elapsedMs());
+        require(ownership.equals(after), "Original owner or bounds changed during physical sample");
+        require(ImageIO.write(physical, "png", output.resolve(file).toFile()), "Physical auxiliary PNG writer unavailable");
+        row.put("image", file); row.put("sha256", sha256(output.resolve(file))); row.put("pixels", imageStats(physical));
+        row.put("physicalScreenCapture", true); row.put("sameOwnerAndBoundsBeforeAfter", true); publishReport();
+    }
+
     /** Failure-only unscaled VO request; never contributes to the physical screen gate. */
     private void observeFailedSurfaceVideo() throws Exception {
         Map<String, Object> row = new LinkedHashMap<>(); result.put("failedSurfaceVideoAuxiliary", row);
@@ -742,7 +821,9 @@ public final class AwtMpvProbe {
         Map<String, Object> row = new LinkedHashMap<>(); result.put("failedSurfaceSoftwareVideoAuxiliary", row);
         row.put("auxiliaryOnly", true); row.put("physicalResult", "failed; retained independently of this auxiliary capture");
         row.put("imageKind", "later CPU video-mode capture with screenshot-sw=yes; not VO rendering, swapchain or physical-screen proof");
-        row.put("nativeTiming", "same-worker source/pause/property checks; later than original physical and VO samples");
+        row.put("nativeTiming", loadOrderObservations
+            ? "same-worker source/pause/property checks; after original physical failure, before any VO screenshot request; not atomic with Robot pixels"
+            : "same-worker source/pause/property checks; later than original physical and VO samples");
         long reserve = TimeUnit.SECONDS.toNanos(caseName.equals("mpv-default-flip-panscan1-clear") ? 9 : 6);
         if (deadline - System.nanoTime() <= reserve) {
             row.put("status", "skipped: original deadline reserves reset observation and cleanup"); return;
