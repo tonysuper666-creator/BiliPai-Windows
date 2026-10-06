@@ -2957,8 +2957,18 @@ object WindowsVideoActualRootUiFixture {
             } }
             capture("225-feedback-selected-private-image",nextEditor)
             // Real OS pointer/key input to the original editor, not a VM write.
-            val field = edt { guard(); descendants(nextEditor.accessibleContext).single {
-                it.accessibleEditableText != null && visible(it, nextEditor) } }
+            val field = edt {
+                guard()
+                // SwingPanel exposes SetText semantics as well as its native
+                // document. Target the same exact native editor as composer proof.
+                nativeComponents(nextEditor).filterIsInstance<javax.swing.JTextPane>().filter {
+                    it.javaClass.name == "com.bilipai.desktop.ui.DesktopInlineEmotePane" &&
+                        it.isShowing && it.isDisplayable && it.isEnabled &&
+                        SwingUtilities.getWindowAncestor(it) === nextEditor && visible(it.accessibleContext, nextEditor)
+                }.map { it.accessibleContext }.single().also {
+                    check(it.accessibleEditableText != null && it.accessibleStateSet.contains(AccessibleState.EDITABLE))
+                }
+            }
             val point = edt { val c = requireNotNull(field.accessibleComponent); val p = requireNotNull(c.locationOnScreen)
                 java.awt.Point(p.x + c.size.width / 2, p.y + c.size.height / 2) }
             robot.mouseMove(point.x,point.y); robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
