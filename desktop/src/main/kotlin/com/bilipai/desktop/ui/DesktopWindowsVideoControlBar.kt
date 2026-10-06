@@ -254,8 +254,9 @@ private fun DesktopWindowsPlayerIconButton(
     }
 }
 
-/** One 44dp input region: the thin rail retains precise seek; its chapter labels
- * jump to the original normalized start on click. Drag and keyboard always seek precisely. */
+/** A 24dp input region expands to 44dp for chapter labels. The thin rail retains
+ * precise seek; labels jump to the original normalized start on click.
+ * Drag and keyboard always seek precisely. */
 @Composable
 private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVersion: Long,
     enabled: Boolean, chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
@@ -272,7 +273,7 @@ private fun DesktopWindowsThinSeek(position: Double, duration: Double, sourceVer
     val currentSegment = findViewPointSegmentAt(segments, (value * 1000.0).toLong())
     val inactive = MaterialTheme.colorScheme.onSurface.copy(alpha = .16f)
     val active = MaterialTheme.colorScheme.primary
-    Box(Modifier.fillMaxWidth().height(44.dp)) {
+    Box(Modifier.fillMaxWidth().height(if (segments.isEmpty()) 24.dp else 44.dp)) {
         Canvas(Modifier.fillMaxSize().semantics {
             contentDescription = "播放进度"
             progressBarRangeInfo = ProgressBarRangeInfo(value.toFloat(), 0f..total.toFloat())
