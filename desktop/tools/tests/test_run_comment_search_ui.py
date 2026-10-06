@@ -7,6 +7,18 @@ SPEC = importlib.util.spec_from_file_location('comment_ui_runner_under_test', TO
 RUNNER = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(RUNNER)
 
+def blocked_heartbeat_record():
+    return dict(stage='requestObserved', scheme='https', host='api.bilibili.com', port=443,
+        path='/x/click-interface/web/heartbeat', method='POST', hasQuery=False, hasFragment=False)
+
+
+def malformed_heartbeat_records():
+    for key, value in (('stage', 'memoryResponse'), ('stage', None), ('scheme', 'http'), ('host', 'other.invalid'),
+            ('port', 80), ('port', 443.0), ('hasQuery', True), ('hasQuery', 0), ('hasFragment', True),
+            ('path', '/x/unknown'), ('method', 'DELETE'), ('remoteMutationSent', False)):
+        row = blocked_heartbeat_record(); row[key] = value; yield row
+
+
 class CommentUiCaseReceiptTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix='comment-case-receipts-')
@@ -70,11 +82,12 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
             for id in RUNNER.CAPTURES_BY_CASE[case]:
                 values = dict(sameAcceptedSourceVersion=7, fullImmutableSourceStillOwned=True, sameActualCanvasRetained=True,
                     nativeState=state(id == '123-fullscreen-paused-hold'), physicalVideoPixelsIndependentlyChecked=False,
+                    captureStateHeldAcrossRead=True, nativeCanvasBoundsMatched=True, physicalCanvasInputDelivered=True,
                     physicalScreenHumanReviewRequired=True, screenCaptureFile=id + '-screen.png',
                     screenCaptureClientBounds=dict(x=0, y=0, width=48, height=32))
                 if id == '121-fullscreen-idle-hidden': values.update(idleMillis=4100, clockBefore=10.0, clockAfter=14.5,
                     shownCanvasHeight=780, hiddenCanvasHeight=900, topAndBottomControlsHidden=True)
-                elif id == '122-fullscreen-mouse-restored': values.update(inputMechanism='OWNED_ACTUAL_CANVAS_MOUSE_MOVED',
+                elif id == '122-fullscreen-mouse-restored': values.update(inputMechanism='OS_ROBOT_MOUSE_MOVE',
                     topAndBottomControlsRestored=True)
                 else: values.update(nativePauseAcknowledged=True, controlsStayedVisible=True, menuHoldExecuted=False)
                 core.append(row(id, **values))
@@ -147,14 +160,44 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
             transport.update(brandFeedbackPlacementInput=True, brandFeedbackPlacement=dict(
                 actualOriginalLikeProtocolConsumed=True, syntheticResponsesOnly=True, remoteMutationSent=False,
                 otherMutationPermitted=False, realCredentialsUsed=False, actions=[1,2,1,2,1]))
-            transport['apiRequests'] += [dict(method='POST', host='api.bilibili.com', path='/x/web-interface/archive/like',
-                originalLikeProtocolMemoryOnly=True, remoteMutationSent=False) for _ in range(5)]
+            transport['apiRequests'] += [item for _ in range(5) for item in (
+                dict(stage='requestObserved', scheme='https', port=443, hasQuery=False, hasFragment=False,
+                    method='POST', host='api.bilibili.com', path='/x/web-interface/archive/like'),
+                dict(method='POST', host='api.bilibili.com', path='/x/web-interface/archive/like',
+                    originalLikeProtocolMemoryOnly=True, remoteMutationSent=False))]
         return observation, transport
 
     def verify(self, case, observations=None, transport=None):
         if observations is None: observations, transport = self.evidence(case)
         self.write(observations, transport, case)
         return RUNNER.verify(self.report, self.local, self.health, self.token, self.process, case)
+
+    def test_blocked_heartbeat_is_only_an_observation_in_composer_and_feedback(self):
+        for case in ('composer', 'feedback'):
+            obs, transport = self.evidence(case); transport['apiRequests'] += [blocked_heartbeat_record() for _ in range(3)]
+            self.verify(case, obs, transport)
+            for bad in malformed_heartbeat_records():
+                obs, transport = self.evidence(case); transport['apiRequests'].append(bad)
+                with self.subTest(case=case, row=bad), self.assertRaises(ValueError): self.verify(case, obs, transport)
+        for case in ('search', 'fullscreen'):
+            obs, transport = self.evidence(case); transport['apiRequests'].append(blocked_heartbeat_record())
+            with self.subTest(case=case), self.assertRaises(ValueError): self.verify(case, obs, transport)
+
+    def test_feedback_requires_five_ordered_observation_and_fulfillment_pairs(self):
+        for change in ('missing_observed', 'extra_observed', 'missing_fulfilled', 'extra_fulfilled', 'orphan_fulfilled',
+                       'foreign_host', 'foreign_scheme', 'wrong_port', 'query', 'fragment', 'extra_marker'):
+            obs, transport = self.evidence('feedback')
+            rows = transport['apiRequests']; at = next(i for i,r in enumerate(rows) if r.get('path') == '/x/web-interface/archive/like')
+            if change == 'missing_observed': rows.pop(at)
+            elif change == 'extra_observed': rows.insert(at, dict(rows[at]))
+            elif change == 'missing_fulfilled': rows.pop(at + 1)
+            elif change == 'extra_fulfilled': rows.insert(at + 1, dict(rows[at + 1]))
+            elif change == 'orphan_fulfilled': rows[at], rows[at + 1] = rows[at + 1], rows[at]
+            else:
+                key,value = dict(foreign_host=('host','other.invalid'),foreign_scheme=('scheme','http'),wrong_port=('port',80),
+                    query=('hasQuery',True),fragment=('hasFragment',True),extra_marker=('remoteMutationSent',False))[change]
+                rows[at][key] = value
+            with self.subTest(change=change), self.assertRaises(ValueError): self.verify('feedback', obs, transport)
 
     def test_search_existing_original_proof_and_eight_captures_remain_required(self):
         result = self.verify('search')
@@ -292,8 +335,8 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
     def test_feedback_like_count_host_path_and_memory_only_markers_are_exact(self):
         for count in (0, 4, 6):
             observations, transport = self.evidence('feedback')
-            like = transport['apiRequests'][-1]
-            transport['apiRequests'] = transport['apiRequests'][:1] + [copy.deepcopy(like) for _ in range(count)]
+            pair = transport['apiRequests'][-2:]
+            transport['apiRequests'] = transport['apiRequests'][:-10] + [copy.deepcopy(item) for _ in range(count) for item in pair]
             with self.subTest(count=count), self.assertRaises(ValueError): self.verify('feedback', observations, transport)
         for key, bad in (('host','app.bilibili.com'), ('host','other.example'), ('host', None),
                 ('method','GET'), ('path','/x/v2/reply/add'), ('originalLikeProtocolMemoryOnly', False),
@@ -428,6 +471,8 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
     def test_fullscreen_capture_boundaries_are_not_physical_pixel_acceptance(self):
         for field, value in [('screenCaptureFile', '../another.png'), ('physicalScreenHumanReviewRequired', False),
                              ('physicalVideoPixelsIndependentlyChecked', True),
+                             ('captureStateHeldAcrossRead', False), ('nativeCanvasBoundsMatched', False),
+                             ('physicalCanvasInputDelivered', False),
                              ('screenCaptureClientBounds', dict(x=0, y=0, width=47, height=32)),
                              ('screenCaptureClientBounds', dict(x=True, y=0, width=48, height=32))]:
             observation, transport = self.evidence('fullscreen'); observation['observations'][1][field] = value
@@ -473,9 +518,13 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         self.assertIn('boundCommentSearchWindow()', preparation)
         self.assertEqual(seam.count('sameCaptureOwner()'), 4)
         self.assertIn('captureMain === window()', seam)
-        self.assertIn('bounds() == canvas', seam)
+        self.assertIn('bounds() == expectedCanvas && nativeCanvasMatches(expectedCanvas)', seam)
+        self.assertIn('if (expectedChromeVisible) completeChrome() else anchorsGone()', seam)
+        self.assertIn('capture("121-fullscreen-idle-hidden", requireNotNull(hidden), false, false,', seam)
         self.assertIn('physicalVideoPixelsIndependentlyChecked', seam)
-        self.assertNotIn('robot.mouse', seam.lower())
+        self.assertIn('canvasRobot.mouseMove(point.x, point.y)', seam)
+        self.assertIn('check(!EventQueue.isDispatchThread())', seam)
+        self.assertNotIn('dispatchEvent(MouseEvent', seam)
 
 
 class VideoShareReceiptTests(unittest.TestCase):
@@ -506,6 +555,13 @@ class VideoShareReceiptTests(unittest.TestCase):
         transport['apiRequests'] += [item for _ in range(2) for item in (dict(stage='requestObserved',scheme='https',port=443,hasQuery=True,hasFragment=False,method='POST',host='api.bilibili.com',path='/x/dynamic/feed/create/dyn'),
             dict(stage='memoryResponse',method='POST',host='api.bilibili.com',path='/x/dynamic/feed/create/dyn',originalVideoDynamicProtocolMemoryOnly=True,remoteMutationSent=False))]
         return obs, transport
+
+    def test_share_preserves_exact_two_posts_with_blocked_heartbeat_observations(self):
+        obs, transport = self.evidence(); transport['apiRequests'] += [blocked_heartbeat_record() for _ in range(3)]
+        self.assertEqual(len(self.verify('video_share', obs, transport)), 5)
+        for bad in malformed_heartbeat_records():
+            obs, transport = self.evidence(); transport['apiRequests'].append(bad)
+            with self.subTest(row=bad), self.assertRaises(ValueError): self.verify('video_share', obs, transport)
 
     def test_explicit_fourth_case_has_five_pairs_without_borrowing_comment_or_private_image_proof(self):
         self.assertEqual(len(self.verify('video_share')), 5)

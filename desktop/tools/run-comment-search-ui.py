@@ -228,6 +228,27 @@ def run_owned(command, cwd, env, log, timeout_seconds, state):
         state.update(forcedCleanup=forced, timedOut=timed_out, cleanupErrors=cleanup_errors,
                      elapsedSeconds=round(time.monotonic() - started, 3))
 
+def is_blocked_composer_heartbeat_observation(request):
+    """Replay logs before its composer read-only guard; this admits no response."""
+    return (request == dict(stage='requestObserved', scheme='https', host='api.bilibili.com',
+        port=443, path='/x/click-interface/web/heartbeat', method='POST', hasQuery=False, hasFragment=False)
+        and type(request.get('port')) is int and request.get('hasQuery') is False and request.get('hasFragment') is False)
+
+
+def verify_feedback_post_records(requests):
+    """Five original actions each log an observation then their owned memory response."""
+    if len(requests) != 10: raise ValueError('Expected exactly five observed and five fulfilled original Like requests')
+    for observed, fulfilled in zip(requests[::2], requests[1::2]):
+        if not (observed == dict(stage='requestObserved', scheme='https', host='api.bilibili.com', port=443,
+                path='/x/web-interface/archive/like', method='POST', hasQuery=False, hasFragment=False)
+                and type(observed.get('port')) is int and observed.get('hasQuery') is False and observed.get('hasFragment') is False):
+            raise ValueError('Original Like observation origin, shape or order differs')
+        if not (fulfilled == dict(path='/x/web-interface/archive/like', method='POST', host='api.bilibili.com',
+                originalLikeProtocolMemoryOnly=True, remoteMutationSent=False)
+                and fulfilled.get('originalLikeProtocolMemoryOnly') is True and fulfilled.get('remoteMutationSent') is False):
+            raise ValueError('Original Like fulfillment did not terminate in memory after its observation')
+
+
 def verify_video_share(observations, by, transport, payload_receipt):
     """Fourth explicit case: original protocol and source receipt; no remote success claim."""
     def need(condition, message):
@@ -382,7 +403,9 @@ def verify_fullscreen(receipt, by, transport):
         need(state.get('nativePaused') is (id == '123-fullscreen-paused-hold'), 'native pause ACK differs')
         if id in CAPTURES_BY_CASE['fullscreen']:
             need(row.get('sameActualCanvasRetained') is True and row.get('physicalVideoPixelsIndependentlyChecked') is False and
-                 row.get('physicalScreenHumanReviewRequired') is True, 'Canvas or physical review scope differs')
+                 row.get('physicalScreenHumanReviewRequired') is True and
+                 all(row.get(key) is True for key in ('captureStateHeldAcrossRead', 'nativeCanvasBoundsMatched', 'physicalCanvasInputDelivered')),
+                 'Canvas capture continuity, native geometry, physical input or review scope differs')
     for id in baseline_ids:
         row = by[id]
         need(number(row.get('clockBefore')) and number(row.get('clockAfter')) and row['clockAfter'] > row['clockBefore'] + .5 and
@@ -394,7 +417,7 @@ def verify_fullscreen(receipt, by, transport):
          type(hidden.get('shownCanvasHeight')) is int and hidden['shownCanvasHeight'] > 0 and
          type(hidden.get('hiddenCanvasHeight')) is int and hidden['hiddenCanvasHeight'] > hidden['shownCanvasHeight'] and
          hidden.get('topAndBottomControlsHidden') is True, 'idle time/playing clock/real layout hide missing')
-    need(restored.get('inputMechanism') == 'OWNED_ACTUAL_CANVAS_MOUSE_MOVED' and restored.get('topAndBottomControlsRestored') is True,
+    need(restored.get('inputMechanism') == 'OS_ROBOT_MOUSE_MOVE' and restored.get('topAndBottomControlsRestored') is True,
          'actual owned-Canvas input did not restore chrome')
     need(paused.get('nativePauseAcknowledged') is True and paused.get('controlsStayedVisible') is True and
          paused.get('menuHoldExecuted') is False, 'paused hold or unexecuted menu scope differs')
@@ -535,17 +558,17 @@ def verify(report, local, health, token, process, ui_case='search'):
             if type(scope.get(key)) is not bool: raise ValueError('Missing actual feedback lifecycle observation: ' + key)
     like_requests = []
     for request in transport['apiRequests']:
+        if ui_case in ('composer', 'feedback', 'video_share') and is_blocked_composer_heartbeat_observation(request):
+            continue  # Exact pre-guard observation only; any fulfilled heartbeat still fails below.
         if video_share and request.get('method') == 'POST' and request.get('host') == 'api.bilibili.com' and request.get('path') == '/x/dynamic/feed/create/dyn':
-            continue  # The fourth-case proof above checks exactly two memory-only original bodies.
+            continue  # The share proof above still checks exactly two observed and two memory-only original bodies.
         if feedback and request.get('method') == 'POST' and request.get('host') == 'api.bilibili.com' and request.get('path') == '/x/web-interface/archive/like':
-            if request.get('originalLikeProtocolMemoryOnly') is not True or request.get('remoteMutationSent') is not False:
-                raise ValueError('Original Like request did not terminate in memory')
             like_requests.append(request)
             continue
         if request['method'] == 'POST' and (request['host'] != 'app.bilibili.com' or request['path'] not in (
             '/bilibili.main.community.reply.v1.Reply/MainList','/bilibili.main.community.reply.v1.Reply/DetailList')):
             raise ValueError('Unexpected guest mutation POST')
-    if feedback and len(like_requests) != 5: raise ValueError('Expected exactly five original Like requests')
+    if feedback: verify_feedback_post_records(like_requests)
     captures = []
     for name in CAPTURES_BY_CASE[ui_case]:
         image = no_links(report / (name + '-screen.png')); data = read(image)

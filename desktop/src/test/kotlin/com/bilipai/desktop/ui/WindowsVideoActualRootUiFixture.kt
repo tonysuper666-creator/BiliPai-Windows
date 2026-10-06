@@ -37,6 +37,27 @@ import javax.imageio.ImageIO
 import javax.swing.JFrame
 import javax.swing.SwingUtilities
 
+/** Select a real nonzero resize without lowering the app's actual minimum or
+ * inventing monitor space. At the minimum, use any remaining physical viewport. */
+internal fun actualWindowsVideoResizeTarget(
+    original: Rectangle, minimum: java.awt.Dimension, monitor: Rectangle,
+): Rectangle {
+    require(minimum.width > 0 && minimum.height > 0 &&
+        original.width >= minimum.width && original.height >= minimum.height && monitor.contains(original))
+    val smallerWidth = maxOf(minimum.width, original.width - 120)
+    val smallerHeight = maxOf(minimum.height, original.height - 100)
+    val canShrink = smallerWidth != original.width || smallerHeight != original.height
+    val width = if (canShrink) smallerWidth else minOf(monitor.width, original.width + 120)
+    val height = if (canShrink) smallerHeight else minOf(monitor.height, original.height + 100)
+    check(width != original.width || height != original.height) {
+        "The actual runner monitor has no room for a nonzero resize above the application's safe minimum"
+    }
+    return Rectangle(
+        original.x.coerceIn(monitor.x, monitor.x + monitor.width - width),
+        original.y.coerceIn(monitor.y, monitor.y + monitor.height - height), width, height,
+    ).also { check(it.width >= minimum.width && it.height >= minimum.height && monitor.contains(it)) }
+}
+
 /** Test-only actual Main. No alternate Root, repository, native player, controller or stack. */
 object WindowsVideoActualRootUiFixture {
     private val latest = AtomicReference<DesktopOriginalRootValidationTap.Frame?>()
@@ -2845,9 +2866,32 @@ object WindowsVideoActualRootUiFixture {
             try { robot.delay(20) } finally { robot.keyRelease(key) }
         }
         fun tab(label: String, throughPeer: javax.swing.JDialog? = null) {
+            var stableBounds: Rectangle? = null
+            var stableSince = 0L
+            await("complete original detail pane and requested tab geometry settle before OS input: $label") { edt {
+                guard()
+                val detail = runCatching { detailPaneScope() }.getOrNull()
+                if (detail == null) {
+                    stableBounds = null; stableSince = 0L; return@edt false
+                }
+                val control = descendants(detail).single { it.accessibleName == label && visible(it, originalMain) &&
+                    it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
+                    it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }
+                val component = requireNotNull(control.accessibleComponent)
+                val bounds = Rectangle(requireNotNull(component.locationOnScreen), component.size)
+                val now = System.nanoTime()
+                if (bounds != stableBounds) {
+                    stableBounds = bounds; stableSince = now; false
+                } else now - stableSince >= Duration.ofMillis(200).toNanos()
+            } }
             physicalClick(originalMain, label, throughPeer)
             await("OS tab click reaches original Main through decorative HWND: $label") { edt {
-                guard(); descendants(detailPaneScope()).any { it.accessibleName == label &&
+                guard()
+                // OS tab activation can briefly publish only its focused node.
+                // Wait for the same complete scope; never repeat the physical click.
+                val detail = runCatching { detailPaneScope() }.getOrNull() ?: return@edt false
+                descendants(detail).any { it.accessibleName == label &&
                     it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
                     it.accessibleStateSet.contains(AccessibleState.SELECTED) }
             } }
@@ -4106,42 +4150,80 @@ object WindowsVideoActualRootUiFixture {
                     (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
             }
         }
-        fun moveOnCanvas(focus: Boolean = false) = edt {
+        fun bounds() = edt { ownedFullscreen(); Rectangle(actualCanvas.locationOnScreen, actualCanvas.size) }
+        fun anchorsGone(): Boolean = edt {
             ownedFullscreen()
-            val now = System.currentTimeMillis()
-            // A real crossing leaves the prior Compose button before entering
-            // the retained heavyweight peer. Deliver both to these owned inputs.
-            val compose = actualComposeInput()
-            compose.dispatchEvent(MouseEvent(compose, MouseEvent.MOUSE_EXITED, now, 0, -1, -1, 0, false))
-            val x = actualCanvas.width / 2; val y = actualCanvas.height / 2
-            actualCanvas.dispatchEvent(MouseEvent(actualCanvas, MouseEvent.MOUSE_MOVED, now + 1, 0, x, y, 0, false))
-            if (focus) {
-                actualCanvas.dispatchEvent(MouseEvent(actualCanvas, MouseEvent.MOUSE_PRESSED, now + 2,
-                    InputEvent.BUTTON1_DOWN_MASK, x, y, 1, false, MouseEvent.BUTTON1))
-                actualCanvas.dispatchEvent(MouseEvent(actualCanvas, MouseEvent.MOUSE_RELEASED, now + 3,
-                    0, x, y, 1, false, MouseEvent.BUTTON1))
+            listOf("返回", "退出全屏", "播放进度", "更多播放操作").none { label ->
+                all().any { hasLabel(it, label) && visible(it) }
             }
         }
-        fun bounds() = edt { ownedFullscreen(); Rectangle(actualCanvas.locationOnScreen, actualCanvas.size) }
-        fun capture(id: String, properties: Map<String, JsonElement>) {
-            edt { ownedFullscreen() }
+        fun nativeCanvasMatches(expected: Rectangle): Boolean = edt {
+            ownedFullscreen()
+            val hwnd = Native.getComponentPointer(actualCanvas)
+            val pid = IntByReference()
+            check(failureWindowApi.GetWindowThreadProcessId(hwnd, pid) != 0 &&
+                Integer.toUnsignedLong(pid.value) == ProcessHandle.current().pid())
+            Memory(16).use { rect -> Memory(8).use { origin ->
+                check(failureWindowApi.GetClientRect(hwnd, rect)); origin.clear()
+                check(failureWindowApi.ClientToScreen(hwnd, origin))
+                Rectangle(origin.getInt(0), origin.getInt(4), rect.getInt(8) - rect.getInt(0),
+                    rect.getInt(12) - rect.getInt(4)) == expected
+            } }
+        }
+        check(!EventQueue.isDispatchThread())
+        val canvasRobot = java.awt.Robot()
+        fun moveOnCanvas(focus: Boolean = false) {
+            check(!EventQueue.isDispatchThread())
+            val point = edt {
+                ownedFullscreen()
+                val area = bounds()
+                check(area.width > 4 && area.height > 4 && nativeCanvasMatches(area))
+                java.awt.Point(area.x + area.width / 2, area.y + area.height / 2)
+            }
+            // Move the physical cursor away from any former control. Both points
+            // are inside this exact owned Canvas; moving twice guarantees input
+            // even when the cursor was already at its centre.
+            canvasRobot.mouseMove(point.x + 1, point.y)
+            canvasRobot.mouseMove(point.x, point.y)
+            canvasRobot.waitForIdle()
+            edt { ownedFullscreen(); check(bounds().contains(point)) }
+            if (focus) {
+                canvasRobot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+                try { Thread.sleep(60) } finally { canvasRobot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+                canvasRobot.waitForIdle()
+                edt { ownedFullscreen(); check(bounds().contains(point)) }
+            }
+        }
+        fun capture(id: String, expectedCanvas: Rectangle, expectedChromeVisible: Boolean,
+            expectedPaused: Boolean, properties: Map<String, JsonElement>) {
+            fun sameCaptureState() = edt {
+                ownedFullscreen()
+                check(bounds() == expectedCanvas && nativeCanvasMatches(expectedCanvas)) {
+                    "Fullscreen capture no longer has its original AWT/native Canvas bounds: $id"
+                }
+                check(if (expectedChromeVisible) completeChrome() else anchorsGone()) {
+                    "Fullscreen chrome changed before the physical capture completed: $id"
+                }
+                check(actualPlayer.state.value.nativePaused == expectedPaused)
+            }
+            sameCaptureState()
             actions.capture(id, edt { current() })
-            edt { ownedFullscreen() }
+            sameCaptureState()
             val captureMain = edt { window() as ComposeWindow }
             val client = edt {
                 ownedFullscreen(); check(captureMain === window() && captureMain.isShowing && captureMain.isDisplayable)
                 Rectangle(captureMain.contentPane.locationOnScreen, captureMain.contentPane.size).also {
-                    check(it.width > 0 && it.height > 0)
+                    check(it.width > 0 && it.height > 0 && it.contains(expectedCanvas))
                 }
             }
-            val canvas = bounds()
             fun sameCaptureOwner() = edt {
-                ownedFullscreen()
+                sameCaptureState()
                 check(captureMain === window() && captureMain.isShowing && captureMain.isDisplayable &&
-                    Rectangle(captureMain.contentPane.locationOnScreen, captureMain.contentPane.size) == client && bounds() == canvas)
+                    Rectangle(captureMain.contentPane.locationOnScreen, captureMain.contentPane.size) == client)
             }
             sameCaptureOwner()
-            // Read-only physical capture; no mouse/key input or pixel PASS is inferred.
+            // The Skia bitmap is not a presented-frame oracle. Keep the physical
+            // read and human visual gate even after both geometry layers match.
             val screen = java.awt.Robot().createScreenCapture(client)
             sameCaptureOwner()
             check(screen.width == client.width && screen.height == client.height)
@@ -4149,6 +4231,8 @@ object WindowsVideoActualRootUiFixture {
             sameCaptureOwner()
             record(id, properties + mapOf("sameAcceptedSourceVersion" to JsonPrimitive(accepted.sourceVersion),
                 "fullImmutableSourceStillOwned" to JsonPrimitive(true), "sameActualCanvasRetained" to JsonPrimitive(true),
+                "captureStateHeldAcrossRead" to JsonPrimitive(true), "nativeCanvasBoundsMatched" to JsonPrimitive(true),
+                "physicalCanvasInputDelivered" to JsonPrimitive(true),
                 "nativeState" to safeState(), "physicalVideoPixelsIndependentlyChecked" to JsonPrimitive(false),
                 "physicalScreenHumanReviewRequired" to JsonPrimitive(true), "screenCaptureFile" to JsonPrimitive("$id-screen.png"),
                 "screenCaptureClientBounds" to buildJsonObject {
@@ -4169,16 +4253,13 @@ object WindowsVideoActualRootUiFixture {
             ownedFullscreen()
             check(playing())
             val area = Rectangle(actualCanvas.locationOnScreen, actualCanvas.size)
-            val anchorsGone = listOf("返回", "退出全屏", "播放进度", "更多播放操作").none { label ->
-                all().any { hasLabel(it, label) && visible(it) }
-            }
-            if (anchorsGone && area.y < shown.y && area.y + area.height > shown.y + shown.height &&
+            if (anchorsGone() && nativeCanvasMatches(area) && area.y < shown.y && area.y + area.height > shown.y + shown.height &&
                 area.x == shown.x && area.width == shown.width &&
                 System.nanoTime() - started >= 4_000_000_000L && actualPlayer.state.value.positionSeconds > beforePosition + .5) {
                 hidden = area; true
             } else false
         } }
-        capture("121-fullscreen-idle-hidden", mapOf("idleMillis" to JsonPrimitive((System.nanoTime() - started) / 1_000_000L),
+        capture("121-fullscreen-idle-hidden", requireNotNull(hidden), false, false, mapOf("idleMillis" to JsonPrimitive((System.nanoTime() - started) / 1_000_000L),
             "clockBefore" to JsonPrimitive(beforePosition), "clockAfter" to JsonPrimitive(actualPlayer.state.value.positionSeconds),
             "shownCanvasHeight" to JsonPrimitive(shown.height), "hiddenCanvasHeight" to JsonPrimitive(requireNotNull(hidden).height),
             "topAndBottomControlsHidden" to JsonPrimitive(true)))
@@ -4186,7 +4267,7 @@ object WindowsVideoActualRootUiFixture {
         await("actual retained-Canvas mouse move restores complete fullscreen controls and original viewport") {
             completeChrome() && bounds() == shown && playing()
         }
-        capture("122-fullscreen-mouse-restored", mapOf("inputMechanism" to JsonPrimitive("OWNED_ACTUAL_CANVAS_MOUSE_MOVED"),
+        capture("122-fullscreen-mouse-restored", shown, true, false, mapOf("inputMechanism" to JsonPrimitive("OS_ROBOT_MOUSE_MOVE"),
             "topAndBottomControlsRestored" to JsonPrimitive(true)))
         click("暂停")
         await("actual fullscreen Pause is acknowledged by the original native player") { sameNative(); actualPlayer.state.value.nativePaused == true }
@@ -4203,7 +4284,7 @@ object WindowsVideoActualRootUiFixture {
             check(state.nativePaused == true && kotlin.math.abs(state.positionSeconds - pausedAt) < .15)
             System.nanoTime() - pausedStart >= 4_500_000_000L
         }
-        capture("123-fullscreen-paused-hold", mapOf("nativePauseAcknowledged" to JsonPrimitive(true),
+        capture("123-fullscreen-paused-hold", shown, true, true, mapOf("nativePauseAcknowledged" to JsonPrimitive(true),
             "controlsStayedVisible" to JsonPrimitive(true), "menuHoldExecuted" to JsonPrimitive(false)))
         click("播放")
         await("original fullscreen Play resumes the same native source before normal fullscreen exit") { sameNative(); playing() }
@@ -4255,8 +4336,24 @@ object WindowsVideoActualRootUiFixture {
         val resized = edt {
             current()
             val main = window()
-            Rectangle(originalBounds.x, originalBounds.y, maxOf(main.minimumSize.width, originalBounds.width - 120),
-                maxOf(main.minimumSize.height, originalBounds.height - 100)).also { target ->
+            val configuration = main.graphicsConfiguration
+            val monitor = configuration.bounds
+            val insets = java.awt.Toolkit.getDefaultToolkit().getScreenInsets(configuration)
+            val workArea = Rectangle(monitor.x + insets.left, monitor.y + insets.top,
+                monitor.width - insets.left - insets.right, monitor.height - insets.top - insets.bottom)
+            actualWindowsVideoResizeTarget(originalBounds, main.minimumSize, monitor).also { target ->
+                fun bounds(value: Rectangle) = buildJsonObject {
+                    put("x", value.x); put("y", value.y); put("width", value.width); put("height", value.height)
+                }
+                record("actual-native-resize-target", mapOf(
+                    "scope" to JsonPrimitive("ACTUAL_MONITOR_BOUNDED_NONZERO_RESIZE_ONLY"),
+                    "originalBounds" to bounds(originalBounds), "workAreaBounds" to bounds(workArea),
+                    "monitorBounds" to bounds(monitor), "targetBounds" to bounds(target),
+                    "minimumWidth" to JsonPrimitive(main.minimumSize.width),
+                    "minimumHeight" to JsonPrimitive(main.minimumSize.height),
+                    "fullMonitorFallback" to JsonPrimitive(!workArea.contains(target)),
+                    "targetFullyInsideWorkArea" to JsonPrimitive(workArea.contains(target)),
+                    "fourKTested" to JsonPrimitive(false), "taskbarOcclusionTested" to JsonPrimitive(false)))
                 check(target.width != originalBounds.width || target.height != originalBounds.height)
                 main.bounds = target; main.validate()
             }

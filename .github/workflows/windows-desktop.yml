@@ -61,7 +61,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: windows-desktop-${{ inputs.source_sha || github.sha }}
+  group: windows-desktop-${{ inputs.source_sha || github.sha }}-${{ inputs.comment_search_ui == true && format('ui-{0}', inputs.comment_ui_case || 'search') || inputs.render_diagnostic == true && format('render-{0}', inputs.diagnostic_suite || 'surface') || 'build' }}
   cancel-in-progress: false
 
 jobs:
@@ -194,7 +194,12 @@ jobs:
               $size = $limit.max_cache_size_gb
               $cacheAllowed = ($size -is [int] -or $size -is [long]) -and $size -gt 0 -and $size -le 10
           } catch {
-              Write-Host 'The cache limit could not be verified; preparation will run without persistent caching.'
+              $exceptionType = $_.Exception.GetType().FullName
+              $statusCode = 0
+              if ($_.Exception.PSObject.Properties['Response'] -and $_.Exception.Response -and $_.Exception.Response.PSObject.Properties['StatusCode']) {
+                  $statusCode = [int]$_.Exception.Response.StatusCode
+              }
+              Write-Host ("The cache limit could not be verified; preparation will run without persistent caching. Exception={0}; HTTP={1}" -f $exceptionType, $statusCode)
           }
           "allowed=$($cacheAllowed.ToString().ToLowerInvariant())" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
           if (-not $cacheAllowed) { Write-Host 'Persistent caching is disabled unless the existing repository limit is at most 10 GB.' }
