@@ -44,7 +44,7 @@ import okio.buffer
     DisposableEffect(editor,scope) {onDispose{scope.cancel();if(SwingUtilities.isEventDispatchThread())editor.retire()else SwingUtilities.invokeLater(editor::retire)}}
     val requests=remember(editor){mutableMapOf<String,Job>()}
     SwingPanel(factory={
-        JScrollPane(editor).apply {
+        DesktopCommentEmoteScrollPane(editor).apply {
             isOpaque=false;viewport.isOpaque=false;border=null
             horizontalScrollBarPolicy=JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
             verticalScrollBarPolicy=JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
@@ -57,6 +57,9 @@ import okio.buffer
         insertTextAtCursor {replacement->if(!enabled||readOnly||!platform.isOwned())false else {editor.replaceSelection(replacement.text);true}}
         setSelection {start,end,_->if(start !in 0..value.text.length||end !in 0..value.text.length)false else {editor.caret.setDot(start);editor.caret.moveDot(end);true}}
     },update={
+        val imageRevision=editor.updateImageSize(size,padding) {
+            requests.values.forEach { it.cancel() }; requests.clear()
+        }
         editor.valueChanged={if(platform.isOwned())change(it)}
         editor.beginEditing={if(platform.isOwned())begin()}
         editor.font=Font("Dialog",if((textStyle.fontWeight?.weight?:400)>=600)Font.BOLD else Font.PLAIN,textPx.toInt().coerceAtLeast(1))
@@ -85,23 +88,27 @@ import okio.buffer
                                 for(y in 0 until size)for(x in 0 until size)image.setRGB(x+padding,y,bitmap.getColor(x,y))
                             }
                         }finally{bitmap.close()}
-                        ensureActive()
-                        val animation=try {
-                            val cache=images.diskCache
-                            val key=result.diskCacheKey
-                            if(cache==null||key==null)null else cache.openSnapshot(key)?.use {snapshot->
-                                val encoded=withContext(Dispatchers.IO) {cache.fileSystem.source(snapshot.data).buffer().use {source->source.inputStream().readNBytes(2*1024*1024+1)}}
-                                ensureActive()
-                                if(!platform.isOwned()||encoded.size>2*1024*1024)null
-                                else com.bilipai.desktop.plugins.DesktopAnimatedSkinImage.decodeOrNull(encoded)
-                            }
-                        }catch(cancelled:CancellationException){throw cancelled}
-                        catch(_:Exception){null}
-                        // Retire a decoded lease even when cancellation/epoch replacement
-                        // occurs between finishing the cache read and EDT publication.
-                        if(!scope.isActive||!platform.isOwned()){animation?.close();return@launch}
-                        val icon=if(animation==null)ImageIcon(raster)else try{DesktopInlineAnimatedEmoteIcon(animation,size,padding)}catch(failure:Throwable){animation.close();throw failure}
-                        editor.imageReady(url,icon)
+                        var rasterTransferred=false
+                        try {
+                            ensureActive()
+                            val animation=try {
+                                val cache=images.diskCache
+                                val key=result.diskCacheKey
+                                if(cache==null||key==null)null else cache.openSnapshot(key)?.use {snapshot->
+                                    val encoded=withContext(Dispatchers.IO) {cache.fileSystem.source(snapshot.data).buffer().use {source->source.inputStream().readNBytes(2*1024*1024+1)}}
+                                    ensureActive()
+                                    if(!platform.isOwned()||encoded.size>2*1024*1024)null
+                                    else com.bilipai.desktop.plugins.DesktopAnimatedSkinImage.decodeOrNull(encoded)
+                                }
+                            }catch(cancelled:CancellationException){throw cancelled}
+                            catch(_:Exception){null}
+                            // Retire a decoded lease even when cancellation/epoch replacement
+                            // occurs between finishing the cache read and EDT publication.
+                            if(!scope.isActive||!platform.isOwned()){animation?.close();return@launch}
+                            val icon=if(animation==null)ImageIcon(raster)else try{DesktopInlineAnimatedEmoteIcon(animation,size,padding)}catch(failure:Throwable){animation.close();throw failure}
+                            if(animation==null)rasterTransferred=true
+                            editor.imageReady(url,icon,imageRevision)
+                        }finally{if(!rasterTransferred)raster.flush()}
                     }catch(cancelled:CancellationException){throw cancelled}
                     catch(_:Exception) { /* Same original text fallback, no synthetic success. */ }
                 }

@@ -3239,6 +3239,240 @@ object WindowsVideoActualRootUiFixture {
             }
             cleanupFailure?.let { failure -> primary?.addSuppressed(failure) ?: throw failure }
         }
+        fun exerciseCommentDialogScaleInput() {
+            val capturedScale = privateScalePercent()
+            check(capturedScale == 125) { "Comment-dialog scale proof requires the observed isolated 125% baseline before input" }
+            val savedDraft = edt { guard(); requireNotNull(composer.composerDrafts.value.comments[0L]) }
+            var scalePeer: javax.swing.JDialog? = null
+            var scalePane: DesktopInlineEmotePane? = null
+            var savedRaw: androidx.compose.ui.text.input.TextFieldValue? = null
+            var failure: Throwable? = null
+            var restored = false
+            var draftRestored = false
+            var baselineFont: Int? = null
+            var sameEditor: (() -> Unit)? = null
+            val longText = (0 until 80).joinToString("\n") { "zoom ${it.toString().padStart(2, '0')}" }
+            try {
+                edt { guard(); check(composer.commentStamp.value == null && !composer.showCommentDialog.value) }
+                physicalClick(originalMain, "详情")
+                await("same source detail pane for post-feedback scale input") { edt {
+                    guard(); runCatching { detailPaneScope() }.isSuccess
+                } }
+                tab("评论"); physicalClick(originalMain, "发表评论")
+                await("one actual original comment dialog for post-feedback scale input") {
+                    modal("发表评论")?.also { scalePeer = it }?.let { it.isShowing && it.isModal } == true
+                }
+                val dialog = requireNotNull(scalePeer)
+                val stamp = edt { guard(); requireNotNull(composer.commentStamp.value) }
+                await("complete native editor with the captured original draft") { edt {
+                    guard(); check(composer.commentStamp.value === stamp && stamp.presentation.isCurrent())
+                    val candidate = nativeComponents(dialog).filterIsInstance<DesktopInlineEmotePane>().filter {
+                        it.isShowing && it.isDisplayable && it.isEnabled && it.isEditable &&
+                            SwingUtilities.getWindowAncestor(it) === dialog
+                    }.singleOrNull() ?: return@edt false
+                    if (candidate.rawValue().text != savedDraft.text) return@edt false
+                    scalePane = candidate; savedRaw = candidate.rawValue(); true
+                } }
+                val pane = requireNotNull(scalePane)
+                val viewport = edt { pane.parent as javax.swing.JViewport }
+                val scroll = edt { viewport.parent as javax.swing.JScrollPane }
+                val hwnd = edt { Pointer.nativeValue(Native.getWindowPointer(dialog)) }
+                fun editorGuard(focused: Boolean = true) {
+                    guard()
+                    check(dialog === scalePeer && dialog.owner === originalMain && dialog.isShowing && dialog.isDisplayable &&
+                        Pointer.nativeValue(Native.getWindowPointer(dialog)) == hwnd && composer.commentStamp.value === stamp &&
+                        stamp.presentation.sourceLease === publication && stamp.presentation.nativeOwner === originalMain &&
+                        stamp.presentation.isCurrent() && composer.showCommentDialog.value &&
+                        pane === scalePane && pane.isShowing && pane.isDisplayable && pane.isEnabled && pane.isEditable &&
+                        SwingUtilities.getWindowAncestor(pane) === dialog && pane.parent === viewport && viewport.parent === scroll)
+                    if (focused) {
+                        val focus = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                        check(dialog.isActive && focus.focusedWindow === dialog && focus.focusOwner === pane && pane.isFocusOwner)
+                    }
+                }
+                sameEditor = { editorGuard(false) }
+                fun pointOnEditor(): java.awt.Point = edt {
+                    editorGuard(false)
+                    val bounds = Rectangle(viewport.locationOnScreen, viewport.size)
+                        .intersection(Rectangle(pane.locationOnScreen, pane.size))
+                    check(bounds.width > 20 && bounds.height > 20 && dialog.bounds.contains(bounds) &&
+                        dialog.graphicsConfiguration.bounds.contains(bounds))
+                    java.awt.Point(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+                }
+                fun longDraftGuard() {
+                    editorGuard()
+                    val draft = requireNotNull(composer.composerDrafts.value.comments[0L])
+                    check(draft.text == longText && draft.imageUris == savedDraft.imageUris &&
+                        draft.syncToDynamic == savedDraft.syncToDynamic && pane.rawValue().text == longText &&
+                        pane.caret.mark == 12 && pane.caret.dot == 19)
+                }
+                fun ctrlKey(code: Int) {
+                    edt { editorGuard() }
+                    robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL)
+                    try { physicalKey(code) } finally { robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL) }
+                }
+                fun wheel(rotation: Int, ctrl: Boolean) {
+                    val point = pointOnEditor(); edt { editorGuard() }
+                    robot.mouseMove(point.x, point.y)
+                    if (ctrl) robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL)
+                    try { robot.mouseWheel(rotation) }
+                    finally { if (ctrl) robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL) }
+                }
+                fun scaleSettled(expected: Int, afterSerial: Long?) {
+                    var geometry: List<Any>? = null
+                    var stableSince = 0L
+                    await("same comment dialog/editor adopts durable scale $expected") {
+                        val stored = privateScalePercent()
+                        edt {
+                            longDraftGuard()
+                            val frame = current()
+                            val ready = stored == expected && (afterSerial == null || frame.serial > afterSerial)
+                            val nowGeometry = listOf(Rectangle(dialog.bounds), Rectangle(pane.bounds),
+                                Rectangle(viewport.bounds), java.awt.Point(viewport.viewPosition), pane.font.size)
+                            val now = System.nanoTime()
+                            if (!ready || geometry != nowGeometry) {
+                                geometry = nowGeometry; stableSince = now; false
+                            } else now - stableSince >= Duration.ofMillis(200).toNanos()
+                        }
+                    }
+                }
+                fun action(id: String, expected: Int, input: () -> Unit) {
+                    val before = privateScalePercent()
+                    val serial = edt { longDraftGuard(); current().serial }
+                    input(); scaleSettled(expected, serial.takeIf { before != expected })
+                    record("feedback-comment-dialog-scale-$id", mapOf(
+                        "inputMechanism" to JsonPrimitive("OS_ROBOT"), "beforePercent" to JsonPrimitive(before),
+                        "afterPercent" to JsonPrimitive(privateScalePercent()), "sameDialogEditorAndStamp" to JsonPrimitive(true),
+                        "draftAndSelectionPreserved" to JsonPrimitive(true), "physicalPixelsReviewed" to JsonPrimitive(false)))
+                }
+                val point = pointOnEditor()
+                robot.mouseMove(point.x, point.y); robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+                try { robot.delay(35) } finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+                await("actual native text focus in the same comment dialog") { edt {
+                    editorGuard(false); java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().focusOwner === pane && pane.isFocusOwner
+                } }
+                edt {
+                    editorGuard()
+                    pane.accessibleContext.accessibleEditableText.setTextContents(longText)
+                    pane.caret.setDot(12); pane.caret.moveDot(19)
+                }
+                await("native long-text setup reaches original draft callback") { edt {
+                    editorGuard(); composer.composerDrafts.value.comments[0L]?.text == longText
+                } }
+                scaleSettled(125, null)
+                val fontAt125 = edt { longDraftGuard(); pane.font.size.also { baselineFont = it } }
+                action("wheel-one-notch", 130) { wheel(-1, true) }
+                action("minus", 125) { ctrlKey(java.awt.event.KeyEvent.VK_MINUS) }
+                action("plus", 130) { ctrlKey(java.awt.event.KeyEvent.VK_EQUALS) }
+                action("reset", 125) { ctrlKey(java.awt.event.KeyEvent.VK_0) }
+                action("upper-limit-setup", 200) { wheel(-15, true) }
+                val fontAt200 = edt { longDraftGuard(); pane.font.size.also { check(it > fontAt125) } }
+                val beforePlainWheel = edt { longDraftGuard(); java.awt.Point(viewport.viewPosition) }
+                wheel(6, false)
+                var stablePosition: java.awt.Point? = null
+                var stableSince = 0L
+                await("ordinary wheel proves the native long-text viewport scrolls to a stable nonedge position") { edt {
+                    longDraftGuard(); check(privateScalePercent() == 200)
+                    val position = java.awt.Point(viewport.viewPosition)
+                    val maximum = viewport.viewSize.height - viewport.extentSize.height
+                    val now = System.nanoTime()
+                    if (position.y <= beforePlainWheel.y || position.y <= 0 || position.y >= maximum || stablePosition != position) {
+                        stablePosition = position; stableSince = now; false
+                    } else now - stableSince >= Duration.ofMillis(200).toNanos()
+                } }
+                val clampedPosition = requireNotNull(stablePosition)
+                wheel(-1, true)
+                val clampedUntil = System.nanoTime() + Duration.ofMillis(300).toNanos()
+                await("clamped Ctrl-wheel changes neither native viewport nor draft/selection") { edt {
+                    longDraftGuard()
+                    check(privateScalePercent() == 200 && pane.font.size == fontAt200 && viewport.viewPosition == clampedPosition) {
+                        "Ctrl-wheel at unchanged 200% also scrolled the native comment editor"
+                    }
+                    System.nanoTime() >= clampedUntil
+                } }
+                record("feedback-comment-dialog-scale-clamped-wheel", mapOf(
+                    "inputMechanism" to JsonPrimitive("OS_ROBOT"), "scalePercent" to JsonPrimitive(200),
+                    "scope" to JsonPrimitive("STABLE_VIEWPORT_AFTER_SENT_GESTURE_ONLY"),
+                    "eventArrivalAckObserved" to JsonPrimitive(false), "consumptionProven" to JsonPrimitive(false),
+                    "observationMillis" to JsonPrimitive(300), "ordinaryWheelMovedViewport" to JsonPrimitive(true), "nonedgeViewportStayedFixed" to JsonPrimitive(true),
+                    "viewportX" to JsonPrimitive(clampedPosition.x), "viewportY" to JsonPrimitive(clampedPosition.y),
+                    "fontAt125" to JsonPrimitive(fontAt125), "fontAt200" to JsonPrimitive(fontAt200),
+                    "sameDialogEditorAndStamp" to JsonPrimitive(true), "draftAndSelectionPreserved" to JsonPrimitive(true),
+                    "physicalPixelsReviewed" to JsonPrimitive(false)))
+            } catch (error: Throwable) { failure = error; throw error }
+            finally {
+                var cleanupFailure: Throwable? = null
+                fun cleanup(block: () -> Unit) { runCatching(block).exceptionOrNull()?.let { error ->
+                    val previous = cleanupFailure; if (previous == null) cleanupFailure = error else previous.addSuppressed(error)
+                } }
+                cleanup { robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL) }
+                val dialog = scalePeer
+                val pane = scalePane
+                if (dialog != null && pane != null) {
+                    cleanup {
+                        val point = edt {
+                            requireNotNull(sameEditor).invoke()
+                            val viewport = pane.parent as javax.swing.JViewport
+                            Rectangle(viewport.locationOnScreen, viewport.size).let { area ->
+                                check(area.width > 20 && area.height > 20 && dialog.bounds.contains(area))
+                                java.awt.Point(area.x + area.width / 2, area.y + area.height / 2)
+                            }
+                        }
+                        robot.mouseMove(point.x, point.y); robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+                        try { robot.delay(35) } finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+                        await("same owned native editor focus before physical scale restoration") { edt {
+                            requireNotNull(sameEditor).invoke()
+                            val focus = java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager()
+                            focus.focusedWindow === dialog && focus.focusOwner === pane && pane.isFocusOwner
+                        } }
+                        robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL)
+                        try { physicalKey(java.awt.event.KeyEvent.VK_0) } finally { robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL) }
+                        await("physical Ctrl0 restores the captured private scale and native font") {
+                            val stored = privateScalePercent()
+                            edt { requireNotNull(sameEditor).invoke()
+                                stored == capturedScale && (baselineFont == null || pane.font.size == baselineFont) }
+                        }
+                        restored = true
+                        val original = requireNotNull(savedRaw)
+                        edt {
+                            requireNotNull(sameEditor).invoke()
+                            pane.accessibleContext.accessibleEditableText.setTextContents(original.text)
+                            pane.caret.setDot(original.selection.start); pane.caret.moveDot(original.selection.end)
+                        }
+                        await("original draft and selection restored through the same native editor") { edt {
+                            requireNotNull(sameEditor).invoke()
+                            pane.rawValue().text == original.text && pane.rawValue().selection == original.selection &&
+                                composer.composerDrafts.value.comments[0L] == savedDraft
+                        } }
+                        draftRestored = true
+                    }
+                    cleanup { closeEditor(dialog) }
+                } else cleanup { check(privateScalePercent() == capturedScale) }
+                // Failure before native-editor admission has not sent any scale input.
+                // Retire only the exact modal captured above; never discover another window.
+                if (dialog != null) cleanup {
+                    edt { guard(); check(dialog.owner === originalMain)
+                        if (dialog.isDisplayable) dialog.dispatchEvent(java.awt.event.WindowEvent(dialog, java.awt.event.WindowEvent.WINDOW_CLOSING)) }
+                    await("the captured post-feedback comment dialog is disposed") { edt { !dialog.isDisplayable && !dialog.isShowing } }
+                }
+                cleanup {
+                    if (edt { guard(); runCatching { detailPaneScope() }.isSuccess }) {
+                        physicalClick(originalMain, "关闭详情")
+                        await("post-feedback scale phase retires its detail pane") { edt {
+                            guard(); all().none { it.accessibleName == "关闭详情" && visible(it) }
+                        } }
+                    }
+                }
+                cleanup { record("feedback-comment-dialog-scale-cleanup", mapOf(
+                    "capturedPercent" to JsonPrimitive(capturedScale), "actualPrivateStorePercent" to JsonPrimitive(privateScalePercent()),
+                    "physicalResetRestoredScale" to JsonPrimitive(restored), "originalDraftAndSelectionRestored" to JsonPrimitive(draftRestored),
+                    "ownedDialogDisposed" to JsonPrimitive(dialog == null || edt { !dialog.isShowing && !dialog.isDisplayable }),
+                    "publishClicked" to JsonPrimitive(false), "remoteMutationSent" to JsonPrimitive(false),
+                    "mainScaleInputProofClaimed" to JsonPrimitive(false), "physicalPixelsReviewed" to JsonPrimitive(false))) }
+                cleanupFailure?.let { error -> failure?.addSuppressed(error) ?: throw error }
+            }
+        }
+        exerciseCommentDialogScaleInput()
         val afterLayers = settledMainInputLayers("feedback-after")
         check(afterLayers.size == beforeLayers.size && beforeLayers.all { old -> afterLayers.any { it === old } }) {
             "Full-client feedback must restore the exact Main input layer identities"

@@ -12,15 +12,25 @@ import java.awt.datatransfer.StringSelection
 import java.awt.event.InputMethodEvent
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import java.awt.event.MouseWheelEvent
 import javax.swing.Icon
 import javax.swing.ImageIcon
 import javax.swing.JTextPane
+import javax.swing.JScrollPane
 import javax.swing.SwingUtilities
 import javax.swing.TransferHandler
 import javax.swing.Timer
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 import javax.swing.text.*
+
+/** The exact owned-window input may already have consumed a scale gesture.
+ * BasicScrollPaneUI otherwise still scrolls it; ordinary wheel events retain Swing behavior. */
+internal class DesktopCommentEmoteScrollPane(editor: DesktopInlineEmotePane) : JScrollPane(editor) {
+    override fun processMouseWheelEvent(event: MouseWheelEvent) {
+        if (!event.isConsumed) super.processMouseWheelEvent(event)
+    }
+}
 
 /** Opt-in read-only evidence of actual Swing painting; this never requests a repaint. */
 internal class DesktopInlineEmotePaintProbe(private val release: () -> Unit) : AutoCloseable {
@@ -62,6 +72,9 @@ internal class DesktopInlineEmotePane(
     var hintColor = Color.GRAY
     private var urls: Map<String,String> = emptyMap()
     private val icons = linkedMapOf<String,Icon>()
+    /** Identity, not only dimensions: returning to a previous scale starts a new lease. */
+    internal class ImageRevision internal constructor(val size: Int, val padding: Int)
+    private var imageRevision: ImageRevision? = null
     private var syncing = false
     private var rendering = false
     private var changing = false
@@ -213,9 +226,21 @@ internal class DesktopInlineEmotePane(
             }
         } finally{rendering=false}
     }
-    fun imageReady(url:String,icon:Icon) {
+    /** Called in the same SwingPanel update as bind; it never replaces the document. */
+    fun updateImageSize(size: Int, padding: Int, cancelRequests: () -> Unit): ImageRevision {
         check(SwingUtilities.isEventDispatchThread())
-        if(closed||!owned()){release(icon);return}
+        require(size > 0 && padding >= 0)
+        imageRevision?.takeIf { it.size == size && it.padding == padding }?.let { return it }
+        val revision = ImageRevision(size, padding)
+        imageRevision = revision // Reject the old lease before cancelling any pending work.
+        cancelRequests()
+        animationTimer.stop(); hasVisibleAnimation = false
+        icons.values.forEach(::release); icons.clear()
+        return revision
+    }
+    fun imageReady(url:String,icon:Icon,revision:ImageRevision) {
+        check(SwingUtilities.isEventDispatchThread())
+        if(closed||!owned()||imageRevision !== revision){release(icon);return}
         val old=icons.put(url,icon);if(old!==icon&&old!=null)release(old)
         if(rendering){SwingUtilities.invokeLater {if(!closed&&owned()){renderEmotes();revalidate();repaint();if(isShowing&&hasVisibleAnimation)animationTimer.start()}};return}
         renderEmotes();revalidate();repaint()
