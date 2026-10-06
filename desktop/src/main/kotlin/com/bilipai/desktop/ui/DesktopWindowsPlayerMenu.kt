@@ -153,20 +153,22 @@ internal fun DesktopWindowsPlayerMenu(
             }
         }
         CompositionLocalProvider(LocalDensity provides parentDensity) {
-            AppSurface(modifier = modifier.fillMaxSize(), shape = RoundedCornerShape(12.dp),
-                color = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onSurface) {
-                val menuScroll = rememberScrollState()
-                Box(Modifier.fillMaxSize()) {
-                    Column(Modifier.fillMaxSize().verticalScroll(menuScroll)
-                        .padding(top = 4.dp, bottom = 4.dp, end = 12.dp), content = content)
-                    if (menuScroll.maxValue > 0) VerticalScrollbar(
-                        adapter = rememberScrollbarAdapter(menuScroll),
-                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
-                            .padding(vertical = 4.dp, horizontal = 3.dp),
-                        style = defaultScrollbarStyle().copy(thickness = 4.dp,
-                            unhoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .28f),
-                            hoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .60f)),
-                    )
+            com.bilipai.desktop.appearance.DesktopWindowsOwnedDisplayScaleInputScope(window, owner) {
+                AppSurface(modifier = modifier.fillMaxSize(), shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onSurface) {
+                    val menuScroll = rememberScrollState()
+                    Box(Modifier.fillMaxSize()) {
+                        Column(Modifier.fillMaxSize().verticalScroll(menuScroll)
+                            .padding(top = 4.dp, bottom = 4.dp, end = 12.dp), content = content)
+                        if (menuScroll.maxValue > 0) VerticalScrollbar(
+                            adapter = rememberScrollbarAdapter(menuScroll),
+                            modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
+                                .padding(vertical = 4.dp, horizontal = 3.dp),
+                            style = defaultScrollbarStyle().copy(thickness = 4.dp,
+                                unhoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .28f),
+                                hoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .60f)),
+                        )
+                    }
                 }
             }
         }

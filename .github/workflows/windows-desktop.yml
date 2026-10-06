@@ -206,6 +206,46 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          function Get-CacheHttpDiagnostic($CacheErrorRecord, [int]$StatusCode) {
+              $diagnostic = [ordered]@{
+                  httpClass = $(if ($StatusCode -eq 403) { 'forbidden' } elseif ($StatusCode -eq 401) { 'unauthenticated' }
+                      elseif ($StatusCode -eq 404) { 'not_found' } elseif ($StatusCode -eq 429) { 'too_many_requests' }
+                      elseif ($StatusCode -ge 500 -and $StatusCode -le 599) { 'server_error' }
+                      elseif ($StatusCode -eq 0) { 'no_http_status' } else { 'other_http_status' })
+                  githubMessageClass = 'unrecognized'
+              }
+              # Parse only the already-buffered small error body; never print its text or URLs.
+              $details = $CacheErrorRecord.ErrorDetails.Message
+              if ($details -is [string] -and $details.Length -le 8192) {
+                  try {
+                      $message = ($details | ConvertFrom-Json -AsHashtable -ErrorAction Stop).message
+                      if ($message -is [string] -and $message.Length -le 512) {
+                          if ($message -ceq 'Resource not accessible by integration') { $diagnostic.githubMessageClass = 'integration_resource_denied' }
+                          elseif ($message -ceq 'Requires authentication' -or $message -ceq 'Bad credentials') { $diagnostic.githubMessageClass = 'authentication_rejected' }
+                          elseif ($message.StartsWith('API rate limit exceeded', [StringComparison]::Ordinal)) { $diagnostic.githubMessageClass = 'api_rate_limit_message' }
+                          elseif ($message.StartsWith('You have exceeded a secondary rate limit', [StringComparison]::Ordinal)) { $diagnostic.githubMessageClass = 'secondary_rate_limit_message' }
+                      }
+                  } catch { } # Diagnostics cannot change the fail-closed cache decision.
+              }
+              $response = $CacheErrorRecord.Exception.Response
+              if ($null -ne $response -and $null -ne $response.Headers) {
+                  foreach ($header in @('X-Accepted-GitHub-Permissions', 'X-RateLimit-Remaining', 'X-RateLimit-Reset', 'Retry-After')) {
+                      $values = $null
+                      if (-not $response.Headers.TryGetValues($header, [ref]$values)) { continue }
+                      $items = @($values)
+                      if ($items.Count -ne 1 -or $items[0].Length -gt 512) { continue }
+                      $value = $items[0]
+                      if ($header -eq 'X-Accepted-GitHub-Permissions') {
+                          if ($value -cmatch '^[a-z][a-z0-9_-]{0,63}=(?:read|write)(?:[,;] *[a-z][a-z0-9_-]{0,63}=(?:read|write)){0,15}$') {
+                              $diagnostic[$header] = $value
+                          }
+                      } elseif ($value -cmatch '^[0-9]{1,12}$') {
+                          $diagnostic[$header] = [long]$value
+                      }
+                  }
+              }
+              return $diagnostic
+          }
           $cacheAllowed = $false
           try {
               $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json'; 'X-GitHub-Api-Version' = '2026-03-10' }
@@ -219,6 +259,12 @@ jobs:
                   $statusCode = [int]$_.Exception.Response.StatusCode
               }
               Write-Host ("The cache limit could not be verified; preparation will run without persistent caching. Exception={0}; HTTP={1}" -f $exceptionType, $statusCode)
+              try {
+                  $diagnostic = Get-CacheHttpDiagnostic $_ $statusCode
+                  Write-Host ('Cache HTTP diagnostic: ' + ($diagnostic | ConvertTo-Json -Compress))
+              } catch {
+                  Write-Host 'Cache HTTP diagnostic: unavailable'
+              }
           }
           "allowed=$($cacheAllowed.ToString().ToLowerInvariant())" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
           if (-not $cacheAllowed) { Write-Host 'Persistent caching is disabled unless the existing repository limit is at most 10 GB.' }
@@ -546,8 +592,8 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true
         uses: actions/download-artifact@v4
         with:
-          artifact-ids: 11412610506
-          run-id: 37457251147
+          artifact-ids: 11417751452
+          run-id: 37468979815
           repository: tonysuper666-creator/BiliPai-Windows
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/bilipai-previous-update-package
@@ -557,7 +603,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $previousZip = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package/BiliPai-Windows-0.2.427.31-x64.zip'
+          $previousZip = Join-Path $env:RUNNER_TEMP 'bilipai-previous-update-package/BiliPai-Windows-0.2.427.32-x64.zip'
           python desktop/tools/verify-updater-baseline.py --package "$previousZip"
           if ($LASTEXITCODE -ne 0) { throw 'The actual previous EXE package could not be verified.' }
           "BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE=$previousZip" | Add-Content -LiteralPath $env:GITHUB_ENV

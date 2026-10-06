@@ -102,11 +102,15 @@ internal fun DesktopWindowsPlayerDialog(
         }
         // No update callback writes geometry: the user keeps normal drag/resize.
         CompositionLocalProvider(LocalDensity provides parentDensity) {
-            DesktopWindowsPopupMaterialHost(sourceOwner = window, owns = { window.isDisplayable }) {
-                BoxWithConstraints(Modifier.fillMaxSize()) {
-                    CompositionLocalProvider(LocalDesktopDanmakuSettingsViewport provides DesktopDanmakuSettingsViewport(
-                        maxWidth.value.toInt().coerceAtLeast(1), maxHeight.value.toInt().coerceAtLeast(1))) {
-                        content()
+            com.bilipai.desktop.appearance.DesktopWindowsOwnedDisplayScaleInputScope(
+                window, owner, presented = presentationVisible != false,
+            ) {
+                DesktopWindowsPopupMaterialHost(sourceOwner = window, owns = { window.isDisplayable }) {
+                    BoxWithConstraints(Modifier.fillMaxSize()) {
+                        CompositionLocalProvider(LocalDesktopDanmakuSettingsViewport provides DesktopDanmakuSettingsViewport(
+                            maxWidth.value.toInt().coerceAtLeast(1), maxHeight.value.toInt().coerceAtLeast(1))) {
+                            content()
+                        }
                     }
                 }
             }

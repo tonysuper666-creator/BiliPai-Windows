@@ -26,10 +26,10 @@ internal class DesktopWindowsScaleWheelAccumulator {
     }
 }
 
-/** Standard JVM AWT registrations, with exact owned Main Window filtering BEFORE decoding.
+/** Standard JVM AWT registrations, with exact owned Window filtering BEFORE decoding.
  * No OS keyboard hook, no global input injection, and no foreign-window input is inspected.
- * One key path also sees the existing native Canvas focus. Ctrl-wheel mutation is solely here;
- * the Main Compose root only suppresses its ordinary scroll handling for that same gesture.
+ * One key path also sees the existing native Canvas/editor focus. Ctrl-wheel mutation is solely here;
+ * each registered Compose host suppresses ordinary scrolling for that same gesture.
  */
 internal class DesktopWindowsDisplayScaleInput(
     private val host: Window,

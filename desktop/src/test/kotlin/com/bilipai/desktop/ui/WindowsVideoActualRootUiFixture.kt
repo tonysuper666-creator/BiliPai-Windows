@@ -3607,7 +3607,8 @@ object WindowsVideoActualRootUiFixture {
         fun has(surface: Window, label: String): Boolean = edt {
             currentSource(); descendants(surface.accessibleContext).any { hasLabel(it, label) && visible(it, surface) }
         }
-        fun capture(id: String, surface: Window, extraGuard: (() -> Unit)? = null) {
+        fun capture(id: String, surface: Window, observeRobotTiming: Boolean = false,
+                    extraGuard: (() -> Unit)? = null): Pair<Long, Long>? {
             val bounds = edt {
                 currentSource(); extraGuard?.invoke()
                 check(surface.isShowing && surface.isDisplayable && ownedWindow(surface) && surface !== originalMain &&
@@ -3617,8 +3618,20 @@ object WindowsVideoActualRootUiFixture {
                 }, CREATE_NEW, WRITE)
                 Rectangle(surface.bounds)
             }
-            check(ImageIO.write(java.awt.Robot().createScreenCapture(bounds), "png", report.resolve("$id-screen.png").toFile()))
+            val robotTimes = if (observeRobotTiming) {
+                val robot = java.awt.Robot()
+                // Same clock as the pane paint receipt; bracket only actual pixel capture.
+                val startedAtNanos = System.nanoTime()
+                val pixels = robot.createScreenCapture(bounds)
+                val completedAtNanos = System.nanoTime()
+                check(ImageIO.write(pixels, "png", report.resolve("$id-screen.png").toFile()))
+                startedAtNanos to completedAtNanos
+            } else {
+                check(ImageIO.write(java.awt.Robot().createScreenCapture(bounds), "png", report.resolve("$id-screen.png").toFile()))
+                null
+            }
             edt { currentSource(); extraGuard?.invoke(); check(surface.isShowing && surface.bounds == bounds) }
+            return robotTimes
         }
         fun draft() = composer.composerDrafts.value.comments[0L]
         fun nativeEditor(surface: Window): DesktopInlineEmotePane =
@@ -3953,8 +3966,10 @@ object WindowsVideoActualRootUiFixture {
             val withImage = requireNotNull(draft())
             check(withImage.text.contains(WindowsCommentComposerReplay.DRAFT) && withImage.text.contains(WindowsCommentComposerReplay.EMOTE) &&
                 withImage.text.contains("@${WindowsCommentComposerReplay.FRIEND_NAME}") && withImage.syncToDynamic)
-            capture("215-composer-selected-private-image", second)
+            val selectedImageRobotTimes = capture("215-composer-selected-private-image", second,
+                observeRobotTiming = observeImagePaint)
             if (imageBaseline != null) {
+                val (original215RobotStartNanos, original215RobotEndNanos) = requireNotNull(selectedImageRobotTimes)
                 val (selectedPane, selectedScroll, selectedPaint) = imageBaseline.first
                 val (beforeImageHeight, beforeImageGeometry, beforeImagePaintSequence) = imageBaseline.second
                 // Keep 215 as the immediate, unmodified physical sample. Observe the
@@ -3994,6 +4009,8 @@ object WindowsVideoActualRootUiFixture {
                 } ?: JsonNull
                 record("composer-same-editor-image-paint-diagnostic", mapOf(
                     "sameDialogAndEditor" to JsonPrimitive(true), "original215Retained" to JsonPrimitive(true),
+                    "original215RobotStartNanos" to JsonPrimitive(original215RobotStartNanos),
+                    "original215RobotEndNanos" to JsonPrimitive(original215RobotEndNanos),
                     "dialogIdentity" to JsonPrimitive(System.identityHashCode(second)),
                     "selectedImageCount" to JsonPrimitive(withImage.imageUris.size), "draftUnchanged" to JsonPrimitive(true),
                     "beforeImagePaintSequence" to JsonPrimitive(beforeImagePaintSequence),
@@ -4003,11 +4020,13 @@ object WindowsVideoActualRootUiFixture {
                     "repaintOrLayoutRequested" to JsonPrimitive(false), "sameDialogReopened" to JsonPrimitive(false),
                     "physicalPixelsRequireReview" to JsonPrimitive(true), "desktopPresentationProvenByPaint" to JsonPrimitive(false)))
                 if (observedPaint != null) {
-                    capture("218-composer-same-editor-after-image-paint", second) {
+                    val (robotStartNanos, robotEndNanos) = requireNotNull(capture(
+                        "218-composer-same-editor-after-image-paint", second, observeRobotTiming = true) {
                         check(editorGeometry(second, selectedPane) == afterPaintGeometry && draft() == withImage)
-                    }
+                    })
                     record("composer-same-editor-image-paint-frame", mapOf(
                         "frame" to JsonPrimitive("218-composer-same-editor-after-image-paint-screen.png"),
+                        "robotStartNanos" to JsonPrimitive(robotStartNanos), "robotEndNanos" to JsonPrimitive(robotEndNanos),
                         "sameDialogAndEditor" to JsonPrimitive(true), "geometryGuardedBeforeAndAfter" to JsonPrimitive(true),
                         "physicalPixelsRequireReview" to JsonPrimitive(true), "desktopPresentationProvenByPaint" to JsonPrimitive(false)))
                 }

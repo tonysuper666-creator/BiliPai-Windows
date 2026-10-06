@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -13,6 +15,8 @@ import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.platform.LocalDensity
 import java.awt.Dimension
 import java.awt.Rectangle
+import java.awt.Window
+import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.math.roundToInt
 
 internal fun desktopWindowsSafeMinimumSize(systemDensity: Float, percent: Int, usable: Rectangle,
@@ -35,11 +39,34 @@ internal fun desktopWindowsSafeMinimumSize(systemDensity: Float, percent: Int, u
     CompositionLocalProvider(LocalDesktopWindowsDisplayScale provides controller,
         LocalDesktopWindowsSystemDensity provides system,
         LocalDensity provides desktopWindowsScaledDensity(system, settings.percent)) {
-        // Pinned Compose mediator does not ignore already-consumed AWT mouse wheel events.
-        // Prevent only this gesture's normal content scroll; all mutation is in the owned AWT path.
-        Box(Modifier.fillMaxSize().onPointerEvent(PointerEventType.Scroll, PointerEventPass.Initial) { event ->
-            if (event.keyboardModifiers.isCtrlPressed && !event.keyboardModifiers.isAltPressed &&
-                !event.keyboardModifiers.isMetaPressed) event.changes.forEach { it.consume() }
-        }) { content() }
+        DesktopWindowsScaleScrollContent(content)
     }
+}
+
+/** Child windows inherit the already scaled density; only their exact native input owner
+ * is registered here. The original controller still validates its actual Root registration. */
+@Composable internal fun DesktopWindowsOwnedDisplayScaleInputScope(
+    host: Window, owner: Window, presented: Boolean = true, content: @Composable () -> Unit,
+) {
+    val controller = LocalDesktopWindowsDisplayScale.current
+    val presentedNow = rememberUpdatedState(presented)
+    DisposableEffect(host, owner, controller) {
+        check(host.owner === owner)
+        val alive = AtomicBoolean(true)
+        val input = DesktopWindowsDisplayScaleInput(host, controller) {
+            alive.get() && presentedNow.value && host.owner === owner &&
+                owner.isDisplayable && owner.isShowing && host.isDisplayable && host.isShowing
+        }
+        onDispose { alive.set(false); input.close() }
+    }
+    DesktopWindowsScaleScrollContent(content)
+}
+
+@Composable private fun DesktopWindowsScaleScrollContent(content: @Composable () -> Unit) {
+    // Pinned Compose mediator does not ignore already-consumed AWT mouse wheel events.
+    // Prevent only this gesture's normal content scroll; all mutation is in the owned AWT path.
+    Box(Modifier.fillMaxSize().onPointerEvent(PointerEventType.Scroll, PointerEventPass.Initial) { event ->
+        if (event.keyboardModifiers.isCtrlPressed && !event.keyboardModifiers.isAltPressed &&
+            !event.keyboardModifiers.isMetaPressed) event.changes.forEach { it.consume() }
+    }) { content() }
 }
