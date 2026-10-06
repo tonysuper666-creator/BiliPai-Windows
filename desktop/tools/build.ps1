@@ -127,14 +127,89 @@ try {
         $smokeRoot = Join-Path $desktopRoot ('build/reports/' + $smokePrefix + [Guid]::NewGuid().ToString('N'))
         New-Item -ItemType Directory -Path $smokeRoot -Force | Out-Null
         $nativeSmokeArgument = if ($env:CI -eq 'true') { '--player-self-test-ci' } else { '--player-self-test' }
-        $nativeProcess = Start-Process -FilePath $executable.FullName -ArgumentList @(
-            $nativeSmokeArgument, ('"' + $smokeRoot + '"')
-        ) -WorkingDirectory $executable.DirectoryName -WindowStyle Hidden -Wait -PassThru
-        if ($nativeProcess.ExitCode -ne 0) { throw "Packaged native playback test failed ($($nativeProcess.ExitCode))." }
-        $nativeReportPath = Join-Path $smokeRoot 'native-player-smoke.json'
-        if (-not (Test-Path -LiteralPath $nativeReportPath)) { throw 'Packaged player produced no native test report.' }
-        $nativeReport = Get-Content -LiteralPath $nativeReportPath -Raw | ConvertFrom-Json
-        if ($nativeReport.passed -ne $true) { throw 'Packaged native playback checks did not pass.' }
+        # Bound only this test-owned launcher; native/player pixel gates remain unchanged.
+        $nativeTimeoutMilliseconds = 300000
+        $nativeTerminationWaitMilliseconds = 10000
+        $nativeProcess, $nativeProcessHandle = $null, $null
+        $nativePhasePassed, $nativeNaturalExit = $false, $false
+        $nativeClock = [Diagnostics.Stopwatch]::StartNew()
+        $nativeParentPath = Join-Path $smokeRoot 'native-player-smoke-parent-timeout.json'
+        $nativeParent = [ordered]@{
+            schemaVersion = 1; phase = 'packaged-native-smoke'; passed = $false; outcome = 'failed'
+            startedAtUtc = [DateTime]::UtcNow.ToString('o'); completedAtUtc = $null; elapsedMilliseconds = 0
+            timeoutMilliseconds = $nativeTimeoutMilliseconds; terminationWaitMilliseconds = $nativeTerminationWaitMilliseconds
+            executable = [IO.Path]::GetFullPath($executable.FullName); processId = $null; processStartedAtUtc = $null
+            timedOut = $false; processExited = $false; exitCode = $null
+            ownedHandleRetained = $false; cleanupAttempted = $false; cleanupSkippedReason = $null
+            terminationRequested = $false; terminationObserved = $false; terminationErrorType = $null; errorType = $null
+        }
+        Write-Host "Native smoke phase begin: $($nativeParent.startedAtUtc); budget=$($nativeTimeoutMilliseconds)ms"
+        try {
+            $nativeProcess = Start-Process -FilePath $executable.FullName -ArgumentList @(
+                $nativeSmokeArgument, ('"' + $smokeRoot + '"')
+            ) -WorkingDirectory $executable.DirectoryName -WindowStyle Hidden -PassThru
+            # Retain the handle from the returned Process through wait/termination; never rediscover by PID/name.
+            $nativeProcessHandle = $nativeProcess.SafeHandle
+            if ($nativeProcessHandle.IsInvalid -or $nativeProcessHandle.IsClosed) { throw 'Native test process handle is unavailable.' }
+            $nativeParent.ownedHandleRetained = $true
+            $nativeParent.processId = $nativeProcess.Id
+            $nativeParent.processStartedAtUtc = $nativeProcess.StartTime.ToUniversalTime().ToString('o')
+            $nativeWaitMilliseconds = [int][Math]::Max(0, $nativeTimeoutMilliseconds - $nativeClock.ElapsedMilliseconds)
+            if ($nativeWaitMilliseconds -le 0 -or -not $nativeProcess.WaitForExit($nativeWaitMilliseconds)) {
+                $nativeParent.timedOut = $true
+                $nativeParent.outcome = 'timeout'
+                $nativeParent.elapsedMilliseconds = $nativeClock.ElapsedMilliseconds
+                $nativeParent | ConvertTo-Json | Set-Content -LiteralPath $nativeParentPath -Encoding utf8
+                Write-Host "Native smoke phase timeout: budget=$($nativeTimeoutMilliseconds)ms; process=$($nativeParent.processId)"
+                # Even a natural exit racing the deadline cannot turn a timeout into a pass.
+                throw "Packaged native playback test exceeded $($nativeTimeoutMilliseconds)ms; see native-player-smoke-parent-timeout.json."
+            }
+            $nativeNaturalExit = $true
+            $nativeParent.processExited = $true
+            $nativeParent.exitCode = $nativeProcess.ExitCode
+            if ($nativeProcess.ExitCode -ne 0) { throw "Packaged native playback test failed ($($nativeProcess.ExitCode))." }
+            $nativeReportPath = Join-Path $smokeRoot 'native-player-smoke.json'
+            if (-not (Test-Path -LiteralPath $nativeReportPath)) { throw 'Packaged player produced no native test report.' }
+            $nativeReport = Get-Content -LiteralPath $nativeReportPath -Raw | ConvertFrom-Json
+            if ($nativeReport.passed -ne $true) { throw 'Packaged native playback checks did not pass.' }
+            $nativePhasePassed = $true
+            $nativeParent.outcome = 'passed'
+        } catch {
+            $nativePrimaryError = $_
+            $nativeParent.errorType = $nativePrimaryError.Exception.GetType().FullName
+            # One cleanup path for deadlines and parent errors after safe ownership was established.
+            try {
+                if ($nativeParent.ownedHandleRetained -and $null -ne $nativeProcessHandle -and
+                    -not $nativeProcessHandle.IsInvalid -and -not $nativeProcessHandle.IsClosed) {
+                    $nativeParent.cleanupAttempted = $true
+                    if ($nativeProcess.HasExited) {
+                        $nativeParent.processExited = $true
+                    } else {
+                        $nativeParent.terminationRequested = $true
+                        # The retained handle stays owned until finally; never reopen by PID or kill descendants.
+                        $nativeProcess.Kill()
+                        $nativeParent.processExited = $nativeProcess.WaitForExit($nativeTerminationWaitMilliseconds)
+                        $nativeParent.terminationObserved = $nativeParent.processExited
+                    }
+                    if ($nativeParent.processExited) { $nativeParent.exitCode = $nativeProcess.ExitCode }
+                } else {
+                    $nativeParent.cleanupSkippedReason = 'no-valid-retained-process-handle'
+                }
+            } catch { $nativeParent.terminationErrorType = $_.Exception.GetType().FullName }
+            throw $nativePrimaryError
+        } finally {
+            $nativeClock.Stop()
+            $nativeParent.completedAtUtc = [DateTime]::UtcNow.ToString('o')
+            $nativeParent.elapsedMilliseconds = $nativeClock.ElapsedMilliseconds
+            try {
+                if (-not $nativePhasePassed) {
+                    $nativeParent | ConvertTo-Json | Set-Content -LiteralPath $nativeParentPath -Encoding utf8
+                }
+                Write-Host "Native smoke phase end: $($nativeParent.completedAtUtc); elapsed=$($nativeParent.elapsedMilliseconds)ms; success=$nativePhasePassed; naturalExit=$nativeNaturalExit"
+            } finally {
+                if ($null -ne $nativeProcess) { $nativeProcess.Dispose() }
+            }
+        }
     }
     $manifest = Get-Content -LiteralPath (Join-Path $desktopRoot 'upstream-sources.json') -Raw | ConvertFrom-Json
     $versionLabel = [regex]::Replace($manifest.upstreamTag, '[^A-Za-z0-9._-]', '-')
