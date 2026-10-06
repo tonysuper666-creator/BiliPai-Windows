@@ -900,12 +900,16 @@ def generate(repo,output,standalone=False):
        afterSha256LF=sha(body),inverseEdits=follow_group_edits))
   recovery_edits=[]
   body=_failure_recovery_delta(recipe['output'],body,recovery_edits)
+  from v030_up_danmaku import same_send_expected_source_delta
+  same_send_edits=[];same_send_before_sha=sha(body)
+  body=same_send_expected_source_delta(recipe['output'],body,same_send_edits)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)
    target.write_text(body,encoding='utf-8',newline='\n')
   outputs.append(dict(path=recipe['output'],origin=recipe['originalPath'],sha256LF=sha(body),mode=recipe['mode'],generated=emitted,
-                      failureRecoveryInverseEdits=recovery_edits,followGroupInverseEdits=follow_group_edits))
+                      failureRecoveryInverseEdits=recovery_edits,followGroupInverseEdits=follow_group_edits,
+                      sameSendExpectedSourceInverseEdits=same_send_edits,sameSendExpectedSourceBeforeSha256LF=same_send_before_sha))
  outputs.append(generate_original_video_action_status(repo,output))
  outputs.append(generate_original_video_progress(repo,output))
  outputs.append(_failure_metadata(repo,output))
@@ -913,7 +917,7 @@ def generate(repo,output,standalone=False):
  metadata_path.parent.mkdir(parents=True,exist_ok=True)
  metadata_path.write_text(json.dumps(dict(schemaVersion=1,upstreamCommit=COMMIT,
      adaptation='Windows exact accepted source and dialog request lifetime; original group API and UI preserved',
-     inverseOrder='Restore failureRecoveryInverseEdits before followGroupInverseEdits',
+     inverseOrder='Restore sameSendExpectedSourceInverseEdits, then failureRecoveryInverseEdits, then followGroupInverseEdits',
      audits=follow_group_audits),ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
  outputs.append(dict(path=metadata_path.name,origin='Windows follow-group lifetime adaptation',
      sha256LF=sha(metadata_path.read_text(encoding='utf-8')),mode='metadata',generated=True))

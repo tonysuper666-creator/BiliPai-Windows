@@ -21,6 +21,9 @@ import java.util.concurrent.atomic.AtomicBoolean
     sourceVersion:Long,
     sourceLease:DesktopOriginalVideoAcceptedPublication,
     stillOwned:()->Boolean,
+    upOwnerUserHash:String?,
+    isSending:Boolean,
+    onSendSame:(String)->Unit,
     window:Window,
     presentation:DesktopDanmakuPresentation,
     viewport:DesktopDanmakuSettingsViewport,
@@ -87,7 +90,8 @@ import java.util.concurrent.atomic.AtomicBoolean
             }
             if(owned()) {
                 DesktopOriginalDanmakuHost(overlay,environment,session,platform,blocks,settingsScope,showPool,
-                    currentPosition(),{if(owned())onDismissPool()},{preferences.currentSettings(settingsScope).blockRulesRaw})
+                    currentPosition(),{if(owned())onDismissPool()},{preferences.currentSettings(settingsScope).blockRulesRaw},
+                    upOwnerUserHash,isSending,{text->if(owned())onSendSame(text)})
                 if(showSettings)DesktopOriginalDanmakuSettingsHost(preferences,presentation,viewport,platform,
                     syncEnabled,account!=null,cloudSync,{if(owned())onShowPool()},{if(owned())onDismissSettings()})
             }

@@ -40,6 +40,9 @@ internal fun DesktopOriginalDanmakuHost(
     currentPositionMs:Long,
     onDismissPool:()->Unit,
     currentBlockRulesRaw:()->String,
+    upOwnerUserHash:String?,
+    isSending:Boolean,
+    onSendSame:(String)->Unit,
 ) {
     val revision by overlay.poolSourceRevision.collectAsState()
     val snapshot=remember(overlay,environment,revision){overlay.poolSourceFor(environment.cid,environment.sourceVersion)}
@@ -65,7 +68,9 @@ internal fun DesktopOriginalDanmakuHost(
         // The original sheet has an explicit empty state, including before a raw document arrives.
         if(showPool)DesktopWindowsPlayerDialog("弹幕列表",onDismissPool) {
             DanmakuPoolSheet(
-                danmakuList=items,currentPositionMs=currentPositionMs,onSeekTo=environment::seekTo,
+                danmakuList=items,currentPositionMs=currentPositionMs,videoCid=environment.cid,onSeekTo=environment::seekTo,
+                upOwnerUserHash=upOwnerUserHash,isSending=isSending,
+                onSendSame={text->if(environment.isOwned() && platform.isOwned() && !isSending)onSendSame(text)},
                 likedDanmakuIds=liked,onLikeDanmaku={dmid,like->session.likeDanmaku(dmid,like)},
                 onRecallDanmaku=session::recallDanmaku,onReportDanmaku={dmid,reason->session.reportDanmaku(dmid,reason)},
                 onBlockSender={block(DanmakuBlockActionTarget.USER,it)},onDismiss=onDismissPool)

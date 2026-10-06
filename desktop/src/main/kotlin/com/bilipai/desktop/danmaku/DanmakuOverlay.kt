@@ -96,6 +96,10 @@ class DanmakuOverlay internal constructor(
     private val mutableAdvanced = MutableStateFlow(emptyList<com.android.purebilibili.danmaku.parser.AdvancedDanmakuData>())
     val advancedItems: StateFlow<List<com.android.purebilibili.danmaku.parser.AdvancedDanmakuData>> = mutableAdvanced.asStateFlow()
     private val sourcePresentation=DesktopDanmakuSourcePresentation(player)
+    private val authorPresentation=DesktopDanmakuAuthorPresentation(player)
+    internal fun bindOriginalAuthor(source:OwnedPlaybackSourceSnapshot,token:Any,mid:Long,stillOwned:()->Boolean):Boolean =
+        authorPresentation.bind(source,token,mid,stillOwned)
+    internal fun releaseOriginalAuthor(token:Any):Boolean = authorPresentation.release(token)
     /** Same full source/recovery identity; this short presentation write takes no Overlay monitor. */
     internal fun bindOriginalPresentation(expected:OwnedPlaybackSourceSnapshot,fullscreen:Boolean):Boolean =
         sourcePresentation.update(expected,fullscreen)
@@ -591,7 +595,7 @@ class DanmakuOverlay internal constructor(
     private val liveRenderer = LiveDanmakuRenderer(requests)
     private data class PendingLive(val generation: Long, val item: LiveDanmakuItem)
     private val pendingLive = ArrayBlockingQueue<PendingLive>(600)
-    private val measuredWidths = mutableMapOf<Pair<Int,Font>, Int>()
+    private val measuredWidths = mutableMapOf<Triple<Int,Font,Boolean>, DesktopDanmakuAuthorTextMetrics>()
     private data class ConfigKey(val settings:DanmakuSettings,val viewport:DanmakuViewport,val font:Font,val live:Boolean,val maskReady:Boolean,val hotReservedHeightPx:Float=0f,val fullscreen:Boolean=false)
     private var resolvedConfig:Pair<ConfigKey,DanmakuRenderConfig>?=null
     private val panel:JComponent = object : JComponent() {
@@ -641,25 +645,32 @@ class DanmakuOverlay internal constructor(
                         val style=styles[comment.id]
                         return desktopDanmakuFont(config,comment,style?.scale ?: 1f,style?.bold==true)
                     }
-                    scheduler.observeOriginalLocalInjectionPhase(synchronized(requestLock){originalLocalInjectionPhase})
-                    val positioned = scheduler.frame(displayTime, geometry.viewport.widthPx, geometry.viewport.heightPx, config) { comment ->
+                    val author=authorPresentation.capture()
+                    val badge=DesktopOriginalUpDanmakuBadge(physical)
+                    fun textMetrics(comment:DanmakuComment):DesktopDanmakuAuthorTextMetrics {
                         val font=font(comment)
-                        val metrics=physical.getFontMetrics(font)
-                        val width=measuredWidths.getOrPut(comment.id to font) {metrics.stringWidth(comment.text)}
-                        DesktopDanmakuTextMetrics(width,metrics.ascent.toDouble())
+                        val tagged=author.matches(comment.userHash)
+                        return measuredWidths.getOrPut(Triple(comment.id,font,tagged)) {badge.measure(comment.text,font,tagged)}
+                    }
+                    scheduler.observeOriginalLocalInjectionPhase(synchronized(requestLock){originalLocalInjectionPhase})
+                    val positioned = scheduler.frame(displayTime, geometry.viewport.widthPx, geometry.viewport.heightPx, config, author.measurementRevision) { comment ->
+                        val metrics=textMetrics(comment)
+                        DesktopDanmakuTextMetrics(metrics.width,metrics.ascent)
                     }
                     val originalHits=mutableListOf<OriginalPaintHit>()
                     positioned.forEach { item ->
                         val style = styles[item.comment.id]
                         val font = font(item.comment)
+                        val authorMetrics=textMetrics(item.comment)
                         pluginAwtColor(style?.backgroundColor)?.let { color ->
                             val metrics = physical.getFontMetrics(font)
                             physical.color = color
                             physical.fillRoundRect(item.x.toInt() - 4, item.baseline.toInt() - metrics.ascent - 2,
                                 item.textWidth + 8, metrics.height + 4, 6, 6)
                         }
+                        badge.paint(item.x,item.baseline,authorMetrics)
                         val shape = font.createGlyphVector(physical.fontRenderContext, item.comment.text)
-                            .getOutline(item.x.toFloat(), item.baseline.toFloat())
+                            .getOutline((item.x+authorMetrics.badgeAdvance).toFloat(), item.baseline.toFloat())
                         if (config.strokeWidthPx > 0f) {
                             physical.color = pluginAwtColor(style?.borderColor) ?: Color(config.strokeColor,true)
                             physical.stroke = BasicStroke(config.strokeWidthPx, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)
@@ -667,7 +678,7 @@ class DanmakuOverlay internal constructor(
                         }
                         if (item.comment.isVipGradualColor && style?.textColor == null) {
                             val x = item.x.toFloat()
-                            physical.paint = LinearGradientPaint(x, 0f, x + item.textWidth.coerceAtLeast(1), 0f,
+                            physical.paint = LinearGradientPaint(x, 0f, x + authorMetrics.pureWidth.coerceAtLeast(1), 0f,
                                 floatArrayOf(0f, 0.5f, 1f), arrayOf(Color(0xff7cba), Color(0xa798ff), Color(0x70d6ff)))
                         } else physical.color = pluginAwtColor(style?.textColor) ?: Color(item.comment.color)
                         physical.fill(shape)

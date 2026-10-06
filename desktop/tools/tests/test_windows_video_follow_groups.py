@@ -25,6 +25,13 @@ def restore(body, rows):
     return body
 
 
+def restore_final_send_stage(body, row):
+    assert hashlib.sha256(body.encode()).hexdigest() == row["sha256LF"]
+    body = restore(body, row["sameSendExpectedSourceInverseEdits"])
+    assert hashlib.sha256(body.encode()).hexdigest() == row["sameSendExpectedSourceBeforeSha256LF"]
+    return body
+
+
 class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -50,8 +57,8 @@ class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
 
     def test_actual_sole_producer_consumes_delta_and_all_three_edits_restore_whole_stage(self):
         self.assertEqual(3, len(self.row["followGroupInverseEdits"]))
-        body = restore(self.actual, self.row["failureRecoveryInverseEdits"])
-        baseline = restore(self.baseline, self.baseline_row["failureRecoveryInverseEdits"])
+        body = restore(restore_final_send_stage(self.actual, self.row), self.row["failureRecoveryInverseEdits"])
+        baseline = restore(restore_final_send_stage(self.baseline, self.baseline_row), self.baseline_row["failureRecoveryInverseEdits"])
         self.assertEqual(baseline, restore(body, self.row["followGroupInverseEdits"]))
         self.assertEqual(1, len(self.audit["audits"]))
         audit = self.audit["audits"][0]
@@ -92,7 +99,7 @@ class OriginalVideoFollowGroupGeneratorTest(unittest.TestCase):
             with mock.patch.object(self.owner, "_desktop_canonical_source", source), contextlib.redirect_stdout(io.StringIO()):
                 with self.assertRaises(AssertionError):
                     self.owner.generate(REPO, Path(root) / "output", True)
-        stage = restore(self.actual, self.row["failureRecoveryInverseEdits"])
+        stage = restore(restore_final_send_stage(self.actual, self.row), self.row["failureRecoveryInverseEdits"])
         rows = self.row["followGroupInverseEdits"]
         changed = stage[:rows[-1]["offset"]] + "!" + stage[rows[-1]["offset"] + 1:]
         with self.assertRaises(AssertionError):

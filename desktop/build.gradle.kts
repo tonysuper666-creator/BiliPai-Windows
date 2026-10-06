@@ -1258,6 +1258,8 @@ val extractOriginalDanmakuSettings by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractOriginalDanmakuSettings) }
 
 val extractOriginalDanmakuListMenu by tasks.registering(Exec::class) {
+    inputs.file("tools/v030_up_danmaku.py")
+    inputs.dir("upstream-slices/v030-up-danmaku")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-danmaku-list-menu.py",
@@ -2359,6 +2361,7 @@ val extractOriginalVideoFullOwner by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/original-video-full-owner").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-video-full-owner.py", sourceManifest)
+    inputs.file("tools/v030_up_danmaku.py")
     inputs.file("tools/v029_failure_recovery.py")
     inputs.dir("upstream-slices/v029-playback-recovery")
     inputs.files(sources.filter { "stable-original-video-full-owner" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }

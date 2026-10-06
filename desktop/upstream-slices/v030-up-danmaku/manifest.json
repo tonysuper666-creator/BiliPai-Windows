@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "commit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+  "scope": "complete ordinary pool and neutral item; complete original UP badge functions; source matching reference; same-send component reused from byte-identical existing owner",
+  "sources": [
+    {
+      "file": "DanmakuPoolSheet.kt",
+      "upstreamPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuPoolSheet.kt",
+      "commit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+      "gitBlob": "5d525a6edfaf9b66c9ee04028b56650e003fc69f",
+      "sha256": "b8660bf7027977122055ccc6a76ea83c6cd9be3492e54f2f928f10b36817e939",
+      "bytes": 27700
+    },
+    {
+      "file": "DanmakuModels.kt",
+      "upstreamPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/DanmakuModels.kt",
+      "commit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+      "gitBlob": "fd5d86e9b6d4db5e987c0504205e93b2c798f04c",
+      "sha256": "a212fae3e6793584a84253e165bccc510907ab7149dd481faa37dd4d6635a355",
+      "bytes": 3468
+    },
+    {
+      "file": "TextDrawItem.kt",
+      "upstreamPath": "danmaku-engine/src/main/java/com/bytedance/danmaku/render/engine/render/draw/text/TextDrawItem.kt",
+      "commit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+      "gitBlob": "824d528247e89a1464c873b0b8a4b49d9e59ab84",
+      "sha256": "fe3918b8196cb6db480ae48afbe1176ba6697c5f6b75a6b8bfe2976d3ad1da43",
+      "bytes": 10575
+    },
+    {
+      "file": "DanmakuManager.kt",
+      "upstreamPath": "app/src/main/java/com/android/purebilibili/feature/video/danmaku/DanmakuManager.kt",
+      "commit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+      "gitBlob": "f65fbabf1aaba961eed4487485fea15c63dc6dbb",
+      "sha256": "10a6924b41bfc1d05ddb96b58958a56c8827e80315b724f0eeadbe0201c8c331",
+      "bytes": 134982
+    },
+    {
+      "file": "ByteDanceDanmakuEngine.kt",
+      "upstreamPath": "danmaku-engine/src/main/java/com/android/purebilibili/danmaku/engine/ByteDanceDanmakuEngine.kt",
+      "commit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+      "gitBlob": "2537c3bc280d27177e9e544012bf95c73f0308e0",
+      "sha256": "9ffed7c42982a1af404896fbc381d54041547a2bf77c0f4c0849e31986ebf650",
+      "bytes": 13476
+    },
+    {
+      "file": "DanmakuSameSendConfirmation.kt",
+      "upstreamPath": "app/src/main/java/com/android/purebilibili/feature/video/ui/components/DanmakuSameSendConfirmation.kt",
+      "commit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+      "gitBlob": "1ffea13a43555cb1ec5fa7af602bb9cb4a9ee7ed",
+      "sha256": "23b033faa6b20e884e8fd319204b221d28aa3ca680874d108ee5ca9406f5a665",
+      "bytes": 929
+    }
+  ]
+}

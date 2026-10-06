@@ -26,10 +26,10 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
     private val pendingLocalComments = mutableListOf<DanmakuComment>()
     private var cursor = 0
     private var previousTime = Double.NaN
-    private data class Geometry(val width:Int,val height:Int,val config:DanmakuRenderConfig) {
+    private data class Geometry(val width:Int,val height:Int,val config:DanmakuRenderConfig,val measurementRevision:Long) {
         fun sameMeasurement(next:Geometry):Boolean = config.textSizePx==next.config.textSizePx &&
             config.typeface==next.config.typeface && config.strokeWidthPx==next.config.strokeWidthPx &&
-            config.lineHeightPx==next.config.lineHeightPx
+            config.lineHeightPx==next.config.lineHeightPx && measurementRevision==next.measurementRevision
     }
     private var viewport:Geometry?=null
 
@@ -103,9 +103,12 @@ class DanmakuScheduler(comments: List<DanmakuComment>, settings: DanmakuSettings
         return (ordinary+injected).sortedBy {it.timeSeconds}
     }
 
-    fun frame(time: Double, width: Int, height: Int, config:DanmakuRenderConfig, measure: (DanmakuComment) -> DesktopDanmakuTextMetrics): List<PositionedDanmaku> {
+    fun frame(time: Double, width: Int, height: Int, config:DanmakuRenderConfig, measure: (DanmakuComment) -> DesktopDanmakuTextMetrics): List<PositionedDanmaku> =
+        frame(time,width,height,config,0L,measure)
+
+    fun frame(time: Double, width: Int, height: Int, config:DanmakuRenderConfig, measurementRevision:Long, measure: (DanmakuComment) -> DesktopDanmakuTextMetrics): List<PositionedDanmaku> {
         if (!time.isFinite() || time < 0 || width <= 0 || height <= 0 || config.lineHeightPx <= 0f) return emptyList()
-        val geometry = Geometry(width, height, config)
+        val geometry = Geometry(width, height, config, measurementRevision)
         val previousGeometry=viewport
         if (!previousTime.isFinite() || time < previousTime || abs(time - previousTime) > 1.0 ||
             previousGeometry==null) {

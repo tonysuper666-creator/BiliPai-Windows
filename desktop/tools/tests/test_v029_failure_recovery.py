@@ -1,6 +1,7 @@
 """Fresh generator consumption and raw/inverse contracts; no JVM or media."""
 from pathlib import Path
 import contextlib
+import hashlib
 import importlib.util
 import io
 import json
@@ -42,7 +43,7 @@ class FailureRecoveryGeneratorTests(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             cls.owner_rows = cls.owner.generate(REPO, cls.root / "owner", True)
             with mock.patch.object(cls.owner, "_failure_recovery_delta", lambda path, body, audit: body):
-                cls.owner.generate(REPO, cls.root / "owner-before", True)
+                cls.owner_before_rows = cls.owner.generate(REPO, cls.root / "owner-before", True)
             cls.core.generate(REPO, cls.root / "core", True)
             with mock.patch.object(cls.core, "_typed_failure_usecase", lambda body, audit: body), \
                  mock.patch.object(cls.core, "_typed_failure_protocol", lambda body, audit: body):
@@ -57,7 +58,14 @@ class FailureRecoveryGeneratorTests(unittest.TestCase):
         row = next(row for row in self.owner_rows if row["path"] == recovery.VM)
         actual = (self.root / "owner" / recovery.VM).read_text(encoding="utf-8")
         baseline = (self.root / "owner-before" / recovery.VM).read_text(encoding="utf-8")
-        self.assertEqual(baseline, restore(actual, row["failureRecoveryInverseEdits"]))
+        baseline_row = next(item for item in self.owner_before_rows if item["path"] == recovery.VM)
+        self.assertEqual(row["sha256LF"], hashlib.sha256(actual.encode()).hexdigest())
+        self.assertEqual(baseline_row["sha256LF"], hashlib.sha256(baseline.encode()).hexdigest())
+        original_actual = restore(actual, row["sameSendExpectedSourceInverseEdits"])
+        original_baseline = restore(baseline, baseline_row["sameSendExpectedSourceInverseEdits"])
+        self.assertEqual(row["sameSendExpectedSourceBeforeSha256LF"], hashlib.sha256(original_actual.encode()).hexdigest())
+        self.assertEqual(baseline_row["sameSendExpectedSourceBeforeSha256LF"], hashlib.sha256(original_baseline.encode()).hexdigest())
+        self.assertEqual(original_baseline, restore(original_actual, row["failureRecoveryInverseEdits"]))
         self.assertIn("desktopOriginalNativeFailureCurrent(player.nativePlayer, accepted, failure)", actual)
         self.assertNotIn("currentSourceSnapshot() == accepted.nativeSource", actual)
         self.assertEqual(1, actual.count("observeDesktopNativeFailure(error)"))

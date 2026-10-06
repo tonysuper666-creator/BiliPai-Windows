@@ -33,6 +33,8 @@ internal class DesktopOriginalVideoOwnerDanmakuBinding(
         currentCoroutineContext().ensureActive(); checkEntry()
         val native = requireNative()
         val accepted = checkNotNull(native.current()) { "No accepted danmaku mutation source" }
+        val expected = DesktopOriginalDanmakuExpectedSubmission.current()
+        expected?.assertCurrent(accepted.nativeSource)
         val subject = checkNotNull(currentSubject()) { "No original video subject" }
         if (subject.cid != cid || (aid != null && subject.aid != aid) ||
             accepted.request.cid != cid || accepted.request.bvid != subject.bvid)
@@ -43,6 +45,7 @@ internal class DesktopOriginalVideoOwnerDanmakuBinding(
         val caller = checkNotNull(currentCoroutineContext()[Job])
         val check = {
             caller.ensureActive(); checkEntry(); binding.assertCurrent()
+            expected?.assertCurrent(accepted.nativeSource)
             val now = currentSubject()
             if (now == null || now.bvid != subject.bvid || now.cid != subject.cid ||
                 now.aid != subject.aid || now.generation != subject.generation || !native.isCurrent(accepted))

@@ -1749,6 +1749,22 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 val danmakuSource = danmakuAssembly?.takeIf { it.owns() }?.native?.current()?.takeIf {
                                     danmakuSuccess != null && danmakuSuccess.info.bvid == it.request.bvid && danmakuSuccess.info.cid == it.request.cid
                                 }
+                                val authorLoad=danmakuAssembly?.playback?.captureDesktopLoadState()
+                                val authorMid=danmakuSuccess?.info?.owner?.mid?.takeIf {it>0L} ?: 0L
+                                val authorHash=authorMid.takeIf {it>0L}?.let {
+                                    com.android.purebilibili.feature.video.danmaku.DanmakuCloudRuleSyncPolicy.crc32Hex(it.toString()) }
+                                fun ownsDanmakuAuthorSource():Boolean {
+                                    val assembly=danmakuAssembly ?: return false
+                                    val accepted=danmakuSource ?: return false
+                                    val captured=authorLoad ?: return false
+                                    val load=assembly.playback.captureDesktopLoadState()
+                                    return !isClosing() && !activatingUpdate && messageRoutes.containsEntry(entryKey) &&
+                                        ordinaryVideo.slot.currentAssembly()===assembly && assembly.owns() &&
+                                        assembly.playback.uiState.value===danmakuSuccess &&
+                                        load.currentLoadRequestToken==captured.currentLoadRequestToken &&
+                                        load.currentBvid==accepted.request.bvid && load.currentCid==accepted.request.cid &&
+                                        ordinaryVideo.factoryFor(assembly).isPresentationCurrent(assembly,accepted)
+                                }
                                 fun ownsDanmakuSource(): Boolean = !isClosing() && !activatingUpdate && active &&
                                     hostVisible && hostDisplayable && messageRoutes.currentKey == entryKey &&
                                     danmakuAssembly != null && ordinaryVideo.slot.currentAssembly() === danmakuAssembly &&
@@ -1805,7 +1821,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         },
                                         overlay = {
                                             if(player!=null && danmaku!=null && danmakuAssembly!=null && danmakuSource!=null && rendererDanmakuSettings.enabled && !pipActive && ownsDanmakuSource())
-                                                DesktopWindowsHotDanmakuHost(hotDanmakuLink,danmakuSource,danmaku,player,danmakuAssembly,::ownsDanmakuSource,
+                                                DesktopWindowsHotDanmakuHost(hotDanmakuLink,danmakuSource,danmaku,player,danmakuAssembly,::ownsDanmakuSource,::ownsDanmakuAuthorSource,
                                                     {action->ownsDanmakuSource() && ordinaryVideo.factoryFor(danmakuAssembly).withPresentationAdmission(danmakuAssembly,danmakuSource,action)})
                                             if (player != null && danmaku != null && danmakuAssembly != null && danmakuSource != null &&
                                                 rendererDanmakuSettings.enabled && !pipActive && ownsDanmakuSource()) {
@@ -1943,12 +1959,27 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     DisposableEffect(danmakuAssembly, danmakuSource, entryKey) {
                                         onDispose { originalDanmakuSettingsVisible = false; originalDanmakuPoolVisible = false }
                                     }
+                                    DisposableEffect(danmaku,danmakuAssembly,danmakuSource,danmakuSuccess,authorMid) {
+                                        val authorToken=Any()
+                                        if(ownsDanmakuAuthorSource())ordinaryVideo.factoryFor(danmakuAssembly).withPresentationAdmission(danmakuAssembly,danmakuSource) {
+                                            if(ownsDanmakuAuthorSource())danmaku.bindOriginalAuthor(danmakuSource.nativeSource,authorToken,authorMid,::ownsDanmakuAuthorSource)
+                                        }
+                                        onDispose {danmaku.releaseOriginalAuthor(authorToken)}
+                                    }
+                                    val poolSending by danmakuAssembly.playback.isSendingDanmaku.collectAsState()
                                     DesktopOriginalDanmakuRootHost(
                                         owner = LocalDesktopOriginalCommentRootOwner.current,
                                         repository = repository, globalStore = pluginStore, overlay = danmaku,
                                         cid = danmakuSource.request.cid, sourceVersion = danmakuSource.sourceVersion,
                                         sourceLease = danmakuSource,
                                         stillOwned = ::ownsDanmakuSource, window = hostWindow,
+                                        upOwnerUserHash = authorHash, isSending = poolSending,
+                                        onSendSame = { text ->
+                                            com.bilipai.desktop.ui.dispatchDesktopOriginalDanmakuSameSend(text,danmakuAssembly.playback,
+                                                danmakuSource.nativeSource,::ownsDanmakuAuthorSource,::ownsDanmakuSource) { action ->
+                                                ordinaryVideo.factoryFor(danmakuAssembly).withPresentationAdmission(danmakuAssembly,danmakuSource,action)
+                                            }
+                                        },
                                         presentation = danmakuPresentation.currentPresentation(),
                                         viewport = with(androidx.compose.ui.platform.LocalDensity.current) {
                                             DesktopDanmakuSettingsViewport(

@@ -58,6 +58,7 @@ internal class DesktopHotDanmakuNativeClock(
     player:MpvPlayer,
     assembly:DesktopOriginalVideoOwnerAssembly,
     stillOwned:()->Boolean,
+    sourceCurrent:()->Boolean,
     admit:(()->Unit)->Boolean,
 ) {
     val attachment=link.current?.takeIf {it.lease===lease} ?: return
@@ -87,8 +88,9 @@ internal class DesktopHotDanmakuNativeClock(
                     getDanmakuList={if(owned())overlay.hotItemsFor(lease.request.cid,lease.sourceVersion) else emptyList()},
                     player=clock,likedDanmakuIds=liked,
                     onLikeDanmaku={id,like->if(owned())attachment.session.likeDanmaku(id,like)},
-                    onSendSame={text->if(owned() && !assembly.playback.isSendingDanmaku.value)
-                        latestAdmission {if(owned())assembly.playback.sendDanmaku(text,16777215,1,25,false)}},
+                    onSendSame={text->
+                        dispatchDesktopOriginalDanmakuSameSend(text,assembly.playback,lease.nativeSource,
+                            sourceCurrent,::owned,latestAdmission)},
                     isSending=sending,modifier=Modifier.onSizeChanged {height=it.height},
                     onVisibilityChange={visible=it},
                 )
