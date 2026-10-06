@@ -370,6 +370,39 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
                 DesktopSessionEpoch(expectedEpoch, stillOwned, if (guest) homeGuestBuvid3 else null)).build())
         }
 
+    /** The existing WebSocket transport keeps its captured primary epoch through
+     * handshake execution and late callbacks. No account monitor encloses socket IO. */
+    internal fun ownedHomeWebSocketFactory(expectedEpoch: Long, stillOwned: () -> Boolean): okhttp3.WebSocket.Factory =
+        okhttp3.WebSocket.Factory { request, listener ->
+            val callbacks = object : okhttp3.WebSocketListener() {
+                private fun current(socket: okhttp3.WebSocket): Boolean {
+                    val owned = sessions.generation == expectedEpoch && stillOwned()
+                    if (!owned) socket.cancel()
+                    return owned
+                }
+                override fun onOpen(socket: okhttp3.WebSocket, response: okhttp3.Response) {
+                    if (current(socket)) listener.onOpen(socket, response)
+                }
+                override fun onMessage(socket: okhttp3.WebSocket, text: String) {
+                    if (current(socket)) listener.onMessage(socket, text)
+                }
+                override fun onMessage(socket: okhttp3.WebSocket, bytes: okio.ByteString) {
+                    if (current(socket)) listener.onMessage(socket, bytes)
+                }
+                override fun onClosing(socket: okhttp3.WebSocket, code: Int, reason: String) {
+                    if (current(socket)) listener.onClosing(socket, code, reason)
+                }
+                override fun onClosed(socket: okhttp3.WebSocket, code: Int, reason: String) {
+                    if (current(socket)) listener.onClosed(socket, code, reason)
+                }
+                override fun onFailure(socket: okhttp3.WebSocket, error: Throwable, response: okhttp3.Response?) {
+                    if (current(socket)) listener.onFailure(socket, error, response)
+                }
+            }
+            client.newWebSocket(request.newBuilder().tag(DesktopSessionEpoch::class.java,
+                DesktopSessionEpoch(expectedEpoch, stillOwned)).build(), callbacks)
+        }
+
     /** Services over the SAME Call.Factory/client/cookie state, used once by retained Home. */
     internal fun <T> ownedHomeService(type: Class<T>, baseUrl: String, expectedEpoch: Long,
         stillOwned: () -> Boolean, guest: Boolean = false): T = Retrofit.Builder().baseUrl(baseUrl)
@@ -484,7 +517,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     internal suspend fun signWebParams(params: Map<String, String>, includeRiskFingerprint: Boolean = false,
         forceRefresh: Boolean = false) = sign(params, includeRiskFingerprint, forceRefresh)
     internal suspend fun signPrimaryLiveWebParams(params: Map<String, String>, expectedEpoch: Long,
-        stillOwned: () -> Boolean): Map<String, String> = sign(params,
+        stillOwned: () -> Boolean, forceRefresh: Boolean = false): Map<String, String> = sign(params,
+        forceRefresh = forceRefresh,
         requestApi = ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/", expectedEpoch, stillOwned),
         expectedEpoch = expectedEpoch, stillOwned = stillOwned)
     internal fun accessTokenCredentials(): Pair<String?, String> = sessions.accessTokenCredentials()

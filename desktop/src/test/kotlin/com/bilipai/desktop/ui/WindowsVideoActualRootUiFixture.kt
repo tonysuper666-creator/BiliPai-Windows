@@ -2978,6 +2978,241 @@ object WindowsVideoActualRootUiFixture {
         await("same source resumes after full-client scope") { sameNative();playing() }
     }
 
+    private fun exerciseVideoDynamicShare(replay: WindowsVideoLocalReplay) {
+        check(!EventQueue.isDispatchThread())
+        val (assembly, publication) = actualHotOwner()
+        val engagement = assembly.domains.engagement
+        val originalMain = edt { window() }
+        val source = accepted
+        val preferences = PlayerPreferencesStore().read()
+        val originalPlacement = edt { originalMain.extendedState }
+        val repository = edt { current(); requireNotNull(owner.messagePages.get()).repository }
+        val session = replay.commentComposerReplay
+        val script = replay.videoDynamicShareReplay
+        check(session.authenticated(repository))
+        val beforeLayers = settledMainInputLayers("video-share-before")
+        val beforeFeedbackId = engagement.uiState.value.maidActionId
+        val robot = java.awt.Robot()
+        val ownedPeers = linkedSetOf<Window>()
+        var baseline = actualPlayer.state.value
+        var firstFailure: Throwable? = null
+        fun guard(hidden: Boolean = false) {
+            current()
+            val iconic = originalMain.extendedState and java.awt.Frame.ICONIFIED != 0
+            if (hidden && iconic) check(actualCanvas.isDisplayable &&
+                SwingUtilities.getWindowAncestor(actualPlayer.surface) === originalMain)
+            else sameNative()
+            check(window() === originalMain && accepted === source && assembly.owns() &&
+                assembly.native.isCurrent(publication) && actualPlayer.ownsSourceSnapshot(source) &&
+                assembly.domains.engagement === engagement && session.authenticated(repository) &&
+                repository.sessionEpoch == session.epoch() && PlayerPreferencesStore().read() == preferences)
+            check(hidden || !iconic)
+            val state = actualPlayer.state.value
+            check(state.paused && state.nativePaused == true && state.seekCompletedId == baseline.seekCompletedId &&
+                state.muted == baseline.muted && state.volume == baseline.volume && state.speed == baseline.speed &&
+                kotlin.math.abs(state.positionSeconds - baseline.positionSeconds) < .25)
+        }
+        fun children(parent: Window): List<Window> = parent.ownedWindows.toList().flatMap { listOf(it) + children(it) }
+        fun registerCreatedPeers() {
+            // This branch starts with no owned input window. Register each exact
+            // new modal immediately, before waiting for its Compose controls.
+            children(originalMain).filter { it.isDisplayable && it is javax.swing.JDialog && it.isModal }
+                .forEach { ownedPeers.add(it) }
+        }
+        fun has(surface: Window, label: String): Boolean = descendants(surface.accessibleContext).any {
+            hasLabel(it, label) && visible(it, surface) }
+        fun physicalClick(surface: Window, label: String) {
+            var point: java.awt.Point? = null
+            await("complete owned share controls for one real '$label' click") { edt {
+                guard(); registerCreatedPeers()
+                val control = descendants(surface.accessibleContext).filter {
+                    hasLabel(it, label) && visible(it, surface) && it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                        it.accessibleRole != javax.accessibility.AccessibleRole.SCROLL_PANE &&
+                        (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }.singleOrNull() ?: return@edt false
+                val c = requireNotNull(control.accessibleComponent); val origin = requireNotNull(c.locationOnScreen)
+                point = java.awt.Point(origin.x + c.size.width / 2, origin.y + c.size.height / 2)
+                true
+            } }
+            val p = requireNotNull(point)
+            robot.mouseMove(p.x, p.y); robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+            try { robot.delay(35) } finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+        }
+        fun editor(surface: Window): AccessibleContext {
+            guard()
+            return descendants(surface.accessibleContext).filter {
+                it.accessibleEditableText != null && visible(it, surface) &&
+                    it.accessibleRole == javax.accessibility.AccessibleRole.TEXT &&
+                    it.accessibleStateSet.contains(AccessibleState.EDITABLE) &&
+                    it.accessibleStateSet.contains(AccessibleState.ENABLED) }.single()
+        }
+        fun text(surface: Window): String = edt {
+            val field = editor(surface)
+            val actual = requireNotNull(field.accessibleText)
+            field.accessibleEditableText.getTextRange(0, actual.charCount).orEmpty()
+        }
+        fun typeDraft(surface: Window) {
+            val p = edt {
+                val field = editor(surface)
+                val c = requireNotNull(field.accessibleComponent); val origin = requireNotNull(c.locationOnScreen)
+                java.awt.Point(origin.x + c.size.width / 2, origin.y + c.size.height / 2)
+            }
+            robot.mouseMove(p.x, p.y); robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+            try { robot.delay(35) } finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+            robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL)
+            try { robot.keyPress(java.awt.event.KeyEvent.VK_A); robot.keyRelease(java.awt.event.KeyEvent.VK_A) }
+            finally { robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL) }
+            // Plain ASCII real key input; no clipboard, VM write or editableText setter.
+            for (ch in WindowsVideoDynamicShareReplay.DRAFT) {
+                val key = java.awt.event.KeyEvent.getExtendedKeyCodeForChar(ch.code)
+                check(key != java.awt.event.KeyEvent.VK_UNDEFINED)
+                if (ch.isUpperCase()) robot.keyPress(java.awt.event.KeyEvent.VK_SHIFT)
+                try { robot.keyPress(key); try { robot.delay(15) } finally { robot.keyRelease(key) } }
+                finally { if (ch.isUpperCase()) robot.keyRelease(java.awt.event.KeyEvent.VK_SHIFT) }
+            }
+            await("original dynamic TextField receives the complete OS draft") { text(surface) == WindowsVideoDynamicShareReplay.DRAFT }
+        }
+        fun capture(id: String, surface: Window = originalMain) {
+            val bounds = edt {
+                guard(); registerCreatedPeers(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+                val rect = if (surface === originalMain) Rectangle(originalMain.contentPane.locationOnScreen, originalMain.contentPane.size)
+                    else Rectangle(surface.bounds)
+                check(originalMain.bounds.contains(rect) && surface.graphicsConfiguration.bounds.contains(rect))
+                rect
+            }
+            val image = robot.createScreenCapture(bounds)
+            val tree = edt {
+                guard(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+                check((if (surface === originalMain) Rectangle(originalMain.contentPane.locationOnScreen, originalMain.contentPane.size)
+                    else Rectangle(surface.bounds)) == bounds)
+                descendants(surface.accessibleContext).joinToString("\n") { "${it.accessibleName}\t${it.accessibleRole}\t${it.accessibleStateSet}" }
+            }
+            check(ImageIO.write(image, "png", report.resolve("$id-screen.png").toFile()))
+            Files.writeString(report.resolve("$id-accessibility.tsv"), tree, CREATE_NEW, WRITE)
+        }
+        fun openSheet(): javax.swing.JDialog {
+            physicalClick(originalMain, "更多播放操作")
+            await("same Main original playback menu") { edt { guard(); playerMenuSurface() != null } }
+            val menu = edt { requireNotNull(playerMenuSurface()).also { if (it !== originalMain) ownedPeers.add(it) } }
+            physicalClick(menu, "分享视频")
+            var result: javax.swing.JDialog? = null
+            await("exact owned original share peer") { edt {
+                guard(); registerCreatedPeers()
+                children(originalMain).filterIsInstance<javax.swing.JDialog>().filter {
+                    it.isDisplayable && it.title == "分享视频" }.also { check(it.size <= 1) }.singleOrNull()
+                    ?.also { result = it; ownedPeers.add(it) }?.isShowing == true
+            } }
+            val peer = requireNotNull(result)
+            await("complete original dynamic share item") { edt {
+                guard(); registerCreatedPeers(); peer.isShowing && peer.isModal && has(peer, "分享到动态") && has(peer, "取消")
+            } }
+            return peer
+        }
+        fun openDynamic(sheet: Window): Window {
+            physicalClick(sheet, "分享到动态")
+            var result: Window? = null
+            await("original dynamic dialog TextField and actions") { edt {
+                guard(); registerCreatedPeers()
+                val surfaces = (listOf(sheet) + children(sheet)).filter { it.isShowing && it.isDisplayable && ownedWindow(it) }
+                surfaces.filter { surface -> has(surface, "分享到动态") && has(surface, "取消") && has(surface, "发布") &&
+                    runCatching { editor(surface) }.isSuccess }
+                    .also { check(it.size <= 1) }.singleOrNull()?.also { result = it } != null
+            } }
+            return requireNotNull(result)
+        }
+        fun closed(sheet: Window): Boolean = edt {
+            guard(); registerCreatedPeers(); !sheet.isShowing && !sheet.isDisplayable &&
+                ownedPeers.none { it.isShowing || it.isDisplayable }
+        }
+        try {
+            check(edt { children(originalMain).none { it.isDisplayable && it is javax.swing.JDialog && it.isModal } })
+            click("暂停"); await("native pause ACK before video share") { sameNative(); actualPlayer.state.value.nativePaused == true }
+            Thread.sleep(200); baseline = actualPlayer.state.value
+            val firstSheet = openSheet(); capture("230-share-original-sheet", firstSheet)
+            val firstDialog = openDynamic(firstSheet); typeDraft(firstDialog)
+            capture("231-share-dynamic-draft", firstDialog)
+            physicalClick(firstDialog, "取消")
+            await("cancel disposes exact original share without a POST") { closed(firstSheet) }
+            check(script.count() == 0 && engagement.uiState.value.maidActionId == beforeFeedbackId)
+            // Existing interaction UI is foreground-owned: do not claim that
+            // hiding an open modal preserves its input. This bounded check has
+            // no modal open and proves only the same paused source can return.
+            edt { guard(); originalMain.extendedState = originalPlacement or java.awt.Frame.ICONIFIED }
+            await("temporary Main hide keeps the same native source after cancel") { edt {
+                guard(true); originalMain.extendedState and java.awt.Frame.ICONIFIED != 0 &&
+                    ownedPeers.none { it.isShowing || it.isDisplayable }
+            } }
+            edt { guard(true); originalMain.extendedState = originalPlacement }
+            await("same native source returns without reviving the cancelled share") { edt {
+                guard(); ownedPeers.none { it.isShowing || it.isDisplayable }
+            } }
+            capture("232-share-dynamic-cancelled")
+            val secondSheet = openSheet(); val secondDialog = openDynamic(secondSheet)
+            typeDraft(secondDialog) // Cancelled dialog does not promise draft retention.
+            physicalClick(secondDialog, "发布")
+            await("original failed share preserves draft/error and permits manual retry") { edt {
+                guard(); registerCreatedPeers(); secondDialog.isShowing && has(secondDialog, WindowsVideoDynamicShareReplay.RETRY_ERROR) &&
+                    has(secondDialog, "发布") && script.count() == 1
+            } && text(secondDialog) == WindowsVideoDynamicShareReplay.DRAFT }
+            check(engagement.uiState.value.maidActionId == beforeFeedbackId)
+            capture("233-share-dynamic-retry-error", secondDialog)
+            physicalClick(secondDialog, "发布")
+            var confirmed: DesktopWindowsVideoFeedbackOrigin? = null
+            val deadline = System.nanoTime() + Duration.ofSeconds(10).toNanos()
+            while (confirmed == null && System.nanoTime() < deadline) {
+                confirmed = edt {
+                    guard(); registerCreatedPeers()
+                    val state = engagement.uiState.value
+                    state.desktopFeedbackOrigin(DesktopWindowsVideoFeedbackKind.SHARE)?.takeIf {
+                        state.maidActionId > beforeFeedbackId && it.instanceId == state.maidActionId &&
+                            it.isCurrent(publication, requireNotNull(state.subject)) && script.count() == 2
+                    }
+                }
+                if (confirmed == null) Thread.sleep(10)
+            }
+            val success = requireNotNull(confirmed) { "Synthetic protocol success did not publish the current original SHARE receipt" }
+            await("successful original dialog disposes its exact captured peer") { closed(secondSheet) }
+            capture("234-share-dynamic-success")
+            val protocol = script.receipt()
+            Files.writeString(report.resolve("video-share-payload-receipt.json"), protocol.toString(), CREATE_NEW, WRITE)
+            record("video-share-original-dynamic-completed", mapOf(
+                "sameActualEngagementDomain" to JsonPrimitive(true), "sameAcceptedPublicationIdentity" to JsonPrimitive(true),
+                "samePausedNativeSourceAndPreferences" to JsonPrimitive(true), "actualOriginalSheetAndDynamicDialog" to JsonPrimitive(true),
+                "cancelProducedZeroPosts" to JsonPrimitive(true), "originalFailureDraftAndErrorRetained" to JsonPrimitive(true),
+                "manualRetryCompletedOriginalProtocol" to JsonPrimitive(true), "sameSourceHiddenRestoreObserved" to JsonPrimitive(true),
+                "currentSourceConfirmedShareReceiptObserved" to JsonPrimitive(true), "confirmedShareInstanceId" to JsonPrimitive(success.instanceId),
+                "confirmedShareSourceVersion" to JsonPrimitive(source.sourceVersion), "exactOwnedPeersDisposed" to JsonPrimitive(true),
+                "inputMechanism" to JsonPrimitive("OS_ROBOT"), "syntheticPrimaryMid" to JsonPrimitive(990000024L),
+                "actualAccountEpoch" to JsonPrimitive(session.epoch()), "remoteMutationSent" to JsonPrimitive(false),
+                "realCredentialsUsed" to JsonPrimitive(false), "physicalFramesRequireHumanReview" to JsonPrimitive(true)))
+        } catch (failure: Throwable) {
+            firstFailure = failure
+            runCatching { val surface = edt { ownedPeers.lastOrNull { it.isShowing && it.isDisplayable } ?: originalMain }
+                capture("video-share-input-failure", surface) }.exceptionOrNull()?.let(failure::addSuppressed)
+            throw failure
+        } finally {
+            var cleanupFailure: Throwable? = null
+            fun cleanup(block: () -> Unit) { runCatching(block).exceptionOrNull()?.let { failure ->
+                val prior = cleanupFailure; if (prior == null) cleanupFailure = failure else prior.addSuppressed(failure) } }
+            // Only captured test-owned references; never cancel a shared VM or
+            // scan/kill a global window/process to clean up this branch.
+            for (peer in ownedPeers.toList().asReversed()) cleanup { edt {
+                var parent: Window? = peer
+                while (parent != null && parent !== originalMain) parent = parent.owner
+                if (peer.isDisplayable && parent === originalMain)
+                    peer.dispatchEvent(java.awt.event.WindowEvent(peer, java.awt.event.WindowEvent.WINDOW_CLOSING))
+            } }
+            cleanup { edt { if (originalMain.isDisplayable) originalMain.extendedState = originalPlacement } }
+            cleanup { val deadline = System.nanoTime() + Duration.ofSeconds(5).toNanos()
+                while (edt { ownedPeers.any { it.isDisplayable } } && System.nanoTime() < deadline) Thread.sleep(50)
+                check(edt { ownedPeers.none { it.isDisplayable } }) { "Captured video-share peer leaked" }
+            }
+            cleanupFailure?.let { failure -> firstFailure?.addSuppressed(failure) ?: throw failure }
+        }
+        val afterLayers = settledMainInputLayers("video-share-after")
+        check(afterLayers.size == beforeLayers.size && beforeLayers.all { old -> afterLayers.any { it === old } })
+        click("播放"); await("same source resumes after original video share") { sameNative(); playing() }
+    }
+
     private fun exerciseCommentComposer(localReplay: WindowsVideoLocalReplay) {
         check(!EventQueue.isDispatchThread())
         sameNative(); check(playing())
@@ -3066,7 +3301,14 @@ object WindowsVideoActualRootUiFixture {
         fun draft() = composer.composerDrafts.value.comments[0L]
         fun editor(surface: Window): AccessibleContext {
             currentSource()
-            return descendants(surface.accessibleContext).filter { it.accessibleEditableText != null && visible(it, surface) }.single()
+            check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+            // SwingPanel also exposes a Compose semantics mirror with SetText.
+            // Read and edit the sole actual native document in this exact peer.
+            return nativeComponents(surface).filterIsInstance<javax.swing.JTextPane>().filter {
+                it.javaClass.name == "com.bilipai.desktop.ui.DesktopInlineEmotePane" &&
+                    it.isShowing && it.isDisplayable && it.isEnabled &&
+                    SwingUtilities.getWindowAncestor(it) === surface && visible(it.accessibleContext, surface)
+            }.map { it.accessibleContext }.single().also { check(it.accessibleEditableText != null) }
         }
         fun editorText(surface: Window): String {
             val text = requireNotNull(editor(surface).accessibleText)
@@ -3085,7 +3327,7 @@ object WindowsVideoActualRootUiFixture {
                     stamp.presentation.sourceLease === publication && stamp.presentation.nativeOwner === originalMain &&
                         stamp.presentation.isCurrent() && composer.showCommentDialog.value &&
                         listOf("表情", "提及用户", "图片", "转发到动态", "发布").all { has(peer, it) } &&
-                        runCatching { editor(peer) }.isSuccess
+                        runCatching { editor(peer).also { check(it.accessibleStateSet.contains(AccessibleState.EDITABLE)) } }.isSuccess
                 }
             }
             return requireNotNull(dialog("发表评论"))
@@ -3143,7 +3385,8 @@ object WindowsVideoActualRootUiFixture {
             await("original mention query field appears") { has(second, "搜索好友昵称") }
             edt {
                 currentSource()
-                val fields = descendants(second.accessibleContext).filter { it.accessibleEditableText != null && visible(it, second) }
+                val fields = descendants(second.accessibleContext).filter { it.accessibleEditableText != null &&
+                    it.accessibleStateSet.contains(AccessibleState.EDITABLE) && visible(it, second) }
                 val query = fields.filter { hasLabel(it, "搜索好友昵称") }.singleOrNull()
                     ?: fields.single { it.accessibleText?.charCount == 0 }
                 query.accessibleEditableText.setTextContents(WindowsCommentComposerReplay.MENTION_QUERY)
@@ -3741,7 +3984,10 @@ object WindowsVideoActualRootUiFixture {
         val initialPlacement = edt { (window() as ComposeWindow).placement }
         check(initialPlacement == WindowPlacement.Floating)
         clockAndCapture("110-ordinary-playing")
-        if (System.getProperty("bilipai.validation.composerInput") == "true") {
+        if (System.getProperty("bilipai.validation.videoDynamicShareInput") == "true") {
+            check(replay) { "Video share proof requires the explicit synthetic protocol/session replay" }
+            exerciseVideoDynamicShare(requireNotNull(localReplay))
+        } else if (System.getProperty("bilipai.validation.composerInput") == "true") {
             check(replay) { "Composer proof requires private synthetic API/session and loopback media" }
             exerciseCommentComposer(requireNotNull(localReplay))
             if (System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true")
@@ -3858,6 +4104,9 @@ object WindowsVideoActualRootUiFixture {
             (replayMode && System.getProperty("bilipai.validation.composerInput") == "true")) {
             "Feedback placement must use the real Main isolated composer synthetic-session replay"
         }
+        check(System.getProperty("bilipai.validation.videoDynamicShareInput") != "true" ||
+            (replayMode && System.getProperty("bilipai.validation.composerInput") == "true" &&
+                System.getProperty("bilipai.validation.brandFeedbackPlacementInput") != "true"))
         val replay = if (replayMode) WindowsVideoLocalReplay.create(report, video) else null
         if (replay != null) Runtime.getRuntime().addShutdownHook(Thread({ replay.close() }, "Owned local media cleanup"))
         DesktopOriginalRootValidationTap.install { latest.set(it) }.use {
@@ -3925,8 +4174,11 @@ object WindowsVideoActualRootUiFixture {
                         put("commentSearchInputProofCompleted", System.getProperty("bilipai.validation.commentSearchInput") == "true")
                         put("commentSearchReadResponsesAreSynthetic", System.getProperty("bilipai.validation.commentSearchInput") == "true")
                         put("commentSearchPhysicalTextHumanReviewRequired", System.getProperty("bilipai.validation.commentSearchInput") == "true")
-                        put("composerInputProofRequested", System.getProperty("bilipai.validation.composerInput") == "true")
-                        put("composerInputProofCompleted", System.getProperty("bilipai.validation.composerInput") == "true")
+                        put("composerInputProofRequested", System.getProperty("bilipai.validation.composerInput") == "true" && System.getProperty("bilipai.validation.videoDynamicShareInput") != "true")
+                        put("composerInputProofCompleted", System.getProperty("bilipai.validation.composerInput") == "true" && System.getProperty("bilipai.validation.videoDynamicShareInput") != "true")
+                        put("videoDynamicShareProofRequested", System.getProperty("bilipai.validation.videoDynamicShareInput") == "true")
+                        put("videoDynamicShareProofCompleted", System.getProperty("bilipai.validation.videoDynamicShareInput") == "true")
+                        put("videoDynamicSharePhysicalFramesRequireHumanReview", System.getProperty("bilipai.validation.videoDynamicShareInput") == "true")
                         put("brandFeedbackPlacementProofRequested", System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true")
                         put("brandFeedbackPlacementProofCompleted", System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true")
                         put("brandFeedbackPhysicalFramesRequireHumanReview", System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true")

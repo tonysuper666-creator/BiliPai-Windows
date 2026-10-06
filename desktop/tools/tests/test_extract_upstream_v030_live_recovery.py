@@ -51,7 +51,38 @@ class V030LiveRecoverySourceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             output=Path(temporary)/'main';tests=Path(temporary)/'tests'
             files=self.media().generate(REPO,output,tests)
-            self.assertEqual(13,len(files))
+            # The sole media output is 15 main files plus three complete socket
+            # tests; the existing stream test is emitted separately as before.
+            main_names = {
+                'com/android/purebilibili/data/repository/DesktopMediaPgcPolicies.kt',
+                'com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt',
+                'com/android/purebilibili/danmaku/parser/DesktopDanmakuMetadataParser.kt',
+                'com/android/purebilibili/feature/download/DesktopOfflinePositionPolicy.kt',
+                'com/android/purebilibili/data/repository/DesktopLiveHosts.kt',
+                'com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt',
+                'com/android/purebilibili/core/network/socket/LiveDanmakuConnectionHealthPolicy.kt',
+                'com/android/purebilibili/core/network/socket/DanmakuProtocol.kt',
+                'com/android/purebilibili/data/repository/DesktopLivePolicies.kt',
+                'com/android/purebilibili/feature/live/DesktopLiveDanmakuItem.kt',
+                'com/android/purebilibili/feature/bangumi/DesktopFollowPolicies.kt',
+                'com/android/purebilibili/data/repository/DesktopOriginalLiveStreamRequest.kt',
+                'com/android/purebilibili/feature/live/DesktopOriginalLiveStreamPolicy.kt',
+                'com/android/purebilibili/feature/live/components/LiveStreamSourceSheet.kt',
+                'com/android/purebilibili/feature/live/DesktopLiveReloadBudget.kt',
+            }
+            socket_test_names = {
+                'com/android/purebilibili/core/network/socket/LiveDanmakuClientTest.kt',
+                'com/android/purebilibili/core/network/socket/LiveDanmakuConnectionHealthPolicyTest.kt',
+                'com/android/purebilibili/core/network/socket/DanmakuProtocolLimitsTest.kt',
+            }
+            # emit_media uses extended Windows paths; compare their exact same
+            # physical identities without changing any generated source bytes.
+            normal = lambda path: str(path).removeprefix("\\\\?\\").replace("\\", "/")
+            expected = {normal(output / path) for path in main_names} | {normal(tests / path) for path in socket_test_names}
+            actual = [normal(path) for path in files]
+            self.assertEqual(15, len(main_names)); self.assertEqual(3, len(socket_test_names))
+            self.assertEqual(expected, set(actual))
+            self.assertEqual(len(expected), len(actual))
             sheet=list(output.rglob('LiveStreamSourceSheet.kt'));self.assertEqual(1,len(sheet))
             generated=sheet[0].read_text(encoding='utf8')
             proof=json.loads((output/'v030-live-recovery-source-proof.json').read_bytes())

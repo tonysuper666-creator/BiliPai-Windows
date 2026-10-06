@@ -28,9 +28,9 @@ on:
         type: boolean
         default: false
       comment_ui_case:
-        description: Isolated actual Main case; composer and feedback use private synthetic responses and never publish remotely
+        description: Isolated actual Main case; composer, feedback and video_share use private synthetic responses and never publish remotely
         type: choice
-        options: [search, composer, feedback]
+        options: [search, composer, feedback, video_share]
         default: search
       verify_previous_update:
         description: Also test forwarding from the exact previously delivered Windows EXE in the isolated updater fixture
@@ -241,7 +241,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          if ($env:COMMENT_UI_CASE -cnotin @('search', 'composer', 'feedback')) { throw 'Unknown independent comment UI case.' }
+          if ($env:COMMENT_UI_CASE -cnotin @('search', 'composer', 'feedback', 'video_share')) { throw 'Unknown independent comment UI case.' }
           $runtime = Join-Path $env:RUNNER_TEMP 'bilipai-comment-runtime.json'
           $initScript = Join-Path $env:GITHUB_WORKSPACE 'desktop/tools/comment-search-ui.init.gradle'
           & ./gradlew.bat -p desktop --no-daemon --console=plain --max-workers=2 "-Dorg.gradle.jvmargs=-Xmx4g" `
@@ -335,6 +335,19 @@ jobs:
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/227-feedback-video-fallback-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/feedback-placement-failure-screen.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/feedback-placement-failure-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/230-share-original-sheet-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/230-share-original-sheet-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/231-share-dynamic-draft-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/231-share-dynamic-draft-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/232-share-dynamic-cancelled-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/232-share-dynamic-cancelled-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/233-share-dynamic-retry-error-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/233-share-dynamic-retry-error-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/234-share-dynamic-success-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/234-share-dynamic-success-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/video-share-input-failure-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/video-share-input-failure-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/video-share-payload-receipt.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-native-state.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-source-admission.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window-geometry.json

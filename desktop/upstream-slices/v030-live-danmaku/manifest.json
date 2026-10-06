@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "upstreamCommit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt",
+      "file": "LiveDanmakuClient.kt",
+      "sha256": "f4691666373985bddb636a5edef644d7069607c66fee3df2a6f7c683a68afc95",
+      "gitBlob": "d6080d88fd9be1a15fab5da09ec5550065542775",
+      "bytes": 13491,
+      "testCount": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/socket/LiveDanmakuConnectionHealthPolicy.kt",
+      "file": "LiveDanmakuConnectionHealthPolicy.kt",
+      "sha256": "4fee3694bbbd680183c739269d3bed1ee12181b81e530506267067e9807a2f6d",
+      "gitBlob": "a01d9589069b5f1181479f056b64b14228131396",
+      "bytes": 2574,
+      "testCount": null
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/core/network/socket/DanmakuProtocol.kt",
+      "file": "DanmakuProtocol.kt",
+      "sha256": "74fabb3e1a8795c2c98c878f9b4074a6c9d603979c3bdf49721415f38deef0d0",
+      "gitBlob": "a68f8d675a4b800f3f2b50cefec5270cc68dafd1",
+      "bytes": 8241,
+      "testCount": null
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/network/socket/LiveDanmakuClientTest.kt",
+      "file": "LiveDanmakuClientTest.kt",
+      "sha256": "4cdb04a4dea3209dadb367b7bd4714bbb329bd521806f917080fdbd16dea7e49",
+      "gitBlob": "54b3aad9aa38cebd9cf46048340249d56776ceef",
+      "bytes": 13021,
+      "testCount": 11
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/network/socket/LiveDanmakuConnectionHealthPolicyTest.kt",
+      "file": "LiveDanmakuConnectionHealthPolicyTest.kt",
+      "sha256": "0389f6a899456df30f501edaa81254475eaade068e3497043c765d36055149af",
+      "gitBlob": "46903fbe980a36c6eed46668770670030f4958f9",
+      "bytes": 4223,
+      "testCount": 9
+    },
+    {
+      "path": "app/src/test/java/com/android/purebilibili/core/network/socket/DanmakuProtocolLimitsTest.kt",
+      "file": "DanmakuProtocolLimitsTest.kt",
+      "sha256": "1feb823d3053a69e7648b144b6bf0616fea5c3e65fc38bacdcf77bbd98f8b6ba",
+      "gitBlob": "c498f59c1d1fdf6b0db433fae740f6f2f1184d04",
+      "bytes": 5171,
+      "testCount": 10
+    }
+  ]
+}

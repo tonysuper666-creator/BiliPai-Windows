@@ -47,6 +47,9 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private val originalInteractionInput = System.getProperty("bilipai.validation.originalInteractionInput") == "true"
     private val commentSearchInput = System.getProperty("bilipai.validation.commentSearchInput") == "true"
     private val composerInput = System.getProperty("bilipai.validation.composerInput") == "true"
+    private val videoDynamicShareInput = System.getProperty("bilipai.validation.videoDynamicShareInput") == "true"
+    private val videoDynamicShareScript = if (videoDynamicShareInput) WindowsVideoDynamicShareReplay(aid) else null
+    val videoDynamicShareReplay: WindowsVideoDynamicShareReplay get() = requireNotNull(videoDynamicShareScript)
     private val brandFeedbackPlacementInput = System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true"
     private val brandFeedbackScript = if (brandFeedbackPlacementInput) WindowsBrandFeedbackReplay(aid) else null
     val brandFeedbackReplay: WindowsBrandFeedbackReplay get() = requireNotNull(brandFeedbackScript)
@@ -71,6 +74,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
         require(!brandFeedbackPlacementInput || composerInput) {
             "Brand feedback needs the unchanged isolated composer synthetic Store/session precondition"
         }
+        require(!videoDynamicShareInput || (composerInput && !brandFeedbackPlacementInput && !commentSearchInput))
         require(!Files.exists(media, NOFOLLOW_LINKS)); Files.createDirectory(media)
         createVideo(media.resolve("video.avi").toFile(), mediaSeconds); createAudio(media.resolve("audio.wav").toFile(), mediaSeconds)
         server.executor = executor
@@ -177,6 +181,20 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                         requireOwner()
                         requests.add(buildJsonObject { put("path", path); put("method", request.method); put("host", request.url.host)
                             put("originalLikeProtocolMemoryOnly", true); put("remoteMutationSent", false) })
+                        return@addInterceptor response
+                    } catch (failure: Throwable) { response.close(); throw failure }
+                }
+            }
+            if (videoDynamicShareInput) {
+                val dynamicResponse = try { videoDynamicShareScript?.respond(request, ::requireOwnerBoolean) }
+                catch (cancelled: java.util.concurrent.CancellationException) { throw cancelled }
+                catch (failure: IOException) { throw failure }
+                catch (_: Exception) { throw IOException("LOCAL video share memory request rejected") }
+                dynamicResponse?.let { response ->
+                    try {
+                        requireOwner()
+                        requests.add(buildJsonObject { put("stage", "memoryResponse"); put("path", path); put("method", request.method); put("host", request.url.host)
+                            put("originalVideoDynamicProtocolMemoryOnly", true); put("remoteMutationSent", false) })
                         return@addInterceptor response
                     } catch (failure: Throwable) { response.close(); throw failure }
                 }
@@ -356,8 +374,9 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                 require(requests.any { it["path"]?.jsonPrimitive?.content == path && it["mapped"]?.jsonPrimitive?.booleanOrNull == true })
             require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" })
         }
+        val videoDynamicShareReceipt = videoDynamicShareScript?.receipt()
         val brandFeedbackReceipt = brandFeedbackScript?.receipt()
-        val composerReceipt = composerScript?.receipt()
+        val composerReceipt = composerScript?.receipt(requireComplete = !videoDynamicShareInput)
         val commentReceipt = commentScript?.receipt()
         if (commentSearchInput) require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" &&
             (it["host"]?.jsonPrimitive?.content != "app.bilibili.com" ||
@@ -379,6 +398,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("commentSearch", commentReceipt ?: JsonNull)
             put("composerInputResponsesAreSynthetic", composerInput)
             put("composerInput", composerReceipt ?: JsonNull)
+            put("videoDynamicShareInput", videoDynamicShareInput)
+            put("videoDynamicShare", videoDynamicShareReceipt ?: JsonNull)
             put("brandFeedbackPlacementInput", brandFeedbackPlacementInput)
             put("brandFeedbackPlacement", brandFeedbackReceipt ?: JsonNull)
             put("originalInteractionMetadataIsSynthetic", originalInteractionInput)
@@ -467,6 +488,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("requests", JsonArray(requests.toList())); put("loopbackRequests", JsonArray(mediaRequests.toList()))
             put("realAccountUsed", false); put("headersOrQueryValuesRecorded", false)
             put("composerInput", composerScript?.receipt(requireComplete = false) ?: JsonNull)
+            put("videoDynamicShare", videoDynamicShareScript?.receipt(requireComplete = false) ?: JsonNull)
             put("brandFeedbackPlacement", brandFeedbackScript?.receipt(requireComplete = false) ?: JsonNull)
         }.toString(), CREATE_NEW, WRITE)
     }

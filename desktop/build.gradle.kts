@@ -158,6 +158,8 @@ val extractUpstreamMedia by tasks.registering(Exec::class) {
     inputs.dir("upstream-slices/v030-live-stream")
     inputs.file("tools/v030_live_recovery.py")
     inputs.dir("upstream-slices/v030-live-recovery")
+    inputs.file("tools/v030_live_danmaku.py")
+    inputs.dir("upstream-slices/v030-live-danmaku")
     inputs.file("tools/extract-upstream-special-danmaku.py")
     inputs.dir("upstream-slices/v029-special-danmaku")
     inputs.file("tools/sync-upstream.py")

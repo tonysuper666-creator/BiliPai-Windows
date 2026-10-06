@@ -169,8 +169,8 @@ fun LiveBrowserScreen(
             } finally { if (memory.playJob === caller) opening = false }
         }
     }
-    LaunchedEffect(account, accountEpoch) {
-        if (sessionAccount != account || sessionEpoch != accountEpoch) {
+    LaunchedEffect(account?.mid, accountEpoch) {
+        if (sessionAccount?.mid != account?.mid || sessionEpoch != accountEpoch) {
             sessionAccount = account; sessionEpoch = accountEpoch
             closeRoom(); cards = emptyList(); generation++
         }

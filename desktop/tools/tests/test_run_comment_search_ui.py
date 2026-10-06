@@ -27,6 +27,8 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
             (self.report / (name + '-screen.png')).write_bytes(self.png)
             (self.report / (name + '-accessibility.tsv')).write_text('original owned controls\n')
         if case in ('composer', 'feedback'): (self.report / 'composer-private-image.png').write_bytes(self.png)
+        if case == 'video_share':
+            (self.report / 'video-share-payload-receipt.json').write_text(json.dumps(transport['videoDynamicShare']), encoding='utf-8')
 
     def evidence(self, case):
         observation = dict(allPreExitAssertionsPassed=True, sameLiveRootAndWindow=True,
@@ -302,15 +304,15 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         runner = (TOOLS / 'run-comment-search-ui.py').read_text(encoding='utf-8')
         self.assertEqual(init.count("tasks.named('windowsVideoLocalReplayUiSmoke', JavaExec)"), 1)
         self.assertNotIn('JavaExec)', init.replace("tasks.named('windowsVideoLocalReplayUiSmoke', JavaExec)", ''))
-        self.assertIn("systemProperty('bilipai.validation.composerInput', (uiCase in ['composer', 'feedback']).toString())", init)
+        self.assertIn("systemProperty('bilipai.validation.composerInput', (uiCase in ['composer', 'feedback', 'video_share']).toString())", init)
         self.assertIn("systemProperty('bilipai.validation.brandFeedbackPlacementInput', (uiCase == 'feedback').toString())", init)
-        self.assertIn("if (uiCase in ['composer', 'feedback']) {", init)
+        self.assertIn("if (uiCase in ['composer', 'feedback', 'video_share']) {", init)
         self.assertIn("task.systemProperty('user.home', privateHome.absolutePath)", init)
         self.assertIn('marker.getText(\'UTF-8\') != token', init)
         self.assertIn('task.setDependsOn([])', init)
         self.assertIn('snapshot(ui.get()) != prepared', init)
-        self.assertIn('options: [search, composer, feedback]', workflow)
-        self.assertIn("@('search', 'composer', 'feedback')", workflow)
+        self.assertIn('options: [search, composer, feedback, video_share]', workflow)
+        self.assertIn("@('search', 'composer', 'feedback', 'video_share')", workflow)
         self.assertIn("run_owned(command, repo, env, output / 'gradle.log', 180, process)", runner)
         self.assertIn('physicalVisibilityReviewed=False', runner)
         self.assertIn('fullNativeScreenGatePassed=False', runner)
@@ -320,5 +322,100 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         for suffix in ('-screen.png', '-accessibility.tsv'):
             self.assertEqual(workflow.count('actual-ui/feedback-placement-failure' + suffix), 1)
         self.assertNotIn('actual-ui/composer-private-image.png', workflow)
+
+class VideoShareReceiptTests(unittest.TestCase):
+    setUp = CommentUiCaseReceiptTests.setUp
+    write = CommentUiCaseReceiptTests.write
+    verify = CommentUiCaseReceiptTests.verify
+
+    def evidence(self, case='video_share'):
+        obs, transport = CommentUiCaseReceiptTests.evidence(self, 'composer')
+        for key in ('composerInputProofRequested', 'composerInputProofCompleted'): obs[key] = False
+        for key in ('videoDynamicShareProofRequested', 'videoDynamicShareProofCompleted', 'videoDynamicSharePhysicalFramesRequireHumanReview'):
+            obs[key] = True
+        obs['observations'][1] = dict(id='video-share-original-dynamic-completed', actualWindowIdentity=701,
+            sameRootAndRouteAssembly=True, inputMechanism='OS_ROBOT', confirmedShareInstanceId=3,
+            confirmedShareSourceVersion=7, actualAccountEpoch=1, syntheticPrimaryMid=990000024,
+            remoteMutationSent=False, realCredentialsUsed=False, **{key: True for key in (
+                'sameActualEngagementDomain','sameAcceptedPublicationIdentity','samePausedNativeSourceAndPreferences',
+                'actualOriginalSheetAndDynamicDialog','cancelProducedZeroPosts','originalFailureDraftAndErrorRetained',
+                'manualRetryCompletedOriginalProtocol','sameSourceHiddenRestoreObserved',
+                'currentSourceConfirmedShareReceiptObserved','exactOwnedPeersDisposed','physicalFramesRequireHumanReview')})
+        transport['videoDynamicShareInput'] = True
+        transport['videoDynamicShare'] = dict(schema=1, expectedAid=170001, actualOriginalVideoDynamicProtocolConsumed=True,
+            syntheticResponsesOnly=True, remoteMutationSent=False, otherMutationPermitted=False, realCredentialsUsed=False,
+            payloads=[dict(method='POST', host='api.bilibili.com', path='/x/dynamic/feed/create/dyn', scene=5, dynType=8,
+                rid=170001, text='LOCAL video share draft', csrfIsSynthetic=True, payloadSha256='a'*64,
+                responseCode=code, terminatedInMemory=True, remoteMutationSent=False) for code in (-1,0)])
+        transport['apiRequests'] += [item for _ in range(2) for item in (dict(stage='requestObserved',scheme='https',port=443,hasQuery=True,hasFragment=False,method='POST',host='api.bilibili.com',path='/x/dynamic/feed/create/dyn'),
+            dict(stage='memoryResponse',method='POST',host='api.bilibili.com',path='/x/dynamic/feed/create/dyn',originalVideoDynamicProtocolMemoryOnly=True,remoteMutationSent=False))]
+        return obs, transport
+
+    def test_explicit_fourth_case_has_five_pairs_without_borrowing_comment_or_private_image_proof(self):
+        self.assertEqual(len(self.verify('video_share')), 5)
+        self.assertFalse((self.report / 'composer-private-image.png').exists())
+        (self.report / 'video-share-payload-receipt.json').unlink()
+        with self.assertRaises(ValueError): RUNNER.verify(self.report,self.local,self.health,self.token,self.process,'video_share')
+
+    def test_original_source_receipt_cancel_failure_retry_and_literal_scopes_are_required(self):
+        for key, bad in (('currentSourceConfirmedShareReceiptObserved',False),('confirmedShareInstanceId',True),
+                ('samePausedNativeSourceAndPreferences',False),('cancelProducedZeroPosts',False),
+                ('originalFailureDraftAndErrorRetained',False),('sameSourceHiddenRestoreObserved',False),
+                ('actualAccountEpoch',2),('remoteMutationSent',True)):
+            obs, transport=self.evidence(); obs['observations'][1][key]=bad
+            with self.subTest(key=key),self.assertRaises(ValueError): self.verify('video_share',obs,transport)
+        for key in ('composerInputProofCompleted','commentPublishingAccepted'):
+            obs,transport=self.evidence();obs[key]=True
+            with self.subTest(key=key),self.assertRaises(ValueError):self.verify('video_share',obs,transport)
+
+    def test_real_model_payload_summary_order_origin_and_two_memory_posts_are_exact(self):
+        for key,bad in (('scene',1),('dynType',1),('rid',7007),('rid',True),('responseCode',0),
+                ('payloadSha256','x'),('csrfIsSynthetic',False),('terminatedInMemory',False),('remoteMutationSent',True)):
+            obs,transport=self.evidence();transport['videoDynamicShare']['payloads'][0][key]=bad
+            with self.subTest(key=key),self.assertRaises(ValueError):self.verify('video_share',obs,transport)
+        for bad in (dict(method='POST',host='api.bilibili.com',path='/x/v2/reply/add'),
+                    dict(method='GET',host='api.bilibili.com',path='/x/dynamic/feed/create/dyn')):
+            obs,transport=self.evidence();transport['apiRequests'].append(bad)
+            with self.assertRaises(ValueError):self.verify('video_share',obs,transport)
+
+    def test_old_modes_reject_dynamic_case_and_init_workflow_keep_only_existing_task(self):
+        obs,transport=self.evidence()
+        for case in ('search','composer','feedback'):
+            with self.subTest(case=case),self.assertRaises((ValueError,KeyError)):self.verify(case,obs,transport)
+        runtime=dict(schema=1,commentUiCase='video_share',task='windowsVideoLocalReplayUiSmoke',
+            mainClass='com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture',classpath=['original.jar'],
+            javaExecutable='fixed/bin/java.exe',applicationResources='original/resources')
+        RUNNER.validate_runtime(runtime,'video_share')
+        for case in ('search','composer','feedback'):
+            with self.assertRaises(ValueError):RUNNER.validate_runtime(runtime,case)
+        workflow=(TOOLS.parents[1]/'.github/workflows/windows-desktop.yml').read_text(encoding='utf-8')
+        init=(TOOLS/'comment-search-ui.init.gradle').read_text(encoding='utf-8')
+        self.assertIn("systemProperty('bilipai.validation.videoDynamicShareInput', (uiCase == 'video_share').toString())",init)
+        self.assertIn('options: [search, composer, feedback, video_share]',workflow)
+        for stage in RUNNER.CAPTURES_BY_CASE['video_share']+['video-share-input-failure']:
+            for suffix in ('-screen.png','-accessibility.tsv'):self.assertEqual(workflow.count('actual-ui/'+stage+suffix),1)
+        self.assertEqual(workflow.count('actual-ui/video-share-payload-receipt.json'),1)
+        self.assertNotIn('actual-ui/composer-private-image.png',workflow)
+
+
+    def test_actual_replay_double_records_require_exact_observed_and_fulfilled_counts(self):
+        obs,transport=self.evidence()
+        self.assertEqual(len([r for r in transport['apiRequests'] if r.get('path')=='/x/dynamic/feed/create/dyn']),4)
+        self.verify('video_share',obs,transport)
+        for stage in ('requestObserved','memoryResponse'):
+            for change in ('missing','extra','wrong_host','wrong_method'):
+                obs,transport=self.evidence(); rows=transport['apiRequests']
+                index=next(i for i,r in enumerate(rows) if r.get('stage')==stage)
+                if change=='missing':rows.pop(index)
+                elif change=='extra':rows.append(dict(rows[index]))
+                elif change=='wrong_host':rows[index]['host']='foreign.invalid'
+                else:rows[index]['method']='GET'
+                with self.subTest(stage=stage,change=change),self.assertRaises(ValueError):self.verify('video_share',obs,transport)
+        replay=(TOOLS.parent/'src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoLocalReplay.kt').read_text(encoding='utf-8')
+        seam=replay.split('if (videoDynamicShareInput) {',1)[1].split('if (composerInput) {',1)[0]
+        self.assertIn('val dynamicResponse = try { videoDynamicShareScript?.respond',seam)
+        self.assertIn('catch (cancelled: java.util.concurrent.CancellationException) { throw cancelled }',seam)
+        self.assertIn('catch (failure: IOException) { throw failure }',seam)
+        self.assertIn('catch (_: Exception) { throw IOException("LOCAL video share memory request rejected") }',seam)
 
 if __name__ == '__main__': unittest.main()

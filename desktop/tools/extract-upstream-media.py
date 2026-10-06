@@ -23,8 +23,8 @@ SOURCES = {
     BASE + "feature/download/DownloadDanmakuAssetService.kt": "direct",
     BASE + "feature/download/OfflineEpisodeQueuePolicy.kt": "direct",
     BASE + "feature/download/OfflineVideoPlaybackPolicy.kt": "policy-extract",
-    BASE + "core/network/socket/DanmakuProtocol.kt": "direct",
-    BASE + "core/network/socket/LiveDanmakuConnectionHealthPolicy.kt": "direct",
+    BASE + "core/network/socket/DanmakuProtocol.kt": "policy-extract",
+    BASE + "core/network/socket/LiveDanmakuConnectionHealthPolicy.kt": "policy-extract",
     BASE + "core/network/socket/LiveDanmakuClient.kt": "extracted",
     BASE + "data/repository/LiveInteractionModels.kt": "direct",
     BASE + "data/repository/LiveRepository.kt": "policy-extract",
@@ -181,21 +181,8 @@ def generate(repo: Path, output: Path, test_output: Path | None = None) -> list[
     body += textwrap.indent(host_body, "    ") + "\n    return webSocketUrls\n}"
     generated.append(write(output, "com/android/purebilibili/data/repository/DesktopLiveHosts.kt", path, source, body))
 
-    path = BASE + "core/network/socket/LiveDanmakuClient.kt"
-    source = read(repo, path)
-    body = source
-    bindings = {
-        "import android.os.SystemClock\n": "",
-        "import com.android.purebilibili.core.network.NetworkModule\n": "",
-        "    private val scope: CoroutineScope,\n": "    private val scope: CoroutineScope,\n    private val httpClient: okhttp3.OkHttpClient,\n",
-        "SystemClock.elapsedRealtime()": "System.nanoTime() / 1_000_000L",
-        "NetworkModule.okHttpClient.newWebSocket": "httpClient.newWebSocket",
-    }
-    for original, replacement in bindings.items():
-        if body.count(original) != 1:
-            raise ValueError(f"Live client platform binding changed: {original!r}")
-        body = body.replace(original, replacement)
-    generated.append(write(output, "com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt", path, source, body))
+    from v030_live_danmaku import emit_socket
+    generated.extend(emit_socket(repo, output, test_output))
 
     path = BASE + "data/repository/LiveRepository.kt"
     source = read(repo, path)

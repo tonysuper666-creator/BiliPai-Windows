@@ -155,50 +155,116 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
         selectLive(data, room, quality) ?: throw BiliApiException(-1, "直播接口没有返回可播放流")
     }
 
-    /** Every connection obtains a fresh token using this shared session's signed API. */
-    internal suspend fun liveDanmakuClient(scope: CoroutineScope, roomId: Long): LiveDanmakuClient = withContext(Dispatchers.IO) {
-        repository.ensureSession()
-        val room = liveRoom(roomId)
-        val identity = repository.account.value
-        val params = mapOf("id" to room.roomId.toString(), "type" to "0", "web_location" to "444.8")
-        var response = api.live.getDanmuInfoWbi(repository.signWebParams(params))
-        if (response.code != 0)
-            response = api.live.getDanmuInfoWbi(repository.signWebParams(params, forceRefresh = true))
-        checkCode(response.code, response.message)
-        val data = response.data ?: throw BiliApiException(-1, "直播弹幕服务信息为空")
-        val urls = resolveDesktopLiveDanmakuHosts(data.host_list)
-        require(urls.isNotEmpty() && data.token.isNotBlank()) { "没有可用的直播弹幕服务器" }
-        if (repository.account.value != identity) throw CancellationException("账号已切换，请重新连接直播间")
-        LiveDanmakuClient(scope, repository.httpClient).also { it.connect(urls, data.token, room.roomId, identity?.mid ?: 0L) }
+    /** Each session client obtains a fresh token using the same captured primary owner. */
+    internal suspend fun liveDanmakuClient(scope: CoroutineScope, roomId: Long,
+        expectedEpoch: Long = repository.sessionEpoch, stillOwned: () -> Boolean = { true }): LiveDanmakuClient {
+        var pendingSocket: LiveDanmakuClient? = null
+        try { return withContext(Dispatchers.IO) {
+        val caller = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
+        val socketOwned = { scope.coroutineContext[kotlinx.coroutines.Job]?.isActive == true && stillOwned() }
+        val current = { caller?.isActive == true && socketOwned() }
+        fun assertCurrent() = repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
+        try {
+            assertCurrent()
+            val room = liveRoom(roomId, expectedEpoch, current)
+            assertCurrent()
+            val identity = repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { repository.account.value }
+            val ownedApi = repository.ownedHomeService(com.android.purebilibili.core.network.BilibiliApi::class.java,
+                "https://api.bilibili.com/", expectedEpoch, current)
+            val params = mapOf("id" to room.roomId.toString(), "type" to "0", "web_location" to "444.8")
+            var response = ownedApi.getDanmuInfoWbi(repository.signPrimaryLiveWebParams(params, expectedEpoch, current))
+            assertCurrent()
+            if (response.code != 0) {
+                response = ownedApi.getDanmuInfoWbi(repository.signPrimaryLiveWebParams(params, expectedEpoch, current, forceRefresh = true))
+                assertCurrent()
+            }
+            checkCode(response.code, response.message)
+            val data = response.data ?: throw BiliApiException(-1, "直播弹幕服务信息为空")
+            val urls = resolveDesktopLiveDanmakuHosts(data.host_list)
+            require(urls.isNotEmpty() && data.token.isNotBlank()) { "没有可用的直播弹幕服务器" }
+            assertCurrent()
+            // The lookup caller finishes on return; reconnects belong to the actual
+            // session scope, never that completed lookup child Job or a latest account.
+            val socket = LiveDanmakuClient(scope, webSocketFactory = repository.ownedHomeWebSocketFactory(expectedEpoch, socketOwned))
+            pendingSocket = socket
+            try {
+                socket.connect(urls, data.token, room.roomId, identity?.mid ?: 0L)
+                assertCurrent()
+                socket
+            } catch (error: Exception) { socket.disconnect(); throw error }
+        } catch (retired: BiliApiException) {
+            if (retired.apiCode != -101 || (repository.sessionEpoch == expectedEpoch && current())) throw retired
+            throw CancellationException("直播弹幕会话或账号已切换").also { it.initCause(retired) }
+        }
+        } } catch (failure: Throwable) {
+            // Also covers prompt cancellation when IO completed but its result
+            // was rejected while dispatching back to the lookup caller.
+            pendingSocket?.disconnect()
+            throw failure
+        }
     }
 
-    suspend fun liveDanmakuPermission(roomId: Long): LiveDanmakuPermission = withContext(Dispatchers.IO) {
+    suspend fun liveDanmakuPermission(roomId: Long, expectedEpoch: Long = repository.sessionEpoch,
+        stillOwned: () -> Boolean = { true }): LiveDanmakuPermission = withContext(Dispatchers.IO) {
         require(roomId > 0)
-        repository.ensureSession()
-        api.live.getLiveDanmakuConfig(roomId).use { parseLiveDanmakuPermission(it.string()) }
+        val caller = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
+        val current = { caller?.isActive == true && stillOwned() }
+        repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
+        repository.ensureOwnedHomeSession(expectedEpoch, current, repository.ownedHomeService(
+            com.android.purebilibili.core.network.BuvidApi::class.java, "https://api.bilibili.com/", expectedEpoch, current))
+        val ownedApi = repository.ownedHomeService(com.android.purebilibili.core.network.BilibiliApi::class.java,
+            "https://api.bilibili.com/", expectedEpoch, current)
+        ownedApi.getLiveDanmakuConfig(roomId).use {
+            repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
+            parseLiveDanmakuPermission(it.string())
+        }
     }
 
-    suspend fun liveDanmakuHistory(roomId: Long): List<LivePrefetchDanmaku> = withContext(Dispatchers.IO) {
+    suspend fun liveDanmakuHistory(roomId: Long, expectedEpoch: Long = repository.sessionEpoch,
+        stillOwned: () -> Boolean = { true }): List<LivePrefetchDanmaku> = withContext(Dispatchers.IO) {
         require(roomId > 0)
-        repository.ensureSession()
-        api.live.getLiveDanmakuHistory(roomId).use { parseLiveDanmakuHistoryItems(it.string()).getOrThrow() }
+        val caller = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
+        val current = { caller?.isActive == true && stillOwned() }
+        repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
+        repository.ensureOwnedHomeSession(expectedEpoch, current, repository.ownedHomeService(
+            com.android.purebilibili.core.network.BuvidApi::class.java, "https://api.bilibili.com/", expectedEpoch, current))
+        val ownedApi = repository.ownedHomeService(com.android.purebilibili.core.network.BilibiliApi::class.java,
+            "https://api.bilibili.com/", expectedEpoch, current)
+        ownedApi.getLiveDanmakuHistory(roomId).use {
+            repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit }
+            parseLiveDanmakuHistoryItems(it.string()).getOrThrow()
+        }
     }
-
-    /** Called only by an explicit Send button; credentials are resolved at that moment. */
-    suspend fun sendLiveDanmaku(request: LiveDanmakuSendRequest) = withContext(Dispatchers.IO) {
+    /** Called only by an explicit Send button in this captured room/account lifetime. */
+    suspend fun sendLiveDanmaku(request: LiveDanmakuSendRequest, expectedEpoch: Long = repository.sessionEpoch,
+        stillOwned: () -> Boolean = { true }) = withContext(Dispatchers.IO) {
         require(request.roomId > 0 && request.message.isNotBlank())
-        val identity = repository.requireAccount()
-        val permission = liveDanmakuPermission(request.roomId)
+        val caller = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
+        val current = { caller?.isActive == true && stillOwned() }
+        fun assertCurrent() {
+            if (repository.sessionEpoch != expectedEpoch || !current()) throw CancellationException("直播会话或账号已切换")
+            try { repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { Unit } }
+            catch (retired: BiliApiException) {
+                if (retired.apiCode != -101 || (repository.sessionEpoch == expectedEpoch && current())) throw retired
+                throw CancellationException("直播会话或账号已切换").also { it.initCause(retired) }
+            }
+        }
+        assertCurrent()
+        repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { repository.requireAccount() }
+        val permission = liveDanmakuPermission(request.roomId, expectedEpoch, current)
+        assertCurrent()
         require(permission.canSend) { permission.statusText }
         require(permission.maxLength <= 0 || request.message.length <= permission.maxLength) { "弹幕不能超过 ${permission.maxLength} 个字" }
         require(permission.availableColors.any { it.color == request.color } && permission.availableModes.any { it.mode == request.mode }) {
             "当前账号没有所选弹幕样式权限"
         }
-        val signed = repository.signWebParams(mapOf("web_location" to "444.8"))
-        if (repository.account.value != identity) throw CancellationException("账号已切换，已取消直播弹幕发送")
-        val csrf = repository.requireCsrf()
+        val signed = repository.signPrimaryLiveWebParams(mapOf("web_location" to "444.8"), expectedEpoch, current)
+        assertCurrent()
+        val csrf = repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { repository.requireCsrf() }
+        val ownedApi = repository.ownedHomeService(com.android.purebilibili.core.network.BilibiliApi::class.java,
+            "https://api.bilibili.com/", expectedEpoch, current)
         val response = try {
-            api.live.sendLiveDanmaku(signedParams = signed, roomId = request.roomId, msg = request.message,
+            ownedApi.sendLiveDanmaku(signedParams = signed, roomId = request.roomId, msg = request.message,
                 color = request.color, fontsize = request.fontSize, mode = request.mode, bubble = request.bubble,
                 roomType = request.roomType, jumpFrom = request.jumpFrom, replyMid = request.replyMid,
                 replyAttr = request.replyAttr, replyUname = request.replyUname, replayDmid = request.replayDmid,
@@ -206,14 +272,14 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
                 csrf = csrf, csrfToken = csrf)
         } catch (cancelled: CancellationException) { throw cancelled
         } catch (error: Exception) {
+            assertCurrent()
             if (signed.isEmpty()) throw error
-            if (repository.account.value != identity) throw CancellationException("账号已切换，已取消直播弹幕发送")
-            api.live.sendLiveDanmaku(roomId = request.roomId, msg = request.message, color = request.color,
+            ownedApi.sendLiveDanmaku(roomId = request.roomId, msg = request.message, color = request.color,
                 fontsize = request.fontSize, mode = request.mode, csrf = csrf, csrfToken = csrf)
         }
+        assertCurrent()
         checkCode(response.code, response.message)
     }
-
     suspend fun bangumiIndex(page: Int = 1, seasonType: Int = 1, filter: BangumiFilter = BangumiFilter()): MediaPage<BangumiCard> = withContext(Dispatchers.IO) {
         require(page > 0 && seasonType in setOf(1, 2, 3, 4, 5, 7))
         repository.ensureSession()

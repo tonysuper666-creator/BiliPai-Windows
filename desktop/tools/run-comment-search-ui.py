@@ -34,6 +34,11 @@ CAPTURES_BY_CASE['feedback'] = CAPTURES_BY_CASE['composer'] + [
     '227-feedback-video-fallback',
 ]
 
+CAPTURES_BY_CASE['video_share'] = [
+    '230-share-original-sheet', '231-share-dynamic-draft', '232-share-dynamic-cancelled',
+    '233-share-dynamic-retry-error', '234-share-dynamic-success',
+]
+
 def validate_ui_case(ui_case):
     if ui_case not in CAPTURES_BY_CASE: raise ValueError('Unknown independent comment UI case')
     return ui_case
@@ -219,6 +224,91 @@ def run_owned(command, cwd, env, log, timeout_seconds, state):
         state.update(forcedCleanup=forced, timedOut=timed_out, cleanupErrors=cleanup_errors,
                      elapsedSeconds=round(time.monotonic() - started, 3))
 
+def verify_video_share(observations, by, transport, payload_receipt):
+    """Fourth explicit case: original protocol and source receipt; no remote success claim."""
+    def need(condition, message):
+        if not condition: raise ValueError('Video share: ' + message)
+    for key in ('videoDynamicShareProofRequested', 'videoDynamicShareProofCompleted',
+                'videoDynamicSharePhysicalFramesRequireHumanReview', 'syntheticAccountSeededThroughActualSessionStore'):
+        need(observations.get(key) is True, 'missing literal assertion ' + key)
+    for key in ('composerInputProofRequested', 'composerInputProofCompleted', 'commentSearchProofRequested',
+                'commentSearchInputProofCompleted', 'commentSearchReadResponsesAreSynthetic',
+                'commentSearchPhysicalTextHumanReviewRequired', 'commentPublishingAccepted', 'imageUploadAccepted',
+                'loginUiAccepted', 'commentsSent', 'physicalStackWrittenByFixture', 'directPhysicalStackListMutation',
+                'newNativeActorCreatedByFixture', 'newRootCreatedByFixture', 'nvidiaUiProofRequested', 'nvidiaUiProofCompleted',
+                'interactionProofRequested', 'interactionProofCompleted', 'featureInputProofCompleted',
+                'hotInputProofRequested', 'hotInputProofCompleted', 'collectionInputProofRequested', 'collectionInputProofCompleted',
+                'videoMetadataProofCompleted', 'bgmInputProofRequested', 'bgmInputProofCompleted',
+                'pipInputProofRequested', 'pipInputProofCompleted', 'originalInteractionProofRequested', 'originalInteractionProofCompleted'):
+        need(observations.get(key) is False, 'mixed acceptance ' + key)
+    need('composer-original-input-closed-without-publish' not in by, 'comment proof leaked into video share')
+    session = by['composer-synthetic-session-actual-root-generation']
+    for key in ('sameActualRepository', 'originalGuestEntryAndRoutesRetired', 'actualRetainedHomeGenerationChanged', 'sameNativeMainWindow'):
+        need(session.get(key) is True, 'missing real session transition ' + key)
+    epoch = session.get('actualAccountEpoch')
+    need(type(epoch) is int and epoch > 0 and session.get('syntheticPrimaryMid') == 990000024 and
+         session.get('loginUiAccepted') is False and type(session.get('sameWindowLevelRootHandle')) is bool,
+         'synthetic session identity differs')
+    proof = by['video-share-original-dynamic-completed']
+    for key in ('sameActualEngagementDomain', 'sameAcceptedPublicationIdentity', 'samePausedNativeSourceAndPreferences',
+                'actualOriginalSheetAndDynamicDialog', 'cancelProducedZeroPosts', 'originalFailureDraftAndErrorRetained',
+                'manualRetryCompletedOriginalProtocol', 'sameSourceHiddenRestoreObserved',
+                'currentSourceConfirmedShareReceiptObserved', 'exactOwnedPeersDisposed', 'physicalFramesRequireHumanReview'):
+        need(proof.get(key) is True, 'missing current original UI assertion ' + key)
+    for key in ('confirmedShareInstanceId', 'confirmedShareSourceVersion'):
+        need(type(proof.get(key)) is int and proof[key] > 0, 'invalid confirmed receipt identity')
+    need(proof.get('inputMechanism') == 'OS_ROBOT' and proof.get('actualAccountEpoch') == epoch and
+         proof.get('syntheticPrimaryMid') == 990000024 and proof.get('remoteMutationSent') is False and
+         proof.get('realCredentialsUsed') is False, 'input/session or remote scope differs')
+    need(transport.get('videoDynamicShareInput') is True and transport.get('sameActualRepository') is True and
+         transport.get('composerInputResponsesAreSynthetic') is True and transport.get('commentSearch') is None,
+         'wrong replay case/repository')
+    for key in ('realAccountUsed', 'realBilibiliDataAccepted', 'newRootCreated', 'newPlayerCreated', 'newControllerCreated',
+                'originalVmStateWritten', 'actualNativeStateWritten', 'physicalStackWritten', 'commentSearchResponsesAreSynthetic',
+                'commentsSent', 'creatorFollowMutationSubmitted', 'bgmAccountMutationSubmitted',
+                'originalInteractionRemoteMutationSubmitted', 'collectionSubscriptionMutationSubmitted'):
+        need(transport.get(key) is False, 'unexpected replay authority ' + key)
+    auth = transport['composerInput']
+    need(auth.get('syntheticSessionSeededThroughActualStore') is True and auth.get('syntheticPrimaryMid') == 990000024 and
+         auth.get('syntheticAccountEpoch') == epoch and auth.get('loginUiAccepted') is False and
+         auth.get('realAccountUsed') is False and auth.get('mutationRequestsPermitted') is False,
+         'reused actual synthetic Store authentication differs')
+    detail = transport['videoDynamicShare']
+    need(type(detail) is dict and detail == payload_receipt and type(detail.get('schema')) is int and detail['schema'] == 1,
+         'separate payload receipt differs from actual transport')
+    for key in ('actualOriginalVideoDynamicProtocolConsumed', 'syntheticResponsesOnly'):
+        need(detail.get(key) is True, 'missing original protocol ' + key)
+    for key in ('remoteMutationSent', 'otherMutationPermitted', 'realCredentialsUsed'):
+        need(detail.get(key) is False, 'unexpected protocol scope ' + key)
+    aid = detail.get('expectedAid')
+    need(type(aid) is int and aid == 170001, 'wrong fixture video aid')
+    payloads = detail.get('payloads')
+    need(type(payloads) is list and len(payloads) == 2, 'exactly failure then manual retry required')
+    for item, code in zip(payloads, (-1, 0)):
+        need(item.get('method') == 'POST' and item.get('host') == 'api.bilibili.com' and
+             item.get('path') == '/x/dynamic/feed/create/dyn' and type(item.get('scene')) is int and item['scene'] == 5 and
+             type(item.get('dynType')) is int and item['dynType'] == 8 and type(item.get('rid')) is int and item['rid'] == aid and
+             item.get('text') == 'LOCAL video share draft' and item.get('csrfIsSynthetic') is True and
+             type(item.get('responseCode')) is int and item['responseCode'] == code and
+             item.get('terminatedInMemory') is True and item.get('remoteMutationSent') is False and
+             isinstance(item.get('payloadSha256'), str) and re.fullmatch('[0-9a-f]{64}', item['payloadSha256']),
+             'original payload/body digest/ordered synthetic response differs')
+    mutations = [item for item in transport['apiRequests'] if item.get('path') == '/x/dynamic/feed/create/dyn']
+    observed = [item for item in mutations if item.get('stage') == 'requestObserved']
+    fulfilled = [item for item in mutations if item.get('stage') == 'memoryResponse']
+    need(len(mutations) == 4 and len(observed) == 2 and len(fulfilled) == 2 and
+         all(item.get('host') == 'api.bilibili.com' and item.get('method') == 'POST' for item in mutations),
+         'exactly two observed and two fulfilled original POSTs are required')
+    need(all(item.get('scheme') == 'https' and type(item.get('port')) is int and item['port'] == 443 and
+             item.get('hasQuery') is True and item.get('hasFragment') is False for item in observed),
+         'observed original POST origin differs')
+    need(all(item.get('originalVideoDynamicProtocolMemoryOnly') is True and item.get('remoteMutationSent') is False
+             for item in fulfilled), 'actual response did not terminate in memory')
+    forbidden = {'/x/relation/modify', '/x/web-interface/archive/like', '/x/v2/reply/add', '/x/v2/reply/action',
+                 '/x/v2/reply/hate', '/x/v2/reply/del', '/x/v2/reply/report', '/x/dynamic/feed/create/dyn/submit', '/x/v3/fav/resource/deal'}
+    need(all(item.get('method') in ('GET', 'POST') and item.get('path') not in forbidden for item in transport['apiRequests']),
+         'another mutation was observed')
+
 def verify(report, local, health, token, process, ui_case='search'):
     validate_ui_case(ui_case)
     if process['exitCode'] != 0 or process['forcedCleanup'] or not process['cleanupCompleted']:
@@ -239,6 +329,11 @@ def verify(report, local, health, token, process, ui_case='search'):
     by = {row['id']: row for row in rows}
     if by['160-original-back-home'].get('physicalStack') != ['MainHost']: raise ValueError('Actual Back did not return Home')
     transport = load(no_links(report / 'local-replay-receipt.json'))
+    video_share = ui_case == 'video_share'
+    for key in ('videoDynamicShareProofRequested','videoDynamicShareProofCompleted','videoDynamicSharePhysicalFramesRequireHumanReview'):
+        if receipt.get(key, False) is not video_share: raise ValueError('Unexpected video share mode: ' + key)
+    if transport.get('videoDynamicShareInput', False) is not video_share or (not video_share and transport.get('videoDynamicShare') is not None):
+        raise ValueError('Mixed video dynamic share replay mode')
     feedback = ui_case == 'feedback'
     for key in ('brandFeedbackPlacementProofRequested','brandFeedbackPlacementProofCompleted',
                 'brandFeedbackPhysicalFramesRequireHumanReview'):
@@ -266,6 +361,8 @@ def verify(report, local, health, token, process, ui_case='search'):
             if detail.get(key) is not True: raise ValueError('Original read cycle not completed')
         if detail.get('chargedControlProtobufField') != 31 or detail.get('subReplyOriginalRootRequested') != 91001:
             raise ValueError('Wrong original protobuf/root identity')
+    elif video_share:
+        verify_video_share(receipt, by, transport, load(no_links(report / 'video-share-payload-receipt.json')))
     else:
         for key in ('composerInputProofRequested','composerInputProofCompleted','syntheticAccountSeededThroughActualSessionStore'):
             if receipt.get(key) is not True: raise ValueError('Missing actual composer assertion: ' + key)
@@ -343,6 +440,8 @@ def verify(report, local, health, token, process, ui_case='search'):
             if type(scope.get(key)) is not bool: raise ValueError('Missing actual feedback lifecycle observation: ' + key)
     like_requests = []
     for request in transport['apiRequests']:
+        if video_share and request.get('method') == 'POST' and request.get('host') == 'api.bilibili.com' and request.get('path') == '/x/dynamic/feed/create/dyn':
+            continue  # The fourth-case proof above checks exactly two memory-only original bodies.
         if feedback and request.get('method') == 'POST' and request.get('host') == 'api.bilibili.com' and request.get('path') == '/x/web-interface/archive/like':
             if request.get('originalLikeProtocolMemoryOnly') is not True or request.get('remoteMutationSent') is not False:
                 raise ValueError('Original Like request did not terminate in memory')

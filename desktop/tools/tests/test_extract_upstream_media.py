@@ -1,6 +1,7 @@
 import importlib.util
 from pathlib import Path
 import tempfile
+import shutil
 import textwrap
 import unittest
 from unittest.mock import patch
@@ -37,7 +38,7 @@ internal fun next(): Int { return 1 }
         with tempfile.TemporaryDirectory() as temporary:
             output = Path(temporary)
             generated = media.generate(REPO, output)
-            self.assertEqual(13, len(generated))
+            self.assertEqual(15, len(generated))
             pgc = (output / "com/android/purebilibili/data/repository/DesktopMediaPgcPolicies.kt").read_text(encoding="utf-8")
             original = media.read(REPO, media.BASE + "data/repository/BangumiRepository.kt")
             for name in ["decodeBangumiPlayUrlPayload", "mergeBangumiDetailSections", "validateBangumiPlayableVideoInfo"]:
@@ -74,10 +75,17 @@ internal fun next(): Int { return 1 }
             adapted_cache=adapted_cache.replace(extra_imports,"",1)
             self.assertEqual(adapted_cache, expected_cache.strip()+"\n")
             live = (output / "com/android/purebilibili/core/network/socket/LiveDanmakuClient.kt").read_text(encoding="utf-8")
-            live_original = media.read(REPO, media.BASE + "core/network/socket/LiveDanmakuClient.kt")
-            for name in ["sendAuthPacket", "startHeartbeat", "startHealthCheck", "scheduleReconnect", "handleMessage"]:
-                self.assertEqual(media.function(live_original, name, media.parser_for(REPO)), media.function(live, name, media.parser_for(REPO)))
-            self.assertIn("httpClient.newWebSocket", live)
+            import v030_live_danmaku as fixed
+            live_original = fixed.sources()["LiveDanmakuClient.kt"]
+            expected_client, edits = fixed.adapt_client(live_original)
+            self.assertEqual(expected_client, live)
+            inverse = live
+            for edit in reversed(edits):
+                at = edit["offset"]
+                self.assertEqual(edit["after"], inverse[at:at + len(edit["after"])])
+                inverse = inverse[:at] + edit["before"] + inverse[at + len(edit["after"]):]
+            self.assertEqual(live_original, inverse)
+            self.assertIn("webSocketFactory.newWebSocket", live)
             self.assertIn("System.nanoTime() / 1_000_000L", live)
             self.assertNotIn("NetworkModule.okHttpClient", live)
             self.assertNotIn("SystemClock", live)
@@ -106,15 +114,14 @@ internal fun next(): Int { return 1 }
                     media.generate(REPO, Path(temporary) / "output")
 
     def test_live_client_binding_change_requires_explicit_review(self):
-        real_read = media.read
-        def changed(repo, path):
-            value = real_read(repo, path)
-            if path.endswith("socket/LiveDanmakuClient.kt"):
-                value = value.replace("NetworkModule.okHttpClient.newWebSocket", "NetworkModule.changedClient.newWebSocket")
-            return value
-        with tempfile.TemporaryDirectory() as temporary, patch.object(media, "read", side_effect=changed):
-            with self.assertRaisesRegex(ValueError, "Live client platform binding changed"):
-                media.generate(REPO, Path(temporary))
+        import v030_live_danmaku as fixed
+        with tempfile.TemporaryDirectory() as temporary:
+            raw = Path(temporary) / "fixed-source"
+            shutil.copytree(fixed.ROOT, raw)
+            client = raw / "LiveDanmakuClient.kt"
+            client.write_bytes(client.read_bytes().replace(b"NetworkModule.okHttpClient", b"NetworkModule.changedClient"))
+            with patch.object(fixed, "ROOT", raw), self.assertRaises(AssertionError):
+                media.generate(REPO, Path(temporary) / "output")
 
 
 if __name__ == "__main__":

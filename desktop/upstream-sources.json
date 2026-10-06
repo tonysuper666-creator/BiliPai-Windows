@@ -993,7 +993,7 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/network/socket/DanmakuProtocol.kt",
-      "mode": "direct",
+      "mode": "policy-extract",
       "features": [
         "media",
         "source-parity",
@@ -1003,7 +1003,7 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/network/socket/LiveDanmakuConnectionHealthPolicy.kt",
-      "mode": "direct",
+      "mode": "policy-extract",
       "features": [
         "media",
         "source-parity",
@@ -11452,7 +11452,7 @@
     "topic": "original-detail-sort-pagination-participation-rich-link-keyword-and-back-route-integrated-offline-tested",
     "playback-settings": "original-codec-audio-subtitle-policy-integrated-native-hardware-and-pair-tested-account-subtitle-retry-pending"
   },
-  "windowsRevision": 27,
+  "windowsRevision": 28,
   "hashNormalization": "lf",
   "resources": [
     {
