@@ -122,6 +122,12 @@ jobs:
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1/*.json
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1/*.png
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1/*.txt
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan0/*.json
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan0/*.png
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan0/*.txt
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1-clear/*.json
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1-clear/*.png
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1-clear/*.txt
             ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.json
             ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.png
             ${{ runner.temp }}/bilipai-render-probe/mpv-bitblt/*.txt

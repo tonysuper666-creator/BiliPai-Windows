@@ -76,7 +76,11 @@ public final class AwtMpvProbe {
         this.caseName = caseName; this.output = output; this.dll = dll; this.shaderRoot = shaderRoot;
         this.debugObservations = debugObservations;
         // SelfTest stores this request before Canvas.addNotify creates the native session.
-        preMountPanscan = caseName.equals("mpv-default-flip-panscan1") ? 1.0 : null;
+        preMountPanscan = switch (caseName) {
+            case "mpv-default-flip-panscan1", "mpv-default-flip-panscan1-clear" -> 1.0;
+            case "mpv-default-flip-panscan0" -> 0.0;
+            default -> null;
+        };
         deadline = started + TimeUnit.SECONDS.toNanos(shaderCase() ? 90 : caseName.equals("awt-alpha-only") ? 25 : 30);
         result.put("schema", 1); result.put("case", caseName); result.put("diagnosticOnly", true);
         result.put("passed", false); result.put("beganUtc", Instant.now().toString());
@@ -105,13 +109,13 @@ public final class AwtMpvProbe {
                     cli.put(args[i], args[i + 1]) != null) throw new IllegalArgumentException("Invalid or duplicate CLI argument");
             }
             String name = cli.get("--case");
-            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive", "mpv-default-flip-panscan1",
+            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear",
                 "shader-clear-default-retained", "shader-clear-default-seek", "shader-clear-nodumb-retained", "shader-clear-nodumb-seek").contains(name))
                 throw new IllegalArgumentException("--case must select one diagnostic case");
             String debugFlag = cli.getOrDefault("--surface-debug-observations", "false");
             if (!Set.of("true", "false").contains(debugFlag)) throw new IllegalArgumentException("Invalid debug observation flag");
             boolean debugObservations = debugFlag.equals("true");
-            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug", "mpv-default-flip-panscan1").contains(name))
+            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear").contains(name))
                 throw new IllegalArgumentException("Debug observations require the explicit surface-debug cases");
             if (name.equals("mpv-default-debug") && !debugObservations) throw new IllegalArgumentException("Debug case requires explicit observations");
             Path output = Path.of(Objects.requireNonNull(cli.get("--output"), "Missing --output")).toAbsolutePath().normalize();
@@ -217,6 +221,10 @@ public final class AwtMpvProbe {
                 catch (Throwable diagnostic) { result.put("failureAuxiliaryError", safe(diagnostic.toString())); }
             }
         } finally {
+            if (actor != null && caseName.equals("mpv-default-flip-panscan1-clear")) {
+                try { observePanscanReset(code == 0); }
+                catch (Throwable diagnostic) { result.put("panscanResetAuxiliaryError", safe(diagnostic.toString())); }
+            }
             if (actor != null) {
                 result.put("native", actor.snapshot);
                 result.put("presentationSelection", actor.presentationSelection);
@@ -584,6 +592,60 @@ public final class AwtMpvProbe {
         throw new GateFailure("Physical screen gate failed: " + stage + " " + rejected);
     }
 
+    /** Later same-entry reset observation; never changes the original case verdict or physical gate. */
+    private void observePanscanReset(boolean originalPassed) throws Exception {
+        Map<String, Object> row = new LinkedHashMap<>(); result.put("panscanResetAuxiliary", row);
+        row.put("auxiliaryOnly", true); row.put("originalCasePassed", originalPassed);
+        row.put("operation", "same actor/entry panscan 1 to 0; no reload, seek, pause or backend change");
+        row.put("nativeTiming", "same-worker property readbacks; nearby Robot pixels are not atomic with native snapshots");
+        Map<String, Object> initial = actor.snapshot;
+        String entry = nativeValue(initial, "playlist/0/id"), pause = nativeValue(initial, "pause");
+        row.put("nativeBefore", initial);
+        if (actor.failure != null || !actor.fileLoaded || entry == null || !"1".equals(nativeValue(initial, "playlist-count")) ||
+            !("yes".equals(pause) || "no".equals(pause)) || actor.number("time-pos") > 8.0 ||
+            deadline - System.nanoTime() <= TimeUnit.SECONDS.toNanos(7)) {
+            row.put("status", "skipped: same source or bounded recovery time unavailable"); publishReport(); return;
+        }
+        CompletableFuture<Map<String, Object>> command = null;
+        BufferedImage image = null; String rejected = "No recovery capture";
+        try {
+            command = actor.clearPanscanForEntry(entry, pause);
+            row.put("workerChange", command.get(2, TimeUnit.SECONDS));
+            waitCondition("same-entry panscan reset readback", 1_000, () -> actor.number("panscan") == 0.0 &&
+                entry.equals(actor.value("playlist/0/id")) && pause.equals(actor.value("pause")));
+            long end = stageDeadline(2_000);
+            do {
+                checkDeadline(); Map<String, Object> before = actor.snapshot;
+                image = capture("panscan-reset-recovery"); Map<String, Object> after = actor.snapshot;
+                try {
+                    require(actor.fileLoaded && entry.equals(nativeValue(before, "playlist/0/id")) &&
+                        entry.equals(nativeValue(after, "playlist/0/id")) && "1".equals(nativeValue(after, "playlist-count")) &&
+                        pause.equals(nativeValue(before, "pause")) && pause.equals(nativeValue(after, "pause")) &&
+                        "0.000000".equals(nativeValue(before, "panscan")) && "0.000000".equals(nativeValue(after, "panscan")),
+                        "Original entry/pause or cleared panscan changed during recovery capture");
+                    FixtureViewport viewport = FixtureViewport.from(before);
+                    require(viewport.equals(FixtureViewport.from(after)), "Recovery viewport changed during capture");
+                    Map<String, Object> integrity = checkFixtureSurface(image, viewport);
+                    ImageIO.write(image, "png", output.resolve("screen-panscan-reset.png").toFile());
+                    row.put("status", "physical recovery passed original pixel gate"); row.put("image", "screen-panscan-reset.png");
+                    row.put("fixtureIntegrity", integrity); return;
+                } catch (IllegalStateException invalid) { rejected = safe(invalid.getMessage()); }
+                Thread.sleep(100);
+            } while (System.nanoTime() < end);
+            row.put("status", "physical recovery did not pass original pixel gate"); row.put("rejected", rejected);
+            if (image != null) {
+                ImageIO.write(image, "png", output.resolve("screen-panscan-reset.png").toFile());
+                row.put("image", "screen-panscan-reset.png");
+            }
+        } catch (Exception | LinkageError invalid) {
+            if (command != null && !command.isDone()) command.cancel(false);
+            if (invalid instanceof InterruptedException) Thread.currentThread().interrupt();
+            row.put("status", "recovery observation unavailable"); row.put("error", safe(invalid.toString()));
+        } finally {
+            row.put("nativeAfter", actor.snapshot); publishReport();
+        }
+    }
+
     /** Failure-only decoded input; never contributes to the physical screen gate. */
     private void observeFailedSurfaceVideo() throws Exception {
         Map<String, Object> row = new LinkedHashMap<>(); result.put("failedSurfaceVideoAuxiliary", row);
@@ -942,6 +1004,22 @@ public final class AwtMpvProbe {
                 return Map.of("preMountRequest", preMountPanscan, "nativeBeforeLoad", before,
                     "playlistCountBeforeLoad", count, "nativeAfterViewportReset", applied,
                     "loadCommandAccepted", true, "sameActorWorker", Thread.currentThread() == worker);
+            });
+        }
+        CompletableFuture<Map<String, Object>> clearPanscanForEntry(String entry, String pause) {
+            require(selectedCase.equals("mpv-default-flip-panscan1-clear"), "Only the explicit reset observation changes panscan");
+            return submit((api, handle) -> {
+                String before = readString(api, handle, "panscan");
+                require(fileLoaded && entry.equals(readString(api, handle, "playlist/0/id")) &&
+                    "1".equals(readString(api, handle, "playlist-count")) && pause.equals(readString(api, handle, "pause")) &&
+                    before != null && Double.parseDouble(before) == 1.0, "Original panscan source changed before reset");
+                check(api, api.mpv_set_property_string(handle, "panscan", "0"), "panscan reset");
+                String after = readString(api, handle, "panscan");
+                require(after != null && Double.parseDouble(after) == 0.0 &&
+                    entry.equals(readString(api, handle, "playlist/0/id")) && pause.equals(readString(api, handle, "pause")),
+                    "Same-entry panscan reset readback failed");
+                return Map.of("entry", entry, "pause", pause, "nativeBefore", before, "nativeAfter", after,
+                    "sameActorWorker", Thread.currentThread() == worker);
             });
         }
         CompletableFuture<Map<String, Object>> screenshotForEntry(String entry, Path target, String mode) {
