@@ -3278,7 +3278,7 @@ object WindowsVideoActualRootUiFixture {
                 fun diagnostic(block: () -> JsonObject): JsonObject = runCatching(block).getOrElse { error ->
                     buildJsonObject { put("available", false); put("errorClass", error.javaClass.name) }
                 }
-                fun sceneSnapshot(): JsonObject = diagnostic {
+                fun sceneSnapshot(expectedPressWhen: Long? = null): JsonObject = diagnostic {
                     check(EventQueue.isDispatchThread()); guard()
                     fun field(value: Any, type: String, name: String): Any? {
                         check(value.javaClass.name == type)
@@ -3372,6 +3372,118 @@ object WindowsVideoActualRootUiFixture {
                             val clickable = matches.single()
                             val state = getter(clickable, "androidx.compose.foundation.AbstractClickableNode", "getGestureState-7meUWtM") as String
                             check(state in setOf("idle", "waiting", "recognized"))
+                            fun pressHitPath(pressWhen: Long): JsonObject {
+                                val readback = linkedMapOf<String, kotlinx.serialization.json.JsonElement>()
+                                fun <T> observed(name: String, value: T): T {
+                                    readback[name] = when (value) {
+                                        null -> JsonNull
+                                        is Boolean -> JsonPrimitive(value)
+                                        is Int -> JsonPrimitive(value)
+                                        is Long -> JsonPrimitive(value)
+                                        else -> error("Unsupported diagnostic scalar")
+                                    }
+                                    return value
+                                }
+                                fun unavailable(reason: String, error: Throwable? = null): JsonObject = buildJsonObject {
+                                    put("available", false); put("reason", reason); put("readback", JsonObject(readback.toMap()))
+                                    error?.let { put("errorClass", it.javaClass.name) }
+                                }
+                                observed("expectedPressWhenMillis", pressWhen)
+                                observed("mainOwnerIdentity", System.identityHashCode(mainOwner))
+                                return runCatching readPath@{
+                                    // Read only the completed processor cache for this exact still-held press.
+                                    // Never call hitTest, dispatch, cancel, clear or a pointer mutation method.
+                                    val event = previous.getOrThrow()
+                                    observed("currentEventPresent", event != null)
+                                    if (event == null) return@readPath unavailable("EXACT_PRESS_NO_LONGER_CURRENT")
+                                    val eventType = "androidx.compose.ui.input.pointer.PointerInputEvent"
+                                    val currentType = observed("currentEventType", field(event, eventType, "eventType") as Int)
+                                    val currentWhen = observed("currentEventWhenMillis", field(event, eventType, "uptime") as Long)
+                                    if (currentType != 1 || currentWhen != pressWhen) return@readPath unavailable("EXACT_PRESS_NO_LONGER_CURRENT")
+                                    val pointers = field(event, eventType, "pointers") as List<*>
+                                    observed("currentPointerCount", pointers.size)
+                                    check(pointers.size == 1)
+                                    val pointer = requireNotNull(pointers.single())
+                                    val dataType = "androidx.compose.ui.input.pointer.PointerInputEventData"
+                                    val pointerDown = observed("currentPointerDown", field(pointer, dataType, "down") as Boolean)
+                                    val pointerWhen = observed("currentPointerWhenMillis", field(pointer, dataType, "uptime") as Long)
+                                    val pointerId = observed("pointerId", field(pointer, dataType, "id") as Long)
+                                    if (!pointerDown || pointerWhen != pressWhen) return@readPath unavailable("EXACT_PRESS_POINTER_MISMATCH")
+                                    val processor = requireNotNull(field(mainOwner, "androidx.compose.ui.node.RootNodeOwner", "pointerInputEventProcessor"))
+                                    observed("processorIdentity", System.identityHashCode(processor))
+                                    val processorType = "androidx.compose.ui.input.pointer.PointerInputEventProcessor"
+                                    val hitTracker = requireNotNull(field(processor, processorType, "hitPathTracker"))
+                                    observed("trackerIdentity", System.identityHashCode(hitTracker))
+                                    val hitType = "androidx.compose.ui.input.pointer.HitPathTracker"
+                                    val processing = observed("processorIsProcessing", field(processor, processorType, "isProcessing") as Boolean)
+                                    val dispatching = observed("trackerDispatchingEvent", field(hitTracker, hitType, "dispatchingEvent") as Boolean)
+                                    val mouseProcessing = observed("mediatorIsMouseEventProcessing", field(mediator, "androidx.compose.ui.scene.ComposeSceneMediator", "isMouseEventProcessing") as Boolean)
+                                    if (processing || dispatching || mouseProcessing) return@readPath unavailable("PRESS_PROCESSOR_STILL_DISPATCHING")
+                                    val producer = requireNotNull(field(processor, processorType, "pointerInputChangeEventProducer"))
+                                    observed("producerIdentity", System.identityHashCode(producer))
+                                    val history = requireNotNull(field(producer, "androidx.compose.ui.input.pointer.PointerInputChangeEventProducer", "previousPointerInputData"))
+                                    check(history.javaClass.name == "androidx.collection.LongSparseArray")
+                                    val latest = history.javaClass.getDeclaredMethod("get", java.lang.Long.TYPE).invoke(history, pointerId)
+                                    observed("processorHistoryPresent", latest != null)
+                                    if (latest == null) return@readPath unavailable("EXACT_PRESS_NOT_IN_PROCESSOR_HISTORY")
+                                    observed("processorHistoryIdentity", System.identityHashCode(latest))
+                                    val historyType = "androidx.compose.ui.input.pointer.PointerInputChangeEventProducer\$PointerInputData"
+                                    val latestWhen = observed("processorHistoryWhenMillis", field(latest, historyType, "uptime") as Long)
+                                    val latestDown = observed("processorHistoryDown", field(latest, historyType, "down") as Boolean)
+                                    if (latestWhen != pressWhen || !latestDown) return@readPath unavailable("EXACT_PRESS_NOT_IN_PROCESSOR_HISTORY")
+                                    // Node caches store chain roots. A delegated target must remain unknown.
+                                    check(getter(clickable, nodeType, "getNode") === clickable)
+                                    val pathRoot = requireNotNull(getter(hitTracker, hitType, "getRoot\$ui"))
+                                    val seen = java.util.IdentityHashMap<Any, Boolean>()
+                                    val nodes = mutableListOf<JsonObject>()
+                                    var selectedTracked = false
+                                    var selectedIn = false
+                                    var selectedMatches = 0
+                                    fun visit(parent: Any, depth: Int) {
+                                        check(depth <= 8 && seen.size < 64 && seen.put(parent, true) == null)
+                                        val children = requireNotNull(getter(parent, "androidx.compose.ui.input.pointer.NodeParent", "getChildren"))
+                                        val size = getter(children, "androidx.compose.runtime.collection.MutableVector", "getSize") as Int
+                                        val content = getter(children, "androidx.compose.runtime.collection.MutableVector", "getContent") as Array<*>
+                                        check(size in 0..64 && size <= content.size)
+                                        for (index in 0 until size) {
+                                            val node = requireNotNull(content[index])
+                                            check(node.javaClass.name == "androidx.compose.ui.input.pointer.Node")
+                                            val modifier = requireNotNull(getter(node, node.javaClass.name, "getModifierNode"))
+                                            val ids = requireNotNull(getter(node, node.javaClass.name, "getPointerIds"))
+                                            val idsType = "androidx.compose.ui.input.pointer.util.PointerIdArray"
+                                            val idCount = getter(ids, idsType, "getSize") as Int
+                                            check(idCount in 0..8)
+                                            val idGetter = Class.forName(idsType).getDeclaredMethod("get-_I2yYro", Integer.TYPE)
+                                            val pointerIds = (0 until idCount).map { idGetter.invoke(ids, it) as Long }
+                                            val selected = modifier === clickable
+                                            val inPath = pointerId in pointerIds
+                                            val isIn = field(node, node.javaClass.name, "isIn") as Boolean
+                                            if (selected) {
+                                                selectedMatches++; selectedTracked = inPath; selectedIn = isIn
+                                            }
+                                            check(modifier.javaClass.name.length <= 256)
+                                            nodes.add(buildJsonObject {
+                                                put("depth", depth + 1); put("modifierClass", modifier.javaClass.name)
+                                                put("modifierIdentity", System.identityHashCode(modifier)); put("matchesSelectedClickable", selected)
+                                                put("pointerIds", JsonArray(pointerIds.map(::JsonPrimitive))); put("containsPressPointer", inPath); put("isIn", isIn)
+                                            })
+                                            visit(node, depth + 1)
+                                        }
+                                    }
+                                    visit(pathRoot, 0)
+                                    check(selectedMatches <= 1)
+                                    buildJsonObject {
+                                        put("available", true); put("scope", "EXISTING_COMPLETED_PRESS_HIT_PATH_CACHE_ONLY")
+                                        put("readback", JsonObject(readback.toMap()))
+                                        put("pressWhenMillis", pressWhen); put("pointerId", pointerId)
+                                        put("processorIdentity", System.identityHashCode(processor)); put("trackerIdentity", System.identityHashCode(hitTracker))
+                                        put("selectedClickableIdentity", System.identityHashCode(clickable)); put("selectedClickableInTrackedPath", selectedTracked)
+                                        put("selectedNodeIsIn", if (selectedMatches == 1) JsonPrimitive(selectedIn) else JsonNull)
+                                        put("nodes", JsonArray(nodes)); put("cacheNodesVisited", seen.size)
+                                        put("mainPassDeliveryProven", false); put("consumptionBeforeTargetProven", false); put("primaryEligibilityProven", false)
+                                    }
+                                }.getOrElse { unavailable("READ_OR_SHAPE_UNAVAILABLE", it) }
+                            }
                             buildJsonObject {
                                 put("available", true); put("scope", "CAPTURED_DETAIL_LAYOUT_MAIN_OWNER_GETTERS_ONLY")
                                 put("accessibleIdentity", System.identityHashCode(control)); put("layoutIdentity", System.identityHashCode(layout))
@@ -3380,6 +3492,7 @@ object WindowsVideoActualRootUiFixture {
                                 put("attached", getter(clickable, nodeType, "isAttached") as Boolean)
                                 put("enabled", getter(clickable, "androidx.compose.foundation.AbstractClickableNode", "getEnabled") as Boolean)
                                 put("gestureState", state); put("callbackExecutionProven", false)
+                                expectedPressWhen?.let { put("pressHitPath", pressHitPath(it)) }
                             }
                         }
                     }
@@ -3468,19 +3581,21 @@ object WindowsVideoActualRootUiFixture {
                         eventCounts[key] = ((eventCounts[key] ?: 0) + 1).coerceAtMost(1_000_000)
                         if (eventSequence >= 16) { droppedEvents = (droppedEvents + 1).coerceAtMost(1_000_000); return }
                         val sequence = ++eventSequence
+                        val pressWhen = event.`when`.takeIf { event.id == MouseEvent.MOUSE_PRESSED && event.button == MouseEvent.BUTTON1 &&
+                            source.javaClass.name == "org.jetbrains.skiko.SkiaLayer\$1" }
                         val delivered = diagnostic { buildJsonObject {
                             put("available", true); put("sequence", sequence); put("eventId", event.id)
                             put("eventWhenMillis", event.`when`); put("observedAtNanos", System.nanoTime())
                             put("sourceIdentity", System.identityHashCode(source)); put("sourceClass", source.javaClass.name)
                             put("button", event.button); put("modifiersEx", event.modifiersEx); put("consumedAtObserver", event.isConsumed)
                             put("x", event.x); put("y", event.y); put("screenX", event.xOnScreen); put("screenY", event.yOnScreen)
-                            put("sceneAtComponentObserver", sceneSnapshot())
+                            put("sceneAtComponentObserver", sceneSnapshot(pressWhen))
                         } }
                         // Runs after this dispatch has returned; it may follow later
                         // queued input too, so this snapshot is not an atomic event trace.
                         EventQueue.invokeLater {
                             if (observationActive) observedEvents.add(buildJsonObject {
-                                put("event", delivered); put("sceneAfterDispatch", sceneSnapshot())
+                                put("event", delivered); put("sceneAfterDispatch", sceneSnapshot(pressWhen))
                             })
                         }
                     }
