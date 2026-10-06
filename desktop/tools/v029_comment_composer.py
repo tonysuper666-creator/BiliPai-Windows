@@ -271,6 +271,68 @@ def overlay_delta(repo,output,body):
         completeOriginalContentPreserved=True,canonicalToGenerated=whole_proof(before,body)))
     return body
 
+def attachment_layout(body):
+    # Relocate one original image item body, not a replacement picker/upload UI.
+    # The full before/after source is still reversed by dialog_delta's whole proof.
+    import textwrap
+    begin = body.index('                        if (selectedImageUris.isNotEmpty()) {')
+    end = body.index('                        // 2. 底部工具栏', begin)
+    images = body[begin:end]
+    item_start = images.index('                                    Box(')
+    item_end = images.index('\n                                }\n', item_start)
+    original_item = images[item_start:item_end]
+    compact_item = replace(textwrap.dedent(original_item), '.size(64.dp)', '.size(thumbnailSize)')
+    thumbnail = ('    val selectedImageThumbnail: @Composable (String, androidx.compose.ui.unit.Dp) -> Unit = { uri, thumbnailSize ->\n'
+        + textwrap.indent(compact_item, '        ') + '\n    }\n\n')
+    body = replace(body, '    AnimatedVisibility(\n        visible = visible,', thumbnail + '    AnimatedVisibility(\n        visible = visible,')
+    legacy = replace(images, original_item, '                                    selectedImageThumbnail(uri, 64.dp)')
+    legacy = replace(legacy, 'if (selectedImageUris.isNotEmpty()) {', 'if (!nativeAttachments && selectedImageUris.isNotEmpty()) {')
+    body = replace(body, images, legacy)
+    # The true native-client Local is provided INSIDE the Windows Dialog content.
+    body = replace(body, '        ) {\n            val density = LocalDensity.current\n',
+        '        ) {\n            val density = LocalDensity.current\n            val nativeAttachments = com.bilipai.desktop.ui.LocalDesktopNativeCommentComposerClient.current\n')
+    body = replace(body, '(if (selectedImageUris.isEmpty()) 0 else 112)',
+        'com.bilipai.desktop.ui.desktopCommentComposerImagePanelBudget(selectedImageUris.size)')
+    # Keep these complete original callback/UI blocks verbatim inside layout slots.
+    begin = body.index('                        // 2. 底部工具栏')
+    end = body.index('\n                        if (!canInputComment) {', begin)
+    toolbar = body[begin:end]
+    tools_start = toolbar.index('                                // 转发到动态')
+    tools_end = toolbar.index('\n                            }\n\n                            Spacer', tools_start)
+    tools = toolbar[tools_start:tools_end]
+    send_start = toolbar.index('                            // 发送按钮')
+    send_end = toolbar.rindex('\n                        }')
+    send = toolbar[send_start:send_end]
+    replacement = '''                        // 2. 底部工具栏：Windows 附件共享原有高度，不挤压原生编辑器。
+                        com.bilipai.desktop.ui.DesktopCommentComposerToolbar(
+                            modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+                            toolHeight = layoutPolicy.toolbarToolButtonSizeDp.dp,
+                            toolSpacing = layoutPolicy.toolbarToolSpacingDp.dp,
+                            attachments = if (nativeAttachments && selectedImageUris.isNotEmpty()) {{
+                                AppText(
+                                    text = "${selectedImageUris.size}/9",
+                                    modifier = Modifier.semantics { contentDescription = "已选 ${selectedImageUris.size}/9 张" },
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    maxLines = 1,
+                                )
+                                Row(Modifier.weight(1f).horizontalScroll(rememberScrollState()),
+                                    horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                                    selectedImageUris.forEach { uri ->
+                                        key(uri) { selectedImageThumbnail(uri, 40.dp) }
+                                    }
+                                }
+                            }} else null,
+                            tools = {
+''' + tools + '\n                            },\n                            send = {\n' + send + '\n                            },\n                        )\n'
+    body = replace(body, toolbar, replacement)
+    body = replace(body, 'import androidx.compose.ui.semantics.Role\n',
+        'import androidx.compose.ui.semantics.Role\nimport androidx.compose.ui.semantics.semantics\nimport androidx.compose.ui.semantics.contentDescription\n')
+    return body, dict(originalItemSha256LF=sha(original_item.encode()),
+        singleOriginalImageItemBody=True, toolAndSendBodiesVerbatim=True,
+        imageItemSizeAdaptation=whole_proof(textwrap.dedent(original_item), compact_item),
+        originalToolsSha256LF=sha(tools.encode()), originalSendSha256LF=sha(send.encode()))
+
 def dialog_delta(repo,output,canonical,body):
     sources=fixed(repo)
     if canonical.replace('\r\n','\n') != sources[DIALOG]: raise ValueError('Complete original input dialog changed between fixed025 and fixed029')
@@ -286,9 +348,10 @@ def dialog_delta(repo,output,canonical,body):
     body=replace(body,'                        .wrapContentHeight(),\n','                        .then(desktopCommentComposerSurfaceHeight()),\n')
     body=replace(body,'                        modifier = Modifier\n                            .padding(layoutPolicy.sheetHorizontalPaddingDp.dp)\n','                        modifier = Modifier\n                            .then(desktopCommentComposerColumnHeight())\n                            .padding(layoutPolicy.sheetHorizontalPaddingDp.dp)\n')
     body=replace(body,'                                .heightIn(\n                                    min = layoutPolicy.inputBoxMinHeightDp.dp,\n                                    max = layoutPolicy.inputBoxMaxHeightDp.dp\n                                )\n','                                .then(desktopCommentComposerInputHeight(\n                                    min = layoutPolicy.inputBoxMinHeightDp.dp,\n                                    max = layoutPolicy.inputBoxMaxHeightDp.dp\n                                ))\n')
+    body, attachments = attachment_layout(body)
     save(output,'v029-domain-comment-dialog-source',dict(upstreamCommit=COMMIT,rawSources=PINS,
         fixedCanonicalEntireBodyIdentical=True,mentionDraftPublicationRepair=True,
-        windowsNativeClientLayoutOnly=True,
+        windowsNativeClientLayoutOnly=True, windowsStableAttachmentToolbar=attachments,
         platformAndDraftPublication=whole_proof(before,body)))
     return body
 
