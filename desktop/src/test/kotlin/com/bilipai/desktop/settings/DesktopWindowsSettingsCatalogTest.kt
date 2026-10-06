@@ -25,11 +25,15 @@ class DesktopWindowsSettingsCatalogTest {
         assertEquals(mountedTargets, targets)
         assertTrue(targets.intersect(removedTargets).isEmpty())
         val focusEntries = desktopWindowsSettingsSearchEntries.filter { it.focus != null }
-        val expectedFocusAnchors = setOf(SettingsSearchTarget.PLAYBACK to "windows_audio_output",
+        val expectedFocusAnchors = setOf(SettingsSearchTarget.PLAYBACK to "windows_playback_quality",
+            SettingsSearchTarget.PLAYBACK to "windows_playback_speed_subtitle",
+            SettingsSearchTarget.PLAYBACK to "windows_playback_behavior",
+            SettingsSearchTarget.PLAYBACK to "windows_playback_comments",
+            SettingsSearchTarget.PLAYBACK to "windows_audio_output",
             SettingsSearchTarget.APPEARANCE to "windows_display_scale",
             SettingsSearchTarget.PLAYBACK to "windows_video_enhancement")
         assertEquals(expectedFocusAnchors, focusEntries.map { it.target to it.focus }.toSet())
-        assertEquals(3, focusEntries.size)
+        assertEquals(8, focusEntries.size)
         // No obsolete original phone focus token is advertised by the new controller.
         assertTrue(desktopWindowsSettingsSearchEntries.all { it.focus == null ||
             (it.target to it.focus) in expectedFocusAnchors })

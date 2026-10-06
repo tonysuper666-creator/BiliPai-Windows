@@ -42,7 +42,8 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
     val detailedCommentTime = desktopWindowsSettingsValue(remember(context) { Preferences.getDetailedCommentTimeEnabled(context) })
     val codecChoices = listOf("avc1" to "AVC / H.264", "hev1" to "HEVC / H.265", "av01" to "AV1")
     DesktopWindowsSettingsPane("播放与音频", onBack) {
-        DesktopWindowsSettingsGroup("解码与画质") {
+        DesktopWindowsSettingsGroup("解码与画质", modifier = Modifier.desktopSettingsSearchFocusAnchor(
+            SettingsSearchTarget.PLAYBACK, "windows_playback_quality")) {
             DesktopWindowsSettingsSwitch("硬件解码", state.hwDecode,
                 description = "使用显卡解码；更改后由播放器按原有恢复策略应用。",
                 onChange = bindings::toggleHwDecode)
@@ -71,7 +72,8 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
             }
             Text("实际画质与编码取决于视频和账号权限。", style = MaterialTheme.typography.bodySmall)
         }
-        DesktopWindowsSettingsGroup("倍速与字幕") {
+        DesktopWindowsSettingsGroup("倍速与字幕", modifier = Modifier.desktopSettingsSearchFocusAnchor(
+            SettingsSearchTarget.PLAYBACK, "windows_playback_speed_subtitle")) {
             DesktopWindowsSettingsSwitch("记住上次播放倍速", rememberSpeed) { enabled ->
                 writer.launch { Preferences.setRememberLastPlaybackSpeed(context, enabled) }
             }
@@ -85,7 +87,8 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
                 writer.launch { Preferences.setSubtitleAutoPreference(context, value) }
             }
         }
-        DesktopWindowsSettingsGroup("播放行为") {
+        DesktopWindowsSettingsGroup("播放行为", modifier = Modifier.desktopSettingsSearchFocusAnchor(
+            SettingsSearchTarget.PLAYBACK, "windows_playback_behavior")) {
             DesktopWindowsSettingsSwitch("后台播放", backgroundPlayback,
                 description = "最小化窗口后继续播放；听视频和小窗遵循各自的播放模式。") { enabled ->
                 writer.launch { Preferences.setBackgroundPlaybackEnabled(context, enabled) }
@@ -99,7 +102,8 @@ internal fun DesktopWindowsPlaybackSettings(bindings: DesktopOriginalPlaybackSet
                 writer.launch { Preferences.setPlaybackCompletionBehavior(context, value) }
             }
         }
-        DesktopWindowsSettingsGroup("评论") {
+        DesktopWindowsSettingsGroup("评论", modifier = Modifier.desktopSettingsSearchFocusAnchor(
+            SettingsSearchTarget.PLAYBACK, "windows_playback_comments")) {
             DesktopWindowsSettingsChoice("默认评论排序", commentSort,
                 listOf(3 to "按热度", 2 to "按时间")) { value ->
                 // The existing whole original setter joins this page's canonical/mirror journal.

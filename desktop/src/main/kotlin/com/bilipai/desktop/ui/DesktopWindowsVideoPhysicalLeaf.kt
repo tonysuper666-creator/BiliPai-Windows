@@ -692,20 +692,20 @@ internal class DesktopWindowsVideoActions(
                         } else Text("正在读取视频信息", style = MaterialTheme.typography.bodyMedium)
                         HorizontalDivider()
                         Text("播放设置", style = MaterialTheme.typography.titleSmall)
-                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             FilterChip(state.audioOnly, onClick = { if(command { native.setAudioOnly(!state.audioOnly) }) preferencesChanged(preferences.copy(audioOnly=!state.audioOnly)) }, label = { Text("仅音频") })
                             FilterChip(preferences.danmaku.enabled, onClick = { if (current()) actions.toggleDanmaku() }, label = { Text("弹幕") })
                             TextButton(onClick = { if (current()) actions.danmakuSettings() }) { Text("弹幕设置") }
                         }
                         Text("视频编码", style = MaterialTheme.typography.labelLarge)
-                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             listOf("hev1" to "HEVC", "av01" to "AV1", "avc1" to "H.264").forEach { (codec, label) ->
                                 FilterChip(preferences.videoCodecPreference == codec,
                                     onClick = { if(current()) preferencesChanged(preferences.copy(videoCodecPreference=codec)) }, label = { Text(label) })
                             }
                         }
                         Text("字幕显示", style = MaterialTheme.typography.labelLarge)
-                        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                             SubtitleDisplayMode.entries.forEach { mode -> FilterChip(subtitleMode==mode,
                                 onClick={if(current()) subtitleOverride=mode}, label={Text(when(mode) {SubtitleDisplayMode.OFF->"字幕关闭";SubtitleDisplayMode.PRIMARY_ONLY->"主字幕";SubtitleDisplayMode.SECONDARY_ONLY->"副字幕";SubtitleDisplayMode.BILINGUAL->"双语字幕"})}) }
                         }
@@ -713,12 +713,12 @@ internal class DesktopWindowsVideoActions(
                             val languages = desktopWindowsAudioLanguageOptions(value)
                             val audioTracks = desktopWindowsNativeAudioTracks(state)
                             if (languages.isNotEmpty() || audioTracks.size > 1) {
-                                Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     if (languages.isNotEmpty()) TextButton(onClick = {
                                         collectionQueueSource?.let { accepted ->
                                             audioLanguageMenu = shell.playback.captureAudioSelection(assembly, accepted, ::collectionQueueCurrent)
                                         }
-                                    }, enabled = collectionQueueCurrent() && !value.isQualitySwitching) {
+                                    }, enabled = collectionQueueCurrent() && !value.isQualitySwitching, modifier = Modifier.fillMaxWidth()) {
                                         val language = desktopWindowsCurrentAudioLanguage(value)
                                         Text("音频语言：${languages.firstOrNull { it.language == language }?.label ?: language ?: "原声"}", maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     }
@@ -726,14 +726,14 @@ internal class DesktopWindowsVideoActions(
                                         collectionQueueSource?.let { accepted ->
                                             audioTrackMenu = shell.playback.captureAudioSelection(assembly, accepted, ::collectionQueueCurrent)
                                         }
-                                    }, enabled = collectionQueueCurrent() && !value.isQualitySwitching && state.ready && !state.loading) {
+                                    }, enabled = collectionQueueCurrent() && !value.isQualitySwitching && state.ready && !state.loading, modifier = Modifier.fillMaxWidth()) {
                                         Text("音轨：${audioTracks.firstOrNull { it.selected }?.let(::desktopWindowsNativeAudioTrackLabel) ?: "未选择"}", maxLines = 1, overflow = TextOverflow.Ellipsis)
                                     }
                                 }
                             }
                             if (value.availableAudioQualities.isNotEmpty()) {
                                 Text("音质", style = MaterialTheme.typography.labelLarge)
-                                Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                                FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                                     value.availableAudioQualities.forEach { audio ->
                                         FilterChip(value.requestedAudioQuality == audio.preferenceId,
                                             onClick = { if (current()) shell.playback.selectAudioQuality(audio.preferenceId) }, label = { Text(audio.label) })

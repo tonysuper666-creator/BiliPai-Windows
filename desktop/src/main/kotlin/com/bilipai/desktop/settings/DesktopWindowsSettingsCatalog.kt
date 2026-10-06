@@ -8,12 +8,12 @@ internal data class DesktopWindowsSettingsSearchEntry(val target: SettingsSearch
     val title: String, val subtitle: String, val section: String, val words: List<String>, val focus: String? = null)
 
 internal val desktopWindowsSettingsSearchEntries = listOf(
-    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "播放与画质", "硬件解码、编码、默认画质", "播放", listOf("解码", "显卡", "AV1", "HEVC", "H264", "画质", "清晰度")),
-    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "倍速与字幕", "记忆倍速、默认速度与自动字幕", "播放", listOf("倍速", "速度", "字幕", "AI")),
+    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "播放与画质", "硬件解码、编码、默认画质", "播放", listOf("解码", "显卡", "AV1", "HEVC", "H264", "画质", "清晰度"), "windows_playback_quality"),
+    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "倍速与字幕", "记忆倍速、默认速度与自动字幕", "播放", listOf("倍速", "速度", "字幕", "AI"), "windows_playback_speed_subtitle"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "Windows 音频输出", "输出设备、WASAPI 独占与实际格式", "音频", listOf("音频", "声音", "输出", "设备", "独占", "WASAPI", "采样率", "光纤"), "windows_audio_output"),
-    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "播放行为", "后台播放、历史续播提示和播完行为", "播放", listOf("后台", "最小化", "续播", "断点", "连播", "循环", "播完", "暂停")),
-    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "评论", "默认排序和详细评论时间", "播放", listOf("评论", "热度", "排序", "相对时间", "详细时间")),
-    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "默认音质", "后续播放的音轨质量偏好", "音频", listOf("音质", "音轨", "无损")),
+    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "播放行为", "后台播放、历史续播提示和播完行为", "播放", listOf("后台", "最小化", "续播", "断点", "连播", "循环", "播完", "暂停"), "windows_playback_behavior"),
+    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "评论", "默认排序和详细评论时间", "播放", listOf("评论", "热度", "排序", "相对时间", "详细时间"), "windows_playback_comments"),
+    DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.PLAYBACK, "默认音质", "后续播放的音轨质量偏好", "音频", listOf("音质", "音轨", "无损"), "windows_audio_output"),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.HOME_FEED, "首页与推荐", "网格、卡片、轮播和本地背景", "首页", listOf("首页", "推荐", "网格", "标题", "轮播", "壁纸", "背景", "UP", "时间表")),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.APPEARANCE, "外观与显示", "主题、字体、语言和图标", "外观", listOf("外观", "主题", "字体", "语言", "图标", "颜色")),
     DesktopWindowsSettingsSearchEntry(SettingsSearchTarget.APPEARANCE, "Windows 窗口缩放", "系统 DPI 上的完整布局比例", "外观", listOf("缩放", "DPI", "放大", "缩小", "比例", "Ctrl", "4K", "5K"), "windows_display_scale"),
