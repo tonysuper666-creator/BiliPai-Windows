@@ -3,8 +3,10 @@ package com.bilipai.desktop.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -21,6 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.SwingPanel
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -35,6 +43,8 @@ import com.bilipai.desktop.danmaku.DanmakuDocument
 import com.bilipai.desktop.player.PlaybackSource as NativePlaybackSource
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.currentCoroutineContext
@@ -530,21 +540,90 @@ fun BangumiBrowserScreen(
 internal fun com.bilipai.desktop.data.PlaybackSource.toNativePlayback() = NativePlaybackSource(videoUrl, audioUrl,
     referer, cookieHeader = cookieHeader, title = title, progressiveSegments = progressiveSegments, authorizationReceipt = authorizationReceipt)
 
+@OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modifier: Modifier = Modifier) {
     val state by session.state.collectAsState()
     val scope = rememberCoroutineScope()
-    val listState = rememberLazyListState()
+    val listState = remember(session) { LazyListState() }
+    val timeline = remember(session) { DesktopLiveChatTimeline<com.android.purebilibili.feature.live.LiveDanmakuItem>() }
+    val rows = remember(session, state.messages) { timeline.update(state.messages) }
+    val currentRows by rememberUpdatedState(rows)
+    var follow by remember(session) { mutableStateOf(DesktopLiveChatFollowState()) }
+    var pointerHeld by remember(session) { mutableStateOf(false) }
+    var automaticScroll by remember(session) { mutableStateOf(false) }
+    var followJob by remember(session) { mutableStateOf<Job?>(null) }
+    var inputJob by remember(session) { mutableStateOf<Job?>(null) }
+    fun nearBottom(): Boolean {
+        val layout = listState.layoutInfo
+        return desktopLiveChatNearBottom(layout.visibleItemsInfo.lastOrNull()?.index ?: -1, layout.totalItemsCount)
+    }
+    fun userInput() {
+        follow = follow.userInput()
+        followJob?.cancel()
+        inputJob?.cancel()
+        inputJob = scope.launch {
+            // Observe the scroll/layout produced by this input, not the preceding frame.
+            withFrameNanos { }
+            do {
+                snapshotFlow { !pointerHeld && !listState.isScrollInProgress }.first { it }
+                withFrameNanos { }
+            } while (pointerHeld || listState.isScrollInProgress)
+            follow = follow.userInputSettled(nearBottom())
+        }
+    }
+    LaunchedEffect(session) {
+        snapshotFlow { listState.isScrollInProgress to automaticScroll }.collect { (scrolling, automatic) ->
+            if (scrolling && !automatic) userInput()
+        }
+    }
+    LaunchedEffect(session) {
+        // collect + delay batches a continuous burst; collectLatest would keep restarting it.
+        snapshotFlow { currentRows.lastOrNull()?.key to follow.revision }.collect {
+            delay(300L)
+            if (currentRows.isNotEmpty() && follow.mayFollow(pointerHeld, listState.isScrollInProgress)) {
+                val target = currentRows.lastIndex
+                automaticScroll = true
+                val animation = scope.launch { listState.animateScrollToItem(target) }
+                followJob = animation
+                try { animation.join() } finally {
+                    automaticScroll = false
+                    if (followJob === animation) followJob = null
+                }
+            }
+        }
+    }
+    val windowFocused = LocalWindowInfo.current.isWindowFocused
+    val chatInput = Modifier
+        .pointerInput(session, windowFocused) {
+            if (!windowFocused) return@pointerInput
+            awaitEachGesture {
+                try {
+                    // Observe every mouse button without consuming the actual click/selection.
+                    var event = awaitPointerEvent(PointerEventPass.Initial)
+                    while (event.changes.none { it.pressed }) event = awaitPointerEvent(PointerEventPass.Initial)
+                    pointerHeld = true
+                    userInput()
+                    while (event.changes.any { it.pressed }) event = awaitPointerEvent(PointerEventPass.Initial)
+                } finally {
+                    // Also runs on lost focus, gesture cancellation, session change and disposal.
+                    pointerHeld = false
+                }
+            }
+        }
+        .onPointerEvent(PointerEventType.Scroll, PointerEventPass.Initial) { userInput() }
+        .onPreviewKeyEvent {
+            if (it.type == KeyEventType.KeyDown && it.key in setOf(Key.DirectionUp, Key.DirectionDown,
+                    Key.PageUp, Key.PageDown, Key.MoveHome, Key.MoveEnd)) userInput()
+            false
+        }
     val draft = remember(session) { DesktopLiveChatDraft() }
     val message = draft.message
     val reply = draft.reply
     var color by remember(session) { mutableIntStateOf(16777215) }
     var mode by remember(session) { mutableIntStateOf(1) }
     var sendJob by remember(session) { mutableStateOf<Job?>(null) }
-    DisposableEffect(session) { onDispose { sendJob?.cancel() } }
-    LaunchedEffect(state.messages.size, state.messages.lastOrNull()) {
-        if (state.messages.isNotEmpty()) listState.animateScrollToItem(state.messages.lastIndex)
-    }
+    DisposableEffect(session) { onDispose { sendJob?.cancel(); followJob?.cancel(); inputJob?.cancel() } }
     val permission = state.permission
     val canSend = isLoggedIn && permission?.canSend == true && !state.sending && message.isNotBlank() &&
         (permission.maxLength <= 0 || message.length <= permission.maxLength)
@@ -566,19 +645,28 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
         Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text(state.status, style = MaterialTheme.typography.labelMedium,
                 color = if (state.connected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
-            LazyColumn(Modifier.weight(1f).fillMaxWidth(), state = listState, verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(state.messages) { item ->
-                    Column(Modifier.fillMaxWidth().clickable(enabled = isLoggedIn && item.uid > 0) { draft.selectReply(item) }) {
-                        Text(buildList {
-                            if (item.isSuperChat) add("SC ${item.superChatPrice}")
-                            if (item.medalName.isNotBlank()) add("${item.medalName} ${item.medalLevel}")
-                            add(item.uname.ifBlank { "用户 ${item.uid}" })
-                        }.joinToString(" · "), style = MaterialTheme.typography.labelSmall,
-                            color = if (item.isSelf) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
-                        if (item.replyToName.isNotBlank()) Text("回复 ${item.replyToName}", style = MaterialTheme.typography.labelSmall)
-                        Text(item.text.ifBlank { if (item.emoticonUrl != null) "[表情]" else "" },
-                            color = Color(item.color or (0xff shl 24)))
+            Box(Modifier.weight(1f).fillMaxWidth()) {
+                LazyColumn(Modifier.fillMaxSize().then(chatInput), state = listState, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(rows, key = { it.key }) { entry ->
+                        val item = entry.item
+                        Column(Modifier.fillMaxWidth().clickable(enabled = isLoggedIn && item.uid > 0) { draft.selectReply(item) }) {
+                            Text(buildList {
+                                if (item.isSuperChat) add("SC ${item.superChatPrice}")
+                                if (item.medalName.isNotBlank()) add("${item.medalName} ${item.medalLevel}")
+                                add(item.uname.ifBlank { "用户 ${item.uid}" })
+                            }.joinToString(" · "), style = MaterialTheme.typography.labelSmall,
+                                color = if (item.isSelf) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
+                            if (item.replyToName.isNotBlank()) Text("回复 ${item.replyToName}", style = MaterialTheme.typography.labelSmall)
+                            Text(item.text.ifBlank { if (item.emoticonUrl != null) "[表情]" else "" },
+                                color = Color(item.color or (0xff shl 24)))
+                        }
                     }
+                }
+                if (rows.isNotEmpty() && !follow.following && !nearBottom()) {
+                    FilledTonalButton(onClick = {
+                        inputJob?.cancel()
+                        follow = follow.resume()
+                    }, modifier = Modifier.align(Alignment.BottomEnd).padding(6.dp)) { Text("回到底部") }
                 }
             }
             state.error?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error) }
