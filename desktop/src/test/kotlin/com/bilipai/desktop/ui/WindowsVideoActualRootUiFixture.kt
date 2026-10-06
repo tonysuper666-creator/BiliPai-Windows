@@ -3535,7 +3535,7 @@ object WindowsVideoActualRootUiFixture {
         click("播放"); await("same source resumes after original video share") { sameNative(); playing() }
     }
 
-    private fun exerciseCommentComposer(localReplay: WindowsVideoLocalReplay) {
+    private fun exerciseCommentComposer(localReplay: WindowsVideoLocalReplay, observeImagePaint: Boolean = false) {
         check(!EventQueue.isDispatchThread())
         sameNative(); check(playing())
         val script = localReplay.commentComposerReplay
@@ -3607,9 +3607,9 @@ object WindowsVideoActualRootUiFixture {
         fun has(surface: Window, label: String): Boolean = edt {
             currentSource(); descendants(surface.accessibleContext).any { hasLabel(it, label) && visible(it, surface) }
         }
-        fun capture(id: String, surface: Window) {
+        fun capture(id: String, surface: Window, extraGuard: (() -> Unit)? = null) {
             val bounds = edt {
-                currentSource()
+                currentSource(); extraGuard?.invoke()
                 check(surface.isShowing && surface.isDisplayable && ownedWindow(surface) && surface !== originalMain &&
                     originalMain.bounds.contains(surface.bounds) && surface.graphicsConfiguration.bounds.contains(surface.bounds))
                 Files.writeString(report.resolve("$id-accessibility.tsv"), descendants(surface.accessibleContext).joinToString("\n") {
@@ -3618,9 +3618,36 @@ object WindowsVideoActualRootUiFixture {
                 Rectangle(surface.bounds)
             }
             check(ImageIO.write(java.awt.Robot().createScreenCapture(bounds), "png", report.resolve("$id-screen.png").toFile()))
-            edt { currentSource(); check(surface.isShowing && surface.bounds == bounds) }
+            edt { currentSource(); extraGuard?.invoke(); check(surface.isShowing && surface.bounds == bounds) }
         }
         fun draft() = composer.composerDrafts.value.comments[0L]
+        fun nativeEditor(surface: Window): DesktopInlineEmotePane =
+            nativeComponents(surface).filterIsInstance<DesktopInlineEmotePane>().filter {
+                it.isShowing && it.isDisplayable && SwingUtilities.getWindowAncestor(it) === surface
+            }.single()
+        fun editorGeometry(surface: Window, pane: DesktopInlineEmotePane): JsonObject {
+            currentSource(); check(nativeEditor(surface) === pane)
+            val viewport = pane.parent as javax.swing.JViewport
+            val scroll = viewport.parent as javax.swing.JScrollPane
+            val group = scroll.parent as javax.swing.JComponent
+            check(group.javaClass.name == "androidx.compose.ui.awt.SwingInteropViewGroup" &&
+                SwingUtilities.getWindowAncestor(group) === surface)
+            fun rect(value: Rectangle) = buildJsonObject {
+                put("x", value.x); put("y", value.y); put("width", value.width); put("height", value.height)
+            }
+            return buildJsonObject {
+                put("sameOwnedEditor", true)
+                for ((name, component) in listOf("pane" to pane, "viewport" to viewport, "scroll" to scroll, "interopGroup" to group)) {
+                    put(name, buildJsonObject {
+                        put("identity", System.identityHashCode(component)); put("class", component.javaClass.name)
+                        put("bounds", rect(component.bounds)); put("screenBounds", rect(Rectangle(component.locationOnScreen, component.size)))
+                        put("visibleRect", rect(component.visibleRect)); put("valid", component.isValid)
+                        put("opaque", component.isOpaque); put("showing", component.isShowing)
+                    })
+                }
+            }
+        }
+        var imagePaintProbe: DesktopInlineEmotePaintProbe? = null
         fun editor(surface: Window): AccessibleContext {
             currentSource()
             check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
@@ -3867,6 +3894,13 @@ object WindowsVideoActualRootUiFixture {
             await("original sync-to-dynamic toggle publishes its true draft flag") { edt {
                 currentSource(); draft()?.syncToDynamic == true
             } }
+            val imageBaseline = if (observeImagePaint) edt {
+                currentSource()
+                val pane = nativeEditor(second)
+                val scroll = pane.parent.parent as javax.swing.JScrollPane
+                val probe = pane.observeCompletedPaints().also { imagePaintProbe = it }
+                Triple(pane, scroll, probe) to Triple(scroll.height, editorGeometry(second, pane), probe.snapshot()?.sequence ?: 0L)
+            } else null
             // Real Compose mouse release is posted asynchronously: its original
             // picker enters a Swing modal secondary loop on EDT. Never block
             // this worker in invokeAndWait until the chooser has been answered.
@@ -3920,6 +3954,65 @@ object WindowsVideoActualRootUiFixture {
             check(withImage.text.contains(WindowsCommentComposerReplay.DRAFT) && withImage.text.contains(WindowsCommentComposerReplay.EMOTE) &&
                 withImage.text.contains("@${WindowsCommentComposerReplay.FRIEND_NAME}") && withImage.syncToDynamic)
             capture("215-composer-selected-private-image", second)
+            if (imageBaseline != null) {
+                val (selectedPane, selectedScroll, selectedPaint) = imageBaseline.first
+                val (beforeImageHeight, beforeImageGeometry, beforeImagePaintSequence) = imageBaseline.second
+                // Keep 215 as the immediate, unmodified physical sample. Observe the
+                // SAME dialog/editor afterward; no repaint, layout call, input or reopen.
+                val (immediateGeometry, immediatePaint) = edt { editorGeometry(second, selectedPane) to selectedPaint.snapshot() }
+                var observedPaint: DesktopInlineEmotePaintProbe.Receipt? = null
+                var observedGeometry: JsonObject? = null
+                val paintDeadline = System.nanoTime() + Duration.ofSeconds(3).toNanos()
+                while (System.nanoTime() < paintDeadline) {
+                    observedPaint = edt {
+                        currentSource(); check(nativeEditor(second) === selectedPane && draft() == withImage)
+                        val scroll = selectedPane.parent.parent as javax.swing.JScrollPane
+                        val viewport = selectedPane.parent as javax.swing.JViewport
+                        selectedPaint.snapshot()?.takeIf { receipt ->
+                            scroll === selectedScroll && scroll.height < beforeImageHeight &&
+                                receipt.scrollIdentity == System.identityHashCode(selectedScroll) &&
+                                receipt.scrollWidth == scroll.width && receipt.scrollHeight == scroll.height &&
+                                receipt.viewportWidth == viewport.width && receipt.viewportHeight == viewport.height &&
+                                receipt.sequence > beforeImagePaintSequence && receipt.width == selectedPane.width &&
+                                receipt.height == selectedPane.height && selectedPane.visibleRect == Rectangle(
+                                    receipt.visibleX, receipt.visibleY, receipt.visibleWidth, receipt.visibleHeight)
+                        }?.also { observedGeometry = editorGeometry(second, selectedPane) }
+                    }
+                    if (observedPaint != null) break
+                    Thread.sleep(25) // Bounded observation of actual paint completion, never a repaint delay.
+                }
+                val afterPaintGeometry = observedGeometry ?: edt { editorGeometry(second, selectedPane) }
+                fun paintJson(value: DesktopInlineEmotePaintProbe.Receipt?): JsonElement = value?.let {
+                    buildJsonObject {
+                        put("sequence", it.sequence); put("width", it.width); put("height", it.height)
+                        put("visibleX", it.visibleX); put("visibleY", it.visibleY)
+                        put("visibleWidth", it.visibleWidth); put("visibleHeight", it.visibleHeight)
+                        put("scrollIdentity", it.scrollIdentity); put("scrollWidth", it.scrollWidth); put("scrollHeight", it.scrollHeight)
+                        put("viewportWidth", it.viewportWidth); put("viewportHeight", it.viewportHeight)
+                        put("completedAtNanos", it.completedAtNanos)
+                    }
+                } ?: JsonNull
+                record("composer-same-editor-image-paint-diagnostic", mapOf(
+                    "sameDialogAndEditor" to JsonPrimitive(true), "original215Retained" to JsonPrimitive(true),
+                    "dialogIdentity" to JsonPrimitive(System.identityHashCode(second)),
+                    "selectedImageCount" to JsonPrimitive(withImage.imageUris.size), "draftUnchanged" to JsonPrimitive(true),
+                    "beforeImagePaintSequence" to JsonPrimitive(beforeImagePaintSequence),
+                    "beforeImageGeometry" to beforeImageGeometry, "immediateGeometry" to immediateGeometry,
+                    "afterPaintGeometry" to afterPaintGeometry, "immediatePaint" to paintJson(immediatePaint),
+                    "observedPaint" to paintJson(observedPaint), "newSizeVisiblePanePaintObserved" to JsonPrimitive(observedPaint != null),
+                    "repaintOrLayoutRequested" to JsonPrimitive(false), "sameDialogReopened" to JsonPrimitive(false),
+                    "physicalPixelsRequireReview" to JsonPrimitive(true), "desktopPresentationProvenByPaint" to JsonPrimitive(false)))
+                if (observedPaint != null) {
+                    capture("218-composer-same-editor-after-image-paint", second) {
+                        check(editorGeometry(second, selectedPane) == afterPaintGeometry && draft() == withImage)
+                    }
+                    record("composer-same-editor-image-paint-frame", mapOf(
+                        "frame" to JsonPrimitive("218-composer-same-editor-after-image-paint-screen.png"),
+                        "sameDialogAndEditor" to JsonPrimitive(true), "geometryGuardedBeforeAndAfter" to JsonPrimitive(true),
+                        "physicalPixelsRequireReview" to JsonPrimitive(true), "desktopPresentationProvenByPaint" to JsonPrimitive(false)))
+                }
+                edt { selectedPaint.close(); imagePaintProbe = null }
+            }
             close(second)
             val third = open()
             await("reopened editor restores text/emote/mention/image/sync together") { edt {
@@ -3960,7 +4053,8 @@ object WindowsVideoActualRootUiFixture {
                 if (peer != null) capture("composer-input-failure", peer) }.exceptionOrNull()?.let(failure::addSuppressed)
             throw failure
         } finally {
-            var cleanupFailure: Throwable? = null
+            var cleanupFailure: Throwable? = if (imagePaintProbe != null)
+                runCatching { edt { imagePaintProbe?.close(); imagePaintProbe = null } }.exceptionOrNull() else null
             for (peer in ownedPeers.toList().asReversed()) {
                 val failure = runCatching { edt {
                     var parent: Window? = peer
@@ -4613,9 +4707,9 @@ object WindowsVideoActualRootUiFixture {
             exerciseVideoDynamicShare(requireNotNull(localReplay))
         } else if (System.getProperty("bilipai.validation.composerInput") == "true") {
             check(replay) { "Composer proof requires private synthetic API/session and loopback media" }
-            exerciseCommentComposer(requireNotNull(localReplay))
-            if (System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true")
-                exerciseBrandFeedbackPlacement(localReplay)
+            val feedbackPlacementInput = System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true"
+            exerciseCommentComposer(requireNotNull(localReplay), observeImagePaint = feedbackPlacementInput)
+            if (feedbackPlacementInput) exerciseBrandFeedbackPlacement(localReplay)
         } else if (System.getProperty("bilipai.validation.commentSearchInput") == "true") {
             check(replay) { "Comment search proof requires the isolated guest API/loopback replay" }
             exerciseCommentSearch(requireNotNull(localReplay))

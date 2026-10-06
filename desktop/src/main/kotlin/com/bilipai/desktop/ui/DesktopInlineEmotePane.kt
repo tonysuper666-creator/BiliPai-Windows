@@ -22,6 +22,32 @@ import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 import javax.swing.text.*
 
+/** Opt-in read-only evidence of actual Swing painting; this never requests a repaint. */
+internal class DesktopInlineEmotePaintProbe(private val release: () -> Unit) : AutoCloseable {
+    data class Receipt(val sequence: Long, val width: Int, val height: Int,
+        val visibleX: Int, val visibleY: Int, val visibleWidth: Int, val visibleHeight: Int,
+        val scrollIdentity: Int, val scrollWidth: Int, val scrollHeight: Int,
+        val viewportWidth: Int, val viewportHeight: Int, val completedAtNanos: Long)
+    private var sequence = 0L
+    private var closed = false
+    private var completed: Receipt? = null
+    fun snapshot(): Receipt? { check(SwingUtilities.isEventDispatchThread()); return if (closed) null else completed }
+    internal fun painted(pane: DesktopInlineEmotePane, clip: java.awt.Shape?) {
+        check(SwingUtilities.isEventDispatchThread())
+        val visible = pane.visibleRect
+        if (closed || visible.isEmpty || clip == null || !clip.contains(visible)) return
+        val viewport = pane.parent as? javax.swing.JViewport ?: return
+        val scroll = viewport.parent as? javax.swing.JScrollPane ?: return
+        if (scroll.width <= 0 || scroll.height <= 0 || viewport.width <= 0 || viewport.height <= 0) return
+        completed = Receipt(++sequence, pane.width, pane.height, visible.x, visible.y, visible.width, visible.height,
+            System.identityHashCode(scroll), scroll.width, scroll.height, viewport.width, viewport.height, System.nanoTime())
+    }
+    override fun close() {
+        check(SwingUtilities.isEventDispatchThread())
+        if (!closed) { closed = true; release() }
+    }
+}
+
 /** A display span covers the existing UTF-16 code; the document is never replaced
  * with an object-replacement character. Draft, IME and clipboard use this document. */
 internal class DesktopInlineEmotePane(
@@ -44,6 +70,14 @@ internal class DesktopInlineEmotePane(
     private var suppliedComposition: TextRange? = null
     private var previousCaret = 0
     private var closed = false
+    private var paintProbe: DesktopInlineEmotePaintProbe? = null
+    internal fun observeCompletedPaints(): DesktopInlineEmotePaintProbe {
+        check(SwingUtilities.isEventDispatchThread() && !closed && paintProbe == null && owned())
+        lateinit var probe: DesktopInlineEmotePaintProbe
+        probe = DesktopInlineEmotePaintProbe { if (paintProbe === probe) paintProbe = null }
+        paintProbe = probe
+        return probe
+    }
     private var hasVisibleAnimation = false
     private val animationTimer=Timer(33) {
         if(!closed&&owned()&&isShowing&&hasVisibleAnimation)repaint()
@@ -205,6 +239,12 @@ internal class DesktopInlineEmotePane(
     override fun processInputMethodEvent(e:InputMethodEvent) {
         if(!canEdit()){e.consume();return};super.processInputMethodEvent(e);schedulePublication()
     }
+    override fun paint(g: Graphics) {
+        super.paint(g)
+        val probe = paintProbe
+        if (probe != null && !closed && isShowing && !isPaintingForPrint && owned())
+            probe.painted(this, g.clip)
+    }
     override fun paintComponent(g:Graphics) {
         super.paintComponent(g)
         if(document.length==0&&hint.isNotEmpty()) {g.color=hintColor;g.font=font;g.drawString(hint,margin.left,margin.top+g.fontMetrics.ascent)}
@@ -212,5 +252,5 @@ internal class DesktopInlineEmotePane(
     private fun release(icon:Icon){if(icon is AutoCloseable)icon.close()else (icon as? ImageIcon)?.image?.flush()}
     override fun addNotify(){super.addNotify();if(hasVisibleAnimation)animationTimer.start()}
     override fun removeNotify(){animationTimer.stop();super.removeNotify()}
-    fun retire(){check(SwingUtilities.isEventDispatchThread());closed=true;animationTimer.stop();icons.values.forEach(::release);icons.clear();requestImage={};valueChanged={};beginEditing={}}
+    fun retire(){check(SwingUtilities.isEventDispatchThread());closed=true;paintProbe?.close();animationTimer.stop();icons.values.forEach(::release);icons.clear();requestImage={};valueChanged={};beginEditing={}}
 }
