@@ -3441,7 +3441,9 @@ object WindowsVideoActualRootUiFixture {
                 if (id.isNotEmpty()) {
                     val field = editor(second)
                     val text = requireNotNull(field.accessibleText)
-                    val bounds = requireNotNull(emoteBounds())
+                    // Diagnostic geometry may disappear while the original panel refreshes after insertion.
+                    // The pre-click target and original draft success checks remain mandatory.
+                    val bounds = emoteBounds()
                     record(id, mapOf("sameOriginalComposerStamp" to JsonPrimitive(composer.commentStamp.value === expectedStamp),
                         "sameNativeEditor" to JsonPrimitive(field === expectedEditor),
                         "nativeTextLength" to JsonPrimitive(nativeText.length), "domainTextLength" to JsonPrimitive(domainText.length),
@@ -3450,8 +3452,9 @@ object WindowsVideoActualRootUiFixture {
                         "nativeCaret" to JsonPrimitive(text.caretPosition),
                         "nativeEditable" to JsonPrimitive(field.accessibleStateSet.contains(AccessibleState.EDITABLE)),
                         "focusOwnerClass" to JsonPrimitive(java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().focusOwner?.javaClass?.name.orEmpty()),
-                        "emoteX" to JsonPrimitive(bounds.x), "emoteY" to JsonPrimitive(bounds.y),
-                        "emoteWidth" to JsonPrimitive(bounds.width), "emoteHeight" to JsonPrimitive(bounds.height),
+                        "emoteControlCurrentlyResolved" to JsonPrimitive(bounds != null),
+                        "emoteX" to (bounds?.x?.let(::JsonPrimitive) ?: JsonNull), "emoteY" to (bounds?.y?.let(::JsonPrimitive) ?: JsonNull),
+                        "emoteWidth" to (bounds?.width?.let(::JsonPrimitive) ?: JsonNull), "emoteHeight" to (bounds?.height?.let(::JsonPrimitive) ?: JsonNull),
                         "inputMechanism" to JsonPrimitive("OS_ROBOT_SINGLE_CLICK")))
                 }
                 return domainHas
