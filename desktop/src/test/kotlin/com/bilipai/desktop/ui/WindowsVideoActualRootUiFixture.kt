@@ -2928,7 +2928,7 @@ object WindowsVideoActualRootUiFixture {
             return restored
         }
         fun physicalClick(surface: Window, label: String, throughPeer: javax.swing.JDialog? = null,
-            observeTarget: ((Rectangle, java.awt.Point) -> Unit)? = null) {
+            observeTarget: ((Rectangle, java.awt.Point, AccessibleContext) -> Unit)? = null) {
             val point = edt {
                 guard()
                 throughPeer?.let { facts(it, true) }
@@ -2937,7 +2937,7 @@ object WindowsVideoActualRootUiFixture {
                 val component = requireNotNull(control.accessibleComponent)
                 val location = requireNotNull(component.locationOnScreen)
                 val point = java.awt.Point(location.x + component.size.width / 2, location.y + component.size.height / 2)
-                observeTarget?.invoke(Rectangle(location, component.size), point)
+                observeTarget?.invoke(Rectangle(location, component.size), point, control)
                 point
             }
             robot.mouseMove(point.x, point.y); robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
@@ -3271,6 +3271,7 @@ object WindowsVideoActualRootUiFixture {
                 var droppedEvents = 0
                 var observationActive = true // Published before registration; callbacks/retirement use EDT.
                 var targetObservation: JsonElement = JsonNull
+                var capturedDetailControl: AccessibleContext? = null
                 fun rect(value: Rectangle) = buildJsonObject {
                     put("x", value.x); put("y", value.y); put("width", value.width); put("height", value.height)
                 }
@@ -3326,6 +3327,62 @@ object WindowsVideoActualRootUiFixture {
                         })
                     }
                     val mainOwner = requireNotNull(field(scene, sceneType, "mainOwner"))
+                    fun detailsClickable(): JsonObject {
+                        val control = capturedDetailControl ?: return buildJsonObject {
+                            put("available", false); put("reason", "TARGET_NOT_CAPTURED")
+                        }
+                        return diagnostic {
+                            // Only the exact AccessibleContext already selected by physicalClick.
+                            // Never search another layout/root or invoke an input/action method.
+                            fun getter(value: Any, ownerType: String, name: String): Any? {
+                                val type = Class.forName(ownerType)
+                                check(type.isInstance(value))
+                                return type.getDeclaredMethod(name).let { check(it.trySetAccessible()); it.invoke(value) }
+                            }
+                            val accessible = requireNotNull(field(control,
+                                "androidx.compose.ui.platform.a11y.ComposeAccessible\$ComposeAccessibleComponent", "this\$0"))
+                            val semantics = requireNotNull(getter(accessible, "androidx.compose.ui.platform.a11y.ComposeAccessible", "getSemanticsNode"))
+                            val layout = requireNotNull(getter(semantics, "androidx.compose.ui.semantics.SemanticsNode", "getLayoutNode\$ui"))
+                            val currentOwner = getter(mainOwner, "androidx.compose.ui.node.RootNodeOwner", "getOwner")
+                            val layoutOwner = getter(layout, "androidx.compose.ui.node.LayoutNode", "getOwner\$ui")
+                            val layoutAttached = getter(layout, "androidx.compose.ui.node.LayoutNode", "isAttached") as Boolean
+                            if (layoutOwner !== currentOwner || !layoutAttached) return@diagnostic buildJsonObject {
+                                put("available", false); put("reason", "CAPTURED_LAYOUT_NOT_CURRENT_MAIN")
+                                put("layoutIdentity", System.identityHashCode(layout)); put("layoutAttached", layoutAttached)
+                            }
+                            val chain = requireNotNull(getter(layout, "androidx.compose.ui.node.LayoutNode", "getNodes\$ui"))
+                            val nodeType = "androidx.compose.ui.Modifier\$Node"
+                            val delegateType = Class.forName("androidx.compose.ui.node.DelegatingNode")
+                            val visited = java.util.IdentityHashMap<Any, Boolean>()
+                            val matches = mutableListOf<Any>()
+                            fun visitChain(first: Any?, depth: Int) {
+                                check(depth <= 8)
+                                var node = first
+                                while (node != null) {
+                                    val item = node
+                                    check(visited.size < 64 && visited.put(item, true) == null)
+                                    if (item.javaClass.name == "androidx.compose.foundation.ClickableNode") matches.add(item)
+                                    if (delegateType.isInstance(item))
+                                        visitChain(getter(item, delegateType.name, "getDelegate\$ui"), depth + 1)
+                                    node = getter(item, nodeType, "getChild\$ui")
+                                }
+                            }
+                            visitChain(getter(chain, "androidx.compose.ui.node.NodeChain", "getHead\$ui"), 0)
+                            check(matches.size == 1) { "Captured detail layout has no unique ClickableNode" }
+                            val clickable = matches.single()
+                            val state = getter(clickable, "androidx.compose.foundation.AbstractClickableNode", "getGestureState-7meUWtM") as String
+                            check(state in setOf("idle", "waiting", "recognized"))
+                            buildJsonObject {
+                                put("available", true); put("scope", "CAPTURED_DETAIL_LAYOUT_MAIN_OWNER_GETTERS_ONLY")
+                                put("accessibleIdentity", System.identityHashCode(control)); put("layoutIdentity", System.identityHashCode(layout))
+                                put("mainOwnerVerified", true); put("layoutAttached", layoutAttached)
+                                put("clickableIdentity", System.identityHashCode(clickable)); put("visitedNodeCount", visited.size)
+                                put("attached", getter(clickable, nodeType, "isAttached") as Boolean)
+                                put("enabled", getter(clickable, "androidx.compose.foundation.AbstractClickableNode", "getEnabled") as Boolean)
+                                put("gestureState", state); put("callbackExecutionProven", false)
+                            }
+                        }
+                    }
                     val layers = (field(scene, sceneType, "layers") as List<*>).map { requireNotNull(it) }
                     check(layers.size <= 8)
                     val layerType = sceneType + "\$AttachedComposeSceneLayer"
@@ -3338,10 +3395,37 @@ object WindowsVideoActualRootUiFixture {
                         put("identity", System.identityHashCode(value)); put("isMainOwner", value === mainOwner)
                         put("currentLayerIndex", owners.indexOfFirst { it === value })
                     }
+                    val chromeSnapshot = diagnostic {
+                        check(SwingUtilities.getWindowAncestor(actualPlayer.surface) === originalMain)
+                        val getter = actualPlayer.surface.getClientProperty("bilipai.validation.fullscreenChromeSnapshot")
+                            as? java.util.function.Supplier<*> ?: error("Bound chrome diagnostic getter unavailable")
+                        val values = getter.get() as? Map<*, *> ?: error("Bound chrome diagnostic is not a map")
+                        check(values.size <= 66)
+                        val attempts = values["detailsCallbackAttempts"]
+                        val accepted = values["detailsCallbackAccepted"]
+                        check(attempts is Long && accepted is Long && attempts >= 0L && accepted in 0L..attempts)
+                        val scalars = JsonObject(values.map { (key, value) ->
+                            check(key is String && key.matches(Regex("[A-Za-z][A-Za-z0-9]{0,63}")))
+                            key to when (value) {
+                                is Boolean -> JsonPrimitive(value)
+                                is Int -> JsonPrimitive(value)
+                                is Long -> JsonPrimitive(value)
+                                else -> error("Bound chrome diagnostic contains a non-scalar")
+                            }
+                        }.toMap())
+                        check(scalars["windowIdentity"] == JsonPrimitive(System.identityHashCode(originalMain)) &&
+                            scalars["surfaceIdentity"] == JsonPrimitive(System.identityHashCode(actualPlayer.surface)))
+                        buildJsonObject {
+                            put("available", true); put("scope", "LATEST_COMPOSED_GATE_AND_CURRENT_EDT_READBACK")
+                            put("values", scalars)
+                        }
+                    }
                     buildJsonObject {
                         put("available", true); put("observedAtNanos", System.nanoTime()); put("pointerState", pointerState)
+                        put("chromeSnapshot", chromeSnapshot)
                         put("mediatorMouseEventProcessing", observed { JsonPrimitive(field(mediator, "androidx.compose.ui.scene.ComposeSceneMediator", "isMouseEventProcessing") as Boolean) })
                         put("mainOwnerIdentity", System.identityHashCode(mainOwner))
+                        put("detailsClickable", detailsClickable())
                         put("gestureOwner", owner(field(scene, sceneType, "gestureOwner")))
                         put("lastHoverOwner", owner(field(scene, sceneType, "lastHoverOwner")))
                         val focus = field(scene, sceneType, "focusedLayer")
@@ -3411,7 +3495,8 @@ object WindowsVideoActualRootUiFixture {
                         runCatching { component.addMouseListener(mouseObserver) }.exceptionOrNull()?.let { registrationErrors.add(it.javaClass.name) }
                         runCatching { component.addMouseMotionListener(mouseObserver) }.exceptionOrNull()?.let { registrationErrors.add(it.javaClass.name) }
                     } }
-                    physicalClick(originalMain, "详情", observeTarget = { bounds, point ->
+                    physicalClick(originalMain, "详情", observeTarget = { bounds, point, control ->
+                        capturedDetailControl = control
                         targetObservation = diagnostic {
                             guard(); check(clientBounds().contains(point) && originalMain.graphicsConfiguration.defaultTransform.isIdentity)
                             val nativeHit = diagnostic {
