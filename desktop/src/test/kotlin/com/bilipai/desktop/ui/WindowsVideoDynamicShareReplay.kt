@@ -28,8 +28,11 @@ internal class WindowsVideoDynamicShareReplay(private val aid: Long) {
         val url = request.url
         require(request.method == "POST" && url.scheme == "https" && url.host == "api.bilibili.com" &&
             url.port == 443 && url.username.isEmpty() && url.password.isEmpty() && url.encodedFragment == null &&
-            url.queryParameterNames == setOf("csrf") && url.queryParameterValues("csrf") ==
-            listOf("LOCAL-COMPOSER-NOT-A-REAL-CSRF"))
+            url.queryParameterNames == setOf("csrf", "platform", "x-bili-device-req-json", "x-bili-web-req-json") &&
+            url.queryParameterValues("csrf") == listOf("LOCAL-COMPOSER-NOT-A-REAL-CSRF") &&
+            url.queryParameterValues("platform") == listOf("web") &&
+            url.queryParameterValues("x-bili-device-req-json") == listOf("{\"platform\":\"web\",\"device\":\"pc\"}") &&
+            url.queryParameterValues("x-bili-web-req-json") == listOf("{\"spm_id\":\"333.999\"}"))
         val body = requireNotNull(request.body)
         require(body.contentLength() in 1..16_384 && body.contentType()?.type == "application" &&
             body.contentType()?.subtype == "json")
