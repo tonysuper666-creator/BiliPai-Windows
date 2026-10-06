@@ -219,6 +219,8 @@ public final class AwtMpvProbe {
                 catch (Throwable diagnostic) { result.put("failureVideoAuxiliaryError", safe(diagnostic.toString())); }
                 try { observeFailedSurfaceWindow(); }
                 catch (Throwable diagnostic) { result.put("failureAuxiliaryError", safe(diagnostic.toString())); }
+                try { observeFailedSurfaceSoftwareVideo(); }
+                catch (Throwable diagnostic) { result.put("failureSoftwareVideoAuxiliaryError", safe(diagnostic.toString())); }
             }
         } finally {
             if (actor != null && caseName.equals("mpv-default-flip-panscan1-clear")) {
@@ -646,11 +648,11 @@ public final class AwtMpvProbe {
         }
     }
 
-    /** Failure-only decoded input; never contributes to the physical screen gate. */
+    /** Failure-only unscaled VO request; never contributes to the physical screen gate. */
     private void observeFailedSurfaceVideo() throws Exception {
         Map<String, Object> row = new LinkedHashMap<>(); result.put("failedSurfaceVideoAuxiliary", row);
         row.put("auxiliaryOnly", true); row.put("physicalResult", "failed; retained independently of this auxiliary capture");
-        row.put("imageKind", "later decoded video-mode capture; not GPU output, swapchain or physical-screen proof");
+        row.put("imageKind", "later unscaled video-mode request; may use VO GPU re-render or software fallback; not swapchain or physical-screen proof");
         row.put("nativeTiming", "same actor/entry checks on native worker; cached state and Robot pixels are near samples, not atomic");
         if (deadline - System.nanoTime() <= TimeUnit.SECONDS.toNanos(9)) {
             row.put("status", "skipped: original deadline reserves existing window auxiliary and cleanup"); return;
@@ -667,10 +669,10 @@ public final class AwtMpvProbe {
             row.put("workerSource", command.get(Math.min(TimeUnit.SECONDS.toNanos(3),
                 Math.max(1, deadline - System.nanoTime() - TimeUnit.SECONDS.toNanos(6))), TimeUnit.NANOSECONDS));
             require(Files.isRegularFile(target) && Files.size(target) > 0 && Files.size(target) <= 32 * 1024 * 1024,
-                "Auxiliary decoded video absent/oversized");
+                "Auxiliary video-mode image absent/oversized");
             BufferedImage image = ImageIO.read(target.toFile());
             require(image != null && (long) image.getWidth() * image.getHeight() <= 16_000_000,
-                "Auxiliary decoded video invalid/oversized");
+                "Auxiliary video-mode image invalid/oversized");
             int width = Integer.parseInt(nativeValue(before, "video-dec-params/w"));
             int height = Integer.parseInt(nativeValue(before, "video-dec-params/h"));
             boolean matches = image.getWidth() == width && image.getHeight() == height;
@@ -687,6 +689,51 @@ public final class AwtMpvProbe {
             Map<String, Object> after = actor.snapshot; row.put("nativeAfter", after);
             row.put("sameObservedEntry", entry.equals(nativeValue(after, "playlist/0/id")));
             publishReport();
+        }
+    }
+
+    /** Explicit software screenshot is separate from existing VO requests and never changes their verdict. */
+    private void observeFailedSurfaceSoftwareVideo() throws Exception {
+        Map<String, Object> row = new LinkedHashMap<>(); result.put("failedSurfaceSoftwareVideoAuxiliary", row);
+        row.put("auxiliaryOnly", true); row.put("physicalResult", "failed; retained independently of this auxiliary capture");
+        row.put("imageKind", "later CPU video-mode capture with screenshot-sw=yes; not VO rendering, swapchain or physical-screen proof");
+        row.put("nativeTiming", "same-worker source/pause/property checks; later than original physical and VO samples");
+        long reserve = TimeUnit.SECONDS.toNanos(caseName.equals("mpv-default-flip-panscan1-clear") ? 9 : 6);
+        if (deadline - System.nanoTime() <= reserve) {
+            row.put("status", "skipped: original deadline reserves reset observation and cleanup"); return;
+        }
+        Map<String, Object> before = actor.snapshot; String entry = nativeValue(before, "playlist/0/id");
+        String pause = nativeValue(before, "pause"); row.put("nativeBefore", before);
+        if (actor.failure != null || !actor.fileLoaded || entry == null || !Set.of("yes", "no").contains(pause == null ? "" : pause) ||
+            !"1".equals(nativeValue(before, "playlist-count"))) {
+            row.put("status", "skipped: original single source/actor/pause is unavailable"); return;
+        }
+        CompletableFuture<Map<String, Object>> command = null;
+        try {
+            Path target = output.resolve("native-failure-software-video.png");
+            command = actor.softwareScreenshotForEntry(entry, pause, target);
+            Map<String, Object> receipt = command.get(2, TimeUnit.SECONDS); row.put("workerSource", receipt);
+            require(Boolean.TRUE.equals(receipt.get("captured")) && Boolean.TRUE.equals(receipt.get("screenshotSwRestored")) &&
+                Boolean.TRUE.equals(receipt.get("sourceRetainedAfterRestore")),
+                "Software screenshot failed, original screenshot-sw was not restored, or source/pause changed");
+            require(Files.isRegularFile(target) && Files.size(target) > 0 && Files.size(target) <= 32 * 1024 * 1024,
+                "Auxiliary software video absent/oversized");
+            BufferedImage image = ImageIO.read(target.toFile());
+            require(image != null && (long) image.getWidth() * image.getHeight() <= 16_000_000,
+                "Auxiliary software video invalid/oversized");
+            boolean matches = image.getWidth() == Integer.parseInt(nativeValue(before, "video-dec-params/w")) &&
+                image.getHeight() == Integer.parseInt(nativeValue(before, "video-dec-params/h"));
+            row.put("image", target.getFileName().toString()); row.put("sha256", sha256(target));
+            Map<String, Object> pixels = new LinkedHashMap<>(imageStats(image)); pixels.put("physicalScreenCapture", false);
+            row.put("pixels", pixels); row.put("matchesObservedDecodedSize", matches);
+            require(matches, "Auxiliary software video did not match observed decoded dimensions");
+            row.put("status", "captured");
+        } catch (Exception | LinkageError invalid) {
+            if (command != null && !command.isDone()) command.cancel(false);
+            if (invalid instanceof InterruptedException) Thread.currentThread().interrupt();
+            row.put("status", "auxiliary failed"); row.put("error", safe(invalid.toString()));
+        } finally {
+            row.put("nativeAfter", actor.snapshot); publishReport();
         }
     }
 
@@ -1040,6 +1087,51 @@ public final class AwtMpvProbe {
                 require(entry.equals(after) && "1".equals(countAfter), "Original single entry retired during auxiliary command");
                 return Map.of("mode", mode, "entryBefore", before, "entryAfter", after,
                     "playlistCountBefore", countBefore, "playlistCountAfter", countAfter, "commandCode", code);
+            }, result));
+            return result;
+        }
+        CompletableFuture<Map<String, Object>> softwareScreenshotForEntry(String entry, String pause, Path target) {
+            CompletableFuture<Map<String, Object>> result = new CompletableFuture<>();
+            if (stopping.get() || failure != null || terminated.get()) {
+                result.completeExceptionally(new IllegalStateException("Own native actor unavailable"));
+            } else tasks.offer(new NativeTask<>((api, handle) -> {
+                require(!result.isDone() && !stopping.get() && failure == null && fileLoaded && Thread.currentThread() == worker,
+                    "Original actor retired/software capture canceled before command");
+                require(entry.equals(readString(api, handle, "playlist/0/id")) && "1".equals(readString(api, handle, "playlist-count")) &&
+                    pause.equals(readString(api, handle, "pause")), "Original source/pause changed before software capture");
+                String originalSw = readString(api, handle, "options/screenshot-sw");
+                require("yes".equals(originalSw) || "no".equals(originalSw), "Original screenshot-sw unavailable");
+                Map<String, Object> row = new LinkedHashMap<>();
+                row.put("sameActorWorker", true); row.put("entryBefore", entry); row.put("pauseBefore", pause);
+                row.put("screenshotSwBefore", originalSw); row.put("captured", false); row.put("screenshotSwRestored", false);
+                row.put("sourceRetainedAfterRestore", false);
+                try {
+                    check(api, api.mpv_set_property_string(handle, "screenshot-sw", "yes"), "software screenshot selection");
+                    String applied = readString(api, handle, "options/screenshot-sw"); row.put("screenshotSwDuring", applied);
+                    require("yes".equals(applied), "Software screenshot selection readback failed");
+                    int code = api.mpv_command(handle, new StringArray(new String[]{"screenshot-to-file", target.toString(), "video"}, "UTF-8"));
+                    row.put("commandCode", code); check(api, code, "source-owned software screenshot");
+                    String afterEntry = readString(api, handle, "playlist/0/id"), afterPause = readString(api, handle, "pause");
+                    String afterCount = readString(api, handle, "playlist-count");
+                    row.put("entryAfter", afterEntry); row.put("pauseAfter", afterPause); row.put("playlistCountAfter", afterCount);
+                    require(entry.equals(afterEntry) && "1".equals(afterCount) && pause.equals(afterPause),
+                        "Original source/pause changed during software capture");
+                    row.put("captured", true);
+                } catch (Exception | LinkageError invalid) {
+                    row.put("captureError", safe(invalid.toString()));
+                } finally {
+                    try {
+                        check(api, api.mpv_set_property_string(handle, "screenshot-sw", originalSw), "restore screenshot-sw");
+                        String restored = readString(api, handle, "options/screenshot-sw"); row.put("screenshotSwAfter", restored);
+                        require(originalSw.equals(restored), "Original screenshot-sw restoration readback failed");
+                        row.put("screenshotSwRestored", true);
+                        boolean retained = entry.equals(readString(api, handle, "playlist/0/id")) &&
+                            "1".equals(readString(api, handle, "playlist-count")) && pause.equals(readString(api, handle, "pause"));
+                        row.put("sourceRetainedAfterRestore", retained);
+                        require(retained, "Original source/pause changed before software screenshot restoration completed");
+                    } catch (Exception | LinkageError invalid) { row.put("restoreError", safe(invalid.toString())); }
+                }
+                return Collections.unmodifiableMap(row);
             }, result));
             return result;
         }
