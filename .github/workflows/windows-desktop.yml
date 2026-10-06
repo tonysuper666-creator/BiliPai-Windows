@@ -460,6 +460,7 @@ jobs:
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-observations.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-thread-stacks.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/fullscreen-idle-failure-screen.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window-frame.txt
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window-accessibility.tsv
           if-no-files-found: warn

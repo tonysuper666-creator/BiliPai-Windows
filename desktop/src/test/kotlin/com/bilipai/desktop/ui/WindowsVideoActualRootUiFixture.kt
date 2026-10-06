@@ -4279,6 +4279,98 @@ object WindowsVideoActualRootUiFixture {
                     put("x", client.x); put("y", client.y); put("width", client.width); put("height", client.height)
                 }))
         }
+        var chromeDiagnosticCount = 0
+        var chromeDiagnosticOverflow = 0
+        var previousChromeDiagnostic: JsonObject? = null
+        fun observeChromeDiagnostic(phase: String, final: Boolean = false) {
+            // Read the bound surface only on the EDT. Diagnostic failure never
+            // changes the existing fullscreen oracle or its timeout.
+            runCatching {
+                val snapshot = edt {
+                    ownedFullscreen()
+                    check(SwingUtilities.getWindowAncestor(actualPlayer.surface) === window())
+                    val getter = actualPlayer.surface.getClientProperty("bilipai.validation.fullscreenChromeSnapshot")
+                        as? java.util.function.Supplier<*> ?: error("Fullscreen diagnostic getter unavailable")
+                    val values = getter.get() as? Map<*, *> ?: error("Fullscreen diagnostic snapshot is not a map")
+                    check(values.size <= 64)
+                    JsonObject(values.map { (key, value) ->
+                        check(key is String && key.matches(Regex("[A-Za-z][A-Za-z0-9]{0,63}")))
+                        key to when (value) {
+                            is Boolean -> JsonPrimitive(value)
+                            is Int -> JsonPrimitive(value)
+                            is Long -> JsonPrimitive(value)
+                            else -> error("Fullscreen diagnostic value is not a scalar")
+                        }
+                    }.toMap()).also {
+                        check(it["windowIdentity"] == JsonPrimitive(System.identityHashCode(window())) &&
+                            it["surfaceIdentity"] == JsonPrimitive(System.identityHashCode(actualPlayer.surface)))
+                    }
+                }
+                val signature = JsonObject(snapshot.filterKeys { it != "remainingIdleMillis" })
+                if (final || signature != previousChromeDiagnostic) {
+                    previousChromeDiagnostic = signature
+                    if (chromeDiagnosticCount < if (final) 32 else 31) {
+                        chromeDiagnosticCount++
+                        record("fullscreen-chrome-diagnostic-$chromeDiagnosticCount", mapOf(
+                            "diagnosticOnly" to JsonPrimitive(true), "phase" to JsonPrimitive(phase),
+                            "scope" to JsonPrimitive("LATEST_COMPOSED_GATE_AND_CURRENT_EDT_READBACK"),
+                            "overflowCount" to JsonPrimitive(chromeDiagnosticOverflow), "chrome" to snapshot))
+                    } else chromeDiagnosticOverflow++
+                }
+            }.onFailure { failure ->
+                if (chromeDiagnosticCount < if (final) 32 else 31) {
+                    chromeDiagnosticCount++
+                    runCatching { record("fullscreen-chrome-diagnostic-$chromeDiagnosticCount", mapOf(
+                        "diagnosticOnly" to JsonPrimitive(true), "phase" to JsonPrimitive(phase),
+                        "observationAvailable" to JsonPrimitive(false),
+                        "diagnosticExceptionType" to JsonPrimitive(failure.javaClass.simpleName),
+                        "overflowCount" to JsonPrimitive(chromeDiagnosticOverflow))) }
+                } else chromeDiagnosticOverflow++
+            }
+        }
+        fun captureFullscreenFailureScreen() {
+            check(!EventQueue.isDispatchThread())
+            val captured = edt {
+                ownedFullscreen()
+                val main = window() as ComposeWindow
+                Triple(main, Native.getWindowPointer(main), Rectangle(main.contentPane.locationOnScreen, main.contentPane.size))
+            }
+            fun sameCaptureOwner() = edt {
+                ownedFullscreen()
+                val (main, hwnd, client) = captured
+                check(main === window() && System.identityHashCode(main) == ownedWindowIdentity &&
+                    main.isShowing && main.isDisplayable && main.isFocused && main.isActive &&
+                    Native.getWindowPointer(main) == hwnd && failureWindowApi.GetForegroundWindow() == hwnd &&
+                    failureWindowApi.IsWindowVisible(hwnd) && !failureWindowApi.IsIconic(hwnd))
+                val pid = IntByReference()
+                check(failureWindowApi.GetWindowThreadProcessId(hwnd, pid) != 0 &&
+                    Integer.toUnsignedLong(pid.value) == ProcessHandle.current().pid())
+                check(client.width > 0 && client.height > 0 && main.graphicsConfiguration.bounds.contains(client) &&
+                    Rectangle(main.contentPane.locationOnScreen, main.contentPane.size) == client && client.contains(bounds()))
+                Memory(16).use { rect -> Memory(8).use { origin ->
+                    check(failureWindowApi.GetClientRect(hwnd, rect)); origin.clear()
+                    check(failureWindowApi.ClientToScreen(hwnd, origin))
+                    check(Rectangle(origin.getInt(0), origin.getInt(4), rect.getInt(8) - rect.getInt(0),
+                        rect.getInt(12) - rect.getInt(4)) == client)
+                } }
+            }
+            sameCaptureOwner()
+            val image = canvasRobot.createScreenCapture(captured.third)
+            sameCaptureOwner()
+            check(image.width == captured.third.width && image.height == captured.third.height)
+            val name = "fullscreen-idle-failure-screen.png"
+            Files.newOutputStream(report.resolve(name), CREATE_NEW, WRITE).use { check(ImageIO.write(image, "png", it)) }
+            sameCaptureOwner()
+            record("fullscreen-idle-failure-physical-capture", mapOf(
+                "diagnosticOnly" to JsonPrimitive(true), "imageSource" to JsonPrimitive("AWT_ROBOT_OWNED_CLIENT_SCREEN"),
+                "screenCaptureFile" to JsonPrimitive(name), "sameWindowAndClientBeforeAfter" to JsonPrimitive(true),
+                "nativeWindowPidVerified" to JsonPrimitive(true), "physicalPixelsHumanReviewRequired" to JsonPrimitive(true),
+                "physicalVideoPixelsIndependentlyChecked" to JsonPrimitive(false),
+                "screenCaptureClientBounds" to buildJsonObject {
+                    put("x", captured.third.x); put("y", captured.third.y)
+                    put("width", captured.third.width); put("height", captured.third.height)
+                }))
+        }
         check(playing() && actualPlayer.state.value.durationSeconds - actualPlayer.state.value.positionSeconds > 12.0) {
             "Fullscreen idle proof requires a playing fixture with more than 12 seconds remaining"
         }
@@ -4289,16 +4381,25 @@ object WindowsVideoActualRootUiFixture {
         val started = System.nanoTime()
         val beforePosition = actualPlayer.state.value.positionSeconds
         var hidden: Rectangle? = null
-        await("after at least four seconds of observed idle both real chrome rows are hidden on the same Canvas/source") { edt {
-            ownedFullscreen()
-            check(playing())
-            val area = Rectangle(actualCanvas.locationOnScreen, actualCanvas.size)
-            if (anchorsGone() && nativeCanvasMatches(area) && area.y < shown.y && area.y + area.height > shown.y + shown.height &&
-                area.x == shown.x && area.width == shown.width &&
-                System.nanoTime() - started >= 4_000_000_000L && actualPlayer.state.value.positionSeconds > beforePosition + .5) {
-                hidden = area; true
-            } else false
-        } }
+        observeChromeDiagnostic("BEFORE_WAIT")
+        try {
+            await("after at least four seconds of observed idle both real chrome rows are hidden on the same Canvas/source") { edt {
+                ownedFullscreen()
+                check(playing())
+                observeChromeDiagnostic("WAIT_CHANGED")
+                val area = Rectangle(actualCanvas.locationOnScreen, actualCanvas.size)
+                if (anchorsGone() && nativeCanvasMatches(area) && area.y < shown.y && area.y + area.height > shown.y + shown.height &&
+                    area.x == shown.x && area.width == shown.width &&
+                    System.nanoTime() - started >= 4_000_000_000L && actualPlayer.state.value.positionSeconds > beforePosition + .5) {
+                    hidden = area; true
+                } else false
+            } }
+        } catch (failure: Throwable) {
+            observeChromeDiagnostic("WAIT_FAILED", final = true)
+            runCatching { captureFullscreenFailureScreen() }.onFailure { failure.addSuppressed(it) }
+            throw failure
+        }
+        observeChromeDiagnostic("WAIT_COMPLETED", final = true)
         capture("121-fullscreen-idle-hidden", requireNotNull(hidden), false, false, mapOf("idleMillis" to JsonPrimitive((System.nanoTime() - started) / 1_000_000L),
             "clockBefore" to JsonPrimitive(beforePosition), "clockAfter" to JsonPrimitive(actualPlayer.state.value.positionSeconds),
             "shownCanvasHeight" to JsonPrimitive(shown.height), "hiddenCanvasHeight" to JsonPrimitive(requireNotNull(hidden).height),

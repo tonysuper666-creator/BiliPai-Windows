@@ -150,6 +150,7 @@ internal class DesktopWindowsVideoActions(
             }
         }
         chromeWindow?.addWindowFocusListener(listener)
+        chromeWindowFocused = chromeWindow?.isFocused == true
         onDispose { chromeWindow?.removeWindowFocusListener(listener) }
     }
     // Listen only to this actual native host and its one non-focusable MPV Canvas.
@@ -402,6 +403,59 @@ internal class DesktopWindowsVideoActions(
     val chromeCanAutoHide = desktopWindowsFullscreenChromeCanAutoHide(fullscreen, active && !pipActive,
         chromeWindowFocused, chromeHeld, state, bootstrapError != null || playback.error != null || playback.recovering)
     val latestChromeCanAutoHide by rememberUpdatedState(chromeCanAutoHide)
+    if (System.getProperty("bilipai.validation.fullscreenIdleInput") == "true") {
+        // Fixture-only readback on this exact retained surface; no controller or
+        // globally registered owner. Returned values never retain live objects.
+        val latestChromeDiagnostic by rememberUpdatedState<() -> Map<String, Any>>({
+            check(java.awt.EventQueue.isDispatchThread())
+            linkedMapOf(
+                "chromeIdentity" to System.identityHashCode(chrome),
+                "sourceIdentity" to System.identityHashCode(chromeSource),
+                "routeIdentity" to System.identityHashCode(route),
+                "windowIdentity" to System.identityHashCode(chromeWindow),
+                "surfaceIdentity" to System.identityHashCode(native.surface),
+                "visible" to chrome.visible, "activityRevision" to chrome.activityRevision,
+                "remainingIdleMillis" to chrome.remainingIdleMillis(),
+                "fullscreen" to fullscreen, "active" to active, "pipActive" to pipActive,
+                "windowFocusedCached" to chromeWindowFocused,
+                "windowFocusedActual" to (chromeWindow?.isFocused == true),
+                "windowActiveActual" to (chromeWindow?.isActive == true),
+                "nativeKeyboardFocusActual" to native.surface.isFocusOwner,
+                "nativePointerClaim" to nativePointerOnVideo, "nativeKeyboardClaim" to nativeKeyboardOnVideo,
+                "topHovered" to topHovered, "topFocused" to topFocused,
+                "barHovered" to barInteraction.hovered, "barFocused" to barInteraction.focused,
+                "barOperationHeld" to barInteraction.operationHeld, "detailsOpen" to detailsOpen,
+                "collectionOpen" to showCollection, "queueOpen" to showPlaybackQueue,
+                "audioLanguageMenuOpen" to (audioLanguageMenu != null), "audioTrackMenuOpen" to (audioTrackMenu != null),
+                "interactionOpen" to (interactionMode != null), "chromeHeldComposed" to chromeHeld,
+                "canAutoHideComposed" to chromeCanAutoHide,
+                "bootstrapErrorPresent" to (bootstrapError != null), "playbackErrorPresent" to (playback.error != null),
+                "playbackRecovering" to playback.recovering, "qualitySwitching" to (success?.isQualitySwitching == true),
+                "ready" to state.ready, "firstVideoFrameReady" to state.firstVideoFrameReady,
+                "nativeUnpaused" to (state.nativePaused == false), "loading" to state.loading,
+                "paused" to state.paused, "ended" to state.ended, "audioOnly" to state.audioOnly,
+                "pausedForCache" to state.pausedForCache, "nativeErrorPresent" to (state.error != null),
+                "assemblyCurrent" to (shell.slot.currentAssembly() === assembly), "assemblyOwned" to assembly.owns(),
+                "rootOwned" to rootEnvironment.owns(), "routeIdentityCurrent" to (rootEnvironment.currentKey() === latestChromeRoute),
+                "sourceCaptured" to (latestChromeSource != null),
+                "sourceCurrent" to (latestChromeSource?.let(assembly.native::isCurrent) == true),
+                "chromeCurrent" to chromeCurrent(), "latestChromeIdentityMatches" to (latestChrome === chrome),
+            )
+        })
+        DisposableEffect(assembly, native.surface, chromeWindow) {
+            val surface = native.surface
+            val boundWindow = chromeWindow
+            val getter = java.util.function.Supplier {
+                check(java.awt.EventQueue.isDispatchThread())
+                check(boundWindow != null && boundWindow === rootEnvironment.window &&
+                    javax.swing.SwingUtilities.getWindowAncestor(surface) === boundWindow)
+                latestChromeDiagnostic()
+            }
+            val property = "bilipai.validation.fullscreenChromeSnapshot"
+            surface.putClientProperty(property, getter)
+            onDispose { if (surface.getClientProperty(property) === getter) surface.putClientProperty(property, null) }
+        }
+    }
     // Gate changes reset the idle period; a new accepted source gets new UI state.
     LaunchedEffect(chrome, fullscreen, active, pipActive, chromeCanAutoHide) { chrome.reveal() }
     LaunchedEffect(chrome, chromeCanAutoHide, chrome.visible, chrome.activityRevision) {
