@@ -2,7 +2,7 @@
 No player, VM, account or GUI implementation is created by this runner.
 """
 from pathlib import Path
-import argparse, ctypes, hashlib, json, os, re, struct, subprocess, sys, tempfile, time, uuid
+import argparse, ctypes, hashlib, json, math, os, re, struct, subprocess, sys, tempfile, time, uuid
 from ctypes import wintypes as W
 sys.dont_write_bytecode = True
 
@@ -37,6 +37,10 @@ CAPTURES_BY_CASE['feedback'] = CAPTURES_BY_CASE['composer'] + [
 CAPTURES_BY_CASE['video_share'] = [
     '230-share-original-sheet', '231-share-dynamic-draft', '232-share-dynamic-cancelled',
     '233-share-dynamic-retry-error', '234-share-dynamic-success',
+]
+
+CAPTURES_BY_CASE['fullscreen'] = [
+    '121-fullscreen-idle-hidden', '122-fullscreen-mouse-restored', '123-fullscreen-paused-hold',
 ]
 
 def validate_ui_case(ui_case):
@@ -310,6 +314,92 @@ def verify_video_share(observations, by, transport, payload_receipt):
     need(all(item.get('method') in ('GET', 'POST') and item.get('path') not in forbidden for item in transport['apiRequests']),
          'another mutation was observed')
 
+def verify_fullscreen(receipt, by, transport):
+    """Existing Main/Canvas assertions and bounded files; physical pixels require human review."""
+    def need(ok, message):
+        if not ok: raise ValueError('Fullscreen: ' + message)
+    def number(value): return type(value) in (int, float) and math.isfinite(value)
+    need(receipt.get('ordinaryFullscreenResizeRegressionExecuted') is True, 'original ordinary baseline did not execute')
+    for key in ('composerInputProofRequested', 'composerInputProofCompleted', 'syntheticAccountSeededThroughActualSessionStore',
+                'commentSearchProofRequested', 'commentSearchInputProofCompleted', 'commentSearchReadResponsesAreSynthetic',
+                'commentSearchPhysicalTextHumanReviewRequired', 'commentPublishingAccepted', 'imageUploadAccepted', 'loginUiAccepted',
+                'nvidiaUiProofRequested', 'nvidiaUiProofCompleted', 'interactionProofRequested', 'interactionProofCompleted',
+                'featureInputProofCompleted', 'hotInputProofRequested', 'hotInputProofCompleted', 'collectionInputProofRequested',
+                'collectionInputProofCompleted', 'videoMetadataProofCompleted', 'bgmInputProofRequested', 'bgmInputProofCompleted',
+                'pipInputProofRequested', 'pipInputProofCompleted', 'originalInteractionProofRequested', 'originalInteractionProofCompleted',
+                'physicalStackWrittenByFixture', 'directPhysicalStackListMutation', 'newNativeActorCreatedByFixture', 'newRootCreatedByFixture'):
+        need(receipt.get(key) is False, 'mixed acceptance ' + key)
+    for key in ('sameActualRepository', 'qualityMetadataIsSynthetic', 'codecMetadataIsSynthetic'):
+        need(transport.get(key) is True, 'missing actual guest replay ' + key)
+    for key in ('realAccountUsed', 'realBilibiliDataAccepted', 'newRootCreated', 'newPlayerCreated', 'newControllerCreated',
+                'originalVmStateWritten', 'actualNativeStateWritten', 'physicalStackWritten', 'commentSearchResponsesAreSynthetic',
+                'composerInputResponsesAreSynthetic', 'chapterMetadataIsSynthetic', 'collectionMetadataIsSynthetic',
+                'videoMetadataIsSynthetic', 'bgmMetadataIsSynthetic', 'bgmDetailAndRecommendResponsesAreSynthetic',
+                'singleBgmDetailOnlyScope', 'originalInteractionMetadataIsSynthetic', 'commentsSent', 'creatorFollowMutationSubmitted',
+                'bgmAccountMutationSubmitted', 'originalInteractionRemoteMutationSubmitted', 'collectionSubscriptionMutationSubmitted',
+                'realDASHCodecAccepted'):
+        need(transport.get(key) is False, 'unexpected replay authority ' + key)
+    need(transport.get('commentSearch') is None and transport.get('composerInput') is None,
+         'comment protocol or synthetic login mixed into fullscreen')
+    need(transport.get('container') == 'MJPEG_AVI_PLUS_PCM_WAV', 'different fixture media')
+    requests = transport.get('apiRequests'); media = transport.get('loopbackRequests')
+    need(type(requests) is list and type(media) is list, 'missing request observations')
+    need(any(item.get('path') == '/x/web-interface/view' for item in requests) and
+         any(item.get('path') in ('/x/player/wbi/playurl', '/x/player/playurl') for item in requests),
+         'original metadata/playurl was not consumed')
+    need(all(any(item.get('file') == name and item.get('method') == 'GET' for item in media)
+             for name in ('video.avi', 'audio.wav')), 'same owned loopback video/audio was not read')
+    baseline_ids = ['110-ordinary-playing', '120-fullscreen-playing', '130-fullscreen-exit-playing',
+                    '140-resized-playing', '150-restored-playing']
+    need(all(id in by for id in baseline_ids + CAPTURES_BY_CASE['fullscreen'] + ['comment-search-bounded-main']),
+         'original bounded Main/fullscreen/resize observation is missing')
+    bounded = by['comment-search-bounded-main']
+    need(bounded.get('scope') == 'ONLY_ACTUAL_AVAILABLE_RUNNER_VIEWPORT' and bounded.get('fourKTested') is False and
+         bounded.get('fullscreenResizeRegressionExecuted') is False and bounded.get('appScaleChangedByFixture') is False and
+         all(type(bounded.get(key)) is int for key in ('x', 'y', 'width', 'height')) and
+         bounded['width'] > 640 and bounded['height'] > 480, 'initial actual monitor setup/scale scope differs')
+    baseline = by['110-ordinary-playing']; version = baseline.get('sameAcceptedSourceVersion')
+    need(type(version) is int and version > 0 and baseline.get('fullImmutableSourceStillOwned') is True,
+         'missing initial full-source identity')
+    need(number(baseline.get('clockBefore')) and number(baseline.get('clockAfter')) and
+         baseline['clockAfter'] > baseline['clockBefore'] + .5, 'initial native clock did not advance')
+    need(baseline.get('actualNativeScreenshot') == '110-ordinary-playing-native.png' and
+         type(baseline.get('sampledNativeColourCount')) is int and baseline['sampledNativeColourCount'] > 1 and
+         type(baseline.get('nativeScreenshotWidth')) is int and baseline['nativeScreenshotWidth'] > 0 and
+         type(baseline.get('nativeScreenshotHeight')) is int and baseline['nativeScreenshotHeight'] > 0,
+         'initial source-bound native decode evidence missing')
+    for id in baseline_ids + CAPTURES_BY_CASE['fullscreen']:
+        row = by[id]; state = row.get('nativeState')
+        need(row.get('sameAcceptedSourceVersion') == version and type(row.get('sameAcceptedSourceVersion')) is int and
+             row.get('fullImmutableSourceStillOwned') is True, 'full-source retirement or version change')
+        need(type(state) is dict and type(state.get('sourceVersion')) is int and state['sourceVersion'] == version,
+             'native state source differs')
+        need(state.get('ready') is True and state.get('loading') is False and state.get('ended') is False and
+             state.get('firstVideoFrameReady') is True and state.get('hasError') is False and
+             state.get('volume') == 0.0 and state.get('muted') is True and
+             number(state.get('positionSeconds')) and state['positionSeconds'] >= 0,
+             'native readiness/clock/private mute changed')
+        need(state.get('nativePaused') is (id == '123-fullscreen-paused-hold'), 'native pause ACK differs')
+        if id in CAPTURES_BY_CASE['fullscreen']:
+            need(row.get('sameActualCanvasRetained') is True and row.get('physicalVideoPixelsIndependentlyChecked') is False and
+                 row.get('physicalScreenHumanReviewRequired') is True, 'Canvas or physical review scope differs')
+    for id in baseline_ids:
+        row = by[id]
+        need(number(row.get('clockBefore')) and number(row.get('clockAfter')) and row['clockAfter'] > row['clockBefore'] + .5 and
+             row.get('windowPlacement') == ('Fullscreen' if id == '120-fullscreen-playing' else 'Floating'),
+             'original ordinary fullscreen/resize clock or placement differs')
+    hidden = by['121-fullscreen-idle-hidden']; restored = by['122-fullscreen-mouse-restored']; paused = by['123-fullscreen-paused-hold']
+    need(type(hidden.get('idleMillis')) is int and hidden['idleMillis'] >= 4000 and
+         number(hidden.get('clockBefore')) and number(hidden.get('clockAfter')) and hidden['clockAfter'] > hidden['clockBefore'] + .5 and
+         type(hidden.get('shownCanvasHeight')) is int and hidden['shownCanvasHeight'] > 0 and
+         type(hidden.get('hiddenCanvasHeight')) is int and hidden['hiddenCanvasHeight'] > hidden['shownCanvasHeight'] and
+         hidden.get('topAndBottomControlsHidden') is True, 'idle time/playing clock/real layout hide missing')
+    need(restored.get('inputMechanism') == 'OWNED_ACTUAL_CANVAS_MOUSE_MOVED' and restored.get('topAndBottomControlsRestored') is True,
+         'actual owned-Canvas input did not restore chrome')
+    need(paused.get('nativePauseAcknowledged') is True and paused.get('controlsStayedVisible') is True and
+         paused.get('menuHoldExecuted') is False, 'paused hold or unexecuted menu scope differs')
+
+
 def verify(report, local, health, token, process, ui_case='search'):
     validate_ui_case(ui_case)
     if process['exitCode'] != 0 or process['forcedCleanup'] or not process['cleanupCompleted']:
@@ -321,8 +411,10 @@ def verify(report, local, health, token, process, ui_case='search'):
         if receipt.get(key) is not True: raise ValueError('Missing actual Main assertion: ' + key)
     if receipt.get('actualMainInvocations') != 1 or receipt.get('defaultRenderer') != 'DIRECT3D':
         raise ValueError('Unexpected Main invocation/default renderer policy marker')
-    for key in ('realAccountUsed','guestRealApi','ordinaryFullscreenResizeRegressionExecuted','commentSearchFourKTested'):
+    for key in ('realAccountUsed','guestRealApi','commentSearchFourKTested'):
         if receipt.get(key) is not False: raise ValueError('Unexpected acceptance scope: ' + key)
+    if receipt.get('ordinaryFullscreenResizeRegressionExecuted') is not (ui_case == 'fullscreen'):
+        raise ValueError('Unexpected ordinary fullscreen/resize scope')
     rows = receipt['observations']; ids = [row['id'] for row in rows]
     if len(ids) != len(set(ids)) or len({row['actualWindowIdentity'] for row in rows}) != 1:
         raise ValueError('Root/window observations changed identity')
@@ -362,6 +454,8 @@ def verify(report, local, health, token, process, ui_case='search'):
             if detail.get(key) is not True: raise ValueError('Original read cycle not completed')
         if detail.get('chargedControlProtobufField') != 31 or detail.get('subReplyOriginalRootRequested') != 91001:
             raise ValueError('Wrong original protobuf/root identity')
+    elif ui_case == 'fullscreen':
+        verify_fullscreen(receipt, by, transport)
     elif video_share:
         verify_video_share(receipt, by, transport, load(no_links(report / 'video-share-payload-receipt.json')))
     else:
@@ -459,7 +553,22 @@ def verify(report, local, health, token, process, ui_case='search'):
         width, height = struct.unpack('>II', data[16:24])
         if min(width, height) <= 0: raise ValueError('Empty physical capture')
         no_links(report / (name + '-accessibility.tsv'))
+        if ui_case == 'fullscreen':
+            row = by[name]; bounds = row.get('screenCaptureClientBounds')
+            if (type(bounds) is not dict or set(bounds) != {'x', 'y', 'width', 'height'} or
+                not all(type(bounds[key]) is int for key in bounds) or
+                row.get('screenCaptureFile') != name + '-screen.png' or
+                bounds['width'] != width or bounds['height'] != height):
+                raise ValueError('Fullscreen physical capture differs from its guarded Main client bounds')
+            for suffix in ('.png', '-frame.txt'): no_links(report / (name + suffix))
         captures.append(dict(path=image.name, sha256=sha(data), width=width, height=height))
+    if ui_case == 'fullscreen':
+        for name in ('110-ordinary-playing', '160-original-back-home'):
+            for suffix in ('.png', '-frame.txt', '-accessibility.tsv'): no_links(report / (name + suffix))
+        native = read(no_links(report / '110-ordinary-playing-native.png'))
+        if (not native.startswith(b'\x89PNG\r\n\x1a\n') or native[12:16] != b'IHDR' or
+            struct.unpack('>II', native[16:24]) != (by['110-ordinary-playing']['nativeScreenshotWidth'], by['110-ordinary-playing']['nativeScreenshotHeight'])):
+            raise ValueError('Initial source-bound native PNG differs from the Main receipt')
     return captures
 
 def main():
@@ -549,6 +658,8 @@ def main():
         fixtureDefaultRendererPolicyMarker="DIRECT3D", actualMainSkikoRenderApiMeasured=False,
         runnerMainObservationScope="RUNNER_SELF_SAMPLING_ONLY",
         physicalTextHumanReviewRequired=True, physicalVisibilityReviewed=False,
+        fullscreenIdleAssertionsPassed=args.comment_ui_case == 'fullscreen' and passed, fullscreenPhysicalVisibilityReviewed=False,
+        captureScope=('OWNED_CLIENT_SCREEN_WITH_SCENE_AND_NATIVE_DECODE_AUXILIARY' if args.comment_ui_case == 'fullscreen' else 'OWNED_PHYSICAL_UI'),
         fullNativeScreenGateExecuted=False, fullNativeScreenGatePassed=False, releaseGatePassed=False,
         portablePackageAccepted=False, newExeDeployed=False, realAccountUsed=False, fourKTested=False)
     save(output / 'result.json', result)

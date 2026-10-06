@@ -26,6 +26,12 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         for name in RUNNER.CAPTURES_BY_CASE[case]:
             (self.report / (name + '-screen.png')).write_bytes(self.png)
             (self.report / (name + '-accessibility.tsv')).write_text('original owned controls\n')
+        if case == 'fullscreen':
+            for name in RUNNER.CAPTURES_BY_CASE[case] + ['110-ordinary-playing', '160-original-back-home']:
+                (self.report / (name + '.png')).write_bytes(self.png)
+                (self.report / (name + '-frame.txt')).write_text('owned fixed Main frame\n')
+                (self.report / (name + '-accessibility.tsv')).write_text('owned Main controls\n')
+            (self.report / '110-ordinary-playing-native.png').write_bytes(self.png)
         if case in ('composer', 'feedback'): (self.report / 'composer-private-image.png').write_bytes(self.png)
         if case == 'video_share':
             (self.report / 'video-share-payload-receipt.json').write_text(json.dumps(transport['videoDynamicShare']), encoding='utf-8')
@@ -53,7 +59,44 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
             brandFeedbackPlacementInput=False, brandFeedbackPlacement=None,
             apiRequests=[dict(method='POST', host='app.bilibili.com',
                 path='/bilibili.main.community.reply.v1.Reply/MainList')])
-        if case == 'search':
+        if case == 'fullscreen':
+            observation['ordinaryFullscreenResizeRegressionExecuted'] = True
+            def state(paused=False): return dict(sourceVersion=7, ready=True, loading=False, ended=False,
+                firstVideoFrameReady=True, hasError=False, volume=0.0, muted=True, nativePaused=paused, positionSeconds=17.0)
+            baseline = row('110-ordinary-playing', sameAcceptedSourceVersion=7, fullImmutableSourceStillOwned=True,
+                nativeState=state(), clockBefore=1.0, clockAfter=3.0, actualNativeScreenshot='110-ordinary-playing-native.png',
+                nativeScreenshotWidth=48, nativeScreenshotHeight=32, sampledNativeColourCount=5, windowPlacement='Floating')
+            core = []
+            for id in RUNNER.CAPTURES_BY_CASE[case]:
+                values = dict(sameAcceptedSourceVersion=7, fullImmutableSourceStillOwned=True, sameActualCanvasRetained=True,
+                    nativeState=state(id == '123-fullscreen-paused-hold'), physicalVideoPixelsIndependentlyChecked=False,
+                    physicalScreenHumanReviewRequired=True, screenCaptureFile=id + '-screen.png',
+                    screenCaptureClientBounds=dict(x=0, y=0, width=48, height=32))
+                if id == '121-fullscreen-idle-hidden': values.update(idleMillis=4100, clockBefore=10.0, clockAfter=14.5,
+                    shownCanvasHeight=780, hiddenCanvasHeight=900, topAndBottomControlsHidden=True)
+                elif id == '122-fullscreen-mouse-restored': values.update(inputMechanism='OWNED_ACTUAL_CANVAS_MOUSE_MOVED',
+                    topAndBottomControlsRestored=True)
+                else: values.update(nativePauseAcknowledged=True, controlsStayedVisible=True, menuHoldExecuted=False)
+                core.append(row(id, **values))
+            ordinary = [row(id, sameAcceptedSourceVersion=7, fullImmutableSourceStillOwned=True, nativeState=state(),
+                clockBefore=1.0, clockAfter=3.0, windowPlacement='Fullscreen' if id == '120-fullscreen-playing' else 'Floating')
+                for id in ('120-fullscreen-playing', '130-fullscreen-exit-playing', '140-resized-playing', '150-restored-playing')]
+            bounded = row('comment-search-bounded-main', scope='ONLY_ACTUAL_AVAILABLE_RUNNER_VIEWPORT', x=0, y=0,
+                width=1024, height=684, fourKTested=False, fullscreenResizeRegressionExecuted=False, appScaleChangedByFixture=False)
+            observation['observations'] = [baseline] + core + ordinary + [bounded, back]
+            transport.update(sameActualRepository=True, realBilibiliDataAccepted=False, newRootCreated=False,
+                newPlayerCreated=False, newControllerCreated=False, originalVmStateWritten=False,
+                actualNativeStateWritten=False, physicalStackWritten=False, qualityMetadataIsSynthetic=True,
+                codecMetadataIsSynthetic=True, container='MJPEG_AVI_PLUS_PCM_WAV', videoDynamicShareInput=False,
+                videoDynamicShare=None, chapterMetadataIsSynthetic=False, collectionMetadataIsSynthetic=False,
+                videoMetadataIsSynthetic=False, bgmMetadataIsSynthetic=False, bgmDetailAndRecommendResponsesAreSynthetic=False,
+                singleBgmDetailOnlyScope=False, originalInteractionMetadataIsSynthetic=False, commentsSent=False,
+                creatorFollowMutationSubmitted=False, bgmAccountMutationSubmitted=False,
+                originalInteractionRemoteMutationSubmitted=False, collectionSubscriptionMutationSubmitted=False,
+                realDASHCodecAccepted=False, apiRequests=[dict(method='GET', path='/x/web-interface/view'),
+                dict(method='GET', path='/x/player/wbi/playurl')], loopbackRequests=[dict(file='video.avi', method='GET'),
+                dict(file='audio.wav', method='GET')])
+        elif case == 'search':
             for key in ('commentSearchProofRequested','commentSearchInputProofCompleted',
                         'commentSearchReadResponsesAreSynthetic','commentSearchPhysicalTextHumanReviewRequired'):
                 observation[key] = True
@@ -306,13 +349,13 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         self.assertNotIn('JavaExec)', init.replace("tasks.named('windowsVideoLocalReplayUiSmoke', JavaExec)", ''))
         self.assertIn("systemProperty('bilipai.validation.composerInput', (uiCase in ['composer', 'feedback', 'video_share']).toString())", init)
         self.assertIn("systemProperty('bilipai.validation.brandFeedbackPlacementInput', (uiCase == 'feedback').toString())", init)
-        self.assertIn("if (uiCase in ['composer', 'feedback', 'video_share']) {", init)
+        self.assertIn("if (uiCase in ['composer', 'feedback', 'video_share', 'fullscreen']) {", init)
         self.assertIn("task.systemProperty('user.home', privateHome.absolutePath)", init)
         self.assertIn('marker.getText(\'UTF-8\') != token', init)
         self.assertIn('task.setDependsOn([])', init)
         self.assertIn('snapshot(ui.get()) != prepared', init)
-        self.assertIn('options: [search, composer, feedback, video_share]', workflow)
-        self.assertIn("@('search', 'composer', 'feedback', 'video_share')", workflow)
+        self.assertIn('options: [search, composer, feedback, video_share, fullscreen]', workflow)
+        self.assertIn("@('search', 'composer', 'feedback', 'video_share', 'fullscreen')", workflow)
         self.assertIn("run_owned(command, repo, env, output / 'gradle.log', 180, process)", runner)
         self.assertIn('physicalVisibilityReviewed=False', runner)
         self.assertIn('fullNativeScreenGatePassed=False', runner)
@@ -322,6 +365,118 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         for suffix in ('-screen.png', '-accessibility.tsv'):
             self.assertEqual(workflow.count('actual-ui/feedback-placement-failure' + suffix), 1)
         self.assertNotIn('actual-ui/composer-private-image.png', workflow)
+
+    def test_fullscreen_requires_three_real_client_captures_and_original_baseline(self):
+        captures = self.verify('fullscreen')
+        self.assertEqual([item['path'] for item in captures], [name + '-screen.png' for name in RUNNER.CAPTURES_BY_CASE['fullscreen']])
+        self.assertEqual(len(captures), 3)
+        observation, transport = self.evidence('fullscreen')
+        for id in ('120-fullscreen-playing', '130-fullscreen-exit-playing', '140-resized-playing', '150-restored-playing', 'comment-search-bounded-main'):
+            bad = copy.deepcopy(observation); bad['observations'] = [row for row in bad['observations'] if row['id'] != id]
+            with self.subTest(id=id), self.assertRaises(ValueError): self.verify('fullscreen', bad, transport)
+        for name in RUNNER.CAPTURES_BY_CASE['fullscreen'] + ['110-ordinary-playing', '160-original-back-home']:
+            for suffix in ('.png', '-frame.txt', '-accessibility.tsv'):
+                observation, transport = self.evidence('fullscreen'); self.write(observation, transport, 'fullscreen')
+                (self.report / (name + suffix)).unlink()
+                with self.subTest(name=name, suffix=suffix), self.assertRaises(ValueError):
+                    RUNNER.verify(self.report, self.local, self.health, self.token, self.process, 'fullscreen')
+        observation, transport = self.evidence('fullscreen'); self.write(observation, transport, 'fullscreen')
+        (self.report / '110-ordinary-playing-native.png').unlink()
+        with self.assertRaises(ValueError): RUNNER.verify(self.report, self.local, self.health, self.token, self.process, 'fullscreen')
+
+    def test_fullscreen_and_original_four_case_receipts_cannot_cross_accept(self):
+        observation, transport = self.evidence('fullscreen')
+        for case in ('search', 'composer', 'feedback', 'video_share'):
+            with self.subTest(case=case), self.assertRaises(ValueError): self.verify(case, observation, transport)
+        for case in ('search', 'composer', 'feedback'):
+            observation, transport = self.evidence(case)
+            with self.subTest(case=case), self.assertRaises(ValueError): self.verify('fullscreen', observation, transport)
+        for key in ('ordinaryFullscreenResizeRegressionExecuted', 'composerInputProofCompleted', 'nvidiaUiProofRequested', 'pipInputProofCompleted'):
+            observation, transport = self.evidence('fullscreen'); observation[key] = key != 'ordinaryFullscreenResizeRegressionExecuted'
+            with self.subTest(key=key), self.assertRaises(ValueError): self.verify('fullscreen', observation, transport)
+
+    def test_fullscreen_full_source_and_native_pause_are_strict(self):
+        for id, field, value in [('121-fullscreen-idle-hidden', 'sameAcceptedSourceVersion', 8),
+                                ('122-fullscreen-mouse-restored', 'sameActualCanvasRetained', False),
+                                ('123-fullscreen-paused-hold', 'fullImmutableSourceStillOwned', False)]:
+            observation, transport = self.evidence('fullscreen')
+            next(row for row in observation['observations'] if row['id'] == id)[field] = value
+            with self.subTest(id=id, field=field), self.assertRaises(ValueError): self.verify('fullscreen', observation, transport)
+        for id, field, value in [('110-ordinary-playing', 'sourceVersion', 8),
+                                ('121-fullscreen-idle-hidden', 'nativePaused', True),
+                                ('123-fullscreen-paused-hold', 'nativePaused', False),
+                                ('122-fullscreen-mouse-restored', 'firstVideoFrameReady', False),
+                                ('123-fullscreen-paused-hold', 'muted', False)]:
+            observation, transport = self.evidence('fullscreen')
+            next(row for row in observation['observations'] if row['id'] == id)['nativeState'][field] = value
+            with self.subTest(id=id, field=field), self.assertRaises(ValueError): self.verify('fullscreen', observation, transport)
+
+    def test_fullscreen_idle_clock_layout_and_input_require_actual_existing_receipts(self):
+        for id, field, value in [('121-fullscreen-idle-hidden', 'idleMillis', 3999),
+                                ('121-fullscreen-idle-hidden', 'idleMillis', True),
+                                ('121-fullscreen-idle-hidden', 'clockAfter', 10.5),
+                                ('121-fullscreen-idle-hidden', 'clockAfter', float('nan')),
+                                ('121-fullscreen-idle-hidden', 'hiddenCanvasHeight', 780),
+                                ('121-fullscreen-idle-hidden', 'topAndBottomControlsHidden', False),
+                                ('122-fullscreen-mouse-restored', 'inputMechanism', 'OS_ROBOT'),
+                                ('123-fullscreen-paused-hold', 'controlsStayedVisible', False),
+                                ('123-fullscreen-paused-hold', 'menuHoldExecuted', True)]:
+            observation, transport = self.evidence('fullscreen')
+            next(row for row in observation['observations'] if row['id'] == id)[field] = value
+            with self.subTest(id=id, field=field), self.assertRaises(ValueError): self.verify('fullscreen', observation, transport)
+
+    def test_fullscreen_capture_boundaries_are_not_physical_pixel_acceptance(self):
+        for field, value in [('screenCaptureFile', '../another.png'), ('physicalScreenHumanReviewRequired', False),
+                             ('physicalVideoPixelsIndependentlyChecked', True),
+                             ('screenCaptureClientBounds', dict(x=0, y=0, width=47, height=32)),
+                             ('screenCaptureClientBounds', dict(x=True, y=0, width=48, height=32))]:
+            observation, transport = self.evidence('fullscreen'); observation['observations'][1][field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError): self.verify('fullscreen', observation, transport)
+        for name in RUNNER.CAPTURES_BY_CASE['fullscreen']:
+            for suffix in ('-screen.png', '-accessibility.tsv'):
+                observation, transport = self.evidence('fullscreen'); self.write(observation, transport, 'fullscreen')
+                (self.report / (name + suffix)).unlink()
+                with self.subTest(name=name, suffix=suffix), self.assertRaises(ValueError):
+                    RUNNER.verify(self.report, self.local, self.health, self.token, self.process, 'fullscreen')
+
+    def test_fullscreen_remains_guest_readonly_and_same_owned_loopback(self):
+        for field, value in [('realAccountUsed', True), ('newPlayerCreated', True), ('composerInput', {}),
+                             ('composerInputResponsesAreSynthetic', True), ('qualityMetadataIsSynthetic', False),
+                             ('loopbackRequests', [dict(file='video.avi', method='GET')])]:
+            observation, transport = self.evidence('fullscreen'); transport[field] = value
+            with self.subTest(field=field), self.assertRaises(ValueError): self.verify('fullscreen', observation, transport)
+        for request in [dict(method='POST', host='api.bilibili.com', path='/x/web-interface/archive/like'),
+                        dict(method='POST', host='api.bilibili.com', path='/x/dynamic/feed/create/dyn'),
+                        dict(method='POST', host='app.bilibili.com', path='/unknown')]:
+            observation, transport = self.evidence('fullscreen'); transport['apiRequests'].append(request)
+            with self.subTest(request=request), self.assertRaises(ValueError): self.verify('fullscreen', observation, transport)
+        observation, transport = self.evidence('fullscreen'); self.process['cleanupCompleted'] = False
+        with self.assertRaises(ValueError): self.verify('fullscreen', observation, transport)
+
+    def test_fullscreen_init_workflow_and_fixture_reuse_original_task_and_three_captures(self):
+        init = (TOOLS / 'comment-search-ui.init.gradle').read_text(encoding='utf-8')
+        workflow = (TOOLS.parents[1] / '.github/workflows/windows-desktop.yml').read_text(encoding='utf-8')
+        fixture = (TOOLS.parent / 'src/test/kotlin/com/bilipai/desktop/ui/WindowsVideoActualRootUiFixture.kt').read_text(encoding='utf-8')
+        self.assertEqual(init.count("tasks.named('windowsVideoLocalReplayUiSmoke', JavaExec)"), 1)
+        self.assertIn("systemProperty('bilipai.validation.fullscreenIdleInput', (uiCase == 'fullscreen').toString())", init)
+        self.assertIn("['composer', 'feedback', 'video_share', 'fullscreen']", init)
+        self.assertIn("task.systemProperty('user.home', privateHome.absolutePath)", init)
+        self.assertIn('options: [search, composer, feedback, video_share, fullscreen]', workflow)
+        self.assertIn('guiTimeoutSeconds=180', (TOOLS / 'run-comment-search-ui.py').read_text(encoding='utf-8'))
+        for name in RUNNER.CAPTURES_BY_CASE['fullscreen']:
+            for suffix in ('.png', '-screen.png', '-frame.txt', '-accessibility.tsv'):
+                self.assertEqual(workflow.count('actual-ui/' + name + suffix), 1)
+        seam = fixture.split('private fun exerciseFullscreenIdleChrome()', 1)[1].split('private fun exercise(replay:', 1)[0]
+        self.assertIn('java.awt.Robot().createScreenCapture(client)', seam)
+        preparation = fixture.split('await("first actual drawn Root")', 1)[1].split('if (replay != null) enterVideoThroughActualSearch', 1)[0]
+        self.assertIn('System.getProperty("bilipai.validation.fullscreenIdleInput") == "true") {', preparation)
+        self.assertIn('boundCommentSearchWindow()', preparation)
+        self.assertEqual(seam.count('sameCaptureOwner()'), 4)
+        self.assertIn('captureMain === window()', seam)
+        self.assertIn('bounds() == canvas', seam)
+        self.assertIn('physicalVideoPixelsIndependentlyChecked', seam)
+        self.assertNotIn('robot.mouse', seam.lower())
+
 
 class VideoShareReceiptTests(unittest.TestCase):
     setUp = CommentUiCaseReceiptTests.setUp
@@ -402,7 +557,7 @@ class VideoShareReceiptTests(unittest.TestCase):
         workflow=(TOOLS.parents[1]/'.github/workflows/windows-desktop.yml').read_text(encoding='utf-8')
         init=(TOOLS/'comment-search-ui.init.gradle').read_text(encoding='utf-8')
         self.assertIn("systemProperty('bilipai.validation.videoDynamicShareInput', (uiCase == 'video_share').toString())",init)
-        self.assertIn('options: [search, composer, feedback, video_share]',workflow)
+        self.assertIn('options: [search, composer, feedback, video_share, fullscreen]',workflow)
         for stage in RUNNER.CAPTURES_BY_CASE['video_share']+['video-share-input-failure']:
             for suffix in ('-screen.png','-accessibility.tsv'):self.assertEqual(workflow.count('actual-ui/'+stage+suffix),1)
         self.assertEqual(workflow.count('actual-ui/video-share-payload-receipt.json'),1)

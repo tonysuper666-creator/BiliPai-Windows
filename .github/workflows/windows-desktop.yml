@@ -30,7 +30,7 @@ on:
       comment_ui_case:
         description: Isolated actual Main case; composer, feedback and video_share use private synthetic responses and never publish remotely
         type: choice
-        options: [search, composer, feedback, video_share]
+        options: [search, composer, feedback, video_share, fullscreen]
         default: search
       verify_previous_update:
         description: Also test forwarding from the exact previously delivered Windows EXE in the isolated updater fixture
@@ -241,7 +241,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          if ($env:COMMENT_UI_CASE -cnotin @('search', 'composer', 'feedback', 'video_share')) { throw 'Unknown independent comment UI case.' }
+          if ($env:COMMENT_UI_CASE -cnotin @('search', 'composer', 'feedback', 'video_share', 'fullscreen')) { throw 'Unknown independent comment UI case.' }
           $runtime = Join-Path $env:RUNNER_TEMP 'bilipai-comment-runtime.json'
           $initScript = Join-Path $env:GITHUB_WORKSPACE 'desktop/tools/comment-search-ui.init.gradle'
           & ./gradlew.bat -p desktop --no-daemon --console=plain --max-workers=2 "-Dorg.gradle.jvmargs=-Xmx4g" `
@@ -281,6 +281,43 @@ jobs:
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/160-original-back-home.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/160-original-back-home-frame.txt
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/160-original-back-home-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/112-owned-player-menu.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/112-owned-player-menu-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/112-owned-player-menu-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/112-owned-player-menu-popup.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/112-owned-player-menu-popup-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/112-owned-player-menu-popup-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/155-original-video-back-search.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/155-original-video-back-search-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/155-original-video-back-search-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/120-fullscreen-playing.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/120-fullscreen-playing-native.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/120-fullscreen-playing-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/120-fullscreen-playing-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/130-fullscreen-exit-playing.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/130-fullscreen-exit-playing-native.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/130-fullscreen-exit-playing-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/130-fullscreen-exit-playing-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/140-resized-playing.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/140-resized-playing-native.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/140-resized-playing-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/140-resized-playing-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/150-restored-playing.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/150-restored-playing-native.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/150-restored-playing-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/150-restored-playing-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/121-fullscreen-idle-hidden.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/121-fullscreen-idle-hidden-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/121-fullscreen-idle-hidden-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/121-fullscreen-idle-hidden-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/122-fullscreen-mouse-restored.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/122-fullscreen-mouse-restored-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/122-fullscreen-mouse-restored-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/122-fullscreen-mouse-restored-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/123-fullscreen-paused-hold.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/123-fullscreen-paused-hold-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/123-fullscreen-paused-hold-frame.txt
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/123-fullscreen-paused-hold-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/178-comment-search-loading-cancel-screen.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/178-comment-search-loading-cancel-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/179-comment-search-retry-error-screen.png

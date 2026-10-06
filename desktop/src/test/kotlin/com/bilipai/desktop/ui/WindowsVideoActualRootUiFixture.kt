@@ -4009,9 +4009,33 @@ object WindowsVideoActualRootUiFixture {
             edt { ownedFullscreen() }
             actions.capture(id, edt { current() })
             edt { ownedFullscreen() }
+            val captureMain = edt { window() as ComposeWindow }
+            val client = edt {
+                ownedFullscreen(); check(captureMain === window() && captureMain.isShowing && captureMain.isDisplayable)
+                Rectangle(captureMain.contentPane.locationOnScreen, captureMain.contentPane.size).also {
+                    check(it.width > 0 && it.height > 0)
+                }
+            }
+            val canvas = bounds()
+            fun sameCaptureOwner() = edt {
+                ownedFullscreen()
+                check(captureMain === window() && captureMain.isShowing && captureMain.isDisplayable &&
+                    Rectangle(captureMain.contentPane.locationOnScreen, captureMain.contentPane.size) == client && bounds() == canvas)
+            }
+            sameCaptureOwner()
+            // Read-only physical capture; no mouse/key input or pixel PASS is inferred.
+            val screen = java.awt.Robot().createScreenCapture(client)
+            sameCaptureOwner()
+            check(screen.width == client.width && screen.height == client.height)
+            check(ImageIO.write(screen, "png", report.resolve("$id-screen.png").toFile()))
+            sameCaptureOwner()
             record(id, properties + mapOf("sameAcceptedSourceVersion" to JsonPrimitive(accepted.sourceVersion),
                 "fullImmutableSourceStillOwned" to JsonPrimitive(true), "sameActualCanvasRetained" to JsonPrimitive(true),
-                "nativeState" to safeState(), "physicalVideoPixelsIndependentlyChecked" to JsonPrimitive(false)))
+                "nativeState" to safeState(), "physicalVideoPixelsIndependentlyChecked" to JsonPrimitive(false),
+                "physicalScreenHumanReviewRequired" to JsonPrimitive(true), "screenCaptureFile" to JsonPrimitive("$id-screen.png"),
+                "screenCaptureClientBounds" to buildJsonObject {
+                    put("x", client.x); put("y", client.y); put("width", client.width); put("height", client.height)
+                }))
         }
         check(playing() && actualPlayer.state.value.durationSeconds - actualPlayer.state.value.positionSeconds > 12.0) {
             "Fullscreen idle proof requires a playing fixture with more than 12 seconds remaining"
@@ -4224,7 +4248,8 @@ object WindowsVideoActualRootUiFixture {
                     actions.awaitActualHealth(health)
                     writeActualMainRuntimeEvidence("start", "FIRST_DRAWN_ROOT_AND_ACTUAL_HEALTH")
                     if (System.getProperty("bilipai.validation.commentSearchInput") == "true" ||
-                        System.getProperty("bilipai.validation.composerInput") == "true") {
+                        System.getProperty("bilipai.validation.composerInput") == "true" ||
+                        System.getProperty("bilipai.validation.fullscreenIdleInput") == "true") {
                         check(replay != null)
                         require(!(System.getProperty("bilipai.validation.commentSearchInput") == "true" &&
                             System.getProperty("bilipai.validation.composerInput") == "true"))
