@@ -3278,7 +3278,7 @@ object WindowsVideoActualRootUiFixture {
                 fun diagnostic(block: () -> JsonObject): JsonObject = runCatching(block).getOrElse { error ->
                     buildJsonObject { put("available", false); put("errorClass", error.javaClass.name) }
                 }
-                fun sceneSnapshot(expectedPressWhen: Long? = null): JsonObject = diagnostic {
+                fun sceneSnapshot(expectedPressWhen: Long? = null, expectedPressEvent: MouseEvent? = null): JsonObject = diagnostic {
                     check(EventQueue.isDispatchThread()); guard()
                     fun field(value: Any, type: String, name: String): Any? {
                         check(value.javaClass.name == type)
@@ -3374,6 +3374,168 @@ object WindowsVideoActualRootUiFixture {
                             check(state in setOf("idle", "waiting", "recognized"))
                             fun pressHitPath(pressWhen: Long): JsonObject {
                                 val readback = linkedMapOf<String, kotlinx.serialization.json.JsonElement>()
+                                val coordinateReadback = linkedMapOf<String, kotlinx.serialization.json.JsonElement>()
+                                fun coordinateObservation(block: MutableMap<String, kotlinx.serialization.json.JsonElement>.() -> Unit): JsonObject {
+                                    val values = linkedMapOf<String, kotlinx.serialization.json.JsonElement>()
+                                    return runCatching {
+                                        values.block(); values["available"] = JsonPrimitive(true); JsonObject(values)
+                                    }.getOrElse { error ->
+                                        values["available"] = JsonPrimitive(false)
+                                        values.putIfAbsent("reason", JsonPrimitive("READ_OR_SHAPE_UNAVAILABLE"))
+                                        values.putIfAbsent("errorClass", JsonPrimitive(error.javaClass.name)); JsonObject(values)
+                                    }
+                                }
+                                fun offset(bits: Long): JsonObject {
+                                    val x = Float.fromBits((bits ushr 32).toInt()); val y = Float.fromBits(bits.toInt())
+                                    check(x.isFinite() && y.isFinite())
+                                    return buildJsonObject { put("packed", bits); put("x", x); put("y", y) }
+                                }
+                                fun intPair(bits: Long, first: String, second: String): JsonObject = buildJsonObject {
+                                    put("packed", bits); put(first, (bits shr 32).toInt()); put(second, bits.toInt())
+                                }
+                                fun floatRect(value: Any): JsonObject = buildJsonObject {
+                                    for (name in listOf("Left", "Top", "Right", "Bottom")) {
+                                        val number = getter(value, "androidx.compose.ui.geometry.Rect", "get$name") as Float
+                                        check(number.isFinite()); put(name.lowercase(), number)
+                                    }
+                                }
+                                fun componentFrame(component: Component): JsonObject {
+                                    check(javax.swing.SwingUtilities.getWindowAncestor(component) === originalMain)
+                                    check(component.isShowing && component.javaClass.name.length <= 256)
+                                    val location = component.locationOnScreen
+                                    val transform = component.graphicsConfiguration.defaultTransform
+                                    val matrix = DoubleArray(6); transform.getMatrix(matrix); check(matrix.all { it.isFinite() })
+                                    return buildJsonObject {
+                                        put("coordinateSpace", "AWT_COMPONENT_AND_SCREEN_LOGICAL_UNITS")
+                                        put("identity", System.identityHashCode(component)); put("class", component.javaClass.name)
+                                        put("localBounds", rect(component.bounds)); put("screenBounds", rect(Rectangle(location.x, location.y, component.width, component.height)))
+                                        put("graphicsTransform", JsonArray(matrix.map(::JsonPrimitive)))
+                                    }
+                                }
+                                fun mediatorFrame(): JsonObject = coordinateObservation {
+                                    put("scope", JsonPrimitive("CURRENT_AWT_FRAME_READBACK_NOT_ATOMIC_ORIGINAL_CONVERSION"))
+                                    val awt = requireNotNull(expectedPressEvent)
+                                    check(awt.`when` == pressWhen && awt.id == MouseEvent.MOUSE_PRESSED && awt.button == MouseEvent.BUTTON1)
+                                    val source = awt.source as Component
+                                    check(source.javaClass.name == "org.jetbrains.skiko.SkiaLayer\$1")
+                                    val mediatorType = "androidx.compose.ui.scene.ComposeSceneMediator"
+                                    val awtContainer = requireNotNull(field(mediator, mediatorType, "container")) as Component
+                                    val content = requireNotNull(getter(mediator, mediatorType, "getContentComponent")) as Component
+                                    put("source", componentFrame(source)); put("container", componentFrame(awtContainer)); put("content", componentFrame(content))
+                                    val sceneBounds = field(mediator, mediatorType, "sceneBoundsInPx")
+                                    put("sceneBoundsInPx", sceneBounds?.let(::floatRect) ?: JsonNull)
+                                    put("originalAwtPoint", buildJsonObject { put("x", awt.x); put("y", awt.y) })
+                                }
+                                val targetAncestors = runCatching {
+                                    val chain = mutableListOf<Any>(); val seen = java.util.IdentityHashMap<Any, Boolean>()
+                                    var next: Any? = layout
+                                    while (next != null) {
+                                        val item = next; check(chain.size < 64 && seen.put(item, true) == null)
+                                        chain.add(item); next = getter(item, "androidx.compose.ui.node.LayoutNode", "getParent\$ui")
+                                    }
+                                    chain
+                                }
+                                fun storedLayout(layoutNode: Any, coordinator: Any, rootLayout: Any): JsonObject = coordinateObservation {
+                                    val layoutType = "androidx.compose.ui.node.LayoutNode"; val coordinatorType = "androidx.compose.ui.node.NodeCoordinator"
+                                    put("scope", JsonPrimitive("EXISTING_COORDINATOR_AND_SPATIAL_CACHE_ONLY_NO_COORDINATE_CALCULATION"))
+                                    put("layoutIdentity", JsonPrimitive(System.identityHashCode(layoutNode)))
+                                    put("coordinatorIdentity", JsonPrimitive(System.identityHashCode(coordinator)))
+                                    put("isTargetLayout", JsonPrimitive(layoutNode === layout)); put("isProcessorRootLayout", JsonPrimitive(layoutNode === rootLayout))
+                                    val depth = targetAncestors.getOrThrow().indexOfFirst { it === layoutNode }
+                                    put("targetAncestorDepth", if (depth >= 0) JsonPrimitive(depth) else JsonNull)
+                                    val layoutOwner = getter(layoutNode, layoutType, "getOwner\$ui")
+                                    put("ownerIsActualMain", JsonPrimitive(layoutOwner === currentOwner)); check(layoutOwner === currentOwner)
+                                    val attached = getter(layoutNode, layoutType, "isAttached") as Boolean
+                                    val placed = getter(layoutNode, layoutType, "isPlaced") as Boolean
+                                    put("attached", JsonPrimitive(attached)); put("placed", JsonPrimitive(placed))
+                                    check(getter(coordinator, coordinatorType, "getLayoutNode") === layoutNode)
+                                    put("coordinatorPosition", intPair(getter(coordinator, coordinatorType, "getPosition-nOcc-ac") as Long, "x", "y"))
+                                    put("coordinatorCoordinateSpace", JsonPrimitive("COORDINATOR_LOCAL_ORIGIN_IN_PARENT_COORDINATOR"))
+                                    put("coordinatorSize", intPair(getter(coordinator, coordinatorType, "getSize-YbymL2g") as Long, "width", "height"))
+                                    put("coordinatorHasLayer", JsonPrimitive(getter(coordinator, coordinatorType, "getLayer") != null))
+                                    val semanticsId = getter(layoutNode, layoutType, "getSemanticsId") as Int
+                                    val index = getter(layoutNode, layoutType, "getRectListIndex\$ui") as Int
+                                    put("semanticsId", JsonPrimitive(semanticsId)); put("rectListIndex", JsonPrimitive(index))
+                                    val rectDirty = getter(layoutNode, layoutType, "getRectInParentDirty\$ui") as Boolean
+                                    val offsetDirty = getter(layoutNode, layoutType, "getOuterToInnerOffsetDirty\$ui") as Boolean
+                                    put("rectInParentDirty", JsonPrimitive(rectDirty)); put("outerToInnerOffsetDirty", JsonPrimitive(offsetDirty))
+                                    put("hasPositionalLayerTransformations", JsonPrimitive(getter(layoutNode, layoutType, "getHasPositionalLayerTransformationsInOffsetFromRoot\$ui") as Boolean))
+                                    val manager = requireNotNull(getter(requireNotNull(currentOwner), "androidx.compose.ui.node.Owner", "getRectManager"))
+                                    val managerType = "androidx.compose.ui.spatial.RectManager"
+                                    val managerDirty = field(manager, managerType, "isDirty") as Boolean
+                                    val offsetsDirty = field(manager, managerType, "isScreenOrWindowDirty") as Boolean
+                                    put("rectManagerIdentity", JsonPrimitive(System.identityHashCode(manager)))
+                                    put("rectManagerDirty", JsonPrimitive(managerDirty)); put("rectManagerScreenOrWindowDirty", JsonPrimitive(offsetsDirty))
+                                    val list = requireNotNull(getter(manager, managerType, "getRects"))
+                                    val listType = "androidx.compose.ui.spatial.RectList"
+                                    val items = field(list, listType, "items") as LongArray
+                                    val size = field(list, listType, "itemsSize") as Int
+                                    put("rectListIdentity", JsonPrimitive(System.identityHashCode(list)))
+                                    put("reason", JsonPrimitive("CACHED_RECT_MISSING_OR_INDEX_UNAVAILABLE"))
+                                    check(semanticsId in 0 until 0x1ffffff && size in 0..items.size && index >= 0 && index % 3 == 0 && index.toLong() + 2 < size)
+                                    val metadata = items[index + 2]; val storedId = metadata.toInt() and 0x1ffffff
+                                    put("cachedRectSemanticsId", JsonPrimitive(storedId)); put("reason", JsonPrimitive("CACHED_RECT_ID_MISMATCH")); check(storedId == semanticsId)
+                                    val topLeft = items[index]; val bottomRight = items[index + 1]
+                                    put("cachedRootRect", buildJsonObject {
+                                        put("coordinateSpace", "COMPOSE_MAIN_ROOT_SPATIAL_CACHE_PIXELS")
+                                        put("left", (topLeft shr 32).toInt()); put("top", topLeft.toInt())
+                                        put("right", (bottomRight shr 32).toInt()); put("bottom", bottomRight.toInt())
+                                        put("physicalPresentationProven", false)
+                                    })
+                                    put("reason", JsonPrimitive("CACHED_RECT_DIRTY_OR_UNPLACED"))
+                                    check(attached && placed && !rectDirty && !offsetDirty && !managerDirty && !offsetsDirty)
+                                    remove("reason"); put("boundsState", JsonPrimitive("MATCHED_EXISTING_CACHE_NOT_EVENT_TIME_GEOMETRY_PROOF"))
+                                }
+                                fun storedNode(modifier: Any, rootLayout: Result<Any>): JsonObject = coordinateObservation {
+                                    val coordinator = requireNotNull(getter(modifier, nodeType, "getCoordinator\$ui"))
+                                    val nodeLayout = requireNotNull(getter(coordinator, "androidx.compose.ui.node.NodeCoordinator", "getLayoutNode"))
+                                    putAll(storedLayout(nodeLayout, coordinator, rootLayout.getOrThrow()))
+                                    check(this["available"] == JsonPrimitive(true))
+                                }
+                                fun cachedNodePress(node: Any, pressPointerId: Long): JsonObject = coordinateObservation {
+                                    put("scope", JsonPrimitive("EXACT_RETAINED_NODE_PRESS_AFTER_DISPATCH_NOT_CONSUMER_ATTRIBUTION"))
+                                    val cached = field(node, "androidx.compose.ui.input.pointer.Node", "pointerEvent")
+                                    put("cachedPointerEventPresent", JsonPrimitive(cached != null)); check(cached != null)
+                                    val eventClass = "androidx.compose.ui.input.pointer.PointerEvent"
+                                    val type = getter(cached, eventClass, "getType-7fucELk") as Int
+                                    val native = getter(cached, eventClass, "getNativeEvent")
+                                    put("cachedEventType", JsonPrimitive(type)); put("sameNativePressObject", JsonPrimitive(native === expectedPressEvent))
+                                    put("reason", JsonPrimitive("CACHED_NODE_EVENT_NOT_EXACT_PRESS"))
+                                    check(type == 1 && expectedPressEvent != null && native === expectedPressEvent && expectedPressEvent.`when` == pressWhen)
+                                    remove("reason")
+                                    val changes = getter(cached, eventClass, "getChanges") as List<*>
+                                    check(changes.size in 1..8)
+                                    val changeType = "androidx.compose.ui.input.pointer.PointerInputChange"
+                                    val matches = changes.filter { it != null && getter(it, changeType, "getId-J3iCeTQ") == pressPointerId }
+                                    check(matches.size == 1); val change = requireNotNull(matches.single())
+                                    val whenMillis = getter(change, changeType, "getUptimeMillis") as Long
+                                    val pressed = getter(change, changeType, "getPressed") as Boolean
+                                    put("pointerId", JsonPrimitive(pressPointerId)); put("uptimeMillis", JsonPrimitive(whenMillis)); put("pressed", JsonPrimitive(pressed))
+                                    check(whenMillis == pressWhen && pressed)
+                                    put("previousPressed", JsonPrimitive(getter(change, changeType, "getPreviousPressed") as Boolean))
+                                    put("previousUptimeMillis", JsonPrimitive(getter(change, changeType, "getPreviousUptimeMillis") as Long))
+                                    put("position", offset(getter(change, changeType, "getPosition-F1C5BW0") as Long))
+                                    put("previousPosition", offset(getter(change, changeType, "getPreviousPosition-F1C5BW0") as Long))
+                                    put("coordinateSpace", JsonPrimitive("CACHED_NODE_LOCAL_POINTER_CHANGE_PIXELS"))
+                                    put("buttons", JsonPrimitive(getter(cached, eventClass, "getButtons-ry648PA") as Int))
+                                    var terminal = change; val consumedSeen = java.util.IdentityHashMap<Any, Boolean>()
+                                    while (true) {
+                                        check(consumedSeen.size < 8 && consumedSeen.put(terminal, true) == null)
+                                        check(getter(terminal, changeType, "getId-J3iCeTQ") == pressPointerId && getter(terminal, changeType, "getUptimeMillis") == pressWhen)
+                                        val next = field(terminal, changeType, "consumedDelegate") ?: break
+                                        terminal = next
+                                    }
+                                    val downConsumed = field(terminal, changeType, "downChange") as Boolean
+                                    val positionConsumed = field(terminal, changeType, "positionChange") as Boolean
+                                    put("consumedDelegateDepth", JsonPrimitive(consumedSeen.size - 1)); put("downChangeConsumed", JsonPrimitive(downConsumed))
+                                    put("positionChangeConsumed", JsonPrimitive(positionConsumed)); put("isConsumedAfterDispatch", JsonPrimitive(downConsumed || positionConsumed))
+                                    val cachedCoordinates = field(node, "androidx.compose.ui.input.pointer.Node", "coordinates")
+                                    put("cachedDispatchCoordinatesPresent", JsonPrimitive(cachedCoordinates != null))
+                                    put("cachedDispatchCoordinateSize", cachedCoordinates?.let {
+                                        intPair(getter(it, "androidx.compose.ui.node.NodeCoordinator", "getSize-YbymL2g") as Long, "width", "height")
+                                    } ?: JsonNull)
+                                    remove("reason"); put("consumerOrPassAttributionProven", JsonPrimitive(false))
+                                }
                                 fun <T> observed(name: String, value: T): T {
                                     readback[name] = when (value) {
                                         null -> JsonNull
@@ -3386,6 +3548,7 @@ object WindowsVideoActualRootUiFixture {
                                 }
                                 fun unavailable(reason: String, error: Throwable? = null): JsonObject = buildJsonObject {
                                     put("available", false); put("reason", reason); put("readback", JsonObject(readback.toMap()))
+                                    put("coordinateReadback", JsonObject(coordinateReadback.toMap()))
                                     error?.let { put("errorClass", it.javaClass.name) }
                                 }
                                 observed("expectedPressWhenMillis", pressWhen)
@@ -3408,10 +3571,29 @@ object WindowsVideoActualRootUiFixture {
                                     val pointerDown = observed("currentPointerDown", field(pointer, dataType, "down") as Boolean)
                                     val pointerWhen = observed("currentPointerWhenMillis", field(pointer, dataType, "uptime") as Long)
                                     val pointerId = observed("pointerId", field(pointer, dataType, "id") as Long)
+                                    coordinateReadback["cachedPointer"] = coordinateObservation {
+                                        put("coordinateSpace", JsonPrimitive("COMPOSE_SCENE_POINTER_EVENT_PIXELS"))
+                                        put("position", offset(field(pointer, dataType, "position") as Long))
+                                        put("positionOnScreen", offset(field(pointer, dataType, "positionOnScreen") as Long))
+                                    }
+                                    coordinateReadback["mediatorFrame"] = mediatorFrame()
                                     if (!pointerDown || pointerWhen != pressWhen) return@readPath unavailable("EXACT_PRESS_POINTER_MISMATCH")
                                     val processor = requireNotNull(field(mainOwner, "androidx.compose.ui.node.RootNodeOwner", "pointerInputEventProcessor"))
                                     observed("processorIdentity", System.identityHashCode(processor))
                                     val processorType = "androidx.compose.ui.input.pointer.PointerInputEventProcessor"
+                                    val processorRoot = runCatching { requireNotNull(field(processor, processorType, "root")) }
+                                    coordinateReadback["mainRoot"] = coordinateObservation {
+                                        put("coordinateSpace", JsonPrimitive("COMPOSE_MAIN_ROOT_PIXELS_STORED_SIZE"))
+                                        val size = field(mainOwner, "androidx.compose.ui.node.RootNodeOwner", "size")
+                                        put("rootInputBoundsUnbounded", JsonPrimitive(size == null))
+                                        put("rootInputSize", size?.let {
+                                            intPair(getter(it, "androidx.compose.ui.unit.IntSize", "unbox-impl") as Long, "width", "height")
+                                        } ?: JsonNull)
+                                        val root = processorRoot.getOrThrow()
+                                        val inner = requireNotNull(getter(root, "androidx.compose.ui.node.LayoutNode", "getInnerCoordinator\$ui"))
+                                        put("processorRootLayout", storedLayout(root, inner, root))
+                                    }
+                                    coordinateReadback["targetClickable"] = storedNode(clickable, processorRoot)
                                     val hitTracker = requireNotNull(field(processor, processorType, "hitPathTracker"))
                                     observed("trackerIdentity", System.identityHashCode(hitTracker))
                                     val hitType = "androidx.compose.ui.input.pointer.HitPathTracker"
@@ -3430,6 +3612,10 @@ object WindowsVideoActualRootUiFixture {
                                     val historyType = "androidx.compose.ui.input.pointer.PointerInputChangeEventProducer\$PointerInputData"
                                     val latestWhen = observed("processorHistoryWhenMillis", field(latest, historyType, "uptime") as Long)
                                     val latestDown = observed("processorHistoryDown", field(latest, historyType, "down") as Boolean)
+                                    coordinateReadback["processorHistory"] = coordinateObservation {
+                                        put("coordinateSpace", JsonPrimitive("PROCESSOR_HISTORY_POSITION_ON_SCREEN_FIELD"))
+                                        put("positionOnScreen", offset(field(latest, historyType, "positionOnScreen") as Long))
+                                    }
                                     if (latestWhen != pressWhen || !latestDown) return@readPath unavailable("EXACT_PRESS_NOT_IN_PROCESSOR_HISTORY")
                                     // Node caches store chain roots. A delegated target must remain unknown.
                                     check(getter(clickable, nodeType, "getNode") === clickable)
@@ -3466,6 +3652,8 @@ object WindowsVideoActualRootUiFixture {
                                                 put("depth", depth + 1); put("modifierClass", modifier.javaClass.name)
                                                 put("modifierIdentity", System.identityHashCode(modifier)); put("matchesSelectedClickable", selected)
                                                 put("pointerIds", JsonArray(pointerIds.map(::JsonPrimitive))); put("containsPressPointer", inPath); put("isIn", isIn)
+                                                put("coordinateReadback", storedNode(modifier, processorRoot))
+                                                put("cachedPressChange", cachedNodePress(node, pointerId))
                                             })
                                             visit(node, depth + 1)
                                         }
@@ -3475,6 +3663,7 @@ object WindowsVideoActualRootUiFixture {
                                     buildJsonObject {
                                         put("available", true); put("scope", "EXISTING_COMPLETED_PRESS_HIT_PATH_CACHE_ONLY")
                                         put("readback", JsonObject(readback.toMap()))
+                                        put("coordinateReadback", JsonObject(coordinateReadback.toMap()))
                                         put("pressWhenMillis", pressWhen); put("pointerId", pointerId)
                                         put("processorIdentity", System.identityHashCode(processor)); put("trackerIdentity", System.identityHashCode(hitTracker))
                                         put("selectedClickableIdentity", System.identityHashCode(clickable)); put("selectedClickableInTrackedPath", selectedTracked)
@@ -3589,13 +3778,13 @@ object WindowsVideoActualRootUiFixture {
                             put("sourceIdentity", System.identityHashCode(source)); put("sourceClass", source.javaClass.name)
                             put("button", event.button); put("modifiersEx", event.modifiersEx); put("consumedAtObserver", event.isConsumed)
                             put("x", event.x); put("y", event.y); put("screenX", event.xOnScreen); put("screenY", event.yOnScreen)
-                            put("sceneAtComponentObserver", sceneSnapshot(pressWhen))
+                            put("sceneAtComponentObserver", sceneSnapshot(pressWhen, event.takeIf { pressWhen != null }))
                         } }
                         // Runs after this dispatch has returned; it may follow later
                         // queued input too, so this snapshot is not an atomic event trace.
                         EventQueue.invokeLater {
                             if (observationActive) observedEvents.add(buildJsonObject {
-                                put("event", delivered); put("sceneAfterDispatch", sceneSnapshot(pressWhen))
+                                put("event", delivered); put("sceneAfterDispatch", sceneSnapshot(pressWhen, event.takeIf { pressWhen != null }))
                             })
                         }
                     }
