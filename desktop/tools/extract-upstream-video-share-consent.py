@@ -4,6 +4,7 @@ source-retained only; Windows exposes its real system chooser/copy/save capabili
 """
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
+from v030_video_dynamic_share import advance_share, emit_additions
 import argparse,hashlib,json,os,subprocess
 COMMIT = '79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40'
 SOURCE_PINS = {'app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheet.kt': '1316c7769903345835c34e7b38922a24caefd970070bd48007cc505b2db7f6fd', 'app/src/main/java/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt': '97b76d437936dddfccb4b0f553b14f3b3105ef012fdd520ac293d5863a5fcced', 'app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheetMotion.kt': 'f734b125809387511ffce1231599717d9de6357f2785e314fc33164e37a84efd', 'app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareToFollowingDialog.kt': '5337b13e4e982eecec0ab01a283e0f15616ce9d9fc5bea4902128aa6cf901ec9', 'app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareMoreTargetsSheet.kt': '5defed29dba05655b77696fb80f12abcff16da3d8e01068107a1f6dbd7fd370b', 'app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareCoverService.kt': '3522337b258e940bbed464b183d06a4b92ceef128f524c84afbbdd7d757ccffc', 'app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareCardService.kt': '3b4457cc2cafe715f096b672c4dcdf20cdb4e439c8ed28529bf3c7bd672f843f', 'app/src/main/java/com/android/purebilibili/feature/home/components/CrashTrackingConsentDialog.kt': 'ef6c64d8ece6629745cdc97429c04ab18cfac1ed8c14e9aa8bb96d8fc89e3e69', 'app/src/main/java/com/android/purebilibili/data/repository/MessageRepository.kt': 'bb055a1da8a8f7cf4f937c4a2f67a5d3fb2f7ff462274857780b55c4628a1eb9', 'app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt': '5799bb8802992594ae9494b48d6357ee00ecc7be03d97ed0dcb5fede7774328c', 'app/src/main/java/com/android/purebilibili/core/ui/common/ClipboardUtils.kt': '4d88d3cd243eeb5b5ab8c555a0321255f43c4ed8d468ce8ac27de5df0649fd7f'}
@@ -100,9 +101,12 @@ def generate(repo,out,standalone=False):
    pos=e['offset'];assert inverse[pos:pos+len(e['after'])]==e['after'],(spec['target'],pos)
    inverse=inverse[:pos]+e['before']+inverse[pos+len(e['after']):]
   assert inverse==original and sha(body)==spec['outputSha256LF'],spec['target']
-  body,presentation_edits=share_presentation_delta(spec['target'],body)
+  body,v030_source=advance_share(repo,spec,original,body)
+  presentation_audit=[]
+  body,presentation_edits=share_presentation_delta(spec['target'],body,presentation_audit)
   target=safe(out/spec['target']);target.parent.mkdir(parents=True,exist_ok=True);target.write_text(body,encoding='utf-8',newline='\n');files.append(target)
-  proof.append({k:v for k,v in spec.items() if k!='operations'} | dict(outputSha256LF=sha(body),adaptationOperations=len(spec['operations']),inverseByteEqual=True,windowsPresentationEdits=presentation_edits,windowsPresentationInverseByteEqual=True))
+  proof.append({k:v for k,v in spec.items() if k!='operations'} | dict(outputSha256LF=sha(body),adaptationOperations=len(spec['operations']),inverseByteEqual=True,windowsPresentationEdits=presentation_edits,windowsPresentationInverseByteEqual=True,windowsPresentationAudit=presentation_audit,v030FullSourceAdaptation=v030_source))
+ files.extend(emit_additions(repo,out))
  proof_path=safe(out/'video-share-consent-selection-proof.json');proof_path.parent.mkdir(parents=True,exist_ok=True);proof_path.write_text(json.dumps(dict(pinnedCommit=COMMIT,selectedSources=proof),ensure_ascii=False,indent=2)+'\n',encoding='utf-8',newline='\n')
  return files
 if __name__=='__main__':

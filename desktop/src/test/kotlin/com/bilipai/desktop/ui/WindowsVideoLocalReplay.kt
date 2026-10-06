@@ -16,6 +16,7 @@ import java.awt.Font
 import java.awt.image.BufferedImage
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.IOException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.nio.ByteBuffer
@@ -111,10 +112,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
         val epoch = repository.sessionEpoch
         composerScript?.bindGuest(repository)
         val client = repository.httpClient.newBuilder().followRedirects(false).followSslRedirects(false).addInterceptor { chain ->
-            fun requireOwner() = require(owns() && (composerScript?.ownsSession(repository)
-                ?: (repository.sessionEpoch == epoch && repository.account.value == null))) {
-                "LOCAL replay exact Root/session owner retired"
-            }
+            fun requireOwner() = requireReplayOwner { owns() && (composerScript?.ownsSession(repository)
+                ?: (repository.sessionEpoch == epoch && repository.account.value == null)) }
             requireOwner()
             fun requireOwnerBoolean(): Boolean { requireOwner(); return true }
             val request = chain.request(); val url = request.url; val path = url.encodedPath
@@ -150,7 +149,16 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                 return@addInterceptor Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200)
                     .message("LOCAL visitor bootstrap").body("<html></html>".toResponseBody("text/html".toMediaType())).build()
             }
-            // Search startup uses three exact original read APIs, including the separate hotword host.
+            backgroundBootstrapResponse(request, ::requireOwnerBoolean)?.let { response ->
+                try {
+                    requireOwner()
+                    requests.add(buildJsonObject { put("path", path); put("method", request.method); put("host", url.host)
+                        put("localReplay", true); put("mapped", true); put("backgroundBootstrapRead", true)
+                        put("bodyBytes", requireNotNull(response.body).contentLength()) })
+                    return@addInterceptor response
+                } catch (failure: Throwable) { response.close(); throw failure }
+            }
+            // Search startup uses four exact original read APIs, including the separate hotword host.
             // This does not add that host to the generic API allowlist or change the loopback media path.
             searchStartupResponse(request, ::requireOwnerBoolean)?.let { response ->
                 try {
@@ -162,9 +170,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                 } catch (failure: Throwable) { response.close(); throw failure }
             }
             // API responses remain memory-only. Every other origin is forbidden, never proceeded.
-            require(url.host in setOf("api.bilibili.com", "api.vc.bilibili.com", "app.bilibili.com")) {
-                "LOCAL replay forbids requests outside mapped API or exact owned loopback media"
-            }
+            requireMappedApiHost(request)
             if (brandFeedbackPlacementInput) {
                 brandFeedbackScript?.respond(request, ::requireOwnerBoolean)?.let { response ->
                     try {
@@ -468,6 +474,40 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     companion object {
         fun create(report: Path, bvid: String) = WindowsVideoLocalReplay(report, bvid)
 
+        /** Exact original background reads only; this handler never proceeds a socket. */
+        internal fun backgroundBootstrapResponse(request: okhttp3.Request, stillOwned: () -> Boolean): Response? {
+            val url = request.url
+            if (url.host != "api.live.bilibili.com") return null
+            val body = when (url.encodedPath) {
+                "/xlive/app-interface/v2/index/feed" -> """{"code":0,"data":{"card_list":[],"has_more":0}}"""
+                "/xlive/web-interface/v1/webMain/getMoreRecList" -> """{"code":0,"data":{"recommend_room_list":[]}}"""
+                "/room/v3/area/getRoomList" -> """{"code":0,"data":{"list":[],"count":0,"has_more":0}}"""
+                "/xlive/web-ucenter/user/following" -> """{"code":0,"data":{"list":[],"living_num":0,"not_living_num":0}}"""
+                "/room/v1/Area/getList" -> """{"code":0,"data":[]}"""
+                else -> return null
+            }
+            if (!stillOwned()) throw IOException("Owned background bootstrap replay retired")
+            if (request.method != "GET" || url.scheme != "https" || url.port != 443 ||
+                url.username.isNotEmpty() || url.password.isNotEmpty() || url.encodedFragment != null)
+                throw IOException("Background bootstrap replay requires the exact HTTPS read origin and method")
+            val response = Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200)
+                .message("LOCAL background bootstrap replay").body(body.toResponseBody("application/json".toMediaType())).build()
+            try {
+                if (!stillOwned()) throw IOException("Owned background bootstrap replay retired")
+                return response
+            } catch (failure: Throwable) { response.close(); throw failure }
+        }
+
+        /** Keep unknown origins fail-closed using OkHttp's supported I/O failure channel. */
+        internal fun requireMappedApiHost(request: okhttp3.Request) {
+            if (request.url.host !in setOf("api.bilibili.com", "api.vc.bilibili.com", "app.bilibili.com"))
+                throw IOException("LOCAL replay forbids requests outside mapped API or exact owned loopback media")
+        }
+
+        internal fun requireReplayOwner(stillOwned: () -> Boolean) {
+            if (!stillOwned()) throw IOException("LOCAL replay exact Root/session owner retired")
+        }
+
         /** Same handler consumed by install and pure OkHttp tests. No socket, account or media authority. */
         internal fun searchStartupResponse(request: okhttp3.Request, stillOwned: () -> Boolean): Response? {
             val url = request.url
@@ -476,6 +516,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                     """{"code":0,"data":{"show_name":"本地搜索回放","url":""}}"""
                 url.host == "s.search.bilibili.com" && url.encodedPath == "/main/hotword" ->
                     """{"code":0,"top_list":[],"list":[]}"""
+                url.host == "s.search.bilibili.com" && url.encodedPath == "/main/suggest" ->
+                    """{"code":0,"result":{"tag":[]}}"""
                 url.host == "app.bilibili.com" && url.encodedPath == "/x/v2/search/recommend" ->
                     """{"code":0,"data":{"list":[]}}"""
                 else -> return null

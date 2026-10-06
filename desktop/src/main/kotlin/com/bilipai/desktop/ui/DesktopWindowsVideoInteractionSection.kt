@@ -148,7 +148,22 @@ private val LocalDesktopWindowsVideoInteractionWindow = staticCompositionLocalOf
         val context = remember(lease, settings) { DesktopOriginalPlayerSettingsContext(settings.pluginContext,
             { lease.isOwned() && settings.isCurrentForOriginalWrite() },
             { action -> lease.commit(action) }) }
-        val share = remember(lease) { shareForPresentation(lease::isOwned, lease::commit, nativeHandoffOwned) }
+        val share = remember(lease) {
+            val subject = assembly.domains.engagement.uiState.value.subject?.takeIf {
+                it.bvid == source.request.bvid && it.cid == source.request.cid
+            }
+            val feedback = subject?.let {
+                DesktopOriginalVideoEngagementPresentation(source, it,
+                    lease::isOwned, lease::commit, nativeHandoffOwned,
+                    { action -> latestAdmission(action) })
+            }
+            shareForPresentation(lease::isOwned, lease::commit, nativeHandoffOwned).withPreparedFeedback { bvid ->
+                if (feedback != null) withContext(feedback.context) {
+                    currentCoroutineContext().ensureActive()
+                    assembly.domains.engagement.showShareFeedback(bvid)
+                }
+            }
+        }
         fun shareNote(title: String, text: String) {
             val handoff = DesktopWindowsNativeShareHandoff(lease::isOwned, nativeHandoffOwned, lease::commit)
             lease.effect { shareText(title, text, handoff) }

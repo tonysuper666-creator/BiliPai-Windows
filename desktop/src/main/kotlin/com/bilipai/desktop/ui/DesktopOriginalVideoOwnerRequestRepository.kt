@@ -188,24 +188,20 @@ internal class DesktopOriginalVideoOwnerAccountView(
     }
 }
 
-/** Concrete captured protocol assembly. onPrimaryVipReceiptRetired is a required
- * short Root event enqueue, performed AFTER Binding's Store/entry write returns.
- * Its consumer must start a NEW original load capture; it cannot retag this Binding.
- * No native IO, request cancellation, or join may run in that callback.
- */
+/** Concrete captured protocol assembly. Binding reports SPI/VIP authorization
+ * retirement after the Store/entry write returns. Root enqueues a NEW same-load
+ * capture; no native IO, cancellation or join occurs inside that write. */
 internal fun createDesktopOriginalVideoOwnerRequestRepository(
     repository: DesktopRepository,
     binding: DesktopOriginalVideoRepositoryBinding,
     subtitleAssets: DesktopSubtitleAssets,
     privacy: DesktopSearchPreferences,
     visitorInitialized: (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
-    onPrimaryVipReceiptRetired: (DesktopPlaybackAuthorizationReceipt) -> Unit,
 ): DesktopOriginalVideoOwnerRequestRepository {
     binding.assertCurrent()
     val updateVip: (Boolean) -> Unit = { vip ->
-        val before = binding.receipt
         binding.updatePrimaryVip(vip)
-        if (!repository.isPlaybackReceiptCurrent(before)) onPrimaryVipReceiptRetired(before)
+        binding.reportPlaybackAuthorizationRetired()
     }
     val metadata = DesktopOriginalVideoOwnerMetadataProtocol(DesktopOriginalVideoMetadataEnvironment(
         load = binding.environment,

@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "upstreamCommit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+  "sources": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareSheet.kt",
+      "file": "VideoShareSheet.kt",
+      "sha256": "668fc2bfdbada0ed1b515f0e968b75ee8ac7a65d40d9b8d51fd24ac84294381d",
+      "gitBlob": "7b678ef67f93f986d69497b191bf2d9b4b751b5f",
+      "bytes": 24160
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoSharePolicy.kt",
+      "file": "VideoSharePolicy.kt",
+      "sha256": "b5c051390305b5084a583331997664bad2b089465f8c1f6c0c72b611a7287070",
+      "gitBlob": "2aad50f69f6cdc3b8895ac28a4b6e48a0870b3bc",
+      "bytes": 7233
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/share/VideoShareToDynamicDialog.kt",
+      "file": "VideoShareToDynamicDialog.kt",
+      "sha256": "11154580c088dd3344892240aaa40890dd2ae2557c2b923f1b48fed83b0cb16d",
+      "gitBlob": "b35a6217c49068c11ada3f896a07c6d88edde489",
+      "bytes": 4648
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/data/repository/VideoDynamicShareRepository.kt",
+      "file": "VideoDynamicShareRepository.kt",
+      "sha256": "a760f172b83314a83b0192573598d4dbb64e1605c53456355b44d8b3960724d1",
+      "gitBlob": "c24ce1d78896516d70eccf5e49b7dbcbca63b031",
+      "bytes": 2777
+    },
+    {
+      "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicCreateModels.kt",
+      "file": "DynamicCreateModels.kt",
+      "sha256": "ea6d1959a53c7aa53250432a7d404c4bae60d70ce5f45bcbca38f33b8b2f1868",
+      "gitBlob": "a725af09ea44104353e5d88e920b04be881ef86f",
+      "bytes": 6627
+    }
+  ]
+}

@@ -1,6 +1,16 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.SearchApi
+import com.android.purebilibili.core.network.BilibiliApi
+import java.io.IOException
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicReference
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Dispatcher
+import okhttp3.Response
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
@@ -24,7 +34,7 @@ class WindowsVideoLocalReplaySearchTest {
             .addInterceptor { chain ->
                 observed += chain.request()
                 requireNotNull(WindowsVideoLocalReplay.searchStartupResponse(chain.request(), owns)) {
-                    "Only the exact three startup reads may be mapped"
+                    "Only the exact four startup reads may be mapped"
                 }
             }.addInterceptor { escaped.incrementAndGet(); error("Memory-only search read reached terminal transport") }.build()
         try { block(client, observed, escaped) }
@@ -48,15 +58,123 @@ class WindowsVideoLocalReplaySearchTest {
                 val recommend = api.getSearchRecommend(mapOf("build" to "1"))
                 assertEquals(0, recommend.code)
                 assertEquals(emptyList(), requireNotNull(recommend.data).list)
+                val suggestion = api.getSearchSuggest("LOCAL")
+                assertEquals(0, suggestion.code)
+                assertEquals(emptyList(), requireNotNull(suggestion.result).tag)
             }
             assertEquals(listOf(
                 "api.bilibili.com" to "/x/web-interface/wbi/search/default",
                 "s.search.bilibili.com" to "/main/hotword",
                 "app.bilibili.com" to "/x/v2/search/recommend",
+                "s.search.bilibili.com" to "/main/suggest",
             ), observed.map { it.url.host to it.url.encodedPath })
             assertTrue(observed.all { it.method == "GET" && it.url.scheme == "https" && it.url.port == 443 })
             assertEquals(0, escaped.get())
         }
+    }
+
+
+    @Test fun originalLiveApiConsumesOnlyFiveExactEmptyBootstrapDtosWithoutNetwork() {
+        val escaped = AtomicInteger()
+        val observed = mutableListOf<Request>()
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+            observed += chain.request()
+            WindowsVideoLocalReplay.backgroundBootstrapResponse(chain.request()) { true }
+                ?: throw IOException("Unmapped background read")
+        }.addInterceptor { escaped.incrementAndGet(); error("Background replay escaped") }.build()
+        try {
+            val api = Retrofit.Builder().baseUrl("https://api.bilibili.com/").client(client)
+                .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory("application/json".toMediaType()))
+                .build().create(BilibiliApi::class.java)
+            runBlocking {
+                val feed = api.getLiveFeedIndex(mapOf("page" to "1"))
+                assertEquals(0, feed.code); assertEquals(emptyList(), requireNotNull(feed.data).cardList)
+                val recommendation = api.getLiveRecommendList()
+                assertEquals(0, recommendation.code)
+                assertEquals(emptyList(), requireNotNull(recommendation.data).recommendRoomList)
+                val rooms = api.getLiveList()
+                assertEquals(0, rooms.code); assertEquals(emptyList(), requireNotNull(rooms.data).getAllRooms())
+                val followed = api.getFollowedLive()
+                assertEquals(0, followed.code); assertEquals(emptyList(), requireNotNull(followed.data).list)
+                val areas = api.getLiveAreaList()
+                assertEquals(0, areas.code); assertEquals(emptyList(), areas.data)
+            }
+            assertEquals(listOf("/xlive/app-interface/v2/index/feed", "/xlive/web-interface/v1/webMain/getMoreRecList",
+                "/room/v3/area/getRoomList", "/xlive/web-ucenter/user/following", "/room/v1/Area/getList"),
+                observed.map { it.url.encodedPath })
+            assertTrue(observed.all { it.url.host == "api.live.bilibili.com" && it.method == "GET" })
+            assertEquals(0, escaped.get())
+        } finally { client.dispatcher.executorService.shutdownNow(); client.connectionPool.evictAll() }
+    }
+
+    @Test fun backgroundMappingsRejectWrongOriginMethodAndRetiredOwner() {
+        for (url in listOf("http://api.live.bilibili.com/room/v1/Area/getList",
+            "https://api.live.bilibili.com:444/room/v1/Area/getList",
+            "https://user:secret@api.live.bilibili.com/room/v1/Area/getList",
+            "https://api.live.bilibili.com/room/v1/Area/getList#fragment")) {
+            assertFailsWith<IOException> {
+                WindowsVideoLocalReplay.backgroundBootstrapResponse(Request.Builder().url(url).build()) { true }
+            }
+        }
+        val request = Request.Builder().url("https://api.live.bilibili.com/room/v1/Area/getList").build()
+        for (method in listOf("POST", "HEAD", "DELETE")) assertFailsWith<IOException> {
+            WindowsVideoLocalReplay.backgroundBootstrapResponse(request.newBuilder()
+                .method(method, if (method == "POST") ByteArray(0).toRequestBody() else null).build()) { true }
+        }
+        assertFailsWith<IOException> { WindowsVideoLocalReplay.backgroundBootstrapResponse(request) { false } }
+        val checks = AtomicInteger()
+        assertFailsWith<IOException> {
+            WindowsVideoLocalReplay.backgroundBootstrapResponse(request) { checks.incrementAndGet() == 1 }
+        }
+        assertEquals(2, checks.get())
+        for (url in listOf("https://api.live.bilibili.com/room/v1/Area/getList/",
+            "https://api.live.bilibili.com/xlive/web-room/v2/index/getRoomPlayInfo",
+            "https://api.live.bilibili.com.evil.invalid/room/v1/Area/getList",
+            "http://127.0.0.1:12345/video.avi"))
+            assertNull(WindowsVideoLocalReplay.backgroundBootstrapResponse(Request.Builder().url(url).build()) { true })
+    }
+
+    @Test fun unknownOriginIsAnAsyncIoFailureWithoutUncaughtWorkerThrowableOrNetwork() {
+        assertAsyncIoRejection("https://unmapped.invalid/bootstrap", { true },
+            "LOCAL replay forbids requests outside mapped API or exact owned loopback media")
+    }
+
+    @Test fun retiredOwnerBeforeAndAfterMemoryResponseUsesAsyncIoWithoutWorkerEscape() {
+        assertAsyncIoRejection("https://api.live.bilibili.com/room/v1/Area/getList", { false },
+            "LOCAL replay exact Root/session owner retired")
+        val checks = AtomicInteger()
+        assertAsyncIoRejection("https://api.live.bilibili.com/room/v1/Area/getList", { checks.incrementAndGet() <= 2 },
+            "Owned background bootstrap replay retired")
+        assertEquals(3, checks.get())
+    }
+
+    private fun assertAsyncIoRejection(url: String, owns: () -> Boolean, expectedMessage: String) {
+        val uncaught = AtomicInteger(); val escaped = AtomicInteger()
+        val executor = Executors.newSingleThreadExecutor { action ->
+            Thread(action, "Owned replay rejection test").apply {
+                uncaughtExceptionHandler = Thread.UncaughtExceptionHandler { _, _ -> uncaught.incrementAndGet() }
+            }
+        }
+        val client = OkHttpClient.Builder().dispatcher(Dispatcher(executor)).addInterceptor { chain ->
+            WindowsVideoLocalReplay.requireReplayOwner(owns)
+            WindowsVideoLocalReplay.backgroundBootstrapResponse(chain.request(), owns)?.let { return@addInterceptor it }
+            WindowsVideoLocalReplay.requireMappedApiHost(chain.request())
+            throw IOException("Unexpected mapped request in unknown-origin test")
+        }.addInterceptor { escaped.incrementAndGet(); error("Rejected replay escaped") }.build()
+        val done = CountDownLatch(1); val actual = AtomicReference<IOException?>()
+        val returned = AtomicInteger(); val failed = AtomicInteger()
+        try {
+            client.newCall(Request.Builder().url(url).build()).enqueue(object : Callback {
+                override fun onFailure(call: Call, failure: IOException) { failed.incrementAndGet(); actual.set(failure); done.countDown() }
+                override fun onResponse(call: Call, response: Response) { response.close(); returned.incrementAndGet(); done.countDown() }
+            })
+            assertTrue(done.await(3, TimeUnit.SECONDS), "Actual OkHttp callback did not finish")
+            executor.submit {}.get(3, TimeUnit.SECONDS)
+            assertEquals(expectedMessage, actual.get()?.message)
+            assertNull(actual.get()?.cause, "Rejection must not be canceled-due-to unchecked throwable")
+            assertEquals(1, failed.get())
+            assertEquals(0, returned.get()); assertEquals(0, uncaught.get()); assertEquals(0, escaped.get())
+        } finally { executor.shutdownNow(); client.connectionPool.evictAll() }
     }
 
     @Test fun exactReadOriginRejectsOtherSchemePortCredentialsAndFragments() {

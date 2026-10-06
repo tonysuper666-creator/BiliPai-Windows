@@ -29,7 +29,7 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
     private val isMobileData: () -> Boolean,
     private val subtitleAssets: DesktopSubtitleAssets,
     private val privacy: DesktopSearchPreferences,
-    private val onPrimaryVipReceiptRetired: (DesktopPlaybackAuthorizationReceipt) -> Unit,
+    private val onPlaybackAuthorizationRetired: (DesktopPlaybackAuthorizationReceipt, PlaybackSessionState) -> Unit,
     private val prepareRequestMedia: (DesktopOriginalVideoOwnerRequestRepository, PlaybackSessionState,
         Long, Job, DesktopOriginalVideoNativeOwner) -> DesktopOriginalVideoMediaPort,
 ) {
@@ -46,7 +46,8 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
             entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
             capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
-            isMobileData, token::available, token::refresh)
+            isMobileData, token::available, token::refresh,
+            { receipt -> onPlaybackAuthorizationRetired(receipt, state) })
     }
 
     suspend fun capture(state: PlaybackSessionState,
@@ -58,11 +59,11 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
             entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
             capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
-            isMobileData, token::available, token::refresh)
+            isMobileData, token::available, token::refresh,
+            { receipt -> onPlaybackAuthorizationRetired(receipt, state) })
         val raw = createDesktopOriginalVideoOwnerRequestRepository(repository, binding,
             subtitleAssets, privacy,
-            { receipt, stillOwned -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, stillOwned) },
-            onPrimaryVipReceiptRetired)
+            { receipt, stillOwned -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, stillOwned) })
         var baseline: Long? = null
         if (!binding.admitCurrentMutation { baseline = native.player.currentSourceVersion })
             throw CancellationException("Original media baseline capture retired")

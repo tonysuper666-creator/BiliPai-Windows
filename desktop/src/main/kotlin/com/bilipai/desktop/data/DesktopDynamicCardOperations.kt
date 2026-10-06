@@ -131,6 +131,38 @@ internal class DesktopDynamicCardOperations(
     suspend fun sendDynamicShare(receiverId:Long,content:String) = result {
         mutate { messageShare.sendDynamicShare(receiverId,content).getOrThrow() }
     }
+    /** Original scene-5 video repost, borrowing this SAME Root mutex and transport.
+     * Per-call owner includes the immutable presentation/source and actual caller.
+     * Awaited API I/O is outside bounded source/account publication admission. */
+    fun canShareVideoToDynamic(): Boolean {
+        if (!isOwned() || repository.account.value == null) return false
+        return try { !repository.ownedHomeCookie("bili_jct", expectedEpoch, ::isOwned).isNullOrBlank() }
+        catch (failure: BiliApiException) { if (!isOwned()) false else throw failure }
+    }
+    suspend fun shareVideoToDynamic(bvid: String, text: String,
+        requestOwned: () -> Boolean, requestAdmission: ((() -> Unit) -> Boolean)): Result<String> = result {
+        val caller = kotlinx.coroutines.currentCoroutineContext()
+        fun current(): Boolean = caller[kotlinx.coroutines.Job]?.isActive != false && isOwned() && requestOwned()
+        fun checkCurrent() { caller.ensureActive(); if (!current()) throw CancellationException("视频动态分享来源已退役") }
+        checkCurrent()
+        // The source check is repeated AFTER the existing mutation mutex admits us.
+        mutex.withLock {
+            checkCurrent()
+            repository.requireAccount()
+            val csrf = repository.requireCsrf()
+            read {
+            checkCurrent()
+            val requestApi = repository.ownedHomeService(BilibiliApi::class.java,
+                "https://api.bilibili.com/", expectedEpoch, ::current)
+            val requestDynamic = repository.ownedHomeService(DynamicApi::class.java,
+                "https://api.bilibili.com/", expectedEpoch, ::current)
+            com.android.purebilibili.data.repository.DesktopOriginalVideoDynamicShareRepository.share(
+                requestApi, requestDynamic, { checkCurrent(); csrf }, bvid, text, ::current,
+                { action -> checkCurrent(); requestAdmission { checkCurrent(); action() } }
+            ).getOrThrow().also { checkCurrent() }
+            }
+        }
+    }
     suspend fun searchUp(name:String) = result { read { upSearch.searchUp(name).getOrThrow() } }
     suspend fun addWatchLater(aid:Long) = mutate { csrf ->
         require(aid>0);val response=api.addToWatchLater(aid,csrf);checked(response.code,response.message)

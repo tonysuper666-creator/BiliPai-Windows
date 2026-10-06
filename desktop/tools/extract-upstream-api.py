@@ -245,6 +245,8 @@ def generate(repo: Path, output: Path) -> Path:
     from v029_comment_search import emit_models
     emit_models(repo, output)
     emit_live_models(repo, output)
+    from v030_video_dynamic_share import emit_models as emit_video_dynamic_models
+    emit_video_dynamic_models(repo, output)
     return destination
 
 

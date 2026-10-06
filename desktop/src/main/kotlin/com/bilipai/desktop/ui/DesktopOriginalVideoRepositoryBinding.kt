@@ -41,7 +41,9 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     isMobileData: () -> Boolean,
     canRefreshPrimaryToken: () -> Boolean,
     refreshPrimaryToken: suspend (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
+    private val onPlaybackAuthorizationRetired: ((DesktopPlaybackAuthorizationReceipt) -> Unit)?,
 ) {
+    private val authorizationRetirementReported = java.util.concurrent.atomic.AtomicBoolean(false)
     val receipt: DesktopPlaybackAuthorizationReceipt get() = authorization.receipt
     private fun entryCurrent(): Boolean = requestJob.isActive && entryJob.isActive && isEntryCurrent()
     private fun current(): Boolean = entryCurrent() && repository.isPlaybackReceiptCurrent(receipt)
@@ -100,7 +102,13 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
         ensureBuvid = {
             currentCoroutineContext().ensureActive(); assertCurrent()
             repository.ensureOwnedHomeSession(receipt.accountEpoch, ::current, buvidApi)
-            currentCoroutineContext().ensureActive(); assertCurrent()
+            currentCoroutineContext().ensureActive()
+            // Real SPI bootstrap has completed. Its buvid3 may retire this immutable
+            // authorization; enqueue a fresh same-request capture before preserving CE.
+            if (entryCurrent() && repository.sessionEpoch == receipt.accountEpoch &&
+                repository.ownedHomeVisitorInitialized(receipt.accountEpoch, ::entryCurrent))
+                reportPlaybackAuthorizationRetired()
+            assertCurrent()
         },
         playbackAccount = ::playbackAccount,
         hasPlaybackSessionCookie = { read {
@@ -200,6 +208,18 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
         query: (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
     ): Boolean = read { query(receipt, ::entryCurrent) }
 
+    /** Called only after an owned SPI/VIP mutation returned, outside every Store/entry
+     * monitor. This is not a generic cancellation retry or a mutable receipt update. */
+    fun reportPlaybackAuthorizationRetired() {
+        if (entryCurrent() && repository.sessionEpoch == receipt.accountEpoch &&
+            !repository.isPlaybackReceiptCurrent(receipt) &&
+            authorizationRetirementReported.compareAndSet(false, true)) {
+            val notify = onPlaybackAuthorizationRetired
+                ?: throw CancellationException("Metadata-only authorization retired; fresh capture required")
+            notify(receipt)
+        }
+    }
+
     fun updatePrimaryVip(isVip: Boolean): Unit = read {
         if (capturedPrimaryMid == null) throw CancellationException("Primary VIP session absent")
         repository.withProfileAccountAdmission(receipt.accountEpoch, capturedPrimaryMid,
@@ -242,6 +262,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
             isMobileData: () -> Boolean,
             canRefreshPrimaryToken: () -> Boolean,
             refreshPrimaryToken: suspend (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
+            onPlaybackAuthorizationRetired: ((DesktopPlaybackAuthorizationReceipt) -> Unit)? = null,
         ): DesktopOriginalVideoRepositoryBinding {
             currentCoroutineContext().ensureActive()
             val requestJob = requireNotNull(currentCoroutineContext()[Job])
@@ -251,7 +272,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
             return DesktopOriginalVideoRepositoryBinding(repository, authorization, requestJob, entryJob,
                 isEntryCurrent, commitIfEntryCurrent, preferences, codecOverride, blockedVideoCodecs,
                 av1Supported, auto1080pEnabled, directedTrafficEnabled, isMobileData,
-                canRefreshPrimaryToken, refreshPrimaryToken).also { it.assertCurrent() }
+                canRefreshPrimaryToken, refreshPrimaryToken, onPlaybackAuthorizationRetired).also { it.assertCurrent() }
         }
     }
 }

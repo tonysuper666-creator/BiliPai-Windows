@@ -53,7 +53,7 @@ internal class DesktopOriginalVideoRootShellResources(
     val rootAlive: () -> Boolean,
     val feedback: (String) -> Unit,
     val metadata: (DesktopOriginalVideoShellEvent.Metadata) -> Unit,
-    val primaryVipRetired: (DesktopPlaybackAuthorizationReceipt) -> Unit,
+    val playbackAuthorizationRetired: (DesktopOriginalVideoAuthorizationRetirement) -> Unit,
     val scratchDirectory: Path,
 )
 
@@ -90,7 +90,10 @@ internal class DesktopOriginalVideoRootAssembler(
     val factory = DesktopOriginalVideoRootFactory(window.runtime.context, window.repository,
         window.repository.originalVideoLogin, window.runtime, resources.player, resources.subtitleAssets,
         resources.app.mediaCache, resources.community.searchPreferences, resources.preferences,
-        ::createEntry, resources.primaryVipRetired, { result ->
+        ::createEntry, { retirement ->
+            if (shell.slot.currentAssembly() === retirement.owner && retirement.isCurrent())
+                resources.playbackAuthorizationRetired(retirement)
+        }, { result ->
             if (result is DesktopOriginalMediaCachePreparation.Direct) diagnostic("Media byte transport selected direct origin")
         })
 

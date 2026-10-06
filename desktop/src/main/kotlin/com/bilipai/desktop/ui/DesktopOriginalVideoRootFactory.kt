@@ -46,7 +46,7 @@ internal class DesktopOriginalVideoRootFactory(
     private val privacy: DesktopSearchPreferences,
     private val preferences: () -> PlayerPreferences,
     private val entryPorts: (DesktopOriginalVideoRootGate) -> DesktopOriginalVideoRootEntryPorts,
-    private val onPrimaryVipReceiptRetired: (DesktopPlaybackAuthorizationReceipt) -> Unit,
+    private val onPlaybackAuthorizationRetired: (DesktopOriginalVideoAuthorizationRetirement) -> Unit,
     private val onPreparation: (DesktopOriginalMediaCachePreparation) -> Unit,
 ) {
     private data class Built(val assembly: DesktopOriginalVideoOwnerAssembly,
@@ -70,7 +70,13 @@ internal class DesktopOriginalVideoRootFactory(
         val requests = DesktopOriginalVideoOwnerRequestFactory(repository, login, gate.capturedEpoch,
             gate.scope, gate::owns, gate::commitEntry, preferences, ports.capabilities,
             ports.auto1080pEnabled, ports.directedTrafficEnabled, ports.effects.network::isMobileData,
-            subtitleAssets, privacy, onPrimaryVipReceiptRetired, media::request)
+            subtitleAssets, privacy, { receipt, capturedState ->
+                val value = assembly()
+                val retirement = DesktopOriginalVideoAuthorizationRetirement(value, receipt, capturedState,
+                    { value.owns() && gate.owns() && repository.sessionEpoch == receipt.accountEpoch },
+                    value::captureLoadState, { value.playback.retry() })
+                if (retirement.isCurrent()) onPlaybackAuthorizationRetired(retirement)
+            }, media::request)
         try {
             val value = DesktopOriginalVideoOwnerAssembly.create(context, ports.settings, repository,
                 gate.capturedEpoch, gate.scope, gate::owns, gate::commitEntry,
@@ -206,7 +212,8 @@ internal class DesktopOriginalVideoRootFactory(
             checkNotNull(gate.scope.coroutineContext[Job]), ::owns, gate::commitEntry,
             preferences, null, emptySet(), construction.ports.capabilities.isAv1Supported(),
             construction.ports.auto1080pEnabled, construction.ports.directedTrafficEnabled,
-            construction.ports.effects.network::isMobileData, token::available, token::refresh)
+            construction.ports.effects.network::isMobileData, token::available, token::refresh,
+            onPlaybackAuthorizationRetired = null) // Metadata-only queue CID lookup; never retry a different playing load.
         val info = binding.rawRepository.getVideoInfoOnly(card.bvid, 0L, 0L).getOrThrow()
         currentCoroutineContext().ensureActive(); binding.assertCurrent()
         val page = info.pages.getOrNull(card.pageIndex)

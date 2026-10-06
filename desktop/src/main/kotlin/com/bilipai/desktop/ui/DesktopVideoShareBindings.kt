@@ -30,13 +30,31 @@ internal class DesktopVideoShareBindings(
     private val windowHeightDp: () -> Int,
     private val presentationAdmission: ((() -> Unit) -> Boolean)? = null,
     private val nativeHandoffOwner: (() -> Boolean)? = null,
+    private val preparedFeedback: (suspend (String) -> Unit)? = null,
 ) {
     /** Borrow all existing Root effects; only add the popup's exact source lifetime. */
     fun forPresentation(owns: () -> Boolean, admit: ((() -> Unit) -> Boolean),
         handoffOwned: () -> Boolean): DesktopVideoShareBindings =
         DesktopVideoShareBindings(operations, following, sendText, files, mid,
             { isOwned() && owns() }, copy, feedback, textShare, mediaShare, chooseSave,
-            nativeAvailable, windowWidthDp, windowHeightDp, admit, { isOwned() && handoffOwned() })
+            nativeAvailable, windowWidthDp, windowHeightDp, admit, { isOwned() && handoffOwned() }, preparedFeedback)
+
+    /** Prepared feedback is dispatched before the original success toast/dismiss.
+     * Its confirmed receipt has source/account lifetime, independent of this sheet. */
+    fun withPreparedFeedback(feedback: suspend (String) -> Unit): DesktopVideoShareBindings =
+        DesktopVideoShareBindings(operations, following, sendText, files, mid, owner, copy,
+            this.feedback, textShare, mediaShare, chooseSave, nativeAvailable,
+            windowWidthDp, windowHeightDp, presentationAdmission, nativeHandoffOwner, feedback)
+    suspend fun sharePrepared(bvid: String) { checkOwned(); preparedFeedback?.invoke(bvid); checkOwned() }
+    fun canShareToDynamic(): Boolean = isOwned() && operations.canShareVideoToDynamic()
+    suspend fun shareToDynamic(bvid: String, text: String): Result<String> {
+        val caller = currentCoroutineContext()
+        fun owned(): Boolean = caller[Job]?.isActive != false && isOwned()
+        checkOwned()
+        return operations.shareVideoToDynamic(bvid, text, ::owned,
+            { action -> caller.ensureActive(); withAdmission { caller.ensureActive(); action() } }
+        ).also { checkOwned() }
+    }
 
     fun withAdmission(action: () -> Unit): Boolean {
         if (!isOwned()) return false
@@ -96,7 +114,7 @@ internal class DesktopVideoShareBindings(
                     }
                     checkOwned();if(!shown)showFeedback("系统分享面板未打开，未确认发送")
                 }
-                VideoShareTarget.BILIBILI_FRIENDS -> error("好友选择由原完整 picker 接收")
+                VideoShareTarget.BILIBILI_FRIENDS,VideoShareTarget.BILIBILI_DYNAMIC -> error("应用内分享由原完整表单接收")
             }
         } catch(cancelled:CancellationException) {throw cancelled}
         catch(failure:Exception) {checkOwned();showFeedback(failure.message ?: "视频分享失败")}

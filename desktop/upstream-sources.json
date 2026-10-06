@@ -294,7 +294,7 @@
         "source-parity",
         "dynamic-editor-detail-parity"
       ],
-      "mode": "direct"
+      "mode": "policy-extract"
     },
     {
       "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/DynamicVoteModels.kt",
@@ -11452,7 +11452,7 @@
     "topic": "original-detail-sort-pagination-participation-rich-link-keyword-and-back-route-integrated-offline-tested",
     "playback-settings": "original-codec-audio-subtitle-policy-integrated-native-hardware-and-pair-tested-account-subtitle-retry-pending"
   },
-  "windowsRevision": 26,
+  "windowsRevision": 27,
   "hashNormalization": "lf",
   "resources": [
     {

@@ -1604,9 +1604,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     { volume -> changePreferences(preferences.copy(volume=volume.toDouble())) },
                                     { !isClosing() && !ordinaryVideoResourcesRetired.get() },{message->ordinaryVideoEvents.trySend(DesktopOriginalVideoShellEvent.Feedback(message))},
                                     { event -> ordinaryVideoEvents.trySend(event) },
-                                    { receipt -> scope.launch {
-                                        if (repository.sessionEpoch == receipt.accountEpoch && ordinaryVideo.slot.currentAssembly()?.owns()==true)
-                                            playback.retry() // Fresh request capture after the original VIP receipt invalidates itself.
+                                    { retirement -> scope.launch {
+                                        if (ordinaryVideo.slot.currentAssembly() === retirement.owner)
+                                            retirement.recaptureIfCurrent() // Same original load only, with fresh SPI/VIP authorization.
                                     } },
                                     DesktopLibrary.directoryForAccount(null).resolve("video-scratch"))
                             }

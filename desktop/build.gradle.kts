@@ -128,6 +128,8 @@ val extractUpstreamApi by tasks.registering(Exec::class) {
     inputs.file(canonicalOriginalSource("app/src/main/java/com/android/purebilibili/core/network/ApiClient.kt"))
     inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/network/CoreNetworkRuntime.kt"))
     inputs.file("tools/extract-upstream-api.py")
+    inputs.file("tools/v030_video_dynamic_share.py")
+    inputs.dir("upstream-slices/v030-video-dynamic-share")
     inputs.file("tools/v030_live_stream.py")
     inputs.dir("upstream-slices/v030-live-stream")
     inputs.file("tools/extract-upstream-special-danmaku.py")
@@ -830,6 +832,8 @@ val extractOriginalVideoShareConsent by tasks.registering(Exec::class) {
         "--source-repo", repositoryRoot.absolutePath,
         "--output-dir", layout.buildDirectory.dir("generated/video-share-consent").get().asFile.absolutePath)
     inputs.file("tools/extract-upstream-video-share-consent.py")
+    inputs.file("tools/v030_video_dynamic_share.py")
+    inputs.dir("upstream-slices/v030-video-dynamic-share")
     inputs.file(sourceManifest)
     inputs.files(sources.filter { "video-share-original-windows" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })

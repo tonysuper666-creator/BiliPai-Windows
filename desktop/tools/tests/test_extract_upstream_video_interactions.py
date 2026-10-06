@@ -33,11 +33,27 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
         original_raw = owner.wide(original_path).read_bytes()
         with tempfile.TemporaryDirectory(prefix="original-interaction-owner-") as temp:
             output = Path(temp)
-            owner.generate(REPO, output / "actual")
+            actual_rows = owner.generate(REPO, output / "actual")
             with patch.object(owner, "composer_source_lifetime_delta", side_effect=lambda path, body: body):
-                owner.generate(REPO, output / "before")
+                before_rows = owner.generate(REPO, output / "before")
             actual = (output / "actual" / VM).read_text(encoding="utf-8")
             before = (output / "before" / VM).read_text(encoding="utf-8")
+
+            def restore_later_stages(body, rows):
+                row = next(item for item in rows if item["path"] == VM)
+                self.assertEqual(row["sha256LF"], hashlib.sha256(body.encode()).hexdigest())
+                # Actual sole-producer order: composer, follow group, recovery, same-send.
+                for field in ("sameSendExpectedSourceInverseEdits", "failureRecoveryInverseEdits", "followGroupInverseEdits"):
+                    for edit in reversed(row[field]):
+                        index = edit["offset"]
+                        self.assertEqual(edit["after"], body[index:index + len(edit["after"])])
+                        body = body[:index] + edit["before"] + body[index + len(edit["after"]):]
+                    if field == "sameSendExpectedSourceInverseEdits":
+                        self.assertEqual(row["sameSendExpectedSourceBeforeSha256LF"], hashlib.sha256(body.encode()).hexdigest())
+                return body
+
+            actual = restore_later_stages(actual, actual_rows)
+            before = restore_later_stages(before, before_rows)
             edits = []
             self.assertEqual(actual, owner.composer_source_lifetime_delta(VM, before, edits))
             self.assertEqual(5, len(edits))
@@ -79,7 +95,7 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix="original-interaction-share-") as temp:
             output = Path(temp)
             share.generate(REPO, output / "actual")
-            with patch.object(share, "share_presentation_delta", side_effect=lambda path, body: (body, 0)):
+            with patch.object(share, "share_presentation_delta", side_effect=lambda path, body, audit=None: (body, 0)):
                 share.generate(REPO, output / "before")
             for spec in share.SPECS:
                 target = spec["target"]
