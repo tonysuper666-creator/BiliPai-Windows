@@ -104,6 +104,8 @@ def generate(repo,output,standalone=False):
    assert text.count(needle)==1
    text=text.replace(needle,'platform.publishSource(playbackRequest, finalSource, requestGeneration, latestPortraitPlaybackAllowed) {',1)
   text=story_portrait_adoption_delta(spec['output'],text)
+  from v031_repost_coin import apply_and_record
+  text,_=apply_and_record(spec['output'],text,output)
   generated=standalone or spec['mode']!='direct';rows.append(dict(path=spec['output'],origin=spec['origin'],mode=spec['mode'],sha256LF=digest(text),generated=generated))
   if generated:
    p=wide(output/spec['output']);p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text,encoding='utf-8',newline='\n')

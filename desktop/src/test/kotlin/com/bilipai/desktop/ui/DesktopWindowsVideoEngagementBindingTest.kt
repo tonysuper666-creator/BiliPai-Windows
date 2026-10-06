@@ -45,7 +45,7 @@ class DesktopWindowsVideoEngagementBindingTest {
                 follows += mid to currentlyFollowing
                 return Result.success(!currentlyFollowing)
             }
-            override suspend fun doTripleAction(aid: Long): Result<TripleActionResult> {
+            override suspend fun doTripleAction(aid: Long, coinCount: Int): Result<TripleActionResult> {
                 assertEquals(0, admissionDepth); triples += aid; return tripleResult()
             }
             override suspend fun toggleLike(aid: Long, currentlyLiked: Boolean, bvid: String) = error("not selected")

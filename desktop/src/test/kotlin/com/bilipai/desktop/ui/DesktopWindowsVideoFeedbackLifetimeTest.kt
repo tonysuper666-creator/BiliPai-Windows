@@ -36,7 +36,7 @@ class DesktopWindowsVideoFeedbackLifetimeTest {
             override suspend fun toggleLike(aid: Long, currentlyLiked: Boolean, bvid: String): Result<Boolean> {
                 assertEquals(0, admissionDepth); likeCalls++; return like()
             }
-            override suspend fun doTripleAction(aid: Long): Result<TripleActionResult> {
+            override suspend fun doTripleAction(aid: Long, coinCount: Int): Result<TripleActionResult> {
                 assertEquals(0, admissionDepth); tripleCalls++; return triple()
             }
             override suspend fun doCoin(aid: Long, count: Int, alsoLike: Boolean, bvid: String): Result<Boolean> {

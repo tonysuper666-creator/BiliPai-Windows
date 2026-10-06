@@ -29,6 +29,9 @@ def original(path):
  raw=wide(_desktop_canonical_source(REPO, path)).read_bytes().replace(b'\r\n',b'\n');assert digest(raw)==SOURCE_PINS[path],path+' differs from fixed stable source'
  SOURCES[path]=dict(path=path,sha256LF=digest(raw),commit=COMMIT);return raw.decode('utf-8')
 def emit(path,text,origin,mode):
+ from v031_repost_coin import apply_and_record
+ text,repostProof=apply_and_record(path,text,OUTPUT)
+ if repostProof is not None:mode="fixed-v031-repost-coin-owned-delta"
  edits=[]
  if path=='com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt':text=_typed_failure_protocol(text,edits)
  if path=='com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt':text=_typed_failure_usecase(text,edits)

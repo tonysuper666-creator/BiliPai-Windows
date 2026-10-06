@@ -58,7 +58,10 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
                 self.assertEqual(row["sha256LF"], feedback.sha(read(self.output / row["path"])), row["path"])
         origin_proof = json.loads(read(self.output / "v029-video-feedback-origin-proof.json"))
         lifetime = json.loads(read(self.output / "v029-video-feedback-lifetime-proof.json"))
-        final_vm = read(self.output / feedback.OUTPUT_VM)
+        import v031_repost_coin as repost
+        output_vm = read(self.output / feedback.OUTPUT_VM)
+        repost_proof = json.loads(read(self.output / "VideoEngagementViewModel.kt.repost-coin-proof.json"))
+        final_vm = repost.undo(output_vm, repost_proof)
         self.assertEqual(lifetime["beforeSha256LF"], origin_proof["afterSha256LF"])
         self.assertEqual(lifetime["afterSha256LF"], feedback.sha(final_vm))
         restored = final_vm

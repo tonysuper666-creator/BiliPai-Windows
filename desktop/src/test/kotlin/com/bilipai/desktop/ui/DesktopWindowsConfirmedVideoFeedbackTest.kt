@@ -32,7 +32,7 @@ class DesktopWindowsConfirmedVideoFeedbackTest {
                 assertEquals(0, depth, "Protocol work must stay outside admission")
                 return like()
             }
-            override suspend fun doTripleAction(aid: Long): Result<TripleActionResult> {
+            override suspend fun doTripleAction(aid: Long, coinCount: Int): Result<TripleActionResult> {
                 assertEquals(0, depth)
                 return triple()
             }

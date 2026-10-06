@@ -94,6 +94,10 @@ val prepareNativeDiagnosticShare by tasks.registering(Exec::class) {
 val prepareUpstreamSources by tasks.registering(Sync::class) {
     from(repositoryRoot) {
         include(sources.filter { (it["mode"] ?: "direct") == "direct" }.map { canonicalOriginalIdentity(it["path"].toString()) })
+        // These three complete fixed v031 sources have one producer in the existing detail output.
+        exclude(canonicalOriginalIdentity("core-data/src/main/java/com/android/purebilibili/data/model/response/VideoDetailResponse.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/components/CoinDialog.kt"))
+        exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/video/ui/feedback/TripleActionVisualStatePolicy.kt"))
         // The fixed v029 special producer owns this one whole source now.
         exclude(canonicalOriginalIdentity("app/src/main/java/com/android/purebilibili/feature/download/DownloadDanmakuAssetService.kt"))
     }
@@ -2068,6 +2072,8 @@ sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/do
 tasks.named("compileKotlin") { dependsOn(extractUpstreamDownloadTransport) }
 
 val extractOriginalVideoDetailUnits by tasks.registering(Exec::class) {
+    inputs.file("tools/v031_repost_coin.py")
+    inputs.dir("upstream-slices/v031-repost-coin")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-detail-full-units.py",
@@ -2230,6 +2236,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoContentFull, verify
 
 // Append alongside existing original video producers; no new dependency or runtime artifact.
 val extractOriginalVideoStateCore by tasks.registering(Exec::class) {
+    inputs.file("tools/v031_repost_coin.py")
+    inputs.dir("upstream-slices/v031-repost-coin")
     dependsOn(prepareUpstreamSources, extractOriginalVideoDetailUnits, extractOriginalVideoContentFull)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-state-core.py",
@@ -2297,6 +2305,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoTabletFull) }
 
 // Append source-only task wiring. Do not replace the existing build file.
 val extractOriginalVideoFullscreenPager by tasks.registering(Exec::class) {
+    inputs.file("tools/v031_repost_coin.py")
+    inputs.dir("upstream-slices/v031-repost-coin")
     dependsOn(prepareUpstreamSources)
     workingDir(projectDir)
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-video-fullscreen-pager.py",
@@ -2380,6 +2390,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoFullOwner) }
 // DIRECT10 are copied once by prepareUpstreamSources; production omits --standalone.
 
 val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
+    inputs.file("tools/v031_repost_coin.py")
+    inputs.dir("upstream-slices/v031-repost-coin")
     inputs.files("tools/v029_comment_composer.py", "tools/v029_comment_search.py")
     inputs.dir("upstream-slices/v029-comment-composer")
     inputs.files("tools/extract-upstream-video-comment-ui.py", "tools/extract-upstream-dynamic-reply-protocol.py")

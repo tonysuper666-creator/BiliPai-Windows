@@ -18,6 +18,7 @@ TOOLS = REPO / "desktop/tools"
 sys.path.insert(0, str(TOOLS))
 import v029_video_feedback as feedback
 import v029_video_feedback_origin as origin
+import v031_repost_coin as repost
 
 
 def load(name: str, path: Path):
@@ -50,7 +51,9 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         cls.addClassCleanup(cls.temp.cleanup)
         cls.output = Path(cls.temp.name) / "generated"
         producer.generate(REPO, cls.output, True)
-        cls.final_vm = read(cls.output / feedback.OUTPUT_VM)
+        cls.output_vm = read(cls.output / feedback.OUTPUT_VM)
+        cls.repost_proof = json.loads(read(cls.output / "VideoEngagementViewModel.kt.repost-coin-proof.json"))
+        cls.final_vm = repost.undo(cls.output_vm, cls.repost_proof)
         cls.lifetime_proof = json.loads(read(cls.output / 'v029-video-feedback-lifetime-proof.json'))
         cls.vm = undo(cls.final_vm, cls.lifetime_proof)
         cls.state_proof = json.loads(read(cls.output / "v029-video-feedback-state-proof.json"))
@@ -72,7 +75,8 @@ class VideoFeedbackExtractionTest(unittest.TestCase):
         vm = [row for row in outputs if row["path"] == feedback.OUTPUT_VM]
         animation = [row for row in outputs if row["path"] == feedback.OUTPUT_ANIMATIONS]
         self.assertEqual(1, len(vm)); self.assertEqual(1, len(animation))
-        self.assertEqual(vm[0]["sha256LF"], self.lifetime_proof["afterSha256LF"])
+        self.assertEqual(vm[0]["sha256LF"], self.repost_proof["afterSha256LF"])
+        self.assertEqual(self.repost_proof["beforeSha256LF"], self.lifetime_proof["afterSha256LF"])
         self.assertEqual(self.origin_proof["afterSha256LF"], self.lifetime_proof["beforeSha256LF"])
         self.assertEqual(feedback.sha(self.vm), self.origin_proof["afterSha256LF"])
         self.assertEqual(animation[0]["fixedCommit"], feedback.COMMIT)
