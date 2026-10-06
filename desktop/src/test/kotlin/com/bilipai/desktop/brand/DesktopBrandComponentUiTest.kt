@@ -26,6 +26,7 @@ import com.android.purebilibili.core.ui.motion.rememberSystemReduceMotion
 import com.bilipai.desktop.appearance.DesktopAppearanceTheme
 import com.bilipai.desktop.appearance.DesktopThemeSettings
 import com.bilipai.desktop.ui.DesktopDetailWindow
+import com.bilipai.desktop.ui.DesktopDecorativeFeedbackContent
 import com.bilipai.desktop.ui.DesktopHomePlatform
 import com.bilipai.desktop.ui.DesktopHomeWindowBackgroundPort
 import com.bilipai.desktop.ui.LocalDesktopHomePlatform
@@ -96,6 +97,60 @@ class DesktopBrandComponentUiTest {
         assertEquals(0, fixture.lifecycle.registry.observerCount)
         background.setBackground(true)
         assertEquals(listOf(0, 1), completions, "Disposed identity cannot publish a later finish")
+    }
+
+    @Test fun decorativeContentUsesCallerLifecycleDespiteStartedHostAndFollowsPauseResumeAndDestroy(): Unit = runBlocking {
+        val caller = ResumedLifecycle().apply { registry.currentState = Lifecycle.State.STARTED }
+        val replay = mutableIntStateOf(0)
+        val completions = mutableListOf<Int>()
+        var observedOwner: LifecycleOwner? = null
+        val background = Background()
+        // ImageComposeScene models the dialog's inner STARTED local. The same
+        // production provider must override it with the caller, without an OS window.
+        val fixture = Scene(background) {
+            DesktopDecorativeFeedbackContent(caller, Density(1f)) {
+                observedOwner = LocalLifecycleOwner.current
+                val identity = replay.intValue
+                BlueSnowMaidAnimation(DesktopMaidAnimation.RETRY, Modifier.size(220.dp),
+                    replayKey = identity, onFinished = { completions += identity })
+            }
+        }
+        fixture.lifecycle.registry.currentState = Lifecycle.State.STARTED
+        try {
+            fixture.pumpFor(650)
+            assertSame(caller, observedOwner, "Dialog defaults must not replace the real caller owner")
+            assertEquals(true, fixture.observedReducedMotion, "Use actual headless accessibility binding")
+            assertTrue(completions.isEmpty(), "A STARTED caller must not play even with visible artwork")
+            assertTrue(caller.registry.observerCount > 0, "Original component observes the caller lifecycle")
+
+            caller.registry.currentState = Lifecycle.State.RESUMED
+            fixture.await("caller resume naturally completes original component") { completions == listOf(0) }
+            assertEquals(Lifecycle.State.STARTED, fixture.lifecycle.registry.currentState,
+                "The non-focusable host does not need to resume")
+
+            caller.registry.currentState = Lifecycle.State.STARTED
+            replay.intValue = 1
+            fixture.pumpFor(650)
+            assertEquals(listOf(0), completions, "A later replay follows a paused caller")
+            caller.registry.currentState = Lifecycle.State.RESUMED
+            fixture.await("caller resumes later replay") { completions == listOf(0, 1) }
+            fixture.pumpFor(350)
+            assertEquals(listOf(0, 1), completions, "Natural completion remains once per identity")
+
+            caller.registry.currentState = Lifecycle.State.STARTED
+            replay.intValue = 2
+            fixture.pumpFor(350)
+            caller.registry.currentState = Lifecycle.State.DESTROYED
+            fixture.pumpFor(650)
+            assertSame(caller, observedOwner, "Destruction cannot substitute a synthetic resumed owner")
+            assertEquals(listOf(0, 1), completions, "Destroyed caller must not finish the waiting replay")
+            assertEquals(Lifecycle.State.STARTED, fixture.lifecycle.registry.currentState)
+        } finally { fixture.close() }
+        assertEquals(0, caller.registry.observerCount)
+        assertEquals(0, fixture.lifecycle.registry.observerCount)
+        assertEquals(0, background.listenerCount)
+        assertEquals(background.added, background.removed)
+        assertEquals(listOf(0, 1), completions, "Disposal cannot publish a late completion")
     }
 
     @Test fun originalCleaningStillNeverFinishesAndDisposalRemovesActualListeners(): Unit = runBlocking {

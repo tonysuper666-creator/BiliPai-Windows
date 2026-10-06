@@ -49,7 +49,8 @@ internal fun DesktopWindowsPlayerSurface(modifier: Modifier = Modifier,
 internal fun DesktopWindowsVideoControlBar(
     state: PlayerState, sourceVersion: Long, enabled: Boolean, fullscreen: Boolean,
     detailsOpen: Boolean, hasPrevious: Boolean, hasNext: Boolean, canPictureInPicture: Boolean,
-    onInteractionHoldChanged: (Boolean) -> Unit,
+    onInteractionHoldChanged: (DesktopWindowsFullscreenChromeInteraction) -> Unit,
+    onChromePointerInput: () -> Unit,
     qualities: List<Pair<Int, String>>, selectedQuality: Int?,
     canOpenCollection: Boolean, canOpenPlaybackQueue: Boolean,
     onOpenCollection: () -> Unit, onOpenPlaybackQueue: () -> Unit,
@@ -70,8 +71,9 @@ internal fun DesktopWindowsVideoControlBar(
     var focused by remember { mutableStateOf(false) }
     var scrubbing by remember(sourceVersion, chapters, chaptersSource) { mutableStateOf(false) }
     val latestHold by rememberUpdatedState(onInteractionHoldChanged)
-    DisposableEffect(Unit) { onDispose { latestHold(false) } }
-    DesktopWindowsPlayerSurface(Modifier.fillMaxWidth().onFocusChanged { focused = it.hasFocus }
+    DisposableEffect(Unit) { onDispose { latestHold(DesktopWindowsFullscreenChromeInteraction()) } }
+    DesktopWindowsPlayerSurface(Modifier.fillMaxWidth().desktopWindowsChromePointerInput(onChromePointerInput)
+        .onFocusChanged { focused = it.hasFocus }
         .focusGroup().hoverable(interactions)) {
         Column(Modifier.padding(horizontal = 8.dp)) {
             DesktopWindowsThinSeek(state.positionSeconds, state.durationSeconds, sourceVersion,
@@ -84,7 +86,8 @@ internal fun DesktopWindowsVideoControlBar(
                 var qualityMenu by remember { mutableStateOf(false) }
                 var volumeMenu by remember { mutableStateOf(false) }
                 var chapterMenu by remember(chapters, chaptersSource, sourceVersion) { mutableStateOf(false) }
-                SideEffect { latestHold(hovered || focused || scrubbing || more || speedMenu || qualityMenu || volumeMenu || chapterMenu) }
+                SideEffect { latestHold(DesktopWindowsFullscreenChromeInteraction(hovered, focused,
+                    scrubbing || more || speedMenu || qualityMenu || volumeMenu || chapterMenu)) }
                 LaunchedEffect(enabled) {
                     if (!enabled) { more = false; speedMenu = false; qualityMenu = false; volumeMenu = false; chapterMenu = false }
                 }

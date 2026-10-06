@@ -127,12 +127,16 @@ internal class DesktopWindowsVideoActions(
     fun chromeActivity() { if (latestFullscreen && chromeCurrent()) latestChrome.reveal() }
     val chromeWindow = LocalDesktopWindowsPlayerWindow.current
     var chromeWindowFocused by remember(chromeWindow) { mutableStateOf(chromeWindow?.isFocused == true) }
-    var barInteractionHeld by remember(chrome) { mutableStateOf(false) }
+    var barInteraction by remember(chrome) { mutableStateOf(DesktopWindowsFullscreenChromeInteraction()) }
+    // These claims come only from this actual native host's AWT input events.
+    // Keep them separate: moving over video does not steal keyboard focus from a control.
+    var nativePointerOnVideo by remember(assembly, native.surface) { mutableStateOf(false) }
+    var nativeKeyboardOnVideo by remember(assembly, native.surface) { mutableStateOf(false) }
     var topFocused by remember(chrome) { mutableStateOf(false) }
     val topInteractions = remember(chrome) { MutableInteractionSource() }
     val topHovered by topInteractions.collectIsHoveredAsState()
     // Only the exact existing Main window; no global input/window observer.
-    DisposableEffect(chromeWindow) {
+    DisposableEffect(chromeWindow, assembly, native.surface) {
         val listener = object : java.awt.event.WindowFocusListener {
             override fun windowGainedFocus(event: java.awt.event.WindowEvent) {
                 chromeWindowFocused = true
@@ -140,6 +144,8 @@ internal class DesktopWindowsVideoActions(
             }
             override fun windowLostFocus(event: java.awt.event.WindowEvent) {
                 chromeWindowFocused = false
+                nativePointerOnVideo = false
+                nativeKeyboardOnVideo = false
                 chromeActivity()
             }
         }
@@ -154,21 +160,32 @@ internal class DesktopWindowsVideoActions(
         surface.isFocusable = true
         val focus = object : java.awt.event.FocusAdapter() {
             override fun focusGained(event: java.awt.event.FocusEvent) {
+                nativeKeyboardOnVideo = current() && !latestPip && surface.isFocusOwner
                 chromeActivity()
                 if(current() && !latestPip) latestActions.focusChanged(true)
             }
             override fun focusLost(event: java.awt.event.FocusEvent) {
+                nativeKeyboardOnVideo = false
                 chromeActivity()
                 if(current()) latestActions.focusChanged(false)
             }
         }
+        fun observeNativePointer(event: java.awt.event.MouseEvent, activity: Boolean) {
+            if (!current() || latestPip || !surface.isShowing) return
+            val point = javax.swing.SwingUtilities.convertPoint(event.component, event.point, surface)
+            nativePointerOnVideo = surface.contains(point)
+            if (activity && nativePointerOnVideo) chromeActivity()
+        }
         val mouse = object : java.awt.event.MouseAdapter() {
-            override fun mouseEntered(event: java.awt.event.MouseEvent) { if (surface.isShowing) chromeActivity() }
-            override fun mouseMoved(event: java.awt.event.MouseEvent) { if (surface.isShowing) chromeActivity() }
-            override fun mouseDragged(event: java.awt.event.MouseEvent) { if (surface.isShowing) chromeActivity() }
+            // A layout expansion may re-enter the same heavyweight peer without
+            // a new user movement. An already owned pointer must not undo hiding.
+            override fun mouseEntered(event: java.awt.event.MouseEvent) { observeNativePointer(event, !nativePointerOnVideo) }
+            override fun mouseMoved(event: java.awt.event.MouseEvent) { observeNativePointer(event, true) }
+            override fun mouseDragged(event: java.awt.event.MouseEvent) { observeNativePointer(event, true) }
+            override fun mouseExited(event: java.awt.event.MouseEvent) { observeNativePointer(event, false) }
             override fun mousePressed(event: java.awt.event.MouseEvent) {
                 if(current() && !latestPip && surface.isShowing) {
-                    chromeActivity()
+                    observeNativePointer(event, true)
                     viewportFocus.requestFocus()
                     surface.requestFocusInWindow()
                 }
@@ -183,6 +200,8 @@ internal class DesktopWindowsVideoActions(
             }
         }
         surface.addFocusListener(focus);surface.addMouseListener(mouse);surface.addKeyListener(key)
+        // Mounting an already focused host need not emit another FocusGained event.
+        nativeKeyboardOnVideo = current() && !latestPip && surface.isFocusOwner
         val canvas = surface.components.filterIsInstance<java.awt.Canvas>().single()
         canvas.addMouseListener(mouse)
         canvas.addMouseMotionListener(mouse); surface.addMouseMotionListener(mouse)
@@ -190,6 +209,7 @@ internal class DesktopWindowsVideoActions(
             canvas.removeMouseMotionListener(mouse); surface.removeMouseMotionListener(mouse)
             canvas.removeMouseListener(mouse);surface.removeMouseListener(mouse)
             surface.removeFocusListener(focus);surface.removeKeyListener(key);surface.isFocusable=oldFocusable
+            nativePointerOnVideo = false; nativeKeyboardOnVideo = false
             latestActions.focusChanged(false)
         }
     }
@@ -375,7 +395,9 @@ internal class DesktopWindowsVideoActions(
             detailsOpen = true
         }
     }
-    val chromeHeld = topHovered || topFocused || barInteractionHeld || detailsOpen ||
+    val chromeHeld = DesktopWindowsFullscreenChromeInteraction(topHovered, topFocused)
+        .held(nativePointerOnVideo, nativeKeyboardOnVideo) ||
+        barInteraction.held(nativePointerOnVideo, nativeKeyboardOnVideo) || detailsOpen ||
         showCollection || showPlaybackQueue || audioLanguageMenu != null || audioTrackMenu != null || interactionMode != null
     val chromeCanAutoHide = desktopWindowsFullscreenChromeCanAutoHide(fullscreen, active && !pipActive,
         chromeWindowFocused, chromeHeld, state, bootstrapError != null || playback.error != null || playback.recovering)
@@ -424,6 +446,7 @@ internal class DesktopWindowsVideoActions(
         Row(Modifier.fillMaxSize(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.spacedBy(if (chromeVisible) 6.dp else 0.dp)) {
                 if (chromeVisible) DesktopWindowsPlayerSurface(Modifier.fillMaxWidth()
+                    .desktopWindowsChromePointerInput { nativePointerOnVideo = false }
                     .onFocusChanged { topFocused = it.hasFocus }.focusGroup().hoverable(topInteractions)) {
                     Row(Modifier.fillMaxWidth().heightIn(min = 44.dp).padding(end = 12.dp), verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = { if (current()) actions.back() }, modifier = Modifier.size(44.dp)) {
@@ -481,9 +504,14 @@ internal class DesktopWindowsVideoActions(
                 if (chromeVisible) DesktopWindowsVideoControlBar(
                     state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,
                     enabled = current() && success != null, fullscreen = fullscreen, detailsOpen = detailsOpen,
-                    onInteractionHoldChanged = { held ->
-                        if (barInteractionHeld != held) { barInteractionHeld = held; chromeActivity() }
+                    onInteractionHoldChanged = { interaction ->
+                        if (barInteraction != interaction) {
+                            val previouslyHeld = barInteraction.held(nativePointerOnVideo, nativeKeyboardOnVideo)
+                            barInteraction = interaction
+                            if (previouslyHeld != interaction.held(nativePointerOnVideo, nativeKeyboardOnVideo)) chromeActivity()
+                        }
                     },
+                    onChromePointerInput = { nativePointerOnVideo = false },
                     hasPrevious = shell.playback.hasPrevious, hasNext = shell.playback.hasNext,
                     canPictureInPicture = !pipActive && success != null && state.videoCodec != null && !state.audioOnly,
                     qualities = success?.let { value -> value.qualityIds.mapIndexed { index, id -> id to (value.qualityLabels.getOrNull(index) ?: id.toString()) } }.orEmpty(),

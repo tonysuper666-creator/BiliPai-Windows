@@ -7,6 +7,9 @@ import androidx.compose.runtime.setValue
 import com.android.purebilibili.feature.video.ui.overlay.FullscreenGestureMode
 import com.android.purebilibili.feature.video.ui.overlay.shouldAutoHideFullscreenControls
 import com.bilipai.desktop.player.PlayerState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.onPointerEvent
 
 /** Compose remember keys compare by value; the navigation entry is an identity. */
 internal class DesktopWindowsFullscreenChromeEntryKey(private val entry: Any) {
@@ -43,6 +46,23 @@ internal class DesktopWindowsFullscreenChromeState(private val clockNanos: () ->
 
     companion object { private const val IDLE_NANOS = 4_000_000_000L }
 }
+
+/** A heavyweight Canvas can own input while Compose retains its last hover/focus.
+ * Native ownership may supersede only those cached flags, never a popup or scrub. */
+internal data class DesktopWindowsFullscreenChromeInteraction(
+    val hovered: Boolean = false,
+    val focused: Boolean = false,
+    val operationHeld: Boolean = false,
+) {
+    fun held(nativePointerOnVideo: Boolean, nativeKeyboardOnVideo: Boolean): Boolean =
+        operationHeld || (hovered && !nativePointerOnVideo) || (focused && !nativeKeyboardOnVideo)
+}
+
+/** Actual Compose pointer input returns pointer ownership from the native video. */
+@OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+internal fun Modifier.desktopWindowsChromePointerInput(onPointer: () -> Unit): Modifier =
+    onPointerEvent(PointerEventType.Enter) { onPointer() }
+        .onPointerEvent(PointerEventType.Move) { onPointer() }
 
 /** Original fullscreen playback rule plus Windows focus/interaction holds. */
 internal fun desktopWindowsFullscreenChromeCanAutoHide(

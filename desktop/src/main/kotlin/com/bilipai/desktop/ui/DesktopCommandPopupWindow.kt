@@ -13,6 +13,9 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.Density
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.sun.jna.Native
 import com.sun.jna.Pointer
 import com.sun.jna.win32.StdCallLibrary
@@ -360,6 +363,20 @@ internal fun DesktopDecorativeVideoFeedbackPopup(
     }
 }
 
+/** The non-focusable dialog has its own STARTED owner; feedback follows its actual caller. */
+@Composable
+internal fun DesktopDecorativeFeedbackContent(
+    lifecycleOwner: LifecycleOwner,
+    density: Density,
+    content: @Composable () -> Unit,
+) {
+    CompositionLocalProvider(
+        LocalLifecycleOwner provides lifecycleOwner,
+        LocalDensity provides density,
+        content = content,
+    )
+}
+
 /** Same carrier for the original Root business receipt; no fake video subject. */
 @Composable
 internal fun DesktopDecorativeBrandSuccessPopup(
@@ -379,8 +396,10 @@ internal fun DesktopDecorativeBrandSuccessPopup(
     key(receipt) {
         val context = currentCompositionLocalContext
         // Keyed source scope prevents an old disposal callback from writing the
-        // successor's available state. The original lifecycle and Root foreground
-        // providers travel through this existing CompositionLocalContext.
+        // successor's available state. ComposeDialog replaces inherited lifecycle
+        // locals, so explicitly retain the caller's real owner inside its content.
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val latestLifecycleOwner by rememberUpdatedState(lifecycleOwner)
         var available by remember { mutableStateOf(false) }
         val latestCurrent by rememberUpdatedState(ownsPresentation)
         val latestContent by rememberUpdatedState(content)
@@ -396,7 +415,7 @@ internal fun DesktopDecorativeBrandSuccessPopup(
         }
         DisposableEffect(host) {
             host.create(context) {
-                CompositionLocalProvider(LocalDensity provides latestDensity) {
+                DesktopDecorativeFeedbackContent(latestLifecycleOwner, latestDensity) {
                     Box(Modifier.fillMaxSize()) { latestContent(available && latestCurrent()) }
                 }
             }
