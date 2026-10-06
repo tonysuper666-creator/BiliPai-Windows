@@ -263,6 +263,7 @@ class DesktopUpdaterIntegrationTest {
                         assertEquals(healthy.executable.toString(),
                             json.parseToJsonElement(Files.readString(activeFile)).jsonObject.getValue("executablePath").jsonPrimitive.content)
                         evidence["actualPreviousExeForwarding"] = buildJsonObject {
+                            put("tested", true)
                             put("passed", true)
                             put("previousVersion", previousConfig.version)
                             put("previousZipSha256", sha256(previousPath))

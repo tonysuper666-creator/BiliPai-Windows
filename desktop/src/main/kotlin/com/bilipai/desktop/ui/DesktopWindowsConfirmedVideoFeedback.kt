@@ -3,6 +3,15 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.platform.LocalDensity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.swing.Swing
+import kotlinx.coroutines.withContext
+import javax.swing.RootPaneContainer
+import javax.swing.SwingUtilities
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.LocalAwtWindow
@@ -19,9 +28,12 @@ internal fun DesktopWindowsConfirmedVideoFeedback(
     binding: DesktopWindowsVideoEngagementBinding,
     surfaceSize: IntSize,
     anchorComponent: Component,
+    bounds: DesktopWindowsVideoFeedbackBounds,
 ) {
     val root = LocalDesktopOriginalVideoRootWindowEnvironment.current
     if (LocalAwtWindow.current !== root.window || !root.owns() || !binding.isFeedbackOwned()) return
+    val client = (root.window as? RootPaneContainer)?.contentPane ?: return
+    if (SwingUtilities.getWindowAncestor(anchorComponent) !== root.window) return
     val snapshot by binding.state.collectAsState()
     fun captured(kind: DesktopWindowsVideoFeedbackKind): DesktopWindowsVideoFeedbackOrigin? =
         binding.feedback(kind)?.takeIf { it === snapshot.desktopFeedbackOrigin(kind) }
@@ -48,27 +60,40 @@ internal fun DesktopWindowsConfirmedVideoFeedback(
                 }
             }
         }
+        var modalVisible by remember { mutableStateOf(false) }
+        LaunchedEffect(binding, root.window) {
+            while (isActive) {
+                modalVisible = withContext(Dispatchers.Swing) { desktopWindowsFeedbackHasOwnedModal(root.window) }
+                delay(16L)
+            }
+        }
         fun current(): Boolean = root.owns() && binding.isFeedbackOwned() && binding.admitFeedback {}
-        DesktopDecorativeVideoFeedbackPopup(surfaceSize, anchorComponent,
+        DesktopDecorativeVideoFeedbackPopup(surfaceSize, client,
             sourceOwner = binding.sourceOwner, subject = binding.subject,
             ownsPresentation = ::current,
             onWindowAvailability = { _, available -> if (available) everAvailable = true },
             onWindowRejected = { receipts.forEach { binding.cancelFeedback(it) } },
+            presented = !modalVisible,
         ) { available ->
-            BoxWithConstraints(Modifier.fillMaxSize()) {
-                val width = maxWidth.value
-                val height = maxHeight.value
+            BoxWithConstraints(Modifier.fillMaxSize().clipToBounds()) {
+                val density = LocalDensity.current
+                val clientSize = IntSize(constraints.maxWidth, constraints.maxHeight)
+                val videoRect = desktopWindowsFeedbackClippedRect(bounds.video, clientSize.width, clientSize.height)
+                val likeRect = desktopWindowsFeedbackClippedRect(bounds.like, clientSize.width, clientSize.height)
+                    ?.takeIf { it == bounds.like }
+                val width = with(density) { (videoRect?.width ?: 0f).toDp().value }
+                val height = with(density) { (videoRect?.height ?: 0f).toDp().value }
                 val space = width.isFinite() && height.isFinite() && width >= 96f && height >= 96f
                 LaunchedEffect(binding, like, maid, triple, space) {
                     if (!space) receipts.forEach { binding.cancelFeedback(it) }
                 }
-                if ((available || everAvailable) && space && current()) {
+                if ((available || everAvailable) && space && videoRect != null && current()) {
                     val compact = width > height || height < 480f
                     val likeSize = minOf(height, width - 32f, 144f).coerceAtLeast(1f).dp
                     val celebrationSize = minOf(height - 32f, width - 32f,
                         if (compact) 180f else 220f).coerceAtLeast(1f).dp
                     DesktopWindowsVideoFeedbackMotionContent(binding, like, maid, triple,
-                        likeSize, celebrationSize, compact, reducedMotion)
+                        likeSize, celebrationSize, compact, reducedMotion, videoRect, likeRect)
                 }
             }
         }

@@ -23,6 +23,17 @@ CAPTURES_BY_CASE = {
     ],
 }
 
+CAPTURES_BY_CASE['feedback'] = CAPTURES_BY_CASE['composer'] + [
+    '220-feedback-client-baseline',
+    '221-feedback-like-button-anchor',
+    '222-feedback-owned-editor-hidden-carrier',
+    '223-feedback-modal-dismissed',
+    '224-feedback-owned-chooser-hidden-carrier',
+    '225-feedback-selected-private-image',
+    '226-feedback-minimize-restored',
+    '227-feedback-video-fallback',
+]
+
 def validate_ui_case(ui_case):
     if ui_case not in CAPTURES_BY_CASE: raise ValueError('Unknown independent comment UI case')
     return ui_case
@@ -228,6 +239,14 @@ def verify(report, local, health, token, process, ui_case='search'):
     by = {row['id']: row for row in rows}
     if by['160-original-back-home'].get('physicalStack') != ['MainHost']: raise ValueError('Actual Back did not return Home')
     transport = load(no_links(report / 'local-replay-receipt.json'))
+    feedback = ui_case == 'feedback'
+    for key in ('brandFeedbackPlacementProofRequested','brandFeedbackPlacementProofCompleted',
+                'brandFeedbackPhysicalFramesRequireHumanReview'):
+        if receipt.get(key) is not feedback: raise ValueError('Unexpected brand feedback mode: ' + key)
+    if transport.get('brandFeedbackPlacementInput') is not feedback:
+        raise ValueError('Mixed brand feedback replay mode')
+    if not feedback and transport.get('brandFeedbackPlacement') is not None:
+        raise ValueError('Unexpected brand feedback replay detail')
     if ui_case == 'search':
         for key in ('commentSearchProofRequested','commentSearchInputProofCompleted','commentSearchReadResponsesAreSynthetic',
                     'commentSearchPhysicalTextHumanReviewRequired'):
@@ -297,12 +316,42 @@ def verify(report, local, health, token, process, ui_case='search'):
         forbidden_gets = {'/x/relation/modify','/x/web-interface/archive/like','/x/v2/reply/add','/x/v2/reply/action',
                           '/x/v2/reply/hate','/x/v2/reply/del','/x/v2/reply/report','/x/dynamic/feed/create/dyn',
                           '/x/dynamic/feed/create/dyn/submit','/x/v3/fav/resource/deal'}
-        if any(item.get('method') not in ('GET','POST') or item.get('path') in forbidden_gets for item in transport['apiRequests']):
+        if any(item.get('method') not in ('GET','POST') or (item.get('path') in forbidden_gets and not
+               (feedback and item.get('method') == 'POST' and item.get('host') == 'api.bilibili.com' and
+                item.get('path') == '/x/web-interface/archive/like')) for item in transport['apiRequests']):
             raise ValueError('Composer transport observed a mutation')
+    if feedback:
+        detail = transport['brandFeedbackPlacement']
+        for key in ('actualOriginalLikeProtocolConsumed','syntheticResponsesOnly'):
+            if detail.get(key) is not True: raise ValueError('Missing original brand feedback protocol: ' + key)
+        for key in ('remoteMutationSent','otherMutationPermitted','realCredentialsUsed'):
+            if detail.get(key) is not False: raise ValueError('Unexpected brand feedback mutation scope: ' + key)
+        actions = detail.get('actions')
+        if type(actions) is not list or actions != [1,2,1,2,1] or any(type(action) is not int for action in actions):
+            raise ValueError('Original five Like/unlike actions were not consumed')
+        modal = by['feedback-owned-modal-hides-same-peer']
+        for key in ('samePeer','actualDialogModal','sameFullSource','liveOwnedModalOverlapObserved','liveOwnedChooserOverlapObserved'):
+            if modal.get(key) is not True: raise ValueError('Missing actual owned-modal feedback assertion: ' + key)
+        scope = by['feedback-full-client-actual-main-scope']
+        for key in ('actualOriginalLikeProtocol','sameActualComposerCommentsAndEngagement','ownedModalAndChooserObserved',
+                    'sourcePausePreferencesPreserved','sameFullSource','physicalFramesRequireHumanReview',
+                    'liveOwnedModalOverlapObserved','liveOwnedChooserOverlapObserved','liveOwnerMinimizedOverlapObserved'):
+            if scope.get(key) is not True: raise ValueError('Missing actual Main feedback assertion: ' + key)
+        if scope.get('inputMechanism') != 'OS_ROBOT' or scope.get('remoteMutationSent') is not False:
+            raise ValueError('Unexpected feedback input or remote mutation')
+        for key in ('samePeerModalRestoreObserved','samePeerMinimizeRestoreObserved','liveVideoFallbackNavigationObserved'):
+            if type(scope.get(key)) is not bool: raise ValueError('Missing actual feedback lifecycle observation: ' + key)
+    like_requests = []
     for request in transport['apiRequests']:
+        if feedback and request.get('method') == 'POST' and request.get('host') == 'api.bilibili.com' and request.get('path') == '/x/web-interface/archive/like':
+            if request.get('originalLikeProtocolMemoryOnly') is not True or request.get('remoteMutationSent') is not False:
+                raise ValueError('Original Like request did not terminate in memory')
+            like_requests.append(request)
+            continue
         if request['method'] == 'POST' and (request['host'] != 'app.bilibili.com' or request['path'] not in (
             '/bilibili.main.community.reply.v1.Reply/MainList','/bilibili.main.community.reply.v1.Reply/DetailList')):
             raise ValueError('Unexpected guest mutation POST')
+    if feedback and len(like_requests) != 5: raise ValueError('Expected exactly five original Like requests')
     captures = []
     for name in CAPTURES_BY_CASE[ui_case]:
         image = no_links(report / (name + '-screen.png')); data = read(image)

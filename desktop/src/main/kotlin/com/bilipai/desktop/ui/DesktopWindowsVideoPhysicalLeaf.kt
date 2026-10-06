@@ -316,6 +316,7 @@ internal class DesktopWindowsVideoActions(
             assembly.playback, assembly.domains.engagement, assembly.domains.composer, assembly.domains.supplement)
         DesktopWindowsVideoFollowGroupSection(assembly, engagementBinding)
     }
+    val feedbackBounds = remember(engagementBinding) { DesktopWindowsVideoFeedbackBounds() }
     val preferredSort = DesktopOriginalReplySettings.getCommentDefaultSortModeSync(platforms.holder.settingsContext.pluginContext)
     LaunchedEffect(assembly, success?.info?.aid, success?.info?.owner?.mid, active, preferredSort) {
         if (active && current() && success != null) assembly.domains.comments.init(success.info.aid,
@@ -413,8 +414,9 @@ internal class DesktopWindowsVideoActions(
                         if (rootEnvironment.currentKey() === route && rootEnvironment.owns() &&
                             shell.slot.currentAssembly() === assembly && assembly.owns() && !pipActive) {
                             val origin = coordinates.positionInWindow()
-                            nativeSurface.reportViewport(route, viewportLease,
-                                Rect(origin.x, origin.y, origin.x + coordinates.size.width, origin.y + coordinates.size.height))
+                            val rect = Rect(origin.x, origin.y, origin.x + coordinates.size.width, origin.y + coordinates.size.height)
+                            feedbackBounds.reportVideo(rect)
+                            nativeSurface.reportViewport(route, viewportLease, rect)
                         }
                     }
                     .focusRequester(viewportFocus).onFocusChanged { if(current()) actions.focusChanged(it.hasFocus) }.focusable()) {
@@ -437,7 +439,7 @@ internal class DesktopWindowsVideoActions(
                         }, native.surface)
                     } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
                     if (presentationAlive && !pipActive) engagementBinding?.let { binding ->
-                        DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface)
+                        DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)
                     }
                 }
                 if (playback.recovering && playback.recoveryMessage != null)
@@ -500,7 +502,8 @@ internal class DesktopWindowsVideoActions(
                                     ::current, actions.user) { url -> latestActions.honorLink(assembly, source, url) }
                             }
                             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                                TextButton(onClick = { engagementBinding?.like() }, enabled = engagementBinding?.isOwned() == true) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
+                                TextButton(onClick = { engagementBinding?.like() }, enabled = engagementBinding?.isOwned() == true,
+                                    modifier = Modifier.desktopWindowsFeedbackLikeAnchor(feedbackBounds)) { Text(if(engagement.isLiked) "已点赞" else "点赞") }
                                 actions.favorite(assembly, success, ::current)
                                 TextButton(onClick = { engagementBinding?.toggleFollow() }, enabled = engagementBinding?.isOwned() == true) { Text(if(engagement.isFollowing) "已关注" else "关注") }
                                 TextButton(onClick = { engagementBinding?.triple() }, enabled = engagementBinding?.isOwned() == true) { Text("三连") }

@@ -215,4 +215,51 @@ class WorkerJdkNoticeTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "NOTICE provenance differs"):
                 worker.verify_existing(root, inputs, lock, runtime_lock)
 
+class WorkerXSumNoticeTest(unittest.TestCase):
+    def original_notice(self):
+        third = SCRIPT.parent.parent / "third-party/graaljs"
+        catalog = json.loads((third / "catalog.json").read_text(encoding="utf-8"))
+        source = next(row for row in catalog["sources"] if row["file"] == "licenses/graaljs-XSum-LICENSE")
+        return third, catalog, source
+
+    def test_fixed_xsum_header_and_artifact_mapping_are_consumed_by_actual_notice_copy(self):
+        third, catalog, source = self.original_notice()
+        self.assertFalse(catalog["complete"])
+        self.assertEqual(source["sourceType"], "fixed-source-license-header")
+        self.assertEqual(source["commit"], "910ef5080496717bf5dbd27983faf54bca8dcde8")
+        self.assertEqual(source["sourceSha256"], "dd018e85543fba77b35fe3a93c16f9227620662b455694e4297fbeb2821268b4")
+        self.assertEqual(source["sha256"], "fe9542e35ebd3ac3b13d7f65d3ea8be58484652e8880e04d070b9c213d9a03f7")
+        header = (third / source["file"]).read_bytes()
+        worker.verify_file(third / source["file"], source)
+        self.assertIn(b"Copyright 2015, 2018, 2021, 2024 Radford M. Neal", header)
+        self.assertIn(b"Universal Permissive License (UPL)", header)
+        self.assertIn(b"The above copyright notice and this permission notice shall be", header)
+        engine = next(row for row in catalog["components"] if row["artifactId"] == "js-language")
+        notice = engine["embeddedComponentNotices"][0]
+        self.assertEqual(engine["artifactSha256"], "243bbffd40bef623143ccaa82cdb70ced78d79e6dcb7a17b3f585cc24a8e8183")
+        self.assertEqual(notice["noticeFile"], source["file"])
+        self.assertEqual(notice["sourceSha256"], source["sourceSha256"])
+        self.assertEqual([row["entry"] for row in notice["archiveEntries"]], [
+            "com/oracle/truffle/js/runtime/external/XSum.class",
+            "com/oracle/truffle/js/runtime/external/XSum$SmallAccumulator.class"])
+        with tempfile.TemporaryDirectory() as temp:
+            output = Path(temp)
+            worker.copy_notices(third / "licenses", third / "catalog.json", output)
+            self.assertEqual((output / "notices/graaljs-XSum-LICENSE").read_bytes(), header)
+            self.assertEqual(json.loads((output / "notices/catalog.json").read_text())["sources"], catalog["sources"])
+
+    def test_changed_xsum_header_is_rejected_by_actual_notice_copy(self):
+        third, _, source = self.original_notice()
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); notices = root / "source"; notices.mkdir()
+            original = (third / source["file"]).read_bytes()
+            (notices / "graaljs-XSum-LICENSE").write_bytes(b"X" + original[1:])
+            catalog = root / "catalog.json"
+            worker.write_json(catalog, {"complete": False, "sources": [source]})
+            output = root / "out"; output.mkdir()
+            with self.assertRaisesRegex(ValueError, "Worker resource checksum mismatch"):
+                worker.copy_notices(notices, catalog, output)
+            self.assertFalse((output / "notices/graaljs-XSum-LICENSE").exists())
+
+
 if __name__ == "__main__": unittest.main()

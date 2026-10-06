@@ -74,6 +74,32 @@
           "name": "MIT License",
           "url": "http://opensource.org/licenses/MIT"
         }
+      ],
+      "embeddedComponentNotices": [
+        {
+          "name": "xsum Java port",
+          "licenses": [
+            "UPL-1.0",
+            "MIT"
+          ],
+          "noticeFile": "licenses/graaljs-XSum-LICENSE",
+          "sourceCommit": "910ef5080496717bf5dbd27983faf54bca8dcde8",
+          "sourcePath": "graal-js/src/com.oracle.truffle.js/src/com/oracle/truffle/js/runtime/external/XSum.java",
+          "sourceSha256": "dd018e85543fba77b35fe3a93c16f9227620662b455694e4297fbeb2821268b4",
+          "archiveEntries": [
+            {
+              "entry": "com/oracle/truffle/js/runtime/external/XSum.class",
+              "bytes": 1143,
+              "sha256": "be17f9dd18ed6107ff2c08d8c790f774403c562cc4ba43b5e35cfec7ca5643cc"
+            },
+            {
+              "entry": "com/oracle/truffle/js/runtime/external/XSum$SmallAccumulator.class",
+              "bytes": 4185,
+              "sha256": "f62b78c6768b8bb88871622435a3953c5f11d3913dab2bde655073236c209e3d"
+            }
+          ],
+          "evidence": "Fixed vm-24.2.2 suite includes com.oracle.truffle.js sources in GRAALJS/js-language; both fixed JAR entries declare SourceFile XSum.java. This is source/notice attribution, not a reproduced compiler build."
+        }
       ]
     },
     {
@@ -265,6 +291,23 @@
       "file": "licenses/temurin-21.0.12.1-NOTICE",
       "bytes": 2400,
       "sha256": "c02756bcd9fa8191bf0fda4451bc018414dd44ee35bf09922c24377a475e4b5a"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/oracle/graaljs/910ef5080496717bf5dbd27983faf54bca8dcde8/graal-js/src/com.oracle.truffle.js/src/com/oracle/truffle/js/runtime/external/XSum.java",
+      "repository": "oracle/graaljs",
+      "tag": "vm-24.2.2",
+      "commit": "910ef5080496717bf5dbd27983faf54bca8dcde8",
+      "path": "graal-js/src/com.oracle.truffle.js/src/com/oracle/truffle/js/runtime/external/XSum.java",
+      "sourceType": "fixed-source-license-header",
+      "sourceBytes": 28224,
+      "sourceSha256": "dd018e85543fba77b35fe3a93c16f9227620662b455694e4297fbeb2821268b4",
+      "sourceByteRange": {
+        "start": 0,
+        "endExclusive": 3171
+      },
+      "file": "licenses/graaljs-XSum-LICENSE",
+      "bytes": 3171,
+      "sha256": "fe9542e35ebd3ac3b13d7f65d3ea8be58484652e8880e04d070b9c213d9a03f7"
     }
   ]
 }

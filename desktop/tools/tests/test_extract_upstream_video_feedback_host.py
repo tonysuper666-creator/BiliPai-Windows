@@ -75,7 +75,8 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
         self.assertEqual(feedback.sha(full), self.proof["originalFullRawSha256"])
         wrapper = self.proof["wrapper"]
         self.assertEqual(self.motion, wrapper["prefix"] + self.proof["generatedExcerpts"]["likeMaid"] +
-                         wrapper["middle"] + self.proof["generatedExcerpts"]["triple"] + wrapper["suffix"])
+                         wrapper["middle"] + self.proof["generatedExcerpts"]["triple"] + wrapper["suffix"] +
+                         wrapper["anchorPrefix"] + self.proof["generatedExcerpts"]["anchor"] + wrapper["anchorSuffix"])
         self.assertEqual(8, len(self.proof["countedAdaptations"]))
         for name, excerpt in self.proof["generatedExcerpts"].items():
             restored = excerpt
@@ -98,7 +99,7 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
         ui = TOOLS.parent / "src/main/kotlin/com/bilipai/desktop/ui"
         leaf = read(ui / "DesktopWindowsVideoPhysicalLeaf.kt")
         mount = read(ui / "DesktopWindowsConfirmedVideoFeedback.kt")
-        self.assertEqual(1, leaf.count("DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface)"))
+        self.assertEqual(1, leaf.count("DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)"))
         self.assertIn("engagementBinding?.like()", leaf)
         read_start = leaf.index("val feedbackSource = assembly.native.current()?.takeIf")
         read_end = leaf.index("val engagementBinding = remember", read_start)
@@ -106,7 +107,7 @@ class VideoFeedbackHostExtractionTest(unittest.TestCase):
         self.assertNotIn("current() &&", leaf[read_start:read_end])
         self.assertIn("remember(assembly, feedbackSource, engagementSubject, presentationAlive, pipActive, brandEvents)", leaf)
         self.assertIn("val expected = feedbackSource", leaf)
-        feedback_index = leaf.index("DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface)")
+        feedback_index = leaf.index("DesktopWindowsConfirmedVideoFeedback(binding, viewportSize, native.surface, feedbackBounds)")
         self.assertIn("if (presentationAlive && !pipActive)", leaf[feedback_index - 150:feedback_index])
         self.assertIn("if (engagementBinding?.coin(count, false) == true)", leaf)
         self.assertIn("LocalAwtWindow.current !== root.window", mount)

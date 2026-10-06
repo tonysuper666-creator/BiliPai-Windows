@@ -20,7 +20,10 @@ def feedback_motion_source():
     like_end = full.index("\n        }\n    }\n\n    val tripleCelebrationPlacement", like_start)
     triple_start = full.index("            key(engagementState.tripleCelebrationId) {")
     triple_end = full.index("\n        }\n    }\n\n    val popupMessage", triple_start)
-    originals = dict(likeMaid=full[like_start:like_end], triple=full[triple_start:triple_end])
+    anchor_start = full.index("        val anchoredOffset: IntOffset? = likeIconBounds?.let { bounds ->")
+    anchor_end = full.index("\n        Box(", anchor_start)
+    originals = dict(likeMaid=full[like_start:like_end], triple=full[triple_start:triple_end],
+                     anchor=full[anchor_start:anchor_end])
     code = dict(originals)
     changes = []
 
@@ -65,6 +68,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.IntOffset
+import kotlin.math.roundToInt
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.ui.BlueSnowMaidAnimation
@@ -85,30 +92,53 @@ internal fun DesktopWindowsVideoFeedbackMotionContent(
     celebrationSize: Dp,
     compactCelebration: Boolean,
     reducedMotion: Boolean,
+    videoBounds: Rect,
+    likeIconBounds: Rect?,
 ) {
-    Box(Modifier.fillMaxSize()) {
+    val density = LocalDensity.current
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val maidSizePx = with(density) { likeSize.toPx() }
+        val anchoredOffset = desktopWindowsOriginalLikeFeedbackOffset(likeIconBounds, maidSizePx,
+            constraints.maxWidth.toFloat(), constraints.maxHeight.toFloat(),
+            0f, 0f, 0f, with(density) { 4.dp.toPx() }, with(density) { 12.dp.toPx() })
+        val likeFrame = if (anchoredOffset != null) Rect(0f, 0f, constraints.maxWidth.toFloat(), constraints.maxHeight.toFloat()) else videoBounds
         if (likeOrigin != null || maidOrigin != null) {
-            Box(Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
+            DesktopWindowsFeedbackRectFrame(likeFrame) {
+                Box(modifier = if (anchoredOffset != null) Modifier.offset { anchoredOffset }
+                    else Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
 '''
     middle = '''
+                }
             }
         }
         if (tripleOrigin != null) {
-            Box(Modifier.align(if (compactCelebration) Alignment.Center else Alignment.BottomEnd).padding(16.dp)) {
+            DesktopWindowsFeedbackRectFrame(videoBounds) {
+                Box(Modifier.align(if (compactCelebration) Alignment.Center else Alignment.BottomEnd).padding(16.dp)) {
 '''
     suffix = '''
+                }
             }
         }
     }
 }
 '''
-    generated = prefix + code["likeMaid"] + middle + code["triple"] + suffix
+    anchor_prefix = '''
+/** Full unchanged original formula; Windows supplies actual client/button
+ * pixels and has no Android system-bar inset. */
+internal fun desktopWindowsOriginalLikeFeedbackOffset(
+    likeIconBounds: Rect?, maidSizePx: Float, screenWidthPx: Float, screenHeightPx: Float,
+    topSafePx: Float, bottomSafePx: Float, sideSafePx: Float,
+    horizontalLeadPx: Float, verticalOverlapPx: Float,
+): IntOffset? {
+'''
+    anchor_suffix = "\n    return anchoredOffset\n}\n"
+    generated = prefix + code["likeMaid"] + middle + code["triple"] + suffix + anchor_prefix + code["anchor"] + anchor_suffix
     proof = dict(schema=1, fixedCommit=COMMIT, origin=ORIGIN, originalFullRawSha256=sha(full),
-                 originalExcerptRanges=dict(likeMaid=[like_start, like_end], triple=[triple_start, triple_end]),
+                 originalExcerptRanges=dict(likeMaid=[like_start, like_end], triple=[triple_start, triple_end], anchor=[anchor_start, anchor_end]),
                  originalExcerpts=originals, generatedExcerpts=code, countedAdaptations=changes,
-                 wrapper=dict(prefix=prefix, middle=middle, suffix=suffix),
+                 wrapper=dict(prefix=prefix, middle=middle, suffix=suffix, anchorPrefix=anchor_prefix, anchorSuffix=anchor_suffix),
                  generatedSha256LF=sha(generated), excerptInverseExact=True,
-                 coordinateAuthority="Actual Windows Canvas popup viewport; no phone system insets/global anchor",
+                 coordinateAuthority="Actual client/Like button pixels; original video fallback/Triple frame; no Android insets/global registry",
                  callbackAuthority="Existing original confirmed state/immutable receipt and original account/source permit",
                  mobileListenerOrToastOrResumeMounted=False)
     return generated, proof

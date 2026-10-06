@@ -46,6 +46,9 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
     private val originalInteractionInput = System.getProperty("bilipai.validation.originalInteractionInput") == "true"
     private val commentSearchInput = System.getProperty("bilipai.validation.commentSearchInput") == "true"
     private val composerInput = System.getProperty("bilipai.validation.composerInput") == "true"
+    private val brandFeedbackPlacementInput = System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true"
+    private val brandFeedbackScript = if (brandFeedbackPlacementInput) WindowsBrandFeedbackReplay(aid) else null
+    val brandFeedbackReplay: WindowsBrandFeedbackReplay get() = requireNotNull(brandFeedbackScript)
     private val composerScript = if (composerInput) WindowsCommentComposerReplay(report) else null
     val commentComposerReplay: WindowsCommentComposerReplay get() = requireNotNull(composerScript)
     private val commentScript = if (commentSearchInput) WindowsCommentSearchReplay() else null
@@ -63,6 +66,9 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
         require(!composerInput || (!commentSearchInput && !bgmInput && !originalInteractionInput && !collectionInput &&
             System.getProperty("bilipai.validation.pipInput") != "true")) {
             "Composer is an isolated synthetic-session read-only branch"
+        }
+        require(!brandFeedbackPlacementInput || composerInput) {
+            "Brand feedback needs the unchanged isolated composer synthetic Store/session precondition"
         }
         require(!Files.exists(media, NOFOLLOW_LINKS)); Files.createDirectory(media)
         createVideo(media.resolve("video.avi").toFile(), mediaSeconds); createAudio(media.resolve("audio.wav").toFile(), mediaSeconds)
@@ -159,6 +165,16 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             require(url.host in setOf("api.bilibili.com", "api.vc.bilibili.com", "app.bilibili.com")) {
                 "LOCAL replay forbids requests outside mapped API or exact owned loopback media"
             }
+            if (brandFeedbackPlacementInput) {
+                brandFeedbackScript?.respond(request, ::requireOwnerBoolean)?.let { response ->
+                    try {
+                        requireOwner()
+                        requests.add(buildJsonObject { put("path", path); put("method", request.method); put("host", request.url.host)
+                            put("originalLikeProtocolMemoryOnly", true); put("remoteMutationSent", false) })
+                        return@addInterceptor response
+                    } catch (failure: Throwable) { response.close(); throw failure }
+                }
+            }
             if (composerInput) {
                 composerScript?.intercept(chain, ::requireOwnerBoolean)?.let { response ->
                     try { requireOwner(); return@addInterceptor response } catch (failure: Throwable) { response.close(); throw failure }
@@ -209,7 +225,9 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                     val bgm = if (bgmInput) ",\"bgm_info\":${bgmSong(if (requestedCid == cid) "fixture-p1" else "fixture-p2-a")}" else ""
                     """{"code":0,"data":{"aid":$aid,"cid":$requestedCid,"bvid":"$bvid","subtitle":{"subtitles":[]},"view_points":$chapters$bgm}}"""
                 }
-                "/x/web-interface/archive/relation" -> if (collectionInput)
+                "/x/web-interface/archive/has/like" -> if (brandFeedbackPlacementInput)
+                    """{"code":0,"data":0}""" else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
+                "/x/web-interface/archive/relation" -> if (collectionInput || brandFeedbackPlacementInput)
                     """{"code":0,"data":{"like":false,"favorite":false,"season_fav":false,"coin":0,"dislike":false}}"""
                     else """{"code":-404,"message":"Unmapped LOCAL replay endpoint"}"""
                 "/x/copyright-music-publicity/bgm/multiple/music" -> if (bgmInput) {
@@ -332,6 +350,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
                 require(requests.any { it["path"]?.jsonPrimitive?.content == path && it["mapped"]?.jsonPrimitive?.booleanOrNull == true })
             require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" })
         }
+        val brandFeedbackReceipt = brandFeedbackScript?.receipt()
         val composerReceipt = composerScript?.receipt()
         val commentReceipt = commentScript?.receipt()
         if (commentSearchInput) require(requests.none { it["method"]?.jsonPrimitive?.content == "POST" &&
@@ -354,6 +373,8 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("commentSearch", commentReceipt ?: JsonNull)
             put("composerInputResponsesAreSynthetic", composerInput)
             put("composerInput", composerReceipt ?: JsonNull)
+            put("brandFeedbackPlacementInput", brandFeedbackPlacementInput)
+            put("brandFeedbackPlacement", brandFeedbackReceipt ?: JsonNull)
             put("originalInteractionMetadataIsSynthetic", originalInteractionInput)
             put("originalInteractionRemoteMutationSubmitted", false)
             put("singleBgmRecommendationRequested", requests.any { it["bgmStage"]?.jsonPrimitive?.content == "recommend" &&
@@ -440,6 +461,7 @@ internal class WindowsVideoLocalReplay private constructor(private val report: P
             put("requests", JsonArray(requests.toList())); put("loopbackRequests", JsonArray(mediaRequests.toList()))
             put("realAccountUsed", false); put("headersOrQueryValuesRecorded", false)
             put("composerInput", composerScript?.receipt(requireComplete = false) ?: JsonNull)
+            put("brandFeedbackPlacement", brandFeedbackScript?.receipt(requireComplete = false) ?: JsonNull)
         }.toString(), CREATE_NEW, WRITE)
     }
     override fun close() { composerScript?.close(); commentScript?.close(); server.stop(0); executor.shutdownNow() }

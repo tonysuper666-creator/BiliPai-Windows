@@ -138,7 +138,9 @@ private class DesktopCommandPopupWindow(
             SwingUtilities.invokeLater {
                 if (!closed && popup === shown && shown.isShowing && owner.isShowing &&
                     anchorComponent.isShowing && SwingUtilities.getWindowAncestor(anchorComponent) === owner) {
-                    if (decorative && (!checkNotNull(ownsPresentation).invoke() ||
+                    if (decorative && desktopWindowsFeedbackHasOwnedModal(owner)) {
+                        publishWindowAvailability(false); shown.isVisible = false
+                    } else if (decorative && (!checkNotNull(ownsPresentation).invoke() ||
                         !DesktopDecorativeWindowStyle.applyTo(shown))) {
                         publishWindowAvailability(false, force = true); shown.isVisible = false
                         checkNotNull(onDecorativeRejection).invoke()
@@ -209,7 +211,7 @@ private class DesktopCommandPopupWindow(
         check(SwingUtilities.isEventDispatchThread())
         if (closed) return
         val window = popup ?: return
-        val showing = presented && (!decorative || checkNotNull(ownsPresentation).invoke()) && owner.isShowing && (owner !is Frame || owner.extendedState and Frame.ICONIFIED == 0) &&
+        val showing = presented && (!decorative || (!desktopWindowsFeedbackHasOwnedModal(owner) && checkNotNull(ownsPresentation).invoke())) && owner.isShowing && (owner !is Frame || owner.extendedState and Frame.ICONIFIED == 0) &&
             anchorComponent.isShowing && SwingUtilities.getWindowAncestor(anchorComponent) === owner &&
             requested.width > 0 && requested.height > 0 && anchorComponent.width > 0 && anchorComponent.height > 0
         if (!showing) { publishWindowAvailability(false); window.isVisible = false; return }
@@ -349,11 +351,12 @@ internal fun DesktopDecorativeVideoFeedbackPopup(
     ownsPresentation: () -> Boolean,
     onWindowAvailability: (Any, Boolean) -> Unit,
     onWindowRejected: () -> Unit,
+    presented: Boolean = true,
     content: @Composable (windowAvailable: Boolean) -> Unit,
 ) {
     key(sourceOwner, subject) {
         DesktopDecorativeBrandSuccessPopup(surfaceSize, anchorComponent, sourceOwner, ownsPresentation,
-            onWindowAvailability, onWindowRejected, content)
+            onWindowAvailability, onWindowRejected, presented, content)
     }
 }
 
@@ -366,6 +369,7 @@ internal fun DesktopDecorativeBrandSuccessPopup(
     ownsPresentation: () -> Boolean,
     onWindowAvailability: (Any, Boolean) -> Unit,
     onWindowRejected: () -> Unit,
+    presented: Boolean = true,
     content: @Composable (windowAvailable: Boolean) -> Unit,
 ) {
     // Keep early exits outside Compose's inline key block. The current compiler
@@ -398,6 +402,6 @@ internal fun DesktopDecorativeBrandSuccessPopup(
             }
             onDispose { host.close() }
         }
-        SideEffect { host.update(context, surfaceSize, latestCurrent()) }
+        SideEffect { host.update(context, surfaceSize, presented && latestCurrent()) }
     }
 }

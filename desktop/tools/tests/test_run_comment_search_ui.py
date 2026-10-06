@@ -26,7 +26,7 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         for name in RUNNER.CAPTURES_BY_CASE[case]:
             (self.report / (name + '-screen.png')).write_bytes(self.png)
             (self.report / (name + '-accessibility.tsv')).write_text('original owned controls\n')
-        if case == 'composer': (self.report / 'composer-private-image.png').write_bytes(self.png)
+        if case in ('composer', 'feedback'): (self.report / 'composer-private-image.png').write_bytes(self.png)
 
     def evidence(self, case):
         observation = dict(allPreExitAssertionsPassed=True, sameLiveRootAndWindow=True,
@@ -34,6 +34,7 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
             defaultRenderer='DIRECT3D', realAccountUsed=False, guestRealApi=False,
             ordinaryFullscreenResizeRegressionExecuted=False, commentSearchFourKTested=False)
         for key in ('composerInputProofRequested','composerInputProofCompleted','syntheticAccountSeededThroughActualSessionStore',
+                    'brandFeedbackPlacementProofRequested','brandFeedbackPlacementProofCompleted','brandFeedbackPhysicalFramesRequireHumanReview',
                     'commentSearchProofRequested','commentSearchInputProofCompleted','commentSearchReadResponsesAreSynthetic',
                     'commentSearchPhysicalTextHumanReviewRequired','commentPublishingAccepted','imageUploadAccepted','loginUiAccepted',
                     'commentsSent','nvidiaUiProofRequested','nvidiaUiProofCompleted','interactionProofRequested','interactionProofCompleted',
@@ -47,6 +48,7 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         back = row('160-original-back-home', physicalStack=['MainHost'])
         transport = dict(realAccountUsed=False, commentSearchResponsesAreSynthetic=False,
             commentSearch=None, composerInputResponsesAreSynthetic=False, composerInput=None,
+            brandFeedbackPlacementInput=False, brandFeedbackPlacement=None,
             apiRequests=[dict(method='POST', host='app.bilibili.com',
                 path='/bilibili.main.community.reply.v1.Reply/MainList')])
         if case == 'search':
@@ -85,6 +87,23 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
                         'creatorFollowMutationSubmitted','bgmAccountMutationSubmitted','originalInteractionRemoteMutationSubmitted',
                         'collectionSubscriptionMutationSubmitted'):
                 transport[key] = False
+        if case == 'feedback':
+            for key in ('brandFeedbackPlacementProofRequested','brandFeedbackPlacementProofCompleted','brandFeedbackPhysicalFramesRequireHumanReview'):
+                observation[key] = True
+            observation['observations'] += [
+                row('feedback-owned-modal-hides-same-peer', samePeer=True, actualDialogModal=True, sameFullSource=True,
+                    liveOwnedModalOverlapObserved=True, liveOwnedChooserOverlapObserved=True),
+                row('feedback-full-client-actual-main-scope', actualOriginalLikeProtocol=True, inputMechanism='OS_ROBOT',
+                    sameActualComposerCommentsAndEngagement=True, ownedModalAndChooserObserved=True,
+                    sourcePausePreferencesPreserved=True, sameFullSource=True, physicalFramesRequireHumanReview=True,
+                    liveOwnedModalOverlapObserved=True, liveOwnedChooserOverlapObserved=True, liveOwnerMinimizedOverlapObserved=True,
+                    samePeerModalRestoreObserved=False, samePeerMinimizeRestoreObserved=False, liveVideoFallbackNavigationObserved=False,
+                    remoteMutationSent=False)]
+            transport.update(brandFeedbackPlacementInput=True, brandFeedbackPlacement=dict(
+                actualOriginalLikeProtocolConsumed=True, syntheticResponsesOnly=True, remoteMutationSent=False,
+                otherMutationPermitted=False, realCredentialsUsed=False, actions=[1,2,1,2,1]))
+            transport['apiRequests'] += [dict(method='POST', host='api.bilibili.com', path='/x/web-interface/archive/like',
+                originalLikeProtocolMemoryOnly=True, remoteMutationSent=False) for _ in range(5)]
         return observation, transport
 
     def verify(self, case, observations=None, transport=None):
@@ -168,5 +187,138 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
 
     def test_invalid_case_has_no_fallback(self):
         with self.assertRaises(ValueError): RUNNER.validate_ui_case('other')
+
+    def test_feedback_reuses_complete_composer_proof_and_all_sixteen_captures(self):
+        result = self.verify('feedback')
+        self.assertEqual(len(result), 16)
+        self.assertEqual([item['path'] for item in result[:8]],
+            [name + '-screen.png' for name in RUNNER.CAPTURES_BY_CASE['composer']])
+        self.assertEqual(result[-1]['path'], '227-feedback-video-fallback-screen.png')
+        for key, bad in (('sourcePausedAndPreferencesPreserved', False), ('publishClicked', True)):
+            observations, transport = self.evidence('feedback')
+            observations['observations'][1][key] = bad
+            with self.subTest(key=key), self.assertRaises(ValueError): self.verify('feedback', observations, transport)
+        observations, transport = self.evidence('feedback')
+        transport['composerInput']['imageSha256'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'Private chooser image'): self.verify('feedback', observations, transport)
+
+    def test_feedback_runtime_and_cross_case_receipts_have_no_fallback(self):
+        runtime = dict(schema=1, commentUiCase='feedback', task='windowsVideoLocalReplayUiSmoke',
+            mainClass='com.bilipai.desktop.ui.WindowsVideoActualRootUiFixture', classpath=['original.jar'],
+            javaExecutable='fixed/bin/java.exe', applicationResources='original/resources')
+        RUNNER.validate_runtime(runtime, 'feedback')
+        for requested in ('search', 'composer'):
+            with self.subTest(requested=requested), self.assertRaises(ValueError): RUNNER.validate_runtime(runtime, requested)
+        for original in ('search', 'composer', 'feedback'):
+            for requested in ('search', 'composer', 'feedback'):
+                if original == requested: continue
+                observations, transport = self.evidence(original)
+                with self.subTest(original=original, requested=requested), self.assertRaises((ValueError, KeyError)):
+                    self.verify(requested, observations, transport)
+
+    def test_old_cases_reject_brand_flags_details_and_original_like_requests(self):
+        for case in ('search', 'composer'):
+            for key in ('brandFeedbackPlacementProofRequested','brandFeedbackPlacementProofCompleted','brandFeedbackPhysicalFramesRequireHumanReview'):
+                for bad in (True, 0, None):
+                    observations, transport = self.evidence(case); observations[key] = bad
+                    with self.subTest(case=case, key=key, bad=bad), self.assertRaises(ValueError): self.verify(case, observations, transport)
+            for key, bad in (('brandFeedbackPlacementInput', True), ('brandFeedbackPlacement', {})):
+                observations, transport = self.evidence(case); transport[key] = bad
+                with self.subTest(case=case, key=key), self.assertRaises(ValueError): self.verify(case, observations, transport)
+            observations, transport = self.evidence(case)
+            transport['apiRequests'].append(dict(method='POST', host='api.bilibili.com', path='/x/web-interface/archive/like',
+                originalLikeProtocolMemoryOnly=True, remoteMutationSent=False))
+            with self.subTest(case=case), self.assertRaises(ValueError): self.verify(case, observations, transport)
+
+    def test_feedback_literal_flags_protocol_and_exact_action_sequence_are_required(self):
+        for key in ('brandFeedbackPlacementProofRequested','brandFeedbackPlacementProofCompleted','brandFeedbackPhysicalFramesRequireHumanReview'):
+            for bad in (False, 1, None):
+                observations, transport = self.evidence('feedback'); observations[key] = bad
+                with self.subTest(key=key, bad=bad), self.assertRaises(ValueError): self.verify('feedback', observations, transport)
+        for key, bad in (('actualOriginalLikeProtocolConsumed', False), ('syntheticResponsesOnly', 1),
+                ('remoteMutationSent', True), ('otherMutationPermitted', True), ('realCredentialsUsed', True),
+                ('actions', [1,2,1,2]), ('actions', [1,2,1,2,1,2]), ('actions', [1,1,1,2,1]),
+                ('actions', [True,2,1,2,1]), ('actions', None)):
+            observations, transport = self.evidence('feedback'); transport['brandFeedbackPlacement'][key] = bad
+            with self.subTest(key=key, bad=bad), self.assertRaises(ValueError): self.verify('feedback', observations, transport)
+        observations, transport = self.evidence('feedback'); transport['brandFeedbackPlacementInput'] = False
+        with self.assertRaises(ValueError): self.verify('feedback', observations, transport)
+
+    def test_feedback_like_count_host_path_and_memory_only_markers_are_exact(self):
+        for count in (0, 4, 6):
+            observations, transport = self.evidence('feedback')
+            like = transport['apiRequests'][-1]
+            transport['apiRequests'] = transport['apiRequests'][:1] + [copy.deepcopy(like) for _ in range(count)]
+            with self.subTest(count=count), self.assertRaises(ValueError): self.verify('feedback', observations, transport)
+        for key, bad in (('host','app.bilibili.com'), ('host','other.example'), ('host', None),
+                ('method','GET'), ('path','/x/v2/reply/add'), ('originalLikeProtocolMemoryOnly', False),
+                ('originalLikeProtocolMemoryOnly', 1), ('remoteMutationSent', True), ('remoteMutationSent', None)):
+            observations, transport = self.evidence('feedback'); transport['apiRequests'][-1][key] = bad
+            with self.subTest(key=key, bad=bad), self.assertRaises(ValueError): self.verify('feedback', observations, transport)
+
+    def test_feedback_still_rejects_other_mutations_and_false_composer_scope(self):
+        for request in (dict(method='POST',host='api.bilibili.com',path='/x/v2/reply/add'),
+                dict(method='GET',host='api.bilibili.com',path='/x/relation/modify'),
+                dict(method='GET',host='api.bilibili.com',path='/x/web-interface/archive/like'),
+                dict(method='DELETE',host='api.bilibili.com',path='/x/v2/reply'),
+                dict(method='POST',host='api.bilibili.com',path='/x/dynamic/feed/create/dyn/submit')):
+            observations, transport = self.evidence('feedback'); transport['apiRequests'].append(request)
+            with self.subTest(request=request), self.assertRaises(ValueError): self.verify('feedback', observations, transport)
+        for key in ('commentsSent','creatorFollowMutationSubmitted','originalInteractionRemoteMutationSubmitted'):
+            observations, transport = self.evidence('feedback'); transport[key] = True
+            with self.subTest(key=key), self.assertRaises(ValueError): self.verify('feedback', observations, transport)
+
+    def test_feedback_owned_modal_source_os_input_and_human_review_scope_are_required(self):
+        for row_index, key, bad in ((3,'samePeer',False), (3,'actualDialogModal',False), (3,'sameFullSource',False),
+                (3,'liveOwnedModalOverlapObserved',False), (3,'liveOwnedChooserOverlapObserved',False),
+                (4,'inputMechanism','COMPOSE_TEST'), (4,'sameActualComposerCommentsAndEngagement',False),
+                (4,'ownedModalAndChooserObserved',False), (4,'sourcePausePreferencesPreserved',False),
+                (4,'sameFullSource',False), (4,'liveOwnedModalOverlapObserved',False), (4,'liveOwnedChooserOverlapObserved',False),
+                (4,'liveOwnerMinimizedOverlapObserved',False), (4,'samePeerModalRestoreObserved',None),
+                (4,'samePeerMinimizeRestoreObserved',1), (4,'liveVideoFallbackNavigationObserved',None),
+                (4,'remoteMutationSent',True), (4,'physicalFramesRequireHumanReview',False), (4,'actualWindowIdentity',702)):
+            observations, transport = self.evidence('feedback'); observations['observations'][row_index][key] = bad
+            with self.subTest(key=key), self.assertRaises(ValueError): self.verify('feedback', observations, transport)
+        observations, transport = self.evidence('feedback'); observations['observations'].pop(3)
+        with self.assertRaises(KeyError): self.verify('feedback', observations, transport)
+        # Natural completion before a restore is accepted as false, never forged
+        # into true. The same receipt can also report a genuinely observed restore.
+        observations, transport = self.evidence('feedback')
+        for key in ('samePeerModalRestoreObserved','samePeerMinimizeRestoreObserved','liveVideoFallbackNavigationObserved'):
+            observations['observations'][4][key] = True
+        self.assertEqual(len(self.verify('feedback', observations, transport)), 16)
+
+    def test_feedback_original_and_added_png_tsv_files_are_all_required(self):
+        for name in ('210-composer-text-draft', '220-feedback-client-baseline', '227-feedback-video-fallback'):
+            for suffix in ('-screen.png', '-accessibility.tsv'):
+                observations, transport = self.evidence('feedback'); self.write(observations, transport, 'feedback')
+                (self.report / (name + suffix)).unlink()
+                with self.subTest(name=name, suffix=suffix), self.assertRaises(ValueError):
+                    RUNNER.verify(self.report, self.local, self.health, self.token, self.process, 'feedback')
+
+    def test_feedback_init_and_workflow_keep_same_task_private_home_and_bounded_scope(self):
+        init = (TOOLS / 'comment-search-ui.init.gradle').read_text(encoding='utf-8')
+        workflow = (TOOLS.parents[1] / '.github/workflows/windows-desktop.yml').read_text(encoding='utf-8')
+        runner = (TOOLS / 'run-comment-search-ui.py').read_text(encoding='utf-8')
+        self.assertEqual(init.count("tasks.named('windowsVideoLocalReplayUiSmoke', JavaExec)"), 1)
+        self.assertNotIn('JavaExec)', init.replace("tasks.named('windowsVideoLocalReplayUiSmoke', JavaExec)", ''))
+        self.assertIn("systemProperty('bilipai.validation.composerInput', (uiCase in ['composer', 'feedback']).toString())", init)
+        self.assertIn("systemProperty('bilipai.validation.brandFeedbackPlacementInput', (uiCase == 'feedback').toString())", init)
+        self.assertIn("if (uiCase in ['composer', 'feedback']) {", init)
+        self.assertIn("task.systemProperty('user.home', privateHome.absolutePath)", init)
+        self.assertIn('marker.getText(\'UTF-8\') != token', init)
+        self.assertIn('task.setDependsOn([])', init)
+        self.assertIn('snapshot(ui.get()) != prepared', init)
+        self.assertIn('options: [search, composer, feedback]', workflow)
+        self.assertIn("@('search', 'composer', 'feedback')", workflow)
+        self.assertIn("run_owned(command, repo, env, output / 'gradle.log', 180, process)", runner)
+        self.assertIn('physicalVisibilityReviewed=False', runner)
+        self.assertIn('fullNativeScreenGatePassed=False', runner)
+        for name in RUNNER.CAPTURES_BY_CASE['feedback']:
+            for suffix in ('-screen.png', '-accessibility.tsv'):
+                self.assertEqual(workflow.count('actual-ui/' + name + suffix), 1)
+        for suffix in ('-screen.png', '-accessibility.tsv'):
+            self.assertEqual(workflow.count('actual-ui/feedback-placement-failure' + suffix), 1)
+        self.assertNotIn('actual-ui/composer-private-image.png', workflow)
 
 if __name__ == '__main__': unittest.main()

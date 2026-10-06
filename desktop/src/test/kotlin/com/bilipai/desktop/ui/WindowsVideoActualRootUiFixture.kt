@@ -338,6 +338,7 @@ object WindowsVideoActualRootUiFixture {
         fun IsWindowVisible(hwnd: Pointer): Boolean
         fun IsIconic(hwnd: Pointer): Boolean
         fun GetWindowLongW(hwnd: Pointer, index: Int): Int
+        fun GetForegroundWindow(): Pointer?
         fun GetWindowRect(hwnd: Pointer, rect: Pointer): Boolean
         fun GetClientRect(hwnd: Pointer, rect: Pointer): Boolean
         fun ClientToScreen(hwnd: Pointer, point: Pointer): Boolean
@@ -2665,6 +2666,318 @@ object WindowsVideoActualRootUiFixture {
         }
     }
 
+    /** Explicit extra scope after the unchanged complete composer proof. Every
+     * Like terminates in the exact memory-only replay. All input below is OS
+     * Robot delivery; it never calls a business VM method or dispatches mouse
+     * events directly to Compose/Swing to bypass the decorative HWND. */
+    @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
+    private fun exerciseBrandFeedbackPlacement(replay: WindowsVideoLocalReplay) {
+        check(!EventQueue.isDispatchThread())
+        val (assembly, publication) = actualHotOwner()
+        val engagement = assembly.domains.engagement
+        val composer = assembly.domains.composer
+        val comments = assembly.domains.comments
+        val originalMain = edt { window() }
+        val source = accepted
+        val preferences = PlayerPreferencesStore().read()
+        val originalPlacement = edt { originalMain.extendedState }
+        val robot = java.awt.Robot()
+        val registered = linkedSetOf<javax.swing.JDialog>()
+        val repository = edt { current(); requireNotNull(owner.messagePages.get()).repository }
+        val script = replay.commentComposerReplay
+        check(script.authenticated(repository))
+        val beforeLayers = settledMainInputLayers("feedback-before")
+        var baseline = actualPlayer.state.value
+        var primary: Throwable? = null
+        fun guard(allowMinimized: Boolean = false) {
+            current()
+            val minimized = originalMain.extendedState and java.awt.Frame.ICONIFIED != 0
+            if (minimized && allowMinimized) {
+                // Expected hidden owner: retain exact Canvas/source identity,
+                // never claim a visible viewport or screenshot while iconic.
+                check(actualCanvas.isDisplayable && SwingUtilities.getWindowAncestor(actualPlayer.surface) === originalMain)
+            } else sameNative()
+            check(window() === originalMain && accepted === source && assembly.owns() &&
+                assembly.native.isCurrent(publication) && actualPlayer.ownsSourceSnapshot(source) &&
+                assembly.domains.engagement === engagement && assembly.domains.composer === composer &&
+                assembly.domains.comments === comments && script.authenticated(repository) &&
+                repository.sessionEpoch == script.epoch() &&
+                PlayerPreferencesStore().read() == preferences && !composer.isSendingComment.value)
+            check(allowMinimized || !minimized)
+            val state = actualPlayer.state.value
+            check(state.paused && state.nativePaused == true && state.seekCompletedId == baseline.seekCompletedId &&
+                state.muted == baseline.muted && state.volume == baseline.volume && state.speed == baseline.speed &&
+                kotlin.math.abs(state.positionSeconds - baseline.positionSeconds) < .25)
+        }
+        fun descendantsOwned(parent: Window): List<Window> = parent.ownedWindows.toList().flatMap {
+            listOf(it) + descendantsOwned(it)
+        }
+        fun clientBounds(): Rectangle = Rectangle(originalMain.contentPane.locationOnScreen, originalMain.contentPane.size)
+        fun peer(): javax.swing.JDialog? {
+            guard()
+            val client = clientBounds()
+            return originalMain.ownedWindows.filterIsInstance<androidx.compose.ui.awt.ComposeDialog>().filter {
+                it.isDisplayable && it.owner === originalMain && it.type == Window.Type.POPUP && it.isTransparent &&
+                    !it.focusableWindowState && !it.isAutoRequestFocus && it.bounds == client
+            }.also { check(it.size <= 1) }.singleOrNull()?.also { registered.add(it) }
+        }
+        fun facts(peer: javax.swing.JDialog, showing: Boolean) {
+            guard(!showing && originalMain.extendedState and java.awt.Frame.ICONIFIED != 0)
+            check(peer.owner === originalMain && peer.isDisplayable && peer.isShowing == showing &&
+                !peer.focusableWindowState && !peer.isAutoRequestFocus && !peer.isOpaque && peer.background.alpha in 0..254)
+            val pointer = Native.getWindowPointer(peer)
+            val actual = failureWindowApi.GetWindowLongW(pointer, -20)
+            check(DesktopDecorativeWindowStylePolicy.inputPolicyAcknowledged(actual))
+            if (showing) {
+                check(DesktopDecorativeWindowStylePolicy.acknowledged(actual) && peer.bounds == clientBounds() &&
+                    originalMain.bounds.contains(peer.bounds))
+            }
+            check(failureWindowApi.GetForegroundWindow() != pointer)
+        }
+        fun settled(peer: javax.swing.JDialog, showing: Boolean): Boolean {
+            guard(!showing && originalMain.extendedState and java.awt.Frame.ICONIFIED != 0)
+            check(peer.owner === originalMain && peer.isDisplayable &&
+                !peer.focusableWindowState && !peer.isAutoRequestFocus && !peer.isOpaque && peer.background.alpha in 0..254)
+            if (peer.isShowing != showing) return false
+            val actual = failureWindowApi.GetWindowLongW(Native.getWindowPointer(peer), -20)
+            if (!DesktopDecorativeWindowStylePolicy.inputPolicyAcknowledged(actual)) return false
+            if (showing && (!DesktopDecorativeWindowStylePolicy.acknowledged(actual) || peer.bounds != clientBounds())) return false
+            facts(peer, showing)
+            return true
+        }
+        fun live(origin: DesktopWindowsVideoFeedbackOrigin): Boolean = engagement.uiState.value.let {
+            it.likeBurstVisible && it.desktopFeedbackOrigin(DesktopWindowsVideoFeedbackKind.LIKE) === origin
+        }
+        fun awaitLiveHidden(peer: javax.swing.JDialog, origin: DesktopWindowsVideoFeedbackOrigin,
+            blocking: () -> Boolean, label: String) {
+            await(label) { edt {
+                guard()
+                check(live(origin)) { "The original Like completed before this live blocking overlap was observed: $label" }
+                blocking() && settled(peer, false)
+            } }
+        }
+        fun restoredOrCompleted(peer: javax.swing.JDialog, origin: DesktopWindowsVideoFeedbackOrigin): Boolean {
+            var restored = false
+            await("original live receipt restores same peer; natural completion disposes it") { edt {
+                guard()
+                if (live(origin)) settled(peer, true).also { if (it) restored = true }
+                else !peer.isShowing && !peer.isDisplayable
+            } }
+            return restored
+        }
+        fun physicalClick(surface: Window, label: String, throughPeer: javax.swing.JDialog? = null) {
+            val point = edt {
+                guard()
+                throughPeer?.let { facts(it, true) }
+                val control = descendants(surface.accessibleContext).filter { hasLabel(it, label) && visible(it, surface) &&
+                    it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single()
+                val component = requireNotNull(control.accessibleComponent)
+                val location = requireNotNull(component.locationOnScreen)
+                java.awt.Point(location.x + component.size.width / 2, location.y + component.size.height / 2)
+            }
+            robot.mouseMove(point.x, point.y); robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+            try { robot.delay(35) } finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+        }
+        fun physicalKey(key: Int) {
+            robot.keyPress(key)
+            try { robot.delay(20) } finally { robot.keyRelease(key) }
+        }
+        fun tab(label: String, throughPeer: javax.swing.JDialog? = null) {
+            physicalClick(originalMain, label, throughPeer)
+            await("OS tab click reaches original Main through decorative HWND: $label") { edt {
+                guard(); descendants(detailPaneScope()).any { it.accessibleName == label &&
+                    it.accessibleRole == javax.accessibility.AccessibleRole.PAGE_TAB &&
+                    it.accessibleStateSet.contains(AccessibleState.SELECTED) }
+            } }
+        }
+        fun capture(id: String, surface: Window = originalMain) {
+            val rectangle = edt {
+                guard(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+                val rect = if (surface === originalMain) clientBounds() else Rectangle(surface.bounds)
+                check(originalMain.bounds.contains(rect) && surface.graphicsConfiguration.bounds.contains(rect))
+                rect
+            }
+            val image = robot.createScreenCapture(rectangle)
+            // Capture the physical short-lived frame before tree serialization.
+            val tree = edt {
+                guard(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+                check((if(surface === originalMain) clientBounds() else Rectangle(surface.bounds)) == rectangle)
+                descendants(surface.accessibleContext).joinToString("\n") {
+                    "${it.accessibleName}\t${it.accessibleRole}\t${it.accessibleStateSet}"
+                }
+            }
+            Files.writeString(report.resolve("$id-accessibility.tsv"), tree, CREATE_NEW, WRITE)
+            check(ImageIO.write(image, "png", report.resolve("$id-screen.png").toFile()))
+            edt { guard(); check(surface.isShowing && surface.isDisplayable &&
+                (if(surface === originalMain) clientBounds() else Rectangle(surface.bounds)) == rectangle) }
+        }
+        fun modal(title: String): javax.swing.JDialog? = edt {
+            guard()
+            descendantsOwned(originalMain).filterIsInstance<javax.swing.JDialog>().filter {
+                it.isDisplayable && it.title == title && ownedWindow(it)
+            }.also { check(it.size <= 1) }.singleOrNull()?.also { registered.add(it) }
+        }
+        fun openEditor(throughPeer: javax.swing.JDialog): javax.swing.JDialog {
+            tab("评论", throughPeer); physicalClick(originalMain, "发表评论", throughPeer)
+            await("actual original composer modal/source stamp") { modal("发表评论")?.let { it.isShowing && it.isModal } == true }
+            return requireNotNull(modal("发表评论")).also { edt {
+                guard(); check(composer.commentStamp.value?.presentation?.sourceLease === publication &&
+                    composer.commentStamp.value?.presentation?.nativeOwner === originalMain)
+            } }
+        }
+        fun closeEditor(editor: javax.swing.JDialog) {
+            check(edt { java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().focusedWindow === editor })
+            physicalKey(java.awt.event.KeyEvent.VK_ESCAPE)
+            await("real ESC disposes exact original composer modal") { edt {
+                guard(); !editor.isDisplayable && !editor.isShowing && composer.commentStamp.value == null
+            } }
+        }
+        fun likeAgain(): javax.swing.JDialog {
+            tab("简介与分P")
+            if (engagement.uiState.value.isLiked) {
+                physicalClick(originalMain, "已点赞")
+                await("original unlike response consumed") { edt { guard(); !engagement.uiState.value.isLiked } }
+            }
+            physicalClick(originalMain, "点赞")
+            await("actual confirmed original Like and full-client decorative HWND") { edt {
+                guard(); engagement.uiState.value.isLiked && engagement.uiState.value.likeBurstVisible && peer()?.isShowing == true
+            } }
+            return edt { requireNotNull(peer()).also { facts(it, true) } }
+        }
+        try {
+            click("暂停"); await("native pause ACK before full-client carrier scope") { sameNative(); actualPlayer.state.value.nativePaused == true }
+            Thread.sleep(200); baseline = actualPlayer.state.value
+            if (edt { runCatching { detailPaneScope() }.isFailure }) {
+                physicalClick(originalMain, "详情"); await("actual introduction sibling") { edt { runCatching { detailPaneScope() }.isSuccess } }
+            }
+            tab("简介与分P"); capture("220-feedback-client-baseline")
+            val first = likeAgain(); capture("221-feedback-like-button-anchor")
+            // The first event is only the anchor screenshot. Do not spend its
+            // natural lifetime serializing a tree and then demand live overlap.
+            await("first original Like naturally completes without forced replay") { edt {
+                guard(); !engagement.uiState.value.likeBurstVisible && !first.isDisplayable && !first.isShowing
+            } }
+            val second = likeAgain()
+            val secondOrigin = requireNotNull(engagement.uiState.value.desktopFeedbackOrigin(DesktopWindowsVideoFeedbackKind.LIKE))
+            // No screenshot/input work between Like and the real modal+chooser.
+            val nextEditor = openEditor(second)
+            awaitLiveHidden(second, secondOrigin, { nextEditor.isShowing && nextEditor.isModal },
+                "live same peer hidden behind actual original composer DOCUMENT_MODAL")
+            physicalClick(nextEditor,"图片")
+            await("actual owned Swing chooser appears") { modal("选择图片")?.let { it.isShowing && it.isModal } == true }
+            val chooserPeer = requireNotNull(modal("选择图片"))
+            awaitLiveHidden(second, secondOrigin, { chooserPeer.isShowing && chooserPeer.isModal &&
+                desktopWindowsFeedbackHasOwnedModal(originalMain) }, "live same peer overlaps actual owned chooser")
+            record("feedback-owned-modal-hides-same-peer", mapOf("samePeer" to JsonPrimitive(true),
+                "actualDialogModal" to JsonPrimitive(nextEditor.isModal), "sameFullSource" to JsonPrimitive(true),
+                "liveOwnedModalOverlapObserved" to JsonPrimitive(true), "liveOwnedChooserOverlapObserved" to JsonPrimitive(true)))
+            // Once live overlaps and native hide were observed, later natural
+            // completion is valid. It must dispose, never count as restoration.
+            capture("224-feedback-owned-chooser-hidden-carrier",chooserPeer)
+            val approve = edt {
+                guard()
+                val chooser = nativeComponents(chooserPeer).filterIsInstance<javax.swing.JFileChooser>().single()
+                val fields = nativeComponents(chooser).filterIsInstance<javax.swing.JTextField>().filter { it.isShowing && it.isEnabled }
+                val named = fields.filter { field -> val labels = field.accessibleContext.accessibleRelationSet
+                    .get(javax.accessibility.AccessibleRelation.LABELED_BY)?.target.orEmpty()
+                    (field.accessibleContext.accessibleName.orEmpty()+labels.filterIsInstance<javax.swing.JLabel>().joinToString { it.text.orEmpty() })
+                        .let { it.contains("文件名") || it.contains("File name",ignoreCase=true) } }
+                val filename = named.singleOrNull() ?: fields.single()
+                filename.accessibleContext.accessibleEditableText.setTextContents(replay.commentComposerReplay.image.toAbsolutePath().toString())
+                val button = requireNotNull(chooserPeer.rootPane.defaultButton)
+                check(button.isShowing && button.isEnabled && SwingUtilities.isDescendingFrom(button,chooser))
+                val p=button.locationOnScreen; java.awt.Point(p.x+button.width/2,p.y+button.height/2)
+            }
+            robot.mouseMove(approve.x,approve.y);robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+            try { robot.delay(35) } finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+            await("actual chooser commits only private PNG to original draft") { edt {
+                guard(); !chooserPeer.isDisplayable && composer.composerDrafts.value.comments[0L]?.imageUris?.size == 1
+            } }
+            capture("225-feedback-selected-private-image",nextEditor)
+            // Real OS pointer/key input to the original editor, not a VM write.
+            val field = edt { guard(); descendants(nextEditor.accessibleContext).single {
+                it.accessibleEditableText != null && visible(it, nextEditor) } }
+            val point = edt { val c = requireNotNull(field.accessibleComponent); val p = requireNotNull(c.locationOnScreen)
+                java.awt.Point(p.x + c.size.width / 2, p.y + c.size.height / 2) }
+            robot.mouseMove(point.x,point.y); robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+            try { robot.delay(35) } finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+            robot.keyPress(java.awt.event.KeyEvent.VK_CONTROL)
+            try { physicalKey(java.awt.event.KeyEvent.VK_END) }
+            finally { robot.keyRelease(java.awt.event.KeyEvent.VK_CONTROL) }
+            physicalKey(java.awt.event.KeyEvent.VK_R)
+            await("original same-domain draft receives OS key without publishing") { edt {
+                guard(); composer.composerDrafts.value.comments[0L]?.text?.endsWith("r") == true
+            } }
+            if (!live(secondOrigin)) await("naturally finished receipt disposes its exact hidden peer") { edt {
+                guard(); !second.isShowing && !second.isDisplayable
+            } }
+            capture("222-feedback-owned-editor-hidden-carrier",nextEditor)
+            closeEditor(nextEditor)
+            val modalRestored = restoredOrCompleted(second, secondOrigin)
+            capture("223-feedback-modal-dismissed")
+            val third=likeAgain()
+            val thirdOrigin = requireNotNull(engagement.uiState.value.desktopFeedbackOrigin(DesktopWindowsVideoFeedbackKind.LIKE))
+            edt { guard(); originalMain.extendedState=originalPlacement or java.awt.Frame.ICONIFIED }
+            await("same full-client peer hides while original Main minimized") { edt {
+                guard(true)
+                check(live(thirdOrigin)) { "Original Like completed before live minimized overlap was observed" }
+                originalMain.extendedState and java.awt.Frame.ICONIFIED != 0 && settled(third, false)
+            } }
+            Thread.sleep(200)
+            edt { guard(true); originalMain.extendedState=originalPlacement }
+            val minimizedRestored = restoredOrCompleted(third, thirdOrigin)
+            capture("226-feedback-minimize-restored")
+            val fallbackLive = edt { guard(); live(thirdOrigin) }
+            physicalClick(originalMain,"关闭详情", if (fallbackLive) third else null)
+            await("actual Like anchor disposal returns feedback to original video fallback") { edt {
+                guard(); all().none { it.accessibleName=="关闭详情" && visible(it) }
+            } }
+            capture("227-feedback-video-fallback")
+            await("original completion disposes every captured decorative peer") { edt {
+                guard(); !engagement.uiState.value.likeBurstVisible && registered.none { it.isShowing || it.isDisplayable }
+            } }
+            replay.brandFeedbackReplay.receipt()
+            record("feedback-full-client-actual-main-scope",mapOf("actualOriginalLikeProtocol" to JsonPrimitive(true),
+                "inputMechanism" to JsonPrimitive("OS_ROBOT"),"sameActualComposerCommentsAndEngagement" to JsonPrimitive(true),
+                "ownedModalAndChooserObserved" to JsonPrimitive(true),"sourcePausePreferencesPreserved" to JsonPrimitive(true),
+                "sameFullSource" to JsonPrimitive(true), "liveOwnedModalOverlapObserved" to JsonPrimitive(true),
+                "liveOwnedChooserOverlapObserved" to JsonPrimitive(true), "liveOwnerMinimizedOverlapObserved" to JsonPrimitive(true),
+                "samePeerModalRestoreObserved" to JsonPrimitive(modalRestored),
+                "samePeerMinimizeRestoreObserved" to JsonPrimitive(minimizedRestored),
+                "liveVideoFallbackNavigationObserved" to JsonPrimitive(fallbackLive),
+                "remoteMutationSent" to JsonPrimitive(false),"physicalFramesRequireHumanReview" to JsonPrimitive(true)))
+        } catch (failure: Throwable) {
+            primary=failure
+            runCatching { capture("feedback-placement-failure") }.exceptionOrNull()?.let(failure::addSuppressed)
+            throw failure
+        } finally {
+            var cleanupFailure: Throwable? = null
+            fun cleanup(block: () -> Unit) { runCatching(block).exceptionOrNull()?.let { error ->
+                val previous = cleanupFailure
+                if (previous == null) cleanupFailure = error else previous.addSuppressed(error)
+            } }
+            for(peer in registered.toList().asReversed()) cleanup { edt {
+                var parent: Window? = peer
+                while (parent != null && parent !== originalMain) parent = parent.owner
+                if(peer.isDisplayable && parent === originalMain)
+                    peer.dispatchEvent(java.awt.event.WindowEvent(peer,java.awt.event.WindowEvent.WINDOW_CLOSING))
+            } }
+            cleanup { edt { if(originalMain.isDisplayable) originalMain.extendedState=originalPlacement } }
+            cleanup {
+                val deadline=System.nanoTime()+Duration.ofSeconds(5).toNanos()
+                while(edt { registered.any { it.isDisplayable } } && System.nanoTime()<deadline) Thread.sleep(50)
+                check(edt { registered.none { it.isDisplayable } }) { "Full-client feedback scope leaked its captured owned peer" }
+            }
+            cleanupFailure?.let { failure -> primary?.addSuppressed(failure) ?: throw failure }
+        }
+        val afterLayers = settledMainInputLayers("feedback-after")
+        check(afterLayers.size == beforeLayers.size && beforeLayers.all { old -> afterLayers.any { it === old } }) {
+            "Full-client feedback must restore the exact Main input layer identities"
+        }
+        click("播放")
+        await("same source resumes after full-client scope") { sameNative();playing() }
+    }
+
     private fun exerciseCommentComposer(localReplay: WindowsVideoLocalReplay) {
         check(!EventQueue.isDispatchThread())
         sameNative(); check(playing())
@@ -3431,6 +3744,8 @@ object WindowsVideoActualRootUiFixture {
         if (System.getProperty("bilipai.validation.composerInput") == "true") {
             check(replay) { "Composer proof requires private synthetic API/session and loopback media" }
             exerciseCommentComposer(requireNotNull(localReplay))
+            if (System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true")
+                exerciseBrandFeedbackPlacement(localReplay)
         } else if (System.getProperty("bilipai.validation.commentSearchInput") == "true") {
             check(replay) { "Comment search proof requires the isolated guest API/loopback replay" }
             exerciseCommentSearch(requireNotNull(localReplay))
@@ -3539,6 +3854,10 @@ object WindowsVideoActualRootUiFixture {
         // This is not settings-UI acceptance and does not change any real user's volume/mute.
         PlayerPreferencesStore().save(PlayerPreferences(volume = 0.0, muted = true))
         check(PlayerPreferencesStore().read() == PlayerPreferences(volume = 0.0, muted = true).normalized())
+        check(System.getProperty("bilipai.validation.brandFeedbackPlacementInput") != "true" ||
+            (replayMode && System.getProperty("bilipai.validation.composerInput") == "true")) {
+            "Feedback placement must use the real Main isolated composer synthetic-session replay"
+        }
         val replay = if (replayMode) WindowsVideoLocalReplay.create(report, video) else null
         if (replay != null) Runtime.getRuntime().addShutdownHook(Thread({ replay.close() }, "Owned local media cleanup"))
         DesktopOriginalRootValidationTap.install { latest.set(it) }.use {
@@ -3608,6 +3927,9 @@ object WindowsVideoActualRootUiFixture {
                         put("commentSearchPhysicalTextHumanReviewRequired", System.getProperty("bilipai.validation.commentSearchInput") == "true")
                         put("composerInputProofRequested", System.getProperty("bilipai.validation.composerInput") == "true")
                         put("composerInputProofCompleted", System.getProperty("bilipai.validation.composerInput") == "true")
+                        put("brandFeedbackPlacementProofRequested", System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true")
+                        put("brandFeedbackPlacementProofCompleted", System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true")
+                        put("brandFeedbackPhysicalFramesRequireHumanReview", System.getProperty("bilipai.validation.brandFeedbackPlacementInput") == "true")
                         put("syntheticAccountSeededThroughActualSessionStore", System.getProperty("bilipai.validation.composerInput") == "true")
                         put("commentPublishingAccepted", false); put("imageUploadAccepted", false); put("loginUiAccepted", false)
                         put("ordinaryFullscreenResizeRegressionExecuted", System.getProperty("bilipai.validation.commentSearchInput") != "true" &&

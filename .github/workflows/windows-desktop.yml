@@ -28,9 +28,9 @@ on:
         type: boolean
         default: false
       comment_ui_case:
-        description: Read-only actual Main case selected only when comment_search_ui is enabled; composer uses a private synthetic session
+        description: Isolated actual Main case; composer and feedback use private synthetic responses and never publish remotely
         type: choice
-        options: [search, composer]
+        options: [search, composer, feedback]
         default: search
       verify_previous_update:
         description: Also test forwarding from the exact previously delivered Windows EXE in the isolated updater fixture
@@ -241,7 +241,7 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          if ($env:COMMENT_UI_CASE -cnotin @('search', 'composer')) { throw 'Unknown independent comment UI case.' }
+          if ($env:COMMENT_UI_CASE -cnotin @('search', 'composer', 'feedback')) { throw 'Unknown independent comment UI case.' }
           $runtime = Join-Path $env:RUNNER_TEMP 'bilipai-comment-runtime.json'
           $initScript = Join-Path $env:GITHUB_WORKSPACE 'desktop/tools/comment-search-ui.init.gradle'
           & ./gradlew.bat -p desktop --no-daemon --console=plain --max-workers=2 "-Dorg.gradle.jvmargs=-Xmx4g" `
@@ -317,6 +317,24 @@ jobs:
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/217-composer-image-removed-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/composer-input-failure-screen.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/composer-input-failure-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/220-feedback-client-baseline-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/220-feedback-client-baseline-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/221-feedback-like-button-anchor-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/221-feedback-like-button-anchor-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/222-feedback-owned-editor-hidden-carrier-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/222-feedback-owned-editor-hidden-carrier-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/223-feedback-modal-dismissed-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/223-feedback-modal-dismissed-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/224-feedback-owned-chooser-hidden-carrier-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/224-feedback-owned-chooser-hidden-carrier-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/225-feedback-selected-private-image-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/225-feedback-selected-private-image-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/226-feedback-minimize-restored-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/226-feedback-minimize-restored-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/227-feedback-video-fallback-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/227-feedback-video-fallback-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/feedback-placement-failure-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/feedback-placement-failure-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-native-state.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-source-admission.json
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/failure-owned-window-geometry.json
