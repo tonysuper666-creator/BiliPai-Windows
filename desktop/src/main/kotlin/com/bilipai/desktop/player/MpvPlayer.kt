@@ -1093,6 +1093,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                             failNvidia(native, handle, action, "当前视频已失去播放所有权，已停止增强")
                         NvidiaNativeMessage.HdrAccepted -> if (!admitNvidia(action) { mutableNvidiaVideo.update { it.copy(driverHdrAccepted = true) } })
                             failNvidia(native, handle, action, "当前视频已失去播放所有权，已停止增强")
+                        is NvidiaNativeMessage.FilterFailed -> if (message.label == nvidiaFilterLabel) {
+                            // A queued old/foreign label and a retired account cannot fail the current output.
+                            admitNvidia(action) { failNvidia(native, handle, action,
+                                "NVIDIA 视频滤镜运行失败，已恢复原画播放") }
+                        }
                         is NvidiaNativeMessage.Failure -> failNvidia(native, handle, action, message.safeMessage)
                         else -> Unit
                     }

@@ -23,6 +23,7 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
     private val session = field("session")
     private val perform = type.getDeclaredMethod("perform", MpvNative::class.java, Pointer::class.java, actionType).apply { isAccessible = true }
     private val receive = type.getDeclaredMethod("receiveEvent", MpvNative::class.java, Pointer::class.java, Pointer::class.java).apply { isAccessible = true }
+    private val refreshNvidia = type.getDeclaredMethod("refreshNvidiaVideo", MpvNative::class.java, Pointer::class.java).apply { isAccessible = true }
     @Suppress("UNCHECKED_CAST")
     private val queue = type.getDeclaredField("commands").apply { isAccessible = true }.get(actor) as LinkedBlockingQueue<Any>
     init {
@@ -59,12 +60,24 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
         }
     }
     fun apply(action: Any = nextNvidia()) { perform.invoke(actor, native, Pointer(1L), action) }
-    fun driverFailure() {
+    fun driverFailure() = nativeMessage("d3d11vpp", "Failed to enable NVIDIA RTX Super Resolution: fixture failure")
+    fun filterFailure(label: String) = nativeMessage("vf", "Disabling filter $label because it has failed.\n", 20)
+    fun acceptedFrame() {
+        native.processedOutput = true
+        nativeMessage("d3d11vpp", "NVIDIA RTX Super Resolution enabled.")
+        Memory(24).use { event ->
+            event.clear(); event.setInt(0, 21) // The actual MPV playback-restart event, then ordinary refresh.
+            receive.invoke(actor, native, Pointer(1L), event)
+        }
+        refreshNvidia.invoke(actor, native, Pointer(1L))
+    }
+    fun retireSession() { session.set(player, null) }
+    private fun nativeMessage(prefixValue: String, value: String, level: Int = 50) {
         fun text(value: String) = Memory(value.toByteArray(Charsets.UTF_8).size + 1L).apply { setString(0, value, "UTF-8") }
-        text("d3d11vpp").use { prefix ->
-            text("Failed to enable NVIDIA RTX Super Resolution: fixture failure").use { message ->
+        text(prefixValue).use { prefix ->
+            text(value).use { message ->
                 Memory(32).use { data -> Memory(24).use { event ->
-                    data.clear(); data.setPointer(0, prefix); data.setPointer(16, message); data.setInt(24, 50)
+                    data.clear(); data.setPointer(0, prefix); data.setPointer(16, message); data.setInt(24, level)
                     event.clear(); event.setInt(0, 2); event.setPointer(16, data)
                     receive.invoke(actor, native, Pointer(1L), event)
                 } }
@@ -80,6 +93,7 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
     val commands = mutableListOf<List<String>>()
     val filters = mutableListOf("scale" to "foreign-user-filter")
     var rejectRemoval = false
+    var processedOutput = false
     private val nodeOwners = mutableListOf<MpvNodes>()
     private val noEvent = Memory(24).apply { clear() }
     override fun mpv_command(handle: Pointer, args: StringArray): Int {
@@ -91,6 +105,19 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
             filters.removeAll { it.second == command[2].removePrefix("@") }
         }
         return 0
+    }
+    override fun mpv_get_property_string(handle: Pointer, name: String): Pointer? {
+        val value = if (processedOutput) when (name) {
+            "current-gpu-context" -> "d3d11"
+            "video-out-params/w" -> "1280"
+            "video-out-params/h" -> "720"
+            "video-out-params/gamma", "video-target-params/gamma" -> "bt.1886"
+            "video-target-params/primaries" -> "bt.709"
+            else -> null
+        } else null
+        if (value == null) return delegate.mpv_get_property_string(handle, name)
+        // The normal property reader frees this memory through delegated mpv_free.
+        return Memory(value.toByteArray(Charsets.UTF_8).size + 1L).apply { setString(0, value, "UTF-8") }
     }
     override fun mpv_get_property(handle: Pointer, name: String, format: Int, data: Pointer): Int {
         check(name == "vf" && format == 6)
@@ -107,6 +134,94 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
 }
 
 class PlayerNvidiaActorWithdrawalTest {
+    @Test fun exactRuntimeDisableReachesRealSessionFromPendingOrActiveAndPreservesRemovalFailure() = runBlocking<Unit> {
+        for (mode in listOf("pending", "active", "removal-error")) {
+            val enabled = MutableStateFlow(true)
+            MpvPlayer().use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/nvidia-runtime-failure.avi"))
+                val snapshot = assertNotNull(player.currentSourceSnapshot())
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordPlayableOutput()
+                    DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                        enabled.value = it; CompletableDeferred(Unit)
+                    }).use { enhancement ->
+                        awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                        actor.apply()
+                        val configuration = player.nvidiaVideoState.value.configurationVersion
+                        if (mode != "pending") {
+                            actor.acceptedFrame()
+                            awaitSession { enhancement.state.value.active }
+                        } else assertTrue(enhancement.state.value.pending)
+                        val playback = player.state.value
+                        actor.native.rejectRemoval = mode == "removal-error"
+                        // Simulates the pinned wrapper retaining its configured vf label while disabled.
+                        assertTrue(actor.native.filters.any { it.second == "bilipai-nvidia-$configuration" })
+                        actor.filterFailure("bilipai-nvidia-$configuration")
+                        awaitSession { enhancement.state.value.error != null }
+                        assertFalse(enhancement.state.value.active); assertFalse(enhancement.state.value.pending)
+                        assertEquals("异常", desktopVideoEnhancementCompactLabel(enhancement.state.value, true, null))
+                        assertNull(player.nvidiaVideoState.value.unavailableReason)
+                        if (mode == "removal-error") {
+                            assertTrue(assertNotNull(enhancement.state.value.error).contains("无法撤回"))
+                            assertEquals(2, actor.native.filters.size)
+                        } else {
+                            assertTrue(assertNotNull(enhancement.state.value.error).contains("运行失败"))
+                            assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters)
+                        }
+                        assertEquals(listOf("vf", "remove", "@bilipai-nvidia-$configuration"), actor.native.commands.last())
+                        assertEquals(playback, player.state.value); assertTrue(player.ownsSourceSnapshot(snapshot))
+                        assertEquals(source, player.currentSourceVersion)
+                    }
+                }
+            }
+        }
+    }
+
+    @Test fun runtimeDisableCannotActOnForeignOldOrRetiredSourceAccountAndSession() {
+        for (retirement in listOf("foreign", "configuration", "source", "revision", "account", "session")) {
+            val admitted = java.util.concurrent.atomic.AtomicBoolean(true)
+            MpvPlayer().use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/nvidia-runtime-retirement.avi",
+                    nativePublication = DesktopNativePlaybackPublication { command ->
+                        if (admitted.get()) { command(); true } else false
+                    }))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    val configuration = assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    when (retirement) {
+                        "configuration" -> {
+                            assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(3.0)))
+                            actor.apply()
+                        }
+                        "source" -> player.loadVersioned(PlaybackSource("file:///C:/nvidia-runtime-replacement.avi"))
+                        "revision" -> assertTrue(player.recoverSource(source, positionSeconds = 3.0, paused = false))
+                        "account" -> admitted.set(false)
+                        "session" -> actor.retireSession()
+                    }
+                    // A new native owner may retain the same source/configuration token.
+                    // Its old handle's receiver still cannot act because session !== this.
+                    val successor = if (retirement == "session") NvidiaWithdrawalActor(player) else null
+                    try {
+                        if (successor != null) {
+                            assertEquals(configuration, player.nvidiaVideoState.value.configurationVersion)
+                            assertEquals(source, player.currentSourceVersion)
+                        }
+                        val before = player.nvidiaVideoState.value
+                        val commands = actor.native.commands.toList()
+                        val filters = actor.native.filters.toList()
+                        val label = if (retirement == "foreign") "bilipai-nvidia-999999" else "bilipai-nvidia-$configuration"
+                        actor.filterFailure(label)
+                        actor.filterFailure("foreign-user-filter")
+                        assertEquals(before, player.nvidiaVideoState.value, retirement)
+                        assertEquals(commands, actor.native.commands, retirement)
+                        assertEquals(filters, actor.native.filters, retirement)
+                        successor?.let { assertTrue(it.native.commands.isEmpty()) }
+                    } finally { successor?.close() }
+                }
+            }
+        }
+    }
+
     @Test fun realSessionKeepsWithdrawalErrorAcrossRepeatedBypassAndRetiresItForNewConfiguration() = runBlocking<Unit> {
         val enabled = MutableStateFlow(true)
         MpvPlayer().use { player ->

@@ -78,6 +78,7 @@ internal sealed interface NvidiaNativeMessage {
     data object VsrAccepted : NvidiaNativeMessage
     data object HdrAccepted : NvidiaNativeMessage
     data class Failure(val safeMessage: String) : NvidiaNativeMessage
+    data class FilterFailed(val label: String) : NvidiaNativeMessage
     data class DeviceName(val name: String) : NvidiaNativeMessage
     data class DeviceVendor(val vendorId: Int) : NvidiaNativeMessage
 }
@@ -86,6 +87,17 @@ internal sealed interface NvidiaNativeMessage {
 internal fun parseNvidiaNativeMessage(prefix: String, text: String): NvidiaNativeMessage? {
     if (text.length > 1024) return null
     val line = text.trim()
+    // Fixed f_output_chain.c runtime-disable report. The vf option still retains
+    // this failed filter's label, so a name/label property read is not sufficient.
+    if (prefix == "vf") {
+        // The pinned C message may have one terminal LF; no control/multiline payload is accepted.
+        val fixedLine = text.removeSuffix("\n")
+        if (fixedLine.any { it.code < 32 || it.code == 127 }) return null
+        Regex("Disabling filter (bilipai-nvidia-[0-9]{1,19}) because it has failed\\.").matchEntire(fixedLine)?.let {
+            return NvidiaNativeMessage.FilterFailed(it.groupValues[1])
+        }
+        return null
+    }
     if (prefix == "d3d11vpp") return when {
         line == "NVIDIA RTX Super Resolution enabled." -> NvidiaNativeMessage.VsrAccepted
         line == "NVIDIA RTX Video HDR enabled." -> NvidiaNativeMessage.HdrAccepted

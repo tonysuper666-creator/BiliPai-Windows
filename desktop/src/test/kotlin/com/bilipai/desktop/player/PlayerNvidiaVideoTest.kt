@@ -66,6 +66,16 @@ class PlayerNvidiaVideoTest {
         assertFalse(failed.safeMessage.contains("fixture-secret"))
     }
 
+    @Test fun onlyExactOwnedLabelRuntimeDisableMessagesAreRecognized() {
+        val line = "Disabling filter bilipai-nvidia-17 because it has failed."
+        assertEquals(NvidiaNativeMessage.FilterFailed("bilipai-nvidia-17"), parseNvidiaNativeMessage("vf", "$line\n"))
+        for (prefix in listOf("d3d11vpp", "af", "ffmpeg", "vf/other")) assertNull(parseNvidiaNativeMessage(prefix, line))
+        for (other in listOf(line + " Cookie: private", line.replace("17", "12345678901234567890"),
+            line.replace("bilipai-nvidia-17", "foreign-filter"), line.replace("17", "-17"), line.removeSuffix("."),
+            " $line", "$line ", "\t$line", "$line\r", "$line\n\n", "$line\n$line", "$line\u0000", "$line\u007f"))
+            assertNull(parseNvidiaNativeMessage("vf", other))
+    }
+
     @Test fun actualGpuMetadataIsParsedAsThePinnedSeparateLineEvents() {
         assertEquals(NvidiaNativeMessage.DeviceName("NVIDIA GeForce RTX 5080"), parseNvidiaNativeMessage("vo/gpu/d3d11", "Device Name: NVIDIA GeForce RTX 5080\n"))
         assertEquals(NvidiaNativeMessage.DeviceVendor(0x10de), parseNvidiaNativeMessage("vo/gpu/d3d11", "Device ID: 10de:2c02 (rev a1)\n"))
