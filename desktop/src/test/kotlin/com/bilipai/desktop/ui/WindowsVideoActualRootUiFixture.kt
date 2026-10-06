@@ -1228,16 +1228,79 @@ object WindowsVideoActualRootUiFixture {
     private fun playerMenuSurface(): Window? {
         current()
         val main = window()
-        val surfaces = listOf<Window>(main) + Window.getWindows().filter { it !== main &&
-            it.isShowing && it.isDisplayable && ownedWindow(it) &&
-            (it is javax.swing.JWindow || it is javax.swing.JDialog) }
-        val matches = surfaces.filter { surface -> descendants(surface.accessibleContext).count { node ->
-            node.accessibleName == "简介、分P与播放设置" && visible(node, surface) &&
+        // Popup identity does not depend on a lower item already being scrolled
+        // into view. The later click still requires its one wholly visible action.
+        val popups = Window.getWindows().filterIsInstance<javax.swing.JDialog>().filter {
+            it.isShowing && it.isDisplayable && it.owner === main &&
+                ownedWindow(it) && !it.isModal && it.title == "播放操作"
+        }
+        check(popups.size <= 1) { "More than one owned modeless player operation menu" }
+        popups.singleOrNull()?.let { return it }
+        // Preserve the existing inline fallback for callers that already had it.
+        val inline = descendants(main.accessibleContext).count { node ->
+            node.accessibleName == "简介、分P与播放设置" && visible(node, main) &&
                 node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
                 (node.accessibleAction?.accessibleActionCount ?: 0) == 1
-        } == 1 }
-        check(matches.size <= 1) { "More than one owned complete player operation menu" }
-        return matches.singleOrNull()
+        }
+        check(inline <= 1) { "More than one complete inline player operation menu" }
+        return main.takeIf { inline == 1 }
+    }
+
+    /** Real bounded OS wheel input into this existing menu peer; no ScrollState/action writes. */
+    private fun ensurePlayerMenuItemVisible(surface: Window, label: String) {
+        check(!EventQueue.isDispatchThread())
+        val (main, source, canvas) = edt {
+            current(); sameNative(); Triple(window(), accepted, actualCanvas)
+        }
+        val peerBounds = edt { Rectangle(surface.bounds) }
+        fun guard() {
+            current(); sameNative()
+            check(window() === main && accepted === source && actualCanvas === canvas &&
+                actualPlayer.ownsSourceSnapshot(source)) { "Player menu source/Main/Canvas was retired" }
+            check(surface.isShowing && surface.isDisplayable && ownedWindow(surface) &&
+                surface.bounds == peerBounds && playerMenuSurface() === surface) { "Exact player menu peer was retired or moved" }
+        }
+        fun item(): AccessibleContext? {
+            val matches = descendants(surface.accessibleContext).filter { node ->
+                hasLabel(node, label) && node.accessibleRole != javax.accessibility.AccessibleRole.SCROLL_PANE &&
+                    node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                    (node.accessibleAction?.accessibleActionCount ?: 0) == 1
+            }
+            check(matches.size <= 1) { "More than one original player menu action: $label" }
+            return matches.singleOrNull()
+        }
+        await("one original enabled '$label' action in the owned player menu tree") { edt {
+            guard(); item() != null
+        } }
+        var robot: java.awt.Robot? = null
+        // Thirty-two single-notch wheels, and a final read, are the fixed ceiling.
+        for (attempt in 0..32) {
+            val step = edt {
+                guard()
+                val target = item()
+                if (target != null && visible(target, surface)) null else {
+                    val input = actualComposeInput(surface)
+                    val content = (surface as javax.swing.RootPaneContainer).contentPane
+                    val area = Rectangle(content.locationOnScreen, content.size)
+                        .intersection(Rectangle(input.locationOnScreen, input.size))
+                        .intersection(surface.graphicsConfiguration.bounds)
+                        .intersection(Rectangle(main.contentPane.locationOnScreen, main.contentPane.size))
+                    check(area.width > 20 && area.height > 20) { "Player menu has no bounded visible owned wheel area" }
+                    val point = java.awt.Point(area.x + area.width / 2, area.y + area.height / 2)
+                    check(input.contains(java.awt.Point(point.x - input.locationOnScreen.x, point.y - input.locationOnScreen.y)))
+                    val origin = target?.accessibleComponent?.locationOnScreen
+                    Pair(point, if (origin != null && origin.y < area.y) -1 else 1)
+                }
+            } ?: return
+            check(attempt < 32) { "Original player menu action remains outside its viewport after 32 OS wheels: $label" }
+            val wheel = robot ?: java.awt.Robot().also { robot = it }
+            wheel.mouseMove(step.first.x, step.first.y)
+            wheel.delay(35)
+            edt { guard() }
+            wheel.mouseWheel(step.second)
+            wheel.delay(120)
+            edt { guard() }
+        }
     }
 
     private fun exercisePlayerMenu() {
@@ -1252,9 +1315,11 @@ object WindowsVideoActualRootUiFixture {
             }
             check(window().bounds.contains(surface.bounds)) { "Player menu must fit within the actual owner window" }
         }
+        ensurePlayerMenuItemVisible(surface, "简介、分P与播放设置")
         actions.capture("112-owned-player-menu", edt { current() })
         if (surface !== edt { window() }) edt { captureOwnedExtraSurface("112-owned-player-menu-popup", surface) }
         edt {
+            current(); sameNative(); check(playerMenuSurface() === surface)
             val item = descendants(surface.accessibleContext).filter { node ->
                 node.accessibleName == "简介、分P与播放设置" && visible(node, surface) &&
                     node.accessibleStateSet.contains(AccessibleState.ENABLED) &&
@@ -1351,6 +1416,8 @@ object WindowsVideoActualRootUiFixture {
 
     private fun clickFeatureItem(surface: Window, label: String) {
         check(!EventQueue.isDispatchThread())
+        if (edt { surface is javax.swing.JDialog && surface.owner === window() &&
+                !surface.isModal && surface.title == "播放操作" }) ensurePlayerMenuItemVisible(surface, label)
         await("owned feature tree restores one real '$label' control") { edt {
             current(); sameNative()
             check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
@@ -1894,9 +1961,7 @@ object WindowsVideoActualRootUiFixture {
         closeBgmIntroduction()
         click("更多播放操作")
         await("actual More menu for the original return-to-P1 collection") { edt {
-            val menu = playerMenuSurface() ?: return@edt false
-            descendants(menu.accessibleContext).count { hasLabel(it, "视频合集") && visible(it, menu) &&
-                (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+            playerMenuSurface() != null
         } }
         clickFeatureItem(edt { requireNotNull(playerMenuSurface()) }, "视频合集")
         await("complete original collection for P2-to-P1 return") { edt {
@@ -1969,11 +2034,8 @@ object WindowsVideoActualRootUiFixture {
         val originalSource = accepted
         fun openFromMore(label: String) {
             sameNative(); click("更多播放操作")
-            await("actual owned More menu contains $label") { edt {
-                val surface = playerMenuSurface() ?: return@edt false
-                descendants(surface.accessibleContext).count { it.accessibleName == label && visible(it, surface) &&
-                    it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
-                    (it.accessibleAction?.accessibleActionCount ?: 0) == 1 } == 1
+            await("actual owned More menu for $label") { edt {
+                playerMenuSurface() != null
             } }
             val menu = edt { requireNotNull(playerMenuSurface()) }
             clickFeatureItem(menu, label)
@@ -3093,6 +3155,7 @@ object WindowsVideoActualRootUiFixture {
             physicalClick(originalMain, "更多播放操作")
             await("same Main original playback menu") { edt { guard(); playerMenuSurface() != null } }
             val menu = edt { requireNotNull(playerMenuSurface()).also { if (it !== originalMain) ownedPeers.add(it) } }
+            ensurePlayerMenuItemVisible(menu, "分享视频")
             physicalClick(menu, "分享视频")
             var result: javax.swing.JDialog? = null
             await("exact owned original share peer") { edt {

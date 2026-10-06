@@ -1,8 +1,12 @@
 package com.bilipai.desktop.ui
 
+import androidx.compose.foundation.VerticalScrollbar
+import androidx.compose.foundation.defaultScrollbarStyle
+import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposeDialog
 import androidx.compose.ui.geometry.Offset
@@ -150,7 +155,19 @@ internal fun DesktopWindowsPlayerMenu(
         CompositionLocalProvider(LocalDensity provides parentDensity) {
             AppSurface(modifier = modifier.fillMaxSize(), shape = RoundedCornerShape(12.dp),
                 color = MaterialTheme.colorScheme.surface, contentColor = MaterialTheme.colorScheme.onSurface) {
-                Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(vertical = 4.dp), content = content)
+                val menuScroll = rememberScrollState()
+                Box(Modifier.fillMaxSize()) {
+                    Column(Modifier.fillMaxSize().verticalScroll(menuScroll)
+                        .padding(top = 4.dp, bottom = 4.dp, end = 12.dp), content = content)
+                    if (menuScroll.maxValue > 0) VerticalScrollbar(
+                        adapter = rememberScrollbarAdapter(menuScroll),
+                        modifier = Modifier.align(Alignment.CenterEnd).fillMaxHeight()
+                            .padding(vertical = 4.dp, horizontal = 3.dp),
+                        style = defaultScrollbarStyle().copy(thickness = 4.dp,
+                            unhoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .28f),
+                            hoverColor = MaterialTheme.colorScheme.onSurface.copy(alpha = .60f)),
+                    )
+                }
             }
         }
     }
