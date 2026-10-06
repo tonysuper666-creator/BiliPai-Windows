@@ -2968,6 +2968,32 @@ object WindowsVideoActualRootUiFixture {
             if (engagement.uiState.value.isLiked) {
                 physicalClick(originalMain, "已点赞")
                 await("original unlike response consumed") { edt { guard(); !engagement.uiState.value.isLiked } }
+                // The domain can finish unlike before Compose publishes the new button.
+                // Reuse the tab's bounded geometry settle; never repeat physical input.
+                var stableBounds: Rectangle? = null
+                var stableSince = 0L
+                await("original unliked action is unique and geometrically stable before one OS click") { edt {
+                    guard()
+                    check(!engagement.uiState.value.isLiked)
+                    val detail = runCatching { detailPaneScope() }.getOrNull()
+                    val matches = detail?.let { descendants(it).filter { control ->
+                        hasLabel(control, "点赞") && visible(control, originalMain) &&
+                            control.accessibleRole == javax.accessibility.AccessibleRole.PUSH_BUTTON &&
+                            control.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                            (control.accessibleAction?.accessibleActionCount ?: 0) == 1
+                    } }.orEmpty()
+                    check(matches.size <= 1) { "More than one original enabled Like action" }
+                    val control = matches.singleOrNull()
+                    if (control == null) {
+                        stableBounds = null; stableSince = 0L; return@edt false
+                    }
+                    val component = requireNotNull(control.accessibleComponent)
+                    val bounds = Rectangle(requireNotNull(component.locationOnScreen), component.size)
+                    val now = System.nanoTime()
+                    if (bounds != stableBounds) {
+                        stableBounds = bounds; stableSince = now; false
+                    } else now - stableSince >= Duration.ofMillis(200).toNanos()
+                } }
             }
             physicalClick(originalMain, "点赞")
             await("actual confirmed original Like and full-client decorative HWND") { edt {
