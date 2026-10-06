@@ -35,6 +35,8 @@ data class NvidiaVideoState(
     val gpuName: String? = null,
     val gpuVendorId: Int? = null,
     val currentGpuContext: String? = null,
+    /** Confirmed unsupported hardware/output; distinct from an attempted processing failure. */
+    val unavailableReason: String? = null,
 )
 
 internal fun nvidiaHdrTransfer(transfer: String?): Boolean = transfer in setOf("pq", "hlg", "st2084", "smpte2084")
@@ -54,7 +56,8 @@ internal fun observeNvidiaVideo(previous: NvidiaVideoState, options: NvidiaVideo
     fun scaled(size: Int): Int = (size * options.scale.toFloat()).toInt().let { it + it % 2 }
     val dimensions = frame.inputWidth > 0 && frame.inputHeight > 0 &&
         frame.outputWidth == scaled(frame.inputWidth) && frame.outputHeight == scaled(frame.inputHeight)
-    val processed = frame.frameAfterConfiguration && frame.ownFilterPresent && dimensions && previous.error == null
+    val usable = previous.error == null && previous.unavailableReason == null
+    val processed = frame.frameAfterConfiguration && frame.ownFilterPresent && dimensions && usable
     val vsr = options.scale > 1.0 && previous.driverVsrAccepted && processed
     val hdr = options.hdr && previous.driverHdrAccepted && processed && nvidiaHdrTransfer(frame.outputTransfer)
     val hdrPresented = hdr && frame.displayHdrEnabled && nvidiaHdrTarget(frame.targetTransfer, frame.targetPrimaries)
@@ -62,7 +65,7 @@ internal fun observeNvidiaVideo(previous: NvidiaVideoState, options: NvidiaVideo
         outputWidth = frame.outputWidth, outputHeight = frame.outputHeight,
         outputTransfer = frame.outputTransfer, targetTransfer = frame.targetTransfer, targetPrimaries = frame.targetPrimaries,
         active = (vsr || hdrPresented) && (options.scale <= 1.0 || vsr) && (!options.hdr || hdrPresented), hdrConversionActive = hdr,
-        pending = options.requiresFilter && previous.error == null && !((options.scale <= 1.0 || vsr) && (!options.hdr || hdrPresented)))
+        pending = options.requiresFilter && usable && !((options.scale <= 1.0 || vsr) && (!options.hdr || hdrPresented)))
 }
 
 internal sealed interface NvidiaNativeMessage {

@@ -54,21 +54,27 @@ internal fun DesktopVideoEnhancementCompactSlot(showStatus: Boolean = true, cont
         LocalDesktopVideoEnhancementCompactStatus provides showStatus, content = content)
 }
 
+internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementState,
+    enabled: Boolean, configurationError: String?): String {
+    return when {
+        configurationError != null || state.error != null -> "异常"
+        !enabled -> "关闭"
+        state.unavailableReason != null -> "不可用"
+        state.active && state.driverVsrAccepted && state.hdrConversionActive -> "VSR · HDR"
+        state.active && state.hdrConversionActive -> "HDR"
+        state.active && state.driverVsrAccepted -> "VSR"
+        state.pending -> "处理中"
+        else -> "原画"
+    }
+}
+
 @Composable
 fun DesktopVideoEnhancementControls(state: DesktopVideoEnhancementState,
     configuration: DesktopVideoEnhancementConfiguration, onToggle: (Boolean) -> Unit, onSettings: () -> Unit) {
     if (LocalDesktopVideoEnhancementCompact.current) {
         val enabled by configuration.automaticEnabled.collectAsState()
         val configurationError by configuration.error.collectAsState()
-        val label = when {
-            configurationError != null || state.error != null -> "异常"
-            !enabled -> "关闭"
-            state.active && state.driverVsrAccepted && state.hdrConversionActive -> "VSR · HDR"
-            state.active && state.hdrConversionActive -> "HDR"
-            state.active && state.driverVsrAccepted -> "VSR"
-            state.pending -> "处理中"
-            else -> "原画"
-        }
+        val label = desktopVideoEnhancementCompactLabel(state, enabled, configurationError)
         val showStatus = LocalDesktopVideoEnhancementCompactStatus.current
         AppTextButton(onClick = onSettings, modifier = (if (showStatus) Modifier.heightIn(min = 44.dp) else Modifier.size(44.dp))
             .semantics { contentDescription = "NVIDIA 增强详情" },

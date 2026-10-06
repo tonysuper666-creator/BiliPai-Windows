@@ -23,7 +23,37 @@ data class DesktopVideoEnhancementState(
     val targetTransfer: String? = null,
     val targetPrimaries: String? = null,
     val hdrDisplayEnabled: Boolean = false,
+    val unavailableReason: String? = null,
 )
+
+/** Shared projection; the session admits the current source/configuration before calling it. */
+internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVideoState): DesktopVideoEnhancementState {
+    val hdrPresented = native.hdrConversionActive && hdrDisplayEnabled && native.active &&
+        nvidiaHdrTarget(native.targetTransfer, native.targetPrimaries)
+    val status = when {
+        native.error != null -> "NVIDIA 增强异常：${native.error}"
+        native.unavailableReason != null -> "NVIDIA 增强不可用：${native.unavailableReason}"
+        native.pending -> "正在请求 NVIDIA 硬件增强"
+        native.active -> buildList {
+            if (native.driverVsrAccepted) add("驱动已接受 VSR")
+            if (hdrPresented) add("HDR 转换帧与 HDR 显示目标均已就绪")
+            else if (native.hdrConversionActive) add("已产生 HDR 转换帧，HDR 显示目标尚未就绪")
+            else if (native.driverHdrAccepted) add("驱动已接受 HDR，等待转换帧与 HDR 显示目标")
+            if (isEmpty()) add("硬件输出已就绪")
+            if (native.inputWidth > 0 && native.outputWidth > 0)
+                add("${native.inputWidth}×${native.inputHeight} → ${native.outputWidth}×${native.outputHeight}")
+        }.joinToString("；")
+        native.hdrConversionActive -> "已产生 HDR 转换帧，HDR 显示目标尚未就绪"
+        else -> "等待 NVIDIA 硬件输出，视频保持原有画面"
+    }
+    return copy(available = native.unavailableReason == null &&
+        (native.gpuVendorId == 0x10de || native.driverVsrAccepted || native.driverHdrAccepted),
+        active = native.active, pending = native.pending, error = native.error, unavailableReason = native.unavailableReason,
+        statusText = native.gpuName?.let { name -> "$name；$status" } ?: status, gpuName = native.gpuName,
+        targetTransfer = native.targetTransfer, targetPrimaries = native.targetPrimaries,
+        driverVsrAccepted = native.driverVsrAccepted, driverHdrAccepted = native.driverHdrAccepted,
+        hdrConversionActive = native.hdrConversionActive)
+}
 
 /** One Windows NVIDIA session on the main native video actor. Every video kind
  * derives ownership from that actor's complete source snapshot; BV labels only
@@ -173,34 +203,12 @@ class DesktopVideoEnhancementSession(
     private fun observeNativeLocked(native: NvidiaVideoState, current: Owned) {
         if (owned !== current || !owns(current.request.source, current.request.epoch)) return
         if (native.configurationVersion != current.token || native.sourceVersion != current.request.source.sourceVersion) {
-            mutableState.update { it.copy(active = false, pending = false, error = null,
+            mutableState.update { it.copy(active = false, pending = false, error = null, unavailableReason = null,
                 driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = false,
                 statusText = "当前硬件增强配置已更换，等待当前输出") }
             return
         }
-        val hdrPresented = native.hdrConversionActive && mutableState.value.hdrDisplayEnabled && native.active &&
-            nvidiaHdrTarget(native.targetTransfer, native.targetPrimaries)
-        val status = when {
-            native.error != null -> "NVIDIA 增强异常：${native.error}"
-            native.pending -> "正在请求 NVIDIA 硬件增强"
-            native.active -> buildList {
-                if (native.driverVsrAccepted) add("驱动已接受 VSR")
-                if (hdrPresented) add("HDR 转换帧与 HDR 显示目标均已就绪")
-                else if (native.hdrConversionActive) add("已产生 HDR 转换帧，HDR 显示目标尚未就绪")
-                else if (native.driverHdrAccepted) add("驱动已接受 HDR，等待转换帧与 HDR 显示目标")
-                if (isEmpty()) add("硬件输出已就绪")
-                if (native.inputWidth > 0 && native.outputWidth > 0)
-                    add("${native.inputWidth}×${native.inputHeight} → ${native.outputWidth}×${native.outputHeight}")
-            }.joinToString("；")
-            native.hdrConversionActive -> "已产生 HDR 转换帧，HDR 显示目标尚未就绪"
-            else -> "等待 NVIDIA 硬件输出，视频保持原有画面"
-        }
-        mutableState.update { it.copy(available = native.gpuVendorId == 0x10de || native.driverVsrAccepted || native.driverHdrAccepted,
-            active = native.active, pending = native.pending, error = native.error,
-            statusText = native.gpuName?.let { name -> "$name；$status" } ?: status, gpuName = native.gpuName,
-            targetTransfer = native.targetTransfer, targetPrimaries = native.targetPrimaries,
-            driverVsrAccepted = native.driverVsrAccepted, driverHdrAccepted = native.driverHdrAccepted,
-            hdrConversionActive = native.hdrConversionActive) }
+        mutableState.update { it.withNvidiaObservation(native) }
     }
 
     private fun clearOwnedLocked() {

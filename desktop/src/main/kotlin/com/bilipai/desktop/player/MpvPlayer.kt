@@ -964,14 +964,20 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 checkResult(native, native.mpv_command(handle, StringArray(arrayOf("vf", "remove", "@$label"), "UTF-8")), "remove-nvidia-filter")
             nvidiaFilterLabel = null
         }
-        private fun failNvidia(native: MpvNative, handle: Pointer, action: Action.NvidiaVideo, message: String) {
+        private fun failNvidia(native: MpvNative, handle: Pointer, action: Action.NvidiaVideo, message: String,
+            unavailable: Boolean = false) {
             if (!nvidiaCurrent(action)) return
             pendingNvidiaAction = null
             var removed = false
             try { removeNvidiaFilter(native, handle); removed = true } catch (_: Exception) { /* state reports removal failure explicitly */ }
             synchronized(lock) {
                 if (nvidiaCurrent(action)) mutableNvidiaVideo.update { it.copy(active = false, hdrConversionActive = false,
-                    pending = false, error = if (removed) message else "无法撤回 NVIDIA 滤镜，请关闭增强或重新打开视频") }
+                    pending = false, unavailableReason = message.takeIf { removed && unavailable },
+                    error = when {
+                        !removed -> "无法撤回 NVIDIA 滤镜，请关闭增强或重新打开视频"
+                        unavailable -> null
+                        else -> message
+                    }) }
             }
         }
         private fun applyNvidiaVideo(native: MpvNative, handle: Pointer, action: Action.NvidiaVideo) {
@@ -981,14 +987,14 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 synchronized(lock) { if (nvidiaCurrent(action)) mutableNvidiaVideo.update { it.copy(pending = false, active = false, hdrConversionActive = false) } }
                 return
             }
-            if (softwareTarget != null) { failNvidia(native, handle, action, "当前软件渲染器不支持 NVIDIA 视频增强，继续原画播放"); return }
+            if (softwareTarget != null) { failNvidia(native, handle, action, "当前软件渲染器不支持 NVIDIA 视频增强，继续原画播放", unavailable = true); return }
             val observed = mutableNvidiaVideo.value
             val input = mutableVideoOutput.value
             if (!fileLoaded || input.inputWidth <= 0 || input.inputHeight <= 0 || observed.gpuVendorId == null || observed.currentGpuContext == null) {
                 pendingNvidiaAction = action; return
             }
             if (observed.gpuVendorId != 0x10de || observed.currentGpuContext != "d3d11") {
-                failNvidia(native, handle, action, "实际播放器未使用 NVIDIA Direct3D 11 设备，继续原画播放"); return
+                failNvidia(native, handle, action, "实际播放器未使用 NVIDIA Direct3D 11 设备，继续原画播放", unavailable = true); return
             }
             val maximum = input.maximumTextureDimension
             if (maximum == null) { pendingNvidiaAction = action; return }

@@ -1,5 +1,6 @@
 package com.bilipai.desktop.player
 
+import com.bilipai.desktop.ui.desktopVideoEnhancementCompactLabel
 import com.sun.jna.Memory
 import com.sun.jna.Pointer
 import com.sun.jna.StringArray
@@ -34,6 +35,11 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
         @Suppress("UNCHECKED_CAST")
         val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
         observed.value = observed.value.copy(gpuVendorId = 0x10de, currentGpuContext = "d3d11")
+    }
+    fun recordDevice(vendor: Int?, context: String?) {
+        @Suppress("UNCHECKED_CAST")
+        val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
+        observed.value = observed.value.copy(gpuVendorId = vendor, currentGpuContext = context)
     }
     fun nextNvidia(): Any {
         while (true) {
@@ -90,6 +96,82 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
 }
 
 class PlayerNvidiaActorWithdrawalTest {
+    @Test fun confirmedUnsupportedOutputIsUnavailableWithoutAnErrorOrFilter() {
+        // Includes the actual cloud vendor ID, another non-NVIDIA vendor, an unsupported
+        // native context, and the existing CPU render target. No physical GPU is claimed.
+        for ((vendor, context, software) in listOf(
+            Triple(0x1414, "d3d11", false), Triple(0x1002, "d3d11", false),
+            Triple(0x10de, "vulkan", false), Triple(0x10de, "d3d11", true))) {
+            val player = if (software) MpvPlayer(MpvSoftwareTarget()) else MpvPlayer()
+            player.use {
+                val source = player.loadVersioned(PlaybackSource("file:///C:/nvidia-unavailable.avi"))
+                val snapshot = assertNotNull(player.currentSourceSnapshot())
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordDevice(vendor, context)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                    actor.apply()
+                    val native = player.nvidiaVideoState.value
+                    assertNotNull(native.unavailableReason); assertNull(native.error)
+                    assertFalse(native.active); assertFalse(native.pending)
+                    val frame = NvidiaFrameObservation(640, 360, 1280, 720, "bt.1886",
+                        "bt.1886", "bt.709", true, true, false)
+                    val later = observeNvidiaVideo(native.copy(driverVsrAccepted = true), NvidiaVideoOptions(2.0), frame)
+                    assertFalse(later.active); assertFalse(later.pending)
+                    assertTrue(actor.native.commands.isEmpty())
+                    assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters)
+                    assertTrue(player.ownsSourceSnapshot(snapshot))
+                    val shown = DesktopVideoEnhancementState(requested = true).withNvidiaObservation(native)
+                    assertFalse(shown.available); assertNull(shown.error); assertFalse(shown.pending)
+                    assertEquals(native.unavailableReason, shown.unavailableReason)
+                    assertTrue(shown.statusText.contains("不可用")); assertFalse(shown.statusText.contains("异常"))
+                    assertEquals("不可用", desktopVideoEnhancementCompactLabel(shown, true, null))
+                    assertEquals("关闭", desktopVideoEnhancementCompactLabel(shown, false, null))
+                    assertEquals("异常", desktopVideoEnhancementCompactLabel(shown, true, "settings failed"))
+                    player.clearNvidiaVideoEnhancementIfConfigurationVersion(native.configurationVersion)
+                    actor.apply()
+                    assertNull(player.nvidiaVideoState.value.unavailableReason)
+                }
+            }
+        }
+    }
+
+    @Test fun unknownDeviceMetadataStaysPendingRatherThanUnavailableOrFailed() {
+        MpvPlayer().use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/nvidia-unknown.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordDevice(null, null)
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                actor.apply()
+                val native = player.nvidiaVideoState.value
+                assertNull(native.unavailableReason); assertNull(native.error); assertTrue(native.pending)
+                assertTrue(actor.native.commands.isEmpty())
+                val shown = DesktopVideoEnhancementState(requested = true).withNvidiaObservation(native)
+                assertEquals("处理中", desktopVideoEnhancementCompactLabel(shown, true, null))
+            }
+        }
+    }
+
+    @Test fun unavailableHardwareCannotHideAnExistingFilterWithdrawalFailure() {
+        MpvPlayer().use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/nvidia-unavailable-remove-error.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(2.0)))
+                actor.apply()
+                actor.recordDevice(0x1414, "d3d11")
+                actor.native.rejectRemoval = true
+                assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(3.0)))
+                actor.apply()
+                val native = player.nvidiaVideoState.value
+                assertNull(native.unavailableReason)
+                assertTrue(assertNotNull(native.error).contains("无法撤回"))
+                assertEquals(2, actor.native.filters.size)
+                val shown = DesktopVideoEnhancementState(requested = true).withNvidiaObservation(native)
+                assertEquals(native.error, shown.error)
+                assertEquals("异常", desktopVideoEnhancementCompactLabel(shown, true, null))
+            }
+        }
+    }
+
     @Test fun disablingActualQueuedEnhancementRemovesOnlyItsFilterAndKeepsSourceAndUserControls() {
         MpvPlayer().use { player ->
             player.setVolume(17.0); player.setMuted(true); player.setSpeed(1.25)
@@ -122,6 +204,9 @@ class PlayerNvidiaActorWithdrawalTest {
                 assertEquals(listOf("scale" to "foreign-user-filter"), actor.native.filters)
                 assertFalse(player.nvidiaVideoState.value.active); assertFalse(player.nvidiaVideoState.value.pending)
                 assertNotNull(player.nvidiaVideoState.value.error)
+                assertNull(player.nvidiaVideoState.value.unavailableReason)
+                val shown = DesktopVideoEnhancementState(requested = true).withNvidiaObservation(player.nvidiaVideoState.value)
+                assertEquals("异常", desktopVideoEnhancementCompactLabel(shown, true, null))
                 assertTrue(player.ownsSourceSnapshot(snapshot))
             }
         }
