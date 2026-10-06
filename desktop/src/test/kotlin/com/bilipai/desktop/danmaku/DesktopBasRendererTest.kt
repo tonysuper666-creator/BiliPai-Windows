@@ -133,6 +133,80 @@ class DesktopBasRendererTest {
             renderer.frame(1000);paint(renderer,220,100).flush();assertEquals(BasTarget.Seek(2000),renderer.hit(115f,45f))
         }
     }
+    @Test fun pausedFrameStillDrawsToEveryDestinationAndKeepsThePressedButton() {
+        DesktopBasRenderer().use {renderer->
+            val items=listOf(item(button));renderer.configure(items,180,100);renderer.frame(1000)
+            val snapshot=assertNotNull(renderer.rasterSnapshot())
+            assertEquals(0xff0000ff.toInt(),snapshot.getRGB(15,45))
+            assertNull(renderer.hitReceipt(15f,45f));snapshot.flush()
+            paint(renderer).flush();val down=assertNotNull(renderer.pressReceipt(15f,45f))
+            val revision=renderer.frameRevision
+            renderer.configure(items,180,100);renderer.frame(1000)
+            assertEquals(revision,renderer.frameRevision,"An identical paused frame must retain its timeline revision")
+            val destination=BufferedImage(220,120,BufferedImage.TYPE_INT_ARGB_PRE)
+            try {
+                val graphics=destination.createGraphics()
+                try {graphics.translate(20,5);assertTrue(renderer.paint(graphics))}finally{graphics.dispose()}
+                assertEquals(0,destination.getRGB(15,45))
+                assertEquals(0xff0000ff.toInt(),destination.getRGB(35,50),"Cached pixels must still reach the current Graphics transform")
+                val up=assertNotNull(renderer.releaseReceipt(15f,45f))
+                assertSame(down.targetIdentity,up.targetIdentity);assertEquals(revision,up.frameRevision)
+            }finally{destination.flush()}
+        }
+    }
+    @Test fun retainedRasterInvalidatesForDocumentViewportAndEveryDisplayStyle() {
+        DesktopBasRenderer().use {renderer->
+            var items=listOf(item(button));var width=180;var height=100
+            var opacity=1f;var scale=1f;var weight=5
+            fun configureAndPaint() {
+                val previous=renderer.frameRevision
+                renderer.configure(items,width,height,opacity,scale,weight)
+                assertTrue(renderer.frameRevision>previous)
+                assertNull(renderer.hitReceipt(15f,45f));assertNull(renderer.rasterSnapshot())
+                renderer.frame(1000)
+                val image=paint(renderer,width,height)
+                try {
+                    assertEquals(if(opacity==1f)255 else 128,image.getRGB(15,45) ushr 24)
+                    assertEquals(255,image.getRGB(15,45) and 255)
+                }finally{image.flush()}
+            }
+            configureAndPaint()
+            val first=assertNotNull(renderer.hitReceipt(15f,45f))
+            assertNotNull(renderer.pressReceipt(15f,45f))
+            items=listOf(items.single());configureAndPaint() // same item, different document list identity
+            assertNull(renderer.releaseReceipt(15f,45f))
+            items=listOf(item(button));configureAndPaint()
+            assertNotSame(first.targetIdentity,assertNotNull(renderer.hitReceipt(15f,45f)).targetIdentity)
+            width=200;configureAndPaint();height=120;configureAndPaint()
+            opacity=.5f;configureAndPaint();scale=1.25f;configureAndPaint();weight=9;configureAndPaint()
+        }
+    }
+    @Test fun retainedFrameUsesExactMillisecondsAcrossSeekResumeAndRejection() {
+        DesktopBasRenderer().use {renderer->
+            val items=listOf(item("""
+                def path p {d="M0 0 L20 0 L20 20 L0 20 Z" x=10 y=10 fillColor=0xff0000 duration=3s}
+                set p {} 1s then set p {x=80} 0ms then set p {} 2s
+            """.trimIndent()))
+            renderer.configure(items,180,100)
+            fun at(time:Long,x:Int,absentX:Int) {
+                val revision=renderer.frameRevision
+                renderer.frame(time);assertTrue(renderer.frameRevision>revision)
+                val image=paint(renderer)
+                try {assertEquals(0xffff0000.toInt(),image.getRGB(x,20));assertEquals(0,image.getRGB(absentX,20))}
+                finally{image.flush()}
+            }
+            at(999,20,90);at(1000,90,20)
+            val paused=renderer.frameRevision;renderer.configure(items,180,100);renderer.frame(1000)
+            assertEquals(paused,renderer.frameRevision)
+            at(999,20,90);at(1001,90,20)
+            renderer.frame(3000);val empty=paint(renderer)
+            try {assertEquals(0,empty.getRGB(90,20))}finally{empty.flush()}
+            at(999,20,90)
+            renderer.frame(-1);assertFalse(renderer.status.accepted);assertNull(renderer.rasterSnapshot())
+            renderer.configure(items,180,100);at(999,20,90)
+            renderer.clear();assertNull(renderer.rasterSnapshot());assertNull(renderer.hitReceipt(20f,20f))
+        }
+    }
     @Test fun invalidRasterAdmissionClearsOnlyThisLeafAndExplicitReconfigureCanRecover() {
         DesktopBasRenderer().use {renderer->
             val items=listOf(item(button));renderer.configure(items,180,100);renderer.frame(0);paint(renderer).flush()
