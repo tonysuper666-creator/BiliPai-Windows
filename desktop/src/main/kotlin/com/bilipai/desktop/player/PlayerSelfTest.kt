@@ -537,8 +537,173 @@ object PlayerSelfTest {
         val primaryFailure = IllegalStateException("Timed out waiting for visible native video rendering: $failure")
         val fields = linkedMapOf<String, String>()
         trace.failedNativeFrameCapture = fields
-        throw observeFailedNativeFrame(player, initialSource,
-            File(screenshot.parentFile, "${screenshot.nameWithoutExtension}-failure-native-video.png"), primaryFailure, fields)
+        throw observeFailedFrameCpuFirst(player, window, robot, initialSource, screenshot, primaryFailure, fields)
+    }
+
+    /** This sequence collects evidence only. Neither auxiliary success nor failure replaces the physical failure. */
+    internal fun observeFailureScreenshotSequence(primaryFailure: Throwable, fields: MutableMap<String, String>,
+        boundary: (String) -> Unit, software: () -> Unit, gpu: () -> Unit): Throwable {
+        fun attempt(stage: String, action: () -> Unit): Boolean = try {
+            action(); fields["$stage.completed"] = "true"; true
+        } catch (failure: Throwable) {
+            fields["$stage.completed"] = "false"
+            fields["$stage.errorType"] = failure.javaClass.simpleName
+            if (failure !== primaryFailure) primaryFailure.addSuppressed(failure)
+            false
+        }
+        fields["gpuHelperInvoked"] = "false"
+        if (!attempt("before-cpu") { boundary("before-cpu") }) return primaryFailure
+        val softwareComplete = attempt("cpu") { software() }
+        // Even an unsuccessful/timeout transaction can have changed rendering; observe, but never infer restoration.
+        val boundaryRetained = attempt("after-cpu") { boundary("after-cpu") }
+        if (!softwareComplete || !boundaryRetained) return primaryFailure
+        fields["gpuHelperInvoked"] = "true"
+        // gpu.completed means only that the old helper returned; gpu.status separately records capture/unavailability.
+        attempt("gpu") { gpu() }
+        attempt("after-gpu") { boundary("after-gpu") }
+        return primaryFailure
+    }
+
+    private fun observeFailedFrameCpuFirst(player: MpvPlayer, window: JFrame, robot: Robot,
+        expected: OwnedPlaybackSourceSnapshot?, screenshot: File, primaryFailure: Throwable,
+        fields: MutableMap<String, String>): Throwable {
+        fields["physicalResult"] = "failed; auxiliary capture cannot change the physical gate"
+        fields["ordering"] = "Robot beforeCPU -> software screenshot -> Robot afterCPU/beforeGPU -> GPU screenshot -> Robot afterGPU"
+        fields["timing"] = "sequential observations, not atomic; afterCPU also precedes the later queued GPU helper"
+        fields["coordinatePolicy"] = "verified unit-scale AWT/native client screen bounds; no inferred DPI conversion"
+        fields["cpuImageKind"] = "later mpv video-mode screenshot with screenshot-sw=yes; not the failed frame or Windows presentation"
+        val stem = screenshot.nameWithoutExtension
+        fun output(suffix: String) = File(screenshot.parentFile, "$stem-failure-$suffix")
+        try {
+            val owned = checkNotNull(expected) { "Failure diagnostic source unavailable" }
+            val canvas = failureEdt { player.surface.components.filterIsInstance<java.awt.Canvas>().single() }
+            val native = com.sun.jna.Native.load("user32", FailureWindowApi::class.java)
+            var baseline: FailureCaptureOwner? = null
+            fun boundary(stage: String) {
+                val before = failureCaptureOwner(player, window, canvas, owned, native)
+                before.fields.forEach { (key, value) -> fields["$stage.before.$key"] = value }
+                val original = baseline ?: before.also { baseline = it }
+                check(before == original) { "Failure diagnostic owner or bounds changed" }
+                fields["$stage.captureStartedNanos"] = System.nanoTime().toString()
+                val image = robot.createScreenCapture(before.bounds)
+                fields["$stage.captureFinishedNanos"] = System.nanoTime().toString()
+                val after = failureCaptureOwner(player, window, canvas, owned, native)
+                after.fields.forEach { (key, value) -> fields["$stage.after.$key"] = value }
+                check(after == original && image.width == before.bounds.width && image.height == before.bounds.height) {
+                    "Failure diagnostic owner or physical capture bounds changed"
+                }
+                val destination = output("$stage.png")
+                check(!destination.exists() && ImageIO.write(image, "png", destination))
+                fields["$stage.image"] = destination.name
+                fields["$stage.imagePixels"] = "${image.width},${image.height}"
+                fields["$stage.sameOwnerAndBounds"] = "true"
+            }
+            observeFailureScreenshotSequence(primaryFailure, fields, ::boundary, software = {
+                val destination = output("cpu-video.png")
+                val receipt = runBlocking { withTimeout(3_000L) {
+                    player.captureSoftwareScreenshotForSource(owned, destination.toPath())
+                } }
+                receipt.fields.forEach { (key, value) -> fields["cpu.$key"] = value }
+                fields["cpu.captured"] = receipt.captured.toString()
+                fields["cpu.restored"] = receipt.restored.toString()
+                fields["cpu.sourceRetained"] = receipt.sourceRetained.toString()
+                fields["cpu.image"] = destination.name
+                val child = checkNotNull(baseline).fields.getValue("mpvChildHwnd")
+                check(receipt.captured && receipt.restored && receipt.sourceRetained &&
+                    receipt.fields["screenshotSwBefore"] == "no" && receipt.fields["screenshotSwDuring"] == "yes" &&
+                    receipt.fields["screenshotSwAfter"] == "no" && receipt.fields["sameActorWorker"] == "true" &&
+                    receipt.fields["sourceVersion"] == owned.sourceVersion.toString() &&
+                    receipt.fields["windowIdBefore"] == child && receipt.fields["windowIdAfter"] == child) {
+                    "CPU screenshot capture, restoration or owned native child was not proven"
+                }
+                val image = checkNotNull(ImageIO.read(destination)) { "CPU screenshot is not an image" }
+                fields["cpu.imagePixels"] = "${image.width},${image.height}"
+                check(image.width == WIDTH && image.height == HEIGHT) { "CPU screenshot fixture dimensions changed" }
+                // Uniform/black CPU pixels are useful evidence, not grounds to bypass the first GPU observation.
+            }, gpu = {
+                val gpuFields = linkedMapOf<String, String>()
+                observeFailedNativeFrame(player, owned, output("native-video.png"), primaryFailure, gpuFields)
+                gpuFields.forEach { (key, value) -> fields["gpu.$key"] = value }
+            })
+        } catch (failure: Throwable) {
+            fields["setupErrorType"] = failure.javaClass.simpleName
+            if (failure !== primaryFailure) primaryFailure.addSuppressed(failure)
+        }
+        try { writePixelCaptureObservations(output("cpu-first.json"), fields) }
+        catch (failure: Throwable) {
+            fields["sidecarErrorType"] = failure.javaClass.simpleName
+            if (failure !== primaryFailure) primaryFailure.addSuppressed(failure)
+        }
+        return primaryFailure
+    }
+
+    private data class FailureCaptureOwner(val bounds: Rectangle, val fields: Map<String, String>)
+
+    /** Read-only Win32 facts of this JVM's original frame, Canvas and mpv child; no window mutation or mpv command. */
+    private fun failureCaptureOwner(player: MpvPlayer, window: JFrame, canvas: java.awt.Canvas,
+        expected: OwnedPlaybackSourceSnapshot, native: FailureWindowApi): FailureCaptureOwner = failureEdt {
+        check(player.ownsSourceSnapshot(expected) && window.isDisplayable && window.isShowing &&
+            canvas.isDisplayable && canvas.isShowing && canvas.parent === player.surface &&
+            SwingUtilities.getWindowAncestor(player.surface) === window)
+        val frameHwnd = com.sun.jna.Native.getComponentPointer(window)
+        val canvasHwnd = com.sun.jna.Native.getComponentPointer(canvas)
+        fun id(hwnd: com.sun.jna.Pointer?) = java.lang.Long.toUnsignedString(com.sun.jna.Pointer.nativeValue(hwnd))
+        fun ownVisible(hwnd: com.sun.jna.Pointer?) {
+            val pid = com.sun.jna.ptr.IntByReference()
+            check(hwnd != null && native.GetWindowThreadProcessId(hwnd, pid) != 0 &&
+                Integer.toUnsignedLong(pid.value) == ProcessHandle.current().pid() && native.IsWindowVisible(hwnd))
+        }
+        ownVisible(frameHwnd); ownVisible(canvasHwnd)
+        var ancestor: com.sun.jna.Pointer? = canvasHwnd
+        var depth = 0
+        while (ancestor != frameHwnd && depth++ < 16) {
+            ancestor = native.GetParent(ancestor)
+            ownVisible(ancestor)
+        }
+        check(ancestor == frameHwnd) { "Canvas is no longer owned by the original frame" }
+        val child = native.GetWindow(canvasHwnd, 5) // GW_CHILD; mpv's window-id is this HWND, not canvasHwnd.
+        ownVisible(child)
+        check(native.GetParent(child) == canvasHwnd && native.GetWindow(child, 2) == null) { "Canvas child is not unique" }
+        fun client(hwnd: com.sun.jna.Pointer?): Rectangle = com.sun.jna.Memory(16).use { rect ->
+            com.sun.jna.Memory(8).use { point ->
+                point.clear()
+                check(native.GetClientRect(hwnd, rect) && native.ClientToScreen(hwnd, point))
+                Rectangle(point.getInt(0), point.getInt(4), rect.getInt(8) - rect.getInt(0), rect.getInt(12) - rect.getInt(4))
+            }
+        }
+        val bounds = Rectangle(canvas.locationOnScreen, canvas.size)
+        val canvasClient = client(canvasHwnd)
+        val childClient = client(child)
+        val configuration = checkNotNull(canvas.graphicsConfiguration)
+        check(configuration.defaultTransform.isIdentity && bounds.width > 0 && bounds.height > 0 &&
+            bounds == canvasClient && bounds == childClient) { "AWT and native physical bounds cannot be matched safely" }
+        fun rect(value: Rectangle) = "${value.x},${value.y},${value.width},${value.height}"
+        val facts = linkedMapOf("sourceVersion" to expected.sourceVersion.toString(),
+            "frameIdentity" to System.identityHashCode(window).toString(),
+            "canvasIdentity" to System.identityHashCode(canvas).toString(),
+            "frameHwnd" to id(frameHwnd), "canvasHwnd" to id(canvasHwnd), "mpvChildHwnd" to id(child),
+            "mpvParentHwnd" to id(native.GetParent(child)), "frameClientScreenRect" to rect(client(frameHwnd)),
+            "canvasClientScreenRect" to rect(canvasClient), "mpvClientScreenRect" to rect(childClient),
+            "awtCanvasScreenRect" to rect(bounds), "monitorBounds" to rect(configuration.bounds),
+            "monitorTransform" to configuration.defaultTransform.toString(), "ownPidVerified" to "true")
+        check(player.ownsSourceSnapshot(expected))
+        FailureCaptureOwner(bounds, facts)
+    }
+
+    private fun <T> failureEdt(block: () -> T): T {
+        if (SwingUtilities.isEventDispatchThread()) return block()
+        var result: Result<T>? = null
+        SwingUtilities.invokeAndWait { result = runCatching(block) }
+        return checkNotNull(result).getOrThrow()
+    }
+
+    private interface FailureWindowApi : com.sun.jna.win32.StdCallLibrary {
+        fun GetWindowThreadProcessId(hwnd: com.sun.jna.Pointer?, pid: com.sun.jna.ptr.IntByReference): Int
+        fun IsWindowVisible(hwnd: com.sun.jna.Pointer?): Boolean
+        fun GetParent(hwnd: com.sun.jna.Pointer?): com.sun.jna.Pointer?
+        fun GetWindow(hwnd: com.sun.jna.Pointer?, command: Int): com.sun.jna.Pointer?
+        fun GetClientRect(hwnd: com.sun.jna.Pointer?, rect: com.sun.jna.Pointer): Boolean
+        fun ClientToScreen(hwnd: com.sun.jna.Pointer?, point: com.sun.jna.Pointer): Boolean
     }
 
     /** Auxiliary later-frame evidence after physical failure only. This always returns the original failure. */

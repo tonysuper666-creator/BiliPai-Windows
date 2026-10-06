@@ -877,6 +877,32 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         try { return withTimeout(15_000L){completion.await()} } finally {if(!completion.isCompleted)completion.cancel()}
     }
 
+    /** Failure-only CPU evidence; ordinary screenshots retain their existing path. */
+    internal suspend fun captureSoftwareScreenshotForSource(expected: OwnedPlaybackSourceSnapshot,
+        destination: Path): DesktopNativeSoftwareScreenshotReceipt {
+        // A caller timeout/cancel immediately retires admission, even while native capture is still running.
+        val completion = CompletableDeferred<Path>(kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job])
+        val diagnostic = synchronized(lock) {
+            val active = session
+            if (!ownsSourceSnapshot(expected) || active == null || active.closing.get() || !state.value.ready ||
+                state.value.ended || state.value.audioOnly || state.value.videoCodec == null) null
+            else SoftwareScreenshotDiagnostic(pauseIntentSerial).also {
+                active.commands.offer(Action.Screenshot(destination.toAbsolutePath().normalize(), false,
+                    completion, expected, playbackRevision, it))
+            }
+        } ?: run {
+            completion.cancel()
+            throw kotlinx.coroutines.CancellationException("Software screenshot source retired/unavailable")
+        }
+        try { withTimeout(15_000L) { completion.await() } }
+        finally { if (!completion.isCompleted) completion.cancel() }
+        return checkNotNull(diagnostic.receipt) { "Software screenshot transaction has no receipt" }
+    }
+
+    private class SoftwareScreenshotDiagnostic(val pauseSerial: Long) {
+        @Volatile var receipt: DesktopNativeSoftwareScreenshotReceipt? = null
+    }
+
     private sealed interface Action {
         data class Load(val source: PlaybackSource, val version: Long, val softwareDecoding: Boolean, val revision: Long, val startMuted: Boolean? = null,
             val presentation: DesktopNativePresentationTransfer? = null) : Action
@@ -895,7 +921,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         data class Command(val args: List<String>) : Action
         data class Seek(val id: Long, val sourceVersion: Long, val revision: Long, val seconds: Double, val relative: Boolean,
             val admissionSource: PlaybackSource? = null) : Action
-        data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>, val owned:OwnedPlaybackSourceSnapshot?=null, val revision:Long?=null) : Action
+        data class Screenshot(val destination: Path, val includeSubtitles: Boolean, val completion: CompletableDeferred<Path>, val owned:OwnedPlaybackSourceSnapshot?=null, val revision:Long?=null,
+            val softwareDiagnostic: SoftwareScreenshotDiagnostic? = null) : Action
         data class IdleCacheBarrier(val token: Any, val completion: CompletableDeferred<Boolean>) : Action
         data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action
         data class WindowsAudioDevices(val completion: CompletableDeferred<DesktopWindowsAudioDeviceListState>) : Action
@@ -1716,7 +1743,40 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             lastTrackPoll = 0L
         }
 
+        private fun saveSoftwareScreenshot(native: MpvNative, handle: Pointer, action: Action.Screenshot,
+            diagnostic: SoftwareScreenshotDiagnostic) {
+            val owned = requireNotNull(action.owned)
+            fun current(): Boolean = synchronized(lock) {
+                action.completion.isActive && !closed.get() && session === this && !closing.get() &&
+                    ownsSourceSnapshot(owned) && action.revision == playbackRevision &&
+                    activeSourceVersion == owned.sourceVersion && activeRevision == action.revision &&
+                    pauseIntentSerial == diagnostic.pauseSerial && fileLoaded
+            }
+            val receipt = captureDesktopNativeSoftwareScreenshot(action.destination, activeEntry?.toString(),
+                mapOf("sourceVersion" to owned.sourceVersion.toString(), "playbackRevision" to action.revision.toString(),
+                    "pauseIntentSerial" to diagnostic.pauseSerial.toString(), "sessionIdentity" to System.identityHashCode(this).toString(),
+                    "sameActorWorker" to (Thread.currentThread() === thread).toString()),
+                current = { Thread.currentThread() === thread && current() },
+                read = { name ->
+                    native.mpv_get_property_string(handle, name)?.let { value ->
+                        try { nativeText(value, 128) } finally { native.mpv_free(value) }
+                    }
+                },
+                setSoftware = { value -> checkResult(native,
+                    native.mpv_set_property_string(handle, "screenshot-sw", value), "failure-software-screenshot-selection") },
+                capture = { temporary -> checkResult(native, native.mpv_command(handle,
+                    StringArray(arrayOf("screenshot-to-file", temporary.toString(), "video"), "UTF-8")), "failure-software-screenshot") },
+                publish = { temporary, destination -> synchronized(lock) {
+                    if (!current()) false else { Files.move(temporary, destination); true }
+                } })
+            diagnostic.receipt = receipt // Published only after the worker's unconditional restore attempt.
+            // For this diagnostic action the Path completion only wakes the caller; the receipt owns success.
+            // Completing a linked child exceptionally here would cancel its caller before it can inspect a failure receipt.
+            if (!action.completion.complete(action.destination) && receipt.captured) Files.deleteIfExists(action.destination)
+        }
+
         private fun saveScreenshot(native: MpvNative, handle: Pointer, action: Action.Screenshot) {
+            action.softwareDiagnostic?.let { saveSoftwareScreenshot(native, handle, action, it); return }
             if (!action.completion.isActive) return
             val destination = action.destination
             require(destination.fileName.toString().endsWith(".png", ignoreCase = true)) { "截图请使用 PNG 文件名。" }

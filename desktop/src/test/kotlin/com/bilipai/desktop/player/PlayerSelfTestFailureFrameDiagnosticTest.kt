@@ -3,7 +3,7 @@ package com.bilipai.desktop.player
 import java.nio.file.Files
 import kotlin.test.*
 
-/** Headless real-player rejection paths only. No HWND, DLL or native screenshots are exercised. */
+/** Headless evidence ordering and real-player rejection paths. No HWND, DLL or native screenshots are exercised. */
 class PlayerSelfTestFailureFrameDiagnosticTest {
     @Test fun sameOwnedSourceWithoutNativeSessionPreservesOriginalFailureAndAllPlaybackIntent() {
         MpvPlayer().use { player ->
@@ -71,6 +71,45 @@ class PlayerSelfTestFailureFrameDiagnosticTest {
                 assertNull(player.currentSourceSnapshot())
             }
             assertEquals(state, player.state.value)
+        }
+    }
+
+    @Test fun cpuFirstEvidenceOrderRetainsTheOriginalPhysicalFailureEvenWhenAllObservationsComplete() {
+        val primary = IllegalStateException("physical timeout")
+        val calls = mutableListOf<String>()
+        val fields = linkedMapOf<String, String>()
+        assertSame(primary, PlayerSelfTest.observeFailureScreenshotSequence(primary, fields,
+            boundary = { calls += it }, software = { calls += "cpu" }, gpu = { calls += "gpu" }))
+        assertEquals(listOf("before-cpu", "cpu", "after-cpu", "gpu", "after-gpu"), calls)
+        assertEquals("true", fields["gpuHelperInvoked"])
+        assertTrue(primary.suppressed.isEmpty())
+    }
+
+    @Test fun rejectedOrUnrestoredSoftwareCaptureStillObservesPhysicalPixelsButNeverCallsGpu() {
+        val primary = IllegalStateException("physical timeout")
+        val restorationFailure = IllegalStateException("restore not proven")
+        val calls = mutableListOf<String>()
+        val fields = linkedMapOf<String, String>()
+        assertSame(primary, PlayerSelfTest.observeFailureScreenshotSequence(primary, fields,
+            boundary = { calls += it }, software = { calls += "cpu"; throw restorationFailure },
+            gpu = { error("GPU must not run after uncertain software restoration") }))
+        assertEquals(listOf("before-cpu", "cpu", "after-cpu"), calls)
+        assertEquals("false", fields["gpuHelperInvoked"])
+        assertSame(restorationFailure, primary.suppressed.single())
+    }
+
+    @Test fun changedPhysicalOwnershipStopsSubsequentCaptureWithoutMaskingTheFirstFailure() {
+        for (failedStage in listOf("before-cpu", "after-cpu")) {
+            val primary = IllegalStateException("physical timeout")
+            val ownershipFailure = IllegalStateException("owner or bounds retired")
+            val calls = mutableListOf<String>()
+            val fields = linkedMapOf<String, String>()
+            assertSame(primary, PlayerSelfTest.observeFailureScreenshotSequence(primary, fields,
+                boundary = { calls += it; if (it == failedStage) throw ownershipFailure },
+                software = { calls += "cpu" }, gpu = { error("GPU must not run after boundary failure") }))
+            assertEquals(if (failedStage == "before-cpu") listOf("before-cpu") else listOf("before-cpu", "cpu", "after-cpu"), calls)
+            assertEquals("false", fields["gpuHelperInvoked"])
+            assertSame(ownershipFailure, primary.suppressed.single())
         }
     }
 
