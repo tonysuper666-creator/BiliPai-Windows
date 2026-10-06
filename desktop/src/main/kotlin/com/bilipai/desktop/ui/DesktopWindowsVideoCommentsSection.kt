@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.android.purebilibili.core.store.DesktopOriginalReplySettings
@@ -19,6 +20,21 @@ import com.android.purebilibili.feature.video.ui.components.*
 import com.android.purebilibili.feature.video.viewmodel.*
 import kotlinx.coroutines.ensureActive
 
+/** One explicit Nav-entry intent. Its handled bit survives Tab composition and
+ * source replacement; it does not own requests or the retained comment state. */
+internal class DesktopWindowsVideoRoutedCommentRequest(
+    val rootReplyId: Long, val targetReplyId: Long, handled: Boolean = false,
+) {
+    var handled by mutableStateOf(handled)
+        internal set
+    companion object {
+        val Saver = Saver<DesktopWindowsVideoRoutedCommentRequest, List<Long>>(
+            save = { listOf(it.rootReplyId, it.targetReplyId, if (it.handled) 1L else 0L) },
+            restore = { DesktopWindowsVideoRoutedCommentRequest(it[0], it[1], it[2] == 1L) },
+        )
+    }
+}
+
 /** The UI dispatch port borrows the sole existing comment VM. Its lifetime only
  * guards NEW callbacks; the VM retains its original typed-subject/account
  * policy for a same-AID mutation that has already been dispatched. */
@@ -32,6 +48,17 @@ internal class DesktopWindowsVideoCommentActions(
     fun loadMore() = presentation.dispatch { viewModel.loadComments() }
     fun sort(mode: CommentSortMode) = presentation.dispatch { viewModel.setSortMode(mode) }
     fun thread(reply: ReplyItem, target: Long) = presentation.dispatch { viewModel.openSubReply(reply, target); threadVisible = true }
+    fun threadFromRoute(request: DesktopWindowsVideoRoutedCommentRequest): Boolean {
+        var started = false
+        presentation.dispatch {
+            if (!request.handled && viewModel.openSubReplyFromRoute(request.rootReplyId, request.targetReplyId)) {
+                threadVisible = true
+                request.handled = true
+                started = true
+            }
+        }
+        return started
+    }
     fun closeThread() = presentation.dispatch { threadVisible = false; viewModel.closeSubReply() }
     fun refreshThread() = presentation.dispatch { viewModel.refreshSubReplies() }
     fun loadThread() = presentation.dispatch { viewModel.loadMoreSubReplies() }
@@ -63,6 +90,7 @@ internal fun DesktopWindowsVideoCommentsSection(
     assembly: DesktopOriginalVideoOwnerAssembly,
     success: VideoPlaybackUiState.Success,
     source: DesktopOriginalVideoAcceptedPublication,
+    routedComment: DesktopWindowsVideoRoutedCommentRequest?,
     current: () -> Boolean,
     admission: (() -> Unit) -> Boolean,
     onUser: (Long) -> Unit, login: () -> Unit, openLink: (String) -> Unit, seek: (Double) -> Unit,
@@ -78,6 +106,9 @@ internal fun DesktopWindowsVideoCommentsSection(
         DisposableEffect(presentation, composerVm) { onDispose { composerVm.retireCommentPresentation(presentation); presentation.close() } }
         val vm = assembly.domains.comments
         val ui = remember { DesktopWindowsVideoCommentActions(vm, presentation) }
+        LaunchedEffect(presentation, routedComment) {
+            routedComment?.let { ui.threadFromRoute(it) }
+        }
         val basePlatform = LocalDesktopCommentBindings.current
         val baseGallery = LocalDesktopDynamicCardBindings.current
         val platform = remember(basePlatform) { desktopWindowsCommentPlatform(basePlatform, presentation) }

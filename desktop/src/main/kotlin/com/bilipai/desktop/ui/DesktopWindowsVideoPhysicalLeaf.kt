@@ -342,14 +342,18 @@ internal class DesktopWindowsVideoActions(
         DesktopWindowsVideoFollowGroupSection(assembly, engagementBinding)
     }
     val feedbackBounds = remember(engagementBinding) { DesktopWindowsVideoFeedbackBounds() }
+    val routedCommentRequest = rememberSaveable(assembly, route.commentRootRpid, route.commentTargetRpid,
+        saver = DesktopWindowsVideoRoutedCommentRequest.Saver) {
+        DesktopWindowsVideoRoutedCommentRequest(route.commentRootRpid, route.commentTargetRpid)
+    }
+    var commentsInitializedAid by remember(assembly, success?.info?.aid) { mutableStateOf(0L) }
     val preferredSort = DesktopOriginalReplySettings.getCommentDefaultSortModeSync(platforms.holder.settingsContext.pluginContext)
     LaunchedEffect(assembly, success?.info?.aid, success?.info?.owner?.mid, active, preferredSort) {
-        if (active && current() && success != null) assembly.domains.comments.init(success.info.aid,
-            success.info.owner.mid, preferredSortMode=CommentSortMode.fromApiMode(preferredSort), expectedReplyCount = success.info.stat.reply)
-    }
-    LaunchedEffect(assembly, route.commentRootRpid, route.commentTargetRpid, success?.info?.aid, active) {
-        if (active && current() && success != null && route.commentRootRpid > 0L)
-            assembly.domains.comments.openSubReplyFromRoute(route.commentRootRpid, route.commentTargetRpid)
+        if (active && current() && success != null) {
+            assembly.domains.comments.init(success.info.aid,
+                success.info.owner.mid, preferredSortMode=CommentSortMode.fromApiMode(preferredSort), expectedReplyCount = success.info.stat.reply)
+            commentsInitializedAid = success.info.aid
+        }
     }
     LaunchedEffect(assembly, success?.info?.bvid, success?.info?.cid, route.startAudio, active) {
         if (route.startAudio && current() && success?.info?.bvid == route.bvid) {
@@ -624,6 +628,8 @@ internal class DesktopWindowsVideoActions(
                         collectionQueueSource?.let { commentSource ->
                         val commentFactory = shell.factoryFor(assembly)
                         DesktopWindowsVideoCommentsSection(assembly, success, commentSource,
+                            routedComment = routedCommentRequest.takeIf { commentsInitializedAid == success.info.aid &&
+                                it.rootReplyId > 0L && !it.handled },
                             current = { interactionCurrent() && commentFactory.isPresentationCurrent(assembly, commentSource) && assembly.native.isCurrent(commentSource) },
                             admission = { action -> commentFactory.withPresentationAdmission(assembly, commentSource, action) },
                             onUser = actions.user, login = actions.login,
@@ -716,26 +722,40 @@ internal class DesktopWindowsVideoActions(
         fun stillSuggested(): Boolean = current() &&
             assembly.playback.resumePlaybackSuggestion.value === suggestion &&
             assembly.native.isCurrent(checkNotNull(resumeAnchor))
-        AlertDialog(
+        DesktopWindowsPlayerDialog(
+            title = "继续播放",
             onDismissRequest = { if(stillSuggested()) assembly.playback.dismissResumePlaybackSuggestion() },
-            title = { Text("继续播放") },
-            text = { Text("检测到上次播放到 ${suggestion.targetLabel}（${FormatUtils.formatDuration(suggestion.positionMs)}），是否跳转继续播放？") },
-            confirmButton = { TextButton(onClick = {
-                // The original method can save history before launching its owned load;
-                // do not execute that IO while holding the native/source admission locks.
-                if(stillSuggested()) assembly.playback.continueResumePlaybackSuggestion()
-            }) { Text("跳转") } },
-            dismissButton = { TextButton(onClick = {
-                if(stillSuggested()) assembly.playback.dismissResumePlaybackSuggestion()
-            }) { Text("稍后") } })
+            preferredHeightDp = 320,
+        ) {
+            AlertDialog(
+                onDismissRequest = { if(stillSuggested()) assembly.playback.dismissResumePlaybackSuggestion() },
+                title = { Text("继续播放") },
+                text = { Text("检测到上次播放到 ${suggestion.targetLabel}（${FormatUtils.formatDuration(suggestion.positionMs)}），是否跳转继续播放？") },
+                confirmButton = { TextButton(onClick = {
+                    // The original method can save history before launching its owned load;
+                    // do not execute that IO while holding the native/source admission locks.
+                    if(stillSuggested()) assembly.playback.continueResumePlaybackSuggestion()
+                }) { Text("跳转") } },
+                dismissButton = { TextButton(onClick = {
+                    if(stillSuggested()) assembly.playback.dismissResumePlaybackSuggestion()
+                }) { Text("稍后") } })
+        }
     }
-    if(engagement.coinDialogVisible) AlertDialog(
-        onDismissRequest={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)},
-        title={Text("投币")}, text={Text("选择投币数量")},
-        confirmButton={Row {listOf(1,2).forEach {count-> TextButton(onClick={if(current()) {
-            if (engagementBinding?.coin(count, false) == true) assembly.domains.engagement.setCoinDialogVisible(false)
-        }}) {Text("${count}枚")} }}},
-        dismissButton={TextButton(onClick={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)}) {Text("取消")}})
+    if(engagement.coinDialogVisible) {
+        DesktopWindowsPlayerDialog(
+            title = "投币",
+            onDismissRequest = { if(current()) assembly.domains.engagement.setCoinDialogVisible(false) },
+            preferredHeightDp = 280,
+        ) {
+            AlertDialog(
+            onDismissRequest={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)},
+            title={Text("投币")}, text={Text("选择投币数量")},
+            confirmButton={Row {listOf(1,2).forEach {count-> TextButton(onClick={if(current()) {
+                if (engagementBinding?.coin(count, false) == true) assembly.domains.engagement.setCoinDialogVisible(false)
+            }}) {Text("${count}枚")} }}},
+            dismissButton={TextButton(onClick={if(current()) assembly.domains.engagement.setCoinDialogVisible(false)}) {Text("取消")}})
+        }
+    }
 }
 
 @OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class, androidx.compose.ui.InternalComposeUiApi::class)

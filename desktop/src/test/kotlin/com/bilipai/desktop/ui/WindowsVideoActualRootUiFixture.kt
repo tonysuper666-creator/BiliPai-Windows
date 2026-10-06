@@ -3539,12 +3539,57 @@ object WindowsVideoActualRootUiFixture {
                 runCatching { edt { observeEmote("composer-emote-os-click-timeout") } }.exceptionOrNull()?.let(failure::addSuppressed)
                 throw failure
             }
-            // Hide the actual emote panel before the original mention toolbar.
+            // The retiring emote semantics can precede the final toolbar layout.
+            // Wait for that existing panel and native editor to settle, then
+            // deliver one real OS click. Never retry insertion of the "@" token.
             clickFeatureItem(second, "表情")
-            await("original emote panel naturally retires before mention toolbar input") {
-                !has(second, WindowsCommentComposerReplay.EMOTE)
+            fun mentionBounds(): Rectangle? {
+                currentSource()
+                check(composer.commentStamp.value === expectedStamp)
+                if (listOf("小黄脸", "小电视", "热词系列", "私有表情4", "颜文字").any { has(second, it) }) return null
+                val field = runCatching { editor(second) }.getOrNull() ?: return null
+                check(field === expectedEditor) { "Original native composer editor changed before mention input" }
+                if (!field.accessibleStateSet.contains(AccessibleState.EDITABLE)) return null
+                val controls = descendants(second.accessibleContext).filter {
+                    hasLabel(it, "提及用户") && visible(it, second) &&
+                        it.accessibleRole == javax.accessibility.AccessibleRole.PUSH_BUTTON &&
+                        it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                        (it.accessibleAction?.accessibleActionCount ?: 0) == 1
+                }
+                check(controls.size <= 1) { "Ambiguous original mention toolbar control" }
+                val control = controls.singleOrNull() ?: return null
+                val component = requireNotNull(control.accessibleComponent)
+                return Rectangle(requireNotNull(component.locationOnScreen), component.size).also {
+                    check(it.width > 0 && it.height > 0 && second.bounds.contains(it))
+                }
             }
-            clickFeatureItem(second, "提及用户")
+            var mentionStableBounds: Rectangle? = null
+            var mentionStableSince = 0L
+            await("retired original emote panel and editable mention toolbar have stable physical geometry") { edt {
+                currentSource()
+                val bounds = mentionBounds()
+                val now = System.nanoTime()
+                if (bounds == null || bounds != mentionStableBounds) {
+                    mentionStableBounds = bounds; mentionStableSince = now; false
+                } else now - mentionStableSince >= Duration.ofMillis(200).toNanos()
+            } }
+            val mentionPoint = edt {
+                currentSource(); check(composer.commentStamp.value === expectedStamp && editor(second) === expectedEditor)
+                val bounds = requireNotNull(mentionBounds()); check(bounds == mentionStableBounds)
+                runCatching { record("composer-mention-before-os-click", mapOf(
+                    "sameOriginalComposerStamp" to JsonPrimitive(true), "sameNativeEditor" to JsonPrimitive(true),
+                    "nativeEditable" to JsonPrimitive(true), "mentionX" to JsonPrimitive(bounds.x),
+                    "mentionY" to JsonPrimitive(bounds.y), "mentionWidth" to JsonPrimitive(bounds.width),
+                    "mentionHeight" to JsonPrimitive(bounds.height), "inputMechanism" to JsonPrimitive("OS_ROBOT_SINGLE_CLICK"))) }
+                java.awt.Point(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+            }
+            emoteRobot.mouseMove(mentionPoint.x, mentionPoint.y)
+            edt {
+                currentSource(); check(composer.commentStamp.value === expectedStamp && editor(second) === expectedEditor)
+                check(mentionBounds() == mentionStableBounds)
+            }
+            emoteRobot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+            try { emoteRobot.delay(35) } finally { emoteRobot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
             await("original mention query field appears") { has(second, "搜索好友昵称") }
             edt {
                 currentSource()
