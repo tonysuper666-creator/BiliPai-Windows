@@ -261,8 +261,10 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
         val signed = repository.signPrimaryLiveWebParams(mapOf("web_location" to "444.8"), expectedEpoch, current)
         assertCurrent()
         val csrf = repository.withPrimaryPlaybackAdmission(expectedEpoch, current) { repository.requireCsrf() }
+        val sendTransport = desktopLiveSendTransport(repository.httpClient)
         val ownedApi = repository.ownedHomeService(com.android.purebilibili.core.network.BilibiliApi::class.java,
-            "https://api.bilibili.com/", expectedEpoch, current)
+            "https://api.bilibili.com/", expectedEpoch, current, transport = sendTransport)
+        // Fixed v0.3.0 sends this mutation once: a lost response may already have posted it.
         val response = try {
             ownedApi.sendLiveDanmaku(signedParams = signed, roomId = request.roomId, msg = request.message,
                 color = request.color, fontsize = request.fontSize, mode = request.mode, bubble = request.bubble,
@@ -272,10 +274,9 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
                 csrf = csrf, csrfToken = csrf)
         } catch (cancelled: CancellationException) { throw cancelled
         } catch (error: Exception) {
+            // Admission can retire while the response is being delivered.
             assertCurrent()
-            if (signed.isEmpty()) throw error
-            ownedApi.sendLiveDanmaku(roomId = request.roomId, msg = request.message, color = request.color,
-                fontsize = request.fontSize, mode = request.mode, csrf = csrf, csrfToken = csrf)
+            throw error
         }
         assertCurrent()
         checkCode(response.code, response.message)

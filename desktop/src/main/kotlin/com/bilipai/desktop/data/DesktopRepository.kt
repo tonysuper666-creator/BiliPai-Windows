@@ -405,8 +405,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     /** Services over the SAME Call.Factory/client/cookie state, used once by retained Home. */
     internal fun <T> ownedHomeService(type: Class<T>, baseUrl: String, expectedEpoch: Long,
-        stillOwned: () -> Boolean, guest: Boolean = false): T = Retrofit.Builder().baseUrl(baseUrl)
-        .callFactory(ownedHomeCallFactory(expectedEpoch, stillOwned, guest))
+        stillOwned: () -> Boolean, guest: Boolean = false, transport: OkHttpClient = client): T = Retrofit.Builder().baseUrl(baseUrl)
+        .callFactory(ownedHomeCallFactory(expectedEpoch, stillOwned, guest, transport))
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
 
     /** Original official QR authorization endpoints over the EXISTING validation transport.

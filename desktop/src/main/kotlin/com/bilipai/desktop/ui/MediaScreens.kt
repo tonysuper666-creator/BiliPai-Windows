@@ -535,10 +535,11 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
     val state by session.state.collectAsState()
     val scope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    var message by remember(session) { mutableStateOf("") }
+    val draft = remember(session) { DesktopLiveChatDraft() }
+    val message = draft.message
+    val reply = draft.reply
     var color by remember(session) { mutableIntStateOf(16777215) }
     var mode by remember(session) { mutableIntStateOf(1) }
-    var reply by remember(session) { mutableStateOf<com.android.purebilibili.feature.live.LiveDanmakuItem?>(null) }
     var sendJob by remember(session) { mutableStateOf<Job?>(null) }
     DisposableEffect(session) { onDispose { sendJob?.cancel() } }
     LaunchedEffect(state.messages.size, state.messages.lastOrNull()) {
@@ -549,9 +550,14 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
         (permission.maxLength <= 0 || message.length <= permission.maxLength)
     fun send() {
         if (!canSend || sendJob?.isActive == true) return
-        val text = message
+        val submitted = draft.capture()
+        val sentColor = color
+        val sentMode = mode
         sendJob = scope.launch {
-            try { session.send(text, color, mode, reply); if (message == text) message = ""; reply = null }
+            try {
+                session.send(submitted.message, sentColor, sentMode, submitted.reply)
+                draft.complete(submitted)
+            }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (_: Exception) { /* The session exposes the real API error below. */ }
         }
@@ -562,7 +568,7 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
                 color = if (state.connected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
             LazyColumn(Modifier.weight(1f).fillMaxWidth(), state = listState, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(state.messages) { item ->
-                    Column(Modifier.fillMaxWidth().clickable(enabled = isLoggedIn && item.uid > 0) { reply = item }) {
+                    Column(Modifier.fillMaxWidth().clickable(enabled = isLoggedIn && item.uid > 0) { draft.selectReply(item) }) {
                         Text(buildList {
                             if (item.isSuperChat) add("SC ${item.superChatPrice}")
                             if (item.medalName.isNotBlank()) add("${item.medalName} ${item.medalLevel}")
@@ -579,7 +585,7 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
             Text(if (!isLoggedIn) "登录后可发送弹幕" else permission?.statusText ?: "正在读取弹幕权限", style = MaterialTheme.typography.labelSmall)
             reply?.let { target -> Row(verticalAlignment = Alignment.CenterVertically) {
                 Text("回复 ${target.uname}", Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
-                TextButton(onClick = { reply = null }) { Text("取消") }
+                TextButton(onClick = { draft.selectReply(null) }) { Text("取消") }
             } }
             if (isLoggedIn && permission != null) {
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -589,7 +595,7 @@ private fun LiveChatPanel(session: DesktopLiveSession, isLoggedIn: Boolean, modi
                     permission.availableColors.forEach { option -> FilterChip(color == option.color, { color = option.color }, label = { Text(option.name) }) }
                 }
             }
-            OutlinedTextField(message, { message = it }, Modifier.fillMaxWidth(), enabled = isLoggedIn && permission?.canSend == true,
+            OutlinedTextField(message, draft::editMessage, Modifier.fillMaxWidth(), enabled = isLoggedIn && permission?.canSend == true,
                 singleLine = true, label = { Text("发送直播弹幕") },
                 supportingText = { if (permission != null) Text("${message.length}/${permission.maxLength}") },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send), keyboardActions = KeyboardActions(onSend = { send() }))
