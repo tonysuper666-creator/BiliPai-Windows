@@ -470,8 +470,16 @@ jobs:
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/216-composer-restored-complete-draft-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/217-composer-image-removed-screen.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/217-composer-image-removed-accessibility.tsv
-            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/218-composer-same-editor-after-image-paint-screen.png
-            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/218-composer-same-editor-after-image-paint-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-zero-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-zero-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-one-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-one-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-nine-last-visible-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-nine-last-visible-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-last-removed-eight-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-last-removed-eight-accessibility.tsv
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-removed-zero-screen.png
+            ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/attachments-v1-removed-zero-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/composer-input-failure-screen.png
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/composer-input-failure-accessibility.tsv
             ${{ runner.temp }}/bilipai-comment-search-ui/actual-ui/220-feedback-client-baseline-screen.png

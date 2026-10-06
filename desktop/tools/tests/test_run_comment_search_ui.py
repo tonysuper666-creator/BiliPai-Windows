@@ -19,6 +19,43 @@ def malformed_heartbeat_records():
         row = blocked_heartbeat_record(); row[key] = value; yield row
 
 
+def stable_attachment_evidence():
+    def rect(x,y,width,height): return dict(x=x,y=y,width=width,height=height)
+    classes = dict(pane='com.bilipai.desktop.ui.DesktopInlineEmotePane', viewport='javax.swing.JViewport',
+        scroll='com.bilipai.desktop.ui.DesktopCommentEmoteScrollPane', interopGroup='androidx.compose.ui.awt.SwingInteropViewGroup')
+    geometry = dict(sameOwnedEditor=True)
+    for index,(name,clazz) in enumerate(classes.items()):
+        geometry[name] = dict(identity=100+index, **{'class':clazz}, bounds=rect(0,0,500,350),
+            screenBounds=rect(30,80,500,350), visibleRect=rect(0,0,500,350), opaque=True,showing=True)
+    geometry['interopGroup']['bounds'].update(x=10,y=50)
+    text = '私有编辑器草稿[夹具表情] @合成好友'
+    fixed = dict(dialogIdentity=42,dialogHwnd=12345,dialogBounds=rect(10,10,660,620),clientBounds=rect(20,30,640,580),
+        geometry=geometry,documentIdentity=51,caretIdentity=52,caretDot=0,caretMark=0,rawText=text,
+        selectionStart=0,selectionEnd=0,composition=None,viewportPosition=dict(x=0,y=0),draftText=text,syncToDynamic=True,
+        publishBounds=rect(570,550,60,40))
+    def row(id,serial,**values): return dict(id=id,serial=serial,keyType='Video',sameRootAndRouteAssembly=True,
+        actualWindowIdentity=701,contract='windows-comment-attachments-stable-editor/v1',forcedRepaintOrLayout=False,
+        physicalPixelsRequireReview=True,wholeUiPhysicalPass=False,**values)
+    immediate = row('composer-stable-image-215-v1',20,dialogIdentity=41,beforeGeometry=copy.deepcopy(geometry),
+        immediateGeometry=copy.deepcopy(geometry),robotStartNanos=-10,robotEndNanos=10,selectedImageCount=1,
+        sameDialogAndEditor=True,original215Retained=True)
+    states = []
+    for stage,indices in [('zero',[]),('cancel-zero',[]),('one',[0]),('nine',list(range(9))),
+            ('cancel-nine',list(range(9))),('nine-last-visible',list(range(9)))]+[
+            ('removed-%d'%n,list(range(n))) for n in range(8,-1,-1)]:
+        states.append(dict(stage=stage,state=copy.deepcopy(fixed),assetIndices=indices))
+    tools=dict(before=0.0,after=100.0,maximum=100.0,viewport=rect(40,550,220,40))
+    attachments=dict(before=0.0,after=360.0,maximum=360.0,viewport=rect(330,550,180,40))
+    proof=row('composer-stable-attachments-v1',21,clientWidthBeforeBaseline=640,states=states,
+        toolScroll=tools,imageButtonAtToolEnd=rect(220,550,32,32),attachmentScroll=attachments,
+        removals=[dict(beforeCount=n,afterCount=n-1,removedAssetIndex=n-1,hitBounds=rect(470,550,20,20),thumbnailBounds=rect(450,550,40,40),
+            effectiveViewport=rect(330,550,180,40),scrollBefore=float(max(0,(n-3)*40))) for n in range(9,0,-1)],
+        privateUniqueAssetCount=9,realRobotInput=True,selectedFilesInjected=False,draftWrittenByFixtureInPhase=False)
+    data = {('composer-private-additional-images/%02d.png' % n): bytes([n])*64 for n in range(2,10)}
+    assets = [dict(file=name,bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in data.items()]
+    return [immediate,proof], assets, data
+
+
 class CommentUiCaseReceiptTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix='comment-case-receipts-')
@@ -146,6 +183,12 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
                         'collectionSubscriptionMutationSubmitted'):
                 transport[key] = False
         if case == 'feedback':
+            stable_rows, private_images, private_bytes = stable_attachment_evidence()
+            transport['composerInput']['additionalPrivateImages'] = private_images
+            for name, raw in private_bytes.items():
+                path = self.report / name
+                path.parent.mkdir(exist_ok=True)
+                path.write_bytes(raw)
             for key in ('brandFeedbackPlacementProofRequested','brandFeedbackPlacementProofCompleted','brandFeedbackPhysicalFramesRequireHumanReview'):
                 observation[key] = True
             observation['observations'] += [
@@ -165,12 +208,52 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
                     method='POST', host='api.bilibili.com', path='/x/web-interface/archive/like'),
                 dict(method='POST', host='api.bilibili.com', path='/x/web-interface/archive/like',
                     originalLikeProtocolMemoryOnly=True, remoteMutationSent=False))]
+        if case == 'feedback': observation['observations'] += stable_rows
         return observation, transport
 
     def verify(self, case, observations=None, transport=None):
         if observations is None: observations, transport = self.evidence(case)
         self.write(observations, transport, case)
         return RUNNER.verify(self.report, self.local, self.health, self.token, self.process, case)
+
+    def test_stable_attachment_contract_rejects_shrink_and_document_replacement(self):
+        for target in ('height','document','caret','selection','viewport'):
+            obs, transport = self.evidence('feedback')
+            state = next(row for row in obs['observations'] if row['id'] == 'composer-stable-attachments-v1')['states'][3]['state']
+            if target == 'height': state['geometry']['scroll']['bounds']['height'] -= 1
+            elif target == 'document': state['documentIdentity'] += 1
+            elif target == 'caret': state['caretIdentity'] += 1
+            elif target == 'selection': state['caretDot'] = state['selectionEnd'] = 1
+            else: state['viewportPosition']['y'] = 1
+            with self.subTest(target=target), self.assertRaises(ValueError): self.verify('feedback',obs,transport)
+
+    def test_stable_attachment_contract_rejects_clipped_hit_and_false_overflow(self):
+        for target in ('hit','motion','last','cancel','injection'):
+            obs, transport = self.evidence('feedback')
+            row = next(row for row in obs['observations'] if row['id'] == 'composer-stable-attachments-v1')
+            if target == 'hit': row['removals'][0]['hitBounds']['x'] = 510
+            elif target == 'motion': row['toolScroll']['before'] = row['toolScroll']['after']
+            elif target == 'last': row['removals'][0]['removedAssetIndex'] = 0
+            elif target == 'cancel': row['states'][4]['assetIndices'] = list(range(8))
+            else: row['selectedFilesInjected'] = True
+            with self.subTest(target=target), self.assertRaises(ValueError): self.verify('feedback',obs,transport)
+
+    def test_stable_attachment_contract_requires_new_record_and_private_file_bytes(self):
+        obs, transport = self.evidence('feedback')
+        obs['observations'] = [row for row in obs['observations'] if row['id'] != 'composer-stable-image-215-v1']
+        with self.assertRaises(ValueError): self.verify('feedback',obs,transport)
+        obs, transport = self.evidence('feedback')
+        (self.report / transport['composerInput']['additionalPrivateImages'][0]['file']).write_bytes(b'changed')
+        with self.assertRaises(ValueError): self.verify('feedback',obs,transport)
+
+    def test_stable_attachment_capture_clock_wrap_and_physical_scope(self):
+        rows, assets, _ = stable_attachment_evidence()
+        rows[0]['robotStartNanos'] = (1 << 63)-10
+        rows[0]['robotEndNanos'] = -(1 << 63)+10
+        result = RUNNER.verify_stable_attachments_v1({row['id']:row for row in rows}, assets)
+        self.assertFalse(result['composerWholeUiPhysicalPass'])
+        rows[0]['robotStartNanos'],rows[0]['robotEndNanos'] = rows[0]['robotEndNanos'],rows[0]['robotStartNanos']
+        with self.assertRaises(ValueError): RUNNER.verify_stable_attachments_v1({row['id']:row for row in rows}, assets)
 
     def test_blocked_heartbeat_is_only_an_observation_in_composer_and_feedback(self):
         for case in ('composer', 'feedback'):
@@ -278,7 +361,7 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
 
     def test_feedback_reuses_complete_composer_proof_and_all_sixteen_captures(self):
         result = self.verify('feedback')
-        self.assertEqual(len(result), 16)
+        self.assertEqual(len(result), 21)
         self.assertEqual([item['path'] for item in result[:8]],
             [name + '-screen.png' for name in RUNNER.CAPTURES_BY_CASE['composer']])
         self.assertEqual(result[-1]['path'], '227-feedback-video-fallback-screen.png')
@@ -374,7 +457,7 @@ class CommentUiCaseReceiptTests(unittest.TestCase):
         observations, transport = self.evidence('feedback')
         for key in ('samePeerModalRestoreObserved','samePeerMinimizeRestoreObserved','liveVideoFallbackNavigationObserved'):
             observations['observations'][4][key] = True
-        self.assertEqual(len(self.verify('feedback', observations, transport)), 16)
+        self.assertEqual(len(self.verify('feedback', observations, transport)), 21)
 
     def test_feedback_original_and_added_png_tsv_files_are_all_required(self):
         for name in ('210-composer-text-draft', '220-feedback-client-baseline', '227-feedback-video-fallback'):

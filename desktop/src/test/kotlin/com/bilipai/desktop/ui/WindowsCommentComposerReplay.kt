@@ -59,6 +59,33 @@ internal class WindowsCommentComposerReplay(private val report: Path) : AutoClos
         check(ImageIO.write(pixels, "png", image.toFile()))
         imageSha = sha(image)
     }
+    private var additionalImages: List<Path> = emptyList()
+    private var additionalImageProofs: List<JsonObject> = emptyList()
+    fun prepareAdditionalImages(): List<Path> {
+        check(alive.get() && additionalImages.isEmpty())
+        val directory = report.resolve("composer-private-additional-images")
+        check(!Files.exists(directory, NOFOLLOW_LINKS))
+        Files.createDirectory(directory)
+        val images = (2..9).map { index ->
+            val path = directory.resolve("%02d.png".format(index))
+            val pixels = BufferedImage(48, 32, BufferedImage.TYPE_INT_ARGB)
+            try {
+                for (y in 0 until 32) for (x in 0 until 48)
+                    pixels.setRGB(x, y, 0xff000000.toInt() or (index * 23 shl 16) or (x * 5 shl 8) or (y * 7))
+                check(ImageIO.write(pixels, "png", path.toFile()))
+            } finally { pixels.flush() }
+            check(Files.isRegularFile(path, NOFOLLOW_LINKS) && !Files.isSymbolicLink(path))
+            path.toRealPath()
+        }
+        additionalImageProofs = images.map { path -> buildJsonObject {
+            put("file", "composer-private-additional-images/" + path.fileName)
+            put("bytes", Files.size(path)); put("sha256", sha(path))
+        } }
+        check(additionalImageProofs.map { it.getValue("sha256") }.toSet().size == 8 &&
+            additionalImageProofs.none { it.getValue("sha256").jsonPrimitive.content == imageSha })
+        additionalImages = images
+        return images.toList()
+    }
     fun bindGuest(repository: DesktopRepository) {
         check(alive.get() && guestEpoch == null && repository.account.value == null)
         guestEpoch = repository.sessionEpoch
@@ -144,6 +171,11 @@ internal class WindowsCommentComposerReplay(private val report: Path) : AutoClos
     }
     fun receipt(requireComplete: Boolean = true): JsonObject {
         check(alive.get() && sha(image) == imageSha)
+        additionalImages.forEachIndexed { index, path ->
+            check(Files.isRegularFile(path, NOFOLLOW_LINKS) && !Files.isSymbolicLink(path) &&
+                Files.size(path) == additionalImageProofs[index].getValue("bytes").jsonPrimitive.long &&
+                sha(path) == additionalImageProofs[index].getValue("sha256").jsonPrimitive.content)
+        }
         if (requireComplete) {
             check(syntheticSessionSeeded && reads.any { it["kind"]?.jsonPrimitive?.content == "emote" } &&
                 reads.any { it["query"]?.jsonPrimitive?.content == MENTION_QUERY })
@@ -154,6 +186,7 @@ internal class WindowsCommentComposerReplay(private val report: Path) : AutoClos
             put("loginUiAccepted", false); put("realAccountUsed", false); put("mutationRequestsPermitted", false)
             put("imageFile", image.fileName.toString()); put("imageSha256", imageSha)
             put("imageCreatedByFixture", true); put("emoteImagesArePrivateFiles", true)
+            put("additionalPrivateImages", JsonArray(additionalImageProofs))
             put("reads", JsonArray(reads.toList()))
         }
     }
