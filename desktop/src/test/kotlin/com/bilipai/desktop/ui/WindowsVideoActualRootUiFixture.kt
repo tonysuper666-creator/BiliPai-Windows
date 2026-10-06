@@ -370,6 +370,8 @@ object WindowsVideoActualRootUiFixture {
         fun GetClientRect(hwnd: Pointer, rect: Pointer): Boolean
         fun ClientToScreen(hwnd: Pointer, point: Pointer): Boolean
         fun GetWindowPlacement(hwnd: Pointer, placement: Pointer): Boolean
+        fun GetParent(hwnd: Pointer?): Pointer?
+        fun GetWindow(hwnd: Pointer?, command: Int): Pointer?
     }
     private val failureWindowApi: FailureWindowApi by lazy { Native.load("user32", FailureWindowApi::class.java) }
     private fun failureWindowGeometry(phase: String): JsonObject = edt {
@@ -2797,7 +2799,7 @@ object WindowsVideoActualRootUiFixture {
         val beforeLayers = settledMainInputLayers("feedback-before")
         var baseline = actualPlayer.state.value
         var primary: Throwable? = null
-        fun guard(allowMinimized: Boolean = false) {
+        fun guard(allowMinimized: Boolean = false, requirePaused: Boolean = true) {
             current()
             val minimized = originalMain.extendedState and java.awt.Frame.ICONIFIED != 0
             if (minimized && allowMinimized) {
@@ -2813,14 +2815,60 @@ object WindowsVideoActualRootUiFixture {
                 PlayerPreferencesStore().read() == preferences && !composer.isSendingComment.value)
             check(allowMinimized || !minimized)
             val state = actualPlayer.state.value
-            check(state.paused && state.nativePaused == true && state.seekCompletedId == baseline.seekCompletedId &&
-                state.muted == baseline.muted && state.volume == baseline.volume && state.speed == baseline.speed &&
+            check(state.seekCompletedId == baseline.seekCompletedId && state.muted == baseline.muted &&
+                state.volume == baseline.volume && state.speed == baseline.speed)
+            if (requirePaused) check(state.paused && state.nativePaused == true &&
                 kotlin.math.abs(state.positionSeconds - baseline.positionSeconds) < .25)
         }
         fun descendantsOwned(parent: Window): List<Window> = parent.ownedWindows.toList().flatMap {
             listOf(it) + descendantsOwned(it)
         }
         fun clientBounds(): Rectangle = Rectangle(originalMain.contentPane.locationOnScreen, originalMain.contentPane.size)
+        data class NativeGeometry(val handles: List<Long>, val client: Rectangle, val canvas: Rectangle,
+            val viewport: com.bilipai.desktop.player.PlayerVideoViewport, val videoWidth: Int, val videoHeight: Int,
+            val panscan: Double)
+        fun nativeHandles(): List<Long> {
+            check(EventQueue.isDispatchThread()); guard(requirePaused = false)
+            val transform = originalMain.graphicsConfiguration.defaultTransform
+            check(transform.isIdentity) { "Feedback physical/native geometry requires the runner's 1:1 DPI coordinates" }
+            val main = Native.getWindowPointer(originalMain)
+            val canvas = Native.getComponentPointer(actualCanvas)
+            val child = requireNotNull(failureWindowApi.GetWindow(canvas, 5)) // GW_CHILD: mpv owns this child, not the Canvas HWND.
+            check(failureWindowApi.GetParent(child) == canvas && failureWindowApi.GetWindow(child, 2) == null)
+            var ancestor: Pointer? = canvas
+            repeat(16) { if (ancestor != null && ancestor != main) ancestor = failureWindowApi.GetParent(ancestor) }
+            check(ancestor == main)
+            return listOf(main, canvas, child).map { hwnd ->
+                val pid = IntByReference()
+                check(failureWindowApi.GetWindowThreadProcessId(hwnd, pid) != 0 &&
+                    Integer.toUnsignedLong(pid.value) == ProcessHandle.current().pid() && failureWindowApi.IsWindowVisible(hwnd))
+                Pointer.nativeValue(hwnd)
+            }
+        }
+        fun nativeClient(hwnd: Long): Rectangle = Memory(16).use { rect -> Memory(8).use { origin ->
+            check(failureWindowApi.GetClientRect(Pointer(hwnd), rect)); origin.clear()
+            check(failureWindowApi.ClientToScreen(Pointer(hwnd), origin))
+            Rectangle(origin.getInt(0), origin.getInt(4), rect.getInt(8) - rect.getInt(0), rect.getInt(12) - rect.getInt(4))
+        } }
+        fun nativeGeometry(expected: List<Long>): NativeGeometry? {
+            check(EventQueue.isDispatchThread()); guard()
+            check(nativeHandles() == expected) { "Feedback native Main/Canvas/mpv HWND identity changed" }
+            val canvas = Rectangle(actualCanvas.locationOnScreen, actualCanvas.size)
+            if (nativeClient(expected[1]) != canvas || nativeClient(expected[2]) != canvas) return null
+            val output = actualPlayer.videoOutput.value
+            check(output.sourceVersion == source.sourceVersion)
+            val viewport = output.viewport ?: return null
+            if (viewport.osdWidth != canvas.width || viewport.osdHeight != canvas.height) return null
+            val state = actualPlayer.state.value
+            if (state.videoWidth <= 0 || state.videoHeight <= 0) return null
+            val panscan = state.activeVideoPanscan ?: return null
+            if (panscan != state.videoPanscan || state.videoPanscan != baseline.videoPanscan) return null
+            // Reuse the actual viewport's margins (including negative crop margins).
+            // Compare the transformed video, never the Canvas aspect: bars/crop remain valid.
+            val transform = viewport.sourceToPhysicalTransform(canvas.width, canvas.height, state.videoWidth, state.videoHeight)
+            if (kotlin.math.abs(transform.scaleX - transform.scaleY) * minOf(state.videoWidth, state.videoHeight) > 2.0) return null
+            return NativeGeometry(expected, clientBounds(), canvas, viewport, state.videoWidth, state.videoHeight, panscan)
+        }
         fun peer(): javax.swing.JDialog? {
             guard()
             val client = clientBounds()
@@ -2921,9 +2969,9 @@ object WindowsVideoActualRootUiFixture {
                     it.accessibleStateSet.contains(AccessibleState.SELECTED) }
             } }
         }
-        fun capture(id: String, surface: Window = originalMain) {
+        fun capture(id: String, surface: Window = originalMain, extraGuard: (() -> Unit)? = null) {
             val rectangle = edt {
-                guard(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+                guard(); extraGuard?.invoke(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
                 val rect = if (surface === originalMain) clientBounds() else Rectangle(surface.bounds)
                 check(originalMain.bounds.contains(rect) && surface.graphicsConfiguration.bounds.contains(rect))
                 rect
@@ -2931,7 +2979,7 @@ object WindowsVideoActualRootUiFixture {
             val image = robot.createScreenCapture(rectangle)
             // Capture the physical short-lived frame before tree serialization.
             val tree = edt {
-                guard(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
+                guard(); extraGuard?.invoke(); check(surface.isShowing && surface.isDisplayable && ownedWindow(surface))
                 check((if(surface === originalMain) clientBounds() else Rectangle(surface.bounds)) == rectangle)
                 descendants(surface.accessibleContext).joinToString("\n") {
                     "${it.accessibleName}\t${it.accessibleRole}\t${it.accessibleStateSet}"
@@ -2939,7 +2987,7 @@ object WindowsVideoActualRootUiFixture {
             }
             Files.writeString(report.resolve("$id-accessibility.tsv"), tree, CREATE_NEW, WRITE)
             check(ImageIO.write(image, "png", report.resolve("$id-screen.png").toFile()))
-            edt { guard(); check(surface.isShowing && surface.isDisplayable &&
+            edt { guard(); extraGuard?.invoke(); check(surface.isShowing && surface.isDisplayable &&
                 (if(surface === originalMain) clientBounds() else Rectangle(surface.bounds)) == rectangle) }
         }
         fun modal(title: String): javax.swing.JDialog? = edt {
@@ -3120,12 +3168,40 @@ object WindowsVideoActualRootUiFixture {
                     restoredCloseBounds = bounds; restoredCloseStableSince = now; false
                 } else now - restoredCloseStableSince >= Duration.ofMillis(200).toNanos()
             } }
+            val fallbackNativeHandles = edt { guard(); nativeHandles() }
             val fallbackLive = edt { guard(); live(thirdOrigin) }
             physicalClick(originalMain,"关闭详情", if (fallbackLive) third else null)
             await("actual Like anchor disposal returns feedback to original video fallback") { edt {
                 guard(); all().none { it.accessibleName=="关闭详情" && visible(it) }
             } }
-            capture("227-feedback-video-fallback")
+            var stableGeometry: NativeGeometry? = null
+            var geometryStableSince = 0L
+            await("same native fallback Canvas and video viewport geometry/readback stable for 200ms") { edt {
+                guard()
+                val geometry = nativeGeometry(fallbackNativeHandles)
+                val complete = runCatching { videoScope("详情") }.isSuccess
+                if (geometry == null || !complete) {
+                    stableGeometry = null; geometryStableSince = 0L; return@edt false
+                }
+                val now = System.nanoTime()
+                if (geometry != stableGeometry) {
+                    stableGeometry = geometry; geometryStableSince = now; false
+                } else now - geometryStableSince >= Duration.ofMillis(200).toNanos()
+            } }
+            val capturedGeometry = requireNotNull(stableGeometry)
+            capture("227-feedback-video-fallback", extraGuard = {
+                check(nativeGeometry(fallbackNativeHandles) == capturedGeometry)
+                videoScope("详情")
+            })
+            record("feedback-fallback-native-geometry", mapOf("sameMainCanvasAndMpvChildHwnd" to JsonPrimitive(true),
+                "nativeClientBoundsMatched" to JsonPrimitive(true), "stableGeometryReadbackMillis" to JsonPrimitive(200),
+                "canvasWidth" to JsonPrimitive(capturedGeometry.canvas.width), "canvasHeight" to JsonPrimitive(capturedGeometry.canvas.height),
+                "viewport" to buildJsonObject { val v = capturedGeometry.viewport
+                    put("osdWidth", v.osdWidth); put("osdHeight", v.osdHeight); put("left", v.left); put("top", v.top)
+                    put("contentWidth", v.contentWidth); put("contentHeight", v.contentHeight) },
+                "videoWidth" to JsonPrimitive(capturedGeometry.videoWidth), "videoHeight" to JsonPrimitive(capturedGeometry.videoHeight),
+                "panscan" to JsonPrimitive(capturedGeometry.panscan), "physicalCaptureGuardedBeforeAndAfter" to JsonPrimitive(true),
+                "newPresentedFrameProven" to JsonPrimitive(false)))
             await("original completion disposes every captured decorative peer") { edt {
                 guard(); !engagement.uiState.value.likeBurstVisible && registered.none { it.isShowing || it.isDisplayable }
             } }
@@ -3167,8 +3243,35 @@ object WindowsVideoActualRootUiFixture {
         check(afterLayers.size == beforeLayers.size && beforeLayers.all { old -> afterLayers.any { it === old } }) {
             "Full-client feedback must restore the exact Main input layer identities"
         }
+        val resumeHandles = edt { guard(); nativeHandles() }
+        val beforeNative = requireNotNull(runBlocking { actualPlayer.captureNativeAudioDiagnostic() })
+        fun nativeClock(value: com.bilipai.desktop.player.DesktopNativeAudioDiagnostic, paused: Boolean): Double {
+            check(value.sourceVersion == source.sourceVersion && value.activeSourceVersion == source.sourceVersion &&
+                value.playbackRevision == value.activePlaybackRevision && value.fileLoaded && !value.pendingPauseIntent)
+            val pause = requireNotNull(value.properties["pause"])
+            val clock = requireNotNull(value.properties["time-pos"])
+            check(pause.nativeCode >= 0 && pause.value == if (paused) "yes" else "no")
+            check(clock.nativeCode >= 0)
+            return requireNotNull(clock.value?.toDoubleOrNull()).also { check(it.isFinite() && it >= 0.0) }
+        }
+        val beforeNativeClock = nativeClock(beforeNative, true)
+        val beforeClock = edt { guard(); check(nativeHandles() == resumeHandles); actualPlayer.state.value.positionSeconds }
         click("播放")
-        await("same source resumes after full-client scope") { sameNative();playing() }
+        await("same source/revision/seek resumes with clock advance after full-client scope") { edt {
+            guard(requirePaused = false); check(nativeHandles() == resumeHandles)
+            val state = actualPlayer.state.value
+            playing() && !state.paused && state.positionSeconds > beforeClock + 0.5
+        } }
+        val afterNative = requireNotNull(runBlocking { actualPlayer.captureNativeAudioDiagnostic() })
+        val afterNativeClock = nativeClock(afterNative, false)
+        edt { guard(requirePaused = false); check(nativeHandles() == resumeHandles && playing()) }
+        check(afterNative.playbackRevision == beforeNative.playbackRevision && afterNative.sessionIdentity == beforeNative.sessionIdentity &&
+            afterNativeClock > beforeNativeClock + 0.5) { "Feedback resume lacks same-session native clock progress" }
+        record("feedback-final-native-clock", mapOf("sameFullSourceRevisionSessionAndSeek" to JsonPrimitive(true),
+            "sourceVersion" to JsonPrimitive(source.sourceVersion), "playbackRevision" to JsonPrimitive(afterNative.playbackRevision),
+            "seekCompletedId" to JsonPrimitive(baseline.seekCompletedId), "nativeClockBefore" to JsonPrimitive(beforeNativeClock),
+            "nativeClockAfter" to JsonPrimitive(afterNativeClock), "minimumAdvanceSeconds" to JsonPrimitive(0.5),
+            "finalPhysicalFrameCaptured" to JsonPrimitive(false)))
     }
 
     private fun exerciseVideoDynamicShare(replay: WindowsVideoLocalReplay) {
