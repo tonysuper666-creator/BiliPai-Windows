@@ -13,6 +13,12 @@ data class NvidiaVideoOptions(val scale: Double = 1.0, val hdr: Boolean = false)
     internal fun filterArguments(): String = "d3d11vpp=scale=$scale:scaling-mode=nvidia:nvidia-true-hdr=${if (hdr) "yes" else "no"}"
 }
 
+/** Exact queued withdrawal identity; a receipt, not another native owner. */
+internal data class NvidiaVideoClearReceipt(
+    val configurationVersion: Long,
+    val source: OwnedPlaybackSourceSnapshot?,
+)
+
 /** Observed driver acceptance and processed frames do not prove Tensor utilization. */
 data class NvidiaVideoState(
     val configurationVersion: Long = 0,

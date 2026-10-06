@@ -76,6 +76,9 @@ class DesktopVideoEnhancementSession(
             source.sourceVersion == other.source.sourceVersion && source.source == other.source.source
     }
     private class Owned(val request: Request, val token: Long)
+    private class Clearing(val source: OwnedPlaybackSourceSnapshot, val epoch: Long, val token: Long) {
+        var reportedError: String? = null
+    }
     private val label = MutableStateFlow(Label(epoch = sessionEpoch()))
     private val mutableState = MutableStateFlow(DesktopVideoEnhancementState(requested = automaticEnabled.value))
     val state: StateFlow<DesktopVideoEnhancementState> = mutableState.asStateFlow()
@@ -83,6 +86,7 @@ class DesktopVideoEnhancementSession(
     private val closed = AtomicBoolean()
     private val ownershipLock = Any()
     private var owned: Owned? = null
+    private var clearing: Clearing? = null
 
     init {
         scope.launch {
@@ -148,6 +152,7 @@ class DesktopVideoEnhancementSession(
                 statusText = native.gpuName?.let { "$it；$text" } ?: text, gpuName = native.gpuName,
                 targetTransfer = native.targetTransfer, targetPrimaries = native.targetPrimaries,
                 hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled)
+            observeClearingLocked(player.nvidiaVideoState.value)
         }
         if (!input.settings.enabled) { bypass(Anime4KBypassReason.DISABLED, "NVIDIA 自动增强已关闭，原画直出"); return@synchronized }
         if (!current) { bypass(Anime4KBypassReason.NONE, "等待当前视频源"); return@synchronized }
@@ -189,6 +194,7 @@ class DesktopVideoEnhancementSession(
             return@synchronized
         }
         owned = Owned(request, token)
+        clearing = null
         mutableState.value = DesktopVideoEnhancementState(identity, source!!.sourceVersion, true, available,
             pending = true, bypassReason = Anime4KBypassReason.NONE, statusText = "正在请求 NVIDIA 硬件增强",
             gpuName = native.gpuName, hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled)
@@ -196,8 +202,39 @@ class DesktopVideoEnhancementSession(
     }
 
     private fun observeNative(native: NvidiaVideoState): Unit = synchronized(ownershipLock) {
-        val current = owned ?: return@synchronized
-        observeNativeLocked(native, current)
+        if (closed.get()) return@synchronized
+        val current = owned
+        if (current == null) observeClearingLocked(native) else observeNativeLocked(native, current)
+    }
+
+    private fun retireClearingLocked(current: Clearing) {
+        if (clearing !== current) return
+        clearing = null
+        if (!closed.get() && current.reportedError != null) mutableState.update {
+            if (it.sourceVersion == current.source.sourceVersion && it.error == current.reportedError)
+                it.copy(error = null, unavailableReason = null, statusText = "当前硬件增强配置已更换，等待当前输出")
+            else it
+        }
+    }
+
+    private fun observeClearingLocked(native: NvidiaVideoState) {
+        val current = clearing ?: return
+        if (closed.get()) return
+        var stillCurrent = false
+        // Only short UI publication under the existing source lock. No new native
+        // command, worker, source owner, or admission inferred from version + 1.
+        player.admitSourceSnapshot(current.source) {
+            if (!owns(current.source, current.epoch) ||
+                player.nvidiaVideoState.value.configurationVersion != current.token) return@admitSourceSnapshot
+            stillCurrent = true
+            // A queued old StateFlow sample must not retire a still-current clear.
+            if (native.configurationVersion != current.token || native.sourceVersion != current.source.sourceVersion) return@admitSourceSnapshot
+            if (native.error != null && mutableState.value.sourceVersion == current.source.sourceVersion) {
+                current.reportedError = native.error
+                mutableState.update { it.withNvidiaObservation(native) }
+            }
+        }
+        if (!stillCurrent) retireClearingLocked(current)
     }
 
     private fun observeNativeLocked(native: NvidiaVideoState, current: Owned) {
@@ -214,7 +251,11 @@ class DesktopVideoEnhancementSession(
     private fun clearOwnedLocked() {
         val previous = owned ?: return
         owned = null
-        player.clearNvidiaVideoEnhancementIfConfigurationVersion(previous.token)
+        clearing = null
+        val receipt = player.clearNvidiaVideoEnhancementWithReceipt(previous.token) ?: return
+        val source = receipt.source ?: return
+        if (source.sourceVersion == previous.request.source.sourceVersion && source.source == previous.request.source.source &&
+            owns(source, previous.request.epoch)) clearing = Clearing(source, previous.request.epoch, receipt.configurationVersion)
     }
 
     override fun close() {
@@ -222,6 +263,7 @@ class DesktopVideoEnhancementSession(
             scope.cancel()
             synchronized(ownershipLock) {
                 clearOwnedLocked()
+                clearing = null
                 mutableState.value = DesktopVideoEnhancementState(requested = automaticEnabled.value,
                     statusText = "视频增强会话已关闭")
             }

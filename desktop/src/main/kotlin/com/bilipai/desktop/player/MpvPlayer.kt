@@ -131,9 +131,16 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             installNvidiaVideo(options, expectedSourceVersion)
         }
     }
-    fun clearNvidiaVideoEnhancementIfConfigurationVersion(expectedConfigurationVersion: Long): Boolean = synchronized(lock) {
-        if (closed.get() || nvidiaConfigurationVersion != expectedConfigurationVersion) false
-        else { installNvidiaVideo(NvidiaVideoOptions(), null); true }
+    fun clearNvidiaVideoEnhancementIfConfigurationVersion(expectedConfigurationVersion: Long): Boolean =
+        clearNvidiaVideoEnhancementWithReceipt(expectedConfigurationVersion) != null
+
+    internal fun clearNvidiaVideoEnhancementWithReceipt(expectedConfigurationVersion: Long): NvidiaVideoClearReceipt? = synchronized(lock) {
+        if (closed.get() || nvidiaConfigurationVersion != expectedConfigurationVersion) null
+        else {
+            val source = currentSourceSnapshot()
+            val configuration = installNvidiaVideo(NvidiaVideoOptions(), null)
+            NvidiaVideoClearReceipt(configuration, source)
+        }
     }
     private fun installNvidiaVideo(options: NvidiaVideoOptions, owner: Long?, retainTargetMetadata: Boolean = true): Long {
         nvidiaOptions = options; nvidiaSourceVersion = owner

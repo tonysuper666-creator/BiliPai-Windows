@@ -4,6 +4,7 @@ import com.bilipai.desktop.ui.desktopVideoEnhancementCompactLabel
 import com.sun.jna.Memory
 import com.sun.jna.Pointer
 import com.sun.jna.StringArray
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.concurrent.LinkedBlockingQueue
 import kotlin.test.*
@@ -36,6 +37,16 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
         val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
         observed.value = observed.value.copy(gpuVendorId = 0x10de, currentGpuContext = "d3d11")
     }
+    fun recordPlayableOutput() {
+        @Suppress("UNCHECKED_CAST")
+        val output = field("mutableVideoOutput").get(player) as MutableStateFlow<PlayerVideoOutputState>
+        output.value = output.value.copy(displayWidth = 1280, displayHeight = 720)
+        @Suppress("UNCHECKED_CAST")
+        val state = field("mutableState").get(player) as MutableStateFlow<PlayerState>
+        state.value = state.value.copy(ready = true, loading = false, firstVideoFrameReady = true,
+            nativePaused = false, videoCodec = "fixture-codec")
+    }
+    fun hasQueuedNvidia() = queue.any { it.javaClass.simpleName == "NvidiaVideo" }
     fun recordDevice(vendor: Int?, context: String?) {
         @Suppress("UNCHECKED_CAST")
         val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
@@ -96,6 +107,99 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
 }
 
 class PlayerNvidiaActorWithdrawalTest {
+    @Test fun realSessionKeepsWithdrawalErrorAcrossRepeatedBypassAndRetiresItForNewConfiguration() = runBlocking<Unit> {
+        val enabled = MutableStateFlow(true)
+        MpvPlayer().use { player ->
+            val source = player.loadVersioned(PlaybackSource("file:///C:/nvidia-session-clear.avi"))
+            NvidiaWithdrawalActor(player).use { actor ->
+                actor.recordPlayableOutput()
+                DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                    enabled.value = it; CompletableDeferred(Unit)
+                }).use { enhancement ->
+                    awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                    actor.apply()
+                    assertEquals(2, actor.native.filters.size)
+                    val configured = player.nvidiaVideoState.value.configurationVersion
+                    assertNotNull(enhancement.setCurrentVideoEnabled(false)).join()
+                    awaitSession { !enhancement.state.value.requested &&
+                        player.nvidiaVideoState.value.configurationVersion != configured && actor.hasQueuedNvidia() }
+                    val withdrawal = actor.nextNvidia()
+                    // A normal same-source bypass must not forget the queued clear.
+                    enhancement.bindVideoIdentity("same-source-before-withdrawal", source)
+                    awaitSession { enhancement.state.value.identity == "same-source-before-withdrawal" }
+                    actor.native.rejectRemoval = true
+                    actor.apply(withdrawal)
+                    awaitSession { enhancement.state.value.error != null }
+                    assertTrue(assertNotNull(enhancement.state.value.error).contains("无法撤回"))
+                    assertEquals("异常", desktopVideoEnhancementCompactLabel(enhancement.state.value, false, null))
+                    assertEquals(2, actor.native.filters.size)
+                    enhancement.bindVideoIdentity("same-source-after-withdrawal", source)
+                    awaitSession { enhancement.state.value.identity == "same-source-after-withdrawal" && enhancement.state.value.error != null }
+                    assertNotNull(enhancement.state.value.error)
+                    assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(3.0)))
+                    awaitSession { enhancement.state.value.error == null }
+                    assertFalse(enhancement.state.value.requested)
+                }
+            }
+        }
+    }
+
+    @Test fun realSessionRejectsLateWithdrawalAfterSourceConfigurationAccountOrSessionRetirement() = runBlocking<Unit> {
+        for (retirement in listOf("source", "configuration", "account", "session")) {
+            val enabled = MutableStateFlow(true)
+            val epoch = java.util.concurrent.atomic.AtomicLong(0L)
+            MpvPlayer().use { player ->
+                val source = player.loadVersioned(PlaybackSource("file:///C:/nvidia-session-late-clear.avi"))
+                NvidiaWithdrawalActor(player).use { actor ->
+                    actor.recordPlayableOutput()
+                    DesktopVideoEnhancementSession(player, enabled, MutableStateFlow(true), MutableStateFlow(false), {
+                        enabled.value = it; CompletableDeferred(Unit)
+                    }, sessionEpoch = epoch::get).use { enhancement ->
+                        awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                        actor.apply()
+                        val configured = player.nvidiaVideoState.value.configurationVersion
+                        assertNotNull(enhancement.setCurrentVideoEnabled(false)).join()
+                        awaitSession { !enhancement.state.value.requested &&
+                            player.nvidiaVideoState.value.configurationVersion != configured && actor.hasQueuedNvidia() }
+                        val withdrawal = actor.nextNvidia()
+                        when (retirement) {
+                            "source" -> {
+                                val replacement = player.loadVersioned(PlaybackSource("file:///C:/nvidia-session-replacement.avi"))
+                                enhancement.bindVideoIdentity("replacement", replacement)
+                                awaitSession { enhancement.state.value.sourceVersion == replacement }
+                            }
+                            "configuration" -> assertNotNull(player.setNvidiaVideoEnhancementIfSourceVersion(source, NvidiaVideoOptions(3.0)))
+                            "account" -> {
+                                epoch.incrementAndGet()
+                                enhancement.bindVideoIdentity("replacement-account", source)
+                                awaitSession { enhancement.state.value.identity == "replacement-account" }
+                            }
+                            "session" -> enhancement.close()
+                        }
+                        // Observe receipt retirement under its existing lock; never
+                        // call the projection or mutate the session's ownership.
+                        val ownership = DesktopVideoEnhancementSession::class.java.getDeclaredField("ownershipLock").apply { isAccessible = true }.get(enhancement)
+                        val clearing = DesktopVideoEnhancementSession::class.java.getDeclaredField("clearing").apply { isAccessible = true }
+                        awaitSession { synchronized(ownership) { clearing.get(enhancement) == null } }
+                        val before = enhancement.state.value
+                        val nativeBefore = player.nvidiaVideoState.value
+                        actor.native.rejectRemoval = true
+                        actor.apply(withdrawal)
+                        if (retirement == "source" || retirement == "configuration")
+                            assertEquals(nativeBefore, player.nvidiaVideoState.value, retirement)
+                        else assertNotNull(player.nvidiaVideoState.value.error, "The actual actor produced the late error: $retirement")
+                        assertNull(enhancement.state.value.error, retirement)
+                        if (retirement == "session") assertEquals(before, enhancement.state.value)
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun awaitSession(condition: () -> Boolean) = withTimeout(3_000) {
+        while (!condition()) delay(10)
+    }
+
     @Test fun confirmedUnsupportedOutputIsUnavailableWithoutAnErrorOrFilter() {
         // Includes the actual cloud vendor ID, another non-NVIDIA vendor, an unsupported
         // native context, and the existing CPU render target. No physical GPU is claimed.
