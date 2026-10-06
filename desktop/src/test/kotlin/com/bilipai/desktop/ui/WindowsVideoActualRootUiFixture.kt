@@ -3094,6 +3094,32 @@ object WindowsVideoActualRootUiFixture {
             edt { guard(true); originalMain.extendedState=originalPlacement }
             val minimizedRestored = restoredOrCompleted(third, thirdOrigin)
             capture("226-feedback-minimize-restored")
+            // Restoring Main can briefly publish only its focused Like node.
+            // Settle the complete original detail target before capturing whether
+            // the decorative peer is still live; never extend or replay its lifetime.
+            var restoredCloseBounds: Rectangle? = null
+            var restoredCloseStableSince = 0L
+            await("restored original detail close control is complete and geometrically stable before one OS click") { edt {
+                guard()
+                val detail = runCatching { detailPaneScope() }.getOrNull()
+                val matches = detail?.let { descendants(it).filter { control ->
+                    hasLabel(control, "关闭详情") && visible(control, originalMain) &&
+                        control.accessibleRole == javax.accessibility.AccessibleRole.PUSH_BUTTON &&
+                        control.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                        (control.accessibleAction?.accessibleActionCount ?: 0) == 1
+                } }.orEmpty()
+                check(matches.size <= 1) { "More than one original enabled detail close action" }
+                val control = matches.singleOrNull()
+                if (control == null) {
+                    restoredCloseBounds = null; restoredCloseStableSince = 0L; return@edt false
+                }
+                val component = requireNotNull(control.accessibleComponent)
+                val bounds = Rectangle(requireNotNull(component.locationOnScreen), component.size)
+                val now = System.nanoTime()
+                if (bounds != restoredCloseBounds) {
+                    restoredCloseBounds = bounds; restoredCloseStableSince = now; false
+                } else now - restoredCloseStableSince >= Duration.ofMillis(200).toNanos()
+            } }
             val fallbackLive = edt { guard(); live(thirdOrigin) }
             physicalClick(originalMain,"关闭详情", if (fallbackLive) third else null)
             await("actual Like anchor disposal returns feedback to original video fallback") { edt {
