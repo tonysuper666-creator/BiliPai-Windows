@@ -1563,7 +1563,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     capturePlaybackState = { playback.state.value.details?.raw?.let { raw ->
                                         com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Success(
                                             info = raw.copy(cid = capturedCid), playUrl = capturedSource.source.videoUrl)
-                                    } }, attention = null, onFeedback = { error = it })
+                                    } }, attention = null,
+                                    onRelatedVideoLink = { bvid -> if (currentCommand()) openVideo(VideoCard(bvid,"","","",0,0)) },
+                                    onFeedback = { error = it })
                             }) else null,
                             onSeekTo = if ((showVideo || section == DesktopSection.STORY) && playing.details != null) playback::seekTo else null,
                             renderSurface = !pipActive, onPictureInPicture = if (pip != null && hostWindow != null) ({ pip.open(hostWindow, initialized.state.value.sourceTitle) }) else null)
@@ -1831,6 +1833,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                         .withPresentationAdmission(capturedAssembly, capturedSource, action) },
                                                     capturePlaybackState = capturedAssembly.playback::captureDesktopPlaybackState,
                                                     attention = attention,
+                                                    onRelatedVideoLink = { bvid -> if (ownsDanmakuSource()) messageRoutes.callbackFor(entryKey) {
+                                                        openVideo(VideoCard(bvid,"","","",0,0))
+                                                    } },
                                                     onFeedback = { error = it })
                                             }
                                         },

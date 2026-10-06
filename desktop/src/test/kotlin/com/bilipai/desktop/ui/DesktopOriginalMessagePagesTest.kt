@@ -537,7 +537,7 @@ class DesktopMessageUpdateInstallationHoldTest {
             val page=f.pageOwner();val old=page.chat(7,1);ready(f,old)
             blockedSend(f,old).use { send->
                 check(page.selectPaneChat(8,1){})
-                val successor=page.chat(8,1);page.keepPaneChat(8,1)
+                val successor=page.chat(8,1);ready(f,successor);page.keepPaneChat(8,1)
                 check(old!==successor && send.job.isCancelled && page.blocksUpdateInstallation())
                 send.close();withTimeout(5_000){send.job.join()}
                 f.waitFor{!child(old).hasPendingEditorMutations()}

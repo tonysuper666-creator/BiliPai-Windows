@@ -3,6 +3,7 @@ from v025_source_paths import canonical_source as _desktop_canonical_source
 from pathlib import Path
 import hashlib,importlib.util,sys,textwrap,json
 import v029_command_vote as v029
+import v030_command_link as v030
 sys.dont_write_bytecode=True
 BASE="app/src/main/java/com/android/purebilibili/"
 PINS={'app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt': '4e57ab6372d3dfd4dc801c67f12e8c1e4263a846c06485a52ba8e91d3bd05e1f', 'app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt': 'b9393e987cfabe627baaf7ac2ed3e54fa8e84d9db0079e7f8b37760422a21d5b'}
@@ -29,12 +30,13 @@ def generate(repo:Path,output:Path):
   target=output/path;target.parent.mkdir(parents=True,exist_ok=True)
   target.write_text("// GENERATED from "+p+"; do not edit.\n// LF-normalized SHA-256: "+PINS[p]+"\n"+body,encoding="utf-8",newline="\n")
  p=BASE+"feature/video/ui/overlay/CommandDanmakuOverlay.kt";read(p)
- original=v029.read(repo,p);edits=[];s=v029.adapt_overlay(original,edits)
+ original=v030.read(repo,p);edits=[];s=v029.adapt_overlay(original,edits)
  def emit_v029(path,source_path,body):
   target=output/path;target.parent.mkdir(parents=True,exist_ok=True)
   size,raw_sha,blob=v029.PINS[source_path]
   target.write_text("// GENERATED from "+source_path+"; do not edit.\n// Fixed upstream "+v029.COMMIT+"; raw SHA-256: "+raw_sha+"; Git blob: "+blob+"\n"+body,encoding="utf-8",newline="\n")
- emit_v029("com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlay.kt",p,s)
+ v030.emit(output,"com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandDanmakuOverlay.kt",p,s)
+ v030.emit_link_callbacks(repo,output)
  for source_path in [v029.POLICY,v029.STATE]:
   emit_v029(source_path.split("/java/",1)[1],source_path,v029.read(repo,source_path))
  summary=v029.read(repo,v029.SUMMARY)
@@ -59,7 +61,7 @@ internal fun submitOriginalDesktopCommandVote(item: CommandDanmakuItem, option: 
 """
  emit_v029("com/android/purebilibili/feature/video/ui/overlay/DesktopOriginalCommandVoteSubmission.kt",v029.SECTION,header+body+"\n}\n")
  (output/"v029-command-vote-proof.json").write_text(json.dumps({
-  "upstreamCommit":v029.COMMIT,"overlayFullInverse":v029.inverse(s,edits)==original,
+  "upstreamCommit":v029.COMMIT,"overlayUpstreamCommit":v030.COMMIT,"overlaySourcePin":v030.PINS[p],"overlayFullInverse":v029.inverse(s,edits)==original,
   "submissionFullInverse":v029.inverse(body,submission_edits)==original_body,
   "overlayEdits":edits,"submissionEdits":submission_edits,
   "files":v029.PINS,"legacyModalRemovedByOriginalSource": "votePanelVoteId" not in original,

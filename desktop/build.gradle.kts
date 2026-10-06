@@ -1413,7 +1413,9 @@ val extractStableVideoVotes by tasks.registering(Exec::class) {
         repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/video-votes").get().asFile.absolutePath)
     inputs.files("tools/extract-stable-video-votes.py", "tools/sync-upstream.py", sourceManifest)
     inputs.file("tools/v029_command_vote.py")
+    inputs.file("tools/v030_command_link.py")
     inputs.dir("upstream-slices/v029-command-vote")
+    inputs.dir("upstream-slices/v030-command-link")
     inputs.files(
         canonicalOriginalSource("app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt"),
         canonicalOriginalSource("app/src/main/java/com/android/purebilibili/data/repository/DanmakuRepository.kt"),

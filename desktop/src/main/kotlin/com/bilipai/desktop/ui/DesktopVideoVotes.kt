@@ -16,6 +16,8 @@ import com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlay
 import com.android.purebilibili.feature.video.ui.overlay.CommandDanmakuOverlayState
 import com.android.purebilibili.feature.video.ui.overlay.rememberCommandDanmakuOverlayState
 import com.android.purebilibili.feature.video.ui.overlay.submitOriginalDesktopCommandVote
+import com.android.purebilibili.feature.video.ui.overlay.DesktopOriginalCommandLinkConfirmation
+import androidx.compose.ui.awt.LocalAwtWindow
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.bilipai.desktop.data.DesktopDynamicCardOperations
 import com.bilipai.desktop.data.DesktopRepository
@@ -107,6 +109,7 @@ internal fun DesktopVideoCommentVoteCardHost(
 }
 
 /** Complete original command cards; ATTENTION retains its real owned callbacks. */
+@OptIn(androidx.compose.ui.ExperimentalComposeUiApi::class)
 @Composable
 internal fun DesktopVideoCommandVoteContent(
     repository: DesktopRepository,
@@ -121,6 +124,7 @@ internal fun DesktopVideoCommandVoteContent(
     withAdmission: (() -> Unit) -> Boolean,
     capturePlaybackState: () -> VideoPlaybackUiState?,
     attention: DesktopWindowsCommandAttentionBinding?,
+    onRelatedVideoLink: (String) -> Unit,
     onFeedback: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -145,9 +149,24 @@ internal fun DesktopVideoCommandVoteContent(
             onFeedback = { feedback(it) })
     }
     DisposableEffect(alive) { onDispose { alive.set(false) } }
-    key(alive) {
+    val parent = LocalDesktopWindowsPlayerWindow.current
+    key(alive, parent) {
         val scope = rememberCoroutineScope()
         val commandState = rememberCommandDanmakuOverlayState(sourceLease)
+        val latestLinkOwns = rememberUpdatedState(stillOwned)
+        val latestLinkAdmission = rememberUpdatedState(withAdmission)
+        val latestLinkNavigation = rememberUpdatedState(onRelatedVideoLink)
+        val latestCommandsHidden = rememberUpdatedState(hideInteractiveCommands)
+        val link = remember(alive, parent, commandState) {
+            DesktopWindowsCommandLinkBinding(sourceLease, commandState,
+                stillOwned = { current() && latestLinkOwns.value() && !latestCommandsHidden.value && parent?.isShowing == true },
+                withAdmission = { action -> latestLinkAdmission.value(action) },
+                onNavigate = { bvid -> latestLinkNavigation.value(bvid) },
+                onFeedback = { feedback(it) })
+        }
+        DisposableEffect(link) { onDispose { link.close() } }
+        SideEffect { link.retireIfUnowned() }
+        val pendingLink by link.pending.collectAsState()
         val native by player.state.collectAsState()
         val commandItems by danmaku.commandItems.collectAsState()
         val cidOwnedCommands = commandItems.let { danmaku.commandItemsFor(cid) }
@@ -165,8 +184,30 @@ internal fun DesktopVideoCommandVoteContent(
                     state = commandState, fontScale = fontScale, isFollowing = attentionState?.isFollowing ?: false,
                     onFollowClick = { if (attentionOwned && current()) attention?.follow() },
                     onTripleClick = { if (attentionOwned && current()) attention?.triple() },
+                    onLinkClick = { item -> link.open(item) },
                     onVoteSubmit = { item, option, index ->
                         submitOriginalDesktopCommandVote(item, option, index, capturedState(), commandState, scope, platform)
+                    })
+            }
+        }
+        pendingLink?.let { request ->
+            if (link.isCurrent(request)) DesktopWindowsPlayerDialog("跳转关联视频", { link.dismiss(request) },
+                preferredHeightDp = 320) {
+                var contentMount by remember(link, request) { mutableStateOf<DesktopWindowsCommandLinkMount?>(null) }
+                val capturedMount = contentMount
+                DesktopOriginalCommandLinkConfirmation(request.item,
+                    onDismiss = { link.dismiss(request) },
+                    onConfirm = { target -> capturedMount?.let { receipt -> link.confirm(request, receipt, target) } },
+                    onMounted = {
+                        val actualDialog = LocalAwtWindow.current
+                        DisposableEffect(link, request, actualDialog) {
+                            val receipt = link.mount(request) { actualDialog?.isDisplayable == true && actualDialog.isShowing }
+                            contentMount = receipt
+                            onDispose {
+                                receipt?.let { link.unmount(it) }
+                                if (contentMount === receipt) contentMount = null
+                            }
+                        }
                     })
             }
         }

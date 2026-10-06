@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+  "hashNormalization": "raw",
+  "files": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt",
+      "bytes": 42133,
+      "sha256": "116a9f1450ccdaec9d1a8c2ea923558aec2faacb2fa8ffbce43edcc74d08023d",
+      "gitBlob": "048e91ba7711a9d92370de27f679466f14d506e7",
+      "commit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/app/src/main/java/com/android/purebilibili/feature/video/ui/overlay/CommandDanmakuOverlay.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt",
+      "bytes": 316137,
+      "sha256": "880feb3fcd54278b3563c9325402b5f1e081159c9730e9e029f91878a7e40237",
+      "gitBlob": "0f0b3fd6d0843c2c8582fd5ead2caa3f7e54f052",
+      "commit": "0e2206a85e288ba08f361cc636fab0710c2b9ab8",
+      "url": "https://github.com/jay3-yy/BiliPai/blob/0e2206a85e288ba08f361cc636fab0710c2b9ab8/app/src/main/java/com/android/purebilibili/feature/video/ui/section/VideoPlayerSection.kt"
+    }
+  ]
+}
