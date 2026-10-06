@@ -27,6 +27,7 @@ ARCHIVE_URLS = [
 CASES = ('awt-alpha-only', 'mpv-default-flip', 'mpv-bitblt', 'mpv-adaptive')
 SURFACE_DEBUG_CASES = ('mpv-default-flip', 'mpv-bitblt', 'mpv-default-debug', 'mpv-default-flip-panscan1',
                        'mpv-default-flip-panscan0', 'mpv-default-flip-panscan1-clear', 'mpv-default-flip-zoom-equivalent')
+LOAD_ORDER_CASES = ('mpv-default-flip-panscan1-immediate', 'mpv-default-flip-panscan1')
 SHADER_CASES = ('shader-clear-default-retained', 'shader-clear-default-seek',
                 'shader-clear-nodumb-retained', 'shader-clear-nodumb-seek')
 SHADER_INPUT_PINS = {
@@ -198,7 +199,7 @@ $os = Get-ItemProperty -LiteralPath 'Registry::HKEY_LOCAL_MACHINE\SOFTWARE\Micro
         scope='Actual loaded paths sampled at worker retirement; filesystem versions/hashes read after exit; registry build metadata; not D3D device/debug ACK')
 
 
-def run_case(case, java, classes, jna, dll, output, java_home, shaders=None, debug_observations=False):
+def run_case(case, java, classes, jna, dll, output, java_home, shaders=None, debug_observations=False, load_order_observations=False):
     work = output / (case + '-work')
     work.mkdir()
     data = work / 'private-data'
@@ -209,8 +210,11 @@ def run_case(case, java, classes, jna, dll, output, java_home, shaders=None, deb
     if case != 'awt-alpha-only':
         command += ['--mpv', str(dll)]
     if debug_observations:
-        assert case in SURFACE_DEBUG_CASES
+        assert case in SURFACE_DEBUG_CASES + LOAD_ORDER_CASES
         command += ['--surface-debug-observations', 'true']
+    if load_order_observations:
+        assert debug_observations and case in LOAD_ORDER_CASES
+        command += ['--load-order-observations', 'true']
     if case in SHADER_CASES:
         command += ['--shader-root', str(shaders)]
     started = time.monotonic()
@@ -276,7 +280,7 @@ def main():
     parser.add_argument('--java-home', type=Path, required=True)
     parser.add_argument('--mpv-archive', type=Path)
     parser.add_argument('--jna-jar', type=Path)
-    parser.add_argument('--suite', choices=('surface', 'shader-clear', 'surface-debug'), default='surface')
+    parser.add_argument('--suite', choices=('surface', 'shader-clear', 'surface-debug', 'surface-load-order'), default='surface')
     args = parser.parse_args()
     sys.stdout.reconfigure(encoding='utf-8')
     if os.name != 'nt':
@@ -284,7 +288,8 @@ def main():
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     started = time.monotonic()
-    cases = SHADER_CASES if args.suite == 'shader-clear' else SURFACE_DEBUG_CASES if args.suite == 'surface-debug' else CASES
+    cases = (LOAD_ORDER_CASES if args.suite == 'surface-load-order' else SHADER_CASES if args.suite == 'shader-clear'
+             else SURFACE_DEBUG_CASES if args.suite == 'surface-debug' else CASES)
     summary = {'diagnosticOnly': True, 'productReleaseGatePassed': False, 'suite': args.suite, 'cases': [], 'passed': False}
     try:
         java_home = args.java_home.resolve(strict=True)
@@ -332,7 +337,9 @@ def main():
                            cwd=output, env=env, check=True, stdout=log, stderr=subprocess.STDOUT, timeout=20)
         for case in cases:
             try:
-                row = run_case(case, java, classes, jna, dll, output, java_home, shaders, debug_observations=args.suite == 'surface-debug')
+                row = run_case(case, java, classes, jna, dll, output, java_home, shaders,
+                               debug_observations=args.suite in ('surface-debug', 'surface-load-order'),
+                               load_order_observations=args.suite == 'surface-load-order')
             except Exception as error:
                 row = {'case': case, 'passed': False, 'runnerError': type(error).__name__}
             summary['cases'].append(row)

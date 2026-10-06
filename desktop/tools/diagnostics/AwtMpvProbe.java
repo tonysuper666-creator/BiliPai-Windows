@@ -33,6 +33,8 @@ public final class AwtMpvProbe {
     private static final long DLL_BYTES = 120342528L;
     private static final int WIDTH = 320, HEIGHT = 180, FPS = 20, SECONDS = 10;
     private static final String ZOOM_CASE = "mpv-default-flip-zoom-equivalent";
+    private static final String IMMEDIATE_PANSCAN_CASE = "mpv-default-flip-panscan1-immediate";
+    private static final String RETAINED_PANSCAN_CASE = "mpv-default-flip-panscan1";
     // aspect.c: 704x396 fit -> 712x401 cover; actual OSD readbacks decide comparability.
     private static final double EQUIVALENT_ZOOM = Math.log(401.0 / 396.0) / Math.log(2.0);
     private static final List<String> FAST = List.of("Anime4K_Clamp_Highlights.glsl", "Anime4K_Restore_CNN_M.glsl",
@@ -63,6 +65,7 @@ public final class AwtMpvProbe {
     private int droppedCaptures;
     private boolean surfacePhysicalFailure;
     private final boolean debugObservations;
+    private final boolean loadOrderObservations;
     private final Double preMountPanscan;
     private int zoomPrimaryCaptures;
     private boolean allZoomPrimaryCapturesComparable = true;
@@ -77,12 +80,12 @@ public final class AwtMpvProbe {
     private DwmApi dwm;
     private Rectangle screenBounds;
 
-    private AwtMpvProbe(String caseName, Path output, Path dll, Path shaderRoot, boolean debugObservations) {
+    private AwtMpvProbe(String caseName, Path output, Path dll, Path shaderRoot, boolean debugObservations, boolean loadOrderObservations) {
         this.caseName = caseName; this.output = output; this.dll = dll; this.shaderRoot = shaderRoot;
-        this.debugObservations = debugObservations;
+        this.debugObservations = debugObservations; this.loadOrderObservations = loadOrderObservations;
         // SelfTest stores this request before Canvas.addNotify creates the native session.
         preMountPanscan = switch (caseName) {
-            case "mpv-default-flip-panscan1", "mpv-default-flip-panscan1-clear" -> 1.0;
+            case RETAINED_PANSCAN_CASE, "mpv-default-flip-panscan1-clear", IMMEDIATE_PANSCAN_CASE -> 1.0;
             case "mpv-default-flip-panscan0", ZOOM_CASE -> 0.0;
             default -> null;
         };
@@ -91,6 +94,9 @@ public final class AwtMpvProbe {
         result.put("passed", false); result.put("beganUtc", Instant.now().toString());
         result.put("ownPid", PID); result.put("javaVersion", System.getProperty("java.version"));
         if (preMountPanscan != null) result.put("preMountPanscan", preMountPanscan);
+        if (loadOrderObservations) result.put("loadOrderExperiment", Map.of("diagnosticOnly", true,
+            "expectedSequence", caseName.equals(IMMEDIATE_PANSCAN_CASE) ? "immediate" : "retained",
+            "scope", "First-load scheduling comparison only; not a product fix or release gate"));
         if (caseName.equals(ZOOM_CASE)) result.put("equivalentZoomGeometry", Map.of(
             "status", "notComparable", "reason", "No primary physical sample yet", "requestedZoom", EQUIVALENT_ZOOM));
         result.put("javaVendor", System.getProperty("java.vendor"));
@@ -112,19 +118,26 @@ public final class AwtMpvProbe {
         try {
             Map<String, String> cli = new LinkedHashMap<>();
             for (int i = 0; i < args.length; i += 2) {
-                if (i + 1 >= args.length || !Set.of("--case", "--output", "--mpv", "--shader-root", "--surface-debug-observations").contains(args[i]) ||
+                if (i + 1 >= args.length || !Set.of("--case", "--output", "--mpv", "--shader-root", "--surface-debug-observations", "--load-order-observations").contains(args[i]) ||
                     cli.put(args[i], args[i + 1]) != null) throw new IllegalArgumentException("Invalid or duplicate CLI argument");
             }
             String name = cli.get("--case");
-            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE,
+            if (!Set.of("awt-alpha-only", "mpv-default-flip", "mpv-default-debug", "mpv-bitblt", "mpv-adaptive", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE, IMMEDIATE_PANSCAN_CASE,
                 "shader-clear-default-retained", "shader-clear-default-seek", "shader-clear-nodumb-retained", "shader-clear-nodumb-seek").contains(name))
                 throw new IllegalArgumentException("--case must select one diagnostic case");
             String debugFlag = cli.getOrDefault("--surface-debug-observations", "false");
             if (!Set.of("true", "false").contains(debugFlag)) throw new IllegalArgumentException("Invalid debug observation flag");
             boolean debugObservations = debugFlag.equals("true");
-            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE).contains(name))
+            if (debugObservations && !Set.of("mpv-default-flip", "mpv-bitblt", "mpv-default-debug", "mpv-default-flip-panscan1", "mpv-default-flip-panscan0", "mpv-default-flip-panscan1-clear", ZOOM_CASE, IMMEDIATE_PANSCAN_CASE).contains(name))
                 throw new IllegalArgumentException("Debug observations require the explicit surface-debug cases");
             if (name.equals("mpv-default-debug") && !debugObservations) throw new IllegalArgumentException("Debug case requires explicit observations");
+            String loadOrderFlag = cli.getOrDefault("--load-order-observations", "false");
+            if (!Set.of("true", "false").contains(loadOrderFlag)) throw new IllegalArgumentException("Invalid load-order observation flag");
+            boolean loadOrderObservations = loadOrderFlag.equals("true");
+            if (loadOrderObservations && (!debugObservations || !Set.of(IMMEDIATE_PANSCAN_CASE, RETAINED_PANSCAN_CASE).contains(name)))
+                throw new IllegalArgumentException("Load-order observations require the explicit two-case group");
+            if (name.equals(IMMEDIATE_PANSCAN_CASE) && !loadOrderObservations)
+                throw new IllegalArgumentException("Immediate comparison requires explicit load-order observations");
             Path output = Path.of(Objects.requireNonNull(cli.get("--output"), "Missing --output")).toAbsolutePath().normalize();
             if (Files.exists(output, LinkOption.NOFOLLOW_LINKS)) throw new IllegalArgumentException("--output must not exist");
             Path parent = Objects.requireNonNull(output.getParent()).toRealPath();
@@ -132,7 +145,7 @@ public final class AwtMpvProbe {
             Files.createDirectory(output);
             Path dll = name.equals("awt-alpha-only") ? null : Path.of(Objects.requireNonNull(cli.get("--mpv"), "Missing --mpv")).toRealPath();
             Path shaders = name.startsWith("shader-clear-") ? Path.of(Objects.requireNonNull(cli.get("--shader-root"), "Missing --shader-root")).toRealPath() : null;
-            code = new AwtMpvProbe(name, output, dll, shaders, debugObservations).run();
+            code = new AwtMpvProbe(name, output, dll, shaders, debugObservations, loadOrderObservations).run();
         } catch (Throwable error) {
             System.err.println(error.getClass().getSimpleName() + ": " + safe(error.getMessage()));
         }
@@ -179,11 +192,11 @@ public final class AwtMpvProbe {
                     "audioSampleRate", 48000, "audioChannels", 1, "volume", 0, "muted", true));
                 long hwnd = edt(() -> Pointer.nativeValue(Native.getComponentPointer(canvas)) & 0xffffffffL);
                 requireOwn(new Pointer(hwnd));
-                actor = new MpvActor(dll, hwnd, video, audio, caseName, debugObservations, preMountPanscan);
+                actor = new MpvActor(dll, hwnd, video, audio, caseName, debugObservations, preMountPanscan, loadOrderObservations);
                 actor.start();
                 waitCondition("native initialization", 7_000, () -> actor.ready.isDone());
                 actor.ready.get();
-                if (preMountPanscan != null) {
+                if (preMountPanscan != null && !caseName.equals(IMMEDIATE_PANSCAN_CASE)) {
                     // Match ready + activeVideoPanscan before PlayerSelfTest calls load.
                     waitCondition("retained pre-mount panscan readback before first load", 1_500, () ->
                         actor.number("panscan") == preMountPanscan && actor.number("playlist-count") == 0 && !actor.fileLoaded &&
@@ -238,6 +251,7 @@ public final class AwtMpvProbe {
             if (actor != null) {
                 result.put("native", actor.snapshot);
                 result.put("presentationSelection", actor.presentationSelection);
+                if (loadOrderObservations) result.put("firstLoadOrder", actor.firstLoadOrder);
                 try { actor.close(); nativeClosed = true; }
                 catch (Throwable cleanup) { result.put("nativeCleanupError", safe(cleanup.toString())); }
                 try { Files.writeString(output.resolve("native-log.txt"), actor.logs(), StandardOpenOption.CREATE_NEW); }
@@ -1043,14 +1057,18 @@ public final class AwtMpvProbe {
         private final long hwnd;
         private final String selectedCase;
         private final boolean debugObservations;
+        private final boolean loadOrderObservations;
         private final Double preMountPanscan;
+        private final long actorCreatedNanos = System.nanoTime();
+        private long initializeReturnedNanos, readyPublishedNanos, loopIterations, propertyPolls;
+        volatile Map<String, Object> firstLoadOrder = Map.of();
         volatile Map<String, Object> runtimeModules = Map.of();
         volatile String expectedFlip = "yes";
         volatile Map<String, Object> presentationSelection = Map.of();
         private final Thread worker;
-        MpvActor(Path dll, long hwnd, Path video, Path audio, String selectedCase, boolean debugObservations, Double preMountPanscan) {
+        MpvActor(Path dll, long hwnd, Path video, Path audio, String selectedCase, boolean debugObservations, Double preMountPanscan, boolean loadOrderObservations) {
             this.dll = dll; this.hwnd = hwnd; this.video = video; this.audio = audio; this.selectedCase = selectedCase;
-            this.debugObservations = debugObservations; this.preMountPanscan = preMountPanscan;
+            this.debugObservations = debugObservations; this.preMountPanscan = preMountPanscan; this.loadOrderObservations = loadOrderObservations;
             worker = new Thread(this::run, "probe-single-mpv-actor"); worker.setDaemon(true);
         }
         void start() { worker.start(); }
@@ -1075,11 +1093,39 @@ public final class AwtMpvProbe {
         }
         CompletableFuture<Map<String, Object>> loadAfterRetainedPanscan() {
             require(preMountPanscan != null, "Only the retained panscan case defers its first load");
-            return submit((api, handle) -> {
+            return submit(this::loadWithRetainedPanscan);
+        }
+        // Both load-order branches call this exact native sequence. Ordinary suites add no extra reads.
+        private Map<String, Object> loadWithRetainedPanscan(Mpv api, Pointer handle) {
+            Map<String, Object> order = new LinkedHashMap<>();
+            try {
+                if (loadOrderObservations) {
+                    boolean immediate = selectedCase.equals(IMMEDIATE_PANSCAN_CASE);
+                    order.put("sequence", immediate ? "immediate" : "retained");
+                    order.put("timeOrigin", "System.nanoTime relative to this actor creation");
+                    order.put("initializeReturnedNanos", initializeReturnedNanos);
+                    order.put("readyPublishedNanosAtLoad", readyPublishedNanos);
+                    order.put("helperEnteredNanos", System.nanoTime() - actorCreatedNanos);
+                    order.put("loopIterationsAtLoad", loopIterations);
+                    order.put("propertyPollsAtLoad", propertyPolls);
+                    order.put("sameActorWorker", Thread.currentThread() == worker);
+                    order.put("conditionsVerified", false);
+                    require(Thread.currentThread() == worker && initializeReturnedNanos > 0,
+                        "First-load comparison is not on its initialized owner worker");
+                    require(immediate ? !ready.isDone() && readyPublishedNanos == 0 && loopIterations == 0 && propertyPolls == 0 :
+                        ready.isDone() && readyPublishedNanos > initializeReturnedNanos && loopIterations > 0 && propertyPolls > 0,
+                        "First-load comparison scheduling condition differs");
+                }
                 String before = readString(api, handle, "panscan");
                 String count = readString(api, handle, "playlist-count");
                 require(!fileLoaded && "0".equals(count) && before != null &&
                     Double.parseDouble(before) == preMountPanscan, "Retained panscan/empty source changed before first load");
+                if (loadOrderObservations) {
+                    order.put("viewportBefore", readFirstLoadViewport(api, handle));
+                    order.put("playlistCountBeforeLoad", count);
+                    order.put("preloadBeganNanos", System.nanoTime() - actorCreatedNanos);
+                    require(expectedFirstLoadViewport(order.get("viewportBefore")), "Comparison viewport differs before first-load reset");
+                }
                 // Match Action.Load -> clearSectionViewport before loadfile on this same worker.
                 for (String[] option : new String[][] {{"video-zoom", selectedCase.equals(ZOOM_CASE) ? Double.toString(EQUIVALENT_ZOOM) : "0"}, {"video-pan-x", "0"},
                     {"video-pan-y", "0"}, {"keepaspect", "yes"}, {"panscan", preMountPanscan.toString()}})
@@ -1090,7 +1136,17 @@ public final class AwtMpvProbe {
                 String zoom = selectedCase.equals(ZOOM_CASE) ? readString(api, handle, "video-zoom") : null;
                 if (selectedCase.equals(ZOOM_CASE)) require(zoom != null && Math.abs(Double.parseDouble(zoom) - EQUIVALENT_ZOOM) <= 0.000001,
                     "Equivalent zoom was not retained by first-load viewport reset");
+                if (loadOrderObservations) {
+                    order.put("viewportAfter", readFirstLoadViewport(api, handle));
+                    require(expectedFirstLoadViewport(order.get("viewportAfter")), "Comparison viewport differs after first-load reset");
+                    order.put("loadCommandBeganNanos", System.nanoTime() - actorCreatedNanos);
+                }
                 check(api, api.mpv_command(handle, new StringArray(new String[]{"loadfile", video.toString(), "replace"}, "UTF-8")), "loadfile");
+                if (loadOrderObservations) {
+                    order.put("loadCommandReturnedNanos", System.nanoTime() - actorCreatedNanos);
+                    order.put("loadCommandAccepted", true);
+                    order.put("conditionsVerified", true);
+                }
                 if (selectedCase.equals(ZOOM_CASE)) return Map.of("preMountRequest", preMountPanscan, "nativeBeforeLoad", before,
                     "playlistCountBeforeLoad", count, "nativeAfterViewportReset", applied,
                     "loadCommandAccepted", true, "sameActorWorker", Thread.currentThread() == worker,
@@ -1098,7 +1154,26 @@ public final class AwtMpvProbe {
                 return Map.of("preMountRequest", preMountPanscan, "nativeBeforeLoad", before,
                     "playlistCountBeforeLoad", count, "nativeAfterViewportReset", applied,
                     "loadCommandAccepted", true, "sameActorWorker", Thread.currentThread() == worker);
-            });
+
+            } finally {
+                if (loadOrderObservations) firstLoadOrder = Collections.unmodifiableMap(new LinkedHashMap<>(order));
+            }
+        }
+        private Map<String, String> readFirstLoadViewport(Mpv api, Pointer handle) {
+            Map<String, String> values = new LinkedHashMap<>();
+            for (String name : List.of("video-zoom", "video-pan-x", "video-pan-y", "keepaspect", "panscan"))
+                values.put(name, readString(api, handle, name));
+            return Collections.unmodifiableMap(values);
+        }
+        private static boolean expectedFirstLoadViewport(Object raw) {
+            if (!(raw instanceof Map<?, ?> values)) return false;
+            try {
+                return Double.parseDouble((String) values.get("video-zoom")) == 0.0 &&
+                    Double.parseDouble((String) values.get("video-pan-x")) == 0.0 &&
+                    Double.parseDouble((String) values.get("video-pan-y")) == 0.0 &&
+                    "yes".equals(values.get("keepaspect")) &&
+                    Double.parseDouble((String) values.get("panscan")) == 1.0;
+            } catch (RuntimeException unavailable) { return false; }
         }
         CompletableFuture<Map<String, Object>> clearPanscanForEntry(String entry, String pause) {
             require(selectedCase.equals("mpv-default-flip-panscan1-clear"), "Only the explicit reset observation changes panscan");
@@ -1247,11 +1322,15 @@ public final class AwtMpvProbe {
                 for (Map.Entry<String, String> option : options.entrySet()) check(api, api.mpv_set_option_string(handle, option.getKey(), option.getValue()), option.getKey());
                 check(api, api.mpv_request_log_messages(handle, debugObservations ? "debug" : "v"), "request-log-messages");
                 check(api, api.mpv_initialize(handle), "initialize");
-                if (preMountPanscan == null)
+                if (loadOrderObservations) initializeReturnedNanos = System.nanoTime() - actorCreatedNanos;
+                if (selectedCase.equals(IMMEDIATE_PANSCAN_CASE)) loadWithRetainedPanscan(api, handle);
+                else if (preMountPanscan == null)
                     check(api, api.mpv_command(handle, new StringArray(new String[]{"loadfile", video.toString(), "replace"}, "UTF-8")), "loadfile");
+                if (loadOrderObservations) readyPublishedNanos = System.nanoTime() - actorCreatedNanos;
                 ready.complete(null);
                 long last = 0;
                 while (!stopping.get()) {
+                    if (loadOrderObservations) loopIterations++;
                     String pause;
                     while ((pause = pauseCommands.poll()) != null) check(api, api.mpv_set_property_string(handle, "pause", pause), "pause");
                     NativeTask<?> task;
@@ -1297,6 +1376,7 @@ public final class AwtMpvProbe {
                             values.put("glsl-shaders-NODE", shaderFiles); values.put("vo-passes-descriptions-NODE", shaderPasses);
                             values.put("restartEventCount", restartCount);
                         }
+                        if (loadOrderObservations) propertyPolls++;
                         snapshot = Collections.unmodifiableMap(values); last = System.nanoTime();
                     }
                 }

@@ -39,7 +39,7 @@ on:
       diagnostic_suite:
         description: Isolated rendering experiment selected only when render_diagnostic is enabled
         type: choice
-        options: [surface, shader-clear, surface-debug]
+        options: [surface, shader-clear, surface-debug, surface-load-order]
         default: surface
   push:
     branches: ['desktop/windows']
@@ -122,6 +122,9 @@ jobs:
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1/*.json
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1/*.png
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1/*.txt
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1-immediate/*.json
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1-immediate/*.png
+            ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan1-immediate/*.txt
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan0/*.json
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan0/*.png
             ${{ runner.temp }}/bilipai-render-probe/mpv-default-flip-panscan0/*.txt
