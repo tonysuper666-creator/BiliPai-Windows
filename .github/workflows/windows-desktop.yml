@@ -138,6 +138,9 @@ jobs:
       && github.event_name == 'workflow_dispatch' && inputs.comment_search_ui == true
     runs-on: windows-latest
     timeout-minutes: 25
+    permissions:
+      contents: read
+      actions: read
     env:
       COMMENT_UI_CASE: ${{ inputs.comment_ui_case || 'search' }}
     steps:
@@ -178,6 +181,39 @@ jobs:
               throw 'Initial checkout is dirty before runtime preparation.'
           }
           "source_sha=$head" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
+      - name: Check the existing free cache limit without changing settings
+        id: cache_allowance
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $cacheAllowed = $false
+          try {
+              $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json'; 'X-GitHub-Api-Version' = '2026-03-10' }
+              $limit = Invoke-RestMethod -Method Get -Uri 'https://api.github.com/repos/tonysuper666-creator/BiliPai-Windows/actions/cache/storage-limit' -Headers $headers -TimeoutSec 20
+              $size = $limit.max_cache_size_gb
+              $cacheAllowed = ($size -is [int] -or $size -is [long]) -and $size -gt 0 -and $size -le 10
+          } catch {
+              Write-Host 'The cache limit could not be verified; preparation will run without persistent caching.'
+          }
+          "allowed=$($cacheAllowed.ToString().ToLowerInvariant())" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
+          if (-not $cacheAllowed) { Write-Host 'Persistent caching is disabled unless the existing repository limit is at most 10 GB.' }
+      - name: Restore only public Gradle dependencies and content-addressed task outputs
+        id: gradle_cache
+        if: steps.cache_allowance.outputs.allowed == 'true'
+        continue-on-error: true
+        timeout-minutes: 3
+        uses: actions/cache/restore@v4
+        with:
+          # Do not persist user properties, credentials, daemon state, project build
+          # directories, generated source trees, runtime receipts or app sessions.
+          path: |
+            ${{ env.GRADLE_USER_HOME }}/wrapper/dists
+            ${{ env.GRADLE_USER_HOME }}/caches/modules-2
+            ${{ env.GRADLE_USER_HOME }}/caches/build-cache-1
+          key: bilipai-ui-gradle-v1-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties', 'desktop/gradle.properties', 'desktop/settings.gradle.kts', 'desktop/build.gradle.kts', 'desktop/third-party/miuix5157/build.gradle.kts') }}-${{ steps.source.outputs.source_sha }}
+          restore-keys: |
+            bilipai-ui-gradle-v1-${{ runner.os }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties', 'desktop/gradle.properties', 'desktop/settings.gradle.kts', 'desktop/build.gradle.kts', 'desktop/third-party/miuix5157/build.gradle.kts') }}-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -237,6 +273,7 @@ jobs:
           }
           Copy-Item -LiteralPath (Join-Path $nativeSource 'provenance.json') -Destination $nativeResources -Force
       - name: Prepare the original Main test runtime without opening a window
+        id: prepare_runtime
         timeout-minutes: 15
         shell: pwsh
         run: |
@@ -249,6 +286,17 @@ jobs:
             "-Porg.gradle.java.installations.auto-download=false" -I "$initScript" `
             -PcommentSearchPhase=prepare "-PcommentUiCase=$env:COMMENT_UI_CASE" "-PcommentSearchRuntime=$runtime" prepareCommentSearchUiRuntime
           if ($LASTEXITCODE -ne 0) { throw 'Original Main test runtime preparation failed.' }
+      - name: Save Gradle preparation before any actual UI or session is created
+        if: steps.cache_allowance.outputs.allowed == 'true' && steps.prepare_runtime.outcome == 'success' && steps.gradle_cache.outputs.cache-hit != 'true' && steps.gradle_cache.outputs.cache-primary-key != ''
+        continue-on-error: true
+        timeout-minutes: 3
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.GRADLE_USER_HOME }}/wrapper/dists
+            ${{ env.GRADLE_USER_HOME }}/caches/modules-2
+            ${{ env.GRADLE_USER_HOME }}/caches/build-cache-1
+          key: ${{ steps.gradle_cache.outputs.cache-primary-key }}
       - name: Exercise the selected actual Main comment UI with owned dialogs
         timeout-minutes: 5
         shell: pwsh
