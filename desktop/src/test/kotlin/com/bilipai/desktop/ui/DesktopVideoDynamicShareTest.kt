@@ -62,6 +62,12 @@ class DesktopVideoDynamicShareTest {
             epoch = repository.sessionEpoch
             operations = DesktopDynamicCardOperations(repository, epoch)
         }
+        fun sourceOwned() = accepted === source && repository.sessionEpoch == epoch
+        fun sourceAdmit(action: () -> Unit): Boolean {
+            if (!sourceOwned()) return false
+            repository.withPrimaryPlaybackAdmission(epoch, ::sourceOwned) { action() }
+            return true
+        }
         fun current() = popup && accepted === source && repository.sessionEpoch == epoch
         fun admit(action: () -> Unit): Boolean {
             if (!current()) return false
@@ -257,4 +263,130 @@ class DesktopVideoDynamicShareTest {
     @Test fun actualPreparedReceiptRejectsRealAccountRetirement(): Unit = runBlocking {
         withTimeout(5_000){feedbackCase{f->f.sessions.logout()}}
     }
+
+    private fun retainedBindings(
+        f: Fixture, files: DesktopVideoShareFiles,
+        copy: (String) -> Unit = { error("No clipboard expected") },
+        system: DesktopTextShareBindings = DesktopTextShareBindings { _, _, _ -> error("No system chooser expected") },
+        guardedSave: (suspend (String, String, () -> Boolean) -> java.nio.file.Path?)? = null,
+    ): DesktopVideoShareBindings {
+        val following = object : DesktopHomeFollowingRequests {
+            override suspend fun getFollowings(mid: Long, page: Int, pageSize: Int) = error("No following IO expected")
+        }
+        return DesktopVideoShareBindings(f.operations, following, { _, _ -> error("No friend send expected") }, files,
+            { 123L }, f::sourceOwned, copy, {}, system,
+            { _, _, _, _, _ -> error("No native media expected") }, { _, _ -> error("Guarded chooser is required") },
+            { true }, { 1024 }, { 768 }, guardedChooseSave = guardedSave)
+            .forPresentation(f::sourceOwned, f::sourceAdmit, f::sourceOwned).whilePresented { f.popup }
+    }
+
+    @Test fun retainedShareActuallyCompletesOriginalGetThenPostWhileSameOwnerIsHidden(): Unit = runBlocking {
+        withTimeout(5_000) { Fixture().use { f ->
+            val folder = Files.createTempDirectory("retained-share-")
+            try {
+                val bindings = retainedBindings(f, DesktopVideoShareFiles(folder, { error("No cover IO") }, f::sourceOwned, f::sourceAdmit))
+                val original = f.reply
+                f.reply = { request -> original(request).also { if (request.method == "GET") f.popup = false } }
+                assertEquals("ok", bindings.shareToDynamic(f.subject.bvid, "draft across minimize").getOrThrow())
+                assertEquals(listOf("GET", "POST"), f.requests.map { it.request.method })
+                assertFalse(bindings.isPresented()); assertTrue(bindings.isOwned()); assertEquals(123L, bindings.currentMid())
+                var localFinishes = 0
+                assertTrue(bindings.withAdmission { localFinishes++ })
+                f.popup = true
+                assertTrue(bindings.isPresented()); assertEquals(1, localFinishes)
+                assertTrue(f.posts().single().body.contains("draft across minimize"))
+                f.accepted = DesktopOriginalVideoAcceptedPublication(f.source.request, f.source.nativeSource)
+                assertFalse(bindings.isOwned())
+                assertFalse(bindings.withAdmission { error("Retired draft may not publish") })
+                assertFailsWith<CancellationException> { bindings.shareToDynamic(f.subject.bvid, "old draft") }
+                assertEquals(1, f.posts().size)
+            } finally { folder.toFile().deleteRecursively() }
+        } }
+    }
+
+    @Test fun hiddenSourceLeaseCannotLaunchClipboardSystemOrSaveChooser(): Unit = runBlocking {
+        withTimeout(5_000) { Fixture().use { f ->
+            val folder = Files.createTempDirectory("retained-share-effects-")
+            try {
+                var effects = 0
+                val bindings = retainedBindings(f, DesktopVideoShareFiles(folder, { error("No cover IO") }, f::sourceOwned, f::sourceAdmit),
+                    copy = { effects++ }, system = DesktopTextShareBindings { _, _, _ -> effects++; true },
+                    guardedSave = { _, _, _ -> effects++; null })
+                val payload = com.android.purebilibili.feature.video.share.buildVideoSharePayload("Title", f.subject.bvid, "", "Owner", "0")
+                f.popup = false
+                assertTrue(bindings.isOwned()); assertFalse(bindings.isPresented())
+                assertFailsWith<CancellationException> { bindings.copyText(payload.url) }
+                assertFailsWith<CancellationException> { bindings.performTarget(com.android.purebilibili.feature.video.share.VideoShareTarget.SYSTEM_SHARE, payload, null) }
+                val card = com.android.purebilibili.feature.video.share.VideoShareCoverFile(folder.resolve("unused.jpg"), "image/jpeg")
+                assertFailsWith<CancellationException> { bindings.performTarget(com.android.purebilibili.feature.video.share.VideoShareTarget.SAVE_CARD, payload, card) }
+                assertEquals(0, effects); assertTrue(f.requests.isEmpty())
+            } finally { folder.toFile().deleteRecursively() }
+        } }
+    }
+
+    @Test fun foregroundChosenSaveCanFinishOriginalOwnedFileCommitAfterHide(): Unit = runBlocking {
+        withTimeout(5_000) { Fixture().use { f ->
+            val folder = Files.createTempDirectory("retained-share-save-")
+            val destinationFolder = Files.createTempDirectory("retained-share-destination-")
+            try {
+                val files = DesktopVideoShareFiles(folder, { error("No cover IO") }, f::sourceOwned, f::sourceAdmit)
+                val card = files.publish("BiliPai_share_fixture.jpg", "image/jpeg") { java.nio.file.Files.write(it, byteArrayOf(1, 2, 3)) }
+                val destination = destinationFolder.resolve("chosen.jpg")
+                var chooserCalls = 0
+                val bindings = retainedBindings(f, files, guardedSave = { _, _, owned ->
+                    assertTrue(owned()); chooserCalls++; f.popup = false; destination
+                })
+                val payload = com.android.purebilibili.feature.video.share.buildVideoSharePayload("Title", f.subject.bvid, "", "Owner", "0")
+                bindings.performTarget(com.android.purebilibili.feature.video.share.VideoShareTarget.SAVE_CARD, payload, card)
+                assertEquals(1, chooserCalls); assertFalse(bindings.isPresented())
+                assertContentEquals(byteArrayOf(1, 2, 3), Files.readAllBytes(destination))
+                assertFalse(Files.exists(card.path)); assertTrue(f.requests.isEmpty())
+            } finally { folder.toFile().deleteRecursively(); destinationFolder.toFile().deleteRecursively() }
+        } }
+    }
+
+    @Test fun hiddenBeforeActualSystemShowCannotPromoteSourceOnlyHandoff(): Unit = runBlocking {
+        withTimeout(5_000) { Fixture().use { f ->
+            val folder = Files.createTempDirectory("retained-share-native-")
+            try {
+                var observedNativeOwner: (() -> Boolean)? = null
+                val bindings = retainedBindings(f, DesktopVideoShareFiles(folder, { error("No cover IO") }, f::sourceOwned, f::sourceAdmit),
+                    system = DesktopTextShareBindings { _, _, owned ->
+                        assertTrue(owned()); observedNativeOwner = owned; f.popup = false
+                        assertFalse(owned()); false
+                    })
+                val payload = com.android.purebilibili.feature.video.share.buildVideoSharePayload("Title", f.subject.bvid, "", "Owner", "0")
+                bindings.performTarget(com.android.purebilibili.feature.video.share.VideoShareTarget.SYSTEM_SHARE, payload, null)
+                assertTrue(bindings.isOwned()); assertFalse(assertNotNull(observedNativeOwner).invoke())
+                f.popup = true
+                assertFalse(assertNotNull(observedNativeOwner).invoke(), "Failed show cannot revive after restore")
+            } finally { folder.toFile().deleteRecursively() }
+        } }
+    }
+
+    @Test fun actualSaveSelectorRejectsAtEdtBeforeConstructingAnyNativeChooser(): Unit = runBlocking {
+        assertTrue(java.awt.GraphicsEnvironment.isHeadless())
+        val checks = java.util.concurrent.atomic.AtomicInteger()
+        withTimeout(5_000) {
+            assertNull(selectDynamicSaveTarget("owned.jpg", "image/jpeg", stillOwned = { checks.incrementAndGet() == 1 }))
+        }
+        assertEquals(2, checks.get(), "IO preflight passed, exact EDT launch was retired")
+    }
+
+    @Test fun hiddenRetainedBindingRejectsActualAccountEpochReplacement(): Unit = runBlocking {
+        withTimeout(5_000) { Fixture().use { f ->
+            val folder = Files.createTempDirectory("retained-share-account-")
+            try {
+                val bindings = retainedBindings(f, DesktopVideoShareFiles(folder, { error("No cover IO") }, f::sourceOwned, f::sourceAdmit))
+                f.popup = false; assertTrue(bindings.isOwned()); assertEquals(123L, bindings.currentMid())
+                f.sessions.logout()
+                assertFalse(bindings.isOwned())
+                assertFailsWith<CancellationException> { bindings.currentMid() }
+                assertFailsWith<CancellationException> { bindings.shareToDynamic(f.subject.bvid, "retired") }
+                assertFalse(bindings.withAdmission { error("Retired cleanup may not publish") })
+                assertTrue(f.requests.isEmpty())
+            } finally { folder.toFile().deleteRecursively() }
+        } }
+    }
+
 }

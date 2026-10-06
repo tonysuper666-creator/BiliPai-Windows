@@ -253,6 +253,7 @@ def verify_video_share(observations, by, transport, payload_receipt):
     for key in ('sameActualEngagementDomain', 'sameAcceptedPublicationIdentity', 'samePausedNativeSourceAndPreferences',
                 'actualOriginalSheetAndDynamicDialog', 'cancelProducedZeroPosts', 'originalFailureDraftAndErrorRetained',
                 'manualRetryCompletedOriginalProtocol', 'sameSourceHiddenRestoreObserved',
+                'openDraftSamePeerHiddenRestore', 'openDraftTextPreserved',
                 'currentSourceConfirmedShareReceiptObserved', 'exactOwnedPeersDisposed', 'physicalFramesRequireHumanReview'):
         need(proof.get(key) is True, 'missing current original UI assertion ' + key)
     for key in ('confirmedShareInstanceId', 'confirmedShareSourceVersion'):

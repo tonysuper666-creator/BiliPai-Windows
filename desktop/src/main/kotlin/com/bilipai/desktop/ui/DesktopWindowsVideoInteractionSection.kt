@@ -28,6 +28,8 @@ internal class DesktopWindowsVideoInteractionPresentation(
     val mode: DesktopWindowsVideoInteraction,
     val stillOwned: () -> Boolean,
     val dismiss: () -> Unit,
+    val stillPresented: () -> Boolean = stillOwned,
+    val visible: Boolean = true,
 )
 
 /** One window's lexical lease over the original factory admission. Payload/native
@@ -134,6 +136,7 @@ private val LocalDesktopWindowsVideoInteractionWindow = staticCompositionLocalOf
     val source = presentation.sourceOwner
     key(assembly, source) {
         val latestOwned by rememberUpdatedState(presentation.stillOwned)
+        val latestPresented by rememberUpdatedState(presentation.stillPresented)
         val latestAdmission by rememberUpdatedState(admit)
         val latestDismiss by rememberUpdatedState(presentation.dismiss)
         val scope = rememberCoroutineScope()
@@ -157,7 +160,8 @@ private val LocalDesktopWindowsVideoInteractionWindow = staticCompositionLocalOf
                     lease::isOwned, lease::commit, nativeHandoffOwned,
                     { action -> latestAdmission(action) })
             }
-            shareForPresentation(lease::isOwned, lease::commit, nativeHandoffOwned).withPreparedFeedback { bvid ->
+            shareForPresentation(lease::isOwned, lease::commit, nativeHandoffOwned)
+                .whilePresented { latestPresented() }.withPreparedFeedback { bvid ->
                 if (feedback != null) withContext(feedback.context) {
                     currentCoroutineContext().ensureActive()
                     assembly.domains.engagement.showShareFeedback(bvid)
@@ -233,7 +237,7 @@ private val LocalDesktopWindowsVideoInteractionWindow = staticCompositionLocalOf
                     },
                 )
                 DesktopWindowsVideoInteraction.SHARE -> DesktopWindowsPlayerDialog("分享视频", ::dismiss,
-                    preferredHeightDp = 480) {
+                    preferredHeightDp = 480, presentationVisible = presentation.visible) {
                     CompositionLocalProvider(LocalDesktopVideoShareBindings provides share) {
                         VideoShareSheetHost(buildVideoSharePayload(success.info.title, success.info.bvid,
                             success.info.pic, success.info.owner.name,

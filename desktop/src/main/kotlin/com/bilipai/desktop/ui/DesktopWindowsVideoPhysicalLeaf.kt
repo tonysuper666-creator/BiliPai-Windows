@@ -209,13 +209,38 @@ internal class DesktopWindowsVideoActions(
     var audioLanguageMenu by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoAudioSelection?>(null) }
     var audioTrackMenu by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoAudioSelection?>(null) }
     var interactionMode by remember(assembly, collectionQueueSource) { mutableStateOf<DesktopWindowsVideoInteraction?>(null) }
+    // SHARE alone retains its original draft tree across temporary owner hiding.
+    // The same Root, route, account authorization and accepted full source remain required.
+    val retainedShareSource = assembly.native.current()?.takeIf { accepted ->
+        feedbackPresentationCurrent() && shell.factoryFor(assembly).isPresentationCurrent(assembly, accepted) &&
+            success?.info?.let { it.bvid == accepted.request.bvid && it.cid == accepted.request.cid } == true
+    }
+    var showRetainedShare by remember(assembly, retainedShareSource) { mutableStateOf(false) }
+    fun retainedShareCurrent(): Boolean = feedbackPresentationCurrent() && retainedShareSource != null &&
+        shell.factoryFor(assembly).isPresentationCurrent(assembly, retainedShareSource) &&
+        assembly.native.isCurrent(retainedShareSource) && assembly.playback.captureDesktopPlaybackState().let {
+            it is VideoPlaybackUiState.Success && it.info.bvid == retainedShareSource.request.bvid &&
+                it.info.cid == retainedShareSource.request.cid
+        }
     fun collectionQueueCurrent(): Boolean = current() && collectionQueueSource != null &&
         assembly.native.isCurrent(collectionQueueSource) && assembly.playback.captureDesktopPlaybackState().let {
             it is VideoPlaybackUiState.Success && it.info.bvid == collectionQueueSource.request.bvid &&
                 it.info.cid == collectionQueueSource.request.cid
         }
     fun interactionCurrent(): Boolean = collectionQueueCurrent() && rootEnvironment.currentKey() === route
-    fun openInteraction(mode: DesktopWindowsVideoInteraction) { if (interactionCurrent()) interactionMode = mode }
+    fun openInteraction(mode: DesktopWindowsVideoInteraction) {
+        if (interactionCurrent()) {
+            if (mode == DesktopWindowsVideoInteraction.SHARE) {
+                if (retainedShareCurrent()) {
+                    interactionMode = null
+                    showRetainedShare = true
+                }
+            } else {
+                showRetainedShare = false
+                interactionMode = mode
+            }
+        }
+    }
     val aiSummaryEntryEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoContentSettings
         .getVideoAiSummaryEntryEnabled(platforms.holder.settingsContext).collectAsState(true)
     val videoNoteEnabled by com.android.purebilibili.core.store.DesktopOriginalVideoContentSettings
@@ -665,6 +690,12 @@ internal class DesktopWindowsVideoActions(
     interactionMode?.takeIf { interactionCurrent() }?.let { mode ->
         actions.interaction(DesktopWindowsVideoInteractionPresentation(assembly,
             checkNotNull(collectionQueueSource), mode, ::interactionCurrent, { interactionMode = null }))
+    }
+    if (showRetainedShare && retainedShareCurrent()) {
+        actions.interaction(DesktopWindowsVideoInteractionPresentation(assembly,
+            checkNotNull(retainedShareSource), DesktopWindowsVideoInteraction.SHARE,
+            ::retainedShareCurrent, { showRetainedShare = false },
+            stillPresented = ::interactionCurrent, visible = interactionCurrent()))
     }
 
     if (success != null && collectionQueueSource != null && collectionQueueCurrent() &&

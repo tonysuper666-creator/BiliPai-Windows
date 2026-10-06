@@ -1896,10 +1896,18 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 presentation.assembly.native.isCurrent(presentation.sourceOwner) &&
                                                 ordinaryVideo.factoryFor(presentation.assembly)
                                                     .isPresentationCurrent(presentation.assembly, presentation.sourceOwner)
-                                            DesktopWindowsVideoInteractionSection(presentation,
+                                            fun ownedSharePresentation() = !isClosing() && !activatingUpdate && active && hostDisplayable &&
+                                                messageRoutes.currentKey === entryKey && presentation.stillOwned() && ownedShareSource()
+                                            val sharing = presentation.mode == DesktopWindowsVideoInteraction.SHARE
+                                            val windowPresentation = DesktopWindowsVideoInteractionPresentation(
+                                                presentation.assembly, presentation.sourceOwner, presentation.mode,
+                                                { if (sharing) ownedSharePresentation() else ownedInteraction() }, presentation.dismiss,
+                                                stillPresented = ::ownedInteraction, visible = ownedInteraction())
+                                            DesktopWindowsVideoInteractionSection(windowPresentation,
                                                 LocalDesktopOriginalVideoRootPlatforms.current!!.holder.settingsContext,
-                                                { action -> ownedInteraction() && ordinaryVideo.factoryFor(presentation.assembly)
-                                                    .withPresentationAdmission(presentation.assembly, presentation.sourceOwner, action) },
+                                                { action -> (if (sharing) ownedSharePresentation() else ownedInteraction()) &&
+                                                    ordinaryVideo.factoryFor(presentation.assembly)
+                                                        .withPresentationAdmission(presentation.assembly, presentation.sourceOwner, action) },
                                                 overlays::shareForPresentation,
                                                 nativeHandoffOwned = ::ownedShareSource,
                                                 openLink = { url -> if (ownedInteraction())

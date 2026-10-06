@@ -89,11 +89,17 @@ class OriginalDomainCommentComposerTests(unittest.TestCase):
         body=self.body('bgm','CommentInputDialog.kt');legacy=inverse(body,proof['platformAndDraftPublication'])
         self.assertTrue(proof['fixedCanonicalEntireBodyIdentical'])
         self.assertTrue(proof['mentionDraftPublicationRepair'])
-        self.assertEqual(2,len(proof['platformAndDraftPublication']['indexedEdits']))
+        self.assertEqual(7,len(proof['platformAndDraftPublication']['indexedEdits']))
         mention='                                    textFieldValue = TextFieldValue(nextText, nextSelection)\n'
         self.assertEqual(1,legacy.count(mention))
         expected=legacy.replace('import androidx.compose.ui.window.Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n')
         expected=expected.replace(mention,mention+'                                    onDraftChange(nextText, selectedImageUris, isForwardToDynamic)\n')
+        self.assertTrue(proof['windowsNativeClientLayoutOnly'])
+        expected=expected.replace('import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\nimport com.bilipai.desktop.ui.desktopCommentComposerSurfaceHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerColumnHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerInputHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerClientHeightDp\n')
+        expected=expected.replace('            val availablePanelHeightDp = configuration.heightDp.value.toInt() -\n','            val availablePanelHeightDp = desktopCommentComposerClientHeightDp(configuration.heightDp.value.toInt()) -\n')
+        expected=expected.replace('                        .wrapContentHeight(),\n','                        .then(desktopCommentComposerSurfaceHeight()),\n')
+        expected=expected.replace('                        modifier = Modifier\n                            .padding(layoutPolicy.sheetHorizontalPaddingDp.dp)\n','                        modifier = Modifier\n                            .then(desktopCommentComposerColumnHeight())\n                            .padding(layoutPolicy.sheetHorizontalPaddingDp.dp)\n')
+        expected=expected.replace('                                .heightIn(\n                                    min = layoutPolicy.inputBoxMinHeightDp.dp,\n                                    max = layoutPolicy.inputBoxMaxHeightDp.dp\n                                )\n','                                .then(desktopCommentComposerInputHeight(\n                                    min = layoutPolicy.inputBoxMinHeightDp.dp,\n                                    max = layoutPolicy.inputBoxMaxHeightDp.dp\n                                ))\n')
         self.assertEqual(expected,body)
     def test_changed_domain_body_cannot_reuse_a_complete_inverse_receipt(self):
         proof=self.proof('holder','v029-domain-comment-composer-source')

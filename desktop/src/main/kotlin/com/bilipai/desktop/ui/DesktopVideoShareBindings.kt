@@ -31,20 +31,34 @@ internal class DesktopVideoShareBindings(
     private val presentationAdmission: ((() -> Unit) -> Boolean)? = null,
     private val nativeHandoffOwner: (() -> Boolean)? = null,
     private val preparedFeedback: (suspend (String) -> Unit)? = null,
+    private val presentationForeground: (() -> Boolean)? = null,
+    private val guardedChooseSave: (suspend (String, String, () -> Boolean) -> Path?)? = null,
 ) {
     /** Borrow all existing Root effects; only add the popup's exact source lifetime. */
     fun forPresentation(owns: () -> Boolean, admit: ((() -> Unit) -> Boolean),
         handoffOwned: () -> Boolean): DesktopVideoShareBindings =
         DesktopVideoShareBindings(operations, following, sendText, files, mid,
             { isOwned() && owns() }, copy, feedback, textShare, mediaShare, chooseSave,
-            nativeAvailable, windowWidthDp, windowHeightDp, admit, { isOwned() && handoffOwned() }, preparedFeedback)
+            nativeAvailable, windowWidthDp, windowHeightDp, admit, { isOwned() && handoffOwned() }, preparedFeedback,
+            presentationForeground, guardedChooseSave)
 
     /** Prepared feedback is dispatched before the original success toast/dismiss.
      * Its confirmed receipt has source/account lifetime, independent of this sheet. */
     fun withPreparedFeedback(feedback: suspend (String) -> Unit): DesktopVideoShareBindings =
         DesktopVideoShareBindings(operations, following, sendText, files, mid, owner, copy,
             this.feedback, textShare, mediaShare, chooseSave, nativeAvailable,
-            windowWidthDp, windowHeightDp, presentationAdmission, nativeHandoffOwner, feedback)
+            windowWidthDp, windowHeightDp, presentationAdmission, nativeHandoffOwner, feedback,
+            presentationForeground, guardedChooseSave)
+    /** Network/state keep the source lease; only external UI requires foreground. */
+    fun whilePresented(visible: () -> Boolean): DesktopVideoShareBindings =
+        DesktopVideoShareBindings(operations, following, sendText, files, mid, owner, copy,
+            feedback, textShare, mediaShare, chooseSave, nativeAvailable, windowWidthDp, windowHeightDp,
+            presentationAdmission, nativeHandoffOwner, preparedFeedback, visible, guardedChooseSave)
+    fun isPresented(): Boolean = isOwned() && (presentationForeground?.invoke() != false)
+    private fun acceptUiEffect() {
+        if (!isPresented() || !withAdmission { if (!isPresented()) throw CancellationException("Share external UI hidden") } ||
+            !isPresented()) throw CancellationException("Share external UI hidden")
+    }
     suspend fun sharePrepared(bvid: String) { checkOwned(); preparedFeedback?.invoke(bvid); checkOwned() }
     fun canShareToDynamic(): Boolean = isOwned() && operations.canShareVideoToDynamic()
     suspend fun shareToDynamic(bvid: String, text: String): Result<String> {
@@ -73,7 +87,7 @@ internal class DesktopVideoShareBindings(
     val isLandscape: Boolean get() = windowWidthDp().also { require(it > 0) } > screenHeightDp
     fun currentMid(): Long? { if(!isOwned())throw CancellationException("分享账号已退役");return mid() }
     fun showFeedback(message: String) { withAdmission { feedback(message) } }
-    fun copyText(text:String) { acceptEffect();if(!isOwned())throw CancellationException("分享页面已退役");copy(text) }
+    fun copyText(text:String) { acceptUiEffect();if(!isPresented())throw CancellationException("分享页面已退役");copy(text) }
     suspend fun getFollowings(mid:Long,page:Int,pageSize:Int):FollowingsResponse {
         checkOwned();return following.getFollowings(mid,page,pageSize).also {checkOwned()}
     }
@@ -97,13 +111,16 @@ internal class DesktopVideoShareBindings(
                     val card=media
                     checkOwned()
                     if(card == null) {showFeedback("卡片生成失败，未保存");return}
-                    val destination=chooseSave(resolveVideoShareCardFileName(payload),card.mimeType) ?: return
+                    acceptUiEffect()
+                    val guardedSave = guardedChooseSave
+                    val destination = (if (guardedSave == null) chooseSave(resolveVideoShareCardFileName(payload), card.mimeType)
+                        else guardedSave(resolveVideoShareCardFileName(payload), card.mimeType, ::isPresented)) ?: return
                     checkOwned();acceptEffect();files.save(card,destination,::withAdmission);checkOwned();files.retire(card,true);showFeedback("分享卡片已保存")
                 }
                 VideoShareTarget.SYSTEM_SHARE,VideoShareTarget.MORE -> {
                     if(!nativeAvailable()) {showFeedback("Windows 系统分享暂不可用，可复制链接或保存卡片");return}
-                    acceptEffect()
-                    val handoff = DesktopWindowsNativeShareHandoff(::isOwned, nativeHandoffOwner ?: ::isOwned, ::withAdmission)
+                    acceptUiEffect()
+                    val handoff = DesktopWindowsNativeShareHandoff(::isPresented, nativeHandoffOwner ?: ::isOwned, ::withAdmission)
                     val shown = handoff.open { nativeOwned ->
                         if(media == null)textShare.share(resolveVideoShareChooserTitle(payload),payload.text,nativeOwned)
                         else {

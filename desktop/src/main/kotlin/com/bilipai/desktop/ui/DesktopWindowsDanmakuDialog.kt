@@ -38,13 +38,18 @@ internal fun DesktopWindowsDanmakuDialog(
 @Composable
 internal fun DesktopWindowsPlayerDialog(
     title: String, onDismissRequest: () -> Unit, dismissOnEscape: Boolean = true,
-    preferredHeightDp: Int = 720, content: @Composable () -> Unit,
+    preferredHeightDp: Int = 720, presentationVisible: Boolean? = null,
+    content: @Composable () -> Unit,
 ) {
     val parentDensity = LocalDensity.current
     val owner = LocalDesktopWindowsPlayerWindow.current ?: return
-    if (!owner.isShowing) return
+    // Existing dialogs still dispose on hiding. SHARE explicitly keeps the same
+    // AwtWindow/setContent group and only toggles its peer's visible property.
+    if (presentationVisible == null && !owner.isShowing) return
+    if (!owner.isDisplayable) return
     val dismiss = rememberUpdatedState(onDismissRequest)
     DialogWindow(
+        visible = presentationVisible ?: true,
         create = {
             ComposeDialog(owner, Dialog.ModalityType.DOCUMENT_MODAL, owner.graphicsConfiguration).apply {
                 this.title = title
@@ -56,7 +61,9 @@ internal fun DesktopWindowsPlayerDialog(
                 val client = (owner as? RootPaneContainer)?.contentPane ?: owner
                 val transform = owner.graphicsConfiguration.defaultTransform
                 bounds = desktopWindowsPlayerDialogInitialBounds(
-                    Rectangle(client.locationOnScreen, client.size), insets,
+                    Rectangle(if (client.isShowing) client.locationOnScreen else
+                        javax.swing.SwingUtilities.convertPoint(client, 0, 0, owner).apply { translate(owner.x, owner.y) },
+                        client.size), insets,
                     parentDensity.density, transform.scaleX, transform.scaleY,
                     preferredHeightDp = preferredHeightDp,
                 )

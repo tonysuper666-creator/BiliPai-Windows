@@ -369,14 +369,21 @@ internal class DesktopDynamicImageAssets(
 
 internal data class DesktopDynamicSaveTarget(val path: Path, val replaceExisting: Boolean)
 
-internal suspend fun selectDynamicSaveTarget(name: String, mime: String, parent: Component? = null): DesktopDynamicSaveTarget? = withContext(Dispatchers.IO) {
+internal suspend fun selectDynamicSaveTarget(name: String, mime: String, parent: Component? = null,
+    stillOwned: () -> Boolean = { true }): DesktopDynamicSaveTarget? = withContext(Dispatchers.IO) {
+    val caller = currentCoroutineContext()
+    caller.ensureActive()
+    if (!stillOwned()) return@withContext null
     var selected: DesktopDynamicSaveTarget? = null
     SwingUtilities.invokeAndWait {
+        // The original chooser is still the only chooser. Recheck at its actual EDT launch.
+        if (caller[Job]?.isActive == false || !stillOwned()) return@invokeAndWait
         val chooser = JFileChooser().apply { dialogTitle = "保存图片 / 实况视频"; selectedFile = java.io.File(name) }
         if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
+            if (caller[Job]?.isActive == false) return@invokeAndWait
             val file = chooser.selectedFile.toPath()
             val exists = Files.exists(file, NOFOLLOW_LINKS)
-            if (!exists || JOptionPane.showConfirmDialog(parent, "所选文件已存在，是否替换？", "保存", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+            if (!exists || (stillOwned() && JOptionPane.showConfirmDialog(parent, "所选文件已存在，是否替换？", "保存", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION))
                 selected = DesktopDynamicSaveTarget(file, exists)
         }
     }

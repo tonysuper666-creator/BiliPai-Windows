@@ -280,8 +280,15 @@ def dialog_delta(repo,output,canonical,body):
     # through the same caller-owned draft port before an immediate dismissal.
     mention='                                    textFieldValue = TextFieldValue(nextText, nextSelection)\n'
     body=replace(body,mention,mention+'                                    onDraftChange(nextText, selectedImageUris, isForwardToDynamic)\n')
+    # Only the owned Windows native client consumes its actual available height.
+    body=replace(body,'import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\n','import com.bilipai.desktop.ui.DesktopWindowsCommentComposerWindow as Dialog\nimport com.bilipai.desktop.ui.desktopCommentComposerSurfaceHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerColumnHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerInputHeight\nimport com.bilipai.desktop.ui.desktopCommentComposerClientHeightDp\n')
+    body=replace(body,'            val availablePanelHeightDp = configuration.heightDp.value.toInt() -\n','            val availablePanelHeightDp = desktopCommentComposerClientHeightDp(configuration.heightDp.value.toInt()) -\n')
+    body=replace(body,'                        .wrapContentHeight(),\n','                        .then(desktopCommentComposerSurfaceHeight()),\n')
+    body=replace(body,'                        modifier = Modifier\n                            .padding(layoutPolicy.sheetHorizontalPaddingDp.dp)\n','                        modifier = Modifier\n                            .then(desktopCommentComposerColumnHeight())\n                            .padding(layoutPolicy.sheetHorizontalPaddingDp.dp)\n')
+    body=replace(body,'                                .heightIn(\n                                    min = layoutPolicy.inputBoxMinHeightDp.dp,\n                                    max = layoutPolicy.inputBoxMaxHeightDp.dp\n                                )\n','                                .then(desktopCommentComposerInputHeight(\n                                    min = layoutPolicy.inputBoxMinHeightDp.dp,\n                                    max = layoutPolicy.inputBoxMaxHeightDp.dp\n                                ))\n')
     save(output,'v029-domain-comment-dialog-source',dict(upstreamCommit=COMMIT,rawSources=PINS,
         fixedCanonicalEntireBodyIdentical=True,mentionDraftPublicationRepair=True,
+        windowsNativeClientLayoutOnly=True,
         platformAndDraftPublication=whole_proof(before,body)))
     return body
 

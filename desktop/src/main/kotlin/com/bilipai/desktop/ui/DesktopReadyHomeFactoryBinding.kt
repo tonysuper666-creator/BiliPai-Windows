@@ -214,7 +214,8 @@ internal class DesktopReadyHomeFactoryBinding(
             { file, title, text, owned, retired -> nativeShare.shareMedia(file, title, text, owned, retired) },
             { name, mime -> selectDynamicSaveTarget(name, mime, actualWindow)?.path },
             nativeShare::probeMediaAvailable,
-            { profileConfiguration.value.screenWidthDp }, { profileConfiguration.value.screenHeightDp })
+            { profileConfiguration.value.screenWidthDp }, { profileConfiguration.value.screenHeightDp },
+            guardedChooseSave = { name, mime, owned -> selectDynamicSaveTarget(name, mime, actualWindow, owned)?.path })
         val consent = object : DesktopCrashConsentBindings {
             override val enhancedEnabled: Boolean get() = diagnostics?.enhancedEnabled?.value == true
             override suspend fun saveChoice(enabled: Boolean) {

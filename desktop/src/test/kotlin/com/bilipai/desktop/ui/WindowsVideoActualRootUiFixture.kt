@@ -3129,13 +3129,37 @@ object WindowsVideoActualRootUiFixture {
             Thread.sleep(200); baseline = actualPlayer.state.value
             val firstSheet = openSheet(); capture("230-share-original-sheet", firstSheet)
             val firstDialog = openDynamic(firstSheet); typeDraft(firstDialog)
+            val draftBeforeHide = text(firstDialog)
+            check(draftBeforeHide == WindowsVideoDynamicShareReplay.DRAFT && script.count() == 0)
+            // The exact retained outer JDialog must hide without disposing its
+            // original TextField composition or sending the unsent draft.
+            edt {
+                guard(); check(firstSheet.isShowing && firstSheet.isDisplayable && firstDialog.isShowing)
+                originalMain.extendedState = originalPlacement or java.awt.Frame.ICONIFIED
+            }
+            await("open original share draft hides on the same displayable native peer") { edt {
+                guard(true); registerCreatedPeers(); check(script.count() == 0)
+                originalMain.extendedState and java.awt.Frame.ICONIFIED != 0 &&
+                    firstSheet.isDisplayable && !firstSheet.isShowing && !firstSheet.isVisible &&
+                    firstDialog.isDisplayable && !firstDialog.isShowing
+            } }
+            edt {
+                guard(true); check(firstSheet.isDisplayable && !firstSheet.isShowing && script.count() == 0)
+                originalMain.extendedState = originalPlacement
+            }
+            await("open original share draft restores the exact native peer and complete text") { edt {
+                guard(); registerCreatedPeers(); check(script.count() == 0)
+                val sameSheet = children(originalMain).filterIsInstance<javax.swing.JDialog>()
+                    .filter { it.isDisplayable && it.title == "分享视频" }.singleOrNull() === firstSheet
+                sameSheet && firstSheet.isShowing && firstSheet.isVisible && firstDialog.isShowing &&
+                    firstDialog.isDisplayable && text(firstDialog) == draftBeforeHide
+            } }
             capture("231-share-dynamic-draft", firstDialog)
             physicalClick(firstDialog, "取消")
             await("cancel disposes exact original share without a POST") { closed(firstSheet) }
             check(script.count() == 0 && engagement.uiState.value.maidActionId == beforeFeedbackId)
-            // Existing interaction UI is foreground-owned: do not claim that
-            // hiding an open modal preserves its input. This bounded check has
-            // no modal open and proves only the same paused source can return.
+            // After explicit cancellation, a second hide/restore must not
+            // revive the disposed share or change the same paused native source.
             edt { guard(); originalMain.extendedState = originalPlacement or java.awt.Frame.ICONIFIED }
             await("temporary Main hide keeps the same native source after cancel") { edt {
                 guard(true); originalMain.extendedState and java.awt.Frame.ICONIFIED != 0 &&
@@ -3179,6 +3203,7 @@ object WindowsVideoActualRootUiFixture {
                 "samePausedNativeSourceAndPreferences" to JsonPrimitive(true), "actualOriginalSheetAndDynamicDialog" to JsonPrimitive(true),
                 "cancelProducedZeroPosts" to JsonPrimitive(true), "originalFailureDraftAndErrorRetained" to JsonPrimitive(true),
                 "manualRetryCompletedOriginalProtocol" to JsonPrimitive(true), "sameSourceHiddenRestoreObserved" to JsonPrimitive(true),
+                "openDraftSamePeerHiddenRestore" to JsonPrimitive(true), "openDraftTextPreserved" to JsonPrimitive(true),
                 "currentSourceConfirmedShareReceiptObserved" to JsonPrimitive(true), "confirmedShareInstanceId" to JsonPrimitive(success.instanceId),
                 "confirmedShareSourceVersion" to JsonPrimitive(source.sourceVersion), "exactOwnedPeersDisposed" to JsonPrimitive(true),
                 "inputMechanism" to JsonPrimitive("OS_ROBOT"), "syntheticPrimaryMid" to JsonPrimitive(990000024L),
@@ -3370,12 +3395,84 @@ object WindowsVideoActualRootUiFixture {
             } }
             capture("211-composer-reopened-draft", second)
             clickFeatureItem(second, "表情")
-            await("original API emote is visible in the complete original grid") { has(second, WindowsCommentComposerReplay.EMOTE) }
-            capture("212-composer-original-emote", second)
-            clickFeatureItem(second, WindowsCommentComposerReplay.EMOTE)
-            await("actual emote click updates the original draft") { edt {
-                currentSource(); draft()?.text?.contains(WindowsCommentComposerReplay.EMOTE) == true
+            // Semantics can precede the completed panel layout. UI03 captured
+            // the old toolbar position after the new emote semantics appeared.
+            // Wait for the complete panel and stable actual control geometry,
+            // then deliver exactly one ordinary OS click. Never retry insertion.
+            fun emoteBounds(): Rectangle? {
+                currentSource()
+                if (!listOf("小黄脸", "小电视", "热词系列", "私有表情4", "颜文字").all { has(second, it) }) return null
+                val controls = descendants(second.accessibleContext).filter {
+                    hasLabel(it, WindowsCommentComposerReplay.EMOTE) && visible(it, second) &&
+                        it.accessibleRole == javax.accessibility.AccessibleRole.PUSH_BUTTON &&
+                        it.accessibleStateSet.contains(AccessibleState.ENABLED) &&
+                        (it.accessibleAction?.accessibleActionCount ?: 0) == 1
+                }
+                check(controls.size <= 1) { "Ambiguous original emote control" }
+                val control = controls.singleOrNull() ?: return null
+                val component = requireNotNull(control.accessibleComponent)
+                return Rectangle(requireNotNull(component.locationOnScreen), component.size).also {
+                    check(it.width > 0 && it.height > 0 && second.bounds.contains(it))
+                }
+            }
+            var stableBounds: Rectangle? = null
+            var stableSince = 0L
+            await("complete original emote panel has stable physical control geometry") { edt {
+                currentSource()
+                val bounds = emoteBounds()
+                val now = System.nanoTime()
+                if (bounds == null || bounds != stableBounds) {
+                    stableBounds = bounds; stableSince = now; false
+                } else now - stableSince >= Duration.ofMillis(200).toNanos()
             } }
+            capture("212-composer-original-emote", second)
+            val expectedStamp = requireNotNull(composer.commentStamp.value)
+            val expectedEditor = edt { editor(second) }
+            var everNativeEmote = false
+            var everDomainEmote = false
+            fun observeEmote(id: String): Boolean {
+                currentSource()
+                val nativeText = editorText(second)
+                val domainText = draft()?.text.orEmpty()
+                val nativeHas = nativeText.contains(WindowsCommentComposerReplay.EMOTE)
+                val domainHas = domainText.contains(WindowsCommentComposerReplay.EMOTE)
+                everNativeEmote = everNativeEmote || nativeHas
+                everDomainEmote = everDomainEmote || domainHas
+                if (id.isNotEmpty()) {
+                    val field = editor(second)
+                    val text = requireNotNull(field.accessibleText)
+                    val bounds = requireNotNull(emoteBounds())
+                    record(id, mapOf("sameOriginalComposerStamp" to JsonPrimitive(composer.commentStamp.value === expectedStamp),
+                        "sameNativeEditor" to JsonPrimitive(field === expectedEditor),
+                        "nativeTextLength" to JsonPrimitive(nativeText.length), "domainTextLength" to JsonPrimitive(domainText.length),
+                        "nativeContainsEmote" to JsonPrimitive(nativeHas), "domainContainsEmote" to JsonPrimitive(domainHas),
+                        "everNativeContainsEmote" to JsonPrimitive(everNativeEmote), "everDomainContainsEmote" to JsonPrimitive(everDomainEmote),
+                        "nativeCaret" to JsonPrimitive(text.caretPosition),
+                        "nativeEditable" to JsonPrimitive(field.accessibleStateSet.contains(AccessibleState.EDITABLE)),
+                        "focusOwnerClass" to JsonPrimitive(java.awt.KeyboardFocusManager.getCurrentKeyboardFocusManager().focusOwner?.javaClass?.name.orEmpty()),
+                        "emoteX" to JsonPrimitive(bounds.x), "emoteY" to JsonPrimitive(bounds.y),
+                        "emoteWidth" to JsonPrimitive(bounds.width), "emoteHeight" to JsonPrimitive(bounds.height),
+                        "inputMechanism" to JsonPrimitive("OS_ROBOT_SINGLE_CLICK")))
+                }
+                return domainHas
+            }
+            val emotePoint = edt {
+                currentSource(); check(composer.commentStamp.value === expectedStamp && editor(second) === expectedEditor)
+                val bounds = requireNotNull(emoteBounds()); check(bounds == stableBounds)
+                observeEmote("composer-emote-before-os-click")
+                java.awt.Point(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+            }
+            val emoteRobot = java.awt.Robot()
+            emoteRobot.mouseMove(emotePoint.x, emotePoint.y)
+            emoteRobot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
+            try { emoteRobot.delay(35) } finally { emoteRobot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
+            try {
+                await("actual emote click updates the original draft") { edt { observeEmote("") } }
+                edt { observeEmote("composer-emote-after-os-click") }
+            } catch (failure: Throwable) {
+                runCatching { edt { observeEmote("composer-emote-os-click-timeout") } }.exceptionOrNull()?.let(failure::addSuppressed)
+                throw failure
+            }
             // Hide the actual emote panel before the original mention toolbar.
             clickFeatureItem(second, "表情")
             await("original emote panel naturally retires before mention toolbar input") {

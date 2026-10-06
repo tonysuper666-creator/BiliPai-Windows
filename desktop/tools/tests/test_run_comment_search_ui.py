@@ -340,6 +340,7 @@ class VideoShareReceiptTests(unittest.TestCase):
                 'sameActualEngagementDomain','sameAcceptedPublicationIdentity','samePausedNativeSourceAndPreferences',
                 'actualOriginalSheetAndDynamicDialog','cancelProducedZeroPosts','originalFailureDraftAndErrorRetained',
                 'manualRetryCompletedOriginalProtocol','sameSourceHiddenRestoreObserved',
+                'openDraftSamePeerHiddenRestore','openDraftTextPreserved',
                 'currentSourceConfirmedShareReceiptObserved','exactOwnedPeersDisposed','physicalFramesRequireHumanReview')})
         transport['videoDynamicShareInput'] = True
         transport['videoDynamicShare'] = dict(schema=1, expectedAid=170001, actualOriginalVideoDynamicProtocolConsumed=True,
@@ -367,6 +368,16 @@ class VideoShareReceiptTests(unittest.TestCase):
         for key in ('composerInputProofCompleted','commentPublishingAccepted'):
             obs,transport=self.evidence();obs[key]=True
             with self.subTest(key=key),self.assertRaises(ValueError):self.verify('video_share',obs,transport)
+
+    def test_open_draft_same_peer_restore_and_text_preservation_are_separate_literal_proofs(self):
+        for key in ('openDraftSamePeerHiddenRestore', 'openDraftTextPreserved'):
+            for bad in (False, None, 1, 'true', 'missing'):
+                obs, transport = self.evidence()
+                proof = obs['observations'][1]
+                if bad == 'missing': proof.pop(key)
+                else: proof[key] = bad
+                with self.subTest(key=key, bad=bad), self.assertRaises(ValueError):
+                    self.verify('video_share', obs, transport)
 
     def test_real_model_payload_summary_order_origin_and_two_memory_posts_are_exact(self):
         for key,bad in (('scene',1),('dynType',1),('rid',7007),('rid',True),('responseCode',0),
