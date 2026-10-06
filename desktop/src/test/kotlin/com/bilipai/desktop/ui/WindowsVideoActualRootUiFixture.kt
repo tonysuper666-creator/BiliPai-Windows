@@ -3748,8 +3748,23 @@ object WindowsVideoActualRootUiFixture {
             } }
             capture("216-composer-restored-complete-draft", third)
             clickFeatureItem(third, "移除")
-            await("original remove image action updates only the current draft") { edt {
-                currentSource(); draft()?.imageUris?.isEmpty() == true && draft()?.text == withImage.text && draft()?.syncToDynamic == true
+            var removedImageStableSince = 0L
+            val selectedImageCount = Regex("已选\\s+\\d+/9\\s+张")
+            await("original remove image action settles in the same owned editor for 200 ms") { edt {
+                currentSource()
+                check(third.isShowing && third.isDisplayable && ownedWindow(third))
+                val countVisible = descendants(third.accessibleContext).any {
+                    selectedImageCount.containsMatchIn(it.accessibleName.orEmpty()) && visible(it, third)
+                }
+                val ready = draft()?.imageUris?.isEmpty() == true && draft()?.text == withImage.text &&
+                    draft()?.syncToDynamic == true && editorText(third) == withImage.text &&
+                    !countVisible && !has(third, "已选图片") && !has(third, "移除")
+                val now = System.nanoTime()
+                if (!ready) { removedImageStableSince = 0L; false }
+                else {
+                    if (removedImageStableSince == 0L) removedImageStableSince = now
+                    now - removedImageStableSince >= Duration.ofMillis(200).toNanos()
+                }
             } }
             capture("217-composer-image-removed", third)
             close(third)
