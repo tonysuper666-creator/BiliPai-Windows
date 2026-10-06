@@ -360,7 +360,13 @@ object WindowsVideoActualRootUiFixture {
             "sameActualSurfaceAndCanvas" to JsonPrimitive(true), "nativeActorIdentity" to JsonPrimitive(System.identityHashCode(actualPlayer))))
         true
     } }
+    @com.sun.jna.Structure.FieldOrder("x", "y")
+    class DiagnosticScreenPoint : com.sun.jna.Structure(), com.sun.jna.Structure.ByValue {
+        @JvmField var x: Int = 0
+        @JvmField var y: Int = 0
+    }
     private interface FailureWindowApi : StdCallLibrary {
+        fun WindowFromPoint(point: DiagnosticScreenPoint): Pointer?
         fun GetWindowThreadProcessId(hwnd: Pointer, pid: IntByReference): Int
         fun IsWindowVisible(hwnd: Pointer): Boolean
         fun IsIconic(hwnd: Pointer): Boolean
@@ -2921,7 +2927,8 @@ object WindowsVideoActualRootUiFixture {
             } }
             return restored
         }
-        fun physicalClick(surface: Window, label: String, throughPeer: javax.swing.JDialog? = null) {
+        fun physicalClick(surface: Window, label: String, throughPeer: javax.swing.JDialog? = null,
+            observeTarget: ((Rectangle, java.awt.Point) -> Unit)? = null) {
             val point = edt {
                 guard()
                 throughPeer?.let { facts(it, true) }
@@ -2929,7 +2936,9 @@ object WindowsVideoActualRootUiFixture {
                     it.accessibleStateSet.contains(AccessibleState.ENABLED) && (it.accessibleAction?.accessibleActionCount ?: 0) == 1 }.single()
                 val component = requireNotNull(control.accessibleComponent)
                 val location = requireNotNull(component.locationOnScreen)
-                java.awt.Point(location.x + component.size.width / 2, location.y + component.size.height / 2)
+                val point = java.awt.Point(location.x + component.size.width / 2, location.y + component.size.height / 2)
+                observeTarget?.invoke(Rectangle(location, component.size), point)
+                point
             }
             robot.mouseMove(point.x, point.y); robot.mousePress(InputEvent.BUTTON1_DOWN_MASK)
             try { robot.delay(35) } finally { robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK) }
@@ -3254,10 +3263,214 @@ object WindowsVideoActualRootUiFixture {
             val longText = (0 until 80).joinToString("\n") { "zoom ${it.toString().padStart(2, '0')}" }
             try {
                 edt { guard(); check(composer.commentStamp.value == null && !composer.showCommentDialog.value) }
-                physicalClick(originalMain, "详情")
-                await("same source detail pane for post-feedback scale input") { edt {
-                    guard(); runCatching { detailPaneScope() }.isSuccess
-                } }
+                // Observe only this single late OS gesture. No retries, extra wait,
+                // synthetic events, focus changes, or production state mutations.
+                val observedEvents = mutableListOf<JsonObject>()
+                val eventCounts = linkedMapOf<String, Int>()
+                var eventSequence = 0
+                var droppedEvents = 0
+                var observationActive = true // Published before registration; callbacks/retirement use EDT.
+                var targetObservation: JsonElement = JsonNull
+                fun rect(value: Rectangle) = buildJsonObject {
+                    put("x", value.x); put("y", value.y); put("width", value.width); put("height", value.height)
+                }
+                fun diagnostic(block: () -> JsonObject): JsonObject = runCatching(block).getOrElse { error ->
+                    buildJsonObject { put("available", false); put("errorClass", error.javaClass.name) }
+                }
+                fun sceneSnapshot(): JsonObject = diagnostic {
+                    check(EventQueue.isDispatchThread()); guard()
+                    fun field(value: Any, type: String, name: String): Any? {
+                        check(value.javaClass.name == type)
+                        return value.javaClass.getDeclaredField(name).let { check(it.trySetAccessible()); it.get(value) }
+                    }
+                    val panel = requireNotNull(field(originalMain, "androidx.compose.ui.awt.ComposeWindow", "composePanel"))
+                    val container = requireNotNull(field(panel, "androidx.compose.ui.awt.ComposeWindowPanel", "_composeContainer"))
+                    val mediator = requireNotNull(field(container, "androidx.compose.ui.scene.ComposeContainer", "mediator"))
+                    val lazyScene = field(mediator, "androidx.compose.ui.scene.ComposeSceneMediator", "scene\$delegate") as Lazy<*>
+                    check(lazyScene.isInitialized())
+                    val scene = requireNotNull(lazyScene.value)
+                    val sceneType = "androidx.compose.ui.scene.CanvasLayersComposeSceneImpl"
+                    fun observed(read: () -> JsonElement): JsonObject = diagnostic {
+                        buildJsonObject { put("available", true); put("value", read()) }
+                    }
+                    val handler = runCatching {
+                        val base = scene.javaClass.superclass
+                        check(base.name == "androidx.compose.ui.scene.BaseComposeScene")
+                        requireNotNull(base.getDeclaredField("inputHandler").let { check(it.trySetAccessible()); it.get(scene) })
+                    }
+                    val tracker = handler.mapCatching { requireNotNull(field(it, "androidx.compose.ui.scene.ComposeSceneInputHandler", "defaultPointerStateTracker")) }
+                    val previous = handler.mapCatching {
+                        val sender = requireNotNull(field(it, "androidx.compose.ui.scene.ComposeSceneInputHandler", "syntheticEventSender"))
+                        field(sender, "androidx.compose.ui.input.pointer.SyntheticEventSender", "previousEvent")
+                    }
+                    fun previousScalar(name: String): JsonObject = observed {
+                        previous.getOrThrow()?.let { event ->
+                            val value = field(event, "androidx.compose.ui.input.pointer.PointerInputEvent", name)
+                            when (value) { is Int -> JsonPrimitive(value); is Long -> JsonPrimitive(value); else -> error("Unexpected pointer scalar type") }
+                        } ?: JsonNull
+                    }
+                    val pointerState = buildJsonObject {
+                        put("scope", "LAST_COMPOSE_INPUT_CACHE_ONLY_NOT_OS_BUTTON_STATE")
+                        put("trackerButtons", observed { JsonPrimitive(field(tracker.getOrThrow(), "androidx.compose.ui.scene.DefaultPointerStateTracker", "buttons") as Int) })
+                        put("previousEventPresent", observed { JsonPrimitive(previous.getOrThrow() != null) })
+                        put("previousButtons", previousScalar("buttons")); put("previousEventType", previousScalar("eventType"))
+                        put("previousUptime", previousScalar("uptime"))
+                        put("previousPointersDown", observed {
+                            previous.getOrThrow()?.let { event ->
+                                val pointers = field(event, "androidx.compose.ui.input.pointer.PointerInputEvent", "pointers") as List<*>
+                                check(pointers.size <= 8)
+                                JsonArray(pointers.map { pointer -> observed {
+                                    JsonPrimitive(field(requireNotNull(pointer), "androidx.compose.ui.input.pointer.PointerInputEventData", "down") as Boolean)
+                                } })
+                            } ?: JsonNull
+                        })
+                    }
+                    val mainOwner = requireNotNull(field(scene, sceneType, "mainOwner"))
+                    val layers = (field(scene, sceneType, "layers") as List<*>).map { requireNotNull(it) }
+                    check(layers.size <= 8)
+                    val layerType = sceneType + "\$AttachedComposeSceneLayer"
+                    fun method(layer: Any, name: String): Any? {
+                        check(layer.javaClass.name == layerType)
+                        return layer.javaClass.getDeclaredMethod(name).let { check(it.trySetAccessible()); it.invoke(layer) }
+                    }
+                    val owners = layers.map { requireNotNull(method(it, "getOwner")) }
+                    fun owner(value: Any?): JsonElement = if (value == null) JsonNull else buildJsonObject {
+                        put("identity", System.identityHashCode(value)); put("isMainOwner", value === mainOwner)
+                        put("currentLayerIndex", owners.indexOfFirst { it === value })
+                    }
+                    buildJsonObject {
+                        put("available", true); put("observedAtNanos", System.nanoTime()); put("pointerState", pointerState)
+                        put("mediatorMouseEventProcessing", observed { JsonPrimitive(field(mediator, "androidx.compose.ui.scene.ComposeSceneMediator", "isMouseEventProcessing") as Boolean) })
+                        put("mainOwnerIdentity", System.identityHashCode(mainOwner))
+                        put("gestureOwner", owner(field(scene, sceneType, "gestureOwner")))
+                        put("lastHoverOwner", owner(field(scene, sceneType, "lastHoverOwner")))
+                        val focus = field(scene, sceneType, "focusedLayer")
+                        put("focusedLayerIdentity", focus?.let { JsonPrimitive(System.identityHashCode(it)) } ?: JsonNull)
+                        put("layers", JsonArray(layers.map { layer ->
+                            val bounds = method(layer, "getBoundsInWindow") as androidx.compose.ui.unit.IntRect
+                            buildJsonObject {
+                                put("identity", System.identityHashCode(layer))
+                                put("owner", owner(method(layer, "getOwner")))
+                                put("boundsInWindow", rect(Rectangle(bounds.left, bounds.top, bounds.width, bounds.height)))
+                                put("focusable", method(layer, "getFocusable") as Boolean)
+                                put("consumePointerInputOutside", method(layer, "getConsumePointerInputOutside") as Boolean)
+                                put("closed", field(layer, layerType, "isClosed") as Boolean)
+                            }
+                        }))
+                    }
+                }
+                val componentAdmission = mutableListOf<JsonObject>()
+                val observedComponents = edt {
+                    listOf<Pair<String, () -> Component>>("composeInput" to { actualComposeInput(originalMain) },
+                        "nativeHost" to { actualPlayer.surface }, "nativeCanvas" to { actualCanvas }).mapNotNull { (role, resolve) ->
+                        var component: Component? = null
+                        val status = diagnostic {
+                            guard(); val candidate = resolve()
+                            check(candidate.isShowing && candidate.isDisplayable && SwingUtilities.getWindowAncestor(candidate) === originalMain)
+                            component = candidate
+                            buildJsonObject { put("available", true); put("identity", System.identityHashCode(candidate)); put("class", candidate.javaClass.name) }
+                        }
+                        componentAdmission.add(buildJsonObject { put("role", role); put("status", status) })
+                        component
+                    }.distinct()
+                }
+                val registrationErrors = mutableListOf<String>()
+                val mouseObserver = object : java.awt.event.MouseAdapter() {
+                    fun observe(event: MouseEvent) {
+                        if (!EventQueue.isDispatchThread() || !observationActive) return
+                        val source = event.component
+                        if (observedComponents.none { it === source }) return
+                        val key = "${observedComponents.indexOf(source)}:${event.id}"
+                        eventCounts[key] = ((eventCounts[key] ?: 0) + 1).coerceAtMost(1_000_000)
+                        if (eventSequence >= 16) { droppedEvents = (droppedEvents + 1).coerceAtMost(1_000_000); return }
+                        val sequence = ++eventSequence
+                        val delivered = diagnostic { buildJsonObject {
+                            put("available", true); put("sequence", sequence); put("eventId", event.id)
+                            put("eventWhenMillis", event.`when`); put("observedAtNanos", System.nanoTime())
+                            put("sourceIdentity", System.identityHashCode(source)); put("sourceClass", source.javaClass.name)
+                            put("button", event.button); put("modifiersEx", event.modifiersEx); put("consumedAtObserver", event.isConsumed)
+                            put("x", event.x); put("y", event.y); put("screenX", event.xOnScreen); put("screenY", event.yOnScreen)
+                            put("sceneAtComponentObserver", sceneSnapshot())
+                        } }
+                        // Runs after this dispatch has returned; it may follow later
+                        // queued input too, so this snapshot is not an atomic event trace.
+                        EventQueue.invokeLater {
+                            if (observationActive) observedEvents.add(buildJsonObject {
+                                put("event", delivered); put("sceneAfterDispatch", sceneSnapshot())
+                            })
+                        }
+                    }
+                    override fun mouseMoved(event: MouseEvent) = observe(event)
+                    override fun mousePressed(event: MouseEvent) = observe(event)
+                    override fun mouseReleased(event: MouseEvent) = observe(event)
+                }
+                val beforeScene = edt { sceneSnapshot() }
+                var inputFailure: Throwable? = null
+                try {
+                    edt { observedComponents.forEach { component ->
+                        runCatching { component.addMouseListener(mouseObserver) }.exceptionOrNull()?.let { registrationErrors.add(it.javaClass.name) }
+                        runCatching { component.addMouseMotionListener(mouseObserver) }.exceptionOrNull()?.let { registrationErrors.add(it.javaClass.name) }
+                    } }
+                    physicalClick(originalMain, "详情", observeTarget = { bounds, point ->
+                        targetObservation = diagnostic {
+                            guard(); check(clientBounds().contains(point) && originalMain.graphicsConfiguration.defaultTransform.isIdentity)
+                            val nativeHit = diagnostic {
+                                val hit = failureWindowApi.WindowFromPoint(DiagnosticScreenPoint().also { it.x = point.x; it.y = point.y })
+                                val pid = IntByReference()
+                                val sameProcess = hit != null && failureWindowApi.GetWindowThreadProcessId(hit, pid) != 0 &&
+                                    pid.value.toLong() == ProcessHandle.current().pid()
+                                buildJsonObject {
+                                    put("available", true); put("hitOwnedProcess", sameProcess); put("hitTestAtGestureDeliveryObserved", false)
+                                    put("ownedHitHwnd", if (sameProcess) JsonPrimitive(Pointer.nativeValue(hit).toString()) else JsonNull)
+                                    val canvas = Native.getComponentPointer(actualCanvas)
+                                    put("hitIsMain", if (sameProcess) JsonPrimitive(hit == Native.getWindowPointer(originalMain)) else JsonNull)
+                                    put("hitIsCanvas", if (sameProcess) JsonPrimitive(hit == canvas) else JsonNull)
+                                    put("hitIsMpvChild", if (sameProcess) JsonPrimitive(hit == failureWindowApi.GetWindow(canvas, 5)) else JsonNull)
+                                }
+                            }
+                            buildJsonObject {
+                                put("available", true); put("observedAtNanos", System.nanoTime()); put("actionCount", 1)
+                                put("bounds", rect(bounds)); put("screenX", point.x); put("screenY", point.y)
+                                put("clientBounds", rect(clientBounds()))
+                                put("canvasBounds", rect(Rectangle(actualCanvas.locationOnScreen, actualCanvas.size)))
+                                put("nativeHit", nativeHit); put("sceneBeforeRobotMove", sceneSnapshot())
+                            }
+                        }
+                    })
+                    await("same source detail pane for post-feedback scale input") { edt {
+                        guard(); runCatching { detailPaneScope() }.isSuccess
+                    } }
+                } catch (error: Throwable) {
+                    inputFailure = error
+                    throw error
+                } finally {
+                    val diagnosticFailure = runCatching { edt {
+                        observationActive = false
+                        val removalErrors = mutableListOf<Throwable>()
+                        observedComponents.forEach { component ->
+                            runCatching { component.removeMouseListener(mouseObserver) }.exceptionOrNull()?.let(removalErrors::add)
+                            runCatching { component.removeMouseMotionListener(mouseObserver) }.exceptionOrNull()?.let(removalErrors::add)
+                        }
+                        record("feedback-detail-robot-input-diagnostic", mapOf(
+                            "scope" to JsonPrimitive("SINGLE_LATE_OS_GESTURE_COMPONENT_OBSERVATIONS_ONLY"),
+                            "target" to targetObservation, "beforeScene" to beforeScene, "finalScene" to sceneSnapshot(),
+                            "componentAdmission" to JsonArray(componentAdmission.toList()),
+                            "registrationErrors" to JsonArray(registrationErrors.map(::JsonPrimitive)),
+                            "removalErrors" to JsonArray(removalErrors.map { JsonPrimitive(it.javaClass.name) }),
+                            "observedComponents" to JsonArray(observedComponents.map { component -> buildJsonObject {
+                                put("identity", System.identityHashCode(component)); put("class", component.javaClass.name)
+                            } }),
+                            "eventCounts" to buildJsonObject { eventCounts.forEach { (key, count) -> put(key, count) } },
+                            "events" to JsonArray(observedEvents.toList()), "droppedEvents" to JsonPrimitive(droppedEvents),
+                            "eventsScheduled" to JsonPrimitive(eventSequence),
+                            "pendingAfterDispatchSnapshots" to JsonPrimitive(eventSequence - observedEvents.size),
+                            "postDispatchSnapshotsAreAtomic" to JsonPrimitive(false), "listenersRemoved" to JsonPrimitive(removalErrors.isEmpty()),
+                            "detailPaneObservedAtEnd" to JsonPrimitive(runCatching { detailPaneScope() }.isSuccess),
+                            "unknownDeliveryIsSuccess" to JsonPrimitive(false), "physicalPixelsReviewed" to JsonPrimitive(false)))
+                        removalErrors.firstOrNull()?.let { first -> removalErrors.drop(1).forEach(first::addSuppressed); throw first }
+                    } }.exceptionOrNull()
+                    diagnosticFailure?.let { error -> inputFailure?.addSuppressed(error) ?: throw error }
+                }
                 tab("评论"); physicalClick(originalMain, "发表评论")
                 await("one actual original comment dialog for post-feedback scale input") {
                     modal("发表评论")?.also { scalePeer = it }?.let { it.isShowing && it.isModal } == true
