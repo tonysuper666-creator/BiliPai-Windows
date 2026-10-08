@@ -116,9 +116,11 @@ def main():
             or not re.fullmatch(r'[0-9a-f]{40}', commit)):
         raise DeliveryError('Only an explicit own-repository source-tag build can save a draft')
     # The step token stays in this process; even the read-only Git child does not receive it.
+    repository_root = Path(__file__).resolve().parents[3]
     child_env = {key: value for key, value in os.environ.items() if key != 'GITHUB_TOKEN'}
-    actual_head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True,
-                                          env=child_env).strip()
+    actual_head = subprocess.check_output(
+        ['git', '-c', 'safe.directory=' + str(repository_root), 'rev-parse', 'HEAD'],
+        cwd=repository_root, text=True, env=child_env).strip()
     if actual_head != commit:
         raise DeliveryError('Checked-out source differs from the workflow commit')
     status_path = owned_file(directory, 'build-status.json')

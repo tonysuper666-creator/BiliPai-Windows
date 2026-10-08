@@ -191,7 +191,8 @@ def main():
                 or os.environ.get('GITHUB_REF_TYPE') != 'tag'
                 or not re.fullmatch(r'rtx-source-[A-Za-z0-9][A-Za-z0-9._-]{0,100}',
                                     os.environ.get('GITHUB_REF_NAME', ''))
-                or subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+                or subprocess.check_output(['git', '-c', 'safe.directory=' + str(ROOT),
+                                            'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
                    != os.environ.get('GITHUB_SHA')):
             raise RuntimeError('CI source builds require the exact pre-existing own source tag')
     if workspace.exists():
