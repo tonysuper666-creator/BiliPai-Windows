@@ -81,13 +81,17 @@ def apply_recipes(recipes, records):
 
 def run(command, log):
     command = [str(x) for x in command]
+    # Only build children inherit this identity; git am keeps each patch author.
+    environment = os.environ.copy()
+    environment['GIT_COMMITTER_NAME'] = 'BiliPai Native Builder'
+    environment['GIT_COMMITTER_EMAIL'] = 'native-builder@bilipai.invalid'
     with log.open('ab') as output:
         marker = ('\nCOMMAND ' + json.dumps(command) + '\n').encode()
         output.write(marker)
         output.flush()
         sys.stdout.buffer.write(marker)
         sys.stdout.buffer.flush()
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=environment)
         try:
             while block := process.stdout.read1(65536):
                 output.write(block)
