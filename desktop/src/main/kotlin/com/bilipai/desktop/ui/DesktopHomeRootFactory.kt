@@ -163,7 +163,7 @@ internal class DesktopHomeRootFactory(
                 navigation.relatedCardTransitionEnabled, navigation.reduceMotion)
             returns = returnOwner
             val search = repository.ownedHomeService(SearchApi::class.java,
-                "https://api.bilibili.com/", epoch, gate::owns)
+                "https://api.bilibili.com/", epoch, entry.requests::isMountedSourceCurrent)
             val liveRoutes = DesktopLiveNavigationBinding(entry.requests.environment, search, runtime.store)
             routes = liveRoutes
             val subscriptionEnabled = runtime.plugins.map { plugins ->

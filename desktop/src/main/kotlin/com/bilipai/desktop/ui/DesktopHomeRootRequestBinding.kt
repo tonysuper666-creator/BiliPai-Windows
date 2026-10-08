@@ -55,22 +55,30 @@ internal class DesktopHomeRootRequestBinding(
         if (!isMountedSourceCurrent()) throw CancellationException("Mounted Home source retired")
     }
     private fun <T> service(type:Class<T>,base:String,guest:Boolean=false)=
-        repository.ownedHomeService(type,base,capturedEpoch,::owns,guest)
+        repository.ownedHomeService(type,base,capturedEpoch,::isMountedSourceCurrent,guest)
     private val api=service(BilibiliApi::class.java,"https://api.bilibili.com/")
     private val guestApi=service(BilibiliApi::class.java,"https://api.bilibili.com/",guest=true)
     private val messages=service(MessageApi::class.java,"https://api.vc.bilibili.com/")
     private val buvid=service(BuvidApi::class.java,"https://api.bilibili.com/")
-    val environment=DesktopHomeProtocolEnvironment(api,guestApi,messages,requestScope,::owns,commitIfCurrent,
-        {assertOwned();preferences.feedMode.value},{assertOwned();preferences.refreshCount.value},
-        {repository.homeWbiKeys(capturedEpoch,::owns,api)},
-        {repository.ownedHomeAccessToken(capturedEpoch,::owns)},
-        {repository.ownedHomeCookie("bili_jct",capturedEpoch,::owns)},
-        {repository.ownedHomeCookie("buvid3",capturedEpoch,::owns)},
-        {repository.assertOwnedHomeSessionRestored(capturedEpoch,::owns)},
-        {repository.ensureOwnedHomeSession(capturedEpoch,::owns,buvid)})
+    // Dedicated request/publication qualification only; never change generic Gate owns.
+    val environment=DesktopHomeProtocolEnvironment(api,guestApi,messages,requestScope,
+        ::isMountedSourceCurrent,::withMountedPublication,
+        {assertMountedSourceCurrent();preferences.feedMode.value},{assertMountedSourceCurrent();preferences.refreshCount.value},
+        {repository.homeWbiKeys(capturedEpoch,::isMountedSourceCurrent,api)},
+        {repository.ownedHomeAccessToken(capturedEpoch,::isMountedSourceCurrent)},
+        {repository.ownedHomeCookie("bili_jct",capturedEpoch,::isMountedSourceCurrent)},
+        {repository.ownedHomeCookie("buvid3",capturedEpoch,::isMountedSourceCurrent)},
+        {repository.assertOwnedHomeSessionRestored(capturedEpoch,::isMountedSourceCurrent)},
+        {repository.ensureOwnedHomeSession(capturedEpoch,::isMountedSourceCurrent,buvid)})
     private fun beginNavRequest(callerJob: Job): DesktopHomeNavRequestSource {
-        val receipt = repository.captureHomeNavRequest(capturedEpoch, capturedMid) { callerJob.isActive && owns() }
-        return DesktopHomeNavRequestSource(receipt, this)
+        var receipt: DesktopHomeNavRequestReceipt? = null
+        // Capture the ORIGINAL per-request receipt in the same mounted Store->entry gate.
+        // A preceding unlocked assert would let an old Root acquire a new installation stamp.
+        val admitted = withMountedPublication {
+            receipt = repository.captureHomeNavRequest(capturedEpoch, capturedMid) { callerJob.isActive && owns() }
+        }
+        if (!admitted) throw CancellationException("Home nav mounted source retired")
+        return DesktopHomeNavRequestSource(requireNotNull(receipt), this)
     }
     internal fun commitNavSource(block: () -> Unit): Boolean {
         var applied = false

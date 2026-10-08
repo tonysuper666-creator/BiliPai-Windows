@@ -142,9 +142,11 @@ internal class DesktopOriginalHomeEmbeddedAggregate private constructor(
                     lifetime.scope, lifetime::owns, lifetime::commit)
                 val partition = PartitionFeedViewModel(partitionEnvironment)
                 val bangumiApi = repository.ownedHomeService(BangumiApi::class.java,
-                    "https://api.bilibili.com/", gate.epoch, lifetime::owns)
+                    "https://api.bilibili.com/", gate.epoch,
+                    { lifetime.owns() && requests.isMountedSourceCurrent() })
                 val searchApi = repository.ownedHomeService(SearchApi::class.java,
-                    "https://api.bilibili.com/", gate.epoch, lifetime::owns)
+                    "https://api.bilibili.com/", gate.epoch,
+                    { lifetime.owns() && requests.isMountedSourceCurrent() })
                 val bangumiRepository = DesktopOriginalBangumiHubRepository(bangumiApi, local.api, searchApi,
                     local.csrf, {
                         var mid: Long? = null

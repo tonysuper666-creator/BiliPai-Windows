@@ -100,7 +100,8 @@ internal class DesktopHomeRetainedEntry private constructor(
                     capturedEpoch, capturedMid, gate::owns, gate::commit, onAuthenticationInvalidated)
                 binding = requests
                 val ownedDynamic = repository.ownedHomeService(DynamicApi::class.java,
-                    "https://api.bilibili.com/", capturedEpoch, gate::owns)
+                    "https://api.bilibili.com/", capturedEpoch,
+                    { gate.owns() && requests.isMountedSourceCurrent() })
                 // Reuse the sole original fetch/pagination implementation, HOME_FOLLOW/video
                 // scope. No Community page DTO or second TodayWatch algorithm is introduced.
                 val originalFollow = DesktopOriginalDynamicTimelineRepository(
