@@ -1,7 +1,7 @@
 // BiliPai core seam, candidate only. GPL-3.0-or-later.
 #define BILIVEYRA_EXPORTS
 #include "bilipai_veyra_core_v1.h"
-#include "veyra/ngx/NgxCoreHost.h"
+#include "bilipai_ngx_shared_host.h"
 #include "veyra/ngx/VideoSrBackend.h"
 #include "veyra/ngx/TrueHdrBackend.h"
 #include <d3d12.h>
@@ -15,21 +15,9 @@
 #include <mutex>
 #include <string>
 using Microsoft::WRL::ComPtr;
-// Only fixed NgxCoreHost.cpp is compiled with its SDK shutdown symbol redirected
-// here. This translation unit keeps the real, unrenamed SDK declaration.
-extern "C" NVSDK_NGX_Result NVSDK_CONV bv_ngx_checked_shutdown_v1(ID3D12Device*);
 namespace {
-std::mutex g_mutex;
+std::mutex& g_mutex=bilipai::ngx::mutex();
 uint64_t g_token = 0;
-// At most these two original modules are pinned, under one authenticated root.
-// A partial/failed pin attempt permanently fixes the root and rejects NGX use.
-std::wstring g_runtimeDirectory;
-HMODULE g_runtimeSr = nullptr, g_runtimeHdr = nullptr;
-bool g_runtimePinFailed = false;
-struct ModuleRef {
-    HMODULE value = nullptr;
-    ~ModuleRef() { if (value) FreeLibrary(value); }
-};
 struct Session {
     bv_config_v1 config{};
     std::wstring runtime;
@@ -45,11 +33,7 @@ struct Session {
     uint64_t nextFence = 1, lastFence = 0, lastSequence = 0;
     bool featuresCreated = false, failed = false, untrackedSubmission = false;
     bool releaseQuarantine = false;
-    bool ngxInitAttempted = false, shutdownArmed = false, shutdownAttempted = false;
-    ID3D12Device* shutdownDevice = nullptr;
-    NVSDK_NGX_Result shutdownResult = NVSDK_NGX_Result_Fail;
-    uint32_t shutdownSeh = 0;
-    veyra::ngx::NgxCoreHost core;
+    bilipai::ngx::HostLease core{this,bilipai::ngx::Kind::Video};
     veyra::ngx::VideoSrBackend sr;
     veyra::ngx::TrueHdrBackend hdr;
     ~Session() {
@@ -71,55 +55,6 @@ int32_t report(bv_status_v1* s, int32_t code, const char* message, HRESULT hr = 
         std::memcpy(s->message, message, (std::min)(std::strlen(message), sizeof(s->message)-1));
     }
     return code;
-}
-bool sameRuntimePath(const std::wstring& a, const std::wstring& b) {
-    return CompareStringOrdinal(a.c_str(), -1, b.c_str(), -1, TRUE) == CSTR_EQUAL;
-}
-int32_t pinRuntimeModule(const wchar_t* name, HMODULE& slot, bv_status_v1* st) {
-    if (slot) return BV_OK;
-    std::error_code ec;
-    const auto expected = std::filesystem::canonical(std::filesystem::path(g_runtimeDirectory) / name, ec);
-    if (ec || !sameRuntimePath(expected.parent_path().native(), g_runtimeDirectory))
-        return report(st, BV_INVALID, "original runtime module must remain inside the authenticated root");
-    std::wstring loadedName(32768, L'\0');
-    ModuleRef module;
-    module.value = LoadLibraryExW(expected.c_str(), nullptr,
-        LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR | LOAD_LIBRARY_SEARCH_SYSTEM32);
-    if (!module.value) return report(st, BV_CORE_FAILURE, "original runtime module load rejected", HRESULT_FROM_WIN32(GetLastError()));
-    const auto length = GetModuleFileNameW(module.value, loadedName.data(), static_cast<DWORD>(loadedName.size()));
-    if (!length || length >= loadedName.size())
-        return report(st, BV_CORE_FAILURE, "loaded runtime module path unavailable");
-    loadedName.resize(length);
-    const auto actual = std::filesystem::canonical(loadedName, ec);
-    if (ec || !sameRuntimePath(actual.native(), expected.native()))
-        return report(st, BV_CORE_FAILURE, "loaded runtime module is not the authenticated file");
-    HMODULE pinned = nullptr;
-    if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_PIN | GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
-            reinterpret_cast<LPCWSTR>(module.value), &pinned))
-        return report(st, BV_CORE_FAILURE, "original runtime module process pin rejected", HRESULT_FROM_WIN32(GetLastError()));
-    if (pinned != module.value) return report(st, BV_CORE_FAILURE, "original runtime module pin identity mismatch");
-    slot = pinned;
-    // Withdraw only our LoadLibrary reference; Windows PIN remains until exit.
-    return BV_OK;
-}
-int32_t pinRuntimeModules(std::wstring& runtime, bv_status_v1* st) {
-    if (g_runtimePinFailed) return report(st, BV_CORE_FAILURE, "runtime pin failed earlier; restart required");
-    std::error_code ec;
-    const auto root = std::filesystem::canonical(runtime, ec);
-    if (ec || !std::filesystem::is_directory(root, ec) || ec)
-        return report(st, BV_INVALID, "authenticated runtime directory unavailable");
-    if (!g_runtimeDirectory.empty() && !sameRuntimePath(g_runtimeDirectory, root.native()))
-        return report(st, BV_INVALID, "runtime directory cannot change within this process");
-    if (g_runtimeDirectory.empty()) g_runtimeDirectory = root.native();
-    // Set before any load/PIN: exceptions or partial success cannot permit
-    // another directory or another unbounded collection of pinned modules.
-    g_runtimePinFailed = true;
-    auto code = pinRuntimeModule(L"nvngx_vsr.dll", g_runtimeSr, st);
-    if (code == BV_OK) code = pinRuntimeModule(L"nvngx_truehdr.dll", g_runtimeHdr, st);
-    if (code != BV_OK) return code;
-    g_runtimePinFailed = false;
-    runtime = g_runtimeDirectory;
-    return BV_OK;
 }
 bool sameObject(IUnknown* a, IUnknown* b) {
     if (!a || !b) return false;
@@ -209,8 +144,8 @@ int32_t submit(Session& s, bv_status_v1* st) {
 int32_t createFeatures(Session& s, bv_status_v1* st) {
     const auto started = begin(s, st); if (started != BV_OK) return started;
     bool ok = true;
-    if (s.config.effects & BV_VIDEO_SR) ok = s.sr.create(s.core, s.list.Get());
-    if (ok && (s.config.effects & BV_VIDEO_HDR)) ok = s.hdr.create(s.core, s.list.Get(), s.runtime);
+    if (s.config.effects & BV_VIDEO_SR) ok = s.sr.create(s.core.host(), s.list.Get());
+    if (ok && (s.config.effects & BV_VIDEO_HDR)) ok = s.hdr.create(s.core.host(), s.list.Get(), s.runtime);
     if (!ok) { s.list->Close(); s.failed = true; return report(st, BV_FEATURE_FAILURE, "Veyra feature creation rejected; inspect upstream diagnostic log"); }
     s.featuresCreated = true;
     const auto submitted = submit(s, st); if (submitted != BV_OK) return submitted;
@@ -223,58 +158,27 @@ int32_t releaseFeatures(Session& s, bv_status_v1* st) {
     s.releaseQuarantine = true; s.failed = true; s.featuresCreated = false;
     const bool initialized = s.core.initialized();
     if (!s.hdr.release() || !s.sr.release() ||
-        (initialized && (!s.core.healthy() || s.core.liveParameterBlockCount() != 0)))
+        (initialized && (!s.core.healthy() || s.core.liveParameterBlockCount() != 0))){
+        s.core.quarantine();
         return report(st, BV_FEATURE_FAILURE, "actual feature/parameter release rejected; restart required, session retained");
+    }
     s.releaseQuarantine = false;
     return BV_OK;
 }
-// Leaf SEH boundary: no C++ object requiring unwinding lives in this frame.
-__declspec(noinline) NVSDK_NGX_Result callActualShutdown(ID3D12Device* device, uint32_t& seh) {
-    seh = 0;
-    NVSDK_NGX_Result result = NVSDK_NGX_Result_Fail;
-    __try { result = NVSDK_NGX_D3D12_Shutdown1(device); }
-    __except (EXCEPTION_EXECUTE_HANDLER) {
-        seh = static_cast<uint32_t>(GetExceptionCode());
-        result = NVSDK_NGX_Result_FAIL_PlatformError;
-    }
-    return result;
-}
-int32_t checkedShutdown(Session& s, bv_status_v1* st) {
-    if (!s.ngxInitAttempted) return BV_OK;
-    // Keep all resources quarantined until the real same-device SDK return has
-    // qualified retirement. Upstream void state changes/logs cannot qualify it.
-    s.releaseQuarantine = true; s.failed = true; s.shutdownArmed = true;
-    if (s.core.initialized()) s.core.shutdown();
-    else (void)bv_ngx_checked_shutdown_v1(s.device.Get());
-    s.shutdownArmed = false;
-    if (!s.shutdownAttempted || s.shutdownDevice != s.device.Get() || s.shutdownSeh ||
-        s.shutdownResult != NVSDK_NGX_Result_Success)
-        return report(st, BV_CORE_FAILURE, "actual device shutdown unqualified; session retained until process exit",
-            S_OK, static_cast<uint32_t>(s.shutdownResult));
-    s.releaseQuarantine = false;
-    return BV_OK;
-}
-bool current(bv_handle_v1 token) { return g_session && token && token == g_token; }
-}
-extern "C" NVSDK_NGX_Result NVSDK_CONV bv_ngx_checked_shutdown_v1(ID3D12Device* device) {
-    // The existing ABI mutex is held by the original Session retirement call.
-    // No second host, thread-local actor, new device or log-derived authority.
-    if (!g_session || device != g_session->device.Get()) return NVSDK_NGX_Result_FAIL_InvalidParameter;
-    auto& s = *g_session;
-    if (s.shutdownAttempted) {
-        // Even if upstream logging/destruction retries, never call SDK twice.
-        return s.shutdownDevice == device ? s.shutdownResult : NVSDK_NGX_Result_FAIL_InvalidParameter;
-    }
-    if (!s.shutdownArmed) return NVSDK_NGX_Result_FAIL_InvalidParameter;
-    s.shutdownAttempted = true; s.shutdownDevice = device;
-    s.shutdownResult = callActualShutdown(device, s.shutdownSeh);
-    return s.shutdownResult;
+int32_t checkedShutdown(Session& s,bv_status_v1* st){
+    s.releaseQuarantine=true;s.failed=true;
+    bilipai::ngx::Issue issue;
+    if(!s.core.retire(issue))
+        return report(st,BV_CORE_FAILURE,issue.message,issue.hr,static_cast<uint32_t>(issue.sdk));
+    s.releaseQuarantine=false;return BV_OK;
+}bool current(bv_handle_v1 token) { return g_session && token && token == g_token; }
 }
 extern "C" int32_t BV_CALL bv_create_v1(const bv_config_v1* c, bv_handle_v1* out, bv_status_v1* st) {
     if (out) *out = 0;
     if (!validStatus(st) || !c || !out || c->size != sizeof(*c) || c->abi != BV_ABI_V1) return report(st, BV_ABI_MISMATCH, "ABI v1 size/version required");
     std::lock_guard lock(g_mutex);
-    if (g_session) return report(st, BV_BUSY, "one process-level core host is already owned");
+    if(g_session||!bilipai::ngx::available())
+        return report(st,BV_BUSY,"one ABI already owns or quarantines the shared process NGX host");
     try {
         veyra::engine::VideoHdrSettings settings{true,c->hdr_contrast,c->hdr_saturation,c->hdr_middle_gray,c->hdr_peak_nits};
         if (!c->session_id || !c->source_generation || !c->adapter_luid || !c->d3d12_device || !c->d3d12_direct_queue ||
@@ -288,8 +192,12 @@ extern "C" int32_t BV_CALL bv_create_v1(const bv_config_v1* c, bv_handle_v1* out
         static_assert(sizeof(wchar_t) == sizeof(uint16_t));
         std::wstring runtime(reinterpret_cast<const wchar_t*>(c->runtime_directory_utf16));
         if (!std::filesystem::path(runtime).is_absolute()) return report(st, BV_INVALID, "runtime directory must be absolute");
-        // Both original feature modules must be process-pinned before NGX init.
-        const auto pinned = pinRuntimeModules(runtime, st); if (pinned != BV_OK) return pinned;
+        // Preserve the v1 public-header contract: both original modules PIN
+        // before NGX, under the one shared authenticated process identity.
+        bilipai::ngx::Issue issue;
+        const auto pinned=bilipai::ngx::pinRuntime(runtime,c->project_id_utf8,c->engine_version_utf8,
+            bilipai::ngx::Kind::Video,bilipai::ngx::VideoSr|bilipai::ngx::TrueHdr,issue);
+        if(pinned!=BV_OK)return report(st,pinned,issue.message,issue.hr);
         auto p = std::make_unique<Session>(); p->config = *c; p->runtime = runtime; p->project = c->project_id_utf8; p->engine = c->engine_version_utf8;
         p->device = static_cast<ID3D12Device*>(c->d3d12_device); p->queue = static_cast<ID3D12CommandQueue*>(c->d3d12_direct_queue);
         if (luidBits(p->device->GetAdapterLuid()) != c->adapter_luid || p->device->GetNodeCount() != 1 ||
@@ -313,7 +221,7 @@ extern "C" int32_t BV_CALL bv_create_v1(const bv_config_v1* c, bv_handle_v1* out
         // destroyed, even after init failure/exception/timeout. No unsafe free.
         g_session=p.release(); *out=++g_token;
         veyra::Status upstream=veyra::Status::Ok;
-        g_session->ngxInitAttempted=true;
+
         if (!g_session->core.initialize(g_session->device.Get(),g_session->runtime,g_session->project.c_str(),g_session->engine.c_str(),upstream)) {
             g_session->failed=true;
             return report(st,BV_CORE_FAILURE,"Veyra NGX core initialization rejected",S_OK,uint32_t(upstream),g_session->core.initResult());
@@ -390,7 +298,7 @@ extern "C" int32_t BV_CALL bv_reset_v1(bv_handle_v1 token,uint64_t session,uint6
         s.config.source_generation=generation;s.lastSequence=0;
         const auto created=createFeatures(s,st);
         return created==BV_OK?report(st,BV_OK,"feature history recreated for the new source generation"):created;
-    }catch(...){s.failed=true;s.releaseQuarantine=true;return report(st,BV_INTERNAL,"native reset exception; session retained until process exit");}
+    }catch(...){s.failed=true;s.releaseQuarantine=true;s.core.quarantine();return report(st,BV_INTERNAL,"native reset exception; session retained until process exit");}
 }
 extern "C" int32_t BV_CALL bv_destroy_v1(bv_handle_v1 token,bv_status_v1* st){
     if(!validStatus(st))return BV_ABI_MISMATCH;
@@ -404,7 +312,7 @@ extern "C" int32_t BV_CALL bv_destroy_v1(bv_handle_v1 token,bv_status_v1* st){
         const auto shutdown=checkedShutdown(s,st);if(shutdown!=BV_OK)return shutdown;
         delete g_session;g_session=nullptr;
         return report(st,BV_OK,"GPU drained, features released, actual device shutdown confirmed; modules remain pinned");
-    }catch(...){s.failed=true;s.releaseQuarantine=true;return report(st,BV_INTERNAL,"native teardown exception; session retained until process exit");}
+    }catch(...){s.failed=true;s.releaseQuarantine=true;s.core.quarantine();return report(st,BV_INTERNAL,"native teardown exception; session retained until process exit");}
 }
 
 

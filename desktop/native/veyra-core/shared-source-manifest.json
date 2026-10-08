@@ -1,0 +1,355 @@
+{
+  "schema": 1,
+  "variant": "bilipai-veyra-shared-core-v1-v2",
+  "moduleRelativeName": "bilipai_veyra_core.dll",
+  "architecture": "windows-x64",
+  "sourceRepository": "https://github.com/Likely7/Veyra-NRVideo",
+  "sourceCommit": "96a7c8de36bc195240161de6814739ad810722f1",
+  "originalVideoRawFiles": 18,
+  "originalDlssRawFiles": 15,
+  "fixedUniqueFiles": 20,
+  "actualSdkHeaderCount": 6,
+  "sdkCommit": "374959484e79a640feaba44c93ac8cfb0a03f5b5",
+  "sharedBuildClosureSha256": "c33283f4f26ac0fa8117b341848cc2aa34749cd12b47c6d18b75765e2da7e12d",
+  "officialSdkManifestSha256": "5fb7a798b0a753f9933fba3b9bec539d592fa7322f9f59b718bdd44fb1c5f812",
+  "adapterEngineVersions": {
+    "v1": "BiliPai-Veyra-Core-1",
+    "v2": "BiliPai-Veyra-DLSS-SR-2"
+  },
+  "actualNgxHostEngineVersion": "BiliPai-Veyra-Core-Shared-1",
+  "wires": {
+    "v1": 65536,
+    "v2": 131072
+  },
+  "exports": [
+    "bv_create_v1",
+    "bv_process_v1",
+    "bv_reset_v1",
+    "bv_destroy_v1",
+    "bvd_create_v2",
+    "bvd_process_v2",
+    "bvd_reset_v2",
+    "bvd_destroy_v2"
+  ],
+  "runtimeOrGpuExecuted": false,
+  "installedModuleBuildSha256": null,
+  "engineStatus": "UNAVAILABLE",
+  "bundledNvidiaFiles": 0,
+  "applicationSelected": false,
+  "pending": [
+    "signed shared-runtime/module/profile authentication",
+    "actual linear/depth/motion producer",
+    "player timeline/consumer integration",
+    "GPU execution and presentation validation",
+    "NR",
+    "DLSS Frame Generation",
+    "NvVFX VFG"
+  ],
+  "files": [
+    {
+      "path": "veyra-core/.gitattributes",
+      "sha256": "9f60ef83ce1c82090bda1bd21f47b0ac091d10b70e93fa4ab837356ff57a975f",
+      "bytes": 116
+    },
+    {
+      "path": "veyra-core/abi_layout_compile.cpp",
+      "sha256": "be0648b1e708895e1a47325b357e3daeba65acde12c1a16ee1435a11791a33a3",
+      "bytes": 506
+    },
+    {
+      "path": "veyra-core/bilipai_ngx_shared_host.cpp",
+      "sha256": "e21dadb460222ef92c5de38246bb34f0d78e245f3ca798c2116a259899a8a7af",
+      "bytes": 9646
+    },
+    {
+      "path": "veyra-core/bilipai_ngx_shared_host.h",
+      "sha256": "5d0d24891dd8b48998f498cc44657f85134fd071897115a1ea98a24610d0633d",
+      "bytes": 1559
+    },
+    {
+      "path": "veyra-core/bilipai_veyra_core_v1.cpp",
+      "sha256": "84e0b6d9525944beeba01b2e7d222e4607801a2347fac780b056754025138cc5",
+      "bytes": 23100
+    },
+    {
+      "path": "veyra-core/bilipai_veyra_core_v1.h",
+      "sha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
+      "bytes": 5311
+    },
+    {
+      "path": "veyra-core/CMakeLists.txt",
+      "sha256": "d184e623af38cf9386a67838aa438c4e1cffbeaf202f81836f68e4ea85922b8a",
+      "bytes": 8069
+    },
+    {
+      "path": "veyra-core/NOTICE.md",
+      "sha256": "935b9ede16be45346de01bedf248ee4bf1eb4e0f8524424f46101383b5f9d57b",
+      "bytes": 1464
+    },
+    {
+      "path": "veyra-core/nvidia-pinned-dependency-hashes.json",
+      "sha256": "9ec6b47b387c2e68125dccc0c71ad6ad5d5860d0f7e406b0ca0302aa863807ff",
+      "bytes": 1659
+    },
+    {
+      "path": "veyra-core/README.md",
+      "sha256": "8512e01b2c875a6598e317c8eb1240f17554e16f8ad01b4beb913015d53c6518",
+      "bytes": 4063
+    },
+    {
+      "path": "veyra-core/SDK_PROVENANCE.json",
+      "sha256": "2f2b808df3648018d39fb7ffc22c8addd2a6dbd636acad6c7d608bbf4d649f5b",
+      "bytes": 1548
+    },
+    {
+      "path": "veyra-core/shared-build-closure.json",
+      "sha256": "c33283f4f26ac0fa8117b341848cc2aa34749cd12b47c6d18b75765e2da7e12d",
+      "bytes": 7885
+    },
+    {
+      "path": "veyra-core/shared-ngx-sdk-pins.json",
+      "sha256": "5fb7a798b0a753f9933fba3b9bec539d592fa7322f9f59b718bdd44fb1c5f812",
+      "bytes": 2299
+    },
+    {
+      "path": "veyra-core/shared-owned-source-hashes.json",
+      "sha256": "0efc52a0d06c103f54969912aa7fac561789c07fae5bbe3597c75df3bcfe47b2",
+      "bytes": 1179
+    },
+    {
+      "path": "veyra-core/shared-veyra-union-hashes.json",
+      "sha256": "6e90e3340a4006c1664a6b7996dfe931c79073f8da3577ba3043c8ad09cb516b",
+      "bytes": 3504
+    },
+    {
+      "path": "veyra-core/UPSTREAM_PROVENANCE.json",
+      "sha256": "742a655f04f87d0992240f95b7ffb1a53a5e47c28cbc5d970e4f558cbc2b6b8a",
+      "bytes": 4505
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/diagnostics/DiagnosticEvent.h",
+      "sha256": "de5678ab9acd31194f056c34a0890d34a8dd918f6f817a9d0641dfabc16459cb",
+      "bytes": 1129
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/diagnostics/FrameTrace.h",
+      "sha256": "fcfe1a7ab5163265fbf97325c417585c33d4b20585b5e42f81d7575f1f0e6498",
+      "bytes": 3065
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/diagnostics/Redaction.h",
+      "sha256": "b22cad816da5aa98c22b5cd1be21b3fb0514c1a43497e6d366a46b5b8885d92d",
+      "bytes": 622
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/engine/VideoHdrSettings.h",
+      "sha256": "40e2701aa052e405f7d6d39415d33a2837a5aa0b3354042c72aaef0266e8c927",
+      "bytes": 406
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/Log.h",
+      "sha256": "2edbde670704c401fe82868bc8a14f4b576bb9abd9c88d52548a8b441e9d40f2",
+      "bytes": 2656
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/ngx/NgxCoreHost.h",
+      "sha256": "b29023c4d5df346cc8d3bec036b3e7430cd351f352a9474f59fa08b5d8df953a",
+      "bytes": 2016
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/ngx/TrueHdrBackend.h",
+      "sha256": "25f6864d5a85ba5f0fbc263fc2c831f537d1d6a88b8f34f1b6954c29b2c8e554",
+      "bytes": 792
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/ngx/VideoSrBackend.h",
+      "sha256": "fde04d1c6eb38e0bd8adbc485c84f3991d81f84f30a9f75c0b7eba292fcc0acd",
+      "bytes": 643
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/NgxResult.h",
+      "sha256": "82d7355f8df9f349d5324e04cd29d717053568f964522464cadd1328d10ccdcb",
+      "bytes": 597
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/pipeline/FrameBatch.h",
+      "sha256": "84481f5e8a7efa3e4fce1fde809d0398023a8be5c9a0daba598122e3a53b904a",
+      "bytes": 2605
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/pipeline/ResolutionPlan.h",
+      "sha256": "ff219366f16236b183d33168db15f5c49d960a5b381b6c1564bb0ebb8da0f631",
+      "bytes": 3308
+    },
+    {
+      "path": "veyra-core/upstream/include/veyra/Result.h",
+      "sha256": "2d402383ee8bc45b141a95123835b82500d59805b10729283dbe492d209966c6",
+      "bytes": 1416
+    },
+    {
+      "path": "veyra-core/upstream/LICENSE",
+      "sha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
+      "bytes": 35823
+    },
+    {
+      "path": "veyra-core/upstream/src/base/Log.cpp",
+      "sha256": "47886884fd2f6caab2a27d325123f31e4a90216becee5d35f05603de621c1682",
+      "bytes": 10347
+    },
+    {
+      "path": "veyra-core/upstream/src/base/NgxResult.cpp",
+      "sha256": "a1032dd871cfa47dd64395f669d15f6efc2a43cbd611b0a3767cb4039cf3684c",
+      "bytes": 4122
+    },
+    {
+      "path": "veyra-core/upstream/src/ngx/NgxCoreHost.cpp",
+      "sha256": "6896e611c5ef88ac3488434fefbf7f8ce274ce6c5824023d9edb2fadbf80eb55",
+      "bytes": 7795
+    },
+    {
+      "path": "veyra-core/upstream/src/ngx/TrueHdrBackend.cpp",
+      "sha256": "fd802f2b705922817aa2f16cae5be97ccaa6316910c4e5e54d8ba8e5f309b055",
+      "bytes": 5763
+    },
+    {
+      "path": "veyra-core/upstream/src/ngx/VideoSrBackend.cpp",
+      "sha256": "5786099afc88f8a3212e98e4121cbccce2384844aa88103a8de15d3725161759",
+      "bytes": 2457
+    },
+    {
+      "path": "veyra-core/veyra-pinned-source-hashes.json",
+      "sha256": "a38801725efdf0ee73f94658d536679685cf3798a12e4abaeafdba6f9b25dd5b",
+      "bytes": 2501
+    },
+    {
+      "path": "veyra-dlss-sr/.gitattributes",
+      "sha256": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+      "bytes": 8
+    },
+    {
+      "path": "veyra-dlss-sr/abi_layout_compile.cpp",
+      "sha256": "48abc8112b3897987456f14c90f7c5713a035c82b289e2692e4b8a64bad60e4d",
+      "bytes": 867
+    },
+    {
+      "path": "veyra-dlss-sr/bilipai_veyra_dlss_sr_v2.cpp",
+      "sha256": "d2cbc169cef2a3350111b1dbc9a18012e8b53d897f00f31d6f74fc638fd622d5",
+      "bytes": 25746
+    },
+    {
+      "path": "veyra-dlss-sr/bilipai_veyra_dlss_sr_v2.h",
+      "sha256": "af884cc3d73262dafa19a76a32f0b85c48a2e3bde912bf59885d8de5d4cdd6bc",
+      "bytes": 6512
+    },
+    {
+      "path": "veyra-dlss-sr/candidate-pinned-source-hashes.json",
+      "sha256": "e566ae07ba8e8ecdb2347ca9fdb57daaf9af03677b97aedf092cc458077c4478",
+      "bytes": 410
+    },
+    {
+      "path": "veyra-dlss-sr/CMakeLists.txt",
+      "sha256": "8421aa2298da4e0c71efae40a88452380e0789efcd79b4c905460387be7fedfc",
+      "bytes": 501
+    },
+    {
+      "path": "veyra-dlss-sr/ngx-pinned-dependency-hashes.json",
+      "sha256": "5fb7a798b0a753f9933fba3b9bec539d592fa7322f9f59b718bdd44fb1c5f812",
+      "bytes": 2299
+    },
+    {
+      "path": "veyra-dlss-sr/NOTICE.txt",
+      "sha256": "830b8990faaf209f51f8caa457622463db305fa34b903cd50fe8dafee0b1283f",
+      "bytes": 805
+    },
+    {
+      "path": "veyra-dlss-sr/README.md",
+      "sha256": "27bb11410c367cbaeb6937f7083d46998de9e635a3eb579e4b3ccc4915c4196c",
+      "bytes": 2074
+    },
+    {
+      "path": "veyra-dlss-sr/source-provenance.json",
+      "sha256": "53d6281e24cc683d0f8f04576160c36b7dcc182bc053e370876525434af79018",
+      "bytes": 1737
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/diagnostics/DiagnosticEvent.h",
+      "sha256": "de5678ab9acd31194f056c34a0890d34a8dd918f6f817a9d0641dfabc16459cb",
+      "bytes": 1129
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/diagnostics/FrameTrace.h",
+      "sha256": "fcfe1a7ab5163265fbf97325c417585c33d4b20585b5e42f81d7575f1f0e6498",
+      "bytes": 3065
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/diagnostics/Redaction.h",
+      "sha256": "b22cad816da5aa98c22b5cd1be21b3fb0514c1a43497e6d366a46b5b8885d92d",
+      "bytes": 622
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/Log.h",
+      "sha256": "2edbde670704c401fe82868bc8a14f4b576bb9abd9c88d52548a8b441e9d40f2",
+      "bytes": 2656
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/ngx/DlssSrBackend.h",
+      "sha256": "44c899cc038324b33a1c2ecdbb9578565fcd299b62cc377a0d4e7b179eba5472",
+      "bytes": 3042
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/ngx/NgxCoreHost.h",
+      "sha256": "b29023c4d5df346cc8d3bec036b3e7430cd351f352a9474f59fa08b5d8df953a",
+      "bytes": 2016
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/NgxResult.h",
+      "sha256": "82d7355f8df9f349d5324e04cd29d717053568f964522464cadd1328d10ccdcb",
+      "bytes": 597
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/pipeline/FrameBatch.h",
+      "sha256": "84481f5e8a7efa3e4fce1fde809d0398023a8be5c9a0daba598122e3a53b904a",
+      "bytes": 2605
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/pipeline/ResolutionPlan.h",
+      "sha256": "ff219366f16236b183d33168db15f5c49d960a5b381b6c1564bb0ebb8da0f631",
+      "bytes": 3308
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/include/veyra/Result.h",
+      "sha256": "2d402383ee8bc45b141a95123835b82500d59805b10729283dbe492d209966c6",
+      "bytes": 1416
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/LICENSE",
+      "sha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
+      "bytes": 35823
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/src/base/Log.cpp",
+      "sha256": "47886884fd2f6caab2a27d325123f31e4a90216becee5d35f05603de621c1682",
+      "bytes": 10347
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/src/base/NgxResult.cpp",
+      "sha256": "a1032dd871cfa47dd64395f669d15f6efc2a43cbd611b0a3767cb4039cf3684c",
+      "bytes": 4122
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/src/ngx/DlssSrBackend.cpp",
+      "sha256": "48de87cb76dc452895a0b5cfe6903af45d2bae6593e46f23dde1cfc348015962",
+      "bytes": 7773
+    },
+    {
+      "path": "veyra-dlss-sr/upstream/src/ngx/NgxCoreHost.cpp",
+      "sha256": "6896e611c5ef88ac3488434fefbf7f8ce274ce6c5824023d9edb2fadbf80eb55",
+      "bytes": 7795
+    },
+    {
+      "path": "veyra-dlss-sr/veyra-pinned-source-hashes.json",
+      "sha256": "5c05b471443750cdd5776b673257a68216413b3792e5a79ba5b5a6418943732e",
+      "bytes": 2069
+    }
+  ]
+}

@@ -78,8 +78,8 @@ typedef struct bvd_result_v2 {
 } bvd_result_v2;
 #pragma pack(pop)
 /* Initialize size/abi on every status/config/frame/result.
-   Exactly one host in this independent module; do not initialize it concurrently
-   with phase-one's separate NGX host. Consolidating the process host is pending.
+   Both v1 and v2 use the one shared process host/library. One active owner only;
+   either ABI returns BUSY while the other owns or quarantines that host.
    All resources must be live genuine same-device COM objects. Color/output:
    non-array single-mip RGBA16F linear BT.709/scRGB (1.0=80 cd/m2), no PQ/YUV.
    Depth: target-size R32_FLOAT, conventional non-inverted [0,1] or real zero.
@@ -102,8 +102,10 @@ typedef struct bvd_result_v2 {
    Keep this candidate DLL loaded for process lifetime after destroy succeeds.
    Before NGX the module OS-PINs itself and exactly nvngx_dlss.dll under the
    caller-authenticated canonical directory. PIN failure rejects before NGX.
-   Only one process-lifetime runtime slot/directory is admitted; switching
-   that directory requires process restart. Native PIN is not authentication.
+   Only three known process-lifetime runtime slots and one directory/GUID are
+   admitted. Switching that identity requires restart. Native PIN is not auth.
+   Caller adapter version remains BiliPai-Veyra-DLSS-SR-2; the actual shared NGX
+   host version is fixed BiliPai-Veyra-Core-Shared-1 for both ABI entrypoints.
    OK is real SDK create/evaluate acceptance plus queue submission, not displayed
    pixels. Equal extents are rejected; ordinary player passthrough stays outside.
    On failed create a nonzero handle is still owned and must be destroyed safely.

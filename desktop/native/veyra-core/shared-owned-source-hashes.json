@@ -1,0 +1,34 @@
+[
+  {
+    "path": "veyra-core/abi_layout_compile.cpp",
+    "sha256": "be0648b1e708895e1a47325b357e3daeba65acde12c1a16ee1435a11791a33a3"
+  },
+  {
+    "path": "veyra-core/bilipai_ngx_shared_host.cpp",
+    "sha256": "e21dadb460222ef92c5de38246bb34f0d78e245f3ca798c2116a259899a8a7af"
+  },
+  {
+    "path": "veyra-core/bilipai_ngx_shared_host.h",
+    "sha256": "5d0d24891dd8b48998f498cc44657f85134fd071897115a1ea98a24610d0633d"
+  },
+  {
+    "path": "veyra-core/bilipai_veyra_core_v1.cpp",
+    "sha256": "84e0b6d9525944beeba01b2e7d222e4607801a2347fac780b056754025138cc5"
+  },
+  {
+    "path": "veyra-core/bilipai_veyra_core_v1.h",
+    "sha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569"
+  },
+  {
+    "path": "veyra-dlss-sr/abi_layout_compile.cpp",
+    "sha256": "48abc8112b3897987456f14c90f7c5713a035c82b289e2692e4b8a64bad60e4d"
+  },
+  {
+    "path": "veyra-dlss-sr/bilipai_veyra_dlss_sr_v2.cpp",
+    "sha256": "d2cbc169cef2a3350111b1dbc9a18012e8b53d897f00f31d6f74fc638fd622d5"
+  },
+  {
+    "path": "veyra-dlss-sr/bilipai_veyra_dlss_sr_v2.h",
+    "sha256": "af884cc3d73262dafa19a76a32f0b85c48a2e3bde912bf59885d8de5d4cdd6bc"
+  }
+]

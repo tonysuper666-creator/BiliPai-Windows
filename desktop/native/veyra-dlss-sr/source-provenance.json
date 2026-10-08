@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "variant": "bilipai-veyra-standard-dlss-sr-v2-candidate",
+  "variant": "bilipai-veyra-standard-dlss-sr-v2-shared-host-source",
   "coreAbi": 2,
   "coreAbiWire": 131072,
   "architecture": "windows-x64",
@@ -28,10 +28,14 @@
   "bundledNvidiaFiles": 0,
   "requiredIntegration": [
     "linear and guidance producer",
-    "signed DLSS runtime/profile/module authentication",
-    "shared process NGX host",
-    "consumer/timeline integration"
+    "signed shared DLSS runtime/profile/module authentication",
+    "consumer/timeline integration",
+    "actual SDK/GPU validation"
   ],
-  "nativeLifetimeContract": "pre-NGX self/exact-runtime process PIN; bounded one canonical directory/slot; failed or throwing feature/parameter/shutdown retirement permanently retains entire Session even after device removal; same-device actual Shutdown1 Success/no-SEH observed exactly once before deletion",
-  "checkedShutdownContract": "per-source fixed NgxCoreHost.cpp symbol redirect; real unrenamed SDK call in owned TU; failed-init explicit attempt; no new public export"
+  "nativeLifetimeContract": "one common host/mutex and actual same-device observed retirement; permanent failed-release/shutdown whole-Session custody; one canonical runtime root/GUID and three bounded process PIN slots",
+  "checkedShutdownContract": "per-source fixed NgxCoreHost.cpp symbol redirect; real unrenamed SDK call in owned TU; failed-init explicit attempt; no new public export",
+  "moduleRelativeName": "bilipai_veyra_core.dll",
+  "adapterEngineVersion": "BiliPai-Veyra-DLSS-SR-2",
+  "actualNgxHostEngineVersion": "BiliPai-Veyra-Core-Shared-1",
+  "sharedHostImplemented": true
 }

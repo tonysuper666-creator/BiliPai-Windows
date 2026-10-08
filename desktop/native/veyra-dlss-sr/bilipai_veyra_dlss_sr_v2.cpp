@@ -1,7 +1,7 @@
 // BiliPai-owned independent standard DLSS SR candidate. GPL-3.0-or-later.
 #define BILIDLSS_EXPORTS
 #include "bilipai_veyra_dlss_sr_v2.h"
-#include "veyra/ngx/NgxCoreHost.h"
+#include "bilipai_ngx_shared_host.h"
 #include "veyra/ngx/DlssSrBackend.h"
 #include <d3d12.h>
 #include <dxgi1_6.h>
@@ -16,11 +16,8 @@
 #include <mutex>
 #include <string>
 using Microsoft::WRL::ComPtr;
-// Only fixed NgxCoreHost.cpp redirects its SDK shutdown symbol here.
-// This translation unit retains the real unrenamed SDK declaration.
-extern "C" NVSDK_NGX_Result NVSDK_CONV bvd_checked_shutdown_v2(ID3D12Device*);
 namespace {
-std::mutex g_mutex;
+std::mutex& g_mutex=bilipai::ngx::mutex();
 uint64_t g_token=0;
 struct Session {
     bvd_config_v2 config{};
@@ -35,13 +32,9 @@ struct Session {
     HANDLE event=nullptr;
     uint64_t nextFence=1,lastFence=0,lastSequence=0,historyEpoch=0;
     bool featuresCreated=false,failed=false,untrackedSubmission=false,needsReset=true,releaseQuarantine=false;
-    veyra::ngx::NgxCoreHost core;
+    bilipai::ngx::HostLease core{this,bilipai::ngx::Kind::Dlss};
     veyra::ngx::DlssSrBackend sr;
     NVSDK_NGX_Parameter* params=nullptr;
-    bool ngxInitAttempted=false,shutdownArmed=false,shutdownAttempted=false;
-    ID3D12Device* shutdownDevice=nullptr;
-    NVSDK_NGX_Result shutdownResult=NVSDK_NGX_Result_Fail;
-    uint32_t shutdownSeh=0;
     ~Session(){
         // Published sessions arrive only after checked feature/parameter release
         // and actual same-device SDK shutdown Success/no-SEH. Member destructors
@@ -63,63 +56,11 @@ int32_t report(bvd_status_v2* s, int32_t code, const char* message, HRESULT hr =
     return code;
 }
 
-bool g_selfPinned=false,g_runtimePinned=false,g_runtimeRejected=false;
-std::wstring g_runtimeDirectory;
-HMODULE g_runtimeModule=nullptr; // one bounded process-lifetime load/PIN slot
-int32_t pinBeforeNgx(const std::wstring& runtime,bvd_status_v2* st){
-    if(!g_selfPinned){
-        HMODULE self=nullptr;
-        if(!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_PIN|GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
-            reinterpret_cast<LPCWSTR>(&report),&self)||!self)
-            return report(st,BVD_CORE_FAILURE,"core module PIN rejected before any NGX call",HRESULT_FROM_WIN32(GetLastError()));
-        g_selfPinned=true; // includes the statically linked official NGX shim
-    }
-    std::error_code ec;
-    const auto dir=std::filesystem::canonical(std::filesystem::path(runtime),ec);
-    if(ec||!std::filesystem::is_directory(dir))
-        return report(st,BVD_INVALID,"authenticated runtime directory must exist before NGX");
-    const auto file=std::filesystem::canonical(dir/L"nvngx_dlss.dll",ec);
-    if(ec||!std::filesystem::is_regular_file(file)||
-        CompareStringOrdinal(file.parent_path().c_str(),-1,dir.c_str(),-1,TRUE)!=CSTR_EQUAL)
-        return report(st,BVD_INVALID,"exact authenticated nvngx_dlss.dll must belong to runtime directory");
-    const auto requestedDir=dir.wstring();
-    if(!g_runtimeDirectory.empty()&&CompareStringOrdinal(g_runtimeDirectory.c_str(),-1,requestedDir.c_str(),-1,TRUE)!=CSTR_EQUAL)
-        return report(st,BVD_BUSY,"runtime directory fixed for process lifetime; restart before switching");
-    if(g_runtimeRejected)return report(st,BVD_CORE_FAILURE,"runtime identity/PIN slot rejected; process restart required");
-    if(g_runtimeDirectory.empty())g_runtimeDirectory=requestedDir;
-    if(!g_runtimeModule){
-        g_runtimeModule=LoadLibraryExW(file.c_str(),nullptr,LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR|LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
-        if(!g_runtimeModule)return report(st,BVD_CORE_FAILURE,"exact runtime load failed before NGX",HRESULT_FROM_WIN32(GetLastError()));
-        // Retain this single owned loader reference through process exit, even if
-        // PIN or identity verification fails. No unbounded loads/directory switches.
-    }
-    wchar_t path[32768]{};
-    const auto length=GetModuleFileNameW(g_runtimeModule,path,static_cast<DWORD>(std::size(path)));
-    if(!length||length>=std::size(path)){
-        g_runtimeRejected=true;
-        return report(st,BVD_CORE_FAILURE,"loaded runtime module path unavailable; NGX not called",HRESULT_FROM_WIN32(GetLastError()));
-    }
-    const auto loadedFile=std::filesystem::canonical(std::filesystem::path(path),ec);
-    if(ec||CompareStringOrdinal(loadedFile.c_str(),-1,file.c_str(),-1,TRUE)!=CSTR_EQUAL){
-        g_runtimeRejected=true;
-        return report(st,BVD_CORE_FAILURE,"loaded runtime module path differs from authenticated file; NGX not called");
-    }
-    if(!g_runtimePinned){
-        HMODULE pinned=nullptr;
-        if(!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_PIN|GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
-            reinterpret_cast<LPCWSTR>(g_runtimeModule),&pinned)||pinned!=g_runtimeModule){
-            g_runtimeRejected=true;
-            return report(st,BVD_CORE_FAILURE,"runtime module PIN rejected before NGX",HRESULT_FROM_WIN32(GetLastError()));
-        }
-        g_runtimePinned=true;
-    }
-    return BVD_OK;
-}
 int32_t releaseFeature(Session& s,bvd_status_v2* st){
     if(s.releaseQuarantine)return report(st,BVD_FEATURE_FAILURE,"prior SDK release failed; retain entire session through process exit");
     s.releaseQuarantine=true; // before the fixed backend: throwing/logging paths may leave an uncertain handle
     if(!s.sr.release()){
-        s.failed=true;
+        s.failed=true;s.core.quarantine();
         return report(st,BVD_FEATURE_FAILURE,"actual DLSS release rejected; permanently retain session and module");
     }
     s.featuresCreated=false;s.releaseQuarantine=false;
@@ -131,39 +72,20 @@ int32_t releaseParameters(Session& s,bvd_status_v2* st){
     s.releaseQuarantine=true; // void upstream API reports external failure via core health
     s.core.destroyParameters(s.params);
     if(!s.core.healthy()){
-        s.failed=true;
+        s.failed=true;s.core.quarantine();
         return report(st,BVD_CORE_FAILURE,"parameter release not certified; permanently retain entire session");
     }
     s.params=nullptr;s.releaseQuarantine=false;
     return BVD_OK;
 }
 
-// Primitive SEH boundary: no C++ object requiring unwinding is in this frame.
-__declspec(noinline) NVSDK_NGX_Result callActualShutdown(ID3D12Device* device,uint32_t& seh){
-    seh=0;
-    NVSDK_NGX_Result result=NVSDK_NGX_Result_Fail;
-    __try{result=NVSDK_NGX_D3D12_Shutdown1(device);}
-    __except(EXCEPTION_EXECUTE_HANDLER){
-        seh=static_cast<uint32_t>(GetExceptionCode());
-        result=NVSDK_NGX_Result_FAIL_PlatformError;
-    }
-    return result;
-}
 int32_t checkedShutdown(Session& s,bvd_status_v2* st){
     if(s.releaseQuarantine)return report(st,BVD_CORE_FAILURE,"prior SDK retirement failed; retain entire session through process exit");
-    if(!s.ngxInitAttempted)return BVD_OK;
-    // A void upstream state change or a module PIN cannot certify retirement.
-    // Arm and quarantine before SDK entry; a logging/C++ exception stays latched.
-    s.releaseQuarantine=true;s.failed=true;s.shutdownArmed=true;
-    if(s.core.initialized())s.core.shutdown();
-    else (void)bvd_checked_shutdown_v2(s.device.Get()); // failed init still requires actual observed shutdown
-    s.shutdownArmed=false;
-    if(!s.shutdownAttempted||s.shutdownDevice!=s.device.Get()||s.shutdownSeh||
-        s.shutdownResult!=NVSDK_NGX_Result_Success)
-        return report(st,BVD_CORE_FAILURE,"actual device shutdown unqualified; session retained until process exit",
-            S_OK,static_cast<uint32_t>(s.shutdownResult));
-    s.releaseQuarantine=false;
-    return BVD_OK;
+    s.releaseQuarantine=true;s.failed=true;
+    bilipai::ngx::Issue issue;
+    if(!s.core.retire(issue))
+        return report(st,BVD_CORE_FAILURE,issue.message,issue.hr,static_cast<uint32_t>(issue.sdk));
+    s.releaseQuarantine=false;return BVD_OK;
 }
 bool sameObject(IUnknown* a, IUnknown* b) {
     if (!a || !b) return false;
@@ -266,7 +188,7 @@ int32_t createFeature(Session& s,bvd_status_v2* st){
     const veyra::ngx::DlssSrBackend::CreateDesc desc{
         s.config.input_width,s.config.input_height,s.config.output_width,s.config.output_height,
         static_cast<int>(s.config.perf_quality),false};
-    if(!s.sr.create(s.core,s.list.Get(),s.params,desc,upstream)||!s.sr.created()){
+    if(!s.sr.create(s.core.host(),s.list.Get(),s.params,desc,upstream)||!s.sr.created()){
         s.list->Close();s.failed=true;
         return report(st,BVD_FEATURE_FAILURE,"actual standard DLSS SR create rejected",S_OK,uint32_t(upstream),s.core.initResult());
     }
@@ -284,26 +206,13 @@ bool ownGuidFormat(const char* p){
     return true;
 }
 }
-extern "C" NVSDK_NGX_Result NVSDK_CONV bvd_checked_shutdown_v2(ID3D12Device* device){
-    // The existing ABI mutex is held by this Session's retirement call.
-    // This internal wrapper is not an additional public DLL export.
-    if(!g_session||device!=g_session->device.Get())return NVSDK_NGX_Result_FAIL_InvalidParameter;
-    auto& s=*g_session;
-    if(s.shutdownAttempted){
-        // Upstream logging/destructor retries never call the SDK a second time.
-        return s.shutdownDevice==device?s.shutdownResult:NVSDK_NGX_Result_FAIL_InvalidParameter;
-    }
-    if(!s.shutdownArmed)return NVSDK_NGX_Result_FAIL_InvalidParameter;
-    s.shutdownAttempted=true;s.shutdownDevice=device;
-    s.shutdownResult=callActualShutdown(device,s.shutdownSeh);
-    return s.shutdownResult;
-}
 extern "C" int32_t BVD_CALL bvd_create_v2(const bvd_config_v2* c,bvd_handle_v2* out,bvd_status_v2* st){
     if(out)*out=0;
     if(!validStatus(st)||!c||!out||c->size!=sizeof(*c)||c->abi!=BVD_ABI_V2)
         return report(st,BVD_ABI_MISMATCH,"DLSS SR ABI v2 size/version required");
     std::lock_guard lock(g_mutex);
-    if(g_session)return report(st,BVD_BUSY,"one independent standard DLSS core host is already owned");
+    if(g_session||!bilipai::ngx::available())
+        return report(st,BVD_BUSY,"one ABI already owns or quarantines the shared process NGX host");
     try{
         if(!c->session_id||!c->source_generation||!c->history_epoch||!c->adapter_luid||
             !c->d3d12_device||!c->d3d12_direct_queue||!c->runtime_directory_utf16||
@@ -317,7 +226,10 @@ extern "C" int32_t BVD_CALL bvd_create_v2(const bvd_config_v2* c,bvd_handle_v2* 
         static_assert(sizeof(wchar_t)==sizeof(uint16_t));
         std::wstring runtime(reinterpret_cast<const wchar_t*>(c->runtime_directory_utf16));
         if(!std::filesystem::path(runtime).is_absolute())return report(st,BVD_INVALID,"runtime directory must be absolute");
-        const auto pinned=pinBeforeNgx(runtime,st);if(pinned!=BVD_OK)return pinned;
+        bilipai::ngx::Issue issue;
+        const auto pinned=bilipai::ngx::pinRuntime(runtime,c->project_id_utf8,c->engine_version_utf8,
+            bilipai::ngx::Kind::Dlss,bilipai::ngx::DlssSr,issue);
+        if(pinned!=BVD_OK)return report(st,pinned,issue.message,issue.hr);
         auto p=std::make_unique<Session>();p->config=*c;p->runtime=runtime;
         p->project=c->project_id_utf8;p->engine=c->engine_version_utf8;p->historyEpoch=c->history_epoch;
         p->config.runtime_directory_utf16=nullptr;p->config.project_id_utf8=nullptr;p->config.engine_version_utf8=nullptr;
@@ -336,7 +248,7 @@ extern "C" int32_t BVD_CALL bvd_create_v2(const bvd_config_v2* c,bvd_handle_v2* 
         // Publish before NGX: even a failed init may return an owned handle.
         g_session=p.release();*out=++g_token;
         veyra::Status upstream=veyra::Status::Ok;
-        g_session->ngxInitAttempted=true;
+
         if(!g_session->core.initialize(g_session->device.Get(),g_session->runtime,g_session->project.c_str(),g_session->engine.c_str(),upstream)){
             g_session->failed=true;
             return report(st,BVD_CORE_FAILURE,"actual NGX own-project initialization rejected",S_OK,uint32_t(upstream),g_session->core.initResult());
@@ -443,7 +355,7 @@ extern "C" int32_t BVD_CALL bvd_reset_v2(bvd_handle_v2 token,uint64_t session,ui
         s.historyEpoch=history;s.lastSequence=0;s.needsReset=true;
         const auto created=createFeature(s,st);
         return created==BVD_OK?report(st,BVD_OK,"actual DLSS history recreated; next frame must reset"):created;
-    }catch(...){s.failed=true;return report(st,BVD_INTERNAL,"native reset exception; any release latch remains permanent");}
+    }catch(...){s.failed=true;if(s.releaseQuarantine)s.core.quarantine();return report(st,BVD_INTERNAL,"native reset exception; any release latch remains permanent");}
 }
 
 extern "C" int32_t BVD_CALL bvd_destroy_v2(bvd_handle_v2 token,bvd_status_v2* st){
@@ -464,7 +376,7 @@ extern "C" int32_t BVD_CALL bvd_destroy_v2(bvd_handle_v2 token,bvd_status_v2* st
         delete g_session;g_session=nullptr;
         return report(st,BVD_OK,"features/parameters released and actual device shutdown confirmed; modules remain pinned");
     }catch(...){
-        if(g_session){g_session->failed=true;g_session->releaseQuarantine=true;}
+        if(g_session){g_session->failed=true;g_session->releaseQuarantine=true;g_session->core.quarantine();}
         return report(st,BVD_INTERNAL,"native teardown exception; retain entire session through process exit");
     }
 }
