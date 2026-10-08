@@ -1,0 +1,55 @@
+{
+  "architecture": "windows-x64",
+  "closedSdkOrRuntimeIncluded": false,
+  "coreAbi": "0x00010000",
+  "coreAbiHeaderSha256": "9365ab89fa61fb016db044a051a1c3c76450231fbc9a8281799f90bc7ff37e84",
+  "filterName": "bilipai-rtx",
+  "frameEffects": [
+    "SR",
+    "HDR"
+  ],
+  "originalNvidiaPatch": {
+    "new": "    if (!mp_refqueue_should_deint(p->queue) && !p->require_filtering &&\n        p->opts->scaling_mode != SCALING_NVIDIA_RTX) {\n",
+    "old": "    if (!mp_refqueue_should_deint(p->queue) && !p->require_filtering) {\n",
+    "originalSha256": "9514d40109894e0bee4e4a2aa343a4e4e4d2368aee3729959180bf5f92d486c3",
+    "patchSha256": "e3599ec5fe4326a6713093e9834514f7c2b001b41f30c03fc26fc763b3345d30",
+    "patchedSha256": "1669c96fc95cfd7276a3149aa2d76058d29b2cc2dd848c77b949d434831c6d2f",
+    "sourcePath": "video/filter/vf_d3d11vpp.c"
+  },
+  "registrationEditsFileName": "filter-registration-edits.json",
+  "registrationEditsSha256": "59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf",
+  "schema": 1,
+  "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+  "sourceFiles": [
+    {
+      "bytes": 12840,
+      "fileName": "vf_bilipai_rtx.c",
+      "sha256": "d8b0a3a09c93732d63585be8425d9582addf3fdf6a236770f412fdb5b38c1965",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c",
+      "targetPath": "video/filter/vf_bilipai_rtx.c"
+    },
+    {
+      "bytes": 27596,
+      "fileName": "bilipai_rtx_mpv_bridge.c",
+      "sha256": "e0bff20a3c6ee75b88a51fd5aad3de3494c2babb18edc700746f0a134cc87725",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c",
+      "targetPath": "video/filter/bilipai_rtx_mpv_bridge.c"
+    },
+    {
+      "bytes": 1902,
+      "fileName": "bilipai_rtx_mpv_bridge.h",
+      "sha256": "317e7a792f795e0510ac9d8d9c920bb6dc1a9815287a64ddd8a624e627a7d8b7",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.h",
+      "targetPath": "video/filter/bilipai_rtx_mpv_bridge.h"
+    },
+    {
+      "bytes": 4344,
+      "fileName": "bilipai_veyra_core_v1.h",
+      "sha256": "9365ab89fa61fb016db044a051a1c3c76450231fbc9a8281799f90bc7ff37e84",
+      "sourcePath": "desktop/native/veyra-core/bilipai_veyra_core_v1.h",
+      "targetPath": "video/filter/bilipai_veyra_core_v1.h"
+    }
+  ],
+  "variant": "bilipai-veyra-rtx-core-v1",
+  "vfgImplemented": false
+}

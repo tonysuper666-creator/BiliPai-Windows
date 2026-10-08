@@ -1,0 +1,267 @@
+/*
+ * BiliPai mpv native video filter candidate, GPL-3.0-or-later.
+ * Input/refqueue/AV hardware pool scaffolding derived from mpv
+ * 69e63f425a531f814431fba12750bdb3721357f2 video/filter/vf_d3d11vpp.c
+ * (LGPL-2.1-or-later; the original notice is retained below).
+ * RTX core follows fixed Veyra 96a7c8de. No Veyra UI/decoder/audio is embedded.
+ */
+/*
+ * This file is part of mpv.
+ *
+ * mpv is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * mpv is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with mpv.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#define COBJMACROS
+#include <assert.h>
+#include <math.h>
+#include <limits.h>
+#include <inttypes.h>
+#include <stdlib.h>
+#include <string.h>
+#include <windows.h>
+#include <d3d11.h>
+#include <libavutil/hwcontext.h>
+#include <libavutil/hwcontext_d3d11va.h>
+#include "common/common.h"
+#include "filters/filter.h"
+#include "filters/filter_internal.h"
+#include "filters/user_filters.h"
+#include "refqueue.h"
+#include "video/hwdec.h"
+#include "video/mp_image.h"
+#include "video/mp_image_pool.h"
+#include "bilipai_rtx_mpv_bridge.h"
+
+struct opts {
+    char *dll, *runtime, *project;
+    int64_t session, generation;
+    float scale;
+    int quality, peak, timeout;
+    bool hdr;
+};
+struct priv {
+    struct opts *opts;
+    struct mp_refqueue *queue;
+    AVBufferRef *av_device_ref, *hw_pool;
+    AVD3D11VADeviceContext *d3d;
+    struct bv_mpv_bridge *bridge;
+    struct mp_image_params params, out_params;
+    uint64_t generation, sequence;
+    bool disabled, accepted_logged;
+};
+static wchar_t *utf16(const char *s)
+{
+    if (!s) return NULL;
+    int n=MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,s,-1,NULL,0);
+    if (!n) return NULL;
+    wchar_t *out=malloc((size_t)n*sizeof(*out));
+    if(out&&!MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,s,-1,out,n)){free(out);out=NULL;}
+    return out;
+}
+static bool source_color(const struct mp_image_params *p,struct bv_mpv_color *out)
+{
+    /* No HDR/proxy reconstruction is claimed here; the original HDR picture
+       bypasses this first bridge. Only explicit transfer/primary/range qualifies. */
+    if(pl_color_space_is_hdr(&p->color)||p->color.primaries!=PL_COLOR_PRIM_BT_709)
+        return false;
+    if(p->color.transfer==PL_COLOR_TRC_SRGB)out->transfer=0;
+    else if(p->color.transfer==PL_COLOR_TRC_BT_1886)out->transfer=1;
+    else return false;
+    if(p->repr.levels==PL_COLOR_LEVELS_FULL)out->limited=0;
+    else if(p->repr.levels==PL_COLOR_LEVELS_LIMITED)out->limited=1;
+    else return false;
+    if(p->repr.sys==PL_COLOR_SYSTEM_RGB)out->matrix=0;
+    else if(p->repr.sys==PL_COLOR_SYSTEM_BT_601)out->matrix=1;
+    else if(p->repr.sys==PL_COLOR_SYSTEM_BT_709)out->matrix=2;
+    else return false;
+    out->chroma=0;
+    switch(p->chroma_location){
+    case PL_CHROMA_UNKNOWN: break;
+    case PL_CHROMA_LEFT: out->chroma=1;break;
+    case PL_CHROMA_CENTER: out->chroma=2;break;
+    case PL_CHROMA_TOP_LEFT: out->chroma=3;break;
+    case PL_CHROMA_TOP_CENTER: out->chroma=4;break;
+    case PL_CHROMA_BOTTOM_LEFT: out->chroma=5;break;
+    case PL_CHROMA_BOTTOM_CENTER: out->chroma=6;break;
+    default:return false;
+    }
+    return true;
+}
+static void release_output_lease(void *image) { talloc_free(image); }
+static void log_failure(struct mp_filter *vf,int code,const char *stage,const char *detail)
+{
+    struct priv *p=vf->priv;
+    MP_WARN(vf,"RTX SDK failure session=%"PRIu64" config-generation=%"PRIu64
+        " stream-generation=%"PRIu64" code=%d stage=%s; %s\n",
+        (uint64_t)p->opts->session,(uint64_t)p->opts->generation,
+        p->generation,code,stage,detail);
+}
+static void retire_bridge(struct mp_filter *vf)
+{
+    struct priv *p=vf->priv;
+    if(p->bridge){
+        bv_status_v1 s;
+        int rc=bv_mpv_bridge_destroy(&p->bridge,&s);
+        if(rc!=BV_OK)MP_WARN(vf,"RTX resources pending retirement (%d); DLL/frames retained, original path available.\n",rc);
+    }
+}
+static void flush_frames(struct mp_filter *vf)
+{
+    struct priv *p=vf->priv;
+    mp_refqueue_flush(p->queue);
+    p->sequence=0;p->accepted_logged=false;
+    if(p->generation==UINT64_MAX){p->disabled=true;retire_bridge(vf);return;}
+    ++p->generation;
+    if(p->bridge){
+        bv_status_v1 s;int rc=bv_mpv_bridge_reset(p->bridge,p->generation,&s);
+        if(rc==BV_OK)p->disabled=false;
+        else {p->disabled=true;log_failure(vf,rc,"seek-reset-retired","bypassing original frame");}
+    }
+}
+static struct mp_image *alloc_out(struct mp_filter *vf)
+{
+    struct priv *p=vf->priv;
+    if(!mp_update_av_hw_frames_pool(&p->hw_pool,p->av_device_ref,IMGFMT_D3D11,
+          p->out_params.hw_subfmt,p->out_params.w,p->out_params.h,false))return NULL;
+    AVFrame *av=av_frame_alloc();if(!av)return NULL;
+    if(av_hwframe_get_buffer(p->hw_pool,av,0)<0){av_frame_free(&av);return NULL;}
+    struct mp_image *out=mp_image_from_av_frame(av);av_frame_free(&av);return out;
+}
+static bool prepare_bridge(struct mp_filter *vf)
+{
+    struct priv *p=vf->priv;struct bv_mpv_color color;
+    if(p->opts->session<=0||p->opts->generation<=0){
+        log_failure(vf,BV_INVALID,"bridge-unavailable","invalid configuration identity");return false;
+    }
+    if(!source_color(&p->params,&color)){
+        log_failure(vf,BV_COLOR_UNSUPPORTED,"bridge-unavailable","unsupported frame color metadata");return false;
+    }
+    if(!isfinite(p->opts->scale)||p->opts->scale<1||p->opts->scale>4||
+       p->opts->quality<1||p->opts->quality>4||p->opts->peak<400||p->opts->peak>2000||
+       p->opts->timeout<1||p->opts->timeout>5000){
+        log_failure(vf,BV_INVALID,"bridge-unavailable","invalid enhancement options");return false;
+    }
+    double w=p->params.w*(double)p->opts->scale,h=p->params.h*(double)p->opts->scale;
+    if(w<1||h<1||w>16384||h>16384){
+        log_failure(vf,BV_INVALID,"bridge-unavailable","invalid enhancement dimensions");return false;
+    }
+    p->out_params=p->params;
+    p->out_params.w=(int)lrint(w);p->out_params.h=(int)lrint(h);
+    p->out_params.hw_subfmt=p->opts->hdr?IMGFMT_X2BGR10:IMGFMT_BGRA;
+    p->out_params.repr.sys=PL_COLOR_SYSTEM_RGB;p->out_params.repr.levels=PL_COLOR_LEVELS_FULL;
+    memset(&p->out_params.repr.bits,0,sizeof(p->out_params.repr.bits));
+    p->out_params.chroma_location=PL_CHROMA_UNKNOWN;
+    if(p->opts->hdr){p->out_params.color=pl_color_space_hdr10;p->out_params.color.hdr.max_luma=p->opts->peak;}
+    else p->out_params.color.transfer=PL_COLOR_TRC_SRGB;
+    p->out_params.crop.x0=lrintf(p->opts->scale*p->params.crop.x0);
+    p->out_params.crop.x1=lrintf(p->opts->scale*p->params.crop.x1);
+    p->out_params.crop.y0=lrintf(p->opts->scale*p->params.crop.y0);
+    p->out_params.crop.y1=lrintf(p->opts->scale*p->params.crop.y1);
+    wchar_t *dll=utf16(p->opts->dll),*runtime=utf16(p->opts->runtime);
+    struct bv_mpv_config cfg={0};cfg.device=p->d3d->device;cfg.dll_path=dll;cfg.runtime_directory=runtime;
+    cfg.project_id=p->opts->project;cfg.engine_version="BiliPai-Veyra-Core-1";
+    cfg.session=(uint64_t)p->opts->session;cfg.generation=p->generation;
+    cfg.input_width=p->params.w;cfg.input_height=p->params.h;cfg.output_width=p->out_params.w;cfg.output_height=p->out_params.h;
+    cfg.effects=BV_VIDEO_SR|(p->opts->hdr?BV_VIDEO_HDR:0);cfg.quality=p->opts->quality;cfg.peak_nits=p->opts->peak;cfg.timeout_ms=p->opts->timeout;
+    cfg.context_lock=p->d3d->lock;cfg.context_unlock=p->d3d->unlock;cfg.context_lock_opaque=p->d3d->lock_ctx;
+    bv_status_v1 s;int rc=bv_mpv_bridge_create(&cfg,&p->bridge,&s);free(dll);free(runtime);
+    if(rc!=BV_OK)log_failure(vf,rc,"bridge-unavailable",s.message);
+    return rc==BV_OK;
+}
+static void process(struct mp_filter *vf)
+{
+    struct priv *p=vf->priv;
+    struct mp_image *format=mp_refqueue_execute_reinit(p->queue);
+    if(format){
+        retire_bridge(vf);av_buffer_unref(&p->hw_pool);
+        p->params=format->params;p->out_params=p->params;p->accepted_logged=false;p->sequence=0;
+        if(p->generation==UINT64_MAX)p->disabled=true;
+        else {++p->generation;p->disabled=!prepare_bridge(vf);}
+    }
+    if(!mp_refqueue_can_output(p->queue))return;
+    struct mp_image *in=mp_refqueue_get(p->queue,0),*out=NULL;
+    struct bv_mpv_color color;
+    if(!p->disabled&&p->bridge&&in&&source_color(&in->params,&color)&&
+       in->pts!=MP_NOPTS_VALUE&&isfinite(in->pts)&&
+       fabs(in->pts)<(double)INT64_MAX/1000000.0&&p->sequence<UINT64_MAX){
+        out=alloc_out(vf);
+        if(out){
+            mp_image_copy_attributes(out,in);out->params=p->out_params;
+            struct mp_image *lease=mp_image_new_ref(out),*input_lease=mp_image_new_ref(in);
+            if(lease&&input_lease){
+                bv_status_v1 s;
+                int rc=bv_mpv_bridge_process(p->bridge,(ID3D11Texture2D*)in->planes[0],(uint32_t)(uintptr_t)in->planes[1],
+                   (ID3D11Texture2D*)out->planes[0],(uint32_t)(uintptr_t)out->planes[1],color,p->generation,++p->sequence,
+                   (int64_t)llround(in->pts*1000000.0),1000000,input_lease,lease,release_output_lease,&s);
+                /* The bridge consumes both leases even on failure. Actual output
+                   ownership survives failed Signal/drain and filter teardown. */
+                if(rc!=BV_OK){talloc_free(out);out=NULL;p->disabled=true;
+                    log_failure(vf,rc,"process-bypass",s.message);
+                }else if(!p->accepted_logged){
+                    MP_INFO(vf,"RTX SDK accepted; GPU frame SUBMITTED session=%"PRIu64
+                       " config-generation=%"PRIu64" stream-generation=%"PRIu64
+                       " sequence=%"PRIu64" size=%dx%d; display completion not asserted.\n",
+                       (uint64_t)p->opts->session,(uint64_t)p->opts->generation,
+                       p->generation,p->sequence,out->w,out->h);
+                    p->accepted_logged=true;
+                }
+            }else {talloc_free(lease);talloc_free(input_lease);talloc_free(out);out=NULL;}
+        }
+    }
+    if(!out)out=mp_image_new_ref(in);
+    if(!out){mp_filter_internal_mark_failed(vf);return;}
+    mp_refqueue_write_out_pin(p->queue,out);
+}
+static void uninit(struct mp_filter *vf)
+{
+    struct priv *p=vf->priv;
+    retire_bridge(vf);
+    if(p->queue){mp_refqueue_flush(p->queue);talloc_free(p->queue);}
+    av_buffer_unref(&p->hw_pool);av_buffer_unref(&p->av_device_ref);
+}
+static const struct mp_filter_info filter={
+    .name="bilipai-rtx",.process=process,.reset=flush_frames,.destroy=uninit,.priv_size=sizeof(struct priv),
+};
+static struct mp_filter *create(struct mp_filter *parent,void *options)
+{
+    struct mp_filter *f=mp_filter_create(parent,&filter);
+    if(!f){talloc_free(options);return NULL;}
+    mp_filter_add_pin(f,MP_PIN_IN,"in");mp_filter_add_pin(f,MP_PIN_OUT,"out");
+    struct priv *p=f->priv;p->opts=talloc_steal(p,options);p->queue=mp_refqueue_alloc(f);
+    if(!p->opts||p->opts->generation<=0)goto fail;
+    p->generation=(uint64_t)p->opts->generation;
+    struct mp_stream_info *info=mp_filter_find_stream_info(f);if(!info||!info->hwdec_devs)goto fail;
+    struct hwdec_imgfmt_request request={.imgfmt=IMGFMT_D3D11,.probing=false};
+    hwdec_devices_request_for_img_fmt(info->hwdec_devs,&request);
+    struct mp_hwdec_ctx *hw=hwdec_devices_get_by_imgfmt_and_type(info->hwdec_devs,IMGFMT_D3D11,AV_HWDEVICE_TYPE_D3D11VA);
+    if(!hw||!hw->av_device_ref)goto fail;
+    p->av_device_ref=av_buffer_ref(hw->av_device_ref);if(!p->av_device_ref)goto fail;
+    AVHWDeviceContext *device=(void*)p->av_device_ref->data;p->d3d=device->hwctx;
+    if(!p->d3d||!p->d3d->device)goto fail;
+    mp_refqueue_add_in_format(p->queue,IMGFMT_D3D11,0);mp_refqueue_set_refs(p->queue,0,0);mp_refqueue_set_mode(p->queue,0);
+    return f;
+fail:
+    talloc_free(f);return NULL;
+}
+#define OPT_BASE_STRUCT struct opts
+static const m_option_t fields[]={
+    {"dll",OPT_STRING(dll)},{"runtime",OPT_STRING(runtime)},{"project",OPT_STRING(project)},
+    {"session",OPT_INT64(session)},{"generation",OPT_INT64(generation)},
+    {"scale",OPT_FLOAT(scale)},{"quality",OPT_INT(quality)},{"hdr",OPT_BOOL(hdr)},
+    {"peak",OPT_INT(peak)},{"timeout",OPT_INT(timeout)},{0}
+};
+const struct mp_user_filter_entry vf_bilipai_rtx={
+    .desc={.name="bilipai-rtx",.description="BiliPai RTX Video GPU bridge candidate",.priv_size=sizeof(struct opts),
+        .priv_defaults=&(const struct opts){.scale=1,.quality=2,.peak=1000,.timeout=1000},.options=fields},.create=create,
+};

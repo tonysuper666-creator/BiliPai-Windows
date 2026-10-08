@@ -1,0 +1,40 @@
+name: Manual RTX core frame-bridge libmpv Windows x64 source build
+
+on:
+  workflow_dispatch:
+    inputs:
+      acknowledge_source_build:
+        description: 'Build an unverified RTX frame-bridge candidate; no GPU/SDK runtime is run'
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  native-candidate:
+    if: >-
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+      && github.event_name == 'workflow_dispatch' && inputs.acknowledge_source_build == true
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    container:
+      # Digest recorded in the original 20260903 x64 build log, not a moving latest tag.
+      image: ghcr.io/shinchiro/archlinux@sha256:6156ca503061914e1e73c3efa7276d14f5d45c78b3b8534c46e60294500beb66
+    steps:
+      # These exact action revisions are recorded in the same original build log.
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+        with:
+          persist-credentials: false
+      - name: Build from fixed source and recipe inputs
+        run: python3 desktop/tools/native/build-mpv-rtx-core-runtime.py --workspace "$RUNNER_TEMP/bilipai-mpv-rtx-core" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
+      - name: Preserve actual candidate or failure logs
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: bilipai-mpv-veyra-rtx-core-v1-x64-${{ github.run_id }}
+          path: desktop/build/rtx-core-native-candidate/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
