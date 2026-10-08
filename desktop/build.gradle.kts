@@ -3264,3 +3264,18 @@ listOf("extractOriginalHomeProtocols", "extractOriginalVideoStateCore", "extract
         inputs.dir("upstream-slices/v032-catalog")
     }
 }
+
+// Complete original ListenVideo pages reuse the existing original audio/Favorites/playlist producers.
+val extractOriginalListenVideoPages by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-listen-video-root.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-listen-video-pages").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-listen-video-root.py", "tools/v025_source_paths.py")
+    inputs.files(sources.filter { "original-listen-video-pages" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-listen-video-pages"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-listen-video-pages")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalListenVideoPages) }

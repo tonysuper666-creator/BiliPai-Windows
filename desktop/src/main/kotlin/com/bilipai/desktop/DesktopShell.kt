@@ -1828,6 +1828,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                         when {
                             entryKey == BiliPaiNavKey.Onboarding ->
                                 DesktopOriginalOnboardingRootHost(messageRoutes, active, onDisagree = onExit)
+                            entryKey == BiliPaiNavKey.ListenVideo ->
+                                DesktopOriginalListenVideoHost(
+                                    remember(personalLists, services.originalSpacePlaylist) {
+                                        personalLists.listenVideo(services.originalSpacePlaylist)
+                                    }, messageRoutes, active, pagerHosted)
                             entryKey == BiliPaiNavKey.IconSettings ->
                                 DesktopDetailWindow { DesktopOriginalIconSettingsRootHost(messageRoutes, homeRootRef,
                                     services.runtime.context, services.imageLifetime, active,
@@ -2556,8 +2561,6 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             entryKey is BiliPaiNavKey.Web -> Column {
                                 Text(entryKey.title);TextButton(onClick={openDynamicWeb(entryKey.url,entryKey.title)}){Text("在浏览器打开")}
                             }
-                            section == DesktopSection.LISTEN -> if (listen != null) ListenBrowserScreen(listen, preferences, ::changePreferences, ::openVideo, { openLogin() })
-                                else Text(playerError ?: "音频播放器未能初始化")
                             section == DesktopSection.BGM -> bgmRequest?.let { request ->
                                 DesktopBgmDetailRootHost(request, repository, community, commentFraud,
                                     nowPlayingBarOverlayVisible = listen?.state?.value?.current != null,

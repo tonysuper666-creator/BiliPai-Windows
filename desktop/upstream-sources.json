@@ -850,7 +850,8 @@
       "mode": "extracted",
       "features": [
         "listen-video",
-        "lyrics"
+        "lyrics",
+        "original-listen-video-pages"
       ],
       "sha256": "bf9518d519b82227e4afbda430e4a5c5d026fd001ad728e31817f8d417f981d2"
     },
@@ -11421,6 +11422,30 @@
       "mode": "policy-extract",
       "features": [
         "desktop-original-background-policy"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/viewmodel/ListenVideoViewModel.kt",
+      "sha256": "7981d25a462be52a79713d0eb33a7e9eb18f9d053d16169165ed94b16c4149bf",
+      "mode": "policy-extract",
+      "features": [
+        "original-listen-video-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ListenVideoScreen.kt",
+      "sha256": "44705806ae3d8785392e264b665c32d98c155604dc8fcd27173d16ab05144fbb",
+      "mode": "policy-extract",
+      "features": [
+        "original-listen-video-pages"
+      ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/ListenVideoLayoutPolicy.kt",
+      "sha256": "4dc3d7cf754f6222ef211d8ae37f4954bb593fee2d87cb139d611e45c9870d7a",
+      "mode": "direct",
+      "features": [
+        "original-listen-video-pages"
       ]
     }
   ],

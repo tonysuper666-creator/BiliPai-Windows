@@ -75,7 +75,7 @@ import kotlinx.coroutines.CancellationException
     val musicTitle = (key as? BiliPaiNavKey.NativeMusic)?.title?.ifEmpty { "背景音乐" }
     val windowEnvironment = LocalDesktopOriginalVideoRootWindowEnvironment.current
     val latestActive by rememberUpdatedState(active)
-    var nativeMusicRequested by remember(current, key) { mutableStateOf(false) }
+    var audioSubjectRequested by remember(current, key) { mutableStateOf(false) }
     var initialized by remember(current, platforms) { mutableStateOf(false) }
     LaunchedEffect(current, platforms) {
         platforms.awaitNativeInitialization()
@@ -86,20 +86,33 @@ import kotlinx.coroutines.CancellationException
         platforms.InitialNativeSurface(Modifier.fillMaxSize())
         return
     }
-    // Android NativeMusic has a route-scoped VM. Windows retains the SAME
-    // original VM across leaves: initialize this explicit subject even when an
-    // earlier BV already has Success/currentPlayer, which AudioMode itself reuses.
+    // Android leaves have a route-scoped VM. Windows retains the SAME original
+    // VM. Seed explicit NativeMusic and different AudioMode subjects; matching
+    // AudioMode keeps the original paused/resume/reuse semantics unchanged.
     LaunchedEffect(current, platforms, key, initialized, active) {
-        if (key !is BiliPaiNavKey.NativeMusic || !initialized || !active || nativeMusicRequested)
-            return@LaunchedEffect
+        if (!initialized || !active || audioSubjectRequested) return@LaunchedEffect
         if (!latestActive || !windowEnvironment.owns() || windowEnvironment.currentKey() != key || !current.owns())
-            throw CancellationException("Original NativeMusic route retired")
-        current.playback.attachPlayer(current.section)
-        current.playback.loadVideo(bvid = key.bvid, cid = key.cid, autoPlay = true,
-            force = current.playback.uiState.value is com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Loading)
-        nativeMusicRequested = true
+            throw CancellationException("Original audio route retired")
+        // Both raw read ports already belong to this same sole full original VM.
+        // beginLoadRequest keeps the prior accepted currentCid, so Loading must
+        // compare its currentRequest; a Ready page switch instead uses currentCid.
+        val loading = current.playback.captureDesktopPlaybackState() is
+            com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Loading
+        val session = current.playback.captureDesktopLoadState()
+        val targetBvid = if (loading) session.currentRequest?.bvid else session.currentBvid
+        val targetCid = if (loading) session.currentRequest?.cid else session.currentCid
+        val sameSubject = targetBvid == audioBvid && (audioCid <= 0L || targetCid == audioCid)
+        val seed = key is BiliPaiNavKey.NativeMusic ||
+            (key is BiliPaiNavKey.AudioMode && audioBvid.isNotBlank() && !sameSubject)
+        if (seed) {
+            current.playback.attachPlayer(current.section)
+            current.playback.loadVideo(bvid = audioBvid, cid = audioCid, autoPlay = true,
+                fallbackResumePositionMs = audioResume,
+                force = loading)
+        }
+        audioSubjectRequested = true
     }
-    if (key is BiliPaiNavKey.NativeMusic && !nativeMusicRequested) {
+    if ((key is BiliPaiNavKey.NativeMusic || key is BiliPaiNavKey.AudioMode) && !audioSubjectRequested) {
         platforms.InitialNativeSurface(Modifier.fillMaxSize())
         return
     }

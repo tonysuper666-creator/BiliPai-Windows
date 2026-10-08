@@ -42,6 +42,7 @@ internal class DesktopPersonalListsRoot(
     private val watchLater = linkedMapOf<BiliPaiNavKey, DesktopWatchLaterEntry>()
     private val following = linkedMapOf<BiliPaiNavKey.Following,DesktopFollowingEntry>()
     private val entriesLock = Any()
+    private var originalListen: DesktopOriginalListenVideoEntry? = null
 
     fun owns(): Boolean = !closed.get() && job.isActive && gate.owns()
     private fun assertOwned() { if (!owns()) throw CancellationException("Personal list owner retired") }
@@ -84,6 +85,24 @@ internal class DesktopPersonalListsRoot(
             { repository.ownedHomeAccessToken(gate.epoch, owned) },
             { repository.withPrimaryPlaybackAdmission(gate.epoch, owned) { repository.accessTokenCredentials().second } },
             { change -> check(); repository.followStateEvents.confirm(capturedFollowOwner,change) }).also { it.mountBrandFeedback(brandEvents, commit) }
+    }
+
+    /** MainHost Listen remains retained while other tabs/video cover it. Its
+     * only protocols are the existing captured Favorites environment. */
+    fun listenVideo(playlist: DesktopOriginalVideoPlaylistBinding): DesktopOriginalListenVideoEntry {
+        assertOwned()
+        synchronized(entriesLock) { originalListen }?.let {
+            check(it.playlist === playlist); return it
+        }
+        val created = DesktopOriginalListenVideoEntry(this, playlist)
+        try {
+            created.install(environment(created.scope, created::owns, created::assertOwned, created::commit))
+            val selected = synchronized(entriesLock) {
+                if (!owns()) null else originalListen ?: created.also { originalListen = it }
+            }
+            if (selected !== created) created.close()
+            return selected ?: throw CancellationException("Personal Root retired during Listen creation")
+        } catch (failure: Throwable) { created.close(); throw failure }
     }
 
     fun watchLater(key: BiliPaiNavKey): DesktopWatchLaterEntry {
@@ -163,6 +182,8 @@ internal class DesktopPersonalListsRoot(
             (histories.values.toList() + liked.values.toList()).also { histories.clear(); liked.clear() }
         }
         old.forEach(DesktopPersonalListEntry::close)
+        val retiredListen = synchronized(entriesLock) { originalListen.also { originalListen = null } }
+        retiredListen?.close()
         val oldWatch = synchronized(entriesLock) { watchLater.values.toList().also {watchLater.clear()} }
         oldWatch.forEach(DesktopWatchLaterEntry::close)
         val oldFollowing=synchronized(entriesLock) {following.values.toList().also {following.clear()}}
