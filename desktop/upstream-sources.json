@@ -11455,6 +11455,38 @@
       "features": [
         "original-au-music-page"
       ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationPolicy.kt",
+      "sha256": "b11892a23659db840095df6ed5d73593bb47238c8f58586236c49cc10ad59f39",
+      "features": [
+        "desktop-original-message-notification-root"
+      ],
+      "mode": "direct"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationSettingsStore.kt",
+      "sha256": "b54bfb95eed322989cbed9544b0e442535a3a81586ada4bb4fd454ae43e0a54d",
+      "features": [
+        "desktop-original-message-notification-root"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationStateStore.kt",
+      "sha256": "d15cfa4ef20a9d70119242bf91450f61f90cbb1c76ac7aff1db55a8431aedc5f",
+      "features": [
+        "desktop-original-message-notification-root"
+      ],
+      "mode": "policy-extract"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/message/notification/MessageNotificationChecker.kt",
+      "sha256": "f576de0425df45d37b39efc7663b90f8a91bb89df92ad333b9114259354ace7b",
+      "features": [
+        "desktop-original-message-notification-root"
+      ],
+      "mode": "policy-extract"
     }
   ],
   "featureCoverage": {

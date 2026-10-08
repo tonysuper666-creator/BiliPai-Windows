@@ -314,6 +314,10 @@ internal class DesktopReadyOriginalRootHandle(
             { handle.isActive() && root.isCurrentOwner() && routes.owns() }
         }
         SideEffect { handle.route.set(routes) }
+        val messageNotificationContext = remember(root, routes, services.repository, services.runtime.store) {
+            DesktopMessageNotificationContext.captureOrNull(services.repository, services.runtime.store, root, routes)
+        }
+        DesktopMessageNotificationRootConsumer(messageNotificationContext, services.community, services.actualWindow)
         LaunchedEffect(root, routes, loginInstalled, loginRestoreRoot) {
             val value = loginInstalled ?: return@LaunchedEffect
             val acknowledgement = loginRestoreRoot ?: return@LaunchedEffect
@@ -470,6 +474,7 @@ internal class DesktopReadyOriginalRootHandle(
             originalAboutMetadata, { latest.rootAlive() }, { latest.feedback(it) })
         CompositionLocalProvider(com.bilipai.desktop.settings.LocalDesktopOriginalAboutReleaseMetadata provides originalAboutMetadata,
             LocalDesktopOriginalHomeSettingsRootServices provides originalHomeSettings,
+            LocalDesktopMessageNotificationContext provides messageNotificationContext,
             LocalDesktopOriginalOnboardingPreferences provides onboardingPreferences,
             com.android.purebilibili.feature.aicu.LocalAicuNavigation provides { uid: Long? ->
             if (routes.owns()) routes.push(BiliPaiNavKey.AicuQuery(uid = uid ?: 0L))

@@ -36,6 +36,7 @@ fun DesktopPrivacySection(bindings: DesktopPrivacySectionBindings,
             DesktopWindowsSettingsSwitch("不新增播放和搜索历史", privacy,
                 description = "已有记录保留。") { value -> scope.launch { bindings.setPrivacyMode(value) } }
         }
+        OutlinedButton(onClick = onMessageNotificationClick) { Text("消息通知") }
         OutlinedButton(onClick = onBlockedListClick) { Text("管理已屏蔽的 UP 主") }
         OutlinedButton(onClick = onCommentFraudHistoryClick) { Text("发评反诈历史") }
         error?.let { Text(it, color = MaterialTheme.colorScheme.error) }

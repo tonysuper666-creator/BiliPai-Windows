@@ -105,6 +105,7 @@ internal fun DesktopSettingsTree(
                             SettingsSearchTarget.HOME_FEED -> homeContent(page) { onDetailBack(page.target) }
                             SettingsSearchTarget.APPEARANCE -> appearanceContent()
                             SettingsSearchTarget.PLUGINS -> pluginsContent()
+                            SettingsSearchTarget.MESSAGE_NOTIFICATION -> DesktopMessageNotificationSettingsContent(onFailure)
                             SettingsSearchTarget.BLOCKED_LIST -> blockedListContent()
                             SettingsSearchTarget.TIPS -> com.bilipai.desktop.ui.DesktopWindowsTipsSettings(onBack = { onDetailBack(page.target) })
                             SettingsSearchTarget.OPEN_SOURCE_LICENSES -> OpenSourceLicensesScreen(onBack = { onDetailBack(page.target) })
@@ -128,7 +129,8 @@ internal fun DesktopSettingsTree(
                                     DesktopHomeRecommendationSettings(discovery, onFailure)
                                 }
                                 SettingsRootCategory.PRIVACY_PERMISSION -> DesktopPrivacySection(privacy,
-                                    onPermissionClick = {}, onMessageNotificationClick = {},
+                                    onPermissionClick = {},
+                                    onMessageNotificationClick = { navigator.openDetail(SettingsSearchTarget.MESSAGE_NOTIFICATION, null) },
                                     onBlockedListClick = { navigator.openDetail(SettingsSearchTarget.BLOCKED_LIST, null) },
                                     onCommentFraudHistoryClick = navigator::openCommentFraudHistory)
                                 SettingsRootCategory.STORAGE_BACKUP -> storageContent(null)

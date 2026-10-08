@@ -3297,3 +3297,19 @@ val extractOriginalAuMusicPage by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-au-music-page")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalAuMusicPage) }
+
+// Original read-only notification Poller/Policy/settings/state; actual retained Windows Root consumer.
+val extractOriginalMessageNotifications by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalMessagePages, extractUpstreamDynamicFullCard)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-message-notifications.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--out", layout.buildDirectory.dir("generated/original-message-notifications").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-message-notifications.py", "tools/v025_source_paths.py",
+        "tools/v025-canonical-sources.json", sourceManifest)
+    inputs.files(sources.filter { "desktop-original-message-notification-root" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-message-notifications"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-message-notifications")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalMessageNotifications) }
