@@ -24,6 +24,7 @@ internal class DesktopDynamicUsersState(
     private val selfFace:String="",
     private val nowMs:()->Long=System::currentTimeMillis,
     private val startupDelay:suspend (Long)->Unit={delay(it)},
+    private val commitIfCurrent:((()->Unit)->Boolean) = { block -> if(stillOwned()){block();true}else false },
 ) : DesktopDynamicCardItemsOwner {
     var selectedLogicalTab by mutableIntStateOf(resolveDynamicSelectedTabWithinVisibleTabs(preferences.selectedTab,
         resolveDynamicVisibleTabs(preferences.initialVisibleTabs,preferences.initialTabOrder)));private set
@@ -59,6 +60,11 @@ internal class DesktopDynamicUsersState(
     private val original=DesktopOriginalDynamicUserRepository(requestPage){owned()}
     val hiddenCount:Int get()=hidden.size
     private fun owned()=!closed&&stillOwned()
+    private fun publish(caller:Job?=null,block:()->Unit):Boolean {
+        var applied=false
+        val admitted=commitIfCurrent { if(owned()&&caller?.isActive!=false){block();applied=true} }
+        return admitted&&applied
+    }
     override fun mutateDynamicItems(transform: (List<DynamicItem>) -> List<DynamicItem>) {
         if (!owned()) return
         userItems = transform(userItems)
@@ -143,20 +149,23 @@ internal class DesktopDynamicUsersState(
     private suspend fun loadLiveUsers(){
         if(!owned())return
         val revision=followStateRevision
-        try{val rows=liveRooms();currentCoroutineContext().ensureActive();if(owned()&&revision==followStateRevision){live=rows;rebuild()}}
+        val caller=currentCoroutineContext()[Job]
+        try{val rows=liveRooms();currentCoroutineContext().ensureActive();publish(caller){if(revision==followStateRevision){live=rows;rebuild()}}}
             catch(cancelled:CancellationException){throw cancelled}catch(_:Exception){}
     }
     private suspend fun loadUnreadUsers(){
         if(!owned())return
-        try{val data=unreadUsers();currentCoroutineContext().ensureActive();if(owned())unread=data?.items
-            ?.filter{it.has_update==1}?.mapNotNull{it.user_profile?.info?.uid}?.filter{it>0}.orEmpty().toSet()}
+        val caller=currentCoroutineContext()[Job]
+        try{val data=unreadUsers();currentCoroutineContext().ensureActive();publish(caller){unread=data?.items
+            ?.filter{it.has_update==1}?.mapNotNull{it.user_profile?.info?.uid}?.filter{it>0}.orEmpty().toSet()}}
             catch(cancelled:CancellationException){throw cancelled}catch(_:Exception){}
     }
     private suspend fun loadAllFollowings(force:Boolean,pageLimit:Int?){
         if(!owned()||isFollowingsLoading)return
         val now=nowMs()
         if(!force&&!shouldReloadFollowings(nowMs=now,lastLoadMs=lastFollowingsLoadMs))return
-        isFollowingsLoading=true
+        val caller=currentCoroutineContext()[Job]
+        if(!publish(caller){isFollowingsLoading=true})return
         val revision=followStateRevision
         try {
             val collected=mutableListOf<FollowingUser>()
@@ -169,17 +178,20 @@ internal class DesktopDynamicUsersState(
                 collected+=rows
                 if(hasLoadedAllDynamicFollowings(rows.size,collected.size,data.total)){reachedEnd=true;break}
             }
-            if(owned()&&revision==followStateRevision){followings=collected;followingsFullyLoaded=reachedEnd;lastFollowingsLoadMs=now;followingsError=null;rebuild()}
-        }catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){if(owned()&&revision==followStateRevision)followingsError=error}
-        finally {
-            isFollowingsLoading=false
-            if(owned()&&followingsRefreshRequested){
-                followingsRefreshRequested=false
-                launchOwned{loadAllFollowings(force=true,pageLimit=resolveDynamicFollowingsPageLimit(false))}
-            } else if(owned()&&completeFollowingsLoadRequested&&!followingsFullyLoaded){
-                completeFollowingsLoadRequested=false
-                launchOwned{loadAllFollowings(force=true,pageLimit=null)}
+            publish(caller){if(revision==followStateRevision){followings=collected;followingsFullyLoaded=reachedEnd;lastFollowingsLoadMs=now;followingsError=null;rebuild()}}
+        }catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){
+            currentCoroutineContext().ensureActive()
+            publish(caller){if(revision==followStateRevision)followingsError=error}
+        }finally {
+            var reload=0
+            publish {
+                isFollowingsLoading=false
+                if(followingsRefreshRequested){followingsRefreshRequested=false;reload=1}
+                else if(completeFollowingsLoadRequested&&!followingsFullyLoaded){completeFollowingsLoadRequested=false;reload=2}
             }
+            // Launch/cancellation handlers must not run inside Store/entry publication.
+            if(reload==1)launchOwned{loadAllFollowings(force=true,pageLimit=resolveDynamicFollowingsPageLimit(false))}
+            else if(reload==2)launchOwned{loadAllFollowings(force=true,pageLimit=null)}
         }
     }
     private fun requestCompleteFollowingsLoad(){
@@ -188,7 +200,7 @@ internal class DesktopDynamicUsersState(
         completeFollowingsLoadRequested=false
         launchOwned{loadAllFollowings(force=true,pageLimit=null)}
     }
-    fun updateTimeline(rows:List<DynamicItem>){if(owned()){dynamics=rows;rebuild()}}
+    fun updateTimeline(rows:List<DynamicItem>){publish { dynamics=rows;rebuild() }}
     fun updateUserPreferences(pinned:Set<Long>,hidden:Set<Long>){if(owned()){this.pinned=pinned;this.hidden=hidden;rebuild()}}
     fun toggleShowHidden(){if(owned()){showHidden=!showHidden;rebuild()}}
     private fun rebuild(){users=applyUserPreferences(resolveMergedFollowedUsers(extractUsersFromFollowings(followings),extractUsersFromLive(live),extractUsersFromDynamicItems(dynamics)),pinned,hidden,showHidden)}
@@ -210,7 +222,7 @@ internal class DesktopDynamicUsersState(
         userJob?.cancel();val token=++requestToken;userLoading=true;userError=null
         userJob=launchOwned {
             try{delay(120);loadUser(true,next,token)}
-            finally{if(owned()&&shouldApplyUserDynamicsResult(selectedUid,next,requestToken,token))userLoading=false}
+            finally{publish { if(shouldApplyUserDynamicsResult(selectedUid,next,requestToken,token))userLoading=false }}
         }
     }
     fun refreshUser()=requestUser(true)
@@ -232,21 +244,25 @@ internal class DesktopDynamicUsersState(
         val uid=selectedUid?:return
         if(!owned()||userLoading||(!refresh&&!hasUserMore))return
         val token=++requestToken;userLoading=true;userError=null
-        userJob=launchOwned{try{loadUser(refresh,uid,token)}finally{if(owned()&&shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))userLoading=false}}
+        userJob=launchOwned{try{loadUser(refresh,uid,token)}finally{publish { if(shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))userLoading=false }}}
     }
     private suspend fun loadUser(refresh:Boolean,uid:Long,token:Long)=requests.withLock {
         if(!owned()||!shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))return@withLock
         val revision=followStateRevision
         val paginationBefore=original.checkpointForFollowChange(uid)
+        val caller=currentCoroutineContext()[Job]
         try {
             val rows=original.getUserDynamicFeed(uid,refresh).getOrThrow();currentCoroutineContext().ensureActive()
-            if(!owned()||!shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))return@withLock
-            if(revision!=followStateRevision)return@withLock
-            // Original ViewModel appends remote rows; local/remote deduplication belongs to its visible-items policy.
-            userItems=if(refresh)rows else userItems+rows;hasUserMore=original.hasMore(uid);userError=null
+            publish(caller) {
+                if(revision==followStateRevision&&shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token)) {
+                    // Original ViewModel appends remote rows; local/remote deduplication belongs to its visible-items policy.
+                    userItems=if(refresh)rows else userItems+rows;hasUserMore=original.hasMore(uid);userError=null
+                }
+            }
         }catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){
-            if(owned()&&revision==followStateRevision&&shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))userError=error
-        }finally{if(revision!=followStateRevision)original.restoreAfterFollowChange(uid,paginationBefore)}
+            currentCoroutineContext().ensureActive()
+            publish(caller){if(revision==followStateRevision&&shouldApplyUserDynamicsResult(selectedUid,uid,requestToken,token))userError=error}
+        }finally{publish { if(revision!=followStateRevision)original.restoreAfterFollowChange(uid,paginationBefore) }}
     }
     private fun clearSelection(){userJob?.cancel();requestToken++;selectedUid=null;userItems=emptyList();userLoading=false;userError=null;hasUserMore=true}
     fun close(){if(closed)return;closed=true;requestToken++;ownedJobs.toList().forEach{it.cancel()}}

@@ -39,6 +39,21 @@ internal class DesktopHomeRootRequestBinding(
     private fun assertOwned(){
         if(!owns())throw CancellationException("Home request binding retired")
     }
+    // Captured once by the actual retained Root constructor, before its first publication.
+    // This is the existing Store receipt, not another account/source cache.
+    private val mountedReceipt = repository.captureHomeNavRequest(capturedEpoch, capturedMid, ::owns)
+    /** Dedicated Store -> original entry admission. General owns() remains lock-free. */
+    internal fun withMountedPublication(block: () -> Unit): Boolean {
+        var applied = false
+        val admitted = repository.withCurrentHomeNavRequest(mountedReceipt, ::owns) {
+            commitIfCurrent { if (owns()) { block(); applied = true } }
+        }
+        return admitted && applied
+    }
+    internal fun isMountedSourceCurrent() = withMountedPublication {}
+    internal fun assertMountedSourceCurrent() {
+        if (!isMountedSourceCurrent()) throw CancellationException("Mounted Home source retired")
+    }
     private fun <T> service(type:Class<T>,base:String,guest:Boolean=false)=
         repository.ownedHomeService(type,base,capturedEpoch,::owns,guest)
     private val api=service(BilibiliApi::class.java,"https://api.bilibili.com/")

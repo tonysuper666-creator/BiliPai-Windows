@@ -179,6 +179,7 @@ internal class DesktopHomeRootFactory(
                 { url, _ -> aggregate.gallery.saveImage(url) },
                 { message -> gate.commit { window.feedback(message) } }, window.overlays(gate, entry.requests, requireNotNull(sharedFiles)))
             gate.assertOwned()
+            entry.requests.assertMountedSourceCurrent()
             return DesktopHomeRetainedRoot(entry, environment, mediaPorts, returnOwner, liveRoutes, mediaOwner, lottie)
         } catch (failure: Throwable) {
             original?.gate?.close()

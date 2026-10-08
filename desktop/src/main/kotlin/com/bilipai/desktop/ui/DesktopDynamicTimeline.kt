@@ -29,6 +29,7 @@ internal class DesktopDynamicTimelineState(
     private val stillOwned:()->Boolean={true},
     initialCachedItems:List<DynamicItem> = emptyList(),
     private val onAllTimelineChanged:(List<DynamicItem>)->Unit = {},
+    private val commitIfCurrent:((()->Unit)->Boolean) = { block -> if(stillOwned()){block();true}else false },
 ) : DesktopDynamicCardItemsOwner {
     private val original=DesktopOriginalDynamicTimelineRepository(fetchPage,stillOwned)
     private val requests=Mutex()
@@ -43,7 +44,12 @@ internal class DesktopDynamicTimelineState(
     var error by mutableStateOf<Throwable?>(null);private set
     val isAllTimeline: Boolean get() = type == "all"
     internal fun currentUpdateBaseline(): String = original.currentUpdateBaseline(type = type)
-    fun persistCurrentItems() { if (isAllTimeline && stillOwned()) onAllTimelineChanged(page.items) }
+    private fun publish(caller:Job?=null,block:()->Unit):Boolean {
+        var applied=false
+        val admitted=commitIfCurrent { if(stillOwned()&&caller?.isActive!=false){block();applied=true} }
+        return admitted&&applied
+    }
+    fun persistCurrentItems() { publish { if (isAllTimeline) onAllTimelineChanged(page.items) } }
     override fun mutateDynamicItems(transform: (List<DynamicItem>) -> List<DynamicItem>) {
         if (!stillOwned()) return
         val updated = transform(page.items)
@@ -72,37 +78,44 @@ internal class DesktopDynamicTimelineState(
         val snapshot=page
         val followRevision=followStateRevision
         val paginationBefore=original.checkpointForFollowChange(type)
-        busy=true;error=null
-        page=resolveDynamicTimelinePageForLoadStart(snapshot,refresh,true)
+        val caller=currentCoroutineContext()[Job]
+        if(!publish(caller) {
+            busy=true;error=null
+            page=resolveDynamicTimelinePageForLoadStart(snapshot,refresh,true)
+        })return false
         try {
             val result=original.getDynamicFeed(refresh=refresh,type=type,incrementalRefresh=incrementalRefresh).getOrThrow()
             currentCoroutineContext().ensureActive()
-            if(!stillOwned())return false
-            if(followRevision!=followStateRevision) {
-                // A pre-confirmation response cannot undo the accepted local reducer.
-                original.restoreAfterFollowChange(type,paginationBefore)
-                page=snapshot.copy(items=page.items)
-                return false
+            var succeeded=false
+            publish(caller) {
+                if(followRevision!=followStateRevision) {
+                    // A pre-confirmation response cannot undo the accepted local reducer.
+                    original.restoreAfterFollowChange(type,paginationBefore)
+                    page=snapshot.copy(items=page.items)
+                } else {
+                    var successPage=resolveDynamicTimelinePageAfterSuccess(page,result.items,refresh,incrementalRefresh,result.hasMore)
+                    // Same post-refresh synchronization as original DynamicViewModel; a replacement
+                    // must not continue paging through the retired tail of the old list.
+                    if(refresh&&successPage.incrementalPrependedCount==0) {
+                        if(result.nextOffset.isNotBlank())original.syncPaginationAfterRefresh(DynamicFeedScope.DYNAMIC_SCREEN,
+                            type,offset=result.nextOffset,hasMore=result.hasMore)
+                        successPage=successPage.copy(hasMore=result.hasMore)
+                    }
+                    page=successPage
+                    initialized=true
+                    if(type=="all")onAllTimelineChanged(page.items)
+                    succeeded=true
+                }
             }
-            var successPage=resolveDynamicTimelinePageAfterSuccess(page,result.items,refresh,incrementalRefresh,result.hasMore)
-            // Same post-refresh synchronization as original DynamicViewModel; a replacement
-            // must not continue paging through the retired tail of the old list.
-            if(refresh&&successPage.incrementalPrependedCount==0) {
-                if(result.nextOffset.isNotBlank())original.syncPaginationAfterRefresh(DynamicFeedScope.DYNAMIC_SCREEN,
-                    type,offset=result.nextOffset,hasMore=result.hasMore)
-                successPage=successPage.copy(hasMore=result.hasMore)
-            }
-            page=successPage
-            initialized=true
-            if(type=="all")onAllTimelineChanged(page.items)
-            return true
+            return succeeded
         }catch(cancelled:CancellationException){
-            if(stillOwned())page=snapshot.copy(items=page.items)
+            publish { page=snapshot.copy(items=page.items) }
             throw cancelled
         }catch(failure:Exception){
-            if(stillOwned()){error=failure;page=resolveDynamicTimelinePageAfterFailure(snapshot.copy(items=page.items),failure.message.orEmpty(),refresh)}
+            currentCoroutineContext().ensureActive()
+            publish(caller){error=failure;page=resolveDynamicTimelinePageAfterFailure(snapshot.copy(items=page.items),failure.message.orEmpty(),refresh)}
             return false
-        }finally{if(followRevision!=followStateRevision)original.restoreAfterFollowChange(type,paginationBefore);busy=false}
+        }finally{publish { if(followRevision!=followStateRevision)original.restoreAfterFollowChange(type,paginationBefore) };busy=false}
     }
 }
 

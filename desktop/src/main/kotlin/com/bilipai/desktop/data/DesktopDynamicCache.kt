@@ -30,7 +30,8 @@ internal class DesktopDynamicCache(
         data class Mark(val session: DesktopDynamicCacheSession, val id: String, val result: CompletableDeferred<Unit>) : Work
         data class Barrier(val result: CompletableDeferred<Unit>) : Work
     }
-    private data class PendingSave(val session: DesktopDynamicCacheSession, val items: List<DynamicItem>)
+    private data class PendingSave(val session: DesktopDynamicCacheSession, val items: List<DynamicItem>,
+                                   val publishCurrent: ((()->Unit)->Boolean)?)
     private val gate = Any()
     private val shutdown = Mutex()
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -46,7 +47,7 @@ internal class DesktopDynamicCache(
             Work.SaveLatest -> {
                 val pending = synchronized(gate) { pendingSave.also { pendingSave = null; saveQueued = false } }
                 if (pending != null) try { save(pending) }
-                    catch (failure: Exception) { pending.session.mutableWriteFailure.value = failure }
+                    catch (failure: Exception) { withPendingPublication(pending) { pending.session.mutableWriteFailure.value = failure } }
             }
             is Work.Mark -> try { mark(work.session, work.id); work.result.complete(Unit) }
                 catch (failure: Exception) {
@@ -71,17 +72,20 @@ internal class DesktopDynamicCache(
             block()
         }
 
-    internal fun saveTimeline(session: DesktopDynamicCacheSession, items: List<DynamicItem>) {
+    internal fun saveTimeline(session: DesktopDynamicCacheSession, items: List<DynamicItem>,
+                              publishCurrent: ((()->Unit)->Boolean)? = null) {
         try {
             // Original DynamicViewModel does not persist or cold-seed a guest timeline.
             if (session.owner.mid <= 0L) {
                 check(withCurrentSession(session) {}) { "账号已切换，请重新加载" }
                 return
             }
-            val accepted = withCurrentSession(session) {
+            var accepted=false
+            val enqueueCurrent:()->Unit = {
+              accepted = withCurrentSession(session) {
                 synchronized(gate) {
                     check(accepting) { "动态缓存已停止" }
-                    val next = PendingSave(session, items.take(DesktopOriginalDynamicCacheKeys.MAX_CACHE_ITEMS).toList())
+                    val next = PendingSave(session, items.take(DesktopOriginalDynamicCacheKeys.MAX_CACHE_ITEMS).toList(),publishCurrent)
                     if (!saveQueued) {
                         check(queue.trySend(Work.SaveLatest).isSuccess) { "动态缓存写入队列已满" }
                         saveQueued = true
@@ -89,9 +93,14 @@ internal class DesktopDynamicCache(
                     // Empty is a real latest version too; an older nonempty snapshot cannot revive it.
                     pendingSave = next
                 }
+              }
             }
+            if(publishCurrent==null)enqueueCurrent() else check(publishCurrent(enqueueCurrent)) { "动态来源已退休" }
             check(accepted) { "账号已切换，请重新加载" }
-        } catch (failure: Exception) { session.mutableWriteFailure.value = failure }
+        } catch (failure: Exception) {
+            if(publishCurrent==null)session.mutableWriteFailure.value=failure
+            else publishCurrent { session.mutableWriteFailure.value=failure }
+        }
     }
 
     internal suspend fun markNotInterested(session: DesktopDynamicCacheSession, id: String) {
@@ -137,14 +146,18 @@ internal class DesktopDynamicCache(
 
     private fun permit(owner: DesktopDynamicCacheOwner, caller: Job? = null,
                        session: DesktopDynamicCacheSession? = null,
-                       requireAccepting: Boolean = false): DesktopPluginStore.OriginalPreferenceWritePermit {
+                       requireAccepting: Boolean = false,
+                       publishCurrent: ((()->Unit)->Boolean)? = null): DesktopPluginStore.OriginalPreferenceWritePermit {
         var result: DesktopPluginStore.OriginalPreferenceWritePermit? = null
-        check(guard.withCurrentDynamicCacheOwner(owner) {
-            caller?.ensureActive()
-            if (session != null) check(active === session) { "动态缓存实例已退休" }
-            if (requireAccepting) synchronized(gate) { check(accepting) { "动态缓存已停止" } }
-            result = DesktopPluginStore.OriginalPreferenceWritePermit(store)
-        }) { "账号已切换，请重新加载" }
+        val acquire:()->Unit = {
+            check(guard.withCurrentDynamicCacheOwner(owner) {
+                caller?.ensureActive()
+                if (session != null) check(active === session) { "动态缓存实例已退休" }
+                if (requireAccepting) synchronized(gate) { check(accepting) { "动态缓存已停止" } }
+                result = DesktopPluginStore.OriginalPreferenceWritePermit(store)
+            }) { "账号已切换，请重新加载" }
+        }
+        if(publishCurrent==null)acquire() else check(publishCurrent(acquire)) { "动态来源已退休" }
         return checkNotNull(result)
     }
 
@@ -217,20 +230,27 @@ internal class DesktopDynamicCache(
         }
     }
 
+    private fun withPendingPublication(pending:PendingSave,block:()->Unit):Boolean {
+        val publish=pending.publishCurrent
+        return if(publish==null){block();true}else publish(block)
+    }
     private fun save(pending: PendingSave) {
         val session = pending.session
-        requireCurrent(session)
+        if(!withPendingPublication(pending){requireCurrent(session)})return
         val payload = pending.items.takeIf { it.isNotEmpty() }?.let { json.encodeToString(it) }
-        store.updateOriginalFromSnapshot(session.cacheNamespace, { requireCurrent(session) },
-            { permit(session.owner, session = session) }) {
+        store.updateOriginalFromSnapshot(session.cacheNamespace,
+            { check(withPendingPublication(pending){requireCurrent(session)}) { "动态来源已退休" } },
+            { permit(session.owner, session = session,publishCurrent=pending.publishCurrent) }) {
             Unit to mapOf(OWNER_KEY to JsonPrimitive(session.owner.namespaceTag),
                 DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE to payload?.let(::JsonPrimitive),
                 DesktopOriginalDynamicCacheKeys.KEY_DYNAMIC_CACHE_TIME to payload?.let { JsonPrimitive(nowMs()) })
         }
-        check(withCurrentSession(session) {
-            session.mutableCachedAllItems.value = pending.items
-            session.mutableWriteFailure.value = null
-        }) { "账号已切换，请重新加载" }
+        withPendingPublication(pending) {
+            check(withCurrentSession(session) {
+                session.mutableCachedAllItems.value = pending.items
+                session.mutableWriteFailure.value = null
+            }) { "账号已切换，请重新加载" }
+        }
     }
 
     private fun mark(session: DesktopDynamicCacheSession, id: String) {
@@ -282,6 +302,6 @@ internal class DesktopDynamicCacheSession internal constructor(
     val cachedAllItems: StateFlow<List<DynamicItem>> = mutableCachedAllItems.asStateFlow()
     val notInterestedIds: StateFlow<Set<String>> = mutableNotInterestedIds.asStateFlow()
     val writeFailure: StateFlow<Throwable?> = mutableWriteFailure.asStateFlow()
-    fun saveTimeline(items: List<DynamicItem>) = cache.saveTimeline(this, items)
+    fun saveTimeline(items: List<DynamicItem>,publishCurrent:((()->Unit)->Boolean)?=null) = cache.saveTimeline(this, items,publishCurrent)
     suspend fun markNotInterested(dynamicId: String) = cache.markNotInterested(this, dynamicId)
 }

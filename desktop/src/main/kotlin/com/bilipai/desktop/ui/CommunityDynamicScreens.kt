@@ -41,8 +41,10 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
     val notInterested by cache.notInterestedIds.collectAsState()
     val cacheFailure by cache.writeFailure.collectAsState()
     val scope=rememberCoroutineScope()
+    val mountedRoot=LocalDesktopOriginalVideoRootWindowEnvironment.current.root
+    val mountedSource=mountedRoot.entry.requests
     val latestActive=rememberUpdatedState(active)
-    fun owned()=community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid
+    fun owned()=community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid&&mountedSource.isMountedSourceCurrent()
     // Observe the existing physical-page signal, in the actual current request Job.
     // This wait belongs only to this composition's sidebar jobs, never to retained timelines.
     suspend fun awaitPageActive() {
@@ -54,13 +56,14 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
     }
     val cardRegistry=checkNotNull(LocalDesktopDynamicCardStateRegistry.current){"Root dynamic mutation registry is not mounted"}
     val tabsPreferences=remember(preferences,cache){DesktopDynamicTabsPreferences(preferences.context,cache)}
-    val users=remember(mid,capturedEpoch,tabsPreferences) {
+    val users=remember(mountedRoot,mid,capturedEpoch,tabsPreferences) {
         DesktopDynamicUsersState(scope,tabsPreferences,mid,
             followingPage={awaitPageActive();community.followings(mid,it,capturedEpoch,mid,::owned).data},
             liveRooms={awaitPageActive();community.dynamicFollowedLiveUsers(capturedEpoch,mid,::owned)},
             unreadUsers={awaitPageActive();community.dynamicUnreadUsers(capturedEpoch,mid,::owned)},
             requestPage={awaitPageActive();community.dynamicSelectedUserPage(it,capturedEpoch,mid,::owned)},
-            stillOwned=::owned,selfFace=community.account.value?.avatar.orEmpty())
+            stillOwned=::owned,selfFace=community.account.value?.avatar.orEmpty(),
+            commitIfCurrent=mountedSource::withMountedPublication)
     }
     DisposableEffect(users){onDispose{users.close()}}
     cardRegistry.register(users)
@@ -68,7 +71,7 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
         .filterNot{it.id_str in notInterested}}}
     val editor=checkNotNull(LocalDesktopDynamicEditorActions.current){"Root dynamic editor is not mounted"}
     val memory=LocalDesktopBrowseMemory.current
-    val timelines=remember(memory,mid,capturedEpoch){mutableMapOf<String,DesktopDynamicTimelineState>()}
+    val timelines=remember(memory,mountedRoot,mid,capturedEpoch){mutableMapOf<String,DesktopDynamicTimelineState>()}
     fun timeline(type:String)=timelines.getOrPut(type) {
         val create={
             lateinit var model:DesktopDynamicTimelineState
@@ -78,13 +81,14 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
             catch(failure:BiliApiException){DynamicFeedResponse(code=failure.apiCode,message=failure.message.orEmpty())}
         },stillOwned=::owned,
             initialCachedItems=if(type=="all")cache.cachedAllItems.value else emptyList(),
-            onAllTimelineChanged={rows->if(cardRegistry.isCurrentAll(model))cache.saveTimeline(rows)})
+            onAllTimelineChanged={rows->if(cardRegistry.isCurrentAll(model))cache.saveTimeline(rows,mountedSource::withMountedPublication)},
+            commitIfCurrent=mountedSource::withMountedPublication)
             model
         }
-        (memory?.screen(listOf("dynamic-settings-timeline",mid,capturedEpoch,type),create)?:create()).also(cardRegistry::register)
+        (memory?.screen(listOf("dynamic-settings-timeline",mountedRoot,mid,capturedEpoch,type),create)?:create()).also(cardRegistry::register)
     }
     Column {
-        cacheFailure?.let{CommunityFailure(it,navigation.onLogin){cache.saveTimeline(timeline("all").page.items)}}
+        cacheFailure?.let{CommunityFailure(it,navigation.onLogin){cache.saveTimeline(timeline("all").page.items,mountedSource::withMountedPublication)}}
         DesktopDynamicTabsHost(users,preferences,navigation.onUser,navigation.onLogin,transform,::timeline,
             active=active,awaitPageActive=::awaitPageActive,
             trailing={Button(onClick={editor.publish(DynamicPublishDraft(text=""))}){DesktopSkinDynamicPublishIcon(false);Text("发布动态")}}) {

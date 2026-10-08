@@ -31,7 +31,7 @@ internal class DesktopHomeRootRetainer(
         val result = owner as? DesktopHomeRetainedRoot
             ?: error("Runtime must bind the same complete retained Home assembly")
         currentCoroutineContext().ensureActive()
-        val accepted = result.entry.gate.commit {
+        val accepted = result.entry.requests.withMountedPublication {
             synchronized(lock) {
                 if (isActive() && epoch == currentEpoch()) mutableRoot.value = result
             }
