@@ -372,7 +372,11 @@ class DesktopDownloadManager internal constructor(
             currentCoroutineContext().ensureActive()
             val directory = ensureOwnedDirectory(task) // this worker retains the same file slot until actual completion
             publish(starting) { it.copy(item = it.item.copy(status = DownloadStatus.DOWNLOADING, errorMessage = null)) }
-            downloadOptionalAssets(read(downloading), directory) { change -> publish(downloading, change) }
+            downloadOptionalAssets(read(downloading), directory, pendingJob, owned(downloading), { action ->
+                synchronized(lock) {
+                    if (!queueOwnedLocked(downloading)) false else { action(); true }
+                }
+            }) { change -> publish(downloading, change) }
             val video = directory.resolve("video.m4s")
             val audio = directory.resolve("audio.m4s")
             val segmentFiles = task.progressiveSegments.indices.map { directory.resolve("segment-${(it + 1).toString().padStart(4, '0')}.media") }
@@ -414,7 +418,8 @@ class DesktopDownloadManager internal constructor(
         }
     }
 
-    private suspend fun downloadOptionalAssets(task: DownloadTask, directory: Path,
+    private suspend fun downloadOptionalAssets(task: DownloadTask, directory: Path, callerJob: Job,
+        stillOwned: () -> Boolean, taskAdmission: ((() -> Unit) -> Boolean),
         publish: ((DownloadTask) -> DownloadTask) -> Unit) {
         val id = task.id
         if (task.item.cover.isNotBlank() && task.item.assets.none { it.kind == DownloadAssetKind.COVER && it.status == DownloadAssetStatus.SKIPPED }) {
@@ -430,8 +435,11 @@ class DesktopDownloadManager internal constructor(
         } else publish { it.copy(item = it.item.withAssetState(DownloadAssetState(DownloadAssetKind.COVER, DownloadAssetStatus.SKIPPED))) }
         if (task.item.options.includeDanmaku && task.item.cid > 0 && danmakuDownloader != null) {
             try {
-                val (segments, manifest) = danmakuDownloader.invoke(task, directory) { state ->
-                    publish { it.copy(item = it.item.withAssetState(state)) }
+                val (segments, manifest) = DownloadDanmakuTransport.withTask(task.playbackSource(), publication,
+                    callerJob, stillOwned, taskAdmission) {
+                    danmakuDownloader.invoke(task, directory) { state ->
+                        publish { it.copy(item = it.item.withAssetState(state)) }
+                    }
                 }
                 publish { it.copy(item = it.item.copy(localDanmakuSegmentPaths = segments, localDanmakuMetadataPath = manifest)) }
             } catch (cancelled: CancellationException) { throw cancelled
@@ -627,18 +635,21 @@ class DesktopDownloadManager internal constructor(
             }
         }
         private fun defaultDanmakuDownloader(repository: DesktopRepository): suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?> = { task, directory, update ->
-            repository.ensureSession()
-            DownloadDanmakuTransport.configure(repository)
-            DownloadDanmakuTransport.resetMetadata(task.item.cid)
-            val result = DownloadDanmakuAssetService.download(task.item, directory.toFile(), update)
-            if (result.metadataPath != null) {
-                val manifest = Json { ignoreUnknownKeys = true }.decodeFromString(LocalDanmakuManifest.serializer(), Files.readString(Path.of(result.metadataPath)))
-                val expected = com.android.purebilibili.data.repository.resolveDanmakuSegmentCount(
-                    task.item.duration.coerceAtLeast(0) * 1000L,
-                    if (task.item.aid > 0) DownloadDanmakuTransport.metadataSegmentCount(task.item.cid) else null)
-                if (manifest.standardSegmentCount != expected) throw IOException("弹幕标准分段未全部下载（${manifest.standardSegmentCount}/$expected），媒体文件继续下载")
+            val owner = DownloadDanmakuTransport.taskOwner()
+            if (owner.source.authorizationReceipt != task.authorizationReceipt)
+                throw CancellationException("离线弹幕下载授权与原任务不同")
+            DownloadDanmakuTransport.withApi(repository) {
+                val result = DownloadDanmakuAssetService.download(task.item, directory.toFile(), update)
+                owner.assertCurrent()
+                if (result.metadataPath != null) {
+                    val manifest = Json { ignoreUnknownKeys = true }.decodeFromString(LocalDanmakuManifest.serializer(),
+                        Files.readString(Path.of(result.metadataPath)))
+                    if (manifest.standardSegmentCount != result.expectedStandardSegmentCount)
+                        throw IOException("弹幕标准分段未全部下载（" + manifest.standardSegmentCount + "/" + result.expectedStandardSegmentCount + "），媒体文件继续下载")
+                }
+                owner.assertCurrent()
+                result.segmentPaths to result.metadataPath
             }
-            result.segmentPaths to result.metadataPath
         }
         private fun defaultStateFile(): Path = Path.of(System.getenv("LOCALAPPDATA")?.takeIf { it.isNotBlank() }
             ?: Path.of(System.getProperty("user.home"), ".local", "share").toString(), "BiliPai", "downloads.json")

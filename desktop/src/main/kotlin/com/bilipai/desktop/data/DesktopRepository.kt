@@ -115,11 +115,14 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
                     "Bilibili 暂时限制了此请求 (HTTP 412)。请在浏览器打开 B 站完成正常验证，或登录后重试；也可稍后再试。"
                     else "Bilibili 请求过于频繁 (HTTP 429)，请稍后再试。")
             }
-            response
+            // Final application response is transparently decoded; apply the same body budget here too.
+            original.tag(com.bilipai.desktop.download.DesktopDownloadDanmakuRequestPolicy::class.java)?.bind(response) ?: response
         }
         // OkHttp's CookieJar runs after application interceptors. Imported cookies must be applied here.
         .addNetworkInterceptor { chain ->
             val request = chain.request()
+            val downloadDanmakuPolicy = request.tag(com.bilipai.desktop.download.DesktopDownloadDanmakuRequestPolicy::class.java)
+            downloadDanmakuPolicy?.validate(request)
             val requestOwner = request.tag(DesktopSessionEpoch::class.java) ?: DesktopSessionEpoch(sessions.generation)
             val epoch = requestOwner.value
             if (epoch != sessions.generation || !requestOwner.stillOwned() || requestOwner.playbackAuthorization?.let { !sessions.isPlaybackAuthorizationCurrent(it.receipt) } == true) throw BiliApiException(-101, "账号已切换，请重新操作")
@@ -134,7 +137,8 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             } else request
             val stripped = stripDesktopAnonymousHomeFeedCookie(stripDesktopMergedFeedCookie(replacement))
             val mediaOrigin = stripped.tag(com.bilipai.desktop.player.cache.DesktopMediaOriginHeaders::class.java)
-            val response = chain.proceed(mediaOrigin?.apply(stripped) ?: stripped)
+            val received = chain.proceed(mediaOrigin?.apply(stripped) ?: stripped)
+            val response = downloadDanmakuPolicy?.bind(received) ?: received
             // The same client must reject captured parallel-range redirects before
             // RetryAndFollowUpInterceptor can send a follow-up to another signed address.
             if (request.tag(com.bilipai.desktop.player.cache.DesktopCdnRangeRequestPolicy::class.java) != null)

@@ -79,7 +79,10 @@ def adapt(name, source):
     elif name == "DownloadDanmakuAssetService.kt":
         body = replace_exact(body, "import java.io.File", "import java.io.File\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive", changes)
         body = replace_exact(body, "viewReply?.specialDms.orEmpty().mapIndexedNotNull", "viewReply?.specialDms.orEmpty().distinct().take(com.bilipai.desktop.danmaku.DesktopSpecialSourceLimits.MAX_SOURCES).mapIndexedNotNull", changes)
-        body = replace_exact(body, "        val manifestFile = File(danmakuDir,", "        currentCoroutineContext().ensureActive()\n        val manifestFile = File(danmakuDir,", changes)
+        body = replace_exact(body, "        val manifestFile = File(danmakuDir,", "        currentCoroutineContext().ensureActive()\n        com.bilipai.desktop.download.DownloadDanmakuTransport.currentBinding().assertCurrent()\n        val manifestFile = File(danmakuDir,", changes)
+        for before, after in [('internal data class DownloadDanmakuAssetResult(\n    val segmentPaths: List<String>,\n    val metadataPath: String?\n)', 'internal data class DownloadDanmakuAssetResult(\n    val segmentPaths: List<String>,\n    val metadataPath: String?,\n    val expectedStandardSegmentCount: Int = 0\n)'), ('        val danmakuDir = File(taskDir, "danmaku").apply { mkdirs() }', '        com.bilipai.desktop.download.DownloadDanmakuTransport.currentBinding().assertCurrent()\n        val danmakuDir = File(taskDir, "danmaku").apply { mkdirs() }'), ('            file.writeBytes(bytes)', '            com.bilipai.desktop.download.DownloadDanmakuTransport.currentBinding().assertCurrent()\n            file.writeBytes(bytes)'), ('            metadataPath = manifestFile.absolutePath\n        )', '            metadataPath = manifestFile.absolutePath,\n            expectedStandardSegmentCount = resolveDanmakuSegmentCount(durationMs, viewReply?.dmSge?.total?.toInt())\n        )')]:
+            body = replace_exact(body, before, after, changes)
+
     elif name == "SpecialDanmakuSource.kt":
         for before, after in [
             ('Log.w("DanmakuRepo", "Special danmaku index failed", e)', 'Log.w("DanmakuRepo", "Special danmaku index failed")'),
