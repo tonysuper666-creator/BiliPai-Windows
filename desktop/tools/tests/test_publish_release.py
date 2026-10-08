@@ -379,7 +379,8 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         if condition == ">-":
             condition = re.match(r"(?:      [^\n]*(?:\n|$))+", body[match.end() + 1:]).group()
         values = {"github.repository": "tonysuper666-creator/BiliPai-Windows", "github.event.repository.private": False,
-                  "github.event_name": "workflow_dispatch", "inputs.render_diagnostic": job == "render-diagnostic",
+                  "github.event_name": "workflow_dispatch", "github.ref_type": "tag",
+                  "inputs.render_diagnostic": job == "render-diagnostic",
                   "inputs.comment_search_ui": job == "comment-search-ui",
                   "inputs.acknowledge_source_build": True,
                   "vars.BILIPAI_WINDOWS_AUTO_SYNC": "true", "vars.BILIPAI_WINDOWS_AUTO_PUBLISH": "true",
@@ -413,7 +414,7 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                 with self.subTest(name=name, job=job):
                     self.assertEqual(re.findall(r"(?m)^          retention-days: (.+)$", step), ["1"])
                     self.assertRegex(step, r"(?m)^          if-no-files-found: (warn|error)$")
-        self.assertEqual(uploads, 12)
+        self.assertEqual(uploads, 11)
 
     def test_only_standard_runner_labels_and_readonly_default_permissions(self):
         for (name, job), body in self.jobs.items():
@@ -455,7 +456,21 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         self.assertRegex(body, r"(?m)^    timeout-minutes: 360$")
         self.assertIn("ghcr.io/shinchiro/archlinux@sha256:6156ca503061914e1e73c3efa7276d14f5d45c78b3b8534c46e60294500beb66", body)
         self.assertIn("python3 desktop/tools/native/build-mpv-rtx-core-runtime.py", body)
+        self.assertIn("python3 desktop/tools/native/upload-mpv-rtx-core-draft.py", body)
+        self.assertRegex(body, r"(?m)^    permissions:\n      contents: write$")
+        self.assertNotIn("actions/upload-artifact@", body)
+        self.assertNotIn("actions/cache", body)
+        self.assertIn("        if: success()", body)
+        self.assertFalse(self.admitted(name, job, **{"github.ref_type": "branch"}))
         self.assertNotRegex(body, r"(?i)gh\s+release|create-release|upload-release|veyra-core.*cmake|nvngx.*(?:build|download)")
+        draft_helper = (Path(__file__).parents[1] / "native/upload-mpv-rtx-core-draft.py").read_text(encoding="utf-8")
+        self.assertIn("\'draft\': True", draft_helper)
+        self.assertIn("\'make_latest\': \'false\'", draft_helper)
+        self.assertIn("PART_BYTES = 1 << 30", draft_helper)
+        self.assertIn("RELEASE_ASSET_LIMIT = 2 << 30", draft_helper)
+        self.assertIn("require_tag(base, tag, commit, token)", draft_helper)
+        self.assertNotIn("target_commitish", draft_helper)
+        self.assertNotIn("api(\'PATCH\'", draft_helper)
         root = Path(__file__).resolve().parents[3]
         inputs = root / "desktop/third-party/libmpv/build/rtx-core-v1"
         fixed = json.loads((inputs / "fixed-inputs.json").read_text(encoding="utf-8"))

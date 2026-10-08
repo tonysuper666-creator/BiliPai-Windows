@@ -12,6 +12,7 @@ import re
 import shutil
 import struct
 import subprocess
+import sys
 import tarfile
 import urllib.request
 import zipfile
@@ -79,10 +80,28 @@ def apply_recipes(recipes, records):
         target.write_bytes(data)
 
 def run(command, log):
+    command = [str(x) for x in command]
     with log.open('ab') as output:
-        output.write(('\nCOMMAND ' + json.dumps([str(x) for x in command]) + '\n').encode())
+        marker = ('\nCOMMAND ' + json.dumps(command) + '\n').encode()
+        output.write(marker)
         output.flush()
-        subprocess.run([str(x) for x in command], check=True, stdout=output, stderr=subprocess.STDOUT)
+        sys.stdout.buffer.write(marker)
+        sys.stdout.buffer.flush()
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        try:
+            while block := process.stdout.read1(65536):
+                output.write(block)
+                output.flush()
+                sys.stdout.buffer.write(block)
+                sys.stdout.buffer.flush()
+            code = process.wait()
+            if code:
+                raise subprocess.CalledProcessError(code, command)
+        finally:
+            if process.poll() is None:
+                process.terminate()
+                process.wait()
+            process.stdout.close()
 
 def pe_imports(data):
     """Read actual PE x64 normal/delay imports without loading the DLL."""
@@ -166,6 +185,15 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     workspace, output = args.workspace.resolve(), args.output.resolve()
+    if os.environ.get('GITHUB_ACTIONS') == 'true':
+        if (os.environ.get('GITHUB_REPOSITORY') != 'tonysuper666-creator/BiliPai-Windows'
+                or os.environ.get('GITHUB_EVENT_NAME') != 'workflow_dispatch'
+                or os.environ.get('GITHUB_REF_TYPE') != 'tag'
+                or not re.fullmatch(r'rtx-source-[A-Za-z0-9][A-Za-z0-9._-]{0,100}',
+                                    os.environ.get('GITHUB_REF_NAME', ''))
+                or subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+                   != os.environ.get('GITHUB_SHA')):
+            raise RuntimeError('CI source builds require the exact pre-existing own source tag')
     if workspace.exists():
         raise RuntimeError('Use a new task-owned workspace; old source/build caches are not accepted')
     if workspace == ROOT or ROOT in workspace.parents and workspace == ROOT / 'desktop':
@@ -225,6 +253,7 @@ def main():
         # Actual cold-build targets from the fixed cd1 README and toolchain recipes.
         # Never call the vendor 'update' target, which moves dependency HEADs.
         for target in ['llvm', 'rustup', 'llvm-clang', 'mpv']:
+            print('DISK before ' + target + ': freeBytes=' + str(shutil.disk_usage(workspace).free), flush=True)
             run(['ninja', '-C', str(build), '-j2', target], log)
         candidates = list(build.glob('mpv-dev-x86_64-*-git-*/libmpv-2.dll'))
         if len(candidates) != 1:

@@ -17,6 +17,9 @@ jobs:
     if: >-
       github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
       && github.event_name == 'workflow_dispatch' && inputs.acknowledge_source_build == true
+      && github.ref_type == 'tag'
+    permissions:
+      contents: write
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     container:
@@ -29,12 +32,10 @@ jobs:
           persist-credentials: false
       - name: Build from fixed source and recipe inputs
         run: python3 desktop/tools/native/build-mpv-rtx-core-runtime.py --workspace "$RUNNER_TEMP/bilipai-mpv-rtx-core" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
-      - name: Preserve actual candidate or failure logs
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: bilipai-mpv-veyra-rtx-core-v1-x64-${{ github.run_id }}
-          path: desktop/build/rtx-core-native-candidate/
-          if-no-files-found: error
-          compression-level: 0
-          retention-days: 1
+      # Root must create the immutable rtx-source-* tag before this manual dispatch.
+      # Only successful source builds may save a draft; failure output stays in job logs.
+      - name: Save successful source candidate in an unpublished own-repository draft
+        if: success()
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 desktop/tools/native/upload-mpv-rtx-core-draft.py --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
