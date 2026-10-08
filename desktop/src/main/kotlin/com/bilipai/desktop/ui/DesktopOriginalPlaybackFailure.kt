@@ -82,8 +82,11 @@ internal fun desktopOriginalNativeFailure(failure: PlayerFailure, premiumAudio: 
             else -> PlaybackFailureReason.Source
         },
         code = when (failure.kind) {
-            PlayerFailureKind.NETWORK -> if (failure.httpStatus != null) DesktopMedia3ErrorCodes.ERROR_CODE_IO_BAD_HTTP_STATUS
-                else DesktopMedia3ErrorCodes.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
+            PlayerFailureKind.NETWORK -> when {
+                failure.httpStatus != null -> DesktopMedia3ErrorCodes.ERROR_CODE_IO_BAD_HTTP_STATUS
+                failure.networkTimedOut -> DesktopMedia3ErrorCodes.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT
+                else -> DesktopMedia3ErrorCodes.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
+            }
             else -> failure.nativeCode ?: 0
         },
         message = failure.safeMessage,

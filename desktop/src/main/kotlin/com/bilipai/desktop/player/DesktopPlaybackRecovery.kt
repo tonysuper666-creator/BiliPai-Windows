@@ -13,8 +13,11 @@ internal class DesktopPlaybackRecoveryBudget {
 
     fun action(failure: PlayerFailure, hasAlternatives: Boolean): PlayerErrorRecoveryAction = decidePlayerErrorRecovery(
         errorCode = if (failure.kind == PlayerFailureKind.NETWORK) {
-            if (failure.httpStatus != null) PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS
-            else PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
+            when {
+                failure.httpStatus != null -> PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS
+                failure.networkTimedOut -> PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT
+                else -> PlaybackException.ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
+            }
         } else -1,
         hasCdnAlternatives = hasAlternatives, retryCount = retries, maxRetries = 3,
         cdnSwitchCount = cdnSwitches, maxCdnSwitches = 2,
