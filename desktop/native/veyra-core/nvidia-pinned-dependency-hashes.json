@@ -39,7 +39,7 @@
     "officialPath": "LICENSE.txt",
     "sha256": "D4216E39EBEF5F9B50A6712EBB37BEEB5379862A67733A9999C651F21592AAF0"
   },
-  "downloadedHeaderCount": 24,
+  "downloadedHeaderCount": 23,
   "downloadedUnusedHeaders": "excluded-from-required-compilation-closure",
   "binariesIncluded": false,
   "headersIncluded": false

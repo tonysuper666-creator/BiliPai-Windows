@@ -13,7 +13,7 @@ endif()
 # Pin every NVIDIA header reached by actual /sourceDependencies, and the exact
 # separately provisioned Release x64 /MT shim. No dependency is downloaded here.
 file(SHA256 "${CMAKE_CURRENT_SOURCE_DIR}/nvidia-pinned-dependency-hashes.json" ngx_manifest_sha)
-if(NOT "${ngx_manifest_sha}" STREQUAL "c7c9e88ac2839d5d92ef169705b289861276f931d4fc00d53bddc723fe467157")
+if(NOT "${ngx_manifest_sha}" STREQUAL "9ec6b47b387c2e68125dccc0c71ad6ad5d5860d0f7e406b0ca0302aa863807ff")
   message(FATAL_ERROR "Fixed NVIDIA dependency manifest itself was changed")
 endif()
 file(READ "${CMAKE_CURRENT_SOURCE_DIR}/nvidia-pinned-dependency-hashes.json" ngx_pins_json)
