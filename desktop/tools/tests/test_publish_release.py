@@ -381,6 +381,7 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         values = {"github.repository": "tonysuper666-creator/BiliPai-Windows", "github.event.repository.private": False,
                   "github.event_name": "workflow_dispatch", "inputs.render_diagnostic": job == "render-diagnostic",
                   "inputs.comment_search_ui": job == "comment-search-ui",
+                  "inputs.acknowledge_source_build": True,
                   "vars.BILIPAI_WINDOWS_AUTO_SYNC": "true", "vars.BILIPAI_WINDOWS_AUTO_PUBLISH": "true",
                   "needs.windows.outputs.release": "true", "needs.detect.outputs.update_needed": "true",
                   "needs.detect.result": "success", "needs.candidate.result": "success",
@@ -389,8 +390,9 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         return evaluate_workflow_guard(self, condition, values)
 
     def test_all_server_jobs_require_own_public_repository(self):
-        self.assertEqual(set(self.workflows), {"windows-desktop.yml", "windows-upstream-sync.yml"})
-        self.assertEqual(len(self.jobs), 7)
+        self.assertEqual(set(self.workflows), {"windows-desktop.yml", "windows-upstream-sync.yml",
+                                               "windows-mpv-native-manual.yml"})
+        self.assertEqual(len(self.jobs), 8)
         for name, job in self.jobs:
             with self.subTest(name=name, job=job):
                 self.assertTrue(self.admitted(name, job))
@@ -411,14 +413,28 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                 with self.subTest(name=name, job=job):
                     self.assertEqual(re.findall(r"(?m)^          retention-days: (.+)$", step), ["1"])
                     self.assertRegex(step, r"(?m)^          if-no-files-found: (warn|error)$")
-        self.assertEqual(uploads, 10)
+        self.assertEqual(uploads, 11)
 
     def test_only_standard_runner_labels_and_readonly_default_permissions(self):
         for (name, job), body in self.jobs.items():
             with self.subTest(name=name, job=job):
-                self.assertIn(re.search(r"(?m)^    runs-on: (.+)$", body).group(1), ("windows-latest", "ubuntu-latest"))
+                runner = re.search(r"(?m)^    runs-on: (.+)$", body).group(1)
+                if (name, job) == ("windows-mpv-native-manual.yml", "native-candidate"):
+                    self.assertEqual(runner, "ubuntu-24.04")
+                else:
+                    self.assertIn(runner, ("windows-latest", "ubuntu-latest"))
         for source in self.workflows.values():
             self.assertRegex(source, r"(?m)^permissions:\n  contents: read$")
+
+    def test_native_candidate_requires_manual_dispatch_and_acknowledgement(self):
+        name = "windows-mpv-native-manual.yml"
+        job = "native-candidate"
+        self.assertTrue(self.admitted(name, job, **{"inputs.acknowledge_source_build": True}))
+        self.assertFalse(self.admitted(name, job, **{"inputs.acknowledge_source_build": False}))
+        for event in ("push", "pull_request"):
+            with self.subTest(event=event):
+                self.assertFalse(self.admitted(name, job, **{"github.event_name": event,
+                                                            "inputs.acknowledge_source_build": True}))
 
     def test_diagnostic_dispatch_keeps_normal_build_and_publish_excluded(self):
         name = "windows-desktop.yml"
