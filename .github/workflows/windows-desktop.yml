@@ -20,6 +20,14 @@ on:
         description: Fixed source commit to build, including publication recovery
         type: string
         default: ''
+      mpv_native_run_id:
+        description: 'Optional reviewed native candidate run ID; pair with its artifact ID for manual validation only'
+        type: string
+        default: ''
+      mpv_native_artifact_id:
+        description: 'Optional single native candidate artifact ID; keep both empty for the original runtime, never combine with release'
+        type: string
+        default: ''
       render_diagnostic:
         description: Run only the isolated AWT and mpv rendering experiment; never build or publish the app
         type: boolean
@@ -555,10 +563,24 @@ jobs:
           SOURCE_SHA: ${{ inputs.source_sha }}
           EXPECTED_HEAD: ${{ inputs.expected_head }}
           MAKE_RELEASE: ${{ github.event_name != 'pull_request' && (inputs.release == true || (github.event_name == 'push' && vars.BILIPAI_WINDOWS_AUTO_PUBLISH == 'true')) }}
+          WORKFLOW_EVENT: ${{ github.event_name }}
+          MPV_NATIVE_RUN_ID: ${{ inputs.mpv_native_run_id }}
+          MPV_NATIVE_ARTIFACT_ID: ${{ inputs.mpv_native_artifact_id }}
         run: |
           $head = git rev-parse HEAD
           foreach ($required in @($env:SOURCE_SHA, $env:EXPECTED_HEAD)) {
             if ($required -and ($required -notmatch '^[0-9a-f]{40}$' -or $head -ne $required)) { throw 'Checkout differs from the fixed source commit; publication stopped.' }
+          }
+          $nativeRun = [string]$env:MPV_NATIVE_RUN_ID
+          $nativeArtifact = [string]$env:MPV_NATIVE_ARTIFACT_ID
+          if ([bool]$nativeRun -ne [bool]$nativeArtifact) { throw 'Native candidate selection requires both run and artifact IDs.' }
+          if ($nativeRun) {
+              if ($nativeRun -cnotmatch '\A[1-9][0-9]{0,18}\z' -or $nativeArtifact -cnotmatch '\A[1-9][0-9]{0,18}\z') {
+                  throw 'Native candidate IDs must each be one complete positive decimal ID.'
+              }
+              if ($env:WORKFLOW_EVENT -cne 'workflow_dispatch') { throw 'Native candidates may enter only an explicitly selected manual validation build.' }
+              if ($env:MAKE_RELEASE -eq 'true') { throw 'An unverified native candidate cannot be published by the standard release workflow.' }
+              'mpv_candidate=true' | Add-Content -LiteralPath $env:GITHUB_OUTPUT
           }
           "source_sha=$head" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
           if ($env:MAKE_RELEASE -eq 'true') { 'release=true' | Add-Content -LiteralPath $env:GITHUB_OUTPUT }
@@ -615,14 +637,38 @@ jobs:
           python desktop/tools/verify-updater-baseline.py --package "$previousZip"
           if ($LASTEXITCODE -ne 0) { throw 'The actual previous EXE package could not be verified.' }
           "BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE=$previousZip" | Add-Content -LiteralPath $env:GITHUB_ENV
+      - name: Download the explicitly selected native candidate bundle
+        if: steps.plan.outputs.mpv_candidate == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ inputs.mpv_native_artifact_id }}
+          run-id: ${{ inputs.mpv_native_run_id }}
+          repository: tonysuper666-creator/BiliPai-Windows
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/bilipai-selected-mpv-candidate
+          merge-multiple: true
       - name: Build tested portable Windows package
         shell: pwsh
         env:
           BILIPAI_WINDOWS_RELEASE_REPOSITORY: ${{ github.repository }}
           MAKE_RELEASE: ${{ steps.plan.outputs.release }}
           VERIFY_PREVIOUS_UPDATE: ${{ github.event_name == 'workflow_dispatch' && inputs.verify_previous_update == true }}
+          MPV_NATIVE_CANDIDATE: ${{ steps.plan.outputs.mpv_candidate || 'false' }}
         run: |
           $parameters = @{ NativeSmoke = $true; UpdaterSmoke = $true }
+          if ($env:MPV_NATIVE_CANDIDATE -eq 'true') {
+              if ($env:MAKE_RELEASE -eq 'true') { throw 'Native candidate validation cannot publish a release.' }
+              $candidateRoot = Join-Path $env:RUNNER_TEMP 'bilipai-selected-mpv-candidate'
+              $descriptor = Join-Path $candidateRoot 'runtime-descriptor.json'
+              $archive = Join-Path $candidateRoot 'bilipai-nvidia-native-v1-x64.zip'
+              $sourceMaterials = Join-Path $candidateRoot 'bilipai-nvidia-native-v1-source-materials.tar.gz'
+              foreach ($required in @($descriptor, $archive, $sourceMaterials)) {
+                  if (-not (Test-Path -LiteralPath $required -PathType Leaf)) { throw 'The selected native artifact is incomplete; no original runtime is substituted.' }
+              }
+              # Existing fetch validates the actual descriptor, complete ZIP and corresponding source hash.
+              $parameters.MpvRuntimeDescriptorPath = $descriptor
+              $parameters.MpvRuntimeArchivePath = $archive
+          }
           if ($env:VERIFY_PREVIOUS_UPDATE -eq 'true') {
               if (-not $env:BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE) { throw 'Requested previous-EXE verification has no verified baseline.' }
               $parameters.PreviousUpdateTestPackage = $env:BILIPAI_PREVIOUS_UPDATE_TEST_PACKAGE
