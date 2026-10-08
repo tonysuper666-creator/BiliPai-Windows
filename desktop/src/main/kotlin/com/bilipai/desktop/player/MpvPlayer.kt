@@ -159,7 +159,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             options.scale, options.hdr, pending = options.requiresFilter,
             targetTransfer = previous.targetTransfer.takeIf { targetCurrent },
             targetPrimaries = previous.targetPrimaries.takeIf { targetCurrent },
-            gpuName = previous.gpuName, gpuVendorId = previous.gpuVendorId, currentGpuContext = previous.currentGpuContext)
+            gpuName = previous.gpuName, gpuVendorId = previous.gpuVendorId, currentGpuContext = previous.currentGpuContext,
+            nativeResolutionPatchAvailable = previous.nativeResolutionPatchAvailable,
+            nativeResolutionProcessingRequested = options.nativeResolutionProcessing)
         session?.commands?.offer(Action.NvidiaVideo(version, owner, playbackRevision, requestedSource, options))
         return version
     }
@@ -934,7 +936,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         mutableVideoOutput.value = PlayerVideoOutputState(sourceVersion = currentSourceVersion)
         synchronized(lock) { mutableNvidiaVideo.value = NvidiaVideoState(nvidiaConfigurationVersion,
             nvidiaSourceVersion ?: sourceVersion, nvidiaOptions.scale, nvidiaOptions.hdr,
-            pending = !closed.get() && requestedSource != null && nvidiaOptions.requiresFilter) }
+            pending = !closed.get() && requestedSource != null && nvidiaOptions.requiresFilter,
+            nativeResolutionProcessingRequested = nvidiaOptions.nativeResolutionProcessing) }
         mutableState.update { it.copy(ready = false, loading = false, activeVideoPanscan = null, nativePaused = null) }
     }
 
@@ -1056,6 +1059,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private var pendingNvidiaAction: Action.NvidiaVideo? = null
         private var activeNvidiaAction: Action.NvidiaVideo? = null
         private var activeNvidiaOptions = NvidiaVideoOptions()
+        private var nativeResolutionPatchAvailable = false
         private var nvidiaFilterLabel: String? = null
         private var nvidiaConfiguredPosition: Double? = null
         private var nvidiaRestarted = false
@@ -1094,7 +1098,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             try { removeNvidiaFilter(native, handle); removed = true } catch (_: Exception) { /* state reports removal failure explicitly */ }
             synchronized(lock) {
                 if (nvidiaCurrent(action)) mutableNvidiaVideo.update { it.copy(active = false, hdrConversionActive = false,
-                    pending = false, unavailableReason = message.takeIf { removed && unavailable },
+                    nativeResolutionAttemptAccepted = false, pending = false, unavailableReason = message.takeIf { removed && unavailable },
                     error = when {
                         !removed -> "无法撤回 NVIDIA 滤镜，请关闭增强或重新打开视频"
                         unavailable -> null
@@ -1106,10 +1110,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             if (!nvidiaCurrent(action)) return
             if (!action.options.requiresFilter) {
                 removeNvidiaFilter(native, handle); pendingNvidiaAction = null
-                synchronized(lock) { if (nvidiaCurrent(action)) mutableNvidiaVideo.update { it.copy(pending = false, active = false, hdrConversionActive = false) } }
+                synchronized(lock) { if (nvidiaCurrent(action)) mutableNvidiaVideo.update { it.copy(pending = false, active = false, hdrConversionActive = false, nativeResolutionAttemptAccepted = false) } }
                 return
             }
             if (softwareTarget != null) { failNvidia(native, handle, action, "当前软件渲染器不支持 NVIDIA 视频增强，继续原画播放", unavailable = true); return }
+            if (action.options.nativeResolutionProcessing && !nativeResolutionPatchAvailable) {
+                failNvidia(native, handle, action, "当前播放库未确认同分辨率处理补丁，继续原画播放", unavailable = true); return
+            }
             val observed = mutableNvidiaVideo.value
             val input = mutableVideoOutput.value
             if (!fileLoaded || input.inputWidth <= 0 || input.inputHeight <= 0 || observed.gpuVendorId == null || observed.currentGpuContext == null) {
@@ -1125,6 +1132,14 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
             val nativeHdr = nvidiaHdrTransfer(input.gamma) || (input.dolbyVisionProfile ?: 0) > 0
             val options = action.options.copy(hdr = action.options.hdr && !nativeHdr)
+            if (options.nativeResolutionProcessing && (options.scale != 1.0 || nativeHdr ||
+                    input.sourceVersion != activeSourceVersion ||
+                    input.displayWidth != input.inputWidth || input.displayHeight != input.inputHeight ||
+                    input.inputWidth % 2 != 0 || input.inputHeight % 2 != 0 || maximum <= 0 ||
+                    input.gamma !in setOf("bt.1886", "bt.709", "srgb", "linear", "gamma1.8", "gamma2.0",
+                        "gamma2.2", "gamma2.4", "gamma2.6", "gamma2.8", "prophoto", "st428"))) {
+                failNvidia(native, handle, action, "当前源或实际视频尺寸不满足同分辨率处理条件，继续原画播放", unavailable = true); return
+            }
             if (options.hdr && input.gamma !in setOf("bt.1886", "bt.709", "srgb", "linear", "gamma1.8", "gamma2.0",
                     "gamma2.2", "gamma2.4", "gamma2.6", "gamma2.8", "prophoto", "st428")) {
                 failNvidia(native, handle, action, "源色彩信息尚未确认 SDR，继续原画播放"); return
@@ -1215,7 +1230,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 try { removeNvidiaFilter(native, handle) } catch (_: Exception) { }
                 synchronized(lock) { if (session === this && nvidiaConfigurationVersion == action.configurationVersion)
                     mutableNvidiaVideo.update { it.copy(active = false, hdrConversionActive = false, pending = false,
-                        driverVsrAccepted = false, driverHdrAccepted = false) } }
+                        nativeResolutionAttemptAccepted = false, driverVsrAccepted = false, driverHdrAccepted = false) } }
                 return
             }
             val input = mutableVideoOutput.value
@@ -1306,7 +1321,14 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             var fatalFailure: Throwable? = null
             var softwareRenderer: MpvSoftwareRenderer? = null
             try {
-                native = MpvNative.load()
+                val loadedNative = MpvNative.loadWithIdentity()
+                native = loadedNative.api
+                nativeResolutionPatchAvailable = loadedNative.identity.nativeResolutionPatchAvailable
+                synchronized(lock) {
+                    if (session === this && !closing.get()) mutableNvidiaVideo.update {
+                        it.copy(nativeResolutionPatchAvailable = nativeResolutionPatchAvailable)
+                    }
+                }
                 handle = native.mpv_create() ?: error("Unable to create the native player.")
                 val startingAudioOutput = synchronized(lock) { requestedWindowsAudioOutput to windowsAudioOutputRevision }
                 windowsAudioAttemptedRevision = startingAudioOutput.second
@@ -1426,7 +1448,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         mutableState.update { it.copy(nativeTrackIdentity = null, tracks = emptyList()) }
                         mutableDecoderCapabilities.value = null
                         mutableNvidiaVideo.update { it.copy(active = false, hdrConversionActive = false, pending = false,
-                            driverVsrAccepted = false, driverHdrAccepted = false, gpuName = null, gpuVendorId = null, currentGpuContext = null) }
+                            nativeResolutionPatchAvailable = false, nativeResolutionAttemptAccepted = false, driverVsrAccepted = false, driverHdrAccepted = false, gpuName = null, gpuVendorId = null, currentGpuContext = null) }
                         fatalFailure?.let { failure ->
                             val typed = diagnostics.failure((failure as? MpvCallException)?.nativeCode,
                                 failure.message ?: "Native player failed.", sourceVersion, nextAttemptId.incrementAndGet())
@@ -1524,7 +1546,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 retireWindowsAudioAcknowledgement()
                 mutableVideoOutput.value = PlayerVideoOutputState(sourceVersion = sourceVersion)
                 mutableNvidiaVideo.update { it.copy(active = false, hdrConversionActive = false,
-                    driverVsrAccepted = false, driverHdrAccepted = false, pending = nvidiaOptions.requiresFilter,
+                    nativeResolutionPatchAvailable = false, nativeResolutionAttemptAccepted = false, driverVsrAccepted = false, driverHdrAccepted = false, pending = nvidiaOptions.requiresFilter,
                     targetTransfer = null, targetPrimaries = null) }
                 mutableState.update { it.copy(ready = false, loading = true, firstVideoFrameReady = false, nativePaused = null) }
             } }

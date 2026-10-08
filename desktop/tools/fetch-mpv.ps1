@@ -1,8 +1,14 @@
 [CmdletBinding()]
-param([string]$SevenZipPath)
+param([string]$SevenZipPath, [string]$RuntimeDescriptorPath, [string]$RuntimeArchivePath)
 $ErrorActionPreference = 'Stop'
 $desktopRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $nativeRoot = Join-Path $desktopRoot 'native/windows-x64'
+if ($RuntimeArchivePath -and -not $RuntimeDescriptorPath) { throw 'A patched runtime archive requires its descriptor.' }
+if ($RuntimeDescriptorPath) {
+    . (Join-Path $PSScriptRoot 'native/mpv-runtime-descriptor.ps1')
+    Install-DescriptorMpvRuntime -DesktopRoot $desktopRoot -NativeRoot $nativeRoot -DescriptorPath $RuntimeDescriptorPath -ArchivePath $RuntimeArchivePath
+    return
+}
 $downloadUrls = @(
     'https://github.com/tonysuper666-creator/BiliPai-Windows/releases/download/runtime-mpv-20260903/mpv-dev-20260903-x64.7z',
     'https://github.com/shinchiro/mpv-winbuild-cmake/releases/download/20260903/mpv-dev-x86_64-20260903-git-69e63f425a.7z'

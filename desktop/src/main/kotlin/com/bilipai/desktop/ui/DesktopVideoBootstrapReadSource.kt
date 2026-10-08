@@ -14,6 +14,17 @@ import java.util.concurrent.atomic.AtomicReference
 import kotlin.coroutines.AbstractCoroutineContextElement
 import kotlin.coroutines.CoroutineContext
 
+private data class DesktopVideoBootstrapRetryIntent(
+    val bvid: String, val cid: Long, val fallbackResumeMs: Long,
+    val autoPlay: Boolean, val audioLang: String?,
+) {
+    fun matches(request: PlaybackRequest, fallbackResumeMs: Long): Boolean =
+        request.bvid == bvid && request.cid == cid && request.aid == 0L && !request.force &&
+        request.autoPlay == autoPlay && !request.ignoreSavedProgress &&
+        request.audioLang == audioLang && request.videoCodecOverride == null &&
+        fallbackResumeMs == this.fallbackResumeMs
+}
+
 /** Original typed bootstrap entry and primary install receipt, captured before openVideoDetail.
  * A covered entry remains valid. Nothing reads a later current video to populate this seed. */
 internal class DesktopVideoBootstrapSeed private constructor(
@@ -22,17 +33,43 @@ internal class DesktopVideoBootstrapSeed private constructor(
     val route: BiliPaiNavKey.VideoDetail,
     val bootstrapCaller: Job,
     val primaryInstallation: DesktopHomeNavRequestReceipt,
+    private val retryIntent: DesktopVideoBootstrapRetryIntent? = null,
 ) {
     fun owns(): Boolean = !bootstrapCaller.isCancelled && window.owns() && assembly.owns() &&
         window.commands.containsEntry(route)
     fun accepted(request: PlaybackRequest, token: Long, fallbackResumeMs: Long): DesktopVideoBootstrapAccepted? {
-        if (!owns() || request.bvid != route.bvid || request.cid != route.cid ||
+        if (!owns()) return null
+        val retry = retryIntent
+        if (retry != null) {
+            if (!retry.matches(request, fallbackResumeMs)) return null
+        } else if (request.bvid != route.bvid || request.cid != route.cid ||
             fallbackResumeMs != route.resumePositionMs.coerceAtLeast(0L)) return null
         // The actual leaf assembly's sole original VM has already accepted this SAME request.
         // If another Facade lease owns the load, it keeps the original read with Unknown origin.
         val original = assembly.captureLoadState()
         if (original.currentRequest !== request || original.currentLoadRequestToken != token) return null
         return DesktopVideoBootstrapAccepted(this, request, token, fallbackResumeMs)
+    }
+    /** Captured from the SAME displayed failure before original retry clears its media.
+     * Only fixed retry parameters survive; no old Throwable/invocation chain is retained.
+     * A prior video's committed CID is not evidence for this failed request's target. */
+    fun forRetry(failed: DesktopVideoBootstrapLoadFailure, bvid: String, cid: Long,
+        fallbackResumeMs: Long, autoPlay: Boolean, audioLang: String?): DesktopVideoBootstrapSeed? {
+        if (!java.awt.EventQueue.isDispatchThread() || failed.source.accepted.seed !== this ||
+            fallbackResumeMs < 0L || failed.source.accepted.request.bvid != bvid ||
+            failed.source.accepted.request.cid != cid) return null
+        var result: DesktopVideoBootstrapSeed? = null
+        failed.source.admit(false) {
+            val original = assembly.captureLoadState()
+            if (original.currentRequest === failed.source.accepted.request &&
+                original.currentLoadRequestToken == failed.source.accepted.requestToken &&
+                assembly.playback.captureDesktopPlaybackState() === failed.displayedError) {
+                result = DesktopVideoBootstrapSeed(window, assembly, route, bootstrapCaller,
+                    primaryInstallation, DesktopVideoBootstrapRetryIntent(bvid, cid, fallbackResumeMs,
+                        autoPlay, audioLang?.trim()?.takeIf { it.isNotEmpty() }))
+            }
+        }
+        return result
     }
     companion object {
         suspend fun capture(window: DesktopOriginalVideoRootWindowEnvironment,

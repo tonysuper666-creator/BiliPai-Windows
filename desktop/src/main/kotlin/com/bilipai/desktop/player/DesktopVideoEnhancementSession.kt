@@ -24,6 +24,7 @@ data class DesktopVideoEnhancementState(
     val targetPrimaries: String? = null,
     val hdrDisplayEnabled: Boolean = false,
     val unavailableReason: String? = null,
+    val nativeResolutionAttemptAccepted: Boolean = false,
 )
 
 /** Shared projection; the session admits the current source/configuration before calling it. */
@@ -35,7 +36,8 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
         native.unavailableReason != null -> "NVIDIA 增强不可用：${native.unavailableReason}"
         native.pending -> "正在请求 NVIDIA 硬件增强"
         native.active -> buildList {
-            if (native.driverVsrAccepted) add("驱动已接受 VSR")
+            if (native.nativeResolutionAttemptAccepted) add("同分辨率处理请求已接受，画质效果尚未验证")
+            else if (native.driverVsrAccepted) add("驱动已接受 VSR")
             if (hdrPresented) add("HDR 转换帧与 HDR 显示目标均已就绪")
             else if (native.hdrConversionActive) add("已产生 HDR 转换帧，HDR 显示目标尚未就绪")
             else if (native.driverHdrAccepted) add("驱动已接受 HDR，等待转换帧与 HDR 显示目标")
@@ -43,6 +45,7 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
             if (native.inputWidth > 0 && native.outputWidth > 0)
                 add("${native.inputWidth}×${native.inputHeight} → ${native.outputWidth}×${native.outputHeight}")
         }.joinToString("；")
+        native.nativeResolutionAttemptAccepted -> "同分辨率处理请求已接受，画质效果尚未验证"
         native.hdrConversionActive -> "已产生 HDR 转换帧，HDR 显示目标尚未就绪"
         else -> "等待 NVIDIA 硬件输出，视频保持原有画面"
     }
@@ -52,7 +55,8 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
         statusText = native.gpuName?.let { name -> "$name；$status" } ?: status, gpuName = native.gpuName,
         targetTransfer = native.targetTransfer, targetPrimaries = native.targetPrimaries,
         driverVsrAccepted = native.driverVsrAccepted, driverHdrAccepted = native.driverHdrAccepted,
-        hdrConversionActive = native.hdrConversionActive)
+        hdrConversionActive = native.hdrConversionActive,
+        nativeResolutionAttemptAccepted = native.nativeResolutionAttemptAccepted)
 }
 
 /** One Windows NVIDIA session on the main native video actor. Every video kind
@@ -69,7 +73,7 @@ class DesktopVideoEnhancementSession(
     private data class Label(val key: String? = null, val version: Long = 0, val epoch: Long = 0)
     private data class Frame(val ready: Boolean, val hasVideo: Boolean, val audioOnly: Boolean, val ended: Boolean, val failed: Boolean, val nativeIdentity: PlayerNativeTrackIdentity?)
     private data class Settings(val enabled: Boolean, val started: Boolean, val pip: Boolean)
-    private data class Target(val sourceVersion: Long, val transfer: String?, val primaries: String?)
+    private data class Target(val sourceVersion: Long, val transfer: String?, val primaries: String?, val nativeResolutionPatchAvailable: Boolean)
     private data class Input(val settings: Settings, val label: Label, val frame: Frame, val output: PlayerVideoOutputState, val target: Target)
     private class Request(val source: OwnedPlaybackSourceSnapshot, val epoch: Long, val options: NvidiaVideoOptions,
         val nativeIdentity: PlayerNativeTrackIdentity) {
@@ -96,8 +100,8 @@ class DesktopVideoEnhancementSession(
             // A completed native load keeps a distinct receipt even if transient loading/zero sizes are conflated.
             val frame = player.state.map { Frame(it.ready, it.videoCodec != null, it.audioOnly, it.ended, it.error != null, it.nativeTrackIdentity) }.distinctUntilChanged()
             // Output format/driver ACK cannot reconfigure its own processing.
-            // Only the actual display target is a distinct native decision input.
-            val target = player.nvidiaVideoState.map { Target(it.sourceVersion, it.targetTransfer, it.targetPrimaries) }.distinctUntilChanged()
+            // Only the actual display target and loaded binary patch identity are decision inputs.
+            val target = player.nvidiaVideoState.map { Target(it.sourceVersion, it.targetTransfer, it.targetPrimaries, it.nativeResolutionPatchAvailable) }.distinctUntilChanged()
             combine(settings, label, frame, player.videoOutput, target) { preferences, identity, playback, output, destination ->
                 Input(preferences, identity, playback, output, destination)
             }.distinctUntilChanged().collect(::apply)
@@ -176,7 +180,8 @@ class DesktopVideoEnhancementSession(
             input.output.displayWidth, input.output.displayHeight, input.output.maximumTextureDimension,
             input.output.gamma, input.output.dolbyVisionProfile, input.output.hdrDisplay.hdrEnabled,
             input.target.transfer.takeIf { input.target.sourceVersion == source!!.sourceVersion },
-            input.target.primaries.takeIf { input.target.sourceVersion == source!!.sourceVersion })
+            input.target.primaries.takeIf { input.target.sourceVersion == source!!.sourceVersion },
+            input.target.nativeResolutionPatchAvailable && input.target.sourceVersion == currentSource.sourceVersion)
         if (!decision.needsProcessing) {
             val text = when (decision.kind) {
                 DesktopNvidiaVideoDecisionKind.WAITING_VIDEO -> "等待实际视频尺寸，原画输出"
@@ -185,7 +190,7 @@ class DesktopVideoEnhancementSession(
             }
             bypass(Anime4KBypassReason.NONE, text); return@synchronized
         }
-        val request = Request(currentSource, epoch, NvidiaVideoOptions(decision.scale, decision.hdr), nativeIdentity)
+        val request = Request(currentSource, epoch, NvidiaVideoOptions(decision.scale, decision.hdr, decision.nativeResolutionProcessing), nativeIdentity)
         val previous = owned
         if (previous != null && previous.request.matches(request)) {
             mutableState.update { it.copy(hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled) }
@@ -250,7 +255,7 @@ class DesktopVideoEnhancementSession(
         if (owned !== current || !owns(current.request.source, current.request.epoch)) return
         if (native.configurationVersion != current.token || native.sourceVersion != current.request.source.sourceVersion) {
             mutableState.update { it.copy(active = false, pending = false, error = null, unavailableReason = null,
-                driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = false,
+                driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = false, nativeResolutionAttemptAccepted = false,
                 statusText = "当前硬件增强配置已更换，等待当前输出") }
             return
         }

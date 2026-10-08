@@ -131,3 +131,7 @@ reasonix.toml
 
 # Task-only JNI extraction caches are never source or verification artifacts.
 desktop/verification/**/private-native-home/
+
+# Native source-build inputs are source; ordinary build output remains ignored.
+!/desktop/third-party/libmpv/build/
+!/desktop/third-party/libmpv/build/**

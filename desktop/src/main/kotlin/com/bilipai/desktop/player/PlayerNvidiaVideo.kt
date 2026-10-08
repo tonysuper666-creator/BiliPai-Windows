@@ -3,13 +3,15 @@ package com.bilipai.desktop.player
 import com.sun.jna.Memory
 import com.sun.jna.Pointer
 
-/** RTX video processing, not DLSS game frame generation. Unity scale without HDR is a bypass. */
-data class NvidiaVideoOptions(val scale: Double = 1.0, val hdr: Boolean = false) {
+/** Explicit same-size intent is distinct from the default withdrawal options. */
+data class NvidiaVideoOptions(val scale: Double = 1.0, val hdr: Boolean = false,
+    val nativeResolutionProcessing: Boolean = false) {
     internal fun requireValid(): NvidiaVideoOptions {
         require(scale.isFinite() && scale in 1.0..4.0) { "NVIDIA video scale must be between 1 and 4." }
+        require(!nativeResolutionProcessing || scale == 1.0) { "Native-resolution processing requires unity scale." }
         return this
     }
-    internal val requiresFilter: Boolean get() = scale > 1.0 || hdr
+    internal val requiresFilter: Boolean get() = scale > 1.0 || hdr || nativeResolutionProcessing
     internal fun filterArguments(): String = "d3d11vpp=scale=$scale:scaling-mode=nvidia:nvidia-true-hdr=${if (hdr) "yes" else "no"}"
 }
 
@@ -43,6 +45,11 @@ data class NvidiaVideoState(
     val currentGpuContext: String? = null,
     /** Confirmed unsupported hardware/output; distinct from an attempted processing failure. */
     val unavailableReason: String? = null,
+    /** Validated declared source patch on the loaded DLL; never driver/effect capability. */
+    val nativeResolutionPatchAvailable: Boolean = false,
+    val nativeResolutionProcessingRequested: Boolean = false,
+    /** ACK + owned filter + current matching frame. Same-size AI effect remains unproven. */
+    val nativeResolutionAttemptAccepted: Boolean = false,
 )
 
 internal fun nvidiaHdrTransfer(transfer: String?): Boolean = transfer in setOf("pq", "hlg", "st2084", "smpte2084")
@@ -67,11 +74,16 @@ internal fun observeNvidiaVideo(previous: NvidiaVideoState, options: NvidiaVideo
     val vsr = options.scale > 1.0 && previous.driverVsrAccepted && processed
     val hdr = options.hdr && previous.driverHdrAccepted && processed && nvidiaHdrTransfer(frame.outputTransfer)
     val hdrPresented = hdr && frame.displayHdrEnabled && nvidiaHdrTarget(frame.targetTransfer, frame.targetPrimaries)
+    val sameSizeAttempt = options.nativeResolutionProcessing && previous.nativeResolutionPatchAvailable &&
+        options.scale == 1.0 && previous.driverVsrAccepted && processed &&
+        frame.inputWidth == frame.outputWidth && frame.inputHeight == frame.outputHeight
+    val scalingReady = if (options.nativeResolutionProcessing) sameSizeAttempt else options.scale <= 1.0 || vsr
     return previous.copy(inputWidth = frame.inputWidth, inputHeight = frame.inputHeight,
         outputWidth = frame.outputWidth, outputHeight = frame.outputHeight,
         outputTransfer = frame.outputTransfer, targetTransfer = frame.targetTransfer, targetPrimaries = frame.targetPrimaries,
         active = (vsr || hdrPresented) && (options.scale <= 1.0 || vsr) && (!options.hdr || hdrPresented), hdrConversionActive = hdr,
-        pending = options.requiresFilter && usable && !((options.scale <= 1.0 || vsr) && (!options.hdr || hdrPresented)))
+        nativeResolutionAttemptAccepted = sameSizeAttempt,
+        pending = options.requiresFilter && usable && !(scalingReady && (!options.hdr || hdrPresented)))
 }
 
 internal sealed interface NvidiaNativeMessage {

@@ -8,7 +8,9 @@ param(
     [switch]$NativeSmoke,
     [switch]$NativeMuxSmoke,
     [switch]$UpdaterSmoke,
-    [string]$PreviousUpdateTestPackage
+    [string]$PreviousUpdateTestPackage,
+    [string]$MpvRuntimeDescriptorPath,
+    [string]$MpvRuntimeArchivePath
 )
 $ErrorActionPreference = 'Stop'
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
@@ -59,6 +61,8 @@ try {
 
     $fetchArguments = @{}
     if ($SevenZipPath) { $fetchArguments.SevenZipPath = $SevenZipPath }
+    if ($MpvRuntimeDescriptorPath) { $fetchArguments.RuntimeDescriptorPath = $MpvRuntimeDescriptorPath }
+    if ($MpvRuntimeArchivePath) { $fetchArguments.RuntimeArchivePath = $MpvRuntimeArchivePath }
     & (Join-Path $PSScriptRoot 'fetch-mpv.ps1') @fetchArguments
     & (Join-Path $PSScriptRoot 'fetch-ffmpeg.ps1')
 

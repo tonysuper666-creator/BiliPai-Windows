@@ -261,6 +261,22 @@ def owner_delta(path, body, audit=None):
         after = after.replace('        PlaybackCooldownManager.clearForVideo(bvid)',
                               '        if (!desktopRecovering) PlaybackCooldownManager.clearForVideo(bvid)')
         after = after.replace('currentState is VideoPlaybackUiState.Error &&', '!desktopRecovering && currentState is VideoPlaybackUiState.Error &&')
+        if name == '    fun retry(':
+            retry_anchor = '        val desktopRetryCid = currentCid\n'
+            retry_capture = '''        val desktopRetryCid = currentCid
+        val desktopRetryBootstrapSource = desktopVideoBootstrapLoadFailure.get()?.let { failed ->
+            failed.source.accepted.seed.forRetry(failed, bvid, desktopRetryCid,
+                fallbackResumePositionMs, resumePlaybackAfterRetry, currentAudioLang)
+        }
+'''
+            assert after.count(retry_anchor) == 1, 'actual retry CID capture before original media clear'
+            after = after.replace(retry_anchor, retry_capture, 1)
+            retry_load = '            desktopRecovering = desktopRecovering\n'
+            retry_bound = '''            desktopRecovering = desktopRecovering,
+            desktopBootstrapSource = desktopRetryBootstrapSource
+'''
+            assert after.count(retry_load) == 1, 'only original retry full load, not codec/quality/queue'
+            after = after.replace(retry_load, retry_bound, 1)
         d.change(before, after)
     d.change('''    override fun close() {
         retireDesktopBangumiPresenter()''', '''    override fun close() {
