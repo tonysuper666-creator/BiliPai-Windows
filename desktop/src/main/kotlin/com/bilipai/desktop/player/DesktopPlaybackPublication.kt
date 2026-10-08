@@ -3,7 +3,11 @@ package com.bilipai.desktop.player
 import com.bilipai.desktop.data.DesktopRepository
 import kotlinx.coroutines.*
 import okhttp3.*
+import okio.Buffer
+import okio.BufferedSource
+import okio.ForwardingSource
 import okio.Timeout
+import okio.buffer
 import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.atomic.AtomicBoolean
@@ -88,12 +92,50 @@ internal fun admittedPlaybackCalls(delegate: Call.Factory, publication: DesktopP
         override fun clone(): Call = admittedPlaybackCalls(delegate, publication, source, stillOwned, callerJob).newCall(request)
         override fun enqueue(callback: Callback) {
             val cancellation = callerJob?.invokeOnCompletion(onCancelling = true, invokeImmediately = true) { cause -> if (cause != null) call.cancel() }
+            val finished = AtomicBoolean(false)
+            fun finish() { if (finished.compareAndSet(false, true)) cancellation?.dispose() }
+            fun retainCancellation(response: Response): Response {
+                callerJob?.ensureActive()
+                val original = response.body
+                val guarded = object : ResponseBody() {
+                    private val input = object : ForwardingSource(original.source()) {
+                        override fun read(sink: Buffer, byteCount: Long): Long {
+                            try {
+                                callerJob?.ensureActive()
+                                return super.read(sink, byteCount).also { callerJob?.ensureActive() }
+                            } catch (failure: Throwable) {
+                                finish(); call.cancel()
+                                callerJob?.ensureActive()
+                                throw failure
+                            }
+                        }
+                        override fun close() { try { super.close() } finally { finish() } }
+                    }.buffer()
+                    override fun contentType(): MediaType? = original.contentType()
+                    override fun contentLength(): Long = original.contentLength()
+                    override fun source(): BufferedSource = input
+                }
+                return response.newBuilder().body(guarded).build()
+            }
             val guardedCallback = object : Callback {
-                override fun onFailure(call: Call, e: IOException) { cancellation?.dispose(); callback.onFailure(call, e) }
-                override fun onResponse(call: Call, response: Response) { cancellation?.dispose(); callback.onResponse(call, response) }
+                override fun onFailure(call: Call, e: IOException) { finish(); callback.onFailure(call, e) }
+                override fun onResponse(call: Call, response: Response) {
+                    // Headers do not end a download: keep the hook while its body can block.
+                    val wrapped = try { retainCancellation(response) }
+                    catch (failure: Throwable) {
+                        try { response.close() }
+                        finally {
+                            finish(); call.cancel()
+                            callback.onFailure(call, IOException("Playback response retired before body delivery", failure))
+                        }
+                        return
+                    }
+                    try { callback.onResponse(call, wrapped) }
+                    catch (failure: Throwable) { wrapped.close(); throw failure }
+                }
             }
             try { publication.admit(source, stillOwned) { call.enqueue(guardedCallback) } }
-            catch (failure: Throwable) { cancellation?.dispose(); call.cancel(); throw failure }
+            catch (failure: Throwable) { finish(); call.cancel(); throw failure }
         }
         override fun execute(): Response {
             val finished = CountDownLatch(1)
@@ -112,6 +154,16 @@ internal fun admittedPlaybackCalls(delegate: Call.Factory, publication: DesktopP
             catch (interrupted: InterruptedException) {
                 synchronized(responseGate) { abandoned.set(true); response?.close(); response = null }
                 cancel(); Thread.currentThread().interrupt(); throw IOException("Interrupted playback request", interrupted)
+            }
+            try { callerJob?.ensureActive() }
+            catch (cancelled: CancellationException) {
+                val delivered = synchronized(responseGate) {
+                    abandoned.set(true); response.also { response = null }
+                }
+                try { delivered?.close() }
+                catch (closeFailure: Throwable) { if (closeFailure !== cancelled) cancelled.addSuppressed(closeFailure) }
+                finally { cancel() }
+                throw cancelled
             }
             failure?.let { throw it }
             return response ?: throw IOException("Playback request returned no response")
