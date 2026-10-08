@@ -226,6 +226,48 @@ internal class DesktopUnifiedPlaybackFacade(
     val hasNext: Boolean get() = navigationOwner()?.environment?.mini?.onHasNextNavigationCallback?.invoke() == true
     fun previous() { navigationOwner()?.environment?.mini?.onNavigatePreviousCallback?.invoke() }
     fun next() { navigationOwner()?.environment?.mini?.onNavigateNextCallback?.invoke() }
+    /** The UI captures this before launching its genuine per-click task. An
+     * explicitly supplied publication is the existing SMTC/source lease, never
+     * a later native getter used to replace that lease. */
+    internal fun captureManualNavigation(
+        expected: DesktopOriginalVideoAcceptedPublication? = null,
+    ): DesktopOriginalManualPlaybackClick? {
+        val a = navigationOwner() ?: return null
+        val accepted = expected ?: a.native.current() ?: return null
+        val raw = a.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success ?: return null
+        if (!a.native.isCurrent(accepted) || raw.info.bvid != accepted.request.bvid ||
+            raw.info.cid != accepted.request.cid || raw.isQualitySwitching) return null
+        return DesktopOriginalManualPlaybackClick(a, accepted,
+            a.environment.mini.onNavigateNextCallback, a.environment.mini.onNavigatePreviousCallback)
+    }
+    /** No VM/queue/checkpoint/cancellation runs in native/Store admission. The
+     * complete original helper selects its target on this actual UI task. */
+    internal fun navigateManual(click: DesktopOriginalManualPlaybackClick, forward: Boolean,
+        caller: Job, uiCurrent: () -> Boolean): Boolean {
+        val a = click.assembly
+        val callback = if (forward) click.nextCallback else click.previousCallback
+        fun current(): Boolean {
+            val raw = a.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success ?: return false
+            val actualCallback = if (forward) a.environment.mini.onNavigateNextCallback
+                else a.environment.mini.onNavigatePreviousCallback
+            return !caller.isCancelled && uiCurrent() && held() === a && pendingCardResolution.value == null &&
+                callback != null && actualCallback === callback && a.native.isCurrent(click.accepted) &&
+                raw.info.bvid == click.accepted.request.bvid && raw.info.cid == click.accepted.request.cid &&
+                !raw.isQualitySwitching
+        }
+        if (!caller.isActive || !current()) return false
+        val origin = click.accepted.bootstrapOrigin
+        // Genuine Unknown sources keep the original callback (including PGC).
+        // A known but rejected origin must never fall through to this old path.
+        if (origin == null) return callback?.invoke() == true
+        if (origin.seed.assembly !== a) return false
+        val source = DesktopOriginalManualPlaybackNavigation(origin, a.native, click.accepted, caller, ::current)
+        if (!source.isCurrent()) return false
+        return if (forward) a.playback.playNextPageOrRecommended(
+            ignoreSavedProgress = false, desktopManualNavigation = source)
+        else a.playback.playPreviousPageOrRecommended(
+            ignoreSavedProgress = false, desktopManualNavigation = source)
+    }
     /** EOF is consumed by original VM's existing native listener, never a second
      * observer. This entry explicitly requests original next strategy if called. */
     fun nextAtEnd() { held()?.playback?.playNextPageOrRecommended() }

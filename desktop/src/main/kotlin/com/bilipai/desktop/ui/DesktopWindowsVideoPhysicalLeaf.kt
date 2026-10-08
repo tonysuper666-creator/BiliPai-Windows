@@ -112,6 +112,17 @@ internal class DesktopWindowsVideoActions(
     val currentPresentationAlive by rememberUpdatedState(presentationAlive)
     val latestPip by rememberUpdatedState(pipActive)
     fun current(): Boolean = currentActive && shell.slot.currentAssembly() === assembly && assembly.owns()
+    fun navigateFromThisClick(forward: Boolean) {
+        if (!current() || !rootEnvironment.owns() || rootEnvironment.currentKey() !== route) return
+        val click = shell.playback.captureManualNavigation() ?: return
+        partScope.launch {
+            val caller = requireNotNull(kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job])
+            if (!caller.isActive) throw CancellationException("Manual video navigation cancelled")
+            shell.playback.navigateManual(click, forward, caller) {
+                current() && rootEnvironment.owns() && rootEnvironment.currentKey() === route
+            }
+        }
+    }
     fun feedbackPresentationCurrent(): Boolean = currentPresentationAlive && !latestPip &&
         rootEnvironment.owns() && rootEnvironment.currentKey() === route &&
         shell.slot.currentAssembly() === assembly && assembly.owns()
@@ -645,7 +656,7 @@ internal class DesktopWindowsVideoActions(
                     onShareVideo = { openInteraction(DesktopWindowsVideoInteraction.SHARE) },
                     chapters = chapters, chaptersSource = chaptersSource, onChapterSeek = ::seekChapter,
                     onPlayPause = { command { native.togglePause() } },
-                    onPrevious = { if (current()) shell.playback.previous() }, onNext = { if (current()) shell.playback.next() },
+                    onPrevious = { navigateFromThisClick(false) }, onNext = { navigateFromThisClick(true) },
                     onMute = { if(command { native.setMuted(!state.muted) }) preferencesChanged(preferences.copy(muted=!state.muted)) },
                     onVolume = { value -> if(command { native.setVolume(value) }) preferencesChanged(preferences.copy(volume=value)) },
                     onSpeed = ::setSpeed,

@@ -80,6 +80,15 @@ internal class DesktopVideoBootstrapSeed private constructor(
         return DesktopVideoBootstrapSeed(window, assembly, route, registrationJob,
             primaryInstallation, partRequest = request, partResumeMs = fallbackResumeMs)
     }
+    /** Original manual algorithm has selected this imminent full-load target.
+     * The click borrows the already accepted typed origin, never an EOF receipt
+     * or a new primary stamp. The real action Job is captured by its UI caller. */
+    internal fun forManualRequest(request: PlaybackRequest, fallbackResumeMs: Long,
+        caller: Job): DesktopVideoBootstrapSeed? {
+        if (!ownsEntry() || !caller.isActive || fallbackResumeMs < 0L) return null
+        return DesktopVideoBootstrapSeed(window, assembly, route, caller,
+            primaryInstallation, partRequest = request, partResumeMs = fallbackResumeMs)
+    }
     /** Captured from the SAME displayed failure before original retry clears its media.
      * Only fixed retry parameters survive; no old Throwable/invocation chain is retained.
      * A prior video's committed CID is not evidence for this failed request's target. */

@@ -547,8 +547,24 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
     } }
     var lastMediaSection by remember { mutableStateOf<DesktopSection?>(null) }
-    val pipPrevious = remember(playback) { java.util.concurrent.atomic.AtomicReference<() -> Unit>({ playback.previous() }) }
-    val pipNext = remember(playback) { java.util.concurrent.atomic.AtomicReference<() -> Unit>({ playback.next() }) }
+    // Swing/keyboard/SMTC callbacks are synchronous. Fix the accepted source on
+    // this real event, then launch only its actual action in the existing Window
+    // scope. Do not borrow native EOF or manufacture a long-lived caller Job.
+    fun navigateOrdinaryFromEvent(forward: Boolean,
+        expected: DesktopOriginalVideoAcceptedPublication? = null,
+        eventCurrent: () -> Boolean = { true }) {
+        if (isClosing() || activatingUpdate || !scope.isActive || !eventCurrent()) return
+        val click = playback.captureManualNavigation(expected) ?: return
+        scope.launch {
+            val caller = requireNotNull(kotlinx.coroutines.currentCoroutineContext()[Job])
+            if (!caller.isActive) throw CancellationException("Manual Window navigation cancelled")
+            playback.navigateManual(click, forward, caller) {
+                !isClosing() && !activatingUpdate && scope.isActive && eventCurrent()
+            }
+        }
+    }
+    val pipPrevious = remember(playback) { java.util.concurrent.atomic.AtomicReference<() -> Unit>({ navigateOrdinaryFromEvent(false) }) }
+    val pipNext = remember(playback) { java.util.concurrent.atomic.AtomicReference<() -> Unit>({ navigateOrdinaryFromEvent(true) }) }
     val pipSeek = remember(player, playback) { java.util.concurrent.atomic.AtomicReference<(Double) -> Unit>({ playback.seekTo(it) }) }
     val pip = remember(player, playback) { player?.let { PictureInPictureController(it, onRestore = {
         showVideo = playback.state.value.details != null
@@ -585,8 +601,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     SideEffect {
         beforeListenAcquire.set { storyHost.retire(); pip?.close(); retainedMedia.stop() }
         beforeStoryAcquire.set { pip?.close(); retainedMedia.stop(); listen?.pause(); systemTargetAudio = false }
-        pipPrevious.set { val owner = retainedMedia.current; if (owner != null) owner.previous?.invoke() else playback.previous() }
-        pipNext.set { val owner = retainedMedia.current; if (owner != null) owner.next?.invoke() else playback.next() }
+        pipPrevious.set { val owner = retainedMedia.current; if (owner != null) owner.previous?.invoke() else navigateOrdinaryFromEvent(false) }
+        pipNext.set { val owner = retainedMedia.current; if (owner != null) owner.next?.invoke() else navigateOrdinaryFromEvent(true) }
         pipSeek.set { seconds ->
             val owner = retainedMedia.current
             if (owner != null) { if (owner.ownsNativeSource) player?.seekTo(seconds) } else playback.seekTo(seconds)
@@ -862,6 +878,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         fun navigate(forward: Boolean) {
             if (!admitNative { } || !current()) return
             if (audioTarget) { if (forward) audioOwner?.next() else audioOwner?.previous() }
+            else if (videoOwner != null && videoSource != null)
+                navigateOrdinaryFromEvent(forward, videoSource, ::current)
             else (if (forward) next else previous)?.invoke()
         }
         fun seek(seconds: Double, relative: Boolean = false) {
@@ -1482,8 +1500,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             PlayerKeyAction.ToggleMute -> { changePreferencesIntent(preferences.copy(muted = !snapshot.muted), forceMute = true); true }
             PlayerKeyAction.ToggleFullscreen -> { toggleOriginalFullscreen(); true }
             PlayerKeyAction.ToggleDanmaku -> { toggleOriginalDanmaku(); true }
-            PlayerKeyAction.PreviousPart -> { playback.previous(); true }
-            PlayerKeyAction.NextPart -> { playback.next(); true }
+            PlayerKeyAction.PreviousPart -> {
+                if (section == DesktopSection.STORY) playback.previous() else navigateOrdinaryFromEvent(false)
+                true
+            }
+            PlayerKeyAction.NextPart -> {
+                if (section == DesktopSection.STORY) playback.next() else navigateOrdinaryFromEvent(true)
+                true
+            }
             is PlayerKeyAction.SetSpeed -> { changePreferencesIntent(preferences.copy(speed = action.speed.toDouble()), forceSpeed = true); true }
             else -> false
         }
