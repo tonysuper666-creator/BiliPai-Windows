@@ -18,6 +18,7 @@ import com.android.purebilibili.core.network.resolveAndroidHdLoginAppKeyHeader
 import com.android.purebilibili.data.model.response.NavData
 import com.android.purebilibili.data.model.response.PlayUrlData
 import com.android.purebilibili.data.model.response.VideoItem
+import com.android.purebilibili.data.model.response.toVideoItem
 import com.android.purebilibili.data.model.response.getBestAudio
 import com.android.purebilibili.data.model.response.getBestVideo
 import com.android.purebilibili.data.repository.buildDashAttemptQualities

@@ -21,7 +21,7 @@ internal class DesktopPersonalListsRoot(
     private val repository: DesktopRepository,
     private val globalStore: DesktopPluginStore,
     internal val recapContext: com.bilipai.desktop.plugins.DesktopPluginContext,
-    library: DesktopLibrary,
+    private val library: DesktopLibrary,
     privacyModeEnabled: () -> Boolean,
     feedback: (String) -> Unit,
     val globalHazeState: dev.chrisbanes.haze.HazeState,

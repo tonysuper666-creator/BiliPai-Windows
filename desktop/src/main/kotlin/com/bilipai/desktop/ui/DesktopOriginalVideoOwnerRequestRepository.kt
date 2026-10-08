@@ -2,6 +2,7 @@ package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.WbiUtils
 import com.android.purebilibili.data.model.response.*
+import com.android.purebilibili.data.model.response.CreatorCardStats
 import com.android.purebilibili.data.repository.*
 import com.android.purebilibili.feature.video.progress.PbpProgressData
 import com.android.purebilibili.feature.video.subtitle.SubtitleCue
