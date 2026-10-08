@@ -1,6 +1,10 @@
 package com.bilipai.desktop.plugins
 
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.Job
+import okhttp3.Call
+import okhttp3.Response
 import kotlinx.coroutines.asContextElement
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
@@ -39,6 +43,32 @@ object DesktopSubscriptionWriteAdmission {
         checkRequest()
         val operation = Operation(::checkRequest, { commit(true, it) }, { commit(false, it) })
         return withContext(current.asContextElement(operation)) { block().also { checkRequest() } }
+    }
+
+    /** Same public Call and caller Job. Cancellation covers execute and all response-body reads. */
+    @OptIn(InternalCoroutinesApi::class)
+    suspend fun <T> executeFeedCall(call: Call, block: (Response) -> T): T {
+        val caller = currentCoroutineContext()[Job] ?: error("Feed request requires a caller Job")
+        val operation = current.get()
+        fun check() { caller.ensureActive(); operation?.checkRequest?.invoke() }
+        check()
+        val cancellation = caller.invokeOnCompletion(onCancelling = true, invokeImmediately = true) {
+            if (it != null) call.cancel()
+        }
+        try {
+            val result = call.execute().use { response ->
+                check()
+                block(response)
+            }
+            check()
+            return result
+        } catch (failure: Throwable) {
+            // A cancelled blocking Call may report IOException; retain the actual coroutine/owner cancellation.
+            check()
+            throw failure
+        } finally {
+            cancellation.dispose()
+        }
     }
 
     /** Used only immediately around the existing AtomicFile final replacement/publication. */

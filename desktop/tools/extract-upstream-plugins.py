@@ -372,8 +372,19 @@ def generate(repo: Path, output: Path) -> list[Path]:
         source = read(repo, path)
         body = source
         if name == "FeedFetcher":
+            if hashlib.sha256(source.encode()).hexdigest() != "1ebb33f5f2f67c6659ddc1d4f2cf3a833f28ae69e933ef2c3892f9ff7448f2fd":
+                raise ValueError("Pinned original FeedFetcher cancellation seams changed")
             body = substitute(body, "import com.android.purebilibili.core.network.NetworkModule\n", "")
+            body = substitute(body, "import kotlinx.coroutines.Job\n", "import kotlinx.coroutines.ensureActive\n")
             body = substitute(body, "NetworkModule.okHttpClient.newBuilder()", "com.bilipai.desktop.plugins.DesktopPluginNetwork.publicClient.newBuilder()")
+            body = substitute(body, "    coroutineContext[Job]?.invokeOnCompletion { call.cancel() }\n", "", count=2)
+            body = substitute(body, "call.execute().use { response ->",
+                "com.bilipai.desktop.plugins.DesktopSubscriptionWriteAdmission.executeFeedCall(call) { response ->", count=2)
+            body = substitute(body, "return@use FeedFetchOutcome.NotModified", "return@executeFeedCall FeedFetchOutcome.NotModified")
+            body = substitute(body, "            }\n        }\n    } catch (_: TimeoutCancellationException) {",
+                "            }.onFailure { if (it is kotlinx.coroutines.CancellationException) throw it }\n        }\n    } catch (_: TimeoutCancellationException) {")
+            body = substitute(body, "    } catch (_: TimeoutCancellationException) {\n        call.cancel()",
+                "    } catch (_: TimeoutCancellationException) {\n        coroutineContext.ensureActive()\n        call.cancel()")
         if re.search(r"(?m)^import android\.", body):
             raise ValueError("Unexpected platform dependency in original feed implementation")
         generated.append(write(output, path, source, body))
