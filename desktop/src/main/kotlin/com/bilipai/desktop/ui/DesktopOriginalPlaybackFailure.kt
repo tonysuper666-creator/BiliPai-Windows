@@ -26,6 +26,10 @@ internal data class DesktopOriginalPlaybackFailureEvidence(
     val premiumAudio: Boolean = false,
 )
 
+/** Only actual original UseCase error results observe this coroutine-local evidence. */
+internal suspend fun desktopOriginalBootstrapVideoLoadError(failure: Throwable, error: VideoLoadError): VideoLoadError =
+    error.also { desktopVideoBootstrapObserveMappedFailure(failure, it) }
+
 /** Preserve a reliable API body code before BiliApiException's IOException base. */
 internal fun desktopOriginalVideoLoadError(failure: Throwable): VideoLoadError =
     desktopOriginalApiCode(failure)?.takeIf { it < 0 }?.let {

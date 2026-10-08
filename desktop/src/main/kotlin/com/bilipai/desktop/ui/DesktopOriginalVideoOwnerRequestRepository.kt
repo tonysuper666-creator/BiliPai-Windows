@@ -51,7 +51,10 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
         currentCoroutineContext().ensureActive(); binding.assertCurrent()
     }
     override suspend fun getVideoInfoOnly(bvid: String, aid: Long, requestedCid: Long): Result<ViewInfo> =
-        binding.rawRepository.getVideoInfoOnly(bvid, aid, requestedCid).also { result -> result.getOrNull()?.let { observedInfo(it) } }
+        binding.rawRepository.getVideoInfoOnly(bvid, aid, requestedCid).also { result ->
+            result.exceptionOrNull()?.let { desktopVideoBootstrapTagApiFailure(it, DesktopVideoBootstrapApiParameters.Detail(bvid, aid, requestedCid)) }
+            result.getOrNull()?.let { observedInfo(it) }
+        }
     override suspend fun getVideoDetails(bvid: String, aid: Long, requestedCid: Long,
         targetQuality: Int?, audioLang: String?): Result<Pair<ViewInfo, PlayUrlData>> =
         binding.rawRepository.getVideoDetails(bvid, aid, requestedCid, targetQuality, audioLang).also { result ->

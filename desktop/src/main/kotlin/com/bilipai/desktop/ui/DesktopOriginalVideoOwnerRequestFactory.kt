@@ -69,6 +69,9 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
             throw CancellationException("Original media baseline capture retired")
         val media = prepareRequestMedia(raw, state, checkNotNull(baseline), requestJob, native)
         currentCoroutineContext().ensureActive(); binding.assertCurrent()
-        return DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent)
+        val bootstrap = currentCoroutineContext()[DesktopVideoBootstrapAccepted]?.let {
+            DesktopVideoBootstrapReadSource.capture(it, state, binding)
+        }
+        return DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent, bootstrap)
     }
 }

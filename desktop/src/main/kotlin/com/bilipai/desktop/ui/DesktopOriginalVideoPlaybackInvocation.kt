@@ -11,11 +11,18 @@ import java.util.concurrent.atomic.AtomicBoolean
  * The factory captures the existing authorization once; all original async children
  * inherit that receipt. Nothing here constructs an API, player, cache or account.
  */
-internal class DesktopOriginalVideoPlaybackInvocation(
+internal class DesktopOriginalVideoPlaybackInvocation private constructor(
     val repository: DesktopOriginalVideoLoadRepository,
     val media: DesktopOriginalVideoMediaPort,
+    val bootstrapReadSource: DesktopVideoBootstrapReadSource?,
     private val assertCurrentPort: () -> Unit,
 ) {
+    constructor(repository: DesktopOriginalVideoLoadRepository, media: DesktopOriginalVideoMediaPort,
+        assertCurrentPort: () -> Unit) : this(repository, media, null, assertCurrentPort)
+    internal constructor(repository: DesktopOriginalVideoLoadRepository, media: DesktopOriginalVideoMediaPort,
+        assertCurrentPort: () -> Unit, bootstrapReadSource: DesktopVideoBootstrapReadSource?) :
+        this(repository, media, bootstrapReadSource, assertCurrentPort)
+
     fun assertCurrent() = assertCurrentPort()
 }
 
@@ -125,8 +132,12 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
         }
         val invocation = capture()
         currentCoroutineContext().ensureActive(); assertCurrent(); invocation.assertCurrent()
-        return withContext(InvocationElement(invocation)) {
-            invocation.assertCurrent(); block()
+        val bootstrapContext = invocation.bootstrapReadSource?.let(::DesktopVideoBootstrapInvocationContext)
+            ?: kotlin.coroutines.EmptyCoroutineContext
+        return withContext(InvocationElement(invocation) + bootstrapContext) {
+            invocation.assertCurrent()
+            invocation.bootstrapReadSource?.bindBodyCaller(requireNotNull(currentCoroutineContext()[Job]))
+            block()
         }
     }
 

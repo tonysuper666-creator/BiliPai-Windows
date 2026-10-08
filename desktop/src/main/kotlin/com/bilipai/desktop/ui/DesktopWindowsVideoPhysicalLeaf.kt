@@ -367,8 +367,9 @@ internal class DesktopWindowsVideoActions(
                 return@LaunchedEffect
             }
             val prior = assembly.native.current()
+            val bootstrapSource = DesktopVideoBootstrapSeed.capture(rootEnvironment, assembly, route)
             val retained = shell.playback.openVideoDetail(VideoCard(route.bvid, "", route.coverUrl, "", 0, 0,
-                preferredCid = route.cid), route.resumePositionMs, keepMatchingSource = true)
+                preferredCid = route.cid), route.resumePositionMs, keepMatchingSource = true, bootstrapSource = bootstrapSource)
             if (samePhysicalEntry()) {
                 nativeSurface.recordBootstrap(route, assembly, prior, retained)
                 nativeSurface.recordPresentedSource(route, assembly, ::samePhysicalEntry)

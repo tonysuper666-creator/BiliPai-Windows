@@ -45,6 +45,9 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
 ) : DesktopOriginalExternalPlaylistRequest {
     private val authorizationRetirementReported = java.util.concurrent.atomic.AtomicBoolean(false)
     val receipt: DesktopPlaybackAuthorizationReceipt get() = authorization.receipt
+    internal fun captureBootstrapAuthorization(): DesktopVideoBootstrapAuthorization = read {
+        DesktopVideoBootstrapAuthorization(receipt, authorization.cookieJar != null, authorization.playbackAccount?.mid)
+    }
     private fun entryCurrent(): Boolean = requestJob.isActive && entryJob.isActive && isEntryCurrent()
     private fun current(): Boolean = entryCurrent() && repository.isPlaybackReceiptCurrent(receipt)
 

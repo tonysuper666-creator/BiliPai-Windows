@@ -112,7 +112,7 @@ internal class DesktopUnifiedPlaybackFacade(
         }) return false
         return adopted
     }
-    fun openVideoDetail(card: VideoCard, resumePositionMs: Long, keepMatchingSource: Boolean): Boolean {
+    fun openVideoDetail(card: VideoCard, resumePositionMs: Long, keepMatchingSource: Boolean, bootstrapSource: DesktopVideoBootstrapSeed? = null): Boolean {
         val a = held(); val accepted = a?.native?.current(); val success = a?.let(::currentSuccess)
         val same = accepted != null && card.preferredCid > 0 && accepted.request.bvid == card.bvid &&
             accepted.request.cid == card.preferredCid && success?.info?.bvid == card.bvid && success.info.cid == card.preferredCid
@@ -121,9 +121,9 @@ internal class DesktopUnifiedPlaybackFacade(
                 if (resumePositionMs > 0) a.playback.seekTo(resumePositionMs)
             }) return true
         }
-        open(card, resumePositionMs); return false
+        openQueue(listOf(card), 0, resumePositionMs = resumePositionMs, bootstrapSource = bootstrapSource); return false
     }
-    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null, resumePositionMs: Long? = null) {
+    fun openQueue(cards: List<VideoCard>, selectedIndex: Int = 0, owner: Any? = null, resumePositionMs: Long? = null, bootstrapSource: DesktopVideoBootstrapSeed? = null) {
         require(cards.size <= 10_000 && selectedIndex in cards.indices && cards.all { it.bvid.isNotBlank() })
         checkpoint()
         val a = required()
@@ -136,9 +136,9 @@ internal class DesktopUnifiedPlaybackFacade(
         val resume = resumePositionMs?.coerceAtLeast(0) ?: (selected.progressSeconds?.toLong()?.times(1000) ?: 0L)
         val capturedLease=Lease(owner,a,session,a.section.nativePlayer.currentSourceVersion,selected,resume)
         lease=capturedLease
-        beginCardLoad(capturedLease,selectedIndex)
+        beginCardLoad(capturedLease,selectedIndex,bootstrapSource)
     }
-    private fun beginCardLoad(capturedLease: Lease, selectedIndex: Int) {
+    private fun beginCardLoad(capturedLease: Lease, selectedIndex: Int, bootstrapSource: DesktopVideoBootstrapSeed? = null) {
         val a=capturedLease.assembly;val session=capturedLease.session
         val selected=capturedLease.clickedCard;val resume=capturedLease.resumeMs
         if (selected.preferredCid <= 0L && selected.pageIndex > 0 && playlist.getCurrentItem()?.cid==selected.preferredCid) {
@@ -155,7 +155,7 @@ internal class DesktopUnifiedPlaybackFacade(
                         throw CancellationException("Queued part resolution replaced")
                     if (!playlist.resolveSelectedCidIfCurrent(session,selected.bvid,selected.preferredCid,resolved.preferredCid))
                         throw CancellationException("Queued part resolution lost original session")
-                    a.playback.loadVideo(resolved.bvid,cid=resolved.preferredCid,fallbackResumePositionMs=resume)
+                    a.playback.loadVideo(resolved.bvid,cid=resolved.preferredCid,fallbackResumePositionMs=resume, desktopBootstrapSource=bootstrapSource)
                 } catch (cancelled:CancellationException) { throw cancelled }
                 catch (failure:Exception) { if (current()) onFailure(failure.message ?: "视频分P解析失败") }
                 finally { if (pendingCardResolution.value===currentCoroutineContext()[Job]) pendingCardResolution.value=null }
@@ -165,7 +165,7 @@ internal class DesktopUnifiedPlaybackFacade(
             return
         }
         a.playback.loadVideo(selected.bvid, cid = selected.preferredCid,
-            fallbackResumePositionMs = resume)
+            fallbackResumePositionMs = resume, desktopBootstrapSource = bootstrapSource)
     }
     private fun cancelCardResolution() { pendingCardResolution.value?.cancel();pendingCardResolution.value=null }
     /** Read only the sole original queue/session. Root collects [state] and must

@@ -82,19 +82,25 @@ def original_policy_test_source(repo, audit=None):
 def typed_protocol_delta(body, audit=None):
     d = _Delta(body)
     d.change('val rawInfo = viewResp.data ?: throw Exception("视频详情为空: ${viewResp.code}")',
-             '''if (viewResp.code != 0) throw com.bilipai.desktop.data.BiliApiException(viewResp.code, "视频请求失败")
+             '''if (viewResp.code != 0) throw com.bilipai.desktop.data.BiliApiException(viewResp.code, "视频请求失败").also {
+                com.bilipai.desktop.ui.desktopVideoBootstrapTagApiFailure(it,
+                    com.bilipai.desktop.ui.DesktopVideoBootstrapApiParameters.Detail(bvid, aid, requestedCid))
+            }
             val rawInfo = viewResp.data ?: throw Exception("视频详情为空")''')
     d.change('''if (response.code in listOf(-404, -403, -10403, -62002)) {
             throw Exception(errorMessage)
         }''', '''if (response.code in listOf(-101, -404, -403, -10403, -62002)) {
-            throw com.bilipai.desktop.data.BiliApiException(response.code, "视频请求失败")
+            throw com.bilipai.desktop.data.BiliApiException(response.code, "视频请求失败").also {
+                com.bilipai.desktop.ui.desktopVideoBootstrapTagApiFailure(it,
+                    com.bilipai.desktop.ui.DesktopVideoBootstrapApiParameters.WebPlayUrl(bvid, cid, qn, audioLang))
+            }
         }''')
     return d.finish(audit)
 
 def usecase_delta(body, audit=None):
     d = _Delta(body)
     d.change("com.bilipai.desktop.ui.desktopWindowsVideoLoadError(e)",
-             "com.bilipai.desktop.ui.desktopOriginalVideoLoadError(e)", 3)
+             "com.bilipai.desktop.ui.desktopOriginalBootstrapVideoLoadError(e, com.bilipai.desktop.ui.desktopOriginalVideoLoadError(e))", 3)
     d.change("com.bilipai.desktop.ui.desktopWindowsVideoLoadCanRetry(e)",
              "com.bilipai.desktop.ui.desktopOriginalVideoLoadCanRetry(e)")
     return d.finish(audit)
@@ -105,7 +111,35 @@ VM_MEMBERS = '''
     }
     internal val desktopPlaybackRecoveryState get() = desktopPlaybackRecovery.state
 
-    private fun observeDesktopLoadFailure(requestToken: Long, failed: VideoPlaybackUiState.Error, requestJob: Job) {
+    private val desktopVideoBootstrapLoadFailure = java.util.concurrent.atomic.AtomicReference<com.bilipai.desktop.ui.DesktopVideoBootstrapLoadFailure?>(null)
+    internal fun desktopBootstrapReadFailure(): com.bilipai.desktop.ui.DesktopVideoBootstrapLoadFailure? {
+        check(java.awt.EventQueue.isDispatchThread())
+        val current = desktopVideoBootstrapLoadFailure.get() ?: return null
+        var result: com.bilipai.desktop.ui.DesktopVideoBootstrapLoadFailure? = null
+        if (current.source.admit(false) {
+            if (desktopVideoBootstrapLoadFailure.get() === current && _uiState.value === current.displayedError &&
+                currentLoadRequestToken == current.source.accepted.requestToken) result = current
+        } && result != null) return result
+        desktopVideoBootstrapLoadFailure.compareAndSet(current, null)
+        return null
+    }
+    private fun retainDesktopBootstrapLoadFailure(requestToken: Long, failed: VideoPlaybackUiState.Error, caller: Job,
+        source: com.bilipai.desktop.ui.DesktopVideoBootstrapReadSource?) {
+        source ?: return
+        if (source.accepted.requestToken != requestToken || source.bodyJob() !== caller) return
+        val value = com.bilipai.desktop.ui.DesktopVideoBootstrapLoadFailure(source, failed, source.mappedFor(failed.error))
+        if (!source.admit(true) {
+            if (currentLoadRequestToken == requestToken && _uiState.value === failed) desktopVideoBootstrapLoadFailure.set(value)
+        }) return
+        fun clearCancelled() {
+            if (source.factoryCaller.isCancelled || caller.isCancelled) desktopVideoBootstrapLoadFailure.compareAndSet(value, null)
+        }
+        source.factoryCaller.invokeOnCompletion { clearCancelled() }
+        caller.invokeOnCompletion { clearCancelled() }
+    }
+
+    private fun observeDesktopLoadFailure(requestToken: Long, failed: VideoPlaybackUiState.Error, requestJob: Job, bootstrapSource: com.bilipai.desktop.ui.DesktopVideoBootstrapReadSource?) {
+        retainDesktopBootstrapLoadFailure(requestToken, failed, requestJob, bootstrapSource)
         fun current(): Boolean = !requestJob.isCancelled && currentLoadRequestToken == requestToken && _uiState.value === failed
         desktopPlaybackRecovery.fail(com.bilipai.desktop.ui.DesktopOriginalPlaybackRecoveryTicket(
             identity = failed, evidence = com.bilipai.desktop.ui.desktopOriginalApiFailure(failed.error),
@@ -186,7 +220,8 @@ def owner_delta(path, body, audit=None):
     d.change('''        desktopExplicitStartPositionMs: Long? = null
     ) {
         require(desktopExplicitStartPositionMs == null || desktopExplicitStartPositionMs >= 0L)''', '''        desktopExplicitStartPositionMs: Long? = null,
-        desktopRecovering: Boolean = false
+        desktopRecovering: Boolean = false,
+        desktopBootstrapSource: com.bilipai.desktop.ui.DesktopVideoBootstrapSeed? = null
     ) {
         require(desktopExplicitStartPositionMs == null || desktopExplicitStartPositionMs >= 0L)''')
     d.change('''        val loadRequestContext = playbackSessionStore.beginLoadRequest(playbackRequest)
@@ -195,13 +230,17 @@ def owner_delta(path, body, audit=None):
         desktopLoadPlayWhenReady = autoPlay ?: true
         desktopLoadAudioLang = playbackRequest.audioLang
         val loadRequestContext = playbackSessionStore.beginLoadRequest(playbackRequest)
-        val requestToken = loadRequestContext.requestToken''')
+        val requestToken = loadRequestContext.requestToken
+        desktopVideoBootstrapLoadFailure.set(null)
+        val desktopBootstrapRequest = desktopBootstrapSource?.accepted(playbackRequest, requestToken, fallbackResumePositionMs)''')
+    d.change('        activeLoadJob = environment.invocations.launch {',
+             '        activeLoadJob = environment.invocations.launch(context = desktopBootstrapRequest ?: kotlin.coroutines.EmptyCoroutineContext) {')
     for before in ['_uiState.value = VideoPlaybackUiState.Error(loadResult.error, loadResult.canRetry)',
                    '_uiState.value = VideoPlaybackUiState.Error(VideoLoadError.Timeout)',
                    '_uiState.value = VideoPlaybackUiState.Error(VideoLoadError.UnknownError(e))']:
         d.change(before, before + '''
                 val desktopFailure = _uiState.value as? VideoPlaybackUiState.Error
-                if (desktopFailure != null) observeDesktopLoadFailure(requestToken, desktopFailure, checkNotNull(kotlinx.coroutines.currentCoroutineContext()[Job]))''')
+                if (desktopFailure != null) observeDesktopLoadFailure(requestToken, desktopFailure, checkNotNull(kotlinx.coroutines.currentCoroutineContext()[Job]), kotlinx.coroutines.currentCoroutineContext()[com.bilipai.desktop.ui.DesktopVideoBootstrapInvocationContext]?.source)''')
     d.change('    fun retry() {', '''    fun retry(desktopRecovering: Boolean = false, desktopResumePositionMs: Long? = null, desktopAutoPlay: Boolean? = null) {''')
     d.change('    fun retryWithCodecFallback() {', '''    fun retryWithCodecFallback(desktopRecovering: Boolean = false, desktopResumePositionMs: Long? = null, desktopAutoPlay: Boolean? = null) {''')
     # Only the two original retry bodies, never global load call sites.
@@ -225,6 +264,7 @@ def owner_delta(path, body, audit=None):
         d.change(before, after)
     d.change('''    override fun close() {
         retireDesktopBangumiPresenter()''', '''    override fun close() {
+        desktopVideoBootstrapLoadFailure.set(null)
         desktopPlaybackRecovery.close()
         retireDesktopBangumiPresenter()''')
     d.change('''                val shouldAutoPlay = playbackRequest.autoPlay ?: appContext?.let {
