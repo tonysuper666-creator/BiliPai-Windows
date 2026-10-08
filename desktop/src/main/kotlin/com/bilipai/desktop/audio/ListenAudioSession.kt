@@ -41,6 +41,7 @@ internal data class ListenAudioState(
 ) { val current: PlaylistItem? get() = queue.getOrNull(currentIndex) }
 
 /** Retained by the application window, not the browsing screen, so navigation does not end audio or its queue. */
+@OptIn(InternalCoroutinesApi::class)
 internal class ListenAudioSession(
     private val repository: DesktopRepository,
     community: DesktopCommunityRepository,
@@ -82,6 +83,8 @@ internal class ListenAudioSession(
     private var shuffle = ShuffleProgress()
     private var musicLyrics: LyricDocument? = null
     private var subtitleLyrics: LyricDocument? = null
+    // The actual accepted AU request, not a second song/lyrics cache.
+    private var preparedAudio: PreparedListenAudio? = null
     private var closed = false
 
     private fun sessionIsCurrent() = !closed && scope.isActive && repository.sessionEpoch == sessionEpoch
@@ -151,8 +154,9 @@ internal class ListenAudioSession(
         return ownsQueue(owner)
     }
 
-    private fun startQueue(items: List<PlaylistItem>, index: Int, positionSeconds: Double, owner: Any?) {
-        if (!sessionIsCurrent()) return
+    private fun startQueue(items: List<PlaylistItem>, index: Int, positionSeconds: Double, owner: Any?,
+        pendingCaller: Job? = null, pendingOwned: () -> Boolean = { true }) {
+        if (!sessionIsCurrent() || pendingCaller?.isActive == false || !pendingOwned()) return
         val clicked = items.getOrNull(index)?.bvid ?: return
         val queue = normalizeListenQueue(items)
         if (queue.isEmpty()) return
@@ -160,31 +164,37 @@ internal class ListenAudioSession(
         queueOwnership = owner?.let { QueueOwnership(it, playGeneration, player.currentSourceVersion) }
         shuffle = ShuffleProgress(history = listOf(selected), historyIndex = 0, cyclePlayed = setOf(selected))
         mutableState.update { it.copy(queue = queue, currentIndex = selected) }
-        playAt(selected, positionSeconds)
+        playAtOwned(selected, positionSeconds, pendingCaller, pendingOwned)
     }
 
-    fun playAt(index: Int, positionSeconds: Double = 0.0) {
-        if (!sessionIsCurrent()) return
+    fun playAt(index: Int, positionSeconds: Double = 0.0) = playAtOwned(index, positionSeconds, null) { true }
+
+    private fun playAtOwned(index: Int, positionSeconds: Double, pendingCaller: Job?, pendingOwned: () -> Boolean) {
+        if (!sessionIsCurrent() || pendingCaller?.isActive == false || !pendingOwned()) return
         val item = mutableState.value.queue.getOrNull(index) ?: return
         val startPosition = positionSeconds.takeIf { it.isFinite() && it >= 0 } ?: 0.0
         resumedPositionSeconds = startPosition
         onAcquirePlayback()
-        if (!sessionIsCurrent()) return
+        if (!sessionIsCurrent() || pendingCaller?.isActive == false || !pendingOwned()) return
         playJob?.cancel(); lyricsJob?.cancel(); playGeneration++; lyricsGeneration++
         val generation = playGeneration
         player.stop()
         val pendingSourceVersion = player.currentSourceVersion
         queueOwnership = queueOwnership?.copy(generation = generation, nativeBaseline = pendingSourceVersion)
         ownedSourceVersion = null
-        musicLyrics = null; subtitleLyrics = null
+        musicLyrics = null; subtitleLyrics = null; preparedAudio = null
         mutableState.update { it.copy(currentIndex = index, loading = true, active = true, error = null, lyrics = null, songInfo = null,
             lyricsLoading = false, lyricsError = null, candidates = emptyList(), subtitles = emptyList(), primarySubtitleKey = null, secondarySubtitleKey = null) }
         persist()
-        playJob = scope.launch {
+        val accepted = java.util.concurrent.atomic.AtomicBoolean(false)
+        fun pendingCurrent() = pendingCaller?.isActive != false && pendingOwned()
+        val request = scope.launch(start = CoroutineStart.LAZY) {
             try {
+                if (!pendingCurrent()) throw CancellationException("AU page request retired")
                 val prepared = playback.prepare(item)
                 currentCoroutineContext().ensureActive()
                 if (generation != playGeneration || !sessionIsCurrent()) return@launch
+                if (!pendingCurrent()) throw CancellationException("AU page request retired")
                 if (player.currentSourceVersion != pendingSourceVersion || player.currentSourceSnapshot() != null) {
                     mutableState.update { it.copy(loading = false, active = false, error = "当前播放已切换，请重新加载音频。") }
                     return@launch
@@ -196,13 +206,18 @@ internal class ListenAudioSession(
                 player.applyPreferences(preferences.copy(audioOnly = true))
                 player.setLoop(preferences.playbackMode == PlaybackMode.REPEAT_ONE && !mutableState.value.sleepAfterTrack)
                 if (!sessionIsCurrent()) return@launch
+                if (!pendingCurrent()) throw CancellationException("AU page request retired")
                 val callerJob = currentCoroutineContext()[Job]
                 val retained = publication.ownedSource(prepared.source.copy(startPositionSeconds = startPosition),
                     { callerJob?.isCancelled != true && generation == playGeneration && sessionIsCurrent() })
                 ownedSourceVersion = publication.admit(retained, { callerJob?.isActive == true && generation == playGeneration &&
-                    sessionIsCurrent() && player.currentSourceVersion == pendingSourceVersion && player.currentSourceSnapshot() == null }) {
+                    sessionIsCurrent() && pendingCurrent() && player.currentSourceVersion == pendingSourceVersion && player.currentSourceSnapshot() == null }) {
+                    // Once admitted, audio belongs to this retained Session, not the page.
+                    // No page cancellation callback releases an accepted native source.
+                    accepted.set(true)
                     player.loadVersioned(retained)
                 }
+                preparedAudio = prepared
                 val current = mutableState.value
                 val queue = current.queue.toMutableList().also { it[resolvedIndex] = prepared.item }
                 mutableState.update { it.copy(queue = queue, currentIndex = resolvedIndex, loading = false, songInfo = prepared.songInfo,
@@ -211,12 +226,27 @@ internal class ListenAudioSession(
                 loadLyrics(prepared)
             } catch (failure: Exception) {
                 if (failure is CancellationException) {
-                    if (generation == playGeneration && sessionIsCurrent()) mutableState.update { it.copy(loading = false, active = false) }
+                    if ((pendingCaller == null || !accepted.get()) && generation == playGeneration && sessionIsCurrent())
+                        mutableState.update { it.copy(loading = false, active = false) }
                     throw failure
                 }
-                if (generation == playGeneration && sessionIsCurrent()) mutableState.update { it.copy(loading = false, active = false, error = failure.message ?: "音频加载失败。") }
+                if (generation == playGeneration && sessionIsCurrent() && (accepted.get() || pendingCurrent())) mutableState.update { it.copy(loading = false, active = false, error = failure.message ?: "音频加载失败。") }
             }
         }
+        playJob = request
+        val cancellation = pendingCaller?.invokeOnCompletion(onCancelling = true, invokeImmediately = true) {
+            if (!accepted.get()) request.cancel()
+        }
+        request.invokeOnCompletion {
+            cancellation?.dispose()
+            if (pendingCaller != null && request.isCancelled && !accepted.get()) scope.launch {
+                // LAZY cancellation can complete without ever entering the request body.
+                // Release this Session busy bit; do not use the retired page gate or touch native.
+                if (generation == playGeneration && sessionIsCurrent() && !accepted.get())
+                    mutableState.update { it.copy(loading = false, active = false) }
+            }
+        }
+        request.start()
     }
 
     /** SMTC controls one already accepted source. Do not cancel the successful
@@ -244,6 +274,125 @@ internal class ListenAudioSession(
         }
         if (admitted && changed) persist()
         return admitted && changed
+    }
+
+    /** Source-bound AU controls borrow the existing Session/Store/native admission. */
+    internal fun loadAuMusicForPage(sid: Long, caller: Job, stillOwned: () -> Boolean) {
+        require(sid > 0)
+        if (!caller.isActive || !stillOwned() || !sessionIsCurrent()) return
+        val source = com.android.purebilibili.feature.audio.player.MusicPlaybackSource.AudioSong(sid)
+        if (!shouldStartNativeMusic(source, state.value, ownedPlaybackSourceVersion != null)) return
+        startQueue(listOf(musicSourcePlaylistItem(source)), 0, 0.0, null, caller, stillOwned)
+    }
+
+    internal fun captureAuMusicSource(sid: Long): com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot? =
+        player.currentSourceSnapshot()?.takeIf { sessionIsCurrent() &&
+            ownedPlaybackSourceVersion == it.sourceVersion && state.value.current?.bvid.equals("au$sid", true) }
+
+    private class AuMusicRequest(val source: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot,
+        val caller: Job, val stillOwned: () -> Boolean)
+    private fun auCurrent(request: AuMusicRequest): Boolean = request.caller.isActive && request.stillOwned() &&
+        sessionIsCurrent() && ownedPlaybackSourceVersion == request.source.sourceVersion && player.ownsSourceSnapshot(request.source)
+    private fun auCommit(request: AuMusicRequest, action: () -> Unit): Boolean {
+        if (!auCurrent(request)) return false
+        val generation = playGeneration
+        var applied = false
+        return try { publication.tryAdmit(request.source.source,
+            { auCurrent(request) && generation == playGeneration }) {
+            player.admitSourceSnapshot(request.source) {
+                if (auCurrent(request) && generation == playGeneration) { action(); applied = true }
+            } && applied
+        } && applied } catch (failure: com.bilipai.desktop.data.BiliApiException) {
+            if (failure.apiCode == -101 && !auCurrent(request)) false else throw failure
+        }
+    }
+    internal fun seekAuMusic(expected: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot,
+        caller: Job, stillOwned: () -> Boolean, milliseconds: Long): Boolean {
+        var sought = false
+        return auCommit(AuMusicRequest(expected, caller, stillOwned)) {
+            sought = player.seekToTrackedIfSourceVersion(expected.sourceVersion, milliseconds.coerceAtLeast(0L) / 1000.0) != null
+        } && sought
+    }
+    internal fun setAuMusicVolume(expected: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot,
+        caller: Job, stillOwned: () -> Boolean, fraction: Float): Boolean {
+        require(fraction.isFinite())
+        return auCommit(AuMusicRequest(expected, caller, stillOwned)) { player.setVolume(fraction.coerceIn(0f, 1f) * 100.0) }
+    }
+    internal fun setAuMusicPaused(expected: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot,
+        caller: Job, stillOwned: () -> Boolean, paused: Boolean): Boolean {
+        val request = AuMusicRequest(expected, caller, stillOwned)
+        if (!auCurrent(request)) return false
+        return try { setSystemMediaPaused(expected, paused) { auCurrent(request) } }
+        catch (failure: com.bilipai.desktop.data.BiliApiException) {
+            if (failure.apiCode == -101 && !auCurrent(request)) false else throw failure
+        }
+    }
+    internal fun retryAuLyrics(expected: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot, caller: Job, stillOwned: () -> Boolean) {
+        val request = AuMusicRequest(expected, caller, stillOwned)
+        val prepared = preparedAudio ?: return
+        if (auCurrent(request)) loadLyrics(prepared, forceRefresh = true, request = request)
+    }
+    internal fun searchAuLyrics(expected: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot, caller: Job,
+        stillOwned: () -> Boolean, title: String) = searchLyricsOwned(title, AuMusicRequest(expected, caller, stillOwned))
+    internal fun selectAuLyrics(expected: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot, caller: Job,
+        stillOwned: () -> Boolean, index: Int) {
+        val request = AuMusicRequest(expected, caller, stillOwned)
+        if (!auCurrent(request)) return
+        state.value.candidates.getOrNull(index)?.let { selectLyricsOwned(it, request) }
+    }
+    internal fun adjustAuLyricsOffset(expected: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot,
+        caller: Job, stillOwned: () -> Boolean, delta: Long) {
+        val request = AuMusicRequest(expected, caller, stillOwned)
+        var item: PlaylistItem? = null; var adjusted: LyricDocument? = null
+        if (!auCommit(request) {
+                val current = state.value.current ?: return@auCommit
+                val document = state.value.lyrics ?: return@auCommit
+                item = current; adjusted = document.withOffset(document.offsetMs + delta)
+                musicLyrics = adjusted
+                mutableState.update { it.copy(lyrics = adjusted) }
+            }) return
+        val capturedItem = item ?: return; val document = adjusted ?: return
+        lyricsOffsetSavingJob?.cancel()
+        lyricsOffsetSavingJob = launchLyricsForRequest(request) {
+            delay(200); if (!auCurrent(request)) return@launchLyricsForRequest
+            playback.lyrics.save(cacheKey(capturedItem), document)
+        }
+    }
+    private fun launchLyricsForRequest(request: AuMusicRequest?, busyGeneration: Long? = null,
+        block: suspend CoroutineScope.() -> Unit): Job {
+        val playbackGeneration = playGeneration
+        val task = scope.launch(start = CoroutineStart.LAZY, block = block)
+        val cancellation = request?.caller?.invokeOnCompletion(onCancelling = true, invokeImmediately = true) { task.cancel() }
+        task.invokeOnCompletion {
+            cancellation?.dispose()
+            if (request != null && busyGeneration != null) scope.launch {
+                // A retired page cannot publish lyrics, but it must release this retained
+                // Session's busy bit. Completion also covers cancellation before LAZY start.
+                releaseAuLyricsBusy(request.source, playbackGeneration, busyGeneration)
+            }
+        }
+        task.start(); return task
+    }
+    private fun releaseAuLyricsBusy(expected: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot,
+        playbackGeneration: Long, generation: Long) {
+        fun current() = sessionIsCurrent() && playGeneration == playbackGeneration && lyricsGeneration == generation &&
+            ownedPlaybackSourceVersion == expected.sourceVersion && player.ownsSourceSnapshot(expected)
+        if (!current()) return
+        try {
+            publication.tryAdmit(expected.source, ::current) {
+                player.admitSourceSnapshot(expected) {
+                    if (current()) mutableState.update { it.copy(lyricsLoading = false) }
+                }
+            }
+        } catch (failure: com.bilipai.desktop.data.BiliApiException) {
+            if (failure.apiCode != -101 || current()) throw failure
+        }
+    }
+    private fun lyricsCommit(generation: Long, request: AuMusicRequest?, action: () -> Unit): Boolean {
+        if (generation != lyricsGeneration || !sessionIsCurrent()) return false
+        var applied = false
+        fun commit() { if (generation == lyricsGeneration && sessionIsCurrent()) { action(); applied = true } }
+        return if (request == null) { commit(); applied } else auCommit(request, ::commit) && applied
     }
 
     fun togglePause() {
@@ -402,31 +551,39 @@ internal class ListenAudioSession(
         player.setLoop(preferences.playbackMode == PlaybackMode.REPEAT_ONE)
     }
 
-    private fun loadLyrics(prepared: PreparedListenAudio, forceRefresh: Boolean = false) {
-        if (!sessionIsCurrent()) return
+    private fun loadLyrics(prepared: PreparedListenAudio, forceRefresh: Boolean = false, request: AuMusicRequest? = null) {
+        if (!sessionIsCurrent() || (request != null && !auCurrent(request))) return
         lyricsJob?.cancel(); lyricsGeneration++
         val generation = lyricsGeneration
-        mutableState.update { it.copy(lyricsLoading = true, lyricsError = null) }
-        lyricsJob = scope.launch {
+        if (!lyricsCommit(generation, request) {
+                if (forceRefresh && request != null) { musicLyrics = null; subtitleLyrics = null }
+                mutableState.update { it.copy(lyricsLoading = true, lyricsError = null,
+                    lyrics = if (forceRefresh && request != null) null else it.lyrics,
+                    candidates = if (forceRefresh) emptyList() else it.candidates) }
+            }) return
+        lyricsJob = launchLyricsForRequest(request, generation) {
             try {
                 val external = async { playback.lyrics.load(cacheKey(prepared.item), LyricQuery(prepared.item.title, prepared.item.owner, prepared.item.duration * 1_000L), prepared.songLyrics, forceRefresh) }
                 try {
                     val tracks = withTimeout(20_000) { playback.subtitleTracks(prepared.item) }
                     val language = resolveDefaultSubtitleLanguages(tracks)
                     val primary = tracks.firstOrNull { it.lan == language.primaryLanguage }
-                    if (generation != lyricsGeneration || !sessionIsCurrent()) return@launch
-                    mutableState.update { it.copy(subtitles = tracks, primarySubtitleKey = primary?.trackKey, secondarySubtitleKey = null) }
+                    if (!lyricsCommit(generation, request) { mutableState.update { it.copy(subtitles = tracks, primarySubtitleKey = primary?.trackKey, secondarySubtitleKey = null) } }) return@launchLyricsForRequest
                     val cues = primary?.let { withTimeout(20_000) { playback.subtitleCues(it) } }.orEmpty()
-                    subtitleLyrics = BiliSubtitleLyricsPolicy.convertSubtitlesToLyricDocument(cues,
+                    val document = BiliSubtitleLyricsPolicy.convertSubtitlesToLyricDocument(cues,
                         isAiGenerated = primary?.let(::isLikelyAiSubtitleTrack) == true, languageLabel = primary?.lanDoc)
+                    if (!lyricsCommit(generation, request) { subtitleLyrics = document }) return@launchLyricsForRequest
                 } catch (failure: Exception) { if (failure is CancellationException && failure !is TimeoutCancellationException) throw failure }
                 val result = external.await()
-                if (generation != lyricsGeneration || !sessionIsCurrent()) return@launch
-                musicLyrics = (result as? LyricsLoadResult.Found)?.document
-                publishLyrics()
+                lyricsCommit(generation, request) {
+                    musicLyrics = (result as? LyricsLoadResult.Found)?.document
+                    publishLyrics()
+                    if (request != null && result == LyricsLoadResult.NotFound) mutableState.update { it.copy(lyricsError = null) }
+                    if (request != null && result == LyricsLoadResult.Failed) mutableState.update { it.copy(lyricsError = "歌词加载失败，请检查网络后重试") }
+                }
             } catch (failure: Exception) {
                 if (failure is CancellationException) throw failure
-                if (generation == lyricsGeneration && sessionIsCurrent()) mutableState.update { it.copy(lyricsLoading = false, lyricsError = failure.message ?: "歌词加载失败。") }
+                lyricsCommit(generation, request) { mutableState.update { it.copy(lyricsLoading = false, lyricsError = failure.message ?: "歌词加载失败。") } }
             }
         }
     }
@@ -457,39 +614,48 @@ internal class ListenAudioSession(
         }
     }
 
-    fun searchLyrics() {
-        if (!sessionIsCurrent()) return
+    fun searchLyrics() = searchLyricsOwned("", null)
+
+    private fun searchLyricsOwned(title: String, request: AuMusicRequest?) {
+        if (!sessionIsCurrent() || (request != null && !auCurrent(request))) return
         val current = mutableState.value.current ?: return
         lyricsJob?.cancel(); lyricsGeneration++
         val generation = lyricsGeneration
-        mutableState.update { it.copy(lyricsLoading = true, lyricsError = null) }
-        lyricsJob = scope.launch {
+        if (!lyricsCommit(generation, request) { mutableState.update { it.copy(lyricsLoading = true, lyricsError = null) } }) return
+        lyricsJob = launchLyricsForRequest(request, generation) {
             try {
-                val candidates = playback.lyrics.search(LyricQuery(current.title, current.owner, current.duration * 1_000L))
-                if (generation == lyricsGeneration && sessionIsCurrent()) mutableState.update { it.copy(candidates = candidates, lyricsLoading = false,
-                    lyricsError = if (candidates.isEmpty()) "未找到匹配歌词。" else null) }
+                val candidates = playback.lyrics.search(LyricQuery(title.ifBlank { current.title }, current.owner, current.duration * 1_000L))
+                lyricsCommit(generation, request) { mutableState.update { it.copy(candidates = candidates, lyricsLoading = false,
+                    lyricsError = if (request == null && candidates.isEmpty()) "未找到匹配歌词。" else null) } }
             } catch (failure: Exception) {
                 if (failure is CancellationException) throw failure
-                if (generation == lyricsGeneration && sessionIsCurrent()) mutableState.update { it.copy(lyricsLoading = false, lyricsError = failure.message) }
+                lyricsCommit(generation, request) { mutableState.update { it.copy(lyricsLoading = false, lyricsError = failure.message) } }
             }
         }
     }
 
-    fun selectLyrics(candidate: LyricCandidate) {
-        if (!sessionIsCurrent()) return
+    fun selectLyrics(candidate: LyricCandidate) = selectLyricsOwned(candidate, null)
+
+    private fun selectLyricsOwned(candidate: LyricCandidate, request: AuMusicRequest?) {
+        if (!sessionIsCurrent() || (request != null && !auCurrent(request))) return
         val current = mutableState.value.current ?: return
         lyricsJob?.cancel(); lyricsGeneration++
         val generation = lyricsGeneration
-        mutableState.update { it.copy(lyricsLoading = true, lyricsError = null) }
-        lyricsJob = scope.launch {
+        if (!lyricsCommit(generation, request) { mutableState.update { it.copy(lyricsLoading = true, lyricsError = null) } }) return
+        lyricsJob = launchLyricsForRequest(request, generation) {
             try {
                 val result = playback.lyrics.select(cacheKey(current), candidate)
-                if (generation != lyricsGeneration || !sessionIsCurrent()) return@launch
-                if (result is LyricsLoadResult.Found) { musicLyrics = result.document; publishLyrics() }
-                else mutableState.update { it.copy(lyricsLoading = false, lyricsError = "所选歌词未能加载。") }
+                lyricsCommit(generation, request) {
+                    if (result is LyricsLoadResult.Found) {
+                        musicLyrics = result.document; publishLyrics()
+                        if (request != null) mutableState.update { it.copy(candidates = emptyList(), lyricsError = null) }
+                    } else if (request != null) mutableState.update { it.copy(lyricsLoading = false,
+                        lyricsError = if (result == LyricsLoadResult.Failed) "歌词加载失败，请检查网络后重试" else null) }
+                    else mutableState.update { it.copy(lyricsLoading = false, lyricsError = "所选歌词未能加载。") }
+                }
             } catch (failure: Exception) {
                 if (failure is CancellationException) throw failure
-                if (generation == lyricsGeneration && sessionIsCurrent()) mutableState.update { it.copy(lyricsLoading = false, lyricsError = failure.message) }
+                lyricsCommit(generation, request) { mutableState.update { it.copy(lyricsLoading = false, lyricsError = failure.message) } }
             }
         }
     }
@@ -556,6 +722,7 @@ internal class ListenAudioSession(
     }
 
     private fun stopOwnedSource() {
+        preparedAudio = null
         queueOwnership = null
         ownedSourceVersion?.let(player::stopIfSourceVersion)
         ownedSourceVersion = null

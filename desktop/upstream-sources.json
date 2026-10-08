@@ -11447,6 +11447,14 @@
       "features": [
         "original-listen-video-pages"
       ]
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/audio/screen/MusicDetailScreen.kt",
+      "sha256": "d4040f6ed3088403d817b2ad2b8f5b35f1ae7a359e57066398b1bb3127b85369",
+      "mode": "policy-extract",
+      "features": [
+        "original-au-music-page"
+      ]
     }
   ],
   "featureCoverage": {

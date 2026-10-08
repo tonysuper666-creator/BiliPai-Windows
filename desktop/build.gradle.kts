@@ -3279,3 +3279,18 @@ val extractOriginalListenVideoPages by tasks.registering(Exec::class) {
 }
 kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-listen-video-pages")) }
 tasks.named("compileKotlin") { dependsOn(extractOriginalListenVideoPages) }
+
+// AU song content shares the existing full Music UI/lyrics/native owners.
+val extractOriginalAuMusicPage by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources, extractOriginalMusicPlayerFull)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-au-music-root.py",
+        "--repo", repositoryRoot.absolutePath,
+        "--output", layout.buildDirectory.dir("generated/original-au-music-page").get().asFile.absolutePath)
+    inputs.files("tools/extract-upstream-au-music-root.py", "tools/v025_source_paths.py", sourceManifest)
+    inputs.files(sources.filter { "original-au-music-page" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
+        .map { canonicalOriginalSource(it["path"].toString()) })
+    outputs.dir(layout.buildDirectory.dir("generated/original-au-music-page"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/original-au-music-page")) }
+tasks.named("compileKotlin") { dependsOn(extractOriginalAuMusicPage) }

@@ -42,13 +42,13 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     canRefreshPrimaryToken: () -> Boolean,
     refreshPrimaryToken: suspend (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
     private val onPlaybackAuthorizationRetired: ((DesktopPlaybackAuthorizationReceipt) -> Unit)?,
-) {
+) : DesktopOriginalExternalPlaylistRequest {
     private val authorizationRetirementReported = java.util.concurrent.atomic.AtomicBoolean(false)
     val receipt: DesktopPlaybackAuthorizationReceipt get() = authorization.receipt
     private fun entryCurrent(): Boolean = requestJob.isActive && entryJob.isActive && isEntryCurrent()
     private fun current(): Boolean = entryCurrent() && repository.isPlaybackReceiptCurrent(receipt)
 
-    fun assertCurrent() {
+    override fun assertCurrent() {
         repository.withPlaybackReceiptAdmission(receipt, ::entryCurrent) {
             if (!commitIfEntryCurrent {
                 if (!entryCurrent()) throw CancellationException("Original raw load request retired")
@@ -161,10 +161,10 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
 
 
     /** Metadata facet of THIS captured request, not a latest-credential service. */
-    val primaryApi: BilibiliApi get() = read { capturedPrimaryApi }
+    override val primaryApi: BilibiliApi get() = read { capturedPrimaryApi }
     /** Same fixed primary request/Call.Factory, including original Space app endpoints. */
     val primarySpaceApi: SpaceApi get() = read { capturedPrimarySpaceApi }
-    val primarySearchApi: SearchApi get() = read { capturedPrimarySearchApi }
+    override val primarySearchApi: SearchApi get() = read { capturedPrimarySearchApi }
     val primaryStoryApi: StoryApi get() = read { capturedPrimaryStoryApi }
     val playbackCalls: okhttp3.Call.Factory get() = read { metadataPlaybackCalls }
     /** Exact primary values of this request, admitted by its original receipt.
@@ -178,7 +178,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     /** Read-only caller identity; no new Job or request authority. */
     fun capturedDownloadCallerJob(): Job = read { requestJob }
 
-    fun admitCurrentMutation(action: () -> Unit): Boolean = try {
+    override fun admitCurrentMutation(action: () -> Unit): Boolean = try {
         read(action)
         true
     } catch (_: CancellationException) { false }

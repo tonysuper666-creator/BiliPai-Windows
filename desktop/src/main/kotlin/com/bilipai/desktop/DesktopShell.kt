@@ -2576,7 +2576,12 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }
                             section == DesktopSection.MUSIC -> {
                                 val source = musicSource
-                                if (listen != null && source != null) DesktopNativeMusicDetailScreen(source, listen, preferences, ::changePreferences,
+                                if (listen != null && entryKey is BiliPaiNavKey.MusicDetail)
+                                    DesktopOriginalAuMusicHost(entryKey, listen,
+                                        active && hostVisible && hostDisplayable && !isClosing() && !activatingUpdate,
+                                        ordinaryVideo.background, ::closeMusic,
+                                        updateRootVolume = { fraction -> changePreferences(preferences.copy(volume = fraction.toDouble() * 100.0)) })
+                                else if (listen != null && source != null) DesktopNativeMusicDetailScreen(source, listen, preferences, ::changePreferences,
                                     ::closeMusic, ::openUser, ::openVideo, startPositionSeconds = musicStartPosition)
                                 else Text(playerError ?: "请从个人空间的音频栏目打开歌曲")
                             }

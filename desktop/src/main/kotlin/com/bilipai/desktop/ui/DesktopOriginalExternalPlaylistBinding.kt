@@ -21,12 +21,19 @@ import okio.buffer
  * A matching batch and its nested checkpoint saves retain one captured request.
  * Capture occurs in the real caller Job, before any original network operation.
  */
+internal interface DesktopOriginalExternalPlaylistRequest {
+    val primaryApi: com.android.purebilibili.core.network.BilibiliApi
+    val primarySearchApi: com.android.purebilibili.core.network.SearchApi
+    fun assertCurrent()
+    fun admitCurrentMutation(action: () -> Unit): Boolean
+}
+
 internal class DesktopOriginalExternalPlaylistBinding(
     private val context: DesktopOriginalPlayerSettingsContext,
     private val audioRepository: DesktopAudioRepository,
-    private val captureRequest: suspend () -> DesktopOriginalVideoRepositoryBinding,
+    private val captureRequest: suspend () -> DesktopOriginalExternalPlaylistRequest,
 ) : DesktopOriginalExternalPlaylistActions {
-    private val retainedRequest = ThreadLocal<DesktopOriginalVideoRepositoryBinding?>()
+    private val retainedRequest = ThreadLocal<DesktopOriginalExternalPlaylistRequest?>()
 
     private suspend fun <T> request(block: suspend (DesktopOriginalExternalPlaylistDomain) -> T): T {
         val caller = currentCoroutineContext()
