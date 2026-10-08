@@ -90,6 +90,13 @@ internal class DesktopOriginalGlobalPlaybackProgress(
                 manager.savePosition(bvid, cid, positionMs, durationMs(bvid, cid))
             }
         }
+    /** Browse surfaces read the same original Manager; zero includes an authoritative completion clear. */
+    internal fun cachedPositionForBrowse(bvid: String, cid: Long, owned: () -> Boolean): Long {
+        if (!owned()) throw CancellationException("Browse progress entry retired")
+        val position = manager.getCachedPosition(bvid, cid)
+        if (!owned()) throw CancellationException("Browse progress entry retired")
+        return position
+    }
     internal fun cachedPositionForSpace(bvid: String, owned: () -> Boolean): Long {
         if (!owned()) throw CancellationException("Space progress entry retired")
         return manager.getCachedPosition(bvid)

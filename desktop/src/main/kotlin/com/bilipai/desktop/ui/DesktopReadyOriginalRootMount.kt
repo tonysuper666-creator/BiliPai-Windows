@@ -95,6 +95,7 @@ internal class DesktopReadyOriginalRootServices(
     val nowPlayingPositionMs: (DesktopHomeRetainedRoot, DesktopOriginalNowPlayingSnapshot) -> Long?,
     val originalSpacePlaylist: DesktopOriginalVideoPlaylistBinding,
     val originalSpaceCachedPosition: (String) -> Long,
+    val originalBrowseCachedPosition: (String, Long, () -> Boolean) -> Long? = { _, _, _ -> null },
 )
 
 /** Shutdown order is captured entry/route admission first, drains outside Store locks, then
@@ -322,7 +323,8 @@ internal class DesktopReadyOriginalRootHandle(
         val brandEvents = LocalDesktopBrandSuccessEvents.current
         val personalLists = remember(root, services.library, brandEvents) { DesktopPersonalListsRoot(root.entry.gate,
             services.repository, services.runtime.store, services.runtime.context, services.library,
-            services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze, brandEvents) }
+            services.community.searchPreferences::isPrivacyModeEnabledSync, services.feedback, haze, brandEvents,
+            services.originalBrowseCachedPosition) }
         SideEffect { handle.personalLists.set(personalLists); personalLists.prune(physicalStack.toList()) }
         DisposableEffect(personalLists) { onDispose {
             handle.personalLists.compareAndSet(personalLists, null); personalLists.close()

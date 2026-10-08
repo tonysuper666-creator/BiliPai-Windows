@@ -26,6 +26,7 @@ internal class DesktopPersonalListsRoot(
     feedback: (String) -> Unit,
     val globalHazeState: dev.chrisbanes.haze.HazeState,
     private val brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents,
+    private val originalCachedPosition: (String, Long, () -> Boolean) -> Long? = { _, _, _ -> null },
 ) : AutoCloseable {
     private val closed = AtomicBoolean(false)
     private val job = SupervisorJob(gate.scope.coroutineContext[Job])
@@ -47,10 +48,17 @@ internal class DesktopPersonalListsRoot(
     private fun <T> api(type: Class<T>, entry: DesktopPersonalListEntry): T =
         repository.ownedHomeService(type, "https://api.bilibili.com/", gate.epoch, entry::owns)
 
-    private val cachedPosition: (String, Long) -> Long = { bvid, cid ->
-        assertOwned()
-        library.resumeCard(bvid)?.takeIf { it.preferredCid == cid }?.progressSeconds
+    private fun cachedPosition(bvid: String, cid: Long, entryOwned: () -> Boolean): Long {
+        fun current() = owns() && entryOwned()
+        if (!current()) throw CancellationException("History progress entry retired")
+        val original = originalCachedPosition(bvid, cid, ::current)
+        if (!current()) throw CancellationException("History progress entry retired")
+        // A completed/cleared original zero must not revive a positive Library checkpoint.
+        if (original != null) return original
+        val compatibility = library.resumeCard(bvid)?.takeIf { cid <= 0L || it.preferredCid == cid }?.progressSeconds
             ?.coerceAtLeast(0)?.toLong()?.times(1000L) ?: 0L
+        if (!current()) throw CancellationException("History progress entry retired")
+        return compatibility
     }
     private val privacy = privacyModeEnabled
     private val onFeedback = feedback
@@ -72,7 +80,7 @@ internal class DesktopPersonalListsRoot(
             owned, { repository.ownedHomeCookie("bili_jct", gate.epoch, owned) },
             { check(); gate.mid }, { message -> commit { onFeedback(message) } },
             HistoryRefreshBus.changes.map { DesktopHomeClock.elapsedRealtime() },
-            cachedPosition, { check(); privacy() }, WatchLaterRefreshBus::notifyChanged,
+            { bvid, cid -> cachedPosition(bvid, cid, owned) }, { check(); privacy() }, WatchLaterRefreshBus::notifyChanged,
             { repository.ownedHomeAccessToken(gate.epoch, owned) },
             { repository.withPrimaryPlaybackAdmission(gate.epoch, owned) { repository.accessTokenCredentials().second } },
             { change -> check(); repository.followStateEvents.confirm(capturedFollowOwner,change) }).also { it.mountBrandFeedback(brandEvents, commit) }

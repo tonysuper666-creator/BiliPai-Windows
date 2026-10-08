@@ -271,7 +271,27 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     val spaceContributions = remember(repository) { DesktopSpaceContributionsRepository(repository) }
     val storyTopic = remember(repository, discovery) { DesktopStoryTopicRepository(repository, discovery) }
     val browseMemory = remember(account?.mid, sessionEpoch) { DesktopBrowseMemory() }
-    val homeCardProgress = remember(library, sessionEpoch) { desktopHomeCardProgressReader(library) }
+    val originalBrowseCachedPosition: (String, Long, () -> Boolean) -> Long? =
+        remember(repository, ordinaryVideoResourcesRef, ordinaryVideoResourcesRetired) {
+            { bvid, cid, owned ->
+                fun currentRoot() = scope.isActive && owned() && !isClosing() && !ordinaryVideoResourcesRetired.get()
+                if (!currentRoot()) throw CancellationException("Original browse progress root retired")
+                // One existing physical owner captured for this read; never switch it partway through a lookup.
+                val captured = ordinaryVideoResourcesRef.get()
+                if (captured == null) {
+                    if (!currentRoot()) throw CancellationException("Original browse progress root retired")
+                    null
+                } else captured.progress.cachedPositionForBrowse(bvid, cid) {
+                    currentRoot() && captured.isActive() && ordinaryVideoResourcesRef.get() === captured
+                }
+            }
+        }
+    val homeCardProgress = remember(library, sessionEpoch, originalBrowseCachedPosition) {
+        val capturedEpoch = sessionEpoch
+        val owned = { scope.isActive && !isClosing() && repository.sessionEpoch == capturedEpoch }
+        desktopHomeCardProgressReader(library,
+            { bvid, cid -> originalBrowseCachedPosition(bvid, cid, owned) }, owned)
+    }
     val appearance = remember(pluginStore) { DesktopThemePrefs(pluginStore, settingsLibrary.storedDark) }
     val themeSettings by appearance.settings.collectAsState(appearance.initialSettings())
     var appearanceReady by remember(appearance) { mutableStateOf(false) }
@@ -1722,7 +1742,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     { root -> originalNowPlayingFor(root,listen).binding },
                     { root, expected -> originalNowPlayingFor(root,listen).positionMs(expected) },
                     ordinaryVideo.playlist,
-                    { bvid -> ordinaryVideoResources?.progress?.cachedPositionForSpace(bvid) { !isClosing() } ?: 0L })
+                    { bvid -> ordinaryVideoResources?.progress?.cachedPositionForSpace(bvid) { !isClosing() } ?: 0L },
+                    originalBrowseCachedPosition)
                 if(!storageStartupReady) Text("正在准备存储与缓存…") else DesktopReadyOriginalRootMount(services,homeRootRef,Modifier.fillMaxSize(),onRootContentFrame) { entryKey,commands,active,pagerHosted,personalLists,originalHomePreferences,messagePages,spacePages ->
                     SideEffect { messageUpdateRoot = messagePages }
                     val messageRoutes = commands as DesktopOriginalRootRouteAssembly

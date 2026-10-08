@@ -15,11 +15,24 @@ internal object DesktopHomeCardWindowMetrics {
         }
 }
 
-/** Root supplies its current-account library. Null means no local checkpoint is known. */
+/** Root supplies the existing original global Manager; Library is only an unavailable-owner compatibility input. */
 internal val LocalDesktopHomeCardProgress=staticCompositionLocalOf<((String,Long)->Long?)?>{null}
-internal fun desktopHomeCardProgressReader(library:com.bilipai.desktop.DesktopLibrary):(String,Long)->Long? = {bvid,cid->
-    library.resumeCard(bvid)?.takeIf{cid>0 && it.preferredCid==cid}?.progressSeconds
-        ?.takeIf{it>=0}?.toLong()?.times(1000L)
+internal fun desktopHomeCardProgressReader(
+    library:com.bilipai.desktop.DesktopLibrary,
+    originalPosition:((String,Long)->Long?)?=null,
+    owned:()->Boolean={true},
+):(String,Long)->Long? = {bvid,cid->
+    if(!owned()) 0L else {
+        // Render retirement is safe zero, not Library fallback or an exception through composition.
+        val original=try { originalPosition?.invoke(bvid,cid) }
+            catch(retired:kotlinx.coroutines.CancellationException) { 0L }
+            catch(retired:com.bilipai.desktop.data.BiliApiException) {
+                if(retired.apiCode == -101) 0L else throw retired
+            }
+        val position=original ?: library.resumeCard(bvid)?.takeIf{cid>0 && it.preferredCid==cid}?.progressSeconds
+            ?.takeIf{it>=0}?.toLong()?.times(1000L)
+        if(owned()) position else 0L
+    }
 }
 /** Created by the current repository/epoch owner, not a second process-global network module. */
 internal val LocalDesktopVideoCardOnlineStore=staticCompositionLocalOf<VideoCardOnlineCountStore?>{null}
