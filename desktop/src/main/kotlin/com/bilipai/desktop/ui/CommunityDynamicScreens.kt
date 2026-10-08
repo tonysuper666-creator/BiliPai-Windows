@@ -25,30 +25,42 @@ import com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicReplySessi
 import com.bilipai.desktop.appearance.LocalDesktopTextClipboard
 
 @Composable
-internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityRepository, navigation: CommunityNavigation) {
+internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityRepository, navigation: CommunityNavigation, active: Boolean = true) {
     val cache=checkNotNull(LocalDesktopDynamicCache.current){"Root dynamic cache is not mounted"}
     val epoch by community.accountEpoch.collectAsState()
     DesktopDynamicCacheContent(cache,mid,epoch,navigation.onLogin) { session ->
-        CommunityDynamicFeedReady(mid,community,navigation,epoch,session)
+        CommunityDynamicFeedReady(mid,community,navigation,epoch,session,active)
     }
 }
 
 @Composable
 private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepository, navigation: CommunityNavigation,
-    capturedEpoch:Long, cache:DesktopDynamicCacheSession) {
+    capturedEpoch:Long, cache:DesktopDynamicCacheSession, active:Boolean) {
     val preferences=checkNotNull(LocalDesktopDynamicTimelinePreferences.current){"Root shared dynamic preferences are not mounted"}
     val blocked by community.blockedUps.mids.collectAsState()
     val notInterested by cache.notInterestedIds.collectAsState()
     val cacheFailure by cache.writeFailure.collectAsState()
     val scope=rememberCoroutineScope()
+    val latestActive=rememberUpdatedState(active)
+    fun owned()=community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid
+    // Observe the existing physical-page signal, in the actual current request Job.
+    // This wait belongs only to this composition's sidebar jobs, never to retained timelines.
+    suspend fun awaitPageActive() {
+        currentCoroutineContext().ensureActive()
+        if(!owned())throw CancellationException("Dynamic source retired")
+        snapshotFlow { latestActive.value }.first { it }
+        currentCoroutineContext().ensureActive()
+        if(!owned())throw CancellationException("Dynamic source retired")
+    }
     val cardRegistry=checkNotNull(LocalDesktopDynamicCardStateRegistry.current){"Root dynamic mutation registry is not mounted"}
     val tabsPreferences=remember(preferences,cache){DesktopDynamicTabsPreferences(preferences.context,cache)}
     val users=remember(mid,capturedEpoch,tabsPreferences) {
         DesktopDynamicUsersState(scope,tabsPreferences,mid,
-            followingPage={community.followings(mid,it).data},
-            liveRooms={community.dynamicFollowedLiveUsers()},unreadUsers={community.dynamicUnreadUsers()},
-            requestPage={community.dynamicSelectedUserPage(it)},
-            stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid},selfFace=community.account.value?.avatar.orEmpty())
+            followingPage={awaitPageActive();community.followings(mid,it,capturedEpoch,mid,::owned).data},
+            liveRooms={awaitPageActive();community.dynamicFollowedLiveUsers(capturedEpoch,mid,::owned)},
+            unreadUsers={awaitPageActive();community.dynamicUnreadUsers(capturedEpoch,mid,::owned)},
+            requestPage={awaitPageActive();community.dynamicSelectedUserPage(it,capturedEpoch,mid,::owned)},
+            stillOwned=::owned,selfFace=community.account.value?.avatar.orEmpty())
     }
     DisposableEffect(users){onDispose{users.close()}}
     cardRegistry.register(users)
@@ -61,10 +73,10 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
         val create={
             lateinit var model:DesktopDynamicTimelineState
             model=DesktopDynamicTimelineState(type,fetchPage={requestType,offset,baseline->
-            try{DynamicFeedResponse(data=community.dynamicFeed(requestType,offset,baseline).data)}
+            try{DynamicFeedResponse(data=community.dynamicFeed(requestType,offset,baseline,capturedEpoch,mid,::owned).data)}
             catch(cancelled:CancellationException){throw cancelled}
             catch(failure:BiliApiException){DynamicFeedResponse(code=failure.apiCode,message=failure.message.orEmpty())}
-        },stillOwned={community.accountEpoch.value==capturedEpoch&&community.account.value?.mid==mid},
+        },stillOwned=::owned,
             initialCachedItems=if(type=="all")cache.cachedAllItems.value else emptyList(),
             onAllTimelineChanged={rows->if(cardRegistry.isCurrentAll(model))cache.saveTimeline(rows)})
             model
@@ -74,6 +86,7 @@ private fun CommunityDynamicFeedReady(mid: Long, community: DesktopCommunityRepo
     Column {
         cacheFailure?.let{CommunityFailure(it,navigation.onLogin){cache.saveTimeline(timeline("all").page.items)}}
         DesktopDynamicTabsHost(users,preferences,navigation.onUser,navigation.onLogin,transform,::timeline,
+            active=active,awaitPageActive=::awaitPageActive,
             trailing={Button(onClick={editor.publish(DynamicPublishDraft(text=""))}){DesktopSkinDynamicPublishIcon(false);Text("发布动态")}}) {
             CommunityDynamicCard(it,community,navigation)
         }

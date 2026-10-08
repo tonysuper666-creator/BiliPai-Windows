@@ -15,6 +15,7 @@ import com.android.purebilibili.data.repository.*
 import com.android.purebilibili.feature.dynamic.*
 import com.bilipai.desktop.settings.*
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.sync.Mutex
@@ -112,16 +113,18 @@ internal fun DesktopDynamicTimelineFeed(
     onLogin:()->Unit,
     transform:(List<DynamicItem>)->List<DynamicItem> = {it},
     oldContentDividerLabel:String="以下是之前的动态",
+    active:Boolean=true,
     row:@Composable (DynamicItem)->Unit,
 ) {
     val scope=rememberCoroutineScope()
+    val latestActive=rememberUpdatedState(active)
     val rootScroll = LocalDesktopRootDynamicScroll.current
     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
     val incremental by preferences.incrementalRefresh.collectAsState(false)
     val displayed=remember(state.page.items,transform){transform(state.page.items)}
     val keys=remember(displayed){displayed.map {"dynamic_${dynamicFeedItemKey(it)}"}}
     val divider=resolveOldContentDividerIndex(displayed.map(::dynamicFeedItemKey),state.page.incrementalRefreshBoundaryKey,true)
-    LaunchedEffect(state){state.initialize(incrementalRefresh=incremental)}
+    LaunchedEffect(state){snapshotFlow { latestActive.value }.first { it };state.initialize(incrementalRefresh=incremental)}
     val allowAutomaticLoadMore=shouldAutoLoadMoreForUserContentFilter(
         isSelectedUserFeed=false,filter=DynamicUserContentFilter.ALL,visibleItemCount=displayed.size)
     val shouldLoadMore by remember(state.scroll,state.busy,state.page.hasMore,allowAutomaticLoadMore) {
@@ -135,11 +138,12 @@ internal fun DesktopDynamicTimelineFeed(
     }
     // Original ViewModel starts a separate owned request. Loading-state recomposition
     // must not cancel that request by retiring this threshold-observation effect.
-    LaunchedEffect(shouldLoadMore,state){if(shouldLoadMore)scope.launch{state.loadMore(incremental)}}
+    LaunchedEffect(shouldLoadMore,state,active){if(active&&shouldLoadMore)scope.launch{if(latestActive.value)state.loadMore(incremental)}}
     fun fetch(refresh:Boolean) {if(!state.busy)scope.launch{state.fetch(refresh,incremental)}}
-    LaunchedEffect(rootScroll, state) {
+    LaunchedEffect(rootScroll, state, active) {
+        if(!active)return@LaunchedEffect
         rootScroll?.receiveAsFlow()?.collectLatest { request ->
-            applyDesktopRootDynamicScroll(request, state.scroll) { state.fetch(true, incremental) }
+            applyDesktopRootDynamicScroll(request, state.scroll) { scope.launch{if(latestActive.value)state.fetch(true, incremental)};Unit }
         }
     }
     Column(Modifier.fillMaxSize()) {

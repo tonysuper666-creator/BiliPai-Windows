@@ -27,6 +27,8 @@ import kotlinx.coroutines.sync.withLock
     onLogin:()->Unit,
     transform:(List<DynamicItem>)->List<DynamicItem>,
     timeline:(String)->DesktopDynamicTimelineState,
+    active:Boolean=true,
+    awaitPageActive:suspend ()->Unit={},
     trailing:@Composable ()->Unit={},
     row:@Composable (DynamicItem)->Unit,
 ) {
@@ -42,7 +44,8 @@ import kotlinx.coroutines.sync.withLock
     fun write(block:suspend()->Unit){scope.launch{try{writer.withLock{block()}}catch(cancelled:CancellationException){throw cancelled}catch(error:Exception){settingError=error}}}
     LaunchedEffect(users,visible,order){users.applyTabs(visible,order)}
     LaunchedEffect(users,pinned,hidden){users.updateUserPreferences(pinned,hidden)}
-    LaunchedEffect(users){users.activateStartupLoads {
+    LaunchedEffect(users,active){if(active)users.activateStartupLoads {
+        awaitPageActive()
         timeline(resolveDynamicFeedRequestType(users.selectedLogicalTab))
             .initialize(timelinePreferences.incrementalRefresh.first())
     }}
@@ -50,8 +53,8 @@ import kotlinx.coroutines.sync.withLock
     val activeTimeline=if(users.selectedLogicalTab==4)null else timeline(selectedType)
     val cardSession=LocalDesktopDynamicCardSession.current
     val contentRevision by (cardSession?.contentRevision ?: remember { kotlinx.coroutines.flow.MutableStateFlow(0L) }).collectAsState()
-    LaunchedEffect(users,selectedType,users.selectedUid,contentRevision) {
-        if(contentRevision<=0L)return@LaunchedEffect
+    LaunchedEffect(users,selectedType,users.selectedUid,contentRevision,active) {
+        if(!active||contentRevision<=0L)return@LaunchedEffect
         val current=timeline(selectedType)
         val refreshUserId=resolveDynamicRefreshUserId(users.selectedLogicalTab,users.selectedUid)
         val seen=if(refreshUserId!=null)users.editorRefreshRevision else current.editorRefreshRevision
@@ -82,9 +85,9 @@ import kotlinx.coroutines.sync.withLock
             if(activeTimeline!=null) {
                 val title=allDynamicTabSpecs.first{it.logicalIndex==users.selectedLogicalTab}.title
                 DesktopDynamicTimelineFeed(activeTimeline,timelinePreferences,onLogin,transform,
-                    oldContentDividerLabel=if(selectedType=="all")"以下是之前的动态"else"以下是之前的${title}",row=row)
+                    oldContentDividerLabel=if(selectedType=="all")"以下是之前的动态"else"以下是之前的${title}",active=active,row=row)
             } else if(users.selectedUid!=null) {
-                DesktopDynamicSelectedUserFeed(users,timelinePreferences,onOpenUser,onLogin,transform,row)
+                DesktopDynamicSelectedUserFeed(users,timelinePreferences,onOpenUser,onLogin,transform,active,row)
             } else AppText("选择关注用户查看动态",Modifier.padding(20.dp),color=MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
@@ -92,13 +95,14 @@ import kotlinx.coroutines.sync.withLock
 
 @Composable private fun DesktopDynamicSelectedUserFeed(
     state:DesktopDynamicUsersState,preferences:DesktopDynamicTimelinePreferences,
-    onOpenUser:(Long)->Unit,onLogin:()->Unit,transform:(List<DynamicItem>)->List<DynamicItem>,row:@Composable (DynamicItem)->Unit,
+    onOpenUser:(Long)->Unit,onLogin:()->Unit,transform:(List<DynamicItem>)->List<DynamicItem>,active:Boolean,row:@Composable (DynamicItem)->Unit,
 ) {
     val layout by preferences.layoutMode.collectAsState(DynamicFeedLayoutMode.WATERFALL)
     val rows=transform(state.visibleItems())
     val grid=remember(state.selectedUid){LazyStaggeredGridState()}
     val rootScroll = LocalDesktopRootDynamicScroll.current
-    LaunchedEffect(rootScroll, state, state.selectedUid) {
+    LaunchedEffect(rootScroll, state, state.selectedUid, active) {
+        if(!active)return@LaunchedEffect
         rootScroll?.receiveAsFlow()?.collectLatest { request ->
             applyDesktopRootDynamicScroll(request, grid) { state.refreshUser() }
         }
@@ -114,7 +118,7 @@ import kotlinx.coroutines.sync.withLock
                 isLoading=state.userLoading,hasMore=state.hasUserMore)
         }
     }
-    LaunchedEffect(shouldLoadMore,state.selectedUid,state.filter){if(shouldLoadMore)state.loadMoreUser()}
+    LaunchedEffect(shouldLoadMore,state.selectedUid,state.filter,active){if(active&&shouldLoadMore)state.loadMoreUser()}
     Column(Modifier.fillMaxSize()) {
         DynamicSelectedUserFeedHeader(state.panelUsers().firstOrNull{it.uid==state.selectedUid}?.name.orEmpty(),
             state.filter,{state.filter=it},{state.selectedUid?.let(onOpenUser)})

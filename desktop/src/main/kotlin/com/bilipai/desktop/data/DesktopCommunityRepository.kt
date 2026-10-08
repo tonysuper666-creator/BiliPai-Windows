@@ -10,6 +10,8 @@ import com.android.purebilibili.core.util.IdUtils
 import kotlinx.coroutines.CancellationException
 import com.android.purebilibili.feature.video.note.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -270,9 +272,12 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
         }
     }
 
-    suspend fun dynamicFeed(type: String = "all", offset: String = "", updateBaseline: String = ""): DynamicPage =
-        read(accountOnly = true, validate = { require(type in setOf("all", "video", "pgc", "article")) }) {
-            val response = dynamic.getDynamicFeed(type = type, offset = offset, updateBaseline = updateBaseline)
+    suspend fun dynamicFeed(type: String = "all", offset: String = "", updateBaseline: String = "",
+        expectedEpoch: Long = repository.sessionEpoch, expectedMid: Long? = repository.account.value?.mid,
+        stillOwned: () -> Boolean = { true }): DynamicPage =
+        readDynamic(expectedEpoch, expectedMid, stillOwned, accountOnly = true,
+            validate = { require(type in setOf("all", "video", "pgc", "article")) }) { _, ownedDynamic ->
+            val response = ownedDynamic.getDynamicFeed(type = type, offset = offset, updateBaseline = updateBaseline)
             communityDynamicPage(verified(response.code, response.message, response.data, "动态列表"), offset)
         }
 
@@ -344,46 +349,35 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
     }
 
     /** Original UP space params are supplied by its original UID-pagination repository. */
-    internal suspend fun dynamicSelectedUserPage(params:Map<String,String>):DynamicFeedResponse {
-        val expectedEpoch=repository.sessionEpoch;val expectedMid=repository.account.value?.mid
-        fun owns()=repository.sessionEpoch==expectedEpoch&&repository.account.value?.mid==expectedMid
-        val result=read(accountOnly=true,validate={require(params["host_mid"]?.toLongOrNull()?.let{it>0}==true)}) {
-            if(!owns())throw kotlinx.coroutines.CancellationException("Dynamic source retired")
-            dynamic.getUserDynamicFeed(params)
+    internal suspend fun dynamicSelectedUserPage(params:Map<String,String>,
+        expectedEpoch:Long=repository.sessionEpoch,expectedMid:Long?=repository.account.value?.mid,
+        stillOwned:()->Boolean={true}):DynamicFeedResponse =
+        readDynamic(expectedEpoch,expectedMid,stillOwned,accountOnly=true,
+            validate={require(params["host_mid"]?.toLongOrNull()?.let{it>0}==true)}) { _, ownedDynamic ->
+            ownedDynamic.getUserDynamicFeed(params)
         }
-        kotlinx.coroutines.currentCoroutineContext().ensureActive()
-        if(!owns())throw kotlinx.coroutines.CancellationException("Dynamic source retired")
-        return result
-    }
-    internal suspend fun dynamicFollowedLiveUsers():List<LiveRoom> {
-        val expectedEpoch=repository.sessionEpoch;val expectedMid=repository.account.value?.mid
-        val result=read(accountOnly=true) {
-            val response=api.getFollowedLive(page=1,pageSize=50)
+    internal suspend fun dynamicFollowedLiveUsers(expectedEpoch:Long=repository.sessionEpoch,
+        expectedMid:Long?=repository.account.value?.mid,stillOwned:()->Boolean={true}):List<LiveRoom> =
+        readDynamic(expectedEpoch,expectedMid,stillOwned,accountOnly=true) { ownedApi, _ ->
+            val response=ownedApi.getFollowedLive(page=1,pageSize=50)
             check(response.code,response.message)
             com.android.purebilibili.data.repository.desktopOriginalDynamicFollowedLiveUsers(response)
         }
-        kotlinx.coroutines.currentCoroutineContext().ensureActive()
-        if(repository.sessionEpoch!=expectedEpoch||repository.account.value?.mid!=expectedMid)throw kotlinx.coroutines.CancellationException("Dynamic source retired")
-        return result
-    }
-    internal suspend fun dynamicUnreadUsers():UplistData? {
-        val expectedEpoch=repository.sessionEpoch;val expectedMid=repository.account.value?.mid
-        val result=read(accountOnly=true) {
-            repository.requireCsrf()
-            val response=dynamic.getDynamicUplist()
+    internal suspend fun dynamicUnreadUsers(expectedEpoch:Long=repository.sessionEpoch,
+        expectedMid:Long?=repository.account.value?.mid,stillOwned:()->Boolean={true}):UplistData? =
+        readDynamic(expectedEpoch,expectedMid,stillOwned,accountOnly=true,csrfRequired=true) { _, ownedDynamic ->
+            val response=ownedDynamic.getDynamicUplist()
             check(response.code,response.message)
             response.data
         }
-        kotlinx.coroutines.currentCoroutineContext().ensureActive()
-        if(repository.sessionEpoch!=expectedEpoch||repository.account.value?.mid!=expectedMid)throw kotlinx.coroutines.CancellationException("Dynamic source retired")
-        return result
-    }
 
-    suspend fun followings(mid: Long, page: Int = 1): RelationPage = read(validate = { require(mid > 0 && page > 0) }) {
-        val response = api.getFollowings(vmid = mid, pn = page, ps = 50)
-        val data = verified(response.code, response.message, response.data, "关注列表")
-        RelationPage(data, communityNumberedNext(page, 50, data.total, data.list.orEmpty().size))
-    }
+    suspend fun followings(mid: Long, page: Int = 1, expectedEpoch: Long = repository.sessionEpoch,
+        expectedMid: Long? = repository.account.value?.mid, stillOwned: () -> Boolean = { true }): RelationPage =
+        readDynamic(expectedEpoch,expectedMid,stillOwned,validate = { require(mid > 0 && page > 0) }) { ownedApi, _ ->
+            val response = ownedApi.getFollowings(vmid = mid, pn = page, ps = 50)
+            val data = verified(response.code, response.message, response.data, "关注列表")
+            RelationPage(data, communityNumberedNext(page, 50, data.total, data.list.orEmpty().size))
+        }
 
     suspend fun relationStats(mid: Long): RelationStatData = read(validate = { require(mid > 0) }) {
         val response = space.getRelationStat(mid)
@@ -568,6 +562,54 @@ class DesktopCommunityRepository(private val repository: DesktopRepository,
         val response = dynamic.getOpusDetail(repository.signWebParams(mapOf("id" to id, "timezone_offset" to "-480",
             "features" to OPUS_DETAIL_FEATURES)))
         return verified(response.code, response.message, response.data, "图文详情")
+    }
+
+    /** Same Community transport; the calling page supplies its captured epoch/MID.
+     * Capture the actual request Job before IO dispatch, not an execution-time account.
+     * Retained timelines can reuse their source closure with a new genuine caller Job. */
+    private suspend fun <T> readDynamic(expectedEpoch: Long, expectedMid: Long?, stillOwned: () -> Boolean,
+        accountOnly: Boolean = false, csrfRequired: Boolean = false, validate: () -> Unit = {},
+        action: suspend (BilibiliApi, DynamicApi) -> T): T {
+        val callerContext = currentCoroutineContext()
+        callerContext.ensureActive()
+        val caller = checkNotNull(callerContext[Job]) { "Dynamic read requires its actual caller Job" }
+        fun owns() = caller.isActive && stillOwned() && repository.sessionEpoch == expectedEpoch &&
+            repository.account.value?.mid == expectedMid
+        fun checkCurrent() {
+            callerContext.ensureActive()
+            if(!owns())throw CancellationException("Dynamic source retired")
+            repository.withPrimaryPlaybackAdmission(expectedEpoch, ::owns) { Unit }
+        }
+        checkCurrent()
+        return withContext(Dispatchers.IO) {
+            try {
+                validate()
+                checkCurrent()
+                if(accountOnly)repository.withPrimaryPlaybackAdmission(expectedEpoch, ::owns) {
+                    repository.requireAccount()
+                }
+                val ownedBuvid = repository.ownedHomeService(BuvidApi::class.java, "https://api.bilibili.com/",
+                    expectedEpoch, ::owns, transport = client)
+                repository.ensureOwnedHomeSession(expectedEpoch, ::owns, ownedBuvid)
+                checkCurrent()
+                if(csrfRequired && repository.ownedHomeCookie("bili_jct", expectedEpoch, ::owns).isNullOrBlank())
+                    throw BiliApiException(-101, "登录凭证缺少 CSRF，请重新登录后重试")
+                val ownedApi = repository.ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/",
+                    expectedEpoch, ::owns, transport = client)
+                val ownedDynamic = repository.ownedHomeService(DynamicApi::class.java, "https://api.bilibili.com/",
+                    expectedEpoch, ::owns, transport = client)
+                val result = action(ownedApi, ownedDynamic)
+                currentCoroutineContext().ensureActive()
+                checkCurrent()
+                result
+            } catch(cancelled: CancellationException) { throw cancelled }
+            catch(failure: Exception) {
+                // A retired request is cancellation, not a new account's feed error.
+                currentCoroutineContext().ensureActive()
+                checkCurrent()
+                throw failure
+            }
+        }
     }
 
     private suspend fun <T> read(accountOnly: Boolean = false, validate: () -> Unit = {}, action: suspend () -> T): T =

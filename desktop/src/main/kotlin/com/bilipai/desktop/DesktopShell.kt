@@ -2640,7 +2640,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     ::openVideo, ::openUser, ::openArticle, { openLogin() }, ::openLive, ::openBangumi, runtime = pluginRuntime,
                                     initialDynamicId = dynamicRoute?.dynamicId.takeIf { section == DesktopSection.DYNAMIC }, onTopic = ::openTopic, onTopicKeyword = ::openTopicKeyword,
                                     defaultSearchHintEnabled = defaultSearchHintEnabled,
-                                    initialCommentRootRpid=dynamicRoute?.rootReplyId?:0L,initialCommentTargetRpid=dynamicRoute?.targetReplyId?:0L)
+                                    initialCommentRootRpid=dynamicRoute?.rootReplyId?:0L,initialCommentTargetRpid=dynamicRoute?.targetReplyId?:0L,active=active)
                             else -> Column(Modifier.fillMaxSize(),verticalArrangement=Arrangement.Center,horizontalAlignment=Alignment.CenterHorizontally) {
                                 Text("该原版页面的平台闭包仍在接入中：${entryKey.toLegacyRoute()}")
                                 TextButton(onClick={commands.back()}) { Text("返回") }
