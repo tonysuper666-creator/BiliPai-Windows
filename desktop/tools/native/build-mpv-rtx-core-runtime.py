@@ -19,7 +19,7 @@ import zipfile
 from pathlib import Path
 
 VARIANT = 'bilipai-veyra-rtx-core-v1'
-IMAGE = 'ghcr.io/shinchiro/archlinux@sha256:6156ca503061914e1e73c3efa7276d14f5d45c78b3b8534c46e60294500beb66'
+IMAGE = 'ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf'
 ROOT = Path(__file__).resolve().parents[3]
 INPUTS = ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1'
 

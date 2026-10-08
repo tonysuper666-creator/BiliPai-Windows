@@ -64,7 +64,8 @@ try {
         foreach($key in @('schema','variant','producerVariant','filterName','architecture','coreAbi','coreAbiWire',
             'veyraSourceCommit','coreSourceSha256','headerSha256','mpvSourceCommit','bridgeSourceSha256',
             'vfSourceSha256','filterSourceManifestSha256','coreModuleRelativePath','mpvModuleRelativePath',
-            'runtimeRoot','featureDirectory','engineVersion')) {
+            'runtimeRoot','featureDirectory','engineVersion','nativeVariant','sharedSourceIdentity',
+            'ngxHostEngineVersion','nativeBuildReceiptRelativePath')) {
             if($existing.Data.PSObject.Properties.Name-notcontains$key -or
                 ($existing.Data.$key|ConvertTo-Json -Compress)-cne($template.Data.$key|ConvertTo-Json -Compress)){Reject 'EXISTING_SOURCE_IDENTITY_MISMATCH'}
         }

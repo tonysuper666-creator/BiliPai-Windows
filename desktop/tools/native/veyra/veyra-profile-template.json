@@ -9,7 +9,7 @@
   "veyraSourceCommit": "96a7c8de36bc195240161de6814739ad810722f1",
   "veyraRelease": "2.0.6",
   "veyraReleaseCommit": "e3aa842a00f693a4a17d1fc4c454d0ebc59428f6",
-  "coreSourceSha256": "1DC853DE084EF333A762F4FC4CA7EADBA3A76FC70BAD0CADC0AD5529B5B84FE8",
+  "coreSourceSha256": "84E0B6D9525944BEEBA01B2E7D222E4607801A2347FAC780B056754025138CC5",
   "headerSha256": "0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569",
   "moduleBuildSha256": null,
   "mpvSourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
@@ -65,14 +65,29 @@
     "runtimeLoaded": false
   },
   "localBuildEvidence": {
-    "role": "updated-source-awaiting-real-link-not-selected-module-identity",
+    "role": "reviewed-shared-source-and-private-CPU-link-not-selected-module",
     "coreCandidateBuildSha256": null,
-    "actuallyLinked": false,
+    "actuallyLinked": true,
     "gpuExecuted": false
   },
   "selection": {
     "default": "unselected",
     "boundStatus": "UNAVAILABLE",
     "reason": "real-registered-mpv-filter-dll-not-built-or-bound"
-  }
+  },
+  "nativeVariant": "bilipai-veyra-shared-core-v1-v2",
+  "sharedSourceIdentity": {
+    "sourceManifestSha256": "7320FED4931E22334A3D5A2086E93CDF0CB8B227EDA75A216AA7BC8EFBB80A5F",
+    "buildClosureManifestSha256": "C33283F4F26AC0FA8117B341848CC2AA34749CD12B47C6D18B75765E2DA7E12D",
+    "v1CoreSourceSha256": "84E0B6D9525944BEEBA01B2E7D222E4607801A2347FAC780B056754025138CC5",
+    "v1HeaderSha256": "0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569",
+    "v2CoreSourceSha256": "D2CBC169CEF2A3350111B1DBC9A18012E8B53D897F00F31D6F74FC638FD622D5",
+    "v2HeaderSha256": "AF884CC3D73262DAFA19A76A32F0B85C48A2E3BDE912BF59885D8DE5D4CDD6BC",
+    "sharedHostSourceSha256": "E21DADB460222EF92C5DE38246BB34F0D78E245F3CA798C2116A259899A8A7AF",
+    "cmakeSha256": "D184E623AF38CF9386A67838AA438C4E1CFFBEAF202F81836F68E4EA85922B8A",
+    "officialSdkManifestSha256": "5FB7A798B0A753F9933FBA3B9BEC539D592FA7322F9F59B718BDD44FB1C5F812"
+  },
+  "ngxHostEngineVersion": "BiliPai-Veyra-Core-Shared-1",
+  "nativeBuildReceiptRelativePath": "core/veyra-native-build-receipt.json",
+  "nativeBuildReceiptSha256": null
 }

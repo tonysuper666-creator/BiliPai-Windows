@@ -26,7 +26,7 @@ $result = [ordered]@{
 }
 function Reject([string]$Code) { throw ('BV_CODE:' + $Code) }
 function Require-Hash([object]$Value, [string]$Code) {
-    if ($Value -isnot [string] -or $Value -notmatch '^[0-9a-fA-F]{64}$') { Reject $Code }
+    if ($Value -isnot [string] -or $Value -notmatch '\A[0-9a-fA-F]{64}\z') { Reject $Code }
     return $Value.ToUpperInvariant()
 }
 function Local-FullPath([string]$Value) {
@@ -86,6 +86,57 @@ function Assert-X64Pe([IO.FileStream]$Stream) {
         if ($reader.ReadUInt16() -ne 0x020B) { Reject 'MODULE_NOT_X64_PE' }
     } finally { $reader.Dispose(); $Stream.Position = 0 }
 }
+$sharedPins=[ordered]@{
+    sourceManifestSha256='7320FED4931E22334A3D5A2086E93CDF0CB8B227EDA75A216AA7BC8EFBB80A5F'
+    buildClosureManifestSha256='C33283F4F26AC0FA8117B341848CC2AA34749CD12B47C6D18B75765E2DA7E12D'
+    v1CoreSourceSha256='84E0B6D9525944BEEBA01B2E7D222E4607801A2347FAC780B056754025138CC5'
+    v1HeaderSha256='0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569'
+    v2CoreSourceSha256='D2CBC169CEF2A3350111B1DBC9A18012E8B53D897F00F31D6F74FC638FD622D5'
+    v2HeaderSha256='AF884CC3D73262DAFA19A76A32F0B85C48A2E3BDE912BF59885D8DE5D4CDD6BC'
+    sharedHostSourceSha256='E21DADB460222EF92C5DE38246BB34F0D78E245F3CA798C2116A259899A8A7AF'
+    cmakeSha256='D184E623AF38CF9386A67838AA438C4E1CFFBEAF202F81836F68E4EA85922B8A'
+    officialSdkManifestSha256='5FB7A798B0A753F9933FBA3B9BEC539D592FA7322F9F59B718BDD44FB1C5F812'
+}
+function Read-LockedJson([object]$Locked,[long]$MaxBytes) {
+    if($Locked.Bytes -gt $MaxBytes){Reject 'JSON_TOO_LARGE'}
+    $reader=New-Object IO.StreamReader($Locked.Stream,(New-Object Text.UTF8Encoding($false,$true)),$true,1024,$true)
+    try{return ($reader.ReadToEnd()|ConvertFrom-Json)} finally{$reader.Dispose();$Locked.Stream.Position=0}
+}
+function Require-Properties([object]$Value,[string[]]$Names,[string]$Code) {
+    if($null-eq$Value){Reject $Code}
+    foreach($name in $Names){if($Value.PSObject.Properties.Name-notcontains$name){Reject $Code}}
+}
+function Same-Hash([object]$Value,[object]$Expected,[string]$Code) {
+    if((Require-Hash $Value $Code)-cne(Require-Hash $Expected $Code)){Reject $Code}
+}
+function Read-SharedBuild([object]$Profile,[string]$Root,[string]$ReceiptHashField,[string]$ReceiptPathField,[object]$Pins) {
+    $locked=Open-Locked (Relative-Path $Root $Profile.$ReceiptPathField)
+    Same-Hash $locked.Sha256 $Profile.$ReceiptHashField 'BUILD_RECEIPT_TRUST_MISMATCH'
+    $receipt=Read-LockedJson $locked 1048576
+    Require-Properties $receipt @('schema','variant','sourceCommit','moduleRelativeName','adapterEngineVersions',
+        'actualNgxHostEngineVersion','module','checks') 'BUILD_RECEIPT_SCHEMA_INVALID'
+    Require-Properties $receipt @($Pins.Keys) 'BUILD_RECEIPT_SOURCE_SCHEMA_INVALID'
+    if($receipt.schema-ne1 -or $receipt.variant-cne'bilipai-veyra-shared-core-v1-v2' -or
+       $receipt.sourceCommit-cne'96a7c8de36bc195240161de6814739ad810722f1' -or
+       $receipt.moduleRelativeName-cne'bilipai_veyra_core.dll' -or
+       $receipt.actualNgxHostEngineVersion-cne'BiliPai-Veyra-Core-Shared-1'){Reject 'BUILD_RECEIPT_IDENTITY_MISMATCH'}
+    foreach($key in $Pins.Keys){Same-Hash $receipt.$key $Pins[$key] 'BUILD_RECEIPT_SOURCE_MISMATCH'}
+    Require-Properties $receipt.adapterEngineVersions @('v1','v2') 'BUILD_RECEIPT_ENGINE_INVALID'
+    if($receipt.adapterEngineVersions.v1-cne'BiliPai-Veyra-Core-1' -or
+       $receipt.adapterEngineVersions.v2-cne'BiliPai-Veyra-DLSS-SR-2'){Reject 'BUILD_RECEIPT_ENGINE_INVALID'}
+    Require-Properties $receipt.checks @('actualObjectCompileExit','actualDllLinkExit','onlyOneHostTranslationUnit',
+        'singleVerifiedIncludeRoot','eightActualExports','checkedShutdownRedirectCoff','sourceDependenciesExactClosure') 'BUILD_RECEIPT_CHECKS_MISSING'
+    if($receipt.checks.actualObjectCompileExit-ne0 -or $receipt.checks.actualDllLinkExit-ne0 -or
+       $receipt.checks.onlyOneHostTranslationUnit-ne$true -or $receipt.checks.singleVerifiedIncludeRoot-ne$true -or
+       $receipt.checks.eightActualExports-ne$true -or $receipt.checks.checkedShutdownRedirectCoff-ne$true -or
+       $receipt.checks.sourceDependenciesExactClosure-ne$true){Reject 'NATIVE_BUILD_NOT_SUCCESSFUL'}
+    Require-Properties $receipt.module @('sha256','bytes','architecture','exports') 'BUILD_RECEIPT_MODULE_INVALID'
+    if($receipt.module.architecture-cne'windows-x64'){Reject 'BUILD_RECEIPT_MODULE_INVALID'}
+    $exports=@('bv_create_v1','bv_process_v1','bv_reset_v1','bv_destroy_v1','bvd_create_v2','bvd_process_v2','bvd_reset_v2','bvd_destroy_v2')
+    if(@($receipt.module.exports).Count-ne8 -or
+       (@($receipt.module.exports|Sort-Object)-join',')-cne(@($exports|Sort-Object)-join',')){Reject 'SHARED_ABI_EXPORTS_MISMATCH'}
+    return [pscustomobject]@{Receipt=$receipt;Sha256=$locked.Sha256}
+}
 try {
     $trusted = Require-Hash $TrustedProfileSha256 'INVALID_TRUST_ANCHOR'
     $profileFull = Local-FullPath $ProfilePath
@@ -99,7 +150,8 @@ try {
         'veyraSourceCommit','coreSourceSha256','headerSha256','moduleBuildSha256','mpvSourceCommit',
         'bridgeSourceSha256','vfSourceSha256','filterSourceManifestSha256','mpvDllSha256',
         'coreModuleRelativePath','mpvModuleRelativePath','runtimeRoot','featureDirectory',
-        'projectId','engineVersion','runtimeFiles')
+        'projectId','engineVersion','runtimeFiles','nativeVariant','sharedSourceIdentity',
+        'ngxHostEngineVersion','nativeBuildReceiptSha256','nativeBuildReceiptRelativePath')
     foreach ($key in $required) {
         if ($profile.PSObject.Properties.Name -notcontains $key) { Reject 'PROFILE_SCHEMA_INVALID' }
     }
@@ -107,19 +159,26 @@ try {
         variant='bilipai-veyra-core-v1'; producerVariant='bilipai-veyra-rtx-core-v1'
         filterName='bilipai-rtx'; architecture='windows-x64'
         veyraSourceCommit='96a7c8de36bc195240161de6814739ad810722f1'
-        coreSourceSha256='1DC853DE084EF333A762F4FC4CA7EADBA3A76FC70BAD0CADC0AD5529B5B84FE8'
+        coreSourceSha256='84E0B6D9525944BEEBA01B2E7D222E4607801A2347FAC780B056754025138CC5'
         headerSha256='0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569'
         mpvSourceCommit='69e63f425a531f814431fba12750bdb3721357f2'
         bridgeSourceSha256='868CFCF4AD01194DAFEC4312B0EFAC6CDAC947E6AE47F15101B2D2B1BC3BAF47'
         vfSourceSha256='D8B0A3A09C93732D63585BE8425D9582ADDF3FDF6A236770F412FDB5B38C1965'
         coreModuleRelativePath='core/bilipai_veyra_core.dll'; mpvModuleRelativePath='mpv/libmpv-2.dll'
         runtimeRoot='.'; featureDirectory='runtime/experimental'; engineVersion='BiliPai-Veyra-Core-1'
+        nativeVariant='bilipai-veyra-shared-core-v1-v2'; ngxHostEngineVersion='BiliPai-Veyra-Core-Shared-1'
+        nativeBuildReceiptRelativePath='core/veyra-native-build-receipt.json'
     }
     foreach ($key in $fixed.Keys) {
         if ($profile.$key -isnot [string] -or $profile.$key -cne $fixed[$key]) { Reject 'PROFILE_SOURCE_IDENTITY_MISMATCH' }
     }
     if ((Require-Hash $profile.filterSourceManifestSha256 'INVALID_FILTER_SOURCE_MANIFEST_HASH') -cne '9C0F19DE87DA2398F15D09DD27EBCA911BA292E5689D53BF7F62EA1742C3359F') { Reject 'FILTER_SOURCE_MANIFEST_MISMATCH' }
     if ($profile.schema -ne 1 -or $profile.coreAbi -ne 1 -or $profile.coreAbiWire -ne 65536) { Reject 'PROFILE_ABI_MISMATCH' }
+    Require-Properties $profile.sharedSourceIdentity @($sharedPins.Keys) 'PROFILE_SHARED_SOURCE_INVALID'
+    foreach($key in $sharedPins.Keys){Same-Hash $profile.sharedSourceIdentity.$key $sharedPins[$key] 'PROFILE_SHARED_SOURCE_MISMATCH'}
+    $result.checked.sharedSourceIdentity=$sharedPins
+    $result.checked.nativeVariant=$profile.nativeVariant
+    $result.checked.ngxHostEngineVersion=$profile.ngxHostEngineVersion
     $result.checked.coreSourceSha256 = $profile.coreSourceSha256
     $result.checked.headerSha256 = $profile.headerSha256
     $result.checked.coreAbi = 1; $result.checked.coreAbiWire = 65536
@@ -172,9 +231,12 @@ try {
         $missing = @()
         if ($null -eq $profile.moduleBuildSha256) { $missing += 'CORE_MODULE_BUILD_SHA256' }
         if ($null -eq $profile.mpvDllSha256) { $missing += 'PATCHED_MPV_DLL_SHA256' }
+        if ($null -eq $profile.nativeBuildReceiptSha256) { $missing += 'SHARED_NATIVE_BUILD_RECEIPT_SHA256' }
         if ($null -eq $profile.projectId -or [string]::IsNullOrWhiteSpace([string]$profile.projectId)) { $missing += 'NGX_PROJECT_ID' }
         $result.missingInputs = $missing
         if ($missing.Count -gt 0) { Reject 'MISSING_BOUND_MODULE_IDENTITIES' }
+        $build=Read-SharedBuild $profile $rootFull 'nativeBuildReceiptSha256' 'nativeBuildReceiptRelativePath' $sharedPins
+        $result.checked.nativeBuildReceiptSha256=$build.Sha256
         $coreExpected = Require-Hash $profile.moduleBuildSha256 'INVALID_CORE_MODULE_HASH'
         $mpvExpected = Require-Hash $profile.mpvDllSha256 'INVALID_MPV_MODULE_HASH'
         $ownGuid = [Guid]::Empty
@@ -186,6 +248,8 @@ try {
         Assert-X64Pe $core.Stream
         $result.checked.moduleBuildSha256 = $core.Sha256
         if ($core.Sha256 -cne $coreExpected) { Reject 'CORE_MODULE_BYTES_MISMATCH' }
+        Same-Hash $core.Sha256 $build.Receipt.module.sha256 'MODULE_BUILD_RECEIPT_MISMATCH'
+        if($core.Bytes-ne$build.Receipt.module.bytes){Reject 'MODULE_BUILD_RECEIPT_MISMATCH'}
         $mpv = Open-Locked (Local-FullPath $MpvModulePath)
         Assert-X64Pe $mpv.Stream
         $result.checked.mpvDllSha256 = $mpv.Sha256

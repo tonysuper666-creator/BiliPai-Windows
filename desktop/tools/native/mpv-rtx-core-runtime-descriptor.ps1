@@ -24,7 +24,7 @@ function Install-RtxCoreDescriptorMpvRuntime {
         patchedNativeSourceSha256 = '1669c96fc95cfd7276a3149aa2d76058d29b2cc2dd848c77b949d434831c6d2f'
         recipeCommit = 'cd1edc11dc6887a50f705717619d879f5a93a488'
         recipeArchiveSha256 = '8b92a254771496b0dcc23017c2734bfa7545441d3e6a37958b063d6e7814a657'
-        containerImage = 'ghcr.io/shinchiro/archlinux@sha256:6156ca503061914e1e73c3efa7276d14f5d45c78b3b8534c46e60294500beb66'
+        containerImage = 'ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf'
     }
     if ($runtime.schema -ne 2) { throw 'Unsupported patched runtime descriptor schema.' }
     if ($runtime.closedSdkOrRuntimeIncluded -cne $false -or $runtime.vfgImplemented -cne $false -or $runtime.rtxCoreBridgeVerified -cne $false) { throw 'RTX candidate is source-only, excludes closed runtime/VFG and is not hardware-verified.' }

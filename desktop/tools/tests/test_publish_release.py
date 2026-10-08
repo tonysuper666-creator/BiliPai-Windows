@@ -454,7 +454,7 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                                                             "inputs.acknowledge_source_build": True}))
         self.assertRegex(body, r"(?m)^    runs-on: ubuntu-24.04$")
         self.assertRegex(body, r"(?m)^    timeout-minutes: 360$")
-        self.assertIn("ghcr.io/shinchiro/archlinux@sha256:6156ca503061914e1e73c3efa7276d14f5d45c78b3b8534c46e60294500beb66", body)
+        self.assertIn("ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf", body)
         self.assertIn("python3 desktop/tools/native/build-mpv-rtx-core-runtime.py", body)
         self.assertIn("python3 desktop/tools/native/upload-mpv-rtx-core-draft.py", body)
         self.assertRegex(body, r"(?m)^    permissions:\n      contents: write$")

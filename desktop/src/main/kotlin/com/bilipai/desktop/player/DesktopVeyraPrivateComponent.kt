@@ -68,6 +68,25 @@ internal class DesktopVeyraPrivateComponent(
             require(json.text("featureDirectory") == "runtime/experimental" && json.text("runtimeRoot") == ".")
             require(json.text("coreModuleRelativePath") == "core/bilipai_veyra_core.dll")
             require(json.text("mpvModuleRelativePath") == "mpv/libmpv-2.dll")
+            require(json.text("nativeVariant") == "bilipai-veyra-shared-core-v1-v2")
+            require(json.text("ngxHostEngineVersion") == "BiliPai-Veyra-Core-Shared-1")
+            val sharedIdentity = json["sharedSourceIdentity"] as? JsonObject ?: error("Shared source identity absent")
+            SHARED_SOURCE_PINS.forEach { (key, expected) -> require(sharedIdentity.digest(key) == expected) }
+            require(json.text("nativeBuildReceiptRelativePath") == "core/veyra-native-build-receipt.json")
+            val buildReceiptHash = json.digest("nativeBuildReceiptSha256")
+            val buildReceiptChannel = locked(relative(root, "core/veyra-native-build-receipt.json"))
+            val buildReceiptBytes = readBounded(buildReceiptChannel, 1048576)
+            require(hash(buildReceiptBytes) == buildReceiptHash)
+            val nativeBuild = Json.parseToJsonElement(buildReceiptBytes.toString(Charsets.UTF_8).removePrefix("\uFEFF")) as JsonObject
+            require(nativeBuild["schema"]?.jsonPrimitive?.intOrNull == 1 &&
+                nativeBuild.text("variant") == "bilipai-veyra-shared-core-v1-v2" &&
+                nativeBuild.text("sourceCommit") == VEYRA_SOURCE_COMMIT &&
+                nativeBuild.text("moduleRelativeName") == "bilipai_veyra_core.dll" &&
+                nativeBuild.text("actualNgxHostEngineVersion") == "BiliPai-Veyra-Core-Shared-1")
+            SHARED_SOURCE_PINS.forEach { (key, expected) -> require(nativeBuild.digest(key) == expected) }
+            val nativeBuildModule = nativeBuild["module"] as? JsonObject ?: error("Native module receipt absent")
+            require(nativeBuildModule.digest("sha256") == json.digest("moduleBuildSha256") &&
+                nativeBuildModule.text("architecture") == "windows-x64")
             val core = relative(root, "core/bilipai_veyra_core.dll")
             val mpv = relative(root, "mpv/libmpv-2.dll")
             require(mpv == dll.toPath().toRealPath())
@@ -109,6 +128,11 @@ internal class DesktopVeyraPrivateComponent(
             require(checked.digest("profileSha256") == trustedProfileSha256 && checked.digest("moduleBuildSha256") == coreHash && checked.digest("mpvDllSha256") == mpvHash)
             require(checked.digest("coreSourceSha256") == CORE_SOURCE_SHA256 && checked.digest("headerSha256") == CORE_HEADER_SHA256)
             require(checked["coreAbi"]?.jsonPrimitive?.intOrNull == 1 && checked["coreAbiWire"]?.jsonPrimitive?.intOrNull == 65536)
+            require(checked.digest("nativeBuildReceiptSha256") == buildReceiptHash &&
+                checked.text("nativeVariant") == "bilipai-veyra-shared-core-v1-v2" &&
+                checked.text("ngxHostEngineVersion") == "BiliPai-Veyra-Core-Shared-1")
+            val checkedShared = checked["sharedSourceIdentity"] as? JsonObject ?: error("Shared verification proof absent")
+            SHARED_SOURCE_PINS.forEach { (key, expected) -> require(checkedShared.digest(key) == expected) }
             val actualRuntime = checked["runtimeFiles"] as? JsonArray ?: error("Runtime signature results absent")
             require(actualRuntime.size == expectedRuntime.size)
             val actualNames = mutableSetOf<String>()
@@ -184,12 +208,23 @@ internal class DesktopVeyraPrivateComponent(
         .also { require(it.matches(Regex("[0-9a-fA-F]{64}"))) }.lowercase(Locale.ROOT)
 
     companion object {
+        private val SHARED_SOURCE_PINS = mapOf(
+            "sourceManifestSha256" to "7320fed4931e22334a3d5a2086e93cdf0cb8b227eda75a216aa7bc8efbb80a5f",
+            "buildClosureManifestSha256" to "c33283f4f26ac0fa8117b341848cc2aa34749cd12b47c6d18b75765e2da7e12d",
+            "v1CoreSourceSha256" to "84e0b6d9525944beeba01b2e7d222e4607801a2347fac780b056754025138cc5",
+            "v1HeaderSha256" to "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
+            "v2CoreSourceSha256" to "d2cbc169cef2a3350111b1dbc9a18012e8b53d897f00f31d6f74fc638fd622d5",
+            "v2HeaderSha256" to "af884cc3d73262dafa19a76a32f0b85c48a2e3bde912bf59885d8de5d4cdd6bc",
+            "sharedHostSourceSha256" to "e21dadb460222ef92c5de38246bb34f0d78e245f3ca798c2116a259899a8a7af",
+            "cmakeSha256" to "d184e623af38cf9386a67838aa438c4e1cffbeaf202f81836f68e4ea85922b8a",
+            "officialSdkManifestSha256" to "5fb7a798b0a753f9933fba3b9bec539d592fa7322f9f59b718bdd44fb1c5f812"
+        )
         private const val VEYRA_SOURCE_COMMIT = "96a7c8de36bc195240161de6814739ad810722f1"
         private const val MPV_SOURCE_COMMIT = "69e63f425a531f814431fba12750bdb3721357f2"
-        private const val CORE_SOURCE_SHA256 = "1dc853de084ef333a762f4fc4ca7eadba3a76fc70bad0cadc0ad5529b5b84fe8"
+        private const val CORE_SOURCE_SHA256 = "84e0b6d9525944beeba01b2e7d222e4607801a2347fac780b056754025138cc5"
         private const val CORE_HEADER_SHA256 = "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569"
         private const val FILTER_SOURCE_SHA256 = "9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f"
-        private const val VERIFIER_SOURCE_SHA256 = "ca725540d846e2957df1d505770d729be3e6e50a354e4e8ca5450a347c22e86d"
+        private const val VERIFIER_SOURCE_SHA256 = "68381fddf953fffe9536a9173179ca166016b0fa4b7828afa46342cb3b71401a"
     }
 }
 
