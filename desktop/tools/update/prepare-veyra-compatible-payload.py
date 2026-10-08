@@ -154,7 +154,7 @@ def release_target(release: dict, repository: str, version: str, archive_name: s
         server_digest = rows[name].get("digest")
         require(server_digest is None or server_digest == "sha256:" + expected, "ASSET_SERVER_DIGEST_MISMATCH")
     checksum_url = exact_asset_url(rows[archive_name + ".sha256"].get("browser_download_url"), repository, tag, archive_name + ".sha256")
-    return {"releaseId": release_id, "assetId": archive["id"], "downloadUrl": archive["browser_download_url"],
+    return {"releaseTag": tag, "releaseId": release_id, "assetId": archive["id"], "downloadUrl": archive["browser_download_url"],
             "checksumUrl": checksum_url, "checksumSidecarContentsInspected": False,
             "draft": release["draft"], "prerelease": release["prerelease"]}
 
@@ -341,7 +341,7 @@ def prepare(args) -> dict:
     native = native_identity(native_manifest, native_input["sha256"], native_receipt, args.engine_protocol_major)
     # Exactly the existing verifier's fourteen payload fields. There is no
     # switch that can promote this status or emit its Ed25519 envelope.
-    payload = {"schema": 1, "repository": args.repository, "version": args.windows_version,
+    payload = {"schema": 1, "repository": args.repository, "version": target["releaseTag"],
                "releaseId": target["releaseId"], "assetId": target["assetId"], "assetName": archive_name,
                "size": package["bytes"], "downloadUrl": target["downloadUrl"], "sha256": package["sha256"],
                "sourceRepository": SOURCE_REPOSITORY, "sourceCommit": native["sourceCommit"],
