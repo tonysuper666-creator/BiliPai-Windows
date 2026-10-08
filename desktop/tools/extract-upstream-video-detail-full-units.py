@@ -390,7 +390,7 @@ internal class DesktopOriginalVideoCreatorCard(private val api:BilibiliApi,priva
 '''+body+'\n}\n',p,'original-creator-read-cache-single-current-entry-authority')
     fragment='''// Desktop original complete video engagement/info binding
     private val videoCreatorCard by lazy { com.android.purebilibili.data.repository.DesktopOriginalVideoCreatorCard(api, ::assertOwned) }
-    suspend fun getVideoCreatorCardStats(mid:Long):Result<com.android.purebilibili.data.repository.CreatorCardStats> = result {
+    suspend fun getVideoCreatorCardStats(mid:Long):Result<com.android.purebilibili.data.model.response.CreatorCardStats> = result {
         read { videoCreatorCard.getCreatorCardStats(mid).getOrThrow() }
     }
     internal fun originalVideoCoinBalanceLoader():com.android.purebilibili.feature.video.viewmodel.VideoCoinBalanceLoader =
