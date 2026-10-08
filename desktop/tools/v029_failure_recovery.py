@@ -262,14 +262,18 @@ def owner_delta(path, body, audit=None):
                               '        if (!desktopRecovering) PlaybackCooldownManager.clearForVideo(bvid)')
         after = after.replace('currentState is VideoPlaybackUiState.Error &&', '!desktopRecovering && currentState is VideoPlaybackUiState.Error &&')
         if name == '    fun retry(':
-            retry_anchor = '        val desktopRetryCid = currentCid\n'
-            retry_capture = '''        val desktopRetryCid = currentCid
-        val desktopRetryBootstrapSource = desktopVideoBootstrapLoadFailure.get()?.let { failed ->
+            retry_anchor = '        environment.cache.invalidate(bvid, desktopRetryCid)\n'
+            retry_capture = '''        val desktopRetryBootstrapSource = desktopVideoBootstrapLoadFailure.get()?.takeIf { failed ->
+            failed.displayedError === currentState &&
+                failed.source.accepted.request === desktopRetryState.currentRequest &&
+                failed.source.accepted.requestToken == desktopRetryState.currentLoadRequestToken
+        }?.let { failed ->
             failed.source.accepted.seed.forRetry(failed, bvid, desktopRetryCid,
                 fallbackResumePositionMs, resumePlaybackAfterRetry, currentAudioLang)
         }
+        environment.cache.invalidate(bvid, desktopRetryCid)
 '''
-            assert after.count(retry_anchor) == 1, 'actual retry CID capture before original media clear'
+            assert after.count(retry_anchor) == 1, 'actual retry source capture before original cache invalidate/media clear'
             after = after.replace(retry_anchor, retry_capture, 1)
             retry_load = '            desktopRecovering = desktopRecovering\n'
             retry_bound = '''            desktopRecovering = desktopRecovering,

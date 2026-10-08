@@ -204,7 +204,15 @@ def pending_playback_delta(path,text):
     assert text.count(before)==1,'same original quality body; real Job cancellation cannot become failure UI/late state'
     text=text.replace(before,after,1)
     before='        environment.cache.invalidate(bvid, currentCid)\n        playbackSessionStore.clearCurrentMedia()\n'
-    after='        val desktopRetryCid = currentCid\n        environment.cache.invalidate(bvid, desktopRetryCid)\n        playbackSessionStore.clearCurrentMedia()\n'
+    after='''        val desktopRetryState = playbackSessionState
+        val desktopRetryCid = if (currentState is VideoPlaybackUiState.Error) {
+            desktopRetryState.currentRequest
+                ?.takeIf { it.bvid == bvid }
+                ?.cid?.takeIf { it > 0L } ?: 0L
+        } else currentCid
+        environment.cache.invalidate(bvid, desktopRetryCid)
+        playbackSessionStore.clearCurrentMedia()
+'''
     assert text.count(before)==1,'retain exact original CID before original clearCurrentMedia resets it'
     text=text.replace(before,after,1)
     before='            bvid = bvid,\n            autoPlay = resumePlaybackAfterRetry,\n            cid = currentCid,\n'
