@@ -34,13 +34,18 @@ internal class DesktopVideoBootstrapSeed private constructor(
     val bootstrapCaller: Job,
     val primaryInstallation: DesktopHomeNavRequestReceipt,
     private val retryIntent: DesktopVideoBootstrapRetryIntent? = null,
+    private val partRequest: PlaybackRequest? = null,
+    private val partResumeMs: Long = 0L,
 ) {
     fun owns(): Boolean = !bootstrapCaller.isCancelled && window.owns() && assembly.owns() &&
         window.commands.containsEntry(route)
     fun accepted(request: PlaybackRequest, token: Long, fallbackResumeMs: Long): DesktopVideoBootstrapAccepted? {
         if (!owns()) return null
         val retry = retryIntent
-        if (retry != null) {
+        val part = partRequest
+        if (part != null) {
+            if (request != part || fallbackResumeMs != partResumeMs) return null
+        } else if (retry != null) {
             if (!retry.matches(request, fallbackResumeMs)) return null
         } else if (request.bvid != route.bvid || request.cid != route.cid ||
             fallbackResumeMs != route.resumePositionMs.coerceAtLeast(0L)) return null
@@ -49,6 +54,22 @@ internal class DesktopVideoBootstrapSeed private constructor(
         val original = assembly.captureLoadState()
         if (original.currentRequest !== request || original.currentLoadRequestToken != token) return null
         return DesktopVideoBootstrapAccepted(this, request, token, fallbackResumeMs)
+    }
+    /** Explicit hand-selected part from this entry's SAME raw original Success.
+     * The typed route is retained unchanged; it is not rewritten to authorize a CID.
+     * Values only describe the imminent original load. accepted() still requires
+     * its actual VM request reference/token, then the actual request/body Jobs. */
+    fun forPart(current: VideoPlaybackUiState.Success, index: Int,
+        position: Double, paused: Boolean): DesktopVideoBootstrapSeed? {
+        if (!java.awt.EventQueue.isDispatchThread() || !position.isFinite() || !owns() ||
+            window.currentKey() !== route || retryIntent != null || partRequest != null ||
+            assembly.playback.captureDesktopPlaybackState() !== current) return null
+        val page = current.info.pages.getOrNull(index) ?: return null
+        val target = PlaybackRequest.create(current.info.bvid, current.info.aid, page.cid,
+            force = true, autoPlay = !paused)
+        return DesktopVideoBootstrapSeed(window, assembly, route, bootstrapCaller,
+            primaryInstallation, partRequest = target,
+            partResumeMs = (position.coerceAtLeast(0.0) * 1000).toLong())
     }
     /** Captured from the SAME displayed failure before original retry clears its media.
      * Only fixed retry parameters survive; no old Throwable/invocation chain is retained.

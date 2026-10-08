@@ -103,6 +103,27 @@ internal class DesktopOriginalRootRouteAssembly(
             pushAdmitted(BiliPaiNavKey.Login)
         }
     }
+    /** The original checkpoint runs before any failure Store/entry admission. The borrowed
+     * intent then revalidates its exact displayed read and current physical entry while the
+     * same Root gate is held; only the existing Window ticket and physical stack are changed. */
+    internal fun loginFromReadFailure(intent: DesktopReadFailureLoginIntent): Boolean {
+        var pushed = false
+        val accepted = admitted {
+            if (intent.root === root && currentKey != BiliPaiNavKey.Login) {
+                intent.admit(this) {
+                    if (owns() && intent.root === root && currentKey != BiliPaiNavKey.Login) {
+                        val binding = loginNavigation?.beginLoginReturn(intent.sourceEpoch,
+                            intent.sourceMid, intent.destination, DesktopLoginReturnOrigin.ROUTE)
+                        if (binding != null) {
+                            pushAdmitted(BiliPaiNavKey.Login)
+                            pushed = true
+                        }
+                    }
+                }
+            }
+        }
+        return accepted && pushed
+    }
     fun loginReturnBinding(): DesktopLoginReturnBinding? = loginNavigation?.pendingLoginBinding(root.capturedEpoch)
     override fun push(key: BiliPaiNavKey): Boolean {
         if (key is BiliPaiNavKey.VideoDetail) { video(key); return owns() }

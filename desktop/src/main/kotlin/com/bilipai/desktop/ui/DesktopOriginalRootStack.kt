@@ -99,7 +99,11 @@ internal class DesktopOriginalRootPageBindings(
         routes.bindMainHostNavigation(selectPage)
         onDispose { routes.unbindMainHostNavigation(selectPage) }
     }
-    val loginReadDestination: () -> BiliPaiNavKey = remember(currentItem) { { bottomPagerNavKeyForItem(currentItem) } }
+    // Read the original selectedPage state at admission, including a tab click whose next
+    // composition has not yet rebound a currentItem snapshot. No second pager state is kept.
+    val loginReadDestination: () -> BiliPaiNavKey = remember(routes, visibleItems) {
+        { bottomPagerNavKeyForItem(resolveBottomPagerItemForPage(selectedPage, visibleItems)) }
+    }
     DisposableEffect(routes, loginReadDestination) {
         routes.bindMainHostDestination(loginReadDestination)
         onDispose { routes.unbindMainHostDestination(loginReadDestination) }

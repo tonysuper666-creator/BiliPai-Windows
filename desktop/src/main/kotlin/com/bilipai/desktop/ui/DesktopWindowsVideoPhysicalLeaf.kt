@@ -48,6 +48,7 @@ import com.android.purebilibili.feature.video.viewmodel.resolvePlaybackCompletio
 import com.bilipai.desktop.data.VideoCard
 import com.bilipai.desktop.player.PlayerPreferences
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
 
 /** Required Root actions. Each callback belongs to the same physical Window/source; no new business authority. */
@@ -102,6 +103,7 @@ internal class DesktopWindowsVideoActions(
     }
     check(nativeSurface.player === native) { "Windows video native surface belongs to another player" }
     val rootEnvironment = LocalDesktopOriginalVideoRootWindowEnvironment.current
+    val partScope = rememberCoroutineScope()
     val viewportLease = remember(nativeSurface) { Any() }
     DisposableEffect(nativeSurface, route, viewportLease) { onDispose {
         nativeSurface.releaseViewport(route, viewportLease)
@@ -240,6 +242,7 @@ internal class DesktopWindowsVideoActions(
     val playback by shell.playback.state.collectAsState()
     val manualSponsorSegment by assembly.playback.currentSponsorSegment.collectAsState()
     val original by assembly.playback.uiState.collectAsState()
+    val latestOriginal by rememberUpdatedState(original)
     val subject by assembly.playback.subjectSnapshot.collectAsState()
     val favoriteEvent by assembly.playback.favoriteFolderSaveEvent.collectAsState()
     val success = original as? VideoPlaybackUiState.Success
@@ -326,6 +329,12 @@ internal class DesktopWindowsVideoActions(
     }
     DisposableEffect(engagementBinding) { onDispose { engagementBinding?.close() } }
     var bootstrapError by remember(assembly, route) { mutableStateOf<String?>(null) }
+    val latestBootstrapError by rememberUpdatedState(bootstrapError)
+    val failureLogin = DesktopVideoFailureLoginIntent.capture(rootEnvironment, shell, assembly, route,
+        original as? VideoPlaybackUiState.Error) {
+        latestBootstrapError == null && current() && feedbackPresentationCurrent() && latestOriginal ===
+            assembly.playback.captureDesktopPlaybackState()
+    }
     val completion by remember(platforms.holder.settingsContext) {
         DesktopOriginalVideoControlSettings.getPlaybackCompletionBehavior(platforms.holder.settingsContext)
     }.collectAsState(DesktopOriginalVideoControlSettings.getPlaybackCompletionBehaviorSync(platforms.holder.settingsContext))
@@ -605,6 +614,12 @@ internal class DesktopWindowsVideoActions(
                     Text(bootstrapError ?: playback.error.orEmpty(), Modifier.weight(1f), style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.error)
                     TextButton(onClick = { if (current()) shell.playback.retry() }) { Text("重试") }
+                    failureLogin?.let { intent ->
+                        TextButton(onClick = {
+                            (rootEnvironment.commands as? DesktopOriginalRootRouteAssembly)
+                                ?.loginFromReadFailure(intent)
+                        }) { Text("登录并返回") }
+                    }
                 }
                 if (chromeVisible) DesktopWindowsVideoControlBar(
                     state = state, sourceVersion = native.currentSourceSnapshot()?.sourceVersion ?: 0L,
@@ -698,7 +713,28 @@ internal class DesktopWindowsVideoActions(
                             if (success.info.pages.size > 1) {
                                 Text("分P", style = MaterialTheme.typography.titleSmall)
                                 success.info.pages.forEachIndexed { index, part ->
-                                    TextButton(onClick = { if (current()) shell.playback.playPart(index) }, modifier = Modifier.fillMaxWidth()) {
+                                    TextButton(onClick = {
+                                        if (!current() || rootEnvironment.currentKey() !== route) return@TextButton
+                                        val selectedState = assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success
+                                            ?: return@TextButton
+                                        if (selectedState.info.bvid != success.info.bvid || selectedState.info.cid != success.info.cid ||
+                                            selectedState.info.pages.getOrNull(index)?.cid != part.cid) return@TextButton
+                                        partScope.launch {
+                                            try {
+                                                if (!current() || rootEnvironment.currentKey() !== route ||
+                                                    assembly.playback.captureDesktopPlaybackState() !== selectedState) return@launch
+                                                val source = DesktopVideoBootstrapSeed.capture(rootEnvironment, assembly, route)
+                                                if (!current() || rootEnvironment.currentKey() !== route ||
+                                                    assembly.playback.captureDesktopPlaybackState() !== selectedState) return@launch
+                                                shell.playback.playPart(index, bootstrapSource = source, expectedPartState = selectedState)
+                                            } catch (cancelled: CancellationException) { throw cancelled }
+                                            catch (failure: Exception) {
+                                                if (current() && rootEnvironment.currentKey() === route &&
+                                                    assembly.playback.captureDesktopPlaybackState() === selectedState)
+                                                    latestActions.notice(failure.message ?: "分 P 加载未能启动")
+                                            }
+                                        }
+                                    }, modifier = Modifier.fillMaxWidth()) {
                                         Text("P${index + 1} · ${part.part}")
                                     }
                                 }

@@ -229,12 +229,21 @@ internal class DesktopUnifiedPlaybackFacade(
     /** EOF is consumed by original VM's existing native listener, never a second
      * observer. This entry explicitly requests original next strategy if called. */
     fun nextAtEnd() { held()?.playback?.playNextPageOrRecommended() }
-    fun playPart(index: Int, position: Double = 0.0, paused: Boolean = false) {
+    fun playPart(index: Int, position: Double = 0.0, paused: Boolean = false,
+        bootstrapSource: DesktopVideoBootstrapSeed? = null,
+        expectedPartState: VideoPlaybackUiState.Success? = null) {
         require(position.isFinite())
-        val a = held() ?: return; val success = currentSuccess(a) ?: return
+        val a = held() ?: return
+        val success = if (bootstrapSource == null) currentSuccess(a) else expectedPartState?.takeIf {
+            bootstrapSource.assembly === a && a.playback.captureDesktopPlaybackState() === it
+        }
+        if (success == null) return
         val page = success.info.pages.getOrNull(index) ?: return
+        val partSource = if (bootstrapSource == null) null
+            else bootstrapSource.forPart(success, index, position, paused) ?: return
         a.playback.loadVideo(success.info.bvid, success.info.aid, force = true, autoPlay = !paused,
-            cid = page.cid, fallbackResumePositionMs = (position.coerceAtLeast(0.0)*1000).toLong())
+            cid = page.cid, fallbackResumePositionMs = (position.coerceAtLeast(0.0)*1000).toLong(),
+            desktopBootstrapSource = partSource)
     }
     fun onPlaybackPreferencesChanged(previous: PlayerPreferences, next: PlayerPreferences, forceSpeed: Boolean = false) {
         val a = held() ?: return
