@@ -186,10 +186,10 @@ internal class DesktopVeyraPrivateComponent(
     companion object {
         private const val VEYRA_SOURCE_COMMIT = "96a7c8de36bc195240161de6814739ad810722f1"
         private const val MPV_SOURCE_COMMIT = "69e63f425a531f814431fba12750bdb3721357f2"
-        private const val CORE_SOURCE_SHA256 = "cf0dbb78f151efd7a87fb919546a1d83d6d96ca01b8050983361f31f6037c3b2"
-        private const val CORE_HEADER_SHA256 = "9365ab89fa61fb016db044a051a1c3c76450231fbc9a8281799f90bc7ff37e84"
-        private const val FILTER_SOURCE_SHA256 = "f9a4eb124583756ed90cd55d941a3dc2bf38d94de4805f4b3afcf9217ed83bbd"
-        private const val VERIFIER_SOURCE_SHA256 = "ae541e5ef9e9521835e9a3294f192f8c32fa9f479c8be5ad4279aa27207d6cc8"
+        private const val CORE_SOURCE_SHA256 = "1dc853de084ef333a762f4fc4ca7eadba3a76fc70bad0cadc0ad5529b5b84fe8"
+        private const val CORE_HEADER_SHA256 = "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569"
+        private const val FILTER_SOURCE_SHA256 = "9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f"
+        private const val VERIFIER_SOURCE_SHA256 = "ca725540d846e2957df1d505770d729be3e6e50a354e4e8ca5450a347c22e86d"
     }
 }
 

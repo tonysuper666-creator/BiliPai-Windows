@@ -2,7 +2,7 @@
 """Only fixed mpv source mutations. No SDK/runtime, binary, GPU or UI here."""
 import hashlib,json,subprocess,sys
 from pathlib import Path
-EXPECTED_MANIFEST_SHA256 = "f9a4eb124583756ed90cd55d941a3dc2bf38d94de4805f4b3afcf9217ed83bbd"
+EXPECTED_MANIFEST_SHA256 = "9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f"
 def sha(data): return hashlib.sha256(data).hexdigest()
 def main():
     if len(sys.argv)!=2: raise SystemExit('One isolated fixed mpv source directory required')

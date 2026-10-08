@@ -107,10 +107,10 @@ try {
         variant='bilipai-veyra-core-v1'; producerVariant='bilipai-veyra-rtx-core-v1'
         filterName='bilipai-rtx'; architecture='windows-x64'
         veyraSourceCommit='96a7c8de36bc195240161de6814739ad810722f1'
-        coreSourceSha256='CF0DBB78F151EFD7A87FB919546A1D83D6D96CA01B8050983361F31F6037C3B2'
-        headerSha256='9365AB89FA61FB016DB044A051A1C3C76450231FBC9A8281799F90BC7FF37E84'
+        coreSourceSha256='1DC853DE084EF333A762F4FC4CA7EADBA3A76FC70BAD0CADC0AD5529B5B84FE8'
+        headerSha256='0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569'
         mpvSourceCommit='69e63f425a531f814431fba12750bdb3721357f2'
-        bridgeSourceSha256='E0BFF20A3C6EE75B88A51FD5AAD3DE3494C2BABB18EDC700746F0A134CC87725'
+        bridgeSourceSha256='868CFCF4AD01194DAFEC4312B0EFAC6CDAC947E6AE47F15101B2D2B1BC3BAF47'
         vfSourceSha256='D8B0A3A09C93732D63585BE8425D9582ADDF3FDF6A236770F412FDB5B38C1965'
         coreModuleRelativePath='core/bilipai_veyra_core.dll'; mpvModuleRelativePath='mpv/libmpv-2.dll'
         runtimeRoot='.'; featureDirectory='runtime/experimental'; engineVersion='BiliPai-Veyra-Core-1'
@@ -118,7 +118,7 @@ try {
     foreach ($key in $fixed.Keys) {
         if ($profile.$key -isnot [string] -or $profile.$key -cne $fixed[$key]) { Reject 'PROFILE_SOURCE_IDENTITY_MISMATCH' }
     }
-    if ((Require-Hash $profile.filterSourceManifestSha256 'INVALID_FILTER_SOURCE_MANIFEST_HASH') -cne 'F9A4EB124583756ED90CD55D941A3DC2BF38D94DE4805F4B3AFCF9217ED83BBD') { Reject 'FILTER_SOURCE_MANIFEST_MISMATCH' }
+    if ((Require-Hash $profile.filterSourceManifestSha256 'INVALID_FILTER_SOURCE_MANIFEST_HASH') -cne '9C0F19DE87DA2398F15D09DD27EBCA911BA292E5689D53BF7F62EA1742C3359F') { Reject 'FILTER_SOURCE_MANIFEST_MISMATCH' }
     if ($profile.schema -ne 1 -or $profile.coreAbi -ne 1 -or $profile.coreAbiWire -ne 65536) { Reject 'PROFILE_ABI_MISMATCH' }
     $result.checked.coreSourceSha256 = $profile.coreSourceSha256
     $result.checked.headerSha256 = $profile.headerSha256

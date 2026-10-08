@@ -86,6 +86,12 @@ set(core_sources
   "${VEYRA_FIXED_SOURCE}/src/ngx/TrueHdrBackend.cpp"
   "${VEYRA_FIXED_SOURCE}/src/base/Log.cpp"
   "${VEYRA_FIXED_SOURCE}/src/base/NgxResult.cpp")
+# Only this fixed translation unit redirects the actual SDK Shutdown1 call
+# through our checked adapter. Upstream bytes and header/type layout stay fixed;
+# the adapter itself still calls the real unrenamed SDK symbol exactly once.
+set_source_files_properties("${VEYRA_FIXED_SOURCE}/src/ngx/NgxCoreHost.cpp" PROPERTIES
+  COMPILE_DEFINITIONS "NVSDK_NGX_D3D12_Shutdown1=bv_ngx_checked_shutdown_v1"
+  SKIP_UNITY_BUILD_INCLUSION ON)
 if(BILIVEYRA_COMPILE_ONLY)
   add_library(bilipai_veyra_core OBJECT ${core_sources})
 else()

@@ -76,6 +76,8 @@ static void release_context(struct bv_mpv_bridge *p) {
     RELEASE(p->isolated_state);RELEASE(p->context4);RELEASE(p->context);RELEASE(p->queue12);RELEASE(p->device12);RELEASE(p->device);
     if(p->held_input_lease)p->release_output_lease(p->held_input_lease);
     if(p->held_output_lease)p->release_output_lease(p->held_output_lease);
+    /* PIN survives this withdrawal of our own LoadLibrary reference. No core
+     * call is allowed unless that exact module was successfully process-pinned. */
     if(p->module)FreeLibrary(p->module);free(p);
 }
 static int wait_native(struct bv_mpv_bridge *p,ID3D11Fence *f,uint64_t value,bv_status_v1 *s) {
@@ -228,6 +230,10 @@ int bv_mpv_bridge_create(const struct bv_mpv_config *c,struct bv_mpv_bridge **ou
     hr=shader_create(p);if(FAILED(hr))goto native_fail;
     p->module=LoadLibraryExW(c->dll_path,NULL,LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR|LOAD_LIBRARY_SEARCH_DEFAULT_DIRS);
     if(!p->module){hr=HRESULT_FROM_WIN32(GetLastError());goto native_fail;}
+    HMODULE pinned=NULL;
+    if(!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_PIN|GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS,
+            (LPCWSTR)p->module,&pinned)){hr=HRESULT_FROM_WIN32(GetLastError());goto native_fail;}
+    if(pinned!=p->module){hr=HRESULT_FROM_WIN32(ERROR_INVALID_HANDLE);goto native_fail;}
     p->create=(create_fn)GetProcAddress(p->module,"bv_create_v1");p->process=(process_fn)GetProcAddress(p->module,"bv_process_v1");
     p->reset=(reset_fn)GetProcAddress(p->module,"bv_reset_v1");p->destroy=(destroy_fn)GetProcAddress(p->module,"bv_destroy_v1");
     if(!p->create||!p->process||!p->reset||!p->destroy){hr=E_NOINTERFACE;goto native_fail;}

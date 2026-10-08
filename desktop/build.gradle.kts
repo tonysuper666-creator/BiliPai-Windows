@@ -1864,7 +1864,7 @@ tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(pr
 // Only the hash-pinned read-only verifier is staged; native SDK/module/runtime files remain opt-in.
 val prepareVeyraRuntimeVerifier by tasks.registering(Copy::class) {
     val verifier = file("tools/native/veyra/verify-veyra-runtime.ps1")
-    val expected = "ae541e5ef9e9521835e9a3294f192f8c32fa9f479c8be5ad4279aa27207d6cc8"
+    val expected = "ca725540d846e2957df1d505770d729be3e6e50a354e4e8ca5450a347c22e86d"
     from(verifier)
     into("resources/common/native/veyra-core")
     inputs.property("verifierSha256", expected)

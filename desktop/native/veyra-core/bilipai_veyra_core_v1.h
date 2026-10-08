@@ -81,7 +81,20 @@ typedef struct bv_result_v1 {
    Caller owns output slots and their later presentation/consumer-done leases.
    The adapter keeps COM references while its processing fence is pending.
    Destroy/reset never free pending resources on TIMEOUT; retry after completion.
-   Never unload this DLL while a handle exists. No UI/audio/auth/DASH inside. */
+   A feature/parameter release failure or reset/teardown exception is permanent:
+   retain the handle and all Session resources until process exit; do not retry
+   cleared upstream handles as success. Later process/reset/destroy reject it.
+   Caller must OS-PIN this core DLL before its first ABI call. Both original
+   NVIDIA modules are OS-pinned before NGX init under one authenticated runtime
+   directory, fixed for process life. Successful destroy additionally requires
+   the one real same-device SDK Shutdown1 result to be Success without SEH.
+   A missing/failed shutdown observation permanently retains the Session; even
+   failed Init must qualify that shutdown, not assume NotInitialized is safe.
+   Shutdown observations come from our checked call, never logs or void host
+   flags. Repeated upstream shutdown calls return the recorded same-device
+   result without a second SDK call. Successful destroy releases Session/GPU
+   leases only; core/runtime modules remain OS-pinned until process exit.
+   No UI/audio/auth/DASH inside. */
 BV_API int32_t BV_CALL bv_create_v1(const bv_config_v1*, bv_handle_v1*, bv_status_v1*);
 BV_API int32_t BV_CALL bv_process_v1(bv_handle_v1, const bv_frame_v1*, bv_result_v1*, bv_status_v1*);
 BV_API int32_t BV_CALL bv_reset_v1(bv_handle_v1, uint64_t session_id, uint64_t newer_generation, bv_status_v1*);

@@ -15,8 +15,8 @@ function Install-RtxCoreDescriptorMpvRuntime {
     $expected = [ordered]@{
         variant = 'bilipai-veyra-rtx-core-v1'
         filterName = 'bilipai-rtx'
-        filterSourceManifestSha256 = 'f9a4eb124583756ed90cd55d941a3dc2bf38d94de4805f4b3afcf9217ed83bbd'
-        coreAbiHeaderSha256 = '9365ab89fa61fb016db044a051a1c3c76450231fbc9a8281799f90bc7ff37e84'
+        filterSourceManifestSha256 = '9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f'
+        coreAbiHeaderSha256 = '0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569'
         architecture = 'windows-x64'
         sourceCommit = '69e63f425a531f814431fba12750bdb3721357f2'
         nativePatchSha256 = 'e3599ec5fe4326a6713093e9834514f7c2b001b41f30c03fc26fc763b3345d30'

@@ -2,7 +2,7 @@
   "architecture": "windows-x64",
   "closedSdkOrRuntimeIncluded": false,
   "coreAbi": "0x00010000",
-  "coreAbiHeaderSha256": "9365ab89fa61fb016db044a051a1c3c76450231fbc9a8281799f90bc7ff37e84",
+  "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
   "filterName": "bilipai-rtx",
   "frameEffects": [
     "SR",
@@ -29,9 +29,9 @@
       "targetPath": "video/filter/vf_bilipai_rtx.c"
     },
     {
-      "bytes": 27596,
+      "bytes": 28067,
       "fileName": "bilipai_rtx_mpv_bridge.c",
-      "sha256": "e0bff20a3c6ee75b88a51fd5aad3de3494c2babb18edc700746f0a134cc87725",
+      "sha256": "868cfcf4ad01194dafec4312b0efac6cdac947e6ae47f15101b2d2b1bc3baf47",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c",
       "targetPath": "video/filter/bilipai_rtx_mpv_bridge.c"
     },
@@ -43,9 +43,9 @@
       "targetPath": "video/filter/bilipai_rtx_mpv_bridge.h"
     },
     {
-      "bytes": 4344,
+      "bytes": 5311,
       "fileName": "bilipai_veyra_core_v1.h",
-      "sha256": "9365ab89fa61fb016db044a051a1c3c76450231fbc9a8281799f90bc7ff37e84",
+      "sha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
       "sourcePath": "desktop/native/veyra-core/bilipai_veyra_core_v1.h",
       "targetPath": "video/filter/bilipai_veyra_core_v1.h"
     }
