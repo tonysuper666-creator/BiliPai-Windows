@@ -379,7 +379,12 @@ internal class DesktopOriginalVideoRootAssembler(
             override fun applyPreferredVolume(player: DesktopOriginalMpvSectionControl) = holder.applyPreferredVolume(player)
             @Composable override fun standalonePlayerState(viewModel: DesktopOriginalAudioVideoOwner, bvid: String, cid: Long,
                 fallbackResumePositionMs: Long): DesktopOriginalMpvVideoPlayerState =
-                holder.BindPlayerState(bvid, cid, fallbackResumePositionMs, false, true, true)
+                key(viewModel) {
+                    holder.BindPlayerState(bvid, cid, fallbackResumePositionMs, false, true, true,
+                        desktopLoadVideo = { autoPlay ->
+                            viewModel.loadInitialAudioVideo(bvid, cid, autoPlay, fallbackResumePositionMs)
+                        })
+                }
         } }
         val textShare = checkNotNull(LocalDesktopTextShareBindings.current) {
             "Original PGC player requires the actual Root text share binding"

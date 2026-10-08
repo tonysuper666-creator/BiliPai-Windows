@@ -105,10 +105,11 @@ import kotlinx.coroutines.CancellationException
         val seed = key is BiliPaiNavKey.NativeMusic ||
             (key is BiliPaiNavKey.AudioMode && audioBvid.isNotBlank() && !sameSubject)
         if (seed) {
+            val bootstrapSource = DesktopVideoBootstrapSeed.captureAudio(windowEnvironment, current, key)
             current.playback.attachPlayer(current.section)
             current.playback.loadVideo(bvid = audioBvid, cid = audioCid, autoPlay = true,
                 fallbackResumePositionMs = audioResume,
-                force = loading)
+                force = loading, desktopBootstrapSource = bootstrapSource)
         }
         audioSubjectRequested = true
     }
@@ -129,7 +130,8 @@ import kotlinx.coroutines.CancellationException
                 manualAudioCurrent = { latestActive && windowEnvironment.owns() &&
                     windowEnvironment.currentKey() === key && current.owns() },
                 manualAudioRetained = { windowEnvironment.owns() &&
-                    windowEnvironment.commands.containsEntry(key) && current.owns() })
+                    windowEnvironment.commands.containsEntry(key) && current.owns() },
+                audioBootstrapWindow = windowEnvironment, audioBootstrapEntry = key)
         },
             engagementViewModel = current.domains.engagement,
             composerViewModel = platforms.audio.composer,
@@ -158,6 +160,19 @@ import kotlinx.coroutines.CancellationException
                 it.inPictureInPicture()
             },
             initialBvid = audioBvid, initialCid = audioCid,
-            initialResumePositionMs = audioResume, titleOverride = musicTitle)
+            initialResumePositionMs = audioResume, titleOverride = musicTitle,
+            desktopInitialFailureContent = { displayedError ->
+                val latestDisplayedError by rememberUpdatedState(displayedError)
+                val failureLogin = DesktopVideoFailureLoginIntent.captureAudio(windowEnvironment,
+                    shell, current, key, displayedError) {
+                    latestActive && windowEnvironment.owns() && windowEnvironment.currentKey() === key &&
+                        current.owns() && current.playback.captureDesktopPlaybackState() === latestDisplayedError
+                }
+                if (failureLogin != null) {
+                    com.android.purebilibili.core.ui.components.AppTextButton(onClick = {
+                        (commands as? DesktopOriginalRootRouteAssembly)?.loginFromReadFailure(failureLogin)
+                    }) { com.android.purebilibili.core.ui.components.AppText("登录后重试") }
+                }
+            })
     }
 }

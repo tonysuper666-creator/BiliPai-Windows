@@ -30,7 +30,7 @@ private data class DesktopVideoBootstrapRetryIntent(
 internal class DesktopVideoBootstrapSeed private constructor(
     val window: DesktopOriginalVideoRootWindowEnvironment,
     val assembly: DesktopOriginalVideoOwnerAssembly,
-    val route: BiliPaiNavKey.VideoDetail,
+    val route: BiliPaiNavKey,
     val bootstrapCaller: Job,
     val primaryInstallation: DesktopHomeNavRequestReceipt,
     private val retryIntent: DesktopVideoBootstrapRetryIntent? = null,
@@ -39,7 +39,10 @@ internal class DesktopVideoBootstrapSeed private constructor(
     private val manualCallerStillOwned: (() -> Boolean)? = null,
 ) {
     /** Retained accepted-native origin only. Loading/error callers still use owns(). */
-    internal fun ownsEntry(): Boolean = window.owns() && assembly.owns() && window.commands.containsEntry(route)
+    internal fun ownsEntry(): Boolean = window.owns() && assembly.owns() && window.commands.containsEntry(route) &&
+        // Audio keys have no openId: only this SAME retained typed entry may carry an accepted subject.
+        (route is BiliPaiNavKey.VideoDetail ||
+            (window.commands as? DesktopOriginalRootRouteAssembly)?.stack?.any { it === route } == true)
     fun owns(): Boolean = !bootstrapCaller.isCancelled && ownsEntry() &&
         (manualCallerStillOwned?.invoke() != false)
     fun accepted(request: PlaybackRequest, token: Long, fallbackResumeMs: Long): DesktopVideoBootstrapAccepted? {
@@ -50,13 +53,21 @@ internal class DesktopVideoBootstrapSeed private constructor(
             if (request != part || fallbackResumeMs != partResumeMs) return null
         } else if (retry != null) {
             if (!retry.matches(request, fallbackResumeMs)) return null
-        } else if (request.bvid != route.bvid || request.cid != route.cid ||
-            fallbackResumeMs != route.resumePositionMs.coerceAtLeast(0L)) return null
+        } else if (!matchesInitialRequest(request, fallbackResumeMs)) return null
         // The actual leaf assembly's sole original VM has already accepted this SAME request.
         // If another Facade lease owns the load, it keeps the original read with Unknown origin.
         val original = assembly.captureLoadState()
         if (original.currentRequest !== request || original.currentLoadRequestToken != token) return null
         return DesktopVideoBootstrapAccepted(this, request, token, fallbackResumeMs)
+    }
+    private fun matchesInitialRequest(request: PlaybackRequest, fallbackResumeMs: Long): Boolean = when (val entry = route) {
+        is BiliPaiNavKey.VideoDetail -> request.bvid == entry.bvid && request.cid == entry.cid &&
+            fallbackResumeMs == entry.resumePositionMs.coerceAtLeast(0L)
+        is BiliPaiNavKey.AudioMode -> request.bvid == entry.sourceBvid && request.cid == entry.sourceCid &&
+            fallbackResumeMs == entry.sourceResumePositionMs
+        is BiliPaiNavKey.NativeMusic -> request.bvid == entry.bvid && request.cid == entry.cid &&
+            fallbackResumeMs == 0L // The original NativeMusic key has no resume-position field.
+        else -> false
     }
     /** Explicit hand-selected part from this entry's SAME raw original Success.
      * The typed route is retained unchanged; it is not rewritten to authorize a CID.
@@ -64,7 +75,7 @@ internal class DesktopVideoBootstrapSeed private constructor(
      * its actual VM request reference/token, then the actual request/body Jobs. */
     fun forPart(current: VideoPlaybackUiState.Success, index: Int,
         position: Double, paused: Boolean): DesktopVideoBootstrapSeed? {
-        if (!java.awt.EventQueue.isDispatchThread() || !position.isFinite() || !owns() ||
+        if (route !is BiliPaiNavKey.VideoDetail || !java.awt.EventQueue.isDispatchThread() || !position.isFinite() || !owns() ||
             window.currentKey() !== route || retryIntent != null || partRequest != null ||
             assembly.playback.captureDesktopPlaybackState() !== current) return null
         val page = current.info.pages.getOrNull(index) ?: return null
@@ -116,7 +127,15 @@ internal class DesktopVideoBootstrapSeed private constructor(
     }
     companion object {
         suspend fun capture(window: DesktopOriginalVideoRootWindowEnvironment,
-            assembly: DesktopOriginalVideoOwnerAssembly, route: BiliPaiNavKey.VideoDetail): DesktopVideoBootstrapSeed {
+            assembly: DesktopOriginalVideoOwnerAssembly, route: BiliPaiNavKey.VideoDetail): DesktopVideoBootstrapSeed =
+            captureTyped(window, assembly, route)
+        suspend fun captureAudio(window: DesktopOriginalVideoRootWindowEnvironment,
+            assembly: DesktopOriginalVideoOwnerAssembly, route: BiliPaiNavKey): DesktopVideoBootstrapSeed {
+            require(route is BiliPaiNavKey.AudioMode || route is BiliPaiNavKey.NativeMusic)
+            return captureTyped(window, assembly, route)
+        }
+        private suspend fun captureTyped(window: DesktopOriginalVideoRootWindowEnvironment,
+            assembly: DesktopOriginalVideoOwnerAssembly, route: BiliPaiNavKey): DesktopVideoBootstrapSeed {
             check(java.awt.EventQueue.isDispatchThread())
             val context = currentCoroutineContext(); context.ensureActive()
             val caller = requireNotNull(context[Job])

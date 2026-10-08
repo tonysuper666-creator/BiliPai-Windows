@@ -23,6 +23,12 @@ internal interface DesktopOriginalAudioVideoOwner {
     val sleepTimerMinutes: StateFlow<Int?>
     val currentPlayer: DesktopOriginalMpvSectionControl?
     fun loadVideo(bvid: String, cid: Long = 0L, autoPlay: Boolean? = null, fallbackResumePositionMs: Long = 0L)
+    /** Only an actual initial AudioMode effect uses this suspending source-aware overload.
+     * Compatibility owners retain their existing load operation. No scope/Job is created. */
+    suspend fun loadInitialAudioVideo(bvid: String, cid: Long = 0L, autoPlay: Boolean? = null,
+        fallbackResumePositionMs: Long = 0L) {
+        loadVideo(bvid, cid, autoPlay, fallbackResumePositionMs)
+    }
     fun retry()
     fun setAudioMode(value: Boolean)
     fun playPreviousAudioModeTrack()

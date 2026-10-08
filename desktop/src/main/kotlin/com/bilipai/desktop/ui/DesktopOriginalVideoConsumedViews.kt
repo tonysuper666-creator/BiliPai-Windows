@@ -16,6 +16,8 @@ internal class DesktopOriginalVideoConsumedViews(
     private val assembly: DesktopOriginalVideoOwnerAssembly,
     private val manualAudioCurrent: (() -> Boolean)? = null,
     private val manualAudioRetained: (() -> Boolean)? = null,
+    private val audioBootstrapWindow: DesktopOriginalVideoRootWindowEnvironment? = null,
+    private val audioBootstrapEntry: com.android.purebilibili.navigation3.BiliPaiNavKey? = null,
 ) : DesktopOriginalPortraitPlaybackOwner, DesktopOriginalAudioVideoOwner {
     private val original = assembly.playback
     private fun assertOwned() {
@@ -69,6 +71,22 @@ internal class DesktopOriginalVideoConsumedViews(
 
     override fun loadVideo(bvid: String, cid: Long, autoPlay: Boolean?, fallbackResumePositionMs: Long) =
         command { original.loadVideo(bvid, cid = cid, autoPlay = autoPlay, fallbackResumePositionMs = fallbackResumePositionMs) }
+    override suspend fun loadInitialAudioVideo(bvid: String, cid: Long, autoPlay: Boolean?, fallbackResumePositionMs: Long) {
+        assertOwned()
+        val window = audioBootstrapWindow
+        val entry = audioBootstrapEntry
+        if (window == null && entry == null) {
+            original.loadVideo(bvid, cid = cid, autoPlay = autoPlay, fallbackResumePositionMs = fallbackResumePositionMs)
+            return
+        }
+        if (window == null || entry == null || manualAudioCurrent?.invoke() != true ||
+            manualAudioRetained?.invoke() != true) throw CancellationException("Original initial audio caller retired")
+        val source = DesktopVideoBootstrapSeed.captureAudio(window, assembly, entry)
+        if (manualAudioCurrent?.invoke() != true || manualAudioRetained?.invoke() != true)
+            throw CancellationException("Original initial audio caller retired")
+        original.loadVideo(bvid, cid = cid, autoPlay = autoPlay, fallbackResumePositionMs = fallbackResumePositionMs,
+            desktopBootstrapSource = source)
+    }
     override fun retry() = command { original.retry() }
     override fun setAudioMode(value: Boolean) = command { original.setAudioMode(value) }
     override fun playPreviousAudioModeTrack() = command { original.playPreviousAudioModeTrack() }

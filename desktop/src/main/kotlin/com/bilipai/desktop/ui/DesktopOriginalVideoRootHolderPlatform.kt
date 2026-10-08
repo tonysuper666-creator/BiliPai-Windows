@@ -76,7 +76,8 @@ internal class DesktopOriginalVideoRootHolderPlatform(
 
     @Composable override fun BindPlayerState(bvid: String, cid: Long, fallbackResumePositionMs: Long,
         startPaused: Boolean, entryTransitionFinished: Boolean,
-        playbackSessionActive: Boolean): DesktopOriginalMpvVideoPlayerState {
+        playbackSessionActive: Boolean,
+        desktopLoadVideo: (suspend (Boolean) -> Unit)?): DesktopOriginalMpvVideoPlayerState {
         check(EventQueue.isDispatchThread())
         val reuseFromMiniPlayerAtEntry = remember(bvid, cid) {
             shouldReuseMiniPlayerAtEntry(mini?.isActive == true, mini?.currentBvid,
@@ -104,9 +105,11 @@ internal class DesktopOriginalVideoRootHolderPlatform(
             awaitNative(); currentCoroutineContext().ensureActive(); requireCurrent()
             assembly.playback.attachPlayer(assembly.section)
             if (!entryTransitionFinished) return@LaunchedEffect
-            assembly.playback.loadVideo(bvid = bvid, cid = cid,
-                fallbackResumePositionMs = fallbackResumePositionMs,
-                autoPlay = !startPaused && DesktopOriginalPlayerSectionSettings.getClickToPlaySync(settingsContext))
+            val autoPlay = !startPaused && DesktopOriginalPlayerSectionSettings.getClickToPlaySync(settingsContext)
+            if (desktopLoadVideo == null) {
+                assembly.playback.loadVideo(bvid = bvid, cid = cid,
+                    fallbackResumePositionMs = fallbackResumePositionMs, autoPlay = autoPlay)
+            } else desktopLoadVideo(autoPlay)
         }
         // Compose disposal only flushes the original retained VM. Root owns
         // cancellation/join, publication retirement and eventual Window cleanup.

@@ -109,7 +109,8 @@ internal interface DesktopOriginalVideoHolderPlatform {
      */
     @Composable fun BindPlayerState(bvid: String, cid: Long, fallbackResumePositionMs: Long,
         startPaused: Boolean, entryTransitionFinished: Boolean,
-        playbackSessionActive: Boolean): DesktopOriginalMpvVideoPlayerState
+        playbackSessionActive: Boolean,
+        desktopLoadVideo: (suspend (Boolean) -> Unit)? = null): DesktopOriginalMpvVideoPlayerState
 }
 
 internal val LocalDesktopOriginalVideoHolderPlatform = staticCompositionLocalOf<DesktopOriginalVideoHolderPlatform> {

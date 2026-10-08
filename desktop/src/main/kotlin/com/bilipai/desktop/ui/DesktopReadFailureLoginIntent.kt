@@ -21,10 +21,10 @@ internal class DesktopVideoFailureLoginIntent private constructor(
     private val window: DesktopOriginalVideoRootWindowEnvironment,
     private val shell: DesktopOriginalVideoShellOwner,
     private val assembly: DesktopOriginalVideoOwnerAssembly,
-    private val entry: BiliPaiNavKey.VideoDetail,
+    private val entry: BiliPaiNavKey,
     private val failure: DesktopVideoBootstrapLoadFailure,
     private val stillPresented: () -> Boolean,
-    override val destination: BiliPaiNavKey.VideoDetail,
+    override val destination: BiliPaiNavKey,
 ) : DesktopReadFailureLoginIntent {
     override val root: DesktopHomeRetainedRoot get() = window.root
     override val sourceEpoch: Long get() = failure.source.accepted.seed.primaryInstallation.epoch
@@ -70,6 +70,18 @@ internal class DesktopVideoFailureLoginIntent private constructor(
         fun capture(window: DesktopOriginalVideoRootWindowEnvironment,
             shell: DesktopOriginalVideoShellOwner, assembly: DesktopOriginalVideoOwnerAssembly,
             entry: BiliPaiNavKey.VideoDetail, displayedError: VideoPlaybackUiState.Error?,
+            stillPresented: () -> Boolean): DesktopVideoFailureLoginIntent? =
+            captureTyped(window, shell, assembly, entry, displayedError, stillPresented)
+        fun captureAudio(window: DesktopOriginalVideoRootWindowEnvironment,
+            shell: DesktopOriginalVideoShellOwner, assembly: DesktopOriginalVideoOwnerAssembly,
+            entry: BiliPaiNavKey, displayedError: VideoPlaybackUiState.Error?,
+            stillPresented: () -> Boolean): DesktopVideoFailureLoginIntent? {
+            if (entry !is BiliPaiNavKey.AudioMode && entry !is BiliPaiNavKey.NativeMusic) return null
+            return captureTyped(window, shell, assembly, entry, displayedError, stillPresented)
+        }
+        private fun captureTyped(window: DesktopOriginalVideoRootWindowEnvironment,
+            shell: DesktopOriginalVideoShellOwner, assembly: DesktopOriginalVideoOwnerAssembly,
+            entry: BiliPaiNavKey, displayedError: VideoPlaybackUiState.Error?,
             stillPresented: () -> Boolean): DesktopVideoFailureLoginIntent? {
             check(EventQueue.isDispatchThread())
             val routes = window.commands as? DesktopOriginalRootRouteAssembly ?: return null
@@ -79,8 +91,18 @@ internal class DesktopVideoFailureLoginIntent private constructor(
             val accepted = failure.source.accepted
             // Only parameters on this genuine accepted read are copied. The original entry
             // reference remains the source; the new Login-return key never proves ownership.
-            val destination = entry.copy(bvid = accepted.request.bvid, cid = accepted.request.cid,
-                resumePositionMs = accepted.fallbackResumeMs)
+            val destination = when (entry) {
+                is BiliPaiNavKey.VideoDetail -> entry.copy(bvid = accepted.request.bvid, cid = accepted.request.cid,
+                    resumePositionMs = accepted.fallbackResumeMs)
+                is BiliPaiNavKey.AudioMode -> entry.copy(sourceBvid = accepted.request.bvid,
+                    sourceCid = accepted.request.cid, sourceResumePositionMs = accepted.fallbackResumeMs)
+                is BiliPaiNavKey.NativeMusic -> {
+                    // The original key has no resume field: never discard a real nonzero read target.
+                    if (accepted.fallbackResumeMs != 0L) return null
+                    entry.copy(bvid = accepted.request.bvid, cid = accepted.request.cid)
+                }
+                else -> return null
+            }
             val intent = DesktopVideoFailureLoginIntent(window, shell, assembly, entry, failure,
                 stillPresented, destination)
             return intent.takeIf { it.admit(routes) {} }
