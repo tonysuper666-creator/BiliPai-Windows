@@ -167,21 +167,33 @@ internal class DesktopReadyHomeFactoryBinding(
         fun published() = gate.owns() && rootPublished(gate) && routes.owns()
         return DesktopOriginalSearchRoot(routes, ::published, repository.account) { owned, commit ->
             check(published()) { "Search may not start before actual Root publication" }
-            DesktopOriginalSearchEnvironment(gate.scope, { published() && owned() }, commit,
+            fun mounted(current: () -> Boolean) = current() && root.entry.requests.isMountedSourceCurrent()
+            fun commitMounted(action: () -> Unit): Boolean {
+                var applied = false
+                val admitted = root.entry.requests.withMountedPublication { applied = commit(action) }
+                return admitted && applied
+            }
+            DesktopOriginalSearchEnvironment(gate.scope, { published() && owned() }, ::commitMounted,
                 context, root.environment.settings, community.searchPreferences, gate.mid,
                 DesktopOriginalSearchBlocked(community.blockedUpRepository.store.records),
-                { current -> DesktopPersonalArticleResolver(repository.ownedHomeCallFactory(gate.epoch,current),current) },
+                { current ->
+                    val sourceCurrent = { mounted(current) }
+                    DesktopPersonalArticleResolver(repository.ownedHomeCallFactory(gate.epoch,sourceCurrent),sourceCurrent)
+                },
                 backToTop,
-                { current -> DesktopOriginalSearchRepository(repository.ownedHomeService(SearchApi::class.java,
-                    "https://api.bilibili.com/", gate.epoch, current),
-                    repository.ownedHomeService(BilibiliApi::class.java,"https://api.bilibili.com/",gate.epoch,current),
-                    root.entry.requests.environment.wbiKeys,current,
-                    { repository.ownedHomeAccessTokenIdentity(gate.epoch,current) }) },
+                { current ->
+                    val sourceCurrent = { mounted(current) }
+                    DesktopOriginalSearchRepository(repository.ownedHomeService(SearchApi::class.java,
+                        "https://api.bilibili.com/", gate.epoch, sourceCurrent),
+                        repository.ownedHomeService(BilibiliApi::class.java,"https://api.bilibili.com/",gate.epoch,sourceCurrent),
+                        root.entry.requests.environment.wbiKeys,sourceCurrent,
+                        { repository.ownedHomeAccessTokenIdentity(gate.epoch,sourceCurrent) })
+                },
                 profileConfiguration,platformContext,desktopDetailRenderEffectsSupported(),
                 root.entry.requests.ports.actions::toggleWatchLater,
                 root.environment.analytics::logScreenView,
                 { query -> (root.environment.analytics as DesktopHomeRootAnalytics).logSearch(query) },
-                { text -> commit { feedback(text) } })
+                { text -> commitMounted { feedback(text) } })
         }
     }
 

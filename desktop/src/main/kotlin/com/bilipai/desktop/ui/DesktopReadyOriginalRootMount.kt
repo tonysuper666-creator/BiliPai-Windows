@@ -373,14 +373,26 @@ internal class DesktopReadyOriginalRootHandle(
                 dynamicUnreadCount = 0
                 return@LaunchedEffect
             }
+            val pollCaller = currentCoroutineContext()
+            fun pollOwns() = pollCaller.isActive && routes.owns() && root.isCurrentOwner() &&
+                root.entry.requests.isMountedSourceCurrent()
             val api = services.repository.ownedHomeService(com.android.purebilibili.core.network.DynamicApi::class.java, "https://api.bilibili.com/",
-                root.capturedEpoch, root::isCurrentOwner)
+                root.capturedEpoch, ::pollOwns)
             while (isActive && routes.owns()) {
                 try {
                     val response = api.getDynamicUpdateCount(type="all",updateBaseline=services.dynamicUnreadBaseline())
                     ensureActive()
-                    if (response.code == 0 && response.data != null)
-                        root.entry.gate.commit { dynamicUnreadCount = requireNotNull(response.data).update_num.coerceAtLeast(0) }
+                    if (response.code == 0 && response.data != null) {
+                        var applied = false
+                        val admitted = root.entry.requests.withMountedPublication {
+                            pollCaller.ensureActive()
+                            if (routes.owns()) {
+                                dynamicUnreadCount = requireNotNull(response.data).update_num.coerceAtLeast(0)
+                                applied = true
+                            }
+                        }
+                        if (!admitted || !applied) throw CancellationException("Dynamic unread polling source retired")
+                    }
                 } catch (cancelled: CancellationException) { throw cancelled }
                 catch (_: Exception) { /* Original onSuccess-only polling preserves the prior count. */ }
                 delay(60_000L)
