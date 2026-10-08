@@ -47,6 +47,22 @@ def bangumi_default_quality_delta(path, body):
  PGC_DEFAULT_QUALITY_PROOFS.append({"path":path,"beforeSha256LF":sha(before),"afterSha256LF":sha(body),"completeInverse":True,"edits":PGC_DEFAULT_QUALITY_EDITS})
  return body
 
+PGC_INITIAL_DETAIL_LOGIN_EDITS = [('        val canRetry: Boolean = true\n    ) : BangumiPlayerState()', '        val canRetry: Boolean = true,\n        internal val desktopInitialDetailFailure: com.bilipai.desktop.ui.DesktopBangumiInitialDetailFailure? = null\n    ) : BangumiPlayerState()'), ('                _uiState.value = BangumiPlayerState.Error(\n                    message = e.message ?: "加载失败",\n                    canRetry = true\n                )', '                // Only the decoded final PRIMARY detail response supplies this metadata.\n                // Native/playurl/quality errors and legacy ports keep their original Error.\n                val desktopResponseFailure = e as? com.bilipai.desktop.ui.DesktopBangumiInitialDetailFailure\n                val desktopDetailFailure = desktopResponseFailure?.forDisplayedRead {\n                    playbackLoadJob === desktopResponseFailure.source.launchCaller\n                }\n                val desktopError = BangumiPlayerState.Error(\n                    message = e.message ?: "加载失败",\n                    isLoginRequired = desktopDetailFailure?.code == -101,\n                    canRetry = true,\n                    desktopInitialDetailFailure = desktopDetailFailure\n                )\n                if (desktopDetailFailure == null) _uiState.value = desktopError\n                else desktopDetailFailure.admit { _uiState.value = desktopError }')]
+def bangumi_initial_detail_login_delta(path, body):
+ if path != 'com/android/purebilibili/feature/bangumi/DesktopOriginalBangumiPlayerViewModel.kt': return body
+ original=body;trace=[]
+ for before,after in PGC_INITIAL_DETAIL_LOGIN_EDITS:
+  assert body.count(before)==1, 'original initial detail Error/schema only'
+  at=body.index(before)
+  body=body[:at]+after+body[at+len(before):]
+  trace.append((at,before,after))
+ inverse=body
+ for at,before,after in reversed(trace):
+  assert inverse[at:at+len(after)]==after, 'exact sequential initial detail inverse'
+  inverse=inverse[:at]+before+inverse[at+len(after):]
+ assert inverse==original, 'complete original initial detail inverse'
+ return body
+
 for recipe in RECIPES:
  raw=(_desktop_canonical_source(repo, recipe['originalPath'])).read_text(encoding='utf8').replace('\r\n','\n');assert sha(raw)==recipe['originalSha256LF']
  body=raw
@@ -57,6 +73,7 @@ for recipe in RECIPES:
  assert sha(body)==recipe['adaptedSha256LF']
  body=bangumi_native_metadata_delta(recipe['output'],body)
  body=bangumi_default_quality_delta(recipe['output'],body)
+ body=bangumi_initial_detail_login_delta(recipe['output'],body)
  target=out/recipe['output'];target.parent.mkdir(parents=True,exist_ok=True)
  target.write_text('// GENERATED full original body; upstream '+PROTOCOL['upstreamCommit']+'; LF '+recipe['originalSha256LF']+'\n'+body,encoding='utf8',newline='\n')
 spec=importlib.util.spec_from_file_location('parser',repo/'desktop/tools/sync-upstream.py');parser=importlib.util.module_from_spec(spec);spec.loader.exec_module(parser)

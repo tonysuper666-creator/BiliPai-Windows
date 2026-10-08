@@ -17,6 +17,7 @@ internal class DesktopOriginalBangumiPlayerRequestsView(
     private val pages: DesktopOriginalBangumiPagesRequests,
     private val capturedPlaybackBinding: () -> DesktopOriginalVideoRepositoryBinding,
     private val assertPresenterCurrent: () -> Unit,
+    private val captureInitialDetailSource: suspend (Long, Long, Boolean) -> DesktopBangumiInitialDetailSource? = { _, _, _ -> null },
 ) : DesktopOriginalBangumiPlayerRequests {
     private suspend fun <T> owned(block: suspend () -> T): T {
         currentCoroutineContext().ensureActive(); assertPresenterCurrent()
@@ -24,8 +25,20 @@ internal class DesktopOriginalBangumiPlayerRequestsView(
         currentCoroutineContext().ensureActive(); assertPresenterCurrent()
         return value
     }
-    override suspend fun getSeasonDetail(seasonId: Long, epId: Long) = owned { pages.getSeasonDetail(seasonId, epId) }
-    override suspend fun getPugvSeasonDetail(seasonId: Long, epId: Long) = owned { pages.getPugvSeasonDetail(seasonId, epId) }
+    override suspend fun getSeasonDetail(seasonId: Long, epId: Long) = owned {
+        val source = captureInitialDetailSource(seasonId, epId, false)
+        val responseFailure: ((Int, String) -> Throwable)? = source?.let { captured ->
+            { code, message -> captured.failure(code, message) }
+        }
+        pages.getSeasonDetail(seasonId, epId, responseFailure)
+    }
+    override suspend fun getPugvSeasonDetail(seasonId: Long, epId: Long) = owned {
+        val source = captureInitialDetailSource(seasonId, epId, true)
+        val responseFailure: ((Int, String) -> Throwable)? = source?.let { captured ->
+            { code, message -> captured.failure(code, message) }
+        }
+        pages.getPugvSeasonDetail(seasonId, epId, responseFailure)
+    }
     override suspend fun getBangumiPlayUrl(epId: Long, qn: Int, cid: Long, bvid: String?, seasonId: Long?, aid: Long, isCourse: Boolean) = owned {
         val binding = capturedPlaybackBinding().also { it.assertCurrent() }
         binding.bangumiPlayRequests().getBangumiPlayUrl(epId, qn, cid, bvid, seasonId, aid, isCourse)

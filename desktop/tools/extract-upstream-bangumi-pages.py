@@ -120,6 +120,21 @@ e.replace('NetworkModule.bangumiApi.','api.')
 e.replace('TokenManager.csrfCache','csrf()')
 e.write(rel,'DesktopOriginalBangumiReviewRequests.kt')
 
+def bangumi_initial_detail_failure_delta(name, e):
+ if name not in ('getSeasonDetail', 'getPugvSeasonDetail'): return
+ signature = 'suspend fun ' + name + '(seasonId: Long = 0, epId: Long = 0): Result<BangumiDetail>'
+ replacement = ('suspend fun ' + name + '(seasonId: Long = 0, epId: Long = 0, '
+     'desktopResponseFailure: ((Int, String) -> Throwable)? = null): Result<BangumiDetail>')
+ e.replace(signature, replacement, 1)
+ if name == 'getSeasonDetail':
+  e.replace('getPugvSeasonDetail(seasonId = seasonId, epId = epId)',
+      'getPugvSeasonDetail(seasonId = seasonId, epId = epId, desktopResponseFailure = desktopResponseFailure)', 2)
+  e.replace('Result.failure(Exception("获取番剧详情失败: ${response.message}"))',
+      'Result.failure(desktopResponseFailure?.invoke(response.code, "获取番剧详情失败: ${response.message}") ?: Exception("获取番剧详情失败: ${response.message}"))', 1)
+ else:
+  e.replace('Result.failure(Exception(response.message.ifBlank { "获取课程详情失败" }))',
+      'Result.failure(desktopResponseFailure?.invoke(response.code, response.message.ifBlank { "获取课程详情失败" }) ?: Exception(response.message.ifBlank { "获取课程详情失败" }))', 1)
+
 # Complete original non-Player season/catalog methods. Borrow the existing Hub
 # object for already-produced methods; no independent HTTP/client/cache/store owner.
 rel,s=original('data/repository/BangumiRepository.kt')
@@ -132,6 +147,7 @@ for name in methods:
  e.optional('withContext(Dispatchers.IO)','ownedBangumiRequest(Dispatchers.IO, actionOwned)' if name=='followBangumi' else 'ownedBangumiRequest(Dispatchers.IO, owned)')
  e.optional('return@withContext','return@ownedBangumiRequest')
  e.optional('${csrf.take(10)}','[Root credential bound]')
+ bangumi_initial_detail_failure_delta(name, e)
  pieces.append(e.s)
  reverse=e.s
  for d in reversed(e.changes):reverse=reverse.replace(d['after'],d['before'])

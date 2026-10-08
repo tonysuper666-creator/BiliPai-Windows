@@ -23,8 +23,13 @@ internal class DesktopOriginalBangumiNativePresenter(
     private val currentCaller = ThreadLocal<Job?>()
     private val callerKey = object : CoroutineContext.Key<CallerElement> {}
     private inner class CallerElement : ThreadContextElement<Job?> {
+        private val launchedCaller = java.util.concurrent.atomic.AtomicReference<Job?>()
+        fun actualLaunchCaller(): Job = checkNotNull(launchedCaller.get())
         override val key: CoroutineContext.Key<*> get() = callerKey
         override fun updateThreadContext(context: CoroutineContext): Job? = currentCaller.get().also {
+            // First continuation of THIS scope.launch has its actual returned Job.
+            // Nested withInvocation/withContext keeps the same element, never replaces it.
+            launchedCaller.compareAndSet(null, checkNotNull(context[Job]))
             currentCaller.set(checkNotNull(context[Job]))
         }
         override fun restoreThreadContext(context: CoroutineContext, oldState: Job?) {
@@ -68,6 +73,12 @@ internal class DesktopOriginalBangumiNativePresenter(
     fun launch(block: suspend CoroutineScope.() -> Unit): Job {
         assertCurrent()
         return scope.launch(CallerElement()) { assembly.invocations.withInvocation { assertCurrent(); block() } }
+    }
+    /** Read-only identity of the original PGC launch. Not the nested body Job
+     * and never a later playbackLoadJob getter or a newly created lifetime. */
+    internal suspend fun captureInitialDetailLaunchCaller(): Job {
+        val context = currentCoroutineContext(); context.ensureActive(); assertCurrent()
+        return checkNotNull(context[callerKey]).actualLaunchCaller().also { it.ensureActive() }
     }
     override suspend fun beginEpisode(detail: BangumiDetail, episode: BangumiEpisode) {
         currentCoroutineContext().ensureActive(); assertCurrent()

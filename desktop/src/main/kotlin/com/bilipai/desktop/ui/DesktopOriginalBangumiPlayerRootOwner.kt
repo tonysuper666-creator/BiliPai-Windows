@@ -114,7 +114,20 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
             val pages = DesktopOriginalBangumiPagesRequests(api, aggregate.bangumiEnvironment.repository,
                 { root.repository.ownedHomeCookie("bili_jct", gate.capturedEpoch, ::owns) },
                 { root.repository.ownedHomeCookie("SESSDATA", gate.capturedEpoch, ::owns) }, ::owns, ::owns)
-            val requests = DesktopOriginalBangumiPlayerRequestsView(pages, native::capturedPlaybackBinding, native::assertCurrent)
+            val requests = DesktopOriginalBangumiPlayerRequestsView(pages, native::capturedPlaybackBinding, native::assertCurrent) { seasonId, epId, isCourse ->
+                // Detail precedes beginEpisode: never borrow a previous ordinary CID/token.
+                // The original resolver and genuine typed initial entry define this read.
+                val initial = resolveBangumiDetailRequest(key.seasonId, key.epId)
+                if (seasonId != initial.seasonId || epId != initial.epId || isCourse != key.isCourse ||
+                    (root.commands as? DesktopOriginalRootRouteAssembly)?.stack?.any { it === key } != true) null
+                else {
+                    native.assertCurrent()
+                    val binding = (owner.invocations.requireRequestRepository() as? DesktopOriginalVideoOwnerRequestRepository)
+                        ?.binding ?: error("PGC initial detail requires its actual Root invocation")
+                    DesktopBangumiInitialDetailSource.capture(root, owner, key,
+                        seasonId, epId, isCourse, native.captureInitialDetailLaunchCaller(), binding, ::owns)
+                }
+            }
             val account = DesktopOriginalBangumiPlayerAccountView(owner, root.repository,
                 resources.community.searchPreferences, native::assertCurrent, ::assertSubject)
             val base = object : DesktopOriginalBangumiBaseRequests {

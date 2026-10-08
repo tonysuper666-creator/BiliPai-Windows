@@ -44,6 +44,11 @@ import kotlinx.coroutines.CancellationException
         com.android.purebilibili.core.ui.components.AppText("播放已切换，请重新打开此剧集")
         return
     }
+    val displayedState by bound.viewModel.uiState.collectAsState()
+    val displayedError = displayedState as? com.android.purebilibili.feature.bangumi.BangumiPlayerState.Error
+    val loginIntent = DesktopBangumiFailureLoginIntent.capture(routes, key, displayedError) {
+        active && bound.owns() && bound.viewModel.uiState.value === displayedError
+    }
     fun navigate(action: () -> Unit) { if (active && bound.owns()) routes.callbackFor(key, action) }
     CompositionLocalProvider(
         LocalDesktopOriginalVideoNativeCarrierActive provides active,
@@ -59,7 +64,8 @@ import kotlinx.coroutines.CancellationException
                     seasonId = key.seasonId, epId = key.epId, resumePositionMs = key.resumePositionMs,
                     isCourse = key.isCourse, preferredAid = key.preferredAid,
                     onBack = { navigate { routes.back() } },
-                    onNavigateToLogin = { navigate { routes.push(BiliPaiNavKey.Login) } },
+                    onNavigateToLogin = { if (active && bound.owns() && loginIntent != null)
+                        routes.loginFromReadFailure(loginIntent) },
                     onUserClick = { mid -> navigate { routes.push(BiliPaiNavKey.Space(mid)) } },
                     onOpenBilibiliLink = { url -> navigate { openBilibiliLink(url) } },
                     viewModel = bound.viewModel, commentViewModel = bound.comments)

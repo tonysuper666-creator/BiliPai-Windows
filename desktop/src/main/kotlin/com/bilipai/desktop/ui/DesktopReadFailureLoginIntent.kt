@@ -3,6 +3,7 @@ package com.bilipai.desktop.ui
 import com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState
 import com.android.purebilibili.navigation3.BiliPaiNavKey
 import java.awt.EventQueue
+import kotlinx.coroutines.ensureActive
 
 /** A borrowed exact displayed read, not a navigation owner, account action or replay queue.
  * Route admission performs its original checkpoint before invoking this short source gate. */
@@ -106,6 +107,122 @@ internal class DesktopVideoFailureLoginIntent private constructor(
             val intent = DesktopVideoFailureLoginIntent(window, shell, assembly, entry, failure,
                 stillPresented, destination)
             return intent.takeIf { it.admit(routes) {} }
+        }
+    }
+}
+
+/** Metadata of ONE genuine initial PGC/PUGV primary-detail request. This is a
+ * borrowed receipt and actual caller, not a task, source, credential or replay owner.
+ * Normal request completion retains a displayed Error; cancellation/entry/account
+ * retirement does not. The already existing Store -> Video-entry gates are reused. */
+internal class DesktopBangumiInitialDetailSource private constructor(
+    val window: DesktopOriginalVideoRootWindowEnvironment,
+    val assembly: DesktopOriginalVideoOwnerAssembly,
+    val entry: BiliPaiNavKey.BangumiPlayer,
+    val seasonId: Long,
+    val epId: Long,
+    val isCourse: Boolean,
+    val caller: kotlinx.coroutines.Job,
+    val launchCaller: kotlinx.coroutines.Job,
+    val primaryInstallation: com.bilipai.desktop.data.DesktopHomeNavRequestReceipt,
+    val authorization: com.bilipai.desktop.data.DesktopPlaybackAuthorizationReceipt,
+    private val entryOwns: () -> Boolean,
+) {
+    private fun owns(): Boolean = !caller.isCancelled && !launchCaller.isCancelled && window.owns() && assembly.owns() && entryOwns() &&
+        (window.commands as? DesktopOriginalRootRouteAssembly)?.stack?.any { it === entry } == true
+
+    fun admit(block: () -> Unit): Boolean {
+        var applied = false
+        try {
+            window.repository.withCurrentHomeNavRequest(primaryInstallation, ::owns) {
+                window.repository.withPlaybackReceiptAdmission(authorization, ::owns) {
+                    assembly.environment.commit { if (owns()) { block(); applied = true } }
+                }
+            }
+        } catch (_: kotlinx.coroutines.CancellationException) { return false }
+        catch (_: com.bilipai.desktop.data.BiliApiException) { return false }
+        return applied
+    }
+    fun failure(code: Int, message: String): Throwable = DesktopBangumiInitialDetailFailure(this, code, message)
+
+    companion object {
+        suspend fun capture(window: DesktopOriginalVideoRootWindowEnvironment,
+            assembly: DesktopOriginalVideoOwnerAssembly, entry: BiliPaiNavKey.BangumiPlayer,
+            seasonId: Long, epId: Long, isCourse: Boolean, launchCaller: kotlinx.coroutines.Job,
+            binding: DesktopOriginalVideoRepositoryBinding, entryOwns: () -> Boolean): DesktopBangumiInitialDetailSource {
+            val context = kotlinx.coroutines.currentCoroutineContext()
+            context.ensureActive()
+            val caller = requireNotNull(context[kotlinx.coroutines.Job])
+            launchCaller.ensureActive()
+            binding.assertCurrent()
+            val primary = window.repository.captureHomeNavRequest(window.root.capturedEpoch, window.root.entry.gate.mid) {
+                caller.isActive && window.owns() && assembly.owns() && entryOwns()
+            }
+            val authorization = binding.captureBootstrapAuthorization().receipt
+            binding.assertCurrent()
+            val source = DesktopBangumiInitialDetailSource(window, assembly, entry,
+                seasonId, epId, isCourse, caller, launchCaller, primary, authorization, entryOwns)
+            if (!source.admit {}) throw kotlinx.coroutines.CancellationException("PGC initial detail source retired")
+            return source
+        }
+    }
+}
+
+/** Public Error DTO exposes only this public Throwable type. Its constructor and
+ * request source stay module-internal. The message is the unchanged original text. */
+class DesktopBangumiInitialDetailFailure internal constructor(
+    internal val source: DesktopBangumiInitialDetailSource,
+    val code: Int,
+    message: String,
+    private val latestLoad: (() -> Boolean)? = null,
+) : Exception(message) {
+    internal fun forDisplayedRead(latest: () -> Boolean): DesktopBangumiInitialDetailFailure {
+        check(latestLoad == null)
+        return DesktopBangumiInitialDetailFailure(source, code, requireNotNull(message), latest)
+    }
+    internal fun admit(block: () -> Unit): Boolean {
+        val current = latestLoad ?: return false
+        var applied = false
+        source.admit { if (current()) { block(); applied = true } }
+        return applied
+    }
+}
+
+/** Explicit user Login for the SAME displayed initial detail failure. Decoded
+ * primary -101 is required; no text matching, dedicated playurl or native evidence. */
+internal class DesktopBangumiFailureLoginIntent private constructor(
+    private val source: DesktopBangumiInitialDetailSource,
+    private val displayedError: com.android.purebilibili.feature.bangumi.BangumiPlayerState.Error,
+    private val stillPresented: () -> Boolean,
+) : DesktopReadFailureLoginIntent {
+    override val root: DesktopHomeRetainedRoot get() = source.window.root
+    override val sourceEpoch: Long get() = source.primaryInstallation.epoch
+    override val sourceMid: Long? get() = source.primaryInstallation.mid
+    override val destination: BiliPaiNavKey get() = source.entry
+
+    private fun current(routes: DesktopOriginalRootRouteAssembly): Boolean {
+        val failure = displayedError.desktopInitialDetailFailure ?: return false
+        return failure.source === source && failure.code == -101 && displayedError.isLoginRequired &&
+            source.window.commands === routes && routes.root === root && routes.owns() &&
+            sourceEpoch == root.capturedEpoch && sourceMid == root.entry.gate.mid &&
+            source.window.currentKey() === source.entry && routes.currentKey === source.entry &&
+            !source.window.inPictureInPicture() && stillPresented()
+    }
+    override fun admit(routes: DesktopOriginalRootRouteAssembly, block: () -> Unit): Boolean {
+        check(EventQueue.isDispatchThread())
+        var applied = false
+        displayedError.desktopInitialDetailFailure?.admit { if (current(routes)) { block(); applied = true } }
+        return applied
+    }
+    companion object {
+        fun capture(routes: DesktopOriginalRootRouteAssembly, entry: BiliPaiNavKey.BangumiPlayer,
+            error: com.android.purebilibili.feature.bangumi.BangumiPlayerState.Error?,
+            stillPresented: () -> Boolean): DesktopBangumiFailureLoginIntent? {
+            check(EventQueue.isDispatchThread())
+            val failure = error?.desktopInitialDetailFailure ?: return null
+            if (failure.source.entry !== entry || failure.code != -101 || !error.isLoginRequired) return null
+            return DesktopBangumiFailureLoginIntent(failure.source, error, stillPresented)
+                .takeIf { it.admit(routes) {} }
         }
     }
 }
