@@ -2395,6 +2395,8 @@ tasks.named("compileKotlin") { dependsOn(extractOriginalVideoFullOwner) }
 // DIRECT10 are copied once by prepareUpstreamSources; production omits --standalone.
 
 val extractOriginalVideoDetailHolderFull by tasks.registering(Exec::class) {
+    inputs.file("tools/v032_video_return_state.py")
+    inputs.dir("upstream-slices/v032-video-return-state")
     inputs.file("tools/v031_repost_coin.py")
     inputs.dir("upstream-slices/v031-repost-coin")
     inputs.files("tools/v029_comment_composer.py", "tools/v029_comment_search.py")

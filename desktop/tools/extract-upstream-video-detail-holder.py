@@ -99,6 +99,8 @@ def generate(repo, output, standalone=False):
         text=domain_delta(repo,output,s['output'],text)
         from v031_repost_coin import apply_and_record
         text,_=apply_and_record(s['output'],text,output)
+        from v032_video_return_state import apply_and_record as apply_return_first_frame
+        text=apply_return_first_frame(repo,s['output'],text,output)
         target=_wide(output/s['output']);target.parent.mkdir(parents=True,exist_ok=True)
         target.write_bytes(text.encode('utf8'));written.append(target)
     return written

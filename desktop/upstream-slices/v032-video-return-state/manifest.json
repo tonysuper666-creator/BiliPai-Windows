@@ -1,0 +1,14 @@
+{
+  "upstreamTag": "v0.3.2",
+  "upstreamCommit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+  "sourcePolicy": "Full fixed original reference; only the first-frame return subscription and its two imports are used.",
+  "sources": [
+    {
+      "path": "VideoDetailScreenStateHolder.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoDetailScreenStateHolder.kt",
+      "gitBlob": "776b1d05118f1273da3818be2b2d13e4736b0651",
+      "sha256LF": "f53eebc494386ea4a8ad1d3adfe89d8fa70af69b18db69b20e091b32337e3338",
+      "bytesLF": 320830
+    }
+  ]
+}
