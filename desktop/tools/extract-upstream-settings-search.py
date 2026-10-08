@@ -5,7 +5,8 @@ import argparse,hashlib,importlib.util,json,re,xml.etree.ElementTree as ET
 BASE='app/src/main/java/com/android/purebilibili/'
 S=BASE+'feature/settings/'
 DIRECT=[S+n+'.kt' for n in ['SettingsSearchPolicy','SettingsSearchFocusPolicy','SettingsRootCategoryPolicy','SettingsDestinationCopy','SettingsSiblingIconPalettePolicy']]
-DIRECT += [BASE+'core/util/PinyinUtils.kt',S+'screen/SettingsSearchHistorySection.kt']
+DIRECT += [S+'screen/SettingsSearchHistorySection.kt']
+OWNED=[BASE+'core/util/PinyinUtils.kt']
 ADAPTED=[S+'SettingsSemanticIconPolicy.kt',S+'SettingsEntryVisualPolicy.kt',BASE+'core/store/SettingsSearchHistoryStore.kt',S+'SettingsSearchNavigationPolicy.kt']
 SELECTED=[S+'screen/SettingsSearchUi.kt',S+'SettingsNavHierarchyPolicy.kt',S+'SettingsViewModel.kt']
 A='{http://schemas.android.com/apk/res/android}'
@@ -58,6 +59,8 @@ def generate(repo,output,standalone=False):
  for path in DIRECT:
   original=read(repo,path);h.prune_old_direct(output,path,original)
   if standalone:files.append(h.write(output,path,original,original))
+ from v032_pinyin import emit as emit_fixed_pinyin
+ files.append(emit_fixed_pinyin(repo,output))
  for path in ADAPTED+SELECTED:
   original=source=read(repo,path);name=None
   if path.endswith(('SettingsSemanticIconPolicy.kt','SettingsEntryVisualPolicy.kt')):
@@ -110,7 +113,7 @@ internal class SettingsSearchHistoryOperations(private val context:DesktopPlugin
  vector=output/'com/bilipai/desktop/settings/DesktopSettingsVectors.kt';vector.parent.mkdir(parents=True,exist_ok=True);vector.write_text(vectors(repo),encoding='utf-8');files.append(vector)
  return files
 
-def inventory(repo):return [dict(path=p,mode='direct' if p in DIRECT else 'platform-adapter-reference' if p in ADAPTED else 'policy-extract',features=['settings-search-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in DIRECT+ADAPTED+SELECTED]
+def inventory(repo):return [dict(path=p,mode='direct' if p in DIRECT else 'platform-adapter-reference' if p in ADAPTED else 'policy-extract',features=['settings-search-parity'],sha256=hashlib.sha256(read(repo,p).encode()).hexdigest()) for p in DIRECT+OWNED+ADAPTED+SELECTED]
 def resource_inventory(repo):return [dict(path='app/src/main/res/drawable/'+n+'.xml',sha256=hashlib.sha256(read(repo,'app/src/main/res/drawable/'+n+'.xml').encode()).hexdigest(),features=['settings-search-symbols']) for n in symbol_names(repo)]
 if __name__=='__main__':
  cli=argparse.ArgumentParser(description=__doc__);cli.add_argument('--repo',type=Path,required=True);cli.add_argument('--output',type=Path);cli.add_argument('--standalone',action='store_true');cli.add_argument('--inventory',action='store_true');cli.add_argument('--resource-inventory',action='store_true');args=cli.parse_args()

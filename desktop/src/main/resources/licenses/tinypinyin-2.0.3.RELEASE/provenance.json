@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "upstreamBiliPaiCommit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+  "upstreamTag": "v0.3.2",
+  "dependencies": [
+    {
+      "file": "TinyPinyin-2.0.3.RELEASE.jar",
+      "url": "https://repo.maven.apache.org/maven2/io/github/biezhi/TinyPinyin/2.0.3.RELEASE/TinyPinyin-2.0.3.RELEASE.jar",
+      "sha256": "1332cb745ec2147751ab40ef0622a393582252e63f7cf71e165da2e93d062bbe",
+      "officialSha1": "4014ed8819c9d86e14f134a4a60923d68fd6e2a9",
+      "size": 121379,
+      "coordinate": "io.github.biezhi:TinyPinyin:2.0.3.RELEASE"
+    },
+    {
+      "file": "ahocorasick-0.4.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/ahocorasick/ahocorasick/0.4.0/ahocorasick-0.4.0.jar",
+      "sha256": "d402a95237f06fc6cc49073339acf0a6f4a5226e749d6264860bb7ec806fedf6",
+      "officialSha1": "574632c1384d7dcde77228f806ed6be481071cea",
+      "size": 23133,
+      "coordinate": "org.ahocorasick:ahocorasick:0.4.0"
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "TinyPinyin-2.0.3.RELEASE.pom",
+      "url": "https://repo.maven.apache.org/maven2/io/github/biezhi/TinyPinyin/2.0.3.RELEASE/TinyPinyin-2.0.3.RELEASE.pom",
+      "sha256": "f6aaa3582539784816739ff59eed3d298eb0f4b210d59db17f0bd634ca940829",
+      "officialSha1": "bdd7b49d14bbb12ac468af8c2ecee6e498f68b88",
+      "size": 8453,
+      "coordinate": "io.github.biezhi:TinyPinyin:2.0.3.RELEASE"
+    },
+    {
+      "file": "TinyPinyin-2.0.3.RELEASE.jar",
+      "url": "https://repo.maven.apache.org/maven2/io/github/biezhi/TinyPinyin/2.0.3.RELEASE/TinyPinyin-2.0.3.RELEASE.jar",
+      "sha256": "1332cb745ec2147751ab40ef0622a393582252e63f7cf71e165da2e93d062bbe",
+      "officialSha1": "4014ed8819c9d86e14f134a4a60923d68fd6e2a9",
+      "size": 121379,
+      "coordinate": "io.github.biezhi:TinyPinyin:2.0.3.RELEASE"
+    },
+    {
+      "file": "TinyPinyin-2.0.3.RELEASE-sources.jar",
+      "url": "https://repo.maven.apache.org/maven2/io/github/biezhi/TinyPinyin/2.0.3.RELEASE/TinyPinyin-2.0.3.RELEASE-sources.jar",
+      "sha256": "5d54554531319a6df9f5e1111afbbf7c1fa5e11df284ec0f1f04bbeaa1186b60",
+      "officialSha1": "4da24616479b10da194362a2b5a568abf6d0e7f7",
+      "size": 68216,
+      "coordinate": "io.github.biezhi:TinyPinyin:2.0.3.RELEASE"
+    },
+    {
+      "file": "ahocorasick-0.4.0.pom",
+      "url": "https://repo.maven.apache.org/maven2/org/ahocorasick/ahocorasick/0.4.0/ahocorasick-0.4.0.pom",
+      "sha256": "b38055ee6da286ddeb3074169cbb77ee894bd367b191fd2a055e0027bd74d194",
+      "officialSha1": "3589fe41f671dbadabd01d6f67dd9a617c64c1ec",
+      "size": 5838,
+      "coordinate": "org.ahocorasick:ahocorasick:0.4.0"
+    },
+    {
+      "file": "ahocorasick-0.4.0.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/ahocorasick/ahocorasick/0.4.0/ahocorasick-0.4.0.jar",
+      "sha256": "d402a95237f06fc6cc49073339acf0a6f4a5226e749d6264860bb7ec806fedf6",
+      "officialSha1": "574632c1384d7dcde77228f806ed6be481071cea",
+      "size": 23133,
+      "coordinate": "org.ahocorasick:ahocorasick:0.4.0"
+    },
+    {
+      "file": "ahocorasick-0.4.0-sources.jar",
+      "url": "https://repo.maven.apache.org/maven2/org/ahocorasick/ahocorasick/0.4.0/ahocorasick-0.4.0-sources.jar",
+      "sha256": "5b86df625955619ba0df618292b3c8f5a5e86eadea9dcddddc286b22cdc94f83",
+      "officialSha1": "f15e4cc8846fbbd012efbd091c1562dfeea62a88",
+      "size": 12021,
+      "coordinate": "org.ahocorasick:ahocorasick:0.4.0"
+    }
+  ],
+  "files": [
+    {
+      "file": "TinyPinyin-LICENSE",
+      "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08"
+    },
+    {
+      "file": "Apache-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "file": "TinyPinyin-2.0.3.RELEASE.pom",
+      "sha256": "f6aaa3582539784816739ff59eed3d298eb0f4b210d59db17f0bd634ca940829"
+    },
+    {
+      "file": "TinyPinyin-2.0.3.RELEASE-sources.jar",
+      "sha256": "5d54554531319a6df9f5e1111afbbf7c1fa5e11df284ec0f1f04bbeaa1186b60"
+    },
+    {
+      "file": "ahocorasick-0.4.0.pom",
+      "sha256": "b38055ee6da286ddeb3074169cbb77ee894bd367b191fd2a055e0027bd74d194"
+    },
+    {
+      "file": "ahocorasick-0.4.0-sources.jar",
+      "sha256": "5b86df625955619ba0df618292b3c8f5a5e86eadea9dcddddc286b22cdc94f83"
+    },
+    {
+      "file": "NOTICE.txt",
+      "sha256": "839e203f0b6ed12ebbd95d3ed6ca0cf32aa8ce0910fb874c2980fb4d13954699"
+    }
+  ],
+  "sourceRepositories": [
+    {
+      "repository": "hellokaton/TinyPinyin",
+      "commit": "e335735714f084640b4255f1c07bb22e097c5386",
+      "ref": "heads/master",
+      "license": {
+        "file": "TinyPinyin-LICENSE",
+        "path": "LICENSE",
+        "gitBlobSHA": "8f71f43fee3f78649d238238cbde51e6d7055c82",
+        "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+        "url": "https://raw.githubusercontent.com/hellokaton/TinyPinyin/e335735714f084640b4255f1c07bb22e097c5386/LICENSE"
+      }
+    },
+    {
+      "repository": "robert-bor/aho-corasick",
+      "ref": "tags/v0.4.0",
+      "commit": "d45c2ee158fbfc2d68924d5af6cd1b237a07082a",
+      "license": {
+        "file": "Apache-2.0.txt",
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "declaredBy": "ahocorasick-0.4.0.pom",
+        "tagContainsLicenseFile": false
+      }
+    }
+  ],
+  "runtimeGraph": {
+    "tinyPinyinCompileDependencies": [
+      "org.ahocorasick:ahocorasick:0.4.0"
+    ],
+    "ahoCorasickCompileDependencies": [],
+    "testScopeExcluded": [
+      "junit:junit:4.12",
+      "com.belerweb:pinyin4j:2.5.1",
+      "junit:junit-dep:4.10"
+    ],
+    "parentPoms": []
+  },
+  "staticSourceClosure": {
+    "tinyPinyinJavaFiles": 12,
+    "tinyPinyinGitMatches": 12,
+    "ahoCorasickJavaFiles": 17,
+    "ahoCorasickGitMatches": 17,
+    "androidReferences": 0,
+    "nativeFiles": 0,
+    "jarClassVersions": [
+      52,
+      51
+    ],
+    "runtimeTestsExecuted": false
+  },
+  "historicalPinyin4jResources": "May remain as historical attribution; no pinyin4j runtime dependency remains",
+  "sourceAndJarArtifactsUnmodified": true,
+  "fullV032ParityClaimed": false
+}

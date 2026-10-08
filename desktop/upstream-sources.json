@@ -3606,7 +3606,7 @@
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/core/util/PinyinUtils.kt",
-      "mode": "direct",
+      "mode": "policy-extract",
       "features": [
         "settings-search-parity"
       ],
@@ -13733,6 +13733,14 @@
     "directory": "desktop/upstream-slices/v032-video-return-state",
     "manifestSHA256": "39cd1e9d2ef642f872d64789ba7b9faf8c8fe50a0590411abc8c4f9a925b4acc",
     "feature": "original-video-return-first-frame-subscription",
+    "sourceBaselineUnchanged": true
+  },
+  "v032PinyinSlice": {
+    "upstreamTag": "v0.3.2",
+    "upstreamCommit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+    "directory": "desktop/upstream-slices/v032-pinyin",
+    "manifestSHA256": "729fbf409519ab92a8cd089de45582d669e838db1dd94569e3b63ce780a06dde",
+    "feature": "settings-and-personal-list-pinyin-matching",
     "sourceBaselineUnchanged": true
   }
 }

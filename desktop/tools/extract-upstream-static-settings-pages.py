@@ -64,6 +64,8 @@ def adapt(repo, path):
             source = edit(source, "rememberMaterialSymbol(iconResId)",
                 "desktopStaticSettingsVector(iconResId)", operations)
         else:
+            # Only dependency attribution data changes; all screen/layout declarations remain.
+            source = edit(source, '    OpenSourceLibrary(\n        name = "pinyin4j",\n        license = "GPL-2.0",\n        url = "https://github.com/belerweb/pinyin4j",\n        description = "中文拼音转换"\n    ),', '    OpenSourceLibrary(\n        name = "TinyPinyin",\n        license = "Apache-2.0",\n        url = "https://github.com/biezhi/TinyPinyin",\n        description = "中文拼音转换"\n    ),\n    OpenSourceLibrary(\n        name = "AhoCorasick",\n        license = "Apache-2.0",\n        url = "https://github.com/robert-bor/aho-corasick",\n        description = "TinyPinyin 的 Java 字符串匹配依赖"\n    ),', operations)
             source = edit(source,
                 "com.android.purebilibili.feature.settings.rememberMaterialSymbol(com.android.purebilibili.R.drawable.ms_keyboard_arrow_right_24)",
                 "desktopStaticSettingsVector(DesktopStaticSettingsSymbols.ms_keyboard_arrow_right_24)", operations)

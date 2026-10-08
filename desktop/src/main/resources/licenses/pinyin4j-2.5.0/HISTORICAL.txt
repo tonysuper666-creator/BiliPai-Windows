@@ -1,0 +1,9 @@
+Historical dependency evidence retained after the v0.3.2 Pinyin migration.
+
+The neighboring NOTICE.txt and provenance.json describe the earlier pinyin4j
+integration and are preserved as historical bytes with their original hashes.
+They do not describe the current runtime. The active runtime now uses
+io.github.biezhi:TinyPinyin:2.0.3.RELEASE and org.ahocorasick:ahocorasick:0.4.0;
+no pinyin4j runtime JAR is used or included by the migrated dependency graph.
+Current source, license, artifact pins and notices are in
+licenses/tinypinyin-2.0.3.RELEASE/. No old notice/source archive was modified.

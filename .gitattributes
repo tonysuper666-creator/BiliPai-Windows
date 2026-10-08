@@ -146,3 +146,8 @@ desktop/upstream-slices/** -text
 desktop/src/main/kotlin/com/android/purebilibili/feature/video/danmaku/DesktopOriginalBasDanmakuFilterPolicy.kt text eol=lf
 desktop/src/main/kotlin/com/bilipai/desktop/danmaku/DesktopBasPluginFilter.kt text eol=lf
 desktop/src/test/kotlin/com/android/purebilibili/feature/video/danmaku/BasDanmakuFilterPolicyTest.kt text eol=lf
+# Fixed JVM pinyin source and license bytes for runtime dependency checks.
+desktop/src/main/resources/licenses/tinypinyin-2.0.3.RELEASE/** -text
+desktop/resources/common/notices/tinypinyin-2.0.3.RELEASE/** -text
+# Preserve the fixed upstream license's original final blank line.
+desktop/src/main/resources/licenses/tinypinyin-2.0.3.RELEASE/TinyPinyin-LICENSE whitespace=-blank-at-eof

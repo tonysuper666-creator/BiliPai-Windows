@@ -1,0 +1,26 @@
+BiliPai Windows active pinyin dependency attribution
+
+TinyPinyin 2.0.3.RELEASE
+Coordinate: io.github.biezhi:TinyPinyin:2.0.3.RELEASE
+Published Java fork: https://github.com/biezhi/TinyPinyin (redirects to hellokaton/TinyPinyin)
+Original project: https://github.com/promeG/TinyPinyin
+Apache License 2.0 is declared in the unmodified published POM and included in
+the fork's LICENSE at fixed commit e335735714f084640b4255f1c07bb22e097c5386.
+All 12 Java source files in the unmodified Maven sources JAR match that commit's Git blobs.
+The published POM's name is "redis-dqueue"; that upstream metadata is preserved unchanged.
+
+AhoCorasick 0.4.0
+Coordinate: org.ahocorasick:ahocorasick:0.4.0
+Project: https://github.com/robert-bor/aho-corasick
+Author/organization in published POM: Robert Bor / 42.
+Apache License 2.0 is declared in the unmodified published POM.
+Tag v0.4.0 resolves to d45c2ee158fbfc2d68924d5af6cd1b237a07082a;
+all 17 Java source files in the unmodified Maven sources JAR match its Git blobs.
+That tag has no LICENSE or NOTICE file, so the official Apache-2.0.txt is included
+from https://www.apache.org/licenses/LICENSE-2.0.txt rather than claiming a tag LICENSE.
+
+No JAR or sources JAR was modified. The production graph is TinyPinyin -> AhoCorasick.
+Upstream test-scope JUnit and pinyin4j 2.5.1 dependencies are not part of this runtime graph.
+Older pinyin4j-2.5.0 license/provenance resources remain historical attribution only;
+the migrated current runtime does not use or ship a pinyin4j runtime JAR.
+No contextual multi-character polyphone disambiguation or measured performance gain is claimed.

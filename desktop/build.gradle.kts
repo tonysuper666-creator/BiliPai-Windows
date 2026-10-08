@@ -385,7 +385,8 @@ val extractUpstreamSettingsSearch by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-settings-search.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/settings-search").get().asFile.absolutePath)
-    inputs.files("tools/extract-upstream-settings-search.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.files("tools/extract-upstream-settings-search.py", "tools/v032_pinyin.py", "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py")
+    inputs.dir("upstream-slices/v032-pinyin")
     inputs.files(sources.filter { "settings-search-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
     inputs.files(originalResources.filter { "settings-search-symbols" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -1650,22 +1651,30 @@ val verifyDynamicMediaDependencies by tasks.registering {
 }
 
 val verifySettingsSearchDependencies by tasks.registering {
-    inputs.dir("src/main/resources/licenses/pinyin4j-2.5.0")
+    inputs.dir("src/main/resources/licenses/tinypinyin-2.0.3.RELEASE")
     doLast {
-        val noticeRoot = file("src/main/resources/licenses/pinyin4j-2.5.0")
+        val noticeRoot = file("src/main/resources/licenses/tinypinyin-2.0.3.RELEASE")
         val pins = JsonSlurper().parse(File(noticeRoot, "provenance.json")) as Map<*, *>
         fun digest(file: File) = MessageDigest.getInstance("SHA-256").digest(file.readBytes()).joinToString("") { "%02x".format(it) }
-        val originalJar = (pins["artifacts"] as List<*>).map { it as Map<*, *> }.single { it["file"] == "pinyin4j-2.5.0.jar" }
-        val artifact = configurations.getByName("runtimeClasspath").resolvedConfiguration.resolvedArtifacts
-            .single { it.moduleVersion.id.toString() == originalJar["coordinate"] }
-        require(digest(artifact.file) == originalJar["sha256"]) { "Original pinyin4j runtime checksum failed" }
+        val dependencies = (pins["dependencies"] as List<*>).map { it as Map<*, *> }
+        require(dependencies.map { it["coordinate"] }.toSet() ==
+            setOf("io.github.biezhi:TinyPinyin:2.0.3.RELEASE", "org.ahocorasick:ahocorasick:0.4.0") &&
+            dependencies.size == 2) { "The fixed pinyin runtime graph changed" }
+        val artifacts = configurations.getByName("runtimeClasspath").resolvedConfiguration.resolvedArtifacts
+        require(artifacts.none { it.moduleVersion.id.group == "com.belerweb" && it.moduleVersion.id.name == "pinyin4j" }) {
+            "Historical pinyin4j must not remain on the migrated runtime classpath"
+        }
+        dependencies.forEach { entry ->
+            val artifact = artifacts.single { it.moduleVersion.id.toString() == entry["coordinate"] }
+            require(digest(artifact.file) == entry["sha256"]) { "Fixed pinyin runtime checksum failed: ${entry["coordinate"]}" }
+        }
         val notices = pins["files"] as List<*>
-        require(notices.size == 5) { "The original pinyin4j notice/source inventory changed" }
+        require(notices.size == 7) { "The fixed pinyin notice/source inventory changed" }
         notices.forEach { item ->
             val entry = item as Map<*, *>
-            require(digest(File(noticeRoot, entry["file"].toString())) == entry["sha256"]) { "pinyin4j notice/source checksum failed: ${entry["file"]}" }
+            require(digest(File(noticeRoot, entry["file"].toString())) == entry["sha256"]) { "Pinyin notice/source checksum failed: ${entry["file"]}" }
         }
-        logger.lifecycle("Verified original pinyin4j runtime and all five source/license files; POM/source license conflict retained.")
+        logger.lifecycle("Verified fixed TinyPinyin and AhoCorasick JVM runtime, source and Apache license inventory.")
     }
 }
 
@@ -1844,8 +1853,8 @@ val prepareAppearanceNotices by tasks.registering(Sync::class) {
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareAppearanceNotices) }
 val prepareSettingsSearchNotices by tasks.registering(Sync::class) {
     dependsOn(verifySettingsSearchDependencies)
-    from("src/main/resources/licenses/pinyin4j-2.5.0")
-    into("resources/common/notices/pinyin4j-2.5.0")
+    from("src/main/resources/licenses/tinypinyin-2.0.3.RELEASE")
+    into("resources/common/notices/tinypinyin-2.0.3.RELEASE")
 }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareSettingsSearchNotices) }
 tasks.withType<JavaExec>().configureEach {
@@ -1902,7 +1911,8 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.17.0")
     implementation("net.java.dev.jna:jna:5.17.0")
     implementation("org.json:json:20240303")
-    implementation("com.belerweb:pinyin4j:2.5.0")
+    implementation("io.github.biezhi:TinyPinyin:2.0.3.RELEASE") { version { strictly("2.0.3.RELEASE") } }
+    implementation("org.ahocorasick:ahocorasick:0.4.0") { version { strictly("0.4.0") } }
     implementation("org.brotli:dec:0.1.2")
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
