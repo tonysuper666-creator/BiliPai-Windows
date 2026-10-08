@@ -1,6 +1,7 @@
 package com.bilipai.desktop.download
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
@@ -45,6 +46,7 @@ class WindowsFfmpegMuxer(private val executable: Path? = locateFfmpeg()) : Downl
     }
 
     private suspend fun execute(output: Path, makeCommand: (Path) -> List<String>) {
+        currentCoroutineContext().ensureActive()
         val staged = output.resolveSibling(output.fileName.toString() + ".merging." + output.fileName.toString().substringAfterLast('.'))
         val log = output.resolveSibling("merge.log")
         val process = ProcessBuilder(makeCommand(staged)).redirectErrorStream(true)
@@ -68,8 +70,24 @@ class WindowsFfmpegMuxer(private val executable: Path? = locateFfmpeg()) : Downl
                 Files.move(staged, output, StandardCopyOption.REPLACE_EXISTING)
             }
         } finally {
-            if (process.isAlive) { process.destroy(); if (!process.waitFor(1, TimeUnit.SECONDS)) process.destroyForcibly() }
-            Files.deleteIfExists(staged)
+            withContext(NonCancellable) {
+                var interrupted = false
+                try {
+                    if (process.isAlive) runCatching { process.destroy() }
+                    // destroyForcibly is a request. Retain the worker/file owner until actual exit.
+                    while (process.isAlive) {
+                        try {
+                            if (!process.waitFor(1, TimeUnit.SECONDS)) runCatching { process.destroyForcibly() }
+                        } catch (_: InterruptedException) {
+                            interrupted = true
+                            runCatching { process.destroyForcibly() }
+                        }
+                    }
+                    Files.deleteIfExists(staged)
+                } finally {
+                    if (interrupted) Thread.currentThread().interrupt()
+                }
+            }
         }
     }
 

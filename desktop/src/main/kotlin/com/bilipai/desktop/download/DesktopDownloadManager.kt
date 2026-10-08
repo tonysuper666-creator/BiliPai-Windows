@@ -148,6 +148,8 @@ class DesktopDownloadManager internal constructor(
 
     /** Pause/cancel retain upstream .part/chunk files for a later Range resume. */
     fun pause(id: String) = synchronized(lock) {
+        // A stale pause-all snapshot cannot undo an already confirmed output.
+        if (mutableTasks.value.any { it.id == id && it.status == DownloadStatus.COMPLETED }) return@synchronized
         updateLocked(id) { it.copy(item = it.item.copy(status = DownloadStatus.PAUSED, errorMessage = null)) }
         jobs[id]?.cancel()
         persistLocked(force = true)
@@ -181,20 +183,25 @@ class DesktopDownloadManager internal constructor(
     }
     fun retry(id: String, refreshedSource: PlaybackSource? = null) = resume(id, refreshedSource)
 
-    fun remove(id: String, deleteFiles: Boolean = false) {
-        val removed = synchronized(lock) {
-            val task = mutableTasks.value.firstOrNull { it.id == id } ?: return
-            val job = jobs[id]
-            job?.cancel()
-            mutableTasks.value = mutableTasks.value.filterNot { it.id == id }
-            persistLocked(force = true)
-            task to job
+    @OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
+    fun remove(id: String, deleteFiles: Boolean = false) = synchronized(lock) {
+        val task = mutableTasks.value.firstOrNull { it.id == id } ?: return@synchronized
+        val previousJob = jobs[id]
+        mutableTasks.value = mutableTasks.value.filterNot { it.id == id }
+        if (deleteFiles) {
+            // Transfer the same slot before cancel: completion may otherwise reschedule synchronously.
+            // ATOMIC enters cleanup even if close cancels this scope before dispatch.
+            val retirement = scope.launch(start = CoroutineStart.ATOMIC) {
+                withContext(NonCancellable) {
+                    previousJob?.join()
+                    deleteOwnedDirectory(task)
+                }
+            }
+            installJobLocked(id, retirement)
         }
-        scope.launch {
-            removed.second?.join()
-            if (deleteFiles) deleteOwnedDirectory(removed.first)
-            synchronized(lock) { scheduleLocked() }
-        }
+        previousJob?.cancel()
+        persistLocked(force = true)
+        scheduleLocked()
     }
 
     fun offlinePlayback(id: String): PlaybackSource {
@@ -242,6 +249,19 @@ class DesktopDownloadManager internal constructor(
         return OfflineDanmakuFiles(safePaths.take(standardCount).map(Path::of), local.specialSegmentPaths.map(Path::of))
     }
 
+    /** Completion, including cancellation before body entry, retires this exact jobs slot. */
+    private fun installJobLocked(id: String, job: Job) {
+        jobs[id] = job
+        job.invokeOnCompletion {
+            synchronized(lock) {
+                if (jobs[id] === job) {
+                    jobs.remove(id)
+                    scheduleLocked()
+                }
+            }
+        }
+    }
+
     private fun scheduleLocked() {
         if (closed) return
         // A cancelled Windows job retains its file owner until its finally block
@@ -257,127 +277,169 @@ class DesktopDownloadManager internal constructor(
             // lock before launching, so a rapid second enqueue cannot overbook.
             updateLocked(id) { it.copy(item = it.item.copy(status = DownloadStatus.PENDING, errorMessage = null)) }
             val job = scope.launch(start = CoroutineStart.LAZY) { runTask(id) }
-            jobs[id] = job
+            installJobLocked(id, job)
             job.start()
         }
         persistLocked(force = true)
     }
 
     private suspend fun runTask(id: String) {
+        val pendingJob = currentCoroutineContext().job
+        var expectedTask: DownloadTask? = null
+        val activeStatuses = setOf(DownloadStatus.PENDING, DownloadStatus.DOWNLOADING, DownloadStatus.MERGING)
+        fun queueOwnedLocked(statuses: Set<DownloadStatus>, requireActive: Boolean = true): Boolean {
+            val expected = expectedTask ?: return false
+            return !closed && (!requireActive || pendingJob.isActive) && jobs[id] === pendingJob &&
+                mutableTasks.value.any { it.id == id && it.item.createdAt == expected.item.createdAt &&
+                    it.destinationRoot == expected.destinationRoot && it.authorizationReceipt == expected.authorizationReceipt &&
+                    it.status in statuses }
+        }
+        fun owned(statuses: Set<DownloadStatus>) = { synchronized(lock) { queueOwnedLocked(statuses) } }
+        fun publish(statuses: Set<DownloadStatus>, change: (DownloadTask) -> DownloadTask) {
+            val expected = expectedTask ?: throw CancellationException("下载任务已退役")
+            val current = owned(statuses)
+            publication.admit(expected.playbackSource(), current) {
+                synchronized(lock) {
+                    if (!queueOwnedLocked(statuses)) throw CancellationException("下载任务已退役")
+                    updateLocked(id, change)
+                }
+            }
+            synchronized(lock) { persistLocked(force = true) }
+        }
+        fun read(statuses: Set<DownloadStatus>): DownloadTask = synchronized(lock) {
+            if (!queueOwnedLocked(statuses)) throw CancellationException("下载任务已退役")
+            mutableTasks.value.first { it.id == id }
+        }
+        fun pauseRetiredWorker() {
+            // Retired authorization can no longer admit a business result. Only retire this
+            // exact existing queue entity; never a replacement, queued user intent or new account.
+            synchronized(lock) {
+                if (queueOwnedLocked(activeStatuses, requireActive = false)) {
+                    updateLocked(id) { it.copy(item = it.item.copy(status = DownloadStatus.PAUSED)) }
+                    persistLocked(force = true)
+                }
+            }
+        }
         try {
-            var task = synchronized(lock) { mutableTasks.value.firstOrNull { it.id == id } } ?: return
-            if (task.status != DownloadStatus.PENDING) return
-            val pendingJob = currentCoroutineContext()[Job]
-            val owned = { pendingJob?.isActive == true && synchronized(lock) { !closed && jobs[id] === pendingJob &&
-                mutableTasks.value.any { it.id == id && it.status in setOf(DownloadStatus.PENDING, DownloadStatus.DOWNLOADING) } } }
+            var task = synchronized(lock) {
+                mutableTasks.value.firstOrNull { !closed && jobs[id] === pendingJob &&
+                    it.id == id && it.status == DownloadStatus.PENDING }
+            } ?: return
+            expectedTask = task
+            currentCoroutineContext().ensureActive()
+            val starting = setOf(DownloadStatus.PENDING)
+            val downloading = setOf(DownloadStatus.DOWNLOADING)
+            val merging = setOf(DownloadStatus.MERGING)
             if (publication.requiresAccountReceipt && task.authorizationReceipt == null) {
                 val refreshed = sourceResolver?.invoke(task) ?: throw CancellationException("Saved download requires fresh owned authorization")
                 currentCoroutineContext().ensureActive()
-                publication.admit(refreshed, owned) {
-                    synchronized(lock) { updateLocked(id) { it.copy(item = it.item.copy(videoUrl = requireMediaUrl(refreshed.videoUrl),
-                        audioUrl = refreshed.audioUrl?.let(::requireMediaUrl).orEmpty()),
-                        referer = refreshed.referer, userAgent = refreshed.userAgent, authorizationReceipt = refreshed.authorizationReceipt,
-                        cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),
-                        progressiveSegments = refreshed.progressiveSegments.map { part -> DownloadProgressiveSegment(requireMediaUrl(part.url), part.durationSeconds) }) } }
+                publication.admit(refreshed, owned(starting)) {
+                    synchronized(lock) {
+                        if (!queueOwnedLocked(starting)) throw CancellationException("下载任务已退役")
+                        updateLocked(id) { it.copy(item = it.item.copy(videoUrl = requireMediaUrl(refreshed.videoUrl),
+                            audioUrl = refreshed.audioUrl?.let(::requireMediaUrl).orEmpty()),
+                            referer = refreshed.referer, userAgent = refreshed.userAgent, authorizationReceipt = refreshed.authorizationReceipt,
+                            cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),
+                            progressiveSegments = refreshed.progressiveSegments.map { part -> DownloadProgressiveSegment(requireMediaUrl(part.url), part.durationSeconds) }) }
+                        task = mutableTasks.value.first { it.id == id }
+                        expectedTask = task
+                    }
                 }
                 synchronized(lock) { persistLocked(force = true) }
-                task = synchronized(lock) { mutableTasks.value.first { it.id == id } }
             }
             val brandSource = task.playbackSource()
             val brandCreatedAt = task.item.createdAt
-            val brandOrigin = pendingJob?.let { worker -> com.bilipai.desktop.ui.DesktopBrandSuccessOrigin(worker,
+            val brandOrigin = pendingJob.let { worker -> com.bilipai.desktop.ui.DesktopBrandSuccessOrigin(worker,
                 { synchronized(lock) { !closed && mutableTasks.value.any {
-                    it.id == id && it.item.createdAt == brandCreatedAt && it.status == DownloadStatus.COMPLETED
+                    it.id == id && it.item.createdAt == brandCreatedAt && it.authorizationReceipt == task.authorizationReceipt &&
+                        it.status == DownloadStatus.COMPLETED
                 } } && publication.isCurrent(brandSource) },
                 { action ->
                     try {
                         publication.admit(brandSource, { synchronized(lock) { !closed && mutableTasks.value.any {
-                            it.id == id && it.item.createdAt == brandCreatedAt && it.status == DownloadStatus.COMPLETED
+                            it.id == id && it.item.createdAt == brandCreatedAt && it.authorizationReceipt == task.authorizationReceipt &&
+                                it.status == DownloadStatus.COMPLETED
                         } } }) {
                             synchronized(lock) {
-                                if (!closed && mutableTasks.value.any { it.id == id && it.item.createdAt == brandCreatedAt && it.status == DownloadStatus.COMPLETED }) action()
+                                if (!closed && mutableTasks.value.any { it.id == id && it.item.createdAt == brandCreatedAt &&
+                                    it.authorizationReceipt == task.authorizationReceipt && it.status == DownloadStatus.COMPLETED }) action()
                             }
                         }
                         true
                     } catch (_: CancellationException) { false }
                 }) }
-            publication.admit(task.playbackSource(), owned) { Unit }
+            publication.admit(task.playbackSource(), owned(starting)) { Unit }
             currentCoroutineContext().ensureActive()
-            val directory = ensureOwnedDirectory(task)
-            val caller = currentCoroutineContext()
-            synchronized(lock) {
-                caller.ensureActive()
-                if (closed || mutableTasks.value.none { it.id == id && it.status == DownloadStatus.PENDING })
-                    throw CancellationException("下载任务已暂停")
-                update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.DOWNLOADING, errorMessage = null)) }
-            }
-            downloadOptionalAssets(id, directory)
+            val directory = ensureOwnedDirectory(task) // this worker retains the same file slot until actual completion
+            publish(starting) { it.copy(item = it.item.copy(status = DownloadStatus.DOWNLOADING, errorMessage = null)) }
+            downloadOptionalAssets(read(downloading), directory) { change -> publish(downloading, change) }
             val video = directory.resolve("video.m4s")
             val audio = directory.resolve("audio.m4s")
             val segmentFiles = task.progressiveSegments.indices.map { directory.resolve("segment-${(it + 1).toString().padStart(4, '0')}.media") }
             if (segmentFiles.isNotEmpty()) {
                 for ((index, file) in segmentFiles.withIndex()) {
-                    val active = synchronized(lock) { mutableTasks.value.firstOrNull { it.id == id } } ?: throw CancellationException()
+                    val active = read(downloading)
                     downloadAsset(id, active.progressiveSegments[index].url, file,
                         if (task.item.isAudioOnly) DownloadAssetKind.AUDIO else DownloadAssetKind.VIDEO, index)
                 }
             } else if (!task.item.isAudioOnly) downloadAsset(id, task.item.videoUrl, video, DownloadAssetKind.VIDEO)
-            val current = synchronized(lock) { mutableTasks.value.firstOrNull { it.id == id } } ?: throw CancellationException()
+            val current = read(downloading)
             if (segmentFiles.isEmpty() && (current.item.audioUrl.isNotBlank() || task.item.isAudioOnly))
                 downloadAsset(id, current.item.audioUrl.ifBlank { current.item.videoUrl }, audio, DownloadAssetKind.AUDIO)
             currentCoroutineContext().ensureActive()
-            update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.MERGING, progress = 0.95f)) }
+            publish(downloading) { it.copy(item = it.item.copy(status = DownloadStatus.MERGING, progress = 0.95f)) }
             val output = directory.resolve("${safeOutputName(task.title)}.${if (task.item.isAudioOnly) "m4a" else "mp4"}")
             if (segmentFiles.isNotEmpty()) muxer.muxSegments(segmentFiles, output, task.item.isAudioOnly)
             else muxer.mux(video.takeUnless { task.item.isAudioOnly }, audio.takeIf { current.item.audioUrl.isNotBlank() || task.item.isAudioOnly }, output)
             currentCoroutineContext().ensureActive()
             val outputSize = Files.size(output)
-            Files.deleteIfExists(video)
-            Files.deleteIfExists(audio)
-            segmentFiles.forEach { Files.deleteIfExists(it) }
-            // COMPLETED is observable immediately; finish owned temporary track cleanup first.
-            update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.COMPLETED, progress = 1f,
+            // Confirm a ready output before discarding inputs. Cancellation before this commit
+            // keeps every downloaded track; confirmed output remains complete if cleanup is interrupted.
+            publish(merging) { it.copy(item = it.item.copy(status = DownloadStatus.COMPLETED, progress = 1f,
                 filePath = output.toString(), fileSize = outputSize, errorMessage = null)) }
-            // Keep the completed task even if decoration fails or its account retires.
-            if (brandOrigin != null) runCatching {
-                brandEvents?.downloadCompleted(brandOrigin, id, brandCreatedAt, task.title)
+            withContext(NonCancellable) {
+                (listOf(video, audio) + segmentFiles).forEach { path -> runCatching { Files.deleteIfExists(path) } }
             }
+            // The same jobs slot remains reserved through input cleanup and worker completion.
+            runCatching { brandEvents?.downloadCompleted(brandOrigin, id, brandCreatedAt, task.title) }
         } catch (cancelled: CancellationException) {
-            update(id, true) { task -> if (task.status in setOf(DownloadStatus.PAUSED, DownloadStatus.QUEUED)) task
-                else task.copy(item = task.item.copy(status = DownloadStatus.PAUSED)) }
+            pauseRetiredWorker()
         } catch (error: Exception) {
-            update(id, true) { it.copy(item = it.item.copy(status = DownloadStatus.FAILED,
-                errorMessage = error.message?.take(2000) ?: "下载失败")) }
-        } finally {
-            synchronized(lock) { jobs.remove(id); scheduleLocked() }
+            if (!pendingJob.isActive) pauseRetiredWorker() else try {
+                publish(activeStatuses) { it.copy(item = it.item.copy(status = DownloadStatus.FAILED,
+                    errorMessage = error.message?.take(2000) ?: "下载失败")) }
+            } catch (_: CancellationException) {
+                pauseRetiredWorker()
+            }
         }
     }
 
-    private suspend fun downloadOptionalAssets(id: String, directory: Path) {
-        val task = synchronized(lock) { mutableTasks.value.firstOrNull { it.id == id } } ?: throw CancellationException()
+    private suspend fun downloadOptionalAssets(task: DownloadTask, directory: Path,
+        publish: ((DownloadTask) -> DownloadTask) -> Unit) {
+        val id = task.id
         if (task.item.cover.isNotBlank() && task.item.assets.none { it.kind == DownloadAssetKind.COVER && it.status == DownloadAssetStatus.SKIPPED }) {
             val cover = directory.resolve("cover.jpg")
             try {
                 downloadAsset(id, requireMediaUrl(task.item.cover), cover, DownloadAssetKind.COVER)
-                update(id, true) { it.copy(item = it.item.copy(localCoverPath = cover.toString())) }
+                publish { it.copy(item = it.item.copy(localCoverPath = cover.toString())) }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (error: Exception) {
-                update(id, true) { it.copy(item = it.item.withAssetState(DownloadAssetState(
+                publish { it.copy(item = it.item.withAssetState(DownloadAssetState(
                     DownloadAssetKind.COVER, DownloadAssetStatus.FAILED, errorMessage = error.message))) }
             }
-        } else update(id, true) { it.copy(item = it.item.withAssetState(DownloadAssetState(DownloadAssetKind.COVER, DownloadAssetStatus.SKIPPED))) }
+        } else publish { it.copy(item = it.item.withAssetState(DownloadAssetState(DownloadAssetKind.COVER, DownloadAssetStatus.SKIPPED))) }
         if (task.item.options.includeDanmaku && task.item.cid > 0 && danmakuDownloader != null) {
             try {
                 val (segments, manifest) = danmakuDownloader.invoke(task, directory) { state ->
-                    update(id, true) { it.copy(item = it.item.withAssetState(state)) }
+                    publish { it.copy(item = it.item.withAssetState(state)) }
                 }
-                update(id, true) { it.copy(item = it.item.copy(localDanmakuSegmentPaths = segments, localDanmakuMetadataPath = manifest)) }
+                publish { it.copy(item = it.item.copy(localDanmakuSegmentPaths = segments, localDanmakuMetadataPath = manifest)) }
             } catch (cancelled: CancellationException) { throw cancelled
             } catch (error: Exception) {
-                update(id, true) { it.copy(item = it.item.withAssetState(DownloadAssetState(
+                publish { it.copy(item = it.item.withAssetState(DownloadAssetState(
                     DownloadAssetKind.DANMAKU, DownloadAssetStatus.FAILED, errorMessage = error.message))) }
             }
-        } else update(id, true) { it.copy(item = it.item.withAssetState(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.SKIPPED))) }
+        } else publish { it.copy(item = it.item.withAssetState(DownloadAssetState(DownloadAssetKind.DANMAKU, DownloadAssetStatus.SKIPPED))) }
     }
 
     private suspend fun downloadAsset(id: String, url: String, output: Path, kind: DownloadAssetKind, progressiveIndex: Int? = null) {
@@ -507,6 +569,7 @@ class DesktopDownloadManager internal constructor(
         val directory = Path.of(task.directory).toAbsolutePath().normalize()
         val root = Path.of(task.destinationRoot).toAbsolutePath().normalize()
         require(directory.parent == root && directory.fileName.toString() == DownloadTask.directoryName(task.id) && !Files.isSymbolicLink(directory))
+        if (Files.notExists(directory)) return // repeated retirement after the same directory was already removed
         val marker = directory.resolve(".bilipai-download")
         require(Files.isRegularFile(marker) && Files.readString(marker) == task.id) { "无法确认下载目录归属" }
         Files.walk(directory).use { paths -> paths.sorted(Comparator.reverseOrder()).forEach { Files.deleteIfExists(it) } }
