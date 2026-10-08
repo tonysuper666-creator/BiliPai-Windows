@@ -1,0 +1,21 @@
+{
+  "upstreamCommit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+  "scope": "Complete fixed v032 shared comment media policy and its public FormatUtils dependency only; full v032 parity unclaimed",
+  "fullV032ParityClaimed": false,
+  "sources": [
+    {
+      "path": "CommentMediaPolicy.kt",
+      "origin": "core-data/src/main/java/com/android/purebilibili/data/repository/CommentMediaPolicy.kt",
+      "bytes": 3419,
+      "sha256": "724c6dc1ebdf655a8958eb8dfad143d0c0dc3b59bf4299f6701f32422558ad39",
+      "gitBlob": "53560c0720e4a19b3d2ebe3467ae4c57c98ad994"
+    },
+    {
+      "path": "FormatUtils.kt",
+      "origin": "core-data/src/main/java/com/android/purebilibili/core/util/FormatUtils.kt",
+      "bytes": 7377,
+      "sha256": "ab1829cf65cb06d9483f2d93f380805c70d9e8aad828e7f99345edbf8e095535",
+      "gitBlob": "36a8ca64ff42391ca19294d2deee27e7b8e288e7"
+    }
+  ]
+}

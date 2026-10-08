@@ -1684,7 +1684,7 @@
       "features": [
         "discovery"
       ],
-      "mode": "direct"
+      "mode": "policy-extract"
     },
     {
       "path": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoCodecSessionPolicy.kt",
@@ -13691,5 +13691,17 @@
     "note": "Immutable source import only; existing extractors and new features still require alignment. No release acceptance."
   },
   "desktopMigrationAccepted": false,
-  "desktopMigrationBase": "ef29ad182d7ecc9c75a793a87bc78dcdfd83224d"
+  "desktopMigrationBase": "ef29ad182d7ecc9c75a793a87bc78dcdfd83224d",
+  "v032CommentMediaSlice": {
+    "upstreamCommit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+    "manifestPath": "upstream-slices/v032-comment-media/manifest.json",
+    "manifestSha256": "10e2a916dc753fbd730dbcfa16ab45d63216e2fd2d4e854ecbd54dac21320b4d",
+    "scope": "Shared display emote keys/pattern and comment picture URL, ratio, grid columns and constants; complete original policy and FormatUtils only",
+    "soleSharedSourceProducer": "tools/extract-upstream-dynamic-editor.py",
+    "existingRendererProducer": "tools/extract-upstream-dynamic-reply.py",
+    "canonicalInventoryAdvanced": false,
+    "fullV032ParityClaimed": false,
+    "validationStatus": "source-implementation-awaiting-validation",
+    "testsExecuted": false
+  }
 }

@@ -20,7 +20,8 @@ SOURCES = {
     BASE + "feature/home/PopularFeedPolicy.kt": "direct",
     BASE + "feature/home/HomeRefreshUiPolicy.kt": "direct",
     BASE + "feature/video/ui/components/CollectionEpisodePolicy.kt": "direct",
-    BASE + "core/util/FormatUtils.kt": "direct",
+    # The existing dynamic-editor producer owns the complete fixed public v032 FormatUtils.
+    BASE + "core/util/FormatUtils.kt": "policy-extract",
     BASE + "feature/home/HomeFeedMergePolicy.kt": "direct",
     BASE + "feature/home/HomeNotInterestedPolicy.kt": "direct",
     "network-core/src/main/java/com/android/purebilibili/core/network/policy/MergedAppFeedCookiePolicy.kt": "direct",

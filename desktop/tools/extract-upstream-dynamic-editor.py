@@ -6,6 +6,7 @@ Source drift rejects the build by manifest LF hash and exact fixed Git blob.
 from v025_source_paths import canonical_source as _desktop_canonical_source
 from v029_comment_time import apply as apply_original_comment_time
 from v029_reply_renderer import rich_link_policy as advance_reply_link_policy
+from v032_comment_media import emit_shared as emit_comment_media, adapt as adapt_comment_media
 from pathlib import Path
 import hashlib, importlib.util, json, sys
 sys.dont_write_bytecode = True
@@ -38,6 +39,8 @@ def generate(repo, output, standalone=False):
     host = load(repo, 'editor_host', 'desktop/tools/extract-upstream-plugins.py')
     media = host.media_extractor(repo); parser = media.parser_for(repo)
     output.mkdir(parents=True, exist_ok=True); files=[]
+    # Sole owner of the two whole fixed v032 shared Kotlin sources.
+    files.extend(emit_comment_media(repo, output))
     def emit(p,s,n): files.append(host.write(output,p,source_texts[p],s,n))
     def sub(s,a,b): return host.substitute(s,a,b)
     for p in DIRECT:
@@ -98,6 +101,7 @@ import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
     c=s.index('internal data class ReplyItemLayoutPolicy',b);d=s.index('@Composable\nfun ReplyHeader',c)
     body=s[a:b]+s[c:d]
     body+=appearance.declarations(parser,s,['normalizeHttpImageUrl','resolveDecorationImageUrl','parseHexColorOrNull'])
+    body=adapt_comment_media(body, 'rich-policy', output)
     emit(p,'''package com.android.purebilibili.feature.video.ui.components
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.*

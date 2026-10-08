@@ -9,6 +9,7 @@ from v029_comment_time import apply as apply_original_comment_time
 from v029_comment_search import charged_delta
 from v021_comment_renderer import adapt as adapt_comment_presentation
 from v029_reply_renderer import renderer as advance_reply_renderer
+from v032_comment_media import adapt as adapt_comment_media
 from pathlib import Path
 import hashlib
 import importlib.util
@@ -218,7 +219,9 @@ def generate(repo, output):
     assert ui.count(android_text_style) == 2, 'Original charged and TOP tag font-padding seams changed'
     ui = ui.replace(android_text_style, 'platformStyle = null,')
     shared=load(repo,'reply_new_log_boundary','desktop/tools/extract-upstream-dynamic-reply-protocol.py')
-    emit(REPLY, shared.drop_logs(adapt_common(imports + private_helpers + ui)), 'DesktopOriginalReplyComponents.kt')
+    reply_body = shared.drop_logs(adapt_common(imports + private_helpers + ui))
+    reply_body = adapt_comment_media(reply_body, 'reply-renderer', output)
+    emit(REPLY, reply_body, 'DesktopOriginalReplyComponents.kt')
 
     original = read(repo, SUB)
     original, sub_time_selection = apply_original_comment_time(repo, SUB, original)

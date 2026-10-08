@@ -1064,6 +1064,9 @@ val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.file("tools/v029_comment_time.py")
     inputs.file("tools/v029_reply_renderer.py")
+    inputs.file("tools/v032_comment_media.py")
+    inputs.dir("upstream-slices/v032-comment-media")
+    inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/util/FormatUtils.kt"))
     inputs.dir("upstream-slices/v029-comment-time")
     inputs.files(sources.filter { "dynamic-editor-detail-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
         .map { canonicalOriginalSource(it["path"].toString()) })
@@ -1095,6 +1098,8 @@ val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
         "tools/extract-upstream-media.py", "tools/extract-appearance-platform.py")
     inputs.file("tools/v029_comment_time.py")
     inputs.file("tools/v029_reply_renderer.py")
+    inputs.file("tools/v032_comment_media.py")
+    inputs.dir("upstream-slices/v032-comment-media")
     inputs.dir("upstream-slices/v029-comment-time")
     inputs.file("tools/v021_comment_renderer.py")
     inputs.files(sources.filter { "dynamic-detail-reply" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }

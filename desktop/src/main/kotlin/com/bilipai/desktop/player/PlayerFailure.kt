@@ -13,6 +13,8 @@ data class PlayerFailure(
     val sourceVersion: Long,
     val attemptId: Long,
     val httpStatus: Int? = null,
+    /** Actual warning/error timeout evidence retained before secret redaction. */
+    val networkTimedOut: Boolean = false,
 )
 
 /** Only warning/error events are retained, and only a terminal file error publishes a failure. */
@@ -22,13 +24,15 @@ internal class PlayerDiagnostics(private val capacity: Int = 32, private val max
     private var headerSecrets: List<String> = emptyList()
     private var streamHeaderPattern: Regex? = null
     private var networkEvidence = false
+    private var networkTimedOut = false
     private var decoderEvidence = false
     private var fileEvidence = false
     private var httpStatus: Int? = null
 
     fun reset(source: PlaybackSource?) {
         lines.clear(); characters = 0
-        networkEvidence = false; decoderEvidence = false; fileEvidence = false; httpStatus = null
+        networkEvidence = false; networkTimedOut = false
+        decoderEvidence = false; fileEvidence = false; httpStatus = null
         val explicit = source?.streamHeaders.orEmpty()
         headerSecrets = buildList {
             addAll(explicit.values.filter(String::isNotBlank))
@@ -52,6 +56,7 @@ internal class PlayerDiagnostics(private val capacity: Int = 32, private val max
         val evidence = bounded.lowercase()
         HTTP_STATUS.find(evidence)?.groupValues?.getOrNull(1)?.toIntOrNull()?.let { httpStatus = it }
         networkEvidence = networkEvidence || NETWORK.containsMatchIn(evidence)
+        networkTimedOut = networkTimedOut || NETWORK_TIMEOUT.containsMatchIn(evidence)
         decoderEvidence = decoderEvidence || DECODER.containsMatchIn(evidence)
         fileEvidence = fileEvidence || LOCAL_FILE.containsMatchIn(evidence)
         val safe = sanitize(bounded).trim().take(2_000)
@@ -87,7 +92,8 @@ internal class PlayerDiagnostics(private val capacity: Int = 32, private val max
             code == -17 || code == -18 || code == -19 -> PlayerFailureKind.UNSUPPORTED
             else -> PlayerFailureKind.UNKNOWN
         }
-        return PlayerFailure(kind, code, safeMessage, lines.toList(), sourceVersion, attemptId, httpStatus)
+        return PlayerFailure(kind, code, safeMessage, lines.toList(), sourceVersion, attemptId, httpStatus,
+            networkTimedOut = kind == PlayerFailureKind.NETWORK && networkTimedOut)
     }
 
     companion object {
@@ -98,6 +104,7 @@ internal class PlayerDiagnostics(private val capacity: Int = 32, private val max
         private val HTTP_STATUS = Regex("(?:http(?: error| status| response(?: code)?)?|server returned|http/[0-9.]+)\\s*[:=]?\\s*([45][0-9]{2})\\b")
         private val NETWORK = Regex("connection (?:timed? ?out|refused|reset|failed)|(?:network|operation|read) (?:is unreachable|timed? ?out)|failed to resolve|could not resolve|name or service not known|temporary failure in name resolution|tls (?:error|handshake)|ssl (?:error|handshake)|server returned [45][0-9]{2}")
         private val DECODER = Regex("(?:decoder|decode|decoding|vd_lavc|ad_lavc|d3d11va|dxva2|hwdec|renderer).*(?:failed|failure|error|not found|unsupported|could not|cannot)|(?:failed|could not|cannot).*(?:decoder|decode|decoding|renderer)")
+        private val NETWORK_TIMEOUT = Regex("connection timed? ?out|(?:network|operation|read) timed? ?out")
         private val LOCAL_FILE = Regex("no such file or directory|file not found|permission denied|access (?:is )?denied|cannot open local file")
     }
 }

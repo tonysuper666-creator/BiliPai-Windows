@@ -41,7 +41,10 @@ internal fun DesktopLivePageMemory.installLivePlayback(info: LivePlaybackInfo,
     snapshot: OwnedPlaybackSourceSnapshot, ports: DesktopLiveRecoveryPorts, resetBudget: Boolean = true) {
     stream = info; sourceVersion = snapshot.sourceVersion; liveSourceSnapshot = snapshot
     recoveryPorts = ports; handledLiveFailure = null
-    if (resetBudget) remainingLiveReloadAttempts = MAX_PLAYBACK_RELOAD_ATTEMPTS
+    if (resetBudget) {
+        remainingLiveReloadAttempts = MAX_PLAYBACK_RELOAD_ATTEMPTS
+        remainingLiveNativeReprepareAttempts = MAX_PLAYBACK_RELOAD_ATTEMPTS
+    }
     if (recoveryObserver == null) recoveryObserver = scope.launch(start = CoroutineStart.UNDISPATCHED) {
         player?.state?.collect { state ->
             val binding = captureLiveSourceBinding() ?: return@collect
@@ -81,18 +84,22 @@ internal class DesktopLiveSourceBinding(
     }
 
     private fun commit(next: LivePlaybackInfo, failure: PlayerFailure?, resetBudget: Boolean, caller: Job? = null,
-        presentationCurrent: () -> Boolean = { true }, cancelPending: Boolean = false): Boolean {
+        presentationCurrent: () -> Boolean = { true }, cancelPending: Boolean = false,
+        nativeReprepare: Boolean = false, softwareFallback: Boolean = false): Boolean {
         var accepted = false
         ports.admit {
             if (!memoryCurrent() || caller?.isActive == false || !presentationCurrent()) return@admit
             player.admitSourceSnapshot(source) {
                 if (!memoryCurrent() || caller?.isActive == false || !presentationCurrent() ||
-                    (failure != null && player.state.value.failure !== failure)) return@admitSourceSnapshot
+                    (failure != null && player.state.value.failure !== failure) ||
+                    (nativeReprepare && memory.remainingLiveNativeReprepareAttempts <= 0)) return@admitSourceSnapshot
                 if (cancelPending) memory.playJob?.takeIf { it !== caller }?.cancel()
                 // Live source replacement prepares at the live edge and retains
                 // the user's current play/pause intent, like original prepare().
                 if (player.recoverSource(source.sourceVersion, next.source.toNativePlayback(), positionSeconds = 0.0,
-                    paused = player.state.value.paused, expectedFailureAttemptId = failure?.attemptId)) {
+                    paused = player.state.value.paused, forceSoftwareDecoding = softwareFallback,
+                    expectedFailureAttemptId = failure?.attemptId)) {
+                    if (nativeReprepare) memory.remainingLiveNativeReprepareAttempts -= 1
                     memory.installLivePlayback(next, requireNotNull(player.currentSourceSnapshot()), ports, resetBudget)
                     memory.loaded = true; memory.error = null; accepted = true
                 }
@@ -119,8 +126,10 @@ internal class DesktopLiveSourceBinding(
         ports.admit {
             if (!memoryCurrent()) return@admit
             player.admitSourceSnapshot(source) {
-                if (memoryCurrent() && player.state.value === state && outputStarted())
+                if (memoryCurrent() && player.state.value === state && outputStarted()) {
                     memory.remainingLiveReloadAttempts = MAX_PLAYBACK_RELOAD_ATTEMPTS
+                    memory.remainingLiveNativeReprepareAttempts = MAX_PLAYBACK_RELOAD_ATTEMPTS
+                }
             }
         }
     }
@@ -131,6 +140,21 @@ internal class DesktopLiveSourceBinding(
         if (resolveLivePlaybackErrorRecovery(DesktopLiveFailureCode.from(failure), failure.httpStatus) !=
             LivePlaybackErrorRecovery.TRY_NEXT_SOURCE) return
         memory.handledLiveFailure = failure
+        val state = player.state.value
+        val decoderFailure = failure.kind == PlayerFailureKind.DECODER
+        val audioInitializationFailure = failure.kind == PlayerFailureKind.AUDIO_OUTPUT && failure.nativeCode == -14
+        if (memory.remainingLiveNativeReprepareAttempts > 0 && (decoderFailure || audioInitializationFailure)) {
+            // A terminal native decoder/AO-init failure can be transient. Keep the
+            // user's selected candidate and URL for one new native attempt first.
+            // Software fallback changes only the existing per-source video guard;
+            // it never changes the persistent hardware preference, audio device,
+            // exclusive mode, only-audio selection, room, requested quality or URL.
+            val softwareFallback = decoderFailure && !memory.onlyAudio && !state.audioOnly &&
+                state.hardwareDecodeEnabled && !state.softwareDecodingRequested
+            if (commit(info, failure, resetBudget = false, nativeReprepare = true,
+                    softwareFallback = softwareFallback)) return
+            if (!current() || player.state.value.failure !== failure) return
+        }
         val playback = info.resolvedPlayback ?: return
         when (val next = advanceLivePlayback(playback, info.candidateIndex, info.urlIndex)) {
             is LiveAdvanceResult.NextSource -> selected(next.candidateIndex, next.urlIndex)?.let {

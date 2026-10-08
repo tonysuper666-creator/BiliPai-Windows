@@ -14,10 +14,15 @@ internal enum class DesktopLiveFailureCode {
     UNKNOWN;
 
     companion object {
-        fun from(failure: PlayerFailure): DesktopLiveFailureCode = when (failure.kind) {
-            PlayerFailureKind.NETWORK -> ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
-            PlayerFailureKind.DECODER -> ERROR_CODE_DECODING_FAILED
-            PlayerFailureKind.AUDIO_OUTPUT -> ERROR_CODE_AUDIO_TRACK_INIT_FAILED
+        fun from(failure: PlayerFailure): DesktopLiveFailureCode = when {
+            failure.kind == PlayerFailureKind.NETWORK && failure.httpStatus != null -> ERROR_CODE_IO_BAD_HTTP_STATUS
+            failure.kind == PlayerFailureKind.NETWORK && failure.networkTimedOut -> ERROR_CODE_IO_NETWORK_CONNECTION_TIMEOUT
+            failure.kind == PlayerFailureKind.NETWORK -> ERROR_CODE_IO_NETWORK_CONNECTION_FAILED
+            failure.kind == PlayerFailureKind.DECODER -> ERROR_CODE_DECODING_FAILED
+            // libmpv MPV_ERROR_AO_INIT_FAILED (-14) identifies initialization,
+            // not an audio write failure. No generic MPV EOF/seek/cache signal
+            // proves Media3 ERROR_CODE_BEHIND_LIVE_WINDOW.
+            failure.kind == PlayerFailureKind.AUDIO_OUTPUT && failure.nativeCode == -14 -> ERROR_CODE_AUDIO_TRACK_INIT_FAILED
             else -> UNKNOWN
         }
     }
