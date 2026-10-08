@@ -15,11 +15,21 @@ import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import com.android.purebilibili.core.store.StoredAccountSession
 
+/** Immutable receipt of the PRIMARY account and the last successful explicit UI credential install.
+ * The opaque in-memory stamp contains no credentials and is owned only by the existing Store. */
+internal class DesktopHomeNavRequestReceipt internal constructor(
+    val epoch: Long,
+    val mid: Long?,
+    internal val uiLoginInstallationStamp: Any,
+)
+
 /** Server cookies retain their scope; explicitly authorized account credentials cover Bilibili hosts. */
 internal class DesktopSessionStore(private val path: Path = defaultPath(), private val persistent: Boolean = true) : CookieJar, DesktopDynamicCacheSessionGuard {
     private val json = Json { ignoreUnknownKeys = true }
     private val lock = Any()
     private var saved = if (persistent) readSaved() else SavedSession()
+    // Replaced only after saveLoginAccount actually persists. Identical credentials may keep generation unchanged.
+    private var primaryUiLoginInstallationStamp = Any()
     private val mutableGeneration = MutableStateFlow(0L)
     val generationState = mutableGeneration.asStateFlow()
     @Volatile var generation: Long = 0
@@ -180,19 +190,32 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
     internal fun homeRequestCookies(expectedGeneration: Long, stillOwned: () -> Boolean): Map<String, String> =
         withHomeRequestAdmission(expectedGeneration, stillOwned) { currentCookies() }
 
+    internal fun captureHomeNavRequest(expectedGeneration: Long, expectedMid: Long?,
+        stillOwned: () -> Boolean): DesktopHomeNavRequestReceipt = synchronized(lock) {
+        if (generation != expectedGeneration || saved.account?.mid != expectedMid || !stillOwned())
+            throw CancellationException("Home nav request source retired")
+        DesktopHomeNavRequestReceipt(generation, saved.account?.mid, primaryUiLoginInstallationStamp)
+    }
+
+    /** Receipt check under the existing Store monitor; callers add the originating entry gate in Store -> entry order. */
+    internal fun withCurrentHomeNavRequest(receipt: DesktopHomeNavRequestReceipt,
+        stillOwned: () -> Boolean, block: () -> Unit): Boolean = synchronized(lock) {
+        if (generation != receipt.epoch || saved.account?.mid != receipt.mid ||
+            primaryUiLoginInstallationStamp !== receipt.uiLoginInstallationStamp || !stillOwned())
+            return@synchronized false
+        block()
+        true
+    }
+
     /** Original TokenManager MID/VIP cache intent is projected into this existing account.
      * Never adopt another MID or credentials, and never increment epoch for a profile flag. */
-    internal fun updateHomeNavIdentity(expectedGeneration: Long, expectedMid: Long?, navMid: Long?, isVip: Boolean,
-        onAuthenticationInvalidated: (Long, Long) -> Unit): Boolean = synchronized(lock) {
+    internal fun updateHomeNavIdentity(expectedGeneration: Long, expectedMid: Long?, navMid: Long?, isVip: Boolean): Boolean = synchronized(lock) {
         if (generation != expectedGeneration || saved.account?.mid != expectedMid) return@synchronized false
         val current = saved.account
         if (current == null) return@synchronized navMid == null
-        if (navMid == null) {
-            // A current AUTH nav=-101 is an input to Root's existing account lifecycle, not
-            // permission to silently clear/relabel the saved account or its credentials.
-            onAuthenticationInvalidated(expectedGeneration, current.mid)
-            return@synchronized true
-        }
+        // The original guest cache projection does not carry a request receipt. AUTH observation
+        // is emitted by the actual getNavInfo caller; never manufacture a late epoch/MID-only event here.
+        if (navMid == null) return@synchronized true
         if (navMid != current.mid) return@synchronized false
         if (current.isVip == isVip) return@synchronized true
         val updated = current.copy(isVip = isVip)
@@ -326,6 +349,8 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         val sourceMid = saved.account?.mid
         saveAccount(cookies, account, imported = true, credentials = credentials,
             preserveAccessToken = false, snapshot = snapshot)
+        // Same monitor, only after the original save/persist succeeded; failed installs leave the old stamp.
+        primaryUiLoginInstallationStamp = Any()
         DesktopLoginInstallationReceipt(expectedEpoch, sourceMid, generation, account.mid)
     }
 

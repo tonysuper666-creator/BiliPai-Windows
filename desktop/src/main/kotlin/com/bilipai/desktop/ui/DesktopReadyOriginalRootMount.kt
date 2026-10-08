@@ -78,7 +78,7 @@ internal class DesktopReadyOriginalRootServices(
     val activeDestinationChanged: (BiliPaiNavKey) -> Unit,
     val feedback: (String) -> Unit,
     val openExternalLink: (String) -> Unit,
-    val authenticationInvalidated: (Long, Long) -> Unit,
+    val authenticationInvalidated: (DesktopHomeAuthenticationInvalidation) -> Unit,
     val profileAccounts: (DesktopHomeRetainedGate) -> DesktopProfileAccountPort,
     val backAtHomeRoot: () -> Unit,
     val login: () -> Unit,

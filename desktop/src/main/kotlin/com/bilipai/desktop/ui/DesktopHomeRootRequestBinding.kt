@@ -4,6 +4,20 @@ import com.android.purebilibili.core.network.*
 import com.bilipai.desktop.data.*
 import kotlinx.coroutines.*
 
+/** A per-nav source borrows this exact original Home binding/gate. It owns no Job, Store or page.
+ * The request child may finish normally before an enqueued invalidation is consumed. */
+internal class DesktopHomeNavRequestSource internal constructor(
+    val receipt: DesktopHomeNavRequestReceipt,
+    private val binding: DesktopHomeRootRequestBinding,
+) {
+    internal fun belongsTo(owner: DesktopHomeRootRequestBinding) = binding === owner
+    fun commitIfCurrent(block: () -> Unit): Boolean = binding.commitNavSource(block)
+}
+
+/** Only a successful original NavData(isLogin=false) from a logged-in primary request creates this.
+ * This is a Home AUTH observation, not the failure origin of an arbitrary current Video leaf. */
+internal class DesktopHomeAuthenticationInvalidation internal constructor(val source: DesktopHomeNavRequestSource)
+
 /** A retained epoch's API views and the complete original protocols. The ONLY HTTP client,
  * cookie admission, session backing, WBI cache and visitor bootstrap remain in repository.
  * The required invalidation callback must enqueue Root's real account lifecycle event. */
@@ -14,8 +28,8 @@ internal class DesktopHomeRootRequestBinding(
     val capturedEpoch:Long,
     private val capturedMid:Long?,
     private val isCurrent:()->Boolean,
-    commitIfCurrent:((()->Unit)->Boolean),
-    private val onAuthenticationInvalidated:(epoch:Long,mid:Long)->Unit,
+    private val commitIfCurrent:((()->Unit)->Boolean),
+    private val onAuthenticationInvalidated:(DesktopHomeAuthenticationInvalidation)->Unit,
 ) : AutoCloseable {
     private val closed=java.util.concurrent.atomic.AtomicBoolean(false)
     private val requestJob=SupervisorJob(parentScope.coroutineContext[Job])
@@ -38,10 +52,32 @@ internal class DesktopHomeRootRequestBinding(
         {repository.ownedHomeCookie("buvid3",capturedEpoch,::owns)},
         {repository.assertOwnedHomeSessionRestored(capturedEpoch,::owns)},
         {repository.ensureOwnedHomeSession(capturedEpoch,::owns,buvid)})
-    val ports=DesktopHomeRequestPorts(environment)
+    private fun beginNavRequest(callerJob: Job): DesktopHomeNavRequestSource {
+        val receipt = repository.captureHomeNavRequest(capturedEpoch, capturedMid) { callerJob.isActive && owns() }
+        return DesktopHomeNavRequestSource(receipt, this)
+    }
+    internal fun commitNavSource(block: () -> Unit): Boolean {
+        var applied = false
+        val admitted = commitIfCurrent { if (owns()) { block(); applied = true } }
+        return admitted && applied
+    }
+    private fun observeNavResult(source: DesktopHomeNavRequestSource, isLogin: Boolean, callerJob: Job) {
+        if (!source.belongsTo(this)) throw CancellationException("Home nav request has a foreign source")
+        var applied = false
+        val admitted = repository.withCurrentHomeNavRequest(source.receipt, ::owns) {
+            applied = source.commitIfCurrent {
+                // The actual executing child must still be live when it publishes; queue lifetime uses the retained owner.
+                if (!callerJob.isActive) throw CancellationException("Home nav request caller retired")
+                if (!isLogin && (source.receipt.mid ?: 0L) > 0L)
+                    onAuthenticationInvalidated(DesktopHomeAuthenticationInvalidation(source))
+            }
+        }
+        if (!admitted || !applied) throw CancellationException("Home nav result source retired")
+    }
+    val ports=DesktopHomeRequestPorts(environment, ::beginNavRequest, ::observeNavResult)
     fun setNavIdentity(mid:Long?,isVip:Boolean){
         assertOwned()
-        if(!repository.updateHomeNavIdentity(capturedEpoch,capturedMid,mid,isVip,onAuthenticationInvalidated))
+        if(!repository.updateHomeNavIdentity(capturedEpoch,capturedMid,mid,isVip))
             throw CancellationException("Home nav response has a foreign account owner")
     }
     override fun close(){if(closed.compareAndSet(false,true)){requestJob.cancel();ports.close()}}

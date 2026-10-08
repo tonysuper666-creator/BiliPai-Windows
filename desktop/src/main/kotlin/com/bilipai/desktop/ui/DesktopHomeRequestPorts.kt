@@ -3,12 +3,17 @@ package com.bilipai.desktop.ui
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.*
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 
 /** Facade only. All selected request/parse/fallback/cache algorithms remain in original protocols;
  * account/CookieJar admission must additionally be provided by Root's owner-bound Call.Factory. */
-internal class DesktopHomeRequestPorts(private val environment:DesktopHomeProtocolEnvironment) : AutoCloseable {
+internal class DesktopHomeRequestPorts(
+    private val environment:DesktopHomeProtocolEnvironment,
+    private val beginNavRequest: (Job) -> DesktopHomeNavRequestSource,
+    private val observeNavResult: (DesktopHomeNavRequestSource, Boolean, Job) -> Unit,
+) : AutoCloseable {
     private val originalVideo=DesktopOriginalHomeVideoProtocol(environment)
     private val originalHistory=DesktopOriginalHomeHistoryProtocol(environment.api)
     private val originalLive=DesktopOriginalHomeLiveProtocol(environment.api)
@@ -31,7 +36,17 @@ internal class DesktopHomeRequestPorts(private val environment:DesktopHomeProtoc
         override suspend fun getWeeklyMustWatchVideos()=result {originalVideo.getWeeklyMustWatchVideos()}
         override suspend fun getPreciousVideos()=result {originalVideo.getPreciousVideos()}
         override suspend fun getRegionVideos(tid:Int,page:Int)=result {originalVideo.getRegionVideos(tid,page)}
-        override suspend fun getNavInfo()=result {originalVideo.getNavInfo()}
+        override suspend fun getNavInfo()=result {
+            val caller = currentCoroutineContext()
+            val callerJob = requireNotNull(caller[Job]) { "Home nav requires its actual caller Job" }
+            caller.ensureActive()
+            val source = beginNavRequest(callerJob)
+            // Preserve the complete original parser: -101 is success(false), other failures stay Result.failure.
+            val response = originalVideo.getNavInfo()
+            caller.ensureActive()
+            response.onSuccess { nav -> observeNavResult(source, nav.isLogin, callerJob) }
+            response
+        }
         override suspend fun getPreviewVideoUrl(bvid:String,cid:Long)=owned {originalVideo.getPreviewVideoUrl(bvid,cid)}
         override suspend fun isVerticalVideo(bvid:String,aid:Long)=owned {originalVideo.isVerticalVideo(bvid,aid)}
     }

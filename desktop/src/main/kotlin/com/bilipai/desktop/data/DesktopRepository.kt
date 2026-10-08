@@ -475,9 +475,14 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     internal fun assertOwnedHomeSessionRestored(expectedEpoch: Long, stillOwned: () -> Boolean) =
         sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) { Unit }
 
-    internal fun updateHomeNavIdentity(expectedEpoch: Long, expectedMid: Long?, navMid: Long?, isVip: Boolean,
-        onAuthenticationInvalidated: (Long, Long) -> Unit): Boolean =
-        sessions.updateHomeNavIdentity(expectedEpoch, expectedMid, navMid, isVip, onAuthenticationInvalidated)
+    internal fun captureHomeNavRequest(expectedEpoch: Long, expectedMid: Long?,
+        stillOwned: () -> Boolean): DesktopHomeNavRequestReceipt =
+        sessions.captureHomeNavRequest(expectedEpoch, expectedMid, stillOwned)
+    internal fun withCurrentHomeNavRequest(receipt: DesktopHomeNavRequestReceipt,
+        stillOwned: () -> Boolean, block: () -> Unit): Boolean =
+        sessions.withCurrentHomeNavRequest(receipt, stillOwned, block)
+    internal fun updateHomeNavIdentity(expectedEpoch: Long, expectedMid: Long?, navMid: Long?, isVip: Boolean): Boolean =
+        sessions.updateHomeNavIdentity(expectedEpoch, expectedMid, navMid, isVip)
 
 
     /** All Profile reads/writes are admitted by THIS same Store, then Root's entry gate.
@@ -903,19 +908,17 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         sessions.logout()
     }
 
-    /** AUTH Home nav invalidation: account mutation under the SAME Store admission only.
-     * The caller drains its event outside the Store callback; HTTP cancellation occurs after
-     * admission releases the Store monitor. Retired/foreign events never log out an account. */
-    internal fun logoutHomeAuthenticationInvalidated(expectedEpoch: Long, expectedMid: Long,
-        stillOwned: () -> Boolean): Boolean {
-        val applied = try {
-            sessions.withHomeRequestAdmission(expectedEpoch, stillOwned) {
-                if (expectedMid <= 0L || sessions.account.value?.mid != expectedMid) false
-                else { sessions.logout(); true }
+    /** Primary Home nav invalidation from its immutable actual request source. Queue draining,
+     * dispatcher cancellation and Root replacement remain outside these admissions. The original
+     * originating entry gate fences the same original Store logout/persist actor. */
+    internal fun logoutHomeAuthenticationInvalidated(receipt: DesktopHomeNavRequestReceipt,
+        commitIfCurrent: ((() -> Unit) -> Boolean), stillOwned: () -> Boolean): Boolean {
+        var applied = false
+        sessions.withCurrentHomeNavRequest(receipt, stillOwned) {
+            if ((receipt.mid ?: 0L) > 0L) commitIfCurrent {
+                // Recheck Window admission inside the original entry gate, after taking its monitor.
+                if (stillOwned()) { sessions.logout(); applied = true }
             }
-        } catch (failure: BiliApiException) {
-            if (failure.apiCode == -101) return false
-            throw failure
         }
         if (applied) resetAuthentication()
         return applied

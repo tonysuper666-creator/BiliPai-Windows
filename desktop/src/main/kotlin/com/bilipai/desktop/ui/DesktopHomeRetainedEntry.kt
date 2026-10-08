@@ -78,7 +78,7 @@ internal class DesktopHomeRetainedEntry private constructor(
             privacyModeEnabledSync: () -> Boolean,
             identityAnalyticsFactory: (DesktopHomeRetainedGate) -> DesktopHomeIdentityAnalytics,
             actualBlockedRepository: DesktopBlockedUpRepository,
-            onAuthenticationInvalidated: (Long, Long) -> Unit,
+            onAuthenticationInvalidated: (DesktopHomeAuthenticationInvalidation) -> Unit,
             feedback: (String) -> Unit,
             embeddedPagesFactory: (DesktopHomeRetainedGate, DesktopHomeRootRequestBinding) -> DesktopHomeEmbeddedRetainedOwner,
         ): DesktopHomeRetainedEntry {

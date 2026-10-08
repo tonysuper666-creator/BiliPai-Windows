@@ -767,13 +767,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var manuallyRequested by remember { mutableStateOf(false) }
     // Store's nav invalidation callback only enqueues. Never start inline coroutine cleanup
     // or dispatcher cancellation while that original Store callback owns its monitor.
-    val authenticationInvalidations = remember(repository) { Channel<Pair<Long,Long>>(Channel.UNLIMITED) }
+    val authenticationInvalidations = remember(repository) { Channel<DesktopHomeAuthenticationInvalidation>(Channel.UNLIMITED) }
     DisposableEffect(authenticationInvalidations) { onDispose { authenticationInvalidations.close() } }
     LaunchedEffect(repository, authenticationInvalidations) {
-        for ((expectedEpoch, expectedMid) in authenticationInvalidations) {
+        for (event in authenticationInvalidations) {
             if (isClosing() || activatingUpdate || !scope.isActive) continue
             try {
-                if(repository.logoutHomeAuthenticationInvalidated(expectedEpoch,expectedMid,
+                if(repository.logoutHomeAuthenticationInvalidated(event.source.receipt,event.source::commitIfCurrent,
                     {!isClosing() && !activatingUpdate && scope.isActive}))
                     error="登录信息已失效，请重新登录"
             } catch(cancelled: CancellationException) { throw cancelled }
@@ -1745,7 +1745,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             initialVideoConsumed=true;rootRoutes()?.video(BiliPaiNavKey.VideoDetail(initialVideo,sourceRoute="home"))
                         } },
                     {error=it}, {raw->openDynamicWeb(raw,"链接")},
-                    { expectedEpoch,expectedMid -> authenticationInvalidations.trySend(expectedEpoch to expectedMid); Unit },
+                    { event -> authenticationInvalidations.trySend(event); Unit },
                     { gate -> DesktopProfileAccountsBinding(repository,gate.epoch,gate.mid,
                         requireNotNull(gate.scope.coroutineContext[Job]),gate::owns,gate::commit,
                         { homeRootRef.get()?.navigation?.cancelLoginReturnForSource(gate.epoch, gate.mid) }) },

@@ -61,7 +61,7 @@ internal class DesktopReadyHomeFactoryBinding(
     private val returnPorts: DesktopHomeRootReturnPorts,
     private val feedback: (String) -> Unit,
     private val openLink: (String) -> Unit,
-    private val invalidateAuthentication: (Long, Long) -> Unit,
+    private val invalidateAuthentication: (DesktopHomeAuthenticationInvalidation) -> Unit,
     private val rootPublished: (DesktopHomeRetainedGate) -> Boolean,
 ) {
     private val systemWallpaper = DesktopWindowsSystemWallpaperPort()

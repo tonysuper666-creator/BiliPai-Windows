@@ -113,7 +113,7 @@ internal class DesktopHomeRootFactory(
     private val window: DesktopHomeRootWindowBindings,
     private val incrementalRefresh: StateFlow<Boolean>,
     private val privacyModeEnabledSync: () -> Boolean,
-    private val onAuthenticationInvalidated: (Long, Long) -> Unit,
+    private val onAuthenticationInvalidated: (DesktopHomeAuthenticationInvalidation) -> Unit,
     private val navigation: DesktopHomeRootReturnPorts,
 ) {
     init {
