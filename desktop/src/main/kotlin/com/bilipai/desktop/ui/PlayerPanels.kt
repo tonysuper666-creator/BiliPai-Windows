@@ -18,6 +18,9 @@ import com.android.purebilibili.feature.video.playback.audio.AudioSelectionDecis
 import com.android.purebilibili.feature.video.playback.audio.resolveAudioQualityControlPresentation
 import com.android.purebilibili.feature.video.subtitle.*
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.swing.Swing
@@ -158,17 +161,23 @@ fun PlayerPanel(
                 }
             }) { Text(if (busyScreenshot) "截图中…" else "截图") }
             TextButton(enabled = state.ready && state.durationSeconds > 0, onClick = {
-                val owner = player.currentSourceVersion
+                val owner = state.nativeTrackIdentity ?: return@TextButton
+                // The remembered panel scope survives a normal launch completion; disposal cancels it.
+                val caller = scope.coroutineContext[Job]?.takeIf { it.isActive } ?: return@TextButton
                 scope.launch {
                     try {
                         chooseSubtitleFile(player)?.let { path ->
-                            if (player.currentSourceVersion != owner) return@launch
-                            onManualSubtitleSelection()
-                            player.addSubtitle(path)
-                            player.setSubtitlesVisible(true)
-                            message("正在载入字幕：${path.fileName}")
+                            currentCoroutineContext().ensureActive()
+                            if (!player.addSubtitleForIdentity(owner, path, caller = caller) || !player.setSubtitlesVisibleForIdentity(owner, true, caller)) return@launch
+                            if (caller.isActive && player.isNativeTrackIdentityCurrent(owner)) {
+                                onManualSubtitleSelection()
+                                message("正在载入字幕：${path.fileName}")
+                            }
                         }
-                    } catch (failure: Exception) { if (failure is CancellationException) throw failure; message(failure.message ?: "字幕加载失败") }
+                    } catch (failure: Exception) {
+                        if (failure is CancellationException) throw failure
+                        if (caller.isActive && player.isNativeTrackIdentityCurrent(owner)) message(failure.message ?: "字幕加载失败")
+                    }
                 }
             }) { Text("载入字幕") }
             if (onOnlineSubtitles != null) TextButton(onClick = onOnlineSubtitles) { Text("在线视频字幕") }
@@ -204,7 +213,11 @@ fun PlayerPanel(
                     PlayerTrackMenu("副字幕", subtitleTracks, { it.selected && it.mainSelection == 1 }, {
                         if (player.selectSecondarySubtitleTrackForIdentity(identity, it) && player.isNativeTrackIdentityCurrent(identity)) onManualSubtitleSelection()
                     })
-                    FilterChip(selected = state.subtitlesVisible, onClick = { onManualSubtitleSelection(); player.setSubtitlesVisible(!state.subtitlesVisible) }, label = { Text("显示字幕") })
+                    FilterChip(selected = state.subtitlesVisible, onClick = {
+                        scope.coroutineContext[Job]?.let { caller ->
+                            if (player.setSubtitlesVisibleForIdentity(identity, !state.subtitlesVisible, caller) && caller.isActive && player.isNativeTrackIdentityCurrent(identity)) onManualSubtitleSelection()
+                        }
+                    }, label = { Text("显示字幕") })
                 }
             } }
             if (onClose != null) TextButton(onClick = onClose) { Text("关闭播放") }
