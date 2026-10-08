@@ -69,7 +69,7 @@ internal class DesktopHomeRootRequestBinding(
         {repository.ownedHomeCookie("bili_jct",capturedEpoch,::isMountedSourceCurrent)},
         {repository.ownedHomeCookie("buvid3",capturedEpoch,::isMountedSourceCurrent)},
         {repository.assertOwnedHomeSessionRestored(capturedEpoch,::isMountedSourceCurrent)},
-        {repository.ensureOwnedHomeSession(capturedEpoch,::isMountedSourceCurrent,buvid)})
+        {repository.ensureOwnedHomeSession(capturedEpoch,::isMountedSourceCurrent,buvid,::withMountedPublication)})
     private fun beginNavRequest(callerJob: Job): DesktopHomeNavRequestSource {
         var receipt: DesktopHomeNavRequestReceipt? = null
         // Capture the ORIGINAL per-request receipt in the same mounted Store->entry gate.

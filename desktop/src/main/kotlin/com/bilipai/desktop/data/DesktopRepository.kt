@@ -454,8 +454,13 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     }
 
     internal suspend fun ensureOwnedHomeSession(expectedEpoch: Long, stillOwned: () -> Boolean,
-        ownedBuvidApi: BuvidApi) = ensureVisitorSession(expectedEpoch, stillOwned,
-            ownedHomeCallFactory(expectedEpoch, stillOwned), ownedBuvidApi)
+        ownedBuvidApi: BuvidApi, publishIfCurrent: ((() -> Unit) -> Boolean)? = null) {
+        val caller = currentCoroutineContext()
+        fun current() = caller[kotlinx.coroutines.Job]?.isActive != false && stillOwned()
+        caller.ensureActive()
+        ensureVisitorSession(expectedEpoch, ::current,
+            ownedHomeCallFactory(expectedEpoch, ::current), ownedBuvidApi, publishIfCurrent)
+    }
 
     /** Existing visitor SPI/bootstrap completion only, not Android activation proof. */
     internal fun ownedHomeVisitorInitialized(expectedEpoch: Long, stillOwned: () -> Boolean): Boolean =
@@ -567,8 +572,14 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
                 resetAuthentication()
                 if (expectedLoginEpoch != null || onLoginInstalled != null) {
                     val caller = currentCoroutineContext()
-                    installedReceipt = sessions.saveLoginAccount(cookies, summary, credentials, snapshot, epoch) {
-                        caller.ensureActive(); stillOwned()
+                    installedReceipt = sessions.withHomeRequestAdmission(epoch, { caller.ensureActive(); stillOwned() }) {
+                        val receipt = sessions.saveLoginAccount(cookies, summary, credentials, snapshot, epoch) {
+                            caller.ensureActive(); stillOwned()
+                        }
+                        // Successful persistence may advance generation; do not recheck the old epoch.
+                        // Clear after the original UI stamp installation in the SAME Store monitor.
+                        visitorInitialized = false
+                        receipt
                     }
                 } else sessions.saveAccount(cookies, summary, imported = true, credentials = credentials, preserveAccessToken = false, snapshot = snapshot)
             } else {
@@ -926,26 +937,55 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     private suspend fun ensureVisitorSession(expectedEpoch: Long? = null,
         stillOwned: () -> Boolean = { true }, callFactory: okhttp3.Call.Factory = client,
-        visitorApi: BuvidApi = buvidApi) = visitorMutex.withLock {
-        val generation = expectedEpoch ?: sessions.generation
-        if (generation != sessions.generation || !stillOwned()) throw CancellationException("Visitor owner retired")
-        if (visitorInitialized && visitorGeneration == generation) return@withLock
-        // Standard visitor bootstrap, once per process. It does not attempt to bypass a security challenge.
-        callFactory.newCall(Request.Builder().url("https://www.bilibili.com/")
-            .header("Accept", "text/html,application/xhtml+xml").build()).execute().use { response ->
-            if (!response.isSuccessful) throw BiliApiException(response.code, "无法初始化 B 站访客会话 (${response.code})")
+        visitorApi: BuvidApi = buvidApi, publishIfCurrent: ((() -> Unit) -> Boolean)? = null) {
+        // Borrow the actual invocation before waiting; this creates no new Job or owner.
+        val caller = currentCoroutineContext()
+        fun current() = caller[kotlinx.coroutines.Job]?.isActive != false && stillOwned()
+        caller.ensureActive()
+        visitorMutex.withLock {
+            val generation = expectedEpoch ?: sessions.generation
+            if (generation != sessions.generation || !current()) throw CancellationException("Visitor owner retired")
+            val receipt = sessions.withHomeRequestAdmission(generation, ::current) {
+                // MID and installation stamp are captured under the SAME existing Store monitor.
+                sessions.captureHomeNavRequest(generation, sessions.activeAccountMid(), ::current)
+            }
+            fun publish(block: () -> Unit) {
+                var applied = false
+                var entryAdmitted = false
+                val admitted = sessions.withCurrentHomeNavRequest(receipt, ::current) {
+                    val apply: () -> Unit = {
+                        caller.ensureActive()
+                        if (!stillOwned()) throw CancellationException("Visitor owner retired")
+                        block()
+                        applied = true
+                    }
+                    entryAdmitted = publishIfCurrent?.invoke(apply) ?: run { apply(); true }
+                }
+                if (!admitted || !entryAdmitted || !applied) throw CancellationException("Visitor publication retired")
+            }
+            var initialized = false
+            publish { initialized = visitorInitialized && visitorGeneration == generation }
+            if (initialized) return@withLock
+            // Standard visitor bootstrap, once per process. It does not attempt to bypass a security challenge.
+            callFactory.newCall(Request.Builder().url("https://www.bilibili.com/")
+                .header("Accept", "text/html,application/xhtml+xml").build()).execute().use { response ->
+                if (!response.isSuccessful) throw BiliApiException(response.code, "无法初始化 B 站访客会话 (${response.code})")
+            }
+            val response = visitorApi.getSpi()
+            checkCode(response.code, "无法获取 B 站访客标识")
+            val visitors = mutableMapOf<String, String>()
+            response.data?.let { data ->
+                data.b_3.takeIf { it.isNotBlank() }?.let { visitors["buvid3"] = it }
+                data.b_4.takeIf { it.isNotBlank() }?.let { visitors["buvid4"] = it }
+            }
+            // Preserve original synchronous persistence. HTTP and mutex waiting are outside
+            // Store/entry admissions; save plus both flags share this receipt's publication.
+            publish {
+                sessions.saveSpiCookies(visitors, generation)
+                visitorGeneration = generation
+                visitorInitialized = true
+            }
         }
-        val response = visitorApi.getSpi()
-        checkCode(response.code, "无法获取 B 站访客标识")
-        val visitors = mutableMapOf<String, String>()
-        response.data?.let { data ->
-            data.b_3.takeIf { it.isNotBlank() }?.let { visitors["buvid3"] = it }
-            data.b_4.takeIf { it.isNotBlank() }?.let { visitors["buvid4"] = it }
-        }
-        if (generation != sessions.generation || !stillOwned()) throw CancellationException("Visitor owner retired")
-        sessions.saveSpiCookies(visitors, generation)
-        visitorGeneration = generation
-        visitorInitialized = true
     }
 
     private suspend fun validateCookieHeader(header: String, validationApi: PassportApi = validationPassportApi): AccountSummary {
