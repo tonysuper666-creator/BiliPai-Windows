@@ -42,8 +42,8 @@ internal class DesktopVeyraReleaseMonitor(
     private val owns: () -> Boolean,
     private val windowsState: () -> UpdateState,
     private val installed: () -> VeyraInstalledCore? = { null },
-    // No feed/key/artifact exists yet. Only a signature-verifying own-catalog adapter may supply this.
-    private val compatibleCatalog: suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer? = { null },
+    // Only the source-pinned own-release resolver supplies full-application compatibility.
+    private val compatibleCatalog: suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer?,
     private val nowMs: () -> Long = System::currentTimeMillis,
 ) {
     private val json = Json { ignoreUnknownKeys = true }
@@ -60,6 +60,29 @@ internal class DesktopVeyraReleaseMonitor(
     /** Refresh passive accepted-module information; never fetch, compare tags or download. */
     fun refreshInstalled() {
         if (owns()) mutable.update { it.copy(installed = installed()) }
+    }
+
+    /** A download resolves its exact available Windows target independently of the ten-hour clock. */
+    suspend fun compatibleForUpdate(update: WindowsUpdate): VerifiedVeyraCompatibleOffer? = withContext(Dispatchers.IO) {
+        val caller = currentCoroutineContext()
+        fun current() {
+            caller.ensureActive()
+            if (!owns()) throw CancellationException("Veyra catalog owner retired")
+            require((windowsState() as? UpdateState.Available)?.update == update) { "Windows 更新目标已改变" }
+        }
+        try {
+            current()
+            val offer = compatibleCatalog(update)
+            current()
+            require(offer == null || offer.update == update) { "Windows 兼容目录目标不匹配" }
+            mutable.update { it.copy(compatible = offer, error = null) }
+            offer
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (failure: Exception) {
+            caller.ensureActive()
+            if (owns()) mutable.update { it.copy(compatible = null, error = failure.message ?: "Windows 兼容目录验证失败") }
+            throw failure
+        }
     }
 
     /** Runs in the existing application's effect Job; consent changes cancel actual HTTP. */
@@ -142,7 +165,9 @@ internal class DesktopVeyraReleaseMonitor(
                 "latestStable" to latestStable?.let { json.encodeToJsonElement(VeyraReleaseEvidence.serializer(), it) },
                 "observedIdentities" to JsonArray((previous + observed).distinct().takeLast(128).map(::JsonPrimitive))))
             current()
-            mutable.update { VeyraTrackingState(installed(), latest, latestStable, compatible, observed.filterNot(previous::contains)) }
+            mutable.update { VeyraTrackingState(installed(), latest, latestStable,
+                compatible?.takeIf { (windowsState() as? UpdateState.Available)?.update == it.update },
+                observed.filterNot(previous::contains)) }
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (failure: Exception) { current(); mutable.update { it.copy(error = failure.message ?: "Veyra release check failed") } }
         finally { mutable.update { it.copy(checking = false) }; mutex.unlock() }

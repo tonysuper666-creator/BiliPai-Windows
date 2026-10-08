@@ -36,6 +36,7 @@ class DesktopUpdater private constructor(
     private val client: OkHttpClient,
     private val childLocalAppData: Path?,
     private val onProcessStarted: (Process) -> Unit,
+    private val catalogLookupForTest: (suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer?)? = null,
 ) {
     constructor() : this(loadBuildConfig(), defaultUpdateRoot(), defaultClient(), null, {})
 
@@ -55,6 +56,27 @@ class DesktopUpdater private constructor(
     private val mutex = Mutex()
     private var retainedPrepared: PreparedUpdate? = null
     private var retainedArchiveSha256: String? = null
+    private val veyraCatalog by lazy { DesktopVeyraCatalogResolver(::fetchCatalogText) }
+
+    internal suspend fun resolveVeyraCatalog(update: WindowsUpdate): VerifiedVeyraCompatibleOffer? = withContext(Dispatchers.IO) {
+        validateUpdate(update)
+        val testLookup = catalogLookupForTest
+        if (testLookup != null) testLookup(update)
+        else {
+            require(repository == DesktopVeyraCatalogTrust.REPOSITORY) { "兼容目录必须来自本应用的 Windows 发布仓库" }
+            veyraCatalog.resolve(update)
+        }
+    }
+
+    /** A failed selected catalog cannot leave Available to trigger an automatic retry loop. */
+    internal suspend fun rejectVeyraCatalog(update: WindowsUpdate, failure: Exception) = withContext(Dispatchers.IO) {
+        mutex.lock()
+        try {
+            currentCoroutineContext().ensureActive()
+            if ((state.value as? UpdateState.Available)?.update == update)
+                mutableState.value = UpdateState.Failed(failure.message ?: "Windows 兼容目录验证失败，当前版本继续运行")
+        } finally { mutex.unlock() }
+    }
 
     /** Explicit UI checks bypass the six-hour background debounce. A prepared update is retained. */
     suspend fun check(force: Boolean = true): UpdateState = withContext(Dispatchers.IO) {
@@ -90,23 +112,28 @@ class DesktopUpdater private constructor(
     suspend fun prepareUpdate(update: WindowsUpdate): PreparedUpdate? = prepareUpdateInternal(update, null)
 
     /** Own signed-compatible full app bundles use the same stage, idle activation and rollback. */
-    internal suspend fun prepareVeyraUpdate(offer: VerifiedVeyraCompatibleOffer): PreparedUpdate? {
-        require((state.value as? UpdateState.Available)?.update == offer.update) { "Compatible Windows target changed" }
-        return prepareUpdateInternal(offer.update, offer.zipSha256)
-    }
+    internal suspend fun prepareVeyraUpdate(offer: VerifiedVeyraCompatibleOffer): PreparedUpdate? =
+        prepareUpdateInternal(offer.update, offer)
 
-    private suspend fun prepareUpdateInternal(update: WindowsUpdate, compatibleSha256: String?): PreparedUpdate? = withContext(Dispatchers.IO) {
+    private suspend fun prepareUpdateInternal(update: WindowsUpdate, compatibleOffer: VerifiedVeyraCompatibleOffer?): PreparedUpdate? = withContext(Dispatchers.IO) {
         if (disabledReason != null || !mutex.tryLock()) return@withContext null
         var staging: Path? = null
         var complete = false
         try {
             retainedPrepared?.let {
-                require(compatibleSha256 == null || retainedArchiveSha256.equals(compatibleSha256, ignoreCase = true)) {
+                require(compatibleOffer == null || compatibleOffer.update == update &&
+                    retainedArchiveSha256.equals(compatibleOffer.zipSha256, ignoreCase = true)) {
                     "Prepared archive differs from the signed compatibility catalog"
                 }
                 return@withContext it.takeIf { prepared -> prepared.update == update }
             }
             validateUpdate(update)
+            require((state.value as? UpdateState.Available)?.update == update) { "Windows 更新目标已改变，请重新检查" }
+            // Generic callers also resolve before any stage or Downloading state. Only absent means ordinary.
+            val offer = compatibleOffer ?: resolveVeyraCatalog(update)
+            require(offer == null || offer.update == update) { "Windows 兼容目录目标已改变" }
+            val compatibleSha256 = offer?.zipSha256
+            currentCoroutineContext().ensureActive()
             val settings = requireNotNull(config)
             staging = UpdateStorage.createStage(updateRoot, requireNotNull(repository), update.assetId)
             val archive = staging.resolve("download.zip")
@@ -221,6 +248,24 @@ class DesktopUpdater private constructor(
             val bytes = input.readNBytes(limit + 1)
             require(bytes.size <= limit) { "更新元数据超过大小限制" }
             bytes.toString(Charsets.UTF_8)
+        }
+    }
+
+    private suspend fun fetchCatalogText(url: String, limit: Int, asset: Boolean): String {
+        val scope = VeyraCatalogHttpScope(url, asset)
+        val request = Request.Builder().url(url).tag(VeyraCatalogHttpScope::class.java, scope)
+            .header("Accept", "application/vnd.github+json").header("User-Agent", "BiliPai-Windows-Updater").build()
+        scope.requireAllowed(request)
+        return executeRequest(request) { response ->
+            scope.requireAllowed(response.request)
+            require(response.isSuccessful) { "Windows 兼容目录服务器返回 HTTP ${response.code}" }
+            val body = response.body
+            require(body.contentLength() <= limit) { "Windows 兼容目录超过大小限制" }
+            val bytes = body.byteStream().use { it.readNBytes(limit + 1) }
+            require(bytes.size <= limit) { "Windows 兼容目录超过大小限制" }
+            Charsets.UTF_8.newDecoder().onMalformedInput(java.nio.charset.CodingErrorAction.REPORT)
+                .onUnmappableCharacter(java.nio.charset.CodingErrorAction.REPORT)
+                .decode(java.nio.ByteBuffer.wrap(bytes)).toString()
         }
     }
 
@@ -390,7 +435,11 @@ class DesktopUpdater private constructor(
         private fun defaultUpdateRoot(): Path = Path.of(System.getenv("LOCALAPPDATA")?.takeIf { it.isNotBlank() }
             ?: Path.of(System.getProperty("user.home"), ".local", "share").toString(), "BiliPai", "updates").toAbsolutePath().normalize()
         private fun defaultClient(): OkHttpClient = OkHttpClient.Builder().connectTimeout(15, TimeUnit.SECONDS)
-            .readTimeout(40, TimeUnit.SECONDS).followSslRedirects(false).build()
+            .readTimeout(40, TimeUnit.SECONDS).followSslRedirects(false)
+            .addNetworkInterceptor { chain ->
+                chain.request().tag(VeyraCatalogHttpScope::class.java)?.requireAllowed(chain.request())
+                chain.proceed(chain.request())
+            }.build()
 
         /** Internal opt-in harness only; the public constructor always uses embedded production settings. */
         internal fun forIntegrationTest(
@@ -401,6 +450,7 @@ class DesktopUpdater private constructor(
             childLocalAppData: Path,
             onProcessStarted: (Process) -> Unit,
             executable: String = "BiliPai Windows.exe",
+            compatibleCatalog: suspend (WindowsUpdate) -> VerifiedVeyraCompatibleOffer? = { null },
         ): DesktopUpdater {
             require(DesktopVersion.parse(currentVersion) != null && validRepository(repository))
             val childData = childLocalAppData.toAbsolutePath().normalize()
@@ -408,7 +458,7 @@ class DesktopUpdater private constructor(
                 "Integration update root must belong to the isolated child LOCALAPPDATA"
             }
             return DesktopUpdater(UpdateConfig(currentVersion, windowsReleaseRepository = repository, executable = executable),
-                updateRoot, client, childData, onProcessStarted)
+                updateRoot, client, childData, onProcessStarted, compatibleCatalog)
         }
         /** Call before creating the UI; true means a previously verified newer window is running. */
         fun launchInstalledUpdateIfNewer(args: Array<String>): Boolean = runBlocking {

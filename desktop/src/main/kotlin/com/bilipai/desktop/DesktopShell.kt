@@ -783,6 +783,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         com.bilipai.desktop.update.DesktopVeyraReleaseMonitor(
             fetch = { url -> publicReleaseHttp.fetch(url, true) },
             store = pluginStore, owns = ownsMonitor, windowsState = { updater.state.value },
+            compatibleCatalog = updater::resolveVeyraCatalog,
             installed = { player?.veyraInstalledIdentity?.value?.let { identity ->
                 com.bilipai.desktop.update.VeyraInstalledCore(
                     tag = null, sourceCommit = identity.sourceCommit, adapterBuildId = identity.moduleSha256,
@@ -1314,8 +1315,16 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (activatingUpdate || updateJob?.isActive == true) return
         if (manual) manuallyRequested = true
         updateJob = scope.launch(start = CoroutineStart.LAZY) {
-            try { if (updater.prepareUpdate(update) == null) manuallyRequested = false }
-            finally { updateJob = null }
+            try {
+                val compatible = veyraMonitor.compatibleForUpdate(update)
+                val prepared = if (compatible == null) updater.prepareUpdate(update)
+                    else updater.prepareVeyraUpdate(compatible)
+                if (prepared == null) manuallyRequested = false
+            } catch (cancelled: CancellationException) { throw cancelled
+            } catch (failure: Exception) {
+                manuallyRequested = false
+                updater.rejectVeyraCatalog(update, failure)
+            } finally { updateJob = null }
         }.also { it.start() }
     }
 
