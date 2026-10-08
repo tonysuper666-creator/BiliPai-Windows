@@ -131,7 +131,11 @@ internal fun admittedPlaybackCalls(delegate: Call.Factory, publication: DesktopP
                         return
                     }
                     try { callback.onResponse(call, wrapped) }
-                    catch (failure: Throwable) { wrapped.close(); throw failure }
+                    catch (failure: Throwable) {
+                        try { wrapped.close() }
+                        catch (closeFailure: Throwable) { if (closeFailure !== failure) failure.addSuppressed(closeFailure) }
+                        throw failure
+                    }
                 }
             }
             try { publication.admit(source, stillOwned) { call.enqueue(guardedCallback) } }
@@ -146,14 +150,21 @@ internal fun admittedPlaybackCalls(delegate: Call.Factory, publication: DesktopP
             enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) { failure = e; finished.countDown() }
                 override fun onResponse(call: Call, value: Response) {
-                    synchronized(responseGate) { if (abandoned.get()) value.close() else response = value }
-                    finished.countDown()
+                    val discarded = synchronized(responseGate) {
+                        if (abandoned.get()) value else { response = value; null }
+                    }
+                    try { discarded?.close() } finally { finished.countDown() }
                 }
             })
             try { finished.await() }
             catch (interrupted: InterruptedException) {
-                synchronized(responseGate) { abandoned.set(true); response?.close(); response = null }
-                cancel(); Thread.currentThread().interrupt(); throw IOException("Interrupted playback request", interrupted)
+                val delivered = synchronized(responseGate) {
+                    abandoned.set(true); response.also { response = null }
+                }
+                try { delivered?.close() }
+                catch (closeFailure: Throwable) { if (closeFailure !== interrupted) interrupted.addSuppressed(closeFailure) }
+                finally { cancel(); Thread.currentThread().interrupt() }
+                throw IOException("Interrupted playback request", interrupted)
             }
             try { callerJob?.ensureActive() }
             catch (cancelled: CancellationException) {
