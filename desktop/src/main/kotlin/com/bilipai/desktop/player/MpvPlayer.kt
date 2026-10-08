@@ -1867,9 +1867,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 activeSourceVersion == action.expected.sourceVersion && activeRevision == action.revision &&
                 (action.readback == null || nativeTrackCommandCurrentLocked(action.readback))
 
-        /** Manual import uses the same retained assets and worker, with admission per native command.
+        /** Retained assets use the same worker, with admission per native command.
          * The synchronous sub-add may read a local document in mpv; no native latency bound is claimed. */
-        private fun restoreOwnedSubtitles(native: MpvNative, handle: Pointer, action: Action.Subtitles) {
+        private fun restoreOwnedSubtitles(native: MpvNative, handle: Pointer, action: Action.Subtitles,
+            clearOperationError: Boolean = true, skipEmptyAssets: Boolean = false) {
             fun admit(block: () -> Unit): Boolean {
                 var current = false
                 admitPresentation(action.expected.source) { synchronized(lock) {
@@ -1880,8 +1881,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             var assets = emptyList<ExternalSubtitle>()
             if (!admit {
                 assets = externalSubtitles.toList()
-                mutableState.update { it.copy(operationError = null) }
+                if (clearOperationError) mutableState.update { it.copy(operationError = null) }
             }) return
+            if (skipEmptyAssets && assets.isEmpty()) return
             for (asset in assets) {
                 if (asset.path in loadedSubtitlePaths) continue
                 try {
@@ -1911,6 +1913,20 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 }) return
             }
             lastTrackPoll = 0L
+        }
+
+        /** FILE_LOADED precedes track polling: capture this actor's exact source/revision without
+         * requiring a published track receipt. Publication admission is outside the capture lock. */
+        private fun restoreFileLoadedSubtitles(native: MpvNative, handle: Pointer) {
+            val action = synchronized(lock) {
+                val source = requestedSource ?: return@synchronized null
+                if (closed.get() || idleCacheMaintenance != null || session !== this || closing.get() || !fileLoaded ||
+                    sourceVersion != activeSourceVersion || playbackRevision != activeRevision || activeEntry == null ||
+                    (expectedEntry != null && expectedEntry != activeEntry)) return@synchronized null
+                Action.Subtitles(OwnedPlaybackSourceSnapshot(activeSourceVersion, source.immutableSnapshot()),
+                    activeRevision, readback = null, caller = null)
+            } ?: return
+            restoreOwnedSubtitles(native, handle, action, clearOperationError = false, skipEmptyAssets = true)
         }
 
         private fun restoreSubtitles(native: MpvNative, handle: Pointer, owned: Action.Subtitles? = null) {
@@ -2050,7 +2066,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     if (activeEntry == null || (expectedEntry != null && activeEntry != expectedEntry)) return
                     fileLoaded = true
                     publishState { it.copy(loading = false, ended = false, error = null, failure = null, nativeEof = null) }
-                    restoreSubtitles(native, handle)
+                    restoreFileLoadedSubtitles(native, handle)
                     pendingPresentationSeek?.let { pendingPresentationSeek = null; perform(native, handle, it) }
                 }
                 21 -> { // MPV_EVENT_PLAYBACK_RESTART: file startup alone has no submitted seek to acknowledge.
