@@ -48,7 +48,7 @@ import java.util.concurrent.atomic.AtomicReference
     val windowsSurface = current?.let { rememberDesktopWindowsNativeVideoSurface(it.section.nativePlayer) }
     var nativeRootOrigin by remember(windowsSurface) { mutableStateOf<Offset?>(null) }
     val destination = environment.currentKey()
-    val sourceLeaf = destination is BiliPaiNavKey.VideoDetail || destination is BiliPaiNavKey.AudioMode ||
+    val sourceLeaf = destination is BiliPaiNavKey.VideoDetail || destination is BiliPaiNavKey.AudioMode || destination is BiliPaiNavKey.NativeMusic ||
         destination is BiliPaiNavKey.Story || destination is BiliPaiNavKey.OfflineVideoPlayer ||
         destination is BiliPaiNavKey.BangumiPlayer || destination is BiliPaiNavKey.Live ||
         destination is BiliPaiNavKey.ExternalMedia

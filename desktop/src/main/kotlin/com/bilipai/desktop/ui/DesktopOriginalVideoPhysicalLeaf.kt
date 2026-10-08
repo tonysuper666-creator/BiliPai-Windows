@@ -21,7 +21,7 @@ import kotlinx.coroutines.CancellationException
     immersivePlaybackChanged: (Boolean) -> Unit,
     pendingOwner: @Composable () -> Unit,
 ) {
-    require(key is BiliPaiNavKey.VideoDetail || key is BiliPaiNavKey.AudioMode)
+    require(key is BiliPaiNavKey.VideoDetail || key is BiliPaiNavKey.AudioMode || key is BiliPaiNavKey.NativeMusic)
     val factoryReady by shell.slot.factoryReady.collectAsState()
     LaunchedEffect(shell, factoryReady, key) {
         if (factoryReady) shell.slot.requireAssembly()
@@ -61,7 +61,21 @@ import kotlinx.coroutines.CancellationException
                 openBilibiliLink, immersivePlaybackChanged))
         return
     }
-    val audio = key as BiliPaiNavKey.AudioMode
+    val audioBvid = when (key) {
+        is BiliPaiNavKey.AudioMode -> key.sourceBvid
+        is BiliPaiNavKey.NativeMusic -> key.bvid
+        else -> error("Expected an original audio route")
+    }
+    val audioCid = when (key) {
+        is BiliPaiNavKey.AudioMode -> key.sourceCid
+        is BiliPaiNavKey.NativeMusic -> key.cid
+        else -> error("Expected an original audio route")
+    }
+    val audioResume = (key as? BiliPaiNavKey.AudioMode)?.sourceResumePositionMs ?: 0L
+    val musicTitle = (key as? BiliPaiNavKey.NativeMusic)?.title?.ifEmpty { "背景音乐" }
+    val windowEnvironment = LocalDesktopOriginalVideoRootWindowEnvironment.current
+    val latestActive by rememberUpdatedState(active)
+    var nativeMusicRequested by remember(current, key) { mutableStateOf(false) }
     var initialized by remember(current, platforms) { mutableStateOf(false) }
     LaunchedEffect(current, platforms) {
         platforms.awaitNativeInitialization()
@@ -69,6 +83,23 @@ import kotlinx.coroutines.CancellationException
         initialized = true
     }
     if (!initialized) {
+        platforms.InitialNativeSurface(Modifier.fillMaxSize())
+        return
+    }
+    // Android NativeMusic has a route-scoped VM. Windows retains the SAME
+    // original VM across leaves: initialize this explicit subject even when an
+    // earlier BV already has Success/currentPlayer, which AudioMode itself reuses.
+    LaunchedEffect(current, platforms, key, initialized, active) {
+        if (key !is BiliPaiNavKey.NativeMusic || !initialized || !active || nativeMusicRequested)
+            return@LaunchedEffect
+        if (!latestActive || !windowEnvironment.owns() || windowEnvironment.currentKey() != key || !current.owns())
+            throw CancellationException("Original NativeMusic route retired")
+        current.playback.attachPlayer(current.section)
+        current.playback.loadVideo(bvid = key.bvid, cid = key.cid, autoPlay = true,
+            force = current.playback.uiState.value is com.android.purebilibili.feature.video.viewmodel.VideoPlaybackUiState.Loading)
+        nativeMusicRequested = true
+    }
+    if (key is BiliPaiNavKey.NativeMusic && !nativeMusicRequested) {
         platforms.InitialNativeSurface(Modifier.fillMaxSize())
         return
     }
@@ -94,8 +125,12 @@ import kotlinx.coroutines.CancellationException
                     current.native.admitPlaybackDispatch(accepted) {
                         position = current.section.currentPosition.coerceAtLeast(0L)
                     }) {
-                    commands.video(BiliPaiNavKey.VideoDetail(bvid, cid,
-                        resumePositionMs = checkNotNull(position), sourceRoute = "audio_mode"))
+                    val destination = BiliPaiNavKey.VideoDetail(bvid, cid,
+                        resumePositionMs = checkNotNull(position), sourceRoute = "audio_mode")
+                    if (key is BiliPaiNavKey.NativeMusic) {
+                        if (latestActive && windowEnvironment.owns() && windowEnvironment.currentKey() == key &&
+                            current.owns() && commands.back()) commands.video(destination)
+                    } else commands.video(destination)
                 }
             },
             isInPipMode = LocalDesktopOriginalVideoRootWindowEnvironment.current.let {
@@ -103,7 +138,7 @@ import kotlinx.coroutines.CancellationException
                 // its actual navigation/window bindings below.
                 it.inPictureInPicture()
             },
-            initialBvid = audio.sourceBvid, initialCid = audio.sourceCid,
-            initialResumePositionMs = audio.sourceResumePositionMs)
+            initialBvid = audioBvid, initialCid = audioCid,
+            initialResumePositionMs = audioResume, titleOverride = musicTitle)
     }
 }

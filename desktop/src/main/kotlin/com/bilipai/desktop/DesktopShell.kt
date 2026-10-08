@@ -1367,7 +1367,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     LaunchedEffect(backup) { backup.automaticBackupIfDue() }
     LaunchedEffect(playback, hostVisible, pipActive) { playback.setInBackground(!hostVisible && !pipActive) }
     DesktopOriginalBackgroundPlaybackEffects(storageSettingsContext, player,
-        hidden = !hostVisible, isPip = pipActive, isInAudioMode = physicalDestination is BiliPaiNavKey.AudioMode,
+        hidden = !hostVisible, isPip = pipActive, isInAudioMode = physicalDestination is BiliPaiNavKey.AudioMode || physicalDestination is BiliPaiNavKey.NativeMusic,
         live = { imageSaveLifetime.isActive() && hostDisplayable && !isClosing() && !activatingUpdate && scope.isActive })
     LaunchedEffect(anyCasting) { if (anyCasting) {
         if (retainedMedia.current?.ownsNativeSource == true) player?.setPaused(true) else playback.pause()
@@ -1717,8 +1717,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     { action -> if(!isClosing()&&!activatingUpdate&&checkpointForNavigation()){action();true}else false },
                     { old,new ->
                         if(old is BiliPaiNavKey.Story && new !is BiliPaiNavKey.Story) storyHost.retire()
-                        if(new is BiliPaiNavKey.VideoDetail) {
+                        if(new is BiliPaiNavKey.VideoDetail || new is BiliPaiNavKey.AudioMode || new is BiliPaiNavKey.NativeMusic) {
                             storyHost.retire();retainedMedia.stop();listen?.pause();systemTargetAudio=false
+                        }
+                        if(new is BiliPaiNavKey.VideoDetail) {
                             if(new.fullscreen && !isFullscreen()) setOriginalFullscreen(true)
                         } else if(old is BiliPaiNavKey.VideoDetail && old.fullscreen && isFullscreen()) setOriginalFullscreen(false)
                     },
@@ -1736,7 +1738,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     dynamicCardRegistry::currentAllUpdateBaseline,null,favoritesEntry?.searchChannel,null,
                     { originalNowPlaying.get()?.second?.dismiss() },
                     { DesktopOriginalNowPlayingVisibility(originalNowPlaying.get()?.second?.owner?.current()?.active==true,
-                        physicalDestination is BiliPaiNavKey.AudioMode,pipActive,true,false,
+                        physicalDestination is BiliPaiNavKey.AudioMode || physicalDestination is BiliPaiNavKey.NativeMusic,pipActive,true,false,
                         physicalDestination is BiliPaiNavKey.VideoDetail,actualWindow.width>actualWindow.height,
                         physicalDestination is BiliPaiNavKey.VideoDetail || retainedMedia.current!=null) },ffprobe,library,
                     { root -> originalNowPlayingFor(root,listen).binding },
@@ -1783,7 +1785,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 val topicId = (entryKey as? BiliPaiNavKey.TopicDetail)?.topicId ?: 0L
                 val roomId = (entryKey as? BiliPaiNavKey.Live)?.roomId?.toLongOrNull() ?: 0L
                 val bgmRequest = (entryKey as? BiliPaiNavKey.BgmDetail)?.let {DesktopBgmMusicTarget.Detail(it.musicId,it.aid,it.cid,it.showVideos)}
-                val musicSource = when(entryKey) {is BiliPaiNavKey.MusicDetail->MusicPlaybackSource.AudioSong(entryKey.sid);is BiliPaiNavKey.NativeMusic->MusicPlaybackSource.VideoAudio(entryKey.bvid,entryKey.cid,entryKey.title);else->null}
+                val musicSource = (entryKey as? BiliPaiNavKey.MusicDetail)?.let { MusicPlaybackSource.AudioSong(it.sid) }
                 val musicStartPosition = if(entryKey is BiliPaiNavKey.AudioMode) entryKey.sourceResumePositionMs/1000.0 else 0.0
                 val seasonId = when(entryKey){is BiliPaiNavKey.BangumiPlayer->entryKey.seasonId;is BiliPaiNavKey.BangumiDetail->entryKey.seasonId;else->0L}
                 val episodeId = when(entryKey){is BiliPaiNavKey.BangumiPlayer->entryKey.epId;is BiliPaiNavKey.BangumiDetail->entryKey.epId;else->0L}
@@ -2101,7 +2103,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     )
                                 }
                             }
-                            entryKey is BiliPaiNavKey.AudioMode ->
+                            entryKey is BiliPaiNavKey.AudioMode || entryKey is BiliPaiNavKey.NativeMusic ->
                                 DesktopOriginalVideoPhysicalLeaf(entryKey, ordinaryVideo, commands, active,
                                     commands::back, ::openVideoHonorLink,
                                     { enabled -> enhancementHostStarted.value = enabled },

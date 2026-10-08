@@ -83,7 +83,7 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
         private var hasPreviousMini: (() -> Boolean)? = null
 
         private fun foreignSourceLeaf(): Boolean = when (val visible = root.currentKey()) {
-            is BiliPaiNavKey.VideoDetail, is BiliPaiNavKey.AudioMode, is BiliPaiNavKey.Story,
+            is BiliPaiNavKey.VideoDetail, is BiliPaiNavKey.AudioMode, is BiliPaiNavKey.NativeMusic, is BiliPaiNavKey.Story,
             is BiliPaiNavKey.OfflineVideoPlayer, is BiliPaiNavKey.Live, is BiliPaiNavKey.ExternalMedia -> true
             is BiliPaiNavKey.BangumiPlayer -> visible != key
             else -> false // Auxiliary covered pages retain the actual PGC source/Mini.

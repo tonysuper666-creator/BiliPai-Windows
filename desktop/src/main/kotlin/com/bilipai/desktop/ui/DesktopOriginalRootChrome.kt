@@ -46,7 +46,7 @@ internal class DesktopOriginalRootChromeBindings(
 ) {
     if (!routes.owns() || !binding.owner.isOwned()) return
     val key = routes.currentKey
-    val video = key is BiliPaiNavKey.VideoDetail || key is BiliPaiNavKey.AudioMode ||
+    val video = key is BiliPaiNavKey.VideoDetail || key is BiliPaiNavKey.AudioMode || key is BiliPaiNavKey.NativeMusic ||
         key is BiliPaiNavKey.BangumiPlayer || key is BiliPaiNavKey.OfflineVideoPlayer
     val audio = binding.audio
     val snapshot = audio?.observeSnapshot()

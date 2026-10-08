@@ -211,7 +211,7 @@ internal class DesktopOriginalRootPageBindings(
                             sourceRoute = key.sourceRoute), resolveAppNavigationMotionSpec(
                             com.android.purebilibili.core.util.LocalWindowSizeClass.current.isTablet,
                             homeSettings.cardTransitionEnabled).slowFadeDurationMillis,
-                        pages.inPictureInPicture(), sessionActive && routes.currentKey !is BiliPaiNavKey.AudioMode,
+                        pages.inPictureInPicture(), sessionActive && routes.currentKey !is BiliPaiNavKey.AudioMode && routes.currentKey !is BiliPaiNavKey.NativeMusic,
                         sessionActive)
                     CompositionLocalProvider(LocalDesktopOriginalRootVideoRouteState provides detailState) {
                         leafContent(key, routes, active, pagerHosted)
