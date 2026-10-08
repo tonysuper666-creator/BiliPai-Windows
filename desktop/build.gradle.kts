@@ -3233,3 +3233,22 @@ listOf("extractUpstreamApi", "extractBgmDetail", "extractVideoCommentUi",
         inputs.dir("upstream-slices/v029-comment-search")
     }
 }
+
+// Partial fixed v032 catalog slice; canonical inventory remains v025.
+val extractV032CatalogSlice by tasks.registering(Exec::class) {
+    dependsOn(prepareUpstreamSources)
+    workingDir(projectDir)
+    commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/v032_catalog.py",
+        repositoryRoot.absolutePath, layout.buildDirectory.dir("generated/v032-catalog").get().asFile.absolutePath)
+    inputs.file("tools/v032_catalog.py")
+    inputs.dir("upstream-slices/v032-catalog")
+    outputs.dir(layout.buildDirectory.dir("generated/v032-catalog"))
+}
+kotlin.sourceSets.named("main") { kotlin.srcDir(layout.buildDirectory.dir("generated/v032-catalog")) }
+tasks.named("compileKotlin") { dependsOn(extractV032CatalogSlice) }
+listOf("extractOriginalHomeProtocols", "extractOriginalVideoStateCore", "extractOriginalVideoDetailUnits").forEach { name ->
+    tasks.named(name) {
+        inputs.file("tools/v032_catalog.py")
+        inputs.dir("upstream-slices/v032-catalog")
+    }
+}

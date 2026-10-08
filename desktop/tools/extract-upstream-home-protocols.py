@@ -78,7 +78,8 @@ import java.util.concurrent.ConcurrentHashMap
     private val verticalVideoCache = ConcurrentHashMap<String, Boolean>()'''
     for l in originalFields.splitlines():assert l.strip() in video,l
     body='\n\n'.join(textwrap.indent(method(videoPath,video,n,lambda s,n=n:video_adapt(n,s)),'    ') for n in methods)
-    write(OUT/'com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt',imports+'''
+    from v032_catalog import apply_and_record as apply_v032_catalog
+    original_home_output = imports+'''
 /** Selected complete original home request bodies; required services are views of Root's graph. */
 internal class DesktopOriginalHomeVideoProtocol(private val environment:DesktopHomeProtocolEnvironment) : AutoCloseable {
     private val api get()=environment.api
@@ -86,7 +87,9 @@ internal class DesktopOriginalHomeVideoProtocol(private val environment:DesktopH
 '''+originalFields+'\n\n'+body+'''
     override fun close() { homePreloadDeferred?.cancel(); homePreloadDeferred=null; preloadedHomeVideos=null; verticalVideoCache.clear() }
 }
-''')
+'''
+    write(OUT/'com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt',
+          apply_v032_catalog('com/android/purebilibili/data/repository/DesktopOriginalHomeVideoProtocol.kt',original_home_output,OUT))
 
     def general_adapt(s):
      s=s.replace('com.android.purebilibili.core.network.CoreDataLog.', 'com.android.purebilibili.core.util.Logger.')

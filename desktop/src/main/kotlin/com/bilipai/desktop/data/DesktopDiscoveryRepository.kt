@@ -45,16 +45,18 @@ class DesktopDiscoveryRepository(private val repository: DesktopRepository,
 
     suspend fun page(section: DiscoverySection, page: Int = 1, regionId: Int = 0, weeklyNumber: Int? = null): DiscoveryPage = withContext(Dispatchers.IO) {
         require(page > 0 && regionId >= 0 && (weeklyNumber == null || weeklyNumber > 0))
-        repository.ensureSession()
+        val catalogRequest = repository.catalogInvocation()
+        catalogRequest.ensureSession()
+        val api = catalogRequest.api
         when (section) {
             DiscoverySection.RECOMMEND -> {
                 val count = refreshCount.value; val mode = feedMode.value
                 val result = resolveDiscoveryRecommendation(mode, web = { merged ->
                     val params = if (merged) buildDesktopMergedWebRecommendParams(page - 1, count) else discoveryRecommendParams(page, count)
-                    val response = api.getRecommendParams(repository.signWebParams(params))
+                    val response = api.getRecommendParams(catalogRequest.sign(params))
                     verified(response.code, response.message, response.data).item.orEmpty().map { it.toVideoItem() }.filter { it.bvid.isNotBlank() }
                 }, app = { merged ->
-                    val token = repository.accessTokenCredentials().first?.takeIf { it.isNotBlank() }
+                    val token = catalogRequest.accessToken()?.takeIf { it.isNotBlank() }
                     val response = if (merged) {
                         val params = buildDesktopMergedMobileRecommendParams(page - 1)
                         token?.let { params["access_key"] = it }
@@ -71,17 +73,24 @@ class DesktopDiscoveryRepository(private val repository: DesktopRepository,
                     actualSources = result.actualSources, sourceNotice = result.sourceNotice)
             }
             DiscoverySection.POPULAR -> {
-                val response = api.getPopularVideos(pn = page, ps = 30)
-                discoveryPopularPage(verified(response.code, response.message, response.data), page)
+                var metadata: PopularData? = null
+                catalogRequest.shared.getPopularVideos(page, catalogRequest.ensureSession) { metadata = it }.getOrThrow()
+                catalogRequest.assertOwned()
+                // Preserve no_more / empty-page semantics from this exact response.
+                discoveryPopularPage(metadata ?: throw BiliApiException(-1, "响应数据为空"), page)
             }
-            DiscoverySection.RANKING -> ranking(resolveRegionRankingRid(regionId) ?: regionId)
+            DiscoverySection.RANKING -> ranking(resolveRegionRankingRid(regionId) ?: regionId, catalogRequest)
             DiscoverySection.PRECIOUS -> {
-                val response = api.getPopularPreciousVideos(); val data = verified(response.code, response.message, response.data)
-                DiscoveryPage(data.list.orEmpty().map { it.toVideoItem() }.filter { it.bvid.isNotBlank() }, null, data.title, data.explain)
+                var metadata: PopularPreciousData? = null
+                val items = catalogRequest.shared.getPreciousVideos(catalogRequest.ensureSession) { metadata = it }.getOrThrow()
+                catalogRequest.assertOwned()
+                val data = metadata ?: throw BiliApiException(-1, "响应数据为空")
+                DiscoveryPage(items, null, data.title, data.explain)
             }
             DiscoverySection.WEEKLY -> {
                 val number = weeklyNumber ?: resolveWeeklyNumberForRequest(weeklyPeriods().map { it.number })
-                val response = api.getWeeklySeriesVideos(number); val data = verified(response.code, response.message, response.data)
+                val data = catalogRequest.shared.getWeeklyPeriod(number).getOrThrow()
+                catalogRequest.assertOwned()
                 DiscoveryPage(data.list.orEmpty().map { it.toVideoItem() }.filter { it.bvid.isNotBlank() }, null,
                     data.config?.name.orEmpty(), data.reminder.ifBlank { data.config?.subject.orEmpty() }, data.config)
             }
@@ -98,30 +107,30 @@ class DesktopDiscoveryRepository(private val repository: DesktopRepository,
                             val data = legacy.data ?: throw BiliApiException(-1, "分区响应为空")
                             val incoming = data.archives.orEmpty()
                             val hasMore = incoming.isNotEmpty() && (data.page?.let { page.toLong() * it.size < it.count } ?: true)
-                            return@withContext DiscoveryPage(incoming.map { it.toVideoItem() }.filter { it.bvid.isNotBlank() }, (page + 1).takeIf { hasMore })
+                            return@withContext DiscoveryPage(incoming.map { it.toVideoItem() }.filter { it.bvid.isNotBlank() }, (page + 1).takeIf { hasMore }).also { catalogRequest.assertOwned() }
                         }
                     }
-                    resolveRegionRankingRid(regionId)?.let { return@withContext ranking(it) }
+                    resolveRegionRankingRid(regionId)?.let { return@withContext ranking(it, catalogRequest) }
                 }
                 check(response.code, response.message)
                 if (response.data == null) throw BiliApiException(-1, "分区响应为空")
                 DiscoveryPage(items, (page + 1).takeIf { raw.isNotEmpty() })
             }
-        }
+        }.also { catalogRequest.assertOwned() }
     }
 
 
     // STABLE_WEEKLY_SERIES_MEMBERS: sole original Result protocol / shared API.
     private val weeklySeriesRequestsDelegate by lazy {
         object : com.android.purebilibili.feature.home.DesktopWeeklySeriesRequests {
-            private val original = com.android.purebilibili.data.repository.DesktopWeeklySeriesProtocol(api)
+            // The same shared catalog supplies both retained Weekly UI requests.
             override suspend fun getWeeklyPeriods(): Result<List<PopularSeriesPeriod>> = withContext(Dispatchers.IO) {
-                try { repository.ensureSession(); original.getWeeklyPeriods() }
+                try { val request = repository.catalogInvocation(); request.ensureSession(); request.shared.getWeeklyPeriods().also { request.assertOwned() } }
                 catch (cancelled: CancellationException) { throw cancelled }
                 catch (failure: Exception) { Result.failure(failure) }
             }
             override suspend fun getWeeklyPeriod(number: Int): Result<PopularSeriesOneData> = withContext(Dispatchers.IO) {
-                try { repository.ensureSession(); original.getWeeklyPeriod(number) }
+                try { val request = repository.catalogInvocation(); request.ensureSession(); request.shared.getWeeklyPeriod(number).also { request.assertOwned() } }
                 catch (cancelled: CancellationException) { throw cancelled }
                 catch (failure: Exception) { Result.failure(failure) }
             }
@@ -130,8 +139,9 @@ class DesktopDiscoveryRepository(private val repository: DesktopRepository,
     fun weeklySeriesRequests(): com.android.purebilibili.feature.home.DesktopWeeklySeriesRequests = weeklySeriesRequestsDelegate
 
     suspend fun weeklyPeriods(): List<PopularSeriesPeriod> = withContext(Dispatchers.IO) {
-        repository.ensureSession(); val response = api.getWeeklySeriesList()
-        verified(response.code, response.message, response.data).list.orEmpty().filter { it.number > 0 }.sortedByDescending { it.number }
+        val request = repository.catalogInvocation()
+        request.ensureSession()
+        request.shared.getWeeklyPeriods().getOrThrow().also { request.assertOwned() }
     }
 
     suspend fun videoShots(bvid: String, cid: Long): VideoshotData = withContext(Dispatchers.IO) {
@@ -215,10 +225,12 @@ class DesktopDiscoveryRepository(private val repository: DesktopRepository,
         else -> "网络连接失败，请稍后重试"
     }
 
-    private suspend fun ranking(rid: Int): DiscoveryPage {
-        val response = api.getRankingVideos(repository.signWebParams(mapOf("rid" to rid.toString(), "type" to "all")))
-        val data = verified(response.code, response.message, response.data)
-        return DiscoveryPage(data.list.orEmpty().map { it.toVideoItem() }.filter { it.bvid.isNotBlank() }, null, "排行榜", data.note)
+    private suspend fun ranking(rid: Int, request: DesktopCatalogInvocation): DiscoveryPage {
+        var metadata: RankingData? = null
+        val items = request.shared.getRankingVideos(rid, "all", request.ensureSession, request.wbiKeys) { metadata = it }.getOrThrow()
+        request.assertOwned()
+        val data = metadata ?: throw BiliApiException(-1, "响应数据为空")
+        return DiscoveryPage(items, null, "排行榜", data.note)
     }
 
     private fun check(code: Int, message: String) { if (code != 0) throw BiliApiException(code, message.ifBlank { "加载失败 ($code)" }) }

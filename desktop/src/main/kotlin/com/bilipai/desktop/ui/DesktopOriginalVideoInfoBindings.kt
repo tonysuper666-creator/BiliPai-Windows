@@ -1,7 +1,7 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.android.purebilibili.data.repository.CreatorCardStats
+import com.android.purebilibili.data.model.response.CreatorCardStats
 import com.bilipai.desktop.plugins.DesktopPluginContext
 
 /** Supplied by the current detail entry on Root's existing account/transport owner. */

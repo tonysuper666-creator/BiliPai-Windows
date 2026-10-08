@@ -239,7 +239,9 @@ pager=mod('original_portrait_protocol_members',REPO/'desktop/tools/extract-upstr
 header=header.replace('import kotlinx.coroutines.*','import kotlinx.coroutines.*\nimport com.android.purebilibili.feature.video.ui.pager.PORTRAIT_PLAYBACK_TARGET_QUALITY\nimport com.android.purebilibili.feature.video.ui.pager.shouldUsePortraitParallelPlaybackBootstrap')
 s+='\n'+pager.protocol_members(REPO)
 s=s.replace('private suspend fun getWbiKeys()', 'internal suspend fun getWbiKeys()', 1)
-p.put(H/'prepared/protocol/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt',header+s+'\n}\n')
+from v032_catalog import apply_and_record as apply_v032_catalog
+p.put(H/'prepared/protocol/com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt',
+    apply_v032_catalog('com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt',header+s+'\n}\n',OUTPUT))
 p.put(H/'raw-protocol-adaptations.json',json.dumps(changes,ensure_ascii=False,indent=2)+'\n')
 p.put(H/'original-stable/VideoRepository.kt',orig)
 print('Full original raw playback selected protocol methods',len(methods),'lines',len((header+s).splitlines()))

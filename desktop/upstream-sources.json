@@ -83,9 +83,10 @@
       "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/RelatedResponse.kt",
       "sha256": "21a49a5294d6e3d0368102b642f3f075fe29de85fafa2d3cc7fe76487d88a346",
       "features": [
-        "data-models"
+        "data-models",
+        "v032-catalog-fixed-related-mapper"
       ],
-      "mode": "direct"
+      "mode": "policy-extract"
     },
     {
       "path": "core-data/src/main/java/com/android/purebilibili/data/model/response/LoginModels.kt",
@@ -13703,5 +13704,27 @@
     "fullV032ParityClaimed": false,
     "validationStatus": "source-implementation-awaiting-validation",
     "testsExecuted": false
+  },
+  "v032CatalogSlice": {
+    "upstreamCommit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+    "upstreamTag": "v0.3.2",
+    "manifestPath": "upstream-slices/v032-catalog/manifest.json",
+    "manifestSha256": "c51e4c9b638772d377fe3c0245330cdff9e23bd893a71ad5f7ea118ef940740a",
+    "scope": "Shared catalog request bodies; lossless Windows discovery page metadata; CreatorCardStats model and RelatedVideo mapper.",
+    "soleSharedSourceProducer": "tools/v032_catalog.py",
+    "existingConsumers": [
+      "tools/extract-upstream-home-protocols.py",
+      "tools/extract-upstream-video-state-core.py",
+      "tools/extract-upstream-video-detail-full-units.py",
+      "src/main/kotlin/com/bilipai/desktop/data/DesktopDiscoveryRepository.kt",
+      "src/main/kotlin/com/bilipai/desktop/data/DesktopRepository.kt"
+    ],
+    "canonicalInventoryAdvanced": false,
+    "fullV032ParityClaimed": false,
+    "validationStatus": "source-implementation-awaiting-validation",
+    "compiled": false,
+    "testsExecuted": false,
+    "guiExecuted": false,
+    "accountRequestsExecuted": false
   }
 }

@@ -682,10 +682,9 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     suspend fun popular(page: Int = 1): List<VideoCard> = withContext(Dispatchers.IO) {
         require(page > 0)
-        ensureVisitorSession()
-        val response = api.getPopularVideos(pn = page)
-        checkCode(response.code, response.message)
-        response.data?.list.orEmpty().map { it.toVideoItem().toCard() }.filter { it.bvid.isNotBlank() }
+        val request = catalogInvocation()
+        request.shared.getPopularVideos(page, request.ensureSession).getOrThrow()
+            .map { it.toCard() }.filter { it.bvid.isNotBlank() }.also { request.assertOwned() }
     }
 
     suspend fun recommendations(page: Int = 1): List<VideoCard> = withContext(Dispatchers.IO) {
@@ -807,10 +806,10 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     }
 
     suspend fun related(bvid: String): List<VideoCard> = withContext(Dispatchers.IO) {
-        ensureVisitorSession()
-        api.getRelatedVideos(bvid).data.orEmpty().map {
-            VideoCard(it.bvid, it.title, normalizeUrl(it.pic), it.owner.name, it.stat.view.toLong(), it.duration, authorMid = it.owner.mid)
-        }.filter { it.bvid.isNotBlank() }
+        val request = catalogInvocation()
+        request.ensureSession()
+        request.shared.getRelatedVideos(bvid).map { discoveryVideoCard(it.toVideoItem()) }
+            .filter { it.bvid.isNotBlank() }.also { request.assertOwned() }
     }
 
     suspend fun comments(aid: Long, page: Int = 1): List<Comment> = withContext(Dispatchers.IO) {

@@ -43,6 +43,8 @@ def confirmed_favorite_receipt_delta(path,t):
     return t.replace(before,after,1)
 
 def emit(path,t,origin,mode):
+    from v032_catalog import apply_and_record as apply_v032_catalog
+    t=apply_v032_catalog(path,t,OUTPUT)
     t=confirmed_favorite_receipt_delta(path,t)
     from v029_video_feedback import apply_video_feedback, celebration_source, OUTPUT_ANIMATIONS, COMMIT as FEEDBACK_COMMIT
     t,feedbackProof=apply_video_feedback(path,t,parser)

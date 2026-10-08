@@ -7,7 +7,7 @@ import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.VideoNoteSnapshot
 import com.android.purebilibili.data.repository.VideoNoteSavePayload
 import com.android.purebilibili.data.repository.VideoNotePublicNotePage
-import com.android.purebilibili.data.repository.CreatorCardStats
+import com.android.purebilibili.data.model.response.CreatorCardStats
 import com.android.purebilibili.feature.download.DownloadTask
 import com.android.purebilibili.feature.plugin.SponsorBlockPlugin
 import com.android.purebilibili.feature.plugin.*

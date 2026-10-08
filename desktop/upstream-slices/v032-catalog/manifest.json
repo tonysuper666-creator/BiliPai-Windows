@@ -1,0 +1,40 @@
+{
+  "upstreamCommit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+  "upstreamTag": "v0.3.2",
+  "partial": true,
+  "selectedScope": "shared catalog requests, creator stats model and related mapper; v025 baseline stays pinned",
+  "sources": [
+    {
+      "path": "VideoCatalogRepository.kt",
+      "origin": "core-data/src/main/java/com/android/purebilibili/data/repository/VideoCatalogRepository.kt",
+      "bytes": 11241,
+      "sha256": "64d44951e08fab64dfb67d7b47fe5a996237d8e987212d23aefada78df4f9333",
+      "sha256LF": "64d44951e08fab64dfb67d7b47fe5a996237d8e987212d23aefada78df4f9333",
+      "gitBlob": "c83cd850472c11ad9055d1464cb0f04fd95a366d"
+    },
+    {
+      "path": "CreatorCardStats.kt",
+      "origin": "core-data/src/main/java/com/android/purebilibili/data/model/response/CreatorCardStats.kt",
+      "bytes": 376,
+      "sha256": "9448cbb8218b944e1bde713ce1dd02b66dadd8b3cdfb7fbfa1de51543541021e",
+      "sha256LF": "9448cbb8218b944e1bde713ce1dd02b66dadd8b3cdfb7fbfa1de51543541021e",
+      "gitBlob": "4724ca245287e74d2bf976e371ffe0e0f302f284"
+    },
+    {
+      "path": "RelatedResponse.kt",
+      "origin": "core-data/src/main/java/com/android/purebilibili/data/model/response/RelatedResponse.kt",
+      "bytes": 939,
+      "sha256": "9c608503d829f7fbe15f6fd9c7565d009ba1275cd8f76efe49dc78a3801a7958",
+      "sha256LF": "9c608503d829f7fbe15f6fd9c7565d009ba1275cd8f76efe49dc78a3801a7958",
+      "gitBlob": "5db7f42d5a0819bd69005e247cb278a8979e113c"
+    },
+    {
+      "path": "VideoRepository.kt",
+      "origin": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "bytes": 89496,
+      "sha256": "96fa347362fe3bbaafdb5039f29baba5789194c231c7436823e7c664471eb1dd",
+      "sha256LF": "96fa347362fe3bbaafdb5039f29baba5789194c231c7436823e7c664471eb1dd",
+      "gitBlob": "01c9cd4f5c330ed7290ad106518d3e5b39918ab5"
+    }
+  ]
+}
