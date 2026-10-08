@@ -124,7 +124,13 @@ import kotlinx.coroutines.CancellationException
         LocalDesktopCommentBindings provides platforms.holder.commentsPlatform,
         LocalDesktopOriginalSubtitleModeBinding provides platforms.subtitleMode,
     ) {
-        AudioModeScreen(viewModel = remember(current) { DesktopOriginalVideoConsumedViews(current) },
+        AudioModeScreen(viewModel = remember(current, key, windowEnvironment) {
+            DesktopOriginalVideoConsumedViews(current,
+                manualAudioCurrent = { latestActive && windowEnvironment.owns() &&
+                    windowEnvironment.currentKey() === key && current.owns() },
+                manualAudioRetained = { windowEnvironment.owns() &&
+                    windowEnvironment.commands.containsEntry(key) && current.owns() })
+        },
             engagementViewModel = current.domains.engagement,
             composerViewModel = platforms.audio.composer,
             supplementViewModel = current.domains.supplement,

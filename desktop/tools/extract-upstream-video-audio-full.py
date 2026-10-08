@@ -103,6 +103,12 @@ t=replace(t,'object : Player.Listener {\n            override fun onEvents(playe
             override fun onPlaybackParametersChanged(parameters: DesktopOriginalPlaybackRate) { snapshot = player.readAudioPlaybackSnapshot() }
             override fun onSourceTransition(sourceVersion: Long) { snapshot = player.readAudioPlaybackSnapshot() }
         }''','Actual owned StateFlow listener events replace Media3 combined-events callback')
+t=replace(t,'onPrevious = { viewModel.playPreviousAudioModeTrack() }',
+ 'onPrevious = { viewModel.playPreviousAudioModeTrack(historyScope) }',
+ 'Actual original AudioMode UI scope launches a source-bound playlist operation')
+t=replace(t,'onNext = { viewModel.playNextAudioModeTrack() }',
+ 'onNext = { viewModel.playNextAudioModeTrack(historyScope) }',
+ 'Actual original AudioMode UI scope launches a source-bound playlist operation')
 emit(CURRENT,t)
 for o in OUTPUTS:
  original=o['original'];reverse=safe(o['path']).read_text(encoding='utf-8')

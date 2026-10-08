@@ -101,6 +101,28 @@ def original_page_transition_media_delta(path, body):
  assert body[:start]+before+body[start+len(after):]==original,'whole original page media delta inverse'
  return body
 
+def manual_audio_navigation_origin_delta(path, body):
+ if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body
+ original=body;edits=[]
+ pairs=[('    fun playNextAudioModeTrack(ignoreSavedProgress: Boolean = false): Boolean {', '    fun playNextAudioModeTrack(ignoreSavedProgress: Boolean = false, desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null): Boolean {\n        if (desktopManualNavigation != null && !desktopManualNavigation.isCurrent()) return false'), ('    fun playPreviousAudioModeTrack(ignoreSavedProgress: Boolean = false): Boolean {', '    fun playPreviousAudioModeTrack(ignoreSavedProgress: Boolean = false, desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null): Boolean {\n        if (desktopManualNavigation != null && !desktopManualNavigation.isCurrent()) return false'), ('        ignoreSavedProgress: Boolean\n    ): Boolean {\n        if (item == null) {', '        ignoreSavedProgress: Boolean,\n        desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null\n    ): Boolean {\n        if (desktopManualNavigation != null && !desktopManualNavigation.isCurrent()) return false\n        if (item == null) {')]
+ for before,after in pairs:
+  assert body.count(before)==1,('manual audio original source anchor',before)
+  at=body.index(before);body=body[:at]+after+body[at+len(before):];edits.append((at,before,after))
+ scoped=[{'start': '    fun playNextAudioModeTrack(', 'end': '    fun playPreviousAudioModeTrack(', 'pairs': [('            ignoreSavedProgress = ignoreSavedProgress\n', '            ignoreSavedProgress = ignoreSavedProgress,\n            desktopManualNavigation = desktopManualNavigation\n')]}, {'start': '    fun playPreviousAudioModeTrack(', 'end': '    private fun handleAudioModePlaybackEnded(', 'pairs': [('            ignoreSavedProgress = ignoreSavedProgress\n', '            ignoreSavedProgress = ignoreSavedProgress,\n            desktopManualNavigation = desktopManualNavigation\n')]}, {'start': '    private fun playAudioModePlaylistItem(', 'end': '    private fun playPreviousFromRecommendedQueue(', 'pairs': [('            ignoreSavedProgress = ignoreSavedProgress\n', '            ignoreSavedProgress = ignoreSavedProgress,\n            desktopManualNavigation = desktopManualNavigation\n')]}]
+ for region in scoped:
+  assert body.count(region['start'])==body.count(region['end'])==1
+  at=body.index(region['start']);end=body.index(region['end'],at);before=body[at:end];after=before
+  for old,new in region['pairs']:
+   assert after.count(old)==1
+   after=after.replace(old,new,1)
+  body=body[:at]+after+body[end:];edits.append((at,before,after))
+ inverse=body
+ for at,before,after in reversed(edits):
+  assert inverse[at:at+len(after)]==after
+  inverse=inverse[:at]+before+inverse[at+len(after):]
+ assert inverse==original,'complete original playlist-only audio body inverse'
+ return body
+
 def manual_navigation_origin_delta(path, body):
  if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body
  original=body;edits=[]
@@ -970,6 +992,7 @@ def generate(repo,output,standalone=False):
   body=_failure_recovery_delta(recipe['output'],body,recovery_edits)
   body=automatic_bootstrap_origin_delta(recipe['output'],body)
   body=manual_navigation_origin_delta(recipe['output'],body)
+  body=manual_audio_navigation_origin_delta(recipe['output'],body)
   body=original_page_transition_media_delta(recipe['output'],body)
   from v030_up_danmaku import same_send_expected_source_delta
   same_send_edits=[];same_send_before_sha=sha(body)

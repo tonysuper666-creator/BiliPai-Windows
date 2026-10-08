@@ -27,6 +27,10 @@ internal interface DesktopOriginalAudioVideoOwner {
     fun setAudioMode(value: Boolean)
     fun playPreviousAudioModeTrack()
     fun playNextAudioModeTrack()
+    // Old no-argument implementations/callers stay compatible. The production
+    // consumed view overrides both scope-aware overloads; only real UI supplies it.
+    fun playPreviousAudioModeTrack(callerScope: kotlinx.coroutines.CoroutineScope) { playPreviousAudioModeTrack() }
+    fun playNextAudioModeTrack(callerScope: kotlinx.coroutines.CoroutineScope) { playNextAudioModeTrack() }
     fun selectSubtitleTrack(trackKey: String)
     fun setSleepTimer(minutes: Int?)
     fun applyPlaybackSpeedFromUi(speed: Float)

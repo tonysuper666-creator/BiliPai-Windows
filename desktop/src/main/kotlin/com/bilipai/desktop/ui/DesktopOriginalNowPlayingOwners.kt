@@ -67,7 +67,15 @@ internal class DesktopOriginalOrdinaryNowPlayingPort(
     private val native: StateFlow<PlayerState>,
     private val rootOwns: () -> Boolean,
     private val admitCommand: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, () -> Unit) -> Boolean,
+    private val navigationScope: CoroutineScope?,
 ) : DesktopOriginalNowPlayingOwnerPort {
+    // Preserve the original six-argument/trailing-lambda API for legacy callers.
+    constructor(assemblies: StateFlow<DesktopOriginalVideoOwnerAssembly?>,
+        currentAssembly: () -> DesktopOriginalVideoOwnerAssembly?,
+        playlist: DesktopOriginalVideoOwnerPlaylist, native: StateFlow<PlayerState>,
+        rootOwns: () -> Boolean,
+        admitCommand: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, () -> Unit) -> Boolean,
+    ) : this(assemblies, currentAssembly, playlist, native, rootOwns, admitCommand, null)
     private class Identity(val assembly: DesktopOriginalVideoOwnerAssembly,
         val subject: VideoSubjectSnapshot, val publication: DesktopOriginalVideoAcceptedPublication,
         val queueItem: PlaylistItem, val queueIndex: Int)
@@ -138,8 +146,22 @@ internal class DesktopOriginalOrdinaryNowPlayingPort(
             if (assembly.section.playWhenReady) assembly.section.pause() else assembly.section.play()
         }
     }
-    override fun next(expected: DesktopOriginalNowPlayingSnapshot) { command(expected) { it.playback.playNextAudioModeTrack() } }
-    override fun previous(expected: DesktopOriginalNowPlayingSnapshot) { command(expected) { it.playback.playPreviousAudioModeTrack() } }
+    override fun next(expected: DesktopOriginalNowPlayingSnapshot) { navigatePlaylistFromClick(expected, true) }
+    override fun previous(expected: DesktopOriginalNowPlayingSnapshot) { navigatePlaylistFromClick(expected, false) }
+    private fun navigatePlaylistFromClick(expected: DesktopOriginalNowPlayingSnapshot, forward: Boolean) {
+        if (!owns(expected)) return
+        val scope = navigationScope
+        if (scope == null) {
+            // Exact old compatibility branch; actual Root always supplies its scope.
+            command(expected) {
+                if (forward) it.playback.playNextAudioModeTrack() else it.playback.playPreviousAudioModeTrack()
+            }
+            return
+        }
+        val token = expected.identity as Identity
+        launchDesktopOriginalManualAudioNavigation(token.assembly, token.publication, scope, forward,
+            clickCurrent = { owns(expected) }, callerStillOwned = { rootOwns() && scope.isActive })
+    }
     override fun dismiss(expected: DesktopOriginalNowPlayingSnapshot): Boolean = command(expected) {
         if (it.section.isPlaying) it.section.pause()
         it.playback.setAudioMode(false)

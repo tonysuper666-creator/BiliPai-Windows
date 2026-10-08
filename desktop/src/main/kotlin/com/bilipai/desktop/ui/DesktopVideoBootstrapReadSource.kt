@@ -36,10 +36,12 @@ internal class DesktopVideoBootstrapSeed private constructor(
     private val retryIntent: DesktopVideoBootstrapRetryIntent? = null,
     private val partRequest: PlaybackRequest? = null,
     private val partResumeMs: Long = 0L,
+    private val manualCallerStillOwned: (() -> Boolean)? = null,
 ) {
     /** Retained accepted-native origin only. Loading/error callers still use owns(). */
     internal fun ownsEntry(): Boolean = window.owns() && assembly.owns() && window.commands.containsEntry(route)
-    fun owns(): Boolean = !bootstrapCaller.isCancelled && ownsEntry()
+    fun owns(): Boolean = !bootstrapCaller.isCancelled && ownsEntry() &&
+        (manualCallerStillOwned?.invoke() != false)
     fun accepted(request: PlaybackRequest, token: Long, fallbackResumeMs: Long): DesktopVideoBootstrapAccepted? {
         if (!owns()) return null
         val retry = retryIntent
@@ -84,10 +86,11 @@ internal class DesktopVideoBootstrapSeed private constructor(
      * The click borrows the already accepted typed origin, never an EOF receipt
      * or a new primary stamp. The real action Job is captured by its UI caller. */
     internal fun forManualRequest(request: PlaybackRequest, fallbackResumeMs: Long,
-        caller: Job): DesktopVideoBootstrapSeed? {
-        if (!ownsEntry() || !caller.isActive || fallbackResumeMs < 0L) return null
+        caller: Job, callerStillOwned: (() -> Boolean)? = null): DesktopVideoBootstrapSeed? {
+        if (!ownsEntry() || !caller.isActive || callerStillOwned?.invoke() == false || fallbackResumeMs < 0L) return null
         return DesktopVideoBootstrapSeed(window, assembly, route, caller,
-            primaryInstallation, partRequest = request, partResumeMs = fallbackResumeMs)
+            primaryInstallation, partRequest = request, partResumeMs = fallbackResumeMs,
+            manualCallerStillOwned = callerStillOwned)
     }
     /** Captured from the SAME displayed failure before original retry clears its media.
      * Only fixed retry parameters survive; no old Throwable/invocation chain is retained.
@@ -105,7 +108,8 @@ internal class DesktopVideoBootstrapSeed private constructor(
                 assembly.playback.captureDesktopPlaybackState() === failed.displayedError) {
                 result = DesktopVideoBootstrapSeed(window, assembly, route, bootstrapCaller,
                     primaryInstallation, DesktopVideoBootstrapRetryIntent(bvid, cid, fallbackResumeMs,
-                        autoPlay, audioLang?.trim()?.takeIf { it.isNotEmpty() }))
+                        autoPlay, audioLang?.trim()?.takeIf { it.isNotEmpty() }),
+                    manualCallerStillOwned = manualCallerStillOwned)
             }
         }
         return result

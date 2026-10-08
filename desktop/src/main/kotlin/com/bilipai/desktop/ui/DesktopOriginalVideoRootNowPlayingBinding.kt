@@ -19,9 +19,10 @@ internal class DesktopOriginalVideoRootNowPlayingBinding(
     private fun ownsRoot() = rootAlive() && root.isCurrentOwner()
     val session = DesktopOriginalNowPlayingSessionView(::ownsRoot, root.entry.gate::commit)
     private val ordinary = DesktopOriginalOrdinaryNowPlayingPort(shell.slot.assemblies,
-        shell.slot::currentAssembly, shell.playlist, player.state, ::ownsRoot) { owner, expected, action ->
-        ownsRoot() && shell.factoryFor(owner).withPresentationAdmission(owner, expected, action)
-    }
+        shell.slot::currentAssembly, shell.playlist, player.state, ::ownsRoot,
+        admitCommand = { owner, expected, action ->
+            ownsRoot() && shell.factoryFor(owner).withPresentationAdmission(owner, expected, action)
+        }, navigationScope = root.entry.gate.scope)
     private val songs = listen?.let {
         DesktopOriginalListenNowPlayingPort(it, repository, root.entry.gate.scope, ::ownsRoot)
     }

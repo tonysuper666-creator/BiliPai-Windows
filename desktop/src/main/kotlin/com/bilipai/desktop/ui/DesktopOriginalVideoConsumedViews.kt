@@ -14,6 +14,8 @@ import kotlinx.coroutines.flow.map
  */
 internal class DesktopOriginalVideoConsumedViews(
     private val assembly: DesktopOriginalVideoOwnerAssembly,
+    private val manualAudioCurrent: (() -> Boolean)? = null,
+    private val manualAudioRetained: (() -> Boolean)? = null,
 ) : DesktopOriginalPortraitPlaybackOwner, DesktopOriginalAudioVideoOwner {
     private val original = assembly.playback
     private fun assertOwned() {
@@ -71,6 +73,17 @@ internal class DesktopOriginalVideoConsumedViews(
     override fun setAudioMode(value: Boolean) = command { original.setAudioMode(value) }
     override fun playPreviousAudioModeTrack() = command { original.playPreviousAudioModeTrack() }
     override fun playNextAudioModeTrack() = command { original.playNextAudioModeTrack() }
+    override fun playPreviousAudioModeTrack(callerScope: kotlinx.coroutines.CoroutineScope) =
+        navigateAudioFromClick(callerScope, false)
+    override fun playNextAudioModeTrack(callerScope: kotlinx.coroutines.CoroutineScope) =
+        navigateAudioFromClick(callerScope, true)
+    private fun navigateAudioFromClick(callerScope: kotlinx.coroutines.CoroutineScope, forward: Boolean) {
+        val current = manualAudioCurrent ?: return
+        val retained = manualAudioRetained ?: return
+        if (!assembly.owns() || !current() || !retained()) return
+        val captured = assembly.native.current() ?: return
+        launchDesktopOriginalManualAudioNavigation(assembly, captured, callerScope, forward, current, retained)
+    }
     override fun setSleepTimer(minutes: Int?) = command { original.setSleepTimer(minutes) }
     override fun applyPlaybackSpeedFromUi(speed: Float) = command { original.applyPlaybackSpeedFromUi(speed) }
     override fun setAudioQuality(audioQuality: Int) = command { original.setAudioQuality(audioQuality) }
