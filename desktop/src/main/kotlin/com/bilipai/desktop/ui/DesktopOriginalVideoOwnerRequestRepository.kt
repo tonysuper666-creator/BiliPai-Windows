@@ -30,6 +30,7 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
     primaryCsrf: () -> String?,
     private val writePrimaryVip: (Boolean) -> Unit,
     val bootstrapOrigin: DesktopVideoBootstrapAccepted? = null,
+    val pageTransition: DesktopOriginalVideoPageTransitionProof? = null,
 ) : DesktopOriginalVideoOwnerRepository,
     DesktopOriginalVideoLoadRepository by binding.rawRepository {
     private var transportObserver: DesktopOriginalVideoTransportObserver? = null
@@ -212,6 +213,18 @@ internal fun createDesktopOriginalVideoOwnerRequestRepositoryWithBootstrapOrigin
     privacy: DesktopSearchPreferences,
     bootstrapOrigin: DesktopVideoBootstrapAccepted?,
     visitorInitialized: (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
+): DesktopOriginalVideoOwnerRequestRepository =
+    createDesktopOriginalVideoOwnerRequestRepositoryWithPageTransition(repository, binding,
+        subtitleAssets, privacy, bootstrapOrigin, null, visitorInitialized)
+
+internal fun createDesktopOriginalVideoOwnerRequestRepositoryWithPageTransition(
+    repository: DesktopRepository,
+    binding: DesktopOriginalVideoRepositoryBinding,
+    subtitleAssets: DesktopSubtitleAssets,
+    privacy: DesktopSearchPreferences,
+    bootstrapOrigin: DesktopVideoBootstrapAccepted?,
+    pageTransition: DesktopOriginalVideoPageTransitionProof?,
+    visitorInitialized: (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
 ): DesktopOriginalVideoOwnerRequestRepository {
     binding.assertCurrent()
     val updateVip: (Boolean) -> Unit = { vip ->
@@ -246,5 +259,5 @@ internal fun createDesktopOriginalVideoOwnerRequestRepositoryWithBootstrapOrigin
                 currentCoroutineContext().ensureActive(); binding.assertCurrent()
                 response.code
             }
-        }, primaryCsrf = binding::primaryCsrf, writePrimaryVip = updateVip, bootstrapOrigin = bootstrapOrigin)
+        }, primaryCsrf = binding::primaryCsrf, writePrimaryVip = updateVip, bootstrapOrigin = bootstrapOrigin, pageTransition = pageTransition)
 }

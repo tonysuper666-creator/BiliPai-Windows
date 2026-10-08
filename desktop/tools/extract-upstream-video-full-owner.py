@@ -87,6 +87,20 @@ def composer_source_lifetime_delta(path, body, audit_edits=None):
  if audit_edits is not None:audit_edits.extend(edits)
  return body
 
+def original_page_transition_media_delta(path, body):
+ if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body
+ original=body
+ start=body.index('    fun switchPage(')
+ end=body.index('\n    fun dismissResumePlaybackSuggestion()',start)
+ before=body[start:end]
+ old='        pageSwitchJob = environment.invocations.launch {';new='        val desktopPageOriginalState = playbackSessionState\n        val desktopPageTransition = com.bilipai.desktop.ui.DesktopOriginalVideoPageTransitionIntent(\n            bvid = targetBvid, cid = page.cid, pageIndex = pageIndex,\n            requestedQuality = current.currentQuality, audioLang = current.currentAudioLang,\n            ignoreSavedProgress = ignoreSavedProgress, previousCid = previousCid,\n            original = desktopPageOriginalState, switchGeneration = switchGeneration,\n            isGenerationCurrent = { switchGeneration == pageSwitchGeneration },\n        )\n        pageSwitchJob = environment.invocations.launch(context = desktopPageTransition) {'
+ assert before.count(old)==1,'sole original page launch'
+ after=before.replace(old,new,1)
+ body=body[:start]+after+body[end:]
+ assert after.count(new)==1 and after.replace(new,old,1)==before
+ assert body[:start]+before+body[start+len(after):]==original,'whole original page media delta inverse'
+ return body
+
 def automatic_bootstrap_origin_delta(path, body):
  if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body
  original=body;edits=[]
@@ -931,6 +945,7 @@ def generate(repo,output,standalone=False):
   recovery_edits=[]
   body=_failure_recovery_delta(recipe['output'],body,recovery_edits)
   body=automatic_bootstrap_origin_delta(recipe['output'],body)
+  body=original_page_transition_media_delta(recipe['output'],body)
   from v030_up_danmaku import same_send_expected_source_delta
   same_send_edits=[];same_send_before_sha=sha(body)
   body=same_send_expected_source_delta(recipe['output'],body,same_send_edits)

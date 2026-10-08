@@ -55,7 +55,11 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
         currentCoroutineContext().ensureActive()
         if (!entryScope.isActive || !stillEntryOwned()) throw CancellationException("Original load entry retired")
         val requestJob = checkNotNull(currentCoroutineContext()[Job])
-        val bootstrapOrigin = currentCoroutineContext()[DesktopVideoBootstrapAccepted]
+        val pageTransition = currentCoroutineContext()[DesktopOriginalVideoPageTransitionIntent]
+            ?.capture(state, requestJob)
+        // In-place page media is Unknown bootstrap provenance. A context inherited
+        // accidentally from an old full load must not tag this different CID.
+        val bootstrapOrigin = if (pageTransition == null) currentCoroutineContext()[DesktopVideoBootstrapAccepted] else null
         val binding = DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,
             entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
@@ -63,8 +67,8 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
             isMobileData, token::available, token::refresh,
             { receipt -> onPlaybackAuthorizationRetired(receipt, state) })
         val bootstrap = bootstrapOrigin?.let { DesktopVideoBootstrapReadSource.capture(it, state, binding) }
-        val raw = createDesktopOriginalVideoOwnerRequestRepositoryWithBootstrapOrigin(repository, binding,
-            subtitleAssets, privacy, bootstrapOrigin,
+        val raw = createDesktopOriginalVideoOwnerRequestRepositoryWithPageTransition(repository, binding,
+            subtitleAssets, privacy, bootstrapOrigin, pageTransition,
             { receipt, stillOwned -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, stillOwned) })
         var baseline: Long? = null
         if (!binding.admitCurrentMutation { baseline = native.player.currentSourceVersion })

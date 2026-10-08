@@ -89,6 +89,7 @@ internal class DesktopOriginalVideoRootMediaFactory(
         // Keep their captured Binding; require a subject only for media publication.
         val capturedRequest = state.currentRequest
         val bootstrapOrigin = raw.bootstrapOrigin
+        val pageTransition = raw.pageTransition
         val token = state.currentLoadRequestToken
         return DesktopOriginalVideoCachedMediaFactory(raw.binding.captureMediaBytes(cache, assembly.environment.network::cdnNetwork),
             legacyOrigin = { video, audio, _ -> transport.source(video, audio) },
@@ -102,13 +103,26 @@ internal class DesktopOriginalVideoRootMediaFactory(
             publish = { source, _ ->
                 raw.binding.assertCurrent()
                 val request = checkNotNull(capturedRequest) { "Original request is required for a media operation" }
-                val resolved = captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token)
-                if (bootstrapOrigin != null && (bootstrapOrigin.request !== request || bootstrapOrigin.requestToken != token))
-                    throw CancellationException("Actual bootstrap request context replaced")
-                native.publishWithBootstrapOrigin(resolved, source, nativeBaseline, callerJob, bootstrapOrigin) {
-                    !callerJob.isCancelled && gate.owns() && runCatching {
-                        captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token) == resolved
-                    }.getOrDefault(false)
+                if (pageTransition != null) {
+                    if (pageTransition.factoryCaller !== callerJob)
+                        throw CancellationException("Actual original page Factory caller replaced")
+                    val resolved = pageTransition.resolvedCommittedSubject(assembly.captureLoadState())
+                    // Keep the existing initial publication/ACK and explicit Unknown
+                    // metadata. This page does not accept a new full-load request.
+                    native.publish(resolved, source, nativeBaseline, callerJob) {
+                        !callerJob.isCancelled && gate.owns() && runCatching {
+                            pageTransition.resolvedCommittedSubject(assembly.captureLoadState()) == resolved
+                        }.getOrDefault(false)
+                    }
+                } else {
+                    val resolved = captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token)
+                    if (bootstrapOrigin != null && (bootstrapOrigin.request !== request || bootstrapOrigin.requestToken != token))
+                        throw CancellationException("Actual bootstrap request context replaced")
+                    native.publishWithBootstrapOrigin(resolved, source, nativeBaseline, callerJob, bootstrapOrigin) {
+                        !callerJob.isCancelled && gate.owns() && runCatching {
+                            captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token) == resolved
+                        }.getOrDefault(false)
+                    }
                 }
             }, onPreparation = onPreparation, reuseAccepted = null, isRetainedCurrent = native::isCurrent).media
     }
