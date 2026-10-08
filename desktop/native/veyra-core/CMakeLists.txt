@@ -1,0 +1,67 @@
+cmake_minimum_required(VERSION 3.25)
+project(BiliPaiVeyraCoreCandidate VERSION 0.1.0 LANGUAGES CXX)
+if(NOT WIN32 OR NOT MSVC OR NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
+  message(FATAL_ERROR "This candidate requires Windows x64 MSVC with C++20/SEH")
+endif()
+set(VEYRA_FIXED_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/upstream" CACHE PATH "Read-only Veyra source at commit 96a7c8de36bc195240161de6814739ad810722f1")
+set(VEYRA_NGX_INCLUDE "" CACHE PATH "Actual NVIDIA public NGX header directory; never fake declarations")
+set(VEYRA_NGX_STATIC_LIBRARY "" CACHE FILEPATH "Reviewed compatible actual nvsdk_ngx_s[_dbg].lib; not downloaded by this project")
+option(BILIVEYRA_COMPILE_ONLY "Compile actual sources to objects without linking/executing SDK" ON)
+if(NOT EXISTS "${VEYRA_NGX_INCLUDE}/nvsdk_ngx.h" OR NOT EXISTS "${VEYRA_FIXED_SOURCE}/include/veyra/ngx/NgxCoreHost.h")
+  message(FATAL_ERROR "Actual fixed Veyra and NVIDIA public headers required")
+endif()
+# This is an enforced content pin, not an advisory source-path comment.
+# Manifest was derived from actual MSVC /sourceDependencies for this closure.
+file(SHA256 "${CMAKE_CURRENT_SOURCE_DIR}/veyra-pinned-source-hashes.json" manifest_sha)
+if(NOT "${manifest_sha}" STREQUAL "a38801725efdf0ee73f94658d536679685cf3798a12e4abaeafdba6f9b25dd5b")
+  message(FATAL_ERROR "Fixed source/header closure manifest itself was changed")
+endif()
+file(READ "${CMAKE_CURRENT_SOURCE_DIR}/veyra-pinned-source-hashes.json" pinned_sources_json)
+string(JSON pinned_source_count LENGTH "${pinned_sources_json}")
+if(NOT pinned_source_count EQUAL 18)
+  message(FATAL_ERROR "Complete fixed source/header closure manifest required")
+endif()
+math(EXPR pinned_source_last "${pinned_source_count} - 1")
+foreach(i RANGE 0 ${pinned_source_last})
+  string(JSON pinned_path GET "${pinned_sources_json}" ${i} path)
+  string(JSON pinned_sha GET "${pinned_sources_json}" ${i} sha256)
+  if(IS_ABSOLUTE "${pinned_path}" OR pinned_path MATCHES "(^|/)\\.\\.(/|$)")
+    message(FATAL_ERROR "Invalid pinned source path: ${pinned_path}")
+  endif()
+  if(NOT EXISTS "${VEYRA_FIXED_SOURCE}/${pinned_path}")
+    message(FATAL_ERROR "Missing fixed source/header: ${pinned_path}")
+  endif()
+  file(SHA256 "${VEYRA_FIXED_SOURCE}/${pinned_path}" actual_sha)
+  string(TOLOWER "${pinned_sha}" pinned_sha)
+  if(NOT "${actual_sha}" STREQUAL "${pinned_sha}")
+    message(FATAL_ERROR "Fixed Veyra source/header hash mismatch: ${pinned_path}")
+  endif()
+endforeach()
+message(STATUS "Verified ${pinned_source_count} actual Veyra source/header/license hashes")
+# Minimal real closure. No add_subdirectory(upstream), Qt, FFmpeg, audio,
+# DLL patch/unlock/NR/DLSS-FG source, renderer, or remote-play source.
+set(core_sources
+  bilipai_veyra_core_v1.cpp
+  "${VEYRA_FIXED_SOURCE}/src/ngx/NgxCoreHost.cpp"
+  "${VEYRA_FIXED_SOURCE}/src/ngx/VideoSrBackend.cpp"
+  "${VEYRA_FIXED_SOURCE}/src/ngx/TrueHdrBackend.cpp"
+  "${VEYRA_FIXED_SOURCE}/src/base/Log.cpp"
+  "${VEYRA_FIXED_SOURCE}/src/base/NgxResult.cpp")
+if(BILIVEYRA_COMPILE_ONLY)
+  add_library(bilipai_veyra_core OBJECT ${core_sources})
+else()
+  if(NOT EXISTS "${VEYRA_NGX_STATIC_LIBRARY}")
+    message(FATAL_ERROR "Linking requires a separately reviewed actual static NGX shim")
+  endif()
+  add_library(bilipai_veyra_core SHARED ${core_sources})
+  target_link_libraries(bilipai_veyra_core PRIVATE "${VEYRA_NGX_STATIC_LIBRARY}" d3d12 dxgi dxguid d3d11 bcrypt wintrust crypt32 version)
+endif()
+set_property(TARGET bilipai_veyra_core PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+target_compile_features(bilipai_veyra_core PRIVATE cxx_std_20)
+target_compile_definitions(bilipai_veyra_core PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN)
+target_compile_options(bilipai_veyra_core PRIVATE /W4 /EHsc /utf-8)
+target_include_directories(bilipai_veyra_core PRIVATE "${VEYRA_FIXED_SOURCE}/include" "${VEYRA_NGX_INCLUDE}")
+add_library(bilipai_veyra_abi_layout OBJECT abi_layout_compile.cpp)
+target_compile_features(bilipai_veyra_abi_layout PRIVATE cxx_std_20)
+
+

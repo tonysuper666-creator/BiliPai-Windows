@@ -1,0 +1,118 @@
+{
+  "schema": 1,
+  "sourceCommit": "96a7c8de36bc195240161de6814739ad810722f1",
+  "releaseTag": "v2.0.6",
+  "releaseCommit": "e3aa842a00f693a4a17d1fc4c454d0ebc59428f6",
+  "selectedClosureFiles": 18,
+  "allSelectedBytesIdentical": true,
+  "files": [
+    {
+      "path": "include/veyra/diagnostics/DiagnosticEvent.h",
+      "frozenSourceGitBlob": "bd77a194302aa66cd8b133aafbe0f499f01de7c6",
+      "releaseGitBlob": "bd77a194302aa66cd8b133aafbe0f499f01de7c6",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/diagnostics/FrameTrace.h",
+      "frozenSourceGitBlob": "2f5d2550556fc4ca2cbcf941cc32fcc3cef886f7",
+      "releaseGitBlob": "2f5d2550556fc4ca2cbcf941cc32fcc3cef886f7",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/diagnostics/Redaction.h",
+      "frozenSourceGitBlob": "99201795b9972043adf42e3318628e8de3af1a6a",
+      "releaseGitBlob": "99201795b9972043adf42e3318628e8de3af1a6a",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/engine/VideoHdrSettings.h",
+      "frozenSourceGitBlob": "df77dd0182575714d56bc763d44e3a02f3301814",
+      "releaseGitBlob": "df77dd0182575714d56bc763d44e3a02f3301814",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/Log.h",
+      "frozenSourceGitBlob": "cf098b0d10e5e3ad4e4963214e727577d39823de",
+      "releaseGitBlob": "cf098b0d10e5e3ad4e4963214e727577d39823de",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/ngx/NgxCoreHost.h",
+      "frozenSourceGitBlob": "a93cb18d6bec3af84039ae0ac237ec0ea086990c",
+      "releaseGitBlob": "a93cb18d6bec3af84039ae0ac237ec0ea086990c",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/ngx/TrueHdrBackend.h",
+      "frozenSourceGitBlob": "4710cb76b430dc84dd543b56dc723cbaeae489e0",
+      "releaseGitBlob": "4710cb76b430dc84dd543b56dc723cbaeae489e0",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/ngx/VideoSrBackend.h",
+      "frozenSourceGitBlob": "9f0de000049c9fc24a2c17cd70b5769fd44585d4",
+      "releaseGitBlob": "9f0de000049c9fc24a2c17cd70b5769fd44585d4",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/NgxResult.h",
+      "frozenSourceGitBlob": "9ed8186e798da77c8fa94a6753355c2fbb55295a",
+      "releaseGitBlob": "9ed8186e798da77c8fa94a6753355c2fbb55295a",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/pipeline/FrameBatch.h",
+      "frozenSourceGitBlob": "7e6ded2301e906d9edb39bc53450184be344e075",
+      "releaseGitBlob": "7e6ded2301e906d9edb39bc53450184be344e075",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/pipeline/ResolutionPlan.h",
+      "frozenSourceGitBlob": "c4fb33446f9059e5e1bf9164fc0d9c149efa3f92",
+      "releaseGitBlob": "c4fb33446f9059e5e1bf9164fc0d9c149efa3f92",
+      "bytesIdentical": true
+    },
+    {
+      "path": "include/veyra/Result.h",
+      "frozenSourceGitBlob": "e0eaec15fdc78eefe771f5fcc8802900d801d79d",
+      "releaseGitBlob": "e0eaec15fdc78eefe771f5fcc8802900d801d79d",
+      "bytesIdentical": true
+    },
+    {
+      "path": "LICENSE",
+      "frozenSourceGitBlob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "releaseGitBlob": "f288702d2fa16d3cdf0035b15a9fcbc552cd88e7",
+      "bytesIdentical": true
+    },
+    {
+      "path": "src/base/Log.cpp",
+      "frozenSourceGitBlob": "bc41081a3301d8f3f5aeba1a4ec705c6c935c974",
+      "releaseGitBlob": "bc41081a3301d8f3f5aeba1a4ec705c6c935c974",
+      "bytesIdentical": true
+    },
+    {
+      "path": "src/base/NgxResult.cpp",
+      "frozenSourceGitBlob": "fdb2d647ccbd47256d2c85c5a6759c5df171f1ba",
+      "releaseGitBlob": "fdb2d647ccbd47256d2c85c5a6759c5df171f1ba",
+      "bytesIdentical": true
+    },
+    {
+      "path": "src/ngx/NgxCoreHost.cpp",
+      "frozenSourceGitBlob": "0f12fda7eabac306be2a7256afb57cd8a17dd4c8",
+      "releaseGitBlob": "0f12fda7eabac306be2a7256afb57cd8a17dd4c8",
+      "bytesIdentical": true
+    },
+    {
+      "path": "src/ngx/TrueHdrBackend.cpp",
+      "frozenSourceGitBlob": "94e17f89620d41bed4cc4176db3ac0f8a945ae69",
+      "releaseGitBlob": "94e17f89620d41bed4cc4176db3ac0f8a945ae69",
+      "bytesIdentical": true
+    },
+    {
+      "path": "src/ngx/VideoSrBackend.cpp",
+      "frozenSourceGitBlob": "006d1a3dc9f85dc814acfef36e9bf38028b8b13a",
+      "releaseGitBlob": "006d1a3dc9f85dc814acfef36e9bf38028b8b13a",
+      "bytesIdentical": true
+    }
+  ]
+}

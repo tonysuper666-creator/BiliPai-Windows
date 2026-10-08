@@ -1,0 +1,74 @@
+[
+  {
+    "path": "include/veyra/diagnostics/DiagnosticEvent.h",
+    "sha256": "DE5678AB9ACD31194F056C34A0890D34A8DD918F6F817A9D0641DFABC16459CB"
+  },
+  {
+    "path": "include/veyra/diagnostics/FrameTrace.h",
+    "sha256": "FCFE1A7AB5163265FBF97325C417585C33D4B20585B5E42F81D7575F1F0E6498"
+  },
+  {
+    "path": "include/veyra/diagnostics/Redaction.h",
+    "sha256": "B22CAD816DA5AA98C22B5CD1BE21B3FB0514C1A43497E6D366A46B5B8885D92D"
+  },
+  {
+    "path": "include/veyra/engine/VideoHdrSettings.h",
+    "sha256": "40E2701AA052E405F7D6D39415D33A2837A5AA0B3354042C72AAEF0266E8C927"
+  },
+  {
+    "path": "include/veyra/Log.h",
+    "sha256": "2EDBDE670704C401FE82868BC8A14F4B576BB9ABD9C88D52548A8B441E9D40F2"
+  },
+  {
+    "path": "include/veyra/ngx/NgxCoreHost.h",
+    "sha256": "B29023C4D5DF346CC8D3BEC036B3E7430CD351F352A9474F59FA08B5D8DF953A"
+  },
+  {
+    "path": "include/veyra/ngx/TrueHdrBackend.h",
+    "sha256": "25F6864D5A85BA5F0FBC263FC2C831F537D1D6A88B8F34F1B6954C29B2C8E554"
+  },
+  {
+    "path": "include/veyra/ngx/VideoSrBackend.h",
+    "sha256": "FDE04D1C6EB38E0BD8ADBC485C84F3991D81F84F30A9F75C0B7EBA292FCC0ACD"
+  },
+  {
+    "path": "include/veyra/NgxResult.h",
+    "sha256": "82D7355F8DF9F349D5324E04CD29D717053568F964522464CADD1328D10CCDCB"
+  },
+  {
+    "path": "include/veyra/pipeline/FrameBatch.h",
+    "sha256": "84481F5E8A7EFA3E4FCE1FDE809D0398023A8BE5C9A0DABA598122E3A53B904A"
+  },
+  {
+    "path": "include/veyra/pipeline/ResolutionPlan.h",
+    "sha256": "FF219366F16236B183D33168DB15F5C49D960A5B381B6C1564BB0EBB8DA0F631"
+  },
+  {
+    "path": "include/veyra/Result.h",
+    "sha256": "2D402383EE8BC45B141A95123835B82500D59805B10729283DBE492D209966C6"
+  },
+  {
+    "path": "LICENSE",
+    "sha256": "230184F60BAE2FEAF244F10A8BAC053C8FF33A183BCC365B4D8B876D2B7F4809"
+  },
+  {
+    "path": "src/base/Log.cpp",
+    "sha256": "47886884FD2F6CAAB2A27D325123F31E4A90216BECEE5D35F05603DE621C1682"
+  },
+  {
+    "path": "src/base/NgxResult.cpp",
+    "sha256": "A1032DD871CFA47DD64395F669D15F6EFC2A43CBD611B0A3767CB4039CF3684C"
+  },
+  {
+    "path": "src/ngx/NgxCoreHost.cpp",
+    "sha256": "6896E611C5EF88AC3488434FEFBF7F8CE274CE6C5824023D9EDB2FADBF80EB55"
+  },
+  {
+    "path": "src/ngx/TrueHdrBackend.cpp",
+    "sha256": "FD802F2B705922817AA2F16CAE5BE97CCAA6316910C4E5E54D8BA8E5F309B055"
+  },
+  {
+    "path": "src/ngx/VideoSrBackend.cpp",
+    "sha256": "5786099AFC88F8A3212E98E4121CBCCCE2384844AA88103A8DE15D3725161759"
+  }
+]

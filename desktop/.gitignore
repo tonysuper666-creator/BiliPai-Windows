@@ -4,6 +4,13 @@
 !/native/
 /native/*
 !/native/diagnostic-share/
+!/native/veyra-core/
+!/native/veyra-core/CMakeLists.txt
+!/native/veyra-core/NOTICE.md
+/native/veyra-core/build*/
+/native/veyra-core/**/*.dll
+/native/veyra-core/**/*.lib
+/native/veyra-core/**/*.obj
 /native/diagnostic-share/*
 !/native/diagnostic-share/DesktopDiagnosticShare.cpp
 !/native/diagnostic-share/approved-development-build.json

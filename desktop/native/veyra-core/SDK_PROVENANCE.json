@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "repository": "https://github.com/NVIDIA/DLSS",
+  "commit": "374959484e79a640feaba44c93ac8cfb0a03f5b5",
+  "sdkFilesIncluded": false,
+  "necessaryPublicHeaderIdentities": [
+    {
+      "path": "include/nvsdk_ngx.h",
+      "sha": "ae6b49174049eed69cc377b2fffd3c901651f764",
+      "size": 40289,
+      "sha256": "DC38E7467CF415379C9D12AE1B6E4A494C453ED92720FB53E92AECB523E7B848"
+    },
+    {
+      "path": "include/nvsdk_ngx_defs.h",
+      "sha": "807fa2475e90214f6846b9b4840be92e7bd66b5b",
+      "size": 44313,
+      "sha256": "EA23F33497CD274860D1C25A97644FCE807DCB0037C594547203343103FAD03E"
+    },
+    {
+      "path": "include/nvsdk_ngx_params.h",
+      "sha": "014d9f4adec600ea3677947b7f98258da9f9c7fc",
+      "size": 7744,
+      "sha256": "943BC8CC5CDAE03B6303016FBAD3183636F2335AE27A2D18776798C3B4EFABBC"
+    }
+  ],
+  "releaseX64StaticShim": {
+    "path": "lib/Windows_x86_64/x64/nvsdk_ngx_s.lib",
+    "gitBlobSha1": "fcd9adc26d111e7013be555d27a4cf60e5753eb5",
+    "sha256": "4E5D355086D2BC11E1A0842457D2519EA528EE1F3E112C45679A84960C07DFF3",
+    "bytes": 3782558,
+    "gitBlobAndBytesVerified": true
+  },
+  "license": {
+    "path": "LICENSE.txt",
+    "sha256": "D4216E39EBEF5F9B50A6712EBB37BEEB5379862A67733A9999C651F21592AAF0",
+    "url": "https://github.com/NVIDIA/DLSS/blob/374959484e79a640feaba44c93ac8cfb0a03f5b5/LICENSE.txt",
+    "included": false
+  },
+  "buildUse": "EXPLICIT_LOCAL_EXTERNAL_DEPENDENCY",
+  "runtimeValidation": "NOT_RUN",
+  "publicDistributionReady": false
+}
