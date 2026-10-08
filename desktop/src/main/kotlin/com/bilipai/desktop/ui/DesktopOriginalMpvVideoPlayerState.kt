@@ -44,6 +44,7 @@ class DesktopOriginalMpvSectionControl internal constructor(
     private val eventScope: CoroutineScope,
     private val sourceVersions: StateFlow<Long?>,
     private val commitEventIfCurrent: ((() -> Unit) -> Boolean),
+    private val captureContinuation: (Long, Job) -> DesktopOriginalNativePlaybackContinuation? = { _, _ -> null },
 ) : DesktopOriginalMpvOverlayControl(nativePlayer, acceptedSourceVersion, entryOwns,
     commitIfCurrent, diagnosticLoggingEnabled, ensurePreparedSource, resumeEndedSource, logSeekDiagnostic) {
     override fun snapshot(): PlayerState {
@@ -106,6 +107,10 @@ class DesktopOriginalMpvSectionControl internal constructor(
                     }
                     // Read the current StateFlow after source admission. combine can carry a
                     // delayed emission from before the owner published its replacement token.
+                    // Fix the accepted publication BEFORE reading this event's native state.
+                    // A known origin is kept even with an absent/stale EOF, so it cannot
+                    // fall through to the source-less compatibility path after recovery.
+                    val capturedContinuation = captureContinuation(version, registrationJob)
                     val value = state.value
                     val old = previous.takeIf { previousVersion == version }
                     fun admit(callback: () -> Unit) {
@@ -118,7 +123,10 @@ class DesktopOriginalMpvSectionControl internal constructor(
                     // A registration first observes state. An already-rendered native frame is
                     // delivered as its actual receipt, never inferred from position/isPlaying.
                     if (previousVersion != version) admit { listener.onSourceTransition(version) }
-                    if (old == null || playbackStateFor(old) != playbackStateFor(value)) admit { listener.onPlaybackStateChanged(playbackStateFor(value)) }
+                    if (old == null || playbackStateFor(old) != playbackStateFor(value)) {
+                        val continuation = capturedContinuation?.forEvent(value.nativeEof)
+                        admit { listener.onPlaybackStateChanged(playbackStateFor(value), continuation) }
+                    }
                     if (old == null || playingFor(old) != playingFor(value)) admit { listener.onIsPlayingChanged(playingFor(value)) }
                     if (old == null || old.paused != value.paused) admit { listener.onPlayWhenReadyChanged(!value.paused, 0) }
                     if (old == null || old.speed != value.speed) admit { listener.onPlaybackParametersChanged(DesktopOriginalPlaybackRate(value.speed.toFloat())) }

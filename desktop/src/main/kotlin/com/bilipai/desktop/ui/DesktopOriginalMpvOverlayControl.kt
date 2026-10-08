@@ -34,6 +34,9 @@ open class DesktopOriginalMpvOverlayControl internal constructor(
      * required entry scope implements admission. This is not a Media3 decoder. */
     interface Listener {
         fun onPlaybackStateChanged(playbackState: Int) {}
+        fun onPlaybackStateChanged(playbackState: Int, continuation: DesktopOriginalNativePlaybackContinuation?) {
+            onPlaybackStateChanged(playbackState)
+        }
         fun onIsPlayingChanged(isPlaying: Boolean) {}
         fun onPlayWhenReadyChanged(playWhenReady: Boolean, reason: Int) {}
         fun onPlaybackParametersChanged(parameters: DesktopOriginalPlaybackRate) {}

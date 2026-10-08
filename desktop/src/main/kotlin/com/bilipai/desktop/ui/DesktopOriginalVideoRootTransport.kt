@@ -88,6 +88,7 @@ internal class DesktopOriginalVideoRootMediaFactory(
         // Original settings/background invocations may precede the first load.
         // Keep their captured Binding; require a subject only for media publication.
         val capturedRequest = state.currentRequest
+        val bootstrapOrigin = raw.bootstrapOrigin
         val token = state.currentLoadRequestToken
         return DesktopOriginalVideoCachedMediaFactory(raw.binding.captureMediaBytes(cache, assembly.environment.network::cdnNetwork),
             legacyOrigin = { video, audio, _ -> transport.source(video, audio) },
@@ -102,7 +103,9 @@ internal class DesktopOriginalVideoRootMediaFactory(
                 raw.binding.assertCurrent()
                 val request = checkNotNull(capturedRequest) { "Original request is required for a media operation" }
                 val resolved = captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token)
-                native.publish(resolved, source, nativeBaseline, callerJob) {
+                if (bootstrapOrigin != null && (bootstrapOrigin.request !== request || bootstrapOrigin.requestToken != token))
+                    throw CancellationException("Actual bootstrap request context replaced")
+                native.publishWithBootstrapOrigin(resolved, source, nativeBaseline, callerJob, bootstrapOrigin) {
                     !callerJob.isCancelled && gate.owns() && runCatching {
                         captureDesktopOriginalResolvedMediaRequest(assembly.captureLoadState(), request, token) == resolved
                     }.getOrDefault(false)

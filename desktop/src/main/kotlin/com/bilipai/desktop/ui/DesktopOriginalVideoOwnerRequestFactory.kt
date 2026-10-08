@@ -55,23 +55,22 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
         currentCoroutineContext().ensureActive()
         if (!entryScope.isActive || !stillEntryOwned()) throw CancellationException("Original load entry retired")
         val requestJob = checkNotNull(currentCoroutineContext()[Job])
+        val bootstrapOrigin = currentCoroutineContext()[DesktopVideoBootstrapAccepted]
         val binding = DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,
             entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
             capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
             isMobileData, token::available, token::refresh,
             { receipt -> onPlaybackAuthorizationRetired(receipt, state) })
-        val raw = createDesktopOriginalVideoOwnerRequestRepository(repository, binding,
-            subtitleAssets, privacy,
+        val bootstrap = bootstrapOrigin?.let { DesktopVideoBootstrapReadSource.capture(it, state, binding) }
+        val raw = createDesktopOriginalVideoOwnerRequestRepositoryWithBootstrapOrigin(repository, binding,
+            subtitleAssets, privacy, bootstrapOrigin,
             { receipt, stillOwned -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, stillOwned) })
         var baseline: Long? = null
         if (!binding.admitCurrentMutation { baseline = native.player.currentSourceVersion })
             throw CancellationException("Original media baseline capture retired")
         val media = prepareRequestMedia(raw, state, checkNotNull(baseline), requestJob, native)
         currentCoroutineContext().ensureActive(); binding.assertCurrent()
-        val bootstrap = currentCoroutineContext()[DesktopVideoBootstrapAccepted]?.let {
-            DesktopVideoBootstrapReadSource.capture(it, state, binding)
-        }
         return DesktopOriginalVideoPlaybackInvocation(raw, media, binding::assertCurrent, bootstrap)
     }
 }

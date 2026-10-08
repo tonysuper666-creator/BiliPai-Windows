@@ -29,6 +29,7 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
     private val heartbeat: suspend (String, Long, Long, Long, Long, Long) -> Boolean,
     primaryCsrf: () -> String?,
     private val writePrimaryVip: (Boolean) -> Unit,
+    val bootstrapOrigin: DesktopVideoBootstrapAccepted? = null,
 ) : DesktopOriginalVideoOwnerRepository,
     DesktopOriginalVideoLoadRepository by binding.rawRepository {
     private var transportObserver: DesktopOriginalVideoTransportObserver? = null
@@ -200,6 +201,17 @@ internal fun createDesktopOriginalVideoOwnerRequestRepository(
     subtitleAssets: DesktopSubtitleAssets,
     privacy: DesktopSearchPreferences,
     visitorInitialized: (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
+): DesktopOriginalVideoOwnerRequestRepository =
+    createDesktopOriginalVideoOwnerRequestRepositoryWithBootstrapOrigin(repository, binding,
+        subtitleAssets, privacy, null, visitorInitialized)
+
+internal fun createDesktopOriginalVideoOwnerRequestRepositoryWithBootstrapOrigin(
+    repository: DesktopRepository,
+    binding: DesktopOriginalVideoRepositoryBinding,
+    subtitleAssets: DesktopSubtitleAssets,
+    privacy: DesktopSearchPreferences,
+    bootstrapOrigin: DesktopVideoBootstrapAccepted?,
+    visitorInitialized: (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
 ): DesktopOriginalVideoOwnerRequestRepository {
     binding.assertCurrent()
     val updateVip: (Boolean) -> Unit = { vip ->
@@ -234,5 +246,5 @@ internal fun createDesktopOriginalVideoOwnerRequestRepository(
                 currentCoroutineContext().ensureActive(); binding.assertCurrent()
                 response.code
             }
-        }, primaryCsrf = binding::primaryCsrf, writePrimaryVip = updateVip)
+        }, primaryCsrf = binding::primaryCsrf, writePrimaryVip = updateVip, bootstrapOrigin = bootstrapOrigin)
 }

@@ -227,7 +227,14 @@ internal class DesktopOriginalVideoOwnerAssembly private constructor(
                     diagnosticLoggingEnabled,
                     ensurePreparedSource = { checkNotNull(owner.native.current()) { "Actual prepared publication required" } },
                     resumeEndedSource, logSeek, entryScope, sourceVersions,
-                    { action -> owner.native.current()?.let { owner.native.admitPlaybackDispatch(it, action) } ?: false })
+                    { action -> owner.native.current()?.let { owner.native.admitPlaybackDispatch(it, action) } ?: false },
+                    { version, registrationJob ->
+                        owner.native.current()?.takeIf { it.sourceVersion == version }?.let { accepted ->
+                            accepted.bootstrapOrigin?.let { origin ->
+                                DesktopOriginalNativePlaybackContinuation(origin, owner.native, accepted, registrationJob)
+                            }
+                        }
+                    })
                 owner.domains = DesktopOriginalVideoDomainOwners.create(context, root, capturedEpoch,
                     owner::owns, owner::commit, { owner.playback.uiState.value }, interactionAnalytics)
                 // Original attach has no media loading side effect. Preferred volume

@@ -81,6 +81,7 @@ internal class DesktopOrdinaryPlaybackHandoff(
 internal class DesktopOriginalVideoAcceptedPublication(
     val request: PlaybackRequest,
     val nativeSource: OwnedPlaybackSourceSnapshot,
+    val bootstrapOrigin: DesktopVideoBootstrapAccepted? = null,
 ) {
     val sourceVersion get() = nativeSource.sourceVersion
     val accountEpoch get() = checkNotNull(nativeSource.source.authorizationReceipt).accountEpoch
@@ -237,7 +238,12 @@ internal class DesktopOriginalVideoNativeOwner(
      * Actual native ACK consumes both transient checks; baseline blocks takeover.
      */
     fun publish(request: PlaybackRequest, source: PlaybackSource,
-        expectedBaselineVersion: Long, requestJob: Job, isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication {
+        expectedBaselineVersion: Long, requestJob: Job, isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication =
+        publishWithBootstrapOrigin(request, source, expectedBaselineVersion, requestJob, null, isRequestCurrent)
+
+    fun publishWithBootstrapOrigin(request: PlaybackRequest, source: PlaybackSource,
+        expectedBaselineVersion: Long, requestJob: Job, bootstrapOrigin: DesktopVideoBootstrapAccepted?,
+        isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication {
         assertEntry()
         val receipt = checkNotNull(source.authorizationReceipt) { "Original ordinary playback receipt is required" }
         if (receipt.accountEpoch != currentEpoch()) throw CancellationException("Original playback account retired")
@@ -253,7 +259,7 @@ internal class DesktopOriginalVideoNativeOwner(
                 val retained = source.copy(nativePublication = initial)
                 val version = player.loadVersionedWithMuted(retained, currentUserMuted())
                 next = DesktopOriginalVideoAcceptedPublication(request,
-                    checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == version) })
+                    checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == version) }, bootstrapOrigin)
                 accepted.set(next)
                 bindAcceptedTransport(next, null) { owns(next) && initial.isTransportCurrent() }
                 inheritedMute.set(null)
@@ -376,7 +382,8 @@ internal class DesktopOriginalVideoNativeOwner(
                                 expectedFailureAttemptId = desktopFailure?.failureAttemptId?.takeUnless { failureConsumed }))
                             throw CancellationException("Accepted ordinary recovery retired")
                         next = DesktopOriginalVideoAcceptedPublication(previous.request,
-                            checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == previous.sourceVersion) })
+                            checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == previous.sourceVersion) },
+                            previous.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(previous.request) })
                         accepted.set(next)
                         bindAcceptedTransport(next, previous) { owns(next) && isPresenterCurrent() }
                         inheritedMute.get()?.takeIf { it.lease === previous }?.let { mute ->
@@ -411,7 +418,8 @@ internal class DesktopOriginalVideoNativeOwner(
                     if (!player.recoverSource(expected.sourceVersion, direct, positionSeconds, paused,
                             expectedFailureAttemptId = expectedFailureAttemptId)) return@withEntryAdmission
                     next = DesktopOriginalVideoAcceptedPublication(expected.request,
-                        checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) })
+                        checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) },
+                        expected.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(expected.request) })
                     accepted.set(next)
                     inheritedMute.get()?.takeIf { it.lease === expected }?.let { previous ->
                         inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))
@@ -460,7 +468,8 @@ internal class DesktopOriginalVideoNativeOwner(
                             startPositionSeconds = position, startPaused = paused)) { owns(next) }
                         if (!player.recoverSource(expected.sourceVersion, direct, position, paused)) return@admitSourceSnapshot
                         next = DesktopOriginalVideoAcceptedPublication(expected.request,
-                            checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) })
+                            checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) },
+                            expected.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(expected.request) })
                         accepted.set(next)
                         inheritedMute.get()?.takeIf { it.lease === expected }?.let { previous ->
                             inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))

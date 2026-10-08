@@ -37,8 +37,9 @@ internal class DesktopVideoBootstrapSeed private constructor(
     private val partRequest: PlaybackRequest? = null,
     private val partResumeMs: Long = 0L,
 ) {
-    fun owns(): Boolean = !bootstrapCaller.isCancelled && window.owns() && assembly.owns() &&
-        window.commands.containsEntry(route)
+    /** Retained accepted-native origin only. Loading/error callers still use owns(). */
+    internal fun ownsEntry(): Boolean = window.owns() && assembly.owns() && window.commands.containsEntry(route)
+    fun owns(): Boolean = !bootstrapCaller.isCancelled && ownsEntry()
     fun accepted(request: PlaybackRequest, token: Long, fallbackResumeMs: Long): DesktopVideoBootstrapAccepted? {
         if (!owns()) return null
         val retry = retryIntent
@@ -70,6 +71,14 @@ internal class DesktopVideoBootstrapSeed private constructor(
         return DesktopVideoBootstrapSeed(window, assembly, route, bootstrapCaller,
             primaryInstallation, partRequest = target,
             partResumeMs = (position.coerceAtLeast(0.0) * 1000).toLong())
+    }
+    /** Actual native event caller and the original algorithm's complete next request.
+     * No typed route or primary installation is recaptured for the successor. */
+    internal fun forAutomaticRequest(request: PlaybackRequest, fallbackResumeMs: Long,
+        registrationJob: Job): DesktopVideoBootstrapSeed? {
+        if (!ownsEntry() || !registrationJob.isActive || fallbackResumeMs < 0L) return null
+        return DesktopVideoBootstrapSeed(window, assembly, route, registrationJob,
+            primaryInstallation, partRequest = request, partResumeMs = fallbackResumeMs)
     }
     /** Captured from the SAME displayed failure before original retry clears its media.
      * Only fixed retry parameters survive; no old Throwable/invocation chain is retained.
@@ -113,6 +122,15 @@ internal class DesktopVideoBootstrapAccepted(val seed: DesktopVideoBootstrapSeed
     val request: PlaybackRequest, val requestToken: Long, val fallbackResumeMs: Long) :
     AbstractCoroutineContextElement(Key) {
     companion object Key : CoroutineContext.Key<DesktopVideoBootstrapAccepted>
+    /** Proof from the SAME accepted raw reference/token to the actual resolved CID.
+     * CID=0 is resolved by the existing original publication helper, never compared
+     * directly with the positive-CID native subject. No later owner is selected. */
+    internal fun matchesResolvedRequest(resolved: PlaybackRequest): Boolean {
+        val state = seed.assembly.captureLoadState()
+        if (state.currentRequest !== request || state.currentLoadRequestToken != requestToken) return false
+        return try { captureDesktopOriginalResolvedMediaRequest(state, request, requestToken) == resolved }
+        catch (_: CancellationException) { false }
+    }
 }
 
 /** Real request Binding's nonsecret transport projection. Selected main-MID playback records
