@@ -78,6 +78,9 @@ def produce():
  # Whole original repositories. API and cached identity are supplied by one owned Root port.
  for name in ['FavoriteRepository','PersonalFavoriteRepository','HistoryRepository','LikedVideosRepository']:
   rel='data/repository/'+name;s=source(rel)
+  if name=='HistoryRepository':
+   from v029_history_read_failure import apply_history_read_source
+   s,readSourceAudit=apply_history_read_source(s,'repository');records[-1]['windowsHistoryReadSourceAdaptation']=readSourceAudit
   s=s.replace('import com.android.purebilibili.core.network.NetworkModule\n','').replace('import com.android.purebilibili.core.store.TokenManager\n','')
   s=s.replace('object '+name+' {','class DesktopOriginal'+name+'(private val environment: com.android.purebilibili.feature.list.DesktopFavoriteEnvironment) {')
   s=s.replace('private val api = NetworkModule.api','private val api = environment.api').replace('NetworkModule.api.','environment.api.').replace('NetworkModule.spaceApi.','environment.spaceApi.')
@@ -139,6 +142,8 @@ def produce():
  # Reference only: the existing sole Message producer emits this exact v029 component.
  source("feature/common/ListLoadError")
  s=source('feature/list/ListViewModel')
+ from v029_history_read_failure import apply_history_read_source
+ s,readSourceAudit=apply_history_read_source(s,'viewmodel');records[-1]['windowsHistoryReadSourceAdaptation']=readSourceAudit
  s='\n'.join(l for l in s.splitlines() if not l.startswith('import android.') and not l.startswith('import androidx.lifecycle.') and not any(x in l for x in ['import com.android.purebilibili.core.network.NetworkModule','import com.android.purebilibili.core.coroutines.AppScope','import com.android.purebilibili.core.refresh.HistoryRefreshBus']))+'\n'
  a=s.index('class LikedVideosViewModelFactory');b=s.index('// --- 历史记录',a);s=s[:a]+s[b:]
  s=s.replace('application: Application','environment: DesktopFavoriteEnvironment').replace('AndroidViewModel(application)','DesktopFavoriteScopedOwner(environment)').replace('BaseListViewModel(application,','BaseListViewModel(environment,').replace('    application,','    environment,')
@@ -274,6 +279,7 @@ def generate(repo:Path,output:Path,standalone=False):
   entry=canonical.setdefault(row['path'],dict(path=row['path'],upstreamCommit=row['upstreamCommit'],sha256LfUtf8=row['sha256LfUtf8'],outputs=[],selections=[]))
   if row.get('windowsBrandConsumerAdaptation'):entry['windowsBrandConsumerAdaptation']=row['windowsBrandConsumerAdaptation']
   if row.get('windowsBrandSuccessAdaptation'):entry['windowsBrandSuccessAdaptation']=row['windowsBrandSuccessAdaptation']
+  if row.get('windowsHistoryReadSourceAdaptation'):entry['windowsHistoryReadSourceAdaptation']=row['windowsHistoryReadSourceAdaptation']
   for key in ['historySourceAdaptation','historyGeneratedAdaptation','rawSha256Bytes','gitBlob']:
    if key in row:entry[key]=row[key]
   if row.get('recapGeneratedAdaptation'):entry['recapGeneratedAdaptation']=row['recapGeneratedAdaptation']

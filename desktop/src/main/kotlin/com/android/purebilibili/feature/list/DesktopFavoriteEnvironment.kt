@@ -31,6 +31,19 @@ class DesktopFavoriteEnvironment @JvmOverloads constructor(
     private val readAccessTokenPlatform: (() -> String)?,
     private val followStateChanged: ((FollowStateChange) -> Unit)? = null,
 ) {
+    private var historyReadCapture: ((Job, com.bilipai.desktop.ui.DesktopHistoryReadParameters) -> com.bilipai.desktop.ui.DesktopHistoryReadSource)? = null
+    internal fun mountHistoryReadCapture(capture: (Job, com.bilipai.desktop.ui.DesktopHistoryReadParameters) -> com.bilipai.desktop.ui.DesktopHistoryReadSource) {
+        assertOwned(); check(historyReadCapture == null)
+        historyReadCapture = capture
+    }
+    internal suspend fun beginHistoryRead(parameters: com.bilipai.desktop.ui.DesktopHistoryReadParameters): com.bilipai.desktop.ui.DesktopHistoryReadSource? {
+        val context = currentCoroutineContext(); context.ensureActive(); assertOwned()
+        val capture = historyReadCapture ?: return null
+        val caller = requireNotNull(context[Job]) { "History read requires its actual caller" }
+        val source = capture(caller, parameters)
+        check(source.environment === this && source.caller === caller && source.parameters == parameters)
+        return source
+    }
     private var brandEvents: com.android.purebilibili.core.events.BrandSuccessEvents? = null
     private var brandAdmission: ((() -> Unit) -> Boolean)? = null
     fun mountBrandFeedback(events: com.android.purebilibili.core.events.BrandSuccessEvents,

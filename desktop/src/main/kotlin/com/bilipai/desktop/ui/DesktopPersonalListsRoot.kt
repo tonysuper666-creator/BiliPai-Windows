@@ -140,6 +140,20 @@ internal class DesktopPersonalListsRoot(
         synchronized(entriesLock) { histories[key] }?.let { return it }
         val created = DesktopPersonalListEntry(this, key).also { entry ->
             val env = environment(entry)
+            env.mountHistoryReadCapture { caller, parameters ->
+                val receipt = repository.captureHomeNavRequest(gate.epoch, gate.mid) { entry.owns() && caller.isActive }
+                DesktopHistoryReadSource(env, entry.key, caller, parameters, receipt) { requireActive, block ->
+                    var applied = false
+                    repository.withCurrentHomeNavRequest(receipt, entry::owns) {
+                        entry.commit {
+                            if (entry.owns() && (if (requireActive) caller.isActive else !caller.isCancelled)) {
+                                block(); applied = true
+                            }
+                        }
+                    }
+                    applied
+                }
+            }
             entry.install(env, HistoryViewModel(env), FavoriteCategoryViewModel(env))
         }
         val selected = synchronized(entriesLock) { if (!owns()) null else histories.getOrPut(key) { created } }
@@ -220,5 +234,10 @@ internal class DesktopPersonalListEntry(
         assertOwned()
         return queue ?: factory().also { queue = it }
     }
-    override fun close() { if (closed.compareAndSet(false, true)) { queue?.close(); job.cancel() } }
+    override fun close() {
+        if (closed.compareAndSet(false, true)) {
+            if (this::viewModel.isInitialized) (viewModel as? HistoryViewModel)?.desktopRetireHistoryReadFailure()
+            queue?.close(); job.cancel()
+        }
+    }
 }

@@ -1195,6 +1195,7 @@ val extractVideoCommentUi by tasks.registering(Exec::class) {
 tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
 
 val extractOriginalFavorites by tasks.registering(Exec::class) {
+    inputs.file("tools/v029_history_read_failure.py")
     inputs.file("tools/v029_brand_success.py")
     inputs.dir("upstream-slices/v029-brand-success")
     dependsOn(prepareUpstreamSources)
