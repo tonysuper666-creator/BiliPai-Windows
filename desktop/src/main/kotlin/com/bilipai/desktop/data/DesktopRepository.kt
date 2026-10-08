@@ -718,11 +718,26 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
         response.data?.result.orEmpty().map { it.toVideoItem().toCard() }.filter { it.bvid.isNotBlank() }
     }
 
-    suspend fun videoDetails(bvid: String): VideoDetails = withContext(Dispatchers.IO) {
-        ensureVisitorSession()
+    suspend fun videoDetails(bvid: String,
+        expectedPlaybackReceipt: DesktopPlaybackAuthorizationReceipt? = null): VideoDetails = withContext(Dispatchers.IO) {
+        val requestJob = currentCoroutineContext()[kotlinx.coroutines.Job]
+        val owned = { requestJob?.isActive != false &&
+            (expectedPlaybackReceipt == null || sessions.isPlaybackAuthorizationCurrent(expectedPlaybackReceipt)) }
+        fun assertExpected() { expectedPlaybackReceipt?.let { sessions.withPlaybackAuthorizationAdmission(it, owned) { Unit } } }
+        assertExpected()
+        val detailApi = if (expectedPlaybackReceipt == null) {
+            ensureVisitorSession()
+            api
+        } else {
+            val epoch = expectedPlaybackReceipt.accountEpoch
+            ensureOwnedHomeSession(epoch, owned, ownedHomeService(BuvidApi::class.java, "https://api.bilibili.com/", epoch, owned))
+            assertExpected()
+            ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/", epoch, owned)
+        }
         val lookup = resolveVideoInfoLookupInput(bvid, 0)
             ?: throw IllegalArgumentException("请输入有效的 BV 或 av 视频编号")
-        val response = if (lookup.aid > 0) api.getVideoInfoByAid(lookup.aid) else api.getVideoInfo(lookup.bvid)
+        val response = if (lookup.aid > 0) detailApi.getVideoInfoByAid(lookup.aid) else detailApi.getVideoInfo(lookup.bvid)
+        assertExpected()
         checkCode(response.code, response.message)
         val info = response.data ?: throw BiliApiException(-1, "视频详情为空")
         val pages = info.pages.map { VideoPart(it.cid, it.part, it.duration) }
@@ -733,13 +748,20 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     suspend fun playback(details: VideoDetails, pageIndex: Int = 0, quality: Int = 80,
         codecOverride: String? = null, forceRefresh: Boolean = false,
-        playbackPreferences: PlayerPreferences = PlayerPreferences(), blockedVideoCodecs: Set<String> = emptySet()): PlaybackSource = withContext(Dispatchers.IO) {
-        val epoch = sessions.generation
+        playbackPreferences: PlayerPreferences = PlayerPreferences(), blockedVideoCodecs: Set<String> = emptySet(),
+        expectedPlaybackReceipt: DesktopPlaybackAuthorizationReceipt? = null): PlaybackSource = withContext(Dispatchers.IO) {
+        val epoch = expectedPlaybackReceipt?.accountEpoch ?: sessions.generation
         val requestJob = currentCoroutineContext()[kotlinx.coroutines.Job]
-        val owned = { requestJob?.isActive != false }
-        ensureVisitorSession(epoch, owned)
+        val owned = { requestJob?.isActive != false &&
+            (expectedPlaybackReceipt == null || sessions.isPlaybackAuthorizationCurrent(expectedPlaybackReceipt)) }
+        if (expectedPlaybackReceipt == null) ensureVisitorSession(epoch, owned) else {
+            sessions.withPlaybackAuthorizationAdmission(expectedPlaybackReceipt, owned) { Unit }
+            ensureOwnedHomeSession(epoch, owned, ownedHomeService(BuvidApi::class.java, "https://api.bilibili.com/", epoch, owned))
+        }
         currentCoroutineContext().ensureActive()
         val authorization = capturePlaybackAuthorization(epoch, owned)
+        if (expectedPlaybackReceipt != null && authorization.receipt != expectedPlaybackReceipt)
+            throw CancellationException("下载来源授权已退役")
         val playbackApi = ownedPlaybackService(BilibiliApi::class.java, authorization, owned)
         val primaryNavApi = ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/", epoch, owned)
         fun assertCurrent() = assertPlaybackAuthorization(authorization, owned)

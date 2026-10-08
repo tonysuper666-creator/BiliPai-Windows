@@ -388,7 +388,6 @@ class DesktopDownloadManager internal constructor(
         val owned = { callerJob?.isActive == true && synchronized(lock) { !closed && jobs[id] === callerJob &&
             mutableTasks.value.any { it.id == id && it.status == DownloadStatus.DOWNLOADING && it.authorizationReceipt == task.authorizationReceipt } } }
         publication.admit(source, owned) { Unit }
-        val headers = com.bilipai.desktop.cast.desktopCastStreamHeaders(source)
         var activeSource = source
         fun calls() = publication.calls(client, activeSource, owned, callerJob)
         fun progress(wrapper: DownloadTask, bytes: Long, total: Long, completed: Boolean, count: Int): DownloadTask {
@@ -407,12 +406,20 @@ class DesktopDownloadManager internal constructor(
             return wrapper.copy(progressiveSegments = parts, item = next.copy(downloadedSize = allDownloaded,
                 progress = if (allTotal > 0) (allDownloaded.toDouble() / allTotal * 0.9).toFloat().coerceIn(0f, 0.9f) else 0f))
         }
-        suspend fun download(activeUrl: String) = ResumableAssetDownloader(calls()).download(HttpDownloadAssetRequest(activeUrl, output.toFile(), headers),
-            ensureActive = { context.ensureActive() }, onProgress = { bytes, total ->
-                update(id, false) { wrapper ->
-                    progress(wrapper, bytes, total, false, 0)
+        fun reportProgress(bytes: Long, total: Long, completed: Boolean, count: Int) {
+            publication.admit(activeSource, owned) {
+                synchronized(lock) {
+                    if (!owned()) throw CancellationException("下载任务已退役")
+                    updateLocked(id) { wrapper -> progress(wrapper, bytes, total, completed, count) }
                 }
-            })
+            }
+            // Persist an already-admitted task snapshot outside the Store monitor.
+            synchronized(lock) { persistLocked(force = completed) }
+        }
+        suspend fun download(activeUrl: String) = ResumableAssetDownloader(calls()).download(
+            HttpDownloadAssetRequest(activeUrl, output.toFile(), com.bilipai.desktop.cast.desktopCastStreamHeaders(activeSource)),
+            ensureActive = { context.ensureActive(); publication.admit(activeSource, owned) { Unit } },
+            onProgress = { bytes, total -> reportProgress(bytes, total, false, 0) })
         val result = try { download(url)
         } catch (cancelled: CancellationException) { throw cancelled
         } catch (error: Exception) {
@@ -423,6 +430,10 @@ class DesktopDownloadManager internal constructor(
             publication.admit(activeSource, owned) { Unit }
             val refreshed = sourceResolver.invoke(task) ?: throw error
             context.ensureActive()
+            if (refreshed.authorizationReceipt != source.authorizationReceipt ||
+                refreshed.primaryAccountEpoch != source.primaryAccountEpoch)
+                throw CancellationException("下载来源授权已退役")
+            publication.admit(activeSource, owned) { Unit }
             publication.admit(refreshed, owned) { Unit }
             if (progressiveIndex != null && refreshed.progressiveSegments.map { mediaIdentity(it.url) } != task.progressiveSegments.map { mediaIdentity(it.url) })
                 throw IOException("原媒体分段已改变，请移除此任务后重新加入下载", error)
@@ -431,8 +442,11 @@ class DesktopDownloadManager internal constructor(
             if (nextUrl == url) throw error
             if (mediaIdentity(nextUrl) != mediaIdentity(url)) clearAssetFiles(output)
             publication.admit(refreshed, owned) {
-                synchronized(lock) { updateLocked(id) { wrapper -> wrapper.copy(item = wrapper.item.copy(videoUrl = refreshed.videoUrl,
+                synchronized(lock) {
+                    if (!owned()) throw CancellationException("下载任务已退役")
+                    updateLocked(id) { wrapper -> wrapper.copy(item = wrapper.item.copy(videoUrl = refreshed.videoUrl,
                     audioUrl = refreshed.audioUrl.orEmpty()), authorizationReceipt = refreshed.authorizationReceipt,
+                    referer = refreshed.referer, userAgent = refreshed.userAgent,
                     cookieHeader = refreshed.cookieHeader, streamHeaders = com.bilipai.desktop.player.copyPlaybackStreamHeaders(refreshed.streamHeaders),
                     progressiveSegments = wrapper.progressiveSegments.zip(refreshed.progressiveSegments).map { (old, part) -> old.copy(url = requireMediaUrl(part.url), durationSeconds = part.durationSeconds) }) } }
             }
@@ -440,7 +454,7 @@ class DesktopDownloadManager internal constructor(
             activeSource = refreshed
             download(requireMediaUrl(nextUrl))
         }
-        update(id, true) { wrapper -> progress(wrapper, result.downloadedBytes, result.totalBytes, true, result.segmentCount) }
+        reportProgress(result.downloadedBytes, result.totalBytes, true, result.segmentCount)
     }
 
     private fun update(id: String, force: Boolean, change: (DownloadTask) -> DownloadTask) = synchronized(lock) {
@@ -510,18 +524,44 @@ class DesktopDownloadManager internal constructor(
     companion object {
         fun defaultDownloadRoot(): Path = Path.of(System.getProperty("user.home"), "Downloads", "BiliPai")
         private fun defaultSourceResolver(repository: DesktopRepository): suspend (DownloadTask) -> PlaybackSource? = { task ->
+            val caller = currentCoroutineContext()[Job]
+            val expectedReceipt = task.authorizationReceipt
+            val owned = { caller?.isActive != false &&
+                (expectedReceipt == null || repository.isPlaybackReceiptCurrent(expectedReceipt)) }
+            val epoch = expectedReceipt?.accountEpoch ?: repository.sessionEpoch
+            if (expectedReceipt == null) {
+                // SPI can update the Store's effective buvid identity before a restored task has authority.
+                repository.ensureOwnedHomeSession(epoch, owned, repository.ownedHomeService(
+                    com.android.purebilibili.core.network.BuvidApi::class.java, "https://api.bilibili.com/", epoch, owned))
+            }
+            val authorization = repository.capturePlaybackAuthorization(epoch, owned)
+            if (expectedReceipt != null && authorization.receipt != expectedReceipt)
+                throw CancellationException("下载来源授权已退役")
+            // Restored tasks acquire authority once through the existing Store; active tasks keep their exact receipt.
+            val receipt = authorization.receipt
+            repository.assertPlaybackAuthorization(authorization, owned)
             val source = if (task.episodeId > 0) {
                 val media = DesktopMediaRepository(repository)
-                val season = media.bangumiSeason(seasonId = task.seasonId, episodeId = task.episodeId, isCourse = task.isCourse)
-                media.bangumiPlayback(season, season.episodes.first { it.id == task.episodeId }, task.item.quality.takeIf { it > 0 } ?: 80)
+                val season = media.bangumiSeason(seasonId = task.seasonId, episodeId = task.episodeId,
+                    isCourse = task.isCourse, expectedPlaybackReceipt = receipt)
+                media.bangumiPlayback(season, season.episodes.first { it.id == task.episodeId },
+                    task.item.quality.takeIf { it > 0 } ?: 80, expectedPlaybackReceipt = receipt)
             } else if (task.item.bvid.startsWith("BV") && task.item.cid > 0) {
-                val details = repository.videoDetails(task.item.bvid)
+                val details = repository.videoDetails(task.item.bvid, expectedPlaybackReceipt = receipt)
                 val index = details.pages.indexOfFirst { it.cid == task.item.cid }
                 if (index < 0) throw IOException("此视频分 P 已不存在")
-                repository.playback(details, index, task.item.quality.takeIf { it > 0 } ?: 80)
+                repository.playback(details, index, task.item.quality.takeIf { it > 0 } ?: 80,
+                    forceRefresh = true, expectedPlaybackReceipt = receipt)
             } else null
-            source?.let { PlaybackSource(it.videoUrl, it.audioUrl, it.referer, cookieHeader = it.cookieHeader, title = it.title,
-                progressiveSegments = it.progressiveSegments, authorizationReceipt = it.authorizationReceipt) }
+            source?.let {
+                repository.assertPlaybackAuthorization(authorization, owned)
+                if (it.authorizationReceipt != receipt) throw CancellationException("下载来源授权已退役")
+                val cookie = repository.capturePlaybackMediaCookieHeader(authorization, it.videoUrl, owned)
+                // The repository resolved fresh direct Bilibili URLs, not the old plugin route.
+                PlaybackSource(it.videoUrl, it.audioUrl, it.referer, userAgent = task.userAgent,
+                    cookieHeader = cookie, title = it.title, progressiveSegments = it.progressiveSegments,
+                    authorizationReceipt = receipt)
+            }
         }
         private fun defaultDanmakuDownloader(repository: DesktopRepository): suspend (DownloadTask, Path, (DownloadAssetState) -> Unit) -> Pair<List<String>, String?> = { task, directory, update ->
             repository.ensureSession()

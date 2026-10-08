@@ -328,18 +328,34 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
         MediaPage(cards, page, page < (data?.numPages ?: page), data?.numResults ?: 0)
     }
 
-    suspend fun bangumiSeason(seasonId: Long = 0, episodeId: Long = 0, isCourse: Boolean = false): BangumiSeason = withContext(Dispatchers.IO) {
+    suspend fun bangumiSeason(seasonId: Long = 0, episodeId: Long = 0, isCourse: Boolean = false,
+        expectedPlaybackReceipt: DesktopPlaybackAuthorizationReceipt? = null): BangumiSeason = withContext(Dispatchers.IO) {
         require(seasonId > 0 || episodeId > 0)
-        repository.ensureSession()
+        val requestJob = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
+        val owned = { requestJob?.isActive != false &&
+            (expectedPlaybackReceipt == null || repository.isPlaybackReceiptCurrent(expectedPlaybackReceipt)) }
+        fun assertExpected() { expectedPlaybackReceipt?.let { repository.withPlaybackReceiptAdmission(it, owned) { Unit } } }
+        assertExpected()
+        val seasonApi = if (expectedPlaybackReceipt == null) {
+            repository.ensureSession()
+            api.bangumi
+        } else {
+            val epoch = expectedPlaybackReceipt.accountEpoch
+            repository.ensureOwnedHomeSession(epoch, owned, repository.ownedHomeService(
+                com.android.purebilibili.core.network.BuvidApi::class.java, "https://api.bilibili.com/", epoch, owned))
+            assertExpected()
+            repository.ownedHomeService(com.android.purebilibili.core.network.BangumiApi::class.java,
+                "https://api.bilibili.com/", epoch, owned)
+        }
         suspend fun courseDetail(): BangumiDetail {
-            val response = api.bangumi.getPugvSeasonDetail(
+            val response = seasonApi.getPugvSeasonDetail(
                 seasonId = seasonId.takeIf { it > 0 && episodeId <= 0 }, epId = episodeId.takeIf { it > 0 })
                 .use { json.decodeFromString<PugvSeasonResponse>(it.string()) }
             checkCode(response.code, response.message)
             return response.data?.toBangumiDetail() ?: throw BiliApiException(-1, "课程详情为空")
         }
         var detail = if (isCourse) courseDetail() else try {
-            val response = api.bangumi.getSeasonDetail(seasonId.takeIf { it > 0 }, episodeId.takeIf { it > 0 })
+            val response = seasonApi.getSeasonDetail(seasonId.takeIf { it > 0 }, episodeId.takeIf { it > 0 })
                 .use { json.decodeFromString<BangumiDetailResponse>(it.string()) }
             checkCode(response.code, response.message)
             response.result ?: throw BiliApiException(-1, "番剧详情为空")
@@ -352,7 +368,7 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
         if (detail.seasonId <= 0) throw BiliApiException(-1, "番剧不存在")
         if (detail.seasonType != 10 && shouldLoadBangumiSections(detail)) {
             try {
-                val sections = api.bangumi.getSeasonSections(detail.seasonId)
+                val sections = seasonApi.getSeasonSections(detail.seasonId)
                 checkCode(sections.code, sections.message)
                 sections.result?.let { detail = mergeBangumiDetailSections(detail, it) }
             } catch (cancelled: CancellationException) { throw cancelled
@@ -360,6 +376,7 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
                 if (episodeCards(detail).isEmpty() || error is BiliApiException && error.apiCode in setOf(412, 429, -101, -352, -412)) throw error
             }
         }
+        assertExpected()
         toSeason(detail)
     }
 
@@ -414,18 +431,24 @@ class DesktopMediaRepository(private val repository: DesktopRepository) {
         bangumiSeason(seasonId = seasonId)
     }
 
-    suspend fun bangumiPlayback(season: BangumiSeason, episode: BangumiEpisode, quality: Int = 80): PlaybackSource =
-        bangumiPlaybackInfo(season, episode, quality).source
+    suspend fun bangumiPlayback(season: BangumiSeason, episode: BangumiEpisode, quality: Int = 80,
+        expectedPlaybackReceipt: DesktopPlaybackAuthorizationReceipt? = null): PlaybackSource =
+        bangumiPlaybackInfo(season, episode, quality, expectedPlaybackReceipt).source
 
-    suspend fun bangumiPlaybackInfo(season: BangumiSeason, episode: BangumiEpisode, quality: Int = 80): BangumiPlaybackInfo = withContext(Dispatchers.IO) {
+    suspend fun bangumiPlaybackInfo(season: BangumiSeason, episode: BangumiEpisode, quality: Int = 80,
+        expectedPlaybackReceipt: DesktopPlaybackAuthorizationReceipt? = null): BangumiPlaybackInfo = withContext(Dispatchers.IO) {
         require(episode.id > 0 && quality > 0 && season.episodes.any { it.id == episode.id })
-        val epoch = repository.sessionEpoch
+        val epoch = expectedPlaybackReceipt?.accountEpoch ?: repository.sessionEpoch
         val requestJob = kotlinx.coroutines.currentCoroutineContext()[kotlinx.coroutines.Job]
-        val owned = { requestJob?.isActive != false }
+        val owned = { requestJob?.isActive != false &&
+            (expectedPlaybackReceipt == null || repository.isPlaybackReceiptCurrent(expectedPlaybackReceipt)) }
+        expectedPlaybackReceipt?.let { repository.withPlaybackReceiptAdmission(it, owned) { Unit } }
         val visitorApi = repository.ownedHomeService(com.android.purebilibili.core.network.BuvidApi::class.java,
             "https://api.bilibili.com/", epoch, owned)
         repository.ensureOwnedHomeSession(epoch, owned, visitorApi)
         val authorization = repository.capturePlaybackAuthorization(epoch, owned)
+        if (expectedPlaybackReceipt != null && authorization.receipt != expectedPlaybackReceipt)
+            throw CancellationException("下载来源授权已退役")
         fun assertCurrent() = repository.assertPlaybackAuthorization(authorization, owned)
         assertCurrent()
         val playbackApi = repository.ownedPlaybackService(com.android.purebilibili.core.network.BangumiApi::class.java, authorization, owned)
