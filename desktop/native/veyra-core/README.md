@@ -31,3 +31,5 @@ See the ABI header for lifetime, completion and reset contracts. The private
 build outcome establishes linking only. Runtime processing, fallback,
 synchronization, performance and distribution compatibility remain separate
 validation work.
+
+The three NVIDIA headers reached by actual MSVC /sourceDependencies and the separately provided Release x64 /MT NGX shim must match enforced fixed hashes. The Debug shim is currently rejected.
