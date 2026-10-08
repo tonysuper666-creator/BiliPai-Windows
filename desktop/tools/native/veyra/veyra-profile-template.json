@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "variant": "bilipai-veyra-core-v1",
+  "producerVariant": "bilipai-veyra-rtx-core-v1",
+  "filterName": "bilipai-rtx",
+  "architecture": "windows-x64",
+  "coreAbi": 1,
+  "coreAbiWire": 65536,
+  "veyraSourceCommit": "96a7c8de36bc195240161de6814739ad810722f1",
+  "veyraRelease": "2.0.6",
+  "veyraReleaseCommit": "e3aa842a00f693a4a17d1fc4c454d0ebc59428f6",
+  "coreSourceSha256": "CF0DBB78F151EFD7A87FB919546A1D83D6D96CA01B8050983361F31F6037C3B2",
+  "headerSha256": "9365AB89FA61FB016DB044A051A1C3C76450231FBC9A8281799F90BC7FF37E84",
+  "moduleBuildSha256": null,
+  "mpvSourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+  "bridgeSourceSha256": "E0BFF20A3C6EE75B88A51FD5AAD3DE3494C2BABB18EDC700746F0A134CC87725",
+  "vfSourceSha256": "D8B0A3A09C93732D63585BE8425D9582ADDF3FDF6A236770F412FDB5B38C1965",
+  "filterSourceManifestSha256": "F9A4EB124583756ED90CD55D941A3DC2BF38D94DE4805F4B3AFCF9217ED83BBD",
+  "mpvDllSha256": null,
+  "coreModuleRelativePath": "core/bilipai_veyra_core.dll",
+  "mpvModuleRelativePath": "mpv/libmpv-2.dll",
+  "runtimeRoot": ".",
+  "featureDirectory": "runtime/experimental",
+  "projectId": null,
+  "engineVersion": "BiliPai-Veyra-Core-1",
+  "runtimeFiles": [
+    {
+      "relativePath": "runtime/experimental/nvngx_vsr.dll",
+      "sha256": "C3D88EEA5FF7A548EDEFA66414CF6E77464D0947277C904F324DD23ABF58A1ED",
+      "bytes": 19140144,
+      "fileVersion": "1.6.0.0",
+      "nvidiaSigner": {
+        "status": "Valid",
+        "subject": "CN=NVIDIA Corporation, OU=1-G, O=NVIDIA Corporation, L=Santa Clara, S=California, C=US",
+        "thumbprint": "9EA06F2F21DCCF7E67AFA4DFA1BCD49681ECD509"
+      }
+    },
+    {
+      "relativePath": "runtime/experimental/nvngx_truehdr.dll",
+      "sha256": "9A80575F247190C05FE80EAC0C4BAA1D0D4D932348F26808310B5EC4BF9EEB4B",
+      "bytes": 3955752,
+      "fileVersion": "1.1.0.0",
+      "nvidiaSigner": {
+        "status": "Valid",
+        "subject": "CN=NVIDIA Corporation, OU=1-G, O=NVIDIA Corporation, L=Santa Clara, S=California, C=US",
+        "thumbprint": "9EA06F2F21DCCF7E67AFA4DFA1BCD49681ECD509"
+      }
+    }
+  ],
+  "phase": "SR_HDR_backend_candidate",
+  "pendingFeatures": [
+    "NR",
+    "DLSS",
+    "VFG"
+  ],
+  "sourceMonitor": {
+    "role": "informational-source-tag-updates-only",
+    "installedEngineBindingAffected": false
+  },
+  "runtimeProvenance": {
+    "observedPackageVersion": "2.0.6",
+    "classification": "official-rtx-video-sdk-1.1.0",
+    "observedReadOnly": true,
+    "runtimeFilesIncluded": false,
+    "runtimeLoaded": false
+  },
+  "localBuildEvidence": {
+    "role": "evidence-only-not-selected-module-identity",
+    "coreCandidateBuildSha256": "EAB0FD55A5B1D770C609207026D5F2E5148ED71EAEDB677B605C1115B3EACDC2",
+    "actuallyLinked": true,
+    "gpuExecuted": false
+  },
+  "selection": {
+    "default": "unselected",
+    "boundStatus": "UNAVAILABLE",
+    "reason": "real-registered-mpv-filter-dll-not-built-or-bound"
+  }
+}
