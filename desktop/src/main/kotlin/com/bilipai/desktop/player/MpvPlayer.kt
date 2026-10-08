@@ -117,8 +117,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private val mutableNvidiaVideo = MutableStateFlow(NvidiaVideoState())
     val nvidiaVideoState: StateFlow<NvidiaVideoState> = mutableNvidiaVideo.asStateFlow()
 
-    internal fun setNvidiaVideoEnhancementIfSourceSnapshot(expected: OwnedPlaybackSourceSnapshot, options: NvidiaVideoOptions): Long? = synchronized(lock) {
-        if (!ownsSourceSnapshot(expected)) null
+    internal fun setNvidiaVideoEnhancementIfSourceSnapshot(expected: OwnedPlaybackSourceSnapshot, options: NvidiaVideoOptions,
+        expectedNativeIdentity: PlayerNativeTrackIdentity? = null): Long? = synchronized(lock) {
+        // Reuse the actual loaded-source receipt; native publication admission remains on Action.NvidiaVideo.
+        if (!ownsSourceSnapshot(expected) ||
+            (expectedNativeIdentity != null && !nativeTrackIdentityCurrentLocked(expectedNativeIdentity))) null
         else setNvidiaVideoEnhancementIfSourceVersion(expected.sourceVersion, options)
     }
 

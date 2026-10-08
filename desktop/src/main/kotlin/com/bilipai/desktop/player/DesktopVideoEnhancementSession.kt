@@ -67,13 +67,15 @@ class DesktopVideoEnhancementSession(
     private val sessionEpoch: () -> Long = { 0L },
 ) : AutoCloseable {
     private data class Label(val key: String? = null, val version: Long = 0, val epoch: Long = 0)
-    private data class Frame(val ready: Boolean, val hasVideo: Boolean, val audioOnly: Boolean, val ended: Boolean, val failed: Boolean)
+    private data class Frame(val ready: Boolean, val hasVideo: Boolean, val audioOnly: Boolean, val ended: Boolean, val failed: Boolean, val nativeIdentity: PlayerNativeTrackIdentity?)
     private data class Settings(val enabled: Boolean, val started: Boolean, val pip: Boolean)
     private data class Target(val sourceVersion: Long, val transfer: String?, val primaries: String?)
     private data class Input(val settings: Settings, val label: Label, val frame: Frame, val output: PlayerVideoOutputState, val target: Target)
-    private class Request(val source: OwnedPlaybackSourceSnapshot, val epoch: Long, val options: NvidiaVideoOptions) {
+    private class Request(val source: OwnedPlaybackSourceSnapshot, val epoch: Long, val options: NvidiaVideoOptions,
+        val nativeIdentity: PlayerNativeTrackIdentity) {
         fun matches(other: Request) = epoch == other.epoch && options == other.options &&
-            source.sourceVersion == other.source.sourceVersion && source.source == other.source.source
+            source.sourceVersion == other.source.sourceVersion && source.source == other.source.source &&
+            nativeIdentity == other.nativeIdentity
     }
     private class Owned(val request: Request, val token: Long)
     private class Clearing(val source: OwnedPlaybackSourceSnapshot, val epoch: Long, val token: Long) {
@@ -91,7 +93,8 @@ class DesktopVideoEnhancementSession(
     init {
         scope.launch {
             val settings = combine(automaticEnabled, hostStarted, pip) { enabled, started, inPip -> Settings(enabled, started, inPip) }
-            val frame = player.state.map { Frame(it.ready, it.videoCodec != null, it.audioOnly, it.ended, it.error != null) }.distinctUntilChanged()
+            // A completed native load keeps a distinct receipt even if transient loading/zero sizes are conflated.
+            val frame = player.state.map { Frame(it.ready, it.videoCodec != null, it.audioOnly, it.ended, it.error != null, it.nativeTrackIdentity) }.distinctUntilChanged()
             // Output format/driver ACK cannot reconfigure its own processing.
             // Only the actual display target is a distinct native decision input.
             val target = player.nvidiaVideoState.map { Target(it.sourceVersion, it.targetTransfer, it.targetPrimaries) }.distinctUntilChanged()
@@ -163,6 +166,12 @@ class DesktopVideoEnhancementSession(
         if (!input.frame.ready || !input.frame.hasVideo || input.frame.ended || input.frame.failed) {
             bypass(Anime4KBypassReason.NONE, "等待可用视频画面"); return@synchronized
         }
+        val currentSource = checkNotNull(source)
+        val nativeIdentity = input.frame.nativeIdentity
+        if (nativeIdentity == null || nativeIdentity.sourceVersion != currentSource.sourceVersion ||
+            nativeIdentity.source != currentSource.source) {
+            bypass(Anime4KBypassReason.NONE, "等待当前原生视频载入"); return@synchronized
+        }
         val decision = resolveDesktopNvidiaVideoDecision(input.output.inputWidth, input.output.inputHeight,
             input.output.displayWidth, input.output.displayHeight, input.output.maximumTextureDimension,
             input.output.gamma, input.output.dolbyVisionProfile, input.output.hdrDisplay.hdrEnabled,
@@ -176,7 +185,7 @@ class DesktopVideoEnhancementSession(
             }
             bypass(Anime4KBypassReason.NONE, text); return@synchronized
         }
-        val request = Request(checkNotNull(source), epoch, NvidiaVideoOptions(decision.scale, decision.hdr))
+        val request = Request(currentSource, epoch, NvidiaVideoOptions(decision.scale, decision.hdr), nativeIdentity)
         val previous = owned
         if (previous != null && previous.request.matches(request)) {
             mutableState.update { it.copy(hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled) }
@@ -186,7 +195,7 @@ class DesktopVideoEnhancementSession(
         // Native actor performs source publication admission outside its MPV lock.
         clearOwnedLocked()
         if (!owns(request.source, request.epoch)) return@synchronized
-        val token = player.setNvidiaVideoEnhancementIfSourceSnapshot(request.source, request.options)
+        val token = player.setNvidiaVideoEnhancementIfSourceSnapshot(request.source, request.options, request.nativeIdentity)
         if (token == null) {
             mutableState.value = DesktopVideoEnhancementState(identity, source!!.sourceVersion, true, available,
                 statusText = "当前视频源已切换，等待新画面", gpuName = native.gpuName,
