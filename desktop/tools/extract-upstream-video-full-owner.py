@@ -101,6 +101,28 @@ def original_page_transition_media_delta(path, body):
  assert body[:start]+before+body[start+len(after):]==original,'whole original page media delta inverse'
  return body
 
+def audio_playback_completion_origin_delta(path, body):
+ if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body
+ original=body;edits=[]
+ pairs=[('val didContinue = handleAudioModePlaybackEnded(ignoreSavedProgress = true)', 'val didContinue = handleAudioModePlaybackEnded(ignoreSavedProgress = true, desktopContinuation = desktopContinuation)'), ('    fun playNextAudioModeTrack(ignoreSavedProgress: Boolean = false, desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null): Boolean {', '    fun playNextAudioModeTrack(ignoreSavedProgress: Boolean = false, desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null, desktopContinuation: com.bilipai.desktop.ui.DesktopOriginalNativePlaybackContinuation? = null): Boolean {\n        if (desktopContinuation != null && !desktopContinuation.isCurrent()) return false'), ('    private fun handleAudioModePlaybackEnded(ignoreSavedProgress: Boolean): Boolean {', '    private fun handleAudioModePlaybackEnded(ignoreSavedProgress: Boolean, desktopContinuation: com.bilipai.desktop.ui.DesktopOriginalNativePlaybackContinuation? = null): Boolean {\n        if (desktopContinuation != null && !desktopContinuation.isCurrent()) return false'), ('        desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null\n    ): Boolean {\n        if (desktopManualNavigation != null && !desktopManualNavigation.isCurrent()) return false\n        if (item == null)', '        desktopManualNavigation: com.bilipai.desktop.ui.DesktopOriginalManualPlaybackNavigation? = null,\n        desktopContinuation: com.bilipai.desktop.ui.DesktopOriginalNativePlaybackContinuation? = null\n    ): Boolean {\n        if (desktopManualNavigation != null && !desktopManualNavigation.isCurrent()) return false\n        if (desktopContinuation != null && !desktopContinuation.isCurrent()) return false\n        if (item == null)')]
+ for before,after in pairs:
+  assert body.count(before)==1,('original audio completion source anchor',before)
+  at=body.index(before);body=body[:at]+after+body[at+len(before):];edits.append((at,before,after))
+ scoped=[{'start': '    fun playNextAudioModeTrack(', 'end': '    fun playPreviousAudioModeTrack(', 'pairs': [('            desktopManualNavigation = desktopManualNavigation\n', '            desktopManualNavigation = desktopManualNavigation,\n            desktopContinuation = desktopContinuation\n')]}, {'start': '    private fun handleAudioModePlaybackEnded(', 'end': '    private fun playAudioModePlaylistItem(', 'pairs': [('        return playNextAudioModeTrack(ignoreSavedProgress = ignoreSavedProgress)', '        return playNextAudioModeTrack(ignoreSavedProgress = ignoreSavedProgress, desktopContinuation = desktopContinuation)')]}, {'start': '    private fun playAudioModePlaylistItem(', 'end': '    private fun playPreviousFromRecommendedQueue(', 'pairs': [('            desktopManualNavigation = desktopManualNavigation\n', '            desktopManualNavigation = desktopManualNavigation,\n            desktopContinuation = desktopContinuation\n')]}]
+ for region in scoped:
+  assert body.count(region['start'])==body.count(region['end'])==1
+  at=body.index(region['start']);end=body.index(region['end'],at);before=body[at:end];after=before
+  for old,new in region['pairs']:
+   assert after.count(old)==1
+   after=after.replace(old,new,1)
+  body=body[:at]+after+body[end:];edits.append((at,before,after))
+ inverse=body
+ for at,before,after in reversed(edits):
+  assert inverse[at:at+len(after)]==after
+  inverse=inverse[:at]+before+inverse[at+len(after):]
+ assert inverse==original,'complete original audio completion source inverse'
+ return body
+
 def manual_audio_navigation_origin_delta(path, body):
  if path!='com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt':return body
  original=body;edits=[]
@@ -993,6 +1015,7 @@ def generate(repo,output,standalone=False):
   body=automatic_bootstrap_origin_delta(recipe['output'],body)
   body=manual_navigation_origin_delta(recipe['output'],body)
   body=manual_audio_navigation_origin_delta(recipe['output'],body)
+  body=audio_playback_completion_origin_delta(recipe['output'],body)
   body=original_page_transition_media_delta(recipe['output'],body)
   from v030_up_danmaku import same_send_expected_source_delta
   same_send_edits=[];same_send_before_sha=sha(body)
