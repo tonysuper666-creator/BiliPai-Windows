@@ -53,7 +53,10 @@ internal suspend fun desktopHistoryReadApiFailure(environment: DesktopFavoriteEn
     return DesktopHistoryReadApiException(code, source, message)
 }
 
-/** Exact original UI state identity and original search generation, never error-text matching. */
+/** Actual original error slot; no UI data-model field or error-text identity. */
+internal enum class DesktopHistoryReadFailureSlot { FIRST, LOAD_MORE }
+
+/** Initial terminal UI object is evidence at binding; subsequent item-only copies preserve its slot. */
 internal data class DesktopHistoryReadFailure(
     val code: Int,
     val message: String?,
@@ -61,6 +64,7 @@ internal data class DesktopHistoryReadFailure(
     val searchGeneration: Long,
     val searchQuery: String,
     val displayedState: ListUiState,
+    val slot: DesktopHistoryReadFailureSlot,
 )
 
 internal data class DesktopHistoryReadEpisode(

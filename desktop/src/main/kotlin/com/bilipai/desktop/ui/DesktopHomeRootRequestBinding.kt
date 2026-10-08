@@ -88,6 +88,10 @@ internal class DesktopHomeRootRequestBinding(
         }
         if (!admitted || !applied) throw CancellationException("Home nav publication source retired")
     }
+    private fun backgroundPublication(source:DesktopHomeNavRequestSource, callerJob:Job) =
+        DesktopHomeBackgroundPublication(
+            publishCurrent={ block -> commitNavPublication(source,callerJob,block) },
+            checkCurrent={ commitNavPublication(source,callerJob) {} })
     private fun navPublication(source:DesktopHomeNavRequestSource, nav:NavData, callerJob:Job) =
         DesktopHomeNavPublication(nav,
             publishCurrent={ block -> commitNavPublication(source, callerJob) {
@@ -95,8 +99,9 @@ internal class DesktopHomeRootRequestBinding(
                 setNavIdentity(if (nav.isLogin) nav.mid else null, nav.isLogin && nav.vip.status == 1)
                 block()
             } },
-            checkCurrent={ commitNavPublication(source, callerJob) {} })
-    val ports=DesktopHomeRequestPorts(environment, ::beginNavRequest, ::observeNavResult, ::navPublication)
+            checkCurrent={ commitNavPublication(source, callerJob) {} },
+            backgroundForCaller={ childJob -> backgroundPublication(source,childJob) })
+    val ports=DesktopHomeRequestPorts(environment, ::beginNavRequest, ::observeNavResult, ::navPublication, ::backgroundPublication)
     private fun setNavIdentity(mid:Long?,isVip:Boolean){
         assertOwned()
         if(!repository.updateHomeNavIdentity(capturedEpoch,capturedMid,mid,isVip))

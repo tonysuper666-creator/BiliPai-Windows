@@ -14,6 +14,7 @@ internal class DesktopHomeRequestPorts(
     private val beginNavRequest: (Job) -> DesktopHomeNavRequestSource,
     private val observeNavResult: (DesktopHomeNavRequestSource, Boolean, Job) -> Unit,
     private val navPublication: (DesktopHomeNavRequestSource, NavData, Job) -> DesktopHomeNavPublication,
+    private val backgroundPublication: (DesktopHomeNavRequestSource, Job) -> DesktopHomeBackgroundPublication,
 ) : AutoCloseable {
     private val originalVideo=DesktopOriginalHomeVideoProtocol(environment)
     private val originalHistory=DesktopOriginalHomeHistoryProtocol(environment.api)
@@ -29,6 +30,20 @@ internal class DesktopHomeRequestPorts(
     }
     private suspend fun <T> result(block:suspend()->Result<T>):Result<T> = owned(block).also {
         (it.exceptionOrNull() as? CancellationException)?.let { cancelled->throw cancelled }
+    }
+    /** Capture immediately before THIS API invocation, never stamp a completed response.
+     * Network/cancellation remain outside Store/entry admission. The final Home reducer
+     * independently keeps its initiating nav receipt and real operation caller. */
+    private suspend fun <T> backgroundRequest(block:suspend()->T):T {
+        assertOwned()
+        val caller=currentCoroutineContext()
+        caller.ensureActive()
+        val callerJob=requireNotNull(caller[Job]) { "Home background API requires its actual caller Job" }
+        val source=beginNavRequest(callerJob)
+        val value=block()
+        caller.ensureActive()
+        backgroundPublication(source,callerJob).assertCurrent()
+        return value
     }
     val video=object:DesktopHomeVideoRequests {
         override suspend fun getHomeVideos(idx:Int)=result {originalVideo.getHomeVideos(idx)}
@@ -61,8 +76,8 @@ internal class DesktopHomeRequestPorts(
         override suspend fun getLiveRooms(page:Int)=result {originalLive.getLiveRooms(page)}
     }
     val messages=object:DesktopHomeMessageRequests {
-        override suspend fun getUnreadCount()=result {originalMessages.getUnreadCount()}
-        override suspend fun getFeedUnread()=result {originalMessages.getFeedUnread()}
+        override suspend fun getUnreadCount()=result {backgroundRequest {originalMessages.getUnreadCount()}}
+        override suspend fun getFeedUnread()=result {backgroundRequest {originalMessages.getFeedUnread()}}
     }
     val actions=object:DesktopHomeActionRequests {
         override suspend fun toggleWatchLater(aid:Long,add:Boolean)=result {originalActions.toggleWatchLater(aid,add)}
@@ -72,7 +87,7 @@ internal class DesktopHomeRequestPorts(
     }
     val following=object:DesktopHomeFollowingRequests {
         override suspend fun getFollowings(mid:Long,page:Int,pageSize:Int)=owned {
-            environment.api.getFollowings(vmid=mid,pn=page,ps=pageSize)
+            backgroundRequest { environment.api.getFollowings(vmid=mid,pn=page,ps=pageSize) }
         }
     }
     /** Root may prime this very original repository before installing its Home VM. It remains

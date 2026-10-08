@@ -5,6 +5,7 @@ import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.data.repository.*
 import com.bilipai.desktop.plugins.DesktopPluginContext
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 
 /** These are the original request/result models. A Root binding must call its ONE shared
@@ -13,6 +14,17 @@ import kotlinx.coroutines.flow.*
  * a transient result carrier, not a nav cache, state owner or successful-login stamp. */
 internal class DesktopHomeNavPublication internal constructor(
  val data:NavData,
+ private val publishCurrent:((()->Unit))->Unit,
+ private val checkCurrent:()->Unit,
+ private val backgroundForCaller:(Job)->DesktopHomeBackgroundPublication,
+) {
+ fun publish(block:()->Unit) = publishCurrent(block)
+ fun assertCurrent() = checkCurrent()
+ /** The child borrows the original receipt; normal nav-caller completion is not its retirement. */
+ fun forBackgroundCaller(callerJob:Job) = backgroundForCaller(callerJob).also { it.assertCurrent() }
+}
+/** A transient receipt/caller reducer gate; owns no list, cache, Job or identity setter. */
+internal class DesktopHomeBackgroundPublication internal constructor(
  private val publishCurrent:((()->Unit))->Unit,
  private val checkCurrent:()->Unit,
 ) {
