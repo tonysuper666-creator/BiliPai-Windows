@@ -16,6 +16,8 @@ data class PlayerVideoOutputState(
     val viewport:PlayerVideoViewport? = null,
     /** Actual video HWND's monitor, including Windows' HDR user switch and active color mode. */
     val hdrDisplay: WindowsHdrDisplayState = WindowsHdrDisplayState(),
+    /** Actual pre-filter video-params primaries from the same owned native poll. */
+    val inputPrimaries: String? = null,
 )
 
 /** Native OSD observations, including legitimate negative crop/pan margins. No aspect/fit inference. */

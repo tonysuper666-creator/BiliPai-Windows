@@ -3,9 +3,12 @@ package com.bilipai.desktop.player
 import com.sun.jna.Memory
 import com.sun.jna.Pointer
 
+enum class NvidiaVideoBackend { DRIVER, VEYRA_CORE }
+
 /** Explicit same-size intent is distinct from the default withdrawal options. */
 data class NvidiaVideoOptions(val scale: Double = 1.0, val hdr: Boolean = false,
-    val nativeResolutionProcessing: Boolean = false) {
+    val nativeResolutionProcessing: Boolean = false,
+    val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER) {
     internal fun requireValid(): NvidiaVideoOptions {
         require(scale.isFinite() && scale in 1.0..4.0) { "NVIDIA video scale must be between 1 and 4." }
         require(!nativeResolutionProcessing || scale == 1.0) { "Native-resolution processing requires unity scale." }
@@ -50,6 +53,10 @@ data class NvidiaVideoState(
     val nativeResolutionProcessingRequested: Boolean = false,
     /** ACK + owned filter + current matching frame. Same-size AI effect remains unproven. */
     val nativeResolutionAttemptAccepted: Boolean = false,
+    val veyraAvailable: Boolean = false,
+    val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,
+    /** Exact receipt plus current owned frame, never display/effect completion. */
+    val veyraSubmitted: Boolean = false,
 )
 
 internal fun nvidiaHdrTransfer(transfer: String?): Boolean = transfer in setOf("pq", "hlg", "st2084", "smpte2084")
@@ -65,6 +72,19 @@ internal data class NvidiaFrameObservation(
 /** A native format readback is only accepted after this configuration has produced a frame. */
 internal fun observeNvidiaVideo(previous: NvidiaVideoState, options: NvidiaVideoOptions,
     frame: NvidiaFrameObservation): NvidiaVideoState {
+    if (options.backend == NvidiaVideoBackend.VEYRA_CORE) {
+        val dimensions = frame.inputWidth > 0 && frame.inputHeight > 0 &&
+            frame.outputWidth == Math.rint(frame.inputWidth * options.scale).toInt() &&
+            frame.outputHeight == Math.rint(frame.inputHeight * options.scale).toInt()
+        val submitted = previous.veyraSubmitted && frame.frameAfterConfiguration && frame.ownFilterPresent &&
+            dimensions && previous.error == null && previous.unavailableReason == null
+        return previous.copy(inputWidth = frame.inputWidth, inputHeight = frame.inputHeight,
+            outputWidth = frame.outputWidth, outputHeight = frame.outputHeight,
+            outputTransfer = frame.outputTransfer, targetTransfer = frame.targetTransfer, targetPrimaries = frame.targetPrimaries,
+            active = false, hdrConversionActive = false, nativeResolutionAttemptAccepted = false,
+            pending = options.requiresFilter && previous.error == null && previous.unavailableReason == null && !submitted,
+            veyraSubmitted = submitted)
+    }
     // Pinned vf_d3d11vpp truncates a float product, then rounds odd sizes UP to even.
     fun scaled(size: Int): Int = (size * options.scale.toFloat()).toInt().let { it + it % 2 }
     val dimensions = frame.inputWidth > 0 && frame.inputHeight > 0 &&
@@ -87,6 +107,10 @@ internal fun observeNvidiaVideo(previous: NvidiaVideoState, options: NvidiaVideo
 }
 
 internal sealed interface NvidiaNativeMessage {
+    data class VeyraSubmitted(val sourceVersion: Long, val configurationVersion: Long,
+        val streamGeneration: Long, val sequence: Long, val width: Int, val height: Int) : NvidiaNativeMessage
+    data class VeyraFailure(val sourceVersion: Long, val configurationVersion: Long,
+        val streamGeneration: Long, val code: Int, val stage: String) : NvidiaNativeMessage
     data object VsrAccepted : NvidiaNativeMessage
     data object HdrAccepted : NvidiaNativeMessage
     data class Failure(val safeMessage: String) : NvidiaNativeMessage
@@ -107,6 +131,29 @@ internal fun parseNvidiaNativeMessage(prefix: String, text: String): NvidiaNativ
         if (fixedLine.any { it.code < 32 || it.code == 127 }) return null
         Regex("Disabling filter (bilipai-nvidia-[0-9]{1,19}) because it has failed\\.").matchEntire(fixedLine)?.let {
             return NvidiaNativeMessage.FilterFailed(it.groupValues[1])
+        }
+        return null
+    }
+    if (prefix == "bilipai-rtx") {
+        val match = Regex("RTX SDK accepted; GPU frame SUBMITTED session=([0-9]{1,19}) config-generation=([0-9]{1,19}) stream-generation=([0-9]{1,19}) sequence=([0-9]{1,19}) size=([0-9]{1,5})x([0-9]{1,5}); display completion not asserted\\.").matchEntire(line)
+        if (match != null) {
+            val source = match.groupValues[1].toLongOrNull() ?: return null
+            val configuration = match.groupValues[2].toLongOrNull() ?: return null
+            val stream = match.groupValues[3].toLongOrNull() ?: return null
+            val sequence = match.groupValues[4].toLongOrNull() ?: return null
+            val width = match.groupValues[5].toIntOrNull() ?: return null
+            val height = match.groupValues[6].toIntOrNull() ?: return null
+            if (source > 0 && configuration > 0 && stream >= configuration && sequence > 0 && width in 1..16384 && height in 1..16384)
+                return NvidiaNativeMessage.VeyraSubmitted(source, configuration, stream, sequence, width, height)
+        }
+        val failure = Regex("RTX SDK failure session=([0-9]{1,19}) config-generation=([0-9]{1,19}) stream-generation=([0-9]{1,19}) code=(-?[0-9]{1,10}) stage=(bridge-unavailable|process-bypass|seek-reset-retired); [^\\r\\n]*").matchEntire(line)
+        if (failure != null) {
+            val source = failure.groupValues[1].toLongOrNull() ?: return null
+            val configuration = failure.groupValues[2].toLongOrNull() ?: return null
+            val stream = failure.groupValues[3].toLongOrNull() ?: return null
+            val code = failure.groupValues[4].toIntOrNull() ?: return null
+            if (source > 0 && configuration > 0 && stream >= configuration)
+                return NvidiaNativeMessage.VeyraFailure(source, configuration, stream, code, failure.groupValues[5])
         }
         return null
     }

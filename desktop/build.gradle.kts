@@ -1861,6 +1861,24 @@ val prepareAppearanceNotices by tasks.registering(Sync::class) {
     into("resources/common/notices/appearance")
 }
 tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareAppearanceNotices) }
+// Only the hash-pinned read-only verifier is staged; native SDK/module/runtime files remain opt-in.
+val prepareVeyraRuntimeVerifier by tasks.registering(Copy::class) {
+    val verifier = file("tools/native/veyra/verify-veyra-runtime.ps1")
+    val expected = "ae541e5ef9e9521835e9a3294f192f8c32fa9f479c8be5ad4279aa27207d6cc8"
+    from(verifier)
+    into("resources/common/native/veyra-core")
+    inputs.property("verifierSha256", expected)
+    fun verifierHash(asset: File): String = MessageDigest.getInstance("SHA-256").digest(asset.readBytes())
+        .joinToString("") { "%02x".format(it.toInt() and 255) }
+    doFirst { require(verifierHash(verifier) == expected) { "Veyra verifier source identity changed." } }
+    doLast { require(verifierHash(file("resources/common/native/veyra-core/verify-veyra-runtime.ps1")) == expected) {
+        "Staged Veyra verifier identity changed."
+    } }
+}
+tasks.named("processResources") { dependsOn(prepareVeyraRuntimeVerifier) }
+tasks.matching { it.name == "prepareAppResources" }.configureEach { dependsOn(prepareVeyraRuntimeVerifier) }
+tasks.withType<JavaExec>().configureEach { dependsOn(prepareVeyraRuntimeVerifier) }
+
 val prepareSettingsSearchNotices by tasks.registering(Sync::class) {
     dependsOn(verifySettingsSearchDependencies)
     from("src/main/resources/licenses/tinypinyin-2.0.3.RELEASE")

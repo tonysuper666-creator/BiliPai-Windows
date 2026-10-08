@@ -25,12 +25,26 @@ data class DesktopVideoEnhancementState(
     val hdrDisplayEnabled: Boolean = false,
     val unavailableReason: String? = null,
     val nativeResolutionAttemptAccepted: Boolean = false,
+    val veyraAvailable: Boolean = false,
+    val veyraSubmitted: Boolean = false,
 )
 
 /** Shared projection; the session admits the current source/configuration before calling it. */
 internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVideoState): DesktopVideoEnhancementState {
     val hdrPresented = native.hdrConversionActive && hdrDisplayEnabled && native.active &&
         nvidiaHdrTarget(native.targetTransfer, native.targetPrimaries)
+    if (native.backend == NvidiaVideoBackend.VEYRA_CORE) {
+        val status = when {
+            native.error != null -> "画质增强暂不可用，继续播放原画"
+            native.unavailableReason != null || !native.veyraAvailable -> "画质增强暂不可用，继续播放原画"
+            native.veyraSubmitted -> "已提交画面增强，等待画面反馈"
+            else -> "正在准备画质增强"
+        }
+        return copy(available = native.veyraAvailable, active = false, pending = native.pending,
+            error = native.error, unavailableReason = native.unavailableReason, statusText = status,
+            driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = false,
+            nativeResolutionAttemptAccepted = false, veyraAvailable = native.veyraAvailable, veyraSubmitted = native.veyraSubmitted)
+    }
     val status = when {
         native.error != null -> "NVIDIA 增强异常：${native.error}"
         native.unavailableReason != null -> "NVIDIA 增强不可用：${native.unavailableReason}"
@@ -73,7 +87,8 @@ class DesktopVideoEnhancementSession(
     private data class Label(val key: String? = null, val version: Long = 0, val epoch: Long = 0)
     private data class Frame(val ready: Boolean, val hasVideo: Boolean, val audioOnly: Boolean, val ended: Boolean, val failed: Boolean, val nativeIdentity: PlayerNativeTrackIdentity?)
     private data class Settings(val enabled: Boolean, val started: Boolean, val pip: Boolean)
-    private data class Target(val sourceVersion: Long, val transfer: String?, val primaries: String?, val nativeResolutionPatchAvailable: Boolean)
+    private data class Target(val sourceVersion: Long, val transfer: String?, val primaries: String?,
+        val nativeResolutionPatchAvailable: Boolean, val veyraAvailable: Boolean)
     private data class Input(val settings: Settings, val label: Label, val frame: Frame, val output: PlayerVideoOutputState, val target: Target)
     private class Request(val source: OwnedPlaybackSourceSnapshot, val epoch: Long, val options: NvidiaVideoOptions,
         val nativeIdentity: PlayerNativeTrackIdentity) {
@@ -101,7 +116,7 @@ class DesktopVideoEnhancementSession(
             val frame = player.state.map { Frame(it.ready, it.videoCodec != null, it.audioOnly, it.ended, it.error != null, it.nativeTrackIdentity) }.distinctUntilChanged()
             // Output format/driver ACK cannot reconfigure its own processing.
             // Only the actual display target and loaded binary patch identity are decision inputs.
-            val target = player.nvidiaVideoState.map { Target(it.sourceVersion, it.targetTransfer, it.targetPrimaries, it.nativeResolutionPatchAvailable) }.distinctUntilChanged()
+            val target = player.nvidiaVideoState.map { Target(it.sourceVersion, it.targetTransfer, it.targetPrimaries, it.nativeResolutionPatchAvailable, it.veyraAvailable) }.distinctUntilChanged()
             combine(settings, label, frame, player.videoOutput, target) { preferences, identity, playback, output, destination ->
                 Input(preferences, identity, playback, output, destination)
             }.distinctUntilChanged().collect(::apply)
@@ -181,7 +196,7 @@ class DesktopVideoEnhancementSession(
             input.output.gamma, input.output.dolbyVisionProfile, input.output.hdrDisplay.hdrEnabled,
             input.target.transfer.takeIf { input.target.sourceVersion == source!!.sourceVersion },
             input.target.primaries.takeIf { input.target.sourceVersion == source!!.sourceVersion },
-            input.target.nativeResolutionPatchAvailable && input.target.sourceVersion == currentSource.sourceVersion)
+            (input.target.nativeResolutionPatchAvailable || (input.target.veyraAvailable && input.output.gamma in setOf("bt.1886", "srgb") && input.output.inputPrimaries == "bt.709" && !nvidiaHdrTransfer(input.output.gamma) && (input.output.dolbyVisionProfile ?: 0) <= 0)) && input.target.sourceVersion == currentSource.sourceVersion)
         if (!decision.needsProcessing) {
             val text = when (decision.kind) {
                 DesktopNvidiaVideoDecisionKind.WAITING_VIDEO -> "等待实际视频尺寸，原画输出"
@@ -190,7 +205,9 @@ class DesktopVideoEnhancementSession(
             }
             bypass(Anime4KBypassReason.NONE, text); return@synchronized
         }
-        val request = Request(currentSource, epoch, NvidiaVideoOptions(decision.scale, decision.hdr, decision.nativeResolutionProcessing), nativeIdentity)
+        val backend = if (input.target.veyraAvailable && input.target.sourceVersion == currentSource.sourceVersion &&
+            input.output.gamma in setOf("bt.1886", "srgb") && input.output.inputPrimaries == "bt.709" && !decision.sourceIsHdr) NvidiaVideoBackend.VEYRA_CORE else NvidiaVideoBackend.DRIVER
+        val request = Request(currentSource, epoch, NvidiaVideoOptions(decision.scale, decision.hdr, decision.nativeResolutionProcessing, backend), nativeIdentity)
         val previous = owned
         if (previous != null && previous.request.matches(request)) {
             mutableState.update { it.copy(hdrDisplayEnabled = input.output.hdrDisplay.hdrEnabled) }

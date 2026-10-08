@@ -37,19 +37,25 @@ internal interface MpvNative : Library {
     companion object {
         fun load(): MpvNative = loadWithIdentity().api
 
-        internal fun loadWithIdentity(): DesktopLoadedMpvNative {
+        private val loadedLibraries = mutableMapOf<java.nio.file.Path, Boolean>()
+        private val libraryLoadLock = Any()
+
+        internal fun loadWithIdentity(veyraComponent: DesktopVeyraPrivateComponent? = null): DesktopLoadedMpvNative {
             check(System.getProperty("os.name").startsWith("Windows", ignoreCase = true)) {
                 "This player package requires Windows."
             }
             check(Native.POINTER_SIZE == 8) { "This player package requires 64-bit Windows." }
             val dll = locateLibrary().canonicalFile
-            val api = Native.load(
-                dll.absolutePath,
-                MpvNative::class.java,
-                mapOf(Library.OPTION_STRING_ENCODING to "UTF-8"),
-            )
-            // Native worker/startup path only; no UI/source/account monitor holds this IO.
-            return DesktopLoadedMpvNative(api, readDesktopMpvRuntimePatchIdentity(dll))
+            val libraryPath = dll.toPath().toRealPath()
+            // Loader gate only: no playback/account gate holds this verification IO.
+            return synchronized(libraryLoadLock) {
+                val binding = veyraComponent?.prepareForNativeLoad(dll, loadedLibraries[libraryPath] == false)
+                val api = Native.load(dll.absolutePath, MpvNative::class.java,
+                    mapOf(Library.OPTION_STRING_ENCODING to "UTF-8"))
+                // A later path hash cannot authenticate an earlier unlocked load.
+                loadedLibraries[libraryPath] = loadedLibraries[libraryPath] == true || binding != null
+                DesktopLoadedMpvNative(api, readDesktopMpvRuntimePatchIdentity(dll), binding)
+            }
         }
 
         internal fun locateLibrary(): File {

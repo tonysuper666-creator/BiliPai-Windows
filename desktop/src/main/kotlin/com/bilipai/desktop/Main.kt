@@ -122,7 +122,8 @@ fun main(args: Array<String>) {
         }
         val repository = remember { DesktopRepository() }
         LaunchedEffect(repository) { diagnostics?.recordStartupStage("repository_initialized") }
-        val playerResult = remember { runCatching { MpvPlayer() } }
+        val veyraComponent = remember { com.bilipai.desktop.player.desktopVeyraComponentFromExplicitConfiguration() }
+        val playerResult = remember(veyraComponent) { runCatching { MpvPlayer(veyraComponent = veyraComponent) } }
         val windowState = rememberWindowState(width = 1360.dp, height = 900.dp)
         val applicationScope = rememberCoroutineScope()
         val shutdown = remember(diagnosticLifecycle) {

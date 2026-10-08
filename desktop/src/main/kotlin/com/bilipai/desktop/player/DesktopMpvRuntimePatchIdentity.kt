@@ -6,7 +6,8 @@ import kotlinx.serialization.json.*
 
 /** Immutable projection of the selected loaded file, not a player/driver/state owner. */
 internal data class DesktopMpvRuntimePatchIdentity(val nativeResolutionPatchAvailable: Boolean = false)
-internal data class DesktopLoadedMpvNative(val api: MpvNative, val identity: DesktopMpvRuntimePatchIdentity)
+internal data class DesktopLoadedMpvNative(val api: MpvNative, val identity: DesktopMpvRuntimePatchIdentity,
+    val veyraBinding: DesktopVeyraVerifiedBinding? = null)
 
 /** Source/binary provenance licenses an attempt only. No GPU or effect is detected here. */
 internal fun readDesktopMpvRuntimePatchIdentity(dll: File): DesktopMpvRuntimePatchIdentity {
