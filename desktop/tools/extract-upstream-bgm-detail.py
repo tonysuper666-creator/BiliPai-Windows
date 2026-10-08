@@ -4,6 +4,7 @@ from pathlib import Path
 import argparse, hashlib, importlib.util, json, re, textwrap
 from v029_brand_consumers import empty_consumer
 import v029_comment_search as comment_search
+from v033_comment_refresh import apply_selected as apply_v033_comment_refresh
 BASE='app/src/main/java/com/android/purebilibili/'
 BGM=BASE+'feature/audio/bgm/'
 SOURCES=[BGM+n+'.kt' for n in ['BgmDetailViewModel','BgmDetailPolicy','BgmHeatChart','BgmDetailScreen']]+[BASE+n+'.kt' for n in ['data/repository/ViewGrpcRepository','data/model/response/PlayerInfoResponse','core/network/ApiClient','navigation/AppNavigation','core/util/BilibiliNavigationTargetParser','feature/video/viewmodel/VideoCommentViewModel','feature/video/ui/components/CommentInputDialog','feature/video/ui/components/CommentSortFilterBar','data/repository/CommentFraudDetectionPolicy','data/model/CommentFraudStatus','core/database/entity/CommentFraudRecord','core/database/dao/CommentFraudDao','data/repository/CommentFraudRepository']]
@@ -228,6 +229,8 @@ def generate_ui(repo,output,original,shared,emit,changes):
             if tail.startswith('{'):end=shared.balanced(mask,end+padding,'{','}')
         return text[:m.start()]+text[end:]
     path=BASE+'feature/video/viewmodel/VideoCommentViewModel.kt';body, comment_selection = comment_search.select_full(repo,path,original[path]); comment_raw=body
+    body, v033_refresh_selection = apply_v033_comment_refresh(repo, path, body)
+    comment_selection['v033SubReplyRefresh'] = v033_refresh_selection
     for name in ['CommentSortMode','SubReplyUiState','resolveSubReplyRemoteTotalCount','resolveSubReplyLoadedTotalCount','resolveRoutedCommentRootReply']:
         body=remove_declaration(body,name)
     body='\n'.join(l for l in body.splitlines() if not l.startswith('import android.') and not any(l==x for x in ['import androidx.lifecycle.ViewModel','import androidx.lifecycle.viewModelScope','import com.android.purebilibili.core.network.NetworkModule','import com.android.purebilibili.data.repository.CommentRepository','import com.android.purebilibili.data.repository.CommentFraudRepository']))+'\n'

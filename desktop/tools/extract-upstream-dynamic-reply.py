@@ -10,6 +10,7 @@ from v029_comment_search import charged_delta
 from v021_comment_renderer import adapt as adapt_comment_presentation
 from v029_reply_renderer import renderer as advance_reply_renderer
 from v032_comment_media import adapt as adapt_comment_media
+from v033_comment_refresh import apply_selected as apply_v033_comment_refresh
 from pathlib import Path
 import hashlib
 import importlib.util
@@ -226,6 +227,9 @@ def generate(repo, output):
     original = read(repo, SUB)
     original, sub_time_selection = apply_original_comment_time(repo, SUB, original)
     original, sub_renderer_selection = advance_reply_renderer(repo, SUB, original)
+    original, v033_target_selection = apply_v033_comment_refresh(repo, SUB, original)
+    (output / 'v033-subreply-target-source.json').write_text(
+        json.dumps(v033_target_selection, ensure_ascii=False, indent=2) + '\n', encoding='utf8')
     (output / 'v029-reply-renderer-selection.json').write_text(
         json.dumps([reply_renderer_selection, sub_renderer_selection], ensure_ascii=True, indent=2) + '\n', encoding='utf8')
     (output / 'v029-comment-time-selection.json').write_text(

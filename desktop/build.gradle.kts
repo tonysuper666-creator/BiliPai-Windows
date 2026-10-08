@@ -1100,6 +1100,8 @@ val extractUpstreamDynamicReply by tasks.registering(Exec::class) {
     inputs.file("tools/v029_comment_time.py")
     inputs.file("tools/v029_reply_renderer.py")
     inputs.file("tools/v032_comment_media.py")
+    inputs.file("tools/v033_comment_refresh.py")
+    inputs.dir("upstream-slices/v033-comment-refresh")
     inputs.dir("upstream-slices/v032-comment-media")
     inputs.dir("upstream-slices/v029-comment-time")
     inputs.file("tools/v021_comment_renderer.py")
@@ -1166,6 +1168,8 @@ val extractBgmDetail by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-bgm-detail.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/bgm-detail").get().asFile.absolutePath)
+    inputs.file("tools/v033_comment_refresh.py")
+    inputs.dir("upstream-slices/v033-comment-refresh")
     inputs.files("tools/extract-upstream-bgm-detail.py", "tools/sync-upstream.py", "tools/extract-upstream-dynamic-reply-protocol.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-media.py", "tools/extract-upstream-plugins.py")
     inputs.file(sourceManifest)
