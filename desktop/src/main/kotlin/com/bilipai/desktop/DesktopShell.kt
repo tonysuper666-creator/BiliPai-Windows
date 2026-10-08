@@ -776,6 +776,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var noteVideo by remember { mutableStateOf<VideoDetails?>(null) }
     var favorite by remember(playing.details?.bvid) { mutableStateOf(playing.details?.let { library.isFavorite(it.bvid) } ?: false) }
     val updater = remember { DesktopUpdater() }
+    val veyraMonitor = remember(repository, pluginStore, updater) {
+        val publicReleaseHttp = com.bilipai.desktop.settings.DesktopOriginalAboutReleaseHttp(
+            repository.httpClient) { !rootClosing.get() }
+        com.bilipai.desktop.update.DesktopVeyraReleaseMonitor(
+            fetch = { url -> publicReleaseHttp.fetch(url, true) },
+            store = pluginStore, owns = { !rootClosing.get() }, windowsState = { updater.state.value })
+    }
     val updateState by updater.state.collectAsState()
     var updatesDialog by remember { mutableStateOf(false) }
     var automaticUpdates by remember { mutableStateOf(settingsLibrary.automaticUpdates) }
@@ -1472,6 +1479,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         } catch (failure: Exception) { error = failure.message ?: "加载失败" }
         finally { feedLoading = false }
     }
+    LaunchedEffect(veyraMonitor) { veyraMonitor.followSettings() }
     LaunchedEffect(Unit) { updater.autoCheck(); while (true) { delay(6 * 60 * 60 * 1000L); updater.autoCheck() } }
     LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, messageUpdateRoot, messageUpdateActivity, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect

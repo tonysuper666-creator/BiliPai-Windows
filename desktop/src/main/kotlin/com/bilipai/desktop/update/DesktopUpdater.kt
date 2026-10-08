@@ -54,6 +54,7 @@ class DesktopUpdater private constructor(
     val state: StateFlow<UpdateState> = mutableState.asStateFlow()
     private val mutex = Mutex()
     private var retainedPrepared: PreparedUpdate? = null
+    private var retainedArchiveSha256: String? = null
 
     /** Explicit UI checks bypass the six-hour background debounce. A prepared update is retained. */
     suspend fun check(force: Boolean = true): UpdateState = withContext(Dispatchers.IO) {
@@ -86,18 +87,32 @@ class DesktopUpdater private constructor(
     suspend fun autoCheck(): UpdateState = check(force = false)
 
     /** Downloads, verifies and extracts a side-by-side installation while the current app keeps running. */
-    suspend fun prepareUpdate(update: WindowsUpdate): PreparedUpdate? = withContext(Dispatchers.IO) {
+    suspend fun prepareUpdate(update: WindowsUpdate): PreparedUpdate? = prepareUpdateInternal(update, null)
+
+    /** Own signed-compatible full app bundles use the same stage, idle activation and rollback. */
+    internal suspend fun prepareVeyraUpdate(offer: VerifiedVeyraCompatibleOffer): PreparedUpdate? {
+        require((state.value as? UpdateState.Available)?.update == offer.update) { "Compatible Windows target changed" }
+        return prepareUpdateInternal(offer.update, offer.zipSha256)
+    }
+
+    private suspend fun prepareUpdateInternal(update: WindowsUpdate, compatibleSha256: String?): PreparedUpdate? = withContext(Dispatchers.IO) {
         if (disabledReason != null || !mutex.tryLock()) return@withContext null
         var staging: Path? = null
         var complete = false
         try {
-            retainedPrepared?.let { return@withContext it.takeIf { prepared -> prepared.update == update } }
+            retainedPrepared?.let {
+                require(compatibleSha256 == null || retainedArchiveSha256.equals(compatibleSha256, ignoreCase = true)) {
+                    "Prepared archive differs from the signed compatibility catalog"
+                }
+                return@withContext it.takeIf { prepared -> prepared.update == update }
+            }
             validateUpdate(update)
             val settings = requireNotNull(config)
             staging = UpdateStorage.createStage(updateRoot, requireNotNull(repository), update.assetId)
             val archive = staging.resolve("download.zip")
             mutableState.value = UpdateState.Downloading(0, update.size)
             val expectedHash = parseChecksum(fetchText(update.checksumUrl, 128 * 1024), update.assetName)
+            compatibleSha256?.let { verifyChecksum(expectedHash, it) }
             val digest = download(update, archive)
             currentCoroutineContext().ensureActive()
             mutableState.value = UpdateState.Verifying
@@ -109,6 +124,7 @@ class DesktopUpdater private constructor(
             Files.delete(archive)
             val prepared = PreparedUpdate(update, staging, executable)
             retainedPrepared = prepared
+            retainedArchiveSha256 = digest.lowercase()
             complete = true
             mutableState.value = UpdateState.Prepared(prepared)
             pruneInstallations()
