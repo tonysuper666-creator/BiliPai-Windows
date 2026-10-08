@@ -82,6 +82,7 @@ internal class DesktopOriginalVideoAcceptedPublication(
     val request: PlaybackRequest,
     val nativeSource: OwnedPlaybackSourceSnapshot,
     val bootstrapOrigin: DesktopVideoBootstrapAccepted? = null,
+    val pageSubject: DesktopOriginalVideoPageTransitionIntent? = null,
 ) {
     val sourceVersion get() = nativeSource.sourceVersion
     val accountEpoch get() = checkNotNull(nativeSource.source.authorizationReceipt).accountEpoch
@@ -243,7 +244,21 @@ internal class DesktopOriginalVideoNativeOwner(
 
     fun publishWithBootstrapOrigin(request: PlaybackRequest, source: PlaybackSource,
         expectedBaselineVersion: Long, requestJob: Job, bootstrapOrigin: DesktopVideoBootstrapAccepted?,
+        isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication =
+        publishWithPageSubject(request, source, expectedBaselineVersion, requestJob,
+            bootstrapOrigin, null, null, isRequestCurrent)
+
+    /** Only the exact previous native page is checked at submission. Existing
+     * wrappers have no parent/page metadata; one original publication body remains. */
+    internal fun publishWithPageSubject(request: PlaybackRequest, source: PlaybackSource,
+        expectedBaselineVersion: Long, requestJob: Job, bootstrapOrigin: DesktopVideoBootstrapAccepted?,
+        pageSubject: DesktopOriginalVideoPageTransitionIntent?,
+        expectedPrevious: DesktopOriginalVideoAcceptedPublication?,
         isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication {
+        if (pageSubject != null && (bootstrapOrigin != null || !pageSubject.matchesResolvedRequest(request)))
+            throw CancellationException("Original page publication subject replaced")
+        if (expectedPrevious != null && (pageSubject == null || expectedPrevious.pageSubject !== pageSubject))
+            throw CancellationException("Original page publication parent changed")
         assertEntry()
         val receipt = checkNotNull(source.authorizationReceipt) { "Original ordinary playback receipt is required" }
         if (receipt.accountEpoch != currentEpoch()) throw CancellationException("Original playback account retired")
@@ -253,18 +268,31 @@ internal class DesktopOriginalVideoNativeOwner(
                 assertEntry()
                 if (requestJob.isCancelled || !isRequestCurrent() || player.currentSourceVersion != expectedBaselineVersion)
                     throw CancellationException("Original playback request/native baseline retired")
-                lateinit var next: DesktopOriginalVideoAcceptedPublication
-                val initial = DesktopOriginalVideoInitialPublication(publication, source, requestJob,
-                    isRequestCurrent, { owns(next) }, withEntryAdmission)
-                val retained = source.copy(nativePublication = initial)
-                val version = player.loadVersionedWithMuted(retained, currentUserMuted())
-                next = DesktopOriginalVideoAcceptedPublication(request,
-                    checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == version) }, bootstrapOrigin)
-                accepted.set(next)
-                bindAcceptedTransport(next, null) { owns(next) && initial.isTransportCurrent() }
-                inheritedMute.set(null)
-                result = next
-                onAccepted(next)
+                fun acceptInitial() {
+                    lateinit var next: DesktopOriginalVideoAcceptedPublication
+                    val initial = DesktopOriginalVideoInitialPublication(publication, source, requestJob,
+                        isRequestCurrent, { owns(next) }, withEntryAdmission)
+                    val retained = source.copy(nativePublication = initial)
+                    val version = player.loadVersionedWithMuted(retained, currentUserMuted())
+                    next = DesktopOriginalVideoAcceptedPublication(request,
+                        checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == version) },
+                        bootstrapOrigin, pageSubject)
+                    accepted.set(next)
+                    bindAcceptedTransport(next, null) { owns(next) && initial.isTransportCurrent() }
+                    inheritedMute.set(null)
+                    result = next
+                    onAccepted(next)
+                }
+                if (expectedPrevious == null) acceptInitial()
+                else if (!player.admitSourceSnapshot(expectedPrevious.nativeSource) {
+                    if (!owns(expectedPrevious) || expectedBaselineVersion != expectedPrevious.sourceVersion ||
+                        expectedPrevious.request != request ||
+                        expectedPrevious.nativeSource.source.authorizationReceipt != receipt)
+                        throw CancellationException("Original page parent publication retired")
+                    // Parent is consumed at submission. The actual next ACK uses
+                    // only its own caller/raw subject and owns(next), never parent.
+                    acceptInitial()
+                }) throw CancellationException("Original page parent native source changed")
             }) throw CancellationException("Original playback entry retired")
         }
         return checkNotNull(result)
@@ -383,7 +411,8 @@ internal class DesktopOriginalVideoNativeOwner(
                             throw CancellationException("Accepted ordinary recovery retired")
                         next = DesktopOriginalVideoAcceptedPublication(previous.request,
                             checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == previous.sourceVersion) },
-                            previous.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(previous.request) })
+                            previous.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(previous.request) },
+                            previous.pageSubject?.takeIf { it.matchesResolvedRequest(previous.request) })
                         accepted.set(next)
                         bindAcceptedTransport(next, previous) { owns(next) && isPresenterCurrent() }
                         inheritedMute.get()?.takeIf { it.lease === previous }?.let { mute ->
@@ -419,7 +448,8 @@ internal class DesktopOriginalVideoNativeOwner(
                             expectedFailureAttemptId = expectedFailureAttemptId)) return@withEntryAdmission
                     next = DesktopOriginalVideoAcceptedPublication(expected.request,
                         checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) },
-                        expected.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(expected.request) })
+                        expected.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(expected.request) },
+                        expected.pageSubject?.takeIf { it.matchesResolvedRequest(expected.request) })
                     accepted.set(next)
                     inheritedMute.get()?.takeIf { it.lease === expected }?.let { previous ->
                         inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))
@@ -469,7 +499,8 @@ internal class DesktopOriginalVideoNativeOwner(
                         if (!player.recoverSource(expected.sourceVersion, direct, position, paused)) return@admitSourceSnapshot
                         next = DesktopOriginalVideoAcceptedPublication(expected.request,
                             checkNotNull(player.currentSourceSnapshot()).also { check(it.sourceVersion == expected.sourceVersion) },
-                            expected.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(expected.request) })
+                            expected.bootstrapOrigin?.takeIf { it.matchesResolvedRequest(expected.request) },
+                            expected.pageSubject?.takeIf { it.matchesResolvedRequest(expected.request) })
                         accepted.set(next)
                         inheritedMute.get()?.takeIf { it.lease === expected }?.let { previous ->
                             inheritedMute.compareAndSet(previous, InheritedMute(next, previous.interval))

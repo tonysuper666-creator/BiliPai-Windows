@@ -57,21 +57,41 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
         val requestJob = checkNotNull(currentCoroutineContext()[Job])
         val pageTransition = currentCoroutineContext()[DesktopOriginalVideoPageTransitionIntent]
             ?.capture(state, requestJob)
-        // In-place page media is Unknown bootstrap provenance. A context inherited
-        // accidentally from an old full load must not tag this different CID.
-        val bootstrapOrigin = if (pageTransition == null) currentCoroutineContext()[DesktopVideoBootstrapAccepted] else null
         val binding = DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,
             entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
             capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
             isMobileData, token::available, token::refresh,
             { receipt -> onPlaybackAuthorizationRetired(receipt, state) })
+        // This Factory borrows only a genuinely accepted page's immutable subject.
+        // All unrelated/new full requests keep the existing full-load path.
+        var pageSuccessor: DesktopOriginalVideoPageSuccessorProof? = null
+        if (pageTransition == null) {
+            val expected = native.current()
+            val subject = expected?.pageSubject
+            if (expected != null && subject != null && subject.sameOriginalRequestIdentity(state)) {
+                if (expected.nativeSource.source.authorizationReceipt != binding.receipt ||
+                    !native.admitPlaybackDispatch(expected) {
+                        binding.assertCurrent()
+                        pageSuccessor = subject.captureSuccessor(state, requestJob, expected)
+                    }) throw CancellationException("Original accepted page capture retired")
+            }
+        }
+        // Page media remains Unknown bootstrap provenance, including successors.
+        val bootstrapOrigin = if (pageTransition == null && pageSuccessor == null)
+            currentCoroutineContext()[DesktopVideoBootstrapAccepted] else null
         val bootstrap = bootstrapOrigin?.let { DesktopVideoBootstrapReadSource.capture(it, state, binding) }
-        val raw = createDesktopOriginalVideoOwnerRequestRepositoryWithPageTransition(repository, binding,
-            subtitleAssets, privacy, bootstrapOrigin, pageTransition,
+        val raw = createDesktopOriginalVideoOwnerRequestRepositoryWithPageSuccessor(repository, binding,
+            subtitleAssets, privacy, bootstrapOrigin, pageTransition, pageSuccessor,
             { receipt, stillOwned -> repository.ownedHomeVisitorInitialized(receipt.accountEpoch, stillOwned) })
         var baseline: Long? = null
-        if (!binding.admitCurrentMutation { baseline = native.player.currentSourceVersion })
+        if (!binding.admitCurrentMutation {
+                baseline = pageSuccessor?.let {
+                    if (!native.isCurrent(it.expected))
+                        throw CancellationException("Original page successor baseline retired")
+                    it.expected.sourceVersion
+                } ?: native.player.currentSourceVersion
+            })
             throw CancellationException("Original media baseline capture retired")
         val media = prepareRequestMedia(raw, state, checkNotNull(baseline), requestJob, native)
         currentCoroutineContext().ensureActive(); binding.assertCurrent()

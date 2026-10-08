@@ -90,6 +90,7 @@ internal class DesktopOriginalVideoRootMediaFactory(
         val capturedRequest = state.currentRequest
         val bootstrapOrigin = raw.bootstrapOrigin
         val pageTransition = raw.pageTransition
+        val pageSuccessor = raw.pageSuccessor
         val token = state.currentLoadRequestToken
         return DesktopOriginalVideoCachedMediaFactory(raw.binding.captureMediaBytes(cache, assembly.environment.network::cdnNetwork),
             legacyOrigin = { video, audio, _ -> transport.source(video, audio) },
@@ -107,11 +108,21 @@ internal class DesktopOriginalVideoRootMediaFactory(
                     if (pageTransition.factoryCaller !== callerJob)
                         throw CancellationException("Actual original page Factory caller replaced")
                     val resolved = pageTransition.resolvedCommittedSubject(assembly.captureLoadState())
-                    // Keep the existing initial publication/ACK and explicit Unknown
-                    // metadata. This page does not accept a new full-load request.
-                    native.publish(resolved, source, nativeBaseline, callerJob) {
+                    // Page subject is native metadata, still Unknown bootstrap provenance.
+                    native.publishWithPageSubject(resolved, source, nativeBaseline, callerJob,
+                        null, pageTransition.intent, null) {
                         !callerJob.isCancelled && gate.owns() && runCatching {
                             pageTransition.resolvedCommittedSubject(assembly.captureLoadState()) == resolved
+                        }.getOrDefault(false)
+                    }
+                } else if (pageSuccessor != null) {
+                    if (pageSuccessor.factoryCaller !== callerJob)
+                        throw CancellationException("Actual page successor caller replaced")
+                    val resolved = pageSuccessor.resolvedCommittedSubject(assembly.captureLoadState())
+                    native.publishWithPageSubject(resolved, source, nativeBaseline, callerJob,
+                        null, pageSuccessor.subject, pageSuccessor.expected) {
+                        !callerJob.isCancelled && gate.owns() && runCatching {
+                            pageSuccessor.resolvedCommittedSubject(assembly.captureLoadState()) == resolved
                         }.getOrDefault(false)
                     }
                 } else {

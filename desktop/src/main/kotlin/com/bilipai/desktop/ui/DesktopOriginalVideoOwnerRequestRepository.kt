@@ -31,6 +31,7 @@ internal class DesktopOriginalVideoOwnerRequestRepository(
     private val writePrimaryVip: (Boolean) -> Unit,
     val bootstrapOrigin: DesktopVideoBootstrapAccepted? = null,
     val pageTransition: DesktopOriginalVideoPageTransitionProof? = null,
+    val pageSuccessor: DesktopOriginalVideoPageSuccessorProof? = null,
 ) : DesktopOriginalVideoOwnerRepository,
     DesktopOriginalVideoLoadRepository by binding.rawRepository {
     private var transportObserver: DesktopOriginalVideoTransportObserver? = null
@@ -225,6 +226,19 @@ internal fun createDesktopOriginalVideoOwnerRequestRepositoryWithPageTransition(
     bootstrapOrigin: DesktopVideoBootstrapAccepted?,
     pageTransition: DesktopOriginalVideoPageTransitionProof?,
     visitorInitialized: (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
+): DesktopOriginalVideoOwnerRequestRepository =
+    createDesktopOriginalVideoOwnerRequestRepositoryWithPageSuccessor(repository, binding,
+        subtitleAssets, privacy, bootstrapOrigin, pageTransition, null, visitorInitialized)
+
+internal fun createDesktopOriginalVideoOwnerRequestRepositoryWithPageSuccessor(
+    repository: DesktopRepository,
+    binding: DesktopOriginalVideoRepositoryBinding,
+    subtitleAssets: DesktopSubtitleAssets,
+    privacy: DesktopSearchPreferences,
+    bootstrapOrigin: DesktopVideoBootstrapAccepted?,
+    pageTransition: DesktopOriginalVideoPageTransitionProof?,
+    pageSuccessor: DesktopOriginalVideoPageSuccessorProof?,
+    visitorInitialized: (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
 ): DesktopOriginalVideoOwnerRequestRepository {
     binding.assertCurrent()
     val updateVip: (Boolean) -> Unit = { vip ->
@@ -259,5 +273,5 @@ internal fun createDesktopOriginalVideoOwnerRequestRepositoryWithPageTransition(
                 currentCoroutineContext().ensureActive(); binding.assertCurrent()
                 response.code
             }
-        }, primaryCsrf = binding::primaryCsrf, writePrimaryVip = updateVip, bootstrapOrigin = bootstrapOrigin, pageTransition = pageTransition)
+        }, primaryCsrf = binding::primaryCsrf, writePrimaryVip = updateVip, bootstrapOrigin = bootstrapOrigin, pageTransition = pageTransition, pageSuccessor = pageSuccessor)
 }
