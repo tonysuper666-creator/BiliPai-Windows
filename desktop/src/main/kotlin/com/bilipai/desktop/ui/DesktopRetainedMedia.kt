@@ -57,9 +57,10 @@ class DesktopLivePageMemory(parent: CoroutineScope, player: MpvPlayer?) : Deskto
     internal var remainingLiveNativeReprepareAttempts = com.android.purebilibili.feature.live.MAX_PLAYBACK_RELOAD_ATTEMPTS
     internal var recoveryObserver: Job? = null
     internal var handledLiveFailure: com.bilipai.desktop.player.PlayerFailure? = null
+    internal var handledLiveEof: com.bilipai.desktop.player.PlayerNativeEof? = null
     init {
         onRetireSource = {
-            liveSourceSnapshot = null; recoveryPorts = null; handledLiveFailure = null
+            liveSourceSnapshot = null; recoveryPorts = null; handledLiveFailure = null; handledLiveEof = null
             remainingLiveNativeReprepareAttempts = 0
             recoveryObserver?.cancel(); recoveryObserver = null
         }

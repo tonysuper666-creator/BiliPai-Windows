@@ -75,6 +75,15 @@ data class PlaybackSegment(val url: String, val durationSeconds: Double? = null)
     }
 }
 
+/** Actual MPV END_FILE/EOF receipt; no inferred network/error category or source secrets. */
+data class PlayerNativeEof internal constructor(
+    val sourceVersion: Long,
+    val attemptId: Long,
+    val playlistEntryId: Long,
+    internal val pauseIntentSerial: Long,
+    val playWhenReady: Boolean,
+)
+
 data class PlayerState(
     val ready: Boolean = false,
     val loading: Boolean = false,
@@ -121,6 +130,7 @@ data class PlayerState(
     /** Actual packet bitrate readback from the current MPV worker, bits/sec. */
     val videoBitrateBps: Long? = null,
     val audioBitrateBps: Long? = null,
+    val nativeEof: PlayerNativeEof? = null,
 )
 
 data class PlayerTrack(

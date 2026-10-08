@@ -2462,7 +2462,23 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }
                             section == DesktopSection.EXTERNAL_MEDIA -> DesktopExternalMediaScreen(retainedMedia.external, player, playerContent,
                                 onBack = { commands.back() })
-                            section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia)
+                            section == DesktopSection.LIVE -> LiveBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, onToggleFullscreen, playerContent, roomId, danmaku, retainedMedia,
+                                isMiniLiveMode = { pip?.active?.value == true && retainedMedia.live.ownsNativeSource },
+                                dismissMiniLive = { epoch, eof ->
+                                    val dismiss = {
+                                        desktopLiveAdmission(repository, epoch, {
+                                            pip?.active?.value == true && retainedMedia.live.ownsNativeSource && player?.ownsNativeEof(eof) == true
+                                        }) {
+                                            val expected = retainedMedia.live.liveSourceSnapshot
+                                            val initialized = player
+                                            if (expected != null && initialized != null) initialized.admitSourceSnapshot(expected) {
+                                                if (initialized.ownsNativeEof(eof) && pip?.active?.value == true) pip?.close()
+                                            }
+                                        }
+                                        Unit
+                                    }
+                                    javax.swing.SwingUtilities.invokeLater { dismiss() }
+                                })
                             section == DesktopSection.BANGUMI -> BangumiBrowserScreen(repository, player, playerError, { mediaActive = it; if (it) listen?.pause() }, downloads, onToggleFullscreen, playerContent, seasonId, danmaku,
                                 initialIsCourse = isCourse, initialEpisodeId = episodeId, initialProgressSeconds = seasonProgress, initialSeasonType = seasonType, retained = retainedMedia, community = community)
                             entryKey == BiliPaiNavKey.DownloadList -> {

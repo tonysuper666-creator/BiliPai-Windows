@@ -49,7 +49,11 @@ fun LiveBrowserScreen(
     playerContent: @Composable (MpvPlayer) -> Unit = { NativeMediaPlayer(it) },
     initialRoomId: Long = 0, sharedDanmaku: DanmakuOverlay? = null,
     retained: DesktopRetainedMedia? = null,
+    isMiniLiveMode: () -> Boolean,
+    dismissMiniLive: (Long, com.bilipai.desktop.player.PlayerNativeEof) -> Unit,
 ) {
+    val currentMiniLiveMode by rememberUpdatedState(isMiniLiveMode)
+    val currentDismissMiniLive by rememberUpdatedState(dismissMiniLive)
     val media = remember(repository) { DesktopMediaRepository(repository) }
     val pageScope = rememberCoroutineScope()
     val memory = retained?.live ?: remember(player) { DesktopLivePageMemory(pageScope, player) }
@@ -157,7 +161,8 @@ fun LiveBrowserScreen(
                     val version = initialized.loadVersioned(info.source.toNativePlayback())
                     check(version == initialized.currentSourceVersion)
                     memory.installLivePlayback(info, requireNotNull(initialized.currentSourceSnapshot()),
-                        desktopLiveRecoveryPorts(repository, media, requestEpoch))
+                        desktopLiveRecoveryPorts(repository, media, requestEpoch,
+                            { currentMiniLiveMode() }, { epoch, eof -> currentDismissMiniLive(epoch, eof) }))
                     loaded = true
                     connectChat()
                 }

@@ -103,7 +103,7 @@ class DesktopLiveOwnedStreamTest {
 
     @Test fun actualPrimaryAdmissionRejectsEpochRetiredAfterSuccessfulPrecheck(): Unit {
         val f = Fixture(); val epoch = f.repository.sessionEpoch
-        val ports = desktopLiveRecoveryPorts(f.repository, f.media, epoch)
+        val ports = desktopLiveRecoveryPorts(f.repository, f.media, epoch, { false }, { _, _ -> error("Fixture has no mini presentation") })
         assertTrue(ports.isAccountCurrent())
         f.sessions.logout() // deterministic interleaving before the real final Session gate
         var published = false

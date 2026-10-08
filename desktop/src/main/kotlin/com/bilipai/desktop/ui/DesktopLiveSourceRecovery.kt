@@ -25,12 +25,17 @@ internal fun desktopLiveAdmission(repository: DesktopRepository, epoch: Long,
 internal interface DesktopLiveRecoveryPorts {
     fun isAccountCurrent(): Boolean
     fun admit(action: () -> Unit): Boolean
+    // Existing isolated fake ports keep their non-PiP behavior; production factory requires real Root callbacks.
+    fun isMiniLiveMode(): Boolean = false
+    fun dismissMiniLive(eof: PlayerNativeEof) {}
     suspend fun reload(room: LiveRoomDetails, quality: Int, onlyAudio: Boolean, current: () -> Boolean): LivePlaybackInfo
 }
 
 internal fun desktopLiveRecoveryPorts(repository: DesktopRepository, media: DesktopMediaRepository,
-    epoch: Long): DesktopLiveRecoveryPorts = object : DesktopLiveRecoveryPorts {
+    epoch: Long, miniLiveMode: () -> Boolean, dismissMini: (Long, PlayerNativeEof) -> Unit): DesktopLiveRecoveryPorts = object : DesktopLiveRecoveryPorts {
     override fun isAccountCurrent() = repository.sessionEpoch == epoch
+    override fun isMiniLiveMode() = miniLiveMode.invoke()
+    override fun dismissMiniLive(eof: PlayerNativeEof) = dismissMini.invoke(epoch, eof)
     override fun admit(action: () -> Unit): Boolean =
         desktopLiveAdmission(repository, epoch, ::isAccountCurrent, action)
     override suspend fun reload(room: LiveRoomDetails, quality: Int, onlyAudio: Boolean, current: () -> Boolean) =
@@ -40,7 +45,7 @@ internal fun desktopLiveRecoveryPorts(repository: DesktopRepository, media: Desk
 internal fun DesktopLivePageMemory.installLivePlayback(info: LivePlaybackInfo,
     snapshot: OwnedPlaybackSourceSnapshot, ports: DesktopLiveRecoveryPorts, resetBudget: Boolean = true) {
     stream = info; sourceVersion = snapshot.sourceVersion; liveSourceSnapshot = snapshot
-    recoveryPorts = ports; handledLiveFailure = null
+    recoveryPorts = ports; handledLiveFailure = null; handledLiveEof = null
     if (resetBudget) {
         remainingLiveReloadAttempts = MAX_PLAYBACK_RELOAD_ATTEMPTS
         remainingLiveNativeReprepareAttempts = MAX_PLAYBACK_RELOAD_ATTEMPTS
@@ -48,7 +53,11 @@ internal fun DesktopLivePageMemory.installLivePlayback(info: LivePlaybackInfo,
     if (recoveryObserver == null) recoveryObserver = scope.launch(start = CoroutineStart.UNDISPATCHED) {
         player?.state?.collect { state ->
             val binding = captureLiveSourceBinding() ?: return@collect
-            state.failure?.let(binding::recover) ?: binding.onPlaybackStarted(state)
+            when {
+                state.failure != null -> binding.recover(state.failure)
+                state.nativeEof != null -> binding.recoverUnexpectedEnd(state.nativeEof)
+                else -> binding.onPlaybackStarted(state)
+            }
         }
     }
 }
@@ -85,20 +94,21 @@ internal class DesktopLiveSourceBinding(
 
     private fun commit(next: LivePlaybackInfo, failure: PlayerFailure?, resetBudget: Boolean, caller: Job? = null,
         presentationCurrent: () -> Boolean = { true }, cancelPending: Boolean = false,
-        nativeReprepare: Boolean = false, softwareFallback: Boolean = false): Boolean {
+        nativeReprepare: Boolean = false, softwareFallback: Boolean = false, eof: PlayerNativeEof? = null): Boolean {
         var accepted = false
         ports.admit {
             if (!memoryCurrent() || caller?.isActive == false || !presentationCurrent()) return@admit
             player.admitSourceSnapshot(source) {
                 if (!memoryCurrent() || caller?.isActive == false || !presentationCurrent() ||
                     (failure != null && player.state.value.failure !== failure) ||
+                    (eof != null && !unexpectedEndCurrent(eof)) ||
                     (nativeReprepare && memory.remainingLiveNativeReprepareAttempts <= 0)) return@admitSourceSnapshot
                 if (cancelPending) memory.playJob?.takeIf { it !== caller }?.cancel()
                 // Live source replacement prepares at the live edge and retains
                 // the user's current play/pause intent, like original prepare().
                 if (player.recoverSource(source.sourceVersion, next.source.toNativePlayback(), positionSeconds = 0.0,
-                    paused = player.state.value.paused, forceSoftwareDecoding = softwareFallback,
-                    expectedFailureAttemptId = failure?.attemptId)) {
+                    paused = if (eof == null) player.state.value.paused else !eof.playWhenReady, forceSoftwareDecoding = softwareFallback,
+                    expectedFailureAttemptId = failure?.attemptId, expectedNativeEof = eof)) {
                     if (nativeReprepare) memory.remainingLiveNativeReprepareAttempts -= 1
                     memory.installLivePlayback(next, requireNotNull(player.currentSourceSnapshot()), ports, resetBudget)
                     memory.loaded = true; memory.error = null; accepted = true
@@ -134,6 +144,29 @@ internal class DesktopLiveSourceBinding(
         }
     }
 
+    private fun unexpectedEndCurrent(eof: PlayerNativeEof): Boolean =
+        current() && player.ownsNativeEof(eof) && shouldRecoverUnexpectedLiveEnd(
+            DesktopOriginalPlaybackStates.STATE_ENDED, eof.playWhenReady,
+            memory.room?.isLive == true && memory.room?.locked == false, ports.isMiniLiveMode())
+
+    fun recoverUnexpectedEnd(eof: PlayerNativeEof) {
+        if (!current() || !player.ownsNativeEof(eof) || memory.handledLiveEof === eof) return
+        var closeMini = false
+        var recover = false
+        ports.admit {
+            if (!memoryCurrent()) return@admit
+            player.admitSourceSnapshot(source) {
+                if (!memoryCurrent() || !player.ownsNativeEof(eof) || memory.handledLiveEof === eof) return@admitSourceSnapshot
+                memory.handledLiveEof = eof
+                closeMini = ports.isMiniLiveMode()
+                recover = !closeMini && unexpectedEndCurrent(eof)
+            }
+        }
+        // No window callback inside the source/account locks. Root re-admits the exact EOF before closing.
+        if (closeMini && current() && player.ownsNativeEof(eof) && ports.isMiniLiveMode()) ports.dismissMiniLive(eof)
+        else if (recover) advanceAfterTerminal(null, eof)
+    }
+
     fun recover(failure: PlayerFailure) {
         if (!current() || failure.sourceVersion != source.sourceVersion || player.state.value.failure !== failure ||
             player.state.value.ended || memory.handledLiveFailure === failure) return
@@ -155,32 +188,50 @@ internal class DesktopLiveSourceBinding(
                     softwareFallback = softwareFallback)) return
             if (!current() || player.state.value.failure !== failure) return
         }
+        advanceAfterTerminal(failure, null)
+    }
+
+    private fun advanceAfterTerminal(failure: PlayerFailure?, eof: PlayerNativeEof?) {
+        fun eventCurrent(): Boolean = current() && when {
+            failure != null -> player.state.value.failure === failure
+            eof != null -> unexpectedEndCurrent(eof)
+            else -> false
+        }
+        if (!eventCurrent()) return
         val playback = info.resolvedPlayback ?: return
         when (val next = advanceLivePlayback(playback, info.candidateIndex, info.urlIndex)) {
             is LiveAdvanceResult.NextSource -> selected(next.candidateIndex, next.urlIndex)?.let {
-                commit(it, failure, resetBudget = false)
+                commit(it, failure, resetBudget = false, eof = eof)
             }
             is LiveAdvanceResult.ReloadCurrentQuality -> {
                 if (memory.remainingLiveReloadAttempts <= 0) {
-                    ports.admit { if (memoryCurrent() && player.ownsSourceSnapshot(source) && player.state.value.failure === failure) {
+                    ports.admit { if (eventCurrent()) {
                         memory.error = "直播流恢复失败，请稍后重试"
                     } }
                     return
                 }
                 memory.launchRequest {
                     val caller = currentCoroutineContext().job
-                    if (!current()) return@launchRequest
-                    memory.remainingLiveReloadAttempts -= 1
-                    memory.opening = true
+                    var admitted = false
+                    ports.admit {
+                        if (!memoryCurrent() || !caller.isActive || memory.playJob !== caller) return@admit
+                        player.admitSourceSnapshot(source) {
+                            if (!eventCurrent() || !caller.isActive || memory.playJob !== caller ||
+                                memory.remainingLiveReloadAttempts <= 0) return@admitSourceSnapshot
+                            memory.remainingLiveReloadAttempts -= 1
+                            memory.opening = true; admitted = true
+                        }
+                    }
+                    if (!admitted) return@launchRequest
                     try {
                         val fresh = ports.reload(room, next.qualityQn, memory.onlyAudio) {
-                            caller.isActive && current() && player.state.value.failure === failure
+                            caller.isActive && memory.playJob === caller && eventCurrent()
                         }
                         currentCoroutineContext().ensureActive()
-                        commit(fresh, failure, resetBudget = false, caller = caller)
+                        commit(fresh, failure, resetBudget = false, caller = caller, eof = eof)
                     } catch (cancelled: CancellationException) { throw cancelled
                     } catch (failed: Exception) {
-                        ports.admit { if (caller.isActive && memoryCurrent() && player.ownsSourceSnapshot(source) && player.state.value.failure === failure) {
+                        ports.admit { if (caller.isActive && memory.playJob === caller && eventCurrent()) {
                             memory.error = failed.message ?: "直播流恢复失败，请稍后重试"
                         } }
                     } finally { if (memory.playJob === caller) memory.opening = false }

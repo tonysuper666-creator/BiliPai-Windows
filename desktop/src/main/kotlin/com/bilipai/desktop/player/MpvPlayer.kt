@@ -445,7 +445,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 it.copy(loading = true, paused = source.startPaused, positionSeconds = source.startPositionSeconds, durationSeconds = 0.0,
                     firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null, videoBitrateBps = null, audioBitrateBps = null,
                     sourceTitle = source.title, videoWidth = 0, videoHeight = 0,
-                    ended = false, error = null, failure = null, softwareDecodingRequested = softwareDecodingRequested,
+                    ended = false, error = null, failure = null, nativeEof = null, softwareDecodingRequested = softwareDecodingRequested,
                     hardwareDecoder = null, seekCompletedId = 0, seekCompletedPositionSeconds = null, operationError = null, videoCodec = null, audioCodec = null, avSyncSeconds = null)
                     .copy(tracks = emptyList(), subtitleText = null, secondarySubtitleText = null)
             }
@@ -459,7 +459,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         pauseIntentSerial++
         pendingPauseIntent = PendingPauseIntent(pauseIntentSerial, automatic = false)
         presentationTransfer?.takeIf { presentationCurrent(it) }?.pause(paused, pauseIntentSerial)
-        mutableState.update { it.copy(paused = paused, nativePaused = null) }
+        mutableState.update { it.copy(paused = paused, nativePaused = null, nativeEof = null) }
         send(Action.Property("pause", if (paused) "yes" else "no", pauseIntentSerial))
     }
     /** Caller enters the existing source publication before this short native lock.
@@ -517,6 +517,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         load(replacement.copy(startPositionSeconds = 0.0, startPaused = false), preserveSubtitles = true)
         true
     }
+    /** Only the exact ended native attempt and unchanged user/lifecycle pause intent can recover EOF. */
+    internal fun ownsNativeEof(expected: PlayerNativeEof): Boolean = synchronized(lock) {
+        !closed.get() && requestedSource != null && sourceVersion == expected.sourceVersion &&
+            state.value.nativeEof === expected && state.value.ended && state.value.failure == null &&
+            state.value.error == null && pauseIntentSerial == expected.pauseIntentSerial
+    }
     /** Reloads the same item for CDN/codec recovery without transferring surface ownership or losing subtitles. */
     fun recoverSource(
         expectedSourceVersion: Long,
@@ -525,9 +531,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         paused: Boolean = state.value.paused,
         forceSoftwareDecoding: Boolean = false,
         expectedFailureAttemptId: Long? = null,
+        expectedNativeEof: PlayerNativeEof? = null,
     ): Boolean = synchronized(lock) {
         if (closed.get() || sourceVersion != expectedSourceVersion || requestedSource == null) return@synchronized false
         if (expectedFailureAttemptId != null && state.value.failure?.attemptId != expectedFailureAttemptId) return@synchronized false
+        if (expectedNativeEof != null && (!ownsNativeEof(expectedNativeEof) || !expectedNativeEof.playWhenReady || paused)) return@synchronized false
         if (!positionSeconds.isFinite()) return@synchronized false
         val retained = (replacement ?: requireNotNull(requestedSource)).immutableSnapshot()
         if (forceSoftwareDecoding) softwareDecodingRequested = true
@@ -762,7 +770,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 it.copy(loading = false, paused = false, positionSeconds = 0.0, durationSeconds = 0.0,
                     firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null, videoBitrateBps = null, audioBitrateBps = null,
                     sourceTitle = "BiliPai", videoWidth = 0, videoHeight = 0,
-                    ended = false, error = null, failure = null, softwareDecodingRequested = softwareDecodingRequested,
+                    ended = false, error = null, failure = null, nativeEof = null, softwareDecodingRequested = softwareDecodingRequested,
                     hardwareDecoder = null, seekCompletedId = 0, seekCompletedPositionSeconds = null, operationError = null, videoCodec = null, audioCodec = null, avSyncSeconds = null)
                     .copy(tracks = emptyList(), subtitleText = null, secondarySubtitleText = null)
             }
@@ -1844,13 +1852,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     activeEntry = entry
                     fileLoaded = false
                     loadedSubtitlePaths.clear()
-                    publishState { it.copy(loading = true, ended = false, error = null, failure = null,
+                    publishState { it.copy(loading = true, ended = false, error = null, failure = null, nativeEof = null,
                         firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null, videoBitrateBps = null, audioBitrateBps = null) }
                 }
                 8 -> { // MPV_EVENT_FILE_LOADED
                     if (activeEntry == null || (expectedEntry != null && activeEntry != expectedEntry)) return
                     fileLoaded = true
-                    publishState { it.copy(loading = false, ended = false, error = null, failure = null) }
+                    publishState { it.copy(loading = false, ended = false, error = null, failure = null, nativeEof = null) }
                     restoreSubtitles(native, handle)
                     pendingPresentationSeek?.let { pendingPresentationSeek = null; perform(native, handle, it) }
                 }
@@ -1899,9 +1907,22 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         seekTracker.acknowledge(activeSourceVersion, state.value.durationSeconds) else null
                     seekTracker.reset()
                     when (data.getInt(0)) {
-                        0 -> publishState { it.copy(loading = false, ended = true, paused = true,
-                            seekCompletedId = completedAtEnd?.id ?: it.seekCompletedId,
-                            seekCompletedPositionSeconds = completedAtEnd?.let { it.positionSeconds } ?: it.seekCompletedPositionSeconds) }
+                        0 -> synchronized(lock) {
+                            if (session !== this || closing.get() || sourceVersion != activeSourceVersion ||
+                                playbackRevision != activeRevision || activeAttemptId <= 0L) return@synchronized
+                            val previous = state.value
+                            if (previous.failure != null || previous.nativeEof?.let {
+                                it.sourceVersion == activeSourceVersion && it.attemptId == activeAttemptId &&
+                                    it.playlistEntryId == entry
+                            } == true) return@synchronized
+                            // Capture retained user intent before terminal presentation forces paused=true.
+                            // EOF can include truncated media; it is not BEHIND_LIVE_WINDOW or an error code.
+                            val eof = PlayerNativeEof(activeSourceVersion, activeAttemptId, entry,
+                                pauseIntentSerial, playWhenReady = !previous.paused)
+                            mutableState.update { it.copy(loading = false, ended = true, paused = true, nativeEof = eof,
+                                seekCompletedId = completedAtEnd?.id ?: it.seekCompletedId,
+                                seekCompletedPositionSeconds = completedAtEnd?.let { it.positionSeconds } ?: it.seekCompletedPositionSeconds) }
+                        }
                         4 -> publishFailure(data.getInt(4), "Playback failed: ${native.mpv_error_string(data.getInt(4))}")
                     }
                 }
@@ -1912,7 +1933,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             if (session !== this || sourceVersion != activeSourceVersion || playbackRevision != activeRevision) return@synchronized
             retireTerminalPresentationLocked()
             val failure = diagnostics.failure(code, message, activeSourceVersion, activeAttemptId)
-            mutableState.update { it.copy(loading = false, error = failure.safeMessage, failure = failure) }
+            mutableState.update { it.copy(loading = false, error = failure.safeMessage, failure = failure, nativeEof = null) }
         }
 
         private fun publishState(transform: (PlayerState) -> PlayerState) = synchronized(lock) {

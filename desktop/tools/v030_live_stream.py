@@ -142,10 +142,13 @@ def stream_policy(source):
         'named original failure categories supplied by typed MPV adapter', edits)
     source = counted(source, '    errorCode: Int,\n', '    errorCode: PlaybackException,\n',
         'typed platform event instead of unrelated MPV numeric error code', edits)
-    for name in ['androidx.media3.common.Player',
-                 'com.android.purebilibili.feature.video.ui.components.VideoAspectRatio']:
-        source = counted(source, 'import ' + name + '\n', '', 'omit unconsumed Android player import', edits)
-    for name in ['shouldRecoverUnexpectedLiveEnd', 'resolveLiveViewportAspectRatio']:
+    source = counted(source, 'import androidx.media3.common.Player\n',
+        'import com.bilipai.desktop.ui.DesktopOriginalPlaybackStates as Player\n',
+        'original STATE_ENDED policy consumes the real typed MPV EOF receipt', edits)
+    source = counted(source,
+        'import com.android.purebilibili.feature.video.ui.components.VideoAspectRatio\n', '',
+        'omit unconsumed Android viewport import', edits)
+    for name in ['resolveLiveViewportAspectRatio']:
         pattern = r'(?m)^internal fun ' + name + r'\('
         start = re.search(pattern, source).start()
         next_decl = re.search(r'(?m)^(?:internal|private) (?:fun|class|data class|sealed|enum)', source[start + 1:])
