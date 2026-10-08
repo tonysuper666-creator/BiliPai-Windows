@@ -33,7 +33,28 @@ data class WindowsMediaSnapshot(
     val hasPrevious: Boolean = false,
     val hasNext: Boolean = false,
     val enabled: Boolean = true,
+    val sourceLease: WindowsMediaSourceLease? = null,
 )
+
+/** Captured transport authority, never a lookup of whichever source is current later.
+ * Admission is supplied by the existing account/entry/source owner. This actor
+ * never logs/exports source credentials or performs controller cleanup in that gate.
+ */
+class WindowsMediaSourceLease internal constructor(
+    private val player: MpvPlayer,
+    private val source: OwnedPlaybackSourceSnapshot,
+    private val current: () -> Boolean,
+    private val command: (WindowsMediaCommand) -> Unit,
+    private val seek: (Double) -> Unit,
+) {
+    internal fun isCurrent(): Boolean = player.ownsSourceSnapshot(source) && current()
+    internal fun matches(player: MpvPlayer, source: OwnedPlaybackSourceSnapshot): Boolean =
+        this.player === player && this.source.sourceVersion == source.sourceVersion && this.source.source == source.source
+    internal fun sameSource(other: WindowsMediaSourceLease): Boolean = other.matches(player, source)
+    internal fun command(value: WindowsMediaCommand) { if (isCurrent()) command.invoke(value) }
+    internal fun seek(seconds: Double) { if (seconds.isFinite() && seconds >= 0.0 && isCurrent()) seek.invoke(seconds) }
+    override fun toString(): String = "WindowsMediaSourceLease(sourceVersion=${source.sourceVersion})"
+}
 
 data class WindowsMediaSessionStatus(
     val available: Boolean = false,
@@ -52,9 +73,11 @@ class WindowsMediaSession(
     window: Window,
     private val onCommand: (WindowsMediaCommand) -> Unit,
     private val onSeek: (Double) -> Unit,
+    private val sourceOwner: (MpvPlayer) -> WindowsMediaSourceLease? = { null },
 ) : AutoCloseable {
     private val closed = AtomicBoolean()
     private val snapshot = AtomicReference<WindowsMediaSnapshot?>()
+    private val publishedLease = AtomicReference<WindowsMediaSourceLease?>()
     private val wake = LinkedBlockingQueue<Unit>(1)
     private val mutableStatus = MutableStateFlow(WindowsMediaSessionStatus())
     val status: StateFlow<WindowsMediaSessionStatus> = mutableStatus.asStateFlow()
@@ -68,10 +91,17 @@ class WindowsMediaSession(
 
     fun update(value: WindowsMediaSnapshot) {
         if (closed.get()) return
+        if (!value.enabled || value.sourceLease == null) publishedLease.set(null)
         snapshot.set(value.copy(title = value.title.replace("\u0000", "").take(2_000),
             artist = value.artist.replace("\u0000", "").take(2_000), mediaId = value.mediaId.replace("\u0000", "").take(2_000)))
         wake.offer(Unit)
     }
+
+    internal fun sourceLeaseFor(player: MpvPlayer, source: OwnedPlaybackSourceSnapshot): WindowsMediaSourceLease? =
+        sourceOwner(player)?.takeIf { it.matches(player, source) && it.isCurrent() }
+
+    private fun publicationCurrent(value: WindowsMediaSnapshot): Boolean = !closed.get() &&
+        snapshot.get() === value && (value.sourceLease?.isCurrent() != false)
 
     private fun runNative() {
         var initialized = false
@@ -94,6 +124,7 @@ class WindowsMediaSession(
                 mutableStatus.value = WindowsMediaSessionStatus(error = failure.toString())
             }
         } finally {
+            publishedLease.set(null)
             runCatching { resources?.close() }
             if (initialized) WinRt.api.RoUninitialize()
             if (closed.get()) mutableStatus.value = WindowsMediaSessionStatus()
@@ -102,13 +133,21 @@ class WindowsMediaSession(
 
     override fun close() {
         if (closed.compareAndSet(false, true)) {
+            publishedLease.set(null)
+            snapshot.set(null)
             wake.offer(Unit)
             if (Thread.currentThread() !== worker) worker.join(3_000)
         }
     }
 
-    private fun dispatch(action: () -> Unit) {
-        if (!closed.get()) SwingUtilities.invokeLater { if (!closed.get()) action() }
+    private fun dispatch(action: (WindowsMediaSourceLease) -> Unit) {
+        val owner = publishedLease.get() ?: return
+        if (!closed.get()) SwingUtilities.invokeLater {
+            val latest = snapshot.get()
+            if (!closed.get() && latest?.enabled == true &&
+                latest.sourceLease?.sameSource(owner) == true &&
+                publishedLease.get()?.sameSource(owner) == true && owner.isCurrent()) action(owner)
+        }
     }
 
     private inner class NativeSession(private val hwnd: Pointer) : AutoCloseable {
@@ -134,13 +173,13 @@ class WindowsMediaSession(
                 7 -> WindowsMediaCommand.PREVIOUS
                 else -> null
             }
-            if (action != null) dispatch { onCommand(action) }
+            if (action != null) dispatch { owner -> owner.command(action) }
         }
         private val seekDelegate = ComDelegate("44e34f15-bdc0-50a7-ace4-39e91fb753f1") { args ->
             val value = LongByReference()
             checkHr(call(args, 6, value), "get_RequestedPlaybackPosition")
             val seconds = (value.value / 10_000_000.0).coerceAtLeast(0.0)
-            dispatch { onSeek(seconds) }
+            dispatch { owner -> owner.seek(seconds) }
         }
 
         fun open() {
@@ -168,6 +207,15 @@ class WindowsMediaSession(
 
         fun update(value: WindowsMediaSnapshot) {
             val control = requireNotNull(controls)
+            if (closed.get() || snapshot.get() !== value) return
+            if (value.sourceLease?.isCurrent() == false) {
+                publishedLease.set(null)
+                checkHr(call(control, 11, 0.toByte()), "SMTC retire IsEnabled")
+                checkHr(call(control, 7, 0), "SMTC retire PlaybackStatus")
+                mutableStatus.value = WindowsMediaSessionStatus(available = true)
+                return
+            }
+            if (!publicationCurrent(value)) return
             val ext = requireNotNull(extended)
             val active = value.enabled && value.title.isNotBlank() && value.state.error == null
             checkHr(call(control, 11, if (active) 1.toByte() else 0.toByte()), "SMTC.IsEnabled")
@@ -182,6 +230,7 @@ class WindowsMediaSession(
             checkHr(call(control, 7, playbackStatus), "SMTC.PlaybackStatus")
             val metadata = listOf(value.title, value.artist, value.mediaId, value.isAudio)
             if (metadata != lastMetadata) {
+                lastMetadata = null // A retired preparation must not leave the next owner with a false cache hit.
                 val display = requireNotNull(updater)
                 checkHr(call(display, 7, if (value.isAudio) 1 else 2), "SMTC.MediaPlaybackType")
                 putString(display, 9, value.mediaId, "SMTC.AppMediaId")
@@ -195,6 +244,7 @@ class WindowsMediaSession(
                 putString(properties, 7, value.title, "SMTC.${if (value.isAudio) "Music" else "Video"}.Title")
                 putString(properties, if (value.isAudio) 11 else 9, value.artist,
                     "SMTC.${if (value.isAudio) "Music.Artist" else "Video.Subtitle"}")
+                if (!publicationCurrent(value)) return
                 checkHr(call(display, 17), "SMTC.Display.Update")
                 lastMetadata = metadata
             }
@@ -208,6 +258,7 @@ class WindowsMediaSession(
             checkHr(call(span, 11, 0L), "Timeline.MinSeekTime")
             checkHr(call(span, 13, ticks(duration)), "Timeline.MaxSeekTime")
             checkHr(call(span, 15, ticks(position)), "Timeline.Position")
+            if (!publicationCurrent(value)) return
             checkHr(call(ext, 12, span), "SMTC.UpdateTimelineProperties")
             val readStatus = IntByReference()
             checkHr(call(control, 6, readStatus), "SMTC read PlaybackStatus")
@@ -215,6 +266,8 @@ class WindowsMediaSession(
             checkHr(call(span, 14, readPosition), "SMTC read Timeline.Position")
             val readTitle = getString(if (value.isAudio) requireNotNull(music) else requireNotNull(video), 6,
                 "SMTC read ${if (value.isAudio) "Music" else "Video"}.Title")
+            if (!publicationCurrent(value)) return
+            publishedLease.set(value.sourceLease.takeIf { active })
             mutableStatus.value = WindowsMediaSessionStatus(true, publishedTitle = readTitle,
                 publishedPlaybackStatus = readStatus.value, publishedPositionSeconds = readPosition.value / 10_000_000.0)
         }

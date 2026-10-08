@@ -219,6 +219,33 @@ internal class ListenAudioSession(
         }
     }
 
+    /** SMTC controls one already accepted source. Do not cancel the successful
+     * request generation on pause: its retained publication owns native commands.
+     * Acquisition/checkpoint work remains outside Store and native monitors.
+     */
+    internal fun setSystemMediaPaused(expected: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot,
+        paused: Boolean, stillOwned: () -> Boolean): Boolean {
+        if (!stillOwned() || !sessionIsCurrent() || ownedPlaybackSourceVersion != expected.sourceVersion ||
+            !player.ownsSourceSnapshot(expected)) return false
+        if (!paused) onAcquirePlayback()
+        val generation = playGeneration
+        var changed = false
+        val admitted = publication.tryAdmit(expected.source,
+            { stillOwned() && sessionIsCurrent() && generation == playGeneration && ownedPlaybackSourceVersion == expected.sourceVersion }) {
+            player.admitSourceSnapshot(expected) {
+                if (!stillOwned() || !sessionIsCurrent() || generation != playGeneration || ownedPlaybackSourceVersion != expected.sourceVersion)
+                    return@admitSourceSnapshot
+                if (!paused && player.state.value.ended) {
+                    if (!replayOwnedSource()) return@admitSourceSnapshot
+                } else player.setPaused(paused)
+                mutableState.update { it.copy(active = !paused, loading = false) }
+                changed = true
+            } && changed
+        }
+        if (admitted && changed) persist()
+        return admitted && changed
+    }
+
     fun togglePause() {
         if (!sessionIsCurrent()) return
         val current = mutableState.value

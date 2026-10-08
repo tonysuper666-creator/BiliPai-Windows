@@ -80,6 +80,7 @@ import com.bilipai.desktop.player.PictureInPictureController
 import com.bilipai.desktop.player.WindowsMediaSession
 import com.bilipai.desktop.player.WindowsMediaCommand
 import com.bilipai.desktop.player.WindowsMediaSnapshot
+import com.bilipai.desktop.player.WindowsMediaSourceLease
 import com.bilipai.desktop.plugins.DesktopPluginRuntime
 import com.bilipai.desktop.plugins.DesktopPluginStore
 import com.bilipai.desktop.settings.*
@@ -785,25 +786,92 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             else -> Unit // No ordinary source exists; never command an unowned native source.
         }
     }
-    val systemMedia = remember(hostWindow, hostDisplayable, player, playback, listen, retainedMedia) {
-        hostWindow?.takeIf { hostDisplayable }?.let { owner -> WindowsMediaSession(owner, onCommand = { command ->
-            val target = if (systemTargetAudio) audioPlayer else player
-            when(command) {
-                WindowsMediaCommand.PLAY -> if (systemTargetAudio) listen?.let { if (it.player.state.value.paused || !it.state.value.active) it.togglePause() }
-                    else if (retainedMedia.current?.ownsNativeSource == true) target?.let { if (it.state.value.ended) it.replay() else it.setPaused(false) }
-                    else ordinaryVideo.play()
-                WindowsMediaCommand.PAUSE -> if (systemTargetAudio) listen?.pause()
-                    else if (retainedMedia.current?.ownsNativeSource == true) target?.setPaused(true) else playback.pause()
-                WindowsMediaCommand.STOP -> if (systemTargetAudio) listen?.pause() else {
-                    pip?.close()
-                    if (retainedMedia.current != null) { retainedMedia.stop(); target?.stop() } else playback.stop()
-                }
-                WindowsMediaCommand.NEXT -> if (systemTargetAudio) listen?.next() else { val owner = retainedMedia.current; if (owner != null) owner.next?.invoke() else playback.next() }
-                WindowsMediaCommand.PREVIOUS -> if (systemTargetAudio) listen?.previous() else { val owner = retainedMedia.current; if (owner != null) owner.previous?.invoke() else playback.previous() }
-                WindowsMediaCommand.FAST_FORWARD -> seekCurrentSystemMedia(10.0, relative = true)
-                WindowsMediaCommand.REWIND -> seekCurrentSystemMedia(-10.0, relative = true)
+    fun captureSystemMediaOwner(target: com.bilipai.desktop.player.MpvPlayer): WindowsMediaSourceLease? {
+        val source = target.currentSourceSnapshot() ?: return null
+        val audioTarget = systemTargetAudio
+        if (target !== if (audioTarget) audioPlayer else player) return null
+        val epoch = repository.sessionEpoch
+        val audioOwner = listen.takeIf { audioTarget }
+        val audioItem = audioOwner?.state?.value?.current
+        val retainedOwner = retainedMedia.current.takeUnless { audioTarget }
+        val videoOwner = ordinaryVideo.slot.currentAssembly().takeIf { !audioTarget && retainedOwner == null }
+        val videoSource = videoOwner?.native?.current()
+        if (audioTarget && (audioOwner == null || audioItem == null || audioOwner.ownedPlaybackSourceVersion != source.sourceVersion)) return null
+        if (!audioTarget && retainedOwner == null && (videoOwner == null || videoSource == null ||
+            !target.ownsSourceSnapshot(videoSource.nativeSource) ||
+            videoSource.nativeSource.sourceVersion != source.sourceVersion || videoSource.nativeSource.source != source.source)) return null
+        fun current(): Boolean = !isClosing() && !activatingUpdate && repository.sessionEpoch == epoch &&
+            systemTargetAudio == audioTarget && target.ownsSourceSnapshot(source) && when {
+                audioTarget -> audioOwner != null && audioOwner.ownedPlaybackSourceVersion == source.sourceVersion && audioOwner.state.value.current === audioItem
+                retainedOwner != null -> retainedMedia.current === retainedOwner && retainedOwner.ownsNativeSource
+                else -> ordinaryVideo.slot.currentAssembly() === videoOwner && videoOwner?.owns() == true &&
+                    videoSource != null && videoOwner.native.isCurrent(videoSource)
             }
-        }, onSeek = { seconds -> seekCurrentSystemMedia(seconds) }) }
+        fun admitNative(action: () -> Unit): Boolean {
+            if (!current()) return false
+            if (videoOwner != null && videoSource != null) {
+                var consumed = false
+                val admitted = videoOwner.native.admitPlaybackDispatch(videoSource) { if (current()) { action(); consumed = true } }
+                return admitted && consumed
+            }
+            val publication = source.source.nativePublication ?: return false
+            var consumed = false
+            val admitted = publication.admit {
+                target.admitSourceSnapshot(source) { if (current()) { action(); consumed = true } }
+            }
+            return admitted && consumed
+        }
+        // Navigation owns its existing VM/request protocol and may checkpoint or
+        // retire a scope. Capture the actual callback; never run that IO in admit.
+        val next = if (retainedOwner != null) retainedOwner.next else videoOwner?.environment?.mini?.onNavigateNextCallback
+        val previous = if (retainedOwner != null) retainedOwner.previous else videoOwner?.environment?.mini?.onNavigatePreviousCallback
+        fun navigate(forward: Boolean) {
+            if (!admitNative { } || !current()) return
+            if (audioTarget) { if (forward) audioOwner?.next() else audioOwner?.previous() }
+            else (if (forward) next else previous)?.invoke()
+        }
+        fun seek(seconds: Double, relative: Boolean = false) {
+            if (!seconds.isFinite()) return
+            admitNative {
+                val destination = (if (relative) target.state.value.positionSeconds + seconds else seconds).coerceAtLeast(0.0)
+                if (videoOwner != null) videoOwner.section.seekTo((destination * 1_000.0).toLong())
+                else target.seekTo(destination)
+            }
+        }
+        return WindowsMediaSourceLease(target, source, ::current, command = { command ->
+            when (command) {
+                WindowsMediaCommand.PLAY -> if (audioTarget) audioOwner?.setSystemMediaPaused(source, false, ::current)
+                    else admitNative { if (videoOwner != null) videoOwner.section.play()
+                        else if (target.state.value.ended) target.replay() else target.setPaused(false) }
+                WindowsMediaCommand.PAUSE -> if (audioTarget) audioOwner?.setSystemMediaPaused(source, true, ::current)
+                    else admitNative { if (videoOwner != null) videoOwner.section.pause() else target.setPaused(true) }
+                WindowsMediaCommand.STOP -> if (audioTarget) audioOwner?.setSystemMediaPaused(source, true, ::current) else {
+                    // Checkpoint the captured owner outside the native lock. The
+                    // stop is then submitted atomically for that exact source.
+                    if (current()) {
+                        if (videoOwner != null) videoOwner.playback.saveCurrentPosition() else retainedOwner?.checkpoint?.invoke()
+                        if (admitNative { target.stopIfSourceVersion(source.sourceVersion) }) {
+                            pip?.close()
+                            if (videoOwner != null) {
+                                if (ordinaryVideo.slot.currentAssembly() === videoOwner && videoOwner.owns())
+                                    ordinaryVideo.playlist.clearPlaylist()
+                                ordinaryVideo.slot.retireAssembly(videoOwner)
+                            } else retainedOwner?.stopPlayback()
+                        }
+                    }
+                }
+                WindowsMediaCommand.NEXT -> navigate(true)
+                WindowsMediaCommand.PREVIOUS -> navigate(false)
+                WindowsMediaCommand.FAST_FORWARD -> seek(10.0, relative = true)
+                WindowsMediaCommand.REWIND -> seek(-10.0, relative = true)
+            }
+            Unit
+        }, seek = { seconds -> seek(seconds) })
+    }
+    val systemMedia = remember(hostWindow, hostDisplayable, player, playback, listen, retainedMedia) {
+        hostWindow?.takeIf { hostDisplayable }?.let { owner ->
+            WindowsMediaSession(owner, onCommand = {}, onSeek = {}, sourceOwner = ::captureSystemMediaOwner)
+        }
     }
 
     LaunchedEffect(ordinaryVideoEvents, systemMedia) {
@@ -813,11 +881,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 if (!systemTargetAudio && retainedMedia.current == null &&
                     ordinaryVideo.slot.currentAssembly() === event.owner && event.owner.owns() &&
                     event.owner.native.isCurrent(event.expected)) {
+                    val sourceLease = systemMedia?.sourceLeaseFor(event.owner.section.nativePlayer, event.expected.nativeSource) ?: continue
                     val readback = event.owner.section.nativePlayer.state.value
                     systemMedia?.update(WindowsMediaSnapshot(event.title, event.author,
                         event.expected.request.bvid, readback, readback.audioOnly,
                         playback.hasPrevious, playback.hasNext,
-                        readback.loading || readback.durationSeconds > 0 || readback.ended))
+                        readback.loading || readback.durationSeconds > 0 || readback.ended,
+                        sourceLease = sourceLease))
                 }
             }
         }
@@ -1315,21 +1385,26 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         while (isActive) {
             val current = playback.state.value
             val audio = listen?.state?.value
-            val audioTarget = systemTargetAudio && audio?.current != null
+            val audioTarget = systemTargetAudio
             val retainedOwner = retainedMedia.current
             val offlinePayload = if (!audioTarget && retainedOwner === retainedMedia.offline && retainedOwner.ownsNativeSource)
                 downloads.tasks.value.firstOrNull { it.id == retainedMedia.offline.current }?.let {
                     com.android.purebilibili.feature.download.resolveOfflineMiniPlayerPayload(it.item)
                 } else null
-            val state = (if (audioTarget) audioPlayer else player)?.state?.value
-            if (state != null) systemMedia?.update(WindowsMediaSnapshot(
+            val selectedPlayer = if (audioTarget) audioPlayer else player
+            val selectedSource = selectedPlayer?.currentSourceSnapshot()
+            val owner = if (selectedPlayer != null && selectedSource != null)
+                systemMedia?.sourceLeaseFor(selectedPlayer, selectedSource) else null
+            val state = selectedPlayer?.state?.value
+            if (state != null && owner != null) systemMedia?.update(WindowsMediaSnapshot(
                 title = if (audioTarget) audio!!.current!!.title else offlinePayload?.title ?: if (retainedOwner != null) retainedMedia.title else current.details?.title ?: state.sourceTitle,
                 artist = if (audioTarget) audio!!.current!!.owner else offlinePayload?.owner ?: if (retainedOwner != null) "" else current.details?.author.orEmpty(),
                 mediaId = if (audioTarget) audio!!.current!!.bvid else offlinePayload?.bvid ?: if (retainedOwner != null) state.sourceTitle else current.details?.bvid ?: state.sourceTitle,
                 state = state, isAudio = audioTarget || state.audioOnly,
                 hasPrevious = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex > 0 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.previous != null } ?: playback.hasPrevious,
                 hasNext = if (audioTarget) audio!!.queue.size > 1 && (audio.currentIndex < audio.queue.size - 1 || preferences.playbackMode in setOf(com.bilipai.desktop.player.PlaybackMode.REPEAT_ALL, com.bilipai.desktop.player.PlaybackMode.SHUFFLE)) else retainedMedia.current?.let { it.next != null } ?: playback.hasNext,
-                enabled = state.loading || state.durationSeconds > 0 || state.ended))
+                enabled = state.loading || state.durationSeconds > 0 || state.ended, sourceLease = owner))
+            else systemMedia?.update(WindowsMediaSnapshot(title = "BiliPai", state = state ?: com.bilipai.desktop.player.PlayerState(), enabled = false))
             delay(500)
         }
     }

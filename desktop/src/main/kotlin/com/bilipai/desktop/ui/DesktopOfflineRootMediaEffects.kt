@@ -15,11 +15,14 @@ internal class DesktopOfflineRootMediaEffects(
     private var reportedUnavailable=false
     override fun publish(payload:OfflineMiniPlayerPayload,player:DesktopOfflineMpvControl) {
         if(!player.isOwned() || !backend.isOwned() || backend.memory.current!=player.taskId)return
+        val source=player.nativePlayer.currentSourceSnapshot() ?: return
+        val owner=systemMedia?.sourceLeaseFor(player.nativePlayer,source)
         val state=player.nativePlayer.state.value
+        if(systemMedia!=null && owner==null)return
         systemMedia?.update(WindowsMediaSnapshot(
             title=payload.title,artist=payload.owner,mediaId=payload.bvid,state=state,isAudio=state.audioOnly,
             hasPrevious=backend.memory.previous!=null,hasNext=backend.memory.next!=null,
-            enabled=state.loading||state.durationSeconds>0||state.ended,
+            enabled=state.loading||state.durationSeconds>0||state.ended,sourceLease=owner,
         )) ?: run {
             if(!reportedUnavailable){reportedUnavailable=true;feedback("Windows 系统媒体控制当前不可用")}
         }
