@@ -42,7 +42,7 @@ internal class DesktopOriginalRootRouteAssembly(
     private val mainHostDestination = AtomicReference<(() -> BiliPaiNavKey)?>(null)
     fun bindMainHostDestination(callback: () -> BiliPaiNavKey) { mainHostDestination.set(callback) }
     fun unbindMainHostDestination(callback: () -> BiliPaiNavKey) { mainHostDestination.compareAndSet(callback, null) }
-    private fun loginReadDestination(): BiliPaiNavKey = if (currentKey == BiliPaiNavKey.MainHost)
+    internal fun loginReadDestination(): BiliPaiNavKey = if (currentKey == BiliPaiNavKey.MainHost)
         mainHostDestination.get()?.invoke() ?: BiliPaiNavKey.MainHost else currentKey
     fun bindMainHostBackAction(callback: () -> AppSystemBackAction) { mainHostBackAction.set(callback) }
     fun unbindMainHostBackAction(callback: () -> AppSystemBackAction) { mainHostBackAction.compareAndSet(callback, null) }

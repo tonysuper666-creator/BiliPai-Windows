@@ -223,6 +223,7 @@ internal class DesktopPersonalListEntry(
         check(viewModel is HistoryViewModel) { "Recap requires the actual History entry" }
         DesktopPersonalRecapBinding(root.recapContext, environment, root.preferences, ::owns, ::commit)
     }
+    internal val homeGate: DesktopHomeRetainedGate get() = root.gate
     fun owns(): Boolean = !closed.get() && job.isActive && root.owns()
     fun assertOwned() { if (!owns()) throw CancellationException("Personal list entry retired") }
     fun commit(block: () -> Unit): Boolean = root.gate.commit { if (owns()) block() } && owns()

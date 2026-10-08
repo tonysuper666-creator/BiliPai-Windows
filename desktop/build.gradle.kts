@@ -1196,6 +1196,7 @@ tasks.named("compileKotlin") { dependsOn(extractVideoCommentUi) }
 
 val extractOriginalFavorites by tasks.registering(Exec::class) {
     inputs.file("tools/v029_history_read_failure.py")
+    inputs.file("tools/v029_history_failure_login.py")
     inputs.file("tools/v029_brand_success.py")
     inputs.dir("upstream-slices/v029-brand-success")
     dependsOn(prepareUpstreamSources)
@@ -2544,6 +2545,7 @@ val extractOriginalMessagePages by tasks.registering(Exec::class) {
         "--out", layout.buildDirectory.dir("generated/original-message-pages").get().asFile.absolutePath)
     inputs.dir("upstream-slices/v029-chat-timeline")
     inputs.file("tools/v029_chat_sources.py")
+    inputs.file("tools/v029_history_failure_login.py")
     inputs.files("tools/extract-upstream-message-pages.py", "tools/extract-appearance-platform.py",
         "tools/extract-upstream-plugins.py", "tools/extract-upstream-media.py", "tools/sync-upstream.py", sourceManifest)
     inputs.files(sources.filter { "stable-original-message-pages-root-parity" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }

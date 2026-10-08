@@ -142,7 +142,10 @@ def generate(repo,out,standalone=False):
    v029_chat_sources.record_adaptation(repo,out,name+'.kt',s)
   emit('com/android/purebilibili/feature/message/'+name+'.kt',s)
  emit('com/android/purebilibili/feature/message/ChatTimelinePolicy.kt',v029_chat_sources.read(repo,'ChatTimelinePolicy.kt'))
- emit('com/android/purebilibili/feature/common/ListLoadError.kt',v029_chat_sources.read(repo,'ListLoadError.kt'))
+ from v029_history_failure_login import apply_history_first_login_source
+ errorBody,_firstLoginAudit=apply_history_first_login_source(v029_chat_sources.read(repo,'ListLoadError.kt'),'loadError')
+ v029_chat_sources.record_adaptation(repo,out,'ListLoadError.kt',errorBody)
+ emit('com/android/purebilibili/feature/common/ListLoadError.kt',errorBody)
  for name in ['ReplyMeScreen','AtMeScreen','LikeMeScreen','SystemNoticeScreen']:
   p=BASE+'feature/message/feed/'+name+'.kt';s=ui(read(repo,p));vm=name.replace('Screen','ViewModel')
   s=s.replace('import com.android.purebilibili.data.repository.MessageRepository','import com.bilipai.desktop.ui.DesktopMessagePageAdmission')

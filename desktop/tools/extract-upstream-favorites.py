@@ -166,6 +166,8 @@ def produce():
  output('feature/list/FavoriteCategoryScreen',s,'entire original state/VM/renderer, only required constructor/scope/API bindings; no renderer/category removed')
  # Whole original generic list renderer, every branch and dialog retained. Android settings/queue/share aliases only.
  s=source('feature/list/CommonListScreen')
+ from v029_history_failure_login import apply_history_first_login_source
+ s,firstLoginAudit=apply_history_first_login_source(s,'common');records[-1]['windowsHistoryFirstLoginAdaptation']=firstLoginAudit
  s=s.replace('import androidx.compose.ui.platform.LocalContext // [New]','import coil3.compose.LocalPlatformContext as LocalContext\nimport com.bilipai.desktop.ui.LocalDesktopFavoriteBindings').replace('import androidx.compose.ui.platform.LocalConfiguration','import com.bilipai.desktop.ui.LocalDesktopFavoriteViewport as LocalConfiguration')
  s=s.replace('import androidx.lifecycle.compose.collectAsStateWithLifecycle','import androidx.compose.runtime.collectAsState as collectAsStateWithLifecycle').replace('import com.android.purebilibili.core.store.SettingsManager // [New]','')
  s=s.replace('    val context = LocalContext.current','    val context = LocalContext.current\n    val platform = LocalDesktopFavoriteBindings.current')

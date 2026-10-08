@@ -2313,7 +2313,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         historySearchChannel = personalLists.historySearchChannel,
                                         historyScrollToTopChannel = personalLists.historyScrollToTopChannel,
                                         globalHazeState = personalLists.globalHazeState,
-                                        isCurrentPage = active && !activatingUpdate)
+                                        isCurrentPage = active && !activatingUpdate,
+                                        routes = commands as? DesktopOriginalRootRouteAssembly,
+                                        actualRouteKey = entryKey)
                                 }
                             }
                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { openLogin() },

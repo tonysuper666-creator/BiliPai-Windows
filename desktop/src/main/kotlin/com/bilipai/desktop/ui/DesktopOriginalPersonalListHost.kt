@@ -38,11 +38,20 @@ internal class DesktopPersonalListNavigation(
     historyScrollToTopChannel: Channel<Unit>,
     globalHazeState: HazeState?,
     isCurrentPage: Boolean,
+    routes: DesktopOriginalRootRouteAssembly? = null,
+    actualRouteKey: BiliPaiNavKey = entry.key,
 ) {
     if (!entry.owns()) return
     val model = entry.viewModel
     val key = entry.key
     val historySearch = key as? BiliPaiNavKey.HistorySearch
+    val latestCurrentPage by rememberUpdatedState(isCurrentPage)
+    val firstReadAuthentication: ((ListUiState) -> (() -> Unit)?)? =
+        if (routes != null && model is HistoryViewModel) { displayed ->
+            DesktopHistoryFailureLoginIntent.capture(routes, entry, actualRouteKey, model, displayed) {
+                latestCurrentPage
+            }?.let { intent -> { routes.loginFromReadFailure(intent); Unit } }
+        } else null
     LaunchedEffect(model, isCurrentPage) {
         if (isCurrentPage && model is HistoryViewModel)
             model.loadData(showLoading = model.uiState.value.items.isEmpty())
@@ -73,6 +82,7 @@ internal class DesktopPersonalListNavigation(
             listScopedSearchChannel = if (model is HistoryViewModel && historySearch == null) historySearchChannel else null,
             scrollToTopChannel = if (model is HistoryViewModel) historyScrollToTopChannel else null,
             onPlayAllAudioClick = { bvid, cid -> if (entry.owns()) onPlayAllAudio(bvid, cid) },
-            globalHazeState = globalHazeState, isCurrentPage = isCurrentPage)
+            globalHazeState = globalHazeState, isCurrentPage = isCurrentPage,
+            onFirstReadAuthenticationRequired = firstReadAuthentication)
     }
 }
