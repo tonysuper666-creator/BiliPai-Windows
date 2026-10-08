@@ -38,7 +38,7 @@ class DesktopHomeLoadFailureTest {
             override suspend fun getRegionVideos(tid: Int, page: Int): Result<List<VideoItem>> {
                 requests += "region" to page; return region(page)
             }
-            override suspend fun getNavInfo(): Result<NavData> = Result.failure(Exception("No identity in this fixture"))
+            override suspend fun getNavInfo(): Result<DesktopHomeNavPublication> = Result.failure(Exception("No identity in this fixture"))
             override suspend fun getPopularVideos(page: Int) = error("No popular request")
             override suspend fun getRankingVideos(rid: Int, type: String) = error("No ranking request")
             override suspend fun getWeeklyMustWatchVideos() = error("No weekly request")
@@ -56,7 +56,7 @@ class DesktopHomeLoadFailureTest {
         fun start() {
             vm = DesktopOriginalHomeViewModel(DesktopHomeDataEnvironment(
                 capturedEpoch = 91L, parentScope = scope, isCurrent = { current }, commitIfCurrent = ::commit,
-                isLoggedIn = { loggedIn }, setNavIdentityCache = { _, _ -> }, isPrivacyModeEnabledSync = { false },
+                isLoggedIn = { loggedIn }, isPrivacyModeEnabledSync = { false },
                 analytics = object : DesktopHomeIdentityAnalytics {
                     override fun syncUserContext(mid: Long?, isVip: Boolean, privacyModeEnabled: Boolean) = Unit
                 }, recommendationContext = context, followingCache = DesktopHomeFollowingCache(context.store, ::commit),

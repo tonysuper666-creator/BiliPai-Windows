@@ -1,6 +1,7 @@
 package com.bilipai.desktop.ui
 
 import com.android.purebilibili.core.network.*
+import com.android.purebilibili.data.model.response.NavData
 import com.bilipai.desktop.data.*
 import kotlinx.coroutines.*
 
@@ -74,8 +75,29 @@ internal class DesktopHomeRootRequestBinding(
         }
         if (!admitted || !applied) throw CancellationException("Home nav result source retired")
     }
-    val ports=DesktopHomeRequestPorts(environment, ::beginNavRequest, ::observeNavResult)
-    fun setNavIdentity(mid:Long?,isVip:Boolean){
+    /** Store -> original retained-entry monitor, exactly as the AUTH observer. No
+     * fresh receipt/stamp is captured and no suspend, cancel or analytics work is admitted. */
+    private fun commitNavPublication(source:DesktopHomeNavRequestSource, callerJob:Job, block:()->Unit) {
+        if (!source.belongsTo(this)) throw CancellationException("Home nav publication has a foreign source")
+        var applied=false
+        val admitted=repository.withCurrentHomeNavRequest(source.receipt, { callerJob.isActive && owns() }) {
+            applied=source.commitIfCurrent {
+                if (!callerJob.isActive) throw CancellationException("Home nav publication caller retired")
+                block()
+            }
+        }
+        if (!admitted || !applied) throw CancellationException("Home nav publication source retired")
+    }
+    private fun navPublication(source:DesktopHomeNavRequestSource, nav:NavData, callerJob:Job) =
+        DesktopHomeNavPublication(nav,
+            publishCurrent={ block -> commitNavPublication(source, callerJob) {
+                // Keep the original VIP setter, including its existing synchronous persistence.
+                setNavIdentity(if (nav.isLogin) nav.mid else null, nav.isLogin && nav.vip.status == 1)
+                block()
+            } },
+            checkCurrent={ commitNavPublication(source, callerJob) {} })
+    val ports=DesktopHomeRequestPorts(environment, ::beginNavRequest, ::observeNavResult, ::navPublication)
+    private fun setNavIdentity(mid:Long?,isVip:Boolean){
         assertOwned()
         if(!repository.updateHomeNavIdentity(capturedEpoch,capturedMid,mid,isVip))
             throw CancellationException("Home nav response has a foreign account owner")

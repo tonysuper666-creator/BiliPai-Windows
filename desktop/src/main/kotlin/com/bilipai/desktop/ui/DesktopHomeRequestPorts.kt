@@ -13,6 +13,7 @@ internal class DesktopHomeRequestPorts(
     private val environment:DesktopHomeProtocolEnvironment,
     private val beginNavRequest: (Job) -> DesktopHomeNavRequestSource,
     private val observeNavResult: (DesktopHomeNavRequestSource, Boolean, Job) -> Unit,
+    private val navPublication: (DesktopHomeNavRequestSource, NavData, Job) -> DesktopHomeNavPublication,
 ) : AutoCloseable {
     private val originalVideo=DesktopOriginalHomeVideoProtocol(environment)
     private val originalHistory=DesktopOriginalHomeHistoryProtocol(environment.api)
@@ -45,7 +46,7 @@ internal class DesktopHomeRequestPorts(
             val response = originalVideo.getNavInfo()
             caller.ensureActive()
             response.onSuccess { nav -> observeNavResult(source, nav.isLogin, callerJob) }
-            response
+            response.map { nav -> navPublication(source, nav, callerJob) }
         }
         override suspend fun getPreviewVideoUrl(bvid:String,cid:Long)=owned {originalVideo.getPreviewVideoUrl(bvid,cid)}
         override suspend fun isVerticalVideo(bvid:String,aid:Long)=owned {originalVideo.isVerticalVideo(bvid,aid)}

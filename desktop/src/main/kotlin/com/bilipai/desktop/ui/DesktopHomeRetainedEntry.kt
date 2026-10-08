@@ -119,12 +119,7 @@ internal class DesktopHomeRetainedEntry private constructor(
                     .stateIn(gate.scope, SharingStarted.Eagerly, homeSettings.homeSettings.value.homeRefreshTipVisible)
                 val environment = DesktopHomeDataEnvironment(capturedEpoch, gate.scope, gate::owns, gate::commit,
                     { gate.assertOwned(); capturedMid != null && capturedMid > 0L },
-                    { mid, vip ->
-                        // The Store's epoch/MID check alone cannot close the same-epoch lifetime
-                        // race. Commit executes under Store -> entry admission, including nav.
-                        if (!gate.commit { requests.setNavIdentity(mid, vip) })
-                            throw CancellationException("Home nav owner retired")
-                    }, privacyModeEnabledSync, identityAnalyticsFactory(gate), globalContext,
+                    privacyModeEnabledSync, identityAnalyticsFactory(gate), globalContext,
                     DesktopHomeFollowingCache(globalContext.store, gate::commit), incrementalTimelineRefresh, refreshTip,
                     requests.ports.video, requests.ports.history, requests.ports.live, requests.ports.messages,
                     requests.ports.actions, follow, desktopHomeBlockedPort(actualBlockedRepository, repository, gate, requests),

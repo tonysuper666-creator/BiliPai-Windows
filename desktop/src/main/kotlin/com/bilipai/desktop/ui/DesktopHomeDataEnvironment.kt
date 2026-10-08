@@ -9,6 +9,16 @@ import kotlinx.coroutines.flow.*
 
 /** These are the original request/result models. A Root binding must call its ONE shared
  * Discovery/API/account graph; no flattened DiscoveryPage or second cache is substituted. */
+/** One successful nav response with its ORIGINAL request/caller admission. This is
+ * a transient result carrier, not a nav cache, state owner or successful-login stamp. */
+internal class DesktopHomeNavPublication internal constructor(
+ val data:NavData,
+ private val publishCurrent:((()->Unit))->Unit,
+ private val checkCurrent:()->Unit,
+) {
+ fun publish(block:()->Unit) = publishCurrent(block)
+ fun assertCurrent() = checkCurrent()
+}
 internal interface DesktopHomeVideoRequests {
  suspend fun getHomeVideos(idx:Int):Result<List<VideoItem>>
  suspend fun getPopularVideos(page:Int):Result<List<VideoItem>>
@@ -16,7 +26,7 @@ internal interface DesktopHomeVideoRequests {
  suspend fun getWeeklyMustWatchVideos():Result<List<VideoItem>>
  suspend fun getPreciousVideos():Result<List<VideoItem>>
  suspend fun getRegionVideos(tid:Int,page:Int):Result<List<VideoItem>>
- suspend fun getNavInfo():Result<NavData>
+ suspend fun getNavInfo():Result<DesktopHomeNavPublication>
  suspend fun getPreviewVideoUrl(bvid:String,cid:Long):String?
  suspend fun isVerticalVideo(bvid:String,aid:Long=0L):Boolean
 }
@@ -50,7 +60,6 @@ internal class DesktopHomeDataEnvironment(
  val isCurrent:()->Boolean,
  val commitIfCurrent:((()->Unit))->Boolean,
  val isLoggedIn:()->Boolean,
- val setNavIdentityCache:(Long?,Boolean)->Unit,
  val isPrivacyModeEnabledSync:()->Boolean,
  val analytics:DesktopHomeIdentityAnalytics,
  val recommendationContext:DesktopPluginContext,
