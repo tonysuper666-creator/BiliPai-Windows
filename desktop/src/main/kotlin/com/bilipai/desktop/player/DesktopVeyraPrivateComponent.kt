@@ -144,7 +144,14 @@ internal class DesktopVeyraPrivateComponent(
             }
             // The hash-pinned verifier checks the fixed NVIDIA leaf identity, while the
             // application locks all selected file identities before that verification.
-            verified = DesktopVeyraVerifiedBinding(mpv, core, runtime, projectId, trustedProfileSha256)
+            verified = DesktopVeyraVerifiedBinding(mpv, core, runtime, projectId, trustedProfileSha256,
+                DesktopVeyraInstalledIdentity(
+                    sourceCommit = requireNotNull(nativeBuild.text("sourceCommit")),
+                    moduleSha256 = coreHash, nativeBuildReceiptSha256 = buildReceiptHash,
+                    mpvSourceCommit = requireNotNull(provenance.text("sourceCommit")),
+                    mpvDllSha256 = mpvHash, filterSourceManifestSha256 = FILTER_SOURCE_SHA256,
+                    sharedSourceManifestSha256 = sharedIdentity.digest("sourceManifestSha256"),
+                    profileSha256 = trustedProfileSha256))
             failure = ""
             return verified
         } catch (failureCause: Exception) {
@@ -228,10 +235,24 @@ internal class DesktopVeyraPrivateComponent(
     }
 }
 
+/** Authenticated, locked-file build identity. A release tag and GPU/effect status are
+ * deliberately absent. The player publishes this only after its actual native load. */
+internal data class DesktopVeyraInstalledIdentity(
+    val sourceCommit: String,
+    val moduleSha256: String,
+    val nativeBuildReceiptSha256: String,
+    val mpvSourceCommit: String,
+    val mpvDllSha256: String,
+    val filterSourceManifestSha256: String,
+    val sharedSourceManifestSha256: String,
+    val profileSha256: String,
+)
+
 /** Passive identity/arguments; the existing actor remains the only native owner. */
 internal class DesktopVeyraVerifiedBinding internal constructor(
     val mpvPath: Path, private val corePath: Path, private val runtimePath: Path,
     private val projectId: String, val profileSha256: String,
+    val installedIdentity: DesktopVeyraInstalledIdentity,
 ) {
     fun filterArguments(options: NvidiaVideoOptions, actualSourceVersion: Long, configurationVersion: Long): String {
         require(actualSourceVersion > 0 && configurationVersion > 0 && configurationVersion < Long.MAX_VALUE)

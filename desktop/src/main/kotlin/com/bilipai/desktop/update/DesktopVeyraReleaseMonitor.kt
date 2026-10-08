@@ -20,7 +20,11 @@ internal data class VeyraReleaseEvidence(
 }
 
 /** Actual integration must supply this from the packaged/loaded core, never from upstream. */
-internal data class VeyraInstalledCore(val tag: String, val sourceCommit: String, val adapterBuildId: String)
+internal data class VeyraInstalledCore(
+    val tag: String?, val sourceCommit: String, val adapterBuildId: String,
+    val nativeBuildReceiptSha256: String, val mpvSourceCommit: String, val mpvDllSha256: String,
+    val filterSourceManifestSha256: String, val sharedSourceManifestSha256: String, val profileSha256: String,
+)
 
 internal data class VeyraTrackingState(
     val installed: VeyraInstalledCore? = null,
@@ -53,6 +57,11 @@ internal class DesktopVeyraReleaseMonitor(
     }
     val state: StateFlow<VeyraTrackingState> = mutable.asStateFlow()
 
+    /** Refresh passive accepted-module information; never fetch, compare tags or download. */
+    fun refreshInstalled() {
+        if (owns()) mutable.update { it.copy(installed = installed()) }
+    }
+
     /** Runs in the existing application's effect Job; consent changes cancel actual HTTP. */
     suspend fun followSettings() {
         store.snapshot("settings").map {
@@ -83,7 +92,7 @@ internal class DesktopVeyraReleaseMonitor(
             val last = (saved["lastAttemptMs"] as? JsonPrimitive)?.longOrNull ?: 0L
             if (!force && last > 0 && now >= last && now - last < INTERVAL_MS) return@withContext
             persist(mapOf("lastAttemptMs" to JsonPrimitive(now)))
-            mutable.value = mutable.value.copy(checking = true, error = null, installed = installed())
+            mutable.update { it.copy(checking = true, error = null, installed = installed()) }
             val rows = mutableListOf<JsonObject>()
             for (page in 1..3) {
                 val batch = json.parseToJsonElement(requireNotNull(fetch(api("releases", page)))).jsonArray
@@ -133,10 +142,10 @@ internal class DesktopVeyraReleaseMonitor(
                 "latestStable" to latestStable?.let { json.encodeToJsonElement(VeyraReleaseEvidence.serializer(), it) },
                 "observedIdentities" to JsonArray((previous + observed).distinct().takeLast(128).map(::JsonPrimitive))))
             current()
-            mutable.value = VeyraTrackingState(installed(), latest, latestStable, compatible, observed.filterNot(previous::contains))
+            mutable.update { VeyraTrackingState(installed(), latest, latestStable, compatible, observed.filterNot(previous::contains)) }
         } catch (cancelled: CancellationException) { throw cancelled }
-        catch (failure: Exception) { current(); mutable.value = mutable.value.copy(error = failure.message ?: "Veyra release check failed") }
-        finally { mutable.value = mutable.value.copy(checking = false); mutex.unlock() }
+        catch (failure: Exception) { current(); mutable.update { it.copy(error = failure.message ?: "Veyra release check failed") } }
+        finally { mutable.update { it.copy(checking = false) }; mutex.unlock() }
     }
 
     private fun api(path: String, page: Int? = null, tag: String? = null): String {

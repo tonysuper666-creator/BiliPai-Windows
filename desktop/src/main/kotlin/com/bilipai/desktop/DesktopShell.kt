@@ -776,15 +776,26 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     var noteVideo by remember { mutableStateOf<VideoDetails?>(null) }
     var favorite by remember(playing.details?.bvid) { mutableStateOf(playing.details?.let { library.isFavorite(it.bvid) } ?: false) }
     val updater = remember { DesktopUpdater() }
-    val veyraMonitor = remember(repository, pluginStore, updater, scope) {
+    val veyraMonitor = remember(repository, pluginStore, updater, scope, player) {
         val ownsMonitor = { scope.isActive && !latestDynamicIsClosing() }
         val publicReleaseHttp = com.bilipai.desktop.settings.DesktopOriginalAboutReleaseHttp(
             repository.httpClient, ownsMonitor)
         com.bilipai.desktop.update.DesktopVeyraReleaseMonitor(
             fetch = { url -> publicReleaseHttp.fetch(url, true) },
-            store = pluginStore, owns = ownsMonitor, windowsState = { updater.state.value })
+            store = pluginStore, owns = ownsMonitor, windowsState = { updater.state.value },
+            installed = { player?.veyraInstalledIdentity?.value?.let { identity ->
+                com.bilipai.desktop.update.VeyraInstalledCore(
+                    tag = null, sourceCommit = identity.sourceCommit, adapterBuildId = identity.moduleSha256,
+                    nativeBuildReceiptSha256 = identity.nativeBuildReceiptSha256,
+                    mpvSourceCommit = identity.mpvSourceCommit, mpvDllSha256 = identity.mpvDllSha256,
+                    filterSourceManifestSha256 = identity.filterSourceManifestSha256,
+                    sharedSourceManifestSha256 = identity.sharedSourceManifestSha256, profileSha256 = identity.profileSha256)
+            } })
     }
     val updateState by updater.state.collectAsState()
+    val veyraInstalledIdentity = player?.veyraInstalledIdentity?.collectAsState()?.value
+    val veyraTracking by veyraMonitor.state.collectAsState()
+    LaunchedEffect(veyraMonitor, veyraInstalledIdentity) { veyraMonitor.refreshInstalled() }
     var updatesDialog by remember { mutableStateOf(false) }
     var automaticUpdates by remember { mutableStateOf(settingsLibrary.automaticUpdates) }
     var updateJob by remember { mutableStateOf<Job?>(null) }
@@ -2701,7 +2712,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation() || backupUpdateHold.blocksUpdateInstallation() || loginUpdateHold.blocksUpdateInstallation() || messageUpdateRoot?.blocksUpdateInstallation() == true,
             playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
-            onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false })
+            onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false },
+            veyraTracking = veyraTracking)
     }
     }
     }
@@ -2757,7 +2769,8 @@ private fun DesktopVideoPage(playing: DesktopPlaybackState, player: MpvPlayer?, 
 
 @Composable
 private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activating: Boolean, editActive: Boolean, playbackActive: Boolean,
-    onAutomatic: (Boolean) -> Unit, onPrepare: (WindowsUpdate) -> Unit, onActivate: () -> Unit, onDismiss: () -> Unit) {
+    onAutomatic: (Boolean) -> Unit, onPrepare: (WindowsUpdate) -> Unit, onActivate: () -> Unit, onDismiss: () -> Unit,
+    veyraTracking: com.bilipai.desktop.update.VeyraTrackingState) {
     AlertDialog(onDismissRequest = onDismiss, title = { Text("Windows 更新") }, text = {
         Column(Modifier.width(380.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
             Text(when(val status = state) {
@@ -2772,6 +2785,13 @@ private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activati
                 UpdateState.Launching -> "正在启动新版本"
                 UpdateState.Launched -> "新版本已启动"
                 is UpdateState.Failed -> status.message
+            })
+            Text(if (veyraTracking.installed == null) "视频增强组件未就绪" else "视频增强组件来源已验证")
+            Text(when {
+                veyraTracking.checking -> "视频增强更新：正在检查…"
+                veyraTracking.error != null -> "视频增强更新：检查失败"
+                veyraTracking.latestPublished != null -> "上游最新 ${veyraTracking.latestPublished.tag}，兼容更新待验证"
+                else -> "视频增强更新：尚未检查"
             })
             Row(verticalAlignment = Alignment.CenterVertically) { Text("自动更新，播放时延后", Modifier.weight(1f)); Switch(automatic, onAutomatic, enabled = !activating) }
         }

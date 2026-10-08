@@ -45,11 +45,23 @@ internal interface MpvNative : Library {
                 "This player package requires Windows."
             }
             check(Native.POINTER_SIZE == 8) { "This player package requires 64-bit Windows." }
-            val dll = locateLibrary().canonicalFile
-            val libraryPath = dll.toPath().toRealPath()
+            val restoredSelection = desktopHasRestoredVeyraSelection()
+            // Only our persisted private selection may fall back; explicit -D/env
+            // library choices retain the original loader/error semantics.
+            val requested = if (restoredSelection) runCatching { locateLibrary().canonicalFile.toPath().toRealPath() }.getOrNull()
+                else locateLibrary().canonicalFile.toPath().toRealPath()
             // Loader gate only: no playback/account gate holds this verification IO.
             return synchronized(libraryLoadLock) {
-                val binding = veyraComponent?.prepareForNativeLoad(dll, loadedLibraries[libraryPath] == false)
+                var libraryPath = requested ?: locateLibrary(ignoreOverrides = true).canonicalFile.toPath().toRealPath()
+                var dll = libraryPath.toFile()
+                val binding = if (restoredSelection && requested == null) null
+                    else veyraComponent?.prepareForNativeLoad(dll, loadedLibraries[libraryPath] == false)
+                if (restoredSelection && binding == null) {
+                    // Do not load a persisted candidate whose same verification failed.
+                    // No retry/authentication or second component lease is created here.
+                    libraryPath = locateLibrary(ignoreOverrides = true).canonicalFile.toPath().toRealPath()
+                    dll = libraryPath.toFile()
+                }
                 val api = Native.load(dll.absolutePath, MpvNative::class.java,
                     mapOf(Library.OPTION_STRING_ENCODING to "UTF-8"))
                 // A later path hash cannot authenticate an earlier unlocked load.
@@ -58,10 +70,10 @@ internal interface MpvNative : Library {
             }
         }
 
-        internal fun locateLibrary(): File {
-            val override = System.getProperty("bilipai.mpv.path")
-                ?.takeIf { it.isNotBlank() }
-                ?: System.getenv("BILIPAI_MPV_PATH")?.takeIf { it.isNotBlank() }
+        internal fun locateLibrary(ignoreOverrides: Boolean = false): File {
+            val override = if (ignoreOverrides) null else (
+                System.getProperty("bilipai.mpv.path")?.takeIf { it.isNotBlank() }
+                    ?: System.getenv("BILIPAI_MPV_PATH")?.takeIf { it.isNotBlank() })
             if (override != null) {
                 val location = File(override)
                 val dll = if (location.isDirectory) File(location, "libmpv-2.dll") else location

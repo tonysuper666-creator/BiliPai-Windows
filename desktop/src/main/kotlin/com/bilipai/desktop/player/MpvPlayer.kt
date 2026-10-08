@@ -37,6 +37,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     }
     private val mutableState = MutableStateFlow(PlayerState())
     val state: StateFlow<PlayerState> = mutableState.asStateFlow()
+    // Installation provenance, independent of a playing source, filter ACK or GPU effect.
+    private val mutableVeyraInstalledIdentity = MutableStateFlow<DesktopVeyraInstalledIdentity?>(null)
+    internal val veyraInstalledIdentity: StateFlow<DesktopVeyraInstalledIdentity?> = mutableVeyraInstalledIdentity.asStateFlow()
     private val mutableDecoderCapabilities = MutableStateFlow<MpvDecoderCapabilities?>(null)
     internal val decoderCapabilities: StateFlow<MpvDecoderCapabilities?> = mutableDecoderCapabilities.asStateFlow()
     private val mutableWindowsAudioOutput = MutableStateFlow(DesktopWindowsAudioOutputStatus())
@@ -1354,8 +1357,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 nativeResolutionPatchAvailable = loadedNative.identity.nativeResolutionPatchAvailable
                 veyraBinding = loadedNative.veyraBinding
                 synchronized(lock) {
-                    if (session === this && !closing.get()) mutableNvidiaVideo.update {
-                        it.copy(nativeResolutionPatchAvailable = nativeResolutionPatchAvailable, veyraAvailable = veyraBinding != null)
+                    if (session === this && !closing.get()) {
+                        // All selected-file validation precedes this successful Native.load.
+                        // A later successful load without a verified binding clears the projection.
+                        mutableVeyraInstalledIdentity.value = veyraBinding?.installedIdentity
+                        mutableNvidiaVideo.update {
+                            it.copy(nativeResolutionPatchAvailable = nativeResolutionPatchAvailable, veyraAvailable = veyraBinding != null)
+                        }
                     }
                 }
                 handle = native.mpv_create() ?: error("Unable to create the native player.")
