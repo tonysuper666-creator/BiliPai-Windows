@@ -262,7 +262,8 @@ internal class DesktopUnifiedPlaybackFacade(
             if (presentationCurrent() && raw != null && !raw.isQualitySwitching && raw.info.bvid == expected.request.bvid &&
                 raw.info.cid == expected.request.cid && session.currentBvid == raw.info.bvid &&
                 session.currentCid == raw.info.cid) {
-                captured = DesktopWindowsVideoAudioSelection(a, expected, raw, session.currentLoadRequestToken, presentationCurrent)
+                captured = DesktopWindowsVideoAudioSelection(a, expected, raw, session.currentLoadRequestToken, presentationCurrent,
+                    a.section.nativePlayer.state.value.nativeTrackIdentity)
             }
         }
         return captured
@@ -292,11 +293,17 @@ internal class DesktopUnifiedPlaybackFacade(
                     desktopExplicitStartPositionMs = change.positionMs)
             })
     }
-    fun selectNativeAudioTrack(selection: DesktopWindowsVideoAudioSelection, id: Int): Boolean =
-        consumeNativeAudioTrack(id, { isAudioSelectionCurrent(selection) },
+    fun selectNativeAudioTrack(selection: DesktopWindowsVideoAudioSelection, id: Int): Boolean {
+        val native = selection.assembly.section.nativePlayer
+        val identity = selection.nativeTrackIdentity ?: return false
+        return consumeNativeAudioTrack(id, { isNativeAudioSelectionCurrent(selection) },
             admit = { action -> selection.assembly.native.admitPlaybackDispatch(selection.accepted, action) },
-            readNative = { selection.assembly.section.nativePlayer.state.value },
-            select = selection.assembly.section.nativePlayer::selectAudioTrack)
+            readNative = { native.state.value },
+            select = { track -> native.selectAudioTrackForIdentity(identity, track) })
+    }
+    fun isNativeAudioSelectionCurrent(selection: DesktopWindowsVideoAudioSelection): Boolean =
+        selection.nativeTrackIdentity?.let { identity -> isAudioSelectionCurrent(selection) &&
+            selection.assembly.section.nativePlayer.isNativeTrackIdentityCurrent(identity) } == true
 
     companion object {
         /** Shared by the actual facade and headless complete-VM command tests.
@@ -339,7 +346,7 @@ internal class DesktopUnifiedPlaybackFacade(
             return true
         }
         internal fun consumeNativeAudioTrack(id: Int, current: () -> Boolean,
-            admit: ((() -> Unit) -> Boolean), readNative: () -> PlayerState, select: (Int) -> Unit): Boolean {
+            admit: ((() -> Unit) -> Boolean), readNative: () -> PlayerState, select: (Int) -> Boolean): Boolean {
             checkAudioUiDispatcher()
             if (id <= 0 || !current()) return false
             var selected = false
@@ -347,7 +354,7 @@ internal class DesktopUnifiedPlaybackFacade(
                 val native = if (current()) readNative() else null
                 if (native != null && native.ready && !native.loading && native.error == null && native.failure == null &&
                     desktopWindowsNativeAudioTracks(native).any { it.id == id && !it.selected }) {
-                    select(id); selected = true
+                    selected = select(id)
                 }
             }
             return admitted && selected

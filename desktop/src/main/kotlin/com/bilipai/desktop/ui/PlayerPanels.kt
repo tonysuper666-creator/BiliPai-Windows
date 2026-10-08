@@ -193,14 +193,20 @@ fun PlayerPanel(
                         onClick = { automaticSubtitleMenu = false; onAutomaticSubtitleMode(option.mode) }) }
                 }
             }
-            val audioTracks = state.tracks.filter { it.type == "audio" }
-            if (audioTracks.isNotEmpty()) PlayerTrackMenu("音轨", audioTracks, { it.selected }, player::selectAudioTrack)
-            val subtitleTracks = state.tracks.filter { it.type == "sub" }
-            if (subtitleTracks.isNotEmpty()) {
-                PlayerTrackMenu("主字幕", subtitleTracks, { it.selected && it.mainSelection != 1 }, { onManualSubtitleSelection(); player.selectSubtitleTrack(it) })
-                PlayerTrackMenu("副字幕", subtitleTracks, { it.selected && it.mainSelection == 1 }, { onManualSubtitleSelection(); player.selectSecondarySubtitleTrack(it) })
-                FilterChip(selected = state.subtitlesVisible, onClick = { onManualSubtitleSelection(); player.setSubtitlesVisible(!state.subtitlesVisible) }, label = { Text("显示字幕") })
-            }
+            state.nativeTrackIdentity?.let { identity -> key(identity) {
+                val audioTracks = state.tracks.filter { it.type == "audio" }
+                if (audioTracks.isNotEmpty()) PlayerTrackMenu("音轨", audioTracks, { it.selected }, { player.selectAudioTrackForIdentity(identity, it) })
+                val subtitleTracks = state.tracks.filter { it.type == "sub" }
+                if (subtitleTracks.isNotEmpty()) {
+                    PlayerTrackMenu("主字幕", subtitleTracks, { it.selected && it.mainSelection != 1 }, {
+                        if (player.selectSubtitleTrackForIdentity(identity, it) && player.isNativeTrackIdentityCurrent(identity)) onManualSubtitleSelection()
+                    })
+                    PlayerTrackMenu("副字幕", subtitleTracks, { it.selected && it.mainSelection == 1 }, {
+                        if (player.selectSecondarySubtitleTrackForIdentity(identity, it) && player.isNativeTrackIdentityCurrent(identity)) onManualSubtitleSelection()
+                    })
+                    FilterChip(selected = state.subtitlesVisible, onClick = { onManualSubtitleSelection(); player.setSubtitlesVisible(!state.subtitlesVisible) }, label = { Text("显示字幕") })
+                }
+            } }
             if (onClose != null) TextButton(onClick = onClose) { Text("关闭播放") }
         }
         when {

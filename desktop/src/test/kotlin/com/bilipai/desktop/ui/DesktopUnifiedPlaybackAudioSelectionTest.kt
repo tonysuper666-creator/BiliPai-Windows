@@ -127,7 +127,7 @@ class DesktopUnifiedPlaybackAudioSelectionTest {
         val state = PlayerState(ready = true, tracks = listOf(PlayerTrack(2, "audio", language = "en", selected = true),
             PlayerTrack(3, "audio", language = "ja"), PlayerTrack(4, "sub")))
         val admit: ((() -> Unit) -> Boolean) = { action -> inAdmission = true; try { action(); true } finally { inAdmission = false } }
-        val apply: (Int) -> Unit = { assertTrue(inAdmission); selected += it }
+        val apply: (Int) -> Boolean = { assertTrue(inAdmission); selected += it; true }
         assertTrue(DesktopUnifiedPlaybackFacade.consumeNativeAudioTrack(3, { true }, admit, { state }, apply))
         for (id in listOf(0, 2, 4, 99))
             assertFalse(DesktopUnifiedPlaybackFacade.consumeNativeAudioTrack(id, { true }, admit, { state }, apply))

@@ -810,7 +810,10 @@ internal class DesktopWindowsVideoActions(
             }
         }
     }
-    audioTrackMenu?.takeIf { shell.playback.isAudioSelectionCurrent(it) }?.let { selection ->
+    LaunchedEffect(state.nativeTrackIdentity, audioTrackMenu) {
+        if (audioTrackMenu?.let { !shell.playback.isNativeAudioSelectionCurrent(it) } == true) audioTrackMenu = null
+    }
+    audioTrackMenu?.takeIf { shell.playback.isNativeAudioSelectionCurrent(it) }?.let { selection ->
         val tracks = desktopWindowsNativeAudioTracks(state)
         DesktopWindowsPlayerDialog("音轨", { audioTrackMenu = null }, preferredHeightDp = (180 + 48 * tracks.size).coerceIn(220, 420)) {
             Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {

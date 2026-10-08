@@ -58,6 +58,7 @@ internal class DesktopWindowsVideoAudioSelection(
     val success: VideoPlaybackUiState.Success,
     val loadToken: Long,
     val presentationCurrent: () -> Boolean,
+    val nativeTrackIdentity: com.bilipai.desktop.player.PlayerNativeTrackIdentity? = null,
 )
 
 internal fun desktopWindowsAudioSelectionIdentityCurrent(

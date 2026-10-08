@@ -84,6 +84,17 @@ data class PlayerNativeEof internal constructor(
     val playWhenReady: Boolean,
 )
 
+/** Identity of the actor's actual track-list readback. IDs alone are not stable across loads. */
+data class PlayerNativeTrackIdentity internal constructor(
+    val sourceVersion: Long,
+    internal val playbackRevision: Long,
+    val attemptId: Long,
+    val playlistEntryId: Long,
+    internal val source: PlaybackSource,
+) {
+    override fun toString(): String = "PlayerNativeTrackIdentity(sourceVersion=$sourceVersion, attemptId=$attemptId, playlistEntryId=$playlistEntryId)"
+}
+
 data class PlayerState(
     val ready: Boolean = false,
     val loading: Boolean = false,
@@ -131,6 +142,7 @@ data class PlayerState(
     val videoBitrateBps: Long? = null,
     val audioBitrateBps: Long? = null,
     val nativeEof: PlayerNativeEof? = null,
+    val nativeTrackIdentity: PlayerNativeTrackIdentity? = null,
 )
 
 data class PlayerTrack(
