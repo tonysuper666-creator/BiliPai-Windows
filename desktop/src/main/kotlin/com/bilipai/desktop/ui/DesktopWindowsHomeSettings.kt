@@ -46,6 +46,11 @@ internal fun DesktopWindowsHomeSettings(state: HomeSettings, viewModel: DesktopO
                 actions.launch { Preferences.setHomeUpBadgesVisible(context, value) }
             }
         }
+        DesktopWindowsSettingsGroup("刷新") {
+            DesktopWindowsSettingsSwitch("撤销刷新按钮", state.homeRefreshUndoVisible) { value ->
+                actions.launch { Preferences.setHomeRefreshUndoVisible(context, value) }
+            }
+        }
         DesktopWindowsSettingsGroup("顶部轮播") {
             DesktopWindowsSettingsSwitch("启用首页轮播", state.homeHeroCarouselEnabled) { value ->
                 actions.launch { Preferences.setHomeHeroCarouselEnabled(context, value) }

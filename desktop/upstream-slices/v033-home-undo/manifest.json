@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "previousUpstreamCommit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+  "fixedUpstreamCommit": "6a95beedce6342219986572620f3b8071b155ef3",
+  "canonicalCommit": "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40",
+  "scope": "Only default-false refresh undo preference and original overlay composition gate; selected canonical sources retain their epoch",
+  "files": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "commit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+      "archiveFile": "v032/SettingsManager.kt",
+      "bytes": 405603,
+      "sha256Bytes": "f15d00e76c4ff6cab8dc1b9b71836b01e846d3fcbad01bed041a64abb0339cdc",
+      "gitBlob": "d10105258a9a21a73cb7a896ed5d1c85089e0cac"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+      "commit": "6a95beedce6342219986572620f3b8071b155ef3",
+      "archiveFile": "v033/SettingsManager.kt",
+      "bytes": 406394,
+      "sha256Bytes": "284ce1fec13bd51b8c7e47a2f204f529227a14643bea546a83899a9f6630d383",
+      "gitBlob": "7d7792157a8ae02d761b216a49d2e83813d2f623"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "commit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+      "archiveFile": "v032/HomeScreen.kt",
+      "bytes": 180937,
+      "sha256Bytes": "9555fc91771e701df9365f1eb3cbf3837009a2756c4381b63163ae1802eae481",
+      "gitBlob": "aa0791a025589bfa14e93aceaf3a33fdad36c4d6"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/home/HomeScreen.kt",
+      "commit": "6a95beedce6342219986572620f3b8071b155ef3",
+      "archiveFile": "v033/HomeScreen.kt",
+      "bytes": 181070,
+      "sha256Bytes": "eef8c33c0f91ad2979c5c81996084ceba0e7ed718e76b6c8f7851fe89d9dd848",
+      "gitBlob": "4c0d68a774ff1f2654dd2a5a0016df7c04b7c234"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt",
+      "commit": "1db8665cb9706dca44fcae0f540f2a3440721089",
+      "archiveFile": "v032/AppearanceSettingsScreen.kt",
+      "bytes": 135875,
+      "sha256Bytes": "e45def9ea2d12cd6308795e6a784fc080a51f81b3fb6bb807643860e2adc3f80",
+      "gitBlob": "babad5b1d6de57f7877b0888de64fd1fcc10a684"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AppearanceSettingsScreen.kt",
+      "commit": "6a95beedce6342219986572620f3b8071b155ef3",
+      "archiveFile": "v033/AppearanceSettingsScreen.kt",
+      "bytes": 136866,
+      "sha256Bytes": "402fb5a93fed0ffaeca3635b9f76458e527b721f36ee8cf62b0165d64c9225fa",
+      "gitBlob": "f227998f8d1655745ff4931e2a1992226162cc28"
+    }
+  ]
+}

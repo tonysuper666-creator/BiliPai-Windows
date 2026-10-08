@@ -606,6 +606,8 @@ val extractOriginalHomePage by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-page").get().asFile.absolutePath)
     inputs.files("tools/extract-upstream-home-page.py", "tools/sync-upstream.py")
+    inputs.file("tools/v033_home_refresh_undo.py")
+    inputs.dir("upstream-slices/v033-home-undo")
     inputs.file("tools/v029_home_load.py")
     inputs.dir("upstream-slices/v029-home-load")
     inputs.file(sourceManifest)
@@ -980,6 +982,8 @@ val extractUpstreamHomeFullCard by tasks.registering(Exec::class) {
     commandLine(System.getenv("PYTHON_EXECUTABLE") ?: "python", "tools/extract-upstream-home-full-card.py",
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-full-card").get().asFile.absolutePath)
+    inputs.file("tools/v033_home_refresh_undo.py")
+    inputs.dir("upstream-slices/v033-home-undo")
     inputs.files("tools/extract-upstream-home-full-card.py", "tools/extract-upstream-home-page.py", "tools/extract-upstream-media.py",
         "tools/extract-appearance-platform.py", "tools/extract-upstream-settings-home.py", "tools/sync-upstream.py")
     inputs.files(sources.filter { "home-full-card" in ((it["features"] as? List<*>) ?: emptyList<Any>()) }
@@ -2711,6 +2715,8 @@ val extractOriginalHomeSettings by tasks.registering(Exec::class) {
         "--repo", repositoryRoot.absolutePath,
         "--output", layout.buildDirectory.dir("generated/home-settings").get().asFile.absolutePath)
     inputs.file(sourceManifest)
+    inputs.file("tools/v033_home_refresh_undo.py")
+    inputs.dir("upstream-slices/v033-home-undo")
     inputs.files("tools/extract-upstream-home-settings-full-page.py", "tools/v025_home_wallpaper_picker.py", "tools/extract-upstream-media.py",
         "tools/extract-upstream-settings-search.py", "tools/sync-upstream.py",
         canonicalOriginalHelperFile, canonicalOriginalCatalogFile)
