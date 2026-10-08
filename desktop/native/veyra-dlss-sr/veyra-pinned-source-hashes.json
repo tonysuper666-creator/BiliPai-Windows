@@ -1,0 +1,62 @@
+[
+  {
+    "path": "include/veyra/diagnostics/DiagnosticEvent.h",
+    "sha256": "de5678ab9acd31194f056c34a0890d34a8dd918f6f817a9d0641dfabc16459cb"
+  },
+  {
+    "path": "include/veyra/diagnostics/FrameTrace.h",
+    "sha256": "fcfe1a7ab5163265fbf97325c417585c33d4b20585b5e42f81d7575f1f0e6498"
+  },
+  {
+    "path": "include/veyra/diagnostics/Redaction.h",
+    "sha256": "b22cad816da5aa98c22b5cd1be21b3fb0514c1a43497e6d366a46b5b8885d92d"
+  },
+  {
+    "path": "include/veyra/Log.h",
+    "sha256": "2edbde670704c401fe82868bc8a14f4b576bb9abd9c88d52548a8b441e9d40f2"
+  },
+  {
+    "path": "include/veyra/ngx/DlssSrBackend.h",
+    "sha256": "44c899cc038324b33a1c2ecdbb9578565fcd299b62cc377a0d4e7b179eba5472"
+  },
+  {
+    "path": "include/veyra/ngx/NgxCoreHost.h",
+    "sha256": "b29023c4d5df346cc8d3bec036b3e7430cd351f352a9474f59fa08b5d8df953a"
+  },
+  {
+    "path": "include/veyra/NgxResult.h",
+    "sha256": "82d7355f8df9f349d5324e04cd29d717053568f964522464cadd1328d10ccdcb"
+  },
+  {
+    "path": "include/veyra/pipeline/FrameBatch.h",
+    "sha256": "84481f5e8a7efa3e4fce1fde809d0398023a8be5c9a0daba598122e3a53b904a"
+  },
+  {
+    "path": "include/veyra/pipeline/ResolutionPlan.h",
+    "sha256": "ff219366f16236b183d33168db15f5c49d960a5b381b6c1564bb0ebb8da0f631"
+  },
+  {
+    "path": "include/veyra/Result.h",
+    "sha256": "2d402383ee8bc45b141a95123835b82500d59805b10729283dbe492d209966c6"
+  },
+  {
+    "path": "LICENSE",
+    "sha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809"
+  },
+  {
+    "path": "src/base/Log.cpp",
+    "sha256": "47886884fd2f6caab2a27d325123f31e4a90216becee5d35f05603de621c1682"
+  },
+  {
+    "path": "src/base/NgxResult.cpp",
+    "sha256": "a1032dd871cfa47dd64395f669d15f6efc2a43cbd611b0a3767cb4039cf3684c"
+  },
+  {
+    "path": "src/ngx/DlssSrBackend.cpp",
+    "sha256": "48de87cb76dc452895a0b5cfe6903af45d2bae6593e46f23dde1cfc348015962"
+  },
+  {
+    "path": "src/ngx/NgxCoreHost.cpp",
+    "sha256": "6896e611c5ef88ac3488434fefbf7f8ce274ce6c5824023d9edb2fadbf80eb55"
+  }
+]

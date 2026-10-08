@@ -153,3 +153,5 @@ desktop/resources/common/notices/tinypinyin-2.0.3.RELEASE/** -text
 desktop/src/main/resources/licenses/tinypinyin-2.0.3.RELEASE/TinyPinyin-LICENSE whitespace=-blank-at-eof
 desktop/native/mpv-rtx-bridge/** -text whitespace=cr-at-eol,-blank-at-eof
 desktop/third-party/libmpv/build/rtx-core-v1/** -text whitespace=cr-at-eol
+
+desktop/native/veyra-dlss-sr/** -text whitespace=cr-at-eol,-blank-at-eof

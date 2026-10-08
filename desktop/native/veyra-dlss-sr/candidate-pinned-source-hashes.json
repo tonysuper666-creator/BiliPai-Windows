@@ -1,0 +1,14 @@
+[
+  {
+    "path": "abi_layout_compile.cpp",
+    "sha256": "48abc8112b3897987456f14c90f7c5713a035c82b289e2692e4b8a64bad60e4d"
+  },
+  {
+    "path": "bilipai_veyra_dlss_sr_v2.cpp",
+    "sha256": "cb018cb4458a0462215a95162df8e58c005cfec317f605364e5cec76ab41bd37"
+  },
+  {
+    "path": "bilipai_veyra_dlss_sr_v2.h",
+    "sha256": "744e915225c0f1504bd3130aa8af09431f3feb862450dfd17b71c8a503abbc2c"
+  }
+]

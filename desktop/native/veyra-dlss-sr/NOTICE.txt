@@ -1,0 +1,14 @@
+BiliPai-owned ABI and adapter: GPL-3.0-or-later.
+Selected upstream Veyra source is preserved byte-for-byte, with its original
+GPL-3.0 LICENSE in upstream/LICENSE.
+Source: https://github.com/Likely7/Veyra-NRVideo
+Fixed source commit: 96a7c8de36bc195240161de6814739ad810722f1.
+The selected blobs equal release 2.0.6 e3aa842a00f693a4a17d1fc4c454d0ebc59428f6.
+
+External SDK source: https://github.com/NVIDIA/DLSS
+Fixed SDK commit: 374959484e79a640feaba44c93ac8cfb0a03f5b5.
+Official SDK LICENSE.txt is a separate external license; its hash and Git
+blob identity are recorded in ngx-pinned-dependency-hashes.json.
+No NVIDIA SDK/runtime bytes are part of this source candidate.
+The existing public SDK/shim were used only for private local compilation.
+This candidate grants no NVIDIA redistribution permission.

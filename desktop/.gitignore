@@ -28,3 +28,17 @@ __pycache__/
 *.pyc
 !/third-party/libmpv/NOTICES.md
 !/third-party/libmpv/licenses/ffmpeg-LICENSE.md
+
+# Reviewed DLSS core source only; local builds and NVIDIA binaries stay private.
+!/native/veyra-dlss-sr/
+/native/veyra-dlss-sr/build*/
+/native/veyra-dlss-sr/cmake-*/
+/native/veyra-dlss-sr/**/*.dll
+/native/veyra-dlss-sr/**/*.lib
+/native/veyra-dlss-sr/**/*.obj
+/native/veyra-dlss-sr/**/*.exe
+/native/veyra-dlss-sr/**/*.pdb
+/native/veyra-dlss-sr/**/nvngx_*
+/native/veyra-dlss-sr/**/nvsdk_*
+!/native/veyra-dlss-sr/CMakeLists.txt
+!/native/veyra-dlss-sr/NOTICE.txt

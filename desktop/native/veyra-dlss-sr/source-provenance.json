@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "variant": "bilipai-veyra-standard-dlss-sr-v2-candidate",
+  "coreAbi": 2,
+  "coreAbiWire": 131072,
+  "architecture": "windows-x64",
+  "sourceRepository": "https://github.com/Likely7/Veyra-NRVideo",
+  "sourceCommit": "96a7c8de36bc195240161de6814739ad810722f1",
+  "releaseCommit": "e3aa842a00f693a4a17d1fc4c454d0ebc59428f6",
+  "selectedBlobsEqualRelease": true,
+  "upstreamFileCount": 15,
+  "officialSdkCommit": "374959484e79a640feaba44c93ac8cfb0a03f5b5",
+  "actualSdkHeaderCount": 6,
+  "compiledFeatures": [
+    "standard DLSS Super Resolution"
+  ],
+  "pendingFeatures": [
+    "NR",
+    "DLSS Frame Generation",
+    "NvVFX VFG"
+  ],
+  "engineVersion": "BiliPai-Veyra-DLSS-SR-2",
+  "installedModuleBuildSha256": null,
+  "engineStatus": "UNAVAILABLE",
+  "productionIntegration": false,
+  "runtimeAuthenticated": false,
+  "runtimeOrGpuExecuted": false,
+  "bundledNvidiaFiles": 0,
+  "requiredIntegration": [
+    "linear and guidance producer",
+    "signed DLSS runtime/profile/module authentication",
+    "shared process NGX host",
+    "consumer/timeline integration"
+  ],
+  "nativeLifetimeContract": "pre-NGX self/exact-runtime process PIN; bounded one canonical directory/slot; failed or throwing feature/parameter/shutdown retirement permanently retains entire Session even after device removal; same-device actual Shutdown1 Success/no-SEH observed exactly once before deletion",
+  "checkedShutdownContract": "per-source fixed NgxCoreHost.cpp symbol redirect; real unrenamed SDK call in owned TU; failed-init explicit attempt; no new public export"
+}
