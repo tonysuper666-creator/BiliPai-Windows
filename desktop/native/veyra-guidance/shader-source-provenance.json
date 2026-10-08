@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "96a7c8de36bc195240161de6814739ad810722f1",
+  "shaderPacketFreezeSha256": "5db812413c847529aac5a1429e5d33b43e1dbfe470bf8c1bd110439fa38cfd31",
+  "shaderPacketCompileReceiptSha256": "2ad8933d075d6fa2ef6668429424cbd9949e6ada9b98cf2c98ae63ede5f7c753",
+  "embedded": [
+    {
+      "path": "bytecode/srgb_to_linear.cso",
+      "sha256": "c28556e142cefd8b14a79861dd6ef461d0d216529ad2518c04652cf5e15a6933",
+      "bytes": 1388
+    },
+    {
+      "path": "bytecode/encoded_to_bgra_vs.cso",
+      "sha256": "e215fd1fda776271bb7527c720ae3b8833ab61b96d4b3f3b8a48143d6e82543e",
+      "bytes": 616
+    },
+    {
+      "path": "bytecode/encoded_to_bgra_ps.cso",
+      "sha256": "c70b66d5e20d86ee7b6ba239ed649be62956d81bd17adfaae6209d6eaa08d30e",
+      "bytes": 672
+    }
+  ],
+  "allInheritedShaderMembers": [
+    {
+      "path": "bytecode/actual_mpv_hdrPS.cso",
+      "bytes": 1228,
+      "sha256": "b9bc7ca8d0ec5259d76d3696fadc0d689feac13c200aedbcab92406ed67f01fa"
+    },
+    {
+      "path": "bytecode/actual_mpv_inputPS.cso",
+      "bytes": 4288,
+      "sha256": "17d960568d6951c7f32f861d1199451ba7196b6c9314f76c287a6c71a0385e44"
+    },
+    {
+      "path": "bytecode/actual_mpv_srPS.cso",
+      "bytes": 620,
+      "sha256": "6f9d4bce2594ac47c74fb7f3ea8b56cfe7564779798d448b1d08871dfc669928"
+    },
+    {
+      "path": "bytecode/actual_mpv_vs.cso",
+      "bytes": 636,
+      "sha256": "68bc9c861bd327cbc0338ac7358f2a73008149d1442651c4db72d9ac493477d8"
+    },
+    {
+      "path": "bytecode/encoded_to_bgra_ps.cso",
+      "bytes": 672,
+      "sha256": "c70b66d5e20d86ee7b6ba239ed649be62956d81bd17adfaae6209d6eaa08d30e"
+    },
+    {
+      "path": "bytecode/encoded_to_bgra_vs.cso",
+      "bytes": 616,
+      "sha256": "e215fd1fda776271bb7527c720ae3b8833ab61b96d4b3f3b8a48143d6e82543e"
+    },
+    {
+      "path": "bytecode/flow_adapt.cso",
+      "bytes": 1372,
+      "sha256": "8b996783f259c80bca718c806825e22d2f9c74f23187dd7d930eec23d1d86ab8"
+    },
+    {
+      "path": "bytecode/linear_to_srgb.cso",
+      "bytes": 1392,
+      "sha256": "3f354716454187eda8846710fc310b2fa621fffea2633295d94666f23eb5a09d"
+    },
+    {
+      "path": "bytecode/nvof_densify.cso",
+      "bytes": 4132,
+      "sha256": "d10e12b4c8c0f27cefbc847372e5086049e2344363c52cf2eedb737b71092858"
+    },
+    {
+      "path": "bytecode/srgb_to_linear.cso",
+      "bytes": 1388,
+      "sha256": "c28556e142cefd8b14a79861dd6ef461d0d216529ad2518c04652cf5e15a6933"
+    },
+    {
+      "path": "CMakeLists.txt",
+      "bytes": 1348,
+      "sha256": "62e095fd1b3375304a5b711b5ffb2ae6d2a369abf95ac64bd20d5ace5e2302d0"
+    },
+    {
+      "path": "compile-logs/actual_mpv_hdrPS.log",
+      "bytes": 149,
+      "sha256": "e9cfeab103933c196e603a288813d02d5acead06cc7dcb2010d5868c0635fa4b"
+    },
+    {
+      "path": "compile-logs/actual_mpv_inputPS.log",
+      "bytes": 151,
+      "sha256": "f68899a11a8f7142c64d67c4b0092ed2ec51901f68c2edf39d033587e1f0d23c"
+    },
+    {
+      "path": "compile-logs/actual_mpv_srPS.log",
+      "bytes": 148,
+      "sha256": "6798fa8ef219fc2a36723ddbf876cea8d20e833e08b62ef8a574800347d150f8"
+    },
+    {
+      "path": "compile-logs/actual_mpv_vs.log",
+      "bytes": 146,
+      "sha256": "04384879940b9530f7db9b18c90a7da4ec3e2e21e8c5994715bb8f8a006098d9"
+    },
+    {
+      "path": "compile-logs/encoded_to_bgra_ps.log",
+      "bytes": 151,
+      "sha256": "8a849d5d7f1c36c3e8d2afdae95b4a70b5247914c929702ce1ae5418e1c66aae"
+    },
+    {
+      "path": "compile-logs/encoded_to_bgra_vs.log",
+      "bytes": 151,
+      "sha256": "1d65e2126285daeb43289c4dcb7929b954cde1ded610811eba0adc8330d80113"
+    },
+    {
+      "path": "compile-logs/flow_adapt.log",
+      "bytes": 143,
+      "sha256": "afa14728b6f2f30f773641ffb60b5249ba2e324ccca9167fb0a627a0f5e6d0f8"
+    },
+    {
+      "path": "compile-logs/linear_to_srgb.log",
+      "bytes": 147,
+      "sha256": "6e41b64d86c368b27516f78b7c94eedcbdf1571e6a1a5b2aa653a4b508717290"
+    },
+    {
+      "path": "compile-logs/nvof_densify.log",
+      "bytes": 145,
+      "sha256": "2a3ef8e0b2bec412352328556476e503c0166e829fdda997b3c97388bfc34610"
+    },
+    {
+      "path": "compile-logs/srgb_to_linear.log",
+      "bytes": 147,
+      "sha256": "76abe100b43700b3f5035ce05c5dd876b6d6351cfa1e39c52f7ef56f2926f04a"
+    },
+    {
+      "path": "compile-receipts.json",
+      "bytes": 13454,
+      "sha256": "2ad8933d075d6fa2ef6668429424cbd9949e6ada9b98cf2c98ae63ede5f7c753"
+    },
+    {
+      "path": "current-bilipai/desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c",
+      "bytes": 28067,
+      "sha256": "868cfcf4ad01194dafec4312b0efac6cdac947e6ae47f15101b2d2b1bc3baf47"
+    },
+    {
+      "path": "current-bilipai/desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.h",
+      "bytes": 1902,
+      "sha256": "317e7a792f795e0510ac9d8d9c920bb6dc1a9815287a64ddd8a624e627a7d8b7"
+    },
+    {
+      "path": "current-bilipai/desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c",
+      "bytes": 12840,
+      "sha256": "d8b0a3a09c93732d63585be8425d9582addf3fdf6a236770f412fdb5b38c1965"
+    },
+    {
+      "path": "current-bilipai/desktop/native/veyra-dlss-sr/bilipai_veyra_dlss_sr_v2.h",
+      "bytes": 6512,
+      "sha256": "af884cc3d73262dafa19a76a32f0b85c48a2e3bde912bf59885d8de5d4cdd6bc"
+    },
+    {
+      "path": "decision.json",
+      "bytes": 1855,
+      "sha256": "301d8fee51daf358aecdae9824b6c825da32b6167c411f33f22d4071e623bace"
+    },
+    {
+      "path": "fixed-veyra/include/veyra/pipeline/ColorMetadata.h",
+      "bytes": 5957,
+      "sha256": "da31b0350e4f1774bdf27c2074f212adb975909a56e1ed368a265369dad8724c"
+    },
+    {
+      "path": "fixed-veyra/shaders/FlowAdapt.hlsl",
+      "bytes": 480,
+      "sha256": "ffbc9bbc58301efad69fb209d915bf0342aa62c10aac3c0a3ec089759bbfb9a9"
+    },
+    {
+      "path": "fixed-veyra/shaders/HdrColor.hlsli",
+      "bytes": 2513,
+      "sha256": "6c846acbed3409c75da53212d9f28c9464bef811bb1f952df61bcacded2f6d9c"
+    },
+    {
+      "path": "fixed-veyra/shaders/NvofDensify.hlsl",
+      "bytes": 3371,
+      "sha256": "68fcf18cdc5abc2c86513785ee0d8cdf68f2e1d9dd22e7cb7d52e21a74cdf938"
+    },
+    {
+      "path": "fixed-veyra/shaders/PresentBlit.hlsl",
+      "bytes": 5420,
+      "sha256": "1b6776281c028d87c67c453d7b9079141fda2bb842f8a5aafd3ed80aebfd5cb9"
+    },
+    {
+      "path": "fixed-veyra/shaders/RgbToLinear.hlsl",
+      "bytes": 1509,
+      "sha256": "b047e4ca2ba22dc4a119a0779932b791e7fd3ba83dcf37a744d328c46884170f"
+    },
+    {
+      "path": "fixed-veyra/shaders/ScaleBlit.hlsl",
+      "bytes": 2913,
+      "sha256": "6041ad923442dff2f9db21b7ca6f8d2e7c92cc75d337029f2a921b125b42483f"
+    },
+    {
+      "path": "fixed-veyra/shaders/YuvToLinearRgb.hlsl",
+      "bytes": 6780,
+      "sha256": "cfb8319c7e654b53dbb1976a301e3c0481f960913e6ffde154dd42b127046ae3"
+    },
+    {
+      "path": "fixed-veyra/src/pipeline/EnhanceGraph.cpp",
+      "bytes": 225940,
+      "sha256": "57fad0d0877deb6591bc83b711940beba434553c1395fe9052ebb98904174d69"
+    },
+    {
+      "path": "include/bilipai_color_flow_shader_bindings.h",
+      "bytes": 2899,
+      "sha256": "29a270a179187ca5eda03258ea93b486ce5ce3f1ae0ebc6de75442a7686d2b4a"
+    },
+    {
+      "path": "review-material/actual-mpv-ingress-and-present.hlsl",
+      "bytes": 2552,
+      "sha256": "704eaa4a79f9e32f2c50ea74ce95aedc4de4dd86abcd893c606f3a697de197d4"
+    },
+    {
+      "path": "shaders/BiliPaiEncodedRgbaToBgra.hlsl",
+      "bytes": 684,
+      "sha256": "32d794c9338ccecc8ebe56e59a034dfcb738bc6f5080dbca6d0f0b758fe83b97"
+    },
+    {
+      "path": "shaders/BiliPaiLinearToSrgbRgba8.hlsl",
+      "bytes": 675,
+      "sha256": "2095446889408c9280e60ac6889cfd58555d536cb1a1ee226f8c9fd8fd8f7201"
+    },
+    {
+      "path": "shaders/BiliPaiSrgb.hlsli",
+      "bytes": 685,
+      "sha256": "934d31267cea791595790ec5cf6e09a63ac29f9203e03ef148d9b8a92d641546"
+    },
+    {
+      "path": "shaders/BiliPaiSrgbRgba8ToLinear.hlsl",
+      "bytes": 910,
+      "sha256": "85c1ccc4d1933da7b70ef9c7413c8f500d86f06b58be5e330e61727b32e7e6eb"
+    },
+    {
+      "path": "shaders/FlowAdapt.hlsl",
+      "bytes": 480,
+      "sha256": "ffbc9bbc58301efad69fb209d915bf0342aa62c10aac3c0a3ec089759bbfb9a9"
+    },
+    {
+      "path": "shaders/NvofDensify.hlsl",
+      "bytes": 3371,
+      "sha256": "68fcf18cdc5abc2c86513785ee0d8cdf68f2e1d9dd22e7cb7d52e21a74cdf938"
+    },
+    {
+      "path": "source-correction.json",
+      "bytes": 908,
+      "sha256": "f222f56476c70d5253b74d1cb5ce50ed4b92539c2058c25704ab040cb42d9fb0"
+    },
+    {
+      "path": "source-receipts.json",
+      "bytes": 4439,
+      "sha256": "e4525d511f1c07ee4df1a044adbe74d44d3170715e00d47783420e35a989fa63"
+    }
+  ]
+}

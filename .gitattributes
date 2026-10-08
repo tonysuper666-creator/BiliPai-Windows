@@ -158,3 +158,6 @@ desktop/native/veyra-dlss-sr/** -text whitespace=cr-at-eol,-blank-at-eof
 
 # Preserve reviewed DLSS tooling byte identities and Windows line endings.
 desktop/tools/native/veyra-dlss-sr/** whitespace=cr-at-eol
+
+# Preserve the reviewed Windows video color stage and shader byte identities.
+desktop/native/veyra-guidance/** -text whitespace=cr-at-eol,-blank-at-eof

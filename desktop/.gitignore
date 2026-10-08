@@ -42,3 +42,17 @@ __pycache__/
 /native/veyra-dlss-sr/**/nvsdk_*
 !/native/veyra-dlss-sr/CMakeLists.txt
 !/native/veyra-dlss-sr/NOTICE.txt
+
+# Reviewed color foundation source only; every other native file remains private.
+!/native/veyra-guidance/
+/native/veyra-guidance/**
+!/native/veyra-guidance/shaders/
+!/native/veyra-guidance/bilipai_color_shader_bytecode.h
+!/native/veyra-guidance/bilipai_guidance_colors.cpp
+!/native/veyra-guidance/bilipai_guidance_colors.h
+!/native/veyra-guidance/CMakeLists.txt
+!/native/veyra-guidance/README.md
+!/native/veyra-guidance/shader-source-provenance.json
+!/native/veyra-guidance/shaders/BiliPaiEncodedRgbaToBgra.hlsl
+!/native/veyra-guidance/shaders/BiliPaiSrgb.hlsli
+!/native/veyra-guidance/shaders/BiliPaiSrgbRgba8ToLinear.hlsl
