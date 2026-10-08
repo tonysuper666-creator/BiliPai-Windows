@@ -44,6 +44,11 @@ internal interface DesktopOriginalBangumiPlayerAccount {
  */
 internal interface DesktopOriginalBangumiNativePublication {
     suspend fun beginEpisode(detail: BangumiDetail, episode: BangumiEpisode)
+    /** Actual Root implements a same-episode replacement capture. Legacy port
+     * implementations fail closed rather than silently stopping a usable source. */
+    suspend fun beginQualityReplacement(state: BangumiPlayerState.Success) {
+        throw CancellationException("PGC quality replacement capture unavailable")
+    }
     fun publishDash(videoUrl: String, audioUrl: String?, seekToMs: Long,
         resetPlayer: Boolean, referer: String, dashManifest: String?)
     fun publishSegments(segmentUrls: List<String>, seekToMs: Long,

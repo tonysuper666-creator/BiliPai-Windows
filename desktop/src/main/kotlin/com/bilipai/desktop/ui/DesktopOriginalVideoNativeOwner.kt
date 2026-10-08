@@ -259,6 +259,26 @@ internal class DesktopOriginalVideoNativeOwner(
             throw CancellationException("Original page publication subject replaced")
         if (expectedPrevious != null && (pageSubject == null || expectedPrevious.pageSubject !== pageSubject))
             throw CancellationException("Original page publication parent changed")
+        return publishCapturedSource(request, source, expectedBaselineVersion, requestJob,
+            bootstrapOrigin, pageSubject, expectedPrevious, isRequestCurrent)
+    }
+
+    /** Same PGC parent is consumed only at submission. Original initial ACK uses
+     * this new actual Job/request qualification plus owns(next), never the parent.
+     * PGC remains Unknown bootstrap/page metadata; existing named wrappers retain
+     * their exact original metadata and validation contract. */
+    internal fun publishBangumiQualityReplacement(request: PlaybackRequest, source: PlaybackSource,
+        expectedBaselineVersion: Long, requestJob: Job,
+        expectedPrevious: DesktopOriginalVideoAcceptedPublication,
+        isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication =
+        publishCapturedSource(request, source, expectedBaselineVersion, requestJob,
+            null, null, expectedPrevious, isRequestCurrent)
+
+    private fun publishCapturedSource(request: PlaybackRequest, source: PlaybackSource,
+        expectedBaselineVersion: Long, requestJob: Job, bootstrapOrigin: DesktopVideoBootstrapAccepted?,
+        pageSubject: DesktopOriginalVideoPageTransitionIntent?,
+        expectedPrevious: DesktopOriginalVideoAcceptedPublication?,
+        isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication {
         assertEntry()
         val receipt = checkNotNull(source.authorizationReceipt) { "Original ordinary playback receipt is required" }
         if (receipt.accountEpoch != currentEpoch()) throw CancellationException("Original playback account retired")

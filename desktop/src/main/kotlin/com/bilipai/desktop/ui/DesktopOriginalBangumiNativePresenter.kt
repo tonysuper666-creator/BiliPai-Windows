@@ -79,6 +79,15 @@ internal class DesktopOriginalBangumiNativePresenter(
         portrait.captureBangumiPageRequest(this, detail, episode)
         currentCoroutineContext().ensureActive(); assertCurrent()
     }
+    /** Only a fresh actual quality Job borrows the current accepted source.
+     * It does not retire the episode, start a Store request or stop the player. */
+    override suspend fun beginQualityReplacement(state: BangumiPlayerState.Success) {
+        currentCoroutineContext().ensureActive(); assertCurrent()
+        check(currentCaller.get() === currentCoroutineContext()[Job]) { "PGC quality requires its actual Root invocation job" }
+        check(activated.get()) { "PGC quality requires an already installed episode" }
+        portrait.captureBangumiQualityRequest(this, state)
+        currentCoroutineContext().ensureActive(); assertCurrent()
+    }
     fun capturedPlaybackBinding(): DesktopOriginalVideoRepositoryBinding {
         assertCurrent()
         return portrait.capturedBangumiRequest(this, checkNotNull(currentCaller.get()) {

@@ -108,8 +108,20 @@ internal class DesktopOriginalPortraitPlatformBinding(
         val payload: com.android.purebilibili.feature.video.usecase.VideoLoadResult.Success,
         val bangumiPresenter: DesktopOriginalBangumiSharedPlaybackPresenter? = null)
     private class BangumiCapture(val presenter: DesktopOriginalBangumiSharedPlaybackPresenter,
-        val detail: BangumiDetail, val episode: BangumiEpisode)
+        val detail: BangumiDetail, val episode: BangumiEpisode,
+        val qualityReplacement: BangumiQualityReplacement? = null)
+    private class BangumiQualityReplacement(previous: DesktopOriginalVideoAcceptedPublication) {
+        var previous: DesktopOriginalVideoAcceptedPublication? = previous // same captures monitor
+        var accepted: DesktopOriginalVideoAcceptedPublication? = null // actual returned snapshot only
+    }
     private val captures = IdentityHashMap<DesktopOriginalVideoRepositoryBinding, Capture>()
+    // Qualification of real in-flight quality operations, not a retained source owner.
+    // Only response/submit uses latest identity. A returned native source keeps
+    // its original ACK custody while a newer quality operation only fetches.
+    private var bangumiQualityCaller: Job? = null // same captures monitor
+    private fun isBangumiQualityCallerCurrent(capture: Capture): Boolean = synchronized(captures) {
+        capture.bangumi?.qualityReplacement == null || bangumiQualityCaller === capture.job
+    }
 
     override suspend fun capturePageRequest(bvid: String, aid: Long, cid: Long): DesktopOriginalVideoRepositoryBinding {
         currentCoroutineContext().ensureActive(); assertOwned()
@@ -274,16 +286,30 @@ internal class DesktopOriginalPortraitPlatformBinding(
         val sameSession = { assembly.captureLoadState().let {
             it.currentLoadRequestToken == capture.requestToken && it.currentBvid == prepared.request.bvid
         } }
-        if (!stillCurrentLoad() || !sameSession()) {
+        if (!stillCurrentLoad() || !sameSession() || !isBangumiQualityCallerCurrent(capture)) {
             (prepared.preparation as? DesktopOriginalMediaCachePreparation.Cached)?.discardUnaccepted()
             return false
         }
         val cached = prepared.preparation as? DesktopOriginalMediaCachePreparation.Cached
         cached?.beginPublish()
         try {
-            val accepted = assembly.native.publish(prepared.request,
+            val quality = synchronized(captures) { capture.bangumi?.qualityReplacement }
+            val stillPublication = {
+                val next = synchronized(captures) { quality?.accepted }
+                !capture.job.isCancelled && owns() && stillCurrentLoad() && sameSession() &&
+                    (next?.let(assembly.native::isCurrent) ?: isBangumiQualityCallerCurrent(capture))
+            }
+            val parent = quality?.let { synchronized(captures) { checkNotNull(it.previous) } }
+            val accepted = if (quality == null) assembly.native.publish(prepared.request,
                 prepared.preparation.source.copy(startPaused = !playWhenReady),
-                capture.nativeBaseline, capture.job) { !capture.job.isCancelled && owns() && stillCurrentLoad() && sameSession() }
+                capture.nativeBaseline, capture.job, stillPublication)
+            else assembly.native.publishBangumiQualityReplacement(prepared.request,
+                prepared.preparation.source.copy(startPaused = !playWhenReady),
+                capture.nativeBaseline, capture.job, checkNotNull(parent), stillPublication)
+            if (quality != null) synchronized(captures) {
+                quality.accepted = accepted // exact returned publication, never predicted/ACK/Active
+                quality.previous = null // consumed parent must not form retained source chains
+            }
             cached?.accepted(accepted)
             return assembly.playback.adoptDesktopPortraitLoad(capture.requestToken, prepared.payload,
                 { !capture.job.isCancelled && owns() && stillCurrentLoad() && assembly.native.isCurrent(accepted) },
@@ -311,6 +337,48 @@ internal class DesktopOriginalPortraitPlatformBinding(
         request.assertCurrent(); currentCoroutineContext().ensureActive(); return request
     }
 
+    /** Capture a fresh same-authority quality request while the old accepted
+     * episode and native source remain usable. Full episode/page loads keep their
+     * original begin/Loading/stop path above. No completed load Binding is reused. */
+    internal suspend fun captureBangumiQualityRequest(presenter: DesktopOriginalBangumiSharedPlaybackPresenter,
+        state: com.android.purebilibili.feature.bangumi.BangumiPlayerState.Success): DesktopOriginalVideoRepositoryBinding {
+        currentCoroutineContext().ensureActive(); assertOwned()
+        val caller = checkNotNull(currentCoroutineContext()[Job])
+        val previous = assembly.native.current() ?: throw CancellationException("PGC quality source absent")
+        val token = assembly.captureLoadState().currentLoadRequestToken
+        val quality = BangumiQualityReplacement(previous)
+        if (!assembly.native.admitPlaybackDispatch(previous) {
+                caller.ensureActive()
+                if (!ownsBangumiPlayback(presenter, state) ||
+                    assembly.captureLoadState().currentLoadRequestToken != token)
+                    throw CancellationException("PGC quality episode replaced before capture")
+                synchronized(captures) { bangumiQualityCaller = caller }
+            }) throw CancellationException("PGC quality parent source retired")
+        // Never restore an older caller when this newer operation fails/cancels.
+        // A successful completed caller may finish its original queued Load ACK
+        // through the actual accepted snapshot, without retaining latest Job.
+        // Failed/cancelled newer callers never re-authorize an older response.
+        caller.invokeOnCompletion {
+            synchronized(captures) {
+                if (bangumiQualityCaller === caller) bangumiQualityCaller = null
+            }
+        }
+        val request = capturePlaybackRequest()
+        val capture = captured(request)
+        if (capture.requestToken != token || capture.nativeBaseline != previous.sourceVersion ||
+            request.receipt != previous.nativeSource.source.authorizationReceipt ||
+            !ownsBangumiPlayback(presenter, state) || !assembly.native.isCurrent(previous))
+            throw CancellationException("PGC quality request/parent changed during capture")
+        synchronized(captures) {
+            if (captures[request] !== capture || bangumiQualityCaller !== caller)
+                throw CancellationException("PGC quality request superseded during capture")
+            capture.bangumi = BangumiCapture(presenter, state.seasonDetail, state.currentEpisode, quality)
+        }
+        request.assertCurrent(); currentCoroutineContext().ensureActive()
+        assertBangumiCallerCurrent(presenter, caller)
+        return request
+    }
+
     private fun findBangumiCapture(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job):
         Pair<DesktopOriginalVideoRepositoryBinding, Capture>? {
         assertOwned(); caller.ensureActive()
@@ -323,6 +391,12 @@ internal class DesktopOriginalPortraitPlatformBinding(
             binding.assertCurrent()
             if (capture.requestToken != assembly.captureLoadState().currentLoadRequestToken)
                 throw CancellationException("PGC actual Store token replaced")
+            capture.bangumi?.qualityReplacement?.let { quality ->
+                val expected = synchronized(captures) { quality.accepted ?: quality.previous }
+                if (!isBangumiQualityCallerCurrent(capture) ||
+                    expected == null || !assembly.native.isCurrent(expected))
+                    throw CancellationException("PGC quality response/source superseded")
+            }
         }
     }
     internal fun capturedBangumiRequest(presenter: DesktopOriginalBangumiSharedPlaybackPresenter, caller: Job): DesktopOriginalVideoRepositoryBinding =
