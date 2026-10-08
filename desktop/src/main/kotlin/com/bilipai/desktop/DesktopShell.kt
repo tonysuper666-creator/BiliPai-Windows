@@ -708,7 +708,21 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     val clipboardFailure by WindowsTextClipboard.lastFailure.collectAsState()
     var loginDialog by remember { mutableStateOf(false) }
-    fun openLogin() { if (loginUpdateHold.canBegin()) loginDialog = true }
+    var modalLoginReturn by remember { mutableStateOf<DesktopLoginReturnBinding?>(null) }
+    fun openLogin() {
+        if (loginUpdateHold.canBegin() && !loginDialog) {
+            modalLoginReturn = homeRootRef.get()?.route?.get()?.prepareModalLoginReturn()
+            loginDialog = true
+        }
+    }
+    LaunchedEffect(sessionEpoch, modalLoginReturn) {
+        if (modalLoginReturn?.sourceEpoch?.let { it != sessionEpoch } == true) {
+            // Epoch retirement disposes only the old form. A Store-committed login's IO success
+            // receipt may still be on its way; never cancel the Window ticket in this automatic path.
+            modalLoginReturn = null
+            loginDialog = false
+        }
+    }
     var jsPluginId by remember { mutableStateOf("") }
     var jsSubscriptionReader by remember { mutableStateOf(false) }
     var castDialog by remember { mutableStateOf(false) }
@@ -1733,8 +1747,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                     {error=it}, {raw->openDynamicWeb(raw,"链接")},
                     { expectedEpoch,expectedMid -> authenticationInvalidations.trySend(expectedEpoch to expectedMid); Unit },
                     { gate -> DesktopProfileAccountsBinding(repository,gate.epoch,gate.mid,
-                        requireNotNull(gate.scope.coroutineContext[Job]),gate::owns,gate::commit) },
-                    { onExit() },{openLogin()},if(account!=null)({repository.logout()})else null,
+                        requireNotNull(gate.scope.coroutineContext[Job]),gate::owns,gate::commit,
+                        { homeRootRef.get()?.navigation?.cancelLoginReturnForSource(gate.epoch, gate.mid) }) },
+                    { onExit() },{openLogin()},if(account!=null)({
+                        val logoutEpoch = repository.sessionEpoch
+                        val logoutMid = repository.account.value?.mid
+                        repository.logout()
+                        homeRootRef.get()?.navigation?.cancelLoginReturnForSource(logoutEpoch, logoutMid)
+                    })else null,
                     dynamicCardRegistry::currentAllUpdateBaseline,null,favoritesEntry?.searchChannel,null,
                     { originalNowPlaying.get()?.second?.dismiss() },
                     { DesktopOriginalNowPlayingVisibility(originalNowPlaying.get()?.second?.owner?.current()?.active==true,
@@ -2528,7 +2548,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                     openQueue(cards,cards.firstOrNull{it.bvid==video.bvid} ?: VideoCard(video.bvid,video.title,video.pic,video.owner.name,video.stat.view.toLong(),video.duration,preferredCid=video.cid))},isClosing=isClosing)
                             entryKey == BiliPaiNavKey.Login -> Column(Modifier.fillMaxSize()) {
                                 TextButton(onClick={commands.back()}) {Text("返回")}
-                                AdvancedLoginDialog(repository,loginUpdateHold,onDismiss={commands.back()},onComplete={commands.back()})
+                                val loginReturn = remember(messageRoutes) { messageRoutes.loginReturnBinding() }
+                                AdvancedLoginDialog(repository,loginUpdateHold,
+                                    onDismiss={loginReturn?.cancel?.invoke(); commands.back()},
+                                    onComplete={if(loginReturn==null) commands.back()}, loginReturn=loginReturn)
                             }
                             entryKey is BiliPaiNavKey.Web -> Column {
                                 Text(entryKey.title);TextButton(onClick={openDynamicWeb(entryKey.url,entryKey.title)}){Text("在浏览器打开")}
@@ -2603,7 +2626,9 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             SnackbarHost(rootFeedback, Modifier.align(Alignment.BottomCenter).padding(16.dp))
         }
         }
-        if (loginDialog) AdvancedLoginDialog(repository, loginUpdateHold, onDismiss = { loginDialog = false }, onComplete = { loginDialog = false })
+        if (loginDialog) AdvancedLoginDialog(repository, loginUpdateHold,
+            onDismiss = { modalLoginReturn?.cancel?.invoke(); modalLoginReturn = null; loginDialog = false },
+            onComplete = { modalLoginReturn = null; loginDialog = false }, loginReturn = modalLoginReturn)
         if (enhancementSettings) DesktopVideoEnhancementSettingsDialog(pluginRuntime.enhancementConfiguration) { enhancementSettings = false }
         if (combinedBackupSettings) BackupSettingsDialog(backup, { combinedBackupSettings = false }, onExit, updateHold = backupUpdateHold)
         if (showDiagnosticViewer && diagnostics != null) {

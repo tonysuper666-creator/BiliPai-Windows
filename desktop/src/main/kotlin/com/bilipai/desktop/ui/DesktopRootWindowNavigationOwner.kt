@@ -29,6 +29,25 @@ import java.awt.event.WindowAdapter
 import java.awt.event.WindowEvent
 import java.beans.PropertyChangeListener
 import java.util.concurrent.atomic.AtomicBoolean
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import com.android.purebilibili.navigation3.BiliPaiNavKey
+import com.bilipai.desktop.data.DesktopLoginInstallationReceipt
+
+internal enum class DesktopLoginReturnOrigin { ROUTE, MODAL, ACCOUNT_ADD }
+internal class DesktopLoginReturnTicket internal constructor(
+    val sourceEpoch: Long, val sourceMid: Long?, val destination: BiliPaiNavKey,
+    val origin: DesktopLoginReturnOrigin,
+)
+internal data class DesktopAcceptedLoginReturn(
+    val ticket: DesktopLoginReturnTicket, val installation: DesktopLoginInstallationReceipt,
+)
+internal class DesktopLoginReturnBinding internal constructor(
+    val sourceEpoch: Long,
+    val owns: () -> Boolean,
+    val installed: (DesktopLoginInstallationReceipt) -> Unit,
+    val cancel: () -> Unit,
+)
 
 /** One actual main-window owner, retained above every route and account epoch.
  *
@@ -43,6 +62,59 @@ internal class DesktopRootWindowNavigationOwner(
 ) : SavedStateRegistryOwner, ViewModelStoreOwner, HasDefaultViewModelProviderFactory,
     NavigationEventDispatcherOwner, AutoCloseable {
     private val closed = AtomicBoolean(false)
+    private val loginLock = Any()
+    private var loginTicket: DesktopLoginReturnTicket? = null
+    private val acceptedLogin = MutableStateFlow<DesktopAcceptedLoginReturn?>(null)
+    // Retain the last receipt after consume/cancel: removing a ticket must not restart Root installation.
+    internal val installedLoginReturn = acceptedLogin.asStateFlow()
+    internal fun beginLoginReturn(epoch: Long, mid: Long?, destination: BiliPaiNavKey,
+        origin: DesktopLoginReturnOrigin): DesktopLoginReturnBinding? {
+        check(EventQueue.isDispatchThread())
+        if (!owns() || destination == BiliPaiNavKey.Login || destination == BiliPaiNavKey.Onboarding) return null
+        val readKey = when (destination) {
+            is BiliPaiNavKey.VideoDetail -> destination.copy(openId = 0L)
+            is BiliPaiNavKey.Search -> destination.copy(openId = 0L)
+            is BiliPaiNavKey.LiveAreaDetail -> destination.copy(openId = 0L)
+            // A launchId identifies a retired transient media launch. Still bind the login,
+            // but reopen the existing MainHost rather than replay that old launch.
+            is BiliPaiNavKey.ExternalMedia -> BiliPaiNavKey.MainHost
+            is BiliPaiNavKey.PluginsSettings -> destination.copy(importUrl = null)
+            else -> destination
+        }
+        return synchronized(loginLock) {
+            if (!owns()) return@synchronized null
+            val ticket = DesktopLoginReturnTicket(epoch, mid, readKey, origin)
+            loginTicket = ticket
+            binding(ticket)
+        }
+    }
+    private fun binding(ticket: DesktopLoginReturnTicket) = DesktopLoginReturnBinding(ticket.sourceEpoch,
+        { synchronized(loginLock) { owns() && loginTicket === ticket && acceptedLogin.value?.ticket !== ticket } },
+        { receipt -> synchronized(loginLock) {
+            if (owns() && loginTicket === ticket && receipt.sourceEpoch == ticket.sourceEpoch &&
+                receipt.sourceMid == ticket.sourceMid && receipt.acceptedEpoch >= receipt.sourceEpoch && receipt.acceptedMid > 0L) {
+                if (ticket.sourceMid != null && ticket.sourceMid != receipt.acceptedMid) loginTicket = null
+                else acceptedLogin.value = DesktopAcceptedLoginReturn(ticket, receipt)
+            }
+        } },
+        { synchronized(loginLock) { if (loginTicket === ticket) loginTicket = null } })
+    internal fun pendingLoginBinding(epoch: Long): DesktopLoginReturnBinding? = synchronized(loginLock) {
+        loginTicket?.takeIf { owns() && it.sourceEpoch == epoch }?.let(::binding)
+    }
+    internal fun isLoginReturnPending(value: DesktopAcceptedLoginReturn): Boolean = synchronized(loginLock) {
+        owns() && loginTicket === value.ticket && acceptedLogin.value === value
+    }
+    internal fun consumeLoginReturn(value: DesktopAcceptedLoginReturn, epoch: Long, mid: Long?): BiliPaiNavKey? = synchronized(loginLock) {
+        if (!owns() || loginTicket !== value.ticket || acceptedLogin.value !== value) return@synchronized null
+        if (value.installation.acceptedEpoch != epoch || value.installation.acceptedMid != mid) {
+            loginTicket = null; return@synchronized null
+        }
+        loginTicket = null
+        value.ticket.destination
+    }
+    internal fun cancelLoginReturnForSource(epoch: Long, mid: Long?) = synchronized(loginLock) {
+        if (loginTicket?.let { it.sourceEpoch == epoch && it.sourceMid == mid } == true) loginTicket = null
+    }
     private val registry = LifecycleRegistry(this)
     private val savedStateController = SavedStateRegistryController.create(this)
     override val lifecycle: Lifecycle get() = registry
@@ -124,6 +196,7 @@ internal class DesktopRootWindowNavigationOwner(
      */
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
+        synchronized(loginLock) { loginTicket = null; acceptedLogin.value = null }
         val dispose = {
             navigationEventDispatcher.isEnabled = false
             window.removeWindowListener(windowListener)

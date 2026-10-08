@@ -252,15 +252,24 @@ internal class DesktopReadyOriginalRootHandle(
             services.feedback, services.openExternalLink, services.authenticationInvalidated,
             rootPublished = { gate -> handle.retainer.current()?.entry?.gate === gate }) }
     }
-    LaunchedEffect(handle, epoch, factoryBinding, retry) {
+    val loginInstalled by navigation.installedLoginReturn.collectAsState()
+    var loginRestoreRoot by remember(navigation) { mutableStateOf<Pair<DesktopAcceptedLoginReturn, DesktopHomeRetainedRoot>?>(null) }
+    LaunchedEffect(handle, epoch, account?.mid, factoryBinding, retry, loginInstalled) {
         val factory = factoryBinding ?: return@LaunchedEffect
         try {
+            loginRestoreRoot = null
+            val loginReturn = loginInstalled?.takeIf { navigation.isLoginReturnPending(it) &&
+                it.installation.acceptedEpoch == epoch && it.installation.acceptedMid == account?.mid }
+            // Same credentials can leave epoch unchanged. Retire admission before the original actor's install,
+            // otherwise its same-epoch active-owner fast path would reuse the failed old read owner.
+            if (loginReturn?.installation?.sourceEpoch == epoch) handle.retainer.current()?.entry?.gate?.close()
             handle.route.getAndSet(null)?.close()
             handle.messagePages.getAndSet(null)?.closeAndJoin()
             handle.spacePages.getAndSet(null)?.closeAndJoin()
             val nextInitialStack = onboardingPreferences.initialStack(includeStartupPortraitFeed = !startupStackInstalled)
             androidx.compose.runtime.snapshots.Snapshot.withMutableSnapshot { physicalStack.clear(); physicalStack.addAll(nextInitialStack) }
-            handle.retainer.install(epoch, account?.mid, factory.factory)
+            val installedRoot = handle.retainer.install(epoch, account?.mid, factory.factory)
+            loginRestoreRoot = loginReturn?.let { it to installedRoot }
             startupStackInstalled = true
             installFailure = null
         } catch (cancelled: CancellationException) { throw cancelled }
@@ -300,11 +309,22 @@ internal class DesktopReadyOriginalRootHandle(
             DesktopOriginalRootRoutePlatform(services.navigationAdmission, services.beforeNavigationCommit,
                 resolver::resolve, saveable::removeState, services.backAtHomeRoot),
             { com.android.purebilibili.feature.home.components.BottomNavItem.entries
-                .filter { it != com.android.purebilibili.feature.home.components.BottomNavItem.STORY }.map { it.route }.toSet() }) }
+                .filter { it != com.android.purebilibili.feature.home.components.BottomNavItem.STORY }.map { it.route }.toSet() }, navigation) }
         val ownsStartupRoot = remember(root, handle, routes) {
             { handle.isActive() && root.isCurrentOwner() && routes.owns() }
         }
         SideEffect { handle.route.set(routes) }
+        LaunchedEffect(root, routes, loginInstalled, loginRestoreRoot) {
+            val value = loginInstalled ?: return@LaunchedEffect
+            val acknowledgement = loginRestoreRoot ?: return@LaunchedEffect
+            if (acknowledgement.first !== value || acknowledgement.second !== root || !routes.owns()) return@LaunchedEffect
+            var destination: BiliPaiNavKey? = null
+            root.entry.gate.commit {
+                if (routes.owns()) destination = navigation.consumeLoginReturn(value, root.capturedEpoch, root.entry.gate.mid)
+            }
+            // The original controller/decorator/resolver/native-beforeCommit still owns the actual stack.
+            destination?.takeUnless { it == BiliPaiNavKey.MainHost }?.let(routes::push)
+        }
         DisposableEffect(routes) { onDispose { handle.route.compareAndSet(routes, null); routes.close() } }
         val messagePages = rememberDesktopOriginalMessagePagesRoot(services.repository, services.community,
             routes, desktopDetailRenderEffectsSupported())
@@ -372,7 +392,7 @@ internal class DesktopReadyOriginalRootHandle(
         val playbackAccountMid by profile.viewModel.playbackAccountMid.collectAsState()
         if (accountSwitcherShown) AccountSwitchDialog(savedAccounts, activeAccountMid, playbackAccountMid,
             onDismiss = { accountSwitcherShown = false },
-            onAddAccount = { accountSwitcherShown = false; routes.push(BiliPaiNavKey.Login) },
+            onAddAccount = { accountSwitcherShown = false; routes.login(DesktopLoginReturnOrigin.ACCOUNT_ADD) },
             onSwitch = { mid -> profile.viewModel.switchAccount(mid,
                 onSuccess = { accountSwitcherShown = false; accountRefresh++ }, onFailure = services.feedback) },
             onSetPlayback = { mid -> profile.viewModel.setPlaybackAccount(mid,

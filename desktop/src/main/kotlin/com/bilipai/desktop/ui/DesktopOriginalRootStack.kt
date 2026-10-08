@@ -99,6 +99,11 @@ internal class DesktopOriginalRootPageBindings(
         routes.bindMainHostNavigation(selectPage)
         onDispose { routes.unbindMainHostNavigation(selectPage) }
     }
+    val loginReadDestination: () -> BiliPaiNavKey = remember(currentItem) { { bottomPagerNavKeyForItem(currentItem) } }
+    DisposableEffect(routes, loginReadDestination) {
+        routes.bindMainHostDestination(loginReadDestination)
+        onDispose { routes.unbindMainHostDestination(loginReadDestination) }
+    }
     val rootBackAction: () -> AppSystemBackAction = remember(currentItem) {
         { resolveAppSystemBackAction(true, currentItem) }
     }

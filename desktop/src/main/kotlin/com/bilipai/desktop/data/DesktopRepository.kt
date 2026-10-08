@@ -534,9 +534,12 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     internal suspend fun installLogin(cookies: Map<String, String>, credentials: DesktopAppCredentials? = null,
         snapshot: DesktopSessionStore.CookieSnapshot? = null, expectedMid: Long? = null,
         expectedActiveMid: Long? = null, requestReceipt: DesktopPlaybackAuthorizationReceipt? = null,
-        stillOwned: () -> Boolean = { true }, commitIfCurrent: ((() -> Unit) -> Boolean)? = null): AccountSummary = withContext(Dispatchers.IO) {
+        stillOwned: () -> Boolean = { true }, commitIfCurrent: ((() -> Unit) -> Boolean)? = null,
+        expectedLoginEpoch: Long? = null,
+        onLoginInstalled: ((DesktopLoginInstallationReceipt) -> Unit)? = null): AccountSummary = withContext(Dispatchers.IO) {
         authMutex.withLock {
-            val epoch = requestReceipt?.accountEpoch ?: sessions.generation
+            require(requestReceipt == null || (expectedLoginEpoch == null && onLoginInstalled == null))
+            val epoch = expectedLoginEpoch ?: requestReceipt?.accountEpoch ?: sessions.generation
             fun assertRequest() {
                 if (requestReceipt != null) sessions.withPlaybackAuthorizationAdmission(requestReceipt, stillOwned) { Unit }
                 else if (!stillOwned()) throw CancellationException("Login request retired")
@@ -554,9 +557,15 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             if (expectedMid != null) require(summary.mid == expectedMid) { "登录返回的账号与验证结果不一致" }
             if (expectedActiveMid != null && account.value?.mid != expectedActiveMid) throw BiliApiException(-101, "账号已切换，请重新操作")
             if (epoch != sessions.generation) throw BiliApiException(-101, "账号已变化，请重新登录")
+            var installedReceipt: DesktopLoginInstallationReceipt? = null
             if (requestReceipt == null) {
                 resetAuthentication()
-                sessions.saveAccount(cookies, summary, imported = true, credentials = credentials, preserveAccessToken = false, snapshot = snapshot)
+                if (expectedLoginEpoch != null || onLoginInstalled != null) {
+                    val caller = currentCoroutineContext()
+                    installedReceipt = sessions.saveLoginAccount(cookies, summary, credentials, snapshot, epoch) {
+                        caller.ensureActive(); stillOwned()
+                    }
+                } else sessions.saveAccount(cookies, summary, imported = true, credentials = credentials, preserveAccessToken = false, snapshot = snapshot)
             } else {
                 val callerContext = currentCoroutineContext()
                 sessions.withPlaybackAuthorizationAdmission(requestReceipt, stillOwned) {
@@ -572,11 +581,13 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
                     }) throw CancellationException("Token install entry retired")
                 }
             }
+            // Synchronous on this IO actor, after Store/entry monitors release and before cancellable return to EDT.
+            installedReceipt?.let { onLoginInstalled?.invoke(it) }
             summary
         }
     }
 
-    suspend fun switchAccount(mid: Long): AccountSummary = withContext(Dispatchers.IO) {
+    suspend fun switchAccount(mid: Long, onAccountSwitched: (() -> Unit)? = null): AccountSummary = withContext(Dispatchers.IO) {
         authMutex.withLock {
             val epoch = sessions.generation
             val header = sessions.accountCookieHeader(mid) ?: throw IllegalArgumentException("此账号已被移除，请重新登录")
@@ -586,13 +597,19 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             currentCoroutineContext().ensureActive()
             resetAuthentication()
             check(sessions.activateAccount(mid, summary)) { "无法切换账号" }
+            onAccountSwitched?.invoke() // Actual Store success, inside IO before cancellable UI return; no Store monitor held.
             summary
         }
     }
 
-    suspend fun removeSavedAccount(mid: Long) = withContext(Dispatchers.IO) { authMutex.withLock {
+    suspend fun removeSavedAccount(mid: Long, onActiveAccountRemoved: (() -> Unit)? = null) = withContext(Dispatchers.IO) { authMutex.withLock {
         if (account.value?.mid == mid) resetAuthentication()
-        sessions.removeAccount(mid)
+        if (onActiveAccountRemoved == null) sessions.removeAccount(mid)
+        else {
+            val (removed, wasPrimary) = sessions.removeLoginAccount(mid)
+            if (wasPrimary) onActiveAccountRemoved() // Pure Window retirement, after Store monitor release on this IO actor.
+            removed
+        }
     } }
 
     private fun resetAuthentication() {
@@ -856,9 +873,12 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
     suspend fun beginQrLogin(): QrLogin = webLogin.beginWebQr()
     suspend fun pollQrLogin(key: String): QrLoginState = webLogin.pollWebQr(key)
 
-    suspend fun importCookies(raw: String): AccountSummary = withContext(Dispatchers.IO) {
+    suspend fun importCookies(raw: String, expectedLoginEpoch: Long? = null,
+        stillOwned: () -> Boolean = { true },
+        onLoginInstalled: ((DesktopLoginInstallationReceipt) -> Unit)? = null): AccountSummary = withContext(Dispatchers.IO) {
         val parsed = parseLoginCookieHeader(raw) ?: throw IllegalArgumentException("Cookie 中缺少 SESSDATA")
-        installLogin(parsed.values)
+        installLogin(parsed.values, stillOwned = stillOwned, expectedLoginEpoch = expectedLoginEpoch,
+            onLoginInstalled = onLoginInstalled)
     }
 
     suspend fun refreshAccount(): AccountSummary? = withContext(Dispatchers.IO) {

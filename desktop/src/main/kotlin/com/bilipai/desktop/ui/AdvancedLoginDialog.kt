@@ -25,7 +25,9 @@ import java.awt.image.BufferedImage
 private enum class LoginMethod(val label: String) { TV("TV 扫码"), WEB("网页扫码"), PASSWORD("密码"), SMS("短信"), COOKIE("Cookie"), ACCOUNTS("账号") }
 
 @Composable
-internal fun AdvancedLoginDialog(repository: DesktopRepository, updateHold: DesktopLoginUpdateHold, onDismiss: () -> Unit, onComplete: (AccountSummary) -> Unit) {
+internal fun AdvancedLoginDialog(repository: DesktopRepository, updateHold: DesktopLoginUpdateHold,
+    onDismiss: () -> Unit, onComplete: (AccountSummary) -> Unit,
+    loginReturn: DesktopLoginReturnBinding? = null) {
     if (!updateHold.canBegin()) return
     val instance = remember(updateHold) { updateHold.newInstance() }
     var admitted by remember(instance) { mutableStateOf(false) }
@@ -35,14 +37,33 @@ internal fun AdvancedLoginDialog(repository: DesktopRepository, updateHold: Desk
     }
     if (!admitted) return
     val account by repository.account.collectAsState()
-    val login = remember(repository) { DesktopLoginRepository(repository) }
-    val bridge = remember(login) { DesktopCaptchaBridge(login) }
     var method by remember { mutableStateOf(if (account == null) LoginMethod.TV else LoginMethod.ACCOUNTS) }
-    CompositionLocalProvider(LocalDesktopLoginUpdateInstance provides instance) {
+    val attempt = remember(instance) { java.util.concurrent.atomic.AtomicReference(Any()) }
+    var attemptVersion by remember(instance) { mutableIntStateOf(0) }
+    fun replaceAttempt() { attempt.set(Any()); attemptVersion++ }
+    val capturedAttempt = remember(instance, attemptVersion) { attempt.get() }
+    val ownsAttempt = remember(instance, loginReturn, capturedAttempt) { {
+        !instance.isRetired() && attempt.get() === capturedAttempt && (loginReturn?.owns?.invoke() ?: true)
+    } }
+    val installed = remember(loginReturn, capturedAttempt) { loginReturn?.let { binding ->
+        { receipt: DesktopLoginInstallationReceipt ->
+            // Explicit refresh/change/cancel retires intent. Account epoch's automatic dispose must not
+            // discard a success already committed by the original IO installer before its EDT return.
+            if (attempt.get() === capturedAttempt) binding.installed(receipt)
+        }
+    } }
+    val login = remember(repository, instance, loginReturn, capturedAttempt) {
+        if (loginReturn == null) DesktopLoginRepository(repository)
+        else DesktopLoginRepository(repository, loginReturn.sourceEpoch, ownsAttempt, installed)
+    }
+    val bridge = remember(login) { DesktopCaptchaBridge(login) }
+    CompositionLocalProvider(LocalDesktopLoginUpdateInstance provides instance,
+        LocalDesktopLoginReturn provides loginReturn, LocalDesktopLoginAttemptOwned provides ownsAttempt,
+        LocalDesktopLoginInstalled provides installed, LocalDesktopLoginAttemptReset provides { replaceAttempt() }) {
     AlertDialog(onDismissRequest = onDismiss, title = { Text("账号与登录") }, text = {
         Column(Modifier.width(650.dp).heightIn(max = 670.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                LoginMethod.entries.forEach { value -> FilterChip(method == value, { method = value }, label = { Text(value.label) }) }
+                LoginMethod.entries.forEach { value -> FilterChip(method == value, { if (method != value) { replaceAttempt(); method = value } }, label = { Text(value.label) }) }
             }
             key(method) {
                 Column(Modifier.fillMaxWidth().weight(1f, fill = false).verticalScroll(rememberScrollState()),
@@ -52,7 +73,7 @@ internal fun AdvancedLoginDialog(repository: DesktopRepository, updateHold: Desk
                         LoginMethod.PASSWORD -> LoginPasswordForm(login, bridge, onComplete)
                         LoginMethod.SMS -> LoginSmsForm(login, bridge, onComplete)
                         LoginMethod.COOKIE -> LoginCookieForm(repository, onComplete)
-                        LoginMethod.ACCOUNTS -> LoginAccountsForm(repository, login, onComplete)
+                        LoginMethod.ACCOUNTS -> LoginAccountsForm(repository, login, onComplete, onDismiss)
                     }
                 }
             }
@@ -64,6 +85,11 @@ internal fun AdvancedLoginDialog(repository: DesktopRepository, updateHold: Desk
 private val LocalDesktopLoginUpdateInstance = staticCompositionLocalOf<DesktopLoginUpdateHold.Instance> {
     error("Login form requires its mounted Main instance")
 }
+
+private val LocalDesktopLoginReturn = staticCompositionLocalOf<DesktopLoginReturnBinding?> { null }
+private val LocalDesktopLoginAttemptOwned = staticCompositionLocalOf<() -> Boolean> { { true } }
+private val LocalDesktopLoginInstalled = staticCompositionLocalOf<((DesktopLoginInstallationReceipt) -> Unit)?> { null }
+private val LocalDesktopLoginAttemptReset = staticCompositionLocalOf<() -> Unit> { {} }
 
 internal class LoginWork(private val scope: CoroutineScope, private val instance: DesktopLoginUpdateHold.Instance) {
     var busy by mutableStateOf(false); private set
@@ -100,7 +126,8 @@ private fun LoginQrForm(login: DesktopLoginRepository, tv: Boolean, onComplete: 
     val complete by rememberUpdatedState(onComplete)
     val scope = rememberCoroutineScope()
     val instance = LocalDesktopLoginUpdateInstance.current
-    DisposableEffect(scope, instance, generation) {
+    val resetAttempt = LocalDesktopLoginAttemptReset.current
+    DisposableEffect(scope, instance, generation, login) {
         val job = launchTrackedLogin(scope, instance) {
         qr = null; error = null; status = "正在获取二维码…"
         try {
@@ -134,7 +161,7 @@ private fun LoginQrForm(login: DesktopLoginRepository, tv: Boolean, onComplete: 
         Text(status)
         Text(if (tv) "TV 授权同时保存 App access token，可用于上游 App 接口。" else "网页扫码保存浏览器 Cookie。", style = MaterialTheme.typography.bodySmall)
         error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-        TextButton(onClick = { generation++ }) { Text("刷新二维码") }
+        TextButton(onClick = { resetAttempt(); generation++ }) { Text("刷新二维码") }
     }
 }
 
@@ -240,17 +267,22 @@ private fun LoginRiskForm(risk: DesktopLoginResult.RiskRequired, login: DesktopL
 @Composable
 private fun LoginCookieForm(repository: DesktopRepository, onComplete: (AccountSummary) -> Unit) {
     val work = rememberLoginWork(); var cookie by remember { mutableStateOf("") }
+    val loginReturn = LocalDesktopLoginReturn.current
+    val ownsAttempt = LocalDesktopLoginAttemptOwned.current
+    val installed = LocalDesktopLoginInstalled.current
     Text("粘贴你自己的 B 站 Cookie（包含 SESSDATA）。保存前会验证账号。")
     OutlinedTextField(cookie, { cookie = it }, label = { Text("Cookie") }, visualTransformation = PasswordVisualTransformation(),
         minLines = 3, maxLines = 6, enabled = !work.busy, modifier = Modifier.fillMaxWidth())
-    Button(enabled = !work.busy && cookie.isNotBlank(), onClick = { work.run { val account = repository.importCookies(cookie); cookie = ""; onComplete(account) } }) { Text("验证并登录") }
+    Button(enabled = !work.busy && cookie.isNotBlank(), onClick = { work.run { val account = repository.importCookies(cookie, loginReturn?.sourceEpoch, ownsAttempt, installed); cookie = ""; onComplete(account) } }) { Text("验证并登录") }
     LoginWorkState(work)
 }
 
 @Composable
-private fun LoginAccountsForm(repository: DesktopRepository, login: DesktopLoginRepository, onComplete: (AccountSummary) -> Unit) {
+private fun LoginAccountsForm(repository: DesktopRepository, login: DesktopLoginRepository, onComplete: (AccountSummary) -> Unit,
+    onDismiss: () -> Unit) {
     val account by repository.account.collectAsState(); val accounts by repository.savedAccounts.collectAsState()
     val work = rememberLoginWork(); var remove by remember { mutableStateOf<DesktopStoredAccountInfo?>(null) }
+    val loginReturn = LocalDesktopLoginReturn.current
     Text("当前账号：${account?.name ?: "访客"}")
     Text("账号凭证由当前 Windows 用户保护；退出登录保留已保存账号。", style = MaterialTheme.typography.bodySmall)
     accounts.forEach { stored ->
@@ -261,7 +293,7 @@ private fun LoginAccountsForm(repository: DesktopRepository, login: DesktopLogin
                     Column { Text(stored.account.name); Text("UID ${stored.account.mid} · ${if (stored.hasAccessToken) stored.accessTokenPlatform.uppercase() + " 授权" else "网页会话"}", style = MaterialTheme.typography.bodySmall) }
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TextButton(enabled = !work.busy && account?.mid != stored.account.mid, onClick = { work.run { onComplete(repository.switchAccount(stored.account.mid)) } }) { Text(if (account?.mid == stored.account.mid) "当前账号" else "切换") }
+                    TextButton(enabled = !work.busy && account?.mid != stored.account.mid, onClick = { work.run { onComplete(repository.switchAccount(stored.account.mid, onAccountSwitched = { loginReturn?.cancel?.invoke() })) } }) { Text(if (account?.mid == stored.account.mid) "当前账号" else "切换") }
                     TextButton(enabled = !work.busy, onClick = { remove = stored }) { Text("移除") }
                 }
             }
@@ -270,15 +302,23 @@ private fun LoginAccountsForm(repository: DesktopRepository, login: DesktopLogin
     if (accounts.isEmpty()) Text("没有已保存账号，请选择登录方式。")
     if (account != null) {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(enabled = !work.busy, onClick = { work.run { repository.refreshAccount(); work.notice = "账号资料已刷新" } }) { Text("刷新资料") }
+            TextButton(enabled = !work.busy, onClick = { work.run { if (repository.refreshAccount() == null) {
+                loginReturn?.cancel?.invoke(); onDismiss()
+            } else work.notice = "账号资料已刷新" } }) { Text("刷新资料") }
             val active = accounts.firstOrNull { it.account.mid == account?.mid }
             if (active?.hasAccessToken == true && active.accessTokenPlatform == "tv") TextButton(enabled = !work.busy, onClick = { work.run { login.refreshTvToken(); work.notice = "TV 授权已更新" } }) { Text("更新 TV 授权") }
-            TextButton(enabled = !work.busy, onClick = { repository.logout() }) { Text("退出登录") }
+            TextButton(enabled = !work.busy, onClick = { work.run { repository.logout(); loginReturn?.cancel?.invoke(); onDismiss() } }) { Text("退出登录") }
         }
     }
     LoginWorkState(work)
     remove?.let { target -> AlertDialog(onDismissRequest = { remove = null }, title = { Text("移除 ${target.account.name}？") },
         text = { Text("移除这台电脑保存的会话，重新登录后可再次添加。") }, confirmButton = {
-            TextButton(enabled = !work.busy, onClick = { remove = null; work.run { repository.removeSavedAccount(target.account.mid) } }) { Text("移除") }
+            TextButton(enabled = !work.busy, onClick = { remove = null; work.run {
+                var removedActive = false
+                repository.removeSavedAccount(target.account.mid, onActiveAccountRemoved = {
+                    loginReturn?.cancel?.invoke(); removedActive = true
+                })
+                if (removedActive) onDismiss()
+            } }) { Text("移除") }
         }, dismissButton = { TextButton(onClick = { remove = null }) { Text("取消") } }) }
 }

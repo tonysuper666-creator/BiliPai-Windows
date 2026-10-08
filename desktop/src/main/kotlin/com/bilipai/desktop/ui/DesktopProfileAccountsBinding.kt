@@ -18,6 +18,7 @@ internal class DesktopProfileAccountsBinding(
     private val entryJob: Job,
     private val isCurrent: () -> Boolean,
     private val commitIfCurrent: ((() -> Unit) -> Boolean),
+    private val retireLoginReturn: () -> Unit = {},
 ) : DesktopProfileAccountPort {
     private data class LogoutTerminal(val oldEpoch: Long, val acceptedEpoch: Long, val caller: Job)
     @Volatile private var logoutTerminal: LogoutTerminal? = null
@@ -57,6 +58,7 @@ internal class DesktopProfileAccountsBinding(
         val job = caller()
         admitted(job) {
             logout()
+            retireLoginReturn()
             logoutTerminal = LogoutTerminal(capturedEpoch, generation, job)
         }
         repository.profileAuthenticationChanged()
@@ -75,7 +77,7 @@ internal class DesktopProfileAccountsBinding(
         clearCurrentSession()
     }
     override suspend fun activateAccount(mid: Long): Boolean {
-        val accepted = admitted(caller()) { activateAccount(mid) }
+        val accepted = admitted(caller()) { activateAccount(mid).also { if (it) retireLoginReturn() } }
         if (accepted) repository.profileAuthenticationChanged()
         return accepted
     }
@@ -83,7 +85,7 @@ internal class DesktopProfileAccountsBinding(
         // This original port is synchronous and is called directly by the UI, not a coroutine.
         // The actual entry Job is therefore its explicit immediate-action lifetime.
         val wasPrimary = capturedMid == mid
-        val accepted = admitted(entryJob) { removeAccount(mid) }
+        val accepted = admitted(entryJob) { removeAccount(mid).also { if (it && wasPrimary) retireLoginReturn() } }
         if (accepted && wasPrimary) repository.profileAuthenticationChanged()
         return accepted
     }

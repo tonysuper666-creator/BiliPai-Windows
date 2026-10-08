@@ -4,6 +4,7 @@ import com.android.purebilibili.core.network.*
 import com.android.purebilibili.data.model.response.*
 import com.android.purebilibili.feature.login.*
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -17,7 +18,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 /** Candidate credentials live in a separate jar until explicit nav validation succeeds. */
-class DesktopLoginRepository(private val repository: DesktopRepository) {
+class DesktopLoginRepository(private val repository: DesktopRepository,
+    private val expectedLoginEpoch: Long? = null,
+    private val loginStillOwned: () -> Boolean = { true },
+    private val onLoginInstalled: ((DesktopLoginInstallationReceipt) -> Unit)? = null,
+) {
     private val candidate = DesktopSessionStore.temporary()
     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
     private val lock = Mutex()
@@ -75,7 +80,7 @@ class DesktopLoginRepository(private val repository: DesktopRepository) {
                 requireLoginCookies(cookies)
                 val credentials = data.accessToken.takeIf { it.isNotBlank() }?.let { DesktopAppCredentials(it, data.refreshToken, "tv",
                     expiry(data.expiresIn)) }
-                QrLoginState.Complete(repository.installLogin(cookies, credentials, candidate.cookieSnapshot(), expectedMid = data.mid.takeIf { it > 0 }))
+                QrLoginState.Complete(installFormLogin(cookies, credentials, expectedMid = data.mid.takeIf { it > 0 }))
             }
             else -> throw BiliApiException(response.code, response.message.ifBlank { "TV 扫码请求失败" })
         }
@@ -96,7 +101,7 @@ class DesktopLoginRepository(private val repository: DesktopRepository) {
             86101 -> QrLoginState.Waiting; 86090 -> QrLoginState.Scanned; 86038 -> QrLoginState.Expired
             0 -> { val cookies = DesktopRepository.resolveQrLoginCookies(response.raw().request.url,
                 response.headers().values("Set-Cookie"), data.url, candidate.currentCookies())
-                QrLoginState.Complete(repository.installLogin(cookies, snapshot = candidate.cookieSnapshot())) }
+                QrLoginState.Complete(installFormLogin(cookies)) }
             else -> throw BiliApiException(data.code, data.message)
         }
     }
@@ -214,21 +219,34 @@ class DesktopLoginRepository(private val repository: DesktopRepository) {
 
     private suspend fun refreshTvTokenBody(requestApi: PassportApi, receipt: DesktopPlaybackAuthorizationReceipt? = null,
         stillOwned: () -> Boolean = { true }, commitIfCurrent: ((() -> Unit) -> Boolean)? = null): AccountSummary {
-        val account = if (receipt == null) repository.requireAccount() else repository.withPlaybackReceiptAdmission(receipt, stillOwned) { repository.requireAccount() }
-        val cookies = if (receipt == null) repository.authCookies() else repository.withPlaybackReceiptAdmission(receipt, stillOwned) { repository.authCookies() }
-        val credentials = (if (receipt == null) repository.appCredentials() else repository.withPlaybackReceiptAdmission(receipt, stillOwned) { repository.appCredentials() })
+        val uiCaller = kotlinx.coroutines.currentCoroutineContext()
+        fun <T> uiAdmitted(block: () -> T): T = if (expectedLoginEpoch == null) block()
+            else repository.withPrimaryPlaybackAdmission(expectedLoginEpoch, { uiCaller.ensureActive(); loginStillOwned() }, block)
+        val account = if (receipt == null) uiAdmitted { repository.requireAccount() } else repository.withPlaybackReceiptAdmission(receipt, stillOwned) { repository.requireAccount() }
+        val cookies = if (receipt == null) uiAdmitted { repository.authCookies() } else repository.withPlaybackReceiptAdmission(receipt, stillOwned) { repository.authCookies() }
+        val credentials = (if (receipt == null) uiAdmitted { repository.appCredentials() } else repository.withPlaybackReceiptAdmission(receipt, stillOwned) { repository.appCredentials() })
             ?: throw BiliApiException(-101, "此账号没有 App 授权，请重新扫码")
         require(credentials.platform == "tv" && credentials.refreshToken.isNotBlank()) { "此授权不支持 TV 刷新，请重新登录" }
         val params = mapOf("access_key" to credentials.accessToken, "refresh_token" to credentials.refreshToken,
             "appkey" to AppSignUtils.TV_APP_KEY, "ts" to AppSignUtils.getTimestamp().toString())
         val response = requestApi.refreshToken(AppSignUtils.signForTvLogin(params)); check(response.code, response.message)
         if (receipt != null) repository.withPlaybackReceiptAdmission(receipt, stillOwned) { Unit }
+        else uiAdmitted { Unit }
         val data = response.data ?: throw BiliApiException(-1, "授权刷新结果为空")
         require(data.accessToken.isNotBlank()) { "授权刷新没有返回 token" }
         val updated = cookies + data.cookieInfo?.cookies.orEmpty().associate { it.name to it.value }.filterKeys { it in DesktopSessionStore.PERSISTED_COOKIE_NAMES }
+        if (receipt == null && (expectedLoginEpoch != null || onLoginInstalled != null))
+            return repository.installLogin(updated, DesktopAppCredentials(data.accessToken, data.refreshToken, "tv", expiry(data.expiresIn)),
+                expectedMid = account.mid, expectedActiveMid = account.mid, stillOwned = loginStillOwned,
+                expectedLoginEpoch = expectedLoginEpoch, onLoginInstalled = onLoginInstalled)
         return repository.installLogin(updated, DesktopAppCredentials(data.accessToken, data.refreshToken, "tv", expiry(data.expiresIn)),
             expectedMid = account.mid, expectedActiveMid = account.mid, requestReceipt = receipt, stillOwned = stillOwned, commitIfCurrent = commitIfCurrent)
     }
+
+    private suspend fun installFormLogin(cookies: Map<String, String>, credentials: DesktopAppCredentials? = null,
+        expectedMid: Long? = null): AccountSummary = repository.installLogin(cookies, credentials,
+        candidate.cookieSnapshot(), expectedMid = expectedMid, stillOwned = loginStillOwned,
+        expectedLoginEpoch = expectedLoginEpoch, onLoginInstalled = onLoginInstalled)
 
     private suspend fun webKey(): WebKeyData {
         val response = api.getWebKey(); check(response.code, response.message)
@@ -256,7 +274,7 @@ class DesktopLoginRepository(private val repository: DesktopRepository) {
         val token = body.data?.tokenInfo
         val credentials = token?.accessToken?.takeIf(String::isNotBlank)?.let { DesktopAppCredentials(it,
             requireNotNull(token).refreshToken, "android") }
-        return DesktopLoginResult.Complete(repository.installLogin(cookies, credentials, candidate.cookieSnapshot()))
+        return DesktopLoginResult.Complete(installFormLogin(cookies, credentials))
     }
 
     private fun tvParams(key: String? = null) = AppSignUtils.signForTvLogin(buildMap {

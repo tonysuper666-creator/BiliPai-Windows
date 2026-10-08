@@ -7,6 +7,14 @@ import java.util.Base64
 data class DesktopStoredAccountInfo(val account: AccountSummary, val lastUsedAt: Long,
     val hasAccessToken: Boolean, val accessTokenPlatform: String)
 
+/** Data receipt minted only by the existing primary Store after a real login save. */
+data class DesktopLoginInstallationReceipt internal constructor(
+    val sourceEpoch: Long,
+    val sourceMid: Long?,
+    val acceptedEpoch: Long,
+    val acceptedMid: Long,
+)
+
 internal data class DesktopAppCredentials(val accessToken: String, val refreshToken: String,
     val platform: String, val expiresAt: Long = 0)
 

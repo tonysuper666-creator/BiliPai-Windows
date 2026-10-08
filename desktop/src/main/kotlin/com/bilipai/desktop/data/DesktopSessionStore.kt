@@ -317,6 +317,18 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         mutableAccounts.value = accountRecords(saved).map { it.toInfo() }
     }
 
+    /** Same original save/persist and monitor; a UI login observer cannot infer success from epoch alone. */
+    internal fun saveLoginAccount(cookies: Map<String, String>, account: AccountSummary,
+        credentials: DesktopAppCredentials?, snapshot: CookieSnapshot?, expectedEpoch: Long,
+        stillOwned: () -> Boolean): DesktopLoginInstallationReceipt = synchronized(lock) {
+        if (generation != expectedEpoch || !stillOwned())
+            throw CancellationException("Login installation source retired")
+        val sourceMid = saved.account?.mid
+        saveAccount(cookies, account, imported = true, credentials = credentials,
+            preserveAccessToken = false, snapshot = snapshot)
+        DesktopLoginInstallationReceipt(expectedEpoch, sourceMid, generation, account.mid)
+    }
+
     fun saveSpiCookies(cookies: Map<String, String>, expectedGeneration: Long? = null) = synchronized(lock) {
         if (expectedGeneration != null && expectedGeneration != generation) throw BiliApiException(-101, "账号已切换，请重新加载")
         val visitors = cookies.filterKeys { it in SPI_COOKIE_NAMES }.filterValues { it.isNotBlank() }
@@ -358,6 +370,13 @@ internal class DesktopSessionStore(private val path: Path = defaultPath(), priva
         persist(next); saved = next; refreshPlaybackAuthorizationLocked()
         if (mutableAccount.value?.mid == mid) { serverCookies.clear(); generation++; mutableAccount.value = null }
         mutableAccounts.value = accountRecords(saved).map { it.toInfo() }; true
+    }
+
+    /** UI account removal result from the same original Store and original remover, not a second account actor. */
+    internal fun removeLoginAccount(mid: Long): Pair<Boolean, Boolean> = synchronized(lock) {
+        val wasPrimary = saved.account?.mid == mid
+        val removed = removeAccount(mid)
+        removed to (removed && wasPrimary)
     }
 
     private fun accountRecords(session: SavedSession): List<SavedAccount> {

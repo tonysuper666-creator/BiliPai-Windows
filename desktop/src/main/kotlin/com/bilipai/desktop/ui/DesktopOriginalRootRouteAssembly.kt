@@ -30,6 +30,7 @@ internal class DesktopOriginalRootRouteAssembly(
     val stack: SnapshotStateList<BiliPaiNavKey>,
     private val platform: DesktopOriginalRootRoutePlatform,
     private val visibleBottomRoutes: () -> Set<String>,
+    private val loginNavigation: DesktopRootWindowNavigationOwner? = null,
 ) : DesktopOriginalRootRouteCommands, AutoCloseable {
     private val routeJob = SupervisorJob(root.entry.gate.scope.coroutineContext[Job])
     private val scope = CoroutineScope(root.entry.gate.scope.coroutineContext + routeJob)
@@ -38,6 +39,11 @@ internal class DesktopOriginalRootRouteAssembly(
     private val videoRequest = AtomicReference<Job?>(null)
     private val mainHostNavigation = AtomicReference<((BiliPaiNavKey) -> Boolean)?>(null)
     private val mainHostBackAction = AtomicReference<(() -> AppSystemBackAction)?>(null)
+    private val mainHostDestination = AtomicReference<(() -> BiliPaiNavKey)?>(null)
+    fun bindMainHostDestination(callback: () -> BiliPaiNavKey) { mainHostDestination.set(callback) }
+    fun unbindMainHostDestination(callback: () -> BiliPaiNavKey) { mainHostDestination.compareAndSet(callback, null) }
+    private fun loginReadDestination(): BiliPaiNavKey = if (currentKey == BiliPaiNavKey.MainHost)
+        mainHostDestination.get()?.invoke() ?: BiliPaiNavKey.MainHost else currentKey
     fun bindMainHostBackAction(callback: () -> AppSystemBackAction) { mainHostBackAction.set(callback) }
     fun unbindMainHostBackAction(callback: () -> AppSystemBackAction) { mainHostBackAction.compareAndSet(callback, null) }
     private val categoryLock = Any()
@@ -74,6 +80,8 @@ internal class DesktopOriginalRootRouteAssembly(
         val destination = next.lastOrNull() ?: BiliPaiNavKey.MainHost
         val removed = resolveRemovedNavigation3SaveableStateKeys(stack.toList(), next)
         platform.beforeCommit(old, destination)
+        if (old == BiliPaiNavKey.Login && destination != BiliPaiNavKey.Login)
+            loginNavigation?.cancelLoginReturnForSource(root.capturedEpoch, root.entry.gate.mid)
         Snapshot.withMutableSnapshot { stack.clear(); stack.addAll(next) }
         removed.forEach(platform.removeSaveableState)
     }
@@ -83,8 +91,22 @@ internal class DesktopOriginalRootRouteAssembly(
         else BiliPaiNavBackStackController(stack.toList()).push(key).backStack
         replaceStack(next)
     }
+    fun prepareModalLoginReturn(): DesktopLoginReturnBinding? {
+        var result: DesktopLoginReturnBinding? = null
+        admitted { result = loginNavigation?.beginLoginReturn(root.capturedEpoch, root.entry.gate.mid,
+            loginReadDestination(), DesktopLoginReturnOrigin.MODAL) }
+        return result
+    }
+    fun login(origin: DesktopLoginReturnOrigin = DesktopLoginReturnOrigin.ROUTE): Boolean = admitted {
+        if (currentKey != BiliPaiNavKey.Login) {
+            loginNavigation?.beginLoginReturn(root.capturedEpoch, root.entry.gate.mid, loginReadDestination(), origin)
+            pushAdmitted(BiliPaiNavKey.Login)
+        }
+    }
+    fun loginReturnBinding(): DesktopLoginReturnBinding? = loginNavigation?.pendingLoginBinding(root.capturedEpoch)
     override fun push(key: BiliPaiNavKey): Boolean {
         if (key is BiliPaiNavKey.VideoDetail) { video(key); return owns() }
+        if (key == BiliPaiNavKey.Login) return login()
         return admitted {
             // Original legacy top-level routes select the actual pager, not a second Home key.
             val parameterizedSearch = key is BiliPaiNavKey.Search && (key.keyword.isNotBlank() || key.openId != 0L)
@@ -268,6 +290,7 @@ internal class DesktopOriginalRootRouteAssembly(
     override fun close() {
         if (!closed.compareAndSet(false, true)) return
         mainHostNavigation.set(null)
+        mainHostDestination.set(null)
         mainHostBackAction.set(null)
         videoRequest.getAndSet(null)?.cancel()
         routeJob.cancel()
