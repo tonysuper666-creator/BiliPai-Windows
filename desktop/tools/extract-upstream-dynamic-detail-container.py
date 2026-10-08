@@ -92,10 +92,18 @@ def detail_layout():
     success=success.replace('session.postComment(state.item.id_str, message, images) {',
         'session.postComment(state.item.id_str, message, images, onSubmissionCancelled = { onResult(false) }) {', 1)
     assert 'android.widget.' not in success
-    success=success.replace('Build.VERSION.SDK_INT >= Build.VERSION_CODES.S','desktopDetailRenderEffectsSupported()')
-    success=success.replace('AndroidRenderEffect.createBlurEffect(', 'androidx.compose.ui.graphics.BlurEffect(')
-    success=success.replace('Shader.TileMode.CLAMP,','edgeTreatment = androidx.compose.ui.graphics.TileMode.Clamp,')
-    success=success.replace(').asComposeRenderEffect()',')')
+    blur_before = """                                    AndroidRenderEffect.createBlurEffect(
+                                        blurFrame.blurRadiusPx,
+                                        blurFrame.blurRadiusPx,
+                                        Shader.TileMode.CLAMP,
+                                    ).asComposeRenderEffect()"""
+    assert success.count(blur_before)==1,'Changed original covered subreply blur call'
+    success=success.replace(blur_before,'                                    desktopSubReplyBlurEffects.resolve(blurFrame.blurRadiusPx)',1)
+    blur_owner_before='                val coveredBlurProgress = if (subReplyState.visible) subReplyCoveredBlurProgress else 0f'
+    assert success.count(blur_owner_before)==1,'Changed original covered subreply owner'
+    success=success.replace(blur_owner_before,
+        '                val desktopSubReplyBlurEffects = remember(state.item.id_str) { DesktopDetailBlurEffectCache() }\n'+blur_owner_before,1)
+    success=success.replace('Build.VERSION.SDK_INT >= Build.VERSION_CODES.S','desktopSubReplyBlurEffects.supported')
     thread=between(source,'                DynamicSubReplyPreviewHost(', '                if (showImagePreview && previewImages.isNotEmpty())')
     thread=thread.replace('interactionViewModel','session')
     thread=thread.replace('com.android.purebilibili.core.store.TokenManager.midCache','currentMid')

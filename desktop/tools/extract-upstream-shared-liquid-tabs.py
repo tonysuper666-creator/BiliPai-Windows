@@ -49,6 +49,18 @@ def desktop_glass_theme_transforms(path):
   'import com.bilipai.desktop.appearance.isDesktopInDarkTheme as isSystemInDarkTheme\n')] if path in (
    HOME+'FloatingDockChrome.kt', HOME+'BottomBarMatchedLiquidChrome.kt') else []
 
+def desktop_glass_uniform_transforms():
+ # Only Lens uses these shader keys/names; the original shader math and all
+ # parameter values stay unchanged. Every Windows Lens writer goes through this.
+ return [
+  ('import top.yukonga.miuix.kmp.blur.runtimeShaderEffect\n',
+   'import top.yukonga.miuix.kmp.blur.runtimeShaderEffect\nimport com.bilipai.desktop.ui.withDesktopWindowsGlassUniformCache\n'),
+  ('        setFloatUniform("size", scaledSizeW, scaledSizeH)\n',
+   '        withDesktopWindowsGlassUniformCache {\n        setFloatUniform("size", scaledSizeW, scaledSizeH)\n'),
+  ('            setFloatUniform("chromaticAberration", chromaticAberration)\n        }\n    }\n}',
+   '            setFloatUniform("chromaticAberration", chromaticAberration)\n        }\n        }\n    }\n}'),
+ ]
+
 def generate(repo: Path, output: Path, standalone: bool = False):
  REPO=Path(repo);HERE=Path(output)
  parser=load('liquid_selected_parser',REPO/'desktop/tools/sync-upstream.py')
@@ -96,7 +108,7 @@ def generate(repo: Path, output: Path, standalone: bool = False):
   p=row['path'];t=desktop_glass_theme_transforms(p)
   if p.endswith('LiquidGlassAdaptiveReadability.kt'):continue
   s=fixed_v027_lens(REPO)[0] if p==V027_LENS_PATH else read(_desktop_canonical_source(REPO, p))
-  if p==V027_LENS_PATH:t+=lens_preflight_visibility_transforms()
+  if p==V027_LENS_PATH:t+=lens_preflight_visibility_transforms()+desktop_glass_uniform_transforms()
   if p.endswith('AppLiquidAwareTabRow.kt'):
    t += [('import androidx.compose.ui.Modifier','import androidx.compose.ui.Modifier\nimport com.bilipai.desktop.ui.excludeFromLiquidBackground'),('        modifier = modifier,\n        enabled = enabled,','        modifier = modifier.excludeFromLiquidBackground(),\n        enabled = enabled,')]
   selected_names=None;selected_imports=''
