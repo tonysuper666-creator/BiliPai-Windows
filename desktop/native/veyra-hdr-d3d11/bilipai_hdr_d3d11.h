@@ -9,6 +9,7 @@
 
 struct bv_hdr11_pipeline;
 struct bv_hdr11_frame;
+struct bv_hdr11_p010_prepared;
 struct bv_hdr11_lease {
     void *value;
     void (*release)(void *);
@@ -111,6 +112,53 @@ struct bv_hdr11_p010_input {
 HRESULT bv_hdr11_begin_p010(struct bv_hdr11_pipeline *,
     const struct bv_hdr11_p010_input *, uint32_t output_width,uint32_t output_height,
     struct bv_hdr11_lease source_lease,struct bv_hdr11_frame **out);
+
+/* Separate UNWIRED split route; existing begin methods keep their contracts.
+ * prepare is called by the one existing legal device/host owner OUTSIDE both
+ * decoder dispatch scope and immediate-context exclusion. No cross-thread
+ * device access is licensed when creation flags/thread ownership are unknown.
+ * D3D11_CREATE_DEVICE_SINGLETHREADED is strictly unsupported for this route.
+ * It consumes a well-formed source_lease on every return, owns source/fence refs,
+ * compiles/creates all resources, and issues NO context state/GPU commands (only
+ * IUnknown interface query). Prepared state is NOT CURRENT/epoch/HDR proof.
+ * No frame is exposed while prepared; pipeline destroy/new begin stay pending.
+ * All methods are serialized by that SAME host OS thread, not a new registry.
+ * Compiler and lease callbacks must not reenter, destroy or mutate this same
+ * pipeline; its external owner serialization includes callback execution.
+ */
+HRESULT bv_hdr11_prepare_p010(struct bv_hdr11_pipeline *,
+    const struct bv_hdr11_p010_input *,uint32_t output_width,uint32_t output_height,
+    struct bv_hdr11_lease source_lease,struct bv_hdr11_p010_prepared **out);
+/* The future independent GPU-use owner must establish actual CURRENT decoder
+ * instance/epoch/retained refs/raw PQ2020/range/chroma at this exact submission,
+ * and hold the ORIGINAL immediate-context exclusion throughout this method.
+ * Existing CPU-only observation callback is NOT authorized to invoke submit.
+ * Caller rechecks real mp_image/HWctx/ready getter and supplies exactly the
+ * prepared texture/slice/crop/constants/fence pointer/value. The helper rechecks
+ * actual owned descriptors, but does not mint an active owner/source permit.
+ * No module-explicit compiler/allocation/QI/AddRef/Release/configured lock/
+ * lease callback, CPU GPU wait, Flush or NVIDIA call. Swap/binding/driver
+ * implicit reference or allocation work is not excluded or validated here.
+ * No active asynchronous query unless the
+ * real owner accounts for these Dispatch commands; VideoContext is unchanged.
+ * Swap/restore is immediate-context-only; old state ref is retained for close.
+ * E_UNEXPECTED means no nonnull previous state was returned: restore is UNKNOWN,
+ * caller must stop use/recover the shared context; NULL must not fake restore.
+ * Any state/queue attempt is conservatively submitted before first Wait.
+ * Failure keeps prepared/failed frame for lock-free close; one attempt only.
+ * Success means commands queued, not later active epoch or GPU/HDR/display.
+ */
+HRESULT bv_hdr11_submit_p010(struct bv_hdr11_p010_prepared *,
+    const struct bv_hdr11_p010_input *actual_input_at_submit);
+/* Called AFTER BOTH owner scope and context exclusion end, on same host thread.
+ * Clears prepared handle exactly once and releases temporary COM refs outside
+ * locks. With no submitted work it frees the frame/source_lease and *out=NULL.
+ * Otherwise it transfers ONE original frame reference even on submit failure;
+ * caller must use actual final-consumer seal/retire, never producer completion.
+ * There is no retry/free of an attempted partial frame or hidden cleanup fence.
+ */
+HRESULT bv_hdr11_close_p010_prepared(struct bv_hdr11_p010_prepared **,
+    struct bv_hdr11_frame **submitted_frame);
 
 /* Borrowed views only while the frame is unsealed/nonfailed; retain the frame
  * for all external use. Proxy: R8G8B8A8_UNORM at source extent, encoded sRGB,

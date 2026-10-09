@@ -38,6 +38,20 @@ struct bv_hdr11_frame {
     uint64_t final_value;
     int submitted,finished,failed,sealed;
 };
+/* Separate CPU-prepared custody. Its opaque frame is not exposed until
+ * lock-free close; no prepared pointer is a source/epoch/HDR permit. */
+struct bv_hdr11_p010_prepared {
+    struct bv_hdr11_frame *frame;
+    struct bv_hdr11_p010_input input;
+    D3D11_TEXTURE2D_DESC source_desc;
+    ID3D11DeviceContext4 *context4;
+    ID3D11ShaderResourceView1 *plane1[2];
+    IUnknown *ready_identity;
+    ID3DDeviceContextState *previous;
+    DWORD owner_thread;
+    UINT device_flags;
+    int attempted;
+};
 static int lease_valid(struct bv_hdr11_lease l) { return l.value&&l.release; }
 static void release_lease(struct bv_hdr11_lease *l) {
     void *v=l->value;void (*release)(void*)=l->release;
@@ -387,6 +401,177 @@ HRESULT bv_hdr11_begin_p010(struct bv_hdr11_pipeline *p,
     context_leave(p,&old);RELEASE(context4);
     if(FAILED(hr))f->failed=1;
     *out=f;return hr;
+}
+/* Exact integer fields; do not memcmp SDK structs with padding. */
+static int p010_desc_equal(const D3D11_TEXTURE2D_DESC *a,const D3D11_TEXTURE2D_DESC *b) {
+    return a->Width==b->Width&&a->Height==b->Height&&a->MipLevels==b->MipLevels&&
+        a->ArraySize==b->ArraySize&&a->Format==b->Format&&
+        a->SampleDesc.Count==b->SampleDesc.Count&&a->SampleDesc.Quality==b->SampleDesc.Quality&&
+        a->Usage==b->Usage&&a->BindFlags==b->BindFlags&&
+        a->CPUAccessFlags==b->CPUAccessFlags&&a->MiscFlags==b->MiscFlags;
+}
+static int p010_input_equal(const struct bv_hdr11_p010_input *a,
+    const struct bv_hdr11_p010_input *b) {
+    return a->texture==b->texture&&a->array_slice==b->array_slice&&
+        a->crop_left==b->crop_left&&a->crop_top==b->crop_top&&
+        a->crop_right==b->crop_right&&a->crop_bottom==b->crop_bottom&&
+        a->producer_ready_fence==b->producer_ready_fence&&
+        a->producer_ready_value==b->producer_ready_value&&
+        a->constants.visible_width==b->constants.visible_width&&
+        a->constants.visible_height==b->constants.visible_height&&
+        a->constants.allocation_width==b->constants.allocation_width&&
+        a->constants.allocation_height==b->constants.allocation_height&&
+        a->constants.raw_range==b->constants.raw_range&&
+        a->constants.raw_chroma_location==b->constants.raw_chroma_location&&
+        a->constants.reserved0==b->constants.reserved0&&a->constants.reserved1==b->constants.reserved1;
+}
+/* No immediate-context state read/write, lock callback or GPU command. The
+ * existing legal host owner invokes prepare/close outside decoder/context locks.
+ * A SINGLETHREADED device is rejected; checking its flags does not license an
+ * otherwise unknown foreign thread to access that device in the first place. */
+HRESULT bv_hdr11_prepare_p010(struct bv_hdr11_pipeline *p,
+    const struct bv_hdr11_p010_input *input,uint32_t ow,uint32_t oh,
+    struct bv_hdr11_lease lease,struct bv_hdr11_p010_prepared **out) {
+    if(!out){if(lease_valid(lease))release_lease(&lease);return E_POINTER;}*out=NULL;
+    if(!lease_valid(lease))return E_INVALIDARG;
+    if(!p||p->frame||!input){release_lease(&lease);return p&&p->frame?E_PENDING:E_INVALIDARG;}
+    UINT flags=ID3D11Device_GetCreationFlags(p->device);
+    if(flags&D3D11_CREATE_DEVICE_SINGLETHREADED){release_lease(&lease);return E_NOTIMPL;}
+    const struct bv_hdr11_p010_input in=*input;
+    D3D11_TEXTURE2D_DESC d={0};HRESULT hr=p010_source(p,&in,&d);
+    if(SUCCEEDED(hr)&&!p010_payload(p,&d,&in.constants,ow,oh))hr=E_INVALIDARG;
+    if(FAILED(hr)){release_lease(&lease);return hr;}
+    ID3D11Device3 *device3=NULL;ID3D11DeviceContext4 *context4=NULL;ID3D11Fence *ready=NULL;
+    hr=ID3D11Device_QueryInterface(p->device,&IID_ID3D11Device3,(void**)&device3);
+    /* IUnknown QI only: no immediate-context command/state inspection. */
+    if(SUCCEEDED(hr))hr=IUnknown_QueryInterface((IUnknown*)p->context,
+        &IID_ID3D11DeviceContext4,(void**)&context4);
+    if(SUCCEEDED(hr))hr=IUnknown_QueryInterface(in.producer_ready_fence,&IID_ID3D11Fence,(void**)&ready);
+    if(SUCCEEDED(hr)) {
+        ID3D11Device *device=NULL;ID3D11Fence_GetDevice(ready,&device);
+        int same=device&&same_device(device,p->device);RELEASE(device);
+        if(!same||ID3D11Fence_GetCompletedValue(ready)==UINT64_MAX)hr=E_INVALIDARG;
+    }
+    if(SUCCEEDED(hr))hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    if(SUCCEEDED(hr))hr=p010_shader(p);
+    if(FAILED(hr)){RELEASE(ready);RELEASE(context4);RELEASE(device3);release_lease(&lease);return hr;}
+    struct bv_hdr11_p010_prepared *s=calloc(1,sizeof(*s));
+    struct bv_hdr11_frame *f=s?calloc(1,sizeof(*f)):NULL;
+    if(!f){free(s);RELEASE(ready);RELEASE(context4);RELEASE(device3);release_lease(&lease);return E_OUTOFMEMORY;}
+    s->frame=f;s->input=in;s->source_desc=d;s->context4=context4;context4=NULL;
+    s->owner_thread=GetCurrentThreadId();s->device_flags=flags;
+    s->ready_identity=in.producer_ready_fence;IUnknown_AddRef(s->ready_identity);
+    f->pipeline=p;f->refs=1;f->source_w=in.constants.visible_width;
+    f->source_h=in.constants.visible_height;f->output_w=ow;f->output_h=oh;
+    f->source_lease=lease;f->source=in.texture;ID3D11Texture2D_AddRef(f->source);
+    f->producer_ready=ready;ready=NULL;f->producer_ready_value=in.producer_ready_value;p->frame=f;
+    hr=p010_copy_create(f,device3,&d,&in.constants);RELEASE(device3);
+    for(int i=0;SUCCEEDED(hr)&&i<2;i++)
+        hr=ID3D11ShaderResourceView_QueryInterface(f->p010_plane[i],
+            &IID_ID3D11ShaderResourceView1,(void**)&s->plane1[i]);
+    if(SUCCEEDED(hr))hr=texture_create(f,HDR_BASE,f->source_w,f->source_h,DXGI_FORMAT_R16G16B16A16_FLOAT);
+    if(SUCCEEDED(hr))hr=texture_create(f,SDR_PROXY,f->source_w,f->source_h,DXGI_FORMAT_R8G8B8A8_UNORM);
+    if(SUCCEEDED(hr))hr=texture_create(f,HDR_RESTORED,ow,oh,DXGI_FORMAT_R16G16B16A16_FLOAT);
+    if(SUCCEEDED(hr))hr=texture_create(f,PQ_OUTPUT,ow,oh,DXGI_FORMAT_R10G10B10A2_UNORM);
+    if(FAILED(hr)) {
+        RELEASE(s->plane1[0]);RELEASE(s->plane1[1]);RELEASE(s->context4);RELEASE(s->ready_identity);
+        free(s);frame_free(f);return hr;
+    }
+    *out=s;return S_OK;
+}
+/* Resource descriptors are immutable, but re-read the actual held objects.
+ * This helper makes no explicit QI/AddRef/Release, allocation, compiler or
+ * caller callback. Driver/COM implicit allocation/ref work is not guaranteed. */
+static int p010_prepared_resources(struct bv_hdr11_p010_prepared *s) {
+    struct bv_hdr11_frame *f=s->frame;struct bv_hdr11_pipeline *p=f->pipeline;
+    if(p->frame!=f||f->failed||f->submitted||f->finished||f->sealed||
+        !lease_valid(f->source_lease)||!s->context4||!s->ready_identity||!p->isolated||
+        !p->p010_shader||!p->shader[BV_HDR_PROXY_ENCODE]||
+        f->source!=s->input.texture||!f->producer_ready||
+        f->producer_ready_value!=s->input.producer_ready_value||
+        !f->p010_copy||!f->p010_constants)return 0;
+    D3D11_TEXTURE2D_DESC d={0};ID3D11Texture2D_GetDesc(f->source,&d);
+    if(!p010_desc_equal(&d,&s->source_desc))return 0;
+    ID3D11Texture2D_GetDesc(f->p010_copy,&d);
+    if(d.Width!=s->input.constants.allocation_width||d.Height!=s->input.constants.allocation_height||
+        d.MipLevels!=1||d.ArraySize!=1||d.Format!=DXGI_FORMAT_P010||
+        d.SampleDesc.Count!=1||d.SampleDesc.Quality||d.Usage!=D3D11_USAGE_DEFAULT||
+        d.BindFlags!=D3D11_BIND_SHADER_RESOURCE||d.CPUAccessFlags||d.MiscFlags)return 0;
+    for(UINT i=0;i<2;i++) {
+        if(!f->p010_plane[i]||!s->plane1[i])return 0;
+        D3D11_SHADER_RESOURCE_VIEW_DESC1 v={0};ID3D11ShaderResourceView1_GetDesc1(s->plane1[i],&v);
+        if(v.Format!=(i?DXGI_FORMAT_R16G16_UNORM:DXGI_FORMAT_R16_UNORM)||
+            v.ViewDimension!=D3D11_SRV_DIMENSION_TEXTURE2DARRAY||
+            v.Texture2DArray.MostDetailedMip||v.Texture2DArray.MipLevels!=1||
+            v.Texture2DArray.FirstArraySlice||v.Texture2DArray.ArraySize!=1||
+            v.Texture2DArray.PlaneSlice!=i)return 0;
+    }
+    const DXGI_FORMAT formats[TEXTURES]={DXGI_FORMAT_R16G16B16A16_FLOAT,
+        DXGI_FORMAT_R8G8B8A8_UNORM,DXGI_FORMAT_R16G16B16A16_FLOAT,DXGI_FORMAT_R10G10B10A2_UNORM};
+    for(int i=0;i<TEXTURES;i++) {
+        if(!f->texture[i]||!f->srv[i]||!f->uav[i])return 0;
+        ID3D11Texture2D_GetDesc(f->texture[i],&d);
+        if(d.Width!=(i<HDR_RESTORED?f->source_w:f->output_w)||
+            d.Height!=(i<HDR_RESTORED?f->source_h:f->output_h)||d.MipLevels!=1||d.ArraySize!=1||
+            d.Format!=formats[i]||d.SampleDesc.Count!=1||d.SampleDesc.Quality||
+            d.Usage!=D3D11_USAGE_DEFAULT||d.BindFlags!=(D3D11_BIND_SHADER_RESOURCE|D3D11_BIND_UNORDERED_ACCESS)||
+            d.CPUAccessFlags||d.MiscFlags)return 0;
+    }
+    D3D11_BUFFER_DESC b={0};ID3D11Buffer_GetDesc(f->p010_constants,&b);
+    return b.ByteWidth==sizeof(struct bv_hdr_p010_constants)&&b.Usage==D3D11_USAGE_IMMUTABLE&&
+        b.BindFlags==D3D11_BIND_CONSTANT_BUFFER&&!b.CPUAccessFlags&&!b.MiscFlags&&!b.StructureByteStride;
+}
+/* Requires the future independent decoder/GPU owner scope AND original context
+ * exclusion, on the same legal host thread. Never invokes configured locks or
+ * release callbacks. Exact tuple match is storage shape, NOT an active permit. */
+HRESULT bv_hdr11_submit_p010(struct bv_hdr11_p010_prepared *s,
+    const struct bv_hdr11_p010_input *input) {
+    if(!s||!input||s->owner_thread!=GetCurrentThreadId()||s->attempted)return E_INVALIDARG;
+    struct bv_hdr11_frame *f=s->frame;struct bv_hdr11_pipeline *p=f->pipeline;
+    const struct bv_hdr11_p010_input in=*input;s->attempted=1;
+    if(!p010_input_equal(&in,&s->input)||!p010_prepared_resources(s)||
+        ID3D11Device_GetCreationFlags(p->device)!=s->device_flags||
+        (s->device_flags&D3D11_CREATE_DEVICE_SINGLETHREADED)||
+        ID3D11DeviceContext1_GetType(p->context)!=D3D11_DEVICE_CONTEXT_IMMEDIATE||
+        ID3D11Fence_GetCompletedValue(f->producer_ready)==UINT64_MAX) {
+        f->failed=1;return E_INVALIDARG;
+    }
+    HRESULT hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    if(FAILED(hr)){f->failed=1;return hr;}
+    /* Conservatively retain even the state-swap attempt; certainly before Wait.
+     * Previous state's returned COM ref is held until lock-free close. */
+    f->submitted=1;
+    ID3D11DeviceContext1_SwapDeviceContextState(p->context,p->isolated,&s->previous);
+    if(!s->previous){f->failed=1;return E_UNEXPECTED;}
+    ID3D11DeviceContext1_ClearState(p->context);
+    hr=ID3D11DeviceContext4_Wait(s->context4,f->producer_ready,f->producer_ready_value);
+    if(SUCCEEDED(hr)) {
+        ID3D11DeviceContext1_CopySubresourceRegion(p->context,(ID3D11Resource*)f->p010_copy,
+            0,0,0,0,(ID3D11Resource*)f->source,in.array_slice,NULL);
+        hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    }
+    if(SUCCEEDED(hr)) {
+        p010_dispatch(f);
+        dispatch(f,BV_HDR_PROXY_ENCODE,&f->srv[HDR_BASE],1,SDR_PROXY,f->source_w,f->source_h);
+        hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    }
+    ID3D11DeviceContext1_SwapDeviceContextState(p->context,s->previous,NULL);
+    if(FAILED(hr))f->failed=1;
+    return hr; /* queued only; no epoch-after-unlock, GPU/HDR/display proof */
+}
+/* Scope and context exclusion have ended. Unsubmitted frames may be freed;
+ * any attempted queue/state use transfers the unchanged retained frame. */
+HRESULT bv_hdr11_close_p010_prepared(struct bv_hdr11_p010_prepared **handle,
+    struct bv_hdr11_frame **out) {
+    if(!handle||!out)return E_POINTER;*out=NULL;
+    struct bv_hdr11_p010_prepared *s=*handle;if(!s)return S_OK;
+    if(s->owner_thread!=GetCurrentThreadId())return E_INVALIDARG;
+    struct bv_hdr11_frame *f=s->frame;int submitted=f->submitted;
+    *handle=NULL;
+    RELEASE(s->previous);RELEASE(s->plane1[0]);RELEASE(s->plane1[1]);
+    RELEASE(s->context4);RELEASE(s->ready_identity);free(s);
+    if(submitted)*out=f;else frame_free(f);
+    return S_OK;
 }
 HRESULT bv_hdr11_proxy(struct bv_hdr11_frame *f,ID3D11Texture2D **texture,
     ID3D11ShaderResourceView **srv) {
