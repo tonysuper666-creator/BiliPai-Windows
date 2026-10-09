@@ -96,12 +96,16 @@ class DesktopDownloadBrandSuccessTest {
         val h = Harness()
         try {
             val manager = h.manager()
-            var statusAtRetirement: DownloadStatus? = null
+            val retirement = CompletableDeferred<DownloadStatus>()
             h.beforeDecoration = {
-                statusAtRetirement = manager.tasks.value.single().status
+                val status = manager.tasks.value.single().status
                 h.accountCurrent = false
+                retirement.complete(status)
             }
-            h.enqueue(manager); h.completed(manager); h.closeManager(manager)
+            h.enqueue(manager); h.completed(manager)
+            // COMPLETED precedes cleanup and decoration; observe the actual callback before closing its worker.
+            val statusAtRetirement = withTimeout(2_000) { retirement.await() }
+            h.closeManager(manager)
             assertEquals(DownloadStatus.COMPLETED, statusAtRetirement)
             assertEquals(DownloadStatus.COMPLETED, manager.tasks.value.single().status)
             assertTrue(h.events.isEmpty())
