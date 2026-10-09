@@ -44,8 +44,15 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
         output.value = output.value.copy(displayWidth = 1280, displayHeight = 720)
         @Suppress("UNCHECKED_CAST")
         val state = field("mutableState").get(player) as MutableStateFlow<PlayerState>
+        // This memory-only loaded actor also needs the same-source track readback receipt.
+        // READY and dimensions alone must never bypass the production load identity check.
+        type.getDeclaredField("activeAttemptId").apply { isAccessible = true }.setLong(actor, 1L)
+        for (name in listOf("activeEntry", "expectedEntry"))
+            type.getDeclaredField(name).apply { isAccessible = true }.set(actor, 11L)
+        val identity = PlayerNativeTrackIdentity(snapshot.sourceVersion, revision, 1L, 11L, snapshot.source)
         state.value = state.value.copy(ready = true, loading = false, firstVideoFrameReady = true,
-            nativePaused = false, videoCodec = "fixture-codec")
+            nativePaused = false, videoCodec = "fixture-codec", nativeTrackIdentity = identity)
+        assertTrue(player.isNativeTrackIdentityCurrent(identity))
     }
     fun hasQueuedNvidia() = queue.any { it.javaClass.simpleName == "NvidiaVideo" }
     fun recordDevice(vendor: Int?, context: String?) {

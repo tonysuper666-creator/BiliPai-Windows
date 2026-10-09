@@ -77,8 +77,10 @@ class DesktopBangumiDefaultQualityTest {
             f.vm.loadBangumiPlay(19, 41)
             f.awaitPlans(1)
             assertEquals(120, f.plans.first().videoTrack?.id)
+            val autoState = f.vm.uiState.value as BangumiPlayerState.Success
             f.vm.changeQuality(80)
             f.awaitPlans(2)
+            assertSame(autoState, f.qualityCaptures.single())
             assertEquals(listOf(127, 80), f.requests.toList())
             assertEquals(80, f.plans.last().videoTrack?.id)
             assertEquals(80, (f.vm.uiState.value as BangumiPlayerState.Success).quality)
@@ -138,6 +140,7 @@ class DesktopBangumiDefaultQualityTest {
             CoroutineExceptionHandler { _, failure -> uncaught += failure })
         val requests = CopyOnWriteArrayList<Int>()
         val plans = CopyOnWriteArrayList<DesktopOriginalBangumiNativeSourcePlan>()
+        val qualityCaptures = CopyOnWriteArrayList<BangumiPlayerState.Success>()
         val resetPlayers = CopyOnWriteArrayList<Boolean>()
         private val requestFinished = CompletableDeferred<Unit>()
         private val launchedRequests = CopyOnWriteArrayList<Job>()
@@ -201,6 +204,17 @@ class DesktopBangumiDefaultQualityTest {
                 override suspend fun getDanmakuRawData(cid: Long): ByteArray? = error("No danmaku request")
             }, object : DesktopOriginalBangumiNativePublication {
                 override suspend fun beginEpisode(detail: BangumiDetail, episode: BangumiEpisode) { check(active.get()) }
+                override suspend fun beginQualityReplacement(state: BangumiPlayerState.Success) {
+                    currentCoroutineContext().ensureActive()
+                    check(active.get())
+                    // Projection-only capture of this exact preceding plan; no native source or ACK is created.
+                    assertSame(vm.uiState.value, state)
+                    val previous = plans.last()
+                    assertSame(previous.data, state.cachedPlayData)
+                    assertSame(previous.episode, state.currentEpisode)
+                    assertSame(previous.detail, state.seasonDetail)
+                    qualityCaptures += state
+                }
                 override fun publishDash(videoUrl: String, audioUrl: String?, seekToMs: Long, resetPlayer: Boolean,
                     referer: String, dashManifest: String?) {
                     check(active.get())

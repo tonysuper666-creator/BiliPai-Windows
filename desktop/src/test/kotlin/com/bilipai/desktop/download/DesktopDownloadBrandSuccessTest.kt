@@ -17,10 +17,14 @@ class DesktopDownloadBrandSuccessTest {
     private class Harness {
         val root = Files.createTempDirectory("download-brand-")
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
-        var accountCurrent = true
+        @Volatile var accountCurrent = true
         var decorateFails = false
+        var beforeDecoration: () -> Unit = {}
         val events = java.util.concurrent.CopyOnWriteArrayList<BrandSuccessFeedback>()
-        val bus = BrandSuccessEvents { if (decorateFails) error("synthetic decorator failure") else scope.isActive }
+        val bus = BrandSuccessEvents {
+            beforeDecoration()
+            if (decorateFails) error("synthetic decorator failure") else scope.isActive && accountCurrent
+        }
         val gate = Any()
         val publication = DesktopLocalPlaybackPublication({ accountCurrent }, { block ->
             synchronized(gate) { if (!accountCurrent) false else { block(); true } }
@@ -88,13 +92,40 @@ class DesktopDownloadBrandSuccessTest {
         } finally { h.close() }
     }
 
-    @Test fun accountRetiresAfterOutputButBusinessCompletionRemainsCompleted(): Unit = runBlocking {
+    @Test fun accountRetiresAfterBusinessCompletionButBusinessCompletionRemainsCompleted(): Unit = runBlocking {
+        val h = Harness()
+        try {
+            val manager = h.manager()
+            var statusAtRetirement: DownloadStatus? = null
+            h.beforeDecoration = {
+                statusAtRetirement = manager.tasks.value.single().status
+                h.accountCurrent = false
+            }
+            h.enqueue(manager); h.completed(manager); h.closeManager(manager)
+            assertEquals(DownloadStatus.COMPLETED, statusAtRetirement)
+            assertEquals(DownloadStatus.COMPLETED, manager.tasks.value.single().status)
+            assertTrue(h.events.isEmpty())
+        } finally { h.close() }
+    }
+
+    @Test fun accountRetiresAfterMuxBeforeBusinessCommitPausesItsOwnTask(): Unit = runBlocking {
         val h = Harness()
         try {
             val old = h.merge
-            h.merge = { video, audio, output -> old(video, audio, output); h.accountCurrent = false }
-            val manager = h.manager(); h.enqueue(manager); h.completed(manager); h.closeManager(manager)
-            assertEquals(DownloadStatus.COMPLETED, manager.tasks.value.single().status)
+            var outputPath: Path? = null
+            h.merge = { video, audio, output ->
+                old(video, audio, output)
+                outputPath = output
+                h.accountCurrent = false
+            }
+            val manager = h.manager(); h.enqueue(manager)
+            val task = withTimeout(5_000) {
+                manager.tasks.first { it.singleOrNull()?.status == DownloadStatus.PAUSED }.single()
+            }
+            h.closeManager(manager)
+            assertEquals(DownloadStatus.PAUSED, task.status)
+            assertNull(task.item.filePath)
+            assertTrue(Files.isRegularFile(assertNotNull(outputPath)))
             assertTrue(h.events.isEmpty())
         } finally { h.close() }
     }
