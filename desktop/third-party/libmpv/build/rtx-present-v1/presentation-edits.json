@@ -1194,8 +1194,8 @@
     "path": "video/filter/vf_format.c"
   },
   {
-    "afterBytes": 51847,
-    "afterSha256": "1558c340800af2f69b8dc5129a5e80da403fa8dced35cd8faa28c052c475a533",
+    "afterBytes": 53721,
+    "afterSha256": "a3da2f565903a59ea071799442d45e4361147f6ae91d157571943e9dcb1d6b4f",
     "beforeBytes": 47089,
     "beforeSha256": "f333a1730570d3a343b94654da4566b1e1cc7de44a537bcb1f7f3f328667ccce",
     "edits": [
@@ -1238,13 +1238,38 @@
         "count": 1,
         "new": "    if (p->is_group) {\n        if (cmd == VDCTRL_BILIPAI_GET_ACTIVE_DECODER ||\n            cmd == VDCTRL_BILIPAI_SET_DECODER_READY)\n            return CONTROL_FALSE;\n",
         "old": "    if (p->is_group) {\n        if (cmd == VDCTRL_BILIPAI_GET_ACTIVE_DECODER)\n            return CONTROL_FALSE;\n"
+      },
+      {
+        "count": 1,
+        "new": "// TLS from fixed osdep/threads.h -> compiler.h; no shared unlocked bool.\n// Reject same-thread callback reentry BEFORE taking the dispatch mutex. Other\n// threads preserve the original dispatcher serialization and control behavior.\nstatic thread_local bool bilipai_gpu_input_callback_active;\n\nint mp_decoder_wrapper_control(struct mp_decoder_wrapper *d,\n",
+        "old": "int mp_decoder_wrapper_control(struct mp_decoder_wrapper *d,\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (bilipai_gpu_input_callback_active ||\n        cmd == VDCTRL_BILIPAI_WITH_GPU_INPUT) return CONTROL_FALSE;\n    struct priv *p = d->f->priv;\n    int res = CONTROL_UNKNOWN;\n",
+        "old": "    struct priv *p = d->f->priv;\n    int res = CONTROL_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "            cmd == VDCTRL_BILIPAI_SET_DECODER_READY ||\n            cmd == VDCTRL_BILIPAI_SET_GPU_INPUT)\n",
+        "old": "            cmd == VDCTRL_BILIPAI_SET_DECODER_READY)\n"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_decoder_wrapper_bilipai_gpu_input(struct mp_decoder_wrapper *d,\n    struct mp_bilipai_gpu_input_scope *scope)\n{\n    if (!scope) return false;\n    scope->entered = scope->callback_accepted = scope->mutex_released = false;\n    if (bilipai_gpu_input_callback_active || !d || !d->f || !scope->image ||\n        !scope->borrow || !scope->instance_id || !scope->epoch_id) return false;\n    struct priv *p = d->f->priv;\n    if (p->is_group) return false;\n    thread_lock(p); // Caller holds no async queue lock; original owner exclusion.\n    struct mp_bilipai_active_decoder active = {0};\n    bool matched = bilipai_active_matches(p, scope->image, &active) &&\n        active.instance_id == scope->instance_id && active.epoch_id == scope->epoch_id;\n    int result = CONTROL_FALSE;\n    if (matched) {\n        bilipai_gpu_input_callback_active = true;\n        // Direct child control; never recursively call public wrapper control.\n        result = p->decoder->control(p->decoder->f, VDCTRL_BILIPAI_WITH_GPU_INPUT,\n                                     scope);\n        bilipai_gpu_input_callback_active = false;\n    }\n    thread_unlock(p);\n    return result == CONTROL_TRUE && scope->entered &&\n        scope->callback_accepted && scope->mutex_released;\n}\n\nstatic bool bilipai_same_retained_reference(const struct mp_image *image,\n",
+        "old": "static bool bilipai_same_retained_reference(const struct mp_image *image,\n"
+      },
+      {
+        "count": 1,
+        "new": "    // Preserve zero/non-TRUE query output even when same-thread reentry rejects.\n    // This occurs before any dispatch mutex acquisition or wrapper dereference.\n    if (cmd == VDCTRL_BILIPAI_GET_ACTIVE_DECODER) {\n        if (!arg) return CONTROL_FALSE;\n        *(struct mp_bilipai_active_decoder *)arg =\n            (struct mp_bilipai_active_decoder){0};\n    }\n    if (bilipai_gpu_input_callback_active ||\n        cmd == VDCTRL_BILIPAI_WITH_GPU_INPUT) return CONTROL_FALSE;\n    struct priv *p = d->f->priv;\n    int res = CONTROL_UNKNOWN;\n",
+        "old": "    if (bilipai_gpu_input_callback_active ||\n        cmd == VDCTRL_BILIPAI_WITH_GPU_INPUT) return CONTROL_FALSE;\n    struct priv *p = d->f->priv;\n    int res = CONTROL_UNKNOWN;\n    if (cmd == VDCTRL_BILIPAI_GET_ACTIVE_DECODER) {\n        if (!arg) return CONTROL_FALSE;\n        *(struct mp_bilipai_active_decoder *)arg =\n            (struct mp_bilipai_active_decoder){0};\n    }\n"
       }
     ],
     "path": "filters/f_decoder_wrapper.c"
   },
   {
-    "afterBytes": 72414,
-    "afterSha256": "4abe8d6cc782725883e2dd8fdb54a3e4254dabe967932b9350260b64e2c083e0",
+    "afterBytes": 82037,
+    "afterSha256": "34f155ac6a4e9b2142eeaa8e0744f36932eacb7c9ed5446e90c57f2a081d9e59",
     "beforeBytes": 52206,
     "beforeSha256": "4c042a000d24dc093a8ccc60bfeeffa8e231fc7404fec3cf4f52c2e20bc3178a",
     "edits": [
@@ -1437,13 +1462,38 @@
         "count": 1,
         "new": "    case VDCTRL_BILIPAI_SET_DECODER_READY: {\n        const struct mp_bilipai_decoder_ready_request *request = arg;\n        if (!request || !ctx->avctx || !avcodec_is_open(ctx->avctx) ||\n            ctx->bilipai_decoder_ids_disabled || !request->instance_id ||\n            !request->epoch_id || !ctx->bilipai_decoder_sequence ||\n            request->instance_id != ctx->bilipai_decoder_instance ||\n            request->epoch_id != ctx->bilipai_decoder_epoch) return CONTROL_FALSE;\n        ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n        if (!request->enable) return CONTROL_TRUE;\n#if HAVE_D3D11\n        if (ctx->use_hwdec && !ctx->hwdec.copying &&\n            ctx->hwdec.lavc_device == AV_HWDEVICE_TYPE_D3D11VA &&\n            d3d11_bilipai_default_owner_known(ctx->hwdec_dev)) {\n            ctx->bilipai_ready_instance = request->instance_id;\n            ctx->bilipai_ready_epoch = request->epoch_id;\n            return CONTROL_TRUE;\n        }\n#endif\n        return CONTROL_FALSE;\n    }\n    case VDCTRL_SET_FRAMEDROP:\n",
         "old": "    case VDCTRL_SET_FRAMEDROP:\n"
+      },
+      {
+        "count": 1,
+        "new": "    uint64_t bilipai_ready_instance, bilipai_ready_epoch;\n    // Separate opt-in; touched only through serialized decoder control/reset.\n    uint64_t bilipai_gpu_input_instance, bilipai_gpu_input_epoch;\n",
+        "old": "    uint64_t bilipai_ready_instance, bilipai_ready_epoch;\n"
+      },
+      {
+        "count": 1,
+        "new": "    ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n    ctx->bilipai_gpu_input_instance = ctx->bilipai_gpu_input_epoch = 0;\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    return;\n",
+        "old": "    ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    return;\n"
+      },
+      {
+        "count": 1,
+        "new": "static void reset_avctx(struct mp_filter *vd)\n{\n    vd_ffmpeg_ctx *ctx = vd->priv;\n\n    ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n    ctx->bilipai_gpu_input_instance = ctx->bilipai_gpu_input_epoch = 0;\n",
+        "old": "static void reset_avctx(struct mp_filter *vd)\n{\n    vd_ffmpeg_ctx *ctx = vd->priv;\n\n    ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n"
+      },
+      {
+        "count": 1,
+        "new": "// Exact raw/current tuple qualification only; no inference/default chroma.\nstatic bool bilipai_gpu_input_chroma(int raw, enum pl_chroma_location current)\n{\n    switch (raw) {\n    case AVCHROMA_LOC_LEFT: return current == PL_CHROMA_LEFT;\n    case AVCHROMA_LOC_CENTER: return current == PL_CHROMA_CENTER;\n    case AVCHROMA_LOC_TOPLEFT: return current == PL_CHROMA_TOP_LEFT;\n    case AVCHROMA_LOC_TOP: return current == PL_CHROMA_TOP_CENTER;\n    case AVCHROMA_LOC_BOTTOMLEFT: return current == PL_CHROMA_BOTTOM_LEFT;\n    case AVCHROMA_LOC_BOTTOM: return current == PL_CHROMA_BOTTOM_CENTER;\n    default: return false;\n    }\n}\n\nstatic bool bilipai_with_gpu_input(vd_ffmpeg_ctx *ctx,\n                                   struct mp_bilipai_gpu_input_scope *scope)\n{\n    if (!scope || !scope->image || !scope->borrow || !scope->instance_id ||\n        !scope->epoch_id || !ctx->avctx || !avcodec_is_open(ctx->avctx) ||\n        ctx->bilipai_decoder_ids_disabled || !ctx->bilipai_decoder_sequence ||\n        !ctx->use_hwdec || ctx->hwdec.copying ||\n        ctx->hwdec.lavc_device != AV_HWDEVICE_TYPE_D3D11VA ||\n        ctx->bilipai_gpu_input_instance != scope->instance_id ||\n        ctx->bilipai_gpu_input_epoch != scope->epoch_id ||\n        ctx->bilipai_ready_instance != scope->instance_id ||\n        ctx->bilipai_ready_epoch != scope->epoch_id ||\n        ctx->bilipai_decoder_instance != scope->instance_id ||\n        ctx->bilipai_decoder_epoch != scope->epoch_id) return false;\n    const struct mp_image *image = scope->image;\n    const struct mp_image_params *q = &image->params;\n    const struct mp_bilipai_decoder_origin *o = &q->bilipai_decoder_origin;\n    const struct mp_bilipai_hdr_snapshot *raw = &o->frame_snapshot;\n    const struct mp_bilipai_d3d11_ready *ready = mp_image_bilipai_d3d11_ready(image);\n    if (!ready || o->version != MP_BILIPAI_DECODER_ORIGIN_VERSION ||\n        o->instance_id != scope->instance_id || o->epoch_id != scope->epoch_id ||\n        !o->frame_sequence || o->frame_sequence > ctx->bilipai_decoder_sequence ||\n        (o->flags & ~MP_BILIPAI_DECODER_EXPORTED_FRAME_ONLY) ||\n        o->hw_device_type != AV_HWDEVICE_TYPE_D3D11VA ||\n        o->crop_left || o->crop_top || o->crop_right || o->crop_bottom ||\n        ((ctx->bilipai_decoder_stream_refusals | o->stream_refusals |\n          q->bilipai_hdr_disqualifying_flags_seen | raw->flags) & MP_BILIPAI_HDR_HAZARDS_MASK) ||\n        raw->version != MP_BILIPAI_HDR_SNAPSHOT_VERSION ||\n        raw->av_format != AV_PIX_FMT_D3D11 || raw->av_sw_format != AV_PIX_FMT_P010LE ||\n        raw->width != image->w || raw->height != image->h ||\n        raw->av_matrix != AVCOL_SPC_BT2020_NCL || raw->av_transfer != AVCOL_TRC_SMPTE2084 ||\n        raw->av_primaries != AVCOL_PRI_BT2020 ||\n        (raw->av_range != AVCOL_RANGE_MPEG && raw->av_range != AVCOL_RANGE_JPEG) ||\n        q->sys_orig != PL_COLOR_SYSTEM_BT_2020_NC ||\n        q->transfer_orig != PL_COLOR_TRC_PQ || q->primaries_orig != PL_COLOR_PRIM_BT_2020 ||\n        q->color.transfer != PL_COLOR_TRC_PQ || q->color.primaries != PL_COLOR_PRIM_BT_2020 ||\n        (q->repr.sys != PL_COLOR_SYSTEM_BT_2020_NC && q->repr.sys != PL_COLOR_SYSTEM_BT_2100_PQ) ||\n        q->levels_orig != (raw->av_range == AVCOL_RANGE_MPEG ? PL_COLOR_LEVELS_LIMITED : PL_COLOR_LEVELS_FULL) ||\n        q->repr.levels != q->levels_orig || !bilipai_gpu_input_chroma(raw->av_chroma,q->chroma_location) ||\n        !image->hwctx || !image->hwctx->data || image->hwctx->size < sizeof(AVHWFramesContext))\n        return false;\n    AVHWFramesContext *frames = (void *)image->hwctx->data;\n    if (frames->format != AV_PIX_FMT_D3D11 || frames->sw_format != AV_PIX_FMT_P010LE ||\n        frames->width < image->w || frames->height < image->h ||\n        !frames->device_ref || !frames->device_ref->data ||\n        frames->device_ref->size < sizeof(AVHWDeviceContext) ||\n        frames->device_ctx != (void *)frames->device_ref->data ||\n        frames->device_ctx->type != AV_HWDEVICE_TYPE_D3D11VA || !frames->device_ctx->hwctx ||\n        !ctx->hwdec_dev || frames->device_ref->buffer != ctx->hwdec_dev->buffer ||\n        frames->device_ref->data != ctx->hwdec_dev->data ||\n        frames->device_ref->size != ctx->hwdec_dev->size ||\n        !d3d11_bilipai_default_owner_known(frames->device_ref)) return false;\n    AVD3D11VADeviceContext *d = frames->device_ctx->hwctx;\n    if (d->device != ready->device || d->device_context != ready->device_context ||\n        !d3d11_bilipai_default_try_lock(frames->device_ref)) return false;\n    // The default constructor owns this mutex/context and held HWctx keeps its\n    // lifetime. Only CPU descriptor/identity checks, no context/GPU submission.\n    ID3D11Device *context_device = NULL, *texture_device = NULL;\n    IUnknown *context_device_id = NULL, *texture_device_id = NULL, *device_id = NULL;\n    D3D11_TEXTURE2D_DESC desc;\n    ID3D11Texture2D *texture = ready->texture;\n    ID3D11DeviceContext_GetDevice(d->device_context,&context_device);\n    ID3D11Texture2D_GetDevice(texture,&texture_device);\n    ID3D11Texture2D_GetDesc(texture,&desc);\n    bool same = context_device && texture_device &&\n        ID3D11DeviceContext_GetType(d->device_context) == D3D11_DEVICE_CONTEXT_IMMEDIATE &&\n        IUnknown_QueryInterface((IUnknown *)context_device,&IID_IUnknown,(void **)&context_device_id) == S_OK &&\n        IUnknown_QueryInterface((IUnknown *)texture_device,&IID_IUnknown,(void **)&texture_device_id) == S_OK &&\n        IUnknown_QueryInterface((IUnknown *)d->device,&IID_IUnknown,(void **)&device_id) == S_OK &&\n        context_device_id == device_id && texture_device_id == device_id &&\n        desc.Format == DXGI_FORMAT_P010 && desc.MipLevels == 1 &&\n        desc.SampleDesc.Count == 1 && !desc.SampleDesc.Quality &&\n        desc.Width == (UINT)ready->allocation_width && desc.Height == (UINT)ready->allocation_height &&\n        desc.Width >= (UINT)image->w && desc.Height >= (UINT)image->h &&\n        desc.Width % 2 == 0 && desc.Height % 2 == 0 &&\n        desc.ArraySize && ready->array_slice < desc.ArraySize;\n    if (device_id) IUnknown_Release(device_id);\n    if (texture_device_id) IUnknown_Release(texture_device_id);\n    if (context_device_id) IUnknown_Release(context_device_id);\n    if (texture_device) ID3D11Device_Release(texture_device);\n    if (context_device) ID3D11Device_Release(context_device);\n    bool slot_locked = same && !atomic_flag_test_and_set(&bilipai_ready_slot_busy);\n    bool accepted = false;\n    if (slot_locked) {\n        struct bilipai_ready_custody *s = &bilipai_ready_slot;\n        if (!s->poisoned && s->device_ref && s->fence == ready->fence &&\n            s->device == d->device && s->context == d->device_context &&\n            s->lock == d->lock && s->unlock == d->unlock && s->lock_ctx == d->lock_ctx &&\n            s->device_ref->buffer == frames->device_ref->buffer &&\n            s->device_ref->data == frames->device_ref->data &&\n            s->device_ref->size == frames->device_ref->size &&\n            ready->signal_value && ready->signal_value <= s->value &&\n            mp_image_bilipai_d3d11_ready(image) == ready) {\n            const struct mp_bilipai_gpu_input_view view = {\n                .image = image, .ready = ready,\n                .active = {ctx->bilipai_decoder_instance,ctx->bilipai_decoder_epoch,\n                           ctx->bilipai_decoder_sequence,ctx->bilipai_decoder_stream_refusals},\n            };\n            scope->entered = true;\n            accepted = scope->borrow(scope->opaque,&view);\n            scope->callback_accepted = accepted;\n        }\n    }\n    bool released = d3d11_bilipai_default_unlock(frames->device_ref);\n    scope->mutex_released = released;\n    if (!released) {\n        ctx->bilipai_gpu_input_instance = ctx->bilipai_gpu_input_epoch = 0;\n        if (slot_locked) bilipai_ready_slot.poisoned = true;\n    }\n    if (slot_locked) atomic_flag_clear(&bilipai_ready_slot_busy);\n    return accepted && released;\n}\n\n#else\nstatic void bilipai_record_decoder_ready(vd_ffmpeg_ctx *ctx,\n",
+        "old": "#else\nstatic void bilipai_record_decoder_ready(vd_ffmpeg_ctx *ctx,\n"
+      },
+      {
+        "count": 1,
+        "new": "    case VDCTRL_BILIPAI_SET_GPU_INPUT: {\n        const struct mp_bilipai_gpu_input_request *request = arg;\n        // Any unsuccessful reconfiguration remains closed, never auto-restarts.\n        ctx->bilipai_gpu_input_instance = ctx->bilipai_gpu_input_epoch = 0;\n        if (!request || !ctx->avctx || !avcodec_is_open(ctx->avctx) ||\n            ctx->bilipai_decoder_ids_disabled || !request->instance_id ||\n            !request->epoch_id || !ctx->bilipai_decoder_sequence ||\n            request->instance_id != ctx->bilipai_decoder_instance ||\n            request->epoch_id != ctx->bilipai_decoder_epoch) return CONTROL_FALSE;\n        if (!request->enable) return CONTROL_TRUE;\n#if HAVE_D3D11\n        if (ctx->bilipai_ready_instance == request->instance_id &&\n            ctx->bilipai_ready_epoch == request->epoch_id && ctx->use_hwdec &&\n            !ctx->hwdec.copying && ctx->hwdec.lavc_device == AV_HWDEVICE_TYPE_D3D11VA &&\n            d3d11_bilipai_default_owner_known(ctx->hwdec_dev)) {\n            ctx->bilipai_gpu_input_instance = request->instance_id;\n            ctx->bilipai_gpu_input_epoch = request->epoch_id;\n            return CONTROL_TRUE;\n        }\n#endif\n        return CONTROL_FALSE;\n    }\n    case VDCTRL_BILIPAI_WITH_GPU_INPUT: {\n#if HAVE_D3D11\n        return bilipai_with_gpu_input(ctx,arg) ? CONTROL_TRUE : CONTROL_FALSE;\n#else\n        return CONTROL_FALSE;\n#endif\n    }\n    case VDCTRL_SET_FRAMEDROP:\n",
+        "old": "    case VDCTRL_SET_FRAMEDROP:\n"
       }
     ],
     "path": "video/decode/vd_lavc.c"
   },
   {
-    "afterBytes": 6409,
-    "afterSha256": "46f2386f708eb50dbe744964ae111940e3ef07940fff35e48fde675be2aa3679",
+    "afterBytes": 9003,
+    "afterSha256": "4d0d97a22135e03018b423393c8ba3ecce938866898ff9a5f3cd66a995e99070",
     "beforeBytes": 4725,
     "beforeSha256": "2d133e104dac514e7f05beeeb78713755019a65c24bc984e2596559a124565dc",
     "edits": [
@@ -1476,6 +1526,21 @@
         "count": 1,
         "new": "    VDCTRL_BILIPAI_GET_ACTIVE_DECODER,\n    // struct mp_bilipai_decoder_ready_request*: exact current identity only;\n    // defaults off and resets/reinit revoke. Groups/unknown owners reject.\n    VDCTRL_BILIPAI_SET_DECODER_READY,\n",
         "old": "    VDCTRL_BILIPAI_GET_ACTIVE_DECODER,\n"
+      },
+      {
+        "count": 1,
+        "new": "struct mp_image;\nstruct mp_bilipai_d3d11_ready;\n// Independent PRIVATE opt-in. Readiness issuance is a prerequisite, not this\n// permit: both exact identities must remain current. Default0; reset revokes.\n// Configure only via the existing owner control lane, outside any callback.\nstruct mp_bilipai_gpu_input_request {\n    uint64_t instance_id, epoch_id;\n    bool enable;\n};\n// Borrowed only inside the callback, under actual decoder dispatch exclusion\n// and the constructor's checked original immediate-context mutex. No pointer\n// in this view may be cached as a later CURRENT/epoch/HDR/GPU-completion proof.\nstruct mp_bilipai_gpu_input_view {\n    const struct mp_image *image;\n    const struct mp_bilipai_d3d11_ready *ready;\n    struct mp_bilipai_active_decoder active;\n};\n// Caller already owns one exact retained mp_image reference and keeps it\n// immutable/alive through return. Prepare/close and all source lease callbacks\n// belong OUTSIDE this scope; never ref/unref/free the image from borrow().\nstruct mp_bilipai_gpu_input_scope {\n    uint64_t instance_id, epoch_id;\n    const struct mp_image *image;\n    bool (*borrow)(void *, const struct mp_bilipai_gpu_input_view *);\n    void *opaque;\n    // Outcomes only: callback entry/return and mutex release, not GPU results.\n    bool entered, callback_accepted, mutex_released;\n};\nenum dec_ctrl {\n",
+        "old": "struct mp_image;\nenum dec_ctrl {\n"
+      },
+      {
+        "count": 1,
+        "new": "    VDCTRL_BILIPAI_SET_DECODER_READY,\n    // struct mp_bilipai_gpu_input_request*: separate exact-epoch opt-in.\n    VDCTRL_BILIPAI_SET_GPU_INPUT,\n    // Internal direct child control only. Public wrapper control rejects it.\n    VDCTRL_BILIPAI_WITH_GPU_INPUT,\n",
+        "old": "    VDCTRL_BILIPAI_SET_DECODER_READY,\n"
+      },
+      {
+        "count": 1,
+        "new": "// UNWIRED/default-off foundation; no production caller enables or uses it.\n// Existing main/filter owner thread ONLY, after async dequeue unlock. Group\n// wrappers/unknown owners reject. This may CPU-wait for the existing decoder\n// dispatch item, then only tries the original context mutex with timeout0.\n// borrow() is synchronous on THIS calling thread (not necessarily decoder OS\n// thread). No recursive wrapper/decoder/observe/control, async queue operations,\n// allocation/cleanup/lease callbacks, GPU wait, Flush, NVIDIA or host calls.\n// This draft performs no GPU commands. A future scoped submit route needs its\n// separately reviewed prepared resources/failure/final-use lifecycle; entry or\n// bool acceptance alone never proves submission/completion/HDR/presentation.\n// Callback must return normally; no longjmp or crossing-language exceptions.\n// Existing CPU-only observation API and its permissions are unchanged.\nbool mp_decoder_wrapper_bilipai_gpu_input(struct mp_decoder_wrapper *d,\n    struct mp_bilipai_gpu_input_scope *scope);\n\n// Force it to reevaluate output parameters (for overrides like aspect).\n",
+        "old": "// Force it to reevaluate output parameters (for overrides like aspect).\n"
       }
     ],
     "path": "filters/f_decoder_wrapper.h"
