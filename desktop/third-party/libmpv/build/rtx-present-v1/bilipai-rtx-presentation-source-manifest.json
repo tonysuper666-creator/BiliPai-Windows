@@ -28,9 +28,9 @@
   "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
   "sourceFiles": [
     {
-      "bytes": 23752,
+      "bytes": 29692,
       "fileName": "vf_bilipai_rtx.c",
-      "sha256": "86560444b6e2100862c94d184ea2c576237d5c0c354b62ff67fef53c6ef04d21",
+      "sha256": "1745a1d830c388ce9acf6d70615fed5c0753c657d31bf57ab70711c4ab98c811",
       "sourcePath": "desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c",
       "targetPath": "video/filter/vf_bilipai_rtx.c"
     },
@@ -161,23 +161,23 @@
       "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_p010_chain.h"
     },
     {
-      "bytes": 18808,
+      "bytes": 26044,
       "fileName": "bilipai_hdr_vf_owner.c",
-      "sha256": "4e3a619c6303cb76148e06e45fb0370f259ad414f97f3077faafa3bb93b5e2ad",
+      "sha256": "da71d15ded855672e76013ad73751e66d297e83cb543d33a61906aa46cb23a5e",
       "sourcePath": "desktop/native/veyra-hdr-caller/bilipai_hdr_vf_owner.c",
       "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_vf_owner.c"
     },
     {
-      "bytes": 4761,
+      "bytes": 6889,
       "fileName": "bilipai_hdr_vf_owner.h",
-      "sha256": "e4bb5e100afced34270a18156b0f4db23b4476885a16b2c8afb28dcfbb8539e4",
+      "sha256": "35c5bcd72edeed345c2da587e1189182ba9b84a27855106d709895ab0ffae8d4",
       "sourcePath": "desktop/native/veyra-hdr-caller/bilipai_hdr_vf_owner.h",
       "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_vf_owner.h"
     }
   ],
   "tokenProtocol": 2,
   "upstreamEditsFileName": "presentation-edits.json",
-  "upstreamEditsSha256": "b9574c2f4792697a705254e6fa3f58150b3fcc12080bc0da7d2fea1c90717419",
+  "upstreamEditsSha256": "be16afe346d3cfba6d1034946cb795140a9b72d8b7983e1a27702b43a79a544c",
   "variant": "bilipai-veyra-rtx-present-v1",
   "vfgImplemented": false
 }

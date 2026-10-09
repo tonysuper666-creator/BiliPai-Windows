@@ -23,6 +23,8 @@ struct owner_generation {
     DWORD thread;
     HANDLE thread_ref;
     bool claimed,retiring,quarantined;
+    bool diagnostic_armed,diagnostic_in_flight;
+    AVBufferRef *diagnostic_owner_ref; // CPU ownership only; held independently by whole custody
     AVBufferRef *device_ref,*pool;
     struct bv_mpv_bridge *bridge;
     struct bv_mpv_hdr_chain *chain;
@@ -36,6 +38,7 @@ struct bv_mpv_hdr_vf_owner {
     DWORD thread;
     HANDLE thread_ref;
     bool entered,recovery_required;
+    AVBufferRef *diagnostic_owner_ref; // never authentication/current/GPU proof
     struct owner_generation *active;
 };
 /* The actual whole objects, not counters or weak pointers, survive a dead VF.
@@ -71,7 +74,8 @@ static bool reserve(struct owner_generation *g) {
     bool ok=false;AcquireSRWLockExclusive(&custody_lock);
     bool unresolved=false;
     for(unsigned i=0;i<2;i++)
-        if(custody[i]&&(custody[i]->retiring||custody[i]->quarantined))unresolved=true;
+        if(custody[i]&&(custody[i]->retiring||custody[i]->quarantined||
+           (custody[i]->instance==g->instance&&custody[i]->epoch==g->epoch)))unresolved=true;
     if(!unresolved)for(unsigned i=0;i<2;i++)if(!custody[i]){
         custody[i]=g;g->claimed=true;ok=true;break;
     }
@@ -107,10 +111,13 @@ static void drop_empty(struct owner_generation *g) {
     for(unsigned i=0;i<2;i++)if(custody[i]==g)custody[i]=NULL;
     ReleaseSRWLockExclusive(&custody_lock);
     av_buffer_unref(&g->pool);av_buffer_unref(&g->device_ref);
+    av_buffer_unref(&g->diagnostic_owner_ref);
     if(g->thread_ref)CloseHandle(g->thread_ref);
     free(g->dll);free(g->runtime);free(g->project);free(g->engine);free(g);
 }
 static HRESULT retire_claimed(struct owner_generation *g) {
+    // Empty chain does NOT prove that explicitly armed decoder permits were revoked.
+    if(g->diagnostic_armed){mark_retiring(g,true);unclaim(g);return E_PENDING;}
     if(g->quarantined){unclaim(g);return E_PENDING;}
     struct mp_image *discard=NULL;
     HRESULT hr=g->chain?bv_mpv_hdr_chain_poll(g->chain,NULL,&discard):S_FALSE;
@@ -213,6 +220,8 @@ HRESULT bv_mpv_hdr_vf_owner_create(struct bv_mpv_hdr_vf_owner **out) {
     struct bv_mpv_hdr_vf_owner *o=calloc(1,sizeof(*o));if(!o)return E_OUTOFMEMORY;
     o->thread=GetCurrentThreadId();
     if(!hold_thread(&o->thread_ref)){free(o);return E_FAIL;}
+    o->diagnostic_owner_ref=av_buffer_allocz(1);
+    if(!o->diagnostic_owner_ref){CloseHandle(o->thread_ref);free(o);return E_OUTOFMEMORY;}
     *out=o;return S_OK;
 }
 HRESULT bv_mpv_hdr_vf_owner_prepare(struct bv_mpv_hdr_vf_owner *o,
@@ -240,10 +249,11 @@ HRESULT bv_mpv_hdr_vf_owner_prepare(struct bv_mpv_hdr_vf_owner *o,
     if(!g){hr=E_OUTOFMEMORY;goto done;}
     g->thread=o->thread;g->cfg=*cfg;g->instance=active.instance_id;g->epoch=active.epoch_id;
     if(!hold_thread(&g->thread_ref)){free(g);hr=E_FAIL;goto done;}
+    g->diagnostic_owner_ref=av_buffer_ref(o->diagnostic_owner_ref);
     g->device_ref=av_buffer_ref(owner);g->dll=copy_wide(b->dll_path);
     g->runtime=copy_wide(b->runtime_directory);g->project=copy_utf8(b->project_id);g->engine=copy_utf8(b->engine_version);
-    if(!g->device_ref||!g->dll||!g->runtime||!g->project||!g->engine) {
-        av_buffer_unref(&g->device_ref);CloseHandle(g->thread_ref);free(g->dll);free(g->runtime);free(g->project);free(g->engine);free(g);
+    if(!g->diagnostic_owner_ref||!g->device_ref||!g->dll||!g->runtime||!g->project||!g->engine) {
+        av_buffer_unref(&g->diagnostic_owner_ref);av_buffer_unref(&g->device_ref);CloseHandle(g->thread_ref);free(g->dll);free(g->runtime);free(g->project);free(g->engine);free(g);
         hr=E_OUTOFMEMORY;goto done;
     }
     AVHWDeviceContext *hw=(void*)g->device_ref->data;
@@ -252,11 +262,11 @@ HRESULT bv_mpv_hdr_vf_owner_prepare(struct bv_mpv_hdr_vf_owner *o,
        (ID3D11Device_GetCreationFlags(d->device)&D3D11_CREATE_DEVICE_SINGLETHREADED)||
        FAILED(ID3D11Device_GetDeviceRemovedReason(d->device))||
        !actual_luid(d->device,&g->adapter_luid)) {
-        av_buffer_unref(&g->device_ref);CloseHandle(g->thread_ref);free(g->dll);free(g->runtime);free(g->project);free(g->engine);free(g);
+        av_buffer_unref(&g->diagnostic_owner_ref);av_buffer_unref(&g->device_ref);CloseHandle(g->thread_ref);free(g->dll);free(g->runtime);free(g->project);free(g->engine);free(g);
         hr=E_NOINTERFACE;goto done;
     }
     if(!reserve(g)) {
-        av_buffer_unref(&g->device_ref);CloseHandle(g->thread_ref);free(g->dll);free(g->runtime);free(g->project);free(g->engine);free(g);
+        av_buffer_unref(&g->diagnostic_owner_ref);av_buffer_unref(&g->device_ref);CloseHandle(g->thread_ref);free(g->dll);free(g->runtime);free(g->project);free(g->engine);free(g);
         hr=E_PENDING;goto done;
     }
     g->cfg.bridge.dll_path=g->dll;g->cfg.bridge.runtime_directory=g->runtime;
@@ -299,6 +309,7 @@ HRESULT bv_mpv_hdr_vf_owner_submit_private(struct bv_mpv_hdr_vf_owner *o,
             struct mp_image *output=pool_image(g);
             hr=output?bv_mpv_hdr_chain_submit(g->chain,decoder,source,output,ticket):E_OUTOFMEMORY;
             talloc_free(output); // chain captured its OWN output ref before any attempt
+            if(hr==S_OK)g->diagnostic_in_flight=true; // queued chain, NOT completion
             if(FAILED(hr)) {
                 /* No failure code or bool can prove that submit never queued
                  * work. Preserve the entire chain and require owner recovery. */
@@ -318,10 +329,124 @@ HRESULT bv_mpv_hdr_vf_owner_service(struct bv_mpv_hdr_vf_owner *o,
         /* CURRENT PRIVATE2/VO native HDR admission is closed. A completed
          * private diagnostic pool picture is not a playable proof or token. */
         talloc_free(completed);
+        if(hr==S_OK)g->diagnostic_in_flight=false; // actual final-use resources retired by poll
         if(FAILED(hr)){mark_retiring(g,true);o->active=NULL;o->recovery_required=true;}
         unclaim(g);
     }
     leave(o);return hr;
+}
+// Only this CPU adapter's actual independently retained marker, not a dead-VF
+// pointer. Resource/decoder work always follows release of the custody lock.
+static struct owner_generation *claim_diagnostic(struct bv_mpv_hdr_vf_owner *o,unsigned slot) {
+    struct owner_generation *g=NULL;AcquireSRWLockExclusive(&custody_lock);
+    struct owner_generation *p=slot<2?custody[slot]:NULL;
+    if(p&&!p->claimed&&original_thread(p->thread_ref,p->thread)&&
+       same_owner(p->diagnostic_owner_ref,o->diagnostic_owner_ref)) {
+        p->claimed=true;g=p;
+    }
+    ReleaseSRWLockExclusive(&custody_lock);return g;
+}
+static HRESULT revoke_diagnostic_claimed(struct owner_generation *g,
+    struct mp_decoder_wrapper *decoder) {
+    if(!g->diagnostic_armed)return S_OK;
+    struct mp_bilipai_active_decoder active={0};
+    if(!decoder||mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_GET_ACTIVE_DECODER,&active)!=CONTROL_TRUE||
+       !active.instance_id||!active.epoch_id)goto unknown;
+    // Another decoder instance being alive does NOT prove this old decoder
+    // was destroyed/revoked; never alter that new instance or infer retirement.
+    if(active.instance_id!=g->instance)goto unknown;
+    if(active.epoch_id!=g->epoch) {
+        // SAME actual instance: fixed vd_lavc init/reset clears all3 opt-ins
+        // BEFORE assigning its new nonreused epoch. Only a TRUE live snapshot
+        // of that new epoch counts; query failure remains UNKNOWN.
+        g->diagnostic_armed=false;return S_OK;
+    }
+    struct mp_bilipai_decoder_ready_request request={
+        .instance_id=g->instance,.epoch_id=g->epoch,.enable=false};
+    // One dispatch-serialized exact validation and all3 revocations. Never
+    // GET followed by three independently unlocking permission clears.
+    if(mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_SET_DECODER_READY,&request)!=CONTROL_TRUE)
+        goto unknown;
+    g->diagnostic_armed=false;return S_OK;
+unknown:
+    mark_retiring(g,true);return E_PENDING; // retain armed record AND whole custody
+}
+HRESULT bv_mpv_hdr_vf_owner_diagnostic_revoke(struct bv_mpv_hdr_vf_owner *o,
+    struct mp_decoder_wrapper *decoder) {
+    if(!o)return S_OK; // this absent adapter armed nothing; global quarantine is untouched
+    if(!enter(o))return E_ACCESSDENIED;
+    HRESULT hr=S_OK;
+    for(unsigned i=0;i<2;i++) {
+        struct owner_generation *g=claim_diagnostic(o,i);
+        if(!g)continue;
+        HRESULT one=revoke_diagnostic_claimed(g,decoder);
+        if(FAILED(one)){o->recovery_required=true;hr=one;}
+        unclaim(g);
+    }
+    // A skipped busy claim must not be mistaken for successful revocation.
+    AcquireSRWLockExclusive(&custody_lock);
+    for(unsigned i=0;i<2;i++) {
+        struct owner_generation *g=custody[i];
+        if(g&&same_owner(g->diagnostic_owner_ref,o->diagnostic_owner_ref)&&g->diagnostic_armed) {
+            g->retiring=true;g->quarantined=true;o->recovery_required=true;hr=E_PENDING;
+        }
+    }
+    ReleaseSRWLockExclusive(&custody_lock);
+    leave(o);return hr;
+}
+HRESULT bv_mpv_hdr_vf_owner_diagnostic_step(struct bv_mpv_hdr_vf_owner *o,
+    struct mp_decoder_wrapper *decoder,const struct mp_image *source,
+    const struct bv_mpv_hdr_vf_prepare *cfg,const struct bv_mpv_hdr_chain_ticket *ticket) {
+    if(!cfg||!ticket||!source||!enter(o))return E_INVALIDARG;
+    struct mp_bilipai_active_decoder active={0};
+    AVBufferRef *owner=actual_owner(source);
+    if(bv_mpv_hdr_vf_owner_recovery_required(o)){leave(o);return E_PENDING;}
+    if(!owner||!current_epoch(decoder,source,&active)){leave(o);return E_ACCESSDENIED;}
+    bool replace=o->active&&(!same_owner(o->active->device_ref,owner)||
+        o->active->instance!=active.instance_id||o->active->epoch!=active.epoch_id||
+        !same_config(o->active,cfg));
+    leave(o);
+    if(replace) {
+        HRESULT revoked=bv_mpv_hdr_vf_owner_diagnostic_revoke(o,decoder);
+        if(FAILED(revoked))return revoked;
+    }
+    // Real resources/whole custody BEFORE granting any opt-in. Compiler/core
+    // preparation and resource allocation remain OUTSIDE both original locks.
+    struct bv_mpv_hdr_chain *chain=NULL;
+    HRESULT hr=bv_mpv_hdr_vf_owner_prepare(o,decoder,source,cfg,&chain);
+    if(FAILED(hr))return hr;
+    if(!enter(o))return E_ACCESSDENIED;
+    struct owner_generation *g=o->active?claim(o->active,false):NULL;
+    if(!g){leave(o);return E_PENDING;}
+    if(g->diagnostic_in_flight){unclaim(g);leave(o);return S_FALSE;}
+    if(!g->diagnostic_armed) {
+        // Sticky BEFORE attempting grant. Separate controls are NOT atomic;
+        // actual submit will requalify in its independent dispatch+mutex scope.
+        g->diagnostic_armed=true;
+        struct mp_bilipai_decoder_ready_request ready={
+            .instance_id=g->instance,.epoch_id=g->epoch,.enable=true};
+        struct mp_bilipai_gpu_input_request input={
+            .instance_id=g->instance,.epoch_id=g->epoch,.enable=true};
+        if(mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_SET_DECODER_READY,&ready)!=CONTROL_TRUE||
+           mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_SET_GPU_INPUT,&input)!=CONTROL_TRUE) {
+            hr=E_ACCESSDENIED;
+            if(FAILED(revoke_diagnostic_claimed(g,decoder)))o->recovery_required=true;
+            unclaim(g);leave(o);return hr;
+        }
+    }
+    // Already-decoded input NEVER gets a synthetic receipt. Only a subsequent
+    // successful decoder receive under the opt-in may issue actual BVR2 ready.
+    if(!mp_image_bilipai_d3d11_ready(source)){unclaim(g);leave(o);return S_FALSE;}
+    hr=bv_mpv_hdr_chain_authorize(chain,decoder,g->instance,g->epoch,true);
+    if(FAILED(hr)) {
+        if(FAILED(revoke_diagnostic_claimed(g,decoder)))o->recovery_required=true;
+        unclaim(g);leave(o);return hr;
+    }
+    unclaim(g);leave(o);
+    // Existing actual chain rechecks SAME held refs/owner/ready/ticket DURING
+    // each scoped submit. Core CPU waits/evaluation and close stay locks OUTSIDE.
+    // S_OK is queued final Signal only, never completion/HDR admission/display.
+    return bv_mpv_hdr_vf_owner_submit_private(o,decoder,source,ticket);
 }
 bool bv_mpv_hdr_vf_owner_has_work(const struct bv_mpv_hdr_vf_owner *o) {
     if(!o||!original_thread(o->thread_ref,o->thread))return false;
@@ -356,5 +481,6 @@ void bv_mpv_hdr_vf_owner_detach(struct bv_mpv_hdr_vf_owner **out) {
     }
     /* Every remaining generation is independently owned by custody[2], has
      * no pointer to this adapter/VF, and keeps source/pool/bridge/chain refs. */
+    av_buffer_unref(&o->diagnostic_owner_ref);
     if(o->thread_ref)CloseHandle(o->thread_ref);free(o);*out=NULL;
 }

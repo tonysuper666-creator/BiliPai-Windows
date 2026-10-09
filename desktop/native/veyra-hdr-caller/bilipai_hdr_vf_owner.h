@@ -20,8 +20,8 @@ HRESULT bv_mpv_hdr_vf_owner_create(struct bv_mpv_hdr_vf_owner **);
  * independent R10 MPV AVHWFrames pool. The exact active epoch is checked on the
  * live borrowed decoder, but this is not a CURRENT_GPU_USE/display proof.
  * Caller does not retain returned chain across reset/detach/another prepare.
- * A future real owner may separately authorize the chain under its reviewed
- * policies. Current VF has no prepare/authorize/submit call, so default stays0.
+ * The native-only diagnostic entry below may prepare/authorize/submit under
+ * its strict external contract; its VF option remains default0.
  * Different owner/epoch/extent/config first drains and destroys the WHOLE old
  * chain and bridge; reset never clears or rebinds the bridge's first HWowner.
  * No allocation of a new generation is allowed while an older generation is
@@ -31,7 +31,8 @@ HRESULT bv_mpv_hdr_vf_owner_prepare(struct bv_mpv_hdr_vf_owner *,
     struct mp_decoder_wrapper *live_decoder,const struct mp_image *source,
     const struct bv_mpv_hdr_vf_prepare *,struct bv_mpv_hdr_chain **borrowed_chain);
 /* Requires the existing owner's independent ready/CPU/GPU opt-ins already to
- * have been explicitly granted. This module never grants them. Captures the
+ * have been explicitly granted. The separate diagnostic entry below is the
+ * only opt-in caller added here. Captures the
  * actual source and its own real output-pool frame; chain enforces current
  * scoped source/owner validation and real final-use custody. A failed call can
  * have queued work, and then the whole generation is retained. Never treat
@@ -39,6 +40,35 @@ HRESULT bv_mpv_hdr_vf_owner_prepare(struct bv_mpv_hdr_vf_owner *,
 HRESULT bv_mpv_hdr_vf_owner_submit_private(struct bv_mpv_hdr_vf_owner *,
     struct mp_decoder_wrapper *live_decoder,const struct mp_image *,
     const struct bv_mpv_hdr_chain_ticket *);
+/* Native-only DEFAULT-OFF diagnostic, NOT app/VO source admission. Existing
+ * app LockedComponentBinding must already verify and keep ALL selected runtime,
+ * component and provenance files locked through native lifetime. This API cannot
+ * authenticate that binding; cfg/path/digest/bool is NOT proof. Current app HDR
+ * gate emits no diagnostic option and cannot trigger this via normal UI.
+ * Same original main/filter lane; direct decoder is borrowed only through return.
+ * No recursive teardown/seek/control from compiler or release callbacks.
+ * Whole custody rejects a second diagnostic generation with the same actual
+ * decoder tuple. Unrelated grantees of these opt-ins are explicitly unsupported.
+ * Raw/current full-crop P010/PQ2020/actual AVHWowner are checked before preparing
+ * real bounded custody and separately granting exact ready+CPU-input opt-ins.
+ * Grant calls are NOT atomic. Actual GPU submit scopes revalidate all live refs.
+ * No receipt is minted for an already-decoded input. S_FALSE is warmup waiting
+ * for genuine subsequent receive OR an actually submitted in-flight chain.
+ * Partial unknown failure retains whole custody and context recovery. Completed
+ * outputs are discarded internally; no native token/TrueHDR bit2/VO/JVM proof.
+ */
+HRESULT bv_mpv_hdr_vf_owner_diagnostic_step(struct bv_mpv_hdr_vf_owner *,
+    struct mp_decoder_wrapper *,const struct mp_image *,
+    const struct bv_mpv_hdr_vf_prepare *,const struct bv_mpv_hdr_chain_ticket *);
+/* BEFORE reset/reinit/detach, same original lane and real decoder lifetime borrow.
+ * Only marker-owned armed tuple is revoked via one exact READY(false) dispatch
+ * call clearing all3 opt-ins. TRUE SAME-instance/new-epoch proves actual reset;
+ * a different instance or absent owner/query is UNKNOWN: retain/quarantine
+ * armed whole resources; never clear another adapter/new epoch. Revoke is NOT
+ * resource retirement: actual chain/loan/ticket final-use fences remain required.
+ */
+HRESULT bv_mpv_hdr_vf_owner_diagnostic_revoke(struct bv_mpv_hdr_vf_owner *,
+    struct mp_decoder_wrapper *live_decoder);
 /* Actual borrowed decoder is valid only for this synchronous main-lane call.
  * Poll uses no stored decoder pointer. Completed HDR pool outputs are released
  * internally and NEVER delivered to current PRIVATE2/VO or stamped with tokens.

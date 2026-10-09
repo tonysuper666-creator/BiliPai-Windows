@@ -31,6 +31,7 @@
 #include <string.h>
 #include <windows.h>
 #include <d3d11.h>
+#include <d3dcompiler.h>
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_d3d11va.h>
 #include "common/common.h"
@@ -49,9 +50,10 @@
 struct opts {
     char *dll, *runtime, *project;
     int64_t session, generation;
+    int64_t native_pq_payload_budget;
     float scale;
     int quality, peak, timeout;
-    bool hdr;
+    bool hdr, native_pq_diagnostic;
 };
 struct priv {
     struct opts *opts;
@@ -63,6 +65,7 @@ struct priv {
     struct mp_image_params params, out_params;
     uint64_t generation, sequence;
     bool disabled, accepted_logged, decoder_ready_logged;
+    bool native_pq_route; // diagnostic routing only; original picture still goes to VO
     struct bv_mpv_pq_p010_observation pq_p010_observation;
 };
 static wchar_t *utf16(const char *s)
@@ -176,6 +179,90 @@ static void service_hdr_owner(struct mp_filter *vf)
         p->disabled = true;
     }
 }
+struct native_pq_revoke_context {struct priv *p;HRESULT hr;};
+static void revoke_native_pq_borrowed(void *opaque,struct mp_decoder_wrapper *decoder)
+{
+    struct native_pq_revoke_context *c=opaque;
+    c->hr=bv_mpv_hdr_vf_owner_diagnostic_revoke(c->p->hdr_owner,decoder);
+}
+static void revoke_native_pq(struct mp_filter *vf)
+{
+    struct priv *p=vf->priv;
+    if(!p->opts||!p->opts->native_pq_diagnostic)return;
+    struct native_pq_revoke_context c={.p=p,.hr=E_PENDING};
+    struct mp_stream_info *info=mp_filter_find_stream_info(vf);
+    bool borrowed=info&&info->bilipai_with_decoder_owner&&
+        info->bilipai_with_decoder_owner(info,revoke_native_pq_borrowed,&c);
+    if(!borrowed)c.hr=bv_mpv_hdr_vf_owner_diagnostic_revoke(p->hdr_owner,NULL);
+    if(FAILED(c.hr)||bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner))p->disabled=true;
+}
+static bool native_pq_requested(struct priv *p,const struct mp_image *format)
+{
+    // Format only selects an explicit diagnostic route, never proves current
+    // source/ready/authentication or decoder epoch. Real source is checked later.
+    return p->opts->native_pq_diagnostic&&p->opts->native_pq_payload_budget>0&&format&&
+        format->imgfmt==IMGFMT_D3D11&&format->params.imgfmt==IMGFMT_D3D11&&
+        format->params.hw_subfmt==pixfmt2imgfmt(AV_PIX_FMT_P010LE)&&
+        format->params.color.transfer==PL_COLOR_TRC_PQ&&
+        format->params.color.primaries==PL_COLOR_PRIM_BT_2020;
+}
+struct native_pq_step_context {
+    struct priv *p;
+    const struct mp_image *source;
+    struct bv_mpv_hdr_vf_prepare cfg;
+    struct bv_mpv_hdr_chain_ticket ticket;
+    HRESULT hr;
+};
+static void step_native_pq_borrowed(void *opaque,struct mp_decoder_wrapper *decoder)
+{
+    struct native_pq_step_context *c=opaque;
+    // Real direct decoder is borrowed only for this synchronous main-lane call.
+    // Outer callback is OUTSIDE dispatch/context locks. Actual chain submit uses
+    // its separate exact qualified scopes; no NVIDIA/CPU wait enters those locks.
+    c->hr=bv_mpv_hdr_vf_owner_diagnostic_step(c->p->hdr_owner,decoder,c->source,&c->cfg,&c->ticket);
+}
+static void step_native_pq_diagnostic(struct mp_filter *vf,const struct mp_image *source)
+{
+    struct priv *p=vf->priv;
+    if(!p->native_pq_route||p->disabled)return;
+    // External caller must hold actual independently verified LockedComponentBinding
+    // files for the native lifetime. These paths/flags do NOT authenticate it;
+    // current app rejects native HDR and NEVER emits this internal option.
+    if(!source||p->opts->native_pq_payload_budget<=0||p->opts->session<=0||
+       p->opts->generation<=0||!p->hdr_owner||
+       !isfinite(p->opts->scale)||p->opts->scale<1||p->opts->scale>4||
+       source->w<=0||source->h<=0||source->pts==MP_NOPTS_VALUE||!isfinite(source->pts)||
+       fabs(source->pts)>=(double)INT64_MAX/1000000.0||p->sequence>=INT64_MAX) {
+        p->disabled=true;revoke_native_pq(vf);return;
+    }
+    double w=source->w*(double)p->opts->scale,h=source->h*(double)p->opts->scale;
+    if(w<1||h<1||w>16384||h>16384){p->disabled=true;revoke_native_pq(vf);return;}
+    wchar_t *dll=utf16(p->opts->dll),*runtime=utf16(p->opts->runtime);
+    struct native_pq_step_context c={.p=p,.source=source,.hr=E_PENDING};
+    c.cfg.bridge=(struct bv_mpv_config){.dll_path=dll,.runtime_directory=runtime,
+        .project_id=p->opts->project,.engine_version="BiliPai-Veyra-Core-1",
+        .session=(uint64_t)p->opts->session,.configuration=(uint64_t)p->opts->generation,
+        .generation=p->generation,.input_width=source->w,.input_height=source->h,
+        .output_width=(uint32_t)lrint(w),.output_height=(uint32_t)lrint(h),
+        .effects=BV_VIDEO_SR,.quality=p->opts->quality,.peak_nits=p->opts->peak,
+        .timeout_ms=p->opts->timeout};
+    // Native PQ uses fixed HDR-base/proxy/delta restoration, never TrueHDR bit2.
+    // Actual owner_prepare overrides device/context fields from source AVHWowner.
+    c.cfg.compile=D3DCompile;
+    c.cfg.texture_payload_budget_bytes=(uint64_t)p->opts->native_pq_payload_budget;
+    c.ticket=(struct bv_mpv_hdr_chain_ticket){.sequence=++p->sequence,
+        .pts_numerator=(int64_t)llround(source->pts*1000000.0),.pts_denominator=1000000};
+    struct mp_stream_info *info=mp_filter_find_stream_info(vf);
+    bool borrowed=dll&&runtime&&info&&info->bilipai_with_decoder_owner&&
+        info->bilipai_with_decoder_owner(info,step_native_pq_borrowed,&c);
+    free(dll);free(runtime); // actual owner made independent bounded copies in prepare
+    if(!borrowed){p->disabled=true;revoke_native_pq(vf);return;}
+    bool recovery=bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner);
+    if(!recovery&&(c.hr==S_FALSE||c.hr==E_PENDING))return; // known warm/pending; never mask recovery
+    if(FAILED(c.hr)||recovery){p->disabled=true;revoke_native_pq(vf);}
+    // S_OK is only queued final-use Signal. NO submitted/presentation log token;
+    // real owner service discards completed diagnostic pictures internally.
+}
 static bool source_color(const struct mp_image *image,struct bv_mpv_color *out)
 {
     if(!image)return false;
@@ -276,6 +363,8 @@ static void retire_bridge(struct mp_filter *vf)
 static void flush_frames(struct mp_filter *vf)
 {
     struct priv *p=vf->priv;
+    // Revoke own exact armed tuple BEFORE whole resource retirement.
+    revoke_native_pq(vf);
     // Retire whole private owner resources; no first-owner reset/rebind.
     bv_mpv_hdr_vf_owner_reset(p->hdr_owner);
     mp_refqueue_flush(p->queue);
@@ -343,22 +432,29 @@ static void process(struct mp_filter *vf)
     struct priv *p=vf->priv;
     struct mp_image *format=mp_refqueue_execute_reinit(p->queue);
     if(format){
+        revoke_native_pq(vf);
         bv_mpv_hdr_vf_owner_reset(p->hdr_owner);
         retire_bridge(vf);av_buffer_unref(&p->hw_pool);
         p->params=format->params;p->out_params=p->params;p->accepted_logged=false;p->decoder_ready_logged=false;p->sequence=0;
         if(p->generation==UINT64_MAX)p->disabled=true;
-        else {++p->generation;p->disabled=
-            bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner)||
-            !prepare_bridge(vf,format);}
+        else {
+            ++p->generation;p->native_pq_route=native_pq_requested(p,format);
+            p->disabled=bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner)||
+                (!p->native_pq_route&&!prepare_bridge(vf,format));
+        }
     }
     if(!mp_refqueue_can_output(p->queue))return;
     struct mp_image *in=mp_refqueue_get(p->queue,0),*out=NULL;
-    // Actual main-lane service only. No production prepare/authorize/submit
-    // call exists: readiness, CPU/GPU scopes and native HDR stay default0.
+    // Actual main-lane real-fence service. Explicit native-only diagnostic may
+    // request prepare/submit, but all options/controls remain default0; VO closed.
     service_hdr_owner(vf);
+    // Service failure can orphan active pointer while its own armed generation
+    // remains in whole custody. Try exact revoke; never infer recovered context.
+    if(p->native_pq_route&&p->disabled)revoke_native_pq(vf);
     observe_native_pq_p010(vf, in);
+    step_native_pq_diagnostic(vf,in);
     struct bv_mpv_color color;
-    if(!p->disabled&&p->bridge&&in&&source_color(in,&color)&&
+    if(!p->native_pq_route&&!p->disabled&&p->bridge&&in&&source_color(in,&color)&&
        in->pts!=MP_NOPTS_VALUE&&isfinite(in->pts)&&
        fabs(in->pts)<(double)INT64_MAX/1000000.0&&p->sequence<UINT64_MAX){
         out=alloc_out(vf);
@@ -390,7 +486,7 @@ static void process(struct mp_filter *vf)
             }else {talloc_free(lease);talloc_free(input_lease);talloc_free(out);out=NULL;}
         }
     }
-    if(!out&&!p->disabled&&p->bridge){
+    if(!out&&!p->native_pq_route&&!p->disabled&&p->bridge){
         p->disabled=true;
         log_failure(vf,BV_INTERNAL,"process-bypass",
                     "frame preparation bypassed; original frame forwarded");
@@ -405,6 +501,7 @@ static void process(struct mp_filter *vf)
 static void uninit(struct mp_filter *vf)
 {
     struct priv *p=vf->priv;
+    revoke_native_pq(vf);
     // Pending whole generations survive this VF; no borrowed decoder pointer
     // or callback into this soon-to-be-destroyed priv is retained.
     bv_mpv_hdr_vf_owner_detach(&p->hdr_owner);
@@ -443,7 +540,10 @@ static const m_option_t fields[]={
     {"dll",OPT_STRING(dll)},{"runtime",OPT_STRING(runtime)},{"project",OPT_STRING(project)},
     {"session",OPT_INT64(session)},{"generation",OPT_INT64(generation)},
     {"scale",OPT_FLOAT(scale)},{"quality",OPT_INT(quality)},{"hdr",OPT_BOOL(hdr)},
-    {"peak",OPT_INT(peak)},{"timeout",OPT_INT(timeout)},{0}
+    {"peak",OPT_INT(peak)},{"timeout",OPT_INT(timeout)},
+    // Internal explicit diagnostic only; no app/JVM/GUI emitter or renderer gate.
+    {"native-pq-diagnostic",OPT_BOOL(native_pq_diagnostic)},
+    {"native-pq-payload-budget",OPT_INT64(native_pq_payload_budget)},{0}
 };
 const struct mp_user_filter_entry vf_bilipai_rtx={
     .desc={.name="bilipai-rtx",.description="BiliPai RTX Video GPU bridge candidate",.priv_size=sizeof(struct opts),

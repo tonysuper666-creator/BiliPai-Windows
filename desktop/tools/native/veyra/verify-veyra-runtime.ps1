@@ -146,10 +146,10 @@ function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$
     if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
     foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
     if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
-       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'd7de23b86ba3d9152422c832bfe4bdf49f3ccff4e355c0311a966293bc7e6a5d'-or
+       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'a2cdc9ce46c34a02004483b48dc1f1ae31e061aa65f7485fee4f7925e88b3d2a'-or
        $Native.coreAbiHeaderSha256-cne$Manifest.coreAbiHeaderSha256-or$Native.tokenProtocol-ne2-or
        $Native.presentationProperty-cne$Manifest.presentationProperty-or
-       $Native.sourcePatchHelperSha256-cne'fd43e000603a141a3457fb869d3bfa48857742ce6973b1cda0584f7f4ec473ab'-or
+       $Native.sourcePatchHelperSha256-cne'90a35f3e57353209b79e873b457fbe545339e2ca1c82c882ed236ad29a59b944'-or
        $Native.nativeBinaryBuiltByThisProgram-cne$false-or$Native.gpuExecuted-cne$false-or
        $Native.displayProofRuntimeVerified-cne$false){throw 'Actual presentation native receipt identity mismatch.'}
     if(@($Native.filterSourceFiles).Count-ne21){throw 'Incomplete presentation private source inventory.'}
@@ -208,14 +208,14 @@ try {
     if($presentation){
         $fixed.producerVariant='bilipai-veyra-rtx-present-v1'
         $fixed.bridgeSourceSha256='B5686FCD414F3287CEFD93E06DECD9D4FD224A538834DAD74C6E828281963A1E'
-        $fixed.vfSourceSha256='86560444B6E2100862C94D184EA2C576237D5C0C354B62FF67FEF53C6EF04D21'
-        $manifestExpected='D7DE23B86BA3D9152422C832BFE4BDF49F3CCFF4E355C0311A966293BC7E6A5D'
+        $fixed.vfSourceSha256='1745A1D830C388CE9ACF6D70615FED5C0753C657D31BF57AB70711C4AB98C811'
+        $manifestExpected='A2CDC9CE46C34A02004483B48DC1F1AE31E061AA65F7485FEE4F7925E88B3D2A'
         Require-Properties $profile @('presentationProtocolVersion','presentationProperty','upstreamEditsSha256',
             'sourcePatchHelperSha256','mpvNativeReceiptRelativePath','mpvNativeReceiptSha256') 'PRESENTATION_PROFILE_MISSING'
         if($profile.presentationProtocolVersion-isnot[int]-or$profile.presentationProtocolVersion-ne2-or$profile.presentationProperty-cne'bilipai-rtx-presentation'-or
            $profile.mpvNativeReceiptRelativePath-cne'mpv/licenses/native-patch-receipt.json'){Reject 'PRESENTATION_PROFILE_INVALID'}
-        Same-Hash $profile.upstreamEditsSha256 'b9574c2f4792697a705254e6fa3f58150b3fcc12080bc0da7d2fea1c90717419' 'PRESENTATION_EDIT_IDENTITY_MISMATCH'
-        Same-Hash $profile.sourcePatchHelperSha256 'fd43e000603a141a3457fb869d3bfa48857742ce6973b1cda0584f7f4ec473ab' 'PRESENTATION_HELPER_IDENTITY_MISMATCH'
+        Same-Hash $profile.upstreamEditsSha256 'be16afe346d3cfba6d1034946cb795140a9b72d8b7983e1a27702b43a79a544c' 'PRESENTATION_EDIT_IDENTITY_MISMATCH'
+        Same-Hash $profile.sourcePatchHelperSha256 '90a35f3e57353209b79e873b457fbe545339e2ca1c82c882ed236ad29a59b944' 'PRESENTATION_HELPER_IDENTITY_MISMATCH'
     }
     foreach ($key in $fixed.Keys) {
         if ($profile.$key -isnot [string] -or $profile.$key -cne $fixed[$key]) { Reject 'PROFILE_SOURCE_IDENTITY_MISMATCH' }
@@ -311,13 +311,13 @@ try {
             $sm=Open-Locked (Relative-Path $rootFull 'mpv/licenses/rtx-filter-source-manifest.json')
             Same-Hash $sm.Sha256 $manifestExpected 'MPV_PRESENTATION_MANIFEST_MISMATCH'
             $up=Open-Locked (Relative-Path $rootFull 'mpv/licenses/rtx-presentation-edits.json')
-            Same-Hash $up.Sha256 'b9574c2f4792697a705254e6fa3f58150b3fcc12080bc0da7d2fea1c90717419' 'MPV_PRESENTATION_EDITS_MISMATCH'
+            Same-Hash $up.Sha256 'be16afe346d3cfba6d1034946cb795140a9b72d8b7983e1a27702b43a79a544c' 'MPV_PRESENTATION_EDITS_MISMATCH'
             $reg=Open-Locked (Relative-Path $rootFull 'mpv/licenses/rtx-registration-edits.json')
             Same-Hash $reg.Sha256 '95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042' 'MPV_PRESENTATION_REGISTRATION_MISMATCH'
             Assert-PresentationSource (Read-LockedJson $native 1048576) (Read-LockedJson $sm 1048576) @(Read-LockedJson $up 2097152) @(Read-LockedJson $reg 1048576)
             $result.checked.presentationProtocolVersion=2
-            $result.checked.sourcePatchHelperSha256='fd43e000603a141a3457fb869d3bfa48857742ce6973b1cda0584f7f4ec473ab'
-            $result.checked.upstreamEditsSha256='b9574c2f4792697a705254e6fa3f58150b3fcc12080bc0da7d2fea1c90717419'
+            $result.checked.sourcePatchHelperSha256='90a35f3e57353209b79e873b457fbe545339e2ca1c82c882ed236ad29a59b944'
+            $result.checked.upstreamEditsSha256='be16afe346d3cfba6d1034946cb795140a9b72d8b7983e1a27702b43a79a544c'
             $result.checked.mpvNativeReceiptSha256=$native.Sha256
         }
         $result.status = 'VERIFIED'; $result.engineStatus = 'AVAILABLE'
