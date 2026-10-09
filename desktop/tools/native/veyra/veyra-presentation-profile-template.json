@@ -1,6 +1,6 @@
 {
   "architecture": "windows-x64",
-  "bridgeSourceSha256": "C9DFA89403478DDF0F33F1B47D90D1068A57126A624001C4ABB48158C0ED92FB",
+  "bridgeSourceSha256": "B8B93F3C513F6CACD2CD6A20402A3C2EBE1D1B594D6D549B0DF7E9685167152C",
   "coreAbi": 1,
   "coreAbiWire": 65536,
   "coreModuleRelativePath": "core/bilipai_veyra_core.dll",
@@ -8,7 +8,7 @@
   "engineVersion": "BiliPai-Veyra-Core-1",
   "featureDirectory": "runtime/experimental",
   "filterName": "bilipai-rtx",
-  "filterSourceManifestSha256": "44AB227B5B0B521627A890CC1BAC7A355E4F243E0BEB7C3F0EDA0F1BC926B988",
+  "filterSourceManifestSha256": "3CBC0C8998D5F8B1DF8A33F73237F6EA4C64B1B9801733F8E685218095A891AB",
   "headerSha256": "0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569",
   "localBuildEvidence": {
     "actuallyLinked": true,
@@ -89,11 +89,11 @@
     "installedEngineBindingAffected": false,
     "role": "informational-source-tag-updates-only"
   },
-  "sourcePatchHelperSha256": "24D0A7E815BF1DABB08CA138281B9684578159412E9E860529F7D45ECCD7B471",
+  "sourcePatchHelperSha256": "EB0038376BF20E3C026D6F95E4BF8B07A44E54563BB2CE2E8AF65DC027F9FCFE",
   "upstreamEditsSha256": "FF8E01F7E732EACBDE82E58BB8EA192236B9425EEA2B126005F0DD6453DC1216",
   "variant": "bilipai-veyra-core-v1",
   "veyraRelease": "2.0.6",
   "veyraReleaseCommit": "e3aa842a00f693a4a17d1fc4c454d0ebc59428f6",
   "veyraSourceCommit": "96a7c8de36bc195240161de6814739ad810722f1",
-  "vfSourceSha256": "4451DCBEB54ECF799033DA45BBCF1682D647E8D6CBD22EAF1118FA3FA7AE09D5"
+  "vfSourceSha256": "ABCC9D0DC334C65452F708DB36F7B9021B73EBB380A232E93EDD38779D9A3745"
 }

@@ -39,6 +39,7 @@
 #include "filters/user_filters.h"
 #include "refqueue.h"
 #include "video/hwdec.h"
+#include "video/fmt-conversion.h"
 #include "video/mp_image.h"
 #include "video/mp_image_pool.h"
 #include "bilipai_rtx_mpv_bridge.h"
@@ -69,9 +70,39 @@ static wchar_t *utf16(const char *s)
     if(out&&!MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,s,-1,out,n)){free(out);out=NULL;}
     return out;
 }
-static bool source_color(const struct mp_image_params *p,struct bv_mpv_color *out)
+static bool source_color(const struct mp_image *image,struct bv_mpv_color *out)
 {
-    out->rgb10_qualified=0;
+    if(!image)return false;
+    const struct mp_image_params *p=&image->params;
+    out->rgb10_qualified=0;out->p016_depth=0;
+    /* P012/P016 share DXGI P016. Only the actual retained AVHWFramesContext
+       identifies CURRENT stored samples; codec/raw metadata and repr.bits
+       are not authority. Fixed FFmpeg uses P012LE shift4 and P016LE shift0. */
+    int effective=p->hw_subfmt?p->hw_subfmt:p->imgfmt;
+    enum AVPixelFormat sampled=imgfmt2pixfmt(effective);
+    if(sampled==AV_PIX_FMT_P012LE||sampled==AV_PIX_FMT_P016LE){
+        if(image->imgfmt!=IMGFMT_D3D11||p->imgfmt!=IMGFMT_D3D11||
+           !image->hwctx||!image->hwctx->data||
+           image->hwctx->size<sizeof(AVHWFramesContext))return false;
+        const AVHWFramesContext *frames=(const void*)image->hwctx->data;
+        if(frames->format!=AV_PIX_FMT_D3D11||frames->sw_format!=sampled||
+           !frames->device_ref||!frames->device_ref->data||
+           frames->device_ref->size<sizeof(AVHWDeviceContext)||
+           (const void*)frames->device_ref->data!=frames->device_ctx||
+           !frames->device_ctx||frames->device_ctx->type!=AV_HWDEVICE_TYPE_D3D11VA||
+           pixfmt2imgfmt(frames->sw_format)!=p->hw_subfmt||
+           !frames->device_ctx->hwctx||!image->planes[0]||
+           image->w<=0||image->h<=0||p->w!=image->w||p->h!=image->h||
+           frames->width<image->w||frames->height<image->h)return false;
+        const AVD3D11VADeviceContext *device=frames->device_ctx->hwctx;
+        if(!device->device)return false;
+        ID3D11Device *texture_device=NULL;
+        ID3D11Texture2D_GetDevice((ID3D11Texture2D*)image->planes[0],&texture_device);
+        bool same_device=texture_device==device->device;
+        if(texture_device)ID3D11Device_Release(texture_device);
+        if(!same_device)return false;
+        out->p016_depth=sampled==AV_PIX_FMT_P012LE?12:16;
+    }
     /* No HDR/proxy reconstruction is claimed here; the original HDR picture
        bypasses this first bridge. Only explicit transfer/primary/range qualifies. */
     if(pl_color_space_is_hdr(&p->color)||p->color.primaries!=PL_COLOR_PRIM_BT_709)
@@ -80,7 +111,6 @@ static bool source_color(const struct mp_image_params *p,struct bv_mpv_color *ou
        tuple and matching resolved SDR metadata. FULL keeps every old raw
        condition and is tightened by the new marker. LIMITED never borrows
        the old FULL flag; UNKNOWN and contradictory metadata bypass. */
-    int effective=p->hw_subfmt?p->hw_subfmt:p->imgfmt;
     if(effective==IMGFMT_X2BGR10){
         if(p->sys_orig!=PL_COLOR_SYSTEM_RGB||p->repr.sys!=p->sys_orig||
            p->primaries_orig!=PL_COLOR_PRIM_BT_709||p->color.primaries!=p->primaries_orig||
@@ -159,13 +189,13 @@ static struct mp_image *alloc_out(struct mp_filter *vf)
     if(av_hwframe_get_buffer(p->hw_pool,av,0)<0){av_frame_free(&av);return NULL;}
     struct mp_image *out=mp_image_from_av_frame(av);av_frame_free(&av);return out;
 }
-static bool prepare_bridge(struct mp_filter *vf)
+static bool prepare_bridge(struct mp_filter *vf,const struct mp_image *format)
 {
     struct priv *p=vf->priv;struct bv_mpv_color color;
     if(p->opts->session<=0||p->opts->generation<=0){
         log_failure(vf,BV_INVALID,"bridge-unavailable","invalid configuration identity");return false;
     }
-    if(!source_color(&p->params,&color)){
+    if(!source_color(format,&color)){
         log_failure(vf,BV_COLOR_UNSUPPORTED,"bridge-unavailable","unsupported frame color metadata");return false;
     }
     if(!isfinite(p->opts->scale)||p->opts->scale<1||p->opts->scale>4||
@@ -208,12 +238,12 @@ static void process(struct mp_filter *vf)
         retire_bridge(vf);av_buffer_unref(&p->hw_pool);
         p->params=format->params;p->out_params=p->params;p->accepted_logged=false;p->sequence=0;
         if(p->generation==UINT64_MAX)p->disabled=true;
-        else {++p->generation;p->disabled=!prepare_bridge(vf);}
+        else {++p->generation;p->disabled=!prepare_bridge(vf,format);}
     }
     if(!mp_refqueue_can_output(p->queue))return;
     struct mp_image *in=mp_refqueue_get(p->queue,0),*out=NULL;
     struct bv_mpv_color color;
-    if(!p->disabled&&p->bridge&&in&&source_color(&in->params,&color)&&
+    if(!p->disabled&&p->bridge&&in&&source_color(in,&color)&&
        in->pts!=MP_NOPTS_VALUE&&isfinite(in->pts)&&
        fabs(in->pts)<(double)INT64_MAX/1000000.0&&p->sequence<UINT64_MAX){
         out=alloc_out(vf);

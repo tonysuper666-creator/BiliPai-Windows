@@ -22,7 +22,9 @@ struct bv_mpv_config {
 /* Private same-MPV call contract only: rgb10_qualified is set exclusively
    by the strict CURRENT X2BGR10 gate and must match the actual DXGI texture.
    This is not the public core ABI or its reserved field. */
-struct bv_mpv_color { uint32_t matrix, limited, transfer, chroma, rgb10_qualified; };
+/* p016_depth is 12/16 only after actual AVHWFramesContext sw_format
+   qualification. Zero for every other texture. No encoded-bitdepth inference. */
+struct bv_mpv_color { uint32_t matrix, limited, transfer, chroma, rgb10_qualified, p016_depth; };
 int bv_mpv_bridge_create(const struct bv_mpv_config *, struct bv_mpv_bridge **,
                          bv_status_v1 *);
 /* process consumes input_lease/output_lease on every path; keep mp_image refs until
