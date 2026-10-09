@@ -108,6 +108,18 @@ class DesktopUpdater private constructor(
 
     suspend fun autoCheck(): UpdateState = check(force = false)
 
+    /** Sleep only the unelapsed durable interval after a skipped startup check.
+     * Failure waits a full interval; busy/due owners retry with a bounded delay. */
+    internal fun automaticCheckDelayMs(nowMs: Long = System.currentTimeMillis()): Long {
+        if (state.value is UpdateState.Disabled || state.value is UpdateState.Failed ||
+            state.value is UpdateState.Prepared || state.value is UpdateState.Launched)
+            return AUTO_CHECK_INTERVAL_MS
+        val previous = lastCheckTime()
+        if (previous <= 0L || nowMs < previous) return 60_000L
+        val elapsed = nowMs - previous
+        return if (elapsed >= AUTO_CHECK_INTERVAL_MS) 60_000L else AUTO_CHECK_INTERVAL_MS - elapsed
+    }
+
     /** Downloads, verifies and extracts a side-by-side installation while the current app keeps running. */
     suspend fun prepareUpdate(update: WindowsUpdate): PreparedUpdate? = prepareUpdateInternal(update, null)
 

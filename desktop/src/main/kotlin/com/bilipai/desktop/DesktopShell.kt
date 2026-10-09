@@ -1503,7 +1503,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     LaunchedEffect(veyraMonitor) { veyraMonitor.followSettings() }
     LaunchedEffect(updater, pluginStore) {
         followDesktopAutomaticUpdateChecks(pluginStore, { scope.isActive && !latestDynamicIsClosing() },
-            { updater.autoCheck() })
+            { updater.autoCheck() }, nextDelayMs = { updater.automaticCheckDelayMs() })
     }
     LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, messageUpdateRoot, messageUpdateActivity, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect

@@ -19,6 +19,7 @@ internal suspend fun followDesktopAutomaticUpdateChecks(
     owns: () -> Boolean,
     check: suspend () -> Unit,
     intervalMs: Long = DesktopUpdater.AUTO_CHECK_INTERVAL_MS,
+    nextDelayMs: () -> Long = { intervalMs },
 ) {
     require(intervalMs > 0)
     store.snapshot("settings").map {
@@ -29,7 +30,8 @@ internal suspend fun followDesktopAutomaticUpdateChecks(
             currentCoroutineContext().ensureActive()
             if (!owns()) throw CancellationException("Windows update check owner retired")
             check()
-            delay(intervalMs)
+            // A skipped startup check must preserve the durable six-hour deadline.
+            delay(nextDelayMs().coerceIn(1L, intervalMs))
         }
     }
 }

@@ -117,4 +117,66 @@ class DesktopUpdateMonitoringTest {
         assertEquals(10 * 60 * 60 * 1000L, DesktopVeyraReleaseMonitor.INTERVAL_MS)
         job.cancelAndJoin()
     }
+
+    private fun clockUpdater(root: java.nio.file.Path, client: okhttp3.OkHttpClient): DesktopUpdater =
+        DesktopUpdater.forIntegrationTest("0.3.3+1", "tonysuper666-creator/BiliPai-Windows",
+            root.resolve("BiliPai/updates"), client, root, { error("A clock check must never launch an EXE") })
+
+    @Test fun `restart five hours after a durable check sleeps only the remaining hour`() = runBlocking {
+        val root = Files.createTempDirectory("bp-update-clock-")
+        val updateRoot = UpdateStorage.verifiedRoot(root.resolve("BiliPai/updates"))
+        val checkedAt = System.currentTimeMillis() - 5 * 60 * 60 * 1000L
+        Files.writeString(updateRoot.resolve("last-check.txt"), checkedAt.toString())
+        var networkCalls = 0
+        val updater = clockUpdater(root, okhttp3.OkHttpClient.Builder().addInterceptor {
+            networkCalls++; error("Debounced restart must not fetch a release")
+        }.build())
+        assertIs<UpdateState.Idle>(updater.autoCheck())
+        assertEquals(0, networkCalls)
+        assertEquals(60 * 60 * 1000L, updater.automaticCheckDelayMs(checkedAt + 5 * 60 * 60 * 1000L))
+        assertEquals(60_000L, updater.automaticCheckDelayMs(checkedAt - 1))
+        assertEquals(checkedAt.toString(), Files.readString(updateRoot.resolve("last-check.txt")))
+    }
+
+    @Test fun `background owner uses the durable remaining deadline then returns to six hours`() = runTest {
+        val root = Files.createTempDirectory("bp-update-clock-owner-")
+        val updateRoot = UpdateStorage.verifiedRoot(root.resolve("BiliPai/updates"))
+        val checkedAt = 10_000_000L
+        val checkpoint = updateRoot.resolve("last-check.txt")
+        Files.writeString(checkpoint, checkedAt.toString())
+        val updater = clockUpdater(root, okhttp3.OkHttpClient())
+        var now = checkedAt + 5 * 60 * 60 * 1000L
+        var calls = 0
+        val job = backgroundScope.launch {
+            followDesktopAutomaticUpdateChecks(store(), { true }, {
+                calls++
+                // Model a successful check checkpoint after the skipped restart.
+                if (calls > 1) Files.writeString(checkpoint, now.toString())
+            }, nextDelayMs = { updater.automaticCheckDelayMs(now) })
+        }
+        runCurrent(); assertEquals(1, calls)
+        advanceTimeBy(60 * 60 * 1000L - 1); now += 60 * 60 * 1000L - 1
+        runCurrent(); assertEquals(1, calls)
+        advanceTimeBy(1); now++; runCurrent(); assertEquals(2, calls)
+        advanceTimeBy(DesktopUpdater.AUTO_CHECK_INTERVAL_MS - 1); now += DesktopUpdater.AUTO_CHECK_INTERVAL_MS - 1
+        runCurrent(); assertEquals(2, calls)
+        advanceTimeBy(1); now++; runCurrent(); assertEquals(3, calls)
+        job.cancelAndJoin()
+    }
+
+    @Test fun `failed due check retains success checkpoint and waits six hours without a hot retry`() = runBlocking {
+        val root = Files.createTempDirectory("bp-update-clock-failure-")
+        val updateRoot = UpdateStorage.verifiedRoot(root.resolve("BiliPai/updates"))
+        val checkedAt = System.currentTimeMillis() - DesktopUpdater.AUTO_CHECK_INTERVAL_MS - 1_000L
+        val checkpoint = updateRoot.resolve("last-check.txt")
+        Files.writeString(checkpoint, checkedAt.toString())
+        var networkCalls = 0
+        val updater = clockUpdater(root, okhttp3.OkHttpClient.Builder().addInterceptor {
+            networkCalls++; throw java.io.IOException("fixture release request failed")
+        }.build())
+        assertIs<UpdateState.Failed>(updater.autoCheck())
+        assertEquals(1, networkCalls)
+        assertEquals(checkedAt.toString(), Files.readString(checkpoint))
+        assertEquals(DesktopUpdater.AUTO_CHECK_INTERVAL_MS, updater.automaticCheckDelayMs())
+    }
 }
