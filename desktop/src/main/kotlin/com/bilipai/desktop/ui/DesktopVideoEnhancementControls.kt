@@ -63,6 +63,7 @@ internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementS
         state.active && state.driverVsrAccepted && state.hdrConversionActive -> "VSR · HDR"
         state.active && state.hdrConversionActive -> "HDR"
         state.active && state.driverVsrAccepted -> "VSR"
+        state.active -> "增强"
         state.pending -> "处理中"
         else -> "原画"
     }
