@@ -24,8 +24,8 @@ import zlib
 KEY_ID = "veyra-compatible-v1-102b3faa4e9e82a5"
 PREPARER_SHA256 = "f208765b7e47d10b516a98250c737d0251935fac029d01b30a32af6662c75720"
 SIGNER_SHA256 = "e2e623518b236859d32eefa42cb3167bea56923454c81939932894fd6fb4ed09"
-TEMPLATE_SHA256 = "4a4f37a0c9ef7314de10850ea0ae9b678864aba3e4c1f5650e112f4070639593"
-VERIFIER_SHA256 = "19aed82e7fb570ec93d1af2c356c7dad531c86638ab34da418ef05f397363ce7"
+TEMPLATE_SHA256 = "03bc600238d6d691056597826216ab8b47bbbf6ea25cbf1fe10b15b0d19f7278"
+VERIFIER_SHA256 = "e6eeb8d3ea223fa31d1655a9a9a5960cf9bd753a7dacb5406ad0e4d21f428927"
 VERIFIED = "VALIDATED_FULL_APPLICATION_BUNDLE"
 PAYLOAD_FIELDS = {"schema", "repository", "version", "releaseId", "assetId", "assetName", "size",
                   "downloadUrl", "sha256", "sourceRepository", "sourceCommit", "adapterBuildId",

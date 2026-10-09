@@ -16,8 +16,8 @@
   {
     "path": "meson.build",
     "before": "                     'video/filter/vf_d3d11vpp.c')",
-    "after": "                     'video/filter/vf_d3d11vpp.c')\n    if features['d3d11']\n        sources += files('video/filter/vf_bilipai_rtx.c',\n                         'video/filter/bilipai_rtx_mpv_bridge.c',\n                         'video/filter/veyra-hdr-d3d11/bilipai_hdr_d3d11.c')\n        dependencies += [cc.find_library('d3d12'),\n                         cc.find_library('d3dcompiler'),\n                         cc.find_library('dxgi'),\n                         cc.find_library('dxguid')]\n    endif",
+    "after": "                     'video/filter/vf_d3d11vpp.c')\n    if features['d3d11']\n        sources += files('video/filter/vf_bilipai_rtx.c',\n                         'video/filter/bilipai_rtx_mpv_bridge.c',\n                         'video/filter/veyra-hdr-d3d11/bilipai_hdr_d3d11.c',\n                         'video/filter/veyra-hdr-caller/bilipai_hdr_p010_chain.c')\n        dependencies += [cc.find_library('d3d12'),\n                         cc.find_library('d3dcompiler'),\n                         cc.find_library('dxgi'),\n                         cc.find_library('dxguid')]\n    endif",
     "beforeSHA256": "7b7e1059fbea9e6a46de8e5d8f7486af41850b4c1fcb77e9cd6b84525bccbbb3",
-    "afterSHA256": "fff5dcd1b9f1f0026e09906d5a20e3476f308ad66281426dc4f385d0420b2a7e"
+    "afterSHA256": "48fa64ef269248c5ec77b8ab5543ab84442f17b1a80cd90128aaa188467a3a40"
   }
 ]

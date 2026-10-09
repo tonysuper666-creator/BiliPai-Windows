@@ -178,6 +178,47 @@ HRESULT bv_hdr11_proxy(struct bv_hdr11_frame *, ID3D11Texture2D **,
 HRESULT bv_hdr11_finish(struct bv_hdr11_frame *, ID3D11Texture2D *sr_output,
     struct bv_hdr11_lease sr_lease);
 
+/* Separate checked restore path. Old finish remains a legacy source method;
+ * it is NOT the qualified route for new native-HDR playback. The caller uses
+ * this three-stage interface with configured context callbacks NULL. */
+struct bv_hdr11_finish_prepared;
+struct bv_hdr11_finish_input {
+    ID3D11Texture2D *sr_output; // actual R8 SR-only, exact output extent
+    IUnknown *sr_ready_fence;  // real same-device bridge result dependency
+    uint64_t sr_ready_value;
+    ID3D11Texture2D *pool_output; // independent real MPV AVBuffer/HWctx storage
+    uint32_t pool_array_slice;
+};
+/* Legal SAME host thread, outside BOTH decoder dispatch and context mutex.
+ * No GPU commands. Exact formats/extents/device/slice/alias are checked;
+ * actual SRV, fence/context QI and retained SR/pool leases prepared here.
+ * Its budget includes the real entire held output pool array in addition to
+ * base/proxy/restore/PQ/source/SR payload, not claimed actual VRAM availability.
+ * Each well-formed lease is consumed on every return. Malformed lease is not.
+ * Its ownership never stands in for source CURRENT/SR completion/SDK proof.
+ * Holds an additional internal frame ref until close. No other host method or
+ * callback may access/mutate this frame while prepared. */
+HRESULT bv_hdr11_prepare_finish(struct bv_hdr11_frame *,
+    const struct bv_hdr11_finish_input *,struct bv_hdr11_lease sr_lease,
+    struct bv_hdr11_lease pool_lease,struct bv_hdr11_finish_prepared **);
+/* ONLY in separately authorized prepared GPU-submit scope plus ORIGINAL checked
+ * exclusion, no active query unless owner accepts these Dispatch commands.
+ * No explicit compiler/alloc/QI/ref/lease/lock/CPU-wait/core/Flush operation.
+ * Actual nonnull previous state is REQUIRED before Wait/restore/PQ/copy.
+ * attempted/submitted stick before Swap. Missing previous state is UNKNOWN;
+ * void Swap restore cannot prove driver restoration and must not be reported
+ * as GPU/HDR success. Owner stops the shared context on any unknown failure.
+ * Copies encoded PQ to actual independent pool slice AFTER restore/encode.
+ * Signal is the caller's later dedicated ticket fence after ALL last uses.
+ * False/unlock/Signal failure retains the whole frame/SRloan/ticket/owner. */
+HRESULT bv_hdr11_submit_restore(struct bv_hdr11_finish_prepared *);
+/* SAME host thread, AFTER BOTH locks. Releases only temporary preparation refs,
+ * transfers consumed SR/pool/fence refs+leases to the already-submitted frame.
+ * No free of submitted source state; real final consumer seal/retire required.
+ * Closing an unattempted preparation releases ONLY these never-used SR/pool
+ * leases; original decode/proxy frame still requires its own final retirement. */
+HRESULT bv_hdr11_close_finish(struct bv_hdr11_finish_prepared **);
+
 /* Borrowed pending output: precise R10G10B10A2_UNORM at output extent.
  * Its content is BT2020/PQ only after the actual completion dependency. No
  * renderer, token, metadata mutation, native HDR or public ABI is enabled. */

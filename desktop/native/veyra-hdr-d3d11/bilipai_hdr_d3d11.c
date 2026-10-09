@@ -36,6 +36,10 @@ struct bv_hdr11_frame {
     struct bv_hdr11_lease source_lease,sr_lease;
     ID3D11Fence *final_use;
     uint64_t final_value;
+    ID3D11Texture2D *pool_output;
+    struct bv_hdr11_lease pool_lease;
+    ID3D11Fence *restore_ready;
+    int finish_pending;
     int submitted,finished,failed,sealed;
 };
 /* Separate CPU-prepared custody. Its opaque frame is not exposed until
@@ -127,8 +131,9 @@ static void frame_free(struct bv_hdr11_frame *f) {
     RELEASE(f->source_srv);RELEASE(f->sr_srv);RELEASE(f->source);RELEASE(f->sr);RELEASE(f->final_use);
     RELEASE(f->p010_plane[0]);RELEASE(f->p010_plane[1]);RELEASE(f->p010_copy);
     RELEASE(f->p010_constants);RELEASE(f->producer_ready);
+    RELEASE(f->pool_output);RELEASE(f->restore_ready);
     /* No context/actor gate held: callbacks may release real mp_image refs. */
-    release_lease(&f->source_lease);release_lease(&f->sr_lease);
+    release_lease(&f->source_lease);release_lease(&f->sr_lease);release_lease(&f->pool_lease);
     if(p->frame==f)p->frame=NULL;free(f);
 }
 static void pipeline_free(struct bv_hdr11_pipeline *p) {
@@ -598,6 +603,156 @@ HRESULT bv_hdr11_finish(struct bv_hdr11_frame *f,ID3D11Texture2D *sr,
     context_leave(p,&old);f->finished=1;
     hr=ID3D11Device_GetDeviceRemovedReason(p->device);if(FAILED(hr))f->failed=1;
     return hr;
+}
+/* Separate three-stage restore path. CPU preparation and cleanup never run
+ * under decoder dispatch or original immediate-context exclusion. */
+struct bv_hdr11_finish_prepared {
+    struct bv_hdr11_frame *frame;
+    ID3D11Texture2D *sr,*pool;
+    ID3D11ShaderResourceView *sr_srv;
+    ID3D11DeviceContext4 *context4;
+    ID3D11Fence *sr_ready;
+    struct bv_hdr11_lease sr_lease,pool_lease;
+    ID3DDeviceContextState *previous;
+    uint64_t ready_value;
+    uint32_t pool_slice;
+    DWORD owner_thread;
+    int attempted;
+};
+static int finish_same_resource(ID3D11Texture2D *a,ID3D11Texture2D *b) {
+    if(!a||!b)return 0;
+    IUnknown *ia=NULL,*ib=NULL;
+    HRESULT ha=IUnknown_QueryInterface((IUnknown*)a,&IID_IUnknown,(void**)&ia);
+    HRESULT hb=IUnknown_QueryInterface((IUnknown*)b,&IID_IUnknown,(void**)&ib);
+    int same=SUCCEEDED(ha)&&SUCCEEDED(hb)&&ia==ib;RELEASE(ia);RELEASE(ib);return same;
+}
+static void finish_prepared_free(struct bv_hdr11_finish_prepared *s) {
+    RELEASE(s->previous);RELEASE(s->sr_srv);RELEASE(s->sr);RELEASE(s->pool);
+    RELEASE(s->context4);RELEASE(s->sr_ready);
+    release_lease(&s->sr_lease);release_lease(&s->pool_lease);free(s);
+}
+static int finish_payload(struct bv_hdr11_frame *f,const D3D11_TEXTURE2D_DESC *pool) {
+    uint64_t total=0,source=UINT64_C(1)*f->source_w*f->source_h;
+    uint64_t output=UINT64_C(1)*f->output_w*f->output_h;
+    D3D11_TEXTURE2D_DESC d={0};ID3D11Texture2D_GetDesc(f->source,&d);
+    if(f->p010_copy) {
+        uint64_t allocation=UINT64_C(1)*d.Width*d.Height;
+        if(!payload_add(&total,allocation,3*(UINT64_C(1)+d.ArraySize))||
+           !payload_add(&total,source,12))return 0;
+    } else if(!payload_add(&total,source,16))return 0;
+    /* Output base/PQ + external SR are16 bytes/pixel; holding one pool slice
+     * pins its actual WHOLE resource. Include that extra array payload too.
+     * This bound is estimated texture bytes, NOT current free VRAM. */
+    return payload_add(&total,output,16)&&
+        payload_add(&total,output,4*UINT64_C(1)*pool->ArraySize)&&
+        total<=f->pipeline->config.texture_payload_budget_bytes;
+}
+HRESULT bv_hdr11_prepare_finish(struct bv_hdr11_frame *f,
+    const struct bv_hdr11_finish_input *in,struct bv_hdr11_lease sr_lease,
+    struct bv_hdr11_lease pool_lease,struct bv_hdr11_finish_prepared **out) {
+    /* Malformed lease is not consumed. Each well-formed lease is consumed on
+     * every return; no caller may destroy its source/loan owner in callbacks. */
+    if(!lease_valid(sr_lease)||!lease_valid(pool_lease)) {
+        if(lease_valid(sr_lease))release_lease(&sr_lease);
+        if(lease_valid(pool_lease))release_lease(&pool_lease);
+        return E_INVALIDARG;
+    }
+    if(!out||*out||!f||f->failed||f->sealed||!f->submitted||f->finished||
+       f->finish_pending||!in||!in->sr_output||!in->pool_output||
+       !in->sr_ready_fence||!in->sr_ready_value||in->sr_ready_value==UINT64_MAX) {
+        release_lease(&sr_lease);release_lease(&pool_lease);return E_INVALIDARG;
+    }
+    struct bv_hdr11_pipeline *p=f->pipeline;
+    if(p->config.context_lock||p->config.context_unlock||
+       (ID3D11Device_GetCreationFlags(p->device)&D3D11_CREATE_DEVICE_SINGLETHREADED)) {
+        release_lease(&sr_lease);release_lease(&pool_lease);return E_NOTIMPL;
+    }
+    HRESULT hr=external_texture(p,in->sr_output,f->output_w,f->output_h,
+                               DXGI_FORMAT_R8G8B8A8_UNORM);
+    ID3D11Device *pool_device=NULL;D3D11_TEXTURE2D_DESC d={0};
+    ID3D11Texture2D_GetDevice(in->pool_output,&pool_device);
+    int same=pool_device&&same_device(pool_device,p->device);RELEASE(pool_device);
+    ID3D11Texture2D_GetDesc(in->pool_output,&d);
+    if(!same||d.Format!=DXGI_FORMAT_R10G10B10A2_UNORM||d.MipLevels!=1||
+       !d.ArraySize||in->pool_array_slice>=d.ArraySize||d.Width!=f->output_w||
+       d.Height!=f->output_h||d.SampleDesc.Count!=1||d.SampleDesc.Quality||
+       d.Usage!=D3D11_USAGE_DEFAULT||d.CPUAccessFlags||
+       !(d.BindFlags&D3D11_BIND_SHADER_RESOURCE)||
+       (d.MiscFlags&D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX))hr=E_INVALIDARG;
+    if(finish_same_resource(in->sr_output,in->pool_output)||
+       finish_same_resource(in->sr_output,f->source)||
+       finish_same_resource(in->sr_output,f->p010_copy)||
+       finish_same_resource(in->pool_output,f->source)||
+       finish_same_resource(in->pool_output,f->p010_copy))hr=E_INVALIDARG;
+    for(int n=0;n<TEXTURES;n++)
+        if(finish_same_resource(in->sr_output,f->texture[n])||
+           finish_same_resource(in->pool_output,f->texture[n]))hr=E_INVALIDARG;
+    if(SUCCEEDED(hr)&&!finish_payload(f,&d))hr=E_OUTOFMEMORY;
+    if(FAILED(hr)){release_lease(&sr_lease);release_lease(&pool_lease);return hr;}
+    struct bv_hdr11_finish_prepared *s=calloc(1,sizeof(*s));
+    if(!s){release_lease(&sr_lease);release_lease(&pool_lease);return E_OUTOFMEMORY;}
+    s->frame=f;s->owner_thread=GetCurrentThreadId();s->ready_value=in->sr_ready_value;
+    s->pool_slice=in->pool_array_slice;s->sr_lease=sr_lease;s->pool_lease=pool_lease;
+    s->sr=in->sr_output;s->pool=in->pool_output;
+    ID3D11Texture2D_AddRef(s->sr);ID3D11Texture2D_AddRef(s->pool);
+    hr=IUnknown_QueryInterface((IUnknown*)p->context,&IID_ID3D11DeviceContext4,
+                              (void**)&s->context4);
+    if(SUCCEEDED(hr))hr=IUnknown_QueryInterface(in->sr_ready_fence,&IID_ID3D11Fence,
+                                              (void**)&s->sr_ready);
+    if(SUCCEEDED(hr)) {
+        ID3D11Device *device=NULL;ID3D11Fence_GetDevice(s->sr_ready,&device);
+        same=device&&same_device(device,p->device);RELEASE(device);
+        if(!same||ID3D11Fence_GetCompletedValue(s->sr_ready)==UINT64_MAX)hr=E_INVALIDARG;
+    }
+    if(SUCCEEDED(hr))hr=ID3D11Device_CreateShaderResourceView(p->device,
+        (ID3D11Resource*)s->sr,NULL,&s->sr_srv);
+    if(SUCCEEDED(hr))hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    if(FAILED(hr)){finish_prepared_free(s);return hr;}
+    hr=bv_hdr11_retain(f);
+    if(FAILED(hr)){finish_prepared_free(s);return hr;}
+    f->finish_pending=1;*out=s;return S_OK; // NO context command/GPU use
+}
+HRESULT bv_hdr11_submit_restore(struct bv_hdr11_finish_prepared *s) {
+    if(!s||s->owner_thread!=GetCurrentThreadId()||s->attempted)return E_INVALIDARG;
+    struct bv_hdr11_frame *f=s->frame;struct bv_hdr11_pipeline *p=f->pipeline;
+    if(!f->finish_pending||f->failed||f->sealed||f->finished||!s->sr_srv||
+       !s->sr_ready||!s->context4||!s->pool)return E_INVALIDARG;
+    s->attempted=1;f->submitted=1; // sticky BEFORE even state/queue attempt
+    ID3D11DeviceContext1_SwapDeviceContextState(p->context,p->isolated,&s->previous);
+    if(!s->previous){f->failed=1;return E_UNEXPECTED;} // never restore NULL
+    ID3D11DeviceContext1_ClearState(p->context);
+    HRESULT hr=ID3D11DeviceContext4_Wait(s->context4,s->sr_ready,s->ready_value);
+    if(SUCCEEDED(hr)) {
+        ID3D11ShaderResourceView *inputs[3]={f->srv[HDR_BASE],f->srv[SDR_PROXY],s->sr_srv};
+        dispatch(f,BV_HDR_RESTORE,inputs,3,HDR_RESTORED,f->output_w,f->output_h);
+        dispatch(f,BV_HDR_ENCODE_PQ,&f->srv[HDR_RESTORED],1,PQ_OUTPUT,f->output_w,f->output_h);
+        ID3D11DeviceContext4_CopySubresourceRegion(s->context4,(ID3D11Resource*)s->pool,
+            s->pool_slice,0,0,0,(ID3D11Resource*)f->texture[PQ_OUTPUT],0,NULL);
+        hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    }
+    ID3D11DeviceContext1_SwapDeviceContextState(p->context,s->previous,NULL);
+    if(SUCCEEDED(hr))hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    if(FAILED(hr))f->failed=1;else f->finished=1;
+    return hr; // queue ordering only; no CPU wait/core/ref/alloc/cleanup
+}
+HRESULT bv_hdr11_close_finish(struct bv_hdr11_finish_prepared **handle) {
+    if(!handle)return E_POINTER;struct bv_hdr11_finish_prepared *s=*handle;
+    if(!s)return S_OK;if(s->owner_thread!=GetCurrentThreadId())return E_INVALIDARG;
+    struct bv_hdr11_frame *f=s->frame;
+    /* Retain all actually consumed SR/pool refs in the already-submitted frame,
+     * including Swap failure. Close runs after BOTH exclusions have ended. */
+    if(s->attempted) {
+        f->sr=s->sr;s->sr=NULL;f->sr_srv=s->sr_srv;s->sr_srv=NULL;
+        f->sr_lease=s->sr_lease;s->sr_lease=(struct bv_hdr11_lease){0};
+        f->pool_output=s->pool;s->pool=NULL;
+        f->pool_lease=s->pool_lease;s->pool_lease=(struct bv_hdr11_lease){0};
+        f->restore_ready=s->sr_ready;s->sr_ready=NULL;
+    }
+    f->finish_pending=0;*handle=NULL;finish_prepared_free(s);
+    /* Original frame reference remains with caller. If it had independently
+     * retired after real final completion, this prepared ref is the last one. */
+    if(InterlockedDecrement(&f->refs)==0)frame_free(f);
+    return S_OK;
 }
 HRESULT bv_hdr11_output(struct bv_hdr11_frame *f,ID3D11Texture2D **texture,
     ID3D11ShaderResourceView **srv) {

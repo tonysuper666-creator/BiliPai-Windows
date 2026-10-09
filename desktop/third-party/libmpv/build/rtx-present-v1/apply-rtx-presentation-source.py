@@ -9,7 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-EXPECTED_MANIFEST_SHA256 = "aaf557d7ccfed93d52fb2cbd9a0a40101bdce276894fdab44cb0adff88562363"
+EXPECTED_MANIFEST_SHA256 = "25f94b9cb76897ee9de448a663f3e2f68aa7b07fbed6a39d5e14f4a565e80819"
 VARIANT = "bilipai-veyra-rtx-present-v1"
 SOURCE_COMMIT = "69e63f425a531f814431fba12750bdb3721357f2"
 
@@ -78,7 +78,7 @@ def main():
         raise ValueError("Reviewed source edits changed")
     registrations = json.loads(registration_raw, object_pairs_hook=unique)
     upstream = json.loads(upstream_raw, object_pairs_hook=unique)
-    if len(registrations) != 3 or len(upstream) != 24 or len(manifest["sourceFiles"]) != 17:
+    if len(registrations) != 3 or len(upstream) != 24 or len(manifest["sourceFiles"]) != 19:
         raise ValueError("Incomplete reviewed graph")
     nvidia = manifest["originalNvidiaPatch"]
     if sha(bounded(here / "bilipai-nvidia-native-69e63f.patch")) != nvidia["patchSha256"]:

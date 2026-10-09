@@ -2,17 +2,17 @@
 function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$Upstream,[object[]]$Registration) {
     if($Manifest.schema-ne2-or$Manifest.variant-cne'bilipai-veyra-rtx-present-v1'-or
        $Manifest.tokenProtocol-ne2-or$Manifest.presentationProperty-cne'bilipai-rtx-presentation'-or
-       @($Manifest.sourceFiles).Count-ne17-or$Upstream.Count-ne24-or$Registration.Count-ne3){throw 'Presentation source manifest graph mismatch.'}
+       @($Manifest.sourceFiles).Count-ne19-or$Upstream.Count-ne24-or$Registration.Count-ne3){throw 'Presentation source manifest graph mismatch.'}
     if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
     foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
     if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
-       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'aaf557d7ccfed93d52fb2cbd9a0a40101bdce276894fdab44cb0adff88562363'-or
+       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'25f94b9cb76897ee9de448a663f3e2f68aa7b07fbed6a39d5e14f4a565e80819'-or
        $Native.coreAbiHeaderSha256-cne$Manifest.coreAbiHeaderSha256-or$Native.tokenProtocol-ne2-or
        $Native.presentationProperty-cne$Manifest.presentationProperty-or
-       $Native.sourcePatchHelperSha256-cne'422e17dc5c9de4fba9a8d2d745d58cc4bf020cae12c5cdfd068532d1cd571855'-or
+       $Native.sourcePatchHelperSha256-cne'd034662a2fd88a25d8e28e018fedcea4bdc76fb818ee4e41834b6584cb94ae64'-or
        $Native.nativeBinaryBuiltByThisProgram-cne$false-or$Native.gpuExecuted-cne$false-or
        $Native.displayProofRuntimeVerified-cne$false){throw 'Actual presentation native receipt identity mismatch.'}
-    if(@($Native.filterSourceFiles).Count-ne17){throw 'Incomplete presentation private source inventory.'}
+    if(@($Native.filterSourceFiles).Count-ne19){throw 'Incomplete presentation private source inventory.'}
     foreach($row in $Manifest.sourceFiles){
         $same=@($Native.filterSourceFiles|Where-Object{$_.targetPath-ceq$row.targetPath})
         if($same.Count-ne1){throw 'Ambiguous presentation private source target.'}
@@ -63,13 +63,13 @@ function Install-RtxCoreDescriptorMpvRuntime {
     if($presentation){
         $inputSubdirectory='rtx-present-v1';$manifestLeaf='bilipai-rtx-presentation-source-manifest.json'
         $expected.variant='bilipai-veyra-rtx-present-v1'
-        $expected.filterSourceManifestSha256='aaf557d7ccfed93d52fb2cbd9a0a40101bdce276894fdab44cb0adff88562363'
+        $expected.filterSourceManifestSha256='25f94b9cb76897ee9de448a663f3e2f68aa7b07fbed6a39d5e14f4a565e80819'
         $expected.nativePatchSha256='e3bf1eada6100b98adf34d3f6a67685104f3cc7d986fa35cabb14fea1afa2bd7'
         $expected.patchedNativeSourceSha256='adef9a85fe5a3fadd3b10939fc198b003f1f9270fff5ad52bcea4f9f258c776c'
         $expected.presentationProtocolVersion=2
         $expected.presentationProperty='bilipai-rtx-presentation'
-        $expected.upstreamEditsSha256='157fd38ac3eedcc4965a013145bab9bef98e2fb7052c484e118350e7b43ac2fb'
-        $expected.sourcePatchHelperSha256='422e17dc5c9de4fba9a8d2d745d58cc4bf020cae12c5cdfd068532d1cd571855'
+        $expected.upstreamEditsSha256='ae3ae1d9691a21ff64e75aab6452cdce2eb47ec9ed9bafb89f8a97bbb55391a2'
+        $expected.sourcePatchHelperSha256='d034662a2fd88a25d8e28e018fedcea4bdc76fb818ee4e41834b6584cb94ae64'
     }
     if ($runtime.schema -ne 2) { throw 'Unsupported patched runtime descriptor schema.' }
     if ($runtime.closedSdkOrRuntimeIncluded -cne $false -or $runtime.vfgImplemented -cne $false -or $runtime.rtxCoreBridgeVerified -cne $false) { throw 'RTX candidate is source-only, excludes closed runtime/VFG and is not hardware-verified.' }
@@ -138,11 +138,11 @@ function Install-RtxCoreDescriptorMpvRuntime {
     if($presentation){
         $upstreamPath=Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-present-v1/presentation-edits.json'
         $registrationPath=Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-present-v1/filter-registration-edits.json'
-        if((Get-FileHash -LiteralPath $upstreamPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'157fd38ac3eedcc4965a013145bab9bef98e2fb7052c484e118350e7b43ac2fb'-or
-           (Get-FileHash -LiteralPath $registrationPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'a40ad24f7f9ef7c22c1c6b27ef28cca6607c6b353ce5d36c5a8b215688ec18af'){throw 'Presentation full-file graph material changed.'}
+        if((Get-FileHash -LiteralPath $upstreamPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'ae3ae1d9691a21ff64e75aab6452cdce2eb47ec9ed9bafb89f8a97bbb55391a2'-or
+           (Get-FileHash -LiteralPath $registrationPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'5e5952e0c69f408689706dd7a619f2c8211cd46bded2d6c2c06007c94e2673c8'){throw 'Presentation full-file graph material changed.'}
         $upstreamRecipe=@(Get-Content -LiteralPath $upstreamPath -Raw|ConvertFrom-Json)
         $presentationRegistration=@(Get-Content -LiteralPath $registrationPath -Raw|ConvertFrom-Json)
-        foreach($material in @(@{path='licenses/rtx-presentation-edits.json';sha256='157fd38ac3eedcc4965a013145bab9bef98e2fb7052c484e118350e7b43ac2fb'},@{path='licenses/rtx-registration-edits.json';sha256='a40ad24f7f9ef7c22c1c6b27ef28cca6607c6b353ce5d36c5a8b215688ec18af'})){
+        foreach($material in @(@{path='licenses/rtx-presentation-edits.json';sha256='ae3ae1d9691a21ff64e75aab6452cdce2eb47ec9ed9bafb89f8a97bbb55391a2'},@{path='licenses/rtx-registration-edits.json';sha256='5e5952e0c69f408689706dd7a619f2c8211cd46bded2d6c2c06007c94e2673c8'})){
             $same=@($rows|Where-Object{$_.path-ceq$material.path})
             if($same.Count-ne1-or$same[0].sha256-cne$material.sha256){throw 'Presentation artifact omitted complete source graph material.'}
         }
