@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "kind": "BILIPAI_HOST_LLVM_IMPORT_TRUST",
+  "repository": "tonysuper666-creator/BiliPai-Windows",
+  "activation": "EXPLICIT_LOCAL_MATERIAL_ONLY",
+  "snapshotAvailable": false,
+  "records": [],
+  "reason": "No actual own source-built snapshot and original host/tool witnesses have been independently reviewed and frozen."
+}

@@ -190,6 +190,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--variant', choices=(VARIANT, 'bilipai-veyra-rtx-present-v1'), default='bilipai-veyra-rtx-present-v1',
                         help='Build the current presentation source by default; core-v1 requires the original immutable source bytes')
+    parser.add_argument('--host-llvm-snapshot-dir', type=Path,
+                        help='Explicit independently pinned local own-source snapshot; missing/untrusted material fails closed')
     args = parser.parse_args()
     variant = args.variant
     presentation = variant == 'bilipai-veyra-rtx-present-v1'
@@ -228,6 +230,33 @@ def main():
                                             'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
                    != os.environ.get('GITHUB_SHA')):
             raise RuntimeError('CI source builds require the exact pre-existing own source tag')
+    # Optional absent parameter retains the original complete cold path.
+    # Explicit material is fully verified before outputs/download/build.
+    fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
+    if presentation and sha(fixed_raw) != 'eb1aa276b236b9b63ee0351ac06866a995bed6415440aa0113b62cdf3e9479bb':
+        raise RuntimeError('Fixed presentation producer inputs changed')
+    fixed = json.loads(fixed_raw)
+    if fixed.get('variant') != variant:
+        raise RuntimeError('Selected producer and fixed input variants differ')
+    import_helper_path = ROOT / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
+    import_helper_raw = import_helper_path.read_bytes()
+    if sha(import_helper_raw) != '766d0c2602f97c187bec03992b5417530d7a82f3d1604a45b2a05fb7d38f5bb4':
+        raise RuntimeError('Reviewed shared importer/collector source changed')
+    import_spec = importlib.util.spec_from_file_location('bilipai_host_import', import_helper_path)
+    if import_spec is None or import_spec.loader is None:
+        raise RuntimeError('Reviewed import source unavailable')
+    import_module = importlib.util.module_from_spec(import_spec)
+    import_spec.loader.exec_module(import_module)
+    sources, build, clang = workspace / 'sources', workspace / 'build-x64', workspace / 'clang-root'
+    original_command = ['cmake', '-DTARGET_ARCH=x86_64-w64-mingw32', '-DCOMPILER_TOOLCHAIN=clang',
+                        '-DGCC_ARCH=x86-64', '-DMAKEJOBS=2', '-DCLANG_PACKAGES_LTO=ON',
+                        '-DCMAKE_INSTALL_PREFIX=' + str(clang),
+                        '-DMINGW_INSTALL_PREFIX=' + str(build / 'x86_64-w64-mingw32'),
+                        '-DSINGLE_SOURCE_LOCATION=' + str(sources),
+                        '-DRUSTUP_LOCATION=' + str(workspace / 'rustup'),
+                        '-G', 'Ninja', '--fresh', '-B', str(build),
+                        '-S', str(workspace / fixed['recipeArchivePrefix'])]
+    import_plan = import_module.inspect_optional(args.host_llvm_snapshot_dir, ROOT, workspace, fixed, IMAGE, original_command)
     if workspace.exists():
         raise RuntimeError('Use a new task-owned workspace; old source/build caches are not accepted')
     if workspace == ROOT or ROOT in workspace.parents and workspace == ROOT / 'desktop':
@@ -237,12 +266,6 @@ def main():
     if list(output.iterdir()):
         raise RuntimeError('Use an empty output directory')
     log = output / 'native-build.log'
-    fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
-    if presentation and sha(fixed_raw) != 'eb1aa276b236b9b63ee0351ac06866a995bed6415440aa0113b62cdf3e9479bb':
-        raise RuntimeError('Fixed presentation producer inputs changed')
-    fixed = json.loads(fixed_raw)
-    if fixed.get('variant') != variant:
-        raise RuntimeError('Selected producer and fixed input variants differ')
     status = {'schema': 1, 'variant': variant, 'success': False, 'binaryProduced': False,
               'reproducible': False, 'gpuOrDriverTested': False}
     try:
@@ -284,6 +307,35 @@ def main():
             raise RuntimeError('Reviewed host LLVM export module cannot be loaded')
         snapshot_module = importlib.util.module_from_spec(snapshot_spec)
         snapshot_spec.loader.exec_module(snapshot_module)
+        (recipes / 'packages/bilipai-host-llvm-import.py').write_bytes(import_helper_raw)
+        (recipes / 'packages/host-llvm-import-trust.json').write_bytes((ROOT / import_module.CATALOG_PATH).read_bytes())
+        import_control_sha = None
+        if import_plan is not None:
+            llvm_recipe = recipes / 'toolchain/llvm/llvm.cmake'
+            cold_recipe = llvm_recipe.read_bytes()
+            if sha(cold_recipe) != import_module.LLVM_RECIPE_SHA256:
+                raise RuntimeError('Complete shared cold LLVM recipe changed')
+            # Fresh real validation receipt output; no original build stamps.
+            # Each subsequent Windows/static target keeps normal dependency semantics.
+            validation_recipe = (
+                'if(DEFINED BILIPAI_HOST_LLVM_IMPORT_CONTROL)\n'
+                '    set(clang_version "22")\n'
+                '    add_custom_command(OUTPUT "${BILIPAI_HOST_LLVM_IMPORT_VALIDATION_RECEIPT}"\n'
+                '        COMMAND python3 ${PROJECT_SOURCE_DIR}/packages/bilipai-host-llvm-import.py\n'
+                '            validate-target --control "${BILIPAI_HOST_LLVM_IMPORT_CONTROL}"\n'
+                '            --control-sha256 "${BILIPAI_HOST_LLVM_IMPORT_CONTROL_SHA256}"\n'
+                '            --workspace "${CMAKE_BINARY_DIR}/.." --source-dir "${SOURCE_LOCATION}"\n'
+                '            --install-dir "${CMAKE_INSTALL_PREFIX}"\n'
+                '            --repository-root "${BILIPAI_HOST_LLVM_IMPORT_REPOSITORY_ROOT}"\n'
+                '        DEPENDS "${BILIPAI_HOST_LLVM_IMPORT_CONTROL}"\n'
+                '            "${PROJECT_SOURCE_DIR}/packages/bilipai-host-llvm-import.py"\n'
+                '        VERBATIM)\n'
+                '    add_custom_target(llvm DEPENDS "${BILIPAI_HOST_LLVM_IMPORT_VALIDATION_RECEIPT}")\n'
+                '    set_property(TARGET llvm PROPERTY _EP_SOURCE_DIR "${SOURCE_LOCATION}")\n'
+                '    get_property(LLVM_SRC TARGET llvm PROPERTY _EP_SOURCE_DIR)\n'
+                '    return()\n'
+                'endif()\n').encode()
+            llvm_recipe.write_bytes(validation_recipe + cold_recipe)
         helper = (inputs / helper_leaf).read_bytes()
         native_patch = (ROOT / 'desktop/third-party/libmpv/patches/nvidia-native-resolution-69e63f.patch').read_bytes()
         if sha(helper) != fixed['buildPatchHelperSha256'] or sha(native_patch) != fixed['nativePatchSha256']:
@@ -323,28 +375,41 @@ def main():
                 raise RuntimeError('Reviewed bridge source/header changed')
             (bridge_sources / row['fileName']).write_bytes(data)
         (recipes / 'packages/bilipai-nvidia-native-69e63f.patch').write_bytes(native_patch)
-        sources, build, clang = workspace / 'sources', workspace / 'build-x64', workspace / 'clang-root'
         sources.mkdir()
-        command = ['cmake', '-DTARGET_ARCH=x86_64-w64-mingw32', '-DCOMPILER_TOOLCHAIN=clang',
-                   '-DGCC_ARCH=x86-64', '-DMAKEJOBS=2', '-DCLANG_PACKAGES_LTO=ON',
-                   '-DCMAKE_INSTALL_PREFIX=' + str(clang),
-                   '-DMINGW_INSTALL_PREFIX=' + str(build / 'x86_64-w64-mingw32'),
-                   '-DSINGLE_SOURCE_LOCATION=' + str(sources),
-                   '-DRUSTUP_LOCATION=' + str(workspace / 'rustup'),
-                   '-G', 'Ninja', '--fresh', '-B', str(build), '-S', str(recipes)]
+        command = list(original_command)
+        if import_plan is not None:
+            import_control, import_control_sha = import_module.prepare_import(
+                import_plan, workspace, output, ROOT, fixed, IMAGE, original_command)
+            command[1:1] = ['-DBILIPAI_HOST_LLVM_IMPORT_CONTROL=' + str(import_control),
+                            '-DBILIPAI_HOST_LLVM_IMPORT_CONTROL_SHA256=' + import_control_sha,
+                            '-DBILIPAI_HOST_LLVM_IMPORT_REPOSITORY_ROOT=' + str(ROOT),
+                            '-DBILIPAI_HOST_LLVM_IMPORT_VALIDATION_RECEIPT=' + str(output / 'host-llvm-import-target-validation.json')]
         run(command, log)
         # Actual cold-build targets from the fixed cd1 README and toolchain recipes.
         # Never call the vendor 'update' target, which moves dependency HEADs.
         for target in ['llvm', 'rustup', 'llvm-clang', 'mpv']:
             print('DISK before ' + target + ': freeBytes=' + str(shutil.disk_usage(workspace).free), flush=True)
-            run(['ninja', '-C', str(build), '-j2', target], log)
+            pending_environment = None
+            if target == 'llvm' and import_plan is None:
+                pending_environment = import_module.capture_cold_environment()
+            target_command = ['ninja', '-C', str(build), '-j2', target]
+            run(target_command, log)
             if target == 'llvm':
-                # Genuine target exit 0; capture before downstream Windows runtimes
-                # mutate the host prefix. No old stamps or imported toolchain here.
-                host_snapshot_descriptor = snapshot_module.export_snapshot(
-                    workspace=workspace, output=output, repository_root=ROOT,
-                    fixed=fixed, snapshot_inputs=snapshot_inputs, container_image=IMAGE,
-                    build_command=command, log=log)
+                if import_plan is None:
+                    # Genuine cold target exit 0; original e23/d349 binding.
+                    host_snapshot_descriptor = snapshot_module.export_snapshot(
+                        workspace=workspace, output=output, repository_root=ROOT,
+                        fixed=fixed, snapshot_inputs=snapshot_inputs, container_image=IMAGE,
+                        build_command=original_command, log=log)
+                    original_environment = import_module.finish_cold_environment(
+                        output, host_snapshot_descriptor, pending_environment)
+                    import_receipt = None
+                else:
+                    # Real validation target succeeded; retain original source
+                    # commit/tag/run and all original snapshot bytes unchanged.
+                    host_snapshot_descriptor = output / 'host-llvm-source-snapshot-descriptor.json'
+                    original_environment = output / 'host-llvm-original-environment.json'
+                    import_receipt = import_module.finish_import(import_plan, output, import_control_sha, target_command)
                 host_snapshot_source = json.loads(host_snapshot_descriptor.read_text(encoding='utf-8'))
                 if (host_snapshot_source.get('schema') != 2 or host_snapshot_source.get('sourceBindingSchema') != 1
                         or host_snapshot_source.get('actualSourceBuildBinding', {}).get('state')
@@ -389,6 +454,14 @@ def main():
         if dll_sha == fixed['originalDllSha256']:
             raise RuntimeError('The original unpatched DLL is not a patched candidate')
         inventory = dependency_inventory(sources)
+        if import_plan is not None:
+            original_source = import_plan['manifest']['actualSourceBuildBinding']['prebuild']
+            inventory.append({'directory': 'llvm', 'commit': original_source['sourceCommit'],
+                              'tree': original_source['sourceTree'], 'remote': original_source['sourceRemote'],
+                              'origin': 'VERIFIED_ORIGINAL_SOURCE_SNAPSHOT_NO_GIT_CHECKOUT_OR_FRESH_LLVM_COMPILE',
+                              'originalSnapshotSourceCommit': import_plan['record']['sourceCommit'],
+                              'originalSnapshotSourceTag': import_plan['record']['sourceTag'],
+                              'actualRestoredSourceTreeManifestSha256': original_source['actualSourceWorktreeManifestSha256']})
         source_bundle = output / (variant + '-source-materials.tar.gz')
         def without_git(info):
             return None if '.git' in Path(info.name).parts else info
@@ -399,6 +472,11 @@ def main():
             source_tar.add(inputs, arcname='ownrepo-build-inputs')
             source_tar.add(ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json', arcname='shared-host-llvm-snapshot-inputs.json')
             source_tar.add(Path(__file__), arcname='ownrepo-build-mpv-runtime.py')
+            source_tar.add(ROOT / import_module.CATALOG_PATH, arcname='shared-host-llvm-import-trust.json')
+            if import_plan is not None:
+                # Original complete canonical LLVM source remains an unchanged
+                # companion draft asset, in addition to this new MPV source bundle.
+                source_tar.add(output / 'host-llvm-import-receipt.json', arcname='original-host-import-receipt.json')
             source_tar.add(ROOT / 'desktop/third-party/libmpv/patches', arcname='ownrepo-native-patches')
         bundle_sha = file_sha(source_bundle)
         tools = {}
@@ -423,7 +501,13 @@ def main():
                    'closedSdkOrRuntimeIncluded': False, 'vfgImplemented': False,
                    'hostLlvmSnapshotDescriptorSha256': file_sha(host_snapshot_descriptor),
                    'hostLlvmSnapshotSourceBindingSha256': host_snapshot_source['actualSourceBuildBindingSha256'],
-                   'hostLlvmSnapshotStatus': 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'}
+                   'hostLlvmSnapshotStatus': import_module.IMPORT_STATUS if import_plan is not None else 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY',
+                   'hostLlvmToolchainImported': import_plan is not None,
+                   'hostLlvmFreshCompileExecuted': import_plan is None,
+                   'hostLlvmOriginalEnvironmentSha256': file_sha(original_environment),
+                   'hostLlvmImportReceiptSha256': file_sha(import_receipt) if import_receipt is not None else None,
+                   'hostLlvmActualRecipeSha256': file_sha(recipes / 'toolchain/llvm/llvm.cmake'),
+                   'hostLlvmAccelerationMeasured': False}
         presentation_identity = {}
         if presentation:
             presentation_identity = {'presentationProtocolVersion': 1, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': sha(upstream_raw), 'sourcePatchHelperSha256': sha(helper)}

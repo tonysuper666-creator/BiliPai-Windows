@@ -9,6 +9,7 @@ Source parts are ranges of the complete original tar, not trimmed source trees.
 import argparse
 import hashlib
 import http.client
+import importlib.util
 import json
 import os
 import re
@@ -176,6 +177,34 @@ def main():
     host_manifest = json.loads(host_manifest_path.read_text(encoding='utf-8'))
     snapshot_inputs = json.loads((repository_root / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json').read_text(encoding='utf-8'))
     host_kind = 'BILIPAI_HOST_LLVM_SOURCE_SNAPSHOT'
+    import_helper_path = repository_root / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
+    if range_sha(import_helper_path, 0, import_helper_path.stat().st_size) != '766d0c2602f97c187bec03992b5417530d7a82f3d1604a45b2a05fb7d38f5bb4':
+        raise DeliveryError('Shared reviewed importer/collector source changed')
+    import_spec = importlib.util.spec_from_file_location('bilipai_host_import_delivery', import_helper_path)
+    if import_spec is None or import_spec.loader is None:
+        raise DeliveryError('Reviewed host snapshot verifier unavailable')
+    import_module = importlib.util.module_from_spec(import_spec)
+    import_spec.loader.exec_module(import_module)
+    import_module.load_catalog(repository_root)
+    import_module.load_exporter(repository_root)
+    imported = receipt.get('hostLlvmSnapshotStatus') == import_module.IMPORT_STATUS
+    origin_commit, origin_tag = commit, tag
+    import_assets = []
+    if imported:
+        original_record = import_module.verify_delivery_import(directory, repository_root, receipt, commit, tag)
+        origin_commit, origin_tag = original_record['sourceCommit'], original_record['sourceTag']
+        import_assets = [owned_file(directory, name) for name in ('host-llvm-import-control.json',
+                         'host-llvm-import-target-validation.json', 'host-llvm-import-receipt.json')]
+    elif (receipt.get('hostLlvmToolchainImported') is not False
+            or receipt.get('hostLlvmFreshCompileExecuted') is not True
+            or receipt.get('hostLlvmImportReceiptSha256') is not None):
+        raise DeliveryError('Cold build must retain genuine LLVM compilation provenance')
+    if (receipt.get('hostLlvmToolchainImported') is not imported
+            or receipt.get('hostLlvmFreshCompileExecuted') is not (not imported)
+            or receipt.get('hostLlvmAccelerationMeasured') is not False):
+        raise DeliveryError('Host LLVM import/fresh compilation provenance differs')
+    environment_path = owned_file(directory, 'host-llvm-original-environment.json')
+    import_module.verify_delivery_environment(directory, repository_root, receipt, host_descriptor, imported)
     if (host_descriptor.get('schema') != 2 or host_descriptor.get('kind') != host_kind
             or host_manifest.get('schema') != 2 or host_manifest.get('kind') != host_kind
             or snapshot_inputs.get('schema') != 2 or snapshot_inputs.get('sourceBindingSchema') != 1
@@ -183,11 +212,11 @@ def main():
             or host_manifest.get('snapshotStatus') != 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'
             or host_descriptor.get('deliveryStatus') != 'LOCAL_SNAPSHOT_ONLY_NOT_RELEASED'
             or host_descriptor.get('reuseReady') is not False
-            or receipt.get('hostLlvmSnapshotStatus') != 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'
+            or receipt.get('hostLlvmSnapshotStatus') != (import_module.IMPORT_STATUS if imported else 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY')
             or receipt.get('hostLlvmSnapshotDescriptorSha256') != range_sha(host_descriptor_path, 0, host_descriptor_path.stat().st_size)
             or host_descriptor.get('snapshotManifest') != {'fileName': host_manifest_path.name,
                 'bytes': host_manifest_path.stat().st_size, 'sha256': range_sha(host_manifest_path, 0, host_manifest_path.stat().st_size)}
-            or any(item.get('ownrepoSourceCommit') != commit or item.get('ownrepoSourceTag') != tag
+            or any(item.get('ownrepoSourceCommit') != origin_commit or item.get('ownrepoSourceTag') != origin_tag
                    or item.get('containerImage') != receipt.get('containerImage')
                    or item.get('recipeCommit') != receipt.get('recipeCommit')
                    or item.get('recipeArchiveSha256') != receipt.get('recipeArchiveSha256')
@@ -278,7 +307,7 @@ def main():
             raise DeliveryError('Complete host toolchain/source archive hash changed')
         host_bundles.append((key, path))
     assets = []
-    for path in (artifact, descriptor_path, receipt_path, status_path, host_descriptor_path, host_manifest_path):
+    for path in (artifact, descriptor_path, receipt_path, status_path, host_descriptor_path, host_manifest_path, environment_path, *import_assets):
         size = path.stat().st_size
         if not 0 < size < RELEASE_ASSET_LIMIT:
             raise DeliveryError('Release asset must be nonempty and strictly below 2 GiB')
@@ -308,7 +337,13 @@ def main():
                                      'sha256': range_sha(path, 0, host_size), 'parts': host_parts}
     manifest = {'schema': 1, 'sourceCommit': commit, 'sourceTag': tag,
                 'delivery': 'OWN_REPOSITORY_DRAFT_ONLY', 'draft': True,
-                'hostToolchain': {'kind': host_kind, 'snapshotStatus': 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY',
+                'hostToolchain': {'kind': host_kind, 'snapshotStatus': receipt['hostLlvmSnapshotStatus'],
+                    'originalSnapshotStatus': host_descriptor['snapshotStatus'],
+                    'originalOwnrepoSourceCommit': origin_commit, 'originalOwnrepoSourceTag': origin_tag,
+                    'toolchainImported': imported, 'freshLlvmCompileExecuted': not imported,
+                    'originalEnvironmentSha256': receipt['hostLlvmOriginalEnvironmentSha256'],
+                    'importReceiptSha256': receipt['hostLlvmImportReceiptSha256'],
+                    'accelerationMeasured': False,
                     'reuseReady': False, 'sourceCommit': host_descriptor['sourceCommit'],
                     'sourceBindingSchema': 1, 'actualSourceBuildBindingSha256': binding_sha,
                     'actualSourceBuildBinding': binding,
