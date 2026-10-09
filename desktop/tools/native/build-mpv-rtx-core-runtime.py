@@ -11,6 +11,7 @@ import json
 import os
 import re
 import shutil
+import stat
 import struct
 import subprocess
 import sys
@@ -171,6 +172,227 @@ SYSTEM_DLLS = set(('advapi32 avrt bcrypt bcryptprimitives crypt32 d3d11 d3d9 d3d
                   'ole32 oleaut32 opengl32 powrprof propsys psapi secur32 setupapi shell32 shlwapi '
                   'ucrtbase user32 version winhttp wininet winmm winspool ws2_32').split())
 
+
+def print_nested_build_failure_logs(workspace, workspace_identity, output, output_identity):
+    """Read bounded CMake logs from this invocation's real workspace only."""
+    file_limit, total_limit, file_count = 64 * 1024, 256 * 1024, 8
+    remaining, printed, scanned = total_limit, 0, 0
+    # The source producer runs in Linux. No weaker pathname fallback on hosts
+    # without descriptor-relative no-follow opens (including Windows).
+    if (os.open not in os.supports_dir_fd or not hasattr(os, 'O_NOFOLLOW')
+            or not hasattr(os, 'O_DIRECTORY') or not hasattr(os, 'O_NONBLOCK')):
+        return {'state': 'UNAVAILABLE_SAFE_OPEN', 'files': 0, 'bytes': 0}
+    directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    root_fd = output_fd = log_fd = None
+    secrets = [piece for name, value in os.environ.items() if value and re.search(
+        r'TOKEN|SECRET|PASSWORD|PASSWD|CREDENTIAL|PRIVATE_KEY|AUTHORIZATION|COOKIE|API_KEY|ACCESS_KEY', name, re.I)
+        for piece in value.splitlines() if piece]
+    sensitive_line = re.compile(
+        r'authorization|cookie|password|passwd|credential|private[ _-]?key|'
+        r"(?:token|secret|api[ _-]?key|access[ _-]?key)['\"]?\s*[:=]|"
+        r'gh[pousr]_[A-Za-z0-9_]{20,}|github_pat_[A-Za-z0-9_]{20,}|'
+        r'\w+://[^\s/]*@', re.I)
+    def filtered(raw, tail_truncated):
+        text = raw.decode('utf-8', 'replace').replace('\r', '\n')
+        text = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', text)
+        lines = []
+        first_private_marker = re.search(r'-----(BEGIN|END) [^-]*PRIVATE KEY-----', text)
+        private_block = bool(tail_truncated and first_private_marker and first_private_marker.group(1) == 'END')
+        for line in text.split('\n'):
+            original_line = line
+            if re.search(r'-----BEGIN .*PRIVATE KEY-----', line):
+                private_block = True
+            hidden = (private_block or sensitive_line.search(line)
+                      or re.fullmatch(r'[A-Za-z0-9+/=]{40,}', line.strip())
+                      or any(value in line for value in secrets))
+            if hidden:
+                line = '[sensitive diagnostic line omitted]'
+            else:
+                # Queries/fragments are not useful compiler diagnostics.
+                line = re.sub(r'https?://[^\s]*[?#][^\s]*', '[URL parameters omitted]', line)
+                line = ''.join(ch for ch in line if ch == '\t' or ord(ch) >= 32)
+            if re.search(r'-----END .*PRIVATE KEY-----', original_line):
+                private_block = False
+            # Prefix every line: nested logs cannot issue Actions :: commands.
+            lines.append('[nested] ' + line)
+        return ('\n'.join(lines) + '\n').encode('utf-8')
+    def emit(data):
+        nonlocal remaining
+        data = data[:remaining]
+        if not data:
+            return
+        pending = memoryview(data)
+        while pending:
+            written = os.write(log_fd, pending)
+            if written <= 0:
+                raise OSError('Diagnostic log write failed')
+            pending = pending[written:]
+        sys.stdout.buffer.write(data)
+        sys.stdout.buffer.flush()
+        remaining -= len(data)
+    def absolute_directory(path):
+        # Walk from the filesystem anchor, never a pathname-opened ancestor.
+        # Main supplies an already resolved absolute directory from this run.
+        if not path.is_absolute() or any(part in ('', '.', '..') for part in path.parts[1:]):
+            raise OSError('Unsafe diagnostic directory')
+        fd = os.open(path.anchor, directory_flags)
+        try:
+            for part in path.parts[1:]:
+                next_fd = os.open(part, directory_flags, dir_fd=fd)
+                os.close(fd)
+                fd = next_fd
+            return fd
+        except BaseException:
+            os.close(fd)
+            raise
+    def directory(parts):
+        fd = os.dup(root_fd)
+        try:
+            for part in parts:
+                next_fd = os.open(part, directory_flags, dir_fd=fd)
+                os.close(fd)
+                fd = next_fd
+            return fd
+        except BaseException:
+            os.close(fd)
+            raise
+    def add_candidate(parts, name, kind):
+        nonlocal scanned, partial
+        if scanned >= 512:
+            partial = True
+            return
+        fd = directory(parts[:-1])
+        try:
+            meta = os.stat(parts[-1], dir_fd=fd, follow_symlinks=False)
+            if stat.S_ISREG(meta.st_mode) and meta.st_nlink == 1 and meta.st_size:
+                candidates.append((parts, name, kind, meta.st_mtime_ns, meta.st_dev, meta.st_ino))
+                scanned += 1
+        finally:
+            os.close(fd)
+    try:
+        root_fd = absolute_directory(workspace)
+        root_stat = os.fstat(root_fd)
+        if (root_stat.st_dev, root_stat.st_ino) != workspace_identity:
+            return {'state': 'RETIRED_WORKSPACE', 'files': 0, 'bytes': 0}
+        # This existing output log supplies only a package identifier, not a
+        # path to open or content to print. A latest failed EP ranks first.
+        output_fd = absolute_directory(output)
+        output_stat = os.fstat(output_fd)
+        if (output_stat.st_dev, output_stat.st_ino) != output_identity:
+            return {'state': 'RETIRED_OUTPUT', 'files': 0, 'bytes': 0}
+        log_fd = os.open('native-build.log', os.O_RDWR | os.O_APPEND | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=output_fd)
+        log_stat = os.fstat(log_fd)
+        if not stat.S_ISREG(log_stat.st_mode) or log_stat.st_nlink != 1:
+            return {'state': 'UNSAFE_DIAGNOSTIC_LOG', 'files': 0, 'bytes': 0}
+        os.lseek(log_fd, max(0, log_stat.st_size - file_limit), os.SEEK_SET)
+        markers = re.findall(rb'([A-Za-z0-9][A-Za-z0-9._-]{0,63})-prefix/src/\1-stamp/\1-(?:build|configure|install)', os.read(log_fd, file_limit))
+        failed_name = markers[-1].decode('ascii') if markers else None
+        candidates, seen, partial = [], set(), False
+        for location in (('build-x64', 'packages'), ('build-x64', 'toolchain'), ('build-x64', 'toolchain', 'llvm')):
+            try:
+                parent_fd = directory(location)
+            except OSError:
+                continue
+            try:
+                names = []
+                with os.scandir(parent_fd) as entries:
+                    for index, entry in enumerate(entries):
+                        if index >= 512:
+                            partial = True
+                            break
+                        if re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._-]{0,63}-prefix', entry.name):
+                            names.append(entry.name)
+                for prefix in sorted(names):
+                    name = prefix[:-7]
+                    stamp_parts = (*location, prefix, 'src', name + '-stamp')
+                    try:
+                        stamp_fd = directory(stamp_parts)
+                    except OSError:
+                        continue
+                    try:
+                        with os.scandir(stamp_fd) as entries:
+                            for index, entry in enumerate(entries):
+                                if index >= 256 or scanned >= 512:
+                                    partial = True
+                                    break
+                                if re.fullmatch(re.escape(name) + r'-(?:build|configure|install)-[A-Za-z0-9._-]{1,64}\.log', entry.name):
+                                    kind = 0 if entry.name.endswith('-err.log') else 1
+                                    add_candidate((*stamp_parts, entry.name), name, kind)
+                    finally:
+                        os.close(stamp_fd)
+                    if scanned < 512:
+                        for leaf in ('CMakeError.log', 'CMakeOutput.log'):
+                            try:
+                                add_candidate((*location, prefix, 'src', name + '-build', 'CMakeFiles', leaf), name, 2)
+                            except OSError:
+                                pass
+            finally:
+                os.close(parent_fd)
+        candidates.sort(key=lambda row: (row[1] != failed_name,
+            row[2] if row[1] == failed_name else 0, -row[3], row[0]))
+        emit(b'\n[nested] BEGIN bounded CMake failure diagnostics\n')
+        for parts, name, kind, mtime, device, inode in candidates:
+            if printed >= file_count or remaining <= 1024:
+                break
+            if (device, inode) in seen:
+                continue
+            seen.add((device, inode))
+            parent_fd = file_fd = None
+            try:
+                parent_fd = directory(parts[:-1])
+                file_fd = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=parent_fd)
+                before = os.fstat(file_fd)
+                if not stat.S_ISREG(before.st_mode) or before.st_nlink != 1 or (before.st_dev, before.st_ino) != (device, inode):
+                    continue
+                start = max(0, before.st_size - file_limit)
+                os.lseek(file_fd, start, os.SEEK_SET)
+                raw = b''
+                while len(raw) < file_limit:
+                    block = os.read(file_fd, file_limit - len(raw))
+                    if not block:
+                        break
+                    raw += block
+                after = os.fstat(file_fd)
+                if (before.st_size, before.st_mtime_ns) != (after.st_size, after.st_mtime_ns):
+                    continue
+                if start:
+                    # Tail may start inside a secret value. Never emit that
+                    # first possibly incomplete physical line.
+                    newline_at = raw.find(b'\n')
+                    discarded = len(raw) if newline_at < 0 else newline_at + 1
+                    raw = raw[discarded:]
+                    start += discarded
+                body = filtered(raw, bool(start))
+                body_budget = min(file_limit - 512, remaining - 512)
+                kept = body[:body_budget].decode('utf-8', 'ignore').encode('utf-8')
+                truncated = len(body) - len(kept)
+                body = kept
+                header = ('[nested] FILE ' + '/'.join(parts) + ' sizeBytes=' + str(before.st_size)
+                    + ' skippedHeadBytes=' + str(start) + ' outputTruncatedBytes=' + str(truncated) + '\n').encode('ascii')
+                emit(header + body + b'\n[nested] END FILE\n')
+                printed += 1
+            except OSError:
+                continue
+            finally:
+                if file_fd is not None:
+                    os.close(file_fd)
+                if parent_fd is not None:
+                    os.close(parent_fd)
+        emit(('[nested] END diagnostics files=' + str(printed) + ' scanBoundReached=' + str(partial) + '\n').encode('ascii'))
+        return {'state': 'BOUNDED_DIAGNOSTICS', 'files': printed, 'bytes': total_limit - remaining,
+                'scanBoundReached': partial, 'fileLimit': file_limit, 'totalLimit': total_limit}
+    except Exception:
+        # Never print an exception containing raw nested content and never mask
+        # the original failing build exception/exit status with diagnostics.
+        return {'state': 'DIAGNOSTICS_UNAVAILABLE', 'files': printed, 'bytes': total_limit - remaining}
+    finally:
+        if log_fd is not None:
+            os.close(log_fd)
+        if output_fd is not None:
+            os.close(output_fd)
+        if root_fd is not None:
+            os.close(root_fd)
+
 def dependency_inventory(sources):
     result = []
     for directory in sorted(sources.iterdir()):
@@ -262,9 +484,13 @@ def main():
     if workspace == ROOT or ROOT in workspace.parents and workspace == ROOT / 'desktop':
         raise RuntimeError('The build workspace cannot replace repository sources')
     workspace.mkdir(parents=True)
+    workspace_stat = workspace.stat()
+    workspace_identity = (workspace_stat.st_dev, workspace_stat.st_ino)
     output.mkdir(parents=True, exist_ok=True)
     if list(output.iterdir()):
         raise RuntimeError('Use an empty output directory')
+    output_stat = output.stat()
+    output_identity = (output_stat.st_dev, output_stat.st_ino)
     log = output / 'native-build.log'
     status = {'schema': 1, 'variant': variant, 'success': False, 'binaryProduced': False,
               'reproducible': False, 'gpuOrDriverTested': False}
@@ -570,6 +796,13 @@ def main():
         status.update(success=True, binaryProduced=True, artifact=artifact.name,
                       descriptorSha256=sha((output / 'runtime-descriptor.json').read_bytes()))
     except BaseException as error:
+        if isinstance(error, subprocess.CalledProcessError):
+            try:
+                status['nestedBuildDiagnostics'] = print_nested_build_failure_logs(workspace, workspace_identity, output, output_identity)
+            except BaseException:
+                # Cleanup/IO in best-effort diagnostics must never replace the
+                # original build error, including failures from helper finally.
+                status['nestedBuildDiagnostics'] = {'state': 'DIAGNOSTICS_UNAVAILABLE'}
         status['errorType'] = type(error).__name__
         status['error'] = str(error)
         raise
