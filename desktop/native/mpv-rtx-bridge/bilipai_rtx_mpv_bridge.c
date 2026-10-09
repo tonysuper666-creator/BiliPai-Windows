@@ -193,6 +193,34 @@ static HRESULT source_views(struct bv_mpv_bridge *p,const D3D11_TEXTURE2D_DESC *
     }
     if(SUCCEEDED(hr)){p->source_width=src->Width;p->source_height=src->Height;p->source_format=src->Format;}return hr;
 }
+void bv_mpv_observe_pq_p010(ID3D11Device *device, ID3D11Texture2D *texture,
+                           uint32_t slice, struct bv_mpv_pq_p010_observation *o)
+{
+    if (!o) return;
+    o->texture_p010 = o->current_domain_observed = 0;
+    o->gpu_epoch_at_use_known = o->native_hdr_qualified = 0;
+    o->dxgi_format = o->texture_width = o->texture_height = o->texture_array_size = 0;
+    if (!device || !texture || !o->width || !o->height ||
+        o->width > 16384 || o->height > 16384) return;
+    ID3D11Device *actual = NULL;
+    ID3D11Texture2D_GetDevice(texture, &actual);
+    bool same = actual == device;
+    if (actual) ID3D11Device_Release(actual);
+    D3D11_TEXTURE2D_DESC d = {0};
+    ID3D11Texture2D_GetDesc(texture, &d);
+    o->dxgi_format = d.Format;
+    o->texture_width = d.Width; o->texture_height = d.Height;
+    o->texture_array_size = d.ArraySize;
+    o->texture_p010 = same && d.Format == DXGI_FORMAT_P010 &&
+        d.MipLevels == 1 && d.SampleDesc.Count == 1 && slice < d.ArraySize &&
+        d.Width >= o->width && d.Height >= o->height;
+    o->current_domain_observed = o->boundary_pq_p010 && o->reference_unchanged &&
+        o->hw_context_matching && o->texture_p010 && o->epoch_matched_at_observe &&
+        !o->refusal_history && (o->raw_range == 1 || o->raw_range == 2);
+    // Scoped caller holds the decoder dispatch lock throughout this lightweight
+    // observation. It is released before return to normal filtering; future GPU
+    // use/output epoch is UNKNOWN. No processing/token/admission is performed.
+}
 int bv_mpv_bridge_create(const struct bv_mpv_config *c,struct bv_mpv_bridge **out,bv_status_v1 *s) {
     *out=NULL;status_init(s);
     if(!c||!c->device||!c->session||!c->configuration||c->configuration>INT64_MAX||c->generation<c->configuration||!absolute_path(c->dll_path)||!absolute_path(c->runtime_directory)||!c->project_id||!c->engine_version||!c->input_width||!c->input_height||!c->output_width||!c->output_height||(!c->context_lock!=!c->context_unlock))return fail(s,BV_INVALID,E_INVALIDARG,"invalid explicit bridge configuration");

@@ -1,7 +1,7 @@
 [
   {
-    "afterBytes": 26368,
-    "afterSha256": "2ceb580cdf1c33bac574d092c6e0826f3cfdad3092a49e9ab5b67e0193aecedf",
+    "afterBytes": 27397,
+    "afterSha256": "c78ca2e83430b3c20a62be6ae3afffa276e3516e5588eb7f8fbbef1ecb5b1f5d",
     "beforeBytes": 24865,
     "beforeSha256": "e109dcf181ba517d97c614f6fddc6533689cf6c4b660ac94f1d29c64d85502c0",
     "edits": [
@@ -44,6 +44,21 @@
         "count": 1,
         "new": "            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx)) {\n            mp_image_params_bilipai_invalidate_current(&((struct mp_image *)frame.data)->params);\n",
         "old": "            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx)) {\n            ((struct mp_image *)frame.data)->params.bilipai_hdr_current_encoding =\n                MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "#include \"f_enhancement_pair.h\"\n#include \"f_decoder_wrapper.h\"\n#include \"f_lavfi.h\"\n",
+        "old": "#include \"f_enhancement_pair.h\"\n#include \"f_lavfi.h\"\n"
+      },
+      {
+        "count": 1,
+        "new": "    struct mp_stream_info stream_info;\n    struct mp_decoder_wrapper *bilipai_decoder_observer; // main-lane borrowed owner\n\n",
+        "old": "    struct mp_stream_info stream_info;\n\n"
+      },
+      {
+        "count": 1,
+        "new": "        vo_control(p->vo, VOCTRL_GET_DISPLAY_RES, res);\n}\n\nstatic bool bilipai_observe_decoder_frame(struct mp_stream_info *info,\n    const struct mp_image *image,\n    void (*observe)(void *, const struct mp_bilipai_active_decoder *), void *ctx)\n{\n    struct chain *p = info->priv;\n    // Player clears this owner before decoder destruction. Access is on the\n    // main filter graph; no observer pointer is retained by the decoder thread.\n    return p->bilipai_decoder_observer &&\n        mp_decoder_wrapper_bilipai_observe(p->bilipai_decoder_observer, image, observe, ctx);\n}\n\nvoid mp_output_chain_set_bilipai_decoder_observer(struct mp_output_chain *c,\n                                                  struct mp_decoder_wrapper *decoder)\n{\n    struct chain *p = c->f->priv;\n    mp_assert(p->type == MP_OUTPUT_CHAIN_VIDEO);\n    p->bilipai_decoder_observer = decoder;\n    p->stream_info.bilipai_observe_decoder_frame = decoder ? bilipai_observe_decoder_frame : NULL;\n}\n",
+        "old": "        vo_control(p->vo, VOCTRL_GET_DISPLAY_RES, res);\n}\n"
       }
     ],
     "path": "filters/f_output_chain.c"
@@ -1139,8 +1154,8 @@
     "path": "video/filter/vf_format.c"
   },
   {
-    "afterBytes": 47471,
-    "afterSha256": "edab9eac5e313ec763adb8bd285a35ee209db6a801f65326427c74f937f1f574",
+    "afterBytes": 51792,
+    "afterSha256": "e30a70d47289c740f9d96d31709632f39bce71092bf9d0f01e3f1e8cd55d11a4",
     "beforeBytes": 47089,
     "beforeSha256": "f333a1730570d3a343b94654da4566b1e1cc7de44a537bcb1f7f3f328667ccce",
     "edits": [
@@ -1153,13 +1168,38 @@
         "count": 1,
         "new": "        mpi->params = p->fixed_format;\n        // Generic format equality deliberately ignores origin timeline IDs.\n        // Metadata normalization is not current decoder-reference authority.\n        mp_image_params_bilipai_hdr_copy_history(&mpi->params, &this_frame_params);\n",
         "old": "        mpi->params = p->fixed_format;\n"
+      },
+      {
+        "count": 1,
+        "new": "    int res = CONTROL_UNKNOWN;\n    if (cmd == VDCTRL_BILIPAI_GET_ACTIVE_DECODER) {\n        if (!arg) return CONTROL_FALSE;\n        *(struct mp_bilipai_active_decoder *)arg =\n            (struct mp_bilipai_active_decoder){0};\n    }\n    if (p->is_group) {\n",
+        "old": "    int res = CONTROL_UNKNOWN;\n    if (p->is_group) {\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (p->is_group) {\n        if (cmd == VDCTRL_BILIPAI_GET_ACTIVE_DECODER)\n            return CONTROL_FALSE;\n        mp_assert(p->num_children);\n",
+        "old": "    if (p->is_group) {\n        mp_assert(p->num_children);\n"
+      },
+      {
+        "count": 1,
+        "new": "    }\n    thread_unlock(p);\n    return res;\n}\n\nstatic bool bilipai_active_matches(struct priv *p, const struct mp_image *image,\n                                    struct mp_bilipai_active_decoder *active)\n{\n    *active = (struct mp_bilipai_active_decoder){0};\n    if (!image || image->params.bilipai_decoder_current_reference != 1 ||\n        p->is_group || !p->decoder || !p->decoder->control) return false;\n    const struct mp_bilipai_decoder_origin *o = &image->params.bilipai_decoder_origin;\n    if (o->version != MP_BILIPAI_DECODER_ORIGIN_VERSION ||\n        !o->instance_id || !o->epoch_id || !o->frame_sequence ||\n        (o->flags & ~MP_BILIPAI_DECODER_EXPORTED_FRAME_ONLY)) return false;\n    if (p->decoder->control(p->decoder->f, VDCTRL_BILIPAI_GET_ACTIVE_DECODER,\n                           active) != CONTROL_TRUE) return false;\n    return active->instance_id == o->instance_id && active->epoch_id == o->epoch_id &&\n        o->frame_sequence <= active->last_frame_sequence;\n}\n\nbool mp_decoder_wrapper_bilipai_observe(struct mp_decoder_wrapper *d,\n    const struct mp_image *image,\n    void (*observe)(void *, const struct mp_bilipai_active_decoder *), void *ctx)\n{\n    if (!d || !image || !observe) return false;\n    struct priv *p = d->f->priv;\n    if (p->is_group) return false;\n    thread_lock(p); // No async queue lock may be held by the consumer.\n    struct mp_bilipai_active_decoder active = {0};\n    bool matched = bilipai_active_matches(p, image, &active);\n    if (matched) observe(ctx, &active); // No submission/queue/wait/recursive control.\n    thread_unlock(p);\n    return matched;\n}\n\nstatic bool bilipai_same_retained_reference(const struct mp_image *image,\n                                             const struct mp_image *held)\n{\n    if (!held || held->params.bilipai_decoder_current_reference != 1 ||\n        !held->bufs[0] || image->imgfmt != held->imgfmt ||\n        image->w != held->w || image->h != held->h ||\n        image->params.imgfmt != held->params.imgfmt ||\n        image->params.hw_subfmt != held->params.hw_subfmt ||\n        image->params.w != held->params.w || image->params.h != held->params.h ||\n        !mp_image_bilipai_decoder_origin_equal(&image->params.bilipai_decoder_origin,\n                                               &held->params.bilipai_decoder_origin))\n        return false;\n    for (int n = 0; n < MP_MAX_PLANES; n++) {\n        if (image->planes[n] != held->planes[n] || image->stride[n] != held->stride[n] ||\n            !!image->bufs[n] != !!held->bufs[n] ||\n            (held->bufs[n] && (image->bufs[n]->buffer != held->bufs[n]->buffer ||\n                              image->bufs[n]->data != held->bufs[n]->data ||\n                              image->bufs[n]->size != held->bufs[n]->size)))\n            return false;\n    }\n    return !!image->hwctx == !!held->hwctx &&\n        (!held->hwctx || (image->hwctx->buffer == held->hwctx->buffer &&\n                         image->hwctx->data == held->hwctx->data &&\n                         image->hwctx->size == held->hwctx->size));\n}\n\nstatic void decf_destroy(struct mp_filter *f)\n",
+        "old": "    }\n    thread_unlock(p);\n    return res;\n}\n\nstatic void decf_destroy(struct mp_filter *f)\n"
+      },
+      {
+        "count": 1,
+        "new": "        struct mp_image_params this_frame_params = mpi->params;\n        // Normal new_ref holds the actual AVBuffer/HWctx references across\n        // metadata normalization; dummy/custom references cannot carry CURRENT.\n        struct mp_image *held_reference = mpi->params.bilipai_decoder_current_reference == 1 ?\n            mp_image_new_ref(mpi) : NULL;\n\n",
+        "old": "        struct mp_image_params this_frame_params = mpi->params;\n\n"
+      },
+      {
+        "count": 1,
+        "new": "        mp_image_params_bilipai_hdr_copy_history(&mpi->params, &this_frame_params);\n        struct mp_bilipai_active_decoder active = {0};\n        // Already serialized on the decoder lane: calling the public wrapper\n        // control/observer here would recursively take the dispatch lock.\n        if (bilipai_same_retained_reference(mpi, held_reference) &&\n            bilipai_active_matches(p, held_reference, &active)) {\n            mpi->params.bilipai_decoder_current_reference = 1;\n            mpi->params.bilipai_hdr_disqualifying_flags_seen |=\n                active.stream_refusals & MP_BILIPAI_HDR_HAZARDS_MASK;\n        }\n        talloc_free(held_reference);\n        // HDR current encoding remains UNKNOWN: unchanged refs are not a\n        // decoded texture/code-domain/HDR processing or presentation proof.\n        mpi->nominal_fps = p->fps;\n",
+        "old": "        mp_image_params_bilipai_hdr_copy_history(&mpi->params, &this_frame_params);\n        mpi->nominal_fps = p->fps;\n"
       }
     ],
     "path": "filters/f_decoder_wrapper.c"
   },
   {
-    "afterBytes": 57817,
-    "afterSha256": "44fb7de8bd64fc8b31b352f5402eada37046144d64d185d5d4ccd1a2a155b755",
+    "afterBytes": 58559,
+    "afterSha256": "e3dd46f4ada7d41e0f69023e3bf607a66527b4162dcbab5096f1365538b8e2a0",
     "beforeBytes": 52206,
     "beforeSha256": "4c042a000d24dc093a8ccc60bfeeffa8e231fc7404fec3cf4f52c2e20bc3178a",
     "edits": [
@@ -1227,8 +1267,119 @@
         "count": 1,
         "new": "    ctx->codec = codec;\n    ctx->bilipai_decoder_instance = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_epoch = 0;\n    ctx->bilipai_decoder_sequence = 0;\n    ctx->bilipai_decoder_stream_refusals = 0;\n    ctx->bilipai_decoder_ids_disabled = !ctx->bilipai_decoder_instance;\n",
         "old": "    ctx->codec = codec;\n"
+      },
+      {
+        "count": 1,
+        "new": "    switch (cmd) {\n    case VDCTRL_BILIPAI_GET_ACTIVE_DECODER: {\n        if (!arg) return CONTROL_FALSE;\n        struct mp_bilipai_active_decoder *active = arg;\n        *active = (struct mp_bilipai_active_decoder){0};\n        if (!ctx->avctx || !avcodec_is_open(ctx->avctx) ||\n            ctx->bilipai_decoder_ids_disabled || !ctx->bilipai_decoder_instance ||\n            !ctx->bilipai_decoder_epoch || !ctx->bilipai_decoder_sequence)\n            return CONTROL_FALSE;\n        active->instance_id = ctx->bilipai_decoder_instance;\n        active->epoch_id = ctx->bilipai_decoder_epoch;\n        active->last_frame_sequence = ctx->bilipai_decoder_sequence;\n        active->stream_refusals = ctx->bilipai_decoder_stream_refusals;\n        return CONTROL_TRUE;\n    }\n    case VDCTRL_SET_FRAMEDROP:\n",
+        "old": "    switch (cmd) {\n    case VDCTRL_SET_FRAMEDROP:\n"
       }
     ],
     "path": "video/decode/vd_lavc.c"
+  },
+  {
+    "afterBytes": 5741,
+    "afterSha256": "c519562b4384f4bf6ec42131a3a6054da59be3427a6a18acb35b207cd167f397",
+    "beforeBytes": 4725,
+    "beforeSha256": "2d133e104dac514e7f05beeeb78713755019a65c24bc984e2596559a124565dc",
+    "edits": [
+      {
+        "count": 1,
+        "new": "#include <stddef.h>\n#include <stdint.h>\n\n",
+        "old": "#include <stddef.h>\n\n"
+      },
+      {
+        "count": 1,
+        "new": "\n// Active decoder lane snapshot only. Not an original-bitstream or GPU proof.\nstruct mp_bilipai_active_decoder {\n    uint64_t instance_id, epoch_id, last_frame_sequence;\n    uint32_t stream_refusals;\n};\nstruct mp_image;\nenum dec_ctrl {\n",
+        "old": "\nenum dec_ctrl {\n"
+      },
+      {
+        "count": 1,
+        "new": "    VDCTRL_CHECK_FORCED_EOF,\n    // struct mp_bilipai_active_decoder*: zero/non-TRUE when unknown.\n    VDCTRL_BILIPAI_GET_ACTIVE_DECODER,\n};\n",
+        "old": "    VDCTRL_CHECK_FORCED_EOF,\n};\n"
+      },
+      {
+        "count": 1,
+        "new": "\n// Main/filter consumer lane only, outside async queue locks. Serialized access\n// under the existing decoder dispatch lock is not necessarily the decoder OS\n// thread. The callback must perform only synchronous lightweight observation:\n// no queue operations, recursive wrapper control, GPU submit, Flush or waits.\n// Owner lifetime is held by the direct player track/output chain; groups reject.\n// A true return proves matching only DURING this callback, never later GPU use.\nbool mp_decoder_wrapper_bilipai_observe(struct mp_decoder_wrapper *d,\n    const struct mp_image *image,\n    void (*observe)(void *, const struct mp_bilipai_active_decoder *), void *ctx);\n\n// Force it to reevaluate output parameters (for overrides like aspect).\n",
+        "old": "\n// Force it to reevaluate output parameters (for overrides like aspect).\n"
+      }
+    ],
+    "path": "filters/f_decoder_wrapper.h"
+  },
+  {
+    "afterBytes": 23713,
+    "afterSha256": "231af7dccd8e156a1034c2096cea6ca0b49c8e6fd0c9cd2952ab559794b61ef6",
+    "beforeBytes": 23244,
+    "beforeSha256": "493f064715ba083c1a4a71cbc10f655bd552ff34958d76ebfca8dae440ce979d",
+    "edits": [
+      {
+        "count": 1,
+        "new": "// mostly used to give filters access to VO mechanisms and capabilities.\nstruct mp_image;\nstruct mp_bilipai_active_decoder;\nstruct mp_stream_info {\n",
+        "old": "// mostly used to give filters access to VO mechanisms and capabilities.\nstruct mp_stream_info {\n"
+      },
+      {
+        "count": 1,
+        "new": "    bool force_swdec;\n    // Main output-chain consumer only, after async queue locks are released.\n    // Callback runs lightweight observe while the existing decoder dispatch\n    // lock is held; epoch match is scoped to observation, not future GPU use.\n    bool (*bilipai_observe_decoder_frame)(struct mp_stream_info *,\n        const struct mp_image *,\n        void (*observe)(void *, const struct mp_bilipai_active_decoder *), void *);\n    struct vo *dr_vo; // for calling vo_get_image()\n",
+        "old": "    bool force_swdec;\n    struct vo *dr_vo; // for calling vo_get_image()\n"
+      }
+    ],
+    "path": "filters/filter.h"
+  },
+  {
+    "afterBytes": 4272,
+    "afterSha256": "06f23d6e6fec22e7bb7af809a34e65098bf122a8567f36475264b4acce727beb",
+    "beforeBytes": 3941,
+    "beforeSha256": "a7267c641bbe59f7513049187e9975ad4ea15c1da6946e05116b176865133827",
+    "edits": [
+      {
+        "count": 1,
+        "new": "\n// Main/player lane only. Borrowed direct decoder owner, cleared before destroy\n// and at EOF; group wrappers are rejected by the scoped observer.\nstruct mp_decoder_wrapper;\nvoid mp_output_chain_set_bilipai_decoder_observer(struct mp_output_chain *,\n                                                  struct mp_decoder_wrapper *);\n\n// Set the AO. The AO format will be used to determine the filter chain output.\n",
+        "old": "\n// Set the AO. The AO format will be used to determine the filter chain output.\n"
+      }
+    ],
+    "path": "filters/f_output_chain.h"
+  },
+  {
+    "afterBytes": 48548,
+    "afterSha256": "e55e99e0460297dc7e85708822fd4e5c8318eb7e13deddac654943ddc883393c",
+    "beforeBytes": 47752,
+    "beforeSha256": "3ccce2b694041ac12aab56fee803b06fba695ffb3f848f915e1acc7d2f5e632b",
+    "edits": [
+      {
+        "count": 1,
+        "new": "        struct track *t = mpctx->vo_chain->track;\n        // Rebind only the real live direct track on seek/reset, including after EOF.\n        mp_output_chain_set_bilipai_decoder_observer(mpctx->vo_chain->filter,\n                                                     t ? t->dec : NULL);\n        if (t && t->dec)\n",
+        "old": "        struct track *t = mpctx->vo_chain->track;\n        if (t && t->dec)\n"
+      },
+      {
+        "count": 1,
+        "new": "{\n    // Main-lane callbacks cannot outlive the direct decoder (track switch,\n    // error/group failure, forced EOF, chain reinit and final teardown all use this).\n    mp_output_chain_set_bilipai_decoder_observer(vo_c->filter, NULL);\n    struct track *track = vo_c->track;\n",
+        "old": "{\n    struct track *track = vo_c->track;\n"
+      },
+      {
+        "count": 1,
+        "new": "        vo_c->dec_src = track->dec->f->pins[0];\n        mp_output_chain_set_bilipai_decoder_observer(vo_c->filter, track->dec);\n        vo_c->filter->container_fps =\n",
+        "old": "        vo_c->dec_src = track->dec->f->pins[0];\n        vo_c->filter->container_fps =\n"
+      },
+      {
+        "count": 1,
+        "new": "        if (vo_has_frame(mpctx->video_out)) {\n            mp_output_chain_set_bilipai_decoder_observer(vo_c->filter, NULL);\n",
+        "old": "        if (vo_has_frame(mpctx->video_out))\n"
+      },
+      {
+        "count": 1,
+        "new": "            return VD_EOF;\n        }\n    }\n",
+        "old": "            return VD_EOF;\n    }\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (r == VD_EOF) {\n        mp_output_chain_set_bilipai_decoder_observer(vo_c->filter, NULL);\n        // If hr-seek went past EOF, use the last frame.\n",
+        "old": "    if (r == VD_EOF) {\n        // If hr-seek went past EOF, use the last frame.\n"
+      },
+      {
+        "count": 1,
+        "new": "    mp_output_chain_reset_harder(vo_c->filter);\n    mp_output_chain_set_bilipai_decoder_observer(vo_c->filter, vo_c->track->dec);\n    return true;\n",
+        "old": "    mp_output_chain_reset_harder(vo_c->filter);\n    return true;\n"
+      }
+    ],
+    "path": "player/video.c"
   }
 ]

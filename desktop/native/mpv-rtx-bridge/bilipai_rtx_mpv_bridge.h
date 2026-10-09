@@ -25,6 +25,20 @@ struct bv_mpv_config {
 /* p016_depth is 12/16 only after actual AVHWFramesContext sw_format
    qualification. Zero for every other texture. No encoded-bitdepth inference. */
 struct bv_mpv_color { uint32_t matrix, limited, transfer, chroma, rgb10_qualified, p016_depth; };
+/* Closed native-HDR observation only. History, held-reference and actual
+   texture observations remain distinct. Epoch at GPU use is never asserted,
+   native_hdr_qualified always stays zero, and no frame token is produced. */
+struct bv_mpv_pq_p010_observation {
+    uint64_t decoder_instance, decoder_epoch, decoder_sequence;
+    uint32_t width, height, raw_range;
+    uint32_t boundary_pq_p010, reference_unchanged, hw_context_matching;
+    uint32_t texture_p010, current_domain_observed;
+    uint32_t epoch_matched_at_observe, gpu_epoch_at_use_known, native_hdr_qualified;
+    uint32_t refusal_history;
+    uint32_t dxgi_format, texture_width, texture_height, texture_array_size;
+};
+void bv_mpv_observe_pq_p010(ID3D11Device *, ID3D11Texture2D *, uint32_t,
+                           struct bv_mpv_pq_p010_observation *);
 int bv_mpv_bridge_create(const struct bv_mpv_config *, struct bv_mpv_bridge **,
                          bv_status_v1 *);
 /* process consumes input_lease/output_lease on every path; keep mp_image refs until

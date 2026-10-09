@@ -43,6 +43,7 @@
 #include "video/mp_image.h"
 #include "video/mp_image_pool.h"
 #include "bilipai_rtx_mpv_bridge.h"
+#include "filters/f_decoder_wrapper.h"
 
 struct opts {
     char *dll, *runtime, *project;
@@ -60,6 +61,7 @@ struct priv {
     struct mp_image_params params, out_params;
     uint64_t generation, sequence;
     bool disabled, accepted_logged;
+    struct bv_mpv_pq_p010_observation pq_p010_observation;
 };
 static wchar_t *utf16(const char *s)
 {
@@ -69,6 +71,71 @@ static wchar_t *utf16(const char *s)
     wchar_t *out=malloc((size_t)n*sizeof(*out));
     if(out&&!MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,s,-1,out,n)){free(out);out=NULL;}
     return out;
+}
+struct pq_p010_observe_context {
+    struct priv *p;
+    const struct mp_image *image;
+};
+static void observe_pq_p010_texture(void *opaque,
+                                    const struct mp_bilipai_active_decoder *active)
+{
+    struct pq_p010_observe_context *ctx = opaque;
+    struct bv_mpv_pq_p010_observation *o = &ctx->p->pq_p010_observation;
+    o->epoch_matched_at_observe = 1;
+    o->refusal_history |= active->stream_refusals & MP_BILIPAI_HDR_HAZARDS_MASK;
+    bv_mpv_observe_pq_p010(ctx->p->d3d->device,
+        (ID3D11Texture2D *)ctx->image->planes[0],
+        (uint32_t)(uintptr_t)ctx->image->planes[1], o);
+    // No queue/recursive-control operations, GPU submission/Flush or waits.
+}
+static void observe_native_pq_p010(struct mp_filter *vf, const struct mp_image *image)
+{
+    struct priv *p = vf->priv;
+    p->pq_p010_observation = (struct bv_mpv_pq_p010_observation){0};
+    if (!image || !p->d3d || !p->d3d->device) return;
+    const struct mp_image_params *q = &image->params;
+    const struct mp_bilipai_decoder_origin *origin = &q->bilipai_decoder_origin;
+    const struct mp_bilipai_hdr_snapshot *raw = &origin->frame_snapshot;
+    if (origin->version != MP_BILIPAI_DECODER_ORIGIN_VERSION ||
+        raw->version != MP_BILIPAI_HDR_SNAPSHOT_VERSION ||
+        raw->av_format != AV_PIX_FMT_D3D11 || raw->av_sw_format != AV_PIX_FMT_P010LE ||
+        raw->av_matrix != AVCOL_SPC_BT2020_NCL || raw->av_transfer != AVCOL_TRC_SMPTE2084 ||
+        raw->av_primaries != AVCOL_PRI_BT2020 ||
+        (raw->av_range != AVCOL_RANGE_MPEG && raw->av_range != AVCOL_RANGE_JPEG)) return;
+    struct bv_mpv_pq_p010_observation *o = &p->pq_p010_observation;
+    o->decoder_instance = origin->instance_id; o->decoder_epoch = origin->epoch_id;
+    o->decoder_sequence = origin->frame_sequence; o->boundary_pq_p010 = 1;
+    o->raw_range = raw->av_range == AVCOL_RANGE_MPEG ? 1 : 2;
+    if (image->imgfmt != IMGFMT_D3D11 || q->imgfmt != IMGFMT_D3D11 ||
+        q->hw_subfmt != pixfmt2imgfmt(AV_PIX_FMT_P010LE) ||
+        !image->hwctx || !image->hwctx->data || image->hwctx->size < sizeof(AVHWFramesContext) ||
+        image->w <= 0 || image->h <= 0 || q->w != image->w || q->h != image->h ||
+        raw->width != image->w || raw->height != image->h || !image->planes[0] ||
+        (uintptr_t)image->planes[1] > UINT32_MAX) return;
+    const AVHWFramesContext *frames = (const void *)image->hwctx->data;
+    if (frames->format != AV_PIX_FMT_D3D11 || frames->sw_format != AV_PIX_FMT_P010LE ||
+        frames->width < image->w || frames->height < image->h ||
+        !frames->device_ref || !frames->device_ref->data ||
+        frames->device_ref->size < sizeof(AVHWDeviceContext) ||
+        !frames->device_ctx || frames->device_ctx != (const void *)frames->device_ref->data ||
+        frames->device_ctx->type != AV_HWDEVICE_TYPE_D3D11VA || !frames->device_ctx->hwctx) return;
+    const AVD3D11VADeviceContext *device = frames->device_ctx->hwctx;
+    if (device->device != p->d3d->device) return;
+    o->hw_context_matching = 1; o->width = image->w; o->height = image->h;
+    o->refusal_history = (q->bilipai_hdr_disqualifying_flags_seen |
+        origin->stream_refusals | raw->flags) & MP_BILIPAI_HDR_HAZARDS_MASK;
+    o->reference_unchanged = q->bilipai_decoder_current_reference == 1 &&
+        origin->instance_id && origin->epoch_id && origin->frame_sequence &&
+        !(origin->flags & ~MP_BILIPAI_DECODER_EXPORTED_FRAME_ONLY) &&
+        !origin->crop_left && !origin->crop_top && !origin->crop_right && !origin->crop_bottom;
+    struct mp_stream_info *info = mp_filter_find_stream_info(vf);
+    struct pq_p010_observe_context ctx = {p, image};
+    if (info && info->bilipai_observe_decoder_frame)
+        info->bilipai_observe_decoder_frame(info, image, observe_pq_p010_texture, &ctx);
+    // Unknown/retired owner or epoch mismatch leaves texture/domain flags zero.
+    // callback match is ONLY at synchronous observation, never GPU epoch proof.
+    // Native HDR admission remains closed. None of these observations changes
+    // source_color, out_params, effects, decoder current-HDR marker or tokens.
 }
 static bool source_color(const struct mp_image *image,struct bv_mpv_color *out)
 {
@@ -242,6 +309,7 @@ static void process(struct mp_filter *vf)
     }
     if(!mp_refqueue_can_output(p->queue))return;
     struct mp_image *in=mp_refqueue_get(p->queue,0),*out=NULL;
+    observe_native_pq_p010(vf, in);
     struct bv_mpv_color color;
     if(!p->disabled&&p->bridge&&in&&source_color(in,&color)&&
        in->pts!=MP_NOPTS_VALUE&&isfinite(in->pts)&&
