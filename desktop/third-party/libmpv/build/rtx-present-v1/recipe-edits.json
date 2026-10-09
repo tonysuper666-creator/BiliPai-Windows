@@ -87,6 +87,80 @@
       "staticForwardEqualsFinal": true,
       "staticInverseEqualsCompleteFixedOriginal": true,
       "targetPath": "build-recipes/packages/libvpl.cmake"
+    },
+    {
+      "afterBytes": 1320,
+      "afterSha256Bytes": "bc0c72c9f87d3fd12ac2f920bdd7b34cec2fed51209b4f15996c28d51614095c",
+      "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/libssh.cmake",
+      "beforeBytes": 998,
+      "beforeSha256Bytes": "31a497f6b79da6d518f3422456fdbaca58d354455a3ebf8832bc0f0bd2f568d6",
+      "identity": "fixed-build-libssh-recipe",
+      "rawEdits": [
+        {
+          "afterStageSha256": "d71418d904491d5e3216acef7cab9b985e0dec76eda0e62d68c4d941a4cc8efb",
+          "beforeStageSha256": "31a497f6b79da6d518f3422456fdbaca58d354455a3ebf8832bc0f0bd2f568d6",
+          "count": 1,
+          "new": "    GIT_REPOSITORY https://gitlab.com/libssh/libssh-mirror.git\n    GIT_TAG 7b3ba877209ae2355f12f4a7ab56022337caaaf5\n    GIT_RESET 7b3ba877209ae2355f12f4a7ab56022337caaaf5\n",
+          "offsetBytesAtSequentialStage": 68,
+          "old": "    GIT_REPOSITORY https://gitlab.com/libssh/libssh-mirror.git\n"
+        },
+        {
+          "afterStageSha256": "4a4dadd6f19e9c072cbdd80b32bb66d220e30fa531e2f53ce27cf892036cb7ba",
+          "beforeStageSha256": "d71418d904491d5e3216acef7cab9b985e0dec76eda0e62d68c4d941a4cc8efb",
+          "count": 1,
+          "new": "        -DWITH_ZLIB=ON\n        -DWITH_SCP=ON\n",
+          "offsetBytesAtSequentialStage": 649,
+          "old": "        -DWITH_ZLIB=ON\n"
+        },
+        {
+          "afterStageSha256": "bc0c72c9f87d3fd12ac2f920bdd7b34cec2fed51209b4f15996c28d51614095c",
+          "beforeStageSha256": "4a4dadd6f19e9c072cbdd80b32bb66d220e30fa531e2f53ce27cf892036cb7ba",
+          "count": 1,
+          "new": "    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install\n    COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-libssh-scp-compat.py libssh-after-install <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-libssh-compat-source\n",
+          "offsetBytesAtSequentialStage": 943,
+          "old": "    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install\n"
+        }
+      ],
+      "staticForwardEqualsFinal": true,
+      "staticInverseEqualsCompleteFixedOriginal": true,
+      "targetPath": "build-recipes/packages/libssh.cmake"
+    },
+    {
+      "afterBytes": 2384,
+      "afterSha256Bytes": "7ea649e63f20f61cdb3a20d9b29372c7985c6908d9338acd8a33b5e1ae1ba30a",
+      "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/curl.cmake",
+      "beforeBytes": 1919,
+      "beforeSha256Bytes": "2233551dc505db4107f3efeced4102a801887a02a61c3c1d3b6037bd75ae04ad",
+      "identity": "fixed-build-curl-recipe",
+      "rawEdits": [
+        {
+          "afterStageSha256": "b1b42cde63e7d5c3213347b04d631896deb1b7455b5deef25fe85411c73ffc15",
+          "beforeStageSha256": "2233551dc505db4107f3efeced4102a801887a02a61c3c1d3b6037bd75ae04ad",
+          "count": 1,
+          "new": "    GIT_REPOSITORY https://github.com/curl/curl.git\n    GIT_TAG 098d3a0d4044d8a3f0a8617a5a5a30cde90fba26\n    GIT_RESET 098d3a0d4044d8a3f0a8617a5a5a30cde90fba26\n",
+          "offsetBytesAtSequentialStage": 186,
+          "old": "    GIT_REPOSITORY https://github.com/curl/curl.git\n"
+        },
+        {
+          "afterStageSha256": "b6f76110a667b64984331c0db8ffe9ce32c51dde15c9250f89c869657ffe95d3",
+          "beforeStageSha256": "b1b42cde63e7d5c3213347b04d631896deb1b7455b5deef25fe85411c73ffc15",
+          "count": 1,
+          "new": "    PATCH_COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-libssh-scp-compat.py patch-curl <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-libssh-compat-source\n",
+          "offsetBytesAtSequentialStage": 493,
+          "old": "    PATCH_COMMAND \"\"\n"
+        },
+        {
+          "afterStageSha256": "7ea649e63f20f61cdb3a20d9b29372c7985c6908d9338acd8a33b5e1ae1ba30a",
+          "beforeStageSha256": "b6f76110a667b64984331c0db8ffe9ce32c51dde15c9250f89c869657ffe95d3",
+          "count": 1,
+          "new": "    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install\n    COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-libssh-scp-compat.py curl-after-install <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-libssh-compat-source\n",
+          "offsetBytesAtSequentialStage": 2013,
+          "old": "    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install\n"
+        }
+      ],
+      "staticForwardEqualsFinal": true,
+      "staticInverseEqualsCompleteFixedOriginal": true,
+      "targetPath": "build-recipes/packages/curl.cmake"
     }
   ]
 }

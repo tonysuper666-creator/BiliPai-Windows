@@ -22,8 +22,35 @@
   "bridgeGpl3LicenseSha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
   "buildPatchHelperSha256": "efcf06f7578d73265de0fbef68f20806d8e7f913f21d283c03003c6f3525a9db",
   "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
+  "curlLibsshCompatibility": {
+    "afterBytes": 8929,
+    "afterSha256": "2ca85b8d650cbc7fcaf9ee759d27ff0e9a82707360827db0159b5f9bcc374007",
+    "beforeBytes": 8905,
+    "beforeSha256": "b83762900d9930c20d80c2fc610a990304e805b9b151e5e28578eef8138626d9",
+    "curlCommit": "098d3a0d4044d8a3f0a8617a5a5a30cde90fba26",
+    "curlTree": "7fa155649a35598bc9952c59e0a9964f7b4f9590",
+    "helperSha256": "752fd825bc3ecfac485ba28819e610a6bc912c2e8061c9ee4bedca5050bcd441",
+    "helperSourcePath": "desktop/tools/native/patch-curl-libssh-scp-compat.py",
+    "libsshCommit": "7b3ba877209ae2355f12f4a7ab56022337caaaf5",
+    "libsshHeaders": {
+      "libssh.h": {
+        "bytes": 39665,
+        "sha256": "e62f0421e365e50062c95dd07282aab4ee7746433fe8b82927786b6b2d7c5728",
+        "sourcePath": "include/libssh/libssh.h"
+      },
+      "scp.h": {
+        "bytes": 3388,
+        "sha256": "482ba2f1d6a3249f6a165ee0b4b720ce98815a7ce5111f29b8265ae4616b8083",
+        "sourcePath": "include/libssh/scp.h"
+      }
+    },
+    "libsshTree": "965f5cee2228e3d65ed66e6777741babbd286dab",
+    "targetPath": "lib/vssh/ssh.h"
+  },
   "expectedPatchedRecipeSha256": {
+    "build-recipes/packages/curl.cmake": "7ea649e63f20f61cdb3a20d9b29372c7985c6908d9338acd8a33b5e1ae1ba30a",
     "build-recipes/packages/ffmpeg.cmake": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
+    "build-recipes/packages/libssh.cmake": "bc0c72c9f87d3fd12ac2f920bdd7b34cec2fed51209b4f15996c28d51614095c",
     "build-recipes/packages/libvpl.cmake": "a044e94b1a06e997a858533cfa2cf489764d49c806f06588cc8d13b21747e671",
     "build-recipes/packages/mpv.cmake": "8e8e5a4fff3b1be48b30b0b18b56640930a5fddd494587922b6aa774512accd2"
   },

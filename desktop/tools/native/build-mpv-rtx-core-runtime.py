@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Explicit RTX core MPV bridge source build. No SDK/runtime, release, UI or GPU run.
 
-mpv, FFmpeg, recipes and container are fixed; present-v1 also pins libvpl.
+mpv, FFmpeg, recipes and container are fixed; present-v1 also pins libvpl, curl and libssh.
 Other historical recipe dependencies
 remain floating and are recorded from the actual build; this is not reproducible.
 """
@@ -77,6 +77,56 @@ def checked_libvpl_materials(directory, spec):
         if materials[name] != canonical:
             raise RuntimeError('Retained libvpl install/source witness changed')
     return json.loads(materials['install-receipt.json']), materials
+
+def checked_curl_libssh_materials(directory, spec):
+    # Complete public headers and canonical recipe observations; not runtime proof.
+    if not stat.S_ISDIR(directory.lstat().st_mode) or directory.is_symlink():
+        raise RuntimeError('Retained curl/libssh material directory changed')
+    names = {'libssh.h', 'scp.h', 'libssh-install-receipt.json',
+             'curl-ssh.before.h', 'curl-ssh.after.h', 'curl-patch-receipt.json',
+             'curl-install-receipt.json'}
+    if {p.name for p in directory.iterdir()} != names:
+        raise RuntimeError('Retained curl/libssh material inventory changed')
+    materials = {}
+    for name in sorted(names):
+        fd = os.open(directory / name, os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0))
+        try:
+            first = os.fstat(fd)
+            if not stat.S_ISREG(first.st_mode) or not 0 < first.st_size <= 65536:
+                raise RuntimeError('Retained curl/libssh material extent changed')
+            with os.fdopen(fd, 'rb', closefd=False) as source:
+                raw = source.read(65537)
+            last = os.fstat(fd)
+            if (first.st_dev, first.st_ino, first.st_size, first.st_mtime_ns) != (last.st_dev, last.st_ino, last.st_size, last.st_mtime_ns) or len(raw) != first.st_size:
+                raise RuntimeError('Retained curl/libssh material changed during read')
+            materials[name] = raw
+        finally:
+            os.close(fd)
+    before, after = materials['curl-ssh.before.h'], materials['curl-ssh.after.h']
+    old, new = b'#include <libssh/libssh.h>\n', b'#include <libssh/libssh.h>\n#include <libssh/scp.h>\n'
+    if (len(before) != spec['beforeBytes'] or len(after) != spec['afterBytes']
+            or sha(before) != spec['beforeSha256'] or sha(after) != spec['afterSha256']
+            or before.count(old) != 1 or after.count(new) != 1
+            or before.replace(old, new) != after or after.replace(new, old) != before):
+        raise RuntimeError('Retained complete curl public-header relation changed')
+    for name, pin in spec['libsshHeaders'].items():
+        if len(materials[name]) != pin['bytes'] or sha(materials[name]) != pin['sha256']:
+            raise RuntimeError('Retained complete libssh public header changed')
+    expected = {'schema': 1, 'kind': 'BILIPAI_CURL_LIBSSH_SCP_HEADER_SOURCE',
+                'curlCommit': spec['curlCommit'], 'curlTree': spec['curlTree'],
+                'libsshCommit': spec['libsshCommit'], 'libsshTree': spec['libsshTree'],
+                'targetPath': spec['targetPath'], 'beforeSha256': spec['beforeSha256'],
+                'afterSha256': spec['afterSha256'], 'libsshHeaders': spec['libsshHeaders'],
+                'helperSha256': spec['helperSha256'], 'reviewedPatchCount': 1,
+                'protocolsDisabled': False, 'runtimeTested': False, 'gpuExecuted': False}
+    for name, state in [('libssh-install-receipt.json', 'AFTER_REAL_LIBSSH_INSTALL_BEFORE_RECIPE_CLEANUP'),
+                        ('curl-patch-receipt.json', 'CURL_PATCH_APPLIED_BEFORE_CONFIGURE'),
+                        ('curl-install-receipt.json', 'AFTER_REAL_CURL_INSTALL_BEFORE_RECIPE_CLEANUP')]:
+        canonical = (json.dumps(dict(expected, state=state), sort_keys=True, indent=2) + '\n').encode()
+        if materials[name] != canonical:
+            raise RuntimeError('Retained curl/libssh recipe observation changed')
+    return json.loads(materials['curl-install-receipt.json']), materials
+
 
 def download(record, directory):
     destination = directory / record['fileName']
@@ -498,7 +548,7 @@ def main():
     # Optional absent parameter retains the original complete cold path.
     # Explicit material is fully verified before outputs/download/build.
     fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
-    if presentation and sha(fixed_raw) != 'b378d2863868e259ba038e03fd53b486f8062855471a0bb69d7f74ed50bcad73':
+    if presentation and sha(fixed_raw) != '6dcbfe1d9dcb43c26a7cb2ed16488c970c9acb585db3cd81429000194556340a':
         raise RuntimeError('Fixed presentation producer inputs changed')
     fixed = json.loads(fixed_raw)
     if fixed.get('variant') != variant:
@@ -543,7 +593,7 @@ def main():
         downloaded = {row['kind']: download(row, archives) for row in fixed['archives']}
         recipes = extract_fixed_recipe(downloaded['recipes'], workspace, fixed['recipeArchivePrefix'])
         recipe_raw = (inputs / 'recipe-edits.json').read_bytes()
-        if presentation and sha(recipe_raw) != 'f6348efd81b77ba5fb97eff7efd16828eb27f6d54f1cc7d32fe46519dacf7532':
+        if presentation and sha(recipe_raw) != '4804ebe16371923c9f96d3ba3646f86b09ccf19b19ce46d2b6bcbd79c3cd338e':
             raise RuntimeError('Complete presentation build recipe edits changed')
         edits = json.loads(recipe_raw)
         apply_recipes(recipes, edits['targets'])
@@ -556,6 +606,17 @@ def main():
             if sha(libvpl_helper) != libvpl_spec['helperSha256']:
                 raise RuntimeError('Reviewed libvpl compatibility helper changed')
             (recipes / 'packages/bilipai-libvpl-mingw-compat.py').write_bytes(libvpl_helper)
+        curl_libssh_spec = None
+        if presentation:
+            curl_libssh_spec = fixed['curlLibsshCompatibility']
+            if curl_libssh_spec != {'curlCommit': '098d3a0d4044d8a3f0a8617a5a5a30cde90fba26', 'curlTree': '7fa155649a35598bc9952c59e0a9964f7b4f9590', 'libsshCommit': '7b3ba877209ae2355f12f4a7ab56022337caaaf5', 'libsshTree': '965f5cee2228e3d65ed66e6777741babbd286dab', 'targetPath': 'lib/vssh/ssh.h', 'beforeBytes': 8905, 'beforeSha256': 'b83762900d9930c20d80c2fc610a990304e805b9b151e5e28578eef8138626d9', 'afterBytes': 8929, 'afterSha256': '2ca85b8d650cbc7fcaf9ee759d27ff0e9a82707360827db0159b5f9bcc374007', 'libsshHeaders': {'libssh.h': {'sourcePath': 'include/libssh/libssh.h', 'bytes': 39665, 'sha256': 'e62f0421e365e50062c95dd07282aab4ee7746433fe8b82927786b6b2d7c5728'}, 'scp.h': {'sourcePath': 'include/libssh/scp.h', 'bytes': 3388, 'sha256': '482ba2f1d6a3249f6a165ee0b4b720ce98815a7ce5111f29b8265ae4616b8083'}}, 'helperSourcePath': 'desktop/tools/native/patch-curl-libssh-scp-compat.py', 'helperSha256': '752fd825bc3ecfac485ba28819e610a6bc912c2e8061c9ee4bedca5050bcd441'}:
+                raise RuntimeError('Reviewed curl/libssh compatibility source contract changed')
+            curl_libssh_helper = (ROOT / curl_libssh_spec['helperSourcePath']).read_bytes()
+            if sha(curl_libssh_helper) != curl_libssh_spec['helperSha256']:
+                raise RuntimeError('Reviewed curl/libssh compatibility helper changed')
+            (recipes / 'packages/bilipai-curl-libssh-scp-compat.py').write_bytes(curl_libssh_helper)
+            if {row['targetPath']: row['afterSha256Bytes'] for row in edits['targets']} != fixed['expectedPatchedRecipeSha256']:
+                raise RuntimeError('Complete selected dependency recipe inventory changed')
         # HOST LLVM is one common recipe slice, independent of the MPV filter variant.
         # Its source identity is not rewritten to pretend it is presentation MPV.
         snapshot_inputs_path = ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json'
@@ -764,7 +825,17 @@ def main():
         if presentation:
             libvpl_material_directory = build / 'bilipai-libvpl-compat-source'
             libvpl_install_receipt, libvpl_materials = checked_libvpl_materials(libvpl_material_directory, libvpl_spec)
+        curl_libssh_install_receipt = None
+        curl_libssh_materials = None
+        if presentation:
+            curl_libssh_material_directory = build / 'bilipai-curl-libssh-compat-source'
+            curl_libssh_install_receipt, curl_libssh_materials = checked_curl_libssh_materials(curl_libssh_material_directory, curl_libssh_spec)
         inventory = dependency_inventory(sources)
+        if presentation:
+            for dependency, commit in [('curl', curl_libssh_spec['curlCommit']), ('libssh', curl_libssh_spec['libsshCommit'])]:
+                selected = [row for row in inventory if row['directory'] == dependency]
+                if len(selected) != 1 or selected[0]['commit'] != commit:
+                    raise RuntimeError('Actual retained dependency commit differs from selected curl/libssh pair')
         if import_plan is not None:
             original_source = import_plan['manifest']['actualSourceBuildBinding']['prebuild']
             inventory.append({'directory': 'llvm', 'commit': original_source['sourceCommit'],
@@ -785,6 +856,14 @@ def main():
                 # materials were separately verified after the real install.
                 for material_name, material_raw in sorted(libvpl_materials.items()):
                     info = tarfile.TarInfo('actual-libvpl-patched-source/' + material_name)
+                    info.size = len(material_raw)
+                    info.mode = 0o600
+                    import io
+                    source_tar.addfile(info, io.BytesIO(material_raw))
+            if curl_libssh_materials is not None:
+                # Both source/install observations precede each recipe cleanup.
+                for material_name, material_raw in sorted(curl_libssh_materials.items()):
+                    info = tarfile.TarInfo('actual-curl-libssh-compat-source/' + material_name)
                     info.size = len(material_raw)
                     info.mode = 0o600
                     import io
@@ -833,8 +912,9 @@ def main():
             presentation_identity = {'presentationProtocolVersion': 2, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': sha(upstream_raw), 'sourcePatchHelperSha256': sha(helper)}
             receipt.update(presentation_identity)
             receipt['sourceGraph'] = source_receipt['sourceGraph']
-            receipt['sourceMaterialScope'] = 'Fixed archives, altered recipes, dependency worktrees after cleanup, and separately retained patched libvpl header/install witness; excluding .git'
+            receipt['sourceMaterialScope'] = 'Fixed archives, altered recipes, dependency worktrees after cleanup, and separately retained patched libvpl and curl/libssh header/install witnesses; excluding .git'
             receipt['libvplCompatibilitySource'] = libvpl_install_receipt
+            receipt['curlLibsshCompatibilitySource'] = curl_libssh_install_receipt
         receipt_bytes = (json.dumps(receipt, sort_keys=True, indent=2) + '\n').encode()
         catalog_path = ROOT / 'desktop/third-party/libmpv/SOURCES.json'
         catalog = json.loads(catalog_path.read_text(encoding='utf-8-sig'))
