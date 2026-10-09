@@ -1,5 +1,30 @@
 # Private processed-frame presentation source candidate
 
+The RGB10A2 SDR source derivative additionally admits a typed
+R10G10B10A2_UNORM input only with BT.709 primaries, sRGB or BT.1886 transfer,
+full range and RGB matrix explicitly known at that AVFrame import boundary.
+An internal import flag and original range survive the existing default
+software-scale/hardware-upload/map/download attribute copies; guesses and
+vf_format retags cannot grant a previously false flag. RGB10 raw admission
+changes participate in parameter equality and therefore real refqueue reinit.
+The current resolved colors must still equal the admitted tuple. This flag is
+not permanent bitstream provenance: mp_image_to_av_frame exports current
+resolved colors and own opaque parameters with an internal export tag. An
+exact-size/tag-checked owned round trip
+can only preserve qualification when both old/raw and current tuples match;
+it cannot promote a false flag. If an external AV filter discards opaque
+parameters, its output creates a new import boundary with its own tags. The
+default application RTX chain has no such external AV filter. Other input
+formats retain their existing resolved
+metadata admission, including MPV's normal guesses.
+
+This adds no uploader or shader. The existing normalized RGB shader still
+creates RGBA8 NVIDIA input, so 10-bit storage is quantized at that declared
+boundary. Output metadata and processed token remain BGRA8 SDR or genuine
+SDR-to-HDR RGB10. Limited-range RGB10A2, P012/P016, unknown new RGB10 tags,
+non-BT.709 gamut and original HDR bypass. No new native/shader compilation,
+GPU execution, effect or completed presentation result is claimed.
+
 This is a future isolated MPV source variant. It is source only; no new MPV DLL has been built or loaded, no GPU work has run, and the current application does not consume this property. The existing core-v1 source manifest and running build remain unchanged.
 
 The real native bridge emits a scalar token only after the checked core output has been copied into the actual MPV-owned D3D11 output and the final consumer signal succeeds. The token includes immutable session/configuration/stream/sequence, source timestamp, LUID, dimensions, effects and transport. mp_image references retain it with image ownership; writable images, general transformed attributes, fallback output and later user filters invalidate it. Exact pixel copies may retain it. The renderer accepts only a fresh successful single-frame draw with the same image ID, excluding repeat, still, interpolation, cached reuse, custom shaders and renderer error/overlay paths.

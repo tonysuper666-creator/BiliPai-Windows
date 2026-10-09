@@ -265,7 +265,10 @@ int bv_mpv_bridge_process(struct bv_mpv_bridge *p,ID3D11Texture2D *in,uint32_t s
     D3D11_TEXTURE2D_DESC d,od;ID3D11Texture2D_GetDesc(in,&d);ID3D11Texture2D_GetDesc(out,&od);
     DXGI_FORMAT expected=(p->config.effects&BV_VIDEO_HDR)?DXGI_FORMAT_R10G10B10A2_UNORM:DXGI_FORMAT_B8G8R8A8_UNORM;
     if(d.MipLevels!=1||d.SampleDesc.Count!=1||slice>=d.ArraySize||d.Width<p->config.input_width||d.Height<p->config.input_height||od.MipLevels!=1||od.SampleDesc.Count!=1||out_slice>=od.ArraySize||od.Format!=expected||od.Width<p->config.output_width||od.Height<p->config.output_height||color.matrix>2||color.transfer>1||color.limited>1||color.chroma>6)RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"unsupported texture/color contract"));
-    if(d.Format!=DXGI_FORMAT_NV12&&d.Format!=DXGI_FORMAT_P010&&d.Format!=DXGI_FORMAT_B8G8R8A8_UNORM&&d.Format!=DXGI_FORMAT_R8G8B8A8_UNORM)RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"unsupported source pixel format"));
+    if(d.Format!=DXGI_FORMAT_NV12&&d.Format!=DXGI_FORMAT_P010&&d.Format!=DXGI_FORMAT_B8G8R8A8_UNORM&&d.Format!=DXGI_FORMAT_R8G8B8A8_UNORM&&d.Format!=DXGI_FORMAT_R10G10B10A2_UNORM)RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"unsupported source pixel format"));
+    /* A typed RGB10A2 SRV supplies normalized RGB to the unchanged mode-zero
+       shader. Its existing 8-bit limited-range equation must not be reused. */
+    if(d.Format==DXGI_FORMAT_R10G10B10A2_UNORM&&color.limited)RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"limited-range RGB10A2 conversion is not implemented"));
     int yuv=d.Format==DXGI_FORMAT_NV12||d.Format==DXGI_FORMAT_P010;
     if((yuv&&color.matrix==0)||(!yuv&&color.matrix!=0))RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"texture matrix metadata mismatch"));
     HRESULT hr=source_views(p,&d);if(FAILED(hr)){p->failed=1;RETURN(fail(s,BV_DEVICE_FAILURE,hr,"source plane view unavailable"));}

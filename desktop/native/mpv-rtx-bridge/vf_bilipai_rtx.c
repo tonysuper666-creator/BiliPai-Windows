@@ -75,6 +75,17 @@ static bool source_color(const struct mp_image_params *p,struct bv_mpv_color *ou
        bypasses this first bridge. Only explicit transfer/primary/range qualifies. */
     if(pl_color_space_is_hdr(&p->color)||p->color.primaries!=PL_COLOR_PRIM_BT_709)
         return false;
+    /* New RGB10 input requires explicit colors at its AVFrame import
+       boundary. MPV's RGB guesses and vf_format retags cannot set this flag.
+       Current metadata must also remain identical and full-range SDR RGB. */
+    if(p->hw_subfmt==IMGFMT_X2BGR10&&
+       (!p->bilipai_rgb10_source_explicit||
+        p->sys_orig!=PL_COLOR_SYSTEM_RGB||p->repr.sys!=p->sys_orig||
+        p->primaries_orig!=PL_COLOR_PRIM_BT_709||p->color.primaries!=p->primaries_orig||
+        (p->transfer_orig!=PL_COLOR_TRC_SRGB&&p->transfer_orig!=PL_COLOR_TRC_BT_1886)||
+        p->color.transfer!=p->transfer_orig||
+        p->levels_orig!=PL_COLOR_LEVELS_FULL||p->repr.levels!=p->levels_orig))
+        return false;
     if(p->color.transfer==PL_COLOR_TRC_SRGB)out->transfer=0;
     else if(p->color.transfer==PL_COLOR_TRC_BT_1886)out->transfer=1;
     else return false;

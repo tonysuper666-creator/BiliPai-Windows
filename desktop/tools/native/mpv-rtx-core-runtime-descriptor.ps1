@@ -6,10 +6,10 @@ function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$
     if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
     foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
     if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
-       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338'-or
+       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5'-or
        $Native.coreAbiHeaderSha256-cne$Manifest.coreAbiHeaderSha256-or$Native.tokenProtocol-ne1-or
        $Native.presentationProperty-cne$Manifest.presentationProperty-or
-       $Native.sourcePatchHelperSha256-cne'8cae5dc860f06c86a101f1bbba77d9822e4dd6f6b75a86bf8f483e44d2e37870'-or
+       $Native.sourcePatchHelperSha256-cne'5631580a05f4af628d2722efddbf9164cf00958add62d59ccb0513652636f70b'-or
        $Native.nativeBinaryBuiltByThisProgram-cne$false-or$Native.gpuExecuted-cne$false-or
        $Native.displayProofRuntimeVerified-cne$false){throw 'Actual presentation native receipt identity mismatch.'}
     if(@($Native.filterSourceFiles).Count-ne5){throw 'Incomplete presentation private source inventory.'}
@@ -63,11 +63,11 @@ function Install-RtxCoreDescriptorMpvRuntime {
     if($presentation){
         $inputSubdirectory='rtx-present-v1';$manifestLeaf='bilipai-rtx-presentation-source-manifest.json'
         $expected.variant='bilipai-veyra-rtx-present-v1'
-        $expected.filterSourceManifestSha256='7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338'
+        $expected.filterSourceManifestSha256='ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5'
         $expected.presentationProtocolVersion=1
         $expected.presentationProperty='bilipai-rtx-presentation'
-        $expected.upstreamEditsSha256='9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea'
-        $expected.sourcePatchHelperSha256='8cae5dc860f06c86a101f1bbba77d9822e4dd6f6b75a86bf8f483e44d2e37870'
+        $expected.upstreamEditsSha256='c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064'
+        $expected.sourcePatchHelperSha256='5631580a05f4af628d2722efddbf9164cf00958add62d59ccb0513652636f70b'
     }
     if ($runtime.schema -ne 2) { throw 'Unsupported patched runtime descriptor schema.' }
     if ($runtime.closedSdkOrRuntimeIncluded -cne $false -or $runtime.vfgImplemented -cne $false -or $runtime.rtxCoreBridgeVerified -cne $false) { throw 'RTX candidate is source-only, excludes closed runtime/VFG and is not hardware-verified.' }
@@ -136,11 +136,11 @@ function Install-RtxCoreDescriptorMpvRuntime {
     if($presentation){
         $upstreamPath=Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-present-v1/presentation-edits.json'
         $registrationPath=Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-present-v1/filter-registration-edits.json'
-        if((Get-FileHash -LiteralPath $upstreamPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea'-or
+        if((Get-FileHash -LiteralPath $upstreamPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064'-or
            (Get-FileHash -LiteralPath $registrationPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf'){throw 'Presentation full-file graph material changed.'}
         $upstreamRecipe=@(Get-Content -LiteralPath $upstreamPath -Raw|ConvertFrom-Json)
         $presentationRegistration=@(Get-Content -LiteralPath $registrationPath -Raw|ConvertFrom-Json)
-        foreach($material in @(@{path='licenses/rtx-presentation-edits.json';sha256='9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea'},@{path='licenses/rtx-registration-edits.json';sha256='59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf'})){
+        foreach($material in @(@{path='licenses/rtx-presentation-edits.json';sha256='c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064'},@{path='licenses/rtx-registration-edits.json';sha256='59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf'})){
             $same=@($rows|Where-Object{$_.path-ceq$material.path})
             if($same.Count-ne1-or$same[0].sha256-cne$material.sha256){throw 'Presentation artifact omitted complete source graph material.'}
         }

@@ -48,8 +48,8 @@
     "path": "player/command.c"
   },
   {
-    "afterBytes": 51746,
-    "afterSha256": "19931a788bcfbc2da779c1ec12e6bda650bf6da3abff2b607f5d0146e5a010e9",
+    "afterBytes": 54284,
+    "afterSha256": "6677238bffe254edb335981fa503ad1c9795a2ad55721f2e72a877325827ed3b",
     "beforeBytes": 50325,
     "beforeSha256": "99165df2282547cec1ec020338d472f594040a0d46d11c642a2828b778ed306c",
     "edits": [
@@ -77,13 +77,33 @@
         "count": 1,
         "new": "#include <limits.h>\n#include <math.h>\n",
         "old": "#include <limits.h>\n"
+      },
+      {
+        "count": 1,
+        "new": "    dst->params.sys_orig = src->params.sys_orig;\n    dst->params.levels_orig = src->params.levels_orig;\n    dst->params.bilipai_rgb10_source_explicit = src->params.bilipai_rgb10_source_explicit;\n",
+        "old": "    dst->params.sys_orig = src->params.sys_orig;\n"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_params_equal(const struct mp_image_params *p1,\n                           const struct mp_image_params *p2)\n{\n    // The BiliPai RGB10 gate needs reinit when raw admission changes even if\n    // MPV's resolved RGB defaults stay equal. Other formats retain their checks.\n    if ((p1->imgfmt == IMGFMT_X2BGR10 || p1->hw_subfmt == IMGFMT_X2BGR10 ||\n         p2->imgfmt == IMGFMT_X2BGR10 || p2->hw_subfmt == IMGFMT_X2BGR10) &&\n        (p1->primaries_orig != p2->primaries_orig ||\n         p1->transfer_orig != p2->transfer_orig ||\n         p1->sys_orig != p2->sys_orig || p1->levels_orig != p2->levels_orig ||\n         p1->bilipai_rgb10_source_explicit != p2->bilipai_rgb10_source_explicit))\n        return false;\n    return p1->imgfmt == p2->imgfmt &&",
+        "old": "bool mp_image_params_equal(const struct mp_image_params *p1,\n                           const struct mp_image_params *p2)\n{\n    return p1->imgfmt == p2->imgfmt &&"
+      },
+      {
+        "count": 1,
+        "new": "    dst->params.sys_orig = dst->params.repr.sys;\n    dst->params.levels_orig = dst->params.repr.levels;\n    dst->params.bilipai_rgb10_source_explicit =\n        dst->params.sys_orig == PL_COLOR_SYSTEM_RGB &&\n        dst->params.primaries_orig == PL_COLOR_PRIM_BT_709 &&\n        (dst->params.transfer_orig == PL_COLOR_TRC_SRGB ||\n         dst->params.transfer_orig == PL_COLOR_TRC_BT_1886) &&\n        dst->params.levels_orig == PL_COLOR_LEVELS_FULL;\n    // Own mp_image_to_av_frame stores the whole parameters in opaque_ref.\n    // An owned round trip may preserve qualification, never create it from\n    // already-guessed exported colors. Exact size and our export tag must\n    // match before reading qualification/original fields from that buffer.\n    if (src->opaque_ref) {\n        if (src->opaque_ref->size != sizeof(struct mp_image_params)) {\n            dst->params.bilipai_rgb10_source_explicit = false;\n        } else {\n            const struct mp_image_params *p = (void *)src->opaque_ref->data;\n            if (p->bilipai_params_export_tag != MP_BILIPAI_PARAMS_EXPORT_TAG) {\n                dst->params.bilipai_rgb10_source_explicit = false;\n            } else {\n                dst->params.bilipai_rgb10_source_explicit &=\n                    p->bilipai_rgb10_source_explicit &&\n                    p->sys_orig == dst->params.sys_orig && p->repr.sys == p->sys_orig &&\n                    p->primaries_orig == dst->params.primaries_orig &&\n                    p->color.primaries == p->primaries_orig &&\n                    p->transfer_orig == dst->params.transfer_orig &&\n                    p->color.transfer == p->transfer_orig &&\n                    p->levels_orig == dst->params.levels_orig && p->repr.levels == p->levels_orig;\n            }\n        }\n    }\n",
+        "old": "    dst->params.sys_orig = dst->params.repr.sys;\n"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_params_restore_dovi_mapping(&params);\n    params.bilipai_params_export_tag = MP_BILIPAI_PARAMS_EXPORT_TAG;\n    pl_avframe_set_repr(dst, params.repr);",
+        "old": "    mp_image_params_restore_dovi_mapping(&params);\n    pl_avframe_set_repr(dst, params.repr);"
       }
     ],
     "path": "video/mp_image.c"
   },
   {
-    "afterBytes": 9864,
-    "afterSha256": "8ddb9a6f6768f78d196ed2cbf7ff2cba8832fe2bac7c0753fd26f1bf1cdf1d4e",
+    "afterBytes": 10423,
+    "afterSha256": "5d9f7318ed4272b789198337e35a6da822d4440f7fba032f7b2a3af142ce1ef3",
     "beforeBytes": 9703,
     "beforeSha256": "dd24eaacb29b8c16d450425db88904b33bc6ccc185e3b82e4689283f5fa1b92f",
     "edits": [
@@ -101,6 +121,16 @@
         "count": 1,
         "new": "void mp_image_copy_attributes(struct mp_image *dmpi, struct mp_image *mpi);\nbool mp_image_bilipai_token_matches(const struct mp_image *img);\n",
         "old": "void mp_image_copy_attributes(struct mp_image *dmpi, struct mp_image *mpi);\n"
+      },
+      {
+        "count": 1,
+        "new": "    enum pl_color_system sys_orig;\n    // Color range at this AVFrame import boundary, before RGB range guessing.\n    enum pl_color_levels levels_orig;\n    // Only this import boundary's explicit RGB/BT.709/sRGB-or-BT.1886/FULL\n    // tuple sets this flag. Retagging resolved metadata cannot set it.\n    bool bilipai_rgb10_source_explicit;\n    // Set only in the owned AVFrame export's copied parameters. Not authority\n    // for a foreign filter's output or a cryptographic origin certificate.\n    uint32_t bilipai_params_export_tag;\n",
+        "old": "    enum pl_color_system sys_orig;\n"
+      },
+      {
+        "count": 1,
+        "new": "#define MP_IMGFIELD_INTERLACED 0x20\n\n#define MP_BILIPAI_PARAMS_EXPORT_TAG UINT32_C(0x42565031)\n",
+        "old": "#define MP_IMGFIELD_INTERLACED 0x20\n"
       }
     ],
     "path": "video/mp_image.h"

@@ -148,12 +148,12 @@ def main():
     if status.get('variant') != variant or descriptor['artifact']['fileName'] != variant + '-x64.zip' or descriptor['sourceBundle']['fileName'] != variant + '-source-materials.tar.gz':
         raise DeliveryError('Selected source variant and actual output asset names differ')
     if variant == 'bilipai-veyra-rtx-present-v1':
-        expected_presentation = {'filterSourceManifestSha256': '7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338', 'presentationProtocolVersion': 1, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': '9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea', 'sourcePatchHelperSha256': '8cae5dc860f06c86a101f1bbba77d9822e4dd6f6b75a86bf8f483e44d2e37870'}
+        expected_presentation = {'filterSourceManifestSha256': 'ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5', 'presentationProtocolVersion': 1, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': 'c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064', 'sourcePatchHelperSha256': '5631580a05f4af628d2722efddbf9164cf00958add62d59ccb0513652636f70b'}
         if any(receipt.get(key) != value or descriptor.get(key) != value for key, value in expected_presentation.items()) or len(receipt.get('sourceGraph', [])) != 17 or len(receipt.get('filterSourceFiles', [])) != 5:
             raise DeliveryError('Future presentation delivery needs its actual complete source graph and protocol')
         # Compare every actual receipt target with whole-byte pinned source inputs.
         inputs = repository_root / 'desktop/third-party/libmpv/build/rtx-present-v1'
-        materials = {'manifest': ('bilipai-rtx-presentation-source-manifest.json', '7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338'), 'upstream': ('presentation-edits.json', '9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea'), 'registration': ('filter-registration-edits.json', '59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf')}
+        materials = {'manifest': ('bilipai-rtx-presentation-source-manifest.json', 'ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5'), 'upstream': ('presentation-edits.json', 'c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064'), 'registration': ('filter-registration-edits.json', '59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf')}
         measured = {}
         for label, (leaf, digest) in materials.items():
             data = owned_file(inputs.resolve(strict=True), leaf).read_bytes()
