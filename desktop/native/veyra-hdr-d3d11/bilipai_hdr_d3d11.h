@@ -5,6 +5,7 @@
 #include <d3d11_4.h>
 #include <d3dcompiler.h>
 #include <stdint.h>
+#include "../veyra-hdr-p010-input/bilipai_hdr_p010_bindings.h"
 
 struct bv_hdr11_pipeline;
 struct bv_hdr11_frame;
@@ -17,7 +18,8 @@ struct bv_hdr11_config {
     /* Actual caller's already selected/loaded compiler; this module loads no DLL. */
     pD3DCompile compile;
     /* Explicit nonzero caller-selected estimated texture payload budget. It
-     * includes the four internal textures and two held external texture refs,
+     * includes the four internal textures and held external texture refs. P010
+ * additionally counts its entire retained padded decoder array and owned copy,
      * but NOT decoder/SR/driver allocation overhead or other pipeline memory.
      * It is NOT measured free VRAM. The future owner must reserve actual DXGI
      * local-memory headroom; even accepted dimensions can fail device creation.
@@ -52,6 +54,63 @@ HRESULT bv_hdr11_begin(struct bv_hdr11_pipeline *, ID3D11Texture2D *source_pq,
     uint32_t source_width, uint32_t source_height,
     uint32_t output_width, uint32_t output_height,
     struct bv_hdr11_lease source_lease, struct bv_hdr11_frame **out);
+
+/* PRIVATE SOURCE input shape, not a source/HDR admission certificate. All
+ * four actual AVFrame crop values must be zero: this method has no cropped
+ * origin contract. constants use the exact reviewed explicit range/chroma
+ * mapping; unknown/guessed/retagged values are not permitted by the caller.
+ * Range FULL=1/LIMITED=2 here is not the observer raw_range numbering:
+ * that observation uses LIMITED=1/FULL=2. It MUST be explicitly mapped.
+ * Producer readiness is an actual SAME-device ID3D11Fence/value whose Signal
+ * the producer has enqueued after writing this retained decoder slice. The
+ * caller must independently keep that slice immutable through final use. */
+struct bv_hdr11_p010_input {
+    ID3D11Texture2D *texture;
+    uint32_t array_slice;
+    uint32_t crop_left,crop_top,crop_right,crop_bottom;
+    struct bv_hdr_p010_constants constants;
+    IUnknown *producer_ready_fence;
+    uint64_t producer_ready_value;
+};
+/* Separate UNWIRED method: actual DXGI_P010 array slice -> same-device owned
+ * single-slice P010 copy with explicit plane0/1 SRV1 -> signed FP16 HDR base.
+ * This host adapts input02's direct-decoder-slice view contract: the whole
+ * actual padded source slice is copied to owned subresource0, then both
+ * plane views select owned FirstArraySlice0 with shader-local array index0.
+ * Copying proves no original decoder/source/epoch or CURRENT qualification;
+ * those remain the future caller's separate obligation for the actual input.
+ * Neither RGB10 nor SDR quantization occurs before that base. The existing
+ * fixed203 proxy/SR-only restore/PQ encode/final-consumer retirement follows.
+ * The caller must positively establish CURRENT PQ/BT2020-NCL/primaries,
+ * explicit range/chroma, decoder/storage/epoch identity AT GPU use. Current
+ * raw history and epochMatchedAtObserve do not meet that contract; current
+ * source provides no active route authorizing this method. No qualification
+ * flag, metadata retag, PRIVATE/PUBLIC token or HDR gate is added here.
+ *
+ * Shared keyed-mutex resources are unsupported by this narrow method: a
+ * readiness fence never substitutes for AcquireSync/ReleaseSync ownership.
+ * No source SRV bind is required: DECODER-only textures are copied after an
+ * actual Context4 GPU Wait, not sampled directly. Wait is ordering only;
+ * it neither establishes color/source identity nor waits on the CPU. The
+ * caller must arrange a real producer Signal independently of this Wait,
+ * avoid an active query scope unless its accounting accepts these commands,
+ * and retain REAL decoder/HWctx/slice refs in source_lease through final use.
+ * That lease must retain any real producer submission owner needed to issue
+ * the readiness Signal. The actual fence COM ref and its value are also held
+ * by this frame until final-consumer retirement, not only until Wait returns.
+ * One frame remains retained, but a missing producer Signal may stall the
+ * shared immediate GPU command stream and ALL later work until real Signal.
+ * The caller must prove the real producer Signal was enqueued BEFORE this
+ * method. A one-frame resource bound does not isolate shared queue impact.
+ * There is no CPU timeout, signal or new quarantine owner inside this module.
+ * All resources are created before Wait. A valid source_lease is consumed on
+ * every return. Before any queued operation failures release it with *out
+ * NULL; once Wait is attempted ANY failure returns a retained FAILED frame.
+ * Seal/retire use the final-consumer fence, never producer/SR completion alone.
+ * S_OK reports queued commands only, not shader/GPU/HDR or display success. */
+HRESULT bv_hdr11_begin_p010(struct bv_hdr11_pipeline *,
+    const struct bv_hdr11_p010_input *, uint32_t output_width,uint32_t output_height,
+    struct bv_hdr11_lease source_lease,struct bv_hdr11_frame **out);
 
 /* Borrowed views only while the frame is unsealed/nonfailed; retain the frame
  * for all external use. Proxy: R8G8B8A8_UNORM at source extent, encoded sRGB,

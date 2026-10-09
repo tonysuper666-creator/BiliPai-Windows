@@ -4,6 +4,7 @@
 #define NOMINMAX
 #include "bilipai_hdr_d3d11.h"
 #include "../veyra-hdr-video-sr/include/bilipai_hdr_video_sr_sources.h"
+#include "../veyra-hdr-p010-input/bilipai_hdr_p010_sources.h"
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -16,6 +17,8 @@ struct bv_hdr11_pipeline {
     ID3D11DeviceContext1 *context;
     ID3DDeviceContextState *isolated;
     ID3D11ComputeShader *shader[BV_HDR_STAGE_COUNT];
+    /* Lazily compiled only by the separate inactive P010 begin method. */
+    ID3D11ComputeShader *p010_shader;
     struct bv_hdr11_frame *frame;
 };
 struct bv_hdr11_frame {
@@ -25,6 +28,11 @@ struct bv_hdr11_frame {
     ID3D11Texture2D *texture[TEXTURES],*source,*sr;
     ID3D11ShaderResourceView *srv[TEXTURES],*source_srv,*sr_srv;
     ID3D11UnorderedAccessView *uav[TEXTURES];
+    ID3D11Texture2D *p010_copy;
+    ID3D11ShaderResourceView *p010_plane[2];
+    ID3D11Buffer *p010_constants;
+    ID3D11Fence *producer_ready;
+    uint64_t producer_ready_value;
     struct bv_hdr11_lease source_lease,sr_lease;
     ID3D11Fence *final_use;
     uint64_t final_value;
@@ -103,12 +111,15 @@ static void frame_free(struct bv_hdr11_frame *f) {
     struct bv_hdr11_pipeline *p=f->pipeline;
     for(int i=0;i<TEXTURES;i++){RELEASE(f->srv[i]);RELEASE(f->uav[i]);RELEASE(f->texture[i]);}
     RELEASE(f->source_srv);RELEASE(f->sr_srv);RELEASE(f->source);RELEASE(f->sr);RELEASE(f->final_use);
+    RELEASE(f->p010_plane[0]);RELEASE(f->p010_plane[1]);RELEASE(f->p010_copy);
+    RELEASE(f->p010_constants);RELEASE(f->producer_ready);
     /* No context/actor gate held: callbacks may release real mp_image refs. */
     release_lease(&f->source_lease);release_lease(&f->sr_lease);
     if(p->frame==f)p->frame=NULL;free(f);
 }
 static void pipeline_free(struct bv_hdr11_pipeline *p) {
     for(int i=0;i<BV_HDR_STAGE_COUNT;i++)RELEASE(p->shader[i]);
+    RELEASE(p->p010_shader);
     RELEASE(p->isolated);RELEASE(p->context);RELEASE(p->device);free(p);
 }
 HRESULT bv_hdr11_create(const struct bv_hdr11_config *c,struct bv_hdr11_pipeline **out) {
@@ -204,6 +215,177 @@ HRESULT bv_hdr11_begin(struct bv_hdr11_pipeline *p,ID3D11Texture2D *source,
     context_leave(p,&old);
     hr=ID3D11Device_GetDeviceRemovedReason(p->device);if(FAILED(hr))f->failed=1;
     /* Submitted work, including failed work, always escapes as retained state. */
+    *out=f;return hr;
+}
+/* Shape/physical representation only. The inactive caller still owes real
+ * source color/current-pixel/epoch authorization, never inferred here. */
+static HRESULT p010_source(struct bv_hdr11_pipeline *p,
+    const struct bv_hdr11_p010_input *in,D3D11_TEXTURE2D_DESC *d) {
+    if(!in||!in->texture||!bv_hdr_p010_constants_valid(&in->constants)||
+       in->crop_left||in->crop_top||in->crop_right||in->crop_bottom||
+       !in->producer_ready_fence||!in->producer_ready_value||
+       in->producer_ready_value==UINT64_MAX)return E_INVALIDARG;
+    ID3D11Device *device=NULL;ID3D11Texture2D_GetDevice(in->texture,&device);
+    int same=device&&same_device(device,p->device);RELEASE(device);
+    if(!same)return E_INVALIDARG;
+    ID3D11Texture2D_GetDesc(in->texture,d);
+    /* Fence readiness is not shared keyed-mutex ownership; no mutex lane
+     * exists in this method, so such resources must fail before submission. */
+    UINT unsupported=D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX|
+        D3D11_RESOURCE_MISC_RESTRICTED_CONTENT|
+        D3D11_RESOURCE_MISC_RESTRICT_SHARED_RESOURCE|
+        D3D11_RESOURCE_MISC_RESTRICT_SHARED_RESOURCE_DRIVER|
+        D3D11_RESOURCE_MISC_GUARDED|D3D11_RESOURCE_MISC_TILE_POOL|
+        D3D11_RESOURCE_MISC_TILED|D3D11_RESOURCE_MISC_HW_PROTECTED|
+        D3D11_RESOURCE_MISC_NO_SHADER_ACCESS;
+    if(d->Format!=DXGI_FORMAT_P010||d->Width!=in->constants.allocation_width||
+       d->Height!=in->constants.allocation_height||d->MipLevels!=1||
+       !d->ArraySize||d->ArraySize>D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION||
+       in->array_slice>=d->ArraySize||d->SampleDesc.Count!=1||d->SampleDesc.Quality||
+       d->Usage!=D3D11_USAGE_DEFAULT||d->CPUAccessFlags||(d->MiscFlags&unsupported))
+        return E_INVALIDARG;
+    /* DECODER bind alone is accepted: source is COPY input, not an SRV. */
+    UINT bits=0;HRESULT hr=ID3D11Device_CheckFormatSupport(p->device,DXGI_FORMAT_P010,&bits);
+    if(FAILED(hr))return hr;
+    if(!(bits&D3D11_FORMAT_SUPPORT_TEXTURE2D))return E_NOTIMPL;
+    hr=support(p->device,DXGI_FORMAT_R16_UNORM,0);
+    if(SUCCEEDED(hr))hr=support(p->device,DXGI_FORMAT_R16G16_UNORM,0);
+    return hr;
+}
+static int payload_add(uint64_t *sum,uint64_t pixels,uint64_t bytes) {
+    if(!bytes||pixels>(UINT64_MAX-*sum)/bytes)return 0;
+    *sum+=pixels*bytes;return 1;
+}
+static int p010_payload(struct bv_hdr11_pipeline *p,const D3D11_TEXTURE2D_DESC *d,
+    const struct bv_hdr_p010_constants *c,uint32_t ow,uint32_t oh) {
+    if(!bounded_extents(c->visible_width,c->visible_height,ow,oh,UINT64_MAX))return 0;
+    uint64_t total=0,visible=UINT64_C(1)*c->visible_width*c->visible_height;
+    uint64_t allocation=UINT64_C(1)*d->Width*d->Height,output=UINT64_C(1)*ow*oh;
+    /* Even P010 is 2 bytes/luma + 4 bytes/2x2 UV = 3 bytes/luma pixel.
+     * Retaining ONE slice still pins the real entire decoder array resource.
+     * Include that full array, owned single-slice copy, visible FP16+proxy,
+     * output FP16+PQ plus the subsequently retained external SR texture.
+     * This is texture payload, not decoder/driver allocation/VRAM headroom. */
+    return payload_add(&total,allocation,3*(UINT64_C(1)+d->ArraySize))&&
+        payload_add(&total,visible,12)&&payload_add(&total,output,16)&&
+        total<=p->config.texture_payload_budget_bytes;
+}
+static HRESULT p010_shader(struct bv_hdr11_pipeline *p) {
+    if(p->p010_shader)return S_OK;
+    if(strcmp(BV_HDR_P010_ENTRY,"main")||strcmp(BV_HDR_P010_TARGET,"cs_5_0")||
+       BV_HDR_P010_SRV_COUNT!=2||BV_HDR_P010_UAV_COUNT!=1||
+       BV_HDR_P010_CONSTANT_BYTES!=sizeof(struct bv_hdr_p010_constants))return E_INVALIDARG;
+    ID3DBlob *code=NULL,*errors=NULL;
+    HRESULT hr=p->config.compile(bv_hdr_p010_to_base_hlsl,sizeof(bv_hdr_p010_to_base_hlsl)-1,
+        "bilipai-hdr-p010-inactive",NULL,NULL,BV_HDR_P010_ENTRY,BV_HDR_P010_TARGET,
+        D3DCOMPILE_ENABLE_STRICTNESS,0,&code,&errors);
+    RELEASE(errors);
+    if(SUCCEEDED(hr)&&code)hr=ID3D11Device_CreateComputeShader(p->device,
+        ID3D10Blob_GetBufferPointer(code),ID3D10Blob_GetBufferSize(code),NULL,&p->p010_shader);
+    else if(SUCCEEDED(hr))hr=E_FAIL;
+    RELEASE(code);return hr;
+}
+static HRESULT p010_copy_create(struct bv_hdr11_frame *f,ID3D11Device3 *device3,
+    const D3D11_TEXTURE2D_DESC *source,const struct bv_hdr_p010_constants *c) {
+    D3D11_TEXTURE2D_DESC d={0};d.Width=source->Width;d.Height=source->Height;
+    d.MipLevels=1;d.ArraySize=1;d.Format=DXGI_FORMAT_P010;d.SampleDesc.Count=1;
+    d.Usage=D3D11_USAGE_DEFAULT;d.BindFlags=D3D11_BIND_SHADER_RESOURCE;
+    HRESULT hr=ID3D11Device_CreateTexture2D(f->pipeline->device,&d,NULL,&f->p010_copy);
+    for(UINT plane=0;SUCCEEDED(hr)&&plane<2;plane++) {
+        D3D11_SHADER_RESOURCE_VIEW_DESC1 view={0};
+        view.Format=plane?DXGI_FORMAT_R16G16_UNORM:DXGI_FORMAT_R16_UNORM;
+        view.ViewDimension=D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+        view.Texture2DArray.MostDetailedMip=0;view.Texture2DArray.MipLevels=1;
+        view.Texture2DArray.FirstArraySlice=0;view.Texture2DArray.ArraySize=1;
+        view.Texture2DArray.PlaneSlice=plane;
+        ID3D11ShaderResourceView1 *actual=NULL;
+        hr=ID3D11Device3_CreateShaderResourceView1(device3,(ID3D11Resource*)f->p010_copy,
+            &view,&actual);
+        if(SUCCEEDED(hr)&&actual)hr=ID3D11ShaderResourceView1_QueryInterface(actual,
+            &IID_ID3D11ShaderResourceView,(void**)&f->p010_plane[plane]);
+        else if(SUCCEEDED(hr))hr=E_FAIL;
+        RELEASE(actual);
+    }
+    D3D11_BUFFER_DESC b={0};b.ByteWidth=sizeof(*c);b.Usage=D3D11_USAGE_IMMUTABLE;
+    b.BindFlags=D3D11_BIND_CONSTANT_BUFFER;
+    D3D11_SUBRESOURCE_DATA data={0};data.pSysMem=c;
+    if(SUCCEEDED(hr))hr=ID3D11Device_CreateBuffer(f->pipeline->device,&b,&data,&f->p010_constants);
+    return hr;
+}
+static void p010_dispatch(struct bv_hdr11_frame *f) {
+    struct bv_hdr11_pipeline *p=f->pipeline;
+    ID3D11ShaderResourceView *empty[3]={NULL,NULL,NULL};
+    ID3D11UnorderedAccessView *none=NULL;ID3D11Buffer *no_constant=NULL;
+    ID3D11DeviceContext1_CSSetShaderResources(p->context,0,3,empty);
+    ID3D11DeviceContext1_CSSetUnorderedAccessViews(p->context,0,1,&none,NULL);
+    ID3D11DeviceContext1_CSSetConstantBuffers(p->context,0,1,&f->p010_constants);
+    ID3D11DeviceContext1_CSSetShader(p->context,p->p010_shader,NULL,0);
+    ID3D11DeviceContext1_CSSetShaderResources(p->context,0,2,f->p010_plane);
+    ID3D11DeviceContext1_CSSetUnorderedAccessViews(p->context,0,1,&f->uav[HDR_BASE],NULL);
+    ID3D11DeviceContext1_Dispatch(p->context,(f->source_w+15)/16,(f->source_h+15)/16,1);
+    ID3D11DeviceContext1_CSSetShaderResources(p->context,0,3,empty);
+    ID3D11DeviceContext1_CSSetUnorderedAccessViews(p->context,0,1,&none,NULL);
+    ID3D11DeviceContext1_CSSetConstantBuffers(p->context,0,1,&no_constant);
+    ID3D11DeviceContext1_CSSetShader(p->context,NULL,NULL,0);
+}
+HRESULT bv_hdr11_begin_p010(struct bv_hdr11_pipeline *p,
+    const struct bv_hdr11_p010_input *input,uint32_t ow,uint32_t oh,
+    struct bv_hdr11_lease lease,struct bv_hdr11_frame **out) {
+    if(!out){if(lease_valid(lease))release_lease(&lease);return E_POINTER;}*out=NULL;
+    if(!lease_valid(lease))return E_INVALIDARG;
+    if(!p||p->frame||!input){release_lease(&lease);return p&&p->frame?E_PENDING:E_INVALIDARG;}
+    /* Explicit caller-owned values copied once; no cache/firstframe metadata. */
+    const struct bv_hdr11_p010_input in=*input;
+    D3D11_TEXTURE2D_DESC d={0};HRESULT hr=p010_source(p,&in,&d);
+    if(SUCCEEDED(hr)&&!p010_payload(p,&d,&in.constants,ow,oh))hr=E_INVALIDARG;
+    if(FAILED(hr)){release_lease(&lease);return hr;}
+    ID3D11Device3 *device3=NULL;ID3D11DeviceContext4 *context4=NULL;ID3D11Fence *ready=NULL;
+    hr=ID3D11Device_QueryInterface(p->device,&IID_ID3D11Device3,(void**)&device3);
+    if(SUCCEEDED(hr))hr=ID3D11DeviceContext1_QueryInterface(p->context,&IID_ID3D11DeviceContext4,
+        (void**)&context4);
+    if(SUCCEEDED(hr))hr=IUnknown_QueryInterface(in.producer_ready_fence,&IID_ID3D11Fence,
+        (void**)&ready);
+    if(SUCCEEDED(hr)) {
+        ID3D11Device *device=NULL;ID3D11Fence_GetDevice(ready,&device);
+        int same=device&&same_device(device,p->device);RELEASE(device);
+        if(!same||ID3D11Fence_GetCompletedValue(ready)==UINT64_MAX)hr=E_INVALIDARG;
+    }
+    if(SUCCEEDED(hr))hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    if(SUCCEEDED(hr))hr=p010_shader(p);
+    if(FAILED(hr)){RELEASE(ready);RELEASE(context4);RELEASE(device3);release_lease(&lease);return hr;}
+    struct bv_hdr11_frame *f=calloc(1,sizeof(*f));
+    if(!f){RELEASE(ready);RELEASE(context4);RELEASE(device3);release_lease(&lease);return E_OUTOFMEMORY;}
+    f->pipeline=p;f->refs=1;f->source_w=in.constants.visible_width;
+    f->source_h=in.constants.visible_height;f->output_w=ow;f->output_h=oh;
+    f->source_lease=lease;f->source=in.texture;ID3D11Texture2D_AddRef(f->source);
+    f->producer_ready=ready;ready=NULL;f->producer_ready_value=in.producer_ready_value;p->frame=f;
+    hr=p010_copy_create(f,device3,&d,&in.constants);RELEASE(device3);
+    if(SUCCEEDED(hr))hr=texture_create(f,HDR_BASE,f->source_w,f->source_h,DXGI_FORMAT_R16G16B16A16_FLOAT);
+    if(SUCCEEDED(hr))hr=texture_create(f,SDR_PROXY,f->source_w,f->source_h,DXGI_FORMAT_R8G8B8A8_UNORM);
+    if(SUCCEEDED(hr))hr=texture_create(f,HDR_RESTORED,ow,oh,DXGI_FORMAT_R16G16B16A16_FLOAT);
+    if(SUCCEEDED(hr))hr=texture_create(f,PQ_OUTPUT,ow,oh,DXGI_FORMAT_R10G10B10A2_UNORM);
+    if(FAILED(hr)){RELEASE(context4);frame_free(f);return hr;}
+    ID3DDeviceContextState *old=NULL;context_enter(p,&old);
+    /* Conservatively retain once the first queue operation is attempted,
+     * even if Wait fails; never free a possibly submitted partial frame. */
+    f->submitted=1;
+    hr=ID3D11DeviceContext4_Wait(context4,f->producer_ready,f->producer_ready_value);
+    if(SUCCEEDED(hr)) {
+        /* Whole padded slice preserves both P010 planes. With mipcount1,
+         * mip0 + array_slice*mipcount is exactly array_slice (SDK helper is
+         * C++ only). Destination has one slice, subresource0, same extents.
+         * There is no source SRV, visible-box copy or partial-plane copy. */
+        ID3D11DeviceContext1_CopySubresourceRegion(p->context,(ID3D11Resource*)f->p010_copy,
+            0,0,0,0,(ID3D11Resource*)f->source,in.array_slice,NULL);
+        hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    }
+    if(SUCCEEDED(hr)) {
+        p010_dispatch(f);
+        dispatch(f,BV_HDR_PROXY_ENCODE,&f->srv[HDR_BASE],1,SDR_PROXY,f->source_w,f->source_h);
+        hr=ID3D11Device_GetDeviceRemovedReason(p->device);
+    }
+    context_leave(p,&old);RELEASE(context4);
+    if(FAILED(hr))f->failed=1;
     *out=f;return hr;
 }
 HRESULT bv_hdr11_proxy(struct bv_hdr11_frame *f,ID3D11Texture2D **texture,
