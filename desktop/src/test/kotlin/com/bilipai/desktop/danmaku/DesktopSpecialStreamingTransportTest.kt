@@ -87,8 +87,7 @@ class DesktopSpecialStreamingTransportTest {
                 val request=chain.request()
                 check(request.method=="GET" && request.url.toString()=="https://comment.bilibili.com/private.pb")
                 val policy=checkNotNull(request.tag(DesktopDownloadDanmakuRequestPolicy::class.java))
-                assertSame(source,policy.owner.source)
-                policy.owner.assertCurrent()
+                policy.validate(request)
                 Response.Builder().request(request).protocol(Protocol.HTTP_1_1).code(200).message("private stream").body(body).build()
             }.build()
         // Keep the Repository's real epoch/body policy; replace only this private fixture's transport.
@@ -96,7 +95,12 @@ class DesktopSpecialStreamingTransportTest {
         try {
             DownloadDanmakuTransport.withTask(source,publication,currentCoroutineContext().job,{true},
                 {action->synchronized(gate) {action();true}}) {
-                DownloadDanmakuTransport.withApi(repository) {coroutineScope {block()}}
+                DownloadDanmakuTransport.withApi(repository) {
+                    val binding=DownloadDanmakuTransport.currentBinding()
+                    assertSame(source,binding.owner.source)
+                    assertSame(repository,binding.repository)
+                    coroutineScope {block()}
+                }
             }
         } finally {
             transport.connectionPool.evictAll()
