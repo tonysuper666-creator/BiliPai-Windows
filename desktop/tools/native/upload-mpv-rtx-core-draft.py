@@ -233,7 +233,7 @@ def main():
     snapshot_inputs = json.loads((repository_root / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json').read_text(encoding='utf-8'))
     host_kind = 'BILIPAI_HOST_LLVM_SOURCE_SNAPSHOT'
     import_helper_path = repository_root / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
-    if range_sha(import_helper_path, 0, import_helper_path.stat().st_size) != '766d0c2602f97c187bec03992b5417530d7a82f3d1604a45b2a05fb7d38f5bb4':
+    if range_sha(import_helper_path, 0, import_helper_path.stat().st_size) != '39d5b016b31836d48402e2e15b880ed5e4324c1f8496587659b22efcbd201a73':
         raise DeliveryError('Shared reviewed importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import_delivery', import_helper_path)
     if import_spec is None or import_spec.loader is None:

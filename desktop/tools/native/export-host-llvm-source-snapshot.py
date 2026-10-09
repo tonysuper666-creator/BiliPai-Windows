@@ -16,6 +16,7 @@ import re
 import stat
 import subprocess
 import tarfile
+import tempfile
 import urllib.request
 from pathlib import Path, PurePosixPath
 
@@ -173,14 +174,16 @@ def git(source, *arguments):
 
 
 def complete_source_archive(source, destination, commit):
-    """Keep the complete public commit archive, verifying every tracked blob.
+    """Rebuild complete raw Git source; archive substitutions are never trusted.
 
-    The sparse clone alone omits source. Fetching missing blobs one at a time
-    could add thousands of requests. The public exact-commit archive is checked
-    against the actual recursive Git tree, not trusted by URL or self-receipt.
-    export-ignore omissions and any extra file fail this complete-source gate.
-    No archive entry is extracted or executed here.
+    The exact-commit public archive supplies bulk bytes. Every retained byte
+    must match the actual recursive Git tree. Only a regular file explicitly
+    marked export-subst in that commit may be rebuilt from its actual Git blob.
+    Extra files, omissions, links/modes and every other mismatch still reject.
+    No archive is extracted and no source code is executed here.
     """
+    if not re.fullmatch(r'[0-9a-f]{40}', commit):
+        raise RuntimeError('Invalid actual LLVM source commit')
     raw_tree = git(source, 'ls-tree', '-r', '-z', '--full-tree', commit)
     expected = {}
     expected_directories = {''}
@@ -194,67 +197,165 @@ def complete_source_archive(source, destination, commit):
             raise RuntimeError('Unsupported or duplicate complete source Git entry; no source is trimmed')
         expected[name] = (mode, object_id)
         expected_directories.update(x.as_posix() for x in PurePosixPath(name).parents if x.as_posix() != '.')
-    if not expected:
-        raise RuntimeError('Complete LLVM source tree is empty')
-    url = 'https://codeload.github.com/llvm/llvm-project/tar.gz/' + commit
-    with urllib.request.urlopen(url, timeout=180) as response, destination.open('xb') as stream:
-        if response.status != 200 or response.geturl() != url:
-            raise RuntimeError('Exact public corresponding source archive URL changed')
-        count = 0
-        while raw := response.read(1 << 20):
-            count += len(raw)
-            if count > 8 << 30:
-                raise RuntimeError('Complete source archive exceeds the explicit safety bound')
-            stream.write(raw)
+    if not expected or len(expected) > 1000000:
+        raise RuntimeError('Empty or oversized complete LLVM source tree')
+
+    def mismatch(name, expected_id, actual_id, detail):
+        # JSON escaping prevents control characters in Git paths becoming log commands.
+        label = json.dumps(name, ensure_ascii=True)[:1024]
+        return RuntimeError('Canonical source blob mismatch commit=' + commit + ' path=' + label
+                            + ' expectedGitBlob=' + expected_id
+                            + ' actualGitBlob=' + actual_id + ' ' + detail)
+
+    def fixed_export_subst(name):
+        # --source alone still reads info/global/system attributes. Isolate those
+        # without writing any configuration or attributes in the real clone.
+        environment = {k: v for k, v in os.environ.items()
+                       if not k.startswith('GIT_') and k not in ('GITHUB_TOKEN', 'GH_TOKEN')}
+        environment.update({'GIT_ATTR_NOSYSTEM': '1', 'GIT_CONFIG_NOSYSTEM': '1',
+                            'GIT_CONFIG_GLOBAL': os.devnull, 'GIT_CONFIG_SYSTEM': os.devnull,
+                            'GIT_CONFIG_COUNT': '0'})
+        command = ['git', '-C', str(source), '-c', 'core.attributesFile=' + os.devnull]
+        git_directory = owned(source / '.git', source, directory=True)
+        common = subprocess.check_output(command + ['rev-parse', '--path-format=absolute',
+                                                     '--git-common-dir'], env=environment)
+        if Path(common.decode('utf-8').strip()).resolve(strict=True) != git_directory:
+            raise RuntimeError('Attribute lookup requires the actual isolated fresh LLVM clone')
+        attribute_path = git_directory / 'info/attributes'
+        def info_state():
+            if attribute_path.parent.exists() or attribute_path.parent.is_symlink():
+                owned(attribute_path.parent, source, directory=True)
+            if attribute_path.is_symlink() or not hasattr(os, 'O_NOFOLLOW'):
+                raise RuntimeError('Unsafe source info attributes cannot qualify export-subst')
+            try:
+                fd = os.open(attribute_path, os.O_RDONLY | os.O_NOFOLLOW)
+            except FileNotFoundError:
+                return None
+            with os.fdopen(fd, 'rb') as stream:
+                data = os.fstat(stream.fileno())
+                if not stat.S_ISREG(data.st_mode) or data.st_size:
+                    raise RuntimeError('Nonempty source info attributes cannot qualify export-subst')
+                return (data.st_dev, data.st_ino, data.st_size, data.st_mtime_ns)
+        before = info_state()
+        attribute = subprocess.check_output(command + ['check-attr', '-z', '--source=' + commit,
+                                                       'export-subst', '--', name], env=environment)
+        if info_state() != before:
+            raise RuntimeError('Source info attributes changed during fixed-commit lookup')
+        return attribute == name.encode('utf-8') + b'\0export-subst\0set\0'
+
+    entries, seen, corrections = [], set(), []
+    source_bound = 8 << 30
     prefix = 'llvm-project-' + commit
-    entries, seen = [], set()
-    with tarfile.open(destination, 'r|gz') as archive:
-        for member in archive:
-            original_name = member.name.rstrip('/')
-            if original_name == prefix and member.isdir():
-                continue
-            if not original_name.startswith(prefix + '/'):
-                raise RuntimeError('Canonical LLVM archive path escaped its commit prefix')
-            name = relative_name(original_name.removeprefix(prefix + '/'))
-            if member.isdir():
-                if name not in expected_directories:
-                    raise RuntimeError('Unexpected corresponding source archive directory')
-                continue
-            if name not in expected or name in seen:
-                raise RuntimeError('Extra or duplicate corresponding source archive file')
-            mode, object_id = expected[name]
-            if mode == '120000':
-                if not member.issym():
-                    raise RuntimeError('Canonical source symlink kind differs from Git')
-                raw = member.linkname.encode('utf-8')
-                if not raw or b'\0' in raw or len(raw) > 8192:
-                    raise RuntimeError('Unsupported canonical source symlink')
-                git_sha = hashlib.sha1(b'blob ' + str(len(raw)).encode('ascii') + b'\0' + raw).hexdigest()
-                entries.append({'path': name, 'kind': 'symlink', 'mode': 0o777, 'bytes': len(raw), 'target': member.linkname, 'sha256': sha(raw), 'gitBlob': object_id})
-            else:
-                if not member.isfile() or member.mode & 0o6000 or bool(member.mode & 0o111) != (mode == '100755'):
-                    raise RuntimeError('Canonical source file kind/mode differs from Git')
-                git_digest = hashlib.sha1(b'blob ' + str(member.size).encode('ascii') + b'\0')
-                digest = hashlib.sha256()
-                count = 0
-                stream = archive.extractfile(member)
-                with stream:
-                    while raw := stream.read(1 << 20):
-                        count += len(raw)
-                        git_digest.update(raw)
-                        digest.update(raw)
-                if count != member.size:
-                    raise RuntimeError('Incomplete canonical source file')
-                git_sha = git_digest.hexdigest()
-                entries.append({'path': name, 'kind': 'file', 'mode': 0o755 if mode == '100755' else 0o644, 'bytes': member.size, 'sha256': digest.hexdigest(), 'gitBlob': object_id})
-            if git_sha != object_id:
-                raise RuntimeError('Canonical corresponding source bytes differ from actual Git blob')
-            seen.add(name)
+    url = 'https://codeload.github.com/llvm/llvm-project/tar.gz/' + commit
+    downloaded_digest = hashlib.sha256()
+    expanded_count = 0
+    exported_count = 0
+    # Both anonymous scratch streams are confined to the existing owned stage.
+    with tempfile.TemporaryFile(dir=destination.parent) as downloaded:
+        with urllib.request.urlopen(url, timeout=180) as response:
+            if response.status != 200 or response.geturl() != url:
+                raise RuntimeError('Exact public corresponding source archive URL changed')
+            count = 0
+            while raw := response.read(1 << 20):
+                count += len(raw)
+                if count > source_bound:
+                    raise RuntimeError('Complete source archive exceeds the explicit safety bound')
+                downloaded_digest.update(raw)
+                downloaded.write(raw)
+        downloaded.seek(0)
+        with tarfile.open(fileobj=downloaded, mode='r|gz') as archive, destination.open('xb') as output:
+            with tarfile.open(fileobj=output, mode='w|gz') as canonical:
+                canonical.addfile(info(prefix, 0o755, kind=tarfile.DIRTYPE))
+                for directory in sorted(expected_directories - {''}):
+                    canonical.addfile(info(prefix + '/' + directory, 0o755, kind=tarfile.DIRTYPE))
+                for member in archive:
+                    original_name = member.name.rstrip('/')
+                    if original_name == prefix and member.isdir():
+                        continue
+                    if not original_name.startswith(prefix + '/'):
+                        raise RuntimeError('Canonical LLVM archive path escaped its commit prefix')
+                    name = relative_name(original_name.removeprefix(prefix + '/'))
+                    if member.isdir():
+                        if name not in expected_directories:
+                            raise RuntimeError('Unexpected corresponding source archive directory')
+                        continue
+                    if name not in expected or name in seen:
+                        raise RuntimeError('Extra or duplicate corresponding source archive file')
+                    mode, object_id = expected[name]
+                    if mode == '120000':
+                        if not member.issym():
+                            raise RuntimeError('Canonical source symlink kind differs from Git')
+                        raw = member.linkname.encode('utf-8')
+                        if not raw or b'\0' in raw or len(raw) > 8192:
+                            raise RuntimeError('Unsupported canonical source symlink')
+                        if expanded_count + len(raw) > source_bound or exported_count + len(raw) > source_bound:
+                            raise RuntimeError('Complete symlink source exceeds the explicit safety bound')
+                        expanded_count += len(raw)
+                        exported_count += len(raw)
+                        git_sha = hashlib.sha1(b'blob ' + str(len(raw)).encode('ascii') + b'\0' + raw).hexdigest()
+                        if git_sha != object_id:
+                            raise mismatch(name, object_id, git_sha, 'symlink bytes rejected')
+                        canonical.addfile(info(prefix + '/' + name, 0o777, kind=tarfile.SYMTYPE, link=member.linkname))
+                        entries.append({'path': name, 'kind': 'symlink', 'mode': 0o777, 'bytes': len(raw), 'target': member.linkname, 'sha256': sha(raw), 'gitBlob': object_id})
+                    else:
+                        if not member.isfile() or member.mode & 0o6000 or bool(member.mode & 0o111) != (mode == '100755'):
+                            raise RuntimeError('Canonical source file kind/mode differs from Git')
+                        if member.size < 0 or exported_count + member.size > source_bound or expanded_count + member.size > source_bound:
+                            raise RuntimeError('Complete expanded source exceeds the explicit safety bound')
+                        git_digest = hashlib.sha1(b'blob ' + str(member.size).encode('ascii') + b'\0')
+                        digest = hashlib.sha256()
+                        count = 0
+                        with tempfile.SpooledTemporaryFile(max_size=8 << 20, dir=destination.parent) as material:
+                            with archive.extractfile(member) as stream:
+                                while raw := stream.read(1 << 20):
+                                    count += len(raw)
+                                    if count > member.size:
+                                        raise RuntimeError('Canonical source file exceeds declared length')
+                                    git_digest.update(raw)
+                                    digest.update(raw)
+                                    material.write(raw)
+                            if count != member.size:
+                                raise RuntimeError('Incomplete canonical source file')
+                            exported_count += count
+                            expanded_count += count
+                            git_sha = git_digest.hexdigest()
+                            length = member.size
+                            if git_sha != object_id:
+                                if not fixed_export_subst(name):
+                                    raise mismatch(name, object_id, git_sha, 'not declared export-subst; bytes rejected')
+                                size_text = git(source, 'cat-file', '-s', object_id)
+                                if not re.fullmatch(rb'(0|[1-9][0-9]{0,6})\n', size_text) or int(size_text) > 1 << 20:
+                                    raise mismatch(name, object_id, git_sha, 'raw export-subst blob exceeds the 1MiB bound')
+                                raw_blob = git(source, 'cat-file', 'blob', object_id)
+                                raw_id = hashlib.sha1(b'blob ' + str(len(raw_blob)).encode('ascii') + b'\0' + raw_blob).hexdigest()
+                                if len(raw_blob) != int(size_text) or raw_id != object_id:
+                                    raise mismatch(name, object_id, raw_id, 'actual raw Git blob rejected')
+                                expanded_count += len(raw_blob) - count
+                                if expanded_count > source_bound:
+                                    raise RuntimeError('Complete raw Git source exceeds the explicit safety bound')
+                                corrections.append({'path': name, 'attribute': 'export-subst',
+                                                    'attributeSourceCommit': commit,
+                                                    'exportedGitBlob': git_sha, 'gitBlob': object_id,
+                                                    'exportedBytes': count, 'rawBytes': len(raw_blob),
+                                                    'rawSha256': sha(raw_blob)})
+                                material.seek(0)
+                                material.truncate()
+                                material.write(raw_blob)
+                                length = len(raw_blob)
+                                digest = hashlib.sha256(raw_blob)
+                            material.seek(0)
+                            canonical.addfile(info(prefix + '/' + name, 0o755 if mode == '100755' else 0o644, length), material)
+                            entries.append({'path': name, 'kind': 'file', 'mode': 0o755 if mode == '100755' else 0o644, 'bytes': length, 'sha256': digest.hexdigest(), 'gitBlob': object_id})
+                    seen.add(name)
     if seen != set(expected):
         raise RuntimeError('Corresponding source archive omitted tracked source; no incomplete snapshot is accepted')
     entries.sort(key=lambda row: row['path'])
-    return entries, sha(raw_tree)
-
+    corrections.sort(key=lambda row: row['path'])
+    materialization = {'method': 'RAW_GIT_BLOB_VERIFIED_CANONICAL_SOURCE',
+                       'publicArchiveUrl': url, 'publicArchiveSha256': downloaded_digest.hexdigest(),
+                       'sourceCommit': commit, 'sourceLsTreeSha256': sha(raw_tree),
+                       'exportSubstRawGitCorrections': corrections}
+    return entries, sha(raw_tree), materialization
 
 def source_identity(source, workspace):
     source = owned(source, workspace, directory=True)
@@ -470,7 +571,7 @@ def export_snapshot(*, workspace, output, repository_root, fixed, snapshot_input
         raise RuntimeError('Host source staging output already exists')
     stage.mkdir()
     canonical = stage / 'complete-llvm-source.tar.gz'
-    full_source_entries, full_ls_tree_sha = complete_source_archive(source, canonical, commit)
+    full_source_entries, full_ls_tree_sha, materialization = complete_source_archive(source, canonical, commit)
     if full_ls_tree_sha != built_source['completeSourceLsTreeSha256']:
         raise RuntimeError('Complete canonical source is not the actual prebuild Git tree')
     full_by_path = {row['path']: row for row in full_source_entries}
@@ -512,6 +613,7 @@ def export_snapshot(*, workspace, output, repository_root, fixed, snapshot_input
         'sourceCommit': commit, 'sourceTree': tree, 'sourceRemote': remote,
         'actualSourcePostBuildGitStatus': dirty, 'completeSourceLsTreeSha256': full_ls_tree_sha,
         'completeCanonicalSourceEntries': full_source_entries, 'canonicalSourceArchiveSha256': file_sha(canonical),
+        'canonicalSourceMaterialization': materialization,
         'actualInstallEntries': install_entries, 'actualCorrespondingSourceBundleEntries': source_entries,
         'actualUsedSourceTreeManifestSha256': sha(json_bytes(used_entries)),
         'actualInstallTreeManifestSha256': sha(json_bytes(install_entries)),
