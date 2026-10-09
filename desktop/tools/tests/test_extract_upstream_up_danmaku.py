@@ -105,6 +105,11 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
         row = next(row for row in self.owner_inventory if row['path'].endswith('/VideoPlaybackViewModel.kt'))
         body = (self.output / 'owner' / row['path']).read_text(encoding='utf8')
         self.assertEqual(row['sha256LF'], hashlib.sha256(body.encode()).hexdigest())
+        for edit in reversed(row['postSameSendInverseEdits']):
+            i = edit['offset']
+            self.assertEqual(edit['after'], body[i:i+len(edit['after'])])
+            body = body[:i] + edit['before'] + body[i+len(edit['after']):]
+        self.assertEqual(row['postSameSendBeforeSha256LF'], hashlib.sha256(body.encode()).hexdigest())
         self.assertEqual(5, len(row['sameSendExpectedSourceInverseEdits']))
         for edit in reversed(row['sameSendExpectedSourceInverseEdits']):
             i = edit['offset']
@@ -112,7 +117,8 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
             body = body[:i] + edit['before'] + body[i+len(edit['after']):]
         self.assertEqual(row['sameSendExpectedSourceBeforeSha256LF'], hashlib.sha256(body.encode()).hexdigest())
         with tempfile.TemporaryDirectory(prefix='bilipai-up-owner-baseline-') as temp:
-            with patch.object(selected, 'same_send_expected_source_delta', side_effect=lambda path, body, edits: body):
+            with patch.object(selected, 'same_send_expected_source_delta', side_effect=lambda path, body, edits: body), \
+                 patch.object(owner_tool, 'paused_original_cdn_resume_delta', side_effect=lambda path, body, audit=None: body):
                 owner_tool.generate(REPO, Path(temp))
             self.assertEqual(body, (Path(temp) / row['path']).read_text(encoding='utf8'))
 
@@ -122,8 +128,13 @@ class CompleteUpDanmakuSourceTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'guard anchor'):
             selected.same_send_expected_source_delta(row['path'], final, [])
         original = final
-        for edit in reversed(row['sameSendExpectedSourceInverseEdits']):
-            i = edit['offset']; original = original[:i] + edit['before'] + original[i+len(edit['after']):]
+        for field in ('postSameSendInverseEdits', 'sameSendExpectedSourceInverseEdits'):
+            for edit in reversed(row[field]):
+                i = edit['offset']
+                self.assertEqual(edit['after'], original[i:i+len(edit['after'])])
+                original = original[:i] + edit['before'] + original[i+len(edit['after']):]
+            checkpoint = 'postSameSendBeforeSha256LF' if field == 'postSameSendInverseEdits' else 'sameSendExpectedSourceBeforeSha256LF'
+            self.assertEqual(row[checkpoint], hashlib.sha256(original.encode()).hexdigest())
         with self.assertRaisesRegex(ValueError, 'guard anchor'):
             selected.same_send_expected_source_delta(row['path'], original.replace('attentionCommand: Boolean = false', 'attentionCommand: Boolean = true', 1), [])
 

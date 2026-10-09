@@ -70,7 +70,9 @@ internal fun next(): Int { return 1 }
             for name in ["decodeBangumiPlayUrlPayload", "mergeBangumiDetailSections", "validateBangumiPlayableVideoInfo"]:
                 self.assertIn(media.function(original, name, media.parser_for(REPO)), pgc)
             repository = (output / "com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt").read_text(encoding="utf-8")
-            self.assertIn("DownloadDanmakuTransport.api", repository)
+            self.assertIn("private suspend fun api() = com.bilipai.desktop.download.DownloadDanmakuTransport.currentBinding().api()", repository)
+            self.assertIn("binding.admit {", repository)
+            self.assertIn("binding.assertCurrent()", repository)
             self.assertIn("Semaphore(MAX_SEGMENT_PARALLELISM)", repository)
             self.assertIn("catch (e: CancellationException)", repository)
             self.assertNotIn("normalizeDanmakuDisplayArea", repository)
@@ -92,8 +94,13 @@ internal fun next(): Int { return 1 }
             account_members.append("    fun clearDanmakuCache() = clearCache()")
             closing = expected_cache.rfind("}")
             expected_cache = expected_cache[:closing] + "\n" + "\n\n".join(account_members) + "\n}" + expected_cache[closing + 1:]
-            adapted_cache=repository.split("\n",2)[2]
-            streaming_member=textwrap.indent(media.function(repository,"downloadSpecialDanmaku",media.parser_for(REPO)),"    ")
+            unbound_repository=repository
+            binding_proof=json.loads((output/"offline-task-binding-source-proof.json").read_bytes())
+            for edit in reversed(binding_proof["mappings"]):
+                self.assertEqual(edit["count"],unbound_repository.count(edit["after"]))
+                unbound_repository=unbound_repository.replace(edit["after"],edit["before"],edit["count"])
+            adapted_cache=unbound_repository.split("\n",2)[2]
+            streaming_member=textwrap.indent(media.function(unbound_repository,"downloadSpecialDanmaku",media.parser_for(REPO)),"    ")
             self.assertEqual(1,adapted_cache.count(streaming_member))
             adapted_cache=adapted_cache.replace(streaming_member+"\n\n", "", 1)
             extra_imports="\n\nimport java.io.File\nimport kotlinx.coroutines.currentCoroutineContext\nimport kotlinx.coroutines.ensureActive"

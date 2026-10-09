@@ -27,8 +27,12 @@ def restore(body, rows):
 
 def restore_final_send_stage(body, row):
     assert hashlib.sha256(body.encode()).hexdigest() == row["sha256LF"]
+    body = restore(body, row["postSameSendInverseEdits"])
+    assert hashlib.sha256(body.encode()).hexdigest() == row["postSameSendBeforeSha256LF"]
     body = restore(body, row["sameSendExpectedSourceInverseEdits"])
     assert hashlib.sha256(body.encode()).hexdigest() == row["sameSendExpectedSourceBeforeSha256LF"]
+    body = restore(body, row["postRecoveryInverseEdits"])
+    assert hashlib.sha256(body.encode()).hexdigest() == row["failureRecoveryAfterSha256LF"]
     return body
 
 

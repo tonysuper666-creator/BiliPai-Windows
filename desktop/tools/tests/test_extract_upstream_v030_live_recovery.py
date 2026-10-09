@@ -110,7 +110,8 @@ class V030LiveRecoverySourceTests(unittest.TestCase):
             before=live.selected_function(REPO,raw,'resolveLivePlaybackErrorRecovery')
             after=live.selected_function(REPO,generated,'resolveLivePlaybackErrorRecovery')
             self.assertEqual(before.replace('errorCode: Int','errorCode: PlaybackException'),after)
-            self.assertNotIn('shouldRecoverUnexpectedLiveEnd',generated)
+            self.assertEqual(live.selected_function(REPO,raw,'shouldRecoverUnexpectedLiveEnd'),
+                             live.selected_function(REPO,generated,'shouldRecoverUnexpectedLiveEnd'))
             actual=(tests/'com/android/purebilibili/feature/live/LivePlaybackPolicyTest.kt').read_text(encoding='utf8')
             self.assertEqual(12,actual.count('@Test'))
             self.assertIn('behind live window should seek to current live edge',actual)

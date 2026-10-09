@@ -383,6 +383,7 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
                   "inputs.render_diagnostic": job == "render-diagnostic",
                   "inputs.comment_search_ui": job == "comment-search-ui",
                   "inputs.acknowledge_source_build": True,
+                  "inputs.producer_variant": "retain-builder-only" if job == "retain-builder" else "bilipai-veyra-rtx-present-v1",
                   "vars.BILIPAI_WINDOWS_AUTO_SYNC": "true", "vars.BILIPAI_WINDOWS_AUTO_PUBLISH": "true",
                   "needs.windows.outputs.release": "true", "needs.detect.outputs.update_needed": "true",
                   "needs.detect.result": "success", "needs.candidate.result": "success",
@@ -393,7 +394,8 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
     def test_all_server_jobs_require_own_public_repository(self):
         self.assertEqual(set(self.workflows), {"windows-desktop.yml", "windows-upstream-sync.yml",
                                                "windows-mpv-native-manual.yml", "windows-mpv-rtx-core-manual.yml"})
-        self.assertEqual(len(self.jobs), 9)
+        self.assertEqual(len(self.jobs), 10)
+        self.assertIn(("windows-mpv-rtx-core-manual.yml", "retain-builder"), self.jobs)
         for name, job in self.jobs:
             with self.subTest(name=name, job=job):
                 self.assertTrue(self.admitted(name, job))
@@ -421,7 +423,8 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
             with self.subTest(name=name, job=job):
                 runner = re.search(r"(?m)^    runs-on: (.+)$", body).group(1)
                 if (name, job) in {("windows-mpv-native-manual.yml", "native-candidate"),
-                                   ("windows-mpv-rtx-core-manual.yml", "native-candidate")}:
+                                   ("windows-mpv-rtx-core-manual.yml", "native-candidate"),
+                                   ("windows-mpv-rtx-core-manual.yml", "retain-builder")}:
                     self.assertEqual(runner, "ubuntu-24.04")
                 else:
                     self.assertIn(runner, ("windows-latest", "ubuntu-latest"))
@@ -448,10 +451,17 @@ class OwnPublicWindowsWorkflowTests(unittest.TestCase):
         self.assertRegex(source, r"(?m)^      acknowledge_source_build:\n(?:        [^\n]*\n)*        default: false$")
         self.assertTrue(self.admitted(name, job, **{"inputs.acknowledge_source_build": True}))
         self.assertFalse(self.admitted(name, job, **{"inputs.acknowledge_source_build": False}))
+        self.assertFalse(self.admitted(name, job, **{"inputs.producer_variant": "retain-builder-only"}))
+        self.assertTrue(self.admitted(name, "retain-builder"))
+        self.assertFalse(self.admitted(name, "retain-builder", **{"inputs.producer_variant": "bilipai-veyra-rtx-present-v1"}))
+        self.assertFalse(self.admitted(name, "retain-builder", **{"inputs.acknowledge_source_build": False}))
+        self.assertFalse(self.admitted(name, "retain-builder", **{"github.ref_type": "branch"}))
         for event in ("push", "pull_request", "schedule", "workflow_call"):
             with self.subTest(event=event):
                 self.assertFalse(self.admitted(name, job, **{"github.event_name": event,
                                                             "inputs.acknowledge_source_build": True}))
+                self.assertFalse(self.admitted(name, "retain-builder", **{"github.event_name": event,
+                                                                          "inputs.acknowledge_source_build": True}))
         self.assertRegex(body, r"(?m)^    runs-on: ubuntu-24.04$")
         self.assertRegex(body, r"(?m)^    timeout-minutes: 360$")
         self.assertIn("ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239", body)

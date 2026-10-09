@@ -68,8 +68,13 @@ class HistoryRecapProducerTest(unittest.TestCase):
   history=load('recap_original_history_contract','v029_brand_history.py')
   for rel,body in [('feature/list/ListViewModel',model),('feature/list/CommonListScreen',screen)]:
    raw=history.load_raw(rel)
+   row=next(r for r in self.rows if r['path'].endswith('/'+rel+'.kt'))
+   audit=row['historyGeneratedAdaptation']
+   self.assertEqual(sha(body),audit['generatedSha256LfUtf8'])
+   restored=self.inverse(body,audit['edits'])
+   self.assertEqual(raw,restored)
    for method in ['retryHistory()', 'loadMore(retry = true)', 'loadMoreError']:
-    self.assertEqual(body.count(method),raw.count(method))
+    self.assertEqual(restored.count(method),raw.count(method))
  def mutated(self):
   helper=self.helper();temp=tempfile.TemporaryDirectory(prefix='history-recap-raw-');self.addCleanup(temp.cleanup)
   target=Path(temp.name)/'raw';shutil.copytree(wide(helper.ROOT),target);helper.ROOT=target;return helper,target

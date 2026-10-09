@@ -92,8 +92,10 @@ class FixedOriginalLiquidLensTest(unittest.TestCase):
         header = "// OriginalSource: " + tool.V027_LENS_PATH + "\n// OriginalSHA256: " + tool.V027_LENS_SHA256 + "\n// OriginalCommit: " + tool.V027_LENS_COMMIT + "\n"
         self.assertTrue(generated.startswith(header))
         adapted = generated[len(header):]
-        transforms = tool.lens_preflight_visibility_transforms()
-        self.assertEqual(2, len(transforms))
+        visibility = tool.lens_preflight_visibility_transforms()
+        self.assertEqual(2, len(visibility))
+        transforms = visibility + tool.desktop_glass_uniform_transforms()
+        self.assertEqual(5, len(transforms))
         restored = adapted
         for before, after in reversed(transforms):
             self.assertEqual(1, restored.count(after))

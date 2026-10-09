@@ -17,7 +17,8 @@ class SettingsSearchExtractionTest(unittest.TestCase):
   self.assertIn('PinyinUtils.matches(',files['SettingsSearchPolicy.kt'])
   self.assertIn('.distinctBy { it.target }',files['SettingsSearchPolicy.kt'])
  def test_direct_sync_boundary_not_duplicated(self):
-  root,files=self.generate(False);self.assertEqual(8,len(files))
+  root,files=self.generate(False);self.assertEqual(9,len(files))
+  self.assertIn("PinyinUtils.kt",files)
   for p in e.DIRECT:self.assertNotIn(Path(p).name,files)
  def test_stale_owned_direct_removed_nonowned_preserved(self):
   root,files=self.generate();self.assertEqual(15,len(files))

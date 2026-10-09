@@ -42,14 +42,18 @@ class OriginalVideoInteractionExtractionTest(unittest.TestCase):
             def restore_later_stages(body, rows):
                 row = next(item for item in rows if item["path"] == VM)
                 self.assertEqual(row["sha256LF"], hashlib.sha256(body.encode()).hexdigest())
-                # Actual sole-producer order: composer, follow group, recovery, same-send.
-                for field in ("sameSendExpectedSourceInverseEdits", "failureRecoveryInverseEdits", "followGroupInverseEdits"):
+                # Actual reverse order includes final CDN and later typed-origin stages.
+                for field in ("postSameSendInverseEdits", "sameSendExpectedSourceInverseEdits", "postRecoveryInverseEdits", "failureRecoveryInverseEdits", "followGroupInverseEdits"):
                     for edit in reversed(row[field]):
                         index = edit["offset"]
                         self.assertEqual(edit["after"], body[index:index + len(edit["after"])])
                         body = body[:index] + edit["before"] + body[index + len(edit["after"]):]
-                    if field == "sameSendExpectedSourceInverseEdits":
-                        self.assertEqual(row["sameSendExpectedSourceBeforeSha256LF"], hashlib.sha256(body.encode()).hexdigest())
+                    checkpoint = {"postSameSendInverseEdits": "postSameSendBeforeSha256LF",
+                                  "sameSendExpectedSourceInverseEdits": "sameSendExpectedSourceBeforeSha256LF",
+                                  "postRecoveryInverseEdits": "failureRecoveryAfterSha256LF",
+                                  "failureRecoveryInverseEdits": "failureRecoveryBeforeSha256LF"}.get(field)
+                    if checkpoint is not None:
+                        self.assertEqual(row[checkpoint], hashlib.sha256(body.encode()).hexdigest())
                 return body
 
             actual = restore_later_stages(actual, actual_rows)

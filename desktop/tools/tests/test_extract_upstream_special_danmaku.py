@@ -64,8 +64,14 @@ class SpecialDanmakuExtractionTest(unittest.TestCase):
         media=module("extract-upstream-media");out=self.root/"media";media.generate(REPO,out)
         generated=(out/"com/android/purebilibili/data/repository/DesktopDownloadDanmakuRepository.kt").read_text(encoding="utf8")
         receipt=json.loads((out/"special-download-source-proof.json").read_text(encoding="utf8"))
+        binding=json.loads((out/"offline-task-binding-source-proof.json").read_text(encoding="utf8"))
+        for change in reversed(binding["mappings"]):
+            self.assertEqual(change["count"],generated.count(change["after"]))
+            generated=generated.replace(change["after"],change["before"],change["count"])
         actual=media.function(generated,"downloadSpecialDanmaku",media.parser_for(REPO))
-        for change in reversed(receipt["mappings"]):actual=actual.replace(change["after"],change["before"],1)
+        for change in reversed(receipt["mappings"]):
+            self.assertEqual(1,actual.count(change["after"]))
+            actual=actual.replace(change["after"],change["before"],1)
         original=special.checked_inputs(REPO)["DanmakuRepository.kt"][1]
         self.assertEqual(media.function(original,"downloadSpecialDanmaku",media.parser_for(REPO)),actual)
         self.assertIn("ByteArray(8192)",actual);self.assertIn("destination.delete()",actual)

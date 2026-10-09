@@ -45,8 +45,16 @@ class V029ChatSourceTest(unittest.TestCase):
     def test_policy_error_ui_and_all_three_original_tests_remain_exact(self):
         with tempfile.TemporaryDirectory(prefix='bp-chat-policy-') as temporary:
             out = Path(temporary); producer.generate(REPO, out)
-            for name, folder in (('ChatTimelinePolicy.kt', 'message'), ('ListLoadError.kt', 'common')):
-                self.assertEqual(source.read(REPO, name), (out / 'com/android/purebilibili/feature' / folder / name).read_text('utf8'))
+            self.assertEqual(source.read(REPO, 'ChatTimelinePolicy.kt'),
+                (out / 'com/android/purebilibili/feature/message/ChatTimelinePolicy.kt').read_text('utf8'))
+            generated = (out / 'com/android/purebilibili/feature/common/ListLoadError.kt').read_text('utf8')
+            proof = json.loads((out / 'ListLoadError.kt.v029-adaptation.json').read_text('utf8'))
+            self.assertEqual(hashlib.sha256(generated.encode()).hexdigest(), proof['adaptedSha256LF'])
+            restored = generated.splitlines(True)
+            for row in reversed(proof['edits']):
+                self.assertEqual(''.join(restored[row['adaptedStart']:row['adaptedEnd']]), row['after'])
+                restored[row['adaptedStart']:row['adaptedEnd']] = row['before'].splitlines(True)
+            self.assertEqual(source.read(REPO, 'ListLoadError.kt'), ''.join(restored))
         test = REPO / 'desktop/src/test/kotlin/com/android/purebilibili/feature/message/ChatTimelinePolicyTest.kt'
         self.assertEqual(source.read(REPO, test.name), test.read_text('utf8'))
         self.assertEqual(3, test.read_text('utf8').count('@Test'))
