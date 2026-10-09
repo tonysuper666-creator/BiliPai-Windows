@@ -15,6 +15,7 @@ import os
 import re
 import subprocess
 import sys
+import tarfile
 from pathlib import Path
 from urllib.parse import quote, urlencode
 
@@ -108,8 +109,15 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--variant', choices=(VARIANT, 'bilipai-veyra-rtx-present-v1'), default='bilipai-veyra-rtx-present-v1',
                         help='Upload the matching current presentation candidate by default; core-v1 must be selected explicitly')
+    parser.add_argument('--host-snapshot-only', action='store_true',
+                        help='Save only a qualified HOST snapshot after native build failure; never MPV success or import activation')
     args = parser.parse_args()
     variant = args.variant
+    if args.host_snapshot_only and not args.output.exists() and not args.output.is_symlink():
+        print('HOST snapshot delivery skipped: no completed local evidence.')
+        return
+    if args.host_snapshot_only and args.output.is_symlink():
+        raise DeliveryError('HOST output directory cannot be a symbolic link')
     directory = args.output.resolve(strict=True)
     tag, commit = os.environ.get('GITHUB_REF_NAME', ''), os.environ.get('GITHUB_SHA', '')
     if (os.environ.get('GITHUB_ACTIONS') != 'true'
@@ -127,50 +135,97 @@ def main():
         cwd=repository_root, text=True, env=child_env).strip()
     if actual_head != commit:
         raise DeliveryError('Checked-out source differs from the workflow commit')
-    status_path = owned_file(directory, 'build-status.json')
-    receipt_path = owned_file(directory, 'build-receipt.json')
-    descriptor_path = owned_file(directory, 'runtime-descriptor.json')
-    status, receipt, descriptor = [json.loads(path.read_text(encoding='utf-8'))
-                                   for path in (status_path, receipt_path, descriptor_path)]
-    if (status.get('success') is not True or status.get('binaryProduced') is not True
-            or status.get('gpuOrDriverTested') is not False
-            or receipt.get('schema') != 2 or receipt.get('variant') != variant
-            or receipt.get('ownrepoSourceCommit') != commit
-            or receipt.get('gpuOrDriverTested') is not False
-            or receipt.get('closedSdkOrRuntimeIncluded') is not False
-            or descriptor.get('schema') != 2 or descriptor.get('variant') != variant
-            or descriptor.get('deliveryStatus') != 'LOCAL_ARTIFACT_ONLY_NOT_RELEASED'
-            or descriptor.get('rtxCoreBridgeVerified') is not False
-            or descriptor.get('closedSdkOrRuntimeIncluded') is not False
-            or descriptor.get('buildReceiptSha256') != range_sha(receipt_path, 0, receipt_path.stat().st_size)
-            or status.get('descriptorSha256') != range_sha(descriptor_path, 0, descriptor_path.stat().st_size)):
-        raise DeliveryError('Only a successful unverified source candidate is eligible')
-    if status.get('variant') != variant or descriptor['artifact']['fileName'] != variant + '-x64.zip' or descriptor['sourceBundle']['fileName'] != variant + '-source-materials.tar.gz':
-        raise DeliveryError('Selected source variant and actual output asset names differ')
-    if variant == 'bilipai-veyra-rtx-present-v1':
-        expected_presentation = {'filterSourceManifestSha256': 'ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5', 'presentationProtocolVersion': 1, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': 'c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064', 'sourcePatchHelperSha256': '5631580a05f4af628d2722efddbf9164cf00958add62d59ccb0513652636f70b'}
-        if any(receipt.get(key) != value or descriptor.get(key) != value for key, value in expected_presentation.items()) or len(receipt.get('sourceGraph', [])) != 17 or len(receipt.get('filterSourceFiles', [])) != 5:
-            raise DeliveryError('Future presentation delivery needs its actual complete source graph and protocol')
-        # Compare every actual receipt target with whole-byte pinned source inputs.
-        inputs = repository_root / 'desktop/third-party/libmpv/build/rtx-present-v1'
-        materials = {'manifest': ('bilipai-rtx-presentation-source-manifest.json', 'ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5'), 'upstream': ('presentation-edits.json', 'c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064'), 'registration': ('filter-registration-edits.json', '59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf')}
-        measured = {}
-        for label, (leaf, digest) in materials.items():
-            data = owned_file(inputs.resolve(strict=True), leaf).read_bytes()
-            if hashlib.sha256(data).hexdigest() != digest:
-                raise DeliveryError('Pinned presentation delivery source input changed')
-            measured[label] = json.loads(data)
-        manifest, upstream, registration = measured['manifest'], measured['upstream'], measured['registration']
-        nvidia = manifest['originalNvidiaPatch']
-        graph = [{'path': nvidia['sourcePath'], 'beforeSha256': nvidia['originalSha256'], 'afterSha256': nvidia['patchedSha256']}] + [{'path': row['path'], 'beforeSha256': row['beforeSHA256'], 'afterSha256': row['afterSHA256']} for row in registration] + [{'path': row['path'], 'beforeSha256': row['beforeSha256'], 'afterSha256': row['afterSha256']} for row in upstream]
-        if len(graph) != 17 or len({row['path'] for row in graph}) != 17 or receipt.get('sourceGraph') != graph or receipt.get('filterSourceFiles') != manifest['sourceFiles'] or type(receipt.get('presentationProtocolVersion')) is not int:
-            raise DeliveryError('Actual presentation delivery source graph or private source closure differs')
-    artifact = owned_file(directory, descriptor['artifact']['fileName'])
-    bundle = owned_file(directory, descriptor['sourceBundle']['fileName'])
-    if (range_sha(artifact, 0, artifact.stat().st_size) != descriptor['artifact']['archiveSha256']
-            or range_sha(bundle, 0, bundle.stat().st_size) != descriptor['sourceBundle']['sha256']
-            or descriptor['sourceBundle']['sha256'] != receipt.get('sourceBundleSha256')):
-        raise DeliveryError('Candidate or complete corresponding source hash changed')
+    if args.host_snapshot_only:
+        required = ('build-status.json', 'host-llvm-build-receipt.json',
+                    'host-llvm-source-snapshot-descriptor.json', 'host-llvm-snapshot-manifest.json',
+                    'host-llvm-original-environment.json', 'host-llvm-install.tar.gz',
+                    'host-llvm-corresponding-source.tar.gz')
+        if not (directory / 'host-llvm-build-receipt.json').exists() and not (directory / 'host-llvm-build-receipt.json').is_symlink():
+            print('HOST snapshot delivery skipped: no completed local evidence.')
+            return
+        if any(not (directory / leaf).exists() and not (directory / leaf).is_symlink() for leaf in required):
+            raise DeliveryError('Completed HOST receipt has missing corresponding material')
+        status_path = owned_file(directory, 'build-status.json')
+        receipt_path = owned_file(directory, 'host-llvm-build-receipt.json')
+        if any(not 0 < path.stat().st_size <= 1 << 20 for path in (status_path, receipt_path)):
+            raise DeliveryError('HOST failure evidence exceeds its metadata bound')
+        status, receipt = [json.loads(path.read_text(encoding='utf-8')) for path in (status_path, receipt_path)]
+        # HEAD alone does not prove the current worktree script is the tagged producer.
+        producer_source = owned_file((repository_root / 'desktop/tools/native').resolve(strict=True), 'build-mpv-rtx-core-runtime.py')
+        producer_blob = subprocess.check_output(['git', '-c', 'safe.directory=' + str(repository_root),
+            'show', commit + ':desktop/tools/native/build-mpv-rtx-core-runtime.py'], cwd=repository_root, env=child_env)
+        producer_commit_sha = hashlib.sha256(producer_blob).hexdigest()
+        if range_sha(producer_source, 0, producer_source.stat().st_size) != producer_commit_sha:
+            raise DeliveryError('Current HOST producer worktree bytes differ from its exact source commit')
+        if (not isinstance(status, dict) or not isinstance(receipt, dict)
+                or status.get('schema') != 1 or status.get('variant') != variant
+                or status.get('success') is not False or status.get('binaryProduced') is not False
+                or status.get('gpuOrDriverTested') is not False or not status.get('errorType')
+                or receipt.get('schema') != 1 or receipt.get('kind') != 'BILIPAI_HOST_LLVM_BUILD_RECEIPT'
+                or receipt.get('state') != 'LOCAL_HOST_TARGET_SUCCEEDED_NATIVE_BUILD_NOT_ASSERTED'
+                or receipt.get('variant') != variant or receipt.get('ownrepoSourceCommit') != commit
+                or receipt.get('ownrepoSourceTag') != tag
+                or receipt.get('workflowRunId') != os.environ.get('GITHUB_RUN_ID')
+                or receipt.get('workflowRunAttempt') != os.environ.get('GITHUB_RUN_ATTEMPT')
+                or receipt.get('producerSourceSha256') != producer_commit_sha
+                or any(receipt.get(key) is not False for key in ('reuseReady', 'nativeBuildSucceeded',
+                    'binaryProduced', 'gpuOrDriverTested', 'closedSdkOrRuntimeIncluded'))):
+            raise DeliveryError('HOST-only delivery requires the actual failed native build and completed local HOST target')
+        if receipt.get('hostLlvmToolchainImported') is True and any(
+                not (directory / leaf).exists() and not (directory / leaf).is_symlink()
+                for leaf in ('host-llvm-import-control.json', 'host-llvm-import-target-validation.json', 'host-llvm-import-receipt.json')):
+            raise DeliveryError('Completed imported HOST receipt has missing original import evidence')
+        native_assets = [receipt_path, status_path]
+        bundle = None
+    else:
+        status_path = owned_file(directory, 'build-status.json')
+        receipt_path = owned_file(directory, 'build-receipt.json')
+        descriptor_path = owned_file(directory, 'runtime-descriptor.json')
+        status, receipt, descriptor = [json.loads(path.read_text(encoding='utf-8'))
+                                       for path in (status_path, receipt_path, descriptor_path)]
+        if (status.get('success') is not True or status.get('binaryProduced') is not True
+                or status.get('gpuOrDriverTested') is not False
+                or receipt.get('schema') != 2 or receipt.get('variant') != variant
+                or receipt.get('ownrepoSourceCommit') != commit
+                or receipt.get('gpuOrDriverTested') is not False
+                or receipt.get('closedSdkOrRuntimeIncluded') is not False
+                or descriptor.get('schema') != 2 or descriptor.get('variant') != variant
+                or descriptor.get('deliveryStatus') != 'LOCAL_ARTIFACT_ONLY_NOT_RELEASED'
+                or descriptor.get('rtxCoreBridgeVerified') is not False
+                or descriptor.get('closedSdkOrRuntimeIncluded') is not False
+                or descriptor.get('buildReceiptSha256') != range_sha(receipt_path, 0, receipt_path.stat().st_size)
+                or status.get('descriptorSha256') != range_sha(descriptor_path, 0, descriptor_path.stat().st_size)):
+            raise DeliveryError('Only a successful unverified source candidate is eligible')
+        if status.get('variant') != variant or descriptor['artifact']['fileName'] != variant + '-x64.zip' or descriptor['sourceBundle']['fileName'] != variant + '-source-materials.tar.gz':
+            raise DeliveryError('Selected source variant and actual output asset names differ')
+        if variant == 'bilipai-veyra-rtx-present-v1':
+            expected_presentation = {'filterSourceManifestSha256': 'ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5', 'presentationProtocolVersion': 1, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': 'c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064', 'sourcePatchHelperSha256': '5631580a05f4af628d2722efddbf9164cf00958add62d59ccb0513652636f70b'}
+            if any(receipt.get(key) != value or descriptor.get(key) != value for key, value in expected_presentation.items()) or len(receipt.get('sourceGraph', [])) != 17 or len(receipt.get('filterSourceFiles', [])) != 5:
+                raise DeliveryError('Future presentation delivery needs its actual complete source graph and protocol')
+            # Compare every actual receipt target with whole-byte pinned source inputs.
+            inputs = repository_root / 'desktop/third-party/libmpv/build/rtx-present-v1'
+            materials = {'manifest': ('bilipai-rtx-presentation-source-manifest.json', 'ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5'), 'upstream': ('presentation-edits.json', 'c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064'), 'registration': ('filter-registration-edits.json', '59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf')}
+            measured = {}
+            for label, (leaf, digest) in materials.items():
+                data = owned_file(inputs.resolve(strict=True), leaf).read_bytes()
+                if hashlib.sha256(data).hexdigest() != digest:
+                    raise DeliveryError('Pinned presentation delivery source input changed')
+                measured[label] = json.loads(data)
+            manifest, upstream, registration = measured['manifest'], measured['upstream'], measured['registration']
+            nvidia = manifest['originalNvidiaPatch']
+            graph = [{'path': nvidia['sourcePath'], 'beforeSha256': nvidia['originalSha256'], 'afterSha256': nvidia['patchedSha256']}] + [{'path': row['path'], 'beforeSha256': row['beforeSHA256'], 'afterSha256': row['afterSHA256']} for row in registration] + [{'path': row['path'], 'beforeSha256': row['beforeSha256'], 'afterSha256': row['afterSha256']} for row in upstream]
+            if len(graph) != 17 or len({row['path'] for row in graph}) != 17 or receipt.get('sourceGraph') != graph or receipt.get('filterSourceFiles') != manifest['sourceFiles'] or type(receipt.get('presentationProtocolVersion')) is not int:
+                raise DeliveryError('Actual presentation delivery source graph or private source closure differs')
+        artifact = owned_file(directory, descriptor['artifact']['fileName'])
+        bundle = owned_file(directory, descriptor['sourceBundle']['fileName'])
+        if (range_sha(artifact, 0, artifact.stat().st_size) != descriptor['artifact']['archiveSha256']
+                or range_sha(bundle, 0, bundle.stat().st_size) != descriptor['sourceBundle']['sha256']
+                or descriptor['sourceBundle']['sha256'] != receipt.get('sourceBundleSha256')):
+            raise DeliveryError('Candidate or complete corresponding source hash changed')
+        native_assets = [artifact, descriptor_path, receipt_path, status_path]
+    if args.host_snapshot_only and any(not 0 < owned_file(directory, leaf).stat().st_size <= 256 << 20
+            for leaf in ('host-llvm-source-snapshot-descriptor.json', 'host-llvm-snapshot-manifest.json')):
+        raise DeliveryError('HOST snapshot metadata exceeds the existing verifier bound')
     host_descriptor_path = owned_file(directory, 'host-llvm-source-snapshot-descriptor.json')
     host_descriptor = json.loads(host_descriptor_path.read_text(encoding='utf-8'))
     host_manifest_path = owned_file(directory, 'host-llvm-snapshot-manifest.json')
@@ -204,7 +259,7 @@ def main():
             or receipt.get('hostLlvmAccelerationMeasured') is not False):
         raise DeliveryError('Host LLVM import/fresh compilation provenance differs')
     environment_path = owned_file(directory, 'host-llvm-original-environment.json')
-    import_module.verify_delivery_environment(directory, repository_root, receipt, host_descriptor, imported)
+    environment_evidence = import_module.verify_delivery_environment(directory, repository_root, receipt, host_descriptor, imported)
     if (host_descriptor.get('schema') != 2 or host_descriptor.get('kind') != host_kind
             or host_manifest.get('schema') != 2 or host_manifest.get('kind') != host_kind
             or snapshot_inputs.get('schema') != 2 or snapshot_inputs.get('sourceBindingSchema') != 1
@@ -306,22 +361,136 @@ def main():
                 or record.get('sha256') != range_sha(path, 0, path.stat().st_size) or path.stat().st_size <= 0):
             raise DeliveryError('Complete host toolchain/source archive hash changed')
         host_bundles.append((key, path))
+    if args.host_snapshot_only:
+        if (receipt.get('containerImage') != import_module.CONTAINER_IMAGE
+                or receipt.get('recipeCommit') != import_module.RECIPE_COMMIT
+                or receipt.get('recipeArchiveSha256') != import_module.RECIPE_ARCHIVE_SHA256):
+            raise DeliveryError('HOST-only fixed environment/recipe identity differs')
+        if (receipt.get('producerSourceSha256') != range_sha(repository_root / 'desktop/tools/native/build-mpv-rtx-core-runtime.py', 0,
+                    (repository_root / 'desktop/tools/native/build-mpv-rtx-core-runtime.py').stat().st_size)
+                or receipt.get('snapshotInputsSha256') != import_module.INPUTS_SHA256
+                or receipt.get('importCollectorSourceSha256') != range_sha(import_helper_path, 0, import_helper_path.stat().st_size)):
+            raise DeliveryError('Current completed HOST receipt producer/collector source differs')
+        record = {'sourceCommit': origin_commit, 'sourceTag': origin_tag,
+                  'workflowRunId': host_descriptor['workflowRunId'],
+                  'workflowRunAttempt': host_descriptor['workflowRunAttempt'],
+                  'actualSourceBuildBindingSha256': binding_sha,
+                  'assets': {path.name: {'fileName': path.name, 'bytes': path.stat().st_size,
+                      'sha256': range_sha(path, 0, path.stat().st_size)} for path in
+                      (host_descriptor_path, host_manifest_path, environment_path, *(path for _, path in host_bundles))}}
+        workspace = Path(absolute_workspace)
+        fixed = json.loads((repository_root / 'desktop/third-party/libmpv/build/rtx-core-v1/fixed-inputs.json').read_text(encoding='utf-8'))
+        import_module.lifecycle(host_manifest, host_descriptor, record, workspace, fixed, host_manifest['actualInitialBuildCommand'])
+        for _, path in host_bundles:
+            import_module.positive(path.stat().st_size, import_module.MAX_ARCHIVE)
+        manifest, descriptor, environment = host_manifest, host_descriptor, environment_evidence
+        paths = {path.name: path for path in (host_descriptor_path, host_manifest_path, environment_path,
+                 *(path for _, path in host_bundles))}
+        root = repository_root
+        # Pure corresponding-source/archive verification follows the existing importer;
+        # this local record is not inserted into its independent trust catalog.
+        install, source = manifest['actualInstallEntries'], manifest['actualCorrespondingSourceBundleEntries']
+        used = import_module.subtree(source, 'actual-used-source-worktree')
+        if (import_module.sha(import_module.encoded(install)) != manifest.get('actualInstallTreeManifestSha256')
+                or descriptor.get('actualInstallTreeManifestSha256') != manifest.get('actualInstallTreeManifestSha256')
+                or import_module.sha(import_module.encoded(used)) != manifest.get('actualUsedSourceTreeManifestSha256')
+                or len(used) != manifest['actualSourceBuildBinding']['prebuild']['actualSourceWorktreeEntries']
+                or manifest['actualSourceBuildBinding']['prebuild']['actualSourceWorktreeManifestSha256'] != import_module.sha(import_module.encoded(used))
+                or import_module.sha(import_module.encoded(manifest['completeCanonicalSourceEntries'])) != manifest.get('completeCanonicalSourceManifestSha256')
+                or descriptor.get('completeCanonicalSourceManifestSha256') != manifest.get('completeCanonicalSourceManifestSha256')):
+            import_module.fail('Whole install/used/canonical inventory identity differs')
+        import_module.validate_links(install, 'host-install', str(workspace / 'clang-root'))
+        import_module.validate_links(used, 'actual-used-source-worktree', str(workspace / 'sources/llvm'))
+        import_module.verify_archive(paths[import_module.ASSETS[2]], install)
+        import_module.verify_archive(paths[import_module.ASSETS[3]], source, manifest)
+        source_table = import_module.inventory(source)
+        canonical = {row['path']: row for row in manifest['completeCanonicalSourceEntries']}
+        # The canonical archive must represent every blob in the actual captured
+        # recursive Git tree, including source omitted by the sparse build worktree.
+        with tarfile.open(paths[import_module.ASSETS[3]], 'r:gz') as archive:
+            tree_member = archive.getmember('actual-config-capture/actual-source-ls-tree.bin')
+            if tree_member.size > import_module.MAX_JSON:
+                import_module.fail('Actual recursive Git tree exceeds explicit metadata bound')
+            raw_tree = archive.extractfile(tree_member).read()
+            actual_blobs = {}
+            for item in raw_tree.split(b'\0'):
+                if not item:
+                    continue
+                fields, raw_name = item.split(b'\t', 1)
+                mode, kind, blob = fields.decode('ascii').split(' ')
+                name = import_module.safe_name(raw_name.decode('utf-8'))
+                if name in actual_blobs or kind != 'blob' or mode not in ('100644', '100755', '120000'):
+                    import_module.fail('Captured actual recursive Git tree contains unsupported/duplicate source')
+                actual_blobs[name] = (mode, import_module.revision(blob))
+            if import_module.sha(raw_tree) != manifest['completeSourceLsTreeSha256'] or set(actual_blobs) != set(canonical):
+                import_module.fail('Full canonical source omitted/added actual tracked Git blobs')
+            for name, (mode, blob) in actual_blobs.items():
+                row = canonical[name]
+                expected_mode = 0o777 if mode == '120000' else 0o755 if mode == '100755' else 0o644
+                if row.get('gitBlob') != blob or row.get('mode') != expected_mode or row['kind'] != ('symlink' if mode == '120000' else 'file'):
+                    import_module.fail('Canonical source blob/mode differs from real prebuild Git tree')
+            module = import_module.load_exporter(root)
+            for folder, key in (('actual-config-capture/prebuild', 'prebuildConfigCaptureReceipt'), ('actual-config-capture', 'configCaptureReceipt')):
+                cache = archive.extractfile(archive.getmember(folder + '/CMakeCache.txt')).read()
+                actual_assertions = module.configuration_assertions(Path(manifest['actualSourceBuildBinding']['actualBuildDirectory']),
+                    workspace / 'sources/llvm', workspace / 'clang-root', cache)
+                if actual_assertions != manifest[key]['resolvedConfigurationAssertions']:
+                    import_module.fail('Full original compiler flags/source configuration differs')
+        for row in used:
+            name = row['path'].removeprefix('actual-used-source-worktree/')
+            tracked = canonical.get(name)
+            if tracked is not None and row['kind'] != 'directory':
+                actual_sha = row.get('sha256') if row['kind'] == 'file' else import_module.sha(row['target'].encode())
+                if row['kind'] != tracked['kind'] or actual_sha != tracked['sha256']:
+                    import_module.fail('Actual used tracked source differs from complete canonical commit')
+        for folder, key in (('actual-config-capture/prebuild', 'prebuildConfigCaptureReceipt'), ('actual-config-capture', 'configCaptureReceipt')):
+            capture = manifest[key]
+            embedded = source_table.get(folder + '/config-capture-receipt.json', {})
+            if embedded.get('sha256') != import_module.sha(import_module.encoded(capture)):
+                import_module.fail('Capture metadata not present in corresponding source')
+            for row in capture['files']:
+                item = source_table.get(folder + '/' + row['path'], {})
+                if any(item.get(name) != row[name] for name in ('bytes', 'sha256')):
+                    import_module.fail('Original captured source/config payload differs')
+        if (source_table.get('actual-modified-build-recipes/toolchain/llvm/llvm.cmake', {}).get('sha256') != import_module.LLVM_RECIPE_SHA256
+                or source_table.get('actual-modified-build-recipes/packages/bilipai-host-llvm-import.py', {}).get('sha256')
+                   != environment.get('collectorSourceSha256')
+                or source_table.get('canonical-source/complete-llvm-source.tar.gz', {}).get('sha256')
+                   != manifest.get('canonicalSourceArchiveSha256')):
+            import_module.fail('Full original modified recipe/collector/canonical source missing')
+        if not imported and source_table.get('own-producing-source/desktop/tools/native/build-mpv-rtx-core-runtime.py', {}).get('sha256') != producer_commit_sha:
+            raise DeliveryError('Cold HOST archived producer is not the actual tagged current source')
+        # Imported snapshots retain the original cold recipe and producer. Only the
+        # current validation prefix belongs to this run; it is not a cold rebuild.
+        with tarfile.open(paths[import_module.ASSETS[3]], 'r:gz') as archive:
+            recipe_member = archive.getmember('actual-modified-build-recipes/toolchain/llvm/llvm.cmake')
+            if not recipe_member.isfile() or not 0 < recipe_member.size <= 1 << 20:
+                raise DeliveryError('Complete cold LLVM recipe is missing or out of bounds')
+            cold_recipe = archive.extractfile(recipe_member).read()
+        if hashlib.sha256(cold_recipe).hexdigest() != import_module.LLVM_RECIPE_SHA256:
+            raise DeliveryError('Original complete cold LLVM recipe changed')
+        validation_prefix = 'if(DEFINED BILIPAI_HOST_LLVM_IMPORT_CONTROL)\n    set(clang_version "22")\n    add_custom_command(OUTPUT "${BILIPAI_HOST_LLVM_IMPORT_VALIDATION_RECEIPT}"\n        COMMAND python3 ${PROJECT_SOURCE_DIR}/packages/bilipai-host-llvm-import.py\n            validate-target --control "${BILIPAI_HOST_LLVM_IMPORT_CONTROL}"\n            --control-sha256 "${BILIPAI_HOST_LLVM_IMPORT_CONTROL_SHA256}"\n            --workspace "${CMAKE_BINARY_DIR}/.." --source-dir "${SOURCE_LOCATION}"\n            --install-dir "${CMAKE_INSTALL_PREFIX}"\n            --repository-root "${BILIPAI_HOST_LLVM_IMPORT_REPOSITORY_ROOT}"\n        DEPENDS "${BILIPAI_HOST_LLVM_IMPORT_CONTROL}"\n            "${PROJECT_SOURCE_DIR}/packages/bilipai-host-llvm-import.py"\n        VERBATIM)\n    add_custom_target(llvm DEPENDS "${BILIPAI_HOST_LLVM_IMPORT_VALIDATION_RECEIPT}")\n    set_property(TARGET llvm PROPERTY _EP_SOURCE_DIR "${SOURCE_LOCATION}")\n    get_property(LLVM_SRC TARGET llvm PROPERTY _EP_SOURCE_DIR)\n    return()\nendif()\n'.encode()
+        expected_recipe_sha = hashlib.sha256(validation_prefix + cold_recipe if imported else cold_recipe).hexdigest()
+        if receipt.get('hostLlvmActualRecipeSha256') != expected_recipe_sha:
+            raise DeliveryError('Current actual cold/import-validation LLVM recipe differs')
     assets = []
-    for path in (artifact, descriptor_path, receipt_path, status_path, host_descriptor_path, host_manifest_path, environment_path, *import_assets):
+    for path in (*native_assets, host_descriptor_path, host_manifest_path, environment_path, *import_assets):
         size = path.stat().st_size
         if not 0 < size < RELEASE_ASSET_LIMIT:
             raise DeliveryError('Release asset must be nonempty and strictly below 2 GiB')
         assets.append({'name': path.name, 'path': path, 'offset': 0, 'bytes': size,
                        'sha256': range_sha(path, 0, size)})
     parts = []
-    size = bundle.stat().st_size
-    for index, offset in enumerate(range(0, size, PART_BYTES), 1):
-        length = min(PART_BYTES, size - offset)
-        name = bundle.name if size <= PART_BYTES else bundle.name + '.part' + str(index).zfill(4)
-        row = {'name': name, 'offset': offset, 'bytes': length,
-               'sha256': range_sha(bundle, offset, length)}
-        parts.append(row)
-        assets.append({**row, 'path': bundle})
+    size = 0
+    if bundle is not None:
+        size = bundle.stat().st_size
+        for index, offset in enumerate(range(0, size, PART_BYTES), 1):
+            length = min(PART_BYTES, size - offset)
+            name = bundle.name if size <= PART_BYTES else bundle.name + '.part' + str(index).zfill(4)
+            row = {'name': name, 'offset': offset, 'bytes': length,
+                   'sha256': range_sha(bundle, offset, length)}
+            parts.append(row)
+            assets.append({**row, 'path': bundle})
     host_delivery_bundles = {}
     for key, path in host_bundles:
         host_parts = []
@@ -351,20 +520,25 @@ def main():
                     'snapshotManifestSha256': range_sha(host_manifest_path, 0, host_manifest_path.stat().st_size),
                     'archives': host_delivery_bundles,
                     'trustRequirement': 'Future import requires independently reviewed manifest and exact own asset identity frozen in consumer source; this draft does not activate reuse.'},
-                'sourceBundle': {'fileName': bundle.name, 'bytes': size,
+                'sourceBundle': None if args.host_snapshot_only else {'fileName': bundle.name, 'bytes': size,
                                  'sha256': descriptor['sourceBundle']['sha256'], 'parts': parts},
-                'reassembly': 'Concatenate parts in listed offset order; verify every part and then the complete SHA256 before using the original sourceBundle file.',
+                'reassembly': ('For each hostToolchain archive, concatenate its listed parts in offset order; verify each part and the complete archive SHA256. No MPV sourceBundle is delivered.' if args.host_snapshot_only else 'Concatenate parts in listed offset order; verify every part and then the complete SHA256 before using the original sourceBundle file.'),
                 'assets': [{key: row[key] for key in ('name', 'bytes', 'sha256')} for row in assets]}
-    manifest_path = directory / 'draft-delivery-manifest.json'
+    if args.host_snapshot_only:
+        manifest['scope'] = 'HOST_LLVM_ONLY_AFTER_NATIVE_BUILD_FAILURE'
+        manifest['nativeBuildSucceeded'] = False
+        manifest['binaryProduced'] = False
+        manifest['reuseReady'] = False
+    manifest_path = directory / ('host-llvm-draft-delivery-manifest.json' if args.host_snapshot_only else 'draft-delivery-manifest.json')
     if manifest_path.exists():
         raise DeliveryError('Draft delivery manifest already exists; no implicit retry')
     manifest_path.write_text(json.dumps(manifest, sort_keys=True, indent=2) + '\n', encoding='utf-8')
     assets.append({'name': manifest_path.name, 'path': manifest_path, 'offset': 0,
                    'bytes': manifest_path.stat().st_size,
                    'sha256': range_sha(manifest_path, 0, manifest_path.stat().st_size)})
-    if not parts or len(assets) > MAX_ASSETS or len({row['name'] for row in assets}) != len(assets):
+    if (not args.host_snapshot_only and not parts) or not all(row['parts'] for row in host_delivery_bundles.values()) or len(assets) > MAX_ASSETS or len({row['name'] for row in assets}) != len(assets):
         raise DeliveryError('Release asset inventory exceeds its documented bounds')
-    # GITHUB_TOKEN is provided only to this successful post-build step, in memory.
+    # GITHUB_TOKEN is provided only to an explicit post-build upload step, in memory.
     # It is never copied to a file or passed to a child command.
     token = os.environ.get('GITHUB_TOKEN')
     if not token:
@@ -377,8 +551,8 @@ def main():
     release_id = None
     try:
         release = api('POST', base + '/releases', token, value={
-            'tag_name': tag, 'name': 'UNVERIFIED RTX core source candidate ' + tag,
-            'body': 'Source-built candidate at ' + commit + '. No GPU/visible-effect verification; no NVIDIA SDK/runtime included. Complete corresponding source is delivered as the ordered source bundle parts and checksummed manifest. This draft is not a product release.',
+            'tag_name': tag, 'name': ('UNVERIFIED HOST LLVM snapshot after native failure ' if args.host_snapshot_only else 'UNVERIFIED RTX core source candidate ') + tag,
+            'body': ('Native build failed at ' + commit + '; no successful MPV binary is asserted. Only the completed HOST LLVM snapshot, complete corresponding source, original environment and checksummed provenance are delivered. No import trust, acceleration measurement, GPU validation or publication is asserted.' if args.host_snapshot_only else 'Source-built candidate at ' + commit + '. No GPU/visible-effect verification; no NVIDIA SDK/runtime included. Complete corresponding source is delivered as the ordered source bundle parts and checksummed manifest. This draft is not a product release.'),
             'draft': True, 'prerelease': True, 'make_latest': 'false',
             'generate_release_notes': False})
         if (not isinstance(release.get('id'), int) or release.get('draft') is not True

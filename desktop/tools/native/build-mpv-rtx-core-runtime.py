@@ -641,6 +641,32 @@ def main():
                         or host_snapshot_source.get('actualSourceBuildBinding', {}).get('state')
                             != 'PREBUILD_INSTALL_POSTCLEANUP_SOURCE_AND_CONFIG_BOUND'):
                     raise RuntimeError('Actual host build source lifecycle is not bound')
+                # A completed HOST target survives a later native dependency failure.
+                # This receipt is local evidence, never an import trust record or MPV success.
+                host_receipt = {'schema': 1, 'kind': 'BILIPAI_HOST_LLVM_BUILD_RECEIPT',
+                    'state': 'LOCAL_HOST_TARGET_SUCCEEDED_NATIVE_BUILD_NOT_ASSERTED',
+                    'variant': variant, 'ownrepoSourceCommit': os.environ.get('GITHUB_SHA'),
+                    'ownrepoSourceTag': os.environ.get('GITHUB_REF_NAME'),
+                    'workflowRunId': os.environ.get('GITHUB_RUN_ID'),
+                    'workflowRunAttempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
+                    'producerSourceSha256': file_sha(Path(__file__)),
+                    'snapshotInputsSha256': sha(snapshot_inputs_raw),
+                    'importCollectorSourceSha256': sha(import_helper_raw),
+                    'containerImage': IMAGE, 'recipeCommit': fixed['recipeCommit'],
+                    'recipeArchiveSha256': sha(downloaded['recipes'].read_bytes()),
+                    'hostLlvmSnapshotDescriptorSha256': file_sha(host_snapshot_descriptor),
+                    'hostLlvmSnapshotSourceBindingSha256': host_snapshot_source['actualSourceBuildBindingSha256'],
+                    'hostLlvmSnapshotStatus': import_module.IMPORT_STATUS if import_plan is not None else 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY',
+                    'hostLlvmToolchainImported': import_plan is not None,
+                    'hostLlvmFreshCompileExecuted': import_plan is None,
+                    'hostLlvmOriginalEnvironmentSha256': file_sha(original_environment),
+                    'hostLlvmImportReceiptSha256': file_sha(import_receipt) if import_receipt is not None else None,
+                    'hostLlvmActualRecipeSha256': file_sha(recipes / 'toolchain/llvm/llvm.cmake'),
+                    'hostLlvmAccelerationMeasured': False, 'reuseReady': False,
+                    'nativeBuildSucceeded': False, 'binaryProduced': False,
+                    'gpuOrDriverTested': False, 'closedSdkOrRuntimeIncluded': False}
+                with (output / 'host-llvm-build-receipt.json').open('x', encoding='utf-8') as stream:
+                    stream.write(json.dumps(host_receipt, sort_keys=True, indent=2) + '\n')
         candidates = list(build.glob('mpv-dev-x86_64-*-git-*/libmpv-2.dll'))
         if len(candidates) != 1:
             raise RuntimeError('Expected exactly one actual mpv copy-package-dir DLL output')

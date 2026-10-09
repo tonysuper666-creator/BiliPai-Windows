@@ -42,11 +42,17 @@ jobs:
         with:
           persist-credentials: false
       - name: Build from fixed source and recipe inputs
+        id: native_build
         run: python3 desktop/tools/native/build-mpv-rtx-core-runtime.py --variant "$BILIPAI_RTX_VARIANT" --workspace "$RUNNER_TEMP/bilipai-mpv-rtx-core" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
       # Root must create the immutable rtx-source-* tag before this manual dispatch.
-      # Only successful source builds may save a draft; failure output stays in job logs.
+      # Native candidates still require full success. Qualified HOST material may survive a downstream failure.
       - name: Save successful source candidate in an unpublished own-repository draft
         if: success()
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: python3 desktop/tools/native/upload-mpv-rtx-core-draft.py --variant "$BILIPAI_RTX_VARIANT" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
+      - name: Save qualified HOST LLVM snapshot after a failed native build
+        if: failure() && steps.native_build.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 desktop/tools/native/upload-mpv-rtx-core-draft.py --host-snapshot-only --variant "$BILIPAI_RTX_VARIANT" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
