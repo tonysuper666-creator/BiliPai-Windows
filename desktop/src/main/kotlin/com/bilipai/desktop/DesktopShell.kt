@@ -335,6 +335,13 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
     }
     val loginUpdateActivity by loginUpdateHold.activity.collectAsState()
     DisposableEffect(loginUpdateHold) { onDispose { loginUpdateHold.close() } }
+    // Read the actual State delegate synchronously; admission cannot await recomposition.
+    val pluginJsonUpdateHold = remember(scope) {
+        DesktopPluginJsonEditorUpdateHold(mainOwned = { !isClosing() && scope.isActive },
+            startAllowed = { !activatingUpdate })
+    }
+    val pluginJsonUpdateActivity by pluginJsonUpdateHold.activity.collectAsState()
+    DisposableEffect(pluginJsonUpdateHold) { onDispose { pluginJsonUpdateHold.close() } }
     val originalDanmakuBlocks = remember(pluginStore, dynamicEditor) {
         DesktopDanmakuBlockPreferences(pluginStore, dynamicEditor.operations::withOwnedEditorImageAdmission)
     }
@@ -1505,11 +1512,11 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         followDesktopAutomaticUpdateChecks(pluginStore, { scope.isActive && !latestDynamicIsClosing() },
             { updater.autoCheck() }, nextDelayMs = { updater.automaticCheckDelayMs() })
     }
-    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, messageUpdateRoot, messageUpdateActivity, activatingUpdate, updateJob) {
+    LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, pluginJsonUpdateHold, pluginJsonUpdateActivity, messageUpdateRoot, messageUpdateActivity, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
             is UpdateState.Available -> if (automaticUpdates) prepareUpdate(status.update, false)
-            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation() && messageUpdateRoot?.blocksUpdateInstallation() != true) {
+            is UpdateState.Prepared -> if ((automaticUpdates || manuallyRequested) && playing.details == null && !playing.opening && !mediaActive && !listening.active && !anyCasting && !anyCastBusy && !pipActive && !dynamicEditor.blocksUpdateInstallation() && !backupUpdateHold.blocksUpdateInstallation() && !loginUpdateHold.blocksUpdateInstallation() && !pluginJsonUpdateHold.blocksUpdateInstallation() && messageUpdateRoot?.blocksUpdateInstallation() != true) {
                 activatingUpdate = true
                 updateJob = scope.launch(start = CoroutineStart.LAZY) {
                     try { if (updater.activatePreparedUpdate(status.prepared)) onExit() }
@@ -2376,7 +2383,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             }
                             section == DesktopSection.COLLECTION -> CommunityCollectionScreen(collectionMid, collectionId, collectionType, community, ::openVideo, ::openUser, { openLogin() },
                                 space = space, onResource = ::openResource, initialTitle = collectionTitle)
-                            section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin)
+                            section == DesktopSection.PLUGINS -> PluginCenterScreen(pluginRuntime, pluginJsonUpdateHold, ::openVideo, ::openQueue, ::openJsPlugin)
                             section == DesktopSection.SETTINGS -> {
                                 val mountedSettingsPage = settingsNavigation.current
                                 val mountedSettingsHandle = homeRootRef.get()
@@ -2431,7 +2438,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 appearanceContent = { DesktopAppearanceSettings(appearance,
                                     onRestartRequested = { onRestart?.invoke() ?: run { error = "请关闭并重新打开客户端以完成语言切换。" } },
                                     onNavigateToIconSettings = { messageRoutes.callbackFor(entryKey) { commands.push(BiliPaiNavKey.IconSettings) } }) },
-                                pluginsContent = { PluginCenterScreen(pluginRuntime, ::openVideo, ::openQueue, ::openJsPlugin) },
+                                pluginsContent = { PluginCenterScreen(pluginRuntime, pluginJsonUpdateHold, ::openVideo, ::openQueue, ::openJsPlugin) },
                                 playbackContent = { page, back ->
                                     DesktopOriginalPlaybackSettingsRootHost(messageRoutes, homeRootRef, entryKey, page,
                                         settingsNavigator, globalPluginContext, repository, services.imageLifetime,
@@ -2721,7 +2728,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         if (googleCastDialog) DesktopGoogleCastDialog(pluginRuntime.context, pluginRuntime.googleCast,
             media = castMediaFactory, onDismiss = { googleCastDialog = false })
         PluginCareReminder(pluginRuntime)
-        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation() || backupUpdateHold.blocksUpdateInstallation() || loginUpdateHold.blocksUpdateInstallation() || messageUpdateRoot?.blocksUpdateInstallation() == true,
+        if (updatesDialog) WindowsUpdateDialog(updateState, automaticUpdates, activatingUpdate, dynamicEditor.blocksUpdateInstallation() || backupUpdateHold.blocksUpdateInstallation() || loginUpdateHold.blocksUpdateInstallation() || pluginJsonUpdateHold.blocksUpdateInstallation() || messageUpdateRoot?.blocksUpdateInstallation() == true,
             playing.details != null || playing.opening || mediaActive || listening.active || anyCasting || anyCastBusy || pipActive,
             onAutomatic = { automaticUpdates = it; settingsLibrary.setAutomaticUpdates(it) },
             onPrepare = { prepareUpdate(it, true) }, onActivate = { manuallyRequested = true }, onDismiss = { updatesDialog = false },

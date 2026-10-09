@@ -17,13 +17,16 @@ import com.bilipai.desktop.data.VideoCard
 import com.bilipai.desktop.plugins.DesktopPluginRuntime
 import com.bilipai.desktop.plugins.DesktopPluginAnalytics
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.awt.Toolkit
 import java.awt.datatransfer.StringSelection
 
 @Composable
-fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> Unit)? = null,
+internal fun PluginCenterScreen(runtime: DesktopPluginRuntime, jsonUpdateHold: DesktopPluginJsonEditorUpdateHold,
+    onVideo: ((VideoCard) -> Unit)? = null,
     onPlayQueue: ((List<VideoCard>, VideoCard) -> Unit)? = null, onOpenJsPlugin: (String) -> Unit = {}) {
     val plugins by runtime.plugins.collectAsState()
     val jsonPlugins by runtime.jsonPlugins.collectAsState()
@@ -41,16 +44,25 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
     var url by remember { mutableStateOf("") }
     var preview by remember { mutableStateOf<JsonRulePlugin?>(null) }
     var previewUrl by remember { mutableStateOf("") }
-    var jsonEditor by remember { mutableStateOf<String?>(null) }
-    fun action(id: String, operation: suspend () -> Unit) {
+    var jsonEditor by remember(jsonUpdateHold) { mutableStateOf<DesktopPluginJsonDraft?>(null) }
+    // Admission is synchronous before publishing state; disposal releases only the form.
+    DisposableEffect(jsonUpdateHold) { onDispose { jsonEditor?.close() } }
+    fun openJsonEditor(initial: () -> String) {
+        if (!scope.isActive || busy != null || jsonEditor != null) return
+        jsonEditor = openDesktopPluginJsonDraft(jsonUpdateHold, initial)
+    }
+    fun action(id: String, updateInstance: DesktopPluginJsonEditorUpdateHold.Instance? = null,
+        operation: suspend () -> Unit) {
         if (busy != null) return
         busy = id; error = null
-        scope.launch {
+        val originalBody: suspend CoroutineScope.() -> Unit = {
             try { operation() }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (failure: Exception) { error = failure.message ?: "插件操作失败" }
             finally { busy = null }
         }
+        if (updateInstance == null) scope.launch(block = originalBody)
+        else launchTrackedPluginJson(scope, updateInstance, onRejected = { busy = null }, block = originalBody)
     }
     LazyColumn(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         item { Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -95,12 +107,19 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
                 OutlinedTextField(url, { url = it; preview = null }, label = { Text("JSON 插件链接") }, singleLine = true, modifier = Modifier.fillMaxWidth(), enabled = busy == null)
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Button(onClick = { val requested = url.trim(); action("json-preview") { preview = runtime.previewJsonUrl(requested).getOrThrow(); previewUrl = requested } }, enabled = busy == null && url.isNotBlank()) { Text("预览链接") }
-                    OutlinedButton(onClick = { jsonEditor = "" }, enabled = busy == null) { Text("导入 JSON 文本") }
+                    OutlinedButton(onClick = { openJsonEditor { "" } }, enabled = busy == null && jsonUpdateHold.canBegin()) { Text("导入 JSON 文本") }
                 }
                 preview?.let { plugin ->
                     Text("${plugin.name} · ${plugin.version} · ${plugin.type} · ${plugin.rules.size} 条规则")
                     Text(plugin.description, style = MaterialTheme.typography.bodySmall)
-                    Button(onClick = { action("json-import") { runtime.importJsonUrl(previewUrl).getOrThrow(); preview = null } }, enabled = busy == null) { Text("导入") }
+                    Button(onClick = {
+                        if (busy == null && scope.isActive) {
+                            val instance = jsonUpdateHold.begin()
+                            if (instance != null) try {
+                                action("json-import", instance) { runtime.importJsonUrl(previewUrl).getOrThrow(); preview = null }
+                            } finally { instance.close() } // Original Job and children remain observed.
+                        }
+                    }, enabled = busy == null && jsonUpdateHold.canBegin()) { Text("导入") }
                 }
             }
         }
@@ -116,7 +135,7 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
                     }
                     Text(loaded.plugin.description, style = MaterialTheme.typography.bodySmall)
                     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                        TextButton(onClick = { jsonEditor = runtime.exportJsonPlugin(loaded.plugin.id) }, enabled = busy == null) { Text("编辑规则") }
+                        TextButton(onClick = { openJsonEditor { runtime.exportJsonPlugin(loaded.plugin.id) } }, enabled = busy == null && jsonUpdateHold.canBegin()) { Text("编辑规则") }
                         TextButton(onClick = { Toolkit.getDefaultToolkit().systemClipboard.setContents(StringSelection(runtime.exportJsonPlugin(loaded.plugin.id)), null) }) { Text("复制 JSON") }
                         TextButton(onClick = { runtime.resetJsonStats(loaded.plugin.id) }) { Text("重置统计") }
                         TextButton(onClick = { runtime.removeJsonPlugin(loaded.plugin.id) }, enabled = busy == null) { Text("删除") }
@@ -133,9 +152,18 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
         runtime.googleCast.id -> DesktopGoogleCastDialog(runtime.context, runtime.googleCast, media = { null }, onDismiss = { selected = null })
         else -> selected?.let { DesktopAdditionalPluginSettings(it, runtime, { selected = null }, onVideo, onPlayQueue) }
     }
-    jsonEditor?.let { content ->
-        JsonTextPluginDialog(content, busy != null, { jsonEditor = null }) { text ->
-            action("json-text") { runtime.importJsonText(text).getOrThrow(); jsonEditor = null }
+    jsonEditor?.let { draft ->
+        key(draft.instance) {
+            JsonTextPluginDialog(draft, busy != null, {
+                if (jsonEditor === draft) jsonEditor = null
+                draft.close()
+            }) { text ->
+                action("json-text", draft.instance) {
+                    runtime.importJsonText(text).getOrThrow()
+                    if (jsonEditor === draft) jsonEditor = null
+                    draft.close()
+                }
+            }
         }
     }
     if (packagesOpen) PluginPackagesDialog(runtime.packages, onDismiss = { packagesOpen = false })
@@ -143,10 +171,10 @@ fun PluginCenterScreen(runtime: DesktopPluginRuntime, onVideo: ((VideoCard) -> U
 }
 
 @Composable
-private fun JsonTextPluginDialog(initial: String, busy: Boolean, onDismiss: () -> Unit, onSave: (String) -> Unit) {
-    var text by remember(initial) { mutableStateOf(initial) }
+private fun JsonTextPluginDialog(draft: DesktopPluginJsonDraft, busy: Boolean, onDismiss: () -> Unit, onSave: (String) -> Unit) {
+    val text = draft.text
     AlertDialog(onDismissRequest = { if (!busy) onDismiss() }, title = { Text("JSON 规则插件") }, text = {
-        OutlinedTextField(text, { text = it }, modifier = Modifier.width(750.dp).heightIn(min = 280.dp, max = 650.dp), minLines = 12, maxLines = 26, enabled = !busy)
+        OutlinedTextField(text, { draft.text = it }, modifier = Modifier.width(750.dp).heightIn(min = 280.dp, max = 650.dp), minLines = 12, maxLines = 26, enabled = !busy)
     }, confirmButton = { TextButton(onClick = { onSave(text) }, enabled = !busy && text.isNotBlank()) { Text("保存并导入") } },
         dismissButton = { TextButton(onClick = onDismiss, enabled = !busy) { Text("取消") } })
 }
