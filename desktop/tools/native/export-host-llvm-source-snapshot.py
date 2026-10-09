@@ -346,9 +346,12 @@ class FixedCrLfAttributes:
         # --all omits true unspecified. Attribute key presence, including a
         # literal value "unset"/"unspecified", is never treated as disabled.
         forbidden = {'ident', 'filter', 'working-tree-encoding', 'crlf', 'export-subst', 'binary'}
-        if (attributes.get('text') != 'set' or attributes.get('eol') != 'crlf'
+        # Explicit eol=crlf implies text only when its key is genuinely absent.
+        # Literal unset/unspecified, text=auto, false and other values stay closed.
+        if (attributes.get('eol') != 'crlf'
+                or ('text' in attributes and attributes['text'] != 'set')
                 or forbidden.intersection(attributes)):
-            raise RuntimeError('Not isolated text=set/eol=crlf without other transforms')
+            raise RuntimeError('Not isolated explicit or implicit text/eol=crlf without other transforms')
         stored = self.run('hash-object', '--no-filters', '-w', '--stdin', raw=raw)
         if stored != blob.encode('ascii') + b'\n':
             raise RuntimeError('Scratch source object changed')
