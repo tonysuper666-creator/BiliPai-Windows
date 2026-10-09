@@ -14,6 +14,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <libavutil/buffer.h>
+#include <libavutil/hwcontext.h>
+#include <libavutil/hwcontext_d3d11va.h>
+#include "video/d3d.h"
 
 _Static_assert(sizeof(void *)==8, "bridge ABI is Windows x64 only");
 _Static_assert(sizeof(bv_config_v1)==120, "core config ABI layout");
@@ -52,6 +56,19 @@ struct bv_mpv_bridge {
     void *held_input_lease, *held_output_lease;
     void (*release_output_lease)(void *);
     int failed;
+    struct bv_mpv_proxy_sr_loan *proxy_sr_loan;
+    AVBufferRef *proxy_owner_ref; /* one exact known owner until full bridge retirement */
+};
+struct bv_mpv_proxy_sr_loan {
+    struct bv_mpv_bridge *bridge;
+    AVBufferRef *device_ref;
+    DWORD host_thread;
+    ID3D11Fence *source_ready, *final_use;
+    ID3D12Fence *core_done;
+    uint64_t producer_value, core_value, ready_value, final_value;
+    void *retained_lease;
+    void (*release_retained_lease)(void *);
+    int attempted, untracked;
 };
 /* At most the existing singleton NGX host can be quarantined. This is solely
  * deferred COM/DLL retirement, never a playable source or second frame cache. */
@@ -76,6 +93,7 @@ static void release_context(struct bv_mpv_bridge *p) {
     RELEASE(p->isolated_state);RELEASE(p->context4);RELEASE(p->context);RELEASE(p->queue12);RELEASE(p->device12);RELEASE(p->device);
     if(p->held_input_lease)p->release_output_lease(p->held_input_lease);
     if(p->held_output_lease)p->release_output_lease(p->held_output_lease);
+    av_buffer_unref(&p->proxy_owner_ref);
     /* PIN survives this withdrawal of our own LoadLibrary reference. No core
      * call is allowed unless that exact module was successfully process-pinned. */
     if(p->module)FreeLibrary(p->module);free(p);
@@ -101,6 +119,7 @@ static int wait_native(struct bv_mpv_bridge *p,ID3D11Fence *f,uint64_t value,bv_
     return BV_OK;
 }
 static int destroy_core(struct bv_mpv_bridge *p,bv_status_v1 *s) {
+    if(p->proxy_sr_loan)return fail(s,BV_BUSY,E_PENDING,"outstanding SR proxy loan retains whole bridge");
     if(p->core) { int rc=p->destroy(p->core,s);if(rc!=BV_OK)return rc;p->core=0; }
     int rc=wait_native(p,p->producer11,p->producer_value,s);
     if(rc==BV_OK)rc=wait_native(p,p->consumer11,p->consumer_done,s);
@@ -279,6 +298,7 @@ int bv_mpv_bridge_process(struct bv_mpv_bridge *p,ID3D11Texture2D *in,uint32_t s
     status_init(s);if(receipt)memset(receipt,0,sizeof(*receipt));
 #define RETURN(value) do { int result=(value);if(input_lease&&release_output_lease)release_output_lease(input_lease);if(output_lease&&release_output_lease)release_output_lease(output_lease);return result; } while(0)
     if(!receipt||!input_lease||!output_lease||!release_output_lease)RETURN(fail(s,BV_INVALID,E_INVALIDARG,"output image lease required"));
+    if(p&&p->proxy_sr_loan)RETURN(fail(s,BV_BUSY,E_PENDING,"SR proxy output still borrowed; old frame cannot reuse bridge"));
     if(!p||p->failed||!in||!out||generation!=p->config.generation||!sequence||sequence<=p->sequence||base<=0)RETURN(fail(s,BV_STALE,E_INVALIDARG,"stale/failed source or invalid timestamp"));
     if(p->held_input_lease||p->held_output_lease){
         int old=wait_native(p,p->producer11,p->producer_value,s);
@@ -351,8 +371,231 @@ int bv_mpv_bridge_process(struct bv_mpv_bridge *p,ID3D11Texture2D *in,uint32_t s
     p->sequence=sequence;RETURN(BV_OK);
 #undef RETURN
 }
+/* UNWIRED: an immutable host proxy uses the already owned shared R8 route.
+ * This code never calls the scoped decoder borrow API or mints a frame token. */
+static int proxy_same_object(IUnknown *a,IUnknown *b) {
+    IUnknown *ca=NULL,*cb=NULL;
+    HRESULT ha=a?IUnknown_QueryInterface(a,&IID_IUnknown,(void**)&ca):E_POINTER;
+    HRESULT hb=b?IUnknown_QueryInterface(b,&IID_IUnknown,(void**)&cb):E_POINTER;
+    int same=SUCCEEDED(ha)&&SUCCEEDED(hb)&&ca==cb;
+    RELEASE(ca);RELEASE(cb);return same;
+}
+static int proxy_same_device11(struct bv_mpv_bridge *p,ID3D11DeviceChild *child) {
+    ID3D11Device *device=NULL;
+    ID3D11DeviceChild_GetDevice(child,&device);
+    int same=proxy_same_object((IUnknown*)device,(IUnknown*)p->device);
+    RELEASE(device);return same;
+}
+static int proxy_completed(ID3D11Fence *f,uint64_t value) {
+    if(!f||!value||value==UINT64_MAX)return 0;
+    uint64_t done=ID3D11Fence_GetCompletedValue(f);
+    return done!=UINT64_MAX&&done>=value;
+}
+static void proxy_drop_loan(struct bv_mpv_proxy_sr_loan **lp) {
+    struct bv_mpv_proxy_sr_loan *l=*lp;
+    struct bv_mpv_bridge *p=l->bridge;
+    p->proxy_sr_loan=NULL;*lp=NULL;
+    RELEASE(l->source_ready);RELEASE(l->core_done);RELEASE(l->final_use);
+    av_buffer_unref(&l->device_ref);
+    void *lease=l->retained_lease;void (*release)(void*)=l->release_retained_lease;
+    free(l);release(lease);
+}
+static HRESULT proxy_enter(struct bv_mpv_bridge *p,
+    struct bv_mpv_proxy_sr_loan *l,ID3DDeviceContextState **previous) {
+    /* This is the REAL constructor-owned default recursive mutex, checked
+     * with timeout zero. Unknown/busy/poisoned/abandoned never enter. */
+    if(!d3d11_bilipai_default_try_lock(l->device_ref))return E_PENDING;
+    AVHWDeviceContext *ctx=(void*)l->device_ref->data;
+    AVD3D11VADeviceContext *d=ctx->hwctx;
+    /* Every immediate/video context call or query is within that mutex. */
+    ID3D11Device *actual=NULL;
+    ID3D11DeviceContext_GetDevice(p->context,&actual);
+    int same=proxy_same_object((IUnknown*)actual,(IUnknown*)p->device)&&
+        proxy_same_object((IUnknown*)d->device,(IUnknown*)p->device)&&
+        proxy_same_object((IUnknown*)d->device_context,(IUnknown*)p->context)&&
+        proxy_same_object((IUnknown*)d->video_context,(IUnknown*)p->context)&&
+        ID3D11DeviceContext_GetType(p->context)==D3D11_DEVICE_CONTEXT_IMMEDIATE&&
+        p->config.context_lock==d->lock&&p->config.context_unlock==d->unlock&&
+        p->config.context_lock_opaque==d->lock_ctx;
+    RELEASE(actual);
+    if(!same){
+        if(!d3d11_bilipai_default_unlock(l->device_ref)){
+            l->untracked=1;p->failed=1;return E_UNEXPECTED;
+        }
+        return E_INVALIDARG;
+    }
+    /* Even a state attempt is conservatively retained on failure. */
+    l->attempted=1;
+    ID3D11DeviceContext1_SwapDeviceContextState((ID3D11DeviceContext1*)p->context4,
+        p->isolated_state,previous);
+    if(!*previous){l->untracked=1;p->failed=1;
+        d3d11_bilipai_default_unlock(l->device_ref);return E_UNEXPECTED;}
+    return S_OK;
+}
+static int proxy_leave(struct bv_mpv_bridge *p,struct bv_mpv_proxy_sr_loan *l,
+    ID3DDeviceContextState **previous) {
+    ID3D11DeviceContext1_SwapDeviceContextState((ID3D11DeviceContext1*)p->context4,
+        *previous,NULL);
+    RELEASE(*previous);
+    int released=d3d11_bilipai_default_unlock(l->device_ref);
+    if(!released){l->untracked=1;p->failed=1;}
+    return released;
+}
+int bv_mpv_bridge_process_proxy_sr(struct bv_mpv_bridge *p,
+    const struct bv_mpv_proxy_sr_input *in,struct bv_mpv_proxy_sr_loan **loan,
+    struct bv_mpv_proxy_sr_result *result,bv_status_v1 *s) {
+    if(result)memset(result,0,sizeof(*result));
+    if(s)status_init(s);
+    int valid_lease=in&&in->retained_lease&&in->release_retained_lease;
+#define PROXY_RETURN(code) do { int rc_=(code);if(valid_lease)in->release_retained_lease(in->retained_lease);return rc_; } while(0)
+    if(!s)PROXY_RETURN(BV_INVALID);
+    if(!loan||!result)PROXY_RETURN(fail(s,BV_INVALID,E_INVALIDARG,"loan/result output required"));
+    /* Never overwrite a live opaque handle on a new-frame retry. */
+    if(*loan)PROXY_RETURN(fail(s,BV_BUSY,E_PENDING,"caller must retain and retire its existing SR loan"));
+    if(!valid_lease)PROXY_RETURN(fail(s,BV_INVALID,E_INVALIDARG,"real retained host proxy lease required"));
+    if(!p||p->failed||!p->core||p->proxy_sr_loan||p->held_input_lease||p->held_output_lease)
+        PROXY_RETURN(fail(s,BV_BUSY,E_PENDING,"dedicated idle SR bridge required; outstanding owner retained"));
+    if(p->config.effects!=BV_VIDEO_SR||!d3d11_bilipai_default_owner_known(in->device_ref)||
+       (p->proxy_owner_ref&&(p->proxy_owner_ref->buffer!=in->device_ref->buffer||
+        p->proxy_owner_ref->data!=in->device_ref->data||p->proxy_owner_ref->size!=in->device_ref->size))||
+       (ID3D11Device_GetCreationFlags(p->device)&D3D11_CREATE_DEVICE_SINGLETHREADED))
+        PROXY_RETURN(fail(s,BV_INVALID,E_INVALIDARG,"SR-only original context owner required"));
+    if(!in->proxy||!in->producer_ready_fence||!in->producer_ready_value||in->producer_ready_value==UINT64_MAX||
+       in->session!=p->config.session||in->configuration!=p->config.configuration||
+       in->generation!=p->config.generation||in->adapter_luid!=p->luid||
+       !in->sequence||in->sequence<=p->sequence||in->pts_denominator<=0||
+       p->producer_value>=UINT64_MAX-1||p->consumer_value>=UINT64_MAX-1)
+        PROXY_RETURN(fail(s,BV_STALE,E_INVALIDARG,"exact proxy session/configuration/source packet required"));
+    D3D11_TEXTURE2D_DESC d={0};ID3D11Texture2D_GetDesc(in->proxy,&d);
+    if(d.Format!=DXGI_FORMAT_R8G8B8A8_UNORM||d.Width!=p->config.input_width||d.Height!=p->config.input_height||
+       d.MipLevels!=1||d.ArraySize!=1||d.SampleDesc.Count!=1||d.Usage!=D3D11_USAGE_DEFAULT||
+       d.CPUAccessFlags||(d.MiscFlags&D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX)||
+       !(d.BindFlags&D3D11_BIND_SHADER_RESOURCE)||
+       !proxy_same_device11(p,(ID3D11DeviceChild*)in->proxy)||
+       proxy_same_object((IUnknown*)in->proxy,(IUnknown*)p->input11)||
+       proxy_same_object((IUnknown*)in->proxy,(IUnknown*)p->output11))
+        PROXY_RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"exact same-device immutable R8 host proxy required"));
+    ID3D11Fence *source_ready=NULL;
+    HRESULT hr=IUnknown_QueryInterface(in->producer_ready_fence,&IID_ID3D11Fence,(void**)&source_ready);
+    if(FAILED(hr)||!source_ready||!proxy_same_device11(p,(ID3D11DeviceChild*)source_ready)||
+       proxy_same_object((IUnknown*)source_ready,(IUnknown*)p->producer11)||
+       proxy_same_object((IUnknown*)source_ready,(IUnknown*)p->consumer11)||
+       ID3D11Fence_GetCompletedValue(source_ready)==UINT64_MAX){RELEASE(source_ready);
+        PROXY_RETURN(fail(s,BV_INVALID,E_INVALIDARG,"actual same-device proxy readiness fence required"));}
+    struct bv_mpv_proxy_sr_loan *l=calloc(1,sizeof(*l));
+    if(!l){RELEASE(source_ready);PROXY_RETURN(fail(s,BV_INTERNAL,E_OUTOFMEMORY,"SR loan allocation failed"));}
+    l->bridge=p;l->host_thread=GetCurrentThreadId();l->source_ready=source_ready;
+    l->device_ref=av_buffer_ref(in->device_ref);
+    if(!l->device_ref){RELEASE(l->source_ready);free(l);
+        PROXY_RETURN(fail(s,BV_INTERNAL,E_OUTOFMEMORY,"actual default HW owner reference failed"));}
+    if(!p->proxy_owner_ref)p->proxy_owner_ref=av_buffer_ref(in->device_ref);
+    if(!p->proxy_owner_ref){av_buffer_unref(&l->device_ref);RELEASE(l->source_ready);free(l);
+        PROXY_RETURN(fail(s,BV_INTERNAL,E_OUTOFMEMORY,"bounded bridge HW owner reference failed"));}
+    l->retained_lease=in->retained_lease;l->release_retained_lease=in->release_retained_lease;
+    p->proxy_sr_loan=l;*loan=l;valid_lease=0;
+    ID3DDeviceContextState *previous=NULL;
+    hr=proxy_enter(p,l,&previous);
+    if(FAILED(hr)){
+        if(!l->attempted&&!l->untracked)proxy_drop_loan(loan);
+        return fail(s,BV_DEVICE_FAILURE,hr,"original proxy context exclusion/state rejected");
+    }
+    hr=ID3D11DeviceContext4_Wait(p->context4,l->source_ready,in->producer_ready_value);
+    if(SUCCEEDED(hr)){
+        ID3D11DeviceContext_CopyResource(p->context,(ID3D11Resource*)p->input11,(ID3D11Resource*)in->proxy);
+        l->producer_value=++p->producer_value;
+        hr=ID3D11DeviceContext4_Signal(p->context4,p->producer11,l->producer_value);
+        ID3D11DeviceContext_Flush(p->context);
+    }
+    int released=proxy_leave(p,l,&previous);
+    if(FAILED(hr)||!released){l->untracked=1;p->failed=1;return fail(s,BV_DEVICE_FAILURE,
+        FAILED(hr)?hr:E_UNEXPECTED,"proxy producer handoff/unlock failed; whole loan retained");}
+    /* CALLER PRECONDITION: decoder scope and original context exclusion must
+     * already have ended. The default Win32 mutex is recursive; checked try0
+     * above cannot detect that the caller held an outer lock. This comment is
+     * not a runtime proof. No current production caller authorizes this route. */
+    bv_frame_v1 f={0};f.size=sizeof(f);f.abi=BV_ABI_V1;
+    f.session_id=in->session;f.source_generation=in->generation;f.sequence=in->sequence;f.adapter_luid=in->adapter_luid;
+    f.pts_numerator=in->pts_numerator;f.pts_denominator=in->pts_denominator;
+    f.input_color=f.output_color=BV_SRGB_BT709_FULL_RGBA8;
+    f.input_texture=p->input12;f.output_texture=p->output12;
+    f.input_ready_fence=p->producer12;f.input_ready_value=l->producer_value;
+    f.input_state=f.output_state=f.output_final_state=D3D12_RESOURCE_STATE_COMMON;
+    bv_result_v1 r={0};r.size=sizeof(r);r.abi=BV_ABI_V1;
+    int rc=p->process(p->core,&f,&r,s);
+    if(rc!=BV_OK){l->untracked=1;p->failed=1;return rc;}
+    if(r.size!=sizeof(r)||r.abi!=BV_ABI_V1||r.session_id!=f.session_id||r.source_generation!=f.source_generation||
+       r.sequence!=f.sequence||r.adapter_luid!=f.adapter_luid||r.pts_numerator!=f.pts_numerator||r.pts_denominator!=f.pts_denominator||
+       r.output_texture!=p->output12||r.output_state!=D3D12_RESOURCE_STATE_COMMON||r.output_color!=BV_SRGB_BT709_FULL_RGBA8||
+       r.output_dxgi_format!=(uint32_t)DXGI_FORMAT_R8G8B8A8_UNORM||r.effects_applied!=BV_VIDEO_SR||
+       r.output_width!=p->config.output_width||r.output_height!=p->config.output_height||
+       !r.completion_fence||!r.completion_value||r.completion_value==UINT64_MAX){
+        l->untracked=1;p->failed=1;return fail(s,BV_STALE,E_FAIL,"exact SR-only core receipt mismatch; loan retained");}
+    hr=IUnknown_QueryInterface((IUnknown*)r.completion_fence,&IID_ID3D12Fence,(void**)&l->core_done);
+    ID3D12Device *fence_device=NULL;
+    if(SUCCEEDED(hr))hr=ID3D12Fence_GetDevice(l->core_done,&IID_ID3D12Device,(void**)&fence_device);
+    int same=SUCCEEDED(hr)&&proxy_same_object((IUnknown*)fence_device,(IUnknown*)p->device12);
+    RELEASE(fence_device);
+    if(!same||ID3D12Fence_GetCompletedValue(l->core_done)==UINT64_MAX){
+        l->untracked=1;p->failed=1;return fail(s,BV_STALE,E_FAIL,"core completion fence identity rejected; loan retained");}
+    l->core_value=r.completion_value;
+    hr=ID3D12CommandQueue_Wait(p->queue12,l->core_done,l->core_value);
+    if(SUCCEEDED(hr)){
+        l->ready_value=++p->consumer_value;
+        hr=ID3D12CommandQueue_Signal(p->queue12,p->consumer12,l->ready_value);
+    }
+    if(FAILED(hr)){l->untracked=1;p->failed=1;return fail(s,BV_DEVICE_FAILURE,hr,"SR completion sharing failed; loan retained");}
+    hr=proxy_enter(p,l,&previous);
+    if(FAILED(hr)){l->untracked=1;p->failed=1;return fail(s,BV_DEVICE_FAILURE,hr,"SR consumer context rejected; loan retained");}
+    hr=ID3D11DeviceContext4_Wait(p->context4,p->consumer11,l->ready_value);
+    ID3D11DeviceContext_Flush(p->context);released=proxy_leave(p,l,&previous);
+    if(FAILED(hr)||!released){l->untracked=1;p->failed=1;return fail(s,BV_DEVICE_FAILURE,
+        FAILED(hr)?hr:E_UNEXPECTED,"SR consumer readiness Wait/unlock rejected; loan retained");}
+    *result=(struct bv_mpv_proxy_sr_result){
+        .output=p->output11,.ready_fence=p->consumer11,.ready_value=l->ready_value,
+        .core_completion_fence=(IUnknown*)l->core_done,.core_completion_value=l->core_value,
+        .session=r.session_id,.configuration=in->configuration,.generation=r.source_generation,
+        .sequence=r.sequence,.adapter_luid=r.adapter_luid,.pts_numerator=r.pts_numerator,.pts_denominator=r.pts_denominator,
+        .width=r.output_width,.height=r.output_height,.effects=r.effects_applied};
+    p->sequence=in->sequence;return BV_OK;
+#undef PROXY_RETURN
+}
+int bv_mpv_bridge_release_proxy_sr_loan(struct bv_mpv_proxy_sr_loan **lp,
+    IUnknown *final_fence,uint64_t final_value,bv_status_v1 *s) {
+    if(!s)return BV_INVALID;status_init(s);
+    if(!lp||!*lp)return fail(s,BV_INVALID,E_INVALIDARG,"live SR loan required");
+    struct bv_mpv_proxy_sr_loan *l=*lp;struct bv_mpv_bridge *p=l->bridge;
+    if(!p||p->proxy_sr_loan!=l||l->host_thread!=GetCurrentThreadId())
+        return fail(s,BV_STALE,E_INVALIDARG,"original serialized host thread/loan owner required");
+    if(l->untracked)return fail(s,BV_RESET_REQUIRED,E_PENDING,"untracked proxy/SR work retained until process exit");
+    if(!l->final_use){
+        ID3D11Fence *f=NULL;
+        HRESULT hr=final_fence?IUnknown_QueryInterface(final_fence,&IID_ID3D11Fence,(void**)&f):E_INVALIDARG;
+        if(FAILED(hr)||!f||!final_value||final_value==UINT64_MAX||
+           !proxy_same_device11(p,(ID3D11DeviceChild*)f)||
+           proxy_same_object((IUnknown*)f,(IUnknown*)l->source_ready)||
+           proxy_same_object((IUnknown*)f,(IUnknown*)p->producer11)||
+           proxy_same_object((IUnknown*)f,(IUnknown*)p->consumer11)){RELEASE(f);
+            return fail(s,BV_INVALID,E_INVALIDARG,"independent same-device final-consumer fence required");}
+        uint64_t completed=ID3D11Fence_GetCompletedValue(f);
+        if(completed==UINT64_MAX||completed>=final_value){RELEASE(f);
+            return fail(s,BV_INVALID,E_INVALIDARG,"seal before the actual future final-use Signal");}
+        l->final_use=f;l->final_value=final_value;
+        return fail(s,BV_BUSY,E_PENDING,"SR loan sealed; actual final-consumer Signal/completion still required");
+    }
+    if((final_fence||final_value)&&(!final_fence||final_value!=l->final_value||
+       !proxy_same_object(final_fence,(IUnknown*)l->final_use)))
+        return fail(s,BV_INVALID,E_INVALIDARG,"sealed final-use fence/value cannot change");
+    uint64_t core_done=ID3D12Fence_GetCompletedValue(l->core_done);
+    if(core_done==UINT64_MAX||core_done<l->core_value||
+       !proxy_completed(p->producer11,l->producer_value)||
+       !proxy_completed(p->consumer11,l->ready_value)||!proxy_completed(l->final_use,l->final_value))
+        return fail(s,BV_BUSY,E_PENDING,"actual producer/core/ready/final completion not proved; loan retained");
+    proxy_drop_loan(lp);return BV_OK;
+}
+
 int bv_mpv_bridge_reset(struct bv_mpv_bridge *p,uint64_t generation,bv_status_v1 *s) {
     status_init(s);if(!p||generation<=p->config.generation)return fail(s,BV_STALE,E_INVALIDARG,"reset generation is not newer");
+    if(p->proxy_sr_loan)return fail(s,BV_BUSY,E_PENDING,"reset waits for actual final-consumer loan retirement");
     int rc=wait_native(p,p->producer11,p->producer_value,s);
     if(rc==BV_OK)rc=wait_native(p,p->consumer11,p->consumer_done,s);
     if(rc==BV_OK)rc=p->reset(p->core,p->config.session,generation,s);
@@ -360,6 +603,7 @@ int bv_mpv_bridge_reset(struct bv_mpv_bridge *p,uint64_t generation,bv_status_v1
 }
 int bv_mpv_bridge_destroy(struct bv_mpv_bridge **pp,bv_status_v1 *s) {
     status_init(s);if(!pp||!*pp)return BV_OK;
+    if((*pp)->proxy_sr_loan)return fail(s,BV_BUSY,E_PENDING,"destroy retains bridge pointer while SR loan is outstanding");
     struct bv_mpv_bridge *p=*pp;*pp=NULL;
     int rc=destroy_core(p,s);
     if(rc==BV_OK){release_context(p);return BV_OK;}

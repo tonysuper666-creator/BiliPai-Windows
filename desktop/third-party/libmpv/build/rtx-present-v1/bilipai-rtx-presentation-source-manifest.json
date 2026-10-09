@@ -35,16 +35,16 @@
       "targetPath": "video/filter/vf_bilipai_rtx.c"
     },
     {
-      "bytes": 32171,
+      "bytes": 48071,
       "fileName": "bilipai_rtx_mpv_bridge.c",
-      "sha256": "9bdbefb6ab8c14a7c9dd23f83003bbdf9746bdd67541abf82f91403436ed3940",
+      "sha256": "b5686fcd414f3287cefd93e06decd9d4fd224a538834dad74c6e828281963a1e",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c",
       "targetPath": "video/filter/bilipai_rtx_mpv_bridge.c"
     },
     {
-      "bytes": 3218,
+      "bytes": 9431,
       "fileName": "bilipai_rtx_mpv_bridge.h",
-      "sha256": "86cf1c456707952dd166aee4a5ec8a73f39bea1dd808c6a1e2a6949a7c777762",
+      "sha256": "ae136fec26f40140858d4c47c955c9bb92feca7f96a46a5c10d6eeab3be346e2",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.h",
       "targetPath": "video/filter/bilipai_rtx_mpv_bridge.h"
     },
