@@ -1,7 +1,7 @@
 [
   {
-    "afterBytes": 28269,
-    "afterSha256": "443c5109fa5cdfe92785d42db8fd81f6570f0982c08842f8df50ace04406390c",
+    "afterBytes": 29407,
+    "afterSha256": "59b2ec20c855bbb26f571e456e59119241a02699bc045beacd6025d3dd21e4de",
     "beforeBytes": 24865,
     "beforeSha256": "e109dcf181ba517d97c614f6fddc6533689cf6c4b660ac94f1d29c64d85502c0",
     "edits": [
@@ -69,6 +69,26 @@
         "count": 1,
         "new": "    p->stream_info.bilipai_observe_decoder_frame = decoder ? bilipai_observe_decoder_frame : NULL;\n    p->stream_info.bilipai_with_decoder_owner = decoder ? bilipai_with_decoder_owner : NULL;",
         "old": "    p->stream_info.bilipai_observe_decoder_frame = decoder ? bilipai_observe_decoder_frame : NULL;"
+      },
+      {
+        "count": 1,
+        "new": "    if (!u->failed && mp_filter_has_failed(u->f)) {\n        struct mp_filter_command cmd = {\n            .type = MP_FILTER_COMMAND_BILIPAI_CONTEXT_FATAL,\n        };\n        bool context_fatal = !strcmp(u->name, \"bilipai-rtx\") &&\n            mp_filter_command(u->f, &cmd) && cmd.bilipai_context_fatal;\n        if (context_fatal) {\n            // Ordinary user-filter failure is bypassable; this is not. Do not\n            // reset away the issuer before the player retires the whole VO.\n            p->public.bilipai_context_fatal = true;\n            MP_FATAL(p, \"RTX shared context recovery is unknown; stopping video.\\n\");\n            mp_filter_wakeup(p->f);\n        } else if (u == p->convert_wrapper) {",
+        "old": "    if (!u->failed && mp_filter_has_failed(u->f)) {\n        if (u == p->convert_wrapper) {"
+      },
+      {
+        "count": 1,
+        "new": "        if (p->public.bilipai_context_fatal ||\n            u == p->convert_wrapper || u->in_eof) {",
+        "old": "        if (u == p->convert_wrapper || u->in_eof) {"
+      },
+      {
+        "count": 1,
+        "new": "static void output_chain_process(struct mp_filter *f)\n{\n    struct chain *p = f->priv;\n\n    if (p->public.bilipai_context_fatal) {\n        p->public.got_output_eof = true;\n        if (mp_pin_in_needs_data(f->ppins[1]))\n            mp_pin_in_write(f->ppins[1], MP_EOF_FRAME);\n        return; // no new original or buffered processed frame enters this VO\n    }\n    if (mp_pin_can_transfer_data(p->filters_in, f->ppins[0])) {",
+        "old": "static void output_chain_process(struct mp_filter *f)\n{\n    struct chain *p = f->priv;\n\n    if (mp_pin_can_transfer_data(p->filters_in, f->ppins[0])) {"
+      },
+      {
+        "count": 1,
+        "new": "        struct mp_frame frame = mp_pin_out_read(p->filters_out);\n        // Failure may have been observed while requesting this inner output.\n        if (p->public.bilipai_context_fatal) {\n            mp_frame_unref(&frame);\n            frame = MP_EOF_FRAME;\n        }\n\n        p->public.got_output_eof = frame.type == MP_FRAME_EOF;",
+        "old": "        struct mp_frame frame = mp_pin_out_read(p->filters_out);\n\n        p->public.got_output_eof = frame.type == MP_FRAME_EOF;"
       }
     ],
     "path": "filters/f_output_chain.c"
@@ -1806,8 +1826,8 @@
     "path": "filters/f_decoder_wrapper.h"
   },
   {
-    "afterBytes": 24332,
-    "afterSha256": "bb5c8f7982657ab19eb33521983c7abdddde3dff9160324d95c79fd8106dc72f",
+    "afterBytes": 24562,
+    "afterSha256": "a19b8703d80e6398e4275ea2cf946150ff61903490143378f3c2ae9f335759df",
     "beforeBytes": 23244,
     "beforeSha256": "493f064715ba083c1a4a71cbc10f655bd552ff34958d76ebfca8dae440ce979d",
     "edits": [
@@ -1830,13 +1850,23 @@
         "count": 1,
         "new": "    // Synchronous main/filter owner borrow, after async dequeue unlock.\n    // No decoder/context lock is held by this callback entrance. Player keeps\n    // the direct owner alive until return and clears it before destruction.\n    // The callback may not retain the decoder, reenter graph/track teardown or\n    // mistake this lifetime borrow for readiness/GPU/HDR/display permission.\n    // Every actual control/submit must revalidate its own current scope.\n    bool (*bilipai_with_decoder_owner)(struct mp_stream_info *,\n        void (*use)(void *, struct mp_decoder_wrapper *), void *);\n    struct vo *dr_vo; // for calling vo_get_image()",
         "old": "    struct vo *dr_vo; // for calling vo_get_image()"
+      },
+      {
+        "count": 1,
+        "new": "    MP_FILTER_COMMAND_IS_ACTIVE,\n    // Private failure observation; never authorizes processing or recovery.\n    MP_FILTER_COMMAND_BILIPAI_CONTEXT_FATAL,\n",
+        "old": "    MP_FILTER_COMMAND_IS_ACTIVE,\n"
+      },
+      {
+        "count": 1,
+        "new": "    // For MP_FILTER_COMMAND_IS_ACTIVE\n    bool is_active;\n\n    // For MP_FILTER_COMMAND_BILIPAI_CONTEXT_FATAL (read-only CPU scalar).\n    bool bilipai_context_fatal;",
+        "old": "    // For MP_FILTER_COMMAND_IS_ACTIVE\n    bool is_active;"
       }
     ],
     "path": "filters/filter.h"
   },
   {
-    "afterBytes": 4272,
-    "afterSha256": "06f23d6e6fec22e7bb7af809a34e65098bf122a8567f36475264b4acce727beb",
+    "afterBytes": 4446,
+    "afterSha256": "e57d8a5bbd0bf8ee5ce326bfd2ff37da0da253e7dc75eacca1317ca1ce635d7f",
     "beforeBytes": 3941,
     "beforeSha256": "a7267c641bbe59f7513049187e9975ad4ea15c1da6946e05116b176865133827",
     "edits": [
@@ -1844,13 +1874,18 @@
         "count": 1,
         "new": "\n// Main/player lane only. Borrowed direct decoder owner, cleared before destroy\n// and at EOF; group wrappers are rejected by the scoped observer.\nstruct mp_decoder_wrapper;\nvoid mp_output_chain_set_bilipai_decoder_observer(struct mp_output_chain *,\n                                                  struct mp_decoder_wrapper *);\n\n// Set the AO. The AO format will be used to determine the filter chain output.\n",
         "old": "\n// Set the AO. The AO format will be used to determine the filter chain output.\n"
+      },
+      {
+        "count": 1,
+        "new": "    bool failed_output_conversion;\n\n    // Unknown shared processing context: sticky, no filter/hwdec bypass.\n    // Only destruction of this whole VO chain removes this latch.\n    bool bilipai_context_fatal;\n",
+        "old": "    bool failed_output_conversion;\n"
       }
     ],
     "path": "filters/f_output_chain.h"
   },
   {
-    "afterBytes": 48548,
-    "afterSha256": "e55e99e0460297dc7e85708822fd4e5c8318eb7e13deddac654943ddc883393c",
+    "afterBytes": 49534,
+    "afterSha256": "06ff03a818840b043a24f38355724f9d52cfdac0ce37c4b021df181263cb5f07",
     "beforeBytes": 47752,
     "beforeSha256": "3ccce2b694041ac12aab56fee803b06fba695ffb3f848f915e1acc7d2f5e632b",
     "edits": [
@@ -1888,6 +1923,21 @@
         "count": 1,
         "new": "    mp_output_chain_reset_harder(vo_c->filter);\n    mp_output_chain_set_bilipai_decoder_observer(vo_c->filter, vo_c->track->dec);\n    return true;\n",
         "old": "    mp_output_chain_reset_harder(vo_c->filter);\n    return true;\n"
+      },
+      {
+        "count": 1,
+        "new": "static bool stop_bilipai_context_fatal(struct MPContext *mpctx)\n{\n    if (!mpctx->vo_chain ||\n        !mpctx->vo_chain->filter->bilipai_context_fatal)\n        return false;\n    MP_FATAL(mpctx, \"RTX shared context recovery is unknown; retiring video output.\\n\");\n    mpctx->error_playing = MPV_ERROR_VO_INIT_FAILED;\n    mpctx->stop_play = PT_ERROR;\n    // Chain-only error handling leaves the old VO alive and calls force-window.\n    // Retire the actual VO here; do not force hwdec fallback or reuse it.\n    // Existing independent native custody retains all unknown queued leases.\n    uninit_video_out(mpctx);\n    mp_wakeup_core(mpctx);\n    return true;\n}\n\nvoid write_video(struct MPContext *mpctx)\n{",
+        "old": "void write_video(struct MPContext *mpctx)\n{"
+      },
+      {
+        "count": 1,
+        "new": "    struct vo *vo = vo_c->vo;\n\n    if (stop_bilipai_context_fatal(mpctx))\n        return; // before paused/ready shortcuts and any existing queued frame\n\n    if (vo_c->filter->reconfig_happened) {",
+        "old": "    struct vo *vo = vo_c->vo;\n\n    if (vo_c->filter->reconfig_happened) {"
+      },
+      {
+        "count": 1,
+        "new": "    int r = video_output_image(mpctx, &logical_eof);\n    // Requesting filter output can discover the fatal latch. Stop before\n    // VD_WAIT/EOF, hwdec fallback, reconfiguration, or vo_queue_frame.\n    if (stop_bilipai_context_fatal(mpctx))\n        return;\n    MP_TRACE(mpctx,",
+        "old": "    int r = video_output_image(mpctx, &logical_eof);\n    MP_TRACE(mpctx,"
       }
     ],
     "path": "player/video.c"

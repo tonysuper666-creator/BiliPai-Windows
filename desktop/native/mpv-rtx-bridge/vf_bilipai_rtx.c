@@ -67,6 +67,7 @@ struct priv {
     bool disabled, accepted_logged, decoder_ready_logged;
     bool native_pq_renderer_d3d11; // actual retained hwdec driver, not a caller option
     bool native_pq_route; // default-off diagnostic/output branch; no app admission
+    bool context_fatal; // sticky until this entire VO chain is destroyed
     struct bv_mpv_pq_p010_observation pq_p010_observation;
 };
 static wchar_t *utf16(const char *s)
@@ -457,6 +458,7 @@ static bool prepare_bridge(struct mp_filter *vf,const struct mp_image *format)
 static void process(struct mp_filter *vf)
 {
     struct priv *p=vf->priv;
+    if(p->context_fatal){mp_filter_internal_mark_failed(vf);return;}
     struct mp_image *format=mp_refqueue_execute_reinit(p->queue);
     if(format){
         revoke_native_pq(vf);
@@ -480,9 +482,11 @@ static void process(struct mp_filter *vf)
     if(p->native_pq_route&&p->disabled)revoke_native_pq(vf);
     observe_native_pq_p010(vf, in);
     out=step_native_pq_diagnostic(vf,in);
-    if(p->native_pq_route&&p->opts->native_pq_output&&
+    if(p->opts->native_pq_output&&
        bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner)) {
-        // Unknown shared context is not a safe original-picture fallback.
+        // Neither a format change nor disabling this filter recovers the shared
+        // context. Output-chain must stop this VO, not forward original pixels.
+        p->context_fatal=true;
         talloc_free(out);mp_filter_internal_mark_failed(vf);return;
     }
     struct bv_mpv_color color;
@@ -541,8 +545,16 @@ static void uninit(struct mp_filter *vf)
     if(p->queue){mp_refqueue_flush(p->queue);talloc_free(p->queue);}
     av_buffer_unref(&p->hw_pool);av_buffer_unref(&p->av_device_ref);
 }
+static bool command(struct mp_filter *vf,struct mp_filter_command *cmd)
+{
+    if(cmd->type!=MP_FILTER_COMMAND_BILIPAI_CONTEXT_FATAL)return false;
+    struct priv *p=vf->priv;
+    cmd->bilipai_context_fatal=p->context_fatal;
+    return true; // CPU-only sticky observation; no GPU/lease/context operation
+}
 static const struct mp_filter_info filter={
-    .name="bilipai-rtx",.process=process,.reset=flush_frames,.destroy=uninit,.priv_size=sizeof(struct priv),
+    .name="bilipai-rtx",.process=process,.reset=flush_frames,.destroy=uninit,
+    .command=command,.priv_size=sizeof(struct priv),
 };
 static struct mp_filter *create(struct mp_filter *parent,void *options)
 {
