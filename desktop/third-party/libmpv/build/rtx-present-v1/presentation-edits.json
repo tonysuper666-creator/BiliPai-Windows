@@ -1,7 +1,7 @@
 [
   {
-    "afterBytes": 27397,
-    "afterSha256": "c78ca2e83430b3c20a62be6ae3afffa276e3516e5588eb7f8fbbef1ecb5b1f5d",
+    "afterBytes": 28269,
+    "afterSha256": "443c5109fa5cdfe92785d42db8fd81f6570f0982c08842f8df50ace04406390c",
     "beforeBytes": 24865,
     "beforeSha256": "e109dcf181ba517d97c614f6fddc6533689cf6c4b660ac94f1d29c64d85502c0",
     "edits": [
@@ -59,6 +59,16 @@
         "count": 1,
         "new": "        vo_control(p->vo, VOCTRL_GET_DISPLAY_RES, res);\n}\n\nstatic bool bilipai_observe_decoder_frame(struct mp_stream_info *info,\n    const struct mp_image *image,\n    void (*observe)(void *, const struct mp_bilipai_active_decoder *), void *ctx)\n{\n    struct chain *p = info->priv;\n    // Player clears this owner before decoder destruction. Access is on the\n    // main filter graph; no observer pointer is retained by the decoder thread.\n    return p->bilipai_decoder_observer &&\n        mp_decoder_wrapper_bilipai_observe(p->bilipai_decoder_observer, image, observe, ctx);\n}\n\nvoid mp_output_chain_set_bilipai_decoder_observer(struct mp_output_chain *c,\n                                                  struct mp_decoder_wrapper *decoder)\n{\n    struct chain *p = c->f->priv;\n    mp_assert(p->type == MP_OUTPUT_CHAIN_VIDEO);\n    p->bilipai_decoder_observer = decoder;\n    p->stream_info.bilipai_observe_decoder_frame = decoder ? bilipai_observe_decoder_frame : NULL;\n}\n",
         "old": "        vo_control(p->vo, VOCTRL_GET_DISPLAY_RES, res);\n}\n"
+      },
+      {
+        "count": 1,
+        "new": "static bool bilipai_with_decoder_owner(struct mp_stream_info *info,\n    void (*use)(void *, struct mp_decoder_wrapper *), void *ctx)\n{\n    struct chain *p = info->priv;\n    if (!use || !p->bilipai_decoder_observer)\n        return false;\n    struct mp_bilipai_active_decoder active = {0};\n    // Reject groups/unknown/retired decoders using the real existing control.\n    // This query returns after dispatch exclusion; use() is OUTSIDE that lock.\n    if (mp_decoder_wrapper_control(p->bilipai_decoder_observer,\n            VDCTRL_BILIPAI_GET_ACTIVE_DECODER, &active) != CONTROL_TRUE ||\n        !active.instance_id || !active.epoch_id)\n        return false;\n    use(ctx, p->bilipai_decoder_observer);\n    return true; // lifetime borrow only, never a later epoch/GPU/HDR proof\n}\n\nvoid mp_output_chain_set_bilipai_decoder_observer(struct mp_output_chain *c,",
+        "old": "void mp_output_chain_set_bilipai_decoder_observer(struct mp_output_chain *c,"
+      },
+      {
+        "count": 1,
+        "new": "    p->stream_info.bilipai_observe_decoder_frame = decoder ? bilipai_observe_decoder_frame : NULL;\n    p->stream_info.bilipai_with_decoder_owner = decoder ? bilipai_with_decoder_owner : NULL;",
+        "old": "    p->stream_info.bilipai_observe_decoder_frame = decoder ? bilipai_observe_decoder_frame : NULL;"
       }
     ],
     "path": "filters/f_output_chain.c"
@@ -1711,8 +1721,8 @@
     "path": "filters/f_decoder_wrapper.h"
   },
   {
-    "afterBytes": 23713,
-    "afterSha256": "231af7dccd8e156a1034c2096cea6ca0b49c8e6fd0c9cd2952ab559794b61ef6",
+    "afterBytes": 24332,
+    "afterSha256": "bb5c8f7982657ab19eb33521983c7abdddde3dff9160324d95c79fd8106dc72f",
     "beforeBytes": 23244,
     "beforeSha256": "493f064715ba083c1a4a71cbc10f655bd552ff34958d76ebfca8dae440ce979d",
     "edits": [
@@ -1725,6 +1735,16 @@
         "count": 1,
         "new": "    bool force_swdec;\n    // Main output-chain consumer only, after async queue locks are released.\n    // Callback runs lightweight observe while the existing decoder dispatch\n    // lock is held; epoch match is scoped to observation, not future GPU use.\n    bool (*bilipai_observe_decoder_frame)(struct mp_stream_info *,\n        const struct mp_image *,\n        void (*observe)(void *, const struct mp_bilipai_active_decoder *), void *);\n    struct vo *dr_vo; // for calling vo_get_image()\n",
         "old": "    bool force_swdec;\n    struct vo *dr_vo; // for calling vo_get_image()\n"
+      },
+      {
+        "count": 1,
+        "new": "struct mp_bilipai_active_decoder;\nstruct mp_decoder_wrapper;\nstruct mp_stream_info {",
+        "old": "struct mp_bilipai_active_decoder;\nstruct mp_stream_info {"
+      },
+      {
+        "count": 1,
+        "new": "    // Synchronous main/filter owner borrow, after async dequeue unlock.\n    // No decoder/context lock is held by this callback entrance. Player keeps\n    // the direct owner alive until return and clears it before destruction.\n    // The callback may not retain the decoder, reenter graph/track teardown or\n    // mistake this lifetime borrow for readiness/GPU/HDR/display permission.\n    // Every actual control/submit must revalidate its own current scope.\n    bool (*bilipai_with_decoder_owner)(struct mp_stream_info *,\n        void (*use)(void *, struct mp_decoder_wrapper *), void *);\n    struct vo *dr_vo; // for calling vo_get_image()",
+        "old": "    struct vo *dr_vo; // for calling vo_get_image()"
       }
     ],
     "path": "filters/filter.h"

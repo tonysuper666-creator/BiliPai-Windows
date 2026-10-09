@@ -44,6 +44,7 @@
 #include "video/mp_image_pool.h"
 #include "bilipai_rtx_mpv_bridge.h"
 #include "filters/f_decoder_wrapper.h"
+#include "veyra-hdr-caller/bilipai_hdr_vf_owner.h"
 
 struct opts {
     char *dll, *runtime, *project;
@@ -58,6 +59,7 @@ struct priv {
     AVBufferRef *av_device_ref, *hw_pool;
     AVD3D11VADeviceContext *d3d;
     struct bv_mpv_bridge *bridge;
+    struct bv_mpv_hdr_vf_owner *hdr_owner;
     struct mp_image_params params, out_params;
     uint64_t generation, sequence;
     bool disabled, accepted_logged, decoder_ready_logged;
@@ -146,6 +148,33 @@ static void observe_native_pq_p010(struct mp_filter *vf, const struct mp_image *
     // callback match is ONLY at synchronous observation, never GPU epoch proof.
     // Native HDR admission remains closed. None of these observations changes
     // source_color, out_params, effects, decoder current-HDR marker or tokens.
+}
+static void service_hdr_owner_borrowed(void *opaque, struct mp_decoder_wrapper *decoder)
+{
+    struct priv *p = opaque;
+    bv_mpv_hdr_vf_owner_service(p->hdr_owner, decoder);
+}
+static void service_hdr_owner(struct mp_filter *vf)
+{
+    struct priv *p = vf->priv;
+    // Recovery is independent of active/pollable work: failed submit has
+    // already moved the whole generation into bounded quarantine. A new VF
+    // on this same original live lane must not reuse the shared context.
+    if (bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner)) {
+        p->disabled = true;
+        return;
+    }
+    if (!bv_mpv_hdr_vf_owner_has_work(p->hdr_owner)) return;
+    struct mp_stream_info *info = mp_filter_find_stream_info(vf);
+    bool borrowed = info && info->bilipai_with_decoder_owner &&
+        info->bilipai_with_decoder_owner(info, service_hdr_owner_borrowed, p);
+    if (!borrowed) bv_mpv_hdr_vf_owner_service(p->hdr_owner, NULL);
+    if (bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner)) {
+        // A partial scope/Signal/state failure can affect the shared context.
+        // Bypass is not a recovered-context witness; actual owner recovery is
+        // still required. No new HDR output or PRIVATE2 token is exported here.
+        p->disabled = true;
+    }
 }
 static bool source_color(const struct mp_image *image,struct bv_mpv_color *out)
 {
@@ -247,6 +276,8 @@ static void retire_bridge(struct mp_filter *vf)
 static void flush_frames(struct mp_filter *vf)
 {
     struct priv *p=vf->priv;
+    // Retire whole private owner resources; no first-owner reset/rebind.
+    bv_mpv_hdr_vf_owner_reset(p->hdr_owner);
     mp_refqueue_flush(p->queue);
     p->sequence=0;p->accepted_logged=false;p->decoder_ready_logged=false;
     if(p->generation==UINT64_MAX){p->disabled=true;retire_bridge(vf);return;}
@@ -312,13 +343,19 @@ static void process(struct mp_filter *vf)
     struct priv *p=vf->priv;
     struct mp_image *format=mp_refqueue_execute_reinit(p->queue);
     if(format){
+        bv_mpv_hdr_vf_owner_reset(p->hdr_owner);
         retire_bridge(vf);av_buffer_unref(&p->hw_pool);
         p->params=format->params;p->out_params=p->params;p->accepted_logged=false;p->decoder_ready_logged=false;p->sequence=0;
         if(p->generation==UINT64_MAX)p->disabled=true;
-        else {++p->generation;p->disabled=!prepare_bridge(vf,format);}
+        else {++p->generation;p->disabled=
+            bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner)||
+            !prepare_bridge(vf,format);}
     }
     if(!mp_refqueue_can_output(p->queue))return;
     struct mp_image *in=mp_refqueue_get(p->queue,0),*out=NULL;
+    // Actual main-lane service only. No production prepare/authorize/submit
+    // call exists: readiness, CPU/GPU scopes and native HDR stay default0.
+    service_hdr_owner(vf);
     observe_native_pq_p010(vf, in);
     struct bv_mpv_color color;
     if(!p->disabled&&p->bridge&&in&&source_color(in,&color)&&
@@ -368,6 +405,9 @@ static void process(struct mp_filter *vf)
 static void uninit(struct mp_filter *vf)
 {
     struct priv *p=vf->priv;
+    // Pending whole generations survive this VF; no borrowed decoder pointer
+    // or callback into this soon-to-be-destroyed priv is retained.
+    bv_mpv_hdr_vf_owner_detach(&p->hdr_owner);
     retire_bridge(vf);
     if(p->queue){mp_refqueue_flush(p->queue);talloc_free(p->queue);}
     av_buffer_unref(&p->hw_pool);av_buffer_unref(&p->av_device_ref);
@@ -383,6 +423,8 @@ static struct mp_filter *create(struct mp_filter *parent,void *options)
     struct priv *p=f->priv;p->opts=talloc_steal(p,options);p->queue=mp_refqueue_alloc(f);
     if(!p->opts||p->opts->generation<=0)goto fail;
     p->generation=(uint64_t)p->opts->generation;
+    // Optional CPU-only owner allocation failure preserves ordinary playback.
+    bv_mpv_hdr_vf_owner_create(&p->hdr_owner);
     struct mp_stream_info *info=mp_filter_find_stream_info(f);if(!info||!info->hwdec_devs)goto fail;
     struct hwdec_imgfmt_request request={.imgfmt=IMGFMT_D3D11,.probing=false};
     hwdec_devices_request_for_img_fmt(info->hwdec_devs,&request);
