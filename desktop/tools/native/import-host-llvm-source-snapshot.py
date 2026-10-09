@@ -228,6 +228,33 @@ def subtree(rows, prefix):
     return [row for row in rows if row['path'] == prefix or row['path'].startswith(prefix + '/')]
 
 
+def report_missing_link_component(link, component):
+    # Only bounded canonical relative names; never dump the raw link target,
+    # process environment, authentication data, or an arbitrary exception.
+    def bounded_path(value):
+        length = len(value)
+        ordinary = (length <= 256 and value.split('/', 1)[0]
+                    in ('host-install', 'actual-used-source-worktree')
+                    and re.fullmatch(r'[A-Za-z0-9._/-]+', value)
+                    and not any(part in ('', '.', '..') for part in value.split('/')))
+        # The validated static root is not a user-derived opaque component.
+        components = value.split('/')[1:] if ordinary else ()
+        token_like = any(
+            re.search(r'(?i)(token|secret|password|credential|auth|key|gh[pousr]_|github_pat_|bearer)', part)
+            or re.search(r'[A-Za-z0-9_-]{24,}', part)
+            for part in components)
+        return {'path': value if ordinary and not token_like else '<withheld>',
+                'characters': length, 'withheld': not bool(ordinary and not token_like)}
+    try:
+        record = {'schema': 1, 'kind': 'BILIPAI_HOST_LLVM_MISSING_LINK_COMPONENT',
+                  'link': bounded_path(link), 'missingComponent': bounded_path(component)}
+        print('HOST LLVM link rejection: ' + json.dumps(record, sort_keys=True, ensure_ascii=True),
+              file=sys.stderr)
+    except Exception:
+        # Diagnostic failure cannot replace the original strict rejection.
+        pass
+
+
 def validate_links(rows, prefix, absolute_prefix=None):
     table = inventory(rows)
     def mapped(link, target):
@@ -260,6 +287,7 @@ def validate_links(rows, prefix, absolute_prefix=None):
                 path = '/'.join(pending[:size])
                 item = table.get(path)
                 if item is None:
+                    report_missing_link_component(name, path)
                     fail('Dangling symlink path component')
                 if item['kind'] == 'symlink':
                     if path in visited:
