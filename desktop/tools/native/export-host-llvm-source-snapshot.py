@@ -300,14 +300,29 @@ class FixedCrLfAttributes:
         self.run('update-index', '-z', '--index-info', raw=bytes(index))
         self.index_entries = b''.join(row['gitMode'].encode('ascii') + b' ' + row['gitBlob'].encode('ascii')
                                      + b' 0\t' + row['path'].encode('utf-8') + b'\0' for row in rows)
+        self.tree_entries = b''.join(row['gitMode'].encode('ascii') + b' blob ' + row['gitBlob'].encode('ascii')
+                                     + b'\t' + row['path'].encode('utf-8') + b'\0' for row in rows)
+        self.attributes_tree = None
+        self.unchanged_index()
+        # cat-file does not load the disk index for a bare blob object name.
+        # Pin exactly this complete attrs-only index as an immutable tree.
+        tree = self.run('write-tree')
+        if not re.fullmatch(rb'[0-9a-f]{40}\n', tree):
+            raise RuntimeError('Invalid independent attributes tree identity')
+        self.attributes_tree = tree[:-1].decode('ascii')
+        if (self.run('cat-file', '-t', self.attributes_tree) != b'tree\n'
+                or self.run('ls-tree', '-r', '-z', self.attributes_tree) != self.tree_entries):
+            raise RuntimeError('Independent attributes tree differs from complete raw attributes')
         self.unchanged_index()
 
     def unchanged_index(self):
         if (self.run('ls-files', '--stage', '-z') != self.index_entries
                 or set(path.name for path in self.directory.iterdir()) != {'.git'}
                 or (self.directory / '.git/info/attributes').exists()
-                or (self.directory / '.git/info/attributes').is_symlink()):
-            raise RuntimeError('Independent attribute index/worktree changed')
+                or (self.directory / '.git/info/attributes').is_symlink()
+                or (self.attributes_tree is not None
+                    and self.run('write-tree') != self.attributes_tree.encode('ascii') + b'\n')):
+            raise RuntimeError('Independent attribute index/worktree/tree changed')
 
     def qualify(self, name, mode, blob, raw, observed):
         relative_name(name)
@@ -337,11 +352,13 @@ class FixedCrLfAttributes:
         stored = self.run('hash-object', '--no-filters', '-w', '--stdin', raw=raw)
         if stored != blob.encode('ascii') + b'\n':
             raise RuntimeError('Scratch source object changed')
-        # The fresh empty working tree falls back to the COMPLETE index attrs.
+        # Use the same complete raw attributes through an explicit tree source;
+        # do not depend on another process having loaded the attrs-only index.
         # Builtin conversion must prove these exact bytes under the effective
         # attributes; the string "set" alone does not prove a boolean state.
         # No filter/ident/encoding driver can be active in this scratch repo.
-        converted = self.run('cat-file', '--filters', '--path=' + name, blob)
+        converted = self.run('--attr-source=' + self.attributes_tree,
+                             'cat-file', '--filters', '--path=' + name, blob)
         self.unchanged_index()
         if converted != observed:
             raise RuntimeError('Git builtin materialization differs from exact CRLF bytes')
