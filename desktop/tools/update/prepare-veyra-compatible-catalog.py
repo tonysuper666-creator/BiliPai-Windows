@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Offline own full-app catalog validation; signing is explicit and stdin-only.
+"""Offline own full-app catalog validation; signing uses an explicit bounded local key.
 
-No network/publication, DPAPI/key provider, native loading or component activation.
+No network/publication or component activation. Explicit local DPAPI key access
+is optional and occurs only after every full-app acceptance gate succeeds.
 Missing independently hashed acceptance inputs remain PENDING without reading a
 key. Reports are operator-provided evidence, not proof this tool ran their checks.
 The unchanged unsigned preparer remains a separate PENDING-only entry point.
@@ -24,6 +25,7 @@ import zlib
 KEY_ID = "veyra-compatible-v1-102b3faa4e9e82a5"
 PREPARER_SHA256 = "f208765b7e47d10b516a98250c737d0251935fac029d01b30a32af6662c75720"
 SIGNER_SHA256 = "e2e623518b236859d32eefa42cb3167bea56923454c81939932894fd6fb4ed09"
+LOCAL_PROVIDER_SHA256 = "f9e65b0c62d234eae7610988c53d768d3356c09d7d161b0c5fb566b23532d1e8"
 TEMPLATE_SHA256 = "f8e42b715a3c8a7617c5ba9c604a2c5e8e11c5540c767492f0b5c8496e6d3a76"
 VERIFIER_SHA256 = "dc18a8db06e9188fb4f29d3b8ca6d486968cef599fffdd526f2c69ae0e5d2bd1"
 VERIFIED = "VALIDATED_FULL_APPLICATION_BUNDLE"
@@ -56,6 +58,42 @@ def load_preparer():
     return module
 
 
+def load_local_provider():
+    path = Path(__file__).with_name("veyra-local-dpapi-key-provider.py")
+    source = path.read_bytes().replace(b"\r\n", b"\n")
+    require(hashlib.sha256(source).hexdigest() == LOCAL_PROVIDER_SHA256, "LOCAL_PROVIDER_SOURCE_MISMATCH")
+    spec = importlib.util.spec_from_file_location("veyra_local_dpapi_provider", path)
+    require(spec is not None and spec.loader is not None, "LOCAL_PROVIDER_UNAVAILABLE")
+    module = importlib.util.module_from_spec(spec)
+    # Execute the exact verified source bytes, never re-read a replacement file
+    # or consume a neighboring bytecode cache. No native call occurs at import.
+    exec(compile(source, str(path), "exec"), module.__dict__)
+    return module
+
+
+def signing_key(args):
+    from contextlib import contextmanager
+
+    @contextmanager
+    def bounded_stdin():
+        private_der = bytearray(sys.stdin.buffer.read(4097))
+        try:
+            require(1 <= len(private_der) <= 4096, "PKCS8_STDIN_SIZE_INVALID")
+            yield private_der
+        finally:
+            private_der[:] = b"\0" * len(private_der)
+
+    if args.sign_from_local_dpapi_record is None:
+        return bounded_stdin()
+    provider = load_local_provider()
+    # The exact Java source key/SPKI is already pinned; verify it BEFORE key read.
+    source = Path(__file__).with_name("VeyraCatalogEd25519.java").read_bytes().replace(b"\r\n", b"\n")
+    require(hashlib.sha256(source).hexdigest() == SIGNER_SHA256, "SIGNER_SOURCE_MISMATCH")
+    return provider.private_pkcs8(args.sign_from_local_dpapi_record,
+        args.trusted_local_record_sha256, args.local_dpapi_storage_contract,
+        args.java_executable, args.trusted_java_executable_sha256)
+
+
 def parse_object(raw, pending):
     value = json.loads(raw.decode("utf-8"), object_pairs_hook=pending.unique_object,
                        parse_constant=pending.reject_json_constant)
@@ -70,8 +108,9 @@ def leaf(mode, payload, extra, java_executable):
     require(hashlib.sha256(source).hexdigest() == SIGNER_SHA256, "SIGNER_SOURCE_MISMATCH")
     frame = bytearray(struct.pack(">II", 0x42564331, len(payload)) + payload + struct.pack(">I", len(extra)) + extra)
     environment = os.environ.copy()
-    for name in ("GH_TOKEN", "GITHUB_TOKEN", "JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS"):
-        environment.pop(name, None)
+    for name in list(environment):
+        if name.upper() in ("GH_TOKEN", "GITHUB_TOKEN", "JAVA_TOOL_OPTIONS", "JDK_JAVA_OPTIONS", "_JAVA_OPTIONS", "CLASSPATH"):
+            environment.pop(name, None)
     try:
         # Execute only the hash-pinned source copy. No key in argv, env or disk.
         with tempfile.TemporaryDirectory(prefix="bilipai-catalog-leaf-") as temporary:
@@ -256,15 +295,14 @@ def prepare(args, pending):
               "missingEvidence": missing, "reportedEvidence": inputs, "checksExecutedHere": False,
               "published": False, "feedWritten": False, "installed": False, "componentSelected": False,
               "privateEngineActivated": False, "gpuVerified": False,
-              "localDpapiPkcs8ProviderImplemented": False}
+              "localDpapiPkcs8ProviderImplemented": True,
+              "localDpapiKeyCompatibilityVerified": False}
     if report is not None:
         result["state"] = "FULL_APP_ACCEPTANCE_RECORDED_AWAITING_SIGNATURE"
-        if args.sign_from_pkcs8_stdin:
-            # No missing material can reach this key read. Caller/provider sends
-            # raw DER only, not a DPAPI blob/base64/filename; provider is not supplied.
-            private_der = bytearray(sys.stdin.buffer.read(4097))
-            try:
-                require(1 <= len(private_der) <= 4096, "PKCS8_STDIN_SIZE_INVALID")
+        if args.sign_from_pkcs8_stdin or args.sign_from_local_dpapi_record is not None:
+            # No missing acceptance material can reach stdin or DPAPI key read.
+            # Private DER goes only into leaf's bounded BVC1 framed child pipe.
+            with signing_key(args) as private_der:
                 selected = {**payload, "compatibilityStatus": VERIFIED}
                 encoded = (json.dumps(selected, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
                 signed = leaf("sign", encoded, private_der, args.java_executable)
@@ -278,9 +316,8 @@ def prepare(args, pending):
                 with (output / (name + ".sha256")).open("xb") as stream:
                     stream.write((catalog_sha + "  " + name + "\n").encode("ascii")); stream.flush(); os.fsync(stream.fileno())
                 result.update(state="SIGNED_FULL_APPLICATION_CATALOG", signed=True, offerValidated=True,
-                              catalogSha256=catalog_sha, catalogBytes=len(signed), catalogAssetName=name)
-            finally:
-                private_der[:] = b"\0" * len(private_der)
+                              catalogSha256=catalog_sha, catalogBytes=len(signed), catalogAssetName=name,
+                              localDpapiKeyCompatibilityVerified=args.sign_from_local_dpapi_record is not None)
     write_new(args.output_directory / "catalog-preparation-result.json", result)
     return result
 
@@ -290,12 +327,22 @@ def main():
         pending = load_preparer()
         cli = pending.parser()
         cli.description = __doc__
-        cli.add_argument("--sign-from-pkcs8-stdin", action="store_true")
+        signing = cli.add_mutually_exclusive_group()
+        signing.add_argument("--sign-from-pkcs8-stdin", action="store_true")
+        signing.add_argument("--sign-from-local-dpapi-record", type=Path)
+        cli.add_argument("--trusted-local-record-sha256")
+        cli.add_argument("--local-dpapi-storage-contract")
+        cli.add_argument("--trusted-java-executable-sha256")
         cli.add_argument("--java-executable", default="java")
         for name in EVIDENCE_INPUTS:
             cli.add_argument("--" + name.replace("_", "-"), type=Path)
             cli.add_argument("--trusted-" + name.replace("_", "-") + "-sha256")
-        result = prepare(cli.parse_args(), pending)
+        args = cli.parse_args()
+        local = args.sign_from_local_dpapi_record is not None
+        require(all((value is not None) == local for value in
+                    (args.trusted_local_record_sha256, args.local_dpapi_storage_contract,
+                     args.trusted_java_executable_sha256)), "LOCAL_PROVIDER_OPTIONS_MUST_BE_PAIRED")
+        result = prepare(args, pending)
     except (CatalogError, ValueError, OSError, KeyError, TypeError, RecursionError, zipfile.BadZipFile, zlib.error, NotImplementedError):
         # No raw input, key/provider/process exception or report pathname escapes.
         print(json.dumps({"state": "REJECTED", "signed": False, "offerValidated": False,
