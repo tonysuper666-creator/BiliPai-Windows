@@ -19,7 +19,10 @@ struct bv_mpv_config {
 };
 /* SDR only: primaries must be BT709; matrix=0 RGB, 1 BT601, 2 BT709;
    transfer=0 sRGB, 1 BT1886/gamma2.4. Unknown/HDR goes around this bridge. */
-struct bv_mpv_color { uint32_t matrix, limited, transfer, chroma; };
+/* Private same-MPV call contract only: rgb10_qualified is set exclusively
+   by the strict CURRENT X2BGR10 gate and must match the actual DXGI texture.
+   This is not the public core ABI or its reserved field. */
+struct bv_mpv_color { uint32_t matrix, limited, transfer, chroma, rgb10_qualified; };
 int bv_mpv_bridge_create(const struct bv_mpv_config *, struct bv_mpv_bridge **,
                          bv_status_v1 *);
 /* process consumes input_lease/output_lease on every path; keep mp_image refs until

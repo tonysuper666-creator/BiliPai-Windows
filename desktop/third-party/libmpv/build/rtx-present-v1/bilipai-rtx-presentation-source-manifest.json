@@ -28,23 +28,23 @@
   "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
   "sourceFiles": [
     {
-      "bytes": 13983,
+      "bytes": 14512,
       "fileName": "vf_bilipai_rtx.c",
-      "sha256": "bdb91ac9f74aa4f41a467d50edf797002cb005b575aeddb2a020c3e5ad366eda",
+      "sha256": "4451dcbeb54ecf799033da45bbcf1682d647e8d6cbd22eaf1118fa3fa7ae09d5",
       "sourcePath": "desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c",
       "targetPath": "video/filter/vf_bilipai_rtx.c"
     },
     {
-      "bytes": 29452,
+      "bytes": 29799,
       "fileName": "bilipai_rtx_mpv_bridge.c",
-      "sha256": "5e3824b12e16eea6205a7ae9bec8dcc5e46be9ad53e1092af0e929d081e94881",
+      "sha256": "c9dfa89403478ddf0f33f1b47d90d1068a57126a624001c4abb48158c0ed92fb",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c",
       "targetPath": "video/filter/bilipai_rtx_mpv_bridge.c"
     },
     {
-      "bytes": 1998,
+      "bytes": 2229,
       "fileName": "bilipai_rtx_mpv_bridge.h",
-      "sha256": "6dd47b1465f69c43b212dc846a91401ca8c6d8392930ff75f6ddb34e5be9061e",
+      "sha256": "a4b67b99c5c5b7895e4b8860417e2b91876fedbb7180bb920237626188f47dc2",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.h",
       "targetPath": "video/filter/bilipai_rtx_mpv_bridge.h"
     },
@@ -56,16 +56,16 @@
       "targetPath": "video/filter/bilipai_veyra_core_v1.h"
     },
     {
-      "bytes": 3492,
+      "bytes": 4061,
       "fileName": "bilipai_rtx_frame_provenance.h",
-      "sha256": "a1dba6d153ddf7e223f20f7a144a9d6f90daf5a48c8431ec05d135280bb757a5",
+      "sha256": "b571c188323313981fe4c84d78e90c543ef4fee6ab75497eca406db400becc55",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
       "targetPath": "video/bilipai_rtx_frame_provenance.h"
     }
   ],
-  "tokenProtocol": 1,
+  "tokenProtocol": 2,
   "upstreamEditsFileName": "presentation-edits.json",
-  "upstreamEditsSha256": "c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064",
+  "upstreamEditsSha256": "ff8e01f7e732eacbde82e58bb8ea192236b9425eea2b126005f0dd6453dc1216",
   "variant": "bilipai-veyra-rtx-present-v1",
   "vfgImplemented": false
 }

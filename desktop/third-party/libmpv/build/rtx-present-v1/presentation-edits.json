@@ -1,7 +1,7 @@
 [
   {
-    "afterBytes": 25496,
-    "afterSha256": "9355e757caeb5f777789191e9b0d30fdcf8aa22a4ffca1952465a9ff0f7421b0",
+    "afterBytes": 26160,
+    "afterSha256": "8882e38a56fdbc342f4e65c565b54e68c3e4398259f997de22bcf3a23f46c8dc",
     "beforeBytes": 24865,
     "beforeSha256": "e109dcf181ba517d97c614f6fddc6533689cf6c4b660ac94f1d29c64d85502c0",
     "edits": [
@@ -14,13 +14,23 @@
         "count": 1,
         "new": "        if (frame.type == MP_FRAME_VIDEO &&\n            !mp_image_bilipai_token_matches(frame.data))\n            ((struct mp_image *)frame.data)->bilipai_rtx =\n                (struct mp_bilipai_frame_token){0};\n        mp_pin_in_write(f->ppins[1], frame);\n\n        struct mp_filter_command",
         "old": "        mp_pin_in_write(f->ppins[1], frame);\n\n        struct mp_filter_command"
+      },
+      {
+        "count": 1,
+        "new": "        if (frame.type == MP_FRAME_VIDEO && strcmp(u->name, \"bilipai-rtx\") &&\n            u != p->input && u != p->output && u != p->convert_wrapper) {\n            ((struct mp_image *)frame.data)->bilipai_rtx =\n                (struct mp_bilipai_frame_token){0};\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range =\n                MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n        }",
+        "old": "        if (frame.type == MP_FRAME_VIDEO && strcmp(u->name, \"bilipai-rtx\") &&\n            u != p->input && u != p->output && u != p->convert_wrapper)\n            ((struct mp_image *)frame.data)->bilipai_rtx =\n                (struct mp_bilipai_frame_token){0};"
+      },
+      {
+        "count": 1,
+        "new": "        // The private RTX producer replaces params after copy_attributes.\n        // A successfully processed output is a new pixel buffer; keep pure\n        // bypass references (no processing token) under their existing proof.\n        if (frame.type == MP_FRAME_VIDEO && !strcmp(u->name, \"bilipai-rtx\") &&\n            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx))\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range =\n                MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n        if (frame.type == MP_FRAME_VIDEO &&\n            !mp_image_bilipai_token_matches(frame.data))",
+        "old": "        if (frame.type == MP_FRAME_VIDEO &&\n            !mp_image_bilipai_token_matches(frame.data))"
       }
     ],
     "path": "filters/f_output_chain.c"
   },
   {
-    "afterBytes": 300115,
-    "afterSha256": "9df3d5b508b6f01bc8673a1783a3b75c340498e73a8f32ee9ec6863f5726dcb0",
+    "afterBytes": 300197,
+    "afterSha256": "239cde3ca70f9d0f80d919249c3267d0d519c0d9c44243803b2c9ccbdfc38d11",
     "beforeBytes": 296818,
     "beforeSha256": "337b47f129f375a4e7b27ea568686eab01d2c1608197c717ca73cb8c02a4a6c3",
     "edits": [
@@ -43,13 +53,28 @@
         "count": 1,
         "new": "    BP_I(\"target-primaries\", r->render.target_primaries);\n    BP_I(\"framebuffer-transfer\", r->render.framebuffer_transfer);\n    BP_I(\"framebuffer-primaries\", r->render.framebuffer_primaries);\n#undef BP_I",
         "old": "    BP_I(\"target-primaries\", r->render.target_primaries);\n#undef BP_I"
+      },
+      {
+        "count": 1,
+        "new": "    BP_I(\"transport\", t->transport); BP_I(\"hdr-peak-nits\", t->hdr_peak_nits);\n    BP_I(\"source-kind\", t->source_kind); BP_I(\"output-intent\", t->output_intent);",
+        "old": "    BP_I(\"transport\", t->transport); BP_I(\"hdr-peak-nits\", t->hdr_peak_nits);"
+      },
+      {
+        "count": 1,
+        "new": "        p.version != 2 || !p.serial || p.serial > INT64_MAX || p.epoch > INT64_MAX)",
+        "old": "        p.version != 1 || !p.serial || p.serial > INT64_MAX || p.epoch > INT64_MAX)"
+      },
+      {
+        "count": 1,
+        "new": "    node_map_add(&node, \"schema\", MPV_FORMAT_INT64)->u.int64 = 2;",
+        "old": "    node_map_add(&node, \"schema\", MPV_FORMAT_INT64)->u.int64 = 1;"
       }
     ],
     "path": "player/command.c"
   },
   {
-    "afterBytes": 54284,
-    "afterSha256": "6677238bffe254edb335981fa503ad1c9795a2ad55721f2e72a877325827ed3b",
+    "afterBytes": 59491,
+    "afterSha256": "4917ed3e0764f8beb0599a2f388fab241cda268cfbcec2b2e3e302f089f9e909",
     "beforeBytes": 50325,
     "beforeSha256": "99165df2282547cec1ec020338d472f594040a0d46d11c642a2828b778ed306c",
     "edits": [
@@ -97,13 +122,108 @@
         "count": 1,
         "new": "    mp_image_params_restore_dovi_mapping(&params);\n    params.bilipai_params_export_tag = MP_BILIPAI_PARAMS_EXPORT_TAG;\n    pl_avframe_set_repr(dst, params.repr);",
         "old": "    mp_image_params_restore_dovi_mapping(&params);\n    pl_avframe_set_repr(dst, params.repr);"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_sethwfmt(struct mp_image *mpi, enum mp_imgfmt hw_fmt, enum mp_imgfmt sw_fmt)\n{\n    mpi->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    struct mp_imgfmt_desc fmt",
+        "old": "void mp_image_sethwfmt(struct mp_image *mpi, enum mp_imgfmt hw_fmt, enum mp_imgfmt sw_fmt)\n{\n    struct mp_imgfmt_desc fmt"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_set_size(image, params->w, params->h);\n    image->params = *params;\n    image->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n}",
+        "old": "    mp_image_set_size(image, params->w, params->h);\n    image->params = *params;\n}"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_copy(new, img);\n    mp_image_copy_attributes(new, img);\n    mp_image_bilipai_rgb10_restore_copy(new, img);\n    new->bilipai_rtx",
+        "old": "    mp_image_copy(new, img);\n    mp_image_copy_attributes(new, img);\n    new->bilipai_rtx"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_make_writeable(struct mp_image *img)\n{\n    img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    img->bilipai_rtx",
+        "old": "bool mp_image_make_writeable(struct mp_image *img)\n{\n    img->bilipai_rtx"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_copy(struct mp_image *dst, struct mp_image *src)\n{\n    dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    mp_assert(dst->imgfmt",
+        "old": "void mp_image_copy(struct mp_image *dst, struct mp_image *src)\n{\n    mp_assert(dst->imgfmt"
+      },
+      {
+        "count": 1,
+        "new": "static bool bilipai_rgb10_sdr_params(const struct mp_image_params *p)\n{\n    int effective = p->hw_subfmt ? p->hw_subfmt : p->imgfmt;\n    return effective == IMGFMT_X2BGR10 && p->repr.sys == PL_COLOR_SYSTEM_RGB &&\n           p->color.primaries == PL_COLOR_PRIM_BT_709 &&\n           (p->color.transfer == PL_COLOR_TRC_SRGB ||\n            p->color.transfer == PL_COLOR_TRC_BT_1886);\n}\n\nvoid mp_image_bilipai_rgb10_restore_copy(struct mp_image *dst,\n                                         const struct mp_image *src)\n{\n    // Metadata range guessing never changes pixel samples. Only the caller's\n    // successful same-effective-format operation supplies the copy proof.\n    dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    if (dst == src || dst->w != src->w || dst->h != src->h ||\n        dst->params.w != dst->w || dst->params.h != dst->h ||\n        src->params.w != src->w || src->params.h != src->h ||\n        !bilipai_rgb10_sdr_params(&dst->params) ||\n        !bilipai_rgb10_sdr_params(&src->params))\n        return;\n    uint8_t range = src->params.bilipai_rgb10_current_range;\n    if (range == MP_BILIPAI_RGB10_RANGE_FULL ||\n        range == MP_BILIPAI_RGB10_RANGE_LIMITED)\n        dst->params.bilipai_rgb10_current_range = range;\n}\n\nstatic enum pl_color_system mp_image_params_get_forced_csp(struct mp_image_params *params)",
+        "old": "static enum pl_color_system mp_image_params_get_forced_csp(struct mp_image_params *params)"
+      },
+      {
+        "count": 1,
+        "new": "    mp_assert(dst != src);\n    dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    dst->bilipai_rtx = (struct mp_bilipai_frame_token){0}; // general transform",
+        "old": "    mp_assert(dst != src);\n    dst->bilipai_rtx = (struct mp_bilipai_frame_token){0}; // general transform"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_clear(struct mp_image *img, int x0, int y0, int x1, int y1)\n{\n    img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n",
+        "old": "void mp_image_clear(struct mp_image *img, int x0, int y0, int x1, int y1)\n{\n"
+      },
+      {
+        "count": 1,
+        "new": "         p1->bilipai_rgb10_source_explicit != p2->bilipai_rgb10_source_explicit ||\n         p1->bilipai_rgb10_current_range != p2->bilipai_rgb10_current_range))",
+        "old": "         p1->bilipai_rgb10_source_explicit != p2->bilipai_rgb10_source_explicit))"
+      },
+      {
+        "count": 1,
+        "new": "        dst->params.levels_orig == PL_COLOR_LEVELS_FULL;\n    // A decoded import is a new pixel-buffer boundary; resolved RGB guessing\n    // is not. Unknown raw tuple/range must never supply this qualification.\n    if (bilipai_rgb10_sdr_params(&dst->params)) {\n        if (dst->params.levels_orig == PL_COLOR_LEVELS_FULL)\n            dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_FULL;\n        else if (dst->params.levels_orig == PL_COLOR_LEVELS_LIMITED)\n            dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_LIMITED;\n    }\n    // Own mp_image_to_av_frame",
+        "old": "        dst->params.levels_orig == PL_COLOR_LEVELS_FULL;\n    // Own mp_image_to_av_frame"
+      },
+      {
+        "count": 1,
+        "new": "    if (src->opaque_ref && src->opaque_ref->size == sizeof(struct mp_image_params)) {\n        const struct mp_image_params *p = (void *)src->opaque_ref->data;\n        if (p->bilipai_params_export_tag == MP_BILIPAI_PARAMS_EXPORT_TAG) {\n            dst->params.stereo3d = p->stereo3d;\n            // Might be incorrect if colorspace changes.\n            dst->params.light = p->light;\n            dst->params.no_dovi = p->no_dovi;\n            dst->params.no_enhancement_layer = p->no_enhancement_layer;\n#if LIBAVUTIL_VERSION_INT < AV_VERSION_INT(60, 11, 100)\n            dst->params.repr.alpha = p->repr.alpha;\n#endif\n        }\n    }",
+        "old": "    if (src->opaque_ref) {\n        struct mp_image_params *p = (void *)src->opaque_ref->data;\n        dst->params.stereo3d = p->stereo3d;\n        // Might be incorrect if colorspace changes.\n        dst->params.light = p->light;\n        dst->params.no_dovi = p->no_dovi;\n        dst->params.no_enhancement_layer = p->no_enhancement_layer;\n#if LIBAVUTIL_VERSION_INT < AV_VERSION_INT(60, 11, 100)\n        dst->params.repr.alpha = p->repr.alpha;\n#endif\n    }"
+      },
+      {
+        "count": 1,
+        "new": "        if (src->opaque_ref->size != sizeof(struct mp_image_params)) {\n            dst->params.bilipai_rgb10_source_explicit = false;\n            dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n",
+        "old": "        if (src->opaque_ref->size != sizeof(struct mp_image_params)) {\n            dst->params.bilipai_rgb10_source_explicit = false;\n"
+      },
+      {
+        "count": 1,
+        "new": "            if (p->bilipai_params_export_tag != MP_BILIPAI_PARAMS_EXPORT_TAG) {\n                dst->params.bilipai_rgb10_source_explicit = false;\n                dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n",
+        "old": "            if (p->bilipai_params_export_tag != MP_BILIPAI_PARAMS_EXPORT_TAG) {\n                dst->params.bilipai_rgb10_source_explicit = false;\n"
+      },
+      {
+        "count": 1,
+        "new": "                    p->levels_orig == dst->params.levels_orig && p->repr.levels == p->levels_orig;\n                // Preserve only an already-qualified owned pixel buffer.\n                // UNKNOWN cannot become FULL from exported guessed metadata;\n                // known LIMITED exported as guessed FULL becomes UNKNOWN too.\n                if (!bilipai_rgb10_sdr_params(p) || p->w != dst->w || p->h != dst->h ||\n                    p->bilipai_rgb10_current_range != dst->params.bilipai_rgb10_current_range ||\n                    p->sys_orig != dst->params.sys_orig ||\n                    p->primaries_orig != dst->params.primaries_orig ||\n                    p->transfer_orig != dst->params.transfer_orig ||\n                    p->levels_orig != dst->params.levels_orig)\n                    dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n            }\n",
+        "old": "                    p->levels_orig == dst->params.levels_orig && p->repr.levels == p->levels_orig;\n            }\n"
+      },
+      {
+        "count": 1,
+        "new": "static bool bilipai_rgb10_limited_pixels(const struct mp_image_params *p)\n{\n    // Only an existing pixel qualification can correct MPV's RGB metadata.\n    // The raw tuple was captured before inference; guesses cannot seed it.\n    return bilipai_rgb10_sdr_params(p) &&\n           p->bilipai_rgb10_current_range == MP_BILIPAI_RGB10_RANGE_LIMITED &&\n           !p->bilipai_rgb10_source_explicit &&\n           p->sys_orig == PL_COLOR_SYSTEM_RGB && p->repr.sys == p->sys_orig &&\n           p->primaries_orig == PL_COLOR_PRIM_BT_709 &&\n           p->color.primaries == p->primaries_orig &&\n           p->color.transfer == p->transfer_orig &&\n           p->levels_orig == PL_COLOR_LEVELS_LIMITED &&\n           (p->repr.levels == PL_COLOR_LEVELS_FULL ||\n            p->repr.levels == PL_COLOR_LEVELS_LIMITED);\n}\n\nvoid mp_image_bilipai_rgb10_restore_copy(struct mp_image *dst,\n                                         const struct mp_image *src)",
+        "old": "void mp_image_bilipai_rgb10_restore_copy(struct mp_image *dst,\n                                         const struct mp_image *src)"
+      },
+      {
+        "count": 1,
+        "new": "    if (range == MP_BILIPAI_RGB10_RANGE_FULL ||\n        range == MP_BILIPAI_RGB10_RANGE_LIMITED)\n        dst->params.bilipai_rgb10_current_range = range;\n    if (range == MP_BILIPAI_RGB10_RANGE_LIMITED) {\n        // copy_attributes guessed FULL before this completed pixel copy.\n        // Synchronize only from the same qualified source's original tuple.\n        if (bilipai_rgb10_limited_pixels(&src->params) &&\n            bilipai_rgb10_limited_pixels(&dst->params))\n            dst->params.repr.levels = PL_COLOR_LEVELS_LIMITED;\n        else\n            dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    }\n}",
+        "old": "    if (range == MP_BILIPAI_RGB10_RANGE_FULL ||\n        range == MP_BILIPAI_RGB10_RANGE_LIMITED)\n        dst->params.bilipai_rgb10_current_range = range;\n}"
+      },
+      {
+        "count": 1,
+        "new": "    } else if (forced_csp == PL_COLOR_SYSTEM_RGB) {\n        bool qualified_limited = bilipai_rgb10_limited_pixels(params);\n        params->repr.sys = PL_COLOR_SYSTEM_RGB;\n        params->repr.levels = qualified_limited ? PL_COLOR_LEVELS_LIMITED\n                                                 : PL_COLOR_LEVELS_FULL;\n",
+        "old": "    } else if (forced_csp == PL_COLOR_SYSTEM_RGB) {\n        params->repr.sys = PL_COLOR_SYSTEM_RGB;\n        params->repr.levels = PL_COLOR_LEVELS_FULL;\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (t->source_kind != MP_BILIPAI_SOURCE_SDR_BT709) return false;\n    if (t->output_intent == MP_BILIPAI_OUTPUT_SDR_SRGB &&\n        t->transport == MP_BILIPAI_SRGB_BGRA8)\n        return",
+        "old": "    if (t->transport == MP_BILIPAI_SRGB_BGRA8)\n        return"
+      },
+      {
+        "count": 1,
+        "new": "    if (t->output_intent != MP_BILIPAI_OUTPUT_SDR_TO_HDR ||\n        t->transport != MP_BILIPAI_HDR10_RGB10) return false;\n    return img->params.hw_subfmt == IMGFMT_X2BGR10 &&",
+        "old": "    return img->params.hw_subfmt == IMGFMT_X2BGR10 &&"
       }
     ],
     "path": "video/mp_image.c"
   },
   {
-    "afterBytes": 10423,
-    "afterSha256": "5d9f7318ed4272b789198337e35a6da822d4440f7fba032f7b2a3af142ce1ef3",
+    "afterBytes": 11777,
+    "afterSha256": "bc4c5197f1ed1c77c687625630bed9e018c515a20de7d208c3e8729920e9378c",
     "beforeBytes": 9703,
     "beforeSha256": "dd24eaacb29b8c16d450425db88904b33bc6ccc185e3b82e4689283f5fa1b92f",
     "edits": [
@@ -131,13 +251,38 @@
         "count": 1,
         "new": "#define MP_IMGFIELD_INTERLACED 0x20\n\n#define MP_BILIPAI_PARAMS_EXPORT_TAG UINT32_C(0x42565031)\n",
         "old": "#define MP_IMGFIELD_INTERLACED 0x20\n"
+      },
+      {
+        "count": 1,
+        "new": "// Layout v2: the new uint8_t uses former bool padding. Size alone cannot\n// distinguish an old opaque export, so every owned export carries a new tag.\n#define MP_BILIPAI_PARAMS_EXPORT_TAG UINT32_C(0x42565032)\n\nenum mp_bilipai_rgb10_range {\n    MP_BILIPAI_RGB10_RANGE_UNKNOWN = 0,\n    MP_BILIPAI_RGB10_RANGE_FULL = 1,\n    MP_BILIPAI_RGB10_RANGE_LIMITED = 2,\n};",
+        "old": "#define MP_BILIPAI_PARAMS_EXPORT_TAG UINT32_C(0x42565031)"
+      },
+      {
+        "count": 1,
+        "new": "    bool bilipai_rgb10_source_explicit;\n    // Current pixel buffer range, independent of guessed/resolved metadata\n    // and historical levels_orig. Only explicit import or a proved byte copy\n    // can retain it; generic transforms invalidate it. No new gate uses it yet.\n    uint8_t bilipai_rgb10_current_range;\n    // Set only in the owned AVFrame export's copied parameters.",
+        "old": "    bool bilipai_rgb10_source_explicit;\n    // Set only in the owned AVFrame export's copied parameters."
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_copy_attributes(struct mp_image *dmpi, struct mp_image *mpi);\n// Call only after a completed exact copy/transfer/map and final attributes.\nvoid mp_image_bilipai_rgb10_restore_copy(struct mp_image *dst,\n                                         const struct mp_image *src);\nbool mp_image_bilipai_token_matches",
+        "old": "void mp_image_copy_attributes(struct mp_image *dmpi, struct mp_image *mpi);\nbool mp_image_bilipai_token_matches"
+      },
+      {
+        "count": 1,
+        "new": "#include <inttypes.h>\n#include <stddef.h>\n#include \"video/bilipai_rtx_frame_provenance.h\"",
+        "old": "#include <inttypes.h>\n#include \"video/bilipai_rtx_frame_provenance.h\""
+      },
+      {
+        "count": 1,
+        "new": "// Keep the uint32 tag at its original offset: the range byte consumes only\n// the former bool padding. The upgraded export tag is still mandatory.\n_Static_assert(sizeof(bool) == 1 &&\n    offsetof(struct mp_image_params, bilipai_rgb10_current_range) ==\n        offsetof(struct mp_image_params, bilipai_rgb10_source_explicit) + 1 &&\n    offsetof(struct mp_image_params, bilipai_params_export_tag) ==\n        offsetof(struct mp_image_params, bilipai_rgb10_source_explicit) + 4,\n    \"Private RGB10 range must fit the prior owned-export padding\");\n\n/* Memory management:\n * - mp_image is a light-weight reference",
+        "old": "/* Memory management:\n * - mp_image is a light-weight reference"
       }
     ],
     "path": "video/mp_image.h"
   },
   {
-    "afterBytes": 36431,
-    "afterSha256": "e89fc9d7fad9665d88a051525661c562c29a4d4da382c47b890f1246a1af7d6a",
+    "afterBytes": 36441,
+    "afterSha256": "a4c1bf4d35b8d99171801eada5b7b7b8f6a67ff1fa6c3ed5b2a56e00935fc3b1",
     "beforeBytes": 20109,
     "beforeSha256": "8f0f70c2ac7cf3cd50e810f2d6b621751e38e4d8b428ceb62d2d07968c91981d",
     "edits": [
@@ -310,6 +455,16 @@
         "count": 1,
         "new": "    // Native child/sibling overlays are also conservatively excluded.\n    HWND overlay = GetTopWindow(w);\n    for (unsigned n = 0; overlay; ++n) {\n        if (n == 256 || overlay == w || !IsWindow(overlay)) return false;\n        if (IsWindowVisible(overlay)) {\n            RECT bounds, overlap;\n            if (!GetWindowRect(overlay, &bounds) ||\n                IntersectRect(&overlap, &bounds, &video)) return false;\n        }\n        overlay = GetWindow(overlay, GW_HWNDNEXT);\n    }\n    HWND child = w;",
         "old": "    // Native child/sibling overlays are also conservatively excluded.\n    HWND child = w;"
+      },
+      {
+        "count": 1,
+        "new": "    bool hdr = r->token.output_intent == MP_BILIPAI_OUTPUT_SDR_TO_HDR;",
+        "old": "    bool hdr = !!(r->token.effects & MP_BILIPAI_EFFECT_HDR);"
+      },
+      {
+        "count": 1,
+        "new": "    p->bilipai_feedback.version = 2;",
+        "old": "    p->bilipai_feedback.version = 1;"
       }
     ],
     "path": "video/out/d3d11/context.c"
@@ -500,5 +655,77 @@
       }
     ],
     "path": "video/out/vo_gpu.c"
+  },
+  {
+    "afterBytes": 15641,
+    "afterSha256": "199bd37533fd567ce070cd08cbb23589beebc883c8f925efbdd029b15118d9c9",
+    "beforeBytes": 15204,
+    "beforeSha256": "8c61e74c7cecf118660e1dfc573b55c68237fcc0921cd429c76881fcbf6d821e",
+    "edits": [
+      {
+        "count": 1,
+        "new": "    if (new) {\n        mp_image_copy(new, img);\n        mp_image_copy_attributes(new, img);\n        mp_image_bilipai_rgb10_restore_copy(new, img);\n    }\n    return new;",
+        "old": "    if (new) {\n        mp_image_copy(new, img);\n        mp_image_copy_attributes(new, img);\n    }\n    return new;"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_pool_make_writeable(struct mp_image_pool *pool,\n                                  struct mp_image *img)\n{\n    img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    if (mp_image_is_writeable(img))",
+        "old": "bool mp_image_pool_make_writeable(struct mp_image_pool *pool,\n                                  struct mp_image *img)\n{\n    if (mp_image_is_writeable(img))"
+      },
+      {
+        "count": 1,
+        "new": "        mp_image_set_size(dst, src->w, src->h);\n        mp_image_copy_attributes(dst, src);\n        mp_image_bilipai_rgb10_restore_copy(dst, src);\n    } else {",
+        "old": "        mp_image_set_size(dst, src->w, src->h);\n        mp_image_copy_attributes(dst, src);\n    } else {"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_hw_upload(struct mp_image *hw_img, struct mp_image *src)\n{\n    hw_img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    if (hw_img->w != src->w || hw_img->h != src->h)",
+        "old": "bool mp_image_hw_upload(struct mp_image *hw_img, struct mp_image *src)\n{\n    if (hw_img->w != src->w || hw_img->h != src->h)"
+      },
+      {
+        "count": 1,
+        "new": "    if (ok) {\n        mp_image_copy_attributes(hw_img, src);\n        mp_image_bilipai_rgb10_restore_copy(hw_img, src);\n    }\n    return ok;",
+        "old": "    if (ok)\n        mp_image_copy_attributes(hw_img, src);\n    return ok;"
+      },
+      {
+        "count": 1,
+        "new": "    if (!mp_image_hw_upload(dst, src)) {\n        talloc_free(dst);\n        return NULL;\n    }\n\n    mp_image_copy_attributes(dst, src);\n    mp_image_bilipai_rgb10_restore_copy(dst, src);\n    return dst;",
+        "old": "    if (!mp_image_hw_upload(dst, src)) {\n        talloc_free(dst);\n        return NULL;\n    }\n\n    mp_image_copy_attributes(dst, src);\n    return dst;"
+      },
+      {
+        "count": 1,
+        "new": "    struct mp_image *dst = mp_image_from_av_frame(dst_frame);\n    av_frame_free(&dst_frame);\n    if (!dst)\n        return NULL;\n\n    mp_image_copy_attributes(dst, src);\n    mp_image_bilipai_rgb10_restore_copy(dst, src);\n    return dst;",
+        "old": "    struct mp_image *dst = mp_image_from_av_frame(dst_frame);\n    av_frame_free(&dst_frame);\n    if (!dst)\n        return NULL;\n\n    mp_image_copy_attributes(dst, src);\n    return dst;"
+      }
+    ],
+    "path": "video/mp_image_pool.c"
+  },
+  {
+    "afterBytes": 15727,
+    "afterSha256": "b3e5b6241ffb00f3341a1d8a6495f8d5dec1c92e209e65cec7c45f0fd6b8c39f",
+    "beforeBytes": 15425,
+    "beforeSha256": "ad92a020f4819a3f0b3909e257d7d591bfd7cdd914b7baf28738bfec7f98a3db",
+    "edits": [
+      {
+        "count": 1,
+        "new": "int mp_sws_scale(struct mp_sws_context *ctx, struct mp_image *dst,\n                 struct mp_image *src)\n{\n    // f_swscale may have assigned the whole out_params after attributes.\n    // Clear before capturing ctx->dst and before BOTH swscale/zimg paths.\n    // Their metadata/return code is not exact current-buffer range proof.\n    dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    ctx->src = src->params;",
+        "old": "int mp_sws_scale(struct mp_sws_context *ctx, struct mp_image *dst,\n                 struct mp_image *src)\n{\n    ctx->src = src->params;"
+      }
+    ],
+    "path": "video/sws_utils.c"
+  },
+  {
+    "afterBytes": 10315,
+    "afterSha256": "f4ba1861d9d4c511499a452422603b50e883327a434c6a131084fa4c738b248f",
+    "beforeBytes": 10170,
+    "beforeSha256": "f9520ed4c127824dd444d450cb054c63b11a20f303e5476e0b7f6411fdf37866",
+    "edits": [
+      {
+        "count": 1,
+        "new": "static void set_params(struct vf_format_opts *p, struct mp_image_params *out,\n                       bool set_size)\n{\n    if (p->colormatrix || p->colorlevels || p->primaries || p->gamma)\n        out->bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    if (p->colormatrix)",
+        "old": "static void set_params(struct vf_format_opts *p, struct mp_image_params *out,\n                       bool set_size)\n{\n    if (p->colormatrix)"
+      }
+    ],
+    "path": "video/filter/vf_format.c"
   }
 ]

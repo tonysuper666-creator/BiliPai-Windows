@@ -71,21 +71,31 @@ static wchar_t *utf16(const char *s)
 }
 static bool source_color(const struct mp_image_params *p,struct bv_mpv_color *out)
 {
+    out->rgb10_qualified=0;
     /* No HDR/proxy reconstruction is claimed here; the original HDR picture
        bypasses this first bridge. Only explicit transfer/primary/range qualifies. */
     if(pl_color_space_is_hdr(&p->color)||p->color.primaries!=PL_COLOR_PRIM_BT_709)
         return false;
-    /* New RGB10 input requires explicit colors at its AVFrame import
-       boundary. MPV's RGB guesses and vf_format retags cannot set this flag.
-       Current metadata must also remain identical and full-range SDR RGB. */
-    if(p->hw_subfmt==IMGFMT_X2BGR10&&
-       (!p->bilipai_rgb10_source_explicit||
-        p->sys_orig!=PL_COLOR_SYSTEM_RGB||p->repr.sys!=p->sys_orig||
-        p->primaries_orig!=PL_COLOR_PRIM_BT_709||p->color.primaries!=p->primaries_orig||
-        (p->transfer_orig!=PL_COLOR_TRC_SRGB&&p->transfer_orig!=PL_COLOR_TRC_BT_1886)||
-        p->color.transfer!=p->transfer_orig||
-        p->levels_orig!=PL_COLOR_LEVELS_FULL||p->repr.levels!=p->levels_orig))
-        return false;
+    /* RGB10 requires CURRENT pixel proof plus the explicit raw import
+       tuple and matching resolved SDR metadata. FULL keeps every old raw
+       condition and is tightened by the new marker. LIMITED never borrows
+       the old FULL flag; UNKNOWN and contradictory metadata bypass. */
+    int effective=p->hw_subfmt?p->hw_subfmt:p->imgfmt;
+    if(effective==IMGFMT_X2BGR10){
+        if(p->sys_orig!=PL_COLOR_SYSTEM_RGB||p->repr.sys!=p->sys_orig||
+           p->primaries_orig!=PL_COLOR_PRIM_BT_709||p->color.primaries!=p->primaries_orig||
+           (p->transfer_orig!=PL_COLOR_TRC_SRGB&&p->transfer_orig!=PL_COLOR_TRC_BT_1886)||
+           p->color.transfer!=p->transfer_orig||p->repr.levels!=p->levels_orig)
+            return false;
+        if(p->bilipai_rgb10_current_range==MP_BILIPAI_RGB10_RANGE_FULL){
+            if(!p->bilipai_rgb10_source_explicit||p->levels_orig!=PL_COLOR_LEVELS_FULL)
+                return false;
+        }else if(p->bilipai_rgb10_current_range==MP_BILIPAI_RGB10_RANGE_LIMITED){
+            if(p->bilipai_rgb10_source_explicit||p->levels_orig!=PL_COLOR_LEVELS_LIMITED)
+                return false;
+        }else return false;
+        out->rgb10_qualified=1;
+    }
     if(p->color.transfer==PL_COLOR_TRC_SRGB)out->transfer=0;
     else if(p->color.transfer==PL_COLOR_TRC_BT_1886)out->transfer=1;
     else return false;

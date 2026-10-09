@@ -1,6 +1,6 @@
 {
   "architecture": "windows-x64",
-  "bridgeSourceSha256": "5E3824B12E16EEA6205A7AE9BEC8DCC5E46BE9AD53E1092AF0E929D081E94881",
+  "bridgeSourceSha256": "C9DFA89403478DDF0F33F1B47D90D1068A57126A624001C4ABB48158C0ED92FB",
   "coreAbi": 1,
   "coreAbiWire": 65536,
   "coreModuleRelativePath": "core/bilipai_veyra_core.dll",
@@ -8,7 +8,7 @@
   "engineVersion": "BiliPai-Veyra-Core-1",
   "featureDirectory": "runtime/experimental",
   "filterName": "bilipai-rtx",
-  "filterSourceManifestSha256": "EC3BD5FEFCA3BFB381CC7DF27447E2F1F7BBA478FFB8B1B974988A473F08C2C5",
+  "filterSourceManifestSha256": "44AB227B5B0B521627A890CC1BAC7A355E4F243E0BEB7C3F0EDA0F1BC926B988",
   "headerSha256": "0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569",
   "localBuildEvidence": {
     "actuallyLinked": true,
@@ -33,7 +33,7 @@
   ],
   "phase": "SR_HDR_backend_candidate",
   "presentationProperty": "bilipai-rtx-presentation",
-  "presentationProtocolVersion": 1,
+  "presentationProtocolVersion": 2,
   "producerVariant": "bilipai-veyra-rtx-present-v1",
   "projectId": null,
   "runtimeFiles": [
@@ -89,11 +89,11 @@
     "installedEngineBindingAffected": false,
     "role": "informational-source-tag-updates-only"
   },
-  "sourcePatchHelperSha256": "5631580A05F4AF628D2722EFDDBF9164CF00958ADD62D59CCB0513652636F70B",
-  "upstreamEditsSha256": "C191F9F5F1A47C3BE31719C95C4161206E20C516D4636D88AC238498B1A84064",
+  "sourcePatchHelperSha256": "24D0A7E815BF1DABB08CA138281B9684578159412E9E860529F7D45ECCD7B471",
+  "upstreamEditsSha256": "FF8E01F7E732EACBDE82E58BB8EA192236B9425EEA2B126005F0DD6453DC1216",
   "variant": "bilipai-veyra-core-v1",
   "veyraRelease": "2.0.6",
   "veyraReleaseCommit": "e3aa842a00f693a4a17d1fc4c454d0ebc59428f6",
   "veyraSourceCommit": "96a7c8de36bc195240161de6814739ad810722f1",
-  "vfSourceSha256": "BDB91AC9F74AA4F41A467D50EDF797002CB005B575AEDDB2A020C3E5AD366EDA"
+  "vfSourceSha256": "4451DCBEB54ECF799033DA45BBCF1682D647E8D6CBD22EAF1118FA3FA7AE09D5"
 }

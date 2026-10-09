@@ -9,7 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-EXPECTED_MANIFEST_SHA256 = "ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5"
+EXPECTED_MANIFEST_SHA256 = "44ab227b5b0b521627a890cc1bac7a355e4f243e0beb7c3f0eda0f1bc926b988"
 VARIANT = "bilipai-veyra-rtx-present-v1"
 SOURCE_COMMIT = "69e63f425a531f814431fba12750bdb3721357f2"
 
@@ -65,7 +65,7 @@ def main():
     if sha(manifest_raw) != EXPECTED_MANIFEST_SHA256:
         raise ValueError("Presentation manifest changed")
     manifest = json.loads(manifest_raw, object_pairs_hook=unique)
-    if manifest["schema"] != 2 or manifest["variant"] != VARIANT or manifest["sourceCommit"] != SOURCE_COMMIT:
+    if manifest["schema"] != 2 or manifest["variant"] != VARIANT or manifest["sourceCommit"] != SOURCE_COMMIT or type(manifest.get("tokenProtocol")) is not int or manifest["tokenProtocol"] != 2:
         raise ValueError("Wrong source protocol")
     head = subprocess.check_output(
         ["git", "-c", "safe.directory=" + str(root), "rev-parse", "HEAD"],
@@ -78,7 +78,7 @@ def main():
         raise ValueError("Reviewed source edits changed")
     registrations = json.loads(registration_raw, object_pairs_hook=unique)
     upstream = json.loads(upstream_raw, object_pairs_hook=unique)
-    if len(registrations) != 3 or len(upstream) != 13 or len(manifest["sourceFiles"]) != 5:
+    if len(registrations) != 3 or len(upstream) != 16 or len(manifest["sourceFiles"]) != 5:
         raise ValueError("Incomplete reviewed graph")
     nvidia = manifest["originalNvidiaPatch"]
     if sha(bounded(here / "bilipai-nvidia-native-69e63f.patch")) != nvidia["patchSha256"]:
@@ -166,7 +166,7 @@ def main():
         "filterName": manifest["filterName"], "filterSourceManifestSha256": EXPECTED_MANIFEST_SHA256,
         "coreAbiHeaderSha256": manifest["coreAbiHeaderSha256"], "filterSourceFiles": manifest["sourceFiles"],
         "sourceGraph": proof, "presentationProperty": manifest["presentationProperty"],
-        "tokenProtocol": 1, "sourcePatchHelperSha256": sha(bounded(Path(__file__))),
+        "tokenProtocol": 2, "sourcePatchHelperSha256": sha(bounded(Path(__file__))),
         "nativeBinaryBuiltByThisProgram": False, "gpuExecuted": False,
         "displayProofRuntimeVerified": False, "appConsumerIntegrated": False,
     }

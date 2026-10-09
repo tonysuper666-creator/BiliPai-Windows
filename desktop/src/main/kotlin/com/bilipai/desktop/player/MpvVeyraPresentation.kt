@@ -13,7 +13,7 @@ internal data class DesktopVeyraPresentationQualification(
     val coreModuleSha256: String,
 ) {
     fun matches(binding: DesktopVeyraVerifiedBinding): Boolean =
-        producerVariant == "bilipai-veyra-rtx-present-v1" && protocolVersion == 1 &&
+        producerVariant == "bilipai-veyra-rtx-present-v1" && protocolVersion == 2 &&
             filterSourceManifestSha256 == binding.installedIdentity.filterSourceManifestSha256 &&
             mpvDllSha256 == binding.installedIdentity.mpvDllSha256 &&
             coreModuleSha256 == binding.installedIdentity.moduleSha256 &&
@@ -27,6 +27,7 @@ internal data class VeyraPresentedFrame(
     val sequence: Long, val ptsNumerator: Long, val ptsDenominator: Long, val frameId: Long,
     val inputWidth: Int, val inputHeight: Int, val width: Int, val height: Int,
     val effects: Int, val transport: Int, val hdrPeakNits: Int,
+    val sourceKind: Int, val outputIntent: Int,
     val epoch: Long, val presentCount: Long, val presentRefreshCount: Long, val syncQpc: Long,
     val dxgiFormat: Int, val dxgiColorSpace: Int,
     val targetTransfer: Int, val targetPrimaries: Int, val framebufferTransfer: Int, val framebufferPrimaries: Int,
@@ -38,6 +39,7 @@ internal data class VeyraPresentedFrame(
             ptsDenominator == other.ptsDenominator && frameId == other.frameId &&
             inputWidth == other.inputWidth && inputHeight == other.inputHeight && width == other.width && height == other.height &&
             effects == other.effects && transport == other.transport && hdrPeakNits == other.hdrPeakNits &&
+            sourceKind == other.sourceKind && outputIntent == other.outputIntent &&
             adapterLuidHex == other.adapterLuidHex
 }
 
@@ -57,7 +59,7 @@ internal object MpvVeyraPresentationProperties {
     private val topKeys = setOf("schema", "serial", "epoch", "reason", "present-hresult", "statistics-hresult", "queued", "displayed")
     private val frameKeys = setOf("valid", "fresh-renderer", "hdr-output-proved", "token-version", "session", "configuration-generation",
         "stream-generation", "sequence", "pts-numerator", "pts-denominator", "frame-id", "input-width", "input-height", "width", "height",
-        "effects", "transport", "hdr-peak-nits", "epoch", "present-count", "present-refresh-count", "sync-qpc", "dxgi-format", "dxgi-color-space",
+        "effects", "transport", "hdr-peak-nits", "source-kind", "output-intent", "epoch", "present-count", "present-refresh-count", "sync-qpc", "dxgi-format", "dxgi-color-space",
         "target-transfer", "target-primaries", "framebuffer-transfer", "framebuffer-primaries", "adapter-luid-hex")
 
     fun read(native: MpvNative, handle: Pointer): VeyraPresentationSnapshot? {
@@ -67,7 +69,7 @@ internal object MpvVeyraPresentationProperties {
             if (native.mpv_get_property(handle, "bilipai-rtx-presentation", 6, root) < 0) return@use null
             try {
                 val top = (decode(root, 0) as? Value.Fields)?.value ?: return@use null
-                require(top.keys == topKeys && top.number("schema") == 1L)
+                require(top.keys == topKeys && top.number("schema") == 2L)
                 VeyraPresentationSnapshot(top.positive("serial"), top.positive("epoch"), top.int("reason", 0..5),
                     top.int("present-hresult"), top.int("statistics-hresult"),
                     frame((top["queued"] as? Value.Fields)?.value ?: return@use null),
@@ -121,18 +123,19 @@ internal object MpvVeyraPresentationProperties {
             fields.number("sequence"), fields.number("pts-numerator"), fields.number("pts-denominator"), fields.number("frame-id"),
             fields.int("input-width", 0..16384), fields.int("input-height", 0..16384), fields.int("width", 0..16384), fields.int("height", 0..16384),
             fields.int("effects", 0..3), fields.int("transport", 0..2), fields.int("hdr-peak-nits", 0..2000),
+            fields.int("source-kind", 0..1), fields.int("output-intent", 0..2), // native HDR remains disabled
             fields.number("epoch"), fields.number("present-count"), fields.number("present-refresh-count"), fields.number("sync-qpc"),
             fields.int("dxgi-format", 0..255), fields.int("dxgi-color-space", 0..255), fields.int("target-transfer", 0..64),
             fields.int("target-primaries", 0..64), fields.int("framebuffer-transfer", 0..64), fields.int("framebuffer-primaries", 0..64),
             (fields["adapter-luid-hex"] as? Value.Text)?.value ?: throw IllegalArgumentException())
         require(frame.adapterLuidHex.matches(Regex("[0-9a-f]{16}")))
         if (frame.valid) {
-            require(frame.tokenVersion == 1L && frame.freshRenderer && frame.session > 0 && frame.configuration > 0 &&
+            require(frame.tokenVersion == 2L && frame.sourceKind == 1 && frame.freshRenderer && frame.session > 0 && frame.configuration > 0 &&
                 frame.stream >= frame.configuration && frame.sequence > 0 && frame.frameId > 0 && frame.ptsDenominator == 1_000_000L &&
                 frame.inputWidth > 0 && frame.inputHeight > 0 && frame.width > 0 && frame.height > 0 &&
                 frame.epoch > 0 && frame.presentCount in 1L..0xffffffffL && frame.adapterLuidHex != "0000000000000000")
-            require((frame.effects == 1 && frame.transport == 1 && frame.hdrPeakNits == 0 && !frame.hdrOutputProved) ||
-                (frame.effects == 3 && frame.transport == 2 && frame.hdrPeakNits in 400..2000 && frame.hdrOutputProved))
+            require((frame.effects == 1 && frame.outputIntent == 1 && frame.transport == 1 && frame.hdrPeakNits == 0 && !frame.hdrOutputProved) ||
+                (frame.effects == 3 && frame.outputIntent == 2 && frame.transport == 2 && frame.hdrPeakNits in 400..2000 && frame.hdrOutputProved))
         }
         return frame
     }
@@ -204,7 +207,8 @@ internal class VeyraPresentationTracker {
         val nativeScale = options.scale.toFloat().toDouble()
         val width = Math.rint(inputWidth * nativeScale).toInt(); val height = Math.rint(inputHeight * nativeScale).toInt()
         fun configured(frame: VeyraPresentedFrame): Boolean = frame.inputWidth == inputWidth && frame.inputHeight == inputHeight &&
-            frame.width == width && frame.height == height && frame.effects == (if (options.hdr) 3 else 1) &&
+            frame.width == width && frame.height == height && frame.sourceKind == 1 &&
+            frame.outputIntent == (if (options.hdr) 2 else 1) && frame.effects == (if (options.hdr) 3 else 1) &&
             frame.transport == (if (options.hdr) 2 else 1) && frame.hdrPeakNits == (if (options.hdr) 1000 else 0)
         if (inputWidth <= 0 || inputHeight <= 0 || !configured(queued) || !configured(displayed) ||
             (options.hdr && (!displayed.hdrOutputProved || !queued.hdrOutputProved ||

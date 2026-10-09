@@ -5,9 +5,12 @@
 #include <stdbool.h>
 #include <limits.h>
 enum {
-    MP_BILIPAI_TOKEN_V1 = 1,
+    MP_BILIPAI_TOKEN_V2 = 2,
     MP_BILIPAI_EFFECT_SR = 1, MP_BILIPAI_EFFECT_HDR = 2,
     MP_BILIPAI_SRGB_BGRA8 = 1, MP_BILIPAI_HDR10_RGB10 = 2,
+    MP_BILIPAI_SOURCE_SDR_BT709 = 1, MP_BILIPAI_SOURCE_NATIVE_HDR = 2,
+    MP_BILIPAI_OUTPUT_SDR_SRGB = 1, MP_BILIPAI_OUTPUT_SDR_TO_HDR = 2,
+    MP_BILIPAI_OUTPUT_NATIVE_HDR_PRESERVE = 3, // reserved; no implementation/admission
     MP_BILIPAI_PROOF_UNPROVEN = 0, MP_BILIPAI_PROOF_QUEUE = 1,
     MP_BILIPAI_PROOF_DISPLAY_MATCH = 2, MP_BILIPAI_PROOF_DISJOINT = 3,
     MP_BILIPAI_PROOF_UNSUPPORTED = 4, MP_BILIPAI_PROOF_OVERFLOW = 5,
@@ -20,10 +23,12 @@ struct mp_bilipai_frame_token {
     int32_t pts_denominator;
     uint32_t input_width, input_height, width, height;
     uint32_t effects, transport, hdr_peak_nits;
+    uint32_t source_kind, output_intent;
 };
 static inline bool mp_bilipai_token_valid(const struct mp_bilipai_frame_token *t)
 {
-    return t && t->version == MP_BILIPAI_TOKEN_V1 && t->submitted == 1 &&
+    return t && t->version == MP_BILIPAI_TOKEN_V2 && t->submitted == 1 &&
+        t->source_kind == MP_BILIPAI_SOURCE_SDR_BT709 &&
         t->session && t->session <= INT64_MAX &&
         t->configuration && t->configuration <= INT64_MAX &&
         t->stream >= t->configuration && t->stream <= INT64_MAX &&
@@ -31,8 +36,10 @@ static inline bool mp_bilipai_token_valid(const struct mp_bilipai_frame_token *t
         t->pts_denominator > 0 && t->input_width && t->input_height &&
         t->width && t->height && t->width <= 16384 && t->height <= 16384 &&
         ((t->effects == MP_BILIPAI_EFFECT_SR &&
+          t->output_intent == MP_BILIPAI_OUTPUT_SDR_SRGB &&
           t->transport == MP_BILIPAI_SRGB_BGRA8 && !t->hdr_peak_nits) ||
          (t->effects == (MP_BILIPAI_EFFECT_SR | MP_BILIPAI_EFFECT_HDR) &&
+          t->output_intent == MP_BILIPAI_OUTPUT_SDR_TO_HDR &&
           t->transport == MP_BILIPAI_HDR10_RGB10 &&
           t->hdr_peak_nits >= 400 && t->hdr_peak_nits <= 2000));
 }
@@ -40,6 +47,8 @@ static inline bool mp_bilipai_token_equal(const struct mp_bilipai_frame_token *a
                                          const struct mp_bilipai_frame_token *b)
 {
     return mp_bilipai_token_valid(a) && mp_bilipai_token_valid(b) &&
+        a->version == b->version && a->source_kind == b->source_kind &&
+        a->output_intent == b->output_intent &&
         a->session == b->session && a->configuration == b->configuration &&
         a->stream == b->stream && a->sequence == b->sequence &&
         a->adapter_luid == b->adapter_luid &&

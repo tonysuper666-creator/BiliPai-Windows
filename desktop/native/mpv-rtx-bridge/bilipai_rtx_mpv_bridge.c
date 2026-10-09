@@ -140,7 +140,7 @@ static HRESULT shared_fence(struct bv_mpv_bridge *p,ID3D11Fence **f11,ID3D12Fenc
  * P010 legal-range equations and HDR matrix follow fixed Veyra shaders. */
 static const char shader[]=
 "Texture2D<float4> src:register(t0);Texture2D<float2> uv:register(t1);"
-"cbuffer K:register(b0){uint mode;uint limited;uint matrixId;uint gamma24;uint width;uint height;uint chroma;uint reserved;}"
+"cbuffer K:register(b0){uint mode;uint limited;uint matrixId;uint gamma24;uint width;uint height;uint chroma;uint rgbDepth;}"
 "float4 vs(uint i:SV_VertexID):SV_Position{return float4(i==2?3:-1,i==1?3:-1,0,1);}"
 "float3 srgb(float3 c){c=max(c,0);return float3(c.r<=0.0031308?12.92*c.r:1.055*pow(c.r,1/2.4)-.055,c.g<=0.0031308?12.92*c.g:1.055*pow(c.g,1/2.4)-.055,c.b<=0.0031308?12.92*c.b:1.055*pow(c.b,1/2.4)-.055);}"
 "float3 decodeTransfer(float3 c){c=max(c,0);if(gamma24)return pow(c,2.4);return float3(c.r<=.04045?c.r/12.92:pow((c.r+.055)/1.055,2.4),c.g<=.04045?c.g/12.92:pow((c.g+.055)/1.055,2.4),c.b<=.04045?c.b/12.92:pow((c.b+.055)/1.055,2.4));}"
@@ -148,7 +148,7 @@ static const char shader[]=
 "float4 inputPS(float4 pos:SV_Position):SV_Target{uint2 q=uint2(pos.xy);float3 rgb=src.Load(int3(q,0)).rgb;"
 "if(mode){float y=rgb.r;float2 c=chromaSample(q);float scale=mode==2?65535.0/64:255;float mx=mode==2?1023:255;float black=mode==2?64:16;float white=mode==2?940:235;float mid=mode==2?512:128;float span=mode==2?896:224;"
 "float yy=limited?(y*scale-black)/(white-black):y*scale/mx;float2 cc=(c*scale-mid)/(limited?span:mx);rgb=matrixId==1?float3(yy+1.402*cc.y,yy-.344136*cc.x-.714136*cc.y,yy+1.772*cc.x):float3(yy+1.5748*cc.y,yy-.187324*cc.x-.468124*cc.y,yy+1.8556*cc.x);"
-"}else if(limited)rgb=(rgb*255-16)/219;return float4(saturate(srgb(decodeTransfer(saturate(rgb)))),1);}"
+"}else if(limited)rgb=rgbDepth==10?(rgb*1023.0-64.0)/876.0:(rgb*255-16)/219;return float4(saturate(srgb(decodeTransfer(saturate(rgb)))),1);}"
 "float4 srPS(float4 p:SV_Position):SV_Target{return src.Load(int3(uint2(p.xy),0));}"
 "float3 pq(float3 n){float3 v=pow(saturate(n/10000),2610.0/16384);return pow((3424.0/4096+(2413.0/128)*v)/(1+(2392.0/128)*v),2523.0/32);}"
 "float4 hdrPS(float4 p:SV_Position):SV_Target{float3 x=max(src.Load(int3(uint2(p.xy),0)).rgb,0)*80;float3 y=float3(dot(x,float3(.627404,.329283,.043313)),dot(x,float3(.069097,.919540,.011362)),dot(x,float3(.016391,.088013,.895595)));return float4(pq(y),1);}";
@@ -264,18 +264,19 @@ int bv_mpv_bridge_process(struct bv_mpv_bridge *p,ID3D11Texture2D *in,uint32_t s
     if(!same_device)RETURN(fail(s,BV_STALE,E_INVALIDARG,"frame texture belongs to another D3D11 device"));
     D3D11_TEXTURE2D_DESC d,od;ID3D11Texture2D_GetDesc(in,&d);ID3D11Texture2D_GetDesc(out,&od);
     DXGI_FORMAT expected=(p->config.effects&BV_VIDEO_HDR)?DXGI_FORMAT_R10G10B10A2_UNORM:DXGI_FORMAT_B8G8R8A8_UNORM;
-    if(d.MipLevels!=1||d.SampleDesc.Count!=1||slice>=d.ArraySize||d.Width<p->config.input_width||d.Height<p->config.input_height||od.MipLevels!=1||od.SampleDesc.Count!=1||out_slice>=od.ArraySize||od.Format!=expected||od.Width<p->config.output_width||od.Height<p->config.output_height||color.matrix>2||color.transfer>1||color.limited>1||color.chroma>6)RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"unsupported texture/color contract"));
+    if(d.MipLevels!=1||d.SampleDesc.Count!=1||slice>=d.ArraySize||d.Width<p->config.input_width||d.Height<p->config.input_height||od.MipLevels!=1||od.SampleDesc.Count!=1||out_slice>=od.ArraySize||od.Format!=expected||od.Width<p->config.output_width||od.Height<p->config.output_height||color.matrix>2||color.transfer>1||color.limited>1||color.chroma>6||color.rgb10_qualified>1)RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"unsupported texture/color contract"));
     if(d.Format!=DXGI_FORMAT_NV12&&d.Format!=DXGI_FORMAT_P010&&d.Format!=DXGI_FORMAT_B8G8R8A8_UNORM&&d.Format!=DXGI_FORMAT_R8G8B8A8_UNORM&&d.Format!=DXGI_FORMAT_R10G10B10A2_UNORM)RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"unsupported source pixel format"));
-    /* A typed RGB10A2 SRV supplies normalized RGB to the unchanged mode-zero
-       shader. Its existing 8-bit limited-range equation must not be reused. */
-    if(d.Format==DXGI_FORMAT_R10G10B10A2_UNORM&&color.limited)RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"limited-range RGB10A2 conversion is not implemented"));
+    /* Typed RGB10A2 sampling is normalized by 1023. Admission came from
+       the strict MPV CURRENT pixel gate and must match this real texture.
+       Other RGB/YUV inputs cannot claim its private qualification. */
+    if((d.Format==DXGI_FORMAT_R10G10B10A2_UNORM)!=(color.rgb10_qualified==1))RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"RGB10 texture and current-pixel qualification mismatch"));
     int yuv=d.Format==DXGI_FORMAT_NV12||d.Format==DXGI_FORMAT_P010;
     if((yuv&&color.matrix==0)||(!yuv&&color.matrix!=0))RETURN(fail(s,BV_COLOR_UNSUPPORTED,E_INVALIDARG,"texture matrix metadata mismatch"));
     HRESULT hr=source_views(p,&d);if(FAILED(hr)){p->failed=1;RETURN(fail(s,BV_DEVICE_FAILURE,hr,"source plane view unavailable"));}
     p->held_input_lease=input_lease;p->release_output_lease=release_output_lease;input_lease=NULL;
     ID3DDeviceContextState *previous=NULL;enter_context(p,&previous);
     ID3D11DeviceContext_CopySubresourceRegion(p->context,(ID3D11Resource*)p->source11,0,0,0,0,(ID3D11Resource*)in,slice,NULL);
-    uint32_t constants[8]={d.Format==DXGI_FORMAT_NV12?1:d.Format==DXGI_FORMAT_P010?2:0,color.limited,color.matrix,color.transfer,p->config.input_width,p->config.input_height,color.chroma,0};
+    uint32_t constants[8]={d.Format==DXGI_FORMAT_NV12?1:d.Format==DXGI_FORMAT_P010?2:0,color.limited,color.matrix,color.transfer,p->config.input_width,p->config.input_height,color.chroma,d.Format==DXGI_FORMAT_R10G10B10A2_UNORM?10:8};
     ID3D11DeviceContext_UpdateSubresource(p->context,(ID3D11Resource*)p->constants,0,NULL,constants,0,0);
     draw(p,p->input_rtv,p->input_ps,p->config.input_width,p->config.input_height,p->source_srv[0],p->source_srv[1]);
     hr=ID3D11DeviceContext4_Signal(p->context4,p->producer11,++p->producer_value);ID3D11DeviceContext_Flush(p->context);leave_context(p,&previous);
@@ -303,7 +304,9 @@ int bv_mpv_bridge_process(struct bv_mpv_bridge *p,ID3D11Texture2D *in,uint32_t s
        immediate queue. The consumer fence covers the real D3D12 submission;
        unlike Veyra's decoder ring, safety does not depend on fixed slot counts. */
     *receipt=(struct mp_bilipai_frame_token){
-        .version=MP_BILIPAI_TOKEN_V1,.submitted=1,
+        .version=MP_BILIPAI_TOKEN_V2,.submitted=1,
+        .source_kind=MP_BILIPAI_SOURCE_SDR_BT709,
+        .output_intent=(r.effects_applied&BV_VIDEO_HDR)?MP_BILIPAI_OUTPUT_SDR_TO_HDR:MP_BILIPAI_OUTPUT_SDR_SRGB,
         .session=r.session_id,.configuration=p->config.configuration,
         .stream=r.source_generation,.sequence=r.sequence,.adapter_luid=r.adapter_luid,
         .pts_numerator=r.pts_numerator,.pts_denominator=r.pts_denominator,

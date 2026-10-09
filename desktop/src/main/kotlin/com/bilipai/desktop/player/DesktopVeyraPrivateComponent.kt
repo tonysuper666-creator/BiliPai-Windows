@@ -62,7 +62,7 @@ internal class DesktopVeyraPrivateComponent(
             val presentationProducer = producerVariant == "bilipai-veyra-rtx-present-v1"
             require(presentationProducer || producerVariant == "bilipai-veyra-rtx-core-v1")
             val filterSourceHash = if (presentationProducer) PRESENTATION_SOURCE_SHA256 else FILTER_SOURCE_SHA256
-            if (presentationProducer) require(json["presentationProtocolVersion"]?.jsonPrimitive?.intOrNull == 1 &&
+            if (presentationProducer) require(json["presentationProtocolVersion"]?.jsonPrimitive?.intOrNull == 2 &&
                 json.text("presentationProperty") == "bilipai-rtx-presentation" &&
                 json.digest("upstreamEditsSha256") == PRESENTATION_EDITS_SHA256 &&
                 json.digest("sourcePatchHelperSha256") == PRESENTATION_HELPER_SHA256)
@@ -104,7 +104,7 @@ internal class DesktopVeyraPrivateComponent(
             val provenance = Json.parseToJsonElement(readBounded(locked(nativeProvenance), 65536).toString(Charsets.UTF_8).removePrefix("\uFEFF")) as JsonObject
             require(provenance["schema"]?.jsonPrimitive?.intOrNull == 2)
             require(provenance.text("variant") == producerVariant)
-            if (presentationProducer) require(provenance["presentationProtocolVersion"]?.jsonPrimitive?.intOrNull == 1)
+            if (presentationProducer) require(provenance["presentationProtocolVersion"]?.jsonPrimitive?.intOrNull == 2)
             require(provenance.text("filterName") == "bilipai-rtx" && provenance.text("architecture") == "windows-x64")
             require(provenance.text("sourceCommit") == MPV_SOURCE_COMMIT)
             require(provenance.digest("filterSourceManifestSha256") == filterSourceHash)
@@ -144,7 +144,7 @@ internal class DesktopVeyraPrivateComponent(
             require(receipt["schema"]?.jsonPrimitive?.intOrNull == 1 && receipt.text("status") == "VERIFIED" && receipt.text("engineStatus") == "AVAILABLE")
             val checked = receipt["checked"] as? JsonObject ?: error("Verification proof absent")
             if (presentationProducer) require(checked.text("producerVariant") == producerVariant &&
-                checked["presentationProtocolVersion"]?.jsonPrimitive?.intOrNull == 1 &&
+                checked["presentationProtocolVersion"]?.jsonPrimitive?.intOrNull == 2 &&
                 checked.digest("filterSourceManifestSha256") == filterSourceHash &&
                 checked.digest("sourcePatchHelperSha256") == PRESENTATION_HELPER_SHA256 &&
                 checked.digest("upstreamEditsSha256") == PRESENTATION_EDITS_SHA256 &&
@@ -177,7 +177,7 @@ internal class DesktopVeyraPrivateComponent(
                     sharedSourceManifestSha256 = sharedIdentity.digest("sourceManifestSha256"),
                     profileSha256 = trustedProfileSha256),
                 presentationQualification = if (presentationProducer) DesktopVeyraPresentationQualification(
-                    checkNotNull(producerVariant), 1, filterSourceHash, mpvHash, coreHash) else null)
+                    checkNotNull(producerVariant), 2, filterSourceHash, mpvHash, coreHash) else null)
             failure = ""
             return verified
         } catch (failureCause: Exception) {
@@ -257,11 +257,11 @@ internal class DesktopVeyraPrivateComponent(
         private const val CORE_SOURCE_SHA256 = "84e0b6d9525944beeba01b2e7d222e4607801a2347fac780b056754025138cc5"
         private const val CORE_HEADER_SHA256 = "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569"
         private const val FILTER_SOURCE_SHA256 = "9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f"
-        private const val PRESENTATION_SOURCE_SHA256 = "ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5"
-        private const val PRESENTATION_EDITS_SHA256 = "c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064"
-        private const val PRESENTATION_HELPER_SHA256 = "5631580a05f4af628d2722efddbf9164cf00958add62d59ccb0513652636f70b"
+        private const val PRESENTATION_SOURCE_SHA256 = "44ab227b5b0b521627a890cc1bac7a355e4f243e0beb7c3f0eda0f1bc926b988"
+        private const val PRESENTATION_EDITS_SHA256 = "ff8e01f7e732eacbde82e58bb8ea192236b9425eea2b126005f0dd6453dc1216"
+        private const val PRESENTATION_HELPER_SHA256 = "24d0a7e815bf1dabb08ca138281b9684578159412e9e860529f7d45eccd7b471"
         private const val PRESENTATION_REGISTRATION_SHA256 = "59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf"
-        private const val VERIFIER_SOURCE_SHA256 = "af936cc441bf214cf5c8ba13d12e36dec724851bae53941cd10846f650446adb"
+        private const val VERIFIER_SOURCE_SHA256 = "ffdf34084484e1bb70e0ecebb7e4b3b413a9d99c196c9dbaac652d8e0d55457b"
     }
 }
 

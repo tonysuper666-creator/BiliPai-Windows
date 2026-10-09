@@ -20,7 +20,7 @@
     }
   ],
   "bridgeGpl3LicenseSha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
-  "buildPatchHelperSha256": "5631580a05f4af628d2722efddbf9164cf00958add62d59ccb0513652636f70b",
+  "buildPatchHelperSha256": "24d0a7e815bf1dabb08ca138281b9684578159412e9e860529f7d45eccd7b471",
   "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
   "expectedPatchedRecipeSha256": {
     "build-recipes/packages/ffmpeg.cmake": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
@@ -28,18 +28,18 @@
   },
   "ffmpegCommit": "9fc8c785e2747c87121ec28f8f10ceab0562384b",
   "filterName": "bilipai-rtx",
-  "filterSourceManifestSha256": "ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5",
+  "filterSourceManifestSha256": "44ab227b5b0b521627a890cc1bac7a355e4f243e0beb7c3f0eda0f1bc926b988",
   "nativePatchSha256": "e3599ec5fe4326a6713093e9834514f7c2b001b41f30c03fc26fc763b3345d30",
   "originalDllSha256": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
   "originalNativeSourceSha256": "9514d40109894e0bee4e4a2aa343a4e4e4d2368aee3729959180bf5f92d486c3",
   "patchedNativeSourceSha256": "1669c96fc95cfd7276a3149aa2d76058d29b2cc2dd848c77b949d434831c6d2f",
   "presentationProperty": "bilipai-rtx-presentation",
-  "presentationProtocolVersion": 1,
+  "presentationProtocolVersion": 2,
   "recipeArchivePrefix": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488",
   "recipeCommit": "cd1edc11dc6887a50f705717619d879f5a93a488",
   "schema": 3,
   "sharedHostInputsPath": "desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json",
   "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
-  "upstreamEditsSha256": "c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064",
+  "upstreamEditsSha256": "ff8e01f7e732eacbde82e58bb8ea192236b9425eea2b126005f0dd6453dc1216",
   "variant": "bilipai-veyra-rtx-present-v1"
 }

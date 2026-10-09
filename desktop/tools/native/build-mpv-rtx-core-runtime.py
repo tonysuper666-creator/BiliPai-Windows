@@ -423,7 +423,7 @@ def main():
     # Reject an incompatible legacy/current source selection before creating output,
     # downloading source or invoking any build tool. Never relabel new source as 9c0.
     selected_manifest_raw = (inputs / manifest_leaf).read_bytes()
-    selected_manifest_sha = ('ec3bd5fefca3bfb381cc7df27447e2f1f7bba478ffb8b1b974988a473f08c2c5'
+    selected_manifest_sha = ('44ab227b5b0b521627a890cc1bac7a355e4f243e0beb7c3f0eda0f1bc926b988'
                              if presentation else '9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f')
     if sha(selected_manifest_raw) != selected_manifest_sha:
         raise RuntimeError('The selected complete source manifest differs from its reviewed identity')
@@ -455,7 +455,7 @@ def main():
     # Optional absent parameter retains the original complete cold path.
     # Explicit material is fully verified before outputs/download/build.
     fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
-    if presentation and sha(fixed_raw) != '978d0ddfe8c0baaf0463d2baf0abeb2d1c81ad05358aff307ecf6b1b36c9ad29':
+    if presentation and sha(fixed_raw) != '4a992f80281e40ad357b909e900efa514d5290f41fd61899a43f154f4cf62d75':
         raise RuntimeError('Fixed presentation producer inputs changed')
     fixed = json.loads(fixed_raw)
     if fixed.get('variant') != variant:
@@ -580,13 +580,13 @@ def main():
         upstream_rows = []
         upstream_raw = b''
         if presentation:
-            if manifest.get('schema') != 2 or manifest.get('tokenProtocol') != 1 or manifest.get('presentationProperty') != 'bilipai-rtx-presentation' or len(manifest['sourceFiles']) != 5:
+            if manifest.get('schema') != 2 or type(manifest.get('tokenProtocol')) is not int or manifest.get('tokenProtocol') != 2 or manifest.get('presentationProperty') != 'bilipai-rtx-presentation' or len(manifest['sourceFiles']) != 5:
                 raise RuntimeError('Presentation source protocol/private inventory differs')
             upstream_raw = (inputs / 'presentation-edits.json').read_bytes()
-            if sha(upstream_raw) != manifest['upstreamEditsSha256'] or sha(upstream_raw) != 'c191f9f5f1a47c3be31719c95c4161206e20c516d4636d88ac238498b1a84064':
+            if sha(upstream_raw) != manifest['upstreamEditsSha256'] or sha(upstream_raw) != 'ff8e01f7e732eacbde82e58bb8ea192236b9425eea2b126005f0dd6453dc1216':
                 raise RuntimeError('Presentation complete upstream edit graph changed')
             upstream_rows = json.loads(upstream_raw)
-            if len(upstream_rows) != 13:
+            if len(upstream_rows) != 16:
                 raise RuntimeError('Presentation needs all thirteen upstream complete files')
             (recipes / 'packages/presentation-edits.json').write_bytes(upstream_raw)
         (recipes / 'packages/filter-registration-edits.json').write_bytes(registration_raw)
@@ -692,9 +692,9 @@ def main():
         if presentation:
             nvidia = manifest['originalNvidiaPatch']
             expected_graph = [{'path': nvidia['sourcePath'], 'beforeSha256': nvidia['originalSha256'], 'afterSha256': nvidia['patchedSha256']}] + expected_registration + [{'path': row['path'], 'beforeSha256': row['beforeSha256'], 'afterSha256': row['afterSha256']} for row in upstream_rows]
-            if len(expected_graph) != 17 or len({row['path'] for row in expected_graph}) != 17 or source_receipt.get('sourceGraph') != expected_graph:
-                raise RuntimeError('Actual presentation complete-file graph does not match all seventeen fixed targets')
-            if type(source_receipt.get('tokenProtocol')) is not int or source_receipt.get('tokenProtocol') != 1 or source_receipt.get('presentationProperty') != 'bilipai-rtx-presentation' or source_receipt.get('sourcePatchHelperSha256') != '5631580a05f4af628d2722efddbf9164cf00958add62d59ccb0513652636f70b' or source_receipt.get('gpuExecuted') is not False or source_receipt.get('displayProofRuntimeVerified') is not False:
+            if len(expected_graph) != 20 or len({row['path'] for row in expected_graph}) != 20 or source_receipt.get('sourceGraph') != expected_graph:
+                raise RuntimeError('Actual presentation complete-file graph does not match all twenty fixed targets')
+            if type(source_receipt.get('tokenProtocol')) is not int or source_receipt.get('tokenProtocol') != 2 or source_receipt.get('presentationProperty') != 'bilipai-rtx-presentation' or source_receipt.get('sourcePatchHelperSha256') != '24d0a7e815bf1dabb08ca138281b9684578159412e9e860529f7d45eccd7b471' or source_receipt.get('gpuExecuted') is not False or source_receipt.get('displayProofRuntimeVerified') is not False:
                 raise RuntimeError('Actual presentation source receipt protocol differs')
             if b'bilipai-rtx-presentation' not in dll:
                 raise RuntimeError('Actual PE lacks the registered presentation property identity')
@@ -762,7 +762,7 @@ def main():
                    'hostLlvmAccelerationMeasured': False}
         presentation_identity = {}
         if presentation:
-            presentation_identity = {'presentationProtocolVersion': 1, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': sha(upstream_raw), 'sourcePatchHelperSha256': sha(helper)}
+            presentation_identity = {'presentationProtocolVersion': 2, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': sha(upstream_raw), 'sourcePatchHelperSha256': sha(helper)}
             receipt.update(presentation_identity)
             receipt['sourceGraph'] = source_receipt['sourceGraph']
         receipt_bytes = (json.dumps(receipt, sort_keys=True, indent=2) + '\n').encode()
