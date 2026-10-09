@@ -1219,8 +1219,8 @@
     "path": "video/filter/vf_format.c"
   },
   {
-    "afterBytes": 55114,
-    "afterSha256": "56860fd98411f6a58c501c67926cff82d7125863952fd63c08b238b635042dba",
+    "afterBytes": 61792,
+    "afterSha256": "b769aa9bab6ab3ef251d41cba83ec24e4e42b70c9bc435d4f88fd28d430a0361",
     "beforeBytes": 47089,
     "beforeSha256": "f333a1730570d3a343b94654da4566b1e1cc7de44a537bcb1f7f3f328667ccce",
     "edits": [
@@ -1303,13 +1303,38 @@
         "count": 1,
         "new": "bool mp_decoder_wrapper_bilipai_gpu_submit(struct mp_decoder_wrapper *d,\n    struct mp_bilipai_gpu_submit_scope *scope)\n{\n    if (!scope) return false;\n    scope->ticket_attempted = false;\n    scope->entered = scope->callback_accepted = scope->mutex_released = false;\n    if (bilipai_gpu_input_callback_active || !d || !d->f || !scope->image ||\n        !scope->submit || !scope->use_ticket || !scope->instance_id || !scope->epoch_id ||\n        scope->stage < MP_BILIPAI_SUBMIT_INPUT || scope->stage > MP_BILIPAI_SUBMIT_FINAL_SIGNAL) return false;\n    struct priv *p = d->f->priv;\n    if (p->is_group) return false;\n    thread_lock(p); // Existing dispatch, never under an async queue lock.\n    struct mp_bilipai_active_decoder active = {0};\n    bool matched = bilipai_active_matches(p, scope->image, &active) &&\n        active.instance_id == scope->instance_id && active.epoch_id == scope->epoch_id;\n    int result = CONTROL_FALSE;\n    if (matched) {\n        bilipai_gpu_input_callback_active = true;\n        result = p->decoder->control(p->decoder->f, VDCTRL_BILIPAI_WITH_GPU_SUBMIT, scope);\n        bilipai_gpu_input_callback_active = false;\n    }\n    thread_unlock(p);\n    return result == CONTROL_TRUE && scope->entered &&\n        scope->callback_accepted && scope->mutex_released;\n}\n\nstatic bool bilipai_same_retained_reference(const struct mp_image *image,\n",
         "old": "static bool bilipai_same_retained_reference(const struct mp_image *image,\n"
+      },
+      {
+        "count": 1,
+        "new": "#include <assert.h>\n#include <stdatomic.h>\n",
+        "old": "#include <assert.h>\n"
+      },
+      {
+        "count": 1,
+        "new": "    struct mp_decoder *decoder;\n    // Existing dispatch lane. Independent owner ref was moved into custody[2]\n    // before binding. Never overwrite an ISSUED/unknown anchor.\n    AVBufferRef *bilipai_grant_anchor;\n",
+        "old": "    struct mp_decoder *decoder;\n"
+      },
+      {
+        "count": 1,
+        "new": "static thread_local bool bilipai_gpu_input_callback_active;\n\n#define BILIPAI_GRANT_TAG UINT64_C(0x4256435055473031)\nstruct mp_bilipai_decoder_grant {\n    uint64_t tag,instance_id,epoch_id,grant_id;\n    uint32_t version,bytes;\n    atomic_uint state;\n};\n_Static_assert(sizeof(unsigned long long)==sizeof(uint64_t),\"Grant IDs need actual64-bit ULL\");\nstatic atomic_ullong bilipai_grant_next=1;\nstatic uint64_t bilipai_grant_next_id(void) {\n    unsigned long long value=atomic_load(&bilipai_grant_next);\n    while(value) {\n        unsigned long long next=value==UINT64_MAX?0:value+1;\n        if(atomic_compare_exchange_strong(&bilipai_grant_next,&value,next))return value;\n    }\n    return 0; // exhaustion latches; never reuse a prior arm identity\n}\nstatic struct mp_bilipai_decoder_grant *bilipai_grant_from_ref(const AVBufferRef *ref) {\n    if(!ref||!ref->buffer||!ref->data||ref->size!=sizeof(struct mp_bilipai_decoder_grant))return NULL;\n    struct mp_bilipai_decoder_grant *p=(void*)ref->data;\n    // Atomic acquire first; immutable fields were initialized before publication.\n    unsigned state=atomic_load_explicit(&p->state,memory_order_acquire);\n    if(state<MP_BILIPAI_GRANT_PREPARED||state>MP_BILIPAI_GRANT_REVOKED||\n       p->tag!=BILIPAI_GRANT_TAG||p->version!=1||p->bytes!=sizeof(*p)||\n       !p->instance_id||!p->epoch_id||!p->grant_id)return NULL;\n    return p;\n}\nbool mp_decoder_bilipai_grant_query(const AVBufferRef *ref,\n    struct mp_bilipai_decoder_grant_snapshot *out) {\n    if(!out)return false;*out=(struct mp_bilipai_decoder_grant_snapshot){0};\n    struct mp_bilipai_decoder_grant *p=bilipai_grant_from_ref(ref);if(!p)return false;\n    unsigned state=atomic_load_explicit(&p->state,memory_order_acquire);\n    *out=(struct mp_bilipai_decoder_grant_snapshot){p->instance_id,p->epoch_id,p->grant_id,state};\n    return true;\n}\nbool mp_decoder_bilipai_grant_issue(struct mp_bilipai_decoder_grant *p,\n    uint64_t instance,uint64_t epoch,uint64_t grant) {\n    if(!p||p->tag!=BILIPAI_GRANT_TAG||p->version!=1||p->bytes!=sizeof(*p)||\n       !grant||p->instance_id!=instance||p->epoch_id!=epoch||p->grant_id!=grant)return false;\n    unsigned expected=MP_BILIPAI_GRANT_PREPARED;\n    return atomic_compare_exchange_strong_explicit(&p->state,&expected,\n        MP_BILIPAI_GRANT_ISSUED,memory_order_release,memory_order_relaxed);\n}\nvoid mp_decoder_bilipai_grant_publish_revoked(struct mp_bilipai_decoder_grant *p,\n    uint64_t grant) {\n    if(p&&p->tag==BILIPAI_GRANT_TAG&&p->version==1&&p->bytes==sizeof(*p)&&\n       grant&&p->grant_id==grant)\n        atomic_store_explicit(&p->state,MP_BILIPAI_GRANT_REVOKED,memory_order_release);\n}\nbool mp_decoder_wrapper_bilipai_arm_grant(struct mp_decoder_wrapper *d,\n    uint64_t instance,uint64_t epoch,bool (*retain)(void *,AVBufferRef **),void *opaque) {\n    if(bilipai_gpu_input_callback_active||!d||!d->f||!instance||!epoch||!retain)return false;\n    struct priv *p=d->f->priv;if(p->is_group)return false;\n    uint64_t id=bilipai_grant_next_id();if(!id)return false;\n    AVBufferRef *own=av_buffer_allocz(sizeof(struct mp_bilipai_decoder_grant));\n    if(!own)return false;\n    struct mp_bilipai_decoder_grant *grant=(void*)own->data;\n    grant->tag=BILIPAI_GRANT_TAG;grant->version=1;grant->bytes=sizeof(*grant);\n    grant->instance_id=instance;grant->epoch_id=epoch;grant->grant_id=id;\n    atomic_init(&grant->state,MP_BILIPAI_GRANT_PREPARED);\n    AVBufferRef *anchor=av_buffer_ref(own); // actual allocation: OUTSIDE dispatch\n    if(!anchor){av_buffer_unref(&own);return false;}\n    // Only the real generation retain callback may consume this owning handle.\n    // No later branch can strand an issued payload without independent custody.\n    if(!retain(opaque,&own)||own){av_buffer_unref(&anchor);av_buffer_unref(&own);return false;}\n    AVBufferRef *old=NULL,*rejected=NULL;int result=CONTROL_FALSE;\n    thread_lock(p);\n    struct mp_bilipai_decoder_grant_snapshot prior={0};\n    bool replace=!p->bilipai_grant_anchor||\n        (mp_decoder_bilipai_grant_query(p->bilipai_grant_anchor,&prior)&&prior.state==MP_BILIPAI_GRANT_REVOKED);\n    if(replace&&p->decoder&&p->decoder->control) {\n        old=p->bilipai_grant_anchor;p->bilipai_grant_anchor=anchor;anchor=NULL;\n        struct mp_bilipai_decoder_grant_binding bind={grant,instance,epoch,id};\n        result=p->decoder->control(p->decoder->f,VDCTRL_BILIPAI_BIND_READY_GRANT,&bind);\n        struct mp_bilipai_decoder_grant_snapshot now={0};\n        // Unexpected ISSUED/unknown partial failure remains anchored AND owned.\n        if(mp_decoder_bilipai_grant_query(p->bilipai_grant_anchor,&now)&&\n           (now.state==MP_BILIPAI_GRANT_PREPARED||now.state==MP_BILIPAI_GRANT_REVOKED)) {\n            rejected=p->bilipai_grant_anchor;p->bilipai_grant_anchor=NULL;\n        }\n    }\n    thread_unlock(p);\n    av_buffer_unref(&old);av_buffer_unref(&rejected);av_buffer_unref(&anchor);\n    return result==CONTROL_TRUE;\n}\nbool mp_decoder_wrapper_bilipai_revoke_grant(struct mp_decoder_wrapper *d,\n    const AVBufferRef *ref) {\n    if(bilipai_gpu_input_callback_active)return false;\n    struct mp_bilipai_decoder_grant_snapshot snapshot={0};\n    if(!mp_decoder_bilipai_grant_query(ref,&snapshot))return false;\n    if(snapshot.state==MP_BILIPAI_GRANT_REVOKED)return true; // no new issuer touched\n    if(snapshot.state!=MP_BILIPAI_GRANT_ISSUED||!d||!d->f)return false;\n    struct priv *p=d->f->priv;if(p->is_group)return false;\n    struct mp_bilipai_decoder_grant_binding bind={bilipai_grant_from_ref(ref),\n        snapshot.instance_id,snapshot.epoch_id,snapshot.grant_id};\n    thread_lock(p);int result=CONTROL_FALSE;\n    if(p->bilipai_grant_anchor&&p->bilipai_grant_anchor->buffer==ref->buffer&&\n       p->bilipai_grant_anchor->data==ref->data&&p->bilipai_grant_anchor->size==ref->size&&\n       p->decoder&&p->decoder->control)\n        result=p->decoder->control(p->decoder->f,VDCTRL_BILIPAI_REVOKE_READY_GRANT,&bind);\n    thread_unlock(p);\n    return result==CONTROL_TRUE&&mp_decoder_bilipai_grant_query(ref,&snapshot)&&\n        snapshot.state==MP_BILIPAI_GRANT_REVOKED;\n}\n",
+        "old": "static thread_local bool bilipai_gpu_input_callback_active;\n"
+      },
+      {
+        "count": 1,
+        "new": "         cmd == VDCTRL_BILIPAI_WITH_GPU_SUBMIT ||\n         cmd == VDCTRL_BILIPAI_BIND_READY_GRANT ||\n         cmd == VDCTRL_BILIPAI_REVOKE_READY_GRANT)) return CONTROL_FALSE;",
+        "old": "         cmd == VDCTRL_BILIPAI_WITH_GPU_SUBMIT)) return CONTROL_FALSE;"
+      },
+      {
+        "count": 1,
+        "new": "    talloc_free(p->dec_root_filter);\n    // Actual child VD destruction has returned, outside the dispatch lock.\n    // Unexpected still-ISSUED is NOT revocation: the pre-bound custody[2]\n    // generation still owns its independent ref and blocks migration forever\n    // unless real terminal proof arrives. No extra/unbounded retention pool.\n    av_buffer_unref(&p->bilipai_grant_anchor);\n    talloc_free(p->queue);",
+        "old": "    talloc_free(p->dec_root_filter);\n    talloc_free(p->queue);"
       }
     ],
     "path": "filters/f_decoder_wrapper.c"
   },
   {
-    "afterBytes": 99113,
-    "afterSha256": "1fd5a9ed945b620a55467fa76c235d1325f68dd891df81c8bc7625c286e25c1d",
+    "afterBytes": 101236,
+    "afterSha256": "ebaddbff5c5ca5a7c0e2909ce4fc78e345f76074c2e56b7527214021eec1aff0",
     "beforeBytes": 52206,
     "beforeSha256": "4c042a000d24dc093a8ccc60bfeeffa8e231fc7404fec3cf4f52c2e20bc3178a",
     "edits": [
@@ -1667,13 +1692,48 @@
         "count": 1,
         "new": "    case VDCTRL_BILIPAI_SET_GPU_SUBMIT: {\n        const struct mp_bilipai_gpu_submit_request *request = arg;\n        if (!request || !ctx->avctx || !avcodec_is_open(ctx->avctx) ||\n            ctx->bilipai_decoder_ids_disabled || !request->instance_id ||\n            !request->epoch_id || !ctx->bilipai_decoder_sequence ||\n            request->instance_id != ctx->bilipai_decoder_instance ||\n            request->epoch_id != ctx->bilipai_decoder_epoch) return CONTROL_FALSE;\n#if HAVE_D3D11\n        if (request->enable && !(ctx->bilipai_ready_instance == request->instance_id &&\n            ctx->bilipai_ready_epoch == request->epoch_id &&\n            ctx->bilipai_gpu_input_instance == request->instance_id &&\n            ctx->bilipai_gpu_input_epoch == request->epoch_id && ctx->use_hwdec &&\n            !ctx->hwdec.copying && ctx->hwdec.lavc_device == AV_HWDEVICE_TYPE_D3D11VA &&\n            d3d11_bilipai_default_owner_known(ctx->hwdec_dev))) return CONTROL_FALSE;\n#else\n        if (request->enable) return CONTROL_FALSE;\n#endif\n        // Only this exact valid tuple is reconfigured; stale failure changes none.\n        ctx->bilipai_gpu_submit_instance = ctx->bilipai_gpu_submit_epoch = 0;\n        if (!request->enable) return CONTROL_TRUE;\n        ctx->bilipai_gpu_submit_instance = request->instance_id;\n        ctx->bilipai_gpu_submit_epoch = request->epoch_id;\n        return CONTROL_TRUE;\n    }\n",
         "old": "    case VDCTRL_BILIPAI_SET_GPU_SUBMIT: {\n        const struct mp_bilipai_gpu_submit_request *request = arg;\n        ctx->bilipai_gpu_submit_instance = ctx->bilipai_gpu_submit_epoch = 0;\n        if (!request || !ctx->avctx || !avcodec_is_open(ctx->avctx) ||\n            ctx->bilipai_decoder_ids_disabled || !request->instance_id ||\n            !request->epoch_id || !ctx->bilipai_decoder_sequence ||\n            request->instance_id != ctx->bilipai_decoder_instance ||\n            request->epoch_id != ctx->bilipai_decoder_epoch) return CONTROL_FALSE;\n        if (!request->enable) return CONTROL_TRUE;\n#if HAVE_D3D11\n        if (ctx->bilipai_ready_instance == request->instance_id &&\n            ctx->bilipai_ready_epoch == request->epoch_id &&\n            ctx->bilipai_gpu_input_instance == request->instance_id &&\n            ctx->bilipai_gpu_input_epoch == request->epoch_id && ctx->use_hwdec &&\n            !ctx->hwdec.copying && ctx->hwdec.lavc_device == AV_HWDEVICE_TYPE_D3D11VA &&\n            d3d11_bilipai_default_owner_known(ctx->hwdec_dev)) {\n            ctx->bilipai_gpu_submit_instance = request->instance_id;\n            ctx->bilipai_gpu_submit_epoch = request->epoch_id;\n            return CONTROL_TRUE;\n        }\n#endif\n        return CONTROL_FALSE;\n    }\n"
+      },
+      {
+        "count": 1,
+        "new": "    uint64_t bilipai_gpu_submit_instance, bilipai_gpu_submit_epoch;\n    struct mp_bilipai_decoder_grant *bilipai_grant_borrowed;\n    uint64_t bilipai_grant_id;\n",
+        "old": "    uint64_t bilipai_gpu_submit_instance, bilipai_gpu_submit_epoch;\n"
+      },
+      {
+        "count": 1,
+        "new": "} vd_ffmpeg_ctx;\n\nstatic void bilipai_clear_all_grants(vd_ffmpeg_ctx *ctx) {\n    ctx->bilipai_ready_instance=ctx->bilipai_ready_epoch=0;\n    ctx->bilipai_gpu_input_instance=ctx->bilipai_gpu_input_epoch=0;\n    ctx->bilipai_gpu_submit_instance=ctx->bilipai_gpu_submit_epoch=0;\n    struct mp_bilipai_decoder_grant *grant=ctx->bilipai_grant_borrowed;\n    uint64_t id=ctx->bilipai_grant_id;\n    ctx->bilipai_grant_borrowed=NULL;ctx->bilipai_grant_id=0;\n    // Final access: actual clear3 AND detach precede terminal release-store.\n    // No AVBuffer unref/free/COM/GPU/destructor is called from this leaf.\n    mp_decoder_bilipai_grant_publish_revoked(grant,id);\n}\n",
+        "old": "} vd_ffmpeg_ctx;\n"
+      },
+      {
+        "count": 1,
+        "new": "    bilipai_clear_all_grants(ctx);\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    return;",
+        "old": "    ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n    ctx->bilipai_gpu_input_instance = ctx->bilipai_gpu_input_epoch = 0;\n    ctx->bilipai_gpu_submit_instance = ctx->bilipai_gpu_submit_epoch = 0;\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    return;"
+      },
+      {
+        "count": 1,
+        "new": "    bilipai_clear_all_grants(ctx);\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    // Same-stream refusal history",
+        "old": "    ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n    ctx->bilipai_gpu_input_instance = ctx->bilipai_gpu_input_epoch = 0;\n    ctx->bilipai_gpu_submit_instance = ctx->bilipai_gpu_submit_epoch = 0;\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    // Same-stream refusal history"
+      },
+      {
+        "count": 1,
+        "new": "    case VDCTRL_BILIPAI_BIND_READY_GRANT: {\n        const struct mp_bilipai_decoder_grant_binding *b=arg;\n        if(!b||!b->borrowed||!b->grant_id||ctx->bilipai_grant_borrowed||\n           !ctx->avctx||!avcodec_is_open(ctx->avctx)||ctx->bilipai_decoder_ids_disabled||\n           !ctx->bilipai_decoder_sequence||b->instance_id!=ctx->bilipai_decoder_instance||\n           b->epoch_id!=ctx->bilipai_decoder_epoch||ctx->bilipai_ready_instance||\n           ctx->bilipai_gpu_input_instance||ctx->bilipai_gpu_submit_instance)return CONTROL_FALSE;\n#if HAVE_D3D11\n        if(!ctx->use_hwdec||ctx->hwdec.copying||\n           ctx->hwdec.lavc_device!=AV_HWDEVICE_TYPE_D3D11VA||\n           !d3d11_bilipai_default_owner_known(ctx->hwdec_dev))return CONTROL_FALSE;\n        if(!mp_decoder_bilipai_grant_issue(b->borrowed,b->instance_id,b->epoch_id,b->grant_id))\n            return CONTROL_FALSE;\n        ctx->bilipai_grant_borrowed=b->borrowed;ctx->bilipai_grant_id=b->grant_id;\n        ctx->bilipai_ready_instance=b->instance_id;ctx->bilipai_ready_epoch=b->epoch_id;\n        return CONTROL_TRUE;\n#else\n        return CONTROL_FALSE;\n#endif\n    }\n    case VDCTRL_BILIPAI_REVOKE_READY_GRANT: {\n        const struct mp_bilipai_decoder_grant_binding *b=arg;\n        if(!b||!b->borrowed||!b->grant_id||ctx->bilipai_grant_borrowed!=b->borrowed||\n           ctx->bilipai_grant_id!=b->grant_id||b->instance_id!=ctx->bilipai_decoder_instance||\n           b->epoch_id!=ctx->bilipai_decoder_epoch)return CONTROL_FALSE;\n        bilipai_clear_all_grants(ctx);return CONTROL_TRUE;\n    }\n    case VDCTRL_BILIPAI_SET_DECODER_READY: {",
+        "old": "    case VDCTRL_BILIPAI_SET_DECODER_READY: {"
+      },
+      {
+        "count": 1,
+        "new": "        const struct mp_bilipai_decoder_ready_request *request = arg;\n        // Tracked grants require payload+grant-ID revoke; tuple-only old holders\n        // cannot re-arm or clear a newer tracked grant in the same epoch.\n        if(ctx->bilipai_grant_borrowed)return CONTROL_FALSE;\n",
+        "old": "        const struct mp_bilipai_decoder_ready_request *request = arg;\n"
+      },
+      {
+        "count": 1,
+        "new": "            bilipai_clear_all_grants(ctx);\n            return CONTROL_TRUE;",
+        "old": "            ctx->bilipai_gpu_input_instance = ctx->bilipai_gpu_input_epoch = 0;\n            return CONTROL_TRUE;"
       }
     ],
     "path": "video/decode/vd_lavc.c"
   },
   {
-    "afterBytes": 10785,
-    "afterSha256": "04b9a8a931f117c4174ec185b635eedcd7ed8f82d9648410efaad9f39b800db9",
+    "afterBytes": 13078,
+    "afterSha256": "ac42505234ad56b1d7538488c29bda979c4accb76b4b075605a13648d07ffd52",
     "beforeBytes": 4725,
     "beforeSha256": "2d133e104dac514e7f05beeeb78713755019a65c24bc984e2596559a124565dc",
     "edits": [
@@ -1731,6 +1791,16 @@
         "count": 1,
         "new": "    VDCTRL_BILIPAI_WITH_GPU_INPUT,\n    VDCTRL_BILIPAI_SET_GPU_SUBMIT,\n    // Internal-only scoped control; public wrapper rejects direct invocation.\n    VDCTRL_BILIPAI_WITH_GPU_SUBMIT,\n",
         "old": "    VDCTRL_BILIPAI_WITH_GPU_INPUT,\n"
+      },
+      {
+        "count": 1,
+        "new": "// CPU-only per-arm revocation credential. No serialized/presentation ABI.\n// The payload is opaque: immutable issuer tuple and never-reused grant ID;\n// only the actual VD publishes terminal state after clearing ALL three permits.\nstruct AVBufferRef;\nstruct mp_bilipai_decoder_grant;\nenum mp_bilipai_decoder_grant_state {\n    MP_BILIPAI_GRANT_UNKNOWN=0, MP_BILIPAI_GRANT_PREPARED=1,\n    MP_BILIPAI_GRANT_ISSUED=2, MP_BILIPAI_GRANT_REVOKED=3,\n};\nstruct mp_bilipai_decoder_grant_snapshot {\n    uint64_t instance_id,epoch_id,grant_id;\n    enum mp_bilipai_decoder_grant_state state;\n};\n// Acquire-load precedes immutable identity reads. Caller holds its actual ref.\nbool mp_decoder_bilipai_grant_query(const struct AVBufferRef *,\n    struct mp_bilipai_decoder_grant_snapshot *);\n// Existing direct owner lane, no async/context/custody lock held on entry.\n// Prepare alloc/ref and retain() occur BEFORE dispatch locking. retain() must\n// physically MOVE the owning ref into an already-reserved bounded whole owner;\n// reject without consuming if no slot. No VD/raw owner pointer is retained.\n// Any issued or unknown partial arm keeps that owner ref, even on false return.\n// The actual implementation's only retain caller validates custody[2] membership.\nbool mp_decoder_wrapper_bilipai_arm_grant(struct mp_decoder_wrapper *,\n    uint64_t instance_id,uint64_t epoch_id,\n    bool (*retain)(void *,struct AVBufferRef **),void *opaque);\n// Exact payload+grant ID+tuple checked under the SAME dispatch before clear3.\n// Old REVOKED handles cannot clear a later arm of the same instance/epoch.\nbool mp_decoder_wrapper_bilipai_revoke_grant(struct mp_decoder_wrapper *,\n    const struct AVBufferRef *);\n// Internal issuer-only pure CPU leaves, never ownership/ref/free/GPU work.\nstruct mp_bilipai_decoder_grant_binding {\n    struct mp_bilipai_decoder_grant *borrowed;\n    uint64_t instance_id,epoch_id,grant_id;\n};\nbool mp_decoder_bilipai_grant_issue(struct mp_bilipai_decoder_grant *,\n    uint64_t instance_id,uint64_t epoch_id,uint64_t grant_id);\nvoid mp_decoder_bilipai_grant_publish_revoked(struct mp_bilipai_decoder_grant *,\n    uint64_t grant_id);\nstruct mp_bilipai_decoder_ready_request {",
+        "old": "struct mp_bilipai_decoder_ready_request {"
+      },
+      {
+        "count": 1,
+        "new": "    VDCTRL_BILIPAI_WITH_GPU_SUBMIT,\n    // Direct wrapper-child only: fresh owning anchor already installed.\n    VDCTRL_BILIPAI_BIND_READY_GRANT,\n    VDCTRL_BILIPAI_REVOKE_READY_GRANT,\n};",
+        "old": "    VDCTRL_BILIPAI_WITH_GPU_SUBMIT,\n};"
       }
     ],
     "path": "filters/f_decoder_wrapper.h"

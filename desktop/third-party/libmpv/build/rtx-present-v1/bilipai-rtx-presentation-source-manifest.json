@@ -161,9 +161,9 @@
       "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_p010_chain.h"
     },
     {
-      "bytes": 26044,
+      "bytes": 28308,
       "fileName": "bilipai_hdr_vf_owner.c",
-      "sha256": "da71d15ded855672e76013ad73751e66d297e83cb543d33a61906aa46cb23a5e",
+      "sha256": "70f6d59cc478047c757b4bbb9ea852f33461d0ce369879b2f8bf9fafc02f2917",
       "sourcePath": "desktop/native/veyra-hdr-caller/bilipai_hdr_vf_owner.c",
       "targetPath": "video/filter/veyra-hdr-caller/bilipai_hdr_vf_owner.c"
     },
@@ -177,7 +177,7 @@
   ],
   "tokenProtocol": 2,
   "upstreamEditsFileName": "presentation-edits.json",
-  "upstreamEditsSha256": "be16afe346d3cfba6d1034946cb795140a9b72d8b7983e1a27702b43a79a544c",
+  "upstreamEditsSha256": "de32086ec47cd0fee20b90faf8e94bbf291427aeee710257d08a176287380434",
   "variant": "bilipai-veyra-rtx-present-v1",
   "vfgImplemented": false
 }

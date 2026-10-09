@@ -23,7 +23,9 @@ struct owner_generation {
     DWORD thread;
     HANDLE thread_ref;
     bool claimed,retiring,quarantined;
-    bool diagnostic_armed,diagnostic_in_flight;
+    bool diagnostic_armed,diagnostic_in_flight,diagnostic_revoke_pending;
+    AVBufferRef *diagnostic_grant_ref;
+    uint64_t diagnostic_grant_id;
     AVBufferRef *diagnostic_owner_ref; // CPU ownership only; held independently by whole custody
     AVBufferRef *device_ref,*pool;
     struct bv_mpv_bridge *bridge;
@@ -75,6 +77,7 @@ static bool reserve(struct owner_generation *g) {
     bool unresolved=false;
     for(unsigned i=0;i<2;i++)
         if(custody[i]&&(custody[i]->retiring||custody[i]->quarantined||
+           custody[i]->diagnostic_revoke_pending||
            (custody[i]->instance==g->instance&&custody[i]->epoch==g->epoch)))unresolved=true;
     if(!unresolved)for(unsigned i=0;i<2;i++)if(!custody[i]){
         custody[i]=g;g->claimed=true;ok=true;break;
@@ -112,12 +115,46 @@ static void drop_empty(struct owner_generation *g) {
     ReleaseSRWLockExclusive(&custody_lock);
     av_buffer_unref(&g->pool);av_buffer_unref(&g->device_ref);
     av_buffer_unref(&g->diagnostic_owner_ref);
+    av_buffer_unref(&g->diagnostic_grant_ref); // only after terminal CPU proof + real GPU/bridge retirement
     if(g->thread_ref)CloseHandle(g->thread_ref);
     free(g->dll);free(g->runtime);free(g->project);free(g->engine);free(g);
 }
+static bool grant_terminal(struct owner_generation *g) {
+    if(!g->diagnostic_armed)return true;
+    struct mp_bilipai_decoder_grant_snapshot s={0};
+    if(!mp_decoder_bilipai_grant_query(g->diagnostic_grant_ref,&s)||
+       s.instance_id!=g->instance||s.epoch_id!=g->epoch||
+       s.grant_id!=g->diagnostic_grant_id||
+       (s.state!=MP_BILIPAI_GRANT_REVOKED&&s.state!=MP_BILIPAI_GRANT_PREPARED))return false;
+    AcquireSRWLockExclusive(&custody_lock);
+    g->diagnostic_armed=false;g->diagnostic_revoke_pending=false;
+    ReleaseSRWLockExclusive(&custody_lock);return true;
+}
+static void pending_cpu_revoke(struct owner_generation *g) {
+    AcquireSRWLockExclusive(&custody_lock);g->retiring=true;
+    g->diagnostic_revoke_pending=true;ReleaseSRWLockExclusive(&custody_lock);
+}
+// Wrapper prepare callback BEFORE dispatch: actual membership/claimed lane and
+// independent ownership MOVE, not a count/boolean/marker assertion of authority.
+static bool retain_grant(void *opaque,AVBufferRef **ref) {
+    if(!ref||!*ref)return false;
+    struct mp_bilipai_decoder_grant_snapshot s={0};
+    if(!mp_decoder_bilipai_grant_query(*ref,&s)||s.state!=MP_BILIPAI_GRANT_PREPARED)return false;
+    bool ok=false;AcquireSRWLockExclusive(&custody_lock);
+    for(unsigned i=0;i<2;i++) {
+        struct owner_generation *g=custody[i];
+        if(g&&g==opaque&&g->claimed&&!g->retiring&&!g->quarantined&&
+           !g->diagnostic_revoke_pending&&!g->diagnostic_grant_ref&&
+           original_thread(g->thread_ref,g->thread)&&s.instance_id==g->instance&&s.epoch_id==g->epoch) {
+            g->diagnostic_grant_ref=*ref;*ref=NULL;
+            g->diagnostic_grant_id=s.grant_id;ok=true;break;
+        }
+    }
+    ReleaseSRWLockExclusive(&custody_lock);return ok;
+}
 static HRESULT retire_claimed(struct owner_generation *g) {
     // Empty chain does NOT prove that explicitly armed decoder permits were revoked.
-    if(g->diagnostic_armed){mark_retiring(g,true);unclaim(g);return E_PENDING;}
+    if(!grant_terminal(g)){pending_cpu_revoke(g);unclaim(g);return E_PENDING;}
     if(g->quarantined){unclaim(g);return E_PENDING;}
     struct mp_image *discard=NULL;
     HRESULT hr=g->chain?bv_mpv_hdr_chain_poll(g->chain,NULL,&discard):S_FALSE;
@@ -141,7 +178,7 @@ static void service_retired(void) {
         struct owner_generation *g=NULL;AcquireSRWLockExclusive(&custody_lock);
         struct owner_generation *p=custody[i];
         if(p&&original_thread(p->thread_ref,p->thread)&&p->retiring&&
-           !p->claimed&&!p->quarantined){p->claimed=true;g=p;}
+           !p->claimed&&(!p->quarantined||p->diagnostic_armed)){p->claimed=true;g=p;}
         ReleaseSRWLockExclusive(&custody_lock);if(g)retire_claimed(g);
     }
 }
@@ -346,30 +383,15 @@ static struct owner_generation *claim_diagnostic(struct bv_mpv_hdr_vf_owner *o,u
     }
     ReleaseSRWLockExclusive(&custody_lock);return g;
 }
-static HRESULT revoke_diagnostic_claimed(struct owner_generation *g,
-    struct mp_decoder_wrapper *decoder) {
-    if(!g->diagnostic_armed)return S_OK;
-    struct mp_bilipai_active_decoder active={0};
-    if(!decoder||mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_GET_ACTIVE_DECODER,&active)!=CONTROL_TRUE||
-       !active.instance_id||!active.epoch_id)goto unknown;
-    // Another decoder instance being alive does NOT prove this old decoder
-    // was destroyed/revoked; never alter that new instance or infer retirement.
-    if(active.instance_id!=g->instance)goto unknown;
-    if(active.epoch_id!=g->epoch) {
-        // SAME actual instance: fixed vd_lavc init/reset clears all3 opt-ins
-        // BEFORE assigning its new nonreused epoch. Only a TRUE live snapshot
-        // of that new epoch counts; query failure remains UNKNOWN.
-        g->diagnostic_armed=false;return S_OK;
-    }
-    struct mp_bilipai_decoder_ready_request request={
-        .instance_id=g->instance,.epoch_id=g->epoch,.enable=false};
-    // One dispatch-serialized exact validation and all3 revocations. Never
-    // GET followed by three independently unlocking permission clears.
-    if(mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_SET_DECODER_READY,&request)!=CONTROL_TRUE)
-        goto unknown;
-    g->diagnostic_armed=false;return S_OK;
-unknown:
-    mark_retiring(g,true);return E_PENDING; // retain armed record AND whole custody
+static HRESULT revoke_diagnostic_claimed(struct bv_mpv_hdr_vf_owner *o,
+    struct owner_generation *g,struct mp_decoder_wrapper *decoder) {
+    if(grant_terminal(g))return S_OK;
+    // No inference from a replacement VD, failed query, same epoch or fence.
+    // Dedicated direct control validates THIS payload+grant ID before clear3.
+    if(mp_decoder_wrapper_bilipai_revoke_grant(decoder,g->diagnostic_grant_ref)&&grant_terminal(g))
+        return S_OK;
+    if(o->active==g)o->active=NULL; // no stale active pointer when retired service later frees g
+    pending_cpu_revoke(g);return E_PENDING;
 }
 HRESULT bv_mpv_hdr_vf_owner_diagnostic_revoke(struct bv_mpv_hdr_vf_owner *o,
     struct mp_decoder_wrapper *decoder) {
@@ -379,8 +401,8 @@ HRESULT bv_mpv_hdr_vf_owner_diagnostic_revoke(struct bv_mpv_hdr_vf_owner *o,
     for(unsigned i=0;i<2;i++) {
         struct owner_generation *g=claim_diagnostic(o,i);
         if(!g)continue;
-        HRESULT one=revoke_diagnostic_claimed(g,decoder);
-        if(FAILED(one)){o->recovery_required=true;hr=one;}
+        HRESULT one=revoke_diagnostic_claimed(o,g,decoder);
+        if(FAILED(one)){if(quarantined_generation(g))o->recovery_required=true;hr=one;}
         unclaim(g);
     }
     // A skipped busy claim must not be mistaken for successful revocation.
@@ -388,7 +410,8 @@ HRESULT bv_mpv_hdr_vf_owner_diagnostic_revoke(struct bv_mpv_hdr_vf_owner *o,
     for(unsigned i=0;i<2;i++) {
         struct owner_generation *g=custody[i];
         if(g&&same_owner(g->diagnostic_owner_ref,o->diagnostic_owner_ref)&&g->diagnostic_armed) {
-            g->retiring=true;g->quarantined=true;o->recovery_required=true;hr=E_PENDING;
+            g->retiring=true;g->diagnostic_revoke_pending=true;
+            if(o->active==g)o->active=NULL;hr=E_PENDING;
         }
     }
     ReleaseSRWLockExclusive(&custody_lock);
@@ -418,19 +441,33 @@ HRESULT bv_mpv_hdr_vf_owner_diagnostic_step(struct bv_mpv_hdr_vf_owner *o,
     if(!enter(o))return E_ACCESSDENIED;
     struct owner_generation *g=o->active?claim(o->active,false):NULL;
     if(!g){leave(o);return E_PENDING;}
+    if(g->diagnostic_revoke_pending){unclaim(g);leave(o);return E_PENDING;}
     if(g->diagnostic_in_flight){unclaim(g);leave(o);return S_FALSE;}
     if(!g->diagnostic_armed) {
-        // Sticky BEFORE attempting grant. Separate controls are NOT atomic;
-        // actual submit will requalify in its independent dispatch+mutex scope.
-        g->diagnostic_armed=true;
-        struct mp_bilipai_decoder_ready_request ready={
-            .instance_id=g->instance,.epoch_id=g->epoch,.enable=true};
-        struct mp_bilipai_gpu_input_request input={
-            .instance_id=g->instance,.epoch_id=g->epoch,.enable=true};
-        if(mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_SET_DECODER_READY,&ready)!=CONTROL_TRUE||
-           mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_SET_GPU_INPUT,&input)!=CONTROL_TRUE) {
+        // Release only a positively terminal prior CPU handle, OUTSIDE all locks.
+        struct mp_bilipai_decoder_grant_snapshot old={0};
+        if(g->diagnostic_grant_ref&&
+           (!mp_decoder_bilipai_grant_query(g->diagnostic_grant_ref,&old)||
+            old.instance_id!=g->instance||old.epoch_id!=g->epoch||old.grant_id!=g->diagnostic_grant_id||
+            (old.state!=MP_BILIPAI_GRANT_REVOKED&&old.state!=MP_BILIPAI_GRANT_PREPARED))) {
+            if(o->active==g)o->active=NULL;pending_cpu_revoke(g);
+            unclaim(g);leave(o);return E_PENDING;
+        }
+        av_buffer_unref(&g->diagnostic_grant_ref);g->diagnostic_grant_id=0;
+        AcquireSRWLockExclusive(&custody_lock);g->diagnostic_armed=true;
+        ReleaseSRWLockExclusive(&custody_lock);
+        // Fresh owning payload goes physically into THIS reserved generation
+        // before VD can bind. Grant controls remain separately serialized.
+        bool armed=mp_decoder_wrapper_bilipai_arm_grant(decoder,g->instance,g->epoch,retain_grant,g);
+        struct mp_bilipai_gpu_input_request input={g->instance,g->epoch,true};
+        if(!armed||mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_SET_GPU_INPUT,&input)!=CONTROL_TRUE) {
             hr=E_ACCESSDENIED;
-            if(FAILED(revoke_diagnostic_claimed(g,decoder)))o->recovery_required=true;
+            if(!g->diagnostic_grant_ref) {
+                // Actual prepare/retain failure never entered the VD bind lane.
+                AcquireSRWLockExclusive(&custody_lock);g->diagnostic_armed=false;
+                ReleaseSRWLockExclusive(&custody_lock);
+            } else if(FAILED(revoke_diagnostic_claimed(o,g,decoder))&&quarantined_generation(g))
+                o->recovery_required=true;
             unclaim(g);leave(o);return hr;
         }
     }
@@ -439,7 +476,7 @@ HRESULT bv_mpv_hdr_vf_owner_diagnostic_step(struct bv_mpv_hdr_vf_owner *o,
     if(!mp_image_bilipai_d3d11_ready(source)){unclaim(g);leave(o);return S_FALSE;}
     hr=bv_mpv_hdr_chain_authorize(chain,decoder,g->instance,g->epoch,true);
     if(FAILED(hr)) {
-        if(FAILED(revoke_diagnostic_claimed(g,decoder)))o->recovery_required=true;
+        if(FAILED(revoke_diagnostic_claimed(o,g,decoder))&&quarantined_generation(g))o->recovery_required=true;
         unclaim(g);leave(o);return hr;
     }
     unclaim(g);leave(o);
