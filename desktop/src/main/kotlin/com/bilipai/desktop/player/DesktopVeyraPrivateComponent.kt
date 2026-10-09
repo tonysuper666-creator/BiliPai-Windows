@@ -58,9 +58,16 @@ internal class DesktopVeyraPrivateComponent(
             require(json["schema"]?.jsonPrimitive?.intOrNull == 1)
             require(json.text("variant") == "bilipai-veyra-core-v1")
             require(json.text("architecture") == "windows-x64")
-            require(json.text("producerVariant") == "bilipai-veyra-rtx-core-v1")
+            val producerVariant = json.text("producerVariant")
+            val presentationProducer = producerVariant == "bilipai-veyra-rtx-present-v1"
+            require(presentationProducer || producerVariant == "bilipai-veyra-rtx-core-v1")
+            val filterSourceHash = if (presentationProducer) PRESENTATION_SOURCE_SHA256 else FILTER_SOURCE_SHA256
+            if (presentationProducer) require(json["presentationProtocolVersion"]?.jsonPrimitive?.intOrNull == 1 &&
+                json.text("presentationProperty") == "bilipai-rtx-presentation" &&
+                json.digest("upstreamEditsSha256") == PRESENTATION_EDITS_SHA256 &&
+                json.digest("sourcePatchHelperSha256") == PRESENTATION_HELPER_SHA256)
             require(json.text("filterName") == "bilipai-rtx")
-            require(json.digest("filterSourceManifestSha256") == FILTER_SOURCE_SHA256)
+            require(json.digest("filterSourceManifestSha256") == filterSourceHash)
             require(json.text("veyraSourceCommit") == VEYRA_SOURCE_COMMIT)
             require(json.digest("coreSourceSha256") == CORE_SOURCE_SHA256)
             require(json.digest("headerSha256") == CORE_HEADER_SHA256)
@@ -96,14 +103,25 @@ internal class DesktopVeyraPrivateComponent(
             val nativeProvenance = relative(root, "mpv/provenance.json")
             val provenance = Json.parseToJsonElement(readBounded(locked(nativeProvenance), 65536).toString(Charsets.UTF_8).removePrefix("\uFEFF")) as JsonObject
             require(provenance["schema"]?.jsonPrimitive?.intOrNull == 2)
-            require(provenance.text("variant") == "bilipai-veyra-rtx-core-v1")
+            require(provenance.text("variant") == producerVariant)
+            if (presentationProducer) require(provenance["presentationProtocolVersion"]?.jsonPrimitive?.intOrNull == 1)
             require(provenance.text("filterName") == "bilipai-rtx" && provenance.text("architecture") == "windows-x64")
             require(provenance.text("sourceCommit") == MPV_SOURCE_COMMIT)
-            require(provenance.digest("filterSourceManifestSha256") == FILTER_SOURCE_SHA256)
+            require(provenance.digest("filterSourceManifestSha256") == filterSourceHash)
             require(provenance.digest("coreAbiHeaderSha256") == CORE_HEADER_SHA256 && provenance.digest("dllSha256") == mpvHash)
             // Require the actual producer's artifact/source/build receipts; a source-only
             // proposal with null binary identity never qualifies as an installed engine.
             listOf("archiveSha256", "runtimeDescriptorSha256", "buildReceiptSha256", "sourceBundleSha256").forEach { provenance.digest(it) }
+            val presentationNativeReceiptHash = if (presentationProducer) {
+                require(json.text("mpvNativeReceiptRelativePath") == "mpv/licenses/native-patch-receipt.json")
+                val expectedReceipt = json.digest("mpvNativeReceiptSha256")
+                // These four passive proof files stay locked before verifier IO and Native.load.
+                require(hash(readBounded(locked(relative(root, "mpv/licenses/native-patch-receipt.json")), 1048576)) == expectedReceipt)
+                require(hash(readBounded(locked(relative(root, "mpv/licenses/rtx-filter-source-manifest.json")), 1048576)) == PRESENTATION_SOURCE_SHA256)
+                require(hash(readBounded(locked(relative(root, "mpv/licenses/rtx-presentation-edits.json")), 1048576)) == PRESENTATION_EDITS_SHA256)
+                require(hash(readBounded(locked(relative(root, "mpv/licenses/rtx-registration-edits.json")), 1048576)) == PRESENTATION_REGISTRATION_SHA256)
+                expectedReceipt
+            } else null
             val projectId = requireNotNull(json.text("projectId"))
             require(projectId.matches(Regex("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")))
             require(json.text("engineVersion") == "BiliPai-Veyra-Core-1")
@@ -125,6 +143,12 @@ internal class DesktopVeyraPrivateComponent(
             val receipt = verify(verifier, profile, root, core, mpv)
             require(receipt["schema"]?.jsonPrimitive?.intOrNull == 1 && receipt.text("status") == "VERIFIED" && receipt.text("engineStatus") == "AVAILABLE")
             val checked = receipt["checked"] as? JsonObject ?: error("Verification proof absent")
+            if (presentationProducer) require(checked.text("producerVariant") == producerVariant &&
+                checked["presentationProtocolVersion"]?.jsonPrimitive?.intOrNull == 1 &&
+                checked.digest("filterSourceManifestSha256") == filterSourceHash &&
+                checked.digest("sourcePatchHelperSha256") == PRESENTATION_HELPER_SHA256 &&
+                checked.digest("upstreamEditsSha256") == PRESENTATION_EDITS_SHA256 &&
+                checked.digest("mpvNativeReceiptSha256") == presentationNativeReceiptHash)
             require(checked.digest("profileSha256") == trustedProfileSha256 && checked.digest("moduleBuildSha256") == coreHash && checked.digest("mpvDllSha256") == mpvHash)
             require(checked.digest("coreSourceSha256") == CORE_SOURCE_SHA256 && checked.digest("headerSha256") == CORE_HEADER_SHA256)
             require(checked["coreAbi"]?.jsonPrimitive?.intOrNull == 1 && checked["coreAbiWire"]?.jsonPrimitive?.intOrNull == 65536)
@@ -149,9 +173,11 @@ internal class DesktopVeyraPrivateComponent(
                     sourceCommit = requireNotNull(nativeBuild.text("sourceCommit")),
                     moduleSha256 = coreHash, nativeBuildReceiptSha256 = buildReceiptHash,
                     mpvSourceCommit = requireNotNull(provenance.text("sourceCommit")),
-                    mpvDllSha256 = mpvHash, filterSourceManifestSha256 = FILTER_SOURCE_SHA256,
+                    mpvDllSha256 = mpvHash, filterSourceManifestSha256 = filterSourceHash,
                     sharedSourceManifestSha256 = sharedIdentity.digest("sourceManifestSha256"),
-                    profileSha256 = trustedProfileSha256))
+                    profileSha256 = trustedProfileSha256),
+                presentationQualification = if (presentationProducer) DesktopVeyraPresentationQualification(
+                    checkNotNull(producerVariant), 1, filterSourceHash, mpvHash, coreHash) else null)
             failure = ""
             return verified
         } catch (failureCause: Exception) {
@@ -231,7 +257,11 @@ internal class DesktopVeyraPrivateComponent(
         private const val CORE_SOURCE_SHA256 = "84e0b6d9525944beeba01b2e7d222e4607801a2347fac780b056754025138cc5"
         private const val CORE_HEADER_SHA256 = "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569"
         private const val FILTER_SOURCE_SHA256 = "9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f"
-        private const val VERIFIER_SOURCE_SHA256 = "68381fddf953fffe9536a9173179ca166016b0fa4b7828afa46342cb3b71401a"
+        private const val PRESENTATION_SOURCE_SHA256 = "7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338"
+        private const val PRESENTATION_EDITS_SHA256 = "9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea"
+        private const val PRESENTATION_HELPER_SHA256 = "8cae5dc860f06c86a101f1bbba77d9822e4dd6f6b75a86bf8f483e44d2e37870"
+        private const val PRESENTATION_REGISTRATION_SHA256 = "59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf"
+        private const val VERIFIER_SOURCE_SHA256 = "a831b4d3414bf80df616122ebd5465f47b055645ea09254d8bfc78a849892dc0"
     }
 }
 
@@ -253,6 +283,7 @@ internal class DesktopVeyraVerifiedBinding internal constructor(
     val mpvPath: Path, private val corePath: Path, private val runtimePath: Path,
     private val projectId: String, val profileSha256: String,
     val installedIdentity: DesktopVeyraInstalledIdentity,
+    val presentationQualification: DesktopVeyraPresentationQualification? = null,
 ) {
     fun filterArguments(options: NvidiaVideoOptions, actualSourceVersion: Long, configurationVersion: Long): String {
         require(actualSourceVersion > 0 && configurationVersion > 0 && configurationVersion < Long.MAX_VALUE)

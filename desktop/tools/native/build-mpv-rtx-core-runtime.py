@@ -188,7 +188,35 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--workspace', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--variant', choices=(VARIANT, 'bilipai-veyra-rtx-present-v1'), default='bilipai-veyra-rtx-present-v1',
+                        help='Build the current presentation source by default; core-v1 requires the original immutable source bytes')
     args = parser.parse_args()
+    variant = args.variant
+    presentation = variant == 'bilipai-veyra-rtx-present-v1'
+    inputs = ROOT / 'desktop/third-party/libmpv/build' / ('rtx-present-v1' if presentation else 'rtx-core-v1')
+    manifest_leaf = 'bilipai-rtx-presentation-source-manifest.json' if presentation else 'bilipai-rtx-source-manifest.json'
+    helper_leaf = 'apply-rtx-presentation-source.py' if presentation else 'bilipai-veyra-rtx-core-patch.py'
+    # Reject an incompatible legacy/current source selection before creating output,
+    # downloading source or invoking any build tool. Never relabel new source as 9c0.
+    selected_manifest_raw = (inputs / manifest_leaf).read_bytes()
+    selected_manifest_sha = ('7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338'
+                             if presentation else '9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f')
+    if sha(selected_manifest_raw) != selected_manifest_sha:
+        raise RuntimeError('The selected complete source manifest differs from its reviewed identity')
+    selected_manifest = json.loads(selected_manifest_raw)
+    if selected_manifest.get('variant') != variant or selected_manifest.get('sourceCommit') != '69e63f425a531f814431fba12750bdb3721357f2':
+        raise RuntimeError('The selected source manifest variant/MPV commit differs')
+    if len(selected_manifest.get('sourceFiles', [])) != (5 if presentation else 4):
+        raise RuntimeError('The selected private source inventory is incomplete')
+    for row in selected_manifest['sourceFiles']:
+        selected_source = (ROOT / row['sourcePath']).resolve(strict=True)
+        if ROOT not in selected_source.parents or not selected_source.is_file():
+            raise RuntimeError('Selected private source escaped the owned checkout')
+        data = selected_source.read_bytes()
+        if sha(data) != row['sha256'] or len(data) != row['bytes']:
+            if not presentation:
+                raise RuntimeError('Legacy core-v1 source is not available in this checkout; use its original immutable source tag. Current source uses present-v1')
+            raise RuntimeError('Current presentation private source/header bytes differ from the reviewed inventory')
     workspace, output = args.workspace.resolve(), args.output.resolve()
     if os.environ.get('GITHUB_ACTIONS') == 'true':
         if (os.environ.get('GITHUB_REPOSITORY') != 'tonysuper666-creator/BiliPai-Windows'
@@ -209,18 +237,31 @@ def main():
     if list(output.iterdir()):
         raise RuntimeError('Use an empty output directory')
     log = output / 'native-build.log'
-    fixed = json.loads((INPUTS / 'fixed-inputs.json').read_text(encoding='utf-8'))
-    status = {'schema': 1, 'variant': VARIANT, 'success': False, 'binaryProduced': False,
+    fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
+    if presentation and sha(fixed_raw) != 'eb1aa276b236b9b63ee0351ac06866a995bed6415440aa0113b62cdf3e9479bb':
+        raise RuntimeError('Fixed presentation producer inputs changed')
+    fixed = json.loads(fixed_raw)
+    if fixed.get('variant') != variant:
+        raise RuntimeError('Selected producer and fixed input variants differ')
+    status = {'schema': 1, 'variant': variant, 'success': False, 'binaryProduced': False,
               'reproducible': False, 'gpuOrDriverTested': False}
     try:
         archives = workspace / 'archives'
         archives.mkdir()
         downloaded = {row['kind']: download(row, archives) for row in fixed['archives']}
         recipes = extract_fixed_recipe(downloaded['recipes'], workspace, fixed['recipeArchivePrefix'])
-        edits = json.loads((INPUTS / 'recipe-edits.json').read_text(encoding='utf-8'))
+        recipe_raw = (inputs / 'recipe-edits.json').read_bytes()
+        if presentation and sha(recipe_raw) != '272157133a64c03e4425df499e3270c4097ccfa1d6e8912e3ab4a86224f7e134':
+            raise RuntimeError('Complete presentation build recipe edits changed')
+        edits = json.loads(recipe_raw)
         apply_recipes(recipes, edits['targets'])
-        snapshot_inputs_path = INPUTS / 'host-llvm-snapshot-inputs.json'
-        snapshot_inputs = json.loads(snapshot_inputs_path.read_text(encoding='utf-8'))
+        # HOST LLVM is one common recipe slice, independent of the MPV filter variant.
+        # Its source identity is not rewritten to pretend it is presentation MPV.
+        snapshot_inputs_path = ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json'
+        snapshot_inputs_raw = snapshot_inputs_path.read_bytes()
+        if sha(snapshot_inputs_raw) != 'd349d111c5bed3e8ba5864ef4310faf7d1699173a7e0d4d02408a05083a7f0fb':
+            raise RuntimeError('Shared host LLVM lifecycle inputs changed')
+        snapshot_inputs = json.loads(snapshot_inputs_raw)
         if (snapshot_inputs.get('schema') != 2 or snapshot_inputs.get('scope') != 'HOST_LLVM_EXPORT_ONLY_NO_IMPORT'
                 or snapshot_inputs.get('sourceBindingSchema') != 1
                 or snapshot_inputs.get('sourceBindingState') != 'PREBUILD_INSTALL_POSTCLEANUP_SOURCE_AND_CONFIG_BOUND'
@@ -243,21 +284,33 @@ def main():
             raise RuntimeError('Reviewed host LLVM export module cannot be loaded')
         snapshot_module = importlib.util.module_from_spec(snapshot_spec)
         snapshot_spec.loader.exec_module(snapshot_module)
-        helper = (INPUTS / 'bilipai-veyra-rtx-core-patch.py').read_bytes()
+        helper = (inputs / helper_leaf).read_bytes()
         native_patch = (ROOT / 'desktop/third-party/libmpv/patches/nvidia-native-resolution-69e63f.patch').read_bytes()
         if sha(helper) != fixed['buildPatchHelperSha256'] or sha(native_patch) != fixed['nativePatchSha256']:
             raise RuntimeError('Ownrepo patch/helper identity mismatch')
         (recipes / 'packages/bilipai-veyra-rtx-core-patch.py').write_bytes(helper)
-        manifest_raw = (INPUTS / 'bilipai-rtx-source-manifest.json').read_bytes()
+        manifest_raw = (inputs / manifest_leaf).read_bytes()
         if sha(manifest_raw) != fixed['filterSourceManifestSha256']:
             raise RuntimeError('Fixed bridge source manifest changed')
         manifest = json.loads(manifest_raw)
-        if manifest['variant'] != VARIANT or manifest['sourceCommit'] != fixed['sourceCommit']:
+        if manifest['variant'] != variant or manifest['sourceCommit'] != fixed['sourceCommit']:
             raise RuntimeError('Wrong bridge source manifest variant/source')
-        registration_raw = (INPUTS / 'filter-registration-edits.json').read_bytes()
+        registration_raw = (inputs / 'filter-registration-edits.json').read_bytes()
         if sha(registration_raw) != manifest['registrationEditsSha256']:
             raise RuntimeError('Fixed bridge registration bytes changed')
-        (recipes / 'packages/bilipai-rtx-source-manifest.json').write_bytes(manifest_raw)
+        (recipes / 'packages' / manifest_leaf).write_bytes(manifest_raw)
+        upstream_rows = []
+        upstream_raw = b''
+        if presentation:
+            if manifest.get('schema') != 2 or manifest.get('tokenProtocol') != 1 or manifest.get('presentationProperty') != 'bilipai-rtx-presentation' or len(manifest['sourceFiles']) != 5:
+                raise RuntimeError('Presentation source protocol/private inventory differs')
+            upstream_raw = (inputs / 'presentation-edits.json').read_bytes()
+            if sha(upstream_raw) != manifest['upstreamEditsSha256'] or sha(upstream_raw) != '9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea':
+                raise RuntimeError('Presentation complete upstream edit graph changed')
+            upstream_rows = json.loads(upstream_raw)
+            if len(upstream_rows) != 13:
+                raise RuntimeError('Presentation needs all thirteen upstream complete files')
+            (recipes / 'packages/presentation-edits.json').write_bytes(upstream_raw)
         (recipes / 'packages/filter-registration-edits.json').write_bytes(registration_raw)
         bridge_sources = recipes / 'packages/bridge-source'
         bridge_sources.mkdir()
@@ -310,32 +363,41 @@ def main():
             # unproven companion dependency or download an SDK to satisfy it.
             raise RuntimeError('Native output requires unsupported companion DLLs: ' + json.dumps(unsupported))
         source_receipt = json.loads(candidates[0].with_name('bilipai-native-patch-receipt.json').read_text())
-        expected = {'patchId': VARIANT, 'sourceCommit': fixed['sourceCommit'],
-                    'patchedSourceSha256': fixed['patchedNativeSourceSha256'], 'patchSha256': fixed['nativePatchSha256'],
+        expected = {'patchId': variant, 'sourceCommit': fixed['sourceCommit'],
                     'filterName': fixed['filterName'], 'filterSourceManifestSha256': fixed['filterSourceManifestSha256'],
                     'coreAbiHeaderSha256': fixed['coreAbiHeaderSha256']}
         if any(source_receipt.get(key) != value for key, value in expected.items()):
             raise RuntimeError('Source receipt beside actual DLL does not match the selected patch')
-        if source_receipt.get('schema') != 2 or source_receipt.get('filterSourceFiles') != manifest['sourceFiles']:
+        if source_receipt.get('schema') != (3 if presentation else 2) or source_receipt.get('filterSourceFiles') != manifest['sourceFiles']:
             raise RuntimeError('Actual bridge source receipt does not match complete source/header inventory')
         registration_rows = json.loads(registration_raw)
         expected_registration = [{'path': r['path'], 'beforeSha256': r['beforeSHA256'], 'afterSha256': r['afterSHA256']} for r in registration_rows]
-        if source_receipt.get('registrations') != expected_registration:
-            raise RuntimeError('Actual registration receipt differs from reviewed complete file hashes')
+        if presentation:
+            nvidia = manifest['originalNvidiaPatch']
+            expected_graph = [{'path': nvidia['sourcePath'], 'beforeSha256': nvidia['originalSha256'], 'afterSha256': nvidia['patchedSha256']}] + expected_registration + [{'path': row['path'], 'beforeSha256': row['beforeSha256'], 'afterSha256': row['afterSha256']} for row in upstream_rows]
+            if len(expected_graph) != 17 or len({row['path'] for row in expected_graph}) != 17 or source_receipt.get('sourceGraph') != expected_graph:
+                raise RuntimeError('Actual presentation complete-file graph does not match all seventeen fixed targets')
+            if type(source_receipt.get('tokenProtocol')) is not int or source_receipt.get('tokenProtocol') != 1 or source_receipt.get('presentationProperty') != 'bilipai-rtx-presentation' or source_receipt.get('sourcePatchHelperSha256') != '8cae5dc860f06c86a101f1bbba77d9822e4dd6f6b75a86bf8f483e44d2e37870' or source_receipt.get('gpuExecuted') is not False or source_receipt.get('displayProofRuntimeVerified') is not False:
+                raise RuntimeError('Actual presentation source receipt protocol differs')
+            if b'bilipai-rtx-presentation' not in dll:
+                raise RuntimeError('Actual PE lacks the registered presentation property identity')
+        elif source_receipt.get('registrations') != expected_registration or source_receipt.get('patchedSourceSha256') != fixed['patchedNativeSourceSha256'] or source_receipt.get('patchSha256') != fixed['nativePatchSha256']:
+            raise RuntimeError('Actual original RTX registration/NVIDIA receipt differs from reviewed complete file hashes')
         if not any(row['name'] == 'd3d12.dll' for row in imports) or b'bilipai-rtx' not in dll:
             raise RuntimeError('Actual PE lacks the expected D3D12 import or registered filter identity string')
         dll_sha = sha(dll)
         if dll_sha == fixed['originalDllSha256']:
             raise RuntimeError('The original unpatched DLL is not a patched candidate')
         inventory = dependency_inventory(sources)
-        source_bundle = output / (VARIANT + '-source-materials.tar.gz')
+        source_bundle = output / (variant + '-source-materials.tar.gz')
         def without_git(info):
             return None if '.git' in Path(info.name).parts else info
         with tarfile.open(source_bundle, 'w:gz', dereference=False) as source_tar:
             source_tar.add(archives, arcname='fixed-archives')
             source_tar.add(recipes, arcname='modified-build-recipes', filter=without_git)
             source_tar.add(sources, arcname='actual-dependency-worktrees', filter=without_git)
-            source_tar.add(INPUTS, arcname='ownrepo-build-inputs')
+            source_tar.add(inputs, arcname='ownrepo-build-inputs')
+            source_tar.add(ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json', arcname='shared-host-llvm-snapshot-inputs.json')
             source_tar.add(Path(__file__), arcname='ownrepo-build-mpv-runtime.py')
             source_tar.add(ROOT / 'desktop/third-party/libmpv/patches', arcname='ownrepo-native-patches')
         bundle_sha = file_sha(source_bundle)
@@ -343,7 +405,7 @@ def main():
         for label, executable in [('cmake', 'cmake'), ('ninja', 'ninja'), ('python', 'python3'),
                                   ('crossClang', str(clang / 'bin/clang'))]:
             tools[label] = subprocess.check_output([executable, '--version'], text=True).strip()
-        receipt = {'schema': 2, 'variant': VARIANT, 'sourceCommit': fixed['sourceCommit'],
+        receipt = {'schema': 2, 'variant': variant, 'sourceCommit': fixed['sourceCommit'],
                    'nativePatchSha256': fixed['nativePatchSha256'],
                    'filterName': fixed['filterName'], 'filterSourceManifestSha256': fixed['filterSourceManifestSha256'],
                    'coreAbiHeaderSha256': fixed['coreAbiHeaderSha256'], 'filterSourceFiles': manifest['sourceFiles'],
@@ -362,16 +424,21 @@ def main():
                    'hostLlvmSnapshotDescriptorSha256': file_sha(host_snapshot_descriptor),
                    'hostLlvmSnapshotSourceBindingSha256': host_snapshot_source['actualSourceBuildBindingSha256'],
                    'hostLlvmSnapshotStatus': 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'}
+        presentation_identity = {}
+        if presentation:
+            presentation_identity = {'presentationProtocolVersion': 1, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': sha(upstream_raw), 'sourcePatchHelperSha256': sha(helper)}
+            receipt.update(presentation_identity)
+            receipt['sourceGraph'] = source_receipt['sourceGraph']
         receipt_bytes = (json.dumps(receipt, sort_keys=True, indent=2) + '\n').encode()
         catalog_path = ROOT / 'desktop/third-party/libmpv/SOURCES.json'
         catalog = json.loads(catalog_path.read_text(encoding='utf-8-sig'))
         catalog['originalBinaryBaseline'] = catalog.pop('binary')
-        catalog['binary'] = {'variant': VARIANT, 'dllSha256': dll_sha, 'sourceBundleSha256': bundle_sha,
+        catalog['binary'] = {'variant': variant, 'dllSha256': dll_sha, 'sourceBundleSha256': bundle_sha,
                              'artifactIdentity': 'See the independently generated runtime-descriptor.json'}
         entries = {'libmpv-2.dll': dll, 'licenses/build-receipt.json': receipt_bytes,
                    'licenses/native-patch-receipt.json': (json.dumps(source_receipt, sort_keys=True, indent=2) + '\n').encode(),
                    'licenses/SOURCES.json': (json.dumps(catalog, sort_keys=True, indent=2) + '\n').encode(),
-                   'licenses/NOTICES.md': ('This is a modified libmpv candidate: ' + VARIANT + '\n'
+                   'licenses/NOTICES.md': ('This is a modified libmpv candidate: ' + variant + '\n'
                        'mpv ' + fixed['sourceCommit'] + ', native patch ' + fixed['nativePatchSha256'] + '\n'
                        'License inventory retained from the fixed baseline. Actual source/build identity is in build-receipt.json.\n'
                        'Corresponding source materials SHA256: ' + bundle_sha + '\n'
@@ -382,6 +449,9 @@ def main():
             raise RuntimeError('Reviewed GPL3 source notice changed')
         entries['licenses/bilipai-veyra-core-GPL3.txt'] = gpl3_raw
         entries['licenses/rtx-filter-source-manifest.json'] = manifest_raw
+        if presentation:
+            entries['licenses/rtx-presentation-edits.json'] = upstream_raw
+            entries['licenses/rtx-registration-edits.json'] = registration_raw
         license_root = catalog_path.parent.resolve()
         for record in catalog['licenseFiles']:
             license_path = (license_root / record['path']).resolve()
@@ -391,11 +461,11 @@ def main():
             if sha(content) != record['sha256']:
                 raise RuntimeError('Existing native license bytes changed')
             entries['licenses/' + record['path']] = content
-        artifact = output / (VARIANT + '-x64.zip')
+        artifact = output / (variant + '-x64.zip')
         with zipfile.ZipFile(artifact, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
             for name, data in sorted(entries.items()):
                 archive.writestr(name, data)
-        descriptor = {'schema': 2, 'variant': VARIANT, 'architecture': 'windows-x64',
+        descriptor = {'schema': 2, 'variant': variant, 'architecture': 'windows-x64',
                       'sourceCommit': receipt['sourceCommit'], 'nativePatchSha256': receipt['nativePatchSha256'],
                       'filterName': fixed['filterName'], 'filterSourceManifestSha256': fixed['filterSourceManifestSha256'],
                       'coreAbiHeaderSha256': fixed['coreAbiHeaderSha256'],
@@ -410,6 +480,7 @@ def main():
                       'sourceBundle': {'fileName': source_bundle.name, 'sha256': bundle_sha, 'downloadUrl': None},
                       'deliveryStatus': 'LOCAL_ARTIFACT_ONLY_NOT_RELEASED', 'nativeResolutionPpeVerified': False,
                       'rtxCoreBridgeVerified': False, 'closedSdkOrRuntimeIncluded': False, 'vfgImplemented': False}
+        descriptor.update(presentation_identity)
         write_json(output / 'runtime-descriptor.json', descriptor)
         write_json(output / 'build-receipt.json', receipt)
         status.update(success=True, binaryProduced=True, artifact=artifact.name,

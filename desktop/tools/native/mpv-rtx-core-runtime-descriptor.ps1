@@ -1,4 +1,36 @@
 # Internal branch of the existing fetch-mpv.ps1 entry. No standalone fetch authority.
+function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$Upstream,[object[]]$Registration) {
+    if($Manifest.schema-ne2-or$Manifest.variant-cne'bilipai-veyra-rtx-present-v1'-or
+       $Manifest.tokenProtocol-ne1-or$Manifest.presentationProperty-cne'bilipai-rtx-presentation'-or
+       @($Manifest.sourceFiles).Count-ne5-or$Upstream.Count-ne13-or$Registration.Count-ne3){throw 'Presentation source manifest graph mismatch.'}
+    if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
+    foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
+    if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
+       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338'-or
+       $Native.coreAbiHeaderSha256-cne$Manifest.coreAbiHeaderSha256-or$Native.tokenProtocol-ne1-or
+       $Native.presentationProperty-cne$Manifest.presentationProperty-or
+       $Native.sourcePatchHelperSha256-cne'8cae5dc860f06c86a101f1bbba77d9822e4dd6f6b75a86bf8f483e44d2e37870'-or
+       $Native.nativeBinaryBuiltByThisProgram-cne$false-or$Native.gpuExecuted-cne$false-or
+       $Native.displayProofRuntimeVerified-cne$false){throw 'Actual presentation native receipt identity mismatch.'}
+    if(@($Native.filterSourceFiles).Count-ne5){throw 'Incomplete presentation private source inventory.'}
+    foreach($row in $Manifest.sourceFiles){
+        $same=@($Native.filterSourceFiles|Where-Object{$_.targetPath-ceq$row.targetPath})
+        if($same.Count-ne1){throw 'Ambiguous presentation private source target.'}
+        foreach($key in @('sourcePath','fileName','targetPath','sha256','bytes')){
+            if($same[0].$key-cne$row.$key){throw 'Presentation private source bytes differ.'}
+        }
+    }
+    $expected=@([pscustomobject]@{path=$Manifest.originalNvidiaPatch.sourcePath;beforeSha256=$Manifest.originalNvidiaPatch.originalSha256;afterSha256=$Manifest.originalNvidiaPatch.patchedSha256})
+    $expected+=@($Registration|ForEach-Object{[pscustomobject]@{path=$_.path;beforeSha256=$_.beforeSHA256;afterSha256=$_.afterSHA256}})
+    $expected+=@($Upstream|ForEach-Object{[pscustomobject]@{path=$_.path;beforeSha256=$_.beforeSha256;afterSha256=$_.afterSha256}})
+    if(@($Native.sourceGraph).Count-ne17-or$expected.Count-ne17){throw 'Incomplete presentation complete-file graph.'}
+    $seen=New-Object 'System.Collections.Generic.HashSet[string]' ([StringComparer]::Ordinal)
+    foreach($row in $expected){
+        if(-not$seen.Add([string]$row.path)){throw 'Duplicate presentation graph target.'}
+        $same=@($Native.sourceGraph|Where-Object{$_.path-ceq$row.path})
+        if($same.Count-ne1-or$same[0].beforeSha256-cne$row.beforeSha256-or$same[0].afterSha256-cne$row.afterSha256){throw 'Presentation complete-file source graph differs.'}
+    }
+}
 function Install-RtxCoreDescriptorMpvRuntime {
     [CmdletBinding()]
     param(
@@ -26,6 +58,17 @@ function Install-RtxCoreDescriptorMpvRuntime {
         recipeArchiveSha256 = '8b92a254771496b0dcc23017c2734bfa7545441d3e6a37958b063d6e7814a657'
         containerImage = 'ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf'
     }
+    $presentation=$runtime.variant-ceq'bilipai-veyra-rtx-present-v1'
+    $inputSubdirectory='rtx-core-v1';$manifestLeaf='bilipai-rtx-source-manifest.json'
+    if($presentation){
+        $inputSubdirectory='rtx-present-v1';$manifestLeaf='bilipai-rtx-presentation-source-manifest.json'
+        $expected.variant='bilipai-veyra-rtx-present-v1'
+        $expected.filterSourceManifestSha256='7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338'
+        $expected.presentationProtocolVersion=1
+        $expected.presentationProperty='bilipai-rtx-presentation'
+        $expected.upstreamEditsSha256='9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea'
+        $expected.sourcePatchHelperSha256='8cae5dc860f06c86a101f1bbba77d9822e4dd6f6b75a86bf8f483e44d2e37870'
+    }
     if ($runtime.schema -ne 2) { throw 'Unsupported patched runtime descriptor schema.' }
     if ($runtime.closedSdkOrRuntimeIncluded -cne $false -or $runtime.vfgImplemented -cne $false -or $runtime.rtxCoreBridgeVerified -cne $false) { throw 'RTX candidate is source-only, excludes closed runtime/VFG and is not hardware-verified.' }
     foreach ($key in $expected.Keys) {
@@ -38,8 +81,8 @@ function Install-RtxCoreDescriptorMpvRuntime {
         $runtime.artifact.dllSha256 -eq '673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4') {
         throw 'The original unpatched native runtime cannot satisfy a patched descriptor.'
     }
-    if ($runtime.artifact.fileName -cne 'bilipai-veyra-rtx-core-v1-x64.zip' -or
-        $runtime.sourceBundle.fileName -cne 'bilipai-veyra-rtx-core-v1-source-materials.tar.gz') { throw 'Unexpected patched runtime asset name.' }
+    if ($runtime.artifact.fileName -cne ($expected.variant+'-x64.zip') -or
+        $runtime.sourceBundle.fileName -cne ($expected.variant+'-source-materials.tar.gz')) { throw 'Unexpected patched runtime asset name.' }
     $ownedReleasePrefix = 'https://github.com/tonysuper666-creator/BiliPai-Windows/releases/download/'
     $urls = @($runtime.artifact.downloadUrls)
     foreach ($url in $urls) {
@@ -48,7 +91,7 @@ function Install-RtxCoreDescriptorMpvRuntime {
             $uri.Scheme -cne 'https' -or $uri.Host -cne 'github.com' -or $uri.Port -ne 443 -or
             $uri.UserInfo -or $uri.Query -or $uri.Fragment -or
             -not ([string]$url).StartsWith($ownedReleasePrefix, [StringComparison]::Ordinal) -or
-            ([Uri]::UnescapeDataString($uri.AbsolutePath)) -cnotmatch '^/tonysuper666-creator/BiliPai-Windows/releases/download/[A-Za-z0-9][A-Za-z0-9._-]*/bilipai-veyra-rtx-core-v1-x64\.zip$') {
+            ([Uri]::UnescapeDataString($uri.AbsolutePath)) -cnotmatch '^/tonysuper666-creator/BiliPai-Windows/releases/download/[A-Za-z0-9][A-Za-z0-9._-]*/bilipai-veyra-rtx-(?:core|present)-v1-x64\.zip$') {
             throw 'Patched runtime URLs must select the named asset from the owned release repository.'
         }
     }
@@ -63,7 +106,7 @@ function Install-RtxCoreDescriptorMpvRuntime {
             $sourceUri.Scheme -cne 'https' -or $sourceUri.Host -cne 'github.com' -or $sourceUri.Port -ne 443 -or
             $sourceUri.UserInfo -or $sourceUri.Query -or $sourceUri.Fragment -or
             -not $sourceUrl.StartsWith($ownedReleasePrefix, [StringComparison]::Ordinal) -or
-            ([Uri]::UnescapeDataString($sourceUri.AbsolutePath)) -cnotmatch '^/tonysuper666-creator/BiliPai-Windows/releases/download/[A-Za-z0-9][A-Za-z0-9._-]*/bilipai-veyra-rtx-core-v1-source-materials\.tar\.gz$') {
+            ([Uri]::UnescapeDataString($sourceUri.AbsolutePath)) -cnotmatch '^/tonysuper666-creator/BiliPai-Windows/releases/download/[A-Za-z0-9][A-Za-z0-9._-]*/bilipai-veyra-rtx-(?:core|present)-v1-source-materials\.tar\.gz$') {
             throw 'Patched runtime needs its local source bundle or an explicit owned-release source URL.'
         }
         # The URL is publication metadata. This branch does not claim to download/verify that remote source bundle.
@@ -86,7 +129,22 @@ function Install-RtxCoreDescriptorMpvRuntime {
     $dllRow = $rows | Where-Object { $_.path -ceq 'libmpv-2.dll' }
     $buildRow = $rows | Where-Object { $_.path -ceq 'licenses/build-receipt.json' }
     if ($dllRow.sha256 -cne $runtime.artifact.dllSha256 -or $buildRow.sha256 -cne $runtime.buildReceiptSha256) { throw 'Patched runtime descriptor entry digests disagree.' }
-    $buildInputs = Get-Content -LiteralPath (Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-core-v1/fixed-inputs.json') -Raw | ConvertFrom-Json
+    $buildInputs = Get-Content -LiteralPath (Join-Path $DesktopRoot ('third-party/libmpv/build/'+$inputSubdirectory+'/fixed-inputs.json')) -Raw | ConvertFrom-Json
+    $selectedManifestPath=Join-Path $DesktopRoot ('third-party/libmpv/build/'+$inputSubdirectory+'/'+$manifestLeaf)
+    if((Get-FileHash -LiteralPath $selectedManifestPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne$expected.filterSourceManifestSha256){throw 'Application source manifest identity changed.'}
+    $selectedManifest=Get-Content -LiteralPath $selectedManifestPath -Raw|ConvertFrom-Json
+    if($presentation){
+        $upstreamPath=Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-present-v1/presentation-edits.json'
+        $registrationPath=Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-present-v1/filter-registration-edits.json'
+        if((Get-FileHash -LiteralPath $upstreamPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea'-or
+           (Get-FileHash -LiteralPath $registrationPath -Algorithm SHA256).Hash.ToLowerInvariant()-cne'59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf'){throw 'Presentation full-file graph material changed.'}
+        $upstreamRecipe=@(Get-Content -LiteralPath $upstreamPath -Raw|ConvertFrom-Json)
+        $presentationRegistration=@(Get-Content -LiteralPath $registrationPath -Raw|ConvertFrom-Json)
+        foreach($material in @(@{path='licenses/rtx-presentation-edits.json';sha256='9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea'},@{path='licenses/rtx-registration-edits.json';sha256='59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf'})){
+            $same=@($rows|Where-Object{$_.path-ceq$material.path})
+            if($same.Count-ne1-or$same[0].sha256-cne$material.sha256){throw 'Presentation artifact omitted complete source graph material.'}
+        }
+    }
     $gpl3Entry = @($rows | Where-Object { $_.path -ceq 'licenses/bilipai-veyra-core-GPL3.txt' })
     if ($gpl3Entry.Count -ne 1 -or $gpl3Entry[0].sha256 -cne $buildInputs.bridgeGpl3LicenseSha256) { throw 'RTX GPL3 source notice inventory mismatch.' }
     $manifestEntry = @($rows | Where-Object { $_.path -ceq 'licenses/rtx-filter-source-manifest.json' })
@@ -115,6 +173,10 @@ function Install-RtxCoreDescriptorMpvRuntime {
                 if (-not (Test-Path -LiteralPath $file -PathType Leaf) -or
                     (Get-Item -LiteralPath $file).Length -ne [long]$row.bytes -or
                     (Get-FileHash -LiteralPath $file -Algorithm SHA256).Hash.ToLowerInvariant() -cne $row.sha256) { $cacheMatches = $false; break }
+            }
+            if($cacheMatches-and$presentation){
+                $cachedNative=Get-Content -LiteralPath (Join-Path $NativeRoot 'licenses/native-patch-receipt.json') -Raw|ConvertFrom-Json
+                Assert-PresentationSource $cachedNative $selectedManifest $upstreamRecipe $presentationRegistration
             }
             if ($cacheMatches) { Write-Host 'Verified cached patched native candidate; RTX core bridge effect is unverified.'; return }
         }
@@ -167,20 +229,26 @@ function Install-RtxCoreDescriptorMpvRuntime {
             if ($receipt.$key -cne $expected[$key]) { throw "Actual build receipt identity mismatch: $key" }
         }
         if ($receipt.dllSha256 -cne $runtime.artifact.dllSha256 -or $receipt.sourceBundleSha256 -cne $runtime.sourceBundle.sha256) { throw 'Actual build receipt differs from artifact/source digests.' }
+        if($presentation){
+            foreach($key in @('presentationProtocolVersion','presentationProperty','upstreamEditsSha256','sourcePatchHelperSha256')){
+                if($receipt.$key-cne$expected[$key]){throw 'Actual presentation build receipt protocol mismatch.'}
+            }
+        }
         if ($receipt.ffmpegCommit -cne $buildInputs.ffmpegCommit) { throw 'Actual build receipt has a different fixed FFmpeg source.' }
         foreach ($property in $buildInputs.expectedPatchedRecipeSha256.PSObject.Properties) {
             $actualProperty = $receipt.patchedRecipeSha256.PSObject.Properties[$property.Name]
             if (-not $actualProperty -or $actualProperty.Value -cne $property.Value) { throw 'Actual build receipt has a different selected recipe.' }
         }
         $nativeReceipt = Get-Content -LiteralPath (Join-Path $extractRoot 'licenses/native-patch-receipt.json') -Raw | ConvertFrom-Json
-        if ($nativeReceipt.patchId -cne $runtime.variant -or $nativeReceipt.sourceCommit -cne $runtime.sourceCommit -or
-            $nativeReceipt.patchSha256 -cne $runtime.nativePatchSha256 -or $nativeReceipt.patchedSourceSha256 -cne $runtime.patchedNativeSourceSha256) { throw 'Native source receipt mismatch.' }
-        if ($nativeReceipt.schema -ne 2 -or $nativeReceipt.filterName -cne $runtime.filterName -or
+        if (-not$presentation-and($nativeReceipt.patchId -cne $runtime.variant -or $nativeReceipt.sourceCommit -cne $runtime.sourceCommit -or
+            $nativeReceipt.patchSha256 -cne $runtime.nativePatchSha256 -or $nativeReceipt.patchedSourceSha256 -cne $runtime.patchedNativeSourceSha256)) { throw 'Native source receipt mismatch.' }
+        $nativeSchema=2;if($presentation){$nativeSchema=3}
+        if ($nativeReceipt.schema -ne $nativeSchema -or $nativeReceipt.filterName -cne $runtime.filterName -or
             $nativeReceipt.filterSourceManifestSha256 -cne $runtime.filterSourceManifestSha256 -or
             $nativeReceipt.coreAbiHeaderSha256 -cne $runtime.coreAbiHeaderSha256) { throw 'Actual RTX bridge source receipt mismatch.' }
         $sourceManifestEntry = @($rows | Where-Object { $_.path -ceq 'licenses/rtx-filter-source-manifest.json' })
         if ($sourceManifestEntry.Count -ne 1 -or $sourceManifestEntry[0].sha256 -cne $runtime.filterSourceManifestSha256) { throw 'RTX source manifest inventory mismatch.' }
-        $selectedManifestPath = Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-core-v1/bilipai-rtx-source-manifest.json'
+        $selectedManifestPath = Join-Path $DesktopRoot ('third-party/libmpv/build/'+$inputSubdirectory+'/'+$manifestLeaf)
         if ((Get-FileHash -LiteralPath $selectedManifestPath -Algorithm SHA256).Hash.ToLowerInvariant() -cne $runtime.filterSourceManifestSha256) { throw 'Installed application source manifest differs.' }
         $selectedManifest = Get-Content -LiteralPath $selectedManifestPath -Raw | ConvertFrom-Json
         if (@($nativeReceipt.filterSourceFiles).Count -ne @($selectedManifest.sourceFiles).Count) { throw 'RTX actual source receipt inventory count differs.' }
@@ -191,13 +259,17 @@ function Install-RtxCoreDescriptorMpvRuntime {
                 if ($matches[0].$field -cne $source.$field) { throw 'RTX actual complete source/header receipt mismatch.' }
             }
         }
-        $registrationRecipePath = Join-Path $DesktopRoot 'third-party/libmpv/build/rtx-core-v1/filter-registration-edits.json'
+        $registrationRecipePath = Join-Path $DesktopRoot ('third-party/libmpv/build/'+$inputSubdirectory+'/filter-registration-edits.json')
         if ((Get-FileHash -LiteralPath $registrationRecipePath -Algorithm SHA256).Hash.ToLowerInvariant() -cne $selectedManifest.registrationEditsSha256) { throw 'Installed RTX registration recipe changed.' }
         $registrationRecipe = @(Get-Content -LiteralPath $registrationRecipePath -Raw | ConvertFrom-Json)
+        if($presentation){
+            Assert-PresentationSource $nativeReceipt $selectedManifest $upstreamRecipe $presentationRegistration
+        }else{
         if (@($nativeReceipt.registrations).Count -ne $registrationRecipe.Count) { throw 'RTX actual registration receipt count differs.' }
         foreach ($registration in $registrationRecipe) {
             $matches = @($nativeReceipt.registrations | Where-Object { $_.path -ceq $registration.path })
             if ($matches.Count -ne 1 -or $matches[0].beforeSha256 -cne $registration.beforeSHA256 -or $matches[0].afterSha256 -cne $registration.afterSHA256) { throw 'RTX actual registration source receipt mismatch.' }
+        }
         }
         $baseCatalog = Get-Content -LiteralPath (Join-Path $DesktopRoot 'third-party/libmpv/SOURCES.json') -Raw | ConvertFrom-Json
         foreach ($license in $baseCatalog.licenseFiles) {
@@ -242,6 +314,7 @@ function Install-RtxCoreDescriptorMpvRuntime {
             reproducible = $false
             nativeResolutionPpeVerified = $false
         }
+        if($presentation){foreach($key in @('presentationProtocolVersion','presentationProperty','upstreamEditsSha256','sourcePatchHelperSha256')){$stamp[$key]=$expected[$key]}}
         $stamp | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath $provenanceFile -Encoding utf8
         Write-Host 'Verified patched libmpv candidate staged; RTX core bridge effect remains unverified.'
     } finally {

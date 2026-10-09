@@ -37,12 +37,13 @@ internal fun DesktopVideoEnhancementState.withNvidiaObservation(native: NvidiaVi
         val status = when {
             native.error != null -> "画质增强暂不可用，继续播放原画"
             native.unavailableReason != null || !native.veyraAvailable -> "画质增强暂不可用，继续播放原画"
+            native.active -> "画质增强画面已显示"
             native.veyraSubmitted -> "已提交画面增强，等待画面反馈"
             else -> "正在准备画质增强"
         }
-        return copy(available = native.veyraAvailable, active = false, pending = native.pending,
+        return copy(available = native.veyraAvailable, active = native.active, pending = native.pending,
             error = native.error, unavailableReason = native.unavailableReason, statusText = status,
-            driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = false,
+            driverVsrAccepted = false, driverHdrAccepted = false, hdrConversionActive = native.hdrConversionActive,
             nativeResolutionAttemptAccepted = false, veyraAvailable = native.veyraAvailable, veyraSubmitted = native.veyraSubmitted)
     }
     val status = when {

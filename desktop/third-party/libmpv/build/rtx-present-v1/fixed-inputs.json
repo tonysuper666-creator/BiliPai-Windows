@@ -1,0 +1,45 @@
+{
+  "archives": [
+    {
+      "fileName": "build-recipes-source-cd1edc11dc68.tar.gz",
+      "kind": "recipes",
+      "sha256": "8b92a254771496b0dcc23017c2734bfa7545441d3e6a37958b063d6e7814a657",
+      "url": "https://github.com/shinchiro/mpv-winbuild-cmake/archive/cd1edc11dc6887a50f705717619d879f5a93a488.tar.gz"
+    },
+    {
+      "fileName": "mpv-source-69e63f425a53.tar.gz",
+      "kind": "mpv",
+      "sha256": "2ae37a9f34730124f73367f31a72f378ba29b4ee96b813306dd6a901ac3af4eb",
+      "url": "https://github.com/mpv-player/mpv/archive/69e63f425a531f814431fba12750bdb3721357f2.tar.gz"
+    },
+    {
+      "fileName": "ffmpeg-source-9fc8c785e274.tar.gz",
+      "kind": "ffmpeg",
+      "sha256": "1f5e585b5b0a8cc3b167f85a464878e50bc3e044832d052bc7cd62e4e3af3506",
+      "url": "https://github.com/FFmpeg/FFmpeg/archive/9fc8c785e2747c87121ec28f8f10ceab0562384b.tar.gz"
+    }
+  ],
+  "bridgeGpl3LicenseSha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
+  "buildPatchHelperSha256": "8cae5dc860f06c86a101f1bbba77d9822e4dd6f6b75a86bf8f483e44d2e37870",
+  "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
+  "expectedPatchedRecipeSha256": {
+    "build-recipes/packages/ffmpeg.cmake": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
+    "build-recipes/packages/mpv.cmake": "8e8e5a4fff3b1be48b30b0b18b56640930a5fddd494587922b6aa774512accd2"
+  },
+  "ffmpegCommit": "9fc8c785e2747c87121ec28f8f10ceab0562384b",
+  "filterName": "bilipai-rtx",
+  "filterSourceManifestSha256": "7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338",
+  "nativePatchSha256": "e3599ec5fe4326a6713093e9834514f7c2b001b41f30c03fc26fc763b3345d30",
+  "originalDllSha256": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
+  "originalNativeSourceSha256": "9514d40109894e0bee4e4a2aa343a4e4e4d2368aee3729959180bf5f92d486c3",
+  "patchedNativeSourceSha256": "1669c96fc95cfd7276a3149aa2d76058d29b2cc2dd848c77b949d434831c6d2f",
+  "presentationProperty": "bilipai-rtx-presentation",
+  "presentationProtocolVersion": 1,
+  "recipeArchivePrefix": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488",
+  "recipeCommit": "cd1edc11dc6887a50f705717619d879f5a93a488",
+  "schema": 3,
+  "sharedHostInputsPath": "desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json",
+  "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+  "upstreamEditsSha256": "9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea",
+  "variant": "bilipai-veyra-rtx-present-v1"
+}

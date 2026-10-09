@@ -171,7 +171,7 @@ static bool prepare_bridge(struct mp_filter *vf)
     wchar_t *dll=utf16(p->opts->dll),*runtime=utf16(p->opts->runtime);
     struct bv_mpv_config cfg={0};cfg.device=p->d3d->device;cfg.dll_path=dll;cfg.runtime_directory=runtime;
     cfg.project_id=p->opts->project;cfg.engine_version="BiliPai-Veyra-Core-1";
-    cfg.session=(uint64_t)p->opts->session;cfg.generation=p->generation;
+    cfg.session=(uint64_t)p->opts->session;cfg.generation=p->generation;cfg.configuration=(uint64_t)p->opts->generation;
     cfg.input_width=p->params.w;cfg.input_height=p->params.h;cfg.output_width=p->out_params.w;cfg.output_height=p->out_params.h;
     cfg.effects=BV_VIDEO_SR|(p->opts->hdr?BV_VIDEO_HDR:0);cfg.quality=p->opts->quality;cfg.peak_nits=p->opts->peak;cfg.timeout_ms=p->opts->timeout;
     cfg.context_lock=p->d3d->lock;cfg.context_unlock=p->d3d->unlock;cfg.context_lock_opaque=p->d3d->lock_ctx;
@@ -200,15 +200,16 @@ static void process(struct mp_filter *vf)
             mp_image_copy_attributes(out,in);out->params=p->out_params;
             struct mp_image *lease=mp_image_new_ref(out),*input_lease=mp_image_new_ref(in);
             if(lease&&input_lease){
-                bv_status_v1 s;
+                bv_status_v1 s;struct mp_bilipai_frame_token measured={0};
                 int rc=bv_mpv_bridge_process(p->bridge,(ID3D11Texture2D*)in->planes[0],(uint32_t)(uintptr_t)in->planes[1],
                    (ID3D11Texture2D*)out->planes[0],(uint32_t)(uintptr_t)out->planes[1],color,p->generation,++p->sequence,
-                   (int64_t)llround(in->pts*1000000.0),1000000,input_lease,lease,release_output_lease,&s);
+                   (int64_t)llround(in->pts*1000000.0),1000000,input_lease,lease,release_output_lease,&s,&measured);
                 /* The bridge consumes both leases even on failure. Actual output
                    ownership survives failed Signal/drain and filter teardown. */
                 if(rc!=BV_OK){talloc_free(out);out=NULL;p->disabled=true;
                     log_failure(vf,rc,"process-bypass",s.message);
-                }else if(!p->accepted_logged){
+                }else {out->bilipai_rtx=measured;}
+                if(rc==BV_OK&&!p->accepted_logged){
                     MP_INFO(vf,"RTX SDK accepted; GPU frame SUBMITTED session=%"PRIu64
                        " config-generation=%"PRIu64" stream-generation=%"PRIu64
                        " sequence=%"PRIu64" size=%dx%d; display completion not asserted.\n",
@@ -219,7 +220,15 @@ static void process(struct mp_filter *vf)
             }else {talloc_free(lease);talloc_free(input_lease);talloc_free(out);out=NULL;}
         }
     }
-    if(!out)out=mp_image_new_ref(in);
+    if(!out&&!p->disabled&&p->bridge){
+        p->disabled=true;
+        log_failure(vf,BV_INTERNAL,"process-bypass",
+                    "frame preparation bypassed; original frame forwarded");
+    }
+    if(!out){
+        out=mp_image_new_ref(in);
+        if(out)out->bilipai_rtx=(struct mp_bilipai_frame_token){0};
+    }
     if(!out){mp_filter_internal_mark_failed(vf);return;}
     mp_refqueue_write_out_pin(p->queue,out);
 }

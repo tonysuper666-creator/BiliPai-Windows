@@ -10,6 +10,7 @@
 !/native/mpv-rtx-bridge/vf_bilipai_rtx.c
 !/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c
 !/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.h
+!/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h
 !/native/veyra-core/CMakeLists.txt
 !/native/veyra-core/NOTICE.md
 /native/veyra-core/build*/

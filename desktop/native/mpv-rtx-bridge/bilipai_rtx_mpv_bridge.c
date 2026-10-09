@@ -193,7 +193,7 @@ static HRESULT source_views(struct bv_mpv_bridge *p,const D3D11_TEXTURE2D_DESC *
 }
 int bv_mpv_bridge_create(const struct bv_mpv_config *c,struct bv_mpv_bridge **out,bv_status_v1 *s) {
     *out=NULL;status_init(s);
-    if(!c||!c->device||!c->session||!c->generation||!absolute_path(c->dll_path)||!absolute_path(c->runtime_directory)||!c->project_id||!c->engine_version||!c->input_width||!c->input_height||!c->output_width||!c->output_height||(!c->context_lock!=!c->context_unlock))return fail(s,BV_INVALID,E_INVALIDARG,"invalid explicit bridge configuration");
+    if(!c||!c->device||!c->session||!c->configuration||c->configuration>INT64_MAX||c->generation<c->configuration||!absolute_path(c->dll_path)||!absolute_path(c->runtime_directory)||!c->project_id||!c->engine_version||!c->input_width||!c->input_height||!c->output_width||!c->output_height||(!c->context_lock!=!c->context_unlock))return fail(s,BV_INVALID,E_INVALIDARG,"invalid explicit bridge configuration");
     AcquireSRWLockExclusive(&retire_lock);
     if(quarantined&&destroy_core(quarantined,s)==BV_OK){release_context(quarantined);quarantined=NULL;}
     int blocked=quarantined!=NULL;ReleaseSRWLockExclusive(&retire_lock);
@@ -245,10 +245,10 @@ int bv_mpv_bridge_create(const struct bv_mpv_config *c,struct bv_mpv_bridge **ou
 native_fail:
     fail(s,BV_DEVICE_FAILURE,hr,"native bridge setup failed; enhancement must bypass");release_context(p);return BV_DEVICE_FAILURE;
 }
-int bv_mpv_bridge_process(struct bv_mpv_bridge *p,ID3D11Texture2D *in,uint32_t slice,ID3D11Texture2D *out,uint32_t out_slice,struct bv_mpv_color color,uint64_t generation,uint64_t sequence,int64_t pts,int32_t base,void *input_lease,void *output_lease,void (*release_output_lease)(void *),bv_status_v1 *s) {
-    status_init(s);
+int bv_mpv_bridge_process(struct bv_mpv_bridge *p,ID3D11Texture2D *in,uint32_t slice,ID3D11Texture2D *out,uint32_t out_slice,struct bv_mpv_color color,uint64_t generation,uint64_t sequence,int64_t pts,int32_t base,void *input_lease,void *output_lease,void (*release_output_lease)(void *),bv_status_v1 *s,struct mp_bilipai_frame_token *receipt) {
+    status_init(s);if(receipt)memset(receipt,0,sizeof(*receipt));
 #define RETURN(value) do { int result=(value);if(input_lease&&release_output_lease)release_output_lease(input_lease);if(output_lease&&release_output_lease)release_output_lease(output_lease);return result; } while(0)
-    if(!input_lease||!output_lease||!release_output_lease)RETURN(fail(s,BV_INVALID,E_INVALIDARG,"output image lease required"));
+    if(!receipt||!input_lease||!output_lease||!release_output_lease)RETURN(fail(s,BV_INVALID,E_INVALIDARG,"output image lease required"));
     if(!p||p->failed||!in||!out||generation!=p->config.generation||!sequence||sequence<=p->sequence||base<=0)RETURN(fail(s,BV_STALE,E_INVALIDARG,"stale/failed source or invalid timestamp"));
     if(p->held_input_lease||p->held_output_lease){
         int old=wait_native(p,p->producer11,p->producer_value,s);
@@ -299,6 +299,18 @@ int bv_mpv_bridge_process(struct bv_mpv_bridge *p,ID3D11Texture2D *in,uint32_t s
     /* These reads/copy and every following input write are on the SAME D3D11
        immediate queue. The consumer fence covers the real D3D12 submission;
        unlike Veyra's decoder ring, safety does not depend on fixed slot counts. */
+    *receipt=(struct mp_bilipai_frame_token){
+        .version=MP_BILIPAI_TOKEN_V1,.submitted=1,
+        .session=r.session_id,.configuration=p->config.configuration,
+        .stream=r.source_generation,.sequence=r.sequence,.adapter_luid=r.adapter_luid,
+        .pts_numerator=r.pts_numerator,.pts_denominator=r.pts_denominator,
+        .input_width=p->config.input_width,.input_height=p->config.input_height,
+        .width=r.output_width,.height=r.output_height,.effects=r.effects_applied,
+        .transport=(r.effects_applied&BV_VIDEO_HDR)?MP_BILIPAI_HDR10_RGB10:MP_BILIPAI_SRGB_BGRA8,
+        .hdr_peak_nits=(r.effects_applied&BV_VIDEO_HDR)?p->config.peak_nits:0,
+    };
+    if(!mp_bilipai_token_valid(receipt)){memset(receipt,0,sizeof(*receipt));p->failed=1;
+        RETURN(fail(s,BV_STALE,E_FAIL,"measured processing token rejected; leases retained"));}
     p->sequence=sequence;RETURN(BV_OK);
 #undef RETURN
 }

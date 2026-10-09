@@ -1,0 +1,61 @@
+{
+  "schema": 1,
+  "targets": [
+    {
+      "afterBytes": 5038,
+      "afterSha256Bytes": "8e8e5a4fff3b1be48b30b0b18b56640930a5fddd494587922b6aa774512accd2",
+      "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/mpv.cmake",
+      "beforeBytes": 4648,
+      "beforeSha256Bytes": "cfb9b0fbaaf6013069fe3eeda7e9e9644546f09cd772dbd549f8eb7fa21c7122",
+      "identity": "fixed-build-mpv-recipe",
+      "rawEdits": [
+        {
+          "count": 1,
+          "new": "    GIT_REPOSITORY https://github.com/mpv-player/mpv.git\n    GIT_TAG 69e63f425a531f814431fba12750bdb3721357f2\n    GIT_RESET 69e63f425a531f814431fba12750bdb3721357f2\n",
+          "offsetBytesAtSequentialStage": 459,
+          "old": "    GIT_REPOSITORY https://github.com/mpv-player/mpv.git\n"
+        },
+        {
+          "count": 1,
+          "new": "    UPDATE_COMMAND \"\"\n    PATCH_COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-veyra-rtx-core-patch.py <SOURCE_DIR>\n",
+          "offsetBytesAtSequentialStage": 696,
+          "old": "    UPDATE_COMMAND \"\"\n"
+        },
+        {
+          "count": 1,
+          "new": "    COMMAND ${CMAKE_COMMAND} -E copy <BINARY_DIR>/libmpv-2.dll          ${CMAKE_CURRENT_BINARY_DIR}/mpv-dev/libmpv-2.dll\n    COMMAND ${CMAKE_COMMAND} -E copy <SOURCE_DIR>/.bilipai-native-patch-receipt.json ${CMAKE_CURRENT_BINARY_DIR}/mpv-dev/bilipai-native-patch-receipt.json\n",
+          "offsetBytesAtSequentialStage": 2935,
+          "old": "    COMMAND ${CMAKE_COMMAND} -E copy <BINARY_DIR>/libmpv-2.dll          ${CMAKE_CURRENT_BINARY_DIR}/mpv-dev/libmpv-2.dll\n"
+        },
+        {
+          "count": 1,
+          "new": "        -Dlibmpv=true\n        -Dd3d-hwaccel=enabled\n",
+          "offsetBytesAtSequentialStage": 1184,
+          "old": "        -Dlibmpv=true\n"
+        }
+      ],
+      "staticForwardEqualsFinal": true,
+      "staticInverseEqualsCompleteFixedOriginal": true,
+      "targetPath": "build-recipes/packages/mpv.cmake"
+    },
+    {
+      "afterBytes": 3255,
+      "afterSha256Bytes": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
+      "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/ffmpeg.cmake",
+      "beforeBytes": 3147,
+      "beforeSha256Bytes": "359c9c7da360f57d3a438e6fe117af6169cbd9aa3672751fd2bfc31e02be8fff",
+      "identity": "fixed-build-ffmpeg-recipe",
+      "rawEdits": [
+        {
+          "count": 1,
+          "new": "    GIT_REPOSITORY https://github.com/FFmpeg/FFmpeg.git\n    GIT_TAG 9fc8c785e2747c87121ec28f8f10ceab0562384b\n    GIT_RESET 9fc8c785e2747c87121ec28f8f10ceab0562384b\n",
+          "offsetBytesAtSequentialStage": 796,
+          "old": "    GIT_REPOSITORY https://github.com/FFmpeg/FFmpeg.git\n"
+        }
+      ],
+      "staticForwardEqualsFinal": true,
+      "staticInverseEqualsCompleteFixedOriginal": true,
+      "targetPath": "build-recipes/packages/ffmpeg.cmake"
+    }
+  ]
+}

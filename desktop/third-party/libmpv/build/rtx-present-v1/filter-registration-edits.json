@@ -1,0 +1,23 @@
+[
+  {
+    "path": "filters/user_filters.h",
+    "before": "extern const struct mp_user_filter_entry vf_d3d11vpp;",
+    "after": "extern const struct mp_user_filter_entry vf_d3d11vpp;\nextern const struct mp_user_filter_entry vf_bilipai_rtx;",
+    "beforeSHA256": "1b44a49ab3d0ba3bab75176bbeebb0c62e9445aeacea5c93ad34ac28ae0e6ed3",
+    "afterSHA256": "dc3c4ac3e5f6c4286399c1b502ac559a6afde12258a1a49b7ff5d3ac449035db"
+  },
+  {
+    "path": "filters/user_filters.c",
+    "before": "    &vf_d3d11vpp,\n#endif",
+    "after": "    &vf_d3d11vpp,\n#if HAVE_D3D11\n    &vf_bilipai_rtx,\n#endif\n#endif",
+    "beforeSHA256": "405a36d4ed0ac4f3d2ee65c50ccb327cfcb910391ced6232749e517cf1ceea4a",
+    "afterSHA256": "d9eca9dc4056464802bd1fd35b401405ae70a9aa618ccaac3de99ceef23fa262"
+  },
+  {
+    "path": "meson.build",
+    "before": "                     'video/filter/vf_d3d11vpp.c')",
+    "after": "                     'video/filter/vf_d3d11vpp.c')\n    if features['d3d11']\n        sources += files('video/filter/vf_bilipai_rtx.c',\n                         'video/filter/bilipai_rtx_mpv_bridge.c')\n        dependencies += [cc.find_library('d3d12'),\n                         cc.find_library('d3dcompiler'),\n                         cc.find_library('dxgi'),\n                         cc.find_library('dxguid')]\n    endif",
+    "beforeSHA256": "7b7e1059fbea9e6a46de8e5d8f7486af41850b4c1fcb77e9cd6b84525bccbbb3",
+    "afterSHA256": "d13fd0b0dc4075712507042ff16b590ad28a9947030f4402f105beea0e03e445"
+  }
+]

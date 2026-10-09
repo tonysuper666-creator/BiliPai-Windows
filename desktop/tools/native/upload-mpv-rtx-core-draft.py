@@ -105,7 +105,10 @@ def require_tag(base, tag, commit, token):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--variant', choices=(VARIANT, 'bilipai-veyra-rtx-present-v1'), default='bilipai-veyra-rtx-present-v1',
+                        help='Upload the matching current presentation candidate by default; core-v1 must be selected explicitly')
     args = parser.parse_args()
+    variant = args.variant
     directory = args.output.resolve(strict=True)
     tag, commit = os.environ.get('GITHUB_REF_NAME', ''), os.environ.get('GITHUB_SHA', '')
     if (os.environ.get('GITHUB_ACTIONS') != 'true'
@@ -130,17 +133,37 @@ def main():
                                    for path in (status_path, receipt_path, descriptor_path)]
     if (status.get('success') is not True or status.get('binaryProduced') is not True
             or status.get('gpuOrDriverTested') is not False
-            or receipt.get('schema') != 2 or receipt.get('variant') != VARIANT
+            or receipt.get('schema') != 2 or receipt.get('variant') != variant
             or receipt.get('ownrepoSourceCommit') != commit
             or receipt.get('gpuOrDriverTested') is not False
             or receipt.get('closedSdkOrRuntimeIncluded') is not False
-            or descriptor.get('schema') != 2 or descriptor.get('variant') != VARIANT
+            or descriptor.get('schema') != 2 or descriptor.get('variant') != variant
             or descriptor.get('deliveryStatus') != 'LOCAL_ARTIFACT_ONLY_NOT_RELEASED'
             or descriptor.get('rtxCoreBridgeVerified') is not False
             or descriptor.get('closedSdkOrRuntimeIncluded') is not False
             or descriptor.get('buildReceiptSha256') != range_sha(receipt_path, 0, receipt_path.stat().st_size)
             or status.get('descriptorSha256') != range_sha(descriptor_path, 0, descriptor_path.stat().st_size)):
         raise DeliveryError('Only a successful unverified source candidate is eligible')
+    if status.get('variant') != variant or descriptor['artifact']['fileName'] != variant + '-x64.zip' or descriptor['sourceBundle']['fileName'] != variant + '-source-materials.tar.gz':
+        raise DeliveryError('Selected source variant and actual output asset names differ')
+    if variant == 'bilipai-veyra-rtx-present-v1':
+        expected_presentation = {'filterSourceManifestSha256': '7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338', 'presentationProtocolVersion': 1, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': '9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea', 'sourcePatchHelperSha256': '8cae5dc860f06c86a101f1bbba77d9822e4dd6f6b75a86bf8f483e44d2e37870'}
+        if any(receipt.get(key) != value or descriptor.get(key) != value for key, value in expected_presentation.items()) or len(receipt.get('sourceGraph', [])) != 17 or len(receipt.get('filterSourceFiles', [])) != 5:
+            raise DeliveryError('Future presentation delivery needs its actual complete source graph and protocol')
+        # Compare every actual receipt target with whole-byte pinned source inputs.
+        inputs = repository_root / 'desktop/third-party/libmpv/build/rtx-present-v1'
+        materials = {'manifest': ('bilipai-rtx-presentation-source-manifest.json', '7aa01708316eb55a9a4fb7106f02d67932e1d8ae47480c7e19b920951611e338'), 'upstream': ('presentation-edits.json', '9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea'), 'registration': ('filter-registration-edits.json', '59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf')}
+        measured = {}
+        for label, (leaf, digest) in materials.items():
+            data = owned_file(inputs.resolve(strict=True), leaf).read_bytes()
+            if hashlib.sha256(data).hexdigest() != digest:
+                raise DeliveryError('Pinned presentation delivery source input changed')
+            measured[label] = json.loads(data)
+        manifest, upstream, registration = measured['manifest'], measured['upstream'], measured['registration']
+        nvidia = manifest['originalNvidiaPatch']
+        graph = [{'path': nvidia['sourcePath'], 'beforeSha256': nvidia['originalSha256'], 'afterSha256': nvidia['patchedSha256']}] + [{'path': row['path'], 'beforeSha256': row['beforeSHA256'], 'afterSha256': row['afterSHA256']} for row in registration] + [{'path': row['path'], 'beforeSha256': row['beforeSha256'], 'afterSha256': row['afterSha256']} for row in upstream]
+        if len(graph) != 17 or len({row['path'] for row in graph}) != 17 or receipt.get('sourceGraph') != graph or receipt.get('filterSourceFiles') != manifest['sourceFiles'] or type(receipt.get('presentationProtocolVersion')) is not int:
+            raise DeliveryError('Actual presentation delivery source graph or private source closure differs')
     artifact = owned_file(directory, descriptor['artifact']['fileName'])
     bundle = owned_file(directory, descriptor['sourceBundle']['fileName'])
     if (range_sha(artifact, 0, artifact.stat().st_size) != descriptor['artifact']['archiveSha256']

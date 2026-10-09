@@ -3,6 +3,14 @@ name: Manual RTX core frame-bridge libmpv Windows x64 source build
 on:
   workflow_dispatch:
     inputs:
+      producer_variant:
+        description: 'Exact reviewed source variant; presentation remains unverified until runtime validation'
+        required: true
+        type: choice
+        default: bilipai-veyra-rtx-present-v1
+        options:
+          - bilipai-veyra-rtx-core-v1
+          - bilipai-veyra-rtx-present-v1
       acknowledge_source_build:
         description: 'Build an unverified RTX frame-bridge candidate; no GPU/SDK runtime is run'
         required: true
@@ -22,6 +30,8 @@ jobs:
       contents: write
     runs-on: ubuntu-24.04
     timeout-minutes: 360
+    env:
+      BILIPAI_RTX_VARIANT: ${{ inputs.producer_variant }}
     container:
       # Public linux/amd64 OCI manifest retrieved 2026-10-08; deliberately newer build environment.
       # Replaces the unavailable historical digest; native sources/recipes/actions remain fixed.
@@ -32,11 +42,11 @@ jobs:
         with:
           persist-credentials: false
       - name: Build from fixed source and recipe inputs
-        run: python3 desktop/tools/native/build-mpv-rtx-core-runtime.py --workspace "$RUNNER_TEMP/bilipai-mpv-rtx-core" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
+        run: python3 desktop/tools/native/build-mpv-rtx-core-runtime.py --variant "$BILIPAI_RTX_VARIANT" --workspace "$RUNNER_TEMP/bilipai-mpv-rtx-core" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
       # Root must create the immutable rtx-source-* tag before this manual dispatch.
       # Only successful source builds may save a draft; failure output stays in job logs.
       - name: Save successful source candidate in an unpublished own-repository draft
         if: success()
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: python3 desktop/tools/native/upload-mpv-rtx-core-draft.py --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"
+        run: python3 desktop/tools/native/upload-mpv-rtx-core-draft.py --variant "$BILIPAI_RTX_VARIANT" --output "$GITHUB_WORKSPACE/desktop/build/rtx-core-native-candidate"

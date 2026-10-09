@@ -322,6 +322,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             retirePresentationTransferLocked()
             presentationTransfer = null; presentationHandoffPending = false
             presentationDisposalPending = true
+            clearVeyraPresentationState()
             session?.let { it.closing.set(true); retiringCacheSessions.add(it) }
             session = null
             muteIntents.retire()
@@ -571,6 +572,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             (source.nativePublication == null && (source.authorizationReceipt != null || source.primaryAccountEpoch != null))) return@synchronized null
         val id = nextSeekId.incrementAndGet()
         transfer?.seek(id, seconds, relative = false, durationSeconds = state.value.durationSeconds)
+        active.requestVeyraPresentationSeek(id)
         active.commands.offer(Action.Seek(id, sourceVersion, playbackRevision, seconds, false, source))
         id
     }
@@ -586,8 +588,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             (state.value.videoCodec == null && state.value.audioCodec == null)) return@synchronized null
         val id = nextSeekId.incrementAndGet()
         transfer?.seek(id, seconds, relative, state.value.durationSeconds)
+        active.requestVeyraPresentationSeek(id)
         active.commands.offer(Action.Seek(id, sourceVersion, playbackRevision, seconds, relative))
         id
+    }
+    private fun clearVeyraPresentationState() {
+        mutableNvidiaVideo.update { if (it.backend == NvidiaVideoBackend.VEYRA_CORE)
+            it.copy(active = false, hdrConversionActive = false, nativeResolutionAttemptAccepted = false) else it }
     }
     fun setVolume(volume: Double) {
         if (!volume.isFinite()) return
@@ -920,6 +927,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             }
             mutableDecoderCapabilities.value = null
             retireWindowsAudioAcknowledgement()
+            clearVeyraPresentationState()
             session?.let { it.closing.set(true); retiringCacheSessions.add(it) }
             session = null
             // Capture also the presentation worker which already cleared
@@ -1067,6 +1075,14 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private var nativeResolutionPatchAvailable = false
         private var veyraBinding: DesktopVeyraVerifiedBinding? = null
         private var veyraReceipt: NvidiaNativeMessage.VeyraSubmitted? = null
+        private val veyraPresentationTracker = VeyraPresentationTracker()
+        // Passive IDs from the actual queued seek. Both reads/writes use the existing player lock.
+        private var veyraSeekRequestedId = 0L
+        private var veyraSeekSubmittedId = 0L
+        fun requestVeyraPresentationSeek(id: Long) {
+            veyraSeekRequestedId = id
+            clearVeyraPresentationState()
+        }
         private var nvidiaFilterLabel: String? = null
         private var nvidiaConfiguredPosition: Double? = null
         private var nvidiaRestarted = false
@@ -1092,6 +1108,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             val label = nvidiaFilterLabel ?: return
             // Stop admitting its fixed success messages before synchronous native removal.
             activeNvidiaAction = null; nvidiaRestarted = false; veyraReceipt = null
+            veyraPresentationTracker.reset()
             val filters = MpvNvidiaVideoProperties.filters(native, handle)
             if (filters == null || filters.any { it.label == label })
                 checkResult(native, native.mpv_command(handle, StringArray(arrayOf("vf", "remove", "@$label"), "UTF-8")), "remove-nvidia-filter")
@@ -1211,7 +1228,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         is NvidiaNativeMessage.VeyraSubmitted -> {
                             if (action.options.backend == NvidiaVideoBackend.VEYRA_CORE &&
                                 message.sourceVersion == action.version && message.configurationVersion == action.configurationVersion)
-                                admitNvidia(action) { veyraReceipt = message }
+                                admitNvidia(action) {
+                                    val previous = veyraReceipt
+                                    if (previous == null || message.streamGeneration > previous.streamGeneration ||
+                                        (message.streamGeneration == previous.streamGeneration && message.sequence >= previous.sequence))
+                                        veyraReceipt = message
+                                }
                         }
                         is NvidiaNativeMessage.VeyraFailure -> {
                             if (action.options.backend == NvidiaVideoBackend.VEYRA_CORE &&
@@ -1232,6 +1254,59 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     }
                 }
             }
+        }
+        private fun clearVeyraPresentationProof() {
+            activeNvidiaAction?.let { action ->
+                if (action.options.backend == NvidiaVideoBackend.VEYRA_CORE) admitNvidia(action) { clearVeyraPresentationState() }
+            }
+        }
+        private fun retireVeyraPresentation() {
+            veyraPresentationTracker.retireStream(veyraReceipt?.streamGeneration ?: activeNvidiaAction?.configurationVersion)
+            clearVeyraPresentationProof()
+        }
+        private fun beginVeyraPresentationSeek() {
+            // The command queues a seek; success is not an actual reset or displayed-frame acknowledgement.
+            veyraPresentationTracker.beginSeek(veyraReceipt?.streamGeneration)
+            clearVeyraPresentationProof()
+        }
+        private fun receiveVeyraPresentationSeek() {
+            // Event20 has no request ID. Confirm a single pending boundary without retiring its new stream again.
+            veyraPresentationTracker.onSeekEvent(veyraReceipt?.streamGeneration)
+            clearVeyraPresentationProof()
+        }
+        private fun refreshVeyraPresentation(native: MpvNative, handle: Pointer, action: Action.NvidiaVideo,
+            binding: DesktopVeyraVerifiedBinding, input: PlayerVideoOutputState, filterPresent: Boolean,
+            outputWidth: Int, outputHeight: Int, transfer: String?, targetTransfer: String?, targetPrimaries: String?) {
+            val entry = activeEntry
+            // Native reads stay outside source/player gates. The same real action and entry are re-admitted below.
+            val snapshot = MpvVeyraPresentationProperties.read(native, handle)
+            val actuallyPaused = property(native, handle, "pause") == "yes"
+            val now = System.nanoTime()
+            if (!admitNvidia(action) {
+                if (veyraBinding !== binding || binding.presentationQualification?.matches(binding) != true ||
+                    !fileLoaded || entry == null || activeEntry != entry || (expectedEntry != null && expectedEntry != entry) ||
+                    veyraSeekRequestedId != veyraSeekSubmittedId) {
+                    clearVeyraPresentationState()
+                } else {
+                    val receipt = veyraReceipt
+                    val shown = veyraPresentationTracker.accept(snapshot, checkNotNull(action.version), action.configurationVersion,
+                        receipt, input.inputWidth, input.inputHeight, activeNvidiaOptions, actuallyPaused, now)
+                    mutableNvidiaVideo.update { previous ->
+                        val submitted = receipt != null && receipt.sourceVersion == action.version &&
+                            receipt.configurationVersion == action.configurationVersion && receipt.width == outputWidth && receipt.height == outputHeight
+                        val observed = observeNvidiaVideo(previous.copy(veyraSubmitted = submitted), activeNvidiaOptions,
+                            NvidiaFrameObservation(input.inputWidth, input.inputHeight, outputWidth, outputHeight,
+                                transfer, targetTransfer, targetPrimaries, fileLoaded && state.value.firstVideoFrameReady,
+                                filterPresent, input.hdrDisplay.hdrEnabled))
+                        val proved = shown != null && shown.width == outputWidth && shown.height == outputHeight &&
+                            previous.error == null && previous.unavailableReason == null &&
+                            filterPresent && state.value.firstVideoFrameReady && !state.value.ended && state.value.error == null &&
+                            (!activeNvidiaOptions.hdr || (input.hdrDisplay.hdrEnabled && nvidiaHdrTarget(targetTransfer, targetPrimaries)))
+                        observed.copy(active = proved, hdrConversionActive = proved && activeNvidiaOptions.hdr,
+                            nativeResolutionAttemptAccepted = false)
+                    }
+                }
+            }) failNvidia(native, handle, action, "当前视频已失去播放所有权，已停止增强")
         }
         private fun refreshNvidiaVideo(native: MpvNative, handle: Pointer) {
             val context = property(native, handle, "current-gpu-context")?.takeIf { it.length <= 32 && it.all { c -> c.isLetterOrDigit() || c == '-' } }
@@ -1266,6 +1341,13 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             val filterName = if (activeNvidiaOptions.backend == NvidiaVideoBackend.VEYRA_CORE) "bilipai-rtx" else "d3d11vpp"
             val filterPresent = MpvNvidiaVideoProperties.filters(native, handle)?.any { it.name == filterName && it.label == nvidiaFilterLabel } == true
             if (!filterPresent) { failNvidia(native, handle, action, "NVIDIA 滤镜已失效，继续原画播放"); return }
+            val binding = veyraBinding
+            if (activeNvidiaOptions.backend == NvidiaVideoBackend.VEYRA_CORE && binding != null &&
+                binding.presentationQualification?.matches(binding) == true) {
+                refreshVeyraPresentation(native, handle, action, binding, input, filterPresent,
+                    outputWidth, outputHeight, transfer, targetTransfer, targetPrimaries)
+                return
+            }
             val position = property(native, handle, "time-pos")?.toDoubleOrNull()
             val advanced = position != null && nvidiaConfiguredPosition != null && position > nvidiaConfiguredPosition!! + 0.001
             if (!admitNvidia(action) { mutableNvidiaVideo.update {
@@ -1623,6 +1705,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         tracks = emptyList()
                         activeSourceVersion = action.version
                         activeRevision = action.revision
+                        veyraSeekRequestedId = 0L; veyraSeekSubmittedId = 0L
+                        veyraPresentationTracker.reset()
                         softwareTarget?.beginSource(action.version, action.revision)
                         activeAttemptId = nextAttemptId.incrementAndGet()
                         seekTracker.reset()
@@ -1692,7 +1776,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                             val position = if (action.relative) (property(native, handle, "time-pos")?.toDoubleOrNull() ?: state.value.positionSeconds) + action.seconds else action.seconds
                             val duration = property(native, handle, "duration")?.toDoubleOrNull()?.takeIf { it > 0 && it.isFinite() }
                             val target = position.coerceAtLeast(0.0).let { if (duration == null) it else it.coerceAtMost(duration) }
+                            beginVeyraPresentationSeek()
                             checkResult(native, native.mpv_command(handle, StringArray(arrayOf("seek", target.toString(), "absolute+exact"), "UTF-8")), "seek")
+                            synchronized(lock) {
+                                if (session === this && !closing.get() && sourceVersion == action.sourceVersion && playbackRevision == action.revision)
+                                    veyraSeekSubmittedId = action.id
+                            }
                             seekTracker.submit(action.id, action.sourceVersion, target)
                         }
                         val owned = action.admissionSource
@@ -2078,7 +2167,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         private fun receiveEvent(native: MpvNative, handle: Pointer, event: Pointer) {
             // mpv_event x64 ABI: int event, int error, uint64 userdata, void* data.
             when (event.getInt(0)) {
-                1 -> closing.set(true) // MPV_EVENT_SHUTDOWN
+                1 -> { // MPV_EVENT_SHUTDOWN
+                    retireVeyraPresentation()
+                    closing.set(true)
+                }
+                20 -> receiveVeyraPresentationSeek() // MPV_EVENT_SEEK, including native seeks outside our command queue
                 2 -> { // MPV_EVENT_LOG_MESSAGE: prefix, level, text pointers; then int log_level.
                     val metadataMessage = event.getPointer(16) ?: return
                     if (metadataMessage.getInt(24) <= 50) receiveNvidiaMessage(native, handle,
@@ -2116,6 +2209,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                 6 -> { // MPV_EVENT_START_FILE
                     val entry = event.getPointer(16)?.getLong(0) ?: return
                     if (expectedEntry != null && expectedEntry != entry) return
+                    retireVeyraPresentation()
                     activeEntry = entry
                     fileLoaded = false
                     tracks = emptyList()
@@ -2167,6 +2261,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     val data = event.getPointer(16) ?: return
                     val entry = data.getLong(8)
                     if (activeEntry != entry) return
+                    retireVeyraPresentation()
                     fileLoaded = false
                     publishState { it.copy(nativeTrackIdentity = null, tracks = emptyList()) }
                     if (data.getInt(0) == 0 || data.getInt(0) == 4) synchronized(lock) {

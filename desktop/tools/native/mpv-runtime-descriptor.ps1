@@ -12,7 +12,7 @@ function Install-DescriptorMpvRuntime {
     if (-not (Test-Path -LiteralPath $descriptorFile -PathType Leaf)) { throw 'Requested patched runtime descriptor is missing.' }
     $descriptorSha = (Get-FileHash -LiteralPath $descriptorFile -Algorithm SHA256).Hash.ToLowerInvariant()
     $runtime = Get-Content -LiteralPath $descriptorFile -Raw | ConvertFrom-Json
-    if ($runtime.schema -eq 2 -and $runtime.variant -ceq 'bilipai-veyra-rtx-core-v1') {
+    if ($runtime.schema -eq 2 -and $runtime.variant -cin @('bilipai-veyra-rtx-core-v1','bilipai-veyra-rtx-present-v1')) {
         . (Join-Path $PSScriptRoot 'mpv-rtx-core-runtime-descriptor.ps1')
         Install-RtxCoreDescriptorMpvRuntime -DesktopRoot $DesktopRoot -NativeRoot $NativeRoot -DescriptorPath $DescriptorPath -ArchivePath $ArchivePath
         return

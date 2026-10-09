@@ -1,0 +1,99 @@
+{
+  "architecture": "windows-x64",
+  "bridgeSourceSha256": "61F7484D386B7B1C8940AC408267F040A89CEC050A1C2DAC678DA24446149E9B",
+  "coreAbi": 1,
+  "coreAbiWire": 65536,
+  "coreModuleRelativePath": "core/bilipai_veyra_core.dll",
+  "coreSourceSha256": "84E0B6D9525944BEEBA01B2E7D222E4607801A2347FAC780B056754025138CC5",
+  "engineVersion": "BiliPai-Veyra-Core-1",
+  "featureDirectory": "runtime/experimental",
+  "filterName": "bilipai-rtx",
+  "filterSourceManifestSha256": "7AA01708316EB55A9A4FB7106F02D67932E1D8AE47480C7E19B920951611E338",
+  "headerSha256": "0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569",
+  "localBuildEvidence": {
+    "actuallyLinked": true,
+    "coreCandidateBuildSha256": null,
+    "gpuExecuted": false,
+    "role": "reviewed-shared-source-and-private-CPU-link-not-selected-module"
+  },
+  "moduleBuildSha256": null,
+  "mpvDllSha256": null,
+  "mpvModuleRelativePath": "mpv/libmpv-2.dll",
+  "mpvNativeReceiptRelativePath": "mpv/licenses/native-patch-receipt.json",
+  "mpvNativeReceiptSha256": null,
+  "mpvSourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+  "nativeBuildReceiptRelativePath": "core/veyra-native-build-receipt.json",
+  "nativeBuildReceiptSha256": null,
+  "nativeVariant": "bilipai-veyra-shared-core-v1-v2",
+  "ngxHostEngineVersion": "BiliPai-Veyra-Core-Shared-1",
+  "pendingFeatures": [
+    "NR",
+    "DLSS",
+    "VFG"
+  ],
+  "phase": "SR_HDR_backend_candidate",
+  "presentationProperty": "bilipai-rtx-presentation",
+  "presentationProtocolVersion": 1,
+  "producerVariant": "bilipai-veyra-rtx-present-v1",
+  "projectId": null,
+  "runtimeFiles": [
+    {
+      "bytes": 19140144,
+      "fileVersion": "1.6.0.0",
+      "nvidiaSigner": {
+        "status": "Valid",
+        "subject": "CN=NVIDIA Corporation, OU=1-G, O=NVIDIA Corporation, L=Santa Clara, S=California, C=US",
+        "thumbprint": "9EA06F2F21DCCF7E67AFA4DFA1BCD49681ECD509"
+      },
+      "relativePath": "runtime/experimental/nvngx_vsr.dll",
+      "sha256": "C3D88EEA5FF7A548EDEFA66414CF6E77464D0947277C904F324DD23ABF58A1ED"
+    },
+    {
+      "bytes": 3955752,
+      "fileVersion": "1.1.0.0",
+      "nvidiaSigner": {
+        "status": "Valid",
+        "subject": "CN=NVIDIA Corporation, OU=1-G, O=NVIDIA Corporation, L=Santa Clara, S=California, C=US",
+        "thumbprint": "9EA06F2F21DCCF7E67AFA4DFA1BCD49681ECD509"
+      },
+      "relativePath": "runtime/experimental/nvngx_truehdr.dll",
+      "sha256": "9A80575F247190C05FE80EAC0C4BAA1D0D4D932348F26808310B5EC4BF9EEB4B"
+    }
+  ],
+  "runtimeProvenance": {
+    "classification": "official-rtx-video-sdk-1.1.0",
+    "observedPackageVersion": "2.0.6",
+    "observedReadOnly": true,
+    "runtimeFilesIncluded": false,
+    "runtimeLoaded": false
+  },
+  "runtimeRoot": ".",
+  "schema": 1,
+  "selection": {
+    "boundStatus": "UNAVAILABLE",
+    "default": "unselected",
+    "reason": "new-presentation-variant-native-build-and-display-validation-pending"
+  },
+  "sharedSourceIdentity": {
+    "buildClosureManifestSha256": "C33283F4F26AC0FA8117B341848CC2AA34749CD12B47C6D18B75765E2DA7E12D",
+    "cmakeSha256": "D184E623AF38CF9386A67838AA438C4E1CFFBEAF202F81836F68E4EA85922B8A",
+    "officialSdkManifestSha256": "5FB7A798B0A753F9933FBA3B9BEC539D592FA7322F9F59B718BDD44FB1C5F812",
+    "sharedHostSourceSha256": "E21DADB460222EF92C5DE38246BB34F0D78E245F3CA798C2116A259899A8A7AF",
+    "sourceManifestSha256": "7320FED4931E22334A3D5A2086E93CDF0CB8B227EDA75A216AA7BC8EFBB80A5F",
+    "v1CoreSourceSha256": "84E0B6D9525944BEEBA01B2E7D222E4607801A2347FAC780B056754025138CC5",
+    "v1HeaderSha256": "0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569",
+    "v2CoreSourceSha256": "D2CBC169CEF2A3350111B1DBC9A18012E8B53D897F00F31D6F74FC638FD622D5",
+    "v2HeaderSha256": "AF884CC3D73262DAFA19A76A32F0B85C48A2E3BDE912BF59885D8DE5D4CDD6BC"
+  },
+  "sourceMonitor": {
+    "installedEngineBindingAffected": false,
+    "role": "informational-source-tag-updates-only"
+  },
+  "sourcePatchHelperSha256": "8CAE5DC860F06C86A101F1BBBA77D9822E4DD6F6B75A86BF8F483E44D2E37870",
+  "upstreamEditsSha256": "9C4B625CA178A34D67099234863A093A097CDB38F68BED25CC15715A07CE4BEA",
+  "variant": "bilipai-veyra-core-v1",
+  "veyraRelease": "2.0.6",
+  "veyraReleaseCommit": "e3aa842a00f693a4a17d1fc4c454d0ebc59428f6",
+  "veyraSourceCommit": "96a7c8de36bc195240161de6814739ad810722f1",
+  "vfSourceSha256": "86FA9F6F772AF490B39EA117D27D88AC4BEA878BA035E0FDB5F0471B07BA5DA7"
+}

@@ -1,0 +1,474 @@
+[
+  {
+    "afterBytes": 25496,
+    "afterSha256": "9355e757caeb5f777789191e9b0d30fdcf8aa22a4ffca1952465a9ff0f7421b0",
+    "beforeBytes": 24865,
+    "beforeSha256": "e109dcf181ba517d97c614f6fddc6533689cf6c4b660ac94f1d29c64d85502c0",
+    "edits": [
+      {
+        "count": 1,
+        "new": "        // A later user/post filter cannot assert the original processing token.\n        // Nop endpoints and auto-convert passthrough are checked at output.\n        if (frame.type == MP_FRAME_VIDEO && strcmp(u->name, \"bilipai-rtx\") &&\n            u != p->input && u != p->output && u != p->convert_wrapper)\n            ((struct mp_image *)frame.data)->bilipai_rtx =\n                (struct mp_bilipai_frame_token){0};\n        mp_pin_in_write(u->f->pins[0], frame);\n",
+        "old": "        mp_pin_in_write(u->f->pins[0], frame);\n"
+      },
+      {
+        "count": 1,
+        "new": "        if (frame.type == MP_FRAME_VIDEO &&\n            !mp_image_bilipai_token_matches(frame.data))\n            ((struct mp_image *)frame.data)->bilipai_rtx =\n                (struct mp_bilipai_frame_token){0};\n        mp_pin_in_write(f->ppins[1], frame);\n\n        struct mp_filter_command",
+        "old": "        mp_pin_in_write(f->ppins[1], frame);\n\n        struct mp_filter_command"
+      }
+    ],
+    "path": "filters/f_output_chain.c"
+  },
+  {
+    "afterBytes": 300115,
+    "afterSha256": "9df3d5b508b6f01bc8673a1783a3b75c340498e73a8f32ee9ec6863f5726dcb0",
+    "beforeBytes": 296818,
+    "beforeSha256": "337b47f129f375a4e7b27ea568686eab01d2c1608197c717ca73cb8c02a4a6c3",
+    "edits": [
+      {
+        "count": 1,
+        "new": "static void bilipai_receipt_node(struct mpv_node *map,\n                                const struct mp_bilipai_present_receipt *r)\n{\n    const struct mp_bilipai_frame_token *t = &r->render.token;\n    node_map_add(map, \"valid\", MPV_FORMAT_FLAG)->u.flag = r->valid;\n    node_map_add(map, \"fresh-renderer\", MPV_FORMAT_FLAG)->u.flag = r->render.fresh;\n    node_map_add(map, \"hdr-output-proved\", MPV_FORMAT_FLAG)->u.flag = r->hdr_output_proved;\n#define BP_I(name, value) node_map_add(map, name, MPV_FORMAT_INT64)->u.int64 = (int64_t)(value)\n    BP_I(\"token-version\", t->version); BP_I(\"session\", t->session);\n    BP_I(\"configuration-generation\", t->configuration); BP_I(\"stream-generation\", t->stream);\n    BP_I(\"sequence\", t->sequence); BP_I(\"pts-numerator\", t->pts_numerator);\n    BP_I(\"pts-denominator\", t->pts_denominator); BP_I(\"frame-id\", r->render.frame_id);\n    BP_I(\"input-width\", t->input_width); BP_I(\"input-height\", t->input_height);\n    BP_I(\"width\", t->width); BP_I(\"height\", t->height); BP_I(\"effects\", t->effects);\n    BP_I(\"transport\", t->transport); BP_I(\"hdr-peak-nits\", t->hdr_peak_nits);\n    BP_I(\"epoch\", r->epoch); BP_I(\"present-count\", r->present_count);\n    BP_I(\"present-refresh-count\", r->refresh_count); BP_I(\"sync-qpc\", r->sync_qpc);\n    BP_I(\"dxgi-format\", r->dxgi_format); BP_I(\"dxgi-color-space\", r->dxgi_color_space);\n    BP_I(\"target-transfer\", r->render.target_transfer);\n    BP_I(\"target-primaries\", r->render.target_primaries);\n#undef BP_I\n    node_map_add(map, \"adapter-luid-hex\", MPV_FORMAT_STRING)->u.string =\n        talloc_asprintf(NULL, \"%016\" PRIx64, t->adapter_luid);\n}\nstatic int mp_property_bilipai_rtx_presentation(void *ctx, struct m_property *prop,\n                                               int action, void *arg)\n{\n    MPContext *mpctx = ctx;\n    if (action == M_PROPERTY_GET_TYPE) {\n        *(struct m_option *)arg = (struct m_option){.type = CONF_TYPE_NODE};\n        return M_PROPERTY_OK;\n    }\n    if (action != M_PROPERTY_GET) return M_PROPERTY_NOT_IMPLEMENTED;\n    struct mp_bilipai_presentation p = {0};\n    if (!mpctx->video_out ||\n        vo_control(mpctx->video_out, VOCTRL_BILIPAI_RTX_SNAPSHOT, &p) <= 0 ||\n        p.version != 1 || !p.serial || p.serial > INT64_MAX || p.epoch > INT64_MAX)\n        return M_PROPERTY_UNAVAILABLE;\n    struct mpv_node node;\n    node_init(&node, MPV_FORMAT_NODE_MAP, NULL);\n    node_map_add(&node, \"schema\", MPV_FORMAT_INT64)->u.int64 = 1;\n    node_map_add(&node, \"serial\", MPV_FORMAT_INT64)->u.int64 = p.serial;\n    node_map_add(&node, \"epoch\", MPV_FORMAT_INT64)->u.int64 = p.epoch;\n    node_map_add(&node, \"reason\", MPV_FORMAT_INT64)->u.int64 = p.reason;\n    node_map_add(&node, \"present-hresult\", MPV_FORMAT_INT64)->u.int64 = p.present_hresult;\n    node_map_add(&node, \"statistics-hresult\", MPV_FORMAT_INT64)->u.int64 = p.statistics_hresult;\n    bilipai_receipt_node(node_map_add(&node, \"queued\", MPV_FORMAT_NODE_MAP), &p.queued);\n    bilipai_receipt_node(node_map_add(&node, \"displayed\", MPV_FORMAT_NODE_MAP), &p.displayed);\n    *(struct mpv_node *)arg = node;\n    return M_PROPERTY_OK;\n}\n\nstatic int mp_property_vo_imgparams(void *ctx, struct m_property *prop,\n",
+        "old": "static int mp_property_vo_imgparams(void *ctx, struct m_property *prop,\n"
+      },
+      {
+        "count": 1,
+        "new": "    {\"video-target-params\", mp_property_tgt_imgparams},\n    {\"bilipai-rtx-presentation\", mp_property_bilipai_rtx_presentation},\n",
+        "old": "    {\"video-target-params\", mp_property_tgt_imgparams},\n"
+      },
+      {
+        "count": 1,
+        "new": "    char luid[17];\n    snprintf(luid, sizeof(luid), \"%016\" PRIx64, t->adapter_luid);\n    node_map_add_string(map, \"adapter-luid-hex\", luid);",
+        "old": "    node_map_add(map, \"adapter-luid-hex\", MPV_FORMAT_STRING)->u.string =\n        talloc_asprintf(NULL, \"%016\" PRIx64, t->adapter_luid);"
+      },
+      {
+        "count": 1,
+        "new": "    BP_I(\"target-primaries\", r->render.target_primaries);\n    BP_I(\"framebuffer-transfer\", r->render.framebuffer_transfer);\n    BP_I(\"framebuffer-primaries\", r->render.framebuffer_primaries);\n#undef BP_I",
+        "old": "    BP_I(\"target-primaries\", r->render.target_primaries);\n#undef BP_I"
+      }
+    ],
+    "path": "player/command.c"
+  },
+  {
+    "afterBytes": 51746,
+    "afterSha256": "19931a788bcfbc2da779c1ec12e6bda650bf6da3abff2b607f5d0146e5a010e9",
+    "beforeBytes": 50325,
+    "beforeSha256": "99165df2282547cec1ec020338d472f594040a0d46d11c642a2828b778ed306c",
+    "edits": [
+      {
+        "count": 1,
+        "new": "    mp_image_copy_attributes(new, img);\n    new->bilipai_rtx = img->bilipai_rtx; // exact pixel copy, not generic attributes\n    return new;\n",
+        "old": "    mp_image_copy_attributes(new, img);\n    return new;\n"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_make_writeable(struct mp_image *img)\n{\n    img->bilipai_rtx = (struct mp_bilipai_frame_token){0};\n",
+        "old": "bool mp_image_make_writeable(struct mp_image *img)\n{\n"
+      },
+      {
+        "count": 1,
+        "new": "    mp_assert(dst != src);\n    dst->bilipai_rtx = (struct mp_bilipai_frame_token){0}; // general transform\n\n    dst->pict_type",
+        "old": "    mp_assert(dst != src);\n\n    dst->pict_type"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_bilipai_token_matches(const struct mp_image *img)\n{\n    if (!img || !mp_bilipai_token_valid(&img->bilipai_rtx))\n        return false;\n    const struct mp_bilipai_frame_token *t = &img->bilipai_rtx;\n    if (img->imgfmt != IMGFMT_D3D11 || img->w != t->width || img->h != t->height ||\n        img->params.w != t->width || img->params.h != t->height ||\n        img->params.repr.sys != PL_COLOR_SYSTEM_RGB ||\n        img->params.repr.levels != PL_COLOR_LEVELS_FULL ||\n        !isfinite(img->pts) || img->pts == MP_NOPTS_VALUE ||\n        fabs(img->pts) >= (double)INT64_MAX / t->pts_denominator ||\n        llround(img->pts * t->pts_denominator) != t->pts_numerator)\n        return false;\n    if (t->transport == MP_BILIPAI_SRGB_BGRA8)\n        return img->params.hw_subfmt == IMGFMT_BGRA &&\n               img->params.color.primaries == PL_COLOR_PRIM_BT_709 &&\n               img->params.color.transfer == PL_COLOR_TRC_SRGB;\n    return img->params.hw_subfmt == IMGFMT_X2BGR10 &&\n           img->params.color.primaries == PL_COLOR_PRIM_BT_2020 &&\n           img->params.color.transfer == PL_COLOR_TRC_PQ &&\n           img->params.color.hdr.max_luma == t->hdr_peak_nits;\n}\n\nvoid mp_image_copy_attributes(struct mp_image *dst, struct mp_image *src)\n",
+        "old": "void mp_image_copy_attributes(struct mp_image *dst, struct mp_image *src)\n"
+      },
+      {
+        "count": 1,
+        "new": "#include <limits.h>\n#include <math.h>\n",
+        "old": "#include <limits.h>\n"
+      }
+    ],
+    "path": "video/mp_image.c"
+  },
+  {
+    "afterBytes": 9864,
+    "afterSha256": "8ddb9a6f6768f78d196ed2cbf7ff2cba8832fe2bac7c0753fd26f1bf1cdf1d4e",
+    "beforeBytes": 9703,
+    "beforeSha256": "dd24eaacb29b8c16d450425db88904b33bc6ccc185e3b82e4689283f5fa1b92f",
+    "edits": [
+      {
+        "count": 1,
+        "new": "#include <inttypes.h>\n#include \"video/bilipai_rtx_frame_provenance.h\"\n",
+        "old": "#include <inttypes.h>\n"
+      },
+      {
+        "count": 1,
+        "new": "    void* priv;\n\n    struct mp_bilipai_frame_token bilipai_rtx;\n",
+        "old": "    void* priv;\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_copy_attributes(struct mp_image *dmpi, struct mp_image *mpi);\nbool mp_image_bilipai_token_matches(const struct mp_image *img);\n",
+        "old": "void mp_image_copy_attributes(struct mp_image *dmpi, struct mp_image *mpi);\n"
+      }
+    ],
+    "path": "video/mp_image.h"
+  },
+  {
+    "afterBytes": 36431,
+    "afterSha256": "e89fc9d7fad9665d88a051525661c562c29a4d4da382c47b890f1246a1af7d6a",
+    "beforeBytes": 20109,
+    "beforeSha256": "8f0f70c2ac7cf3cd50e810f2d6b621751e38e4d8b428ceb62d2d07968c91981d",
+    "edits": [
+      {
+        "count": 1,
+        "new": "    struct pl_color_space swapchain_csp;\n    bool bilipai_color_configured, bilipai_counter_failed;\n    DXGI_COLOR_SPACE_TYPE bilipai_dxgi_csp;\n    uint64_t bilipai_adapter_luid;\n    HMONITOR bilipai_monitor;\n    struct mp_bilipai_render_receipt bilipai_pending;\n    struct mp_bilipai_presentation bilipai_feedback;\n    struct mp_bilipai_present_receipt bilipai_ring[VO_MAX_SWAPCHAIN_DEPTH];\n    unsigned bilipai_ring_next;\n",
+        "old": "    struct pl_color_space swapchain_csp;\n"
+      },
+      {
+        "count": 1,
+        "new": "static void bilipai_step(struct priv *p)\n{\n    if (p->bilipai_feedback.serial >= INT64_MAX) {\n        p->bilipai_counter_failed = true;\n        p->bilipai_feedback.queued.valid = p->bilipai_feedback.displayed.valid = false;\n        return;\n    }\n    ++p->bilipai_feedback.serial;\n}\nstatic void bilipai_invalidate(struct priv *p, uint32_t reason, bool epoch)\n{\n    p->bilipai_pending = (struct mp_bilipai_render_receipt){0};\n    memset(p->bilipai_ring, 0, sizeof(p->bilipai_ring));\n    p->bilipai_ring_next = 0;\n    p->bilipai_feedback.queued.valid = p->bilipai_feedback.displayed.valid = false;\n    p->bilipai_feedback.reason = reason;\n    if (epoch) {\n        if (p->bilipai_feedback.epoch >= INT64_MAX)\n            p->bilipai_counter_failed = true;\n        else\n            ++p->bilipai_feedback.epoch;\n    }\n    bilipai_step(p);\n}\nstruct bilipai_fullscreen_probe { RECT monitor; bool foreign_fullscreen; };\nstatic BOOL CALLBACK bilipai_foreign_fullscreen(HWND w, LPARAM opaque)\n{\n    struct bilipai_fullscreen_probe *p = (void *)opaque;\n    DWORD pid = 0; RECT r;\n    GetWindowThreadProcessId(w, &pid);\n    if (pid && pid != GetCurrentProcessId() && IsWindowVisible(w) &&\n        !IsIconic(w) && GetWindowRect(w, &r) &&\n        r.left <= p->monitor.left && r.top <= p->monitor.top &&\n        r.right >= p->monitor.right && r.bottom >= p->monitor.bottom)\n        p->foreign_fullscreen = true;\n    return TRUE;\n}\nstatic bool bilipai_statistics_environment(struct ra_swapchain *sw)\n{\n    struct priv *p = sw->priv;\n    if (p->opts->sync_interval != 1 || sw->ctx->opts.composition ||\n        GetSystemMetrics(SM_CMONITORS) != 1)\n        return false;\n    HWND w = vo_w32_hwnd(sw->ctx->vo);\n    HMONITOR mon = MonitorFromWindow(w, MONITOR_DEFAULTTONULL);\n    MONITORINFO info = {.cbSize = sizeof(info)};\n    DXGI_SWAP_CHAIN_DESC desc = {0};\n    if (!w || !mon || mon != p->bilipai_monitor ||\n        !GetMonitorInfo(mon, &info) ||\n        IDXGISwapChain_GetDesc(p->swapchain, &desc) != S_OK ||\n        (desc.SwapEffect != DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL &&\n         desc.SwapEffect != DXGI_SWAP_EFFECT_FLIP_DISCARD))\n        return false;\n    struct bilipai_fullscreen_probe probe = {.monitor = info.rcMonitor};\n    return EnumWindows(bilipai_foreign_fullscreen, (LPARAM)&probe) &&\n           !probe.foreign_fullscreen;\n}\nstatic bool bilipai_output(struct ra_swapchain *sw,\n                          const struct mp_bilipai_render_receipt *r,\n                          struct mp_bilipai_present_receipt *out)\n{\n    struct priv *p = sw->priv;\n    DXGI_SWAP_CHAIN_DESC desc = {0};\n    if (!r->fresh || !mp_bilipai_token_valid(&r->token) ||\n        !p->bilipai_color_configured || !p->bilipai_adapter_luid ||\n        r->token.adapter_luid != p->bilipai_adapter_luid ||\n        r->target_transfer != p->swapchain_csp.transfer ||\n        r->target_primaries != p->swapchain_csp.primaries ||\n        r->framebuffer_transfer != p->swapchain_csp.transfer ||\n        r->framebuffer_primaries != p->swapchain_csp.primaries ||\n        IDXGISwapChain_GetDesc(p->swapchain, &desc) != S_OK)\n        return false;\n    bool hdr = !!(r->token.effects & MP_BILIPAI_EFFECT_HDR);\n    bool hdr_proved = false;\n    if (hdr) {\n        DXGI_OUTPUT_DESC1 display = {0};\n        bool hdr_encoding =\n            (desc.BufferDesc.Format == DXGI_FORMAT_R10G10B10A2_UNORM &&\n             p->bilipai_dxgi_csp == DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020) ||\n            (desc.BufferDesc.Format == DXGI_FORMAT_R16G16B16A16_FLOAT &&\n             p->bilipai_dxgi_csp == DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709);\n        hdr_proved = hdr_encoding && !sw->ctx->opts.composition &&\n            mp_dxgi_output_desc_from_hwnd(&p->dxgi_ctx, vo_w32_hwnd(sw->ctx->vo), &display) &&\n            display.ColorSpace == DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020;\n        if (!hdr_proved) return false;\n    }\n    *out = (struct mp_bilipai_present_receipt){\n        .render = *r, .epoch = p->bilipai_feedback.epoch,\n        .dxgi_format = desc.BufferDesc.Format, .dxgi_color_space = p->bilipai_dxgi_csp,\n        .hdr_output_proved = hdr_proved,\n    };\n    return true;\n}\nstatic bool bilipai_same_generation(const struct mp_bilipai_frame_token *a,\n                                    const struct mp_bilipai_frame_token *b)\n{\n    return a->session == b->session && a->configuration == b->configuration &&\n           a->stream == b->stream && a->adapter_luid == b->adapter_luid;\n}\nstatic void bilipai_update_statistics(struct ra_swapchain *sw)\n{\n    struct priv *p = sw->priv;\n    if (p->bilipai_counter_failed || !p->bilipai_feedback.queued.valid)\n        return;\n    if (!bilipai_statistics_environment(sw)) {\n        p->bilipai_feedback.displayed.valid = false;\n        p->bilipai_feedback.reason = MP_BILIPAI_PROOF_UNSUPPORTED;\n        return;\n    }\n    DXGI_FRAME_STATISTICS stats = {0};\n    HRESULT hr = IDXGISwapChain_GetFrameStatistics(p->swapchain, &stats);\n    p->bilipai_feedback.statistics_hresult = hr;\n    if (hr == DXGI_ERROR_FRAME_STATISTICS_DISJOINT) {\n        struct mp_bilipai_present_receipt queued = p->bilipai_feedback.queued;\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_DISJOINT, true);\n        // Preserve only truthful queue acceptance; previous display sequence is gone.\n        queued.epoch = p->bilipai_feedback.epoch;\n        p->bilipai_feedback.queued = queued;\n        return;\n    }\n    if (hr != S_OK || !stats.PresentCount || !stats.PresentRefreshCount ||\n        !stats.SyncRefreshCount || stats.SyncQPCTime.QuadPart <= 0) {\n        p->bilipai_feedback.displayed.valid = false;\n        return;\n    }\n    for (unsigned n = 0; n < VO_MAX_SWAPCHAIN_DEPTH; ++n) {\n        const struct mp_bilipai_present_receipt *entry = &p->bilipai_ring[n];\n        if (!entry->valid || entry->epoch != p->bilipai_feedback.epoch ||\n            entry->present_count != stats.PresentCount ||\n            !bilipai_same_generation(&entry->render.token,\n                                     &p->bilipai_feedback.queued.render.token))\n            continue;\n        if (p->bilipai_feedback.displayed.valid &&\n            p->bilipai_feedback.displayed.present_count == entry->present_count &&\n            mp_bilipai_token_equal(&p->bilipai_feedback.displayed.render.token,\n                                  &entry->render.token))\n            return;\n        p->bilipai_feedback.displayed = *entry;\n        p->bilipai_feedback.displayed.refresh_count = stats.PresentRefreshCount;\n        p->bilipai_feedback.displayed.sync_qpc = stats.SyncQPCTime.QuadPart;\n        p->bilipai_feedback.reason = MP_BILIPAI_PROOF_DISPLAY_MATCH;\n        bilipai_step(p);\n        return;\n    }\n    // Unknown/dropped/overwritten IDs cannot inherit another frame's evidence.\n    p->bilipai_feedback.displayed.valid = false;\n}\nstatic void d3d11_bilipai_prepare(struct ra_swapchain *sw,\n                                 const struct mp_bilipai_render_receipt *r,\n                                 bool invalidate)\n{\n    struct priv *p = sw->priv;\n    p->bilipai_pending = (struct mp_bilipai_render_receipt){0};\n    if (invalidate) {\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, false);\n        return;\n    }\n    if (r && r->fresh && mp_bilipai_token_valid(&r->token) &&\n        !p->bilipai_counter_failed) {\n        if (p->bilipai_feedback.queued.valid &&\n            !bilipai_same_generation(&r->token,\n                                     &p->bilipai_feedback.queued.render.token))\n            bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, true);\n        p->bilipai_pending = *r;\n    }\n}\nstatic bool d3d11_bilipai_snapshot(struct ra_swapchain *sw,\n                                  struct mp_bilipai_presentation *out)\n{\n    struct priv *p = sw->priv;\n    if (!out) return false;\n    HMONITOR mon = MonitorFromWindow(vo_w32_hwnd(sw->ctx->vo), MONITOR_DEFAULTTONULL);\n    if (!mon || mon != p->bilipai_monitor) {\n        p->bilipai_monitor = mon;\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, true);\n    }\n    bilipai_update_statistics(sw);\n    *out = p->bilipai_feedback;\n    return !p->bilipai_counter_failed;\n}\n\nstatic struct ra_tex *get_backbuffer(struct ra_ctx *ctx)\n",
+        "old": "static struct ra_tex *get_backbuffer(struct ra_ctx *ctx)\n"
+      },
+      {
+        "count": 1,
+        "new": "    bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, true);\n    hr = IDXGISwapChain_ResizeBuffers(p->swapchain, 0, ctx->vo->dwidth,\n",
+        "old": "    hr = IDXGISwapChain_ResizeBuffers(p->swapchain, 0, ctx->vo->dwidth,\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (!frame->current || !mp_image_bilipai_token_matches(frame->current) ||\n        frame->repeat || frame->redraw || frame->still ||\n        frame->frame_id != p->bilipai_pending.frame_id ||\n        !mp_bilipai_token_equal(&frame->current->bilipai_rtx,\n                                &p->bilipai_pending.token))\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, false);\n    ra_d3d11_flush(sw->ctx->ra);\n",
+        "old": "    ra_d3d11_flush(sw->ctx->ra);\n"
+      },
+      {
+        "count": 1,
+        "new": "    HMONITOR mon = MonitorFromWindow(vo_w32_hwnd(sw->ctx->vo), MONITOR_DEFAULTTONULL);\n    if (!mon || mon != p->bilipai_monitor) {\n        p->bilipai_monitor = mon;\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, true);\n    }\n    struct mp_bilipai_present_receipt measured = {0};\n    bool eligible = bilipai_output(sw, &p->bilipai_pending, &measured);\n    HRESULT actual_present = IDXGISwapChain_Present(p->swapchain, p->opts->sync_interval, 0);\n    p->bilipai_feedback.present_hresult = actual_present;\n    if (actual_present != S_OK || !eligible || p->bilipai_counter_failed) {\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, false);\n        return;\n    }\n    UINT count = 0;\n    if (IDXGISwapChain_GetLastPresentCount(p->swapchain, &count) != S_OK || !count ||\n        (p->bilipai_feedback.queued.valid &&\n         count <= p->bilipai_feedback.queued.present_count)) {\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, true);\n        return;\n    }\n    measured.present_count = count;\n    measured.valid = true;\n    bool overwritten = p->bilipai_ring[p->bilipai_ring_next].valid;\n    p->bilipai_ring[p->bilipai_ring_next] = measured;\n    p->bilipai_ring_next = (p->bilipai_ring_next + 1) % VO_MAX_SWAPCHAIN_DEPTH;\n    p->bilipai_feedback.queued = measured;\n    p->bilipai_feedback.reason = overwritten ? MP_BILIPAI_PROOF_OVERFLOW : MP_BILIPAI_PROOF_QUEUE;\n    if (overwritten) p->bilipai_feedback.displayed.valid = false;\n    p->bilipai_pending = (struct mp_bilipai_render_receipt){0};\n    bilipai_step(p);\n    bilipai_update_statistics(sw);\n",
+        "old": "    IDXGISwapChain_Present(p->swapchain, p->opts->sync_interval, 0);\n"
+      },
+      {
+        "count": 1,
+        "new": "    .submit_frame = d3d11_submit_frame,\n    .bilipai_prepare = d3d11_bilipai_prepare,\n    .bilipai_snapshot = d3d11_bilipai_snapshot,\n",
+        "old": "    .submit_frame = d3d11_submit_frame,\n"
+      },
+      {
+        "count": 1,
+        "new": "    p->bilipai_feedback.version = 1;\n    p->bilipai_feedback.epoch = 1;\n    p->bilipai_monitor = MonitorFromWindow(vo_w32_hwnd(ctx->vo), MONITOR_DEFAULTTONULL);\n    IDXGIDevice *identity_device = NULL; IDXGIAdapter *identity_adapter = NULL;\n    DXGI_ADAPTER_DESC identity_desc = {0};\n    if (ID3D11Device_QueryInterface(p->device, &IID_IDXGIDevice,\n                                  (void **)&identity_device) == S_OK &&\n        IDXGIDevice_GetAdapter(identity_device, &identity_adapter) == S_OK &&\n        IDXGIAdapter_GetDesc(identity_adapter, &identity_desc) == S_OK)\n        p->bilipai_adapter_luid = (uint64_t)(uint32_t)identity_desc.AdapterLuid.LowPart |\n            ((uint64_t)(uint32_t)identity_desc.AdapterLuid.HighPart << 32);\n    SAFE_RELEASE(identity_adapter); SAFE_RELEASE(identity_device);\n    struct d3d11_swapchain_opts scopts = {\n",
+        "old": "    struct d3d11_swapchain_opts scopts = {\n"
+      },
+      {
+        "count": 1,
+        "new": "        .configured_csp = &p->swapchain_csp,\n        .configuration_succeeded = &p->bilipai_color_configured,\n        .configured_dxgi_csp = &p->bilipai_dxgi_csp,\n",
+        "old": "        .configured_csp = &p->swapchain_csp,\n"
+      },
+      {
+        "count": 1,
+        "new": "#include \"video/out/gpu/context.h\"\n#include \"video/mp_image.h\"\n",
+        "old": "#include \"video/out/gpu/context.h\"\n"
+      },
+      {
+        "count": 1,
+        "new": "static void bilipai_disjoint(struct priv *p)\n{\n    struct mp_bilipai_present_receipt queued = p->bilipai_feedback.queued;\n    bilipai_invalidate(p, MP_BILIPAI_PROOF_DISJOINT, true);\n    // Keep the actual old queue epoch; no historical queue entry is re-labelled.\n    p->bilipai_feedback.queued = queued;\n}\nstruct bilipai_fullscreen_probe { RECT monitor; HWND owned_root; bool foreign_fullscreen; };",
+        "old": "struct bilipai_fullscreen_probe { RECT monitor; bool foreign_fullscreen; };"
+      },
+      {
+        "count": 1,
+        "new": "    RECT r;\n    if (w != p->owned_root && w != GetShellWindow() && IsWindowVisible(w) &&",
+        "old": "    DWORD pid = 0; RECT r;\n    GetWindowThreadProcessId(w, &pid);\n    if (pid && pid != GetCurrentProcessId() && IsWindowVisible(w) &&"
+      },
+      {
+        "count": 1,
+        "new": "struct bilipai_fullscreen_probe probe = {\n        .monitor = info.rcMonitor, .owned_root = GetAncestor(w, GA_ROOT),\n    };\n    if (!probe.owned_root) return false;",
+        "old": "struct bilipai_fullscreen_probe probe = {.monitor = info.rcMonitor};"
+      },
+      {
+        "count": 1,
+        "new": "        bilipai_disjoint(p);",
+        "old": "        struct mp_bilipai_present_receipt queued = p->bilipai_feedback.queued;\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_DISJOINT, true);\n        // Preserve only truthful queue acceptance; previous display sequence is gone.\n        queued.epoch = p->bilipai_feedback.epoch;\n        p->bilipai_feedback.queued = queued;"
+      },
+      {
+        "count": 1,
+        "new": "    if (hr == DXGI_ERROR_FRAME_STATISTICS_DISJOINT) {\n        // The stock vsync query can consume DISJOINT before our property query.\n        p->bilipai_feedback.statistics_hresult = hr;\n        bilipai_disjoint(p);\n        p->last_sync_refresh_count = 0;",
+        "old": "    if (hr == DXGI_ERROR_FRAME_STATISTICS_DISJOINT) {\n        p->last_sync_refresh_count = 0;"
+      },
+      {
+        "count": 1,
+        "new": "    bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, true);\n    hr = IDXGISwapChain_SetFullscreenState(p->swapchain,\n                                           enable_exclusive_fs, NULL);",
+        "old": "    hr = IDXGISwapChain_SetFullscreenState(p->swapchain,\n                                           enable_exclusive_fs, NULL);"
+      },
+      {
+        "count": 1,
+        "new": "struct bilipai_fullscreen_probe {\n    RECT monitor, video; HWND owned_root;\n    bool foreign_fullscreen, before_owned, obscured, saw_owned;\n};",
+        "old": "struct bilipai_fullscreen_probe { RECT monitor; HWND owned_root; bool foreign_fullscreen; };"
+      },
+      {
+        "count": 1,
+        "new": "    if (w == p->owned_root) {\n        p->before_owned = false; p->saw_owned = true;\n        return TRUE;\n    }\n    RECT r, intersection;\n    if (w != GetShellWindow() && IsWindowVisible(w) &&\n        !IsIconic(w) && GetWindowRect(w, &r)) {\n        if (r.left <= p->monitor.left && r.top <= p->monitor.top &&\n            r.right >= p->monitor.right && r.bottom >= p->monitor.bottom)\n            p->foreign_fullscreen = true;\n        // EnumWindows walks Z order. A visible window above the video's root\n        // overlapping its client rectangle makes full visibility unproved.\n        if (p->before_owned && IntersectRect(&intersection, &r, &p->video))\n            p->obscured = true;\n    }",
+        "old": "    RECT r;\n    if (w != p->owned_root && w != GetShellWindow() && IsWindowVisible(w) &&\n        !IsIconic(w) && GetWindowRect(w, &r) &&\n        r.left <= p->monitor.left && r.top <= p->monitor.top &&\n        r.right >= p->monitor.right && r.bottom >= p->monitor.bottom)\n        p->foreign_fullscreen = true;"
+      },
+      {
+        "count": 1,
+        "new": "    struct bilipai_fullscreen_probe probe = {\n        .monitor = info.rcMonitor, .owned_root = GetAncestor(w, GA_ROOT),\n        .before_owned = true,\n    };\n    if (!probe.owned_root || !IsWindowVisible(w) || IsIconic(probe.owned_root) ||\n        GetAncestor(GetForegroundWindow(), GA_ROOT) != probe.owned_root ||\n        !GetClientRect(w, &probe.video) || probe.video.right <= 0 || probe.video.bottom <= 0)\n        return false;\n    POINT corners[2] = {{probe.video.left, probe.video.top},\n                        {probe.video.right, probe.video.bottom}};\n    if (!ClientToScreen(w, &corners[0]) || !ClientToScreen(w, &corners[1]))\n        return false;\n    probe.video = (RECT){corners[0].x, corners[0].y, corners[1].x, corners[1].y};\n    if (probe.video.left < info.rcMonitor.left || probe.video.top < info.rcMonitor.top ||\n        probe.video.right > info.rcMonitor.right || probe.video.bottom > info.rcMonitor.bottom)\n        return false;\n    return EnumWindows(bilipai_foreign_fullscreen, (LPARAM)&probe) &&\n           probe.saw_owned && !probe.foreign_fullscreen && !probe.obscured;",
+        "old": "    struct bilipai_fullscreen_probe probe = {\n        .monitor = info.rcMonitor, .owned_root = GetAncestor(w, GA_ROOT),\n    };\n    if (!probe.owned_root) return false;\n    return EnumWindows(bilipai_foreign_fullscreen, (LPARAM)&probe) &&\n           !probe.foreign_fullscreen;"
+      },
+      {
+        "count": 1,
+        "new": "    if (hr != S_OK || !stats.PresentCount || !stats.PresentRefreshCount ||\n        !stats.SyncRefreshCount || stats.SyncQPCTime.QuadPart <= 0 ||\n        !bilipai_statistics_environment(sw)) {",
+        "old": "    if (hr != S_OK || !stats.PresentCount || !stats.PresentRefreshCount ||\n        !stats.SyncRefreshCount || stats.SyncQPCTime.QuadPart <= 0) {"
+      },
+      {
+        "count": 1,
+        "new": "#include \"common/msg.h\"\n#include <dwmapi.h>\n",
+        "old": "#include \"common/msg.h\"\n"
+      },
+      {
+        "count": 1,
+        "new": "        p->bilipai_counter_failed = true;\n        p->bilipai_pending = (struct mp_bilipai_render_receipt){0};\n        memset(p->bilipai_ring, 0, sizeof(p->bilipai_ring));\n        p->bilipai_feedback.queued = (struct mp_bilipai_present_receipt){0};\n        p->bilipai_feedback.displayed = (struct mp_bilipai_present_receipt){0};\n        return;",
+        "old": "        p->bilipai_counter_failed = true;\n        p->bilipai_feedback.queued.valid = p->bilipai_feedback.displayed.valid = false;\n        return;"
+      },
+      {
+        "count": 1,
+        "new": "    p->bilipai_feedback.queued = (struct mp_bilipai_present_receipt){0};\n    p->bilipai_feedback.displayed = (struct mp_bilipai_present_receipt){0};\n    p->bilipai_feedback.present_hresult = E_PENDING;\n    p->bilipai_feedback.statistics_hresult = E_PENDING;\n    p->bilipai_feedback.reason = reason;",
+        "old": "    p->bilipai_feedback.queued.valid = p->bilipai_feedback.displayed.valid = false;\n    p->bilipai_feedback.reason = reason;"
+      },
+      {
+        "count": 1,
+        "new": "// No EnumWindows ordering or desktop-app-only enumeration assumption.\n// The actual USER window Z chain is bounded, cycle checked and revalidated;\n// inaccessible/changed/cloaked state is unproved, including non-desktop hosts.\nstatic bool bilipai_statistics_environment(struct ra_swapchain *sw)\n{\n    struct priv *p = sw->priv;\n    if (p->opts->sync_interval != 1 || sw->ctx->opts.composition ||\n        GetSystemMetrics(SM_CMONITORS) != 1)\n        return false;\n    HWND w = vo_w32_hwnd(sw->ctx->vo), root = GetAncestor(w, GA_ROOT);\n    HMONITOR mon = MonitorFromWindow(w, MONITOR_DEFAULTTONULL);\n    MONITORINFO info = {.cbSize = sizeof(info)};\n    DXGI_SWAP_CHAIN_DESC desc = {0};\n    RECT video;\n    DWORD cloaked = 0;\n    if (!w || !root || !mon || mon != p->bilipai_monitor ||\n        !IsWindow(w) || !IsWindowVisible(w) || IsIconic(root) ||\n        GetAncestor(GetForegroundWindow(), GA_ROOT) != root ||\n        DwmGetWindowAttribute(root, DWMWA_CLOAKED, &cloaked, sizeof(cloaked)) != S_OK || cloaked ||\n        !GetMonitorInfo(mon, &info) || !GetClientRect(w, &video) ||\n        video.right <= 0 || video.bottom <= 0 ||\n        IDXGISwapChain_GetDesc(p->swapchain, &desc) != S_OK ||\n        (desc.SwapEffect != DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL &&\n         desc.SwapEffect != DXGI_SWAP_EFFECT_FLIP_DISCARD))\n        return false;\n    POINT corners[2] = {{video.left, video.top}, {video.right, video.bottom}};\n    if (!ClientToScreen(w, &corners[0]) || !ClientToScreen(w, &corners[1]))\n        return false;\n    video = (RECT){corners[0].x, corners[0].y, corners[1].x, corners[1].y};\n    if (video.left < info.rcMonitor.left || video.top < info.rcMonitor.top ||\n        video.right > info.rcMonitor.right || video.bottom > info.rcMonitor.bottom)\n        return false;\n\n    HWND visited[256], cursor = GetTopWindow(NULL);\n    unsigned count = 0;\n    bool saw_root = false;\n    if (!cursor) return false;\n    while (cursor) {\n        if (count == MP_ARRAY_SIZE(visited) || !IsWindow(cursor)) return false;\n        for (unsigned n = 0; n < count; ++n)\n            if (visited[n] == cursor) return false;\n        visited[count++] = cursor;\n        if (cursor == root) {\n            saw_root = true;\n        } else if (IsWindowVisible(cursor) && !IsIconic(cursor)) {\n            DWORD hidden = 0;\n            RECT bounds, overlap;\n            if (DwmGetWindowAttribute(cursor, DWMWA_CLOAKED, &hidden, sizeof(hidden)) != S_OK ||\n                !GetWindowRect(cursor, &bounds))\n                return false;\n            if (!hidden && cursor != GetShellWindow()) {\n                // A foreground root is necessary but not sufficient: topmost\n                // windows, immersive/UWP hosts and ordinary popups may cover it.\n                if (!saw_root && IntersectRect(&overlap, &bounds, &video)) return false;\n                if (bounds.left <= info.rcMonitor.left && bounds.top <= info.rcMonitor.top &&\n                    bounds.right >= info.rcMonitor.right && bounds.bottom >= info.rcMonitor.bottom)\n                    return false;\n            }\n        }\n        HWND next = GetWindow(cursor, GW_HWNDNEXT);\n        if (!IsWindow(cursor)) return false;\n        cursor = next;\n    }\n    // Native child/sibling overlays are also conservatively excluded.\n    HWND child = w;\n    for (unsigned level = 0; child != root; ++level) {\n        if (level == 32 || !IsWindow(child)) return false;\n        HWND sibling = GetWindow(child, GW_HWNDPREV);\n        unsigned siblings = 0;\n        while (sibling) {\n            if (++siblings > 256 || sibling == child || !IsWindow(sibling)) return false;\n            if (IsWindowVisible(sibling) && !IsIconic(sibling)) {\n                RECT bounds, overlap;\n                if (!GetWindowRect(sibling, &bounds) ||\n                    IntersectRect(&overlap, &bounds, &video)) return false;\n            }\n            sibling = GetWindow(sibling, GW_HWNDPREV);\n        }\n        child = GetAncestor(child, GA_PARENT);\n        if (!child) return false;\n    }\n    return saw_root && GetAncestor(GetForegroundWindow(), GA_ROOT) == root &&\n        MonitorFromWindow(w, MONITOR_DEFAULTTONULL) == mon;\n}\n",
+        "old": "struct bilipai_fullscreen_probe {\n    RECT monitor, video; HWND owned_root;\n    bool foreign_fullscreen, before_owned, obscured, saw_owned;\n};\nstatic BOOL CALLBACK bilipai_foreign_fullscreen(HWND w, LPARAM opaque)\n{\n    struct bilipai_fullscreen_probe *p = (void *)opaque;\n    if (w == p->owned_root) {\n        p->before_owned = false; p->saw_owned = true;\n        return TRUE;\n    }\n    RECT r, intersection;\n    if (w != GetShellWindow() && IsWindowVisible(w) &&\n        !IsIconic(w) && GetWindowRect(w, &r)) {\n        if (r.left <= p->monitor.left && r.top <= p->monitor.top &&\n            r.right >= p->monitor.right && r.bottom >= p->monitor.bottom)\n            p->foreign_fullscreen = true;\n        // EnumWindows walks Z order. A visible window above the video's root\n        // overlapping its client rectangle makes full visibility unproved.\n        if (p->before_owned && IntersectRect(&intersection, &r, &p->video))\n            p->obscured = true;\n    }\n    return TRUE;\n}\nstatic bool bilipai_statistics_environment(struct ra_swapchain *sw)\n{\n    struct priv *p = sw->priv;\n    if (p->opts->sync_interval != 1 || sw->ctx->opts.composition ||\n        GetSystemMetrics(SM_CMONITORS) != 1)\n        return false;\n    HWND w = vo_w32_hwnd(sw->ctx->vo);\n    HMONITOR mon = MonitorFromWindow(w, MONITOR_DEFAULTTONULL);\n    MONITORINFO info = {.cbSize = sizeof(info)};\n    DXGI_SWAP_CHAIN_DESC desc = {0};\n    if (!w || !mon || mon != p->bilipai_monitor ||\n        !GetMonitorInfo(mon, &info) ||\n        IDXGISwapChain_GetDesc(p->swapchain, &desc) != S_OK ||\n        (desc.SwapEffect != DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL &&\n         desc.SwapEffect != DXGI_SWAP_EFFECT_FLIP_DISCARD))\n        return false;\n    struct bilipai_fullscreen_probe probe = {\n        .monitor = info.rcMonitor, .owned_root = GetAncestor(w, GA_ROOT),\n        .before_owned = true,\n    };\n    if (!probe.owned_root || !IsWindowVisible(w) || IsIconic(probe.owned_root) ||\n        GetAncestor(GetForegroundWindow(), GA_ROOT) != probe.owned_root ||\n        !GetClientRect(w, &probe.video) || probe.video.right <= 0 || probe.video.bottom <= 0)\n        return false;\n    POINT corners[2] = {{probe.video.left, probe.video.top},\n                        {probe.video.right, probe.video.bottom}};\n    if (!ClientToScreen(w, &corners[0]) || !ClientToScreen(w, &corners[1]))\n        return false;\n    probe.video = (RECT){corners[0].x, corners[0].y, corners[1].x, corners[1].y};\n    if (probe.video.left < info.rcMonitor.left || probe.video.top < info.rcMonitor.top ||\n        probe.video.right > info.rcMonitor.right || probe.video.bottom > info.rcMonitor.bottom)\n        return false;\n    return EnumWindows(bilipai_foreign_fullscreen, (LPARAM)&probe) &&\n           probe.saw_owned && !probe.foreign_fullscreen && !probe.obscured;\n}\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (!bilipai_statistics_environment(sw)) {\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNSUPPORTED, true);\n        return;\n    }",
+        "old": "    if (!bilipai_statistics_environment(sw)) {\n        p->bilipai_feedback.displayed.valid = false;\n        p->bilipai_feedback.reason = MP_BILIPAI_PROOF_UNSUPPORTED;\n        return;\n    }"
+      },
+      {
+        "count": 1,
+        "new": "    if (!bilipai_statistics_environment(sw)) {\n        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNSUPPORTED, true);\n        p->bilipai_feedback.statistics_hresult = hr;\n        return;\n    }\n    if (hr != S_OK || !stats.PresentCount || !stats.PresentRefreshCount ||\n        !stats.SyncRefreshCount || stats.SyncQPCTime.QuadPart <= 0) {\n        p->bilipai_feedback.displayed = (struct mp_bilipai_present_receipt){0};\n        p->bilipai_feedback.reason = MP_BILIPAI_PROOF_UNPROVEN;\n        bilipai_step(p);\n        return;\n    }",
+        "old": "    if (hr != S_OK || !stats.PresentCount || !stats.PresentRefreshCount ||\n        !stats.SyncRefreshCount || stats.SyncQPCTime.QuadPart <= 0 ||\n        !bilipai_statistics_environment(sw)) {\n        p->bilipai_feedback.displayed.valid = false;\n        return;\n    }"
+      },
+      {
+        "count": 1,
+        "new": "        p->bilipai_feedback.displayed = *entry;\n",
+        "old": "        if (p->bilipai_feedback.displayed.valid &&\n            p->bilipai_feedback.displayed.present_count == entry->present_count &&\n            mp_bilipai_token_equal(&p->bilipai_feedback.displayed.render.token,\n                                  &entry->render.token))\n            return;\n        p->bilipai_feedback.displayed = *entry;\n"
+      },
+      {
+        "count": 1,
+        "new": "    p->bilipai_feedback.displayed = (struct mp_bilipai_present_receipt){0};\n    p->bilipai_feedback.reason = MP_BILIPAI_PROOF_UNPROVEN;\n    bilipai_step(p);\n}\nstatic void d3d11_bilipai_prepare",
+        "old": "    p->bilipai_feedback.displayed.valid = false;\n}\nstatic void d3d11_bilipai_prepare"
+      },
+      {
+        "count": 1,
+        "new": "    // Re-read live output/format/color support on every snapshot, even if the\n    // HWND monitor identity has not changed (Windows HDR may change in place).\n    if (p->bilipai_feedback.queued.valid) {\n        struct mp_bilipai_present_receipt live = {0};\n        const struct mp_bilipai_present_receipt *q = &p->bilipai_feedback.queued;\n        if (ID3D11Device_GetDeviceRemovedReason(p->device) != S_OK ||\n            !bilipai_output(sw, &q->render, &live) ||\n            live.dxgi_format != q->dxgi_format || live.dxgi_color_space != q->dxgi_color_space ||\n            live.hdr_output_proved != q->hdr_output_proved)\n            bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, true);\n    }\n    bilipai_update_statistics(sw);\n    *out = p->bilipai_feedback;",
+        "old": "    bilipai_update_statistics(sw);\n    *out = p->bilipai_feedback;"
+      },
+      {
+        "count": 1,
+        "new": "        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, false);\n        p->bilipai_feedback.present_hresult = actual_present;\n        return;\n    }\n    UINT count = 0;",
+        "old": "        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, false);\n        return;\n    }\n    UINT count = 0;"
+      },
+      {
+        "count": 1,
+        "new": "    if (overwritten) p->bilipai_feedback.displayed = (struct mp_bilipai_present_receipt){0};",
+        "old": "    if (overwritten) p->bilipai_feedback.displayed.valid = false;"
+      },
+      {
+        "count": 1,
+        "new": "    p->bilipai_feedback.queued = queued;\n    p->bilipai_feedback.present_hresult = queued.valid ? S_OK : E_PENDING;\n    p->bilipai_feedback.statistics_hresult = DXGI_ERROR_FRAME_STATISTICS_DISJOINT;\n}\n// No EnumWindows",
+        "old": "    p->bilipai_feedback.queued = queued;\n}\n// No EnumWindows"
+      },
+      {
+        "count": 1,
+        "new": "    SetLastError(0);\n    LONG_PTR root_style = GetWindowLongPtr(root, GWL_EXSTYLE);\n    if ((!root_style && GetLastError()) || (root_style & WS_EX_TOPMOST)) return false;\n    if (!w || !root || !mon || mon != p->bilipai_monitor ||",
+        "old": "    if (!w || !root || !mon || mon != p->bilipai_monitor ||"
+      },
+      {
+        "count": 1,
+        "new": "        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, true);\n        return;\n    }\n    if (r && r->fresh",
+        "old": "        bilipai_invalidate(p, MP_BILIPAI_PROOF_UNPROVEN, false);\n        return;\n    }\n    if (r && r->fresh"
+      },
+      {
+        "count": 1,
+        "new": "    // Native child/sibling overlays are also conservatively excluded.\n    HWND overlay = GetTopWindow(w);\n    for (unsigned n = 0; overlay; ++n) {\n        if (n == 256 || overlay == w || !IsWindow(overlay)) return false;\n        if (IsWindowVisible(overlay)) {\n            RECT bounds, overlap;\n            if (!GetWindowRect(overlay, &bounds) ||\n                IntersectRect(&overlap, &bounds, &video)) return false;\n        }\n        overlay = GetWindow(overlay, GW_HWNDNEXT);\n    }\n    HWND child = w;",
+        "old": "    // Native child/sibling overlays are also conservatively excluded.\n    HWND child = w;"
+      }
+    ],
+    "path": "video/out/d3d11/context.c"
+  },
+  {
+    "afterBytes": 6232,
+    "afterSha256": "17153e6a7f7237cc17bcfb1aae2605903ffe25df980e29e6952d53910f6364ce",
+    "beforeBytes": 5857,
+    "beforeSha256": "3562ed486dcfec64be5218d102ba237788e849e21406d05a2e3f7bb4d03ea161",
+    "edits": [
+      {
+        "count": 1,
+        "new": "    bool (*submit_frame)(struct ra_swapchain *sw, const struct vo_frame *frame);\n    // Private default-D3D11 proof; optional and unavailable for other contexts.\n    void (*bilipai_prepare)(struct ra_swapchain *sw,\n                           const struct mp_bilipai_render_receipt *receipt,\n                           bool invalidate);\n    bool (*bilipai_snapshot)(struct ra_swapchain *sw,\n                            struct mp_bilipai_presentation *out);\n",
+        "old": "    bool (*submit_frame)(struct ra_swapchain *sw, const struct vo_frame *frame);\n"
+      }
+    ],
+    "path": "video/out/gpu/context.h"
+  },
+  {
+    "afterBytes": 48612,
+    "afterSha256": "9ce33d1a8b92cde0898eb359976a1f8881dcbd5a20d601ec06afdb102be10b90",
+    "beforeBytes": 48239,
+    "beforeSha256": "16d07d8fc34e15607b62d6bf667615660d6c9d065a5c0e267b1132354d74a3f0",
+    "edits": [
+      {
+        "count": 1,
+        "new": "                                        struct pl_color_space *configured_csp,\n                                        DXGI_COLOR_SPACE_TYPE *configured_dxgi_csp)\n",
+        "old": "                                        struct pl_color_space *configured_csp)\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (configured_csp) {\n        *configured_csp = pl_color_system;\n    }\n    if (configured_dxgi_csp)\n        *configured_dxgi_csp = selected_colorspace;\n",
+        "old": "    if (configured_csp) {\n        *configured_csp = pl_color_system;\n    }\n"
+      },
+      {
+        "count": 1,
+        "new": "    bool success = false;\n    HRESULT hr;\n    if (opts->configuration_succeeded) *opts->configuration_succeeded = false;\n\n    hr = ID3D11Device_QueryInterface(dev, &IID_IDXGIDevice1",
+        "old": "    bool success = false;\n    HRESULT hr;\n\n    hr = ID3D11Device_QueryInterface(dev, &IID_IDXGIDevice1"
+      },
+      {
+        "count": 1,
+        "new": "    bool configured = configure_created_swapchain(log, swapchain, opts->format,\n                                opts->color_space, opts->configured_csp,\n                                opts->configured_dxgi_csp);\n    if (opts->configuration_succeeded) *opts->configuration_succeeded = configured;\n",
+        "old": "    configure_created_swapchain(log, swapchain, opts->format,\n                                opts->color_space,\n                                opts->configured_csp);\n"
+      }
+    ],
+    "path": "video/out/gpu/d3d11_helpers.c"
+  },
+  {
+    "afterBytes": 4931,
+    "afterSha256": "c65e01f61014cf9c1517e47e83daac8d57fe254c3351128f62476398a33875d1",
+    "beforeBytes": 4848,
+    "beforeSha256": "6946a97728a45f2c77065dcd8e39d2580054a96b04bb7e49e576c0a6c6de9883",
+    "edits": [
+      {
+        "count": 1,
+        "new": "    struct pl_color_space *configured_csp;\n    bool *configuration_succeeded;\n    DXGI_COLOR_SPACE_TYPE *configured_dxgi_csp;\n",
+        "old": "    struct pl_color_space *configured_csp;\n"
+      }
+    ],
+    "path": "video/out/gpu/d3d11_helpers.h"
+  },
+  {
+    "afterBytes": 163630,
+    "afterSha256": "5831c929b9447c124cd2cb3cb113a6025a9baadebd12da9630f1008f0ff60e5a",
+    "beforeBytes": 162322,
+    "beforeSha256": "c3a2d28dadc406f8224002d01864119d27d0fe35454c62fe367beaa6f3a5355a",
+    "edits": [
+      {
+        "count": 1,
+        "new": "    struct video_image image;\n    struct mp_bilipai_render_receipt bilipai_receipt;\n",
+        "old": "    struct video_image image;\n"
+      },
+      {
+        "count": 1,
+        "new": "    p->bilipai_receipt = (struct mp_bilipai_render_receipt){0};\n    bool bilipai_fresh_draw = false;\n    struct mp_rect target_rc = {0, 0, fbo->tex->params.w, fbo->tex->params.h};\n",
+        "old": "    struct mp_rect target_rc = {0, 0, fbo->tex->params.w, fbo->tex->params.h};\n"
+      },
+      {
+        "count": 1,
+        "new": "                pass_draw_to_screen(p, dest_fbo, flags);\n                bilipai_fresh_draw = !r && is_new && !frame->repeat &&\n                    !frame->redraw && !frame->still &&\n                    !p->opts.user_shaders;\n",
+        "old": "                pass_draw_to_screen(p, dest_fbo, flags);\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (bilipai_fresh_draw && !p->broken_frame && !p->hwdec_overlay &&\n        frame->frame_id && frame->frame_id <= INT64_MAX &&\n        mp_image_bilipai_token_matches(frame->current) &&\n        p->image.id == frame->frame_id) {\n        p->bilipai_receipt = (struct mp_bilipai_render_receipt){\n            .token = frame->current->bilipai_rtx, .frame_id = frame->frame_id,\n            .target_transfer = p->target_params.color.transfer,\n            .target_primaries = p->target_params.color.primaries,\n            .framebuffer_transfer = fbo->color_space.transfer,\n            .framebuffer_primaries = fbo->color_space.primaries,\n            .fresh = true,\n        };\n    }\n    p->frames_rendered++;\n    pass_report_performance(p);\n}\nbool gl_video_bilipai_receipt(struct gl_video *p, struct mp_bilipai_render_receipt *out)\n{\n    if (!out) return false;\n    *out = p->bilipai_receipt;\n    return out->fresh && mp_bilipai_token_valid(&out->token);\n}\n",
+        "old": "    p->frames_rendered++;\n    pass_report_performance(p);\n}\n"
+      },
+      {
+        "count": 1,
+        "new": "void gl_video_reset(struct gl_video *p)\n{\n    p->bilipai_receipt = (struct mp_bilipai_render_receipt){0};\n",
+        "old": "void gl_video_reset(struct gl_video *p)\n{\n"
+      },
+      {
+        "count": 1,
+        "new": "                    (!p->opts.user_shaders || !p->opts.user_shaders[0]);",
+        "old": "                    !p->opts.user_shaders;"
+      }
+    ],
+    "path": "video/out/gpu/video.c"
+  },
+  {
+    "afterBytes": 7174,
+    "afterSha256": "a3ddaf382c7f57db0d435300cd52c1cec33f65f51b03a6ea3c26fca68ab8ffa7",
+    "beforeBytes": 7036,
+    "beforeSha256": "8db57ba5d371ca5708531c0e2398d6e7f99e0655119253285273e92b0c74028a",
+    "edits": [
+      {
+        "count": 1,
+        "new": "#include <stdbool.h>\n#include \"video/bilipai_rtx_frame_provenance.h\"\n",
+        "old": "#include <stdbool.h>\n"
+      },
+      {
+        "count": 1,
+        "new": "void gl_video_set_osd_source(struct gl_video *p, struct osd_state *osd);\nbool gl_video_bilipai_receipt(struct gl_video *p, struct mp_bilipai_render_receipt *out);\n",
+        "old": "void gl_video_set_osd_source(struct gl_video *p, struct osd_state *osd);\n"
+      }
+    ],
+    "path": "video/out/gpu/video.h"
+  },
+  {
+    "afterBytes": 46749,
+    "afterSha256": "2278ad070df29ff54baa4573f3b59cb2f846234831e10e0040b0dceef57f92ee",
+    "beforeBytes": 46679,
+    "beforeSha256": "8504b70c5ec07cb79f6fc4b5c7e332eb46376a97539feaaef2bfcd2e1adacbd1",
+    "edits": [
+      {
+        "count": 1,
+        "new": "    if (in->dropped_frame) {\n        vo->driver->control(vo, VOCTRL_BILIPAI_RTX_INVALIDATE, NULL);\n        in->drop_count += 1;\n",
+        "old": "    if (in->dropped_frame) {\n        in->drop_count += 1;\n"
+      }
+    ],
+    "path": "video/out/vo.c"
+  },
+  {
+    "afterBytes": 21845,
+    "afterSha256": "0fb1c65c4148baa414e610b6b5ae4063fef144b6f2f2de685c5260505cafc910",
+    "beforeBytes": 21729,
+    "beforeSha256": "6a039da11ef851c361135c4f30d322d3b8fe1f78d349950dac737e42672fb753",
+    "edits": [
+      {
+        "count": 1,
+        "new": "    VOCTRL_RESET = 1,\n    VOCTRL_BILIPAI_RTX_SNAPSHOT,\n    VOCTRL_BILIPAI_RTX_INVALIDATE,\n",
+        "old": "    VOCTRL_RESET = 1,\n"
+      },
+      {
+        "count": 1,
+        "new": "#include \"video/img_format.h\"\n#include \"video/bilipai_rtx_frame_provenance.h\"\n",
+        "old": "#include \"video/img_format.h\"\n"
+      }
+    ],
+    "path": "video/out/vo.h"
+  },
+  {
+    "afterBytes": 11405,
+    "afterSha256": "24628ac7dfc8690cb7c65d0519581c68df0063244246c89ac5de8b2a1a7d2436",
+    "beforeBytes": 9725,
+    "beforeSha256": "c6db98db931e6ecbb357f3c46d0e101eb601ae1eb06aedb4785e29183c111337",
+    "edits": [
+      {
+        "count": 1,
+        "new": "    struct ra_fbo fbo;\n    if (sw->fns->bilipai_prepare)\n        sw->fns->bilipai_prepare(sw, NULL, false); // pending slot only\n    if (!sw->fns->start_frame(sw, &fbo)) {\n        if (sw->fns->bilipai_prepare)\n            sw->fns->bilipai_prepare(sw, NULL, true);\n        return VO_FALSE;\n    }\n",
+        "old": "    struct ra_fbo fbo;\n    if (!sw->fns->start_frame(sw, &fbo))\n        return VO_FALSE;\n"
+      },
+      {
+        "count": 1,
+        "new": "    gl_video_render_frame(p->renderer, frame, &fbo, RENDER_FRAME_DEF);\n    struct mp_bilipai_render_receipt measured = {0};\n    bool eligible = gl_video_bilipai_receipt(p->renderer, &measured);\n    if (sw->fns->bilipai_prepare)\n        sw->fns->bilipai_prepare(sw, eligible ? &measured : NULL, !eligible);\n    if (!sw->fns->submit_frame(sw, frame)) {\n        if (sw->fns->bilipai_prepare)\n            sw->fns->bilipai_prepare(sw, NULL, true);\n",
+        "old": "    gl_video_render_frame(p->renderer, frame, &fbo, RENDER_FRAME_DEF);\n    if (!sw->fns->submit_frame(sw, frame)) {\n"
+      },
+      {
+        "count": 1,
+        "new": "    switch (request) {\n    case VOCTRL_BILIPAI_RTX_SNAPSHOT:\n        return p->ctx->swapchain->fns->bilipai_snapshot &&\n            p->ctx->swapchain->fns->bilipai_snapshot(p->ctx->swapchain, data)\n            ? VO_TRUE : VO_NOTIMPL;\n    case VOCTRL_BILIPAI_RTX_INVALIDATE:\n        if (p->ctx->swapchain->fns->bilipai_prepare)\n            p->ctx->swapchain->fns->bilipai_prepare(p->ctx->swapchain, NULL, true);\n        return VO_TRUE;\n    case VOCTRL_SET_PANSCAN:\n",
+        "old": "    switch (request) {\n    case VOCTRL_SET_PANSCAN:\n"
+      },
+      {
+        "count": 1,
+        "new": "    case VOCTRL_RESET:\n        control(vo, VOCTRL_BILIPAI_RTX_INVALIDATE, NULL);\n        gl_video_reset(p->renderer);\n",
+        "old": "    case VOCTRL_RESET:\n        gl_video_reset(p->renderer);\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (events & (VO_EVENT_RESIZE | VO_EVENT_WIN_STATE | VO_EVENT_ICC_PROFILE_CHANGED))\n        control(vo, VOCTRL_BILIPAI_RTX_INVALIDATE, NULL);\n    if (events & VO_EVENT_RESIZE)\n        resize(vo);\n",
+        "old": "    if (events & VO_EVENT_RESIZE)\n        resize(vo);\n"
+      },
+      {
+        "count": 1,
+        "new": "    case VOCTRL_BILIPAI_RTX_SNAPSHOT: {\n        struct ra_swapchain *sw = p->ctx->swapchain;\n        struct mp_bilipai_presentation *snapshot = data;\n        if (!snapshot || !sw->fns->bilipai_snapshot ||\n            !sw->fns->bilipai_snapshot(sw, snapshot)) return VO_NOTIMPL;\n        struct mp_image_params *live = gl_video_get_target_params_ptr(p->renderer);\n        if (snapshot->queued.valid && (!live ||\n            live->color.transfer != snapshot->queued.render.target_transfer ||\n            live->color.primaries != snapshot->queued.render.target_primaries)) {\n            sw->fns->bilipai_prepare(sw, NULL, true);\n            if (!sw->fns->bilipai_snapshot(sw, snapshot)) return VO_NOTIMPL;\n        }\n        return VO_TRUE;\n    }",
+        "old": "    case VOCTRL_BILIPAI_RTX_SNAPSHOT:\n        return p->ctx->swapchain->fns->bilipai_snapshot &&\n            p->ctx->swapchain->fns->bilipai_snapshot(p->ctx->swapchain, data)\n            ? VO_TRUE : VO_NOTIMPL;"
+      }
+    ],
+    "path": "video/out/vo_gpu.c"
+  }
+]

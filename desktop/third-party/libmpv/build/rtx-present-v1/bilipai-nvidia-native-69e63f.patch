@@ -1,0 +1,12 @@
+--- a/video/filter/vf_d3d11vpp.c
++++ b/video/filter/vf_d3d11vpp.c
+@@ -675,7 +675,8 @@
+     if (!mp_refqueue_can_output(p->queue))
+         return;
+ 
+-    if (!mp_refqueue_should_deint(p->queue) && !p->require_filtering) {
++    if (!mp_refqueue_should_deint(p->queue) && !p->require_filtering &&
++        p->opts->scaling_mode != SCALING_NVIDIA_RTX) {
+         // no filtering
+         struct mp_image *in = mp_image_new_ref(mp_refqueue_get(p->queue, 0));
+         if (!in) {

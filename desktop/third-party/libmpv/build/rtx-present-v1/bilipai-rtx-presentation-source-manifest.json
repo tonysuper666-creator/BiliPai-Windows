@@ -1,0 +1,71 @@
+{
+  "appConsumerIntegrated": false,
+  "architecture": "windows-x64",
+  "closedSdkOrRuntimeIncluded": false,
+  "coreAbi": "0x00010000",
+  "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
+  "displayProofRuntimeVerified": false,
+  "filterName": "bilipai-rtx",
+  "frameEffects": [
+    "SR",
+    "HDR"
+  ],
+  "nativeBinaryBuildSha256": null,
+  "originalNvidiaPatch": {
+    "new": "    if (!mp_refqueue_should_deint(p->queue) && !p->require_filtering &&\n        p->opts->scaling_mode != SCALING_NVIDIA_RTX) {\n",
+    "old": "    if (!mp_refqueue_should_deint(p->queue) && !p->require_filtering) {\n",
+    "originalSha256": "9514d40109894e0bee4e4a2aa343a4e4e4d2368aee3729959180bf5f92d486c3",
+    "patchSha256": "e3599ec5fe4326a6713093e9834514f7c2b001b41f30c03fc26fc763b3345d30",
+    "patchedSha256": "1669c96fc95cfd7276a3149aa2d76058d29b2cc2dd848c77b949d434831c6d2f",
+    "sourcePath": "video/filter/vf_d3d11vpp.c"
+  },
+  "originalSourceArchiveSha256": "2ae37a9f34730124f73367f31a72f378ba29b4ee96b813306dd6a901ac3af4eb",
+  "presentationFeedbackScope": "Native queued acceptance and conditional exact FrameStatistics ID match; no app activation or quality measurement",
+  "presentationProperty": "bilipai-rtx-presentation",
+  "registrationEditsFileName": "filter-registration-edits.json",
+  "registrationEditsSha256": "59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf",
+  "schema": 2,
+  "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
+  "sourceFiles": [
+    {
+      "bytes": 13282,
+      "fileName": "vf_bilipai_rtx.c",
+      "sha256": "86fa9f6f772af490b39ea117d27d88ac4bea878ba035e0fdb5f0471b07ba5da7",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/vf_bilipai_rtx.c",
+      "targetPath": "video/filter/vf_bilipai_rtx.c"
+    },
+    {
+      "bytes": 29086,
+      "fileName": "bilipai_rtx_mpv_bridge.c",
+      "sha256": "61f7484d386b7b1c8940ac408267f040a89cec050a1c2dac678da24446149e9b",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.c",
+      "targetPath": "video/filter/bilipai_rtx_mpv_bridge.c"
+    },
+    {
+      "bytes": 1998,
+      "fileName": "bilipai_rtx_mpv_bridge.h",
+      "sha256": "6dd47b1465f69c43b212dc846a91401ca8c6d8392930ff75f6ddb34e5be9061e",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_mpv_bridge.h",
+      "targetPath": "video/filter/bilipai_rtx_mpv_bridge.h"
+    },
+    {
+      "bytes": 5311,
+      "fileName": "bilipai_veyra_core_v1.h",
+      "sha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
+      "sourcePath": "desktop/native/veyra-core/bilipai_veyra_core_v1.h",
+      "targetPath": "video/filter/bilipai_veyra_core_v1.h"
+    },
+    {
+      "bytes": 3492,
+      "fileName": "bilipai_rtx_frame_provenance.h",
+      "sha256": "a1dba6d153ddf7e223f20f7a144a9d6f90daf5a48c8431ec05d135280bb757a5",
+      "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
+      "targetPath": "video/bilipai_rtx_frame_provenance.h"
+    }
+  ],
+  "tokenProtocol": 1,
+  "upstreamEditsFileName": "presentation-edits.json",
+  "upstreamEditsSha256": "9c4b625ca178a34d67099234863a093a097cdb38f68bed25cc15715a07ce4bea",
+  "variant": "bilipai-veyra-rtx-present-v1",
+  "vfgImplemented": false
+}
