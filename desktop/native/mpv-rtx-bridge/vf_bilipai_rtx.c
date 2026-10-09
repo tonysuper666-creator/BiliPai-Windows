@@ -60,7 +60,7 @@ struct priv {
     struct bv_mpv_bridge *bridge;
     struct mp_image_params params, out_params;
     uint64_t generation, sequence;
-    bool disabled, accepted_logged;
+    bool disabled, accepted_logged, decoder_ready_logged;
     struct bv_mpv_pq_p010_observation pq_p010_observation;
 };
 static wchar_t *utf16(const char *s)
@@ -132,6 +132,16 @@ static void observe_native_pq_p010(struct mp_filter *vf, const struct mp_image *
     struct pq_p010_observe_context ctx = {p, image};
     if (info && info->bilipai_observe_decoder_frame)
         info->bilipai_observe_decoder_frame(info, image, observe_pq_p010_texture, &ctx);
+    const struct mp_bilipai_d3d11_ready *ready = mp_image_bilipai_d3d11_ready(image);
+    if (ready && ready->device == p->d3d->device &&
+        ready->device_context == p->d3d->device_context && !p->decoder_ready_logged) {
+        MP_VERBOSE(vf, "Decoder-ready Signal recorded value=%"PRIu64
+                   " instance=%"PRIu64" epoch=%"PRIu64" sequence=%"PRIu64
+                   "; CURRENT GPU use and native HDR remain unavailable\n",
+                   ready->signal_value, ready->origin.instance_id,
+                   ready->origin.epoch_id, ready->origin.frame_sequence);
+        p->decoder_ready_logged = true;
+    }
     // Unknown/retired owner or epoch mismatch leaves texture/domain flags zero.
     // callback match is ONLY at synchronous observation, never GPU epoch proof.
     // Native HDR admission remains closed. None of these observations changes
@@ -238,7 +248,7 @@ static void flush_frames(struct mp_filter *vf)
 {
     struct priv *p=vf->priv;
     mp_refqueue_flush(p->queue);
-    p->sequence=0;p->accepted_logged=false;
+    p->sequence=0;p->accepted_logged=false;p->decoder_ready_logged=false;
     if(p->generation==UINT64_MAX){p->disabled=true;retire_bridge(vf);return;}
     ++p->generation;
     if(p->bridge){
@@ -303,7 +313,7 @@ static void process(struct mp_filter *vf)
     struct mp_image *format=mp_refqueue_execute_reinit(p->queue);
     if(format){
         retire_bridge(vf);av_buffer_unref(&p->hw_pool);
-        p->params=format->params;p->out_params=p->params;p->accepted_logged=false;p->sequence=0;
+        p->params=format->params;p->out_params=p->params;p->accepted_logged=false;p->decoder_ready_logged=false;p->sequence=0;
         if(p->generation==UINT64_MAX)p->disabled=true;
         else {++p->generation;p->disabled=!prepare_bridge(vf,format);}
     }

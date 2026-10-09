@@ -108,8 +108,8 @@
     "path": "player/command.c"
   },
   {
-    "afterBytes": 76983,
-    "afterSha256": "09b9d4fc05ecc8351916bcb37fd0b150d80157e874fd1d9eae02601bc60f491f",
+    "afterBytes": 79188,
+    "afterSha256": "b8247fb9f62e26a509a4bcc8deb9ebf094e0fd2a6dd1a9524dd8d2d604f796ed",
     "beforeBytes": 50325,
     "beforeSha256": "99165df2282547cec1ec020338d472f594040a0d46d11c642a2828b778ed306c",
     "edits": [
@@ -527,13 +527,38 @@
         "count": 1,
         "new": "                    MP_BILIPAI_HDR_SNAPSHOT_OWNED_HISTORY;\n            }\n            if (p->bilipai_decoder_origin.version == MP_BILIPAI_DECODER_ORIGIN_VERSION) {\n                dst->params.bilipai_decoder_origin = p->bilipai_decoder_origin;\n                dst->params.bilipai_hdr_disqualifying_flags_seen |=\n                    p->bilipai_decoder_origin.stream_refusals & MP_BILIPAI_HDR_HAZARDS_MASK;\n            }\n            // Generic/foreign AV round trips never restore decoder current proof.\n            mp_image_params_bilipai_invalidate_current(&dst->params);\n",
         "old": "                    MP_BILIPAI_HDR_SNAPSHOT_OWNED_HISTORY;\n            }\n"
+      },
+      {
+        "count": 1,
+        "new": "    av_buffer_unref(&mpi->hwctx);\n    av_buffer_unref(&mpi->bilipai_d3d11_ready);\n",
+        "old": "    av_buffer_unref(&mpi->hwctx);\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_unref_data(struct mp_image *img)\n{\n    av_buffer_unref(&img->bilipai_d3d11_ready);\n",
+        "old": "void mp_image_unref_data(struct mp_image *img)\n{\n"
+      },
+      {
+        "count": 1,
+        "new": "    ref_buffer(&new->hwctx);\n    ref_buffer(&new->bilipai_d3d11_ready);\n",
+        "old": "    ref_buffer(&new->hwctx);\n"
+      },
+      {
+        "count": 1,
+        "new": "    new->hwctx = NULL;\n    new->bilipai_d3d11_ready = NULL; // borrowed dummy/custom reference never inherits\n",
+        "old": "    new->hwctx = NULL;\n"
+      },
+      {
+        "count": 1,
+        "new": "static bool bilipai_ready_same_buffer(const AVBufferRef *a, const AVBufferRef *b)\n{\n    return (!a && !b) || (a && b && a->buffer == b->buffer &&\n        a->data == b->data && a->size == b->size);\n}\n\nconst struct mp_bilipai_d3d11_ready *\nmp_image_bilipai_d3d11_ready(const struct mp_image *image)\n{\n    if (!image || !image->bilipai_d3d11_ready ||\n        !image->bilipai_d3d11_ready->data ||\n        image->bilipai_d3d11_ready->size != sizeof(struct mp_bilipai_d3d11_ready) ||\n        image->params.bilipai_decoder_current_reference != 1 ||\n        image->imgfmt != IMGFMT_D3D11 || image->params.imgfmt != IMGFMT_D3D11 ||\n        image->params.hw_subfmt != pixfmt2imgfmt(AV_PIX_FMT_P010LE)) return NULL;\n    const struct mp_bilipai_d3d11_ready *r = (const void *)image->bilipai_d3d11_ready->data;\n    if (r->version != MP_BILIPAI_D3D11_READY_VERSION || r->reserved ||\n        !r->signal_value || r->signal_value == UINT64_MAX ||\n        !r->fence || !r->device || !r->device_context || !r->texture ||\n        image->w != r->width || image->h != r->height ||\n        image->params.w != r->width || image->params.h != r->height ||\n        image->planes[0] != r->texture ||\n        (uintptr_t)image->planes[1] != r->array_slice ||\n        !image->bufs[0] || !r->source_bufs[0] ||\n        !bilipai_ready_same_buffer(image->hwctx, r->source_hwctx) ||\n        !mp_image_bilipai_decoder_origin_equal(&image->params.bilipai_decoder_origin,\n                                               &r->origin)) return NULL;\n    for (int n = 0; n < MP_MAX_PLANES; ++n) {\n        if (image->planes[n] != r->planes[n] || image->stride[n] != r->stride[n] ||\n            !bilipai_ready_same_buffer(image->bufs[n], r->source_bufs[n])) return NULL;\n    }\n    // Existing mutation hooks clear decoder_current_reference, not this ref.\n    // Keeping an unusable receipt until ordinary image destruction is bounded\n    // by the existing frame refs and avoids unref of shallow stack views.\n    return r;\n}\n\n// Return a new reference to img. The returned reference is owned by the caller,\n",
+        "old": "// Return a new reference to img. The returned reference is owned by the caller,\n"
       }
     ],
     "path": "video/mp_image.c"
   },
   {
-    "afterBytes": 17032,
-    "afterSha256": "52d46b597df242dc98e522baba9a7ecfb9e34d7250e6197d4084f1fe928f43a7",
+    "afterBytes": 18298,
+    "afterSha256": "6a46b929ef01d372755514741377e8672adab08f5b8975cd37c8ec32248f719d",
     "beforeBytes": 9703,
     "beforeSha256": "dd24eaacb29b8c16d450425db88904b33bc6ccc185e3b82e4689283f5fa1b92f",
     "edits": [
@@ -656,6 +681,21 @@
         "count": 1,
         "new": "struct AVFrame;\n// Caller must be the successful vd_lavc receive boundary; not a generic import.\nvoid mp_image_bilipai_note_decoded_frame(struct mp_image *image,\n    const struct AVFrame *frame, uint64_t instance_id, uint64_t epoch_id,\n    uint64_t frame_sequence, int codec_id, int codec_profile,\n    uint32_t stream_refusals);\n",
         "old": "struct AVFrame;\n"
+      },
+      {
+        "count": 1,
+        "new": "/* PRIVATE retained-reference readiness receipt; never serialized in params\n * or AVFrame. Recorded Signal ordering is neither GPU completion nor CURRENT\n * decoder/color/HDR admission. Pointers are borrowed from the one separately\n * retained process-lifetime custody slot. Only vd_lavc's real decoder lane mints.\n * An exact mp_image_new_ref clone preserves it; transforms/AV roundtrips don't.\n */\n#define MP_BILIPAI_D3D11_READY_VERSION UINT32_C(0x42565231)\nstruct mp_bilipai_d3d11_ready {\n    uint32_t version, reserved;\n    uint64_t signal_value;\n    void *fence, *device, *device_context, *texture;\n    uintptr_t array_slice;\n    int width, height, allocation_width, allocation_height;\n    uint8_t *planes[MP_MAX_PLANES];\n    int stride[MP_MAX_PLANES];\n    struct mp_bilipai_decoder_origin origin;\n    struct AVBufferRef *source_bufs[MP_MAX_PLANES];\n    struct AVBufferRef *source_hwctx;\n};\n\n/* Memory management:\n",
+        "old": "/* Memory management:\n"
+      },
+      {
+        "count": 1,
+        "new": "    struct mp_bilipai_frame_token bilipai_rtx;\n\n    // Own ref to the private readiness receipt; not an admission bit.\n    struct AVBufferRef *bilipai_d3d11_ready;\n",
+        "old": "    struct mp_bilipai_frame_token bilipai_rtx;\n"
+      },
+      {
+        "count": 1,
+        "new": "// Borrowed immutable view while this exact retained image remains owned.\n// NULL after loss of the existing direct-reference witness or tuple mismatch.\nconst struct mp_bilipai_d3d11_ready *\nmp_image_bilipai_d3d11_ready(const struct mp_image *image);\n\nstruct mp_ff_side_data {\n",
+        "old": "struct mp_ff_side_data {\n"
       }
     ],
     "path": "video/mp_image.h"
@@ -1154,8 +1194,8 @@
     "path": "video/filter/vf_format.c"
   },
   {
-    "afterBytes": 51792,
-    "afterSha256": "e30a70d47289c740f9d96d31709632f39bce71092bf9d0f01e3f1e8cd55d11a4",
+    "afterBytes": 51847,
+    "afterSha256": "1558c340800af2f69b8dc5129a5e80da403fa8dced35cd8faa28c052c475a533",
     "beforeBytes": 47089,
     "beforeSha256": "f333a1730570d3a343b94654da4566b1e1cc7de44a537bcb1f7f3f328667ccce",
     "edits": [
@@ -1193,13 +1233,18 @@
         "count": 1,
         "new": "        mp_image_params_bilipai_hdr_copy_history(&mpi->params, &this_frame_params);\n        struct mp_bilipai_active_decoder active = {0};\n        // Already serialized on the decoder lane: calling the public wrapper\n        // control/observer here would recursively take the dispatch lock.\n        if (bilipai_same_retained_reference(mpi, held_reference) &&\n            bilipai_active_matches(p, held_reference, &active)) {\n            mpi->params.bilipai_decoder_current_reference = 1;\n            mpi->params.bilipai_hdr_disqualifying_flags_seen |=\n                active.stream_refusals & MP_BILIPAI_HDR_HAZARDS_MASK;\n        }\n        talloc_free(held_reference);\n        // HDR current encoding remains UNKNOWN: unchanged refs are not a\n        // decoded texture/code-domain/HDR processing or presentation proof.\n        mpi->nominal_fps = p->fps;\n",
         "old": "        mp_image_params_bilipai_hdr_copy_history(&mpi->params, &this_frame_params);\n        mpi->nominal_fps = p->fps;\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (p->is_group) {\n        if (cmd == VDCTRL_BILIPAI_GET_ACTIVE_DECODER ||\n            cmd == VDCTRL_BILIPAI_SET_DECODER_READY)\n            return CONTROL_FALSE;\n",
+        "old": "    if (p->is_group) {\n        if (cmd == VDCTRL_BILIPAI_GET_ACTIVE_DECODER)\n            return CONTROL_FALSE;\n"
       }
     ],
     "path": "filters/f_decoder_wrapper.c"
   },
   {
-    "afterBytes": 58559,
-    "afterSha256": "e3dd46f4ada7d41e0f69023e3bf607a66527b4162dcbab5096f1365538b8e2a0",
+    "afterBytes": 72414,
+    "afterSha256": "4abe8d6cc782725883e2dd8fdb54a3e4254dabe967932b9350260b64e2c083e0",
     "beforeBytes": 52206,
     "beforeSha256": "4c042a000d24dc093a8ccc60bfeeffa8e231fc7404fec3cf4f52c2e20bc3178a",
     "edits": [
@@ -1272,13 +1317,133 @@
         "count": 1,
         "new": "    switch (cmd) {\n    case VDCTRL_BILIPAI_GET_ACTIVE_DECODER: {\n        if (!arg) return CONTROL_FALSE;\n        struct mp_bilipai_active_decoder *active = arg;\n        *active = (struct mp_bilipai_active_decoder){0};\n        if (!ctx->avctx || !avcodec_is_open(ctx->avctx) ||\n            ctx->bilipai_decoder_ids_disabled || !ctx->bilipai_decoder_instance ||\n            !ctx->bilipai_decoder_epoch || !ctx->bilipai_decoder_sequence)\n            return CONTROL_FALSE;\n        active->instance_id = ctx->bilipai_decoder_instance;\n        active->epoch_id = ctx->bilipai_decoder_epoch;\n        active->last_frame_sequence = ctx->bilipai_decoder_sequence;\n        active->stream_refusals = ctx->bilipai_decoder_stream_refusals;\n        return CONTROL_TRUE;\n    }\n    case VDCTRL_SET_FRAMEDROP:\n",
         "old": "    switch (cmd) {\n    case VDCTRL_SET_FRAMEDROP:\n"
+      },
+      {
+        "count": 1,
+        "new": "#include <libavutil/pixdesc.h>\n#include <libavutil/mem.h>\n#include \"config.h\"\n#if HAVE_D3D11\n#include <d3d11_4.h>\n#include <libavutil/hwcontext_d3d11va.h>\n#endif\n",
+        "old": "#include <libavutil/pixdesc.h>\n"
+      },
+      {
+        "count": 1,
+        "new": "#if HAVE_D3D11\n/* New, explicitly bounded custody state, NOT another playback/decoder owner.\n * One actual AVHWDeviceContext + canonical COM device/context is pinned until\n * process exit. No cleanup path guesses whether a pending/failed Signal is safe\n * to Release. Changing hardware owners/devices safely stops optional issuance.\n * Signal failure or counter exhaustion is permanent for this slot. */\nstruct bilipai_ready_custody {\n    AVBufferRef *device_ref;\n    IUnknown *device_identity, *context_identity;\n    ID3D11Device *device;\n    ID3D11DeviceContext *context;\n    ID3D11DeviceContext4 *context4;\n    ID3D11Fence *fence;\n    void (*lock)(void *), (*unlock)(void *);\n    void *lock_ctx;\n    uint64_t value;\n    bool poisoned;\n};\nstatic struct bilipai_ready_custody bilipai_ready_slot;\nstatic atomic_flag bilipai_ready_slot_busy = ATOMIC_FLAG_INIT;\n\nstatic void bilipai_ready_free(void *opaque, uint8_t *data)\n{\n    (void)opaque;\n    struct mp_bilipai_d3d11_ready *r = (void *)data;\n    for (int n = 0; n < MP_MAX_PLANES; ++n)\n        av_buffer_unref(&r->source_bufs[n]);\n    av_buffer_unref(&r->source_hwctx);\n    // No fence/context Release here: those belong to the bounded lifetime slot.\n    // This receipt starts no new GPU reads of its source decoder slice.\n    av_free(r);\n}\n\nstatic bool bilipai_ready_owner(const AVBufferRef *device_ref,\n                               AVD3D11VADeviceContext *d)\n{\n    struct bilipai_ready_custody *s = &bilipai_ready_slot;\n    IUnknown *device_id = NULL, *context_id = NULL, *video_id = NULL;\n    ID3D11Device5 *device5 = NULL;\n    ID3D11DeviceContext4 *context4 = NULL;\n    ID3D11Fence *fence = NULL;\n    AVBufferRef *held = NULL;\n    bool ok = false;\n    if (ID3D11DeviceContext_GetType(d->device_context) != D3D11_DEVICE_CONTEXT_IMMEDIATE ||\n        IUnknown_QueryInterface((IUnknown *)d->device, &IID_IUnknown,\n                                (void **)&device_id) != S_OK ||\n        IUnknown_QueryInterface((IUnknown *)d->device_context, &IID_IUnknown,\n                                (void **)&context_id) != S_OK ||\n        IUnknown_QueryInterface((IUnknown *)d->video_context, &IID_IUnknown,\n                                (void **)&video_id) != S_OK || context_id != video_id) goto done;\n    if (s->device_ref) {\n        ok = !s->poisoned && s->device_identity == device_id &&\n            s->context_identity == context_id && s->device == d->device &&\n            s->context == d->device_context && s->lock == d->lock &&\n            s->unlock == d->unlock && s->lock_ctx == d->lock_ctx &&\n            s->device_ref->buffer == device_ref->buffer &&\n            s->device_ref->data == device_ref->data && s->device_ref->size == device_ref->size;\n        goto done;\n    }\n    if (IUnknown_QueryInterface((IUnknown *)d->device, &IID_ID3D11Device5,\n                                (void **)&device5) != S_OK ||\n        IUnknown_QueryInterface((IUnknown *)d->device_context, &IID_ID3D11DeviceContext4,\n                                (void **)&context4) != S_OK ||\n        ID3D11Device5_CreateFence(device5, 0, D3D11_FENCE_FLAG_NONE,\n                                 &IID_ID3D11Fence, (void **)&fence) != S_OK ||\n        !(held = av_buffer_ref((AVBufferRef *)device_ref))) goto done;\n    // All required refs exist before publishing. Process-lifetime, one slot;\n    // the original AVHWDeviceContext ref retains lock callbacks/opaque as well.\n    s->device_ref = held; held = NULL;\n    s->device_identity = device_id; device_id = NULL;\n    s->context_identity = context_id; context_id = NULL;\n    s->device = d->device; s->context = d->device_context;\n    s->context4 = context4; context4 = NULL; s->fence = fence; fence = NULL;\n    s->lock = d->lock; s->unlock = d->unlock; s->lock_ctx = d->lock_ctx;\n    ok = true;\ndone:\n    // Only pre-Signal local creation refs are released here. Published custody\n    // is never implicitly torn down by a receipt, decoder reset or destructor.\n    av_buffer_unref(&held);\n    if (fence) ID3D11Fence_Release(fence);\n    if (context4) ID3D11DeviceContext4_Release(context4);\n    if (device5) ID3D11Device5_Release(device5);\n    if (video_id) IUnknown_Release(video_id);\n    if (context_id) IUnknown_Release(context_id);\n    if (device_id) IUnknown_Release(device_id);\n    return ok;\n}\n\nstatic void bilipai_record_decoder_ready(struct mp_image *image, const AVFrame *frame)\n{\n    const struct mp_bilipai_decoder_origin *o = &image->params.bilipai_decoder_origin;\n    if (image->bilipai_d3d11_ready || image->params.bilipai_decoder_current_reference != 1 ||\n        o->version != MP_BILIPAI_DECODER_ORIGIN_VERSION || !o->instance_id ||\n        !o->epoch_id || !o->frame_sequence ||\n        (o->flags & ~MP_BILIPAI_DECODER_EXPORTED_FRAME_ONLY) ||\n        o->crop_left || o->crop_top || o->crop_right || o->crop_bottom ||\n        frame->format != AV_PIX_FMT_D3D11 ||\n        frame->colorspace != AVCOL_SPC_BT2020_NCL ||\n        frame->color_primaries != AVCOL_PRI_BT2020 ||\n        frame->color_trc != AVCOL_TRC_SMPTE2084 ||\n        (frame->color_range != AVCOL_RANGE_MPEG && frame->color_range != AVCOL_RANGE_JPEG) ||\n        !image->bufs[0] || !image->hwctx || !image->hwctx->data ||\n        image->hwctx->size < sizeof(AVHWFramesContext) ||\n        !frame->hw_frames_ctx || frame->hw_frames_ctx->buffer != image->hwctx->buffer ||\n        frame->hw_frames_ctx->data != image->hwctx->data ||\n        frame->hw_frames_ctx->size != image->hwctx->size ||\n        image->imgfmt != IMGFMT_D3D11 || image->params.imgfmt != IMGFMT_D3D11 ||\n        image->params.hw_subfmt != pixfmt2imgfmt(AV_PIX_FMT_P010LE) ||\n        image->w <= 0 || image->h <= 0 || image->w != frame->width || image->h != frame->height ||\n        image->params.w != image->w || image->params.h != image->h ||\n        image->planes[0] != frame->data[0] || image->planes[1] != frame->data[1] ||\n        !image->planes[0] || (uintptr_t)image->planes[1] > UINT32_MAX) return;\n    AVHWFramesContext *frames = (void *)image->hwctx->data;\n    if (frames->format != AV_PIX_FMT_D3D11 || frames->sw_format != AV_PIX_FMT_P010LE ||\n        frames->width < image->w || frames->height < image->h ||\n        !frames->device_ref || !frames->device_ref->data ||\n        frames->device_ref->size < sizeof(AVHWDeviceContext) ||\n        frames->device_ctx != (void *)frames->device_ref->data ||\n        frames->device_ctx->type != AV_HWDEVICE_TYPE_D3D11VA || !frames->device_ctx->hwctx) return;\n    AVD3D11VADeviceContext *d = frames->device_ctx->hwctx;\n    if (!d->device || !d->device_context || !d->video_context || !d->lock || !d->unlock) return;\n    ID3D11Texture2D *texture = (void *)image->planes[0];\n    ID3D11Device *texture_device = NULL, *context_device = NULL;\n    IUnknown *texture_id = NULL, *context_device_id = NULL, *owner_device_id = NULL;\n    D3D11_TEXTURE2D_DESC desc;\n    ID3D11Texture2D_GetDesc(texture, &desc);\n    ID3D11Texture2D_GetDevice(texture, &texture_device);\n    ID3D11DeviceContext_GetDevice(d->device_context, &context_device);\n    bool same = texture_device && context_device &&\n        IUnknown_QueryInterface((IUnknown *)texture_device, &IID_IUnknown, (void **)&texture_id) == S_OK &&\n        IUnknown_QueryInterface((IUnknown *)context_device, &IID_IUnknown, (void **)&context_device_id) == S_OK &&\n        IUnknown_QueryInterface((IUnknown *)d->device, &IID_IUnknown, (void **)&owner_device_id) == S_OK &&\n        texture_id == owner_device_id && context_device_id == owner_device_id;\n    if (owner_device_id) IUnknown_Release(owner_device_id);\n    if (context_device_id) IUnknown_Release(context_device_id);\n    if (texture_id) IUnknown_Release(texture_id);\n    if (context_device) ID3D11Device_Release(context_device);\n    if (texture_device) ID3D11Device_Release(texture_device);\n    if (!same || desc.Format != DXGI_FORMAT_P010 || desc.MipLevels != 1 ||\n        desc.SampleDesc.Count != 1 || desc.SampleDesc.Quality ||\n        desc.Width < (UINT)image->w || desc.Height < (UINT)image->h ||\n        desc.Width > INT_MAX || desc.Height > INT_MAX ||\n        !desc.ArraySize || (uintptr_t)image->planes[1] >= desc.ArraySize) return;\n\n    struct mp_bilipai_d3d11_ready *r = av_mallocz(sizeof(*r));\n    if (!r) return;\n    AVBufferRef *receipt = NULL;\n    r->source_hwctx = av_buffer_ref(image->hwctx);\n    if (!r->source_hwctx) goto receipt_done;\n    for (int n = 0; n < MP_MAX_PLANES; ++n) {\n        if (image->bufs[n] && !(r->source_bufs[n] = av_buffer_ref(image->bufs[n]))) goto receipt_done;\n        r->planes[n] = image->planes[n]; r->stride[n] = image->stride[n];\n    }\n    r->version = MP_BILIPAI_D3D11_READY_VERSION; r->origin = *o;\n    r->width = image->w; r->height = image->h;\n    r->allocation_width = (int)desc.Width; r->allocation_height = (int)desc.Height;\n    r->texture = texture; r->array_slice = (uintptr_t)image->planes[1];\n    receipt = av_buffer_create((uint8_t *)r, sizeof(*r), bilipai_ready_free, NULL, 0);\n    if (!receipt) goto receipt_done;\n    r = NULL; // receipt destructor now owns source refs; no new GPU source reads\n\n    // Existing decoder lane remains active. Original FFmpeg lock serializes\n    // its actual VideoContext and immediate-context command ordering, not epoch.\n    // Global try-gate only protects the one custody slot: it never waits/spins.\n    d->lock(d->lock_ctx);\n    if (atomic_flag_test_and_set(&bilipai_ready_slot_busy)) {\n        d->unlock(d->lock_ctx); goto receipt_done;\n    }\n    struct bilipai_ready_custody *s = &bilipai_ready_slot;\n    if (bilipai_ready_owner(frames->device_ref, d)) {\n        if (s->value == UINT64_MAX - 1) {\n            s->poisoned = true;\n        } else {\n            uint64_t value = s->value + 1;\n            s->value = value; // reserve once; never reuse a failed value\n            HRESULT hr = ID3D11DeviceContext4_Signal(s->context4, s->fence, value);\n            if (hr == S_OK) {\n                struct mp_bilipai_d3d11_ready *v = (void *)receipt->data;\n                v->signal_value = value; v->fence = s->fence;\n                v->device = s->device; v->device_context = s->context;\n                image->bilipai_d3d11_ready = receipt; receipt = NULL;\n            } else {\n                s->poisoned = true; // retain all actual fence/context/HW-owner custody\n            }\n        }\n    }\n    atomic_flag_clear(&bilipai_ready_slot_busy);\n    d->unlock(d->lock_ctx);\nreceipt_done:\n    av_buffer_unref(&receipt);\n    if (r) bilipai_ready_free(NULL, (uint8_t *)r);\n}\n#else\nstatic void bilipai_record_decoder_ready(struct mp_image *image, const AVFrame *frame)\n{\n    (void)image; (void)frame;\n}\n#endif\n\n// Returns whether decoder is still active (!EOF state).\n",
+        "old": "// Returns whether decoder is still active (!EOF state).\n"
+      },
+      {
+        "count": 1,
+        "new": "    ctx->bilipai_decoder_stream_refusals |=\n        mpi->params.bilipai_decoder_origin.stream_refusals;\n    bilipai_record_decoder_ready(mpi, ctx->pic); // optional queued readiness only\n",
+        "old": "    ctx->bilipai_decoder_stream_refusals |=\n        mpi->params.bilipai_decoder_origin.stream_refusals;\n"
+      },
+      {
+        "count": 1,
+        "new": "#include <libavutil/mem.h>\n#include <limits.h>\n",
+        "old": "#include <libavutil/mem.h>\n"
+      },
+      {
+        "count": 1,
+        "new": "        desc.Width > (UINT)INT_MAX || desc.Height > (UINT)INT_MAX ||\n",
+        "old": "        desc.Width > INT_MAX || desc.Height > INT_MAX ||\n"
+      },
+      {
+        "count": 1,
+        "new": "#include <libavutil/hwcontext_d3d11va.h>\n#include \"video/d3d.h\"\n#endif\n",
+        "old": "#include <libavutil/hwcontext_d3d11va.h>\n#endif\n"
+      },
+      {
+        "count": 1,
+        "new": "    bool bilipai_decoder_ids_disabled;\n    // Existing decoder dispatch lane only; zero means no opt-in and no Signal.\n    uint64_t bilipai_ready_instance, bilipai_ready_epoch;\n",
+        "old": "    bool bilipai_decoder_ids_disabled;\n"
+      },
+      {
+        "count": 1,
+        "new": "    ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    return;\n",
+        "old": "    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    return;\n"
+      },
+      {
+        "count": 1,
+        "new": "    ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    // Same-stream refusal history",
+        "old": "    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    // Same-stream refusal history"
+      },
+      {
+        "count": 1,
+        "new": "    // All required refs exist before publishing. Process-lifetime, one slot.\n    // Exact built-in constructor provenance was checked before locking; this\n    // retained AVHWDeviceContext owns its known default HANDLE and record.\n    // It does not authorize arbitrary externally owned callback/opaque state.\n",
+        "old": "    // All required refs exist before publishing. Process-lifetime, one slot;\n    // the original AVHWDeviceContext ref retains lock callbacks/opaque as well.\n"
+      },
+      {
+        "count": 1,
+        "new": "    AVBufferRef *held = NULL;\n    ID3D11Device *context_device = NULL;\n    IUnknown *context_device_id = NULL;\n    bool ok = false;\n    // Every immediate-context method, including GetDevice, is inside the\n    // successfully acquired original default mutex.\n    ID3D11DeviceContext_GetDevice(d->device_context, &context_device);\n    if (!context_device ||\n        IUnknown_QueryInterface((IUnknown *)context_device, &IID_IUnknown,\n                                (void **)&context_device_id) != S_OK) goto done;\n    if (ID3D11DeviceContext_GetType",
+        "old": "    AVBufferRef *held = NULL;\n    bool ok = false;\n    if (ID3D11DeviceContext_GetType"
+      },
+      {
+        "count": 1,
+        "new": "                                (void **)&video_id) != S_OK || context_id != video_id ||\n        context_device_id != device_id) goto done;\n",
+        "old": "                                (void **)&video_id) != S_OK || context_id != video_id) goto done;\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (device5) ID3D11Device5_Release(device5);\n    if (context_device_id) IUnknown_Release(context_device_id);\n    if (context_device) ID3D11Device_Release(context_device);\n    if (video_id)",
+        "old": "    if (device5) ID3D11Device5_Release(device5);\n    if (video_id)"
+      },
+      {
+        "count": 1,
+        "new": "static void bilipai_record_decoder_ready(vd_ffmpeg_ctx *ctx,\n                                        struct mp_image *image, const AVFrame *frame)\n{\n    const struct mp_bilipai_decoder_origin *o = &image->params.bilipai_decoder_origin;\n    // Closed by default, before allocations, context calls or custody/Signal.\n    // Only the existing decoder owner control can opt in to this exact epoch.\n    if (!ctx->bilipai_ready_instance || !ctx->bilipai_ready_epoch ||\n        ctx->bilipai_decoder_ids_disabled || !ctx->use_hwdec || ctx->hwdec.copying ||\n        ctx->hwdec.lavc_device != AV_HWDEVICE_TYPE_D3D11VA ||\n        !ctx->hwdec_dev || !ctx->hwdec_dev->data ||\n        ctx->bilipai_ready_instance != ctx->bilipai_decoder_instance ||\n        ctx->bilipai_ready_epoch != ctx->bilipai_decoder_epoch ||\n        ctx->bilipai_ready_instance != o->instance_id ||\n        ctx->bilipai_ready_epoch != o->epoch_id) return;\n",
+        "old": "static void bilipai_record_decoder_ready(struct mp_image *image, const AVFrame *frame)\n{\n    const struct mp_bilipai_decoder_origin *o = &image->params.bilipai_decoder_origin;\n"
+      },
+      {
+        "count": 1,
+        "new": "        frames->device_ctx->type != AV_HWDEVICE_TYPE_D3D11VA || !frames->device_ctx->hwctx ||\n        frames->device_ref->buffer != ctx->hwdec_dev->buffer ||\n        frames->device_ref->data != ctx->hwdec_dev->data ||\n        frames->device_ref->size != ctx->hwdec_dev->size ||\n        !d3d11_bilipai_default_owner_known(frames->device_ref)) return;\n    AVD3D11VADeviceContext *d = frames->device_ctx->hwctx;\n    if (!d->device || !d->device_context || !d->video_context || !d->lock || !d->unlock ||\n        !d->lock_ctx || d->lock_ctx == INVALID_HANDLE_VALUE) return;\n",
+        "old": "        frames->device_ctx->type != AV_HWDEVICE_TYPE_D3D11VA || !frames->device_ctx->hwctx) return;\n    AVD3D11VADeviceContext *d = frames->device_ctx->hwctx;\n    if (!d->device || !d->device_context || !d->video_context || !d->lock || !d->unlock) return;\n"
+      },
+      {
+        "count": 1,
+        "new": "    ID3D11Device *texture_device = NULL;\n    IUnknown *texture_id = NULL, *owner_device_id = NULL;\n",
+        "old": "    ID3D11Device *texture_device = NULL, *context_device = NULL;\n    IUnknown *texture_id = NULL, *context_device_id = NULL, *owner_device_id = NULL;\n"
+      },
+      {
+        "count": 1,
+        "new": "    bool same = texture_device &&\n        IUnknown_QueryInterface((IUnknown *)texture_device, &IID_IUnknown, (void **)&texture_id) == S_OK &&\n        IUnknown_QueryInterface((IUnknown *)d->device, &IID_IUnknown, (void **)&owner_device_id) == S_OK &&\n        texture_id == owner_device_id;\n    if (owner_device_id) IUnknown_Release(owner_device_id);\n    if (texture_id) IUnknown_Release(texture_id);\n",
+        "old": "    ID3D11DeviceContext_GetDevice(d->device_context, &context_device);\n    bool same = texture_device && context_device &&\n        IUnknown_QueryInterface((IUnknown *)texture_device, &IID_IUnknown, (void **)&texture_id) == S_OK &&\n        IUnknown_QueryInterface((IUnknown *)context_device, &IID_IUnknown, (void **)&context_device_id) == S_OK &&\n        IUnknown_QueryInterface((IUnknown *)d->device, &IID_IUnknown, (void **)&owner_device_id) == S_OK &&\n        texture_id == owner_device_id && context_device_id == owner_device_id;\n    if (owner_device_id) IUnknown_Release(owner_device_id);\n    if (context_device_id) IUnknown_Release(context_device_id);\n    if (texture_id) IUnknown_Release(texture_id);\n    if (context_device) ID3D11Device_Release(context_device);\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (!d3d11_bilipai_default_try_lock(frames->device_ref)) goto receipt_done;\n    if (atomic_flag_test_and_set(&bilipai_ready_slot_busy)) {\n        d3d11_bilipai_default_unlock(frames->device_ref);\n        goto receipt_done;\n    }\n",
+        "old": "    d->lock(d->lock_ctx);\n    if (atomic_flag_test_and_set(&bilipai_ready_slot_busy)) {\n        d->unlock(d->lock_ctx); goto receipt_done;\n    }\n"
+      },
+      {
+        "count": 1,
+        "new": "    struct bilipai_ready_custody *s = &bilipai_ready_slot;\n    bool publish = false;\n    if (bilipai_ready_owner(frames->device_ref, d)) {\n",
+        "old": "    struct bilipai_ready_custody *s = &bilipai_ready_slot;\n    if (bilipai_ready_owner(frames->device_ref, d)) {\n"
+      },
+      {
+        "count": 1,
+        "new": "                v->device = s->device; v->device_context = s->context;\n                publish = true;\n",
+        "old": "                v->device = s->device; v->device_context = s->context;\n                image->bilipai_d3d11_ready = receipt; receipt = NULL;\n"
+      },
+      {
+        "count": 1,
+        "new": "    bool released = d3d11_bilipai_default_unlock(frames->device_ref);\n    if (!released) s->poisoned = true;\n    atomic_flag_clear(&bilipai_ready_slot_busy);\n    if (publish && released) {\n        image->bilipai_d3d11_ready = receipt; receipt = NULL;\n    }\nreceipt_done:\n",
+        "old": "    atomic_flag_clear(&bilipai_ready_slot_busy);\n    d->unlock(d->lock_ctx);\nreceipt_done:\n"
+      },
+      {
+        "count": 1,
+        "new": "static void bilipai_record_decoder_ready(vd_ffmpeg_ctx *ctx,\n                                        struct mp_image *image, const AVFrame *frame)\n{\n    (void)ctx; (void)image; (void)frame;\n}\n",
+        "old": "static void bilipai_record_decoder_ready(struct mp_image *image, const AVFrame *frame)\n{\n    (void)image; (void)frame;\n}\n"
+      },
+      {
+        "count": 1,
+        "new": "    bilipai_record_decoder_ready(ctx, mpi, ctx->pic); // scoped opt-in; default closed\n",
+        "old": "    bilipai_record_decoder_ready(mpi, ctx->pic); // optional queued readiness only\n"
+      },
+      {
+        "count": 1,
+        "new": "    case VDCTRL_BILIPAI_SET_DECODER_READY: {\n        const struct mp_bilipai_decoder_ready_request *request = arg;\n        if (!request || !ctx->avctx || !avcodec_is_open(ctx->avctx) ||\n            ctx->bilipai_decoder_ids_disabled || !request->instance_id ||\n            !request->epoch_id || !ctx->bilipai_decoder_sequence ||\n            request->instance_id != ctx->bilipai_decoder_instance ||\n            request->epoch_id != ctx->bilipai_decoder_epoch) return CONTROL_FALSE;\n        ctx->bilipai_ready_instance = ctx->bilipai_ready_epoch = 0;\n        if (!request->enable) return CONTROL_TRUE;\n#if HAVE_D3D11\n        if (ctx->use_hwdec && !ctx->hwdec.copying &&\n            ctx->hwdec.lavc_device == AV_HWDEVICE_TYPE_D3D11VA &&\n            d3d11_bilipai_default_owner_known(ctx->hwdec_dev)) {\n            ctx->bilipai_ready_instance = request->instance_id;\n            ctx->bilipai_ready_epoch = request->epoch_id;\n            return CONTROL_TRUE;\n        }\n#endif\n        return CONTROL_FALSE;\n    }\n    case VDCTRL_SET_FRAMEDROP:\n",
+        "old": "    case VDCTRL_SET_FRAMEDROP:\n"
       }
     ],
     "path": "video/decode/vd_lavc.c"
   },
   {
-    "afterBytes": 5741,
-    "afterSha256": "c519562b4384f4bf6ec42131a3a6054da59be3427a6a18acb35b207cd167f397",
+    "afterBytes": 6409,
+    "afterSha256": "46f2386f708eb50dbe744964ae111940e3ef07940fff35e48fde675be2aa3679",
     "beforeBytes": 4725,
     "beforeSha256": "2d133e104dac514e7f05beeeb78713755019a65c24bc984e2596559a124565dc",
     "edits": [
@@ -1301,6 +1466,16 @@
         "count": 1,
         "new": "\n// Main/filter consumer lane only, outside async queue locks. Serialized access\n// under the existing decoder dispatch lock is not necessarily the decoder OS\n// thread. The callback must perform only synchronous lightweight observation:\n// no queue operations, recursive wrapper control, GPU submit, Flush or waits.\n// Owner lifetime is held by the direct player track/output chain; groups reject.\n// A true return proves matching only DURING this callback, never later GPU use.\nbool mp_decoder_wrapper_bilipai_observe(struct mp_decoder_wrapper *d,\n    const struct mp_image *image,\n    void (*observe)(void *, const struct mp_bilipai_active_decoder *), void *ctx);\n\n// Force it to reevaluate output parameters (for overrides like aspect).\n",
         "old": "\n// Force it to reevaluate output parameters (for overrides like aspect).\n"
+      },
+      {
+        "count": 1,
+        "new": "// PRIVATE optional readiness authorization for one actual decoder epoch.\n// Call through mp_decoder_wrapper_control from its existing owner thread,\n// outside async queue locks and outside the lightweight observe callback.\n// The existing dispatch lock serializes this control with decoder receive.\n// No current production caller enables this. It is NOT a GPU-use/HDR permit.\nstruct mp_bilipai_decoder_ready_request {\n    uint64_t instance_id, epoch_id;\n    bool enable;\n};\nstruct mp_image;\nenum dec_ctrl {\n",
+        "old": "struct mp_image;\nenum dec_ctrl {\n"
+      },
+      {
+        "count": 1,
+        "new": "    VDCTRL_BILIPAI_GET_ACTIVE_DECODER,\n    // struct mp_bilipai_decoder_ready_request*: exact current identity only;\n    // defaults off and resets/reinit revoke. Groups/unknown owners reject.\n    VDCTRL_BILIPAI_SET_DECODER_READY,\n",
+        "old": "    VDCTRL_BILIPAI_GET_ACTIVE_DECODER,\n"
       }
     ],
     "path": "filters/f_decoder_wrapper.h"
@@ -1381,5 +1556,43 @@
       }
     ],
     "path": "player/video.c"
+  },
+  {
+    "afterBytes": 13852,
+    "afterSha256": "443f7e62777e9d3252e08750d446d76d783bcc3e66ed2cffde17cf8d40d13c18",
+    "beforeBytes": 10171,
+    "beforeSha256": "eb191c341208444dfd6bd9df80b94c4ecd42efc1f4de0b472ce9226ed2573f15",
+    "edits": [
+      {
+        "count": 1,
+        "new": "#include <dxgi.h>\n#include <stdatomic.h>\n#include <libavutil/mem.h>\n",
+        "old": "#include <dxgi.h>\n"
+      },
+      {
+        "count": 1,
+        "new": "/* Private default-owner provenance, created only by this actual wrapper.\n * AVHWDeviceContext::free is the constructor identity; unknown external\n * user_opaque is never dereferenced. FFmpeg keeps its original lock callbacks\n * and closes its default HANDLE during device_uninit, before this free hook.\n * This optional CPU record does not create a GPU queue/fence or lifetime slot.\n */\nstruct bilipai_d3d11_default_owner {\n    AVHWDeviceContext *context;\n    ID3D11Device *device;\n    ID3D11DeviceContext *device_context;\n    ID3D11VideoContext *video_context;\n    void (*lock)(void *), (*unlock)(void *);\n    HANDLE mutex;\n    atomic_bool poisoned;\n};\n\nstatic void bilipai_d3d11_owner_free(AVHWDeviceContext *ctx)\n{\n    av_free(ctx->user_opaque);\n    ctx->user_opaque = NULL;\n}\n\nstatic struct bilipai_d3d11_default_owner *\nbilipai_d3d11_owner(const AVBufferRef *ref)\n{\n    if (!ref || !ref->data || ref->size < sizeof(AVHWDeviceContext)) return NULL;\n    AVHWDeviceContext *ctx = (void *)ref->data;\n    if (ctx->type != AV_HWDEVICE_TYPE_D3D11VA || !ctx->hwctx ||\n        ctx->free != bilipai_d3d11_owner_free || !ctx->user_opaque) return NULL;\n    struct bilipai_d3d11_default_owner *r = ctx->user_opaque;\n    AVD3D11VADeviceContext *d = ctx->hwctx;\n    if (r->context != ctx || !r->mutex || r->mutex == INVALID_HANDLE_VALUE ||\n        !r->device || !r->device_context || !r->video_context || !r->lock || !r->unlock ||\n        d->device != r->device || d->device_context != r->device_context ||\n        d->video_context != r->video_context || d->lock != r->lock ||\n        d->unlock != r->unlock || d->lock_ctx != r->mutex) return NULL;\n    return r;\n}\n\nbool d3d11_bilipai_default_owner_known(const AVBufferRef *ref)\n{\n    struct bilipai_d3d11_default_owner *r = bilipai_d3d11_owner(ref);\n    return r && !atomic_load(&r->poisoned);\n}\n\nbool d3d11_bilipai_default_try_lock(const AVBufferRef *ref)\n{\n    struct bilipai_d3d11_default_owner *r = bilipai_d3d11_owner(ref);\n    if (!r || atomic_load(&r->poisoned)) return false;\n    DWORD result = WaitForSingleObjectEx(r->mutex, 0, FALSE);\n    if (result == WAIT_OBJECT_0) {\n        if (!atomic_load(&r->poisoned)) return true;\n        ReleaseMutex(r->mutex);\n        return false;\n    }\n    if (result != WAIT_TIMEOUT) atomic_store(&r->poisoned, true);\n    // WAIT_ABANDONED grants ownership despite the failed validity contract.\n    // Relinquish it, but never issue a Signal or reuse this poisoned owner.\n    if (result == WAIT_ABANDONED) ReleaseMutex(r->mutex);\n    return false;\n}\n\nbool d3d11_bilipai_default_unlock(const AVBufferRef *ref)\n{\n    struct bilipai_d3d11_default_owner *r = bilipai_d3d11_owner(ref);\n    if (!r) return false;\n    bool ok = ReleaseMutex(r->mutex) != 0;\n    if (!ok) atomic_store(&r->poisoned, true);\n    return ok;\n}\n\nAVBufferRef *d3d11_wrap_device_ref(ID3D11Device *device)\n",
+        "old": "AVBufferRef *d3d11_wrap_device_ref(ID3D11Device *device)\n"
+      },
+      {
+        "count": 1,
+        "new": "    ID3D11Device_AddRef(device);\n    hwctx->device = device;\n\n    // Allocated context is fresh and lock is NULL: fixed FFmpeg initialization\n    // installs its own default mutex/callbacks. Never label custom callbacks.\n    struct bilipai_d3d11_default_owner *owner = NULL;\n    if (!ctx->free && !ctx->user_opaque && !hwctx->lock && !hwctx->unlock &&\n        !hwctx->lock_ctx)\n        owner = av_mallocz(sizeof(*owner));\n    if (owner) {\n        owner->context = ctx;\n        atomic_init(&owner->poisoned, false);\n        ctx->free = bilipai_d3d11_owner_free;\n        ctx->user_opaque = owner;\n    }\n    if (av_hwdevice_ctx_init(device_ref) < 0) {\n        av_buffer_unref(&device_ref);\n    } else if (owner) {\n        owner->device = hwctx->device;\n        owner->device_context = hwctx->device_context;\n        owner->video_context = hwctx->video_context;\n        owner->lock = hwctx->lock;\n        owner->unlock = hwctx->unlock;\n        owner->mutex = hwctx->lock_ctx;\n    }\n\n    return device_ref;\n",
+        "old": "    ID3D11Device_AddRef(device);\n    hwctx->device = device;\n\n    if (av_hwdevice_ctx_init(device_ref) < 0)\n        av_buffer_unref(&device_ref);\n\n    return device_ref;\n"
+      }
+    ],
+    "path": "video/d3d.c"
+  },
+  {
+    "afterBytes": 1960,
+    "afterSha256": "ea8b4c4bf9a8ba97ed645bc0c94c96ef6d7676e11608660d7f8498e3ce0d6afc",
+    "beforeBytes": 1291,
+    "beforeSha256": "db0b9de437ff81c8be401845e6cb275df2f2fc4beb9887541e75f379f3168d30",
+    "edits": [
+      {
+        "count": 1,
+        "new": "struct AVBufferRef *d3d11_wrap_device_ref(ID3D11Device *device);\n\n// Internal built-in wrapper provenance only; unknown/custom owners reject.\n// Caller retains this exact AVHWDeviceContext ref across known/try/unlock.\n// try_lock uses the same original default recursive mutex, zero wait, and\n// reports actual acquisition. A successful try must have exactly one unlock.\n// Abandoned/failed acquisition or failed release permanently closes issuance.\n// None of these functions submit GPU work or prove source CURRENT/completion.\nbool d3d11_bilipai_default_owner_known(const struct AVBufferRef *ref);\nbool d3d11_bilipai_default_try_lock(const struct AVBufferRef *ref);\nbool d3d11_bilipai_default_unlock(const struct AVBufferRef *ref);\n",
+        "old": "struct AVBufferRef *d3d11_wrap_device_ref(ID3D11Device *device);\n"
+      }
+    ],
+    "path": "video/d3d.h"
   }
 ]
