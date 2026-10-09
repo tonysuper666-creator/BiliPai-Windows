@@ -23,6 +23,7 @@
 /resources/common/native/
 /resources/common/js-engine/
 /resources/common/notices/appearance/
+/resources/common/notices/tinypinyin-2.0.3.RELEASE/
 /.local/
 *.log
 __pycache__/
