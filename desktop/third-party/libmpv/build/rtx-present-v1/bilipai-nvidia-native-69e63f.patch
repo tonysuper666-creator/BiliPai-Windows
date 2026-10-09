@@ -1,6 +1,15 @@
 --- a/video/filter/vf_d3d11vpp.c
 +++ b/video/filter/vf_d3d11vpp.c
-@@ -675,7 +675,8 @@
+@@ -550,6 +550,8 @@
+     mp_image_copy_attributes(out, in);
+     // TODO: sanitize out_params based the processing enabled.
+     out->params = p->out_params;
++    // Cached format params must not replace this frame raw metadata history.
++    mp_image_params_bilipai_hdr_copy_history(&out->params, &in->params);
+ 
+     D3D11_VIDEO_FRAME_FORMAT d3d_frame_format;
+     if (!mp_refqueue_should_deint(p->queue)) {
+@@ -675,7 +677,8 @@
      if (!mp_refqueue_can_output(p->queue))
          return;
  

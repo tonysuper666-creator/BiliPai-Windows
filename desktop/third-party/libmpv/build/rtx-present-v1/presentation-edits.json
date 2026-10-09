@@ -1,7 +1,7 @@
 [
   {
-    "afterBytes": 26160,
-    "afterSha256": "8882e38a56fdbc342f4e65c565b54e68c3e4398259f997de22bcf3a23f46c8dc",
+    "afterBytes": 26434,
+    "afterSha256": "69eb6ae7cc3b1fd1b57f9c6266578ce5f73781f64470c100558b255cf099b3bf",
     "beforeBytes": 24865,
     "beforeSha256": "e109dcf181ba517d97c614f6fddc6533689cf6c4b660ac94f1d29c64d85502c0",
     "edits": [
@@ -24,6 +24,16 @@
         "count": 1,
         "new": "        // The private RTX producer replaces params after copy_attributes.\n        // A successfully processed output is a new pixel buffer; keep pure\n        // bypass references (no processing token) under their existing proof.\n        if (frame.type == MP_FRAME_VIDEO && !strcmp(u->name, \"bilipai-rtx\") &&\n            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx))\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range =\n                MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n        if (frame.type == MP_FRAME_VIDEO &&\n            !mp_image_bilipai_token_matches(frame.data))",
         "old": "        if (frame.type == MP_FRAME_VIDEO &&\n            !mp_image_bilipai_token_matches(frame.data))"
+      },
+      {
+        "count": 1,
+        "new": "            ((struct mp_image *)frame.data)->bilipai_rtx =\n                (struct mp_bilipai_frame_token){0};\n            ((struct mp_image *)frame.data)->params.bilipai_hdr_current_encoding =\n                MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range =",
+        "old": "            ((struct mp_image *)frame.data)->bilipai_rtx =\n                (struct mp_bilipai_frame_token){0};\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range ="
+      },
+      {
+        "count": 1,
+        "new": "            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx)) {\n            ((struct mp_image *)frame.data)->params.bilipai_hdr_current_encoding =\n                MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range =\n                MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n        }",
+        "old": "            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx))\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range =\n                MP_BILIPAI_RGB10_RANGE_UNKNOWN;"
       }
     ],
     "path": "filters/f_output_chain.c"
@@ -73,8 +83,8 @@
     "path": "player/command.c"
   },
   {
-    "afterBytes": 59491,
-    "afterSha256": "4917ed3e0764f8beb0599a2f388fab241cda268cfbcec2b2e3e302f089f9e909",
+    "afterBytes": 70884,
+    "afterSha256": "2b210595bd7073b8c7fcd558db4b7e5387b2651a30a550ee2f5cb831ace22d68",
     "beforeBytes": 50325,
     "beforeSha256": "99165df2282547cec1ec020338d472f594040a0d46d11c642a2828b778ed306c",
     "edits": [
@@ -217,13 +227,193 @@
         "count": 1,
         "new": "    if (t->output_intent != MP_BILIPAI_OUTPUT_SDR_TO_HDR ||\n        t->transport != MP_BILIPAI_HDR10_RGB10) return false;\n    return img->params.hw_subfmt == IMGFMT_X2BGR10 &&",
         "old": "    return img->params.hw_subfmt == IMGFMT_X2BGR10 &&"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_set_size(struct mp_image *mpi, int w, int h)\n{\n    mpi->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;",
+        "old": "void mp_image_set_size(struct mp_image *mpi, int w, int h)\n{"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_make_writeable(struct mp_image *img)\n{\n    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;",
+        "old": "bool mp_image_make_writeable(struct mp_image *img)\n{"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_copy(struct mp_image *dst, struct mp_image *src)\n{\n    dst->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;",
+        "old": "void mp_image_copy(struct mp_image *dst, struct mp_image *src)\n{"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_crop(struct mp_image *img, int x0, int y0, int x1, int y1)\n{\n    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;",
+        "old": "void mp_image_crop(struct mp_image *img, int x0, int y0, int x1, int y1)\n{"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_clear(struct mp_image *img, int x0, int y0, int x1, int y1)\n{\n    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;",
+        "old": "void mp_image_clear(struct mp_image *img, int x0, int y0, int x1, int y1)\n{"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_vflip(struct mp_image *img)\n{\n    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;",
+        "old": "void mp_image_vflip(struct mp_image *img)\n{"
+      },
+      {
+        "count": 1,
+        "new": "    mpi->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    mpi->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;",
+        "old": "    mpi->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;"
+      },
+      {
+        "count": 1,
+        "new": "    image->params = *params;\n    image->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n",
+        "old": "    image->params = *params;\n"
+      },
+      {
+        "count": 1,
+        "new": "    dst->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    // Metadata range guessing never changes pixel samples. Only the caller's",
+        "old": "    // Metadata range guessing never changes pixel samples. Only the caller's"
+      },
+      {
+        "count": 1,
+        "new": "    mp_assert(dst != src);\n    dst->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    dst->params.bilipai_rgb10_current_range",
+        "old": "    mp_assert(dst != src);\n    dst->params.bilipai_rgb10_current_range"
+      },
+      {
+        "count": 1,
+        "new": "    dst->params.bilipai_rgb10_source_explicit = src->params.bilipai_rgb10_source_explicit;\n    dst->params.bilipai_hdr_snapshot = src->params.bilipai_hdr_snapshot;\n    dst->params.bilipai_hdr_observed_flags = src->params.bilipai_hdr_observed_flags;\n    dst->params.bilipai_hdr_snapshot_relation =\n        src->params.bilipai_hdr_snapshot.version == MP_BILIPAI_HDR_SNAPSHOT_VERSION ?\n        MP_BILIPAI_HDR_SNAPSHOT_ATTRIBUTE_HISTORY : MP_BILIPAI_HDR_SNAPSHOT_NONE;",
+        "old": "    dst->params.bilipai_rgb10_source_explicit = src->params.bilipai_rgb10_source_explicit;"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_params_guess_csp(struct mp_image_params *params)\n{\n    params->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;",
+        "old": "void mp_image_params_guess_csp(struct mp_image_params *params)\n{"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_params_restore_dovi_mapping(struct mp_image_params *params)\n{\n    params->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;",
+        "old": "void mp_image_params_restore_dovi_mapping(struct mp_image_params *params)\n{"
+      },
+      {
+        "count": 1,
+        "new": "static bool bilipai_hdr_rational_equal(struct mp_bilipai_hdr_rational a,\n                                       struct mp_bilipai_hdr_rational b)\n{\n    return a.num == b.num && a.den == b.den;\n}\n\nbool mp_image_bilipai_hdr_snapshot_equal(\n    const struct mp_bilipai_hdr_snapshot *a,\n    const struct mp_bilipai_hdr_snapshot *b)\n{\n    // Compare logical fields, never padding; retain exact rational identity.\n    if (a->version != b->version || a->flags != b->flags ||\n        a->av_format != b->av_format || a->av_sw_format != b->av_sw_format ||\n        a->width != b->width || a->height != b->height ||\n        a->av_matrix != b->av_matrix || a->av_range != b->av_range ||\n        a->av_primaries != b->av_primaries || a->av_transfer != b->av_transfer ||\n        a->av_chroma != b->av_chroma || a->mdm_count != b->mdm_count ||\n        a->cll_count != b->cll_count || a->mdm_size != b->mdm_size ||\n        a->cll_size != b->cll_size || a->has_primaries != b->has_primaries ||\n        a->has_luminance != b->has_luminance || a->max_cll != b->max_cll ||\n        a->max_fall != b->max_fall ||\n        !bilipai_hdr_rational_equal(a->min_luminance, b->min_luminance) ||\n        !bilipai_hdr_rational_equal(a->max_luminance, b->max_luminance))\n        return false;\n    for (int c = 0; c < 3; c++) {\n        for (int xy = 0; xy < 2; xy++) {\n            if (!bilipai_hdr_rational_equal(a->display_primaries[c][xy],\n                                           b->display_primaries[c][xy]))\n                return false;\n        }\n    }\n    for (int xy = 0; xy < 2; xy++) {\n        if (!bilipai_hdr_rational_equal(a->white_point[xy], b->white_point[xy]))\n            return false;\n    }\n    return true;\n}\n\nbool mp_image_params_equal(const struct mp_image_params *p1,\n",
+        "old": "bool mp_image_params_equal(const struct mp_image_params *p1,\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (p1->bilipai_hdr_current_encoding != p2->bilipai_hdr_current_encoding ||\n        p1->bilipai_hdr_observed_flags != p2->bilipai_hdr_observed_flags ||\n        p1->bilipai_hdr_snapshot_relation != p2->bilipai_hdr_snapshot_relation ||\n        !mp_image_bilipai_hdr_snapshot_equal(&p1->bilipai_hdr_snapshot,\n                                            &p2->bilipai_hdr_snapshot))\n        return false;\n    // The BiliPai RGB10 gate needs reinit",
+        "old": "    // The BiliPai RGB10 gate needs reinit"
+      },
+      {
+        "count": 1,
+        "new": "    a.color.hdr = b.color.hdr = (struct pl_hdr_metadata){0};\n    // Raw per-frame observation must not force static filter reinitialization.\n    a.bilipai_hdr_snapshot = b.bilipai_hdr_snapshot =\n        (struct mp_bilipai_hdr_snapshot){0};\n    a.bilipai_hdr_observed_flags = b.bilipai_hdr_observed_flags = 0;\n    a.bilipai_hdr_snapshot_relation = b.bilipai_hdr_snapshot_relation =\n        MP_BILIPAI_HDR_SNAPSHOT_NONE;",
+        "old": "    a.color.hdr = b.color.hdr = (struct pl_hdr_metadata){0};"
+      },
+      {
+        "count": 1,
+        "new": "    // Copy this frame's raw record, never peak-detected/inferred hdr values.\n    // Updating metadata alone cannot qualify a current pixel buffer.\n    dst->bilipai_hdr_snapshot = src->bilipai_hdr_snapshot;\n    dst->bilipai_hdr_observed_flags = src->bilipai_hdr_observed_flags;\n    dst->bilipai_hdr_snapshot_relation = src->bilipai_hdr_snapshot_relation;\n    dst->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    dst->repr.dovi = src->repr.dovi;",
+        "old": "    dst->repr.dovi = src->repr.dovi;"
+      },
+      {
+        "count": 1,
+        "new": "static struct mp_bilipai_hdr_rational bilipai_hdr_rational(AVRational r)\n{\n    return (struct mp_bilipai_hdr_rational){ .num = r.num, .den = r.den };\n}\n\nstatic void bilipai_hdr_capture_boundary(struct mp_image_params *p,\n                                         const AVFrame *src)\n{\n    // This AVFrame may come from a decoder OR a foreign filter.\n    struct mp_bilipai_hdr_snapshot s = {0};\n    s.version = MP_BILIPAI_HDR_SNAPSHOT_VERSION;\n    s.av_format = s.av_sw_format = src->format;\n    if (src->hw_frames_ctx && src->hw_frames_ctx->data) {\n        const AVHWFramesContext *hw = (const void *)src->hw_frames_ctx->data;\n        s.av_sw_format = hw->sw_format;\n    }\n    s.width = src->width;\n    s.height = src->height;\n    s.av_matrix = src->colorspace;\n    s.av_range = src->color_range;\n    s.av_primaries = src->color_primaries;\n    s.av_transfer = src->color_trc;\n    s.av_chroma = src->chroma_location;\n    const AVFrameSideData *mdm = NULL, *cll = NULL;\n    for (int n = 0; n < src->nb_side_data; n++) {\n        const AVFrameSideData *sd = src->side_data[n];\n        switch (sd->type) {\n        case AV_FRAME_DATA_MASTERING_DISPLAY_METADATA:\n            s.flags |= MP_BILIPAI_HDR_MDM_PRESENT;\n            s.mdm_count++;\n            if (!mdm) { mdm = sd; s.mdm_size = sd->size; }\n            break;\n        case AV_FRAME_DATA_CONTENT_LIGHT_LEVEL:\n            s.flags |= MP_BILIPAI_HDR_CLL_PRESENT;\n            s.cll_count++;\n            if (!cll) { cll = sd; s.cll_size = sd->size; }\n            break;\n        case AV_FRAME_DATA_DYNAMIC_HDR_PLUS:\n            s.flags |= MP_BILIPAI_HDR_PLUS_PRESENT;\n            break;\n        case AV_FRAME_DATA_DYNAMIC_HDR_VIVID:\n            s.flags |= MP_BILIPAI_HDR_VIVID_PRESENT;\n            break;\n        case AV_FRAME_DATA_DYNAMIC_HDR_SMPTE_2094_APP5:\n            s.flags |= MP_BILIPAI_HDR_APP5_PRESENT;\n            break;\n        case AV_FRAME_DATA_DOVI_METADATA:\n            s.flags |= MP_BILIPAI_HDR_DOVI_METADATA_PRESENT;\n            break;\n        case AV_FRAME_DATA_DOVI_RPU_BUFFER:\n            s.flags |= MP_BILIPAI_HDR_DOVI_RPU_PRESENT;\n            break;\n        case AV_FRAME_DATA_ICC_PROFILE:\n            s.flags |= MP_BILIPAI_HDR_ICC_PRESENT;\n            break;\n        default:\n            break;\n        }\n    }\n    if (s.mdm_count > 1 || s.cll_count > 1)\n        s.flags |= MP_BILIPAI_HDR_DUPLICATE_STATIC;\n    if (mdm) {\n        // Fixed FFmpeg9fc8 layout only. Unknown size cannot be dereferenced.\n        if (!mdm->data || mdm->size != sizeof(AVMasteringDisplayMetadata)) {\n            s.flags |= MP_BILIPAI_HDR_MDM_SIZE_UNKNOWN;\n        } else {\n            AVMasteringDisplayMetadata m;\n            memcpy(&m, mdm->data, sizeof(m));\n            s.flags |= MP_BILIPAI_HDR_MDM_PARSED;\n            s.has_primaries = m.has_primaries;\n            s.has_luminance = m.has_luminance;\n            for (int c = 0; c < 3; c++) {\n                for (int xy = 0; xy < 2; xy++) {\n                    s.display_primaries[c][xy] = bilipai_hdr_rational(m.display_primaries[c][xy]);\n                    if (m.has_primaries && m.display_primaries[c][xy].den <= 0)\n                        s.flags |= MP_BILIPAI_HDR_MDM_RATIONAL_INVALID;\n                }\n            }\n            for (int xy = 0; xy < 2; xy++) {\n                s.white_point[xy] = bilipai_hdr_rational(m.white_point[xy]);\n                if (m.has_primaries && m.white_point[xy].den <= 0)\n                    s.flags |= MP_BILIPAI_HDR_MDM_RATIONAL_INVALID;\n            }\n            s.min_luminance = bilipai_hdr_rational(m.min_luminance);\n            s.max_luminance = bilipai_hdr_rational(m.max_luminance);\n            if (m.has_luminance && (m.min_luminance.den <= 0 || m.max_luminance.den <= 0))\n                s.flags |= MP_BILIPAI_HDR_MDM_RATIONAL_INVALID;\n            if ((m.has_primaries != 0 && m.has_primaries != 1) ||\n                (m.has_luminance != 0 && m.has_luminance != 1))\n                s.flags |= MP_BILIPAI_HDR_MDM_FLAGS_NONBOOLEAN;\n        }\n    }\n    if (cll) {\n        if (!cll->data || cll->size != sizeof(AVContentLightMetadata)) {\n            s.flags |= MP_BILIPAI_HDR_CLL_SIZE_UNKNOWN;\n        } else {\n            AVContentLightMetadata c;\n            memcpy(&c, cll->data, sizeof(c));\n            s.flags |= MP_BILIPAI_HDR_CLL_PARSED;\n            s.max_cll = c.MaxCLL;\n            s.max_fall = c.MaxFALL;\n        }\n    }\n    p->bilipai_hdr_snapshot = s;\n    p->bilipai_hdr_observed_flags = s.flags;\n    p->bilipai_hdr_snapshot_relation = MP_BILIPAI_HDR_SNAPSHOT_AVFRAME_BOUNDARY;\n    p->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n}\n\n// Create a new mp_image reference to av_frame.\n",
+        "old": "// Create a new mp_image reference to av_frame.\n"
+      },
+      {
+        "count": 1,
+        "new": "    dst->params.chroma_location = pl_chroma_from_av(src->chroma_location);\n    bilipai_hdr_capture_boundary(&dst->params, src);",
+        "old": "    dst->params.chroma_location = pl_chroma_from_av(src->chroma_location);"
+      },
+      {
+        "count": 1,
+        "new": "            if (p->bilipai_hdr_snapshot.version == MP_BILIPAI_HDR_SNAPSHOT_VERSION) {\n                // Preserve history when export generated MDM from inferred hdr.\n                // Neither opaque tag nor this record proves current pixels.\n                dst->params.bilipai_hdr_snapshot = p->bilipai_hdr_snapshot;\n                dst->params.bilipai_hdr_snapshot_relation =\n                    MP_BILIPAI_HDR_SNAPSHOT_OWNED_HISTORY;\n            }\n            dst->params.stereo3d = p->stereo3d;",
+        "old": "            dst->params.stereo3d = p->stereo3d;"
+      },
+      {
+        "count": 1,
+        "new": "    image->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    image->params.bilipai_hdr_snapshot_relation =\n        image->params.bilipai_hdr_snapshot.version == MP_BILIPAI_HDR_SNAPSHOT_VERSION ?\n        MP_BILIPAI_HDR_SNAPSHOT_ATTRIBUTE_HISTORY : MP_BILIPAI_HDR_SNAPSHOT_NONE;\n",
+        "old": "    image->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "    dst->bilipai_hdr_snapshot_relation =\n        src->bilipai_hdr_snapshot.version == MP_BILIPAI_HDR_SNAPSHOT_VERSION ?\n        MP_BILIPAI_HDR_SNAPSHOT_ATTRIBUTE_HISTORY : MP_BILIPAI_HDR_SNAPSHOT_NONE;",
+        "old": "    dst->bilipai_hdr_snapshot_relation = src->bilipai_hdr_snapshot_relation;"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_params_bilipai_hdr_copy_history(struct mp_image_params *dst,\n                                              const struct mp_image_params *src)\n{\n    struct mp_bilipai_hdr_snapshot s = {0};\n    if (src->bilipai_hdr_snapshot.version == MP_BILIPAI_HDR_SNAPSHOT_VERSION)\n        s = src->bilipai_hdr_snapshot;\n    // Compute before assignment so even aliasing cannot erase refusal facts.\n    uint32_t hazards = src->bilipai_hdr_disqualifying_flags_seen |\n        ((src->bilipai_hdr_observed_flags | src->bilipai_hdr_snapshot.flags) &\n         MP_BILIPAI_HDR_HAZARDS_MASK);\n    dst->bilipai_hdr_snapshot = s;\n    dst->bilipai_hdr_snapshot_relation = s.version == MP_BILIPAI_HDR_SNAPSHOT_VERSION ?\n        MP_BILIPAI_HDR_SNAPSHOT_ATTRIBUTE_HISTORY : MP_BILIPAI_HDR_SNAPSHOT_NONE;\n    dst->bilipai_hdr_disqualifying_flags_seen = hazards;\n    dst->bilipai_hdr_observed_flags = 0;\n    dst->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n}\n\nvoid mp_image_copy_attributes(struct mp_image *dst, struct mp_image *src)\n",
+        "old": "void mp_image_copy_attributes(struct mp_image *dst, struct mp_image *src)\n"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_params_bilipai_hdr_copy_history(&dst->params, &src->params);",
+        "old": "    dst->params.bilipai_hdr_snapshot = src->params.bilipai_hdr_snapshot;\n    dst->params.bilipai_hdr_observed_flags = src->params.bilipai_hdr_observed_flags;\n    dst->params.bilipai_hdr_snapshot_relation =\n        src->params.bilipai_hdr_snapshot.version == MP_BILIPAI_HDR_SNAPSHOT_VERSION ?\n        MP_BILIPAI_HDR_SNAPSHOT_ATTRIBUTE_HISTORY : MP_BILIPAI_HDR_SNAPSHOT_NONE;"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_params_bilipai_hdr_copy_history(dst, src);",
+        "old": "    dst->bilipai_hdr_snapshot = src->bilipai_hdr_snapshot;\n    dst->bilipai_hdr_observed_flags = src->bilipai_hdr_observed_flags;\n    dst->bilipai_hdr_snapshot_relation =\n        src->bilipai_hdr_snapshot.version == MP_BILIPAI_HDR_SNAPSHOT_VERSION ?\n        MP_BILIPAI_HDR_SNAPSHOT_ATTRIBUTE_HISTORY : MP_BILIPAI_HDR_SNAPSHOT_NONE;\n    dst->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;"
+      },
+      {
+        "count": 1,
+        "new": "    p->bilipai_hdr_observed_flags = s.flags;\n    p->bilipai_hdr_disqualifying_flags_seen = s.flags & MP_BILIPAI_HDR_HAZARDS_MASK;",
+        "old": "    p->bilipai_hdr_observed_flags = s.flags;"
+      },
+      {
+        "count": 1,
+        "new": "                dst->params.bilipai_hdr_snapshot = p->bilipai_hdr_snapshot;\n                dst->params.bilipai_hdr_disqualifying_flags_seen |=\n                    p->bilipai_hdr_disqualifying_flags_seen |\n                    (p->bilipai_hdr_snapshot.flags & MP_BILIPAI_HDR_HAZARDS_MASK);",
+        "old": "                dst->params.bilipai_hdr_snapshot = p->bilipai_hdr_snapshot;"
+      },
+      {
+        "count": 1,
+        "new": "        p1->bilipai_hdr_observed_flags != p2->bilipai_hdr_observed_flags ||\n        p1->bilipai_hdr_disqualifying_flags_seen != p2->bilipai_hdr_disqualifying_flags_seen ||",
+        "old": "        p1->bilipai_hdr_observed_flags != p2->bilipai_hdr_observed_flags ||"
+      },
+      {
+        "count": 1,
+        "new": "    a.bilipai_hdr_observed_flags = b.bilipai_hdr_observed_flags = 0;\n    a.bilipai_hdr_disqualifying_flags_seen = b.bilipai_hdr_disqualifying_flags_seen = 0;",
+        "old": "    a.bilipai_hdr_observed_flags = b.bilipai_hdr_observed_flags = 0;"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_params_bilipai_hdr_copy_history(&image->params, params);",
+        "old": "    image->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    image->params.bilipai_hdr_snapshot_relation =\n        image->params.bilipai_hdr_snapshot.version == MP_BILIPAI_HDR_SNAPSHOT_VERSION ?\n        MP_BILIPAI_HDR_SNAPSHOT_ATTRIBUTE_HISTORY : MP_BILIPAI_HDR_SNAPSHOT_NONE;"
+      },
+      {
+        "count": 1,
+        "new": "#include <libavutil/rational.h>\n#include <libavutil/pixdesc.h>",
+        "old": "#include <libavutil/rational.h>"
+      },
+      {
+        "count": 1,
+        "new": "    s.av_format = src->format;\n    // A hardware enum without an actual valid frames context is not a software\n    // sample format. Keep unknown explicit; never infer from encoded depth.\n    const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(src->format);\n    s.av_sw_format = desc && !(desc->flags & AV_PIX_FMT_FLAG_HWACCEL) ?\n        src->format : AV_PIX_FMT_NONE;\n    if (src->hw_frames_ctx && src->hw_frames_ctx->data &&\n        src->hw_frames_ctx->size >= sizeof(AVHWFramesContext)) {\n        const AVHWFramesContext *hw = (const void *)src->hw_frames_ctx->data;\n        const AVPixFmtDescriptor *sw_desc = av_pix_fmt_desc_get(hw->sw_format);\n        if (hw->format == src->format && sw_desc &&\n            !(sw_desc->flags & AV_PIX_FMT_FLAG_HWACCEL))\n            s.av_sw_format = hw->sw_format;\n    }",
+        "old": "    s.av_format = s.av_sw_format = src->format;\n    if (src->hw_frames_ctx && src->hw_frames_ctx->data) {\n        const AVHWFramesContext *hw = (const void *)src->hw_frames_ctx->data;\n        s.av_sw_format = hw->sw_format;\n    }"
+      },
+      {
+        "count": 1,
+        "new": "    if (dst->hwctx) {\n        // This earlier import read must obey the same actual context bounds.\n        // Borrowed source buffers have not been ref'd/allocated at this point.\n        if (!dst->hwctx->data || dst->hwctx->size < sizeof(AVHWFramesContext))\n            return NULL;\n        AVHWFramesContext *fctx = (void *)dst->hwctx->data;\n        dst->params.hw_subfmt = pixfmt2imgfmt(fctx->sw_format);\n    }",
+        "old": "    if (dst->hwctx) {\n        AVHWFramesContext *fctx = (void *)dst->hwctx->data;\n        dst->params.hw_subfmt = pixfmt2imgfmt(fctx->sw_format);\n    }"
+      },
+      {
+        "count": 1,
+        "new": "            AVMasteringDisplayMetadata m = {0};",
+        "old": "            AVMasteringDisplayMetadata m;"
+      },
+      {
+        "count": 1,
+        "new": "            AVContentLightMetadata c = {0};",
+        "old": "            AVContentLightMetadata c;"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_set_params(struct mp_image *image,\n                         const struct mp_image_params *params)\n{\n    // possibly initialize other stuff\n    uint32_t hazards = image->params.bilipai_hdr_disqualifying_flags_seen |\n        ((image->params.bilipai_hdr_observed_flags |\n          image->params.bilipai_hdr_snapshot.flags) & MP_BILIPAI_HDR_HAZARDS_MASK);\n    mp_image_setfmt(image, params->imgfmt);\n    mp_image_set_size(image, params->w, params->h);\n    image->params = *params;\n    mp_image_params_bilipai_hdr_copy_history(&image->params, params);\n    image->params.bilipai_hdr_disqualifying_flags_seen |= hazards;\n    image->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n}\n",
+        "old": "void mp_image_set_params(struct mp_image *image,\n                         const struct mp_image_params *params)\n{\n    // possibly initialize other stuff\n    mp_image_setfmt(image, params->imgfmt);\n    mp_image_set_size(image, params->w, params->h);\n    image->params = *params;\n    mp_image_params_bilipai_hdr_copy_history(&image->params, params);\n    image->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n}\n"
       }
     ],
     "path": "video/mp_image.c"
   },
   {
-    "afterBytes": 11777,
-    "afterSha256": "bc4c5197f1ed1c77c687625630bed9e018c515a20de7d208c3e8729920e9378c",
+    "afterBytes": 15311,
+    "afterSha256": "9312a3811fa6f985140dfec896433b7f94f1da26d57923b2e6c4b4e92e0a083e",
     "beforeBytes": 9703,
     "beforeSha256": "dd24eaacb29b8c16d450425db88904b33bc6ccc185e3b82e4689283f5fa1b92f",
     "edits": [
@@ -276,6 +466,41 @@
         "count": 1,
         "new": "// Keep the uint32 tag at its original offset: the range byte consumes only\n// the former bool padding. The upgraded export tag is still mandatory.\n_Static_assert(sizeof(bool) == 1 &&\n    offsetof(struct mp_image_params, bilipai_rgb10_current_range) ==\n        offsetof(struct mp_image_params, bilipai_rgb10_source_explicit) + 1 &&\n    offsetof(struct mp_image_params, bilipai_params_export_tag) ==\n        offsetof(struct mp_image_params, bilipai_rgb10_source_explicit) + 4,\n    \"Private RGB10 range must fit the prior owned-export padding\");\n\n/* Memory management:\n * - mp_image is a light-weight reference",
         "old": "/* Memory management:\n * - mp_image is a light-weight reference"
+      },
+      {
+        "count": 1,
+        "new": "// Layout v3 appends a pointer-free HDR boundary snapshot. Exact size AND this\n// new tag reject old opaque exports; the tag is not pixel/origin authority.\n#define MP_BILIPAI_PARAMS_EXPORT_TAG UINT32_C(0x42565033)",
+        "old": "// Layout v2: the new uint8_t uses former bool padding. Size alone cannot\n// distinguish an old opaque export, so every owned export carries a new tag.\n#define MP_BILIPAI_PARAMS_EXPORT_TAG UINT32_C(0x42565032)"
+      },
+      {
+        "count": 1,
+        "new": "// Storage only. These values cannot admit native HDR or certify decoder origin.\n#define MP_BILIPAI_HDR_SNAPSHOT_VERSION UINT32_C(1)\nenum mp_bilipai_hdr_snapshot_relation {\n    MP_BILIPAI_HDR_SNAPSHOT_NONE = 0,\n    MP_BILIPAI_HDR_SNAPSHOT_AVFRAME_BOUNDARY = 1,\n    MP_BILIPAI_HDR_SNAPSHOT_OWNED_HISTORY = 2,\n    MP_BILIPAI_HDR_SNAPSHOT_ATTRIBUTE_HISTORY = 3,\n};\nenum mp_bilipai_hdr_current_encoding {\n    MP_BILIPAI_HDR_CURRENT_UNKNOWN = 0,\n    // Reserved; never produced in this storage-only implementation.\n    MP_BILIPAI_HDR_CURRENT_PQ_BT2020_P010 = 1,\n    MP_BILIPAI_HDR_CURRENT_PQ_BT2020_RGB10 = 2,\n};\nenum mp_bilipai_hdr_snapshot_flags {\n    MP_BILIPAI_HDR_MDM_PRESENT = 1u << 0,\n    MP_BILIPAI_HDR_MDM_PARSED = 1u << 1,\n    MP_BILIPAI_HDR_CLL_PRESENT = 1u << 2,\n    MP_BILIPAI_HDR_CLL_PARSED = 1u << 3,\n    MP_BILIPAI_HDR_DUPLICATE_STATIC = 1u << 4,\n    MP_BILIPAI_HDR_MDM_SIZE_UNKNOWN = 1u << 5,\n    MP_BILIPAI_HDR_CLL_SIZE_UNKNOWN = 1u << 6,\n    MP_BILIPAI_HDR_MDM_RATIONAL_INVALID = 1u << 7,\n    MP_BILIPAI_HDR_MDM_FLAGS_NONBOOLEAN = 1u << 8,\n    MP_BILIPAI_HDR_PLUS_PRESENT = 1u << 9,\n    MP_BILIPAI_HDR_VIVID_PRESENT = 1u << 10,\n    MP_BILIPAI_HDR_APP5_PRESENT = 1u << 11,\n    MP_BILIPAI_HDR_DOVI_METADATA_PRESENT = 1u << 12,\n    MP_BILIPAI_HDR_DOVI_RPU_PRESENT = 1u << 13,\n    MP_BILIPAI_HDR_ICC_PRESENT = 1u << 14,\n};\nstruct mp_bilipai_hdr_rational {\n    int32_t num, den; // Exact AV integers, never q2d/infer/default peak.\n};\n// Always initialized to zero. No pointers, floats or encoded/original depth.\n// PARSED means extraction only, not usable metadata. Malformed/duplicate data\n// cannot supply a usable identity; only the first static payload is recorded.\nstruct mp_bilipai_hdr_snapshot {\n    uint32_t version, flags;\n    int32_t av_format, av_sw_format, width, height;\n    int32_t av_matrix, av_range, av_primaries, av_transfer, av_chroma;\n    uint32_t mdm_count, cll_count;\n    uint64_t mdm_size, cll_size;\n    int32_t has_primaries, has_luminance;\n    struct mp_bilipai_hdr_rational display_primaries[3][2], white_point[2];\n    struct mp_bilipai_hdr_rational min_luminance, max_luminance;\n    uint32_t max_cll, max_fall; // Zero stays zero, independently of presence.\n};\n\n// Describes image parameters that usually stay constant.\n",
+        "old": "// Describes image parameters that usually stay constant.\n"
+      },
+      {
+        "count": 1,
+        "new": "    bool no_enhancement_layer;\n    // History is independent of color.hdr (inferred/mapped/peak-detected).\n    struct mp_bilipai_hdr_snapshot bilipai_hdr_snapshot;\n    uint32_t bilipai_hdr_observed_flags; // Current boundary, not historical absence.\n    uint8_t bilipai_hdr_snapshot_relation;\n    uint8_t bilipai_hdr_current_encoding; // Always UNKNOWN in this implementation.\n};",
+        "old": "    bool no_enhancement_layer;\n};"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_bilipai_hdr_snapshot_equal(\n    const struct mp_bilipai_hdr_snapshot *a,\n    const struct mp_bilipai_hdr_snapshot *b);\n\nstruct AVFrame;\n",
+        "old": "struct AVFrame;\n"
+      },
+      {
+        "count": 1,
+        "new": "// Monotonic refusal facts are independent of original/static metadata identity.\n#define MP_BILIPAI_HDR_HAZARDS_MASK (MP_BILIPAI_HDR_DUPLICATE_STATIC | \\\n    MP_BILIPAI_HDR_MDM_SIZE_UNKNOWN | MP_BILIPAI_HDR_CLL_SIZE_UNKNOWN | \\\n    MP_BILIPAI_HDR_MDM_RATIONAL_INVALID | MP_BILIPAI_HDR_MDM_FLAGS_NONBOOLEAN | \\\n    MP_BILIPAI_HDR_PLUS_PRESENT | MP_BILIPAI_HDR_VIVID_PRESENT | \\\n    MP_BILIPAI_HDR_APP5_PRESENT | MP_BILIPAI_HDR_DOVI_METADATA_PRESENT | \\\n    MP_BILIPAI_HDR_DOVI_RPU_PRESENT | MP_BILIPAI_HDR_ICC_PRESENT)\n\nstruct mp_bilipai_hdr_rational {\n",
+        "old": "struct mp_bilipai_hdr_rational {\n"
+      },
+      {
+        "count": 1,
+        "new": "    uint32_t bilipai_hdr_observed_flags; // Current AV boundary, not historical absence.\n    uint32_t bilipai_hdr_disqualifying_flags_seen; // Monotonic history, not current proof.",
+        "old": "    uint32_t bilipai_hdr_observed_flags; // Current boundary, not historical absence."
+      },
+      {
+        "count": 1,
+        "new": "// Copies initialized logical history; clears current observation/qualification.\nvoid mp_image_params_bilipai_hdr_copy_history(struct mp_image_params *dst,\n                                              const struct mp_image_params *src);\nbool mp_image_bilipai_hdr_snapshot_equal(\n",
+        "old": "bool mp_image_bilipai_hdr_snapshot_equal(\n"
       }
     ],
     "path": "video/mp_image.h"
@@ -657,8 +882,8 @@
     "path": "video/out/vo_gpu.c"
   },
   {
-    "afterBytes": 15641,
-    "afterSha256": "199bd37533fd567ce070cd08cbb23589beebc883c8f925efbdd029b15118d9c9",
+    "afterBytes": 15802,
+    "afterSha256": "c1456dae6ecb0e7fa2f2a546baff57d49c2cd81de6ccdcde85554ef4b54441cb",
     "beforeBytes": 15204,
     "beforeSha256": "8c61e74c7cecf118660e1dfc573b55c68237fcc0921cd429c76881fcbf6d821e",
     "edits": [
@@ -696,13 +921,23 @@
         "count": 1,
         "new": "    struct mp_image *dst = mp_image_from_av_frame(dst_frame);\n    av_frame_free(&dst_frame);\n    if (!dst)\n        return NULL;\n\n    mp_image_copy_attributes(dst, src);\n    mp_image_bilipai_rgb10_restore_copy(dst, src);\n    return dst;",
         "old": "    struct mp_image *dst = mp_image_from_av_frame(dst_frame);\n    av_frame_free(&dst_frame);\n    if (!dst)\n        return NULL;\n\n    mp_image_copy_attributes(dst, src);\n    return dst;"
+      },
+      {
+        "count": 1,
+        "new": "    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;",
+        "old": "    img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;"
+      },
+      {
+        "count": 1,
+        "new": "    hw_img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    hw_img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;",
+        "old": "    hw_img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;"
       }
     ],
     "path": "video/mp_image_pool.c"
   },
   {
-    "afterBytes": 15727,
-    "afterSha256": "b3e5b6241ffb00f3341a1d8a6495f8d5dec1c92e209e65cec7c45f0fd6b8c39f",
+    "afterBytes": 15958,
+    "afterSha256": "b30db2d5858de413a8fb69bb53c6425209eb20fcdc75bc2a1939bf1f1e472fad",
     "beforeBytes": 15425,
     "beforeSha256": "ad92a020f4819a3f0b3909e257d7d591bfd7cdd914b7baf28738bfec7f98a3db",
     "edits": [
@@ -710,13 +945,23 @@
         "count": 1,
         "new": "int mp_sws_scale(struct mp_sws_context *ctx, struct mp_image *dst,\n                 struct mp_image *src)\n{\n    // f_swscale may have assigned the whole out_params after attributes.\n    // Clear before capturing ctx->dst and before BOTH swscale/zimg paths.\n    // Their metadata/return code is not exact current-buffer range proof.\n    dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    ctx->src = src->params;",
         "old": "int mp_sws_scale(struct mp_sws_context *ctx, struct mp_image *dst,\n                 struct mp_image *src)\n{\n    ctx->src = src->params;"
+      },
+      {
+        "count": 1,
+        "new": "    dst->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;",
+        "old": "    dst->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;"
+      },
+      {
+        "count": 1,
+        "new": "    // Cached f_swscale out_params must not replace this input frame history.\n    mp_image_params_bilipai_hdr_copy_history(&dst->params, &src->params);\n    ctx->src = src->params;\n    ctx->dst = dst->params;\n",
+        "old": "    ctx->src = src->params;\n    ctx->dst = dst->params;\n"
       }
     ],
     "path": "video/sws_utils.c"
   },
   {
-    "afterBytes": 10315,
-    "afterSha256": "f4ba1861d9d4c511499a452422603b50e883327a434c6a131084fa4c738b248f",
+    "afterBytes": 10387,
+    "afterSha256": "02ea7b0b96816b7e1af29ca9dc8a136fb400be96e13ac9e583155d3ed0f68da9",
     "beforeBytes": 10170,
     "beforeSha256": "f9520ed4c127824dd444d450cb054c63b11a20f303e5476e0b7f6411fdf37866",
     "edits": [
@@ -724,6 +969,11 @@
         "count": 1,
         "new": "static void set_params(struct vf_format_opts *p, struct mp_image_params *out,\n                       bool set_size)\n{\n    if (p->colormatrix || p->colorlevels || p->primaries || p->gamma)\n        out->bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n    if (p->colormatrix)",
         "old": "static void set_params(struct vf_format_opts *p, struct mp_image_params *out,\n                       bool set_size)\n{\n    if (p->colormatrix)"
+      },
+      {
+        "count": 1,
+        "new": "    out->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    if (p->colormatrix || p->colorlevels || p->primaries || p->gamma)",
+        "old": "    if (p->colormatrix || p->colorlevels || p->primaries || p->gamma)"
       }
     ],
     "path": "video/filter/vf_format.c"

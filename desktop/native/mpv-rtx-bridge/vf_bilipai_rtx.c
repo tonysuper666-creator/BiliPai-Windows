@@ -249,6 +249,10 @@ static void process(struct mp_filter *vf)
         out=alloc_out(vf);
         if(out){
             mp_image_copy_attributes(out,in);out->params=p->out_params;
+            // Cached format params must not replace this frame's raw history.
+            // New RTX pixels have no AVFrame-boundary observation or native
+            // HDR intake proof. TrueHDR remains the existing SDR conversion.
+            mp_image_params_bilipai_hdr_copy_history(&out->params,&in->params);
             struct mp_image *lease=mp_image_new_ref(out),*input_lease=mp_image_new_ref(in);
             if(lease&&input_lease){
                 bv_status_v1 s;struct mp_bilipai_frame_token measured={0};
