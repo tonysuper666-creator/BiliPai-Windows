@@ -11,6 +11,7 @@ on:
         options:
           - bilipai-veyra-rtx-core-v1
           - bilipai-veyra-rtx-present-v1
+          - retain-builder-only
       acknowledge_source_build:
         description: 'Build an unverified RTX frame-bridge candidate; no GPU/SDK runtime is run'
         required: true
@@ -21,11 +22,38 @@ permissions:
   contents: read
 
 jobs:
+  retain-builder:
+    if: >-
+      github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
+      && github.event_name == 'workflow_dispatch' && inputs.acknowledge_source_build == true
+      && github.ref_type == 'tag' && inputs.producer_variant == 'retain-builder-only'
+    permissions:
+      contents: read
+      packages: write
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    concurrency:
+      group: bilipai-builder-c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a
+        with:
+          persist-credentials: false
+      - name: Install registry transfer utility on the standard host
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y skopeo
+      - name: Retain exact reviewed builder image in own registry
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 desktop/tools/native/retain-builder-image.py
+
   native-candidate:
     if: >-
       github.repository == 'tonysuper666-creator/BiliPai-Windows' && github.event.repository.private == false
       && github.event_name == 'workflow_dispatch' && inputs.acknowledge_source_build == true
       && github.ref_type == 'tag'
+      && inputs.producer_variant != 'retain-builder-only'
     permissions:
       contents: write
     runs-on: ubuntu-24.04

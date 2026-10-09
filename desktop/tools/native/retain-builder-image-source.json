@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "sourceRegistry": "ghcr.io",
+  "sourceRepository": "shinchiro/archlinux",
+  "targetRepository": "tonysuper666-creator/bilipai-windows-builder",
+  "retentionTag": "source-c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239",
+  "manifest": {
+    "digest": "sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239",
+    "bytes": 673,
+    "mediaType": "application/vnd.oci.image.manifest.v1+json"
+  },
+  "config": {
+    "digest": "sha256:efd31b01fb263e6f4a16a8c8f99a9eda1915637e875a4f91f586829c3ebc1b82",
+    "bytes": 1616,
+    "mediaType": "application/vnd.oci.image.config.v1+json"
+  },
+  "layers": [
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:0f8cf166b7ffdde813a342b45c7b49d5c7ccfeca5c16b49786a4b89b6b93842b",
+      "size": 650254893
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:3338a5fe53061b00089fe01db02a0d7ea3decb4ecff92fa531c2499a2dd59d92",
+      "size": 17784
+    }
+  ],
+  "platform": {
+    "os": "linux",
+    "architecture": "amd64"
+  }
+}
