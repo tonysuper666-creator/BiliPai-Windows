@@ -32,6 +32,14 @@ struct bv_mpv_hdr_chain_ticket {
  * creation/QI and the caller-selected compiler are possible in create/prepare.
  * Legal device owner thread is a caller prerequisite; SINGLETHREADED rejects.
  * No active asynchronous query unless its real owner accounts for Dispatch.
+ * Create requires the actual device's existing ID3D10Multithread protection;
+ * it does not turn that protection on. Each submit callback enters that same
+ * device section inside decoder-dispatch/constructor exclusion, then leaves
+ * after the full state-swap/commands/restore. This also excludes protected RA
+ * API calls on other threads; the constructor HANDLE alone cannot do that.
+ * No owner may turn device protection off during this chain's lifetime.
+ * QI/AddRef/Release for the held multithread interface occur outside all those
+ * locks. Enter may wait on CPU contention, never for GPU completion.
  * Config/source identities are not authentication; only the app's actual locked
  * verified component plus future explicit renderer/HDR policy may choose this.
  * This draft adds NO production enable call or native-HDR source admission. */
@@ -71,6 +79,20 @@ HRESULT bv_mpv_hdr_chain_authorize(struct bv_mpv_hdr_chain *,
 HRESULT bv_mpv_hdr_chain_submit(struct bv_mpv_hdr_chain *,
     struct mp_decoder_wrapper *,const struct mp_image *source,
     const struct mp_image *pool_output,const struct bv_mpv_hdr_chain_ticket *);
+/* Internal queued-output handoff, no default enable or native PRIVATE2 token.
+ * Call only immediately after THIS exact submit returned S_OK. Caller proves
+ * the actual renderer uses the same retained constructor AVHWowner/device and
+ * its immediate context; foreign/copyback/Vulkan contexts are unsupported.
+ * Returns a normal independent MPV frame reference for the SAME source/ticket.
+ * The output pool ref survives consumer ownership; chain source/output and all
+ * host/SR/ticket leases remain until real final-use retirement. No CPU/GPU wait.
+ * S_OK is queued same-context availability, NEVER completion or Present proof.
+ * Generated RGB/PQ2020 metadata includes only explicit valid mastering display
+ * data; content peaks remain unknown. CURRENT/ready/token remain zero.
+ * App/JVM native HDR admission remains closed pending actual validation. */
+HRESULT bv_mpv_hdr_chain_acquire_queued_output(struct bv_mpv_hdr_chain *,
+    struct mp_decoder_wrapper *,const struct mp_image *,
+    const struct bv_mpv_hdr_chain_ticket *,struct mp_image **);
 /* Nonwaiting fence poll. S_FALSE pending, failure retains the whole chain.
  * A live direct decoder owner must be held by caller through this call; NULL
  * discards output after safe retirement (e.g. teardown). Epoch mismatch discards

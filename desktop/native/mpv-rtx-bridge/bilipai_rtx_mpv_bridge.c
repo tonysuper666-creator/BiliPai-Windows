@@ -401,7 +401,7 @@ static void proxy_drop_loan(struct bv_mpv_proxy_sr_loan **lp) {
     free(l);release(lease);
 }
 static HRESULT proxy_enter(struct bv_mpv_bridge *p,
-    struct bv_mpv_proxy_sr_loan *l,ID3DDeviceContextState **previous) {
+    struct bv_mpv_proxy_sr_loan *l) {
     /* This is the REAL constructor-owned default recursive mutex, checked
      * with timeout zero. Unknown/busy/poisoned/abandoned never enter. */
     if(!d3d11_bilipai_default_try_lock(l->device_ref))return E_PENDING;
@@ -424,19 +424,14 @@ static HRESULT proxy_enter(struct bv_mpv_bridge *p,
         }
         return E_INVALIDARG;
     }
-    /* Even a state attempt is conservatively retained on failure. */
+    /* This route queues only Wait/CopyResource/Signal/Flush, which do not use
+     * CS/OM/IA/RS bindings. Do not Swap/restore the renderer's pipeline state.
+     * Original SDR draw normalization keeps its existing separate isolation.
+     * Retain conservatively BEFORE the first actual queue operation. */
     l->attempted=1;
-    ID3D11DeviceContext1_SwapDeviceContextState((ID3D11DeviceContext1*)p->context4,
-        p->isolated_state,previous);
-    if(!*previous){l->untracked=1;p->failed=1;
-        d3d11_bilipai_default_unlock(l->device_ref);return E_UNEXPECTED;}
     return S_OK;
 }
-static int proxy_leave(struct bv_mpv_bridge *p,struct bv_mpv_proxy_sr_loan *l,
-    ID3DDeviceContextState **previous) {
-    ID3D11DeviceContext1_SwapDeviceContextState((ID3D11DeviceContext1*)p->context4,
-        *previous,NULL);
-    RELEASE(*previous);
+static int proxy_leave(struct bv_mpv_bridge *p,struct bv_mpv_proxy_sr_loan *l) {
     int released=d3d11_bilipai_default_unlock(l->device_ref);
     if(!released){l->untracked=1;p->failed=1;}
     return released;
@@ -493,8 +488,7 @@ int bv_mpv_bridge_process_proxy_sr(struct bv_mpv_bridge *p,
         PROXY_RETURN(fail(s,BV_INTERNAL,E_OUTOFMEMORY,"bounded bridge HW owner reference failed"));}
     l->retained_lease=in->retained_lease;l->release_retained_lease=in->release_retained_lease;
     p->proxy_sr_loan=l;*loan=l;valid_lease=0;
-    ID3DDeviceContextState *previous=NULL;
-    hr=proxy_enter(p,l,&previous);
+    hr=proxy_enter(p,l);
     if(FAILED(hr)){
         if(!l->attempted&&!l->untracked)proxy_drop_loan(loan);
         return fail(s,BV_DEVICE_FAILURE,hr,"original proxy context exclusion/state rejected");
@@ -506,7 +500,7 @@ int bv_mpv_bridge_process_proxy_sr(struct bv_mpv_bridge *p,
         hr=ID3D11DeviceContext4_Signal(p->context4,p->producer11,l->producer_value);
         ID3D11DeviceContext_Flush(p->context);
     }
-    int released=proxy_leave(p,l,&previous);
+    int released=proxy_leave(p,l);
     if(FAILED(hr)||!released){l->untracked=1;p->failed=1;return fail(s,BV_DEVICE_FAILURE,
         FAILED(hr)?hr:E_UNEXPECTED,"proxy producer handoff/unlock failed; whole loan retained");}
     /* CALLER PRECONDITION: decoder scope and original context exclusion must
@@ -544,10 +538,10 @@ int bv_mpv_bridge_process_proxy_sr(struct bv_mpv_bridge *p,
         hr=ID3D12CommandQueue_Signal(p->queue12,p->consumer12,l->ready_value);
     }
     if(FAILED(hr)){l->untracked=1;p->failed=1;return fail(s,BV_DEVICE_FAILURE,hr,"SR completion sharing failed; loan retained");}
-    hr=proxy_enter(p,l,&previous);
+    hr=proxy_enter(p,l);
     if(FAILED(hr)){l->untracked=1;p->failed=1;return fail(s,BV_DEVICE_FAILURE,hr,"SR consumer context rejected; loan retained");}
     hr=ID3D11DeviceContext4_Wait(p->context4,p->consumer11,l->ready_value);
-    ID3D11DeviceContext_Flush(p->context);released=proxy_leave(p,l,&previous);
+    ID3D11DeviceContext_Flush(p->context);released=proxy_leave(p,l);
     if(FAILED(hr)||!released){l->untracked=1;p->failed=1;return fail(s,BV_DEVICE_FAILURE,
         FAILED(hr)?hr:E_UNEXPECTED,"SR consumer readiness Wait/unlock rejected; loan retained");}
     *result=(struct bv_mpv_proxy_sr_result){

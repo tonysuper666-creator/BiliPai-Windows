@@ -60,6 +60,17 @@ HRESULT bv_mpv_hdr_vf_owner_submit_private(struct bv_mpv_hdr_vf_owner *,
 HRESULT bv_mpv_hdr_vf_owner_diagnostic_step(struct bv_mpv_hdr_vf_owner *,
     struct mp_decoder_wrapper *,const struct mp_image *,
     const struct bv_mpv_hdr_vf_prepare *,const struct bv_mpv_hdr_chain_ticket *);
+/* Internal default-off output branch; diagnostic_step retains its old discard
+ * behavior. This branch returns ONLY the exact current successful submission's
+ * normal MPV pool reference, never an older service/poll result. Caller MUST
+ * prove same actual renderer HWowner/immediate-context ordering before calling.
+ * It does not authenticate cfg, open app/HDR admission or mint PRIVATE2 tokens.
+ * Unknown partial/state/Signal failure still requires whole shared-context
+ * recovery; forwarding an original frame cannot demonstrate such recovery. */
+HRESULT bv_mpv_hdr_vf_owner_diagnostic_output_step(struct bv_mpv_hdr_vf_owner *,
+    struct mp_decoder_wrapper *,const struct mp_image *,
+    const struct bv_mpv_hdr_vf_prepare *,const struct bv_mpv_hdr_chain_ticket *,
+    struct mp_image **);
 /* BEFORE reset/reinit/detach, same original lane and real decoder lifetime borrow.
  * Only marker-owned armed tuple is revoked via one exact READY(false) dispatch
  * call clearing all3 opt-ins. TRUE SAME-instance/new-epoch proves actual reset;

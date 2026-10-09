@@ -6,6 +6,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include <d3d10.h>
 #include <libavutil/buffer.h>
 #include <libavutil/hwcontext.h>
 #include <libavutil/hwcontext_d3d11va.h>
@@ -22,6 +23,7 @@ struct bv_mpv_hdr_chain {
     DWORD thread;
     struct AVBufferRef *owner;
     ID3D11Device *device;
+    ID3D10Multithread *multithread;
     ID3D11DeviceContext4 *context4;
     ID3D11Fence *proxy_ready,*final_use;
     uint64_t proxy_value,final_value,last_sequence,instance,epoch;
@@ -35,7 +37,7 @@ struct bv_mpv_hdr_chain {
     struct mp_image *source,*output;
     struct bv_mpv_hdr_chain_ticket ticket;
     HRESULT submit_hr;
-    bool busy,quarantine,proxy_released,sr_released,final_signaled;
+    bool busy,quarantine,proxy_released,sr_released,final_signaled,output_loaned;
 };
 static bool on_thread(const struct bv_mpv_hdr_chain *c) {
     return c&&c->thread==GetCurrentThreadId();
@@ -159,7 +161,14 @@ HRESULT bv_mpv_hdr_chain_create(const struct bv_mpv_hdr_chain_config *cfg,
     if(!c->owner){free(c);return E_OUTOFMEMORY;}
     c->device=d->device;ID3D11Device_AddRef(c->device);
     ID3D11Device5 *dev5=NULL;
-    HRESULT hr=ID3D11Device_QueryInterface(c->device,&IID_ID3D11Device5,(void**)&dev5);
+    /* Same interface used by fixed D3D11 HW mapper to protect this actual
+     * renderer device. Keep its strong ref; do not enable protection ourselves
+     * or infer exclusion from the FFmpeg constructor mutex alone. */
+    HRESULT hr=ID3D11Device_QueryInterface(c->device,&IID_ID3D10Multithread,
+        (void**)&c->multithread);
+    if(SUCCEEDED(hr)&&!ID3D10Multithread_GetMultithreadProtected(c->multithread))
+        hr=E_ACCESSDENIED;
+    if(SUCCEEDED(hr))hr=ID3D11Device_QueryInterface(c->device,&IID_ID3D11Device5,(void**)&dev5);
     if(SUCCEEDED(hr))hr=IUnknown_QueryInterface((IUnknown*)d->device_context,
         &IID_ID3D11DeviceContext4,(void**)&c->context4);
     if(SUCCEEDED(hr))hr=ID3D11Device5_CreateFence(dev5,0,D3D11_FENCE_FLAG_NONE,
@@ -172,7 +181,7 @@ HRESULT bv_mpv_hdr_chain_create(const struct bv_mpv_hdr_chain_config *cfg,
     /* No void context callbacks. This module supplies actual checked exclusion. */
     if(SUCCEEDED(hr))hr=bv_hdr11_create(&host,&c->host);
     if(FAILED(hr)) {DROP(c->proxy_ready);DROP(c->final_use);DROP(c->context4);
-        DROP(c->device);av_buffer_unref(&c->owner);free(c);return hr;}
+        DROP(c->multithread);DROP(c->device);av_buffer_unref(&c->owner);free(c);return hr;}
     *out=c;return S_OK; /* instance/epoch remain0; no Signal/control/NVIDIA */
 }
 HRESULT bv_mpv_hdr_chain_authorize(struct bv_mpv_hdr_chain *c,
@@ -189,11 +198,21 @@ static bool submit_prepared(void *opaque,const struct mp_bilipai_gpu_input_view 
     if(view->image!=c->source||view->active.instance_id!=c->instance||
        view->active.epoch_id!=c->epoch||view->ready->device!=c->device||
        !map_input(view->image,view->ready,&current))return false;
+    /* Lock order is decoder dispatch -> constructor HANDLE -> this device
+     * critical section. Protected RA calls share this last section without
+     * taking the constructor mutex. Preserve the whole state-swap/dispatch/
+     * restore sequence; per-API multithread protection alone is insufficient. */
+    ID3D10Multithread_Enter(c->multithread);
+    if(!ID3D10Multithread_GetMultithreadProtected(c->multithread)) {
+        c->submit_hr=E_ACCESSDENIED;ID3D10Multithread_Leave(c->multithread);return false;
+    }
     c->submit_hr=bv_hdr11_submit_p010(c->prepared,&current);
-    if(FAILED(c->submit_hr))return false;
-    /* Scope is independently authorized for prepared-only Wait/Copy/Dispatch
-     * and this actual producer-ready Signal. No NVIDIA/core/CPU waits/Flush. */
-    c->submit_hr=ID3D11DeviceContext4_Signal(c->context4,c->proxy_ready,c->proxy_value);
+    /* No configured callback, compiler, COM cleanup, NVIDIA/core/CPU GPU wait
+     * or Flush in this section. Enter itself can wait for another CPU thread's
+     * protected API call; it is not a GPU completion operation. */
+    if(SUCCEEDED(c->submit_hr))c->submit_hr=ID3D11DeviceContext4_Signal(
+        c->context4,c->proxy_ready,c->proxy_value);
+    ID3D10Multithread_Leave(c->multithread);
     return SUCCEEDED(c->submit_hr);
 }
 static bool current_scope(struct bv_mpv_hdr_chain *c,
@@ -206,7 +225,12 @@ static bool current_scope(struct bv_mpv_hdr_chain *c,
 static bool submit_finish(void *opaque,const struct mp_bilipai_gpu_input_view *view) {
     struct bv_mpv_hdr_chain *c=opaque;
     if(!current_scope(c,view))return false;
+    ID3D10Multithread_Enter(c->multithread);
+    if(!ID3D10Multithread_GetMultithreadProtected(c->multithread)) {
+        c->submit_hr=E_ACCESSDENIED;ID3D10Multithread_Leave(c->multithread);return false;
+    }
     c->submit_hr=bv_hdr11_submit_restore(c->finish_prepared);
+    ID3D10Multithread_Leave(c->multithread);
     return SUCCEEDED(c->submit_hr);
 }
 static bool submit_final_signal(void *opaque,const struct mp_bilipai_gpu_input_view *view) {
@@ -214,11 +238,17 @@ static bool submit_final_signal(void *opaque,const struct mp_bilipai_gpu_input_v
     if(!current_scope(c,view)||!c->final_use||c->final_value!=1)return false;
     /* Exact dedicated ticket fence: actual Signal AFTER every last-use Copy.
      * No shader preparation/ref/cleanup/NVIDIA/CPU wait in this callback. */
+    ID3D10Multithread_Enter(c->multithread);
+    if(!ID3D10Multithread_GetMultithreadProtected(c->multithread)) {
+        c->submit_hr=E_ACCESSDENIED;ID3D10Multithread_Leave(c->multithread);return false;
+    }
     c->submit_hr=ID3D11DeviceContext4_Signal(c->context4,c->final_use,c->final_value);
+    ID3D10Multithread_Leave(c->multithread);
     return SUCCEEDED(c->submit_hr);
 }
 static void clear_unsubmitted(struct bv_mpv_hdr_chain *c) {
     talloc_free(c->source);talloc_free(c->output);c->source=c->output=NULL;c->busy=false;
+    c->output_loaned=false;
 }
 static HRESULT cancel_unattempted(struct bv_mpv_hdr_chain *c,HRESULT hr) {
     /* Ticket knows whether it has ever been attempted; no inferred cancellation
@@ -326,6 +356,44 @@ HRESULT bv_mpv_hdr_chain_submit(struct bv_mpv_hdr_chain *c,
 /* A generated picture inherits timing and raw ATTRIBUTE HISTORY only.
  * Do not copy decoder crop, inferred HDR peaks, ICC/DV/grain/FF side data or
  * an enhancement-layer picture onto newly restored/encoded RGB pixels. */
+/* Preserve ONLY unique, explicitly parsed source mastering-display metadata.
+ * It describes the mastering display, not measured enhanced content peaks.
+ * Missing/malformed/duplicate values stay unknown; source CLL/FALL are history
+ * only because SR may change them. Never copy inferred color.hdr/peak=1000. */
+static void generated_mastering_metadata(struct mp_image_params *p,
+                                         const struct mp_image *src) {
+    const struct mp_bilipai_hdr_snapshot *r=&src->params.bilipai_decoder_origin.frame_snapshot;
+    const uint32_t bad=MP_BILIPAI_HDR_DUPLICATE_STATIC|MP_BILIPAI_HDR_MDM_SIZE_UNKNOWN|
+        MP_BILIPAI_HDR_MDM_RATIONAL_INVALID|MP_BILIPAI_HDR_MDM_FLAGS_NONBOOLEAN;
+    if(r->version!=MP_BILIPAI_HDR_SNAPSHOT_VERSION||r->mdm_count!=1||
+       (r->flags&(MP_BILIPAI_HDR_MDM_PRESENT|MP_BILIPAI_HDR_MDM_PARSED))!=
+           (MP_BILIPAI_HDR_MDM_PRESENT|MP_BILIPAI_HDR_MDM_PARSED)||(r->flags&bad))return;
+    if(r->has_luminance==1&&r->min_luminance.den>0&&r->max_luminance.den>0) {
+        double lo=(double)r->min_luminance.num/r->min_luminance.den;
+        double hi=(double)r->max_luminance.num/r->max_luminance.den;
+        if(lo>=0&&hi>=5&&hi<=10000&&lo<hi) {
+            p->color.hdr.min_luma=(float)lo;p->color.hdr.max_luma=(float)hi;
+        }
+    }
+    if(r->has_primaries!=1)return;
+    for(unsigned n=0;n<3;n++)for(unsigned xy=0;xy<2;xy++) {
+        struct mp_bilipai_hdr_rational q=r->display_primaries[n][xy];
+        if(q.den<=0||q.num<0||q.num>q.den)return;
+    }
+    for(unsigned xy=0;xy<2;xy++) {
+        struct mp_bilipai_hdr_rational q=r->white_point[xy];
+        if(q.den<=0||q.num<0||q.num>q.den)return;
+    }
+    p->color.hdr.prim=(struct pl_raw_primaries){
+        .red={.x=(float)((double)r->display_primaries[0][0].num/r->display_primaries[0][0].den),
+              .y=(float)((double)r->display_primaries[0][1].num/r->display_primaries[0][1].den)},
+        .green={.x=(float)((double)r->display_primaries[1][0].num/r->display_primaries[1][0].den),
+                .y=(float)((double)r->display_primaries[1][1].num/r->display_primaries[1][1].den)},
+        .blue={.x=(float)((double)r->display_primaries[2][0].num/r->display_primaries[2][0].den),
+               .y=(float)((double)r->display_primaries[2][1].num/r->display_primaries[2][1].den)},
+        .white={.x=(float)((double)r->white_point[0].num/r->white_point[0].den),
+                .y=(float)((double)r->white_point[1].num/r->white_point[1].den)}};
+}
 static void generated_metadata(struct mp_image *dst,const struct mp_image *src) {
     struct mp_image_params p={.imgfmt=dst->params.imgfmt,
         .imgfmt_name=dst->params.imgfmt_name,.hw_subfmt=dst->params.hw_subfmt,
@@ -339,7 +407,8 @@ static void generated_metadata(struct mp_image *dst,const struct mp_image *src) 
     mp_image_params_set_dsize(&p,display_w,display_h);
     p.repr.sys=PL_COLOR_SYSTEM_RGB;p.repr.levels=PL_COLOR_LEVELS_FULL;
     p.color.primaries=PL_COLOR_PRIM_BT_2020;p.color.transfer=PL_COLOR_TRC_PQ;
-    /* color.hdr and chroma/depth/encoded-origin guesses stay zero/unknown.
+    generated_mastering_metadata(&p,src);
+    /* CLL/FALL and chroma/depth/encoded-origin guesses stay zero/unknown.
      * The history helper preserves exact raw snapshots/refusals but invalidates
      * CURRENT and decoder authority. BVP4 export tag/old RGB10 bool stay zero. */
     mp_image_params_bilipai_hdr_copy_history(&p,&src->params);
@@ -356,6 +425,45 @@ static void generated_metadata(struct mp_image *dst,const struct mp_image *src) 
 }
 static void current_at_poll(void *opaque,const struct mp_bilipai_active_decoder *active) {
     bool *ok=opaque;*ok=!(active->stream_refusals&MP_BILIPAI_HDR_HAZARDS_MASK);
+}
+/* Exact SAME submit only. No delayed poll result is substituted for a newer
+ * input PTS; AVBuffer/HWctx/plane identity is independent of mutable metadata. */
+static bool same_source_reference(const struct mp_image *a,const struct mp_image *b) {
+    if(!a||!b||a->imgfmt!=b->imgfmt||a->w!=b->w||a->h!=b->h||
+       !a->hwctx||!b->hwctx||a->hwctx->buffer!=b->hwctx->buffer||
+       a->hwctx->data!=b->hwctx->data||a->hwctx->size!=b->hwctx->size||
+       !mp_image_bilipai_decoder_origin_equal(&a->params.bilipai_decoder_origin,
+                                               &b->params.bilipai_decoder_origin)||
+       mp_image_bilipai_d3d11_ready(a)!=mp_image_bilipai_d3d11_ready(b))return false;
+    for(unsigned n=0;n<MP_MAX_PLANES;n++) {
+        if(a->planes[n]!=b->planes[n]||a->stride[n]!=b->stride[n]||
+           !!a->bufs[n]!=!!b->bufs[n])return false;
+        if(a->bufs[n]&&(a->bufs[n]->buffer!=b->bufs[n]->buffer||
+           a->bufs[n]->data!=b->bufs[n]->data||a->bufs[n]->size!=b->bufs[n]->size))return false;
+    }
+    return true;
+}
+HRESULT bv_mpv_hdr_chain_acquire_queued_output(struct bv_mpv_hdr_chain *c,
+    struct mp_decoder_wrapper *decoder,const struct mp_image *source,
+    const struct bv_mpv_hdr_chain_ticket *ticket,struct mp_image **out) {
+    if(!out||*out||!on_thread(c)||!decoder||!ticket)return E_INVALIDARG;
+    if(!c->busy||c->quarantine||!c->final_signaled||c->output_loaned||!c->output||
+       !c->final_use||c->final_value!=1||ticket->sequence!=c->ticket.sequence||
+       ticket->pts_numerator!=c->ticket.pts_numerator||
+       ticket->pts_denominator!=c->ticket.pts_denominator||
+       !same_source_reference(source,c->source))return S_FALSE;
+    bool current=false;
+    if(!mp_decoder_wrapper_bilipai_observe(decoder,c->source,current_at_poll,&current)||
+       !current)return S_FALSE;
+    if(FAILED(ID3D11Device_GetDeviceRemovedReason(c->device)))return poison(c,E_FAIL);
+    // Final COPY and final Signal were enqueued in THIS device's immediate
+    // context. The caller's VO MUST use this exact retained renderer HWowner.
+    // This is a separate normal frame ref, NOT CPU completion/Present proof.
+    // Chain source/output/host/loan/ticket refs remain until its real final fence.
+    generated_metadata(c->output,c->source);
+    struct mp_image *loan=mp_image_new_ref(c->output);
+    if(!loan)return E_OUTOFMEMORY;
+    c->output_loaned=true;*out=loan;return S_OK;
 }
 HRESULT bv_mpv_hdr_chain_poll(struct bv_mpv_hdr_chain *c,
     struct mp_decoder_wrapper *decoder,struct mp_image **out) {
@@ -389,6 +497,6 @@ HRESULT bv_mpv_hdr_chain_destroy(struct bv_mpv_hdr_chain **p) {
     if(!on_thread(c)||c->busy||c->quarantine||c->prepared||c->finish_prepared||
        c->frame||c->proxy_hold||c->loan||c->use_ticket)return E_PENDING;
     HRESULT hr=bv_hdr11_destroy(&c->host);if(FAILED(hr))return hr;
-    DROP(c->proxy_ready);DROP(c->final_use);DROP(c->context4);DROP(c->device);
+    DROP(c->proxy_ready);DROP(c->final_use);DROP(c->context4);DROP(c->multithread);DROP(c->device);
     av_buffer_unref(&c->owner);free(c);*p=NULL;return S_OK;
 }

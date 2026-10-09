@@ -485,6 +485,33 @@ HRESULT bv_mpv_hdr_vf_owner_diagnostic_step(struct bv_mpv_hdr_vf_owner *o,
     // S_OK is queued final Signal only, never completion/HDR admission/display.
     return bv_mpv_hdr_vf_owner_submit_private(o,decoder,source,ticket);
 }
+HRESULT bv_mpv_hdr_vf_owner_diagnostic_output_step(struct bv_mpv_hdr_vf_owner *o,
+    struct mp_decoder_wrapper *decoder,const struct mp_image *source,
+    const struct bv_mpv_hdr_vf_prepare *cfg,const struct bv_mpv_hdr_chain_ticket *ticket,
+    struct mp_image **out) {
+    if(!out||*out)return E_INVALIDARG;
+    // Preserve real resource preparation, fresh CPU grant, subsequent decoder
+    // receive readiness, independent GPU authorization and exact submit scopes.
+    HRESULT hr=bv_mpv_hdr_vf_owner_diagnostic_step(o,decoder,source,cfg,ticket);
+    if(hr!=S_OK)return hr; // pending/previous output is NEVER taken here
+    if(!enter(o))return E_ACCESSDENIED;
+    struct owner_generation *g=o->active?claim(o->active,false):NULL;
+    hr=S_FALSE;
+    if(g) {
+        hr=bv_mpv_hdr_chain_acquire_queued_output(g->chain,decoder,source,ticket,out);
+        if(FAILED(hr)) {
+            // Acquisition is after a real successful GPU submission. On an
+            // unexpected device/state/ref failure retain this WHOLE generation;
+            // no original-picture bypass proves shared-context recovery.
+            mark_retiring(g,true);o->active=NULL;o->recovery_required=true;
+        }
+        if(bv_mpv_hdr_vf_owner_recovery_required(o)) {
+            talloc_free(*out);*out=NULL;hr=E_PENDING;
+        }
+        unclaim(g);
+    }
+    leave(o);return hr;
+}
 bool bv_mpv_hdr_vf_owner_has_work(const struct bv_mpv_hdr_vf_owner *o) {
     if(!o||!original_thread(o->thread_ref,o->thread))return false;
     bool work=o->active!=NULL;AcquireSRWLockExclusive(&custody_lock);

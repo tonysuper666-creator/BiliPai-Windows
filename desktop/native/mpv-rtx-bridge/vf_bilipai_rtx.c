@@ -53,7 +53,7 @@ struct opts {
     int64_t native_pq_payload_budget;
     float scale;
     int quality, peak, timeout;
-    bool hdr, native_pq_diagnostic;
+    bool hdr, native_pq_diagnostic, native_pq_output;
 };
 struct priv {
     struct opts *opts;
@@ -65,7 +65,8 @@ struct priv {
     struct mp_image_params params, out_params;
     uint64_t generation, sequence;
     bool disabled, accepted_logged, decoder_ready_logged;
-    bool native_pq_route; // diagnostic routing only; original picture still goes to VO
+    bool native_pq_renderer_d3d11; // actual retained hwdec driver, not a caller option
+    bool native_pq_route; // default-off diagnostic/output branch; no app admission
     struct bv_mpv_pq_p010_observation pq_p010_observation;
 };
 static wchar_t *utf16(const char *s)
@@ -206,11 +207,24 @@ static bool native_pq_requested(struct priv *p,const struct mp_image *format)
         format->params.color.transfer==PL_COLOR_TRC_PQ&&
         format->params.color.primaries==PL_COLOR_PRIM_BT_2020;
 }
+/* Native queued output may use ONLY the actual retained renderer constructor
+ * owner obtained at VF create. Same adapter/device-name is not queue ordering. */
+static bool native_pq_same_renderer_owner(struct priv *p,const struct mp_image *im) {
+    if(!p->native_pq_renderer_d3d11||!p->av_device_ref||!p->d3d||!p->d3d->device||!p->d3d->device_context||
+       !im||!im->hwctx||!im->hwctx->data||im->hwctx->size<sizeof(AVHWFramesContext))return false;
+    const AVHWFramesContext *f=(const void*)im->hwctx->data;
+    if(!f->device_ref||f->device_ref->buffer!=p->av_device_ref->buffer||
+       f->device_ref->data!=p->av_device_ref->data||f->device_ref->size!=p->av_device_ref->size||
+       f->device_ctx!=(const void*)p->av_device_ref->data||
+       f->device_ctx->type!=AV_HWDEVICE_TYPE_D3D11VA||f->device_ctx->hwctx!=p->d3d)return false;
+    return true;
+}
 struct native_pq_step_context {
     struct priv *p;
     const struct mp_image *source;
     struct bv_mpv_hdr_vf_prepare cfg;
     struct bv_mpv_hdr_chain_ticket ticket;
+    struct mp_image *output;
     HRESULT hr;
 };
 static void step_native_pq_borrowed(void *opaque,struct mp_decoder_wrapper *decoder)
@@ -219,12 +233,16 @@ static void step_native_pq_borrowed(void *opaque,struct mp_decoder_wrapper *deco
     // Real direct decoder is borrowed only for this synchronous main-lane call.
     // Outer callback is OUTSIDE dispatch/context locks. Actual chain submit uses
     // its separate exact qualified scopes; no NVIDIA/CPU wait enters those locks.
-    c->hr=bv_mpv_hdr_vf_owner_diagnostic_step(c->p->hdr_owner,decoder,c->source,&c->cfg,&c->ticket);
+    if(c->p->opts->native_pq_output)
+        c->hr=bv_mpv_hdr_vf_owner_diagnostic_output_step(c->p->hdr_owner,decoder,
+            c->source,&c->cfg,&c->ticket,&c->output);
+    else c->hr=bv_mpv_hdr_vf_owner_diagnostic_step(c->p->hdr_owner,decoder,c->source,&c->cfg,&c->ticket);
 }
-static void step_native_pq_diagnostic(struct mp_filter *vf,const struct mp_image *source)
+static struct mp_image *step_native_pq_diagnostic(struct mp_filter *vf,const struct mp_image *source)
 {
     struct priv *p=vf->priv;
-    if(!p->native_pq_route||p->disabled)return;
+    if(p->opts->native_pq_output&&!native_pq_same_renderer_owner(p,source))return NULL;
+    if(!p->native_pq_route||p->disabled)return NULL;
     // External caller must hold actual independently verified LockedComponentBinding
     // files for the native lifetime. These paths/flags do NOT authenticate it;
     // current app rejects native HDR and NEVER emits this internal option.
@@ -233,17 +251,23 @@ static void step_native_pq_diagnostic(struct mp_filter *vf,const struct mp_image
        !isfinite(p->opts->scale)||p->opts->scale<1||p->opts->scale>4||
        source->w<=0||source->h<=0||source->pts==MP_NOPTS_VALUE||!isfinite(source->pts)||
        fabs(source->pts)>=(double)INT64_MAX/1000000.0||p->sequence>=INT64_MAX) {
-        p->disabled=true;revoke_native_pq(vf);return;
+        p->disabled=true;revoke_native_pq(vf);return NULL;
     }
     double w=source->w*(double)p->opts->scale,h=source->h*(double)p->opts->scale;
-    if(w<1||h<1||w>16384||h>16384){p->disabled=true;revoke_native_pq(vf);return;}
+    if(w<1||h<1||w>16384||h>16384){p->disabled=true;revoke_native_pq(vf);return NULL;}
+    uint32_t output_width=(uint32_t)lrint(w),output_height=(uint32_t)lrint(h);
+    if(p->opts->native_pq_output) {
+        // Actual D3D11 MPV mapper rounds both extents up to even before Copy.
+        // Allocate those real extents; generated metadata preserves source DAR.
+        output_width=(output_width+1u)&~1u;output_height=(output_height+1u)&~1u;
+    }
     wchar_t *dll=utf16(p->opts->dll),*runtime=utf16(p->opts->runtime);
     struct native_pq_step_context c={.p=p,.source=source,.hr=E_PENDING};
     c.cfg.bridge=(struct bv_mpv_config){.dll_path=dll,.runtime_directory=runtime,
         .project_id=p->opts->project,.engine_version="BiliPai-Veyra-Core-1",
         .session=(uint64_t)p->opts->session,.configuration=(uint64_t)p->opts->generation,
         .generation=p->generation,.input_width=source->w,.input_height=source->h,
-        .output_width=(uint32_t)lrint(w),.output_height=(uint32_t)lrint(h),
+        .output_width=output_width,.output_height=output_height,
         .effects=BV_VIDEO_SR,.quality=p->opts->quality,.peak_nits=p->opts->peak,
         .timeout_ms=p->opts->timeout};
     // Native PQ uses fixed HDR-base/proxy/delta restoration, never TrueHDR bit2.
@@ -256,12 +280,15 @@ static void step_native_pq_diagnostic(struct mp_filter *vf,const struct mp_image
     bool borrowed=dll&&runtime&&info&&info->bilipai_with_decoder_owner&&
         info->bilipai_with_decoder_owner(info,step_native_pq_borrowed,&c);
     free(dll);free(runtime); // actual owner made independent bounded copies in prepare
-    if(!borrowed){p->disabled=true;revoke_native_pq(vf);return;}
+    if(!borrowed){p->disabled=true;revoke_native_pq(vf);return NULL;}
     bool recovery=bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner);
-    if(!recovery&&(c.hr==S_FALSE||c.hr==E_PENDING))return; // known warm/pending; never mask recovery
+    if(!recovery&&(c.hr==S_FALSE||c.hr==E_PENDING))return NULL; // known warm/pending; never mask recovery
     if(FAILED(c.hr)||recovery){p->disabled=true;revoke_native_pq(vf);}
-    // S_OK is only queued final-use Signal. NO submitted/presentation log token;
-    // real owner service discards completed diagnostic pictures internally.
+    if(FAILED(c.hr)||recovery){talloc_free(c.output);return NULL;}
+    // Only this SAME successful submit can supply a queued pool ref. Its original
+    // PTS is preserved. Future service/poll releases chain-owned refs only.
+    // No native token/display receipt is asserted by this internal branch.
+    return c.output;
 }
 static bool source_color(const struct mp_image *image,struct bv_mpv_color *out)
 {
@@ -452,7 +479,12 @@ static void process(struct mp_filter *vf)
     // remains in whole custody. Try exact revoke; never infer recovered context.
     if(p->native_pq_route&&p->disabled)revoke_native_pq(vf);
     observe_native_pq_p010(vf, in);
-    step_native_pq_diagnostic(vf,in);
+    out=step_native_pq_diagnostic(vf,in);
+    if(p->native_pq_route&&p->opts->native_pq_output&&
+       bv_mpv_hdr_vf_owner_recovery_required(p->hdr_owner)) {
+        // Unknown shared context is not a safe original-picture fallback.
+        talloc_free(out);mp_filter_internal_mark_failed(vf);return;
+    }
     struct bv_mpv_color color;
     if(!p->native_pq_route&&!p->disabled&&p->bridge&&in&&source_color(in,&color)&&
        in->pts!=MP_NOPTS_VALUE&&isfinite(in->pts)&&
@@ -527,6 +559,9 @@ static struct mp_filter *create(struct mp_filter *parent,void *options)
     hwdec_devices_request_for_img_fmt(info->hwdec_devs,&request);
     struct mp_hwdec_ctx *hw=hwdec_devices_get_by_imgfmt_and_type(info->hwdec_devs,IMGFMT_D3D11,AV_HWDEVICE_TYPE_D3D11VA);
     if(!hw||!hw->av_device_ref)goto fail;
+    // Fixed D3D11 mapper wraps ra_d3d11_get_device; EGL has a distinct driver.
+    // Do not infer queue ordering from any D3D11 decode surface alone.
+    p->native_pq_renderer_d3d11=hw->driver_name&&!strcmp(hw->driver_name,"d3d11va");
     p->av_device_ref=av_buffer_ref(hw->av_device_ref);if(!p->av_device_ref)goto fail;
     AVHWDeviceContext *device=(void*)p->av_device_ref->data;p->d3d=device->hwctx;
     if(!p->d3d||!p->d3d->device)goto fail;
@@ -543,7 +578,9 @@ static const m_option_t fields[]={
     {"peak",OPT_INT(peak)},{"timeout",OPT_INT(timeout)},
     // Internal explicit diagnostic only; no app/JVM/GUI emitter or renderer gate.
     {"native-pq-diagnostic",OPT_BOOL(native_pq_diagnostic)},
-    {"native-pq-payload-budget",OPT_INT64(native_pq_payload_budget)},{0}
+    {"native-pq-payload-budget",OPT_INT64(native_pq_payload_budget)},
+    // Internal source-only output handoff; default0, no app/JVM emitter or token.
+    {"native-pq-output",OPT_BOOL(native_pq_output)},{0}
 };
 const struct mp_user_filter_entry vf_bilipai_rtx={
     .desc={.name="bilipai-rtx",.description="BiliPai RTX Video GPU bridge candidate",.priv_size=sizeof(struct opts),
