@@ -26,8 +26,8 @@ BINDING_STATE = 'PREBUILD_INSTALL_POSTCLEANUP_SOURCE_AND_CONFIG_BOUND'
 IMPORT_STATUS = 'IMPORTED_OWN_SOURCE_SNAPSHOT_REAL_LLVM_TARGET_VALIDATED'
 CATALOG_PATH = 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-import-trust.json'
 CATALOG_SHA256 = '1c3f838050e5d30295eae23361bac3059e91b88a53d3e164778829889aa2c7aa'
-EXPORTER_SHA256 = '6d1fd72df8e544af6d3bc0925846ed95ad0a4e69f126147a9bb8299abc48766d'
-INPUTS_SHA256 = 'a6deba79f4b82e66e63d8087eb29e84576b94c37098b623608ddd218d965a0d6'
+EXPORTER_SHA256 = '3ac2ad74af044f2004c461737a6eed4e511b7d9aec5c94227360861bf9d2e171'
+INPUTS_SHA256 = '2cdaea2ab2ffa26ea058bf2ac84f681e11eda6be410140a10bab04a23e6fbc62'
 LLVM_RECIPE_SHA256 = '32e9dc394790ba6a95c4ac5a829a5063460ee893736328441cfc22dc610db36b'
 RECIPE_COMMIT = 'cd1edc11dc6887a50f705717619d879f5a93a488'
 RECIPE_ARCHIVE_SHA256 = '8b92a254771496b0dcc23017c2734bfa7545441d3e6a37958b063d6e7814a657'
@@ -358,6 +358,16 @@ def verify_archive(path, rows, manifest=None):
         fail('Complete archive inventory or bytes changed')
 
 
+def verify_used_tracked_source(root, bundle, manifest, used, canonical, actual_blobs):
+    # The same hash-pinned raw-byte verifier closes import and upload gates.
+    # Independent full archive/tree verification remains mandatory before this.
+    module = load_exporter(root)
+    witnesses = module.verify_used_source_relationship(bundle, manifest['sourceCommit'],
+        used, canonical, actual_blobs)
+    if witnesses != manifest.get('actualUsedSourceCrLfMaterializations'):
+        fail('Actual used source CRLF relations are missing, changed or unproved')
+
+
 def lifecycle(manifest, descriptor, record, workspace, fixed, command):
     origin = {'ownrepoSourceCommit': record['sourceCommit'], 'ownrepoSourceTag': record['sourceTag'],
               'workflowRunId': record['workflowRunId'], 'workflowRunAttempt': record['workflowRunAttempt']}
@@ -532,13 +542,7 @@ def inspect_optional(directory, root, workspace, fixed, image, command):
                 workspace / 'sources/llvm', workspace / 'clang-root', cache)
             if actual_assertions != manifest[key]['resolvedConfigurationAssertions']:
                 fail('Full original compiler flags/source configuration differs')
-    for row in used:
-        name = row['path'].removeprefix('actual-used-source-worktree/')
-        tracked = canonical.get(name)
-        if tracked is not None and row['kind'] != 'directory':
-            actual_sha = row.get('sha256') if row['kind'] == 'file' else sha(row['target'].encode())
-            if row['kind'] != tracked['kind'] or actual_sha != tracked['sha256']:
-                fail('Actual used tracked source differs from complete canonical commit')
+    verify_used_tracked_source(root, paths[ASSETS[3]], manifest, used, canonical, actual_blobs)
     for folder, key in (('actual-config-capture/prebuild', 'prebuildConfigCaptureReceipt'), ('actual-config-capture', 'configCaptureReceipt')):
         capture = manifest[key]
         embedded = source_table.get(folder + '/config-capture-receipt.json', {})

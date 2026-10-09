@@ -233,7 +233,7 @@ def main():
     snapshot_inputs = json.loads((repository_root / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json').read_text(encoding='utf-8'))
     host_kind = 'BILIPAI_HOST_LLVM_SOURCE_SNAPSHOT'
     import_helper_path = repository_root / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
-    if range_sha(import_helper_path, 0, import_helper_path.stat().st_size) != '39d5b016b31836d48402e2e15b880ed5e4324c1f8496587659b22efcbd201a73':
+    if range_sha(import_helper_path, 0, import_helper_path.stat().st_size) != 'b0ec32edb38ef882b2cd73881f1e19828f851ce38bcfeb56b8a596f9e1f86306':
         raise DeliveryError('Shared reviewed importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import_delivery', import_helper_path)
     if import_spec is None or import_spec.loader is None:
@@ -436,13 +436,8 @@ def main():
                     workspace / 'sources/llvm', workspace / 'clang-root', cache)
                 if actual_assertions != manifest[key]['resolvedConfigurationAssertions']:
                     import_module.fail('Full original compiler flags/source configuration differs')
-        for row in used:
-            name = row['path'].removeprefix('actual-used-source-worktree/')
-            tracked = canonical.get(name)
-            if tracked is not None and row['kind'] != 'directory':
-                actual_sha = row.get('sha256') if row['kind'] == 'file' else import_module.sha(row['target'].encode())
-                if row['kind'] != tracked['kind'] or actual_sha != tracked['sha256']:
-                    import_module.fail('Actual used tracked source differs from complete canonical commit')
+        import_module.verify_used_tracked_source(root, paths[import_module.ASSETS[3]],
+            manifest, used, canonical, actual_blobs)
         for folder, key in (('actual-config-capture/prebuild', 'prebuildConfigCaptureReceipt'), ('actual-config-capture', 'configCaptureReceipt')):
             capture = manifest[key]
             embedded = source_table.get(folder + '/config-capture-receipt.json', {})

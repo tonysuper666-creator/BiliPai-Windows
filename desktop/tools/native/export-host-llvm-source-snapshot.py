@@ -173,12 +173,308 @@ def git(source, *arguments):
     return subprocess.check_output(['git', '-C', str(source), *arguments], env=environment)
 
 
+# This narrow relation is a declared Git materialization, never normalization
+# of captured build source. Only ordinary LF-only blobs <=1MiB may qualify.
+CRLF_BLOB_BOUND = 1 << 20
+CRLF_ATTRIBUTES_BOUND = 64 << 20
+
+
+def raw_git_blob(raw):
+    return hashlib.sha1(b'blob ' + str(len(raw)).encode('ascii') + b'\0' + raw).hexdigest()
+
+
+def fixed_git_environment():
+    environment = {key: value for key, value in os.environ.items()
+                   if not key.startswith('GIT_') and key not in ('GITHUB_TOKEN', 'GH_TOKEN')}
+    environment.update({'GIT_ATTR_NOSYSTEM': '1', 'GIT_CONFIG_NOSYSTEM': '1',
+                        'GIT_CONFIG_GLOBAL': os.devnull, 'GIT_CONFIG_SYSTEM': os.devnull,
+                        'GIT_CONFIG_COUNT': '0'})
+    return environment
+
+
+def source_attribute_state(source):
+    # No source clone config/attribute modifications; foreign common-dir and
+    # info rules cannot qualify the independent fixed-commit EOL relation.
+    directory = owned(source / '.git', source, directory=True)
+    command = ['git', '-C', str(source), '-c', 'core.attributesFile=' + os.devnull]
+    common = subprocess.check_output(command + ['rev-parse', '--path-format=absolute',
+                                               '--git-common-dir'], env=fixed_git_environment())
+    if Path(common.decode('utf-8').strip()).resolve(strict=True) != directory:
+        raise RuntimeError('Fixed EOL attributes require the actual isolated LLVM clone')
+    path = directory / 'info/attributes'
+    if path.parent.exists() or path.parent.is_symlink():
+        owned(path.parent, source, directory=True)
+    if path.is_symlink() or not hasattr(os, 'O_NOFOLLOW'):
+        raise RuntimeError('Unsafe source info attributes cannot qualify EOL')
+    try:
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+    except FileNotFoundError:
+        return None
+    with os.fdopen(fd, 'rb') as stream:
+        state = os.fstat(stream.fileno())
+        if not stat.S_ISREG(state.st_mode) or state.st_size:
+            raise RuntimeError('Nonempty source info attributes cannot qualify EOL')
+        return (state.st_dev, state.st_ino, state.st_size, state.st_mtime_ns)
+
+
+def bounded_source_blob(source, blob):
+    command = ['git', '-C', str(source)]
+    environment = fixed_git_environment()
+    size = subprocess.check_output(command + ['cat-file', '-s', blob], env=environment)
+    if not re.fullmatch(rb'(0|[1-9][0-9]{0,6})\n', size) or int(size) > CRLF_BLOB_BOUND:
+        raise RuntimeError('Raw materialization blob exceeds 1MiB bound')
+    raw = subprocess.check_output(command + ['cat-file', 'blob', blob], env=environment)
+    if len(raw) != int(size) or raw_git_blob(raw) != blob:
+        raise RuntimeError('Raw materialization Git object differs')
+    return raw
+
+
+def source_raw_attributes(source, expected):
+    before = source_attribute_state(source)
+    attributes, total = [], 0
+    for name, (mode, blob) in sorted(expected.items()):
+        if PurePosixPath(name).name != '.gitattributes':
+            continue
+        if mode not in ('100644', '100755'):
+            raise RuntimeError('Nonregular fixed Git attributes cannot qualify EOL')
+        raw = bounded_source_blob(source, blob)
+        total += len(raw)
+        if total > CRLF_ATTRIBUTES_BOUND or len(attributes) >= 10000:
+            raise RuntimeError('Complete fixed attributes exceed explicit bound')
+        attributes.append((name, mode, blob, raw))
+    if source_attribute_state(source) != before:
+        raise RuntimeError('Source info attributes changed during fixed EOL lookup')
+    return attributes
+
+
+class FixedCrLfAttributes:
+    """Independent attrs-only index; no source checkout/filter driver is used."""
+    def __init__(self, loader, scratch, commit):
+        if not re.fullmatch(r'[0-9a-f]{40}', commit):
+            raise RuntimeError('Invalid fixed attributes commit')
+        self.loader, self.scratch, self.commit = loader, scratch, commit
+        self.temporary = None
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, kind, value, traceback):
+        if self.temporary is not None:
+            self.temporary.cleanup()
+
+    def run(self, *arguments, raw=None):
+        command = ['git', '-C', str(self.directory), '-c', 'core.attributesFile=' + os.devnull,
+                   '-c', 'core.autocrlf=false', '-c', 'core.safecrlf=true', *arguments]
+        return subprocess.check_output(command, input=raw, env=fixed_git_environment(), stderr=subprocess.PIPE)
+
+    def initialize(self):
+        if self.temporary is not None:
+            return
+        attributes = self.loader()
+        total, rows, names = 0, [], set()
+        for name, mode, blob, raw in attributes:
+            relative_name(name)
+            if (PurePosixPath(name).name != '.gitattributes' or name in names
+                    or mode not in ('100644', '100755') or len(raw) > CRLF_BLOB_BOUND
+                    or raw_git_blob(raw) != blob):
+                raise RuntimeError('Invalid complete raw Git attributes')
+            names.add(name)
+            total += len(raw)
+            if total > CRLF_ATTRIBUTES_BOUND or len(names) > 10000:
+                raise RuntimeError('Complete attribute index exceeds explicit bound')
+            rows.append({'path': name, 'gitMode': mode, 'gitBlob': blob,
+                         'bytes': len(raw), 'sha256': sha(raw)})
+        rows.sort(key=lambda row: row['path'])
+        self.attributes_sha256 = sha(json_bytes(rows))
+        self.temporary = tempfile.TemporaryDirectory(prefix='bilipai-fixed-eol-', dir=self.scratch)
+        self.directory = Path(self.temporary.name)
+        # Empty template, SHA1 objects, sanitized environment, no original
+        # clone/global/system/config/alternates/info attributes/filter drivers.
+        self.run('init', '--quiet', '--template=', '--object-format=sha1')
+        index = bytearray()
+        for name, mode, blob, raw in sorted(attributes):
+            stored = self.run('hash-object', '--no-filters', '-w', '--stdin', raw=raw)
+            if stored != blob.encode('ascii') + b'\n':
+                raise RuntimeError('Scratch raw attribute object changed')
+            index.extend(mode.encode('ascii') + b' ' + blob.encode('ascii') + b'\t' + name.encode('utf-8') + b'\0')
+        self.run('update-index', '-z', '--index-info', raw=bytes(index))
+        self.index_entries = b''.join(row['gitMode'].encode('ascii') + b' ' + row['gitBlob'].encode('ascii')
+                                     + b' 0\t' + row['path'].encode('utf-8') + b'\0' for row in rows)
+        self.unchanged_index()
+
+    def unchanged_index(self):
+        if (self.run('ls-files', '--stage', '-z') != self.index_entries
+                or set(path.name for path in self.directory.iterdir()) != {'.git'}
+                or (self.directory / '.git/info/attributes').exists()
+                or (self.directory / '.git/info/attributes').is_symlink()):
+            raise RuntimeError('Independent attribute index/worktree changed')
+
+    def qualify(self, name, mode, blob, raw, observed):
+        relative_name(name)
+        if (mode not in ('100644', '100755') or len(raw) > CRLF_BLOB_BOUND
+                or b'\0' in raw or b'\r' in raw or b'\n' not in raw
+                or raw_git_blob(raw) != blob or observed != raw.replace(b'\n', b'\r\n')):
+            raise RuntimeError('Not an exact bounded LF-to-CRLF Git materialization')
+        self.initialize()
+        self.unchanged_index()
+        returned = self.run('check-attr', '--cached', '-z', '--all', '--', name)
+        fields = returned.split(b'\0')
+        if fields[-1] or (len(fields) - 1) % 3:
+            raise RuntimeError('Malformed fixed attribute response')
+        attributes = {}
+        for offset in range(0, len(fields) - 1, 3):
+            path, key, value = fields[offset:offset + 3]
+            key = key.decode('utf-8')
+            if path != name.encode('utf-8') or key in attributes:
+                raise RuntimeError('Wrong or duplicate fixed attribute response')
+            attributes[key] = value.decode('utf-8')
+        # --all omits true unspecified. Attribute key presence, including a
+        # literal value "unset"/"unspecified", is never treated as disabled.
+        forbidden = {'ident', 'filter', 'working-tree-encoding', 'crlf', 'export-subst', 'binary'}
+        if (attributes.get('text') != 'set' or attributes.get('eol') != 'crlf'
+                or forbidden.intersection(attributes)):
+            raise RuntimeError('Not isolated text=set/eol=crlf without other transforms')
+        stored = self.run('hash-object', '--no-filters', '-w', '--stdin', raw=raw)
+        if stored != blob.encode('ascii') + b'\n':
+            raise RuntimeError('Scratch source object changed')
+        # The fresh empty working tree falls back to the COMPLETE index attrs.
+        # Builtin conversion must prove these exact bytes under the effective
+        # attributes; the string "set" alone does not prove a boolean state.
+        # No filter/ident/encoding driver can be active in this scratch repo.
+        converted = self.run('cat-file', '--filters', '--path=' + name, blob)
+        self.unchanged_index()
+        if converted != observed:
+            raise RuntimeError('Git builtin materialization differs from exact CRLF bytes')
+        return {'path': name, 'kind': 'DECLARED_GIT_TEXT_EOL_CRLF', 'gitMode': mode,
+                'attributeSourceCommit': self.commit, 'attributes': attributes,
+                'attributeFilesSha256': self.attributes_sha256, 'gitBlob': blob,
+                'rawBytes': len(raw), 'rawSha256': sha(raw), 'lfCount': raw.count(b'\n'),
+                'observedBytes': len(observed), 'observedSha256': sha(observed),
+                'observedGitBlob': raw_git_blob(observed)}
+
+
+def verify_used_source_relationship(bundle, commit, used, canonical, actual_blobs, *, scratch=None):
+    """Recompute bounded CRLF witnesses from retained archive bytes, not labels.
+
+    The caller still verifies every outer/canonical payload and the complete
+    captured recursive Git tree. This independent relation rechecks ALL raw
+    attributes and each differing actual-used file against that full tree.
+    Raw Git canonical source and original captured worktree remain unchanged.
+    """
+    if set(actual_blobs) != set(canonical):
+        raise RuntimeError('EOL relation requires the complete real recursive Git tree')
+    for name, (mode, blob) in actual_blobs.items():
+        relative_name(name)
+        row = canonical[name]
+        expected_mode = 0o777 if mode == '120000' else 0o755 if mode == '100755' else 0o644
+        if (mode not in ('100644', '100755', '120000') or row.get('gitBlob') != blob
+                or row.get('mode') != expected_mode
+                or row.get('kind') != ('symlink' if mode == '120000' else 'file')):
+            raise RuntimeError('EOL relation canonical blob/mode differs from captured tree')
+    differences = {}
+    for row in used:
+        path = relative_name(row['path'])
+        prefix = 'actual-used-source-worktree/'
+        if not path.startswith(prefix):
+            if path == prefix[:-1] and row['kind'] == 'directory':
+                continue
+            raise RuntimeError('EOL relation used source has wrong root')
+        name = path[len(prefix):]
+        original = canonical.get(name)
+        if original is None or row['kind'] == 'directory':
+            continue
+        actual_sha = row.get('sha256') if row['kind'] == 'file' else sha(row['target'].encode('utf-8'))
+        if row['kind'] == original['kind'] and actual_sha == original['sha256']:
+            continue
+        mode, blob = actual_blobs[name]
+        if (name in differences or mode not in ('100644', '100755')
+                or row['kind'] != 'file' or original['kind'] != 'file'
+                or row['mode'] & 0o6000
+                or bool(row['mode'] & 0o111) != (mode == '100755')
+                or row['bytes'] > CRLF_BLOB_BOUND * 2 or original['bytes'] > CRLF_BLOB_BOUND):
+            raise RuntimeError('Actual used tracked source differs beyond bounded regular CRLF relation')
+        differences[name] = row
+    if not differences:
+        return []
+    # No extracted source files or original clone filter/config are used.
+    # Load every fixed raw .gitattributes, including ancestors outside sparse
+    # checkout, plus each candidate raw file from the complete canonical tar.
+    required = set(differences) | {name for name in canonical if PurePosixPath(name).name == '.gitattributes'}
+    attributes, raw_candidates, seen_required = [], {}, set()
+    retained_bytes = 0
+    if len(required) > 10000:
+        raise RuntimeError('Materialization candidate inventory exceeds bound')
+    before = file_sha(bundle)
+    with tarfile.open(bundle, 'r:gz') as outer:
+        member = outer.getmember('canonical-source/complete-llvm-source.tar.gz')
+        if not member.isfile():
+            raise RuntimeError('Canonical EOL input is not an ordinary archive member')
+        prefix = 'llvm-project-' + commit
+        directories = {prefix}
+        for name in canonical:
+            directories.update(parent.as_posix() for parent in PurePosixPath(prefix + '/' + name).parents
+                               if parent.as_posix() != '.')
+        seen = set()
+        with tarfile.open(fileobj=outer.extractfile(member), mode='r|gz') as archive:
+            for item in archive:
+                path = relative_name(item.name.rstrip('/') if item.isdir() else item.name)
+                if path in seen:
+                    raise RuntimeError('Duplicate canonical EOL source member')
+                seen.add(path)
+                if item.isdir():
+                    if path not in directories:
+                        raise RuntimeError('Unexpected canonical EOL directory')
+                    continue
+                if not path.startswith(prefix + '/') or path[len(prefix) + 1:] not in canonical:
+                    raise RuntimeError('Unexpected canonical EOL source path')
+                name = path[len(prefix) + 1:]
+                if name not in required:
+                    continue
+                row = canonical[name]
+                mode, blob = actual_blobs[name]
+                if (not item.isfile() or row['kind'] != 'file'
+                        or mode not in ('100644', '100755') or item.size != row['bytes']
+                        or item.size > CRLF_BLOB_BOUND or item.mode & 0o6000
+                        or bool(item.mode & 0o111) != (mode == '100755')):
+                    raise RuntimeError('Raw attribute/materialization input length/mode differs')
+                raw = archive.extractfile(item).read(CRLF_BLOB_BOUND + 1)
+                if len(raw) != item.size or sha(raw) != row['sha256'] or raw_git_blob(raw) != blob:
+                    raise RuntimeError('Raw attribute/materialization bytes differ from real Git blob')
+                retained_bytes += len(raw)
+                if retained_bytes > CRLF_ATTRIBUTES_BOUND:
+                    raise RuntimeError('Retained raw attribute/materialization inputs exceed 64MiB')
+                seen_required.add(name)
+                if name in differences:
+                    raw_candidates[name] = raw
+                if PurePosixPath(name).name == '.gitattributes':
+                    attributes.append((name, mode, blob, raw))
+        if (seen_required != required
+                or not {prefix + '/' + name for name in canonical} <= seen):
+            raise RuntimeError('Full canonical EOL source/attributes omitted')
+        witnesses = []
+        with FixedCrLfAttributes(lambda: attributes, scratch, commit) as fixed_crlf:
+            for name, row in sorted(differences.items()):
+                actual = outer.getmember(row['path'])
+                if (not actual.isfile() or actual.size != row['bytes'] or actual.mode != row['mode']
+                        or actual.size > CRLF_BLOB_BOUND * 2):
+                    raise RuntimeError('Actual retained used-source materialization shape differs')
+                observed = outer.extractfile(actual).read(CRLF_BLOB_BOUND * 2 + 1)
+                if len(observed) != actual.size or sha(observed) != row['sha256']:
+                    raise RuntimeError('Actual retained used-source materialization bytes differ')
+                mode, blob = actual_blobs[name]
+                witnesses.append(fixed_crlf.qualify(name, mode, blob, raw_candidates[name], observed))
+    if file_sha(bundle) != before:
+        raise RuntimeError('Corresponding-source bundle changed during EOL verification')
+    return witnesses
+
+
 def complete_source_archive(source, destination, commit):
     """Rebuild complete raw Git source; archive substitutions are never trusted.
 
     The exact-commit public archive supplies bulk bytes. Every retained byte
-    must match the actual recursive Git tree. Only a regular file explicitly
-    marked export-subst in that commit may be rebuilt from its actual Git blob.
+    must match the actual recursive Git tree. Only fixed export-subst or the
+    isolated declared text/eol=crlf relation may rebuild an ordinary raw blob.
+    Original archive bytes and actual build captures are never rewritten.
     Extra files, omissions, links/modes and every other mismatch still reject.
     No archive is extracted and no source code is executed here.
     """
@@ -243,7 +539,7 @@ def complete_source_archive(source, destination, commit):
             raise RuntimeError('Source info attributes changed during fixed-commit lookup')
         return attribute == name.encode('utf-8') + b'\0export-subst\0set\0'
 
-    entries, seen, corrections = [], set(), []
+    entries, seen, corrections, crlf_corrections = [], set(), [], []
     source_bound = 8 << 30
     prefix = 'llvm-project-' + commit
     url = 'https://codeload.github.com/llvm/llvm-project/tar.gz/' + commit
@@ -251,7 +547,8 @@ def complete_source_archive(source, destination, commit):
     expanded_count = 0
     exported_count = 0
     # Both anonymous scratch streams are confined to the existing owned stage.
-    with tempfile.TemporaryFile(dir=destination.parent) as downloaded:
+    with (FixedCrLfAttributes(lambda: source_raw_attributes(source, expected), destination.parent, commit) as fixed_crlf,
+          tempfile.TemporaryFile(dir=destination.parent) as downloaded):
         with urllib.request.urlopen(url, timeout=180) as response:
             if response.status != 200 or response.geturl() != url:
                 raise RuntimeError('Exact public corresponding source archive URL changed')
@@ -321,23 +618,26 @@ def complete_source_archive(source, destination, commit):
                             git_sha = git_digest.hexdigest()
                             length = member.size
                             if git_sha != object_id:
-                                if not fixed_export_subst(name):
-                                    raise mismatch(name, object_id, git_sha, 'not declared export-subst; bytes rejected')
-                                size_text = git(source, 'cat-file', '-s', object_id)
-                                if not re.fullmatch(rb'(0|[1-9][0-9]{0,6})\n', size_text) or int(size_text) > 1 << 20:
-                                    raise mismatch(name, object_id, git_sha, 'raw export-subst blob exceeds the 1MiB bound')
-                                raw_blob = git(source, 'cat-file', 'blob', object_id)
-                                raw_id = hashlib.sha1(b'blob ' + str(len(raw_blob)).encode('ascii') + b'\0' + raw_blob).hexdigest()
-                                if len(raw_blob) != int(size_text) or raw_id != object_id:
-                                    raise mismatch(name, object_id, raw_id, 'actual raw Git blob rejected')
+                                export_subst = fixed_export_subst(name)
+                                raw_blob = bounded_source_blob(source, object_id)
+                                if export_subst:
+                                    corrections.append({'path': name, 'attribute': 'export-subst',
+                                                        'attributeSourceCommit': commit,
+                                                        'exportedGitBlob': git_sha, 'gitBlob': object_id,
+                                                        'exportedBytes': count, 'rawBytes': len(raw_blob),
+                                                        'rawSha256': sha(raw_blob)})
+                                else:
+                                    if count > 2 * CRLF_BLOB_BOUND:
+                                        raise mismatch(name, object_id, git_sha, 'EOL materialization exceeds 2MiB bound')
+                                    material.seek(0)
+                                    observed = material.read(2 * CRLF_BLOB_BOUND + 1)
+                                    try:
+                                        crlf_corrections.append(fixed_crlf.qualify(name, mode, object_id, raw_blob, observed))
+                                    except RuntimeError as failure:
+                                        raise mismatch(name, object_id, git_sha, 'not an exact isolated declared CRLF materialization') from failure
                                 expanded_count += len(raw_blob) - count
                                 if expanded_count > source_bound:
                                     raise RuntimeError('Complete raw Git source exceeds the explicit safety bound')
-                                corrections.append({'path': name, 'attribute': 'export-subst',
-                                                    'attributeSourceCommit': commit,
-                                                    'exportedGitBlob': git_sha, 'gitBlob': object_id,
-                                                    'exportedBytes': count, 'rawBytes': len(raw_blob),
-                                                    'rawSha256': sha(raw_blob)})
                                 material.seek(0)
                                 material.truncate()
                                 material.write(raw_blob)
@@ -351,10 +651,12 @@ def complete_source_archive(source, destination, commit):
         raise RuntimeError('Corresponding source archive omitted tracked source; no incomplete snapshot is accepted')
     entries.sort(key=lambda row: row['path'])
     corrections.sort(key=lambda row: row['path'])
+    crlf_corrections.sort(key=lambda row: row['path'])
     materialization = {'method': 'RAW_GIT_BLOB_VERIFIED_CANONICAL_SOURCE',
                        'publicArchiveUrl': url, 'publicArchiveSha256': downloaded_digest.hexdigest(),
                        'sourceCommit': commit, 'sourceLsTreeSha256': sha(raw_tree),
-                       'exportSubstRawGitCorrections': corrections}
+                       'exportSubstRawGitCorrections': corrections,
+                       'declaredCrLfRawGitCorrections': crlf_corrections}
     return entries, sha(raw_tree), materialization
 
 def source_identity(source, workspace):
@@ -592,13 +894,17 @@ def export_snapshot(*, workspace, output, repository_root, fixed, snapshot_input
                      'desktop/third-party/libmpv/build/rtx-core-v1/fixed-inputs.json',
                      'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json'):
             source_entries.append(add_regular(archive, owned(repository_root / path, repository_root), 'own-producing-source/' + path))
-    for row in used_entries:
-        name = row['path'].removeprefix('actual-used-source-worktree/')
-        original = full_by_path.get(name)
-        if original and row['kind'] != 'directory':
-            actual_sha = row.get('sha256') if row['kind'] == 'file' else sha(row['target'].encode('utf-8'))
-            if row['kind'] != original['kind'] or actual_sha != original['sha256']:
-                raise RuntimeError('Actual used LLVM tracked source differs from the complete canonical commit')
+    actual_blobs = {}
+    for value in postcleanup_tree.split(b'\0'):
+        if value:
+            fields, raw_name = value.split(b'\t', 1)
+            mode, kind, blob = fields.decode('ascii').split(' ')
+            name = relative_name(raw_name.decode('utf-8'))
+            if kind != 'blob' or name in actual_blobs:
+                raise RuntimeError('Actual captured source tree contains unsupported/duplicate entries')
+            actual_blobs[name] = (mode, blob)
+    used_materializations = verify_used_source_relationship(output / names[1], commit,
+        used_entries, full_by_path, actual_blobs, scratch=stage)
     final_source, final_entries, final_tree = source_identity(source, workspace)
     if (final_source != built_source or final_entries != postcleanup_entries
             or final_tree != postcleanup_tree or used_entries != postcleanup_entries):
@@ -614,6 +920,7 @@ def export_snapshot(*, workspace, output, repository_root, fixed, snapshot_input
         'actualSourcePostBuildGitStatus': dirty, 'completeSourceLsTreeSha256': full_ls_tree_sha,
         'completeCanonicalSourceEntries': full_source_entries, 'canonicalSourceArchiveSha256': file_sha(canonical),
         'canonicalSourceMaterialization': materialization,
+        'actualUsedSourceCrLfMaterializations': used_materializations,
         'actualInstallEntries': install_entries, 'actualCorrespondingSourceBundleEntries': source_entries,
         'actualUsedSourceTreeManifestSha256': sha(json_bytes(used_entries)),
         'actualInstallTreeManifestSha256': sha(json_bytes(install_entries)),
