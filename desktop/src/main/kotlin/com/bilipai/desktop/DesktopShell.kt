@@ -1501,7 +1501,10 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         finally { feedLoading = false }
     }
     LaunchedEffect(veyraMonitor) { veyraMonitor.followSettings() }
-    LaunchedEffect(Unit) { updater.autoCheck(); while (true) { delay(6 * 60 * 60 * 1000L); updater.autoCheck() } }
+    LaunchedEffect(updater, pluginStore) {
+        followDesktopAutomaticUpdateChecks(pluginStore, { scope.isActive && !latestDynamicIsClosing() },
+            { updater.autoCheck() })
+    }
     LaunchedEffect(updateState, automaticUpdates, manuallyRequested, playing.details, playing.opening, mediaActive, listening.active, anyCasting, anyCastBusy, pipActive, dynamicEditor, dynamicEditor.request, dynamicEditorSubmissions, backupUpdateActivity, loginUpdateHold, loginUpdateActivity, messageUpdateRoot, messageUpdateActivity, activatingUpdate, updateJob) {
         if (updateJob?.isActive == true || activatingUpdate) return@LaunchedEffect
         when (val status = updateState) {
@@ -2799,7 +2802,9 @@ private fun WindowsUpdateDialog(state: UpdateState, automatic: Boolean, activati
             Text(when {
                 veyraTracking.checking -> "视频增强更新：正在检查…"
                 veyraTracking.error != null -> "视频增强更新：检查失败"
-                veyraTracking.latestPublished != null -> "上游最新 ${veyraTracking.latestPublished.tag}，兼容更新待验证"
+                veyraTracking.latestPublished != null -> "上游最新 ${veyraTracking.latestPublished.tag}，" +
+                    if (veyraTracking.catalogError != null) "兼容目录验证失败" else "兼容更新待验证"
+                veyraTracking.catalogError != null -> "视频增强更新：兼容目录验证失败"
                 else -> "视频增强更新：尚未检查"
             })
             Row(verticalAlignment = Alignment.CenterVertically) { Text("自动更新，播放时延后", Modifier.weight(1f)); Switch(automatic, onAutomatic, enabled = !activating) }
