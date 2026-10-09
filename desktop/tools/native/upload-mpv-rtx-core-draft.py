@@ -147,8 +147,115 @@ def main():
             or range_sha(bundle, 0, bundle.stat().st_size) != descriptor['sourceBundle']['sha256']
             or descriptor['sourceBundle']['sha256'] != receipt.get('sourceBundleSha256')):
         raise DeliveryError('Candidate or complete corresponding source hash changed')
+    host_descriptor_path = owned_file(directory, 'host-llvm-source-snapshot-descriptor.json')
+    host_descriptor = json.loads(host_descriptor_path.read_text(encoding='utf-8'))
+    host_manifest_path = owned_file(directory, 'host-llvm-snapshot-manifest.json')
+    host_manifest = json.loads(host_manifest_path.read_text(encoding='utf-8'))
+    snapshot_inputs = json.loads((repository_root / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json').read_text(encoding='utf-8'))
+    host_kind = 'BILIPAI_HOST_LLVM_SOURCE_SNAPSHOT'
+    if (host_descriptor.get('schema') != 2 or host_descriptor.get('kind') != host_kind
+            or host_manifest.get('schema') != 2 or host_manifest.get('kind') != host_kind
+            or snapshot_inputs.get('schema') != 2 or snapshot_inputs.get('sourceBindingSchema') != 1
+            or host_descriptor.get('snapshotStatus') != 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'
+            or host_manifest.get('snapshotStatus') != 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'
+            or host_descriptor.get('deliveryStatus') != 'LOCAL_SNAPSHOT_ONLY_NOT_RELEASED'
+            or host_descriptor.get('reuseReady') is not False
+            or receipt.get('hostLlvmSnapshotStatus') != 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'
+            or receipt.get('hostLlvmSnapshotDescriptorSha256') != range_sha(host_descriptor_path, 0, host_descriptor_path.stat().st_size)
+            or host_descriptor.get('snapshotManifest') != {'fileName': host_manifest_path.name,
+                'bytes': host_manifest_path.stat().st_size, 'sha256': range_sha(host_manifest_path, 0, host_manifest_path.stat().st_size)}
+            or any(item.get('ownrepoSourceCommit') != commit or item.get('ownrepoSourceTag') != tag
+                   or item.get('containerImage') != receipt.get('containerImage')
+                   or item.get('recipeCommit') != receipt.get('recipeCommit')
+                   or item.get('recipeArchiveSha256') != receipt.get('recipeArchiveSha256')
+                   or item.get('helperSha256') != snapshot_inputs.get('helperSha256')
+                   or item.get('hostTargetExitCode') != 0 or item.get('toolchainImported') is not False
+                   or item.get('reproducible') is not False or item.get('gpuOrDriverTested') is not False
+                   or item.get('closedSdkOrRuntimeIncluded') is not False
+                   or item.get('hostCompilerOrNativeTestedByExporter') is not False
+                   for item in (host_descriptor, host_manifest))
+            or not re.fullmatch(r'[0-9a-f]{40}', host_descriptor.get('sourceCommit', ''))
+            or host_manifest.get('sourceCommit') != host_descriptor.get('sourceCommit')
+            or host_manifest.get('sourceTree') != host_descriptor.get('sourceTree')
+            or not host_manifest.get('actualInstallEntries')
+            or not host_manifest.get('completeCanonicalSourceEntries')
+            or not host_manifest.get('completeLicenseEntries')):
+        raise DeliveryError('Only the genuine untested own-source host snapshot may accompany this successful build')
+    binding = host_manifest.get('actualSourceBuildBinding', {})
+    built_source = binding.get('prebuild', {})
+    binding_sha = hashlib.sha256((json.dumps(binding, sort_keys=True, indent=2) + '\n').encode('utf-8')).hexdigest()
+    absolute_workspace = host_manifest.get('originalAbsoluteWorkspace', '')
+    expected_source = absolute_workspace + '/sources/llvm'
+    expected_build = absolute_workspace + '/build-x64/toolchain/llvm-prefix/src/llvm-build'
+    expected_config = binding.get('resolvedConfigurationAssertions', {})
+    capture = host_manifest.get('configCaptureReceipt', {})
+    prebuild_capture = host_manifest.get('prebuildConfigCaptureReceipt', {})
+    if (binding.get('schema') != 1 or binding.get('state') != 'PREBUILD_INSTALL_POSTCLEANUP_SOURCE_AND_CONFIG_BOUND'
+            or host_descriptor.get('sourceBindingSchema') != 1 or host_manifest.get('sourceBindingSchema') != 1
+            or host_descriptor.get('actualSourceBuildBinding') != binding
+            or host_descriptor.get('actualSourceBuildBindingSha256') != binding_sha
+            or host_manifest.get('actualSourceBuildBindingSha256') != binding_sha
+            or receipt.get('hostLlvmSnapshotSourceBindingSha256') != binding_sha
+            or built_source.get('schema') != 1 or not built_source
+            or binding.get('postinstall') != built_source or binding.get('postcleanup') != built_source
+            or built_source.get('sourceCommit') != host_manifest.get('sourceCommit')
+            or built_source.get('sourceTree') != host_manifest.get('sourceTree')
+            or built_source.get('sourceRemote') != 'https://github.com/llvm/llvm-project.git'
+            or built_source.get('gitStatusPorcelainZHex') != ''
+            or built_source.get('actualSourceDirectory') != expected_source
+            or binding.get('actualSourceDirectory') != expected_source
+            or binding.get('actualBuildDirectory') != expected_build
+            or not re.fullmatch(r'[0-9a-f]{40}', built_source.get('sourceTree', ''))
+            or not re.fullmatch(r'[0-9a-f]{64}', built_source.get('actualSourceWorktreeManifestSha256', ''))
+            or built_source.get('completeSourceLsTreeSha256') != host_manifest.get('completeSourceLsTreeSha256')
+            or not re.fullmatch(r'[0-9a-f]{64}', built_source.get('completeSourceLsTreeSha256', ''))
+            or type(built_source.get('actualSourceWorktreeEntries')) is not int or built_source['actualSourceWorktreeEntries'] <= 1
+            or built_source.get('actualSourceWorktreeManifestSha256') != host_manifest.get('actualUsedSourceTreeManifestSha256')
+            or any(not re.fullmatch(r'[0-9a-f]{64}', binding.get(key, ''))
+                   for key in ('prebuildCaptureReceiptSha256', 'postinstallCaptureReceiptSha256'))
+            or binding.get('prebuildCaptureReceiptSha256')
+                != hashlib.sha256((json.dumps(prebuild_capture, sort_keys=True, indent=2) + '\n').encode('utf-8')).hexdigest()
+            or prebuild_capture.get('schema') != 2 or prebuild_capture.get('sourceBindingSchema') != 1
+            or prebuild_capture.get('stage') != 'AFTER_CONFIGURATION_BEFORE_REAL_LLVM_BUILD'
+            or prebuild_capture.get('helperSha256') != snapshot_inputs.get('helperSha256')
+            or prebuild_capture.get('actualBuildSource') != built_source
+            or prebuild_capture.get('actualBuildDirectory') != expected_build
+            or prebuild_capture.get('actualSourceDirectory') != expected_source
+            or prebuild_capture.get('resolvedConfigurationAssertions') != expected_config
+            or binding.get('postinstallCaptureReceiptSha256')
+                != hashlib.sha256((json.dumps(capture, sort_keys=True, indent=2) + '\n').encode('utf-8')).hexdigest()
+            or capture.get('schema') != 2 or capture.get('sourceBindingSchema') != 1
+            or capture.get('stage') != 'AFTER_REAL_LLVM_INSTALL_BEFORE_RECIPE_CLEANUP'
+            or capture.get('helperSha256') != snapshot_inputs.get('helperSha256')
+            or capture.get('actualBuildSource') != built_source
+            or capture.get('prebuildCaptureReceiptSha256') != binding.get('prebuildCaptureReceiptSha256')
+            or capture.get('actualBuildDirectory') != expected_build or capture.get('actualSourceDirectory') != expected_source
+            or capture.get('resolvedConfigurationAssertions') != expected_config
+            or host_manifest.get('resolvedConfigurationAssertions') != expected_config
+            or expected_config.get('CMAKE_HOME_DIRECTORY') != expected_source + '/llvm'
+            or expected_config.get('CMAKE_CACHEFILE_DIR') != expected_build
+            or expected_config.get('CMAKE_INSTALL_PREFIX') != host_manifest.get('originalAbsoluteInstallPrefix')):
+        raise DeliveryError('Actual compiler prebuild/install/cleanup source and configuration identity is not fully bound')
+    pre_files = {row.get('path'): row for row in prebuild_capture.get('files', [])}
+    post_files = {row.get('path'): row for row in capture.get('files', [])}
+    expected_pre_files = {'CMakeCache.txt', 'build.ninja', 'CMakeFiles/rules.ninja',
+                          'actual-source-worktree.json', 'actual-source-ls-tree.bin'}
+    if (set(pre_files) != expected_pre_files or len(prebuild_capture.get('files', [])) != 5
+            or set(post_files) != expected_pre_files | {'install_manifest.txt'} or len(capture.get('files', [])) != 6
+            or any(pre_files[name] != post_files[name] for name in expected_pre_files)
+            or prebuild_capture.get('workspace') != absolute_workspace or capture.get('workspace') != absolute_workspace):
+        raise DeliveryError('Captured prebuild and installed source/config file identities differ')
+    host_bundles = []
+    for key, expected_name in (('installArchive', 'host-llvm-install.tar.gz'),
+                               ('correspondingSourceArchive', 'host-llvm-corresponding-source.tar.gz')):
+        record = host_descriptor.get(key, {})
+        path = owned_file(directory, expected_name)
+        if (record.get('fileName') != expected_name or record.get('bytes') != path.stat().st_size
+                or record.get('sha256') != range_sha(path, 0, path.stat().st_size) or path.stat().st_size <= 0):
+            raise DeliveryError('Complete host toolchain/source archive hash changed')
+        host_bundles.append((key, path))
     assets = []
-    for path in (artifact, descriptor_path, receipt_path, status_path):
+    for path in (artifact, descriptor_path, receipt_path, status_path, host_descriptor_path, host_manifest_path):
         size = path.stat().st_size
         if not 0 < size < RELEASE_ASSET_LIMIT:
             raise DeliveryError('Release asset must be nonempty and strictly below 2 GiB')
@@ -163,8 +270,29 @@ def main():
                'sha256': range_sha(bundle, offset, length)}
         parts.append(row)
         assets.append({**row, 'path': bundle})
+    host_delivery_bundles = {}
+    for key, path in host_bundles:
+        host_parts = []
+        host_size = path.stat().st_size
+        for index, offset in enumerate(range(0, host_size, PART_BYTES), 1):
+            length = min(PART_BYTES, host_size - offset)
+            name = path.name if host_size <= PART_BYTES else path.name + '.part' + str(index).zfill(4)
+            row = {'name': name, 'offset': offset, 'bytes': length,
+                   'sha256': range_sha(path, offset, length)}
+            host_parts.append(row)
+            assets.append({**row, 'path': path})
+        host_delivery_bundles[key] = {'fileName': path.name, 'bytes': host_size,
+                                     'sha256': range_sha(path, 0, host_size), 'parts': host_parts}
     manifest = {'schema': 1, 'sourceCommit': commit, 'sourceTag': tag,
                 'delivery': 'OWN_REPOSITORY_DRAFT_ONLY', 'draft': True,
+                'hostToolchain': {'kind': host_kind, 'snapshotStatus': 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY',
+                    'reuseReady': False, 'sourceCommit': host_descriptor['sourceCommit'],
+                    'sourceBindingSchema': 1, 'actualSourceBuildBindingSha256': binding_sha,
+                    'actualSourceBuildBinding': binding,
+                    'descriptorSha256': range_sha(host_descriptor_path, 0, host_descriptor_path.stat().st_size),
+                    'snapshotManifestSha256': range_sha(host_manifest_path, 0, host_manifest_path.stat().st_size),
+                    'archives': host_delivery_bundles,
+                    'trustRequirement': 'Future import requires independently reviewed manifest and exact own asset identity frozen in consumer source; this draft does not activate reuse.'},
                 'sourceBundle': {'fileName': bundle.name, 'bytes': size,
                                  'sha256': descriptor['sourceBundle']['sha256'], 'parts': parts},
                 'reassembly': 'Concatenate parts in listed offset order; verify every part and then the complete SHA256 before using the original sourceBundle file.',

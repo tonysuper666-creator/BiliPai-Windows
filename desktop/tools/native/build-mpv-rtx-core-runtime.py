@@ -6,6 +6,7 @@ remain floating and are recorded from the actual build; this is not reproducible
 """
 import argparse
 import hashlib
+import importlib.util
 import json
 import os
 import re
@@ -218,6 +219,30 @@ def main():
         recipes = extract_fixed_recipe(downloaded['recipes'], workspace, fixed['recipeArchivePrefix'])
         edits = json.loads((INPUTS / 'recipe-edits.json').read_text(encoding='utf-8'))
         apply_recipes(recipes, edits['targets'])
+        snapshot_inputs_path = INPUTS / 'host-llvm-snapshot-inputs.json'
+        snapshot_inputs = json.loads(snapshot_inputs_path.read_text(encoding='utf-8'))
+        if (snapshot_inputs.get('schema') != 2 or snapshot_inputs.get('scope') != 'HOST_LLVM_EXPORT_ONLY_NO_IMPORT'
+                or snapshot_inputs.get('sourceBindingSchema') != 1
+                or snapshot_inputs.get('sourceBindingState') != 'PREBUILD_INSTALL_POSTCLEANUP_SOURCE_AND_CONFIG_BOUND'
+                or snapshot_inputs.get('sourceCaptureStages') != ['AFTER_CONFIGURATION_BEFORE_REAL_LLVM_BUILD',
+                    'AFTER_REAL_LLVM_INSTALL_BEFORE_RECIPE_CLEANUP']
+                or snapshot_inputs.get('variant') != VARIANT or snapshot_inputs.get('containerImage') != IMAGE
+                or snapshot_inputs.get('recipeCommit') != fixed['recipeCommit']
+                or snapshot_inputs.get('helperSourcePath') != 'desktop/tools/native/export-host-llvm-source-snapshot.py'
+                or len(snapshot_inputs.get('recipeEdits', [])) != 1
+                or snapshot_inputs['recipeEdits'][0].get('targetPath') != 'build-recipes/toolchain/llvm/llvm.cmake'):
+            raise RuntimeError('Wrong reviewed host LLVM export inputs')
+        snapshot_helper_path = ROOT / snapshot_inputs['helperSourcePath']
+        snapshot_helper = snapshot_helper_path.read_bytes()
+        if sha(snapshot_helper) != snapshot_inputs['helperSha256']:
+            raise RuntimeError('Reviewed host LLVM exporter bytes changed')
+        apply_recipes(recipes, snapshot_inputs['recipeEdits'])
+        (recipes / 'packages/bilipai-host-llvm-source-snapshot.py').write_bytes(snapshot_helper)
+        snapshot_spec = importlib.util.spec_from_file_location('bilipai_host_llvm_snapshot', snapshot_helper_path)
+        if snapshot_spec is None or snapshot_spec.loader is None:
+            raise RuntimeError('Reviewed host LLVM export module cannot be loaded')
+        snapshot_module = importlib.util.module_from_spec(snapshot_spec)
+        snapshot_spec.loader.exec_module(snapshot_module)
         helper = (INPUTS / 'bilipai-veyra-rtx-core-patch.py').read_bytes()
         native_patch = (ROOT / 'desktop/third-party/libmpv/patches/nvidia-native-resolution-69e63f.patch').read_bytes()
         if sha(helper) != fixed['buildPatchHelperSha256'] or sha(native_patch) != fixed['nativePatchSha256']:
@@ -260,6 +285,18 @@ def main():
         for target in ['llvm', 'rustup', 'llvm-clang', 'mpv']:
             print('DISK before ' + target + ': freeBytes=' + str(shutil.disk_usage(workspace).free), flush=True)
             run(['ninja', '-C', str(build), '-j2', target], log)
+            if target == 'llvm':
+                # Genuine target exit 0; capture before downstream Windows runtimes
+                # mutate the host prefix. No old stamps or imported toolchain here.
+                host_snapshot_descriptor = snapshot_module.export_snapshot(
+                    workspace=workspace, output=output, repository_root=ROOT,
+                    fixed=fixed, snapshot_inputs=snapshot_inputs, container_image=IMAGE,
+                    build_command=command, log=log)
+                host_snapshot_source = json.loads(host_snapshot_descriptor.read_text(encoding='utf-8'))
+                if (host_snapshot_source.get('schema') != 2 or host_snapshot_source.get('sourceBindingSchema') != 1
+                        or host_snapshot_source.get('actualSourceBuildBinding', {}).get('state')
+                            != 'PREBUILD_INSTALL_POSTCLEANUP_SOURCE_AND_CONFIG_BOUND'):
+                    raise RuntimeError('Actual host build source lifecycle is not bound')
         candidates = list(build.glob('mpv-dev-x86_64-*-git-*/libmpv-2.dll'))
         if len(candidates) != 1:
             raise RuntimeError('Expected exactly one actual mpv copy-package-dir DLL output')
@@ -321,7 +358,10 @@ def main():
                    'sourceMaterialScope': 'Fixed archives, altered recipes, active dependency source worktrees excluding .git',
                    'floatingDependencies': True, 'reproducible': False,
                    'gpuOrDriverTested': False, 'nativeResolutionPpeVerified': False, 'rtxCoreBridgeVerified': False,
-                   'closedSdkOrRuntimeIncluded': False, 'vfgImplemented': False}
+                   'closedSdkOrRuntimeIncluded': False, 'vfgImplemented': False,
+                   'hostLlvmSnapshotDescriptorSha256': file_sha(host_snapshot_descriptor),
+                   'hostLlvmSnapshotSourceBindingSha256': host_snapshot_source['actualSourceBuildBindingSha256'],
+                   'hostLlvmSnapshotStatus': 'BUILT_FROM_SOURCE_THIS_RUN_EXPORT_ONLY'}
         receipt_bytes = (json.dumps(receipt, sort_keys=True, indent=2) + '\n').encode()
         catalog_path = ROOT / 'desktop/third-party/libmpv/SOURCES.json'
         catalog = json.loads(catalog_path.read_text(encoding='utf-8-sig'))

@@ -1,0 +1,32 @@
+{
+  "containerImage": "ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf",
+  "helperSha256": "e23c6cc54f31665597281d2b133e5072f0a5016cb6dfd468128c936a05cbe071",
+  "helperSourcePath": "desktop/tools/native/export-host-llvm-source-snapshot.py",
+  "recipeCommit": "cd1edc11dc6887a50f705717619d879f5a93a488",
+  "recipeEdits": [
+    {
+      "afterBytes": 9418,
+      "afterSha256Bytes": "32e9dc394790ba6a95c4ac5a829a5063460ee893736328441cfc22dc610db36b",
+      "beforeBytes": 8294,
+      "beforeSha256Bytes": "a1168b87c9ef663c40ce08f666219e3f668efb328429e4cea8704741b8cb31db",
+      "rawEdits": [
+        {
+          "count": 1,
+          "new": "cleanup(llvm install)\n# Record configured source/config before the actual build, not cleanup identity.\nExternalProject_Add_Step(llvm bilipai-capture-host-prebuild\n    DEPENDEES configure\n    DEPENDERS build\n    COMMAND python3 ${PROJECT_SOURCE_DIR}/packages/bilipai-host-llvm-source-snapshot.py\n        capture-config --stage prebuild --build-dir <BINARY_DIR> --source-dir <SOURCE_DIR>\n        --workspace ${CMAKE_BINARY_DIR}/..\n        --output ${CMAKE_BINARY_DIR}/bilipai-host-llvm-config\n    LOG 1\n    COMMENT \"Capturing actual host LLVM source identity before build\"\n)\n# Install must have used the exact prebuild source/config; preserve before cleanup.\nExternalProject_Add_Step(llvm bilipai-capture-host-config\n    DEPENDEES install\n    DEPENDERS postremovebuild\n    COMMAND python3 ${PROJECT_SOURCE_DIR}/packages/bilipai-host-llvm-source-snapshot.py\n        capture-config --stage postinstall --build-dir <BINARY_DIR> --source-dir <SOURCE_DIR>\n        --workspace ${CMAKE_BINARY_DIR}/..\n        --output ${CMAKE_BINARY_DIR}/bilipai-host-llvm-config\n    LOG 1\n    COMMENT \"Verifying actual installed host LLVM source/config before cleanup\"\n)\nget_property(LLVM_SRC TARGET llvm PROPERTY _EP_SOURCE_DIR)\n",
+          "offsetBytesAtSequentialStage": 8213,
+          "old": "cleanup(llvm install)\nget_property(LLVM_SRC TARGET llvm PROPERTY _EP_SOURCE_DIR)\n"
+        }
+      ],
+      "targetPath": "build-recipes/toolchain/llvm/llvm.cmake"
+    }
+  ],
+  "schema": 2,
+  "scope": "HOST_LLVM_EXPORT_ONLY_NO_IMPORT",
+  "sourceBindingSchema": 1,
+  "sourceBindingState": "PREBUILD_INSTALL_POSTCLEANUP_SOURCE_AND_CONFIG_BOUND",
+  "sourceCaptureStages": [
+    "AFTER_CONFIGURATION_BEFORE_REAL_LLVM_BUILD",
+    "AFTER_REAL_LLVM_INSTALL_BEFORE_RECIPE_CLEANUP"
+  ],
+  "variant": "bilipai-veyra-rtx-core-v1"
+}
