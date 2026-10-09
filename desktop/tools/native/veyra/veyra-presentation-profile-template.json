@@ -8,7 +8,7 @@
   "engineVersion": "BiliPai-Veyra-Core-1",
   "featureDirectory": "runtime/experimental",
   "filterName": "bilipai-rtx",
-  "filterSourceManifestSha256": "65AB7561DE49F6AC2788BB52409D2735AC1A570EADD738ECDB82BEA00D531C7B",
+  "filterSourceManifestSha256": "6A25A87CBC6DF819125A61EEED32578F3C8B642247B499305FDCA186C22E1863",
   "headerSha256": "0B9521ABD2725E5DA969A1DAD81BFF51619847A989A07563DCF4B1DF4A64E569",
   "localBuildEvidence": {
     "actuallyLinked": true,
@@ -89,8 +89,8 @@
     "installedEngineBindingAffected": false,
     "role": "informational-source-tag-updates-only"
   },
-  "sourcePatchHelperSha256": "87F84B84BC9ABFFD33999619C6D6B0352A110C8885A4D19832E733FFB092F6AC",
-  "upstreamEditsSha256": "CD22E20FEA9E9DAF7979D5B3E19BA6D08FC6B0DC1C6EB032FBB8045257BE2DE9",
+  "sourcePatchHelperSha256": "5D7E59765343E0748BF91D0BAD98229E330B40CF852B37B4462EBECCF9B7CE44",
+  "upstreamEditsSha256": "DA42B4BFA8AC0441CDE4C16267864EFD5968AD2B2F6CD719F8FD6BBA5B23F3FC",
   "variant": "bilipai-veyra-core-v1",
   "veyraRelease": "2.0.6",
   "veyraReleaseCommit": "e3aa842a00f693a4a17d1fc4c454d0ebc59428f6",

@@ -1,7 +1,7 @@
 [
   {
-    "afterBytes": 26434,
-    "afterSha256": "69eb6ae7cc3b1fd1b57f9c6266578ce5f73781f64470c100558b255cf099b3bf",
+    "afterBytes": 26368,
+    "afterSha256": "2ceb580cdf1c33bac574d092c6e0826f3cfdad3092a49e9ab5b67e0193aecedf",
     "beforeBytes": 24865,
     "beforeSha256": "e109dcf181ba517d97c614f6fddc6533689cf6c4b660ac94f1d29c64d85502c0",
     "edits": [
@@ -34,6 +34,16 @@
         "count": 1,
         "new": "            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx)) {\n            ((struct mp_image *)frame.data)->params.bilipai_hdr_current_encoding =\n                MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range =\n                MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n        }",
         "old": "            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx))\n            ((struct mp_image *)frame.data)->params.bilipai_rgb10_current_range =\n                MP_BILIPAI_RGB10_RANGE_UNKNOWN;"
+      },
+      {
+        "count": 1,
+        "new": "                (struct mp_bilipai_frame_token){0};\n            mp_image_params_bilipai_invalidate_current(&((struct mp_image *)frame.data)->params);\n",
+        "old": "                (struct mp_bilipai_frame_token){0};\n            ((struct mp_image *)frame.data)->params.bilipai_hdr_current_encoding =\n                MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx)) {\n            mp_image_params_bilipai_invalidate_current(&((struct mp_image *)frame.data)->params);\n",
+        "old": "            mp_bilipai_token_valid(&((struct mp_image *)frame.data)->bilipai_rtx)) {\n            ((struct mp_image *)frame.data)->params.bilipai_hdr_current_encoding =\n                MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
       }
     ],
     "path": "filters/f_output_chain.c"
@@ -83,8 +93,8 @@
     "path": "player/command.c"
   },
   {
-    "afterBytes": 70884,
-    "afterSha256": "2b210595bd7073b8c7fcd558db4b7e5387b2651a30a550ee2f5cb831ace22d68",
+    "afterBytes": 76983,
+    "afterSha256": "09b9d4fc05ecc8351916bcb37fd0b150d80157e874fd1d9eae02601bc60f491f",
     "beforeBytes": 50325,
     "beforeSha256": "99165df2282547cec1ec020338d472f594040a0d46d11c642a2828b778ed306c",
     "edits": [
@@ -407,13 +417,108 @@
         "count": 1,
         "new": "void mp_image_set_params(struct mp_image *image,\n                         const struct mp_image_params *params)\n{\n    // possibly initialize other stuff\n    uint32_t hazards = image->params.bilipai_hdr_disqualifying_flags_seen |\n        ((image->params.bilipai_hdr_observed_flags |\n          image->params.bilipai_hdr_snapshot.flags) & MP_BILIPAI_HDR_HAZARDS_MASK);\n    mp_image_setfmt(image, params->imgfmt);\n    mp_image_set_size(image, params->w, params->h);\n    image->params = *params;\n    mp_image_params_bilipai_hdr_copy_history(&image->params, params);\n    image->params.bilipai_hdr_disqualifying_flags_seen |= hazards;\n    image->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n}\n",
         "old": "void mp_image_set_params(struct mp_image *image,\n                         const struct mp_image_params *params)\n{\n    // possibly initialize other stuff\n    mp_image_setfmt(image, params->imgfmt);\n    mp_image_set_size(image, params->w, params->h);\n    image->params = *params;\n    mp_image_params_bilipai_hdr_copy_history(&image->params, params);\n    image->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;\n}\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_sethwfmt(struct mp_image *mpi, enum mp_imgfmt hw_fmt, enum mp_imgfmt sw_fmt)\n{\n    mp_image_params_bilipai_invalidate_current(&mpi->params);\n",
+        "old": "void mp_image_sethwfmt(struct mp_image *mpi, enum mp_imgfmt hw_fmt, enum mp_imgfmt sw_fmt)\n{\n    mpi->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_set_size(struct mp_image *mpi, int w, int h)\n{\n    mp_image_params_bilipai_invalidate_current(&mpi->params);\n",
+        "old": "void mp_image_set_size(struct mp_image *mpi, int w, int h)\n{\n    mpi->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "    *new = img ? *img : (struct mp_image){0};\n    // Dummy/custom wrappers do not retain the original AVBuffer/HWctx set.\n    // Preserve origin history, never the current retained-reference witness.\n    mp_image_params_bilipai_invalidate_current(&new->params);\n",
+        "old": "    *new = img ? *img : (struct mp_image){0};\n"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_make_writeable(struct mp_image *img)\n{\n    mp_image_params_bilipai_invalidate_current(&img->params);\n",
+        "old": "bool mp_image_make_writeable(struct mp_image *img)\n{\n    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_copy(struct mp_image *dst, struct mp_image *src)\n{\n    mp_image_params_bilipai_invalidate_current(&dst->params);\n",
+        "old": "void mp_image_copy(struct mp_image *dst, struct mp_image *src)\n{\n    dst->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "                                         const struct mp_image *src)\n{\n    mp_image_params_bilipai_invalidate_current(&dst->params);\n",
+        "old": "                                         const struct mp_image *src)\n{\n    dst->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "           img->params.color.hdr.max_luma == t->hdr_peak_nits;\n}\n\nvoid mp_image_params_bilipai_invalidate_current(struct mp_image_params *p)\n{\n    p->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    p->bilipai_decoder_current_reference = 0;\n}\n\n",
+        "old": "           img->params.color.hdr.max_luma == t->hdr_peak_nits;\n}\n\n"
+      },
+      {
+        "count": 1,
+        "new": "         MP_BILIPAI_HDR_HAZARDS_MASK);\n    struct mp_bilipai_decoder_origin origin = {0};\n    if (src->bilipai_decoder_origin.version == MP_BILIPAI_DECODER_ORIGIN_VERSION)\n        origin = src->bilipai_decoder_origin;\n    dst->bilipai_decoder_origin = origin;\n",
+        "old": "         MP_BILIPAI_HDR_HAZARDS_MASK);\n"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_params_bilipai_invalidate_current(dst);\n",
+        "old": "    dst->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "    mp_assert(dst != src);\n    mp_image_params_bilipai_invalidate_current(&dst->params);\n",
+        "old": "    mp_assert(dst != src);\n    dst->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_crop(struct mp_image *img, int x0, int y0, int x1, int y1)\n{\n    mp_image_params_bilipai_invalidate_current(&img->params);\n",
+        "old": "void mp_image_crop(struct mp_image *img, int x0, int y0, int x1, int y1)\n{\n    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_clear(struct mp_image *img, int x0, int y0, int x1, int y1)\n{\n    mp_image_params_bilipai_invalidate_current(&img->params);\n",
+        "old": "void mp_image_clear(struct mp_image *img, int x0, int y0, int x1, int y1)\n{\n    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_vflip(struct mp_image *img)\n{\n    mp_image_params_bilipai_invalidate_current(&img->params);\n",
+        "old": "void mp_image_vflip(struct mp_image *img)\n{\n    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "        if (!bilipai_hdr_rational_equal(a->white_point[xy], b->white_point[xy]))\n            return false;\n    }\n    return true;\n}\n\nbool mp_image_bilipai_decoder_origin_equal(\n    const struct mp_bilipai_decoder_origin *a,\n    const struct mp_bilipai_decoder_origin *b)\n{\n    return a->version == b->version && a->flags == b->flags &&\n        a->instance_id == b->instance_id && a->epoch_id == b->epoch_id &&\n        a->frame_sequence == b->frame_sequence && a->codec_id == b->codec_id &&\n        a->codec_profile == b->codec_profile &&\n        a->hw_device_type == b->hw_device_type && a->frame_flags == b->frame_flags &&\n        a->stream_refusals == b->stream_refusals &&\n        a->crop_left == b->crop_left && a->crop_top == b->crop_top &&\n        a->crop_right == b->crop_right && a->crop_bottom == b->crop_bottom &&\n        mp_image_bilipai_hdr_snapshot_equal(&a->frame_snapshot, &b->frame_snapshot);\n}\n\n",
+        "old": "        if (!bilipai_hdr_rational_equal(a->white_point[xy], b->white_point[xy]))\n            return false;\n    }\n    return true;\n}\n\n"
+      },
+      {
+        "count": 1,
+        "new": "bool mp_image_params_equal(const struct mp_image_params *p1,\n                           const struct mp_image_params *p2)\n{\n    // Generic format/cache equality is not decoder-origin identity.\n    // Use the independent origin_equal only at an explicit provenance consumer.\n",
+        "old": "bool mp_image_params_equal(const struct mp_image_params *p1,\n                           const struct mp_image_params *p2)\n{\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_params_restore_dovi_mapping(struct mp_image_params *params)\n{\n    mp_image_params_bilipai_invalidate_current(params);\n",
+        "old": "void mp_image_params_restore_dovi_mapping(struct mp_image_params *params)\n{\n    params->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "void mp_image_params_guess_csp(struct mp_image_params *params)\n{\n    mp_image_params_bilipai_invalidate_current(params);\n",
+        "old": "void mp_image_params_guess_csp(struct mp_image_params *params)\n{\n    params->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "    p->bilipai_hdr_snapshot_relation = MP_BILIPAI_HDR_SNAPSHOT_AVFRAME_BOUNDARY;\n    mp_image_params_bilipai_invalidate_current(p);\n}\n\nvoid mp_image_bilipai_note_decoded_frame(struct mp_image *image,\n    const AVFrame *frame, uint64_t instance_id, uint64_t epoch_id,\n    uint64_t frame_sequence, int codec_id, int codec_profile,\n    uint32_t stream_refusals)\n{\n    // Fresh decoder frame metadata, never generic import/opaque history.\n    struct mp_bilipai_decoder_origin origin = {0};\n    origin.version = MP_BILIPAI_DECODER_ORIGIN_VERSION;\n    origin.flags = MP_BILIPAI_DECODER_EXPORTED_FRAME_ONLY;\n    origin.instance_id = instance_id;\n    origin.epoch_id = epoch_id;\n    origin.frame_sequence = frame_sequence;\n    origin.codec_id = codec_id;\n    origin.codec_profile = codec_profile;\n    origin.hw_device_type = AV_HWDEVICE_TYPE_NONE;\n    origin.frame_flags = frame->flags;\n    origin.crop_left = frame->crop_left;\n    origin.crop_top = frame->crop_top;\n    origin.crop_right = frame->crop_right;\n    origin.crop_bottom = frame->crop_bottom;\n    origin.stream_refusals = stream_refusals & MP_BILIPAI_HDR_HAZARDS_MASK;\n    bool same = instance_id && epoch_id && frame_sequence && frame->buf[0] &&\n        image->imgfmt == pixfmt2imgfmt(frame->format) &&\n        frame->width > 0 && frame->height > 0 &&\n        image->w == frame->width && image->h == frame->height;\n    if (!instance_id || !epoch_id || !frame_sequence)\n        origin.flags |= MP_BILIPAI_DECODER_IDS_DISABLED;\n    for (int n = 0; n < 4; n++) {\n        if (image->planes[n] != frame->data[n] || image->stride[n] != frame->linesize[n] ||\n            !!image->bufs[n] != !!frame->buf[n] ||\n            (frame->buf[n] && image->bufs[n]->buffer != frame->buf[n]->buffer))\n            same = false;\n    }\n    if (!same)\n        origin.flags |= MP_BILIPAI_DECODER_BUFFER_MISMATCH;\n    const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(frame->format);\n    bool hardware = desc && (desc->flags & AV_PIX_FMT_FLAG_HWACCEL);\n    if (!desc)\n        same = false;\n    if (hardware) {\n        bool valid = frame->hw_frames_ctx && image->hwctx &&\n            frame->hw_frames_ctx->buffer == image->hwctx->buffer &&\n            frame->hw_frames_ctx->data &&\n            frame->hw_frames_ctx->size >= sizeof(AVHWFramesContext);\n        if (valid) {\n            const AVHWFramesContext *hw = (const void *)frame->hw_frames_ctx->data;\n            valid = hw->format == frame->format && hw->width >= frame->width &&\n                hw->height >= frame->height && hw->device_ref && hw->device_ref->data &&\n                hw->device_ref->size >= sizeof(AVHWDeviceContext) &&\n                hw->device_ctx == (const void *)hw->device_ref->data;\n            if (valid) {\n                origin.hw_device_type = hw->device_ctx->type;\n                valid = origin.hw_device_type != AV_HWDEVICE_TYPE_NONE;\n            }\n        }\n        if (!valid) {\n            origin.flags |= MP_BILIPAI_DECODER_HW_CONTEXT_UNKNOWN;\n            same = false;\n        }\n    } else if (frame->hw_frames_ctx || image->hwctx) {\n        origin.flags |= MP_BILIPAI_DECODER_HW_CONTEXT_UNKNOWN;\n        same = false;\n    }\n    AVFrame boundary = *frame;\n    bool side_data_known = frame->nb_side_data >= 0 && frame->nb_side_data <= 128 &&\n        (!frame->nb_side_data || frame->side_data);\n    if (side_data_known) {\n        for (int n = 0; n < frame->nb_side_data; n++) {\n            if (!frame->side_data[n]) { side_data_known = false; break; }\n        }\n    }\n    if (!side_data_known) {\n        boundary.side_data = NULL;\n        boundary.nb_side_data = 0;\n        origin.flags |= MP_BILIPAI_DECODER_SIDE_DATA_UNKNOWN;\n        origin.stream_refusals |= MP_BILIPAI_HDR_DECODER_METADATA_UNKNOWN;\n        same = false;\n    }\n    struct mp_image_params fresh = {0};\n    bilipai_hdr_capture_boundary(&fresh, &boundary);\n    origin.frame_snapshot = fresh.bilipai_hdr_snapshot;\n    origin.stream_refusals |= fresh.bilipai_hdr_disqualifying_flags_seen;\n    image->params.bilipai_decoder_origin = origin;\n    image->params.bilipai_hdr_disqualifying_flags_seen |= origin.stream_refusals;\n    mp_image_params_bilipai_invalidate_current(&image->params);\n    // This certifies ONLY unchanged retained decoder references at this call.\n    // Raw metadata/texture code domain/HDR/NVIDIA/output still need their own proof.\n    image->params.bilipai_decoder_current_reference = same;\n",
+        "old": "    p->bilipai_hdr_snapshot_relation = MP_BILIPAI_HDR_SNAPSHOT_AVFRAME_BOUNDARY;\n    p->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "                    MP_BILIPAI_HDR_SNAPSHOT_OWNED_HISTORY;\n            }\n            if (p->bilipai_decoder_origin.version == MP_BILIPAI_DECODER_ORIGIN_VERSION) {\n                dst->params.bilipai_decoder_origin = p->bilipai_decoder_origin;\n                dst->params.bilipai_hdr_disqualifying_flags_seen |=\n                    p->bilipai_decoder_origin.stream_refusals & MP_BILIPAI_HDR_HAZARDS_MASK;\n            }\n            // Generic/foreign AV round trips never restore decoder current proof.\n            mp_image_params_bilipai_invalidate_current(&dst->params);\n",
+        "old": "                    MP_BILIPAI_HDR_SNAPSHOT_OWNED_HISTORY;\n            }\n"
       }
     ],
     "path": "video/mp_image.c"
   },
   {
-    "afterBytes": 15311,
-    "afterSha256": "9312a3811fa6f985140dfec896433b7f94f1da26d57923b2e6c4b4e92e0a083e",
+    "afterBytes": 17032,
+    "afterSha256": "52d46b597df242dc98e522baba9a7ecfb9e34d7250e6197d4084f1fe928f43a7",
     "beforeBytes": 9703,
     "beforeSha256": "dd24eaacb29b8c16d450425db88904b33bc6ccc185e3b82e4689283f5fa1b92f",
     "edits": [
@@ -501,6 +606,41 @@
         "count": 1,
         "new": "// Copies initialized logical history; clears current observation/qualification.\nvoid mp_image_params_bilipai_hdr_copy_history(struct mp_image_params *dst,\n                                              const struct mp_image_params *src);\nbool mp_image_bilipai_hdr_snapshot_equal(\n",
         "old": "bool mp_image_bilipai_hdr_snapshot_equal(\n"
+      },
+      {
+        "count": 1,
+        "new": "// Layout v4 adds separate decoder history/current-reference evidence. Exact\n// size AND this tag reject older opaque exports; neither tag certifies pixels.\n#define MP_BILIPAI_PARAMS_EXPORT_TAG UINT32_C(0x42565034)\n",
+        "old": "// Layout v3 appends a pointer-free HDR boundary snapshot. Exact size AND this\n// new tag reject old opaque exports; the tag is not pixel/origin authority.\n#define MP_BILIPAI_PARAMS_EXPORT_TAG UINT32_C(0x42565033)\n"
+      },
+      {
+        "count": 1,
+        "new": "    MP_BILIPAI_HDR_ICC_PRESENT = 1u << 14,\n    MP_BILIPAI_HDR_DOVI_CONFIG_PRESENT = 1u << 15,\n    MP_BILIPAI_HDR_DECODER_METADATA_UNKNOWN = 1u << 16,\n",
+        "old": "    MP_BILIPAI_HDR_ICC_PRESENT = 1u << 14,\n"
+      },
+      {
+        "count": 1,
+        "new": "    MP_BILIPAI_HDR_DOVI_RPU_PRESENT | MP_BILIPAI_HDR_ICC_PRESENT | \\\n    MP_BILIPAI_HDR_DOVI_CONFIG_PRESENT | MP_BILIPAI_HDR_DECODER_METADATA_UNKNOWN)\n",
+        "old": "    MP_BILIPAI_HDR_DOVI_RPU_PRESENT | MP_BILIPAI_HDR_ICC_PRESENT)\n"
+      },
+      {
+        "count": 1,
+        "new": "    uint32_t max_cll, max_fall; // Zero stays zero, independently of presence.\n};\n\n// Factual successful decoder boundary; never a native HDR/GPU/code-domain proof.\n#define MP_BILIPAI_DECODER_ORIGIN_VERSION UINT32_C(1)\nenum mp_bilipai_decoder_origin_flags {\n    MP_BILIPAI_DECODER_EXPORTED_FRAME_ONLY = 1u << 0,\n    MP_BILIPAI_DECODER_BUFFER_MISMATCH = 1u << 1,\n    MP_BILIPAI_DECODER_HW_CONTEXT_UNKNOWN = 1u << 2,\n    MP_BILIPAI_DECODER_IDS_DISABLED = 1u << 3,\n    MP_BILIPAI_DECODER_SIDE_DATA_UNKNOWN = 1u << 4,\n};\nstruct mp_bilipai_decoder_origin {\n    uint32_t version, flags;\n    uint64_t instance_id, epoch_id, frame_sequence;\n    int32_t codec_id, codec_profile, hw_device_type;\n    uint32_t frame_flags, stream_refusals;\n    uint64_t crop_left, crop_top, crop_right, crop_bottom;\n    // Fresh THIS decoded frame capture, separate from generic owned history.\n    struct mp_bilipai_hdr_snapshot frame_snapshot;\n};\n\n",
+        "old": "    uint32_t max_cll, max_fall; // Zero stays zero, independently of presence.\n};\n\n"
+      },
+      {
+        "count": 1,
+        "new": "    uint8_t bilipai_hdr_current_encoding; // Always UNKNOWN in this implementation.\n    struct mp_bilipai_decoder_origin bilipai_decoder_origin; // Can be history.\n    uint8_t bilipai_decoder_current_reference; // Only direct decoder hook mints.\n",
+        "old": "    uint8_t bilipai_hdr_current_encoding; // Always UNKNOWN in this implementation.\n"
+      },
+      {
+        "count": 1,
+        "new": "    const struct mp_bilipai_hdr_snapshot *b);\n\nvoid mp_image_params_bilipai_invalidate_current(struct mp_image_params *p);\nbool mp_image_bilipai_decoder_origin_equal(\n    const struct mp_bilipai_decoder_origin *a,\n    const struct mp_bilipai_decoder_origin *b);\n",
+        "old": "    const struct mp_bilipai_hdr_snapshot *b);\n\n"
+      },
+      {
+        "count": 1,
+        "new": "struct AVFrame;\n// Caller must be the successful vd_lavc receive boundary; not a generic import.\nvoid mp_image_bilipai_note_decoded_frame(struct mp_image *image,\n    const struct AVFrame *frame, uint64_t instance_id, uint64_t epoch_id,\n    uint64_t frame_sequence, int codec_id, int codec_profile,\n    uint32_t stream_refusals);\n",
+        "old": "struct AVFrame;\n"
       }
     ],
     "path": "video/mp_image.h"
@@ -882,8 +1022,8 @@
     "path": "video/out/vo_gpu.c"
   },
   {
-    "afterBytes": 15802,
-    "afterSha256": "c1456dae6ecb0e7fa2f2a546baff57d49c2cd81de6ccdcde85554ef4b54441cb",
+    "afterBytes": 15768,
+    "afterSha256": "0bb3bd678838e9d81f804af2edeefda20624fe6040eecbaeec8b03f23a57fdcf",
     "beforeBytes": 15204,
     "beforeSha256": "8c61e74c7cecf118660e1dfc573b55c68237fcc0921cd429c76881fcbf6d821e",
     "edits": [
@@ -931,13 +1071,23 @@
         "count": 1,
         "new": "    hw_img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    hw_img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;",
         "old": "    hw_img->params.bilipai_rgb10_current_range = MP_BILIPAI_RGB10_RANGE_UNKNOWN;"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_params_bilipai_invalidate_current(&img->params);\n",
+        "old": "    img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_params_bilipai_invalidate_current(&hw_img->params);\n",
+        "old": "    hw_img->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
       }
     ],
     "path": "video/mp_image_pool.c"
   },
   {
-    "afterBytes": 15958,
-    "afterSha256": "b30db2d5858de413a8fb69bb53c6425209eb20fcdc75bc2a1939bf1f1e472fad",
+    "afterBytes": 15941,
+    "afterSha256": "374b379f5107efd88e5b63ed9ef215a0bbf0741fff351d9e6862680af942ec2e",
     "beforeBytes": 15425,
     "beforeSha256": "ad92a020f4819a3f0b3909e257d7d591bfd7cdd914b7baf28738bfec7f98a3db",
     "edits": [
@@ -955,13 +1105,18 @@
         "count": 1,
         "new": "    // Cached f_swscale out_params must not replace this input frame history.\n    mp_image_params_bilipai_hdr_copy_history(&dst->params, &src->params);\n    ctx->src = src->params;\n    ctx->dst = dst->params;\n",
         "old": "    ctx->src = src->params;\n    ctx->dst = dst->params;\n"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_params_bilipai_invalidate_current(&dst->params);\n",
+        "old": "    dst->params.bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
       }
     ],
     "path": "video/sws_utils.c"
   },
   {
-    "afterBytes": 10387,
-    "afterSha256": "02ea7b0b96816b7e1af29ca9dc8a136fb400be96e13ac9e583155d3ed0f68da9",
+    "afterBytes": 10368,
+    "afterSha256": "641065da0143451bed5cffb93acf57b43d888236635aef949e3d60894723742e",
     "beforeBytes": 10170,
     "beforeSha256": "f9520ed4c127824dd444d450cb054c63b11a20f303e5476e0b7f6411fdf37866",
     "edits": [
@@ -974,8 +1129,106 @@
         "count": 1,
         "new": "    out->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n    if (p->colormatrix || p->colorlevels || p->primaries || p->gamma)",
         "old": "    if (p->colormatrix || p->colorlevels || p->primaries || p->gamma)"
+      },
+      {
+        "count": 1,
+        "new": "    mp_image_params_bilipai_invalidate_current(out);\n",
+        "old": "    out->bilipai_hdr_current_encoding = MP_BILIPAI_HDR_CURRENT_UNKNOWN;\n"
       }
     ],
     "path": "video/filter/vf_format.c"
+  },
+  {
+    "afterBytes": 47471,
+    "afterSha256": "edab9eac5e313ec763adb8bd285a35ee209db6a801f65326427c74f937f1f574",
+    "beforeBytes": 47089,
+    "beforeSha256": "f333a1730570d3a343b94654da4566b1e1cc7de44a537bcb1f7f3f328667ccce",
+    "edits": [
+      {
+        "count": 1,
+        "new": "        struct mp_image *mpi = frame.data;\n        // Keep this decoded frame history across the normalized-format cache.\n        struct mp_image_params this_frame_params = mpi->params;\n",
+        "old": "        struct mp_image *mpi = frame.data;\n"
+      },
+      {
+        "count": 1,
+        "new": "        mpi->params = p->fixed_format;\n        // Generic format equality deliberately ignores origin timeline IDs.\n        // Metadata normalization is not current decoder-reference authority.\n        mp_image_params_bilipai_hdr_copy_history(&mpi->params, &this_frame_params);\n",
+        "old": "        mpi->params = p->fixed_format;\n"
+      }
+    ],
+    "path": "filters/f_decoder_wrapper.c"
+  },
+  {
+    "afterBytes": 57817,
+    "afterSha256": "44fb7de8bd64fc8b31b352f5402eada37046144d64d185d5d4ccd1a2a155b755",
+    "beforeBytes": 52206,
+    "beforeSha256": "4c042a000d24dc093a8ccc60bfeeffa8e231fc7404fec3cf4f52c2e20bc3178a",
+    "edits": [
+      {
+        "count": 1,
+        "new": "#include <stdbool.h>\n#include <stdatomic.h>\n",
+        "old": "#include <stdbool.h>\n"
+      },
+      {
+        "count": 1,
+        "new": "static void uninit_avctx(struct mp_filter *vd);\nstatic uint32_t bilipai_packet_refusals(const AVPacketSideData *side, int count);\n",
+        "old": "static void uninit_avctx(struct mp_filter *vd);\n"
+      },
+      {
+        "count": 1,
+        "new": "                          struct bstr name);\n\n// Existing MPV69 uses C stdatomic atomic_ullong and compare_exchange_strong.\n// Global process-local IDs never recycle: UINT64_MAX is followed by permanent0.\n_Static_assert(sizeof(unsigned long long) == sizeof(uint64_t),\n               \"Decoder IDs require the actual64-bit unsigned long long\");\nstatic atomic_ullong bilipai_decoder_next = 1;\nstatic uint64_t bilipai_decoder_next_id(void)\n{\n    unsigned long long value = atomic_load(&bilipai_decoder_next);\n    while (value) {\n        unsigned long long next = value == UINT64_MAX ? 0 : value + 1;\n        if (atomic_compare_exchange_strong(&bilipai_decoder_next, &value, next))\n            return value;\n    }\n    return 0; // exhaustion is latched; never wrap to an earlier identity.\n}\n",
+        "old": "                          struct bstr name);\n"
+      },
+      {
+        "count": 1,
+        "new": "    AVPacket *avpkt;\n    uint64_t bilipai_decoder_instance, bilipai_decoder_epoch, bilipai_decoder_sequence;\n    uint32_t bilipai_decoder_stream_refusals;\n    bool bilipai_decoder_ids_disabled;\n",
+        "old": "    AVPacket *avpkt;\n"
+      },
+      {
+        "count": 1,
+        "new": "} vd_ffmpeg_ctx;\n\nstatic uint32_t bilipai_decoded_refusals(AVFrameSideData *const *side, int count);\nstatic void bilipai_decoder_observe_context(vd_ffmpeg_ctx *ctx);\n",
+        "old": "} vd_ffmpeg_ctx;\n"
+      },
+      {
+        "count": 1,
+        "new": "        int sent = avcodec_send_packet(avctx, ctx->avpkt);\n        if (sent >= 0)\n            ctx->bilipai_decoder_stream_refusals |=\n                bilipai_packet_refusals(ctx->avpkt->side_data, ctx->avpkt->side_data_elems);\n        int received = avcodec_receive_frame(avctx, ctx->pic);\n        if (received >= 0) {\n            bilipai_decoder_observe_context(ctx);\n            ctx->bilipai_decoder_stream_refusals |=\n                bilipai_decoded_refusals(ctx->pic->side_data, ctx->pic->nb_side_data);\n        }\n",
+        "old": "        avcodec_send_packet(avctx, ctx->avpkt);\n        avcodec_receive_frame(avctx, ctx->pic);\n"
+      },
+      {
+        "count": 1,
+        "new": "        avcodec_flush_buffers(ctx->avctx);\n    }\n\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n",
+        "old": "        avcodec_flush_buffers(ctx->avctx);\n    }\n\n"
+      },
+      {
+        "count": 1,
+        "new": "static void reset_avctx(struct mp_filter *vd)\n{\n    vd_ffmpeg_ctx *ctx = vd->priv;\n\n    ctx->bilipai_decoder_epoch = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_ids_disabled |= !ctx->bilipai_decoder_epoch;\n    // Same-stream refusal history survives seek/reset/fallback; sequence never resets.\n",
+        "old": "static void reset_avctx(struct mp_filter *vd)\n{\n    vd_ffmpeg_ctx *ctx = vd->priv;\n\n"
+      },
+      {
+        "count": 1,
+        "new": "            ctx->hwdec_failed = true;\n    }\n}\n\nstatic uint32_t bilipai_packet_refusals(const AVPacketSideData *side, int count)\n{\n    if (count < 0 || count > 128 || (count && !side))\n        return MP_BILIPAI_HDR_DECODER_METADATA_UNKNOWN;\n    uint32_t flags = 0;\n    for (int n = 0; n < count; n++) {\n        switch (side[n].type) {\n        case AV_PKT_DATA_DOVI_CONF: flags |= MP_BILIPAI_HDR_DOVI_CONFIG_PRESENT; break;\n        case AV_PKT_DATA_ICC_PROFILE: flags |= MP_BILIPAI_HDR_ICC_PRESENT; break;\n        case AV_PKT_DATA_DYNAMIC_HDR10_PLUS: flags |= MP_BILIPAI_HDR_PLUS_PRESENT; break;\n        case AV_PKT_DATA_DYNAMIC_HDR_SMPTE_2094_APP5: flags |= MP_BILIPAI_HDR_APP5_PRESENT; break;\n        default: break;\n        }\n        // Presence survives even when payload contents cannot be trusted.\n        if (side[n].size && !side[n].data)\n            flags |= MP_BILIPAI_HDR_DECODER_METADATA_UNKNOWN;\n    }\n    return flags;\n}\n\nstatic uint32_t bilipai_decoded_refusals(AVFrameSideData *const *side, int count)\n{\n    if (count < 0 || count > 128 || (count && !side))\n        return MP_BILIPAI_HDR_DECODER_METADATA_UNKNOWN;\n    uint32_t flags = 0;\n    for (int n = 0; n < count; n++) {\n        if (!side[n]) { flags |= MP_BILIPAI_HDR_DECODER_METADATA_UNKNOWN; continue; }\n        switch (side[n]->type) {\n        case AV_FRAME_DATA_DYNAMIC_HDR_PLUS: flags |= MP_BILIPAI_HDR_PLUS_PRESENT; break;\n        case AV_FRAME_DATA_DYNAMIC_HDR_VIVID: flags |= MP_BILIPAI_HDR_VIVID_PRESENT; break;\n        case AV_FRAME_DATA_DYNAMIC_HDR_SMPTE_2094_APP5: flags |= MP_BILIPAI_HDR_APP5_PRESENT; break;\n        case AV_FRAME_DATA_DOVI_METADATA: flags |= MP_BILIPAI_HDR_DOVI_METADATA_PRESENT; break;\n        case AV_FRAME_DATA_DOVI_RPU_BUFFER: flags |= MP_BILIPAI_HDR_DOVI_RPU_PRESENT; break;\n        case AV_FRAME_DATA_ICC_PROFILE: flags |= MP_BILIPAI_HDR_ICC_PRESENT; break;\n        default: break;\n        }\n        if (side[n]->size && !side[n]->data)\n            flags |= MP_BILIPAI_HDR_DECODER_METADATA_UNKNOWN;\n    }\n    return flags;\n}\n\nstatic void bilipai_decoder_observe_context(vd_ffmpeg_ctx *ctx)\n{\n    if (!ctx->avctx) return;\n    ctx->bilipai_decoder_stream_refusals |=\n        bilipai_packet_refusals(ctx->avctx->coded_side_data, ctx->avctx->nb_coded_side_data) |\n        bilipai_decoded_refusals(ctx->avctx->decoded_side_data, ctx->avctx->nb_decoded_side_data);\n}\n\n",
+        "old": "            ctx->hwdec_failed = true;\n    }\n}\n\n"
+      },
+      {
+        "count": 1,
+        "new": "    if (ret < 0)\n        handle_err(vd);\n    else {\n        bilipai_decoder_observe_context(ctx);\n        if (pkt)\n            ctx->bilipai_decoder_stream_refusals |=\n                bilipai_packet_refusals(ctx->avpkt->side_data, ctx->avpkt->side_data_elems);\n    }\n",
+        "old": "    if (ret < 0)\n        handle_err(vd);\n"
+      },
+      {
+        "count": 1,
+        "new": "        }\n        return ret;\n    }\n\n    // Latch successful receive facts even if later import rejects this frame.\n    bilipai_decoder_observe_context(ctx);\n    ctx->bilipai_decoder_stream_refusals |=\n        bilipai_decoded_refusals(ctx->pic->side_data, ctx->pic->nb_side_data);\n",
+        "old": "        }\n        return ret;\n    }\n\n"
+      },
+      {
+        "count": 1,
+        "new": "        return AVERROR_BUG;\n    }\n\n    if (ctx->bilipai_decoder_sequence == UINT64_MAX)\n        ctx->bilipai_decoder_ids_disabled = true;\n    else\n        ctx->bilipai_decoder_sequence++;\n    mp_image_bilipai_note_decoded_frame(mpi, ctx->pic,\n        ctx->bilipai_decoder_ids_disabled ? 0 : ctx->bilipai_decoder_instance,\n        ctx->bilipai_decoder_ids_disabled ? 0 : ctx->bilipai_decoder_epoch,\n        ctx->bilipai_decoder_ids_disabled ? 0 : ctx->bilipai_decoder_sequence,\n        avctx->codec_id, avctx->profile, ctx->bilipai_decoder_stream_refusals);\n    ctx->bilipai_decoder_stream_refusals |=\n        mpi->params.bilipai_decoder_origin.stream_refusals;\n",
+        "old": "        return AVERROR_BUG;\n    }\n\n"
+      },
+      {
+        "count": 1,
+        "new": "    ctx->codec = codec;\n    ctx->bilipai_decoder_instance = bilipai_decoder_next_id();\n    ctx->bilipai_decoder_epoch = 0;\n    ctx->bilipai_decoder_sequence = 0;\n    ctx->bilipai_decoder_stream_refusals = 0;\n    ctx->bilipai_decoder_ids_disabled = !ctx->bilipai_decoder_instance;\n",
+        "old": "    ctx->codec = codec;\n"
+      }
+    ],
+    "path": "video/decode/vd_lavc.c"
   }
 ]

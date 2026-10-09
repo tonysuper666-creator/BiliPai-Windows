@@ -199,12 +199,12 @@ def main():
         if status.get('variant') != variant or descriptor['artifact']['fileName'] != variant + '-x64.zip' or descriptor['sourceBundle']['fileName'] != variant + '-source-materials.tar.gz':
             raise DeliveryError('Selected source variant and actual output asset names differ')
         if variant == 'bilipai-veyra-rtx-present-v1':
-            expected_presentation = {'filterSourceManifestSha256': '65ab7561de49f6ac2788bb52409d2735ac1a570eadd738ecdb82bea00d531c7b', 'presentationProtocolVersion': 2, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': 'cd22e20fea9e9daf7979d5b3e19ba6d08fc6b0dc1c6eb032fbb8045257be2de9', 'sourcePatchHelperSha256': '87f84b84bc9abffd33999619c6d6b0352a110c8885a4d19832e733ffb092f6ac'}
-            if any(receipt.get(key) != value or descriptor.get(key) != value for key, value in expected_presentation.items()) or len(receipt.get('sourceGraph', [])) != 20 or len(receipt.get('filterSourceFiles', [])) != 5:
+            expected_presentation = {'filterSourceManifestSha256': '6a25a87cbc6df819125a61eeed32578f3c8b642247b499305fdca186c22e1863', 'presentationProtocolVersion': 2, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': 'da42b4bfa8ac0441cde4c16267864efd5968ad2b2f6cd719f8fd6bba5b23f3fc', 'sourcePatchHelperSha256': '5d7e59765343e0748bf91d0bad98229e330b40cf852b37b4462ebeccf9b7ce44'}
+            if any(receipt.get(key) != value or descriptor.get(key) != value for key, value in expected_presentation.items()) or len(receipt.get('sourceGraph', [])) != 22 or len(receipt.get('filterSourceFiles', [])) != 5:
                 raise DeliveryError('Future presentation delivery needs its actual complete source graph and protocol')
             # Compare every actual receipt target with whole-byte pinned source inputs.
             inputs = repository_root / 'desktop/third-party/libmpv/build/rtx-present-v1'
-            materials = {'manifest': ('bilipai-rtx-presentation-source-manifest.json', '65ab7561de49f6ac2788bb52409d2735ac1a570eadd738ecdb82bea00d531c7b'), 'upstream': ('presentation-edits.json', 'cd22e20fea9e9daf7979d5b3e19ba6d08fc6b0dc1c6eb032fbb8045257be2de9'), 'registration': ('filter-registration-edits.json', '59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf')}
+            materials = {'manifest': ('bilipai-rtx-presentation-source-manifest.json', '6a25a87cbc6df819125a61eeed32578f3c8b642247b499305fdca186c22e1863'), 'upstream': ('presentation-edits.json', 'da42b4bfa8ac0441cde4c16267864efd5968ad2b2f6cd719f8fd6bba5b23f3fc'), 'registration': ('filter-registration-edits.json', '59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf')}
             measured = {}
             for label, (leaf, digest) in materials.items():
                 data = owned_file(inputs.resolve(strict=True), leaf).read_bytes()
@@ -214,7 +214,7 @@ def main():
             manifest, upstream, registration = measured['manifest'], measured['upstream'], measured['registration']
             nvidia = manifest['originalNvidiaPatch']
             graph = [{'path': nvidia['sourcePath'], 'beforeSha256': nvidia['originalSha256'], 'afterSha256': nvidia['patchedSha256']}] + [{'path': row['path'], 'beforeSha256': row['beforeSHA256'], 'afterSha256': row['afterSHA256']} for row in registration] + [{'path': row['path'], 'beforeSha256': row['beforeSha256'], 'afterSha256': row['afterSha256']} for row in upstream]
-            if len(graph) != 20 or len({row['path'] for row in graph}) != 20 or receipt.get('sourceGraph') != graph or receipt.get('filterSourceFiles') != manifest['sourceFiles'] or type(receipt.get('presentationProtocolVersion')) is not int:
+            if len(graph) != 22 or len({row['path'] for row in graph}) != 22 or receipt.get('sourceGraph') != graph or receipt.get('filterSourceFiles') != manifest['sourceFiles'] or type(receipt.get('presentationProtocolVersion')) is not int:
                 raise DeliveryError('Actual presentation delivery source graph or private source closure differs')
         artifact = owned_file(directory, descriptor['artifact']['fileName'])
         bundle = owned_file(directory, descriptor['sourceBundle']['fileName'])
