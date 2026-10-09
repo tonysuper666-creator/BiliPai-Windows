@@ -285,7 +285,7 @@ def print_nested_build_failure_logs(workspace, workspace_identity, output, outpu
         if not stat.S_ISREG(log_stat.st_mode) or log_stat.st_nlink != 1:
             return {'state': 'UNSAFE_DIAGNOSTIC_LOG', 'files': 0, 'bytes': 0}
         os.lseek(log_fd, max(0, log_stat.st_size - file_limit), os.SEEK_SET)
-        markers = re.findall(rb'([A-Za-z0-9][A-Za-z0-9._-]{0,63})-prefix/src/\1-stamp/\1-(?:build|configure|install)', os.read(log_fd, file_limit))
+        markers = re.findall(rb'([A-Za-z0-9][A-Za-z0-9._-]{0,63})-prefix/src/\1-stamp/\1-(?:build|configure|install|bilipai-capture-host-(?:prebuild|config))', os.read(log_fd, file_limit))
         failed_name = markers[-1].decode('ascii') if markers else None
         candidates, seen, partial = [], set(), False
         for location in (('build-x64', 'packages'), ('build-x64', 'toolchain'), ('build-x64', 'toolchain', 'llvm')):
@@ -315,7 +315,7 @@ def print_nested_build_failure_logs(workspace, workspace_identity, output, outpu
                                 if index >= 256 or scanned >= 512:
                                     partial = True
                                     break
-                                if re.fullmatch(re.escape(name) + r'-(?:build|configure|install)-[A-Za-z0-9._-]{1,64}\.log', entry.name):
+                                if re.fullmatch(re.escape(name) + r'-(?:build|configure|install|bilipai-capture-host-(?:prebuild|config))-[A-Za-z0-9._-]{1,64}\.log', entry.name):
                                     kind = 0 if entry.name.endswith('-err.log') else 1
                                     add_candidate((*stamp_parts, entry.name), name, kind)
                     finally:
