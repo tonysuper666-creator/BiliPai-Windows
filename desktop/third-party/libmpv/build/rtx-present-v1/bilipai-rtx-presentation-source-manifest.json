@@ -23,7 +23,7 @@
   "presentationFeedbackScope": "Native queued acceptance and conditional exact FrameStatistics ID match; no app activation or quality measurement",
   "presentationProperty": "bilipai-rtx-presentation",
   "registrationEditsFileName": "filter-registration-edits.json",
-  "registrationEditsSha256": "59d1c4ffbb4506d9d81586d6146ba4a54a0882557f1c8861a858cbe24cd2c5cf",
+  "registrationEditsSha256": "a40ad24f7f9ef7c22c1c6b27ef28cca6607c6b353ce5d36c5a8b215688ec18af",
   "schema": 2,
   "sourceCommit": "69e63f425a531f814431fba12750bdb3721357f2",
   "sourceFiles": [
@@ -61,6 +61,90 @@
       "sha256": "b571c188323313981fe4c84d78e90c543ef4fee6ab75497eca406db400becc55",
       "sourcePath": "desktop/native/mpv-rtx-bridge/bilipai_rtx_frame_provenance.h",
       "targetPath": "video/bilipai_rtx_frame_provenance.h"
+    },
+    {
+      "bytes": 37756,
+      "fileName": "bilipai_hdr_d3d11.c",
+      "sha256": "2117780828c429e7c1758fabec01e9093994d8fc4c877ff76693e97b753013fc",
+      "sourcePath": "desktop/native/veyra-hdr-d3d11/bilipai_hdr_d3d11.c",
+      "targetPath": "video/filter/veyra-hdr-d3d11/bilipai_hdr_d3d11.c"
+    },
+    {
+      "bytes": 12725,
+      "fileName": "bilipai_hdr_d3d11.h",
+      "sha256": "f3f9e412634a06ea2d57f2385f83f1752c96c3e39d17fe8d95236c82db5a7eb7",
+      "sourcePath": "desktop/native/veyra-hdr-d3d11/bilipai_hdr_d3d11.h",
+      "targetPath": "video/filter/veyra-hdr-d3d11/bilipai_hdr_d3d11.h"
+    },
+    {
+      "bytes": 16238,
+      "fileName": "bilipai_hdr_video_sr_sources.h",
+      "sha256": "ab68fe368080ce9904dd1b084abf8219ea12995d2a551bbf11aa25b88c2f2cdf",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/include/bilipai_hdr_video_sr_sources.h",
+      "targetPath": "video/filter/veyra-hdr-video-sr/include/bilipai_hdr_video_sr_sources.h"
+    },
+    {
+      "bytes": 7655,
+      "fileName": "bilipai_hdr_p010_sources.h",
+      "sha256": "b7eecdda6d733f4c9c198e21684fd2a429c70175d048edab17a53a0725f727c7",
+      "sourcePath": "desktop/native/veyra-hdr-p010-input/bilipai_hdr_p010_sources.h",
+      "targetPath": "video/filter/veyra-hdr-p010-input/bilipai_hdr_p010_sources.h"
+    },
+    {
+      "bytes": 3163,
+      "fileName": "bilipai_hdr_p010_bindings.h",
+      "sha256": "c5b68c7c9a35e7ab638d488e640d2b32330e641a3887f7cea49a9b17ff3d814a",
+      "sourcePath": "desktop/native/veyra-hdr-p010-input/bilipai_hdr_p010_bindings.h",
+      "targetPath": "video/filter/veyra-hdr-p010-input/bilipai_hdr_p010_bindings.h"
+    },
+    {
+      "bytes": 2744,
+      "fileName": "BiliPaiHdrColor.hlsli",
+      "sha256": "20a435b4230bc6c5468b95c267f2ee9c84c749959fb059c44009bc3a3fe1b163",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrColor.hlsli",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrColor.hlsli"
+    },
+    {
+      "bytes": 596,
+      "fileName": "BiliPaiHdrDecodePq.hlsl",
+      "sha256": "8925de233bf2952173bf70dc7872992b0e9252153d152f8cae37e7a9f7f1ce1f",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrDecodePq.hlsl",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrDecodePq.hlsl"
+    },
+    {
+      "bytes": 622,
+      "fileName": "BiliPaiHdrProxyEncode.hlsl",
+      "sha256": "554b53a89a9e57b03628ce821abdc3e2bf87c63796b76f0784105e6b3b76fcf3",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrProxyEncode.hlsl",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrProxyEncode.hlsl"
+    },
+    {
+      "bytes": 953,
+      "fileName": "BiliPaiHdrVideoSrRestore.hlsl",
+      "sha256": "ad2fbfc064d14fb9214dab4a303db7f26809e27cac58b749e9959cc0b29b9a16",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrVideoSrRestore.hlsl",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrVideoSrRestore.hlsl"
+    },
+    {
+      "bytes": 622,
+      "fileName": "BiliPaiHdrEncodePq.hlsl",
+      "sha256": "e3a228bc5fc2ad9457b721223327d178f4a43518756789b27a550eeadeda533f",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/shaders/BiliPaiHdrEncodePq.hlsl",
+      "targetPath": "video/filter/veyra-hdr-video-sr/shaders/BiliPaiHdrEncodePq.hlsl"
+    },
+    {
+      "bytes": 3947,
+      "fileName": "BiliPaiHdrP010ToBase.hlsl",
+      "sha256": "01c6bd26dc3ba52db6c3b1793b5ec55a9b68d8043499fbdb6b3d443f28b119b7",
+      "sourcePath": "desktop/native/veyra-hdr-p010-input/BiliPaiHdrP010ToBase.hlsl",
+      "targetPath": "video/filter/veyra-hdr-p010-input/BiliPaiHdrP010ToBase.hlsl"
+    },
+    {
+      "bytes": 35149,
+      "fileName": "LICENSE",
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "sourcePath": "desktop/native/veyra-hdr-video-sr/LICENSE",
+      "targetPath": "video/filter/veyra-hdr-video-sr/LICENSE"
     }
   ],
   "tokenProtocol": 2,

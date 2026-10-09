@@ -20,7 +20,7 @@
     }
   ],
   "bridgeGpl3LicenseSha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
-  "buildPatchHelperSha256": "172ab291733578c6057fc9cf61c9e53dff0f2800cb7c0fb6a0604529c3be88f6",
+  "buildPatchHelperSha256": "422e17dc5c9de4fba9a8d2d745d58cc4bf020cae12c5cdfd068532d1cd571855",
   "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
   "expectedPatchedRecipeSha256": {
     "build-recipes/packages/ffmpeg.cmake": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
@@ -28,7 +28,7 @@
   },
   "ffmpegCommit": "9fc8c785e2747c87121ec28f8f10ceab0562384b",
   "filterName": "bilipai-rtx",
-  "filterSourceManifestSha256": "49d4932cd731d36440c4bc58bec92811a5c155fffdb70158ad54f1485d619533",
+  "filterSourceManifestSha256": "aaf557d7ccfed93d52fb2cbd9a0a40101bdce276894fdab44cb0adff88562363",
   "nativePatchSha256": "e3bf1eada6100b98adf34d3f6a67685104f3cc7d986fa35cabb14fea1afa2bd7",
   "originalDllSha256": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
   "originalNativeSourceSha256": "9514d40109894e0bee4e4a2aa343a4e4e4d2368aee3729959180bf5f92d486c3",

@@ -16,8 +16,8 @@
   {
     "path": "meson.build",
     "before": "                     'video/filter/vf_d3d11vpp.c')",
-    "after": "                     'video/filter/vf_d3d11vpp.c')\n    if features['d3d11']\n        sources += files('video/filter/vf_bilipai_rtx.c',\n                         'video/filter/bilipai_rtx_mpv_bridge.c')\n        dependencies += [cc.find_library('d3d12'),\n                         cc.find_library('d3dcompiler'),\n                         cc.find_library('dxgi'),\n                         cc.find_library('dxguid')]\n    endif",
+    "after": "                     'video/filter/vf_d3d11vpp.c')\n    if features['d3d11']\n        sources += files('video/filter/vf_bilipai_rtx.c',\n                         'video/filter/bilipai_rtx_mpv_bridge.c',\n                         'video/filter/veyra-hdr-d3d11/bilipai_hdr_d3d11.c')\n        dependencies += [cc.find_library('d3d12'),\n                         cc.find_library('d3dcompiler'),\n                         cc.find_library('dxgi'),\n                         cc.find_library('dxguid')]\n    endif",
     "beforeSHA256": "7b7e1059fbea9e6a46de8e5d8f7486af41850b4c1fcb77e9cd6b84525bccbbb3",
-    "afterSHA256": "d13fd0b0dc4075712507042ff16b590ad28a9947030f4402f105beea0e03e445"
+    "afterSHA256": "fff5dcd1b9f1f0026e09906d5a20e3476f308ad66281426dc4f385d0420b2a7e"
   }
 ]
