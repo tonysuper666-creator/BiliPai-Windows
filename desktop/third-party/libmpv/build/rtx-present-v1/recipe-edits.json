@@ -56,6 +56,37 @@
       "staticForwardEqualsFinal": true,
       "staticInverseEqualsCompleteFixedOriginal": true,
       "targetPath": "build-recipes/packages/ffmpeg.cmake"
+    },
+    {
+      "afterBytes": 1313,
+      "afterSha256Bytes": "a044e94b1a06e997a858533cfa2cf489764d49c806f06588cc8d13b21747e671",
+      "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/libvpl.cmake",
+      "beforeBytes": 918,
+      "beforeSha256Bytes": "92eed21c261ee9a500f8e9da4fe934f4192093364fbf9fa6df54c90718ebadc7",
+      "identity": "fixed-build-libvpl-recipe",
+      "rawEdits": [
+        {
+          "count": 1,
+          "new": "    GIT_TAG 674d015bcb294bc39fa276e99a652ea045423e82\n    GIT_RESET 674d015bcb294bc39fa276e99a652ea045423e82\n",
+          "offsetBytesAtSequentialStage": 181,
+          "old": "    GIT_TAG main\n"
+        },
+        {
+          "count": 1,
+          "new": "    UPDATE_COMMAND \"\"\n    PATCH_COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-libvpl-mingw-compat.py patch <SOURCE_DIR> ${CMAKE_BINARY_DIR}/bilipai-libvpl-compat-source\n",
+          "offsetBytesAtSequentialStage": 289,
+          "old": "    UPDATE_COMMAND \"\"\n"
+        },
+        {
+          "count": 1,
+          "new": "    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install\n    COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-libvpl-mingw-compat.py after-install <SOURCE_DIR> ${CMAKE_BINARY_DIR}/bilipai-libvpl-compat-source\n",
+          "offsetBytesAtSequentialStage": 975,
+          "old": "    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install\n"
+        }
+      ],
+      "staticForwardEqualsFinal": true,
+      "staticInverseEqualsCompleteFixedOriginal": true,
+      "targetPath": "build-recipes/packages/libvpl.cmake"
     }
   ]
 }

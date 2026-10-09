@@ -104,6 +104,48 @@ def require_tag(base, tag, commit, token):
         raise DeliveryError('Pre-existing lightweight source tag does not identify this build')
 
 
+def report_source_failure(error):
+    # Only bounded fixed SOURCE labels/line numbers are emitted. Never inspect
+    # exception text/arguments, frame values, response bodies or environment.
+    # This aids a later failed delivery; it does not qualify or activate assets.
+    try:
+        tool_root = Path(__file__).resolve().parent
+        trusted = {
+            os.path.normcase(os.path.abspath(str(tool_root / leaf))): label
+            for leaf, label in (
+                ('upload-mpv-rtx-core-draft.py', 'UPLOADER'),
+                ('import-host-llvm-source-snapshot.py', 'IMPORTER'),
+                ('export-host-llvm-source-snapshot.py', 'EXPORTER'),
+            )
+        }
+        trace, scanned, clipped = error.__traceback__, 0, False
+        frames = []
+        while trace is not None and scanned < 64:
+            scanned += 1
+            source = trusted.get(os.path.normcase(os.path.abspath(
+                trace.tb_frame.f_code.co_filename)))
+            line = trace.tb_lineno
+            if source is not None and type(line) is int and 1 <= line <= 1000000:
+                frames.append({'source': source, 'line': line})
+                if len(frames) > 8:
+                    frames.pop(0)
+                    clipped = True
+            trace = trace.tb_next
+        record = {'kind': 'BILIPAI_DRAFT_FAILURE_SOURCE_LOCATIONS', 'schema': 1,
+                  'frames': frames, 'scannedFrames': scanned,
+                  'tracebackTruncated': trace is not None,
+                  'retainedFramesClipped': clipped}
+        print('Draft failure SOURCE locations: '
+              + json.dumps(record, sort_keys=True, separators=(',', ':')),
+              file=sys.stderr)
+    except Exception:
+        # Diagnostic failure must not replace the original failure/exit path.
+        try:
+            print('Draft failure SOURCE locations unavailable.', file=sys.stderr)
+        except Exception:
+            pass
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, required=True)
@@ -600,4 +642,6 @@ if __name__ == '__main__':
     except Exception as error:
         message = str(error) if isinstance(error, DeliveryError) else type(error).__name__
         print('Draft candidate delivery stopped: ' + message, file=sys.stderr)
+        if not isinstance(error, DeliveryError):
+            report_source_failure(error)
         raise SystemExit(1)

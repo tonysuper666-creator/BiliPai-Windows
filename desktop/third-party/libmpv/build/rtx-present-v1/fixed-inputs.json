@@ -24,11 +24,23 @@
   "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
   "expectedPatchedRecipeSha256": {
     "build-recipes/packages/ffmpeg.cmake": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
+    "build-recipes/packages/libvpl.cmake": "a044e94b1a06e997a858533cfa2cf489764d49c806f06588cc8d13b21747e671",
     "build-recipes/packages/mpv.cmake": "8e8e5a4fff3b1be48b30b0b18b56640930a5fddd494587922b6aa774512accd2"
   },
   "ffmpegCommit": "9fc8c785e2747c87121ec28f8f10ceab0562384b",
   "filterName": "bilipai-rtx",
   "filterSourceManifestSha256": "25ce2a0880ef210dd64c6945bbdedcf4d3896ded20e9cac0a138ba2a122f0b3d",
+  "libvplCompatibility": {
+    "afterBytes": 1224,
+    "afterSha256": "f49130c9a394c16395788c5133fab49e2f2d95973460aa41d1208f1146fe475b",
+    "beforeBytes": 1203,
+    "beforeSha256": "bb1913bed7c1d6ab7cd3fcc12e3d53fa679d6ffca7425186da5c742b1d82e433",
+    "helperSha256": "0e045699089718612dd48feec9e92a9039aac8377458e21f0fc2aac6cc287d11",
+    "helperSourcePath": "desktop/tools/native/patch-libvpl-mingw-compat.py",
+    "sourceCommit": "674d015bcb294bc39fa276e99a652ea045423e82",
+    "sourceTree": "7f4e8143a3960b3dfd2f525842a69953c1ff5ca5",
+    "targetPath": "libvpl/src/windows/mfx_dispatcher_defs.h"
+  },
   "nativePatchSha256": "e3bf1eada6100b98adf34d3f6a67685104f3cc7d986fa35cabb14fea1afa2bd7",
   "originalDllSha256": "673e6397920ab64a9c5b3a618f7f16d38854efe72b58665f1f84e4e873b763a4",
   "originalNativeSourceSha256": "9514d40109894e0bee4e4a2aa343a4e4e4d2368aee3729959180bf5f92d486c3",

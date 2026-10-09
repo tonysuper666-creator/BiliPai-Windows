@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Explicit RTX core MPV bridge source build. No SDK/runtime, release, UI or GPU run.
 
-mpv, FFmpeg, recipes and container are fixed. Other historical recipe dependencies
+mpv, FFmpeg, recipes and container are fixed; present-v1 also pins libvpl.
+Other historical recipe dependencies
 remain floating and are recorded from the actual build; this is not reproducible.
 """
 import argparse
@@ -34,6 +35,48 @@ def file_sha(path):
 
 def write_json(path, value):
     path.write_text(json.dumps(value, sort_keys=True, indent=2) + '\n', encoding='utf-8')
+
+def checked_libvpl_materials(directory, spec):
+    # Exact public source/material bytes, not QSV/GPU execution evidence.
+    if not stat.S_ISDIR(directory.lstat().st_mode) or directory.is_symlink():
+        raise RuntimeError('Retained libvpl material directory changed')
+    names = {'mfx_dispatcher_defs.before.h', 'mfx_dispatcher_defs.after.h',
+             'patch-receipt.json', 'install-receipt.json'}
+    if {p.name for p in directory.iterdir()} != names:
+        raise RuntimeError('Retained libvpl material inventory changed')
+    materials = {}
+    for name in sorted(names):
+        fd = os.open(directory / name, os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0))
+        try:
+            first = os.fstat(fd)
+            if not stat.S_ISREG(first.st_mode) or not 0 < first.st_size <= 65536:
+                raise RuntimeError('Retained libvpl material extent changed')
+            with os.fdopen(fd, 'rb', closefd=False) as source:
+                raw = source.read(65537)
+            last = os.fstat(fd)
+            if (first.st_dev, first.st_ino, first.st_size, first.st_mtime_ns) != (last.st_dev, last.st_ino, last.st_size, last.st_mtime_ns) or len(raw) != first.st_size:
+                raise RuntimeError('Retained libvpl material changed during read')
+            materials[name] = raw
+        finally:
+            os.close(fd)
+    before, after = materials['mfx_dispatcher_defs.before.h'], materials['mfx_dispatcher_defs.after.h']
+    old, new = b'#if _MSC_VER < 1400\n', b'#if defined(_MSC_VER) && _MSC_VER < 1400\n'
+    if (len(before) != spec['beforeBytes'] or len(after) != spec['afterBytes']
+            or sha(before) != spec['beforeSha256'] or sha(after) != spec['afterSha256']
+            or before.count(old) != 1 or after.count(new) != 1
+            or before.replace(old, new) != after or after.replace(new, old) != before):
+        raise RuntimeError('Retained complete libvpl header relation changed')
+    expected = {'schema': 1, 'kind': 'BILIPAI_LIBVPL_MINGW_COMPAT_HEADER_SOURCE',
+                'sourceCommit': spec['sourceCommit'], 'sourceTree': spec['sourceTree'],
+                'targetPath': spec['targetPath'], 'beforeSha256': spec['beforeSha256'],
+                'afterSha256': spec['afterSha256'], 'helperSha256': spec['helperSha256'],
+                'patchCount': 1, 'qsvRuntimeTested': False, 'gpuExecuted': False}
+    for name, state in [('patch-receipt.json', 'PATCH_APPLIED_BEFORE_CONFIGURE'),
+                        ('install-receipt.json', 'AFTER_REAL_LIBVPL_INSTALL_BEFORE_RECIPE_CLEANUP')]:
+        canonical = (json.dumps(dict(expected, state=state), sort_keys=True, indent=2) + '\n').encode()
+        if materials[name] != canonical:
+            raise RuntimeError('Retained libvpl install/source witness changed')
+    return json.loads(materials['install-receipt.json']), materials
 
 def download(record, directory):
     destination = directory / record['fileName']
@@ -455,7 +498,7 @@ def main():
     # Optional absent parameter retains the original complete cold path.
     # Explicit material is fully verified before outputs/download/build.
     fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
-    if presentation and sha(fixed_raw) != 'd66e52908daf11424aa3f31febe1ee79d45ac2d9bffdd1650e4b81489a9d2abb':
+    if presentation and sha(fixed_raw) != '06b844f3eb4ade101267efd08cad9d1c3aebf887237e98684b6a935ddee7efe2':
         raise RuntimeError('Fixed presentation producer inputs changed')
     fixed = json.loads(fixed_raw)
     if fixed.get('variant') != variant:
@@ -500,10 +543,19 @@ def main():
         downloaded = {row['kind']: download(row, archives) for row in fixed['archives']}
         recipes = extract_fixed_recipe(downloaded['recipes'], workspace, fixed['recipeArchivePrefix'])
         recipe_raw = (inputs / 'recipe-edits.json').read_bytes()
-        if presentation and sha(recipe_raw) != '272157133a64c03e4425df499e3270c4097ccfa1d6e8912e3ab4a86224f7e134':
+        if presentation and sha(recipe_raw) != 'f6348efd81b77ba5fb97eff7efd16828eb27f6d54f1cc7d32fe46519dacf7532':
             raise RuntimeError('Complete presentation build recipe edits changed')
         edits = json.loads(recipe_raw)
         apply_recipes(recipes, edits['targets'])
+        libvpl_spec = None
+        if presentation:
+            libvpl_spec = fixed['libvplCompatibility']
+            if libvpl_spec != {'afterBytes': 1224, 'afterSha256': 'f49130c9a394c16395788c5133fab49e2f2d95973460aa41d1208f1146fe475b', 'beforeBytes': 1203, 'beforeSha256': 'bb1913bed7c1d6ab7cd3fcc12e3d53fa679d6ffca7425186da5c742b1d82e433', 'helperSha256': '0e045699089718612dd48feec9e92a9039aac8377458e21f0fc2aac6cc287d11', 'helperSourcePath': 'desktop/tools/native/patch-libvpl-mingw-compat.py', 'sourceCommit': '674d015bcb294bc39fa276e99a652ea045423e82', 'sourceTree': '7f4e8143a3960b3dfd2f525842a69953c1ff5ca5', 'targetPath': 'libvpl/src/windows/mfx_dispatcher_defs.h'}:
+                raise RuntimeError('Reviewed libvpl compatibility source contract changed')
+            libvpl_helper = (ROOT / libvpl_spec['helperSourcePath']).read_bytes()
+            if sha(libvpl_helper) != libvpl_spec['helperSha256']:
+                raise RuntimeError('Reviewed libvpl compatibility helper changed')
+            (recipes / 'packages/bilipai-libvpl-mingw-compat.py').write_bytes(libvpl_helper)
         # HOST LLVM is one common recipe slice, independent of the MPV filter variant.
         # Its source identity is not rewritten to pretend it is presentation MPV.
         snapshot_inputs_path = ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json'
@@ -707,6 +759,11 @@ def main():
         dll_sha = sha(dll)
         if dll_sha == fixed['originalDllSha256']:
             raise RuntimeError('The original unpatched DLL is not a patched candidate')
+        libvpl_install_receipt = None
+        libvpl_materials = None
+        if presentation:
+            libvpl_material_directory = build / 'bilipai-libvpl-compat-source'
+            libvpl_install_receipt, libvpl_materials = checked_libvpl_materials(libvpl_material_directory, libvpl_spec)
         inventory = dependency_inventory(sources)
         if import_plan is not None:
             original_source = import_plan['manifest']['actualSourceBuildBinding']['prebuild']
@@ -723,6 +780,15 @@ def main():
             source_tar.add(archives, arcname='fixed-archives')
             source_tar.add(recipes, arcname='modified-build-recipes', filter=without_git)
             source_tar.add(sources, arcname='actual-dependency-worktrees', filter=without_git)
+            if libvpl_materials is not None:
+                # Cleanup restores the checkout; these complete patched header
+                # materials were separately verified after the real install.
+                for material_name, material_raw in sorted(libvpl_materials.items()):
+                    info = tarfile.TarInfo('actual-libvpl-patched-source/' + material_name)
+                    info.size = len(material_raw)
+                    info.mode = 0o600
+                    import io
+                    source_tar.addfile(info, io.BytesIO(material_raw))
             source_tar.add(inputs, arcname='ownrepo-build-inputs')
             source_tar.add(ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json', arcname='shared-host-llvm-snapshot-inputs.json')
             source_tar.add(Path(__file__), arcname='ownrepo-build-mpv-runtime.py')
@@ -767,6 +833,8 @@ def main():
             presentation_identity = {'presentationProtocolVersion': 2, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': sha(upstream_raw), 'sourcePatchHelperSha256': sha(helper)}
             receipt.update(presentation_identity)
             receipt['sourceGraph'] = source_receipt['sourceGraph']
+            receipt['sourceMaterialScope'] = 'Fixed archives, altered recipes, dependency worktrees after cleanup, and separately retained patched libvpl header/install witness; excluding .git'
+            receipt['libvplCompatibilitySource'] = libvpl_install_receipt
         receipt_bytes = (json.dumps(receipt, sort_keys=True, indent=2) + '\n').encode()
         catalog_path = ROOT / 'desktop/third-party/libmpv/SOURCES.json'
         catalog = json.loads(catalog_path.read_text(encoding='utf-8-sig'))
