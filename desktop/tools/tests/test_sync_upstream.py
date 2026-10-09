@@ -35,6 +35,83 @@ class ReleasePolicyTests(unittest.TestCase):
             with self.assertRaises(sync.UpdateError):
                 sync.latest_release()
 
+    @staticmethod
+    def release_page(first_id, count=100, published_at="2026-08-01T00:00:00Z"):
+        return [{"id": release_id, "tag_name": f"v-fixture-{release_id}",
+                 "published_at": published_at, "prerelease": False}
+                for release_id in range(first_id, first_id + count)]
+
+    def test_scans_all_four_release_pages_before_selecting_latest_alpha(self):
+        pages = [self.release_page(1), self.release_page(101), self.release_page(201), self.release_page(301, 35)]
+        candidate = pages[3][0]
+        candidate.update(tag_name="v0.3.3-alpha.1", published_at="2026-10-08T15:00:00Z", prerelease=True)
+        pages[3][-1].update(published_at="2026-10-09T15:00:00Z", draft=True)
+        with patch.object(sync, "request_json", side_effect=pages) as fetch:
+            self.assertIs(sync.latest_release(), candidate)
+        self.assertEqual([entry.args[0] for entry in fetch.call_args_list],
+                         [f"releases?per_page=100&page={page}" for page in range(1, 5)])
+
+    def test_full_final_release_page_requires_the_empty_terminal_page(self):
+        first = self.release_page(1)
+        with patch.object(sync, "request_json", side_effect=[first, []]) as fetch:
+            self.assertIs(sync.latest_release(), first[-1])
+        self.assertEqual([entry.args[0] for entry in fetch.call_args_list],
+                         ["releases?per_page=100&page=1", "releases?per_page=100&page=2"])
+
+    def test_offset_and_fractional_publication_times_compare_by_instant_then_id(self):
+        releases = [
+            {"id": 99, "tag_name": "earlier-fraction-high-id", "published_at": "2026-10-09T11:30:00.1000001+02:00"},
+            {"id": 2, "tag_name": "later-fraction", "published_at": "2026-10-09T09:30:00.1000002Z"},
+            {"id": 3, "tag_name": "same-instant-higher-id", "published_at": "2026-10-09T04:30:00.100000200-05:00"},
+        ]
+        with patch.object(sync, "request_json", return_value=releases):
+            self.assertIs(sync.latest_release(), releases[2])
+
+    def test_invalid_later_page_never_returns_the_first_page_candidate(self):
+        valid = {"id": 101, "tag_name": "later", "published_at": "2026-10-09T10:00:00Z"}
+        invalid = [
+            {"message": "not a release page"}, [dict(valid)] * 101, [None],
+            [{**valid, "id": True}], [{**valid, "id": 0}],
+            [{**valid, "draft": "false"}], [{**valid, "prerelease": "true"}],
+            [{**valid, "tag_name": 17}], [{**valid, "published_at": []}],
+            [{**valid, "published_at": "2026-13-01T10:00:00Z"}],
+            [{**valid, "published_at": "2026-10-09T10:00:00"}],
+            [{**valid, "published_at": "2026-10-09T10:00:00+00:60"}],
+            [{**valid, "published_at": "2026-10-09T10:00:00+24:00"}],
+        ]
+        for bad_page in invalid:
+            with self.subTest(bad_page=bad_page), patch.object(sync, "request_json", side_effect=[self.release_page(1), bad_page]):
+                with self.assertRaises(sync.UpdateError):
+                    sync.latest_release()
+
+    def test_repeated_full_release_page_is_not_a_complete_scan(self):
+        first = self.release_page(1)
+        with patch.object(sync, "request_json", side_effect=[first, first]) as fetch:
+            with self.assertRaisesRegex(sync.UpdateError, "repeated release ID"):
+                sync.latest_release()
+        self.assertEqual(fetch.call_count, 2)
+
+    def test_overlapping_release_id_on_short_later_page_fails(self):
+        first = self.release_page(1)
+        overlap = {**first[-1], "published_at": "2026-10-09T10:00:00Z"}
+        with patch.object(sync, "request_json", side_effect=[first, [overlap]]):
+            with self.assertRaisesRegex(sync.UpdateError, "repeated release ID"):
+                sync.latest_release()
+
+    def test_full_pages_exhausting_budget_never_claim_a_complete_scan(self):
+        pages = [self.release_page(1), self.release_page(101)]
+        with patch.object(sync, "MAX_RELEASE_PAGES", 2), patch.object(sync, "request_json", side_effect=pages) as fetch:
+            with self.assertRaisesRegex(sync.UpdateError, "page budget"):
+                sync.latest_release()
+        self.assertEqual(fetch.call_count, 2)
+
+    def test_later_request_failure_never_returns_partial_candidates(self):
+        failure = sync.UpdateError("fixture release page request failed")
+        with patch.object(sync, "request_json", side_effect=[self.release_page(1), failure]) as fetch:
+            with self.assertRaisesRegex(sync.UpdateError, "fixture release page request failed"):
+                sync.latest_release()
+        self.assertEqual(fetch.call_count, 2)
+
     def test_annotated_tag_resolves_to_commit_not_tag_object(self):
         with patch.object(sync, "request_json", side_effect=[
             {"object": {"type": "tag", "sha": OLD}}, {"object": {"type": "commit", "sha": NEW}}

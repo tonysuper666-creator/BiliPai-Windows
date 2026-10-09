@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
+from decimal import Decimal
 import hashlib
 import importlib.util
 import json
@@ -21,6 +23,9 @@ SAFE_WORKFLOWS = {"windows-desktop.yml", "windows-upstream-sync.yml"}
 # explicitly pinned files Windows reuses. The current complete inventory is
 # under 0.5 MiB; this budget leaves room to grow without a stale file-count cap.
 MAX_MANIFEST_BYTES = 4 * 1024 * 1024
+# A full final page is not proof of completion: exhausting this finite scan fails.
+RELEASE_PAGE_SIZE = 100
+MAX_RELEASE_PAGES = 100
 CANONICAL_CATALOG_SHA256 = "2fa53aa78cc27c76a3923cc44750128b3657c340dbcfe44ec13810cbc48becbc"
 CANONICAL_BASELINE_COMMIT = "79e8fa3019f5d70b2dee77db1ce9ce99a84bbe40"
 CANONICAL_CATALOG_PATH = "desktop/tools/v025-canonical-sources.json"
@@ -227,15 +232,52 @@ def release_tree(tree: object) -> dict[str, dict]:
 
 
 def latest_release() -> dict:
-    # /releases/latest excludes prereleases. Read /releases so alpha tags are included.
-    releases = request_json("releases?per_page=100")
-    if not isinstance(releases, list):
-        raise UpdateError("GitHub returned an invalid release list.")
-    published = [item for item in releases if isinstance(item, dict) and not item.get("draft")
-                 and item.get("published_at") and item.get("tag_name")]
+    # /releases/latest excludes prereleases. Scan /releases through its terminal
+    # short page so a republished older tag is not hidden by creation-order pages.
+    published = []
+    seen_release_ids = set()
+    for page in range(1, MAX_RELEASE_PAGES + 1):
+        releases = request_json(f"releases?per_page={RELEASE_PAGE_SIZE}&page={page}")
+        if not isinstance(releases, list) or len(releases) > RELEASE_PAGE_SIZE:
+            raise UpdateError(f"GitHub returned an invalid release page {page}.")
+        for item in releases:
+            if not isinstance(item, dict):
+                raise UpdateError(f"GitHub returned an invalid release entry on page {page}.")
+            release_id = item.get("id")
+            if type(release_id) is not int or release_id <= 0:
+                raise UpdateError(f"GitHub returned an invalid release ID on page {page}.")
+            if release_id in seen_release_ids:
+                raise UpdateError(f"GitHub repeated release ID {release_id}; the release scan is incomplete.")
+            seen_release_ids.add(release_id)
+            if not isinstance(item.get("draft", False), bool) or not isinstance(item.get("prerelease", False), bool):
+                raise UpdateError(f"GitHub returned invalid release flags on page {page}.")
+            if item.get("draft") or item.get("published_at") is None:
+                continue
+            published_at, tag = item.get("published_at"), item.get("tag_name")
+            if not isinstance(published_at, str) or not isinstance(tag, str) or not tag.strip():
+                raise UpdateError(f"GitHub returned an invalid published release on page {page}.")
+            timestamp = re.fullmatch(
+                r"([0-9]{4}-[0-9]{2}-[0-9]{2}[Tt][0-9]{2}:[0-9]{2}:[0-9]{2})(?:\.([0-9]+))?([Zz]|[+-](?:[01][0-9]|2[0-3]):[0-5][0-9])",
+                published_at)
+            if timestamp is None:
+                raise UpdateError(f"GitHub returned an invalid release publication time on page {page}.")
+            seconds, fraction, offset = timestamp.groups()
+            try:
+                publication = datetime.fromisoformat(seconds + ("+00:00" if offset in {"Z", "z"} else offset))
+            except ValueError as error:
+                raise UpdateError(f"GitHub returned an invalid release publication time on page {page}.") from error
+            if publication.tzinfo is None or publication.utcoffset() is None:
+                raise UpdateError(f"GitHub returned a release publication time without a timezone on page {page}.")
+            # datetime truncates fractions beyond microseconds; Decimal keeps their
+            # exact ordering without rounding or assuming GitHub's timestamp precision.
+            published.append((publication, Decimal("0." + (fraction or "0")), item))
+        if len(releases) < RELEASE_PAGE_SIZE:
+            break
+    else:
+        raise UpdateError(f"GitHub release scan exceeds the {MAX_RELEASE_PAGES}-page budget; completeness is unverified.")
     if not published:
         raise UpdateError("No published GitHub releases found; no tag or APK is guessed.")
-    return max(published, key=lambda item: (item["published_at"], item.get("id", 0)))
+    return max(published, key=lambda entry: (entry[0], entry[1], entry[2]["id"]))[2]
 
 
 def resolve_tag(tag: str) -> str:
