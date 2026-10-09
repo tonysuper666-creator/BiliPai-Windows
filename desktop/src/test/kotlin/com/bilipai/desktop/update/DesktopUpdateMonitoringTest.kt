@@ -5,6 +5,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*
 import kotlinx.serialization.json.*
 import java.nio.file.Files
+import okhttp3.ResponseBody.Companion.toResponseBody
 import kotlin.test.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -178,5 +179,185 @@ class DesktopUpdateMonitoringTest {
         assertEquals(1, networkCalls)
         assertEquals(checkedAt.toString(), Files.readString(checkpoint))
         assertEquals(DesktopUpdater.AUTO_CHECK_INTERVAL_MS, updater.automaticCheckDelayMs())
+    }
+
+    private val ownReleaseRepository = "tonysuper666-creator/BiliPai-Windows"
+    private fun ownCoreRows(firstId: Long, count: Int = 100): List<JsonElement> = List(count) { index ->
+        val id = firstId + index
+        buildJsonObject {
+            put("id", id); put("tag_name", "rtx-source-$id")
+            put("html_url", "https://github.com/$ownReleaseRepository/releases/tag/rtx-source-$id")
+            put("prerelease", true); put("draft", false); put("assets", buildJsonArray {})
+        }
+    }
+    private fun ownWindowsRelease(id: Long, version: String): JsonObject = buildJsonObject {
+        val tag = "Windows-v$version"
+        val asset = "BiliPai-Windows-$version.zip"
+        val prefix = "https://github.com/$ownReleaseRepository/releases/download/$tag"
+        put("id", id); put("tag_name", tag)
+        put("html_url", "https://github.com/$ownReleaseRepository/releases/tag/$tag")
+        put("prerelease", true); put("draft", false)
+        put("assets", buildJsonArray {
+            add(buildJsonObject {
+                put("id", id * 10); put("name", asset); put("size", 100)
+                put("browser_download_url", "$prefix/$asset")
+            })
+            add(buildJsonObject {
+                put("id", id * 10 + 1); put("name", "$asset.sha256"); put("size", 64)
+                put("browser_download_url", "$prefix/$asset.sha256")
+            })
+        })
+    }
+    private fun ownPage(page: Int): String {
+        val rows = ownCoreRows((page - 1) * 100L + 1).toMutableList()
+        if (page == 1) rows[0] = ownWindowsRelease(1, "0.3.3+1")
+        return JsonArray(rows).toString()
+    }
+    private fun ownResponse(chain: okhttp3.Interceptor.Chain, body: String, code: Int = 200): okhttp3.Response {
+        val request = chain.request()
+        assertEquals("GET", request.method)
+        assertEquals("https", request.url.scheme)
+        assertEquals("api.github.com", request.url.host)
+        assertEquals("/repos/$ownReleaseRepository/releases", request.url.encodedPath)
+        assertEquals("100", request.url.queryParameter("per_page"))
+        return okhttp3.Response.Builder().request(request).protocol(okhttp3.Protocol.HTTP_1_1)
+            .code(code).message("fixture").body(body.toResponseBody()).build()
+    }
+    private data class OwnCheckFixture(val updater: DesktopUpdater, val updateRoot: java.nio.file.Path,
+        val checkpointText: String, val activeText: String, val currentExe: java.nio.file.Path, val previousExe: java.nio.file.Path)
+    private fun ownCheckFixture(client: okhttp3.OkHttpClient): OwnCheckFixture {
+        val root = Files.createTempDirectory("bp-own-release-pages-")
+        val updateRoot = UpdateStorage.verifiedRoot(root.resolve("BiliPai/updates"))
+        val current = UpdateStorage.createStage(updateRoot, ownReleaseRepository, 700_001)
+        val previous = UpdateStorage.createStage(updateRoot, ownReleaseRepository, 700_002)
+        val currentExe = Files.writeString(Files.createDirectory(current.resolve("app")).resolve("BiliPai Windows.exe"), "current retained")
+        val previousExe = Files.writeString(Files.createDirectory(previous.resolve("app")).resolve("BiliPai Windows.exe"), "previous retained")
+        val active = buildJsonObject {
+            put("repository", ownReleaseRepository); put("version", "0.3.3+1"); put("executablePath", currentExe.toString())
+            put("previousVersion", "0.3.3+0"); put("previousExecutablePath", previousExe.toString())
+        }.toString()
+        Files.writeString(updateRoot.resolve("active-install.json"), active)
+        val checkedAt = (System.currentTimeMillis() - DesktopUpdater.AUTO_CHECK_INTERVAL_MS - 1_000L).toString()
+        Files.writeString(updateRoot.resolve("last-check.txt"), checkedAt)
+        return OwnCheckFixture(clockUpdater(root, client), updateRoot, checkedAt, active, currentExe, previousExe)
+    }
+    private fun assertOwnInstallRetained(fixture: OwnCheckFixture) {
+        assertEquals(fixture.activeText, Files.readString(fixture.updateRoot.resolve("active-install.json")))
+        assertEquals("current retained", Files.readString(fixture.currentExe))
+        assertEquals("previous retained", Files.readString(fixture.previousExe))
+    }
+
+    @Test fun `manual own update finds a higher Windows version after three full mixed pages`() = runBlocking {
+        val requests = java.util.concurrent.CopyOnWriteArrayList<Int>()
+        val fixture = ownCheckFixture(okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+            val page = requireNotNull(chain.request().url.queryParameter("page")).toInt(); requests += page
+            ownResponse(chain, if (page <= 3) ownPage(page) else {
+                assertEquals(4, page); JsonArray(listOf(ownWindowsRelease(301, "0.3.3+2"))).toString()
+            })
+        }.build())
+        val update = assertIs<UpdateState.Available>(fixture.updater.check()).update
+        assertEquals("Windows-v0.3.3+2", update.version); assertEquals(301L, update.releaseId)
+        assertEquals(listOf(1, 2, 3, 4), requests.toList())
+        assertNotEquals(fixture.checkpointText, Files.readString(fixture.updateRoot.resolve("last-check.txt")))
+        assertOwnInstallRetained(fixture)
+    }
+
+    @Test fun `a full own release page requires its empty terminal page before reporting current`() = runBlocking {
+        val requests = java.util.concurrent.CopyOnWriteArrayList<Int>()
+        val fixture = ownCheckFixture(okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+            val page = requireNotNull(chain.request().url.queryParameter("page")).toInt(); requests += page
+            ownResponse(chain, when (page) { 1 -> ownPage(1); 2 -> "[]"; else -> error("Unexpected page") })
+        }.build())
+        assertIs<UpdateState.UpToDate>(fixture.updater.check())
+        assertEquals(listOf(1, 2), requests.toList()); assertOwnInstallRetained(fixture)
+    }
+
+    @Test fun `bad late own release pages retain checkpoint and installs without publishing a partial candidate`() = runBlocking {
+        val cases = listOf(
+            200 to "{\"message\":\"invalid page\"}",
+            200 to JsonArray(ownCoreRows(1, 1)).toString(),
+            200 to JsonArray(ownCoreRows(501, 101)).toString(),
+            503 to "[]",
+        )
+        for ((code, body) in cases) {
+            val requests = java.util.concurrent.CopyOnWriteArrayList<Int>()
+            val fixture = ownCheckFixture(okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+                val page = requireNotNull(chain.request().url.queryParameter("page")).toInt(); requests += page
+                if (page <= 3) ownResponse(chain, ownPage(page))
+                else { assertEquals(4, page); ownResponse(chain, body, code) }
+            }.build())
+            assertIs<UpdateState.Failed>(fixture.updater.autoCheck())
+            assertEquals(listOf(1, 2, 3, 4), requests.toList())
+            assertEquals(fixture.checkpointText, Files.readString(fixture.updateRoot.resolve("last-check.txt")))
+            assertEquals(DesktopUpdater.AUTO_CHECK_INTERVAL_MS, fixture.updater.automaticCheckDelayMs())
+            assertOwnInstallRetained(fixture)
+        }
+    }
+
+    @Test fun `full own release pages exhausting budget never checkpoint a partial current version`() = runBlocking {
+        val requests = java.util.concurrent.CopyOnWriteArrayList<Int>()
+        val fixture = ownCheckFixture(okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+            val page = requireNotNull(chain.request().url.queryParameter("page")).toInt(); requests += page
+            ownResponse(chain, ownPage(page))
+        }.build())
+        assertIs<UpdateState.Failed>(fixture.updater.check())
+        assertEquals((1..DesktopUpdater.MAX_RELEASE_PAGES).toList(), requests.toList())
+        assertEquals(fixture.checkpointText, Files.readString(fixture.updateRoot.resolve("last-check.txt")))
+        assertOwnInstallRetained(fixture)
+    }
+
+    @Test fun `cancelling a late own release response restores prior state checkpoint and both installs`() = runBlocking {
+        val requests = java.util.concurrent.CopyOnWriteArrayList<Int>()
+        val paged = java.util.concurrent.atomic.AtomicBoolean(false)
+        val entered = java.util.concurrent.CountDownLatch(1)
+        val release = java.util.concurrent.CountDownLatch(1)
+        val fixture = ownCheckFixture(okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+            val page = requireNotNull(chain.request().url.queryParameter("page")).toInt(); requests += page
+            val body = if (!paged.get()) JsonArray(listOf(ownWindowsRelease(1, "0.3.3+1"))).toString()
+                else if (page <= 3) ownPage(page) else {
+                    assertEquals(4, page); entered.countDown()
+                    check(release.await(5, java.util.concurrent.TimeUnit.SECONDS)); "[]"
+                }
+            ownResponse(chain, body)
+        }.build())
+        val previousState = assertIs<UpdateState.UpToDate>(fixture.updater.check())
+        val checkpoint = Files.readString(fixture.updateRoot.resolve("last-check.txt"))
+        requests.clear(); paged.set(true)
+        val request = async { fixture.updater.check() }
+        try {
+            withContext(Dispatchers.IO) { check(entered.await(5, java.util.concurrent.TimeUnit.SECONDS)) }
+            request.cancel(); release.countDown(); request.join()
+            assertEquals(previousState, fixture.updater.state.value)
+            assertEquals(checkpoint, Files.readString(fixture.updateRoot.resolve("last-check.txt")))
+            assertEquals(listOf(1, 2, 3, 4), requests.toList()); assertOwnInstallRetained(fixture)
+        } finally { release.countDown(); request.cancelAndJoin() }
+    }
+
+    @Test fun `a late ordinary response error with cancellation retains prior updater state and checkpoint`() = runBlocking {
+        val requests = java.util.concurrent.CopyOnWriteArrayList<Int>()
+        val paged = java.util.concurrent.atomic.AtomicBoolean(false)
+        val entered = java.util.concurrent.CountDownLatch(1)
+        val release = java.util.concurrent.CountDownLatch(1)
+        val fixture = ownCheckFixture(okhttp3.OkHttpClient.Builder().addInterceptor { chain ->
+            val page = requireNotNull(chain.request().url.queryParameter("page")).toInt(); requests += page
+            if (!paged.get()) ownResponse(chain, JsonArray(listOf(ownWindowsRelease(1, "0.3.3+1"))).toString())
+            else if (page <= 3) ownResponse(chain, ownPage(page)) else {
+                assertEquals(4, page); entered.countDown()
+                check(release.await(5, java.util.concurrent.TimeUnit.SECONDS))
+                ownResponse(chain, "{invalid response}", 503)
+            }
+        }.build())
+        val previousState = assertIs<UpdateState.UpToDate>(fixture.updater.check())
+        val checkpoint = Files.readString(fixture.updateRoot.resolve("last-check.txt"))
+        requests.clear(); paged.set(true)
+        val request = async { fixture.updater.check() }
+        try {
+            withContext(Dispatchers.IO) { check(entered.await(5, java.util.concurrent.TimeUnit.SECONDS)) }
+            request.cancel(); release.countDown(); request.join()
+            assertTrue(request.isCancelled)
+            assertEquals(previousState, fixture.updater.state.value)
+            assertEquals(checkpoint, Files.readString(fixture.updateRoot.resolve("last-check.txt")))
+            assertEquals(listOf(1, 2, 3, 4), requests.toList()); assertOwnInstallRetained(fixture)
+        } finally { release.countDown(); request.cancelAndJoin() }
     }
 }

@@ -88,6 +88,7 @@ class DesktopUpdater private constructor(
             mutableState.value = UpdateState.Checking
             val releases = fetchReleases(requireNotNull(repository))
             val result = evaluateReleases(releases, requireNotNull(config), requireNotNull(installedVersion))
+            currentCoroutineContext().ensureActive()
             if (result !is UpdateState.Failed) {
                 UpdateStorage.verifiedRoot(updateRoot)
                 Files.writeString(updateRoot.resolve("last-check.txt"), System.currentTimeMillis().toString())
@@ -99,7 +100,12 @@ class DesktopUpdater private constructor(
             mutableState.value = previousState
             throw cancelled
         } catch (error: Exception) {
-            currentCoroutineContext().ensureActive()
+            // A decode/validation error can arrive together with cancellation.
+            try { currentCoroutineContext().ensureActive() }
+            catch (cancelled: CancellationException) {
+                mutableState.value = previousState
+                throw cancelled
+            }
             UpdateState.Failed(error.message ?: "Windows 更新检查失败").also { mutableState.value = it }
         } finally {
             mutex.unlock()
@@ -225,13 +231,23 @@ class DesktopUpdater private constructor(
 
     private suspend fun fetchReleases(repository: String): List<GitHubRelease> {
         val releases = mutableListOf<GitHubRelease>()
-        for (page in 1..3) {
-            val response = fetchText("https://api.github.com/repos/$repository/releases?per_page=100&page=$page", 8 * 1024 * 1024)
+        val seenReleaseIds = mutableSetOf<Long>()
+        for (page in 1..MAX_RELEASE_PAGES) {
+            currentCoroutineContext().ensureActive()
+            val response = fetchText("https://api.github.com/repos/$repository/releases?per_page=$RELEASE_PAGE_SIZE&page=$page", 8 * 1024 * 1024)
+            currentCoroutineContext().ensureActive()
             val batch = json.decodeFromString<List<GitHubRelease>>(response)
+            currentCoroutineContext().ensureActive()
+            require(batch.size <= RELEASE_PAGE_SIZE) { "Windows 发布列表第${page}页大小异常，无法确认更新" }
+            batch.forEach { release ->
+                require(release.id > 0L && seenReleaseIds.add(release.id)) {
+                    "Windows 发布列表出现重复或无效版本标识，无法确认完整更新列表"
+                }
+            }
             releases += batch
-            if (batch.size < 100) break
+            if (batch.size < RELEASE_PAGE_SIZE) return releases
         }
-        return releases
+        error("Windows 发布列表超过${MAX_RELEASE_PAGES}页，无法确认完整更新列表")
     }
 
     /** A cancellation watcher closes the socket even while the IO thread is reading a large body. */
@@ -436,6 +452,8 @@ class DesktopUpdater private constructor(
         const val STARTUP_TIMEOUT_MS = 30_000L
         internal const val STARTUP_STABILITY_MS = 1_500L
         internal const val AUTO_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000L
+        private const val RELEASE_PAGE_SIZE = 100
+        internal const val MAX_RELEASE_PAGES = 100
         private fun loadBuildConfig(): UpdateConfig? = runCatching {
             DesktopUpdater::class.java.getResourceAsStream("/windows-update.json")?.use {
                 Json { ignoreUnknownKeys = true }.decodeFromString<UpdateConfig>(it.readBytes().toString(Charsets.UTF_8))
