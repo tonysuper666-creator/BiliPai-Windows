@@ -53,6 +53,8 @@ private fun DesktopWindowsAudioOutputContent(context: DesktopOriginalPlayerSetti
     val configurationError by controller.configurationError.collectAsState()
     val video by controller.video.collectAsState()
     val listening by controller.listening.collectAsState()
+    val videoCanApply by controller.videoCanApply.collectAsState()
+    val listeningCanApply by controller.listeningCanApply.collectAsState()
     val devices by controller.devices.collectAsState()
     val compositionScope = rememberCoroutineScope()
     val pageJob = remember(controller, context) { SupervisorJob(compositionScope.coroutineContext[Job]) }
@@ -68,7 +70,7 @@ private fun DesktopWindowsAudioOutputContent(context: DesktopOriginalPlayerSetti
             delay(100)
         }
     }
-    fun launchWrite(action: suspend () -> Unit) {
+    fun launchWrite(failureMessage: String = "音频输出设置未保存，请重试。", action: suspend () -> Unit) {
         if (!current || !pageScope.isActive || saving || !context.isCurrentForOriginalWrite()) return
         saving = true
         operationFailure = null
@@ -78,7 +80,7 @@ private fun DesktopWindowsAudioOutputContent(context: DesktopOriginalPlayerSetti
                 ensureActive()
             } catch (cancelled: CancellationException) { throw cancelled }
             catch (_: Exception) {
-                if (context.isCurrentForOriginalWrite()) operationFailure = "音频输出设置未保存，请重试。"
+                if (context.isCurrentForOriginalWrite()) operationFailure = failureMessage
             } finally {
                 if (pageScope.isActive && context.isCurrentForOriginalWrite()) saving = false
             }
@@ -111,7 +113,7 @@ private fun DesktopWindowsAudioOutputContent(context: DesktopOriginalPlayerSetti
         AppPreferenceGroup {
             AppSwitchPreference(
                 title = "WASAPI 独占输出",
-                subtitle = "绕过系统混音，更改从下一次播放生效。独占时其他应用可能无法使用同一设备。",
+                subtitle = "绕过系统混音。保存后可立即应用到当前播放，也会从下次播放生效；独占时其他应用可能无法使用同一设备。",
                 checked = preferences.exclusive,
                 enabled = enabled,
                 onCheckedChange = { value -> launchWrite { controller.updateExclusive(context, value) } },
@@ -140,10 +142,20 @@ private fun DesktopWindowsAudioOutputContent(context: DesktopOriginalPlayerSetti
             operationFailure?.let { message ->
                 AppText(message, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(16.dp))
             }
-            if (saving) AppText("正在保存…", modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
+            if (saving) AppText("正在处理…", modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp))
         }
-        DesktopWindowsAudioOutputObservation("视频 / BV 听视频输出", video)
-        DesktopWindowsAudioOutputObservation("独立音频播放器输出", listening)
+        DesktopWindowsAudioOutputObservation("视频 / BV 听视频输出", video, videoCanApply,
+            onApply = if (enabled) ({ expected ->
+                launchWrite("当前音频输出未重开。请等待播放器就绪，确认设备可用后重试。") {
+                    check(controller.applyToVideo(context, expected))
+                }
+            }) else null)
+        DesktopWindowsAudioOutputObservation("独立音频播放器输出", listening, listeningCanApply,
+            onApply = if (enabled) ({ expected ->
+                launchWrite("当前音频输出未重开。请等待播放器就绪，确认设备可用后重试。") {
+                    check(controller.applyToListening(context, expected))
+                }
+            }) else null)
         AppText(
             "音量、静音和播放速度沿用播放器现有设置。显示的格式来自播放器读回；本界面不据此认证位完美输出或光纤链路格式。",
             style = MaterialTheme.typography.bodySmall,
@@ -154,10 +166,22 @@ private fun DesktopWindowsAudioOutputContent(context: DesktopOriginalPlayerSetti
 }
 
 @Composable
-private fun DesktopWindowsAudioOutputObservation(title: String, status: DesktopWindowsAudioOutputStatus) {
+private fun DesktopWindowsAudioOutputObservation(title: String, status: DesktopWindowsAudioOutputStatus,
+    canApply: Boolean, onApply: ((DesktopWindowsAudioOutputStatus) -> Unit)? = null,
+) {
     AppPreferenceSectionTitle(title)
     AppPreferenceGroup {
         AppPreference(title = "本次播放状态", subtitle = desktopWindowsAudioOutputPhaseLabel(status), showChevron = false)
+        AppPreferenceDivider()
+        AppPreference(
+            title = if (status.phase == DesktopWindowsAudioOutputPhase.ERROR) "重试音频输出" else "立即应用到当前播放",
+            subtitle = "按已保存的设备和独占偏好重新加载当前媒体，保留进度与暂停状态；可能短暂中断播放。",
+            onClick = if (canApply && onApply != null) ({ onApply(status) }) else null,
+            showChevron = false,
+        )
+        if (status.phase == DesktopWindowsAudioOutputPhase.ERROR && !canApply)
+            AppText("当前媒体尚未就绪；已终止的播放失败请使用播放器的播放重试。",
+                style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(16.dp))
         status.error?.takeIf { it.isNotBlank() }?.let { message ->
             AppText(message, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(16.dp))
         }
@@ -182,11 +206,11 @@ private fun DesktopWindowsAudioOutputObservation(title: String, status: DesktopW
 
 internal fun desktopWindowsAudioOutputPhaseLabel(status: DesktopWindowsAudioOutputStatus): String = when (status.phase) {
     DesktopWindowsAudioOutputPhase.IDLE -> "尚未播放，未验证输出模式。"
-    DesktopWindowsAudioOutputPhase.PENDING_NEXT_PLAY -> "已保存，等待下一次播放应用；当前输出不会被自动重载。"
+    DesktopWindowsAudioOutputPhase.PENDING_NEXT_PLAY -> "已保存，可立即应用到当前播放，也会从下次播放生效。"
     DesktopWindowsAudioOutputPhase.OPENING -> "正在打开音频输出，独占状态尚未确认。"
     DesktopWindowsAudioOutputPhase.ACTIVE_SHARED -> "播放器已确认共享输出。"
     DesktopWindowsAudioOutputPhase.ACTIVE_EXCLUSIVE -> "播放器已确认 WASAPI 独占输出。"
-    DesktopWindowsAudioOutputPhase.ERROR -> "音频输出失败。请检查设备占用、设备状态或格式支持，并在下次播放重试。"
+    DesktopWindowsAudioOutputPhase.ERROR -> "音频输出失败。请检查设备占用、设备状态或格式支持，解除问题后重试音频输出。"
     DesktopWindowsAudioOutputPhase.UNAVAILABLE -> "当前播放器的音频输出能力不可用。"
 }
 

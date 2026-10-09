@@ -33,6 +33,7 @@ internal class DesktopWindowsAudioOutputController(private val store: DesktopPlu
     private val mutableDevices = MutableStateFlow(DesktopWindowsAudioDeviceListState())
     val devices: StateFlow<DesktopWindowsAudioDeviceListState> = mutableDevices.asStateFlow()
     private val refresh = kotlinx.coroutines.sync.Mutex()
+    private val applyOutput = kotlinx.coroutines.sync.Mutex()
     init {
         // Set only future-load intent before initial deep-link/source effects can start; this does not open an AO.
         players.forEach {
@@ -68,6 +69,44 @@ internal class DesktopWindowsAudioOutputController(private val store: DesktopPlu
         val committed = decodeConfiguration(committedSnapshot)
         context.commit { players.forEach { it.requestWindowsAudioOutputPreferences(binding, committed.preferences) { !closed.get() && snapshots.value === committedSnapshot } } }
     }
+    val videoCanApply: StateFlow<Boolean> = if (videoPlayer == null) MutableStateFlow(false).asStateFlow()
+        else combine(videoPlayer.state, video) { state, status -> canApplyOutput(state, status) }
+            .stateIn(childScope, SharingStarted.Eagerly, false)
+    val listeningCanApply: StateFlow<Boolean> = if (listeningPlayer == null) MutableStateFlow(false).asStateFlow()
+        else combine(listeningPlayer.state, listening) { state, status -> canApplyOutput(state, status) }
+            .stateIn(childScope, SharingStarted.Eagerly, false)
+
+    suspend fun applyToVideo(context: DesktopOriginalPlayerSettingsContext, expected: DesktopWindowsAudioOutputStatus): Boolean =
+        applyToCurrent(context, videoPlayer, expected)
+    suspend fun applyToListening(context: DesktopOriginalPlayerSettingsContext, expected: DesktopWindowsAudioOutputStatus): Boolean =
+        applyToCurrent(context, listeningPlayer, expected)
+
+    /** Selection/save remains independent. Apply only an already committed exact
+     * preference snapshot to the actor and source shown by the clicked status. */
+    private suspend fun applyToCurrent(context: DesktopOriginalPlayerSettingsContext, player: MpvPlayer?,
+        expected: DesktopWindowsAudioOutputStatus,
+    ): Boolean {
+        require(context.pluginContext.store === store) { "音频输出设置必须使用当前 Root 的同一 Store" }
+        val caller = currentCoroutineContext()
+        val callerJob = checkNotNull(caller[Job])
+        fun checkRequest() { caller.ensureActive(); check(!closed.get()); context.requireCurrent() }
+        checkRequest()
+        if (player == null || !applyOutput.tryLock()) return false
+        try {
+            checkRequest()
+            val snapshot = snapshots.value
+            val saved = decodeConfiguration(snapshot)
+            if (saved.error != null || saved.preferences != expected.requested || !canApplyOutput(player.state.value, expected)) return false
+            val revision = expected.playbackRevision ?: return false
+            val source = player.currentSourceSnapshot() ?: return false
+            if (source.sourceVersion != expected.sourceVersion) return false
+            return player.reopenWindowsAudioOutput(binding, source, revision, expected.requestedRevision,
+                saved.preferences, callerJob, { command ->
+                    context.commit { checkRequest(); command() }
+                }, { !closed.get() && snapshots.value === snapshot && context.isCurrentForOriginalWrite() })
+        } finally { applyOutput.unlock() }
+    }
+
     suspend fun refreshDevices(context: DesktopOriginalPlayerSettingsContext) {
         val caller = currentCoroutineContext()
         fun checkRequest() { caller.ensureActive(); check(!closed.get()); context.requireCurrent() }
@@ -97,6 +136,14 @@ internal class DesktopWindowsAudioOutputController(private val store: DesktopPlu
         }
     }
     companion object {
+        private fun canApplyOutput(state: PlayerState, status: DesktopWindowsAudioOutputStatus): Boolean {
+            val actual = state.nativeTrackIdentity ?: return false
+            return state.ready && !state.loading && !state.ended && state.error == null && state.failure == null &&
+                actual.sourceVersion == status.sourceVersion && actual.playbackRevision == status.playbackRevision &&
+                status.phase in setOf(DesktopWindowsAudioOutputPhase.PENDING_NEXT_PLAY,
+                    DesktopWindowsAudioOutputPhase.ACTIVE_SHARED, DesktopWindowsAudioOutputPhase.ACTIVE_EXCLUSIVE,
+                    DesktopWindowsAudioOutputPhase.ERROR)
+        }
         const val NAMESPACE = "windows_audio_output"
         private val EXCLUSIVE = com.bilipai.desktop.plugins.DesktopPreferenceKey<JsonElement>("exclusive") { it }
         private val DEVICE = com.bilipai.desktop.plugins.DesktopPreferenceKey<JsonElement>("device_id") { it }

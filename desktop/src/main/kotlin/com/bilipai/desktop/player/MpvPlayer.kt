@@ -47,6 +47,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
     private var requestedWindowsAudioOutput = DesktopWindowsAudioOutputPreferences()
     private var windowsAudioOutputRevision = 0L
     private var windowsAudioOutputBinding: Any? = null
+    private var pendingWindowsAudioReopen: CompletableDeferred<Boolean>? = null
     internal fun bindWindowsAudioOutputOwner(owner: Any) = synchronized(lock) { if (!closed.get()) windowsAudioOutputBinding = owner }
     internal fun retireWindowsAudioOutputOwner(owner: Any) = synchronized(lock) { if (windowsAudioOutputBinding === owner) windowsAudioOutputBinding = null }
     /** Called under the same native lock when a source/session is requested, stopped or retired. */
@@ -67,6 +68,40 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         mutableWindowsAudioOutput.update { it.copy(requested = preferences, requestedRevision = windowsAudioOutputRevision,
             phase = DesktopWindowsAudioOutputPhase.PENDING_NEXT_PLAY, error = null) }
     }
+    /** Explicit manual request only. True means a same-source reload was accepted,
+     * never that WASAPI reopened successfully; the existing AO readback decides that.
+     * Request admission is entered after the live media publication and before this lock. */
+    internal suspend fun reopenWindowsAudioOutput(owner: Any, expected: OwnedPlaybackSourceSnapshot,
+        expectedPlaybackRevision: Long, expectedOutputRevision: Long,
+        preferences: DesktopWindowsAudioOutputPreferences, caller: Job,
+        withRequestAdmission: (() -> Unit) -> Unit, stillCurrent: () -> Boolean,
+    ): Boolean {
+        val completion = CompletableDeferred<Boolean>()
+        val queued = synchronized(lock) {
+            val active = session
+            if (useNullAudioOutput || closed.get() || windowsAudioOutputBinding !== owner ||
+                pendingWindowsAudioReopen != null || presentationHandoffPending || presentationDisposalPending ||
+                idleCacheMaintenance != null || !caller.isActive || !stillCurrent() ||
+                !ownsSourceSnapshot(expected) || expected.source.nativePublication == null ||
+                playbackRevision != expectedPlaybackRevision || windowsAudioOutputRevision != expectedOutputRevision ||
+                requestedWindowsAudioOutput != preferences || active == null || active.closing.get() ||
+                !state.value.ready || state.value.loading || state.value.ended ||
+                state.value.error != null || state.value.failure != null) false
+            else {
+                pendingWindowsAudioReopen = completion
+                active.commands.offer(Action.WindowsAudioReopen(owner, expected, expectedPlaybackRevision,
+                    expectedOutputRevision, preferences, pauseIntentSerial, nextSeekId.get(), caller,
+                    completion, withRequestAdmission, stillCurrent))
+            }
+        }
+        if (!queued) return false
+        return try { kotlinx.coroutines.withTimeoutOrNull(3_000L) { completion.await() } ?: false }
+        finally {
+            completion.cancel()
+            synchronized(lock) { if (pendingWindowsAudioReopen === completion) pendingWindowsAudioReopen = null }
+        }
+    }
+
     internal suspend fun queryWindowsAudioDevices(): DesktopWindowsAudioDeviceListState {
         val completion = CompletableDeferred<DesktopWindowsAudioDeviceListState>()
         val queued = synchronized(lock) {
@@ -427,7 +462,9 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         else { stop(); true }
     }
 
-    private fun load(source: PlaybackSource, preserveSubtitles: Boolean, startMuted: Boolean? = null) {
+    private fun load(source: PlaybackSource, preserveSubtitles: Boolean, startMuted: Boolean? = null,
+        audioReopen: WindowsAudioReopenCursor? = null, dispatchLoad: ((Action.Load) -> Unit)? = null,
+    ) {
         synchronized(lock) {
             check(!closed.get()) { "Player is closed" }
             check(idleCacheMaintenance==null) { "播放器缓存正在清理，请稍后重试" }
@@ -454,7 +491,8 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             softwareTarget?.beginSource(sourceVersion, revision)
             mutableVideoOutput.update { it.copy(sourceVersion = sourceVersion, inputWidth = 0, inputHeight = 0, displayWidth = 0, displayHeight = 0, viewport = null, gamma = null, dolbyVisionProfile = null) }
             mutableState.update {
-                it.copy(loading = true, paused = source.startPaused, positionSeconds = source.startPositionSeconds, durationSeconds = 0.0,
+                it.copy(loading = true, paused = audioReopen?.paused ?: source.startPaused,
+                    positionSeconds = audioReopen?.positionSeconds ?: source.startPositionSeconds, durationSeconds = 0.0,
                     firstVideoFrameReady = false, pausedForCache = false, bufferedForwardSeconds = null, nativePaused = null, videoBitrateBps = null, audioBitrateBps = null,
                     sourceTitle = source.title, videoWidth = 0, videoHeight = 0,
                     ended = false, error = null, failure = null, nativeEof = null, softwareDecodingRequested = softwareDecodingRequested,
@@ -462,8 +500,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     .copy(tracks = emptyList(), nativeTrackIdentity = null, subtitleText = null, secondarySubtitleText = null)
             }
             val active = session
-            if (active != null) active.commands.offer(Action.Load(retainedSource, sourceVersion, softwareDecodingRequested, revision, startMuted))
-            else attachedWindowId?.let(::startSession)
+            if (active != null) {
+                val command = Action.Load(retainedSource, sourceVersion, softwareDecodingRequested, revision, startMuted, audioReopen = audioReopen)
+                if (dispatchLoad == null) active.commands.offer(command) else dispatchLoad(command)
+            } else attachedWindowId?.let(::startSession)
         }
     }
 
@@ -1004,9 +1044,11 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         AUDIO("aid", "audio", null), PRIMARY_SUBTITLE("sid", "sub", 0), SECONDARY_SUBTITLE("secondary-sid", "sub", 1),
     }
 
+    private data class WindowsAudioReopenCursor(val positionSeconds: Double, val paused: Boolean)
+
     private sealed interface Action {
         data class Load(val source: PlaybackSource, val version: Long, val softwareDecoding: Boolean, val revision: Long, val startMuted: Boolean? = null,
-            val presentation: DesktopNativePresentationTransfer? = null) : Action
+            val presentation: DesktopNativePresentationTransfer? = null, val audioReopen: WindowsAudioReopenCursor? = null) : Action
         data class PreparePresentation(val transfer: DesktopNativePresentationTransfer) : Action
         data class Subtitles(val expected: OwnedPlaybackSourceSnapshot, val revision: Long, val readback: PlayerNativeTrackIdentity?, val caller: Job?) : Action
         data class HardwareDecoding(val controlVersion: Long, val version: Long, val revision: Long) : Action
@@ -1030,6 +1072,10 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
         data class IdleCacheBarrier(val token: Any, val completion: CompletableDeferred<Boolean>) : Action
         data class Barrier(val version: Long, val revision: Long, val completion: CompletableDeferred<Boolean>) : Action
         data class WindowsAudioDevices(val completion: CompletableDeferred<DesktopWindowsAudioDeviceListState>) : Action
+        data class WindowsAudioReopen(val owner: Any, val expected: OwnedPlaybackSourceSnapshot,
+            val revision: Long, val outputRevision: Long, val preferences: DesktopWindowsAudioOutputPreferences,
+            val pauseSerial: Long, val seekSerial: Long, val caller: Job, val completion: CompletableDeferred<Boolean>,
+            val withRequestAdmission: (() -> Unit) -> Unit, val stillCurrent: () -> Boolean) : Action
         data class AudioDiagnostic(val version: Long, val revision: Long, val source: PlaybackSource?,
             val pauseSerial: Long, val completion: CompletableDeferred<DesktopNativeAudioDiagnostic?>) : Action
     }
@@ -1524,6 +1570,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         if (closing.get()) {
                             if (action is Action.IdleCacheBarrier) action.completion.complete(false)
                             if (action is Action.AudioDiagnostic) action.completion.complete(null)
+                            if (action is Action.WindowsAudioReopen) action.completion.complete(false)
                             if (action is Action.WindowsAudioDevices) action.completion.complete(DesktopWindowsAudioDeviceListState(error = "原生播放器已退出"))
                             if (action is Action.Screenshot) action.completion.completeExceptionally(IllegalStateException("Player stopped before the screenshot was saved."))
                             break
@@ -1551,6 +1598,7 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                     val pending = commands.poll() ?: break
                     if(pending is Action.IdleCacheBarrier)pending.completion.complete(false)
                     if (pending is Action.AudioDiagnostic) pending.completion.complete(null)
+                    if (pending is Action.WindowsAudioReopen) pending.completion.complete(false)
                     if (pending is Action.WindowsAudioDevices) pending.completion.complete(DesktopWindowsAudioDeviceListState(error = "原生播放器已退出"))
                     if (pending is Action.Screenshot) pending.completion.completeExceptionally(IllegalStateException("Player stopped before the screenshot was saved."))
                 }
@@ -1681,11 +1729,59 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
             if (pendingPresentationCapture?.isRetired == true) pendingPresentationCapture = null
         }
 
+        /** All native reads run on this actor. Preserve the existing publication ->
+         * visible settings Context -> player lock order; no wait occurs inside those gates.
+         * A newer pause, seek, source, preference or page cancels this exact request. */
+        private fun reopenWindowsAudioOutput(native: MpvNative, handle: Pointer, action: Action.WindowsAudioReopen) {
+            var accepted = false
+            try {
+                val publication = action.expected.source.nativePublication ?: return
+                publication.admit {
+                    action.withRequestAdmission { synchronized(lock) {
+                        if (useNullAudioOutput || closed.get() || session !== this || closing.get() ||
+                            windowsAudioOutputBinding !== action.owner || pendingWindowsAudioReopen !== action.completion ||
+                            presentationHandoffPending || presentationDisposalPending || idleCacheMaintenance != null ||
+                            !action.completion.isActive || !action.caller.isActive || !action.stillCurrent() ||
+                            !ownsSourceSnapshot(action.expected) || playbackRevision != action.revision ||
+                            activeSourceVersion != action.expected.sourceVersion || activeRevision != action.revision ||
+                            activeWindowsAudioSource != action.expected.source ||
+                            windowsAudioOutputRevision != action.outputRevision || requestedWindowsAudioOutput != action.preferences ||
+                            pauseIntentSerial != action.pauseSerial || nextSeekId.get() != action.seekSerial ||
+                            !fileLoaded || seekTracker.hasPendingSeek || commands.isNotEmpty() ||
+                            !state.value.ready || state.value.loading || state.value.ended ||
+                            state.value.error != null || state.value.failure != null) return@synchronized
+                        val position = property(native, handle, "time-pos")?.toDoubleOrNull()
+                            ?.takeIf { it.isFinite() && it >= 0.0 } ?: return@synchronized
+                        val paused = when (property(native, handle, "pause")) {
+                            "yes" -> true
+                            "no" -> false
+                            else -> return@synchronized
+                        }
+                        if (!action.completion.isActive || !action.caller.isActive || !action.stillCurrent()) return@synchronized
+                        // Keep the complete accepted source and sourceVersion unchanged:
+                        // its existing owner admits this same media, not a copied cursor.
+                        // Synchronous same-actor Load leaves no preference/page queue gap.
+                        appliedWindowsAudioOutputRevision = null
+                        load(action.expected.source, preserveSubtitles = true,
+                            audioReopen = WindowsAudioReopenCursor(position, paused),
+                            dispatchLoad = { perform(native, handle, it) })
+                        accepted = true
+                    } }
+                }
+            } catch (_: Exception) {
+                // A retired admission/read failure rejects this control request. It is
+                // not an AO -14 media failure and must not trigger premium-track fallback.
+            } finally {
+                action.completion.complete(accepted)
+            }
+        }
+
         private fun perform(native: MpvNative, handle: Pointer, action: Action) {
             try {
-                if (action !is Action.PreparePresentation && action !is Action.WindowsAudioDevices && action !is Action.AudioDiagnostic && action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.IdleCacheBarrier && action !is Action.OwnedMute && action !is Action.OwnedLifecyclePause && action !is Action.OwnedVideoViewport && action !is Action.OwnedTrackSelection && action !is Action.OwnedSubtitleVisibility && action !is Action.Subtitles &&
+                if (action !is Action.PreparePresentation && action !is Action.WindowsAudioDevices && action !is Action.WindowsAudioReopen && action !is Action.AudioDiagnostic && action !is Action.Load && action !is Action.Screenshot && action !is Action.Barrier && action !is Action.IdleCacheBarrier && action !is Action.OwnedMute && action !is Action.OwnedLifecyclePause && action !is Action.OwnedVideoViewport && action !is Action.OwnedTrackSelection && action !is Action.OwnedSubtitleVisibility && action !is Action.Subtitles &&
                     !(action is Action.Seek && action.admissionSource != null)) publishState { it.copy(operationError = null) }
                 when (action) {
+                    is Action.WindowsAudioReopen -> reopenWindowsAudioOutput(native, handle, action)
                     is Action.PreparePresentation -> {
                         if (synchronized(lock) { session === this && !closing.get() && presentationCurrent(action.transfer) })
                             pendingPresentationCapture = action.transfer
@@ -1726,8 +1822,12 @@ class MpvPlayer internal constructor(private val useNullAudioOutput: Boolean = f
                         MpvNodes().use { nodes ->
                             // Per-file options prevent old audio tracks or cookies
                             // from leaking into the next video, even on rapid loads.
+                            val fileOptions = action.source.mpvFileOptions().let { original ->
+                                action.audioReopen?.let { cursor -> original + mapOf(
+                                    "start" to cursor.positionSeconds.toString(), "pause" to if (cursor.paused) "yes" else "no") } ?: original
+                            }
                             val args = nodes.array(listOf("loadfile", action.source.nativeLoadUrl, "replace", "-1",
-                                presentationLoadCursor?.fileOptions(action.source.mpvFileOptions()) ?: action.source.mpvFileOptions()))
+                                presentationLoadCursor?.fileOptions(fileOptions) ?: fileOptions))
                             checkResult(native, native.mpv_command_node(handle, args, null), "loadfile")
                         }
                         if (transfer == null && action.startMuted != null) requestedLoadMute?.let { muted ->

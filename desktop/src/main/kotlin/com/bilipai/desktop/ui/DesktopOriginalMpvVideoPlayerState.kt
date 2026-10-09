@@ -28,6 +28,22 @@ data class DesktopOriginalPlaybackRate(val speed: Float, val pitch: Float = 1f) 
 data class DesktopOriginalNativePlaybackError(val message: String, val failure: PlayerFailure?)
 data class DesktopOriginalNativeVideoSize(val width: Int, val height: Int)
 
+/** Native output readiness for recovery, independent of the UI READY projection.
+ * A video codec is metadata; video needs the actual rendered-frame receipt.
+ * Native audio-only playback has no video frame and needs its selected audio output.
+ */
+internal fun desktopOriginalCdnRecoveryMediaReady(state: PlayerState, expectedAudioTrack: Boolean = false): Boolean {
+    if (!state.ready || state.loading || state.pausedForCache || state.ended ||
+        state.error != null || state.failure != null) return false
+    if ((state.audioOnly || expectedAudioTrack) &&
+        state.tracks.none { it.type == "audio" && it.selected }) return false
+    return if (state.audioOnly) {
+        state.audioCodec != null
+    } else {
+        state.firstVideoFrameReady
+    }
+}
+
 /** One extended command/readback view of the already installed Overlay control.
  * All native publication goes through its existing Store->entry->source admission.
  * This class neither loads a URL nor creates/closes any native player or scope.
@@ -69,6 +85,9 @@ class DesktopOriginalMpvSectionControl internal constructor(
     fun currentNativeSourceVersion(): Long? = acceptedSourceVersion().takeIf { isOwned() }
     val videoSize: DesktopOriginalNativeVideoSize get() = snapshot().let { DesktopOriginalNativeVideoSize(it.videoWidth, it.videoHeight) }
     val firstVideoFrameReady: Boolean get() = snapshot().firstVideoFrameReady
+    val cdnRecoveryMediaReady: Boolean get() = desktopOriginalCdnRecoveryMediaReady(snapshot())
+    fun isCdnRecoveryMediaReady(expectedAudioTrack: Boolean): Boolean =
+        desktopOriginalCdnRecoveryMediaReady(snapshot(), expectedAudioTrack)
     val playerError: DesktopOriginalNativePlaybackError? get() = snapshot().let { it.error?.let { message -> DesktopOriginalNativePlaybackError(message, it.failure) } }
     val currentTracks: List<PlayerTrack> get() = snapshot().tracks
     var repeatMode: Int
@@ -105,36 +124,53 @@ class DesktopOriginalMpvSectionControl internal constructor(
                         previous = null
                         return@collect
                     }
-                    // Read the current StateFlow after source admission. combine can carry a
-                    // delayed emission from before the owner published its replacement token.
-                    // Fix the accepted publication BEFORE reading this event's native state.
-                    // A known origin is kept even with an absent/stale EOF, so it cannot
-                    // fall through to the source-less compatibility path after recovery.
-                    val capturedContinuation = captureContinuation(version, registrationJob)
-                    val value = state.value
-                    val old = previous.takeIf { previousVersion == version }
-                    fun admit(callback: () -> Unit) {
-                        callbackContext.ensureActive()
-                        commitEventIfCurrent {
-                            if (entryOwns() && acceptedSourceVersion() == version && nativePlayer.ownsSourceVersion(version) &&
-                                synchronized(eventLock) { registrations[listener] === registrationJob && registrationJob.isActive }) callback()
+                    // Root binds this exact gate to NativeOwner.admitPlaybackDispatch, which
+                    // holds Store -> entry -> native. Capture source and state together here;
+                    // a same-version recovery cannot splice its new source onto an old frame.
+                    commitEventIfCurrent {
+                        val recoverySource = nativePlayer.currentSourceSnapshot()
+                        if (entryOwns() && acceptedSourceVersion() == version && recoverySource != null &&
+                            recoverySource.sourceVersion == version && nativePlayer.ownsSourceSnapshot(recoverySource) &&
+                            synchronized(eventLock) { registrations[listener] === registrationJob && registrationJob.isActive }) {
+                            // Read the current StateFlow after source admission. combine can carry a
+                            // delayed emission from before the owner published its replacement token.
+                            // Fix the accepted publication BEFORE reading this event's native state.
+                            // A known origin is kept even with an absent/stale EOF, so it cannot
+                            // fall through to the source-less compatibility path after recovery.
+                            val capturedContinuation = captureContinuation(version, registrationJob)
+                            val value = state.value
+                            val old = previous.takeIf { previousVersion == version }
+                            fun admit(callback: () -> Unit) {
+                                callbackContext.ensureActive()
+                                // The surrounding real event admission already holds Store -> entry -> native.
+                                if (entryOwns() && acceptedSourceVersion() == version && nativePlayer.ownsSourceSnapshot(recoverySource) &&
+                                    synchronized(eventLock) { registrations[listener] === registrationJob && registrationJob.isActive }) callback()
+                            }
+                            // A registration first observes state. An already-rendered native frame is
+                            // delivered as its actual receipt, never inferred from position/isPlaying.
+                            if (previousVersion != version) admit { listener.onSourceTransition(version) }
+                            // Codec metadata can leave the UI at READY before real output is ready.
+                            // Re-notify only after the actual subject's required output facts become healthy.
+                            val recoveryExpectedAudioTrack = recoverySource.source.audioUrl != null
+                            val recoveryMediaBecameReady = desktopOriginalCdnRecoveryMediaReady(value, recoveryExpectedAudioTrack) &&
+                                (old == null || !desktopOriginalCdnRecoveryMediaReady(old, recoveryExpectedAudioTrack))
+                            if (old == null || playbackStateFor(old) != playbackStateFor(value) || recoveryMediaBecameReady) {
+                                val continuation = capturedContinuation?.forEvent(value.nativeEof)
+                                admit {
+                                    if (nativePlayer.ownsSourceSnapshot(recoverySource))
+                                        listener.onPlaybackStateChanged(playbackStateFor(value), continuation)
+                                }
+                            }
+                            if (old == null || playingFor(old) != playingFor(value)) admit { listener.onIsPlayingChanged(playingFor(value)) }
+                            if (old == null || old.paused != value.paused) admit { listener.onPlayWhenReadyChanged(!value.paused, 0) }
+                            if (old == null || old.speed != value.speed) admit { listener.onPlaybackParametersChanged(DesktopOriginalPlaybackRate(value.speed.toFloat())) }
+                            if (value.firstVideoFrameReady && old?.firstVideoFrameReady != true) admit { listener.onRenderedFirstFrame() }
+                            if (old == null || old.tracks != value.tracks) admit { listener.onTracksChanged(value.tracks) }
+                            if (value.error != null && (old?.error != value.error || old.failure != value.failure)) admit { listener.onPlayerError(DesktopOriginalNativePlaybackError(value.error, value.failure)) }
+                            previousVersion = version
+                            previous = value
                         }
                     }
-                    // A registration first observes state. An already-rendered native frame is
-                    // delivered as its actual receipt, never inferred from position/isPlaying.
-                    if (previousVersion != version) admit { listener.onSourceTransition(version) }
-                    if (old == null || playbackStateFor(old) != playbackStateFor(value)) {
-                        val continuation = capturedContinuation?.forEvent(value.nativeEof)
-                        admit { listener.onPlaybackStateChanged(playbackStateFor(value), continuation) }
-                    }
-                    if (old == null || playingFor(old) != playingFor(value)) admit { listener.onIsPlayingChanged(playingFor(value)) }
-                    if (old == null || old.paused != value.paused) admit { listener.onPlayWhenReadyChanged(!value.paused, 0) }
-                    if (old == null || old.speed != value.speed) admit { listener.onPlaybackParametersChanged(DesktopOriginalPlaybackRate(value.speed.toFloat())) }
-                    if (value.firstVideoFrameReady && old?.firstVideoFrameReady != true) admit { listener.onRenderedFirstFrame() }
-                    if (old == null || old.tracks != value.tracks) admit { listener.onTracksChanged(value.tracks) }
-                    if (value.error != null && (old?.error != value.error || old.failure != value.failure)) admit { listener.onPlayerError(DesktopOriginalNativePlaybackError(value.error, value.failure)) }
-                    previousVersion = version
-                    previous = value
                 }
             }
             registrations[listener] = job
