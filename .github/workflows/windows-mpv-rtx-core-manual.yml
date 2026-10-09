@@ -56,14 +56,18 @@ jobs:
       && inputs.producer_variant != 'retain-builder-only'
     permissions:
       contents: write
+      packages: read
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     env:
       BILIPAI_RTX_VARIANT: ${{ inputs.producer_variant }}
     container:
-      # Public linux/amd64 OCI manifest retrieved 2026-10-08; deliberately newer build environment.
-      # Replaces the unavailable historical digest; native sources/recipes/actions remain fixed.
-      image: ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf
+      # Exact linux/amd64 builder retained and authenticated in own workflow run 37928635585.
+      # This is a new OCI environment; old HOST snapshot evidence cannot be relabelled or reused.
+      image: ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       # These exact action revisions are recorded in the same original build log.
       - uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a

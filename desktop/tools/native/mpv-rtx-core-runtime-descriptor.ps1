@@ -56,7 +56,7 @@ function Install-RtxCoreDescriptorMpvRuntime {
         patchedNativeSourceSha256 = '1669c96fc95cfd7276a3149aa2d76058d29b2cc2dd848c77b949d434831c6d2f'
         recipeCommit = 'cd1edc11dc6887a50f705717619d879f5a93a488'
         recipeArchiveSha256 = '8b92a254771496b0dcc23017c2734bfa7545441d3e6a37958b063d6e7814a657'
-        containerImage = 'ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf'
+        containerImage = 'ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239'
     }
     $presentation=$runtime.variant-ceq'bilipai-veyra-rtx-present-v1'
     $inputSubdirectory='rtx-core-v1';$manifestLeaf='bilipai-rtx-source-manifest.json'

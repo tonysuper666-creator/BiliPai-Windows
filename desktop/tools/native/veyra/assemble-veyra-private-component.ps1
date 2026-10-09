@@ -173,7 +173,7 @@ try{
     foreach($key in $fixedFields){Fields $descriptor @($key);Fields $provenance @($key);if($descriptor.$key-cne$fixed.$key-or$provenance.$key-cne$fixed.$key){Reject 'MPV_FIXED_IDENTITY_MISMATCH'}}
     if($descriptor.architecture-cne'windows-x64'-or$provenance.architecture-cne'windows-x64'-or
         $descriptor.recipeArchiveSha256-cne$fixed.archives[0].sha256-or$provenance.recipeArchiveSha256-cne$fixed.archives[0].sha256-or
-        $descriptor.containerImage-cne'ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf'-or
+        $descriptor.containerImage-cne'ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239'-or
         $provenance.containerImage-cne$descriptor.containerImage){Reject 'MPV_BUILD_ENVIRONMENT_MISMATCH'}
     foreach($key in @('closedSdkOrRuntimeIncluded','vfgImplemented','rtxCoreBridgeVerified')){False-Field $descriptor.$key}
     foreach($key in @('rtxCoreBridgeVerified','reproducible','nativeResolutionPpeVerified')){False-Field $provenance.$key}

@@ -1,5 +1,5 @@
 {
-  "containerImage": "ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf",
+  "containerImage": "ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239",
   "helperSha256": "0c5bcd49bcd515eb6989308a78a55756c0544dbdc5ec2658ee80432b8fcfe778",
   "helperSourcePath": "desktop/tools/native/export-host-llvm-source-snapshot.py",
   "recipeCommit": "cd1edc11dc6887a50f705717619d879f5a93a488",

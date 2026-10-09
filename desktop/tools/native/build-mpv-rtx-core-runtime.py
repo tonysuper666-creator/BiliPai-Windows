@@ -21,7 +21,7 @@ import zipfile
 from pathlib import Path
 
 VARIANT = 'bilipai-veyra-rtx-core-v1'
-IMAGE = 'ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf'
+IMAGE = 'ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239'
 ROOT = Path(__file__).resolve().parents[3]
 INPUTS = ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1'
 
@@ -462,7 +462,7 @@ def main():
         raise RuntimeError('Selected producer and fixed input variants differ')
     import_helper_path = ROOT / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
     import_helper_raw = import_helper_path.read_bytes()
-    if sha(import_helper_raw) != '78fec19637f26f7bbd574234ef0f14d85aa1ab11b73833386e03b0fcce43cac6':
+    if sha(import_helper_raw) != '038b4aa2a90a515dfd643dd81ef0c266e3187a886abf00d8c042f1beafbdbdb3':
         raise RuntimeError('Reviewed shared importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import', import_helper_path)
     if import_spec is None or import_spec.loader is None:
@@ -508,7 +508,7 @@ def main():
         # Its source identity is not rewritten to pretend it is presentation MPV.
         snapshot_inputs_path = ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json'
         snapshot_inputs_raw = snapshot_inputs_path.read_bytes()
-        if sha(snapshot_inputs_raw) != 'f73ae4e1471d36e359cf5f31f24bbbea51409e176dd9270ed3ca46d2d3b395bc':
+        if sha(snapshot_inputs_raw) != '7fc17a39fb4d3bd4aa8b9fed408044d7416ea31bc6e1dfc97a0b93aee145de38':
             raise RuntimeError('Shared host LLVM lifecycle inputs changed')
         snapshot_inputs = json.loads(snapshot_inputs_raw)
         if (snapshot_inputs.get('schema') != 2 or snapshot_inputs.get('scope') != 'HOST_LLVM_EXPORT_ONLY_NO_IMPORT'
