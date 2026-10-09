@@ -1,6 +1,6 @@
 {
   "containerImage": "ghcr.io/shinchiro/archlinux@sha256:2b81f07c567b051455b9539770a71b53dd3add5f9ef52eca95ac01a2272e9fdf",
-  "helperSha256": "3ac2ad74af044f2004c461737a6eed4e511b7d9aec5c94227360861bf9d2e171",
+  "helperSha256": "0c5bcd49bcd515eb6989308a78a55756c0544dbdc5ec2658ee80432b8fcfe778",
   "helperSourcePath": "desktop/tools/native/export-host-llvm-source-snapshot.py",
   "recipeCommit": "cd1edc11dc6887a50f705717619d879f5a93a488",
   "recipeEdits": [

@@ -26,8 +26,8 @@ BINDING_STATE = 'PREBUILD_INSTALL_POSTCLEANUP_SOURCE_AND_CONFIG_BOUND'
 IMPORT_STATUS = 'IMPORTED_OWN_SOURCE_SNAPSHOT_REAL_LLVM_TARGET_VALIDATED'
 CATALOG_PATH = 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-import-trust.json'
 CATALOG_SHA256 = '1c3f838050e5d30295eae23361bac3059e91b88a53d3e164778829889aa2c7aa'
-EXPORTER_SHA256 = '3ac2ad74af044f2004c461737a6eed4e511b7d9aec5c94227360861bf9d2e171'
-INPUTS_SHA256 = '2cdaea2ab2ffa26ea058bf2ac84f681e11eda6be410140a10bab04a23e6fbc62'
+EXPORTER_SHA256 = '0c5bcd49bcd515eb6989308a78a55756c0544dbdc5ec2658ee80432b8fcfe778'
+INPUTS_SHA256 = 'f73ae4e1471d36e359cf5f31f24bbbea51409e176dd9270ed3ca46d2d3b395bc'
 LLVM_RECIPE_SHA256 = '32e9dc394790ba6a95c4ac5a829a5063460ee893736328441cfc22dc610db36b'
 RECIPE_COMMIT = 'cd1edc11dc6887a50f705717619d879f5a93a488'
 RECIPE_ARCHIVE_SHA256 = '8b92a254771496b0dcc23017c2734bfa7545441d3e6a37958b063d6e7814a657'
@@ -366,6 +366,13 @@ def verify_used_tracked_source(root, bundle, manifest, used, canonical, actual_b
         used, canonical, actual_blobs)
     if witnesses != manifest.get('actualUsedSourceCrLfMaterializations'):
         fail('Actual used source CRLF relations are missing, changed or unproved')
+    prebuild = manifest.get('prebuildConfigCaptureReceipt', {})
+    installed = manifest.get('configCaptureReceipt', {})
+    if prebuild.get('sourcePreflight') != installed.get('sourcePreflight'):
+        fail('Original prebuild source observation differs from installed capture')
+    module.verify_source_preflight(prebuild.get('sourcePreflight'),
+        manifest['actualSourceBuildBinding']['prebuild'],
+        canonical_entries=manifest['completeCanonicalSourceEntries'], used_materializations=witnesses)
 
 
 def lifecycle(manifest, descriptor, record, workspace, fixed, command):

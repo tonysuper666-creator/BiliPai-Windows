@@ -711,6 +711,85 @@ def configuration_assertions(build_directory, source, install, cache_raw):
     return expected
 
 
+def verify_source_preflight(preflight, identity, *, canonical_entries=None, used_materializations=None):
+    """Validate an earlier stage observation; never replace actual byte gates."""
+    required = {'schema', 'stage', 'actualBuildSourceSha256', 'sourceCommit', 'sourceTree',
+        'completeSourceLsTreeSha256', 'actualUsedSourceTreeManifestSha256',
+        'completeCanonicalSourceManifestSha256', 'canonicalArchiveSha256Observed',
+        'usedBundleSha256Observed', 'materializationSha256Observed',
+        'actualUsedSourceCrLfMaterializations', 'temporaryMaterialsRetained', 'canonicalCacheReused'}
+    if (not isinstance(preflight, dict) or set(preflight) != required
+            or type(preflight.get('schema')) is not int or preflight['schema'] != 1
+            or preflight.get('stage') != 'ACTUAL_CONFIGURED_PREBUILD_CANONICAL_AND_USED_BYTES_CHECKED'
+            or preflight.get('actualBuildSourceSha256') != sha(json_bytes(identity))
+            or preflight.get('sourceCommit') != identity.get('sourceCommit')
+            or preflight.get('sourceTree') != identity.get('sourceTree')
+            or preflight.get('completeSourceLsTreeSha256') != identity.get('completeSourceLsTreeSha256')
+            or preflight.get('actualUsedSourceTreeManifestSha256') != identity.get('actualSourceWorktreeManifestSha256')
+            or not isinstance(preflight.get('actualUsedSourceCrLfMaterializations'), list)
+            or len(preflight['actualUsedSourceCrLfMaterializations']) > 10000
+            or preflight.get('temporaryMaterialsRetained') is not False
+            or preflight.get('canonicalCacheReused') is not False):
+        raise RuntimeError('Actual prebuild source preflight missing or bound to another source')
+    for key in ('actualBuildSourceSha256', 'completeSourceLsTreeSha256',
+                'actualUsedSourceTreeManifestSha256', 'completeCanonicalSourceManifestSha256',
+                'canonicalArchiveSha256Observed', 'usedBundleSha256Observed', 'materializationSha256Observed'):
+        if not isinstance(preflight.get(key), str) or not re.fullmatch(r'[0-9a-f]{64}', preflight[key]):
+            raise RuntimeError('Prebuild source observation digest shape differs')
+    if canonical_entries is not None:
+        if preflight['completeCanonicalSourceManifestSha256'] != sha(json_bytes(canonical_entries)):
+            raise RuntimeError('Actual final canonical source manifest differs from prebuild preflight')
+    if used_materializations is not None:
+        if preflight['actualUsedSourceCrLfMaterializations'] != used_materializations:
+            raise RuntimeError('Actual final used-source byte relations differ from prebuild preflight')
+
+
+def preflight_configured_source(source, workspace, identity, entries, raw_tree):
+    """Run at the actual configure->capture->build dependency before LLVM build.
+
+    Temporary canonical/used archives are discarded; these are observations at
+    prebuild, not retained future byte-proof assets or a reusable cache. Actual
+    postinstall/export and independent importer/upload gates all run again.
+    """
+    with tempfile.TemporaryDirectory(prefix='bilipai-host-preflight-', dir=workspace) as temporary:
+        stage = owned(Path(temporary), workspace, directory=True)
+        canonical = stage / 'complete-llvm-source.tar.gz'
+        full_entries, tree_sha, materialization = complete_source_archive(source, canonical, identity['sourceCommit'])
+        if (tree_sha != identity['completeSourceLsTreeSha256'] or tree_sha != sha(raw_tree)
+                or sha(json_bytes(entries)) != identity['actualSourceWorktreeManifestSha256']):
+            raise RuntimeError('Configured source preflight differs from actual prebuild tree/worktree')
+        actual_blobs = {}
+        for value in raw_tree.split(b'\0'):
+            if value:
+                fields, raw_name = value.split(b'\t', 1)
+                mode, kind, blob = fields.decode('ascii').split(' ')
+                name = relative_name(raw_name.decode('utf-8'))
+                if kind != 'blob' or name in actual_blobs:
+                    raise RuntimeError('Prebuild recursive tree contains unsupported/duplicate entries')
+                actual_blobs[name] = (mode, blob)
+        bundle = stage / 'prebuild-canonical-and-used-source.tar.gz'
+        with tarfile.open(bundle, 'w:gz') as archive:
+            add_regular(archive, canonical, 'canonical-source/complete-llvm-source.tar.gz')
+            used = pack_tree(archive, source, 'actual-used-source-worktree', skip_git=True)
+        if used != entries:
+            raise RuntimeError('Actual configured worktree changed during prebuild source preflight')
+        witnesses = verify_used_source_relationship(bundle, identity['sourceCommit'], used,
+            {row['path']: row for row in full_entries}, actual_blobs, scratch=stage)
+        observed = {'schema': 1, 'stage': 'ACTUAL_CONFIGURED_PREBUILD_CANONICAL_AND_USED_BYTES_CHECKED',
+            'actualBuildSourceSha256': sha(json_bytes(identity)),
+            'sourceCommit': identity['sourceCommit'], 'sourceTree': identity['sourceTree'],
+            'completeSourceLsTreeSha256': tree_sha,
+            'actualUsedSourceTreeManifestSha256': sha(json_bytes(used)),
+            'completeCanonicalSourceManifestSha256': sha(json_bytes(full_entries)),
+            'canonicalArchiveSha256Observed': file_sha(canonical),
+            'usedBundleSha256Observed': file_sha(bundle),
+            'materializationSha256Observed': sha(json_bytes(materialization)),
+            'actualUsedSourceCrLfMaterializations': witnesses,
+            'temporaryMaterialsRetained': False, 'canonicalCacheReused': False}
+        verify_source_preflight(observed, identity, canonical_entries=full_entries, used_materializations=witnesses)
+    return observed
+
+
 def verify_capture(directory, workspace, helper_sha, stage, names):
     directory = owned(directory, workspace, directory=True)
     receipt_path = owned(directory / 'config-capture-receipt.json', workspace)
@@ -740,6 +819,7 @@ def verify_capture(directory, workspace, helper_sha, stage, names):
         workspace / 'sources/llvm', workspace / 'clang-root', (directory / 'CMakeCache.txt').read_bytes())
     if assertions != receipt.get('resolvedConfigurationAssertions'):
         raise RuntimeError('Captured source/build configuration assertions changed')
+    verify_source_preflight(receipt.get('sourcePreflight'), identity)
     return receipt
 
 
@@ -794,13 +874,26 @@ def capture_config(build_directory, source, workspace, output, stage):
     for name, raw in zip(SOURCE_FILES, (json_bytes(entries), raw_tree)):
         (destination_root / name).write_bytes(raw)
         rows.append({'path': name, 'bytes': len(raw), 'sha256': sha(raw)})
+    if before:
+        preflight = before['sourcePreflight']
+    else:
+        preflight = preflight_configured_source(source, workspace, identity, entries, raw_tree)
+        # The potentially long byte preflight must not bind stale configure
+        # payloads; compare the actual build files with their retained capture.
+        for row in rows:
+            if row['path'] in CONFIG_FILES[:-1]:
+                path = owned(build_directory / row['path'], workspace)
+                if path.stat().st_size != row['bytes'] or file_sha(path) != row['sha256']:
+                    raise RuntimeError('Actual configured LLVM files changed during source preflight')
+    verify_source_preflight(preflight, identity)
     final, final_entries, final_tree = source_identity(source, workspace)
     if final != identity or final_entries != entries or final_tree != raw_tree:
         raise RuntimeError('LLVM source changed while writing actual capture')
     receipt = {'schema': 2, 'kind': KIND, 'stage': stage_name, 'sourceBindingSchema': 1,
         'actualBuildDirectory': str(build_directory), 'actualSourceDirectory': str(source),
         'workspace': str(workspace), 'helperSha256': helper_sha, 'files': rows,
-        'actualBuildSource': identity, 'resolvedConfigurationAssertions': assertions}
+        'actualBuildSource': identity, 'resolvedConfigurationAssertions': assertions,
+        'sourcePreflight': preflight}
     if before:
         receipt['prebuildCaptureReceiptSha256'] = file_sha(output / 'prebuild/config-capture-receipt.json')
     write_json(destination_root / 'config-capture-receipt.json', receipt)
@@ -823,6 +916,7 @@ def export_snapshot(*, workspace, output, repository_root, fixed, snapshot_input
         'AFTER_CONFIGURATION_BEFORE_REAL_LLVM_BUILD', CONFIG_FILES[:-1] + SOURCE_FILES)
     prebuild_sha = file_sha(config / 'prebuild/config-capture-receipt.json')
     if (capture.get('prebuildCaptureReceiptSha256') != prebuild_sha
+            or capture['sourcePreflight'] != prebuild['sourcePreflight']
             or capture['actualBuildSource'] != prebuild['actualBuildSource']
             or capture['resolvedConfigurationAssertions'] != prebuild['resolvedConfigurationAssertions']):
         raise RuntimeError('Installed LLVM provenance is not the actual prebuild source/config')
@@ -909,6 +1003,10 @@ def export_snapshot(*, workspace, output, repository_root, fixed, snapshot_input
     if (final_source != built_source or final_entries != postcleanup_entries
             or final_tree != postcleanup_tree or used_entries != postcleanup_entries):
         raise RuntimeError('Actual built LLVM source changed during snapshot export')
+    # Compare deterministic full inventories/byte relations, never separately
+    # generated gzip hashes. Final retained source assets remain authoritative.
+    verify_source_preflight(prebuild['sourcePreflight'], built_source,
+        canonical_entries=full_source_entries, used_materializations=used_materializations)
     licenses = [row for row in full_source_entries if row['kind'] == 'file'
                 and (PurePosixPath(row['path']).name.upper().startswith(('LICENSE', 'COPYING', 'NOTICE')))]
     if not any(row['path'] in ('LICENSE.TXT', 'llvm/LICENSE.TXT') for row in licenses):

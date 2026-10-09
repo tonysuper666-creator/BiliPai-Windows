@@ -462,7 +462,7 @@ def main():
         raise RuntimeError('Selected producer and fixed input variants differ')
     import_helper_path = ROOT / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
     import_helper_raw = import_helper_path.read_bytes()
-    if sha(import_helper_raw) != 'b0ec32edb38ef882b2cd73881f1e19828f851ce38bcfeb56b8a596f9e1f86306':
+    if sha(import_helper_raw) != '78fec19637f26f7bbd574234ef0f14d85aa1ab11b73833386e03b0fcce43cac6':
         raise RuntimeError('Reviewed shared importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import', import_helper_path)
     if import_spec is None or import_spec.loader is None:
@@ -508,7 +508,7 @@ def main():
         # Its source identity is not rewritten to pretend it is presentation MPV.
         snapshot_inputs_path = ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json'
         snapshot_inputs_raw = snapshot_inputs_path.read_bytes()
-        if sha(snapshot_inputs_raw) != '2cdaea2ab2ffa26ea058bf2ac84f681e11eda6be410140a10bab04a23e6fbc62':
+        if sha(snapshot_inputs_raw) != 'f73ae4e1471d36e359cf5f31f24bbbea51409e176dd9270ed3ca46d2d3b395bc':
             raise RuntimeError('Shared host LLVM lifecycle inputs changed')
         snapshot_inputs = json.loads(snapshot_inputs_raw)
         if (snapshot_inputs.get('schema') != 2 or snapshot_inputs.get('scope') != 'HOST_LLVM_EXPORT_ONLY_NO_IMPORT'
