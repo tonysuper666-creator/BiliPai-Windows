@@ -209,8 +209,98 @@ def publication_status(github: GitHub, manifest: dict, version: str, source_sha:
             "missingAssets": missing, "draft": bool(release and release.get("draft"))}
 
 
+def veyra_tools():
+    path = Path(__file__).parent / "update/prepare-veyra-compatible-catalog.py"
+    spec = importlib.util.spec_from_file_location("veyra_own_catalog", path)
+    if spec is None or spec.loader is None:
+        raise ReleaseError("Own catalog validator is missing.")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def exact_veyra_target(github: GitHub, version: str, source_sha: str, digest: str) -> tuple[dict, dict]:
+    # API metadata, not operator-invented IDs. The source tag and actual asset
+    # bytes are independently checked by publication_status/remote_digest.
+    own = "tonysuper666-creator/BiliPai-Windows"
+    if github.repository != own:
+        raise ReleaseError("Veyra catalogs can target only the configured own repository.")
+    tag = "Windows-v" + version
+    if not verify_tag(github, tag, source_sha):
+        raise ReleaseError("The exact Windows source tag is missing.")
+    release = github.release(tag)
+    if not release or release.get("draft") is not True or type(release.get("id")) is not int or release["id"] <= 0 or release.get("tag_name") != tag:
+        raise ReleaseError("A Veyra catalog requires an existing unpublished own Windows draft.")
+    if release.get("html_url") != f"https://github.com/{own}/releases/tag/{tag}":
+        raise ReleaseError("Windows draft repository/tag metadata differs.")
+    assets = inventory(release)
+    if len({name.lower() for name in assets}) != len(assets) or len(assets) > 128:
+        raise ReleaseError("Windows asset names must be unique, including case.")
+    archive, sidecar, source = asset_names(version)
+    ids = set()
+    for name in (archive, sidecar, source):
+        row = assets.get(name, {})
+        asset_id, size = row.get("id"), row.get("size")
+        url = f"https://github.com/{own}/releases/download/{tag}/{name}"
+        if (type(asset_id) is not int or asset_id <= 0 or asset_id in ids or type(size) is not int or size <= 0 or
+                row.get("state") != "uploaded" or row.get("browser_download_url") != url):
+            raise ReleaseError("Actual full application asset metadata is missing or invalid.")
+        ids.add(asset_id)
+    if assets[archive]["size"] > 512 * 1024 * 1024:
+        raise ReleaseError("Full application ZIP exceeds the updater limit.")
+    with tempfile.TemporaryDirectory(prefix="bilipai-veyra-draft-check-") as temporary:
+        if remote_digest(github, tag, assets[archive], Path(temporary)) != digest:
+            raise ReleaseError("The actual draft ZIP differs from the checked package.")
+    return release, {"repository": own, "version": tag, "releaseId": release["id"], "assetId": assets[archive]["id"],
+                     "assetName": archive, "size": assets[archive]["size"],
+                     "downloadUrl": assets[archive]["browser_download_url"], "sha256": digest}
+
+
+def attach_veyra_catalog(github: GitHub, version: str, source_sha: str, digest: str,
+                        catalog_directory: Path, trusted_catalog_sha256: str) -> dict:
+    tools = veyra_tools()
+    release, expected = exact_veyra_target(github, version, source_sha, digest)
+    # Verification is public-key only; private signing is never part of publisher/CI.
+    _, raw, _ = tools.signed_directory(catalog_directory, trusted_catalog_sha256, expected)
+    name = expected["assetName"] + ".veyra-compatible.json"
+    before = inventory(release)
+    if any(key.lower() == name.lower() and key != name for key in before):
+        raise ReleaseError("Catalog name has an ambiguous case variant.")
+    actual_sha = hashlib.sha256(raw).hexdigest()
+    with tempfile.TemporaryDirectory(prefix="bilipai-veyra-catalog-upload-") as temporary:
+        directory = Path(temporary)
+        path = directory / name
+        path.write_bytes(raw)  # Upload the exact verified bytes, not a later reread.
+        if name not in before:
+            github.upload("Windows-v" + version, [path])
+        current, target = exact_veyra_target(github, version, source_sha, digest)
+        if target != expected or current["id"] != release["id"]:
+            raise ReleaseError("Windows draft/ZIP identity changed during catalog attachment.")
+        after = inventory(current)
+        if set(after) != set(before) | {name}:
+            raise ReleaseError("Unexpected assets changed during catalog attachment.")
+        for old_name, row in before.items():
+            if after[old_name].get("id") != row.get("id") or after[old_name].get("size") != row.get("size"):
+                raise ReleaseError("An existing release asset changed during catalog attachment.")
+        asset = after[name]
+        expected_url = expected["downloadUrl"] + ".veyra-compatible.json"
+        if (type(asset.get("id")) is not int or asset["id"] <= 0 or asset.get("state") != "uploaded" or
+                asset.get("size") != len(raw) or asset.get("browser_download_url") != expected_url or
+                remote_digest(github, "Windows-v" + version, asset, directory) != actual_sha):
+            raise ReleaseError("Exact signed catalog attachment verification failed; keep the draft unpublished.")
+    return {"catalogAssetId": asset["id"], "catalogSha256": actual_sha, "catalogAssetName": name}
+
+
 def publish(github: GitHub, manifest: dict, version: str, source_sha: str,
-            assets_root: Path, gate: dict) -> dict:
+            assets_root: Path, gate: dict, *, stage_veyra: bool = False,
+            catalog_directory: Path | None = None, trusted_catalog_sha256: str | None = None) -> dict:
+    if stage_veyra and catalog_directory is not None:
+        raise ReleaseError("Draft staging cannot consume a signed catalog.")
+    if (catalog_directory is None) != (trusted_catalog_sha256 is None):
+        raise ReleaseError("Signed catalog directory and independent SHA-256 must be paired.")
+    if stage_veyra or catalog_directory is not None:
+        if github.repository != "tonysuper666-creator/BiliPai-Windows":
+            raise ReleaseError("Veyra catalog flow requires the configured own repository.")
     validate_gates(gate)
     if gate.get("windowsSourceCommit") != validate_sha(source_sha):
         raise ReleaseError("Release gate does not match the exact Windows source commit.")
@@ -225,9 +315,13 @@ def publish(github: GitHub, manifest: dict, version: str, source_sha: str,
         raise ReleaseError("Release gate does not match the checked Windows package version and SHA-256.")
     status = publication_status(github, manifest, version, source_sha)
     if not status["publicationNeeded"]:
+        if stage_veyra or catalog_directory is not None:
+            raise ReleaseError("An already published release is retained; create a new reviewed Windows version.")
         return status
     tag = status["tag"]
     release = github.release(tag)
+    if (stage_veyra or catalog_directory is not None) and release is not None and release.get("draft") is not True:
+        raise ReleaseError("Veyra catalog flow cannot turn a public release back into a draft.")
     assets = inventory(release)
     with tempfile.TemporaryDirectory(prefix="bilipai-release-publish-") as temporary:
         directory = Path(temporary)
@@ -282,8 +376,22 @@ def publish(github: GitHub, manifest: dict, version: str, source_sha: str,
         verified = publication_status(github, manifest, version, source_sha)
         if verified["missingAssets"]:
             raise ReleaseError("Release remains draft because an uploaded asset is missing.")
+        catalog_result = {}
+        if stage_veyra:
+            staged, target = exact_veyra_target(github, version, source_sha, digest)
+            stage_evidence = directory / "stage-evidence"
+            stage_evidence.mkdir()
+            actual_evidence = github.download(tag, source_name, stage_evidence).read_bytes()
+            validate_evidence(json.loads(actual_evidence.decode("utf-8-sig")), manifest, version, source_sha, digest)
+            return {"status": "draftStagedPendingVeyraAcceptance", "published": False,
+                    "compatibilityStatus": "PENDING_FULL_APPLICATION_VALIDATION",
+                    "target": target, "ownReleaseMetadata": staged, "windowsSourceEvidenceRaw": actual_evidence}
+        if catalog_directory is not None:
+            catalog_result = attach_veyra_catalog(github, version, source_sha, digest,
+                                                   catalog_directory, trusted_catalog_sha256)
         github.draft(tag, False)
         result = publication_status(github, manifest, version, source_sha)
+        result.update(catalog_result)
         if result["publicationNeeded"]:
             raise ReleaseError("Release did not become public after attachment verification.")
         return result
@@ -294,6 +402,10 @@ def main() -> int:
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--check", action="store_true")
     mode.add_argument("--publish", action="store_true")
+    mode.add_argument("--stage-veyra", action="store_true")
+    parser.add_argument("--stage-output-directory", type=Path)
+    parser.add_argument("--catalog-directory", type=Path)
+    parser.add_argument("--trusted-catalog-sha256")
     parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[2])
     parser.add_argument("--repository", required=True)
     parser.add_argument("--source-sha")
@@ -301,6 +413,18 @@ def main() -> int:
     parser.add_argument("--gate", type=Path, default=Path("release-evidence/release-gate.json"))
     args = parser.parse_args()
     try:
+        if (args.catalog_directory is None) != (args.trusted_catalog_sha256 is None) or (args.check and args.catalog_directory is not None):
+            raise ReleaseError("A signed catalog directory/hash pair is allowed only for publication.")
+        if args.stage_veyra != (args.stage_output_directory is not None):
+            raise ReleaseError("Explicit draft staging requires a unique stage output directory.")
+        if args.stage_veyra and args.catalog_directory is not None:
+            raise ReleaseError("Stage first; offline acceptance/signing follows real draft asset IDs.")
+        if args.stage_output_directory is not None:
+            tools = veyra_tools()
+            pending = tools.load_preparer()
+            if not args.stage_output_directory.is_absolute() or args.stage_output_directory.exists():
+                raise ReleaseError("A new absolute stage output directory is required.")
+            pending.no_links(args.stage_output_directory.parent)
         repo = args.repo.resolve()
         remote_repository = sync.publication_check(repo)
         if remote_repository.lower() != valid_repository(args.repository).lower():
@@ -316,7 +440,18 @@ def main() -> int:
         version = version_for(repo, manifest)
         result = (publication_status(github, manifest, version, source_sha) if args.check else
                   publish(github, manifest, version, source_sha, args.assets.resolve(),
-                          json.loads(args.gate.read_text(encoding="utf-8-sig"))))
+                          json.loads(args.gate.read_text(encoding="utf-8-sig")), stage_veyra=args.stage_veyra,
+                          catalog_directory=args.catalog_directory, trusted_catalog_sha256=args.trusted_catalog_sha256))
+        if args.stage_veyra:
+            output = args.stage_output_directory
+            output.mkdir()
+            documents = {"own-release-metadata.json": (json.dumps(result.pop("ownReleaseMetadata"), ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode("utf-8"),
+                         asset_names(version)[2]: result.pop("windowsSourceEvidenceRaw")}
+            result["localStageEvidence"] = {}
+            for name, raw in documents.items():
+                with (output / name).open("xb") as stream:
+                    stream.write(raw)
+                result["localStageEvidence"][name] = {"sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except (ReleaseError, OSError, ValueError, KeyError, TypeError) as error:

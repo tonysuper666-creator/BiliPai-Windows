@@ -28,6 +28,18 @@ on:
         description: 'Optional single native candidate artifact ID; keep both empty for the original runtime, never combine with release'
         type: string
         default: ''
+      veyra_catalog_run_id:
+        description: Optional own run containing an independently validated and signed full-app catalog
+        type: string
+        default: ''
+      veyra_catalog_artifact_id:
+        description: Pair with catalog run ID; never use a native-only or unsigned artifact
+        type: string
+        default: ''
+      veyra_catalog_sha256:
+        description: Independent SHA-256 of the exact signed catalog asset; all three inputs are required
+        type: string
+        default: ''
       render_diagnostic:
         description: Run only the isolated AWT and mpv rendering experiment; never build or publish the app
         type: boolean
@@ -566,6 +578,9 @@ jobs:
           WORKFLOW_EVENT: ${{ github.event_name }}
           MPV_NATIVE_RUN_ID: ${{ inputs.mpv_native_run_id }}
           MPV_NATIVE_ARTIFACT_ID: ${{ inputs.mpv_native_artifact_id }}
+          VEYRA_CATALOG_RUN_ID: ${{ inputs.veyra_catalog_run_id }}
+          VEYRA_CATALOG_ARTIFACT_ID: ${{ inputs.veyra_catalog_artifact_id }}
+          VEYRA_CATALOG_SHA256: ${{ inputs.veyra_catalog_sha256 }}
         run: |
           $head = git rev-parse HEAD
           foreach ($required in @($env:SOURCE_SHA, $env:EXPECTED_HEAD)) {
@@ -581,6 +596,13 @@ jobs:
               if ($env:WORKFLOW_EVENT -cne 'workflow_dispatch') { throw 'Native candidates may enter only an explicitly selected manual validation build.' }
               if ($env:MAKE_RELEASE -eq 'true') { throw 'An unverified native candidate cannot be published by the standard release workflow.' }
               'mpv_candidate=true' | Add-Content -LiteralPath $env:GITHUB_OUTPUT
+          }
+          $catalogRun = [string]$env:VEYRA_CATALOG_RUN_ID
+          $catalogArtifact = [string]$env:VEYRA_CATALOG_ARTIFACT_ID
+          $catalogSha = [string]$env:VEYRA_CATALOG_SHA256
+          if ($catalogRun -or $catalogArtifact -or $catalogSha) {
+              if ($catalogRun -cnotmatch '\A[1-9][0-9]{0,18}\z' -or $catalogArtifact -cnotmatch '\A[1-9][0-9]{0,18}\z' -or $catalogSha -cnotmatch '\A[0-9a-f]{64}\z') { throw 'Catalog selection requires two complete IDs and one independent SHA-256.' }
+              if ($env:WORKFLOW_EVENT -cne 'workflow_dispatch' -or $env:MAKE_RELEASE -cne 'true') { throw 'Signed catalogs require an explicit manual publication.' }
           }
           "source_sha=$head" | Add-Content -LiteralPath $env:GITHUB_OUTPUT
           if ($env:MAKE_RELEASE -eq 'true') { 'release=true' | Add-Content -LiteralPath $env:GITHUB_OUTPUT }
@@ -777,6 +799,7 @@ jobs:
       cancel-in-progress: false
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@v4
         with:
@@ -793,11 +816,32 @@ jobs:
         with:
           name: Windows-release-smoke-evidence
           path: ${{ runner.temp }}/release-evidence
+      - name: Select an already signed catalog from the fixed own repository
+        if: inputs.veyra_catalog_run_id != ''
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: ${{ inputs.veyra_catalog_artifact_id }}
+          run-id: ${{ inputs.veyra_catalog_run_id }}
+          repository: tonysuper666-creator/BiliPai-Windows
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/veyra-signed-catalog
+          merge-multiple: true
+      - uses: actions/setup-java@v4
+        if: inputs.veyra_catalog_run_id != ''
+        with:
+          distribution: temurin
+          java-version: '21'
       - name: Finish draft, verify immutable tag and all assets, then publish
         env:
           GH_TOKEN: ${{ github.token }}
           SOURCE_SHA: ${{ needs.windows.outputs.source_sha }}
-        run: >-
-          python desktop/tools/publish-release.py --publish
-          --repository "$GITHUB_REPOSITORY" --source-sha "$SOURCE_SHA"
-          --assets "$RUNNER_TEMP/release-assets" --gate "$RUNNER_TEMP/release-evidence/release-gate.json"
+          VEYRA_CATALOG_RUN_ID: ${{ inputs.veyra_catalog_run_id }}
+          VEYRA_CATALOG_SHA256: ${{ inputs.veyra_catalog_sha256 }}
+        shell: bash
+        run: |
+          parameters=(--publish --repository "$GITHUB_REPOSITORY" --source-sha "$SOURCE_SHA"
+                      --assets "$RUNNER_TEMP/release-assets" --gate "$RUNNER_TEMP/release-evidence/release-gate.json")
+          if [[ -n "$VEYRA_CATALOG_RUN_ID" ]]; then
+              parameters+=(--catalog-directory "$RUNNER_TEMP/veyra-signed-catalog" --trusted-catalog-sha256 "$VEYRA_CATALOG_SHA256")
+          fi
+          python desktop/tools/publish-release.py "${parameters[@]}"
