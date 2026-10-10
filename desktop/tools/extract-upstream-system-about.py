@@ -167,11 +167,11 @@ def generate(repo, output, resource_output, proof_output):
         assert sha(wide(duplicate).read_bytes()) == "fc422e6d435a259ace89ec27ab8e7f65f29bb62c2adcc273e2222ec8b830b7b8", "Unexpected modified duplicate agreement output"
         wide(duplicate).unlink()
     profile_producer = repo / "desktop/tools/extract-upstream-profile-main.py"
-    assert sha(wide(profile_producer).read_bytes().replace(bytes([13,10]),bytes([10]))) == "47736c78062ec6bcc99888f35a1396f90b3bfc31cbbff5bd571e5a8c188d4663", "Existing complete agreement owner changed"
+    assert sha(wide(profile_producer).read_bytes().replace(bytes([13,10]),bytes([10]))) == "12381c526cae72f0de45b6e942cf097a2919f60ff080b557d4290e3d1161262d", "Existing complete agreement owner changed"
     agreement_source = orig.text(GATE)
     shared_agreement = dict(originalPath=GATE, originalRawSha256=sha(orig.raw(GATE)),
         originalLfSha256=sha(agreement_source.encode()), producer="desktop/tools/extract-upstream-profile-main.py",
-        producerLfSha256="47736c78062ec6bcc99888f35a1396f90b3bfc31cbbff5bd571e5a8c188d4663", producerHashNormalization="lf",
+        producerLfSha256="12381c526cae72f0de45b6e942cf097a2919f60ff080b557d4290e3d1161262d", producerHashNormalization="lf",
         output="build/generated/profile-main/com/android/purebilibili/feature/agreement/DesktopOriginalAgreementReview.kt",
         functions={name: sha(media.function(agreement_source,name,parser).encode())
             for name in ["UserAgreementBody", "LinkifiedText", "UserAgreementReviewDialog"]},

@@ -300,6 +300,17 @@ def emit_latest_profile_closures(source, emit, parser, media, standalone):
             val oriented = rotateDesktopQrPixels(originalPixels, bitmap.width, bitmap.height, rotation)
             val pixels = oriented.third'''
  assert before in s;s=s.replace(before,after).replace('RGBLuminanceSource(oriented.width, oriented.height, pixels)','RGBLuminanceSource(oriented.first, oriented.second, pixels)')
+ # v0.3.4-beta.2 keeps scanning later orientations after an unsupported QR payload.
+ before='''            return when {
+                acceptAny -> text
+                text.startsWith("bilipai://transfer/") || parseBilibiliLoginQr(text) != null -> text
+                else -> null
+            }'''
+ after='''            if (acceptAny || text.startsWith("bilipai://transfer/") || parseBilibiliLoginQr(text) != null) {
+                return text
+            }
+            // An unrelated result must not abort the remaining orientation attempts.'''
+ assert s.count(before)==1;s=s.replace(before,after,1)
  s+='''
 /** Same clockwise four-orientation album policy as Android Bitmap rotation. */
 private fun rotateDesktopQrPixels(pixels: IntArray, width: Int, height: Int, rotation: Int): Triple<Int, Int, IntArray> {
