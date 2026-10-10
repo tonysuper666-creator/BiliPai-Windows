@@ -194,6 +194,22 @@ def generate(repo: Path, output: Path) -> None:
     body = body[:start] + "        private fun resolveLocalIpv4Address(context: Context): String = DesktopCastNetwork.proxyAddress(context)\n\n" + body[end:]
     body = substitute(body, 'val upstreamResponse = client.newCall(upstreamRequest).execute()', 'val upstreamResponse = (registration?.publication?.calls(client) ?: client).newCall(upstreamRequest).execute()')
     body = substitute(body, '            manifestStore[key] = manifest', '            val frame = su.litvak.chromecast.api.v2.DesktopCastPublication.current() as? com.bilipai.desktop.cast.DesktopCastPublicationFrame\n            if (frame == null) manifestStore[key] = manifest else frame.admit { manifestStore[key] = manifest }')
+    # Serve completed offline output through the existing HTTP server/session registry.
+    # No request parameter can select a filesystem path.
+    body = substitute(body, '        if (uri == "/proxy") {', '''        if (uri.startsWith("/local/")) {
+            return com.bilipai.desktop.cast.serveDesktopLocalCastFile(session)
+        }
+
+        if (uri == "/proxy") {''')
+    body = substitute(body, '        fun dashManifestPath(key: String): String = "/dash/$key.mpd"', '''        fun getLocalFileUrl(context: Context, file: java.nio.file.Path, contentType: String,
+            nativePublication: com.bilipai.desktop.player.DesktopNativePlaybackPublication): String {
+            ensureStarted()
+            val id = DesktopCastProxySessions.registerLocalFile(file, contentType, nativePublication)
+            val ipAddress = resolveLocalIpv4Address(context)
+            return "http://$ipAddress:${sharedServer?.listeningPort ?: PORT}/local/$id"
+        }
+
+        fun dashManifestPath(key: String): String = "/dash/$key.mpd"''')
     write(path, body)
 
     path = BASE + "feature/plugin/dlna/DlnaCastPlugin.kt"

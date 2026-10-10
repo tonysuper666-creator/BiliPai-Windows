@@ -13,8 +13,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin,
-    media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit) =
-    DesktopGoogleCastDialogContent(context, plugin, media, null, onDismiss)
+    media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit,
+    controlSource: DesktopCastMediaPublication? = null) =
+    DesktopGoogleCastDialogContent(context, plugin, media, null, onDismiss, controlSource)
 
 @Composable
 internal fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin,
@@ -25,13 +26,14 @@ internal fun DesktopGoogleCastDialog(context: DesktopPluginContext, plugin: Desk
 private fun DesktopGoogleCastDialogContent(context: DesktopPluginContext, plugin: DesktopGoogleCastPlugin,
     media: (suspend () -> DesktopCastMediaPublication?)?,
     onRouteSelected: ((com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit)?,
-    onDismiss: () -> Unit) {
+    onDismiss: () -> Unit, controlSource: DesktopCastMediaPublication? = null) {
     val latestSelection by rememberUpdatedState(onRouteSelected)
     val scope = rememberCoroutineScope()
     val routes by plugin.routes.collectAsState()
     val playback by plugin.playbackState.collectAsState()
     val pluginBusy by plugin.isBusy.collectAsState()
     var preparing by remember { mutableStateOf(false) }
+    var sourceAccepted by remember(plugin, controlSource) { mutableStateOf(controlSource == null) }
     val busy = pluginBusy || preparing
     val discovering by plugin.isDiscovering.collectAsState()
     val error by plugin.error.collectAsState()
@@ -55,7 +57,15 @@ private fun DesktopGoogleCastDialogContent(context: DesktopPluginContext, plugin
                         val preparation = DesktopCastProxySessions.acquirePreparation()
                         preparing = true
                         mediaError = null
-                        try { val request = checkNotNull(media).invoke(); if (request == null) mediaError = "当前媒体没有可投屏的播放地址" else request.use { plugin.cast(context, route, it) } }
+                        try {
+                            val request = checkNotNull(media).invoke()
+                            if (request == null) mediaError = "当前媒体没有可投屏的播放地址"
+                            else {
+                                if (controlSource != null) check(request === controlSource)
+                                val result = request.use { plugin.cast(context, route, it) }
+                                if (result.isSuccess) sourceAccepted = true
+                            }
+                        }
                         catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
                         catch (_: Exception) { mediaError = "获取投屏媒体失败，请重新选择播放源" }
                         finally { preparing = false; preparation.close(); com.android.purebilibili.feature.cast.LocalProxyServer.stopAndClear() }
@@ -65,17 +75,25 @@ private fun DesktopGoogleCastDialogContent(context: DesktopPluginContext, plugin
                 }
             }
             if (routes.isEmpty()) Text("未发现设备。请让电脑与 Chromecast / Google Cast 设备连接同一局域网。")
-            if (playback.isActive) {
+            if (playback.isActive && (controlSource == null || sourceAccepted)) {
                 Text("${playback.deviceLabel} · ${playback.title}")
                 Text("${playback.currentPositionMs/1000} / ${playback.durationMs/1000} 秒")
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(enabled = !busy, onClick = { scope.launch { if (playback.isPlaying) plugin.pause() else plugin.play() } }) { Text(if (playback.isPlaying) "暂停" else "播放") }
-                    OutlinedButton(enabled = !busy, onClick = { scope.launch { plugin.stop() } }) { Text("停止投屏") }
+                    Button(enabled = !busy, onClick = { scope.launch {
+                        if (controlSource == null) { if (playback.isPlaying) plugin.pause() else plugin.play() }
+                        else controlSource.onSource { if (playback.isPlaying) plugin.pause() else plugin.play() }
+                    } }) { Text(if (playback.isPlaying) "暂停" else "播放") }
+                    OutlinedButton(enabled = !busy, onClick = { scope.launch {
+                        if (controlSource == null) plugin.stop() else controlSource.onSource { plugin.stop() }
+                    } }) { Text("停止投屏") }
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     OutlinedTextField(seekSeconds, { seekSeconds = it }, label = { Text("跳转秒数") }, singleLine = true, modifier = Modifier.weight(1f))
                     TextButton(enabled = !busy && seekSeconds.toLongOrNull()?.let { it >= 0 && it <= Long.MAX_VALUE/1000 } == true,
-                        onClick = { scope.launch { plugin.seek(seekSeconds.toLong()*1000) } }) { Text("跳转") }
+                        onClick = { scope.launch {
+                             if (controlSource == null) plugin.seek(seekSeconds.toLong()*1000)
+                             else controlSource.onSource { plugin.seek(seekSeconds.toLong()*1000) }
+                         } }) { Text("跳转") }
                 }
             }
             if (busy) LinearProgressIndicator(Modifier.fillMaxWidth())
