@@ -140,22 +140,37 @@ private fun DesktopWindowsVideoEnhancementBody(configuration: DesktopVideoEnhanc
             actionError = null
             runCatching { configuration.setQuality(quality) }.onFailure { actionError = "保存 NVIDIA 处理质量失败，可重试" }
         }
-        AppText("HDR 减弱也会减少亮度扩展。计算质量由完整应用设置中的处理质量决定。",
-            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        AppText("HDR 自动仅在 HDR 显示目标可用时转换 SDR；原生 HDR 保持原样。",
-            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        if (enabled && !preferences.srEnabled) AppText("仅 HDR 自动使用原尺寸转换，不使用清晰度处理质量。",
-            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        if (showProcessingQuality && enabled && preferences.srEnabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE)) AppText(
-            if (!state.veyraAvailable) "当前无法应用处理质量，选择已保存，可用时自动应用。"
-            else "当前视频暂不支持质量调节，选择已保存，支持时自动应用。",
-            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        if (enabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE ||
-                state.error != null || state.unavailableReason != null)) AppText(
-            "当前效果强度未应用，选择已保存；可用时自动应用。",
-            style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        AppText(state.statusText, style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant)
+        if (showProcessingQuality) {
+            AppText("HDR 减弱也会减少亮度扩展。计算质量由完整应用设置中的处理质量决定。",
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            AppText("HDR 自动仅在 HDR 显示目标可用时转换 SDR；原生 HDR 保持原样。",
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            if (enabled && !preferences.srEnabled) AppText("仅 HDR 自动使用原尺寸转换，不使用清晰度处理质量。",
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            if (showProcessingQuality && enabled && preferences.srEnabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE)) AppText(
+                if (!state.veyraAvailable) "当前无法应用处理质量，选择已保存，可用时自动应用。"
+                else "当前视频暂不支持质量调节，选择已保存，支持时自动应用。",
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            if (enabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE ||
+                    state.error != null || state.unavailableReason != null)) AppText(
+                "当前效果强度未应用，选择已保存；可用时自动应用。",
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            AppText(state.statusText, style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant)
+        } else {
+            val label = desktopVideoEnhancementCompactLabel(state, enabled, configurationError)
+            val status = state.unavailableReason ?: when {
+                !enabled -> "已关闭，使用原画播放。"
+                state.error != null || configurationError != null -> "增强异常，详情见下方。"
+                state.pending -> "正在准备增强。"
+                state.active -> "当前状态：$label。"
+                else -> "当前使用原画，满足条件后自动增强。"
+            }
+            val intensityNotApplied = enabled && (!state.veyraAvailable || state.backend != NvidiaVideoBackend.VEYRA_CORE ||
+                state.error != null || state.unavailableReason != null)
+            AppText(if (intensityNotApplied) "$status 强度选择已保存，当前未应用。" else status,
+                style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
         // Native status distinguishes accepted driver requests and actual output
         // conditions. The switch itself is never proof of VSR/Tensor/HDR activity.
         state.error?.let { AppText(it, color = MaterialTheme.colorScheme.error) }
