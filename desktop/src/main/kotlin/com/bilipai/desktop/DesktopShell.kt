@@ -1528,6 +1528,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
     }
 
+    val ordinaryScreenshotShortcut = remember { DesktopWindowsVideoScreenshotShortcut() }
     fun performPlayerKey(action: PlayerKeyAction?): Boolean {
         val initialized = player ?: return false
         val snapshot = initialized.state.value
@@ -1540,6 +1541,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             PlayerKeyAction.ToggleMute -> { changePreferencesIntent(preferences.copy(muted = !snapshot.muted), forceMute = true); true }
             PlayerKeyAction.ToggleFullscreen -> { toggleOriginalFullscreen(); true }
             PlayerKeyAction.ToggleDanmaku -> { toggleOriginalDanmaku(); true }
+            PlayerKeyAction.TakeScreenshot -> ordinaryScreenshotShortcut.dispatch()
             PlayerKeyAction.PreviousPart -> {
                 if (section == DesktopSection.STORY) playback.previous() else navigateOrdinaryFromEvent(false)
                 true
@@ -2133,6 +2135,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                         },
                                         toggleDanmaku = ::toggleOriginalDanmaku, notice = { error = it },
                                         focusChanged = { focused -> if(messageRoutes.currentKey==entryKey) playerFocused=focused },
+                                        registerScreenshot = ordinaryScreenshotShortcut::register,
                                         nativeKey = { event -> if(!isClosing() && !activatingUpdate && active && hostVisible && hostDisplayable &&
                                             messageRoutes.currentKey==entryKey) latestRootKeyHandler(event) else false }))
                                 if (danmaku != null && hostWindow != null && danmakuSource != null && danmakuSource.request.cid > 0L) {

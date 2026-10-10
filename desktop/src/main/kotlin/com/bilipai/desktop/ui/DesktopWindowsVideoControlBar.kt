@@ -57,6 +57,7 @@ internal fun DesktopWindowsVideoControlBar(
     onOpenCollection: () -> Unit, onOpenPlaybackQueue: () -> Unit,
     canOpenInteraction: Boolean, onSendDanmaku: () -> Unit, onShareVideo: () -> Unit,
     canDownloadAudio: Boolean, canSaveCover: Boolean, onDownloadAudio: () -> Unit, onSaveCover: () -> Unit,
+    canScreenshot: Boolean, screenshotBusy: Boolean, onScreenshot: () -> Unit,
     chapters: DesktopOriginalVideoChapterResult?, chaptersSource: DesktopOriginalVideoAcceptedPublication?,
     onChapterSeek: (DesktopOriginalVideoChapterResult, DesktopOriginalVideoAcceptedPublication, Long) -> Unit,
     onPlayPause: () -> Unit, onPrevious: () -> Unit, onNext: () -> Unit,
@@ -182,7 +183,7 @@ internal fun DesktopWindowsVideoControlBar(
                         }
                         DesktopWindowsPlayerMenu(more, onDismissRequest = { more = false },
                             preferredHeight = if (expanded) (64 + (if (canOpenCollection) 48 else 0) +
-                                 (if (canOpenPlaybackQueue) 48 else 0) + 96).dp else 516.dp) {
+                                 (if (canOpenPlaybackQueue) 48 else 0) + 144).dp else 564.dp) {
                             if (!expanded) {
                                 DropdownMenuItem(text = { Text("上一集") }, enabled = enabled && hasPrevious,
                                     onClick = { onPrevious(); more = false })
@@ -220,6 +221,9 @@ internal fun DesktopWindowsVideoControlBar(
                                 onClick = { more = false; onDownloadAudio() })
                             DropdownMenuItem(text = { Text("保存封面") }, enabled = enabled && canSaveCover,
                                 onClick = { more = false; onSaveCover() })
+                            DropdownMenuItem(text = { Text(if (screenshotBusy) "截图中…" else "视频截图（S）") },
+                                enabled = enabled && canScreenshot && !screenshotBusy,
+                                onClick = { more = false; onScreenshot() })
                             DropdownMenuItem(text = { Text("简介、分P与播放设置") }, onClick = { onOpenIntroduction(); more = false })
                         }
                         if (!showEnhancementStatus && chapters != null && chaptersSource != null)

@@ -294,15 +294,21 @@ internal class DesktopOriginalVideoSectionWindowsPlatform(
         if (resources.native.current()?.let(::owns) == true) layout.boundsInWindow else null
     override suspend fun captureAndSaveScreenshot(videoWidth:Int,videoHeight:Int,title:String):Boolean =
         captureAndSaveScreenshotForShare(videoWidth,videoHeight,title) != null
-    override suspend fun captureAndSaveScreenshotForShare(videoWidth:Int,videoHeight:Int,title:String):DesktopOriginalSavedVideoScreenshot? {
-        val value=expected();val bytes=capture(value);checkpoint(value)
+    override suspend fun captureAndSaveScreenshotForShare(videoWidth:Int,videoHeight:Int,title:String):DesktopOriginalSavedVideoScreenshot? =
+        captureAndSaveScreenshotForShare(expected(), title) { true }
+
+    /** Windows clicks supply their captured source and page lifetime; never resolve a later source. */
+    internal suspend fun captureAndSaveScreenshotForShare(value:DesktopOriginalVideoAcceptedPublication,
+        title:String, stillCaptured:()->Boolean):DesktopOriginalSavedVideoScreenshot? {
         val safeTitle=title.replace(Regex("[\\\\/:*?\"<>|\\p{Cntrl}]"),"_").take(80).ifBlank{"BiliPai"}
         val name="$safeTitle-${System.currentTimeMillis()}-${UUID.randomUUID()}.png"
-        val caller=currentCoroutineContext()
-        val saved = resources.gallery.saveNativeFrameBytes(bytes,name,{caller.isActive && owns(value)}) { block -> resources.withPresentationAdmission(value) {caller.ensureActive();block()} }
-        checkpoint(value)
-        if (!saved) return null
-        return DesktopOriginalSavedVideoScreenshot(bytes) { owns(value) }
+        val current = { owns(value) && stillCaptured() }
+        val bytes = captureDesktopWindowsVideoScreenshot(current,
+            capture = { capture(value) },
+            save = { png, owned, commit -> resources.gallery.saveNativeFrameBytes(png,name,owned,commit) },
+            admission = { block -> resources.withPresentationAdmission(value,block) }) ?: return null
+        // Successful request completion is not the lifetime of the saved image/share grant.
+        return DesktopOriginalSavedVideoScreenshot(bytes,current)
     }
     override suspend fun shareSavedScreenshot(screenshot:DesktopOriginalSavedVideoScreenshot):Boolean =
         resources.imageShare.shareCapturedNativeImage(screenshot.copyPngBytes(), "视频截图", screenshot::isCurrent)

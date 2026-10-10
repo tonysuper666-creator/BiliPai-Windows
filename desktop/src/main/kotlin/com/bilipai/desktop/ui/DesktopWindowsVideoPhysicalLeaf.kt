@@ -65,6 +65,7 @@ internal class DesktopWindowsVideoActions(
     val notice: (String) -> Unit,
     val focusChanged: (Boolean) -> Unit,
     val nativeKey: (androidx.compose.ui.input.key.KeyEvent) -> Boolean,
+    val registerScreenshot: (() -> Boolean) -> AutoCloseable,
     val collectionQueue: @Composable (DesktopWindowsVideoCollectionQueuePresentation) -> Unit,
     val bgm: @Composable (DesktopWindowsVideoBgmPresentation) -> Unit,
     val interaction: @Composable (DesktopWindowsVideoInteractionPresentation) -> Unit,
@@ -372,6 +373,53 @@ internal class DesktopWindowsVideoActions(
             success != null && success.info.bvid == result.bvid && success.info.cid == result.cid
     }
     val resumeSuggestion by assembly.playback.resumePlaybackSuggestion.collectAsState()
+    val screenshotSection = checkNotNull(platforms.holder.section as? DesktopOriginalVideoSectionWindowsPlatform) {
+        "Windows screenshots require the existing Root Windows Section"
+    }
+    var screenshotBusy by remember(assembly, route) { mutableStateOf(false) }
+    var savedScreenshot by remember(assembly, route) { mutableStateOf<DesktopOriginalSavedVideoScreenshot?>(null) }
+    fun takeScreenshot(): Boolean {
+        val value = assembly.playback.captureDesktopPlaybackState() as? VideoPlaybackUiState.Success ?: return false
+        val expected = assembly.native.current() ?: return false
+        val pageJob = partScope.coroutineContext[kotlinx.coroutines.Job] ?: return false
+        val factory = shell.factoryFor(assembly)
+        fun stillCaptured(): Boolean = pageJob.isActive && current() && !latestPip &&
+            rootEnvironment.owns() && rootEnvironment.currentKey() === route &&
+            factory.isPresentationCurrent(assembly, expected) && assembly.native.isCurrent(expected)
+        val actual = native.state.value
+        if (!stillCaptured() || value.info.bvid != expected.request.bvid || value.info.cid != expected.request.cid ||
+            value.isQualitySwitching || !actual.ready || actual.loading || actual.ended || actual.audioOnly || actual.videoCodec == null) return false
+        if (screenshotBusy || savedScreenshot?.isCurrent() == true) return true
+        savedScreenshot = null
+        screenshotBusy = true
+        partScope.launch {
+            try {
+                // Explicit accepted publication: a delayed launch can never capture a later source.
+                val image = screenshotSection.captureAndSaveScreenshotForShare(expected, value.info.title, ::stillCaptured)
+                if (image == null) {
+                    if (stillCaptured()) latestActions.notice("截图失败，请稍后重试")
+                } else {
+                    var published = false
+                    if (!factory.withPresentationAdmission(assembly, expected) {
+                            if (stillCaptured() && image.isCurrent()) { savedScreenshot = image; published = true }
+                        } || !published) throw CancellationException("Screenshot page retired before saved prompt")
+                }
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (failure: Exception) {
+                if (stillCaptured()) latestActions.notice(failure.message ?: "截图失败，请稍后重试")
+            } finally { screenshotBusy = false }
+        }
+        return true
+    }
+    LaunchedEffect(savedScreenshot, collectionQueueSource, active, pipActive) {
+        if (savedScreenshot?.isCurrent() == false) savedScreenshot = null
+    }
+    val latestScreenshot by rememberUpdatedState<() -> Boolean>(::takeScreenshot)
+    DisposableEffect(assembly, route, screenshotSection, active, presentationAlive, pipActive) {
+        val registration = if (current() && !latestPip && rootEnvironment.owns() && rootEnvironment.currentKey() === route)
+            latestActions.registerScreenshot { latestScreenshot() } else null
+        onDispose { registration?.close() }
+    }
     val engagement by assembly.domains.engagement.uiState.collectAsState()
     val engagementSubject = engagement.subject
     // The original interaction menus keep collectionQueueSource's foreground
@@ -505,7 +553,8 @@ internal class DesktopWindowsVideoActions(
     val chromeHeld = DesktopWindowsFullscreenChromeInteraction(topHovered, topFocused)
         .held(nativePointerOnVideo, nativeKeyboardOnVideo) ||
         barInteraction.held(nativePointerOnVideo, nativeKeyboardOnVideo) || detailsOpen ||
-        showCollection || showPlaybackQueue || audioLanguageMenu != null || audioTrackMenu != null || interactionMode != null
+        showCollection || showPlaybackQueue || audioLanguageMenu != null || audioTrackMenu != null || interactionMode != null ||
+        screenshotBusy || savedScreenshot?.isCurrent() == true
     val chromeCanAutoHide = desktopWindowsFullscreenChromeCanAutoHide(fullscreen, active && !pipActive,
         chromeWindowFocused, chromeHeld, state, bootstrapError != null || playback.error != null || playback.recovering)
     val latestChromeCanAutoHide by rememberUpdatedState(chromeCanAutoHide)
@@ -719,6 +768,10 @@ internal class DesktopWindowsVideoActions(
                     canSaveCover = interactionCurrent() && success?.let { !it.isQualitySwitching && it.info.pic.isNotBlank() } == true,
                     onDownloadAudio = { saveVideoResource(audioOnly = true) },
                     onSaveCover = { saveVideoResource(audioOnly = false) },
+                    canScreenshot = interactionCurrent() && success?.isQualitySwitching == false &&
+                        state.ready && !state.loading && !state.ended && !state.audioOnly && state.videoCodec != null &&
+                        savedScreenshot?.isCurrent() != true,
+                    screenshotBusy = screenshotBusy, onScreenshot = { takeScreenshot() },
                     chapters = chapters, chaptersSource = chaptersSource, onChapterSeek = ::seekChapter,
                     onPlayPause = { command { native.togglePause() } },
                     onPrevious = { navigateFromThisClick(false) }, onNext = { navigateFromThisClick(true) },
@@ -782,6 +835,11 @@ internal class DesktopWindowsVideoActions(
                                     enabled = interactionCurrent() && !success.isQualitySwitching && !success.audioUrl.isNullOrBlank()) { Text("仅下载音频") }
                                 TextButton(onClick = { saveVideoResource(audioOnly = false) },
                                     enabled = interactionCurrent() && !success.isQualitySwitching && success.info.pic.isNotBlank()) { Text("保存封面") }
+                                TextButton(onClick = { takeScreenshot() },
+                                    enabled = interactionCurrent() && !success.isQualitySwitching && state.ready && !state.loading &&
+                                        !state.ended && !state.audioOnly && state.videoCodec != null && !screenshotBusy && savedScreenshot?.isCurrent() != true) {
+                                    Text(if (screenshotBusy) "截图中…" else "视频截图（S）")
+                                }
                                 TextButton(onClick = { openInteraction(DesktopWindowsVideoInteraction.SHARE) }, enabled = interactionCurrent()) { Text("分享视频") }
                             }
                             FlowRow(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -1013,6 +1071,30 @@ internal class DesktopWindowsVideoActions(
                 if (batchDownloadSelection === selected) batchDownloadSelection = null
             },
         )
+    }
+
+    savedScreenshot?.takeIf { it.isCurrent() }?.let { image ->
+        fun dismissSavedScreenshot() { if (!screenshotBusy && savedScreenshot === image) savedScreenshot = null }
+        DesktopWindowsPlayerDialog("截图已保存", ::dismissSavedScreenshot, preferredHeightDp = 280) {
+            AlertDialog(onDismissRequest = ::dismissSavedScreenshot,
+                title = { Text("截图已保存") },
+                text = { Text("已保存到图片目录（PNG），是否分享这张截图？") },
+                confirmButton = { TextButton(enabled = !screenshotBusy, onClick = {
+                    if (!image.isCurrent() || savedScreenshot !== image) return@TextButton
+                    screenshotBusy = true
+                    partScope.launch {
+                        try {
+                            if (screenshotSection.shareSavedScreenshot(image)) {
+                                if (image.isCurrent() && savedScreenshot === image) savedScreenshot = null
+                            } else if (image.isCurrent()) latestActions.notice("无法打开分享，请稍后重试")
+                        } catch (cancelled: CancellationException) { throw cancelled }
+                        catch (failure: Exception) {
+                            if (image.isCurrent()) latestActions.notice(failure.message ?: "无法打开分享，请稍后重试")
+                        } finally { screenshotBusy = false }
+                    }
+                }) { Text(if (screenshotBusy) "分享中…" else "分享") } },
+                dismissButton = { TextButton(enabled = !screenshotBusy, onClick = ::dismissSavedScreenshot) { Text("完成") } })
+        }
     }
 
     // Consume only the original VM suggestion; its coordinator owns the threshold,
