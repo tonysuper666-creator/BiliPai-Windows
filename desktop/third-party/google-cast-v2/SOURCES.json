@@ -318,8 +318,8 @@
     },
     {
       "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastDialog.kt",
-      "sha256": "2ccafbe32fcc1493f9adbace00cad0e6b568ef55f3ab93693e56280a584fa56e",
-      "bytes": 5562
+      "sha256": "fc9e035940cfef309d378b4a653ad67747b7ff8a57616795c11d821e938269a5",
+      "bytes": 6669
     },
     {
       "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopGoogleCastPlugin.kt",
@@ -598,8 +598,8 @@
     },
     {
       "path": "src/main/kotlin/com/bilipai/desktop/cast/DesktopCastProxySessions.kt",
-      "sha256": "ec4d7d41497b2d379dd467574fef1fe6027d8ff4f12dcae7f34c36059c54ef05",
-      "bytes": 5019
+      "sha256": "3e47712d438ca9a2281d37fe60ccf699d338d421be6ad5b58135e84eec5e8d3c",
+      "bytes": 6112
     }
   ],
   "dependencyNotices": [
