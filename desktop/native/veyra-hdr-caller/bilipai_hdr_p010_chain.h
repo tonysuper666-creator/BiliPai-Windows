@@ -26,6 +26,27 @@ struct bv_mpv_hdr_chain_ticket {
     int64_t pts_numerator;
     int32_t pts_denominator;
 };
+/* Synchronous CHAIN -> VF-owner output-boundary record. Scalar facts only:
+ * NOT readiness, completion, display, authentication or PRIVATE2 authority.
+ * Produced only by exact-current acquire AFTER actual SR receipt matching and
+ * successful restore/Copy/final Signal enqueue. The real owner immediately
+ * consumes it against its retained decoder epoch/pool/source/ticket, then clears
+ * its stack copy before returning. Never retain/serialize it or stamp a token.
+ * Source, host, SR loan, output pool and final-use custody remain unchanged. */
+enum { BV_MPV_HDR_QUEUED_OUTPUT_RECORD_V1 = 1 };
+struct bv_mpv_hdr_queued_output_record {
+    uint32_t version;
+    uint64_t decoder_instance, decoder_epoch, decoder_frame_sequence;
+    uint64_t session, configuration, generation, sequence, adapter_luid;
+    int64_t pts_numerator;
+    int32_t pts_denominator;
+    uint32_t input_width, input_height, width, height, sr_effects, output_array_slice;
+    bool proxy_sr_accepted, restore_copy_enqueued, final_use_signal_enqueued;
+};
+/* CPU-only invalidation on the chain's existing legal lane. No receipt/resource
+ * release, GPU query, fence wait, decoder call or completion claim. Retirement
+ * calls this even if actual pending/quarantined resources must remain held. */
+void bv_mpv_hdr_chain_forget_queued_record(struct bv_mpv_hdr_chain *);
 /* ONE existing host/filter OS thread; serialized calls/callbacks only. No new
  * thread, audio owner or public ABI. Default closed: create does not issue
  * decoder controls, Signal, Wait, Copy, Dispatch or NVIDIA calls. Device resource
@@ -89,10 +110,14 @@ HRESULT bv_mpv_hdr_chain_submit(struct bv_mpv_hdr_chain *,
  * S_OK is queued same-context availability, NEVER completion or Present proof.
  * Generated RGB/PQ2020 metadata includes only explicit valid mastering display
  * data; content peaks remain unknown. CURRENT/ready/token remain zero.
- * App/JVM native HDR admission remains closed pending actual validation. */
+ * App/JVM native HDR admission remains closed pending actual validation.
+ * A record is zero on every non-S_OK return. It exists only for this synchronous
+ * owner's exact output-boundary validation; a normal frame ref alone cannot
+ * preserve the record or use it as downstream rendering/display authority. */
 HRESULT bv_mpv_hdr_chain_acquire_queued_output(struct bv_mpv_hdr_chain *,
     struct mp_decoder_wrapper *,const struct mp_image *,
-    const struct bv_mpv_hdr_chain_ticket *,struct mp_image **);
+    const struct bv_mpv_hdr_chain_ticket *,struct mp_image **,
+    struct bv_mpv_hdr_queued_output_record *);
 /* Nonwaiting fence poll. S_FALSE pending, failure retains the whole chain.
  * A live direct decoder owner must be held by caller through this call; NULL
  * discards output after safe retirement (e.g. teardown). Epoch mismatch discards

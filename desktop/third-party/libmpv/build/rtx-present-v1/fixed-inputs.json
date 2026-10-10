@@ -20,7 +20,7 @@
     }
   ],
   "bridgeGpl3LicenseSha256": "230184f60bae2feaf244f10a8bac053c8ff33a183bcc365b4d8b876d2b7f4809",
-  "buildPatchHelperSha256": "c4cc51aa081fd9457a56081aa51e79f70a29e0bf2493e645921d6d2c2bd27d92",
+  "buildPatchHelperSha256": "157c16b7b455d8e36e3741c8f57fbcf9b0c0520ac9662bb13098e6337be7655c",
   "coreAbiHeaderSha256": "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569",
   "curlLibsshCompatibility": {
     "afterBytes": 8929,
@@ -71,7 +71,7 @@
   },
   "ffmpegCommit": "9fc8c785e2747c87121ec28f8f10ceab0562384b",
   "filterName": "bilipai-rtx",
-  "filterSourceManifestSha256": "161658c7830ce53f7a99b056757c8ebc5b82c2fe82da9264b590175c77a5c9e5",
+  "filterSourceManifestSha256": "4ef14f966e6edb7d4259028794232560b5c145edb71ad25e450bdaa6a6a6923d",
   "libvplCompatibility": {
     "afterBytes": 1224,
     "afterSha256": "f49130c9a394c16395788c5133fab49e2f2d95973460aa41d1208f1146fe475b",

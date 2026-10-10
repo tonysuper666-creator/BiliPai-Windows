@@ -36,6 +36,9 @@ struct bv_mpv_hdr_chain {
     struct bv_hdr11_p010_input input;
     struct mp_image *source,*output;
     struct bv_mpv_hdr_chain_ticket ticket;
+    /* Incomplete private facts while ONE actual chain submission is held.
+     * Version stays0 until exact queued acquire constructs the stack record. */
+    struct bv_mpv_hdr_queued_output_record queued_facts;
     HRESULT submit_hr;
     bool busy,quarantine,proxy_released,sr_released,final_signaled,output_loaned;
 };
@@ -61,7 +64,11 @@ static void proxy_release_requested(void *p) {
 static void sr_release_requested(void *p) {
     ((struct bv_mpv_hdr_chain*)p)->sr_released=true;
 }
+void bv_mpv_hdr_chain_forget_queued_record(struct bv_mpv_hdr_chain *c) {
+    if(on_thread(c))c->queued_facts=(struct bv_mpv_hdr_queued_output_record){0};
+}
 static HRESULT poison(struct bv_mpv_hdr_chain *c,HRESULT hr) {
+    bv_mpv_hdr_chain_forget_queued_record(c);
     c->quarantine=true;c->instance=c->epoch=0;return FAILED(hr)?hr:E_FAIL;
 }
 static bool owner_frames(struct bv_mpv_hdr_chain *c,const struct mp_image *im,
@@ -187,6 +194,7 @@ HRESULT bv_mpv_hdr_chain_create(const struct bv_mpv_hdr_chain_config *cfg,
 HRESULT bv_mpv_hdr_chain_authorize(struct bv_mpv_hdr_chain *c,
     struct mp_decoder_wrapper *decoder,uint64_t instance,uint64_t epoch,bool enable) {
     if(!on_thread(c)||c->busy||c->quarantine||!decoder)return E_PENDING;
+    bv_mpv_hdr_chain_forget_queued_record(c);
     c->instance=c->epoch=0;
     struct mp_bilipai_gpu_submit_request r={instance,epoch,enable};
     int rc=mp_decoder_wrapper_control(decoder,VDCTRL_BILIPAI_SET_GPU_SUBMIT,&r);
@@ -247,6 +255,7 @@ static bool submit_final_signal(void *opaque,const struct mp_bilipai_gpu_input_v
     return SUCCEEDED(c->submit_hr);
 }
 static void clear_unsubmitted(struct bv_mpv_hdr_chain *c) {
+    bv_mpv_hdr_chain_forget_queued_record(c);
     talloc_free(c->source);talloc_free(c->output);c->source=c->output=NULL;c->busy=false;
     c->output_loaned=false;
 }
@@ -273,6 +282,7 @@ HRESULT bv_mpv_hdr_chain_submit(struct bv_mpv_hdr_chain *c,
     struct mp_image *source_lease=c->source?mp_image_new_ref(c->source):NULL;
     if(!c->source||!c->output||!source_lease){talloc_free(source_lease);clear_unsubmitted(c);return E_OUTOFMEMORY;}
     c->busy=true;c->ticket=*ticket;c->proxy_released=c->sr_released=c->final_signaled=false;
+    bv_mpv_hdr_chain_forget_queued_record(c);
     c->use_ticket=mp_bilipai_d3d11_use_prepare(c->source->bilipai_d3d11_ready);
     void *own_fence=NULL;uint64_t own_value=0;
     if(!c->use_ticket||!mp_bilipai_d3d11_use_consumer_fence(c->use_ticket,&own_fence,&own_value)||
@@ -318,6 +328,19 @@ HRESULT bv_mpv_hdr_chain_submit(struct bv_mpv_hdr_chain *c,
        sr.pts_denominator!=ticket->pts_denominator||sr.effects!=BV_VIDEO_SR||
        sr.width!=c->cfg.output_width||sr.height!=c->cfg.output_height||
        !sr.output||!sr.ready_fence||!sr.ready_value)return poison(c,E_FAIL);
+    /* Copy identities from the ACTUAL matched core result, never cfg alone.
+     * This is incomplete private state; no record has been issued to a caller. */
+    const struct mp_bilipai_decoder_origin *origin=&c->source->params.bilipai_decoder_origin;
+    c->queued_facts=(struct bv_mpv_hdr_queued_output_record){
+        .decoder_instance=origin->instance_id,.decoder_epoch=origin->epoch_id,
+        .decoder_frame_sequence=origin->frame_sequence,
+        .session=sr.session,.configuration=sr.configuration,.generation=sr.generation,
+        .sequence=sr.sequence,.adapter_luid=sr.adapter_luid,
+        .pts_numerator=sr.pts_numerator,.pts_denominator=sr.pts_denominator,
+        .input_width=(uint32_t)c->source->w,.input_height=(uint32_t)c->source->h,
+        .width=sr.width,.height=sr.height,.sr_effects=sr.effects,
+        .output_array_slice=(uint32_t)(uintptr_t)c->output->planes[1],
+        .proxy_sr_accepted=true};
     /* Create every SRV/ref/fence/parameter outside BOTH locks. The source
      * frame already has queued work, so all later failures keep whole custody. */
     struct mp_image *pool_lease=mp_image_new_ref(c->output);
@@ -338,6 +361,7 @@ HRESULT bv_mpv_hdr_chain_submit(struct bv_mpv_hdr_chain *c,
     hr=bv_hdr11_close_finish(&c->finish_prepared); // BOTH locks ended
     if(FAILED(hr)||!accepted||!scope.mutex_released||FAILED(c->submit_hr))
         return poison(c,FAILED(hr)?hr:c->submit_hr);
+    c->queued_facts.restore_copy_enqueued=true; // requested in checked submit_restore
     /* All future uses stop here. Host + SR loan + generation share this EXACT
      * dedicated ticket fence, sealed before the actual final Signal callback. */
     hr=bv_hdr11_seal(c->frame,(IUnknown*)c->final_use,c->final_value);
@@ -351,7 +375,8 @@ HRESULT bv_mpv_hdr_chain_submit(struct bv_mpv_hdr_chain *c,
     c->submit_hr=E_ACCESSDENIED;
     accepted=mp_decoder_wrapper_bilipai_gpu_submit(decoder,&scope);
     if(!accepted||!scope.mutex_released||FAILED(c->submit_hr))return poison(c,c->submit_hr);
-    c->final_signaled=true;c->last_sequence=ticket->sequence;return S_OK;
+    c->final_signaled=true;c->queued_facts.final_use_signal_enqueued=true;
+    c->last_sequence=ticket->sequence;return S_OK;
 }
 /* A generated picture inherits timing and raw ATTRIBUTE HISTORY only.
  * Do not copy decoder crop, inferred HDR peaks, ICC/DV/grain/FF side data or
@@ -445,8 +470,10 @@ static bool same_source_reference(const struct mp_image *a,const struct mp_image
 }
 HRESULT bv_mpv_hdr_chain_acquire_queued_output(struct bv_mpv_hdr_chain *c,
     struct mp_decoder_wrapper *decoder,const struct mp_image *source,
-    const struct bv_mpv_hdr_chain_ticket *ticket,struct mp_image **out) {
-    if(!out||*out||!on_thread(c)||!decoder||!ticket)return E_INVALIDARG;
+    const struct bv_mpv_hdr_chain_ticket *ticket,struct mp_image **out,
+    struct bv_mpv_hdr_queued_output_record *record) {
+    if(record)*record=(struct bv_mpv_hdr_queued_output_record){0};
+    if(!out||*out||!record||!on_thread(c)||!decoder||!ticket)return E_INVALIDARG;
     if(!c->busy||c->quarantine||!c->final_signaled||c->output_loaned||!c->output||
        !c->final_use||c->final_value!=1||ticket->sequence!=c->ticket.sequence||
        ticket->pts_numerator!=c->ticket.pts_numerator||
@@ -454,7 +481,20 @@ HRESULT bv_mpv_hdr_chain_acquire_queued_output(struct bv_mpv_hdr_chain *c,
        !same_source_reference(source,c->source))return S_FALSE;
     bool current=false;
     if(!mp_decoder_wrapper_bilipai_observe(decoder,c->source,current_at_poll,&current)||
-       !current)return S_FALSE;
+       !current){bv_mpv_hdr_chain_forget_queued_record(c);return S_FALSE;}
+    const struct bv_mpv_hdr_queued_output_record *q=&c->queued_facts;
+    const struct mp_bilipai_decoder_origin *origin=&c->source->params.bilipai_decoder_origin;
+    if(q->version||!q->proxy_sr_accepted||!q->restore_copy_enqueued||
+       !q->final_use_signal_enqueued||q->decoder_instance!=c->instance||
+       q->decoder_epoch!=c->epoch||q->decoder_frame_sequence!=origin->frame_sequence||
+       q->session!=c->cfg.session||q->configuration!=c->cfg.configuration||
+       q->generation!=c->cfg.generation||q->sequence!=ticket->sequence||
+       q->adapter_luid!=c->cfg.adapter_luid||q->pts_numerator!=ticket->pts_numerator||
+       q->pts_denominator!=ticket->pts_denominator||q->sr_effects!=BV_VIDEO_SR||
+       q->input_width!=(uint32_t)c->source->w||q->input_height!=(uint32_t)c->source->h||
+       q->width!=c->cfg.output_width||q->height!=c->cfg.output_height||
+       q->output_array_slice!=(uint32_t)(uintptr_t)c->output->planes[1])
+        return poison(c,E_UNEXPECTED);
     if(FAILED(ID3D11Device_GetDeviceRemovedReason(c->device)))return poison(c,E_FAIL);
     // Final COPY and final Signal were enqueued in THIS device's immediate
     // context. The caller's VO MUST use this exact retained renderer HWowner.
@@ -463,7 +503,9 @@ HRESULT bv_mpv_hdr_chain_acquire_queued_output(struct bv_mpv_hdr_chain *c,
     generated_metadata(c->output,c->source);
     struct mp_image *loan=mp_image_new_ref(c->output);
     if(!loan)return E_OUTOFMEMORY;
-    c->output_loaned=true;*out=loan;return S_OK;
+    c->output_loaned=true;
+    *record=c->queued_facts;record->version=BV_MPV_HDR_QUEUED_OUTPUT_RECORD_V1;
+    *out=loan;return S_OK; // no completion, current-HDR, token or display authority
 }
 HRESULT bv_mpv_hdr_chain_poll(struct bv_mpv_hdr_chain *c,
     struct mp_decoder_wrapper *decoder,struct mp_image **out) {

@@ -257,11 +257,11 @@ internal class DesktopVeyraPrivateComponent(
         private const val CORE_SOURCE_SHA256 = "84e0b6d9525944beeba01b2e7d222e4607801a2347fac780b056754025138cc5"
         private const val CORE_HEADER_SHA256 = "0b9521abd2725e5da969a1dad81bff51619847a989a07563dcf4b1df4a64e569"
         private const val FILTER_SOURCE_SHA256 = "9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f"
-        private const val PRESENTATION_SOURCE_SHA256 = "161658c7830ce53f7a99b056757c8ebc5b82c2fe82da9264b590175c77a5c9e5"
+        private const val PRESENTATION_SOURCE_SHA256 = "4ef14f966e6edb7d4259028794232560b5c145edb71ad25e450bdaa6a6a6923d"
         private const val PRESENTATION_EDITS_SHA256 = "e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f"
-        private const val PRESENTATION_HELPER_SHA256 = "c4cc51aa081fd9457a56081aa51e79f70a29e0bf2493e645921d6d2c2bd27d92"
+        private const val PRESENTATION_HELPER_SHA256 = "157c16b7b455d8e36e3741c8f57fbcf9b0c0520ac9662bb13098e6337be7655c"
         private const val PRESENTATION_REGISTRATION_SHA256 = "95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042"
-        private const val VERIFIER_SOURCE_SHA256 = "652b8c8b9a413aedb44aa0c8b1dcbe4a9b9012fe22d8e29b0d5c0e297cfcfc45"
+        private const val VERIFIER_SOURCE_SHA256 = "c209061a6c2ca7695c07456aa783727514192f359f1bd2eafc3c46b925f14fb8"
     }
 }
 

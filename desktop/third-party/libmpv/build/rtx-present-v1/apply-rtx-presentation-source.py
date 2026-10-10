@@ -9,7 +9,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-EXPECTED_MANIFEST_SHA256 = "161658c7830ce53f7a99b056757c8ebc5b82c2fe82da9264b590175c77a5c9e5"
+EXPECTED_MANIFEST_SHA256 = "4ef14f966e6edb7d4259028794232560b5c145edb71ad25e450bdaa6a6a6923d"
 VARIANT = "bilipai-veyra-rtx-present-v1"
 SOURCE_COMMIT = "69e63f425a531f814431fba12750bdb3721357f2"
 

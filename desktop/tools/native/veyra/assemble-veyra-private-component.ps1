@@ -98,10 +98,10 @@ function Assert-PresentationSource([object]$Native,[object]$Manifest,[object[]]$
     if($Native.schema-isnot[int]-or$Native.tokenProtocol-isnot[int]){throw 'Presentation receipt protocol must use integer values.'}
     foreach($flag in @('nativeBinaryBuiltByThisProgram','gpuExecuted','displayProofRuntimeVerified')){if($Native.$flag-isnot[bool]-or$Native.$flag-ne$false){throw 'Presentation receipt may not claim native execution or runtime verification.'}}
     if($Native.schema-ne3-or$Native.patchId-cne$Manifest.variant-or$Native.sourceCommit-cne$Manifest.sourceCommit-or
-       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'161658c7830ce53f7a99b056757c8ebc5b82c2fe82da9264b590175c77a5c9e5'-or
+       $Native.filterName-cne$Manifest.filterName-or$Native.filterSourceManifestSha256-cne'4ef14f966e6edb7d4259028794232560b5c145edb71ad25e450bdaa6a6a6923d'-or
        $Native.coreAbiHeaderSha256-cne$Manifest.coreAbiHeaderSha256-or$Native.tokenProtocol-ne2-or
        $Native.presentationProperty-cne$Manifest.presentationProperty-or
-       $Native.sourcePatchHelperSha256-cne'c4cc51aa081fd9457a56081aa51e79f70a29e0bf2493e645921d6d2c2bd27d92'-or
+       $Native.sourcePatchHelperSha256-cne'157c16b7b455d8e36e3741c8f57fbcf9b0c0520ac9662bb13098e6337be7655c'-or
        $Native.nativeBinaryBuiltByThisProgram-cne$false-or$Native.gpuExecuted-cne$false-or
        $Native.displayProofRuntimeVerified-cne$false){throw 'Actual presentation native receipt identity mismatch.'}
     if(@($Native.filterSourceFiles).Count-ne21){throw 'Incomplete presentation private source inventory.'}
@@ -127,7 +127,7 @@ try{
     $presentation=$ProducerVariant-ceq'bilipai-veyra-rtx-present-v1'
     $templateContract='tools/native/veyra/veyra-profile-template.json';$buildFolder='third-party/libmpv/build/rtx-core-v1';$manifestLeaf='bilipai-rtx-source-manifest.json'
     $contracts=[ordered]@{
-        'tools/native/veyra/verify-veyra-runtime.ps1'='652b8c8b9a413aedb44aa0c8b1dcbe4a9b9012fe22d8e29b0d5c0e297cfcfc45'
+        'tools/native/veyra/verify-veyra-runtime.ps1'='c209061a6c2ca7695c07456aa783727514192f359f1bd2eafc3c46b925f14fb8'
         'tools/native/veyra/veyra-profile-template.json'='b9d6201b7e33d3e042edaf0175683d6166a5e013dc85825c98ecc9e740cd2bbc'
         'third-party/libmpv/build/rtx-core-v1/fixed-inputs.json'='b1cfbd180bd2c0c00257f29176707cc965cd7f849a22271cae402259778bceb7'
         'third-party/libmpv/build/rtx-core-v1/bilipai-rtx-source-manifest.json'='9c0f19de87da2398f15d09dd27ebca911ba292e5689d53bf7f62ea1742c3359f'
@@ -137,9 +137,9 @@ try{
     if($presentation){
         foreach($key in @('tools/native/veyra/veyra-profile-template.json','third-party/libmpv/build/rtx-core-v1/fixed-inputs.json','third-party/libmpv/build/rtx-core-v1/bilipai-rtx-source-manifest.json','third-party/libmpv/build/rtx-core-v1/filter-registration-edits.json')){[void]$contracts.Remove($key)}
         $templateContract='tools/native/veyra/veyra-presentation-profile-template.json';$buildFolder='third-party/libmpv/build/rtx-present-v1';$manifestLeaf='bilipai-rtx-presentation-source-manifest.json'
-        $contracts[$templateContract]='73420076c552a780f2dfa9db12560cd5514ecefddd27306fe55206310e1f324b'
-        $contracts[$buildFolder+'/fixed-inputs.json']='9c20ad57a24318c2bf6088ec495a942be8392b120ca897d4faf9e2dfacf68183'
-        $contracts[$buildFolder+'/'+$manifestLeaf]='161658c7830ce53f7a99b056757c8ebc5b82c2fe82da9264b590175c77a5c9e5'
+        $contracts[$templateContract]='d30226b5afae2f6878e17f38ebc002203538d11ec4742ba0fcb8de822aef6b34'
+        $contracts[$buildFolder+'/fixed-inputs.json']='88b9a97df82f2f4c6aabf1c3f05cc6ed53b942b4686a57fb5fb7189d9088a178'
+        $contracts[$buildFolder+'/'+$manifestLeaf]='4ef14f966e6edb7d4259028794232560b5c145edb71ad25e450bdaa6a6a6923d'
         $contracts[$buildFolder+'/filter-registration-edits.json']='95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042'
         $contracts[$buildFolder+'/presentation-edits.json']='e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f'
     }
@@ -212,7 +212,7 @@ try{
         foreach($item in @(@{path='licenses/rtx-presentation-edits.json';sha256='e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f'},@{path='licenses/rtx-registration-edits.json';sha256='95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042'})){
             if(-not$rowFiles.ContainsKey($item.path)){Reject 'MPV_PRESENTATION_SOURCE_MISSING'};Equal-Hash $rowFiles[$item.path].Sha256 $item.sha256
         }
-        $protocol=@{presentationProtocolVersion=2;presentationProperty='bilipai-rtx-presentation';upstreamEditsSha256='e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f';sourcePatchHelperSha256='c4cc51aa081fd9457a56081aa51e79f70a29e0bf2493e645921d6d2c2bd27d92'}
+        $protocol=@{presentationProtocolVersion=2;presentationProperty='bilipai-rtx-presentation';upstreamEditsSha256='e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f';sourcePatchHelperSha256='157c16b7b455d8e36e3741c8f57fbcf9b0c0520ac9662bb13098e6337be7655c'}
         foreach($key in $protocol.Keys){if($descriptor.$key-cne$protocol[$key]-or$provenance.$key-cne$protocol[$key]-or$mpvReceipt.$key-cne$protocol[$key]){Reject 'MPV_PRESENTATION_PROTOCOL_MISMATCH'}}
         Assert-PresentationSource $nativeReceipt $manifest $upstream $registrations
     }else{

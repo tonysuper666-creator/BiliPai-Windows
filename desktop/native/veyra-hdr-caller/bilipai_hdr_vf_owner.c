@@ -102,6 +102,8 @@ static void unclaim(struct owner_generation *g) {
 static void mark_retiring(struct owner_generation *g,bool quarantine) {
     AcquireSRWLockExclusive(&custody_lock);g->retiring=true;
     g->quarantined|=quarantine;ReleaseSRWLockExclusive(&custody_lock);
+    // Same-lane CPU invalidation only; foreign detach performs no chain call.
+    if(original_thread(g->thread_ref,g->thread))bv_mpv_hdr_chain_forget_queued_record(g->chain);
 }
 static bool quarantined_generation(struct owner_generation *g) {
     bool poisoned=false;AcquireSRWLockExclusive(&custody_lock);
@@ -133,6 +135,7 @@ static bool grant_terminal(struct owner_generation *g) {
 static void pending_cpu_revoke(struct owner_generation *g) {
     AcquireSRWLockExclusive(&custody_lock);g->retiring=true;
     g->diagnostic_revoke_pending=true;ReleaseSRWLockExclusive(&custody_lock);
+    if(original_thread(g->thread_ref,g->thread))bv_mpv_hdr_chain_forget_queued_record(g->chain);
 }
 // Wrapper prepare callback BEFORE dispatch: actual membership/claimed lane and
 // independent ownership MOVE, not a count/boolean/marker assertion of authority.
@@ -485,6 +488,76 @@ HRESULT bv_mpv_hdr_vf_owner_diagnostic_step(struct bv_mpv_hdr_vf_owner *o,
     // S_OK is queued final Signal only, never completion/HDR admission/display.
     return bv_mpv_hdr_vf_owner_submit_private(o,decoder,source,ticket);
 }
+static bool queued_output_has_zero_token(const struct mp_image *out) {
+    const unsigned char *bytes=(const void*)&out->bilipai_rtx;
+    for(size_t i=0;i<sizeof(out->bilipai_rtx);i++)if(bytes[i])return false;
+    return true; // generated_metadata uses actual memset, including padding
+}
+static bool queued_output_texture_has_owner(struct owner_generation *g,
+                                            const struct mp_image *out) {
+    const AVHWDeviceContext *hw=(const void*)g->device_ref->data;
+    const AVD3D11VADeviceContext *d=hw->hwctx;
+    ID3D11Device *texture_device=NULL;IUnknown *expected=NULL,*actual=NULL;
+    ID3D11Texture2D_GetDevice((ID3D11Texture2D*)out->planes[0],&texture_device);
+    HRESULT a=d&&d->device?ID3D11Device_QueryInterface(d->device,&IID_IUnknown,(void**)&expected):E_POINTER;
+    HRESULT b=texture_device?ID3D11Device_QueryInterface(texture_device,&IID_IUnknown,(void**)&actual):E_POINTER;
+    bool same=SUCCEEDED(a)&&SUCCEEDED(b)&&expected==actual;
+    if(actual)IUnknown_Release(actual);if(expected)IUnknown_Release(expected);
+    if(texture_device)ID3D11Device_Release(texture_device);
+    return same; // original constructor object, never adapter/name inference
+}
+/* The real consumer of the synchronous chain output-boundary record. This
+ * runs OUTSIDE dispatch/context/custody locks and before any VF/VO handoff.
+ * Actual output refs/pool/HWowner and current decoder are checked independently
+ * of scalar queue facts; successful validation still gives NO display/token
+ * authority. The caller clears its one stack record on every exit. */
+static bool queued_output_record_matches(struct owner_generation *g,
+    struct mp_decoder_wrapper *decoder,const struct mp_image *source,
+    const struct bv_mpv_hdr_chain_ticket *ticket,const struct mp_image *out,
+    const struct bv_mpv_hdr_queued_output_record *q) {
+    struct mp_bilipai_active_decoder active={0};
+    const struct bv_mpv_config *b=&g->cfg.bridge;
+    if(!q||q->version!=BV_MPV_HDR_QUEUED_OUTPUT_RECORD_V1||
+       !q->proxy_sr_accepted||!q->restore_copy_enqueued||!q->final_use_signal_enqueued||
+       g->retiring||g->quarantined||g->diagnostic_revoke_pending||!g->diagnostic_in_flight||
+       !current_epoch(decoder,source,&active)||
+       active.instance_id!=g->instance||active.epoch_id!=g->epoch||
+       q->decoder_instance!=g->instance||q->decoder_epoch!=g->epoch||
+       q->decoder_frame_sequence!=source->params.bilipai_decoder_origin.frame_sequence||
+       q->session!=b->session||q->configuration!=b->configuration||q->generation!=b->generation||
+       q->sequence!=ticket->sequence||q->adapter_luid!=g->adapter_luid||
+       q->pts_numerator!=ticket->pts_numerator||q->pts_denominator!=ticket->pts_denominator||
+       q->sr_effects!=BV_VIDEO_SR||q->input_width!=(uint32_t)source->w||
+       q->input_height!=(uint32_t)source->h||q->width!=b->output_width||q->height!=b->output_height||
+       !out||out->imgfmt!=IMGFMT_D3D11||out->params.imgfmt!=IMGFMT_D3D11||
+       out->params.hw_subfmt!=IMGFMT_X2BGR10||!out->bufs[0]||
+       !out->hwctx||!g->pool||out->hwctx->buffer!=g->pool->buffer||
+       out->hwctx->data!=g->pool->data||out->hwctx->size!=g->pool->size||
+       out->hwctx->size<sizeof(AVHWFramesContext)||!out->planes[0]||
+       (uintptr_t)out->planes[1]>UINT32_MAX||q->output_array_slice!=(uint32_t)(uintptr_t)out->planes[1]||
+       out->w!=(int)q->width||out->h!=(int)q->height||out->params.w!=out->w||out->params.h!=out->h||
+       out->params.repr.sys!=PL_COLOR_SYSTEM_RGB||out->params.repr.levels!=PL_COLOR_LEVELS_FULL||
+       out->params.color.transfer!=PL_COLOR_TRC_PQ||out->params.color.primaries!=PL_COLOR_PRIM_BT_2020||
+       out->pts!=source->pts||!queued_output_has_zero_token(out)||
+       out->params.crop.x0||out->params.crop.y0||out->params.crop.x1!=out->w||out->params.crop.y1!=out->h||
+       out->bilipai_d3d11_ready||out->params.bilipai_decoder_current_reference||
+       out->params.bilipai_hdr_current_encoding!=MP_BILIPAI_HDR_CURRENT_UNKNOWN)return false;
+    const AVHWFramesContext *frames=(const void*)out->hwctx->data;
+    if(frames->format!=AV_PIX_FMT_D3D11||frames->sw_format!=AV_PIX_FMT_X2BGR10LE||
+       frames->width!=out->w||frames->height!=out->h||
+       !same_owner(frames->device_ref,g->device_ref)||
+       frames->device_ctx!=(const void*)g->device_ref->data||
+       !d3d11_bilipai_default_owner_known(g->device_ref)||
+       !queued_output_texture_has_owner(g,out))return false;
+    // Exact independent MPV storage and actual texture shape; no Copy/Wait/SDK.
+    D3D11_TEXTURE2D_DESC desc={0};
+    ID3D11Texture2D_GetDesc((ID3D11Texture2D*)out->planes[0],&desc);
+    return desc.Format==DXGI_FORMAT_R10G10B10A2_UNORM&&desc.Width==q->width&&desc.Height==q->height&&
+        desc.MipLevels==1&&desc.ArraySize&&q->output_array_slice<desc.ArraySize&&
+        desc.SampleDesc.Count==1&&!desc.SampleDesc.Quality&&desc.Usage==D3D11_USAGE_DEFAULT&&
+        !desc.CPUAccessFlags&&(desc.BindFlags&D3D11_BIND_SHADER_RESOURCE)&&
+        !(desc.MiscFlags&D3D11_RESOURCE_MISC_SHARED_KEYEDMUTEX);
+}
 HRESULT bv_mpv_hdr_vf_owner_diagnostic_output_step(struct bv_mpv_hdr_vf_owner *o,
     struct mp_decoder_wrapper *decoder,const struct mp_image *source,
     const struct bv_mpv_hdr_vf_prepare *cfg,const struct bv_mpv_hdr_chain_ticket *ticket,
@@ -497,8 +570,14 @@ HRESULT bv_mpv_hdr_vf_owner_diagnostic_output_step(struct bv_mpv_hdr_vf_owner *o
     if(!enter(o))return E_ACCESSDENIED;
     struct owner_generation *g=o->active?claim(o->active,false):NULL;
     hr=S_FALSE;
+    struct bv_mpv_hdr_queued_output_record queued={0};
     if(g) {
-        hr=bv_mpv_hdr_chain_acquire_queued_output(g->chain,decoder,source,ticket,out);
+        hr=bv_mpv_hdr_chain_acquire_queued_output(g->chain,decoder,source,ticket,out,&queued);
+        if(hr==S_OK&&!queued_output_record_matches(g,decoder,source,ticket,*out,&queued)) {
+            // Real work is already queued: retain whole custody and stop the
+            // existing shared-context output lane; original bypass is no proof.
+            talloc_free(*out);*out=NULL;hr=E_UNEXPECTED;
+        }
         if(FAILED(hr)) {
             // Acquisition is after a real successful GPU submission. On an
             // unexpected device/state/ref failure retain this WHOLE generation;
@@ -510,6 +589,7 @@ HRESULT bv_mpv_hdr_vf_owner_diagnostic_output_step(struct bv_mpv_hdr_vf_owner *o
         }
         unclaim(g);
     }
+    queued=(struct bv_mpv_hdr_queued_output_record){0}; // no record escapes this call
     leave(o);return hr;
 }
 bool bv_mpv_hdr_vf_owner_has_work(const struct bv_mpv_hdr_vf_owner *o) {
