@@ -213,18 +213,18 @@
       "targetPath": "build-recipes/packages/libaribcaption.cmake"
     },
     {
-      "afterBytes": 897,
-      "afterSha256Bytes": "9e7c4513e8f76308e730381ab9ddcbbf6d6672c89591dad9440ff3bb821cd3af",
+      "afterBytes": 885,
+      "afterSha256Bytes": "3e15c3086b9e4173b0004ea3389c19540444b0d70ae32beeeef6da2399c3bfd1",
       "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/subrandr.cmake",
       "beforeBytes": 840,
       "beforeSha256Bytes": "cbf83815bc10a86c38151633826e413d34167410bc9569ee22c045c53a01f477",
       "identity": "fixed-build-subrandr-rust-internal-lto-recipe",
       "rawEdits": [
         {
-          "afterStageSha256": "9e7c4513e8f76308e730381ab9ddcbbf6d6672c89591dad9440ff3bb821cd3af",
+          "afterStageSha256": "3e15c3086b9e4173b0004ea3389c19540444b0d70ae32beeeef6da2399c3bfd1",
           "beforeStageSha256": "cbf83815bc10a86c38151633826e413d34167410bc9569ee22c045c53a01f477",
           "count": 1,
-          "new": "        CARGO_PROFILE_RELEASE_LTO=thin\n        RUSTFLAGS='-C embed-bitcode -C lto=thin'\n",
+          "new": "        CARGO_PROFILE_RELEASE_LTO=thin\n        RUSTFLAGS='-C embed-bitcode'\n",
           "offsetBytesAtSequentialStage": 432,
           "old": "        ${cargo_lto_rustflags}\n"
         }

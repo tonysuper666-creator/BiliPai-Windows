@@ -548,7 +548,7 @@ def main():
     # Optional absent parameter retains the original complete cold path.
     # Explicit material is fully verified before outputs/download/build.
     fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
-    if presentation and sha(fixed_raw) != '14d9e9ae6e40a81b3f7af47883c5658fa7907821f66d16f0907ed26ddc921cd0':
+    if presentation and sha(fixed_raw) != '9ef656f3594d60baaae7f3efe4b922eb9599d87c7fb42d5d6e4b1410148f08a7':
         raise RuntimeError('Fixed presentation producer inputs changed')
     fixed = json.loads(fixed_raw)
     if fixed.get('variant') != variant:
@@ -593,7 +593,7 @@ def main():
         downloaded = {row['kind']: download(row, archives) for row in fixed['archives']}
         recipes = extract_fixed_recipe(downloaded['recipes'], workspace, fixed['recipeArchivePrefix'])
         recipe_raw = (inputs / 'recipe-edits.json').read_bytes()
-        if presentation and sha(recipe_raw) != '4a794257cc8881f3859405148cf59c8f69ce692b8fdbcb3d844b26604c10363e':
+        if presentation and sha(recipe_raw) != 'ac32910bd88fb5d4b726f16429bacc921b058201faf252956a3677d0bc991a58':
             raise RuntimeError('Complete presentation build recipe edits changed')
         edits = json.loads(recipe_raw)
         apply_recipes(recipes, edits['targets'])
