@@ -45,6 +45,22 @@ def emit(rel,t,origin,mode):
 
 def adapt(t,before,after,label):
  assert t.count(before)==1,(label,t.count(before));ADAPT.append(dict(label=label,before=before,after=after));return t.replace(before,after,1)
+def windows_nvidia_control_bar_ui(source,record=False):
+ s=source
+ for before,after,label in [('    seekPositionProvider: (() -> Long)? = null\n) {', '    seekPositionProvider: (() -> Long)? = null,\n    windowsEnhancementContent: (@Composable ((Boolean) -> Unit) -> Unit)? = null,\n) {', 'optional compact slot keeps original default callers'), ('    val floatingPanelVisible = showMoreActionsPanel || showSubtitlePanel || showVideoEnhancementPanel\n', '    var showWindowsEnhancementMenu by remember { mutableStateOf(false) }\n    val floatingPanelVisible = showMoreActionsPanel || showSubtitlePanel || showVideoEnhancementPanel || showWindowsEnhancementMenu\n', 'same original auto-hide hold includes compact modeless menu'), ('                ) {\n                    if (showAspectRatioButton) {', '                ) {\n                    if (windowsEnhancementContent != null) {\n                        windowsEnhancementContent { showWindowsEnhancementMenu = it }\n                    }\n                    if (showAspectRatioButton) {', 'compact content in original right function row')]:
+  assert s.count(before)==1,label
+  if record:ADAPT.append(dict(label=label,before=before,after=after))
+  s=s.replace(before,after,1)
+ return s
+
+def windows_nvidia_overlay_compact_ui(source,record=False):
+ s=source
+ for before,after,label in [('    actions: VideoPlayerOverlayActions,\n) {', '    actions: VideoPlayerOverlayActions,\n    windowsEnhancementContent: (@Composable ((Boolean) -> Unit) -> Unit)? = null,\n) {', 'optional content retains original overlay defaults'), ('                    BottomControlBar(\n                    viewportWidthDpOverride = viewportWidthDpOverride,', '                    BottomControlBar(\n                    windowsEnhancementContent = windowsEnhancementContent,\n                    viewportWidthDpOverride = viewportWidthDpOverride,', 'same original overlay forwards content to actual bottom bar')]:
+  assert s.count(before)==1,label
+  if record:ADAPT.append(dict(label=label,before=before,after=after))
+  s=s.replace(before,after,1)
+ return s
+
 def windows_nvidia_enhancement_leaf(source,record=False):
  """Replace only the legacy enhancement widget; all other original controls remain."""
  start_marker='            item {\n                Column(modifier = Modifier.fillMaxWidth()) {\n                    VideoSettingsSwitchRow(\n                        icon = qualityIcon,\n                        title = "画质增强",'
@@ -120,6 +136,7 @@ def main():
  t=t.replace('.semantics { testTagsAsResourceId = true }','.semantics { }')
  t=re.sub(r'(?m)^\s*decorFitsSystemWindows = false,?\s*\n','',t)
  t=t.replace('import com.android.purebilibili.core.plugin.skin.UiSkinAnimatedAsset','import com.bilipai.desktop.ui.DesktopOriginalPlayerSkinAsset as UiSkinAnimatedAsset')
+ t=windows_nvidia_control_bar_ui(t,record=True)
  emit(rel,t,rel,'complete-original-bottom-controls-and-menus-platform-adapt')
  rel='feature/video/ui/overlay/TopControlBar.kt';t=read(rel)
  for name in ['android.content.Context','android.content.Intent','android.content.IntentFilter','android.os.BatteryManager','androidx.compose.ui.platform.LocalContext']:
@@ -392,6 +409,7 @@ import com.android.purebilibili.feature.video.ui.overlay.PlaybackUserActionType
  copy=adapt(copy,'context.videoOverlay.copyText("BiliPai Player Diagnostics", exportDiagnosticReport(null))','if (context.videoOverlay.copyText("BiliPai Player Diagnostics", exportDiagnosticReport(null))) {','Real Windows clipboard acknowledgment gates original success feedback')
  copy=adapt(copy,'                        ).show()\n                    }','                        ).show()\n                        }\n                    }','Close real clipboard success branch without changing original feedback body')
  t=t[:copyA]+copy+t[copyB:]
+ t=windows_nvidia_overlay_compact_ui(t,record=True)
  t=windows_native_audio_overlay_ui(t,record=True)
  emit(rel,t,rel,'complete-original-overlay-all-menus-cast-reload-diagnostic-drawer-real-mpv-platform-adapt')
  rel='feature/video/screen/VideoDetailPlatformPolicy.kt';t=read(rel)

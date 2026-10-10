@@ -28,11 +28,22 @@ def full(raw,r):
  parts.append(''.join(lines[cursor:]));reversedParts.append(''.join(lines[cursor:]))
  assert ''.join(reversedParts)==raw
  adapted=''.join(parts);assert sha(adapted)==r['adaptedSha256LF'];return r['prefix']+adapted
+def windows_nvidia_bangumi_overlay_ui(source):
+ s=source;edits=[]
+ for before,after,label in [('import androidx.compose.runtime.Composable\n', 'import androidx.compose.runtime.Composable\nimport androidx.compose.runtime.collectAsState\nimport androidx.compose.runtime.getValue\n', 'same Root session state collection'), ('    VideoPlayerOverlay(\n        state = VideoPlayerOverlayState(', '    VideoPlayerOverlay(\n        windowsEnhancementContent = { onMenuExpandedChange ->\n            val binding = com.bilipai.desktop.ui.LocalDesktopWindowsVideoEnhancement.current\n            val enhancementState by binding.state.collectAsState()\n            com.bilipai.desktop.ui.DesktopVideoEnhancementCompactSlot(\n                showStatus = false,\n                menuEnabled = player.isOwned() && com.bilipai.desktop.ui.LocalDesktopDetailForeground.current,\n                onMenuExpandedChanged = onMenuExpandedChange,\n            ) {\n                com.bilipai.desktop.ui.DesktopVideoEnhancementControls(\n                    state = enhancementState, configuration = binding.configuration,\n                    onToggle = { binding.configuration.setAutomaticEnabled(it) }, onSettings = {},\n                )\n            }\n        },\n        state = VideoPlayerOverlayState(', 'actual PGC player supplies same Root compact modeless controls')]:
+  assert s.count(before)==1,label
+  edits.append(dict(label=label,before=before,after=after))
+  s=s.replace(before,after,1)
+ return s,edits
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
  records=[]
  for r in RECIPES:
-  raw=read(a.repo,r);body=full(raw,r);write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body)))
+  raw=read(a.repo,r);body=full(raw,r);windows_edits=[]
+  if r['originalPath']=='app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt':
+   body,windows_edits=windows_nvidia_bangumi_overlay_ui(body)
+  write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  raw=read(a.repo,POLICY);first=raw.index('internal fun resolveBangumiPlayerTopControlsPaddingTopDp(');last=raw.index('internal fun resolveBangumiFullscreen(')
  i=raw.index('internal fun resolveBangumiToggleOrientationTarget(');j=raw.index('internal data class BangumiEpisodePreviewWindow(')
  selected=raw[first:last]+raw[i:j];assert sha(selected)==POLICY['exactBodySha256LF']
