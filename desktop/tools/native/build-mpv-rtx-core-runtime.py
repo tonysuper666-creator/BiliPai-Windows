@@ -548,14 +548,14 @@ def main():
     # Optional absent parameter retains the original complete cold path.
     # Explicit material is fully verified before outputs/download/build.
     fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
-    if presentation and sha(fixed_raw) != '6dcbfe1d9dcb43c26a7cb2ed16488c970c9acb585db3cd81429000194556340a':
+    if presentation and sha(fixed_raw) != 'eb51caae11d8c30ff22b82c88eec68717d391c0689f86604be145fc19dfaee48':
         raise RuntimeError('Fixed presentation producer inputs changed')
     fixed = json.loads(fixed_raw)
     if fixed.get('variant') != variant:
         raise RuntimeError('Selected producer and fixed input variants differ')
     import_helper_path = ROOT / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
     import_helper_raw = import_helper_path.read_bytes()
-    if sha(import_helper_raw) != 'c4da9f7654ce889e347e327ae374743c12ae6ef46819eee0e423c40548e5f357':
+    if sha(import_helper_raw) != 'ecb1b27034a4ee99516e84dde440344ead6512dbc9a8e98e2f6af6b782dfd5d8':
         raise RuntimeError('Reviewed shared importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import', import_helper_path)
     if import_spec is None or import_spec.loader is None:
@@ -593,7 +593,7 @@ def main():
         downloaded = {row['kind']: download(row, archives) for row in fixed['archives']}
         recipes = extract_fixed_recipe(downloaded['recipes'], workspace, fixed['recipeArchivePrefix'])
         recipe_raw = (inputs / 'recipe-edits.json').read_bytes()
-        if presentation and sha(recipe_raw) != '4804ebe16371923c9f96d3ba3646f86b09ccf19b19ce46d2b6bcbd79c3cd338e':
+        if presentation and sha(recipe_raw) != '21be6ca0c2a106f918ee14a78b44fa74ec14112e214eaca8e1921cf8f12f15d1':
             raise RuntimeError('Complete presentation build recipe edits changed')
         edits = json.loads(recipe_raw)
         apply_recipes(recipes, edits['targets'])
@@ -617,11 +617,26 @@ def main():
             (recipes / 'packages/bilipai-curl-libssh-scp-compat.py').write_bytes(curl_libssh_helper)
             if {row['targetPath']: row['afterSha256Bytes'] for row in edits['targets']} != fixed['expectedPatchedRecipeSha256']:
                 raise RuntimeError('Complete selected dependency recipe inventory changed')
+        curl_openssl_module = None
+        if presentation:
+            curl_openssl_spec = fixed['curlOpenSslCompatibility']
+            if curl_openssl_spec != {'curlCommit': '098d3a0d4044d8a3f0a8617a5a5a30cde90fba26', 'curlTree': '7fa155649a35598bc9952c59e0a9964f7b4f9590', 'opensslBaseCommit': 'd8bf6cdd4849925c30e4f1911c7acb49cb34b702', 'targetPath': 'lib/vtls/openssl.c', 'beforeBytes': 172763, 'beforeSha256': 'a1cb83d9e2be60d96d7c3e9b60337dcaa9cf4bec4075dd15cb51438f3e78278a', 'afterBytes': 172755, 'afterSha256': '7978fa5870d545cfb8072f17d5429c9a5b5fdb8204f00ff048c64bcb9af0f033', 'asn1TemplateSha256': 'b92fdb5214505c17ea3f582c615a391705185563ecef3bcc52ed66ba14895d88', 'versionSha256': 'ddcd76798d2650c9808815cd7c2bfc991056cd8471bfbf156068dfac52f319dd', 'helperSourcePath': 'desktop/tools/native/patch-curl-openssl-asn1-compat.py', 'helperSha256': 'f3038f7aaba6ed47442ebff88e4c9bad77d7f2612af834a245145bfaa68719ac'}:
+                raise RuntimeError('Reviewed curl/OpenSSL source contract changed')
+            curl_openssl_helper_path = ROOT / curl_openssl_spec['helperSourcePath']
+            curl_openssl_helper = curl_openssl_helper_path.read_bytes()
+            if sha(curl_openssl_helper) != curl_openssl_spec['helperSha256']:
+                raise RuntimeError('Reviewed curl/OpenSSL helper changed')
+            (recipes / 'packages/bilipai-curl-openssl-asn1-compat.py').write_bytes(curl_openssl_helper)
+            openssl_module_spec = importlib.util.spec_from_file_location('bilipai_curl_openssl', curl_openssl_helper_path)
+            if openssl_module_spec is None or openssl_module_spec.loader is None:
+                raise RuntimeError('Reviewed curl/OpenSSL source validator unavailable')
+            curl_openssl_module = importlib.util.module_from_spec(openssl_module_spec)
+            openssl_module_spec.loader.exec_module(curl_openssl_module)
         # HOST LLVM is one common recipe slice, independent of the MPV filter variant.
         # Its source identity is not rewritten to pretend it is presentation MPV.
         snapshot_inputs_path = ROOT / 'desktop/third-party/libmpv/build/rtx-core-v1/host-llvm-snapshot-inputs.json'
         snapshot_inputs_raw = snapshot_inputs_path.read_bytes()
-        if sha(snapshot_inputs_raw) != '00a0fdb6d0c6d09c461478503162a53df914d97d0c6d87d8504b1196924fdcd2':
+        if sha(snapshot_inputs_raw) != '2d3e0d23fbea6c03e5cc06adee97479995bbef7932cd8d51ceb99aedb0c7a448':
             raise RuntimeError('Shared host LLVM lifecycle inputs changed')
         snapshot_inputs = json.loads(snapshot_inputs_raw)
         if (snapshot_inputs.get('schema') != 2 or snapshot_inputs.get('scope') != 'HOST_LLVM_EXPORT_ONLY_NO_IMPORT'
@@ -830,6 +845,11 @@ def main():
         if presentation:
             curl_libssh_material_directory = build / 'bilipai-curl-libssh-compat-source'
             curl_libssh_install_receipt, curl_libssh_materials = checked_curl_libssh_materials(curl_libssh_material_directory, curl_libssh_spec)
+        curl_openssl_install_receipt = None
+        curl_openssl_materials = None
+        if presentation:
+            curl_openssl_install_receipt, curl_openssl_materials = curl_openssl_module.validate_materials(
+                build / 'bilipai-curl-openssl-compat-source')
         inventory = dependency_inventory(sources)
         if presentation:
             for dependency, commit in [('curl', curl_libssh_spec['curlCommit']), ('libssh', curl_libssh_spec['libsshCommit'])]:
@@ -864,6 +884,14 @@ def main():
                 # Both source/install observations precede each recipe cleanup.
                 for material_name, material_raw in sorted(curl_libssh_materials.items()):
                     info = tarfile.TarInfo('actual-curl-libssh-compat-source/' + material_name)
+                    info.size = len(material_raw)
+                    info.mode = 0o600
+                    import io
+                    source_tar.addfile(info, io.BytesIO(material_raw))
+            if curl_openssl_materials is not None:
+                # Actual installed generated OpenSSL header and curl build source survive cleanup.
+                for material_name, material_raw in sorted(curl_openssl_materials.items()):
+                    info = tarfile.TarInfo('actual-curl-openssl-compat-source/' + material_name)
                     info.size = len(material_raw)
                     info.mode = 0o600
                     import io
@@ -912,9 +940,10 @@ def main():
             presentation_identity = {'presentationProtocolVersion': 2, 'presentationProperty': 'bilipai-rtx-presentation', 'upstreamEditsSha256': sha(upstream_raw), 'sourcePatchHelperSha256': sha(helper)}
             receipt.update(presentation_identity)
             receipt['sourceGraph'] = source_receipt['sourceGraph']
-            receipt['sourceMaterialScope'] = 'Fixed archives, altered recipes, dependency worktrees after cleanup, and separately retained patched libvpl and curl/libssh header/install witnesses; excluding .git'
+            receipt['sourceMaterialScope'] = 'Fixed archives, altered recipes, dependency worktrees after cleanup, and separately retained patched libvpl, curl/libssh and curl/OpenSSL generated-header/source/install witnesses; excluding .git'
             receipt['libvplCompatibilitySource'] = libvpl_install_receipt
             receipt['curlLibsshCompatibilitySource'] = curl_libssh_install_receipt
+            receipt['curlOpenSslCompatibilitySource'] = curl_openssl_install_receipt
         receipt_bytes = (json.dumps(receipt, sort_keys=True, indent=2) + '\n').encode()
         catalog_path = ROOT / 'desktop/third-party/libmpv/SOURCES.json'
         catalog = json.loads(catalog_path.read_text(encoding='utf-8-sig'))

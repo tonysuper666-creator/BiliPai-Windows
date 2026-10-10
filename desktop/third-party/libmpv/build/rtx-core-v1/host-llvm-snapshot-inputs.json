@@ -1,12 +1,12 @@
 {
   "containerImage": "ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239",
-  "helperSha256": "3a407553420df7c0c43cc193ef0caabd5977855b28a5c0d375c82c7e70b5a17c",
+  "helperSha256": "a117460dac80b3b85e9e312df2e943feffb718218e5ed909458c39b656d4343d",
   "helperSourcePath": "desktop/tools/native/export-host-llvm-source-snapshot.py",
   "recipeCommit": "cd1edc11dc6887a50f705717619d879f5a93a488",
   "recipeEdits": [
     {
-      "afterBytes": 9418,
-      "afterSha256Bytes": "32e9dc394790ba6a95c4ac5a829a5063460ee893736328441cfc22dc610db36b",
+      "afterBytes": 9462,
+      "afterSha256Bytes": "e89cd57a4085b49500354ef50bb201f51e317c2fe45026736c3a3f9bf0919164",
       "beforeBytes": 8294,
       "beforeSha256Bytes": "a1168b87c9ef663c40ce08f666219e3f668efb328429e4cea8704741b8cb31db",
       "rawEdits": [
@@ -15,6 +15,14 @@
           "new": "cleanup(llvm install)\n# Record configured source/config before the actual build, not cleanup identity.\nExternalProject_Add_Step(llvm bilipai-capture-host-prebuild\n    DEPENDEES configure\n    DEPENDERS build\n    COMMAND python3 ${PROJECT_SOURCE_DIR}/packages/bilipai-host-llvm-source-snapshot.py\n        capture-config --stage prebuild --build-dir <BINARY_DIR> --source-dir <SOURCE_DIR>\n        --workspace ${CMAKE_BINARY_DIR}/..\n        --output ${CMAKE_BINARY_DIR}/bilipai-host-llvm-config\n    LOG 1\n    COMMENT \"Capturing actual host LLVM source identity before build\"\n)\n# Install must have used the exact prebuild source/config; preserve before cleanup.\nExternalProject_Add_Step(llvm bilipai-capture-host-config\n    DEPENDEES install\n    DEPENDERS postremovebuild\n    COMMAND python3 ${PROJECT_SOURCE_DIR}/packages/bilipai-host-llvm-source-snapshot.py\n        capture-config --stage postinstall --build-dir <BINARY_DIR> --source-dir <SOURCE_DIR>\n        --workspace ${CMAKE_BINARY_DIR}/..\n        --output ${CMAKE_BINARY_DIR}/bilipai-host-llvm-config\n    LOG 1\n    COMMENT \"Verifying actual installed host LLVM source/config before cleanup\"\n)\nget_property(LLVM_SRC TARGET llvm PROPERTY _EP_SOURCE_DIR)\n",
           "offsetBytesAtSequentialStage": 8213,
           "old": "cleanup(llvm install)\nget_property(LLVM_SRC TARGET llvm PROPERTY _EP_SOURCE_DIR)\n"
+        },
+        {
+          "afterStageSha256": "e89cd57a4085b49500354ef50bb201f51e317c2fe45026736c3a3f9bf0919164",
+          "beforeStageSha256": "32e9dc394790ba6a95c4ac5a829a5063460ee893736328441cfc22dc610db36b",
+          "count": 1,
+          "new": "        -DCLANG_BUILD_TOOLS=OFF\n        -DCLANG_TOOL_OFFLOAD_ARCH_BUILD=OFF\n",
+          "offsetBytesAtSequentialStage": 2155,
+          "old": "        -DCLANG_BUILD_TOOLS=OFF\n"
         }
       ],
       "targetPath": "build-recipes/toolchain/llvm/llvm.cmake"

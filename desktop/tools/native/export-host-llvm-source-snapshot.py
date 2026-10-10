@@ -725,7 +725,8 @@ def configuration_assertions(build_directory, source, install, cache_raw):
         'CLANG_DEFAULT_UNWINDLIB': 'libunwind', 'CLANG_DEFAULT_CXX_STDLIB': 'libc++',
         'CLANG_DEFAULT_LINKER': 'lld', 'LLD_DEFAULT_LD_LLD_IS_MINGW': 'ON',
         'LLVM_ENABLE_LTO': 'OFF', 'LLVM_ENABLE_ASSERTIONS': 'OFF', 'LLVM_ENABLE_PIC': 'OFF',
-        'LLVM_LINK_LLVM_DYLIB': 'OFF', 'LLVM_BUILD_LLVM_DYLIB': 'OFF', 'BUILD_SHARED_LIBS': 'OFF'}
+        'LLVM_LINK_LLVM_DYLIB': 'OFF', 'LLVM_BUILD_LLVM_DYLIB': 'OFF', 'BUILD_SHARED_LIBS': 'OFF',
+        'CLANG_BUILD_TOOLS': 'OFF', 'CLANG_TOOL_OFFLOAD_ARCH_BUILD': 'OFF'}
     if any(cache_values.get(key) != value for key, value in expected.items()):
         raise RuntimeError('Actual LLVM source/build configuration differs from the fixed cold build')
     return expected

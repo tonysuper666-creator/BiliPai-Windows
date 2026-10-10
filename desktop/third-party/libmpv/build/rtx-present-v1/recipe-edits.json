@@ -126,8 +126,8 @@
       "targetPath": "build-recipes/packages/libssh.cmake"
     },
     {
-      "afterBytes": 2384,
-      "afterSha256Bytes": "7ea649e63f20f61cdb3a20d9b29372c7985c6908d9338acd8a33b5e1ae1ba30a",
+      "afterBytes": 2762,
+      "afterSha256Bytes": "b17133fb195d2c566db52b458116369dfdb588b836c561a97f8e6e24b687e7d7",
       "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/curl.cmake",
       "beforeBytes": 1919,
       "beforeSha256Bytes": "2233551dc505db4107f3efeced4102a801887a02a61c3c1d3b6037bd75ae04ad",
@@ -142,25 +142,46 @@
           "old": "    GIT_REPOSITORY https://github.com/curl/curl.git\n"
         },
         {
-          "afterStageSha256": "b6f76110a667b64984331c0db8ffe9ce32c51dde15c9250f89c869657ffe95d3",
+          "afterStageSha256": "e5156ed8f54cf8abb8a2f3d6ed8e00f6984a1a9b62a312d6658a339707896dbf",
           "beforeStageSha256": "b1b42cde63e7d5c3213347b04d631896deb1b7455b5deef25fe85411c73ffc15",
           "count": 1,
-          "new": "    PATCH_COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-libssh-scp-compat.py patch-curl <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-libssh-compat-source\n",
+          "new": "    PATCH_COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-libssh-scp-compat.py patch-curl <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-libssh-compat-source\n    COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-openssl-asn1-compat.py patch-curl <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-openssl-compat-source\n",
           "offsetBytesAtSequentialStage": 493,
           "old": "    PATCH_COMMAND \"\"\n"
         },
         {
-          "afterStageSha256": "7ea649e63f20f61cdb3a20d9b29372c7985c6908d9338acd8a33b5e1ae1ba30a",
-          "beforeStageSha256": "b6f76110a667b64984331c0db8ffe9ce32c51dde15c9250f89c869657ffe95d3",
+          "afterStageSha256": "b17133fb195d2c566db52b458116369dfdb588b836c561a97f8e6e24b687e7d7",
+          "beforeStageSha256": "e5156ed8f54cf8abb8a2f3d6ed8e00f6984a1a9b62a312d6658a339707896dbf",
           "count": 1,
-          "new": "    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install\n    COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-libssh-scp-compat.py curl-after-install <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-libssh-compat-source\n",
-          "offsetBytesAtSequentialStage": 2013,
+          "new": "    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install\n    COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-openssl-asn1-compat.py curl-after-install <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-openssl-compat-source\n    COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-libssh-scp-compat.py curl-after-install <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-libssh-compat-source\n",
+          "offsetBytesAtSequentialStage": 2198,
           "old": "    INSTALL_COMMAND ${EXEC} ninja -C <BINARY_DIR> install\n"
         }
       ],
       "staticForwardEqualsFinal": true,
       "staticInverseEqualsCompleteFixedOriginal": true,
       "targetPath": "build-recipes/packages/curl.cmake"
+    },
+    {
+      "afterBytes": 1862,
+      "afterSha256Bytes": "64f9213033eff346089e7a8506ec128625204a6cce24507cac532a33cb4db914",
+      "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/openssl.cmake",
+      "beforeBytes": 1641,
+      "beforeSha256Bytes": "79cd848d11ebb59ccc55db4fa237e94d600428bbd9ae255c9abeb613ca4be8fc",
+      "identity": "fixed-build-openssl-installed-header-observation",
+      "rawEdits": [
+        {
+          "afterStageSha256": "64f9213033eff346089e7a8506ec128625204a6cce24507cac532a33cb4db914",
+          "beforeStageSha256": "79cd848d11ebb59ccc55db4fa237e94d600428bbd9ae255c9abeb613ca4be8fc",
+          "count": 1,
+          "new": "    INSTALL_COMMAND ${MAKE} install_sw\n    COMMAND python3 ${CMAKE_CURRENT_LIST_DIR}/bilipai-curl-openssl-asn1-compat.py openssl-after-install <SOURCE_DIR> ${MINGW_INSTALL_PREFIX} ${CMAKE_BINARY_DIR}/bilipai-curl-openssl-compat-source --build-dir <BINARY_DIR>\n",
+          "offsetBytesAtSequentialStage": 1473,
+          "old": "    INSTALL_COMMAND ${MAKE} install_sw\n"
+        }
+      ],
+      "staticForwardEqualsFinal": true,
+      "staticInverseEqualsCompleteFixedOriginal": true,
+      "targetPath": "build-recipes/packages/openssl.cmake"
     }
   ]
 }

@@ -47,12 +47,27 @@
     "libsshTree": "965f5cee2228e3d65ed66e6777741babbd286dab",
     "targetPath": "lib/vssh/ssh.h"
   },
+  "curlOpenSslCompatibility": {
+    "afterBytes": 172755,
+    "afterSha256": "7978fa5870d545cfb8072f17d5429c9a5b5fdb8204f00ff048c64bcb9af0f033",
+    "asn1TemplateSha256": "b92fdb5214505c17ea3f582c615a391705185563ecef3bcc52ed66ba14895d88",
+    "beforeBytes": 172763,
+    "beforeSha256": "a1cb83d9e2be60d96d7c3e9b60337dcaa9cf4bec4075dd15cb51438f3e78278a",
+    "curlCommit": "098d3a0d4044d8a3f0a8617a5a5a30cde90fba26",
+    "curlTree": "7fa155649a35598bc9952c59e0a9964f7b4f9590",
+    "helperSha256": "f3038f7aaba6ed47442ebff88e4c9bad77d7f2612af834a245145bfaa68719ac",
+    "helperSourcePath": "desktop/tools/native/patch-curl-openssl-asn1-compat.py",
+    "opensslBaseCommit": "d8bf6cdd4849925c30e4f1911c7acb49cb34b702",
+    "targetPath": "lib/vtls/openssl.c",
+    "versionSha256": "ddcd76798d2650c9808815cd7c2bfc991056cd8471bfbf156068dfac52f319dd"
+  },
   "expectedPatchedRecipeSha256": {
-    "build-recipes/packages/curl.cmake": "7ea649e63f20f61cdb3a20d9b29372c7985c6908d9338acd8a33b5e1ae1ba30a",
+    "build-recipes/packages/curl.cmake": "b17133fb195d2c566db52b458116369dfdb588b836c561a97f8e6e24b687e7d7",
     "build-recipes/packages/ffmpeg.cmake": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
     "build-recipes/packages/libssh.cmake": "bc0c72c9f87d3fd12ac2f920bdd7b34cec2fed51209b4f15996c28d51614095c",
     "build-recipes/packages/libvpl.cmake": "a044e94b1a06e997a858533cfa2cf489764d49c806f06588cc8d13b21747e671",
-    "build-recipes/packages/mpv.cmake": "8e8e5a4fff3b1be48b30b0b18b56640930a5fddd494587922b6aa774512accd2"
+    "build-recipes/packages/mpv.cmake": "8e8e5a4fff3b1be48b30b0b18b56640930a5fddd494587922b6aa774512accd2",
+    "build-recipes/packages/openssl.cmake": "64f9213033eff346089e7a8506ec128625204a6cce24507cac532a33cb4db914"
   },
   "ffmpegCommit": "9fc8c785e2747c87121ec28f8f10ceab0562384b",
   "filterName": "bilipai-rtx",
