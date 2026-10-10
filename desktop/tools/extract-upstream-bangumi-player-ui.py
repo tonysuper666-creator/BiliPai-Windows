@@ -32,7 +32,15 @@ def main():
  parser=argparse.ArgumentParser();parser.add_argument('--repo',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);a=parser.parse_args()
  records=[]
  for r in RECIPES:
-  raw=read(a.repo,r);body=full(raw,r);write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body)))
+  raw=read(a.repo,r);body=full(raw,r)
+  if r['output'].endswith('/DesktopOriginalBangumiPlayerScreen.kt'):
+   before='''                if (isDrmError) {
+                    viewModel.handlePlaybackDrmError()
+                }
+'''
+   after=before.replace('                }\n','                } else {\n                    platform.observePlaybackFailure(error)\n                }\n')
+   assert body.count(before)==1;body=body.replace(before,after)
+  write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body)))
  raw=read(a.repo,POLICY);first=raw.index('internal fun resolveBangumiPlayerTopControlsPaddingTopDp(');last=raw.index('internal fun resolveBangumiFullscreen(')
  i=raw.index('internal fun resolveBangumiToggleOrientationTarget(');j=raw.index('internal data class BangumiEpisodePreviewWindow(')
  selected=raw[first:last]+raw[i:j];assert sha(selected)==POLICY['exactBodySha256LF']

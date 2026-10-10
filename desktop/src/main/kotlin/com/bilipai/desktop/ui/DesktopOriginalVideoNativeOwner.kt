@@ -270,15 +270,17 @@ internal class DesktopOriginalVideoNativeOwner(
     internal fun publishBangumiQualityReplacement(request: PlaybackRequest, source: PlaybackSource,
         expectedBaselineVersion: Long, requestJob: Job,
         expectedPrevious: DesktopOriginalVideoAcceptedPublication,
-        isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication =
+        isRequestCurrent: () -> Boolean,
+        isParentIntentCurrent: () -> Boolean = { true }): DesktopOriginalVideoAcceptedPublication =
         publishCapturedSource(request, source, expectedBaselineVersion, requestJob,
-            null, null, expectedPrevious, isRequestCurrent)
+            null, null, expectedPrevious, isRequestCurrent, isParentIntentCurrent)
 
     private fun publishCapturedSource(request: PlaybackRequest, source: PlaybackSource,
         expectedBaselineVersion: Long, requestJob: Job, bootstrapOrigin: DesktopVideoBootstrapAccepted?,
         pageSubject: DesktopOriginalVideoPageTransitionIntent?,
         expectedPrevious: DesktopOriginalVideoAcceptedPublication?,
-        isRequestCurrent: () -> Boolean): DesktopOriginalVideoAcceptedPublication {
+        isRequestCurrent: () -> Boolean,
+        isParentIntentCurrent: () -> Boolean = { true }): DesktopOriginalVideoAcceptedPublication {
         assertEntry()
         val receipt = checkNotNull(source.authorizationReceipt) { "Original ordinary playback receipt is required" }
         if (receipt.accountEpoch != currentEpoch()) throw CancellationException("Original playback account retired")
@@ -305,8 +307,8 @@ internal class DesktopOriginalVideoNativeOwner(
                 }
                 if (expectedPrevious == null) acceptInitial()
                 else if (!player.admitSourceSnapshot(expectedPrevious.nativeSource) {
-                    if (!owns(expectedPrevious) || expectedBaselineVersion != expectedPrevious.sourceVersion ||
-                        expectedPrevious.request != request ||
+                    if (!owns(expectedPrevious) || !isParentIntentCurrent() ||
+                        expectedBaselineVersion != expectedPrevious.sourceVersion || expectedPrevious.request != request ||
                         expectedPrevious.nativeSource.source.authorizationReceipt != receipt)
                         throw CancellationException("Original page parent publication retired")
                     // Parent is consumed at submission. The actual next ACK uses
