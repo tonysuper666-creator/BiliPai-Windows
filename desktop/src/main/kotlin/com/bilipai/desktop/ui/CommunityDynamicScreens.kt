@@ -24,6 +24,15 @@ import com.android.purebilibili.core.store.DesktopDynamicCardSettings
 import com.android.purebilibili.feature.dynamic.DesktopOriginalDynamicReplySession
 import com.bilipai.desktop.appearance.LocalDesktopTextClipboard
 
+/** Borrowed navigation from the actually mounted original Root, never a new router. */
+internal class DesktopDynamicReactionNavigation(
+    val isCurrent: () -> Boolean,
+    val revision: () -> Long,
+    val openUser: (Long, stillOwned: () -> Boolean, admission: ((() -> Unit) -> Boolean)) -> Unit,
+)
+internal val LocalDesktopDynamicReactionNavigation =
+    staticCompositionLocalOf<DesktopDynamicReactionNavigation?> { null }
+
 @Composable
 internal fun CommunityDynamicFeed(mid: Long, community: DesktopCommunityRepository, navigation: CommunityNavigation, active: Boolean = true) {
     val cache=checkNotNull(LocalDesktopDynamicCache.current){"Root dynamic cache is not mounted"}
@@ -130,6 +139,87 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
     var removedVersion by remember(id,capturedEpoch) { mutableIntStateOf(0) }
     var commentVersion by remember(id,capturedEpoch) { mutableIntStateOf(0) }
     val latestItem by rememberUpdatedState(data?.item)
+    // The same mounted Root request gate precedes the existing page monitor.
+    // Closing a Sheet never runs cancellation while either admission is held.
+    val reactionNavigation = LocalDesktopDynamicReactionNavigation.current
+    val reactionRoot = LocalDesktopOriginalVideoRootWindowEnvironment.current.root
+    val reactionRequests = reactionRoot.entry.requests
+    val capturedReactionNavigation = remember(alive) { reactionNavigation }
+    var reactionList by remember(alive) { mutableStateOf<DesktopDynamicReactionListState?>(null) }
+    fun sameReactionItem(item: DynamicItem): Boolean {
+        val current = latestItem ?: return false
+        return error == null && current.id_str == item.id_str && current.type == item.type &&
+            current.basic?.rid_str == item.basic?.rid_str
+    }
+    fun reactionPageOwned(item: DynamicItem, revision: Long): Boolean {
+        val navigationSource = capturedReactionNavigation ?: return false
+        return owned() && navigationSource.isCurrent() &&
+            navigationSource.revision() == revision && sameReactionItem(item)
+    }
+    fun reactionPageAdmission(item: DynamicItem, revision: Long, action: () -> Unit): Boolean {
+        var applied = false
+        val admitted = reactionRequests.withMountedPublication {
+            synchronized(exportOwnerLock) {
+                if (reactionPageOwned(item, revision)) { action(); applied = true }
+            }
+        }
+        return admitted && applied
+    }
+    fun dismissReaction(list: DesktopDynamicReactionListState) {
+        synchronized(exportOwnerLock) { if (reactionList === list) reactionList = null }
+        list.close()
+    }
+    fun showReactions(item: DynamicItem) {
+        val navigationSource = capturedReactionNavigation ?: return
+        var revision = -1L
+        var captured = false
+        reactionRequests.withMountedPublication {
+            synchronized(exportOwnerLock) {
+                if (owned() && navigationSource.isCurrent() && sameReactionItem(item)) {
+                    revision = navigationSource.revision()
+                    captured = true
+                }
+            }
+        }
+        if (!captured) return
+        var capturedList: DesktopDynamicReactionListState? = null
+        fun current() = reactionPageOwned(item, revision) &&
+            (capturedList == null || reactionList === capturedList)
+        val created = try { operations.createReactionList(item, sourceOwned = ::current,
+            sourceAdmission = { action ->
+                reactionPageAdmission(item, revision) { if (capturedList != null && reactionList === capturedList) action() }
+            }) } catch (cancelled: CancellationException) { return }
+        capturedList = created
+        var previous: DesktopDynamicReactionListState? = null
+        var installed = false
+        reactionPageAdmission(item, revision) {
+            previous = reactionList
+            reactionList = created
+            installed = true
+        }
+        previous?.close()
+        if (!installed) created.close()
+    }
+    fun openReactionUser(list: DesktopDynamicReactionListState, mid: Long) {
+        val navigationSource = capturedReactionNavigation ?: return
+        var revision = -1L
+        var permitted = false
+        reactionRequests.withMountedPublication {
+            synchronized(exportOwnerLock) {
+                if (owned() && navigationSource.isCurrent() && reactionList === list && list.isOwned() &&
+                    mid > 0L && list.state.value.users.any { it.mid == mid }) {
+                    revision = navigationSource.revision()
+                    reactionList = null // Dismiss before the existing Root navigation checkpoint.
+                    permitted = true
+                }
+            }
+        }
+        if (!permitted) return
+        list.close() // Request cancellation is outside Store/entry/page monitors.
+        navigationSource.openUser(mid,
+            { reactionPageOwned(list.item, revision) },
+            { action -> reactionPageAdmission(list.item, revision, action) })
+    }
     val history:suspend(Long)->Unit=remember(alive){{articleId->community.reportDynamicArticleView(articleId,capturedEpoch,capturedMid);Unit}}
     val requests=remember(operations){DesktopDynamicReplyOperationsBinding(operations,
         csrfAvailable={!repository.authCookies()["bili_jct"].isNullOrBlank()},
@@ -160,7 +250,14 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
                     withOwnedCommit=commitOwned)
             }
         },pickImages=commentPickers::pickImages,textShare=textShare,shareScope=pageScope)}
-    DisposableEffect(alive){onDispose{synchronized(exportOwnerLock){alive.set(false)};replySession.close();selectedCommentImages.close();pageScope.cancel()}}
+    DisposableEffect(alive){onDispose{
+        val retired = synchronized(exportOwnerLock) {
+            alive.set(false)
+            reactionList.also { reactionList = null }
+        }
+        retired?.close()
+        replySession.close();selectedCommentImages.close();pageScope.cancel()
+    }}
     val contentRevision by cardSession.contentRevision.collectAsState()
     val rootMutations=checkNotNull(LocalDesktopDynamicCardMutations.current)
     fun mutateDetail(transform:(List<DynamicItem>)->List<DynamicItem>) {
@@ -224,12 +321,24 @@ internal fun CommunityDynamicDetail(route: DesktopDynamicDetailRoute, community:
                 DesktopOriginalDynamicDetailLayout(id,uiState,replySession,defaultLayout,
                     liquidGlassEnabled=false,currentMid=account?.mid,
                     openCommentRootRpid=route.rootReplyId,openCommentTargetRpid=route.targetReplyId,
-                    onBack=navigation.onDynamicBack,onRetry={revision++},onUserClick=navigation.onUser) {layout,onCommentClick->
+                    onBack=navigation.onDynamicBack,onRetry={revision++},onUserClick=navigation.onUser,
+                    onShowReactions=if(capturedReactionNavigation==null)null else ::showReactions) {layout,onCommentClick->
                     data?.item?.let{CommunityDynamicCard(it,community,navigation,details=true,
                         detailImageLayoutOverride=layout,onDetailCommentClick=onCommentClick)}
                 }
             }
         }
+        }
+        reactionList?.let { list ->
+            key(list) {
+                com.android.purebilibili.feature.dynamic.components.DesktopOriginalDynamicReactionSheet(
+                    list, onDismiss = { dismissReaction(list) },
+                    onUserClick = { mid -> openReactionUser(list, mid) })
+            }
+        }
+        LaunchedEffect(reactionList, uiState, capturedReactionNavigation?.revision?.invoke(),
+            capturedReactionNavigation?.isCurrent?.invoke()) {
+            reactionList?.let { if (!it.isOwned()) dismissReaction(it) }
         }
         SnackbarHost(snackbar,Modifier.align(Alignment.BottomCenter))
     }

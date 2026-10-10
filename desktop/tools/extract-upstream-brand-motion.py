@@ -1,4 +1,4 @@
-"""Sole fixed-v029 brand catalog, resources and complete BlueSnow UI producer.
+"""Sole fixed-v029 resource/catalog and fixed-v034 complete BlueSnow UI producer.
 
 Every original is checked as raw bytes against the immutable archive manifest.
 The enum and complete BlueSnow body have separate reversible adaptations.
@@ -26,6 +26,11 @@ CATALOG_SHA256 = "15291a833f8e9d90731bdb5c1f8707a63c9958f395fb6938f6b5b49b1910a6
 PROOF_PATH = "brand-motion-source-proof.json"
 UI_PATH = "kotlin/com/android/purebilibili/core/ui/BlueSnowMaidAnimation.kt"
 UI_PROOF_PATH = "brand-motion-ui-source-proof.json"
+UI_COMMIT = "b2091b1de636e499df80af7e700796b4f52b7f92"
+UI_ARCHIVE = Path("desktop/upstream-slices/v034-brand-motion-ui")
+UI_SOURCE_BYTES = 12046
+UI_SOURCE_SHA256 = "e4ff623fa5b859bdffe82f7723988cbdd2b0bd9f524acfd37d7bbe95a4a54171"
+UI_SOURCE_BLOB = "12b7af152f2dbfe7f64c14059b58ee30c60276f2"
 _ui_spec = importlib.util.spec_from_file_location("v029_brand_motion_ui", Path(__file__).with_name("v029_brand_motion_ui.py"))
 brand_ui = importlib.util.module_from_spec(_ui_spec)
 _ui_spec.loader.exec_module(brand_ui)
@@ -113,6 +118,17 @@ def checked_inputs(repo: Path) -> tuple[dict, dict[str, bytes]]:
     return manifest, originals
 
 
+def checked_ui_input(repo: Path) -> bytes:
+    root = repo.absolute() / UI_ARCHIVE
+    reject_reparse(root)
+    if set(files_under(root)) != {BLUE_SNOW}:
+        raise ValueError("Incomplete or unknown fixed v034 BlueSnow UI input")
+    data = wide(root / BLUE_SNOW).read_bytes()
+    if len(data) != UI_SOURCE_BYTES or sha256(data) != UI_SOURCE_SHA256 or git_blob(data) != UI_SOURCE_BLOB:
+        raise ValueError("Fixed v034 BlueSnow whole source identity mismatch")
+    return data
+
+
 def counted_replace(text: str, before: str, after: str, label: str, edits: list[dict]) -> str:
     if text.count(before) != 1:
         raise ValueError("Counted source adaptation mismatch: " + label)
@@ -128,7 +144,7 @@ def inverse(text: str, edits: list[dict]) -> str:
     return text
 
 
-def make_outputs(manifest: dict, originals: dict[str, bytes]) -> dict[str, bytes]:
+def make_outputs(manifest: dict, originals: dict[str, bytes], ui_original: bytes) -> dict[str, bytes]:
     original = originals[BLUE_SNOW].decode("utf-8")
     start = original.index("enum class MaidAnimation(")
     end = original.index("\n}", start) + 2
@@ -211,13 +227,15 @@ enum class DesktopMaidAnimation(
                  runtimeOutputs=[dict(path=path, bytes=len(data), sha256Bytes=sha256(data)) for path, data in sorted(outputs.items())],
                  scope="Catalog identity/schema/resources only. BlueSnow UI has its own full-source proof. No renderer or animation UI acceptance is inferred from this proof.")
     outputs[PROOF_PATH] = (json.dumps(proof, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
-    ui, recipe = brand_ui.adapt_blue_snow_with_recipe(originals[BLUE_SNOW])
+    ui, recipe = brand_ui.adapt_blue_snow_with_recipe(ui_original)
     restored_ui = brand_ui.reverse_blue_snow(ui, recipe).encode("utf-8")
-    if restored_ui != originals[BLUE_SNOW]:
+    if restored_ui != ui_original:
         raise ValueError("Complete BlueSnow UI inverse mismatch")
     outputs[UI_PATH] = ui.encode("utf-8")
-    ui_proof = dict(fixedUpstreamCommit=COMMIT, originalPath=BLUE_SNOW,
-                    originalSha256Bytes=sha256(originals[BLUE_SNOW]),
+    ui_proof = dict(fixedUpstreamCommit=UI_COMMIT, originalPath=BLUE_SNOW,
+                    originalGitBlob=UI_SOURCE_BLOB, originalBytes=UI_SOURCE_BYTES,
+                    resourceCatalogCommit=COMMIT,
+                    originalSha256Bytes=sha256(ui_original),
                     fullSourceInverseSha256Bytes=sha256(restored_ui),
                     generatedPath=UI_PATH, generatedSha256Bytes=sha256(outputs[UI_PATH]),
                     countedAdaptations=recipe,
@@ -234,11 +252,14 @@ enum class DesktopMaidAnimation(
 def generate(repo: Path, output: Path) -> dict:
     repo, output = repo.absolute(), output.absolute()
     source = repo / ARCHIVE
+    ui_source = repo / UI_ARCHIVE
     reject_reparse(output)
-    if output == repo or output in source.parents or source in output.parents or output == source:
+    if (output == repo or any(output in item.parents or item in output.parents or output == item
+                             for item in (source, ui_source))):
         raise ValueError("Generated output overlaps repository/raw source input")
     manifest, originals = checked_inputs(repo)
-    outputs = make_outputs(manifest, originals)
+    ui_original = checked_ui_input(repo)
+    outputs = make_outputs(manifest, originals, ui_original)
     existing = files_under(output)
     if set(existing) - set(outputs):
         raise ValueError("Generated directory contains unknown files")
@@ -252,7 +273,7 @@ def generate(repo: Path, output: Path) -> dict:
             target.write_bytes(data)
     return dict(originalFiles=len(originals), countedAdaptations=17, fullSourceInverse=True,
                 catalogSha256Bytes=CATALOG_SHA256, runtimeUniquePairs=13, runtimeEnumIdentities=14,
-                generatedFiles=len(outputs), blueSnowCountedAdaptations=20, welcomeRuntimeAllowed=False)
+                generatedFiles=len(outputs), blueSnowCountedAdaptations=len(json.loads(outputs[UI_PROOF_PATH])["countedAdaptations"]), welcomeRuntimeAllowed=False)
 
 
 def main() -> None:

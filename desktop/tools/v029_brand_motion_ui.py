@@ -7,12 +7,14 @@ import hashlib
 import re
 
 BLUE_SNOW_LF_SHA256 = '459d914d7a32ef73cf87c13c2b3f0f05e42c5e03eff9078cfad89a1495fee1f3'
+BLUE_SNOW_V034_LF_SHA256 = 'e4ff623fa5b859bdffe82f7723988cbdd2b0bd9f524acfd37d7bbe95a4a54171'
 
 
 def adapt_blue_snow_with_recipe(raw: bytes):
     original = raw.decode('utf-8').replace('\r\n', '\n')
-    if hashlib.sha256(original.encode('utf-8')).hexdigest() != BLUE_SNOW_LF_SHA256:
-        raise ValueError('Fixed v029 BlueSnow source mismatch')
+    source_sha = hashlib.sha256(original.encode('utf-8')).hexdigest()
+    if source_sha not in (BLUE_SNOW_LF_SHA256, BLUE_SNOW_V034_LF_SHA256):
+        raise ValueError('Fixed BlueSnow source mismatch')
     text = original
     recipe = []
 
@@ -65,16 +67,29 @@ def adapt_blue_snow_with_recipe(raw: bytes):
                             }
                         }
 '''
-    change(bitmap_prepare, '                        composition.requirePreparedImage(animation)\n')
+    prepared_indent = '                        '
+    if source_sha == BLUE_SNOW_V034_LF_SHA256:
+        bitmap_prepare = ''.join('    ' + line if line.strip() else line
+                                 for line in bitmap_prepare.splitlines(keepends=True))
+        prepared_indent += '    '
+    change(bitmap_prepare, prepared_indent + 'composition.requirePreparedImage(animation)\n')
     change('''            Image(
                 painter = painterResource(animation.staticResource),
                 contentDescription = "蓝雪女仆",
                 modifier = Modifier.fillMaxSize()
             )''', '''            DesktopMaidStillImage(
-                result = result,
+                result = REQUIRE_RESULT,
                 contentDescription = "蓝雪女仆",
                 modifier = Modifier.fillMaxSize()
-            )''')
+            )'''.replace('REQUIRE_RESULT', 'requireNotNull(result)'
+                         if source_sha == BLUE_SNOW_V034_LF_SHA256 else 'result'))
+    if source_sha == BLUE_SNOW_V034_LF_SHA256:
+        change('''            LottieAnimation(
+                composition = player.composition,
+''', '''            LottieAnimation(
+                composition = player.composition,
+                result = requireNotNull(result),
+''')
     if reverse_blue_snow(text, recipe) != original:
         raise ValueError('BlueSnow full-source inverse mismatch')
     return text, recipe

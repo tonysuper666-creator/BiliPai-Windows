@@ -7,6 +7,7 @@ from v025_source_paths import canonical_source as _desktop_canonical_source
 from v029_comment_time import apply as apply_original_comment_time
 from v029_reply_renderer import rich_link_policy as advance_reply_link_policy
 from v032_comment_media import emit_shared as emit_comment_media, adapt as adapt_comment_media
+from v034_dynamic_reaction_ui import source as reaction_ui_source, sheet_body as reaction_sheet_body, BASE as REACTION_UI_BASE, PINS as REACTION_UI_PINS, COMMIT as REACTION_UI_COMMIT
 from pathlib import Path
 import hashlib, importlib.util, json, sys
 sys.dont_write_bytecode = True
@@ -41,7 +42,7 @@ def generate(repo, output, standalone=False):
     output.mkdir(parents=True, exist_ok=True); files=[]
     # Sole owner of the two whole fixed v032 shared Kotlin sources.
     files.extend(emit_comment_media(repo, output))
-    def emit(p,s,n): files.append(host.write(output,p,source_texts[p],s,n))
+    def emit(p,s,n,original=None): files.append(host.write(output,p,source_texts[p] if original is None else original,s,n))
     def sub(s,a,b): return host.substitute(s,a,b)
     for p in DIRECT:
         if standalone: emit(p,source_texts[p],'DesktopOriginal'+Path(p).name)
@@ -70,11 +71,12 @@ internal suspend fun verifyDesktopOriginalDynamicPublish(
     p=BASE+'feature/video/viewmodel/VideoCommentViewModel.kt';s=source_texts[p]
     body=appearance.declarations(parser,s,['CommentSortMode','SubReplyUiState'])
     emit(p,'package com.android.purebilibili.feature.video.viewmodel\nimport com.android.purebilibili.data.model.response.ReplyItem\nimport kotlinx.collections.immutable.*\n'+body,'DesktopOriginalDynamicCommentModels.kt')
-    p=COMP+'DynamicCommentSheet.kt';s=source_texts[p]
+    p=COMP+'DynamicCommentSheet.kt';s=reaction_ui_source(repo,'DynamicCommentSheet.kt')
     body=appearance.declarations(parser,s,['DynamicCommentSortControl','DynamicCommentSortControlSpec','resolveDynamicCommentSortControlSpec','DynamicInlineCommentHeader'])
     emit(p,'''package com.android.purebilibili.feature.dynamic.components
 import androidx.compose.runtime.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.Alignment
@@ -86,7 +88,13 @@ import com.android.purebilibili.core.ui.components.*
 import com.android.purebilibili.feature.dynamic.resolveDynamicCommentCountLabel
 import com.android.purebilibili.feature.video.viewmodel.CommentSortMode
 import top.yukonga.miuix.kmp.blur.Backdrop as MiuixBackdrop
-'''+body,'DesktopOriginalDynamicInlineCommentHeader.kt')
+'''+body,'DesktopOriginalDynamicInlineCommentHeader.kt',original=s)
+    p=REACTION_UI_BASE+'DynamicReactionSheet.kt';s=reaction_ui_source(repo,'DynamicReactionSheet.kt')
+    emit(p,reaction_sheet_body(s),'DesktopOriginalDynamicReactionSheet.kt',original=s)
+    for name, (digest, blob) in REACTION_UI_PINS.items():
+        source_identities.append(dict(path=REACTION_UI_BASE+name, requestedPath=COMP+name,
+            pinnedCommit=REACTION_UI_COMMIT, pinnedTag='v0.3.4-beta.2', pinnedGitBlob=blob,
+            currentGitBlob=blob, sha256LfUtf8=digest, matchesPinnedCommit=True))
     p=BASE+'feature/video/ui/components/ReplyComponents.kt';s=source_texts[p]
     s, time_selection = apply_original_comment_time(repo, p, s)
     s, link_selection = advance_reply_link_policy(repo, s)

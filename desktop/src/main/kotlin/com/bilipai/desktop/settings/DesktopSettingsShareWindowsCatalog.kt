@@ -72,7 +72,7 @@ internal object DesktopSettingsShareWindowsCatalog {
             "bottom_bar_blur_enabled", "top_bar_liquid_glass_enabled", "home_search_liquid_glass_enabled",
             "bottom_bar_liquid_glass_enabled", "android_native_liquid_glass_enabled", "liquid_glass_enabled",
             "pinch_to_change_grid_columns_enabled", "home_hero_carousel_enabled", "home_hero_carousel_autoplay_enabled",
-            "card_animation_enabled", "ui_entrance_animation_enabled", "card_transition_enabled",
+            "card_animation_enabled", "maid_lottie_animation_enabled", "ui_entrance_animation_enabled", "card_transition_enabled",
             "compact_video_stats_on_cover",
             "home_up_badges_visible", "home_refresh_tip_visible", "home_refresh_undo_visible",
             "home_up_avatars_visible", "home_publish_time_visible", "full_video_card_content_visible",

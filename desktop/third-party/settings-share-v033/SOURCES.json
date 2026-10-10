@@ -153,6 +153,7 @@
     "long_press_speed",
     "long_press_speed_hint_hidden",
     "long_press_speed_lock_enabled",
+    "maid_lottie_animation_enabled",
     "md3_color_source",
     "md3_custom_color_hex",
     "navigation_icon_cross_scale_enabled",
@@ -511,7 +512,11 @@
     "desktop/tools/extract-upstream-home-page.py",
     "desktop/tools/extract-upstream-home-settings-full-page.py",
     "desktop/tools/extract-upstream-full-navigation.py",
-    "desktop/tools/extract-upstream-danmaku-settings.py"
+    "desktop/tools/extract-upstream-danmaku-settings.py",
+    "desktop/src/main/kotlin/com/bilipai/desktop/brand/DesktopMaidMotionPreferences.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceSettings.kt",
+    "desktop/tools/extract-upstream-brand-motion.py"
   ],
   "desktopBaseCommit": "f32b5bda5af31a627b4e9d119e30f8d8f09aae91",
   "consumerFamilies": {
@@ -544,7 +549,7 @@
       "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootNavigationPreferences.kt"
     ]
   },
-  "windowsMappedDefinitionCount": 168,
+  "windowsMappedDefinitionCount": 169,
   "windowsUnmappedDefinitionCount": 48,
   "importedPreferenceDefinitions": [
     {
@@ -639,5 +644,51 @@
       "same-name/timestamp collisions append a suffix instead of silently replacing",
       "damaged records are skipped without swallowing cancellation"
     ]
+  },
+  "shareWhitelistSupplement": {
+    "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+    "upstreamTag": "v0.3.4-beta.2",
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "gitBlob": "0f101389d174d1b5c00f0287014f719f722d55c1",
+    "bytes": 407009,
+    "sha256": "baa8e063a938b363378e099327597237530584e88ceddcc65f7706bc687f0019",
+    "definitionCount": 217,
+    "baselineDefinitionCount": 216,
+    "completeDefinitionComparison": {
+      "added": [
+        {
+          "symbol": "KEY_MAID_LOTTIE_ANIMATION_ENABLED",
+          "key": "maid_lottie_animation_enabled",
+          "type": "Boolean",
+          "section": "APPEARANCE",
+          "defaultValue": true
+        }
+      ],
+      "removed": [],
+      "changed": []
+    },
+    "unchangedCopiedModelsAndPolicy": true,
+    "mappedForWindows": true,
+    "consumer": "desktop/src/main/kotlin/com/bilipai/desktop/brand/DesktopMaidMotionPreferences.kt",
+    "scope": "Whole v033 Models/Policy retained byte-identical to b209; only the new maid preference and its full original animation body are integrated from beta2. Other beta2 features require separate alignment."
+  },
+  "brandMotionPreference": {
+    "key": "maid_lottie_animation_enabled",
+    "defaultValue": true,
+    "animationSource": {
+      "path": "brand-motion/src/main/java/com/android/purebilibili/core/ui/BlueSnowMaidAnimation.kt",
+      "commit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+      "gitBlob": "12b7af152f2dbfe7f64c14059b58ee30c60276f2",
+      "bytes": 12046,
+      "sha256": "e4ff623fa5b859bdffe82f7723988cbdd2b0bd9f524acfd37d7bbe95a4a54171"
+    },
+    "originalSwitchSource": {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/screen/AnimationSettingsScreen.kt",
+      "gitBlob": "13a9279018c79b41af8c0a88394709f3413ae1a5",
+      "bytes": 53341,
+      "sha256": "7435553add86cb65a007a9ded30d1334e0f417afcf6ed1b6d208f7a66da9e63d"
+    },
+    "resourceCatalogCommit": "a4b77f894d0a2dd26c0b9fc144b8adb88ac05480",
+    "resourceCatalogEnumUnchanged": true
   }
 }

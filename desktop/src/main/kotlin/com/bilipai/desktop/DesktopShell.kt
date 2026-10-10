@@ -1860,7 +1860,17 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                             desktopOriginalOpenMessageLink(raw, commands, entryKey.toLegacyRoute())
                         }
                     }
+                    val reactionNavigation = DesktopDynamicReactionNavigation(
+                        isCurrent = { active && hostVisible && hostDisplayable && !isClosing() &&
+                            !activatingUpdate && messageRoutes.owns() && messageRoutes.currentKey === entryKey },
+                        revision = { messageRoutes.sourceNavigationRevision },
+                        openUser = { mid, current, admit ->
+                            if (mid > 0L) messageRoutes.pushFromSource(BiliPaiNavKey.Space(mid),
+                                { active && hostVisible && hostDisplayable && !isClosing() && !activatingUpdate &&
+                                    messageRoutes.currentKey === entryKey && current() }, admit)
+                        })
                     CompositionLocalProvider(LocalDesktopDetailForeground provides (active&&hostVisible&&hostDisplayable),
+                        LocalDesktopDynamicReactionNavigation provides reactionNavigation,
                         LocalDesktopOriginalMessageLinkNavigation provides messageLink) {
 
                 val section = desktopReadySection(entryKey)
@@ -2555,8 +2565,21 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                             com.bilipai.desktop.diagnostics.DesktopDiagnosticsBridge.record("INFO", "PlaybackSettings", "$name=$value")
                                         }, onBack = back)
                                 },
-                                backupContent = { target, dismiss -> BackupSettingsDialog(backup, dismiss, onExit, updateHold = backupUpdateHold,
-                                    initialSection = requireNotNull(resolveDesktopBackupEntrySection(target))) },
+                                backupContent = { target, dismiss ->
+                                    if (target == SettingsSearchTarget.SETTINGS_SHARE) {
+                                        val page = settingsNavigator.state.value.current as? DesktopSettingsPage.Detail
+                                        if (page != null && page.target == target) {
+                                            DesktopSettingsShareRootHost(messageRoutes, homeRootRef, entryKey, page,
+                                                settingsNavigator, globalPluginContext, services.imageLifetime, backupUpdateHold,
+                                                active = active && hostVisible && hostDisplayable && !isClosing() && !activatingUpdate,
+                                                completeBackupContent = { close ->
+                                                    BackupSettingsDialog(backup, close, onExit, updateHold = backupUpdateHold,
+                                                        initialSection = DesktopBackupSettingsSection.LOCAL_SETTINGS)
+                                                }, onDismiss = dismiss)
+                                        }
+                                    } else BackupSettingsDialog(backup, dismiss, onExit, updateHold = backupUpdateHold,
+                                        initialSection = requireNotNull(resolveDesktopBackupEntrySection(target)))
+                                },
                                 blockedListContent = { DesktopBlockedListScreen(community.blockedUpRepository, onLogin = { openLogin() }) },
                                 donateContent = { donateEntry, dismiss ->
                                     val capturedHandle = homeRootRef.get()

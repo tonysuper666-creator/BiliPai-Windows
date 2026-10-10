@@ -17,11 +17,12 @@ spec.loader.exec_module(brand)
 
 class BrandMotionProducerTest(unittest.TestCase):
     def clone_archive(self, root: Path) -> None:
-        source = REPO / brand.ARCHIVE
-        for rel, path in brand.files_under(source).items():
-            target = brand.wide(root / brand.ARCHIVE / rel)
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(path.read_bytes())
+        for archive in (brand.ARCHIVE, brand.UI_ARCHIVE):
+            source = REPO / archive
+            for rel, path in brand.files_under(source).items():
+                target = brand.wide(root / archive / rel)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(path.read_bytes())
 
     def test_actual_fresh_catalog_has_complete_original_inverse(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -78,14 +79,33 @@ class BrandMotionProducerTest(unittest.TestCase):
             brand.generate(REPO, output)
             proof = json.loads((output / brand.UI_PROOF_PATH).read_bytes())
             code = (output / brand.UI_PATH).read_text(encoding="utf-8")
-            original = brand.wide(REPO / brand.ARCHIVE / brand.BLUE_SNOW).read_bytes()
-            self.assertEqual(20, len(proof["countedAdaptations"]))
+            original = brand.checked_ui_input(REPO)
+            self.assertEqual(21, len(proof["countedAdaptations"]))
             self.assertEqual(original, brand.brand_ui.reverse_blue_snow(code, proof["countedAdaptations"]).encode("utf-8"))
             self.assertEqual(proof["originalSha256Bytes"], proof["fullSourceInverseSha256Bytes"])
             self.assertEqual(brand.sha256(code.encode("utf-8")), proof["generatedSha256Bytes"])
             changed = code.replace("LottieCompositionSpec.Animation(animation)", "LottieCompositionSpec.Animation(other)")
             with self.assertRaisesRegex(ValueError, "inverse mismatch"):
                 brand.brand_ui.reverse_blue_snow(changed, proof["countedAdaptations"])
+
+    def test_latest_ui_tamper_rejected_before_any_generation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            repo = Path(temp) / "repo"
+            self.clone_archive(repo)
+            path = brand.wide(repo / brand.UI_ARCHIVE / brand.BLUE_SNOW)
+            path.write_bytes(path.read_bytes() + b"\n")
+            with self.assertRaisesRegex(ValueError, "whole source identity mismatch"):
+                brand.generate(repo, Path(temp) / "generated")
+            self.assertFalse((Path(temp) / "generated").exists())
+
+    def test_latest_ui_unknown_file_rejected_before_any_generation(self):
+        with tempfile.TemporaryDirectory() as temp:
+            repo = Path(temp) / "repo"
+            self.clone_archive(repo)
+            brand.wide(repo / brand.UI_ARCHIVE / "foreign.txt").write_bytes(b"foreign")
+            with self.assertRaisesRegex(ValueError, "unknown fixed v034 BlueSnow UI input"):
+                brand.generate(repo, Path(temp) / "generated")
+            self.assertFalse((Path(temp) / "generated").exists())
 
     def test_json_tamper_rejected_before_any_generation(self):
         with tempfile.TemporaryDirectory() as temp:

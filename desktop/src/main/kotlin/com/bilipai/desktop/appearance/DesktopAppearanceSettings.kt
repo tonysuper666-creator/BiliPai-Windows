@@ -1,6 +1,8 @@
 package com.bilipai.desktop.appearance
 
 import com.bilipai.desktop.ui.LocalDesktopWindowsGlassMaterial
+import com.bilipai.desktop.ui.LocalDesktopOriginalPlayerSettingsContext
+import com.bilipai.desktop.brand.DesktopMaidMotionPreferences
 import com.bilipai.desktop.settings.desktopSettingsSearchFocusAnchor
 import com.android.purebilibili.feature.settings.SettingsSearchTarget
 import com.android.purebilibili.feature.settings.SettingsSearchFocusIds
@@ -41,6 +43,7 @@ fun DesktopAppearanceSettings(
     val settings by prefs.settings.collectAsState(prefs.initialSettings())
     val strings = LocalDesktopStrings.current
     val glassMaterial = LocalDesktopWindowsGlassMaterial.current
+    val settingsContext = LocalDesktopOriginalPlayerSettingsContext.current
     val scope = rememberCoroutineScope()
     var error by remember { mutableStateOf<String?>(null) }
     var busy by remember { mutableStateOf(true) }
@@ -149,6 +152,14 @@ fun DesktopAppearanceSettings(
             AppSwitchPreference(title = strings.desktop("入场动画", "入場動畫", "Entrance animations"),
                 checked = settings.uiEntranceAnimationEnabled, enabled = !busy,
                 onCheckedChange = { update { prefs.setUiEntranceAnimation(it) } })
+            AppSwitchPreference(
+                title = strings.desktop("女仆动画", "女僕動畫", "Maid animations"),
+                subtitle = strings.desktop("关闭后隐藏女仆动画和静态图", "關閉後隱藏女僕動畫和靜態圖", "Hide maid animations and still images when disabled"),
+                checked = settings.maidLottieAnimationEnabled, enabled = !busy,
+                onCheckedChange = { enabled ->
+                    update { DesktopMaidMotionPreferences.setMaidLottieAnimationEnabled(settingsContext, enabled) }
+                },
+            )
         }
         DesktopAppearanceCard(Modifier.fillMaxWidth()) {
             Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {

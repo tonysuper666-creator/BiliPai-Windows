@@ -28,7 +28,8 @@ import java.time.Instant
 /** Callable JSON compatibility backend for the actual Root/page preference context.
  * Original schema/theme migration/section preview are reused unchanged. This does not reset
  * the document, import deviceDebug or touch account data. The existing ZIP backup is separate.
- * UI mounting and migration of Android profile directories remain future work.
+ * The mounted settings editor and native selectors share this service. Android profile
+ * directories still require an explicit import; local records use the Root document.
  */
 class DesktopSettingsShareService(private val context: DesktopOriginalPlayerSettingsContext) {
     private val json = Json { prettyPrint = true; encodeDefaults = true; ignoreUnknownKeys = true }

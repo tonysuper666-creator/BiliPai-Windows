@@ -24,8 +24,9 @@ class DesktopMaidFrameClockPlayerTest {
         }
     }
 
-    private suspend fun loadedOwner(): DesktopMaidResourceOwner<DesktopMaidComposition> {
-        val owner = DesktopMaidResourceOwner<DesktopMaidComposition>()
+    private suspend fun loadedOwner(
+        owner: DesktopMaidResourceOwner<DesktopMaidComposition> = DesktopMaidResourceOwner(),
+    ): DesktopMaidResourceOwner<DesktopMaidComposition> {
         try {
             owner.load {
                 val animation = DesktopMaidAnimation.RETRY
@@ -69,6 +70,41 @@ class DesktopMaidFrameClockPlayerTest {
             withTimeout(2_000) { secondClock.frame(30_900_000_000L); requireNotNull(resumed).join() }
             assertEquals(1f, player.progress)
         } finally { first?.cancelAndJoin(); resumed?.cancelAndJoin(); owner.close() }
+    }
+
+    @Test fun reEnabledFinishedIdentityDrawsThroughNewLeaseWithoutRestartingFrameClock(): Unit = runBlocking {
+        val oldOwner = loadedOwner()
+        val newOwner = DesktopMaidResourceOwner<DesktopMaidComposition>()
+        val player = DesktopMaidAnimatable()
+        fun pixels(composition: DesktopMaidComposition): ByteArray = org.jetbrains.skia.Surface.makeRasterN32Premul(96, 96).use { target ->
+            composition.renderer.render(target.canvas, 96, 96, player.progress.toDouble())
+            target.makeImageSnapshot().use { image ->
+                requireNotNull(image.encodeToData(org.jetbrains.skia.EncodedImageFormat.PNG)).use { it.bytes }
+            }
+        }
+        try {
+            val oldComposition = assertNotNull(oldOwner.await())
+            player.snapTo(oldComposition, 1f)
+            val completedFrame = pixels(oldComposition)
+            oldOwner.close() // Original OFF removes composition and closes native resources.
+            assertTrue(oldComposition.renderer.resources().closed)
+            assertFailsWith<IllegalStateException> { pixels(oldComposition) }
+            val result = DesktopMaidCompositionResult(newOwner)
+            assertNull(desktopMaidCompositionForDisplay(player.composition, result))
+            loadedOwner(newOwner)
+            val newComposition = assertNotNull(newOwner.await())
+            val display = assertNotNull(desktopMaidCompositionForDisplay(player.composition, result))
+            assertSame(newComposition, display)
+            assertNotSame(oldComposition, display)
+            var rendered: ByteArray? = null
+            assertTrue(display.owner.useCurrent(display) { rendered = pixels(it) })
+            assertContentEquals(completedFrame, assertNotNull(rendered))
+            assertEquals(1f, player.progress)
+            assertSame(oldComposition, player.composition) // No new animate call or frame request.
+            assertFalse(newComposition.renderer.resources().closed)
+            newOwner.close()
+            assertNull(desktopMaidCompositionForDisplay(player.composition, result))
+        } finally { oldOwner.close(); newOwner.close() }
     }
 
     @Test fun realReducedMotionSnapHasNoClockWaitAndRetiredCompositionCannotRestart(): Unit = runBlocking {

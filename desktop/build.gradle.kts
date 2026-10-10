@@ -1071,6 +1071,8 @@ val extractUpstreamDynamicEditor by tasks.registering(Exec::class) {
     inputs.file("tools/v029_comment_time.py")
     inputs.file("tools/v029_reply_renderer.py")
     inputs.file("tools/v032_comment_media.py")
+    inputs.file("tools/v034_dynamic_reaction_ui.py")
+    inputs.files("third-party/dynamic-reaction-v034/DynamicCommentSheet.kt", "third-party/dynamic-reaction-v034/DynamicReactionSheet.kt")
     inputs.dir("upstream-slices/v032-comment-media")
     inputs.file(canonicalOriginalSource("core-data/src/main/java/com/android/purebilibili/core/util/FormatUtils.kt"))
     inputs.dir("upstream-slices/v029-comment-time")
@@ -3256,6 +3258,7 @@ val extractOriginalBrandMotion by tasks.registering(Exec::class) {
     inputs.file("tools/extract-upstream-brand-motion.py")
     inputs.file("tools/v029_brand_motion_ui.py")
     inputs.dir("upstream-slices/v029-brand-motion")
+    inputs.dir("upstream-slices/v034-brand-motion-ui")
     outputs.dir(layout.buildDirectory.dir("generated/original-brand-motion"))
 }
 // Test runtime uses the main classpath resources; no duplicate test/raw resource root.

@@ -35,6 +35,8 @@ internal class DesktopOriginalRootRouteAssembly(
     private val routeJob = SupervisorJob(root.entry.gate.scope.coroutineContext[Job])
     private val scope = CoroutineScope(root.entry.gate.scope.coroutineContext + routeJob)
     private val closed = AtomicBoolean(false)
+    private val navigationRevision = java.util.concurrent.atomic.AtomicLong(0L)
+    internal val sourceNavigationRevision: Long get() = navigationRevision.get()
     private val sessionKeys = DesktopOriginalRootSessionKeys()
     private val videoRequest = AtomicReference<Job?>(null)
     private val mainHostNavigation = AtomicReference<((BiliPaiNavKey) -> Boolean)?>(null)
@@ -89,6 +91,7 @@ internal class DesktopOriginalRootRouteAssembly(
         val destination = next.lastOrNull() ?: BiliPaiNavKey.MainHost
         val removed = resolveRemovedNavigation3SaveableStateKeys(stack.toList(), next)
         platform.beforeCommit(old, destination)
+        navigationRevision.incrementAndGet()
         if (old == BiliPaiNavKey.Login && destination != BiliPaiNavKey.Login)
             loginNavigation?.cancelLoginReturnForSource(root.capturedEpoch, root.entry.gate.mid)
         Snapshot.withMutableSnapshot { stack.clear(); stack.addAll(next) }

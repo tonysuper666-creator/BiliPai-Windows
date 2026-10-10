@@ -80,6 +80,9 @@ def detail_layout():
                     }
                 }
 '''+success[last:]
+    reaction_header = '                            onSortModeChange = interactionViewModel::setDynamicCommentSortMode,'
+    assert success.count(reaction_header) == 1, 'Original reaction header mount changed'
+    success=success.replace(reaction_header,reaction_header + '\n                            onShowReactions = onShowReactions?.let { show -> { show(state.item) } },',1)
     success=success.replace('interactionViewModel','session')
     success=success.replace('com.android.purebilibili.core.store.TokenManager.midCache','currentMid')
     success=success.replace('                        shouldLoadMoreDynamicDetailComments(',
@@ -161,6 +164,7 @@ import top.yukonga.miuix.kmp.blur.rememberLayerBackdrop
     onBack: () -> Unit,
     onRetry: () -> Unit,
     onUserClick: (Long) -> Unit,
+    onShowReactions: ((DynamicItem) -> Unit)? = null,
     card: @Composable (DynamicDetailImageLayout, onCommentClick: () -> Unit) -> Unit,
 ) {
     key(dynamicId, session) {

@@ -18,6 +18,7 @@ import com.android.purebilibili.core.theme.*
 import com.android.purebilibili.core.ui.AppThemeConfig
 import com.android.purebilibili.core.ui.ProvideAppThemeConfig
 import com.android.purebilibili.core.ui.LocalAppIconStyle
+import com.android.purebilibili.core.ui.LocalMaidLottieAnimationEnabled
 import com.android.purebilibili.core.ui.LocalAppListItemStyle
 import com.android.purebilibili.core.ui.components.AppButton
 import com.android.purebilibili.core.ui.components.AppCard
@@ -104,6 +105,7 @@ fun DesktopAppearanceTheme(
     }
     CompositionLocalProvider(
         LocalDesktopDarkTheme provides palette.dark,
+        LocalMaidLottieAnimationEnabled provides settings.maidLottieAnimationEnabled,
         LocalAppUiStyle provides settings.uiStyle,
         LocalAppIconStyle provides settings.appIconStyle,
         LocalAppListItemStyle provides settings.appListItemStyle,

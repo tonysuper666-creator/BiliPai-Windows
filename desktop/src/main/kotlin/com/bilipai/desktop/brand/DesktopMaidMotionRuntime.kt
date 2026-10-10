@@ -171,9 +171,20 @@ internal fun rememberDesktopMaidForeground(background: DesktopHomeWindowBackgrou
     return foreground
 }
 
+/** OFF disposes the native owner while the original animatable retains its last frame.
+ * Re-enabling draws that frame through the current result's owner, without restarting its clock.
+ * Read current during composition so publishing the new resource also redraws a finished identity.
+ */
+internal fun desktopMaidCompositionForDisplay(
+    retained: DesktopMaidComposition?, result: DesktopMaidCompositionResult?,
+): DesktopMaidComposition? = if (result == null) retained else result.owner.current
+
 @Composable
-internal fun DesktopMaidMotionCanvas(composition: DesktopMaidComposition?, progress: () -> Float, modifier: Modifier) {
-    Canvas(modifier) { composition?.let { current ->
+internal fun DesktopMaidMotionCanvas(composition: DesktopMaidComposition?, progress: () -> Float,
+    modifier: Modifier, result: DesktopMaidCompositionResult? = null,
+) {
+    val currentComposition = desktopMaidCompositionForDisplay(composition, result)
+    Canvas(modifier) { currentComposition?.let { current ->
         current.owner.useCurrent(current) { drawMaid(it.renderer, progress().toDouble(), false) }
     } }
 }
