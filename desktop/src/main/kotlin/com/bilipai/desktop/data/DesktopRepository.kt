@@ -357,8 +357,10 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
             client.newCall(request.newBuilder().tag(DesktopSessionEpoch::class.java,
                 DesktopSessionEpoch(authorization.receipt.accountEpoch, stillOwned, playbackAuthorization = authorization)).build())
         }
-    internal fun <T> ownedPlaybackService(type: Class<T>, authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean): T =
-        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(ownedPlaybackCallFactory(authorization, stillOwned))
+    internal fun <T> ownedPlaybackService(type: Class<T>, authorization: DesktopPlaybackAuthorization, stillOwned: () -> Boolean,
+        decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null): T =
+        Retrofit.Builder().baseUrl("https://api.bilibili.com/").callFactory(ownedPlaybackCallFactory(authorization, stillOwned)
+            .let { decorateCalls?.invoke(it) ?: it })
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
 
     // Original guest CookieJar identity generation expression, now a scalar on the SAME
@@ -410,8 +412,10 @@ class DesktopRepository internal constructor(private val sessions: DesktopSessio
 
     /** Services over the SAME Call.Factory/client/cookie state, used once by retained Home. */
     internal fun <T> ownedHomeService(type: Class<T>, baseUrl: String, expectedEpoch: Long,
-        stillOwned: () -> Boolean, guest: Boolean = false, transport: OkHttpClient = client): T = Retrofit.Builder().baseUrl(baseUrl)
-        .callFactory(ownedHomeCallFactory(expectedEpoch, stillOwned, guest, transport))
+        stillOwned: () -> Boolean, guest: Boolean = false, transport: OkHttpClient = client,
+        decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null): T = Retrofit.Builder().baseUrl(baseUrl)
+        .callFactory(ownedHomeCallFactory(expectedEpoch, stillOwned, guest, transport)
+            .let { decorateCalls?.invoke(it) ?: it })
         .addConverterFactory(json.asConverterFactory("application/json".toMediaType())).build().create(type)
 
     /** Original official QR authorization endpoints over the EXISTING validation transport.

@@ -7,6 +7,7 @@ import com.android.purebilibili.feature.dynamic.DynamicDeleteAction
 import com.android.purebilibili.feature.dynamic.components.*
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -94,6 +95,7 @@ internal class DesktopDynamicCardOperations(
     private val grpc = com.android.purebilibili.core.network.grpc.DesktopDynamicBiliGrpcClient(guardedClient(),
         { assertOwned(); repository.authCookies() }, { assertOwned(); repository.account.value?.mid },
         { assertOwned(); repository.accessTokenCredentials().first }, ::isOwned)
+    private val reactionApi = com.android.purebilibili.core.network.grpc.DesktopDynamicReactionApi(grpc::request)
     private val messageShare = com.android.purebilibili.data.repository.DesktopDynamicMessageShareRepository(grpc::request,
         { assertOwned(); repository.account.value?.mid })
     private val userInfo = com.android.purebilibili.feature.message.DesktopDynamicMessageUserInfoLoader(api, space,
@@ -125,6 +127,37 @@ internal class DesktopDynamicCardOperations(
     suspend fun submitVote(voteId: Long, options: List<Int>, dynamicId: String, anonymous: Boolean = false): Result<DynamicVoteInfo> = result {
         mutate { vote.submitVote(voteId, options, dynamicId, anonymous).getOrThrow() }
     }
+    /** One reaction list for the caller's actual mounted dynamic. Source admission
+     * must be the same retained page gate; only short state/HTTP publications run in it. */
+    fun createReactionList(
+        item: DynamicItem,
+        sourceOwned: () -> Boolean,
+        sourceAdmission: (() -> Unit) -> Boolean,
+    ): DesktopDynamicReactionListState {
+        assertOwned()
+        val accountOwner = checkNotNull(editorImageOwner) { "Dynamic account owner is unavailable" }
+        if (accountOwner.epoch != expectedEpoch || !sourceOwned())
+            throw CancellationException("Dynamic reaction source retired")
+        return DesktopDynamicReactionListState(item,
+            fetchPage = { target, cursor ->
+                currentCoroutineContext().ensureActive()
+                if (!sourceOwned()) throw CancellationException("Dynamic reaction source retired")
+                read { reactionApi.load(target, cursor) }.also {
+                    currentCoroutineContext().ensureActive()
+                    if (!sourceOwned()) throw CancellationException("Dynamic reaction source retired")
+                }
+            },
+            stillOwned = { isOwned() && sourceOwned() },
+            commitIfCurrent = { action ->
+                var applied = false
+                repository.dynamicCacheSessionGuard.withCurrentDynamicCacheOwner(accountOwner) {
+                    sourceAdmission {
+                        if (isOwned() && sourceOwned()) { action(); applied = true }
+                    }
+                } && applied
+            })
+    }
+
     suspend fun getShareTargets(size:Int=5) = result { read { messageShare.getShareTargets(size).getOrThrow() } }
     suspend fun getMessageSessions(size:Int=30) = result { read { messageSessions.getSessions(size=size).getOrThrow() } }
     suspend fun fetchMessageUserInfo(mid:Long) = read { userInfo.fetch(mid) }

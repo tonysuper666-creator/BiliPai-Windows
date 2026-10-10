@@ -77,7 +77,9 @@ class DesktopOriginalDanmakuSameSendTest {
         val vm=VideoPlaybackViewModel(DesktopOriginalVideoPlaybackOwnerEnvironment(scope,settings,invocations,
             repository,unused(),actions,useCase,interaction,unused(),unused(),unused(),unused(),unused(),
             unused(),unused(),{null},unused(),unused(),unused(),danmaku,MutableStateFlow(false),::current,::commit,
-            DesktopTodayWatchFeedbackWriteBinding(context,::current,::commit)))
+            DesktopTodayWatchFeedbackWriteBinding(context,::current,::commit),
+            captureNativePublication = { null },
+            admitNativePublication = { _, _ -> error("No related publication in same-send fixture") }))
         val session=VideoPlaybackViewModel::class.java.getDeclaredField("playbackSessionStore").apply {isAccessible=true}
             .get(vm) as PlaybackSessionStore
         init {

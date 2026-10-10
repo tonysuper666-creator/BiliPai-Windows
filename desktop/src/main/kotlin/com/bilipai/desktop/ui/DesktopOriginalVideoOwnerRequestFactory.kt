@@ -41,7 +41,8 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
      * Captures the ACTUAL calling coroutine Job and original playback state. */
     suspend fun captureBinding(state: PlaybackSessionState,
         stillSourceOwned: (() -> Boolean)? = null,
-        sourceAdmission: ((() -> Unit) -> Boolean)? = null): DesktopOriginalVideoRepositoryBinding {
+        sourceAdmission: ((() -> Unit) -> Boolean)? = null,
+        decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null): DesktopOriginalVideoRepositoryBinding {
         currentCoroutineContext().ensureActive()
         fun current() = stillEntryOwned() && (stillSourceOwned?.invoke() != false)
         fun commit(action: () -> Unit): Boolean {
@@ -59,7 +60,7 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
             capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,
             isMobileData, token::available, token::refresh,
-            { receipt -> onPlaybackAuthorizationRetired(receipt, state) })
+            { receipt -> onPlaybackAuthorizationRetired(receipt, state) }, decorateCalls)
     }
 
     suspend fun capture(state: PlaybackSessionState,
@@ -69,7 +70,14 @@ internal class DesktopOriginalVideoOwnerRequestFactory(
         val requestJob = checkNotNull(currentCoroutineContext()[Job])
         val pageTransition = currentCoroutineContext()[DesktopOriginalVideoPageTransitionIntent]
             ?.capture(state, requestJob)
-        val binding = DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,
+        val relatedSource = currentCoroutineContext()[DesktopOriginalVideoRelatedRequestSource]
+        val binding = if (relatedSource != null) captureBinding(state,
+            stillSourceOwned = { relatedSource.stillOwned() && native.isCurrent(relatedSource.expected) },
+            sourceAdmission = { action -> native.admitPlaybackDispatch(relatedSource.expected) {
+                if (!relatedSource.stillOwned()) throw CancellationException("Original related source retired")
+                action()
+            } }, decorateCalls = { delegate -> relatedSource.calls(delegate, native, requestJob) })
+        else DesktopOriginalVideoRepositoryBinding.capture(repository, capturedEpoch,
             entryJob, stillEntryOwned, commitIfEntryCurrent, preferences(),
             state.currentRequest?.videoCodecOverride, state.blockedVideoCodecs,
             capabilities.isAv1Supported(), auto1080pEnabled, directedTrafficEnabled,

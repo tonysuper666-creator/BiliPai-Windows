@@ -113,7 +113,9 @@ class DesktopWindowsVideoFollowGroupViewModelTest {
             scope, settings, invocations, repository, unused(), actions, useCase, interaction,
             unused(), unused(), unused(), plugins, unused(), unused(), unused(), { null },
             unused(), unused(), unused(), unused(), MutableStateFlow(false), ::entryCurrent, ::commit,
-            DesktopTodayWatchFeedbackWriteBinding(context, ::entryCurrent, ::commit)))
+            DesktopTodayWatchFeedbackWriteBinding(context, ::entryCurrent, ::commit),
+            captureNativePublication = { accepted.takeIf { entryCurrent() } },
+            admitNativePublication = ::admit))
         fun open(mid: Long = 33): DesktopWindowsVideoFollowGroupRequest {
             vm.showFollowGroupDialogForUser(mid)
             return assertNotNull(vm.desktopFollowGroupRequest.value)

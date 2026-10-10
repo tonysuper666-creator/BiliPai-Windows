@@ -225,6 +225,8 @@ internal class DesktopOriginalVideoPlaybackOwnerEnvironment(
     private val isCurrent:()->Boolean,
     private val admission:((()->Unit)->Boolean),
     val todayWatchFeedback: DesktopTodayWatchFeedbackWriteBinding,
+    val captureNativePublication: () -> DesktopOriginalVideoAcceptedPublication?,
+    val admitNativePublication: (DesktopOriginalVideoAcceptedPublication, () -> Unit) -> Boolean,
 ) {
     fun assertCurrent() {
         if(!isCurrent() || !scope.isActive) throw CancellationException("Original video owner retired")

@@ -1263,6 +1263,8 @@ def generate(repo,output,standalone=False):
   post_same_send_before_sha=sha(body);post_same_send_edits=[]
   body=paused_original_cdn_resume_delta(recipe['output'],body,post_same_send_edits)
   body=interactive_choice_source_lifetime_delta(recipe['output'],body,post_same_send_edits)
+  from v034_related import apply_and_record as apply_related
+  body,relatedProof=apply_related(recipe['output'],body,output)
   emitted=standalone or recipe['mode']!='direct'
   if emitted:
    target=wide(Path(output)/recipe['output']);target.parent.mkdir(parents=True,exist_ok=True)

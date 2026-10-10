@@ -16,6 +16,7 @@ internal interface DesktopOriginalVideoLoadRepository {
     suspend fun getInitialPlayUrlData(bvid:String,cid:Long,targetQuality:Int,audioLang:String?):PlayUrlData?
     suspend fun getVideoDetails(bvid:String,aid:Long,requestedCid:Long,targetQuality:Int?,audioLang:String?):Result<Pair<ViewInfo,PlayUrlData>>
     suspend fun getRelatedVideos(bvid:String):List<RelatedVideo>
+    suspend fun getRelatedVideosResult(bvid:String):Result<List<RelatedVideo>>
     suspend fun getPlayUrlData(bvid:String,cid:Long,qn:Int,audioLang:String? = null):PlayUrlData?
     suspend fun getPlaybackNavInfo():Result<NavData>
     fun isPlaybackLoggedIn():Boolean

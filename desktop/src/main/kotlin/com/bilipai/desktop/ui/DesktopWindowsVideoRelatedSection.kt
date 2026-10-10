@@ -1,11 +1,12 @@
 package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import com.android.purebilibili.core.ui.components.AppText
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -66,6 +67,7 @@ import com.android.purebilibili.navigation3.BiliPaiNavKey
         val visibleRelatedVideos = remember(success.related, hiddenRelatedBvids) {
             filterRelatedVideosByHiddenBvids(success.related, hiddenRelatedBvids)
         }
+        val relatedLoadState = success.relatedLoadState
         val relatedRows = remember(visibleRelatedVideos) {
             chunkRelatedVideosForHomeStyleGrid(visibleRelatedVideos)
         }
@@ -78,8 +80,19 @@ import com.android.purebilibili.navigation3.BiliPaiNavKey
                 val cardLayout = rememberRelatedVideoCardLayout()
                 LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(vertical = 8.dp)) {
                     item { RelatedVideosHeader() }
-                    if (relatedRows.isEmpty()) item {
-                        Text("暂无相关推荐", style = MaterialTheme.typography.bodyMedium)
+                    if (relatedLoadState == VideoPlaybackUiState.RelatedLoadState.LOADING) {
+                        item(key = "video_related_loading") {
+                            Column {
+                                repeat(3) { com.android.purebilibili.core.ui.skeleton.MediaListRowSkeleton() }
+                            }
+                        }
+                    } else if (visibleRelatedVideos.isEmpty()) {
+                        item(key = "video_related_empty") {
+                            AppText(
+                                if (relatedLoadState == VideoPlaybackUiState.RelatedLoadState.FAILED) "相关推荐加载失败" else "暂无相关推荐",
+                                modifier = Modifier.padding(16.dp),
+                            )
+                        }
                     }
                     itemsIndexed(relatedRows, key = { rowIndex, row ->
                         val first = row.firstOrNull()

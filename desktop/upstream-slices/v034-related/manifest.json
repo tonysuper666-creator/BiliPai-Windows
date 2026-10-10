@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "upstreamCommit": "b2091b1de636e499df80af7e700796b4f52b7f92",
+  "release": "v0.3.4-beta.2",
+  "partial": true,
+  "sources": [
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/usecase/VideoPlaybackUseCase.kt",
+      "file": "VideoPlaybackUseCase.kt",
+      "bytes": 59940,
+      "sha256": "3159cceaad617b4c1bc2c868ff705c955a081a5a1d30df25a6753a44aa851f62",
+      "gitBlob": "ec33c01835292ad3218db717aff1c743bde7028b"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "file": "VideoPlaybackViewModel.kt",
+      "bytes": 402972,
+      "sha256": "2548e7341d8daa03cdc292bd62d9ed72b7487db50b0d670a393c601899c18ef1",
+      "gitBlob": "1aacf1093cdfb002a682d323a8be5570f0a94b4e"
+    },
+    {
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/data/repository/VideoCatalogRepository.kt",
+      "file": "VideoCatalogRepository.kt",
+      "bytes": 11755,
+      "sha256": "cc4b65d442eebcd8b557bf632c0ecfcaed02f0313c31e21baf2258108433766c",
+      "gitBlob": "e7b0c0d45266e1c399e910ef3d9d49ddedaf29b2"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/data/repository/VideoRepository.kt",
+      "file": "VideoRepository.kt",
+      "bytes": 89640,
+      "sha256": "6499248f927141e132a8c51e4177fc6247d6f3c1dc7fe48433b2bb1cab1065e6",
+      "gitBlob": "09638d20c360e8895106f198c44a3f3654f17dd1"
+    },
+    {
+      "originalPath": "core-data/src/main/java/com/android/purebilibili/data/model/response/RelatedResponse.kt",
+      "file": "RelatedResponse.kt",
+      "bytes": 993,
+      "sha256": "c0024333b0fbf888673c1100c1c22c166bde9129ab4c69f1276d07511268ead1",
+      "gitBlob": "4ae648eb3d9c44acd09f4f5416dcf3e71489a414"
+    },
+    {
+      "originalPath": "app/src/main/java/com/android/purebilibili/feature/video/screen/VideoContentSection.kt",
+      "file": "VideoContentSection.kt",
+      "bytes": 100891,
+      "sha256": "909358253a0d8bc4da46e7ede8c4499041cb5aff77c1e8f3ae220aa566300c06",
+      "gitBlob": "2d227d7bc385fcbe4dc83a43ebcc209f1106ca9c"
+    }
+  ],
+  "outputs": {
+    "com/android/purebilibili/feature/video/viewmodel/DesktopOriginalVideoPlaybackUiState.kt": {
+      "beforeSha256LF": "c797fb30a1754ca135d6dde8a80afcfc8abf9e2268cbf83b9c3822295e21f204",
+      "afterSha256LF": "6b459f8c2780faa633593405933fc67b818db19ad31c40a66621ed44bb77ec96",
+      "edits": [
+        {
+          "before": "sealed class VideoPlaybackUiState {",
+          "after": "sealed class VideoPlaybackUiState {\n    enum class RelatedLoadState { LOADING, READY, FAILED }"
+        },
+        {
+          "before": "        val related: List<RelatedVideo> = emptyList(),",
+          "after": "        val related: List<RelatedVideo> = emptyList(),\n        val relatedLoadState: RelatedLoadState = RelatedLoadState.READY,"
+        }
+      ]
+    },
+    "com/android/purebilibili/feature/video/usecase/DesktopOriginalVideoPlaybackUseCase.kt": {
+      "beforeSha256LF": "9649ebc321976d36ce59f07d3b9246209d6e3da482ff7b433a9317b2a3fdd4cc",
+      "afterSha256LF": "8b89f74aecfc1a9be313d2703d0f3229a8ff68aba9c42ad7cdebcd74ffd534d4",
+      "edits": [
+        {
+          "before": "                val fetchRelatedAfterDetail = shouldFetchRelatedVideosAfterVideoDetail(bvid)\n                val relatedDeferred: kotlinx.coroutines.Deferred<List<RelatedVideo>>? = if (fetchRelatedAfterDetail) {\n                    null\n                } else {\n                    async {\n                        val relatedBvid = resolveRelatedVideosRequestBvid(\n                            requestBvid = bvid,\n                            canonicalBvid = \"\"\n                        )\n                        if (relatedBvid.isNotEmpty()) {\n                            VideoRepository.getRelatedVideos(relatedBvid)\n                        } else {\n                            emptyList()\n                        }\n                    }\n                }\n",
+          "after": "                // 起播关键路径只等待 playinfo/播放地址，不等待相关推荐。\n                // 相关推荐由 ViewModel 在播放器 prepare 后异步拉取。\n"
+        },
+        {
+          "before": "                val relatedVideos = relatedDeferred?.await() ?: mergedDetailResult.fold(\n                    onSuccess = { (info, _) ->\n                        val relatedBvid = resolveRelatedVideosRequestBvid(\n                            requestBvid = bvid,\n                            canonicalBvid = info.bvid\n                        )\n                        if (relatedBvid.isNotEmpty()) {\n                            VideoRepository.getRelatedVideos(relatedBvid)\n                        } else {\n                            emptyList()\n                        }\n                    },\n                    onFailure = { emptyList() }\n                )",
+          "after": "                val relatedVideos = emptyList<RelatedVideo>()"
+        }
+      ]
+    },
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoLoadProtocol.kt": {
+      "beforeSha256LF": "36712f6de2773ba5e5804ebfe7966cd9fa4d744829fdaf3dd2c86b21fbdf5d0d",
+      "afterSha256LF": "34257885a47a71a870efde0265ba8a4b71806423e76153f538591e410c5d06e2",
+      "edits": [
+        {
+          "before": "    override suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> = VideoCatalogRepository.getRelatedVideos(bvid)",
+          "after": "    override suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> = VideoCatalogRepository.getRelatedVideos(bvid)\n\n    override suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> =\n        VideoCatalogRepository.getRelatedVideosResult(bvid)"
+        }
+      ]
+    },
+    "com/android/purebilibili/data/repository/DesktopOriginalVideoCatalogRepository.kt": {
+      "beforeSha256LF": "efe520db0919c2d4ebdc7fa3b020f0db62530d47c6bdf7cf103d51ce91f027ea",
+      "afterSha256LF": "e3d14509dc91c7b8408f238aa612d6be0e7cabb42b3f6d3c934f4ffefb9c6de4",
+      "edits": [
+        {
+          "before": "    suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> = withContext(Dispatchers.IO) {\n        currentCoroutineContext().ensureActive(); assertOwned()\n        try { api.getRelatedVideos(bvid).data ?: emptyList() } catch (e: Exception) {\n            if (e is CancellationException) throw e\n            currentCoroutineContext().ensureActive(); assertOwned()\n emptyList() }\n    }.also { currentCoroutineContext().ensureActive(); assertOwned() }\n",
+          "after": "    suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> =\n        getRelatedVideosResult(bvid).getOrDefault(emptyList())\n\n    suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> = withContext(Dispatchers.IO) {\n        currentCoroutineContext().ensureActive(); assertOwned()\n        try {\n            val response = api.getRelatedVideos(bvid)\n            currentCoroutineContext().ensureActive(); assertOwned()\n            if (response.code != 0 || response.data == null) {\n                Result.failure(IllegalStateException(\"相关推荐加载失败 (${response.code})\"))\n            } else {\n                Result.success(requireNotNull(response.data))\n            }\n        } catch (e: CancellationException) {\n            throw e\n        } catch (e: Exception) {\n            currentCoroutineContext().ensureActive(); assertOwned()\n            Result.failure(e)\n        }\n    }.also { currentCoroutineContext().ensureActive(); assertOwned() }\n"
+        }
+      ]
+    },
+    "com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt": {
+      "beforeSha256LF": "78b7689109e0a1c144160a21849db52f7b84e29bcd04d19d4cf84c9c8567429d",
+      "afterSha256LF": "a0e30b1f98c05cfb0e4239949f694b5ca14e10ec00bd8dbfa12863a24f403fd7",
+      "edits": [
+        {
+          "before": "    private var activeLoadJob: Job? = null\n",
+          "after": "    private var activeLoadJob: Job? = null\n    private var desktopRelatedLoadJob: Job? = null\n    private var desktopRelatedLoadSource: com.bilipai.desktop.ui.DesktopOriginalVideoAcceptedPublication? = null\n    private var desktopRelatedLoadBvid: String = \"\"\n    private var desktopRelatedLoadCid: Long = 0L\n    private var desktopRelatedLoadToken: Long = Long.MIN_VALUE\n    private var desktopRelatedFailedAttempts: Int = 0\n"
+        },
+        {
+          "before": "        override fun onTracksChanged(tracks: List<com.bilipai.desktop.player.PlayerTrack>) {",
+          "after": "        override fun onSourceTransitionAfterAdmission(\n            sourceVersion: Long, source: com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot,\n        ) {\n            if (hasDesktopBangumiPlayback()) return\n            val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n            if (current.relatedLoadState != VideoPlaybackUiState.RelatedLoadState.LOADING) return\n            val expected = environment.captureNativePublication() ?: return\n            if (expected.sourceVersion == sourceVersion && expected.nativeSource.source == source.source)\n                loadRelatedVideosAfterPlayback(current.info.bvid, currentLoadRequestToken, expected)\n        }\n\n        override fun onTracksChanged(tracks: List<com.bilipai.desktop.player.PlayerTrack>) {"
+        },
+        {
+          "before": "                            related = result.related,\n                            currentQuality = result.quality,",
+          "after": "                            related = result.related,\n                            relatedLoadState = VideoPlaybackUiState.RelatedLoadState.LOADING,\n                            currentQuality = result.quality,"
+        },
+        {
+          "before": "                        updatePlaylist(result.info, result.related)\n",
+          "after": "                        updatePlaylist(result.info, (_uiState.value as? VideoPlaybackUiState.Success)\n                            ?.takeIf { it.info.bvid == result.info.bvid && it.info.cid == result.info.cid &&\n                                currentLoadRequestToken == requestToken }?.related ?: result.related)\n                        loadRelatedVideosAfterPlayback(result.info.bvid, requestToken)\n"
+        },
+        {
+          "before": "    private fun scheduleDeferredPostLoadWork(\n",
+          "after": "    /** Complete beta2 deferred-related flow: 8s x 2, 500ms retry,\n     * Result failure versus empty success and related-only state/playlist commit.\n     * The actual native source/account publication admits short mutations; Jobs,\n     * HTTP and the original PlayUrl preloader always start outside its monitors. */\n    private fun loadRelatedVideosAfterPlayback(\n        bvid: String, requestToken: Long,\n        expectedSource: com.bilipai.desktop.ui.DesktopOriginalVideoAcceptedPublication? = null,\n        restart: Boolean = false,\n    ) {\n        if (hasDesktopBangumiPlayback()) return\n        val current = _uiState.value as? VideoPlaybackUiState.Success ?: return\n        if (current.relatedLoadState != VideoPlaybackUiState.RelatedLoadState.LOADING) return\n        val original = playbackSessionState\n        val request = original.currentRequest ?: return\n        val expected = expectedSource ?: environment.captureNativePublication() ?: return\n        val cid = current.info.cid\n        fun subjectCurrent(): Boolean {\n            val state = playbackSessionState\n            val latest = _uiState.value as? VideoPlaybackUiState.Success ?: return false\n            return !hasDesktopBangumiPlayback() && state.currentRequest === request &&\n                state.currentLoadRequestToken == requestToken && currentLoadRequestToken == requestToken &&\n                state.currentBvid == bvid && state.currentCid == cid &&\n                latest.info.bvid == bvid && latest.info.cid == cid &&\n                expected.request.bvid == bvid && expected.request.cid == cid &&\n                environment.captureNativePublication() === expected\n        }\n        if (!subjectCurrent()) return\n        val source = com.bilipai.desktop.ui.DesktopOriginalVideoRelatedRequestSource(expected, ::subjectCurrent)\n        lateinit var operation: Job\n        fun operationCurrent(): Boolean = subjectCurrent() && desktopRelatedLoadJob === operation &&\n            !operation.isCancelled && !operation.isCompleted\n        operation = environment.invocations.launch(context = source,\n            start = kotlinx.coroutines.CoroutineStart.LAZY,\n            desktopFinally = {\n                environment.commit {\n                    if (desktopRelatedLoadJob === operation) desktopRelatedLoadJob = null\n                }\n            }) {\n            repeat(2) {\n                kotlinx.coroutines.currentCoroutineContext().ensureActive()\n                if (!operationCurrent()) throw CancellationException(\"Deferred related source retired\")\n                val result = kotlinx.coroutines.withTimeoutOrNull(8_000L) {\n                    VideoRepository.getRelatedVideosResult(bvid)\n                } ?: Result.failure(IllegalStateException(\"相关推荐请求超时\"))\n                (result.exceptionOrNull() as? CancellationException)?.let { throw it }\n                kotlinx.coroutines.currentCoroutineContext().ensureActive()\n                var retry = false\n                var applied = false\n                var preload = emptyList<RelatedVideo>()\n                val admitted = environment.admitNativePublication(expected) {\n                    if (operationCurrent()) {\n                        // Only completed, still-admitted failure/timeout consumes the\n                        // original two-request budget. Source cancellation does not.\n                        if (result.isFailure) desktopRelatedFailedAttempts += 1\n                        retry = result.isFailure && desktopRelatedFailedAttempts < 2\n                        if (!retry) {\n                            val related = result.getOrDefault(emptyList())\n                            val loadState = if (result.isSuccess) VideoPlaybackUiState.RelatedLoadState.READY\n                                else VideoPlaybackUiState.RelatedLoadState.FAILED\n                            _uiState.update { state ->\n                                if (state is VideoPlaybackUiState.Success && operationCurrent())\n                                    state.copy(related = related, relatedLoadState = loadState) else state\n                            }\n                            val latest = _uiState.value as? VideoPlaybackUiState.Success\n                            if (result.isSuccess && latest != null && operationCurrent())\n                                updatePlaylist(latest.info, related, desktopPostPreload = { preload = it })\n                        }\n                        applied = true\n                    }\n                }\n                if (!admitted || !applied) throw CancellationException(\"Deferred related result retired\")\n                if (retry) {\n                    delay(500L)\n                    return@repeat\n                }\n                if (preload.isNotEmpty()) preloadRelatedPlayUrls(preload, source)\n                return@launch\n            }\n        }\n        var previous: Job? = null\n        var linked = false\n        environment.admitNativePublication(expected) {\n            val latest = _uiState.value as? VideoPlaybackUiState.Success\n            val existing = desktopRelatedLoadJob\n            if (subjectCurrent() && latest?.relatedLoadState == VideoPlaybackUiState.RelatedLoadState.LOADING &&\n                (restart || existing == null || existing.isCancelled || existing.isCompleted ||\n                    desktopRelatedLoadSource !== expected)) {\n                if (restart || desktopRelatedLoadBvid != bvid || desktopRelatedLoadCid != cid ||\n                    desktopRelatedLoadToken != requestToken) desktopRelatedFailedAttempts = 0\n                desktopRelatedLoadBvid = bvid\n                desktopRelatedLoadCid = cid\n                desktopRelatedLoadToken = requestToken\n                desktopRelatedLoadSource = expected\n                previous = existing\n                desktopRelatedLoadJob = operation\n                linked = true\n            }\n        }\n        // Cancellation can run request/transport cleanup. Never do it while the\n        // Store/entry/native monitor is held, and never reject LAZY by isActive.\n        if (linked) { previous?.cancel(); operation.start() } else operation.cancel()\n    }\n\n    private fun scheduleDeferredPostLoadWork(\n"
+        },
+        {
+          "before": "    private fun updatePlaylist(currentInfo: com.android.purebilibili.data.model.response.ViewInfo, related: List<com.android.purebilibili.data.model.response.RelatedVideo>) {",
+          "after": "    private fun updatePlaylist(currentInfo: com.android.purebilibili.data.model.response.ViewInfo, related: List<com.android.purebilibili.data.model.response.RelatedVideo>,\n        desktopPostPreload: ((List<RelatedVideo>) -> Unit)? = null) {"
+        },
+        {
+          "before": "            preloadRelatedPlayUrls(related.take(preloadCount))\n",
+          "after": "            val batch = related.take(preloadCount)\n            if (desktopPostPreload == null) preloadRelatedPlayUrls(batch) else desktopPostPreload(batch)\n"
+        },
+        {
+          "before": "    private fun preloadRelatedPlayUrls(videos: List<com.android.purebilibili.data.model.response.RelatedVideo>) {",
+          "after": "    private fun preloadRelatedPlayUrls(videos: List<com.android.purebilibili.data.model.response.RelatedVideo>,\n        desktopRelatedSource: com.bilipai.desktop.ui.DesktopOriginalVideoRelatedRequestSource? = null) {"
+        },
+        {
+          "before": "        environment.invocations.launch(kotlinx.coroutines.Dispatchers.IO) {\n            for (video in videos) {",
+          "after": "        environment.invocations.launch(kotlinx.coroutines.Dispatchers.IO +\n            (desktopRelatedSource ?: kotlin.coroutines.EmptyCoroutineContext)) {\n            for (video in videos) {"
+        },
+        {
+          "before": "        publishSubjectSnapshot(restoredState)\n        restoreSponsorPlaybackState(restoredState)\n",
+          "after": "        publishSubjectSnapshot(restoredState)\n        restoreSponsorPlaybackState(restoredState)\n        if (restoredState.relatedLoadState == VideoPlaybackUiState.RelatedLoadState.LOADING)\n            loadRelatedVideosAfterPlayback(restoredState.info.bvid, currentLoadRequestToken, restart = true)\n"
+        },
+        {
+          "before": "            related = result.related,\n            currentQuality = result.quality,",
+          "after": "            related = result.related,\n            relatedLoadState = if (bangumiPresenter == null) VideoPlaybackUiState.RelatedLoadState.LOADING\n                else VideoPlaybackUiState.RelatedLoadState.READY,\n            currentQuality = result.quality,"
+        },
+        {
+          "before": "        if (!publishCurrent { updatePlaylist(result.info, result.related) }) return false\n",
+          "after": "        if (!publishCurrent { updatePlaylist(result.info, (_uiState.value as? VideoPlaybackUiState.Success)\n                ?.related ?: result.related) }) return false\n        loadRelatedVideosAfterPlayback(result.info.bvid, requestToken)\n"
+        },
+        {
+          "before": "        activeLoadJob?.cancel()\n        playerInfoJob?.cancel()\n",
+          "after": "        activeLoadJob?.cancel()\n        desktopRelatedLoadJob?.cancel()\n        playerInfoJob?.cancel()\n"
+        },
+        {
+          "before": "                } catch (e: Exception) {\n                    // 预加载失败不影响正常播放，静默忽略",
+          "after": "                } catch (e: Exception) {\n                    if (desktopRelatedSource != null && e is CancellationException) throw e\n                    // 预加载失败不影响正常播放，静默忽略"
+        }
+      ]
+    }
+  },
+  "originalBlocks": {
+    "relatedLoader": "    private fun loadRelatedVideosAfterPlayback(\n        bvid: String,\n        requestToken: Long\n    ) {\n        viewModelScope.launch {\n            repeat(2) { attempt ->\n                val current = _uiState.value as? VideoPlaybackUiState.Success ?: return@launch\n                if (currentLoadRequestToken != requestToken ||\n                    current.info.bvid != bvid\n                ) return@launch\n                val result = kotlinx.coroutines.withTimeoutOrNull(8_000L) {\n                    VideoRepository.getRelatedVideosResult(bvid)\n                } ?: Result.failure(IllegalStateException(\"相关推荐请求超时\"))\n                if (result.isFailure && attempt == 0) {\n                    delay(500L)\n                    return@repeat\n                }\n                val related = result.getOrDefault(emptyList())\n                val loadState = if (result.isSuccess) VideoPlaybackUiState.RelatedLoadState.READY\n                    else VideoPlaybackUiState.RelatedLoadState.FAILED\n                _uiState.update { state ->\n                    if (state is VideoPlaybackUiState.Success &&\n                        state.info.bvid == bvid &&\n                        currentLoadRequestToken == requestToken\n                    ) state.copy(related = related, relatedLoadState = loadState) else state\n                }\n                val latest = _uiState.value as? VideoPlaybackUiState.Success ?: return@launch\n                if (latest.info.bvid == bvid &&\n                    currentLoadRequestToken == requestToken && result.isSuccess\n                ) updatePlaylist(latest.info, related)\n                return@launch\n            }\n        }\n    }\n\n",
+    "relatedCatalog": "    suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> =\n        getRelatedVideosResult(bvid).getOrDefault(emptyList())\n\n    suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> = withContext(Dispatchers.IO) {\n        try {\n            val response = api.getRelatedVideos(bvid)\n            if (response.code != 0 || response.data == null) {\n                Result.failure(IllegalStateException(\"相关推荐加载失败 (${response.code})\"))\n            } else {\n                Result.success(requireNotNull(response.data))\n            }\n        } catch (e: CancellationException) {\n            throw e\n        } catch (e: Exception) {\n            Result.failure(e)\n        }\n    }\n",
+    "relatedUi": "if (relatedLoadState == VideoPlaybackUiState.RelatedLoadState.LOADING) {\n            item(key = \"video_related_loading\") {\n                Column {\n                    repeat(3) { com.android.purebilibili.core.ui.skeleton.MediaListRowSkeleton() }\n                }\n            }\n        } else if (visibleRelatedVideos.isEmpty()) {\n            item(key = \"video_related_empty\") {\n                AppText(\n                    if (relatedLoadState == VideoPlaybackUiState.RelatedLoadState.FAILED) \"相关推荐加载失败\" else \"暂无相关推荐\",\n                    modifier = Modifier.padding(16.dp),\n                )\n            }\n        }"
+  }
+}

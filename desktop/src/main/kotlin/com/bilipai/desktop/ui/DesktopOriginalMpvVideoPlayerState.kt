@@ -7,6 +7,7 @@ import com.bilipai.desktop.player.MpvPlayer
 import com.bilipai.desktop.player.PlayerState
 import com.bilipai.desktop.player.PlayerTrack
 import com.bilipai.desktop.player.PlayerFailure
+import com.bilipai.desktop.player.OwnedPlaybackSourceSnapshot
 import com.bilipai.desktop.player.platform.DesktopMedia3ColorTransfers
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -114,6 +115,7 @@ class DesktopOriginalMpvSectionControl internal constructor(
             if (registrations.containsKey(listener)) return
             val job = eventScope.launch(start = kotlinx.coroutines.CoroutineStart.LAZY) {
                 var previousVersion: Long? = null
+                var previousSource: OwnedPlaybackSourceSnapshot? = null
                 var previous: PlayerState? = null
                 combine(state, sourceVersions) { state, version -> state to version }.collect { (_, version) ->
                     val callbackContext = currentCoroutineContext()
@@ -121,13 +123,15 @@ class DesktopOriginalMpvSectionControl internal constructor(
                     callbackContext.ensureActive()
                     if (version == null || !entryOwns() || acceptedSourceVersion() != version || !nativePlayer.ownsSourceVersion(version)) {
                         previousVersion = null
+                        previousSource = null
                         previous = null
                         return@collect
                     }
                     // Root binds this exact gate to NativeOwner.admitPlaybackDispatch, which
                     // holds Store -> entry -> native. Capture source and state together here;
                     // a same-version recovery cannot splice its new source onto an old frame.
-                    commitEventIfCurrent {
+                    var deliveredTransition: OwnedPlaybackSourceSnapshot? = null
+                    val eventCommitted = commitEventIfCurrent {
                         val recoverySource = nativePlayer.currentSourceSnapshot()
                         if (entryOwns() && acceptedSourceVersion() == version && recoverySource != null &&
                             recoverySource.sourceVersion == version && nativePlayer.ownsSourceSnapshot(recoverySource) &&
@@ -148,7 +152,10 @@ class DesktopOriginalMpvSectionControl internal constructor(
                             }
                             // A registration first observes state. An already-rendered native frame is
                             // delivered as its actual receipt, never inferred from position/isPlaying.
-                            if (previousVersion != version) admit { listener.onSourceTransition(version) }
+                            if (previousVersion != version || previousSource?.source != recoverySource.source) admit {
+                                listener.onSourceTransition(version)
+                                deliveredTransition = recoverySource
+                            }
                             // Codec metadata can leave the UI at READY before real output is ready.
                             // Re-notify only after the actual subject's required output facts become healthy.
                             val recoveryExpectedAudioTrack = recoverySource.source.audioUrl != null
@@ -168,9 +175,20 @@ class DesktopOriginalMpvSectionControl internal constructor(
                             if (old == null || old.tracks != value.tracks) admit { listener.onTracksChanged(value.tracks) }
                             if (value.error != null && (old?.error != value.error || old.failure != value.failure)) admit { listener.onPlayerError(DesktopOriginalNativePlaybackError(value.error, value.failure)) }
                             previousVersion = version
+                            previousSource = recoverySource
                             previous = value
                         }
                     }
+                    // Never start/cancel request Jobs while Store -> entry -> native
+                    // or the registration monitor is held. This exact registered
+                    // listener gets a post-admission edge; its VM still performs
+                    // the final captured-publication admission when linking work.
+                    val transitioned = deliveredTransition
+                    callbackContext.ensureActive()
+                    if (eventCommitted && transitioned != null && entryOwns() &&
+                        acceptedSourceVersion() == version && nativePlayer.ownsSourceSnapshot(transitioned) &&
+                        synchronized(eventLock) { registrations[listener] === registrationJob && registrationJob.isActive })
+                        listener.onSourceTransitionAfterAdmission(version, transitioned)
                 }
             }
             registrations[listener] = job

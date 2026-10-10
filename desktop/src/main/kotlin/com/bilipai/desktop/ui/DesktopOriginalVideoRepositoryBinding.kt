@@ -42,6 +42,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     canRefreshPrimaryToken: () -> Boolean,
     refreshPrimaryToken: suspend (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
     private val onPlaybackAuthorizationRetired: ((DesktopPlaybackAuthorizationReceipt) -> Unit)?,
+    private val decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)?,
 ) : DesktopOriginalExternalPlaylistRequest {
     private val authorizationRetirementReported = java.util.concurrent.atomic.AtomicBoolean(false)
     val receipt: DesktopPlaybackAuthorizationReceipt get() = authorization.receipt
@@ -71,6 +72,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
     // Identity scalar only, captured under the SAME receipt/Store -> entry gate.
     private val capturedPrimaryMid = read { repository.activeAccountMid() }
     private val metadataPlaybackCalls = repository.ownedPlaybackCallFactory(authorization, ::current)
+        .let { decorateCalls?.invoke(it) ?: it }
     private val preferenceSnapshot = preferences.normalized()
     private val blockedSnapshot = blockedVideoCodecs.toSet()
     private val views = repository.originalVideoProtocolViews(authorization, ::entryCurrent, commitIfEntryCurrent) { bvid, cid, quality ->
@@ -78,19 +80,19 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
             blockedSnapshot, av1Supported)
     }
     private val capturedPrimaryApi = repository.ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/",
-        receipt.accountEpoch, ::current)
+        receipt.accountEpoch, ::current, decorateCalls = decorateCalls)
     private val capturedPrimarySpaceApi = repository.ownedHomeService(SpaceApi::class.java, "https://api.bilibili.com/",
-        receipt.accountEpoch, ::current)
+        receipt.accountEpoch, ::current, decorateCalls = decorateCalls)
     private val capturedPrimarySearchApi = repository.ownedHomeService(SearchApi::class.java, "https://api.bilibili.com/",
-        receipt.accountEpoch, ::current)
+        receipt.accountEpoch, ::current, decorateCalls = decorateCalls)
     private val capturedPrimaryStoryApi = repository.ownedHomeService(StoryApi::class.java, "https://app.bilibili.com/",
-        receipt.accountEpoch, ::current)
-    private val playbackApi = repository.ownedPlaybackService(BilibiliApi::class.java, authorization, ::current)
-    private val capturedPlaybackBangumiApi = repository.ownedPlaybackService(BangumiApi::class.java, authorization, ::current)
+        receipt.accountEpoch, ::current, decorateCalls = decorateCalls)
+    private val playbackApi = repository.ownedPlaybackService(BilibiliApi::class.java, authorization, ::current, decorateCalls = decorateCalls)
+    private val capturedPlaybackBangumiApi = repository.ownedPlaybackService(BangumiApi::class.java, authorization, ::current, decorateCalls = decorateCalls)
     private val guestApi = repository.ownedHomeService(BilibiliApi::class.java, "https://api.bilibili.com/",
-        receipt.accountEpoch, ::current, guest = true)
+        receipt.accountEpoch, ::current, guest = true, decorateCalls = decorateCalls)
     private val buvidApi = repository.ownedHomeService(BuvidApi::class.java, "https://api.bilibili.com/",
-        receipt.accountEpoch, ::current)
+        receipt.accountEpoch, ::current, decorateCalls = decorateCalls)
 
     // Original NetworkModule.playbackAccount returns the valid selected account even if
     // it is the main MID; only the transport CookieJar switches for a dedicated MID.
@@ -266,6 +268,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
             canRefreshPrimaryToken: () -> Boolean,
             refreshPrimaryToken: suspend (DesktopPlaybackAuthorizationReceipt, () -> Boolean) -> Boolean,
             onPlaybackAuthorizationRetired: ((DesktopPlaybackAuthorizationReceipt) -> Unit)? = null,
+            decorateCalls: ((okhttp3.Call.Factory) -> okhttp3.Call.Factory)? = null,
         ): DesktopOriginalVideoRepositoryBinding {
             currentCoroutineContext().ensureActive()
             val requestJob = requireNotNull(currentCoroutineContext()[Job])
@@ -275,7 +278,7 @@ internal class DesktopOriginalVideoRepositoryBinding private constructor(
             return DesktopOriginalVideoRepositoryBinding(repository, authorization, requestJob, entryJob,
                 isEntryCurrent, commitIfEntryCurrent, preferences, codecOverride, blockedVideoCodecs,
                 av1Supported, auto1080pEnabled, directedTrafficEnabled, isMobileData,
-                canRefreshPrimaryToken, refreshPrimaryToken, onPlaybackAuthorizationRetired).also { it.assertCurrent() }
+                canRefreshPrimaryToken, refreshPrimaryToken, onPlaybackAuthorizationRetired, decorateCalls).also { it.assertCurrent() }
         }
     }
 }

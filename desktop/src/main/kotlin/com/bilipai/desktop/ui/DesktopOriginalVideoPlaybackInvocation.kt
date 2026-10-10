@@ -5,12 +5,50 @@ import com.android.purebilibili.core.player.dash.AdaptiveDashPlaybackSource
 import com.bilipai.desktop.player.PlaybackSource
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.AbstractCoroutineContextElement
 import java.util.concurrent.atomic.AtomicBoolean
 
 /** One actual load/quality coroutine's views of the SAME Repository and publication.
  * The factory captures the existing authorization once; all original async children
  * inherit that receipt. Nothing here constructs an API, player, cache or account.
  */
+/** Immutable request facet borrowing the already accepted native publication.
+ * It is not a resolver/owner: Factory consumes the same Store -> entry -> native
+ * admission for this coroutine's HTTP and cache commits, including preloading. */
+internal class DesktopOriginalVideoRelatedRequestSource(
+    val expected: DesktopOriginalVideoAcceptedPublication,
+    val stillOwned: () -> Boolean,
+) : AbstractCoroutineContextElement(Key) {
+    companion object Key : CoroutineContext.Key<DesktopOriginalVideoRelatedRequestSource>
+
+    /** This view delegates ALL authority to the real NativeOwner. The existing
+     * admittedPlaybackCalls owns short newCall/enqueue and waits/cancels outside
+     * admission; no new transport, account receipt, source or resolver is made. */
+    fun calls(delegate: okhttp3.Call.Factory, native: DesktopOriginalVideoNativeOwner,
+        caller: Job): okhttp3.Call.Factory {
+        val captured = expected.nativeSource.source
+        val view = object : com.bilipai.desktop.player.DesktopPlaybackPublication {
+            override val requiresAccountReceipt = true
+            override fun isCurrent(source: PlaybackSource): Boolean =
+                source == captured && caller.isActive && stillOwned() && native.isCurrent(expected)
+            override fun <T> admit(source: PlaybackSource, lifetime: () -> Boolean, block: () -> T): T {
+                var result: Result<T>? = null
+                if (!native.admitPlaybackDispatch(expected) {
+                        caller.ensureActive()
+                        if (source != captured || !stillOwned() || !lifetime())
+                            throw CancellationException("Related transport source retired")
+                        result = runCatching(block)
+                    }) throw CancellationException("Related transport publication retired")
+                return checkNotNull(result).getOrThrow()
+            }
+            override fun calls(raw: okhttp3.Call.Factory, source: PlaybackSource,
+                lifetime: () -> Boolean, callerJob: Job?): okhttp3.Call.Factory =
+                com.bilipai.desktop.player.admittedPlaybackCalls(raw, this, source, lifetime, callerJob)
+        }
+        return com.bilipai.desktop.player.admittedPlaybackCalls(delegate, view, captured, stillOwned, caller)
+    }
+}
+
 internal class DesktopOriginalVideoPlaybackInvocation private constructor(
     val repository: DesktopOriginalVideoLoadRepository,
     val media: DesktopOriginalVideoMediaPort,
@@ -169,6 +207,8 @@ internal class DesktopOriginalVideoPlaybackInvocationPorts(
             activeInvocation().repository.getVideoDetails(bvid, aid, requestedCid, targetQuality, audioLang)
         override suspend fun getRelatedVideos(bvid: String): List<RelatedVideo> =
             activeInvocation().repository.getRelatedVideos(bvid)
+        override suspend fun getRelatedVideosResult(bvid: String): Result<List<RelatedVideo>> =
+            activeInvocation().repository.getRelatedVideosResult(bvid)
         override suspend fun getPlayUrlData(bvid: String, cid: Long, qn: Int, audioLang: String?): PlayUrlData? =
             activeInvocation().repository.getPlayUrlData(bvid, cid, qn, audioLang)
         override suspend fun getPlaybackNavInfo(): Result<NavData> = activeInvocation().repository.getPlaybackNavInfo()
