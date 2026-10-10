@@ -57,7 +57,7 @@ class EnhancementExtractionTest(unittest.TestCase):
         self.assertEqual(edit['label'], 'windows-nvidia-only-enhancement-widget')
         self.assertEqual(result.count(edit['after']), 1)
         self.assertEqual(result.replace(edit['after'], edit['before'], 1), original)
-        self.assertIn('DesktopWindowsVideoEnhancementSettingsContent()', edit['after'])
+        self.assertIn('DesktopWindowsVideoEnhancementSettingsContent(showProcessingQuality = false)', edit['after'])
         for widget in ('VideoEnhancementAlgorithmOptions(', 'Anime4KPresetOptions(', 'FsrSharpnessOptions('):
             self.assertEqual(edit['before'].count(widget), 1)
             self.assertNotIn(widget, result)

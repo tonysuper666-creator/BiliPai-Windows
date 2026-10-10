@@ -54,7 +54,7 @@ def windows_nvidia_enhancement_leaf(source,record=False):
  original=source[start:end]
  for name in ('VideoEnhancementAlgorithmOptions(', 'Anime4KPresetOptions(', 'FsrSharpnessOptions('):
   if original.count(name)!=1:raise ValueError('Original video enhancement choice changed: '+name)
- replacement='            item {\n                com.bilipai.desktop.ui.DesktopWindowsVideoEnhancementSettingsContent()\n                SettingsDivider()\n            }'
+ replacement='            item {\n                com.bilipai.desktop.ui.DesktopWindowsVideoEnhancementSettingsContent(showProcessingQuality = false)\n                SettingsDivider()\n            }'
  if record:ADAPT.append(dict(label='windows-nvidia-only-enhancement-widget',before=original,after=replacement))
  return source[:start]+replacement+source[end:]
 

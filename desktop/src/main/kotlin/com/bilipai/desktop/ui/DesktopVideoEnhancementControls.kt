@@ -128,9 +128,9 @@ fun DesktopVideoEnhancementControls(state: DesktopVideoEnhancementState,
 }
 
 @Composable
-internal fun DesktopWindowsVideoEnhancementSettingsContent() {
+internal fun DesktopWindowsVideoEnhancementSettingsContent(showProcessingQuality: Boolean = true) {
     val binding = LocalDesktopWindowsVideoEnhancement.current
-    DesktopWindowsVideoEnhancementSettingsContent(binding.configuration)
+    DesktopWindowsVideoEnhancementSettingsContent(binding.configuration, showProcessingQuality)
 }
 
 @Composable
