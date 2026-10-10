@@ -63,9 +63,9 @@
       "targetPath": "video/bilipai_rtx_frame_provenance.h"
     },
     {
-      "bytes": 46703,
+      "bytes": 46902,
       "fileName": "bilipai_hdr_d3d11.c",
-      "sha256": "0768ebfd57bf32b0cdefe2ce18ba404621eedbc072137ad7b72797f9006cb1cd",
+      "sha256": "dfa4ec7f349405c853cafca1bf934a3c3b5e6c6126d2a2e324f2b098c91472ea",
       "sourcePath": "desktop/native/veyra-hdr-d3d11/bilipai_hdr_d3d11.c",
       "targetPath": "video/filter/veyra-hdr-d3d11/bilipai_hdr_d3d11.c"
     },

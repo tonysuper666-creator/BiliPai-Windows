@@ -9,6 +9,10 @@
 #include <string.h>
 #include <limits.h>
 
+/* Windows SDK D3D11_RESOURCE_MISC_NO_SHADER_ACCESS is 0x400000.
+ * Older MinGW headers omit the enum; keep rejecting that ABI bit. */
+#define BV_HDR11_RESOURCE_MISC_NO_SHADER_ACCESS 0x00400000u
+
 #define RELEASE(x) do { if(x) { IUnknown_Release((IUnknown *)(x)); (x)=NULL; } } while(0)
 enum { HDR_BASE, SDR_PROXY, HDR_RESTORED, PQ_OUTPUT, TEXTURES };
 struct bv_hdr11_pipeline {
@@ -256,7 +260,7 @@ static HRESULT p010_source(struct bv_hdr11_pipeline *p,
         D3D11_RESOURCE_MISC_RESTRICT_SHARED_RESOURCE_DRIVER|
         D3D11_RESOURCE_MISC_GUARDED|D3D11_RESOURCE_MISC_TILE_POOL|
         D3D11_RESOURCE_MISC_TILED|D3D11_RESOURCE_MISC_HW_PROTECTED|
-        D3D11_RESOURCE_MISC_NO_SHADER_ACCESS;
+        BV_HDR11_RESOURCE_MISC_NO_SHADER_ACCESS;
     if(d->Format!=DXGI_FORMAT_P010||d->Width!=in->constants.allocation_width||
        d->Height!=in->constants.allocation_height||d->MipLevels!=1||
        !d->ArraySize||d->ArraySize>D3D11_REQ_TEXTURE2D_ARRAY_AXIS_DIMENSION||
