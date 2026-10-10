@@ -17,6 +17,7 @@ import kotlinx.serialization.json.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.nio.file.Files
+import java.time.Instant
 import java.util.concurrent.atomic.AtomicInteger
 
 /** Real JSON service, original preference consumers and Root Store file; no UI/native fixture. */
@@ -261,5 +262,147 @@ class DesktopSettingsShareServiceTest {
         assertEquals(landscape, preferences.currentSettings(DanmakuSettingsScope.LANDSCAPE))
         assertTrue(preferences.currentSettings(DanmakuSettingsScope.PORTRAIT).enabled)
         assertTrue(preferences.currentSettings(DanmakuSettingsScope.LANDSCAPE).enabled)
+    }
+
+
+    @Test fun savedProfileSaveReplaysFreshCanonicalAndUsesOriginalNameAndOrdering(): Unit = runBlocking {
+        val store = store(); seed(store)
+        val permits = AtomicInteger()
+        val service = DesktopSettingsShareService(context(store, commit = { action ->
+            if (permits.incrementAndGet() == 1) store.update("settings", mapOf(
+                "hw_decode" to JsonPrimitive(false), "concurrent_fixture" to JsonPrimitive("keep")))
+            action(); true
+        }))
+        val now = Instant.parse("2026-10-10T00:00:00Z")
+        val first = service.saveCurrentProfile("  方案 / 4K  ", "0.3.3", now)
+        assertTrue(permits.get() >= 2)
+        assertEquals("方案 / 4K", first.name)
+        assertEquals("方案_4K-${now.toEpochMilli()}.json", first.fileName)
+        assertEquals(JsonPrimitive(false), service.readSavedProfile(first).profile.sections.playback["hw_decode"])
+        val raw = store.preferences(DesktopSettingsShareService.PROFILES_NAMESPACE)[first.fileName]!!.jsonPrimitive.content
+        assertFalse(raw.contains("fixture_sentinel"))
+        assertFalse(raw.contains("concurrent_fixture"))
+        assertNull(service.readSavedProfile(first).profile.deviceDebug)
+        val sameName = service.saveCurrentProfile(first.name, "0.3.3", now)
+        assertNotEquals(first.fileName, sameName.fileName)
+        assertEquals(raw, store.preferences(DesktopSettingsShareService.PROFILES_NAMESPACE)[first.fileName]!!.jsonPrimitive.content)
+        val newer = service.saveCurrentProfile("newer", "0.3.3", now.plusSeconds(1))
+        val listed = service.listSavedProfiles()
+        assertEquals(3, listed.size)
+        assertEquals(newer, listed.first())
+        assertEquals(setOf(first.fileName, sameName.fileName, newer.fileName), listed.map { it.fileName }.toSet())
+        assertEquals(JsonPrimitive("keep"), store.preferences("settings")["foreign"])
+        assertEquals(JsonPrimitive("keep"), store.preferences("settings")["concurrent_fixture"])
+        assertEquals(JsonPrimitive("preserve"), store.preferences("accounts")["fixture_sentinel"])
+    }
+
+    @Test fun previewedRestoreRejectsArchiveReplacementOrDeletionDuringActualCasReplay(): Unit = runBlocking {
+        for (delete in listOf(false, true)) {
+            val store = store(); seed(store)
+            val setup = DesktopSettingsShareService(context(store))
+            setup.applyImport(setup.readImportSession(raw("""
+                "appearance":{"theme_mode_v2":2},"playback":{"hw_decode":true,"default_playback_speed":2.0}
+            """.trimIndent())))
+            val profile = setup.saveCurrentProfile("restore", "0.3.3", Instant.parse("2026-10-10T00:00:00Z"))
+            val captured = setup.readSavedProfile(profile)
+            setup.applyImport(setup.readImportSession(raw("""
+                "appearance":{"theme_mode_v2":0},"playback":{"hw_decode":false,"default_playback_speed":1.0}
+            """.trimIndent())))
+            val canonical = store.preferences("settings")
+            val theme = store.preferences("theme_cache")
+            val player = store.preferences("player_settings_cache")
+            val speed = store.preferences("playback_speed_cache")
+            val permits = AtomicInteger()
+            var afterConcurrentArchive: ByteArray? = null
+            val service = DesktopSettingsShareService(context(store, commit = { action ->
+                if (permits.incrementAndGet() == 1) {
+                    // A real independent archive mutation changes the whole Backing revision.
+                    // Even equal decoded content with different raw bytes retires this preview.
+                    store.update(DesktopSettingsShareService.PROFILES_NAMESPACE, mapOf(profile.fileName to
+                        if (delete) null else JsonPrimitive(captured.rawJson + "\n")))
+                    afterConcurrentArchive = bytes(store)
+                }
+                action(); true
+            }))
+            if (delete) assertThrows(IllegalStateException::class.java) {
+                runBlocking { service.restoreSavedProfile(profile, captured) }
+            } else assertThrows(IllegalArgumentException::class.java) {
+                runBlocking { service.restoreSavedProfile(profile, captured) }
+            }
+            assertEquals(1, permits.get())
+            assertArrayEquals(checkNotNull(afterConcurrentArchive), bytes(store))
+            assertEquals(canonical, store.preferences("settings"))
+            assertEquals(theme, store.preferences("theme_cache"))
+            assertEquals(player, store.preferences("player_settings_cache"))
+            assertEquals(speed, store.preferences("playback_speed_cache"))
+            assertEquals(JsonPrimitive("preserve"), store.preferences("accounts")["fixture_sentinel"])
+        }
+    }
+
+    @Test fun explicitProfileReplaceDeleteAndRestoreRequireTheCapturedRawIdentity(): Unit = runBlocking {
+        val store = store(); seed(store)
+        val service = DesktopSettingsShareService(context(store))
+        val now = Instant.parse("2026-10-10T00:00:00Z")
+        val profile = service.saveCurrentProfile("original", "0.3.3", now)
+        val captured = service.readSavedProfile(profile)
+        service.applyImport(service.readImportSession(raw(""""playback":{"hw_decode":false}""")))
+        val replacement = service.replaceSavedProfile(profile, captured, name = "renamed", appVersion = "0.3.3",
+            now = now.plusSeconds(1))
+        assertEquals(profile.fileName, replacement.fileName)
+        assertEquals("renamed", replacement.name)
+        assertEquals(1, service.listSavedProfiles().size)
+        val afterReplacement = bytes(store)
+        assertThrows(IllegalArgumentException::class.java) {
+            runBlocking { service.replaceSavedProfile(profile, captured, appVersion = "0.3.3") }
+        }
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { service.deleteSavedProfile(profile, captured) } }
+        assertThrows(IllegalArgumentException::class.java) { runBlocking { service.restoreSavedProfile(profile, captured) } }
+        assertArrayEquals(afterReplacement, bytes(store))
+        val current = service.readSavedProfile(replacement)
+        service.applyImport(service.readImportSession(raw(""""playback":{"hw_decode":true}""")))
+        assertTrue(service.restoreSavedProfile(replacement, current).appliedKeys.contains("hw_decode"))
+        assertEquals(JsonPrimitive(false), store.preferences("settings")["hw_decode"])
+        assertEquals(JsonPrimitive(false), store.preferences("player_settings_cache")["hw_decode_enabled"])
+        val canonical = store.preferences("settings")
+        service.deleteSavedProfile(replacement, current)
+        assertTrue(service.listSavedProfiles().isEmpty())
+        assertEquals(canonical, store.preferences("settings"))
+        assertEquals(JsonPrimitive("preserve"), store.preferences("accounts")["fixture_sentinel"])
+    }
+
+    @Test fun archiveCallerCancellationOrRootRetirementAtActualPermitCannotPublish(): Unit = runBlocking {
+        for (cancelCaller in listOf(false, true)) {
+            val store = store(); seed(store)
+            val before = bytes(store)
+            val ownerGeneration = AtomicInteger(1)
+            val permits = AtomicInteger()
+            lateinit var request: Job
+            val service = DesktopSettingsShareService(context(store, { ownerGeneration.get() == 1 }) { action ->
+                permits.incrementAndGet()
+                if (cancelCaller) request.cancel(CancellationException("Archive caller retired")) else ownerGeneration.set(2)
+                action(); true
+            })
+            request = launch(start = CoroutineStart.LAZY) {
+                service.saveCurrentProfile("cancelled", "0.3.3", Instant.parse("2026-10-10T00:00:00Z"))
+            }
+            request.start(); request.join()
+            assertTrue(request.isCancelled)
+            assertEquals(1, permits.get())
+            assertArrayEquals(before, bytes(store))
+            assertTrue(store.preferences(DesktopSettingsShareService.PROFILES_NAMESPACE).isEmpty())
+        }
+    }
+
+    @Test fun savedProfileNameRejectsBlankAndUsesOriginalTrimAndEightyCharacterLimit(): Unit = runBlocking {
+        val store = store(); seed(store)
+        val service = DesktopSettingsShareService(context(store))
+        val before = bytes(store)
+        assertThrows(IllegalStateException::class.java) { runBlocking { service.saveCurrentProfile(" \t\n ", "0.3.3") } }
+        assertArrayEquals(before, bytes(store))
+        val now = Instant.parse("2026-10-10T00:00:00Z")
+        val saved = service.saveCurrentProfile("  ${"x".repeat(100)}  ", "0.3.3", now)
+        assertEquals("x".repeat(80), saved.name)
+        assertEquals("${"x".repeat(80)}-${now.toEpochMilli()}.json", saved.fileName)
+        assertEquals(saved.name, service.readSavedProfile(saved).profile.profileName)
     }
 }
