@@ -24,7 +24,7 @@ import kotlin.test.*
  * MPV stays headless. No decoder, receiver, discovery, public endpoint or account data is used.
  */
 class DesktopOfflineLocalCastTest {
-    private class Fixture : AutoCloseable {
+    private inner class Fixture : AutoCloseable {
         val directory = Files.createTempDirectory("bp-local-cast-")
         val file = Files.write(directory.resolve("merged.mp4"), "abcdefghij".toByteArray())
         private val sessions = DesktopSessionStore(directory.resolve("fixture-session.json"), persistent = false)
