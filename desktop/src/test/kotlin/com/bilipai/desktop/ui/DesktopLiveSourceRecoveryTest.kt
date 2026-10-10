@@ -21,7 +21,8 @@ class DesktopLiveSourceRecoveryTest {
         return requireNotNull(DesktopMediaRepository.selectLive(requireNotNull(response.data), room, requested))
     }
 
-    private inner class Fixture(parent: CoroutineScope, val initial: LivePlaybackInfo = stream()) : AutoCloseable {
+    private inner class Fixture(parent: CoroutineScope, val initial: LivePlaybackInfo = stream(),
+        private val primaryPorts: DesktopLiveRecoveryPorts? = null) : AutoCloseable {
         val player = MpvPlayer()
         val memory = DesktopLivePageMemory(parent, player)
         var accountCurrent = true
@@ -29,12 +30,13 @@ class DesktopLiveSourceRecoveryTest {
         val reloadRequests = mutableListOf<Triple<Long, Int, Boolean>>()
         var reload: suspend (LiveRoomDetails, Int, Boolean, () -> Boolean) -> LivePlaybackInfo = { _, _, _, _ -> initial }
         val ports = object : DesktopLiveRecoveryPorts {
-            override fun isAccountCurrent() = accountCurrent
+            override val accountEpoch get() = primaryPorts?.accountEpoch
+            override fun isAccountCurrent() = accountCurrent && (primaryPorts?.isAccountCurrent() ?: true)
             override fun admit(action: () -> Unit): Boolean {
                 if (!accountCurrent) return false
                 beforeAdmission?.also { beforeAdmission = null }?.invoke()
                 if (!accountCurrent) return false
-                action(); return true
+                return primaryPorts?.admit(action) ?: run { action(); true }
             }
             override suspend fun reload(room: LiveRoomDetails, quality: Int, onlyAudio: Boolean, current: () -> Boolean): LivePlaybackInfo {
                 check(current()); reloadRequests += Triple(room.roomId, quality, onlyAudio)
@@ -43,8 +45,11 @@ class DesktopLiveSourceRecoveryTest {
         }
         init {
             memory.room = room
-            player.loadVersioned(initial.source.toNativePlayback())
-            memory.installLivePlayback(initial, requireNotNull(player.currentSourceSnapshot()), ports)
+            check(installSource())
+        }
+        fun installSource(info: LivePlaybackInfo = initial): Boolean = ports.admit {
+            player.loadVersioned(memory.nativePlaybackSource(info, room.roomId, ports))
+            memory.installLivePlayback(info, requireNotNull(player.currentSourceSnapshot()), ports)
             memory.loaded = true
         }
         fun binding() = requireNotNull(memory.captureLiveSourceBinding())
@@ -331,6 +336,120 @@ class DesktopLiveSourceRecoveryTest {
                     audioCodec = "aac", positionSeconds = 2.0, nativePaused = false)
                 settle()
                 assertEquals(0, f.memory.remainingLiveReloadAttempts)
+            }
+        }
+    }
+
+    /** Only production ports own account authority; the existing fixture wraps them for its old interleaving hooks. */
+    private fun primaryPorts(sessions: DesktopSessionStore): DesktopLiveRecoveryPorts {
+        val repository = DesktopRepository(sessions)
+        return desktopLiveRecoveryPorts(repository, DesktopMediaRepository(repository), repository.sessionEpoch,
+            { false }, { _, _ -> error("No mini-window callback belongs to this headless fixture") })
+    }
+
+    @Test fun retiredStoreEpochRejectsNativeCommandWhileOriginalRoomAndSourceRemainMounted(): Unit = runBlocking {
+        withTimeout(5_000) {
+            val sessions = DesktopSessionStore.temporary()
+            Fixture(this, primaryPorts = primaryPorts(sessions)).use { f ->
+                val snapshot = requireNotNull(f.memory.liveSourceSnapshot)
+                val publication = requireNotNull(snapshot.source.nativePublication)
+                val epoch = sessions.generation
+                assertEquals(epoch, snapshot.source.primaryAccountEpoch)
+                var submitted = 0
+                assertTrue(publication.admit { submitted++ })
+                sessions.logout() // The actual Store changes epoch before any Compose owner/disposal effect.
+                assertTrue(sessions.generation > epoch)
+                assertSame(f.initial, f.memory.stream)
+                assertSame(snapshot, f.memory.liveSourceSnapshot)
+                assertTrue(f.memory.loaded)
+                assertTrue(f.player.ownsSourceSnapshot(snapshot))
+                assertFalse(publication.admit { submitted++ })
+                assertEquals(1, submitted)
+            }
+        }
+    }
+
+    @Test fun completedInitialRequestKeepsItsInstalledNativePublicationAlive(): Unit = runBlocking {
+        withTimeout(5_000) {
+            Fixture(this, primaryPorts = primaryPorts(DesktopSessionStore.temporary())).use { f ->
+                f.memory.stopPlayback()
+                f.memory.launchRequest { assertTrue(f.installSource()) }
+                val request = requireNotNull(f.memory.playJob)
+                request.join()
+                assertTrue(request.isCompleted)
+                assertFalse(request.isActive)
+                assertFalse(request.isCancelled)
+                assertTrue(f.memory.scope.isActive)
+                val snapshot = requireNotNull(f.memory.liveSourceSnapshot)
+                assertTrue(f.player.ownsSourceSnapshot(snapshot))
+                val publication = requireNotNull(snapshot.source.nativePublication)
+                var submitted = 0
+                assertTrue(publication.admit { submitted++ })
+                assertEquals(1, submitted)
+            }
+        }
+    }
+
+    @Test fun sameVersionLineSwitchRejectsOldPublicationAndAdmitsActualChild(): Unit = runBlocking {
+        withTimeout(5_000) {
+            Fixture(this, primaryPorts = primaryPorts(DesktopSessionStore.temporary())).use { f ->
+                val old = requireNotNull(f.memory.liveSourceSnapshot)
+                val oldPublication = requireNotNull(old.source.nativePublication)
+                assertTrue(DesktopLiveSourceSelection(f.binding()).switch(0, 1))
+                val child = requireNotNull(f.memory.liveSourceSnapshot)
+                val childPublication = requireNotNull(child.source.nativePublication)
+                assertEquals(old.sourceVersion, child.sourceVersion)
+                assertNotSame(oldPublication, childPublication)
+                assertFalse(f.player.ownsSourceSnapshot(old))
+                assertTrue(f.player.ownsSourceSnapshot(child))
+                var submitted = 0
+                assertFalse(oldPublication.admit { submitted++ })
+                assertTrue(childPublication.admit { submitted++ })
+                assertEquals(1, submitted)
+            }
+        }
+    }
+
+    @Test fun sameUrlRoomAndVersionReturnCannotReviveOldPublication(): Unit = runBlocking {
+        withTimeout(5_000) {
+            Fixture(this, primaryPorts = primaryPorts(DesktopSessionStore.temporary())).use { f ->
+                val old = requireNotNull(f.memory.liveSourceSnapshot)
+                val oldPublication = requireNotNull(old.source.nativePublication)
+                assertTrue(DesktopLiveSourceSelection(f.binding()).switch(0, 1))
+                assertTrue(DesktopLiveSourceSelection(f.binding()).switch(0, 0))
+                val returned = requireNotNull(f.memory.liveSourceSnapshot)
+                val returnedPublication = requireNotNull(returned.source.nativePublication)
+                assertEquals(old.sourceVersion, returned.sourceVersion)
+                assertEquals(old.source.videoUrl, returned.source.videoUrl)
+                assertEquals(room.roomId, f.memory.room?.roomId)
+                assertNotSame(oldPublication, returnedPublication)
+                assertFalse(f.player.ownsSourceSnapshot(old))
+                assertTrue(f.player.ownsSourceSnapshot(returned))
+                var submitted = 0
+                assertFalse(oldPublication.admit { submitted++ })
+                assertTrue(returnedPublication.admit { submitted++ })
+                assertEquals(1, submitted)
+            }
+        }
+    }
+
+    @Test fun stoppedAndClosedLiveMemoryRejectTheirInstalledNativePublications(): Unit = runBlocking {
+        withTimeout(5_000) {
+            Fixture(this, primaryPorts = primaryPorts(DesktopSessionStore.temporary())).use { f ->
+                val stopped = requireNotNull(f.player.currentSourceSnapshot()?.source?.nativePublication)
+                var submitted = 0
+                f.memory.stopPlayback()
+                assertTrue(f.memory.scope.isActive)
+                assertNull(f.memory.liveSourceSnapshot)
+                assertFalse(stopped.admit { submitted++ })
+                assertTrue(f.installSource())
+                val closed = requireNotNull(f.player.currentSourceSnapshot()?.source?.nativePublication)
+                f.memory.close()
+                assertFalse(f.memory.scope.isActive)
+                assertNull(f.memory.liveSourceSnapshot)
+                assertFalse(closed.admit { submitted++ })
+                assertFalse(stopped.admit { submitted++ })
+                assertEquals(0, submitted)
             }
         }
     }
