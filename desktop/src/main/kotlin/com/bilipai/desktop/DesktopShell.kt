@@ -2152,6 +2152,28 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 else -> Unit
                                             }
                                         },
+                                        metadataNavigation = { assembly, source, target, metadataOwned ->
+                                            val factory = ordinaryVideo.factoryFor(assembly)
+                                            fun ownsMetadata() = metadataOwned() && !isClosing() && !activatingUpdate &&
+                                                active && hostVisible && hostDisplayable && messageRoutes.currentKey === entryKey &&
+                                                ordinaryVideo.slot.currentAssembly() === assembly && assembly.owns() &&
+                                                factory.isPresentationCurrent(assembly, source)
+                                            fun admitMetadata(action: () -> Unit): Boolean {
+                                                if (!ownsMetadata()) return false
+                                                var applied = false
+                                                return factory.withPresentationAdmission(assembly, source) {
+                                                    if (ownsMetadata()) assembly.native.admitPlaybackDispatch(source) {
+                                                        if (ownsMetadata()) { action(); applied = true }
+                                                    }
+                                                } && applied
+                                            }
+                                            // The real Root checkpoints before holding final source/native admission.
+                                            // No HTTP, launch or clipboard IO is performed inside this short gate.
+                                            if (ownsMetadata() && (target is BiliPaiNavKey.Search ||
+                                                target is BiliPaiNavKey.BgmDetail || target is BiliPaiNavKey.Web)) {
+                                                messageRoutes.pushFromSource(target, ::ownsMetadata, ::admitMetadata)
+                                            }
+                                        },
                                         descriptionLink = { assembly, source, url, descriptionOwned ->
                                             val factory = ordinaryVideo.factoryFor(assembly)
                                             fun ownsDescription() = descriptionOwned() && !isClosing() && !activatingUpdate &&

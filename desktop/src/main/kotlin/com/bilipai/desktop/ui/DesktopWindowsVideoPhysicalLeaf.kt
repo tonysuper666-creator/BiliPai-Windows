@@ -63,6 +63,7 @@ internal class DesktopWindowsVideoActions(
     val honorLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String) -> Unit,
     val descriptionLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String, () -> Boolean) -> Unit,
     val relatedNavigation: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, BiliPaiNavKey, () -> Boolean) -> Unit,
+    val metadataNavigation: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, BiliPaiNavKey, () -> Boolean) -> Unit,
     val login: () -> Unit, val danmakuSettings: () -> Unit, val toggleDanmaku: () -> Unit,
     val notice: (String) -> Unit,
     val focusChanged: (Boolean) -> Unit,
@@ -889,7 +890,11 @@ internal class DesktopWindowsVideoActions(
                             }
                             collectionQueueSource?.let { source ->
                                 DesktopWindowsVideoDescriptionSection(assembly, success.info, source,
-                                    ::interactionCurrent) { url, descriptionOwned ->
+                                    success.videoTags, platforms.holder.settingsContext.pluginContext,
+                                    ::interactionCurrent,
+                                    onMetadataNavigation = { target, metadataOwned ->
+                                        latestActions.metadataNavigation(assembly, source, target, metadataOwned)
+                                    }) { url, descriptionOwned ->
                                     latestActions.descriptionLink(assembly, source, url, descriptionOwned)
                                 }
                             }
