@@ -182,6 +182,35 @@
       "staticForwardEqualsFinal": true,
       "staticInverseEqualsCompleteFixedOriginal": true,
       "targetPath": "build-recipes/packages/openssl.cmake"
+    },
+    {
+      "afterBytes": 1136,
+      "afterSha256Bytes": "dd4ce1fd21c4ee1444dd463677789deab238bff269fda5bafd3aba800f8865b6",
+      "archiveMember": "mpv-winbuild-cmake-cd1edc11dc6887a50f705717619d879f5a93a488/packages/libaribcaption.cmake",
+      "beforeBytes": 1120,
+      "beforeSha256Bytes": "a66502a1e55c8ba94f8d8ef9641e983e9da3e0832ffae287007cfd1cccae65c6",
+      "identity": "fixed-build-libaribcaption-md5-recipe",
+      "rawEdits": [
+        {
+          "afterStageSha256": "5c54a2e1300b81a6a3e453e534683e61ea6d6bf3dde46ff5d78efa9dffdd945b",
+          "beforeStageSha256": "a66502a1e55c8ba94f8d8ef9641e983e9da3e0832ffae287007cfd1cccae65c6",
+          "count": 1,
+          "new": "    GIT_REPOSITORY https://github.com/xqq/libaribcaption.git\n    GIT_TAG 94e0b1dcabcd0df218929493c15bdbcac876939a\n    GIT_RESET 94e0b1dcabcd0df218929493c15bdbcac876939a\n",
+          "offsetBytesAtSequentialStage": 100,
+          "old": "    GIT_REPOSITORY https://github.com/xqq/libaribcaption.git\n"
+        },
+        {
+          "afterStageSha256": "dd4ce1fd21c4ee1444dd463677789deab238bff269fda5bafd3aba800f8865b6",
+          "beforeStageSha256": "5c54a2e1300b81a6a3e453e534683e61ea6d6bf3dde46ff5d78efa9dffdd945b",
+          "count": 1,
+          "new": "",
+          "offsetBytesAtSequentialStage": 887,
+          "old": "        \"-DCMAKE_C_FLAGS='-DHAVE_OPENSSL=1'\"\n        \"-DCMAKE_CXX_FLAGS='-DHAVE_OPENSSL=1'\"\n"
+        }
+      ],
+      "staticForwardEqualsFinal": true,
+      "staticInverseEqualsCompleteFixedOriginal": true,
+      "targetPath": "build-recipes/packages/libaribcaption.cmake"
     }
   ]
 }

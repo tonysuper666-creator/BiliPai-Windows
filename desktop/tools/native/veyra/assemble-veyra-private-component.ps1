@@ -138,7 +138,7 @@ try{
         foreach($key in @('tools/native/veyra/veyra-profile-template.json','third-party/libmpv/build/rtx-core-v1/fixed-inputs.json','third-party/libmpv/build/rtx-core-v1/bilipai-rtx-source-manifest.json','third-party/libmpv/build/rtx-core-v1/filter-registration-edits.json')){[void]$contracts.Remove($key)}
         $templateContract='tools/native/veyra/veyra-presentation-profile-template.json';$buildFolder='third-party/libmpv/build/rtx-present-v1';$manifestLeaf='bilipai-rtx-presentation-source-manifest.json'
         $contracts[$templateContract]='d30226b5afae2f6878e17f38ebc002203538d11ec4742ba0fcb8de822aef6b34'
-        $contracts[$buildFolder+'/fixed-inputs.json']='88b9a97df82f2f4c6aabf1c3f05cc6ed53b942b4686a57fb5fb7189d9088a178'
+        $contracts[$buildFolder+'/fixed-inputs.json']='4f0988c58abcf58fb5ac7f5c1e8ed7abd263c27452d96fd7c7c29c892ce815ff'
         $contracts[$buildFolder+'/'+$manifestLeaf]='4ef14f966e6edb7d4259028794232560b5c145edb71ad25e450bdaa6a6a6923d'
         $contracts[$buildFolder+'/filter-registration-edits.json']='95b48fb8e6073c493a91f0373e778fc7c6c22c4f9d3b23e74bc889ca08c9e042'
         $contracts[$buildFolder+'/presentation-edits.json']='e84fd26d22eb7ac012747960d72ae384191e93dc5ab68a0d1e81fa9dfaf3d34f'

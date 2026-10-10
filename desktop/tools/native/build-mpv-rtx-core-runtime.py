@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Explicit RTX core MPV bridge source build. No SDK/runtime, release, UI or GPU run.
 
-mpv, FFmpeg, recipes and container are fixed; present-v1 also pins libvpl, curl and libssh.
+mpv, FFmpeg, recipes and container are fixed; present-v1 also pins libvpl, curl, libssh and libaribcaption.
 Other historical recipe dependencies
 remain floating and are recorded from the actual build; this is not reproducible.
 """
@@ -548,7 +548,7 @@ def main():
     # Optional absent parameter retains the original complete cold path.
     # Explicit material is fully verified before outputs/download/build.
     fixed_raw = (inputs / 'fixed-inputs.json').read_bytes()
-    if presentation and sha(fixed_raw) != '88b9a97df82f2f4c6aabf1c3f05cc6ed53b942b4686a57fb5fb7189d9088a178':
+    if presentation and sha(fixed_raw) != '4f0988c58abcf58fb5ac7f5c1e8ed7abd263c27452d96fd7c7c29c892ce815ff':
         raise RuntimeError('Fixed presentation producer inputs changed')
     fixed = json.loads(fixed_raw)
     if fixed.get('variant') != variant:
@@ -593,7 +593,7 @@ def main():
         downloaded = {row['kind']: download(row, archives) for row in fixed['archives']}
         recipes = extract_fixed_recipe(downloaded['recipes'], workspace, fixed['recipeArchivePrefix'])
         recipe_raw = (inputs / 'recipe-edits.json').read_bytes()
-        if presentation and sha(recipe_raw) != '21be6ca0c2a106f918ee14a78b44fa74ec14112e214eaca8e1921cf8f12f15d1':
+        if presentation and sha(recipe_raw) != '1902b5be53d047d25db14000f6846aa81688e1dbd90f13a6af70d5e9f4ac0f76':
             raise RuntimeError('Complete presentation build recipe edits changed')
         edits = json.loads(recipe_raw)
         apply_recipes(recipes, edits['targets'])
@@ -852,10 +852,11 @@ def main():
                 build / 'bilipai-curl-openssl-compat-source')
         inventory = dependency_inventory(sources)
         if presentation:
-            for dependency, commit in [('curl', curl_libssh_spec['curlCommit']), ('libssh', curl_libssh_spec['libsshCommit'])]:
+            for dependency, commit in [('curl', curl_libssh_spec['curlCommit']), ('libssh', curl_libssh_spec['libsshCommit']),
+                                       ('libaribcaption', fixed['libaribcaptionCommit'])]:
                 selected = [row for row in inventory if row['directory'] == dependency]
                 if len(selected) != 1 or selected[0]['commit'] != commit:
-                    raise RuntimeError('Actual retained dependency commit differs from selected curl/libssh pair')
+                    raise RuntimeError('Actual retained dependency commit differs from selected presentation input')
         if import_plan is not None:
             original_source = import_plan['manifest']['actualSourceBuildBinding']['prebuild']
             inventory.append({'directory': 'llvm', 'commit': original_source['sourceCommit'],

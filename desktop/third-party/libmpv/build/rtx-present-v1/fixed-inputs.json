@@ -64,6 +64,7 @@
   "expectedPatchedRecipeSha256": {
     "build-recipes/packages/curl.cmake": "b17133fb195d2c566db52b458116369dfdb588b836c561a97f8e6e24b687e7d7",
     "build-recipes/packages/ffmpeg.cmake": "c485d6c6fac0c13385e283a2b550a5e56c212f029d2654552c79448e86642ad6",
+    "build-recipes/packages/libaribcaption.cmake": "dd4ce1fd21c4ee1444dd463677789deab238bff269fda5bafd3aba800f8865b6",
     "build-recipes/packages/libssh.cmake": "bc0c72c9f87d3fd12ac2f920bdd7b34cec2fed51209b4f15996c28d51614095c",
     "build-recipes/packages/libvpl.cmake": "a044e94b1a06e997a858533cfa2cf489764d49c806f06588cc8d13b21747e671",
     "build-recipes/packages/mpv.cmake": "8e8e5a4fff3b1be48b30b0b18b56640930a5fddd494587922b6aa774512accd2",
@@ -72,6 +73,7 @@
   "ffmpegCommit": "9fc8c785e2747c87121ec28f8f10ceab0562384b",
   "filterName": "bilipai-rtx",
   "filterSourceManifestSha256": "4ef14f966e6edb7d4259028794232560b5c145edb71ad25e450bdaa6a6a6923d",
+  "libaribcaptionCommit": "94e0b1dcabcd0df218929493c15bdbcac876939a",
   "libvplCompatibility": {
     "afterBytes": 1224,
     "afterSha256": "f49130c9a394c16395788c5133fab49e2f2d95973460aa41d1208f1146fe475b",
