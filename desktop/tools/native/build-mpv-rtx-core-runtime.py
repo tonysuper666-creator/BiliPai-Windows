@@ -555,7 +555,7 @@ def main():
         raise RuntimeError('Selected producer and fixed input variants differ')
     import_helper_path = ROOT / 'desktop/tools/native/import-host-llvm-source-snapshot.py'
     import_helper_raw = import_helper_path.read_bytes()
-    if sha(import_helper_raw) != 'ecb1b27034a4ee99516e84dde440344ead6512dbc9a8e98e2f6af6b782dfd5d8':
+    if sha(import_helper_raw) != '3b4c06dcc272c40dd9564b4577d14182fd76786716745f35d3d2499aa868a8d6':
         raise RuntimeError('Reviewed shared importer/collector source changed')
     import_spec = importlib.util.spec_from_file_location('bilipai_host_import', import_helper_path)
     if import_spec is None or import_spec.loader is None:
