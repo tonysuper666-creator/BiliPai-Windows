@@ -21,6 +21,13 @@ internal class DesktopOriginalBangumiNativePresenter(
     private val retired = AtomicBoolean(false)
     private val activated = AtomicBoolean(false)
     private val currentCaller = ThreadLocal<Job?>()
+    // Coroutine-local view of the exact failed origin and its playback intent.
+    // The existing Portrait capture/native owner still owns parent -> child acceptance.
+    private class NetworkRecovery(val source: DesktopOriginalVideoAcceptedPublication,
+        val playWhenReady: Boolean, val parentCurrent: () -> Boolean) {
+        var publicationState: BangumiPlayerState.Success? = null // synchronous lexical view only
+    }
+    private val currentRecovery = ThreadLocal<NetworkRecovery?>()
     private val callerKey = object : CoroutineContext.Key<CallerElement> {}
     private inner class CallerElement : ThreadContextElement<Job?> {
         private val launchedCaller = java.util.concurrent.atomic.AtomicReference<Job?>()
@@ -70,9 +77,14 @@ internal class DesktopOriginalBangumiNativePresenter(
     /** Root injects THIS launch into the complete original VM. Original invocation
      * services capture primary actions/heartbeat in the actual job; the PGC media
      * binding is captured only after the sole Store starts its new request. */
-    fun launch(block: suspend CoroutineScope.() -> Unit): Job {
+    fun launch(block: suspend CoroutineScope.() -> Unit, start: CoroutineStart = CoroutineStart.DEFAULT,
+        recoverySource: DesktopOriginalVideoAcceptedPublication? = null, recoveryPlayWhenReady: Boolean = true,
+        recoveryParentCurrent: () -> Boolean = { true }): Job {
         assertCurrent()
-        return scope.launch(CallerElement()) { assembly.invocations.withInvocation { assertCurrent(); block() } }
+        val recovery = recoverySource?.let { NetworkRecovery(it, recoveryPlayWhenReady, recoveryParentCurrent) }
+        return scope.launch(CallerElement() + currentRecovery.asContextElement(recovery), start = start) {
+            assembly.invocations.withInvocation { assertCurrent(); block() }
+        }
     }
     /** Read-only identity of the original PGC launch. Not the nested body Job
      * and never a later playbackLoadJob getter or a newly created lifetime. */
@@ -96,8 +108,27 @@ internal class DesktopOriginalBangumiNativePresenter(
         currentCoroutineContext().ensureActive(); assertCurrent()
         check(currentCaller.get() === currentCoroutineContext()[Job]) { "PGC quality requires its actual Root invocation job" }
         check(activated.get()) { "PGC quality requires an already installed episode" }
-        portrait.captureBangumiQualityRequest(this, state)
+        val recovery = currentRecovery.get()
+        portrait.captureBangumiQualityRequest(this, state, recovery?.source, recovery?.parentCurrent ?: { true })
         currentCoroutineContext().ensureActive(); assertCurrent()
+    }
+    /** Only this actual recovery invocation borrows pending original Success for
+     * media preparation. Root/VM observable state changes only after acceptance. */
+    internal fun withNetworkRecoveryState(state: BangumiPlayerState.Success, action: () -> Unit) {
+        assertCurrent()
+        val recovery = checkNotNull(currentRecovery.get()) { "PGC recovery invocation required" }
+        val previous = recovery.publicationState
+        recovery.publicationState = state
+        try {
+            // Base VM's preferred-volume command is a short write to this exact parent.
+            // The lexical wrapper does not hold admission during media preparation.
+            assembly.section.withSourceCommandAdmission({ mutation ->
+                var applied = false
+                assembly.native.admitPlaybackDispatch(recovery.source) {
+                    if (recovery.parentCurrent()) { mutation(); applied = true }
+                } && applied
+            }, action)
+        } finally { recovery.publicationState = previous }
     }
     fun capturedPlaybackBinding(): DesktopOriginalVideoRepositoryBinding {
         assertCurrent()
@@ -115,16 +146,16 @@ internal class DesktopOriginalBangumiNativePresenter(
     override fun publishDash(videoUrl: String, audioUrl: String?, seekToMs: Long,
         resetPlayer: Boolean, referer: String, dashManifest: String?) {
         assertCurrent(); currentCaller.get()?.ensureActive()
-        portrait.publishBangumiSource(this, currentCaller.get(), checkNotNull(currentState()), videoUrl, audioUrl,
-            null, seekToMs, referer, dashManifest, playWhenReady = true)
+        portrait.publishBangumiSource(this, currentCaller.get(), currentRecovery.get()?.publicationState ?: checkNotNull(currentState()), videoUrl, audioUrl,
+            null, seekToMs, referer, dashManifest, playWhenReady = currentRecovery.get()?.playWhenReady ?: true)
     }
     override fun publishSegments(segmentUrls: List<String>, seekToMs: Long,
         resetPlayer: Boolean, referer: String) {
         assertCurrent(); currentCaller.get()?.ensureActive()
         val urls = segmentUrls.filter(String::isNotBlank)
         require(urls.isNotEmpty())
-        portrait.publishBangumiSource(this, currentCaller.get(), checkNotNull(currentState()), urls.first(), null,
-            urls, seekToMs, referer, null, playWhenReady = true)
+        portrait.publishBangumiSource(this, currentCaller.get(), currentRecovery.get()?.publicationState ?: checkNotNull(currentState()), urls.first(), null,
+            urls, seekToMs, referer, null, playWhenReady = currentRecovery.get()?.playWhenReady ?: true)
     }
     override fun stopCurrentEpisode() { assertCurrent(); portrait.stopBangumiPlayback(this, currentCaller.get()) }
 }

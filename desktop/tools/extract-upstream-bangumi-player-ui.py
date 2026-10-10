@@ -43,6 +43,13 @@ def main():
   raw=read(a.repo,r);body=full(raw,r);windows_edits=[]
   if r['originalPath']=='app/src/main/java/com/android/purebilibili/feature/bangumi/ui/player/BangumiPlayerOverlayHost.kt':
    body,windows_edits=windows_nvidia_bangumi_overlay_ui(body)
+  if r['output'].endswith('/DesktopOriginalBangumiPlayerScreen.kt'):
+   before='''                if (isDrmError) {
+                    viewModel.handlePlaybackDrmError()
+                }
+'''
+   after=before.replace('                }\n','                } else {\n                    platform.observePlaybackFailure(error)\n                }\n')
+   assert body.count(before)==1;body=body.replace(before,after)
   write(a.output,r['output'],body);records.append(dict(source=r['originalPath'],output=r['output'],wholeBody=True,edits=len(r['edits']),originalSha256LF=sha(raw),generatedSha256LF=sha(body),windowsAdaptations=windows_edits))
  raw=read(a.repo,POLICY);first=raw.index('internal fun resolveBangumiPlayerTopControlsPaddingTopDp(');last=raw.index('internal fun resolveBangumiFullscreen(')
  i=raw.index('internal fun resolveBangumiToggleOrientationTarget(');j=raw.index('internal data class BangumiEpisodePreviewWindow(')

@@ -105,6 +105,94 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
             if (!native.ownsPlaybackSource()) throw CancellationException("Original PGC accepted publication replaced")
         }
 
+        // The existing bounded original strategy lives for this retained PGC entry.
+        // Its budget follows the actual episode, never the replacement sourceVersion.
+        private var recoveryEpisode: Triple<Long, Long, Long>? = null
+        private val recovery = DesktopOriginalPlaybackRecovery(scope,
+            { action -> owner.environment.commit { assertOwned(); action() } }, ::assertOwned)
+
+        private fun failureSourceCurrent(state: BangumiPlayerState.Success,
+            expected: DesktopOriginalVideoAcceptedPublication,
+            failure: com.bilipai.desktop.player.PlayerFailure, revision: Long): Boolean {
+            if (!owns() || viewModel.desktopPlaybackIntentRevision != revision ||
+                owner.native.current() !== expected || !native.ownsPlaybackSource()) return false
+            val actual = success() ?: return false
+            return actual.currentEpisode.id == state.currentEpisode.id &&
+                actual.currentEpisode.cid == state.currentEpisode.cid &&
+                actual.seasonDetail.seasonId == state.seasonDetail.seasonId &&
+                actual.quality == state.quality && actual.requestedAudioQuality == state.requestedAudioQuality &&
+                desktopOriginalNativeFailureCurrent(player.nativePlayer, expected, failure)
+        }
+        private fun admitFailureSource(state: BangumiPlayerState.Success,
+            expected: DesktopOriginalVideoAcceptedPublication,
+            failure: com.bilipai.desktop.player.PlayerFailure, revision: Long, action: () -> Unit): Boolean {
+            var applied = false
+            return factory.withPresentationAdmission(owner, expected) {
+                owner.native.admitPlaybackDispatch(expected) {
+                    if (failureSourceCurrent(state, expected, failure, revision)) { action(); applied = true }
+                }
+            } && applied
+        }
+        override fun observePlaybackFailure(error: DesktopOriginalNativePlaybackError) {
+            if (isActualDrmFailure(error) || !owns()) return
+            val failure = error.failure ?: return
+            val state = success() ?: return
+            val expected = owner.native.current() ?: return
+            val revision = viewModel.desktopPlaybackIntentRevision
+            queuePlaybackFailure(state, expected, failure, revision,
+                desktopOriginalNativeFailure(failure, premiumAudio = false), failure)
+        }
+        private fun queuePlaybackFailure(state: BangumiPlayerState.Success,
+            expected: DesktopOriginalVideoAcceptedPublication,
+            failure: com.bilipai.desktop.player.PlayerFailure, revision: Long,
+            evidence: DesktopOriginalPlaybackFailureEvidence, identity: Any) {
+            var position = 0L
+            var playing = false
+            if (!admitFailureSource(state, expected, failure, revision) {
+                    position = player.currentPosition.coerceAtLeast(0L)
+                    playing = player.playWhenReady // failure makes isPlaying false, not the user's intent
+                }) return
+            val episode = Triple(state.seasonDetail.seasonId, state.currentEpisode.id, state.currentEpisode.cid)
+            if (recoveryEpisode != episode) { recovery.beginLoad(false); recoveryEpisode = episode }
+            // Classification is shared; this first slice implements only reliable network re-fetch.
+            // Decoder/audio/source/auth/restriction do not enter an invented fallback.
+            recovery.fail(DesktopOriginalPlaybackRecoveryTicket(identity,
+                evidence.copy(automaticRecovery = evidence.automaticRecovery && evidence.reason == PlaybackFailureReason.Network,
+                    decoder = false, premiumAudio = false), false, position, playing,
+                { failureSourceCurrent(state, expected, failure, revision) },
+                { action, _, _ ->
+                    if (action != com.android.purebilibili.feature.video.state.PlayerErrorRecoveryAction.RETRY_NETWORK) false
+                    else {
+                        var retryPosition = 0L
+                        var retryPlaying = false
+                        val captured = admitFailureSource(state, expected, failure, revision) {
+                            retryPosition = player.currentPosition.coerceAtLeast(0L)
+                            retryPlaying = player.playWhenReady
+                        }
+                        if (!captured) false else {
+                            // A pause/seek during HTTP keeps the usable failed parent;
+                            // only its final native parent gate consumes this predicate.
+                            val parentCurrent = {
+                                failureSourceCurrent(state, expected, failure, revision) &&
+                                    player.playWhenReady == retryPlaying && player.currentPosition == retryPosition
+                            }
+                            viewModel.retryNetworkPlayback(state, revision, retryPosition,
+                                launchLazy = { block -> native.launch(block, CoroutineStart.LAZY,
+                                    expected, retryPlaying, parentCurrent) },
+                                admitOrigin = { mutation -> admitFailureSource(state, expected, failure, revision) {
+                                    if (parentCurrent()) mutation()
+                                } },
+                                currentOrigin = parentCurrent,
+                                publication = native::withNetworkRecoveryState,
+                                onFailure = { responseFailure ->
+                                    queuePlaybackFailure(state, expected, failure, revision,
+                                        desktopOriginalApiFailure(desktopOriginalVideoLoadError(responseFailure)), responseFailure)
+                                })
+                        }
+                    }
+                }))
+        }
+
         internal fun initialize() {
             val ports = factory.entryPorts(owner)
             val aggregate = root.root.entry.embeddedPages as? DesktopOriginalHomeEmbeddedAggregate
@@ -162,7 +250,7 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 { root.runtime.plugins.value.filter { it.enabled }.map { it.plugin }.filterIsInstance<PlaybackCdnPlugin>().firstOrNull() },
                 owner.environment.plugins::rewritePlaybackCandidates,
                 { items, index, source -> assertOwned(); shell.playlist.setExternalPlaylist(items, index, source) },
-                ::enqueueCurrentTask, ports.applyPreferredVolume, native::launch, native::commit, ::owns, native::ownsPlaybackSource)
+                ::enqueueCurrentTask, ports.applyPreferredVolume, { block -> native.launch(block) }, native::commit, ::owns, native::ownsPlaybackSource)
             val vm = BangumiPlayerViewModel(environment)
             stateOwner.set(vm)
             native.installRetirementCapture(::captureFinalHeartbeat) { _, nextEpisode ->
@@ -195,6 +283,7 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
             scopeJob.invokeOnCompletion {
                 EventQueue.invokeLater {
                     if (current.compareAndSet(this, null)) mutableEntries.value = null
+                    recovery.close()
                     clearMiniCallbacks()
                     // Only this borrowed listener/VM view is closed, never native MPV.
                     stateOwner.get()?.close()
@@ -355,6 +444,7 @@ internal class DesktopOriginalBangumiPlayerRootOwner(
                 line.contains("drm", true) && (line.contains("unsupported", true) || line.contains("encrypted", true) || line.contains("decrypt", true))
             } == true
         override fun close() {
+            recovery.close()
             native.onSharedPlaybackReplaced()
             clearMiniCallbacks()
         }

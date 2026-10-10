@@ -110,7 +110,8 @@ internal class DesktopOriginalPortraitPlatformBinding(
     private class BangumiCapture(val presenter: DesktopOriginalBangumiSharedPlaybackPresenter,
         val detail: BangumiDetail, val episode: BangumiEpisode,
         val qualityReplacement: BangumiQualityReplacement? = null)
-    private class BangumiQualityReplacement(previous: DesktopOriginalVideoAcceptedPublication) {
+    private class BangumiQualityReplacement(previous: DesktopOriginalVideoAcceptedPublication,
+        val parentIntentCurrent: () -> Boolean = { true }) {
         var previous: DesktopOriginalVideoAcceptedPublication? = previous // same captures monitor
         var accepted: DesktopOriginalVideoAcceptedPublication? = null // actual returned snapshot only
     }
@@ -305,7 +306,8 @@ internal class DesktopOriginalPortraitPlatformBinding(
                 capture.nativeBaseline, capture.job, stillPublication)
             else assembly.native.publishBangumiQualityReplacement(prepared.request,
                 prepared.preparation.source.copy(startPaused = !playWhenReady),
-                capture.nativeBaseline, capture.job, checkNotNull(parent), stillPublication)
+                capture.nativeBaseline, capture.job, checkNotNull(parent), stillPublication,
+                isParentIntentCurrent = quality.parentIntentCurrent)
             if (quality != null) synchronized(captures) {
                 quality.accepted = accepted // exact returned publication, never predicted/ACK/Active
                 quality.previous = null // consumed parent must not form retained source chains
@@ -341,15 +343,18 @@ internal class DesktopOriginalPortraitPlatformBinding(
      * episode and native source remain usable. Full episode/page loads keep their
      * original begin/Loading/stop path above. No completed load Binding is reused. */
     internal suspend fun captureBangumiQualityRequest(presenter: DesktopOriginalBangumiSharedPlaybackPresenter,
-        state: com.android.purebilibili.feature.bangumi.BangumiPlayerState.Success): DesktopOriginalVideoRepositoryBinding {
+        state: com.android.purebilibili.feature.bangumi.BangumiPlayerState.Success,
+        expectedPublication: DesktopOriginalVideoAcceptedPublication? = null,
+        parentIntentCurrent: () -> Boolean = { true }): DesktopOriginalVideoRepositoryBinding {
         currentCoroutineContext().ensureActive(); assertOwned()
         val caller = checkNotNull(currentCoroutineContext()[Job])
-        val previous = assembly.native.current() ?: throw CancellationException("PGC quality source absent")
+        val previous = expectedPublication ?: assembly.native.current()
+            ?: throw CancellationException("PGC quality source absent")
         val token = assembly.captureLoadState().currentLoadRequestToken
-        val quality = BangumiQualityReplacement(previous)
+        val quality = BangumiQualityReplacement(previous, parentIntentCurrent)
         if (!assembly.native.admitPlaybackDispatch(previous) {
                 caller.ensureActive()
-                if (!ownsBangumiPlayback(presenter, state) ||
+                if (!ownsBangumiPlayback(presenter, state) || !parentIntentCurrent() ||
                     assembly.captureLoadState().currentLoadRequestToken != token)
                     throw CancellationException("PGC quality episode replaced before capture")
                 synchronized(captures) { bangumiQualityCaller = caller }
@@ -393,7 +398,8 @@ internal class DesktopOriginalPortraitPlatformBinding(
                 throw CancellationException("PGC actual Store token replaced")
             capture.bangumi?.qualityReplacement?.let { quality ->
                 val expected = synchronized(captures) { quality.accepted ?: quality.previous }
-                if (!isBangumiQualityCallerCurrent(capture) ||
+                val parentIntent = synchronized(captures) { quality.accepted != null } || quality.parentIntentCurrent()
+                if (!isBangumiQualityCallerCurrent(capture) || !parentIntent ||
                     expected == null || !assembly.native.isCurrent(expected))
                     throw CancellationException("PGC quality response/source superseded")
             }
