@@ -92,10 +92,11 @@ internal fun DesktopWindowsVideoControlBar(
                 var qualityMenu by remember { mutableStateOf(false) }
                 var volumeMenu by remember { mutableStateOf(false) }
                 var chapterMenu by remember(chapters, chaptersSource, sourceVersion) { mutableStateOf(false) }
+                var enhancementMenu by remember(sourceVersion) { mutableStateOf(false) }
                 SideEffect { latestHold(DesktopWindowsFullscreenChromeInteraction(hovered, focused,
-                    scrubbing || more || speedMenu || qualityMenu || volumeMenu || chapterMenu)) }
+                    scrubbing || more || speedMenu || qualityMenu || volumeMenu || chapterMenu || enhancementMenu)) }
                 LaunchedEffect(enabled) {
-                    if (!enabled) { more = false; speedMenu = false; qualityMenu = false; volumeMenu = false; chapterMenu = false }
+                    if (!enabled) { more = false; speedMenu = false; qualityMenu = false; volumeMenu = false; chapterMenu = false; enhancementMenu = false }
                 }
                 Row(Modifier.fillMaxWidth().heightIn(min = 44.dp), verticalAlignment = Alignment.CenterVertically) {
                     DesktopWindowsPlayerIconButton(tooltip = if (state.paused || state.ended) "播放" else "暂停", onClick = onPlayPause, enabled = enabled && state.ready, modifier = Modifier.size(44.dp)) {
@@ -164,7 +165,8 @@ internal fun DesktopWindowsVideoControlBar(
                         }
                     }
                     sponsorSkip()
-                    DesktopVideoEnhancementCompactSlot(showStatus = showEnhancementStatus) { enhancement() }
+                    DesktopVideoEnhancementCompactSlot(showStatus = showEnhancementStatus, menuEnabled = enabled,
+                        onMenuExpandedChanged = { enhancementMenu = it }) { enhancement() }
                     DesktopWindowsPlayerIconButton(tooltip = "详情", onClick = onDetails, modifier = Modifier.size(44.dp)) {
                         Icon(Icons.Default.Info, contentDescription = "详情",
                             tint = if (detailsOpen) MaterialTheme.colorScheme.primary else LocalContentColor.current)

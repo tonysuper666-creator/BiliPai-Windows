@@ -50,12 +50,17 @@ fun DesktopVideoEnhancementSettingsDialog(configuration: DesktopVideoEnhancement
 
 internal val LocalDesktopVideoEnhancementCompact = staticCompositionLocalOf { false }
 private val LocalDesktopVideoEnhancementCompactStatus = staticCompositionLocalOf { true }
+private val LocalDesktopVideoEnhancementMenuEnabled = staticCompositionLocalOf { true }
+private val LocalDesktopVideoEnhancementMenuExpanded = staticCompositionLocalOf<(Boolean) -> Unit> { {} }
 
 /** Compact presentation only. All switch and detail operations still use the original Root binding. */
 @Composable
-internal fun DesktopVideoEnhancementCompactSlot(showStatus: Boolean = true, content: @Composable () -> Unit) {
+internal fun DesktopVideoEnhancementCompactSlot(showStatus: Boolean = true, menuEnabled: Boolean = true,
+    onMenuExpandedChanged: (Boolean) -> Unit = {}, content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalDesktopVideoEnhancementCompact provides true,
-        LocalDesktopVideoEnhancementCompactStatus provides showStatus, content = content)
+        LocalDesktopVideoEnhancementCompactStatus provides showStatus,
+        LocalDesktopVideoEnhancementMenuEnabled provides menuEnabled,
+        LocalDesktopVideoEnhancementMenuExpanded provides onMenuExpandedChanged, content = content)
 }
 
 internal fun desktopVideoEnhancementCompactLabel(state: DesktopVideoEnhancementState,
@@ -83,12 +88,38 @@ fun DesktopVideoEnhancementControls(state: DesktopVideoEnhancementState,
         val configurationError by configuration.error.collectAsState()
         val label = desktopVideoEnhancementCompactLabel(state, enabled, configurationError)
         val showStatus = LocalDesktopVideoEnhancementCompactStatus.current
-        AppTextButton(onClick = onSettings, modifier = (if (showStatus) Modifier.heightIn(min = 44.dp) else Modifier.size(44.dp))
-            .semantics { contentDescription = "NVIDIA 增强详情" },
-            contentPadding = if (showStatus) AppButtonDefaults.TextButtonContentPadding else PaddingValues(4.dp)) {
-            AppText(if (showStatus) "NVIDIA · $label" else "RTX", style = MaterialTheme.typography.labelMedium,
-                maxLines = 1, softWrap = false,
-                color = if (configurationError != null || state.error != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary)
+        val binding = LocalDesktopWindowsVideoEnhancement.current
+        check(binding.configuration === configuration) { "NVIDIA settings must use the actual Root configuration" }
+        val owner = LocalDesktopWindowsPlayerWindow.current
+        val menuEnabled = LocalDesktopVideoEnhancementMenuEnabled.current
+        // The Root recreates its binding wrapper on recompose; the session flow is stable.
+        // A changed source or retired source (version zero) never revives an old popover.
+        var menuOpen by remember(configuration, binding.state, owner, state.sourceVersion, state.identity, menuEnabled) {
+            mutableStateOf(false)
+        }
+        val canExpand = menuEnabled && state.sourceVersion > 0 && owner?.isShowing == true
+        val expanded = menuOpen && canExpand
+        val reportExpanded by rememberUpdatedState(LocalDesktopVideoEnhancementMenuExpanded.current)
+        SideEffect { reportExpanded(expanded) }
+        DisposableEffect(configuration, binding.state, owner) {
+            onDispose { reportExpanded(false) }
+        }
+        Box {
+            AppTextButton(onClick = {
+                    val actualState = binding.state.value
+                    if (canExpand && actualState.sourceVersion == state.sourceVersion && actualState.identity == state.identity) menuOpen = true
+                }, enabled = canExpand, modifier = (if (showStatus) Modifier.heightIn(min = 44.dp) else Modifier.size(44.dp))
+                .semantics { contentDescription = "NVIDIA 增强详情" },
+                contentPadding = if (showStatus) AppButtonDefaults.TextButtonContentPadding else PaddingValues(4.dp)) {
+                AppText(if (showStatus) "NVIDIA · $label" else "RTX", style = MaterialTheme.typography.labelMedium,
+                    maxLines = 1, softWrap = false,
+                    color = if (configurationError != null || state.error != null) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary)
+            }
+            DesktopWindowsPlayerMenu(expanded, onDismissRequest = { menuOpen = false }, preferredHeight = 400.dp) {
+                Column(Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
+                    DesktopWindowsVideoEnhancementSettingsContent(configuration, showProcessingQuality = false)
+                }
+            }
         }
         return
     }
