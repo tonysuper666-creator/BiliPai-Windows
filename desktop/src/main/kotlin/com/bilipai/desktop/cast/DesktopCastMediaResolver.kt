@@ -62,6 +62,24 @@ class DesktopCastMediaResolver(private val repository: DesktopRepository, privat
         contentType: String = "video/mp4", positionMs: Long = 0, autoplay: Boolean = true): CastPluginMediaRequest =
         resolveDesktopNativeCastMedia(context, source, creator, contentType, positionMs, autoplay)
 
+    /** The completed task's final MP4/M4A is the sole local cast input, never its DASH assets. */
+    fun offlineFile(source: com.bilipai.desktop.player.PlaybackSource, managedFile: java.nio.file.Path,
+        managedDirectory: java.nio.file.Path, audioOnly: Boolean, positionMs: Long = 0,
+        autoplay: Boolean = true): CastPluginMediaRequest {
+        check(source.audioUrl == null && source.progressiveSegments.isEmpty()) { "缓存音视频尚未合并，无法完整投屏" }
+        val file = managedFile.toAbsolutePath().normalize()
+        val directory = managedDirectory.toRealPath()
+        require(file.isAbsolute && !java.nio.file.Files.isSymbolicLink(file) && file.toRealPath().startsWith(directory)) {
+            "缓存文件不在当前下载目录"
+        }
+        require(java.nio.file.Path.of(source.videoUrl).toAbsolutePath().normalize() == file) { "当前播放源已不是此缓存文件" }
+        val publication = checkNotNull(source.nativePublication) { "缓存播放会话已经变化，请重新开始投屏" }
+        val type = if (audioOnly) "audio/mp4" else "video/mp4"
+        LocalProxyServer.ensureStarted()
+        return CastPluginMediaRequest(LocalProxyServer.getLocalFileUrl(context, file, type, publication),
+            source.title, "", type, positionMs.coerceAtLeast(0), autoplay)
+    }
+
     fun existingSource(source: PlaybackSource, nativeSource: com.bilipai.desktop.player.PlaybackSource,
         creator: String = "", durationMs: Long = 0, positionMs: Long = 0,
         autoplay: Boolean = true): CastPluginMediaRequest = resolveDesktopCastMedia(context,

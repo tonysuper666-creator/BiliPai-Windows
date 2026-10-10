@@ -22,6 +22,7 @@ internal class DesktopCastProxyTarget(val url: HttpUrl, val headers: Map<String,
 
 object DesktopCastProxySessions {
     private val registrations = ConcurrentHashMap<String, DesktopCastProxyTarget>()
+    private val localRegistrations = ConcurrentHashMap<String, DesktopCastLocalTarget>()
     private val lifecycle = Any()
     private val consumers = mutableMapOf<Any, () -> Boolean>()
     private var preparations = 0
@@ -62,8 +63,27 @@ object DesktopCastProxySessions {
         return id
     }
 
+    /** Only the current, already-muxed offline playback source can register a file. */
+    fun registerLocalFile(path: java.nio.file.Path, contentType: String,
+        nativePublication: com.bilipai.desktop.player.DesktopNativePlaybackPublication): String {
+        val frame = checkNotNull(su.litvak.chromecast.api.v2.DesktopCastPublication.current() as? DesktopCastPublicationFrame) {
+            "本地文件投屏缺少当前播放会话"
+        }
+        // Filesystem checks stay outside account, entry and native admission.
+        val target = DesktopCastLocalTarget.capture(path, contentType, frame, nativePublication)
+        val id = UUID.randomUUID().toString()
+        target.admit { localRegistrations[id] = target }
+        return id
+    }
+
     internal fun find(id: String): DesktopCastProxyTarget? = registrations[id]
-    fun clear() { registrations.clear() }
+    internal fun findLocal(id: String): DesktopCastLocalTarget? = localRegistrations[id]
+    fun clear() {
+        registrations.clear()
+        val local = localRegistrations.values.toList()
+        localRegistrations.clear()
+        local.forEach(DesktopCastLocalTarget::retire)
+    }
 
     /** Apply after OkHttp's bridge so explicit empty Cookie/Referer/UA cannot acquire defaults. */
     fun networkInterceptor(): Interceptor = Interceptor { chain ->

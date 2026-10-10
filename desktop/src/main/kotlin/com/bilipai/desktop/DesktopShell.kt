@@ -1261,13 +1261,23 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         val nativeSource = player?.currentSourceSnapshot()
         val current = playback.state.value
         val epoch = repository.sessionEpoch
+        val offlineTask = if (owner === retainedMedia.offline)
+            downloads.tasks.value.firstOrNull { it.id == retainedMedia.offline.current }
+                ?: error("缓存任务已经变化，请重新开始投屏") else null
+        val offlineCurrent = {
+            owner !== retainedMedia.offline || offlineTask != null && retainedMedia.offline.current == offlineTask.id &&
+                downloads.tasks.value.any { it.id == offlineTask.id &&
+                    it.status == com.android.purebilibili.feature.download.DownloadStatus.COMPLETED &&
+                    it.directory == offlineTask.directory && it.item.filePath == offlineTask.item.filePath &&
+                    it.item.fileSize == offlineTask.item.fileSize && it.item.isAudioOnly == offlineTask.item.isAudioOnly }
+        }
         val positionMs = ((player?.state?.value?.positionSeconds ?: 0.0) * 1000).toLong()
         val callerJob = kotlinx.coroutines.currentCoroutineContext()[Job]
         val owned = {
             val latest = player?.currentSourceSnapshot()
             callerJob?.isCancelled != true && scope.isActive && !isClosing() && !activatingUpdate && epoch == repository.sessionEpoch &&
                 nativeSource?.sourceVersion == latest?.sourceVersion && nativeSource?.source == latest?.source &&
-                retainedMedia.current === owner && !systemTargetAudio &&
+                retainedMedia.current === owner && !systemTargetAudio && offlineCurrent() &&
                 (owner != null || playback.state.value.details?.bvid == current.details?.bvid && playback.state.value.currentPart == current.currentPart) &&
                 (owner !== retainedMedia.external || retainedMedia.external.authorizationCurrent)
         }
@@ -1282,7 +1292,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
             else -> nativeSource?.source?.copy(primaryAccountEpoch = epoch) ?: error("当前播放源已经变化")
         }
         val frame = com.bilipai.desktop.cast.DesktopCastPublicationFrame(
-            com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository, allowPrimaryAccountSource = true), admittedSource, owned, callerJob)
+            com.bilipai.desktop.player.DesktopRepositoryPlaybackPublication(repository, allowPrimaryAccountSource = true), admittedSource, owned, callerJob,
+            nativeAdmission = nativeSource?.source?.nativePublication.takeIf { owner === retainedMedia.offline })
         return com.bilipai.desktop.cast.DesktopCastMediaPublication(frame) {
         val media = when (owner) {
             retainedMedia.external -> {
@@ -1301,7 +1312,14 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                 castResolver.existingSource(source, nativeSource?.source ?: error("剧集播放源已经变化"),
                     durationMs = (retainedMedia.bangumi.episode?.durationSeconds ?: 0) * 1000, positionMs = positionMs)
             }
-            retainedMedia.offline -> error("本地离线文件暂不支持局域网投屏，请打开在线视频")
+            retainedMedia.offline -> withContext(Dispatchers.IO) {
+                val task = checkNotNull(offlineTask)
+                // Reuse the download manager's completed-task/muxed-output validation.
+                val local = downloads.offlinePlayback(task.id)
+                check(offlineCurrent()) { "缓存任务已经变化，请重新开始投屏" }
+                castResolver.offlineFile(checkNotNull(nativeSource).source, java.nio.file.Path.of(local.videoUrl),
+                    java.nio.file.Path.of(task.directory), task.item.isAudioOnly, positionMs)
+            }
             else -> {
                 val info = current.details ?: error("请先打开需要投屏的视频")
                 val source = resolvedVideo!!
@@ -1310,7 +1328,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         }
         val latestSource = player?.currentSourceSnapshot()
         check(epoch == repository.sessionEpoch && nativeSource?.sourceVersion == latestSource?.sourceVersion &&
-            nativeSource?.source == latestSource?.source && retainedMedia.current === owner && !systemTargetAudio &&
+            nativeSource?.source == latestSource?.source && retainedMedia.current === owner && !systemTargetAudio && offlineCurrent() &&
             (owner != null || playback.state.value.details?.bvid == current.details?.bvid && playback.state.value.currentPart == current.currentPart) &&
             (owner !== retainedMedia.external || retainedMedia.external.authorizationCurrent)) {
             "当前播放视频已切换，请重新开始投屏"
@@ -2697,7 +2715,7 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                 DesktopOriginalOfflineRootHost(entryKey.taskId,binding,offlineEntryScope,globalPluginContext,
                                     originalDanmakuPreferences,danmakuPresentation,systemMedia,pip,pipActive,hostWindow,
                                     isFullscreen,::setOriginalFullscreen,{homeRootRef.get()?.refreshCurrentRootChrome()},
-                                    {commands.back()},{error=it})
+                                    {commands.back()},{error=it},cast,pluginRuntime,::currentCastMedia)
                             }
                             entryKey is BiliPaiNavKey.WeeklySeries -> DesktopWeeklySeriesScreen(discovery.weeklySeriesRequests(),repository,entryKey.number,{commands.back()},
                                 {video,list -> val cards=list.map{VideoCard(it.bvid,it.title,it.pic,it.owner.name,it.stat.view.toLong(),it.duration,preferredCid=it.cid)};

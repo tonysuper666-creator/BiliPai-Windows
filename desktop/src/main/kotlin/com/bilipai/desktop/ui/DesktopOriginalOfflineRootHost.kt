@@ -16,6 +16,10 @@ import com.bilipai.desktop.plugins.DesktopPluginContext
 import com.bilipai.desktop.settings.DesktopOriginalDanmakuPreferences
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.launch
 import java.awt.Window
 
 /** Defers the original request until this exact control window has finished showing. */
@@ -62,10 +66,14 @@ internal fun DesktopOriginalOfflineRootHost(
     restoreCurrentRootChrome: () -> Unit,
     onBack: () -> Unit,
     feedback: (String) -> Unit,
+    cast: com.bilipai.desktop.cast.DesktopCastController,
+    runtime: com.bilipai.desktop.plugins.DesktopPluginRuntime,
+    castMedia: suspend () -> com.bilipai.desktop.cast.DesktopCastMediaPublication,
 ) {
     val actualPipActive by rememberUpdatedState(pipActive)
     val foregroundActive by rememberUpdatedState(LocalDesktopDetailForeground.current)
     val currentFeedback by rememberUpdatedState(feedback)
+    val currentCastMedia by rememberUpdatedState(castMedia)
     val currentFullscreen by rememberUpdatedState(isFullscreen)
     val setActualFullscreen by rememberUpdatedState(setFullscreen)
     val restoreChrome by rememberUpdatedState(restoreCurrentRootChrome)
@@ -75,17 +83,21 @@ internal fun DesktopOriginalOfflineRootHost(
             { currentFullscreen() }, { setActualFullscreen(it) }, { restoreChrome() },
         )
     }
-    val surface = remember(backend, pictureInPicture, window, windowEffects) {
+    val surface = remember(backend, pictureInPicture, window, windowEffects, cast, runtime) {
         object : DesktopOriginalOfflineSurface {
             @Composable
             override fun Render(player: DesktopOfflineMpvControl, modifier: Modifier, foreground: @Composable () -> Unit) {
                 val controls: @Composable () -> Unit = {
                     Box(Modifier.fillMaxSize()) {
                         foreground()
+                        Row(Modifier.align(Alignment.TopEnd).padding(top = 58.dp, end = 20.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        DesktopOfflineCastControls(player, backend, foregroundActive, runtime, cast,
+                            { currentCastMedia() }) { currentFeedback(it) }
                         if (player.isOwned() && foregroundActive && pictureInPicture != null && window != null &&
                             !player.nativePlayer.state.value.audioOnly) {
                             AppTextButton(
-                                modifier = Modifier.align(Alignment.TopEnd).padding(top = 58.dp, end = 20.dp),
+                                modifier = Modifier,
                                 onClick = {
                                     if (player.isOwned() && foregroundActive) {
                                         if (actualPipActive) pictureInPicture.restore()
@@ -95,6 +107,7 @@ internal fun DesktopOriginalOfflineRootHost(
                                     }
                                 },
                             ) { AppText(if (actualPipActive) "返回主窗口" else "浮窗") }
+                        }
                         }
                         if (actualPipActive) AppText("正在浮窗播放", modifier = Modifier.align(Alignment.Center))
                     }
@@ -122,5 +135,92 @@ internal fun DesktopOriginalOfflineRootHost(
             if (backend.ownsAcceptedSource()) pictureInPicture?.close()
             onBack()
         }
+    }
+}
+
+
+/** Small original-control slot in the actual offline foreground window. Shared cast actors remain Root-owned. */
+@Composable
+private fun DesktopOfflineCastControls(
+    player: DesktopOfflineMpvControl,
+    backend: DesktopOfflineTaskPlayerBinding,
+    foregroundActive: Boolean,
+    runtime: com.bilipai.desktop.plugins.DesktopPluginRuntime,
+    cast: com.bilipai.desktop.cast.DesktopCastController,
+    media: suspend () -> com.bilipai.desktop.cast.DesktopCastMediaPublication,
+    feedback: (String) -> Unit,
+) {
+    require(cast.context === runtime.context)
+    val foreground by rememberUpdatedState(foregroundActive)
+    val latestMedia by rememberUpdatedState(media)
+    val latestFeedback by rememberUpdatedState(feedback)
+    val nativeState by player.nativePlayer.state.collectAsState()
+    val expected = remember(player, nativeState) { player.nativePlayer.currentSourceSnapshot() }
+    val scope = rememberCoroutineScope()
+    var publication by remember(player, expected?.sourceVersion, expected?.source) {
+        mutableStateOf<com.bilipai.desktop.cast.DesktopCastMediaPublication?>(null)
+    }
+    var protocol by remember(player, expected?.sourceVersion, expected?.source) { mutableStateOf<String?>(null) }
+    var opening by remember(player, expected?.sourceVersion, expected?.source) { mutableStateOf(false) }
+    var enabling by remember(player, expected?.sourceVersion, expected?.source) { mutableStateOf(false) }
+    val info by runtime.plugins.collectAsState()
+    fun current(): Boolean = expected != null && foreground && player.isOwned() && player.isForegroundOwned() &&
+        backend.isOwned() && backend.ownsAcceptedSource() && player.sourceVersion == expected.sourceVersion &&
+        player.nativePlayer.ownsSourceSnapshot(expected)
+    fun commit(action: () -> Unit): Boolean {
+        val captured = expected ?: return false
+        val source = captured.source.nativePublication ?: return false
+        var applied = false
+        val accepted = source.admit { if (current()) { action(); applied = true } }
+        return accepted && applied
+    }
+    if (!current()) return
+    AppTextButton(onClick = {
+        if (commit { opening = true }) scope.launch {
+            try {
+                currentCoroutineContext().ensureActive()
+                if (!current()) throw CancellationException("Offline cast source retired")
+                // Capture the SAME Root factory before showing any device picker. No IO/admission lock is held.
+                val captured = latestMedia()
+                currentCoroutineContext().ensureActive()
+                if (!commit { publication = captured; protocol = "choose" })
+                    throw CancellationException("Offline cast source retired")
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) { commit { latestFeedback("无法准备缓存投屏，请重新打开缓存视频") } }
+            finally { commit { opening = false } }
+        }
+    }, enabled = !opening) { AppText(if (opening) "准备投屏…" else "投屏") }
+    val source = publication ?: return
+    val sourceMedia: suspend () -> com.bilipai.desktop.cast.DesktopCastMediaPublication? = {
+        if (!current()) throw CancellationException("Offline cast source retired")
+        source // Never substitute a newly loaded source for this open picker.
+    }
+    val dismiss = { commit { protocol = null; publication = null }; Unit }
+    when (protocol) {
+        runtime.dlnaCast.id -> com.bilipai.desktop.cast.DesktopCastDialog(cast, sourceMedia, dismiss, controlSource = source)
+        runtime.googleCast.id -> com.bilipai.desktop.cast.DesktopGoogleCastDialog(runtime.context, runtime.googleCast,
+            sourceMedia, dismiss, controlSource = source)
+        "choose" -> androidx.compose.material3.AlertDialog(onDismissRequest = dismiss,
+            title = { AppText("选择投屏协议") }, text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf(runtime.dlnaCast, runtime.googleCast).forEach { plugin ->
+                        val enabled = info.any { it.plugin === plugin && it.enabled }
+                        AppTextButton(enabled = !enabling && !plugin.unavailable, modifier = Modifier.fillMaxWidth(), onClick = {
+                            if (commit { enabling = true }) scope.launch {
+                                try {
+                                    if (!enabled) runtime.setEnabled(plugin.id, true, ::current)
+                                    currentCoroutineContext().ensureActive()
+                                    if (!commit {
+                                        check(runtime.plugins.value.any { it.plugin === plugin && it.enabled })
+                                        protocol = plugin.id
+                                    }) throw CancellationException("Offline cast source retired")
+                                } catch (cancelled: CancellationException) { throw cancelled }
+                                catch (_: Exception) { commit { latestFeedback("投屏插件启用失败，请检查插件设置") } }
+                                finally { commit { enabling = false } }
+                            }
+                        }) { AppText(if (enabled) plugin.name else "启用 ${plugin.name}") }
+                    }
+                }
+            }, confirmButton = { AppTextButton(onClick = dismiss) { AppText("关闭") } })
     }
 }

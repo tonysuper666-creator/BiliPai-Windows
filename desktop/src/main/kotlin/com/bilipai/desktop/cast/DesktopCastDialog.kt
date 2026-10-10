@@ -13,8 +13,9 @@ import kotlinx.coroutines.launch
 
 /** Discovery begins only when the user opens this dialog; dismissal keeps a successful cast playing. */
 @Composable
-fun DesktopCastDialog(controller: DesktopCastController, media: suspend () -> DesktopCastMediaPublication?, onDismiss: () -> Unit) =
-    DesktopCastDialogContent(controller, media, null, onDismiss)
+fun DesktopCastDialog(controller: DesktopCastController, media: suspend () -> DesktopCastMediaPublication?,
+    onDismiss: () -> Unit, controlSource: DesktopCastMediaPublication? = null) =
+    DesktopCastDialogContent(controller, media, null, onDismiss, controlSource)
 
 @Composable
 internal fun DesktopCastDialog(controller: DesktopCastController,
@@ -25,12 +26,13 @@ internal fun DesktopCastDialog(controller: DesktopCastController,
 private fun DesktopCastDialogContent(controller: DesktopCastController,
     media: (suspend () -> DesktopCastMediaPublication?)?,
     onRouteSelected: ((com.android.purebilibili.core.plugin.CastPluginApi, com.android.purebilibili.core.plugin.CastPluginRoute) -> Unit)?,
-    onDismiss: () -> Unit) {
+    onDismiss: () -> Unit, controlSource: DesktopCastMediaPublication? = null) {
     val routes by controller.routes.collectAsState()
     val state by controller.playbackState.collectAsState()
     val discovering by controller.isDiscovering.collectAsState()
     val actorBusy by controller.isBusy.collectAsState()
     var selectionPending by remember(controller) { mutableStateOf(false) }
+    var sourceAccepted by remember(controller, controlSource) { mutableStateOf(controlSource == null) }
     val busy = actorBusy || selectionPending
     val latestSelection by rememberUpdatedState(onRouteSelected)
     val error by controller.error.collectAsState()
@@ -70,12 +72,17 @@ private fun DesktopCastDialogContent(controller: DesktopCastController,
                         Button(onClick = {
                             val selection = latestSelection
                             if (selection != null) { selectionPending = true; selection(controller.plugin, route) }
-                            else scope.launch { controller.cast(route) { checkNotNull(latestMedia).invoke() } }
+                            else scope.launch {
+                                val result = controller.cast(route) {
+                                    checkNotNull(latestMedia).invoke().also { if (controlSource != null) check(it === controlSource) }
+                                }
+                                if (result.isSuccess) sourceAccepted = true
+                            }
                         }, enabled = !busy) { Text("投屏到此设备") }
                     }
                 }
             }
-            if (state.isActive) {
+            if (state.isActive && (controlSource == null || sourceAccepted)) {
                 HorizontalDivider()
                 Text("正在 ${state.deviceLabel} 上播放", style = MaterialTheme.typography.titleMedium)
                 Text(state.title)
@@ -87,14 +94,22 @@ private fun DesktopCastDialogContent(controller: DesktopCastController,
                         onValueChangeFinished = {
                             val fraction = pendingSeek
                             pendingSeek = null
-                            if (fraction != null) scope.launch { controller.seek((fraction * state.durationMs).toLong()) }
+                            if (fraction != null) scope.launch {
+                                if (controlSource == null) controller.seek((fraction * state.durationMs).toLong())
+                                else controlSource.onSource { controller.seek((fraction * state.durationMs).toLong()) }
+                            }
                         })
                 }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(onClick = { scope.launch { if (state.isPlaying) controller.pause() else controller.play() } }, enabled = !busy) {
+                    Button(onClick = { scope.launch {
+                        if (controlSource == null) { if (state.isPlaying) controller.pause() else controller.play() }
+                        else controlSource.onSource { if (state.isPlaying) controller.pause() else controller.play() }
+                    } }, enabled = !busy) {
                         Text(if (state.isPlaying) "暂停" else "播放")
                     }
-                    OutlinedButton(onClick = { scope.launch { controller.stop() } }, enabled = !busy) { Text("停止投屏") }
+                    OutlinedButton(onClick = { scope.launch {
+                        if (controlSource == null) controller.stop() else controlSource.onSource { controller.stop() }
+                    } }, enabled = !busy) { Text("停止投屏") }
                 }
             }
         }
