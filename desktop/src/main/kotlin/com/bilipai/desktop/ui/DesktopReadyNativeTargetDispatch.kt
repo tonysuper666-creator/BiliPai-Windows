@@ -10,35 +10,47 @@ import com.android.purebilibili.navigation3.*
  * The existing physical pager is selected by routes.home(); the original VM owns its category.
  * In particular a PopularFeed target is not reduced to a separate Windows flat popular page. */
 internal fun dispatchDesktopReadyNativeTarget(root: DesktopHomeRetainedRoot,
-    routes: DesktopOriginalRootRouteAssembly, target: BilibiliNavigationTarget): Boolean {
-    if (!routes.owns()) return false
+    routes: DesktopOriginalRootRouteAssembly, target: BilibiliNavigationTarget,
+    stillOwned: (() -> Boolean)? = null, sourceAdmission: (((() -> Unit) -> Boolean))? = null): Boolean {
+    if (!routes.owns() || stillOwned?.invoke() == false) return false
+    fun push(key: BiliPaiNavKey): Boolean = if (stillOwned == null && sourceAdmission == null) {
+        routes.push(key); true // Preserve the existing three-argument dispatch outcome.
+    } else routes.pushFromSource(key, stillOwned, sourceAdmission)
     when (target) {
-        is BilibiliNavigationTarget.Video -> routes.video(BiliPaiNavKey.VideoDetail(target.videoId))
-        is BilibiliNavigationTarget.Dynamic -> routes.push(BiliPaiNavKey.DynamicDetail(target.dynamicId))
-        is BilibiliNavigationTarget.Search -> routes.push(BiliPaiNavKey.Search(target.keyword))
+        is BilibiliNavigationTarget.Video -> {
+            val key = BiliPaiNavKey.VideoDetail(target.videoId)
+            if (stillOwned == null && sourceAdmission == null) routes.video(key)
+            else routes.videoFromSource(key, stillOwned, sourceAdmission)
+        }
+        is BilibiliNavigationTarget.Dynamic -> return push(BiliPaiNavKey.DynamicDetail(target.dynamicId))
+        is BilibiliNavigationTarget.Search -> return push(BiliPaiNavKey.Search(target.keyword))
         is BilibiliNavigationTarget.Space -> {
             if (target.mid <= 0L) return false
-            routes.push(BiliPaiNavKey.Space(target.mid))
+            return push(BiliPaiNavKey.Space(target.mid))
         }
-        is BilibiliNavigationTarget.Live -> routes.push(BiliPaiNavKey.Live(roomId = target.roomId.toString()))
-        is BilibiliNavigationTarget.BangumiSeason -> routes.push(BiliPaiNavKey.BangumiDetail(
+        is BilibiliNavigationTarget.Live -> return push(BiliPaiNavKey.Live(roomId = target.roomId.toString()))
+        is BilibiliNavigationTarget.BangumiSeason -> return push(BiliPaiNavKey.BangumiDetail(
             seasonId = target.seasonId, mediaId = target.mediaId))
-        is BilibiliNavigationTarget.BangumiEpisode -> routes.push(BiliPaiNavKey.BangumiDetail(seasonId = 0L, epId = target.epId))
-        is BilibiliNavigationTarget.Music -> routes.push(legacyRouteToBiliPaiNavKey(
+        is BilibiliNavigationTarget.BangumiEpisode -> return push(BiliPaiNavKey.BangumiDetail(seasonId = 0L, epId = target.epId))
+        is BilibiliNavigationTarget.Music -> return push(legacyRouteToBiliPaiNavKey(
             ScreenRoutes.createMusicRoute(target.musicId) ?: return false))
-        is BilibiliNavigationTarget.Article -> routes.push(BiliPaiNavKey.ArticleDetail(target.articleId))
+        is BilibiliNavigationTarget.Article -> return push(BiliPaiNavKey.ArticleDetail(target.articleId))
         is BilibiliNavigationTarget.PopularFeed -> {
             if (target.subCategoryKey == "weekly") {
-                routes.push(BiliPaiNavKey.WeeklySeries(target.weeklyNumber)); return true
+                return push(BiliPaiNavKey.WeeklySeries(target.weeklyNumber))
             }
-            root.entry.viewModel.switchPopularSubCategory(when (target.subCategoryKey) {
-                "weekly" -> PopularSubCategory.WEEKLY
-                "rank" -> PopularSubCategory.RANKING
-                "all", "precious" -> PopularSubCategory.PRECIOUS
-                else -> PopularSubCategory.COMPREHENSIVE
-            })
-            root.entry.viewModel.switchCategory(HomeCategory.POPULAR)
-            routes.home()
+            fun preparePopular() {
+                root.entry.viewModel.switchPopularSubCategory(when (target.subCategoryKey) {
+                    "weekly" -> PopularSubCategory.WEEKLY
+                    "rank" -> PopularSubCategory.RANKING
+                    "all", "precious" -> PopularSubCategory.PRECIOUS
+                    else -> PopularSubCategory.COMPREHENSIVE
+                })
+                root.entry.viewModel.switchCategory(HomeCategory.POPULAR)
+            }
+            if (stillOwned == null && sourceAdmission == null) {
+                preparePopular(); routes.home()
+            } else return routes.pushFromSource(BiliPaiNavKey.Home, stillOwned, sourceAdmission, ::preparePopular)
         }
     }
     return true

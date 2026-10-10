@@ -2128,6 +2128,30 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 if (externalLinkAdmitted) openVideoHonorLink(url)
                                             }
                                         },
+                                        descriptionLink = { assembly, source, url, descriptionOwned ->
+                                            val factory = ordinaryVideo.factoryFor(assembly)
+                                            fun ownsDescription() = descriptionOwned() && !isClosing() && !activatingUpdate &&
+                                                active && hostVisible && hostDisplayable && messageRoutes.currentKey === entryKey &&
+                                                ordinaryVideo.slot.currentAssembly() === assembly && assembly.owns() &&
+                                                factory.isPresentationCurrent(assembly, source)
+                                            fun admitDescription(action: () -> Unit): Boolean {
+                                                if (!ownsDescription()) return false
+                                                var applied = false
+                                                return factory.withPresentationAdmission(assembly, source) {
+                                                    if (ownsDescription()) { action(); applied = true }
+                                                } && applied
+                                            }
+                                            if (ownsDescription()) {
+                                                val target = com.android.purebilibili.core.util.BilibiliNavigationTargetParser.parse(url)
+                                                // Root performs its checkpoint before final source admission.
+                                                // Its existing resolver Job also keeps this exact metadata lease.
+                                                if (target != null) dispatchDesktopReadyNativeTarget(messageRoutes.root, messageRoutes, target,
+                                                    ::ownsDescription, ::admitDescription)
+                                                else if (url.startsWith("https://", ignoreCase = true) ||
+                                                    url.startsWith("http://", ignoreCase = true))
+                                                    messageRoutes.pushFromSource(BiliPaiNavKey.Web(url), ::ownsDescription, ::admitDescription)
+                                            }
+                                        },
                                         login = { openLogin() }, danmakuSettings = {
                                             if (danmaku != null && hostWindow != null && danmakuSource != null &&
                                                 danmakuSource.request.cid > 0L && ownsDanmakuSource()) originalDanmakuSettingsVisible = true

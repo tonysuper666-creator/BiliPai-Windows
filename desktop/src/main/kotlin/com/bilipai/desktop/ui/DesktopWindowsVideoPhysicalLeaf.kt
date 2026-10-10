@@ -61,6 +61,7 @@ internal class DesktopWindowsVideoActions(
     val enhancement: @Composable () -> Unit,
     val openLink: (String) -> Unit,
     val honorLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String) -> Unit,
+    val descriptionLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String, () -> Boolean) -> Unit,
     val login: () -> Unit, val danmakuSettings: () -> Unit, val toggleDanmaku: () -> Unit,
     val notice: (String) -> Unit,
     val focusChanged: (Boolean) -> Unit,
@@ -853,7 +854,12 @@ internal class DesktopWindowsVideoActions(
                                     actions.bgm(DesktopWindowsVideoBgmPresentation(assembly, source, music, ::current))
                                 }
                             }
-                            Text(success.info.desc, style = MaterialTheme.typography.bodyMedium)
+                            collectionQueueSource?.let { source ->
+                                DesktopWindowsVideoDescriptionSection(assembly, success.info, source,
+                                    ::interactionCurrent) { url, descriptionOwned ->
+                                    latestActions.descriptionLink(assembly, source, url, descriptionOwned)
+                                }
+                            }
                             if (success.info.pages.size > 1) {
                                 Text("分P", style = MaterialTheme.typography.titleSmall)
                                 success.info.pages.forEachIndexed { index, part ->

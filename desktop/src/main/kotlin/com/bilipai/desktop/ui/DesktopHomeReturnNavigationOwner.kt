@@ -39,11 +39,20 @@ internal class DesktopHomeReturnNavigationOwner(
     private var relatedTransitionObserved = false
 
     private fun owns(): Boolean = !closed && stillOwned()
-    private fun mutate(block: () -> Unit): Boolean {
-        if (!owns()) return false
+    private fun mutate(stillOwned: (() -> Boolean)? = null,
+        sourceAdmission: (((() -> Unit) -> Boolean))? = null, block: () -> Unit): Boolean {
+        if (!owns() || stillOwned?.invoke() == false) return false
         var accepted = false
         commitIfCurrent {
-            synchronized(lock) { if (owns()) { block(); accepted = true } }
+            val publish = {
+                synchronized(lock) {
+                    if (owns() && stillOwned?.invoke() != false) { block(); accepted = true }
+                }
+                Unit
+            }
+            // Store -> Home entry -> borrowed video entry -> Return lock.
+            // Source admission never encloses the outer navigation checkpoint.
+            if (sourceAdmission == null) publish() else sourceAdmission(publish)
         }
         return accepted
     }
@@ -60,11 +69,27 @@ internal class DesktopHomeReturnNavigationOwner(
         hasVideoDetailAncestor: Boolean,
         visibleBottomBarRoutes: Set<String>,
         performNavigation: (BiliPaiVideoSource, VideoCardTransitionSession) -> Unit,
+    ): Boolean =
+        enterVideoFromSource(bvid, explicitSourceRoute, coverIdentity, currentKey, hasVideoDetailAncestor,
+            visibleBottomBarRoutes, null, null, performNavigation)
+
+    /** Same complete transition/return mutation with a source-aware final admission.
+     * The original navigation checkpoint precedes mutate and all source monitors. */
+    internal fun enterVideoFromSource(
+        bvid: String,
+        explicitSourceRoute: String?,
+        coverIdentity: String?,
+        currentKey: BiliPaiNavKey?,
+        hasVideoDetailAncestor: Boolean,
+        visibleBottomBarRoutes: Set<String>,
+        stillOwned: (() -> Boolean)?,
+        sourceAdmission: (((() -> Unit) -> Boolean))?,
+        performNavigation: (BiliPaiVideoSource, VideoCardTransitionSession) -> Unit,
     ): Boolean {
-        if (!owns() || bvid.isBlank()) return false
+        if (!owns() || stillOwned?.invoke() == false || bvid.isBlank()) return false
         var navigated = false
         admitRootNavigation {
-            mutate {
+            mutate(stillOwned, sourceAdmission) {
                 if (!owns()) return@mutate
                 val matchedVisibleCardRoute = resolveVideoCardSourceRouteForNavigation(
                     currentRoute = currentKey?.toLegacyRoute(), videoBvid = bvid,

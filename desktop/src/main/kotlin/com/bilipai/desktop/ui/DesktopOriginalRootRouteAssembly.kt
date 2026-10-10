@@ -64,18 +64,27 @@ internal class DesktopOriginalRootRouteAssembly(
 
     /** Root checkpoint precedes Store/entry admission. The commit callback must not suspend,
      * acquire a second Store or join a native/coroutine actor. */
-    private fun admitted(action: () -> Unit): Boolean {
+    private fun admitted(stillOwned: (() -> Boolean)? = null,
+        sourceAdmission: (((() -> Unit) -> Boolean))? = null, action: () -> Unit): Boolean {
         check(EventQueue.isDispatchThread()) { "Actual Root navigation must run on its Window EDT" }
-        if (!owns()) return false
+        if (!owns() || stillOwned?.invoke() == false) return false
         var applied = false
         val accepted = platform.admit {
-            root.entry.gate.commit { if (owns()) { action(); applied = true } }
+            root.entry.gate.commit {
+                val publish = {
+                    if (owns() && stillOwned?.invoke() != false) { action(); applied = true }
+                    Unit
+                }
+                if (sourceAdmission == null) publish() else sourceAdmission(publish)
+            }
         }
         if (applied) pruneCategoryOwners()
         return accepted && applied
     }
     private fun replaceStack(next: List<BiliPaiNavKey>) {
         if (next == stack.toList()) return
+        // A pending click cannot survive a real navigation away and return to an equal key.
+        videoRequest.getAndSet(null)?.cancel()
         val old = currentKey
         val destination = next.lastOrNull() ?: BiliPaiNavKey.MainHost
         val removed = resolveRemovedNavigation3SaveableStateKeys(stack.toList(), next)
@@ -97,7 +106,10 @@ internal class DesktopOriginalRootRouteAssembly(
             loginReadDestination(), DesktopLoginReturnOrigin.MODAL) }
         return result
     }
-    fun login(origin: DesktopLoginReturnOrigin = DesktopLoginReturnOrigin.ROUTE): Boolean = admitted {
+    fun login(origin: DesktopLoginReturnOrigin = DesktopLoginReturnOrigin.ROUTE): Boolean =
+        loginFromSource(origin, null, null)
+    private fun loginFromSource(origin: DesktopLoginReturnOrigin, stillOwned: (() -> Boolean)?,
+        sourceAdmission: (((() -> Unit) -> Boolean))?): Boolean = admitted(stillOwned, sourceAdmission) {
         if (currentKey != BiliPaiNavKey.Login) {
             loginNavigation?.beginLoginReturn(root.capturedEpoch, root.entry.gate.mid, loginReadDestination(), origin)
             pushAdmitted(BiliPaiNavKey.Login)
@@ -125,10 +137,17 @@ internal class DesktopOriginalRootRouteAssembly(
         return accepted && pushed
     }
     fun loginReturnBinding(): DesktopLoginReturnBinding? = loginNavigation?.pendingLoginBinding(root.capturedEpoch)
-    override fun push(key: BiliPaiNavKey): Boolean {
-        if (key is BiliPaiNavKey.VideoDetail) { video(key); return owns() }
-        if (key == BiliPaiNavKey.Login) return login()
-        return admitted {
+    override fun push(key: BiliPaiNavKey): Boolean = pushFromSource(key, null, null)
+    /** Borrow the existing checkpoint/controller/stack; never invoke public push under a source gate. */
+    internal fun pushFromSource(key: BiliPaiNavKey, stillOwned: (() -> Boolean)?,
+        sourceAdmission: (((() -> Unit) -> Boolean))?, prepareNavigation: (() -> Unit)? = null): Boolean {
+        if (key is BiliPaiNavKey.VideoDetail) {
+            video(key, directEntry = true, stillOwned = stillOwned, sourceAdmission = sourceAdmission)
+            return owns()
+        }
+        if (key == BiliPaiNavKey.Login) return loginFromSource(DesktopLoginReturnOrigin.ROUTE, stillOwned, sourceAdmission)
+        return admitted(stillOwned, sourceAdmission) {
+            prepareNavigation?.invoke()
             // Original legacy top-level routes select the actual pager, not a second Home key.
             val parameterizedSearch = key is BiliPaiNavKey.Search && (key.keyword.isNotBlank() || key.openId != 0L)
             if (parameterizedSearch || mainHostNavigation.get()?.invoke(key) != true) pushAdmitted(decorate(key))
@@ -207,39 +226,55 @@ internal class DesktopOriginalRootRouteAssembly(
         else push(key)
     }
     override fun video(key: BiliPaiNavKey.VideoDetail) = video(key, directEntry = true)
-    private fun video(key: BiliPaiNavKey.VideoDetail, directEntry: Boolean) {
+    /** A captured click borrows the ONE original resolver Job and full result dispatch. */
+    internal fun videoFromSource(key: BiliPaiNavKey.VideoDetail, stillOwned: (() -> Boolean)?,
+        sourceAdmission: (((() -> Unit) -> Boolean))?) =
+        video(key, directEntry = true, stillOwned = stillOwned, sourceAdmission = sourceAdmission)
+    private fun video(key: BiliPaiNavKey.VideoDetail, directEntry: Boolean,
+        stillOwned: (() -> Boolean)? = null, sourceAdmission: (((() -> Unit) -> Boolean))? = null) {
         check(EventQueue.isDispatchThread()) { "Actual Root video admission must run on its Window EDT" }
-        if (!owns() || key.bvid.isBlank()) return
+        if (!owns() || stillOwned?.invoke() == false || key.bvid.isBlank()) return
         videoRequest.getAndSet(null)?.cancel()
+        val sourceEntry = currentKey
         val job = scope.launch(start = CoroutineStart.LAZY) {
+            val requestJob = currentCoroutineContext().job
+            fun sourceCurrent() = requestJob.isActive && owns() && stillOwned?.invoke() != false &&
+                (stillOwned == null || currentKey === sourceEntry)
             ensureActive()
-            if (!owns()) throw CancellationException("Root video route owner retired")
-            val resolved = platform.resolveVideo(key, directEntry)
+            if (!sourceCurrent()) throw CancellationException("Root video click source retired")
+            val resolved = platform.resolveVideo(key, directEntry) // Outside all admission monitors.
             ensureActive()
-            if (!owns()) throw CancellationException("Root video route owner retired")
+            if (!sourceCurrent()) throw CancellationException("Root video click source retired")
+            if (resolved == null) return@launch // Original unavailable-network feedback; no navigation mutation.
+            // Consume only this successful, still-current request before destination commit.
+            // replaceStack must cancel a pending predecessor, never this accepted destination.
+            if (!videoRequest.compareAndSet(requestJob, null))
+                throw CancellationException("Root video click was replaced")
             when (resolved) {
-                is BiliPaiNavKey.VideoDetail -> enterVideoResolved(resolved)
-                is BiliPaiNavKey.Story -> enterStoryResolved(resolved)
-                null -> Unit // Original unavailable-network feedback performed by resolver.
-                else -> push(resolved) // Exact original offline or explicit non-video result.
+                is BiliPaiNavKey.VideoDetail -> enterVideoResolved(resolved, ::sourceCurrent, sourceAdmission)
+                is BiliPaiNavKey.Story -> enterStoryResolved(resolved, ::sourceCurrent, sourceAdmission)
+                else -> pushFromSource(resolved, ::sourceCurrent, sourceAdmission) // Exact original offline/non-video result.
             }
         }
         videoRequest.set(job)
         job.invokeOnCompletion { videoRequest.compareAndSet(job, null) }
         job.start()
     }
-    private fun enterVideoResolved(key: BiliPaiNavKey.VideoDetail) {
-        if (!owns()) return
-        root.returns.enterVideo(key.bvid, key.sourceRoute, key.coverUrl, currentKey,
-            stack.any { it is BiliPaiNavKey.VideoDetail }, visibleBottomRoutes()) { source, _ ->
+    private fun enterVideoResolved(key: BiliPaiNavKey.VideoDetail, stillOwned: () -> Boolean,
+        sourceAdmission: (((() -> Unit) -> Boolean))?) {
+        if (!owns() || !stillOwned()) return
+        root.returns.enterVideoFromSource(key.bvid, key.sourceRoute, key.coverUrl, currentKey,
+            stack.any { it is BiliPaiNavKey.VideoDetail }, visibleBottomRoutes(), stillOwned, sourceAdmission) { source, _ ->
             if (owns()) pushAdmitted(decorate(key.copy(sourceRoute = source.route)))
         }
         pruneCategoryOwners()
     }
-    private fun enterStoryResolved(key: BiliPaiNavKey.Story) {
-        // AppNavigation's portrait branch also captures the clicked card/source BEFORE push.
-        root.returns.enterVideo(key.seedBvid, key.sourceRoute, key.seedCover, currentKey,
-            stack.any { it is BiliPaiNavKey.VideoDetail }, visibleBottomRoutes()) { source, _ ->
+    private fun enterStoryResolved(key: BiliPaiNavKey.Story, stillOwned: () -> Boolean,
+        sourceAdmission: (((() -> Unit) -> Boolean))?) {
+        if (!owns() || !stillOwned()) return
+        // Original portrait dispatch retains its full seed/CID/cover/source route.
+        root.returns.enterVideoFromSource(key.seedBvid, key.sourceRoute, key.seedCover, currentKey,
+            stack.any { it is BiliPaiNavKey.VideoDetail }, visibleBottomRoutes(), stillOwned, sourceAdmission) { source, _ ->
             if (owns()) pushAdmitted(decorate(key.copy(sourceRoute = source.route)))
         }
         pruneCategoryOwners()
