@@ -260,6 +260,21 @@ internal class DesktopWindowsVideoActions(
     val subject by assembly.playback.subjectSnapshot.collectAsState()
     val favoriteEvent by assembly.playback.favoriteFolderSaveEvent.collectAsState()
     val success = original as? VideoPlaybackUiState.Success
+    val interactiveChoicePanel by assembly.playback.interactiveChoicePanel.collectAsState()
+    // Bind outside the original visible choice UI and the viewport carrier.
+    // Owner minimization/choice hiding does not revoke an accepted child ACK.
+    val interactiveChoiceSource = rememberDesktopWindowsVideoInteractiveChoiceSource(
+        assembly, success, assembly.native.current(), interactiveChoicePanel,
+        stillOwned = ::feedbackPresentationCurrent,
+        sourceAdmission = { source, action ->
+            var applied = false
+            shell.factoryFor(assembly).withPresentationAdmission(assembly, source) {
+                if (feedbackPresentationCurrent()) assembly.native.admitPlaybackDispatch(source) {
+                    if (feedbackPresentationCurrent()) { action(); applied = true }
+                }
+            } && applied
+        },
+    )
     val playlistItems by assembly.environment.playlist.playlist.collectAsState()
     val collectionQueueSource = assembly.native.current()?.takeIf { accepted ->
         current() && success?.info?.let { it.bvid == accepted.request.bvid && it.cid == accepted.request.cid } == true
@@ -723,6 +738,7 @@ internal class DesktopWindowsVideoActions(
                                         primary?.let { Text(it, color=Color.White, fontSize=20.sp) }
                                         secondary?.let { Text(it, color=Color.White, fontSize=16.sp) }
                                     }
+                                DesktopWindowsVideoInteractiveChoiceOverlay(assembly, interactiveChoicePanel, interactiveChoiceSource)
                             }
                         }, native.surface)
                     } else Text("正在浮窗播放", color=Color.White, modifier=Modifier.align(Alignment.Center))
