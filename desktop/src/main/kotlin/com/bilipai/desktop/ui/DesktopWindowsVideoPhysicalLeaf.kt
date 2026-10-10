@@ -62,6 +62,7 @@ internal class DesktopWindowsVideoActions(
     val openLink: (String) -> Unit,
     val honorLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String) -> Unit,
     val descriptionLink: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, String, () -> Boolean) -> Unit,
+    val relatedNavigation: (DesktopOriginalVideoOwnerAssembly, DesktopOriginalVideoAcceptedPublication, BiliPaiNavKey, () -> Boolean) -> Unit,
     val login: () -> Unit, val danmakuSettings: () -> Unit, val toggleDanmaku: () -> Unit,
     val notice: (String) -> Unit,
     val focusChanged: (Boolean) -> Unit,
@@ -804,7 +805,15 @@ internal class DesktopWindowsVideoActions(
             if (detailsOpen) DesktopWindowsVideoDetailsPanel(
                 modifier = Modifier.width(detailsWidth).fillMaxHeight(), selectedTab = detailsTab,
                 onTabChange = { detailsTab = it }, onClose = { if (current()) detailsOpen = false },
-                current = ::current, related = playback.related, onVideo = actions.video,
+                current = ::current,
+                related = {
+                    collectionQueueSource?.let { source ->
+                        if (success != null) DesktopWindowsVideoRelatedSection(assembly, success, source,
+                            platforms.content, ::interactionCurrent) { target, cardOwned ->
+                            latestActions.relatedNavigation(assembly, source, target, cardOwned)
+                        }
+                    }
+                },
                 introduction = {
                     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         if (success != null) {

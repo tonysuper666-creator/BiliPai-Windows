@@ -2128,6 +2128,30 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
                                                 if (externalLinkAdmitted) openVideoHonorLink(url)
                                             }
                                         },
+                                        relatedNavigation = { assembly, source, target, cardOwned ->
+                                            val factory = ordinaryVideo.factoryFor(assembly)
+                                            fun ownsRelated() = cardOwned() && !isClosing() && !activatingUpdate &&
+                                                active && hostVisible && hostDisplayable && messageRoutes.currentKey === entryKey &&
+                                                ordinaryVideo.slot.currentAssembly() === assembly && assembly.owns() &&
+                                                factory.isPresentationCurrent(assembly, source)
+                                            fun admitRelated(action: () -> Unit): Boolean {
+                                                if (!ownsRelated()) return false
+                                                var applied = false
+                                                return factory.withPresentationAdmission(assembly, source) {
+                                                    if (ownsRelated()) { action(); applied = true }
+                                                } && applied
+                                            }
+                                            // Root performs its checkpoint before this captured source admission.
+                                            // Its one resolver retains the same lease across queued/async video resolution.
+                                            if (ownsRelated()) when (target) {
+                                                is BiliPaiNavKey.VideoDetail -> messageRoutes.videoFromSource(
+                                                    target.copy(sourceRoute = entryKey.toLegacyRoute()),
+                                                    ::ownsRelated, ::admitRelated)
+                                                is BiliPaiNavKey.Space -> messageRoutes.pushFromSource(
+                                                    target, ::ownsRelated, ::admitRelated)
+                                                else -> Unit
+                                            }
+                                        },
                                         descriptionLink = { assembly, source, url, descriptionOwned ->
                                             val factory = ordinaryVideo.factoryFor(assembly)
                                             fun ownsDescription() = descriptionOwned() && !isClosing() && !activatingUpdate &&

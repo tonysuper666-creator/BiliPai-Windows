@@ -2,7 +2,6 @@ package com.bilipai.desktop.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
@@ -12,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.bilipai.desktop.data.VideoCard
 
 internal enum class DesktopWindowsVideoDetailsTab(val title: String) {
     INTRODUCTION("简介与分P"), COMMENTS("评论"), RELATED("相关推荐")
@@ -23,7 +21,7 @@ internal enum class DesktopWindowsVideoDetailsTab(val title: String) {
 internal fun DesktopWindowsVideoDetailsPanel(
     modifier: Modifier, selectedTab: DesktopWindowsVideoDetailsTab,
     onTabChange: (DesktopWindowsVideoDetailsTab) -> Unit, onClose: () -> Unit,
-    current: () -> Boolean, related: List<VideoCard>, onVideo: (VideoCard) -> Unit,
+    current: () -> Boolean, related: @Composable () -> Unit,
     introduction: @Composable () -> Unit, comments: @Composable () -> Unit,
 ) {
     DesktopWindowsPlayerSurface(modifier) {
@@ -40,24 +38,17 @@ internal fun DesktopWindowsVideoDetailsPanel(
                         text = { Text(tab.title, style = MaterialTheme.typography.labelMedium, maxLines = 1) })
                 }
             }
-            // The original comment tab owns its LazyColumn/weight. Give it a
-            // finite sibling viewport, never an unbounded outer list item.
-            if (selectedTab == DesktopWindowsVideoDetailsTab.COMMENTS) {
-                Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp)) { comments() }
-            } else LazyColumn(Modifier.fillMaxWidth().weight(1f), contentPadding = PaddingValues(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                when (selectedTab) {
-                    DesktopWindowsVideoDetailsTab.INTRODUCTION -> item { introduction() }
-                    DesktopWindowsVideoDetailsTab.COMMENTS -> Unit // Rendered in the bounded sibling above.
-                    DesktopWindowsVideoDetailsTab.RELATED -> {
-                        if (related.isEmpty()) item { Text("暂无相关推荐", style = MaterialTheme.typography.bodyMedium) }
-                        items(related, key = { it.bvid }) { video ->
-                            OutlinedButton(onClick = { if (current()) onVideo(video) }, modifier = Modifier.fillMaxWidth()) {
-                                Text(video.title)
-                            }
-                        }
+            // Each original tab receives a finite sibling viewport and owns its own list.
+            when (selectedTab) {
+                DesktopWindowsVideoDetailsTab.COMMENTS ->
+                    Box(Modifier.fillMaxWidth().weight(1f).padding(horizontal = 12.dp)) { comments() }
+                DesktopWindowsVideoDetailsTab.RELATED ->
+                    Box(Modifier.fillMaxWidth().weight(1f)) { related() }
+                DesktopWindowsVideoDetailsTab.INTRODUCTION ->
+                    LazyColumn(Modifier.fillMaxWidth().weight(1f), contentPadding = PaddingValues(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        item { introduction() }
                     }
-                }
             }
         }
     }
