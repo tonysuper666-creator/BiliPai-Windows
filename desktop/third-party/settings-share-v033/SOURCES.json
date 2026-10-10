@@ -1,0 +1,519 @@
+{
+  "upstreamCommit": "6a95beedce6342219986572620f3b8071b155ef3",
+  "upstreamTag": "v0.3.3",
+  "copiedWholeFiles": [
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/share/SettingsShareModels.kt",
+      "gitBlob": "a92a3c80b0e9156b8297556b8fc3d658f1c27e91",
+      "bytes": 2940,
+      "sha256": "161e3e893beb13d8797c15fcb5d3ddd28c3cb485063d4de381871fc325c8b72c",
+      "reuse": "complete unchanged file",
+      "target": "desktop/src/main/kotlin/com/android/purebilibili/feature/settings/share/SettingsShareModels.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/share/SettingsSharePolicy.kt",
+      "gitBlob": "0c42c37231729ebf0d0eea93fd8448734fc914e2",
+      "bytes": 9246,
+      "sha256": "06bbf50dae7866844478579eee4edf78a0531ecbf527d72ba396d821c1164329",
+      "reuse": "complete unchanged file",
+      "target": "desktop/src/main/kotlin/com/android/purebilibili/feature/settings/share/SettingsSharePolicy.kt"
+    },
+    {
+      "path": "app/src/main/java/com/android/purebilibili/feature/settings/share/SettingsShareService.kt",
+      "gitBlob": "0a23708498f54296c7d8efca6b2f349968bd5520",
+      "bytes": 21415,
+      "sha256": "6b75c30811d2ac2708f8451e43913f5ba9c888b3a6f00fec079582c935c26f32",
+      "reuse": "Android IO adapter not copied; decode/normalize/preview contracts reused",
+      "target": null
+    }
+  ],
+  "shareWhitelistSource": {
+    "path": "app/src/main/java/com/android/purebilibili/core/store/SettingsManager.kt",
+    "gitBlob": "7d7792157a8ae02d761b216a49d2e83813d2f623",
+    "bytes": 406394,
+    "sha256": "284ce1fec13bd51b8c7e47a2f204f529227a14643bea546a83899a9f6630d383",
+    "definitionCount": 211
+  },
+  "limitations": [
+    "Backend read/preview/apply/export callable; settings import UI not mounted. Existing ZIP restore remains unchanged.",
+    "Android saved-profile management is not migrated.",
+    "Original legacy danmaku share fields are baseline defaults; existing scoped portrait/landscape overrides stay authoritative.",
+    "Original deviceDebug, Android system/rotation/haptics/brightness/PiP fields, local wallpaper paths and unknown fields are never written.",
+    "Windows fonts/UI scale are useful consumers but absent from the fixed v0.3.3 sharing whitelist; app_font_size_preset/app_font_weight/app_ui_scale_preset remain gaps.",
+    "Structured dynamic tab visibility, bottom item colors and unverified useful keys remain visible as skipped; not claimed complete."
+  ],
+  "windowsMappedOriginalKeys": [
+    "android_native_liquid_glass_enabled",
+    "app_icon_style",
+    "app_language_v1",
+    "app_list_item_style",
+    "audio_now_playing_bar_opens_audio_mode",
+    "audio_quality_preference",
+    "auto_highest_quality",
+    "auto_play",
+    "background_playback_enabled",
+    "blur_intensity",
+    "bottom_bar_blur_enabled",
+    "bottom_bar_floating",
+    "bottom_bar_label_mode",
+    "bottom_bar_liquid_glass_enabled",
+    "bottom_bar_order",
+    "bottom_bar_search_layout_mode",
+    "bottom_bar_visibility_mode",
+    "bottom_bar_visible_tabs",
+    "bottom_progress_behavior",
+    "card_animation_enabled",
+    "card_transition_enabled",
+    "click_to_play",
+    "comment_collapsed_reply_preview_limit",
+    "comment_default_sort_mode",
+    "comment_fraud_detection_enabled",
+    "comment_member_decorations_enabled",
+    "common_list_header_collapse_mode",
+    "compact_video_stats_on_cover",
+    "danmaku_allow_bottom",
+    "danmaku_allow_colorful",
+    "danmaku_allow_scroll",
+    "danmaku_allow_special",
+    "danmaku_allow_top",
+    "danmaku_area",
+    "danmaku_block_attention_commands",
+    "danmaku_block_rules",
+    "danmaku_duplicate_merge_count_threshold",
+    "danmaku_duplicate_merge_window_ms",
+    "danmaku_enabled",
+    "danmaku_font_scale",
+    "danmaku_font_weight",
+    "danmaku_line_height",
+    "danmaku_massive_mode",
+    "danmaku_merge_duplicates",
+    "danmaku_opacity",
+    "danmaku_scroll_duration_seconds",
+    "danmaku_scroll_fixed_velocity",
+    "danmaku_smart_occlusion",
+    "danmaku_speed",
+    "danmaku_static_duration_seconds",
+    "danmaku_static_to_scroll",
+    "danmaku_stroke_width",
+    "dark_theme_style_v1",
+    "data_saver_mode",
+    "default_playback_speed",
+    "detailed_comment_time_enabled",
+    "display_mode",
+    "double_tap_seek_enabled",
+    "dynamic_all_tab_horizontal_user_list_visible",
+    "dynamic_color",
+    "dynamic_image_preview_text_visible",
+    "dynamic_top_bar_collapse_on_scroll",
+    "exp_double_tap_like",
+    "full_video_card_content_visible",
+    "fullscreen_aspect_ratio",
+    "gesture_sensitivity",
+    "global_text_tap_copy_enabled",
+    "grid_column_count",
+    "grid_column_count_compact",
+    "header_blur_enabled",
+    "header_collapse_enabled",
+    "hide_top_tabs",
+    "home_duration_style",
+    "home_feed_card_style",
+    "home_feed_card_width_preset",
+    "home_header_collapse_mode",
+    "home_hero_carousel_autoplay_enabled",
+    "home_hero_carousel_enabled",
+    "home_publish_time_visible",
+    "home_refresh_tip_visible",
+    "home_refresh_undo_visible",
+    "home_search_liquid_glass_enabled",
+    "home_top_layout_order",
+    "home_top_right_action",
+    "home_up_avatars_visible",
+    "home_up_badges_visible",
+    "home_video_duration_badges_visible",
+    "home_wallpaper_effect_mode",
+    "hot_danmaku_expanded_mode",
+    "hw_decode",
+    "image_preview_3d_page_enabled",
+    "image_preview_long_press_save_enabled",
+    "incremental_timeline_refresh",
+    "liquid_glass_advanced_preset",
+    "liquid_glass_chromatic_aberration",
+    "liquid_glass_content_distortion",
+    "liquid_glass_content_readability",
+    "liquid_glass_enabled",
+    "liquid_glass_material_progress_v2",
+    "liquid_glass_mode",
+    "liquid_glass_progressive_blur_curve",
+    "liquid_glass_progressive_blur_extent",
+    "liquid_glass_progressive_blur_radius",
+    "liquid_glass_strength",
+    "liquid_glass_style",
+    "long_press_speed_hint_hidden",
+    "long_press_speed_lock_enabled",
+    "md3_color_source",
+    "md3_custom_color_hex",
+    "miuix_transition_blur_enabled",
+    "navigation_icon_cross_scale_enabled",
+    "pinch_to_change_grid_columns_enabled",
+    "playback_completion_behavior",
+    "progress_peak_danmaku_enabled",
+    "remember_last_playback_speed",
+    "resume_playback_prompt_enabled",
+    "seek_backward_seconds",
+    "seek_forward_seconds",
+    "show_fullscreen_action_items",
+    "show_fullscreen_screenshot_button",
+    "show_fullscreen_time",
+    "show_online_count",
+    "show_pgc_timeline",
+    "show_profile_edit_button",
+    "show_video_detail_comment_count",
+    "sidebar_account_switcher_enabled",
+    "sidebar_expanded",
+    "space_played_video_locate_prompt_enabled",
+    "sponsor_block_auto_skip",
+    "sponsor_block_enabled",
+    "stop_playback_on_exit",
+    "subtitle_auto_preference",
+    "subtitle_portrait_vertical_offset_fraction",
+    "subtitle_position_locked",
+    "subtitle_vertical_offset_fraction",
+    "tablet_use_sidebar",
+    "theme_color_index",
+    "theme_color_spec",
+    "theme_color_style",
+    "theme_dark_background",
+    "theme_dark_control_accent",
+    "theme_dark_primary_text",
+    "theme_dark_secondary_text",
+    "theme_light_background",
+    "theme_light_control_accent",
+    "theme_light_primary_text",
+    "theme_light_secondary_text",
+    "theme_mode_v2",
+    "theme_role_overrides_enabled",
+    "theme_selection_v1",
+    "top_bar_liquid_glass_enabled",
+    "top_tab_label_mode",
+    "top_tab_order",
+    "top_tab_visible_tabs",
+    "ui_entrance_animation_enabled",
+    "video_ai_summary_entry_enabled",
+    "video_argue_msg_shown",
+    "video_card_long_press_action_enabled",
+    "video_codec_preference",
+    "video_info_default_expanded",
+    "video_note_default_collapsed",
+    "video_note_enabled",
+    "video_second_codec_preference",
+    "video_shared_return_gesture_follow_enabled",
+    "video_shared_return_gesture_translation_enabled",
+    "video_tag_size_preset",
+    "wifi_default_quality"
+  ],
+  "unmappedOriginalKeys": [
+    {
+      "key": "app_icon_appearance",
+      "type": "Int",
+      "section": "APPEARANCE",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "app_icon_key",
+      "type": "String",
+      "section": "APPEARANCE",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "audio_focus_enabled",
+      "type": "Boolean",
+      "section": "PLAYBACK",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "auto_enter_fullscreen",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "auto_exit_fullscreen",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "auto_portrait_fullscreen",
+      "type": "Boolean",
+      "section": "PLAYBACK",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "auto_rotate_enabled",
+      "type": "Boolean",
+      "section": "PLAYBACK",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "bg_play",
+      "type": "Boolean",
+      "section": "PLAYBACK",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "bottom_bar_item_colors",
+      "type": "String",
+      "section": "NAVIGATION",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "center_swipe_to_fullscreen",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "dynamic_page_layout_direction",
+      "type": "Int",
+      "section": "NAVIGATION",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "dynamic_tab_visible_tabs",
+      "type": "String",
+      "section": "APPEARANCE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "feed_api_type",
+      "type": "Int",
+      "section": "NAVIGATION",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "fullscreen_gesture_reverse",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "fullscreen_mode",
+      "type": "Int",
+      "section": "PLAYBACK",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "fullscreen_swipe_seek_enabled",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "fullscreen_swipe_seek_seconds",
+      "type": "Int",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "haptic_feedback_enabled",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "hide_video_page_status_bar",
+      "type": "Boolean",
+      "section": "PLAYBACK",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "home_refresh_count",
+      "type": "Int",
+      "section": "NAVIGATION",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "home_wallpaper_uri",
+      "type": "String",
+      "section": "APPEARANCE",
+      "reason": "local Android URI is not a portable Windows file"
+    },
+    {
+      "key": "horizontal_adaptation_enabled",
+      "type": "Boolean",
+      "section": "PLAYBACK",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "inline_swipe_seek_seconds",
+      "type": "Int",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "live_surface_card_transition_enabled",
+      "type": "Boolean",
+      "section": "APPEARANCE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "mobile_default_quality",
+      "type": "Int",
+      "section": "PLAYBACK",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "music_lyrics_ui_style",
+      "type": "Int",
+      "section": "PLAYBACK",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "pause_on_player_collapse",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "pip_no_danmaku",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "portrait_fullscreen_enabled",
+      "type": "Boolean",
+      "section": "PLAYBACK",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "portrait_player_collapse_mode",
+      "type": "Int",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "portrait_swipe_to_fullscreen",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "set_system_brightness",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "show_fullscreen_battery_level",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "show_fullscreen_lock_button",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "single_choice_presentation",
+      "type": "String",
+      "section": "APPEARANCE",
+      "reason": "Useful field has no mounted Root settings consumer in this source; retained as a gap, never silently applied."
+    },
+    {
+      "key": "slide_volume_brightness_enabled",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "swipe_hide_player",
+      "type": "Boolean",
+      "section": "GESTURE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "tablet_comment_panel_width_preset",
+      "type": "Int",
+      "section": "PLAYBACK",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "tablet_secondary_default_tab",
+      "type": "Int",
+      "section": "PLAYBACK",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "vertical_video_ratio",
+      "type": "Float",
+      "section": "PLAYBACK",
+      "reason": "Android/device-specific behavior or combined Android system control"
+    },
+    {
+      "key": "video_detail_chrome_scroll_hide_enabled",
+      "type": "Boolean",
+      "section": "PLAYBACK",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "video_shared_transition_custom_duration_millis",
+      "type": "Int",
+      "section": "APPEARANCE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "video_shared_transition_speed",
+      "type": "Int",
+      "section": "APPEARANCE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    },
+    {
+      "key": "video_transition_realtime_blur_enabled",
+      "type": "Boolean",
+      "section": "APPEARANCE",
+      "reason": "useful or structured field remains unmapped; actual consumer/normalization/mirror must be verified before applying"
+    }
+  ],
+  "consumerSources": [
+    "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlaybackPreferenceOperation.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalPlayerSettingsContext.kt",
+    "desktop/src/main/kotlin/com/bilipai/desktop/plugins/DesktopPluginStore.kt",
+    "desktop/tools/extract-upstream-whole-playback-settings.py",
+    "desktop/tools/extract-upstream-home-page.py",
+    "desktop/tools/extract-upstream-home-settings-full-page.py",
+    "desktop/tools/extract-upstream-full-navigation.py",
+    "desktop/tools/extract-upstream-danmaku-settings.py"
+  ],
+  "desktopBaseCommit": "f32b5bda5af31a627b4e9d119e30f8d8f09aae91",
+  "consumerFamilies": {
+    "appearance": [
+      "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopThemePrefs.kt",
+      "desktop/src/main/kotlin/com/bilipai/desktop/appearance/DesktopAppearanceTheme.kt",
+      "desktop/build/generated/home-page/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecode.kt",
+      "desktop/build/generated/home-page/com/android/purebilibili/feature/home/DesktopOriginalHomeScreen.kt"
+    ],
+    "playback": [
+      "desktop/build/generated/whole-playback-settings/generated/com/android/purebilibili/core/store/DesktopOriginalPlaybackSettingsPreferences.kt",
+      "desktop/build/generated/original-video-full-owner/com/android/purebilibili/feature/video/viewmodel/VideoPlaybackViewModel.kt",
+      "desktop/build/generated/original-video-player-full-controls/com/android/purebilibili/core/store/player/DesktopOriginalVideoPlayerSettings.kt",
+      "desktop/build/generated/original-video-fullscreen-pager/com/android/purebilibili/core/store/DesktopOriginalPortraitSettings.kt"
+    ],
+    "gesture": [
+      "desktop/build/generated/original-video-player-section-full/com/android/purebilibili/core/store/DesktopOriginalPlayerSectionSettings.kt",
+      "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopWindowsVideoPhysicalLeaf.kt"
+    ],
+    "danmaku": [
+      "desktop/build/generated/original-danmaku-settings/com/bilipai/desktop/settings/DesktopOriginalDanmakuPreferences.kt",
+      "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopDanmakuSettingsProjection.kt"
+    ],
+    "navigation": [
+      "desktop/build/generated/home-page/com/bilipai/desktop/ui/DesktopOriginalHomeSettingsDecode.kt",
+      "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopReadyOriginalRootMount.kt",
+      "desktop/src/main/kotlin/com/bilipai/desktop/ui/DesktopOriginalRootNavigationPreferences.kt"
+    ]
+  }
+}
