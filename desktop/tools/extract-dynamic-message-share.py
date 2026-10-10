@@ -44,7 +44,7 @@ def generate(repo,out,standalone=False):
  if hashlib.sha256(reaction_original.encode()).hexdigest()!=REACTION_SOURCE_SHA256:
   raise ValueError('Fixed DynamicReactionApi source digest mismatch')
  reaction_body=host.substitute(reaction_original,'object DynamicReactionApi {','internal class DesktopDynamicReactionApi(private val request: suspend (String, ByteArray) -> ByteArray) {')
- reaction_body=host.substitute(reaction_body,'BiliGrpcClient.request("/bilibili.app.dynamic.v2.Dynamic/ReactionList", request)','this.request("/bilibili.app.dynamic.v2.Dynamic/ReactionList", request)')
+ reaction_body=host.substitute(reaction_body,'BiliGrpcClient.request("/bilibili.app.dynamic.v2.Dynamic/ReactionList", request)','this@DesktopDynamicReactionApi.request("/bilibili.app.dynamic.v2.Dynamic/ReactionList", request)')
  files.append(host.write(out,REACTION_SOURCE,reaction_original,reaction_body,'DesktopDynamicReactionApi.kt'))
  p=BASE+'data/repository/MessageShareGrpcRepository.kt';s=read(repo,p)
  s=s.replace('import com.android.purebilibili.core.network.grpc.BiliGrpcClient','')
