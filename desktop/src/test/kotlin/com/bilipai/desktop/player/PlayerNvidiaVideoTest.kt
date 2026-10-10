@@ -3,6 +3,30 @@ package com.bilipai.desktop.player
 import kotlin.test.*
 
 class PlayerNvidiaVideoTest {
+    @Test fun realSharedCoreArgumentsForwardEveryExposedQualityAndNeverInventADriverOption() {
+        val hash = "a".repeat(64)
+        val identity = DesktopVeyraInstalledIdentity("fixture", hash, hash, "fixture", hash, hash, hash, hash)
+        val binding = DesktopVeyraVerifiedBinding(java.nio.file.Path.of("C:/fixture/mpv/libmpv-2.dll"),
+            java.nio.file.Path.of("C:/fixture/core/bilipai_veyra_core.dll"), java.nio.file.Path.of("C:/fixture/runtime"),
+            "00000000-0000-0000-0000-000000000001", hash, identity)
+        assertEquals(4, DesktopNvidiaVideoPreferences().quality.nativeLevel)
+        assertEquals(DesktopNvidiaVideoHdrMode.OFF, DesktopNvidiaVideoPreferences().hdrMode)
+        val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "bt.1886", null, false)
+        val driverDefault = DesktopNvidiaVideoPreferences().optionsFor(decision, NvidiaVideoBackend.DRIVER)
+        for (quality in DesktopNvidiaVideoQuality.entries) {
+            val preferences = DesktopNvidiaVideoPreferences(quality = quality)
+            val options = preferences.optionsFor(decision, NvidiaVideoBackend.VEYRA_CORE)
+            val arguments = binding.filterArguments(options, 17, 23)
+            assertTrue(arguments.contains(":quality=${quality.nativeLevel}:hdr=no:"))
+            assertTrue(arguments.contains(":session=17:generation=23:scale=2.0:"))
+            assertFalse(options.copy(backend = NvidiaVideoBackend.DRIVER).filterArguments().contains("quality"))
+            assertEquals(driverDefault, preferences.optionsFor(decision, NvidiaVideoBackend.DRIVER))
+        }
+        for (invalid in listOf(0, 5)) assertFailsWith<IllegalArgumentException> {
+            binding.filterArguments(NvidiaVideoOptions(2.0, qualityLevel = invalid), 17, 23)
+        }
+    }
+
     @Test fun unityWithoutHdrDoesNotRequestAFilterAndArgumentsAreBounded() {
         assertFalse(NvidiaVideoOptions().requireValid().requiresFilter)
         assertTrue(NvidiaVideoOptions(hdr = true).requiresFilter)

@@ -1,6 +1,9 @@
 package com.bilipai.desktop.plugins
 
 import com.android.purebilibili.feature.anime4k.VideoEnhancementAlgorithm
+import com.bilipai.desktop.player.DesktopNvidiaVideoHdrMode
+import com.bilipai.desktop.player.DesktopNvidiaVideoPreferences
+import com.bilipai.desktop.player.DesktopNvidiaVideoQuality
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.*
 import org.junit.jupiter.api.io.TempDir
@@ -10,6 +13,66 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.test.*
 
 class DesktopVideoEnhancementConfigurationTest {
+    @Test fun `quality and HDR writes merge in queue order and drain on retirement`(): Unit = runBlocking {
+        val accepting = AtomicBoolean(true)
+        val config = configuration(accepting = accepting::get)
+        val requests = listOf(config.setQuality(DesktopNvidiaVideoQuality.STANDARD),
+            config.setHdrMode(DesktopNvidiaVideoHdrMode.OFF), config.setAutomaticEnabled(false),
+            config.setQuality(DesktopNvidiaVideoQuality.HIGH))
+        accepting.set(false)
+        assertFailsWith<IllegalStateException> { config.setQuality(DesktopNvidiaVideoQuality.HIGHEST) }
+        withTimeout(5000) { config.flushAndClose(); requests.forEach { it.await() } }
+        assertEquals(DesktopNvidiaVideoPreferences(false, DesktopNvidiaVideoQuality.HIGH, DesktopNvidiaVideoHdrMode.OFF),
+            config.preferences.value)
+        val namespace = document()["windows_video_enhancement"]!!.jsonObject
+        assertEquals(3, namespace["quality_level"]!!.jsonPrimitive.int)
+        assertEquals("off", namespace["hdr_mode"]!!.jsonPrimitive.content)
+        val coldRoot = Files.createDirectory(root.resolve("quality-cold-store"))
+        Files.copy(root.resolve("plugin-settings.json"), coldRoot.resolve("plugin-settings.json"))
+        val cold = configuration(DesktopPluginStore(coldRoot))
+        withTimeout(5000) { cold.flushAndClose() }
+        assertEquals(config.preferences.value, cold.preferences.value)
+    }
+
+    @Test fun `existing migration keeps off and defaults missing quality and HDR without rewriting disk`(): Unit = runBlocking {
+        val original = """{"windows_video_enhancement":{"migration_version":1,"enabled":false},"unrelated":{"keep":7}}"""
+        Files.writeString(root.resolve("plugin-settings.json"), original)
+        val config = configuration()
+        withTimeout(5000) { config.flushAndClose() }
+        assertEquals(DesktopNvidiaVideoPreferences(false, DesktopNvidiaVideoQuality.HIGHEST, DesktopNvidiaVideoHdrMode.OFF),
+            config.preferences.value)
+        assertEquals(Json.parseToJsonElement(original), document())
+    }
+
+    @Test fun `invalid quality or HDR stays disabled and is never overwritten`(): Unit = runBlocking {
+        for ((index, field) in listOf("\"quality_level\":\"4\"", "\"quality_level\":0", "\"quality_level\":5",
+            "\"hdr_mode\":true", "\"hdr_mode\":\"unknown\"").withIndex()) {
+            val path = Files.createDirectory(root.resolve("invalid-$index"))
+            val original = """{"windows_video_enhancement":{"migration_version":1,"enabled":true,$field}}"""
+            Files.writeString(path.resolve("plugin-settings.json"), original)
+            val config = configuration(DesktopPluginStore(path))
+            assertFailsWith<IllegalStateException> { withTimeout(5000) { config.setHdrMode(DesktopNvidiaVideoHdrMode.OFF).await() } }
+            assertFalse(config.preferences.value.enabled)
+            assertNotNull(config.error.value)
+            assertEquals(Json.parseToJsonElement(original), document(path))
+            withTimeout(5000) { config.flushAndClose() }
+        }
+    }
+
+    @Test fun `frozen quality write does not optimistically change the atomic preferences`(): Unit = runBlocking {
+        val store = DesktopPluginStore(root)
+        val config = configuration(store)
+        withTimeout(5000) { config.setQuality(DesktopNvidiaVideoQuality.HIGHEST).await() }
+        val before = config.preferences.value
+        val saved = document()
+        store.freezeWrites()
+        assertFailsWith<IllegalStateException> { withTimeout(5000) { config.setQuality(DesktopNvidiaVideoQuality.STANDARD).await() } }
+        assertEquals(before, config.preferences.value)
+        assertEquals(saved, document())
+        assertNotNull(config.error.value)
+        withTimeout(5000) { config.flushAndClose() }
+    }
+
     @TempDir lateinit var root: Path
     private fun configuration(store: DesktopPluginStore = DesktopPluginStore(root),
         accepting: () -> Boolean = { true }) = DesktopVideoEnhancementConfiguration(store,

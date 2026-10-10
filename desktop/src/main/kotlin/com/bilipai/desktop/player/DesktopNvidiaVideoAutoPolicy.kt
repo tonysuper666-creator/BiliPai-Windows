@@ -29,6 +29,7 @@ internal fun resolveDesktopNvidiaVideoDecision(
     targetTransfer: String? = null,
     targetPrimaries: String? = null,
     nativeResolutionPatchAvailable: Boolean = false,
+    hdrMode: DesktopNvidiaVideoHdrMode = DesktopNvidiaVideoHdrMode.OFF,
 ): DesktopNvidiaVideoDecision {
     val transfer = inputTransfer?.lowercase()
     val sourceIsHdr = dolbyVisionProfile != null || transfer in setOf("pq", "hlg", "st2084", "smpte2084")
@@ -36,7 +37,8 @@ internal fun resolveDesktopNvidiaVideoDecision(
     // request SDR-to-HDR only for a known decoded SDR transfer on an active HDR display.
     val knownSdr = transfer in setOf("bt.1886", "bt.709", "srgb", "linear", "gamma1.8", "gamma2.0",
         "gamma2.2", "gamma2.4", "gamma2.6", "gamma2.8", "prophoto", "st428")
-    val hdr = hdrDisplayEnabled && knownSdr && !sourceIsHdr && nvidiaHdrTarget(targetTransfer, targetPrimaries)
+    val hdr = hdrMode == DesktopNvidiaVideoHdrMode.AUTO && hdrDisplayEnabled && knownSdr &&
+        !sourceIsHdr && nvidiaHdrTarget(targetTransfer, targetPrimaries)
     if (inputWidth <= 0 || inputHeight <= 0 || displayWidth <= 0 || displayHeight <= 0)
         return DesktopNvidiaVideoDecision(DesktopNvidiaVideoDecisionKind.WAITING_VIDEO, sourceIsHdr = sourceIsHdr)
 

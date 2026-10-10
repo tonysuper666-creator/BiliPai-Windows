@@ -3,6 +3,9 @@ package com.bilipai.desktop.plugins
 import com.android.purebilibili.feature.anime4k.Anime4KPreset
 import com.android.purebilibili.feature.anime4k.VideoEnhancementAlgorithm
 import com.android.purebilibili.feature.anime4k.Anime4KConfig
+import com.bilipai.desktop.player.DesktopNvidiaVideoHdrMode
+import com.bilipai.desktop.player.DesktopNvidiaVideoPreferences
+import com.bilipai.desktop.player.DesktopNvidiaVideoQuality
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +23,8 @@ class DesktopVideoEnhancementConfiguration(
     dispatcher: CoroutineDispatcher = Dispatchers.Main,
     private val acceptChanges: () -> Boolean = { true },
 ) {
-    private data class Request(val enabled: Boolean, val completion: CompletableDeferred<Unit>)
+    private data class Request(val change: (DesktopNvidiaVideoPreferences) -> DesktopNvidiaVideoPreferences,
+        val completion: CompletableDeferred<Unit>)
     private val scope = CoroutineScope(SupervisorJob() + dispatcher)
     private val requests = Channel<Request>(Channel.UNLIMITED)
     private val closed = AtomicBoolean()
@@ -28,6 +32,8 @@ class DesktopVideoEnhancementConfiguration(
     val error: StateFlow<String?> = mutableError.asStateFlow()
     private val mutableAutomaticEnabled = MutableStateFlow(false)
     val automaticEnabled: StateFlow<Boolean> = mutableAutomaticEnabled.asStateFlow()
+    private val mutablePreferences = MutableStateFlow(DesktopNvidiaVideoPreferences())
+    val preferences: StateFlow<DesktopNvidiaVideoPreferences> = mutablePreferences.asStateFlow()
     // A read-only view for compiled upstream platform signatures. This never
     // selects an algorithm or writes the old plugin's configuration.
     private val compatibilityConfig = MutableStateFlow(Anime4KConfig())
@@ -42,9 +48,10 @@ class DesktopVideoEnhancementConfiguration(
                     if (fresh[migrationKey] == null) {
                         // One user-authorized migration to the Windows replacement;
                         // legacy plugin keys and JSON remain untouched.
-                        mapOf(ENABLED_KEY to JsonPrimitive(true), MIGRATION_KEY to JsonPrimitive(1))
+                        savedValues(DesktopNvidiaVideoPreferences(enabled = true)) +
+                            (MIGRATION_KEY to JsonPrimitive(1))
                     } else {
-                        validatedEnabled(fresh)
+                        validatedPreferences(fresh)
                         emptyMap()
                     }
                 }
@@ -60,10 +67,34 @@ class DesktopVideoEnhancementConfiguration(
         return checkNotNull(enabled?.takeUnless { it.isString }?.booleanOrNull) { "NVIDIA 自动增强设置无效" }
     }
     private fun publishSaved(snapshot: DesktopPreferenceSnapshot) {
-        val enabled = validatedEnabled(snapshot)
-        mutableAutomaticEnabled.value = enabled
-        compatibilityConfig.value = Anime4KConfig(rememberAcrossVideos = true, rememberedEnabled = enabled)
+        val saved = validatedPreferences(snapshot)
+        mutablePreferences.value = saved
+        mutableAutomaticEnabled.value = saved.enabled
+        compatibilityConfig.value = Anime4KConfig(rememberAcrossVideos = true, rememberedEnabled = saved.enabled)
     }
+    private fun validatedPreferences(snapshot: DesktopPreferenceSnapshot): DesktopNvidiaVideoPreferences {
+        val enabled = validatedEnabled(snapshot)
+        val qualityValue = snapshot[qualityKey]
+        val quality = if (qualityValue == null) DesktopNvidiaVideoQuality.HIGHEST else {
+            val level = (qualityValue as? JsonPrimitive)?.takeUnless { it.isString }?.intOrNull
+            checkNotNull(DesktopNvidiaVideoQuality.entries.singleOrNull { it.nativeLevel == level }) {
+                "NVIDIA 处理质量设置无效"
+            }
+        }
+        val hdrValue = snapshot[hdrModeKey]
+        val hdrMode = if (hdrValue == null) DesktopNvidiaVideoHdrMode.OFF else {
+            val name = (hdrValue as? JsonPrimitive)?.takeIf { it.isString }?.content
+            checkNotNull(DesktopNvidiaVideoHdrMode.entries.singleOrNull { it.storedValue == name }) {
+                "NVIDIA HDR 设置无效"
+            }
+        }
+        return DesktopNvidiaVideoPreferences(enabled, quality, hdrMode)
+    }
+    private fun savedValues(preferences: DesktopNvidiaVideoPreferences) = mapOf(
+        ENABLED_KEY to JsonPrimitive(preferences.enabled),
+        QUALITY_KEY to JsonPrimitive(preferences.quality.nativeLevel),
+        HDR_MODE_KEY to JsonPrimitive(preferences.hdrMode.storedValue),
+    )
     private val worker = scope.launch {
         try { serialize { ensureLoaded() } }
         catch (cancelled: CancellationException) { throw cancelled }
@@ -74,8 +105,7 @@ class DesktopVideoEnhancementConfiguration(
                     ensureLoaded()
                     withContext(Dispatchers.IO) {
                         store.updateFromSnapshot(NAMESPACE) { fresh ->
-                            validatedEnabled(fresh)
-                            mapOf(ENABLED_KEY to JsonPrimitive(request.enabled))
+                            savedValues(request.change(validatedPreferences(fresh)))
                         }
                         publishSaved(store.snapshot(NAMESPACE).value)
                     }
@@ -92,10 +122,13 @@ class DesktopVideoEnhancementConfiguration(
         }
     }
 
-    fun setAutomaticEnabled(enabled: Boolean): Deferred<Unit> {
+    fun setAutomaticEnabled(enabled: Boolean): Deferred<Unit> = setPreference { it.copy(enabled = enabled) }
+    fun setQuality(quality: DesktopNvidiaVideoQuality): Deferred<Unit> = setPreference { it.copy(quality = quality) }
+    fun setHdrMode(hdrMode: DesktopNvidiaVideoHdrMode): Deferred<Unit> = setPreference { it.copy(hdrMode = hdrMode) }
+    private fun setPreference(change: (DesktopNvidiaVideoPreferences) -> DesktopNvidiaVideoPreferences): Deferred<Unit> {
         check(!closed.get() && acceptChanges()) { "NVIDIA 增强设置已关闭" }
         val completion = CompletableDeferred<Unit>()
-        check(requests.trySend(Request(enabled, completion)).isSuccess) { "NVIDIA 增强设置已关闭" }
+        check(requests.trySend(Request(change, completion)).isSuccess) { "NVIDIA 增强设置已关闭" }
         return completion
     }
     // Old signatures compile while their Windows widget leaf is replaced. They
@@ -120,7 +153,11 @@ class DesktopVideoEnhancementConfiguration(
         const val NAMESPACE = "windows_video_enhancement"
         const val ENABLED_KEY = "enabled"
         const val MIGRATION_KEY = "migration_version"
+        const val QUALITY_KEY = "quality_level"
+        const val HDR_MODE_KEY = "hdr_mode"
         private val enabledKey = DesktopPreferenceKey(ENABLED_KEY) { it }
         private val migrationKey = DesktopPreferenceKey(MIGRATION_KEY) { it }
+        private val qualityKey = DesktopPreferenceKey(QUALITY_KEY) { it }
+        private val hdrModeKey = DesktopPreferenceKey(HDR_MODE_KEY) { it }
     }
 }

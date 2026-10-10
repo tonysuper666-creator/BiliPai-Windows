@@ -3,8 +3,22 @@ package com.bilipai.desktop.player
 import kotlin.test.*
 
 class DesktopNvidiaVideoAutoPolicyTest {
+    @Test fun userHdrOffOnlyDisablesConversionAndKeepsTheBoundedUpscale() {
+        val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 5120, 2880, 16384, "bt.1886", null,
+            true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.OFF)
+        assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE, decision.kind)
+        assertEquals(5120.0 / 1920.0, decision.scale)
+        assertFalse(decision.hdr)
+        for (transfer in listOf("pq", "hlg")) {
+            val native = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, transfer, null,
+                true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.OFF)
+            assertTrue(native.sourceIsHdr)
+            assertFalse(native.hdr)
+        }
+    }
+
     @Test fun actualVideoRectangleRequestsBothUpscalingAndHdrOnAnActiveHdrDisplay() {
-        val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "bt.1886", null, true, "pq", "bt.2020")
+        val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "bt.1886", null, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO)
         assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE_AND_HDR, decision.kind)
         assertEquals(2.0, decision.scale)
         assertTrue(decision.hdr)
@@ -28,7 +42,7 @@ class DesktopNvidiaVideoAutoPolicyTest {
         val wait = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, null, "bt.1886", null, false)
         assertEquals(DesktopNvidiaVideoDecisionKind.WAITING_GPU_LIMIT, wait.kind)
         assertFalse(wait.needsProcessing)
-        val hdr = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, null, "bt.1886", null, true, "pq", "bt.2020")
+        val hdr = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, null, "bt.1886", null, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO)
         assertEquals(DesktopNvidiaVideoDecisionKind.HDR, hdr.kind)
         assertEquals(1.0, hdr.scale)
         assertTrue(hdr.hdr)
@@ -36,7 +50,7 @@ class DesktopNvidiaVideoAutoPolicyTest {
 
     @Test fun nativeHdrAndDolbyVisionNeverEnterSdrToHdrConversion() {
         for ((gamma, dv) in listOf("pq" to null, "hlg" to null, "bt.1886" to 5)) {
-            val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, gamma, dv, true, "pq", "bt.2020")
+            val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, gamma, dv, true, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO)
             assertTrue(decision.sourceIsHdr)
             assertFalse(decision.hdr)
             assertEquals(2.0, decision.scale)
@@ -45,7 +59,7 @@ class DesktopNvidiaVideoAutoPolicyTest {
 
     @Test fun hdrRequiresKnownDecodedSdrAndAnActuallyEnabledHdrDisplay() {
         for ((gamma, display) in listOf(null to true, "unknown" to true, "bt.1886" to false)) {
-            val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 1920, 1080, 16384, gamma, null, display, "pq", "bt.2020")
+            val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 1920, 1080, 16384, gamma, null, display, "pq", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO)
             assertFalse(decision.hdr)
         }
     }
@@ -53,13 +67,13 @@ class DesktopNvidiaVideoAutoPolicyTest {
     @Test fun unknownOrSdrTargetDoesNotRejectTheEligibleVsrRequest() {
         for ((transfer, primaries) in listOf(null to null, "bt.1886" to "bt.709", "linear" to "unknown")) {
             val decision = resolveDesktopNvidiaVideoDecision(1920, 1080, 3840, 2160, 16384, "bt.1886", null, true,
-                transfer, primaries)
+                transfer, primaries, hdrMode = DesktopNvidiaVideoHdrMode.AUTO)
             assertEquals(DesktopNvidiaVideoDecisionKind.UPSCALE, decision.kind)
             assertEquals(2.0, decision.scale)
             assertFalse(decision.hdr)
         }
         val hdr = resolveDesktopNvidiaVideoDecision(1920, 1080, 1920, 1080, 16384, "bt.1886", null, true,
-            "linear", "bt.2020")
+            "linear", "bt.2020", hdrMode = DesktopNvidiaVideoHdrMode.AUTO)
         assertEquals(DesktopNvidiaVideoDecisionKind.HDR, hdr.kind)
     }
 

@@ -8,10 +8,12 @@ enum class NvidiaVideoBackend { DRIVER, VEYRA_CORE }
 /** Explicit same-size intent is distinct from the default withdrawal options. */
 data class NvidiaVideoOptions(val scale: Double = 1.0, val hdr: Boolean = false,
     val nativeResolutionProcessing: Boolean = false,
-    val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER) {
+    val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,
+    val qualityLevel: Int = 4) {
     internal fun requireValid(): NvidiaVideoOptions {
         require(scale.isFinite() && scale in 1.0..4.0) { "NVIDIA video scale must be between 1 and 4." }
         require(!nativeResolutionProcessing || scale == 1.0) { "Native-resolution processing requires unity scale." }
+        require(qualityLevel in 1..4) { "NVIDIA video quality must be between 1 and 4." }
         return this
     }
     internal val requiresFilter: Boolean get() = scale > 1.0 || hdr || nativeResolutionProcessing
@@ -57,6 +59,8 @@ data class NvidiaVideoState(
     val backend: NvidiaVideoBackend = NvidiaVideoBackend.DRIVER,
     /** Exact receipt plus current owned frame, never display/effect completion. */
     val veyraSubmitted: Boolean = false,
+    /** Requested shared-core quality. Driver d3d11vpp has no quality option. */
+    val requestedQualityLevel: Int = 4,
 )
 
 internal fun nvidiaHdrTransfer(transfer: String?): Boolean = transfer in setOf("pq", "hlg", "st2084", "smpte2084")

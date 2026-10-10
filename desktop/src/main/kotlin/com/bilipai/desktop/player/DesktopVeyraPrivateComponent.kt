@@ -286,9 +286,10 @@ internal class DesktopVeyraVerifiedBinding internal constructor(
     val presentationQualification: DesktopVeyraPresentationQualification? = null,
 ) {
     fun filterArguments(options: NvidiaVideoOptions, actualSourceVersion: Long, configurationVersion: Long): String {
+        options.requireValid()
         require(actualSourceVersion > 0 && configurationVersion > 0 && configurationVersion < Long.MAX_VALUE)
         fun quoted(value: String) = "%${value.toByteArray(Charsets.UTF_8).size}%$value"
         return "bilipai-rtx=dll=${quoted(corePath.toString())}:runtime=${quoted(runtimePath.toString())}:project=${quoted(projectId)}" +
-            ":session=$actualSourceVersion:generation=$configurationVersion:scale=${options.scale}:quality=4:hdr=${if(options.hdr) "yes" else "no"}:peak=1000:timeout=1000"
+            ":session=$actualSourceVersion:generation=$configurationVersion:scale=${options.scale}:quality=${options.qualityLevel}:hdr=${if(options.hdr) "yes" else "no"}:peak=1000:timeout=1000"
     }
 }

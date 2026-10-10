@@ -585,7 +585,8 @@ private fun DesktopReadyApp(repository: DesktopRepository, player: MpvPlayer?, p
         DesktopVideoEnhancementSession(nativePlayer, pluginRuntime.enhancementConfiguration.automaticEnabled,
             enhancementHostStarted, pip?.active ?: emptyPipState,
             pluginRuntime.enhancementConfiguration::setAutomaticEnabled,
-            sessionEpoch = { repository.sessionEpoch })
+            sessionEpoch = { repository.sessionEpoch },
+            enhancementPreferences = pluginRuntime.enhancementConfiguration.preferences)
     } }
     val emptyEnhancement = remember { MutableStateFlow(DesktopVideoEnhancementState()) }
     val enhancementState by (enhancement?.state ?: emptyEnhancement).collectAsState()

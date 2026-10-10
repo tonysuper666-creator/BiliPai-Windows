@@ -1,12 +1,16 @@
 package com.bilipai.desktop.player
 
 import com.bilipai.desktop.ui.desktopVideoEnhancementCompactLabel
+import com.bilipai.desktop.plugins.DesktopPluginStore
+import com.bilipai.desktop.plugins.DesktopVideoEnhancementConfiguration
 import com.sun.jna.Memory
 import com.sun.jna.Pointer
 import com.sun.jna.StringArray
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.concurrent.LinkedBlockingQueue
+import java.nio.file.Path
+import org.junit.jupiter.api.io.TempDir
 import kotlin.test.*
 
 /** Real private MPV actor, memory-only C ABI. No thread, HWND, native DLL or GPU is started. */
@@ -55,6 +59,15 @@ private class NvidiaWithdrawalActor(val player: MpvPlayer) : AutoCloseable {
         assertTrue(player.isNativeTrackIdentityCurrent(identity))
     }
     fun hasQueuedNvidia() = queue.any { it.javaClass.simpleName == "NvidiaVideo" }
+    fun recordVeyra(binding: DesktopVeyraVerifiedBinding) {
+        type.getDeclaredField("veyraBinding").apply { isAccessible = true }.set(actor, binding)
+        @Suppress("UNCHECKED_CAST")
+        val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
+        observed.value = observed.value.copy(veyraAvailable = true)
+        @Suppress("UNCHECKED_CAST")
+        val output = field("mutableVideoOutput").get(player) as MutableStateFlow<PlayerVideoOutputState>
+        output.value = output.value.copy(inputPrimaries = "bt.709")
+    }
     fun recordDevice(vendor: Int?, context: String?) {
         @Suppress("UNCHECKED_CAST")
         val observed = field("mutableNvidiaVideo").get(player) as MutableStateFlow<NvidiaVideoState>
@@ -106,7 +119,8 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
     override fun mpv_command(handle: Pointer, args: StringArray): Int {
         val command = args.getStringArray(0).toList(); commands += command
         check(command.take(2) in listOf(listOf("vf", "add"), listOf("vf", "remove")))
-        if (command[1] == "add") filters += "d3d11vpp" to command[2].substringAfter('@').substringBefore(':')
+        if (command[1] == "add") filters += (if (command[2].substringAfter(':').startsWith("bilipai-rtx=")) "bilipai-rtx" else "d3d11vpp") to
+            command[2].substringAfter('@').substringBefore(':')
         else {
             if (rejectRemoval) return -12
             filters.removeAll { it.second == command[2].removePrefix("@") }
@@ -141,6 +155,55 @@ private class NvidiaWithdrawalNative(private val delegate: PremiumRecoveryNative
 }
 
 class PlayerNvidiaActorWithdrawalTest {
+    @TempDir lateinit var enhancementSettingsRoot: Path
+
+    @Test fun persistedQualityReplacesOnlyOwnedFilterOnTheSamePlayingSource() = runBlocking<Unit> {
+        val configuration = DesktopVideoEnhancementConfiguration(DesktopPluginStore(enhancementSettingsRoot),
+            dispatcher = Dispatchers.Default)
+        try {
+            withTimeout(3000) { configuration.setAutomaticEnabled(true).await() }
+            val hash = "a".repeat(64)
+            val identity = DesktopVeyraInstalledIdentity("fixture", hash, hash, "fixture", hash, hash, hash, hash)
+            val binding = DesktopVeyraVerifiedBinding(Path.of("C:/fixture/mpv/libmpv-2.dll"),
+                Path.of("C:/fixture/core/bilipai_veyra_core.dll"), Path.of("C:/fixture/runtime"),
+                "00000000-0000-0000-0000-000000000001", hash, identity)
+            MpvPlayer().use { player ->
+                player.setVolume(23.0); player.setMuted(true); player.setSpeed(1.25)
+                val version = player.loadVersioned(PlaybackSource("file:///C:/quality-owned-playing.avi"))
+                val source = assertNotNull(player.currentSourceSnapshot())
+                NvidiaWithdrawalActor(player).use { actor ->
+                    // Memory-only fixture metadata/binding. No verification, SDK, GPU or DLL executes.
+                    actor.recordPlayableOutput(); actor.recordVeyra(binding)
+                    DesktopVideoEnhancementSession(player, configuration.automaticEnabled, MutableStateFlow(true),
+                        MutableStateFlow(false), configuration::setAutomaticEnabled,
+                        enhancementPreferences = configuration.preferences).use { enhancement ->
+                        awaitSession { enhancement.state.value.pending && actor.hasQueuedNvidia() }
+                        while (actor.hasQueuedNvidia()) actor.apply()
+                        val first = player.nvidiaVideoState.value.configurationVersion
+                        val playback = player.state.value
+                        assertTrue(actor.native.commands.last().last().contains(":quality=4:hdr=no:"))
+                        withTimeout(3000) { configuration.setQuality(DesktopNvidiaVideoQuality.STANDARD).await() }
+                        awaitSession { player.nvidiaVideoState.value.configurationVersion != first &&
+                            player.nvidiaVideoState.value.requestedQualityLevel == 2 && actor.hasQueuedNvidia() }
+                        while (actor.hasQueuedNvidia()) actor.apply()
+                        assertTrue(actor.native.commands.last().last().contains(":quality=2:hdr=no:"))
+                        assertEquals(playback, player.state.value)
+                        assertEquals(version, player.currentSourceVersion)
+                        assertTrue(player.ownsSourceSnapshot(source))
+                        assertFalse(enhancement.state.value.active)
+                        assertTrue(actor.native.filters.any { it == ("scale" to "foreign-user-filter") })
+                        assertTrue(actor.native.commands.all { it.take(2) in listOf(listOf("vf", "add"), listOf("vf", "remove")) })
+                        val beforeReplacement = player.nvidiaVideoState.value.configurationVersion
+                        player.loadVersioned(PlaybackSource("file:///C:/quality-replacement.avi"))
+                        assertNull(player.setNvidiaVideoEnhancementIfSourceSnapshot(source,
+                            NvidiaVideoOptions(2.0, backend = NvidiaVideoBackend.VEYRA_CORE, qualityLevel = 3)))
+                        assertFalse(player.clearNvidiaVideoEnhancementIfConfigurationVersion(beforeReplacement))
+                    }
+                }
+            }
+        } finally { withTimeout(3000) { configuration.flushAndClose() } }
+    }
+
     @Test fun exactRuntimeDisableReachesRealSessionFromPendingOrActiveAndPreservesRemovalFailure() = runBlocking<Unit> {
         for (mode in listOf("pending", "active", "removal-error")) {
             val enabled = MutableStateFlow(true)
