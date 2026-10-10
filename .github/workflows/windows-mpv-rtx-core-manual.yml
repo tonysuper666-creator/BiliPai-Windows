@@ -76,6 +76,7 @@ jobs:
       # Exact linux/amd64 builder retained and authenticated in own workflow run 37928635585.
       # This is a new OCI environment; old HOST snapshot evidence cannot be relabelled or reused.
       image: ghcr.io/tonysuper666-creator/bilipai-windows-builder@sha256:c7dffe77b57d98b10e327dde12d3977faf4cb90aa7cb4f5eeac4e9d68d724239
+      options: --env ImageOS --env ImageVersion
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
